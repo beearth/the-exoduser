@@ -14,8 +14,13 @@ namespace Exoduser.UnityPort
   IEnumerator UiFinishCapture()
   {
    string output=Argument("-output"),phase=Argument("-ui-phase");if(string.IsNullOrEmpty(output))yield break;
-   Directory.CreateDirectory(output);lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();
-   SetGameFocus(true);yield return new WaitForSecondsRealtime(.4f);
+   // Same entry as the UI overlap check: skip the startup presentation first, otherwise EnterNativeTest leaves the lobby on screen
+   // (2026-11-03 Mac: every pause/inventory shot of this fixture showed the lobby).
+   Directory.CreateDirectory(output);smokeActive=true;lobby.AutomatedInput=true;lobby.SetPlaybackFocus(true);SetGameFocus(true);
+   lobby.ShowLobby();lobby.StartupCaptureState.Skip();lobby.SelectPreview();lobby.EnterNativeTest();
+   frontendEntryInputFence=false;Running=false;menu=false;if(firstPractice!=null)EndFirstPractice(true);Running=false;areaTitle.Hide();levelUp.Hide();
+   yield return new WaitForSecondsRealtime(.4f);
+   if(lobby.IsBlocking){uiArtFailures++;Debug.LogError("UI_FINISH_LOBBY_STILL_BLOCKING");}
    var log=new System.Collections.Generic.List<string>();
    foreach(var size in new[]{new Vector2Int(1920,1080),new Vector2Int(1600,900)})
    {
@@ -24,9 +29,10 @@ namespace Exoduser.UnityPort
     if(phase=="art")yield return UiFinishArt(output,tag,log);
     if(phase=="settings")yield return UiFinishSettings(output,tag,log);
     if(phase=="hud")yield return UiFinishHud(output,tag,log);
-    if(phase=="pause")yield return UiFinishPause(output,tag,log);
+    if(phase=="pause"||phase=="pause,inventory")yield return UiFinishPause(output,tag,log);
+    if(phase=="inventory"||phase=="pause,inventory")yield return UiFinishInventory(output,tag,log);
    }
-   File.WriteAllText(Path.Combine(output,"ui-finish-"+phase+".json"),"{\"phase\":\""+phase+"\",\"passed\":"+(uiArtFailures==0?"true":"false")+",\"failures\":"+uiArtFailures+",\"log\":["+string.Join(",",log.ConvertAll(x=>"\""+x.Replace("\"","'")+"\""))+"]}");
+   File.WriteAllText(Path.Combine(output,"ui-finish-"+phase.Replace(',','+')+".json"),"{\"phase\":\""+phase+"\",\"passed\":"+(uiArtFailures==0?"true":"false")+",\"failures\":"+uiArtFailures+",\"log\":["+string.Join(",",log.ConvertAll(x=>"\""+x.Replace("\"","'")+"\""))+"]}");
    lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);
    Debug.Log("QA_MEDIA_DRAIN_COMPLETE UI_FINISH");Application.Quit(uiArtFailures==0?0:2);
   }
@@ -87,6 +93,40 @@ namespace Exoduser.UnityPort
    yield return UiCapture(output,"unity-pause-open-"+tag);
    pauseMenu.Navigation.ObserveReleased(false);ApplyPauseCommand(pauseMenu.HandleKey(PauseKey.Back,false,false));
    bool resumed=!menu&&Running;if(!resumed)uiArtFailures++;log.Add((resumed?"PASS ":"FAIL ")+"두 번째 ESC 게임 재개 "+tag);
+  }
+  // Inventory action row (web #invActionBtns + #invJunkSelBtn/#invJunkBtn): open window, a selected bag item, then every non-favorite bag item marked junk.
+  // The junk flags and the selection are restored afterwards so the second resolution starts from the same state.
+  IEnumerator UiFinishInventory(string output,string tag,System.Collections.Generic.List<string> log)
+  {
+   menu=false;Running=false;pauseMenu.Reset();SetInventory(true);inventory.Navigation.ObserveReleased(false);
+   var st=inventory.State;var priorSel=st.Selected;var priorJunk=new List<bool>();foreach(var b in st.Bag)priorJunk.Add(b.junk);
+   st.Selected=null;yield return UiCapture(output,"Unity_인벤토리_열림_"+tag);
+   var first=st.Bag.Count>0?st.Bag[0]:null;st.Select(first);yield return UiCapture(output,"Unity_인벤토리_가방선택_"+tag);
+   // Half marked first: web shows both invJunkSelBtn and invJunkBtn in one row.
+   st.Selected=null;int half=0;foreach(var b in st.Bag)if(!b.fav&&half<st.Bag.Count/2){b.junk=true;half++;}
+   yield return UiCapture(output,"Unity_인벤토리_쓰레기일부_"+tag);
+   int marked=0;foreach(var b in st.Bag)if(!b.fav){b.junk=true;marked++;}
+   yield return UiCapture(output,"Unity_인벤토리_쓰레기지정_"+tag);log.Add("inventory bag="+st.Bag.Count+" junkMarked="+marked+" mats="+Simulation.Materials+" "+tag);
+   // invJunkBtn -> gameConfirm. ESC through the real PollKeys path closes only the confirm.
+   var bagBefore=new List<InventoryItem>(st.Bag);int matsBefore=Simulation.Materials;int expected=0;foreach(var j in st.JunkItems())expected+=InventoryState.SalvageValue(j);
+   inventory.OpenJunkConfirm();yield return UiCapture(output,"Unity_인벤토리_분해확인_"+tag);
+   bool confirmShown=inventory.JunkConfirmOpen;if(!confirmShown)uiArtFailures++;log.Add((confirmShown?"PASS ":"FAIL ")+"쓰레기 분해 확인창 표시 "+tag);
+   var keyboard=UnityEngine.InputSystem.InputSystem.AddDevice<UnityEngine.InputSystem.Keyboard>();
+   try{
+    keyboard.MakeCurrent();UnityEngine.InputSystem.LowLevel.InputState.Change(keyboard,new UnityEngine.InputSystem.LowLevel.KeyboardState(UnityEngine.InputSystem.Key.Escape));
+    inventory.Navigation.ObserveReleased(false);bool closeInventory=inventory.PollKeys(Simulation.Player.Level);
+    bool escOk=!inventory.JunkConfirmOpen&&!closeInventory&&inventory.Open;if(!escOk)uiArtFailures++;log.Add((escOk?"PASS ":"FAIL ")+"확인창 ESC는 확인창만 닫음(인벤토리 유지) "+tag);
+    UnityEngine.InputSystem.LowLevel.InputState.Change(keyboard,new UnityEngine.InputSystem.LowLevel.KeyboardState());
+   }finally{UnityEngine.InputSystem.InputSystem.RemoveDevice(keyboard);}
+   yield return null;
+   inventory.OpenJunkConfirm();int gained=inventory.ConfirmJunkSalvage();
+   bool salvaged=gained==expected&&Simulation.Materials==matsBefore+expected&&st.JunkItems().Count==0&&st.Bag.Count==bagBefore.Count-marked&&st.Selected==null&&!inventory.JunkConfirmOpen;
+   if(!salvaged)uiArtFailures++;log.Add((salvaged?"PASS ":"FAIL ")+"쓰레기 "+marked+"개 분해 악의오브 +"+gained+" (기대 +"+expected+", "+matsBefore+"->"+Simulation.Materials+") 가방 "+bagBefore.Count+"->"+st.Bag.Count+" "+tag);
+   yield return UiCapture(output,"Unity_인벤토리_분해후_"+tag);
+   // Restore the fixture state for the next resolution (same item objects, same cells, same orbs).
+   st.Bag.Clear();st.Bag.AddRange(bagBefore);Simulation.Materials=matsBefore;
+   for(int i=0;i<priorJunk.Count&&i<st.Bag.Count;i++)st.Bag[i].junk=priorJunk[i];st.Selected=priorSel;
+   SetInventory(false);Running=false;
   }
   IEnumerator UiFinishArt(string output,string tag,System.Collections.Generic.List<string> log)
   {

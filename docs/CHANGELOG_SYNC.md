@@ -2,6 +2,12 @@
 
 활성7기술·예고/회복/쿨다운·잡기/잠행·슬램r260·정지거리220·4콤보를 반영했다. 전투100375검사 중 잠행18실패, 프레임124/0. Player/Editor Roslyn5어셈블리 오류0. 채찍×1.6·돌진폭×1.5는 Core고정값 때문에 미적용, RB1-8 미착수. 동일 하니스2회 실패 중단 규칙 적용, 통합 금지. [정확한 수치와 증거](engine/UNITY_BOSS_ARENA_RB1_7_8_20261103.md).
 
+2026-11-03 규칙 정리(사용자 "전부 추천대로", 51항목): CLAUDE.md를 main·unity/main 같은 본문(233줄)으로 다시 쓰고 AGENTS.md는 CLAUDE.md 안내만 둔다. 핵심: 새 개발은 unity/main만·웹은 Steam 유지보수(부록 W), 11-05부터 Claude 구현, PC 컴파일·Mac 판정(PC 예외 ①BuildLoop ②루프 정지 중 1회 교체 ③승인 후보), 1-1 원근 LOCK 34°, docs 정본=unity/main. main에만 있던 매뉴얼·보드·실버 헬 등 9개 문서를 unity/main으로 옮기고 v4.1·운영 매뉴얼 v1.1·TERMINAL_FAILURE_FALLBACK·DOCS_INDEX를 추가했다. 딸린 문서 5개(API연결_가이드·BUILD_BACKUP_POLICY·2_3 상단 노트·IMAGE_PROVIDER_PRIORITY·MAP_OBJECT_SEEDREAM)와 EnergyShield.cs 주석 출처를 고쳤다. 원문은 [docs/_archive/rules-20261103](_archive/rules-20261103/README.md).
+
+2026-11-03 Mac Unity 인벤토리 쓰레기 분해 웹 이식·제목 제거·일시정지 실버 헬 마감: Core `InventoryState.SalvageValue/JunkItems/SalvageJunk/SalvageOne`(웹 `salvageVal` oracle 224행 일치), 하단 지정·분해 두 버튼, 웹 `gameConfirm` 확인창(입력 차단·ESC는 확인창만), 단일 분해 실제 동작, `인벤토리` 제목 띠 삭제. 일시정지는 비활성 틴트 제거, 버튼 skin 배경 제거, 은빛 판+작은 진홍 빛, 공통 제목 띠, Hahmlet 자간 글자, 판 바탕 Linear 보정(`Panel(...,iron:false)`). ARM64 빌드 오류0, 캡처 장치 1920·1600 PASS, 눈 검수 PASS. 키 회귀 두 개의 기존 결함은 변경 전 빌드와 동일. 번역 목록 3662–3666 등록. [기록](engine/UNITY_PAUSE_SILVER_BRIEF_20261103.md#42-적용-내용).
+
+2026-11-03 Mac Unity UI 인계(인벤토리 분해·제목·일시정지): 클라우드 브리프를 unity 작업 브랜치로 옮기고 `--unity-ui-finish-capture -ui-phase pause,inventory` 전/후 캡처 단계를 추가했다. 이 장치가 로비에 머물던 결함(시작 연출 미건너뜀)을 UI 겹침 검사와 같은 진입 순서로 고쳤다. 제품 UI 변경과 결과는 후속 절에 기록한다. [브리프·기록](engine/UNITY_PAUSE_SILVER_BRIEF_20261103.md#4-mac-적용-기록-2026-11-03-pc-ui-총괄-mac-세션).
+
 2026-11-03 19:00 지옥문 조건 목표 표시: 최신 unity/main `9dc27dea5` 병합 후 실제 Core 비율/보너스의 필요 처치 수(23마리→19, 문지기 보너스→17), 아귀 상태·정화 N/4·다음 지역·문 열린 뒤 보스방 안내를 우측 두 줄과 미니맵에 연결. 기존 serif/뼈색·금색 선·웹 아귀/자물쇠 문법, 새 문구224개/28언어. 표시 모델33검사·Core 최소수400조합·언어형식 통과, 공용bin 컴파일 `3920a25c` 오류0/USER_SAVE0. PC Player·새 빌드·게임 캡처0, Mac 1920/3840 1x·3x와 자연 진행 미검증. [G0 근거·구현·Mac 인자](engine/UNITY_HELLGATE_OBJECTIVES_20261103.md).
 
 2026-10-29 Mac 로비 메타 대비 후보: 최신 웹 `main:7e0113fe4`의 좌상단 회색 alpha `.5`는 실제 1280/1600 1x에서 석재 배경 위 판독이 약했다. Mac 정의 JSON의 일반·한도 alpha만 `.9`로 변경, ARM64 Settings QA build Succeeded/오류0, 5/5 실제 화면·Tab/Return/Esc 유지·로스터 SHA 불변. 웹 세 위치 동기화와 물리 마우스 hit는 HOLD, 전체 VISUAL VERDICT RETOUCH. [수치·화면·후속](engine/UNITY_LOBBY_20261024.md#2026-10-29-좌상단-메타-대비-후보--mac-범위).

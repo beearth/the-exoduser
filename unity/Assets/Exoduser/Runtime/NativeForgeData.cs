@@ -58,11 +58,7 @@ namespace Exoduser.UnityPort {
    if(enh>=25)return new Color32(255,204,0,255);if(enh>=10)return new Color32(68,170,255,255);return new Color32(240,215,184,255);
   }
   // 28189 salvageVal (the stored _enhRefund of transferred web items does not exist in Unity)
-  public static int SalvageValue(InventoryItem it,int[] table){
-   int e=it.enh,refund=0;
-   if(e>0){double m=RarityMul[EconomyRarity(it.rarity)],total=0;for(int i=0;i<e;i++)total+=Math.Ceiling(Math.Max(1,Math.Ceiling((1+i*0.15)*1.5))*m);refund=(int)Math.Floor(total*0.5);}
-   return table[EconomyRarity(it.rarity)]+refund+it.tier*2;
-  }
+  public static int SalvageValue(InventoryItem it,int[] table){return InventoryState.SalvageValue(it,table);}   // one formula: Core InventoryState.SalvageValue (web oracle in Tools/inv-salvage-oracle)
   // 50546.. bonus text per equipment class (ATK from atk, DEF/HP/ST/MP from the slot)
   public static string BonusText(InventoryItem it,string fallback){
    int enh=it.enh;string t="";

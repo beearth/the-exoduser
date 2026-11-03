@@ -37,7 +37,7 @@ namespace Exoduser.UnityPort
         }
         IEnumerator M1Shot(string name)
         {
-            UpdateViews(); yield return new WaitForSecondsRealtime(.15f); yield return new WaitForEndOfFrame();
+            DispatchFeedback();UpdateViews(); yield return new WaitForSecondsRealtime(.15f); yield return new WaitForEndOfFrame();
             m1Overlays[name] = M1Overlay();
             if (playerView != null) Debug.Log("[M1CAP] " + name + " player.enabled=" + playerView.enabled + " active=" + playerView.gameObject.activeInHierarchy + " sprite=" + (playerView.sprite != null) + " visibleToCamera=" + playerView.isVisible + " sort=" + playerView.sortingOrder + " pos=" + playerView.transform.position + " cam=" + view.transform.position + " alpha=" + playerView.color.a + " state=" + (Simulation != null ? Simulation.Player.State : "?") + " inArena=" + (Simulation != null && Simulation.Stage.InArena) + " focus=" + Application.isFocused + " guiRepaints=" + m1GuiRepaints);
             if (!m1Headless) { ScreenCapture.CaptureScreenshot(Path.Combine(m1Caps, name + ".png")); yield return null; yield break; }
@@ -147,6 +147,7 @@ namespace Exoduser.UnityPort
             sim.SetRollInput(false, false, false, true, false); StepInput(0, 0, p.X + 300, p.Y, false, false);
             sim.SetRollInput(false, false, false, true, true); for (int i = 0; i < RollRules.Frames + 1; i++) { StepInput(0, 0, p.X + 300, p.Y, false, false); if (i == 8) yield return M1Shot("05-roll"); }
             sim.SetRollInput(false, false, false, false, false);
+            yield return M1Shot("05-roll-end");
             float rd = Mathf.Sqrt((p.X - rx) * (p.X - rx) + (p.Y - ry) * (p.Y - ry));
             M1Add("05", "roll", Mathf.Abs(rd - 175) < 1 || (rd > 20 && rd < 175.5f) ? "ok" : "fail", "rolled " + rd.ToString("0.0") + " px, gauge " + sim.HarpGauge.ToString("0.0") + ", count " + sim.RollCount, "05-roll.png");
 
@@ -155,11 +156,18 @@ namespace Exoduser.UnityPort
             p.Iframes = 0; p.State = "idle"; sim.SbCd = 0; int parries = sim.ParryCount; float hpq = p.Hp;
             sim.SetPlayerCombatInput(true, false, false); StepInput(0, 0, p.X + 300, p.Y, false, false); sim.HurtPlayer(500);
             yield return M1Shot("06-parry");
+            yield return M1Shot("06-parry-q");
             bool q = sim.ParryCount == parries + 1 && p.Hp >= hpq;
             sim.SetPlayerCombatInput(false, false, false); StepInput(0, 0, p.X + 300, p.Y, false, false);
             for (int i = 0; i < 60; i++) StepInput(0, 0, p.X + 300, p.Y, false, false);
             int bashes0 = sim.BashStrikeCount; p.State = "idle"; p.Stamina = p.MaxStamina; sim.SetPlayerCombatInput(false, true, false); StepInput(0, 0, p.X + 300, p.Y, false, false);
             bool eDraw = p.State == "sDraw"; sim.SetPlayerCombatInput(false, false, false); StepInput(0, 0, p.X + 300, p.Y, false, false); bool eBash = p.State == "sBash";
+            // Capture the real shield-strike parry inside its existing window.
+            // Restore the probe even if screenshot capture throws; no Tick may
+            // run inside this scope (M1 keeps Running=false during these shots).
+            var restoreParryCapture = sim.CaptureParryProbeState();
+            try { p.Iframes = 0; sim.HurtPlayer(500); yield return M1Shot("06-parry-shield"); }
+            finally { restoreParryCapture(); }
             for (int i = 0; i < 60 && p.State != "idle"; i++) StepInput(0, 0, p.X + 300, p.Y, false, false);
             M1Add("06", "parry (Q) and shield strike (E)", q && eDraw && eBash && sim.BashStrikeCount == bashes0 + 1 ? "ok" : "fail", "Q parry " + q + ", E sDraw " + eDraw + " sBash " + eBash + " strike " + (sim.BashStrikeCount - bashes0) + " hits " + sim.BashHitCount + "; E projectile reflection not ported (B07b doc), no sBlock/sBash sprite", "06-parry.png");
 

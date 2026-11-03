@@ -71,3 +71,6 @@
 - 이모지·글리프는 1x 크롭이라 해상도 배율을 바꾸면 흐려진다(설계 좌표 1920×1080 기준).
 
 2026-10-30 PC 현행 시각 자산·은빛 팔레트·Linear 글자 보정은 [Unity UI 원화 반영](UNITY_UI_ASSETS_20261030.md)을 따른다. 기능·저장·미이식 범위와 위 검수 이력은 유지하며, 현재 원화의 실제 Player 결과는 해당 문서의 정확 후보 영수증으로 구분한다.
+
+
+2026-11-03: 분해값 공식은 Core `InventoryState.SalvageValue(it,table)` 한 곳으로 옮겼다. `ForgeFormulas.SalvageValue(it,table)`는 그 함수에 `forge_web.json` valueTable을 넘기기만 한다. 인벤토리 단일 분해·쓰레기 전부 분해가 같은 공식을 쓴다. 웹 `salvageVal` 대조는 `unity/Tools/inv-salvage-oracle`(224행)과 `Tools/Tests --salvage-only`다. 대장간 분해 탭의 실제 분해 동작은 여전히 미이식이다. [분해 이식 기록](UNITY_PAUSE_SILVER_BRIEF_20261103.md)

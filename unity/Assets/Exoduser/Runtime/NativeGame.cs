@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using Exoduser.UnityPort.Core;
+using Exoduser.UnityPort.Vfx;
 
 namespace Exoduser.UnityPort
 {
@@ -17,6 +18,7 @@ namespace Exoduser.UnityPort
         public int RenderedEnemyCount {get {return enemies.Count;}}
         Camera view; SpriteRenderer playerView; NativeHeroView heroView; Font font; KiSlashView kiView;NativeBoltView boltView;
         KiImpactView impacts; NativeSkillView skillView; NativeFeedbackAudio sound; NativeGameMusic music; NativeAmbientSources ambient; bool smokeActive;
+        CombatImpactView combatImpacts;
         NativeHud hud;bool hudSmoke;NativeInventory inventory;bool inventorySmoke,inventoryWasRunning;
         NativePauseMenu pauseMenu;NativeSettingsState settings;NativeSkills skills;NativeStatPanel stats;bool skillsWasRunning,statsWasRunning,skillInputFence;
         NativeLobby lobby;bool lobbySmoke,lobbyControlsSmoke;int worldMask;
@@ -70,6 +72,7 @@ namespace Exoduser.UnityPort
             impacts=new KiImpactView(transform,f=>SpriteFor("Art/vfx/ki_slash_hit_silver_sheet",f%2*627,f/2*627,627,627,new Vector2(.5f,.5f)));
             skillView=new NativeSkillView(transform);   // B03 skill effects
             ImpactInitialize();
+            combatImpacts=new CombatImpactView(transform);
             sound=new NativeFeedbackAudio(transform,view);
             gameObject.AddComponent<NativeUiSounds>().Initialize(sound,()=>lobby!=null&&lobby.IsBlocking?lobby.UiAudioAllowed:gameFocused,()=>lobby!=null&&lobby.IsBlocking);
             music=new NativeGameMusic(transform,sound.Bus);ambient=new NativeAmbientSources(transform,sound.Bus);   // RM-1 sound: BGM bus, forest bed, 3D environment sources
@@ -147,6 +150,7 @@ namespace Exoduser.UnityPort
         {
             ResetFirstPractice();
             contactVfx?.Reset();
+            combatImpacts?.Reset();
             startupResetCount++;
             foreach(var e in enemies.Values){Destroy(e.body.gameObject);Destroy(e.walk.gameObject);}enemies.Clear();damage.Clear();damageFloaters.Clear();ResetFieldBossViews();
             kiView?.Reset();boltView?.Reset();impacts?.Reset();skillView?.Reset();skillRemaster?.Reset();sound?.Reset();
@@ -222,7 +226,7 @@ namespace Exoduser.UnityPort
                 UpdateViews();return;
             }
             // Web togglePanel: pressing another window's key while a window is open switches directly to that window.
-            if(inventory.Open&&!inventoryKeysSmoke&&NativeKeyBindInput.Down("skill")){OnPanelHotkeyRequested("skillPanel");return;}
+            if(inventory.Open&&!inventoryKeysSmoke&&!inventory.JunkConfirmOpen&&NativeKeyBindInput.Down("skill")){OnPanelHotkeyRequested("skillPanel");return;}
             if(inventory.Open){if(!inventoryKeysSmoke&&inventory.PollKeys(Simulation.Player.Level))SetInventory(false);UpdateViews();return;}
             if(skillInputFence&&!ExoInput.Mouse(0))skillInputFence=false;
             if(ExoInput.KeyDown(KeyCode.Escape)||NativeKeyBindInput.Down("settings")){
@@ -282,7 +286,7 @@ namespace Exoduser.UnityPort
         void DispatchFeedback()
         {
             sound.CurrentTick=Simulation.TickCount;
-            while(Simulation.Feedback.Count>0){var e=Simulation.Feedback.Dequeue();if(!ImpactActive||e.Kind!=FeedbackKind.FeelContact)impacts.Handle(e);sound.Handle(e);}
+            while(Simulation.Feedback.Count>0){var e=Simulation.Feedback.Dequeue();if(!ImpactActive||e.Kind!=FeedbackKind.FeelContact)impacts.Handle(e);combatImpacts?.Handle(e);combatImpacts?.Flash(e);if(!e.VisualOnly)sound.Handle(e);}
             sound.Flush();
         }
         void BuildProps()
@@ -317,6 +321,7 @@ namespace Exoduser.UnityPort
             float camX=p.X/100,camY=-p.Y/100;BossCameraZoom();ClampCameraToMap(ref camX,ref camY);   // [CAM-CLAMP] web _clampCamToMap before the shake offset
             ImpactCameraProjection();
             hd2dCameraShake=new Vector3(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0,shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0,0);
+            if(combatImpacts!=null){combatImpacts.ReducedMotion=impacts!=null&&impacts.ReducedMotion;combatImpacts.ShakeScale=OptionShakeScale;hd2dCameraShake+=combatImpacts.CameraOffset(Simulation.TickCount);}
             view.transform.position=new Vector3(camX,camY,-10)+hd2dCameraShake;StageFlowSyncViews();if(!Simulation.Stage.InArena)StreamChunks(view.transform.position.x*100,-view.transform.position.y*100);
             bool newTick=renderedTick!=Simulation.TickCount;
             if(newTick){float dx=p.X-lastX,dy=p.Y-lastY;walkDistance+=Mathf.Sqrt(dx*dx+dy*dy);lastX=p.X;lastY=p.Y;playerMoving=dx*dx+dy*dy>.001f;}
@@ -375,6 +380,7 @@ namespace Exoduser.UnityPort
             if(NativeHd2D.Enabled&&!NativeRemodel3D.Active)Hd2dArenaFrame();
             teleView?.Update(Simulation,view); // 최종 flat camera의 화면 장판 clip 경계를 사용한다.
             if(NativeHd2D.Enabled&&!NativeRemodel3D.Active)NativeHd2D.ProjectFlatActors(view);
+            combatImpacts?.Update(Simulation,HudCamera);
             renderedTick=Simulation.TickCount;damage.RemoveAll(d=>Time.unscaledTime>d.until);
         }
         // game.html drawEn (53853-53870): every mob with an energy shield carries a pulsing pale-blue arc (radius r+5, +-1.0 rad around shieldAng, 5 px stroke, 25% wedge fill);
@@ -469,6 +475,7 @@ namespace Exoduser.UnityPort
             // 웹 rgba(200,0,0,.25)의 색 알파와 globalAlpha를 함께 적용한다. Core 감쇠는 그대로 둔다.
             if(!KiImpactView.FeelEnabled&&Simulation.ScreenFlashAlpha>0)NativeUiViewport.FillScreen(new Color(200f/255,0,0,Simulation.ScreenFlashAlpha*.25f));
             if(impacts!=null&&impacts.HurtActive(Simulation.TickCount))DrawFeelHurtEdge();
+            combatImpacts?.DrawFlash(Simulation.TickCount);
             // 로딩 원화/정보는 HUD 뒤에 가리지 않도록 아래 전환 분기에서 마지막으로 그린다.
             var baseMatrix=GUI.matrix;
             GUI.matrix=NativeUiViewport.Matrix;
@@ -594,7 +601,7 @@ namespace Exoduser.UnityPort
         // Web update() 32117~32122: window keys are processed while paused. G = forge, J = stats, F10 = settings toggle.
         // TAB/K switching between inventory and skills is in OnPanelRequested's callers; ESC follows _panelBack (close the open window, else open settings).
         bool HandlePanelHotkeys(){
-            if(Simulation==null||Simulation.Player.Hp<=0||firstPractice!=null||stats.TextInputActive||pauseMenu.KeyCaptureActive)return false;   // A16: a key waiting in the binding page must not open windows
+            if(Simulation==null||Simulation.Player.Hp<=0||firstPractice!=null||stats.TextInputActive||pauseMenu.KeyCaptureActive||inventory.JunkConfirmOpen)return false;   // junk confirm is modal; A16: a key waiting in the binding page must not open windows
             if(NativeKeyBindInput.Down("forge")){OnPanelHotkeyRequested("forge");return true;}
             if(NativeKeyBindInput.Down("stats")){OnPanelHotkeyRequested("statPanel");return true;}
             if(ExoInput.KeyDown(KeyCode.F10)){
@@ -713,7 +720,7 @@ namespace Exoduser.UnityPort
         public static string Argument(string key){var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,key);return i>=0&&i+1<a.Length?a[i+1]:"";}
         [Serializable] sealed class SmokeReceipt{public bool moved,webViewUsed,charged,released;public float initialX,finalX,maximumCharge;public int originalMapChunks,loadedChunks,enemyActors,maximumProjectiles,kills,totalDamage;public FeedbackAudioReceipt feedbackAudio;public ImpactReceipt feedbackVisual;}
         [Serializable] sealed class HudSmokeReceipt{public string scope,activeSkill,iconResource;public bool iconDrawn;public HudPixelProbe[] cases;}
-        void OnDestroy(){nextDifficulty.Dispose();NativePanelTabBar.Requested-=OnPanelRequested;skillRemaster?.Dispose();contactVfx?.Dispose();kiView?.Dispose();boltView?.Dispose();impacts?.Dispose();skillView?.Dispose();sound?.Dispose();hud?.Dispose();foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();music?.Dispose();ambient?.Dispose();if(Instance==this)Instance=null;}
+        void OnDestroy(){combatImpacts?.Dispose();nextDifficulty.Dispose();NativePanelTabBar.Requested-=OnPanelRequested;skillRemaster?.Dispose();contactVfx?.Dispose();kiView?.Dispose();boltView?.Dispose();impacts?.Dispose();skillView?.Dispose();sound?.Dispose();hud?.Dispose();foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();music?.Dispose();ambient?.Dispose();if(Instance==this)Instance=null;}
         [Serializable] sealed class TextReviewLabel {public string text;public int count,priority;public long value;public float originX,originY,x,y,width,height,distance;}
         [Serializable] sealed class TextReviewShot {public string name,kind,note;public int tick,visible,deferred,stateEvents,damageEvents;public float realSeconds;public List<TextReviewLabel> labels=new List<TextReviewLabel>();}
         readonly List<TextReviewShot> textReviewShots=new List<TextReviewShot>();float textReviewStart;
