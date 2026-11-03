@@ -306,3 +306,18 @@ Graph 본체 대신 기존 원화 경로를 유지한다. 실제 첫 Player에�
 | 진입 | 두 impact 검수만 PrepareImpactReviewEntry를 사용. 기존 전환 종료15초 상한 → 실제 ShowLobby 요청 → 해당 전환 종료15초 상한 → 실제 Lobby 페이지 확인 → SelectPreview/EnterNativeTest 성공 및 !IsBlocking 확인. 그 뒤 첫연습 종료/입력 fence 해제·Running=false. 기존 실제 필드 조명45초 대기는 유지 |
 | 실패 | 진입 조건 불충족이면 entry-failure.json 기록/exit2. 전환을 끄거나 AutomatedInput/LegacyFrontendFixture 우회로 제품 흐름을 바꾸지 않음. 일반 플레이·Core·입력·UI 전환 코드 변경0 |
 | 검증 | 이 변경은 QA 진입만 수정. 실제 RED를 근거로 새 정식 같은패키지 M1 및 탄막 전후 촬영에서 검증하며, 이전 M1/영상으로 대체하지 않음 |
+
+### 11-03 탄막 세 번째 단위 실제 영수증
+
+| 항목 | 검증된 결과·범위 |
+|---|---|
+| 고정 입력·정식 | 89448183f5787b8df0cc780a47898de332b3d6de, 정식5ae078c4/6000.6.7f1/remodel-scenes1/Succeeded/errors0/compileErrors0/USER_SAVE0/6,610,915,253B. dur190102/refresh81323/compile7831ms. errorLogs2는 라이선스 진단으로 보존 |
+| 진입 재작업 GREEN | 같은 M1 36bd451b=23/23. before29b82c1d는 로비 대신 실제필드 raw0010 확인·접점8/넉백복원. 9e20085f의 로비300PNG 실패는 보존 |
+| 전후 | before29b82c1d/after2dffe6cf 각1600×900/300PNG/10초. Core94b8ca82dd8800273b1358cd7a2ce2e3f5fc9ad67d99d9b48510e5830fcbae4d 동일, 피해83076/접점8/동시피격3/normal99.6108·Ki207.2568px 넉백 동일 |
+| 실제 관측 | kiAnchorError2.336359m→0m/60관측, kiOverlapShots3/3, 원화독/물리입/어둠 각600프레임/fallback0. 꺼진 Graph 카운터를 원화 출력 증거로 쓰지 않음 |
+| 추가 회귀 | wide894e929a=실제3840×1080/300PNG/pass/raw0070 직접열람. all-skills9547b81f=480PNG/5castKinds/악의구3폭발/강타넉백53.1396px/pass. 성역은 기존 웹감쇠0.11/0.03으로1x에서 매우 약함; 전체스킬 디자인PASS 아님 |
+| 영상 | 전후·091256 고정앵커·별도움직이는공식참조3편 각3200×900/한쪽1600×900/10초/300프레임 실제끝재생/누락0/손상0. browser2ff53ef1=창0/잔류0/USER_SAVE0/임시프로필제거 |
+| 직접 판정 | 1x중첩0258/0260/0264/0268/0270·3배탄막0010/배우0070/지면뿌리0070·시간연속판/영상참조표본을 열람. 적몸·3종탄이 흰검기 앞에서 구분되고 독의 강한 녹흑 분절/어둠 자홍이 감소. 가독성범위PASS/전체VFX RETOUCH |
+| 한계·보존 | 이 탑다운 shot에는 하늘·독립바위 없음. 지면뿌리크롭을 하늘/바위PASS로 오표기하지 않음. 기존픽셀해상도/양식감·전체맵배우·자연전투/FPS·청취·Mac미검증. 파생857원본복원/신규1보관·참조0·Unitydiff0. 실제213파일/160DLL MCP0 |
+
+실제 자료 `I:/EXODUSER-Storage/demo-art/impact/1103-entry-field-verdict.json`, `REPORT_1103.md`. 전사·피격 첫두단위의 공통d00 영수증은 유지하며, 같은 패키지의 드루이드 단위 실제검수 후 후속공통 checkpoint를 갱신한다.
