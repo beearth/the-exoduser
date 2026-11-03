@@ -111,3 +111,13 @@ dash-parry 187,165/0 · skill-oracle 8,416/0 · enemy-pool 26,271/0 · c01-field
 - 병합 **뒤** .NET 검증은 모두 통과: fieldboss-oracle · region-oracle · dash-parry-oracle exit 0, 실제 맵 테스트 113/0.
 - Unity 빌드와 m1-check(§6)는 **병합 전 코드**로 batchmode 20/20, 창 모드 20/20. 병합 뒤 Unity 빌드는 아직 못 돌렸다: 에디터가 두 번 크래시했다(첫 번째는 메모리 할당기, 두 번째는 Bee 빌드 캐시 손상 뒤 실행 중 크래시, 로그 `E:/exoduser-wt/_out/fixedmobs/build8.log`, `build8c.log`). 같은 시각 창 모드 플레이어 좀비 프로세스 6개가 커밋 한도를 차지하고 있었다. 이후 "빌드는 PC 전체에서 한 번에 하나, 차례는 유니티 총괄이 알림" 규칙이 생겨 차례를 요청해야 한다. 차례를 받으면 `Library/Bee`를 새로 만들고(옛 것은 `_out/fixedmobs/Bee.stale-0231`로 옮겨 둠) 빌드 → m1-check batchmode·창 모드를 한 번씩 돌린다.
 
+
+## 9. M1 09c 지옥문 개방 대기 (2026-11-04 SWAP2-M1-09c)
+
+- 증상: 바탕화면 교체 2회차 `eaf67fae9`의 M1 스모크에서 아귀 4마리 사망·지역 4/4·필드보스 플래그 올라감인데 `BossUnlocked=false`. 기록 18개 중 17개 통과 뒤 09c에서 조기 종료.
+- 원인: Core 결함이 아니라 M1 검사의 대기 시간이 짧았다. 마지막 아귀가 죽으면 그 지역은 다음 15프레임 지역 판정(`TickRegions`, 웹 `_regionTick` 61283)에서 클리어되고, 지옥문은 그 뒤 첫 30프레임 룸 판정(`StageFlow` `CheckT`, 웹 `checkRooms` `_crT` 42069)에서 열린다. 처치마다 룸 판정이 한 번 더 돌아(`pendingKillRoomChecks`) 두 주기의 위상이 판마다 달라진다. 그래서 마지막 아귀 처치부터 개방까지 1~44틱이 걸린다. M1 09c는 마지막 처치 뒤 30틱만 진행하고 판정했다. 패링 G2(`f6ff63e33`)는 앞 단계의 처치 수·난수 소비를 바꿔 위상만 옮겼을 뿐, 개방 규칙은 바꾸지 않았다.
+- 웹 대조: 웹도 15프레임 지역 판정과 30프레임 룸 판정을 그대로 쓴다. Core는 웹과 같으므로 Core는 수정하지 않는다.
+- 재현(`Tools/region-test` 6절 R-B 끝): 실제 1-1 맵에서 지역 판정 위상 15 × 룸 판정 위상 30 = 450가지로 마지막 아귀를 처치했다. 모두 자연 개방됐고 최대 대기는 44틱이었다. 30틱 시점에 아직 봉인된 경우는 105/450이다. **124 checks / 0 failures**.
+- 수정(`NativeGame.M1Check.cs` 09c): 30틱 꼬리 뒤에 `BossUnlocked`가 될 때까지 최대 45틱 더 진행한다. 플래그·게이트는 손으로 세우지 않는다. 기록에 추가 대기 틱(`+N ticks after the 30-tick tail`)을 남긴다.
+- 검증: .NET 하니스와 Unity 6000.6.7f1 에디터 batch 컴파일(오류 0)까지만 했다. PC Player는 실행하지 않았다(CTO 지시). 실제 M1 23단계 통과는 다음 바탕화면 교체 스모크에서 확인한다.
+- 산출물: `I:/EXODUSER-Storage/debug/m1-09c-20261104/`(region-test.json·region-test.log·compile-receipt.json)

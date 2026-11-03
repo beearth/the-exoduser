@@ -35,6 +35,8 @@ Node와 .NET SDK8을 사용한다. 산출물은 I:의 고유 경로로 지정한
 & 'C:\nvm4w\nodejs\node.exe' .\Tools\verify-core.cjs --source-root 'E:\exoduser-wt\codex-port-takeover-20261023' --project 'E:\exoduser-wt\codex-port-takeover-20261023\unity' --out 'I:\EXODUSER-Storage\qa\unity-port-recheck'
 ```
 
+`map-oracle.cjs`는 원문 `isW`/`canMv`를 정적 맵 export에 실행해 2,523표본을 만든다. export에는 웹 맵 생성이 `MAP_OBJS`에 넣는 `boss_gate_col`(sz250 → 원 반경 100, 게이트 행 한 칸 위 중앙)이 없어서, 2026-11-04부터 원문 sz와 게이트 타일(값 3)로 같은 원을 추가한다. 이 원이 없으면 게이트 뒤 2표본이 웹은 통과, Unity는 막힘으로 어긋났다(Core 36/1 → 36/0). Unity는 이 원을 벽 13타일 + 게이트 타일 차단으로 근사한다(3ed856bf6). 게이트 주변 2px 정밀 격자에서는 테두리 모양이 5,156/157,383표본 다르다(x3898~4140, y52~280). 새 통로나 막힌 길은 없고 출구 타일·아레나 진입에는 영향이 없다.
+
 이는 Unity 실행 검사가 아니다. Editor의 `PortVerification.Verify`, `PortVerification.Build`, `PortVerification.Capture`는 라이선스 활성화 후 배치 실행용이다. `-receipt`와 `-output`을 별도 절대 경로로 전달한다. Capture는 카메라의 월드만 저장하며 IMGUI HUD 검수는 실제 Player의 `--unity-smoke -output <고유 폴더>` 캡처로 구분한다.
 
 Library·Temp·Logs·UserSettings·Editor 도구·Tests는 이 체크아웃에서 I:로 연결했다. Git 복원본에는 소스 파일만 존재하므로 새 PC에서는 같은 저장 정책을 적용한 뒤 import한다. 기존 Godot와 웹 원본은 그대로 보존했다.

@@ -61,3 +61,45 @@
 - `지옥문 봉인 (지역 `은 코드가 이어 붙이는 조각 키라 목록에 단독 행이 없다. 전체 문구 "지옥문 봉인 (지역 N/4)"로 등록된 것과 같다.
 - 아랍어 데이터는 논리 순서로 저장돼 있고, UI Toolkit Advanced·RTL로 모양과 방향을 처리한다. 맞물림·정렬(왼쪽 정렬 상자 안의 RTL 문장)은 Mac 화면에서만 판정할 수 있다.
 - 새로 번역한 25개 언어 입장 이야기는 원어민 감수 전이다. de·fr·es·ru·ar 18줄을 읽어 본 범위에서는 오역이 없었다.
+
+## 5. 체험판 flavor 문구 판정 — `codex/unity-demo-flavor-20261103` @d53d9b6fa (2026-11-04)
+
+판정: **RETOUCH(경미)**. F1·F2를 고치면 문구 PASS다. F3은 demo-text 병합 뒤의 후속이고, 이번 병합을 막지 않는다.
+
+대조 결과, 그대로 써도 되는 것:
+- `demoSub` 29개 언어는 STY-23 정본(No.3473)과 같다.
+- `demoNext` 29개 언어는 기존 등록 No.2824 "데모 종료 / End of Demo"와 같다.
+- 한글 누출 0, 옛 문구 0.
+- 게임 안 "데모 종료"(No.2824)는 그대로 둔다. 스팀 9.2 초안의 "체험판"은 Steam 상점 화면의 용어라서 화면이 다르다.
+
+| # | 대상 | 문제 | 고칠 내용 |
+|---|---|---|---|
+| F1 | `demoWishlist`(No.4261) | ko "본편"이 스팀 9.2 초안("정식판")과 웹 게임 용어 `'정식판'`과 다르다. 17개 언어도 웹 `'정식판'` 번역어와 다른 낱말을 썼다. vi "danh sách ước"는 Steam 용어가 아니다 | 아래 문구로 바꾼다(나머지 11개 언어는 그대로) |
+| F2 | 번역 목록 No.4259·4260 | 4259는 이미 등록된 No.3473과 같은 문구다. 4260 "데모 종료"는 기존 No.2824이고, 영어도 "End demo"가 아니라 "End of Demo"다 | 4259·4260 행을 지우고 No.3473·2824를 참조한다. `buildflavor_web.json` button 영어 "End demo"도 "End of Demo"로 바꾼다 |
+| F3 | 완료 화면 아랍어 | `EffectiveLocale`이 ar을 en으로 돌린다(기존 동작). demo-text 브랜치에 아랍어 RTL 경로(`NativeDemoArabicText`)가 생겼다 | 후속: demo-text 병합 뒤 완료 화면도 같은 경로로 아랍어를 표시한다 |
+
+F1 바꿀 문구:
+
+| 언어 | 문구 |
+|---|---|
+| ko | 정식판 위시리스트에 추가 |
+| zh | 将正式版加入愿望单 |
+| zht | 將正式版加入願望清單 |
+| vi | Thêm bản đầy đủ vào danh sách mong muốn |
+| th | เพิ่มเวอร์ชันเต็มในรายการสิ่งที่อยากได้ |
+| id | Tambahkan versi penuh ke wishlist |
+| ms | Tambah versi penuh ke senarai hajat |
+| de | Vollspiel auf die Wunschliste setzen |
+| sv | Lägg fullversionen på önskelistan |
+| da | Føj den fulde version til ønskelisten |
+| no | Legg fullversjonen på ønskelisten |
+| ru | Добавить полную версию в желаемое |
+| uk | Додати повну версію до бажаного |
+| pl | Dodaj pełną wersję do listy życzeń |
+| cs | Přidat plnou verzi do seznamu přání |
+| bg | Добавяне на пълната версия в желания |
+| fi | Lisää täysversio toivelistalle |
+| tr | Tam sürümü istek listesine ekle |
+| ar | أضف النسخة الكاملة إلى قائمة الأمنيات |
+
+번역 목록 No.4261의 KO 칸도 "정식판 위시리스트에 추가"로 바꾼다.
