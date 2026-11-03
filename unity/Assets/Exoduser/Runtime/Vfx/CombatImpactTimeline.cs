@@ -4,6 +4,24 @@ using Exoduser.UnityPort.Core;
 
 namespace Exoduser.UnityPort.Vfx
 {
+    // Screen pixels, Y up. The enemy lane owns the ratios; no duplicate formula.
+    public struct CombatHitAnchor
+    {
+        public bool UseBody;
+        public double OffsetY,DrawWidth;
+        public static CombatHitAnchor Resolve(double footY,double bottomY,double topY,FeedbackKind kind,double chestRatio=double.NaN,bool large=false) {
+            if(double.IsNaN(footY)||double.IsInfinity(footY)||double.IsNaN(bottomY)||double.IsInfinity(bottomY)||
+                double.IsNaN(topY)||double.IsInfinity(topY)||topY<=bottomY)return default;
+            double height=topY-bottomY;
+            bool heavy=kind==FeedbackKind.EnemyCrit||kind==FeedbackKind.BossHit||kind==FeedbackKind.EnemyDeath||kind==FeedbackKind.BossDeath;
+            return new CombatHitAnchor{UseBody=true,OffsetY=bottomY-footY+height*NativeEnemyRigPolicy.AnchorRatio(chestRatio),
+                DrawWidth=height*NativeEnemyRigPolicy.ImpactRatio(heavy?1:0,large)};
+        }
+        public static bool Applies(bool perspective,int targetId,FeedbackKind kind,CombatClipMode mode) {
+            return perspective&&targetId!=0&&(kind==FeedbackKind.EnemyHit||kind==FeedbackKind.EnemyCrit||kind==FeedbackKind.BossHit)&&
+                (mode==CombatClipMode.Impact||mode==CombatClipMode.SlashBurst||mode==CombatClipMode.Electric||mode==CombatClipMode.Blood);
+        }
+    }
     // Web game.html: _addBoom/_boomGrow, _addImpact/_impactSpriteFor,
     // doParry TVFX2, deathFX and activateRoll/_finishRoll. No Unity or gameplay state.
     public enum CombatClipMode { Boom, Impact, Flipbook, Death, Electric, SlashBurst, Blood }
@@ -178,7 +196,7 @@ namespace Exoduser.UnityPort.Vfx
     public sealed class CombatBloodDecals
     {
         public const int Capacity=8, HoldTicks=210, FadeTicks=60;
-        public sealed class Stamp {public int Born,Frame;public float X,Y,Width;public double Angle;public bool Active;public long Serial;}
+        public sealed class Stamp {public int Born,Frame,Delay;public float X,Y,Width;public double Angle;public bool Active;public long Serial;}
         public readonly Stamp[] Slots=new Stamp[Capacity];long serial;
         public CombatBloodDecals(){for(int i=0;i<Capacity;i++)Slots[i]=new Stamp();}
         public static bool ShouldStamp(FeedbackEvent e) {
@@ -186,13 +204,13 @@ namespace Exoduser.UnityPort.Vfx
             return e.Kind==FeedbackKind.EnemyDeath||e.Kind==FeedbackKind.BossDeath||
                 (e.VisualOnly&&(e.Kind==FeedbackKind.EnemyCrit||e.Kind==FeedbackKind.BossHit));
         }
-        public int Add(FeedbackEvent e,int frame,double angle) {
+        public int Add(FeedbackEvent e,int frame,double angle,int delay=0) {
             int index=0;long oldest=long.MaxValue;
             for(int i=0;i<Capacity;i++) {
-                if(Alpha(i,e.Tick)<=0){index=i;break;}
+                if(Alpha(i,e.Tick)<=0&&(!Slots[i].Active||Slots[i].Delay==0||e.Tick>=Slots[i].Born)){index=i;break;}
                 if(Slots[i].Serial<oldest){oldest=Slots[i].Serial;index=i;}
             }
-            var s=Slots[index];s.Born=e.Tick;s.X=e.X;s.Y=e.Y;s.Width=Math.Max(1,e.Size)*2;
+            var s=Slots[index];s.Delay=Math.Max(0,delay);s.Born=e.Tick+s.Delay;s.X=e.X;s.Y=e.Y;s.Width=Math.Max(1,e.Size)*2;
             s.Frame=Math.Max(12,Math.Min(15,frame));s.Angle=angle;s.Active=true;s.Serial=++serial;return index;
         }
         public double Alpha(int index,int tick) {

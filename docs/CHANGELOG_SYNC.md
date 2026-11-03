@@ -1,3 +1,4 @@
+2026-11-04 U-VFX-11 피격 기준점: 실제 표시 몸 실루엣1,556셀·ID 제공자·Enemy3D 비율 재사용, PC865검사/0실패·Core/Runtime컴파일오류0, Mac 화면·실제rig연결 대기. 기록 docs/5.1임펙트디자인/UNITY_COMBAT_IMPACTS_20261103.md
 2026-11-04 적 3D 연결 바탕 WIP 중단: 최신6d99d0c46에서 codex/unity-enemy3d-20261104 생성. 읽기 전용 상태 정책·etype1/4 모델표·0차 FBX 변환·검사 초안 보존. 같은 정책 검사 명령2회 실패(예상 RED, 이후 Core/Skills 소스 열거 누락 CS0234/CS0246)로 사용자 지시대로 중단. Unity 렌더/Animator/VFX 연결·meta·전체 PC 컴파일·Mac 판정 미완, 본편 병합 금지. 인계 UNITY_ENEMY3D_WIRING_20261104.md.
 
 2026-11-04 00:35 3D 적 피격 위치 계획을 보스전 총괄 1차 일정(적 3D G0 §8, 773bf0238)에 맞춤: 1차 4종 G1~G3.5에서 Blender 숫자 3개(메시 높이·가슴 비율·34° 투영 높이) 요청, Unity 모델 표 연결 커밋에 피격 기준점(투영 bounds) 연결, 같은 Mac 판정 차례에 피격 컷 추가, 2차 다안 육괴는 눈 높이 접점. 문서만, 코드 무변경. 기록 docs/5.1임펙트디자인/UNITY_COMBAT_IMPACTS_20261103.md

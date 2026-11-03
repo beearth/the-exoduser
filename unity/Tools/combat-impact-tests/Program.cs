@@ -10,6 +10,42 @@ static class Program
     static void Check(bool value,string name){checks++;if(!value){bad++;Console.WriteLine("FAIL "+name);}}
     static int Main()
     {
+        // RED uses reflection so an absent presentation policy is an assertion,
+        // not a compiler failure. Expected coordinates are screen pixels, Y up.
+        var anchorType=typeof(CombatImpactTimeline).Assembly.GetType("Exoduser.UnityPort.Vfx.CombatHitAnchor");
+        Check(anchorType!=null,"visible-body hit anchor policy exists");
+        if(anchorType!=null) {
+            var resolve=anchorType.GetMethod("Resolve");
+            Func<double,double,double,FeedbackKind,double,bool,dynamic> anchor=(foot,bottom,top,kind,ratio,large)=>
+                resolve.Invoke(null,new object[]{foot,bottom,top,kind,ratio,large});
+            foreach(var kind in new[]{FeedbackKind.EnemyHit,FeedbackKind.EnemyCrit,FeedbackKind.BossHit,FeedbackKind.EnemyDeath,FeedbackKind.BossDeath}) {
+                dynamic a=anchor(100,110,210,kind,double.NaN,false);
+                Check((bool)a.UseBody&&Math.Abs((double)a.OffsetY-65)<1e-9,"default chest .55 excludes transparent padding "+kind);
+                Check(Math.Abs((double)a.DrawWidth-(kind==FeedbackKind.EnemyHit?60:100))<1e-9,"normal .6 / critical boss death 1.0 body width "+kind);
+            }
+            foreach(double ratio in new[]{-1.0,0,.55,.618,1,2,double.PositiveInfinity}) {
+                dynamic a=anchor(20,30,230,FeedbackKind.EnemyHit,ratio,true);
+                double y=20+(double)a.OffsetY;
+                Check(y>=30&&y<=230,"contact remains inside visible body "+ratio);
+                Check((double)a.DrawWidth<=200*1.2,"large enemy width capped at 1.2 body heights "+ratio);
+            }
+            dynamic chest=anchor(0,0,200,FeedbackKind.EnemyCrit,.618,false);
+            Check(Math.Abs((double)chest.OffsetY-123.6)<1e-9,"rig catalog chest ratio is honored");
+            foreach(double height in new[]{32.0,96.0,192.0}) {
+                dynamic a=anchor(300,300,300+height,FeedbackKind.BossHit,double.NaN,true);
+                Check(Math.Abs((double)a.DrawWidth-height)<1e-9&&Math.Abs((double)a.OffsetY-height*.55)<1e-9,"perspective body pixels scale independently of Core radius "+height);
+            }
+            foreach(var pair in new[]{(0.0,0.0),(200.0,100.0),(double.NaN,100.0),(0.0,double.PositiveInfinity)})
+                Check(!(bool)anchor(0,pair.Item1,pair.Item2,FeedbackKind.EnemyHit,double.NaN,false).UseBody,"missing/invalid body requests exact legacy path");
+            var applies=anchorType.GetMethod("Applies");
+            foreach(var mode in new[]{CombatClipMode.Impact,CombatClipMode.SlashBurst,CombatClipMode.Electric,CombatClipMode.Blood}) {
+                Check((bool)applies.Invoke(null,new object[]{true,9,FeedbackKind.EnemyHit,mode}),"body hit layer "+mode);
+                Check(!(bool)applies.Invoke(null,new object[]{false,9,FeedbackKind.EnemyHit,mode}),"flat mode preserves legacy "+mode);
+                Check(!(bool)applies.Invoke(null,new object[]{true,0,FeedbackKind.EnemyHit,mode}),"target zero preserves legacy "+mode);
+                Check(!(bool)applies.Invoke(null,new object[]{true,9,FeedbackKind.EnemyDeath,mode}),"death stays at ground "+mode);
+            }
+            Check(!(bool)applies.Invoke(null,new object[]{true,9,FeedbackKind.Parry,CombatClipMode.Impact}),"melee parry is excluded");
+        }
         var s=new Simulation(new SimulationConfig{EnemyAiEnabled=false,PlayerBaseAttack=10,PlayerCriticalChance=0},123);
         var e=s.SpawnNormalEnemy(s.Player.X+40,s.Player.Y);
         if(e==null)throw new Exception("fixture spawn failed");
@@ -67,6 +103,11 @@ static class Program
             Check((int)pool.Slots.Length==8&&pool.Slots[0].Frame==15&&Math.Abs((double)pool.Slots[0].Angle-.5)<1e-9,"eight fixed slots retain last-four frame and rotation");
             stamp.Tick=500;Check((int)pool.Add(stamp,12,0)==0,"expired slots reused without growth");
             pool.Reset();Check((double)pool.Alpha(0,500)==0,"restart hides pooled decals");
+            stamp.Tick=100;pool.Add(stamp,12,0,20);
+            Check((int)pool.Slots[0].Born==120&&(double)pool.Alpha(0,119)==0&&(double)pool.Alpha(0,120)==1,"optional collapse delay starts ground blood on the selected tick");
+            Check((int)pool.Add(stamp,12,0,20)==1,"queued death blood reserves its pool slot before collapse");
+            pool.Reset();pool.Add(stamp,12,0);
+            Check((int)pool.Slots[0].Born==100&&(double)pool.Alpha(0,100)==1,"unset death delay preserves contact tick exactly");
             foreach(var kind in new[]{FeedbackKind.EnemyCrit,FeedbackKind.BossHit,FeedbackKind.EnemyDeath,FeedbackKind.BossDeath})
                 Check((bool)poolType.GetMethod("ShouldStamp").Invoke(null,new object[]{new FeedbackEvent{Kind=kind,VisualOnly=true}}),"decal event "+kind);
             foreach(var evt in new[]{new FeedbackEvent{Kind=FeedbackKind.EnemyHit,VisualOnly=true},new FeedbackEvent{Kind=FeedbackKind.EnemyCrit},new FeedbackEvent{Kind=FeedbackKind.BossDeath,Source="druid_sink"}})

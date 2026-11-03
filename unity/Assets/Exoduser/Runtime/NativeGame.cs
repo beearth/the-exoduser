@@ -43,6 +43,70 @@ namespace Exoduser.UnityPort
         public static NativeGame Instance {get;private set;}
         sealed class ChunkView {public SpriteRenderer renderer;public string path;}
         sealed class EnemyView {public SpriteRenderer body,walk,arc;public float distance,lastX,lastY;public int skin,hp;public float shield;public bool moving;}
+        [Serializable] sealed class EnemyBodyTable {public EnemyBodyExtent[] bodies;}
+        [Serializable] sealed class EnemyBodyExtent {public string texture;public int x,y;public float bottom,top;}
+        readonly Dictionary<string,EnemyBodyExtent> enemyBodyExtents=new Dictionary<string,EnemyBodyExtent>();
+        readonly Dictionary<Sprite,EnemyBodyExtent> enemyBodyCache=new Dictionary<Sprite,EnemyBodyExtent>();
+        bool enemyBodiesLoaded;
+        readonly bool rigHitAnchors=NativeEnemyRigPolicy.Requested(Environment.GetCommandLineArgs());
+        // Enemy3D owns identity/catalog selection. Bind only an actually displayed
+        // renderer by enemy ID (etype 4 alone cannot distinguish EyeMass).
+        public Func<int,(Renderer renderer,float chestRatio,int deathTicks)?> EnemyRigBody;
+        (Renderer renderer,float chestRatio,int deathTicks)? DisplayedEnemyRig(int id) {
+            // 적 3D 레인 키 확정 후 한 줄 교체: ID -> displayed renderer + definition.
+            var rig=rigHitAnchors&&EnemyRigBody!=null?EnemyRigBody(id):null;
+            return rig.HasValue&&rig.Value.renderer!=null&&rig.Value.renderer.enabled&&rig.Value.renderer.gameObject.activeInHierarchy?rig:null;
+        }
+        double CombatEnemyChestRatio(int id) {
+            var rig=DisplayedEnemyRig(id);return rig.HasValue?rig.Value.chestRatio:double.NaN;
+        }
+        (Vector3 foot,Vector3 top)? CombatEnemyBody(int id) {
+            var camera=HudCamera;if(camera==null||!NativeRemodel3D.Active||camera.orthographic)return null;
+            var rig=DisplayedEnemyRig(id);
+            if(rig.HasValue)return ProjectEnemyBody(rig.Value.renderer,null,camera);
+            if(!enemies.TryGetValue(id,out var ev))return null;
+            // Walk is a partial overlay on body, so union both visible silhouettes.
+            var body=AtlasEnemyBody(ev.body,camera);var walk=AtlasEnemyBody(ev.walk,camera);
+            if(!body.HasValue)return walk;if(!walk.HasValue)return body;
+            var b0=camera.WorldToScreenPoint(body.Value.foot);var b1=camera.WorldToScreenPoint(body.Value.top);
+            var w0=camera.WorldToScreenPoint(walk.Value.foot);var w1=camera.WorldToScreenPoint(walk.Value.top);
+            b0.y=Mathf.Min(b0.y,w0.y);b1.y=Mathf.Max(b1.y,w1.y);
+            return (camera.ScreenToWorldPoint(b0),camera.ScreenToWorldPoint(b1));
+        }
+        (Vector3 foot,Vector3 top)? AtlasEnemyBody(SpriteRenderer renderer,Camera camera) {
+            if(renderer==null||!renderer.enabled||!renderer.gameObject.activeInHierarchy||renderer.sprite==null)return null;
+            if(!enemyBodiesLoaded) {
+                enemyBodiesLoaded=true;var json=Resources.Load<TextAsset>("Data/enemy_body_extents");
+                var table=json!=null?JsonUtility.FromJson<EnemyBodyTable>(json.text):null;
+                if(table!=null&&table.bodies!=null)foreach(var b in table.bodies)enemyBodyExtents[b.texture+":"+b.x+":"+b.y]=b;
+            }
+            var sprite=renderer.sprite;
+            if(!enemyBodyCache.TryGetValue(sprite,out var extent)) {
+                var rect=sprite.rect;enemyBodyExtents.TryGetValue(sprite.texture.name+":"+(int)rect.x+":"+(int)rect.y,out extent);
+                enemyBodyCache[sprite]=extent;
+            }
+            return extent!=null?ProjectEnemyBody(renderer,extent,camera):null;
+        }
+        static (Vector3 foot,Vector3 top)? ProjectEnemyBody(Renderer renderer,EnemyBodyExtent extent,Camera camera) {
+            float lo=float.MaxValue,hi=float.MinValue,left=float.MaxValue,right=float.MinValue;
+            var bounds=renderer.bounds;float depth=camera.WorldToScreenPoint(bounds.center).z;
+            if(depth<=0)return null;
+            var spriteRenderer=renderer as SpriteRenderer;
+            for(int i=0;i<(extent!=null?4:8);i++) {
+                Vector3 point;
+                if(extent!=null) {
+                    var sprite=spriteRenderer.sprite;var rect=sprite.rect;
+                    float x=((i&1)==0?0:rect.width)-sprite.pivot.x;
+                    float y=rect.height*((i&2)==0?extent.bottom:extent.top)-sprite.pivot.y;
+                    point=renderer.transform.TransformPoint(new Vector3(spriteRenderer.flipX?-x:x,spriteRenderer.flipY?-y:y,0)/sprite.pixelsPerUnit);
+                } else point=bounds.center+Vector3.Scale(bounds.extents,new Vector3((i&1)==0?-1:1,(i&2)==0?-1:1,(i&4)==0?-1:1));
+                var screen=camera.WorldToScreenPoint(point);if(screen.z<=0)return null;
+                lo=Mathf.Min(lo,screen.y);hi=Mathf.Max(hi,screen.y);left=Mathf.Min(left,screen.x);right=Mathf.Max(right,screen.x);
+            }
+            if(hi<=lo)return null;
+            float centre=(left+right)*.5f;
+            return (camera.ScreenToWorldPoint(new Vector3(centre,lo,depth)),camera.ScreenToWorldPoint(new Vector3(centre,hi,depth)));
+        }
         sealed class DamageText {public float x,y,until;public int amount;public bool shield,submitted;}
         readonly NativeFloatingTextLayout.Buffer damageFloaters=new NativeFloatingTextLayout.Buffer();
         readonly NativeReviveHud revive=new NativeReviveHud(); // B08: revive/shield floaters + fallen countdown
@@ -84,7 +148,7 @@ namespace Exoduser.UnityPort
             impacts=new KiImpactView(transform,f=>SpriteFor("Art/vfx/ki_slash_hit_silver_sheet",f%2*627,f/2*627,627,627,new Vector2(.5f,.5f)),kiHeight,()=>HudCamera);
             skillView=new NativeSkillView(transform);   // B03 skill effects
             ImpactInitialize();
-            combatImpacts=new CombatImpactView(transform);
+            combatImpacts=new CombatImpactView(transform){EnemyBody=CombatEnemyBody,EnemyChestRatio=CombatEnemyChestRatio};
             sound=new NativeFeedbackAudio(transform,view);
             gameObject.AddComponent<NativeUiSounds>().Initialize(sound,()=>lobby!=null&&lobby.IsBlocking?lobby.UiAudioAllowed:gameFocused,()=>lobby!=null&&lobby.IsBlocking);
             music=new NativeGameMusic(transform,sound.Bus);ambient=new NativeAmbientSources(transform,sound.Bus);   // RM-1 sound: BGM bus, forest bed, 3D environment sources

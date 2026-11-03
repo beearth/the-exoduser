@@ -333,3 +333,57 @@ CTO 야간 지시(11-03 밤). 작업본 `G:/exoduser-wt/codex-vfx-spark`, 브랜
 변경: `Vfx/CombatImpactTimeline.cs`, `Vfx/CombatImpactView.cs`, `NativeGame.cs`(홀드 프레임 한 줄), `NativeGame.Remodel3D.cs`(.08u 당김 줄 삭제), `NativeGame.MeleeParry.cs`(임시 성공 스파크 끔), `NativeGame.M1Check.cs`(A/B 컷 근접 이벤트), `NativeBossView.cs`·`NativeDruidArt.cs`(독탄 코어 .35), 새 PNG·meta 2쌍, `tools/vfx/recolor_parry_water.py`, 검사 `Program.cs`·`run.cjs`, 이 문서·VFX 마스터·CHANGELOG_SYNC.
 
 **판정: PC 검사·컴파일 통과 / RETOUCH_GAME_QA_PENDING.** Mac에서 볼 것: 물탄 방패 패링 색(06-parry-shield 계열), 일반·보스 사망 1x에 점 0, 구르기 먼지 1x 판독·탄 가림 없음, 드루이드 독탄 중심 밝기, M1 06 A/B, 근접 패링 스파크 정점 +3프레임.
+
+## 피격 기준점 — 보이는 몸 기준 (U-VFX-11, 2026-11-04)
+
+작업본 `G:/exoduser-wt/codex-vfx-ki`, 브랜치 `claude/unity-pc-vfx-hitanchor-20261104`, 기준 `3d3c18610617221709ceb8d6a76e724ae55042b8`. **PC 정책·참조 컴파일 통과 / RETOUCH_GAME_QA_PENDING**. 이 절이 위의 3D 적 연결 계획 중 아틀라스 폴백·키·작업 시점을 갱신한다. 커밋·push·병합은 총괄 담당이며 이번 실행에서는 하지 않았다.
+
+### 목표 장면·계약
+
+브리프 `I:/EXODUSER-Storage/codex-runs/20261104-005540_vfx-hitanchor/prompt.md`의 가장 큰 차이 = 원근 화면에서 피격 섬광이 몸통 대신 발밑에서 생김. 제작법은 승인된 플립북의 표시 좌표·폭 연결이며 새 시트·카메라 변경은 없다. 참조는 위 계획과 실제 `DrawMeleeParry`의 투영 높이 계산이다. 레퍼런스 공통 관례인 접촉점과 몸 크기의 일치·위험 탄 가독성을 유지한다. 이번 PC 작업은 소스·정책 검증까지이며 첫 실제 화면 판정은 아래 Mac 컷에서 한다.
+
+| 항목 | 전 | 후 |
+|---|---|---|
+| 피격 접점 | 이벤트 X,Y의 바닥 + .03u | 최종 표시 몸 아래 + 투영 몸 높이 × `NativeEnemyRigPolicy.AnchorRatio`(기본 .55). Core 이벤트는 읽기만 함 |
+| 폭 | 시트 셀·스케일 또는 Core Size | `CombatHitAnchor.Resolve` → 몸 높이 × `NativeEnemyRigPolicy.ImpactRatio`: 일반 .6, 치명·보스 1.0. 기존 큰 적 정책의 1.2 상한 준수, 별도 확대 없음 |
+| 적용 층 | Impact·SlashBurst·Electric·Blood가 바닥 기준 | 원근·TargetId 비0·제공자 값 유효일 때만 몸 기준. Blood의 Stretch 1.6은 세로 종횡비에 반영해 최종 가로폭이 정책을 초과하지 않음 |
+| 투영 시점 | Update에서 클립 배치 | 기존 Update 후, URP `beginCameraRendering` / Built-in `onPreCull`에서 최종 적 투영·접지·카메라 포즈를 읽어 해당 피격 층만 재배치 |
+| 정보 없음·제공자 null·TargetId 0·비원근 | 기존 경로 | 기존 경로 유지. 기존 Place·Update 그리기 본문과 근접 패링 함수는 기준 SHA와 소스 바이트 일치 확인 |
+| 사망 피·바닥 혈흔 | 바닥, 사망 이벤트 틱 시작 | 바닥 유지. `EnemyDeathDelay(id)` 선택 접속부만 추가, 미설정 기본 0. 지연 시 클립 Delay·혈흔 Born을 같이 늦추고 대기 중 풀 슬롯을 보존 |
+| 예고→접점→본체→잔여 | 기존 플립북 프레임·알파·수명 | 타이밍 동일, 피격 폭만 몸 비율로 고정. Blood의 공격 방향 원뿔·접점에서 멀어지는 이동 유지. 근접 패링·입자 경로 무변경 |
+
+`CombatHitAnchor`는 Unity 타입 없이 화면 Y와 높이를 double로 계산하는 얇은 정책이다. 몸 위·아래가 없거나 역전·NaN·무한대면 `UseBody=false`로 기존 경로를 요청한다. 비율 공식은 적 3D 레인의 함수를 호출하며 재구현하지 않는다. 사망 ×1.0은 순수 정책에서 검사하지만 실제 사망 클립은 몸 위치로 올리지 않는다.
+
+### 아틀라스 실루엣 표
+
+`tools/vfx/enemy_body_extents.py`는 `Resources/Art/enemy/atlas_ch1_8dir_*.png` 중 idle 8방향·walk 8방향의 256px 셀마다 **alpha > 20**의 위·아래 가장자리를 읽는다. `Resources/Data/enemy_body_extents.json`에는 비어 있지 않은 **1,556셀**, 몸 높이 **59~189px**를 저장했다. 원화 PNG 수정 없음.
+
+| 필드·조회 | 의미 |
+|---|---|
+| texture·x·y | 표시 중인 Sprite의 texture.name·rect.x·rect.y와 일치. y는 Unity의 아래 원점 |
+| cell·frame | 위 원점의 기존 8열 몬스터 칸 번호와 walk 0~3프레임(검토용). etype로 모델을 선택하지 않음 |
+| bottom·top | 셀 아래에서 위로 0~1. 불투명 최하단·최상단 픽셀의 바깥 경계이며 투명 여백 제외 |
+| 런타임 | 실제 Sprite pivot·pixelsPerUnit·transform·flip을 적용하고 화면 위/아래를 투영. walk는 부분 overlay라 body와 walk의 **표시 중인 실루엣 합집합** 사용. 표 없는 보스 시트 등은 기존 경로 |
+| 캐시·재현 | 표는 최초 1회 로드, Sprite별 조회 캐시. `--check-only`는 PNG에서 재계산한 JSON 바이트를 비교하고 파일을 쓰지 않음 |
+
+### 3D 적 연결 방법·소유 경계
+
+시작 시 `codex-takeover/parry-g2/REPORT.md`와 실제 문서 `docs/8.0몬스터디자인/UNITY_ENEMY3D_WIRING_20261104.md`를 확인했다(브리프의 `docs/engine/` 위치에는 없음). 이 기준판에는 실제 리깅 적 렌더러·모델 조회 API가 아직 없다. etype 4가 일반 갑각 사도와 시작 다안 육괴를 공유하므로 기존 `enemy_rig_models.json`의 etype 4 → EyeMass를 직접 조회하지 않는다.
+
+1. 적 3D 레인이 확정한 표현 키(etype + 시작 몹 표식)를 그 레인에서 해석하고, **적 id → 실제 표시 중인 렌더러**를 `NativeGame.EnemyRigBody`에 연결한다. 반환값은 `(Renderer renderer, float chestRatio, int deathTicks)?`. 모델 표의 height로 이미 배치된 실제 renderer.bounds를 사용하며 VFX가 height를 다시 추정하지 않는다.
+2. 조회는 `DisplayedEnemyRig(id)` 한 함수로 감쌌다. **적 3D 레인 키 확정 후 한 줄 교체** 지점이다. `NativeEnemyRigPolicy.Requested`로 `--enemy-render=rigpixel`이 선택되고 실제 렌더러가 활성일 때만 우선한다. 없거나 비활성이면 아틀라스 → 기존 경로 순서다.
+3. `CombatImpactView.EnemyBody`는 `(Vector3 foot, Vector3 top)?` 제공자다. 3D는 실제 bounds 8꼭짓점 투영 높이, 아틀라스는 표의 실제 몸 영역을 같은 제공자로 돌려준다. 비율은 표시 중인 rig 정의의 chestRatio를 사용한다. 다안 육괴는 둥근 몸이므로 향후 **가슴 대신 눈 높이 비율**을 이 필드로 전달해야 한다(.55 초안 확정 아님).
+4. 사망은 `EnemyDeathDelay`에 실제 무너짐 시작 오프셋을 넣는다. `deathTicks`는 전체 사망 길이이므로 그 숫자를 지연으로 그대로 대입하지 않는다. 현재 접속부 기본 null/0이며 무너짐 클립과의 실제 동기화는 미연결이다.
+
+적 3D 소유 정책·모델 JSON·FBX·import 도구·enemy3d-tests는 수정·재실행하지 않았다. 기존 enemy3d-tests의 Core/Skills 열거 누락 실패는 **적 3D 레인 소유 실패**로 남긴다. 새 커밋 fetch·merge 없음.
+
+### 검사 결과·Mac에서 볼 컷
+
+- 최초 TDD RED: 새 정책 부재만 실패, **813검사 / 1실패**. 원인 구현 후 최종 `combat-impact-tests/run.cjs` **865검사 / 0실패**, blood-dark·원소구 v3·물 패링·실루엣 표 검사 PASS. 같은 실패 무수정 재실행 없음.
+- 실루엣 생성 1회: `C:/Python314/python.exe -B tools/vfx/enemy_body_extents.py`(CMD에서는 stdin을 `<NUL`로 닫음). check-only는 위 run.cjs에 연결했다.
+- `tools/vfx-missing-compile.cjs` 1회: **Core 126·Runtime 262 소스, 오류 0**. 기존 Core EnemyAi.cs 미사용 변수 경고 2개는 범위 밖이다. Unity 실행이 아닌 기존 Unity 참조 DLL을 읽는 Roslyn 사전 컴파일이다.
+- 검사: 몸 안 접점·기본 .55·표의 .618·일반/치명/보스/사망 폭·큰 적 상한·32/96/192px 투영 높이·무효 몸 폴백·평면/TargetId0/사망/패링 제외·기본/선택 사망 지연과 풀 예약. 로그 `tools/combat-impact-check/checks.log`, 최초 RED `red.log`, Core·Runtime 컴파일 `compile/*.log`.
+
+Mac 판정은 **화면 위·중간·아래 × 일반 피격·치명·보스 피격**을 각각 1x·3x로 비교한다. idle/walk 전환, 겹친 3마리, 작은 적/큰 적, 아틀라스/연결 후 rigpixel을 포함하고 먼 적의 접점·최종 폭·탄 가림(.2초 초과 금지)을 본다. 사망 피·혈흔은 바닥에 있고 기본 시작 틱이 같은지, 근접 패링이 그대로인지, 제공자 null·TargetId0·평면 모드가 기존 캡처와 같은지 확인한다. 1920×1080·3840×1080, 10초 무음 영상 포함.
+
+PC Unity/Player·빌드·실제 캡처·Unity JSON 임포트·URP 렌더 콜백·실제 rigpixel 표시 검수는 미실행이다. 따라서 화면 바이트 동일이나 게임 품질 PASS로 확대 해석하지 않는다. **기능 소스·PC 검사 완료 / Mac G4 및 적 3D 연결 대기**.

@@ -19,6 +19,9 @@ if(m1){
  fs.writeFileSync(generated,'using System;using Exoduser.UnityPort.Core;static partial class M1ParryTests{static void ShieldCut(Simulation sim,Action capture){var p=sim.Player;'+cut.replace(/yield return M1Shot\("06-parry-shield"\);/g,'capture();').replace('yield return M1ParryCameraComparison(qContact);','')+'}static void GateRoute(Simulation sim){active=sim;var p=sim.Player;'+gate.replace('levelUp.Hide();','')+'}}');files.push(generated);
 }
 const policy=path.join(root,'unity/Assets/Exoduser/Runtime/Vfx/CombatImpactTimeline.cs');if(fs.existsSync(policy))files.push(policy);
+// Ratio formulas are owned by Enemy3D. Compile its policy unchanged, including
+// all recursive Core sources above; do not invoke or modify enemy3d-tests.
+files.push(path.join(root,'unity/Assets/Exoduser/Runtime/NativeEnemyRigPolicy.cs'));
 const args=['/nologo','/target:exe','/langversion:latest','/out:'+path.join(out,name+'.dll'),...fs.readdirSync(path.join(ref,tfm)).filter(f=>f.endsWith('.dll')).map(f=>'/r:'+path.join(ref,tfm,f)),...files];
 const env={...process.env,DOTNET_CLI_HOME:out,DOTNET_CLI_TELEMETRY_OPTOUT:'1',DOTNET_SKIP_FIRST_TIME_EXPERIENCE:'1'};
 function run(a){return cp.spawnSync('C:/Program Files/dotnet/dotnet.exe',a,{encoding:'utf8',windowsHide:true,env,timeout:60000});}
@@ -32,5 +35,7 @@ if(status===0&&name==='checks'){
   log+=(orb.stdout||'')+(orb.stderr||'')+(orb.error?.message||'');status=orb.status??1;}
  if(status===0){const water=cp.spawnSync('C:/Python314/python.exe',[path.join(root,'tools/vfx/recolor_parry_water.py'),'--check-only'],{cwd:root,encoding:'utf8',windowsHide:true,env:{...env,PYTHONDONTWRITEBYTECODE:'1'},timeout:60000});
   log+=(water.stdout||'')+(water.stderr||'')+(water.error?.message||'');status=water.status??1;}
+ if(status===0){const bodies=cp.spawnSync('C:/Python314/python.exe',['-B',path.join(root,'tools/vfx/enemy_body_extents.py'),'--check-only'],{cwd:root,encoding:'utf8',windowsHide:true,stdio:['ignore','pipe','pipe'],env,timeout:60000});
+  log+=(bodies.stdout||'')+(bodies.stderr||'')+(bodies.error?.message||'');status=bodies.status??1;}
 }
 fs.writeFileSync(path.join(out,process.argv.includes('--red')?'red.log':name+'.log'),log);process.stdout.write(log);process.exitCode=status;
