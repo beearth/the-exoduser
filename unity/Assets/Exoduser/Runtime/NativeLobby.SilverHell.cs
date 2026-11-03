@@ -57,25 +57,18 @@ namespace Exoduser.UnityPort
             tex.Apply(false,true);
             return tex;
         }
+        static readonly float[] sliceDx=new float[4],sliceDy=new float[4],sliceSx=new float[4],sliceSy=new float[4];
         internal static void Slice(Rect box,Texture2D tex,float sourceX,float sourceY,float edgeX,float edgeY,bool center)
         {
             if(tex==null||box.width<=0||box.height<=0)return;
             edgeX=Mathf.Min(edgeX,box.width/2);
             edgeY=Mathf.Min(edgeY,box.height/2);
-            float[] dx=
-            {
-                box.x,box.x+edgeX,box.xMax-edgeX,box.xMax
-            },dy=
-            {
-                box.y,box.y+edgeY,box.yMax-edgeY,box.yMax
-            };
-            float[] sx=
-            {
-                0,sourceX,tex.width-sourceX,tex.width
-            },sy=
-            {
-                0,sourceY,tex.height-sourceY,tex.height
-            };
+            // PERF-U7: reused scratch arrays (IMGUI main thread, not re-entrant) instead of four new float[4] per call.
+            float[] dx=sliceDx,dy=sliceDy,sx=sliceSx,sy=sliceSy;
+            dx[0]=box.x;dx[1]=box.x+edgeX;dx[2]=box.xMax-edgeX;dx[3]=box.xMax;
+            dy[0]=box.y;dy[1]=box.y+edgeY;dy[2]=box.yMax-edgeY;dy[3]=box.yMax;
+            sx[0]=0;sx[1]=sourceX;sx[2]=tex.width-sourceX;sx[3]=tex.width;
+            sy[0]=0;sy[1]=sourceY;sy[2]=tex.height-sourceY;sy[3]=tex.height;
             for(int y=0;y<3;y++)for(int x=0;x<3;x++)
             {
                 if(!center&&x==1&&y==1)continue;

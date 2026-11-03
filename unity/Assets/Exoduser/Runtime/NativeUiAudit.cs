@@ -166,7 +166,7 @@ namespace Exoduser.UnityPort
                 Surface(draw,texture,uv,alphaBlend,Source(file,line));}
             GUI.DrawTexture(r,texture,mode,alphaBlend,imageAspect);
         }
-        internal static void DrawTextureWithTexCoords(Rect r,Texture texture,Rect uv,bool alphaBlend=true,[CallerFilePath]string file="",[CallerLineNumber]int line=0){Surface(r,texture,uv,alphaBlend,Source(file,line));GUI.DrawTextureWithTexCoords(r,texture,uv,alphaBlend);}
+        internal static void DrawTextureWithTexCoords(Rect r,Texture texture,Rect uv,bool alphaBlend=true,[CallerFilePath]string file="",[CallerLineNumber]int line=0){if(Repainting)Surface(r,texture,uv,alphaBlend,Source(file,line));GUI.DrawTextureWithTexCoords(r,texture,uv,alphaBlend);}   // PERF-U7: source text only while recording
         static readonly MethodInfo textRectOffset=typeof(GUIStyle).GetMethod("Internal_GetTextRectOffset",BindingFlags.Instance|BindingFlags.NonPublic,null,new[]{typeof(Rect),typeof(GUIContent),typeof(Vector2)},null);
         static void Text(Rect rect,GUIContent content,GUIStyle style,string source)
         {
@@ -214,7 +214,7 @@ namespace Exoduser.UnityPort
             StateBackground(r,style,"GUIStyle 모든 상태 바탕 알파 공통 하한");
         }
         internal static void Label(Rect r,string s,GUIStyle style,[CallerFilePath]string file="",[CallerLineNumber]int line=0){if(Active){StyleBackground(r,style,true);Text(r,new GUIContent(s),style,Source(file,line));}GUI.Label(r,s,style);}
-        internal static void Label(Rect r,GUIContent s,GUIStyle style,[CallerFilePath]string file="",[CallerLineNumber]int line=0){StyleBackground(r,style,true);Text(r,s,style,Source(file,line));GUI.Label(r,s,style);}
+        internal static void Label(Rect r,GUIContent s,GUIStyle style,[CallerFilePath]string file="",[CallerLineNumber]int line=0){StyleBackground(r,style,true);if(Active)Text(r,s,style,Source(file,line));GUI.Label(r,s,style);}
         internal static void Label(Rect r,string s){Label(r,s,GUI.skin.label);}
         internal static void Label(Rect r,GUIContent s){Label(r,s,GUI.skin.label);}
         internal static bool Button(Rect r,string s,GUIStyle style){return Button(r,new GUIContent(s),style);}

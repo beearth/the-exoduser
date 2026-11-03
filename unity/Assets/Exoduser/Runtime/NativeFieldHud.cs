@@ -12,12 +12,12 @@ namespace Exoduser.UnityPort
   public struct Info { public SourceMap map;public Simulation sim;public int statPoints,passivePoints,combatPower;public float progress;public bool english; }
   Texture2D frame,mapTex,portrait,markerRing,markerArrow,objectiveCircle,lockClosed,lockOpen;
   readonly List<NativeMinimapObjective> objectiveMarkers=new List<NativeMinimapObjective>(24);Font font;NativeMinimapTiles texFor;bool mapBuilt;float mapSc;int mapW,mapH;
-  readonly Dictionary<string,GUIStyle> styles=new Dictionary<string,GUIStyle>();
+  readonly Dictionary<(int,TextAnchor,Color32,bool),GUIStyle> styles=new Dictionary<(int,TextAnchor,Color32,bool),GUIStyle>();   // PERF-U7: value key; Color32 = the old ToHtmlStringRGBA quantization
   static Color C(int r,int g,int b,float a=1f){return new Color(r/255f,g/255f,b/255f,a);}
   static void Fill(Rect r,Color c){var o=GUI.color;GUI.color=c;NativeUiAudit.DrawTexture(r,Texture2D.whiteTexture);GUI.color=o;}
   GUIStyle St(int size,TextAnchor a,Color c,bool bold=false)
   {
-   string k=size+"|"+a+"|"+ColorUtility.ToHtmlStringRGBA(c)+bold;GUIStyle s;if(styles.TryGetValue(k,out s))return s;
+   var k=(size,a,UiTextCache.Quantize(c),bold);GUIStyle s;if(styles.TryGetValue(k,out s))return s;
    s=new GUIStyle(GUI.skin.label){font=font,fontSize=size,alignment=a,fontStyle=FontStyle.Normal,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset()};s.normal.textColor=c;styles[k]=s;return s;
   }
   void Init()
@@ -141,11 +141,11 @@ namespace Exoduser.UnityPort
   {
    float a=1f,x=hudWidth/2-85;var box=new Rect(x,17,170,37);
    NativeSilverHellUi.ActionPlate(box,false,0,false,12,0);
-   int sec=Mathf.Max(0,info.sim.TickCount/60);string t=(sec/60).ToString("00")+":"+(sec%60).ToString("00");
+   int sec=Mathf.Max(0,info.sim.TickCount/60);if(sec!=clockSec){clockSec=sec;clockText=(sec/60).ToString("00")+":"+(sec%60).ToString("00");}string t=clockText;
    var st=St(12,TextAnchor.MiddleCenter,C(230,227,221,.92f*a),true);
    // letter-spacing .14em
-   float total=0;foreach(char ch in t)total+=st.CalcSize(new GUIContent(ch.ToString())).x+1.68f;float lx=box.center.x-total/2;
-   foreach(char ch in t){NativeSilverHellUi.Label(new Rect(lx,23,20,16),ch.ToString(),St(12,TextAnchor.MiddleLeft,C(230,227,221,.92f*a),true));lx+=st.CalcSize(new GUIContent(ch.ToString())).x+1.68f;}
+   float total=0;foreach(char ch in t)total+=UiTextCache.Size(st,UiTextCache.Char(ch)).x+1.68f;float lx=box.center.x-total/2;
+   foreach(char ch in t){NativeSilverHellUi.Label(new Rect(lx,23,20,16),UiTextCache.Char(ch),St(12,TextAnchor.MiddleLeft,C(230,227,221,.92f*a),true));lx+=UiTextCache.Size(st,UiTextCache.Char(ch)).x+1.68f;}
    // #stageProgress: 2px track rgba(0,0,0,.45) + shadow 0 1px 2px rgba(0,0,0,.85); #stageProgressFill: linear-gradient(90deg,rgba(112,96,73,.34),rgba(183,166,129,.8),rgba(112,96,73,.34)),
    // width transition .6s ease-out (cubic-bezier(0,0,.58,1)); the fill's own glow is clipped by the track's overflow:hidden
    var bar=new Rect(x+12,44,146,2);Fill(new Rect(bar.x-1,bar.y+1,bar.width+2,2),new Color(0,0,0,.28f*a));Fill(bar,new Color(0,0,0,.45f*a));
@@ -153,6 +153,7 @@ namespace Exoduser.UnityPort
    if(w>0){if(fillGrad==null){fillGrad=new Texture2D(3,1,TextureFormat.RGBA32,false){wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};fillGrad.SetPixel(0,0,C(96,99,99,.34f));fillGrad.SetPixel(1,0,C(165,168,168,.8f));fillGrad.SetPixel(2,0,C(96,99,99,.34f));fillGrad.Apply(false,true);}
     var oc=GUI.color;GUI.color=new Color(1,1,1,a);NativeUiAudit.DrawTexture(new Rect(bar.x,bar.y,w,2),fillGrad);GUI.color=oc;}
   }
+  int clockSec=-1;string clockText="";
   Texture2D fillGrad;float progFrom,progTo,progStart=-10;bool progInit;
   static float EaseOut(float x){x=Mathf.Clamp01(x);float lo=0,hi=1,t=x;for(int i=0;i<24;i++){t=(lo+hi)/2;float bx=3*(1-t)*t*t*.58f+t*t*t;if(bx<x)lo=t;else hi=t;}return 3*(1-t)*t*t*1+t*t*t;}   // cubic-bezier(0,0,.58,1)
   float ProgressShown(float target)

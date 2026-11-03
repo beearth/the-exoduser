@@ -36,7 +36,8 @@ namespace Exoduser.UnityPort
   public string ArrowLabel { get { return raLabel; } }
 
   Font nanum, cinzelDeco, cinzel, notoSans; Texture2D arrowTex, lineTex, flareTex; bool ready;
-  readonly Dictionary<string, GUIStyle> styles = new Dictionary<string, GUIStyle>();
+  readonly Dictionary<(Font, int, TextAnchor, FontStyle), GUIStyle> styles = new Dictionary<(Font, int, TextAnchor, FontStyle), GUIStyle>();   // PERF-U7: value key (was a per-call name|size|anchor|style string)
+  readonly Dictionary<(Font, int, FontStyle, char), float> glyphWidths = new Dictionary<(Font, int, FontStyle, char), float>();
   readonly Dictionary<Color32, Texture2D> glowCache = new Dictionary<Color32, Texture2D>();
 
   string L(string ko, string en) { return English ? en : ko; }
@@ -123,7 +124,7 @@ namespace Exoduser.UnityPort
   }
   GUIStyle St(Font f, int size, TextAnchor a, FontStyle fs = FontStyle.Normal)
   {
-   string k = f.name + "|" + size + "|" + a + "|" + fs; GUIStyle s;
+   var k = (f, size, a, fs); GUIStyle s;
    if (!styles.TryGetValue(k, out s))
    {
     s = new GUIStyle(GUI.skin.label) { font = f, fontSize = size, alignment = a, fontStyle = fs, wordWrap = false, clipping = TextClipping.Overflow, padding = new RectOffset(), margin = new RectOffset() };
@@ -140,8 +141,9 @@ namespace Exoduser.UnityPort
   FontStyle latinFs = FontStyle.Normal;   // weight of the Latin glyphs (web Cinzel 500 for the English line: Bold is the closest face IMGUI can pick)
   float CharW(char ch, int size, Font latin)
   {
-   bool lt = latin != null && Latin(ch); var f = lt ? latin : nanum; var st = St(f, size, TextAnchor.MiddleLeft, lt ? latinFs : FontStyle.Normal);
-   return st.CalcSize(new GUIContent(ch.ToString())).x;
+   bool lt = latin != null && Latin(ch); var f = lt ? latin : nanum; var fs = lt ? latinFs : FontStyle.Normal;
+   var key = (f, size, fs, ch); float w; if (glyphWidths.TryGetValue(key, out w)) return w;
+   var st = St(f, size, TextAnchor.MiddleLeft, fs); w = UiTextCache.Size(st, UiTextCache.Char(ch)).x; glyphWidths[key] = w; return w;
   }
   void SpacedLine(string s, float cx, float cy, int size, float ls, Color col, Font latin, Vector2 off)
   {
@@ -149,7 +151,7 @@ namespace Exoduser.UnityPort
    foreach (char ch in s)
    {
     bool lt = latin != null && Latin(ch); var f = lt ? latin : nanum; var st = St(f, size, TextAnchor.MiddleLeft, lt ? latinFs : FontStyle.Normal); st.normal.textColor = col;
-    NativeSilverHellUi.Label(new Rect(x, cy + off.y - size, 80, size * 2), ch.ToString(), st);
+    NativeSilverHellUi.Label(new Rect(x, cy + off.y - size, 80, size * 2), UiTextCache.Char(ch), st);
     x += CharW(ch, size, latin) + ls;
    }
   }
@@ -348,13 +350,16 @@ namespace Exoduser.UnityPort
    // label: Nanum Myeongjo 700 14px bone, Cinzel 12px distance, 8-direction black offsets
    float lx = ax - Mathf.Cos(ang) * 68, ly = ay - Mathf.Sin(ang) * 68;
    if (!string.IsNullOrEmpty(raLabel)) OutlinedCenter(raLabel, lx, ly, nanum, 14, FontStyle.Bold, C(218,215,209, .96f), 1.5f);
-   OutlinedCenter(dm + "m", lx, ly + 16, cinzel, 12, FontStyle.Bold, C(188,185,179, .92f), 1.4f);
+   OutlinedCenter(MeterLabel(dm), lx, ly + 16, cinzel, 12, FontStyle.Bold, C(188,185,179, .92f), 1.4f);
   }
+  // PERF-U7: the same text as `distance + "m"`, built once per distinct value.
+  readonly Dictionary<float, string> meterLabels = new Dictionary<float, string>();
+  string MeterLabel(float d) { string s; if (!meterLabels.TryGetValue(d, out s)) { if (meterLabels.Count > 4096) meterLabels.Clear(); s = d + "m"; meterLabels[d] = s; } return s; }
   Rect ArrowFootprint(float angle,float distance)
   {
    float w=96,h=w*arrowTex.height/arrowTex.width,k=w/arrowTex.width,c=Mathf.Cos(angle),s=Mathf.Sin(angle);var r=new Rect(40-w-18*k,-h/2-18*k,w+36*k,h+36*k);float x0=float.MaxValue,y0=float.MaxValue,x1=float.MinValue,y1=float.MinValue;
    for(int i=0;i<4;i++){float x=i%2==0?r.x:r.xMax,y=i<2?r.y:r.yMax,rx=x*c-y*s,ry=x*s+y*c;x0=Mathf.Min(x0,rx);x1=Mathf.Max(x1,rx);y0=Mathf.Min(y0,ry);y1=Mathf.Max(y1,ry);}
-   var a=St(nanum,14,TextAnchor.MiddleCenter,FontStyle.Bold).CalcSize(new GUIContent(raLabel));var b=St(cinzel,12,TextAnchor.MiddleCenter,FontStyle.Bold).CalcSize(new GUIContent(distance+"m"));float lx=-c*68,ly=-s*68;float tw=Mathf.Max(a.x,b.x)/2+2;x0=Mathf.Min(x0,lx-tw);x1=Mathf.Max(x1,lx+tw);y0=Mathf.Min(y0,ly-Mathf.Max(a.y,b.y)/2-2);y1=Mathf.Max(y1,ly+16+b.y/2+2);return Rect.MinMaxRect(x0,y0,x1,y1);
+   var a=UiTextCache.Size(St(nanum,14,TextAnchor.MiddleCenter,FontStyle.Bold),raLabel);var b=UiTextCache.Size(St(cinzel,12,TextAnchor.MiddleCenter,FontStyle.Bold),MeterLabel(distance));float lx=-c*68,ly=-s*68;float tw=Mathf.Max(a.x,b.x)/2+2;x0=Mathf.Min(x0,lx-tw);x1=Mathf.Max(x1,lx+tw);y0=Mathf.Min(y0,ly-Mathf.Max(a.y,b.y)/2-2);y1=Mathf.Max(y1,ly+16+b.y/2+2);return Rect.MinMaxRect(x0,y0,x1,y1);
   }
   void OutlinedCenter(string s, float x, float y, Font f, int size, FontStyle fs, Color col, float o)
   {
