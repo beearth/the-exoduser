@@ -2724,7 +2724,7 @@ function playCinematic(){
     const _hgX=_hgCv.getContext('2d');_hgX.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
     let _cinHoldKey=false,_cinHoldProg=0,_cinHoldActive=false;
     let _cinGpHold=false; // 게임패드 홀드 상태
-    const _CIN_HOLD_DUR=5000;
+    const _CIN_HOLD_DUR=3000;
     console.log('[CINEMATIC] Hold skip initialized, duration: '+_CIN_HOLD_DUR+'ms');
     document.addEventListener('keydown',function _chk(e){
       if(_cinDone){document.removeEventListener('keydown',_chk);return}
