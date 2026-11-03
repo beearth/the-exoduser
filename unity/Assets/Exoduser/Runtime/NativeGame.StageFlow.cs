@@ -19,7 +19,7 @@ namespace Exoduser.UnityPort
 
         void WorldTextAdd(float x, float y, string ko, string en, Color color, float seconds = 1.6f)
         {
-            string text = English ? en : ko;
+            string text = NativeDemoText.Get(ko,lobby.Language,en);
             worldTexts.RemoveAll(t => t.text == text);   // the same notice is not stacked while the player keeps standing on the gate
             worldTexts.Add(new WorldText { x = x, y = y, text = text, color = color, until = Time.unscaledTime + seconds });
         }
@@ -27,6 +27,7 @@ namespace Exoduser.UnityPort
         // Hooks the Core flow to this run: original exit/gate tiles, the abyssal angler (not ported) counted as done, Core enabled outside the first practice.
         void StageFlowAttach()
         {
+            BossDialogueAttach();
             var flow = Simulation.Stage;
             flow.InitializeField(Map.Data.tiles, Map.Data.width);
             flow.Enabled = firstPractice == null;
@@ -66,7 +67,7 @@ namespace Exoduser.UnityPort
                     case StageEventKind.BossDefeated:
                         WorldTextAdd(p.X, p.Y - 40, "출구가 열렸다!", "The exit is open!", new Color(.5f, .85f, .55f), 2.6f); break;
                     case StageEventKind.ExitOpened:
-                        Toast("보스 처치 · 출구가 열렸다"); break;
+                        Toast(NativeDemoText.Get("보스 처치 · 출구가 열렸다",lobby.Language)); break;
                     case StageEventKind.StageCleared:
                         // 완료 보상은 아래 실제 이벤트 틱의 SP 변화로 한 번 표시한다.
                         stageClear.Show(NativeStageClearOverlay.WithAutoPotion(new NativeStageClearOverlay.Input {
@@ -86,6 +87,7 @@ namespace Exoduser.UnityPort
         // Boss bar: web 35966-35972 shows it as soon as a boss exists (the bar owns the 2 s intro); it stays off the black load screen.
         void StageFlowBossBar()
         {
+            bossBar.LocaleCode=lobby.Language;
             var flow = Simulation.Stage; EnemyState boss = flow.InArena && (flow.LoadPhase == 0 || flow.LoadPhase == 4) ? flow.FindBoss() : null;
             if (boss == null) { if (BossBarShown) { bossBar.Hide(); BossBarShown = false; } return; }
             var input = new NativeBossBar.Input {
@@ -134,18 +136,19 @@ namespace Exoduser.UnityPort
             {
                 var pt = ToGUI(t.x, t.y); float a = Mathf.Clamp01((t.until - Time.unscaledTime) / .5f);
                 var c = t.color; c.a = a; var st = center; var keep = st.normal.textColor;var keepFont=st.font;st.font=NativeSilverHellUi.TextFont(keepFont,t.text);
-                st.normal.textColor = new Color(0, 0, 0, .85f * a); NativeUiAudit.Label(new Rect(pt.x - 301, pt.y - 49, 600, 40), t.text, st);
-                st.normal.textColor = c; NativeUiAudit.Label(new Rect(pt.x - 300, pt.y - 50, 600, 40), t.text, st); st.normal.textColor = keep;st.font=keepFont;
+                st.normal.textColor = new Color(0, 0, 0, .85f * a); NativeDemoText.Label(new Rect(pt.x - 301, pt.y - 49, 600, 40), t.text, st);
+                st.normal.textColor = c; NativeDemoText.Label(new Rect(pt.x - 300, pt.y - 50, 600, 40), t.text, st); st.normal.textColor = keep;st.font=keepFont;
             }
             if (flow.InArena && flow.Exits.Count > 0 && !flow.StageCleared)
             {
                 var ex = flow.Exits[0]; var pt = ToGUI((ex.X + .5f) * 40, (ex.Y + .5f) * 40 - 34);
                 var keep = center.normal.textColor; center.normal.textColor = new Color(.85f, .55f, .3f, .95f);
-                NativeUiAudit.Label(new Rect(pt.x - 60, pt.y - 20, 120, 40), English ? "EXIT" : "출구", center); center.normal.textColor = keep;
+                NativeDemoText.Label(new Rect(pt.x - 100, pt.y - 20, 200, 40), NativeDemoText.Get("출구",lobby.Language), center); center.normal.textColor = keep;
             }
         }
         void StageFlowDrawLoad()
         {
+            bossBar.LocaleCode=lobby.Language;
             var flow = Simulation.Stage;
             if (flow.LoadPhase > 0)
             {

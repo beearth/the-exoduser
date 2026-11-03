@@ -11,7 +11,7 @@ namespace Exoduser.UnityPort
         public NativeRegionHud RegionHud { get { return regionHud; } }
 
         void RegionHudAttach() { regionHud.Reset(); regionHud.ToGUI = ToGUI; regionHud.SafeZone = RegionHudSafeZone; }
-        void RegionHudTick() { regionHud.English = English; regionHud.OnTick(Simulation); }
+        void RegionHudTick() { regionHud.English = English;regionHud.LocaleCode=lobby.Language; regionHud.OnTick(Simulation); }
 
         NativeRegionHud.Safe RegionHudSafeZone()
         {
@@ -25,7 +25,7 @@ namespace Exoduser.UnityPort
         void DrawRegionHud()
         {
             if (Simulation == null || firstPractice != null) return;
-            regionHud.English = English;
+            regionHud.English = English;regionHud.LocaleCode=lobby.Language;
             regionHud.Draw(Simulation, menu || stageClear.Active || death.Active || PlayerDown);
         }
     }

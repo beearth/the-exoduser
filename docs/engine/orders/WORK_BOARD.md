@@ -711,3 +711,8 @@ PC후보af70a6a2c5는정본버전매빌드읽기·직업X사슬/로어·실능�
 | PC Codex / codex/unity-ui-plate-20261103 | SilverLobby ENTER/슬롯/레일, SilverHell 공통9-slice, SilverCharacter/CharacterPresentation 원화, NativeUiChrome 기본 스킨 한정 제거, 원화11종 meta, DeathUiCapture/회귀/비교 도구 및 관련 docs | 최신385e76ce1 정상 병합. 원화 복구·밉맵OFF·밝기1.0 계약 회귀 PASS. 코드 판/세로명암 미사용. PC Player/빌드/캡처0. 실제1920/3840·1x/3x·4화면 비교는 Mac 대기/미검증 |
 
 10-28 로비 캡처와 원화8종은 직접 열어 확인했다. 원화 점검판은 I:/EXODUSER-Storage/codex-takeover/death-screen/review-current/original-assets.png이며 제품 캡처가 아니다. 실제 비교기는 unity/Tools/lobby-art-review/compare.cjs(실제PNG4개 필수). 최종SHA·Mac 인자/비교판 경로는 death-screen/REPORT.md. 기존 guard.baseline.json WIP 보존.
+
+## 2026-11-04 Codex UI — 01:00 밉맵 우선 후00:40 문구
+
+- 밉맵 별도 브랜치 codex/unity-ui-mipmap-20261104 @2d2705dac891d80edc84ea901800410ecb2951ea:15종 importer OFF/Bilinear·4meta·38회귀·PC 참조컴파일PASS. Mac 재임포트 meta불변/실제mip1 대기.
+- codex/unity-demo-text-20261104: 문구 착수2e5a64b927 분리→긴급 병합20d46aef20→29언어 보스/HUD/입장/보스 자막 구현. 펫 말풍선은 조사만·다음 회차. Core 수치/판정·원화5항목 수정0. PC 참조컴파일1회5어셈블리 오류0,8소스/데이터계약PASS. Mac 실제 화면/자연 이벤트/원어민 감수 대기. [인자·정본 상태](../../3.1%20ui%20hud%20디자인/UNITY_DEMO_TEXT_20261104.md).

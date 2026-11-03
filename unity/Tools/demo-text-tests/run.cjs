@@ -42,4 +42,14 @@ test('non-Latin scripts use serif fallback and Arabic uses the existing advanced
  const s=read('NativeDemoText.cs');assert(s.includes('NativeSilverHellUi.TextFont'));assert(!s.includes('code=="ar")code="en"'));
  const ar=read('NativeDemoArabicText.cs');assert(ar.includes('TextGeneratorType.Advanced')&&ar.includes('LanguageDirection.RTL'));
 });
+test('intro dialogue survives the longer arena load before its 3.2-second display starts',()=>{
+ const s=read('NativeGame.BossDialogue.cs');assert(s.includes('pendingBossLine=key'),'Core intro fires during load; retain its key');
+ assert(s.includes('bossDialogue.Show(pendingBossLine)'),'begin visible lifetime after load');
+});
+test('Mac capture entry is registered and refuses persistent stores',()=>{
+ const game=read('NativeGame.cs');assert(game.includes('Array.IndexOf(args,"--unity-demo-text-smoke")>=0'));
+ const s=read('NativeGame.DemoTextCapture.cs');assert(s.includes('nativeSettingsStore!=null')&&s.includes('combatStore!=null')&&s.includes('CharacterStoreDirectory'));
+ assert(s.includes('BossLineLog.Contains("intro0")'));assert(s.includes('sink0')&&s.includes('controlled'));
+ const gate=JSON.parse(fs.readFileSync(path.join(data,'hellgate_objectives.json'),'utf8'));assert.equal(gate.entries.length,29);assert(/[\u0600-\u06ff]/.test(gate.entries.find(e=>e.code==='ar').sealedGate));
+});
 console.log(JSON.stringify({checks,failed,passed:failed===0,scope:'data and source contracts; no Unity/Player execution'}));process.exitCode=failed?1:0;

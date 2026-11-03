@@ -10,8 +10,8 @@ namespace Exoduser.UnityPort {
  // Intro = web `.intro` (2.0s): name fades in with letter-spacing 1em -> .25em and blur 8px -> 0 (0.8s ease-out), the HP bar scales in from the centre
  // (1.2s ease-out, 0.4s delay); at 2.0s the web removes the class and the spacing snaps to .08em (kept). While the boss cine runs (3s) the HP bar shows the
  // intro fill (1.5s ramp, `_bossCine._introFill`) instead of the real value.
- // Not ported: poise label text (the web clips it: `.bpow{overflow:hidden}` hides `.bpol{right:-52px}`), the unused shield bar (width 0 in the web), English boss
- // names (`_T`), druid finale / revive suffix glyph emoji, rounded 2px corners of the poise frame.
+ // Not ported: clipped poise label, unused shield bar, druid finale / revive suffix glyph emoji, rounded 2px poise corners.
+ // STY-23: stage name keys resolve through the 29-locale text catalogue; non-Korean names use complete serif text runs.
  public sealed class NativeBossBar {
   public enum PoiseState {Normal,Groggy,Immune}
   public struct Chip {public string kind;public int stacks;public float seconds;}   // kind: bleed | poison | burn | shock
@@ -38,6 +38,7 @@ namespace Exoduser.UnityPort {
   void ResolveHide(){if(active&&hiding&&Alpha()<=.001f){active=false;hiding=false;}}
   // set by the caller while a full-screen panel (inventory, forge, skills, stats, settings) is open: web ui-foundation.css 124 / game.html 2469 hide #bossBar then
   public bool Suppressed;
+  public string LocaleCode="ko";
   // measurements for the capture check (design px)
   public float LastNameWidth,LastNameLetterSpacing;public readonly List<float> LastChipWidths=new List<float>();
 
@@ -49,7 +50,7 @@ namespace Exoduser.UnityPort {
   float Age{get{return ForcedAge.HasValue?ForcedAge.Value:Now-start;}}
 
   // Boss name of a stage index (web STG[si].bn = HELL_BOSSES[hell][min(floor,last)], definitions only); null when the index is outside the 35 stages.
-  public string BossNameForStage(int si){foreach(var s in defs.stages)if(s.si==si)return s.boss;return null;}
+  public string BossNameForStage(int si){foreach(var s in defs.stages)if(s.si==si)return NativeDemoText.Get(s.boss,LocaleCode);return null;}
   public void Show(string bossName,float hp01,float poise01){Show(new Input{name=bossName,hp01=hp01,poise01=poise01,state=PoiseState.Normal});}
   // First call starts the web intro; further calls while the bar is visible only update the values.
   public void Show(Input value){
@@ -198,6 +199,13 @@ namespace Exoduser.UnityPort {
   }
 
   void DrawName(string name,float cx,float y,float spacing,float alpha,float blurW){
+   if(LocaleCode!="ko")
+   {
+    var st=NativeDemoText.Style(Style(26),name);st.font=NativeSilverHellUi.TextFont(NativeSilverHellUi.Font(true),name);st.alignment=TextAnchor.MiddleCenter;
+    float width=Mathf.Min(860,st.CalcSize(new GUIContent(name)).x+24);while(st.fontSize>16&&st.CalcSize(new GUIContent(name)).x>836)st.fontSize--;
+    st.normal.textColor=new Color(217/255f,214/255f,208/255f,alpha);LastNameWidth=width;LastNameLetterSpacing=0;
+    NativeDemoText.Label(new Rect(cx-width/2,y,width,defs.layout.nameH),name,st,"boss-name");return;
+   }
    var a=defs.atlas;float total=0;var list=new List<Tok>();var advs=new List<float>();
    foreach(var ch in name){
     string k=ch.ToString();Tok t;if(!sharp.TryGetValue(k,out t))t=null;list.Add(t);float adv=t!=null?t.adv:defs.timing.nameEm*.5f;advs.Add(adv);total+=adv+spacing;

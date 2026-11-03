@@ -99,8 +99,8 @@ namespace Exoduser.UnityPort {
   bool GoalLine(Rect rect,string text,Color color){
    var style=new GUIStyle(Style(13,false)){font=NativeSilverHellUi.TextFont(nanum,text),clipping=TextClipping.Clip};
    while(style.fontSize>11&&style.CalcSize(new GUIContent(text)).x>rect.width)style.fontSize--;
-   style.normal.textColor=new Color(0,0,0,.95f);NativeSilverHellUi.Label(new Rect(rect.x,rect.y+1,rect.width,rect.height),text,style);
-   style.normal.textColor=color;NativeSilverHellUi.Label(rect,text,style);
+   style.normal.textColor=new Color(0,0,0,.95f);NativeDemoText.Label(new Rect(rect.x,rect.y+1,rect.width,rect.height),text,style);
+   style.normal.textColor=color;NativeDemoText.Label(rect,text,style);
    return style.CalcSize(new GUIContent(text)).x<=rect.width;
   }
  }

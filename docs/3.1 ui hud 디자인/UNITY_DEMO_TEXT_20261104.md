@@ -21,4 +21,37 @@
 
 ## 펫 말풍선 조사 (5항 · 구현은 다음 회차)
 
-조사 결과와 후속 범위는 구현 완료 후 아래에 확정한다. 이번 회차에는 게임 중 펫 말풍선 장치를 추가하지 않는다.
+조사 결과와 확정 범위는 아래 「펫 말풍선 후속 범위 확정」에 기록했다. 이번 회차의 게임 중 말풍선 구현은0이다.
+
+## 구현·확인 결과
+
+- 보스35 stage 이름·지역 HUD·진행 알림·보스 대사 총77개 키×29언어를 demo_text.json/NativeDemoText로 연결했다. 값은 웹 a78daf055의 최종 Object.assign까지 반영한 정본이다. 새 문구를 웹에 추가하지 않았다. No.4258 완성 알림의29언어는 Unity 데이터에 전파했다.
+- 한글 아틀라스에 없는 보스 이름은 명조 전체 문자열로 그린다. 지역 안내도 비KO에서 문자를 잘게 쪼개지 않아 태국어/아랍어 연결을 보존한다. 기존 장식 영문 보조행은 남긴다. 아랍어는 UI Toolkit Advanced/RTL을 기존 Naskh 동적 폰트/PanelSettings로 격리 렌더하며 각 IMGUI 위치·깊이에서 합성한다(최대24캐시, 미초기화 렌더타깃 투명 초기화).
+- startup_intro.json은29언어×KO 정본27cue(총783cue, 언어당 표시문구18개)다. KO 문장/시간/이미지/화자/순서 보존. 기존 en/ja/zh의 빠진22b를 채우고23의 깨우기 의미를 KO에 맞췄다. 신규25언어는 이번에 번역했다. 글꼴 fallback/줄바꿈/타자 노출은 기존 입장 UI에 연결했다. 새 번역의 원어민 감수는 대기다.
+- BossLineRaised를 Simulation마다 구독하고 이전 구독을 해제한다. 로딩 중 intro0는 화면이 열린 뒤3.2초를 시작하도록 대기한다. 메뉴/대화상자/사망/클리어/로딩에서 표시하지 않는다. 웹 bottom19%/폭860/은빛 헤어라인/명조 배치를 사용한다. 판/버튼 원화5항목과Core 수치·판정 수정0.
+- hellgate_objectives의 빠진 ar8개(No.4250~4257)도 채워29언어가 됐다. 목표 패널·로딩 이름은 같은 RTL/명조 렌더 경로를 사용한다.
+- PC 데이터·소스8항 PASS(최초6FAIL→구현후PASS, 로딩 수명/촬영 진입 결함 검출 후 보강). 원화 importer38회귀PASS. 문구 최종 DLL 참조 컴파일1회: Player Core126/Runtime269, Editor Core126/Runtime269/Editor60,5어셈블리 오류0. Unity 실행/Player/빌드/캡처0. 따라서 시각/자연입력/런타임 동작은 아직 Mac 미검증이다.
+
+## 펫 말풍선 후속 범위 확정 (이번 구현0)
+
+- 웹 원본: game.html #petSubtitle2692, _petBubbleShow9534, _petSay9557, 우선순위 디스패처9580이후, _updatePetBubble9650부근. 까마귀는 실제 화면 왼쪽20px, 고양이는 오른쪽20px. 오른쪽 조작 안내가 열리면 반대편으로 이동한다. 아래 HUD 위220px,480px 초상/원화 말풍선, UI/text scale×1.5. 텍스트 칸은 까마귀(92,237,306,51), 고양이(122,250,190,42), 원화 안에서 줄바꿈한다. 현재 웹의 산세리프 선언은 그대로 복사하지 않고 Unity 실버 헬 명조/가독성 기준으로 대조해야 한다.
+- 동작: 한 번에1개. 원문키를 보존해 언어 변경/입력장치 변경 때 다시 번역·키바인딩 치환. 첫 대사 뒤 페어 대사를 순차 표시. 각 id의 쿨다운과 티어별 전역 쿨다운이 있다. T0분위기/T1튜토리얼/T2진행/T3조언/T4핵심전투/T5생존, 전역20/12/8/6/4/0초. T5는 가중치가 높은 경고로 현재 대사/페어를 인터럽트하고 낮은 티어를5초 억제한다. 보스 피날레에는 T0~T2를 차단한다.
+- 1차 후속 연결 후보: STY-21 위치 펫4줄 No.3855~3858(기존29언어 JSON), 챕터 환경 _envDlg[0]의 까마귀4초→고양이4초(No.3480/0852), 첫 보스 _bi[0] 까마귀5초→고양이4초(No.3630/3631). 환경 조건은 웹에서 진입30초 누적 후 !G.bossAlive이며, 이 플래그가 Unity Stage.BossAlive와 같은 의미인지 매핑을 먼저 정해야 한다. 구간 경계/1회성 표식은 맵 총괄 GB1 확정 뒤 연결한다.
+- 후속 구현물: Core 변경 없이 이벤트→표현 큐, 원화 초상/말풍선, id·티어·쿨다운/페어/생존 인터럽트,29언어/키치환, 죽음·메뉴·로딩 시 숨김, 새 run/아레나 재진입의1회성 초기화. 기존 사망 대사는 별도 흐름으로 유지한다. Mac1920/3840에서 초상/텍스트칸/하단 HUD/조작 안내 겹침·언어 변경·페어·생존 인터럽트까지 판정한다.
+
+## Mac 촬영 인계
+
+아래는 새 동일 SHA Player를 쓰는 제어된 표시 fixture다. 기존 바탕화면 실행본을 PC에서 실행/교체하지 않았다. 기본 요청 해상도1920,3840도 같은 인자로 가능하다. ko/en/ja/fr/ar 우선 촬영 후 나머지 언어도 데이터와 실제 글리프를 대조한다.
+
+~~~zsh
+PLAYER="<동일 SHA Mac Player/Contents/MacOS 실행파일>"
+ROOT="$PWD/_out/demo-text-current"
+for lang in ko en ja fr ar; do
+  out="$ROOT/$lang"; mkdir -p "$out"
+  "$PLAYER" -mute-audio -screen-fullscreen 0 -screen-width 1920 -screen-height 1080 \
+    --unity-demo-text-smoke --unity-boss-direct 0 -text-lang "$lang" \
+    --unity-qa-sandbox "$out/qa-save" -output "$out" -logFile "$out/player.log"
+done
+~~~
+
+PNG는 demo-lobby/demo-hud/demo-boss-intro/demo-boss-sink-controlled-언어_1920x1080.png, 영수증 demo-text-언어.json. coreIntroEvent/visibleIntro/storesDisabled/rosterUnchanged=true와 선택언어 이름을 확인한다. 마지막 sink0는 표현 호출을 직접 준 제어 표본이며 자연 처치의 증거가 아니다. 실제 입장 이야기27cue의29언어·아랍어 연결/타자노출, 자연 보스 진입→침강퇴장/재도전/사망/메뉴 가림은 별도 Mac 게임 관문이다. 소스 계약8PASS나 JSON passed는 시각 합격을 뜻하지 않는다.

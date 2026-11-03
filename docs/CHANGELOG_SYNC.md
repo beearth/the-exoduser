@@ -57843,3 +57843,5 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 
 2026-11-04 00:40 데모 문구 착수 보존: 8da100339 기준 codex/unity-demo-text-20261104에서77개29언어 카탈로그·G0/G1·미구현 검출6항목을 작성했다. 런타임 연결/입장 이야기25언어/화면 판정은 아직 미구현이며 회귀6FAIL은 착수 근거다. 사용자01:00 밉맵 긴급 지시로 이 상태를 별도 커밋에 보존하고 먼저 importer를 고친 뒤 돌아온다. [작업표](3.1%20ui%20hud%20디자인/UNITY_DEMO_TEXT_20261104.md).
 2026-11-04 01:00 원화 버튼 밉맵 긴급: SourceTextureImporter /ui/ 강제ON 원인을 고쳤다. 정책 정본 OriginalUiNoMipmaps로 실버 헬 판/버튼/프레임15종만OFF/Bilinear,4meta 동기화·버전4. 다른 UI·캐릭터·지형 규칙 보존.38회귀PASS·PC DLL참조1회5어셈블리 오류0, Unity import/Player0. Mac 재임포트2회 meta불변/loaded mip1 검수 메서드 준비, 실제 검수 대기. 문구 착수2e5a64b927과 분리. [원화 계약](3.1%20ui%20hud%20디자인/UNITY_BUTTON_PLATE_MATERIAL_20261103.md).
+
+2026-11-04 00:40 데모 문구 구현: 긴급 밉맵2d2705dac8를 먼저 별도 push한 뒤 문구 브랜치에 정상 병합. 보스35stage 이름/지역HUD/진행알림/보스한줄77키29언어 연결, 입장 이야기29×27cue, 지옥문 ar8키/No.4258 전파. 로딩 중 Core intro 대기 후3.2초 명조 자막·RTL/Naskh 전체문자열. 펫은 웹 티어/페어/쿨다운 조사·후속 범위만 정리(구현0).8계약/38밉맵회귀PASS·PC DLL참조1회5어셈블리 오류0, PC Player0·Mac1920/3840 실제/원어민 검수 대기. [구현표](3.1%20ui%20hud%20디자인/UNITY_DEMO_TEXT_20261104.md).
