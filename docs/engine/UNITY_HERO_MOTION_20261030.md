@@ -188,3 +188,11 @@ R7 현재같은제품의 실제검수·입력보존·전체아트RETOUCH경계�
 |인수 상태|제작자선택1x검수완료/공통·Desktop지정integrator 신청준비. 공통병합·Desktop갱신·설치본M1은이문서만으로완료아님. 자연완주·실측FPS·OSfocus·Mac동기화 미검증|
 
 근거 I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/STAGE1_R5_VISUAL_REVIEW_KO.md, STAGE1_R5_BUILD_LINK.json, stage1-r5-validation-8dbdf205a/receipt.json, stage1-r5-review-8dbdf205a, scope-cleanup-after-r5. 이전순수985/087·실패validator 이력은덮지않는다.
+
+## 2026-11-03 리깅 픽셀 전용 거리보행·Shift
+
+--hero-render=rigpixel에서만 NativeHeroView.PixelLighting→EnableRigPixelMotion을 켠다. 기존 sprite/legacy3D 시간계약은 유지한다. R7 Run64등분에서 발목높이 최소+.035m 안의 후방진행 구간 25개를 측정해 -deltaZ/deltaPhase 중앙값3.012645696m/주기를 얻었다. 모델배율.87에서 접지속도4.1384m/s(클립.6333334초), 실제R4 221→309틱239.3293px 이동=1.631791m/s로 시간기반 재생과 큰차이가 있었다. 새RigPixelLocomotionClock은 같은Core틱은1회만 반영하며 실제평면루트거리/모델배율/3.0126457로 위상을 누적한다. 정지시위상유지/표시Idle0, rewind·새Simulation초기화, 단일모델이동>2.5m는텔레포트로보고위상에미반영. 구르기/사슬/사망 때보행누적0, Core루트/입력/피해/속도변경0. 양레이어·운반팔주기를 같은거리위상에맞춘다.
+
+Shift 모션은 Core의 실제HarpActive||DashActive를읽는 Chain 표현이다. 사망→구르기→Chain→기존전투순서, 발사중phase=clamp((CoreTick-발사시작)/12), 실제DashActive당김은phase1. 몸앞.06×phase/낮춤.06×phase/가슴기울임22도×phase, 우손운반(.30,1.10,.06)/칼(.16,-.58,-.80), 좌손시전목표(-.18,1.26,.48)이며 대검을사슬총으로바꾸지않는다. 루트/사슬목표/기간/방어·패링설계는수정0. 순수거리·동일틱·정지·방향·되감기·텔레포트·배율·Chain·사망우선9검사 RED(실제class/입력필드없음)→GREEN9/9. 최초PowerShell구형C#및NuGet자식환경오류는계약RED가아니며별도로그. 실제발 미끄러짐·양발접지·체중/Shift연속동작은새Player영상검수전미검증이다.
+
+거리보행의접지중앙구간은 Run실측왼발phase.29~.43/오른발.83~.96이다. 해당구간에진입하면실제Toe월드좌표를고정하고 원Foot회전을보존한2본IK로발목을맞춘다. 같은틱재표본에도같은접점을재사용하며 이동중약25도초과방향변화(dot<.9063)나발목추적차>.15m는접점을새로잡는다. Core루트/각도는쓰지않음. Run이아닌상태/새Simulation에서해제. gaitPhase/gaitFootPlanted/gaitFootPlantError를실제PNG대응JSON에기록하고달리기접지표본>0/Toe오차≤.003m를추가확인한다. 신발솔/경사접지·실제화면PASS는영상검수전별개다.

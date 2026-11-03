@@ -52,3 +52,13 @@ R6 실제광원 보강에 맞춘 최종후보 팔레트(alpha1): Iron(.17,.19,.2
 Editor사전검사 최종카메라만sRGB RenderTexture로 저장한다(내부리그RT는Linear 유지). Linear최종바이트를 gamma변환 없이 PNG로 내보내 어둡게 보이던 사전미리보기 한계를 수정했다. T포즈 정면으로 표면의큰면/재질만 대조하며 실제제품색/모션 판정은 아니다.
 
 동일패키지C10 기준은 --unity-rigpixel-natural --hero-render=sprite --remodel3d로 같은실제입장/같은1920·3840×1080 검수흐름을 사용한다. 자연입력 시작 전 natural-entry.png와 entryScreenX/Y(발밑화면앵커)를 기록하며 해당PNG인코딩은 성능측정 시작 전이다. sprite baseline은 리그표시검사를 통과했다고 해석하지 않는다.
+
+R6b 사전검사10fec0bd 오류0/USER_SAVE0·geometry동일·RT성공. 3x에서 큰재질면 개선 후에도 미세명암얼룩이 남아 G3를 이어간다. 몸체/정적대검 모두 복제Mesh에8cm 법선평균을4회 적용해 미세방향 편차를 낮춘다(기존1회→4회, 원정점/전체면/가중유지). Editor는 Run클립64등분의 양발목 모델좌표 CSV를 추가해 루트이동0으로 저장된 클립의 실제 보행거리/접지구간을 조사한다. 평균속도 메타데이터는 Run7.29e-8/Walk1.61e-7로 사실상0이며 이것을 보행속도라 사용하지 않는다.
+
+R6 모션 보강은 UNITY_HERO_MOTION_20261030.md의11-03 절을 따른다. 실제Core이동1.631791m/s와기존Run접지4.1384m/s의불일치를측정해 모델주기3.0126457m당거리위상으로 보강했다. rigpixel 전용Chain 상태는HarpActive/DashActive를읽고 기존달리기대체, 실제Shift화면판정대기. 순수계약9/9이며게임용PASS아님.
+
+모션보강 기존대검발회전회귀는 실제DLL141/141 PASS. wrapper dotnet run은출력경로와실행경로가달라져실행파일찾기실패했지만 빌드된I:절대DLL을dotnet으로직접실행해검수했다. 이는게임용실제Player판정을대신하지않음.
+
+보행접점시각기록은HeroFrame.gaitPhase/gaitFootPlanted/gaitFootPlantError, Shift실제InputSystem프레임은PlaytestFrame.motion을추가한다. 실제HarpActive/DashActive와Chain포즈의동시표시를대조한다. Body/발목코드는HERO_MOTION11-03절, Core변경0.
+
+11-03 비정상종료 후 재개: 사용자 보고Kernel-Power41 이후 REPORT/작업파일을 대조했다. 9개 자기미커밋수정 보존, INDEX0, origin/unity/main c741c11c27은현HEAD조상으로이미포함. R6d는PC종료전실행결과가없고재사용하지않는다. 순수모션9검사를재개후다시실행하고 검수전복구커밋으로보존한다. 타인/Unity임포트파생메타/guard는포함하지않는다. 최신v4253ad0b1d의G0~G5/하루커밋push/1920·3840/점0관문은유지한다.

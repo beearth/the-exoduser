@@ -20,6 +20,14 @@ namespace Exoduser.CharacterLab {
    RenderSettings.ambientMode=AmbientMode.Flat;RenderSettings.ambientLight=new Color(.25f,.25f,.25f);
    var root=new GameObject("Surface preview rig");var hero=new NativeHeroView(root.transform);hero.Model.transform.parent.localScale=Vector3.one*.87f;hero.Model.transform.parent.rotation=Quaternion.Euler(0,180,0);
    File.WriteAllLines(Path.Combine(output,"clip-metrics.txt"),hero.Model.GetComponent<Animator>().runtimeAnimatorController.animationClips.Select(c=>c.name+" length="+c.length+" averageSpeed="+c.averageSpeed+" apparentSpeed="+c.apparentSpeed));
+   var animator=hero.Model.GetComponent<Animator>();animator.Rebind();
+   var left=animator.GetBoneTransform(HumanBodyBones.LeftFoot);var right=animator.GetBoneTransform(HumanBodyBones.RightFoot);
+   foreach(string state in new[]{"Run","Walk"}){
+    var samples=new System.Collections.Generic.List<string>{"phase,leftX,leftY,leftZ,rightX,rightY,rightZ"};
+    for(int i=0;i<=64;i++){animator.Play("Base Layer."+state,0,i/64f);animator.Update(0);var l=hero.Model.transform.InverseTransformPoint(left.position);var r=hero.Model.transform.InverseTransformPoint(right.position);samples.Add(string.Join(",",new[]{i/64f,l.x,l.y,l.z,r.x,r.y,r.z}.Select(v=>v.ToString("R",System.Globalization.CultureInfo.InvariantCulture))));}
+    File.WriteAllLines(Path.Combine(output,state.ToLowerInvariant()+"-foot-samples.csv"),samples);
+   }
+   animator.Play("Base Layer.Idle",0,0);animator.Update(0);
    var before=hero.Model.GetComponentInChildren<SkinnedMeshRenderer>().sharedMesh;
    var beforeIndices=before.triangles.OrderBy(x=>x).ToArray();var beforeVertices=before.vertices;var beforeWeights=before.boneWeights;
    var camera=new GameObject("Surface preview camera").AddComponent<Camera>();camera.orthographic=true;camera.orthographicSize=6.3f;camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.08f,.08f,.08f);camera.nearClipPlane=.1f;camera.farClipPlane=50;

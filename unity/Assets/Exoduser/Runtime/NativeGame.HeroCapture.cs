@@ -7,7 +7,7 @@ namespace Exoduser.UnityPort {
  public sealed partial class NativeGame {
   bool heroReviewActive;
   [Serializable] sealed class HeroFrame {
-   public int frame,tick,combo;public string section,state,motion;public float phase,x,y,facing,footError,footPlantError,leftGripError,screenHeight,screenX,screenY,bladeTipHeight;public bool spriteVisible,bladeTipKnown,footPivotActive,leftGripMeasured;public Vector3 root;
+   public int frame,tick,combo;public string section,state,motion;public float phase,x,y,facing,footError,footPlantError,leftGripError,screenHeight,screenX,screenY,bladeTipHeight,gaitPhase,gaitFootPlantError;public bool spriteVisible,bladeTipKnown,footPivotActive,leftGripMeasured,gaitFootPlanted;public Vector3 root;
   }
   [Serializable] sealed class HeroReview {
    public string scope="실제 Player·격리 세이브·Core 입력·지옥강타 첫틱 피해 표적과 별도 피격/사망 fixture, OS 손조작 아님. PNG 연속프레임을30fps 영상으로 조립";
@@ -50,7 +50,7 @@ namespace Exoduser.UnityPort {
     if(section=="구르기"){sim.HarpGauge=225;sim.SetRollInput(moveY<0,moveY>0,moveX<0,moveX>0,false);}
     if(section=="피격"){p.Iframes=0;p.Hp=p.MaxHp;p.Shield=p.MaxShield;sim.HurtPlayer(80);}
     if(section=="사망"){p.Iframes=0;p.Hp=0;p.Shield=0;p.State="dead";p.StateTicks=0;}
-    var sectionMotions=new HashSet<string>();var sectionCombos=new HashSet<int>();var sectionDirections=new HashSet<int>();float maxFootPlantError=0,maxGripError=0;int footPivotSamples=0,gripSamples=0;
+    var sectionMotions=new HashSet<string>();var sectionCombos=new HashSet<int>();var sectionDirections=new HashSet<int>();float maxFootPlantError=0,maxGripError=0,maxGaitPlantError=0;int footPivotSamples=0,gripSamples=0,gaitPlantSamples=0;
     Core.EnemyState slamTarget=null;int slamRequestedTick=-1,slamBeforeHp=0;
     if(section=="시전"){
      // 첫 피해 틱과 실제 칼 접점을 함께 확인하는 격리 표적. AI/소환을 켜거나 Core 피해 시각을 바꾸지 않는다.
@@ -67,6 +67,7 @@ namespace Exoduser.UnityPort {
      if(section=="시전"&&f==0){report.slamDamage=slamBeforeHp-slamTarget.Hp;report.slamHitTick=sim.TickCount;report.slamWaveCount=sim.SlamWaves.Count;sim.Enemies.Remove(slamTarget);UpdateViews();}
      Running=false;yield return null;yield return new WaitForEndOfFrame();
      var motion=heroView.Motion;motions.Add(motion.MotionKind.ToString());sectionMotions.Add(motion.MotionKind.ToString());
+     if(section=="달리기"&&motion.GaitFootPlanted){gaitPlantSamples++;maxGaitPlantError=Mathf.Max(maxGaitPlantError,motion.GaitFootPlantError);}
      bool gripMeasured=gripMarker!=null&&gripSocket!=null&&(motion.MotionKind==HeroMotionKind.Swing||motion.MotionKind==HeroMotionKind.Charge||motion.MotionKind==HeroMotionKind.Bash||motion.MotionKind==HeroMotionKind.Guard||motion.MotionKind==HeroMotionKind.SlamWindup||motion.MotionKind==HeroMotionKind.SlamStrike);
      float gripError=gripMeasured?Vector3.Distance(gripMarker.position,gripSocket.position+gripSocket.up*.09f):0;
      if(gripMeasured){maxGripError=Mathf.Max(maxGripError,gripError);gripSamples++;}
@@ -93,10 +94,11 @@ namespace Exoduser.UnityPort {
       }
       var anchor=HudCamera.WorldToScreenPoint(heroView.Model.transform.parent.position);
       bool tipKnown=motion.TryGetBladeTip(out var frameTip);float tipHeight=tipKnown?Vector3.Dot(frameTip-heroView.Model.transform.position,heroView.Model.transform.up):0;
-      report.frames.Add(new HeroFrame{frame=frame,tick=sim.TickCount,section=section,state=p.State,motion=motion.MotionKind.ToString(),phase=motion.MotionPhase,combo=motion.ComboStep,x=p.X,y=p.Y,facing=p.Facing,footError=heroView.FootError(),footPlantError=motion.FootPlantError,footPivotActive=motion.FootPivotActive,leftGripError=gripError,leftGripMeasured=gripMeasured,screenHeight=high-low,screenX=anchor.x,screenY=Screen.height-anchor.y,bladeTipKnown=tipKnown,bladeTipHeight=tipHeight,spriteVisible=playerView.enabled,root=heroView.Model.transform.parent.position});
+      report.frames.Add(new HeroFrame{frame=frame,tick=sim.TickCount,section=section,state=p.State,motion=motion.MotionKind.ToString(),phase=motion.MotionPhase,combo=motion.ComboStep,x=p.X,y=p.Y,facing=p.Facing,footError=heroView.FootError(),footPlantError=motion.FootPlantError,footPivotActive=motion.FootPivotActive,leftGripError=gripError,leftGripMeasured=gripMeasured,screenHeight=high-low,screenX=anchor.x,screenY=Screen.height-anchor.y,bladeTipKnown=tipKnown,bladeTipHeight=tipHeight,spriteVisible=playerView.enabled,root=heroView.Model.transform.parent.position,gaitPhase=motion.GaitPhase,gaitFootPlanted=motion.GaitFootPlanted,gaitFootPlantError=motion.GaitFootPlantError});
       ScreenCapture.CaptureScreenshot(Path.Combine(output,"frames","hero-"+(shot++).ToString("0000")+".png"));
      }
     }
+    if(section=="달리기"&&RigPixelRequested)check(gaitPlantSamples>0&&maxGaitPlantError<=.003f,"거리보행 실제 발가락 고정 표본="+gaitPlantSamples+", 접점3mm 이내="+maxGaitPlantError.ToString("F6"));
     if(section=="E충전강타"){check(sectionMotions.Contains("Charge"),"E 충전 구간 실제 Charge");check(sectionMotions.Contains("Bash"),"E 해제 실제 강타");check(sectionMotions.Contains("BashRecover"),"E 강타 실제 회복");}
     if(section=="대검3타"||section=="검기3타")foreach(int combo in new[]{1,2,3})check(sectionCombos.Contains(combo),section+" 실제 휘두르기 "+combo);
     if(section=="대검3타"||section=="검기3타")check(footPivotSamples>0&&maxFootPlantError<=.003f,section+" 정지1·2타 실제 발 회전 표본="+footPivotSamples+", 발가락 접점 오차3mm 이내: "+maxFootPlantError.ToString("F6"));

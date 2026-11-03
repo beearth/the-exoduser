@@ -20,3 +20,5 @@
 | 스킨 | 팔꿈치/무릎 루프·어깨 늘어짐·가늘고 긴 손/새발의 수동 웨이트. Blender Normalize/Limit Total4, 가중 없는 정점0 | 실제 저해상도 RT 1x/3x에서 큰면·실루엣·점0, 손/지팡이/발 접지 |
 | 동작 인수 | 보스전 담당127 원형과 현행공격계약을 Generic 리타깃 계획으로 대조. 보드 거름내려찍기 예비48/발동6/회복70은 계획기준이며 Core를 바꾸지 않음 | 같은 후보 실제 보스방 idle/walk/slam/피격/목숨전환/침강 연속영상·1920/3840·60fps. 일반영웅1-1 검수가 보스합격 아님 |
 | 조율 | 보스전 SSOT UNITY_BOSS_BATTLE_BOARD_20261026.md 및 DARK_DRUID_DESIGN_LOCK.md, 보스전 담당에게 인수할 항목은 메시SHA·Generic골격·StaffSocket_L·127 접촉틱·후속 보조본 | 보스전 담당 응답/공동검수 전은 계획만. 전달 성공/공동판정 완료를 주장하지 않음 |
+
+기존 모델 직접 확인: 검증된 G:/blander/blender.exe 5.1.0을 무창 background로 실행해 기존 FBX와 BaseColor만 읽고 I:/EXODUSER-Storage/codex-takeover/rig-pixel/hero-model-inspection/existing-models-4view.png를 출력해 직접 보았다. 실행6.9초, 원본 변경/새 모델 생성0. Silvertail 높이1.7199997m/92665정점/24본. 뒤·측면에서 긴 포니테일 아래 LOCK의 큰ㄱ자 연결이 명확하게 읽히지 않고, Ivan 머리는 짧고 뾰족한 다발로 드레드와 다르다. 중립광 정적A포즈이며 Unity모션/게임용PASS가 아니다. 등허브/접힌날과 머리/천 보정이 필요하다.

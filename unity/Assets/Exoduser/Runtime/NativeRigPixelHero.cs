@@ -31,6 +31,7 @@ namespace Exoduser.UnityPort {
     var toon=Resources.Load<Shader>("Shaders/RigPixelToon");var shader=Resources.Load<Shader>("Shaders/RigPixelComposite");
     if(hero==null||!hero.Ready||toon==null||shader==null)throw new InvalidOperationException("Warrior rig or pixel shaders missing");
     foreach(var skin in hero.Model.GetComponentsInChildren<SkinnedMeshRenderer>(true)){SmoothSurfaceNormals(skin);CleanMaterialRegions(skin);}
+    foreach(var filter in hero.Model.GetComponentsInChildren<MeshFilter>(true))filter.sharedMesh=SmoothMeshNormals(filter.sharedMesh,filter.transform);
     foreach(var r in hero.Model.GetComponentsInChildren<Renderer>(true)){
      var sourceMaterials=r.sharedMaterials;var materials=new Material[sourceMaterials.Length];
      for(int i=0;i<materials.Length;i++){
@@ -134,11 +135,15 @@ namespace Exoduser.UnityPort {
    Debug.Log("[RigPixel] material islands cleaned="+changed+" triangles="+count+"; vertices/weights/UV unchanged");
   }
   void SmoothSurfaceNormals(SkinnedMeshRenderer skin){
-   var source=skin.sharedMesh;if(source==null)return;
+   skin.sharedMesh=SmoothMeshNormals(skin.sharedMesh,skin.transform);
+  }
+  Mesh SmoothMeshNormals(Mesh source,Transform meshTransform){
+   if(source==null)return null;
    if(!source.isReadable)throw new InvalidOperationException("RigPixel requires readable R7 skin mesh for surface cleanup");
-   var vertices=source.vertices;var normals=source.normals;if(normals.Length!=vertices.Length)return;
-   float scale=hero.Model.transform.InverseTransformVector(skin.transform.TransformVector(Vector3.right)).magnitude;
+   var vertices=source.vertices;var normals=source.normals;if(normals.Length!=vertices.Length)return source;
+   float scale=hero.Model.transform.InverseTransformVector(meshTransform.TransformVector(Vector3.right)).magnitude;
    float radius=.08f/Mathf.Max(.0001f,scale),radius2=radius*radius;
+   for(int pass=0;pass<4;pass++){
    var cells=new Dictionary<Vector3Int,NormalCell[]>();var keys=new Vector3Int[vertices.Length];
    for(int i=0;i<vertices.Length;i++){
     var v=vertices[i];var key=new Vector3Int(Mathf.FloorToInt(v.x/radius),Mathf.FloorToInt(v.y/radius),Mathf.FloorToInt(v.z/radius));keys[i]=key;
@@ -157,7 +162,9 @@ namespace Exoduser.UnityPort {
      }
     smooth[i]=(sum/weight).normalized;
    }
-   var mesh=Instantiate(source);mesh.name=source.name+" RigPixel broad normals";mesh.normals=smooth;skin.sharedMesh=mesh;ownedMeshes.Add(mesh);
+   normals=smooth;
+   }
+   var mesh=Instantiate(source);mesh.name=source.name+" RigPixel broad normals";mesh.normals=normals;ownedMeshes.Add(mesh);return mesh;
    // Positions, skin weights, bind poses, UVs and topology are untouched: Core/feet/blade geometry stays identical.
   }
   static Color Palette(string name){
