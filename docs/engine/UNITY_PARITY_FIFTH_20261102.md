@@ -240,3 +240,8 @@ R3 전체1395/18건/로딩관측누락15는FAIL그대로다. 새검수전0건이
 Mac a049ef5c4/qa/unity-parity/5b6b4fce9의 실제6PNG·REPORT를 인수했다. 정식0오류/M1 23/23 정상종료/로딩270누락0은 유지되나 전체18건·가림증명누락30·scroll-ink1/4로 P0 FAIL이다. 현재 수정은 네이티브 텍스트 정렬 원점, 플랫폼 공통 GUIStyle 알파, 실제 높이에 따른 추가 QA 푸터 y 올림, fr/de QA 번역, 배경과 어두운 녹색을 분리하는 국소 잉크 대조다. 자세한 계약과 값은 UNITY_UI_OVERLAP_20261030.md의 같은 시각 절에 있다. 기존 forge y467.8/20.4 및 로드맵x1622/224는 유지했다.
 
 이름 입력은 --unity-name-gate-only의5해상도 전용 경로를 추가했다. Windows 실제 자기 HWND 마우스를 기본으로 유지하고, Mac은 sandbox QA Event를 실제 NativeLobby.OnGUI에 전달해 제품 hit-test로 판정한다. 사용자 마우스·전역 OS 입력을 조작하지 않으며 자동 입력 차단/제품 전환 정책은 유지한다. PC는 이름 전용 Player1회만 허용되며 정식 빌드/M1/전체UI검사는 Mac이 수행한다. 새 공통 입력 경로·새 잉크 네 건의 양성·전체18→0/누락30→0은 Mac 실제 후보 검수 전 미검증이다. 전체5차 잔여는 이 게이트 뒤에 계속한다.
+
+
+### PC 단독 이름 검사 인수
+
+Player7603230d 1회에서5해상도 모두 lockedBlocked/nameOpened=true, native exit0·10PNG·창0·잔여0. 기존 R5 패키지+컴파일DLL의 이름 전용 fixture이고 정식 빌드 아님. Runtime9d1244ea…를 대조하고 원본 DLL 두 개를 정확 SHA로 복원했다. 단, 사용자 영역 Player.log 하나 변경이 감지되어 공용 가드 전체 ok=false/runner exit5/USER_SAVE changed1이다. 원인 미확정·가드 완화0·로그 덮어쓰기0·추가 Player0. 이름 기능 PASS와 안전 가드 FAIL을 분리한다. 상세5행표·경로는 UNITY_UI_OVERLAP 최신절에 보존한다. PC 컴파일 Core/Runtime0오류·Mac 조건부 소스0, 잉크 회귀5/5. 새 후보의 Mac 전체 겹침·잉크·공통 입력 경로는 아직 미검증이다.

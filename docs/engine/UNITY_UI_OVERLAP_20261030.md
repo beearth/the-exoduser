@@ -356,3 +356,25 @@ Mac은 새 HEAD 정식 패키지의 실제 캡처 폴더에 --candidate를 실�
 | 이름 검사 | --unity-ui-overlap-check --unity-name-gate-only로 같은 Player에서5해상도 ko의 잠긴 직업/이름 열기만 검사, 정상 종료. Windows 기본은 자기 숨은 HWND WM 클릭. Mac은 sandbox 전용 NativeLobby.OnGUI 입력 Event down/up 큐, Windows에서도 --unity-gui-clicks로 선택 가능 | 실제 제품 Draw/hit-test/전환을 통과하며 결과를 API로 설정하지 않음. queue는 명시 QA sandbox/overlap run에서만 허용. 입력 차단·전환대기15s·전달2s·이번 클릭 이후 전환 id 범위 실패 확인. Mac 공통 입력 경로는 런타임 미검증 |
 
 PC는 Core/Runtime 컴파일 오류0, UNITY_STANDALONE_OSX 조건부 소스 컴파일0(PC 컴파일러이며 Mac 런타임 증거 아님)까지 확인했다. 이름 열기만 PC Player1회로 확인할 계획이며, 정식 빌드·M1·1410장 실행/분석은 하지 않는다. 이름 전용은 기존 자기 R5 격리 패키지에 이번 컴파일 DLL만 임시 결합한 별도 fixture이며 정식 패키지 PASS로 승격하지 않는다. 원본 DLL은 정확 SHA 백업/검증 후 사용하고 실행 종료 finally에서 원래 바이트로 복원한다. 최종 결과와 push SHA는 I: REPORT 맨 위에 기록한다.
+
+
+잉크 검사의 새 후보 샘플은 계측 Rect 바깥2px까지 읽어 글자 상단이 상자를 넘는지 검출한다. 포함 판정에는 padding을 주지 않는다. 독립 R3 위치 중심에서24px 이상 벗어나면 다른 글자를 잡지 않고 실패하며, 기존 Rect 크기 제한·최소 실제 잉크 수·단색/과선택 실패도 유지한다. 고정 작은 PC ROI가 Mac의 작은 글자 정렬 차이로 비는 문제와 상자 밖 획을 잘라 버리는 문제를 분리한다. 네 원본 위치/기존 좌표는 manifest에 보존하고 구 절대 threshold는 legacy 기록으로 이름을 명확히 했다. 2px 바깥의 실제 잉크가 잘못된 상자를 통과시키지 않는 음성 검사도 추가했다. 새 Mac 전체 원본의 판정 결과는 별도다.
+
+
+### PC 이름 열기 전용 1회 결과 — 기능 PASS / 공용 가드 FAIL 분리
+
+| 해상도 | lockedBlocked | nameOpened | 입력 |
+|---|---|---|---|
+| 2560×1600 | true | true | 자기 숨은 HWND WM 마우스 |
+| 1920×1080 | true | true | 자기 숨은 HWND WM 마우스 |
+| 2560×1080 | true | true | 자기 숨은 HWND WM 마우스 |
+| 3840×1080 | true | true | 자기 숨은 HWND WM 마우스 |
+| 1600×900 | true | true | 자기 숨은 HWND WM 마우스 |
+
+공용 bin Player 7603230d 한 프로세스, 30.964초, native exit0·timedOut=false·expectedKill=false. 이름 관련10PNG·inputIsolation/simulationFrozen각10, 1600×900 이름 창 원본을 직접 열어 확인했다. Runtime9d1244ea89439c66ef37f054b0c24aa1f1024858ab6431cf04568039e3a41683은 이번 컴파일 입력과 일치한다. 이는 기존 R5 QA 패키지에 새 Core/Runtime DLL만 임시 적용한 이름 전용 fixture이며 정식 패키지 검수/M1/전체UI PASS가 아니다. 공용 순번·숨은 데스크톱·무음 사용, 사용자 데스크톱 창0·잔여0·숨은 데스크톱 닫힘true. 새 정식 빌드·M1·1410실행/분석0, 두 DLL은 finally에서 원래 SHA로 복원/대조했다.
+
+공용 가드는 USER_SAVE changed=1로 전체 ok=false/runner exit5다. 관측 파일은 C:/Users/심도진/AppData/LocalLow/ForDearGamers/EXODUSER · Unity 이식 검증판/Player.log 하나(4440→979B)이며 원인은 미확정이다. 검사 전부터 사용자 unity-latest Player47956이 실행 중이었다는 별도 관측만 남긴다. 사용자의 로그를 덮어쓰거나 가드 제외/허용오차를 바꾸지 않았다. USER_SAVE0·전체 실행 PASS로 올리지 않고 추가 Player도 실행하지 않는다. 이름 기능 판정과 가드 판정은 별도다.
+
+증거는 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/mac-gate-1320/의 name-only/실제_마우스_역변환.json·coverage.json·10PNG, name-player-launch.log·name-dll-manifest.json·name-dll-restored.json 및 공용 _exec/done/7603230d.json이다. 밝은배경/어두운녹색/단색판/잘못된 상자/실제4crop의 오프라인 회귀5/5도 통과했다. 기존 Mac x3 진단그림의 글자는 새 분류기로4영역 모두 관측되며 배경 전체선택을 하지 않았다(mac-diagnostic-ink.json). 표시선 있는 x3 그림은 새 좌표 양성이나 새 제품 PASS 근거가 아니다.
+
+최신 공통25356462dede7e0045de71bf5df7a2f87dc58010을 정상 병합(5062b5701)했다. check.ps1 충돌은 같은 공용 bin 경로의 슬래시 표기만 통일했으며 타 레인 코드와 외부 guard WIP를 보존했다. 다음은 Mac 새 HEAD 정식/M1/1410·issue18→0/가림누락30→0/새 scroll-ink4/4·웹1x 확인이다. Mac 새 Event 경로도 실제5해상도 판정이 필요하다.
