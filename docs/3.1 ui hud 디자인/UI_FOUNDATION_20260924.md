@@ -31,7 +31,7 @@
 
 | 항목 | 현재 구현 |
 |---|---|
-| parryLesson | opacity1. 부모 transparent/border0/box-shadow:none, 내부 ::before padding-box에 기존 어두운 배경 유지(2026-09-27 정정). 패딩68px 24px 20px. 장식 프레임·문장 유지 |
+| parryLesson | opacity1. 부모 transparent/border0/box-shadow:none. **2026-11-02 실버 헬 교체**: 틀 = ::after `lesson_frame_20261102.png` 160 / 48px / 0 stretch round, 판 = ::before inset15px 흑철, 패딩56px 28px 22px. 옛 hell_gothic 틀·문장(--ui-frame/--ui-crest) 사용 중지. 상세 [UI_COMPOSITION 2026-11-02 절](UI_COMPOSITION_20260925.md#2026-11-02-실습창-실버-헬-틀) |
 | 프레임/문장 | frame.png slice22%/40px, crest.png 174×58px·top6px. 이미지 레이어 pointer-events:none; 실제 체크/텍스트/버튼은 DOM |
 | 작은/낮은 화면 | 폭≤760 패딩18px 20px 16px, 문장 숨김, 행12px·패딩5px. 폭>760이면서 높이≤700 패딩54px 20px 16px, 문장120×40px·top6px. 기존 최대 높이·본문 스크롤·하단 버튼 고정 유지 |
 | 현재 목표 | 행14px/줄높이1.6, 패딩7px 8px, #fff0df, #551819aa→#25101166 배경, 선 #a34d3f, 왼쪽2px #ec7958. 완료 #b2d6ac. 마법/물리/성공 게이지의 의미 색 유지 |
