@@ -5,6 +5,13 @@
 - 관련: 예약 작업 `EXODUSER_DailySteamRelease` → `G:\exoduser-steam\daily_release.bat` → `daily_release.ps1` → `steam_update.ps1`. 로그 `G:\exoduser-steam\logs\`, 결과 요약 `G:\exoduser-steam\state\daily_release_<날짜>.md`
 - 메모리: `steam-update-rules.md`, `steam-steampipe-setup.md`, `user-path-dotnet-pollution-9009.md`, `git-pack-corruption-20261027.md`
 
+## 11-03 밤 갱신 (스팀 총괄 Opus)
+- 웹 일일 배포 예약 작업은 사용자 승인으로 정지(CTO 11-03 공지). 웹 패치는 유지보수 수정이 있을 때만.
+- Unity BuildID 26401646 = `unity-beta`(비밀번호). default는 웹판 25482996(state\default_buildid.txt 정정).
+- 실행 옵션 1(`EXODUSER-Unity.exe`, `-force-d3d11 --remodel3d`, 베타 키 unity-beta, 설명 Play Unity Beta) 사용자 입력·저장 완료, **앱 게시(Steam에 게시) 사용자 클릭 대기**.
+- Steamworks 설정 변경·게시·Set Live 클릭은 Claude 자동 안전 검사(운영 배포)가 막는다 → 사용자에게 한 단계씩 클릭 안내, Claude는 화면 읽기로 확인.
+- 다음: `review-20260916` 비활성화(사용자 클릭), 기본 브랜치 Unity 전환 준비 = `docs/13출시·마케팅/STEAM_UNITY_DEFAULT_READINESS_20261103.md`, 다음 unity-beta 업로드 후보 = 바탕화면 빌드 9f0d00cf8(업로드는 사용자 확인 뒤).
+
 ## 현재 상태 (10-28 밤, 사전 준비)
 ### 10-29 08:49 KST 재개 확인
 - 조회 기준 원격 `5d0d4d44aba03f618b2139e690fbab466f168a0e`에 기존 준비 문서 4개가 모두 동일 blob으로 포함됨을 확인했다. 사전 검토 `62b538d0063fbf045d0ed97fca3cac1c2580d198` 이후 비문서 변경은 0개라 플레이어 노트 문구를 중복 수정하지 않았다.
