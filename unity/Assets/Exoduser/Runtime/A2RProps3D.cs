@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 namespace Exoduser.UnityPort
 {
     [DefaultExecutionOrder(24200)]
-    public sealed class A2RProps3D:MonoBehaviour
+    public sealed partial class A2RProps3D:MonoBehaviour
     {
         [Serializable] sealed class Catalog {public Record[] models;}
         [Serializable] sealed class Record {public string name,resource,source;public bool prepared;public float width,depth;public int lods,triangles;}
@@ -57,7 +57,7 @@ namespace Exoduser.UnityPort
             if(name.StartsWith("fern",StringComparison.Ordinal)){float h=baseHeight>.45f?.40f:.32f;h=Mathf.Min(h,.9f/Mathf.Max(.01f,unitWidth));return Vector3.one*h;}
             float xz=Mathf.Min(baseHeight*.7f,1.4f/Mathf.Max(.01f,unitWidth));return new Vector3(xz,baseHeight*1.2f,xz);
         }
-        sealed class Plant {public GameObject go,ao;public Vector3 clean,old,aoClean,aoOld;public bool keep;public List<Material> mats=new List<Material>();}
+        sealed class Plant {public bool inField;public GameObject go,ao;public Vector3 clean,old,aoClean,aoOld;public bool keep;public List<Material> mats=new List<Material>();}
         readonly List<Plant> plants=new List<Plant>();GameObject lastAo;public int PlantsTotal {get{return plants.Count;}}public int PlantsKept {get;private set;}
         public static bool KeepPlantRule(float x,float z,List<Vector2> trees,Func<float,float,bool> walkable)
         {
@@ -68,14 +68,14 @@ namespace Exoduser.UnityPort
         }
         void RegisterPlant(GameObject go,string name,float baseHeight,float x,float z,List<Vector2> trees,Func<float,float,bool> walkable)
         {
-            var p=new Plant{go=go,ao=lastAo,clean=go.transform.localScale,old=Vector3.one*baseHeight,keep=KeepPlantRule(x,z,trees,walkable)};var spec=records[name];
+            var p=new Plant{go=go,ao=lastAo,clean=go.transform.localScale,old=Vector3.one*baseHeight,keep=KeepPlantRule(x,z,trees,walkable),inField=TerrainEnabled&&InTerrainField(x,z)};var spec=records[name];
             p.aoClean=lastAo.transform.localScale;float ow=Mathf.Clamp(spec.width*baseHeight*.36f,.25f,2.5f);p.aoOld=new Vector3(ow,ow*.5f,1);float cw=Mathf.Clamp(spec.width*Mathf.Max(p.clean.x,p.clean.z)*.36f,.2f,2.5f);p.aoClean=new Vector3(cw,cw*.5f,1);
             foreach(var r in go.GetComponentsInChildren<MeshRenderer>(true))foreach(var m in r.sharedMaterials)if(m!=null&&m.HasProperty("_A2R3DWind")&&!p.mats.Contains(m))p.mats.Add(m);plants.Add(p);if(p.keep)PlantsKept++;
         }
         // r19 cleanup: sparse plants (kept near trees and boundaries), clean silhouettes, wind x1.5. false restores the r18 values for the before|after proof.
         public void SetClean(bool on)
         {
-            A2RClean.Set(on);foreach(var p in plants){bool show=!on||p.keep;if(p.go!=null){p.go.SetActive(show);p.go.transform.localScale=on?p.clean:p.old;}if(p.ao!=null){p.ao.SetActive(show);p.ao.transform.localScale=on?p.aoClean:p.aoOld;}foreach(var m in p.mats)m.SetVector("_A2R3DWind",new Vector4(on?.0825f:.055f,.18f,0,0));}
+            A2RClean.Set(on);foreach(var p in plants){bool show=(!on||p.keep)&&!(on&&p.inField);if(p.go!=null){p.go.SetActive(show);p.go.transform.localScale=on?p.clean:p.old;}if(p.ao!=null){p.ao.SetActive(show);p.ao.transform.localScale=on?p.aoClean:p.aoOld;}foreach(var m in p.mats)m.SetVector("_A2R3DWind",new Vector4(on?(TerrainEnabled?.12f:.0825f):.055f,.18f,0,0));}if(terrainRoot!=null){terrainRoot.SetActive(on);foreach(var m in terrainMats)m.SetVector("_A2R3DWind",new Vector4(.12f,.18f,0,0));}
         }
         public static float FoliageYaw(string id){return (Hash(id)%1001)/1000f*50-25;}
         public static void ApplyFoliageBudget(GameObject root){foreach(var group in root.GetComponentsInChildren<LODGroup>(true)){var lods=group.GetLODs();for(int i=0;i<lods.Length;i++)lods[i].screenRelativeTransitionHeight=i==lods.Length-1?.00001f:i==0?.12f:.04f;group.SetLODs(lods);group.RecalculateBounds();}foreach(var r in root.GetComponentsInChildren<MeshRenderer>(true))r.shadowCastingMode=ShadowCastingMode.Off;}
@@ -98,7 +98,7 @@ namespace Exoduser.UnityPort
                 if(!records.ContainsKey(name)){Result.missing++;Result.missingKinds.Add(c.id+":"+c.kind);continue;}
                 cards.Add(card.gameObject);var model=Place(c,name,c.x/100,-c.y/100,c.height,c.id);if(c.kind=="m_c1altar"&&model!=null)Rune(model,c);
             }
-            if(Result.missing>0)throw new InvalidOperationException("A2R 3D unmapped kinds: "+string.Join(",",Result.missingKinds));SetLook(Enabled);SetClean(A2RClean.On);Debug.Log("A2R_3D_READY models="+Result.modelInstances+" flat="+Result.flatDecals+" standing="+Result.standingCards+" floating="+Result.floating);
+            if(Result.missing>0)throw new InvalidOperationException("A2R 3D unmapped kinds: "+string.Join(",",Result.missingKinds));BuildTerrainDress(world,treeSpots,walkable);SetLook(Enabled);SetClean(A2RClean.On);Debug.Log("A2R_3D_READY models="+Result.modelInstances+" flat="+Result.flatDecals+" standing="+Result.standingCards+" floating="+Result.floating);
         }
         GameObject Place(A2RWebAssets.Card c,string name,float x,float z,float height,string id)
         {

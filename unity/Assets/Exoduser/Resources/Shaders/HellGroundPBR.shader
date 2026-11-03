@@ -67,19 +67,19 @@ Shader "EXODUSER/HellGroundPBR"
     if(_FullField>.5)
     {
      float edge=(SAMPLE_TEXTURE2D(_FieldSdf,sampler_FieldSdf,float2(i.world.x/80,-i.world.z/80)).r-.5)*40;
-     float macro=smoothstep(-.7,.7,sin(i.world.x*.27+sin(i.world.z*.23)*1.8)+sin(i.world.z*.36+i.world.x*.16)*.55);
+     float2 mq=i.world.xz*.11;float2 mf=frac(mq),mi=floor(mq);mf=mf*mf*(3-2*mf);float4 mh=frac(sin(float4(dot(mi,float2(127.1,311.7)),dot(mi+float2(1,0),float2(127.1,311.7)),dot(mi+float2(0,1),float2(127.1,311.7)),dot(mi+float2(1,1),float2(127.1,311.7))))*43758.5453);float macro=lerp(lerp(mh.x,mh.y,mf.x),lerp(mh.z,mh.w,mf.x),mf.y);
      float fringe=1-smoothstep(.1,5,edge);
      float2 soilFine=i.world.xz/2.3;
      half3 dirt=SAMPLE_TEXTURE2D(_SoilMap,sampler_ForestMap,soilFine).rgb*half3(.55,.48,.36);
-     half3 roots=SAMPLE_TEXTURE2D(_RootMap,sampler_ForestMap,i.world.xz/3.8).rgb*half3(.60,.48,.32);
+     half3 roots=SAMPLE_TEXTURE2D(_RootMap,sampler_ForestMap,i.world.xz/3.8).rgb*half3(.36,.29,.21);
      half3 leaves=SAMPLE_TEXTURE2D(_ForestMap,sampler_ForestMap,i.world.xz/1.8).rgb*half3(.47,.38,.24);
      half3 moss=SAMPLE_TEXTURE2D(_FieldMoss,sampler_ForestMap,i.world.xz/2.6).rgb*half3(.50,.56,.34);
-     mossMix=SAMPLE_TEXTURE2D(_FieldCover,sampler_FieldCover,float2(i.world.x/80,-i.world.z/80)).r*(.48+.35*macro);
-     a=lerp(dirt,roots,.3+.35*fringe);a=lerp(a,leaves,macro*.42);a=lerp(a,moss,mossMix);
-     nt=normalize(lerp(UnpackNormalScale(SAMPLE_TEXTURE2D(_SoilNormal,sampler_ForestMap,soilFine),.65),UnpackNormalScale(SAMPLE_TEXTURE2D(_RootNormal,sampler_ForestMap,i.world.xz/3.8),.65),.3+.35*fringe));
+     mossMix=SAMPLE_TEXTURE2D(_FieldCover,sampler_FieldCover,float2(i.world.x/80,-i.world.z/80)).r*(.48+.35*macro)*fringe*fringe;
+     a=lerp(dirt,roots,.45*fringe);a=lerp(a,leaves,macro*.30*fringe);a=lerp(a,moss,mossMix);
+     nt=normalize(lerp(UnpackNormalScale(SAMPLE_TEXTURE2D(_SoilNormal,sampler_ForestMap,soilFine),.65),UnpackNormalScale(SAMPLE_TEXTURE2D(_RootNormal,sampler_ForestMap,i.world.xz/3.8),.65),.45*fringe));
      nt=normalize(lerp(nt,UnpackNormalScale(SAMPLE_TEXTURE2D(_FieldMossNormal,sampler_ForestNormal,i.world.xz/2.6),.55),mossMix));
      input.normalWS=normalize(mul(nt,float3x3(t,b,n)));
-     a*=lerp(.8,1.12,macro);
+     a*=1+.08*(macro*2-1);
     }
     SurfaceData surface=(SurfaceData)0;surface.albedo=a;surface.alpha=1;surface.occlusion=1;surface.normalTS=nt;surface.specular=.04;
     half rough=SAMPLE_TEXTURE2D(_RockRough,sampler_RockRough,tile).r;surface.smoothness=lerp(.24,.50-.25*rough,rock);surface.metallic=0;
@@ -88,7 +88,7 @@ Shader "EXODUSER/HellGroundPBR"
     surface.smoothness=lerp(surface.smoothness,.12+.18*(1-SAMPLE_TEXTURE2D(_RootRough,sampler_ForestRough,rootUV).r),rootMix);
     half leafRough=SAMPLE_TEXTURE2D(_ForestRough,sampler_ForestRough,leafUV).r;surface.smoothness=lerp(surface.smoothness,.12+.18*(1-leafRough),leafMix);
     surface.smoothness=lerp(surface.smoothness,.22+.23*(1-SAMPLE_TEXTURE2D(_FieldMossRough,sampler_ForestRough,i.world.xz/2.6).r),mossMix);
-    if(_FullField>.5)surface.smoothness=lerp(.44-.24*SAMPLE_TEXTURE2D(_SoilRough,sampler_ForestMap,i.world.xz/2.3).r,.24+.18*(1-SAMPLE_TEXTURE2D(_FieldMossRough,sampler_ForestMap,i.world.xz/2.6).r),mossMix);
+    if(_FullField>.5)surface.smoothness=lerp(.30-.16*SAMPLE_TEXTURE2D(_SoilRough,sampler_ForestMap,i.world.xz/2.3).r,.24+.18*(1-SAMPLE_TEXTURE2D(_FieldMossRough,sampler_ForestMap,i.world.xz/2.6).r),mossMix);
     #if defined(_DBUFFER)
     ApplyDecalToSurfaceData(i.positionCS,surface,input);
     input.bakedGI=SampleSH(input.normalWS);
