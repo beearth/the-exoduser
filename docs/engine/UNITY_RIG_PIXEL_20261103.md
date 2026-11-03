@@ -1,6 +1,6 @@
 # 전사 실시간 리깅 픽셀 렌더 — 2026-11-03
 
-현재 상태: 이전 22918886e는 Mac 실제1920/3840·가독성·60fps 확인, CTO 14:25 판정은 망토 끝 낱픽셀/회청 갑옷/흰 검격 RETOUCH. 현재는 세 항목 수정 후 PC 컴파일·Mac 재검수 준비이며 기본 sprite/공통/Desktop 미전환.
+현재 상태: aa9538206 Mac 검수에서 망토 낱픽셀0·흑철·동일 픽셀 크기·127/83fps는 확인됐으나 검격 뒤 검은 사각 면이 FAIL. 20:20 지시에 따라 원시트 premultiplied RGB coverage를 교정하며 새 화면은 Mac 재검수 전 미검증이다.
 
 | 계약 | 코드·수치 |
 |---|---|
@@ -120,10 +120,23 @@ R6d 배치665409d7은C#오류0/USER_SAVE0이지만renderer=true·humanoid=true·
 | metal cells | _MetallicPlane iron1 / blade.8 / 그외0. 실제달빛/Point E를기존과같이압축, N·H≥.90이면.04 / ≥.97이면추가.08의넓은하이라이트 | 노멀맵·스펙맵·노이즈0. H=normalize(광방향+view), 원기하/법선큰면·median유지. 회청색큰바탕을낮추고밝은금속면만분리 |
 | pixel grid | NativeRigPixelHero가_RigPixelGrid=(RT화면좌하단x,y,n,1)을전달. n=max(1,height/1080) 정수. 투영화면좌표를동일격자중심에맞춰UV미분으로원본시트표본위치를계산 | ComputeScreenPos로D3D/Metal Y방향을보정. 뷰포트/고해상도n전환은Mac필수확인 |
 | KiSlashView opt-in | Requested(args)일때자기additive/ink재질의_RigPixelMode1, 기본0. 셀rect를_PixelFrameRect로전달 | 공유impact/다른재질은기본0, 기존RGB/opacity·원시트·발사/수명/크기/5레이어유지 |
-| slash sampling | inline Point Clamp·LOD0. source alpha<.25는제거, 나머지는coverage1과RGB4단(floor(rgb×3+.5)/3). 화면8이웃의1~2픽셀섬도제거 | 아틀라스셀경계는반텍셀안쪽으로clamp. 시간fade는기존_Opacity한번만적용. sprite모드는기존필터/합성유지 |
-| slash ink | rigpixel모드에서정리된coverage의4이웃1픽셀테, 외곽alpha.6×opacity, 내부1×opacity, RGB(5,4,6)/255 | 기존121탭넓은blur는sprite모드에만남김. 탄막·스킬·SFX·히트스톱·Core타이밍변경0 |
+| slash sampling | inline Point Clamp·LOD0. source premultiplied RGB의 max×2.4를clamp한C<.25는제거, 나머지는coverage1과RGB4단(floor(rgb×3+.5)/3). 화면8이웃의1~2픽셀섬도제거 | 아틀라스셀경계는반텍셀안쪽으로clamp. 시간fade는기존_Opacity한번만적용. sprite모드는기존필터/합성유지 |
+| slash ink | rigpixel모드에서정리된coverage의4이웃1픽셀테, 각정리픽셀의I=saturate(max(RGB×alpha)×2.4)를사용, 최종alpha=max(I,4이웃I최대×.6)×opacity, RGB(5,4,6)/255 | 기존121탭넓은blur는sprite모드에만남김. 탄막·스킬·SFX·히트스톱·Core타이밍변경0 |
 | compile gate | Verify는toon/composite/slash additive/ink네셰이더오류·R7아바타를검사 | PC공용bin batch compile만1회, 새Player/빌드0. Mac Metal/실게임판정후CTO가통합/기본전환결정 |
 
 inline Point/Clamp의D3D11/12·Metal지원은 [Unity 공식 sampler 문서](https://docs.unity.cn/6000.0/Documentation/Manual/SL-SamplerStates.html)와대조했다. 효과형태·기본타이밍의다음변경은임팩트레인이VFX_G1표로진행하며이번표본화플래그/그리드를재사용한다. 새유료호출0.
 
 PC 단일 컴파일 결과: 7d38fa45, source1274675fb0. renderer/shaders(네개)/humanoid true, exit0, C# compileErrors0·USER_SAVE변경0. 실제작업27.4초/순번포함719초. 부수 라이선스토큰갱신·종료통신로그는별도기록하며코드/셰이더검사실패는없다. 새Player/정식빌드/시각PASS를뜻하지않는다. 자기Editor 종료뒤자기worktree의자동직렬화860개·새meta/SceneTemplate57개·CLI임시캐시를정리했다. 실제수정은이미커밋된13경로에만남는다. 최신Mac판정6PNG만current에남겼고확인끝난PC빌드7개·이전캡처8폴더·사본을삭제했다(약51.2GiB). 정식빌드고정폴더는build-current, Mac PASS후CTO만통합/기본전환결정.
+
+## 20:20 Mac FAIL — 검격 뒤 검은 사각 면 교정
+
+G0 범위는 1-1 검격만이며 최신 CLAUDE7bc7a3518 및 docs 정본 unity/main을 적용한다. origin/unity/main d6c5bb89bb206d7712b6bcf286ad7a98d3fbd638을 먼저 정상 merge했다. 기존 G0의 큰 형태·게임 동작과 같은 효과 결·배경 판독 관례는 유지한다. 새 입력은 qa/mac-captures-20261103 @39c3ae380의qa/unity-rigpixel/aa95382/1920_hero_slash_x3.png와1920_full.png로, 회전 검은 사각 면을 직접 봤다. 시트 원화는1254×1254, alpha전범위255/모서리RGBA(0,0,0,255)를디스크에서확인했다. 알파를투명마스크로가정한이전구현이원인이며원화는바꾸지않는다.
+
+| id | 교정 계약 | 보존·판정 범위 |
+|---|---|---|
+| Raw coverage C | RigSlashInkAlpha(c)=saturate(max(c.rgb×c.a)×2.4). 중앙/8이웃/두번째연결검사를전부이C≥.25로판정 | opaque black(0,0,0,1)도C0이므로배경으로제거. 검격에사용되는원본RGBA/asset/meta 수정0 |
+| Pixel output | 연결섬정리후 RGB4단/alpha1은유지, 제거픽셀은RGBA0 | 기존Point·격자·셀clamp·1~2픽셀섬정리·5레이어·opacity타이밍유지 |
+| Ink alpha I | 필터된각픽셀에서같은premultiplied RGB식으로I계산. 최종alpha=max(Icenter,.6×max(Ileft,Iright,Iup,Idown))×_Opacity | alpha만보고검게칠하지않음. 빈검은배경은중앙/이웃I0→ink0. 기존sprite121탭분기무변경 |
+| 이전 Mac PASS | 망토낱픽셀0·중성흑철·동일픽셀크기·FPS1920 127.11 /3840 83.11 | 해당 aa9538206 입력의증거. 이번RGB교정의G4합격은같은두해상도 재검수전미검증 |
+
+첫 새실물 판정은 PC 공용 단일 컴파일 후 Mac 같은패키지1920/3840의검격표본이다. 원래 사각 면좌표1920 x744–983/y369–565와3840 중앙을1x/3x에서직접보고, 10초무음영상에서검격의사각배경0·망토낱픽셀0·흑철/픽셀크기/FPS회귀0을확인한다. Core/카메라/망토/팔레트/원시트/공통재질기본값은변경0. 두번실패하면무수정재실행없이원인을보고한다. 검수후기본값전환과통합은CTO가결정한다.

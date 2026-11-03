@@ -23,17 +23,23 @@ void RigSlashGrid(float2 sourceUv,float4 projected,out float2 uv,out float2 axis
  uv=sourceUv+dxUv*(snapped.x-screen.x)+dyUv*(snapped.y-screen.y);
  axisX=dxUv*scale;axisY=dyUv*scale;
 }
+// The source silver sheet is opaque black-backed artwork, not an alpha mask.
+// Match the legacy ink's premultiplied-RGB coverage so black texels stay transparent.
+half RigSlashInkAlpha(half4 colour){
+ half3 premul=colour.rgb*colour.a;
+ return saturate(max(premul.r,max(premul.g,premul.b))*2.4h);
+}
 half4 RigSlashPixel(float2 uv,float2 axisX,float2 axisY){
- half4 c=RigSlashPoint(uv);if(c.a<.25h)return 0;
+ half4 c=RigSlashPoint(uv);if(RigSlashInkAlpha(c)<.25h)return 0;
  int neighbours=0;float2 adjacent=0;
  [unroll]for(int y=-1;y<=1;y++)[unroll]for(int x=-1;x<=1;x++){
-  if(x!=0||y!=0){float2 offset=x*axisX+y*axisY;if(RigSlashPoint(uv+offset).a>=.25h){neighbours++;adjacent=offset;}}
+  if(x!=0||y!=0){float2 offset=x*axisX+y*axisY;if(RigSlashInkAlpha(RigSlashPoint(uv+offset))>=.25h){neighbours++;adjacent=offset;}}
  }
  if(neighbours==0)return 0;
  if(neighbours==1){
   int support=0;
   [unroll]for(int sy=-1;sy<=1;sy++)[unroll]for(int sx=-1;sx<=1;sx++){
-   if(sx!=0||sy!=0)if(RigSlashPoint(uv+adjacent+sx*axisX+sy*axisY).a>=.25h)support++;
+   if(sx!=0||sy!=0)if(RigSlashInkAlpha(RigSlashPoint(uv+adjacent+sx*axisX+sy*axisY))>=.25h)support++;
   }
   if(support<=1)return 0;
  }

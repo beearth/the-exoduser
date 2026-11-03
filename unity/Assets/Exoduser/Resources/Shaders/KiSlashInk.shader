@@ -21,8 +21,8 @@ Shader "EXODUSER/KiSlashInk"
             {
                 if(_RigPixelMode>.5){
                     float2 uv,axisX,axisY;RigSlashGrid(i.uv,i.screen,uv,axisX,axisY);
-                    half coverage=RigSlashPixel(uv,axisX,axisY).a;
-                    half edge=max(max(RigSlashPixel(uv-axisX,axisX,axisY).a,RigSlashPixel(uv+axisX,axisX,axisY).a),max(RigSlashPixel(uv-axisY,axisX,axisY).a,RigSlashPixel(uv+axisY,axisX,axisY).a));
+                    half coverage=RigSlashInkAlpha(RigSlashPixel(uv,axisX,axisY));
+                    half edge=max(max(RigSlashInkAlpha(RigSlashPixel(uv-axisX,axisX,axisY)),RigSlashInkAlpha(RigSlashPixel(uv+axisX,axisX,axisY))),max(RigSlashInkAlpha(RigSlashPixel(uv-axisY,axisX,axisY)),RigSlashInkAlpha(RigSlashPixel(uv+axisY,axisX,axisY))));
                     return fixed4(float3(5,4,6)/255,max(coverage,edge*.6h)*_Opacity);
                 }
                 // Source canvas blur(5px), then max(premultiplied RGB)*2.4.

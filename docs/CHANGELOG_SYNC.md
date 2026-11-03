@@ -57380,3 +57380,8 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 - KiSlashView·KiSlashAdditive/Ink·RigPixelSlashSampling: rigpixel opt-in Point/4단색/알파정리/동일격자/1픽셀 ink. sprite기본·원본시트·5레이어opacity·Core판정/타이밍 유지.
 - UNITY_RIG_PIXEL_20261103의 G0 공통관례·현행 수치표와 Mac 검수 명세를 동기화. PC 컴파일만, 실게임 점0/팔레트/검격/FPS는 Mac 판정 대기.
 - PC 공용 단일 컴파일7d38fa45는네셰이더/renderer/Humanoid true·exit0·C#오류0·USER_SAVE0. 자동직렬화/CLI임시물은정리, Mac실게임판정전기본값/공통반영0.
+
+## 2026-11-03 — 20:20 rigpixel 검격 검은 사각 면 수정
+
+- RigPixelSlashSampling.hlsl과KiSlashInk.shader: alpha255인검은원시트배경을투명영역으로분류하도록C=saturate(max(RGB×alpha)×2.4) coverage/ink alpha를공유. 중앙·이웃·섬정리모두같은C, 원화변경0.
+- 망토/흑철/동일픽셀격자/원시트/5레이어/Core·카메라타이밍유지. UNITY_RIG_PIXEL의현행식과Mac재검수좌표·인자·WORK_BOARD를동기화. docs정본unity/main, PC컴파일만수행.
