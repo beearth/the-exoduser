@@ -2,7 +2,7 @@
 
 | 담당 | 목표 | 소유 파일 | 상태 |
 |---|---|---|---|
-| codex/unity-parity-1102 | 11-04 00:50 UI 잔여 큰 묶음 조판 수정 | NativeObjectivePanel/NativeInventoryOssuary/NativeLobby.SilverHell/NativeUiTextRun, Tools/ui-text-run-tests, 관련 UI docs/CHANGELOG 자기 절 | 공통6d99d0c46 병합. HUD 한 번 조판·봉안함 측정/그리기 통일·실제 caller source 보존, 조판31검사PASS. PC Player0. 컴파일/기존JSON 재분석1회 후 push |
+| codex/unity-parity-1102 | 11-04 00:50 UI 잔여 큰 묶음 조판 수정 | NativeObjectivePanel/NativeInventoryOssuary/NativeLobby.SilverHell/NativeUiTextRun, Tools/ui-text-run-tests, 관련 UI docs/CHANGELOG 자기 절 | 공통6d99d0c46 병합. HUD 한 번 조판·봉안함 측정/그리기 통일·실제 caller source 보존, 조판31검사PASS. PC Core126/Runtime262 오류0·Player0. 기존JSON 재분석1회 1410장/8363(이전입력동일). 새 Mac/디자인총괄판정 대기·자기브랜치 push |
 
 ## 2026-10-29 Mac 첫 연습 실입력 후속
 

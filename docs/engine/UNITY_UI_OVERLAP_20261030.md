@@ -472,6 +472,8 @@ PC 컴파일 결과: 추가 공통b04ddd73b를fe236a8bc로 정상 병합한 뒤 
 
 기존 G0의 같은 게임 가독성/의미 라벨 관례와 이전 PNG를 기준으로 한다. 직접 본 cb77 실습안내2560 및 de 설정1600 PNG는 제목/상태/키 라벨이 실제로 분리되어 있다. 반대로 예전 계측은 실습 왼쪽/오른쪽 라벨을 동일x1919.999로 기록했다. 이전 TextCore/키 목록 수정은 보존하고 이 예전 좌표에 맞춰 정상 레이아웃을 임의 이동하지 않는다. Unity 공식 IMGUI/GUIStyle/TextHandle 참조는 글자 조판·cursor의 역할을 확인하는 용도로만 읽었다. 제품/폰트 코드 반입0.
 
-이번 수정은 판·원화·표시 문구·색·폰트·행/앵커를 없애지 않는다. 디자인 요소 손실0은 소스 요소/조판 문자열31개 대조의 범위다. 새 Player의 같은 해상도 PNG 전후 비교·디자인총괄 판정은 Mac 대기이며 PC에서 확인했다고 보고하지 않는다. .5px 충돌/알파/clip/화면 경계·원계측은 불변.
+이번 수정은 판·원화·표시 문구·색·폰트·행/앵커를 없애지 않는다. 디자인 요소 손실0은 소스 변경 검토와31개 조판 계약 검사의 범위다. 새 Player의 같은 해상도 PNG 전후 비교·디자인총괄 판정은 Mac 대기이며 PC에서 확인했다고 보고하지 않는다. .5px 충돌/알파/clip/화면 경계·원계측은 불변.
 
 참고한 엔진 계약: [GUIStyle cursor](https://github.com/Unity-Technologies/UnityCsReference/blob/master/Modules/IMGUI/GUIStyle.cs), [IMGUITextHandle](https://github.com/Unity-Technologies/UnityCsReference/blob/master/Modules/IMGUI/IMGUITextHandle.cs). 실제 설치본의 컴파일 확인과 공개 최신 참조의 범위를 구분하며, 참조 코드 복제0. PC 검증은 실제 NativeUiTextRun 소스로31검사PASS, Core126/Runtime262 컴파일 오류0·경고2/529.
+
+00:50 요청의 기존 JSON 재분석1회 완주: cb77 원본1410장, 잔여8363(글자-글자7784/글자-버튼152/화면이탈250/글자-판177), 동일내용819, 993.216초. 분석기·원본 JSON/PNG 변경0이므로 이전 재분석과 동일하다. 새 C# 렌더링은 이 과거 입력에 들어 있지 않아 실제 감소 수치로 쓰지 않는다. 새 Mac 수집에서 기존 상위 source를 실제 caller별로 분류하고 HUD·봉안함/비교판의 actual ink·경계·텍스트 보존을 같은 크기 PNG로 판정한다. 이 인계는 제품 전체 겹침0/디자인 PASS가 아니다.
