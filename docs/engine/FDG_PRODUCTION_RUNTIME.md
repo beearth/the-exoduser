@@ -2,7 +2,7 @@
 
 2026-10-11. `engine/fdg/runtime.js`의 일반 map 제작 이동과 공통 이미지 수명을 보완한다. 일반 맵의 실제 이동 API를 Studio가 사용할 수 있게 하는 작업이며, 본편 production 장면 인수를 뜻하지 않는다. 기존 sourcePreview/World/terrain/sourceScene/rigScene 소비자·v0.17 완료검사·원 PNG는 재검사하지 않았다.
 
-선행 정본: [런타임 계약](FDG_RUNTIME.md), [엔진 제작 계획](FDG_GAME_DEVELOPMENT_PLAN.md). 맵 가이드와 SSOT 읽기 순서는 앞선 작업에서 읽은 [공통 제작 가이드](../4.1맵디자인+설정/EXODUSER_MAP_PRODUCTION_GUIDELINE_v0.9.md) 전체 및 [_MAP_SSOT_INDEX](../4.1맵디자인+설정/_MAP_SSOT_INDEX.md)를 따른다. 이번 변경은 geometry/원천 nav/START/EXIT/맵 이미지/본편 save/Q/E를 수정하지 않는다.
+선행 정본: [런타임 계약](FDG_RUNTIME.md), [엔진 제작 계획](../_archive/engine/FDG_GAME_DEVELOPMENT_PLAN.md). 맵 가이드와 SSOT 읽기 순서는 앞선 작업에서 읽은 [공통 제작 가이드](../4.1맵디자인+설정/EXODUSER_MAP_PRODUCTION_GUIDELINE_v0.9.md) 전체 및 [_MAP_SSOT_INDEX](../4.1맵디자인+설정/_MAP_SSOT_INDEX.md)를 따른다. 이번 변경은 geometry/원천 nav/START/EXIT/맵 이미지/본편 save/Q/E를 수정하지 않는다.
 
 ## 공개 이동 API
 

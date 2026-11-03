@@ -2,8 +2,8 @@
 
 2026-10-22 KST, PC Claude. 기준 INTEG-10 동결 `9133e2782`, 브랜치 `claude/pc-move-skills-v2-20261022`, worktree `G:\exoduser-wt\pc-move-skills-v2`.
 원본 = 고정 스냅샷 `godot/source_snapshot/game.html`(SHA256 `4d911cdd…85e5d4`, main game.html과 같음).
-> **2026-10-22 스냅샷 갱신(행 +2 이동)**: 고정 스냅샷이 main `91e2774b7`(SHA256 `dee094fd…1f05209`)로 바뀌었다(유골함 mkItem 원시 효과 키 삭제 2줄 삽입, 새 G16156–16157). 이 문서의 G행은 이전 스냅샷 `e556b617`(`4d911cdd…85e5d4`) 좌표이고, 포트 영수증·oracle 라벨도 같은 좌표를 쓴다. 새 스냅샷에서 실제 행은 **G16156 이상 +2**(G16155 이하 그대로). PC oracle(.cjs)은 읽을 때만 옮긴다 — [INTEG5 스냅샷 계약 갱신 이력](INTEG5_SOURCE_SNAPSHOT_20261021.md#갱신-이력).
-차이 목록 기준: [PARITY_DIFF_LIST_20261022.md](PARITY_DIFF_LIST_20261022.md) V-01·V-02. 보고서: [orders/reports/pc-move-skills_REPORT.md](orders/reports/pc-move-skills_REPORT.md).
+> **2026-10-22 스냅샷 갱신(행 +2 이동)**: 고정 스냅샷이 main `91e2774b7`(SHA256 `dee094fd…1f05209`)로 바뀌었다(유골함 mkItem 원시 효과 키 삭제 2줄 삽입, 새 G16156–16157). 이 문서의 G행은 이전 스냅샷 `e556b617`(`4d911cdd…85e5d4`) 좌표이고, 포트 영수증·oracle 라벨도 같은 좌표를 쓴다. 새 스냅샷에서 실제 행은 **G16156 이상 +2**(G16155 이하 그대로). PC oracle(.cjs)은 읽을 때만 옮긴다 — [INTEG5 스냅샷 계약 갱신 이력](../_archive/engine/INTEG5_SOURCE_SNAPSHOT_20261021.md#갱신-이력).
+차이 목록 기준: [PARITY_DIFF_LIST_20261022.md](PARITY_DIFF_LIST_20261022.md) V-01·V-02. 보고서: [../_archive/engine/orders/reports/pc-move-skills_REPORT.md](../_archive/engine/orders/reports/pc-move-skills_REPORT.md).
 
 **판정 기준**은 웹과 같은 장면을 나란히 찍어 같아 보이고 같은 거리·같은 프레임으로 움직이는가다. 테스트 PASS는 필요조건이다.
 
@@ -131,4 +131,4 @@
 - 나란히 캡처(웹 수동 rAF 1틱 스텝 = Godot SceneTree 1틱 스텝): 사슬 1·2단과 전격이동 프레임별 위치·무적·게이지가 웹과 소수 둘째 자리까지 같다(보고서 표).
 
 
-2026-10-22 PARITY-INTRO-01b: 이전 Mac PC 이동 회귀 실패는 저장 namespace와 실행 인자의 불일치였다. 인트로 분기 변경은 확인되지 않았다. Mac 공통 하니스는 PC fixture에 storage 인자가 없을 때 `--demo11-storage=off`를 명시하며 제품/E2E `on` 경로는 유지한다. [원인·계약·검증](PARITY_INTRO_01b_20261022.md).
+2026-10-22 PARITY-INTRO-01b: 이전 Mac PC 이동 회귀 실패는 저장 namespace와 실행 인자의 불일치였다. 인트로 분기 변경은 확인되지 않았다. Mac 공통 하니스는 PC fixture에 storage 인자가 없을 때 `--demo11-storage=off`를 명시하며 제품/E2E `on` 경로는 유지한다. [원인·계약·검증](../_archive/engine/PARITY_INTRO_01b_20261022.md).

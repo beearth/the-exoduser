@@ -44,8 +44,8 @@ namespace Exoduser.UnityPort
         }
         [Serializable] sealed class UiWideCue {public int width,height;public string language,caption;public double start,end,requested,observed;}
         [Serializable] sealed class UiWideMovie {public int width,height,visual,textureWidth,textureHeight;public string language,file;public long frameBefore,frameAfter;public double timeBefore,timeAfter;public bool prepared,playing;}
-        [Serializable] sealed class UiWideInputCheck {public int width,height;public bool lockedBlocked,nameOpened;public string inputPath;}
-        [Serializable] sealed class UiWideInputReport {public List<UiWideInputCheck> checks;}
+        [Serializable] sealed class UiWideInputCheck {public int width,height;public bool lockedBlocked,lockedButtonHit,nameOpened,nameButtonClicked,capturePreparedByApi;public string inputPath,status,diagnostic;public Vector2 position;}
+        [Serializable] sealed class UiWideInputReport {public List<UiWideInputCheck> checks;public List<NativeLobby.QaPointerReceipt> events;public List<NativeLobby.QaGuiSample> onGuiSamples;}
         readonly List<UiWideInputCheck> wideInputChecks=new List<UiWideInputCheck>();
         UiOverlapCoverage overlapCoverage;
         string overlapOutput,overlapLanguage;
@@ -144,31 +144,38 @@ namespace Exoduser.UnityPort
         }
 #endif
 
+        // Common default on PC/Mac. The legacy HWND path is an explicit Windows diagnostic only.
         static bool UiUsesGuiClicks {
             get {
 #if UNITY_STANDALONE_WIN
-                return Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-gui-clicks")>=0;
+                return Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-win-mouse-clicks")<0;
 #else
                 return true;
 #endif
             }
         }
-        IEnumerator UiWideClick(float x,float y)
+        string overlapClickError;
+        Vector2 overlapClickPosition;
+        IEnumerator UiWideClick()
         {
-            var a=NativeUiViewport.Edges;int px=Mathf.RoundToInt(Screen.width-(1920-x)*a.Scale),py=Mathf.RoundToInt(y*a.Scale);
+            overlapClickError="";float targetDeadline=Time.realtimeSinceStartup+2;Vector2 position;
+            while(!lobby.TryGetQaNamePointer(out position)&&Time.realtimeSinceStartup<targetDeadline)yield return null;
+            if(!lobby.TryGetQaNamePointer(out position)){overlapClickError="현재 실제 버튼 Repaint 좌표 미수집";yield break;}
+            overlapClickPosition=position;
             var history=NativeScreenTransition.History;int before=history==null||history.Count==0?0:history[history.Count-1].id;
             overlapPhysicalClick=true;lobby.AutomatedInput=false;
             try {
                 if(UiUsesGuiClicks){
                     foreach(var type in new[]{EventType.MouseDown,EventType.MouseUp}){
-                        int serial=lobby.QueueQaPointer(type,new Vector2(px,py));float deliveredBy=Time.realtimeSinceStartup+2;
+                        int serial=lobby.QueueQaPointer(type,position);float deliveredBy=Time.realtimeSinceStartup+2;
+                        if(serial==0){overlapClickError=lobby.QaPointerError;yield break;}
                         while(lobby.QaPointerDelivered<serial&&Time.realtimeSinceStartup<deliveredBy)yield return null;
-                        if(lobby.QaPointerDelivered<serial)throw new InvalidOperationException("제품 OnGUI QA pointer 수신 시간초과");
+                        if(lobby.QaPointerDelivered<serial){overlapClickError="실제 OnGUI 버튼 경계의 이벤트 전달 시간초과";lobby.CancelQaPointer();yield break;}
                         yield return null;
                     }
                 }
 #if UNITY_STANDALONE_WIN
-                else yield return UiWidePostClick(px,py);
+                else yield return UiWidePostClick(Mathf.RoundToInt(position.x),Mathf.RoundToInt(position.y));
 #endif
                 yield return new WaitForEndOfFrame();float deadline=Time.realtimeSinceStartup+15;
                 while(NativeScreenTransition.Busy&&Time.realtimeSinceStartup<deadline)yield return null;
@@ -181,11 +188,24 @@ namespace Exoduser.UnityPort
         IEnumerator UiNameGateAtCurrentSize()
         {
             var field=typeof(NativeLobby).GetField("characterStep",BindingFlags.Instance|BindingFlags.NonPublic);
-            var check=new UiWideInputCheck{width=Screen.width,height=Screen.height,inputPath=UiUsesGuiClicks?"Unity IMGUI event via actual NativeLobby.OnGUI":"Windows own hidden HWND WM mouse"};
-            yield return UiWideClick(1790,1018);check.lockedBlocked=(int)field.GetValue(lobby)==1;
-            lobby.ChooseCharacterVisual(0);yield return null;yield return UiWideClick(1790,1018);check.nameOpened=(int)field.GetValue(lobby)==2;
-            wideInputChecks.Add(check);File.WriteAllText(Path.Combine(overlapOutput,"실제_마우스_역변환.json"),JsonUtility.ToJson(new UiWideInputReport{checks=wideInputChecks},true));
-            if(!check.lockedBlocked||!check.nameOpened)throw new InvalidOperationException("잠긴 직업/이름 열기 실제 OnGUI hit-test 실패");
+            var check=new UiWideInputCheck{width=Screen.width,height=Screen.height,inputPath=UiUsesGuiClicks?"actual NativeLobby.OnGUI -> button-local Event.current -> public GUI.Button (not OS/native event pump)":"Windows own hidden HWND WM mouse",diagnostic=""};
+            int receiptBefore=lobby.QaPointerReceipts.Count;yield return UiWideClick();
+            var lockedEvents=lobby.QaPointerReceipts;check.lockedButtonHit=lockedEvents.Count==receiptBefore+2&&lockedEvents[receiptBefore].inside&&!lockedEvents[receiptBefore].enabled&&lockedEvents[receiptBefore+1].inside&&!lockedEvents[receiptBefore+1].enabled&&!lockedEvents[receiptBefore+1].clicked;
+            check.lockedBlocked=(int)field.GetValue(lobby)==1&&(!UiUsesGuiClicks||check.lockedButtonHit);check.diagnostic=overlapClickError;
+            lobby.ChooseCharacterVisual(0);yield return null;yield return new WaitForEndOfFrame();yield return UiWideClick();
+            check.nameOpened=(int)field.GetValue(lobby)==2;check.position=overlapClickPosition;
+            var events=lobby.QaPointerReceipts;check.nameButtonClicked=events.Count>0&&events[events.Count-1].type==EventType.MouseUp.ToString()&&events[events.Count-1].inside&&events[events.Count-1].clicked;
+            if(!string.IsNullOrEmpty(overlapClickError))check.diagnostic+=(check.diagnostic.Length==0?"":"; ")+overlapClickError;
+            check.status=check.diagnostic.Length>0?"UNVERIFIED":check.lockedBlocked&&check.nameOpened&&(!UiUsesGuiClicks||check.nameButtonClicked)?"PASS":"FAIL";
+            // An unavailable QA input transport must not suppress the other 1398 captures.
+            // API preparation is explicitly excluded from the hit-test verdict above.
+            if(!check.nameOpened){
+                check.capturePreparedByApi=true;lobby.ChooseCharacterVisual(0);
+                if(!lobby.ConfirmCharacterVisual())throw new InvalidOperationException("입력 판정 이후 이름 화면 수집 준비 실패");
+            }
+            wideInputChecks.Add(check);
+            File.WriteAllText(Path.Combine(overlapOutput,"실제_마우스_역변환.json"),JsonUtility.ToJson(new UiWideInputReport{checks=wideInputChecks,events=lobby.QaPointerReceipts,onGuiSamples=lobby.QaGuiSamples},true));
+            if(check.status!="PASS")Debug.LogWarning("UI_NAME_INPUT_"+check.status+" "+check.width+"x"+check.height+" lockedBlocked="+check.lockedBlocked+" nameOpened="+check.nameOpened+" "+check.diagnostic);
         }
         IEnumerator UiNameGateOnly()
         {

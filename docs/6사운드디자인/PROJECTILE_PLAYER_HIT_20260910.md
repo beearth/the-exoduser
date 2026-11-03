@@ -26,7 +26,7 @@
 
 ## 2026-09-10 피격음 대안 청취
 
-이전 Python 합성 후보 4종은 사용자 미채택. 현재 피격음은 사용자 선택③ Bisqo 편집본으로 교체했다. [이전 후보 기록](PROJECTILE_HIT_CANDIDATES_20260910.md). 새 [ElevenLabs 마법 피격음 3종](MAGIC_HIT_ELEVENLABS_20260910.md)을 생성하고 비교 재생을 검증했다. 새 후보는 아직 선택·게임 적용 전이다.
+이전 Python 합성 후보 4종은 사용자 미채택. 현재 피격음은 사용자 선택③ Bisqo 편집본으로 교체했다. [이전 후보 기록](../_archive/6사운드디자인/PROJECTILE_HIT_CANDIDATES_20260910.md). 새 [ElevenLabs 마법 피격음 3종](MAGIC_HIT_ELEVENLABS_20260910.md)을 생성하고 비교 재생을 검증했다. 새 후보는 아직 선택·게임 적용 전이다.
 
 ## 현재 소스
 

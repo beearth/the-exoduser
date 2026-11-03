@@ -151,7 +151,7 @@ namespace Exoduser.UnityPort {
   LocaleRow CurrentLabels(){
    if(localeRows.Count==0){var asset=Resources.Load<TextAsset>("Data/stageclear_labels");if(asset!=null){var b=JsonUtility.FromJson<LocaleBundle>(asset.text);foreach(var e in b.entries)localeRows[e.code]=e;}}
    LocaleRow row;if(localeRows.TryGetValue(EffectiveLocale,out row))return row;if(localeRows.TryGetValue("en",out row))return row;
-   return new LocaleRow{title="ZONE CLEARED",hellTitle="HELL ESCAPED",sub="Prepare, then continue",time="Clear time",kills="Kills",reward="Reward",sp="Stat points",regions="Regions cleared",potions="Potions",deaths="Deaths",score="Score",next="Return to lobby",demoSub="You conquered the Rotten Forest.",demoNext="End demo",demoWishlist="Wishlist the full game"};
+   return new LocaleRow{title="ZONE CLEARED",hellTitle="HELL ESCAPED",sub="Prepare, then continue",time="Clear time",kills="Kills",reward="Reward",sp="Stat points",regions="Regions cleared",potions="Potions",deaths="Deaths",score="Score",next="Return to lobby",demoSub="The Rotten Forest is not finished yet.",demoNext="End demo",demoWishlist="Wishlist the full game"};
   }
   Font BodyFont(){if(EffectiveLocale=="ja"){if(japanese==null)japanese=Resources.Load<Font>("Art/fonts/NotoSerifCJKjp-Regular");return japanese??nanum;}if(EffectiveLocale=="ko"||EffectiveLocale=="en")return nanum;if(latin==null)latin=Resources.Load<Font>("Art/fonts/NativeCaptionNotoSerif");return NativeA15SettingsLabels.FontForLocale(EffectiveLocale,latin??nanum);}
   public NativeStageClearPresentation.Model PresentationModel(){

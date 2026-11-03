@@ -302,7 +302,7 @@ ERROR: Required packaged original M30 texture is missing: res://assets/vfx/__mis
 | game.html @ 284d7faf | 65692 / 4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4 |
 | index.html @ 284d7faf | 4742 / 36008f72723dbcbf1ae7b6af6b08dfe6299962e2445261139b6237082a24cf12 |
 | godot/data/encounters.json @ 284d7faf | 1 / 91fd1a88b394152cd8b0de653f1bde5139b7829f331787581616f7ef3c0724fa |
-| docs/engine/FDG_FEATURE_INVENTORY_20261020.md @ 284d7faf | 1304 / ba08777073cc06f7d6671f452fa8ab9c1dd08a31c54eed18b06937e5629a6d64 |
+| docs/_archive/engine/FDG_FEATURE_INVENTORY_20261020.md @ 284d7faf | 1304 / ba08777073cc06f7d6671f452fa8ab9c1dd08a31c54eed18b06937e5629a6d64 |
 | docs/engine/orders/WORK_BOARD.md @ 284d7faf | 111 / f367df8d6379f2b2e6d7f74993a03006a4caac88e98f97aaceb9ff9f306265b9 |
 
 ## 부록 B. 35식별자·구조·함수의 원본 전체 일치행
@@ -450,9 +450,9 @@ ERROR: Required packaged original M30 texture is missing: res://assets/vfx/__mis
 
 ## 2026-10-21 DEMO11-30 연결 전 감사 — BLOCKED
 
-main `ac3764bfe5476b56e2f2388b1f2d9baeff731885`에서 §5.1 EL-01 제품 경로와 EL-03 owner 경로는 부재다. type3/type7 constructor 테스트의 all-ready 서비스를 실제 Q/E 준비 증거로 사용할 수 없다. Main은 부분 Q_CONTROL만 연결하고, 기존 QE contact API는 투사체 전용이므로 M29의 원본 G40533–40534 비투사체 패링을 대체하지 못한다. PC 전투 소유권을 지키기 위해 자연 actor 등록을 보류했다. 단일 lock·hell0 제한·G31614–31638 forced 후대입 보존 및 재개 인터페이스는 [DEMO11-30 보고서](orders/reports/demo11-30_REPORT.md)에 기록했다. 제품·테스트 변경0, Godot 실행0, 완료 승격0.
+main `ac3764bfe5476b56e2f2388b1f2d9baeff731885`에서 §5.1 EL-01 제품 경로와 EL-03 owner 경로는 부재다. type3/type7 constructor 테스트의 all-ready 서비스를 실제 Q/E 준비 증거로 사용할 수 없다. Main은 부분 Q_CONTROL만 연결하고, 기존 QE contact API는 투사체 전용이므로 M29의 원본 G40533–40534 비투사체 패링을 대체하지 못한다. PC 전투 소유권을 지키기 위해 자연 actor 등록을 보류했다. 단일 lock·hell0 제한·G31614–31638 forced 후대입 보존 및 재개 인터페이스는 [DEMO11-30 보고서](../_archive/engine/orders/reports/demo11-30_REPORT.md)에 기록했다. 제품·테스트 변경0, Godot 실행0, 완료 승격0.
 
 
 ## 2026-10-21 EL-01 — Mac hell0 배정 결과
 
-사용자/PC 결정에 따라 EL-01 중 **hell0 stage0..3 선택기**를 구현했다. §5.1의 전체35stage 카탈로그 이식은 이번 범위가 아니다. type3 recipe·인트로 링·소환굴에서 원래 constructor prefix에 선택기를 재사용하고 speed/radius/facing 뒤 aura 위치를 바꾸지 않는다. G38798–38809의 단일 lock owner 진입점·M30 standalone 호환·G31620–31636 forced 후처리 API도 구현했다. DEMO11-30의 ‘EL-01 부재’는 이 단위로 해소하되, 실제 PC 비투사체 패링 미인수 시 type3/type7 M29 binding NOT_READY와 문지기 실제 actor caller 후행은 유지한다. [EL-01 보고서](orders/reports/el-01_REPORT.md)에 실제 원격 의존·검수·잔여를 구분한다.
+사용자/PC 결정에 따라 EL-01 중 **hell0 stage0..3 선택기**를 구현했다. §5.1의 전체35stage 카탈로그 이식은 이번 범위가 아니다. type3 recipe·인트로 링·소환굴에서 원래 constructor prefix에 선택기를 재사용하고 speed/radius/facing 뒤 aura 위치를 바꾸지 않는다. G38798–38809의 단일 lock owner 진입점·M30 standalone 호환·G31620–31636 forced 후처리 API도 구현했다. DEMO11-30의 ‘EL-01 부재’는 이 단위로 해소하되, 실제 PC 비투사체 패링 미인수 시 type3/type7 M29 binding NOT_READY와 문지기 실제 actor caller 후행은 유지한다. [EL-01 보고서](../_archive/engine/orders/reports/el-01_REPORT.md)에 실제 원격 의존·검수·잔여를 구분한다.

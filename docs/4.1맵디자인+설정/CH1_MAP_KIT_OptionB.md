@@ -336,3 +336,8 @@ v2 룩(갈흑 흙, 독녹 늪, 검은 뿌리, 외곽 철창/제단)에 **거의 
 - **현행 2026-08-30:** reference landmark 관계를 기존 CH1 에셋 `handProps` 63개로 유지하고, structural module 59개는 baked-aligned canonical forest tile boundary로 교체했다. mega/자동 filler는 0개다.
 - **후속:** `g_crack`/뿌리 엣지 소품, 늪 전이타일, FG Y소트는 아직 미구현이며 별도 승인 범위다.
 - `?stage=0` PROD/FIELD_ONE 테스트 경로는 이번 변경에서 건드리지 않았다.
+
+
+### 2026-10-31 현행 진입 경로 정정
+
+위 8월 stage=0→PROD 임시 선택은 제작 이력이다. 현재 stage=0은 200×200 본편이다. PROD 원화 판은 mapTest=1/v4 또는 stage=0&plate=prod, FIELD_ONE은 stage=0&plate=fieldone/v1로 명시한다. classic=1은 원화 테스트를 끈다. 작은 판에는 본편 청크와 나무를 혼합하지 않는다. [초광폭 SSOT](../12퍼포먼스·최적화/WORLD_ULTRAWIDE_20261031.md).

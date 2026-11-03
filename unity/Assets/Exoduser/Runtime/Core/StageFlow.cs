@@ -205,7 +205,7 @@ namespace Exoduser.UnityPort.Core
                     }
                     if (!BossAlive)
                     {
-                        StageCleared = true; p.StatPoints += 10;   // P.sp+=10
+                        StageCleared = true; sim.Stats.clearSeconds=sim.TickCount/60.0; p.StatPoints += 10;   // P.sp+=10
                         Raise(StageEventKind.StageCleared, p.X, p.Y);
                         break;
                     }

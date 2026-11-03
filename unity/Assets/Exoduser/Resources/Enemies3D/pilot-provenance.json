@@ -1,0 +1,60 @@
+[
+  {
+    "model": "SpineApostle",
+    "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/cleanup/spine_walk_eyefix.glb",
+    "bones": 24,
+    "triangles": 12495,
+    "actions": [
+      "Walk"
+    ],
+    "palettePlanes": 8
+  },
+  {
+    "model": "SageApostle",
+    "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/sage_rig_20261104_0038/basic_animations_walking_glb.glb",
+    "bones": 24,
+    "triangles": 12321,
+    "actions": [
+      "Walk"
+    ],
+    "palettePlanes": 8
+  },
+  {
+    "model": "TrapperApostle",
+    "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/trapper_rig_20261104_0042/basic_animations_walking_glb.glb",
+    "bones": 24,
+    "triangles": 12415,
+    "actions": [
+      "Walk"
+    ],
+    "palettePlanes": 8
+  },
+  {
+    "model": "ShadowTwin",
+    "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/twin_rig_20261104_0046/basic_animations_walking_glb.glb",
+    "bones": 24,
+    "triangles": 12323,
+    "actions": [
+      "Walk"
+    ],
+    "palettePlanes": 8
+  },
+  {
+    "model": "CarapaceApostleV2",
+    "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/carapace2_rig_20261104_0100/basic_animations_walking_glb.glb",
+    "bones": 24,
+    "triangles": 12473,
+    "actions": [
+      "Walk"
+    ],
+    "palettePlanes": 8
+  },
+  {
+    "model": "EyeMass",
+    "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/tripo/eyemass_meshy_tripo_rigged.glb",
+    "bones": 20,
+    "triangles": 12504,
+    "actions": [],
+    "palettePlanes": 8
+  }
+]

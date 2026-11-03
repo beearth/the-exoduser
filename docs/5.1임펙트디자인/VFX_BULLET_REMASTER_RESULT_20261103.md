@@ -76,4 +76,61 @@
 
 남은 문제: 원소구의 큰 탄두+짧은 꼬리 형태 재제작은2차. `NativeSkillRemaster.Current.Drawn(p)`가 true인 경로의 실제 시트 소비,독탄 importer/런타임 합성,1920/3840 실게임1x/3x,07e·11a·무음10초·자연 밀집전은 총괄 인수 후 검수해야 한다. 사용자 실행본 교체·커밋·push는 하지 않았다. 원본PNG·game.html·Core·다른 세션·세이브 변경0,영구 삭제0.
 
+## 2차 — 원소구 형태·드루이드 독탄 밝기 (2026-11-03)
+
+**정적 구현·검사 통과 / 실게임 QA 대기.** 기준 HEAD `aa38bb8773274bd5f2c91fdc25c4eb2cf003565d`, 브랜치 `claude/unity-pc-vfx-orb2-20261103`, 작업본 `G:/exoduser-wt/codex-vfx-orb2`. 시작 상태는 tracked/untracked 모두 깨끗했다. 지시문 `I:/EXODUSER-Storage/codex-runs/20261103-210806_vfx-orb2/prompt.md`와 끝의 표준 실행 규칙을 적용했다. 커밋·push·fetch·브랜치 전환·Unity·브라우저·유료 API·영구 삭제·다른 worktree 쓰기 0. 최신 지시의 커밋·삭제 금지가 전역 커밋/정리 원칙보다 우선한다. 원격 최신성은 미확인이다.
+
+### G0/G1·변경 경계
+
+- 목표: 어두운 1-1에서 실이 아니라 둥근 탄두와 짧은 꼬리로 원소구가 먼저 읽히고, 독탄 본체의 형광을 낮춘다. 직접 읽은 기준은 `VFX_LEAD_MASTER_20261026.md` §2.2/2.5/2.7, `IMPACT_REFERENCE_PBZ_DOTA2_20261103.md`, `VFX_G1_TIMING_DESIGN_20261103.md` §5와 1b 결과다. 이번에 타사 게임 프레임을 직접 열었다고 주장하지 않는다.
+- 공통 관례: 작은 코어·원소 본체·방향성·주변 어둠 유지=이번 반영. 적 탄 가림 0=실게임 미검증. 제작법은 브리프가 지정한 NumPy+Pillow 절차 생성이며 서비스 호출이 없다. 첫 실물은 아래 비교판 4장을 직접 열어 검사했다. 같은 핵심 형태 결함 2회면 방법 변경; 이번 생성은 1회, 생성 실패 0.
+- 예고→접점→본체→잔여: 예고/명중/소멸은 Core 그대로. 비행만 6프레임·기존 tick 위상으로 시트 교체, 독탄 16프레임/70ms 유지. 새 파티클·충돌·속도 변경 없음. 타격 레퍼런스의 3~5프레임 코어 지속을 비행 루프의 수명으로 전용하지 않는다.
+- 합격 범위: 36셀 3x alpha>0.05 연결 성분 1·분리 점 0, 동일 alpha 실루엣, 첫 프레임 유효, 컴파일 오류 0. 정적 합성으로 G2/G4/G5나 전체 아트 PASS를 대신하지 않는다.
+
+### 변경 파일
+
+| 파일 | 결과 |
+|---|---|
+| `unity/Assets/Exoduser/Resources/Art/vfx/field/proj_elem_orb_v2.png` + `.meta` | 1536×768, 256×128 셀×6열×6행 F/I/D/L/H/E, 새 GUID. 탄두 지름 57.6px(높이 45%), 코어 반지름 7.2px(탄두 반지름 25%), 꼬리 86.4px(지름 1.5배), 2.5px 페더. 화염/연기 소용돌이, 결정 능선, 전광 가지, 기울어진 고리, 큰 돌 결을 같은 실루엣 안에서 회전. 분리 조각·노이즈 생성 없음 |
+| `unity/Assets/Exoduser/Runtime/NativeBossView.FieldBullets.cs` | `OrbRes`를 v2로, `OrbW/H`를 256/128로 교체. **브리프의 기존값 설명과 실제 소스(512/256)가 달랐다.** 새 셀 지시를 따르되 기존 `h*OrbW/OrbH`=2h와 h, 중심 피벗·회전·프레임 선택은 보존 |
+| `unity/Assets/Exoduser/Resources/Art/vfx/boss/druid_poison_orb_v2.png` + `.meta` | 1254×1254·4×4·313 정수셀, 새 GUID. 기존 alpha 전 픽셀 보존, 위/오른쪽 2px 여백 유지. 본체 RGB를 #1c2810→#5f8a2e 범위로 낮추고 alpha>0.05 윤곽의 **안쪽 2 원본px**를 #1c2810으로 처리(실루엣 팽창 없음). 표시 배율에 따라 테두리는 1 화면px 미만일 수 있으며 GPU 가독성은 미검증 |
+| `unity/Assets/Exoduser/Runtime/NativeDruidArt.cs` | PoisonShot을 v2 본체에 연결. 셀 좌표·RGBA 복사·피벗 유지. 캐시된 64×64 `PoisonCore()`를 별도 생성, 색 #c8e8a8·원형 페더 |
+| `unity/Assets/Exoduser/Runtime/NativeBossView.cs` 독탄 분기만 | 본체는 기존 `PutBox` 일반 alpha 유지. **기존 소스에서 본체가 가산이라는 가설은 확인되지 않았다.** `PutAdd` 코어 1겹만 추가, opacity .6·draw box 지름 .25배. 기존 size식·속도·판정 불변 |
+| `tools/vfx/make_elem_orb_v2.py`, `tools/vfx/orb_v2_checks.py` | 재생성 파일과 4개 회귀 검사. 기존 시트·importer 설정 보존. 새 importer는 GUID만 다름 |
+| 이 문서 | 2차 기록. 기존 1차/1b 이력 보존 |
+
+### 직접 본 비교판·수치
+
+위치: `tmp/design-review/vfx-orb2/`(약 1.02MB, 빌드 없음, 고정 파일명만 사용).
+
+- `sheet_compare.png`: 1차 | v2 전 36셀, 동일 표시 배율. 1차 512×256 원본은 256×128로 맞춰 비교했다.
+- `crop_3x.png`: 6원소 첫 프레임 전후, 위 표시 셀의 3x NEAREST. 오른쪽의 둥근 본체·짧은 꼬리와 분리 잔점 없음을 직접 확인했다. 이는 원본 해상도 차이를 숨긴 1:1 텍셀 비교가 아니라 **동일 표시 크기** 비교다.
+- `floor_1x.png`: #2b2523 바닥 위 원소구 draw box 192×96(기존 최소 h=96), 독탄 96×96의 일반 alpha 전후+작은 가산 코어 모의 합성. `SIMULATED`/`NOT a Unity capture` 표시. 원근·카메라·Linear/HDR/톤매핑은 재현하지 않는다.
+- `poison_compare_3x.png`: 313 정수셀 원본 3x, 본체만 비교. 밝은 링이 탁한 녹색으로 낮아졌음을 직접 확인했다. **기존 위성 조각·내부 점 질감은 남는다. 독탄 전체 점 0이나 형태 PASS를 주장하지 않는다.**
+- `asset_checks.json`: 전 36셀 연결 성분=1·분리 성분=0. 독탄 alpha 변경=0px, alpha>128 본체 평균 휘도 112.535→77.893(약 30.8% 감소), 최대 114.655. RGB luma=.299R+.587G+.114B, 가산 코어·배경 제외 수치다.
+- 보조 파일: `tmp/vfx_orb2_inspect.cjs`(읽기 전용 조사), `tmp/vfx_orb2_receipt.py`(수치 영수증). tmp는 Git ignore 대상이며 인수 시 비교판 별도 확보 필요.
+
+### 검증 방법과 결과
+
+| 명령 | 결과 |
+|---|---|
+| `C:/Python314/python.exe -B tools/vfx/orb_v2_checks.py` | 구현 전 신규 시트/소스 부재로 RED 4개 확인, 구현 후 **4/4 PASS**. 36셀 alpha 동일·연결 1·분리 점 0·테두리/밝기·source 합성 경로·GUID/설정 검사 |
+| `C:/Python314/python.exe -B tools/vfx/make_elem_orb_v2.py` | 생성 1회 성공, 2 PNG+meta·4 비교판 |
+| `C:/Python314/python.exe -B tools/vfx/bullet_recolor_checks.py` | 기존 1b 에셋 회귀 **9/9 PASS** |
+| `C:/nvm4w/nodejs/node.exe unity/Tools/combat-impact-tests/run.cjs` | 실제 Core+timeline Roslyn 컴파일/실행 **60 checks, 0 failures**; blood-dark check-only PASS. 기존 EnemyAi.cs CS0219 2건(gb/water 미사용), 오류 아님 |
+| `C:/nvm4w/nodejs/node.exe tools/vfx-missing-compile.cjs` | 실제 checkout Core 121·Runtime 255 소스 Roslyn **오류 0**, exit 0. 기존 `codex-unity-parity-1102` 참조/RSP는 읽기만, 모든 출력은 이 worktree `tools/combat-impact-check/compile/`. Unity 실행 없음 |
+| `C:/Python314/python.exe -B tmp/vfx_orb2_receipt.py` | 정적 수치 JSON 기록 |
+| `git diff --check`, 소유 C# diff 검토 | PASS. Core·웹·다른 VFX 레인 변경 없음 |
+
+### 남은 문제·인수
+
+1. `NativeBossView.Update`의 기존 `NativeSkillRemaster.Current.Drawn(p)` early continue가 시트 소비를 건너뛴다. 실제 remaster는 `Runtime/Vfx/NativeSkillRemaster.cs:297`부터 별도 메시·Surface/Emit 경로로 독탄 등을 그린다. 이 파일은 소유 범위 밖이라 수정하지 않았다. **새 시트가 실게임에 반드시 보인다거나 형광의 실제 원인을 해결했다고 확정하지 않는다.** 총괄이 실제 경로를 확인하고 해당 레인 담당과 소비자를 인수해야 한다.
+2. 일반 alpha/가산 분리 검사는 source/shader 계약 검사다. GPU 합성·Unity importer·색공간/톤매핑·코어 상대 크기·실제 화면 테두리와 어두운 바닥 가독성은 Mac same-build에서 확인해야 한다.
+3. 07e·11a, 1920×1080/3840×1080 실게임 1x/3x, 무음 10초·밀집 탄막 가림 0·자연 플레이·사용자 실행본 갱신 미실시. 이 턴에서 Unity/브라우저/빌드는 금지였으므로 **STATIC_CHECKS_PASS_GAME_QA_PENDING**을 유지한다.
+4. 커밋·push 금지에 따라 변경은 이 worktree에 남겼다. HEAD는 기준 SHA 그대로이며 신규 전달 SHA는 없다. 원본 PNG 보존, Core·game.html·CombatImpactView/Timeline·KiImpactView·KiSlashView·다른 worktree·사용자 세이브 변경 0.
+
 END
+
+### 2차 총괄 판정 (2026-11-03)
+- 드루이드 독탄 v2(일반 알파 본체 + 코어 가산 .6 + 얇은 그림자 테두리): **채택** — 형광 번짐 제거, 탁한 독 녹색 + 작은 빛 코어.
+- 원소구 v2(절차 생성 둥근 탄두 + 원뿔 꼬리): 가독성·점 0은 통과했지만 **평면 클립아트처럼 보여 게임 아트 기준 FAIL — 채택하지 않음**(`FieldBullets.cs`는 1차 `proj_elem_orb_el` 유지, v2 시트·생성 스크립트는 커밋하지 않음). 절차 생성 2회(1차 재채색·2차 절차)로 형태 문제를 못 풀었으므로 방법을 바꾼다 → U-VFX-07b: 이미지 생성(내장 이미지 도구, 비용 확인) 원화 기반 재제작, G0 브리프부터.

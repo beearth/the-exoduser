@@ -96,11 +96,14 @@ namespace Exoduser.UnityPort {
    var st=Style(f,size,bold);float w=0;
    foreach(char ch in text){
     var g=ch.ToString();float cw=st.CalcSize(new GUIContent(g)).x;
+    using(var paint=NativeUiAudit.GroupText(new Rect(x+w,y,60,h),g)){
     if(shadowAlpha>0){
      st.normal.textColor=new Color(0,0,0,shadowAlpha*c.a);PaintDeathGlyph(new Rect(x+w,y+shadowY,60,h),g,st,shadowSpread>0);
      if(shadowSpread>0)foreach(var d in new[]{new Vector2(-1,0),new Vector2(1,0),new Vector2(0,-1),new Vector2(0,1)}){st.normal.textColor=new Color(0,0,0,shadowAlpha*.35f*c.a);PaintDeathGlyph(new Rect(x+w+d.x*shadowSpread,y+shadowY+d.y*shadowSpread,60,h),g,st,true);}
     }
-    st.normal.textColor=c;PaintDeathGlyph(new Rect(x+w,y,60,h),g,st,false);w+=cw+ls;
+    st.normal.textColor=c;PaintDeathGlyph(new Rect(x+w,y,60,h),g,st,false);
+    }
+    w+=cw+ls;
    }
    return w;
   }

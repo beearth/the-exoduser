@@ -172,16 +172,16 @@ namespace Exoduser.UnityPort.Core
         private struct BlockFx { public bool Active, Peace, Failed, FocusKeep; public double Rate, KbMagnitude, Shake; }
 
         // HurtPlayer hook: true = the hit was fully handled (parry success). `damage` may be reduced by a failed-parry absorb.
-        private bool CombatBeforeHurt(ref int damage, bool dot, out BlockFx fx)
+        private bool CombatBeforeHurt(ref int damage, bool dot, out BlockFx fx, bool canParry=true)
         {
             fx = default(BlockFx);
             if (!PlayerCombatWired) return false;
             if (HarpActive || DashActive) return true;   // web: no damage while the chain move runs
             // E strike window (sBash): isPWin
-            if (ParryRules.IsParryWindow(Player.State, Player.StateTicks, 0, SbParryT, CapeParry) && Player.State == "sBash") { ApplyParrySuccess(false); return true; }
+            if (canParry && ParryRules.IsParryWindow(Player.State, Player.StateTicks, 0, SbParryT, CapeParry) && Player.State == "sBash") { ApplyParrySuccess(false); return true; }
             string stateBefore = Player.State; double parryBefore = SbParryT, poiseBefore = Player.Poise;
-            var b = PlayerPoise.ShieldBranch(new PlayerPoise.BlockInput { S = Player.State, SbParryT = SbParryT, Dmg = damage, Poise = Player.Poise, PGuard = PGuard, ShieldBlockDR = ShieldBlockDR, CcRes = CcRes, StunRes = StunRes, Dot = dot, RedBean = false });
-            if (!b.ReachedDamage) { SbParryT = b.SbParryT; ApplyParrySuccess(true); return true; }
+            var b = PlayerPoise.ShieldBranch(new PlayerPoise.BlockInput { S = Player.State, SbParryT = canParry?SbParryT:0, Dmg = damage, Poise = Player.Poise, PGuard = PGuard, ShieldBlockDR = ShieldBlockDR, CcRes = CcRes, StunRes = StunRes, Dot = dot, RedBean = false });
+            if (!b.ReachedDamage && canParry) { SbParryT = b.SbParryT; ApplyParrySuccess(true); return true; }
             if (stateBefore == "sBlock" || stateBefore == "peaceShield")
             {
                 damage = (int)b.Dmg; Player.Poise = (float)b.Poise; SbParryT = b.SbParryT;
@@ -206,27 +206,31 @@ namespace Exoduser.UnityPort.Core
             string state = p.State;
             double rage = Rage, harp = HarpGauge, lastHp = LastParryHp;
             int materials = Materials, parries = ParryCount, dodges = DodgeCount;
-            uint rng = randomState;
+            uint rng = randomState; var restoreStats=Stats.Capture();
             return () => {
                 p.Hp = hp; p.Shield = shield; p.Stamina = stamina; p.Mana = mana; p.Poise = poise; p.Iframes = iframes; p.State = state; p.StateTicks = stateTicks;
                 Rage = rage; HarpGauge = harp; LastParryHp = lastHp;
-                Materials = materials; ParryCount = parries; DodgeCount = dodges; randomState = rng;
+                Materials = materials; ParryCount = parries; DodgeCount = dodges; randomState = rng; restoreStats();
             };
         }
 
-        private void ApplyParrySuccess(bool qParry, double resourceMul = 1, string parryEl = null, string visualSource = null, float? visualX = null, float? visualY = null)   // trailing parameters are presentation only
+        private void ApplyParrySuccess(bool qParry, double resourceMul = 1, string parryEl = null, string visualSource = null, float? visualX = null, float? visualY = null, ParryKind kind=ParryKind.Melee)   // trailing parameters are presentation only
         {
+            float hpBefore=Player.Hp,stBefore=Player.Stamina,mpBefore=Player.Mana;double rageBefore=Rage,maliceBefore=Materials,harpBefore=HarpGauge;
             var r = ParryRewards.Apply(new ParryRewards.Input
             {
+                Kind=kind, ShakeOverride=kind==ParryKind.Melee?ParryFeedback.meleeShake:ParryFeedback.projectileShake, LessonActive=ParryLessonActive,
                 PlayerState = Player.State, ForceQ = qParry, SbParryT = SbParryT, ResourceMul = resourceMul, ParryEl = parryEl, ParryBonus = ParryBonus, PRegen = PRegen, OptHitStop = 100, OptShake = 100,
                 Iframes = Player.Iframes, Hp = Player.Hp, Mhp = Player.MaxHp, St = Player.Stamina, Mst = Player.MaxStamina, Mp = Player.Mana, Mmp = Player.MaxMana, Poise = Player.Poise, MaxPoise = PlayerPoise.MaxPoise,
                 Rage = Rage, RageMax = RageMaximum, Mats = Materials, HarpGauge = HarpGauge, HarpGaugeMax = HarpGaugeMax,
             });
             Player.Iframes = (float)r.Iframes; Player.Hp = (float)r.Hp; Player.Stamina = (float)r.St; Player.Mana = (float)r.Mp; Player.Poise = (float)r.Poise; HarpGauge = r.HarpGauge; AddMalice((int)r.Mats - Materials); SetRage(r.Rage);
             ParryCount++; LastParryHp = r.Hp;
+            bool qInput=r.IsQParry;CombatStats.Add(Stats.parrySuccess,(kind==ParryKind.Melee?"melee":"proj")+(qInput?"Q":"E"));
+            var gains=kind==ParryKind.Melee?Stats.meleeGain:Stats.projGain;CombatStats.Add(gains,"hp",Player.Hp-hpBefore);if(Player.MaxHp>0)CombatStats.Add(gains,"hpMaxFrac",(Player.Hp-hpBefore)/(double)Player.MaxHp);CombatStats.Add(gains,"st",Player.Stamina-stBefore);CombatStats.Add(gains,"mp",Player.Mana-mpBefore);CombatStats.Add(gains,"rage",Rage-rageBefore);CombatStats.Add(gains,"malice",Materials-maliceBefore);CombatStats.Add(gains,"harp",HarpGauge-harpBefore);
             // RM-1 sound: web doParry plays q_parry for a Q parry (_forceQ || sBlock || peaceShield || _sbParryT>0) and sword_parry + sword_back otherwise (Step 1 = Q parry)
             Feedback.Enqueue(new FeedbackEvent { Kind = FeedbackKind.Parry, Step = (qParry || Player.State == "sBlock" || Player.State == "peaceShield" || SbParryT > 0) ? 1 : 0, Tick = TickCount, X = visualX ?? Player.X, Y = visualY ?? Player.Y,
-                Source = visualSource, SampleKey = parryEl, Angle = Player.Facing });
+                Source = visualSource, SampleKey = parryEl, Angle = Player.Facing, MeleeParry=kind==ParryKind.Melee, HitStopTicks=(int)r.HitStop, ParryShake=(float)r.Shake, CameraPushIn=kind==ParryKind.Melee?ParryFeedback.meleeCameraPushIn:0 });
             RaisePlayerText(Player.X, Player.Y - 42, "PARRY!", "#ffdd00", 45);   // web '⚡PARRY!' (addTxt 45f)
         }
 

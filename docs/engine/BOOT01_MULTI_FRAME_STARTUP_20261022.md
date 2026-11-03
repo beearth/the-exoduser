@@ -112,7 +112,7 @@ keypost.ps1(SendNotifyMessage, 자기 창 HWND에만, 마지막 키만 자동반
 | 레슨 넘김 +4 s 적 스폰 | 적 5마리, 종류·좌표 동일(이동 중 소수점 ±0.3 px), 앵글러 1 |
 상세 `logs/state_base_s1·s2`, `state_fix_s1·s2`.
 
-### 4-4. 회귀 — 표는 [보고서](orders/reports/pc-boot01_REPORT.md) §4
+### 4-4. 회귀 — 표는 [보고서](../_archive/engine/orders/reports/pc-boot01_REPORT.md) §4
 
 ### 4-5. 수정 중 발견·처리한 문제
 - 처음 판은 단계 부팅 전체를 트리 일시정지로 감쌌다 → 초기화 디스패처가 "world 정지"로 거절(진입 실패). 단계 사이 프레임만 정지로 바꿨다.

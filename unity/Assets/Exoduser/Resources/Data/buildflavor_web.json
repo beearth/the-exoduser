@@ -53,8 +53,8 @@
    "clearFinal": {
     "stage": 0,
     "sub": [
-     "썩은 숲을 정복했습니다.",
-     "You conquered the Rotten Forest."
+     "썩은 숲은 아직 끝나지 않았다.",
+     "The Rotten Forest is not finished yet."
     ],
     "button": [
      "데모 종료",
@@ -82,8 +82,8 @@
    "clearFinal": {
     "stage": 0,
     "sub": [
-     "썩은 숲을 정복했습니다.",
-     "You conquered the Rotten Forest."
+     "썩은 숲은 아직 끝나지 않았다.",
+     "The Rotten Forest is not finished yet."
     ],
     "button": [
      "데모 종료",

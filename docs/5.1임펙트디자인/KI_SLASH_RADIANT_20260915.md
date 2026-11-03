@@ -68,7 +68,7 @@
 
 ## Godot 이식 동기화 (P2-007a, 2026-10-20)
 
-Godot 포트(`godot/`)가 구 청색 `ki_slash_radiant_sheet.png` + 3타 hue150으로 남아 있던 것을 위 "실버+블랙" 현행으로 맞췄다. 상세: [FDG_P2_007A_UI_POLISH_20261020.md](../engine/FDG_P2_007A_UI_POLISH_20261020.md) §B.
+Godot 포트(`godot/`)가 구 청색 `ki_slash_radiant_sheet.png` + 3타 hue150으로 남아 있던 것을 위 "실버+블랙" 현행으로 맞췄다. 상세: [FDG_P2_007A_UI_POLISH_20261020.md](../_archive/engine/FDG_P2_007A_UI_POLISH_20261020.md) §B.
 
 | 원본 | Godot |
 |---|---|

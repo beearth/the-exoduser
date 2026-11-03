@@ -5,7 +5,7 @@ namespace Exoduser.UnityPort.Core
 {
     // Optional `opts` of the web hurtP(dmg, opts): damage over time, energy (magic / parry) damage type, knock-back direction.
     // The etype0 contact attack calls hurtP(dmg) without opts, so the knock-back direction is a random angle (game.html 43745).
-    public struct HurtOptions { public bool Dot, Magic, HasAngle, HasSource; public float Angle, SrcX, SrcY; }
+    public struct HurtOptions { public bool Dot, Magic, HasAngle, HasSource, Unparryable; public float Angle, SrcX, SrcY; public EnemyState MeleeEnemy; public string MeleeSource, Source; }
 
     // PC-B09: the player-hurt pipeline of hurtP (game.html 43563-43754): guards, dodge, shield-block branch (B07), defence / hit cap / minimum, B08 energy shield, HP,
     // poise stagger (B07 PlayerPoise), damage floater, damage-proportional knock-back, screen flash and shake, hit sound. Not ported (inputs the equipment / affix /
@@ -60,8 +60,10 @@ namespace Exoduser.UnityPort.Core
                 double dodgePct = Math.Min(35, (Crossbow.DexFlat + Math.Truncate(Player.Level * .5)) * .05 + DodgeAffix * 100);
                 if (NextRandom() * 100 < dodgePct) { DodgeCount++; return; }
             }
-            BlockFx blk;
-            if (CombatBeforeHurt(ref damage, o.Dot, out blk)) return;
+            if (!o.Dot && o.MeleeEnemy != null && !o.Unparryable && MeleeParry(o.MeleeEnemy,o.MeleeSource??"swing")) return;
+            if(o.Unparryable && ParryRules.IsParryWindow(Player.State,Player.StateTicks,0,SbParryT,CapeParry)) Stats.parryWrongInput++;
+            BlockFx blk=default(BlockFx);
+            if (!o.Unparryable && CombatBeforeHurt(ref damage, o.Dot, out blk, o.MeleeEnemy == null && o.Source != "proj")) return;
             if (blk.Active)
             {
                 // sBlock / peaceShield absorb (B07 ShieldBranch did the maths): failed-parry floater, knock-back, shake, sound, flash, rate floater
@@ -91,6 +93,7 @@ namespace Exoduser.UnityPort.Core
             else if (sh.FullBlock) HurtText(Player.X, Player.Y - 25, "-" + a, "-" + a, "#4488ff", 20);
             a = (int)sh.Damage;
             Player.Hp -= a; HurtDamage += a; HurtCount++; LastHurtAmount = a;
+            Stats.hurtCount++; CombatStats.Add(Stats.dmgTaken,o.Source??"hazard",a);
             if (o.Dot) { Player.Iframes = 0; }
             else
             {

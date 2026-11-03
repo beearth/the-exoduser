@@ -22,7 +22,7 @@ Godot 보존·최종 엔진 미확정. Unity의 실제 HP·독립MP/ST·쉴드 �
 | 미니맵 | 2585 130×130 캔버스/166×166 프레임; 60177~60233 타일·적·굴 마커 | P2-002b 구현 범위. 지역/필드보스 사이트·소환굴 생산자 후속은 별도 작업판 담당 |
 | 글꼴·최종 CSS | 117의 Nanum Myeongjo/Noto Serif KR 스택, 364 Cinzel; hudCorner는 외부 ui-refinement.css 재정의 존재 | game.html 기본값만으로 최종 화면 판정 금지. P2-002b 보강의 opacity .94는 외부 CSS·당시 실측 근거이며 game.html 기본 .48과 구분. 현재 브랜치의 Noto 대체와 P2-007a 후속을 구분 |
 
-새 화면 검수·Godot 테스트 PASS를 주장하지 않는다. 상세 대조표는 `docs/engine/orders/reports/DOC-SYNC_REPORT.md`.
+새 화면 검수·Godot 테스트 PASS를 주장하지 않는다. 상세 대조표는 `docs/_archive/engine/orders/reports/DOC-SYNC_REPORT.md`.
 
 > 2026-09-27 인벤토리 최신 창 규격은 [장비 시스템 최신 절](../2_7%20인벤토리+장비시스템/2_7%20인벤토리+장비시스템.md)의 `100dvh−24px`(620px 이하 `−8px`) 및 장비/가방/정보 가변폭 1.28fr/clamp(400px,30vw,600px)/1fr이다. 아래 기존 270px 장비 행과 680px 창 높이는 당시 제작 기록이다.
 
@@ -681,7 +681,7 @@ const HUD_ICON = {
 
 **변경점**:
 - 캐릭터 이름+레벨+EXP바를 철 프레임 블록으로 묶음
-- 리소스(킬/악의/SP)를 별도 블록으로
+- 리소스(킬/악의오브/SP)를 별도 블록으로
 - CP(전투력)를 별도 블록으로
 - "? 조작법" → 키보드 아이콘 "⌨"로 축소
 - `expBar`가 캐릭터 블록 안으로 이동
@@ -778,7 +778,7 @@ const HUD_ICON = {
 | 우측 상단 | `#hudLevelLabel` + `#lvLbl` | **레벨 10**처럼 이름+아라비아 숫자. `_hudRoman` 제거, 3999 표시 상한 제거 | `P.lv` | `updateHUD(true)`, `_hudReadableNumber()` |
 | 우측 상단 | `#hudExpLabel` + `#expTxt` → `경험치 {현재 EXP} / {필요 EXP}` | 천단위 쉼표, K/M 축약 없이 정확한 정수. 기존 경험치 라인 유지 | `P.exp`, `P.maxExp` | `updateHUD()` |
 | 우측 상단(목표 패널 `#mmLvl`) | `#hudKillLabel` + `#killCnt` → `지역 처치 {처치} / {총스폰}` | 아이콘 대신 뜻이 명확한 라벨과 천단위 쉼표를 표시. 현재 스테이지 진행도(`#stageProgressFill`과 동일 분모) | `G._stageKills / G._totalSpawned` | `updateHUD(true)`, `_hudPulse('killCnt',_stageK)` |
-| 우측 상단 | `#hudMaliceLabel` + `#matCnt` | `악의 6,600,000`처럼 정수 전체와 천단위 쉼표 표시. 기존 K/M/B 축약 제거 | `G.mats` | `updateHUD(true)`, `_hudReadableNumber()` |
+| 우측 상단 | `#hudMaliceLabel` + `#matCnt` | `악의오브 6,600,000`처럼 정수 전체와 천단위 쉼표 표시. 기존 K/M/B 축약 제거 | `G.mats` | `updateHUD(true)`, `_hudReadableNumber()` |
 
 > **[2026-08-18 correctness fix] 처치 카운터 분자 stale (game.html:50934)**
 > - **버그**: `#killCnt`가 `G.kills`(런 전체 누적) / `G._totalSpawned`(스테이지별 스폰) 조합이라, 2번째 지역부터 분자>분모(예: `150 / 92`)로 100% 초과 표시. 바로 아래 진행바(`#stageProgressFill`)는 `G._stageKills/_totalSpawned`로 정상 → 카운터만 어긋남.
@@ -810,8 +810,9 @@ const HUD_ICON = {
 - **2열 행**: 라벨 --font-hell ls.2em #c2b6a9 / 수치 Cinzel #e6d6b9(점수 1.18rem 강조), 기준(par) #8d7c65 소자.
 - **breakdown**: 2열 그리드, 항목별 라벨 좌(#9a8a72 명조)/수치 우(Cinzel #c9bda6, 감점 −표기 #a8776a), 점선 리더(rgba(164,147,115,.16)). 항목: 처치/지역 정화/보스 처치/시간 보너스/(무사망)/(무피격)/최대콤보/(사망 감점).
 - **베스트 행**: 상단 헤어라인 구분, `베스트 t · s · r`(랭크 레터는 랭크색 제목체). **신기록 씰**: 금 보더 소형 태그(rgba(216,183,120,.6) 보더, #d8b778, ls.2em) — 이모지 아님.
-- **[4차] 헤더/버튼**: `#clearTitle` #areaTitle 계열(제목체 1.3rem+금 헤어라인)+`#clearTitleEn`(Cinzel 영문 장식줄 ZONE CLEARED/HELL ESCAPED, 항상 영어), `#clearSub` 명조 뼈-은은, `#nextBtn` UI_COMPOSITION 표준 암적색 행동 버튼 마감(min 44px, 기능·id·리스너 무변). 본행/breakdown/베스트 라벨 13px(#cfc3b0/#c5b8a3), par 12px, 타임 1.12rem/점수 1.3rem.
+- **[4차] 헤더/버튼**: `#clearTitle` #areaTitle 계열(제목체 1.3rem+금 헤어라인)+`#clearTitleEn`(Cinzel 영문 장식줄 ZONE CLEARED/LAYER BROKEN, 항상 영어), `#clearSub` 명조 뼈-은은, `#nextBtn` UI_COMPOSITION 표준 암적색 행동 버튼 마감(min 44px, 기능·id·리스너 무변). 본행/breakdown/베스트 라벨 13px(#cfc3b0/#c5b8a3), par 12px, 타임 1.12rem/점수 1.3rem.
 - **하위 `#clearStats`**: 이모지·원색 제거, 명조 #9a8a72/#bcab90 저채도 톤 + `·` 구분자(데이터·의미 무변, 뱃지 텍스트만 유지).
+- **[2026-10-28 실버 헬] 지옥보스 클리어**: 제목 아이콘 진홍 눈(`_glyph('eye','#c21a10',16)`, 옛 금색 자물쇠), `showPH`·떠오르는 글자 "{장} 돌파!"·`+10 SP` 은빛 `#e6e3dc`(옛 네온 초록 `#44ffaa`), `.ph` 팝업 글꼴 `var(--font-hell)` 800(옛 Noto Sans KR 900). 상세 `DESIGN_CONCEPT_SILVER_HELL_20261028.md` §6.2.
 클리어 타임=보스 사망 시점 `G.stageTime` 스냅샷(일시정지/튜토리얼/시네마틱 자동 제외). DOM 안전: 전용 리프 innerHTML만. 데모에선 demoEnd 이전에 표시. nextBtn 진행 흐름 무변경.
 
 ### 지역 진입 연출
@@ -917,7 +918,7 @@ grep "hud.*::before" game.html  # 2개
 | 요소 | 변경 전 | 변경 후 |
 |---|---|---|
 | ✦SP/◇CP 자원 | `#hudTop` 상단 중앙 (시계 아래 나열) | 신설 `#hudCorner` 좌측 상단(미니맵 아래 top=`188px×--ui-scale + safe-area-top`), Cinzel .62rem, opacity **.48** |
-| 우측 목표 프레임 `.objective-frame` | `display:none` (킬/악의 숨김) | 2026-09-10: `#mmLvl` 전체를 하나의 패널로 묶고 `.objective-frame`은 상단 구분선만 표시. 지역 처치/악의 라벨 추가 |
+| 우측 목표 프레임 `.objective-frame` | `display:none` (킬/악의오브 숨김) | 2026-09-10: `#mmLvl` 전체를 하나의 패널로 묶고 `.objective-frame`은 상단 구분선만 표시. 지역 처치/악의오브 라벨 추가 |
 | `#killCnt` | JS가 `☠ 0 / 0` 기록 (아이콘 span과 중복) | 2026-09-10: `지역 처치` 라벨 + 천단위 쉼표 숫자 `0 / 1,100` |
 | `#expF` 경험치 라인 | 밝은 골드 그라디언트 | 뮤트 브론즈 rgba(122,101,72,.55)→rgba(196,171,124,.85), 2px 룬 라인 |
 | CP 숫자 | 원시값 그대로 | `1,584` 천단위 구분, 10만 이상은 `1.06M` 압축 |
@@ -932,7 +933,7 @@ grep "hud.*::before" game.html  # 2개
 - `#areaTitle` 지역 진입 타이틀: `제N구역 · 이름` + `THE ~` 영문 각인체, 3.1s fade in/out ✓
 - `#stageClock` 상단 중앙 `02:19` (TIME 텍스트 없음) + 2px 진행 룬 라인 (숫자 % 없음), opacity .57 ✓
 - TIME/CLEAR/TOTAL 나열 HUD는 1차 정비에서 이미 제거 — 구버전(_deployed_game.html 6/16)에만 존재. **배포 동기화 필요.**
-- 우측 상단은 2026-09-10 가독성 개선으로 `#mmLvl.on` opacity1, 레벨·경험치·지역 처치·악의 라벨+정수 표기 적용.
+- 우측 상단은 2026-09-10 가독성 개선으로 `#mmLvl.on` opacity1, 레벨·경험치·지역 처치·악의오브 라벨+정수 표기 적용.
 
 ### 색상 규칙 (준수)
 dirty ivory `rgba(214,205,187)` / aged silver `rgba(196,187,168)` / dark iron `rgba(88,72,54)` / muted bronze `rgba(196,171,124)` — 순백·네온·시안 금지, 적색은 위험/최상위 티어 한정.
@@ -946,7 +947,7 @@ dirty ivory `rgba(214,205,187)` / aged silver `rgba(196,187,168)` / dark iron `r
 | 레벨 | `hudLevelLabel` + `lvLbl`: 레벨10 (기존 X). 로마숫자 함수 제거 |
 | 경험치 | `hudExpLabel` + `expTxt`: 경험치7 / 45. 현재/다음 레벨 필요 경험치 |
 | 지역 처치 | `hudKillLabel` + `killCnt`: 지역 처치0 / 1,100. `_stageKills / _totalSpawned` 유지 |
-| 악의 | `hudMaliceLabel` + `matCnt`: 악의6,600,000. K/M/B 대신 전체 정수 |
+| 악의오브 | `hudMaliceLabel` + `matCnt`: 악의오브6,600,000. K/M/B 대신 전체 정수 |
 | 포맷 | `_hudNumberFormatter`: 재사용 `Intl.NumberFormat('en-US',{maximumFractionDigits:0})`. `_hudReadableNumber`: `max(0,floor(Number(n)||0))`에 천단위 쉼표 |
 | 외형 | 최소200px, padding10px 12px, on opacity1, 바깥1px 브론즈 선. 레벨 .94rem/700, 라벨·행 .75rem, 행최소21px, 행간3px, 수치 tabular-nums |
 | 색상 | 수치 #eee4d4, 라벨 #cbbd9f, 레벨 #f2e6cb, 경험치 #dfcfaa(Lv1000+ #d6aaff). 배경 rgba(12,13,15,.88)→rgba(9,10,12,.76) |
@@ -1048,7 +1049,7 @@ dirty ivory `rgba(214,205,187)` / aged silver `rgba(196,187,168)` / dark iron `r
 | 항목 | 현재 계약 |
 |---|---|
 | 인벤토리 제목판 | 직계 헤더의 .ptitle display:none. 제목 이미지와 가상요소도 표시하지 않음 |
-| 정보행 | 전투력/악의/닫기 유지. gap0, margin4px 0 8px |
+| 정보행 | 전투력/악의오브/닫기 유지. gap0, margin4px 0 8px |
 | 높이 배분 | 장비 탭 inv-wrap 첫 행270px, 가방 행 minmax(min-content,1fr). invCenter height:auto/min-height260px,invGrid height140px/flex1 1 140px. 필터 높이를 반영하며 나머지 높이는 가방에 배정. 작은 화면은 기존 바깥 세로 스크롤 사용 |
 | 적용 범위 | 인벤토리 내부 장비/유골함/보석/보관함 페이지 공통. 다른 메뉴 제목 유지 |
 
@@ -1097,7 +1098,7 @@ CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 
 
 | 대상 / id | 현행 구현·검수 |
 |---|---|
-| 사용자 기준 | 획득 배지가 없으면 HUD에 배지0/3·빈 버튼·자리 표시를 남기지 않는다. 지역 처치·악의 수치를 가리지 않는다 |
+| 사용자 기준 | 획득 배지가 없으면 HUD에 배지0/3·빈 버튼·자리 표시를 남기지 않는다. 지역 처치·악의오브 수치를 가리지 않는다 |
 | 표시 조건 | tutorial-badges.js의 init에서 button.hidden=true로 시작. render에서 count=Object.keys(earned).length; count===0이면 button/panel hidden=true 및 aria-expanded=false. 1~3개 획득·복원 시 button.hidden=false. 언어 갱신에도 같은 조건 적용 |
 | 모음 열기 | toggle(open)은 button.hidden이면 열기를 거부하며 숨긴 버튼에 focus하지 않는다. 배지가 있으면 기존 닫기 초점/버튼 복귀·aria-expanded·3개 카드 정책 유지 |
 | 위치 | button과 collection을 #mmLvl의 자식으로 연결. 둘 모두 position:absolute/right0/pointer-events:auto; 버튼 top:calc(100% + 8px),모음 top:calc(100% + 46px). 상태창의 기존 크기·UI배율·safe-area 이동을 따라가며 수치 행과 겹치지 않음 |

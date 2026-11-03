@@ -47,6 +47,7 @@ namespace Exoduser.UnityPort {
    fill.transform.position=ground+floor*new Vector3(-.7f,1.8f,-1.4f);
    rim.transform.position=ground+floor*new Vector3(.9f,1.5f,1.1f);
   }
+  public void PixelLighting(){if(fill!=null)fill.enabled=false;if(rim!=null)rim.enabled=false;motion?.EnableRigPixelMotion();}
   public float FootError(){
    if(!Ready||leftFoot==null||rightFoot==null)return 0;
    return Mathf.Min(model.transform.InverseTransformPoint(leftFoot.position).y,model.transform.InverseTransformPoint(rightFoot.position).y)-.055f;

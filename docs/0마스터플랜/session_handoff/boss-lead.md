@@ -1,8 +1,10 @@
 # 보스전 총괄 인계 — 최신 (2026-11-03)
 
-> **정본 위치(11-03 규칙 정리)**: 이 문서의 정본은 origin/unity/main이다. main에는 위치 안내만 둔다.
+> **정본 위치(11-03 규칙 정리)**: 이 문서의 정본은 origin/unity/main이다. main에는 위치 안내만 둔다. 옮긴 커밋: unity/main `342aa0de3`(내용은 main `354693bd8` 기준 + 11-03 G1 판정 반영).
 >
-> **11-03 최신 — M1 메시 완료**: 형태 PASS(조건부), 34° 29.8%, 조각 0, Tripo 불필요. 노인 코어 시트(`23_G1_oldman_turnaround.png`)는 RETOUCH(경미). M2·M3 패키지는 `gpt/meshy_m2/`(원 세션 실행, 원장 예약 35cr)이고 누계 65cr/395cr. 다음은 디자인총괄 판정 → M2 → 높이 실측 → M3, 그리고 Blender 부위 분할. 기획서 §21.
+> **11-03 최신 — M3 리깅·정리 v1**: Meshy 이번 승인분이 끝났다(M1·M2·M3 65cr/395cr). 리그 검사 결과와 정리 v1(`I:/EXODUSER-Storage/boss/greybox-20261103/m3_clean/`)을 마쳤다. 남은 Blender 정리 순서는 기획서 §24 표다. 유료 호출은 원 세션만 한다(보드 역할 분담).
+>
+> **11-03 — M1 메시 완료**: 형태 PASS(조건부), 34° 29.8%, 조각 0, Tripo 불필요. 노인 코어 시트(`23_G1_oldman_turnaround.png`)는 RETOUCH(경미). M2·M3 패키지는 `gpt/meshy_m2/`(원 세션 실행, 원장 예약 35cr)이고 누계 65cr/395cr. 다음은 디자인총괄 판정 → M2 → 높이 실측 → M3, 그리고 Blender 부위 분할. 기획서 §21.
 >
 > **11-03 — G1 판정 반영, Meshy 보류**: 디자인총괄 RETOUCH(경미)·메시 입력 허가. CTO가 사용자에게 Meshy 키/Tripo 웹 선택을 묻는 중이다. M1 패키지(`gpt/meshy_m1/`), 디칼(`gpt/decal/`), 노인 시트 스크립트(`gpt/gen_boss_g1_oldman.py`, G1 남은 2회)는 준비됐고 호출은 0이다. G3는 65cr. RB1-7 변경표는 RM1 §13.4(Unity 배정은 CTO). 기획서 §20.
 >

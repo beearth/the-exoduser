@@ -55,7 +55,7 @@
 | 날짜 | 버전 | BuildID | 공개 | 패치노트 |
 |---|---|---|---|---|
 | 2026-10-10 | 0.7.0 | 25842101 | 대기 (Set Live 사용자 확인) | v0.7.0.md (final), Steam 게시 대기 |
-| 2026-11-03 | Unity beta (unity/main b8214e5) | 26401646 | `unity-beta` 브랜치(비밀번호)만. default는 웹판 **25482996**(09-23) 유지 — 이전 기록의 25202408은 오기 | 미게시. 실행 옵션 1(`EXODUSER-Unity.exe`, 베타 키 unity-beta) 저장·앱 게시 대기. 전환 준비: `STEAM_UNITY_DEFAULT_READINESS_20261103.md` |
+| 2026-11-03 | Unity | 26401646 (본편 unity-beta)·26404441 (체험판) | 비공개 | Unity 배포 기록·절차는 origin/unity/main 이 문서 §12와 `STEAM_UNITY_DEMO_20261103.md`. 본편 default는 웹판 25482996(이전 기록 25202408은 오기) |
 
 ## 7. 구현 도구 (2026-10-09 구축)
 

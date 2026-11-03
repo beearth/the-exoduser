@@ -5,7 +5,7 @@ namespace Exoduser.UnityPort
     public sealed partial class NativeLobby
     {
         GUIStyle silverName,silverBody,silverMicro;
-        Texture2D silverLobbyPoster;
+        Texture2D silverLobbyPoster,lobbySlotPortrait;
         sealed class SilverSlotSummary{internal int level=1,stage;internal bool unreadable;}
         readonly System.Collections.Generic.Dictionary<string,SilverSlotSummary> silverSlotSummaries=new System.Collections.Generic.Dictionary<string,SilverSlotSummary>();
         string SilverSlotCaption(string name)
@@ -44,6 +44,7 @@ namespace Exoduser.UnityPort
             SilverStyles();
             var edgeMatrix=GUI.matrix;GUI.matrix=NativeUiViewport.RightMatrix;NativeUiAudit.Region(new Rect(1360,0,560,1080),"component","frontend-right","로비 오른쪽 레일");
             NativeUiAudit.DrawTexture(new Rect(1360,0,560,1080),lobbySilverShade);
+            NativeSilverHellUi.FrameOnly(new Rect(1368,8,544,1064));
             var lang=new Rect(1424,188,140,36);
             SilverLabel(lang,LobbyLanguageLabel(Language),silverMicro,TextAnchor.MiddleLeft);
             Fill(new Rect(1424,217,140,1),new Color(.61f,.62f,.62f,.3f));
@@ -65,15 +66,18 @@ namespace Exoduser.UnityPort
                 if(name.Length==0)continue;
                 var card=new Rect(1428,421+n*94,390,84);
                 bool selected=index==Characters.SelectedIndex;
-                if(selected)
-                {
+                if(selected){
                     Fill(card,new Color(194/255f,26/255f,16/255f,.1f));
                     Fill(new Rect(card.x,card.y,2,card.height),new Color(194/255f,26/255f,16/255f));
                 }
-                Fill(new Rect(card.x,card.yMax-1,card.width,1),new Color(.61f,.62f,.62f,.13f));
-                DrawSpaced(1450,card.y+10,32,name,silverName.font,22,22*.08f,NativeSilverHellUi.Text,true);
-                SilverLabel(new Rect(1600,card.y+20,160,20),K("전사","WARRIOR"),silverMicro,TextAnchor.MiddleLeft);
-                SilverLabel(new Rect(1450,card.y+52,342,24),SilverSlotCaption(name),silverBody,TextAnchor.MiddleLeft);
+                Border(card,new Color(.61f,.62f,.62f,.13f),1);
+                var portrait=new Rect(card.x+14,card.y+14,56,56);
+                if(lobbySlotPortrait==null)lobbySlotPortrait=Resources.Load<Texture2D>("Art/CharacterSelect/portrait_warrior")??Resources.Load<Texture2D>("Art/lobby/warrior_portrait");
+                Image(new Rect(portrait.x+1,portrait.y+1,54,54),lobbySlotPortrait,ScaleMode.ScaleAndCrop);
+                Border(portrait,new Color(.61f,.62f,.62f,.25f),1);
+                DrawSpaced(1510,card.y+9,30,name,silverName.font,20,20*.08f,NativeSilverHellUi.Text,true);
+                SilverLabel(new Rect(1690,card.y+17,86,20),K("전사","WARRIOR"),silverMicro,TextAnchor.MiddleRight);
+                SilverLabel(new Rect(1510,card.y+49,266,24),SilverSlotCaption(name),silverBody,TextAnchor.MiddleLeft);
                 GUI.SetNextControlName("character-slot-"+index);if(NativeUiAudit.Button(new Rect(card.x,card.y,345,84),"",GUIStyle.none))SelectCharacter(index);
                 if((selected||card.Contains(Event.current.mousePosition))&&NativeUiAudit.Button(new Rect(1782,card.y+21,30,34),"×",silverBody))RequestCharacterDelete(index);
             }
@@ -82,8 +86,11 @@ namespace Exoduser.UnityPort
             {
                 fontSize=15,wordWrap=true
             };
-            string createLabel="+ "+K("새 캐릭터","New character");
-            SilverLabel(new Rect(1450,609,286,64),createLabel,createStyle,TextAnchor.MiddleLeft);
+            Border(create,new Color(.61f,.62f,.62f,.3f),1);
+            var plus=new Rect(create.x+14,create.y+12,40,40);Border(plus,new Color(.61f,.62f,.62f,.3f),1);
+            SilverLabel(plus,"+",silverName,TextAnchor.MiddleCenter);
+            string createLabel=K("새 캐릭터","New character");
+            SilverLabel(new Rect(1510,609,220,64),createLabel,createStyle,TextAnchor.MiddleLeft);
             SilverLabel(new Rect(1750,609,78,64),Characters.Count.ToString(),silverBody,TextAnchor.MiddleRight);
             Fill(new Rect(1428,672,400,1),new Color(.61f,.62f,.62f,.13f));
             GUI.enabled=controls&&characterWritesAllowed;
@@ -95,14 +102,11 @@ namespace Exoduser.UnityPort
                 characterRestoreCreateFocus=false;
             }
             GUI.enabled=controls;
-            var play=new Rect(1428,722,400,76);
-            bool canEnter=controls&&Characters.SelectedIndex>=0;
-            var tint=GUI.color;if(!canEnter)GUI.color=new Color(tint.r*.52f,tint.g*.52f,tint.b*.52f,tint.a);
-            NativeSilverHellUi.ActionPlate(play,canEnter,canEnter&&play.Contains(Event.current.mousePosition)?1:0,!AutomatedInput&&play.Contains(Event.current.mousePosition)&&ExoInput.Mouse(0));
-            GUI.color=tint;
-            var enterText=K("입장","ENTER");float enterSpacing=22*.14f,enterWidth=SpacedWidth(silverName.font,22,enterText,enterSpacing)-enterSpacing;
-            DrawSpaced(play.center.x-enterWidth/2,play.y,play.height,enterText,silverName.font,22,enterSpacing,canEnter?NativeSilverHellUi.Bright:NativeSilverHellUi.Dim,true);
-            GUI.enabled=controls&&Characters.SelectedIndex>=0;
+            var play=new Rect(1428,702,416,156);
+            bool canEnter=controls&&Characters.SelectedIndex>=0&&NativeSilverHellUi.ReviewState!="disabled";
+            NativeSilverHellUi.ArtImage(play,canEnter?lobbySilverEnter:lobbySilverDisabled);
+            // ENTER is baked into the source painting. No duplicate translated label.
+            GUI.enabled=canEnter;
             GUI.SetNextControlName("lobby-enter");DrawEntryHover(play,canEnter);if(EntrySoundButton(play))EnterSelectedCharacter();
             GUI.enabled=controls;
             SilverLabel(new Rect(1424,866,100,42),K("▶ 시네마틱","▶ Cinematic"),silverMicro,TextAnchor.MiddleLeft);

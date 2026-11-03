@@ -124,8 +124,10 @@ namespace Exoduser.UnityPort {
             Txt(new Rect(50+dx,105,34,18),"전투력",12,C(105,108,108),400);
             // #cpVal: 21px / 600, text-shadow 0 0 8px rgba(255,200,0,.3).
             var cpRect=new Rect(90+dx,101,60,25);string cpText=power.Total.ToString();
-            TxtGlow(cpRect,cpText,21,C(255,200,0,.3f),600);
-            Txt(cpRect,cpText,21,C(200,197,191),600);
+            using(var paint=NativeUiAudit.GroupText(cpRect,cpText)){
+                TxtGlow(cpRect,cpText,21,C(255,200,0,.3f),600);
+                Txt(cpRect,cpText,21,C(200,197,191),600);
+            }
             // #cpBreak: 12x12 viewBox-24 svg icons (stroke 1.6 -> .8px, drop-shadow 0 0 5px) followed by "value " text.
             float bx=145.8f+dx;int[] vals={power.Atk,power.Def,power.Extra};
             for(int i=0;i<3;i++){

@@ -145,18 +145,19 @@ namespace Exoduser.UnityPort
   }
   void SpacedLine(string s, float cx, float cy, int size, float ls, Color col, Font latin, Vector2 off)
   {
-   float w = SpacedWidth(s, size, ls, latin); float x = cx - w / 2f + off.x;
+   float w = SpacedWidth(s, size, ls, latin); float logicalX = cx - w / 2f; float x = logicalX + off.x;
    foreach (char ch in s)
    {
     bool lt = latin != null && Latin(ch); var f = lt ? latin : nanum; var st = St(f, size, TextAnchor.MiddleLeft, lt ? latinFs : FontStyle.Normal); st.normal.textColor = col;
-    NativeSilverHellUi.Label(new Rect(x, cy + off.y - size, 80, size * 2), ch.ToString(), st);
-    x += CharW(ch, size, latin) + ls;
+    using(var paint=NativeUiAudit.GroupText(new Rect(logicalX,cy-size,80,size*2),ch.ToString()))
+     NativeSilverHellUi.Label(new Rect(x, cy + off.y - size, 80, size * 2), ch.ToString(), st);
+    float advance=CharW(ch,size,latin)+ls; x += advance;logicalX += advance;
    }
   }
   // soft shadow / blur approximation: ring of offset copies with the total alpha preserved
   void Ring(string s, float cx, float cy, int size, float ls, Font lc, Color col, float radius, float dy)
   {
-   bool previous=NativeUiAudit.DrawingTextShadow;string profile=NativeUiAudit.DrawingTextShadowProfile;try{if(col.r==0&&col.g==0&&col.b==0&&radius==5&&dy==4){NativeUiAudit.DrawingTextShadow=true;NativeUiAudit.DrawingTextShadowProfile="region-banner-black-shadow";}for (int i = 0; i < 8; i++) { float a = i * Mathf.PI / 4; SpacedLine(s, cx, cy, size, ls, new Color(col.r, col.g, col.b, col.a * .07f), lc, new Vector2(Mathf.Cos(a) * radius, dy + Mathf.Sin(a) * radius)); }}finally{NativeUiAudit.DrawingTextShadow=previous;NativeUiAudit.DrawingTextShadowProfile=profile;}
+   bool previous=NativeUiAudit.DrawingTextShadow;string profile=NativeUiAudit.DrawingTextShadowProfile;try{NativeUiAudit.DrawingTextShadow=true;NativeUiAudit.DrawingTextShadowProfile=col.r==0&&col.g==0&&col.b==0&&radius==5&&dy==4?"region-banner-black-shadow":"region-banner-blur";for (int i = 0; i < 8; i++) { float a = i * Mathf.PI / 4; SpacedLine(s, cx, cy, size, ls, new Color(col.r, col.g, col.b, col.a * .07f), lc, new Vector2(Mathf.Cos(a) * radius, dy + Mathf.Sin(a) * radius)); }}finally{NativeUiAudit.DrawingTextShadow=previous;NativeUiAudit.DrawingTextShadowProfile=profile;}
   }
   static float Ease(float x)   // cubic-bezier(.42,0,.58,1) by bisection
   {
