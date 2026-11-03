@@ -228,3 +228,8 @@ R3 전체1395/18건/로딩관측누락15는FAIL그대로다. 새검수전0건이
 2. 새 HEAD로 정식 빌드 1회, 같은 패키지 M1 23/23 + 정상 종료, ko/de/fr ×5해상도 1410장 issueCount0·로딩 관측 누락0·중단0. 다섯 해상도 모두 lockedBlocked/nameOpened=true. 기존 R5 결과는 스크롤 계측 양성 증거가 없으므로 새 후보 PASS로 재사용하지 않는다.
 3. 같은 패키지 캡처 폴더에 대해 unity/Tools/ui-overlap/scroll-ink.py --candidate <절대캡처폴더> --output <절대영수증경로>를 Mac Python3+Pillow로 실행한다. --self-test는 검사기 교정만이며 이를 제품 PASS로 쓰지 않는다. 누락된 글자/빈 잉크/해상도 불일치/글자 밖 감사 상자는 FAIL이다. 고정 ko4장은 겹침 분석의 허용오차나 문자열 제외를 바꾸지 않는 별도 게이트다.
 4. 슬롯04·09 및 대장간은 웹3333과 같은 크기로 나란히1x 확인한다. 모든 게이트 후 최신 unity/main 정상 병합·비강제 반영과 REPORT 공통 SHA를 별도로 기록한다. 바탕화면 직접 교체0. 전체5차 잔여·번역/폰트 등은 RETOUCH 유지.
+
+
+### Mac 인계 직전 공통 병합 확인
+
+재fetch에서 공통 원격은 c741c11c27 이후 b47885989692b81d63eeeb38ac5f8b50bd1b02f8로 전진했다. 자연1-1 fullrun·프런트엔드·미니맵·입력 보존과 devtools 종료 직후 창 오검출 교정을 자기 브랜치에 정상 병합했다. merge ebe1b5ca65ee82b2cb6887cb1c65b3adade26eae, CTO 수정 커밋 c94938d651. 위임 스텁과 창 감지 수정은 서로 보존했고 충돌0이었다. 새 Runtime 소스5개까지 포함한240개 + Core 전체를 병합 후 다시 컴파일하여 exit0/0, 실행기 격리5/5를 재확인했다. 최종 문서 커밋은 이와 같은 Runtime 입력이다. 공통 브랜치로 push하지 않고 자기 브랜치만 Mac 검수 후보로 push한다. guard WIP의 SHA256은 시작값9414ce48…과 동일하다.
