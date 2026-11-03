@@ -69,12 +69,13 @@ function Get-DesktopProcessExitCode {
     param($Process)
     [uint32]$code = 0
     [void][HD]::GetExitCodeProcess($Process.hProcess, [ref]$code)
-    return [int]$code
+    # 11-04 r17: 밖에서 강제 종료하면 0xFFFFFFFF(4294967295)이 와서 [int] 변환이 예외를 내고 영수증이 사라졌다. 비트 그대로 부호 있는 값으로 읽는다(-1).
+    return [BitConverter]::ToInt32([BitConverter]::GetBytes($code), 0)
 }
 
 function Stop-DesktopProcess {
     param($Process, [int]$ExitCode = 99)
-    [void][HD]::TerminateProcess($Process.hProcess, [uint32]$ExitCode)
+    [void][HD]::TerminateProcess($Process.hProcess, [BitConverter]::ToUInt32([BitConverter]::GetBytes($ExitCode), 0))
 }
 
 function Close-DesktopProcess {

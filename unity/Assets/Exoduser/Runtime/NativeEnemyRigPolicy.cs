@@ -34,6 +34,9 @@ namespace Exoduser.UnityPort {
  [Serializable] public sealed class EnemyRigDefinition {
   public int etype;public bool startEyeMass;public string modelResource,animator;public float baseRadius,height,chestRatio=.55f,stride=80;public int deathTicks=45;
   public string idle,move,tell,active,recover,hit,stagger,death;
+  // 11-04 30-species table. Defaults keep the older 6 rows byte-for-byte equivalent: no cross-fade, no extra data.
+  // blendTicks: Core ticks of cross-fade when the clip changes (carapace attack_tele->attack_act joint jump). sockets/extras/retouch/source are documentation read by the editor check and the tests only.
+  public int blendTicks;public string[] sockets=Array.Empty<string>(),extras=Array.Empty<string>();public string retouch,source;
   public bool Matches(EnemyState enemy){return enemy!=null&&!enemy.IsBoss&&!enemy.IsGhoul&&enemy.Etype==etype&&enemy.IsStartEyeMass==startEyeMass;}
   public string Clip(EnemyRigState state){switch(state){case EnemyRigState.Move:return move;case EnemyRigState.Tell:return tell;case EnemyRigState.Active:return active;case EnemyRigState.Recover:return recover;case EnemyRigState.Hit:return hit;case EnemyRigState.Stagger:return stagger;case EnemyRigState.Death:return death;default:return idle;}}
  }

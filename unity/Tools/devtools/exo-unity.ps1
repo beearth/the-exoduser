@@ -45,7 +45,7 @@ if($Command -ne 'install-bin' -and $env:EXO_UNITY_NO_FORWARD -ne '1' -and
     exit $LASTEXITCODE
 }
 
-$ExoUnityVersion = '2026.11.03-slots3'
+$ExoUnityVersion = '2026.11.04-sharedlog'
 $MaxPlayerSlots = 2
 Import-Module (Join-Path $PSScriptRoot 'QueueTurn.psm1') -Force
 try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false) } catch { }
@@ -61,6 +61,13 @@ $Utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 function Say([string]$m) { [Console]::Error.WriteLine('[exo-unity] ' + $m) }
 function NowIso { [DateTime]::UtcNow.ToString('yyyy-MM-ddTHH:mm:ss.fffZ') }
 function Stamp { [DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfff') }
+
+# 11-04: 종료 중 커널에서 멈춘 Player는 강제 종료 뒤에도 -logFile 쓰기 핸들을 쥔다. ReadAllText(FileShare.Read)는
+# 그 핸들과 충돌해 IOException을 내고 영수증을 잃었다(UI 후보 57be03df·02ef0c30). 쓰는 쪽과 함께 열어 읽는다.
+function Read-SharedText([string]$p) {
+    $fs = New-Object IO.FileStream($p, [IO.FileMode]::Open, [IO.FileAccess]::Read, ([IO.FileShare]::ReadWrite -bor [IO.FileShare]::Delete))
+    try { $sr = New-Object IO.StreamReader($fs, $true); return $sr.ReadToEnd() } finally { $fs.Dispose() }
+}
 
 function Read-Json([string]$p) {
     for ($i = 0; $i -lt 5; $i++) {
@@ -611,7 +618,47 @@ function Acquire-Slot([string]$Role, [string]$wt, [int]$ownerPid, [string]$queue
 }
 
 # ------------------------------------------------------------------ start
+# 11-04: Codex node_repl 등 제한된 부모는 ProgramData·ProgramFiles·APPDATA·ComSpec·PATHEXT 없이 이 CLI를 띄운다.
+# 그 환경을 물려받은 Unity는 UnityPackageManager.exe가 IPC를 열지 못해 30초 뒤 exit 1로 끝난다(r14·r15).
+# 빈 변수만 이 프로세스 범위에서 Windows 알려진 폴더 값으로 채운다. 이미 있는 값·시스템 설정은 바꾸지 않는다.
+function Repair-WindowsEnv {
+    $sf = [Environment+SpecialFolder]
+    $win = [Environment]::GetFolderPath($sf::Windows)
+    $want = [ordered]@{
+        'SystemRoot' = $win; 'windir' = $win; 'SystemDrive' = $win.Substring(0, 2)
+        'ComSpec' = (Join-Path $win 'System32\cmd.exe')
+        'USERPROFILE' = [Environment]::GetFolderPath($sf::UserProfile)
+        'APPDATA' = [Environment]::GetFolderPath($sf::ApplicationData)
+        'LOCALAPPDATA' = [Environment]::GetFolderPath($sf::LocalApplicationData)
+        'ProgramData' = [Environment]::GetFolderPath($sf::CommonApplicationData)
+        'ALLUSERSPROFILE' = [Environment]::GetFolderPath($sf::CommonApplicationData)
+        'ProgramFiles' = [Environment]::GetFolderPath($sf::ProgramFiles)
+        'ProgramW6432' = [Environment]::GetFolderPath($sf::ProgramFiles)
+        'ProgramFiles(x86)' = [Environment]::GetFolderPath($sf::ProgramFilesX86)
+        'CommonProgramFiles' = [Environment]::GetFolderPath($sf::CommonProgramFiles)
+        'CommonProgramW6432' = [Environment]::GetFolderPath($sf::CommonProgramFiles)
+        'CommonProgramFiles(x86)' = [Environment]::GetFolderPath($sf::CommonProgramFilesX86)
+    }
+    $fixed = @()
+    foreach ($k in $want.Keys) {
+        if (-not [Environment]::GetEnvironmentVariable($k, 'Process') -and $want[$k]) { [Environment]::SetEnvironmentVariable($k, $want[$k], 'Process'); $fixed += $k }
+    }
+    $prof = [Environment]::GetEnvironmentVariable('USERPROFILE', 'Process')
+    if (-not $env:HOMEDRIVE) { $env:HOMEDRIVE = $prof.Substring(0, 2); $fixed += 'HOMEDRIVE' }
+    if (-not $env:HOMEPATH) { $env:HOMEPATH = $prof.Substring(2); $fixed += 'HOMEPATH' }
+    foreach ($k in 'TEMP', 'TMP') { if (-not [Environment]::GetEnvironmentVariable($k, 'Process')) { [Environment]::SetEnvironmentVariable($k, (Join-Path $env:LOCALAPPDATA 'Temp'), 'Process'); $fixed += $k } }
+    if (@($env:PATHEXT -split ';') -notcontains '.EXE') {
+        $m = [Environment]::GetEnvironmentVariable('PATHEXT', 'Machine'); if (-not $m) { $m = '.COM;.EXE;.BAT;.CMD' }
+        $env:PATHEXT = $m; $fixed += 'PATHEXT'
+    }
+    $sys = Join-Path $win 'System32'
+    if (@($env:Path -split ';' | ForEach-Object { $_.TrimEnd('\') }) -notcontains $sys) { $env:Path = $sys + ';' + $win + ';' + $env:Path; $fixed += 'Path' }
+    return , $fixed
+}
+
 function Set-DotnetEnv {
+    $fixed = Repair-WindowsEnv
+    if ($fixed.Count) { Say ('Windows 기본 환경 보정(이 프로세스만): ' + ($fixed -join ', ')) }
     $env:DOTNET_ADD_GLOBAL_TOOLS_TO_PATH = 'false'; $env:DOTNET_SKIP_FIRST_TIME_EXPERIENCE = '1'
     $env:DOTNET_NOLOGO = '1'; $env:DOTNET_CLI_HOME = 'E:/exoduser-wt/_dotnet-home'
 }
@@ -1133,8 +1180,11 @@ function Invoke-Guarded([string]$File, [string[]]$ArgList, [string]$Cwd, [int]$l
     }
     $exit = 0
     if ($proc.HasExited) {
-        if ($HiddenDesktop) { $exit = Get-DesktopProcessExitCode $dproc }
-        else { $exit = $proc.ExitCode }
+        # 종료 코드를 못 읽어도 아래 정리·숨은 데스크톱 닫기·영수증은 계속한다(11-04 r17 영수증 유실).
+        try {
+            if ($HiddenDesktop) { $exit = Get-DesktopProcessExitCode $dproc }
+            else { $exit = $proc.ExitCode }
+        } catch { $warnings += ('종료 코드 읽기 실패: ' + $_.Exception.Message); $exit = -1 }
     }
     else {
         & taskkill.exe /PID $proc.Id /T /F 2>&1 | Out-Null
@@ -1151,6 +1201,8 @@ function Invoke-Guarded([string]$File, [string[]]$ArgList, [string]$Cwd, [int]$l
     }
     $killed = @()
     foreach ($id in $left) { try { Stop-Process -Id ([int]$id) -Force -ErrorAction Stop; $killed += $id } catch { } }
+    # 강제 종료 뒤에도 남는 프로세스(커널 대기에 걸린 Player)는 다음 Player 종료까지 막을 수 있으므로 영수증에 따로 남긴다.
+    if ($left.Count) { Start-Sleep -Seconds 3; $stuck = @($tree.Keys | Where-Object { Test-SameProc $_ $tree[$_] }); if ($stuck.Count) { $warnings += ('강제 종료 뒤에도 남은 프로세스(커널 대기 의심): ' + ($stuck -join ',')) } }
     if ($HiddenDesktop) { Close-DesktopProcess $dproc; $desktopClosed = [bool](Close-HiddenDesktop $desk) }
     $sw.Stop()
     return [pscustomobject]@{
@@ -1248,7 +1300,8 @@ function Cmd-Player {
         if ($crashCause) { New-Halt $crashCause 'player' $logsUsed $t0c }
         $gpu = ''; $nullGfx = $false
         if (Test-Path -LiteralPath $log) {
-            $txt = [IO.File]::ReadAllText($log)
+            $txt = ''
+            try { $txt = Read-SharedText $log } catch { $g.warnings = @($g.warnings) + ('Player 로그 읽기 실패: ' + $_.Exception.Message) }
             $m = [regex]::Match($txt, '(?m)^\s*Renderer:\s*(.+?)\s*(\(ID=|$)')
             if ($m.Success) { $gpu = $m.Groups[1].Value.Trim() }
             if ($txt.Contains('Forcing GfxDevice: Null')) { $nullGfx = $true }
