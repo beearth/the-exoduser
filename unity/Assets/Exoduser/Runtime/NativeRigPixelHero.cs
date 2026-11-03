@@ -11,6 +11,7 @@ namespace Exoduser.UnityPort {
   NativeHeroView hero;Func<Camera> cameraSource;SpriteRenderer fallback;
   Light moon;Camera capture;MeshRenderer image,contact;RenderTexture texture;Material composite,shadowMaterial;
   readonly List<Material> ownedMaterials=new List<Material>();
+  readonly List<Mesh> ownedMeshes=new List<Mesh>();
   readonly Dictionary<Camera,int> masks=new Dictionary<Camera,int>();
   UniversalRenderPipeline.SingleCameraRequest request;
   bool failed,hasFrame;int renderedFrame=-1;
@@ -26,6 +27,7 @@ namespace Exoduser.UnityPort {
    try {
     var toon=Resources.Load<Shader>("Shaders/RigPixelToon");var shader=Resources.Load<Shader>("Shaders/RigPixelComposite");
     if(hero==null||!hero.Ready||toon==null||shader==null)throw new InvalidOperationException("Warrior rig or pixel shaders missing");
+    foreach(var skin in hero.Model.GetComponentsInChildren<SkinnedMeshRenderer>(true))SmoothSurfaceNormals(skin);
     foreach(var r in hero.Model.GetComponentsInChildren<Renderer>(true)){
      var sourceMaterials=r.sharedMaterials;var materials=new Material[sourceMaterials.Length];
      for(int i=0;i<materials.Length;i++){
@@ -46,14 +48,42 @@ namespace Exoduser.UnityPort {
     request=new UniversalRenderPipeline.SingleCameraRequest();
    } catch(Exception e){Fail(e);}
   }
+  sealed class NormalCell {public Vector3 position,normal;public int count;}
+  void SmoothSurfaceNormals(SkinnedMeshRenderer skin){
+   var source=skin.sharedMesh;if(source==null)return;
+   if(!source.isReadable)throw new InvalidOperationException("RigPixel requires readable R7 skin mesh for surface cleanup");
+   var vertices=source.vertices;var normals=source.normals;if(normals.Length!=vertices.Length)return;
+   float scale=hero.Model.transform.InverseTransformVector(skin.transform.TransformVector(Vector3.right)).magnitude;
+   float radius=.08f/Mathf.Max(.0001f,scale),radius2=radius*radius;
+   var cells=new Dictionary<Vector3Int,NormalCell[]>();var keys=new Vector3Int[vertices.Length];
+   for(int i=0;i<vertices.Length;i++){
+    var v=vertices[i];var key=new Vector3Int(Mathf.FloorToInt(v.x/radius),Mathf.FloorToInt(v.y/radius),Mathf.FloorToInt(v.z/radius));keys[i]=key;
+    if(!cells.TryGetValue(key,out var groups)){groups=new NormalCell[6];cells.Add(key,groups);}
+    var n=normals[i];int axis=Mathf.Abs(n.x)>Mathf.Abs(n.y)&&Mathf.Abs(n.x)>Mathf.Abs(n.z)?(n.x>0?0:1):Mathf.Abs(n.y)>Mathf.Abs(n.z)?(n.y>0?2:3):(n.z>0?4:5);
+    var cell=groups[axis];if(cell==null){cell=new NormalCell();groups[axis]=cell;}cell.position+=v;cell.normal+=n;cell.count++;
+   }
+   foreach(var groups in cells.Values)foreach(var cell in groups)if(cell!=null){cell.position/=cell.count;cell.normal.Normalize();}
+   var smooth=new Vector3[normals.Length];
+   for(int i=0;i<vertices.Length;i++){
+    Vector3 sum=normals[i];float weight=1;
+    for(int x=-1;x<=1;x++)for(int y=-1;y<=1;y++)for(int z=-1;z<=1;z++)
+     if(cells.TryGetValue(keys[i]+new Vector3Int(x,y,z),out var groups))foreach(var cell in groups){
+      if(cell==null||Vector3.Dot(normals[i],cell.normal)<.35f)continue;float distance=(vertices[i]-cell.position).sqrMagnitude;if(distance>=radius2)continue;
+      float w=(1-distance/radius2)*cell.count;sum+=cell.normal*w;weight+=w;
+     }
+    smooth[i]=(sum/weight).normalized;
+   }
+   var mesh=Instantiate(source);mesh.name=source.name+" RigPixel broad normals";mesh.normals=smooth;skin.sharedMesh=mesh;ownedMeshes.Add(mesh);
+   // Positions, skin weights, bind poses, UVs and topology are untouched: Core/feet/blade geometry stays identical.
+  }
   static Color Palette(string name){
    name=name.ToLowerInvariant();
-   if(name.Contains("skin"))return new Color(.38f,.245f,.18f,1);
-   if(name.Contains("hair"))return new Color(.022f,.018f,.016f,1);
-   if(name.Contains("cloth")||name.Contains("cape"))return new Color(.16f,.033f,.028f,1);
-   if(name.Contains("leather"))return new Color(.075f,.046f,.030f,1);
-   if(name.Contains("sword")||name.Contains("weapon")||name.Contains("blade"))return new Color(.29f,.30f,.32f,1);
-   return new Color(.18f,.205f,.235f,1);
+   if(name.Contains("skin"))return new Color(.62f,.42f,.32f,1);
+   if(name.Contains("hair"))return new Color(.06f,.045f,.035f,1);
+   if(name.Contains("cloth")||name.Contains("cape"))return new Color(.34f,.085f,.065f,1);
+   if(name.Contains("leather"))return new Color(.18f,.11f,.07f,1);
+   if(name.Contains("sword")||name.Contains("weapon")||name.Contains("blade"))return new Color(.48f,.50f,.52f,1);
+   return new Color(.34f,.38f,.42f,1);
   }
   MeshRenderer Quad(string name,Material material){
    var go=GameObject.CreatePrimitive(PrimitiveType.Quad);go.name=name;go.transform.SetParent(transform,false);Destroy(go.GetComponent<Collider>());
@@ -108,6 +138,7 @@ namespace Exoduser.UnityPort {
   void OnDestroy(){
    foreach(var pair in masks)if(pair.Key!=null)pair.Key.cullingMask=(pair.Key.cullingMask&~(1<<RigLayer))|(pair.Value&(1<<RigLayer));
    if(texture!=null){texture.Release();Destroy(texture);}foreach(var material in ownedMaterials)if(material!=null)Destroy(material);
+   foreach(var mesh in ownedMeshes)if(mesh!=null)Destroy(mesh);
    if(composite!=null)Destroy(composite);if(shadowMaterial!=null)Destroy(shadowMaterial);
   }
  }

@@ -17,12 +17,13 @@ namespace Exoduser.UnityPort {
    string output=Argument("-output");
    if(string.IsNullOrEmpty(output)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))){Debug.LogError("전사 검수는 명시적 출력·격리 세이브가 필요");Application.Quit(2);yield break;}
    Directory.CreateDirectory(output);Directory.CreateDirectory(Path.Combine(output,"frames"));
-   heroReviewActive=true;AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;Application.targetFrameRate=60;Time.captureDeltaTime=1f/60;smokeActive=true;dropSmoke=true;pauseSmoke=true;Running=false;
+   heroReviewActive=true;AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;Application.targetFrameRate=60;if(!RigPixelRequested)Time.captureDeltaTime=1f/60;smokeActive=true;dropSmoke=true;pauseSmoke=true;Running=false;
    int reviewWidth=1600,reviewHeight=900;if(RigPixelRequested){reviewHeight=1080;if(!int.TryParse(Argument("-review-width"),out reviewWidth))reviewWidth=1920;}
    Screen.SetResolution(reviewWidth,reviewHeight,FullScreenMode.Windowed);if(RigPixelRequested){yield return RigPixelReviewEntry();if(!rigPixelEntryReady){Application.Quit(2);yield break;}}else{lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();}
    EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;
    yield return new WaitForSecondsRealtime(.6f);
    float deadline=Time.realtimeSinceStartup+45;while(NativeRemodel3D.Requested&&!NativeRemodel3D.Active&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
+   if(RigPixelRequested)Time.captureDeltaTime=1f/60;
    var report=new HeroReview{device=SystemInfo.graphicsDeviceName,world3D=NativeRemodel3D.Active};bool ok=true;
    Action<bool,string> check=(pass,label)=>{report.checks.Add((pass?"통과 ":"실패 ")+label);ok&=pass;};
    check(heroView!=null&&heroView.Ready,"실제 Resources 전사·대검·망토 생성");
