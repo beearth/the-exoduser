@@ -73,3 +73,7 @@ UI 최종 Desktop 완료 전 Unity/Player/빌드/선예약0. 완료 후 최신�
 수명정정: statePassed161은표시메타데이터다. 정리예외로두수명행동의최종결과merge가미실행됐으므로pool행동완료PASS로간주하지않고, 수정앱에서원래두수명검사를별도완주·기록한다.
 
 최신 상태(2026-11-03): Mac 표적 정리/두수명행동·semantic 복원/동일앱 M1 23 통과는 후보 범위다. 사용자 PC 실행본131887780의 Runtime2bad5c6c8ace951017cee6c3673921692bc2a2a309ca5b5b0d23f1fbc471ff0a에는 접지 수정 타입 둘 다 없어 실제 전달 미완료를 확인했다. 최신 unity/main1d89b0c18와 정상 병합해 UI/사운드를 보존했으며, 새 실행본 검수·unity-latest 반영 뒤 다시 확인한다. 원full100/61·독립참조/미관측/oldref 한계는 그대로 보존한다.
+
+## 2026-11-03 14:20 P0 보충 — 지면 강타의 billboard 예외를 대체
+
+위 중심 registry는2D/기존 이력이다. 3D 대지치기 wave/flash는이제 NativeGroundSkillSurface.Mark로 등록해 실제 지면·다리·수면에 수신깊이 투영한다. centered 카드의 lift0만으로는 카드 하단이 지면에 묻혀 반쪽이 가려지므로, NativeGame.Remodel3D의 공용 tilt를 통과하기 전에 Project가 처리한다. Core 중심·반경·프레임·45틱 수명·색/알파는 그대로다. 실제 Mac1920/3840 연속 처음~끝 검수는미완료이며 정적3/3을시각PASS로올리지않는다. 상세 [P0](UNITY_GROUND_AOE_P0_20261103.md).

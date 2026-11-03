@@ -57375,3 +57375,11 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 - NativeGroundWarningProjection/NativeDruidTelegraphView: 원형·부채·선형 under 삼각형을16m 투영 볼륨으로 표시, 원색/alpha·판정 경계·2D 복원 유지.
 - Core·패링·세이브·피해·반경·시간 변경0. PC는 GroundAoeCompileCheck 배치 컴파일1회만 하고 Mac에서 평지/경사/다리/늪·적탄 중첩·1920/21:9/3840을 판정한다.
 - [설계·수치·판정표](engine/UNITY_GROUND_AOE_P0_20261103.md). 시각 미검증·사용자 실행본 미반영.
+
+## 2026-11-03 PC 15:39 재개 — 대지치기 반쪽 가림
+
+| 범위 | 변경 | 검증·한계 |
+|---|---|---|
+| NativeSkillView SlamWaves | wave/flash 생성 시 NativeGroundSkillSurface.Mark에 등록해 지면 중심 billboard의 아래쪽 깊이 가림을 제거. 기존 실제 receiver-depth,16m 투영을 공유 | 원화4셀512px·1024²·FullRect 유지. 프레임min(3,floor(pow(p,.6)*4)),45틱=.75초,셀5/10/13/17틱,크기.9×(.72+.28min(1,p3.5)),alpha p<.62/이후(1-p)/.38 불변 |
+| Core·웹 정본 | 최신 origin/main 프레임·수명과 대조. Core/피해/판정/저장/Q/E 변경0 | 정적회귀 tools/tests/unitySlamGroundProjection.test.cjs 수정후3/3. GPU 시각PASS 아님 |
+| PC/Mac 분리 | PC는 공용exo 배치컴파일1회 후작업브랜치push. 장판·대지치기1920/3840·처음~끝 연속프레임/웹비교·M1은Mac검수요청 | 상세 docs/engine/UNITY_GROUND_AOE_P0_20261103.md, REPORT_1103.md. 사용자 실행본 자동변경 주장안함 |

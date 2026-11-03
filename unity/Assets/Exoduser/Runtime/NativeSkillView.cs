@@ -148,7 +148,15 @@ namespace Exoduser.UnityPort
             stale.Clear(); foreach (var k in waves.Keys) stale.Add(k);
             foreach (var w in sim.SlamWaves)
             {
-                stale.Remove(w.Id); Item it; if (!waves.TryGetValue(w.Id, out it)) { it = NewItem("slam" + w.Id); waves[w.Id] = it; it.a = NewRenderer(it, "wave", slamFrames[0], addFlat == null ? add : add, -18900); it.b = NewRenderer(it, "flash", disc, alpha, -18890); centeredSlamSprites.Add(it.a); centeredSlamSprites.Add(it.b); }
+                stale.Remove(w.Id); Item it; if (!waves.TryGetValue(w.Id, out it))
+                {
+                    it = NewItem("slam" + w.Id); waves[w.Id] = it;
+                    it.a = NewRenderer(it, "wave", slamFrames[0], add, -18900); it.b = NewRenderer(it, "flash", disc, alpha, -18890);
+                    // These are ground impacts. A centered, depth-tested billboard
+                    // intersects the terrain through its middle and loses half its art.
+                    NativeGroundSkillSurface.Mark(it.a); NativeGroundSkillSurface.Mark(it.b);
+                    centeredSlamSprites.Add(it.a); centeredSlamSprites.Add(it.b);
+                }
                 ActiveWaves++; it.go.transform.position = Point(w.X, w.Y);
                 float wp = w.T / (float)w.MaxT, fadeA = wp < .62f ? 1f : Mathf.Max(0, (1 - wp) / .38f);
                 int frame = Mathf.Min(3, Mathf.FloorToInt(Mathf.Pow(wp, .6f) * 4)); it.a.sprite = slamFrames[frame];
