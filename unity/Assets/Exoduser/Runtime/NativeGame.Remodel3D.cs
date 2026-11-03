@@ -91,18 +91,30 @@ namespace Exoduser.UnityPort
             if(a2EnemyShadowRoot!=null)a2EnemyShadowRoot.SetActive(on);
             if (hellActorMaterial != null) HellLightingActive(on);
             if (r3Roots != null) foreach (var root in r3Roots) if (root != null) root.SetActive(on);
-            if (!on) { r3Base.Clear(); view.cullingMask = worldMask; }   // back to the 2D camera: Update() re-applies the lobby / world mask next frame
+            if (!on) { r3Base.Clear(); view.cullingMask = worldMask; Remodel3DViewCamera(false); }   // back to the 2D camera: Update() re-applies the lobby / world mask next frame
+        }
+
+        // PERF-U9a: while the 3D camera draws (Base, SolidColor clear, depth = 2D + 10, full viewport) everything the empty-mask 2D camera rendered
+        // (clear + post-processing of nothing) is overwritten, so skip that camera's render. Only re-enable it if this code disabled it, so a capture
+        // fixture that switches the 2D camera off itself (GroundReceiverCapture) keeps its own state. Its transform and matrices stay in use.
+        bool r3ViewCameraOff;
+        void Remodel3DViewCamera(bool off)
+        {
+            if (view == null || off == r3ViewCameraOff) return;
+            if (off && !view.enabled) return;
+            r3ViewCameraOff = off; view.enabled = !off;
         }
 
         // LateUpdate: after every 2D view wrote its transforms for this frame.
         void Remodel3DLate()
         {
             HellArenaLate();
-            if (!NativeRemodel3D.Active || r3Cam == null || Simulation == null) return;
+            if (!NativeRemodel3D.Active || r3Cam == null || Simulation == null) { Remodel3DViewCamera(false); return; }
             NativeGroundSkillProjection.BeginFrame(r3Cam);
             bool hidden = view.cullingMask == 0;   // the lobby / startup hides the world through the 2D camera mask: mirror it
             view.cullingMask = 0;                  // the 2D camera only clears the frame while the 3D one draws
             r3Cam.enabled = !hidden;
+            Remodel3DViewCamera(!hidden);
             Remodel3DViewport();
             var p = Simulation.Player; r3Marker.position = NativeRemodel3D.Point(p.X, p.Y) + NativeRemodelCamera.TargetOffset;   // CM LOOK-001 follows the marker (offset 0, 10.52, -9.24, no damping)
             r3Marker.position += ImpactCameraOffset();

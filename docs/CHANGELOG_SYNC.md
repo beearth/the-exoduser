@@ -1,3 +1,5 @@
+2026-11-03 Unity PERF-U6·U7·U9a 프레임 할당·HUD·카메라: 적·플레이어 스프라이트 배열 조회(U6), 지역·필드 HUD 스타일 값 키·글자 폭/문자열 캐시·전투력 계산 캐시·UI 감사 출처 문자열 지연(U7), 3D 모드에서 덮이는 2D 카메라 렌더 생략(U9a). Mac 필드 95초 기준 할당 150 KB→48 KB/프레임, GC 410→약 100회/분, CPU 메인 P95 10.7→7.4 ms. 계측기에 HUD 하위 구간과 구간별 할당 추가, 실행 스크립트 caffeinate, GPU 무효 실행 경고. [총괄 문서](12퍼포먼스·최적화/UNITY_FRAME_OPT_MASTER_20261103.md).
+
 2026-11-03 Unity PERF-U4 아레나 바닥 마스크: `NativeArenaView` 마스크(1536×1376, CPU 셰이딩 + 분리 블러 6회)를 타일 내용·출구 키로 캐시하고, 필드에 있는 동안 낮은 우선순위 스레드에서 닫힘·출구 개방 마스크를 미리 계산한다. 미스는 행 단위 병렬 계산. 에디터 `PerfSelfTests.ArenaMask` 7스테이지 × 닫힘/개방 직렬=병렬 바이트 동일 PASS. Mac 기준선의 아레나 입장(재도전 포함) 약 140 ms 정지 대상. [총괄 문서](12퍼포먼스·최적화/UNITY_FRAME_OPT_MASTER_20261103.md).
 
 2026-11-03 Unity 프레임 최적화 PERF-U0 측정 장치: `--unity-perf`일 때만 켜지는 `PerfProbe`/`PerfRecorder`(프레임 벽시계·FrameTimingManager CPU/GPU·GC·드로우콜·구간 Update/FixedSim/Views/Chunks/Gui/Hud/R3Late/Qa)와 `unity/Tools/perf/{analyze.py,run-mac.sh}`. 완주 QA는 perf 모드에서 PNG·해상도 전환 캡처를 끄고 경로 탐색 배열을 재사용한다(결과 동일). `enableFrameTimingStats 1`, `m_LogWhenShaderIsCompiled 1`. 꺼짐 상태 동작·그림 불변. Mac 기준선과 후보: [UNITY_FRAME_OPT_MASTER_20261103](12퍼포먼스·최적화/UNITY_FRAME_OPT_MASTER_20261103.md).
