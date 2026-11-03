@@ -47,7 +47,7 @@
       "next": "로비로 돌아가기",
       "demoSub": "썩은 숲은 아직 끝나지 않았다.",
       "demoNext": "데모 종료",
-      "demoWishlist": "본편 위시리스트에 추가"
+      "demoWishlist": "정식판 위시리스트에 추가"
     },
     {
       "code": "en",
@@ -83,7 +83,7 @@
       "next": "返回大厅",
       "demoSub": "腐烂森林还没有结束。",
       "demoNext": "演示结束",
-      "demoWishlist": "将完整版加入愿望单"
+      "demoWishlist": "将正式版加入愿望单"
     },
     {
       "code": "zht",
@@ -101,7 +101,7 @@
       "next": "返回大廳",
       "demoSub": "腐爛森林還沒有結束。",
       "demoNext": "試玩版結束",
-      "demoWishlist": "將完整版加入願望清單"
+      "demoWishlist": "將正式版加入願望清單"
     },
     {
       "code": "ja",
@@ -137,7 +137,7 @@
       "next": "Quay về sảnh",
       "demoSub": "Rừng Mục Nát vẫn chưa kết thúc.",
       "demoNext": "Kết Thúc Demo",
-      "demoWishlist": "Thêm bản đầy đủ vào danh sách ước"
+      "demoWishlist": "Thêm bản đầy đủ vào danh sách mong muốn"
     },
     {
       "code": "th",
@@ -155,7 +155,7 @@
       "next": "กลับไปที่ล็อบบี้",
       "demoSub": "ป่าเน่ายังไม่จบ",
       "demoNext": "สิ้นสุดเดโม",
-      "demoWishlist": "เพิ่มเกมฉบับเต็มในรายการสิ่งที่อยากได้"
+      "demoWishlist": "เพิ่มเวอร์ชันเต็มในรายการสิ่งที่อยากได้"
     },
     {
       "code": "id",
@@ -173,7 +173,7 @@
       "next": "Kembali ke Lobi",
       "demoSub": "Hutan Busuk belum berakhir.",
       "demoNext": "Akhir Demo",
-      "demoWishlist": "Tambahkan game lengkap ke wishlist"
+      "demoWishlist": "Tambahkan versi penuh ke wishlist"
     },
     {
       "code": "ms",
@@ -191,7 +191,7 @@
       "next": "Kembali ke Lobi",
       "demoSub": "Hutan Busuk belum berakhir.",
       "demoNext": "Akhir Demo",
-      "demoWishlist": "Tambah permainan penuh ke senarai hajat"
+      "demoWishlist": "Tambah versi penuh ke senarai hajat"
     },
     {
       "code": "es",
@@ -299,7 +299,7 @@
       "next": "Zurück zur Lobby",
       "demoSub": "Der Faulige Wald ist noch nicht zu Ende.",
       "demoNext": "Ende der Demo",
-      "demoWishlist": "Vollversion auf die Wunschliste"
+      "demoWishlist": "Vollspiel auf die Wunschliste setzen"
     },
     {
       "code": "nl",
@@ -335,7 +335,7 @@
       "next": "Återgå till Lobbyn",
       "demoSub": "Ruttnande Skog är inte över än.",
       "demoNext": "Slut på Demo",
-      "demoWishlist": "Lägg hela spelet på önskelistan"
+      "demoWishlist": "Lägg fullversionen på önskelistan"
     },
     {
       "code": "da",
@@ -353,7 +353,7 @@
       "next": "Vend tilbage til Lobbyen",
       "demoSub": "Den Rådne Skov er ikke slut endnu.",
       "demoNext": "Slut på Demo",
-      "demoWishlist": "Føj hele spillet til ønskelisten"
+      "demoWishlist": "Føj den fulde version til ønskelisten"
     },
     {
       "code": "no",
@@ -371,7 +371,7 @@
       "next": "Gå tilbake til Lobbyen",
       "demoSub": "Den Råtne Skogen er ikke over ennå.",
       "demoNext": "Slutt på Demo",
-      "demoWishlist": "Legg hele spillet på ønskelisten"
+      "demoWishlist": "Legg fullversjonen på ønskelisten"
     },
     {
       "code": "ru",
@@ -389,7 +389,7 @@
       "next": "Вернуться в лобби",
       "demoSub": "Гнилой Лес ещё не кончился.",
       "demoNext": "Конец Демо",
-      "demoWishlist": "Добавить полную игру в желаемое"
+      "demoWishlist": "Добавить полную версию в желаемое"
     },
     {
       "code": "uk",
@@ -407,7 +407,7 @@
       "next": "Повернутися до лобі",
       "demoSub": "Гнилий ліс ще не скінчився.",
       "demoNext": "Кінець Демо",
-      "demoWishlist": "Додати повну гру до бажаного"
+      "demoWishlist": "Додати повну версію до бажаного"
     },
     {
       "code": "pl",
@@ -425,7 +425,7 @@
       "next": "Powrót do lobby",
       "demoSub": "Zgniły Las jeszcze się nie skończył.",
       "demoNext": "Koniec Dema",
-      "demoWishlist": "Dodaj pełną grę do listy życzeń"
+      "demoWishlist": "Dodaj pełną wersję do listy życzeń"
     },
     {
       "code": "cs",
@@ -443,7 +443,7 @@
       "next": "Návrat do Lobby",
       "demoSub": "Shnilý les ještě neskončil.",
       "demoNext": "Konec Dema",
-      "demoWishlist": "Přidat plnou hru do seznamu přání"
+      "demoWishlist": "Přidat plnou verzi do seznamu přání"
     },
     {
       "code": "hu",
@@ -479,7 +479,7 @@
       "next": "Обратно към Лобито",
       "demoSub": "Гнилата гора още не е свършила.",
       "demoNext": "Край на Демото",
-      "demoWishlist": "Добавяне на пълната игра в желания"
+      "demoWishlist": "Добавяне на пълната версия в желания"
     },
     {
       "code": "el",
@@ -515,7 +515,7 @@
       "next": "Palaa Aulaan",
       "demoSub": "Mätä Metsä ei ole vielä ohi.",
       "demoNext": "Demon Loppu",
-      "demoWishlist": "Lisää koko peli toivelistalle"
+      "demoWishlist": "Lisää täysversio toivelistalle"
     },
     {
       "code": "tr",
@@ -533,7 +533,7 @@
       "next": "Lobiye Dön",
       "demoSub": "Çürük Orman daha bitmedi.",
       "demoNext": "Demo Sonu",
-      "demoWishlist": "Tam oyunu istek listesine ekle"
+      "demoWishlist": "Tam sürümü istek listesine ekle"
     },
     {
       "code": "ar",
@@ -551,7 +551,7 @@
       "next": "العودة إلى الصالة",
       "demoSub": "الغابة المتعفنة لم تنتهِ بعد.",
       "demoNext": "نهاية العرض التجريبي",
-      "demoWishlist": "أضف اللعبة الكاملة إلى قائمة الأمنيات"
+      "demoWishlist": "أضف النسخة الكاملة إلى قائمة الأمنيات"
     }
   ],
   "demoEndNote": "U-D1/U-D5: 29언어 체험판 종료 문구. ar 데이터 보유, 기존 IMGUI RTL 영문 표시 폴백 유지(별도 RTL 이식 범위)."
