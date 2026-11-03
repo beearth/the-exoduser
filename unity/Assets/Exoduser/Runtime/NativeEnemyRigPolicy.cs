@@ -7,6 +7,7 @@ namespace Exoduser.UnityPort {
   int previousTick=int.MinValue,entered,release=-1000,hitUntil=-1000;double previousDistance,charge;bool moving,dead;EnemyRigState state;
   public static bool Requested(string[] args){bool enabled=false;if(args==null)return false;for(int i=0;i<args.Length;i++){string v=null;if(args[i]!=null&&args[i].StartsWith("--enemy-render=",StringComparison.Ordinal))v=args[i].Substring(15);else if(args[i]=="--enemy-render"&&i+1<args.Length)v=args[++i];if(v!=null)enabled=v=="rigpixel";}return enabled;}
   public static double AnchorRatio(double value){return double.IsNaN(value)||double.IsInfinity(value)?.55:Math.Max(0,Math.Min(1,value));}
+  public static double AnchorY(double min,double max,double foot,double height,double ratio){return Math.Max(min,Math.Min(max,foot+height*AnchorRatio(ratio)));}
   public static double ImpactRatio(int critical,bool large){return Math.Min(large?1.2:1,critical!=0?1:.6);}
   public EnemyRigSample Sample(EnemyState e,int tick,double distance){
    var w=e.Web;double charging=w!=null?w._projChargeT:e.ProjectileChargeTicks;
@@ -31,8 +32,9 @@ namespace Exoduser.UnityPort {
  }
  [Serializable] public sealed class EnemyRigCatalog {public EnemyRigDefinition[] models;}
  [Serializable] public sealed class EnemyRigDefinition {
-  public int etype;public string modelResource,animator;public float baseRadius,height,chestRatio=.55f,stride=80;public int deathTicks=45;
+  public int etype;public bool startEyeMass;public string modelResource,animator;public float baseRadius,height,chestRatio=.55f,stride=80;public int deathTicks=45;
   public string idle,move,tell,active,recover,hit,stagger,death;
+  public bool Matches(EnemyState enemy){return enemy!=null&&!enemy.IsBoss&&!enemy.IsGhoul&&enemy.Etype==etype&&enemy.IsStartEyeMass==startEyeMass;}
   public string Clip(EnemyRigState state){switch(state){case EnemyRigState.Move:return move;case EnemyRigState.Tell:return tell;case EnemyRigState.Active:return active;case EnemyRigState.Recover:return recover;case EnemyRigState.Hit:return hit;case EnemyRigState.Stagger:return stagger;case EnemyRigState.Death:return death;default:return idle;}}
  }
 }

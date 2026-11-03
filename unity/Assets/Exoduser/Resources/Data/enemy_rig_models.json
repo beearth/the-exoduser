@@ -3,7 +3,7 @@
     {
       "etype": 1,
       "modelResource": "Enemies3D/SpineApostle",
-      "animator": "Generic/CoreTickSample",
+      "animator": "Generic/CoreTickPlayables",
       "baseRadius": 10,
       "height": 1.35,
       "chestRatio": 0.618,
@@ -21,7 +21,7 @@
     {
       "etype": 4,
       "modelResource": "Enemies3D/EyeMass",
-      "animator": "Generic/CoreTickSample",
+      "animator": "Generic/CoreTickPlayables",
       "baseRadius": 16,
       "height": 1.05,
       "chestRatio": 0.55,
@@ -34,7 +34,8 @@
       "recover": "",
       "hit": "",
       "stagger": "",
-      "death": ""
+      "death": "",
+      "startEyeMass": true
     }
   ]
 }

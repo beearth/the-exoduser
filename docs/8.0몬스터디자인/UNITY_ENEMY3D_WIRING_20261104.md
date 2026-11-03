@@ -1,34 +1,64 @@
-# 적 3D Unity 연결 바탕 — 중단 인계 (2026-11-04)
+# 적 3D Unity 연결 바탕 — 2026-11-04 01:00 재개
 
-상태: **미완 / 동일 검사 명령 2회 실패 후 사용자 지시로 중단. 본편 병합 금지.**
-기준: origin/unity/main 6d99d0c46c9410bd7be729524117209697d5de8c. 작업 브랜치 codex/unity-enemy3d-20261104. 기존 패링 브랜치를 최신 본편으로 fast-forward한 뒤 최신 SHA에서 새 브랜치를 만들었다.
+상태: **PC 정책103/0·전체 참조 컴파일5개 오류0 / RETOUCH_GAME_QA_PENDING.** 실제 임포트·Player 화면·동작 완성·성능은 미판정이다.
+기준: origin/unity/main ec89d5166082e053b60cb23bf461bbeb143dace9. 브랜치 codex/unity-enemy3d-20261104, 작업본 G:/exoduser-wt/codex-parry. 최신 본편을 먼저 병합했고 CHANGELOG 양쪽 기록을 보존했다.
 
-## 생성한 부분 산출물
+## 모델 선택
 
-- NativeEnemyRigPolicy.cs: Core를 읽기만 하는 표시 상태 샘플러 초안. 대기·이동·예고·발동·복귀·피격·경직·사망, G2 근접 타이머와 탄 충전 타이머를 매핑한다. Core 파일 수정0. 정책 검사는 컴파일 준비 단계에서 중단되어 동작 미검증.
-- Data/enemy_rig_models.json: etype1→가시 사도, etype4→다안 육괴 초안. D1에 따라 위치 해시·정예별 별도 모델은 넣지 않았다. Generic/CoreTickSample 문자열은 예정 경로이며 실제 Animator/렌더러에 연결되지 않았다. 가시 사도 걷기 외 동작 슬롯은 비어 있다. 높이·가슴·보폭·사망 길이는 일부 잠정값으로 Mac 실측/총괄 확인 전 확정하면 안 된다.
-- Enemies3D/SpineApostle.fbx·EyeMass.fbx: 선택 GLB를 Blender로 변환한 초벌. 영웅 셀 셰이더에 연결할 8개 재질 면을 준비했지만 Unity 임포트·.meta·실제 렌더는 미완, 외형 채택 아님. pilot-provenance.json에 출처·뼈 수·면 수·클립을 기록했다. 원본 GLB는 수정하지 않았다.
-- unity/Tools/enemy3d/import-pilots.py: 위 2개만 변환하는 스크립트. 프로젝트 사본·새 유료 호출 없음. 가시 사도 armature preview GLB는 형상 검토 중 제외하고 실제 walking_glb를 썼다. 8k tri 이하 proxy를 거부하는 검사를 추가했다.
-- unity/Tools/enemy3d-tests/: 표시 상태와 피격 비율 정책 검사 초안. 현재 run.cjs의 Core 소스 열거가 최상위 폴더만 포함해 하위 Skills 소스가 빠진다. 수정하지 않은 상태로 중단 인계한다.
+| 표현 키 | 리소스 | 동작 현황 | 표시 데이터 |
+|---|---|---|---|
+| etype1, startEyeMass=false | Enemies3D/SpineApostle | Meshy24본, Walk 클립 연결 | baseRadius10, height1.35, chestRatio.618, stride80, deathTicks45 |
+| etype4, startEyeMass=true | Enemies3D/EyeMass | Meshy+Tripo20본, 제공 클립 없음 | baseRadius16, height1.05, chestRatio.55, stride80, deathTicks45 |
+| etype4, startEyeMass=false | 현재 아틀라스 | 갑각 사도 3D 준비 전까지 유지 | 기존 Core/스프라이트 표시 |
+| 모델 없음·보스·구울 | 현재 표시 | 보스 전용 경로 포함 | 기존 표시 유지 |
 
-## 실패 횟수와 중단
+표: Resources/Data/enemy_rig_models.json. 기존 AnchorRatio·ImpactRatio·chestRatio/height/deathTicks 및 --enemy-render=rigpixel 이름과 의미를 유지했다. startEyeMass 키와 EnemyState.IsStartEyeMass만 추가했다. 기존 시작 로그에는 개체 ID가 없어 문자열/좌표 추정 대신 StartMobs에서 해당 두 개체에 비직렬화 표현 태그를 붙인다. Core 수정은 필드 선언+대입 두 줄뿐이며 전투 규칙에서는 읽지 않는다. 정예·스폰 좌표 해시는 새 모델 선택에 쓰지 않는다.
 
-같은 명령: C:/nvm4w/nodejs/node.exe unity/Tools/enemy3d-tests/run.cjs.
-1. 정책 파일 작성 전 예상 RED: FAIL: enemy rig presentation policy is absent. 종료1.
-2. 정책 작성 후: CS0234 Core.Skills 미포함, CS0246 FireZone 미발견. 종료1. 실제 정책 assertion 실행 전 C# 하니스 컴파일 단계에서 실패했다.
+Spine height/chestRatio는 총괄의 0차 측정값(1.35/.618), Eye height1.05/chestRatio.55와 stride80은 잠정값이다. 실제 눈 높이·보폭은 G3.5/Mac 캡처로 보정한다. 일반 갑각 사도를 EyeMass로 바꾸던 이전 키 결함은 수정했다.
 
-사용자 최신 지시가 ‘같은 테스트 2회 실패면 멈추고 보고’이므로 예상 RED와 도구 준비 실패를 임의로 집계에서 빼지 않고 중단했다. TDD의 예상 실패가 이 제한을 소비한 것은 절차 선택의 문제다. 3회차 검사, PC 전체 참조 컴파일, Unity/Player 실행은 하지 않았다. 이 브랜치는 검증 완료나 본편 연결 완료가 아니다.
+## 렌더 연결
 
-증거: I:/EXODUSER-Storage/codex-takeover/parry-g2/enemy3d-check/policy.log·enemy3d-failures.json, enemy3d-convert.out.log·err.log, REPORT.md.
+- --enemy-render=rigpixel opt-in. NativeRemodel3D.Active일 때만 적 리그를 표시한다. 기본값과 2D 구역은 기존 스프라이트다. 영웅과 직접 비교할 때 --hero-render=rigpixel도 함께 쓴다.
+- NativeGame.Enemy3D → NativeEnemyRigRenderer. 영웅과 같은 Shaders/RigPixelToon·RigPixelComposite·HD2DContact를 공유한다. 화면 높이에 따른 NativeRigPixelPolicy의 정수 텍셀 배율, Point·비MSAA·비밉맵 RT, 발밑 픽셀 스냅과 같은 외곽선 합성이다. 셰이더 사본은 만들지 않았다.
+- 전용 레이어28(기존 지면 QA29·영웅30과 분리), 공유 캡처 카메라1개, 보이는 개체마다 RT1개. 포착할 리그만 일시적으로 켜고 월드 카메라에는 원본 메시를 숨긴다. 34도 카메라·거리·판정 원은 바꾸지 않는다.
+- 실제 RenderRequest 성공 뒤에만 본체/걷기 스프라이트를 숨긴다. 모델/셰이더/Animator/RT 실패는 해당 개체를 스프라이트로 돌리고 경고를 한 번 기록한다. 재시작·소멸 때 RT·재질·Playables를 정리하고 카메라 마스크의 자기 비트만 복구한다.
+- 기존 피격 포즈 홀드 중에는 모델도 마지막 자세를 유지한다. 모델 없는 etype의 렌더는 그대로다.
 
-## 재개 시 필요한 일
+## Animator와 Core 틱
 
-1. 하니스가 Core/Skills 등 하위 폴더를 재귀 열거하도록 고친 뒤 정책 검증. 중단 제한 해제 전 재실행하지 않는다.
-2. Unity 임포트 설정·고정 .meta, Generic Animator/클립 샘플링, 영웅과 같은 RigPixelToon·RigPixelComposite·정수 배율·Point·외곽선 렌더 경로 구현.
-3. NativeGame에 opt-in --enemy-render=rigpixel 연결. 현재는 플래그 파서 초안만 있고 실행 경로는 연결되지 않아 기존 스프라이트 그대로다. 모델 없는 etype·리소스 실패도 스프라이트로 보존.
-4. 임펙트 계획 6d99d0c46의 투영 bounds/가슴·눈 기준점과 크기 비율 연결. 현재는 chestRatio 데이터 초안과 비율 정책만 있으며 VFX에는 미연결.
-5. PC 전체 참조 컴파일, 본편 병합 검토, Mac 34도 실제 화면·30마리 성능·동작·피격·사망 판정.
+Generic Animator + PlayableGraph(Manual), applyRootMotion=false. 상태마다 JSON 클립 슬롯을 바꿀 수 있고 샘플링 시각은 아래 Core 값에서 구한다. 벽시계/Animator 자동 전이로 전투 시점을 만들지 않는다.
 
-다안 육괴 선택 하이브리드는 실제 20본이다(0차 표와 실제 GLB/rig 기록 일치). 브리프의 19본은 순수 Tripo 쪽과 혼동된 것으로 보이며 선택 파일은 eyemass_meshy_tripo_rigged.glb다. 총괄과 직접 통신은 하지 않았고 총괄 문서와 실제 산출물을 대조했다.
+| 상태 | 시계/근거 |
+|---|---|
+| Idle | Core 틱, 기본 반복120틱 |
+| Move | 기존 ev.distance / stride로 보행 위상 |
+| Tell | g2Tell: MeleeTellMax-MeleeTimer / 탄:60-_projChargeT |
+| Active | g2Active: MeleeActiveMax-MeleeTimer / 탄 충전 종료 후 표시3틱 |
+| Recover | g2Gap 또는 MeleeFreezeUntil·MeleeParriedTick / 탄 표시 복귀9틱 |
+| Hit | HurtTicks·HitStun, 표시10틱 |
+| Stagger | Stunned·MaxStunned, 포이즈 붕괴 |
+| Death | 첫 사망 관측 Core 틱부터 definition.deathTicks에 맞춰 클립 샘플링, 이후 표시 종료 |
 
-기존 누락 에셋·0바이트 로딩 PNG·guard baseline 로컬 수정은 보존하고 이번 커밋에서 제외한다. 원격 SHA는 REPORT 맨 위에 기록한다.
+탄 발동3/복귀9·Hit10은 표시용 길이이며 Core 발사/피해 수치를 바꾸지 않는다. 근접 판정은 기존 G2 타이머를 그대로 읽는다. 동작 클립이 없는 슬롯은 bind pose로 남고 missingClips/로그에 드러난다. **제공되지 않은 공격·피격·사망 동작을 제작 완료로 판정하지 않는다.** EyeMass는 리그만 있어 모든 동작이 이 상태이며, 모델/렌더 연결 검수용이다.
+
+## VFX 연결 계약
+
+- NativeEnemyRigRenderer.ImpactAnchor(FeedbackEvent,Camera) → nullable EnemyRigImpactAnchor. 필드 Point/Ground/WorldHeight/ProjectedHeightPx/ChestRatio/DeathStartTick/DeathTicks/Large.
+- TargetId 우선. ID가 없는 이벤트는 etype+동일 좌표의 유일한 표시 개체만 쓴다. 후보가 겹치면 추정하지 않고 기존 Core 반경 방식을 유지한다.
+- 표시 리그 Renderer.bounds의 8꼭짓점을 투영한다. Point는 발밑 화면Y+투영 높이×AnchorRatio(chestRatio), 몸 투영 bounds 안으로 제한한다. WorldHeight는 그 투영 높이를 해당 깊이의 월드 길이로 환산한 값이다.
+- CombatImpactView.EnemyRigAnchor 선택적 콜백으로 일반 피격·치명·사망의 접점을 몸으로 옮긴다. 최종 시트 폭은 WorldHeight×ImpactRatio(일반.6/치명·사망1.0, 큰 적 상한1.2)이며 Blood Stretch도 최종 폭에 포함해 상한을 넘기지 않는다. null이면 기존 경로 그대로다. Core 이벤트 자체의 X/Y/Size는 수정하지 않는다.
+- 사망 이벤트를 Dispatch에서 먼저 관측하므로 모델 사망 샘플링 시작과 기존 피 시트·바닥 혈흔 생성은 같은 Core 틱이다. 바닥 혈흔은 발밑에 남긴다. deathTicks 뒤에도 이미 생성된 피 시트가 발밑으로 튀지 않도록 마지막 리그 접점을 유지한다. 실제 무너짐 클립은 아직 없다.
+
+## 검증·남은 관문
+
+- 하니스 Core/Skills 재귀 열거 수정 후 지정 재검사1회:65개/실패0.
+- 시작 스폰 태그·공유 etype 선택·리소스 존재·8개 상태·정지 틱·접점 bounds/비율 확장 검사1회:103개/실패0. 정책만 검사했으며 Unity 런타임 모의 PASS가 아니다.
+- 전체 PC Unity DLL 참조 컴파일1회: Player Core126/Runtime268, Editor Core126/Runtime268/Editor59, 총5개 오류0. 기존 Core 경고 CS0219 2개는 유지.
+- 기존 다른 작업본 Library의 RSP/DLL은 읽기 참조만. Unity/Player/빌드 실행0, 유료0. PC에서 임포트나 화면 검사를 실행하지 않았다.
+- FBX·JSON·코드의 고정 GUID .meta를 추가했다. 실제 Generic 리그/클립 임포트는 Mac에서 확인한다. 이전 변환 FBX/8재질 면은 G3.5 수정 전 시범 자산이며 외형 채택 판정은 아니다.
+- Mac: 1920×1080·3840×1080, 위/중간/아래 bounds와 접지, 일반4 아틀라스/시작4 육괴 구분, G2 예고·발동(겹친3마리), 일반/치명/사망 피격, 영웅 옆1x·3x, 10초 무음 영상, 30마리 성능. 모든 누락 동작 클립 제작 후 자연 플레이 판정이 필요하다.
+- -output을 주면 종료 시 enemy3d-render.json에 개체키·모델·현재상태·누락클립·렌더수·폴백·최근 렌더시간을 쓴다. NativeGame.WriteEnemyRigReceipt(directory)로 Mac 하니스에서 중간 기록도 가능하다.
+
+증거 고정 위치: I:/EXODUSER-Storage/codex-takeover/parry-g2/REPORT.md(최종 SHA), enemy3d-check/policy.log, enemy3d-compile.out.log, compile-current/result.json·assembly-sources.json·Player/Editor/*.log. 바이너리 중간물은 확인 후 정리한다.
+
+이전 중단 이력: 3d3c186106은 예상 RED1회와 하니스 소스 열거 오류1회 뒤 중단한 WIP였다. 01:00 브리프가 재개를 승인했고 이번 첫 재검사가 통과해 그 중단 사유는 해소됐다. 이전 failure JSON은 과거 기록이며 이번 검증 결과는 아니다.
