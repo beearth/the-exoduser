@@ -197,3 +197,7 @@ proof-a2r-r2255-vs-4895bf9c6.png / proof-a2r-r2255-diagnostics.png 직접 확인
 - 영웅원 반경=화면키1.6배, 적·탄=키1.2배/최소24px, 최대32/가까운순. 안쪽70% alpha.1, 바깥30% smoothstep로1.0. .2초 페이드/.12초히스테리시스, 현재카메라행렬로매프레임계산. 실제원형영역에서 nearest surface만그려뒤줄기누적을막는다. 기존영웅뼈색윤곽유지/actor텍셀불변.
 - A2RHumanSave.Bind의 CandidateDefault 격리 분기 삭제. --a2r-play-sandbox 있을 때만 사용자 샌드박스 binding, QA는 기존 명시 --unity-qa-sandbox 경로를 사용한다. 표현기본ON과저장경로분리, 실제세이브쓰기0.
 - --a2r-sight-smoke는 일반로비→Core캠프 뒤 실제나무3지점을 원래 Core StepInput/BFS 경로로 이동(보조이동은가속,플레이어좌표대입0), OFF/ON1920·3840 원본컷과 자연 mesh 가림수/GPU픽셀을 요구한다. 적탄은 명시한 Core projectile fixture다. 남→북10초영상은실시간60Hz Core보행. 작은테스트판으로실제나무검증을대체하지않으며바로가기에도sightVerified를요구한다.
+
+00:10 첫 Playerb2abb29e: 일반로비/Core캠프1829ticks·오류0/창0/세이브변경0. 실제가림표면/GPU>0과적탄원은확인했으나, 원래Collider의원점내부/비균일계층변환 때문에 앞줄기일부가 빠졌고, 보조Core도보가필러에서막혀FAIL. 바로가기갱신보류.
+
+보정: 실제Renderer.worldToLocalMatrix/원본triangle+UV를직접읽는양면BVHray로교체(게임물리콜라이더/씬추가0). 렌더와동일한shear/scale, 내부시점도검사한다. 보조BFS는기존FullRunCanMove와동일한Core필러차단을읽어피한다. Core수정/순간이동0. 불필요한shader hole bits0순회즉시반환. 이수정후한번검증하며다시실패하면중단·보고.
