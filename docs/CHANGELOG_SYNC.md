@@ -115817,3 +115817,7 @@ r14 제출/맵 총괄 판정 전: 실제 빌드3e96685265e4f1b814c38012ca332e4a4
 
 - 원경 far 허용 제거·원화 숲 벽6, 식생113개를 준비된 fern0~2/brush0~3 GLB로 교체. 높이 .40/.54/.45m, 카드 id 시드 ±25°, 기존 바람·반사OFF·그림자OFF·3LOD.
 - A2RBuilder/검사·실게임 비교 fixture와 UNITY_A2R_R18_20261104 기록을 동기화. Core·카메라·바로가기 무변경.
+
+- r18 실측: 원화숲벽6·식생113·세운46/바닥4, 가림·배치 fixture 통과. 5장면/3크롭/sight1 제출. 황록 식생 톤 RETOUCH, 성능 예산·Mac·자연플레이 미검증. 상세는 UNITY_A2R_R18_20261104.
+
+- r18 Player 게임 fixture는 통과했으나 종료 shutdown 정지 및 공용 taskkill CantActivateDocumentInPipeline으로 최종 영수증 유실. 정확한 QA PID만 종료, CIM 잔류·최종 창/세이브 감사 미확인. 추가 실행 없이 별도 결함으로 인계.
