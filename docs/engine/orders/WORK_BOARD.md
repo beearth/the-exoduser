@@ -56,7 +56,7 @@ source `c03f20489` 고유 ARM64 build4 Succeeded/errors0/C# 오류·경고0. 128
 
 ## 2026-10-27 Mac A03/A04 전달 인수·컴파일 현행
 
-PC 전달 문서 커밋 `d132f425b67a16bc1d393eea710778d86222abd5`를 확인했다. 제품 후보 `97227ceb7c4a33becd2fe55d4ab1712dc8013182`의 Runtime tree `8376905b93fc0df4170c9ecc67acb47577990f99`를 고정해 A03 패치노트와 A04 생성·삭제·시각선택 해당 파일·hunk만 Mac에 인수했다. 아래 preflight는 전달 전 시점의 읽기 기록이다. 현재 상태는 [인수 상세와 검증 경계](../UNITY_MAC_A03A04_INTEGRATION_20261027.md)를 따른다. Unity 6000.6.7f1 batch import·compile exit 0, C# 오류·경고 0; 기존 UAC1001은 남는다. Player·GUI 실행 0이며 실제 화면·키 입력 검수는 미실시다.
+PC 전달 문서 커밋 `d132f425b67a16bc1d393eea710778d86222abd5`를 확인했다. 제품 후보 `97227ceb7c4a33becd2fe55d4ab1712dc8013182`의 Runtime tree `8376905b93fc0df4170c9ecc67acb47577990f99`를 고정해 A03 패치노트와 A04 생성·삭제·시각선택 해당 파일·hunk만 Mac에 인수했다. 아래 preflight는 전달 전 시점의 읽기 기록이다. 현재 상태는 [인수 상세와 검증 경계](../../_archive/engine/UNITY_MAC_A03A04_INTEGRATION_20261027.md)를 따른다. Unity 6000.6.7f1 batch import·compile exit 0, C# 오류·경고 0; 기존 UAC1001은 남는다. Player·GUI 실행 0이며 실제 화면·키 입력 검수는 미실시다.
 
 ## 2026-10-27 Mac A03/A04 원격 UI 후보 최소 인수 preflight
 
@@ -86,8 +86,8 @@ Mac 소유 `NativeSettingsStore`/`NativeGame.SettingsPersistence`/`NativePauseMe
 | 상태 | 현재 단위 / 담당 / 실제 범위 |
 |---|---|
 | COMPLETE | 첫2실습·world-blend HUD 인수 유지. 지원 SFX/BGM·FPS·fullscreen 저장/복원: 모델61+별도write3/read2, 실제 격리 Player6회63/63·성공/오류 설정창 확인. source9d587ca15, 정상 ARM64 errors0. [설정 인수](../UNITY_MAC_SETTINGS_PERSISTENCE_20261026.md) / [최신 실행본](../UNITY_MAC_PLAYABLE_20261025.md) |
-| COMPLETE | 720p 착용 안내 문장만 짧게 정리. source837636a26·Player8/8·720/1080 두 PNG 직접 인수·정상 ARM64 errors0. 글꼴/viewport/스크롤바/장비 동작 보존. [인수](../UNITY_MAC_INVENTORY_HINT_20261026.md) |
-| COMPLETE | 같은 language_pointer가 다음 자막 범위를 읽기 전용으로 확정: 실제 caption=NanumMyeongjo-Regular, 우크라이나어 ї/є/і의 cmap 매핑 없음. 메뉴 Noto 검사와 구분·제품/다운로드/GPU/저장 변경0. [근거](../UNITY_MAC_LANGUAGE_DIAGNOSTICS_20261025.md) |
+| COMPLETE | 720p 착용 안내 문장만 짧게 정리. source837636a26·Player8/8·720/1080 두 PNG 직접 인수·정상 ARM64 errors0. 글꼴/viewport/스크롤바/장비 동작 보존. [인수](../../_archive/engine/UNITY_MAC_INVENTORY_HINT_20261026.md) |
+| COMPLETE | 같은 language_pointer가 다음 자막 범위를 읽기 전용으로 확정: 실제 caption=NanumMyeongjo-Regular, 우크라이나어 ї/є/і의 cmap 매핑 없음. 메뉴 Noto 검사와 구분·제품/다운로드/GPU/저장 변경0. [근거](../../_archive/engine/UNITY_MAC_LANGUAGE_DIAGNOSTICS_20261025.md) |
 | COMPLETE | 원본 초반 무음·Gate original soundtrack 복구. FDG 호출 muted=true, native intro track0일 때만 원본 MP3 packet fallback. 실제 Player31/31·normal b4560e63 ARM64 errors0, 정상 저장 hash 동일·기존 사용자 앱 유지. [인수](../UNITY_MAC_INTRO_SILENCE_20261026.md) |
 | ACTIVE | 실제 Claude 기존 조명 담당 UNITY-MAP-LIGHT-01의 d3a4a9a3b 코드 제출 회수. Unity/GPU 해제를 전달했으며 별도 빌드·화면·조명 전후 성능 검수로 진행. 공용 NativeGame 두 줄은 별도 patch 대조, 자동 병합/시각 PASS 아직 없음 |
 | PENDING | GPT API 이미지1개는 OPENAI_API_KEY 부재로 요청0·생성0. 안전한 로컬 인증 후 필요한 자산만 진행. 다른 제공자 잔액 소진 주장은 하지 않음. 자막3문자 후속은 보존 |
@@ -105,21 +105,21 @@ Mac 배경폭 후속: `9cc2759c1` ARM64 오류0 빌드에서 720p 웹 동일 cue
 
 Mac A02 자기 큐: 최종 fit `9cc2759c1` 720p cue1–32 전수 실화면 검수는 안전한 PID/인자↔창 선택 수단이 없어 미검증. CUA `getApp` 자동 실행 경로를 재사용하지 않고 새 Player/빌드0; 이전 32큐 manifest와 최종 JSON 32×3 동일·최종 코드 SHA/빌드 일치·가로 최대84% 불변을 읽기 전용 대조했다. [채택 관문표](../UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md). 일반 ar 승격 HOLD, 기존 Player·개인 저장 보존, PC 누적 패치 통합은 별도 소유 합의·검수 범위로 유지한다.
 
-Mac UI 누적 통합 preflight: 최신 PC 전달함 밤11은 기존 18개를 `a48faf9ea` **19개**로 대체한다. Mac `941ee99bc`의 인덱스·제품 파일을 보존한 `_out` 임시 사본 순차 `git apply --check`에서 1 `U04B`, 13 `A24`, 14 `A26_nativelobby_buildlabels`가 FAIL(1·14의 3-way도 충돌), 나머지 16개 PASS*는 실패를 건너뛴 잠정 문맥 결과다. 실제 병합·빌드·schema 변경0. [19개 표·소유/충돌 구역](../UNITY_MAC_PC_UI_PREFLIGHT_20261026.md). PC 답신 필요: 1번 inventory smoke 갱신 hunk, 13번 Mac `DiagnosticUiEnabled` 보존 기준, 14번 Mac 세계관/ATG 로비에서 build label 삽입점. 선행 충돌 해소 후 2–3번 U08 tab bar를 첫 UI 적용 후보로 재검사한다. A02 최종 fit 32큐 실화면 HOLD와 기존 앱·저장 보존은 유지한다.
+Mac UI 누적 통합 preflight: 최신 PC 전달함 밤11은 기존 18개를 `a48faf9ea` **19개**로 대체한다. Mac `941ee99bc`의 인덱스·제품 파일을 보존한 `_out` 임시 사본 순차 `git apply --check`에서 1 `U04B`, 13 `A24`, 14 `A26_nativelobby_buildlabels`가 FAIL(1·14의 3-way도 충돌), 나머지 16개 PASS*는 실패를 건너뛴 잠정 문맥 결과다. 실제 병합·빌드·schema 변경0. [19개 표·소유/충돌 구역](../../_archive/engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md). PC 답신 필요: 1번 inventory smoke 갱신 hunk, 13번 Mac `DiagnosticUiEnabled` 보존 기준, 14번 Mac 세계관/ATG 로비에서 build label 삽입점. 선행 충돌 해소 후 2–3번 U08 tab bar를 첫 UI 적용 후보로 재검사한다. A02 최종 fit 32큐 실화면 HOLD와 기존 앱·저장 보존은 유지한다.
 
-Mac UI 1번 U04B 후속: 현재 Mac inventory fixture의 기본 선택 흐름을 보존하고 PC patch가 요구한 `maxMana=Simulation.Player.MaxMana`, `mana=Simulation.Player.Mana` 두 QA 영수증 필드만 `NativeGame.cs`에 적응했다. `-output`/저장 계약·전투 수치 불변. 소스 백업과 독립 diff를 `_out/UNITY-MAC-UI-U04B-20261026/`에 보관했고 [키·시점·검사표](../UNITY_MAC_PC_UI_PREFLIGHT_20261026.md)에 기록했다. 수정 소스 임시 사본에서 다음 2→3 U08 tab bar `git apply --check`·임시 적용 2/2 PASS; 제품 적용·빌드·Player0. 13·14는 미해결, A02 fit32 실화면 HOLD 유지.
+Mac UI 1번 U04B 후속: 현재 Mac inventory fixture의 기본 선택 흐름을 보존하고 PC patch가 요구한 `maxMana=Simulation.Player.MaxMana`, `mana=Simulation.Player.Mana` 두 QA 영수증 필드만 `NativeGame.cs`에 적응했다. `-output`/저장 계약·전투 수치 불변. 소스 백업과 독립 diff를 `_out/UNITY-MAC-UI-U04B-20261026/`에 보관했고 [키·시점·검사표](../../_archive/engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md)에 기록했다. 수정 소스 임시 사본에서 다음 2→3 U08 tab bar `git apply --check`·임시 적용 2/2 PASS; 제품 적용·빌드·Player0. 13·14는 미해결, A02 fit32 실화면 HOLD 유지.
 
 Mac UI 누적 소스 checkpoint: PC 최신 `a48faf9ea`의 PC 소유 파일·문서를 merge로 인수한다. merge-tree가 예고한 충돌은 `NativeGame.cs` inventory smoke 한 곳이었고 Mac `ef8080387` U04B 두 필드/기존 fixture 흐름을 그대로 보존해 해소했다. PC 원본은 기본 선택 해제 QA 장면 두 줄을 가졌으나 이번 Mac fixture에는 추가하지 않는다. 2–12 hook 적용은 다음 단계, 13·14 충돌 보류. 이 시점 빌드·Player 판정 없음.
 
-Mac UI hook 2→3 checkpoint: PC 소스 merge 뒤 `U08_nativegame_tabbar`·`U08_nativepausemenu_tabbar`를 받은 순서로 `git apply --check`→실제 적용했다. `NativeGame.cs` 탭 요청 라우팅과 `NativePauseMenu.cs` 설정 프리셋 표시는 [계약표](../UNITY_MAC_PC_UI_PREFLIGHT_20261026.md)에 기록. `NativePanelTabBar`는 PC blob 그대로, Mac ATG·설정 저장 코드는 변경0. 4–12 후속/13·14 충돌 보류, Mac 빌드·Player 미실행.
+Mac UI hook 2→3 checkpoint: PC 소스 merge 뒤 `U08_nativegame_tabbar`·`U08_nativepausemenu_tabbar`를 받은 순서로 `git apply --check`→실제 적용했다. `NativeGame.cs` 탭 요청 라우팅과 `NativePauseMenu.cs` 설정 프리셋 표시는 [계약표](../../_archive/engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md)에 기록. `NativePanelTabBar`는 PC blob 그대로, Mac ATG·설정 저장 코드는 변경0. 4–12 후속/13·14 충돌 보류, Mac 빌드·Player 미실행.
 
-Mac UI hook 4→6 checkpoint: U05 skill smoke focus, A07B NativeGame G/J/F10·inventory smoke, A07B NativePauseMenu TAB/K를 원본 patch 순서대로 `git apply --check`→적용했다. [파일·의미 표](../UNITY_MAC_PC_UI_PREFLIGHT_20261026.md). PC 소유 입력/탭바 blob 직접수정0, 원래 Mac ATG·저장 코드 보존. 7–12 후속, 13·14 충돌 보류; OS 키/Player 검수 없음.
+Mac UI hook 4→6 checkpoint: U05 skill smoke focus, A07B NativeGame G/J/F10·inventory smoke, A07B NativePauseMenu TAB/K를 원본 patch 순서대로 `git apply --check`→적용했다. [파일·의미 표](../../_archive/engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md). PC 소유 입력/탭바 blob 직접수정0, 원래 Mac ATG·저장 코드 보존. 7–12 후속, 13·14 충돌 보류; OS 키/Player 검수 없음.
 
-Mac UI hook 7→12 checkpoint: A13 능력치·A14 대장간·A20 레벨업·A21 사망·A22 클리어 배선·A23 보스바 배선을 PC 원본 순서로 모두 문맥 검사→`NativeGame.cs`에 적용했다. 13 A24는 Mac `DiagnosticUiEnabled` HUD 조건에서 재차 실패해 **미적용**, 14 이후도 순서상 보류. [단계표](../UNITY_MAC_PC_UI_PREFLIGHT_20261026.md). Unity 6000.6.7f1 비대화형 script compile 1회 exit0·error CS0·warning CS0, 기존 UAC1001만; import `.meta` churn 412개는 백업/HEAD 대조 후 작업 상태로 복원. Player·OS 입력·화면·저장 회귀 미검증, 기존 사용자 앱 보존. PC 질문 3건은 바로 아래 유지한다.
+Mac UI hook 7→12 checkpoint: A13 능력치·A14 대장간·A20 레벨업·A21 사망·A22 클리어 배선·A23 보스바 배선을 PC 원본 순서로 모두 문맥 검사→`NativeGame.cs`에 적용했다. 13 A24는 Mac `DiagnosticUiEnabled` HUD 조건에서 재차 실패해 **미적용**, 14 이후도 순서상 보류. [단계표](../../_archive/engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md). Unity 6000.6.7f1 비대화형 script compile 1회 exit0·error CS0·warning CS0, 기존 UAC1001만; import `.meta` churn 412개는 백업/HEAD 대조 후 작업 상태로 복원. Player·OS 입력·화면·저장 회귀 미검증, 기존 사용자 앱 보존. PC 질문 3건은 바로 아래 유지한다.
 
-Mac UI hook 13→14 후속: PC 새 답신이 없는 상태에서 Mac 소유 문맥만 수동 적응했다. A24는 `DiagnosticUiEnabled` 진단 배지 조건을 보존하면서 구역 제목 1회·정본 목표 패널을 조건 밖에 연결; 지역 총량은 미이식. A26 lobby는 `DrawLobby()` 전원 버튼 뒤에 BuildFlavor 라벨 호출 1회, 기존 세계관/ATG·진단 preview 분기 유지. [적응 patch·계약](../UNITY_MAC_PC_UI_PREFLIGHT_20261026.md). 정적 적용·diff 검사만 PASS, 화면/Player 미검증. 아래 PC 질문은 원본 충돌·Mac 적응 근거로 유지하며 PC 확인이 오면 대조한다. 15–19는 다음 순서 검사 단계.
+Mac UI hook 13→14 후속: PC 새 답신이 없는 상태에서 Mac 소유 문맥만 수동 적응했다. A24는 `DiagnosticUiEnabled` 진단 배지 조건을 보존하면서 구역 제목 1회·정본 목표 패널을 조건 밖에 연결; 지역 총량은 미이식. A26 lobby는 `DrawLobby()` 전원 버튼 뒤에 BuildFlavor 라벨 호출 1회, 기존 세계관/ATG·진단 preview 분기 유지. [적응 patch·계약](../../_archive/engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md). 정적 적용·diff 검사만 PASS, 화면/Player 미검증. 아래 PC 질문은 원본 충돌·Mac 적응 근거로 유지하며 PC 확인이 오면 대조한다. 15–19는 다음 순서 검사 단계.
 
-Mac UI hook 15→19 후속: A26 PortVerification flavor, A16 PauseMenu/NativeGame 키 설정·QA, B11 Simulation 자동 물약/장비 입력을 원본 patch 순서로 적용했다. 저장 schema v2 구현0. B11은 `Materials += 4` 유지, 일반 킬 드랍 난수 1→2개와 hp만 악의+1인 웹 계약으로 변경. [19개 완료 단계표·공식·남은 런타임 관문](../UNITY_MAC_PC_UI_PREFLIGHT_20261026.md). Mac B11 원본 함수 oracle2438/0, Unity6000.6.7f1 비대화형 compile exit0·CS오류/경고0(기존 UAC1001). Editor `.meta` churn은 사전 작업 상태로 복원. **코드 통합·컴파일 PASS, Player/OS 입력/로비라벨/자동물약 실플레이/저장 회귀 미검증**. 기존 앱·개인 저장 보존, A02 fit32 실화면 HOLD. 아래 PC 질문은 Mac 적응의 확인 요청으로 남긴다.
+Mac UI hook 15→19 후속: A26 PortVerification flavor, A16 PauseMenu/NativeGame 키 설정·QA, B11 Simulation 자동 물약/장비 입력을 원본 patch 순서로 적용했다. 저장 schema v2 구현0. B11은 `Materials += 4` 유지, 일반 킬 드랍 난수 1→2개와 hp만 악의+1인 웹 계약으로 변경. [19개 완료 단계표·공식·남은 런타임 관문](../../_archive/engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md). Mac B11 원본 함수 oracle2438/0, Unity6000.6.7f1 비대화형 compile exit0·CS오류/경고0(기존 UAC1001). Editor `.meta` churn은 사전 작업 상태로 복원. **코드 통합·컴파일 PASS, Player/OS 입력/로비라벨/자동물약 실플레이/저장 회귀 미검증**. 기존 앱·개인 저장 보존, A02 fit32 실화면 HOLD. 아래 PC 질문은 Mac 적응의 확인 요청으로 남긴다.
 
 PC에 답신 필요한 원본 근거 3건:
 1. 원본 `a48faf9ea:U04B_nativegame_inventory_smoke_mana.patch`는 기본 선택 해제 장면을 context로 쓰지만 Mac `NativeGame.cs` inventory smoke에는 그 장면이 없다. Mac은 영수증 두 필드를 같은 생성 지점에 적응했다. 이 스냅샷 시점·키 계약이 PC 의도와 일치하는지 확인 요청.
@@ -168,12 +168,12 @@ K 창·원본13슬롯 선택·기검참 상태/충전 HUD 연결. 모델34/34, �
 
 ## 2026-10-25 Mac 장비 비교·일시정지 설정 통합
 
-**이번 단위 완료:** 장비 비교156·지원 설정66·실제 Player15검사 통과, ARM64 build 오류0·화면8장 확인. OS 직접 메뉴 입력과 전체화면 전환은 미검수. **NEXT:** 스킬·퀵슬롯 → 캐릭터 생성·슬롯 → 남은 메뉴. 기존 담당이 원본/기존 기능 범위부터 연결하며 새 자동화·신규 팀을 만들지 않는다. [통합 범위](../UNITY_MAC_INVENTORY_SETTINGS_20261025.md). 언어 해상도 진단은 [근거 보존](../UNITY_MAC_LANGUAGE_DIAGNOSTICS_20261025.md) 후 마감, 자동 마우스/본문 글꼴·RTL은 미완료. 영상·offset·저장·PC·자동화 변경0.
+**이번 단위 완료:** 장비 비교156·지원 설정66·실제 Player15검사 통과, ARM64 build 오류0·화면8장 확인. OS 직접 메뉴 입력과 전체화면 전환은 미검수. **NEXT:** 스킬·퀵슬롯 → 캐릭터 생성·슬롯 → 남은 메뉴. 기존 담당이 원본/기존 기능 범위부터 연결하며 새 자동화·신규 팀을 만들지 않는다. [통합 범위](../UNITY_MAC_INVENTORY_SETTINGS_20261025.md). 언어 해상도 진단은 [근거 보존](../../_archive/engine/UNITY_MAC_LANGUAGE_DIAGNOSTICS_20261025.md) 후 마감, 자동 마우스/본문 글꼴·RTL은 미완료. 영상·offset·저장·PC·자동화 변경0.
 
 
 ## 2026-10-25 Mac 로비·시네마틱 언어 선택 연결 완료
 
-동일29개 이름 목록/2열 키보드, 실제 EN자막 변경·Esc6초 목록취소의 skip차단·키해제 후 정상skip·KO로비복귀 확인. 일반build 오류0. [최종 입력 검수](../UNITY_MAC_CINEMATIC_LANGUAGE_20261025.md). 검수 앱은 한국어 로비로 열어뒀다. **NEXT:** 29개 자막 본문 글꼴/RTL과 새 목록 해상도·정밀 마우스 입력의 미완료 범위를 실제 근거로 좁힌다. 영상/offset/저장/전투/PC/자동화 변경0.
+동일29개 이름 목록/2열 키보드, 실제 EN자막 변경·Esc6초 목록취소의 skip차단·키해제 후 정상skip·KO로비복귀 확인. 일반build 오류0. [최종 입력 검수](../../_archive/engine/UNITY_MAC_CINEMATIC_LANGUAGE_20261025.md). 검수 앱은 한국어 로비로 열어뒀다. **NEXT:** 29개 자막 본문 글꼴/RTL과 새 목록 해상도·정밀 마우스 입력의 미완료 범위를 실제 근거로 좁힌다. 영상/offset/저장/전투/PC/자동화 변경0.
 
 
 ## 2026-10-25 Mac 로비 언어 이름 완료 → 시네마틱 선택 통일
@@ -183,7 +183,7 @@ K 창·원본13슬롯 선택·기검참 상태/충전 HUD 연결. 모델34/34, �
 
 ## 2026-10-25 Mac 로비 팝업 조작 검수 → 언어 목록 가독성
 
-일반 Mac 빌드 오류0. CUA 실제 L 열기·FR 선택·Esc 취소·마지막 AR 경계·Tab KO 순환·바깥 클릭 닫기를 확인했다. 작은 selector 마우스 입력은 미확인, Unity 실행 차단 아님. [결과](../UNITY_MAC_LOBBY_POPUP_20261025.md). **NEXT/ACTIVE:** 같은 담당이 언어 목록의 자국어명 가독성·기존 폰트 지원 범위를 조사한다. 기존20/9·536/42 반복0, 영상/저장/전투/PC/자동화 변경0.
+일반 Mac 빌드 오류0. CUA 실제 L 열기·FR 선택·Esc 취소·마지막 AR 경계·Tab KO 순환·바깥 클릭 닫기를 확인했다. 작은 selector 마우스 입력은 미확인, Unity 실행 차단 아님. [결과](../../_archive/engine/UNITY_MAC_LOBBY_POPUP_20261025.md). **NEXT/ACTIVE:** 같은 담당이 언어 목록의 자국어명 가독성·기존 폰트 지원 범위를 조사한다. 기존20/9·536/42 반복0, 영상/저장/전투/PC/자동화 변경0.
 
 
 ## 2026-10-25 Mac 로비 자막 선택 완료 → 팝업 조작 진행
@@ -250,20 +250,20 @@ Unity 비교 시험 담당은 PC Codex / `codex/unity-port-20261024` / 기존 �
 
 ## 2026-10-23 PC Codex 인수 — PORT-TAKEOVER-01
 
-2026-10-24 후속 `PORT-TAKEOVER-03`: 같은 PC Codex가 G17 모체 산란의 `SFX.magic(3)` 중 원본 `fire_magic1` 샘플 레이어를 연결했다. Main의 G 전용 sample 진입·G sfx 분기·기존 runtime 검사·원본 MP3 1개·관련 docs 범위. **격리 기술 검수 후보**: WASAPI 집중122/0·G204/0(실제 모체 caller2회)·sound45/0·ERROR0. 돌진/그로기·마법 합성 DSP는 실제 출력 adapter 부재로 미이식 유지하며 다른 소리로 대체하지 않는다. 원본 모체 AI/자식 생성·피해·Q/E·저장·맵 및 공용 main 무수정. [보고서](reports/PORT-TAKEOVER-03_REPORT.md), 최종 SHA/근거 `I:/EXODUSER-Storage/qa/port-magic-20261024/DONE.json`.
+2026-10-24 후속 `PORT-TAKEOVER-03`: 같은 PC Codex가 G17 모체 산란의 `SFX.magic(3)` 중 원본 `fire_magic1` 샘플 레이어를 연결했다. Main의 G 전용 sample 진입·G sfx 분기·기존 runtime 검사·원본 MP3 1개·관련 docs 범위. **격리 기술 검수 후보**: WASAPI 집중122/0·G204/0(실제 모체 caller2회)·sound45/0·ERROR0. 돌진/그로기·마법 합성 DSP는 실제 출력 adapter 부재로 미이식 유지하며 다른 소리로 대체하지 않는다. 원본 모체 AI/자식 생성·피해·Q/E·저장·맵 및 공용 main 무수정. [보고서](../../_archive/engine/orders/reports/PORT-TAKEOVER-03_REPORT.md), 최종 SHA/근거 `I:/EXODUSER-Storage/qa/port-magic-20261024/DONE.json`.
 
-2026-10-24 사용자 지시 "이식작업 여기서 계속하자"로 같은 인수 브랜치에서 재개했다. `PORT-TAKEOVER-02`는 G 이동음 7원본 MP3, Main의 공용 sample queue 진입 함수, G `play_sample`, 기존 G runtime 검사 및 sound40의 AUDIO-01 기대 경로 정정과 관련 docs만 소유한다. **격리 구현·기술 검수 후보**: G190/0·sound45/0·shield166/0·kill47/0, WASAPI 이동음107/0·실제 노드5·ERROR0. 연속47h는11PASS/7NOT_READY이며 전체 이식/자연 보스 완료가 아니다. 기존 actor/전투/맵/저장 owner와 타 팀 WIP는 보존한다. [검수·실패·미완료](reports/PORT-TAKEOVER-02_REPORT.md), 최종 원격 SHA 등 외부 근거 `I:/EXODUSER-Storage/qa/port-resume-20261024/DONE.json`.
+2026-10-24 사용자 지시 "이식작업 여기서 계속하자"로 같은 인수 브랜치에서 재개했다. `PORT-TAKEOVER-02`는 G 이동음 7원본 MP3, Main의 공용 sample queue 진입 함수, G `play_sample`, 기존 G runtime 검사 및 sound40의 AUDIO-01 기대 경로 정정과 관련 docs만 소유한다. **격리 구현·기술 검수 후보**: G190/0·sound45/0·shield166/0·kill47/0, WASAPI 이동음107/0·실제 노드5·ERROR0. 연속47h는11PASS/7NOT_READY이며 전체 이식/자연 보스 완료가 아니다. 기존 actor/전투/맵/저장 owner와 타 팀 WIP는 보존한다. [검수·실패·미완료](../../_archive/engine/orders/reports/PORT-TAKEOVER-02_REPORT.md), 최종 원격 SHA 등 외부 근거 `I:/EXODUSER-Storage/qa/port-resume-20261024/DONE.json`.
 
 사용자 직접 지시: "이식작업 니가 이어받아서 계속해 토큰세이브 MD나 다 보고". PC Codex가 이전 PC Claude의 중단 작업을 인수한다. 기존 PC/Mac 작업자를 자동 재가동하지 않고, 공용 main의 INDEX/WORK와 원 작업자의 WIP는 보존한다.
 
 | 작업ID | 담당 / 브랜치 | 소유 범위 | 상태 |
 |---|---|---|---|
-| PORT-TAKEOVER-01 / PC-ENEMY-ACTORS | PC Codex / `codex/port-takeover-20261023` / `E:/exoduser-wt/codex-port-takeover-20261023` | G actor/kernel/spawn/decor 신규 4파일, 원 PC WIP의 factory/Main/E spawn/death FX/natural base/stage adapter/Player의 명시 7구역, G 전용 테스트·오라클, 자기 보고서와 현재 인계 문맥 | **격리 기술 검수·백업 후보 / VISUAL RETOUCH**. 최신 Mac 코드 `9734e2e79` 위에 보존 WIP를 3way 적용, 충돌0. 최종 GUI148/0·직접 회귀4종0실패·ERROR0. 원 폴더 무수정. 자연 플레이·웹1x·사운드 미완료 및 최종 제출 SHA는 [보고서](reports/PORT-TAKEOVER-01_REPORT.md)/외부 DONE.json 참조 |
+| PORT-TAKEOVER-01 / PC-ENEMY-ACTORS | PC Codex / `codex/port-takeover-20261023` / `E:/exoduser-wt/codex-port-takeover-20261023` | G actor/kernel/spawn/decor 신규 4파일, 원 PC WIP의 factory/Main/E spawn/death FX/natural base/stage adapter/Player의 명시 7구역, G 전용 테스트·오라클, 자기 보고서와 현재 인계 문맥 | **격리 기술 검수·백업 후보 / VISUAL RETOUCH**. 최신 Mac 코드 `9734e2e79` 위에 보존 WIP를 3way 적용, 충돌0. 최종 GUI148/0·직접 회귀4종0실패·ERROR0. 원 폴더 무수정. 자연 플레이·웹1x·사운드 미완료 및 최종 제출 SHA는 [보고서](../../_archive/engine/orders/reports/PORT-TAKEOVER-01_REPORT.md)/외부 DONE.json 참조 |
 
 기존 context pack 15종을 모두 읽었으며, 그 안의 10월20~21일 구현 현황은 당시 snapshot이다. 최신 계보는 17d → ENEMY-VIS → SWEEP-B2/B3 → E2E-TAIL-02 → G04-02이다. SWEEP-B4 문서-only 보류를 구현 완료로 올리지 않는다. 코드 main 병합·기존 사용자 실행판 교체·Steam 배포는 이번 후보 검수와 별개다.
 
 > 이 문서가 **지금 누가 무엇을 하는지의 유일한 기준**이다. 새 작업을 시작하거나 끝낼 때 양쪽 총괄 모두 이 표를 먼저 읽고 갱신한다(경로 지정 커밋, 문서만 main 직접 push 허용).
-> 상위 계획: [FDG_GAME_DEVELOPMENT_PLAN.md](../FDG_GAME_DEVELOPMENT_PLAN.md) · 사용자용 현황: [FDG_GODOT_PORT_STATUS.md](../FDG_GODOT_PORT_STATUS.md) · Mac 지시서: [MAC_ORDERS_20261020.md](MAC_ORDERS_20261020.md)
+> 상위 계획: [FDG_GAME_DEVELOPMENT_PLAN.md](../../_archive/engine/FDG_GAME_DEVELOPMENT_PLAN.md) · 사용자용 현황: [FDG_GODOT_PORT_STATUS.md](../../_archive/engine/FDG_GODOT_PORT_STATUS.md) · Mac 지시서: [MAC_ORDERS_20261020.md](../../_archive/engine/orders/MAC_ORDERS_20261020.md)
 
 > **2026-10-20 저녁 사용자 지시로 역할 전환**: "자동작업은 이제 맥북만 24시간 켜둘꺼니까 거기서 하는거야", "너는 가끔 PC에서 잘 구동돼나 테스트정도만 하면됄듯".
 > - 작업 배정·검수·**main 병합 = 맥북총괄(Mac Claude)**. 아래 공통 규칙 1의 "Claude 총괄"은 이제 맥북총괄을 뜻한다. 병합 전 검수 기준은 그대로다(원본 행 대조, 병합본 위 독립 재실행, 회귀 목록, 정확한 경로 스테이징, force 금지).
@@ -276,23 +276,23 @@ Unity 비교 시험 담당은 PC Codex / `codex/unity-port-20261024` / 기존 �
 
 ## DEMO11-24b · 2026-10-21 Mac 후속
 
-- 동일 브랜치 인수5a3af410에서 이어감. 306id 분류=게임14/PC50/드랍0인id0/소비 미확인242. 기존 게임 시스템 owner13id를 값 캐시로 연결, 신규131/0·원문13사례 일치·직접 회귀6종 각1회4167/0·최종ERROR/누수/잔류0. 실제 intro 뒤 회복 identity 인계는1회·owner/clock guard 유지. Main+23/-3/State0/보호·저장0. 수동 퀵슬롯 potionCdRed1id 및 원본 소비 미확인242개는 미완료로 남기고 PC50+기존72/혼합 부분은 pc-iface-pack 인계. [후속 보고서](reports/demo11-24b_REPORT.md) 및 `_out/demo11-24b/`.
+- 동일 브랜치 인수5a3af410에서 이어감. 306id 분류=게임14/PC50/드랍0인id0/소비 미확인242. 기존 게임 시스템 owner13id를 값 캐시로 연결, 신규131/0·원문13사례 일치·직접 회귀6종 각1회4167/0·최종ERROR/누수/잔류0. 실제 intro 뒤 회복 identity 인계는1회·owner/clock guard 유지. Main+23/-3/State0/보호·저장0. 수동 퀵슬롯 potionCdRed1id 및 원본 소비 미확인242개는 미완료로 남기고 PC50+기존72/혼합 부분은 pc-iface-pack 인계. [후속 보고서](../../_archive/engine/orders/reports/demo11-24b_REPORT.md) 및 `_out/demo11-24b/`.
 
 ## DEMO11-24 · 2026-10-21 Mac 단위
 
-- 담당: 이 Mac Codex 창. main0138c5bb + 22r d276e02e 정상merge 기준. 데모 affix 후보398레코드/396id 전수·원본 롤 빈도 표 작성, 기존 PC 재계산 소비18id 실제 Main 검증639/0·원문18사례360필드 불일치0. hurtE72id·기타306id 및 native 데모금지필터 차이는 미완료 인계. Main/State/보호/저장0줄, 장착 receipt 관찰 +1줄. 직접 회귀2종 각1회735/0·ERROR/누수/잔류0. 제출은 [보고서](reports/demo11-24_REPORT.md) 및 `_out/demo11-24/`에 기록한다.
+- 담당: 이 Mac Codex 창. main0138c5bb + 22r d276e02e 정상merge 기준. 데모 affix 후보398레코드/396id 전수·원본 롤 빈도 표 작성, 기존 PC 재계산 소비18id 실제 Main 검증639/0·원문18사례360필드 불일치0. hurtE72id·기타306id 및 native 데모금지필터 차이는 미완료 인계. Main/State/보호/저장0줄, 장착 receipt 관찰 +1줄. 직접 회귀2종 각1회735/0·ERROR/누수/잔류0. 제출은 [보고서](../../_archive/engine/orders/reports/demo11-24_REPORT.md) 및 `_out/demo11-24/`에 기록한다.
 
 ## DEMO11-22r · 2026-10-21 Mac 단위
 
-- 담당: 이 Mac Codex 창. 최종 main `0138c5bb` 정상merge `da098350`, PC runtime `a28117c1`/드랍 종료수정`72e602d1` 포함. 실제 INV17슬롯 장착/해제·PC equipment refresh·rollback·DEMO11-27 이전 continuation 기능 검증 완료: 신규442/0·직접회귀2614/0·ERROR/누수/잔류0. 전투 핵심/피해식/저장/UI owner 변경 없음. 제출 근거는 [단위 보고서](reports/demo11-22r_REPORT.md)와 외부 `_out/demo11-22r/`.
+- 담당: 이 Mac Codex 창. 최종 main `0138c5bb` 정상merge `da098350`, PC runtime `a28117c1`/드랍 종료수정`72e602d1` 포함. 실제 INV17슬롯 장착/해제·PC equipment refresh·rollback·DEMO11-27 이전 continuation 기능 검증 완료: 신규442/0·직접회귀2614/0·ERROR/누수/잔류0. 전투 핵심/피해식/저장/UI owner 변경 없음. 제출 근거는 [단위 보고서](../../_archive/engine/orders/reports/demo11-22r_REPORT.md)와 외부 `_out/demo11-22r/`.
 
 ## DEMO11-23 · Mac BLOCKED
 
-- main0138c5bb+22r d276e02e. SV-SHARED는 계산 전용이며 actual STORAGE owner/입출고 부재. 제품0줄·계산회귀149486/0·실제 UI/IO 미검수. [필요 인수](reports/demo11-23_REPORT.md).
+- main0138c5bb+22r d276e02e. SV-SHARED는 계산 전용이며 actual STORAGE owner/입출고 부재. 제품0줄·계산회귀149486/0·실제 UI/IO 미검수. [필요 인수](../../_archive/engine/orders/reports/demo11-23_REPORT.md).
 
 ## DEMO11-23b · 실제 공유창고/가방 UI 검수 대기
 
-- 기존06c State/IO·22r 장착을 단일 owner로 재사용. main0138+완료06c93f 정상merge fb76706(미병합 의존 명시). 신규1286/0·집중10/0·직접회귀150073/0·3캡처 준비, 전투0/번역CRLF 보존. [보고서](reports/demo11-23b_REPORT.md).
+- 기존06c State/IO·22r 장착을 단일 owner로 재사용. main0138+완료06c93f 정상merge fb76706(미병합 의존 명시). 신규1286/0·집중10/0·직접회귀150073/0·3캡처 준비, 전투0/번역CRLF 보존. [보고서](../../_archive/engine/orders/reports/demo11-23b_REPORT.md).
 
 ## 역할 (2026-10-20 사용자 지시 기준)
 | 역할 | 누구 | 하는 일 |
@@ -311,7 +311,7 @@ Unity 비교 시험 담당은 PC Codex / `codex/unity-port-20261024` / 기존 �
 
 ## 진행 중 (2026-10-20 갱신: Claude 총괄)
 
-DEMO11-44: Mac Codex / `codex/demo11-44-20261021` / NativePets·catalog/generator·Main357 추가1줄·자기 tests/docs. 기존9 ID 추가69/102, 신규75/0·Node10/0. 제품 피해·회복/State writer 변경0, 자연 전투·시각 미확인. [보고서](reports/demo11-44_REPORT.md).
+DEMO11-44: Mac Codex / `codex/demo11-44-20261021` / NativePets·catalog/generator·Main357 추가1줄·자기 tests/docs. 기존9 ID 추가69/102, 신규75/0·Node10/0. 제품 피해·회복/State writer 변경0, 자연 전투·시각 미확인. [보고서](../../_archive/engine/orders/reports/demo11-44_REPORT.md).
 
 | 작업ID | 내용 | 담당·환경 | 브랜치 | 소유 파일(다른 담당 수정 금지) | 상태 |
 |---|---|---|---|---|---|
@@ -327,44 +327,44 @@ DEMO11-44: Mac Codex / `codex/demo11-44-20261021` / NativePets·catalog/generato
 
 
 | DEMO11-19ui | 성장 별자리·투자/환불 계획·예약 UI | Mac Codex | codex/demo11-19ui-20261021 | native_growth_panel·추출 data/SVG/tool·신규 test·Main 설치6줄·자기 docs | **검수 대기** — 19r0c136318 merge·기능/관련709/0·최종 렌더12/0·전체2장/1x4장, 사용자 눈 검수 대기. 보고서 demo11-19ui_REPORT.md |
-| DEMO11-21fix | pending draw의 Main/State 해제 수명 보호 | Mac Codex | codex/demo11-21-20261021 | native_world_drops·신규 수명 테스트·자기 docs | **검수 대기** — mainac3764bfe 정상merge, 수명9/0·starter148/0·관련드랍60/0. ERROR/ObjectDB/resource0, Main/State/전투0줄. [보고서](reports/demo11-21fix_REPORT.md) |
-| DEMO11-21 | P2-006a/b 기존 제품 journal→실제 INV 자연 연결 | Mac Codex | codex/demo11-21-20261021 | Main252–257·State432/565–566/584–659 기존 추가분, 새 통합 테스트 | **검수 대기** — P2 수락 원격48f0d8e7/e69fe444 정상 merge·표시 byte 재사용, 신규24/0·관련회귀36/0. 보호 전투·맵·저장0. [보고서](reports/demo11-21_REPORT.md) |
+| DEMO11-21fix | pending draw의 Main/State 해제 수명 보호 | Mac Codex | codex/demo11-21-20261021 | native_world_drops·신규 수명 테스트·자기 docs | **검수 대기** — mainac3764bfe 정상merge, 수명9/0·starter148/0·관련드랍60/0. ERROR/ObjectDB/resource0, Main/State/전투0줄. [보고서](../../_archive/engine/orders/reports/demo11-21fix_REPORT.md) |
+| DEMO11-21 | P2-006a/b 기존 제품 journal→실제 INV 자연 연결 | Mac Codex | codex/demo11-21-20261021 | Main252–257·State432/565–566/584–659 기존 추가분, 새 통합 테스트 | **검수 대기** — P2 수락 원격48f0d8e7/e69fe444 정상 merge·표시 byte 재사용, 신규24/0·관련회귀36/0. 보호 전투·맵·저장0. [보고서](../../_archive/engine/orders/reports/demo11-21_REPORT.md) |
 | DEMO11-19r | 실제 성장 투자/리셋/예약→PC refresh·XP 순서 | Mac Codex | codex/demo11-19r-20261021 | State 성장/XP 접점·Main event API·native_demo_growth_owner·신규test/oracle·자기docs | **기술 검수 대기** — 신규383/0(원문24)+기존6suite2827/0=3210/0. 실제PC거부복구2·XP순서, main에PC a28117c1 포함. HUD최소표시/full UI·저장IO未, 최종SHA는 _out/demo11-19r/DONE |
 
 | DEMO11-09 | 데모 일시정지·입력 프로필·설정 인계 | Mac Codex | codex/demo11-09-20261021 | Main pause 접점·native_demo_pause_menu·신규 test·자기 docs | **일부 화면 자료 준비 / 설정 BLOCKED** — pause·back·resume/기존 BINDS 안내153/0 각1회. S01 missing3/S10 부재·설정writer미인수, Main+10/-0·State/전투0. 전체완료아님, 캡처 _out/demo11-09/captures/, 최종SHA는DONE |
 
-| DEMO11-etype-a | 51/52/54/55/56 자연 etype0·1·4·5·6 | Mac Codex | codex/demo11-etype-a-20261021 | Main3069–3076·신규selected0 consumer·자기 테스트/docs | **부분 구현·통합 BLOCKED** —43 9b763da9 ff merge, selected0 기존 P3→실제World→43 origin. 1/4 자연등록·5/6 AI·PC 보호owner·source scheduler 미완, 5종벤치0(미충족). 신규48/0+관련338/0, P3 ObjectDB8 경고보존. [보고서](reports/demo11-etype-a_REPORT.md) |
-| DEMO11-etype-d | 자연 D18/19/23/24/25 실제 등록·전투 경계 | Mac Codex | codex/demo11-etype-d-20261021 | factory EOF18·Main EOF7·registry D추가30·native_demo11_etype_d_*·신규tests·자기docs | **재개 검수 대기** — 기존9627cf75 위5종실등록,신규158/0·관련83/0+factory3그룹/0·최종벤치14/0 max4.252ms.25death/PC이동탄contact·자동29종selector후행,보호0·A/B/C통합후보. [보고](reports/demo11-etype-d_REPORT.md) |
+| DEMO11-etype-a | 51/52/54/55/56 자연 etype0·1·4·5·6 | Mac Codex | codex/demo11-etype-a-20261021 | Main3069–3076·신규selected0 consumer·자기 테스트/docs | **부분 구현·통합 BLOCKED** —43 9b763da9 ff merge, selected0 기존 P3→실제World→43 origin. 1/4 자연등록·5/6 AI·PC 보호owner·source scheduler 미완, 5종벤치0(미충족). 신규48/0+관련338/0, P3 ObjectDB8 경고보존. [보고서](../../_archive/engine/orders/reports/demo11-etype-a_REPORT.md) |
+| DEMO11-etype-d | 자연 D18/19/23/24/25 실제 등록·전투 경계 | Mac Codex | codex/demo11-etype-d-20261021 | factory EOF18·Main EOF7·registry D추가30·native_demo11_etype_d_*·신규tests·자기docs | **재개 검수 대기** — 기존9627cf75 위5종실등록,신규158/0·관련83/0+factory3그룹/0·최종벤치14/0 max4.252ms.25death/PC이동탄contact·자동29종selector후행,보호0·A/B/C통합후보. [보고](../../_archive/engine/orders/reports/demo11-etype-d_REPORT.md) |
 
-| DEMO11-etype-a | 51/52/54/55/56 자연 etype0·1·4·5·6 | Mac Codex | codex/demo11-etype-a-20261021 | factory680–688 append9·기존Main3069–3076·자기consumer/test/docs | 승인 재개: 실제5종 등록/phase/탄/PC접촉/사망1952/0·경계48/0. source scheduler/PC type6 보호owner 미완, 120Hz240틱 벽시계5.312초(지속120fps 미달). [보고서](reports/demo11-etype-a_REPORT.md) |
+| DEMO11-etype-a | 51/52/54/55/56 자연 etype0·1·4·5·6 | Mac Codex | codex/demo11-etype-a-20261021 | factory680–688 append9·기존Main3069–3076·자기consumer/test/docs | 승인 재개: 실제5종 등록/phase/탄/PC접촉/사망1952/0·경계48/0. source scheduler/PC type6 보호owner 미완, 120Hz240틱 벽시계5.312초(지속120fps 미달). [보고서](../../_archive/engine/orders/reports/demo11-etype-a_REPORT.md) |
 
-| DEMO11-perf-enemy | 30/60 적 fixed-tick·상위10 profile·Mac 최적화 | Mac Codex | codex/demo11-perf-enemy-20261021 | World3206–3241 기하 질의·Flesh249–256 분리·신규test/tools/docs | 진단 제출: 동치+관련8825/0, native CPU 평균9.58%/10.31% 감소. 전체30개체 최대18.975/20.652ms로8.333ms 목표 미달, PC권위 OLD/NEW·동시Godot 한계 기록. [보고서](reports/demo11-perf-enemy_REPORT.md) |
-| DEMO11-etype-a | 51/52/54/55/56 자연 etype0·1·4·5·6 | Mac Codex | codex/demo11-etype-a-20261021 | factory680–688 append9·기존Main3069–3076·자기consumer/test/docs | 승인 재개: 실제5종 등록/phase/탄/PC접촉/사망1952/0·경계48/0. source scheduler/PC type6 보호owner 미완, 120Hz240틱 벽시계5.312초(지속120fps 미달). [보고서](reports/demo11-etype-a_REPORT.md) |
+| DEMO11-perf-enemy | 30/60 적 fixed-tick·상위10 profile·Mac 최적화 | Mac Codex | codex/demo11-perf-enemy-20261021 | World3206–3241 기하 질의·Flesh249–256 분리·신규test/tools/docs | 진단 제출: 동치+관련8825/0, native CPU 평균9.58%/10.31% 감소. 전체30개체 최대18.975/20.652ms로8.333ms 목표 미달, PC권위 OLD/NEW·동시Godot 한계 기록. [보고서](../../_archive/engine/orders/reports/demo11-perf-enemy_REPORT.md) |
+| DEMO11-etype-a | 51/52/54/55/56 자연 etype0·1·4·5·6 | Mac Codex | codex/demo11-etype-a-20261021 | factory680–688 append9·기존Main3069–3076·자기consumer/test/docs | 승인 재개: 실제5종 등록/phase/탄/PC접촉/사망1952/0·경계48/0. source scheduler/PC type6 보호owner 미완, 120Hz240틱 벽시계5.312초(지속120fps 미달). [보고서](../../_archive/engine/orders/reports/demo11-etype-a_REPORT.md) |
 
-| DEMO11-etype-d | 자연 D18/19/23/24/25 실제 등록·전투 경계 | Mac Codex | codex/demo11-etype-d-20261021 | factory EOF18·Main EOF7·registry D추가30·native_demo11_etype_d_*·신규tests·자기docs | **재개 검수 대기** — 기존9627cf75 위5종실등록,신규158/0·관련83/0+factory3그룹/0·최종벤치14/0 max4.252ms.25death/PC이동탄contact·자동29종selector후행,보호0·A/B/C통합후보. [보고](reports/demo11-etype-d_REPORT.md) |
+| DEMO11-etype-d | 자연 D18/19/23/24/25 실제 등록·전투 경계 | Mac Codex | codex/demo11-etype-d-20261021 | factory EOF18·Main EOF7·registry D추가30·native_demo11_etype_d_*·신규tests·자기docs | **재개 검수 대기** — 기존9627cf75 위5종실등록,신규158/0·관련83/0+factory3그룹/0·최종벤치14/0 max4.252ms.25death/PC이동탄contact·자동29종selector후행,보호0·A/B/C통합후보. [보고](../../_archive/engine/orders/reports/demo11-etype-d_REPORT.md) |
 
-| DEMO11-etype-a | 51/52/54/55/56 자연 etype0·1·4·5·6 | Mac Codex | codex/demo11-etype-a-20261021 | Main3069–3076·신규selected0 consumer·자기 테스트/docs | **부분 구현·통합 BLOCKED** —43 9b763da9 ff merge, selected0 기존 P3→실제World→43 origin. 1/4 자연등록·5/6 AI·PC 보호owner·source scheduler 미완, 5종벤치0(미충족). 신규48/0+관련338/0, P3 ObjectDB8 경고보존. [보고서](reports/demo11-etype-a_REPORT.md) |
-| DEMO11-etype-d | 자연 D18/19/23/24/25 실제 등록·전투 경계 | Mac Codex | codex/demo11-etype-d-20261021 | factory EOF18·Main EOF7·registry D추가30·native_demo11_etype_d_*·신규tests·자기docs | **재개 검수 대기** — 기존9627cf75 위5종실등록,신규158/0·관련83/0+factory3그룹/0·최종벤치14/0 max4.252ms.25death/PC이동탄contact·자동29종selector후행,보호0·A/B/C통합후보. [보고](reports/demo11-etype-d_REPORT.md) |
-| DEMO11-etype-a | 51/52/54/55/56 자연 etype0·1·4·5·6 | Mac Codex | codex/demo11-etype-a-20261021 | factory680–688 append9·기존Main3069–3076·자기consumer/test/docs | 승인 재개: 실제5종 등록/phase/탄/PC접촉/사망1952/0·경계48/0. source scheduler/PC type6 보호owner 미완, 120Hz240틱 벽시계5.312초(지속120fps 미달). [보고서](reports/demo11-etype-a_REPORT.md) |
+| DEMO11-etype-a | 51/52/54/55/56 자연 etype0·1·4·5·6 | Mac Codex | codex/demo11-etype-a-20261021 | Main3069–3076·신규selected0 consumer·자기 테스트/docs | **부분 구현·통합 BLOCKED** —43 9b763da9 ff merge, selected0 기존 P3→실제World→43 origin. 1/4 자연등록·5/6 AI·PC 보호owner·source scheduler 미완, 5종벤치0(미충족). 신규48/0+관련338/0, P3 ObjectDB8 경고보존. [보고서](../../_archive/engine/orders/reports/demo11-etype-a_REPORT.md) |
+| DEMO11-etype-d | 자연 D18/19/23/24/25 실제 등록·전투 경계 | Mac Codex | codex/demo11-etype-d-20261021 | factory EOF18·Main EOF7·registry D추가30·native_demo11_etype_d_*·신규tests·자기docs | **재개 검수 대기** — 기존9627cf75 위5종실등록,신규158/0·관련83/0+factory3그룹/0·최종벤치14/0 max4.252ms.25death/PC이동탄contact·자동29종selector후행,보호0·A/B/C통합후보. [보고](../../_archive/engine/orders/reports/demo11-etype-d_REPORT.md) |
+| DEMO11-etype-a | 51/52/54/55/56 자연 etype0·1·4·5·6 | Mac Codex | codex/demo11-etype-a-20261021 | factory680–688 append9·기존Main3069–3076·자기consumer/test/docs | 승인 재개: 실제5종 등록/phase/탄/PC접촉/사망1952/0·경계48/0. source scheduler/PC type6 보호owner 미완, 120Hz240틱 벽시계5.312초(지속120fps 미달). [보고서](../../_archive/engine/orders/reports/demo11-etype-a_REPORT.md) |
 
-| MAP11-PROD / DEMO11-45 | Main 실제 MAP11 provider·gate·상자 소비 | Mac Codex | codex/map11-prod-20261021 | Main/World map-only 접점·State transport/상자·신규 어댑터/테스트·자기 docs | **검수 대기 / 상자 PC 완료 대기** — Main37/0·상자26/0·관련170/0·map계약1case, 실제 provider/Marker 연결. [보고서](reports/map11-prod_REPORT.md) |
-| DEMO11-21fix | pending draw의 Main/State 해제 수명 보호 | Mac Codex | codex/demo11-21-20261021 | native_world_drops·신규 수명 테스트·자기 docs | **검수 대기** — mainac3764bfe 정상merge, 수명9/0·starter148/0·관련드랍60/0. ERROR/ObjectDB/resource0, Main/State/전투0줄. [보고서](reports/demo11-21fix_REPORT.md) |
-| DEMO11-21 | P2-006a/b 기존 제품 journal→실제 INV 자연 연결 | Mac Codex | codex/demo11-21-20261021 | Main252–257·State432/565–566/584–659 기존 추가분, 새 통합 테스트 | **검수 대기** — P2 수락 원격48f0d8e7/e69fe444 정상 merge·표시 byte 재사용, 신규24/0·관련회귀36/0. 보호 전투·맵·저장0. [보고서](reports/demo11-21_REPORT.md) |
+| MAP11-PROD / DEMO11-45 | Main 실제 MAP11 provider·gate·상자 소비 | Mac Codex | codex/map11-prod-20261021 | Main/World map-only 접점·State transport/상자·신규 어댑터/테스트·자기 docs | **검수 대기 / 상자 PC 완료 대기** — Main37/0·상자26/0·관련170/0·map계약1case, 실제 provider/Marker 연결. [보고서](../../_archive/engine/orders/reports/map11-prod_REPORT.md) |
+| DEMO11-21fix | pending draw의 Main/State 해제 수명 보호 | Mac Codex | codex/demo11-21-20261021 | native_world_drops·신규 수명 테스트·자기 docs | **검수 대기** — mainac3764bfe 정상merge, 수명9/0·starter148/0·관련드랍60/0. ERROR/ObjectDB/resource0, Main/State/전투0줄. [보고서](../../_archive/engine/orders/reports/demo11-21fix_REPORT.md) |
+| DEMO11-21 | P2-006a/b 기존 제품 journal→실제 INV 자연 연결 | Mac Codex | codex/demo11-21-20261021 | Main252–257·State432/565–566/584–659 기존 추가분, 새 통합 테스트 | **검수 대기** — P2 수락 원격48f0d8e7/e69fe444 정상 merge·표시 byte 재사용, 신규24/0·관련회귀36/0. 보호 전투·맵·저장0. [보고서](../../_archive/engine/orders/reports/demo11-21_REPORT.md) |
 | DEMO11-20 | 실제 State addExp META-06 cap100·회복/표시/저장 인계 | Mac Codex | codex/demo11-20-20261021 | native_source_new_run_state.gd의 addExp 구역·신규 테스트/oracle·자기 docs | **검수 대기** — State cap100 실제연결·회복/표시/저장 인계, 신규214/0+관련1099/0=1313/0 각1회. State+62/−8·피해/Main/맵0줄, 저장IO未·collectorHOLD. 후속 aa1eaea5a merge·목록API0·자기코드추가수정0·관련4suite 각1회1313/0. 최종SHA는 원로그 DONE.txt |
 
 
 
 
-| DEMO11-33 | 곰치4개체·Marker/실tick/물기/HP사망·aggro 인계 | Mac Codex | codex/demo11-33-20261021 | native_demo11_worm*·Main 설치/API·31 registry 보조field접점·새 tests/원본시트·자기 docs | **구현·검증 완료/통합 인수 대기** — main0138c5bb9+31/76bcae8d merge50f31d37. 기능9,339/0·벤치265/0 max2.460ms. MAP Marker/PC producer·자연전투 후행,32/보호경로0·helper 통합 제안만. [보고](reports/demo11-33_REPORT.md) |
-| DEMO11-21fix | pending draw의 Main/State 해제 수명 보호 | Mac Codex | codex/demo11-21-20261021 | native_world_drops·신규 수명 테스트·자기 docs | **검수 대기** — mainac3764bfe 정상merge, 수명9/0·starter148/0·관련드랍60/0. ERROR/ObjectDB/resource0, Main/State/전투0줄. [보고서](reports/demo11-21fix_REPORT.md) |
-| DEMO11-21 | P2-006a/b 기존 제품 journal→실제 INV 자연 연결 | Mac Codex | codex/demo11-21-20261021 | Main252–257·State432/565–566/584–659 기존 추가분, 새 통합 테스트 | **검수 대기** — P2 수락 원격48f0d8e7/e69fe444 정상 merge·표시 byte 재사용, 신규24/0·관련회귀36/0. 보호 전투·맵·저장0. [보고서](reports/demo11-21_REPORT.md) |
+| DEMO11-33 | 곰치4개체·Marker/실tick/물기/HP사망·aggro 인계 | Mac Codex | codex/demo11-33-20261021 | native_demo11_worm*·Main 설치/API·31 registry 보조field접점·새 tests/원본시트·자기 docs | **구현·검증 완료/통합 인수 대기** — main0138c5bb9+31/76bcae8d merge50f31d37. 기능9,339/0·벤치265/0 max2.460ms. MAP Marker/PC producer·자연전투 후행,32/보호경로0·helper 통합 제안만. [보고](../../_archive/engine/orders/reports/demo11-33_REPORT.md) |
+| DEMO11-21fix | pending draw의 Main/State 해제 수명 보호 | Mac Codex | codex/demo11-21-20261021 | native_world_drops·신규 수명 테스트·자기 docs | **검수 대기** — mainac3764bfe 정상merge, 수명9/0·starter148/0·관련드랍60/0. ERROR/ObjectDB/resource0, Main/State/전투0줄. [보고서](../../_archive/engine/orders/reports/demo11-21fix_REPORT.md) |
+| DEMO11-21 | P2-006a/b 기존 제품 journal→실제 INV 자연 연결 | Mac Codex | codex/demo11-21-20261021 | Main252–257·State432/565–566/584–659 기존 추가분, 새 통합 테스트 | **검수 대기** — P2 수락 원격48f0d8e7/e69fe444 정상 merge·표시 byte 재사용, 신규24/0·관련회귀36/0. 보호 전투·맵·저장0. [보고서](../../_archive/engine/orders/reports/demo11-21_REPORT.md) |
 | DEMO11-31 | 1-1 앵글러 family·Marker/기상/실탄/PC처치→지역 gate | Mac Codex | codex/demo11-31-20261021 | native_demo11_angler*·field energy carrier·35 registry field 접점·Main 설치/API·새 tests/원문asset·자기 docs | **검수 대기** — main45be76e4+37/05f41cc7 merge8992ef35. 기능1613/0+bench263/0 cleanPASS(max4.649ms), Main+6·registry+31/−4, State/World/PC 피해/패링·지형0. 실제Marker/PC producer·전용연출 후행. 최종SHA는 _out/demo11-31/DONE.txt |
 
-| DEMO11-etype-a | 51/52/54/55/56 자연 etype0·1·4·5·6 | Mac Codex | codex/demo11-etype-a-20261021 | Main3069–3076·신규selected0 consumer·자기 테스트/docs | **부분 구현·통합 BLOCKED** —43 9b763da9 ff merge, selected0 기존 P3→실제World→43 origin. 1/4 자연등록·5/6 AI·PC 보호owner·source scheduler 미완, 5종벤치0(미충족). 신규48/0+관련338/0, P3 ObjectDB8 경고보존. [보고서](reports/demo11-etype-a_REPORT.md) |
-| DEMO11-etype-d | 자연 D18/19/23/24/25 실제 등록·전투 경계 | Mac Codex | codex/demo11-etype-d-20261021 | factory EOF18·Main EOF7·registry D추가30·native_demo11_etype_d_*·신규tests·자기docs | **재개 검수 대기** — 기존9627cf75 위5종실등록,신규158/0·관련83/0+factory3그룹/0·최종벤치14/0 max4.252ms.25death/PC이동탄contact·자동29종selector후행,보호0·A/B/C통합후보. [보고](reports/demo11-etype-d_REPORT.md) |
-| DEMO11-etype-a | 51/52/54/55/56 자연 etype0·1·4·5·6 | Mac Codex | codex/demo11-etype-a-20261021 | factory680–688 append9·기존Main3069–3076·자기consumer/test/docs | 승인 재개: 실제5종 등록/phase/탄/PC접촉/사망1952/0·경계48/0. source scheduler/PC type6 보호owner 미완, 120Hz240틱 벽시계5.312초(지속120fps 미달). [보고서](reports/demo11-etype-a_REPORT.md) |
-| DEMO11-21fix | pending draw의 Main/State 해제 수명 보호 | Mac Codex | codex/demo11-21-20261021 | native_world_drops·신규 수명 테스트·자기 docs | **검수 대기** — mainac3764bfe 정상merge, 수명9/0·starter148/0·관련드랍60/0. ERROR/ObjectDB/resource0, Main/State/전투0줄. [보고서](reports/demo11-21fix_REPORT.md) |
-| DEMO11-21 | P2-006a/b 기존 제품 journal→실제 INV 자연 연결 | Mac Codex | codex/demo11-21-20261021 | Main252–257·State432/565–566/584–659 기존 추가분, 새 통합 테스트 | **검수 대기** — P2 수락 원격48f0d8e7/e69fe444 정상 merge·표시 byte 재사용, 신규24/0·관련회귀36/0. 보호 전투·맵·저장0. [보고서](reports/demo11-21_REPORT.md) |
+| DEMO11-etype-a | 51/52/54/55/56 자연 etype0·1·4·5·6 | Mac Codex | codex/demo11-etype-a-20261021 | Main3069–3076·신규selected0 consumer·자기 테스트/docs | **부분 구현·통합 BLOCKED** —43 9b763da9 ff merge, selected0 기존 P3→실제World→43 origin. 1/4 자연등록·5/6 AI·PC 보호owner·source scheduler 미완, 5종벤치0(미충족). 신규48/0+관련338/0, P3 ObjectDB8 경고보존. [보고서](../../_archive/engine/orders/reports/demo11-etype-a_REPORT.md) |
+| DEMO11-etype-d | 자연 D18/19/23/24/25 실제 등록·전투 경계 | Mac Codex | codex/demo11-etype-d-20261021 | factory EOF18·Main EOF7·registry D추가30·native_demo11_etype_d_*·신규tests·자기docs | **재개 검수 대기** — 기존9627cf75 위5종실등록,신규158/0·관련83/0+factory3그룹/0·최종벤치14/0 max4.252ms.25death/PC이동탄contact·자동29종selector후행,보호0·A/B/C통합후보. [보고](../../_archive/engine/orders/reports/demo11-etype-d_REPORT.md) |
+| DEMO11-etype-a | 51/52/54/55/56 자연 etype0·1·4·5·6 | Mac Codex | codex/demo11-etype-a-20261021 | factory680–688 append9·기존Main3069–3076·자기consumer/test/docs | 승인 재개: 실제5종 등록/phase/탄/PC접촉/사망1952/0·경계48/0. source scheduler/PC type6 보호owner 미완, 120Hz240틱 벽시계5.312초(지속120fps 미달). [보고서](../../_archive/engine/orders/reports/demo11-etype-a_REPORT.md) |
+| DEMO11-21fix | pending draw의 Main/State 해제 수명 보호 | Mac Codex | codex/demo11-21-20261021 | native_world_drops·신규 수명 테스트·자기 docs | **검수 대기** — mainac3764bfe 정상merge, 수명9/0·starter148/0·관련드랍60/0. ERROR/ObjectDB/resource0, Main/State/전투0줄. [보고서](../../_archive/engine/orders/reports/demo11-21fix_REPORT.md) |
+| DEMO11-21 | P2-006a/b 기존 제품 journal→실제 INV 자연 연결 | Mac Codex | codex/demo11-21-20261021 | Main252–257·State432/565–566/584–659 기존 추가분, 새 통합 테스트 | **검수 대기** — P2 수락 원격48f0d8e7/e69fe444 정상 merge·표시 byte 재사용, 신규24/0·관련회귀36/0. 보호 전투·맵·저장0. [보고서](../../_archive/engine/orders/reports/demo11-21_REPORT.md) |
 
 | DEMO11-37 | P3 지역/앵글러 gate→Marker arena→PC 최종 사망→보상/기록/종료 인계 | Mac Codex | codex/demo11-37-20261021 | native_demo11_encounter/clear_result·Main 설치/API·State progression/reward·새 tests·자기 docs | **검수 대기** — mainac3764bf+35/38 정상merge=e7d855b6. 기능410/0+bench1회260/0 cleanPASS(max1.512ms), Main+14/State新32+既1줄수정. PC 사망/전투·맵0줄, provider접촉/PC最終producer 후행. 최종SHA는 _out/demo11-37/DONE.txt |
 | DEMO11-20 | 실제 State addExp META-06 cap100·회복/표시/저장 인계 | Mac Codex | codex/demo11-20-20261021 | native_source_new_run_state.gd의 addExp 구역·신규 테스트/oracle·자기 docs | **검수 대기** — State cap100 실제연결·회복/표시/저장 인계, 신규214/0+관련1099/0=1313/0 각1회. State+62/−8·피해/Main/맵0줄, 저장IO未·collectorHOLD. 후속 aa1eaea5a merge·목록API0·자기코드추가수정0·관련4suite 각1회1313/0. 최종SHA는 원로그 DONE.txt |
@@ -392,7 +392,7 @@ DEMO11-44: Mac Codex / `codex/demo11-44-20261021` / NativePets·catalog/generato
 | P3-001 | 맵 pit_poison 타원 충돌 계약 | PC Codex(codex exec) | codex/p3-001-pc-20261020 | engine/fdg/map-source-adapter.js, godot/data/map.json, 맵 계약 테스트 | **검수 완료·main 병합(Claude 총괄 대리 커밋 3081760c5)** — Godot 195/195·Node 10, 실창 미검증 |
 | P2-004b | 펫 대사 카테고리 160여 종 | **PC Codex**(codex exec) | codex/p2-004b-pc-20261020 | native_pets.gd 대사 테이블 | **검수 완료·main 병합(Claude 총괄)** — 원문 171/0, 대사 822/0, 런타임 10/0, 펫 회귀 20/0, Node 1/1(총괄 독립). 선언 연결 60·데이터 전용 111, 자연 발화 전체·실화면 미검증 | |
 | P3-003 | 지역 시스템 | Mac Codex ENGINE(채택) + PC 총괄 통합 | codex/p3-003-20261020 → main | native_regions.gd 등 | **검수 완료·main 병합(Claude 총괄 2026-10-20)** — 42702 _regKill 연결 포함 |
-| FEATURE-INVENTORY | 전체 기능 분모 표·이식 상태 판정 | **PC VS Code Codex 1**(P3-003 중복 배정을 중단하고 전환 — P3-003은 Mac ENGINE 단독) | codex/feature-inventory-pc-20261020 | docs/engine/FDG_FEATURE_INVENTORY_20261020.md | **main 병합(Claude 총괄 2026-10-20)** — 1,061행 분모, 완료(격리) 6·실플레이 0 |
+| FEATURE-INVENTORY | 전체 기능 분모 표·이식 상태 판정 | **PC VS Code Codex 1**(P3-003 중복 배정을 중단하고 전환 — P3-003은 Mac ENGINE 단독) | codex/feature-inventory-pc-20261020 | docs/_archive/engine/FDG_FEATURE_INVENTORY_20261020.md | **main 병합(Claude 총괄 2026-10-20)** — 1,061행 분모, 완료(격리) 6·실플레이 0 |
 | SV-CONTRACT | 세이브 5경로 key set 계약 테스트(제품 무변경) | Mac Codex 창6 01a158a5-5a79 | codex/sv-contract-20261020 | tests/test_native_save_contract.gd(신규) | **main 병합(PC Claude 2026-10-20, 사용자 지시)** — PC Windows 병합본 3,023/0(실행 시 `-- --node-bin=C:/nvm4w/nodejs/node.exe` 필요: 기본 node shim 깨짐)·contracts·starter 0실패 |
 | QS-01 | 퀵슬롯 1번 단위: 신규 계산 모듈+테스트(공용 0줄) | Mac Codex 창5 01a158a5-5597 | codex/qs-01-20261020 | 신규 모듈·테스트만 | **main 병합(PC Claude 2026-10-20, 사용자 지시)** — PC 병합본 318/0, 원본 28072·35894 대조 일치, 재생 바인딩·p2005d 재생·contracts 0실패. 자동 물약 런타임 연결은 다음 단위 |
 | SETTINGS-S01 | 설정 원본 default 읽기 전용 view(source_options_state.gd 무수정) | Mac Codex 창7 01a158a5-6274 | codex/settings-s01-20261020 | native_settings_read_view.gd·test(신규) | **main 병합(PC Claude 2026-10-20, 사용자 지시)** — PC 병합본 unit 112/0·actual_main 12/0(`-- --only=unit|actual_main` 필수), starter·HUD·contracts 0실패. OPT actual 35/누락 3(textScale·panelFit·diffV2) NOT_READY 유지 |
@@ -406,9 +406,9 @@ DEMO11-44: Mac Codex / `codex/demo11-44-20261021` / NativePets·catalog/generato
 | QA-006 | Mac Codex 구현 단위 | Mac Codex | codex/qa-006-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 2차 일괄)** — 통합본 기본 회귀 20종 0실패, 신규 Godot 30종 중 21종 PC 통과. PC(Windows) 실패는 테스트 하니스 이식성 문제로 판정(QA-007): OS.execute 출력 첫 덩어리만 읽음(output[0]) · NW-02 node 경로 고정 · Node 심볼릭링크 전제 · Godot Windows 출력 인코딩 추정. 제품 코드 공용 변경 0 |
 | META-04 | Mac Codex 구현 단위 | Mac Codex | codex/meta-04-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 2차 일괄)** — 통합본 기본 회귀 20종 0실패, 신규 Godot 30종 중 21종 PC 통과. PC(Windows) 실패는 테스트 하니스 이식성 문제로 판정(QA-007): OS.execute 출력 첫 덩어리만 읽음(output[0]) · NW-02 node 경로 고정 · Node 심볼릭링크 전제 · Godot Windows 출력 인코딩 추정. 제품 코드 공용 변경 0 |
 | META-05 | Mac Codex 구현 단위 | Mac Codex | codex/meta-05-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 2차 일괄)** — 통합본 기본 회귀 20종 0실패, 신규 Godot 30종 중 21종 PC 통과. PC(Windows) 실패는 테스트 하니스 이식성 문제로 판정(QA-007): OS.execute 출력 첫 덩어리만 읽음(output[0]) · NW-02 node 경로 고정 · Node 심볼릭링크 전제 · Godot Windows 출력 인코딩 추정. 제품 코드 공용 변경 0 |
-| DEMO11-35 | BC09 실제 탄 출생·registry·tick/expiry | Mac Codex | codex/demo11-35-20261021 | [보고서](reports/demo11-35_REPORT.md) | 일반 탄 연결 제출(main 미병합). 신규53/0·BC09 56664/0·기존일반탄4그룹/0. bench1회 tick최대1.049ms이나 draw오류256으로 전체PASS제외→색fallback draw6/0, 재벤치0. PC 접촉/특수 owner·자연clock 대기 |
-| DEMO11-34 | stage0 보스 actor·AI assembler | Mac Codex | codex/demo11-34-20261021 | [보고서](reports/demo11-34_REPORT.md) | 구현·격리 검증 제출(main 미병합). 신규195/0·BC01~10 354093/0·권위22/0·intro18/0. Main +17/-0; 실제 자연전투는 source clock/prefix 및 PC 보호 owner 대기. PC 피해·패링·HP/poise·부활 소유자 및 source clock/prefix 명시 ack 필요  성능 후속 main8dbbf2b0(aa1eaea5a 포함) 정상merge·13파일 목록API0·자체제품변경0; 관련8종654/0 각1회, main 미병합 |
-| DEMO11-01 | 1-1 데모 실행 권위 | Mac Codex | codex/demo11-01-20261021 | [보고서](reports/demo11-01_REPORT.md) | **main 병합(PC Claude 2026-10-21)** — 병합본 신규 22/0(의도된 거부 ERROR 1)·부팅 경로 회귀 11종 0실패 |
+| DEMO11-35 | BC09 실제 탄 출생·registry·tick/expiry | Mac Codex | codex/demo11-35-20261021 | [보고서](../../_archive/engine/orders/reports/demo11-35_REPORT.md) | 일반 탄 연결 제출(main 미병합). 신규53/0·BC09 56664/0·기존일반탄4그룹/0. bench1회 tick최대1.049ms이나 draw오류256으로 전체PASS제외→색fallback draw6/0, 재벤치0. PC 접촉/특수 owner·자연clock 대기 |
+| DEMO11-34 | stage0 보스 actor·AI assembler | Mac Codex | codex/demo11-34-20261021 | [보고서](../../_archive/engine/orders/reports/demo11-34_REPORT.md) | 구현·격리 검증 제출(main 미병합). 신규195/0·BC01~10 354093/0·권위22/0·intro18/0. Main +17/-0; 실제 자연전투는 source clock/prefix 및 PC 보호 owner 대기. PC 피해·패링·HP/poise·부활 소유자 및 source clock/prefix 명시 ack 필요  성능 후속 main8dbbf2b0(aa1eaea5a 포함) 정상merge·13파일 목록API0·자체제품변경0; 관련8종654/0 각1회, main 미병합 |
+| DEMO11-01 | 1-1 데모 실행 권위 | Mac Codex | codex/demo11-01-20261021 | [보고서](../../_archive/engine/orders/reports/demo11-01_REPORT.md) | **main 병합(PC Claude 2026-10-21)** — 병합본 신규 22/0(의도된 거부 ERROR 1)·부팅 경로 회귀 11종 0실패 |
 | META-06 | Mac Codex 구현 단위 | Mac Codex | codex/meta-06-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 2차 일괄)** — 통합본 기본 회귀 20종 0실패, 신규 Godot 30종 중 21종 PC 통과. PC(Windows) 실패는 테스트 하니스 이식성 문제로 판정(QA-007): OS.execute 출력 첫 덩어리만 읽음(output[0]) · NW-02 node 경로 고정 · Node 심볼릭링크 전제 · Godot Windows 출력 인코딩 추정. 제품 코드 공용 변경 0 |
 | IT-05 | Mac Codex 구현 단위 | Mac Codex | codex/it-05-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 2차 일괄)** — 통합본 기본 회귀 20종 0실패, 신규 Godot 30종 중 21종 PC 통과. PC(Windows) 실패는 테스트 하니스 이식성 문제로 판정(QA-007): OS.execute 출력 첫 덩어리만 읽음(output[0]) · NW-02 node 경로 고정 · Node 심볼릭링크 전제 · Godot Windows 출력 인코딩 추정. 제품 코드 공용 변경 0 |
 | SK-S04 | Mac Codex 구현 단위 | Mac Codex | codex/sk-s04-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 2차 일괄)** — 통합본 기본 회귀 20종 0실패, 신규 Godot 30종 중 21종 PC 통과. PC(Windows) 실패는 테스트 하니스 이식성 문제로 판정(QA-007): OS.execute 출력 첫 덩어리만 읽음(output[0]) · NW-02 node 경로 고정 · Node 심볼릭링크 전제 · Godot Windows 출력 인코딩 추정. 제품 코드 공용 변경 0 |
@@ -483,7 +483,7 @@ DEMO11-44: Mac Codex / `codex/demo11-44-20261021` / NativePets·catalog/generato
 | TI-01 | Mac Codex 구현 단위 | Mac Codex | codex/ti-01-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
 | CH1-01 | Mac Codex 구현 단위 | Mac Codex | codex/ch1-01-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
 | CH1-02 | Mac Codex 구현 단위 | Mac Codex | codex/ch1-02-20261020 | 보고서 참조 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
-| MAP-LOOK | 맵 표현 강화 1·2차(부분 광원·요철·접지 그림자·근경 원근·흔들림·빛줄기·지역 환경광·번개) — PoE2·No Rest 레퍼런스 | PC Claude 직접 | claude/map-look-20261020 → main | native_map_look.gd·map_look_*.gdshader·data/map_look_ch1.json | **main 병합(PC Claude 2026-10-20)** — test_map_look 16/0·회귀 13종 0실패(p1002g는 P2-008a-FIX 대기). 실게임 기본 ON·하니스 OFF. [문서](../../4.1맵디자인+설정/MAP_LOOK_GODOT_PASS1_20261020.md) |
+| MAP-LOOK | 맵 표현 강화 1·2차(부분 광원·요철·접지 그림자·근경 원근·흔들림·빛줄기·지역 환경광·번개) — PoE2·No Rest 레퍼런스 | PC Claude 직접 | claude/map-look-20261020 → main | native_map_look.gd·map_look_*.gdshader·data/map_look_ch1.json | **main 병합(PC Claude 2026-10-20)** — test_map_look 16/0·회귀 13종 0실패(p1002g는 P2-008a-FIX 대기). 실게임 기본 ON·하니스 OFF. [문서](../../_archive/4.1맵디자인+설정/MAP_LOOK_GODOT_PASS1_20261020.md) |
 | MAPLOOK-HOLE | 소환굴 공허 연출 모듈 | PC VS Code Codex | codex/maplook-hole-pc-20261020 | scripts/maplook/spawn_hole_fx.gd | **main 병합(MAP-LOOK과 함께)** 67/0 |
 | MAPLOOK-TOXIC / SHADOW / MIST | 독액 수면 / 캐릭터 접지 그림자 / 월드 바닥 안개 모듈 | PC VS Code Codex | codex/maplook-{toxic,shadow,mist}-pc-20261020 | scripts/maplook/ 각 1파일 | 큐 대기(아직 착수 전) |
 | BC01 | 1장 보스 1번 단위 구현(공용 0줄) | Mac Codex ttys009 | codex/bc01-20261020 | 신규 파일·테스트 | **main 병합(PC Claude 2026-10-20 통합 일괄)** — 통합본 45종 0실패(신규 29+기본 16). bc02/bc03은 `-- --source-game=<game.html>`, save_collector는 `-- --node-bin=` 인자 필요 |
@@ -506,7 +506,7 @@ DEMO11-44: Mac Codex / `codex/demo11-44-20261021` / NativePets·catalog/generato
 
 | 작업ID | 담당·브랜치 | 소유 파일 | 상태 |
 |---|---|---|---|
-| FEATURE-INVENTORY | PC Codex · codex/feature-inventory-pc-20261020 | docs/engine/FDG_FEATURE_INVENTORY_20261020.md, docs/engine/orders/reports/FEATURE-INVENTORY_REPORT.md; 관련 계획 문서에 snapshot 링크만 추가 | 검수 대기 · 1,061행, 원본/근거3389참조·등록집합 대조. 정적 첫22통과/1서식실패 후 해당1검사만 수정·통과. 게임 실행/실플레이 인수 아님. P3-003은 Mac ENGINE 소유로 무수정. 커밋 SHA는 보고서 마감 단락/원격 ref에서 확인 |
+| FEATURE-INVENTORY | PC Codex · codex/feature-inventory-pc-20261020 | docs/_archive/engine/FDG_FEATURE_INVENTORY_20261020.md, docs/_archive/engine/orders/reports/FEATURE-INVENTORY_REPORT.md; 관련 계획 문서에 snapshot 링크만 추가 | 검수 대기 · 1,061행, 원본/근거3389참조·등록집합 대조. 정적 첫22통과/1서식실패 후 해당1검사만 수정·통과. 게임 실행/실플레이 인수 아님. P3-003은 Mac ENGINE 소유로 무수정. 커밋 SHA는 보고서 마감 단락/원격 ref에서 확인 |
 
 FEATURE-INVENTORY 문서 체크포인트: `32492e498a3e5f53471c85eb6a6f752755b53000` / 브랜치 `codex/feature-inventory-pc-20261020`. 최종 판정 없음387·일부665·격리완료6·실플레이0·미확인3. 의미 검토의 보수화25행/집계 영향만 별도2검사군 통과(`classification-03.json`). 원본 HEAD 고정 snapshot이며 최신 main 전체 진행률로 사용하지 않는다.
 
@@ -529,7 +529,7 @@ P1-002.C~H, P2-001a~k, P2-002a/b, P2-003a, P2-004a, P2-005a~d — main ad7f15777
 
 ## P3-003 원격 제출 · PC Claude 총괄 검수 요청
 
-- 브랜치 `codex/p3-003-20261020`, 원격 검수 SHA [`919f6a28ab4e64e8a07cd403551777d8dbc77e6a`](https://github.com/beearth/the-exoduser/commit/919f6a28ab4e64e8a07cd403551777d8dbc77e6a), [제출 보고서](https://github.com/beearth/the-exoduser/blob/919f6a28ab4e64e8a07cd403551777d8dbc77e6a/docs/engine/orders/reports/P3-003_REPORT.md).
+- 브랜치 `codex/p3-003-20261020`, 원격 검수 SHA [`919f6a28ab4e64e8a07cd403551777d8dbc77e6a`](https://github.com/beearth/the-exoduser/commit/919f6a28ab4e64e8a07cd403551777d8dbc77e6a), [제출 보고서](https://github.com/beearth/the-exoduser/blob/919f6a28ab4e64e8a07cd403551777d8dbc77e6a/docs/_archive/engine/orders/reports/P3-003_REPORT.md).
 - CLI push 최초 인증 실패는 원로그에 보존했습니다. ROOT가 공식 GitHub 연결로 등록된 8경로만 게시했으며 원격 branch ref·parent(base `efdbf76b`)·변경8경로를 확인했습니다. 로컬 최종 `8d7e67a66d5acb10e223191bec681692df080ab8`과 원격 전체 tree는 `ffb3443402e57613f238fbc36cbb25ede84eb223`로 동일합니다. 원격 API 커밋 SHA는 별도이며 로컬3커밋·INDEX/WORK는 변경하지 않았습니다. 강제 push·reset·main 코드 병합 없음.
 - core27/0, 실제 Main 최초9/0 및 배선 정정9/0은 별개 검수입니다. 표시 최초6통과1실패·단일 기대값 수리1/0, import 종료 설정 저장 실패도 그대로 보존합니다. C 실제 처치·P3-002 확정 분모·필드보스 전투/효과·실창1x는 미완이므로 전체 지역 진행 완료가 아닙니다. 위 요청 연결점과 보고서를 PC 총괄이 검수·조정한 뒤 코드 main 병합을 결정합니다.
 
@@ -537,7 +537,7 @@ P1-002.C~H, P2-001a~k, P2-002a/b, P2-003a, P2-004a, P2-005a~d — main ad7f15777
 
 2026-10-24 재작업: 최신v22b113.2507초자연완주/2718frame·20/20PASS·오디오폐기0·일반빌드UDP/TCP0확인. 원본로비장식복원/High444프로파일호환파생본/폰트400·600·700과작은글자잘림보정후실제UI-probe12/12PASS·caption/detail11/10행·독립수정검토PASS. 고정E:실행본152파일SHA대조, I:검수보존. 캐릭터생성/저장/계정/전체UI인수는별도미완료로유지한다.
 
-2026-10-24 사용자 추가 요청 UI-DOCK: PoE2 참고 화면처럼 화면경계에 붙는 일체감을 HUD/인벤토리/독립검토로 병렬 진행한다. 기존 EXODUSER 아트를 사용하고 NativeHud·NativeInventory·NativeGame OnGUI 소유를 분리한다. 원본 구슬/bar 알파 여백에 따른 하단 틈·잘림과 인벤 개별카드 구조를 교정한다. 인트로 소스·Godot·사용자저장·공유 INDEX 보존. [범위·배치·검수](../UNITY_UI_DOCK_20261024.md).
+2026-10-24 사용자 추가 요청 UI-DOCK: PoE2 참고 화면처럼 화면경계에 붙는 일체감을 HUD/인벤토리/독립검토로 병렬 진행한다. 기존 EXODUSER 아트를 사용하고 NativeHud·NativeInventory·NativeGame OnGUI 소유를 분리한다. 원본 구슬/bar 알파 여백에 따른 하단 틈·잘림과 인벤 개별카드 구조를 교정한다. 인트로 소스·Godot·사용자저장·공유 INDEX 보존. [범위·배치·검수](../../_archive/engine/UNITY_UI_DOCK_20261024.md).
 
 2026-10-24 UI-DOCK 검수: 실제3해상도×HUD/인벤6런PASS·18PNG실제크기대조, 독립시각이번도킹PASS(7PNG), build0오류. 고정E:실행본152파일SHA대조갱신, 이전본I:보존. 인트로/모델/세이브불변, OS직접입력·전체UI인수와구분. I:/EXODUSER-Storage/qa/unity-ui-dock-20261024/suite.json·LIVE.json·SAVED.json.
 
@@ -549,11 +549,11 @@ PC freeze `741d97ba1`의 dock/skills 두 파일만 Mac에 적용, 원본 사본�
 
 ## 2026-10-27 Mac 실제 시작→필드 키보드 QA
 
-A06 고유 ARM64 QA 앱 재사용·신규 빌드0. 실제 일반 시작에서 실버테일 반복 타이틀→문→정본 v22b 영상→격리 로비0/5→전사 생성 취소→전사 `A06QA` 생성/스토리→안내 4단계→필드 HUD→W 이동까지 키보드 PASS. FDG 단독 frame·이번 청음, 113초 자연완주·실습 완료·OS 물리 마우스는 HOLD. 격리 QA roster revision1/1명, 기존 세 앱/개인 파일 보존, QA PID 종료. [단계별 표·원본 PNG](../UNITY_MAC_START_TO_FIELD_QA_20261027.md).
+A06 고유 ARM64 QA 앱 재사용·신규 빌드0. 실제 일반 시작에서 실버테일 반복 타이틀→문→정본 v22b 영상→격리 로비0/5→전사 생성 취소→전사 `A06QA` 생성/스토리→안내 4단계→필드 HUD→W 이동까지 키보드 PASS. FDG 단독 frame·이번 청음, 113초 자연완주·실습 완료·OS 물리 마우스는 HOLD. 격리 QA roster revision1/1명, 기존 세 앱/개인 파일 보존, QA PID 종료. [단계별 표·원본 PNG](../../_archive/engine/UNITY_MAC_START_TO_FIELD_QA_20261027.md).
 
 ## 2026-10-27 Mac 정본 세계관 일반 UI 자연완주
 
-같은 A06 고유 앱·신규 빌드0, 새 절대 QA output/PID22329에서 제목문 `Return` 뒤 입력 없이 정본 SHA `3b99d59b…`의 초반·중간 frame을 관찰하고 129.133초 gate→로비 wall 후 0/5 자동 전환을 확인했다. 일반 UI 자연 로비 전환 PASS; 정밀 영상 길이/마지막 frame PNG·이번 오디오 계측은 HOLD. 이전 시작→필드 보고의 skip 경로와 분리한다. QA PID 종료·기존 앱3 유지·roster 파일 생성0. [시간표·PNG](../UNITY_MAC_NATURAL_WORLD_INTRO_20261027.md).
+같은 A06 고유 앱·신규 빌드0, 새 절대 QA output/PID22329에서 제목문 `Return` 뒤 입력 없이 정본 SHA `3b99d59b…`의 초반·중간 frame을 관찰하고 129.133초 gate→로비 wall 후 0/5 자동 전환을 확인했다. 일반 UI 자연 로비 전환 PASS; 정밀 영상 길이/마지막 frame PNG·이번 오디오 계측은 HOLD. 이전 시작→필드 보고의 skip 경로와 분리한다. QA PID 종료·기존 앱3 유지·roster 파일 생성0. [시간표·PNG](../../_archive/engine/UNITY_MAC_NATURAL_WORLD_INTRO_20261027.md).
 
 ## 2026-10-27 Mac A15 조작 캡처·저장 후속
 
@@ -561,7 +561,7 @@ QA 전용 직접 진입에서 OS Esc/Tab 키 캡처를 검증하고, 캡처 완�
 
 후속 보존 회귀: 같은 앱/코드로 새 표시된 A05 QA 루트에서 SFX35→36·주 키 KeyZ→Tab을 저장하고 재시작했다. `cinSeen:true`, 기존 패드 JSON, 별도 unknown sentinel, 보조 KeyX의 동일값·raw token을 확인했다. 실제 QA Player write/read 각1회, 빌드0. 요청1099px에서 캡처 창1100px·사운드2열이므로 1열/scroll은 HOLD. 사용자 앱3개·일반 설정/로스터를 건드리지 않았다. [표](../UNITY_MAC_A15_4TAB_20261027.md#2026-10-27-a15-저장-시-a05미지원-데이터-보존-회귀).
 
-후속 1098px·라벨 후보 preflight: 고유 QA Player 새 표시 루트에서 1회 실행, 실제 1098px 사운드 1열 첫·끝 카드/고정 footer/휠 뒤 같은 위치 PASS. PC `157e3e8f…` 후보는 62 ID·29 locale 자료만 읽었고 공통373값 감사 외 전체 QA 확정 전 제품 연결0. Mac `NativeGame`/`NativePauseMenu` locale 전달·조회기와 PC 소유 키 목록 hook, IMGUI glyph/RTL 게이트를 기록. 코드/빌드0, 기존 사용자 앱3개 유지. [경계·이미지](../UNITY_MAC_A15_LABEL_PREFLIGHT_20261027.md).
+후속 1098px·라벨 후보 preflight: 고유 QA Player 새 표시 루트에서 1회 실행, 실제 1098px 사운드 1열 첫·끝 카드/고정 footer/휠 뒤 같은 위치 PASS. PC `157e3e8f…` 후보는 62 ID·29 locale 자료만 읽었고 공통373값 감사 외 전체 QA 확정 전 제품 연결0. Mac `NativeGame`/`NativePauseMenu` locale 전달·조회기와 PC 소유 키 목록 hook, IMGUI glyph/RTL 게이트를 기록. 코드/빌드0, 기존 사용자 앱3개 유지. [경계·이미지](../../_archive/engine/UNITY_MAC_A15_LABEL_PREFLIGHT_20261027.md).
 
 ## 2026-10-27 Mac A15 라벨 exact 43 부분 연결 / PC 키 목록 owner 검토 요청
 
@@ -591,15 +591,15 @@ PC 고정 `766250b64d833acd4172c83fb694820777d68b1b`의 QA v2가 exact43×29=124
 
 **A15 1280 위험 문자/목록 하단 후속:** 위 최종 QA 앱을 새 marker 루트의 PID43099에서 재사용, 빌드/코드 변경0. 실제 1280×720 Game viewport의 한글 목록 상단·고정 footer PASS. 지원 scroll 입력 1회 후에도 첫 행 위치가 그대로여서 **1280 하단/scroll HOLD**; 실패 입력 반복·임의 native 주입 없음. F8 `el` 대표 방패 이름 2행은 E 버튼 전에 끝나 visual PASS. F8 `th` 대표 행은 글리프가 보이고 뚜렷한 행/버튼 겹침·tofu는 없으나 결합 부호 shaping 정확성은 판정 불가로 **HOLD**. 일반 물리 mouse/전체29언어도 HOLD. PID 종료. [컷·로그·범위](../UNITY_MAC_A15_FONT_COVERAGE_20261027.md#1280-bottom-scroll-and-greekthai-representative-player-review--2026-10-27).
 
-**U08 상단 탭바 OS 키/배치 인수:** 최종 ARM64 Settings QA 앱을 새 marker root에서 재사용(새 build/제품 수정0). 정확 argv의 PID43596(1280)과 PID43626(1920)에서 Settings 활성 탭, K→Skill, TAB→Inventory와 각각의 활성 강조·본문의 탭바 아래 배치를 대표 화면으로 확인. 1280 Inventory K→Skill, Skill/Inventory ESC→field, field ESC→pause, pause K→Skill; 1920 Inventory ESC→field도 확인. 키보드·대표 1280/1920 시각 PASS. 이전 macOS click 위치 문제가 있어 탭바 mouse 클릭/물리 mouse는 HOLD; Forge/Stat과 픽셀 동등성도 별도. QA PID 종료·사용자 앱 미접촉. [컷·로그·판정](../UNITY_MAC_PC_UI_PREFLIGHT_20261026.md#u08-keyboard-tab-transition-player-review--2026-10-27).
+**U08 상단 탭바 OS 키/배치 인수:** 최종 ARM64 Settings QA 앱을 새 marker root에서 재사용(새 build/제품 수정0). 정확 argv의 PID43596(1280)과 PID43626(1920)에서 Settings 활성 탭, K→Skill, TAB→Inventory와 각각의 활성 강조·본문의 탭바 아래 배치를 대표 화면으로 확인. 1280 Inventory K→Skill, Skill/Inventory ESC→field, field ESC→pause, pause K→Skill; 1920 Inventory ESC→field도 확인. 키보드·대표 1280/1920 시각 PASS. 이전 macOS click 위치 문제가 있어 탭바 mouse 클릭/물리 mouse는 HOLD; Forge/Stat과 픽셀 동등성도 별도. QA PID 종료·사용자 앱 미접촉. [컷·로그·판정](../../_archive/engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md#u08-keyboard-tab-transition-player-review--2026-10-27).
 
-**U04B 인벤토리 화면 인수:** 같은 최종 Settings QA 빌드와 postossuary seed, 격리 marker 루트에서 장비 1920 및 유골함 1280/1920 Player 스모크를 실행(build0·제품/seed/Core 변경0). U08의 장비 1280/1920 캡처도 재사용했다. 대표 화면의 장비·가방·자원/전투력·제목/탭바/본문·하단은 잘림/겹침 없이 PASS; 장비 `15/16`은 일반 장비만, 실제 `initialEquipped=16`은 유골함 포함이며 가방10·최대MP480·현재MP330·전투력1656이다. 유골함 페이지 0/300은 범주별 가방 수다. 정확 argv의 QA PID44276/44308/44315는 종료. 물리 mouse 아이템 클릭·이동·장착은 HOLD, 유골함 수집/해제·유물/보관함 본문은 PC-U04b 원문 미구현 범위. 신규 layout owner patch 필요 없음. U08의 옛 Settings TAB 설명은 현재 Settings 초점 이동/일시정지 루트 인벤토리 전환으로 문서 정정했고 키 코드는 그대로다. [영수증·화면 표](../UNITY_MAC_PC_UI_PREFLIGHT_20261026.md#u04b-inventory-player-screen-acceptance--2026-10-27).
+**U04B 인벤토리 화면 인수:** 같은 최종 Settings QA 빌드와 postossuary seed, 격리 marker 루트에서 장비 1920 및 유골함 1280/1920 Player 스모크를 실행(build0·제품/seed/Core 변경0). U08의 장비 1280/1920 캡처도 재사용했다. 대표 화면의 장비·가방·자원/전투력·제목/탭바/본문·하단은 잘림/겹침 없이 PASS; 장비 `15/16`은 일반 장비만, 실제 `initialEquipped=16`은 유골함 포함이며 가방10·최대MP480·현재MP330·전투력1656이다. 유골함 페이지 0/300은 범주별 가방 수다. 정확 argv의 QA PID44276/44308/44315는 종료. 물리 mouse 아이템 클릭·이동·장착은 HOLD, 유골함 수집/해제·유물/보관함 본문은 PC-U04b 원문 미구현 범위. 신규 layout owner patch 필요 없음. U08의 옛 Settings TAB 설명은 현재 Settings 초점 이동/일시정지 루트 인벤토리 전환으로 문서 정정했고 키 코드는 그대로다. [영수증·화면 표](../../_archive/engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md#u04b-inventory-player-screen-acceptance--2026-10-27).
 
-**U05 K 스킬창 대표 화면 인수:** PC-U05/선행 Mac 스킬 계약을 읽고 같은 최종 Settings QA 앱의 U08 실제 K 입력 캡처(1280/1920)를 재판독했다. 새 Player·build·제품/스킬/저장 변경0. Skill 탭 강조, `전투 스킬` 제목, 13슬롯·LMB 기검참 Lv1과 12슬롯 `미이식`, 악의1,000/LV1, 왼쪽 정보·가운데 제단·오른쪽 로드맵·하단 버튼 모두 대표 두 viewport 안에 있어 배치 PASS. 기존 U08 실제 키 관측의 1280 Skill ESC→field/field ESC→pause/pause K→Skill은 재실행하지 않고 근거만 인용했다. 물리 mouse 습득·장착/hover는 이전 위치 문제로 HOLD; U05 원문 미이식 SP·강화·합성은 그대로다. 새 가림/잘림 결함이 없어 owner hunk 요청 없음. [화면·소스 경계](../UNITY_MAC_PC_UI_PREFLIGHT_20261026.md#u05-k-skill-window-representative-player-acceptance--2026-10-27).
+**U05 K 스킬창 대표 화면 인수:** PC-U05/선행 Mac 스킬 계약을 읽고 같은 최종 Settings QA 앱의 U08 실제 K 입력 캡처(1280/1920)를 재판독했다. 새 Player·build·제품/스킬/저장 변경0. Skill 탭 강조, `전투 스킬` 제목, 13슬롯·LMB 기검참 Lv1과 12슬롯 `미이식`, 악의1,000/LV1, 왼쪽 정보·가운데 제단·오른쪽 로드맵·하단 버튼 모두 대표 두 viewport 안에 있어 배치 PASS. 기존 U08 실제 키 관측의 1280 Skill ESC→field/field ESC→pause/pause K→Skill은 재실행하지 않고 근거만 인용했다. 물리 mouse 습득·장착/hover는 이전 위치 문제로 HOLD; U05 원문 미이식 SP·강화·합성은 그대로다. 새 가림/잘림 결함이 없어 owner hunk 요청 없음. [화면·소스 경계](../../_archive/engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md#u05-k-skill-window-representative-player-acceptance--2026-10-27).
 
-**A14 G 대장간 대표 화면 인수:** PC-A14 계약·기본 KeyG/NativeGame 배선 확인 뒤 기존 최종 Settings QA 앱의 격리 1280/1920 Player에서 OS G 열기, 1280 G 닫기·1920 ESC 닫기 PASS. 붉은 Forge 탭, `복수의 대장간`, 6개 왼쪽 탭, 강화 본문, 악의1000·현재 seed 장비3카드/99%/비용7500과 하단 버튼이 viewport 안에 있음. 긴 목록은 내부 스크롤. build/제품/Core/save 변경0, 귀속 QA PID 종료. 기본 강화 탭 외 5탭 실화면과 물리 mouse/실제 강화는 HOLD; owner hunk 필요 없음. [컷·로그·범위](../UNITY_MAC_PC_UI_PREFLIGHT_20261026.md#a14-g-forge-window-player-acceptance--2026-10-27).
+**A14 G 대장간 대표 화면 인수:** PC-A14 계약·기본 KeyG/NativeGame 배선 확인 뒤 기존 최종 Settings QA 앱의 격리 1280/1920 Player에서 OS G 열기, 1280 G 닫기·1920 ESC 닫기 PASS. 붉은 Forge 탭, `복수의 대장간`, 6개 왼쪽 탭, 강화 본문, 악의1000·현재 seed 장비3카드/99%/비용7500과 하단 버튼이 viewport 안에 있음. 긴 목록은 내부 스크롤. build/제품/Core/save 변경0, 귀속 QA PID 종료. 기본 강화 탭 외 5탭 실화면과 물리 mouse/실제 강화는 HOLD; owner hunk 필요 없음. [컷·로그·범위](../../_archive/engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md#a14-g-forge-window-player-acceptance--2026-10-27).
 
-**A13 J 능력치 대표 화면 인수:** PC-A13 계약·기본 KeyJ/NativeGame 배선 확인 뒤 A14와 같은 격리 1280/1920 Player를 순차 재사용(동시 QA Player1). 실제 OS J 열기, 1280 J 닫기·1920 ESC 닫기 PASS. 붉은 Stat 탭, `성장의 각인`, 길 목록·검색, 트리·기본 분석판·하단이 viewport 안에 있음. `265/265`는 전체 정의 노드, 길 카운터와 AP/투자/효과의 `미이식`은 현재 상태 계약이다. 1280 왼쪽 설명 줄바꿈과 오른쪽 내부 스크롤은 정상 범위. build/제품/Core/save 변경0, QA PID 종료. 노드/검색/줌 등 실제 입력·물리 mouse 및 투자 실행은 HOLD; owner hunk 필요 없음. [컷·로그·범위](../UNITY_MAC_PC_UI_PREFLIGHT_20261026.md#a13-j-stat-panel-player-acceptance--2026-10-27).
+**A13 J 능력치 대표 화면 인수:** PC-A13 계약·기본 KeyJ/NativeGame 배선 확인 뒤 A14와 같은 격리 1280/1920 Player를 순차 재사용(동시 QA Player1). 실제 OS J 열기, 1280 J 닫기·1920 ESC 닫기 PASS. 붉은 Stat 탭, `성장의 각인`, 길 목록·검색, 트리·기본 분석판·하단이 viewport 안에 있음. `265/265`는 전체 정의 노드, 길 카운터와 AP/투자/효과의 `미이식`은 현재 상태 계약이다. 1280 왼쪽 설명 줄바꿈과 오른쪽 내부 스크롤은 정상 범위. build/제품/Core/save 변경0, QA PID 종료. 노드/검색/줌 등 실제 입력·물리 mouse 및 투자 실행은 HOLD; owner hunk 필요 없음. [컷·로그·범위](../../_archive/engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md#a13-j-stat-panel-player-acceptance--2026-10-27).
 
 **A05-IO 전사 영상 자연완주 → 첫 시작 안내:** 기존 최종 Settings QA 앱의 일반 타이틀·세계관·로비에서 새 전사를 만든 뒤 영상에 입력하지 않았다. 끝의 보라색 화면은 정지 영상이 아니라 별도 네메시아 입장 시네마틱의 대사 입력 대기였다. 추적 ARM64 QA 빌드 1회(errors0)에서 영상 time 95.000/96.400초 뒤 해당 대사로 이행하고, 대사를 Return으로 정상 진행해 첫 안내 1/4를 캡처했다. 임시 종료 대체 분기는 0회 실행되어 제품 코드에서 제거했고 최종 Runtime/Core/save/media 변경0. 정본 영상 SHA 일치·격리 roster 1명/revision1, 중복·오류0으로 시각 경로 PASS. 청음 HOLD, 세계관 재생을 생략한 두 번째 로비 진입은 QA 직접 진입으로 구분한다. QA PID 둘 종료·사용자 앱/저장 보존. [시간표·PNG·범위](../UNITY_MAC_WARRIOR_NATURAL_QA_20261027.md).
 

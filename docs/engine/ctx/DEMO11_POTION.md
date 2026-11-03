@@ -23,7 +23,7 @@
 
 - `docs/2_8 퀵슬롯+물약시스템/`
 - `docs/engine/FDG_SOURCE_TRACE_QUICKSLOT_20261020.md` §1, QS-01~07
-- `docs/engine/DEMO11_COMPLETION_GAP_20261021.md` D29
+- `docs/_archive/engine/DEMO11_COMPLETION_GAP_20261021.md` D29
 
 ## 주의
 

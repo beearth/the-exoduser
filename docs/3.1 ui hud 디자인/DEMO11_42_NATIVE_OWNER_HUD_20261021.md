@@ -1,6 +1,6 @@
 # DEMO11-42 — RETOUCH 후 현재 native HUD owner 표시
 
-2026-10-21 Mac 총괄749d0c6e RETOUCH 지시를 적용했다. 보스 HP bar는 PASS 블록 byte 그대로, Main/State/전투/저장 writer 변경0. 현재 범위·검증은 [보고서](../engine/orders/reports/demo11-42_REPORT.md) 맨 위 재제출 절을 따른다.
+2026-10-21 Mac 총괄749d0c6e RETOUCH 지시를 적용했다. 보스 HP bar는 PASS 블록 byte 그대로, Main/State/전투/저장 writer 변경0. 현재 범위·검증은 [보고서](../_archive/engine/orders/reports/demo11-42_REPORT.md) 맨 위 재제출 절을 따른다.
 
 오른쪽 구슬은 원본 game.html2640–2665/60300–60305의 독립 반구 규칙이다. 왼쪽 MP=실제 State mp/mmp 파랑(#0c2244→#3388cc,라벨#88bbff), 오른쪽 ST=실제 player st/mst 초록(#0c3322→#2a8844,라벨#88dd88). 레거시 웹 SP 문자는 이번 사용자 지시와 HUD 리디자인의 ST 명칭에 따라 ST로 교정해 성장 SP와 구분한다. MP owner를 읽을 수 없거나 수치가 비유효하면 MP label/value를 숨기고0fill, 개발 문구나 가짜 기본값을 보이지 않는다. 값은 소수 부분을 원본 ~~처럼 버려 표시한다. 자원 writer/자동회복/비용 수식 변경0.
 

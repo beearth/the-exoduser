@@ -179,3 +179,6 @@ v21과 동일한 영상에 무가사 「심연의 탈주」를 합성한 v22를 
 | 부수효과 경계 | demo 활성화·loading·로고 preload는 기존처럼 예약 전에 수행. stale callback은 이동만 중단하며 기존 activation·loading을 되돌리지 않는다. demo 활성화 실패는 기존 hideLoading/오류/예약0 유지 |
 | 새 검수 | 격리 실제 showCharGate/직접 callback의 정상URL·demo실패·늦은취소·서로 다른 요청의 양쪽 실행순서·같은번호반복·가드외본문불변6묶음 PASS. 해당 inline script1개 구문 PASS. 전체 Startup/실브라우저·사용자 save/API 실행은 아님 |
 | 보호 범위 | 3387/classic/ch1Three/ch1Rig/webgpu carry 미채택. MAP·package·패링별도dependency·game-easy-test/Godot/HUD 변경0. PC/잔여R전체이식 미완료 |
+
+
+2026-11-02 현행 화면 전환 정정: 과거 source 추적·검수 이력은 보존한다. 입장 고정1200ms 및 스테이지 고정5000ms를 공통 검정500ms/표시600ms와 실제 준비 대기로 교체했다. 영상 first-frame decode·마지막.6초/스킵, 기존 오디오 gain, 지연300ms 인장·초광폭 계약은 [전환 SSOT](../3.1%20ui%20hud%20디자인/SCREEN_TRANSITIONS_20261102.md)를 따른다. 게임 규칙·저장 identity·맵 geometry 변경은 없다.

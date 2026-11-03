@@ -25,7 +25,7 @@
 - `docs/2_7 인벤토리+장비시스템/`, `docs/7아이템디자인/`
 - `docs/engine/FDG_SOURCE_TRACE_INVENTORY_20261020.md`
 - `docs/engine/FDG_SOURCE_TRACE_ITEMS_20261020.md`
-- `docs/engine/DEMO11_COMPLETION_GAP_20261021.md` D26–D28
+- `docs/_archive/engine/DEMO11_COMPLETION_GAP_20261021.md` D26–D28
 
 ## 주의
 

@@ -20,4 +20,4 @@ Mac ARM64 일반 build errors0. CUA 실제 키보드로 한국어·영어 목록
 다음: 시네마틱 안의 기존 코드 전용 언어 선택도 같은 이름/키보드/닫기 규칙으로 연결한다. 목록 조작이 장면 넘김/긴 누름 건너뛰기로 전파되지 않게 제한한다.
 
 
-2026-10-25 시네마틱 후속: 로비와29개 이름/2열 키보드 목록을 공유. 실제 EN 자막 선택, 목록 Esc6초의 skip 차단, 키 해제 후 정상 skip·KO 로비복귀 확인. 일반 build errors0. 전체29자막 글꼴/RTL·정밀 마우스와 구분. [검수](UNITY_MAC_CINEMATIC_LANGUAGE_20261025.md).
+2026-10-25 시네마틱 후속: 로비와29개 이름/2열 키보드 목록을 공유. 실제 EN 자막 선택, 목록 Esc6초의 skip 차단, 키 해제 후 정상 skip·KO 로비복귀 확인. 일반 build errors0. 전체29자막 글꼴/RTL·정밀 마우스와 구분. [검수](../_archive/engine/UNITY_MAC_CINEMATIC_LANGUAGE_20261025.md).

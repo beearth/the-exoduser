@@ -1,6 +1,6 @@
 # FDG 수동 충돌 v7 delta 계약
 
-2026-10-20 P3-001 갱신. 같은 CH1-1 제작 장면의 원본 수동 충돌 subset에 MAP v7의 두 타입 metadata 확정을 적용한다. MAP-021의 `pit_poison` 타원 계약은 이 worktree의 `game.html:18166` 배치·`18407` metadata를 따른다. 후보 JSON 생성까지의 정본이며 실제 입력·설치·시각 검수는 별도 owner gate이다. 이전 v0.16 subset13 종주와 2026-10-11 원형 v7 검수는 동결 이력으로 보존한다. 최신 검증 수치·재추출·Godot 인수 상태는 [P3-001 보고서](orders/reports/P3-001_REPORT.md)를 따른다.
+2026-10-20 P3-001 갱신. 같은 CH1-1 제작 장면의 원본 수동 충돌 subset에 MAP v7의 두 타입 metadata 확정을 적용한다. MAP-021의 `pit_poison` 타원 계약은 이 worktree의 `game.html:18166` 배치·`18407` metadata를 따른다. 후보 JSON 생성까지의 정본이며 실제 입력·설치·시각 검수는 별도 owner gate이다. 이전 v0.16 subset13 종주와 2026-10-11 원형 v7 검수는 동결 이력으로 보존한다. 최신 검증 수치·재추출·Godot 인수 상태는 [P3-001 보고서](../_archive/engine/orders/reports/P3-001_REPORT.md)를 따른다.
 
 | 항목 | 현행 계약 |
 |---|---|
@@ -69,7 +69,7 @@ applyMapSourceHandColliderDelta(previewProject, { delta, scope })
 
 ## 2026-10-11 원형 계약 검증 이력(동결)
 
-아래 결과는 MAP-021 적용 전 `circle/radius80` 계약의 당시 기록이다. 현행 ellipse 계약의 PASS로 간주하거나 재집계하지 않는다. 원본 delta 파일이 저장소에 없어 과거 producer JSON을 현재 재추출했다고 주장하지 않는다. 최신 P3-001 검증은 [보고서](orders/reports/P3-001_REPORT.md)에 별도로 기록한다.
+아래 결과는 MAP-021 적용 전 `circle/radius80` 계약의 당시 기록이다. 현행 ellipse 계약의 PASS로 간주하거나 재집계하지 않는다. 원본 delta 파일이 저장소에 없어 과거 producer JSON을 현재 재추출했다고 주장하지 않는다. 최신 P3-001 검증은 [보고서](../_archive/engine/orders/reports/P3-001_REPORT.md)에 별도로 기록한다.
 
 | 확인 | 결과 / 한계 |
 |---|---|

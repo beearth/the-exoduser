@@ -20,8 +20,8 @@
 | 근거 | 확인·경계 |
 |---|---|
 | [WORK_BOARD](orders/WORK_BOARD.md) 진행 중·공용 연결 요청 | TRACE-BOSS-CH1은 새 문서 단독 소유. TRACE-CH1-ENEMIES·TRACE-SOUND·TRACE-META·TRACE-WEAPONS·TRACE-SKILLS·TRACE-ITEMS와 분리. QS-01/SETTINGS-S01/SV-CONTRACT 신규 모듈을 선점하지 않음 |
-| [개발 계획](FDG_GAME_DEVELOPMENT_PLAN.md) §단계별 실행·인수 표 / 실행 작업표 | 보스 데이터·AI·전투는 P3, HUD/다음 진행 연결은 P4 의존. P4 전체 완료나 배정 확정으로 보고하지 않음. P3-002는 작업판과 실제 병합 파일 기준으로 이미 존재; 계획의 옛 미병합 문구만으로 결손 판정하지 않음 |
-| [FEATURE-INVENTORY](FDG_FEATURE_INVENTORY_20261020.md) 기준·보스 슬롯/무브 행 | 원 snapshot HEAD=`2845f96e97d4803e4fb8ab4f3d5c0ff8e80d4353`, 이 조사와 game.html SHA256은 같음. Godot 진행 판정은 이 worktree 실제 파일로 다시 구분. 35슬롯/59기술 등록과 옛 19보스/49기술 요약을 구분 |
+| [개발 계획](../_archive/engine/FDG_GAME_DEVELOPMENT_PLAN.md) §단계별 실행·인수 표 / 실행 작업표 | 보스 데이터·AI·전투는 P3, HUD/다음 진행 연결은 P4 의존. P4 전체 완료나 배정 확정으로 보고하지 않음. P3-002는 작업판과 실제 병합 파일 기준으로 이미 존재; 계획의 옛 미병합 문구만으로 결손 판정하지 않음 |
+| [FEATURE-INVENTORY](../_archive/engine/FDG_FEATURE_INVENTORY_20261020.md) 기준·보스 슬롯/무브 행 | 원 snapshot HEAD=`2845f96e97d4803e4fb8ab4f3d5c0ff8e80d4353`, 이 조사와 game.html SHA256은 같음. Godot 진행 판정은 이 worktree 실제 파일로 다시 구분. 35슬롯/59기술 등록과 옛 19보스/49기술 요약을 구분 |
 | [부활·실드 추적](FDG_SOURCE_TRACE_REVIVE_SHIELD_20261020.md) §1.3·§1.5·§3~5 | 보스 즉시 부활·180f 폴백·신성력·실드·최종 죽음 소유는 이 기존 추적에 둠. 아래 순서는 이중 보스 부활 모듈을 새로 설계하지 않음 |
 | [SAVE](FDG_SOURCE_TRACE_SAVE_20261020.md), [SETTINGS](FDG_SOURCE_TRACE_SETTINGS_20261020.md), [INVENTORY](FDG_SOURCE_TRACE_INVENTORY_20261020.md), [QUICKSLOT](FDG_SOURCE_TRACE_QUICKSLOT_20261020.md) | 저장 5개 생산자·설정·장비·퀵슬롯 소유는 기존 추적을 유지. 이 문서는 보스에서 읽거나 넘기는 접점만 열거 |
 | 작업판 갱신/보고서 일반 규칙과 이번 지시 | 사용자의 ‘새 추적 문서 1개만’이 우선. 공용 작업판·별도 REPORT를 수정하지 않고 제출 SHA와 외부 DONE으로 인계 |
@@ -792,4 +792,4 @@ BC11/12/13도 각각 큐·상태별 독립 테스트 그룹으로 나눠 한 그
 | 실행 인수 | 일반/QA/옛 피날레의 실제 도달·화면·사운드·자연 AI 전투·PC/Mac 동기 실행은 이번 조사에서 미확인 |
 | 후속 첫 단위 | BC01 신규 catalog+test만, 공용0줄. 다음 배정에서 원본 SHA/소유/격리 실행 도구를 다시 확인 후 구현 |
 
-DEMO11-34(2026-10-21)는 기존 BC01~10을 변경하지 않고 stage0 Node2D actor·요청 assembler를 Main에 설치한다. 원본 clock/prefix/실제 owner가 미공급인 경계는 정지하며, 자연 arena/피해·패링·HP/poise·부활·실제 탄 registry/렌더 인수로 확대하지 않는다. 새 공개 API와 Main 변경 줄·PC36/49 인계는 [DEMO11-34 보고서](orders/reports/demo11-34_REPORT.md)를 따른다.
+DEMO11-34(2026-10-21)는 기존 BC01~10을 변경하지 않고 stage0 Node2D actor·요청 assembler를 Main에 설치한다. 원본 clock/prefix/실제 owner가 미공급인 경계는 정지하며, 자연 arena/피해·패링·HP/poise·부활·실제 탄 registry/렌더 인수로 확대하지 않는다. 새 공개 API와 Main 변경 줄·PC36/49 인계는 [DEMO11-34 보고서](../_archive/engine/orders/reports/demo11-34_REPORT.md)를 따른다.

@@ -1,6 +1,7 @@
 # 애니메이션·VFX팀 마스터 (ANIMVFX)
 
 > 총괄: Codex의 [PROJECT_MANAGEMENT_MASTER.md](../0마스터플랜/PROJECT_MANAGEMENT_MASTER.md). 이 문서는 애니메이션·VFX팀의 책임·소유 범위·작업 대장·검수 근거·미해결·다음 백로그를 관리한다.
+> **2026-10-26부터 이펙트 디자인 기준·방향·백로그는 [VFX_LEAD_MASTER_20261026.md](VFX_LEAD_MASTER_20261026.md)(임팩트 총괄)가 우선한다.** 이 문서는 개별 작업 운영 기록으로 유지한다.
 > 연속 진행·한국어 응대는 [TEAM_CONTINUATION_POLICY_20261001.md](../0마스터플랜/TEAM_CONTINUATION_POLICY_20261001.md)를 따른다.
 > 상세 수치·계약은 기존 SSOT([5.0애니메이션파이프라인](../5.0애니메이션파이프라인/5.0애니메이션파이프라인.md), [VFX_구현가이드](VFX_구현가이드.md), 캐릭터/스킬/몬스터 SSOT)를 따르고, 이 문서는 운영 현황을 관리한다.
 
@@ -36,7 +37,7 @@
 
 | ID | 작업 | 상태 | 검수 근거 | 미해결 |
 |---|---|---|---|---|
-| MAPLOOK-HOLE | Godot 소환굴 표시 전용 강화 | 독립 모듈 검수·제출, 신규67/0·회귀3종0실패·실창/1x 국소 작업자PASS, 기본 실행 미연결 | [계약](../4.1맵디자인+설정/MAPLOOK_HOLE_20261020.md), [보고서](../engine/orders/reports/MAPLOOK-HOLE_REPORT.md) | 총괄 광원 통합·정상 플레이·HUD fixture 빈 구슬 관측 별도, 최대지연 예산 보장 아님 |
+| MAPLOOK-HOLE | Godot 소환굴 표시 전용 강화 | 독립 모듈 검수·제출, 신규67/0·회귀3종0실패·실창/1x 국소 작업자PASS, 기본 실행 미연결 | [계약](../_archive/4.1맵디자인+설정/MAPLOOK_HOLE_20261020.md), [보고서](../_archive/engine/orders/reports/MAPLOOK-HOLE_REPORT.md) | 총괄 광원 통합·정상 플레이·HUD fixture 빈 구슬 관측 별도, 최대지연 예산 보장 아님 |
 | PM-014 | CH1 동작·VFX 첫 결함 개선(몹 피격 플래시 복원) | 구현·2D 실화면 검증 완료 / GL 실화면 대기 | §5 | GL 경로 실화면 스크린샷(정규 풀부팅) |
 
 ## 5. PM-014 — CH1 몹 피격 플래시 복원

@@ -24,7 +24,7 @@
 
 - `docs/8.1보스디자인바이블/`
 - `docs/engine/FDG_SOURCE_TRACE_BOSS_CH1_20261020.md` §1, §4–5
-- `docs/engine/DEMO11_COMPLETION_GAP_20261021.md` D23–D25
+- `docs/_archive/engine/DEMO11_COMPLETION_GAP_20261021.md` D23–D25
 
 ## 주의
 

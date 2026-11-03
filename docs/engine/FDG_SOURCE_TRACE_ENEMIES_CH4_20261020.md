@@ -14,7 +14,7 @@ G=`2c3c211ff3c9e2be4e2754d608f9f0ea963588b2:game.html`, I=`동일 SHA:index.html
 | main [ENEMIES_CH2](FDG_SOURCE_TRACE_ENEMIES_CH2_20261020.md) §0–5·부록 | 생성 caller별 원소 부재·등록·후대입, 공통 FSM·네임드·zone/저장·곰치의 기존 권위 참조. CH2 30..39 전용 정책을 CH4 actor로 위장하지 않음 |
 | 원격 [ENEMIES_CH3 제출본](https://github.com/beearth/the-exoduser/blob/20b2139a7f140f13dc37deb082e471c494d6fa77/docs/engine/FDG_SOURCE_TRACE_ENEMIES_CH3_20261020.md) 전체 | 요청한 형식·깊이와 §4.1 선택 leaf/API/원문 oracle·부록 전수 색인 재사용. **기준 main에는 이 문서 없음**. CH3 40..49 중 CH4 풀에도 있는47만 기존 actor 의존이며, 40은47의 clone 생성 부수효과로만 남음 |
 | main [ELITES](FDG_SOURCE_TRACE_ELITES_20261020.md) §0–7·부록 | 전체31mods+4auras=35의 구현은 재설계하지 않는다. CH4 해금22mods/4auras·확률·9999 후 보정·caller 후대입만 기록 |
-| main [WORK_BOARD](orders/WORK_BOARD.md)·[FEATURE_INVENTORY](FDG_FEATURE_INVENTORY_20261020.md) | PC P2-008a/FIX·b=CH1 actor/factory, P3-002=굴/동적등록, P3-003=지역 소유. inventory의 EN-00~99 데이터 분모는 구현 진척이 아님. 작업판·기존 담당 파일0줄 |
+| main [WORK_BOARD](orders/WORK_BOARD.md)·[FEATURE_INVENTORY](../_archive/engine/FDG_FEATURE_INVENTORY_20261020.md) | PC P2-008a/FIX·b=CH1 actor/factory, P3-002=굴/동적등록, P3-003=지역 소유. inventory의 EN-00~99 데이터 분모는 구현 진척이 아님. 작업판·기존 담당 파일0줄 |
 
 | EC2·EC3 원격 제출 / SHA | 기준 main 포함 | 읽은 모듈·실제 재사용 범위 |
 |---|:---:|---|
@@ -250,7 +250,7 @@ main에새CH4전용enemy policy/actor파일은발견하지못했다. 후속정�
 
 ### 4.1 1번 EC4-01 — 4장 유형·원소 선택 순수 정책 (구현 지시서)
 
-**산출 범위:** 새 `godot/scripts/native_ch4_enemy_spawn_policy.gd`·`godot/tests/test_ch4_enemy_spawn_policy.gd`와자기UID2, `docs/engine/orders/reports/ec4-01_REPORT.md`·CHANGELOG_SYNC자기절. 기존selector/공용/다른담당/원본/저장0줄. mainEC2-01의API/진단/원연산형식을재사용하고, 원격EC3-01의장별leaf/파일oracle을참조한다. selector범용추출/기존stageguard확장은공용변경이므로이번단위에서하지않는다.
+**산출 범위:** 새 `godot/scripts/native_ch4_enemy_spawn_policy.gd`·`godot/tests/test_ch4_enemy_spawn_policy.gd`와자기UID2, `docs/_archive/engine/orders/reports/ec4-01_REPORT.md`·CHANGELOG_SYNC자기절. 기존selector/공용/다른담당/원본/저장0줄. mainEC2-01의API/진단/원연산형식을재사용하고, 원격EC3-01의장별leaf/파일oracle을참조한다. selector범용추출/기존stageguard확장은공용변경이므로이번단위에서하지않는다.
 
 1. RefCounted `pick_etype(stage:int,random_unit:Callable)->Dictionary` / `pick_element(stage:int,random_unit:Callable)->Dictionary`. stage14..20만허용, 다른stage는0draw NOT_READY(unsupported_stage). 유효Callable없으면0draw NOT_READY(invalid_random_callable). 가드순서는stage→callable→sample이다. 자체randf/seed/실RNG/State/actorowner없음.
 2. §1.1의POOL31쌍을**원순서그대로**보관, R9개/가중합36, 전체165/비R129를검사. `HELL_SPAWN[3]`/`_RANGED_ET`/`_HELL_CDF`/rollEtype/rollEl의현재원문으로golden을생성한다. 31종과가중치를GDScript기대값만으로검사하지않음.

@@ -1,40 +1,48 @@
-> 2026-10-22 **PARITY-MAP-02 native 분기:** 원본61군락 얼굴·소품 국소변형/손3/매듭5·늪/독구덩이·원본 하프조명/DOM 안개 합성 이식. 원본 웹 수치·배치/충돌/카메라 변경0. 1440p청크·최종 판정은 [마감 기록](../engine/PARITY_MAP_02_20261022.md)을 따른다. 아래 웹 제작 이력은 보존한다. main/PC 인수 아님.
+> 2026-10-22 **PARITY-MAP-02 native 분기:** 원본61군락 얼굴·소품 국소변형/손3/매듭5·늪/독구덩이·원본 하프조명/DOM 안개 합성 이식. 원본 웹 수치·배치/충돌/카메라 변경0. 1440p청크·최종 판정은 [마감 기록](../_archive/engine/PARITY_MAP_02_20261022.md)을 따른다. 아래 웹 제작 이력은 보존한다. main/PC 인수 아님.
 
-> 2026-10-22 **PARITY-MAP-01 기준 정정:** 웹 레이아웃·충돌·좌표·동선·카메라 시스템은 동일, 맵 비주얼 업그레이드는 허용. 컨셉 판 통째 재사용/직선 패치/원근 왜곡 금지. [2차 구현·두 판정](../engine/PARITY_MAP_01_20261022.md). 아래 “원본 동일성”은 구조/시스템에 적용하며 픽셀 복제만을 목표로 삼지 않는다.
+> 2026-10-22 **PARITY-MAP-01 기준 정정:** 웹 레이아웃·충돌·좌표·동선·카메라 시스템은 동일, 맵 비주얼 업그레이드는 허용. 컨셉 판 통째 재사용/직선 패치/원근 왜곡 금지. [2차 구현·두 판정](../_archive/engine/PARITY_MAP_01_20261022.md). 아래 “원본 동일성”은 구조/시스템에 적용하며 픽셀 복제만을 목표로 삼지 않는다.
 
-> 2026-10-22 **PARITY-MAP-01 브랜치:** 사용자 원본 동일성 지시로 Godot 컨셉 판 제품 참조를 끊고 웹 청크/좌표/충돌로 복귀하는 후보. [원본 대응·검수·미이식 경계](../engine/PARITY_MAP_01_20261022.md). **VISUAL RETOUCH / 동일성 미완료**, main/PC 인수 아님. 아래 MAP11 제작 차수는 이 브랜치의 제품 기준이 아닌 보존 이력이다.
+> 2026-10-22 **PARITY-MAP-01 브랜치:** 사용자 원본 동일성 지시로 Godot 컨셉 판 제품 참조를 끊고 웹 청크/좌표/충돌로 복귀하는 후보. [원본 대응·검수·미이식 경계](../_archive/engine/PARITY_MAP_01_20261022.md). **VISUAL RETOUCH / 동일성 미완료**, main/PC 인수 아님. 아래 MAP11 제작 차수는 이 브랜치의 제품 기준이 아닌 보존 이력이다.
 
-> 2026-10-21 SHARP-01 품질 후보: [HiDPI·무손실·렌더 선명도](SHARP_01_RENDER_CLARITY_20261021.md). 기준c335f345. canvas_items/native resolve, 지면26import mode0, 단일 제한형clarity pass. 1080p 전후1x 선명도PASS, native2560 p95 9.793ms/p99 11.219ms/focus0, 113checks/0fail. 120fps미달/전체맵아트PASS·PC인수 아님. 아래32c의 mode2/VRAM은 당시 이력.
+> 2026-10-21 SHARP-01 품질 후보: [HiDPI·무손실·렌더 선명도](../_archive/4.1맵디자인+설정/SHARP_01_RENDER_CLARITY_20261021.md). 기준c335f345. canvas_items/native resolve, 지면26import mode0, 단일 제한형clarity pass. 1080p 전후1x 선명도PASS, native2560 p95 9.793ms/p99 11.219ms/focus0, 113checks/0fail. 120fps미달/전체맵아트PASS·PC인수 아님. 아래32c의 mode2/VRAM은 당시 이력.
 
-> 2026-10-21 MAP11-32c 최신 후보: [계측·북쪽 디테일·VRAM 압축](MAP11_32C_MEASURED_FIELD_20261021.md). 기준/현재 p95 9.485/9.520ms, 최종9.122ms/p99 10.247ms/focus0. 전체 VRAM p95 3257505721→2825851708bytes. 237checks/0fail. source clock/input CPU 원인은 PC 인계, core수정0. **VISUAL RETOUCH / PERFORMANCE FAIL**, main 인수/PC 동기화 완료 아님. 아래32b는 이전 후보 이력.
+> 2026-10-21 MAP11-32c 최신 후보: [계측·북쪽 디테일·VRAM 압축](../_archive/4.1맵디자인+설정/MAP11_32C_MEASURED_FIELD_20261021.md). 기준/현재 p95 9.485/9.520ms, 최종9.122ms/p99 10.247ms/focus0. 전체 VRAM p95 3257505721→2825851708bytes. 237checks/0fail. source clock/input CPU 원인은 PC 인계, core수정0. **VISUAL RETOUCH / PERFORMANCE FAIL**, main 인수/PC 동기화 완료 아님. 아래32b는 이전 후보 이력.
 
-> 2026-10-21 MAP11-32b 최신 후보: [정적 bake·북접합 리터치·검수](MAP11_32B_FIELD_BAKE_20261021.md). START zoom.70 유지, 북미러/검은공백 제거. 관련237/0, 유효p95 **11.806ms**/p99 **12.905ms**/focus0, **124draw/225objects**. VISUAL RETOUCH / 성능 FAIL, main 인수금지. 아래32는 이전 후보 이력.
+> 2026-10-21 MAP11-32b 최신 후보: [정적 bake·북접합 리터치·검수](../_archive/4.1맵디자인+설정/MAP11_32B_FIELD_BAKE_20261021.md). START zoom.70 유지, 북미러/검은공백 제거. 관련237/0, 유효p95 **11.806ms**/p99 **12.905ms**/focus0, **124draw/225objects**. VISUAL RETOUCH / 성능 FAIL, main 인수금지. 아래32는 이전 후보 이력.
 
-> 2026-10-21 MAP11-32 필드 첫 구역 검토 후보: [목표 장면 분해·룩·층·발 충돌·실측](MAP11_32_FIELD_TARGET_SPLIT_20261021.md). START `(0,3700)`→첫 통로만, 원화 배율1.3714285714/기존 줌.70·투영.6 유지. 입구 TOUR4개를 source 고목으로 대체, 다른13개 유지. main/PC 반영 아님. 최종 판정·단회 성능은 해당 보고서 하단.
+> 2026-10-21 MAP11-32 필드 첫 구역 검토 후보: [목표 장면 분해·룩·층·발 충돌·실측](../_archive/4.1맵디자인+설정/MAP11_32_FIELD_TARGET_SPLIT_20261021.md). START `(0,3700)`→첫 통로만, 원화 배율1.3714285714/기존 줌.70·투영.6 유지. 입구 TOUR4개를 source 고목으로 대체, 다른13개 유지. main/PC 반영 아님. 최종 판정·단회 성능은 해당 보고서 하단.
 
-> 2026-10-21 MAP11-30c 현행 후보: [축척·캐릭터 접지·정적 바닥 디테일/검수](MAP11_30C_SCALE_INTEGRATION_20261021.md). 웹 정면 근접48:473.105:1080 대응, 카메라 .563700169(입장)/최대.8, R1700·PC core 보존. 유효 성능1회p95 **7.738ms**/focus_lost0; 일부 후검토 보정은 해당 보고서의 측정 경계 참조. **VISUAL RETOUCH**, 실제Main live0/2초 캡처 포함. 아래 차수는 제작 이력.
+> 2026-10-21 MAP11-30c 현행 후보: [축척·캐릭터 접지·정적 바닥 디테일/검수](../_archive/4.1맵디자인+설정/MAP11_30C_SCALE_INTEGRATION_20261021.md). 웹 정면 근접48:473.105:1080 대응, 카메라 .563700169(입장)/최대.8, R1700·PC core 보존. 유효 성능1회p95 **7.738ms**/focus_lost0; 일부 후검토 보정은 해당 보고서의 측정 경계 참조. **VISUAL RETOUCH**, 실제Main live0/2초 캡처 포함. 아래 차수는 제작 이력.
 
-> **2026-10-21 MAP11-23 현행:** [설계서 §28](MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#28-map11-23--남은-retouch-마감-2026-10-21). 외곽 변형/PNG소품 교체·입구4주 변주·처형장 기존fade·pit grading. 전체 **RETOUCH**, before 유효성 실패로 맵비용 전후 비교 미검증. after p95 field9.449/arena8.509ms·focus_lost0. 아래는 제작 이력.
+> **2026-10-21 MAP11-23 현행:** [설계서 §28](../_archive/4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#28-map11-23--남은-retouch-마감-2026-10-21). 외곽 변형/PNG소품 교체·입구4주 변주·처형장 기존fade·pit grading. 전체 **RETOUCH**, before 유효성 실패로 맵비용 전후 비교 미검증. after p95 field9.449/arena8.509ms·focus_lost0. 아래는 제작 이력.
 
-> 2026-10-21 MAP11-21d 현행: [설계서 §20.7](MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#207-map11-21d--지옥-관광-코스-3차-보정-마감-2026-10-21). 04정상variant0/06죄수정면yaw0+opaque-depth·pit1.5배/게이트뒤root-dark PNG. **VISUAL RETOUCH, 성능검수 FAIL**: 단회96checks/3fail, p95 field9.530/arena7.212ms, focus_lost1648/1749. 아래21c이하는 이력.
+> 2026-10-21 MAP11-21d 현행: [설계서 §20.7](../_archive/4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#207-map11-21d--지옥-관광-코스-3차-보정-마감-2026-10-21). 04정상variant0/06죄수정면yaw0+opaque-depth·pit1.5배/게이트뒤root-dark PNG. **VISUAL RETOUCH, 성능검수 FAIL**: 단회96checks/3fail, p95 field9.530/arena7.212ms, focus_lost1648/1749. 아래21c이하는 이력.
 
-> 2026-10-21 MAP11-21c 현행: [설계서 §20.6](MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#206-map11-21c--관광-코스-2차-보정-2026-10-21). 해골chroma.20/cut.055·대야chroma.72·04/05광원감쇠·01/03/06무리보정. 96검사/0fail, field p95 7.581ms/p99 8.742ms/focus_lost 0/draw 133.0; arena p95 7.286ms/p99 7.752ms/focus_lost 0/draw 136.0. **VISUAL RETOUCH**, 04내부평면/06림 잔여. 아래21b이하는 이력.
+> 2026-10-21 MAP11-21c 현행: [설계서 §20.6](../_archive/4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#206-map11-21c--관광-코스-2차-보정-2026-10-21). 해골chroma.20/cut.055·대야chroma.72·04/05광원감쇠·01/03/06무리보정. 96검사/0fail, field p95 7.581ms/p99 8.742ms/focus_lost 0/draw 133.0; arena p95 7.286ms/p99 7.752ms/focus_lost 0/draw 136.0. **VISUAL RETOUCH**, 04내부평면/06림 잔여. 아래21b이하는 이력.
 
-> 2026-10-21 MAP11-21b 현행 보정: [설계서 §20.5](MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#205-map11-21b--관광-무리받침-제거-보정-2026-10-21). 17소품/6무리, 대표1.3배, offline 높이절단으로 Meshy 바닥판 제거, PNG normal/contact 재생성. 아래 MAP11-21은 기준 후보 이력. 판정·성능은 §20.5의 최종 검수 기록 참조.
+> 2026-10-21 MAP11-21b 현행 보정: [설계서 §20.5](../_archive/4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#205-map11-21b--관광-무리받침-제거-보정-2026-10-21). 17소품/6무리, 대표1.3배, offline 높이절단으로 Meshy 바닥판 제거, PNG normal/contact 재생성. 아래 MAP11-21은 기준 후보 이력. 판정·성능은 §20.5의 최종 검수 기록 참조.
 
-> 2026-10-21 **MAP11-21 지옥 관광 코스 후보**: [설계서 §20](MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#20-map11-21--1-1-지옥-관광-코스-2026-10-21). 7GLB×3yaw offline diffuse/normal, 6장면15소품·발치원충돌·빛웅덩이6. bone/blood/cracked 평면패치·scatter0. **VISUAL RETOUCH**, 성능 단회84checks/0fail, 상세p95는 §20. 기존웹/PC본편 인수완료가 아니며 아래 25Db/20의 수치는 해당후보 이력.
+> 2026-10-21 **MAP11-21 지옥 관광 코스 후보**: [설계서 §20](../_archive/4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#20-map11-21--1-1-지옥-관광-코스-2026-10-21). 7GLB×3yaw offline diffuse/normal, 6장면15소품·발치원충돌·빛웅덩이6. bone/blood/cracked 평면패치·scatter0. **VISUAL RETOUCH**, 성능 단회84checks/0fail, 상세p95는 §20. 기존웹/PC본편 인수완료가 아니며 아래 25Db/20의 수치는 해당후보 이력.
 
-> 2026-10-21 **MAP11-17 조명 현행**: [설계서 §14](MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#14-map11-17--조명-룩-패스-2026-10-21). 기준 MAP11-15 `1f797a8b`, MAP11-16/16b 미사용. MAP11 전용 CanvasModulate/광원·접지·외곽 안개가 현행이며 아래 MAP11-15의 전면 안개·광원 수치는 당시 이력이다. 1080p p95 필드7.857ms/아레나7.580ms, **VISUAL VERDICT: RETOUCH**. 독립 프리뷰와 웹 본편은 제품과 구분한다.
+> 2026-10-21 **MAP11-17 조명 현행**: [설계서 §14](../_archive/4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#14-map11-17--조명-룩-패스-2026-10-21). 기준 MAP11-15 `1f797a8b`, MAP11-16/16b 미사용. MAP11 전용 CanvasModulate/광원·접지·외곽 안개가 현행이며 아래 MAP11-15의 전면 안개·광원 수치는 당시 이력이다. 1080p p95 필드7.857ms/아레나7.580ms, **VISUAL VERDICT: RETOUCH**. 독립 프리뷰와 웹 본편은 제품과 구분한다.
 
 ## 2026-10-21 — MAP11-15 Godot 제품 보스룸·맵 성능
 
-[경계 마감·120fps 검수 계약](MAP11_FINISH_PERFORMANCE_20261021.md). 웹 본편/기존 stage LOCK·보호 전투 설계를 변경하지 않는다.
+[경계 마감·120fps 검수 계약](../_archive/4.1맵디자인+설정/MAP11_FINISH_PERFORMANCE_20261021.md). 웹 본편/기존 stage LOCK·보호 전투 설계를 변경하지 않는다.
 
 > 진행 프로젝트: [MAP_IMPROVEMENT_PROJECT.md](MAP_IMPROVEMENT_PROJECT.md) · 2.5D 깊이 기준: [DEPTH_2_5D_BENCHMARK_20260930.md](DEPTH_2_5D_BENCHMARK_20260930.md)
 
+## 2026-11-03 — 웹 3D 8라운드 (기본 OFF·제작자 RETOUCH)
+
+CTO 11-02 23:50의 밀도·유령나무·생동감 재작업. 원래 고사목12종 하단24%와 기존 뿌리/뼈를 사용하는 표시용1797군락·10구역, 수풀12.5px·밑동고정·부착식생, 어두운 목질/청백 윤곽 유령나무. 맵/충돌/전투/저장/HUD·원본PNG 보존, 유료0. 13카메라1920/3840 비교·빈바닥 표, 시작/캠프/후반/제단10초4편·1x 재생/프레임차, 활성64적96탄 ON평균137.57~160.61FPS. 원재질 hue 분리검수와 실제ON 잔여바닥 국소평균을 별도 공개. **실제ON 모든 국소 hue/전체AAA PASS 아님**. [현행 계약](WEB3D_TRIAL_20261031.md) · I:/EXODUSER-Storage/codex-takeover/web3d-r8/REPORT.md·delivery.json.
+
+## 2026-11-02 — 웹 3D 7라운드 이력 (8라운드 재작업으로 대체)
+
+원본맵 위 표현레이어의 스티커형 groundOnly90개를 제거, bank밑동 연결48입력/31표시(전체165/147)·실alpha feather40~80px·native RGB동일scalar로 수정. 표시잡티정리/미풍/안개/유령나무 가시성도수정. 13구도×3해상도 바닥hue13.0920°/개별소품11.6363°/패치1.8803°·패치밝기−.5184~−.1435%, 직접3x 추가점/스티커윤곽0. 요청12편10초1x드롭0, ON평균151.11~191.24FPS(64적96탄·Dota실행),12목적지키보드완주. 추가194초route영상은1x재생2프레임드롭남음. **제작자R7수정범위PASS·독립CTO판정대기/기본OFF**. [정확한현행수치·증거범위](WEB3D_TRIAL_20261031.md), I:/EXODUSER-Storage/codex-takeover/web3d-r7/REPORT.md·delivery.json, 3377 /tmp/web3d-r7-review/index.html. 자연보스완주/전체AAA/Unity/Steam완료와구분.
+
 ## 2026-10-20 — MAPLOOK-HOLE Godot 독립 소환굴 오버레이
 
-게임플레이·원본 시트는 불변. 실제 G.spawnHoles 위치·size·트리거·제거만 읽어 림 왜곡·맥동·7개 흡입 streak·0.85초 잔광을 별도 world 자식에 표시한다. 신규 이미지·광원 0, 기본 실행 미연결. [정확한 표시 계약](MAPLOOK_HOLE_20261020.md) · [실창·성능·미검수 경계 보고](../engine/orders/reports/MAPLOOK-HOLE_REPORT.md).
+게임플레이·원본 시트는 불변. 실제 G.spawnHoles 위치·size·트리거·제거만 읽어 림 왜곡·맥동·7개 흡입 streak·0.85초 잔광을 별도 world 자식에 표시한다. 신규 이미지·광원 0, 기본 실행 미연결. [정확한 표시 계약](../_archive/4.1맵디자인+설정/MAPLOOK_HOLE_20261020.md) · [실창·성능·미검수 경계 보고](../_archive/engine/orders/reports/MAPLOOK-HOLE_REPORT.md).
 
 ## 2026-10-08 — CH1-1 썩은 생체나무 98차 현행 (런타임 나무·변형 12종·흔들림·전체 깜빡임)
 
@@ -234,9 +242,9 @@
 
 > **42차 현행(2026-09-27):** 구형 spider_web 원화·동일사본4개와CH2 seamWeb4배치폐기. CH2 authored105/시스템포함107,충돌51+비충돌54,seam6,wall-belt27. 구형거미줄유지였던41차기록은검토이력. 큰거미줄뼈기둥보존. [현행SSOT](CH2_WEB_RETIREMENT_PASS42.md).
 
-> **2026-09-16 후속 실제 수정:** 사용자 추가 지시에 따라 bake/cache가 `20260916-ground-2`로 변경됐다. 흙길/공터와 이끼·낙엽을 구분하며 geometry/START/EXIT/배치/진행은 유지한다. [현재 지면 구성·전후 증거](CH1_1_GROUND_STRUCTURE_20260916.md). 아래 finish-3 및 ec7bf70d8 동일성 판정은 수정 전 검수 이력이다.
+> **2026-09-16 후속 실제 수정:** 사용자 추가 지시에 따라 bake/cache가 `20260916-ground-2`로 변경됐다. 흙길/공터와 이끼·낙엽을 구분하며 geometry/START/EXIT/배치/진행은 유지한다. [현재 지면 구성·전후 증거](../_archive/4.1맵디자인+설정/CH1_1_GROUND_STRUCTURE_20260916.md). 아래 finish-3 및 ec7bf70d8 동일성 판정은 수정 전 검수 이력이다.
 
-> **2026-09-16 후속 결과 검수:** 맵 ec7bf70d8 보존. 최신 시각 판정은 **RETOUCH**. [원본 화면/일반 플레이/남은 결함](CH1_1_FINAL_REVIEW_20260916.md). 기존 제작 보고의 PASS를 정정하며 기술 이력과 구분한다.
+> **2026-09-16 후속 결과 검수:** 맵 ec7bf70d8 보존. 최신 시각 판정은 **RETOUCH**. [원본 화면/일반 플레이/남은 결함](../_archive/4.1맵디자인+설정/CH1_1_FINAL_REVIEW_20260916.md). 기존 제작 보고의 PASS를 정정하며 기술 이력과 구분한다.
 
 > **2026-09-16 CH1-1 PRODUCTION 적용 계약 — 이전 CH1-1 배경/경계 설명보다 우선:** 사용자 최신 지시에 따라 실제 `STAGES[0]`(표시 1-1)에 고정 수작업 전체맵을 적용했다. 현행 경계는 `assets/map/ch1/production_finish/layout.js`의 53점 polygon/8구역이며, 기본 배경은 `assets/map/ch1/production_finish`다. 8192² master의 1024px core를 **월드 1000px**로 그려 200×200타일(`T=40`, 8000²) 충돌 좌표와 일치시킨다. `smoothing`은 호환 phase 이름이며 과거 smoothing 폴더를 기본 로드한다는 뜻이 아니다. `outer` query는 과거 아트 비교용으로, 현행 경계와 시각 정합을 보증하지 않는다. authored62/runtime63, hand collision21/total22, 자동 scatter0. `_CH1S1`/stage1은 별도 맵이다. START `(100.5,185.5)`, 시체나무 `(102.5,90.5)`, 북쪽 gate y5/exit y7과 진행 조건은 유지한다. 아래의 이전 outer/smoothing 수치·좌표는 **해당 날짜의 이력**이며 현행값은 [전체 제작·수치·검증 보고서](CH1_1_PRODUCTION_FINISH_20260916.md)를 따른다. 기술 PASS와 시각 판정은 보고서에서 별도로 기록한다.
 
@@ -246,9 +254,9 @@
 
 > **CH1-1 최우선 콘셉트 (2026-09-25): [맵디테일.md](맵디테일.md) 필독.** 넓은 전투공간·피부 바닥·꿈틀거리는 동맥·부패 생체나무의 음침한 지옥. 이전 자연숲 원화들은 현행 승인안이 아니다. 공통 제작 가이드 다음에 읽고 이전 제작 이력보다 이 최신 콘셉트를 적용한다.
 
-> **오늘 작업 재개·최신 목표 (2026-09-24):** [Rootworld 모델 이미지 일치 검수](ROOTWORLD_REFERENCE_FIDELITY_20260924.md). 기준 원화와 동일 구현이 목표. candidate-v1 시각 FAIL, 신규 API 생성은 잔액 부족으로 출력 없음. 오늘 QA 작업을 위 9월 17일 본편 리터치 이력과 혼동하지 않는다.
+> **오늘 작업 재개·최신 목표 (2026-09-24):** [Rootworld 모델 이미지 일치 검수](../_archive/4.1맵디자인+설정/ROOTWORLD_REFERENCE_FIDELITY_20260924.md). 기준 원화와 동일 구현이 목표. candidate-v1 시각 FAIL, 신규 API 생성은 잔액 부족으로 출력 없음. 오늘 QA 작업을 위 9월 17일 본편 리터치 이력과 혼동하지 않는다.
 
-> **진행 중인 제출 목표 (2026-09-24):** [스마일게이트 제출용 CH1-1 완성 목표](SMILEGATE_CH1_SUBMISSION_GOAL_20260924.md). 추석 이후 제출용 맵 한 개를 목표로 승인 원화와 비교하며 **전체 구도부터** 완성한다. 현재는 전체 구도 재검토이며, 작은 디테일은 그 뒤에 진행한다. 기존 본편 LOCK과 외부 제출 권한은 이 목표만으로 변경되지 않는다.
+> **진행 중인 제출 목표 (2026-09-24):** [스마일게이트 제출용 CH1-1 완성 목표](../_archive/4.1맵디자인+설정/SMILEGATE_CH1_SUBMISSION_GOAL_20260924.md). 추석 이후 제출용 맵 한 개를 목표로 승인 원화와 비교하며 **전체 구도부터** 완성한다. 현재는 전체 구도 재검토이며, 작은 디테일은 그 뒤에 진행한다. 기존 본편 LOCK과 외부 제출 권한은 이 목표만으로 변경되지 않는다.
 
 > 2026-08-30 갱신. 지옥의 길(EXODUSER) 수직 상승 세미 오픈월드 맵/레벨/보스/외곽 기획의 진실 공급원(SSOT) 묶음.
 > 설계 문서와 현재 런타임·QA 구현을 함께 동기화한다. 실제 맵 구현은 승인된 PHASE만.
@@ -371,4 +379,8 @@
 
 환경광 `G._envLightCvs`·동적 비네트 `G._dvgCvs`·저체력 틴트 `G._redTintCvs`가 화면 너비만 확인하던 조건에 각 캐시의 `height!==C.height`를 추가했다. 본편/쉬운 테스트 공통, 높이 변경 직후 재작성·정지 시 캐시 재사용·색과 alpha 유지·신규 캔버스0. 두 파일 12건 RED→신규18+기존17=35 PASS, 본편2805×1206→1256→1006→1256에서 env/dvg 높이1206 고정→현재 main 높이 일치. 이전 Mac 이동/성능 문제의 해결 선언이 아니다. [정확한 계약·MAP PRODUCTION REPORT](../12퍼포먼스·최적화/POSTFX_HEIGHT_COVERAGE_20260929.md).
 
-> 2026-10-22 PARITY-BOSS-01 아레나 후보: 사용자 사각124×104 지시·원본 흙 renderer·새 Markers 계약. 컨셉/원형R1700 제품 참조 중단(파일 보존). 원본 at0 원형과의 차이·시각/기술 판정은 [기록](../engine/PARITY_BOSS_01_20261022.md). 필드 웹 구조·에셋은 변경0. 아래 제작 차수 수치는 이력이다.
+> 2026-10-22 PARITY-BOSS-01 아레나 후보: 사용자 사각124×104 지시·원본 흙 renderer·새 Markers 계약. 컨셉/원형R1700 제품 참조 중단(파일 보존). 원본 at0 원형과의 차이·시각/기술 판정은 [기록](../_archive/engine/PARITY_BOSS_01_20261022.md). 필드 웹 구조·에셋은 변경0. 아래 제작 차수 수치는 이력이다.
+
+## 2026-10-31 초광폭 월드 경로 정정
+
+stage=0을 과거 55×31 원화 판으로 열던 묵시 분기를 제거했다. 실제 200×200 본편·전체 폭 렌더·1920 회귀 계약은 [WORLD_ULTRAWIDE](../12퍼포먼스·최적화/WORLD_ULTRAWIDE_20261031.md)를 따른다. 작은 원화 판은 명시적 mapTest/plate 옵션으로 보존하며 본편 검수에서 제외한다.

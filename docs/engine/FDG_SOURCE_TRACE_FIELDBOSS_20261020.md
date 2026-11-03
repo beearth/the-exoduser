@@ -1,6 +1,6 @@
-> **2026-10-21 DEMO11-33 현행 보충:** 곰치4슬롯을 실제 Main/World tick·동일 G/RNG·Marker provider·기존31/35 registry에 연결했다. 원문108/54 잠복·2발 즉시 혈안탄·물리/E·HP/CD8/사망null·PC 물기/실제 aggro readback 경계 보존. Player 피해/패링·맵·32파일 변경0, 실제 MAP Marker/PC producer·자연전투/연출은 후행. [API·검증·31/32/33 통합 후보](orders/reports/demo11-33_REPORT.md). 아래 원본 추적 이력은 보존한다.
+> **2026-10-21 DEMO11-33 현행 보충:** 곰치4슬롯을 실제 Main/World tick·동일 G/RNG·Marker provider·기존31/35 registry에 연결했다. 원문108/54 잠복·2발 즉시 혈안탄·물리/E·HP/CD8/사망null·PC 물기/실제 aggro readback 경계 보존. Player 피해/패링·맵·32파일 변경0, 실제 MAP Marker/PC producer·자연전투/연출은 후행. [API·검증·31/32/33 통합 후보](../_archive/engine/orders/reports/demo11-33_REPORT.md). 아래 원본 추적 이력은 보존한다.
 
-> **2026-10-21 DEMO11-31 현행 보충:** 앵글러1 family4개체를 Main/실제 World phase·같은 G에 설치했고,35 registry의 field birth/에너지 전용 sweep·PC HP/최종 사망 readback→P3→37를 연결했다. 배치는 provider Marker4개만, source 사이트 좌표 복제0. PC 피해/패링·world/player·저장·지형 변경0. 실제 맵/PC producer/렌더 마감·전역 원본 update 순서 동치는 미인수다. [API·원문 대조·최종 수치](orders/reports/demo11-31_REPORT.md). 아래 원본 추적 이력/수치는 보존한다.
+> **2026-10-21 DEMO11-31 현행 보충:** 앵글러1 family4개체를 Main/실제 World phase·같은 G에 설치했고,35 registry의 field birth/에너지 전용 sweep·PC HP/최종 사망 readback→P3→37를 연결했다. 배치는 provider Marker4개만, source 사이트 좌표 복제0. PC 피해/패링·world/player·저장·지형 변경0. 실제 맵/PC producer/렌더 마감·전역 원본 update 순서 동치는 미인수다. [API·원문 대조·최종 수치](../_archive/engine/orders/reports/demo11-31_REPORT.md). 아래 원본 추적 이력/수치는 보존한다.
 
 # 필드보스 원본 추적·작은 이식 단위 설계 — 2026-10-20
 
@@ -8,7 +8,7 @@
 
 main0138c5bb9 기준 화마귀 전용 `native_demo11_fire_devil_tick.gd`와 `native_demo11_fire_devils.gd`를 추가했다. source `_fdTickOne`의 tick 단위/직접 RNG4회·HP/ATK/8방향·충전/TP 순서를 유지하고 Main에는 설치/Marker provider/read API만, State에는 FD 4슬롯 claim만 추가했다. 배치는 MAP11 `Markers/FireDevil1..4`만이며 원본 사이트 좌표를 복제하지 않는다. 사망은 FD 슬롯 null, kills/지역/보상/fbDone 변경 없음.
 
-35 registry/class/drop/실제 carrier를 재사용하지만 현재 specialized elemBall 거절은 유지한다. PC contact/landing KB·incoming hitSet/query와 실제 source clock·registry phase·MAP11 Marker 인수 전 **부분 구현·통합 BLOCKED**다. 피해/QE/Player·World·35/지형 수정0. standalone source oracle·실제 작은 탄 검증과 전체 실플레이/시각 완료는 구분한다. **31과 통합 후보**(provider 수명·명령 continuation·hit ingress·registry clock/aggro)는 [보고서](orders/reports/demo11-32_REPORT.md)에 정리했다. 아래 과거 ‘미이식’ 표는 동결 SHA 당시이며 현재 전체 이식 완료로 읽지 않는다.
+35 registry/class/drop/실제 carrier를 재사용하지만 현재 specialized elemBall 거절은 유지한다. PC contact/landing KB·incoming hitSet/query와 실제 source clock·registry phase·MAP11 Marker 인수 전 **부분 구현·통합 BLOCKED**다. 피해/QE/Player·World·35/지형 수정0. standalone source oracle·실제 작은 탄 검증과 전체 실플레이/시각 완료는 구분한다. **31과 통합 후보**(provider 수명·명령 continuation·hit ingress·registry clock/aggro)는 [보고서](../_archive/engine/orders/reports/demo11-32_REPORT.md)에 정리했다. 아래 과거 ‘미이식’ 표는 동결 SHA 당시이며 현재 전체 이식 완료로 읽지 않는다.
 
 
 ## 0. 기준·범위
@@ -31,10 +31,10 @@ main0138c5bb9 기준 화마귀 전용 `native_demo11_fire_devil_tick.gd`와 `nat
 
 | 먼저 읽은 근거 | 이번 문서의 경계 |
 | --- | --- |
-| [P3-003 지역](FDG_P3_003_REGIONS_20261020.md) | 분면·정화·배너·미니맵 사이트·자물쇠는 기존 owner를 참조. 초두의 처치 훅/분모 미연결은 제출 당시 기록이며 §4에서 최신 코드를 구분 |
+| [P3-003 지역](../_archive/engine/FDG_P3_003_REGIONS_20261020.md) | 분면·정화·배너·미니맵 사이트·자물쇠는 기존 owner를 참조. 초두의 처치 훅/분모 미연결은 제출 당시 기록이며 §4에서 최신 코드를 구분 |
 | [BOSS_CH1](FDG_SOURCE_TRACE_BOSS_CH1_20261020.md) §0.2·§2·공용 접점 | ib=true 장 보스·아레나·59무브·부활·피날레를 독립 필드몹에 중복 적용하지 않음 |
-| [P3-002 소환굴](FDG_P3_002_SPAWN_HOLES_20261020.md) §1·§4.8 | 14굴·168분모·동적 등록·RNG·지역 초기화 순서는 기존 소유. 고정 필드몹 사이트를 소환굴 배치로 대체하지 않음 |
-| [작업판](orders/WORK_BOARD.md) P3-002/P3-003 병합 행, [기능 목록](FDG_FEATURE_INVENTORY_20261020.md) FIELD 4항목 | 과거 snapshot과 최신 main 구현을 구분. 타인 WIP/미병합 branch를 현재 완료로 포함하지 않음 |
+| [P3-002 소환굴](../_archive/engine/FDG_P3_002_SPAWN_HOLES_20261020.md) §1·§4.8 | 14굴·168분모·동적 등록·RNG·지역 초기화 순서는 기존 소유. 고정 필드몹 사이트를 소환굴 배치로 대체하지 않음 |
+| [작업판](orders/WORK_BOARD.md) P3-002/P3-003 병합 행, [기능 목록](../_archive/engine/FDG_FEATURE_INVENTORY_20261020.md) FIELD 4항목 | 과거 snapshot과 최신 main 구현을 구분. 타인 WIP/미병합 branch를 현재 완료로 포함하지 않음 |
 | [CH1 일반 적 추적](FDG_SOURCE_TRACE_CH1_ENEMIES_20261020.md) §1.1·§1.2·§2 | 문지기 ch1_initial_003/etype29·호위·일반 AI·피해·드랍 상세는 기존 담당에 위임. 여기서는 필드/게이트 접점만 연결 |
 
 ### 0.3 ‘지역별 4종’과 FIELD 분모 4의 구분

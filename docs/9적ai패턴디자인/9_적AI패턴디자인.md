@@ -1,16 +1,16 @@
 > 2026-10-21 DEMO11-enemy-base3: DEMO11-enemy-base3: F source-selected common 이관 및 Mac29 World phase/warning60/common35. PC contact·PCI-11 terminal gate 대기.3/7 실제 readiness 경계·source RNG 미소비. 자세한 수치·검증은 demo11-enemy-base3_REPORT.md.
 
-> 2026-10-21 DEMO11-enemy-base2: A d931ebe2·B c6d19973를 D 공통 admission으로 이관했다. 등록15종 중 B8/D25 사망 PC prefix는 기존 HOLD이며 나머지13종은 통합 생명주기로 확인한다. 단일 factory 표·World/43·35 registry, A 고유 legacy carrier와 B 탄 owner 부재는 보존한다. 상세/검증/공용 diff는 `docs/engine/orders/reports/demo11-enemy-base2_REPORT.md`.
+> 2026-10-21 DEMO11-enemy-base2: A d931ebe2·B c6d19973를 D 공통 admission으로 이관했다. 등록15종 중 B8/D25 사망 PC prefix는 기존 HOLD이며 나머지13종은 통합 생명주기로 확인한다. 단일 factory 표·World/43·35 registry, A 고유 legacy carrier와 B 탄 owner 부재는 보존한다. 상세/검증/공용 diff는 `docs/_archive/engine/orders/reports/demo11-enemy-base2_REPORT.md`.
 
 ## 2026-10-21 DEMO11-enemy-base 공통 기반
 
-[DEMO11-enemy-base 단일 source clock·scheduler·origin 계약](DEMO11_NATURAL_ENEMY_CLOCK_20261021.md)을 추가했다. 현재 자동 source 등록은0normal/undefined-el이며, D9fd31a64의18/19/23/24/25는 기존 선택 생성 계약을 유지해 공통 admission으로 이관했다. D 자동 scheduler/25사망/PC 이동탄 contact는 후행이다. 기존 A/B/C/D 경계 기록은 당시 이력이다. 타 타입/특수 PC 경계·full v3 hurtE·전체120fps는 미완이며, 실제 범위·검증·최대틱 예산 초과는 [보고서](../engine/orders/reports/demo11-enemy-base_REPORT.md)를 따른다.
+[DEMO11-enemy-base 단일 source clock·scheduler·origin 계약](../_archive/9적ai패턴디자인/DEMO11_NATURAL_ENEMY_CLOCK_20261021.md)을 추가했다. 현재 자동 source 등록은0normal/undefined-el이며, D9fd31a64의18/19/23/24/25는 기존 선택 생성 계약을 유지해 공통 admission으로 이관했다. D 자동 scheduler/25사망/PC 이동탄 contact는 후행이다. 기존 A/B/C/D 경계 기록은 당시 이력이다. 타 타입/특수 PC 경계·full v3 hurtE·전체120fps는 미완이며, 실제 범위·검증·최대틱 예산 초과는 [보고서](../_archive/engine/orders/reports/demo11-enemy-base_REPORT.md)를 따른다.
 
 > 2026-10-16 통합 범위: 웹 본편 수치·현행은 최신 main 기준, 별도 Native/FDG 항목은 source pin9a4534b4의 부분 이식·명시 opt-in 계약이다. 전체 최신 본편 이식 완료가 아니다. 상세: docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md.
 
 ## P2-008a PC 후보 — etype20 전용 소비자 / 2026-10-20
 
-원본 38681–38705의 LOS<800·d>30 flow1배 뒤 40483의 idle1.6배, 분리 cd3을 별도 etype20 스크립트가 소비한다. body/쉴드/포이즈/hurtE owner만 재사용하며 type0 AI를 호출하지 않는다. 원본 39057–39060은 빈 전용 분기, 40499의 근접 목록에20이 없고 31154의 탄막 제외 목록에20이 있으므로 자연 피해·투사체를 추가하지 않는다. 정확한 세 프로필(order4/10/12)만 추가하여 이 브랜치 source16 지원9/미지원7. 기존 본문6/10·pending type7·배송 기록은 당시 범위이며 main 전체 갱신 증거가 아니다. 상세 원본 수치·남은7개체·검수 한계: [P2-008a 정본](../engine/FDG_P2_008A_CH1_ENEMIES_20261020.md).
+원본 38681–38705의 LOS<800·d>30 flow1배 뒤 40483의 idle1.6배, 분리 cd3을 별도 etype20 스크립트가 소비한다. body/쉴드/포이즈/hurtE owner만 재사용하며 type0 AI를 호출하지 않는다. 원본 39057–39060은 빈 전용 분기, 40499의 근접 목록에20이 없고 31154의 탄막 제외 목록에20이 있으므로 자연 피해·투사체를 추가하지 않는다. 정확한 세 프로필(order4/10/12)만 추가하여 이 브랜치 source16 지원9/미지원7. 기존 본문6/10·pending type7·배송 기록은 당시 범위이며 main 전체 갱신 증거가 아니다. 상세 원본 수치·남은7개체·검수 한계: [P2-008a 정본](../_archive/engine/FDG_P2_008A_CH1_ENEMIES_20261020.md).
 
 <!-- fdg-godot-native-owner-element-integration-20261013:begin -->
 ## Godot 소환·6원소 실행 연결 / 현재 이식 경계 · 2026-10-13
@@ -472,7 +472,7 @@ atkTicketRelease(e) → 티켓 반환
 | local flags / 예외 | _druidThornVolley pooled 기본/reset false, _druidThornLane 기본/reset−1. 해당 flag탄만 기존 modulo3 drop 및 생성 직후 decoy/ancestor aim 재지정에서 제외. 공용 후처리 배율은 적용하며 전역 drop/decoy/seek 변경0 |
 | 입력 / 최종 속도 | 입력4.4px/native tick. 기존 후처리 최종 physical5px/tick=300px/s(60Hz), magic500/60..600/60px/tick=500..600px/s. 이 값은 clip24FPS와 별개이며 신규 속도 배율0 |
 | 피해 | n=floor(atk×1.3), 최종 physical=floor(floor(2n)×.5), magic=floor(2n). atk103이면 n133/physical133/magic266. native poison wrapper는 원 class 보존 후 EL.P/col#66dd22, 실제 HP 피해시 기존 poison+3 |
-| 수명 / 판정 | life/ml400은 nominal native-frame metadata. 기존 감소 life−=sp×.667 및 magic의 기존 카메라2500px 범위 안 life<=0→life1 연장/공용 제거 규칙 유지, 정확400tick 종료/초 단위로 승격0. 후처리 sz2.4·pool.r5.2; 일반탄 player collision base=P.r+7.2/기본 gate=P.r+11.2(base+4), 기존 Q/E 확장·현재/이전 P/shot 선분 sweep 유지, 저작 silhouette로 판정변경0 |
+| 수명 / 판정 | life/ml400은 nominal native-frame metadata. 기존 감소 life−=sp×.667 및 magic의 카메라2500px 이내 또는 실제 가시 영역+100px 이내에서 life<=0→life1 연장. 원거리 정리는 두 범위 밖에서만 수행(2026-10-31 웹 기준), 정확400tick 종료/초 단위로 승격0. 후처리 sz2.4·pool.r5.2; 일반탄 player collision base=P.r+7.2/기본 gate=P.r+11.2(base+4), 기존 Q/E 확장·현재/이전 P/shot 선분 sweep 유지, 저작 silhouette로 판정변경0 |
 | 준비 / 회복 / cd | wind=floor(25×BOSS_PHASES[phase].teleM)+extraDelay, phase0/1의 base18/16native f(추가 delay 별도). 발사 직후 recover45, 다음 기존 보스 recover update에서20으로 clamp. 기존 fan cd100 유지. authored1.6초를 native 준비·수명·회복 시간으로 덮어쓰지 않는다 |
 | 보존 | 기존 E physical/Q magic/black Q-only·반사 friendly blue 유도·피해/poise·자원 유지. phase2+의 기존 count/black/modulo3 drop·피날레·다른 보스·기본 main·사용자 save 유지 |
 | tell / 실제 wind | first start에서 _druidFanWindMax=e.st2·e.facing=atan2Player, bossFanWind에서도 e.facing=atan2Player로 준비 중 추적. tell progress=clamp(1−st2/실제 _druidFanWindMax), 폭π×(.7+.06×phase)와 같은 atan2Player 소비. 기존 default p/facing 원값 유지 |
@@ -541,7 +541,7 @@ atkTicketRelease(e) → 티켓 반환
 | `ch1_initial_015 / order14 / etype0 / physical` | 실제 `enemy_melee_flesh_crawler.gd`의 `st2` canonical / `_contact_ticks` alias, `mhp` canonical / `max_hp` alias, source numeric `el` / `element` 이름 alias를 같은 actor 수명으로 통합. 별도 타이머·spawn record current 대체0 |
 | 공개 source field prefix | World의 current same-Node invocation→source `events` 순서의 known shield/alert/recover-st2/HP/hit field write. 기존 `receive_damage` 재호출·doublemath0. 미소유 status/poise/KB/owner request/presentation/kill에서 exact partial. `full_hurtE_ready=false/source_clock_ready=false` |
 | 첫 새 검사 | 21/21 PASS·exit0·양 로그 ERROR/WARN/leak0. actual actor methods의 렌더 setup/_draw 억제·projectile 및 기타 World 대역 fixture; full Main·source acc/RNG·실전/전체 최신/시각 PASS 아님. 이전 frozen 검수 재연0 |
-| 정본 | [일반 몬스터 필드 소유자](../engine/FDG_NATIVE_NORMAL_ENEMY_FIELD_OWNER_20261017.md). 원 snapshot/support/runtime 및 옛 배송·미이식 이력은 보존하며 이 표는 새 field API만 갱신 |
+| 정본 | [일반 몬스터 필드 소유자](../_archive/engine/FDG_NATIVE_NORMAL_ENEMY_FIELD_OWNER_20261017.md). 원 snapshot/support/runtime 및 옛 배송·미이식 이력은 보존하며 이 표는 새 field API만 갱신 |
 
 
 ## 2026-10-17 일반 type0 동기 poise 실제 owner 후속
@@ -552,7 +552,7 @@ atkTicketRelease(e) → 티켓 반환
 | nonbreak / break | source false 반환은 owner `ok=true/staggered=false`로 보존. break는 실제 core(poise0·stunned/maxStunned180) 적용 후 현재 `_uqScCtx`19985 미소유에서 partial/함수return未. parent4cursor와별도core적용을구분 |
 | 수명 / 경계 | 기존 deferred pending 보존·재사용0. native 같은 stun/regen counter를 소비하나 source acc/regen 전체동등未; fullhurtE/source_clock_ready=false. unique/SFX/slowMo/14RNG/kill·다른 actor·Q/E/BOSS 연결완료 아님 |
 | 새 영향 검수 | 첫새poise21 PASS/양로그clean→분기guard교정뒤새영향2 PASS/양로그clean. 앞field21·37/24/29·parse·수송 재연0; final전체suite단일재실행 증거아님 |
-| 상세 정본 | [동기 포이즈 소유자](../engine/FDG_NATIVE_NORMAL_ENEMY_SYNC_POISE_20261017.md). 이전 미소유/배송/검수 이력은 보존 |
+| 상세 정본 | [동기 포이즈 소유자](../_archive/engine/FDG_NATIVE_NORMAL_ENEMY_SYNC_POISE_20261017.md). 이전 미소유/배송/검수 이력은 보존 |
 
 
 ## 2026-10-17 exact type0 source momentum owner 후속
@@ -562,4 +562,4 @@ atkTicketRelease(e) → 티켓 반환
 | `enemy.kb_add / 42482` | 같은 World/current same-Node invocation/events순서로 producer의 계산된 `{x,y}` 증분을 actual `_knockback`에더하고 `owner_requests/events`각1증가. 피해/KB공식·배율·15cap·감쇠/clock 재계산0 |
 | 수명 / 미완 | Node/World수명은검증하고새alivegate없음. `42483 offscreen_move_if_can_move`는정확NR, geometry/좌표실행0. fullhurtE/source_clock_ready=false, poise19985 tail·실전·현재실행본반영未 |
 | 새 검수 | 첫type추론compile실패/기능검사0/exit0을PASS로세지않음→Vector2선언1줄수리→새KB15/15 PASS·양로그clean. 앞field21/poise21+2/37/24/29/parse/성공수송재연0 |
-| 정본 | [일반 몬스터 KB 소유자](../engine/FDG_NATIVE_NORMAL_ENEMY_KB_OWNER_20261017.md). 앞 field/poise 및 배송/검수 이력을 보존하며 exact momentum 요청 범위만 갱신 |
+| 정본 | [일반 몬스터 KB 소유자](../_archive/engine/FDG_NATIVE_NORMAL_ENEMY_KB_OWNER_20261017.md). 앞 field/poise 및 배송/검수 이력을 보존하며 exact momentum 요청 범위만 갱신 |

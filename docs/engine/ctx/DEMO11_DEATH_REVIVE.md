@@ -24,7 +24,7 @@
 
 - `docs/2_5 부활+에너지쉴드시스템/`
 - `docs/engine/FDG_SOURCE_TRACE_REVIVE_SHIELD_20261020.md` §1, §3–4
-- `docs/engine/DEMO11_COMPLETION_GAP_20261021.md` D31
+- `docs/_archive/engine/DEMO11_COMPLETION_GAP_20261021.md` D31
 
 ## 주의
 

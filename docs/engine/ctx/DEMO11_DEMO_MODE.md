@@ -23,7 +23,7 @@
 
 ## 관련 docs
 
-- `docs/engine/DEMO11_COMPLETION_GAP_20261021.md` §1, D01–D04, D32
+- `docs/_archive/engine/DEMO11_COMPLETION_GAP_20261021.md` §1, D01–D04, D32
 - `docs/engine/FDG_SOURCE_TRACE_SKILLS_20261020.md` demo gate
 - `docs/engine/FDG_SOURCE_TRACE_ITEMS_20261020.md` DEMO
 
