@@ -186,3 +186,9 @@ Unity 인벤토리의 "인벤토리" 제목과 눈 메달이 상단 공통 탭 �
 - 분해 효과음 `ui_salvage` 미연결(Unity 리소스 없음).
 - **범위 밖 발견(중요)**: 이 Linear Player는 IMGUI `GUI.color`와 코드 생성 텍스처를 sRGB 변환 없이 그린다. 웹 색을 그대로 넣은 Unity 창 바탕들(인벤토리 등)이 웹보다 밝게 보이는 공통 원인일 가능성이 높다. 이번에는 일시정지·확인창 판만 보정했다. 전체 적용은 별도 단위로 측정 후 결정한다.
 - `--unity-pause-input-check` 첫 단계 실패와 `--unity-inventory-keys-smoke` 미종료는 기존 결함이다. 이번에 고치지 않았다.
+
+### 4.5 통합 (2026-11-03)
+
+- 작업 기준이 오래된 원격 추적 ref(34ce305e)였다. 실제 `unity/main`은 9f0d00cf(지옥문 목표·기동 고리 등 7커밋)까지 나가 있었다. 최신 `unity/main`을 비강제로 병합했다(`10cbe2ff`). 겹친 파일은 `CHANGELOG_SYNC.md`(두 항목 모두 보존)와 `NativeGame.cs`(자동 병합)였다.
+- 병합본을 다시 빌드했다(`b6-merged`): Succeeded·오류 0, 6,446,338,142 B. 마감 캡처 장치 1920·1600 16/16 PASS, 화면 동일.
+- 지정 브랜치 이름 `claude/unity-pc-inv-salvage-20261103`에는 클라우드 세션 커밋 `85ca8fd9`(같은 세 작업, Unity 6 컴파일·Player 캡처 미실시)가 먼저 올라가 있었다. 남의 커밋을 덮어쓰지 않으려고 Mac 검수본은 `claude/unity-pc-inv-salvage-20261103-mac`으로 올리고, 이 브랜치만 `unity/main`에 병합한다. `85ca8fd9`은 병합하지 않았다. 내용이 이 기록과 겹치므로 보관 여부는 사용자가 정한다.
