@@ -1,3 +1,5 @@
+2026-11-04 U-VFX-10 드루이드 내려찍기·채찍 G2 촬영 인자 `--unity-druid-vfx-review` (QA 전용, 인자 없으면 동작 0): NativeGame.BossArenaReview.cs 샷 대기열에 단계 띠(vfx-slam-n-tm1/a00~a180, vfx-slash<타>-n-a00~a150, 3타 tm1)·연속 600프레임(seq-slam/seq-slash)·QA 카운터 JSON 추가. Core 수정 0, druid-skill-vfx-tests 203/0.
+
 2026-11-04 U-VFX-09 ① 채찍 3타 예고 구슬 호박빛(임펙트 총괄): 보스 아레나 4c077e30c 병합, rig `lantern_orb` 소켓 월드 위치에 마지막 12틱 0→.8 `#d49a5c` 가산(지름 0.15H), 소켓 없으면 생략. druid-skill-vfx-tests 203/0, Core 무수정.
 
 ## 2026-11-04 06:00 드루이드 ① 가지 채찍 3연(slashCombo) 본체 VFX 구현 (U-VFX-09 2번째 기술)
