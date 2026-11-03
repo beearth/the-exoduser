@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Exoduser.UnityPort.Core
 {
-    // RB1-7: seven active moves in the original twelve slots; druid-only reach/width approved by CTO 2026-11-03 20:25.
+    // RB1-7: seven active moves in the original twelve slots; AI range160 / hit reach300 corrected by CTO 2026-11-03 21:00.
     // RM-B1 (RB1-1 / RB1-2): the remodelled 1-1 dark druid. SSOT = docs/engine/UNITY_BOSS_RM1_DARK_DRUID_20261027.md (§2 lives, §3 moves, §4 telegraph).
     // Everything here is data; the behaviour lives in DruidBoss.Remodel.cs (moves) and Simulation.DruidRemodel.cs (lives, collapse, sink).
     // The web-port tables in DruidBossData.cs stay untouched: the remodel is switched on per fight (DruidBoss.Remodel / Simulation.DruidRemodel), the default is off.
@@ -24,7 +24,7 @@ namespace Exoduser.UnityPort.Core
         public const int GrabTicks = 120;                  // 2 s of absorption
         public const double GrabHealFraction = 0.03;       // boss +3 % of the current life HP over the whole grab
         public const int GrabEscapeHits = 3;               // player hits during the grab that break it
-        public const double SlashReach = 300 * 1.6, ChargeWidthMultiplier = 1.5; // druid set only; total charge judgement width scales with body + player +80
+        public const double SlashReach = 300, ChargeContact = 120; // RM1 §13.4: slash hit reach unchanged; charge extra contact 80 ->120
         public const double SlamRadius = 260;              // RB1-7 §13.2 #2 (the web value is a 1000 px arena wave)
         public const int PoisonTrailTicks = 180;           // spec §3 #8 "독 흔적 3초"
         public const double ChaseZoneRadius = 150;         // initial value: the web uses 450, unreadable with a short warning
@@ -42,7 +42,7 @@ namespace Exoduser.UnityPort.Core
         public const int ParryRecoveryBonus = 30;                              // a parried move recovers 30 f longer (M3): hits 1-2 of #1, #2, #3, #10
         public const int FeintRecovery = 25;
         // move frames that are not in the table (BossMove.Tele / Rec / Cd): active parts and speeds, spec §10.2
-        public const int SlashActive = 10, SlashHitAt = 6, SlashLinkTele = 26;  // RB1-7 #1: telegraph 36 for the first hit (Moves[0].Tele), 26 for hits 2 and 3, swing 10 f, damage check when St2 == 6
+        public const int SlashActive = 10, SlashHitAt = 8, SlashLinkTele = 26;  // RB1-7 #1: telegraph 36 for the first hit (Moves[0].Tele), 26 for hits 2 and 3, swing 10 f, damage check when St2 == 8 (2 ticks after swing start)
         public const int SlamActive = 6;                                       // #2
         public const double ChargeSpeed = 22, ChargeTicks = 40;                // #3: up to 880 px
         public const double FissureSpeed = 14;                                 // #4: head px per tick
@@ -65,8 +65,8 @@ namespace Exoduser.UnityPort.Core
 
         // phase index 0 / 1 / 2 = life 1 / 2 / 3 (P1 / P2 / P3). Order = spec table rows #1..#12.
         public static readonly BossMove[] Moves = {
-            M("slashCombo",   13, 36, 84, 120, false,   0, 100, new[] { 0, 1, 2 }, new[] { "melee", "multi-hit" }),
-            M("slam",         14, 52, 76, 160, false,   0, 140, new[] { 0, 1, 2 }, new[] { "melee", "aoe" }),
+            M("slashCombo",   13, 36, 84, 120, false,   0, 160, new[] { 0, 1, 2 }, new[] { "melee", "multi-hit" }),
+            M("slam",         14, 52, 76, 160, false,   0, 260, new[] { 0, 1, 2 }, new[] { "melee", "aoe" }),
             M("charge",        2, 58, 74, 130, true,   40, 400, new[] { 0, 1, 2 }, new[] { "gap-close", "melee" }),
             M("groundFissure",34, 42, 60, 160, false,  60, 400, new[] { 1, 2 }, new[] { "aoe", "zone", "ranged" }),
             M("fan",           1, 38, 60, 120, false,  60, 300, new int[0],    new[] { "ranged", "frontal" }),
@@ -78,7 +78,7 @@ namespace Exoduser.UnityPort.Core
             M("seekerMines",  36, 40, 60, 200, false,   0, 999, new int[0],       new[] { "ranged", "zone", "utility" }),
             M("heartbeat",    57, 90, 90, DruidRemodelData.HeartbeatCooldownTicks, false, 0, 999, new[] { 2 }, new[] { "aoe" }),
         };
-        // RB1-7 §13.2: C1 / C2 / C7 (P2-3) / C4. Inactive moves keep their executor slots.
+        // RB1-7 §13.2: C1 / C2 / C3 (P2-3) / C4. Inactive moves keep their executor slots.
         public static readonly BossCombo[] Combos = {
             C(new[] { 0, 1, 2 }, "slashCombo", "slam"),
             C(new[] { 0, 1, 2 }, "charge", "slashCombo"),

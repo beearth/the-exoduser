@@ -43,10 +43,10 @@ namespace Exoduser.UnityPort.Core
         public const double StaffReachExtra = 70;   // staff tip = body radius + 70 along (Facing + WeaponAng): initial value, the web draws no staff
         public const double ChargeSpeed = DruidRemodelData.ChargeSpeed, ChargeTicks = DruidRemodelData.ChargeTicks, SlashReach = 300, SlashHalfAngle = 1.2, EruptReachExtra = 120, FanRange = 2000, SummonSpread = 80;
         // lead = ticks between the end of the wind state and the damage check of the move (slam: bossSlam 8; first slash: bossSlash 10 -> window at <= 6; burrow: 45 under + 8 erupt)
-        const int SlamLead = DruidRemodelData.SlamActive, SlashLead = DruidRemodelData.SlashActive - DruidRemodelData.SlashHitAt, BurrowUnder = 45, BurrowEruptLead = DruidRemodelData.BurrowEruptWarn, FissureMaxT = 140;   // ticks from the end of the wind to the damage check (slam swing 6, slash swing -> check at St2 == 6, erupt warning 30)
+        const int SlamLead = DruidRemodelData.SlamActive, SlashLead = DruidRemodelData.SlashActive - DruidRemodelData.SlashHitAt, BurrowUnder = 45, BurrowEruptLead = DruidRemodelData.BurrowEruptWarn, FissureMaxT = 140;   // ticks from the end of the wind to the damage check (slam swing 6, slash swing10 -> check at St2 == 8, erupt warning 30)
         // Keep the web and other remodel sets' ranges unchanged.
         double SlashHitReach { get { return Remodel && Set.Id == DruidRemodelData.SetId ? DruidRemodelData.SlashReach : SlashReach; } }
-        double ChargeHitRadius(DruidData d, double playerRadius) { return (d.R + playerRadius + 80) * (Remodel && Set.Id == DruidRemodelData.SetId ? DruidRemodelData.ChargeWidthMultiplier : 1); }
+        double ChargeHitRadius(DruidData d, double playerRadius) { return d.R + playerRadius + (Remodel && Set.Id == DruidRemodelData.SetId ? DruidRemodelData.ChargeContact : 80); }
         public int TeleSerial;               // counts move starts (remodel only)
 
         // groundFissure: how far the head may crawl (also read by the telegraph)
@@ -109,7 +109,7 @@ namespace Exoduser.UnityPort.Core
                     break;
                 case "bossSlash":
                     {
-                        int idx = d.SlashIdx; double left = d.St2 - DruidRemodelData.SlashHitAt;   // the swing is 8 f and the damage is checked once, when St2 == 6
+                        int idx = d.SlashIdx; double left = d.St2 - DruidRemodelData.SlashHitAt;   // the swing is 10 f and damage is checked once at St2 == 8
                         if (left > 0) AddSlash(into, d, pr, idx, SlashTele(d, idx) + SlashLead, left);
                         break;
                     }

@@ -24,7 +24,8 @@ static partial class P
     static void VerifyMoveTable()
     {
         var mv = DruidRemodelData.Moves;
-        Check(DruidRemodelData.SlashActive == 10 && DruidRemodelData.SlashLinkTele == 26, "RB1-7 lash active/link 10/26");
+        Check(mv[0].RangeMax == 160 && mv[1].RangeMax == 260, "RB1-7 AI selection ranges slash160/slam260");
+        Check(DruidRemodelData.SlashActive == 10 && DruidRemodelData.SlashHitAt == 8 && DruidRemodelData.SlashLinkTele == 26, "RB1-7 lash active/hit-at/link 10/8/26");
         Check(DruidRemodelData.SlamRadius == 260 && DruidRemodelData.WalkStandOff == 220, "RB1-7 slam radius / stand-off 260/220");
         Check(DruidRemodelData.GrabLungeTicks == 20 && DruidRemodelData.GrabContact == 150 && DruidRemodelData.GrabMissRecovery == 84 && DruidRemodelData.BurrowEruptWarn == 34, "RB1-7 grab / burrow timing");
         for (int phase = 0; phase < 3; phase++) {
