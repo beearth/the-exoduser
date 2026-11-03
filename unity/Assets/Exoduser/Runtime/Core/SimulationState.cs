@@ -24,7 +24,7 @@ namespace Exoduser.UnityPort.Core
         public float PlayerMaxShield = 100, PlayerStartingShield = 0;
         public float InitialIframes = 0;
         public float PlayerHpRegen = .05f, PlayerStaminaRegen = .05f, PlayerManaRegen = .05f;
-        public float PlayerPhysicalDefense = 2, PlayerEnergyDefense = 0;   // PlayerEnergyDefense: totalEDef of hurtP (magic / parry damage), 0 until the energy-defence equipment rows feed it
+        public float PlayerPhysicalDefense = 2, PlayerEnergyDefense = 0;   // PlayerEnergyDefense: totalEDef of hurtP (magic / parry damage), _playerDefTotals().eDef via ApplyEquipment (D-U2)
         // double like the web statCrit()/statCritDmg(): a float multiplier truncates the crit damage one point low on large hits.
         public double PlayerCriticalChance = 0, PlayerCriticalMultiplier = 1.5;
         public float AttackSpeedMultiplier = 1;
