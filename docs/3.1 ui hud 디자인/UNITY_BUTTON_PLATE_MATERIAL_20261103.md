@@ -68,3 +68,11 @@ git status --porcelain -- unity/Assets/Exoduser/Resources/Art/ui/silver_hell
 - CharacterSelect/UI/button_iron은 lowercase /ui/ 분기가 아닌 기본 Art 분기에서 mipmap=false/Bilinear를 지정한다. importer 버전/규칙은 유지하고 meta filterMode만2(Trilinear)→1(Bilinear)로 맞췄다. PNG/GUID/밝기/원화9-slice 불변. 기존 임포트 후 값과 일치시키는 수정이며 선명도/축소 샘플링은 Mac 디자인 판정에 남긴다. DefaultTexturePlatform의8192/무압축·Clamp 설정도 기존 규칙과 일치한다. root의 구형4096 필드는 그대로 보존했다.
 - SilverUiImportCheck는 기존21원화+button_iron 총22종의 임포트 전/1회/2회 meta 완전일치, loaded mip1, OFF/Bilinear를 검사한다. 실제 Unity 실행 증거는 아직 없다.
 - PC 검증 중단: importer.test.cjs의 추가 확장 코드에서 SyntaxError가 2회 연속 발생해 사용자 중단 규칙을 적용했다. 확장분은 직전52항PASS 상태로 되돌렸고 재실행하지 않았다. 이번 최종 소스의 PC 컴파일/Unity import/Player는 실행하지 않았다. 이전 컴파일 결과를 이번 근거로 사용하지 않는다. 재개 후 컴파일과 Mac22종 재임포트·실제 화면 검수가 필요하다.
+
+## 11-04 01:40 실제시각 — 중단 원인 해결
+
+- 최신 origin/unity/main c4b388903c54cab88d0fcddec9df5ef51eea9d48을 f60d55c1e3로 병합. CHANGELOG 양쪽 기록 보존.
+- 01:40 실제시각 재개: 추가 확장 코드를 만드는 String.replace의 replacement 문자열에서 달러+작은따옴표($')가 suffix 삽입으로 해석돼 RegExp 리터럴과 중복 조각을 깨뜨렸다. 4cba2a857에는 직전52항 복원본만 들어 있었으며 구문이 깨진 확장분은 미커밋이었다. 이번에는 생성 치환 없이 직접 패치로 YAML scalar/DefaultTexturePlatform 비교를 작성했다. 기존52항 중button_iron의1검사를10개 속성검사로 보강해61항이며 유용한 기존검사를 삭제하지 않았다.
+- 수정 뒤 importer 테스트1회61PASS/0FAIL. 병합최종소스 DLL참조 Roslyn 컴파일1회:Player Core126/Runtime273,Editor Core126/Runtime273/Editor60,5어셈블리 exit0/오류0. Unity 에디터/import/Player/빌드/캡처0. 이 참조컴파일은 실제 Unity 임포트/플랫폼 빌드 판정이 아니다. Mac22종2회재임포트 meta불변/mip1 및 같은SHA 화면/폰트/RTL/선명도 판정은 대기다.
+- 앞 절의 컴파일미실행/검증중단은4cba 당시 이력이다. 이번 재개로PC 검증 중단을 해소했다. importer 규칙·meta·PNG·원화 디자인 신규변경0.
+- 이번 범위:기존 검사 안정화, 근거는 이전 오류줄과 현재 importer/meta, 직접패치→1회테스트→1회컴파일. 또 실패하면 즉시중단·오류원문REPORT가 재개절 조건이었다.

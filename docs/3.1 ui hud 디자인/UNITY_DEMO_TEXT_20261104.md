@@ -59,3 +59,7 @@ PNG는 demo-lobby/demo-hud/demo-boss-intro/demo-boss-sink-controlled-언어_1920
 ## 11-04 01:50 문구 R1·R2
 
 9언어 악의 용어를 화폐 용어로 맞추고(cue13/14/18b/23,36문장),No.3477 킬루를 데이터 키·KO·7장 stage33·29언어에 연결했다. 원본 KO27cue와 나머지20언어/타이밍·이미지·화자는 그대로다. 기존 보스 이름 atlas에는 킬 글자가 없어 KO도 누락 glyph일 때 명조 전체 문자열로 그린다. 추출 도구가 킬루 키를 유지한다. 데이터/소스9항PASS. 스토리총괄이 허용한 다른26개 표기는 변경하지 않았고, 실제 화면 검수는 Mac 대기다. [상세](../11내러티브·로어디자인/DEMO_V0_1_1_TEXT_AUDIT_20261104.md#6-11-04-0150-r1r2-반영).
+
+## 11-04 01:40 실제시각 — 최종 컴파일 후속
+
+R1/R2 e9898f7953과button_iron4cba2a857의 검증 중단을 해소했다. 수정 뒤 importer 테스트1회61PASS/0FAIL. 병합최종소스 DLL참조 Roslyn 컴파일1회:Player Core126/Runtime273,Editor Core126/Runtime273/Editor60,5어셈블리 exit0/오류0. Unity 에디터/import/Player/빌드/캡처0. 이 참조컴파일은 실제 Unity 임포트/플랫폼 빌드 판정이 아니다. Mac22종2회재임포트 meta불변/mip1 및 같은SHA 화면/폰트/RTL/선명도 판정은 대기다. R1/R2 텍스트 신규변경0,9항PASS는 이전 데이터검사 이력이며 이번에 반복하지 않았다.

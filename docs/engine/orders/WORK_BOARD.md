@@ -729,3 +729,7 @@ R1 9언어36cue 악의 화폐용어/R2 킬루29언어·키·stage33·추출 도�
 ## 2026-11-04 01:50·02:00 Codex 중단 인계
 
 R1/R2 별도 커밋 e9898f79538b5ab78d68b33422374c7b00eca4a9:9항PASS. button_iron filter2→1/기존규칙 유지·Mac22종 import 검사 추가. PC 검증 중단: importer.test.cjs의 추가 확장 코드에서 SyntaxError가 2회 연속 발생해 사용자 중단 규칙을 적용했다. 확장분은 직전52항PASS 상태로 되돌렸고 재실행하지 않았다. 이번 최종 소스의 PC 컴파일/Unity import/Player는 실행하지 않았다. 이전 컴파일 결과를 이번 근거로 사용하지 않는다. 재개 후 컴파일과 Mac22종 재임포트·실제 화면 검수가 필요하다.
+
+## 2026-11-04 01:40 실제시각 Codex 재개 인계
+
+최신c4b388903 병합f60d55c1e3·CHANGELOG양쪽 보존. 01:40 실제시각 재개: 추가 확장 코드를 만드는 String.replace의 replacement 문자열에서 달러+작은따옴표($')가 suffix 삽입으로 해석돼 RegExp 리터럴과 중복 조각을 깨뜨렸다. 4cba2a857에는 직전52항 복원본만 들어 있었으며 구문이 깨진 확장분은 미커밋이었다. 이번에는 생성 치환 없이 직접 패치로 YAML scalar/DefaultTexturePlatform 비교를 작성했다. 기존52항 중button_iron의1검사를10개 속성검사로 보강해61항이며 유용한 기존검사를 삭제하지 않았다. 수정 뒤 importer 테스트1회61PASS/0FAIL. 병합최종소스 DLL참조 Roslyn 컴파일1회:Player Core126/Runtime273,Editor Core126/Runtime273/Editor60,5어셈블리 exit0/오류0. Unity 에디터/import/Player/빌드/캡처0. 이 참조컴파일은 실제 Unity 임포트/플랫폼 빌드 판정이 아니다. Mac22종2회재임포트 meta불변/mip1 및 같은SHA 화면/폰트/RTL/선명도 판정은 대기다. 자기경로 커밋·비강제push 후REPORT최상단SHA로 인계.
