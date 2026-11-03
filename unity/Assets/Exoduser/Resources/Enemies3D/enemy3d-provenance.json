@@ -340,8 +340,9 @@
    "etype": 4,
    "model": "CarapaceApostleV2",
    "resource": "Enemies3D/CarapaceApostleV2",
-   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/carapace2_anim_v1.glb",
-   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/carapace2_anim_report.json",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/carapace2_anim_v2.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/carapace2_anim_v2_report.json",
+   "animVersion": "v2",
    "bones": 24,
    "bodyTriangles": 12473,
    "nonHuman": false,
@@ -395,18 +396,18 @@
    "rootMotion": {
     "attack_act": {
      "frames": 3,
-     "top_bone_max_excursion_m": 0.0,
-     "top_bone_net_m": 0.0
+     "top_bone_max_excursion_m": 0.092,
+     "top_bone_net_m": 0.092
     },
     "attack_rec": {
      "frames": 45,
-     "top_bone_max_excursion_m": 0.155,
-     "top_bone_net_m": 0.155
+     "top_bone_max_excursion_m": 0.127,
+     "top_bone_net_m": 0.127
     },
     "attack_tele": {
      "frames": 36,
      "top_bone_max_excursion_m": 0.106,
-     "top_bone_net_m": 0.063
+     "top_bone_net_m": 0.035
     },
     "block": {
      "frames": 20,
@@ -450,8 +451,8 @@
    "displayHeightM": 1.49,
    "displayHeightDerivedM": 1.49,
    "displayHeightFromTurnedBodyBboxM": 1.4911,
-   "fbxBytes": 2783628,
-   "seconds": 5.5
+   "fbxBytes": 2784316,
+   "seconds": 1.4
   },
   {
    "key": "eyemass",
@@ -720,8 +721,9 @@
    "etype": 6,
    "model": "IroncladApostle",
    "resource": "Enemies3D/IroncladApostle",
-   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/ironclad_anim_v1.glb",
-   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/ironclad_anim_report.json",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/ironclad_anim_v2.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/ironclad_anim_v2_report.json",
+   "animVersion": "v2",
    "bones": 24,
    "bodyTriangles": 12471,
    "nonHuman": false,
@@ -807,7 +809,7 @@
     },
     "shield_tele": {
      "frames": 24,
-     "top_bone_max_excursion_m": 0.014,
+     "top_bone_max_excursion_m": 0.048,
      "top_bone_net_m": 0.014
     },
     "stagger": {
@@ -833,7 +835,7 @@
    "displayHeightDerivedM": 1.34,
    "displayHeightFromTurnedBodyBboxM": 1.3409,
    "fbxBytes": 2860460,
-   "seconds": 6.0
+   "seconds": 1.3
   },
   {
    "key": "sage",
@@ -1083,8 +1085,9 @@
    "etype": 9,
    "model": "RitualApostle",
    "resource": "Enemies3D/RitualApostle",
-   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/ritual_anim_v1.glb",
-   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/ritual_anim_report.json",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/ritual_anim_v2.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/ritual_anim_v2_report.json",
+   "animVersion": "v2",
    "bones": 24,
    "bodyTriangles": 12091,
    "nonHuman": false,
@@ -1217,8 +1220,8 @@
    "displayHeightM": 1.27,
    "displayHeightDerivedM": 1.27,
    "displayHeightFromTurnedBodyBboxM": 1.2241,
-   "fbxBytes": 2837916,
-   "seconds": 7.0
+   "fbxBytes": 2839964,
+   "seconds": 1.4
   },
   {
    "key": "shadow",
@@ -1613,8 +1616,9 @@
    "etype": 13,
    "model": "SpiderApostle",
    "resource": "Enemies3D/SpiderApostle",
-   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/spider_anim_v1.glb",
-   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/spider_anim_report.json",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/spider_anim_v2.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/spider_anim_v2_report.json",
+   "animVersion": "v2",
    "bones": 59,
    "bodyTriangles": 12519,
    "nonHuman": true,
@@ -1730,7 +1734,7 @@
    "displayHeightDerivedM": 1.0915,
    "displayHeightFromTurnedBodyBboxM": 1.0893,
    "fbxBytes": 4793916,
-   "seconds": 6.0
+   "seconds": 1.4
   },
   {
    "key": "winged",
@@ -3474,8 +3478,9 @@
    "etype": 29,
    "model": "Warden",
    "resource": "Enemies3D/Warden",
-   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/warden_anim_v1.glb",
-   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/warden_anim_report.json",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/warden_anim_v2.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/warden_anim_v2_report.json",
+   "animVersion": "v2",
    "bones": 24,
    "bodyTriangles": 12387,
    "nonHuman": false,
@@ -3666,8 +3671,8 @@
    "displayHeightM": 2.57,
    "displayHeightDerivedM": 2.57,
    "displayHeightFromTurnedBodyBboxM": 2.5177,
-   "fbxBytes": 3982428,
-   "seconds": 7.1
+   "fbxBytes": 3984572,
+   "seconds": 1.7
   },
   {
    "key": "twin",
@@ -3802,7 +3807,7 @@
    "seconds": 6.2
   }
  ],
- "totalFbxBytes": 99619208,
+ "totalFbxBytes": 99624088,
  "frontCrossCheck": {
   "tool": "unity/Tools/enemy3d/front-lunge-check.py",
   "unit": "Blender world metres of the source glb, before the turn",

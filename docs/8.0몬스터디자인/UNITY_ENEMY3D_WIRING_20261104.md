@@ -211,6 +211,11 @@ Generic Animator + PlayableGraph(Manual), applyRootMotion=false. 상태마다 JS
 - `NativeEnemyRigRenderer.Create`: 모델 크기·접지 bounds를 `SkinnedMeshRenderer`로만 잰다(스킨 메시가 하나도 없으면 이전과 같은 전체 bounds). 무기 소품(의식 지팡이가 머리 위로 솟음)이 표의 몸 height를 줄이지 않게 하는 보정이다. 화면 bounds·접점은 무기 포함 전체 bounds를 그대로 쓴다. 정면 보정은 변환에서 끝냈으므로 런타임 회전은 없다. `--enemy-render=rigpixel` 이름·의미·기본값(꺼짐) 변경 0.
 - `unity/Assets/Exoduser/Editor/Enemy3DImportCheck.cs`(고정 GUID .meta): Mac 임포트 검사. 표 30행마다 `Resources.Load<GameObject>`·SkinnedMeshRenderer 수·뼈 수·에셋 경로의 AnimationClip 이름·비어 있지 않은 슬롯과 extras 이름(런타임과 같은 `|` 뒤 이름 규칙)·sockets·인스턴스화한 렌더러 bounds 높이 > 0을 확인해 `enemy3d-import.json`에 쓰고 하나라도 실패하면 passed=false·`EditorApplication.Exit(1)`. **총괄이 공용 실행기로 1회 돌린다. PC 서브에이전트는 Unity를 실행하지 않았다.**
 
+### RETOUCH v2 5종 반영 (06:30, G0 §4.1.8)
+
+- 보스전 총괄의 경미 RETOUCH v2(unity/main 6a61db1ea)에 맞춰 철갑 6·거미 13·갑각 4 v2·문지기 29·의식 9의 원본을 `<key>_anim_v2.glb`(+ `_anim_v2_report.json`)로 바꿨다. 쌍낫 21은 v1 그대로다. 변환기 `import-anim-v1.py`에 `V2` 집합을 두었고, `--only`는 지정 행만 다시 쓰며 다른 행과 `frontCrossCheck` 기록은 보존한다(provenance LF 고정). 5종만 다시 변환했다(Blender 1회, 각 1.5~1.9초). 클립 이름·길이·뼈 수·소켓은 v1과 같고, provenance `animVersion: "v2"`로 구분한다. FBX 합계는 99,624,088바이트다.
+- 표 `retouch` 메모를 v2 결과로 바꿨다. 문지기·의식의 무기 바닥 관통은 해소됐다(+0.20·+0.14cm). 갑각 예고→발동은 프레임당 23.9°로 줄었지만 `blendTicks` 2는 그대로 둔다(1-2틱 크로스페이드, CTO 지시). 수치 필드(height·chestRatio·slot)는 바뀌지 않았다.
+
 ### 검증 (PC, 각 1회)
 
 - `node unity/Tools/enemy3d-tests/run.cjs`(출력 폴더는 환경변수 `EXO_ENEMY3D_CHECK_OUT`로 바꿀 수 있고 기본값은 전과 같다): **1046 checks / 0 failures**. 기존 정책·상태·접점 검사는 그대로 통과했고 표 검사를 30행으로 늘렸다: 키 30개 유일·etype 집합 = 29종 + 시작 육괴, 모든 슬롯·extras 이름이 provenance 클립 목록에 있고 슬롯+extras가 클립 전체와 일치, height·chestRatio(G0 값, 비사람형은 환산값), baseRadius = Core R, 일반 etype4 blendTicks 2, warden 1.84, sockets·stride·정면 보정·루트 고정 일치, FBX meta GUID 유일, FBX 합계 150MB 미만. 영수증 `I:/EXODUSER-Storage/ulead-enemy3d-20261104/enemy3d-check/policy.log`. 옛 `pilot-provenance.json`의 6행·Walk 1클립 검사는 새 표로 대체했다.

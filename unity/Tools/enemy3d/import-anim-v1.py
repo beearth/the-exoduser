@@ -24,6 +24,8 @@ MODELS=[('lesser','LesserApostle',0,False),('spine','SpineApostle',1,False),('im
  ('worm','SplitWorm',15,True),('trapper','TrapperApostle',16,False),('mother','MotherApostle',17,True),('vampire','VampireApostle',18,False),('giant','GiantApostle',19,False),
  ('cleaver','CleaverApostle',20,False),('duelist','DuelistApostle',21,False),('wraith','Wraith',23,True),('zombie','FrozenZombie',24,False),('slime','SwampSlime',25,True),
  ('hexer','HexerApostle',26,False),('bat','IcicleBat',27,True),('golem','GlacierGolem',28,False),('warden','Warden',29,False),('twin','ShadowTwin',47,False)]
+# 11-04 RETOUCH v2 (G0 4.1.8): same clip names/lengths/bones/sockets as v1, fixed tell/impact/penetration. duelist stays v1.
+V2={'carapace2','ironclad','ritual','spider','warden'}
 NONHUMAN_TRI_MIN=5000   # Tripo bodies are ~12.2k triangles; a bone preview shape is a few hundred
 HUMAN_TRI_MIN=8000      # same guard as import-pilots.py
 LOCK_NET_M=0.5          # locomotion clip: the top bone ends this many display metres away from where it started
@@ -44,8 +46,8 @@ def set_action(arm,a):
  ad=arm.animation_data or arm.animation_data_create();ad.action=a
  if a.slots:ad.action_slot=a.slots[0]
 def convert(key,name,etype,nonhuman_flag):
- t0=time.time();src=BASE+'anim/%s_anim_v1.glb'%key
- report=load_report(BASE+'anim/%s_anim_report.json'%key)
+ t0=time.time();ver='v2' if key in V2 else 'v1';src=BASE+'anim/%s_anim_%s.glb'%(key,ver)
+ rpath=BASE+('anim/%s_anim_v2_report.json'%key if ver=='v2' else 'anim/%s_anim_report.json'%key);report=load_report(rpath)
  bpy.ops.wm.read_factory_settings(use_empty=True)
  bpy.context.scene.render.fps=60;bpy.context.scene.render.fps_base=1   # the glTF importer converts seconds to frames with the scene fps
  bpy.ops.import_scene.gltf(filepath=src)
@@ -185,7 +187,7 @@ def convert(key,name,etype,nonhuman_flag):
  bpy.ops.export_scene.fbx(filepath=path,use_selection=True,object_types=types,add_leaf_bones=False,bake_anim=True,bake_anim_use_all_actions=True,bake_anim_use_nla_strips=False,bake_anim_simplify_factor=0,axis_forward='-Z',axis_up='Y',path_mode='STRIP')
  clips={a.name:int(round(a.frame_range[1]-a.frame_range[0])) for a in actions}
  sock_rows=[{'name':s.name,'parent_bone':s.parent_bone,'node_scale':[round(v,3) for v in s.scale],'glb_basis_location':[round(v,5) for v in s.location],'glb_basis_rotation_euler_deg':[round(math.degrees(v),3) for v in s.rotation_euler],'props':[w.name for w in weapons if w.parent==s],'prop_triangles':sum(len(p.vertices)-2 for w in weapons if w.parent==s for p in w.data.polygons)} for s in sockets]
- row={'key':key,'etype':etype,'model':name,'resource':'Enemies3D/'+name,'source':src,'report':BASE+'anim/%s_anim_report.json'%key,'bones':bones,'bodyTriangles':tris,'nonHuman':nonhuman,'triangleGuardMin':NONHUMAN_TRI_MIN if nonhuman else HUMAN_TRI_MIN,
+ row={'key':key,'etype':etype,'model':name,'resource':'Enemies3D/'+name,'source':src,'report':rpath,'animVersion':ver,'bones':bones,'bodyTriangles':tris,'nonHuman':nonhuman,'triangleGuardMin':NONHUMAN_TRI_MIN if nonhuman else HUMAN_TRI_MIN,
   'fps':60,'clips':clips,'unityClipNames':['Armature|'+c for c in clips],'reportLengthMismatch':{c:[n,report['clips'][c]['length']] for c,n in clips.items() if c in report['clips'] and int(report['clips'][c]['length'])!=n},'frontFix':frontinfo,'rootMotion':rootinfo,'rootLocked':rootlock,'sockets':sock_rows,'weaponMaterialsRenamed':renamed,'palettePlanes':len(PALETTE),
   'scaleToDisplay':scale_disp,'rawHeightM':report.get('raw_height_m'),'displaySizeM':report.get('display_size_m'),'displayBasis':report.get('display_basis'),'displayHeightM':report.get('display_height_m'),'displayHeightDerivedM':round(report.get('display_height_m') or report['raw_height_m']*report['scale_to_display'],4),'displayHeightFromTurnedBodyBboxM':round(frontinfo['body_height_raw_m']*scale_disp,4),'fbxBytes':os.path.getsize(path),'seconds':round(time.time()-t0,1)}
  print('ENEMY3D_ROW',json.dumps({k:row[k] for k in('key','model','bones','bodyTriangles','nonHuman','rootLocked','fbxBytes','seconds')}))
@@ -195,5 +197,11 @@ for key,name,etype,nonhuman in MODELS:
  if ONLY and key not in ONLY:continue
  results.append(convert(key,name,etype,nonhuman))
 prov=os.path.join(OUT,'enemy3d-provenance.json')
-with open(prov,'w',encoding='utf8') as f:json.dump({'generator':'unity/Tools/enemy3d/import-anim-v1.py','blender':bpy.app.version_string,'models':results,'totalFbxBytes':sum(r['fbxBytes'] for r in results)},f,ensure_ascii=False,indent=1)
+base={}
+if ONLY and os.path.exists(prov):
+ # --only refreshes just those rows; other rows and extra top-level records (frontCrossCheck) stay as they were
+ base=json.load(open(prov,encoding='utf8'));done={r['key']:r for r in results};old=base.get('models',[])
+ results=[done.get(r['key'],r) for r in old]+[r for k,r in done.items() if k not in {o['key'] for o in old}]
+base.update({'generator':'unity/Tools/enemy3d/import-anim-v1.py','blender':bpy.app.version_string,'models':results,'totalFbxBytes':sum(r['fbxBytes'] for r in results)})
+with open(prov,'w',encoding='utf8',newline='\n') as f:json.dump(base,f,ensure_ascii=False,indent=1)
 print('ENEMY3D_DONE',len(results),sum(r['fbxBytes'] for r in results))

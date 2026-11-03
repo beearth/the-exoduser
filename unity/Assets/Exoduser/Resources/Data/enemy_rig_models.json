@@ -95,7 +95,7 @@
       "extras": [
         "block"
       ],
-      "retouch": "attack_tele 끝~attack_act 첫 관절 점프 약 80도(blendTicks 2), 충격 때 주먹이 땅에 완전히 닿지 않음, 팔 도달 0.17~0.29m 부족",
+      "retouch": "v2(G0 4.1.8): 예고→발동 관절 점프 80°→프레임당 23.9°(blendTicks 2 유지), 충격 attack_act f2 주먹 바닥 위 약 8cm, 팔 도달 0.17~0.29m 부족",
       "source": "carapace2"
     },
     {
@@ -172,7 +172,7 @@
       "extras": [
         "charge_hit"
       ],
-      "retouch": "shield_tele 방패 들기가 대기와의 차이 작음(경미)",
+      "retouch": "v2(G0 4.1.8): shield_tele 방패를 얼굴 앞까지 듦(손 높이 1.46→1.83), 몸통 22.6°→29.8°",
       "source": "ironclad"
     },
     {
@@ -250,7 +250,7 @@
         "WeaponSocket_R"
       ],
       "extras": [],
-      "retouch": "stagger 지팡이 바닥 관통 8cm",
+      "retouch": "v2(G0 4.1.8): 지팡이 바닥 관통 해소(stagger -5.75→+0.14cm, idle -2.23→+0.14cm)",
       "source": "ritual"
     },
     {
@@ -355,7 +355,7 @@
       "blendTicks": 0,
       "sockets": [],
       "extras": [],
-      "retouch": "attack_tele 앞다리 들기 작음(경미), 정면 방향 Mac 확인",
+      "retouch": "v2(G0 4.1.8): attack_tele 앞몸 들기 32°→42°, 정면 방향 Mac 확인",
       "source": "spider"
     },
     {
@@ -739,7 +739,7 @@
         "charge_run",
         "charge_hit"
       ],
-      "retouch": "idle/stagger 망치 머리 바닥 관통 4~8cm, 손 도달 부족 최대 0.21~0.27m",
+      "retouch": "v2(G0 4.1.8): 망치 바닥 관통 해소(idle -3.71→+0.20cm, stagger -8.43→+0.20cm), 손 도달 부족 최대 0.21~0.27m",
       "source": "warden"
     },
     {
