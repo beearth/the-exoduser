@@ -22,6 +22,13 @@
 
 활성7기술·예고/회복/쿨다운·잡기/잠행·슬램r260·정지거리220·4콤보를 반영했다. 전투100375검사 중 잠행18실패, 프레임124/0. Player/Editor Roslyn5어셈블리 오류0. 채찍×1.6·돌진폭×1.5는 Core고정값 때문에 미적용, RB1-8 미착수. 동일 하니스2회 실패 중단 규칙 적용, 통합 금지. [정확한 수치와 증거](engine/UNITY_BOSS_ARENA_RB1_7_8_20261103.md).
 
+2026-11-04 적 3D 01:00 연결 바탕: 최신ec89d5166 병합·하니스 Core/Skills 재귀 열거65/0 회복. etype4 공유 키를 시작 육괴 표현 태그로 분리해 일반 갑각 사도 아틀라스 유지. 영웅 공유 rig-pixel·Generic Animator/Core 틱·투영 bounds VFX 접점·사망 시작 연결, 고정meta 추가. 확장 정책103/0·전체 PC Roslyn5어셈블리 오류0 각1회, Player0. 미제공 동작은 bind pose로 기록하며 Mac 화면·임포트·동작·성능 미판정.
+
+2026-11-04 적 3D 연결 바탕 WIP 중단: 최신6d99d0c46에서 codex/unity-enemy3d-20261104 생성. 읽기 전용 상태 정책·etype1/4 모델표·0차 FBX 변환·검사 초안 보존. 같은 정책 검사 명령2회 실패(예상 RED, 이후 Core/Skills 소스 열거 누락 CS0234/CS0246)로 사용자 지시대로 중단. Unity 렌더/Animator/VFX 연결·meta·전체 PC 컴파일·Mac 판정 미완, 본편 병합 금지. 인계 UNITY_ENEMY3D_WIRING_20261104.md.
+
+
+2026-11-04 03:30 1-1 드루이드 노인 코어 Blender 정리 v2~v6(CTO 야간 지시, 유료 0·PC Unity 실행 0): 매달린 랜턴 삭제, 지팡이 2.30m + 열린 뿌리 케이지 별도 소품(StaffSocket_L), 손 한 덩어리(왼 지팡이 감아 쥠·오른 갈고리), 새발 장화, 가면 정본 인장 굽기, 앞자락 추가, rig-pixel 팔레트 재질 7개 분할과 Blender 근사 미리보기. 문서 docs/8.1보스디자인바이블/BOSS_1-1_FIRST_BOSS_REPLAN_G0_20261103.md §26, LOCK §17.8, docs/engine/UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md. 코드 무변경.
+
 2026-11-04 00:35 3D 적 피격 위치 계획을 보스전 총괄 1차 일정(적 3D G0 §8, 773bf0238)에 맞춤: 1차 4종 G1~G3.5에서 Blender 숫자 3개(메시 높이·가슴 비율·34° 투영 높이) 요청, Unity 모델 표 연결 커밋에 피격 기준점(투영 bounds) 연결, 같은 Mac 판정 차례에 피격 컷 추가, 2차 다안 육괴는 눈 높이 접점. 문서만, 코드 무변경. 기록 docs/5.1임펙트디자인/UNITY_COMBAT_IMPACTS_20261103.md
 
 2026-11-04 00:30 Unity 임펙트 RETOUCH 4(CTO 야간 지시): 사망 입자(흰 사각 링·흰/분홍/주황/적색 점) 삭제 → dark 시트+바닥 혈흔만. 물탄 패링 Ice 시트를 §2.2 물 램프로 재채색한 _water 2장(tools/vfx/recolor_parry_water.py, 색상각 199~206°, 잔점 0, 충격 12프레임·안개 .6). 구르기 먼지를 2~6px 사각 점에서 부드러운 흙먼지 덩이(시작 3·끝 2·4틱마다 1, 정점 알파 .42 이하)로. 드루이드 독탄 중심 가산 .6→.35. 패링 G1 대조: 히트스톱 2틱 동안 스파크·섬광·흔들림이 멈춰 정점이 +5프레임이던 것을 표시 시계로 +3프레임에 맞춤, G2 임시 성공 스파크 끔, 푸시인 후보 두 개(.08u 당김·화각 2.5%)를 화각 푸시인 하나로 합치고 근접 패링에만 적용, M1 06 A/B 컷을 근접 완벽 패링으로. combat-impact 812/0, Core·Runtime Roslyn 오류 0. Mac 판정 대기. 기록 docs/5.1임펙트디자인/UNITY_COMBAT_IMPACTS_20261103.md
@@ -30,6 +37,7 @@
 2026-11-03 UI-PARITY 최신 공통 통합: 사용자 지시로 origin/unity/main 8c5f967d74를 자기 브랜치에 병합. CHANGELOG_SYNC 두 충돌은 양쪽 원문을 보존했다. 현재 docs/Unity 충돌 표시0, PC 컴파일1회 Core121/Runtime259 오류0(경고2/522), Player0. 21:50 다중 패스 수정과66회귀 증거 보존. 새 통합본 Mac 게이트 대기.
 
 2026-11-03 21:50 BuildLoop UI 겹침 오탐 수정: 다중 패스의 실제 논리 원점 ID/본문1개/클립/발행 source로 장식 패스를 묶는다. 기존 JSON은 선언 offset+픽셀 양자화만 복원하고 .5px 충돌 기준과 중복 본문/다른 글자 검출은 유지한다. 메뉴·봉안함 실제 표본0, 회귀66/66. 기존1410장 재분석8363은 과거 계측 입력의 잔여로 보존하며 Mac 새 게이트 필요. PC 컴파일만, Player0. 문서 docs/engine/UNITY_UI_OVERLAP_20261030.md.
+2026-11-04 패링 G2 판정 준비(Unity 총괄): 통합본 4d336665a 점검 — 규칙86/0, enemy-hurt oracle 6,066,962검사 기존2318/신규0(분기점 다중집합 동일), dash-parry 187,165/0, parry-reflect 48,708/0, PC Roslyn5어셈블리 오류0. Core 맵 충돌 대조(canMv 2,523표본 불일치2)는 b3cf7a682·8c5f967d7에서도 같아 이번 통합과 무관한 기존 결함. combat-stats에 hpMaxFrac(회복량/그 순간 최대HP) 추가, judge-stats.cjs로 G1 §8 수치 판정. 고친 뒤 규칙87/0·oracle 신규0·5어셈블리 오류0. Mac 3판 판정 대기.
 2026-11-03 패링 G2 최신 본편 병합: 87a77a11f 위에 origin/unity/main 8e4e358e6(8c5f967d7 이후) 통합. Core 충돌0, 문서 양쪽 기록·최신 번역 재번호와 G2 DANGER 이력 보존. 최신 RETOUCH 3 선 스파크/섬광 제한과 G2 근접·흔들림 데이터 연결. 병합 뒤 규칙86/0·oracle 6,066,962검사 기존2318/신규0·PC Roslyn5어셈블리 오류0 각1회. CTO fast-forward·Mac 판정 대기.
 
 2026-11-03 22:45 U-VFX-07b 필드 원소구 v3: 실 묶음 형태(1차 재채색)·평면 클립아트(2차 절차) 연속 FAIL로 방법을 원화 생성으로 바꿈. Codex 내장 image_gen 6회(외부 비용 0)로 원소별 측면 탄두+꼬리 원화 → tools/vfx/make_elem_orb_v3.py가 크로마 키잉·despill·원소 색상 범위·차가운 계열 코어 채도 상한·탄두 124px를 발사 지점 중심(268,128)에 맞춰 Resources/Art/vfx/field/proj_elem_orb_v3.png(3072×1536, 6열×6행 F/I/D/L/H/E, 알파 6프레임 동일·무늬만 흐름) 생성. NativeBossView.FieldBullets.cs OrbRes만 교체(크기·속도·판정·일반 알파 합성 불변). combat-impact run.cjs에 v3 수치 검사 연결(60/0, blood-dark·orb v3 PASS), Runtime Roslyn 오류 0. 1x·3x 총괄 자체 PASS, Mac 07e·11a 판정 대기. 기록 docs/5.1임펙트디자인/VFX_ELEM_ORB_V3_G0_20261103.md
