@@ -1,0 +1,323 @@
+{
+  "entries": [
+    {
+      "code": "ko",
+      "title": "기본 스토리",
+      "stories": [
+        "가족을 잃고 복수의 길을 걸은 전사. 지옥에서도 아직 구해야 할 아이들이 그를 기다린다.",
+        "단검을 쓰는 암살자 위니는 자신을 구해 준 다이안을 짝사랑했다. 순수한 조력자였던 다이안은 아내의 의부증과 질투로 죽었다. 그를 죽인 집단을 말살한 위니는 붙잡혀 지옥에 떨어졌다. 이제 다이안의 장검을 등에 부착하고, 단검과 몸의 회전으로 싸운다.",
+        "자신이 만든 폭탄이 고향을 파괴하는 광경을 목격한 아이반. 검은 연기 속에 남은 것은 자신의 손으로 만든 무기에 대한 죄책감이었다.",
+        "연금술이 극에 달한 국가, 크레이아. 그곳에서 최고 경지에 이른 변성술사는 상황에 맞게 무기를 변성한다.",
+        "수만 년간 전쟁이 이어진 호전적인 세계, 트발토. 마법과 전사의 모든 클래스를 마스터한 최고등급의 리더로서 전장을 지배한다."
+      ]
+    },
+    {
+      "code": "en",
+      "title": "BACKGROUND",
+      "stories": [
+        "A warrior who lost his family and pursued revenge. Even in hell, his children still await rescue.",
+        "Wini, a dagger assassin, loved her rescuer Daian, who helped her without romantic feelings. His wife’s obsessive jealousy led to his death. Wini wiped out his killers, was captured and fell into hell. She now fights with a dagger and a longsword attached to her back, striking as she spins.",
+        "Ivan witnessed bombs of his own making destroy his homeland. Amid the black smoke, he was left with guilt for the weapons his hands had made.",
+        "In Kreia, a nation where alchemy has reached its pinnacle, transmuters attain the highest mastery and reshape their weapons to suit the situation.",
+        "In Tvalto, a warlike world torn by tens of thousands of years of war, the Spearmage masters every mage and warrior class and rules the battlefield as a leader of the highest rank."
+      ]
+    },
+    {
+      "code": "ja",
+      "title": "背景",
+      "stories": [
+        "家族を失い、復讐の道を歩んだ戦士。地獄でも、救うべき子供たちが彼を待っている。",
+        "短剣の暗殺者ウィニは、恩人ダイアンに片思いしていた。純粋な善意で彼女を助けた彼は、妻の疑念と嫉妬によって命を落とす。殺害に関わった集団を殲滅したウィニは捕らえられ、地獄へ落ちた。今は彼の長剣を背中に取り付け、短剣と身体の回転で戦う。",
+        "自ら作った爆弾が故郷を破壊する光景を目にしたイヴァン。黒煙の中に残ったのは、自らの手で作った兵器への罪悪感だった。",
+        "錬金術が極致に達した国家クレイア。そこで最高の境地に達した変成術師は、状況に応じて武器を変成する。",
+        "数万年にわたって戦争が続く好戦的な世界トヴァルト。魔法使いと戦士の全クラスを極めた最高位の指導者として、戦場を支配する。"
+      ]
+    },
+    {
+      "code": "zh",
+      "title": "背景故事",
+      "stories": [
+        "失去家人后踏上复仇之路的战士。即使身在地狱，他仍有等待救援的孩子。",
+        "匕首刺客维妮单恋着救命恩人戴安，而他只是出于善意帮助她。妻子的猜忌与嫉妒导致戴安身亡。维妮灭尽杀害他的团伙后被捕，坠入地狱。如今她将戴安的长剑固定在背部，以匕首和身体旋转作战。",
+        "伊万亲眼目睹自己制造的炸弹摧毁故乡。黑烟之中，留下的是对亲手制造的武器的罪责感。",
+        "克雷亚是炼金术登峰造极的国家。达到最高境界的变成术师，能依照战况变换武器。",
+        "特瓦尔托是战争持续了数万年的好战世界。精通法师与战士所有职业的最高等级领袖，主宰着战场。"
+      ]
+    },
+    {
+      "code": "zht",
+      "title": "背景故事",
+      "stories": [
+        "失去家人後踏上復仇之路的戰士。即使身在地獄，他仍有等待救援的孩子。",
+        "匕首刺客維妮單戀著救命恩人戴安，而他只是出於善意幫助她。妻子的猜忌與嫉妒導致戴安身亡。維妮滅盡殺害他的集團後被捕，墜入地獄。如今她將戴安的長劍固定於背部，以匕首和身體旋轉作戰。",
+        "伊萬親眼目睹自己製造的炸彈摧毀故鄉。黑煙之中，留下的是對親手製造的武器的罪責感。",
+        "克雷亞是鍊金術登峰造極的國家。達到最高境界的變成術師，能依照戰況變換武器。",
+        "特瓦爾托是戰爭持續了數萬年的好戰世界。精通法師與戰士所有職業的最高等級領袖，主宰著戰場。"
+      ]
+    },
+    {
+      "code": "fr",
+      "title": "HISTOIRE",
+      "stories": [
+        "Un guerrier qui a perdu sa famille et choisi la vengeance. Même en enfer, ses enfants attendent encore d’être sauvés.",
+        "Wini, assassine aux dagues, aimait Daian sans retour : il l’aidait par pure bonté. La jalousie obsessionnelle de son épouse causa sa mort. Wini extermina ses meurtriers, fut capturée et tomba en enfer. Elle combat avec une dague et la longue épée de Daian fixée au dos, frappant en tournoyant.",
+        "Ivan vit les bombes qu’il avait fabriquées détruire sa patrie. Dans la fumée noire, seule resta la culpabilité liée aux armes sorties de ses mains.",
+        "À Kreia, nation où l’alchimie atteint son apogée, les maîtres suprêmes de la transmutation adaptent leurs armes à chaque situation.",
+        "Tvalto est un monde belliqueux ravagé par des dizaines de millénaires de guerre. Maître de toutes les classes de mage et de guerrier, ce chef du plus haut rang domine le champ de bataille."
+      ]
+    },
+    {
+      "code": "de",
+      "title": "HINTERGRUND",
+      "stories": [
+        "Ein Krieger, der seine Familie verlor und Rache suchte. Selbst in der Hölle warten seine Kinder noch auf Rettung.",
+        "Die Dolchassassinin Wini liebte ihren Retter Daian einseitig. Er half ihr aus reiner Güte. Die krankhafte Eifersucht seiner Frau führte zu seinem Tod. Wini vernichtete seine Mörder, wurde gefangen und stürzte in die Hölle. Sie kämpft mit einem Dolch und Daians am Rücken befestigtem Langschwert, mit dem sie sich drehend zuschlägt.",
+        "Ivan sah, wie seine eigenen Bomben seine Heimat zerstörten. Im schwarzen Rauch blieb die Schuld an den Waffen, die seine Hände geschaffen hatten.",
+        "In Kreia hat die Alchemie ihren Höhepunkt erreicht. Die dortigen Transmutationsmeister höchster Stufe verwandeln ihre Waffen je nach Lage.",
+        "Tvalto ist eine kriegerische Welt, in der seit Zehntausenden von Jahren Krieg herrscht. Als Anführer höchsten Ranges, der alle Magier- und Kriegerklassen gemeistert hat, beherrscht der Speermagier das Schlachtfeld."
+      ]
+    },
+    {
+      "code": "es",
+      "title": "HISTORIA",
+      "stories": [
+        "Un guerrero que perdió a su familia y buscó venganza. Incluso en el infierno, sus hijos siguen esperando ser rescatados.",
+        "Wini, asesina de dagas, amaba a Daian sin ser correspondida; él la ayudaba por pura bondad. Los celos obsesivos de su esposa causaron su muerte. Wini aniquiló a sus asesinos, fue capturada y cayó al infierno. Lucha con una daga y la espada larga de Daian fijada a su espalda, golpeando al girar.",
+        "Ivan vio cómo sus propias bombas destruían su tierra natal. Entre el humo negro quedó la culpa por las armas que habían creado sus manos.",
+        "Kreia es una nación donde la alquimia alcanzó su cumbre. Sus transmutadores de máximo dominio transforman sus armas según la situación.",
+        "Tvalto es un mundo belicoso con decenas de miles de años de guerra. Tras dominar todas las clases de mago y guerrero, el lancero mago controla el campo de batalla como líder del más alto rango."
+      ]
+    },
+    {
+      "code": "it",
+      "title": "STORIA",
+      "stories": [
+        "Un guerriero che ha perso la famiglia e cercato vendetta. Persino all’inferno, i suoi figli attendono ancora di essere salvati.",
+        "Wini, assassina armata di pugnale, amava Daian senza essere ricambiata: lui l’aiutava per pura bontà. La gelosia ossessiva della moglie ne causò la morte. Wini sterminò i suoi assassini, fu catturata e precipitò all’inferno. Combatte con un pugnale e la spada lunga di Daian fissata alla schiena, colpendo mentre ruota.",
+        "Ivan vide le bombe da lui costruite distruggere la sua patria. Nel fumo nero rimase il senso di colpa per le armi create dalle sue mani.",
+        "Kreia è una nazione dove l’alchimia ha raggiunto l’apice. I suoi massimi maestri della trasmutazione trasformano le armi secondo la situazione.",
+        "Tvalto è un mondo bellicoso segnato da decine di millenni di guerra. Padrone di tutte le classi di mago e guerriero, il mago lanciere domina il campo di battaglia come guida del più alto rango."
+      ]
+    },
+    {
+      "code": "ptbr",
+      "title": "HISTÓRIA",
+      "stories": [
+        "Um guerreiro que perdeu a família e buscou vingança. Mesmo no inferno, seus filhos ainda esperam ser resgatados.",
+        "Wini, assassina de adaga, amava Daian sem ser correspondida; ele a ajudava por pura bondade. O ciúme obsessivo da esposa causou sua morte. Wini exterminou seus assassinos, foi capturada e caiu no inferno. Luta com uma adaga e a espada longa de Daian presa às costas, golpeando ao girar.",
+        "Ivan viu suas próprias bombas destruírem sua terra natal. Na fumaça negra, restou a culpa pelas armas que suas mãos haviam criado.",
+        "Kreia é uma nação onde a alquimia atingiu o auge. Seus transmutadores de domínio supremo transformam armas conforme a situação.",
+        "Tvalto é um mundo belicoso com dezenas de milhares de anos de guerra. Dominando todas as classes de mago e guerreiro, o mago lanceiro governa o campo de batalha como líder do mais alto nível."
+      ]
+    },
+    {
+      "code": "ru",
+      "title": "ИСТОРИЯ",
+      "stories": [
+        "Воин, потерявший семью и избравший месть. Даже в аду его дети всё ещё ждут спасения.",
+        "Вини, убийца с кинжалом, безответно любила Дайана. Он помогал ей из чистого великодушия. Болезненная ревность жены привела к его гибели. Вини истребила его убийц, была схвачена и низвергнута в ад. Теперь она сражается кинжалом и закреплённым на спине длинным мечом Дайана, нанося удары вращением тела.",
+        "Иван увидел, как изготовленные им бомбы уничтожили его родину. Среди чёрного дыма осталась вина за оружие, созданное его руками.",
+        "Крейя — страна, где алхимия достигла вершины. Её величайшие мастера трансмутации меняют оружие по обстоятельствам.",
+        "Твалто — воинственный мир, где войны идут десятки тысяч лет. Овладев всеми классами магов и воинов, копейщик-маг господствует на поле боя как предводитель высшего ранга."
+      ]
+    },
+    {
+      "code": "uk",
+      "title": "ІСТОРІЯ",
+      "stories": [
+        "Воїн, який утратив родину й обрав помсту. Навіть у пеклі його діти досі чекають порятунку.",
+        "Віні, убивця з кинджалом, нерозділено кохала Даяна. Він допомагав їй із чистої доброти. Хворобливі ревнощі дружини призвели до його смерті. Віні винищила його вбивць, була схоплена й потрапила до пекла. Вона б’ється кинджалом і довгим мечем Даяна, закріпленим на спині, завдаючи ударів обертанням тіла.",
+        "Іван побачив, як виготовлені ним бомби знищили його батьківщину. Серед чорного диму лишилася провина за зброю, створену його руками.",
+        "Крея — держава, де алхімія сягнула вершини. Її найвищі майстри трансмутації змінюють зброю відповідно до обставин.",
+        "Твалто — войовничий світ, де війна триває десятки тисяч років. Опанувавши всі класи магів і воїнів, маг-списник панує на полі бою як провідник найвищого рангу."
+      ]
+    },
+    {
+      "code": "pl",
+      "title": "HISTORIA",
+      "stories": [
+        "Wojownik, który stracił rodzinę i wybrał zemstę. Nawet w piekle jego dzieci wciąż czekają na ratunek.",
+        "Wini, zabójczyni walcząca sztyletem, bez wzajemności kochała Daiana. On pomagał jej z czystej dobroci. Obsesyjna zazdrość żony doprowadziła do jego śmierci. Wini wybiła jego zabójców, została pojmana i trafiła do piekła. Walczy sztyletem oraz długim mieczem Daiana przymocowanym do pleców, uderzając obrotem ciała.",
+        "Ivan zobaczył, jak stworzone przez niego bomby niszczą jego ojczyznę. W czarnym dymie pozostała wina za broń wykonaną własnymi rękami.",
+        "Kreia to państwo, w którym alchemia osiągnęła szczyt. Jego najwyżsi mistrzowie transmutacji zmieniają broń zależnie od sytuacji.",
+        "Tvalto to wojowniczy świat nękany wojną od dziesiątek tysięcy lat. Mistrz wszystkich klas magów i wojowników włada polem bitwy jako przywódca najwyższej rangi."
+      ]
+    },
+    {
+      "code": "cs",
+      "title": "PŘÍBĚH",
+      "stories": [
+        "Válečník, který ztratil rodinu a vydal se za pomstou. I v pekle jeho děti stále čekají na záchranu.",
+        "Wini, vražedkyně s dýkou, neopětovaně milovala Daiana. On jí pomáhal z čisté dobroty. Chorobná žárlivost jeho ženy vedla k jeho smrti. Wini vyhladila jeho vrahy, byla zajata a skončila v pekle. Bojuje dýkou a Daianovým dlouhým mečem připevněným na zádech, kterým zasahuje při otáčení těla.",
+        "Ivan spatřil, jak bomby jeho vlastní výroby ničí jeho domovinu. V černém dýmu zůstala vina za zbraně vytvořené jeho rukama.",
+        "Kreia je země, kde alchymie dosáhla vrcholu. Její nejvyšší mistři transmutace mění zbraně podle situace.",
+        "Tvalto je válečnický svět, kde válka trvá desítky tisíc let. Mistr všech tříd mágů i válečníků vládne bojišti jako vůdce nejvyššího stupně."
+      ]
+    },
+    {
+      "code": "hu",
+      "title": "TÖRTÉNET",
+      "stories": [
+        "Egy harcos, aki elvesztette családját és bosszút esküdött. Gyermekei még a pokolban is megmentésre várnak.",
+        "Wini, a tőrrel küzdő orgyilkos viszonzatlanul szerette Daiant. Ő tiszta jóindulatból segítette. Felesége beteges féltékenysége a halálához vezetett. Wini kiirtotta gyilkosait, majd elfogták és a pokolba zuhant. Tőrrel és Daian hátára rögzített hosszúkardjával harcol, testének forgásával sújt le.",
+        "Ivan látta, ahogy saját bombái elpusztítják szülőföldjét. A fekete füstben csak a saját kezével készített fegyverek miatti bűntudat maradt.",
+        "Kreia országában az alkímia elérte csúcspontját. Legmagasabb szintű transzmutációs mesterei a helyzethez alakítják fegyvereiket.",
+        "Tvalto harcias világában több tízezer éve dúl a háború. Az összes mágus- és harcososztály mestereként a lándzsamágus a legmagasabb rangú vezetők egyikeként uralja a csatateret."
+      ]
+    },
+    {
+      "code": "ro",
+      "title": "POVESTE",
+      "stories": [
+        "Un războinic care și-a pierdut familia și a ales răzbunarea. Chiar și în iad, copiii lui încă așteaptă să fie salvați.",
+        "Wini, asasină cu pumnal, îl iubea fără răspuns pe Daian, care o ajuta din bunătate. Gelozia obsesivă a soției lui i-a provocat moartea. Wini i-a exterminat ucigașii, a fost capturată și a căzut în iad. Luptă cu un pumnal și sabia lungă a lui Daian fixată pe spate, lovind prin rotirea corpului.",
+        "Ivan a văzut cum bombele create de el i-au distrus țara natală. În fumul negru a rămas vina pentru armele făcute de mâinile sale.",
+        "Kreia este o țară unde alchimia a atins apogeul. Maeștrii supremi ai transmutației își transformă armele după situație.",
+        "Tvalto este o lume războinică aflată în război de zeci de mii de ani. Stăpânind toate clasele de mag și războinic, magul lăncier domină câmpul de luptă ca lider de cel mai înalt rang."
+      ]
+    },
+    {
+      "code": "bg",
+      "title": "ИСТОРИЯ",
+      "stories": [
+        "Воин, изгубил семейството си и поел по пътя на отмъщението. Дори в ада децата му още чакат спасение.",
+        "Уини, убийца с кама, обичала несподелено Даян. Той ѝ помагал от чиста доброта. Болезнената ревност на жена му довела до смъртта му. Уини избила убийците му, била заловена и попаднала в ада. Бие се с кама и дългия меч на Даян, закрепен на гърба ѝ, нанасяйки удари чрез завъртане.",
+        "Иван видял как направените от него бомби унищожават родината му. В черния дим останала вината за оръжията, създадени от собствените му ръце.",
+        "Крея е държава, където алхимията е достигнала върха си. Върховните ѝ майстори на трансмутацията преобразяват оръжията според обстановката.",
+        "Твалто е войнствен свят, където войната продължава десетки хиляди години. Овладял всички класове магове и воини, копиеносецът маг владее бойното поле като водач от най-висок ранг."
+      ]
+    },
+    {
+      "code": "el",
+      "title": "ΙΣΤΟΡΙΑ",
+      "stories": [
+        "Ένας πολεμιστής που έχασε την οικογένειά του και αναζήτησε εκδίκηση. Ακόμη και στην κόλαση, τα παιδιά του περιμένουν να σωθούν.",
+        "Η Γουίνι, δολοφόνος με στιλέτο, αγαπούσε χωρίς ανταπόκριση τον Ντάιαν. Εκείνος τη βοηθούσε από καλοσύνη. Η εμμονική ζήλια της συζύγου του οδήγησε στον θάνατό του. Η Γουίνι εξόντωσε τους δολοφόνους του, αιχμαλωτίστηκε και έπεσε στην κόλαση. Πολεμά με στιλέτο και το μακρύ ξίφος του στερεωμένο στην πλάτη, χτυπώντας καθώς περιστρέφεται.",
+        "Ο Ιβάν είδε τις δικές του βόμβες να καταστρέφουν την πατρίδα του. Μέσα στον μαύρο καπνό έμεινε η ενοχή για τα όπλα που έφτιαξαν τα χέρια του.",
+        "Στην Κρέια, κράτος όπου η αλχημεία έφτασε στην κορυφή, οι ανώτατοι μεταστοιχειωτές αλλάζουν τα όπλα τους ανάλογα με την περίσταση.",
+        "Το Τβάλτο είναι ένας πολεμοχαρής κόσμος με δεκάδες χιλιάδες χρόνια πολέμου. Έχοντας κατακτήσει όλες τις κλάσεις μάγων και πολεμιστών, ο λογχομάγος κυριαρχεί στη μάχη ως ηγέτης ανώτατου βαθμού."
+      ]
+    },
+    {
+      "code": "tr",
+      "title": "HİKÂYE",
+      "stories": [
+        "Ailesini kaybedip intikam yoluna giren bir savaşçı. Cehennemde bile çocukları hâlâ kurtarılmayı bekliyor.",
+        "Hançerli suikastçı Wini, Daian’a karşılıksız âşıktı. Daian ona yalnızca iyiliğinden yardım ediyordu. Karısının saplantılı kıskançlığı ölümüne yol açtı. Wini onu öldürenleri yok etti, yakalandı ve cehenneme düştü. Hançeri ve sırtına sabitlenmiş Daian’ın uzun kılıcıyla, dönerek saldırır.",
+        "Ivan kendi yaptığı bombaların memleketini yok edişini gördü. Kara dumanın içinde, elleriyle yaptığı silahların suçluluğu kaldı.",
+        "Kreia, simyanın zirveye ulaştığı bir ülkedir. En üst ustalığa erişen dönüşümcüler silahlarını duruma göre dönüştürür.",
+        "Tvalto, on binlerce yıldır savaşın sürdüğü savaşçı bir dünyadır. Tüm büyücü ve savaşçı sınıflarında ustalaşan mızrak büyücüsü, en yüksek rütbeli lider olarak savaş alanına hükmeder."
+      ]
+    },
+    {
+      "code": "nl",
+      "title": "ACHTERGROND",
+      "stories": [
+        "Een krijger die zijn gezin verloor en wraak zocht. Zelfs in de hel wachten zijn kinderen nog op redding.",
+        "Wini, een sluipmoordenaar met een dolk, hield onbeantwoord van Daian. Hij hielp haar uit pure goedheid. De ziekelijke jaloezie van zijn vrouw leidde tot zijn dood. Wini roeide zijn moordenaars uit, werd gevangengenomen en belandde in de hel. Ze vecht met een dolk en Daians langzwaard aan haar rug, waarmee ze draaiend toeslaat.",
+        "Ivan zag hoe zijn eigen bommen zijn vaderland verwoestten. In de zwarte rook bleef schuld achter over de wapens die zijn handen hadden gemaakt.",
+        "Kreia is een land waar alchemie haar hoogtepunt bereikt heeft. De hoogste transmutatiemeesters veranderen hun wapens naar de situatie.",
+        "Tvalto is een oorlogszuchtige wereld waar al tienduizenden jaren oorlog woedt. Als meester van alle magiër- en krijgerklassen beheerst de speermagiër het slagveld als leider van de hoogste rang."
+      ]
+    },
+    {
+      "code": "sv",
+      "title": "BAKGRUND",
+      "stories": [
+        "En krigare som förlorade sin familj och sökte hämnd. Även i helvetet väntar hans barn ännu på räddning.",
+        "Wini, en lönnmördare med dolk, älskade Daian utan gensvar. Han hjälpte henne av ren godhet. Hans hustrus sjukliga svartsjuka ledde till hans död. Wini utplånade hans mördare, tillfångatogs och föll till helvetet. Hon strider med dolk och Daians långsvärd fäst på ryggen och slår till genom att snurra.",
+        "Ivan såg sina egna bomber förstöra sitt hemland. I den svarta röken återstod skulden för vapnen hans händer hade skapat.",
+        "Kreia är ett land där alkemin nått sin höjdpunkt. Dess främsta transmutationsmästare förvandlar sina vapen efter situationen.",
+        "Tvalto är en krigisk värld med tiotusentals år av krig. Spjutmagikern har bemästrat alla magiker- och krigarklasser och härskar på slagfältet som ledare av högsta rang."
+      ]
+    },
+    {
+      "code": "da",
+      "title": "BAGGRUND",
+      "stories": [
+        "En kriger, der mistede sin familie og søgte hævn. Selv i helvede venter hans børn stadig på at blive reddet.",
+        "Wini, en snigmorder med dolk, elskede Daian uden gengældelse. Han hjalp hende af ren godhed. Hans hustrus sygelige jalousi førte til hans død. Wini udslettede hans mordere, blev fanget og faldt i helvede. Hun kæmper med en dolk og Daians langsværd fastgjort på ryggen og slår ved at dreje kroppen.",
+        "Ivan så sine egne bomber ødelægge sit hjemland. I den sorte røg stod skylden tilbage for de våben, hans hænder havde skabt.",
+        "Kreia er et land, hvor alkymien har nået sit højdepunkt. Dets øverste transmutationsmestre forvandler deres våben efter situationen.",
+        "Tvalto er en krigerisk verden med titusinder af års krig. Spydmagikeren mestrer alle mager- og krigerklasser og hersker over slagmarken som leder af højeste rang."
+      ]
+    },
+    {
+      "code": "no",
+      "title": "BAKGRUNN",
+      "stories": [
+        "En kriger som mistet familien sin og søkte hevn. Selv i helvete venter barna hans fortsatt på å bli reddet.",
+        "Wini, en snikmorder med dolk, elsket Daian uten gjengjeldelse. Han hjalp henne av ren godhet. Konas sykelige sjalusi førte til hans død. Wini utslettet drapsmennene hans, ble fanget og falt i helvete. Hun slåss med dolk og Daians langsverd festet til ryggen, og angriper ved å snurre.",
+        "Ivan så sine egne bomber ødelegge hjemlandet hans. I den svarte røyken ble skylden igjen for våpnene hendene hans hadde skapt.",
+        "Kreia er et land der alkymien har nådd sitt høydepunkt. De fremste transmutasjonsmestrene forvandler våpnene etter situasjonen.",
+        "Tvalto er en krigersk verden med titusener av år med krig. Spydmagikeren mestrer alle magiker- og krigerklasser og hersker over slagmarken som leder av høyeste rang."
+      ]
+    },
+    {
+      "code": "fi",
+      "title": "TAUSTATARINA",
+      "stories": [
+        "Soturi, joka menetti perheensä ja lähti kostamaan. Vielä helvetissäkin hänen lapsensa odottavat pelastusta.",
+        "Tikarimurhaaja Wini rakasti Daiania saamatta vastakaikua. Daian auttoi häntä puhtaasta hyvyydestä. Vaimon sairaalloinen mustasukkaisuus johti hänen kuolemaansa. Wini tuhosi hänen murhaajansa, jäi vangiksi ja joutui helvettiin. Hän taistelee tikarilla ja selkään kiinnitetyllä Daianin pitkämiekalla, jolla iskee pyörähtäessään.",
+        "Ivan näki omien pommiensa tuhoavan kotimaansa. Mustaan savuun jäi syyllisyys hänen käsillään tehdyistä aseista.",
+        "Kreia on valtio, jossa alkemia on saavuttanut huippunsa. Sen korkeimmat transmutaation mestarit muuttavat aseitaan tilanteen mukaan.",
+        "Tvalto on sotaisa maailma, jossa sota on jatkunut kymmeniätuhansia vuosia. Kaikki maagi- ja soturiluokat hallitseva keihäsmaagi johtaa taistelukenttää korkeimman tason johtajana."
+      ]
+    },
+    {
+      "code": "vi",
+      "title": "CỐT TRUYỆN",
+      "stories": [
+        "Chiến binh mất gia đình và bước vào con đường báo thù. Ngay cả ở địa ngục, những đứa con của anh vẫn chờ được cứu.",
+        "Wini, sát thủ dùng dao găm, đơn phương yêu ân nhân Daian. Anh chỉ giúp cô bằng lòng tốt. Sự ghen tuông bệnh hoạn của vợ khiến Daian chết. Wini tiêu diệt nhóm sát hại anh rồi bị bắt và rơi xuống địa ngục. Cô chiến đấu bằng dao găm và thanh trường kiếm của Daian gắn trên lưng, tung đòn bằng cách xoay người.",
+        "Ivan chứng kiến bom do chính mình chế tạo phá hủy quê hương. Trong khói đen chỉ còn tội lỗi vì những vũ khí do tay mình làm ra.",
+        "Kreia là quốc gia nơi thuật giả kim đạt đến đỉnh cao. Những bậc thầy biến đổi tối cao tại đây biến đổi vũ khí tùy theo tình huống.",
+        "Tvalto là thế giới hiếu chiến với chiến tranh kéo dài hàng chục nghìn năm. Tinh thông mọi lớp pháp sư và chiến binh, thương pháp sư thống trị chiến trường với tư cách thủ lĩnh cấp cao nhất."
+      ]
+    },
+    {
+      "code": "id",
+      "title": "LATAR CERITA",
+      "stories": [
+        "Prajurit yang kehilangan keluarga dan menempuh jalan balas dendam. Bahkan di neraka, anak-anaknya masih menanti diselamatkan.",
+        "Wini, pembunuh berbelati, mencintai Daian tanpa balasan. Daian menolongnya semata karena kebaikan hati. Kecemburuan obsesif istrinya menyebabkan kematiannya. Wini membasmi kelompok pembunuhnya, ditangkap, lalu jatuh ke neraka. Ia bertarung dengan belati dan pedang panjang Daian yang terpasang di punggung, menyerang sambil berputar.",
+        "Ivan menyaksikan bom buatannya sendiri menghancurkan tanah kelahirannya. Dalam asap hitam, tersisa rasa bersalah atas senjata yang dibuat tangannya.",
+        "Kreia adalah negara tempat alkimia mencapai puncaknya. Para ahli transmutasi tertingginya mengubah senjata sesuai keadaan.",
+        "Tvalto adalah dunia gemar perang yang dilanda peperangan selama puluhan ribu tahun. Menguasai semua kelas penyihir dan prajurit, penyihir tombak memimpin medan perang sebagai pemimpin tingkat tertinggi."
+      ]
+    },
+    {
+      "code": "ms",
+      "title": "LATAR CERITA",
+      "stories": [
+        "Pahlawan yang kehilangan keluarga dan menuntut bela. Walaupun di neraka, anak-anaknya masih menanti untuk diselamatkan.",
+        "Wini, pembunuh berbelati, mencintai Daian tanpa balasan. Daian membantunya semata-mata kerana kebaikan hati. Kecemburuan melampau isterinya menyebabkan kematiannya. Wini menghapuskan kumpulan pembunuhnya, ditangkap lalu jatuh ke neraka. Dia bertarung dengan belati dan pedang panjang Daian yang dipasang pada belakang, menyerang dengan putaran badan.",
+        "Ivan menyaksikan bom buatannya memusnahkan tanah airnya. Dalam asap hitam, tinggal rasa bersalah terhadap senjata ciptaan tangannya.",
+        "Kreia ialah negara tempat alkimia mencapai kemuncaknya. Ahli transmutasi tertingginya mengubah senjata mengikut keadaan.",
+        "Tvalto ialah dunia suka berperang yang dilanda peperangan selama puluhan ribu tahun. Menguasai semua kelas ahli sihir dan pahlawan, ahli sihir tombak menguasai medan perang sebagai pemimpin bertaraf tertinggi."
+      ]
+    },
+    {
+      "code": "th",
+      "title": "เรื่องราว",
+      "stories": [
+        "นักรบผู้สูญเสียครอบครัวและเดินบนเส้นทางแห่งการแก้แค้น แม้อยู่ในนรก ลูก ๆ ของเขาก็ยังรอการช่วยเหลือ",
+        "วินี นักฆ่าผู้ใช้มีดสั้น แอบรักไดอันผู้มีพระคุณ แต่เขาช่วยเธอด้วยความเมตตาล้วน ๆ ความหึงหวงอย่างคลั่งไคล้ของภรรยาทำให้เขาตาย วินีกวาดล้างกลุ่มที่ฆ่าเขา ก่อนถูกจับและตกสู่นรก เธอต่อสู้ด้วยมีดสั้นและดาบยาวของไดอันที่ติดไว้กับหลัง ใช้การหมุนตัวโจมตี",
+        "อีวานเห็นระเบิดที่ตนสร้างทำลายบ้านเกิด ท่ามกลางควันดำ เหลือเพียงความรู้สึกผิดจากอาวุธที่สร้างด้วยมือตนเอง",
+        "เครอาคือประเทศที่ศาสตร์เล่นแร่แปรธาตุถึงจุดสูงสุด เหล่าผู้เชี่ยวชาญการแปรสภาพขั้นสูงสุดของที่นี่เปลี่ยนอาวุธให้เหมาะกับสถานการณ์",
+        "ทวัลโตคือโลกกระหายสงครามที่สู้รบมานับหมื่นปี จอมเวทหอกผู้เชี่ยวชาญทุกคลาสของจอมเวทและนักรบ ครองสนามรบในฐานะผู้นำระดับสูงสุด"
+      ]
+    },
+    {
+      "code": "ar",
+      "title": "القصة",
+      "stories": [
+        "محارب فقد عائلته وسلك طريق الانتقام. حتى في الجحيم، ما زال أطفاله ينتظرون الإنقاذ.",
+        "أحبت ويني، القاتلة بالخنجر، منقذها دايان من طرف واحد. كان يساعدها بدافع الخير وحده. أدت غيرة زوجته المرضية إلى موته. أبادت ويني جماعة قاتليه، ثم أُسرت وسقطت في الجحيم. تقاتل بخنجر وسيف دايان الطويل المثبت على ظهرها، وتضرب بدوران جسدها.",
+        "شهد إيفان قنابل من صنعه تدمر موطنه. وسط الدخان الأسود، بقي الشعور بالذنب تجاه الأسلحة التي صنعتها يداه.",
+        "كريا دولة بلغت فيها الخيمياء ذروتها. يبدل أساتذة التحويل الأعلى مرتبة أسلحتهم بما يلائم الموقف.",
+        "تفالتو عالم مولع بالحرب استمرت فيه الحروب عشرات آلاف السنين. يتقن ساحر الرمح جميع فئات السحرة والمحاربين، ويهيمن على ساحة المعركة بوصفه قائداً من أعلى رتبة."
+      ]
+    }
+  ]
+}
