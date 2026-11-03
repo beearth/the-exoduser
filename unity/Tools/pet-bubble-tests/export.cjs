@@ -10,12 +10,12 @@ const cue=(id,tier,weight,seconds,cooldown,key,pairKey,pairSeconds)=>({id,tier,w
 const cues=[
  cue('env_ch0',0,0,4,99999,'…새 한 마리 안 우네. 숲이 다 먹었어.','…나무가 우릴 보고 있어. 기분 나빠.',4),
  cue('boss_intro_ch0',4,0,5,99999,'…첫 번째다. 부담 갖지 마. 죽어도 다시 와.','첫 보스야. 겁먹지 마, 우리도 있어.',4),
- cue('warn_hp50',5,40,3,60,'…절반이다. 정신차려.','체력 반 남았어! 물약 마실 타이밍!',3),
+ {...cue('warn_hp50',5,40,3,60,'…절반이다. 정신차려.','',0),pairWho:''}, // Unity: no manual potion, so the cat reply (No.0924) is unused
  cue('crisis_hp30',5,60,4,20,'피가 새고 있다. Shift. 빠져.','사슬 던져! 끌려가면 무적이야!',4),
  cue('hp_critical',5,100,3,30,'…죽기 직전이다. 패링해. 피를 채워.','한 방이면 죽어! 패링으로 HP 채워!!',3)
 ];
 const entries=[];
-for(const key of new Set(cues.flatMap(c=>[c.key,c.pairKey]))){
+for(const key of new Set(cues.flatMap(c=>[c.key,c.pairKey]).filter(Boolean))){
  if(!source.includes("'"+key+"'"))throw Error('Unregistered source text '+key);
  entries.push({key,texts:codes.map(code=>{const value=code==='ko'?key:tables[code][key];if(!value)throw Error('Missing '+code+': '+key);return value;})});
 }

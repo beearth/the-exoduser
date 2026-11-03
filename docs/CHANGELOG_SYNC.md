@@ -1,3 +1,5 @@
+2026-11-04 Unity 펫 말풍선 P1~P3: 첫 보스·환경 대사 seen을 런 단위(새 Simulation에서만 초기화)로, 환경 대사는 스테이지 0 필드 `!InArena` 누적 30초 뒤 런당 1회, `warn_hp50` 짝 대사(No.0924) Unity 미사용으로 비움(번역 목록 행 유지·비고만 추가). Core 변경 0, 펫 말풍선 검사 38/0·59/0·5어셈블리 컴파일 오류 0, Mac 화면 확인 전.
+
 2026-11-04 death-ui 새 실행: 05:50 JUDGEMENT가 이전 칩 유지 해석을 대체. 크기 자동 칩 분기를 제거하고 설정 조작만 명시 선택, 기본 가시/20개 Lanczos3 1x·2x 파생본 복원. 공통 Panel 철14%는 StretchToFill 대신 화면 픽셀 기준 Mirror UV로 통일. 관련 검사 및 Roslyn 5어셈블리 오류0, 새 Unity·후보 빌드·촬영0(이전 공용 ReadAllText 2FAIL 미해결/G: 여유 기준). 자기 캐시6,453,436,611B 정리, 기존 guard WIP·후보 실행본·세이브 보존. docs UI 후보/작은판/재질/사망/에셋/WORK_BOARD 동기화.
 
 2026-11-04 적 3D 01:00 연결 바탕: 최신ec89d5166 병합·하니스 Core/Skills 재귀 열거65/0 회복. etype4 공유 키를 시작 육괴 표현 태그로 분리해 일반 갑각 사도 아틀라스 유지. 영웅 공유 rig-pixel·Generic Animator/Core 틱·투영 bounds VFX 접점·사망 시작 연결, 고정meta 추가. 확장 정책103/0·전체 PC Roslyn5어셈블리 오류0 각1회, Player0. 미제공 동작은 bind pose로 기록하며 Mac 화면·임포트·동작·성능 미판정.

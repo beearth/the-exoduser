@@ -5,9 +5,9 @@ namespace Exoduser.UnityPort
 {
  public static class NativePetBubblePolicy
  {
-  // G.bossAlive is zone-local on web. Stage.BossAlive also means "not yet spawned" in Unity.
-  // This conservative common subset cannot incorrectly announce a quiet initial field.
-  public static bool EnvironmentReady(float elapsed,bool bossAlive,bool observedDefeat)=>elapsed>30&&!bossAlive&&observedDefeat;
+  // G.bossAlive is zone-local on web. Stage.BossAlive also means "not yet spawned" in Unity,
+  // so the "not a boss fight" test is the arena flag; elapsed is the cumulative stage-0 field time of the run.
+  public static bool EnvironmentReady(float elapsed,bool inArena)=>elapsed>30&&!inArena;
   public static bool BossReady(bool inArena,bool actorPresent,bool actorAlive)=>inArena&&actorPresent&&actorAlive;
  }
  public static class NativePetBubbleHints

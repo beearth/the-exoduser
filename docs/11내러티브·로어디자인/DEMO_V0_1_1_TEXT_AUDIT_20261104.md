@@ -155,6 +155,8 @@ R1/R2 데이터·소스9항PASS는 유지한다. 예정했던 최종 PC컴파일
 | P2 | 환경 대사 시점 | "보스 생존 → 처치 관찰 후 30초 초과"일 때만 나온다. 그래서 보스를 잡은 뒤 아레나에서야 "…새 한 마리 안 우네. 숲이 다 먹었어."가 나온다. 이 대사는 숲에 처음 들어선 분위기 대사다 | 웹은 챕터 진입 30초 뒤, 보스전이 아닐 때 한 번 낸다. Unity의 `Stage.BossAlive`는 스폰 전에도 참이므로, 조건을 `!BossAlive` 대신 `!flow.InArena`로 바꾼다. 스테이지 0 필드에서 누적 30초, 런당 한 번 |
 | P3 | 옛 문구 No.0924 | 고양이 "체력 반 남았어! 물약 마실 타이밍!"은 수동 물약을 마시라는 안내다. 수동 퀵슬롯 물약은 2_8에서 폐지됐고(10-10), Unity Core는 `AutoPotion`(악의 자동 소비)만 있다. 플레이어가 따를 수 없는 안내다 | Unity `warn_hp50`은 까마귀 "…절반이다. 정신차려."(0931)만 내고 짝 대사를 비운다(`pairWho`·`pairKey` 빈 값, `pairSeconds` 0). No.0924 행은 지우지 않고 비고에 "Unity 미사용(수동 물약 폐지)"을 적는다. 웹 쪽 같은 문구는 웹 유지보수 몫이라 손대지 않는다 |
 
+**11-04 P1~P3 반영:** `NativeGame.PetBubble.cs`(seen 표시를 런 단위로 옮김: `ResetPetBubbleEncounter`는 큐만 비우고, 새 Simulation에서만 `ResetPetBubbleRun`이 지움. 환경 대사는 스테이지 0 필드(`!flow.InArena`) 누적 30초 뒤 런당 1회), `NativePetBubblePolicy.cs`(`EnvironmentReady(elapsed,inArena)`), `pet_bubble.json`(`warn_hp50` 짝 대사 비움, 미사용 0924 키 제거로 14→13키), `pet-bubble-tests`(export·run·Program, P1~P3 확인 추가), 번역대상_전체목록 No.0924 비고. 검사: 펫 말풍선 `run.cjs` 정책 38/0·데이터·소스 59/0 통과, 참조 컴파일 5어셈블리 오류 0(`I:/EXODUSER-Storage/codex-takeover/death-screen/pet-p1p3-compile`). 상태: PC 검사·컴파일만, Mac 화면 확인 전.
+
 병합을 막지 않는 것:
 
 | # | 항목 | 내용 |

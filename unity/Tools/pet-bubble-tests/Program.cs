@@ -37,10 +37,10 @@ static class Program
   q.BeginFrame(1,false,false,false);q.Offer(Cue("on-time",4));Check(q.Dispatch()!=null,"suppression ends at five seconds");
   q.Reset();q.BeginFrame(0,false,false,false);q.Offer(env);Check(q.Dispatch()!=null,"run reset clears id cooldown");
   q.Reset();Check(!q.Active&&q.Clock==0,"encounter reset clears pending and clock");
-  Check(!NativePetBubblePolicy.EnvironmentReady(30,false,false),"environment strictly after thirty seconds");
-  Check(!NativePetBubblePolicy.EnvironmentReady(31,true,true),"boss flag blocks environment");
-  Check(!NativePetBubblePolicy.EnvironmentReady(31,false,false),"unobserved flag is not equivalent");
-  Check(NativePetBubblePolicy.EnvironmentReady(31,false,true),"observed defeat conservative common condition");
+  Check(!NativePetBubblePolicy.EnvironmentReady(30,false),"P2 environment strictly after thirty field seconds");
+  Check(!NativePetBubblePolicy.EnvironmentReady(31,true),"P2 arena blocks environment");
+  Check(!NativePetBubblePolicy.EnvironmentReady(5,false),"P2 not before thirty seconds");
+  Check(NativePetBubblePolicy.EnvironmentReady(31,false),"P2 field after thirty seconds without any boss kill");
   Check(!NativePetBubblePolicy.BossReady(true,false,true),"no boss reference means no intro");
   Check(NativePetBubblePolicy.BossReady(true,true,true),"alive arena actor means boss intro");
   string hint=NativePetBubbleHints.Resolve("Shift / SHIFT / Space. Q! Equal Shifter.",action=>action=="charge"?"C":action=="bow"?"B":action=="parry"?"V":"?");

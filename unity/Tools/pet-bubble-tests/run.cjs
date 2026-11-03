@@ -13,7 +13,10 @@ try{
  check(actual.codes.length===29&&new Set(actual.codes).size===29,'29 distinct locales');
  assert.deepEqual(actual.entries,gold.entries);checks++;
  assert.deepEqual(actual.cues,gold.cues);checks++;
- check(actual.entries.length===14&&actual.cues.length===9,'first pass scope');
+ check(actual.entries.length===13&&actual.cues.length===9,'first pass scope (13 keys: No.0924 unused in Unity)');
+ const warn=actual.cues.find(c=>c.id==='warn_hp50');
+ check(warn&&warn.who==='crow'&&warn.key==='…절반이다. 정신차려.'&&warn.pairWho===''&&warn.pairKey===''&&warn.pairSeconds===0,'P3 warn_hp50 crow only, empty pair');
+ check(!actual.entries.some(e=>e.key.includes('물약 마실 타이밍')),'P3 No.0924 text not in Unity catalogue');
  for(const entry of actual.entries)check(entry.texts.length===29&&entry.texts.every(t=>typeof t==='string'&&t.length>0),'complete '+entry.key);
  for(const cue of actual.cues)check(actual.entries.some(e=>e.key===cue.key)&&(!cue.pairKey||actual.entries.some(e=>e.key===cue.pairKey)),'cue references '+cue.id);
  for(const [who,source] of [['crow','crow'],['cat','cat_pet']]){
@@ -27,7 +30,14 @@ try{
  check(game.includes('UpdatePetBubble();')&&game.includes('DrawPetBubble();')&&game.includes('StartCoroutine(PetBubbleCaptureRun())'),'minimal live and fixture hooks');
  for(const guard of ['lobby.IsBlocking','menu','inventory.Open','skills.Open','stats.Open','forge.Open','stageClear.Active','LoadPhase>0','DeathPresentationActive','PlayerDown'])check(adapter.includes(guard),'live visibility '+guard);
  check(adapter.includes('Simulation.TickCount-petBubbleTick')&&adapter.includes('petBubbleSimulation!=Simulation')&&adapter.includes('petBubbleArena!=flow.InArena'),'tick/run/arena lifetime');
- check(adapter.includes('petBubbleObservedDefeat')&&adapter.includes('EnvironmentReady(petBubbleStageSeconds,flow.BossAlive'),'conservative environment mapping');
+ check(adapter.includes('EnvironmentReady(petBubbleFieldSeconds,flow.InArena)')&&adapter.includes('petBubbleStage==0&&!flow.InArena')&&!adapter.includes('petBubbleObservedDefeat')&&!adapter.includes('petBubbleStageSeconds'),'P2 environment: stage-0 field time, not in arena');
+ const body=name=>{const at=adapter.indexOf('void '+name+'()'),open=adapter.indexOf('{',at),close=adapter.indexOf('\n  }',open);return at<0?'':adapter.slice(open,close);};
+ const enc=body('ResetPetBubbleEncounter'),runReset=body('ResetPetBubbleRun');
+ check(enc&&!/Seen|FieldSeconds/.test(enc)&&enc.includes('petBubble.Reset()'),'P1 encounter reset keeps run-level seen flags');
+ check(runReset&&runReset.includes('petBubbleBossSeen=petBubbleEnvSeen=false')&&runReset.includes('petBubbleFieldSeconds=0'),'P1 run reset clears seen flags');
+ check((adapter.match(/petBubbleBossSeen=false|petBubbleEnvSeen=false|petBubbleBossSeen=petBubbleEnvSeen=false/g)||[]).length===1,'P1 seen flags cleared in exactly one place');
+ check(adapter.includes('petBubbleRun!=Simulation')&&adapter.includes('firstPractice==null&&petBubbleRun!=Simulation'),'P1 new Simulation is the only run boundary');
+ check(adapter.includes('petBubbleStage>=0&&petBubbleStage<=3')&&adapter.includes('NativePetBubblePolicy.BossReady(flow.InArena'),'P1 chapter-0 arena boss only');
  check(!adapter.includes('ch11.line.'),'GB1 automatic triggers held');
  check(adapter.includes('ratio<.1')&&adapter.includes('ratio<.3')&&adapter.includes('ratio<.5'),'HP trigger thresholds');
  check(view.includes('new Rect(92,237,306,51)')&&view.includes('new Rect(122,250,190,42)')&&view.includes('scale=1.5f'),'web text apertures/scale');

@@ -6,10 +6,11 @@ namespace Exoduser.UnityPort
  {
   readonly NativePetBubbleQueue petBubble=new NativePetBubbleQueue();
   readonly NativePetBubbleView petBubbleView=new NativePetBubbleView();
-  Simulation petBubbleSimulation;
+  Simulation petBubbleSimulation,petBubbleRun;
   int petBubbleTick=-1,petBubbleStage=-1;
-  float petBubbleStageSeconds;
-  bool petBubbleArena,petBubbleBossSeen,petBubbleEnvSeen,petBubbleHadBoss,petBubbleObservedDefeat;
+  // Run-level (new Simulation only): chapter-0 boss intro / forest ambience are one-shot per run, like web _petBossIntroSeen.
+  float petBubbleFieldSeconds;
+  bool petBubbleArena,petBubbleBossSeen,petBubbleEnvSeen;
   bool petBubbleFixtureActive,petBubbleFixtureOwnsQueue;
   bool PetBubbleHidden=>Simulation==null||lobby==null||lobby.IsBlocking||menu||!gameFocused||
    inventory.Open||skills.Open||stats.Open||forge.Open||nextDifficulty.Active||stageClear.Active||
@@ -17,14 +18,19 @@ namespace Exoduser.UnityPort
    (!Running&&!petBubbleFixtureActive)||(smokeActive&&!petBubbleFixtureActive);
   void ResetPetBubbleEncounter()
   {
-   petBubble.Reset();petBubbleStageSeconds=0;
-   petBubbleBossSeen=petBubbleEnvSeen=petBubbleHadBoss=petBubbleObservedDefeat=false;
+   petBubble.Reset();
+  }
+  void ResetPetBubbleRun()
+  {
+   petBubbleRun=null;petBubbleFieldSeconds=0;petBubbleBossSeen=petBubbleEnvSeen=false;
   }
   void UpdatePetBubble()
   {
    if(petBubbleFixtureOwnsQueue)return;
-   if(Simulation==null){petBubbleSimulation=null;ResetPetBubbleEncounter();return;}
+   if(Simulation==null){petBubbleSimulation=null;ResetPetBubbleRun();ResetPetBubbleEncounter();return;}
    var flow=Simulation.Stage;
+   // A new Simulation is a new run. The first-practice arena swaps Simulation temporarily; it must not reset the run flags.
+   if(firstPractice==null&&petBubbleRun!=Simulation){ResetPetBubbleRun();petBubbleRun=Simulation;}
    bool changed=petBubbleSimulation!=Simulation||petBubbleStage!=Simulation.Config.StageIndex||Simulation.TickCount<petBubbleTick;
    if(changed||petBubbleArena!=flow.InArena){
     ResetPetBubbleEncounter();petBubbleTick=Simulation.TickCount;
@@ -36,13 +42,11 @@ namespace Exoduser.UnityPort
    bool finale=Simulation.Config.DemoMode&&petBubbleStage==3&&flow.InArena&&flow.BossAlive;
    petBubble.BeginFrame(seconds,PetBubbleHidden,dead,finale);
    if(PetBubbleHidden||dead)return;
-   petBubbleStageSeconds+=seconds;
+   if(petBubbleStage==0&&!flow.InArena)petBubbleFieldSeconds+=seconds;
    bool actorAlive=flow.Boss!=null&&flow.Boss.Alive;
-   if(flow.BossAlive&&actorAlive)petBubbleHadBoss=true;
-   if(petBubbleHadBoss&&!flow.BossAlive)petBubbleObservedDefeat=true;
    // First pass covers chapter 1's existing environment/intro pairs only.
    if(petBubbleStage>=0&&petBubbleStage<=3){
-    if(!petBubbleEnvSeen&&NativePetBubblePolicy.EnvironmentReady(petBubbleStageSeconds,flow.BossAlive,petBubbleObservedDefeat))
+    if(!petBubbleEnvSeen&&petBubbleStage==0&&NativePetBubblePolicy.EnvironmentReady(petBubbleFieldSeconds,flow.InArena))
      petBubble.Offer(NativePetBubbleCatalog.Cue("env_ch0"));
     if(!petBubbleBossSeen&&flow.BossAlive&&NativePetBubblePolicy.BossReady(flow.InArena,flow.Boss!=null,actorAlive))
      petBubble.Offer(NativePetBubbleCatalog.Cue("boss_intro_ch0"));

@@ -65,9 +65,9 @@
       "key": "…절반이다. 정신차려.",
       "seconds": 3,
       "cooldown": 60,
-      "pairWho": "cat",
-      "pairKey": "체력 반 남았어! 물약 마실 타이밍!",
-      "pairSeconds": 3
+      "pairWho": "",
+      "pairKey": "",
+      "pairSeconds": 0
     },
     {
       "id": "crisis_hp30",
@@ -311,40 +311,6 @@
         "…Μισή ζωή. Συγκεντρώσου.",
         "…Половина. Събери се.",
         "…Setengah nyawa. Fokus."
-      ]
-    },
-    {
-      "key": "체력 반 남았어! 물약 마실 타이밍!",
-      "texts": [
-        "체력 반 남았어! 물약 마실 타이밍!",
-        "Half HP left! Time to drink a potion!",
-        "HP剩一半！喝药时机！",
-        "HP半分！ポーション飲むタイミング！",
-        "¡Mitad de HP! ¡Momento de beber una poción!",
-        "HP剩一半！喝藥時機！",
-        "ОЗ наполовину! Время зелья!",
-        "Halbe HP übrig! Zeit, einen Trank zu trinken!",
-        "Metade do HP! Hora de tomar uma poção!",
-        "Moitié des PV restants ! Le moment de boire une potion !",
-        "Połowa HP! Czas na miksturę!",
-        "Metà HP rimasti! Ora di bere una pozione!",
-        "ОЗ наполовину! Час зілля!",
-        "HP yarıda! İksir zamanı!",
-        "HP còn nửa! Uống thuốc đi!",
-        "HP เหลือครึ่ง! ดื่มยาได้แล้ว!",
-        "HP setengah! Waktunya minum ramuan!",
-        "HP النصف! وقت الجرعة!",
-        "Halvt HP! Drickdags för potion!",
-        "Halvt HP! Tidspoint for trylledrik!",
-        "Halvt HP! Tid for trylledrikk!",
-        "Puolet HP! Juoma-aika!",
-        "HP napůl! Čas na lektvar!",
-        "HP fele! Ideje az elixírnek!",
-        "HP jumătate! Timpul pentru poțiune!",
-        "Half HP! Potiontijd!",
-        "HP στα μισά! Ώρα για φίλτρο!",
-        "HP наполовина! Време за отвара!",
-        "HP setengah! Waktunya minum ramuan!"
       ]
     },
     {
