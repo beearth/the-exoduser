@@ -245,3 +245,8 @@ Mac a049ef5c4/qa/unity-parity/5b6b4fce9의 실제6PNG·REPORT를 인수했다. �
 ### PC 단독 이름 검사 인수
 
 Player7603230d 1회에서5해상도 모두 lockedBlocked/nameOpened=true, native exit0·10PNG·창0·잔여0. 기존 R5 패키지+컴파일DLL의 이름 전용 fixture이고 정식 빌드 아님. Runtime9d1244ea…를 대조하고 원본 DLL 두 개를 정확 SHA로 복원했다. 단, 사용자 영역 Player.log 하나 변경이 감지되어 공용 가드 전체 ok=false/runner exit5/USER_SAVE changed1이다. 원인 미확정·가드 완화0·로그 덮어쓰기0·추가 Player0. 이름 기능 PASS와 안전 가드 FAIL을 분리한다. 상세5행표·경로는 UNITY_UI_OVERLAP 최신절에 보존한다. PC 컴파일 Core/Runtime0오류·Mac 조건부 소스0, 잉크 회귀5/5. 새 후보의 Mac 전체 겹침·잉크·공통 입력 경로는 아직 미검증이다.
+
+
+## 2026-11-03 15:39 복구 후 인계
+
+최신 공통044c82d760 정상 병합. 복구 HEAD72c395db5의 13:20 수정은 보존했고, NativeUiAudit.TextLayoutBounds를 감사와 푸터에서 공용으로 사용해 수동 가운데 정렬식 차이를 없앴다. 웹 autosave 위치는 유지하며 추가 안내만 y1022부터 네이티브 경계 뒤 한 화면 픽셀 간격으로 올림(최대4회)한다. fr QA 문구·scroll-ink/표면 알파 수정 유지, 검사 임계 완화0. PC 현재 Core/Runtime 오류0, Player/정식 빌드/M1/1410/새 캡처 실행0. 새 Mac 게이트 전 P0 PASS나 전체5차 완료로 올리지 않는다.

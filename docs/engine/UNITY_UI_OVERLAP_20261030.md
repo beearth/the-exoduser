@@ -350,7 +350,7 @@ Mac은 새 HEAD 정식 패키지의 실제 캡처 폴더에 --candidate를 실�
 |---|---|---|
 | GUIStyle 바탕 | GUI.Label의 hover/normal 선택은 플랫폼 공통 Unity DoLabel 계약으로 계측. Windows 전용 제한 제거. 나머지 상태 불명 표면은 TextField와 공통으로8상태·노출 HiDPI·모든 밉 GPU 알파의 공통 하한을 기록 | null 바탕은 하한0, disabled는 하한0. 실제 알파를 모르면 unknown 유지. 불투명하다고 추정하거나 분석기 제외/임계 변경하지 않음. 누락30→0은 Mac 대기 |
 | 글자 원점 | 수동 padding/center 계산 대신 GUIStyle.Internal_GetTextRectOffset에 실제 CalcSize/CalcHeight를 전달해 네이티브 정렬·반올림 원점을 기록. metricProof 추가. API 부재는 fail-closed | BeginGroup/BeginScrollView 원점 스택 및 p0 계약 유지. 제품 그리기·matrix/scroll 반환값 변경0. 보관함 상단 ink 포함은 새 Mac 캡처로 판정 |
-| 설정 하단 | 웹 autosave Rect(96,1004,500,20)는 유지. 추가 native/QA 안내의 y만 savedH·noticeH 실제 조판 높이로 다음 경계를 계산해 올림하고 최소1022. 안내 Rect(96,noticeY,1200,18), 서체11 유지 | 2560ko/fr의0.620px 교차 재검수. 전역 겹침 허용오차 변경0 |
+| 설정 하단 | 웹 autosave Rect(96,1004,500,20)는 유지. 추가 native/QA 안내는 y1022에서 시작해 감사와 같은 TextLayoutBounds로 경계를 계산한다. 현재 GUI.matrix의 세로 배율 기준 한 화면 픽셀 간격을 확보하도록 올림하고 최대4회 보정. 안내 폭1200·높이18·서체11 유지 | 2560ko/fr의0.620px 교차 재검수. 전역 겹침 허용오차 변경0 |
 | QA 번역 | NativePauseMenu.QaLabels.cs의 native QA 전용 표: ko/en/de/fr. qa settings-not-saved 문장을 Normalize(locale)로 조회, 다른 언어는 영어 fallback | fr: Les paramètres ne sont pas enregistrés pendant ce test QA. de: Einstellungen werden während dieses QA-Tests nicht gespeichert. 웹 정본43 exact ID 및29언어 원본 카탈로그 변경0 |
 | 잉크 선택 | 절대 gray60/G35 대신 ROI 안의 gray 밝기/green 우세도 분포를 Otsu로 분리. dynamic range12 미만·빈 ROI·전체70% 초과 선택은 실패. 최소 픽셀 조건과 실제 감사 상자 포함 판정은 유지 | 밝은 회색 배경·G35 미만 녹색·빈/단색 판 음성·실제4개 crop 및 잘못된 상자 padding 음성 회귀5/5. 구 R3 좌표 음성은 계속 실패. Mac 원본4쌍 PNG/JSON 추가 요청 중. 표시선이 있는 x3 진단 이미지를 제품 양성으로 쓰지 않음 |
 | 이름 검사 | --unity-ui-overlap-check --unity-name-gate-only로 같은 Player에서5해상도 ko의 잠긴 직업/이름 열기만 검사, 정상 종료. Windows 기본은 자기 숨은 HWND WM 클릭. Mac은 sandbox 전용 NativeLobby.OnGUI 입력 Event down/up 큐, Windows에서도 --unity-gui-clicks로 선택 가능 | 실제 제품 Draw/hit-test/전환을 통과하며 결과를 API로 설정하지 않음. queue는 명시 QA sandbox/overlap run에서만 허용. 입력 차단·전환대기15s·전달2s·이번 클릭 이후 전환 id 범위 실패 확인. Mac 공통 입력 경로는 런타임 미검증 |
@@ -378,3 +378,12 @@ PC는 Core/Runtime 컴파일 오류0, UNITY_STANDALONE_OSX 조건부 소스 컴�
 증거는 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/mac-gate-1320/의 name-only/실제_마우스_역변환.json·coverage.json·10PNG, name-player-launch.log·name-dll-manifest.json·name-dll-restored.json 및 공용 _exec/done/7603230d.json이다. 밝은배경/어두운녹색/단색판/잘못된 상자/실제4crop의 오프라인 회귀5/5도 통과했다. 기존 Mac x3 진단그림의 글자는 새 분류기로4영역 모두 관측되며 배경 전체선택을 하지 않았다(mac-diagnostic-ink.json). 표시선 있는 x3 그림은 새 좌표 양성이나 새 제품 PASS 근거가 아니다.
 
 최신 공통25356462dede7e0045de71bf5df7a2f87dc58010을 정상 병합(5062b5701)했다. check.ps1 충돌은 같은 공용 bin 경로의 슬래시 표기만 통일했으며 타 레인 코드와 외부 guard WIP를 보존했다. 다음은 Mac 새 HEAD 정식/M1/1410·issue18→0/가림누락30→0/새 scroll-ink4/4·웹1x 확인이다. Mac 새 Event 경로도 실제5해상도 판정이 필요하다.
+
+
+## 2026-11-03 15:39 중단 복구 — 푸터·감사 정렬식 일치
+
+origin/unity/main 044c82d760을 자기 브랜치에 정상 병합했다. 13:20 대응의 GUIStyle 알파 증명·스크롤 원점·네이티브 텍스트 정렬·Otsu 잉크 분리·fr QA 문구는 72c395db5에 보존되어 있었다. 남은 푸터 수동 savedH/noticeH 계산은 감사의 네이티브 정렬과 달라 반올림 차이를 보장할 수 없어 제거했다.
+
+TextLayoutBounds가 CalcSize/CalcHeight + GUIStyle.Internal_GetTextRectOffset + 실제 clipping을 한 번 정의하며, 감사 Text와 추가 안내 위치 계산 양쪽이 이를 사용한다. 웹 autosave Rect(96,1004,500,20)는 그대로다. 추가 안내만 y1022에서 시작해 네이티브 saved bottom 뒤 한 화면 픽셀(1/abs(GUI.matrix.m11))을 확보하도록 물리 픽셀 단위로 올림한다(최대4회). 겹침 판정 임계·글자 제외·감사 상자 padding 변경0. 프랑스어 QA 문장은 기존 언어표를 유지한다.
+
+PC는 현재 Core121/Runtime241 소스의 컴파일 오류0만 새로 확인했다. Player·정식 빌드·M1·전체 UI·scroll-ink 재실행0. 직전 Player7603230d의 이름 기능5/5와 Player.log 한 건의 가드 FAIL은 과거 결과 그대로이며 새 실행 PASS로 재사용하지 않는다. 새 후보의 issue18→0·가림누락30→0·실제 ink4/4는 Mac 재검수 대기다.

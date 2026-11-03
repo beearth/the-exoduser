@@ -168,11 +168,9 @@ namespace Exoduser.UnityPort
         }
         internal static void DrawTextureWithTexCoords(Rect r,Texture texture,Rect uv,bool alphaBlend=true,[CallerFilePath]string file="",[CallerLineNumber]int line=0){Surface(r,texture,uv,alphaBlend,Source(file,line));GUI.DrawTextureWithTexCoords(r,texture,uv,alphaBlend);}
         static readonly MethodInfo textRectOffset=typeof(GUIStyle).GetMethod("Internal_GetTextRectOffset",BindingFlags.Instance|BindingFlags.NonPublic,null,new[]{typeof(Rect),typeof(GUIContent),typeof(Vector2)},null);
-        static void Text(Rect rect,GUIContent content,GUIStyle style,string source)
+        internal static Rect TextLayoutBounds(Rect rect,GUIContent content,GUIStyle style)
         {
-            if(!Active||frame==null||content==null||string.IsNullOrWhiteSpace(content.text)||GUI.color.a*GUI.contentColor.a*style.normal.textColor.a<.01f)return;
-            // Use the same native alignment/rounding offset as GUIStyle drawing. The
-            // previous hand-written centering disagreed with small bitmap fonts on Metal.
+            // Shared by audit and the QA footer; keep native alignment/rounding identical.
             Vector2 measured=style.CalcSize(content);
             float naturalWidth=Mathf.Max(0,measured.x-style.padding.horizontal);
             float naturalHeight=Mathf.Max(0,(style.wordWrap?style.CalcHeight(content,rect.width):measured.y)-style.padding.vertical);
@@ -182,6 +180,12 @@ namespace Exoduser.UnityPort
             bool overflow=style.clipping==TextClipping.Overflow;
             Rect inkRect=new Rect(offset.x,offset.y,naturalWidth,naturalHeight);
             if(!overflow)inkRect=Intersect(inkRect,rect);
+            return inkRect;
+        }
+        static void Text(Rect rect,GUIContent content,GUIStyle style,string source)
+        {
+            if(!Active||frame==null||content==null||string.IsNullOrWhiteSpace(content.text)||GUI.color.a*GUI.contentColor.a*style.normal.textColor.a<.01f)return;
+            Rect inkRect=TextLayoutBounds(rect,content,style);
             Color ink=style.normal.textColor;
             Color actualInk=ink*GUI.color*GUI.contentColor;
             var e=Record(inkRect,"text",content.text,source+(DrawingTextShadow?" / 명시 CSS text-shadow 광휘 패스"+(DrawingTextShadowProfile==null?"":" / "+DrawingTextShadowProfile):""),DrawingTextShadow||(actualInk.r<.001f&&actualInk.g<.001f&&actualInk.b<.001f));

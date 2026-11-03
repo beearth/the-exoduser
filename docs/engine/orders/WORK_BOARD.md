@@ -1,3 +1,9 @@
+## 진행 중 — UI-PARITY-1102-RECOVER (2026-11-03)
+
+| 담당 | 목표 | 소유 파일 | 상태 |
+|---|---|---|---|
+| codex/unity-parity-1102 | 13:20 Mac FAIL 후속·15:39 중단 복구 | NativeUiAudit.cs, NativePauseMenu.A15Web.cs, 관련 패리티 문서·CHANGELOG_SYNC의 자기 절 | PC Core/Runtime 컴파일 오류0. 자기 브랜치 push 후 Mac issue0/ink4/4 재검수 대기. 이번 PC Player/정식 빌드 없음 |
+
 ## 2026-10-29 Mac 첫 연습 실입력 후속
 
 ARM64 Settings QA 앱에서 웹 `mouse2`↔Unity 오른쪽 버튼 1을 입력/캡처 양쪽에 맞춰 수정했다. 실제 OS 오른쪽 클릭으로 마법 처치 5/5, 첫 연습 1~9단계 완료. 10단계 방향+Space 동시 키 입력은 현재 CUA가 일반키 2개 조합을 거부해 구르기 0/5 HOLD. 이어질 11~12단계·일반 1-1 몹/드롭은 미검증. PC A18 `NativePractice*` 변경0. [증거·다음 관문](../UNITY_MAC_PRACTICE_MOUSE_BRIDGE_20261029.md).
