@@ -1,0 +1,42 @@
+{
+  "source": "existing web CH1 production_finish/depth root_bank/root_fan paintings",
+  "recipes": [
+    [
+      "rock",
+      "r3_bank",
+      {
+        "left": 940,
+        "top": 568,
+        "width": 150,
+        "height": 140
+      }
+    ],
+    [
+      "bark",
+      "r3_bank",
+      {
+        "left": 710,
+        "top": 370,
+        "width": 230,
+        "height": 130
+      }
+    ],
+    [
+      "mud",
+      "r3_rootfan",
+      {
+        "left": 600,
+        "top": 490,
+        "width": 220,
+        "height": 210
+      }
+    ]
+  ],
+  "generatedArt": false,
+  "paidRequests": 0,
+  "projection": "world triplanar",
+  "size": [
+    512,
+    512
+  ]
+}

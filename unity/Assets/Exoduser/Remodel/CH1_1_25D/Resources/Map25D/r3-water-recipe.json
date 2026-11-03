@@ -1,0 +1,32 @@
+{
+  "source": "assets/map/ch1/floor_objects/prop_g_toxic.png",
+  "ref": "1403c5ee6d52c540815ab1cf70d5666b9023aa75",
+  "patches": [
+    {
+      "left": 150,
+      "top": 65,
+      "width": 335,
+      "height": 365
+    },
+    {
+      "left": 90,
+      "top": 330,
+      "width": 400,
+      "height": 370
+    },
+    {
+      "left": 370,
+      "top": 260,
+      "width": 355,
+      "height": 420
+    }
+  ],
+  "size": 2048,
+  "blend": "deterministic overlapping painted patches; 160px smooth edge, no new grain",
+  "worldPeriodUnits": 8,
+  "flowUnitsPerSecond": [
+    0.012,
+    0.018
+  ],
+  "bankSource": "assets/map/ch1/production_finish/depth/root_bank.png"
+}

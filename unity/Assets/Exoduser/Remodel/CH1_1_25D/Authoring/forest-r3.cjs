@@ -1,0 +1,13 @@
+// Existing web-drawn alpha trees only. Explicit offline forest masses; no generated art/scatter.
+const fs=require('fs'),path=require('path'),sharp=require('G:/exoduser/node_modules/sharp');
+const art=path.resolve(__dirname,'../Resources/Map25D/Art');
+const ids=[0,3,5,18,19,24,33,35];
+const recipes=[
+ [[3,0,140,980,1460],[5,800,10,1100,1630],[0,1680,160,1210,1490],[24,2820,60,1250,1600],[19,-200,570,1520,1500],[33,950,650,1360,1400],[35,2070,580,1310,1480],[18,3060,740,1250,1340]],
+ [[18,-120,90,1250,1550],[0,910,190,1070,1400],[33,1780,0,1280,1690],[5,2860,180,1280,1420],[24,-190,690,1470,1400],[35,850,600,1470,1460],[3,2130,710,1270,1360],[19,3150,610,1180,1480]],
+ [[35,-100,160,1250,1500],[24,870,10,1320,1680],[19,1950,230,1140,1430],[3,2920,120,1230,1530],[33,-250,610,1500,1490],[18,940,780,1310,1280],[5,2010,620,1400,1490],[0,3020,750,1300,1380]]
+];
+async function main(){for(let p=0;p<3;p++){const layers=[];for(let i=0;i<recipes[p].length;i++){let[id,x,y,w,h]=recipes[p][i];const{data,info}=await sharp(art+'/r3_tree_'+id+'.png').resize(w,h,{fit:'fill'}).ensureAlpha().raw().toBuffer({resolveWithObject:true});if(info.channels!==4)throw Error('RGBA required');let layer=i<3?0:i<6?1:2,fade=[.55,.22,0][layer],gain=[.17,.22,.30][layer];for(let k=0;k<data.length;k+=4){let a=data[k+3]/255;let l=.2126*data[k]+.7152*data[k+1]+.0722*data[k+2];for(let c=0;c<3;c++){let v=(data[k+c]*.75+l*.25)*gain;data[k+c]=Math.round(v*(1-fade)+[5,12,14][c]*fade);}if(a<.04)data[k+3]=0;}
+ let b=await sharp(data,{raw:{width:w,height:h,channels:4}}).png().toBuffer();let left=Math.max(0,x),top=Math.max(0,y),cropX=Math.max(0,-x),cropY=Math.max(0,-y);b=await sharp(b).extract({left:cropX,top:cropY,width:Math.min(w-cropX,4096-left),height:Math.min(h-cropY,2048-top)}).png().toBuffer();layers.push({input:b,left,top});}
+ const png=await sharp({create:{width:4096,height:2048,channels:4,background:'#00000000'}}).composite(layers).png().toBuffer();await sharp(png).toFile(art+'/r3_forest_'+p+'.png');await sharp(png).resize(1536,768).flatten({background:'#050c12'}).png().toFile('I:/EXODUSER-Storage/map25d/r3-forest-'+p+'.png');await sharp({create:{width:8,height:8,channels:3,background:{r:128,g:128,b:255}}}).png().toFile(art+'/r3_forest_'+p+'_normal.png');}
+fs.writeFileSync(path.resolve(art,'../r3-forest-recipe.json'),JSON.stringify({source:'existing web r3_tree alpha captures',recipes,channels:'Explicit straight RGBA stride; no premultiplied metadata reuse',layers:['far blue-black trees','middle overlapping trunks','front connected root mass']},null,2));console.log('Three clean web forest masses ready');}main().catch(e=>{console.error(e);process.exitCode=1});

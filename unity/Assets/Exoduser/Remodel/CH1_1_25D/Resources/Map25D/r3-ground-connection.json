@@ -1,0 +1,14 @@
+{
+  "source": {
+    "r3_soil": "assets/map/ch1/ground_dark_soil.png",
+    "r3_litter": "assets/map/ch1/production_finish/materials/forest_moss_litter.png"
+  },
+  "underlay": "64 native 1000px web terrain captures",
+  "mask": "Continuous world-space curved earth trail + broad litter fields. No occupancy/tile mask, no circular decal, no grain/noise.",
+  "periods": {
+    "soil": 8,
+    "litter": 10
+  },
+  "soilBlend": 0.72,
+  "litterBlend": 0.38
+}

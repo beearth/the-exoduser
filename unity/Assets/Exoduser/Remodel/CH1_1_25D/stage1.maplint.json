@@ -1,0 +1,56 @@
+{
+    "name": "Round3 original web world",
+    "defaultGrid": "",
+    "gridKey": "walk",
+    "walkChar": "0",
+    "gridW": 200,
+    "gridH": 200,
+    "tileSize": 0.4000000059604645,
+    "heightTolerance": 0.03999999910593033,
+    "walkPlaneY": 0.0,
+    "agentHeight": 1.600000023841858,
+    "overheadMinH": 2.5,
+    "capsuleCentreY": 1.0,
+    "camOffsetY": 10.520000457763672,
+    "camOffsetZ": -9.239999771118164,
+    "deepTiles": 0.5,
+    "visTiles": 0.6000000238418579,
+    "worldRoot": "World",
+    "ignoreNames": [
+        "Atmosphere"
+    ],
+    "coverIgnoreNames": [
+        "Ground",
+        "Decals"
+    ],
+    "colliderIgnoreNames": [
+        "NavWalkMesh"
+    ],
+    "heroLayerName": "Hero",
+    "defaultRenderingLayerMask": 1,
+    "window": [
+        12,
+        84,
+        72,
+        124
+    ],
+    "navSampleDist": 0.20000000298023224,
+    "navHorizTol": 0.07999999821186066,
+    "islandMaxTiles": 100,
+    "wedgeBase": 0.8999999761581421,
+    "wedgeMinH": 0.8999999761581421,
+    "pitchRad": 0.8500000238418579,
+    "wedgeSlope": 0.0,
+    "wedgeXMargin": 0.800000011920929,
+    "groupMaxExtent": 2.5,
+    "tallReportH": 2.0,
+    "originRadius": 1.0,
+    "originMaxCount": 3,
+    "expectedColorSpace": "Linear",
+    "expectedPostExposure": 1.2999999523162842,
+    "expectPostProcessing": true,
+    "sceneWarnMB": 50.0,
+    "maxAdditionalLights": 8,
+    "shotMaxW": 3200,
+    "shotMaxH": 2160
+}

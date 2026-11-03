@@ -1,0 +1,68 @@
+{
+  "source": "actual served web CH1-1 altar-moat painting from r3-web tiles 5/6,3/4; no HUD or actor pixels",
+  "unwrap": {
+    "center": [
+      5880,
+      3920
+    ],
+    "radius": [
+      720,
+      360
+    ],
+    "r": [
+      0.77,
+      1.11
+    ],
+    "theta": [
+      -1.25,
+      1.25
+    ]
+  },
+  "size": [
+    512,
+    2048
+  ],
+  "riverPoints": [
+    {
+      "x": 1155,
+      "y": 3200,
+      "width": 225
+    },
+    {
+      "x": 775,
+      "y": 3500,
+      "width": 225
+    },
+    {
+      "x": 715,
+      "y": 3800,
+      "width": 225
+    },
+    {
+      "x": 755,
+      "y": 4100,
+      "width": 225
+    },
+    {
+      "x": 835,
+      "y": 4300,
+      "width": 225
+    },
+    {
+      "x": 1155,
+      "y": 4500,
+      "width": 225
+    },
+    {
+      "x": 1615,
+      "y": 4700,
+      "width": 225
+    },
+    {
+      "x": 2075,
+      "y": 5000,
+      "width": 225
+    }
+  ],
+  "coreChanged": false
+}

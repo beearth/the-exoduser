@@ -1,0 +1,98 @@
+{
+  "version": 2,
+  "sourceRef": "1403c5ee6d52c540815ab1cf70d5666b9023aa75",
+  "bounds": [
+    -1000,
+    2400,
+    5000,
+    6000
+  ],
+  "size": [
+    5120,
+    3072
+  ],
+  "sources": {
+    "soil": "assets/map/ch1/ground_dark_soil.png",
+    "moss": "assets/map/ch1/production_finish/materials/forest_moss_litter.png",
+    "skin": "assets/map/ch1/production_finish/floor87_sources/skin_material_generated.png",
+    "root": "assets/map/ch1/floor_objects/prop_g_root.png",
+    "edge": "assets/map/ch1/floor_objects/prop_g_edge.png",
+    "toxic": "assets/map/ch1/floor_objects/prop_g_toxic.png"
+  },
+  "decals": [
+    {
+      "source": "root",
+      "x": 850,
+      "y": 3700,
+      "w": 550,
+      "h": 410,
+      "angle": 22,
+      "opacity": 0.58
+    },
+    {
+      "source": "root",
+      "x": 1130,
+      "y": 4480,
+      "w": 430,
+      "h": 320,
+      "angle": -33,
+      "opacity": 0.48
+    },
+    {
+      "source": "root",
+      "x": 2250,
+      "y": 3960,
+      "w": 510,
+      "h": 370,
+      "angle": 156,
+      "opacity": 0.38
+    },
+    {
+      "source": "root",
+      "x": 2450,
+      "y": 4670,
+      "w": 390,
+      "h": 290,
+      "angle": -62,
+      "opacity": 0.32
+    },
+    {
+      "source": "edge",
+      "x": 1000,
+      "y": 4030,
+      "w": 460,
+      "h": 230,
+      "angle": 74,
+      "opacity": 0.44
+    },
+    {
+      "source": "edge",
+      "x": 1250,
+      "y": 4840,
+      "w": 570,
+      "h": 260,
+      "angle": 57,
+      "opacity": 0.36
+    },
+    {
+      "source": "toxic",
+      "x": 1480,
+      "y": 4640,
+      "w": 370,
+      "h": 240,
+      "angle": -18,
+      "opacity": 0.26
+    },
+    {
+      "source": "toxic",
+      "x": 2050,
+      "y": 4400,
+      "w": 290,
+      "h": 190,
+      "angle": 32,
+      "opacity": 0.23
+    }
+  ],
+  "blend": "analytic curved path + low frequency continuous trigonometric fields; no Core/tile sampling",
+  "normals": "1.5px blur; +/-2px luminance slope, strength 2.5; no grain/dither"
+}

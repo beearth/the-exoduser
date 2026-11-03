@@ -1,5 +1,224 @@
 # Unity RM-1 슬라이스 (1-1 R1 START ~ R2) 구현 현황 — 2026-10-28
 
+## 2026-11-03 GB1 — 승인 PLAN V2 전체 회색 박스 (실제 빌드 검증 전)
+
+평면도는 `I:/EXODUSER-Storage/map25d/composition/plan_v2.json` 조건부 PASS본을 고정했다. C17 수정 중단 뒤 GB1로 전환했다. 이전 C17 빌드·검증 프로세스는 종료하거나 변경하지 않았다. GB1은 kit1103·손그림 소품을 장면에 사용하지 않으며 회색 지형·기둥·다리·약한 색 구분만 만든다.
+
+| 계약 | 구현·검증 범위 |
+|---|---|
+| Core 입력 | 새 MapData는 Remodel/Resources/Map25D/GB1/gb1-map.json. 원본 SourceMap JSON·Core 소스 변경0. NativeGame.Map25D.Graybox의 AfterSceneLoad 어댑터가 로비 진입 전에 기존 A2FieldLayout.CreateMap(MapData)와 기존 ResetRun을 호출. ResetRun이 CanMove·LineOfSight·ProjectileBlocked·Stage.InitializeField·소환굴/지역 초기화에 새 입력을 연결. 반사·Core 패치·좌표 순간이동0. 정적 컴파일 PASS, 실제 Player 확인은 빌드 뒤 |
+| 데이터 보존 | 200×200/타일40px, 시작4020/7420. 게이트·출구6칸·콜라이더19·hill 계약 유지. 기준점43·4지역·소환굴14/계획168·필드보스4 유지. 초기 적16은 실제 C1702 표본. 새 걷기 데이터만 제안으로 공급 |
+| 표면 | 범위210×210m/원점−65,−145, 높이1025². 길0~1.1m, 둑3~6m, 물−1.6m. 북향 목교4.8m 폭·데크+.55m는 승인 척추와 동일한 곡선을 사용. Core/Nav는 실제 표면 높이로 격자0/0 검사 |
+| G1~G4 | 다리 동쪽 늪 확장(보행 영역은 보호), 남쪽 척추/동쪽 고리에 교대 둑·고목·바위 회색 덩어리, 32:9 외곽210m 숲. 실제 화면 판정 전 |
+| P0 접지 | 지형·데크는 query용 레이어28 콜라이더. Core 판정에는 쓰지 않음. 회색 물체는 아래 레이캐스트 후4cm 묻음, 바위·고목 root 기울기 최대15°. 발밑 AO. 다리는 설계된 지지 span·물은 설계 수면으로 분리. 메시 bounds 하단/등록 액터 발의 양의 틈>3cm 또는 투영 틈>2px를 FAIL 목록으로 기록 |
+| 카드 계약 | GB1 환경 카드는0. inherited round4 reprojector도 지형 ray/height sample−.04m·불투명 최저 row 피벗·Y축 원통 빌보드로 수정. 액터 합성 셰이더·아틀라스·정수 배율은 변경하지 않음 |
+| 플레이 증거 | 실제 제품 로비65초 회귀 검사→1-1 도보→캠프→A2→북안→뿌리길→밀집 공터→관문. 1920 구간8장·3840 네 곳·접지 JSON·자연 Core 전투 FPS. 영상1은 시작→캠프 전체 경로 중 첫 연속10초, 영상2는 실제 캠프→다리 건너 raw11초의 마지막10초(배속0). 전체 이동을10초에 완료했다고 주장하지 않음 |
+
+바로가기 교체는 맵 총괄 판정 뒤에만 한다. GB1_STATUS.md에 최신 실행 상태를 기록한다. 기술 검사와 시각 구도 판정을 구분한다.
+
+## 2026-11-03 09:45 추가 인수 — C17 제작 계약 (새 패키지 검증 전)
+
+| 항목 | 현재 제작값·경계 |
+|---|---|
+| 액터 레인 경계 | R4PixelActor 셰이더·색 합성 유지. 아래09:10 영웅 크기 실험은 폐기하고 C1701 승인된 reference3/1080·리마스터 조건부 짝수 정수배로 복원. Point·divisor1·virtual PPU200·A64 등록 유지. 원본 atlas 수정0, remaster 기본OFF |
+| 접지 계약 | Map25DContactShadows 실행순서25000: NativeHd2D가 산출한 foot=contact−up×.018u를 보존. 그림자만 up.009u+달빛 진행방향XZ×.12u로 이동. 폭=clamp(기존폭×.72,.30,1.35)u, 길이=폭×.43, 기존 opacity×1.45. R4PixelActors는 보존한 foot을 조회하며 이동한 그림자로부터 actor 위치를 역산하지 않음. 영웅·적 동일, Core 위치 변경0 |
+| 빌더 저장 | ContactQuad처럼 이미 저장된 공유 메시를 새 Mesh_N 경로에 직접 다시 저장하지 않음. MeshObject 진입에서 persistent mesh만 복제 후 저장. 첫 시도51e05072는 이 오류로 패키지 생성 전에 실패했으며 같은 경로로 재검증 |
+| 독액·둑 | 수면−.35u(지면0), planar 반사 기준 동기화. 탁한 녹갈색·반사 Fresnel.06+.14. 레인B kit1103 원본 읽기/FBX·BaseColor·Normal24종 byte 복사, JSON52배치(뿌리둑5·바위12·고목6·그루터기6·식생23). 둑Y배율.42·lift−.25u. Collider0 |
+| 검은 쐐기·입체 줄기 | 모델 일부 삼각형을 임의 삭제하던 경로 제거, 닫힌 RF3 메시 보존. FBX 원래 축 회전·scale에 JSON yaw/배율을 곱함. 원본 모델 변경0 |
+| 노란 원 | 실제 C1701 Renderer 위치(1385.7,579.1), 이름web_20/type m_fyellow를 확인. 장식 카드1개 제거, Core 위험 장판 변경0 |
+| 다리 | 동일3×10u 안34판재, 두께.12u/상단.025u, 하부보.18u. 면별 실제 metre×.65 UV, 환경 Trilinear+mip. 타일/대각 triplanar 경로 폐기 |
+| 바닥·조명 | Soil/Litter/Mud3원화 레이어. 연속 저주파 macro UV warp·회전·19u 대형 soil 혼합/색변형, 디더·점 생성0. 차가운 달빛1.45(이전1.05), Neutral exposure1.3, 캠프 range8/intensity7.68 유지 |
+| 성능 계약 | 실제 로비→도보 도착 이후3840×1080·5120×1440 각각10초 Core 기본공격/자연 스폰. 무적 갱신 fixture, 적 주입0. 평균/P50/P95·main/render/GPU valid·draw/triangle·유일 적수 기록. 밀집 화면18개 이상/60fps 게이트는 실제 결과로 판정 |
+
+## 2026-11-03 09:10 지시 인수 — C17 재개 (새 패키지 검증 전)
+
+I: 접근 복구 후 HEAD1403c5ee6·codex/unity-map25d-20261102·빈 INDEX를 재확인했다. 명령은 시스템 Windows PowerShell5.1 `powershell.exe -NoProfile -Command`로 실행하고 Unity는 공용 `I:/EXODUSER-Storage/unity-jobs/bin/exo-unity.ps1` slots3만 사용한다. 타 작업 Editor/Player는 종료하지 않는다. 아래7시 기록은 이전 중단 이력이다.
+
+| 항목 | 재개 C17 변경·검증 계약 |
+|---|---|
+| 32:9 지형 | 기존96×96u/원점−8,−88에서208×192u/원점−64,−128로 확장. JSON terrainBounds,513² 높이/512² 레이어·4096² 연속 곡선 mask,4×4×128² 메시. Core 걷기 칸/충돌 불변. 1920×1080·3840×1080·5120×1440 실제 Player 확인 |
+| 외곽 질량 | Core 밖에 명시 JSON 좌표18개 기존 RF3 거목 추가. 경계선 일렬 배치/랜덤 scatter0. 지형 높이에 발을 붙이고 개체별 실제 바닥 높이를 바람 뿌리 기준으로 설정 |
+| 검은 다리 조각 | 잘려서 검은 홈통으로 보인 원래 bridge shell 복제를 제거. 같은 Core 승인3×10u/yaw135° 안에34개 완전한 판재와 밑 지지목만 구성. 상단.025u·Collider0. 전체 다리 표본/Core Nav0/0 재검사 |
+| 청색 그림판 나무 | 원본 PNG는 보존. tree 카드 baked blue를48% 중성화 후1.13/1/.84 재질 배율과 실제 장면 광원 적용. 보이는 tree 카드 발에만 타원 접지 그림자. forest wall alpha는 네 가장자리 모두 곡선 feather |
+| 영웅 크기 | 이 행의 reference2/무조건 짝수화 실험은09:45 액터 경계 지시로 회수했다. C1701의 reference3/1080p·리마스터 ON에서만 짝수 기준을 유지하며 새 합성 방식은 넣지 않는다. 원래 월드 Sprite·PPU·발 위치/virtual PPU200·A64 등록·Point·divisor1 유지. 정수 맞춤에 따른 flag OFF/ON 화면 크기 차이는 별도 리깅 레인 계약 검토 대상으로 남김 |
+| 증명 | 실제 도보 도착 위치에서 Core tick/좌표를 바꾸지 않고1600·3840·5120 전투/적 없는 컷을 각각 저장. 가림 OFF/ON·원색·native 텍셀·한 면1텍셀 rim을 별도 검증 |
+| 적 무더기 | 매 StepInput 후 ID 최초 출현 좌표·틱을 읽기만 하여 원래 Core 스폰과 도보 유인을 구분. body+부분 walk overlay는 원래 한 적의 레이어이므로 제거하거나 두 적으로 세지 않음. Core/스폰 수정0 |
+
+중단 패키지 진단1702: 실제 도보131.48초·1829틱·4974.279px·오류0·도착. 같은 자리 clean 전후 틱1888/적132/좌표 동일. 원본 불투명1091텍셀 RGB 오차0. 현재 자세에서는 가림 ON/OFF 모두 오차0이므로 C16 회색 기둥의 원인을 가림으로 확정하지 않는다. 진입16→도착132,600px 안9개로 원래 Core의 경로 중 추가 생성도 존재한다. 새 추적 자료와 화면으로 재판정한다. 이 진단은 새 C17 패키지 채택 근거가 아니다.
+
+## 2026-11-03 07:00 C17 최종 상태 — 실제 검증·제출 미완료
+
+I:의 결과 읽기·기록 저장 요청이 07:00까지 반환되지 않았다. C17의7항목은 소스에 반영했고 소스 컴파일 및 빌더의 생성 자산 저장까지 확인했으나, 실제 패키지 빌드·play-smoke·proof-17·1920/3840 캡처·10초 영상·FPS·MapLint 결과는 미검증이다. 바로가기 교체0(C10 유지). C10 실행 파일도 I:에 있어 현재 정상 실행 재확인까지 완료한 것은 아니다.
+
+자기 Editor38876·C17 빌드/검증 프로세스는 생성 시각 대조 후 종료 확인했다. 타인/C15 프로그램은 종료하지 않았다. 예약 파일 정리·자동 생성 파일 HEAD byte 복원·최종 Git diff는 I: 접근 복구 대기다. 커밋·stage·push·stash·reset·rebase·영구 삭제는 하지 않았다. G:의 `unity/Temp/map25d-tools/C17_REPORT_DRAFT.md`와 `C17_CURRENT_SOURCE_MANIFEST.json`에 임시 복구 기록을 보존했다. I: REPORT 갱신 완료나 최종 산출물 제출 완료로 간주하지 않는다.
+
+현재 2026-11-03 06시 C17은 **I: 실행 자료 접근 지연으로 실제 빌드·Player 검증 대기**, 후보 바로가기 C10 유지다. 파일 끝의 `06:03 C17 실행 차단 상태`와 작업본 Temp의 `C17_REPORT_DRAFT.md`를 함께 본다. 05:25에 생성된4096 R8 곡선 마스크의 Core 중심 격자 검사에서는 다리 밖 물 위 걷기 중심0개를 확인했지만 실제 화면 PASS를 뜻하지 않는다.
+
+06:40 자기 Editor38876·C17 빌드/검증 PowerShell35984/42640과 부모Node38424/44216을 생성 시각으로 식별해 중단 정리했다. .NET `HasExited=True`/부모Node 없음 및 두 도구 세션 exit1 확인. C15·타인 프로그램 종료0. 낡은 검증의 뒤늦은 자동 실행은 중단했으며, 예약 파일/HEAD byte 복원은 I: 접근 복구 전까지 미확인이다. 현재 C17 재시도는 실행하지 않았다.
+
+## 2026-11-03 05:15 CTO — C17 일곱 항목 재작업 (실제 Player 검증 전)
+
+C16은 맵 총괄 FAIL이며 후보 바로가기는 C10 그대로다. C16 제품 경로128.19초·1829틱·4974.28px·막힘0·오류0은 기능 증거만 보존한다. 아래는 C17 제작값이며 실제 합격으로 올리지 않는다.
+
+| 항목 | 변경·검증 계약 |
+|---|---|
+| 곡선 물가 | Core 격자로 찍던 렌더 구멍을 폐기. world 좌표10개 bank curve, Catmull-Rom+저주파 Perlin(.18/.07u)로4096² R8 연속 signed-distance를 구움. 물가 wet band.60u. 실제 수면 메시 최소 범위보다 작은 ellipse radius.86 안에서만 구멍 생성. 목교 아래도 이 수면 범위와 교집합, width×.28/length×.43. Core 칸/충돌 변경0 |
+| 바닥 칠 | SmoothStep(from,to,t)에 world 거리/좌표를 직접 넣던 잘못된 정규화를 수정. InverseLerp 후0~1 SmoothStep. 낙엽 최대.86→.45, path 폭1.1~3.8u/48~69u 구간 곡선 연결. alpha가 없는 원화 뿌리 부분은 soil로 채워 검은 구멍 색을 만들지 않음 |
+| 검은 쐐기 | C16 실제 동일 패키지 진단 f144204a에서 shadow OFF에도 남음. 렌더 holes와 실제 수면 범위의 불일치를 우선 제거. C17 동일 진단으로 잔여 여부 판정. 원인 확정/제거 PASS는 실제 화면 뒤 기록 |
+| 목교 | 원래 admitted 썩은 다리 형상/재질 유지, 잘려 나간 판재 사이에34개 평탄한 웹 재질 판재를 추가. 폭3u·길이10u·상단.025u, gap.012u. Collider0. 아래 지형 높이의 pixel/world 단위 오류도 수정 |
+| 영웅 색 | 가림 경로를 기본 OFF로 하고 원본 RGBA×원래 tint로 그림. 적 world-depth는 유지. 같은 자리의 적 없는 카메라 컷에서 hero occlusion OFF→ON·depth mask를 저장하여 원인을 분리. 한 면1 native texel×.025 윤곽광은 유지, 원본색 진단에서는 이 광도 OFF. 전 둘레 edge lerp 없음 |
+| 증명 | 실제 camp arrival 전투 PNG 보존. 같은 Core tick·동일 좌표에서 적/탄/그림자 등 비맵 렌더와 OnGUI만 뺀 Camera StandardRequest 컷을 별도 저장. Simulation.Enemies 제거/좌표 대입0. clean receipt에 틱·적 수·좌표 전후 기록. C14 실제 캠프 무적 컷과 C17 clean의 hero3x를 proof에 넣음 |
+| 적 무더기 | 입장·실제 캠프 도착의 Core enemy ID/좌표/생존/이동거리/영웅600px 이내 수를 JSON으로 기록. 걷기 fixture는 무적600틱 갱신·공격false이므로 추적/생존 집결 가능. C10/C16 HUD 모두00:30~31에0/53, 새 sprite 표시는256px 원본1배로 C10 논리64px보다 크게 읽힘. 스폰/AI 코드·맵 데이터 불변. 웹 같은 시각 자연 플레이는 아직 미검증 |
+| 밀도 | 기존 웹 원화16개 추가 손배치: 뿌리·독주머니·토템·고사리·고목. 36개 카드+기존 거목7개+RM1 덩어리. 랜덤 scatter0. 실제 빈 바닥 비율과 L1/L1b/L4는 별도 검수 |
+| 캠프 광원 | C10의 camp_glow_0(radius340/energy1.5) 복구. 주 불빛 radius650→800px·energy2→3.2(실제×2.4), 중심1860/4080. 화면 텐트의 fire pit 위치에0.64×.90u 연속 emissive flame, point particle/새 유료 원화0. C10과 실제 도착 컷 비교 |
+
+## 2026-11-03 05:00 CTO — C16 영웅 후보 한정 예외 (빌드 검증 전)
+
+이 절이 아래 03:40 사용 금지와 04:54 rim 초안을 대체한다. 제품 채택이 아닌 맵 후보 검토용이다. C15 검증 대기는 중단하지 않았다.
+
+| 항목 | C16 계약 |
+|---|---|
+| 플래그 | `--map25d-hero-remaster`, 기본 OFF. 이 맵 표현층의 영웅 overlay만 바꿈. 일반 제품/적/애니메이션/Core/원래 SpriteRenderer는 그대로 |
+| 원화 | sprites-11의 r15 8방향 기본21셀 PNG와 r13 강타 atlas를 읽기 전용 원본에서 `Remodel/CH1_1_25D/Resources/Map25D/HeroRemaster/`로 동일 byte 복사. 총9장. r15가 r11 대기/r10 보행/r13 기본 강타 호환 셀을 재패킹한 패키지. 별도 r14 피격은 미바인딩 유지. dash 등 미제공 atlas는 원본 그대로 |
+| 세계·발선 | 원래 Sprite/PPU100/월드 크기·투영 발 위치는 바꾸지 않는다. overlay의2배 텍셀은 가상 PPU200으로 대응. 원본240셀 A64 하단을 대조하여23셀의 차이(정수 candidate texel)를 draw 발 등록 offset으로 보정. 원본/복사 PNG 편집0 |
+| 정수 출력 한계 | C14 원본48px×3 출력은2배96px 원화에서1.5배가 되어 native 텍셀 폭이 불균일해진다. C16 opt-in은 원래 목표 배율을 가까운 짝수로 양자화하고2배 텍셀을 그 절반의 정수 배율로 출력한다. 900/1080p에서96px×2=192px canvas이며 C14의48px×3=144px보다33.3% 크다. 세계/발 위치 보존과 화면 양자화 차이를 구분하며 '화면 크기 완전 동일'로 주장하지 않음. Point·원본 텍셀 축소0 |
+| 윤곽광 | 전체 회색 edge lerp·외부 alpha 확장 제거. 달빛을 받는 한 축 방향의 alpha 경계 내부1 native texel에만 뼈색/청백(.72,.76,.68)×.025 가산. 캠프를 향한 면 제외. 실제 소품 뒤 hero는 원본색×.30/alpha×.55로만 표시, 전 둘레 띠 없음 |
+| 달빛 방향 | 기존 cold key1.05·색(.36,.56,.65) 유지, yaw44→−44°로 캠프 왼쪽 따뜻한 빛과 반대인 오른쪽 달빛 면을 만든다. pitch32°/실제 그림자 유지 |
+| 실행·바로가기 | 검증 실행은 플래그를 명시한다. 통과 뒤 후보 바로가기 인자에만 opt-in을 넣고 Description/shortcut-history Note에 `영웅=리마스터 후보(미승인)` 표시. 기존 일반 바로가기 불변. C15와 C16의 Player 예약 owner를 분리해 실행/해제 충돌 방지 |
+| 증명 | 실제 play-smoke·C10 대비1x·hero3x C14와C16·원본 적3x·1600/3840 경계·native grid. 두 CTO 결함 잔여 시 바로가기 미교체 |
+
+05:04 C16 빌드 d0cefa64 오류0·USER_SAVE0, Editor 즉시 반납. 건설 실측은 Nav/Core0/0·이동10676칸 높이 최대.0000611u·목교1407표본 비이동면0. 실제 제품 경로 검증 중이다. C17 준비 소스에서 높이 루프의 py(웹 pixel)를 bridgeFade에 쓰기 전에/100하도록 단위 오류를 수정했다. 이 수정은 판재 아래 지면을.025u로 올리며 C16 설치본에는 소급하지 않는다. holes 루프의 py는 이미 world unit이므로 그대로 둔다.
+
+## 2026-11-03 03:40 CTO 우선 수정 (C14 검증·시각 RETOUCH)
+
+04:31 현황: C14 실제 제품 경로130.21초·도착·오류0. 원본 크기/Point/divisor1 전원 통과, field-entry hero1936셀 중 불균일0. 1600/3840 수직 경계 제거 확인. 다만 혼잡 캠프의48px 원본 영웅은3x에서 여전히 거칠어 strict 시각 PASS를 선언하지 않고 **후보 바로가기는 C10 유지**. 금지된 전사 remaster0. source는 R5 대체 지형으로 진행하되 모든 새 후보에 동일 증명을 적용한다.
+
+04:54 C16 준비: 반투명 원본 내부를 회색으로 혼합하던 visible rim을 제거하고 원본 색을 보존한다. alpha<.02인 바깥 셀에서 이웃 alpha>.65일 때만 냉색(.25,.48,.52) 윤곽 alpha.45(실제 소품 뒤 .24)를 그린다. 정수 배율·원본 Point 텍셀은 그대로다. 아직 실제 Player 검증 전이다.
+
+| 항목 | 현재 계약 |
+|---|---|
+| 배우 | sourceDivisor 무조건1. 원본48px hero/80px 공격/256px 적 셀을 줄이지 않음. 원본 Point texel × 정수 destination, 위치 정수 반올림. hero 2배 fallback 강제 확대를 없애고1.4배 목표에 가장 가까운 정수 배율. 별도 전사 리마스터 사용0. 실제 원본/로드 atlas 크기·Point를 영수증으로 대조 |
+| C12 재작업 | 실제 걷기 PASS·축소0이나, native 적 실루엣이 커지며 근접 적이 영웅을 가림. 바로가기 미교체. C13 이후 일반 깊이 순서를 유지하되 hero와1.4u 이내·eye-depth차1.1u 이내 접촉 적 다음에 영웅을 그려 가독성 보정. hero 원본 경계의 냉색 rim 혼합.20. 소품 가림은 world-depth 경로로 별도 처리 |
+| 텍셀 진단 | C12 전체 actor grid는 적의256px 불투명 진단 사각형이 hero grid를 덮어1936셀 검사가 오염됨. C13은 진단 때만 비hero를 discard하여 hero 실제 quad의 정수 셀 균일도를 검사. 제품 렌더 원본/알파는 그대로. 적은 native256→256·Point·1배 출력 |
+| 정수 렌더·깊이 | R4 전용 pipeline MSAA4→1, renderScale1 유지. C12 world-depth readback이 far plane199.995만 반환하여 유효 가림으로 인정하지 않음. C13 이후 overlay clear 전 AfterRenderingTransparents에서 shader-read placeholder 대신 실제 base activeDepthTexture를 R32Float로 보존. Viewer를 R3 원근 카메라 한 개로 제한하여 빈 기본2D clear 카메라/반사 카메라는 제외. C13 실제 발밑25.814u/머리27.008u 확인 |
+| C13→C14 방법 전환 | C13 실제 readback 발밑25.814u/머리27.008u로 깊이 유효, 제품 경로126.55초·도달·예외0. 그러나 hero48px 원본을 원근 높이에 맞춰4배 확대하는 거친 모습이 남음. 확인한 원본·backup·최초 PixelLab metadata 모두48px. C14는 원근 크기 피팅을 버리고 원본 게임2배에서1.5배인1080p 기준3texel 배율로 고정: floor(3×height/1080+.5), 900/1080은3·1440은4. 위치만 원근. 전사2배 remaster/업스케일 재활용0 |
+| C14 grid | C13 캠프1936셀 중92셀은 제품 바닥 아이템 글자/바와 겹쳐 불균일 결과를 그대로 보존. C14는 동일 제품 Player의 field-entry에서도 hero-only grid를 캡처하여 라벨 없는1936 내부 셀을 실측. 캠프 정상1x/3x에는 원래HUD·아이템 표시 그대로 유지 |
+| 오른쪽 경계 | R4 숲 패널 세로/바닥 외곽을 저주파 곡선 alpha feather로 제거, forward/depth/shadow 동일 적용. 충돌 변경0. C14 실제1600/3840 검수에서 세로 직선 경계 제거 확인. 외곽 검은 질량의 미술 품질은 RETOUCH |
+| 보존 | 반쯤 만든 R5 C11은 컴파일·빌드 성공, 실제 화면 지형 렌더 누락 FAIL. 파일을 보존하고 active-presentation=4로 CTO2건부터 검수. R5 기본 전환은 이후 |
+| 증명 | play-smoke 캠프 실제 PNG+원본 texel 영수증+grid 진단. 후보10 대비1x/hero·적3x/오른쪽 경계 proof를 제출, 두 결함 잔여 시 바로가기 미교체 |
+
+## 2026-11-03 P0 평소 실행·5차 Unity 구성 (제작 중, 시각 미검증)
+
+04:31 R5 지형 방법 전환: TerrainData513²·실제 Terrain Layer512²는 유지하고 동일 높이 표본을4×4 메시(각64×64cell)로 그린다. 별도 R5Ground 셰이더가 같은3개 웹 레이어와 동일 holes/weight를 샘플한다. Native Terrain renderer는 숨기고 Core 높이 질의는 같은 TerrainData를 사용한다. 기존 RM1 영역은 양수 둔덕으로 덮지 않고 원래 음수 수로 높이도 보존한다. 목교 아래 이동 높이는 최대.025u·허용±.04u 안. 새 web bark는 tree03의 원본110×140 crop/휘도 노멀, 3D 가지는 world-height 기준 root고정 wind.08u. 영웅 작은 빛은 sprite scale을 상속하지 않고 실제 월드 위치를 따른다. 실행 검증 전 상태.
+
+| 항목 | 현재 계약 |
+|---|---|
+| 평소 진입 | 캡처 전용 60초 제한을 일반 실행에서 제거. 무기한 필드 대기 후 1-1에서만 표현층 생성. 로비/다른 stage 비활성·원본 Renderer/Light/Volume/Terrain/렌더 파이프라인 복원. 재입장·사망 재시도는 같은 표현층 한 개 재사용 |
+| 사람 세이브 | `--map25d-play-sandbox I:/EXODUSER-Storage/map25d/play-sandbox`는 기존 NativeQaSandbox 저장 경로만 바꿈. QA 자동 실행 인자를 사람 바로가기에서 제거하여 설정 저장·일반 입력·소리 정책 유지. 공용/Core 수정 없이 저장 라우터 private root/resolved에 조기 바인딩하며 계약 변경 시 종료. 실제 사람 청취/OS 입력은 별도 미검증 |
+| 제품 경로 fixture | `--map25d-play-smoke -output ABS`: 65초 생존→제품 LobbyKeys/키보드 경로→캐릭터 진입→제품 튜토리얼 건너뛰기→실제 Map.CanMove BFS→StepInput 60Hz로 시작4020/7420에서 캠프2050/4400까지 걷기. 직접 좌표 대입 없음. 이동 QA 동안만 무적600틱. 로비 재입장/제품 사망 재시도/다른 stage 합성 guard를 별도 기록. 실제 1-2 자연 진행 검수 아님 |
+| R5 기본 표현 | `UnityComposition.prefab` 우선, 보존된 R4 KeyScene은 구버전 폴백. `r5-layout.json`·`r5-construction.json` 데이터 제작. 원본 RM1 scene 읽기 전용으로 Toxic/Blockout mesh 변환 복사, 웹 전체 바닥 그림 사용 안 함 |
+| 지형 | R5 전용96×8×96u/원점−8,−1,−88, 높이513²·블렌드512². 걷기와 주변2칸 높이0, 걷기 바깥만 기존 RM1 높이+완만한 둔덕. 지형 레이어 soil7.5u/litter5.5u/mud11u와 곡선 길. 새 Collider0. 수면 구멍은 막힘55px 여유 또는 목교 판재 아래로 제한 |
+| 입체 | 기존 Resources RF3 거목 A/B 7개와 목교 복제, 원본 FBX 불변. 웹 bark/rock/mud triplanar 재질. 거목 낮은1.35u 부분에서 Core 이동+45px 침범 삼각형 제거, 높은 가지 보존. C15 목교5.4×8.6u/중심2050,4620의 남쪽이 비이동 영역 위임을 발견하여 C16은3×10u/중심2340,4620/yaw135°로 회전 배치. 판재 높이.025u·높은 난간 제거. .15u 간격의 전체 deck 표본이 Core 비이동이면 빌드 실패. 실제 Player 검증 대기 |
+| 카메라·배우 | R5 pitch50°/yaw0°/FOV35°/거리35u/lookAhead2.5u. R4 화면 정렬 직교 카메라 정수 배율 actor 유지. 원본 hero48px·적256px 그대로, divisor1·Point sampling. hero 배율 floor(3×height/1080+.5), 최소1. 실제 소품/적 가림은 별도 시각 검수 |
+| 빛·심도 | cold key1.05/색(.36,.56,.65)/Euler32,44. 따뜻한 camp spot180/범위24/각28°·inner18°/부드러운 cookie, 공중 주황 막대 없음. Neutral1.30/Bloom.055·threshold1.5. Bokeh 대신9tap Gaussian band2.4px tilt-shift·HUD/배우 sharp overlay. 음영 보라색 제거 |
+| 독액 | 원본 Unity 수로 메시+캠프 양편 타원 basin. 웹 독액 반복/느린 흐름(.003,−.006)·노멀·약한 자체 발광. 기존 A2 실제 장면 반사 D3D11 readonly 컴포넌트 사용, 수면−.075u. 반사카메라는 actor world-depth 수집에서 제외 |
+| 지면 접지 검증 | C16 소품은 R5 Terrain.SampleHeight+terrainY 위에 둔다. 목교 holes/높이 ramp도 같은 yaw로 회전한다. 모든 이동 칸 지형 높이 최대±.04u를 실측하고 넘으면 빌드 실패. 목교 holes는 local half extent의 width×.40/length×.46 이내이며 판재가 덮는다. C15 결과에 소급하지 않음 |
+| 검증·배포 | Editor는 slots2 공용 실행기 빌드 직전 예약·빌드 직후 종료. Player 독립2슬롯. 제품 경로 fixture와 CTO 두 시각 결함 모두 PASS일 때 후보 바로가기 교체. C10 제품 경로169.30초/1829틱·4974.28px/도달 true/오류0으로 PASS, 03:37 후보 바로가기 교체. R5 C15 빌드 f8d754a9 오류0·Nav0/0. MapLint 가림 잔여L1 341·L1b55·L4 38. R5 실제 Player 시각·FPS는 대기열 대기 중이며 미검증 |
+
+### 이후 승인용 맵 데이터 제안 (오늘 적용0)
+
+A2처럼 캠프 양편이 깊은 늪이고 목교만 건너는 구도는 현재 Core의 넓은 캠프 이동면과 충돌한다. 제안 검토 영역은 웹 좌표 x1300~3000, y4200~5000이며 중앙 x1780~2320 목교 이동면과 캠프2050/4400 도착을 유지하는 방향이다. 이 구역의 이동 타일·스폰·회피 공간 영향은 별도 승인/플레이 검수 대상이다. 오늘은 Core·맵 데이터 변경0, 기존 걷기 위 물 구멍은 시각 목교 아래만 만들고 Nav/Core 0/0을 유지한다.
+
+아래 4차 및 이전 절은 후보 이력이며 위 5차 수치가 현행 제작값이다. 빌드/정적 컴파일은 시각 합격 근거가 아니다.
+
+## 2026-11-03 Map25D 4차 — 빛·원근·실제 높이로 전환 (진행 중)
+
+BRIEF4와 실제6칸 비교판/GAP_ANALYSIS를 직접 검수했다. R13은 빌드 성공 상태이며 사용자 중지 지시로 결과물을 보존하고 I: `r4-before-source`에2489파일 체크포인트를 남겼다. ①+② 실제 Player step1을 먼저 만든 뒤 ③~⑥ 순서로 진행한다.
+
+| 항목 | 현재4차 계약 |
+|---|---|
+| 카메라·심도 | 원근 pitch50°/yaw−25°/FOV30°/거리28u. Bokeh 초점28m, focalLength50mm, aperture5.6. 실제1x에서 중앙 선명도와 위·아래 끝 흐림 검증 전 |
+| 입체 카드 | 바닥 복사/카메라 광선 깊이 가짜 투영을 4차에서 끔. 원래 웹 소품/크기를 실제 높이의 upright alpha card로 세움. alpha clip ShadowCaster·TwoSided 실제 그림자, 지면은 receiveShadow. 원본Core/걷기/소품 데이터 수정0 |
+| 주광 | 차가운 방향광1개, 강도1.65·색(.48,.66,1)·Euler32/−38°. 그림자강도1·bias.025/normal.04. 캠프 따뜻한 spot1개: 위치(13.5,10,−43.5)→(18.4,0,−40.3), 강도75/각33°·inner20°·range23. 기존 캠프/포탈 점광 유지 |
+| 렌더 에셋 | Remodel Resources의 R4Pipeline/R4Renderer 복제본만 변경. depthTexture ON, CopyDepth after opaque, 주광 shadow4096/거리65. opt-in 실행 중 QualitySettings.renderPipeline에만 적용하고 종료 시 복원. ProjectSettings/Packages/공용 렌더 에셋 수정 없음 |
+| 셰이더 | R4Surface는 실제 world normal과 실제높이에서 주광·추가광·alpha 그림자를 받음. 기존 웹 원화64타일/해자 재사용, 바닥·물 그림 미세조정 후보를 더 만들지 않음. Neutral/노출1.30 |
+| 실행·검증 | 단일 에디터 빌더 유지. 같은 실제 Core Player에서 shadow ON/OFF 진단 캡처를 추가. step1/최종 품질은 아직 미검증. 원래3차 결과물 수정 없음 |
+
+
+## 2026-11-02 Map25D 3차 — 웹 원화 지형·해자 방식으로 전환 (진행 중)
+
+BRIEF3의 23시 추가 지시를 적용한다. 3개 빌드마다 중간 보고하되 횟수만으로 멈추지 않고 핵심 결함이 반복되면 제작법을 바꾼다. A2 품질 도달 전 시각 PASS로 올리지 않는다. 이 대화가 단독 writer이며 CTO가 중지한 실행의 WIP는 `I:/EXODUSER-Storage/map25d/r3-takeover-source/`와 `r3-concurrent-writer-*/`에 보존했다. 공유 예약 `codex-map25d-r3`를 현재 대화의 단독 소유 표시로 갱신했다. 사용자 프로그램은 종료하지 않는다.
+
+| 항목 | 현재 제작 계약·검증 범위 |
+|---|---|
+| 웹 지형 | 실제 웹 런타임 `assets/map/ch1/production_finish` 캐시와 hill/해자를 8×8, 각1000² 타일로 캡처한 WIP를 인수. 월드8000px, 1타일40px, x=px/100,z=−py/100. 캡처 뒤 추가 축소 없이64장으로 지형 샘플. 원본 캐시1024px를 웹의1000px 영역에 그린 결과이며 원본 PNG byte 복사는 아님. provenance는 I: `r3-web/manifest.json`, 추출 코드는 `r3-web.py` |
+| 원래 소품 | 웹 draw routine에서 추출한36장·경계 나무8장 중 보이는43카드. 투명 테두리 crop 뒤 drawX/footY만 보정하여 원래 x/y와 가시 크기 보존. 캠프 원래1820/4020, 가시588×442px; 포탈1220/3860; 뼈1940/4340; 검1580/4180; 토템6220/4060. Core props와 collider 수정 없음 |
+| 걷기 가림 | 직립 소품의 원화 픽셀이 원래 Core 걷기 칸에 해당하면 직립 알파를 비우고 같은 원화 픽셀을 바닥 연결 그림으로 이동. 원래 막힌 칸 위 부분만 직립으로 남김. 원형 뿌리 둔덕·원형 데칼 추가 없음. 원래 막힘/평탄화 픽셀 수는 `original-prop-coverage.json`. 표준 MapLint 결과는 별도로 보존 |
+| 물 제작 전환 | 단색 수면/카메라 평면반사 폐기. 웹 제단 해자(중심5880/3920, rx720/ry360)의 원래 둑·수면을512×2048 띠로 펼친 `r3_moat_strip` 사용. 캠프 옆 원래 걷기 바깥8개 손배치 riverPoints, 폭450px에 얹음. 해자 자체의 Core 위치/충돌은 이동하지 않으며 캠프 옆 띠는 표현만 추가. 삼각형 정점이 걷기 칸에 닿으면 제거. 노드 코드 `Authoring/moat-r3.cjs`, recipe JSON에 좌표 보존 |
+| 색/움직임 | 기존 원화만 사용, 새 이미지 생성/유료 도구0. 수면 마스크에만 UV drift(.0018×sin/cos), 노멀의 느린 흐름·실시간 빛 반사. 원래 녹색은 water RGB×(1.16,.62,.30)로 탁하게 조정. Neutral/노출1.30 유지. 낮은 안개(.014,.025,.037,.17)/밀도.10과 높은 안개(.014,.026,.040,.12)/밀도.06 |
+| 지형·카메라 | Core 지형/걷기는 원형 보존. 표현 지형80×80u, 걷기 정점0·바깥 높이상한.035u(±.04u 이내), 새 Collider0. 선행 확인용 카메라55° 정사영/100px per world unit, 가로 보정−2u. 영웅은 최종 카메라에 원본2D sprite 재투영. 원근/외곽/수풀 보강은 r3_step1 검수 뒤 진행 |
+| 지면 연결/외곽 | 기존 웹 soil/litter 그림을 native64타일 위 월드 곡선 흙길(폭1.2~4.3u, 혼합.72)과 이끼장(혼합.38)으로 연결. soil8u/litter10u 주기, Repeat, 원형 데칼 없음. 맵 바깥(−32~112u)에는 웹 흙 지면 apron .025u 아래, 충돌 바깥3개 실제 3D 숲 패널15×7.5u, 위치(−2.5,−35)/(−1.5,−43)/(−4.5,−51), 앞/중간/뒤3층 합성. 전역 DOF는 실제 Player에서 캠프까지 흐려져 제거, 근경 mip2 흐림만 유지. 진정한 tilt-shift 완료 아님 |
+| 실행 근거 | 첫 빌드 `0a6e5424`/실제 Player `ccc2bdc9`로 웹 바닥·캠프 크기 확인. 캠프 옆 물 없음과 영웅의 소품 가림을 발견하여 해자 띠/걷기 평탄화를 적용한 두 번째 빌드 진행. 아직 3차 최종 시각 판정·채택 근거가 아님 |
+
+첫 `r3_step1.png`는 실제 Player에서 E1/E5를 확인한 뒤 보존한다. 최종 화면·영상·FPS·MapLint와 E1~E6 판정은 REPORT의 3차 절에 기록한다. Core/Common/ProjectSettings/Packages는 수정하지 않으며 자동 생성 변화는 최종 실행 뒤 보존/복원한다. stage·commit·push는 금지 상태를 유지한다.
+
+## 2026-11-02 Map25D 2차 — 어둠·회화 바닥 선행 GATE
+
+맵 총괄 candidate5 FAIL 판정을 받아 제작법을 전환한다. 2차는 빌드 최대3회이며, 먼저 어둠/바닥만 실제 Player로 캡처하여 `20261102_map25d/r2_step1.png`에서 D1·D2를 직접 판정한다. 이 GATE 통과 전 숲 패널·강·그림자·전경 재작업으로 넘어가지 않는다. 현재 원격 `unity/main`은 fetch 후 `5a61e137b416f50bf56b2f052293ac20eb9acd88`이나, 사용자 지정 입력/HEAD `1403c5ee6`을 유지하며 merge·stage·commit·push를 하지 않는다.
+
+| 변경 | 2차 계약 |
+|---|---|
+| 회화 바닥 | `Authoring/paint-r2.cjs`가 지정 입력 웹 흙/이끼/피부 원화3종을 큰 연속 곡선·저주파 블렌드로 합성. Core 타일/occupancy를 색상 합성에 사용하지 않음. 뿌리/둑/독액 원화8개 넓은 feather 덧그림. 배치/블렌드/원본 경로는 `r2-paint-recipe.json` |
+| 바닥 좌표 | px x−1000..5000/y2400..6000, 5120×3072, 최대 임포트8192·Clamp. UV=((wx+10)/60, 1−(−wz−24)/36). 단일 월드 그림을 기존 지형 청크에 연속 샘플. 기존 칸 모양 floor87 덧그림 제거 |
+| 바닥 노멀 | 합성 원화 휘도·1.5px blur·±2px 차분, 강도2.5. 새 grain/dither 없음. 합성 전후 그림·해시는 I: `map25d/r2-paint-final` |
+| 어둠 | 환경광(.003,.006,.014), 셰이더 상수광(.004,.007,.014), 달빛(.26,.38,.65)/강도.055. 셰이더 거리 안개 시작18u/계수.025/색(.003,.008,.015). Neutral/노출1.30 유지 |
+| 높이 안개 | 낮은 층 y.06...65/색(.006,.014,.020,.15)/밀도.065; 높은 층 y1.8..7.4/색(.009,.022,.034,.34)/밀도.09. 강 독안개(.018,.026,.012,.14)/밀도.15 |
+| 빛 웅덩이 | 활성 키 구역 광원3개: camp_fire_0 반경950px/energy3.2, camp_glow_0 반경340px/energy1.5, tree_glow_m_ctree15 반경440px/energy1.9. 실제 Light intensity=energy×2.4×일렁임. 원화 없이 바닥만 붉히던 원거리 광원 제거. 캠프/포탈 원화 적색 발광 계수.36/.70 |
+| 어둠 측정 | HUD 외곽을 뺀 (60,80)~(1860,900) sRGB 휘도30/255 미만 면적60~75%를 CTO 수치 보조선으로 사용하고 전체 화면 비율도 별도 기록. 바닥에만 moonFill=(1.008,1.44,2.088)×곡선 patch(.25~1)×구름(.80~1)을 곱해 원화 디테일을 보완. 이는 선형 셰이더 계수이며 화면 RGB 밝기가 아님. 숫자만으로 D2 합격 처리하지 않고 1x 빛 경계·영웅·원화 디테일을 함께 검수 |
+| 영상 | 화면 readback 목표20Hz로 RAM에 모은 뒤 동작 구간이 끝나면 무손실32bit BMP로 I: 저장. 인코딩은 Player와 별도. 실제 표본 수/시간·타임스탬프를 motion.json에 기록하며 인코딩 fps를 게임 fps로 쓰지 않음 |
+
+선행 실제 Player: 빌드1 `9992b6c8`·Player `f00aabdb`, `r2_step1.png` 직접 1x 확인. D1 칸 덧그림 계단선 제거/빛 아래 회화 정보, D2 암부90.93%/빛 웅덩이 분리로 선행 GATE 통과. 기존의 투사 그림자/흰 접지 얼룩은 이 시점 미해결로 보존했다. 이후에만 아래 제작법을 적용했다.
+
+| 후속 표현 | 2차 계약·검증 범위 |
+|---|---|
+| 숲 합성 | `Authoring/forest-r2.cjs`: 웹 나무01/02/03/05/06/07/11 원화의 back/mid/front를 오프라인 중첩한 서로 다른4096×2048 패널4장, 전경1024² 합성2장. 원본/배치/색은 `r2-forest-recipe.json`. 런타임의 개별 나무 줄 배치 제거. 패널은 수직으로 세우고 yaw만 카메라에 맞춤 |
+| 카메라 | 표현층 opt-in에서만 yaw−70°, pitch48.7014126°/거리20u/세로FOV46.9453°, lookAhead4u/lookSide−1.5u. x=px/100,z=−py/100 그대로. 실제 카메라 최종 pose 후 기존 NativeHd2D actor의 소스 자세로 재투영하고 비actor는 기존 pivot/roll을 보존. Core·입력·스프라이트 자산 변경 없음. 각 해상도 Player readback에 cameraYaw/position/euler 기록 |
+| 소품 가림 | 카드32×40 분할, 알파는 픽셀 셰이더에서 clip. 중심점 알파로 삼각형을 제거하던 처리는 얇은 가지를 잘라 삭제. 숲 패널은 실제 걷기 영역 주변45px도 geometry에서 제외. 캠프/아치/뼈/검의 표현 위치·크기는 JSON에 별도 기록해 외곽 막힘 영역으로 옮김. SourceMap 원본 props/colliders는 불변. 상호작용과 표시 위치 일치 검수는 별도 미완 |
+| 충돌 섬 표현 | 원래1220/3860(rx57,ry57),1820/4020(rx201.5,ry124),1580/4180(rx80,ry80) 세 ellipse에 원화 뿌리+월드 바닥을 합성한 낮은 지형 둔덕. 반경1.035배·20ring×64segment, 막힘 내부 높이최대.42u/정규화반경.86에서0·걷기 높이0. 새 Collider 없음. 지형 전체160×120u/257² 높이맵, 걷기 밖 완만한 높이 변화는 걷기 사각형까지 연속거리.85~1.65u로 블렌드 |
+| 그림자 | 모든 환경 카드의 투사 그림자 OFF. 보이는 소품 발밑의 kind3 검은 접지만 사용(알파.40·제곱 radial fade), ZWrite0/queue2980. actor 접지는 stage-owned FootContact 셰이더(RGB0/알파.48)로 실행 중만 교체하고 종료 시 복원. Common/원본 스프라이트 자산은 수정하지 않음 |
+| 강/둑 | 끝단을 화면 밖으로 연장한12개 riverPoints를 Catmull-Rom 보간, 중심선24sin(.007y)+12sin(.015y)px/폭28sin(.0055y)+18cos(.012y)px 변주. 수면−.55u, 양 둑−.57u→기존지형/범위−6..145px. 걷기 쪽은 높이0 이하. 탁한 녹갈색 깊이 차이·연속 노이즈 흐름(.018,.032)/초·기포·미약한 자체 발광·실제 평면반사와 캠프/포탈의 긴 반사 흔적. 별도 RG flow-map은 미구현. 강의 윤곽/둑 일체감은 실제 화면에서 별도 판정 |
+| 후처리/동작 | Neutral/노출1.30, Bloom강도.09/threshold1.25/scatter.5, Gaussian DOF24~38u/반경.6(엄밀한 tilt-shift 아님). 바람.72/1.13rad/s·공통방향(1,.28)·world phase·뿌리 고정, 숲패널 sway.06~.12u, hero 근접1.2u 눌림. 원본 Godot 전경27개는 앵커만 보존하고 전부 가시 이식하지 않음 |
+| 시점 검사 | 표준 MapLint는 기존 북향 L1b/L4 계약 그대로 실행하여 결과를 숨기지 않음. 회전 시점은 추가로 걷기1460칸×높이.25/1/1.6u의4380ray로 카드 메시 교차 검사. 최종 L1/L1b/L2/L3/L3b/L5/L6/L7 위반0, L4 캠프1건 FAIL(h2.537u/허용2.344u). 추가ray 가림0. 이는 빌더 CPU 시점 검사이며 시각 PASS가 아님 |
+
+**2차 최종 VISUAL VERDICT: FAIL.** 세 번째 빌드 `b6a7db05`/실제 Player `f067fadc`(D3D11/RX9070XT)까지 검수하고 3/3 한도로 중단했다. 암부 ROI71.00%/전체74.66%, 실제 캡처·1x/3x·3열 비교·10초 영상은 최종 REPORT의 “2차” 절에 있다. 강이 판처럼 읽히고 숲 하단 절단·초광폭 오른쪽 빈 바닥·검은 수면 반사 도형이 남는다. L4 잔여1, 3x 점0도 합격 선언하지 않는다. 정지 Core tick 중 6초 표본 1920 평균249.84FPS/3840 평균273.30FPS, 동작 원본201장/10.018초(20.063Hz readback)를 30fps·10.000초로 인코딩했다. 밀집 전투/자연 손조작 QA는 미검증이다.
+
+**21:30 CTO 최신 지시로 Dota 대기 규칙을 폐지**하여 자체 실행 스크립트의 검사와 중단을 모두 제거했다. 사용자 프로그램은 종료하지 않았다. 공용 FIFO/단일 Unity·무창·무음·격리 세이브를 지켰고 최종 Player 창 노출0/잔여0/사용자 세이브 변경0이다. Unity 자동 tracked718개와 새 meta/settings58개는 I:에 SHA 보존 후 복원/이동했다. HEAD·INDEX 불변, 보호 경로 diff0, Core DLL은 1차와 2차3후보 모두 동일하다. 자체 서버·예약을 종료했고 다른 작업자 예약은 보존했다. 중단 무결성은 `r2-interruption-integrity.json`, 최종 보호 검증은 `r2-final-verification.json`, 최종 소스 보존본은 `r2-candidate3-source/`다. stage·commit·push0, 2단계 미착수.
+
+## 2026-11-02 CH1-1 2.5D 캠프·강 1차 후보5 이력 (현행 수치는 위 2차 절)
+
+브랜치 `codex/unity-map25d-20261102`, 입력 `1403c5ee6d52c540815ab1cf70d5666b9023aa75`. 이번 범위는 실제 Core 캠프 한 장면이며 전체 1-1 적용/채택/사용자 실행본 교체가 아니다. 커밋·push 없이 총괄 diff 검수에 제출한다. 판정·최종 실행 근거는 `G:/exoduser/tmp/design-review/20261102_map25d/REPORT.md`, 중간물·원본·로그는 `I:/EXODUSER-Storage/map25d/`다.
+
+| 항목 | 현재 후보 계약 |
+|---|---|
+| 소유 | `Remodel/CH1_1_25D/**`, 에디터 `Map25DBuilder.cs` 1개, 본 절. Core/Common/ProjectSettings/Packages 설계 변경 없음. Unity 자동 임포트·직렬화 변화는 별도 보존 후 원본 byte 복원 |
+| 진입 | `--remodel3d --unity-keyshot-baseline --unity-map25d-capture`와 실행기의 격리 세이브 필수. 기존 `FirstPlayable`·실제 NativeGame/Simulation·RM1 카메라를 쓰고 기존 맵 표현만 끔. 기본 실행에는 연결하지 않음 |
+| 좌표·구역 | x=px/100, z=−py/100, 40px=0.4u. 캠프 원본 `(1820,4020)`, 검수 영웅 `(1690,4430)`, MapLint 타일 창 `[12,84,72,124)`; 표현 지형 px x−3000..7000/y2000..6400. 높이 표본257², 지형100×4×44u/원점(−30,−.8,−64), 4u 청크25×11개 |
+| 원화 | 웹 `rotforest_tree`·camp·sword_pile·bone·root 15종을 동일 byte 입력으로 복사. 바닥 반복 베이스는 불투명 floor87 `skin_material_generated`(2048²·명도.65/채도.65), 전역 덧그림은 floor87 좌표 crop `[0,2458,4506,3482]`→4096×3165. 마스크가 있는 skin65 덧그림을 반복 베이스로 썼던 검은 도형 결함은 폐기. CG 나무·바위 모델 없음 |
+| 노멀 | 밝기(.2126R+.7152G+.0722B)와 알파 경사, 1.5px blur 후 ±2px 차분. 새 점/디더/그레인 추가 없음. 카드 강도3, soil1.4, floor1.8 |
+| 지형 | 걷기 칸 주변 2칸 확장 영역 y=0. 비보행만 낮은 기복·강 홈. 기존 SourceMap의 이동·판정·스폰 데이터/콜백 불변. 새 물리 Collider 없음 |
+| 배치 | `Resources/Map25D/layout.json` 손배치26카드. 기존 Godot 전경 앵커27개는 좌표 데이터/비렌더링 transform으로 보존. 전체 나무 전경→걷기 영역 메시 절단을 반려하고 카메라 모서리 가지 crop2장으로 제작법 전환: tree03/01, UV(0,.43,1,.57)/(0,.47,1,.53), 크기7×5/6.5×4.5u, 회전−24/26°, 깊이8u·바깥오프셋1.1u/하단.45u·mip4 blur·알파.92. 원본 전경27실물 이식 완료가 아님. 원본 캠프 소품의 카드 가림은 MapLint에 그대로 남김 |
+| 빛·안개 | Godot MAP-LOOK 원본 JSON 별도 보존. 정적 광원30앵커 해석(오브젝트/나무/빛줄기 웅덩이), 키 구역만 생성·근접7개 활성. 플레이어 소형광 별도. 원본 동적 스폰/VFX 광원 전체 이식은 미완. 높이 안개2겹+독안개·깊이 버퍼로 절단하는 24표본 볼륨 빛줄기 |
+| 톤 | Neutral·postExposure1.30·채도−8·대비6, Bloom .09/threshold1.25/scatter.5. Gaussian DOF 시작17.5u/끝28u/반경.6. 엄밀한 기울어진 초점면의 tilt-shift는 미구현. Volume override는 서브에셋으로 저장하고 Player readback 검사 |
+| 움직임 | 카드 위쪽 uv.y²로만 바람·위상 변주/영웅 반경1.2u 눌림. 시간 .72/1.13rad/s, 공통 바람(1,.28). 독액 곡선 UV 흐름(.018/.032uv/s)·실제 평면반사(기존 A2RiverReflection readonly, 혼합.18)·8개 JSON 기포(.11주기/초)·강가 거품. 포자38/수명10초/크기.11u/속도.022, 불씨34/수명2.6초/크기.055u/속도.28, seed20261020. 저속 구름 그림자 .035/.026rad/s. 별도 풀 군락과 엄밀한 RG flow-map은 미구현 |
+| 검수 fixture | 캠프 직접 좌표 진입, 정지 구도는 Core tick 정지. 스폰굴14·초기 적16 유지. 영상은 기존 StepInput 60Hz·600틱 무적. 자연 도착/OS 손조작/밀집 전투 검수 아님 |
+| 성능·판정 | 1920/3840×1080 실제 hidden D3D11 Player에서 각6초 무제한 프레임 측정, PNG 저장/영상 인코딩과 분리. 첫 후보 398.98/393.78fps는 전경 가림/후처리 저장 결함이 있는 FAIL 이력이며 후속 후보의 성능으로 재사용하지 않음 |
+
+첫 실화면의 전경 중앙 가림·검은 바닥 도형·분홍 사각형을 FAIL로 보존했다. 전경 메시 절단 뒤 모서리 가지 crop 방식으로 전환했고, 재생성 시 자산 참조 유지·URP shadow bias/clip-space·후처리 서브에셋 저장을 수정했다. 검은 바닥 도형의 원인은 마스크가 있는 바닥을 반복 베이스로 쓴 것이어서 불투명 원화로 교체했다. 최종 비교·1x/3x·동작·FPS·MapLint의 범위와 판정은 위 REPORT를 따른다. 기술 검사로 visual PASS를 대체하지 않는다.
+
+최종 후보5: 빌드 `63dc3023` 오류0, 실제 hidden D3D11/RX9070XT Player `431dd645` 종료0·사용자창0·잔여0·USER_SAVE 변경0. Neutral/1.30 readback, 1920×1080 **338.67fps**(p95 3.900ms), 3840×1080 **324.09fps**(p95 4.049ms), 각6초·Core 정지 표본이다. 영상은 실시간10초/59 PNG 표본을 타임스탬프로30fps·10.000초에 배치했으며 실제게임30fps 성능 증거가 아니다. Core DLL 5후보 모두 `04afacf88c56fb84223f2bcca0e7a9b81e58add87f4358b19934847dfd940713`로 동일. 최종 Runtime DLL `86c45e802e61b51982b75db218cbb4414a8f6d735bd74d1ce337b53691edb673`.
+
+최종 MapLint: L1 **125칸 FAIL**, L1b **8칸 FAIL**, L4 **5건 FAIL**; L2/L3/L3b/L5/L6 위반0, L7 경고0. 기존 source 캠프·아치·뼈 카드가 걷는 면 위를 덮는 표현 문제이며 검사에서 숨기거나 Core 충돌을 바꾸지 않았다. **VISUAL VERDICT: FAIL** — A2 대비 외곽 질량/안개 깊이/수면/구도 큰 차이 잔여, 3x 전체 점0 확정 안 됨. 1단계 미합격 제출이며 2단계 착수0·일반 실행본 반영0. Unity 자동 tracked718개는 I: 보존 후 HEAD byte 복원, 새 자동 meta/settings58개도 생성 시각·소유 확인 뒤 I:로 이동 보존했다. 자체 서버·예약 해제, INDEX/commit/push0.
+
 ## 2026-10-31 현행 순수 맵 분기 — 미인수 UI 재질 제외
 
 기존맵분기에상속된 c253ec3b0/1c985c88e 재질시안은현공통15c8 및현재순수UI01dbc의조상이아니며현행채택근거가없다. UI담당과대조후정확8파일을I: `steam-keyshot/a2/field-screen-20261031/미인수UI-원본/`에보존하고, Overlay/Presentation은승인공통15c8의정확byte로복원·MaterialLayout/Material.Capture의cs/meta 및전용tests2파일은현행맵입력에서제외했다. 원격6771672c9와기존이력은보존했다.
@@ -300,3 +519,11 @@ root가 candidate2-caps/natural-medium.png·synthetic-high.png·synthetic-moving
 영상 순서(초): LMB0~1.35, RMB1.35~2.70, Shift2.70~4.05, E4.05~5.40, Q5.40~6.75, Ctrl6.75~9.25, Space9.25~10.60, 1키10.60~11.95, 2키11.95~13.30, 3키13.30~14.65, 4키14.65~16.00, F16.00~17.35, Z17.35~18.70, 구르기18.70~20.05. 왼쪽웹/오른쪽Unity, 각1600×900.
 
 웹 실행기 b533b4f8 최종 영수증은 ok=false/exit=-1/창0/사용자세이브변경0, 잔류1(PID56288)을 실행기가 정리했다. 해당PID와 실행기5172는 최종조회에서없음, 두Chrome은HasExited=true다. 두임시프로필은 chrome_debug.log EBUSY로 완전삭제 미완료이며 browser-profile-cleanup.json에 정확경로를 남겼다. 사용자앱/브라우저·시스템설정 변경0. 영상은3200×900·20fps·401프레임·20.05초로 인코딩/추출프레임 직접확인 완료.
+# 2026-11-03 06:03 C17 실행 차단 상태
+
+05:10/05:15의 7항목 구현과 Runtime/Editor 정적 컴파일 exit 0까지 확인했다. C17 빌드는 시작됐으나, 이후 I: 결과 파일 읽기에서 10초 타임아웃이 재현됐다. G: 작업본 파일 읽기·작은 상태 파일 저장과 tasklist는 응답했다. 원인은 확정하지 않았다. 당시 자기 Editor PID 38876은 존재했고 별도 Unity PID 29288도 관측돼, 소유권/공용 슬롯 확인 없이 중복 빌드나 다른 프로세스 종료는 하지 않았다.
+
+**C17 빌드 완료·play-smoke·proof-17·영웅 원색·곡선 경계·쐐기 제거·밀도·캠프 빛은 미검증이다. 바로가기 교체는 실행하지 않았다(C10 유지).** 공용 실행기/예약은 I: 접근 복구 후 재확인한다. 자동 생성 파일 복원은 자기 Editor 종료 확인 이후에만 한다. 현 상태 영수증은 작업본 `unity/Temp/map25d-tools/c17-execution-status.md`에 임시 보존했다. I: REPORT 저장은 응답을 확인하지 못했다.
+
+앞의 C17 수치는 구현 계약이며 실제 Player PASS를 의미하지 않는다.
+
