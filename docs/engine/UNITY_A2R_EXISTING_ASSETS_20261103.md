@@ -292,3 +292,8 @@ proof-a2r-r2255-vs-4895bf9c6.png / proof-a2r-r2255-diagnostics.png 직접 확인
 ## 야간 ⑥ 바람 데이터 계약 보정
 
 최종첫빌드56f957268/5f085da6 컴파일·부분가림GPU시험은통과했지만실행전50종실데이터검사에서소품28+far15는COLOR없음, 식생7만COLOR있음을확인했다. 원색/원메시를고치지않고 소품은합성정점G위상을무시해공통위상·부드러운공간위상으로흔들고, 식생의작가R/G위상은보존한다. 모든정리본prepared=true라식생±25도분기가막혔던것도정면기준각에더하도록고쳤다. ③형태수정재개가아니며검은둥근수풀RETOUCH유지. 새소스변경이있으므로같은next폴더만다시빌드한다. Core/34도/액터/원화불변·바로가기미변경.
+
+
+## 야간 ⑥ GPU 개수 타입 계약
+
+설치된 Unity6000.6.7f1 CoreModule의 실제IL을검사했다. legacy Shader.SetGlobalInt는SetGlobalFloatImpl을호출하며 SetGlobalInteger만SetGlobalIntImpl을호출한다. 기존Nature와새3D바람의HLSL int 개수3종(액터/잔물결/교각)을정수API로바꿔 이전프레임배열의유령눌림을막는다. 타입은그대로이며Source정점/카메라/Core/액터그리기불변. 이 검증은metadata실독이며추측이아니다. Sourcefd2f8ab4a/75e3d693빌드0이후최종Player1회는계속마치게두고, C#만변경한최종소스를같은next폴더에증분재빌드한다. 바로가기미변경. 병합후첫Player d8fa35c5에서 A2R초기화전 Invalid vertex array 오류1회도확인했다. Main/액터 코드를수정하지않고명시QA에만BeforeSplashScreen 로그수집을추가해초기오류도최종스모크FAIL로잡는다. 5장면·도보촬영은마치며, 조기오류를숨겨오류0/PASS로올리지않는다. 다음실행에서다시발생하면⑥의본편준비게이트를실패로정리한다.

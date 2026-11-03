@@ -24,7 +24,7 @@ namespace Exoduser.UnityPort
             // extended support posts share one mesh; the mesh bounds corners are not post locations.
             if(bridge!=null)ReadSupports(bridge);
             MakeParticles("low swamp threads",new Vector3(at.x,-.24f,at.z),new Vector3(8,.03f,6),3,14,2.5f,3.5f,new Color(.10f,.11f,.085f,.018f),2);
-            Shader.SetGlobalVectorArray("_A2RPiers",piers);Shader.SetGlobalInt("_A2RPierCount",pierCount);SetLook(false);
+            Shader.SetGlobalVectorArray("_A2RPiers",piers);Shader.SetGlobalInteger("_A2RPierCount",pierCount);SetLook(false);
         }
         static int Root(int[] parents,int i){while(parents[i]!=i){parents[i]=parents[parents[i]];i=parents[i];}return i;}
         void ReadSupports(Transform bridge)
@@ -51,9 +51,9 @@ namespace Exoduser.UnityPort
         public void Ripple(Vector3 at,float strength,bool projectile=false){ripples[nextRipple++%24]=new Vector4(at.x,at.z,Time.time,strength);if(projectile)ProjectileRipples++;else FootRipples++;}
         void LateUpdate()
         {
-            if(!Applied||collect==null)return;actors.Clear();collect(actors);ActorCount=0;activeProjectiles.Clear();foreach(var a in actors){if(a.projectile){projectiles[a.id]=a.position;activeProjectiles.Add(a.id);}else if(ActorCount<32)bends[ActorCount++]=new Vector4(a.position.x,a.position.y,a.position.z,a.radius);}Shader.SetGlobalVectorArray("_A2RActors",bends);Shader.SetGlobalInt("_A2RActorCount",ActorCount);Shader.SetGlobalVectorArray("_A2RRipples",ripples);if(leaves!=null)leaves.transform.position=hero()+Vector3.up*4;
+            if(!Applied||collect==null)return;actors.Clear();collect(actors);ActorCount=0;activeProjectiles.Clear();foreach(var a in actors){if(a.projectile){projectiles[a.id]=a.position;activeProjectiles.Add(a.id);}else if(ActorCount<32)bends[ActorCount++]=new Vector4(a.position.x,a.position.y,a.position.z,a.radius);}Shader.SetGlobalVectorArray("_A2RActors",bends);Shader.SetGlobalInteger("_A2RActorCount",ActorCount);Shader.SetGlobalVectorArray("_A2RRipples",ripples);if(leaves!=null)leaves.transform.position=hero()+Vector3.up*4;
             gone.Clear();foreach(var p in projectiles)if(!activeProjectiles.Contains(p.Key)){if(p.Value.y<-.39f)Ripple(p.Value,.009f,true);gone.Add(p.Key);}foreach(int id in gone)projectiles.Remove(id);
-            Shader.SetGlobalInt("_A2RRippleCount",Mathf.Min(nextRipple,24));if(Time.unscaledTime<nextSample)return;nextSample=Time.unscaledTime+.16f;
+            Shader.SetGlobalInteger("_A2RRippleCount",Mathf.Min(nextRipple,24));if(Time.unscaledTime<nextSample)return;nextSample=Time.unscaledTime+.16f;
             foreach(var a in actors){if(a.projectile)continue;var p=a.position;Vector3 old;float last;bool moved=previous.TryGetValue(a.id,out old)&&(p-old).sqrMagnitude>.003f;previous[a.id]=p;lastStep.TryGetValue(a.id,out last);if(moved&&p.y<-.39f&&Time.time-last>.38f){Ripple(p,.012f);lastStep[a.id]=Time.time;}}
         }
         void OnDisable(){Shader.SetGlobalFloat("_A2RNatureOn",0);}
