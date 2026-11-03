@@ -45,7 +45,7 @@ namespace Exoduser.UnityPort
             var names=new[]{"start","bridge","swamps","distant-enemies","foreground"};
             for(int s=0;s<points.Length;s++)
             {
-                A2RSetLook(true);var p=WideLegal(points[s].x,points[s].y);Simulation.Player.X=p.x;Simulation.Player.Y=p.y;lastX=p.x;lastY=p.y;receipt.fixedPoseAssignments++;a2rPlay.visualPoseAssignments++;Simulation.Enemies.Clear();Simulation.SpawnHoles=null;
+                A2RSetLook(true);var p=WideLegal(points[s].x,points[s].y);Simulation.Player.X=p.x;Simulation.Player.Y=p.y;lastX=p.x;lastY=p.y;receipt.fixedPoseAssignments++;a2rPlay.visualPoseAssignments++;Simulation.Enemies.Clear();
                 for(int i=0;i<12;i++){UpdateViews();yield return null;}
                 int spawned=0;for(int n=0;n<180&&spawned<6;n++){float angle=n*2.399963f;var at=p+new Vector2(Mathf.Cos(angle)*(450+n%4*160),-850-Mathf.Abs(Mathf.Sin(angle))*450);if(!Map.CanMove(at.x,at.y,25))continue;var v=r3Cam.WorldToViewportPoint(NativeRemodel3D.Point(at.x,at.y)+Vector3.up*.8f);if(v.z<=0||v.x<.1f||v.x>.9f||v.y<.5f||v.y>.92f)continue;if(Simulation.SpawnEnemy(at.x,at.y,n%4,null,false)!=null)spawned++;}
                 foreach(int width in new[]{1920,3840})

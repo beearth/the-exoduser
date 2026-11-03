@@ -1,5 +1,5 @@
 {
   "enabled": true,
-  "baseUnityMain": "5ce03758f57daca409cb18876e75ab48f6df705a",
+  "baseUnityMain": "6ef1899cb388e2378786eeb50e20fb325403a954",
   "scope": "A2R candidate branch; --remodel3d uses A2R by default. --a2r-off restores native look. Human save sandbox only when --a2r-play-sandbox <absolute path> is present; QA runner supplies its separate explicit QA sandbox. Unreviewed cloud, height relief and air effects are opt-in."
 }
