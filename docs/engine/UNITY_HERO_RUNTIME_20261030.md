@@ -166,7 +166,7 @@ R3 수정 검수부터 `Time.captureDeltaTime=1/60`을 이 전용 fixture에만 
 
 ## 2026-10-31 HD-2D 방향 확정 — 현행 표현 전환
 
-[본 적용 계약](UNITY_HD2D_RUNTIME_20261031.md)에 따라 현재 후보는 픽셀 스프라이트를 기본으로 사용한다. NativeHeroView 3D 연결 코드는 보존하고 --legacy-models에서만 생성한다. 캐릭터만 원본 알파 발선·출력1화소 스냅·URP 조명·접지 그림자를 적용한다. 드루이드 원본 시트의 중복 additive 발광은 기본 해제한다. 아래의 과거 3D 후보 검수와 Desktop 영수증은 당시 입력의 이력이며 HD2D 후보의 검증을 대신하지 않는다. 현 후보 Player·공통통합·Desktop은 아직 미완이다.
+[본 적용 계약](UNITY_HD2D_RUNTIME_20261031.md)에 따라 현재 후보는 픽셀 스프라이트를 기본으로 사용한다. NativeHeroView 3D 연결 코드는 보존하고 --legacy-models 또는 --hero-render=rigpixel에서 생성한다. 캐릭터만 원본 알파 발선·출력1화소 스냅·URP 조명·접지 그림자를 적용한다. 드루이드 원본 시트의 중복 additive 발광은 기본 해제한다. 아래의 과거 3D 후보 검수와 Desktop 영수증은 당시 입력의 이력이며 HD2D 후보의 검증을 대신하지 않는다. 현 후보 Player·공통통합·Desktop은 아직 미완이다.
 
 
 ### 순수 HD-2D 985 같은빌드 재검수
@@ -195,3 +195,5 @@ R3 수정 검수부터 `Time.captureDeltaTime=1/60`을 이 전용 fixture에만 
 |인수 상태|제작자선택1x검수완료/공통·Desktop지정integrator 신청준비. 공통병합·Desktop갱신·설치본M1은이문서만으로완료아님. 자연완주·실측FPS·OSfocus·Mac동기화 미검증|
 
 근거 I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/STAGE1_R5_VISUAL_REVIEW_KO.md, STAGE1_R5_BUILD_LINK.json, stage1-r5-validation-8dbdf205a/receipt.json, stage1-r5-review-8dbdf205a, scope-cleanup-after-r5. 이전순수985/087·실패validator 이력은덮지않는다.
+
+2026-11-03 실시간 리깅 픽셀 후보: [정확 렌더·검수 계약](UNITY_RIG_PIXEL_20261103.md). 기본 sprite는 유지하며 rigpixel은 R7 리그→정사영 Point RT→같은 Core 발밑 합성이다. 현재 구현·검수 진행이며 과거 3D 검수는 이 후보의 시각/성능 PASS가 아니다.

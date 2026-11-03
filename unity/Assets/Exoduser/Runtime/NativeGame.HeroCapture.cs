@@ -18,7 +18,8 @@ namespace Exoduser.UnityPort {
    if(string.IsNullOrEmpty(output)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))){Debug.LogError("전사 검수는 명시적 출력·격리 세이브가 필요");Application.Quit(2);yield break;}
    Directory.CreateDirectory(output);Directory.CreateDirectory(Path.Combine(output,"frames"));
    heroReviewActive=true;AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;Application.targetFrameRate=60;Time.captureDeltaTime=1f/60;smokeActive=true;dropSmoke=true;pauseSmoke=true;Running=false;
-   Screen.SetResolution(1600,900,FullScreenMode.Windowed);lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();
+   int reviewWidth=1600,reviewHeight=900;if(RigPixelRequested){reviewHeight=1080;if(!int.TryParse(Argument("-review-width"),out reviewWidth))reviewWidth=1920;}
+   Screen.SetResolution(reviewWidth,reviewHeight,FullScreenMode.Windowed);lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();
    EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;
    yield return new WaitForSecondsRealtime(.6f);
    float deadline=Time.realtimeSinceStartup+45;while(NativeRemodel3D.Requested&&!NativeRemodel3D.Active&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
@@ -61,7 +62,7 @@ namespace Exoduser.UnityPort {
      sim.SetPlayerCombatInput(section=="패링"&&f<30,section=="E충전강타"&&f<70,false);
      sim.SetSkillInput(section=="보조시전"&&f==0,false,false,false,section=="시전"&&f==0,false,false,false);
      float ax=moveX,ay=moveY;if(section=="방향"){float angle=(f/20)*Mathf.PI/4;ax=Mathf.Cos(angle);ay=Mathf.Sin(angle);}
-     StepInput(section=="달리기"?moveX:0,section=="달리기"?moveY:0,p.X+ax*300,p.Y+ay*300,attack,false);
+     StepInput(section=="방향"&&RigPixelRequested?ax:section=="달리기"?moveX:0,section=="방향"&&RigPixelRequested?ay:section=="달리기"?moveY:0,p.X+ax*300,p.Y+ay*300,attack,false);
      if(section=="시전"&&f==0){report.slamDamage=slamBeforeHp-slamTarget.Hp;report.slamHitTick=sim.TickCount;report.slamWaveCount=sim.SlamWaves.Count;sim.Enemies.Remove(slamTarget);UpdateViews();}
      Running=false;yield return null;yield return new WaitForEndOfFrame();
      var motion=heroView.Motion;motions.Add(motion.MotionKind.ToString());sectionMotions.Add(motion.MotionKind.ToString());
@@ -111,7 +112,8 @@ namespace Exoduser.UnityPort {
      menu=false;Running=false;
     }
    }
-   check(!playerView.enabled,"3D 생성 성공 시 기존 플레이어 빌보드 숨김");
+   check(!playerView.enabled,"리깅 생성 성공 시 기존 플레이어 빌보드 숨김");
+   if(RigPixelRequested){check(rigPixelHero!=null&&rigPixelHero.Ready&&rigPixelHero.RenderCount>0,"실시간 RT 합성 실제 실행");check(rigPixelHero!=null&&rigPixelHero.AnchorScreenError<=.71f,"최종 카메라 발밑 앵커 0.71px 이내");File.WriteAllText(Path.Combine(output,"rigpixel-render.json"),"{\"textureWidth\":"+(rigPixelHero!=null?rigPixelHero.TextureWidth:0)+",\"texelScale\":"+(rigPixelHero!=null?rigPixelHero.TexelScale:0)+",\"renderCount\":"+(rigPixelHero!=null?rigPixelHero.RenderCount:0)+",\"width\":"+Screen.width+",\"height\":"+Screen.height+"}");}
    foreach(string kind in new[]{"Idle","Run","Roll","Swing","Recover","Charge","SlamWindup","SlamStrike","SlamRecover","Hurt","Dead"})check(motions.Contains(kind),"실제 상태 샘플 "+kind);
    report.passed=ok;File.WriteAllText(Path.Combine(output,"hero-review.json"),JsonUtility.ToJson(report,true));
    lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();
