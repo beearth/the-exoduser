@@ -24,4 +24,9 @@ const env={...process.env,DOTNET_CLI_HOME:out,DOTNET_CLI_TELEMETRY_OPTOUT:'1',DO
 function run(a){return cp.spawnSync('C:/Program Files/dotnet/dotnet.exe',a,{encoding:'utf8',windowsHide:true,env,timeout:60000});}
 let r=run([path.join(sdk,latest(sdk),'Roslyn/bincore/csc.dll'),...args]);let log=(r.stdout||'')+(r.stderr||'')+(r.error?.message||'');
 if(r.status===0){fs.writeFileSync(path.join(out,name+'.runtimeconfig.json'),JSON.stringify({runtimeOptions:{tfm,framework:{name:'Microsoft.NETCore.App',version:tfm.slice(3)+'.0'},rollForward:'LatestMajor'}}));r=run([path.join(out,name+'.dll'),...(feedback?[path.join(out,'feedback.json'),path.join(__dirname,'../feedback-oracle/oracle.json')]:m1||region?[path.join(root,'unity/Assets/Exoduser/Resources/Data/ch1_map.json')]:[])]);log+=(r.stdout||'')+(r.stderr||'')+(r.error?.message||'');}
-fs.writeFileSync(path.join(out,process.argv.includes('--red')?'red.log':name+'.log'),log);process.stdout.write(log);process.exitCode=r.status??1;
+let status=r.status??1;
+if(status===0&&name==='checks'){
+ const art=cp.spawnSync('C:/Python314/python.exe',[path.join(root,'tools/vfx/recolor_blood_dark.py'),'--check-only'],{cwd:root,encoding:'utf8',windowsHide:true,env:{...env,PYTHONDONTWRITEBYTECODE:'1'},timeout:60000});
+ log+=(art.stdout||'')+(art.stderr||'')+(art.error?.message||'');status=art.status??1;
+}
+fs.writeFileSync(path.join(out,process.argv.includes('--red')?'red.log':name+'.log'),log);process.stdout.write(log);process.exitCode=status;

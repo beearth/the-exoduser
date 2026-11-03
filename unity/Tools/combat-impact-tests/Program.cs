@@ -43,9 +43,39 @@ static class Program
         budget.Reset();Check(budget.AdmitHit(1,false),"restart resets budget even when ticks rewind");
         Check(CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.BossDeath,Source="druid_sink",IsBoss=true}).Count==0,"druid escape must not bleed");
         var dead=CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.EnemyDeath,Size=20}).Single();
-        Check(dead.Life==64&&Math.Abs(dead.Width-236.8)<.001&&!dead.Additive&&dead.Sheet=="Blood_FBF_4x4_matte","ordinary death keeps matte blood alpha blend and radius-dependent width");
+        Check(dead.Life==64&&Math.Abs(dead.Width-236.8)<.001&&!dead.Additive&&dead.Sheet=="Blood_FBF_4x4_dark","ordinary death uses dark blood alpha blend and radius-dependent width");
         var bossDead=CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.BossDeath,IsBoss=true,Size=40}).Single();
-        Check(bossDead.Frames==24&&bossDead.Life==96&&bossDead.Fallback=="Blood_FBF_4x4_matte","boss authored24 clip maps original96tick lifecycle with16cell matte fallback");
+        Check(bossDead.Frames==16&&bossDead.Life==96&&bossDead.Sheet=="Blood_FBF_4x4_dark"&&!bossDead.Additive,"boss death uses the same dark ramp and retains96tick lifecycle");
+        foreach(var kind in new[]{FeedbackKind.EnemyHit,FeedbackKind.EnemyCrit,FeedbackKind.BossHit}) {
+            bool heavy=kind!=FeedbackKind.EnemyHit;
+            var blood=CombatImpactTimeline.Plan(new FeedbackEvent{Kind=kind,VisualOnly=true,Size=20,Angle=.7f,IsBoss=kind==FeedbackKind.BossHit}).Where(c=>c.Sheet=="Blood_FBF_4x4_dark").ToArray();
+            Check(blood.Length==1,"one directional blood clip for "+kind);
+            if(blood.Length==1){var c=blood[0];Check(!c.Additive&&c.Life==(heavy?18:9)&&c.Frames==16&&c.Stretch==1.6,"normal alpha, horizontal stretch and .15/.3s blood lifecycle "+kind);
+                Check(Math.Abs(c.Angle-.7)<35*Math.PI/180&&Math.Abs(c.Width-40*(heavy?1:.6))<.001,"blood angle cone and body diameter scale "+kind);
+                Check(c.Frame(0)==0&&c.Frame(c.Life)==-1&&c.Alpha(12)<=.35,"blood starts on contact and stops obscuring after .2s "+kind);}
+        }
+        // Reflection allows the first RED to report a missing policy as a test
+        // failure rather than a compiler error; this exercises the real pool.
+        var poolType=typeof(CombatImpactTimeline).Assembly.GetType("Exoduser.UnityPort.Vfx.CombatBloodDecals");
+        Check(poolType!=null,"pooled blood decal lifecycle policy exists");
+        if(poolType!=null) {
+            dynamic pool=Activator.CreateInstance(poolType);
+            var stamp=new FeedbackEvent{Kind=FeedbackKind.EnemyCrit,VisualOnly=true,Size=20,Tick=100};
+            int slot=(int)pool.Add(stamp,12,.25);
+            Check(slot==0&&(double)pool.Alpha(slot,99)==0&&(double)pool.Alpha(slot,100)==1,"decal begins at contact, no negative age");
+            Check((double)pool.Alpha(slot,309)==1&&(double)pool.Alpha(slot,310)==1,"decal holds full opacity for3.5seconds");
+            Check(Math.Abs((double)pool.Alpha(slot,340)-.5)<1e-9&&(double)pool.Alpha(slot,370)==0,"decal fades for1second then expires");
+            for(int i=1;i<8;i++){stamp.Tick=100+i;Check((int)pool.Add(stamp,12+i%4,.25)==i,"decal free slot "+i);}
+            stamp.Tick=108;Check((int)pool.Add(stamp,15,.5)==0,"ninth decal recycles oldest slot");
+            stamp.Tick=109;Check((int)pool.Add(stamp,14,.6)==1,"tenth decal recycles next oldest slot");
+            Check((int)pool.Slots.Length==8&&pool.Slots[0].Frame==15&&Math.Abs((double)pool.Slots[0].Angle-.5)<1e-9,"eight fixed slots retain last-four frame and rotation");
+            stamp.Tick=500;Check((int)pool.Add(stamp,12,0)==0,"expired slots reused without growth");
+            pool.Reset();Check((double)pool.Alpha(0,500)==0,"restart hides pooled decals");
+            foreach(var kind in new[]{FeedbackKind.EnemyCrit,FeedbackKind.BossHit,FeedbackKind.EnemyDeath,FeedbackKind.BossDeath})
+                Check((bool)poolType.GetMethod("ShouldStamp").Invoke(null,new object[]{new FeedbackEvent{Kind=kind,VisualOnly=true}}),"decal event "+kind);
+            foreach(var evt in new[]{new FeedbackEvent{Kind=FeedbackKind.EnemyHit,VisualOnly=true},new FeedbackEvent{Kind=FeedbackKind.EnemyCrit},new FeedbackEvent{Kind=FeedbackKind.BossDeath,Source="druid_sink"}})
+                Check(!(bool)poolType.GetMethod("ShouldStamp").Invoke(null,new object[]{evt}),"no blood decal for audio, normal hit or druid escape");
+        }
         Check(CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.EnemyHit,VisualOnly=true,Element=6})[0].Sheet=="impact_basic_sheet","unbanked earth element uses the web basic fallback");
         Check(Math.Abs(CombatImpactTimeline.ParticleTravel(3,0,2)-5.7)<1e-9&&Math.Abs(CombatImpactTimeline.ParticleTravel(3,.1,2)-5.79)<1e-9,"particle drag.9 and gravity match two web pool updates");
         Check(CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.Parry,Step=1,Source="waterBean"})[0].Sheet=="Ice_ImpactIce_Sheet","water Q parry selects the ice exception instead of duplicate dark02");
