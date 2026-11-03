@@ -57371,3 +57371,4 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 - NativeRigPixelHero/Composite/Toon: 망토1~2텍셀 분리 섬과 외곽테 제거, 중성 흑철(.18,.185,.195)과 실제광의2단 금속하이라이트, 공통 화면픽셀격자 전달.
 - KiSlashView·KiSlashAdditive/Ink·RigPixelSlashSampling: rigpixel opt-in Point/4단색/알파정리/동일격자/1픽셀 ink. sprite기본·원본시트·5레이어opacity·Core판정/타이밍 유지.
 - UNITY_RIG_PIXEL_20261103의 G0 공통관례·현행 수치표와 Mac 검수 명세를 동기화. PC 컴파일만, 실게임 점0/팔레트/검격/FPS는 Mac 판정 대기.
+- PC 공용 단일 컴파일7d38fa45는네셰이더/renderer/Humanoid true·exit0·C#오류0·USER_SAVE0. 자동직렬화/CLI임시물은정리, Mac실게임판정전기본값/공통반영0.

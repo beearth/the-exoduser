@@ -315,7 +315,7 @@ DEMO11-44: Mac Codex / `codex/demo11-44-20261021` / NativePets·catalog/generato
 
 | 작업ID | 내용 | 담당·환경 | 브랜치 | 소유 파일(다른 담당 수정 금지) | 상태 |
 |---|---|---|---|---|---|
-| RIGPIXEL-1425 | 망토 낱픽셀·흑철·픽셀 검격 재작업 | PC Codex / Mac 실게임검수 | codex/unity-rigpixel-20261103 | NativeRigPixelHero·RigPixelComposite/Toon·KiSlashView·KiSlashAdditive/Ink의 opt-in 표본화·공유 샘플 include·RigPixelVerification·관련 docs | 진행 중 — PC 컴파일만, Mac 최종 판정 |
+| RIGPIXEL-1425 | 망토 낱픽셀·흑철·픽셀 검격 재작업 | PC Codex / Mac 실게임검수 | codex/unity-rigpixel-20261103 | NativeRigPixelHero·RigPixelComposite/Toon·KiSlashView·KiSlashAdditive/Ink의 opt-in 표본화·공유 샘플 include·RigPixelVerification·관련 docs | 검수 대기 — source1274675fb0·PC7d38fa45(네셰이더/C#0/세이브0), Mac낱픽셀0·흑철·검격·60fps 대기 |
 | DEMO11-32 | 화마귀 family tick·탄·사망·aggro 소비자 | Mac Codex | codex/demo11-32-20261021 | 신규 FD전용2파일·Main342/3058–3064·State1589–1594·자기 테스트/docs | **부분 구현·통합 BLOCKED** — source18사례/초기8·실제35 작은탄 검증. 큰탄 specialized/PC contact·hit/실제clock·MAP11 Marker 미인수, 31과 통합 후보 기록. 신규906/0·예산2/0·기존51/0(총959/0), 최종 수치는 [보고서](reports/demo11-32_REPORT.md), 보호/35/맵0줄 |
 | DEMO11-21fix | pending draw의 Main/State 해제 수명 보호 | Mac Codex | codex/demo11-21-20261021 | native_world_drops·신규 수명 테스트·자기 docs | **검수 대기** — mainac3764bfe 정상merge, 수명9/0·starter148/0·관련드랍60/0. ERROR/ObjectDB/resource0, Main/State/전투0줄. [보고서](reports/demo11-21fix_REPORT.md) |
 | DEMO11-21 | P2-006a/b 기존 제품 journal→실제 INV 자연 연결 | Mac Codex | codex/demo11-21-20261021 | Main252–257·State432/565–566/584–659 기존 추가분, 새 통합 테스트 | **검수 대기** — P2 수락 원격48f0d8e7/e69fe444 정상 merge·표시 byte 재사용, 신규24/0·관련회귀36/0. 보호 전투·맵·저장0. [보고서](reports/demo11-21_REPORT.md) |

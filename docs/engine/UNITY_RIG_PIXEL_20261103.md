@@ -125,3 +125,5 @@ R6d 배치665409d7은C#오류0/USER_SAVE0이지만renderer=true·humanoid=true·
 | compile gate | Verify는toon/composite/slash additive/ink네셰이더오류·R7아바타를검사 | PC공용bin batch compile만1회, 새Player/빌드0. Mac Metal/실게임판정후CTO가통합/기본전환결정 |
 
 inline Point/Clamp의D3D11/12·Metal지원은 [Unity 공식 sampler 문서](https://docs.unity.cn/6000.0/Documentation/Manual/SL-SamplerStates.html)와대조했다. 효과형태·기본타이밍의다음변경은임팩트레인이VFX_G1표로진행하며이번표본화플래그/그리드를재사용한다. 새유료호출0.
+
+PC 단일 컴파일 결과: 7d38fa45, source1274675fb0. renderer/shaders(네개)/humanoid true, exit0, C# compileErrors0·USER_SAVE변경0. 실제작업27.4초/순번포함719초. 부수 라이선스토큰갱신·종료통신로그는별도기록하며코드/셰이더검사실패는없다. 새Player/정식빌드/시각PASS를뜻하지않는다. 자기Editor 종료뒤자기worktree의자동직렬화860개·새meta/SceneTemplate57개·CLI임시캐시를정리했다. 실제수정은이미커밋된13경로에만남는다. 최신Mac판정6PNG만current에남겼고확인끝난PC빌드7개·이전캡처8폴더·사본을삭제했다(약51.2GiB). 정식빌드고정폴더는build-current, Mac PASS후CTO만통합/기본전환결정.
