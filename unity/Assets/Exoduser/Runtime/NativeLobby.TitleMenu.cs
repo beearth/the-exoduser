@@ -111,6 +111,7 @@ namespace Exoduser.UnityPort
 
         void PaintSpacedGlyph(Rect box,string glyph,GUIStyle style,bool shadow){bool previous=NativeUiAudit.DrawingTextShadow;string profile=NativeUiAudit.DrawingTextShadowProfile;try{if(shadow){NativeUiAudit.DrawingTextShadow=true;NativeUiAudit.DrawingTextShadowProfile="frontend-black-shadow";}NativeUiAudit.Label(box,glyph,style);}finally{NativeUiAudit.DrawingTextShadow=previous;NativeUiAudit.DrawingTextShadowProfile=profile;}}
 
+        // Keep the two outer black passes inside the existing shadow budget after native pixel rounding.
         void DrawSpaced(float x, float y, float height, string text, Font font, int size, float spacing, Color color, bool shadow)
         {
             font = NativeSilverHellUi.TextFont(font,text);
@@ -122,7 +123,7 @@ namespace Exoduser.UnityPort
                 CharacterInfo info; if (!font.GetCharacterInfo(ch, out info, size)) continue; string s = ch.ToString();
                 if (ch != ' ')
                 {
-                    if (shadow) { st.normal.textColor = new Color(0, 0, 0, .9f * color.a); PaintSpacedGlyph(new Rect(cx, y + 1, 80, height), s, st,true); st.normal.textColor = new Color(0, 0, 0, .3f * color.a); PaintSpacedGlyph(new Rect(cx + .5f, y + 3, 80, height), s, st,true); PaintSpacedGlyph(new Rect(cx - .5f, y + 3, 80, height), s, st,true); }
+                    if (shadow) { st.normal.textColor = new Color(0, 0, 0, .9f * color.a); PaintSpacedGlyph(new Rect(cx, y + 1, 80, height), s, st,true); st.normal.textColor = new Color(0, 0, 0, .3f * color.a); PaintSpacedGlyph(new Rect(cx + .5f, y + 2, 80, height), s, st,true); PaintSpacedGlyph(new Rect(cx - .5f, y + 2, 80, height), s, st,true); }
                     st.normal.textColor = NativeSilverHellUi.TextColor(color); PaintSpacedGlyph(new Rect(cx, y, 80, height), s, st,false);
                 }
                 cx += info.advance + spacing;

@@ -2,7 +2,7 @@
 
 | 담당 | 목표 | 소유 파일 | 상태 |
 |---|---|---|---|
-| codex/unity-parity-1102 | 13:20 Mac FAIL 후속·15:39 중단 복구 | NativeUiAudit.cs, NativePauseMenu.A15Web.cs, 관련 패리티 문서·CHANGELOG_SYNC의 자기 절 | PC Core/Runtime 컴파일 오류0. 자기 브랜치 push 후 Mac issue0/ink4/4 재검수 대기. 이번 PC Player/정식 빌드 없음 |
+| codex/unity-parity-1102 | 19:00 Mac FAIL: nameOpened·2560×1600 부분58건 후속 | NativeLobby.cs, NativeLobby.TitleMenu.cs, NativeLobby.SilverCharacter.cs, NativeLobby.CharacterPresentation.cs, NativeGame.UiOverlapCapture.cs, 관련 패리티 문서·CHANGELOG_SYNC의 자기 절 | 최신 공통 cbdcbc282 정상 병합(7dc05359c). Mac 실패 증거·G0 관례 조사 완료, 수정 중. PC 컴파일만, 실제 Mac 게이트 대기 |
 
 ## 2026-10-29 Mac 첫 연습 실입력 후속
 

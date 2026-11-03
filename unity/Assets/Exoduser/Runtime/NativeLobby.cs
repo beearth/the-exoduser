@@ -126,19 +126,43 @@ namespace Exoduser.UnityPort
    return UseNotoCaptionForLanguage(Language)&&ukCaptionShadow!=null?ukCaptionShadow:captionShadow;
   }
   public void Draw(){if(!IsBlocking||!ready)return;Styles();var old=GUI.matrix;var tint=GUI.color;bool enabled=GUI.enabled;int priorDepth=GUI.depth;GUI.matrix=Matrix4x4.identity;if(!StartupWorldVisible)Fill(new Rect(0,0,Screen.width,Screen.height),Color.black);float fit=Mathf.Min(Screen.width/1920f,Screen.height/1080f);GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*fit)/2,(Screen.height-1080*fit)/2,0),Quaternion.identity,new Vector3(fit,fit,1));OriginalArtDrawn=false;CaptionVisible=false;if(!StartupWorldVisible)Fill(new Rect(0,0,1920,1080),Color.black);if(StartupEntryActive)DrawStartupEntry();else if(CharacterStoryActive)DrawCharacterStory();else if(splash==1){if(fdgWatchdog.FallingBack)Image(new Rect(0,0,1920,1080),fdgEmblem);else DrawMovie(new Rect(0,0,1920,1080),fdgEmblem,false);Label(new Rect(0,955,1920,60),K("아무 키나 눌러 계속","Press any key to continue"),small,TextAnchor.MiddleCenter);}else if(splash==2){DrawTitleSplash();}else if(Flow.Page==LobbyPage.Lobby)DrawLobby();else{DrawCinematicMovie();NativeUiViewport.MaskFrontend();if(Flow.Page==LobbyPage.Title||Flow.Page==LobbyPage.Gate)DrawGatePresentation();if(Flow.Page==LobbyPage.WorldIntro)DrawWorldIntro();if(Flow.Page!=LobbyPage.Lobby&&(Flow.Page!=LobbyPage.Title||since>=1)){DrawCinematicSkip();}}if(!StartupWorldVisible&&splash==1)NativeUiViewport.MaskFrontend();GUI.color=tint;GUI.enabled=enabled;GUI.depth=priorDepth;GUI.matrix=old;}
-  Event qaPointer;int qaPointerSerial,qaPointerDelivered,qaPointerFrame=-1;
+  [Serializable] internal sealed class QaPointerReceipt {
+   public int serial,frame,hotBefore,hotAfter;public string type;public Vector2 position;public bool consumed;
+  }
+  readonly System.Collections.Generic.List<QaPointerReceipt> qaPointerReceipts=new System.Collections.Generic.List<QaPointerReceipt>();
+  internal System.Collections.Generic.List<QaPointerReceipt> QaPointerReceipts=>qaPointerReceipts;
+  static readonly System.Reflection.MethodInfo qaQueueEvent=typeof(Event).GetMethod("QueueEvent",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic,null,new[]{typeof(Event)},null);
+  Event qaPointer;int qaPointerSerial,qaPointerDelivered,qaNameWidth,qaNameHeight;
+  Vector2 qaNamePointer;bool qaNamePointerKnown;
   internal int QaPointerDelivered=>qaPointerDelivered;
+  internal string QaPointerError{get;private set;}="";
+  bool QaPointerAllowed=>NativeQaSandbox.Active&&Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-ui-overlap-check")>=0;
+  // Observe the actual product button under its current GUI matrix, not a second layout formula.
+  void TrackQaNameButton(Rect button){
+   if(!QaPointerAllowed||Event.current.type!=EventType.Repaint)return;
+   var matrix=GUI.matrix;Vector2 screen=GUIUtility.GUIToScreenPoint(button.center);
+   try{GUI.matrix=Matrix4x4.identity;qaNamePointer=GUIUtility.ScreenToGUIPoint(screen);}
+   finally{GUI.matrix=matrix;}
+   qaNameWidth=Screen.width;qaNameHeight=Screen.height;qaNamePointerKnown=true;
+  }
+  internal bool TryGetQaNamePointer(out Vector2 position){position=qaNamePointer;return QaPointerAllowed&&qaNamePointerKnown&&qaNameWidth==Screen.width&&qaNameHeight==Screen.height;}
   internal int QueueQaPointer(EventType type,Vector2 position){
-   if(!NativeQaSandbox.Active||Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-ui-overlap-check")<0)throw new InvalidOperationException("QA pointer requires explicit isolated overlap run");
+   if(!QaPointerAllowed)throw new InvalidOperationException("QA pointer requires explicit isolated overlap run");
    if(type!=EventType.MouseDown&&type!=EventType.MouseUp)throw new ArgumentException("QA pointer down/up only");
    if(qaPointer!=null)throw new InvalidOperationException("QA pointer still pending");
-   qaPointer=new Event{type=type,button=0,mousePosition=position,clickCount=1};return ++qaPointerSerial;
+   QaPointerError="";
+   if(qaQueueEvent==null){QaPointerError="Unity Event.QueueEvent unavailable";return 0;}
+   qaPointer=new Event{type=type,button=0,mousePosition=position,clickCount=1,commandName="EXO_QA_POINTER_"+(++qaPointerSerial)};
+   try{qaQueueEvent.Invoke(null,new object[]{qaPointer});return qaPointerSerial;}
+   catch(Exception error){QaPointerError="Unity Event.QueueEvent: "+(error.InnerException??error).GetType().Name;qaPointer=null;return 0;}
   }
+  internal void CancelQaPointer(){qaPointer=null;}
   void OnGUI(){
-   Event original=Event.current;bool injected=qaPointer!=null&&original.type==EventType.Layout&&qaPointerFrame!=Time.frameCount;
-   if(injected){Event.current=qaPointer;qaPointer=null;qaPointerFrame=Time.frameCount;}
-   try{if((AutomatedInput||NativeScreenTransition.InputBlocked)&&(Event.current.isKey||Event.current.isMouse||Event.current.type==EventType.ScrollWheel))Event.current.Use();Draw();}
-   finally{if(injected){qaPointerDelivered=qaPointerSerial;Event.current=original;}}
+   // Native queued mouse events enter OnGUI normally: never replace/restore a Layout event.
+   var current=Event.current;bool delivered=qaPointer!=null&&current.rawType==qaPointer.rawType&&current.button==0&&current.commandName==qaPointer.commandName;
+   var receipt=delivered?new QaPointerReceipt{serial=qaPointerSerial,frame=Time.frameCount,type=current.rawType.ToString(),position=current.mousePosition,hotBefore=GUIUtility.hotControl}:null;
+   try{if((AutomatedInput||NativeScreenTransition.InputBlocked)&&(current.isKey||current.isMouse||current.type==EventType.ScrollWheel))current.Use();Draw();}
+   finally{if(delivered){receipt.hotAfter=GUIUtility.hotControl;receipt.consumed=current.type==EventType.Used;qaPointerReceipts.Add(receipt);qaPointerDelivered=receipt.serial;qaPointer=null;}}
   }
   string K(string ko,string en){return Language=="ko"?ko:en;}
   static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;NativeUiAudit.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}

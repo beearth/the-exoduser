@@ -204,6 +204,7 @@ namespace Exoduser.UnityPort
             }
             bool prior=GUI.enabled;
             Rect cancel=new Rect(x,h-84,180,44),create=new Rect(x+200,h-84,180,44);
+            TrackQaNameButton(create);
             var cancelPlate=new Rect(cancel.x+8,cancel.y,cancel.width-16,cancel.height);
             var createPlate=new Rect(create.x+8,create.y,create.width-16,create.height);
             NativeSilverHellUi.ActionPlate(cancelPlate,false,cancel.Contains(Event.current.mousePosition)?1:0,!AutomatedInput&&cancel.Contains(Event.current.mousePosition)&&ExoInput.Mouse(0));

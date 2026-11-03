@@ -250,3 +250,12 @@ Player7603230d 1회에서5해상도 모두 lockedBlocked/nameOpened=true, native
 ## 2026-11-03 15:39 복구 후 인계
 
 최신 공통044c82d760 정상 병합. 복구 HEAD72c395db5의 13:20 수정은 보존했고, NativeUiAudit.TextLayoutBounds를 감사와 푸터에서 공용으로 사용해 수동 가운데 정렬식 차이를 없앴다. 웹 autosave 위치는 유지하며 추가 안내만 y1022부터 네이티브 경계 뒤 한 화면 픽셀 간격으로 올림(최대4회)한다. fr QA 문구·scroll-ink/표면 알파 수정 유지, 검사 임계 완화0. PC 현재 Core/Runtime 오류0, Player/정식 빌드/M1/1410/새 캡처 실행0. 새 Mac 게이트 전 P0 PASS나 전체5차 완료로 올리지 않는다.
+
+
+## 2026-11-03 19:00 Mac 게이트 후속 후보
+
+직전366826269의 Mac 정식 빌드 오류0/M1 23/23은 그 커밋의 결과다. 전체UI는12/1410 중단·메뉴48+직업선택10이며 새 후보의 PASS로 사용하지 않는다. G0 공식 Diablo IV/Last Epoch 공통 UI 관례, 원인·수치·입력 판정은 [UI 겹침 문서의19:00절](UNITY_UI_OVERLAP_20261030.md#2026-11-03-1900-mac-fail--g0수정-경계)에 기록했다.
+
+NativeLobby 실제 생성 버튼 좌표→Unity 네이티브 Event.QueueEvent→실제 OnGUI/GUI.Button을 PC/Mac 공통 기본으로 사용한다. 수신 실패는 UNVERIFIED, 실제 동작 불일치는 FAIL이며 나머지 전체 캡처를 계속한다. 수집 전용 API 준비는 capturePreparedByApi로 표시하고 실제 입력 성공에 포함하지 않는다. DrawSpaced 검정 외곽 그림자 두 패스의 y는3→2 디자인px, alpha.3/좌우±.5px와 본문·자간·검사 임계값은 보존한다.
+
+PC는 컴파일만 한다. Mac 새 정식 빌드1회·같은 패키지 M1 23/23 정상 종료·ko/de/fr×5해상도1410장 issue0/가림 누락0·로딩270장 관측 누락0·scroll-ink4/4·이름 입력5해상도PASS가 다음 관문이다. 입력 UNVERIFIED는 해당 항목만 미검증으로 남기며 전체 게이트 PASS로 승격하지 않는다. 바탕화면·사용자 저장·타인 Player 변경0.

@@ -57372,3 +57372,6 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 - 실제 자기 worktree의 NativeUiAudit.cs·NativePauseMenu.A15Web.cs를 직접 수정. TextLayoutBounds를 공용으로 써 설정 푸터와 감사의 네이티브 글자 정렬을 일치시킨다. 웹 autosave Rect 유지, 추가 안내만 최소 한 화면 픽셀 간격으로 올림(최대4회). 기존 fr QA 언어표·표면 알파/스크롤/ink 수정 보존.
 - 현재 Core121/Runtime241 PC 컴파일 오류0. 이번 재개에서 Unity Player·정식 빌드·M1·UI 캡처/전체 검사 실행0. Mac issue0·가림누락0·실제 ink4/4는 미검증. 과거 이름5/5 및 Player.log 가드 FAIL은 분리 기록.
 - 관련 SSOT: [UNITY_UI_OVERLAP_20261030](engine/UNITY_UI_OVERLAP_20261030.md), [UNITY_PARITY_FIFTH_20261102](engine/UNITY_PARITY_FIFTH_20261102.md). 최신 공통044c82d760 정상 병합, 외부 guard WIP 보존.
+
+
+2026-11-03 PC UI-PARITY 19:00 Mac FAIL 후속: G0 공식 Diablo IV/Last Epoch UI 입력·서체 관례 확인. Layout 이벤트 치환을 Unity Event.QueueEvent 네이티브 루프로 교체하고 실제 생성 버튼 Repaint 좌표·down/up/hotControl 수신 영수증을 사용한다. 이름 입력 PASS/FAIL/UNVERIFIED와 수집 전용 API 준비를 구분해 나머지1410장 수집을 입력 도구 실패로 중단하지 않는다. 자간 글자 외곽 검정 그림자 y3→2 디자인px, 기존 검사 임계값 유지. 최신 공통 cbdcbc282 정상 병합 후 구현 체크포인트이며 PC 컴파일·추가 공통 병합은 후속 기록. 새 Mac 실행 전 issue58→0/nameOpened/시각 PASS 미검증. [범위·G0·수치](engine/UNITY_UI_OVERLAP_20261030.md#2026-11-03-1900-mac-fail--g0수정-경계).

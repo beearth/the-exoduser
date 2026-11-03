@@ -120,6 +120,7 @@ namespace Exoduser.UnityPort
    if(GUI.GetNameOfFocusedControl()=="visual-info-right")Border(right,new Color(.92f,.78f,.53f),2);
    DrawCharacterRail(w,px,railY);
    float actionX=(w-760)/2,cancelWidth=98.563f;Rect cancel=new Rect(actionX,actionY+1.25f,cancelWidth,44),create=new Rect(w*.5f+247.063f,actionY,132.938f,46.5f);
+   TrackQaNameButton(create);
    bool priorEnabled=GUI.enabled;GUI.enabled=priorEnabled;GUI.SetNextControlName("visual-cancel");if(NativeUiAudit.Button(cancel,CharacterDialogLabel("cancel",K("취소","CANCEL")),presentationAction))CloseCharacterCreation();
    GUI.enabled=priorEnabled&&!locked;GUI.SetNextControlName("visual-create");if(NativeUiAudit.Button(create,locked?CharacterDialogLabel("comingSoon",K("출시 준비 중","COMING SOON")):CharacterDialogLabel("create",K("생성","CREATE")),presentationCreateAction))ConfirmCharacterVisual();GUI.enabled=priorEnabled;
    if(GUI.GetNameOfFocusedControl()=="visual-cancel")Border(cancel,new Color(.92f,.78f,.53f),2);

@@ -387,3 +387,23 @@ origin/unity/main 044c82d760을 자기 브랜치에 정상 병합했다. 13:20 �
 TextLayoutBounds가 CalcSize/CalcHeight + GUIStyle.Internal_GetTextRectOffset + 실제 clipping을 한 번 정의하며, 감사 Text와 추가 안내 위치 계산 양쪽이 이를 사용한다. 웹 autosave Rect(96,1004,500,20)는 그대로다. 추가 안내만 y1022에서 시작해 네이티브 saved bottom 뒤 한 화면 픽셀(1/abs(GUI.matrix.m11))을 확보하도록 물리 픽셀 단위로 올림한다(최대4회). 겹침 판정 임계·글자 제외·감사 상자 padding 변경0. 프랑스어 QA 문장은 기존 언어표를 유지한다.
 
 PC는 현재 Core121/Runtime241 소스의 컴파일 오류0만 새로 확인했다. Player·정식 빌드·M1·전체 UI·scroll-ink 재실행0. 직전 Player7603230d의 이름 기능5/5와 Player.log 한 건의 가드 FAIL은 과거 결과 그대로이며 새 실행 PASS로 재사용하지 않는다. 새 후보의 issue18→0·가림누락30→0·실제 ink4/4는 Mac 재검수 대기다.
+
+
+## 2026-11-03 19:00 Mac FAIL — G0·수정 경계
+
+| G0 항목 | 확인·적용 |
+|---|---|
+| 목표·실제 연 증거 | qa/mac-captures-20261103@642a2affe: qa/unity-parity/3668262/REPORT.md, 2560x1600_menu_full.png, 2560x1600_character4_full.png와 두 3x 크롭. 12/1410 중단·메뉴48+직업선택10. 개별 좌표 JSON은 이 Git 증거에 없음 |
+| 레퍼런스 공통 관례 | [Diablo IV 공식 UI 개선](https://news.blizzard.com/en-us/article/23938289/diablo-iv-open-beta-retrospective-transforming-feedback-into-change)의 입력/메뉴 동작 정합, [Last Epoch 공식 UI 변경](https://forum.lastepoch.com/t/last-epoch-shattered-omens-patch-notes/80571/)의 읽기 쉬운 일관된 서체·키/패드 메뉴 탐색·클릭 가능한 스크롤바를 확인. 두 게임에서 도출한 적용 체크리스트: 문구 가독성/입력 수단별 동일한 의미 동작=있음, 표시 위치와 실제 클릭 위치 일치=이번 QA 경로 수정, 모달 뒤 입력 차단/초점 복귀=있음. 새 UI 스킨/자산 제작은 이번 결함 범위에서 뺌 |
+| 가장 큰 차이·선택 제작법 | 실제 화면 자체는 읽히지만 QA 클릭 실패가 나머지1398장을 차단. UI의 실제 Rect·기존 IMGUI 버튼/콜백을 재사용하고 Event.QueueEvent로 네이티브 이벤트 루프에 전달. 제품 상태를 직접 설정한 것을 hit-test 성공으로 세지 않음 |
+| 그림자 조사 | 자간 조판의 외곽 검정 그림자 두 패스는 y+3·x±0.5 디자인px. 네이티브 정렬의 픽셀 반올림으로 16:10에서 (±1,5)물리px가 되면 기존3.1×1600/1080=4.593px 소유 반경을 초과(거리5.099). 메뉴/footer와 직업선택 공통 DrawSpaced 경로의 과도한 외곽 패스를 줄이며 판정 반경은 늘리지 않음. 실제58건 각각이 이 원인인지 새 Mac 원계측으로 확인 필요 |
+| 첫 실물·합격 조건 | PC 컴파일 후 새 SHA로 Mac 정식 빌드1회→동일 패키지 M1 23/23·정상 종료→1410장 issue0/가림 누락0/로딩270장 누락0/scroll-ink4/4. 이름 입력은5해상도 실제 이벤트 전달·lockedBlocked/nameOpened 모두true만 PASS |
+| 중단·미검증 | PC Player/빌드/M1/캡처 실행0. Mac 입력 API 미지원·전달 실패는 해당 입력만 UNVERIFIED로 보존하고 화면 API 준비와 구분해 나머지 수집 계속. 전달된 실제 버튼 동작 불일치는 FAIL 유지. 새 Mac 실제 화면 전 VISUAL VERDICT RETOUCH |
+
+| 이번 구현 | 현행 계약 |
+|---|---|
+| 실제 포인터 | NativeLobby의 실제 생성 버튼 Rect를 Repaint에서 GUIToScreenPoint→identity ScreenToGUIPoint로 관측. 창 원점·DPI·중앙/오른쪽 GUI.matrix를 Unity에 맡김. 기존1790/1018 재계산 제거. PC/Mac 기본은 Event.QueueEvent 네이티브 루프이며 --unity-win-mouse-clicks만 Windows HWND 진단 경로 |
+| 이벤트 수신 | Layout 교체/복원0. down/up별 고유 commandName이 실제 OnGUI에 도착했을 때만 serial 완료. 프레임·좌표·rawType·hotControl 전후·Used를 실제_마우스_역변환.json events에 기록. 전달 제한2s·이후 자기 전환 id 실패/취소 확인·전환 제한15s 보존 |
+| 판정·계속 | checks의 status=PASS/FAIL/UNVERIFIED, lockedBlocked/nameOpened 원값 보존. 전송 API 없음/수신 시간초과는 UNVERIFIED, 전달 후 상태 불일치는 FAIL. 입력 실패만으로 전체 수집을 throw하지 않음. 필요할 때만 수집 화면을 제품 API로 준비하고 capturePreparedByApi=true; 이 준비는 입력 PASS에 포함하지 않음 |
+| 검정 그림자 | DrawSpaced의 세 패스 (0,+1)/alpha.9, (+.5,+2)·(-.5,+2)/alpha.3. 종전 외곽 y+3에서+2로 축소. 실제본문/번역/자간/글자 크기·기하 교차 .5px·frontend-black-shadow 허용반경3.1×화면높이/1080·분석기 제외 정책 불변 |
+| 증거 한계 | 메뉴48+직업선택10은 직전 Mac 실패값. 제품/검수 코드 변경 후 새 숫자는 PC에서 측정하지 않음. 58→0·nameOpened·1410장·scroll-ink 통과 주장은 Mac 새 실행 전 하지 않음 |
