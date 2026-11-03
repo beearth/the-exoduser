@@ -221,7 +221,7 @@ namespace Exoduser.UnityPort
   {
    bool hover=r.Contains(Event.current.mousePosition),pressed=!AutomatedInput&&hover&&ExoInput.Mouse(0);
    if(hover&&!pressed)NativeSilverHellUi.ButtonFocus(r);NativeSilverHellUi.ActionPlate(r,primary,hover?1:0,pressed,28,6);
-   var label=new GUIStyle(normal){font=NativeSilverHellUi.Font()??normal.font,fontSize=18,fontStyle=FontStyle.Normal};label.normal.textColor=NativeSilverHellUi.Bright;Label(r,text,label,TextAnchor.MiddleCenter);
+   var label=new GUIStyle(normal){font=NativeSilverHellUi.Font()??normal.font,fontSize=18,fontStyle=FontStyle.Normal};label.normal.textColor=hover?NativeSilverHellUi.PlateTextHot:NativeSilverHellUi.PlateText;Label(r,text,label,TextAnchor.MiddleCenter);
    return NativeUiAudit.Button(r,GUIContent.none,GUIStyle.none);
   }
   string LobbyLanguageLabel(string code)

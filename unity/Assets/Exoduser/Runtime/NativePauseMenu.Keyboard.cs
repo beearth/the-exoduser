@@ -68,7 +68,10 @@ namespace Exoduser.UnityPort
    bool hover=GUI.enabled&&rect.Contains(Event.current.mousePosition);bool pressed=hover&&ExoInput.Mouse(0);
    if(GUI.enabled&&(hover||selected)&&!pressed)NativeSilverHellUi.ButtonFocus(rect);
    NativeSilverHellUi.ActionPlate(rect,primary,hover||selected?1:0,pressed,36,8);
-   var label=new GUIStyle(style){font=font,fontStyle=FontStyle.Normal,alignment=TextAnchor.MiddleCenter,padding=new RectOffset(),margin=new RectOffset()};label.normal.textColor=GUI.enabled?NativeSilverHellUi.Bright:NativeSilverHellUi.Dim;
+   // 글자 전용 스타일: GUI.skin.button에서 복사하면 기본 스킨의 밝은 회색 그라데이션 바탕이 글자와 함께 그려진다(11-03 "플라스틱 상자" 원인).
+   var label=new GUIStyle(GUI.skin.label){font=NativeSilverHellUi.TextFont(font,text),fontSize=style.fontSize,fontStyle=FontStyle.Normal,alignment=TextAnchor.MiddleCenter,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset()};
+   label.normal.background=null;label.hover.background=null;label.active.background=null;label.focused.background=null;
+   label.normal.textColor=!GUI.enabled?NativeSilverHellUi.Dim:(hover||selected)?NativeSilverHellUi.PlateTextHot:NativeSilverHellUi.PlateText;
    NativeSilverHellUi.Label(rect,text,label);return NativeUiAudit.Button(rect,GUIContent.none,GUIStyle.none);
   }
   bool MenuButton(Rect rect,string text,int index,GUIStyle style){PointAt(rect,index);bool primary=page==PausePage.Main&&index==0||page==PausePage.Quit&&index==1;bool clicked=MetalAction(rect,text,primary,navigation.Focused&&navigation.Cursor==index,style);if(clicked)navigation.Fence();return clicked;}

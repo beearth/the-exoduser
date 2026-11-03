@@ -11,9 +11,10 @@ namespace Exoduser.UnityPort
   void CharacterDeleteStyles()
   {
    if(deleteMessageStyle!=null)return;
-   deleteMessageStyle=new GUIStyle(characterSmall){fontSize=18,alignment=TextAnchor.MiddleCenter,wordWrap=true};deleteMessageStyle.normal.textColor=new Color(.8f,.667f,.467f);
-   deleteConfirmStyle=new GUIStyle(characterButton){fontSize=17,alignment=TextAnchor.MiddleCenter};deleteConfirmStyle.normal.textColor=new Color(1,.267f,.267f);
-   deleteCancelStyle=new GUIStyle(characterButton){fontSize=17,alignment=TextAnchor.MiddleCenter};deleteCancelStyle.normal.textColor=new Color(.667f,.533f,.4f);
+   // 확인 창 글자도 게임 명조(Hahmlet) 토큰. 스킨 버튼에서 복사하던 기본 회색 그라데이션 바탕을 쓰지 않는다(2026-11-03 재질 정리).
+   deleteMessageStyle=new GUIStyle(GUI.skin.label){font=NativeSilverHellUi.Font(true),fontSize=19,alignment=TextAnchor.MiddleCenter,wordWrap=true,padding=new RectOffset(),margin=new RectOffset()};deleteMessageStyle.normal.textColor=NativeSilverHellUi.PlateText;
+   deleteConfirmStyle=new GUIStyle(GUI.skin.label){font=NativeSilverHellUi.Font(true),fontSize=17,alignment=TextAnchor.MiddleCenter,wordWrap=false,padding=new RectOffset(),margin=new RectOffset()};deleteConfirmStyle.normal.textColor=NativeSilverHellUi.PlateTextDanger;
+   deleteCancelStyle=new GUIStyle(deleteConfirmStyle);deleteCancelStyle.normal.textColor=NativeSilverHellUi.PlateText;
   }
   public bool CharacterDeleteOpen {get{return characterStep==3;}}
   public bool RequestCharacterDelete(int index)
@@ -45,17 +46,19 @@ namespace Exoduser.UnityPort
   void DrawCharacterDelete()
   {
    CharacterDeleteStyles();Fill(new Rect(0,0,1920,1080),new Color(0,0,0,.85f));
-   Rect panel=new Rect(727,425,466,230);Fill(panel,new Color(.102f,.078f,.063f));Border(panel,new Color(.4f,.2f,.133f),2);
+   Rect panel=new Rect(727,425,466,230);NativeSilverHellUi.Panel(panel,28,8);
    string message=deletingName+CharacterDialogLabel("deleteSuffix",K(" 캐릭터를 정말 삭제하시겠습니까?"," — Really delete this character?"));
-   Label(new Rect(759,445,402,104),message,deleteMessageStyle,TextAnchor.MiddleCenter);
+   deleteMessageStyle.font=NativeSilverHellUi.TextFont(NativeSilverHellUi.Font(true),message);Label(new Rect(759,445,402,104),message,deleteMessageStyle,TextAnchor.MiddleCenter);
    var confirm=new Rect(784,562,170,46);var cancel=new Rect(966,562,170,46);
-   Fill(confirm,new Color(.22f,.035f,.035f));Border(confirm,new Color(.533f,0,0),1);
-   Fill(cancel,new Color(.063f,.055f,.047f));Border(cancel,new Color(.333f,.267f,.2f),1);
+   bool overConfirm=confirm.Contains(Event.current.mousePosition),overCancel=cancel.Contains(Event.current.mousePosition);
+   NativeSilverHellUi.ActionPlate(confirm,false,deleteSelected||overConfirm?1:0,!AutomatedInput&&overConfirm&&ExoInput.Mouse(0),22,2);
+   NativeSilverHellUi.ActionPlate(cancel,false,!deleteSelected||overCancel?1:0,!AutomatedInput&&overCancel&&ExoInput.Mouse(0),22,2);
    GUI.SetNextControlName("character-delete-confirm");if(DecisionSoundButton(confirm))ConfirmCharacterDelete();
    GUI.SetNextControlName("character-delete-cancel");if(NativeUiAudit.Button(cancel,"",GUIStyle.none))CloseCharacterCreation();
-   Label(confirm,CharacterDialogLabel("confirm",K("확인","Confirm")),deleteConfirmStyle,TextAnchor.MiddleCenter);
-   Label(cancel,CharacterDialogLabel("cancel",K("취소","Cancel")),deleteCancelStyle,TextAnchor.MiddleCenter);
-   Border(deleteSelected?confirm:cancel,new Color(.788f,.663f,.38f),2);
+   string confirmText=CharacterDialogLabel("confirm",K("확인","Confirm")),cancelText=CharacterDialogLabel("cancel",K("취소","Cancel"));
+   deleteConfirmStyle.font=NativeSilverHellUi.TextFont(NativeSilverHellUi.Font(true),confirmText);deleteCancelStyle.font=NativeSilverHellUi.TextFont(NativeSilverHellUi.Font(true),cancelText);
+   Label(confirm,confirmText,deleteConfirmStyle,TextAnchor.MiddleCenter);
+   Label(cancel,cancelText,deleteCancelStyle,TextAnchor.MiddleCenter);
    if(deleteFocus&&Event.current.type==EventType.Repaint){GUI.FocusControl(deleteSelected?"character-delete-confirm":"character-delete-cancel");deleteFocus=false;}
   }
  }
