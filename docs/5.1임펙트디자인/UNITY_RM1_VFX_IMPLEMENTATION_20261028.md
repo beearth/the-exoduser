@@ -296,3 +296,13 @@ Graph 본체 대신 기존 원화 경로를 유지한다. 실제 첫 Player에�
 
 
 보스 검수의 실제 필드 로딩 대기는45초 상한이다. 검기 centeredProjectiles 역할 registry와 MeasureProjectileAnchorError는 본인 발사체만 다루며 배우 FootLift/타 팀 투영을 변경하지 않는다.
+
+### 11-03 최신 로비 전환과 임팩트 검수 진입의 충돌
+
+| 항목 | 현행 검수 계약 |
+|---|---|
+| 실제 RED | e611548의 정식 b978a598 및 M1 재검사6e72c093(23/23·USER_SAVE0) 후 before9e20085f는300PNG지만 접점/반응/넉백0으로 실패. raw0010은 필드 대신 로비였다. 실패 원본을 보존하며 시각 증거로 채택하지 않음 |
+| 원인 | 최신 ShowLobby는 return-lobby 전환을 비동기 요청한다. 이전 fixture는 같은 프레임에 SelectPreview/EnterNativeTest를 호출해 뒤늦은 로비 swap이 Playing 상태를 덮었다. 실제 전투 상태와 표시/관측이 분리됨 |
+| 진입 | 두 impact 검수만 PrepareImpactReviewEntry를 사용. 기존 전환 종료15초 상한 → 실제 ShowLobby 요청 → 해당 전환 종료15초 상한 → 실제 Lobby 페이지 확인 → SelectPreview/EnterNativeTest 성공 및 !IsBlocking 확인. 그 뒤 첫연습 종료/입력 fence 해제·Running=false. 기존 실제 필드 조명45초 대기는 유지 |
+| 실패 | 진입 조건 불충족이면 entry-failure.json 기록/exit2. 전환을 끄거나 AutomatedInput/LegacyFrontendFixture 우회로 제품 흐름을 바꾸지 않음. 일반 플레이·Core·입력·UI 전환 코드 변경0 |
+| 검증 | 이 변경은 QA 진입만 수정. 실제 RED를 근거로 새 정식 같은패키지 M1 및 탄막 전후 촬영에서 검증하며, 이전 M1/영상으로 대체하지 않음 |

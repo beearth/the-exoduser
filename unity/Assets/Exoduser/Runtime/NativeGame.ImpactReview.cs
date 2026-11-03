@@ -12,6 +12,32 @@ namespace Exoduser.UnityPort
 {
     public sealed partial class NativeGame
     {
+        bool impactReviewEntryReady;
+        IEnumerator PrepareImpactReviewEntry(string output)
+        {
+            impactReviewEntryReady=false;
+            float deadline=Time.realtimeSinceStartup+15;
+            while(NativeScreenTransition.Busy&&Time.realtimeSinceStartup<deadline)yield return null;
+            if(!NativeScreenTransition.Busy)
+            {
+                lobby.ShowLobby();deadline=Time.realtimeSinceStartup+15;
+                while(NativeScreenTransition.Busy&&Time.realtimeSinceStartup<deadline)yield return null;
+                if(!NativeScreenTransition.Busy&&lobby.Flow.Page==LobbyPage.Lobby)
+                {
+                    lobby.SelectPreview();
+                    if(lobby.EnterNativeTest()&&!lobby.IsBlocking)
+                    {
+                        EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;
+                        impactReviewEntryReady=true;
+                    }
+                }
+            }
+            if(!impactReviewEntryReady)
+            {
+                File.WriteAllText(Path.Combine(output,"entry-failure.json"),"{\"passed\":false,\"reason\":\"lobby transition did not complete before impact fixture entry\"}");
+                Debug.LogError("Impact fixture entry failed; refusing to tick a hidden or replaced Simulation");Application.Quit(2);
+            }
+        }
         [Serializable] sealed class ImpactBossReceipt
         {
             public string scope="실제 GPU Player 현행 lit XY 보스방10초: 실제 게이트·아레나 진입 후 Core StartPattern에 잠복/충격파/강타를 요청하는 통제 fixture. 이후 실제 Core tick·이벤트·원화 소비. 자연 패턴선택·회피·진짜3D 지형 아레나·전체 보스 완성 증거 아님";
@@ -26,7 +52,8 @@ namespace Exoduser.UnityPort
             AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;Application.targetFrameRate=60;Time.captureDeltaTime=1f/60;
             smokeActive=true;dropSmoke=true;pauseSmoke=true;Running=false;
             int width,height;if(!int.TryParse(Argument("-impact-width"),out width))width=1600;if(!int.TryParse(Argument("-impact-height"),out height))height=900;
-            Screen.SetResolution(width,height,FullScreenMode.Windowed);lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;
+            Screen.SetResolution(width,height,FullScreenMode.Windowed);
+            yield return PrepareImpactReviewEntry(output);if(!impactReviewEntryReady)yield break;
             yield return new WaitForSecondsRealtime(.6f);
             // Finish the real field lighting load before walking its gate. In the arena,
             // NativeRemodel3D.Active is deliberately false: its lit XY presentation has a separate camera.
@@ -92,8 +119,8 @@ namespace Exoduser.UnityPort
             smokeActive=true;dropSmoke=true;pauseSmoke=true;Running=false;
             int width,height;if(!int.TryParse(Argument("-impact-width"),out width))width=1600;if(!int.TryParse(Argument("-impact-height"),out height))height=900;
             width=Mathf.Clamp(width,1600,3840);height=Mathf.Clamp(height,900,2160);
-            Screen.SetResolution(width,height,FullScreenMode.Windowed);lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();
-            EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;
+            Screen.SetResolution(width,height,FullScreenMode.Windowed);
+            yield return PrepareImpactReviewEntry(output);if(!impactReviewEntryReady)yield break;
             yield return new WaitForSecondsRealtime(.6f);
             float deadline=Time.realtimeSinceStartup+45;
             while(NativeRemodel3D.Requested&&!NativeRemodel3D.Active&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
