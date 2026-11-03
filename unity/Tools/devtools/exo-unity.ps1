@@ -45,7 +45,7 @@ if($Command -ne 'install-bin' -and $env:EXO_UNITY_NO_FORWARD -ne '1' -and
     exit $LASTEXITCODE
 }
 
-$ExoUnityVersion = '2026.11.03-slots3'
+$ExoUnityVersion = '2026.11.04-winenv'
 $MaxPlayerSlots = 2
 Import-Module (Join-Path $PSScriptRoot 'QueueTurn.psm1') -Force
 try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false) } catch { }
@@ -611,7 +611,47 @@ function Acquire-Slot([string]$Role, [string]$wt, [int]$ownerPid, [string]$queue
 }
 
 # ------------------------------------------------------------------ start
+# 11-04: Codex node_repl 등 제한된 부모는 ProgramData·ProgramFiles·APPDATA·ComSpec·PATHEXT 없이 이 CLI를 띄운다.
+# 그 환경을 물려받은 Unity는 UnityPackageManager.exe가 IPC를 열지 못해 30초 뒤 exit 1로 끝난다(r14·r15).
+# 빈 변수만 이 프로세스 범위에서 Windows 알려진 폴더 값으로 채운다. 이미 있는 값·시스템 설정은 바꾸지 않는다.
+function Repair-WindowsEnv {
+    $sf = [Environment+SpecialFolder]
+    $win = [Environment]::GetFolderPath($sf::Windows)
+    $want = [ordered]@{
+        'SystemRoot' = $win; 'windir' = $win; 'SystemDrive' = $win.Substring(0, 2)
+        'ComSpec' = (Join-Path $win 'System32\cmd.exe')
+        'USERPROFILE' = [Environment]::GetFolderPath($sf::UserProfile)
+        'APPDATA' = [Environment]::GetFolderPath($sf::ApplicationData)
+        'LOCALAPPDATA' = [Environment]::GetFolderPath($sf::LocalApplicationData)
+        'ProgramData' = [Environment]::GetFolderPath($sf::CommonApplicationData)
+        'ALLUSERSPROFILE' = [Environment]::GetFolderPath($sf::CommonApplicationData)
+        'ProgramFiles' = [Environment]::GetFolderPath($sf::ProgramFiles)
+        'ProgramW6432' = [Environment]::GetFolderPath($sf::ProgramFiles)
+        'ProgramFiles(x86)' = [Environment]::GetFolderPath($sf::ProgramFilesX86)
+        'CommonProgramFiles' = [Environment]::GetFolderPath($sf::CommonProgramFiles)
+        'CommonProgramW6432' = [Environment]::GetFolderPath($sf::CommonProgramFiles)
+        'CommonProgramFiles(x86)' = [Environment]::GetFolderPath($sf::CommonProgramFilesX86)
+    }
+    $fixed = @()
+    foreach ($k in $want.Keys) {
+        if (-not [Environment]::GetEnvironmentVariable($k, 'Process') -and $want[$k]) { [Environment]::SetEnvironmentVariable($k, $want[$k], 'Process'); $fixed += $k }
+    }
+    $prof = [Environment]::GetEnvironmentVariable('USERPROFILE', 'Process')
+    if (-not $env:HOMEDRIVE) { $env:HOMEDRIVE = $prof.Substring(0, 2); $fixed += 'HOMEDRIVE' }
+    if (-not $env:HOMEPATH) { $env:HOMEPATH = $prof.Substring(2); $fixed += 'HOMEPATH' }
+    foreach ($k in 'TEMP', 'TMP') { if (-not [Environment]::GetEnvironmentVariable($k, 'Process')) { [Environment]::SetEnvironmentVariable($k, (Join-Path $env:LOCALAPPDATA 'Temp'), 'Process'); $fixed += $k } }
+    if (@($env:PATHEXT -split ';') -notcontains '.EXE') {
+        $m = [Environment]::GetEnvironmentVariable('PATHEXT', 'Machine'); if (-not $m) { $m = '.COM;.EXE;.BAT;.CMD' }
+        $env:PATHEXT = $m; $fixed += 'PATHEXT'
+    }
+    $sys = Join-Path $win 'System32'
+    if (@($env:Path -split ';' | ForEach-Object { $_.TrimEnd('\') }) -notcontains $sys) { $env:Path = $sys + ';' + $win + ';' + $env:Path; $fixed += 'Path' }
+    return , $fixed
+}
+
 function Set-DotnetEnv {
+    $fixed = Repair-WindowsEnv
+    if ($fixed.Count) { Say ('Windows 기본 환경 보정(이 프로세스만): ' + ($fixed -join ', ')) }
     $env:DOTNET_ADD_GLOBAL_TOOLS_TO_PATH = 'false'; $env:DOTNET_SKIP_FIRST_TIME_EXPERIENCE = '1'
     $env:DOTNET_NOLOGO = '1'; $env:DOTNET_CLI_HOME = 'E:/exoduser-wt/_dotnet-home'
 }
