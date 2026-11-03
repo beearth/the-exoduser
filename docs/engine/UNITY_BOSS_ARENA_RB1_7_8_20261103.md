@@ -28,8 +28,22 @@ fan/chaseAoe/summon/tideWave/seekerMines는 슬롯·실행기를 남기고 Phase
 
 ## RB1-8a
 
-착수 예정: 34°/FOV46.9453/전방1.45 고정, 보스 생존~침강동안18.3·복귀16.5·0.6초 전환. BossArenaLayout 기반 회색 바닥·외곽3~6m·Core 기둥4개3.2m. GroundY 아레나 분기·2D 폴백. 미술마감8d는 맵 총괄이며8b·8c로 승격하지 않는다.
+소스 구현·Roslyn 컴파일 완료, Mac 실게임 판정 대기: 34°/FOV46.9453/전방1.45 고정, 보스 생존~침강동안18.3·복귀16.5·0.6초 전환. BossArenaLayout 기반 회색 바닥·외곽3~6m·Core 기둥4개3.2m. GroundY 아레나 분기·2D 폴백. 미술마감8d는 맵 총괄이며8b·8c로 승격하지 않는다.
 
 ## Mac 검수 인자
 
 <Player경로> --remodel3d --unity-druid-remodel --unity-boss-direct 0 --unity-mute --unity-qa-sandbox <격리프로필경로> -screen-width 1920 -screen-height 1080 -logFile <로그경로>. 같은 SHA3840×1080도 검수한다. 보스직행 강제검수와 자연진입·퇴장 판정을 구분한다.
+
+
+## RB1-8a 검증 범위와 다음 관문
+
+- NativeArena3DPlan은BossArenaLayout4/5/0의평지·벽1의3~6m연속회색외곽·경계면을만든다. 128타일(51.2m) overscan, UInt32메시. 실제Core기둥반경·위치로높이3.2m기둥표시. 충돌격자변경0.
+- NativeGame.RemodelArena는3D진입·2D폴백·필드표시복원·GroundY평지분기·생존/침강뒤카메라복귀를연결한다. 기존필드카메라의피치/FOV/전방/배우크기를보존한다.
+- CPU13검사/0실패: 충돌타일불변,전체top커버·floor수,벽3~6m,유효정점·인덱스·상향면,출구벽→바닥,16.5→17.4→18.3및복귀0.6초·전환첫순간튐0. 이검사는화면증거가아니다.
+- 최종Roslyn Player/Editor5어셈블리오류0(Core121/Runtime255/Editor57). 동일컴파일호출의PowerShell대기가먼저끝나완료영수증·실제새로그·프로세스종료를읽어확인했으며컴파일재실행은하지않았다.
+- Mac최우선: 남쪽진입·네모서리에서높은전경벽이영웅·보스를가리는지,1920/3840의검은틈·영웅크기10~12%·빌보드접지·암전진입/출구/재시도/침강복귀·60fps. 현재회색벽은컷어웨이없음,기둥반투명·7기술장판투영은8c미구현. 화면이없어기능통합·visual PASS아님.
+- 8b(필드와같은톤/재질·독액·똑바른횃불)·8c(장판·가림)·8d(맵총괄미술)는미착수. 무료,USER_SAVE0,Library복사0,사용자실행본교체0.
+
+## MAP PRODUCTION REPORT
+
+STAGE=1-1 보스 아레나8a; MASTER=기존Core원형방·남진입·북출구; OUTER MASS=4방향닫힌회색상부3~6m·overscan51.2m; LARGE/MEDIUM=타일연속면·보행경계수직면(최종숲미술미구현); GROUND=y0평지·그림자·재질미착수; PLAYABLE=Core충돌/동선불변·전투가독성Mac미검증; LANDMARK=실제Core4기둥3.2m; CAMERA QA=START/ARENA/SIDE L/R/EXIT모두Mac대기; TECH QA=CPU13/0·Roslyn오류0·실성능/그림자/로딩/시임미검증; FILES=자기아레나표현·정본만; GIT=자기브랜치비강제push·줄기병합0·배포0; VISUAL VERDICT=미검증; NEXT PASS=Mac8a판정→결함수정후8b.

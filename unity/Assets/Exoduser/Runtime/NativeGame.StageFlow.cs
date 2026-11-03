@@ -117,6 +117,7 @@ namespace Exoduser.UnityPort
                 foreach (var ev in enemies.Values) { Destroy(ev.body.gameObject); Destroy(ev.walk.gameObject); }
                 enemies.Clear(); damage.Clear(); ClearDropViews(); renderedTick = -1;
             }
+            arenaView?.SetVisible(!NativeRemodel3D.ArenaActive);
             if (arenaView != null && !arenaViewWasOpen && flow.Exits.Count > 0)
             {
                 var ex = flow.Exits[0]; arenaView.Rebuild(true, ex.X, ex.Y); arenaViewWasOpen = true;
