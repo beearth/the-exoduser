@@ -29,3 +29,13 @@
 증거 고정 위치: I:/EXODUSER-Storage/codex-takeover/parry-g2/의 oracle-audit.json, classification-before-fix.json, baseline-current/provenance.json·baseline.log·oracle-result.json, enemy-hurt-oracle/oracle-result.json·rules.log, assembly-compile.log·compile-current/result.json. 바이너리/RSP는 확인 후 정리한다.
 
 Mac §8 비율·회복·그로기·화면과 M1/자동3판/사람3판은 미확인이다.
+
+## 최신 본편 병합 검증 (2026-11-03)
+
+- G2 `87a77a11f700ceb32b1704700343895296a38869` 위에 최신 `origin/unity/main`의 `8e4e358e622bb6d1a6466cc7e1915fd47dc2bb33`를 병합했다(`8c5f967d7` 이후). Core 충돌은 없었다.
+- 문서 2개는 양쪽 기록을 보존했다. 번역 목록의 최신 재번호 기록을 유지하고 G2 DANGER는 No.3667→4249 이력을 남겼다. NativeGame은 최신 사망 중 부활문구 차단과 새 VFX Update 인자를 유지하면서 G2 초기화·근접 예고를 연결했다.
+- 최신 RETOUCH 3의 따뜻한 흰 선 스파크·근접 완벽 패링만 섬광·PARRY 글자 미표시를 유지했다. G2 근접 플래그와 흔들림 데이터도 연결했다. 기존 두 선택 인자 `--parry-feedback-push-in`(G2 위치 밀기)와 `--unity-parry-camera=pushin`(최신 VFX 확대)을 보존했으며 비교 검수에서는 각각 별도로 사용한다.
+- 병합 뒤 G2 규칙 1회: 86개/실패0. 적 피격 oracle `--a-plan` 1회: 6,066,962개/기존2318건. 전체 실패 다중집합 대조 누락0·신규0, A안 기대값372개. 기존 분기점 결과를 재사용했으며 분기점 재실행은 하지 않았다.
+- PC Unity Roslyn DLL 참조 컴파일 1회: Player Core126/Runtime263, Editor Core126/Runtime263/Editor58, 5개 어셈블리 오류0. Unity/Player 시작·게임 빌드 없음. 기존 다른 Unity 프로세스는 조작하지 않았다.
+- `.meta`의 로컬 수정으로 병합이 거부되지 않아 동일내용 스테이징 우회는 사용하지 않았다. 병합 전부터 있던 누락 에셋·0바이트 로딩 PNG·guard baseline 변경은 커밋에서 제외했다.
+- 최종 병합 SHA와 push 확인은 `I:/EXODUSER-Storage/codex-takeover/parry-g2/REPORT.md` 맨 위에 기록한다. CTO fast-forward·Mac 실게임/화면 판정은 별도다.

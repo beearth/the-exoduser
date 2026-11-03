@@ -43,13 +43,14 @@ namespace Exoduser.UnityPort
             if (!m1Headless) { ScreenCapture.CaptureScreenshot(Path.Combine(m1Caps, name + ".png")); yield return null; yield break; }
             const int w = 1600, h = 900;
             var rt = RenderTexture.GetTemporary(w, h, 24, RenderTextureFormat.ARGB32);
-            var previousTarget = view.targetTexture; var previousActive = RenderTexture.active; Texture2D tex = null;
+            var captureCamera=HudCamera;
+            var previousTarget = captureCamera.targetTexture; var previousActive = RenderTexture.active; Texture2D tex = null;
             try
             {
-                view.targetTexture = rt; view.Render(); view.targetTexture = previousTarget;
+                captureCamera.targetTexture = rt; captureCamera.Render(); captureCamera.targetTexture = previousTarget;
                 m1GuiTarget = rt;                       // the next Repaint (if any) draws the IMGUI over this frame's world
             }
-            catch (Exception e) { view.targetTexture = previousTarget; Debug.LogWarning("[M1] headless world render failed: " + e.Message); }
+            catch (Exception e) { captureCamera.targetTexture = previousTarget; Debug.LogWarning("[M1] headless world render failed: " + e.Message); }
             yield return null; yield return new WaitForEndOfFrame();
             m1GuiTarget = null;
             try
@@ -58,6 +59,41 @@ namespace Exoduser.UnityPort
                 File.WriteAllBytes(Path.Combine(m1Caps, name + ".png"), tex.EncodeToPNG());
             }
             finally { RenderTexture.active = previousActive; RenderTexture.ReleaseTemporary(rt); if (tex != null) Destroy(tex); }
+        }
+        // No simulation Tick in this probe. Capture the real Q contact once and
+        // show that identical contact at +4 ticks through two isolated views.
+        IEnumerator M1ParryCameraComparison(FeedbackEvent qContact) {
+            var sim=Simulation;var p=sim.Player;
+            var restore=sim.CaptureParryProbeState();var pending=sim.Feedback.ToArray();
+            var previous=combatImpacts;var show=previous.HideForProbe();var rng=UnityEngine.Random.state;
+            float savedZoom=camZoom,savedSize=view.orthographicSize;var savedPosition=view.transform.position;
+            var savedRotation=view.transform.rotation;var savedProjection=view.projectionMatrix;var savedShake=hd2dCameraShake;
+            var savedMarker=r3Marker!=null?r3Marker.position:Vector3.zero;
+            var savedLens=r3Vcam!=null?r3Vcam.Lens:default;
+            var savedR3Position=r3Cam!=null?r3Cam.transform.position:Vector3.zero;
+            var savedR3Rotation=r3Cam!=null?r3Cam.transform.rotation:Quaternion.identity;
+            float savedR3Fov=r3Cam!=null?r3Cam.fieldOfView:0;
+            Exoduser.UnityPort.Vfx.CombatImpactView probe=null;
+            try {
+                if(qContact==null)throw new InvalidOperationException("M1 camera comparison requires a real Q parry");
+                p.State="sBlock";p.StateTicks=0;p.Iframes=0;sim.Feedback.Clear();
+                // Reuse the first real Q event; do not award or simulate another parry.
+                var contact=new FeedbackEvent{Kind=qContact.Kind,Step=qContact.Step,Source=qContact.Source,SampleKey=qContact.SampleKey,
+                    X=qContact.X,Y=qContact.Y,Angle=qContact.Angle,Tick=sim.TickCount-4};
+                foreach(bool pushin in new[]{false,true}) {
+                    camZoom=savedZoom;UnityEngine.Random.state=rng;
+                    probe=new Exoduser.UnityPort.Vfx.CombatImpactView(transform){ParryPushIn=pushin};combatImpacts=probe;
+                    probe.Handle(contact);probe.Flash(contact);
+                    yield return M1Shot(pushin?"06-parry-q-pushin":"06-parry-q-shake");
+                    probe.Dispose();probe=null;
+                }
+            } finally {
+                if(probe!=null)probe.Dispose();combatImpacts=previous;restore();sim.Feedback.Clear();foreach(var evt in pending)sim.Feedback.Enqueue(evt);
+                show();UnityEngine.Random.state=rng;camZoom=savedZoom;hd2dCameraShake=savedShake;
+                view.transform.SetPositionAndRotation(savedPosition,savedRotation);view.orthographicSize=savedSize;view.projectionMatrix=savedProjection;
+                if(r3Marker!=null)r3Marker.position=savedMarker;if(r3Vcam!=null)r3Vcam.Lens=savedLens;
+                if(r3Cam!=null){r3Cam.transform.SetPositionAndRotation(savedR3Position,savedR3Rotation);r3Cam.fieldOfView=savedR3Fov;}
+            }
         }
         // status: "ok", "fail", "missing", "pending-core" (needs the boss Core, not a flow gap)
         void M1Add(string id, string name, string status, string note, string cap)
@@ -155,6 +191,7 @@ namespace Exoduser.UnityPort
             for (int i = 0; i < 60; i++) StepInput(0, 0, p.X + 300, p.Y, false, false);
             p.Iframes = 0; p.State = "idle"; sim.SbCd = 0; int parries = sim.ParryCount; float hpq = p.Hp;
             sim.SetPlayerCombatInput(true, false, false); StepInput(0, 0, p.X + 300, p.Y, false, false); sim.HurtPlayer(500);
+            FeedbackEvent qContact=null;foreach(var evt in sim.Feedback)if(evt.Kind==FeedbackKind.Parry)qContact=evt;
             yield return M1Shot("06-parry");
             yield return M1Shot("06-parry-q");
             bool q = sim.ParryCount == parries + 1 && p.Hp >= hpq;
@@ -168,6 +205,7 @@ namespace Exoduser.UnityPort
             var restoreParryCapture = sim.CaptureParryProbeState();
             try { p.Iframes = 0; sim.HurtPlayer(500); yield return M1Shot("06-parry-shield"); }
             finally { restoreParryCapture(); }
+            yield return M1ParryCameraComparison(qContact);
             for (int i = 0; i < 60 && p.State != "idle"; i++) StepInput(0, 0, p.X + 300, p.Y, false, false);
             M1Add("06", "parry (Q) and shield strike (E)", q && eDraw && eBash && sim.BashStrikeCount == bashes0 + 1 ? "ok" : "fail", "Q parry " + q + ", E sDraw " + eDraw + " sBash " + eBash + " strike " + (sim.BashStrikeCount - bashes0) + " hits " + sim.BashHitCount + "; E projectile reflection not ported (B07b doc), no sBlock/sBash sprite", "06-parry.png");
 

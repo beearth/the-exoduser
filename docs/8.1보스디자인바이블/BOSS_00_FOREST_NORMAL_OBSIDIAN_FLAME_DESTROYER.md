@@ -82,11 +82,13 @@
 
 | 항목 | 현재 코드값 |
 |---|---|
-| `HELL_BOSSES[0][0]` | `흑요염 파괴자` |
-| `_EN['흑요염 파괴자']` | `Obsidian Flame Destroyer` |
-| `STG[0].be` | `EL.F` |
-| `_BOSS_MOVESET[0]` | 기존 si0 Set 유지 |
+| `HELL_BOSSES[0][0]` | `다크드루이드` (흑요염 파괴자는 si0에서 해제됨) |
+| `_EN['흑요염 파괴자']` | `Obsidian Flame Destroyer` (번역 키만 잔존) |
+| `STG[0].be` | `EL.P` (`HELL_THEMES[0].be`, 썩은 숲 공통) |
+| `_BOSS_MOVESET[0]` | `new Set(_BOSS_MOVESET[3])` — 다크드루이드 si3 무브셋 복사(23종, `burrowStrike`·`seekerMines` 포함, `cageTrap` 제외). 위 §3 표는 흑요염 당시 기록 |
+| `_CODEX_BOSS[0]` | `_CODEX_BOSS[3]`(드루이드, `use2D`/`anim`, dw 9.3/dh 14.1)로 대체. `STAGE1_CODEX_BOSS_SKIN` 로더·`STAGE1_CODEX_BOSS_MOTION` 표는 코드에 잔존 |
 | `_BOSS_SFX[0]` | `boss_howl/0.7`, `death_boss/0.7`, `boss_hit/0.7`, `monster_hurt/0.7` |
+| PNG 크기 | `stage1_codex_lava_warbringer.png` 1024×1536 |
 
 ## 6. 후속 제작 계획
 

@@ -7,7 +7,7 @@ $ErrorActionPreference='Stop'
 $tokens=$null;$errors=$null;$ast=[Management.Automation.Language.Parser]::ParseFile($source,[ref]$tokens,[ref]$errors)
 if($errors.Count){throw $errors[0]}
 # Import full definitions at script scope (including their parameter lists).
-$functions=@('Read-UiOverlapSummary','Invoke-UiOverlapCheck','ReadJson','WriteJson','Cmd-Run','Update-AttemptState','Prop')
+$functions=@('Read-UiOverlapSummary','Invoke-UiOverlapCheck','ReadJson','WriteJson','Cmd-Run','Update-AttemptState','Prop','Get-ReserializeDirt','Get-ReserializeOverlap','Get-IncomingCollision')
 foreach($name in $functions){
  $f=$ast.FindAll({param($n)$n -is [Management.Automation.Language.FunctionDefinitionAst]},$true)|Where-Object Name -eq $name|Select-Object -First 1
  if(-not $f){throw ('FAIL: missing bounded UI summary consumer: '+$name)}

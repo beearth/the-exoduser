@@ -85,13 +85,13 @@ node meshy_generate.cjs --download TASK_ID
 ### 파일 위치
 - 스크립트: `meshy_generate.cjs`
 - 결과물: `assets/3d/` 폴더에 GLB 저장
-- 게임 적용: `game.html` chest3d 섹션에서 `GLTFLoader`로 로드
+- 현행 게임 적용: `game.html` CHEST3D bootstrap → `chest3d.mjs`의 `GLTFLoader`. 아래 Meshy 생성은 과거 이력이고, 11/02부터 같은 런타임 GLB 경로의 내용은 Tripo 몸통·경첩 파생본이다.
 
 ### 게임 내 3D 에셋 현황
 
 | 에셋 | 파일 | Task ID | 상태 |
 |------|------|---------|------|
-| 보물상자 (리파인) | `assets/3d/dark_gothic_medieval_treasure_chest__iro_019e0a38.glb` | `019e0a38-4794-7f6a-b8ff-42a5fac41b59` | game.html 적용 완료 |
+| 구 Meshy 보물상자 (리파인 이력) | `assets/3d/dark_gothic_medieval_treasure_chest__iro_019e0a38.glb` | `019e0a38-4794-7f6a-b8ff-42a5fac41b59` | 11/02 런타임 경로는 Tripo 몸통/경첩 파생본으로 교체, 구 원본은 Git·정확-byte 백업 보존. [현행 상자](../4.1맵디자인+설정/TRIPO_CHEST_GAME_20261102.md) |
 | 보물상자 (프리뷰) | `assets/3d/dark_gothic_medieval_treasure_chest__iro_019e0a30.glb` | `019e0a30-9563-7d95-bfc5-3f8469f7f90e` | 프리뷰 (사용 안함) |
 
 ### 비용

@@ -88,12 +88,12 @@ namespace Exoduser.UnityPort
             sprites[key] = s; return s;
         }
 
-        // Precolored enemy-poison ramp, 4x4/16f. Keep the original integer-cell origin.
+        // Muted alpha body + inner shadow contour, 4x4/16f. Original cell origin retained.
         public static Sprite PoisonShot(int frame)
         {
             string key = "poisonShot:" + frame;
             Sprite s; if (sprites.TryGetValue(key, out s) && s != null) return s;
-            var t = Tex(VfxDir + "druid_poison_orb"); int cw = t.width / 4, ch = t.height / 4;
+            var t = Tex(VfxDir + "druid_poison_orb_v2"); int cw = t.width / 4, ch = t.height / 4;
             var src = t.GetPixels32(); var px = new Color32[cw * ch];
             int ox = frame % 4 * cw, oy = (3 - frame / 4) * ch;
             for (int y = 0; y < ch; y++) for (int x = 0; x < cw; x++)
@@ -104,6 +104,25 @@ namespace Exoduser.UnityPort
             var cell = new Texture2D(cw, ch, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp };
             cell.SetPixels32(px); cell.Apply(false, true);
             s = Sprite.Create(cell, new Rect(0, 0, cw, ch), new Vector2(.5f, .5f), 100, 0, SpriteMeshType.FullRect);
+            sprites[key] = s; return s;
+        }
+
+        // Separate light-only centre. Caller uses one additive layer at .6 opacity,
+        // diameter .25 of the unchanged body draw box, hence radius ratio .25 too.
+        public static Sprite PoisonCore()
+        {
+            const string key = "poisonCore";
+            Sprite s; if (sprites.TryGetValue(key, out s) && s != null) return s;
+            const int n = 64; var px = new Color32[n * n];
+            for (int y = 0; y < n; y++) for (int x = 0; x < n; x++)
+            {
+                float dx = (x + .5f) / n * 2 - 1, dy = (y + .5f) / n * 2 - 1;
+                float a = Mathf.Clamp01((1 - Mathf.Sqrt(dx * dx + dy * dy)) / .28f);
+                px[y * n + x] = new Color32(0xc8, 0xe8, 0xa8, (byte)(a * 255));
+            }
+            var tex = new Texture2D(n, n, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp };
+            tex.SetPixels32(px); tex.Apply(false, true);
+            s = Sprite.Create(tex, new Rect(0, 0, n, n), new Vector2(.5f, .5f), 100, 0, SpriteMeshType.FullRect);
             sprites[key] = s; return s;
         }
 

@@ -703,7 +703,7 @@ U03의3개체는 단독 actor 구성까지이며 U14 입장은005→011→013을
 
 | 문서 | 일치행 |
 |---|---|
-| `docs/13출시·마케팅/VIDEO_EDIT_PLAN_20261008.md` | 116 |
+| `docs/_archive/13출시·마케팅/VIDEO_EDIT_PLAN_20261008.md` | 116 |
 | `docs/16번역·로컬라이제이션/번역대상_전체목록.md` | 1574, 2049 |
 | `docs/2_2 무기+활+속성시스템/2_2 무기+활+속성시스템.md` | 22, 34, 54, 62, 64, 66, 70, 89, 96 |
 | `docs/4.0케릭터스프라이트 디자인/캐릭터_몬스터_보스_최적화디자인_v1.md` | 84 |
@@ -730,36 +730,36 @@ U03의3개체는 단독 actor 구성까지이며 U14 입장은005→011→013을
 | `docs/CHANGELOG_SYNC.md` | 1858, 1860, 1880, 1924, 2003, 2058, 2073, 2084, 2105, 2115, 2117, 2119, 2123, 2137, 2144, 5448, 5594 |
 | `docs/engine/FDG_BENCHMARK.md` | 50, 62, 81, 94, 96, 98, 102, 120, 127 |
 | `docs/engine/FDG_ENGINE.md` | 476, 517, 751, 767, 769, 789, 833, 912, 967, 982, 994, 1018, 1031, 1033, 1035, 1039, 1053, 1060 |
-| `docs/engine/FDG_FEATURE_INVENTORY_20261020.md` | 235~236, 249~250, 254, 258, 276 |
-| `docs/engine/FDG_GAME_DEVELOPMENT_PLAN.md` | 483, 485, 505, 549, 628, 683, 698, 710, 729, 731, 737, 739, 741, 745, 763, 770 |
+| `docs/_archive/engine/FDG_FEATURE_INVENTORY_20261020.md` | 235~236, 249~250, 254, 258, 276 |
+| `docs/_archive/engine/FDG_GAME_DEVELOPMENT_PLAN.md` | 483, 485, 505, 549, 628, 683, 698, 710, 729, 731, 737, 739, 741, 745, 763, 770 |
 | `docs/engine/FDG_GODOT_ENCOUNTER_FACTORY_20261013.md` | 25, 37, 42, 56, 58, 64, 66, 68, 72, 88, 91, 98, 146, 219, 285, 317~318, 430~431, 524 |
 | `docs/engine/FDG_GODOT_ETYPE1_LIGHTNING_HIVE_BLOATER_20261013.md` | 5, 11, 122 |
 | `docs/engine/FDG_GODOT_ETYPE4_ICE_SOUL_FLAME_20261013.md` | 311 |
 | `docs/engine/FDG_GODOT_ETYPE4_PHYSICAL_SPINE_BEAST_20261013.md` | 256 |
 | `docs/engine/FDG_GODOT_ETYPE7_PHYSICAL_FLESH_CRAWLER_20261013.md` | 12, 17, 24, 41, 48, 50, 61, 66, 68, 76, 85, 208 |
-| `docs/engine/FDG_GODOT_FLOATING_TEXT_BINDING_20261013.md` | 11, 126 |
-| `docs/engine/FDG_GODOT_GROUND_SURFACE_BINDING_20261013.md` | 87 |
-| `docs/engine/FDG_GODOT_M29_FIRST_20261013.md` | 12, 28 |
+| `docs/_archive/engine/FDG_GODOT_FLOATING_TEXT_BINDING_20261013.md` | 11, 126 |
+| `docs/_archive/engine/FDG_GODOT_GROUND_SURFACE_BINDING_20261013.md` | 87 |
+| `docs/_archive/engine/FDG_GODOT_M29_FIRST_20261013.md` | 12, 28 |
 | `docs/engine/FDG_GODOT_M30_EPICENTER_20261013.md` | 12, 21, 37, 125, 132 |
 | `docs/engine/FDG_GODOT_NATIVE_FIRST_20261013.md` | 437 |
-| `docs/engine/FDG_GODOT_NATIVE_MAIN_INTRO_SHADOW_FIRST_20261014.md` | 34 |
-| `docs/engine/FDG_GODOT_NUMBER_ATLAS_BINDING_20261014.md` | 87 |
-| `docs/engine/FDG_GODOT_PORT_COMMON_CHARGE_WARNING_FIRST_20261013.md` | 12 |
-| `docs/engine/FDG_GODOT_PORT_FLOATING_TEXT_FIRST_20261013.md` | 9 |
-| `docs/engine/FDG_GODOT_PORT_NUMBER_ATLAS_FIRST_20261013.md` | 11 |
-| `docs/engine/FDG_GODOT_PORT_SOURCE_POST_STAGE_OWNER_FIRST_20261014.md` | 42 |
-| `docs/engine/FDG_GODOT_SOURCE_NEW_RUN_STATE_20261014.md` | 91 |
-| `docs/engine/FDG_GODOT_TYPE3_ACTOR_FIRST_20261013.md` | 12, 27 |
+| `docs/_archive/engine/FDG_GODOT_NATIVE_MAIN_INTRO_SHADOW_FIRST_20261014.md` | 34 |
+| `docs/_archive/engine/FDG_GODOT_NUMBER_ATLAS_BINDING_20261014.md` | 87 |
+| `docs/_archive/engine/FDG_GODOT_PORT_COMMON_CHARGE_WARNING_FIRST_20261013.md` | 12 |
+| `docs/_archive/engine/FDG_GODOT_PORT_FLOATING_TEXT_FIRST_20261013.md` | 9 |
+| `docs/_archive/engine/FDG_GODOT_PORT_NUMBER_ATLAS_FIRST_20261013.md` | 11 |
+| `docs/_archive/engine/FDG_GODOT_PORT_SOURCE_POST_STAGE_OWNER_FIRST_20261014.md` | 42 |
+| `docs/_archive/engine/FDG_GODOT_SOURCE_NEW_RUN_STATE_20261014.md` | 91 |
+| `docs/_archive/engine/FDG_GODOT_TYPE3_ACTOR_FIRST_20261013.md` | 12, 27 |
 | `docs/engine/FDG_GODOT_TYPE3_BINDING_20261013.md` | 3, 13, 86 |
-| `docs/engine/FDG_GODOT_TYPE3_SPAWN_FIRST_20261013.md` | 12, 19 |
+| `docs/_archive/engine/FDG_GODOT_TYPE3_SPAWN_FIRST_20261013.md` | 12, 19 |
 | `docs/engine/FDG_GODOT_TYPE7_INTEGRATION_20261013.md` | 9, 32, 41, 73 |
 | `docs/engine/FDG_GODOT_TYPE7_TELEPORT_20261013.md` | 12, 21, 46 |
 | `docs/engine/FDG_INTEGRATION_INTERFACE.md` | 389, 391, 411, 455, 534, 589, 604, 616, 647, 664, 666, 668, 672, 691, 698 |
-| `docs/engine/FDG_NATIVE_NORMAL_ENEMY_PLAYER_VIEW_CALLBACK_20261017.md` | 17, 29 |
-| `docs/engine/FDG_NATIVE_NORMAL_ENEMY_PLAYER_VIEW_MAIN_SYNC_20261017.md` | 12 |
+| `docs/_archive/engine/FDG_NATIVE_NORMAL_ENEMY_PLAYER_VIEW_CALLBACK_20261017.md` | 17, 29 |
+| `docs/_archive/engine/FDG_NATIVE_NORMAL_ENEMY_PLAYER_VIEW_MAIN_SYNC_20261017.md` | 12 |
 | `docs/engine/FDG_NATIVE_PERSPECTIVE_20261012.md` | 114 |
 | `docs/engine/FDG_P1_002E_MELEE_HURTE_TRACE_20261019.md` | 56, 153 |
-| `docs/engine/FDG_P2_001H_INTRO_CURTAIN_SEQUENCE_20261020.md` | 89 |
+| `docs/_archive/engine/FDG_P2_001H_INTRO_CURTAIN_SEQUENCE_20261020.md` | 89 |
 | `docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md` | 1043 |
 | `docs/engine/FDG_RUINED_FOREST_PLAYABLE_20261012.md` | 147 |
 | `docs/engine/FDG_RUNTIME.md` | 47 |
@@ -767,4 +767,4 @@ U03의3개체는 단독 actor 구성까지이며 U14 입장은005→011→013을
 
 ## 2026-10-21 EL-01 constructor oracle 보충
 
-`type3생성/채널` 행의 기본 외부 oracle 파일은 여전히 Git에 없지만, EL-01의 새 `godot/tools/export_el01_hell0_oracle.mjs`로 최신 원본 mkEn projection/선택 규칙을 UTF-8 파일에 재생성할 수 있다. type3 원본72사례의 RNG 순서·constructor 공통 leaf를 검증하고 기존 recipe 검사는 이 파일을 `--oracle`로 받아 전체1회 실행했다. 이는 일반 factory 자연 입장·실제 PC 패링·전체337필드·맵 충돌까지 검증했다는 뜻이 아니다. 상세 결과/fixture 경계는 [EL-01 보고서](orders/reports/el-01_REPORT.md) 참조.
+`type3생성/채널` 행의 기본 외부 oracle 파일은 여전히 Git에 없지만, EL-01의 새 `godot/tools/export_el01_hell0_oracle.mjs`로 최신 원본 mkEn projection/선택 규칙을 UTF-8 파일에 재생성할 수 있다. type3 원본72사례의 RNG 순서·constructor 공통 leaf를 검증하고 기존 recipe 검사는 이 파일을 `--oracle`로 받아 전체1회 실행했다. 이는 일반 factory 자연 입장·실제 PC 패링·전체337필드·맵 충돌까지 검증했다는 뜻이 아니다. 상세 결과/fixture 경계는 [EL-01 보고서](../_archive/engine/orders/reports/el-01_REPORT.md) 참조.

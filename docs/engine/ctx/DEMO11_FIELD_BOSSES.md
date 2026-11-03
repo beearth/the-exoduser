@@ -24,7 +24,7 @@ gap D22는 제품 fieldboss actor/전투 owner를 찾지 못해 **미착수**다
 
 - `docs/8.0몬스터디자인/`, `docs/9적ai패턴디자인/`
 - `docs/engine/FDG_SOURCE_TRACE_FIELDBOSS_20261020.md` §1–5
-- `docs/engine/DEMO11_COMPLETION_GAP_20261021.md` D22
+- `docs/_archive/engine/DEMO11_COMPLETION_GAP_20261021.md` D22
 
 ## 주의
 

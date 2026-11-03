@@ -108,6 +108,7 @@ namespace Exoduser.UnityPort
             r3Marker.position += ImpactCameraOffset();
             if(combatImpacts!=null)r3Marker.position+=(NativeRemodel3D.Point(p.X,p.Y)-r3Cam.transform.position).normalized*combatImpacts.CameraPushIn(Simulation.TickCount);
             if(NativeHd2D.Enabled&&r3Brain!=null)r3Brain.ManualUpdate(); // 최종 카메라 pose 뒤에만 픽셀 스냅한다.
+            combatImpacts?.DrawMeleeParry(Simulation.TickCount,r3Cam,playerView);
             foreach (var r in props) if (r != null) r.enabled = false;
             foreach (var c in chunks.Values) if (c.renderer != null) c.renderer.enabled = false;
             Remodel3DBillboards();
@@ -122,10 +123,11 @@ namespace Exoduser.UnityPort
             if (r3Vcam == null) return;
             var lens = r3Vcam.Lens;
             float fov = NativeRemodelCamera.FieldOfView;
+            if(combatImpacts!=null)fov*=combatImpacts.ParryCameraScale(Simulation.TickCount);
             r3Vcam.transform.rotation = A2Requested ? Quaternion.Euler(NativeRemodel3D.Pitch*Mathf.Rad2Deg,0,0) : NativeRemodelCamera.Rotation;
             var follow = r3Vcam.GetComponent<CinemachineFollow>();
             if (follow != null) follow.FollowOffset = A2Requested ? new Vector3(0,Mathf.Sin(NativeRemodel3D.Pitch)*NativeRemodel3D.DistU,-Mathf.Cos(NativeRemodel3D.Pitch)*NativeRemodel3D.DistU) : NativeRemodelCamera.FollowOffset;
-            if (Mathf.Abs(lens.FieldOfView - fov) > .01f) { lens.FieldOfView = fov; r3Vcam.Lens = lens; }
+            if (lens.FieldOfView != fov) { lens.FieldOfView = fov; r3Vcam.Lens = lens; }
         }
 
         // 캐릭터 스프라이트는 LOOK-001 카메라를 향해 세우고 발을 지면에 둔다.

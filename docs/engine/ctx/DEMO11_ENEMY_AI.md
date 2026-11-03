@@ -1,8 +1,8 @@
 # DEMO11 — 적 생성·AI tick·처치 context pack
 
-2026-10-24 [PORT-TAKEOVER-03](../orders/reports/PORT-TAKEOVER-03_REPORT.md)은 모체17 산란 뒤 magic(3)의 원본 fire_magic1 샘플만 연결한다. 생성/AI 조건·HP/피해 변경0. 샘플 레이어 공유 RNG2회는 실제 소비하며 합성층/전체 cue/전체 RNG parity는 미완료다.
+2026-10-24 [PORT-TAKEOVER-03](../../_archive/engine/orders/reports/PORT-TAKEOVER-03_REPORT.md)은 모체17 산란 뒤 magic(3)의 원본 fire_magic1 샘플만 연결한다. 생성/AI 조건·HP/피해 변경0. 샘플 레이어 공유 RNG2회는 실제 소비하며 합성층/전체 cue/전체 RNG parity는 미완료다.
 
-> 2026-10-23 PC 인수 후보: G04-02 `9734e2e79` 위에 보존 PC-ENEMY-ACTORS WIP를 결합했다. G 일반 non-boss elite0 `3/7/13/14/16/17/20/21/47` 및 문지기와 분리된 일반29 생성·AI·기존 피해 owner 연결을 격리 검수 중이다. `--demo11-storage=off`는 이 PC 단위검사의 저장 격리 계약이며 제품 저장 거절을 해제하지 않는다. 아래 'Godot origin/main 대응'은 작성 당시 이력이다. [현재 검수·시각/청감 미완료](../orders/reports/PORT-TAKEOVER-01_REPORT.md).
+> 2026-10-23 PC 인수 후보: G04-02 `9734e2e79` 위에 보존 PC-ENEMY-ACTORS WIP를 결합했다. G 일반 non-boss elite0 `3/7/13/14/16/17/20/21/47` 및 문지기와 분리된 일반29 생성·AI·기존 피해 owner 연결을 격리 검수 중이다. `--demo11-storage=off`는 이 PC 단위검사의 저장 격리 계약이며 제품 저장 거절을 해제하지 않는다. 아래 'Godot origin/main 대응'은 작성 당시 이력이다. [현재 검수·시각/청감 미완료](../../_archive/engine/orders/reports/PORT-TAKEOVER-01_REPORT.md).
 
 ## 원본 계약
 
@@ -29,7 +29,7 @@
 - `docs/8.0몬스터디자인/`, `docs/9적ai패턴디자인/`
 - `docs/engine/FDG_SOURCE_TRACE_CH1_ENEMIES_20261020.md`
 - `docs/engine/FDG_SOURCE_TRACE_ELITES_20261020.md`
-- `docs/engine/DEMO11_COMPLETION_GAP_20261021.md` D18–D21
+- `docs/_archive/engine/DEMO11_COMPLETION_GAP_20261021.md` D18–D21
 
 ## 주의
 

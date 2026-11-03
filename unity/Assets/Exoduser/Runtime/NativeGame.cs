@@ -69,7 +69,19 @@ namespace Exoduser.UnityPort
             kiView=new KiSlashView(transform,f=>SpriteFor("Art/vfx/ki_slash_silver_sheet",f%3*(kiSheet.width/3),f/3*(kiSheet.height/3),kiSheet.width/3,kiSheet.height/3,new Vector2(.5f,.5f)));
             var hitSheet=Resources.Load<Texture2D>("Art/vfx/ki_slash_hit_silver_sheet");
             if(hitSheet==null||hitSheet.width!=1254||hitSheet.height!=1254)throw new InvalidOperationException("Invalid original kiSlash 2x2 hit sheet");
-            impacts=new KiImpactView(transform,f=>SpriteFor("Art/vfx/ki_slash_hit_silver_sheet",f%2*627,f/2*627,627,627,new Vector2(.5f,.5f)));
+            // Cache the actual model renderers on first contact, after hero creation.
+            GameObject kiHero=null;Renderer[] kiHeroParts=null;
+            Func<float> kiHeight=()=>{
+                var model=heroView!=null?heroView.Model:null;
+                if(model!=null){
+                    if(kiHero!=model){kiHero=model;kiHeroParts=model.GetComponentsInChildren<SkinnedMeshRenderer>();}
+                    bool found=false;Bounds bounds=default;
+                    foreach(var part in kiHeroParts)if(part!=null&&part.enabled){if(!found){bounds=part.bounds;found=true;}else bounds.Encapsulate(part.bounds);}
+                    if(found&&bounds.size.y>.01f)return bounds.size.y*100;
+                }
+                return playerView!=null&&playerView.sprite!=null?playerView.bounds.size.y*100:160;
+            };
+            impacts=new KiImpactView(transform,f=>SpriteFor("Art/vfx/ki_slash_hit_silver_sheet",f%2*627,f/2*627,627,627,new Vector2(.5f,.5f)),kiHeight,()=>HudCamera);
             skillView=new NativeSkillView(transform);   // B03 skill effects
             ImpactInitialize();
             combatImpacts=new CombatImpactView(transform);
@@ -88,7 +100,7 @@ namespace Exoduser.UnityPort
             pauseMenu.OptionChanged=OnSettingsOptionChanged;pauseMenu.LanguagePicked=code=>{lobby.SetLanguage(code);QueueSettingsSave();};pauseMenu.DiagLine=SettingsDiagLine;
             UpdateSettingsPersistenceNotice();
             var args=Environment.GetCommandLineArgs();
-            bool legacyFixture=Array.IndexOf(args,HellGateObjectiveCaptureFlag)>=0||Array.IndexOf(args,"--unity-currency-orb-capture")>=0||(A2Requested&&(Application.isEditor||Array.IndexOf(args,"--unity-steam-keyshot")>=0||Array.IndexOf(args,"--unity-field-screen")>=0))||Array.IndexOf(args,"--unity-ground-receiver-capture")>=0||Array.IndexOf(args,"--unity-ground-map-capture")>=0||Array.IndexOf(args,"--unity-facing-only-qa")>=0||Array.IndexOf(args,"--unity-world-ultrawide-check")>=0||Array.IndexOf(args,"--unity-playtest-capture")>=0||Array.IndexOf(args,"--unity-boss-text-smoke")>=0||Array.IndexOf(args,"--unity-exp-capture")>=0||Array.IndexOf(args,A15DirectArgument)>=0||Array.IndexOf(args,IntroSilenceFlag)>=0||Array.IndexOf(args,NativeSettingsStorageScope.FixtureArgument)>=0||Array.IndexOf(args,"--unity-inventory-keys-smoke")>=0||Array.IndexOf(args,"--unity-pause-smoke")>=0||Array.IndexOf(args,"--unity-character-story-smoke")>=0||Array.IndexOf(args,"--unity-character-store-smoke")>=0||Array.IndexOf(args,"--unity-character-smoke")>=0||Array.IndexOf(args,"--unity-skill-smoke")>=0||Array.IndexOf(args,"--unity-ui-smoke")>=0||Array.IndexOf(args,"--unity-inventory-smoke")>=0||Array.IndexOf(args,"--unity-hud-smoke")>=0||Array.IndexOf(args,"--unity-hud-blend-smoke")>=0||Array.IndexOf(args,"--unity-drop-smoke")>=0||Array.IndexOf(args,"--unity-revive-smoke")>=0||Array.IndexOf(args,"--unity-smoke")>=0;
+            bool legacyFixture=Array.IndexOf(args,"--unity-death-screen-smoke")>=0||Array.IndexOf(args,"--unity-death-ui-smoke")>=0||Array.IndexOf(args,"--unity-currency-orb-capture")>=0||(A2Requested&&(Application.isEditor||Array.IndexOf(args,"--unity-steam-keyshot")>=0||Array.IndexOf(args,"--unity-field-screen")>=0))||Array.IndexOf(args,"--unity-ground-receiver-capture")>=0||Array.IndexOf(args,"--unity-ground-map-capture")>=0||Array.IndexOf(args,"--unity-facing-only-qa")>=0||Array.IndexOf(args,"--unity-world-ultrawide-check")>=0||Array.IndexOf(args,"--unity-playtest-capture")>=0||Array.IndexOf(args,"--unity-boss-text-smoke")>=0||Array.IndexOf(args,"--unity-exp-capture")>=0||Array.IndexOf(args,A15DirectArgument)>=0||Array.IndexOf(args,IntroSilenceFlag)>=0||Array.IndexOf(args,NativeSettingsStorageScope.FixtureArgument)>=0||Array.IndexOf(args,"--unity-inventory-keys-smoke")>=0||Array.IndexOf(args,"--unity-pause-smoke")>=0||Array.IndexOf(args,"--unity-character-story-smoke")>=0||Array.IndexOf(args,"--unity-character-store-smoke")>=0||Array.IndexOf(args,"--unity-character-smoke")>=0||Array.IndexOf(args,"--unity-skill-smoke")>=0||Array.IndexOf(args,"--unity-ui-smoke")>=0||Array.IndexOf(args,"--unity-inventory-smoke")>=0||Array.IndexOf(args,"--unity-hud-smoke")>=0||Array.IndexOf(args,"--unity-hud-blend-smoke")>=0||Array.IndexOf(args,"--unity-drop-smoke")>=0||Array.IndexOf(args,"--unity-revive-smoke")>=0||Array.IndexOf(args,"--unity-smoke")>=0;
             InitializeEntryFlowCapture(args);
             if(!legacyFixture){Running=false;if(Array.IndexOf(args,"--unity-quick-start")>=0)lobby.ShowLobby();else lobby.Begin();}
             if(Array.IndexOf(args,"--unity-entry-flow-capture")>=0)StartCoroutine(EntryFlowCapture());
@@ -112,6 +124,7 @@ namespace Exoduser.UnityPort
             else if(Array.IndexOf(args,"--unity-world-ultrawide-check")>=0){Running=false;StartCoroutine(WorldWideCapture());}
             else if(Array.IndexOf(args,"--unity-ui-overlap-check")>=0){Running=false;StartCoroutine(UiOverlapCapture());}
             else if(Array.IndexOf(args,"--unity-loading-tip-capture")>=0){Running=false;StartCoroutine(LoadingTipCapture());}
+            else if(Array.IndexOf(args,"--unity-rigpixel-natural")>=0){Running=false;StartCoroutine(RigPixelNaturalCapture());}
             else if(Array.IndexOf(args,"--unity-hero-review")>=0){Running=false;StartCoroutine(HeroCapture());}
             else if(Array.IndexOf(args,"--unity-impact-review")>=0){Running=false;StartCoroutine(ImpactReview());}
             else if(Array.IndexOf(args,"--unity-m1-check")>=0){Running=false;StartCoroutine(M1Check());}
@@ -141,6 +154,8 @@ namespace Exoduser.UnityPort
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-b07-smoke")>=0){dropSmoke=true;menu=false;Running=false;StartCoroutine(B07Smoke());}
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-rage-malice-smoke")>=0){dropSmoke=true;menu=false;Running=false;StartCoroutine(RageMaliceSmoke());}
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-drop-smoke")>=0){dropSmoke=true;menu=false;Running=false;StartCoroutine(DropSmoke());}
+            else if(Array.IndexOf(args,"--unity-death-ui-smoke")>=0){menu=false;Running=false;StartCoroutine(DeathUiCaptureRun());}
+            else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-death-screen-smoke")>=0){dropSmoke=true;menu=false;Running=false;StartCoroutine(DeathScreenCaptureRun());} // 사망 대기 화면 Mac 검수 캡처
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-revive-smoke")>=0){reviveSmoke=true;dropSmoke=true;menu=false;Running=false;StartCoroutine(ReviveSmokeRun());} // B08 (dropSmoke keeps focus loss from opening the pause menu)
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-inventory-smoke")>=0){inventorySmoke=true;menu=false;Running=true;StartCoroutine(InventorySmoke());}
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-hud-smoke")>=0){hudSmoke=true;menu=false;StartCoroutine(HudSmoke());}
@@ -153,15 +168,17 @@ namespace Exoduser.UnityPort
             combatImpacts?.Reset();
             startupResetCount++;
             foreach(var e in enemies.Values){Destroy(e.body.gameObject);Destroy(e.walk.gameObject);}enemies.Clear();damage.Clear();damageFloaters.Clear();ResetFieldBossViews();
+            kiContactCamera=false;kiContactObserved=-1;
             kiView?.Reset();boltView?.Reset();impacts?.Reset();skillView?.Reset();skillRemaster?.Reset();sound?.Reset();
             var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;if(settings!=null)config.DifficultyIndex=settings.Options.Get("diff");if(BuildFlavor.Current.DemoMode)config.LevelCap=BuildFlavor.Current.LevelCap;CombatBeginRun(config);
-            Simulation=new Simulation(config,SourceStarterFixture.Seed);ConfigureParryFeedback();revive.Reset();Simulation.ReviveTextRaised+=revive.Add;Simulation.Config.DemoMode=BuildFlavor.Current.DemoMode;Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.ProjectileBlocked;Simulation.LevelledUp+=OnLevelledUp;ReviewArgsApply();ApplySettingsOptions();
+            Simulation=new Simulation(config,SourceStarterFixture.Seed);ConfigureParryFeedback();revive.Reset();Simulation.ReviveTextRaised+=t=>{if(!DeathPresentationActive)revive.Add(t);};Simulation.Config.DemoMode=BuildFlavor.Current.DemoMode;Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.ProjectileBlocked;Simulation.LevelledUp+=OnLevelledUp;ReviewArgsApply();ApplySettingsOptions();
             inventory.Reset();CombatRestoreState();skills.SetOpen(false);stats.SetOpen(false);forge.SetOpen(false);levelUp.Hide();levelUpSeen=Simulation.Player.Level;death.Hide();deathShown=false;stageClear.Hide();bossBar.Hide();areaTitle.Hide();areaTitleShown=false;skillInputFence=false;Simulation.ApplyEquipment(inventory.State);CombatRestoreResources();
             Simulation.IsLootOnScreen=l=>WorldPointVisible(l.X,l.Y,0);   // Actual 2D/3D camera viewport; pickup distance rules remain in Core.
             // D01: mkItem drops are real; R picks the highest rarity on screen (web 32936) into the bag. Persistent saves stay unimplemented.
             Simulation.TryCollectLoot=CollectLoot;ClearDropViews();
             if(playerView==null)playerView=CreateRenderer("Player");
-            if(!NativeHd2D.Enabled&&heroView==null)heroView=new NativeHeroView(transform);
+            if((!NativeHd2D.Enabled||RigPixelRequested)&&heroView==null)heroView=new NativeHeroView(transform);
+            AttachRigPixel();
             lastX=config.StartX;lastY=config.StartY;walkDistance=0;renderedTick=-1;playerMoving=false;
             hud.Refresh(Simulation.Player,Simulation.TickCount,true);
             StageFlowAttach();   // C07: gate/exit tiles, arena flow reset for this run
@@ -186,6 +203,9 @@ namespace Exoduser.UnityPort
         {
             if(hellGateCaptureActive){UpdateViews();return;}
             UpdateSettingsPersistence();UpdateCombatSave();
+            // 사망 대기 화면 상태·채도 Volume(연출 전용, Core 흐름 불변). 로비가 화면을 쥐면 필터를 걷는다.
+            {var downPlayer=Simulation!=null&&!(lobby!=null&&lobby.IsBlocking)?Simulation.Player:null;revive.TickScreen(downPlayer,downPlayer!=null&&PlayerDown,transform);}
+            if(DeathPresentationActive){damage.Clear();damageFloaters.Clear();notice="";noticeUntil=0;}
             lobby.AutomatedInput=UiOverlapOwnsInput||lobbySmoke&&!introKeysSmoke;
             if(lobbySmoke&&!lobbyControlsSmoke)lobby.SetPlaybackFocus(true); // Natural-playback fixture only; controls fixture owns focus transitions.
             if(lobby!=null&&lobby.IsBlocking){if(firstPractice!=null)EndFirstPractice(true);Running=false;view.cullingMask=lobby.StartupWorldVisible?worldMask:0;UpdateGameMusic();return;}
@@ -312,17 +332,26 @@ namespace Exoduser.UnityPort
             var remove=new List<int>();foreach(var pair in chunks)if(!keep.Contains(pair.Key))remove.Add(pair.Key);
             foreach(int id in remove){var c=chunks[id];Destroy(c.renderer.gameObject);chunks.Remove(id);ReleaseSprites(c.path);}
         }
+        bool kiContactCamera;int kiContactObserved=-1;
+        Vector2 KiContactCameraOffset()=>ImpactActive&&!kiContactCamera?contactVfx.CameraOffset(ImpactNow)*OptionShakeScale:Vector2.zero;
         void UpdateViews()
         {
             RestoreMeleePoses();
             if(Simulation==null||view==null)return;BindWorldViewport();Remodel3DRestoreBillboards();NativeHd2D.RestoreSourcePoses();var p=Simulation.Player;
             if(contactVfx!=null){contactVfx.RenderCamera=HudCamera;contactVfx.ReducedMotion=impacts!=null&&impacts.ReducedMotion;}
             if(skillRemaster!=null)skillRemaster.RenderCamera=HudCamera;
+            if(impacts!=null)impacts.ShakeScale=OptionShakeScale;
+            int contactsBefore=contactVfx!=null?contactVfx.Contacts:0;
             contactVfx?.Observe(Simulation,ImpactNow);
+            // Replace only the observer impulse caused by this Ki feedback batch.
+            // A later non-Ki observed contact immediately restores its own impulse.
+            if(contactVfx!=null&&contactVfx.Contacts!=contactsBefore)kiContactCamera=impacts!=null&&impacts.HitSince(kiContactObserved);
+            kiContactObserved=Simulation.TickCount;
             float shk=impacts!=null&&impacts.ReducedMotion?0:Simulation.ShakeAmount*OptionShakeScale;   // B09: web G.shake -> camera offset (random +-shake px, game.html 51900)
             float camX=p.X/100,camY=-p.Y/100;BossCameraZoom();ClampCameraToMap(ref camX,ref camY);   // [CAM-CLAMP] web _clampCamToMap before the shake offset
             ImpactCameraProjection();
             hd2dCameraShake=new Vector3(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0,shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0,0);
+            if(impacts!=null)hd2dCameraShake+=(Vector3)impacts.CameraOffset(Simulation.TickCount);
             if(combatImpacts!=null){combatImpacts.ReducedMotion=impacts!=null&&impacts.ReducedMotion;combatImpacts.ShakeScale=OptionShakeScale;hd2dCameraShake+=combatImpacts.CameraOffset(Simulation.TickCount);}
             view.transform.position=new Vector3(camX,camY,-10)+hd2dCameraShake;StageFlowSyncViews();if(!Simulation.Stage.InArena)StreamChunks(view.transform.position.x*100,-view.transform.position.y*100);
             bool newTick=renderedTick!=Simulation.TickCount;
@@ -341,7 +370,7 @@ namespace Exoduser.UnityPort
             // web roll: the body curls up and turns once (360 degrees) over the 18 frames, dust trail
             playerView.transform.rotation=Simulation.RollActive?Quaternion.Euler(0,0,-360f*(1f-(float)Simulation.RollMoveT/RollRules.Frames)):Quaternion.identity;
             heroView?.Sync(Simulation,playerMoving);}
-            playerView.enabled=NativeHd2D.Enabled||heroView==null||!heroView.Ready;
+            playerView.enabled=rigPixelHero!=null?!rigPixelHero.Ready:NativeHd2D.Enabled||heroView==null||!heroView.Ready;
             NativeHd2D.Actor(playerView,false,p.Radius*.02f*heroPresentationScale);
             foreach(var e in Simulation.Enemies)
             {
@@ -352,7 +381,7 @@ namespace Exoduser.UnityPort
                     ev=new EnemyView{body=CreateRenderer("Enemy "+e.Id),walk=CreateRenderer("Enemy walk "+e.Id),skin=idx,lastX=e.X,lastY=e.Y,hp=e.Hp,shield=e.Shield};enemies.Add(e.Id,ev);
                 }
                 ev.body.enabled=e.Alive;ev.walk.enabled=e.Alive;if(ev.arc!=null&&!e.Alive)ev.arc.enabled=false;if(!e.Alive){BossSinkDraw(e,ev);continue;}
-                int dealtHp=Mathf.RoundToInt(ev.hp-e.Hp),dealtShield=Mathf.RoundToInt(ev.shield-e.Shield);if(dealtShield>0)damage.Add(new DamageText{x=e.X,y=e.Y-24,amount=dealtShield,shield=true,until=Time.unscaledTime+1});if(dealtHp>0)damage.Add(new DamageText{x=e.X,y=e.Y,amount=dealtHp,until=Time.unscaledTime+1});ev.hp=e.Hp;ev.shield=e.Shield;
+                int dealtHp=Mathf.RoundToInt(ev.hp-e.Hp),dealtShield=Mathf.RoundToInt(ev.shield-e.Shield);if(!DeathPresentationActive&&dealtShield>0)damage.Add(new DamageText{x=e.X,y=e.Y-24,amount=dealtShield,shield=true,until=Time.unscaledTime+1});if(!DeathPresentationActive&&dealtHp>0)damage.Add(new DamageText{x=e.X,y=e.Y,amount=dealtHp,until=Time.unscaledTime+1});ev.hp=e.Hp;ev.shield=e.Shield;
                 if(newTick){float ex=e.X-ev.lastX,ey=e.Y-ev.lastY;float travel=Mathf.Sqrt(ex*ex+ey*ey);ev.distance+=travel;ev.lastX=e.X;ev.lastY=e.Y;ev.moving=travel>.001f;}
                 if(BossBodyDraw(e,ev,newTick))continue;   // BX: the 1-1 druid has its own sheets (damage numbers and walk bookkeeping above already ran)
                 // Keep the struck body's last drawn pose for 55/75/90ms; Core movement and knockback continue unchanged.
@@ -380,9 +409,10 @@ namespace Exoduser.UnityPort
             if(skillRemaster!=null&&skillRemaster.Active)skillView?.Reset();else skillView?.Update(Simulation,Time.time);
             hud?.Refresh(p,Simulation.TickCount);StageFlowBossBar();
             if(NativeHd2D.Enabled&&!NativeRemodel3D.Active)Hd2dArenaFrame();
+            if(combatImpacts!=null)view.orthographicSize*=combatImpacts.ParryCameraScale(Simulation.TickCount);
             teleView?.Update(Simulation,view); // 최종 flat camera의 화면 장판 clip 경계를 사용한다.
             if(NativeHd2D.Enabled&&!NativeRemodel3D.Active)NativeHd2D.ProjectFlatActors(view);
-            combatImpacts?.Update(Simulation,HudCamera);
+            combatImpacts?.Update(Simulation,HudCamera,playerView);
             if(!NativeRemodel3D.Active)ApplyMeleePresentation(HudCamera);
             renderedTick=Simulation.TickCount;damage.RemoveAll(d=>Time.unscaledTime>d.until);
         }
@@ -442,7 +472,8 @@ namespace Exoduser.UnityPort
         }
         // Web: _xbowEquipped toggle + showPH('석궁 자동발사 ON/OFF'). OPT.xbowAuto persistence belongs to the settings owner and is not wired here.
         public void ToggleCrossbow(){Toast(Simulation.ToggleCrossbowAuto()?"석궁 자동발사 ON":"석궁 자동발사 OFF");}
-        void Toast(string text){notice=text;noticeUntil=Time.unscaledTime+3;}
+        bool DeathPresentationActive{get{return Simulation!=null&&(Simulation.Player.State=="fallen"||PlayerDown||revive.CombatTextSuppressed);}}
+        void Toast(string text){if(DeathPresentationActive)return;notice=text;noticeUntil=Time.unscaledTime+3;}
         void InitGUI()
         {
             if(guiReady)return;guiReady=true;
@@ -496,6 +527,7 @@ namespace Exoduser.UnityPort
             DrawFieldBossBars();
             DrawMobilityOverhead();
             floatingTextLayout.BeginFrame(Time.unscaledTime);
+            if(!DeathPresentationActive){
             var textViewport=NativeUiViewport.ScreenInDesign;floatingTextLayout.SetHorizontalBounds(textViewport.x+8,textViewport.xMax-8);
             ReserveEdgeFeedback(new Rect(0,0,160,176));ReserveEdgeFeedback(new Rect(16,188,108,58.3f));ReserveEdgeFeedback(NativeObjectivePanel.Bounds(NativeUiViewport.Edges.Width,NativeHellGateObjective.Read(Simulation).Visible));
             if(firstPractice!=null&&!menu&&gameFocused){var pr=PracticePanel(NativeUiViewport.Edges.Width);ReserveEdgeFeedback(new Rect(pr.x-8,pr.y-8,pr.width+16,pr.height+16));}
@@ -509,11 +541,13 @@ namespace Exoduser.UnityPort
             if(Time.unscaledTime<noticeUntil){var noticeMatrix=GUI.matrix;GUI.matrix=NativeUiViewport.EdgeMatrix;var noticeStyle=new GUIStyle(label){alignment=TextAnchor.UpperLeft,wordWrap=true};NativeUiAudit.Label(new Rect(20,270,440,noticeStyle.CalcHeight(new GUIContent(notice),440)),notice,noticeStyle);GUI.matrix=noticeMatrix;}
             if(levelUp.Active){var lp=HudCamera.WorldToScreenPoint(Point(p.X,p.Y));levelUp.Draw(new Vector2(lp.x,Screen.height-lp.y));}
             if(areaTitle.Active)areaTitle.Draw();
+            }
             DrawRegionHud();   // M1 region HUD: entry/purge banner + direction arrow
             // Boss bar: Unity has no boss actor / boss-entry event yet, so nothing calls bossBar.Show(); once one exists it passes name (BossNameForStage), hp, poise, groggy/immune state and status chips each frame.
             if(bossBar.Active)bossBar.Draw();
             StageFlowDrawWorld();
-            if(p.State=="fallen"&&!death.Active)revive.DrawFallen(p,label);
+            // 사망 대기 화면: 물리 화면 전체 필터·비네트 + 명조 제목·원형 게이지. 사망 확정 뒤 사망 패널은 이 위에 그린다.
+            revive.LocaleCode=lobby.Language;revive.DrawDeathScreen(p);
             if(death.Active&&PlayerDown&&!heroReviewActive){death.Draw();}
             else if((menu||PlayerDown)&&!hudSmoke&&!inventorySmoke&&!heroReviewActive){
                 pauseMenu.English=lobby.Language!="ko";

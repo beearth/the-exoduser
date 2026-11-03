@@ -1,3 +1,5 @@
+> 2026-11-02 웹 상자 표시 갱신: 보상 수량·확률/스폰/저장은 보존하고 `game.html` CHEST3D inline을 `chest3d.mjs`+Tripo 몸통/경첩 GLB로 교체했다. 로드 전/실패의2D 폴백·개봉1회·열린 뚜껑 유지의 현행 계약은 [Tripo 상자 문서](../4.1맵디자인+설정/TRIPO_CHEST_GAME_20261102.md)를 따른다. 11/02 후속에서는 ±25px 드롭을 외곽 부채꼴/벽 검사·순차 분출·착지 전 수거 대기로 변경했다. 최신 크기64×64 CSSpx와44×24 동적 몸통 충돌(닫힘/열림 유지)도 같은 현행 문서를 따른다. 아래 분산50px를 포함한2026-10-20 고정 원본 행/이식 판정은 그 당시 증거이며 Unity/Godot에 이번 변경이 이식됐다는 뜻이 아니다.
+
 # NPC·상점·월드 상호작용 원본 추적·작은 이식 단위 — 2026-10-20
 
 작업ID `trace-npc-world` · **원본 추적/구현 순서안 제출, 코드 구현·실플레이 인수 아님**. 다음 1번 후보는 §5.1의 **NW-01 MAP_OBJS 첫 상호작용 대상 읽기 질의**다. 원본의 순서·반경만 신규 모듈에서 검수하고 공용 파일 0줄로 시작한다. NW-*는 문서 내부 후보 ID이며 신규 담당 배정·구현 승인을 뜻하지 않는다.
@@ -11,7 +13,7 @@
 | 작업 폴더 | `~/exoduser-wt/trace-npc-world`, `worktree add --no-checkout` 후 `sparse-checkout set --no-cone`. docs·G/I·Godot 코드/테스트와 필요한 소형 JS만 읽음. 대용량 원화·GLB를 checkout하지 않음 |
 | R 불변 | `/Users/fordeargamers/Projects/exoduser-migration-20261001`, branch `codex/mac-live-play-time-main-20261017`, HEAD `dd49171c5b88e211575a41f185395d6c0a14b184`. tracked INDEX/WORK 각각 빈 상태 확인. fetch/분리 worktree 관리 외 R 파일·브랜치·인덱스 변경 0 |
 | 작업판 | [WORK_BOARD](orders/WORK_BOARD.md):23–104의 진행·공용·보존 WIP 확인. P2-006b 표시·P2-008b 적 factory·레슨·SK/IT/SV/설정·맵 담당과 중복하지 않음. 사용자 지시가 문서1개+CHANGELOG_SYNC만 허용하므로 작업판/별도 보고서는 수정하지 않음 |
-| 분모 | [FEATURE_INVENTORY](FDG_FEATURE_INVENTORY_20261020.md)의 과거 snapshot `2845f96e97d4803e4fb8ab4f3d5c0ff8e80d4353`: 아이템·경제·NPC18행 중 없음12, 월드9행 중 없음8. 이20행은 조사 출발점이며 현재 완료율/새 판정 합계가 아님 |
+| 분모 | [FEATURE_INVENTORY](../_archive/engine/FDG_FEATURE_INVENTORY_20261020.md)의 과거 snapshot `2845f96e97d4803e4fb8ab4f3d5c0ff8e80d4353`: 아이템·경제·NPC18행 중 없음12, 월드9행 중 없음8. 이20행은 조사 출발점이며 현재 완료율/새 판정 합계가 아님 |
 | 변경·실행 | 이 문서와 CHANGELOG_SYNC 신규 절만. 제품·테스트·보호 설계·공용 6파일 각 0행. **Godot/브라우저/실제 게임/사용자 저장/서버 실행 0**. 원본 단편의 Node VM 관측과 정적 파싱만 수행 |
 
 ### 먼저 읽은 추적과 재사용 경계
@@ -22,7 +24,7 @@
 | [INVENTORY](FDG_SOURCE_TRACE_INVENTORY_20261020.md) §2–5,6 | 장착·가방격자·pickupItem·비교·분해·보관함·부착/분리. UI mutation은 TI 담당안 참조. NW는 그 결과/현재 owner를 주입받는 접점만 정의 |
 | [META](FDG_SOURCE_TRACE_META_20261020.md) §3,4,6–9 | 비용 할인·강화·분해·리롤·제작·재화 권위·클리어 결과. 수치/경제 구현 단위를 중복 제안하지 않음 |
 | MAPS_CH1 | 기준 main에는 파일 없음. 로컬 `codex/trace-maps-ch1-20261020@668cfdedf62dd4758057c4c16ea185fffa0c424f`의 `docs/engine/FDG_SOURCE_TRACE_MAPS_CH1_20261020.md` §1.2/1.4,3–5를 Git object로 읽은 **미병합 참고본**. 배치/타일/충돌/arena 전환은 이쪽 경계, 참고본을 main 구현으로 세지 않음. 원문 사본 MAPS_CH1-reference.md를 로그에 보존 |
-| [SAVE](FDG_SOURCE_TRACE_SAVE_20261020.md), [SETTINGS](FDG_SOURCE_TRACE_SETTINGS_20261020.md), [QUICKSLOT](FDG_SOURCE_TRACE_QUICKSLOT_20261020.md) | 슬롯 identity·공유 mats/storage·serializer/복원 **보호**; 입력 바인딩·키 엣지·물약의 실제 악의 전환은 기존 계약. 새 저장 키/바인딩을 발명하지 않음 |
+| [SAVE](FDG_SOURCE_TRACE_SAVE_20261020.md), [SETTINGS](FDG_SOURCE_TRACE_SETTINGS_20261020.md), [QUICKSLOT](FDG_SOURCE_TRACE_QUICKSLOT_20261020.md) | 슬롯 identity·공유 mats/storage·serializer/복원 **보호**; 입력 바인딩·키 엣지·물약의 실제 악의오브 전환은 기존 계약. 새 저장 키/바인딩을 발명하지 않음 |
 | SKILLS/WEAPONS/REVIVE_SHIELD/SOUND/CH1_ENEMIES/BOSS_CH1 | 기존 각 추적의 범위·공용 접점/관련 심벌 절 확인. F영역스킬·Q/E·피해·상인 actor·펫 대사/음성/효과음은 해당 소비자 경계. 전투 계산/효과를 여기서 변경하지 않음 |
 
 ## 1. 기능 분모 20행 대응
@@ -107,9 +109,9 @@ G:25735–25778에서 editor functional5종을 걸러내고 새 MAP_OBJS를 구�
 | 공통 배열/cap | G:16721 `_wiPush`는 cap20. 미개봉/미수거 chest 점수Infinity, item은rarity, 나머지−1의 최솟값을 tail로 교체 후 축소. 전체가Infinity면 초기 mi0 폴백이므로 ‘상자 절대 미삭제’라고 새 보장하지 않음. Godot 처치 기록 배열과 월드 소비는 구분 |
 | 상자 생성 | G:41820–41839 `bossAlive && bossArena`, findBoss/부활대기 확인, bossRoom 존재·생존보스 없음 때 bossAlive=false/clearTime스냅샷/출구연출 후 room중심에 `{type:'chest',picked:false,opened:false}`. _chest3d.show 조건부. 보스 사망 한 번 latch와 부활대기 판정은 보스 담당 경계 |
 | 개봉 | G:32855–32878 type/flags/거리<60 첫상자, 먼저 opened=true→3D.open/승리SFX. count3+~~(U*3), 매 item 슬롯17 중1·원소P/F/I/D/L/H 중1·tier0, stgB=min((stage||0)*.015,.30), leg=min(.15+stgB*.5,.40), hero=min(.25+stgB*.4,.35), rr<leg→4/<leg+hero→3/<leg+hero+.30→2/나머지1. mkItem 의존→분산50px world drop, 보장 가방 반입 아님 |
-| 추가 보상 | G:32875 mats+=5+~~(stage*2), :32876 addPotion('hp',2)는 원본 :28250–28257에 의해 실제 악의+2. 표기 ‘HP물약+2’를 새 지속 물약2개로 해석하지 않음. 첫상자 pet tut hook32877은 대사/오디오 담당 의존 |
+| 추가 보상 | G:32875 mats+=5+~~(stage*2), :32876 addPotion('hp',2)는 원본 :28250–28257에 의해 실제 악의오브+2. 표기 ‘HP물약+2’를 새 지속 물약2개로 해석하지 않음. 첫상자 pet tut hook32877은 대사/오디오 담당 의존 |
 | 잔해 생성 | G:42745–42752 !boss/!rare 적 사망 시 elite>=3/.25·>=2/.15·>=1/.08, 성공하면 debTier2/1/0 레코드. 처치·드랍 담당 소유. breakable/MAP_OBJS와 다른 컬렉션 |
-| 잔해 개봉 | G:32882–32911 first unpicked debris/<50, picked=true. mats=[3,8,15][tier]+~~(stage*[.5,1,2][tier]); 장비수=[0,1,2]+(tier>=1&&U<.5?1:0), 등급분기는32901–32902 그대로. tier>=1이면 U<.4일 때 HP추출1→악의1. chestOpened를 공유해 같은 입력의 chest/debris 2중 개봉 방지 |
+| 잔해 개봉 | G:32882–32911 first unpicked debris/<50, picked=true. mats=[3,8,15][tier]+~~(stage*[.5,1,2][tier]); 장비수=[0,1,2]+(tier>=1&&U<.5?1:0), 등급분기는32901–32902 그대로. tier>=1이면 U<.4일 때 HP추출1→악의오브1. chestOpened를 공유해 같은 입력의 chest/debris 2중 개봉 방지 |
 | 그림·fallback | G:52595–52619 조건부 3D active면2D 힌트, opened/닫힌 도형 fallback. :65235–65338 THREE/GLTF 별도 module·GLB로드/전역 _chest3d.show/open/hide/active, 이후 tick 렌더. 단일 전역3Doverlay와 보상 상태는 별개. 자산 GLB 미수신·실제 로드/동작 미확인, Godot로 이식됐다는 뜻 아님 |
 | 수거 | G:32913–32979 HP/산소/장비/mat/potion 및 hold는 기존 TI/P2-006 의존. UI 번호/화면내 판정과 상태 반입 API 완료 여부를 각각 검수해야 함 |
 
@@ -155,7 +157,7 @@ G:3533–3576/3603–3811 및 실제 로컬·데모·웹 override는 SAVE 참조
 | D15 | MAPS_CH1 참고본은 완료 추적·수치, 기능 분모는 과거 MAP0snapshot | 이번 main에 그 문서 없음, 참고 SHA와 원본해시는 분리 기록 | **참고와 인수 차이**. 미병합 문서/관측으로 최신map consumer 완료를 주장하지 않음 |
 | D16 | `2_6 소환굴+리프트시스템.md:28–29` 균열 접근 시 보상/이벤트, FEATURE의 META-rift 입장·귀환 명칭 | G:42755–42761 생성→35695–35720 틱 기반 적 소환/소멸 | **행동 의미 불일치**. 원본 G.rifts를 이동 포탈로 이식하지 않음 |
 
-마스터 전체 경로: `docs/0마스터플랜/EXODUSER_MASTER_BIBLE_v2_2 (2).md`; prompt 전체 경로: `docs/4.1맵디자인+설정/map-objects-placeholder-prompt (2).md`. 설계 충돌은 원문/현 코드와 함께 총괄 인수 대상으로 남긴다.
+마스터 전체 경로: `docs/0마스터플랜/EXODUSER_MASTER_BIBLE_v2_2 (2).md`; prompt 전체 경로: `docs/_archive/4.1맵디자인+설정/map-objects-placeholder-prompt (2).md`. 설계 충돌은 원문/현 코드와 함께 총괄 인수 대상으로 남긴다.
 
 ## 4. Godot 의존과 빠진 것 — 코드·테스트 정적 확인
 
@@ -305,4 +307,4 @@ oracle은 각 구현 작업의 고정 원본에서 **재생성**한다. Mac의 `
 
 ## 2026-10-21 MAP11-PROD / DEMO11-45 소비 연결
 
-Main의 새 MAP11 기본 선택과 실제 provider 참조로 45의 provider 대기는 해소했다. 보물상자는 실제 map11.arena.boss에 바인딩하고 기존 item factory·DEMO11-21 journal·State 악의/INV writer를 재사용한다. 부활 대기를 포함한 PC 최종 완료 admission은 NOT_READY/hidden이며 테스트 component fixture를 자연 플레이 PASS로 세지 않는다. 새 영속 개봉 flag·상인·지도 배치0. [45 재개 보고서](orders/reports/demo11-45_REPORT.md), [제품 맵 바인딩](../4.1맵디자인+설정/MAP11_PRODUCTION_BINDING_20261021.md).
+Main의 새 MAP11 기본 선택과 실제 provider 참조로 45의 provider 대기는 해소했다. 보물상자는 실제 map11.arena.boss에 바인딩하고 기존 item factory·DEMO11-21 journal·State 악의/INV writer를 재사용한다. 부활 대기를 포함한 PC 최종 완료 admission은 NOT_READY/hidden이며 테스트 component fixture를 자연 플레이 PASS로 세지 않는다. 새 영속 개봉 flag·상인·지도 배치0. [45 재개 보고서](../_archive/engine/orders/reports/demo11-45_REPORT.md), [제품 맵 바인딩](../_archive/4.1맵디자인+설정/MAP11_PRODUCTION_BINDING_20261021.md).

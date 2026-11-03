@@ -16,12 +16,13 @@ namespace Exoduser.UnityPort
         readonly SpriteRenderer[] tiers=new SpriteRenderer[3];
         readonly Sprite line;
         readonly MaterialPropertyBlock properties=new MaterialPropertyBlock();
-        static readonly int Opacity=Shader.PropertyToID("_Opacity");
+        static readonly int Opacity=Shader.PropertyToID("_Opacity"),FrameRect=Shader.PropertyToID("_PixelFrameRect");
 
         public KiSlashView(Transform parent,Func<int,Sprite> frame)
         {
             this.parent=parent;this.frame=frame;
             additive=Material("Shaders/KiSlashAdditive");ink=Material("Shaders/KiSlashInk");
+            if(NativeRigPixelPolicy.Requested(Environment.GetCommandLineArgs())){additive.SetFloat("_RigPixelMode",1);ink.SetFloat("_RigPixelMode",1);}
             line=Sprite.Create(Texture2D.whiteTexture,new Rect(0,0,1,1),new Vector2(.5f,.5f),100);
             for(int i=0;i<2;i++)charge[i]=Renderer("Ki third charge "+i,additive,26000+i);
             for(int i=0;i<3;i++){tiers[i]=Renderer("Ki charge tier "+i,null,26002+i);tiers[i].sprite=line;}
@@ -58,13 +59,20 @@ namespace Exoduser.UnityPort
                 }
                 float progress=Mathf.Clamp01(1-p.Life/Mathf.Max(1,p.MaxLife));
                 int cell=Mathf.Min(8,Mathf.FloorToInt(progress*9));
-                float alpha=Mathf.Min(1,(1-progress)*2.5f),size=(p.Step==3?252:192)*p.ChargeScale;
-                Set(layers[0],cell,p.X,p.Y,p.Angle,size*1.14f,size*1.14f,alpha*.9f);
+                // Display age only: Core life, radius, speed and trail samples stay intact.
+                float age=p.MaxLife-p.Life;
+                float alpha=(float)KiImpactPresentation.TrailAlpha(age);
+                float body=(float)KiImpactPresentation.BodyAlpha(age);
+                float size=(p.Step==3?252:192)*p.ChargeScale;
+                Set(layers[0],cell,p.X,p.Y,p.Angle,size*1.14f,size*1.14f,body*.4f);
                 int far=(p.TrailHead-4+5)%5,near=(p.TrailHead-2+5)%5;
-                Set(layers[1],cell,p.TrailX[far],p.TrailY[far],p.Angle,size*.9f,size*.9f,alpha*.08f);
-                Set(layers[2],cell,p.TrailX[near],p.TrailY[near],p.Angle,size*.9f,size*.9f,alpha*.18f);
-                Set(layers[3],cell,p.X,p.Y,p.Angle,size*1.08f,size*1.08f,alpha*(p.Step==3?.3f:.18f));
-                Set(layers[4],cell,p.X,p.Y,p.Angle,size,size,alpha);
+                Set(layers[1],cell,p.TrailX[far],p.TrailY[far],p.Angle,size*.9f,size*.9f,body*.08f);
+                Set(layers[2],cell,p.TrailX[near],p.TrailY[near],p.Angle,size*.9f,size*.9f,body*.18f);
+                Set(layers[3],cell,p.X,p.Y,p.Angle,size*1.08f,size*1.08f,body*.25f);
+                // Compress across travel, keeping the arc's height and its leading tip.
+                float thin=(float)KiImpactPresentation.TrailThickness;
+                float front=size*(1-thin)*.35f;
+                Set(layers[4],cell,p.X+Mathf.Cos(p.Angle)*front,p.Y+Mathf.Sin(p.Angle)*front,p.Angle,size*thin,size,alpha);
             }
             var remove=new List<int>();foreach(var id in projectiles.Keys)if(!active.Contains(id))remove.Add(id);
             foreach(int id in remove){foreach(var r in projectiles[id])UnityEngine.Object.Destroy(r.gameObject);projectiles.Remove(id);}
@@ -88,12 +96,15 @@ namespace Exoduser.UnityPort
         }
         void Set(SpriteRenderer r,int cell,float x,float y,float angle,float width,float height,float alpha)
         {
-            r.enabled=true;r.sprite=frame(cell);r.transform.position=Point(x,y);
+            r.enabled=alpha>0;if(!r.enabled)return;r.sprite=frame(cell);r.transform.position=Point(x,y);
             r.transform.rotation=Quaternion.Euler(0,0,-angle*Mathf.Rad2Deg);
             r.transform.localScale=new Vector3(width/r.sprite.rect.width,height/r.sprite.rect.height,1);r.color=Color.white;
             // Explicit per-renderer opacity avoids relying on pipeline-specific
             // SpriteRenderer color uniforms or multiplying its alpha twice.
-            r.GetPropertyBlock(properties);properties.SetFloat(Opacity,alpha);r.SetPropertyBlock(properties);
+            r.GetPropertyBlock(properties);properties.SetFloat(Opacity,alpha);
+            var rect=r.sprite.textureRect;var texture=r.sprite.texture;
+            properties.SetVector(FrameRect,new Vector4(rect.xMin/texture.width,rect.yMin/texture.height,rect.xMax/texture.width,rect.yMax/texture.height));
+            r.SetPropertyBlock(properties);
         }
         static Vector3 Point(float x,float y){return NativeRemodel3D.Point(x,y);}
         public void Dispose(){Reset();foreach(var r in charge)UnityEngine.Object.Destroy(r.gameObject);foreach(var r in tiers)UnityEngine.Object.Destroy(r.gameObject);UnityEngine.Object.Destroy(line);UnityEngine.Object.Destroy(additive);UnityEngine.Object.Destroy(ink);}

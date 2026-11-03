@@ -384,6 +384,37 @@ function Set-UnityReservation([string]$command, [string]$kind = 'editor') {
   foreach ($file in @(($base+'.out.log'),($base+'.err.log'))) { if (Test-Path $file) { foreach ($line in @(Get-Content $file -Encoding UTF8)) { Log ([string]$line) } } }
   if ($pr.ExitCode -ne 0) { throw ('Unity 예약 명령 실패: ' + $command) }
 }
+# Unity가 import·빌드 중 다시 쓰는 추적 파일만 'kept', 그 밖의 변경(INDEX 포함)은 'foreign'.
+function Get-ReserializeDirt([string]$worktree) {
+  $kept = @(); $foreign = @()
+  foreach ($line in @(& git.exe -C $worktree -c core.quotePath=false status --porcelain --untracked-files=no)) {
+    if (-not $line) { continue }
+    $path = $line.Substring(3)
+    if ($line.Substring(0,2) -eq ' M' -and $path -match '^unity/(Assets|ProjectSettings)/.+\.(meta|mat|asset|unity)$') { $kept += $path } else { $foreign += $line }
+  }
+  return [pscustomobject]@{ kept = $kept; foreign = $foreign }
+}
+function Get-ReserializeOverlap([string]$worktree, [string[]]$kept, [string]$target) {
+  $incoming = @(& git.exe -C $worktree -c core.quotePath=false diff --name-only HEAD $target)
+  return @($kept | Where-Object { $incoming -contains $_ })
+}
+# 새 커밋이 바꾸는 경로 가운데 작업본 사본이 있는 것(유지 중인 재직렬화 + 미추적)을 내용 같음/다름으로 나눈다.
+function Get-IncomingCollision([string]$worktree, [string[]]$kept, [string]$target) {
+  $incoming = @(& git.exe -C $worktree -c core.quotePath=false diff --name-only HEAD $target)
+  $untracked = @(& git.exe -C $worktree -c core.quotePath=false ls-files --others --exclude-standard)
+  $paths = @(@($kept) + $untracked | Where-Object { $_ -and $incoming -contains $_ } | Select-Object -Unique)
+  $same = @(); $different = @()
+  if (-not $paths.Count) { return [pscustomobject]@{ same = $same; different = $different } }
+  # 경로 수백 개를 인자 하나에 넣으면 Windows 명령줄 한도를 넘으므로 전체 트리를 읽고, hash-object는 100개씩 나눠 부른다.
+  $set = @{}; foreach ($p in $paths) { $set[$p] = $true }
+  $want = @{}
+  foreach ($line in @(& git.exe -C $worktree -c core.quotePath=false ls-tree -r $target)) { if ($line -match '^\S+ blob (\S+)\t(.+)$' -and $set.ContainsKey($Matches[2])) { $want[$Matches[2]] = $Matches[1] } }
+  $have = @()
+  for ($i = 0; $i -lt $paths.Count; $i += 100) { $have += @(& git.exe -C $worktree hash-object -- @($paths[$i..([math]::Min($i + 99, $paths.Count - 1))])) }
+  if ($have.Count -ne $paths.Count) { throw '재직렬화 파일 해시 계산 실패' }
+  for ($i = 0; $i -lt $paths.Count; $i++) { if ($want.ContainsKey($paths[$i]) -and $want[$paths[$i]] -eq $have[$i]) { $same += $paths[$i] } else { $different += $paths[$i] } }
+  return [pscustomobject]@{ same = $same; different = $different }
+}
 function Get-BlockingUnityOwner([string]$kind = 'editor', [string]$root = 'I:\EXODUSER-Storage\unity-jobs') {
   foreach ($f in @(Get-ChildItem (Join-Path $root 'queue') -Filter '*.json' -ErrorAction SilentlyContinue | Sort-Object Name)) {
     $r = ReadJson $f.FullName
@@ -409,7 +440,7 @@ function Invoke-Exo([string]$command, [string[]]$jobArgs, [string]$logBase, [str
   $argsText = $jobArgs -join ','
   $timeout = $Cfg.BuildTimeoutMin * 60; if ($command -eq 'player') { $timeout = $Cfg.SmokeTimeoutMin * 60 }
   $pa = @('-NoProfile','-NonInteractive','-WindowStyle','Hidden','-ExecutionPolicy','Bypass','-File', ('"{0}"' -f $launcher), $command, '-Worktree', ('"{0}"' -f $Cfg.Worktree), '-Owner','buildloop','-WaitMin',([string]$Cfg.WaitMaxMin),'-Json','-TimeoutSec', ([string]$timeout), '-Args', ('"{0}"' -f $argsText))
-  if ($exe) { $pa += @('-Exe', ('"{0}"' -f $exe), '-Desktop', $desktop) }
+  if ($exe) { $pa += @('-Exe', ('"{0}"' -f $exe), '-Desktop', $desktop, '-PcException', 'buildloop') }
   $pr = Start-Process -FilePath "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -ArgumentList $pa -WindowStyle Hidden -PassThru -RedirectStandardOutput ($logBase+'.out.log') -RedirectStandardError ($logBase+'.err.log')
   $null = $pr.Handle; $pr.WaitForExit(); $pr.Refresh()
   $rc = $pr.ExitCode; $receipt = $null
@@ -422,7 +453,7 @@ function Invoke-UiOverlapCheck([string]$check, [string]$exe, [string]$worktree, 
   # PS5.1 turns native stderr into NativeCommandError under & ... *> with EAP=Stop.
   # Redirect the child's raw streams directly, retaining the parent's error policy.
   $errLog = $log -replace '\.log$', '.err.log'
-  $pa = @('-NoProfile','-NonInteractive','-WindowStyle','Hidden','-File',('"{0}"' -f $check),'-Exe',('"{0}"' -f $exe),'-Worktree',('"{0}"' -f $worktree),'-Output',('"{0}"' -f $output),'-OverlapOnly')
+  $pa = @('-NoProfile','-NonInteractive','-WindowStyle','Hidden','-File',('"{0}"' -f $check),'-Exe',('"{0}"' -f $exe),'-Worktree',('"{0}"' -f $worktree),'-Output',('"{0}"' -f $output),'-OverlapOnly','-PcException','buildloop')
   $pr = Start-Process -FilePath "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -ArgumentList $pa -WindowStyle Hidden -PassThru -RedirectStandardOutput $log -RedirectStandardError $errLog
   try {
     $null = $pr.Handle; $pr.WaitForExit(); $pr.Refresh()
@@ -776,13 +807,32 @@ function Cmd-Run {
 
     # Update only a clean detached checkout/explicit unity/main checkout; never force or touch a lane branch.
     $actual = ([string](GitR rev-parse HEAD)).Trim()
-    $dirty = & git.exe -C $Cfg.Worktree status --porcelain --untracked-files=no
-    if ($dirty) { throw '작업본 INDEX/WORK 변경이 있어 이번 회차 중단' }
+    # 11-03: 빌드 자체가 Unity 직렬화 파일(.meta·.mat·.asset·.unity)을 다시 쓴다. 이것만 남은 작업본은 버리지 않고 그대로 진행하고,
+    # 새 커밋과 겹칠 때만 중단한다(정리는 사용자 확인 사항). INDEX 변경·그 밖의 파일은 예전처럼 중단.
+    $dirt = Get-ReserializeDirt $Cfg.Worktree
+    if ($dirt.foreign.Count) { throw ('작업본 INDEX/WORK 변경이 있어 이번 회차 중단: ' + (($dirt.foreign | Select-Object -First 5) -join ', ')) }
+    $sameAsTarget = @()
+    if ($actual -ne $head.full) {
+      # 새 커밋이 바꾸는 파일 중 작업본 사본(유지 중인 재직렬화·미추적)이 커밋 내용과 똑같으면 스테이징만 하고 갱신한다(내용 손실 0).
+      # git은 내용이 같아도 로컬 수정이 있으면 ff를 거부하기 때문이다. 내용이 다르면 그대로 중단(되돌리기는 사용자 확인 사항).
+      $col = Get-IncomingCollision $Cfg.Worktree $dirt.kept $head.full
+      if ($col.different.Count) { throw ('Unity 재직렬화 파일이 새 커밋과 겹침(' + $col.different.Count + '개, 사용자 정리 필요): ' + (($col.different | Select-Object -First 5) -join ', ')) }
+      $sameAsTarget = @($col.same)
+    }
+    if ($dirt.kept.Count) {
+      $run.reserializedKept = $dirt.kept.Count
+      Log ('Unity 재직렬화 파일 ' + $dirt.kept.Count + '개 유지(버리지 않음), 새 커밋과 내용이 같은 파일 ' + $sameAsTarget.Count + '개는 스테이징 후 갱신')
+    }
     if ($actual -ne $head.full) {
       $branch = "$(GitR branch --show-current)".Trim()
       if ($branch -and $branch -ne 'unity/main') { throw '다른 담당 브랜치는 자동 갱신하지 않음' }
       & git.exe -C $Cfg.Worktree merge-base --is-ancestor HEAD $head.full
       if ($LASTEXITCODE -ne 0) { throw '비 fast-forward 갱신 거부' }
+      if ($sameAsTarget.Count) {
+        $spec = Join-Path $runDir 'same-as-target.txt'; [IO.File]::WriteAllLines($spec, [string[]]$sameAsTarget, (New-Object Text.UTF8Encoding($false)))
+        & git.exe -C $Cfg.Worktree -c core.quotePath=false add --pathspec-from-file=$spec
+        if ($LASTEXITCODE -ne 0) { throw '새 커밋과 같은 내용의 파일 스테이징 실패' }
+      }
     if ($branch) { & git.exe -C $Cfg.Worktree merge --ff-only --no-overwrite-ignore $head.full }
       else { & git.exe -C $Cfg.Worktree switch --no-overwrite-ignore --detach $head.full }
       if ($LASTEXITCODE -ne 0) { throw '정상 갱신 실패' }
