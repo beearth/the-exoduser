@@ -376,7 +376,7 @@ function Update-AttemptState($stateObj,[string]$sha,[string]$verdict,[bool]$bran
   if ($verdict -notin @('ABORT','WAIT') -and -not $branchOnly) { $stateObj.lastAttemptSha = $sha; $stateObj.lastAttemptVerdict = $verdict }
 }
 function Set-UnityReservation([string]$command, [string]$kind = 'editor') {
-  $launcher = Join-Path $Cfg.Worktree 'unity\Tools\devtools\exo-unity.ps1'
+  $launcher = 'I:\EXODUSER-Storage\unity-jobs\bin\exo-unity.ps1'
   $base = Join-Path $LoopDir ('reservation-' + [guid]::NewGuid().ToString('N'))
   $pa = @('-NoProfile','-NonInteractive','-WindowStyle','Hidden','-File', ('"{0}"' -f $launcher), $command, '-Kind',$kind,'-Owner','buildloop','-Worktree', ('"{0}"' -f $Cfg.Worktree), '-Note','"buildloop FIFO"','-TtlMin', [string]($Cfg.WaitMaxMin + $Cfg.BuildTimeoutMin + 30))
   $pr = Start-Process -FilePath "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -ArgumentList $pa -WindowStyle Hidden -PassThru -RedirectStandardOutput ($base+'.out.log') -RedirectStandardError ($base+'.err.log')
@@ -405,7 +405,7 @@ function Get-BlockingUnityOwner([string]$kind = 'editor', [string]$root = 'I:\EX
 function Invoke-Exo([string]$command, [string[]]$jobArgs, [string]$logBase, [string]$exe = '', [string]$desktop = 'hidden') {
   $kind = 'editor'; if ($command -eq 'player') { $kind = 'player' }
   Set-UnityReservation 'reserve' $kind
-  $launcher = Join-Path $Cfg.Worktree 'unity\Tools\devtools\exo-unity.ps1'
+  $launcher = 'I:\EXODUSER-Storage\unity-jobs\bin\exo-unity.ps1'
   $argsText = $jobArgs -join ','
   $timeout = $Cfg.BuildTimeoutMin * 60; if ($command -eq 'player') { $timeout = $Cfg.SmokeTimeoutMin * 60 }
   $pa = @('-NoProfile','-NonInteractive','-WindowStyle','Hidden','-ExecutionPolicy','Bypass','-File', ('"{0}"' -f $launcher), $command, '-Worktree', ('"{0}"' -f $Cfg.Worktree), '-Owner','buildloop','-WaitMin',([string]$Cfg.WaitMaxMin),'-Json','-TimeoutSec', ([string]$timeout), '-Args', ('"{0}"' -f $argsText))
