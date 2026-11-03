@@ -48,7 +48,7 @@ namespace Exoduser.UnityPort
 
         void Awake()
         {
-            Instance=this;basicWeaponMode=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-basic-weapon")>=0;Application.targetFrameRate=120;Time.fixedDeltaTime=1f/60f;
+            Instance=this;if(PerfProbe.Enabled)AttachPerfRecorder();basicWeaponMode=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-basic-weapon")>=0;Application.targetFrameRate=120;Time.fixedDeltaTime=1f/60f;
             view=Camera.main;
             if(view==null){view=new GameObject("World Camera").AddComponent<Camera>();view.tag="MainCamera";}
             view.orthographic=true;view.orthographicSize=5.4f;view.backgroundColor=new Color(.015f,.02f,.018f);view.clearFlags=CameraClearFlags.SolidColor;
@@ -176,7 +176,8 @@ namespace Exoduser.UnityPort
                 if(Map.CanMove(nx,ny,r)){x=nx;y=ny;return true;}
             }return false;
         }
-        void Update()
+        void Update(){PerfProbe.Begin(PerfProbe.Section.Update);try{UpdateFrame();}finally{PerfProbe.End(PerfProbe.Section.Update);}}
+        void UpdateFrame()
         {
             UpdateSettingsPersistence();UpdateCombatSave();
             lobby.AutomatedInput=UiOverlapOwnsInput||lobbySmoke&&!introKeysSmoke;
@@ -251,8 +252,9 @@ namespace Exoduser.UnityPort
             Simulation.SetRollInput(NativeKeyBindInput.Held("up"),NativeKeyBindInput.Held("down"),NativeKeyBindInput.Held("left"),NativeKeyBindInput.Held("right"),NativeKeyBindInput.HeldKeyboard("roll"));
             SetSkillKeys();}
             int statPointsBeforeTick=Simulation.Player.StatPoints;int currencyBeforeTick=Simulation.Materials;
+            PerfProbe.FixedSteps++;PerfProbe.Begin(PerfProbe.Section.FixedSim);
             if(!HandleFirstPracticeTick(x,y,aim.x*100,-aim.y*100,attack,PointerOverPractice()))Simulation.Tick(x,y,aim.x*100,-aim.y*100,attack,NativeKeyBindInput.Held("interact"));
-            StageFlowPump(statPointsBeforeTick);DispatchFeedback();
+            StageFlowPump(statPointsBeforeTick);DispatchFeedback();PerfProbe.End(PerfProbe.Section.FixedSim);
             if(Simulation.Materials>currencyBeforeTick){var at=HudCamera.WorldToViewportPoint(Point(p.X,p.Y));NativeCurrencyOrb.Emit(new Vector2(at.x,at.y));}
             if(PlayerDown){Running=false;Toast("쓰러졌습니다");}
             // Web normal play omits kill reward text; the actual currency HUD/orb feedback above owns it.
@@ -304,7 +306,8 @@ namespace Exoduser.UnityPort
             var remove=new List<int>();foreach(var pair in chunks)if(!keep.Contains(pair.Key))remove.Add(pair.Key);
             foreach(int id in remove){var c=chunks[id];Destroy(c.renderer.gameObject);chunks.Remove(id);ReleaseSprites(c.path);}
         }
-        void UpdateViews()
+        void UpdateViews(){PerfProbe.Begin(PerfProbe.Section.Views);try{UpdateViewsFrame();}finally{PerfProbe.End(PerfProbe.Section.Views);}}
+        void UpdateViewsFrame()
         {
             if(Simulation==null||view==null)return;BindWorldViewport();Remodel3DRestoreBillboards();NativeHd2D.RestoreSourcePoses();var p=Simulation.Player;
             if(contactVfx!=null){contactVfx.RenderCamera=HudCamera;contactVfx.ReducedMotion=impacts!=null&&impacts.ReducedMotion;}
@@ -314,7 +317,7 @@ namespace Exoduser.UnityPort
             float camX=p.X/100,camY=-p.Y/100;BossCameraZoom();ClampCameraToMap(ref camX,ref camY);   // [CAM-CLAMP] web _clampCamToMap before the shake offset
             ImpactCameraProjection();
             hd2dCameraShake=new Vector3(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0,shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0,0);
-            view.transform.position=new Vector3(camX,camY,-10)+hd2dCameraShake;StageFlowSyncViews();if(!Simulation.Stage.InArena)StreamChunks(view.transform.position.x*100,-view.transform.position.y*100);
+            view.transform.position=new Vector3(camX,camY,-10)+hd2dCameraShake;StageFlowSyncViews();if(!Simulation.Stage.InArena){PerfProbe.Begin(PerfProbe.Section.Chunks);StreamChunks(view.transform.position.x*100,-view.transform.position.y*100);PerfProbe.End(PerfProbe.Section.Chunks);}
             bool newTick=renderedTick!=Simulation.TickCount;
             if(newTick){float dx=p.X-lastX,dy=p.Y-lastY;walkDistance+=Mathf.Sqrt(dx*dx+dy*dy);lastX=p.X;lastY=p.Y;playerMoving=dx*dx+dy*dy>.001f;}
             bool heroHeld=ImpactHoldHeroPose();
@@ -405,6 +408,9 @@ namespace Exoduser.UnityPort
             ev.arc.transform.position=Point(e.X,e.Y);ev.arc.transform.rotation=Quaternion.Euler(0,0,-(float)e.Web.shieldAng*Mathf.Rad2Deg);ev.arc.sortingOrder=(int)e.Y+2;
         }
         SpriteRenderer CreateRenderer(string name){var go=new GameObject(name);go.transform.SetParent(transform);return go.AddComponent<SpriteRenderer>();}
+        // PERF-U0: --unity-perf attaches the frame recorder (writes into -output, else <QA sandbox>/perf, else persistentDataPath/perf). -perf-cap N keeps an N fps cap; default uncapped.
+        public bool FrontendBlocking {get {return lobby!=null&&lobby.IsBlocking;}}
+        void AttachPerfRecorder(){var r=gameObject.AddComponent<PerfRecorder>();r.Game=this;string o=Argument("-output");if(string.IsNullOrEmpty(o)){string sb=Argument("--unity-qa-sandbox");if(!string.IsNullOrEmpty(sb))o=Path.Combine(sb,"perf");}r.Output=o;int cap;if(int.TryParse(Argument("-perf-cap"),out cap))r.FrameCap=cap;}
         Sprite SpriteFor(string resource,int x,int top,int width,int height,Vector2 pivot)
         {
             string key=resource+":"+x+":"+top+":"+width+":"+height+":"+pivot.x+":"+pivot.y;
@@ -442,7 +448,8 @@ namespace Exoduser.UnityPort
             characterBadge=new GUIStyle(label){font=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular")??font};
         }
         void DrawFeelHurtEdge(){var prior=GUI.matrix;try{GUI.matrix=Matrix4x4.identity;var color=new Color(166/255f,50/255f,37/255f,.24f);Fill(new Rect(0,0,Screen.width,6),color);Fill(new Rect(0,Screen.height-6,Screen.width,6),color);Fill(new Rect(0,6,6,Screen.height-12),color);Fill(new Rect(Screen.width-6,6,6,Screen.height-12),color);}finally{GUI.matrix=prior;}}
-        void OnGUI()
+        void OnGUI(){PerfProbe.GuiCalls++;PerfProbe.Begin(PerfProbe.Section.Gui);try{OnGUIFrame();}finally{PerfProbe.End(PerfProbe.Section.Gui);}}
+        void OnGUIFrame()
         {
             if(groundReceiverQaActive)return;
             if(Simulation==null)return;
@@ -474,7 +481,7 @@ namespace Exoduser.UnityPort
             // Web #mmLvl objective panel (game.html 2576-2586): level / experience / area kills / malice from Unity state; Unity has no area-kill total (shown as 미이식).
             {int areaK,areaT;Simulation.AreaKills(regionHud.CurIdx,out areaK,out areaT);objective.Draw(hudWidth,new NativeObjectivePanel.Info{level=p.Level,exp=p.Experience,maxExp=p.MaxExperience,materials=Simulation.Materials,areaKills=areaK,areaTotal=areaT,english=lobby.Language!="ko"});}   // LT-5: "지역 처치" = current region min(kills,total)/total, else G._stageKills/G._totalSpawned (web 60584-60586), not G.kills
             DrawFieldHud(hudWidth);
-            hud.FeelHurtActive=impacts!=null&&impacts.HurtActive(Simulation.TickCount);hud.Draw(hudWidth,NativeUiSafeArea.DesignHeight,Simulation.Config.ActiveAttack,Simulation);DrawFirstPractice(hudWidth);GUI.matrix=baseMatrix;
+            hud.FeelHurtActive=impacts!=null&&impacts.HurtActive(Simulation.TickCount);PerfProbe.Begin(PerfProbe.Section.Hud);hud.Draw(hudWidth,NativeUiSafeArea.DesignHeight,Simulation.Config.ActiveAttack,Simulation);PerfProbe.End(PerfProbe.Section.Hud);DrawFirstPractice(hudWidth);GUI.matrix=baseMatrix;
             // 전환 중 전투 안내·지역 제목·레벨업이 중앙 명패를 덮지 않게 한다. 자원 HUD는 유지한다.
             if(Simulation.Stage.LoadPhase>0){StageFlowDrawLoad();GUI.matrix=old;return;}
             // game.html drawEn 54054: a 4 px bar (r*2+6 wide, r+16 above the centre) once the mob is hurt or its shield is down: black 60%, red hp, the blue shield laid over it

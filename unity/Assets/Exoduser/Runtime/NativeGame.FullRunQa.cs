@@ -209,7 +209,7 @@ namespace Exoduser.UnityPort
                             if (d < best) { best = d; destination = new Vector2(e.X,e.Y); objective = "remaining-" + e.Id; }
                         }
                     }
-                    var move = navigation.Direction(p.X,p.Y,destination.x,destination.y,p.Radius,FullRunCanMove,sim.TickCount,flow.InArena&&!flow.BossAlive);
+                    PerfProbe.Begin(PerfProbe.Section.Qa);var move = navigation.Direction(p.X,p.Y,destination.x,destination.y,p.Radius,FullRunCanMove,sim.TickCount,flow.InArena&&!flow.BossAlive);PerfProbe.End(PerfProbe.Section.Qa);
                     if(fighting&&Vector2.SqrMagnitude(new Vector2(p.X,p.Y)-aim)>=(selectedAngler?320*320:170*170)&&Vector2.SqrMagnitude(new Vector2(p.X,p.Y)-aim)<(selectedAngler?410*410:260*260)&&FullRunLine(p.X,p.Y,aim.x,aim.y)){var offset=new Vector2(p.X,p.Y)-aim;var tangent=new Vector2(-offset.y,offset.x).normalized;if(FullRunCanMove(p.X+tangent.x*80,p.Y+tangent.y*80,p.Radius))move=tangent;}
                     var keys = new List<Key> { Key.R };
                     bool defend=false,evade=false,shield=false;Vector2 threat=aim;double shieldDistance=0,shieldSpeed=0;
@@ -258,7 +258,7 @@ namespace Exoduser.UnityPort
                     {
                         try
                         {
-                            string raw=File.ReadAllText(policyPath);
+                            PerfProbe.Begin(PerfProbe.Section.Qa);string raw=File.ReadAllText(policyPath);PerfProbe.End(PerfProbe.Section.Qa);
                             if(raw!=policyText)
                             {
                                 var nextPolicy=new FullRunControlPolicy();JsonUtility.FromJsonOverwrite(raw,nextPolicy);nextPolicy.Normalize();
@@ -414,6 +414,7 @@ namespace Exoduser.UnityPort
         }
         IEnumerator FullRunShot(string output,string name)
         {
+            if(PerfProbe.Enabled)yield break;   // PERF-U0: perf runs take no PNG / resolution-switch captures so the frame sample is play only
             bool wide=name=="00-lobby"||name=="combat"||name=="boss-entry"||name=="death"||name=="clear"||name=="clear-difficulty"||name=="clear-lobby";name=fullRunCapturePrefix+name;fullRunCaptureActivity=name;
             yield return new WaitForEndOfFrame();
             fullRunLastCaptureActivity=name;fullRunLastCaptureFrame=Time.frameCount;
@@ -449,7 +450,7 @@ namespace Exoduser.UnityPort
     // Collision-aware navigation for QA input. A path is sampled against the same host collision callback.
     sealed class FullRunNavigation
     {
-        readonly List<Vector2> path=new List<Vector2>();Vector2 goal;int nextPlan,probeTick,fineUntil;Vector2 probePosition,probeGoal;
+        readonly List<Vector2> path=new List<Vector2>();int[] previousBuffer;readonly Queue<int> queueBuffer=new Queue<int>();/* reused (PERF-U0): the planner made a fresh 421² array every 90 ticks */Vector2 goal;int nextPlan,probeTick,fineUntil;Vector2 probePosition,probeGoal;
         public Vector2 Direction(float x,float y,float tx,float ty,float radius,Func<float,float,float,bool> canMove,int tick,bool precise=false)
         {
             var from=new Vector2(x,y);var target=new Vector2(tx,ty);
@@ -460,8 +461,8 @@ namespace Exoduser.UnityPort
                 nextPlan=tick+90;goal=target;path.Clear();
                 bool fine=tick<fineUntil;int side=fine?421:210;float cell=fine?20:40;
                 int sx=Mathf.Clamp((int)(x/cell),0,side-1),sy=Mathf.Clamp((int)(y/cell),0,side-1),start=sy*side+sx;
-                float ox=fine?x-sx*cell:cell*.5f,oy=fine?y-sy*cell:cell*.5f;var previous=new int[side*side];for(int i=0;i<previous.Length;i++)previous[i]=-1;
-                var queue=new Queue<int>();queue.Enqueue(start);previous[start]=start;int closest=start;float best=float.MaxValue;
+                float ox=fine?x-sx*cell:cell*.5f,oy=fine?y-sy*cell:cell*.5f;if(previousBuffer==null||previousBuffer.Length!=side*side)previousBuffer=new int[side*side];var previous=previousBuffer;for(int i=0;i<previous.Length;i++)previous[i]=-1;
+                var queue=queueBuffer;queue.Clear();queue.Enqueue(start);previous[start]=start;int closest=start;float best=float.MaxValue;
                 while(queue.Count>0)
                 {
                     int at=queue.Dequeue(),ax=at%side,ay=at/side;var point=new Vector2(ax*cell+ox,ay*cell+oy);

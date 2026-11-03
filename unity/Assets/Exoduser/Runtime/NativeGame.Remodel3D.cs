@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort
     public sealed partial class NativeGame
     {
         const string R3SceneName = "RM1_Slice";
-        sealed class R3Late : MonoBehaviour { public System.Action Late; void LateUpdate() { if (Late != null) Late(); } }
+        sealed class R3Late : MonoBehaviour { public System.Action Late; void LateUpdate() { if (Late == null) return; PerfProbe.Begin(PerfProbe.Section.R3Late); try { Late(); } finally { PerfProbe.End(PerfProbe.Section.R3Late); } } }
         bool r3Loaded, r3Loading, r3Failed; Scene r3Scene; GameObject[] r3Roots;
         Camera r3Cam; Transform r3Marker; CinemachineCamera r3Vcam; CinemachineBrain r3Brain; R3Late r3Late;
         public bool Remodel3DReady { get { return r3Loaded; } }
