@@ -57373,3 +57373,10 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 - Runtime A2RLighting/A2RWebAssets/A2ROcclusion/NativeGame.A2Redesign, Resources/A2R의 기존 원화34개·기존 노멀/바닥/늪 및 데이터·가림 셰이더, 기존 A2ToxicRiver의 기본값0 원화 혼합 옵션을 추가했다. 원화는 a5c287157에서 복용했고 SourceMap ID·XY를 유지한다.
 - Editor A2RBuilder는 플랫폼에 맞는 빌드 경로와 자기 원화 import 설정만 소유한다. Mac 촬영 계약은 A/B8컷+고정 위치 가림3컷+4096 구조도 원본/실제 Core 좌표 JSON이다. PC에서는 컴파일만 확인하며 Unity 빌드·촬영·시각 PASS를 주장하지 않는다.
 - 수치·경계: [UNITY_A2R_EXISTING_ASSETS_20261103.md](engine/UNITY_A2R_EXISTING_ASSETS_20261103.md). 커밋은 CTO 직접 승인. 일반 실행·바로가기·배포 반영 없음.
+
+## 2026-11-03 A2R Mac FAIL 5항목 수정 후보
+
+- `qa/mac-captures-20261103@1e7b556d9`의 8dce239 REPORT·PNG6장을 직접 검수했다. 이전 후보는 빌드PASS이나 촬영 errors2/exit3·청록 조명·다리 번짐·고목 띠·캠프 중첩으로 FAIL이다.
+- A2ROcclusion은 GroundSkillReceiver 재질 Renderer를 제외하고 HasProperty로 실제 텍스처 속성만 읽는다. 원형 마스크는 GPU 투영 기준 화면 높이12%/알파.30/0.2초, 픽셀 깊이 절단 제거. 캠프 원화 중심18% 마스크를 기존 3D 나무에만 추가했다.
+- 따뜻한 WB12/tint3, 중립 달빛.75·exposure.80, 캠프6.2/횃불7, 낮은 높이 안개.008·DOF.25로 보정했다. A2R 수면의 직접 정반사만 꺼 흰 타원을 억제하며 원본 A/B 상태는 복원한다. A/B와 가림 촬영에 추가.25초 안정 시간을 둔다.
+- PC는 Runtime·Editor C# 컴파일만 확인한다. 새 Mac 셰이더·촬영·시각 판정은 대기이며 이전31개 접지/floating0을 새 후보 PASS로 재사용하지 않는다. Core·구도·원근·배우·원화·장판 수신 셰이더 변경0. 상세 수치·범위·MAP PRODUCTION REPORT는 [A2R 계약](engine/UNITY_A2R_EXISTING_ASSETS_20261103.md).

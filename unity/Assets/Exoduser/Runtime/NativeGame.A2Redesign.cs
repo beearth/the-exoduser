@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort
             if(!A2RRequested||a2rLighting!=null)return;
             var volumes=new List<Volume>();foreach(var root in r3Roots)volumes.AddRange(root.GetComponentsInChildren<Volume>(true));
             a2rLighting=a2Root.AddComponent<A2RLighting>();a2rLighting.Initialize(a2Root.transform,r3Cam,FindObjectsByType<Light>(FindObjectsInactive.Include,FindObjectsSortMode.None),volumes,()=>NativeRemodel3D.Point(Simulation.Player.X,Simulation.Player.Y));
-            foreach(var p in Map.Data.props){if(p.id=="m_c1camp"){var at=NativeRemodel3D.Point(p.x,p.y);a2rLighting.AddLamp("A2R1 C10 camp fire",at+Vector3.up*1.3f,6.5f,4.8f,new Color(1,.46f,.16f));a2rLighting.AddLamp("A2R1 C10 camp glow",at+Vector3.up*.8f,3.4f,3.6f,new Color(1,.62f,.30f));}else if(p.id=="m_ctree15"||p.id=="m_c1altar")a2rLighting.AddLamp("A2R1 C10 red "+p.id,NativeRemodel3D.Point(p.x,p.y)+Vector3.up*1.2f,4.4f,4.56f,new Color(.92f,.18f,.14f));}
+            foreach(var p in Map.Data.props){if(p.id=="m_c1camp"){var at=NativeRemodel3D.Point(p.x,p.y);a2rLighting.AddLamp("A2R1 C10 camp fire",at+Vector3.up*1.3f,6.5f,6.2f,new Color(1,.32f,.08f));a2rLighting.AddLamp("A2R1 C10 camp glow",at+Vector3.up*.8f,3.4f,3.6f,new Color(1,.52f,.20f),false);}else if(p.id=="m_ctree15"||p.id=="m_c1altar")a2rLighting.AddLamp("A2R1 C10 red "+p.id,NativeRemodel3D.Point(p.x,p.y)+Vector3.up*1.2f,4.4f,4.56f,new Color(.92f,.18f,.14f));}
             a2rOcclusion=a2Root.AddComponent<A2ROcclusion>();a2rOcclusion.Initialize(a2Root.transform,r3Cam,()=>NativeRemodel3D.Point(Simulation.Player.X,Simulation.Player.Y));a2rWeb=a2Root.AddComponent<A2RWebAssets>();a2rWeb.Initialize(a2Root.transform,r3Cam,props,a2FieldSoil,a2Water,a2rOcclusion);A2RSetLook(true);
         }
         void A2RSetLook(bool on){a2rLighting.SetLook(on);a2rWeb.SetLook(on);a2rOcclusion.SetLook(on);}
@@ -50,7 +50,7 @@ namespace Exoduser.UnityPort
                     Simulation.Player.X=p.x;Simulation.Player.Y=p.y;lastX=p.x;lastY=p.y;Vector3 beforePosition=Vector3.zero;float beforeFov=0;
                     foreach(bool on in new[]{false,true})
                     {
-                        A2RSetLook(on);for(int i=0;i<14;i++){UpdateViews();yield return null;}string id=width+"-"+names[s]+(on?"-c10":"-original");yield return KeyshotSave(output,id,keyshots);
+                        A2RSetLook(on);for(int i=0;i<14;i++){UpdateViews();yield return null;}yield return new WaitForSecondsRealtime(.25f);UpdateViews();yield return null;string id=width+"-"+names[s]+(on?"-c10":"-original");yield return KeyshotSave(output,id,keyshots);
                         var f=new A2RFrame{id=id,look=on?"C10 lighting":"original unity/main",x=p.x,y=p.y,heroGroundY=NativeRemodel3D.GroundY(p.x/100,-p.y/100),width=Screen.width,height=Screen.height,cameraFov=r3Cam.fieldOfView,cameraPitch=r3Cam.transform.eulerAngles.x,cameraPosition=r3Cam.transform.position,orthographic=r3Cam.orthographic};receipt.frames.Add(f);if(!on){beforePosition=f.cameraPosition;beforeFov=f.cameraFov;}else if(Vector3.Distance(beforePosition,f.cameraPosition)>.0001f||Mathf.Abs(beforeFov-f.cameraFov)>.0001f||f.orthographic)Debug.LogError("A2R A/B camera lock mismatch");
                     }
                 }
@@ -71,7 +71,7 @@ namespace Exoduser.UnityPort
                     bool found=false;for(int radius=1;radius<=12&&!found;radius++)for(int n=0;n<32;n++){float a=n*Mathf.PI/16;var q=p+new Vector2(Mathf.Cos(a),Mathf.Sin(a))*radius*20;if(Map.CanMove(q.x,q.y,Simulation.Player.Radius)){p=q;found=true;break;}}
                     if(!found){Debug.LogError("A2R occlusion pose inaccessible: "+(i+1));Application.Quit(3);yield break;}
                 }
-                Simulation.Player.X=p.x;Simulation.Player.Y=p.y;lastX=p.x;lastY=p.y;for(int j=0;j<24;j++){UpdateViews();yield return null;}
+                Simulation.Player.X=p.x;Simulation.Player.Y=p.y;lastX=p.x;lastY=p.y;for(int j=0;j<24;j++){UpdateViews();yield return null;}yield return new WaitForSecondsRealtime(.25f);UpdateViews();yield return null;
                 string id="1920-occlusion-"+(i+1);yield return KeyshotSave(output,id,keyshots);
                 receipt.occlusionFrames.Add(new A2RFrame{id=id,look="web assets + C10 + circular fade",x=p.x,y=p.y,heroGroundY=NativeRemodel3D.GroundY(p.x/100,-p.y/100),width=Screen.width,height=Screen.height,cameraFov=r3Cam.fieldOfView,cameraPitch=r3Cam.transform.eulerAngles.x,cameraPosition=r3Cam.transform.position,orthographic=r3Cam.orthographic});
             }

@@ -14,6 +14,7 @@ Shader "EXODUSER/A2ToxicRiver"
    #pragma fragment frag
    #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE
    #pragma multi_compile _ _ADDITIONAL_LIGHTS
+   #pragma multi_compile_local_fragment _ _SPECULARHIGHLIGHTS_OFF
    #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
     #pragma multi_compile_fragment _ _SHADOWS_SOFT _SHADOWS_SOFT_LOW _SHADOWS_SOFT_MEDIUM _SHADOWS_SOFT_HIGH
    #pragma multi_compile_fog
@@ -46,7 +47,7 @@ Shader "EXODUSER/A2ToxicRiver"
      float slick=pow(saturate(sin(p.x*.72+p.y*.36+t*.05)*.5+.5),16)*pow(saturate(sin(p.x*.22-p.y*.48-t*.1)*.5+.5),8);
      float foam=saturate(max(contact*.72,bank*.85)*smoothstep(.20,.8,ribbon)+slick*.16);
     InputData data=(InputData)0;data.positionWS=i.world;data.normalWS=n;data.viewDirectionWS=GetWorldSpaceNormalizeViewDir(i.world);data.shadowCoord=TransformWorldToShadowCoord(i.world);data.bakedGI=SampleSH(n);data.shadowMask=1;data.normalizedScreenSpaceUV=screenUV;
-     SurfaceData s=(SurfaceData)0;s.albedo=lerp(_BaseColor.rgb*(.82+.24*flow),_FoamColor.rgb,foam);half3 web=SAMPLE_TEXTURE2D(_A2RWebTex,sampler_A2RWebTex,i.world.xz*.16+float2(_Time.y*.001,0)).rgb;s.albedo=lerp(s.albedo,web*.60,_A2RWebMix*.85);s.normalTS=float3(0,0,1);s.metallic=0;s.specular=.035;s.smoothness=lerp(.78,.22,foam);s.occlusion=1;s.alpha=1;s.emission=_BaseColor.rgb*_Emission;
+     SurfaceData s=(SurfaceData)0;s.albedo=lerp(_BaseColor.rgb*(.82+.24*flow),_FoamColor.rgb,foam);half3 web=SAMPLE_TEXTURE2D(_A2RWebTex,sampler_A2RWebTex,i.world.xz*.16+float2(_Time.y*.001,0)).rgb;s.albedo=lerp(s.albedo,web*.60,_A2RWebMix*.85);s.normalTS=float3(0,0,1);s.metallic=0;s.specular=.035;s.smoothness=lerp(lerp(.78,.22,foam),.18,saturate(_A2RWebMix));s.occlusion=1;s.alpha=1;s.emission=_BaseColor.rgb*_Emission;
     half4 c=UniversalFragmentPBR(data,s);
     float4 reflected=mul(_PlanarVP,float4(i.world,1));float2 reflectionUV=reflected.xy/reflected.w*.5+.5;
     reflectionUV+=n.xz*.12;
