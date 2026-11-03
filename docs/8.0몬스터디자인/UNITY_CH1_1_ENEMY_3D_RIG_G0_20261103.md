@@ -264,6 +264,22 @@
 | 동작 클립 | 1차 5종 v1 완료(4.1.5). 2·3차 25종은 Meshy 걷기·달리기만 있음 → 다음 일 |
 | 판정 | 전부 Blender 근사 기준 제작자 판정. "영웅과 같은 질" 최종 판정은 Unity 연결(레인 `codex/unity-enemy3d-20261104`) 뒤 Mac 캡처 |
 
+#### 4.1.7 2·3차 25종 동작 클립 (11-04 4~5시, Blender 서브에이전트 3개, 유료 0) — 30종 동작 v1 전부 끝
+
+브리프: `I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/BRIEF_anim_2nd_3rd.md`. 산출: `.../anim/<key>_anim_v1.glb`·`.blend`·`<key>_anim_report.json`, 띠 `G:/exoduser/tmp/design-review/20261104_enemy3d_pilot/anim_<key>_strip_1x·3x.png`. 60fps, 1프레임 = Core 1틱. 공통 `idle` 120·`walk`·`hit` 12·`stagger` 40·`death` 45.
+
+| 묶음 | 종(공격 클립 틱) | 비고 |
+|---|---|---|
+| 2차 사람형 10 | lesser `attack` 24/2/36 · ironclad `shield_tele` 24→`charge_run` 20(루트 2.3m/s)→`charge_hit` 4→`attack_rec` 40 · warden `combo1` 30/3 `combo_gap` 10 `combo2` 16/3 `combo3` 16/3 `attack_rec` 45, `charge_tele` 40→`charge_run` 20(3.2m/s)→`charge_hit` 4 · zombie·cleaver·duelist 24/3/30 · hexer·bloated·ritual 60/6/30 · berserk 24/3/30 + `rage` 40 | 무기 3종은 전용 걷기: warden 망치 끌기 72f(0.9m/s), ritual 지팡이 짚기 64f, duelist 60f. 소켓 위치 오차 0 |
+| 3차 사람형 6 | shadow 24/3/30 + `vanish`·`appear` 20 · winged `dive_tele` 24/`dive_act` 12(루트 2.2m)/`attack_rec` 30 · imp·vampire·golem 24/3/30 · giant `attack1` 18/2 → `attack1_gap` 22 → `attack2` 40/1 → `attack_rec` 36 | 단계 연결 오차 ≤0.09° |
+| 비사람형 9 (Tripo 뼈) | slime·hexer형 60/6/30 · eyemass·wraith·spider·worm 24/3/30 · fetal 24/3/30 + `explode_tele` 30/`explode_act` 6 · mother·womb 60/6/30 + `summon` 40/10/30 · bat `dive` 24/12(루트 1.6)/30 | 모두 새 `walk`(구르기·부유·8다리 보행·물결 기기·날갯짓). 덩어리형은 뼈 스케일 찌그러짐 |
+
+- 예고 정점 몸통 회전은 모두 ≥19°다(womb 몸 축 19°, 나머지 ≥20°). 회복 최저 자세는 회복 길이의 1/3 이하다. 예고·발동 발 미끄러짐은 사람형 ≤0.5cm, 비사람형 접지 정점 평균 2.2~3.7cm(덩어리 변형 때문).
+- 판정: **제작자 조건부 PASS**. 34° 1x에서 25종 모두 예고 정점이 대기와 다르게 읽힌다. RETOUCH(경미)는 둘이다: 철갑 사도 `shield_tele`(방패 들기가 대기와 차이가 작음), 거미 사도 `attack_tele`(앞다리 들기가 작음).
+- **Unity 연결 주의**: ① 비사람형 9종은 앞 방향이 월드 -X다(사람형은 Meshy 정면). 모델 표에서 90° 돌려 맞춘다. ② 루트 이동량 임시값 — 날개 사도 `dive_act` 2.2m, 뼈 박쥐 1.6(원본 단위), 철갑·문지기 `charge_run` 속도 — 는 Core 이동값과 맞춰 레인이 스케일한다. ③ 대형 사도 `attack1_gap`, 문지기 `charge_hit`·`combo_gap`(2회 재사용)은 브리프에 없던 이음 클립이다. ④ 무기 GLB를 Blender로 다시 읽으면 소켓이 어긋나 보이지만 GLB 노드 값은 맞다.
+- 남은 결함: 문지기 `idle`·`stagger`에서 망치 머리 4~8cm, 의식 `stagger` 지팡이 8cm 바닥 관통. 손 도달 부족 최대 0.21~0.27m(문지기·골렘·대형). 사망 착지 반동 최대 8cm. 덩어리형(slime·eyemass·womb)은 지면에 붙인 뒤 한쪽이 들린다.
+- 사고 기록: 3차 사람형 서브에이전트가 `python -` 명령으로 멈춘 뒤 `taskkill /IM python.exe`로 PC의 python 프로세스 3개를 모두 끝냈다. 다른 작업의 python이 함께 끊겼을 수 있다. 이후 서브에이전트 브리프에 "프로세스를 이름으로 일괄 종료하지 않는다"를 넣는다.
+
 - 1차 동작의 남은 결함: ① 갑각 사도 `attack_tele` 끝 → `attack_act` 첫(충격 자세)의 관절 점프가 최대 약 80°다. Unity에서 1~2프레임 크로스페이드가 필요하고, 충격 때 주먹이 땅에 완전히 닿지 않는다(무릎 아래까지). ② 덫·쌍둥이·갑각 일부 지면 목표에서 팔 도달이 0.17~0.29m 모자란다. ③ 쌍둥이 `tp_vanish`·`slam`은 바닥에 13~16cm 묻힌다(의도). `death` 전이에는 7~8cm 관통이 남는다. ④ 가시·망토·지팡이 보조 뼈가 없어 몸통·손으로만 표현했다. `block`은 진입·유지·복귀가 20f에 들어 있어 유지 구간은 Unity에서 멈춘다.
 
 - 맵 범위: 사용자 "맵에 들어가는 모든 에셋은 3D로"는 맵 총괄 범위다. 이 비교의 결과표(도구별 형태·면 수·잔점·비용)를 맵 총괄에 넘겨 소품 도구 선택에 쓰게 한다.
