@@ -57408,3 +57408,5 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 | 무창 Mac QA | GPU batch RenderTexture 지원, Null GPU 거부·배우/UI 숨김 필수. 창 해상도/WaitForEndOfFrame 없이 기존실제 DispatchSlot/생산투영 촬영. batchMode/captureMode/biasMatchedReceivers 기록 | 정적4/4. PC는 공용bin 컴파일1회만. 새GPU 촬영/소품차폐/1920·3840은 Mac 검수 |
 
 공통9446618af 선행 정상병합. 최신 인자/근거는 docs/engine/UNITY_GROUND_AOE_P0_20261103.md. 이전창 촬영 인자는 최신무창규칙으로 대체. docs정본 unity/main.
+
+PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b30250 1회 exit0/C#0/shader3/USER_SAVE0. 실행279953ms(wall373445ms), errorLogs1(종료Curl42, entitlement확인). 정적4/4. meta850/mat29만 자기소스에서 복원, 외부guard/기존미추적63 보존. PC Player/빌드0, 최종Unity소스는컴파일입력과동일, 새Metal/시각은Mac대기.

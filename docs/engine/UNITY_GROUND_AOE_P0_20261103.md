@@ -32,6 +32,10 @@ Mac 공용 실행기에서 새 정식 ARM64 패키지의 Player에 아래 인자
 
 PC는 자기 worktree 직접 수정·컴파일1회·정상 commit/push까지. Mac PASS 전 공통 unity/main 반영/배포0. 과거 아래 창 촬영 절차는 최신 무창 지시로 대체한다.
 
+### 20:20 재작업 PC 결과
+
+소스 checkpoint `82110bab432ae08a5f273ac410250be918009346`에서 공용 bin Editor 배치1회 `a5b30250`: exit0/C#오류0/대상shaderImports3/USER_SAVE변경0. `compile.json` passed/compileOnly=true, playerRun/visualVerified=false. 실행279953ms, 대기 포함wall373445ms, refresh254901ms/compile72797ms. errorLogs=1: 라이선스 토큰 갱신 메시지 뒤 entitlement 정상 확인, 종료 시 `Curl error42: Callback aborted`. 동일 컴파일 재실행0. 정적 회귀4/4. Unity 종료·예약 해제 확인 후 임포트 파생meta850/material29만 자기 checkpoint로 복원, 기존 외부guard WORK/미추적63항목 보존. PC 정식빌드/Player/M1/영상0. 최종 인계 커밋은 이 소스와 Unity 파일 차이0이며, Mac 시각 재검수 대기다.
+
 ## 19:00 Mac FAIL 3건 재작업 — G0 / 설계
 
 Mac 원본 `qa/mac-captures-20261103@642a2affe`, `qa/unity-ground-aoe/e96b137/06-slam-cells-x3.png`와1920 T15 컷을 직접 열었다. 이전 e96b137은 지면/목교 투영·45틱 종료·Shader/RenderGraph0은 통과했지만 직선 경계와 네 지형별 실제 스킬·중앙 섬광 증거 부족으로 **AOE-GATE FAIL**이다. 이 판정이 아래 과거 PC 기록보다 최신이다. 착수 전 최신 `origin/unity/main cbdcbc2822` 정상 병합.

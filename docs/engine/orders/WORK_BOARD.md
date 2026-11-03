@@ -3,7 +3,7 @@
 ## 2026-11-03 PC P0 진행
 | 작업ID | 내용 | 담당·브랜치 | 소유 파일 | 상태 |
 |---|---|---|---|---|
-| UNITY-GROUND-AOE-P0 | 20:20 Mac FAIL 1건: 경사 흙/뿌리 접합부 투영 누락 | PC Codex / codex/unity-ground-aoe-decal-20261103 | NativeGroundSkillProjection, GroundSkillReceiverDepth.shader, NativeGame.GroundSkillCapture, tools/tests/unityGroundReceiverDepthBias.test.cjs, P0/관련SSOT·CHANGELOG·본인행 | 최신공통9446618af 병합. 원본A2RootSurface와 receiver의 raster bias 일치, 전역2cm/법선/수신배제 불변. 무창 GPU 촬영 경로. PC 컴파일 예정, ec043b26d 경사 FAIL 계승·새 Metal 재검수 대기 |
+| UNITY-GROUND-AOE-P0 | 20:20 Mac FAIL 1건: 경사 흙/뿌리 접합부 투영 누락 | PC Codex / codex/unity-ground-aoe-decal-20261103 | NativeGroundSkillProjection, GroundSkillReceiverDepth.shader, NativeGame.GroundSkillCapture, tools/tests/unityGroundReceiverDepthBias.test.cjs, P0/관련SSOT·CHANGELOG·본인행 | 최신공통9446618af 병합. 원본A2RootSurface와 receiver의 raster bias 일치, 전역2cm/법선/수신배제 불변. 무창 GPU 촬영 경로. 소스82110bab43/정적4/4·공용a5b30250 exit0/C#0/shader3/USER_SAVE0. 종료Curl42 기록. ec043b26d 경사 FAIL 계승·새 Metal 재검수 대기 |
 
 
 ARM64 Settings QA 앱에서 웹 `mouse2`↔Unity 오른쪽 버튼 1을 입력/캡처 양쪽에 맞춰 수정했다. 실제 OS 오른쪽 클릭으로 마법 처치 5/5, 첫 연습 1~9단계 완료. 10단계 방향+Space 동시 키 입력은 현재 CUA가 일반키 2개 조합을 거부해 구르기 0/5 HOLD. 이어질 11~12단계·일반 1-1 몹/드롭은 미검증. PC A18 `NativePractice*` 변경0. [증거·다음 관문](../UNITY_MAC_PRACTICE_MOUSE_BRIDGE_20261029.md).
