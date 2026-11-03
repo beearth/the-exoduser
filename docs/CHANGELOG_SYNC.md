@@ -1,3 +1,7 @@
+2026-11-03 UI-PARITY 최신 공통 통합: 사용자 지시로 origin/unity/main 8c5f967d74를 자기 브랜치에 병합. CHANGELOG_SYNC 두 충돌은 양쪽 원문을 보존했다. 현재 docs/Unity 충돌 표시0, PC 컴파일1회 Core121/Runtime259 오류0(경고2/522), Player0. 21:50 다중 패스 수정과66회귀 증거 보존. 새 통합본 Mac 게이트 대기.
+
+2026-11-03 21:50 BuildLoop UI 겹침 오탐 수정: 다중 패스의 실제 논리 원점 ID/본문1개/클립/발행 source로 장식 패스를 묶는다. 기존 JSON은 선언 offset+픽셀 양자화만 복원하고 .5px 충돌 기준과 중복 본문/다른 글자 검출은 유지한다. 메뉴·봉안함 실제 표본0, 회귀66/66. 기존1410장 재분석8363은 과거 계측 입력의 잔여로 보존하며 Mac 새 게이트 필요. PC 컴파일만, Player0. 문서 docs/engine/UNITY_UI_OVERLAP_20261030.md.
+
 2026-11-03 22:45 U-VFX-07b 필드 원소구 v3: 실 묶음 형태(1차 재채색)·평면 클립아트(2차 절차) 연속 FAIL로 방법을 원화 생성으로 바꿈. Codex 내장 image_gen 6회(외부 비용 0)로 원소별 측면 탄두+꼬리 원화 → tools/vfx/make_elem_orb_v3.py가 크로마 키잉·despill·원소 색상 범위·차가운 계열 코어 채도 상한·탄두 124px를 발사 지점 중심(268,128)에 맞춰 Resources/Art/vfx/field/proj_elem_orb_v3.png(3072×1536, 6열×6행 F/I/D/L/H/E, 알파 6프레임 동일·무늬만 흐름) 생성. NativeBossView.FieldBullets.cs OrbRes만 교체(크기·속도·판정·일반 알파 합성 불변). combat-impact run.cjs에 v3 수치 검사 연결(60/0, blood-dark·orb v3 PASS), Runtime Roslyn 오류 0. 1x·3x 총괄 자체 PASS, Mac 07e·11a 판정 대기. 기록 docs/5.1임펙트디자인/VFX_ELEM_ORB_V3_G0_20261103.md
 
 2026-11-03 23:10 Unity 패링 RETOUCH 3(사용자 "패링구현이 엉망이네"): 실행본 385e76ce1 캡처에서 Q 패링 보라 별(Dark_MediumImpact)·둥근 점 입자 잔점·방패 탄 패링 누런 번개 3장·탄 패링 원소색 섬광·영문 PARRY! 노랑 글자 두 줄을 확인. 브랜치 claude/unity-pc-vfx-spark-20261103에서 모든 패링을 따뜻한 흰 선 스파크로(근접 80~130/30~60, 탄 36~50/20~30), 보라 별·번개·점 입자·탄 패링 섬광 삭제, PARRY! 글자 표시 안 함(Core 문자열 불변). combat-impact 508/0, Runtime Roslyn 오류 0. Mac M1 06 판정 대기. 기록 docs/5.1임펙트디자인/UNITY_COMBAT_IMPACTS_20261103.md
@@ -57721,6 +57725,23 @@ Mac 원본4장 몬스터16종 공통·배송: 실기동 검수후 개인/`unity/
 2026-11-02 Mac 공통 6ad의 A2 지면 데칼 수신 기술 후보: `HellGroundPBR`·`A2RootSurface` 각각 DBuffer 변종·설치 URP 표준 수신 호출 6줄만 추가. 격리 QA 플래그/실제 DBuffer ShaderGraph 재질을 분리해 기존 평면 `M_Decal_blood`를 잘못된 양성 대조로 쓰지 않는다. 정확 소스 `afdd4ab` Settings QA ARM64 빌드 Succeeded/오류0·같은 앱 Metal M1 23/23·평면과 실제 A2 흙/뿌리/목교 1920 실창 및 3840 직접 RT 수신 기술 PASS. raw outside 차분은 비0이며 `effect>self+4` 필터 outside0과 구분한다. 일반 앱 파일 전달 후에도 Impact R4 VISUAL FAIL·맵 전체 RETOUCH 보존. [계약·수치·검증 경계](engine/UNITY_A2_DECAL_RECEIVER_20261101.md).
 
 Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반 build errors0, 정규화·strict/deep 서명 PASS, 이전앱3SHA CAS/보존 후 `/Users/fordeargamers/Applications/EXODUSER.app` 설치. 원본/stage/설치 211파일 전체 manifest SHA `54d8ae1b…` 동일, QA/일반 Runtime·Core DLL SHA 동일. 일반 저장11·QA plist2 최종 원문 동일, 일반 앱 실행0. 실제 A2 지면/뿌리/목교 기술 수신 VISUAL PASS 범위만 해당, 맵 전체 RETOUCH/Impact R4 FAIL 유지. [상세](engine/UNITY_A2_DECAL_RECEIVER_20261101.md#일반-mac-앱-파일-전달-2026-11-02).
+
+
+## 2026-11-03 UI-PARITY-1102-RECOVER — Mac 13:20 FAIL 후속
+
+- 실제 자기 worktree의 NativeUiAudit.cs·NativePauseMenu.A15Web.cs를 직접 수정. TextLayoutBounds를 공용으로 써 설정 푸터와 감사의 네이티브 글자 정렬을 일치시킨다. 웹 autosave Rect 유지, 추가 안내만 최소 한 화면 픽셀 간격으로 올림(최대4회). 기존 fr QA 언어표·표면 알파/스크롤/ink 수정 보존.
+- 현재 Core121/Runtime241 PC 컴파일 오류0. 이번 재개에서 Unity Player·정식 빌드·M1·UI 캡처/전체 검사 실행0. Mac issue0·가림누락0·실제 ink4/4는 미검증. 과거 이름5/5 및 Player.log 가드 FAIL은 분리 기록.
+- 관련 SSOT: [UNITY_UI_OVERLAP_20261030](engine/UNITY_UI_OVERLAP_20261030.md), [UNITY_PARITY_FIFTH_20261102](engine/UNITY_PARITY_FIFTH_20261102.md). 최신 공통044c82d760 정상 병합, 외부 guard WIP 보존.
+
+
+2026-11-03 PC UI-PARITY 19:00 Mac FAIL 후속: G0 공식 Diablo IV/Last Epoch UI 입력·서체 관례 확인. Layout 이벤트 치환을 Unity Event.QueueEvent 네이티브 루프로 교체하고 실제 생성 버튼 Repaint 좌표·down/up/hotControl 수신 영수증을 사용한다. 이름 입력 PASS/FAIL/UNVERIFIED와 수집 전용 API 준비를 구분해 나머지1410장 수집을 입력 도구 실패로 중단하지 않는다. 자간 글자 외곽 검정 그림자 y3→2 디자인px, 기존 검사 임계값 유지. 최신 공통 cbdcbc282 정상 병합 후 구현 체크포인트이며 PC 컴파일·추가 공통 병합은 후속 기록. 새 Mac 실행 전 issue58→0/nameOpened/시각 PASS 미검증. [범위·G0·수치](engine/UNITY_UI_OVERLAP_20261030.md#2026-11-03-1900-mac-fail--g0수정-경계).
+
+같은19:00 후보의 PC 확인: 추가 공통9dc27dea5를 d746ea4b6로 정상 병합(새 캐릭터 스토리 포함), 실제 Core121/Runtime243 소스를 Unity6000.6.7f1 Roslyn으로 컴파일한 결과 두 exit0·C# 오류0. 초광폭 SSOT의 검정 외곽 그림자 현행값도3→2px로 동기화. 새 Mac 빌드/Player/겹침/이름 입력은 미검증으로 유지한다.
+
+
+2026-11-03 PC UI-PARITY 20:20 Mac FAIL 후속: 정리된 CLAUDE7bc7a3518 재독·docs 정본 unity/main·공통d6c5bb89 정상 병합. 실패 SHA에는 새 분해/일시정지febeb55b2가 없으며 상위 라벨3파일은 이전 검수본과 diff0임을 확인했다. NativeUiAudit를 public GUIStyle cursor+같은 TextCore의 실제 행 좌표로 바꾸고, 키 목록 무자간 문자열은 한 번 조판한다. 실제 OnGUI의 GUI.Button 경계에서 local Event를 주입하며 inside/disabled/clicked·hotControl·반복 프레임을 기록한다. 입력 PASS와 수집 API 준비를 구분한다. scroll-ink ROI/임계값은 유지하고 새 metric 증명을 필수 조건에 추가했다. 설치 DLL PE 메타데이터의 필수 API 존재를 확인했으며 네이티브 실행 증거와 구분한다. PC 컴파일 후 Mac 실제 판정 대기. [범위·원인·수치](engine/UNITY_UI_OVERLAP_20261030.md#2026-11-03-2020-mac-fail--g0g1-원인-확정).
+
+20:20 후속 PC 컴파일: 공통b04ddd73b 병합본(fe236a8bc)의 Core121/Runtime249 최종 exit0·오류0. 내부 GUI 픽셀 배율 속성 직접 접근2개 CS0117을 캐시한 PropertyInfo로 고치고 Runtime만 다시 확인했다. 경고531건은 별도다. 설치 DLL8타입 API 메타데이터 확인, 새 Mac UI/입력/잉크 미검증 유지.
 
 ## 2026-11-02 타이틀 후보 보드·왼쪽 안전 여백
 

@@ -1,5 +1,7 @@
 # Unity UI 글자 겹침 수정과 전 화면 상시 검사
 
+> 현행 후보: 2026-11-03 20:20절. 이전 Internal_GetTextRectOffset 단독/네이티브 Event.QueueEvent 검수 경로는 아래 실패 이력이며 현행 구현이 아니다. docs 정본 unity/main.
+
 > 2026-10-31 최신: 사이드 판·미니맵·상태·알림·실습은 실제 화면 끝, 무대·제목·모달·구슬/스킬바는 중앙. 다섯 창64px 메달 제목·성장 본문181px 확대·스킬16표시·최종 확장원화+하단 그라데이션 로딩 규격은 [초광폭 현행 SSOT](UNITY_UI_ULTRAWIDE_20261031.md)의 첫 절을 따른다. 아래 이전 수치/검수는 이력이며 새 Player 검수 대기. 공통76상태·실제 직업/세계관/타이틀/브랜드 영상 준비/프레임 진행·활성16로딩/실패 폴백을 검사하며, 프레임별 전체 근거 순차 저장으로 대량 보고서 메모리 누적을 없앴다. 명시 지역 검정 그림자/일반 CP 광휘의 별도 한도를 포함한 분석 회귀44건 통과.
 
 사용자 인계: `I:/EXODUSER-Storage/codex-takeover/ui-overlap-brief.md`. 기준 공통 `10c49850f`를 현재 UI 브랜치에 정상 fast-forward했다. 기존 519개 작업 변경과 미추적 메타는 보존한다.
@@ -350,9 +352,110 @@ Mac은 새 HEAD 정식 패키지의 실제 캡처 폴더에 --candidate를 실�
 |---|---|---|
 | GUIStyle 바탕 | GUI.Label의 hover/normal 선택은 플랫폼 공통 Unity DoLabel 계약으로 계측. Windows 전용 제한 제거. 나머지 상태 불명 표면은 TextField와 공통으로8상태·노출 HiDPI·모든 밉 GPU 알파의 공통 하한을 기록 | null 바탕은 하한0, disabled는 하한0. 실제 알파를 모르면 unknown 유지. 불투명하다고 추정하거나 분석기 제외/임계 변경하지 않음. 누락30→0은 Mac 대기 |
 | 글자 원점 | 수동 padding/center 계산 대신 GUIStyle.Internal_GetTextRectOffset에 실제 CalcSize/CalcHeight를 전달해 네이티브 정렬·반올림 원점을 기록. metricProof 추가. API 부재는 fail-closed | BeginGroup/BeginScrollView 원점 스택 및 p0 계약 유지. 제품 그리기·matrix/scroll 반환값 변경0. 보관함 상단 ink 포함은 새 Mac 캡처로 판정 |
-| 설정 하단 | 웹 autosave Rect(96,1004,500,20)는 유지. 추가 native/QA 안내의 y만 savedH·noticeH 실제 조판 높이로 다음 경계를 계산해 올림하고 최소1022. 안내 Rect(96,noticeY,1200,18), 서체11 유지 | 2560ko/fr의0.620px 교차 재검수. 전역 겹침 허용오차 변경0 |
+| 설정 하단 | 웹 autosave Rect(96,1004,500,20)는 유지. 추가 native/QA 안내는 y1022에서 시작해 감사와 같은 TextLayoutBounds로 경계를 계산한다. 현재 GUI.matrix의 세로 배율 기준 한 화면 픽셀 간격을 확보하도록 올림하고 최대4회 보정. 안내 폭1200·높이18·서체11 유지 | 2560ko/fr의0.620px 교차 재검수. 전역 겹침 허용오차 변경0 |
 | QA 번역 | NativePauseMenu.QaLabels.cs의 native QA 전용 표: ko/en/de/fr. qa settings-not-saved 문장을 Normalize(locale)로 조회, 다른 언어는 영어 fallback | fr: Les paramètres ne sont pas enregistrés pendant ce test QA. de: Einstellungen werden während dieses QA-Tests nicht gespeichert. 웹 정본43 exact ID 및29언어 원본 카탈로그 변경0 |
-| 잉크 선택 | 절대 gray60/G35 대신 ROI 안의 gray 밝기/green 우세도 분포를 Otsu로 분리. dynamic range12 미만·빈 ROI·전체70% 초과 선택은 실패. 최소 픽셀 조건과 실제 감사 상자 포함 판정은 유지 | 밝은 회색 배경·G35 미만 녹색·빈/단색 판 음성·실제4개 crop 회귀4/4. 구 R3 좌표 음성은 계속 실패. Mac 원본4쌍 PNG/JSON 추가 요청 중. 표시선이 있는 x3 진단 이미지를 제품 양성으로 쓰지 않음 |
+| 잉크 선택 | 절대 gray60/G35 대신 ROI 안의 gray 밝기/green 우세도 분포를 Otsu로 분리. dynamic range12 미만·빈 ROI·전체70% 초과 선택은 실패. 최소 픽셀 조건과 실제 감사 상자 포함 판정은 유지 | 밝은 회색 배경·G35 미만 녹색·빈/단색 판 음성·실제4개 crop 및 잘못된 상자 padding 음성 회귀5/5. 구 R3 좌표 음성은 계속 실패. Mac 원본4쌍 PNG/JSON 추가 요청 중. 표시선이 있는 x3 진단 이미지를 제품 양성으로 쓰지 않음 |
 | 이름 검사 | --unity-ui-overlap-check --unity-name-gate-only로 같은 Player에서5해상도 ko의 잠긴 직업/이름 열기만 검사, 정상 종료. Windows 기본은 자기 숨은 HWND WM 클릭. Mac은 sandbox 전용 NativeLobby.OnGUI 입력 Event down/up 큐, Windows에서도 --unity-gui-clicks로 선택 가능 | 실제 제품 Draw/hit-test/전환을 통과하며 결과를 API로 설정하지 않음. queue는 명시 QA sandbox/overlap run에서만 허용. 입력 차단·전환대기15s·전달2s·이번 클릭 이후 전환 id 범위 실패 확인. Mac 공통 입력 경로는 런타임 미검증 |
 
 PC는 Core/Runtime 컴파일 오류0, UNITY_STANDALONE_OSX 조건부 소스 컴파일0(PC 컴파일러이며 Mac 런타임 증거 아님)까지 확인했다. 이름 열기만 PC Player1회로 확인할 계획이며, 정식 빌드·M1·1410장 실행/분석은 하지 않는다. 이름 전용은 기존 자기 R5 격리 패키지에 이번 컴파일 DLL만 임시 결합한 별도 fixture이며 정식 패키지 PASS로 승격하지 않는다. 원본 DLL은 정확 SHA 백업/검증 후 사용하고 실행 종료 finally에서 원래 바이트로 복원한다. 최종 결과와 push SHA는 I: REPORT 맨 위에 기록한다.
+
+
+잉크 검사의 새 후보 샘플은 계측 Rect 바깥2px까지 읽어 글자 상단이 상자를 넘는지 검출한다. 포함 판정에는 padding을 주지 않는다. 독립 R3 위치 중심에서24px 이상 벗어나면 다른 글자를 잡지 않고 실패하며, 기존 Rect 크기 제한·최소 실제 잉크 수·단색/과선택 실패도 유지한다. 고정 작은 PC ROI가 Mac의 작은 글자 정렬 차이로 비는 문제와 상자 밖 획을 잘라 버리는 문제를 분리한다. 네 원본 위치/기존 좌표는 manifest에 보존하고 구 절대 threshold는 legacy 기록으로 이름을 명확히 했다. 2px 바깥의 실제 잉크가 잘못된 상자를 통과시키지 않는 음성 검사도 추가했다. 새 Mac 전체 원본의 판정 결과는 별도다.
+
+
+### PC 이름 열기 전용 1회 결과 — 기능 PASS / 공용 가드 FAIL 분리
+
+| 해상도 | lockedBlocked | nameOpened | 입력 |
+|---|---|---|---|
+| 2560×1600 | true | true | 자기 숨은 HWND WM 마우스 |
+| 1920×1080 | true | true | 자기 숨은 HWND WM 마우스 |
+| 2560×1080 | true | true | 자기 숨은 HWND WM 마우스 |
+| 3840×1080 | true | true | 자기 숨은 HWND WM 마우스 |
+| 1600×900 | true | true | 자기 숨은 HWND WM 마우스 |
+
+공용 bin Player 7603230d 한 프로세스, 30.964초, native exit0·timedOut=false·expectedKill=false. 이름 관련10PNG·inputIsolation/simulationFrozen각10, 1600×900 이름 창 원본을 직접 열어 확인했다. Runtime9d1244ea89439c66ef37f054b0c24aa1f1024858ab6431cf04568039e3a41683은 이번 컴파일 입력과 일치한다. 이는 기존 R5 QA 패키지에 새 Core/Runtime DLL만 임시 적용한 이름 전용 fixture이며 정식 패키지 검수/M1/전체UI PASS가 아니다. 공용 순번·숨은 데스크톱·무음 사용, 사용자 데스크톱 창0·잔여0·숨은 데스크톱 닫힘true. 새 정식 빌드·M1·1410실행/분석0, 두 DLL은 finally에서 원래 SHA로 복원/대조했다.
+
+공용 가드는 USER_SAVE changed=1로 전체 ok=false/runner exit5다. 관측 파일은 C:/Users/심도진/AppData/LocalLow/ForDearGamers/EXODUSER · Unity 이식 검증판/Player.log 하나(4440→979B)이며 원인은 미확정이다. 검사 전부터 사용자 unity-latest Player47956이 실행 중이었다는 별도 관측만 남긴다. 사용자의 로그를 덮어쓰거나 가드 제외/허용오차를 바꾸지 않았다. USER_SAVE0·전체 실행 PASS로 올리지 않고 추가 Player도 실행하지 않는다. 이름 기능 판정과 가드 판정은 별도다.
+
+증거는 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/mac-gate-1320/의 name-only/실제_마우스_역변환.json·coverage.json·10PNG, name-player-launch.log·name-dll-manifest.json·name-dll-restored.json 및 공용 _exec/done/7603230d.json이다. 밝은배경/어두운녹색/단색판/잘못된 상자/실제4crop의 오프라인 회귀5/5도 통과했다. 기존 Mac x3 진단그림의 글자는 새 분류기로4영역 모두 관측되며 배경 전체선택을 하지 않았다(mac-diagnostic-ink.json). 표시선 있는 x3 그림은 새 좌표 양성이나 새 제품 PASS 근거가 아니다.
+
+최신 공통25356462dede7e0045de71bf5df7a2f87dc58010을 정상 병합(5062b5701)했다. check.ps1 충돌은 같은 공용 bin 경로의 슬래시 표기만 통일했으며 타 레인 코드와 외부 guard WIP를 보존했다. 다음은 Mac 새 HEAD 정식/M1/1410·issue18→0/가림누락30→0/새 scroll-ink4/4·웹1x 확인이다. Mac 새 Event 경로도 실제5해상도 판정이 필요하다.
+
+
+## 2026-11-03 15:39 중단 복구 — 푸터·감사 정렬식 일치
+
+origin/unity/main 044c82d760을 자기 브랜치에 정상 병합했다. 13:20 대응의 GUIStyle 알파 증명·스크롤 원점·네이티브 텍스트 정렬·Otsu 잉크 분리·fr QA 문구는 72c395db5에 보존되어 있었다. 남은 푸터 수동 savedH/noticeH 계산은 감사의 네이티브 정렬과 달라 반올림 차이를 보장할 수 없어 제거했다.
+
+TextLayoutBounds가 CalcSize/CalcHeight + GUIStyle.Internal_GetTextRectOffset + 실제 clipping을 한 번 정의하며, 감사 Text와 추가 안내 위치 계산 양쪽이 이를 사용한다. 웹 autosave Rect(96,1004,500,20)는 그대로다. 추가 안내만 y1022에서 시작해 네이티브 saved bottom 뒤 한 화면 픽셀(1/abs(GUI.matrix.m11))을 확보하도록 물리 픽셀 단위로 올림한다(최대4회). 겹침 판정 임계·글자 제외·감사 상자 padding 변경0. 프랑스어 QA 문장은 기존 언어표를 유지한다.
+
+PC는 현재 Core121/Runtime241 소스의 컴파일 오류0만 새로 확인했다. Player·정식 빌드·M1·전체 UI·scroll-ink 재실행0. 직전 Player7603230d의 이름 기능5/5와 Player.log 한 건의 가드 FAIL은 과거 결과 그대로이며 새 실행 PASS로 재사용하지 않는다. 새 후보의 issue18→0·가림누락30→0·실제 ink4/4는 Mac 재검수 대기다.
+
+
+## 2026-11-03 19:00 Mac FAIL — G0·수정 경계
+
+| G0 항목 | 확인·적용 |
+|---|---|
+| 목표·실제 연 증거 | qa/mac-captures-20261103@642a2affe: qa/unity-parity/3668262/REPORT.md, 2560x1600_menu_full.png, 2560x1600_character4_full.png와 두 3x 크롭. 12/1410 중단·메뉴48+직업선택10. 개별 좌표 JSON은 이 Git 증거에 없음 |
+| 레퍼런스 공통 관례 | [Diablo IV 공식 UI 개선](https://news.blizzard.com/en-us/article/23938289/diablo-iv-open-beta-retrospective-transforming-feedback-into-change)의 입력/메뉴 동작 정합, [Last Epoch 공식 UI 변경](https://forum.lastepoch.com/t/last-epoch-shattered-omens-patch-notes/80571/)의 읽기 쉬운 일관된 서체·키/패드 메뉴 탐색·클릭 가능한 스크롤바를 확인. 두 게임에서 도출한 적용 체크리스트: 문구 가독성/입력 수단별 동일한 의미 동작=있음, 표시 위치와 실제 클릭 위치 일치=이번 QA 경로 수정, 모달 뒤 입력 차단/초점 복귀=있음. 새 UI 스킨/자산 제작은 이번 결함 범위에서 뺌 |
+| 가장 큰 차이·선택 제작법 | 실제 화면 자체는 읽히지만 QA 클릭 실패가 나머지1398장을 차단. UI의 실제 Rect·기존 IMGUI 버튼/콜백을 재사용하고 Event.QueueEvent로 네이티브 이벤트 루프에 전달. 제품 상태를 직접 설정한 것을 hit-test 성공으로 세지 않음 |
+| 그림자 조사 | 자간 조판의 외곽 검정 그림자 두 패스는 y+3·x±0.5 디자인px. 네이티브 정렬의 픽셀 반올림으로 16:10에서 (±1,5)물리px가 되면 기존3.1×1600/1080=4.593px 소유 반경을 초과(거리5.099). 메뉴/footer와 직업선택 공통 DrawSpaced 경로의 과도한 외곽 패스를 줄이며 판정 반경은 늘리지 않음. 실제58건 각각이 이 원인인지 새 Mac 원계측으로 확인 필요 |
+| 첫 실물·합격 조건 | PC 컴파일 후 새 SHA로 Mac 정식 빌드1회→동일 패키지 M1 23/23·정상 종료→1410장 issue0/가림 누락0/로딩270장 누락0/scroll-ink4/4. 이름 입력은5해상도 실제 이벤트 전달·lockedBlocked/nameOpened 모두true만 PASS |
+| 중단·미검증 | PC Player/빌드/M1/캡처 실행0. Mac 입력 API 미지원·전달 실패는 해당 입력만 UNVERIFIED로 보존하고 화면 API 준비와 구분해 나머지 수집 계속. 전달된 실제 버튼 동작 불일치는 FAIL 유지. 새 Mac 실제 화면 전 VISUAL VERDICT RETOUCH |
+
+| 이번 구현 | 현행 계약 |
+|---|---|
+| 실제 포인터 | NativeLobby의 실제 생성 버튼 Rect를 Repaint에서 GUIToScreenPoint→identity ScreenToGUIPoint로 관측. 창 원점·DPI·중앙/오른쪽 GUI.matrix를 Unity에 맡김. 기존1790/1018 재계산 제거. PC/Mac 기본은 Event.QueueEvent 네이티브 루프이며 --unity-win-mouse-clicks만 Windows HWND 진단 경로 |
+| 이벤트 수신 | Layout 교체/복원0. down/up별 고유 commandName이 실제 OnGUI에 도착했을 때만 serial 완료. 프레임·좌표·rawType·hotControl 전후·Used를 실제_마우스_역변환.json events에 기록. 전달 제한2s·이후 자기 전환 id 실패/취소 확인·전환 제한15s 보존 |
+| 판정·계속 | checks의 status=PASS/FAIL/UNVERIFIED, lockedBlocked/nameOpened 원값 보존. 전송 API 없음/수신 시간초과는 UNVERIFIED, 전달 후 상태 불일치는 FAIL. 입력 실패만으로 전체 수집을 throw하지 않음. 필요할 때만 수집 화면을 제품 API로 준비하고 capturePreparedByApi=true; 이 준비는 입력 PASS에 포함하지 않음 |
+| 검정 그림자 | DrawSpaced의 세 패스 (0,+1)/alpha.9, (+.5,+2)·(-.5,+2)/alpha.3. 종전 외곽 y+3에서+2로 축소. 실제본문/번역/자간/글자 크기·기하 교차 .5px·frontend-black-shadow 허용반경3.1×화면높이/1080·분석기 제외 정책 불변 |
+| 증거 한계 | 메뉴48+직업선택10은 직전 Mac 실패값. 제품/검수 코드 변경 후 새 숫자는 PC에서 측정하지 않음. 58→0·nameOpened·1410장·scroll-ink 통과 주장은 Mac 새 실행 전 하지 않음 |
+
+PC 확인: 최초 공통 cbdcbc282(병합7dc05359c) 이후 추가9dc27dea5도 정상 병합(d746ea4b6). 실제 Core121·Runtime243 소스(새 스토리/조상 캡처 포함)를 설치된 Unity6000.6.7f1 Roslyn으로 한 묶음 컴파일, 두 exit0/C# 오류0. Runtime 경고521건(CS0219/CS0162/CS0618/CS0649/CS0169/CS0414/UAC1001/UAC0007)은 오류0과 별도이며 경고0이라고 보고하지 않는다. 실제 Unity Editor/정식 빌드/Player 실행은0. 고정 출력 mac-gate-1320/compile-current의 로그·rsp만 보존하고 확인된 DLL4개는 정리한다. 새 Mac 실행은 아직 없음.
+
+
+## 2026-11-03 20:20 Mac FAIL — G0/G1 원인 확정
+
+| 항목 | 증거·설계 |
+|---|---|
+| 목표·현재 차이 | qa/mac-captures-20261103@39c3ae380, qa/unity-parity/1e81002/의 REPORT와 설정·보관함 PNG를1x로 직접 확인.1410장/로딩270장 완주·메뉴48→0은 직전 SHA 성과. 남은 이름 입력5/5 UNVERIFIED·9103건·scroll-ink2/4를 고침 |
+| G0 공통 관례 | 이전19:00절의 공식 Diablo IV/Last Epoch 입력/표시 정합·가독성 체크리스트 재사용. 있음: 실버 헬 서체·입력 차단·실제버튼. 이번에 넣음: 제품 OnGUI 버튼 경계에서 직접 down/up 전달·실제 TextCore 정렬 계측. 뺌: 새 스킨·제품 배치 개편(이번 결함은 도구/조판 정합) |
+| 병합 출처 | 5b6b4fce9↔실패1e810024dd의 NativeLobby.SilverHell.cs/NativeKeyBindList.cs/NativeInventoryDock.cs는 각각diff0. febeb55b2(쓰레기 분해·일시정지 실버 헬)는1e810024dd의 조상이 아님. 따라서9103건을 해당 새 병합 탓으로 돌리지 않음. 네이티브 정렬 감사로 바꾼871a5c25e/366826269 경로부터 바로잡음 |
+| 계측 원인 | [Unity6000.6 GUIStyle.GetCursorPixelPosition](https://github.com/Unity-Technologies/UnityCsReference/blob/6000.6.7f1/Modules/IMGUI/GUIStyle.cs)은 TextCore의 정렬된 cursor 좌표에 Internal_GetTextRectOffset을 더함. 기존 감사는 후자만 사용하여 가운데/오른쪽/세로 정렬을 빠뜨리고, 줄바꿈 높이에 줄바꿈 전 전체 폭을 합침. 실제 보관함 PNG의 전기 전투화 잉크는 기존623px ROI에 있으므로 ROI를 옮기지 않음 |
+| G1 계측 | 실제 GUIStyle cursor와 같은 IMGUITextHandle의 line/character 데이터를 사용. 각 행 origin/xAdvance/ascender/descender를 GUI 좌표로 변환하고 실제 클립 적용. 스타일 정렬을 독자적으로 추정하지 않음. 구체 실제 새 좌표와0건은 Mac에서 판정 |
+| G1 입력 | 네이티브 Event.QueueEvent가 수신0인 방식 폐기. 실제 NativeLobby.OnGUI의 제품 GUI.Button 호출 직전에만 mouse event와 실제 inverse GUI 좌표를 주입. down/up은 서로 다른 실제 OnGUI 프레임, hotControl/Used/클릭 결과와 반복 Layout/Repaint를 기록. hotControl 강제 설정·제품 API로 입력 성공 만들기 금지 |
+| 합격·첫 실물 | PC 컴파일 후 Mac 같은 새 정식 패키지 M1 23/23,1410장 issue0/관측 누락0/로딩270,scroll-ink4/4,이름5해상도 실제입력 PASS. 이전 실패는 재실행해 지우지 않고 새 SHA로 한 회차 확인 |
+| 중단 | Mac 실제 판정 전 미검증. 입력 도구 실패만UNVERIFIED로 보존·전체수집 계속, 실제 제품 실패는FAIL. PC Unity Editor/Player/정식빌드0. 모든 docs의 정본은unity/main |
+
+| 이번 수정 | 현행 수치·판정 |
+|---|---|
+| TextLayoutBounds | GUIStyle.GetCursorPixelPosition의 실제 native 원점 + 동일 IMGUITextHandle의 정렬된 행 origin/xAdvance/ascender/descender. fixedWidth/fixedHeight·padding·pixelsPerPoint·wordWrap·실제clip 반영. 줄바꿈 전 폭과 줄바꿈 후 높이를 섞지 않음. reader/필수행 없음·Advanced Text 미지원은 오류로 닫으며 가짜0건으로 진행하지 않음 |
+| 원계측 추가 | textLayoutRect(배정상자의 실제 화면좌표),textAlignment,textFont,textFontSize,textWordWrap,textPixelsPerPoint를 text 원소에 함께 보존. analyzer의.5px 교차·가림·그림자 반경은 불변 |
+| 키 목록 | ls=0이고 해당문자에 아틀라스 토큰이 없으면 문자열 전체를 기존 font/px·32px 높이 중앙으로 한 번 조판. Width와Run은 같은 GUIStyle.CalcSize 전체 폭. 개별 glyph의 round/커닝 차이를 문자열 충돌로 세지 않음. 자간/아틀라스·키판 Rect·입력/저장/글꼴/크기 불변 |
+| 실제 버튼 | NativeUiAudit.Button이 실제 GUI.Button 직전에만 sandbox/overlap run의 대기 이벤트를 주입. 실제NativeLobby.OnGUI Layout에서만·한 프레임1회·현재 생성 버튼 Rect/matrix 일치 때 적용. root→screen→현재GUI 역변환 뒤주입,호출 뒤 원래event복구. down/up은 다른 실제 프레임,hotControl은 읽기만 함 |
+| 입력 증명 | events: serial/frame/type/loopPhase/root·local좌표/실제button/inside/enabled/Used/clicked/hotControl전후. onGuiSamples: 대기중 최근64회 실제 Layout/Repaint·hotControl·입력차단 상태. lockedBlocked는 실제 내부hit의 disabled down/up2개와단계1 유지 필요. nameOpened 단계2+실제 mouse-up GUI.Button clicked가 함께 있어야PASS |
+| scroll-ink | ROI623/388과분류·밀도·24px위치제한·2px표본halo·실제rect무패딩 포함조건 불변. 새 GUIStyle.GetCursorPixelPosition/IMGUITextHandle metricProof도 productionPassed 필수조건으로 추가(종전표시만하던조건을필수로강화). ROI를잘못된583/364에옮기지않음 |
+| 설치 API 확인 | .NET Framework ReflectionOnly 형식 로드는 netstandard 참조 문제로2회실패,반복중단. PE metadata reader로 바꿔 설치Unity6000.6.7f1의8타입/필수메서드·행필드·GUIContent·GUIUtility속성 존재 확인. Unity어셈블리/네이티브실행0이며 Mac 런타임 PASS 아님 |
+
+Mac 다음 증거는 overlap-summary.json, 실제_마우스_역변환.json와 남은 각유형/상위출처의 a/b rect·textLayoutRect·metricProof·font·alignment 표본5개를짧은 JSON으로남긴다. 원본전체1.4GB보고서를복제하거나,PNG만남겨다음원인추적을막지않는다. 새1410장/9103→0/입력5/5/잉크4/4는PC에서판정하지않는다.
+
+PC 컴파일 결과: 추가 공통b04ddd73b를fe236a8bc로 정상 병합한 뒤 Core121개 소스 exit0. 최초 Runtime은 내부 GUIUtility.pixelsPerPoint를 직접 접근한2개 CS0117로 실패했다. 설치 DLL의 해당 내부 속성을 캐시한 PropertyInfo로 읽도록 고치고, 불변 Core를 반복하지 않고 Runtime249개만 다시 컴파일해 exit0·오류0을 확인했다. Runtime 경고531건은 남아 있으며 경고0이라고 보고하지 않는다. 설치 DLL8타입의 필수 API 존재를 PE 메타데이터로 확인했다. 이는 Mac 런타임·UI 통과 증거가 아니다.
+
+
+## 2026-11-03 21:50 BuildLoop 다중 패스 게이트 — G0/G1
+
+| 항목 | 설계·근거 |
+|---|---|
+| 목표/실제 표본 | BuildLoop cb77ca96f의 기존1410장 원계측을 읽기만 함. 실제 메뉴 O는 본문1+그림자3, 봉안함1656은 본문1+광휘16. 기존 분석에서 각각 자기끼리3/10건 재현. 새 Player 생성0 |
+| 공통 관례 | 이전 G0의 공식 Diablo IV/Last Epoch UI 가독성·한 의미 라벨 관례 유지. 있음: 은빛 서체·스타일 패스. 이번에 넣음: 같은 원점의 논리 글자 식별자. 뺌: 새 배치·스킨·제품 표현 변경 |
+| 새 원계측 | 각 실제 다중 패스 발행 함수가 원래 글자 상자/문자열의 GroupText scope를 명시. 같은 frame의 고유 paintGroupId·paintGroupText·원점·발행 source를 모든 패스에 기록. 동일 source/문자열/정확한 원점/깊이의 반복 호출은 같은 ID. 같은 ID라도 본문 두 개는 병합하지 않음 |
+| 묶기 조건 | 같은 ID/문자열/원점/발행 source, 본문 정확히1개, 나머지 증명된 shadow/paint 패스만 연결. 본문 두 개·다른 글자·다른 원점은 경고와 원래 충돌을 유지. 다른 본문/조작부/화면 이탈 검사는 계속 적용 |
+| 이전 JSON | 새 식별자가 없는 기존 표본은 선언된 profile의 실제 offset 목록과 픽셀 반올림의 floor/ceil 차이로만 원점을 복원. 임의 반경 확대·전이적 그림자 사슬·문자열/source 전체 제외0. 전체 원계측과 장식 패스를 보존 |
+| 합격/중단 | 실제 실패 표본과 중복 본문/다른 글자/잘못된 원점/클립 회귀 통과, 기존 회귀 유지, PC C# 컴파일 뒤 push. 기존1410장 재분석은 과거 입력의 분석기 증거이며 새 패키지/바탕화면 갱신 PASS가 아님. Mac에서 새 패키지 판정 |
+
+구현/PC 증거: 실제 글자 발행 함수(전면 메뉴·CP광휘·인벤 그림자·키 라벨·사망2종·지역 배너)에 GroupText를 연결했다. 지역 색상 blur도 장식으로 명시하며 렌더링 색/좌표/패스 수는 바꾸지 않았다. 본문의 실제 textLayoutRect가 있으면 선언 원점과 정확히 일치해야 한다. 잘못된 실제 원점 RED를 확인한 뒤 전체 회귀66/66 PASS. Core121/Runtime255 PC C# 컴파일 오류0(현재 공통 추가분 재병합 전), Runtime 경고520.
+
+기존 cb77ca96f 1410장 JSON 읽기 전용 재분석: 논리 그룹75936, 잔여8363(글자-글자7784/글자-버튼152/화면이탈250/글자-판177), 같은 내용 쌍819. 실제 메뉴/봉안함 표본 자기 충돌0. 잔여 상위는 SilverHell5744·KeyBindList1469이며 TextCore 이전 metricProof와 개별 글자 조판을 담은 과거 데이터다. 20:20 수정은 이번 코드에 보존되어 있지만 기존 JSON을 새 좌표로 변조하거나 임의로 제외하지 않는다. 원점 ID가 없는 예전 사망/지역 그림자는 보수적 매칭을 못 한357/92건도 남긴다. 새 패키지의 실제 잔여/이름/잉크는 Mac에서 판정한다. PC Player 실행0, BuildLoop 원본/바탕화면 수정0.
+
+최종 공통 병합: origin/unity/main f579841cef를0241b147ca로 정상 병합했다(앞선0082cdfa84 포함). CHANGELOG_SYNC 충돌은 양쪽 기록을 보존했고 실제 코드 충돌은 없다. 추가 rigpixel 소스가 포함된 최종 Core121/Runtime259 컴파일 exit0·오류0, Core 경고2/Runtime 경고522. 컴파일만 수행했으며 셰이더/Player 판정은 Mac 대기다.
+
+사용자 최신 통합 지시 후 origin/unity/main 8c5f967d74를 자기 브랜치에 추가 병합했다. CHANGELOG_SYNC 두 충돌의 양쪽 원문을 모두 보존했고 docs/Unity/CLAUDE/AGENTS의 충돌 표시0·미해결 경로0을 확인했다. 공통에도 있던 game.html.bak_20260611_conflictfix의 오래된 표시6개는 해당 파일이 origin과 동일함을 확인하고 보존했다. .meta 로컬 수정 거부는 없었다. 병합된 실제 소스로 PC 컴파일1회: Core121/Runtime259 exit0·오류0, 경고2/522. Player0. 새 Mac 게이트 대기는 유지한다.
