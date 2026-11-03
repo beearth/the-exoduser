@@ -43,11 +43,10 @@ namespace Exoduser.UnityPort.Core
     // Field enemy AI of the web updateE for the 1-1 etypes (game.html 38950~41493), the part after the shared head (CX-03a) and the DOT block:
     // atk reset, elite modifier tick, projectile charge ring, per-etype idle skills, the state machine (idle / charges / swoop / slam / bash / summon / windup / attack / recover)
     // and the contact + projectile shot of the idle state. Boss branches (ib), rare etypes (90~99) and the etypes of chapters 2..7 are not ported here.
-    public static class EnemyAi
+    public static partial class EnemyAi
     {
         const double EL_P = 0, EL_F = 1, EL_I = 2, EL_D = 3, EL_L = 4;
         static readonly string[] ElCol = { "#bbbbbb", "#ff5522", "#3388ff", "#9933cc", "#ffee00", "#ff88cc", "#88aa44" };
-        static readonly HashSet<int> NoProj = new HashSet<int> { 5, 9, 11, 20, 24, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59 };   // _noProjEtypes
         static readonly HashSet<int> KeepDistance = new HashSet<int> { 1, 7, 8, 9, 11, 16, 17, 21, 23, 25, 26, 31, 34, 38, 62 };
         static readonly HashSet<int> MeleeEt = new HashSet<int> { 0, 2, 4, 5, 6, 10, 12, 18, 19 };
 
@@ -138,6 +137,10 @@ namespace Exoduser.UnityPort.Core
 
         static void ChargeHit(IEnemyAiHost h, EnemySpawn e, double dmgMul, double knock, bool bigImpact, bool bash)
         {
+            if (h is IMeleeCombatHost meleeHost) {
+                bool landed=meleeHost.MeleeHit(e, Js.Int(e.atk * dmgMul * h.ElMul(e.el)), "charge", false);
+                if(landed){ModHitP(h,e);double angle=JsMath.Atan2(h.PY-e.y,h.PX-e.x);h.KnockPlayer(JsMath.Cos(angle)*knock,JsMath.Sin(angle)*knock);if(bigImpact){h.Shake(10);h.Sfx("detonate");}if(bash){h.StaggerPlayer(40);h.Text(h.PX,h.PY-20,"경직!","#8888ff",30);}}return;
+            }
             if (h.IsParryWindow()) { h.Parry(e, e.atk); return; }
             if (h.PState != "charge")
             {
@@ -224,6 +227,8 @@ namespace Exoduser.UnityPort.Core
             }
         }
 
+        public static void TickParried(IEnemyAiHost h,EnemySpawn e,double sp){DotTick(h,e,sp);}
+
         public static void UpdateBody(IEnemyAiHost h, EnemySpawn e, double sp, double d)
         {
             double px = h.PX, py = h.PY, pr = h.PRadius;
@@ -241,6 +246,7 @@ namespace Exoduser.UnityPort.Core
             }
             e._moveAng = JsMath.Atan2(py - e.y, px - e.x); e.st2 -= sp;   // no flow field: _ffDir is null
             int et = (int)e.etype;
+            if (TickG2Melee(h,e,sp,d)) return;
             string s0 = e.s;
             if (et == 5 && e.s == "idle" && d < 35 + pr) { e.s = "windup"; e.st2 = 20; }
             if (et == 6) Etype6Escort(h, e, sp);
@@ -746,13 +752,13 @@ namespace Exoduser.UnityPort.Core
             }
             else if (e._sepCd > 0) e._sepCd -= sp;
             // contact attack
-            if (MeleeEt.Contains(et) && d < e.r + pr + 8 && h.PIframes <= 0 && e.st2 <= 0)
+            if (!MeleeAttackRules.Target(et) && MeleeEt.Contains(et) && d < e.r + pr + 8 && h.PIframes <= 0 && e.st2 <= 0)
             {
                 h.HurtPlayer(Js.Int(e.atk * 0.8), false); h.Parts(h.PX, h.PY, e.col, 4);
                 e.st2 = 40 + Js.Int(h.Rand() * 20);
             }
             // generic projectile ring (60f charge, then _fireChargedProj)
-            if (e.projCd >= 9000 && !e.ib && !NoProj.Contains(et)) { e.projCd = 240; e.projT = 180 + h.Rand() * 120; }
+            if (e.projCd >= 9000 && !e.ib && EnemyProjectilePolicy.Interval(et)<9000) { e.projCd = EnemyProjectilePolicy.Interval(et); e.projT = 180 + h.Rand() * 120 * (e.projCd / 240); }
             if (e.projCd < 9000)
             {
                 if (!(e._projChargeT > 0))
@@ -767,6 +773,7 @@ namespace Exoduser.UnityPort.Core
                         e._projChargeCol = e._projChargeBean == "dark" ? "#a44cff" : e._projChargeBean == "water" ? "#317cec" : e._projChargeBean == "fire" ? "#ff2e22" : (ElColor(e.el) ?? e.col);
                         e._projChargeParryClass = el == EL_P ? "physical" : "magic";
                         e._projChargeT = 60;
+                        if(h is IMeleeCombatHost statsHost) statsHost.ProjectileTell(e._projChargeParryClass);
                     }
                 }
             }

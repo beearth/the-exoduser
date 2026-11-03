@@ -99,6 +99,7 @@ namespace Exoduser.UnityPort
             waterMesh.uv=new[]{Vector2.zero,Vector2.right,Vector2.up,Vector2.one};waterMesh.triangles=new[]{0,2,1,1,2,3};waterMesh.RecalculateNormals();waterMesh.RecalculateBounds();
             var water=new GameObject("A2 원본 보행 밖 독액 개울");water.transform.SetParent(a2Root.transform,false);water.layer=4;
             water.AddComponent<MeshFilter>().sharedMesh=waterMesh;var wr=water.AddComponent<MeshRenderer>();wr.sharedMaterial=a2Water;wr.shadowCastingMode=ShadowCastingMode.Off;
+            NativeGroundSkillProjection.RegisterWaterReceiver(water.GetComponent<MeshFilter>());
             // 수면이 높은 지면 아래 숨어 있으므로 원본 보행 타일을 수로로 바꾸지 않는다.
             r3Cam.cullingMask|=1<<4;var reflection=water.AddComponent<A2RiverReflection>();reflection.Viewer=r3Cam;reflection.Surface=a2Water;reflection.Height=-.45f;
         }

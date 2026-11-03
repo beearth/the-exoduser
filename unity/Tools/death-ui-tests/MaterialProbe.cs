@@ -1,55 +1,56 @@
 using System;
-class Texture2D {public static Texture2D whiteTexture=new Texture2D();}
-enum ColorSpace{Gamma,Linear}
-enum ScaleMode{StretchToFill}
-static class QualitySettings{public static ColorSpace activeColorSpace;}
-struct Rect{}
-struct Color{
- public float r,g,b,a;
- public Color(float r,float g,float b,float a=1){this.r=r;this.g=g;this.b=b;this.a=a;}
- static float Decode(float c)=>c<=.04045f?c/12.92f:(float)Math.Pow((c+.055f)/1.055f,2.4);
- static float Encode(float c)=>c<=.0031308f?12.92f*c:1.055f*(float)Math.Pow(c,1/2.4f)-.055f;
- public Color linear=>new Color(Decode(r),Decode(g),Decode(b),a);
- public Color gamma=>new Color(Encode(r),Encode(g),Encode(b),a);
- public static Color white=>new Color(1,1,1,1);
-}
-static class GUI{public static Color color,backgroundColor;}
+using System.Collections.Generic;
+class Texture2D{public string name;public Texture2D(string name=""){this.name=name;}}
+static class Debug{public static void Log(string s){Console.WriteLine(s);}}
+struct Color{public float r,g,b,a;public Color(float r,float g,float b,float a=1){this.r=r;this.g=g;this.b=b;this.a=a;}public static Color white=>new Color(1,1,1,1);}
+struct Rect{public float x,y,width,height;public Rect(float x,float y,float w,float h){this.x=x;this.y=y;width=w;height=h;}}
+static class Mathf{public static float Min(float a,float b)=>Math.Min(a,b);public static float Clamp01(float x)=>Math.Max(0,Math.Min(1,x));}
+static class GUI{public static Color color;}
+static class Resources{public static T Load<T>(string name) where T:class=>new Texture2D(name) as T;}
 static class NativeUiAudit{
- public static bool blend;public static Color ink;public static Texture2D texture;
- public static void DrawTexture(Rect r,Texture2D t,ScaleMode m,bool alphaBlend){blend=alphaBlend;ink=GUI.color;texture=t;}
+ public static int clip;public static bool glowClipped=true;public static float glowAlpha;
+ public static void Region(Rect r,string s){}
+ public static void BeginGroup(Rect r){clip++;}
+ public static void EndGroup(){clip--;}
+ public static void DrawTexture(Rect r,Texture2D t){glowClipped&=clip>0;glowAlpha=GUI.color.a;}
 }
-static class Debug {public static void Log(string s){Console.WriteLine(s);}}
-class GUIStyleState {public Texture2D background;public Texture2D[] scaledBackgrounds;}
-class GUIStyle {
- public static GUIStyle none=new GUIStyle();
+class GUIStyleState{public Texture2D background;public Texture2D[] scaledBackgrounds=Array.Empty<Texture2D>();}
+class GUIStyle{
+ public static GUIStyle none=new GUIStyle();public string name="test";public int fontSize=23,padding=7;
  public GUIStyleState normal=new GUIStyleState(),hover=new GUIStyleState(),active=new GUIStyleState(),focused=new GUIStyleState(),onNormal=new GUIStyleState(),onHover=new GUIStyleState(),onActive=new GUIStyleState(),onFocused=new GUIStyleState();
- public int fontSize=23,padding=7;public string name="test";
 }
-static class MaterialProbe {
- static int StrippedStates;
- static void RememberStock(){}
+static class MaterialProbe{
+ static int StrippedStates;static readonly HashSet<Texture2D> skinTextures=new HashSet<Texture2D>();static void RememberStock(){}
+ static Texture2D plaque,primaryPlaque,innerButtonGlow;internal static string ReviewState;
+ static string face;static Color tint;static bool sliced;
+ static void Slice(Rect r,Texture2D t,float sx,float sy,float ex,float ey,bool center){face=t.name;tint=GUI.color;sliced=sx==174&&sy==0&&ex==40&&ey==0&&center;}
  /*PRODUCTION*/
  static int Main(){
+  int fail=0;var native=new Texture2D("skin");skinTextures.Add(native);
   var style=new GUIStyle();var states=new[]{style.normal,style.hover,style.active,style.focused,style.onNormal,style.onHover,style.onActive,style.onFocused};
-  foreach(var state in states){state.background=new Texture2D();state.scaledBackgrounds=new[]{new Texture2D()};}
-  var result=ClearBackgrounds(style);int fail=0;
+  foreach(var state in states){state.background=native;state.scaledBackgrounds=new[]{native};}
+  ClearBackgrounds(style);
   foreach(var state in states){if(state.background!=null)fail++;
 #if UNITY_EDITOR
-   if(state.scaledBackgrounds.Length!=0)fail++;
+   if(state.scaledBackgrounds[0]!=null)fail++;
 #endif
   }
-  if(result!=style||style.fontSize!=23||style.padding!=7||StrippedStates!=8)fail++;
-  ClearBackgrounds(style);if(StrippedStates!=8)fail++;
-  Console.WriteLine((fail==0?"PASS":"FAIL")+" all 8 native/HiDPI states; typography/padding preserved; repeat safe");
-  foreach(var space in new[]{ColorSpace.Gamma,ColorSpace.Linear}){
-   QualitySettings.activeColorSpace=space;GUI.color=new Color(.8f,.1f,.4f,.2f);GUI.backgroundColor=new Color(.2f,.3f,.8f,.1f);
-   SolidRect(new Rect(),new Color(15/255f,15/255f,16/255f,.3f),true);
-   var displayed=space==ColorSpace.Linear?NativeUiAudit.ink.gamma:NativeUiAudit.ink;
-   bool ok=!NativeUiAudit.blend&&NativeUiAudit.ink.a==1&&NativeUiAudit.texture==Texture2D.whiteTexture
-    &&Math.Abs(displayed.r-15/255f)<.00001f&&Math.Abs(displayed.b-16/255f)<.00001f
-    &&GUI.color.a==.2f&&GUI.backgroundColor.a==.1f;
-   Console.WriteLine((ok?"PASS ":"FAIL ")+space+" solid face: alpha1 / no blend / no inherited tint / #0f0f10");if(!ok)fail++;
+  if(StrippedStates!=8||style.fontSize!=23||style.padding!=7)fail++;
+  var art=new Texture2D("artist-painted");style.normal.background=art;style.normal.scaledBackgrounds=new[]{native,art};ClearBackgrounds(style);
+  if(style.normal.background!=art)fail++;
+#if UNITY_EDITOR
+  if(style.normal.scaledBackgrounds[0]!=null||style.normal.scaledBackgrounds[1]!=art)fail++;
+#endif
+  Console.WriteLine((fail==0?"PASS ":"FAIL ")+"only stock skin removed; authored backgrounds and typography preserved");
+  foreach(bool primary in new[]{false,true})foreach(string state in new[]{"normal","hover","selected","disabled"})foreach(bool pressed in new[]{false,true}){
+   ReviewState=state;GUI.color=new Color(.2f,.3f,.4f,.25f);NativeUiAudit.glowAlpha=0;NativeUiAudit.glowClipped=true;
+   ActionPlate(new Rect(100,200,400,76),primary,0,pressed);
+   bool ok=sliced&&face.EndsWith(primary?"btn_primary_composed":"btn_plaque_20261029")&&tint.r==1&&tint.g==1&&tint.b==1&&tint.a==1
+    &&GUI.color.r==.2f&&GUI.color.a==.25f&&NativeUiAudit.clip==0&&NativeUiAudit.glowClipped;
+   bool focused=state=="hover"||state=="selected";ok&=focused?NativeUiAudit.glowAlpha==.18f:NativeUiAudit.glowAlpha==0;
+   if(!ok){Console.WriteLine("FAIL art state "+primary+"/"+state+"/"+pressed);fail++;}
   }
+  Console.WriteLine((fail==0?"PASS ":"FAIL ")+"original artwork slices; brightness1.0 all states; clipped inner hover only");
   return fail==0?0:2;
  }
 }

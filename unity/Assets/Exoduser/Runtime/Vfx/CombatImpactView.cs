@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using Exoduser.UnityPort.Core;
 
 namespace Exoduser.UnityPort.Vfx
@@ -12,6 +13,20 @@ namespace Exoduser.UnityPort.Vfx
         sealed class Sheet {public Texture2D texture;public Sprite[] frames;public int cols,rows;}
         sealed class Clip {public SpriteRenderer renderer;public CombatClip spec;public Sheet sheet;public FeedbackEvent source;}
         sealed class Particle {public SpriteRenderer renderer;public int born,type;public float x,y,vx,vy,size,life,gravity,angle;public Color color;}
+        sealed class ParryLine {public SpriteRenderer renderer;public FeedbackEvent source;public CombatParryPresentation.Spark spec;public int born;}
+        sealed class DustPuff {public SpriteRenderer renderer;public int born;public float x,y;public CombatRollDust.Puff spec;}
+        readonly CombatParryPresentation parry=new CombatParryPresentation();
+        readonly CombatPresentationClock clock=new CombatPresentationClock();
+        readonly List<DustPuff> dust=new List<DustPuff>();int rollBorn=-1000;
+        readonly Sprite puff;readonly Texture2D puffTexture;
+        readonly List<ParryLine> parryLines=new List<ParryLine>();
+        readonly Sprite line;readonly Texture2D lineTexture;
+        readonly SpriteRenderer meleeFlash;readonly Material meleeFlashMaterial;
+        int parryBorn=-1000,meleeFlashBorn=-1000;
+        public bool ParryPushIn;
+        public float ParryCameraScale(int tick){return ReducedMotion?1:(float)parry.CameraScale(clock.Now(tick)-parryBorn,ParryPushIn);}
+        // Called for each fixed step the simulation is held by the melee parry hit-stop.
+        public void HoldFrame(){clock.Hold();}
         readonly Transform parent;
         readonly Dictionary<string,Sheet> sheets=new Dictionary<string,Sheet>();
         readonly List<Clip> clips=new List<Clip>();
@@ -28,10 +43,19 @@ namespace Exoduser.UnityPort.Vfx
         readonly System.Random random=new System.Random(20261103); // presentation RNG only
         public int Hits,Parries,Deaths,RollStarts,RollEnds,DrawnFrames,MissingSheets;
         public bool ReducedMotion;
+        // Optional presentation-only enemy model bounds. Null preserves every atlas/boss path.
+        public Func<FeedbackEvent,Camera,EnemyRigImpactAnchor?> EnemyRigAnchor;
+        // Atlas (sprite) enemies: actual displayed body by enemy ID after the final billboard pose.
+        // Rig-pixel enemies are anchored by EnemyRigAnchor above (enemy 3D lane); this path skips them.
+        public Func<int,(Vector3 foot,Vector3 top)?> EnemyBody;
+        // Collapse-start offset, not the full death duration. Enemy3D can derive
+        // this from its deathTicks timeline; unset/flat keeps the exact tick 0.
+        public Func<int,int> EnemyDeathDelay;
+        Camera renderCamera;int renderTick;
         public float ShakeScale=1;
         int shakeBorn=-1000;float shake;
         int rollDustTick=-1;
-        public int ActiveCount {get{return clips.Count+particles.Count;}}
+        public int ActiveCount {get{return clips.Count+particles.Count+parryLines.Count+dust.Count;}}
         public static bool IsSprite(SpriteRenderer r){return owned.Contains(r);}
         public CombatImpactView(Transform parent) {
             this.parent=parent;
@@ -42,9 +66,27 @@ namespace Exoduser.UnityPort.Vfx
             whiteAlpha=new Material(alpha);whiteAlpha.SetFloat("_Flat",1);
             bloodFloor=new Material(alpha);bloodFloor.SetFloat("_DepthTest",4); // LEqual in the legacy floor path
             dot=Sprite.Create(Texture2D.whiteTexture,new Rect(0,0,1,1),new Vector2(.5f,.5f),100);
+            ParryPushIn=parry.ParsePushIn(Environment.GetCommandLineArgs());
+            lineTexture=new Texture2D(64,4,TextureFormat.RGBA32,false){filterMode=FilterMode.Bilinear,wrapMode=TextureWrapMode.Clamp};
+            var linePixels=new Color32[64*4];
+            for(int y=0;y<4;y++)for(int x=0;x<64;x++)linePixels[y*64+x]=new Color32(255,255,255,(byte)(255*Mathf.Min(1,Mathf.Min(x,63-x)/8f)*(y==0||y==3?.35f:1)));
+            lineTexture.SetPixels32(linePixels);lineTexture.Apply();line=Sprite.Create(lineTexture,new Rect(0,0,64,4),new Vector2(.5f,.5f),100);
+            // Before transparent danger sprites (queue3000), after opaque terrain.
+            meleeFlashMaterial=new Material(alpha){renderQueue=2999};
+            meleeFlash=Make("Melee parry screen flash below danger",meleeFlashMaterial);meleeFlash.sprite=dot;meleeFlash.sortingOrder=-32700;meleeFlash.enabled=false;
             ringTexture=new Texture2D(32,32,TextureFormat.RGBA32,false){filterMode=FilterMode.Point};var px=new Color32[32*32];
             for(int y=0;y<32;y++)for(int x=0;x<32;x++)px[y*32+x]=new Color32(255,255,255,(byte)(x==0||x==31||y==0||y==31?255:0));
             ringTexture.SetPixels32(px);ringTexture.Apply();ring=Sprite.Create(ringTexture,new Rect(0,0,32,32),new Vector2(.5f,.5f),100);
+            // Soft lobed dust puff: five overlapping smooth lobes, no noise or grain, alpha 0 at the border.
+            puffTexture=new Texture2D(64,64,TextureFormat.RGBA32,false){filterMode=FilterMode.Bilinear,wrapMode=TextureWrapMode.Clamp};var puffPixels=new Color32[64*64];
+            var lobes=new[]{new Vector3(0,0,.40f),new Vector3(.17f,.07f,.28f),new Vector3(-.16f,.09f,.28f),new Vector3(.05f,-.15f,.26f),new Vector3(-.09f,-.11f,.24f)};
+            for(int y=0;y<64;y++)for(int x=0;x<64;x++){float u=(x+.5f)/64-.5f,v=(y+.5f)/64-.5f,sum=0;foreach(var l in lobes){float dx=u-l.x,dy=v-l.y,sigma=l.z*.5f;sum+=Mathf.Exp(-(dx*dx+dy*dy)/(2*sigma*sigma));}
+                float edge=Mathf.Clamp01((.5f-Mathf.Sqrt(u*u+v*v))/.12f);puffPixels[y*64+x]=new Color32(255,255,255,(byte)(255*(1-Mathf.Exp(-sum*1.6f))*edge));}
+            puffTexture.SetPixels32(puffPixels);puffTexture.Apply();puff=Sprite.Create(puffTexture,new Rect(0,0,64,64),new Vector2(.5f,.5f),100);
+            // Actor projection/grounding happens in LateUpdate. Read final bounds
+            // immediately before the camera renders (URP and Built-in).
+            RenderPipelineManager.beginCameraRendering+=BeforeCamera;
+            Camera.onPreCull+=BeforeBuiltinCamera;
         }
         SpriteRenderer Make(string name,Material material) {
             var go=new GameObject(name);go.transform.SetParent(parent,false);
@@ -61,23 +103,26 @@ namespace Exoduser.UnityPort.Vfx
             sheets[id]=sheet;return sheet;
         }
         public void Handle(FeedbackEvent e) {
+            bool death=e.Kind==FeedbackKind.EnemyDeath||e.Kind==FeedbackKind.BossDeath;
+            int deathDelay=death&&NativeRemodel3D.Active&&e.TargetId!=0&&EnemyDeathDelay!=null?Math.Max(0,EnemyDeathDelay(e.TargetId)):0;
             // Decals have their own pool and must survive the transient hit budget.
-            if(CombatBloodDecals.ShouldStamp(e))StampBlood(e);
+            if(CombatBloodDecals.ShouldStamp(e))StampBlood(e,deathDelay);
             bool hit=e.VisualOnly&&(e.Kind==FeedbackKind.EnemyHit||e.Kind==FeedbackKind.EnemyCrit||e.Kind==FeedbackKind.BossHit);
             if(hit&&!timeline.AdmitHit(e.Tick,e.IsBoss))return;
             var plan=CombatImpactTimeline.Plan(e);
-            if(e.Kind==FeedbackKind.Parry){Parries++;ParryParts(e);Shake(e.Tick,14);}
+            // Latest warm line sparks for all parries; retain G2 feedback data.
+            // Push-in candidate (R4) applies to melee parries only; bullet parries keep the G1 shake 4 because they are frequent.
+            if(e.Kind==FeedbackKind.Parry){Parries++;bool melee=e.MeleeParry||parry.IsMelee(e);float amount=e.ParryShake>0?e.ParryShake:melee?6:4;
+                if(melee&&ParryPushIn){parryBorn=clock.Now(e.Tick);amount=Mathf.Min(amount,2);}ParryLines(e);Shake(clock.Now(e.Tick),amount);}
             if(hit){Hits++;HitParts(e);}
             if((e.Kind==FeedbackKind.EnemyDeath||e.Kind==FeedbackKind.BossDeath)&&e.Source!="druid_sink") {
                 Deaths++;
-                AddParticle(e,0,0,Color.white,Mathf.Max(8,e.Size),e.IsBoss?12:8,0,3);
-                if(e.IsBoss)AddParticle(e,0,0,Hex("#ff5577"),Mathf.Max(12,e.Size*1.5f),15,0,3);
-                for(int i=0;i<(e.IsBoss?3:1);i++)AddParticle(e,R(-.15f,.3f),R(-.15f,.3f),Color.white,e.IsBoss?6:4,e.IsBoss?6:4,0,1);
-                if(e.IsBoss||e.Size>=18)Burst(e,e.IsBoss?26:16,e.IsBoss?Hex("#ff5577"):Hex("#ffaa66"),e.IsBoss?4.6f:3.2f,e.IsBoss?3.2f:2,2.4f,2.8f,14,10,.08f,true);
-                Burst(e,e.IsBoss?10:6,Hex("#880000"),1.5f,3,1.5f,2.5f,12,10,.12f,false);
+                // RETOUCH 4: the web's white square ring, white specks and pink/orange/bright-red dot bursts are gone. Death reads
+                // from the dark matte blood sheet and the ground stain only (VFX master §2.2 blood row, PBZ R6/R7, no dots).
             }
-            if(e.Kind==FeedbackKind.Roll){if(e.Step==0){RollStarts++;Shake(e.Tick,2);}else RollEnds++;Dust(e);}
+            if(e.Kind==FeedbackKind.Roll){if(e.Step==0){RollStarts++;rollBorn=e.Tick;Shake(clock.Now(e.Tick),2);}else RollEnds++;RollDust(e);}
             foreach(var spec in plan) {
+                if(death)spec.Delay+=deathDelay;
                 if(spec.Mode==CombatClipMode.Blood)spec.Angle+=R(-35,70)*Math.PI/180;
                 var sheet=Load(spec.Sheet,spec.Cols,spec.Rows);
                 if(sheet==null&&spec.Fallback!=null){
@@ -94,9 +139,9 @@ namespace Exoduser.UnityPort.Vfx
                 clips.Add(new Clip{renderer=renderer,spec=spec,sheet=sheet,source=e});
             }
         }
-        void StampBlood(FeedbackEvent e) {
+        void StampBlood(FeedbackEvent e,int delay=0) {
             var sheet=Load("Blood_FBF_4x4_dark",4,4);if(sheet==null)return;
-            int slot=bloodDecals.Add(e,12+random.Next(4),R(0,Mathf.PI*2));
+            int slot=bloodDecals.Add(e,12+random.Next(4),R(0,Mathf.PI*2),delay);
             var stamp=bloodDecals.Slots[slot];var renderer=bloodGround[slot];
             if(renderer==null){renderer=Make("Pooled ground blood",bloodFloor);renderer.sortingOrder=-18998;
                 renderer.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;renderer.receiveShadows=false;
@@ -106,7 +151,7 @@ namespace Exoduser.UnityPort.Vfx
             // depth in 3D (including slopes/deck gaps), rather than a floating card.
             renderer.transform.SetPositionAndRotation(ImpactSpace.Point(stamp.X,stamp.Y,.002f),Quaternion.Euler(0,0,(float)stamp.Angle*Mathf.Rad2Deg));
             renderer.transform.localScale=Vector3.one*(stamp.Width/renderer.sprite.rect.width);
-            renderer.color=new Color(.9f,.9f,.9f,1);renderer.enabled=!NativeRemodel3D.Active||NativeGroundSkillProjection.Available;
+            renderer.color=new Color(.9f,.9f,.9f,1);renderer.enabled=delay==0&&(!NativeRemodel3D.Active||NativeGroundSkillProjection.Available);
             NativeGroundSkillSurface.Project(renderer);
         }
         void EnforceCapacity(CombatClipMode mode,FeedbackEvent incoming) {
@@ -119,19 +164,10 @@ namespace Exoduser.UnityPort.Vfx
         }
         static Color Hex(string value){ColorUtility.TryParseHtmlString(value,out var c);return c;}
         static Color ElementColor(int el){return Hex(new[]{"#bbbbbb","#ff5522","#3388ff","#9933cc","#ffee00","#ff88cc","#88aa44"}[Mathf.Clamp(el,0,6)]);}
-        static Color ParryColor(FeedbackEvent e){
-            // Existing feedback tags take precedence; rainbow has no single
-            // element, so use the sacred core of its four-layer contact.
-            if(e.Source=="waterBean")return Hex("#dcebf0");
-            if(e.Source=="physicalProjectile")return Hex("#efe6d2");
-            if(e.SampleKey=="red")return Hex("#ffd9a0");
-            if(e.SampleKey=="rainbow")return Hex("#fff2d6");
-            return Hex(new[]{"#efe6d2","#ffd9a0","#e8f3f8","#cdb2e0","#fff4d0","#fff2d6","#dcc8a4"}[Mathf.Clamp(e.Element,0,6)]);
-        }
         float R(float low,float span){return low+(float)random.NextDouble()*span;}
         void Shake(int tick,float amount){float current=shake*Mathf.Pow(.86f,Mathf.Max(0,tick-shakeBorn));shakeBorn=tick;shake=Mathf.Max(current,amount);}
         public Vector3 CameraOffset(int tick) {
-            float age=tick-shakeBorn;if(ReducedMotion||age<0)return Vector3.zero;
+            float age=clock.Now(tick)-shakeBorn;if(ReducedMotion||age<0)return Vector3.zero;
             float amplitude=shake*Mathf.Pow(.86f,age)*ShakeScale;if(amplitude<.3f)return Vector3.zero;
             float a=amplitude/100;
             return new Vector3(Mathf.Cos(age*2.399f)*a,Mathf.Sin(age*2.13f)*a,0);
@@ -141,8 +177,44 @@ namespace Exoduser.UnityPort.Vfx
             var r=Make("Combat particle "+e.Kind,alpha);r.sprite=type==3?ring:dot;
             particles.Add(new Particle{renderer=r,born=e.Tick,x=e.X,y=e.Y,vx=vx,vy=vy,color=col,size=size,life=life,gravity=gravity,type=type,angle=angle});
         }
-        void ParryParts(FeedbackEvent e) {
-            for(int i=0;i<12;i++){float a=Mathf.PI*2*i/12;AddParticle(e,Mathf.Cos(a)*R(3,4),Mathf.Sin(a)*R(3,4),i%3==0?Color.white:ParryColor(e),R(2,3),R(10,6),0);}
+        void ParryLines(FeedbackEvent e) {
+            var specs=parry.Sparks(e,unchecked(e.Tick*397+e.Step*17+(int)e.X));
+            // Four complete contacts maximum; no per-cell culling of the 130-line peak.
+            if(parryLines.Count+specs.Length>520){foreach(var p in parryLines)ReleaseRenderer(p.renderer);parryLines.Clear();}
+            foreach(var spec in specs){var r=Make("Melee parry line",add);r.sprite=line;parryLines.Add(new ParryLine{renderer=r,source=e,spec=spec,born=clock.Now(e.Tick)});}
+        }
+        public void DrawMeleeParry(int tick,Camera camera,SpriteRenderer hero) {
+            if(camera==null)return;
+            float height=96*camera.pixelHeight/900f;
+            if(hero!=null&&hero.enabled){var b=hero.bounds;float lo=float.MaxValue,hi=float.MinValue;
+                for(int corner=0;corner<8;corner++){var point=b.center+Vector3.Scale(b.extents,new Vector3((corner&1)==0?-1:1,(corner&2)==0?-1:1,(corner&4)==0?-1:1));
+                    float y=camera.WorldToScreenPoint(point).y;lo=Mathf.Min(lo,y);hi=Mathf.Max(hi,y);}height=Mathf.Max(1,hi-lo);}
+            float plane=camera.nearClipPlane+.1f;
+            for(int i=0;i<parryLines.Count;) {
+                var p=parryLines[i];float age=clock.Now(tick)-p.born;var spec=p.spec;
+                if(age<0||age>=spec.Life){ReleaseRenderer(p.renderer);parryLines.RemoveAt(i);continue;}
+                float opacity=(float)parry.SparkAlpha(spec,age);var origin=camera.WorldToScreenPoint(NativeRemodel3D.Point(p.source.X,p.source.Y));
+                p.renderer.enabled=opacity>0&&origin.z>0;if(!p.renderer.enabled){i++;continue;}
+                var aim=camera.WorldToScreenPoint(NativeRemodel3D.Point(p.source.X+Mathf.Cos((float)spec.Angle)*100,p.source.Y+Mathf.Sin((float)spec.Angle)*100));
+                var direction=new Vector2(aim.x-origin.x,aim.y-origin.y).normalized;
+                float a=Mathf.Max(0,age-spec.Delay),travel=height*(float)spec.Speed*a;
+                var centre=new Vector2(origin.x,origin.y)+direction*travel+Vector2.down*(height*.00065f*a*a);
+                float length=height*(float)parry.SparkLength(spec,age),thickness=(float)spec.Thickness*camera.pixelHeight/900f;
+                // Lifetime taper never shrinks below one reference pixel or key length×.05.
+                thickness=Mathf.Max(camera.pixelHeight/900f,thickness*(1-age/spec.Life*.5f));
+                var at=camera.ScreenToWorldPoint(new Vector3(centre.x,centre.y,plane));
+                var right=camera.ScreenToWorldPoint(new Vector3(centre.x+length,centre.y,plane));
+                var up=camera.ScreenToWorldPoint(new Vector3(centre.x,centre.y+thickness,plane));
+                p.renderer.transform.SetPositionAndRotation(at,camera.transform.rotation*Quaternion.Euler(0,0,Mathf.Atan2(direction.y,direction.x)*Mathf.Rad2Deg));
+                p.renderer.transform.localScale=new Vector3(Vector3.Distance(at,right)/line.bounds.size.x,Vector3.Distance(at,up)/line.bounds.size.y,1);
+                var color=Color.Lerp(Hex("#f5e5d5"),Hex("#f0debd"),(float)spec.Color);color.a=opacity;p.renderer.color=color;i++;
+            }
+            float flash=ReducedMotion?0:(float)parry.FlashAlpha(clock.Now(tick)-meleeFlashBorn,QualitySettings.activeColorSpace==ColorSpace.Linear);
+            meleeFlash.enabled=flash>0;
+            if(flash>0){var centre=camera.ViewportToWorldPoint(new Vector3(.5f,.5f,plane));var corner=camera.ViewportToWorldPoint(new Vector3(1,1,plane));
+                meleeFlash.transform.SetPositionAndRotation(centre,camera.transform.rotation);
+                meleeFlash.transform.localScale=new Vector3(Vector3.Dot(corner-centre,camera.transform.right)*2/dot.bounds.size.x,Vector3.Dot(corner-centre,camera.transform.up)*2/dot.bounds.size.y,1);
+                meleeFlash.color=new Color(1,244/255f,208/255f,flash);}
         }
         void HitParts(FeedbackEvent e) {
             var ec=ElementColor(e.Element);var ep=e.Element>=0&&e.Element<6?Hex(new[]{"#dddddd","#ff6622","#44aaff","#bb55ee","#ffee44","#ffdd55"}[e.Element]):ec;
@@ -153,15 +225,10 @@ namespace Exoduser.UnityPort.Vfx
             if(e.Element==3)AddParticle(e,0,0,Hex("#aa44ff"),6,8,0,3);
             if(e.Element==4)for(int i=0;i<4;i++){float a=R(0,Mathf.PI*2),v=R(3,4);AddParticle(e,Mathf.Cos(a)*v,Mathf.Sin(a)*v,Hex("#ffff88"),R(1.5f,1),R(4,3),0,2,a);}
         }
-        void Burst(FeedbackEvent e,int n,Color col,float speed,float speedRange,float size,float sizeRange,float life,float lifeRange,float gravity,bool radial) {
-            for(int i=0;i<n;i++) {
-                float a=radial?Mathf.PI*2*i/n:e.Angle+Mathf.PI+R(-1.1f,2.2f),v=R(speed,speedRange);
-                AddParticle(e,Mathf.Cos(a)*v,Mathf.Sin(a)*v,col,R(size,sizeRange),R(life,lifeRange),gravity);
-            }
-        }
-        void Dust(FeedbackEvent e){ // web addParts truncates requested count × .6
-            int n=(int)((e.Step==0?5:4)*.6f);
-            for(int i=0;i<n;i++)AddParticle(e,R(-3.5f,7),R(-3.5f,7),Hex("#6e6050"),R(2,4),R(12,12),0);
+        void RollDust(FeedbackEvent e){foreach(var spec in CombatRollDust.Burst(e,unchecked(e.Tick*131+e.Step*7+(int)e.X)))AddPuff(e.Tick,e.X,e.Y,spec);}
+        void AddPuff(int tick,float x,float y,CombatRollDust.Puff spec){
+            if(dust.Count>=24){ReleaseRenderer(dust[0].renderer);dust.RemoveAt(0);}
+            var r=Make("Roll dust puff",alpha);r.sprite=puff;dust.Add(new DustPuff{renderer=r,born=tick,x=x,y=y,spec=spec});
         }
         static void Place(SpriteRenderer r,float x,float y,float width,float height,float angle,Camera camera) {
             var position=NativeRemodel3D.Point(x,y);
@@ -169,13 +236,44 @@ namespace Exoduser.UnityPort.Vfx
             else r.transform.rotation=Quaternion.Euler(0,0,-angle*Mathf.Rad2Deg);
             r.transform.position=position;r.transform.localScale=new Vector3(width/r.sprite.rect.width,height/r.sprite.rect.height,1);
         }
-        public void Update(Simulation simulation,Camera camera) {
+        void BeforeCamera(ScriptableRenderContext context,Camera camera){DrawEnemyHits(camera);}
+        void BeforeBuiltinCamera(Camera camera){if(GraphicsSettings.currentRenderPipeline==null)DrawEnemyHits(camera);}
+        void DrawEnemyHits(Camera camera) {
+            if(camera==null||camera!=renderCamera||!NativeRemodel3D.Active||camera.orthographic||EnemyBody==null)return;
+            foreach(var c in clips) {
+                if(!c.renderer.enabled||!CombatHitAnchor.Applies(true,c.source.TargetId,c.source.Kind,c.spec.Mode))continue;
+                if(EnemyRigAnchor!=null&&EnemyRigAnchor(c.source,camera).HasValue)continue;
+                var body=EnemyBody(c.source.TargetId);if(!body.HasValue)continue;
+                var foot=camera.WorldToScreenPoint(body.Value.foot);var top=camera.WorldToScreenPoint(body.Value.top);
+                if(foot.z<=0||top.z<=0)continue;
+                var anchor=CombatHitAnchor.Resolve(foot.y,foot.y,top.y,c.source.Kind,double.NaN,c.source.IsBoss||c.source.Size>=18);
+                if(!anchor.UseBody)continue;
+                float w=(float)anchor.DrawWidth,h=w*c.renderer.sprite.rect.height/c.renderer.sprite.rect.width/(float)c.spec.Stretch;
+                var screen=new Vector3(foot.x,foot.y+(float)anchor.OffsetY,foot.z);
+                float angle=-(float)c.spec.Angle;
+                if(c.spec.Mode==CombatClipMode.Blood) {
+                    var a=camera.WorldToScreenPoint(NativeRemodel3D.Point(c.source.X,c.source.Y));
+                    var b=camera.WorldToScreenPoint(NativeRemodel3D.Point(c.source.X+Mathf.Cos((float)c.spec.Angle)*100,c.source.Y+Mathf.Sin((float)c.spec.Angle)*100));
+                    angle=Mathf.Atan2(b.y-a.y,b.x-a.x);
+                    float offset=w*.3f*Mathf.Min(1,(renderTick-c.source.Tick)/6f);
+                    screen.x+=Mathf.Cos(angle)*offset;screen.y+=Mathf.Sin(angle)*offset;
+                }
+                var at=camera.ScreenToWorldPoint(screen);
+                var right=camera.ScreenToWorldPoint(screen+Vector3.right*w);var up=camera.ScreenToWorldPoint(screen+Vector3.up*h);
+                c.renderer.transform.SetPositionAndRotation(at,camera.transform.rotation*Quaternion.Euler(0,0,angle*Mathf.Rad2Deg));
+                // Stretch changes aspect only; the final width obeys the policy.
+                c.renderer.transform.localScale=new Vector3(Vector3.Distance(at,right)/c.renderer.sprite.bounds.size.x,Vector3.Distance(at,up)/c.renderer.sprite.bounds.size.y,1);
+            }
+        }
+        public void Update(Simulation simulation,Camera camera,SpriteRenderer hero=null) {
+            renderCamera=camera;renderTick=simulation.TickCount;
             int tick=simulation.TickCount;
+            DrawMeleeParry(tick,camera,hero);
             for(int i=0;i<bloodGround.Length;i++)if(bloodGround[i]!=null){var r=bloodGround[i];float fade=(float)bloodDecals.Alpha(i,tick);
                 r.enabled=fade>0&&(!NativeRemodel3D.Active||NativeGroundSkillProjection.Available);r.color=new Color(.9f,.9f,.9f,fade);NativeGroundSkillSurface.Project(r);}
             if(rollDustTick!=tick){
                 rollDustTick=tick;
-                if(simulation.RollActive&&random.NextDouble()>.4){var p=simulation.Player;var e=new FeedbackEvent{Kind=FeedbackKind.Roll,Tick=tick,X=p.X+R(-p.Radius*.5f,p.Radius),Y=p.Y+p.Radius*.6f};AddParticle(e,R(-1,2),-R(0,1.5f),Hex("#6e6050"),R(2,2),R(10,6),0);}
+                if(simulation.RollActive&&CombatRollDust.Trail(tick-rollBorn)){var p=simulation.Player;AddPuff(tick,p.X+R(-p.Radius*.4f,p.Radius*.8f),p.Y+p.Radius*.5f,CombatRollDust.TrailPuff(tick));}
             }
             int drawnHits=0;
             for(int i=0;i<clips.Count;) {
@@ -187,6 +285,10 @@ namespace Exoduser.UnityPort.Vfx
                 c.renderer.sprite=c.sheet.frames[Mathf.Clamp(frame,0,c.sheet.frames.Length-1)];
                 float w=(float)c.spec.DrawWidth(age,c.renderer.sprite.rect.width),h=w*c.renderer.sprite.rect.height/c.renderer.sprite.rect.width;
                 float angle=(float)c.spec.Angle,x=c.source.X,y=c.source.Y;
+                var rigAnchor=EnemyRigAnchor!=null?EnemyRigAnchor(c.source,camera):null;
+                bool rigHit=c.source.VisualOnly&&(c.source.Kind==FeedbackKind.EnemyHit||c.source.Kind==FeedbackKind.EnemyCrit);
+                bool rigDeath=c.source.Kind==FeedbackKind.EnemyDeath;
+                if(rigAnchor.HasValue&&(rigHit||rigDeath)){var anchor=rigAnchor.Value;float ratio=(float)NativeEnemyRigPolicy.ImpactRatio(c.source.Kind==FeedbackKind.EnemyCrit||rigDeath?1:0,anchor.Large);w=anchor.WorldHeight*100*ratio/(float)Math.Max(1,c.spec.Stretch);h=w*c.renderer.sprite.rect.height/c.renderer.sprite.rect.width;}
                 if(c.spec.Mode==CombatClipMode.Blood){
                     // Move the stream away from the contact, preserving its
                     // attack-direction cone; never leave a body-sized centre blob.
@@ -196,6 +298,7 @@ namespace Exoduser.UnityPort.Vfx
                         angle=-Mathf.Atan2(b.y-a.y,b.x-a.x);}
                 }
                 Place(c.renderer,x,y,w*(float)c.spec.Stretch,h,angle,camera);
+                if(rigAnchor.HasValue&&(rigHit||rigDeath))c.renderer.transform.position+=rigAnchor.Value.Point-NativeRemodel3D.Point(c.source.X,c.source.Y);
                 c.renderer.color=new Color(1,1,1,(float)c.spec.Alpha(age));DrawnFrames++;i++;
             }
             particleCells.Clear();int drawnParticles=0;
@@ -211,22 +314,41 @@ namespace Exoduser.UnityPort.Vfx
                 float size=p.type==3?p.size*(1+age/p.life*2)*2:p.size;
                 Place(p.renderer,x,y,p.type==2?size*3:size,p.type==2?1:size,p.angle,camera);i++;
             }
+            for(int i=0;i<dust.Count;) {
+                var d=dust[i];float age=tick-d.born;var spec=d.spec;
+                if(age<0||age>=spec.Delay+spec.Life){ReleaseRenderer(d.renderer);dust.RemoveAt(i);continue;}
+                float a=(float)CombatRollDust.Alpha(spec,age);d.renderer.enabled=a>0;if(a<=0){i++;continue;}
+                var color=Color.Lerp(Hex("#6e6050"),Hex("#9a8a72"),(float)spec.Shade);color.a=a;d.renderer.color=color;
+                float travel=(float)CombatRollDust.Travel(spec,age),w=(float)CombatRollDust.Width(spec,age);
+                Place(d.renderer,d.x+(float)spec.Dx*travel,d.y+(float)spec.Dy*travel,w,w*.7f,0,camera);i++;
+            }
         }
         public void DrawFlash(int tick) { // same UI flash path, below HUD; no simulation hit-stop
             if(ReducedMotion)return;
             float alphaFlash=FlashAlpha(tick);
             if(alphaFlash>0){var c=flashColor;c.a=alphaFlash;NativeUiViewport.FillScreen(c);}
         }
+        // M1 uses a separate deterministic view without consuming the live view's
+        // RNG or clocks. Preserve the exact enabled flags of its existing sprites.
+        public Action HideForProbe() {
+            var saved=new List<KeyValuePair<SpriteRenderer,bool>>();
+            Action<SpriteRenderer> hide=r=>{if(r!=null){saved.Add(new KeyValuePair<SpriteRenderer,bool>(r,r.enabled));r.enabled=false;}};
+            foreach(var c in clips)hide(c.renderer);foreach(var p in particles)hide(p.renderer);foreach(var p in parryLines)hide(p.renderer);foreach(var d in dust)hide(d.renderer);
+            foreach(var r in bloodGround)hide(r);hide(meleeFlash);
+            return ()=>{foreach(var pair in saved)if(pair.Key!=null)pair.Key.enabled=pair.Value;};
+        }
         int flashBorn=-1000;float flashPeak;Color flashColor;
         public float FlashAlpha(int tick){return Mathf.Max(0,flashPeak-Mathf.Max(0,tick-flashBorn)*.08f);}
         public void Flash(FeedbackEvent e){
-            if(e.Kind!=FeedbackKind.Parry&&!e.VisualOnly)return;
-            float strength=e.Kind==FeedbackKind.Parry?.25f:e.IsBoss?.2f:.1f;
-            flashPeak=Mathf.Min(.5f,FlashAlpha(e.Tick)+strength*.5f);flashBorn=e.Tick;flashColor=e.Kind==FeedbackKind.Parry?ParryColor(e):ElementColor(e.Element);
+            // Screen flash only for a perfect melee parry (R2); bullet parries and blocks get none.
+            if(e.Kind==FeedbackKind.Parry){if(parry.HasFlash(e))meleeFlashBorn=clock.Now(e.Tick);return;}
+            if(!e.VisualOnly)return;
+            float strength=e.IsBoss?.2f:.1f;
+            flashPeak=Mathf.Min(.5f,FlashAlpha(e.Tick)+strength*.5f);flashBorn=e.Tick;flashColor=ElementColor(e.Element);
         }
         static void Release(UnityEngine.Object o){if(Application.isPlaying)UnityEngine.Object.Destroy(o);else UnityEngine.Object.DestroyImmediate(o);}
         static void ReleaseRenderer(SpriteRenderer r){owned.Remove(r);Release(r.gameObject);}
-        public void Reset(){foreach(var c in clips)ReleaseRenderer(c.renderer);clips.Clear();foreach(var p in particles)ReleaseRenderer(p.renderer);particles.Clear();timeline.Reset();bloodDecals.Reset();foreach(var r in bloodGround)if(r!=null){r.enabled=false;NativeGroundSkillSurface.Project(r);}rollDustTick=-1;shakeBorn=flashBorn=-1000;shake=flashPeak=0;}
-        public void Dispose(){Reset();foreach(var r in bloodGround)if(r!=null)ReleaseRenderer(r);foreach(var sheet in sheets.Values)if(sheet!=null)foreach(var frame in sheet.frames)Release(frame);sheets.Clear();Release(dot);Release(ring);Release(ringTexture);Release(add);Release(alpha);Release(whiteAlpha);Release(bloodFloor);}
+        public void Reset(){foreach(var c in clips)ReleaseRenderer(c.renderer);clips.Clear();foreach(var p in particles)ReleaseRenderer(p.renderer);particles.Clear();foreach(var p in parryLines)ReleaseRenderer(p.renderer);parryLines.Clear();foreach(var d in dust)ReleaseRenderer(d.renderer);dust.Clear();rollBorn=-1000;clock.Reset();meleeFlash.enabled=false;parryBorn=meleeFlashBorn=-1000;timeline.Reset();bloodDecals.Reset();foreach(var r in bloodGround)if(r!=null){r.enabled=false;NativeGroundSkillSurface.Project(r);}rollDustTick=-1;shakeBorn=flashBorn=-1000;shake=flashPeak=0;}
+        public void Dispose(){RenderPipelineManager.beginCameraRendering-=BeforeCamera;Camera.onPreCull-=BeforeBuiltinCamera;Reset();ReleaseRenderer(meleeFlash);Release(meleeFlashMaterial);Release(line);Release(lineTexture);foreach(var r in bloodGround)if(r!=null)ReleaseRenderer(r);foreach(var sheet in sheets.Values)if(sheet!=null)foreach(var frame in sheet.frames)Release(frame);sheets.Clear();Release(dot);Release(ring);Release(ringTexture);Release(puff);Release(puffTexture);Release(add);Release(alpha);Release(whiteAlpha);Release(bloodFloor);}
     }
 }

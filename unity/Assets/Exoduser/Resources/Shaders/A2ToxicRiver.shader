@@ -3,12 +3,13 @@ Shader "EXODUSER/A2ToxicRiver"
  Properties { _A2RWebTex("Existing web poison paint",2D)="white"{} _A2RWebMix("Existing web paint enabled",Float)=0 _BaseColor("탁한 녹황",Color)=(.40,.32,.035,1) _FoamColor("오염 거품",Color)=(.57,.52,.23,1) _Emission("은은한 자체발광",Range(0,.1))=.1 _PlanarReflection("실제 장면 반사",2D)="black"{} _PlanarStrength("실제 반사 활성",Float)=0 _ShoreField("수로 접촉거리",2D)="black"{} _ShoreBounds("거리장 영역",Vector)=(-30,-100,140,170) _ShoreReady("거리장 연결",Float)=0 }
  SubShader
  {
-  // 물가 거품은 불투명 지형 깊이가 복사된 뒤 샘플한다. 표면은 불투명하게 쓰되 그리기 순서만 뒤로 둔다.
+  // The ground projection pass draws water after opaque depth is available,
+  // before ground ink and transparent actors. Foam still samples the bed depth.
   Tags { "RenderPipeline"="UniversalPipeline" "RenderType"="Transparent" "Queue"="Transparent" }
   ZWrite On
   Pass
   {
-   Name "독액 수면" Tags { "LightMode"="UniversalForward" }
+   Name "독액 수면" Tags { "LightMode"="ExoduserGroundWater" }
    HLSLPROGRAM
    #pragma vertex vert
    #pragma fragment frag

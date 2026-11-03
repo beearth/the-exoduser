@@ -1,11 +1,13 @@
 # 전투 패링 재기획 G1 — A안 명세 (2026-11-03)
 
+> 2026-11-04 표기만 갱신, 설계 무변경: §10 푸시인 후보 표시 방식(VFX RETOUCH 4)만 코드 사실로 고침.
+
 - 사용자 선택: **A안**(근접 리듬 추가 + 근접·탄 보상 분리). 11-03 20시 사용자 원문 "A안", CTO 전달. B안(기세 자원)은 지금 하지 않습니다.
 - 앞 문서: [PARRY_REDESIGN_G0_20261103.md](PARRY_REDESIGN_G0_20261103.md)
 - 이 문서는 G2 구현(1-1 회색 실물 한 판)의 입력 명세입니다. 구현은 CTO가 구현 레인에 배정하고, 판정과 병합은 유니티 총괄이 합니다.
 - 기준 코드: `origin/unity/main` Core. 60틱 = 1초. 아래 줄 번호는 11-03 기준입니다.
 
-## 1. 정본 수치(현재 값)
+## 1. 정본 수치(G2 구현 전 기준값)
 
 정본은 코드입니다. 웹 `game.html` `doParry`와 Unity `ParryRewards.cs`가 같은 값입니다. 2_3 문서의 옛 수치(E 30·기동 +10·악의 +1000)는 이 커밋에서 코드 값으로 고쳤습니다. 수정금지 문서의 사실 표기만 갱신했습니다.
 
@@ -20,7 +22,7 @@
 | 악의 | (빨콩 500·무지개 2000·그 외 1000)×자원 배율×2 | +2000 |
 | 적 포이즈 | 돌진·강하·방패돌진(`EnemyAi.ChargeHit`)만 `AiHost.Parry` → `PoiseHit(20)`. 접촉·슬램·착지 충격은 포이즈 피해 0 | 20 또는 0 |
 
-- 남은 불일치(별건, G2에서 웹 대조): 2_3 문서 반사표의 "무지개 pPD×3"과 Unity `ParryReflect.cs` 무지개 ×1.5. 웹 원문을 확인한 뒤 맞춥니다.
+- G2 대조: 무지개 pPD×1.5가 정답. 웹 Q 마법 반사 _npDmg·_fromRainbow 경로는 _aoeR=0/_aoeDmg=0, 착탄 폴백 반경100·피해p.dmg이므로 옛×6도 중심×1.5로 사실 정정한다. 보스 최대HP10% 유지.
 
 ## 2. 근접 공격 계약(공통)
 
@@ -128,7 +130,7 @@ Core에 표시 전용 `CombatStats`를 둡니다. 규칙과 난수에는 영향�
 | 기회 | `meleeTellStarted[source]`(source = swing·slam·charge·combo·unparryable), `projChargeStarted[parryClass]`(physical·magic·forbidden) | 근접 예고 시작, `_projChargeT=60` 설정 지점 |
 | 패링 | `parrySuccess[kind]`(meleeE·meleeQ·projE·projQ), `parryWrongInput`(패링 불가에 입력, 색 틀림) | `MeleeParry`, `ApplyParrySuccess`(출처 인자 추가), 반사 경로 |
 | 피해 출처 | `dmgDealt[source]`(normal·skill·reflect·counter), `dmgTaken[source]`(meleeEnemy·proj·hazard·boss) | 적 피격·`HurtPlayer`의 `HurtOptions`에 출처 필드 추가 |
-| 자원 | `gain[kind][res]`(res = hp·st·mp·rage·malice·harp, kind = 근접·탄) | 보상 적용 지점 |
+| 자원 | `gain[kind][res]`(res = hp·st·mp·rage·malice·harp·hpMaxFrac, kind = 근접·탄). `hpMaxFrac`는 회복할 때마다 "그 순간 최대 HP 대비 회복량"을 더한 값(8절 회복 판정용, 2026-11-04 추가) | 보상 적용 지점 |
 | 그로기 | `groggy[cause]`(meleeParry·counter·hit·reflect) | `EnemyPoiseRules.PoiseHit` 호출자 |
 | 결과 | `deaths`, `clearSeconds`, `hurtCount` | 기존 `HurtCount` 확장 |
 
@@ -154,3 +156,18 @@ Core에 표시 전용 `CombatStats`를 둡니다. 규칙과 난수에는 영향�
 2. 표현: 필드 적 섬광·자세 변형·패링 불가 적갈 고리·소리. 스파크 모양은 VFX와 맞춥니다.
 3. 검증: 바꾼 규칙의 oracle 기대값 갱신 + 나머지 불일치 0, m1-check, 자동 진행 3판, 1x 캡처.
 4. 문서: 2_3 문서 "공통 패링 보상" 절을 이 문서 5절로 대체 표시, 몬스터 문서(`docs/8.0몬스터디자인/`)의 5종 공격 설명 갱신.
+
+## 10. G2 구현 인계 (2026-11-03)
+
+- Core: MeleeAttackRules(5종 상태/공통 탄 정책), Simulation.MeleeParry(통합·반격·독립 행동정지), ParryRewards.Input.Kind(보상분리), CombatStats(관측), ParryRhythmBot(10개 예고 중7개 입력, 게임 RNG 무사용).
+- 19의 1타 뒤 gap22→2타 tell40, 29는 타간 gap10→tell16이다. 패링은 남은 연타를 즉시 취소한다. 6 돌진24예고→20발동; 29 돌진40예고→25발동(기존 길이)·쿨360·패링불가.
+- 표현: 예고 +2~10틱(9틱) 뼈색 섬광28px 이상·정렬30000, 화면6px 후퇴·1.06/.94→발동 첫2틱14px 전진. 성공 +2~6틱 최소 스파크, +6틱18px 후퇴. PBZ 본 스파크는 VFX 레인 소유다.
+- parry_feedback.json: standard6/4·밀기0, pushIn2/4·.08u. --parry-feedback-push-in으로 전환. (11-04 표시 사실: .08u 마커 당김은 쓰지 않고, 이 플래그와 `--unity-parry-camera=pushin` 모두 근접 패링에만 화각 2.5% 푸시인(8틱+복귀 20틱)을 건다. 탄 패링은 흔들림 4. 패링 연출은 히트스톱 홀드 중에도 진행. 기록 `docs/5.1임펙트디자인/UNITY_COMBAT_IMPACTS_20261103.md` RETOUCH 4 절) 규칙은 후보 전환으로 바뀌지 않는다.
+- 사망/클리어·M1/전체진행 종료에 combat-stats.json 작성. M1 save/continue 이전 통계를 보존한다. 적 피해는 실제 HP+쉴드 손실, 플레이어 피해는 HP 손실, 자원은 상한 적용 후 실제 증가량이다.
+- Mac: --unity-m1-check 1회, --unity-fullrun-qa --parry-g2-bot 격리출력3판, 사람3판과 1600×900 1x 겹침 장면. 봇은 기회별 목표 입력70%이며 실제 성공률은 카운터로 따로 판정한다. 강제 성공·자원 주입은 없다.
+- PC 범위는 구현·참조 컴파일. §8 실게임 비율/회복/그로기·화면 합격은 Mac 미판정.
+- 2026-11-04 판정 준비: combat-stats.json에 최대 HP가 없어 회복 기준(분당 최대 HP 30%)을 계산할 수 없던 공백을 `gain.*.hpMaxFrac`로 메웠다. `unity/Tools/parry-g2-tests/judge-stats.cjs <판 폴더>... --out <폴더>`가 판별 근접 비중·반사 비중·분당 회복·근접 그로기를 8절 합격선으로 PASS/FAIL/미측정 표(g2-judge.md·json)로 만든다. 시간은 clearSeconds, 사망으로 끝난 판은 ticks/60. 화면·회귀 줄은 이 표에 넣지 않는다.
+
+### PC 검증 경계
+
+21:40 분기점 1회 대조로 2,696건의 원인을 확정했다: 기존 2,318건(보스 대사1,300·악의오브 문구1,018), §6 공통 탄 변경에 따른 의도 차이372건, 비대상 NoProj 엘리트 주기 덮어쓰기 결함6건. 6건을 수정하고 372건만 별도 A안 기대값으로 기록했다. 같은 6,066,962개 검사의 잔여 2,318건은 분기점 실패 항목과 중복까지 동일하고 신규 불일치0이다. 전체 oracle PASS는 아니며 기존 불일치로 인계한다. 규칙86/0·PC 참조 컴파일5개 어셈블리 오류0. [원인·재현](PARRY_G2_ORACLE_AUDIT_20261103.md). Mac §8 미판정.

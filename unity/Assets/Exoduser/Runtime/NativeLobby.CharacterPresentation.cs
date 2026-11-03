@@ -120,6 +120,7 @@ namespace Exoduser.UnityPort
    if(GUI.GetNameOfFocusedControl()=="visual-info-right")Border(right,new Color(.92f,.78f,.53f),2);
    DrawCharacterRail(w,px,railY);
    float actionX=(w-760)/2,cancelWidth=98.563f;Rect cancel=new Rect(actionX,actionY+1.25f,cancelWidth,44),create=new Rect(w*.5f+247.063f,actionY,132.938f,46.5f);
+   TrackQaNameButton(create);
    bool priorEnabled=GUI.enabled;GUI.enabled=priorEnabled;GUI.SetNextControlName("visual-cancel");if(NativeUiAudit.Button(cancel,CharacterDialogLabel("cancel",K("취소","CANCEL")),presentationAction))CloseCharacterCreation();
    GUI.enabled=priorEnabled&&!locked;GUI.SetNextControlName("visual-create");if(NativeUiAudit.Button(create,locked?CharacterDialogLabel("comingSoon",K("출시 준비 중","COMING SOON")):CharacterDialogLabel("create",K("생성","CREATE")),presentationCreateAction))ConfirmCharacterVisual();GUI.enabled=priorEnabled;
    if(GUI.GetNameOfFocusedControl()=="visual-cancel")Border(cancel,new Color(.92f,.78f,.53f),2);
@@ -128,10 +129,11 @@ namespace Exoduser.UnityPort
    if(i==1){if(presentationChains!=null){Color old=GUI.color;GUI.color=new Color(1,1,1,.58f);NativeUiAudit.DrawTexture(new Rect(stageX,bodyY+bodyHeight*.18f,stageWidth,bodyHeight*.72f),presentationChains,ScaleMode.ScaleToFit,true);GUI.color=old;}Label(new Rect(stageX,railY-31,stageWidth,26),VisualSelectionLabel("출시 준비 중","COMING SOON"),presentationSubtitle,TextAnchor.MiddleCenter);}
    else if(i>=2){float releaseBottom=bodyY+bodyHeight-4,chainSize=Mathf.Min(72,bodyHeight*.20f);Rect chainRect=new Rect((w-chainSize)*.5f,releaseBottom-28-8-chainSize,chainSize,chainSize);if(presentationChains!=null){Color old=GUI.color;GUI.color=new Color(1,1,1,.78f);NativeUiAudit.DrawTexture(chainRect,presentationChains,ScaleMode.ScaleToFit,true);GUI.color=old;}Label(new Rect(w*.5f-150,releaseBottom-28,300,28),VisualSelectionLabel("출시 준비 중","COMING SOON"),presentationReleaseLabel,TextAnchor.MiddleCenter);}
   }
-  Texture2D silverNamePanel,silverNameInput;
+  Texture2D silverNamePanel,silverNameInput,silverNameCreate,silverNameCancel;
   void DrawCharacterNamePresentation()
   {
    if(silverNamePanel==null){silverNamePanel=Resources.Load<Texture2D>("Art/ui/silver_hell/name_panel");silverNameInput=Resources.Load<Texture2D>("Art/ui/silver_hell/name_input");}
+   if(silverNameCreate==null){silverNameCreate=Resources.Load<Texture2D>("Art/ui/silver_hell/name_create");silverNameCancel=Resources.Load<Texture2D>("Art/ui/silver_hell/name_cancel");}
    float w=NativeUiSafeArea.DesignWidth,h=NativeUiSafeArea.DesignHeight;Fill(new Rect(0,0,w,h),new Color(0,0,0,.90f));Rect panel=new Rect((w-440)/2,(h-335)/2,440,335);NativeUiAudit.Region(panel,"panel");Image(panel,silverNamePanel,ScaleMode.StretchToFill);
    float x=panel.x+41,y=panel.y;var noto=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular");
    string heading=CharacterDialogLabel("title",K("새 캐릭터 생성","Create Character"));
@@ -145,10 +147,8 @@ namespace Exoduser.UnityPort
    if(characterFocus&&Event.current.type==EventType.Repaint){GUI.FocusControl("character-name");characterFocus=false;}
    if(!string.IsNullOrEmpty(characterError))Label(new Rect(x,y+219,358,18),characterError,presentationNameError,TextAnchor.MiddleLeft);
    var cancel=new Rect(x,y+239,173,47);var create=new Rect(x+185,y+239,173,47);
-   NativeSilverHellUi.ActionPlate(cancel,false,cancel.Contains(Event.current.mousePosition)?1:0,!AutomatedInput&&cancel.Contains(Event.current.mousePosition)&&ExoInput.Mouse(0),22,2);
-   NativeSilverHellUi.ActionPlate(create,true,create.Contains(Event.current.mousePosition)?1:0,!AutomatedInput&&create.Contains(Event.current.mousePosition)&&ExoInput.Mouse(0),22,2);
-   DrawSpaced(cancel.center.x-(SpacedWidth(noto,14,CharacterDialogLabel("cancel",K("취소","CANCEL")),1.152f)-1.152f)/2,cancel.y,cancel.height,CharacterDialogLabel("cancel",K("취소","CANCEL")),noto,14,1.152f,new Color(210/255f,207/255f,201/255f),false);
-   var bold=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Bold")??noto;DrawSpaced(create.center.x-(SpacedWidth(bold,14,CharacterDialogLabel("create",K("생성","CREATE")),1.728f)-1.728f)/2,create.y,create.height,CharacterDialogLabel("create",K("생성","CREATE")),bold,14,1.728f,new Color(244/255f,241/255f,235/255f),false);
+   NativeSilverHellUi.ArtImage(cancel,silverNameCancel);NativeSilverHellUi.ArtImage(create,silverNameCreate);
+   // Both original name-button labels are baked into their paintings.
    GUI.SetNextControlName("character-cancel");if(NativeUiAudit.Button(cancel,"",GUIStyle.none))CloseCharacterCreation();
    GUI.SetNextControlName("character-create");if(DecisionSoundButton(create))CreateCharacter(characterName);
   }

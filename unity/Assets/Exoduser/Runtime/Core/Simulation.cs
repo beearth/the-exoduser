@@ -158,7 +158,7 @@ namespace Exoduser.UnityPort.Core
                     // ordinary profile only clears the stun presentation marker.
                     if (enemy.Stunned <= 0 && enemy.MaxStunned > 0) enemy.MaxStunned = 0;
                 }
-                if (Config.EnemyAiEnabled && enemy.IsBoss) { if (BossTick != null) BossTick(enemy); else TickEnemy(enemy); }   // C07: boss Core plug-in
+                if (Config.EnemyAiEnabled && enemy.IsBoss && TickCount>=enemy.MeleeFreezeUntil) { if (BossTick != null) BossTick(enemy); else TickEnemy(enemy); }   // C07: boss Core plug-in
             }
             TickCorpses();
             if (AfterEnemyTick != null) AfterEnemyTick();   // BX: boss projectiles and hazards (Simulation.DruidBoss.cs)
@@ -236,6 +236,9 @@ namespace Exoduser.UnityPort.Core
         private void ApplyEnemyDamage(EnemyState enemy, int damage, float angle, bool poiseHit, float knockbackMultiplier, bool dot = false, bool shieldHit = false, double typeDamagePct = 0, double critRateBonus = 0, bool arrow = false, int atkEl = 0, bool iceBlade = false, bool blueBean = false, bool parryBlueBean = false, bool magicHit = false, double? poiseMult = null, bool visualImpact = true)
         {
             if (enemy == null || !enemy.Alive || enemy.Hp <= 0) return;
+            bool counter=!dot&&!blueBean&&TickCount<enemy.MeleeCounterUntil;
+            float poiseBefore=enemy.Poise;
+            if(counter){damage=Combat.Js.Int(damage*1.75);poiseMult=(poiseMult??1)*2;poiseHit=true;}
             // Source parryLesson.hurtEnemy: a valid hit defeats this lesson actor
             // directly; its inherited shield is untouched and no rewards roll.
             if(IsFirstPracticeActor(enemy)){ApplyPracticeDamage(enemy,damage);return;}
@@ -255,6 +258,9 @@ namespace Exoduser.UnityPort.Core
             hitSfxCd = (int)context.HitSfxCd; hurtSfxEnemy = null;
             SyncFromWeb(enemy, web); ApplyHurtPlayerBack(player);
             int total = (int)((shieldBefore - enemy.Shield) + (hpBefore - enemy.Hp));
+            if(counter&&total>0)enemy.MeleeCounterUntil=TickCount;
+            CombatStats.Add(Stats.dmgDealt,counter?"counter":blueBean?"reflect":poiseHit||magicHit?"skill":"normal",Math.Max(0,total));
+            if(poiseBefore>0&&enemy.Poise<=0&&enemy.Stunned>0)CombatStats.Add(Stats.groggy,counter?"counter":blueBean?"reflect":"hit");
             LastHitDamage = total; TotalDamage += total; BossPainCheck(enemy);
             // Presentation only. Audio notifications are throttled and noImpact is
             // deliberately true above; neither may suppress the actual hit art.
@@ -282,6 +288,7 @@ namespace Exoduser.UnityPort.Core
             var body = EnemyHurt.Body(context, web, null, true, opts, head); critSfxCd = context.CritSfxCd;
             SyncFromWeb(enemy, web); ApplyHurtPlayerBack(player);
             int total = (int)((shieldBefore - enemy.Shield) + (hpBefore - enemy.Hp));
+            CombatStats.Add(Stats.dmgDealt,"skill",Math.Max(0,total));
             LastHitDamage = total; TotalDamage += total;
             if (enemy.Hp <= 0) OnEnemyZeroHp(enemy, context, web, null, opts, body);
             if (live) { web.alive = enemy.Alive; web.hp = enemy.Hp; }

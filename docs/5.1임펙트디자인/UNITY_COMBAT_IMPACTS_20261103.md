@@ -149,3 +149,367 @@ VISUAL VERDICT: **미검증**. 이번 소스 연결을 전체 누락 연출 이�
 변경 파일은 `CombatImpactTimeline.cs`, `CombatImpactView.cs`, `unity/Tools/combat-impact-tests/Program.cs`, `run.cjs`, `tools/vfx/recolor_blood_dark.py`, 새 dark PNG/meta, 이 문서의 8개다. `tmp/design-review/vfx-blood/`에는 비교판·픽셀 검사 결과만 둔다. CHANGELOG_SYNC 인수용 초안: “U-VFX-04: 무광 dark 피 시트·피격 방향성 핏줄기·8장 풀의 3.5s+1s 지형 혈흔 연결, 회귀60/0·Roslyn 오류0; 실제 화면 미검증.” 공용 CHANGELOG는 총괄 커밋 시 반영한다.
 
 **판정: 소스·독립 회귀 통과 / RETOUCH_GAME_QA_PENDING.** 남은 것은 Mac Unity 임포트·실제 원근 카메라에서 핏줄기 방향/크기(몸 지름 근사 대 실제 키)·지형 접지·8장 교체·3.5s+1s·0.2s 이후 적/탄 가독성의 1x 검수다. 1920×1080·3840×1080, 10초 무음 영상과 3x 크롭으로 판정한다. 실행본 반영·통합·실게임 품질 완료로 처리하지 않는다.
+
+## 근접 패링 스파크(G2) — 2026-11-03 PC
+
+실행본 반영 없음. 작업본 `G:/exoduser-wt/codex-vfx-spark`, 브랜치 `claude/unity-pc-vfx-spark-20261103`, 기준 HEAD `17490149b1301bc7f01055be4e684eb9040905c8`.
+관문: 소스 회귀·Roslyn 통과 / **RETOUCH_GAME_QA_PENDING**, 추가 M1 독립 회귀의 09c는 FAIL.
+다음: 총괄이 09c·디스크 여유를 확인하고 Mac에서 같은 장면 A/B·1x/3x·탄막 가독성을 판정한다.
+
+### 작업 범위와 계약
+
+브리프 `I:/EXODUSER-Storage/codex-runs/20261103-203816_vfx-spark/prompt.md` 및 끝의 표준 실행 규칙을 우선했다. 착수 시 tracked·untracked·index 변경 없음, 브랜치·기준 SHA 일치. LANES.md에 spark 개별 행은 없어 브리프를 소유 범위로 삼았다. fetch는 외부 Git 메타데이터에 쓰므로 하지 않았으며 원격 최신 여부는 미확인이다. commit·push·stage·영구 삭제·다른 worktree 쓰기·Core/웹 변경·유료 호출·Unity/브라우저 실행을 하지 않았다. PowerShell 시작의 CreateProcessW os error5 이후 문서에 허용된 CMD/Node 경로로 진행했다.
+
+목표 장면은 1-1 원근 LOCK의 근접 Q/완벽 패링과 Step0 막기다. 시간 정본은 `PARRY_REDESIGN_G1_20261103.md` §3, 모양·색 근거는 [PBZ·도타 실측](IMPACT_REFERENCE_PBZ_DOTA2_20261103.md) R2·R4·R5다. 두 문서를 읽었으며 원본 게임 영상은 이 실행에서 다시 열지 않았다. 공통 관례 중 접점 방사선·접촉 뒤 정점·짧은 제한 섬광·일시 푸시인을 연결했다. 기존 가장 큰 차이는 점 파편12개와 표시 흔들림14였다. 제작법은 기존 가산 셰이더+코드로 만든 선 텍스처+표시 전용 틱 정책이며 이미지 생성은 쓰지 않았다. 첫 실물 판정은 Mac G2/G4다. 1x/3x 점0·적 예고/탄 가독성·같은 장면 A/B·카메라 원상복귀가 인수 조건이며 PC 컴파일만으로 시각 PASS를 주지 않는다.
+
+| 항목 | 구현 |
+|---|---|
+| 근접 식별 | `FeedbackKind.Parry`, 비어 있는 SampleKey, Source가 없음 또는 contact/swing/slam/charge/combo/melee 접두사. 비어 있지 않은 반사 SampleKey나 알 수 없는 Source는 근접에서 제외. Core 이벤트는 읽기만 함 |
+| 스파크 | Step1 80~130개, Step0 30~60개. 표시 RNG로 접촉 틱에 약30%(정수 반올림), +1~3틱 나머지 방출, 개수·밝기 +3틱 정점. 접촉 기준18~30틱 수명. 약70%는 `Angle+π` 중심180° 부채, 나머지는 전방위. 화면 아래로 약한 중력 |
+| 선·색·크기 | `#f5e5d5`~`#f0debd`, 가산. 키의 .10~.25배에서 감쇠하되 .05배 이상 유지. 900px 높이 기준1~2px, 수명 말기에도1px 이상. 끝 알파 페이드와 수명 중 두께·밝기 감쇠. 키는 표시 중인 영웅 SpriteRenderer의 투영 bounds 높이, 없으면900px 기준96px 폴백. 실제 리깅 실루엣 높이와의 일치는 Mac에서 확인 필요 |
+| 예전 파편·시트 | 근접의 점 파편과 dark/lightning boom을 선으로 교체. 탄 반사의 기존 시트·12개 파편·GUI 섬광은 유지하고 근접 스파크를 추가하지 않음. 완전한 점0은 실제1x/3x 검수 전 미확인 |
+| 근접 화면 섬광 | Step1만 `#fff4d0`. 0→1틱 상승, 1→6틱 감쇠, 6틱에0. 중첩해서 더하지 않음. Gamma 알파 상한 .15(최대채널 변화38.25), Linear 상한 .02(검정 위 sRGB 변환 약38.7)를 사용. 평균 휘도≤40을 보수적으로 제한하는 정책이며 실제 HDR/톤매핑/후처리 화면 측정은 미실행 |
+| 위험 정렬 | 근접 섬광은 GUI 대신 화면을 덮는 world SpriteRenderer, renderQueue2999·ZTestAlways. 기존 transparent(queue3000) 적 예고·탄보다 먼저 그림. 근접 스파크도 기존 Combat sortingOrder를 사용. 실제 렌더 파이프라인 정렬은 Mac 검수 필요 |
+| 카메라 A/B | `--unity-parry-camera=shake` 기본: 근접6/탄4. `--unity-parry-camera=pushin`: 흔들림2, 8틱 동안 화각/orthographicSize를2.5% 좁히고20틱 복귀. 28틱 이후 정확히 배율1. 원근 카메라는 기존 `NativeRemodelCamera.FieldOfView`에서 매번 계산하여 누적 변경 없음. 피치34°·기본거리·follow offset 불변. ReducedMotion이면 푸시인·표시 흔들림·섬광 없음 |
+| M1 06 비교 | 첫 실제 Q 패링 이벤트를 재사용. Tick을 진행하지 않고 접촉+4틱으로 표시 age만 맞춰 `06-parry-q-shake.png` / `06-parry-q-pushin.png` 추가. 별도 동일 seed 표시 객체, 기존 효과 enabled 플래그·Core probe 상태/RNG·pending feedback·카메라 pose/lens/projection·marker·Unity RNG를 finally에서 복원. 보상을 다시 지급하지 않음. headless 컷은 실제 HudCamera를 RenderTexture로 렌더. 기존06 판정식 불변 |
+
+카메라 선택 인자는 `NativeReviewArgs.IsReviewArgument`에 등록하여 지역 제목이 QA 인자로 오인되어 꺼지지 않게 했다. 기존 피·데칼·다른 전투 표현의 계약은 유지했다. 새 사용자 표시 문자열은 없다.
+
+### 검증·남은 문제
+
+- `C:/nvm4w/nodejs/node.exe unity/Tools/combat-impact-tests/run.cjs --red`: 새 정책 누락으로 **61검사/1실패** 확인. 구현 후 기본 명령1회 **430검사/0실패**, 기존 피 PNG 검사도 통과. 스파크40개 seed/Step 조합의 개수·30%/70%·정점·수명·최소선길이, 섬광 상승/소멸·상한·이벤트 제외, 옵션 기본값·8+20틱 복귀 및4개 기준 카메라 값의 정확한 원상복귀를 검사했다. `tools/combat-impact-check/red.log`, `checks.log`.
+- `C:/nvm4w/nodejs/node.exe tools/vfx-missing-compile.cjs`: **Core121·Runtime249소스, Roslyn 오류0**. 기존 Unity 참조 DLL은 읽기만 함. `tools/combat-impact-check/compile/`. Unity 임포트·셰이더 컴파일 증거는 아니다. Core `EnemyAi.cs:88`의 기존 CS0219 경고2개는 남음.
+- 추가 `run.cjs --m1`1회: **11검사/2실패**. 기존 shield probe의 상태/RNG 복원 검사는 통과했지만 기존09c 대조 경로 양쪽에서 `naturally unlocked False`, `stage kills 136/168`로 실패했다. `tools/combat-impact-check/m1.log`. 09c·Core는 이번 수정 대상이 아니므로 고치거나 무수정 재실행하지 않았다. 새 카메라 coroutine은 Roslyn 컴파일만 확인했고 이 독립 검사는 실제 캡처를 실행하지 않는다.
+- `git diff --check` 통과. G: 여유가 약97.8GiB로 확인되어 운영 매뉴얼의100GB 기준 아래임을 보고하고 추가 실행을 중단했다. 브리프의 영구 삭제 금지를 따라 정리는 하지 않았다. 큰 빌드·캡처·복사본은 생성하지 않았으며 로그/독립 검사 출력은 worktree 내 고정 경로만 사용했다.
+- **아직 없는 증거:** 실제 M1 A/B PNG, Mac Player, 1x·3x 점0, 투영된 실제 키/접점/방향, HDR 후처리 뒤 평균 밝기≤40, 적 예고·탄 정렬, 카메라28틱 복귀의 실제 Player 값, 1920×1080·3840×1080 및10초 무음 영상. 실행본 반영·병합·화면 PASS로 처리하지 않는다.
+
+변경9파일: `unity/Assets/Exoduser/Runtime/NativeGame.cs`, `NativeGame.Remodel3D.cs`, `NativeGame.M1Check.cs`, `NativeReviewArgs.cs`, `Vfx/CombatImpactTimeline.cs`, `Vfx/CombatImpactView.cs`(뒤5개도 같은 Runtime 아래), `unity/Tools/combat-impact-tests/Program.cs`, `run.cjs`, 이 문서. 공용 CHANGELOG는 소유 범위 밖이라 총괄 인수용 초안만 남긴다: “근접 패링 G2: 따뜻한 선 스파크·6틱 제한 섬광·shake/pushin 비교 옵션·M1 +4틱 A/B 컷 연결. 표시 회귀430/0·Roslyn 오류0, 추가M1 09c FAIL·실제 화면 미검증.”
+
+END
+
+## 패링 RETOUCH 3 — 사용자 「패링구현이 엉망이네」 (2026-11-03 PC)
+
+바탕화면 실행본 385e76ce1의 M1 캡처(06-parry-q·06-parry-shield)를 1x·3x로 다시 봤다. 결함:
+
+| 결함 | 원인 | 조치 |
+|---|---|---|
+| Q 패링 = 보라 8각 별 스티커 | 웹 doParry의 `Dark_MediumImpact`(암흑 원소 시트)를 그대로 이식 | 근접은 이 브랜치의 따뜻한 흰 선 스파크(80~130). **탄 패링도 같은 선 스파크로 바꾸고 보라 별 삭제**(완벽 36~50·막기 20~30, 반사되는 탄이 주인공이라 적게) |
+| 패링 주변 보라·흰 잔점 | `ParryParts` 둥근 점 입자 12개 | **삭제**(점 금지). 모든 패링은 선 스파크만 |
+| 방패 탄 패링 = 누런 번개 시트 3장 | 웹 TVFX2 번개 3층 | **삭제**, 선 스파크 20~30. 물리탄 방패 패링의 화염 붐(`Fire_ImpactFire_Sheet`)·물콩·무지개 전용 시트는 유지 |
+| 탄 패링에도 원소색 화면 섬광 .25 | 옛 `Flash` 경로 | **삭제** — 화면 섬광은 완벽 근접 패링만(R2, Δ≤40·6틱) |
+| 영문 「PARRY!」 원색 노랑 글자, 빠른 연속 패링에 두 줄 쌓임 | Core `RaisePlayerText("PARRY!","#ffdd00")`(웹 '⚡PARRY!') | **표시 안 함**(`NativeRevive.Add`에서 거름, Core 문자열은 그대로). 레퍼런스 공통(팬텀 블레이드 제로·도타2·세키로류): 패링 성공은 스파크·섬광·소리로 읽히고 글자를 띄우지 않는다 |
+
+- 파일: `Runtime/Vfx/CombatImpactTimeline.cs`(Plan 탄 패링 시트 제거, `CombatParryPresentation.Sparks` 탄 패링 개수), `Runtime/Vfx/CombatImpactView.cs`(`ParryLines` 하나로, `ParryParts`·`ParryColor` 삭제, `Flash` 패링 분기), `Runtime/NativeRevive.cs`(PARRY! 거름), `unity/Tools/combat-impact-tests/Program.cs`.
+- 검사: combat-impact **508 checks 0 failures**(탄 패링 시트 0개·스파크 개수·섬광 없음 포함), blood-dark PASS, Runtime Roslyn 오류 0(249 소스), m1-parry 11개 중 실패 2건은 기존 09c 오프라인 하네스(위 「09c 회귀 조사」)와 같은 것.
+- 판정: PC는 컴파일까지. Mac M1 06(06-parry-q-shake/pushin·06-parry-shield)·07e(탄 패링 장면 있으면) 1x·3x 판정 뒤 병합.
+- 규칙 쪽(패링 판정 창·보상·히트스톱·적 밀림)은 이 브랜치가 건드리지 않는다. 손맛 결함은 유니티 총괄에 따로 전달.
+
+
+## U-VFX-05 — 기검참 접점·얇은 초승달·명중 흔들림 (2026-11-03 PC 후속)
+
+기준 HEAD d37fb2a0ddd1a17c98ddb6454e26f980aae612b2, 브랜치 claude/unity-pc-vfx-ki-20261103, 작업본 G:/exoduser-wt/codex-vfx-ki. 후속 브리프 I:/EXODUSER-Storage/codex-runs/20261103-205915_vfx-ki-2/prompt.md에 따라 1차 미커밋 변경을 이어서 직접 수정했다. **stage·commit·push·fetch·Unity·브라우저·유료 API·외부 쓰기·영구 삭제 없음.** 시작 HEAD는 로컬 origin/unity/main보다 2커밋 뒤였고, 마감 status에서는 공유 원격 추적 ref가 갱신되어 13커밋 뒤로 표시됐다. 브랜치 전환·병합은 하지 않았으며 원격 최신 여부와 해당 추가 커밋 통합 결과는 미확인이다. LANES에 개별 소유 행이 없어 두 브리프를 소유 범위로 사용했다. 프로세스 조회는 접근 거부여서 생존·잠금 상태를 확정하지 않는다.
+
+### 목표와 실제 경로
+
+목표는 기존 04-attack의 오래 남는 두꺼운 회백 초승달을 줄이고, 실제 KiSlashHit에 5틱 코어·방향성 선 스파크·작은 명중 반동을 넣는 것이다. G1 §3·§8 및 PBZ·도타2 실측 R1·R4·R5를 기준으로 기존 원화·가산 재질을 재사용한다. 이번에 원본 게임 클립·04-attack Player 캡처를 다시 열지는 않았다. 원본 초승달 PNG는 직접 열어 오른쪽 앞날을 확인했다. 실제 카메라 판정은 Mac G2/G4에 남긴다.
+
+- 일반 게임은 NativeGame.Awake → KiSlashView, Art/vfx/ki_slash_silver_sheet를 사용한다. NativeSkillRemaster.Enabled=false여서 이 경로가 기본이다.
+- Vfx/KiSlashVfxView.cs(RM1 Graph)는 생성자 호출이 없고 미연결 NativeGame.VfxCheck.cs의 인자로만 등장한다. 현재 일반 게임에 사용되지 않아 수정하지 않았다. 향후 활성화 시 같은 표시 규칙 이식이 필요하다.
+- Core 기검참은 ShakeAmount를 만들지 않는다. 기존 큰 반동은 HP 감소 관찰기 NativeImpactView → ImpactResponse에서 발생한다(일반 .022world=2.2px, heavy .045world=4.5px). 평면은 projection, 원근은 NativeGame.Impact.cs → ImpactCameraOffset → Remodel3DLate에서 적용된다. 이 부분 클래스의 카메라 누적부도 이번 수정 범위에 포함했다. 공용 ImpactResponse·NativeImpactView·CombatImpactView/Timeline은 수정하지 않았다.
+
+### 파일별 최종 표시 계약
+
+| 파일 | 변경 |
+|---|---|
+| Runtime/KiImpactView.cs | 1차 코어 유지: 5틱(첫 틱 차오름·뒤 4틱 감소), 키×.35 / 3타 키×.6×충전배율. 색 #fff4d0→#ffd9a0, SkillAdditive 가산. 명중 시트 원본·크기·수명 유지, 0번 셀 시작·1번 셀 +3틱 도달. 명중 잉크 상한 .35. 접점 보정 등록과 Reset/Dispose 회수 유지 |
+| 같은 파일 스파크 | 최종 길이 = clamp(height*(.08+.07*(index%8)/7), height*.05, height*.15). 기존 결정적 분산을 유지하며 **최종 키 단위에서 clamp, 충전배율은 길이에 적용하지 않음**. 1·2타12개, 3타 기본24개×충전배율 반올림(티어0/1/2/3: 24/34/43/53개). 1차의 20~30개는 충전 전 기본 개수로 두고 후속의 개수 배율 지시를 적용했다. 공격 방향 ±60°, 12~18틱, 길이 고정·알파만 감소, 카메라 환산 두께1.5px 유지 |
+| Runtime/KiSlashView.cs | 실제 원화의 진행 방향 폭 .45배, 높이 유지, 앞날 쪽으로 이동. 잉크·잔상·몸통은 각각 알파 .35 이하·3틱에0. 앞날은 나이0~5틱 진하게, 6틱 .35 → 7틱 .2333 → 8틱 .1167 → 9틱0(비표시). 표시 나이를 MaxLife-Life로 읽기만 한다. Core 판정·속도·수명·위치·트레일 불변. 최종 형상은 실제 1x 검수 필요 |
+| Runtime/NativeGame.cs | 1차 생성부의 SkinnedMeshRenderer 캐시·bounds 키 계측·HudCamera 전달 유지. 명중/관찰 틱으로 기검참이 만든 공용 관찰 반동을 식별해 대체한다. 뒤의 비기검참 관찰 접점은 공용 반동을 다시 사용한다. 전용 기검참 반동을 평면 카메라에 연결, 시작/재시작에서 식별 상태 초기화 |
+| Runtime/NativeGame.Impact.cs | 같은 반동 대체를 원근 marker와 평면 projection에 연결. 기검참 유발 반동: 1·2타0, 3타2px/최대충전3px, .86/틱 감쇠. OptionShakeScale 최종1회·ReducedMotion이면0. 기존 Core 피격·패링·구르기 반동 별도 유지 |
+| unity/Tools/combat-impact-tests/KiPresentationTests.cs / run-ki.cjs | 실제 KiImpactPresentation을 추출해 Roslyn 실행. 키4종·96인덱스·충전별 개수·길이·수명·부채·코어·시트·흔들림·옵션 검사. 길이 허용오차1e-4. 실제 표시/카메라 연결 소스 검사·원본 PNG 셀 휘도 계측 추가. Unity 렌더링 검사 아님 |
+
+### 원인과 검증
+
+1차 413검사/20실패의 직접 원인은 인덱스7/15/23에서 **160*(.08+.07*7/7)=24.000000000000004 > 160*.15=24**가 된 엄격 비교다. 당시 길이 식에는 충전배율이 없었다. 최종 clamp와 허용오차1e-4를 적용했다. 새 검사의 첫 실행은 기존 SparkCount 인자 차이로 Reflection 예외가 났고, 이를 검사 실패로 기록하도록 하네스를 고친 뒤 RED를 확인했다. 구현 수정 후 GREEN이며 같은 방법으로 두 번 수정 실패하지 않았다.
+
+아래 명령의 Node는 C:/nvm4w/nodejs/node.exe이며 모든 산출물은 이 worktree 내부다.
+
+| 실행·증거 | 결과 |
+|---|---|
+| unity/Tools/combat-impact-tests/run-ki.cjs --red | 정책2311검사/36실패, 연결6검사/6실패로 충전 개수·짧은 앞날·카메라 연결 누락 확인. tools/combat-impact-check/ki/red.log |
+| 같은 명령, --red 제외 | **2722검사/0실패**, 연결·시트 **7검사/0실패**. tools/combat-impact-check/ki/checks.log |
+| tools/vfx-missing-compile.cjs | **Core121소스·Runtime250소스 Roslyn 오류0**. 기존 Unity 참조 DLL은 읽기만 하고 현재 worktree 전체 Core/Runtime 소스를 컴파일. tools/combat-impact-check/compile/Exoduser.Core.log 및 Exoduser.Runtime.log. Unity 실행·임포트·셰이더·Player 검증 아님 |
+| unity/Tools/combat-impact-tests/run.cjs | **60검사/0실패**, 기존 dark 피 PNG 검사 통과. tools/combat-impact-check/checks.log |
+| 같은 도구 --feedback | **28검사/0실패**. tools/combat-impact-check/feedback.log. 위 두 회귀에서 기존 EnemyAi.cs:88의 미사용 gb/water 경고 CS0219는 남음 |
+| 원본 명중 PNG 계측 | RGB8·1254²·2×2. 셀 총휘도: 0번5,347,752 / **1번12,257,303** / 2번6,517,537 / 3번2,516,441. 실제 최대 정점은1번이며 +3틱에 표시됨. 원본 텍셀 peak255는 Player 코어240+ 증거가 아님. tools/combat-impact-check/ki/sheet-measurements.json. PIL 미설치로 Python 계측 실패 후, 설치 없이 Node zlib로 PNG 필터를 해독해 계측 |
+| 범위·형식 | git diff --check 통과. Core·CombatImpactView.cs·CombatImpactTimeline.cs·RM1 Graph·웹·원본 에셋 변경0. 생성물은 기존 고정 tools/combat-impact-check에 작은 DLL·로그로 덮어씀. 대형 빌드·캡처·백업 없음. G: 여유 약93.5GiB, 영구 삭제 금지에 따라 정리하지 않음 |
+
+### 남은 인수 조건
+
+**판정: 소스·Roslyn·관련 회귀 통과 / RETOUCH_GAME_QA_PENDING.** Unity 임포트·셰이더·Player·실게임 판정·실행본 반영은 수행하지 않았다. Mac의 1920×1080·3840×1080, 1x/3x·10초 무음 영상으로 .45배 앞날 형상·9틱 소멸·접점 코어240+·실제 키/포즈 변동·1.5px 스파크·120°·적/탄 가독성을 확인해야 한다. 공용 관찰 반동 분류는 같은 관찰 배치의 기검참 피드백 기준이므로 **동일 배치에 기검참과 다른 공격이 겹치는 경우**도 확인해야 한다. 독립 정책/연결 검사가 화면 검수를 대신하지 않는다.
+
+변경 파일은 위 Runtime4개·검사2개·이 문서의 **7개**이며 미커밋으로 인계한다. CHANGELOG_SYNC 인수용 초안: “U-VFX-05: 스파크 최종 키 길이 clamp·충전 개수, 실제 KiSlashView .45배 앞날/6틱 진한 구간/9틱 소멸, 1·2타0·3타2/최대충전3의 평면·원근 반동 연결; 기검참2722/0·연결7/0·임팩트60/0·피드백28/0·Core/Runtime Roslyn 오류0, 실게임 검수 대기.” 공용 CHANGELOG는 총괄 인수 커밋 시 반영한다.
+
+END
+
+## RETOUCH 4·패링 G1 타이밍 대조·흔들림 A/B 근거·3D 적 피격 위치 계획 (2026-11-04 PC)
+
+CTO 야간 지시(11-03 밤). 작업본 `G:/exoduser-wt/codex-vfx-spark`, 브랜치 `claude/unity-pc-vfx-retouch-20261104`, 기준 origin/unity/main `4d336665a`. 새 작업본·빌드 없음(G: 여유 84GB).
+
+### RETOUCH 4 — 남은 4건
+
+| 결함 | 원인 | 조치 | 수치 근거 |
+|---|---|---|---|
+| 사망 피 색 | 사망 시트는 dark로 바뀌었지만 웹 deathFX 입자가 남음: 흰 사각 테두리 링·흰 점 1~3·보스 분홍 링 `#ff5577`·큰 몹/보스 방사 점 16/26개 `#ffaa66`/`#ff5577`·밝은 적색 점 6/10개 `#880000` | 사망 입자 전부 삭제. 사망은 dark 무광 시트 64/96틱 + 바닥 혈흔 3.5s+1s만 | VFX 마스터 §2.2 피 행(`#2a0f0b`~`#7a3326`), PBZ R6·R7, 점 금지 |
+| 방패 패링 청록 | 물 파란콩(`waterBean`) 패링이 웹 `Ice_ImpactIce_Sheet`·`Ice_MistSmoke_FBF_4x4` 원본을 그대로 씀. 색상각 180~210° 채도 .67~.98, 중간 휘도 .53~.60의 밝은 만화풍 하늘색 + 흩어진 물방울 점 | `tools/vfx/recolor_parry_water.py`로 §2.2 물 램프(`#0f1c26`→`#3a6a88`→`#8db4c8`→`#dcebf0`, 감마 1.6, 코어색은 0~1프레임만) 재채색 + 셀 면적 0.2% 미만 분리 조각 제거 → `Ice_ImpactIce_Sheet_water`·`Ice_MistSmoke_FBF_4x4_water`. 충격 시트는 12프레임에서 멈춤(12~15는 흩어진 물방울만), 안개 투명도 .8→.6 | 검사: 색상각 199.1~206.0° / 200.0~202.8°, 잔점 0, 2~15프레임 중간색 초과 0, 알파는 제거분(2,886/82px) 외 동일, 임포트 설정 동일·새 GUID. 비교판 `tmp/design-review/vfx-retouch4/water_parry_compare.png` |
+| 구르기 먼지 1x 판독 | 웹 addParts 그대로: 시작 3·끝 2개 + 틱마다 60% 확률 1개, `#6e6050` 2~6px 사각 → 1x에서 점으로만 보이고 먼지로 안 읽힘 | 부드러운 흙먼지 덩이(코드로 만든 64px 5엽 가우시안, 노이즈·그레인 없음, 가장자리 알파 0), 일반 알파. 시작: 구르는 방향 반대쪽 ±40°로 3개(지름 30~40 웹px, 수명 26~34틱, 정점 .42). 끝: 발밑 주위 2개(26~34px, 22~28틱, .36). 구르는 중: 4틱마다 1개(18~24px, 20~26틱, .26). 3틱에 정점, 지름 1.8배로 퍼지며 감속 이동. 색 `#6e6050`~`#9a8a72`(뼈·흙 계열) | 정점 알파 .42 이하라 탄·예고가 비쳐 보임. 동시 상한 24개 |
+| 독탄 가산 과광 | 독탄 본체(일반 알파, 최고 휘도 .45) 위에 중심 가산층 `#c8e8a8` ×.6 | 중심 가산 .6→.35 | 실제 시트로 계산(선형 색공간, 프로젝트 설정 Linear): .6 = 정점 `#b4de8b` 휘도 .79 / .35 = `#97c170` 휘도 .67, 색상각 88~90° 띠 안. 블룸 문턱 1.1 아래. 감마 공간 가정이면 .6은 녹 채널 포화 18%(`#d6ff91`, 라임 쪽) |
+
+### 패링 G1 §3 타이밍 대조 (근접 패링)
+
+| G1 항목 | G1 값 | 수정 전 실제 | 수정 후 |
+|---|---|---|---|
+| 접촉 → 스파크 정점 | +2~4틱 | Core 히트스톱 2틱 동안 `FixedUpdate`가 멈추고 스파크 나이도 시뮬레이션 틱이라 같이 멈춤 → 화면 기준 **+5프레임** | 표시 시계(`CombatPresentationClock`)가 홀드 프레임도 셈 → **+3프레임**. 섬광·흔들림·푸시인도 같은 시계(PBZ R3 "포즈 홀드만, 연출은 계속") |
+| 스파크 | 선 80~130, 키 .10~.25, 수명 .3~.5s | 같음(18~30틱) | 같음 |
+| 섬광 | 근접만, Δ≤40, ≤6틱 | 홀드 중 0에 멈췄다가 2프레임 늦게 시작 | 접촉 다음 프레임부터 6프레임 안에 끝남 |
+| 히트스톱 | 근접 2, 탄 0 | Core `ParryRewards` 2/0 | 같음(Core 무변경) |
+| 슬로 | 0 | 0 | 같음 |
+| 흔들림 | 근접 6, 탄 4 | Core 이벤트 `ParryShake` 6/4 | 같음 |
+| 적 반응 | +6틱부터 18px 밀림 | G2 표현(시뮬레이션 틱 기준) | 변경 없음(G2 레인 소유, 홀드 2틱만큼 화면에서 늦음 — Mac에서 확인) |
+| 성공 스파크 중복 | VFX 레인 소유 | G2 레인 임시 "최소 스파크"(뼈색 예고 섬광 줄을 +2~6틱 다시 켬)와 VFX 선 스파크가 함께 나옴 | 임시 줄 끔. 뼈색 줄은 예고 전용 |
+| 푸시인 후보 | — | 두 개: VFX `--unity-parry-camera=pushin`(화각 2.5%, 8+20틱)과 G2 `--parry-feedback-push-in`(마커 .08u 당김, 6틱 선형 감소, 근접 흔들림 2) | 하나로 합침: 두 플래그 모두 R4 화각 푸시인 선택, .08u 당김 삭제. **근접 패링에만** 적용(탄 패링은 G1대로 흔들림 4). M1 06 A/B 컷도 근접 완벽 패링 이벤트로 찍음(위치·방향은 실제 Q 이벤트) |
+
+### 흔들림 A/B — 기본값을 정할 근거
+
+같은 근접 완벽 패링 한 번에서 화면이 움직이는 양(1600×900, 약 62.8px/u, 1080p는 ×1.2):
+
+| 항목 | A: 흔들림 6 (지금 기본) | B: 푸시인(흔들림 2 + 화각 2.5%) |
+|---|---|---|
+| 움직임 모양 | 화면 전체가 진동(코사인·사인 진동, 크기 0.86배씩 감소) | 화면 중심 쪽으로 부드럽게 확대 후 복귀, 진동은 흔들림 2만 |
+| 최대 이동 | 약 3.8px(.06u), 화면 전체 같은 양 | 플레이어 근처(화면 중심) ≈0px, 위쪽 먼 적(중심에서 400px) ≈10px, 모서리(918px) ≈24px. 진동 1.3px |
+| 지속 | 약 20틱(.33s) 뒤 0.3 미만 | 8틱 확대 + 20틱 복귀 = 28틱(.47s), 그 뒤 정확히 원래 값 |
+| 패링 직후 회피할 탄 | 플레이어 주변 탄도 같이 3.8px 떨림 | 플레이어 주변은 거의 고정. 가장자리의 먼 적만 천천히 이동 |
+| 레퍼런스 | G1 표가 현행 14에서 낮춘 값 | PBZ: 진동 없음·푸시인, 도타: 흔들림 0 → R4 "큰 사건은 진동 대신 푸시인(화각 2~3% 6~10틱 → 복귀 20틱)" |
+| 카메라 LOCK | 피치·거리 불변 | 피치 34°·거리 불변, 화각만 2.5% 28틱. 화면 끝 1.3% 띠(900p 기준 위아래 약 11px)가 잠깐 잘림 — 먼 적이 그 띠에만 있을 때만 영향 |
+| 줄이기 옵션 | ReducedMotion이면 0 | ReducedMotion이면 0 |
+
+- **총괄 제안: 기본 B(푸시인).** 레퍼런스 공통점이 "큰 사건은 진동 대신 푸시인"이고, 패링 직후 피할 탄이 플레이어 주변에 있어 진동보다 덜 방해된다.
+- **확정 조건:** Mac M1 `06-parry-q-shake`·`06-parry-q-pushin` 같은 장면 1x 비교와 10초 무음 영상에서 (1) 푸시인이 체감되는지, (2) 먼 적이 화면 밖으로 밀려나지 않는지, (3) 연속 패링 3회에서 화면이 출렁이지 않는지를 본다. 셋 다 맞으면 `parry_feedback.json`·기본 플래그를 B로 바꾸는 한 줄 커밋을 한다. 하나라도 틀리면 A를 유지한다.
+
+### 3D 적이 들어올 때 피격 이펙트 위치 확인 계획
+
+지금 피격 이펙트는 Core 이벤트의 발밑 좌표(X,Y)에 그리고, 크기는 Core 반경 `Size`(몸 반지름)로 정한다. 키는 몸 지름으로 어림한다(U-VFX-04 절). 리깅 3D 적([1-1 적 3D G0](../8.0몬스터디자인/UNITY_CH1_1_ENEMY_3D_RIG_G0_20261103.md), 메시 높이 = 1.85m × 적 r ÷ 영웅 r × 체형 보정)이 들어오면 실제 몸과 어긋날 수 있다.
+
+| 순서 | 할 일 | 합격 기준 |
+|---|---|---|
+| 1. 기준점 | 근접 패링 스파크가 이미 쓰는 방식(표시 중인 렌더러의 투영 bounds 높이)을 적에도 쓴다. 적 3D 렌더러가 있으면 접점 = 발밑에서 화면 위로 몸 높이 ×0.55(가슴), 크기 = 투영 높이. 없으면(아틀라스 적) 지금처럼 Core `Size` | Core 판정·좌표 무변경(표시만) |
+| 2. 표 | etype마다 "Core r · 메시 높이 · 투영 높이(px, 34° 화면 위·중간·아래 3위치) · 접점 높이"를 G1 적 표 옆에 적는다. 1차 = 가시 사도·다안 육괴(도구 비교 대상) | 표의 투영 높이와 실제 캡처 bounds 차이 10% 이하 |
+| 3. 캡처 | Mac M1에 적 3D 피격 컷 추가: 일반 피격·치명·사망·근접 패링(겹친 적 3마리)을 화면 위·중간·아래에서 각각, 1x·3x | 피격 섬광 중심이 몸통 안(머리 위·발밑 밖으로 벗어나지 않음), 핏줄기가 몸 실루엣을 .2s 넘게 가리지 않음, 먼 적의 피격도 1x에서 보임 |
+| 4. 크기 | 피격 시트 폭 ÷ 투영 몸 높이 비율을 지금 아틀라스 적과 같게(일반 .6~1.0배) 맞춘다. 큰 적(대형사도·빙마 문지기)은 상한 1.2배 | 같은 장면에서 작은 적·큰 적 모두 "몸에 맞는 크기"로 눈 판정 |
+| 5. 사망 | 3D 적이 무너지는 동작과 사망 피 시트·바닥 혈흔 시작 틱을 맞춘다(무너짐 시작 = 혈흔 생성) | 피가 몸보다 먼저/엉뚱한 곳에 생기지 않음 |
+
+- 착수 시점: G0 §4의 G5(etype → rig-pixel 모델 표 연결)와 같은 커밋 묶음. PC는 컴파일·정책 검사까지, 판정은 Mac.
+
+#### 보스전 총괄 1차 일정에 맞춘 순서 (11-04, CTO 지시)
+
+기준: 적 3D G0 §8(773bf0238). 0차 시범 가시 사도(1)는 Meshy 메시·리깅까지 끝났고, 나머지 1차 4종은 현자형 사도(7)·덫 사도(16)·그림자 쌍둥이(47)·갑각 사도(4)다. 지금 피격 크기는 Core 반경으로 몸 지름 = 2×r 웹px: 1·7·16 = 20, 47 = 24, 4 = 32(일반 피격은 ×.6, 치명·보스는 ×1.0).
+
+| 적 3D 단계(G0 §8) | 임펙트가 붙이는 일 | 담당 | 산출물 |
+|---|---|---|---|
+| 0차 완료(가시 사도) | 이 계획 확정. 가시 사도는 G3.5 정리 뒤 정리 FBX로 1번 표를 먼저 채워 시범으로 쓴다 | 임펙트 총괄 | 이 절 |
+| 3. 1차 4종 G1~G3.5 | G2.5 조기 판정 렌더(34°·거리 16.5·영웅 1.31u 기준)와 같은 Blender 장면에서 종마다 숫자 3개를 함께 적어 달라고 요청: **메시 높이(u)·가슴 높이 비율(발 피벗 기준)·화면 위/중간/아래 투영 높이(px, 1920×1080)**. 그림자 쌍둥이는 분신·순간이동 뒤 나타나는 자리, 갑각 사도는 등딱지 막기 자세의 가슴 높이도 함께 적는다 | 보스전 총괄 서브에이전트(Blender 렌더에 숫자 출력 추가, 추가 비용 0) → 임펙트 총괄이 2번 표로 정리 | 종×숫자 표(5종) |
+| 4. Unity etype→rig-pixel 모델 표 | 같은 커밋 묶음에 피격 기준점 연결: 3D 렌더러가 있는 etype은 투영 bounds로 접점 높이(가슴 .55 또는 표의 비율)·크기(일반 .6~1.0배, 큰 적 상한 1.2배)를 정하고, 없으면 지금처럼 Core 반경. 사망 무너짐 시작 틱에 사망 피·바닥 혈흔을 맞춘다. 표시 전용, Core 무변경. 정책 검사(접점이 몸 bounds 안, 크기 비율 범위)는 combat-impact 검사에 추가 | 11-05부터 Sonnet 서브에이전트(임펙트 총괄 브리프·검수) | 코드+검사, PC 컴파일 1회 |
+| 5. Mac 34° 캡처·영상 판정 | 같은 Mac 판정 차례에 피격 컷을 함께 넣는다: 5종 × 일반 피격·치명·사망 × 화면 위·중간·아래, 근접 패링은 갑각 사도 내려치기(겹친 적 3마리), 그림자 쌍둥이는 착지 강타 뒤 피격. 1x·3x와 10초 무음 영상 | 디자인총괄·테스트 총괄(캡처), 임펙트 총괄(피격 판정) | 3번 표의 합격 기준으로 PASS/RETOUCH |
+| 1차 PASS 뒤 2차 | 다안 육괴(비인간형, 0차에 메시 완료)는 몸이 둥글어 가슴 비율 대신 **눈 높이**를 접점으로 쓴다. 문지기 빙마(29)는 ×1.4 크기라 상한 1.2배 확인 | 임펙트 총괄 | 2차 G1 표에 같은 숫자 열 |
+
+- 막히는 조건: 3번 숫자가 없으면 4번은 Core 반경 방식을 유지한 채 연결만 하고, 크기 조정은 Mac 캡처의 bounds로 대신한다(일정을 늦추지 않음).
+
+### 검증
+
+- `run.cjs` 1회: **812검사/0실패**(물 패링 시트·12프레임·안개 .6, 표시 시계 홀드 +3, 구르기 먼지 개수·정점·수명·크기·퍼짐·방향, 두 푸시인 플래그) + blood-dark·원소구 v3·물 패링 PNG 검사 PASS. 로그 `tools/combat-impact-check/checks.log`.
+- `tools/vfx-missing-compile.cjs`: Core 126·Runtime 262 소스 Roslyn 오류 0(1차에서 MeleeParry 한 줄 주석이 뒤 코드를 가린 CS0103을 고친 뒤).
+- 화면 판정 없음: Unity 임포트·Player·실게임 1x·10초 영상은 Mac. 독탄 밝기는 계산값이며 화면 측정이 아니다.
+
+변경: `Vfx/CombatImpactTimeline.cs`, `Vfx/CombatImpactView.cs`, `NativeGame.cs`(홀드 프레임 한 줄), `NativeGame.Remodel3D.cs`(.08u 당김 줄 삭제), `NativeGame.MeleeParry.cs`(임시 성공 스파크 끔), `NativeGame.M1Check.cs`(A/B 컷 근접 이벤트), `NativeBossView.cs`·`NativeDruidArt.cs`(독탄 코어 .35), 새 PNG·meta 2쌍, `tools/vfx/recolor_parry_water.py`, 검사 `Program.cs`·`run.cjs`, 이 문서·VFX 마스터·CHANGELOG_SYNC.
+
+**판정: PC 검사·컴파일 통과 / RETOUCH_GAME_QA_PENDING.** Mac에서 볼 것: 물탄 방패 패링 색(06-parry-shield 계열), 일반·보스 사망 1x에 점 0, 구르기 먼지 1x 판독·탄 가림 없음, 드루이드 독탄 중심 밝기, M1 06 A/B, 근접 패링 스파크 정점 +3프레임.
+
+## 피격 기준점 — 보이는 몸 기준 (U-VFX-11, 2026-11-04)
+
+작업본 `G:/exoduser-wt/codex-vfx-ki`, 브랜치 `claude/unity-pc-vfx-hitanchor-20261104`, 기준 `3d3c18610617221709ceb8d6a76e724ae55042b8`. **PC 정책·참조 컴파일 통과 / RETOUCH_GAME_QA_PENDING**. 이 절이 위의 3D 적 연결 계획 중 아틀라스 폴백·키·작업 시점을 갱신한다. 커밋·push·병합은 총괄 담당이며 이번 실행에서는 하지 않았다.
+
+### 목표 장면·계약
+
+브리프 `I:/EXODUSER-Storage/codex-runs/20261104-005540_vfx-hitanchor/prompt.md`의 가장 큰 차이 = 원근 화면에서 피격 섬광이 몸통 대신 발밑에서 생김. 제작법은 승인된 플립북의 표시 좌표·폭 연결이며 새 시트·카메라 변경은 없다. 참조는 위 계획과 실제 `DrawMeleeParry`의 투영 높이 계산이다. 레퍼런스 공통 관례인 접촉점과 몸 크기의 일치·위험 탄 가독성을 유지한다. 이번 PC 작업은 소스·정책 검증까지이며 첫 실제 화면 판정은 아래 Mac 컷에서 한다.
+
+| 항목 | 전 | 후 |
+|---|---|---|
+| 피격 접점 | 이벤트 X,Y의 바닥 + .03u | 최종 표시 몸 아래 + 투영 몸 높이 × `NativeEnemyRigPolicy.AnchorRatio`(기본 .55). Core 이벤트는 읽기만 함 |
+| 폭 | 시트 셀·스케일 또는 Core Size | `CombatHitAnchor.Resolve` → 몸 높이 × `NativeEnemyRigPolicy.ImpactRatio`: 일반 .6, 치명·보스 1.0. 기존 큰 적 정책의 1.2 상한 준수, 별도 확대 없음 |
+| 적용 층 | Impact·SlashBurst·Electric·Blood가 바닥 기준 | 원근·TargetId 비0·제공자 값 유효일 때만 몸 기준. Blood의 Stretch 1.6은 세로 종횡비에 반영해 최종 가로폭이 정책을 초과하지 않음 |
+| 투영 시점 | Update에서 클립 배치 | 기존 Update 후, URP `beginCameraRendering` / Built-in `onPreCull`에서 최종 적 투영·접지·카메라 포즈를 읽어 해당 피격 층만 재배치 |
+| 정보 없음·제공자 null·TargetId 0·비원근 | 기존 경로 | 기존 경로 유지. 기존 Place·Update 그리기 본문과 근접 패링 함수는 기준 SHA와 소스 바이트 일치 확인 |
+| 사망 피·바닥 혈흔 | 바닥, 사망 이벤트 틱 시작 | 바닥 유지. `EnemyDeathDelay(id)` 선택 접속부만 추가, 미설정 기본 0. 지연 시 클립 Delay·혈흔 Born을 같이 늦추고 대기 중 풀 슬롯을 보존 |
+| 예고→접점→본체→잔여 | 기존 플립북 프레임·알파·수명 | 타이밍 동일, 피격 폭만 몸 비율로 고정. Blood의 공격 방향 원뿔·접점에서 멀어지는 이동 유지. 근접 패링·입자 경로 무변경 |
+
+`CombatHitAnchor`는 Unity 타입 없이 화면 Y와 높이를 double로 계산하는 얇은 정책이다. 몸 위·아래가 없거나 역전·NaN·무한대면 `UseBody=false`로 기존 경로를 요청한다. 비율 공식은 적 3D 레인의 함수를 호출하며 재구현하지 않는다. 사망 ×1.0은 순수 정책에서 검사하지만 실제 사망 클립은 몸 위치로 올리지 않는다.
+
+### 아틀라스 실루엣 표
+
+`tools/vfx/enemy_body_extents.py`는 `Resources/Art/enemy/atlas_ch1_8dir_*.png` 중 idle 8방향·walk 8방향의 256px 셀마다 **alpha > 20**의 위·아래 가장자리를 읽는다. `Resources/Data/enemy_body_extents.json`에는 비어 있지 않은 **1,556셀**, 몸 높이 **59~189px**를 저장했다. 원화 PNG 수정 없음.
+
+| 필드·조회 | 의미 |
+|---|---|
+| texture·x·y | 표시 중인 Sprite의 texture.name·rect.x·rect.y와 일치. y는 Unity의 아래 원점 |
+| cell·frame | 위 원점의 기존 8열 몬스터 칸 번호와 walk 0~3프레임(검토용). etype로 모델을 선택하지 않음 |
+| bottom·top | 셀 아래에서 위로 0~1. 불투명 최하단·최상단 픽셀의 바깥 경계이며 투명 여백 제외 |
+| 런타임 | 실제 Sprite pivot·pixelsPerUnit·transform·flip을 적용하고 화면 위/아래를 투영. walk는 부분 overlay라 body와 walk의 **표시 중인 실루엣 합집합** 사용. 표 없는 보스 시트 등은 기존 경로 |
+| 캐시·재현 | 표는 최초 1회 로드, Sprite별 조회 캐시. `--check-only`는 PNG에서 재계산한 JSON 바이트를 비교하고 파일을 쓰지 않음 |
+
+### 3D 적 연결 방법·소유 경계
+
+시작 시 `codex-takeover/parry-g2/REPORT.md`와 실제 문서 `docs/8.0몬스터디자인/UNITY_ENEMY3D_WIRING_20261104.md`를 확인했다(브리프의 `docs/engine/` 위치에는 없음). 이 기준판에는 실제 리깅 적 렌더러·모델 조회 API가 아직 없다. etype 4가 일반 갑각 사도와 시작 다안 육괴를 공유하므로 기존 `enemy_rig_models.json`의 etype 4 → EyeMass를 직접 조회하지 않는다.
+
+1. 적 3D 레인이 확정한 표현 키(etype + 시작 몹 표식)를 그 레인에서 해석하고, **적 id → 실제 표시 중인 렌더러**를 `NativeGame.EnemyRigBody`에 연결한다. 반환값은 `(Renderer renderer, float chestRatio, int deathTicks)?`. 모델 표의 height로 이미 배치된 실제 renderer.bounds를 사용하며 VFX가 height를 다시 추정하지 않는다.
+2. 조회는 `DisplayedEnemyRig(id)` 한 함수로 감쌌다. **적 3D 레인 키 확정 후 한 줄 교체** 지점이다. `NativeEnemyRigPolicy.Requested`로 `--enemy-render=rigpixel`이 선택되고 실제 렌더러가 활성일 때만 우선한다. 없거나 비활성이면 아틀라스 → 기존 경로 순서다.
+3. `CombatImpactView.EnemyBody`는 `(Vector3 foot, Vector3 top)?` 제공자다. 3D는 실제 bounds 8꼭짓점 투영 높이, 아틀라스는 표의 실제 몸 영역을 같은 제공자로 돌려준다. 비율은 표시 중인 rig 정의의 chestRatio를 사용한다. 다안 육괴는 둥근 몸이므로 향후 **가슴 대신 눈 높이 비율**을 이 필드로 전달해야 한다(.55 초안 확정 아님).
+4. 사망은 `EnemyDeathDelay`에 실제 무너짐 시작 오프셋을 넣는다. `deathTicks`는 전체 사망 길이이므로 그 숫자를 지연으로 그대로 대입하지 않는다. 현재 접속부 기본 null/0이며 무너짐 클립과의 실제 동기화는 미연결이다.
+
+적 3D 소유 정책·모델 JSON·FBX·import 도구·enemy3d-tests는 수정·재실행하지 않았다. 기존 enemy3d-tests의 Core/Skills 열거 누락 실패는 **적 3D 레인 소유 실패**로 남긴다. 새 커밋 fetch·merge 없음.
+
+### 검사 결과·Mac에서 볼 컷
+
+- 최초 TDD RED: 새 정책 부재만 실패, **813검사 / 1실패**. 원인 구현 후 최종 `combat-impact-tests/run.cjs` **865검사 / 0실패**, blood-dark·원소구 v3·물 패링·실루엣 표 검사 PASS. 같은 실패 무수정 재실행 없음.
+- 실루엣 생성 1회: `C:/Python314/python.exe -B tools/vfx/enemy_body_extents.py`(CMD에서는 stdin을 `<NUL`로 닫음). check-only는 위 run.cjs에 연결했다.
+- `tools/vfx-missing-compile.cjs` 1회: **Core 126·Runtime 262 소스, 오류 0**. 기존 Core EnemyAi.cs 미사용 변수 경고 2개는 범위 밖이다. Unity 실행이 아닌 기존 Unity 참조 DLL을 읽는 Roslyn 사전 컴파일이다.
+- 검사: 몸 안 접점·기본 .55·표의 .618·일반/치명/보스/사망 폭·큰 적 상한·32/96/192px 투영 높이·무효 몸 폴백·평면/TargetId0/사망/패링 제외·기본/선택 사망 지연과 풀 예약. 로그 `tools/combat-impact-check/checks.log`, 최초 RED `red.log`, Core·Runtime 컴파일 `compile/*.log`.
+
+Mac 판정은 **화면 위·중간·아래 × 일반 피격·치명·보스 피격**을 각각 1x·3x로 비교한다. idle/walk 전환, 겹친 3마리, 작은 적/큰 적, 아틀라스/연결 후 rigpixel을 포함하고 먼 적의 접점·최종 폭·탄 가림(.2초 초과 금지)을 본다. 사망 피·혈흔은 바닥에 있고 기본 시작 틱이 같은지, 근접 패링이 그대로인지, 제공자 null·TargetId0·평면 모드가 기존 캡처와 같은지 확인한다. 1920×1080·3840×1080, 10초 무음 영상 포함.
+
+PC Unity/Player·빌드·실제 캡처·Unity JSON 임포트·URP 렌더 콜백·실제 rigpixel 표시 검수는 미실행이다. 따라서 화면 바이트 동일이나 게임 품질 PASS로 확대 해석하지 않는다. **기능 소스·PC 검사 완료 / Mac G4 및 적 3D 연결 대기**.
+
+## 스킬·패링 팔레트 묶음 2 (2026-11-04 PC, U-VFX-12)
+
+기준 HEAD `6d99d0c46c9410bd7be729524117209697d5de8c`, 작업본 `G:/exoduser-wt/codex-vfx-blood`, 브랜치 `claude/unity-pc-vfx-skillpal-20261104`. 커밋·push는 총괄 담당이며 이 결과는 미커밋 인계다. G: 여유 약 92GiB에서 브리프대로 소형 PNG·검사 산출물만 작업본 안의 고정 경로에 작성했다. Unity·Player·브라우저·유료 API·작업본 밖 쓰기·삭제는 실행하지 않았다.
+
+### G0·G1 / 방법과 범위
+
+목표는 1-1의 가시 덫·빙결 구슬·악의구 폭발과 무지개 Q 4층을 §2.2 팔레트로 맞추는 것이다. 신성 돔은 기존 경로를 유지한다. 레퍼런스는 VFX 마스터 §2.2·§2.7.2·§3.7~3.9와 위 7장 원본을 직접 열어 비교했다. 기준은 국소 접점만 밝고 잔여는 절제하여 탄막 가시성을 지키는 것. 이번은 색·분리 잔점 처리만 하며 예고→접점→본체→잔여의 시간, 크기·회전·지연·수명·합성·Core 판정을 바꾸지 않는다. 첫 실물은 아래 1x 전체/3x 최근접 비교판이며 실게임 판정은 Mac이다. 같은 검사 두 번 실패 또는 색으로 해결할 수 없는 형태는 중단한다.
+
+- `tools/vfx/recolor_skill_palette.py`: 원본을 읽어 5장 `_pal.png`·`.meta` 생성. 그림자→중간→코어 3색 램프, 기본 감마 1.6. 코어는 원본 최고 휘도 3% 이내이면서 0~1프레임에만 허용. 구슬만 유지 픽셀 중간 휘도 .45를 목표로 전역 감마 0.848651를 계산한다. 알파는 셀 면적 0.2% 미만 분리 조각 제거(알파 >0 및 >20, 8방향 연결) 외 바이트 동일. 이는 연결된 원본 내부 질감이나 큰 파편까지 제거했다는 뜻이 아니다.
+- 원본 `.meta` 바이트에서 guid 하나만 uuid5로 치환하며 줄 끝·임포트 설정을 유지한다. 원본 PNG/meta는 수정하지 않았다. `--check-only`는 실제 출력과 결정적 변환·크기·알파·팔레트·코어 위치·meta를 검사하고 고정 `checks.json`을 갱신한다. 검사 실패 시 1을 반환한다.
+- 격자 근거: `NativeSkillView.cs` Whole=가시 덫 1×1, orbTex.width/3·height/3=구슬 3×3; `NativeSkillView.Malice.cs` columns/rows의 세 번째=충격 3×3(원본 256², 셀 85px, 나머지 띠도 원본 크기 유지); `CombatImpactTimeline.Boom` Cols=4·Rows=4=무지개 각 층. 소스 계약도 검사한다.
+- **가시 덫 원소 근거:** 웹 `game.html:45517`의 `_fireZones.push(...el:EL.P,...type:'spikeTrap')`를 읽기만 했다. 물리 행 `#2a2220 → #9a8a72 → #efe6d2`를 사용한다. 붉은 예고색을 피하려고 램프의 그림자~중간 혼합을 최소 .10으로 두며 붉은색(345~15°, S≥.2) 0이다. 최종 S 최대 .264901이어서 S≥.35 색상각은 없고, S≥.2는 17.143~38.333°다. 웹 파일은 수정하지 않았다.
+- 무지개 배열은 독·얼음만 `_pal`로 교체, 암흑은 검사 후 원본 유지. **빛은 원본 유지 — 아래 형태 중단 사유.** NativeSkillView의 3개 경로도 이름만 교체했다.
+
+### 전→후 실측
+
+색상각은 알파 >12/255·S≥.35의 전 픽셀(샘플링 없음), 휘도는 같은 알파에서 RGB 가중합(.299/.587/.114) 중간값이다. Player·선형 조명·가산 4층의 화면 측정값이 아니다.
+
+| 시트 | 격자 | 색상각 전 → 후 | 중간 휘도 전 → 후 | 처리 |
+|---|---|---|---|---|
+| `skill_ice_orb_sheet_pal` | 3×3 | 147.273~250.000° → 203.514~207.097° | 0.702102 → 0.449839(최고 0.942) | 알파 제거 74,918px, 잔점 검사 0. **총괄 RETOUCH(11-04)**: 1차 처리판은 그림자→중간 한 줄 램프에 하이라이트를 막아 납작한 회색 원판으로 보였다(얼음 재질 소실). 4단 램프(그림자·중간·서리 하이라이트 `#a8c8dc`·코어)로 바꿔 깎인 면 하이라이트는 모든 프레임에, 코어색은 0~1프레임에만, 중앙 휘도 .45는 전역 감마 2.61 하나로 맞췄다(`ice_orb()`) |
+| `skill_malice_impact_pal` | 3×3 | 273.000~277.846° → 250.435~255.429° | 0.312875 → 0.144082 | 알파 제거 648px, 잔점 검사 0 |
+| `skill_spike_thorn_pal` | 1×1 | 0.000~359.761° → 해당 픽셀 없음 | 0.071525 → 0.181314 | 알파 제거 128,012px, 잔점 검사 0 |
+| `combat/Poison_MediumImpact_pal` | 4×4 | 87.458~90.000° → 88.000~90.000° | 0.436455 → 0.232518 | 알파 제거 2,886px, 잔점 검사 0 |
+| `combat/Ice_ImpactIce_Sheet_pal` | 4×4 | 203.684~206.471° → 204.000~206.667° | 0.529416 → 0.303345 | 알파 제거 2,886px, 잔점 검사 0 |
+| `combat/Dark_DarkSmoke_FBF_4x4` | 원본 검사만 | 268.889~276.364° → 268.889~276.364° | 0.264835 → 0.264835 | 원본 유지 |
+| `combat/Light_ImpactLight_Sheet` | 4×4 원본 유지 | 61.579~180.000° → 동일 | .264427 → 동일 | **형태 문제 — 원화 생성 필요** |
+
+생성 5장 전부 팔레트 밖 0, 라임(65~80°)·마젠타(300°+)·네온 시안(170~195°) 0(S≥.35), 분리 잔점 검사 0, 중간색 초과가 코어 허용 영역 밖인 픽셀 0, meta 설정·줄 끝 동일/새 GUID. 암흑 원본은 268.889~276.364°·마젠타 0으로 유지했다. `checks.json.pass=true`는 **생성 5장+암흑 검사 1건의 범위만** 뜻하며, `deferred`에 빛 1건을 명시한다. 묶음 전체의 네온 제거 합격은 아니다.
+
+### 비교판 직접 검수 / G2·G3 한계
+
+고정 폴더 `tmp/design-review/vfx-skillpal/`의 `compare_<원본이름>.png` 7장을 도구로 직접 열었다. 배경 `#262a22`, 왼쪽 원본/오른쪽 처리판, 1x 전체와 첫/후반 대표 셀 3x 최근접이다. 대형 구슬·덫은 전체판이 표시 과정에서 축소되므로 `inspect_skill_ice_orb_sheet.png`·`inspect_skill_spike_thorn.png`의 **리사이즈 없는 1x·3x 창**도 직접 확인했다.
+
+- 구슬: 과도한 흰색·청록이 회청으로 내려가고, 분리 흰 점이 줄었다. 구면·얼음 조각은 남는다. 내부 얼음 질감과 일부 고휘도 경계는 원본에서 이어져 있어 전체 텍스처의 점 0이라고 판정하지 않는다. 게임 크기의 과도한 가림/불투명 인상은 Mac에서 확인해야 한다.
+- 가시 덫: 붉은 발광이 뼈·녹슨 흑철 선으로 바뀌어 적 경고색과 구분된다. 기존 가시 윤곽·문양은 유지되며 새 점묘를 더하지 않았다. 전체 장판의 실제 1x 가독성은 미검증이다.
+- 악의구·독·얼음 충격: 푸른 보라/탁한 녹/회청 본체로 바뀌고 후반 광량을 줄였다. 분리된 큰 방울은 셀 0.2% 제거 기준 밖인 원본 파편이므로 남아 있다. 첫 프레임의 불규칙 접점 돌기까지 새 원화로 바꾼 작업은 아니다. 3x에서 새 디더링·그레인은 보이지 않았다.
+- 암흑: 탁한 보라 연기이며 원본과 동일하다.
+- **빛은 중단:** 첫 행 만화 별, 둘째 행 납작한 화살표, 셋째 행 구형 링이 직접 확인된다. 재채색으로는 이 형태가 해결되지 않으므로 브리프의 중단 규칙대로 PNG/meta·런타임 이름을 그대로 두었다. 양쪽 모두 원본인 비교판으로 근거를 남겼다. **형태 문제 — 원화 생성 필요.** 원화 생성은 이번 범위 밖이다. 따라서 무지개 3층의 네온이 남고 묶음 전체 PC 시각 합격을 선언하지 않는다.
+
+### 검증·남은 일
+
+| 실행 | 결과·근거 |
+|---|---|
+| Python `-B tools/vfx/recolor_skill_palette.py < NUL` | 최초 독 1건 실패: 색상각 8비트 보정식이 G를 올려 코어 허용 영역 밖 701px가 중간색을 초과. HSV 식 H=120−60(R−B)/(G−B)에 맞게 G 범위를 수정한 뒤 1회 재생성 → 생성 5장+암흑 1건 통과. `tmp/design-review/vfx-skillpal/checks.json` |
+| Node `unity/Tools/combat-impact-tests/run.cjs --red` | 새 이름 검사를 먼저 추가하여 813검사/1실패 확인. `tools/combat-impact-check/red.log` |
+| Node `unity/Tools/combat-impact-tests/run.cjs` | 수정 후 **813검사/0실패**. blood-dark·원소구 v3·물 패링·새 팔레트 `--check-only` 통과. `tools/combat-impact-check/checks.log`. 기존 EnemyAi.cs:87 미사용 gb/water CS0219 경고 2건은 남음 |
+| Node `tools/vfx-missing-compile.cjs` | **Core126소스·Runtime261소스 오류0**. `tools/combat-impact-check/compile/Exoduser.Core.log`·`Exoduser.Runtime.log`. 기존 참조 DLL 읽기·Roslyn 컴파일이며 Unity 임포트·Player 증거가 아님 |
+
+**판정: 지정 팔레트 처리·검사 범위 통과 / 빛 형태 중단 / RETOUCH_GAME_QA_PENDING.** 남은 일은 빛 시트 신성 원화 제작 후 4층 전체 재검사, Mac의 동일 패키지 1-1에서 시작 스킬과 무지개 Q를 탄막과 겹쳐 1x·3x·10초 무음 영상으로 판정하는 것이다. 특히 구슬의 절제/탄막 가시성, 덫 적 예고 구분, 악의구 초기 접점 형태와 큰 방울, 4층 가산 밝기는 실게임 미확인이다. 사용자 실행본·병합·배포는 갱신하지 않았다.
+
+추가 인계 감사 중단: 필수 검증 뒤 `tmp/skillpal-final-audit.cjs`가 두 번 실패해 실행을 중단했다. 대형 CHANGELOG의 `git show` stdout이 Node 기본 버퍼를 넘은 `ENOBUFS`다. 첫 실행은 상태 확인 누락으로 잘린 출력을 바이트 불일치로 잘못 표시했고, 상태 검사를 추가한 두 번째에서 원인을 확인했다. 이 추가 감사는 미통과이며 더 실행하지 않았다. 앞서 CHANGELOG 기록 직후 원본 바이트 보존은 확인했고, 필수 팔레트·813검사·컴파일 통과와는 구분한다. 전체 변경 목록과 중단 원인은 `tmp/design-review/vfx-skillpal/RESULT.md`에 있다.
+
+END
+## U-VFX-06 원소 피격 v2 (2026-11-04)
+
+기준 SHA `6d99d0c46c9410bd7be729524117209697d5de8c`, 작업 브랜치 `claude/unity-pc-vfx-elhit-20261104`. 목표는 1-1 원근 34° 카메라에서 첫 피격 접점과 빠른 정점이 보이도록 시트만 고치는 것이다. 원본 12장과 원본 meta는 그대로 두고 `impact_el{0..5}_sheet_v2.png`·`impact_el{0..5}_boss_sheet_v2.png` 및 meta 12쌍을 추가했다. 커밋·push는 총괄 담당이며 이 레인에서는 하지 않았다.
+
+### 방법·측정
+
+- `tools/vfx/remaster_element_hits.py`: 각 칸의 알파 면적 `Σ(alpha/255)`과 휘도 합 `Σ((.299R+.587G+.114B)×alpha/255)`을 모두 측정한다. 두 지표 중 더 늦은 정점을 일반 1칸·보스 2칸 이내에 놓도록 성장 프레임을 줄이고, 원래의 비어 있지 않은 감쇠 프레임을 반복해 9/16칸을 유지한다. 본체의 새 프레임·입자·그레인을 그리지 않는다. 원본의 마지막 빈칸(일반 8·보스 15)은 마지막 감쇠 칸까지 늘려 채웠다.
+- 원본 자체의 휘도 합 정점은 대부분 이미 1/2칸이다. 늦었던 것은 특히 화염의 알파 면적(3/5칸), 암흑 일반(2칸), 신성 보스(3칸)이다. 따라서 아래 표에서 정점이 같은 칸인 원소도 있다. 기존 실게임의 +0.15초 진단과 시트 정점 수치는 서로 다른 측정이며, 실게임 시점 개선은 Mac에서 확인한다.
+- §2.2 코어·중간·그림자 램프로 원래 휘도 구조를 재채색한다. 중간 밝기는 `코어×.45+중간×.55` 뒤 RGB 평균 기준 채도 2.0배를 적용한다. 첫 2칸(보스 3칸) 중심에 부드러운 원형 코어를 합성한다. 0칸이 가장 크고 밝고, 뒤로 갈수록 작고 어두워진다. 순백은 코어 중심 반지름 25% 이내에만 허용한다.
+- 코어 지름: 일반 **30%→24%**(85px 셀은 25.5→20.4px, el5 128px 셀은 38.4→30.72px), 보스 **30%→26%→22%**(128px 셀, 38.4→33.28→28.16px). 모든 0칸 중심 알파 255·휘도 **255**, 원본 휘도 합 정점 칸의 최고 휘도 227.39~254.77 이상이다.
+- 빙결 색상각은 명시 범위 198~212°. 나머지 5원소는 §2.2의 세 팔레트 색상각 최솟값~최댓값에 8비트 반올림 허용치 ±2°를 둔다(별도 숫자 범위가 없는 행의 해석). 채도 .05 초과·알파 0 초과인 모든 픽셀을 검사하고, 범위 밖 픽셀은 최대 RGB 밝기를 유지하면서 해당 중간색 색상각으로 당긴다. 중성 백열 중심은 색상각 판정에서 제외하며, 순백 위치를 따로 검사한다.
+- 각 칸 8방향 연결 성분에서 칸 면적 0.2% 미만의 분리 조각을 알파 0·20 양쪽 기준으로 반복 제거한다. 원본 다운샘플이 경계에 남긴 알파 1~4 흔적만 가장 바깥 한 줄에서 지운다(경계 알파가 4보다 크면 잘라내지 않고 실패).
+- meta는 원본 바이트에서 GUID 32자리만 `uuid5(NAMESPACE_URL, 'exoduser/vfx-elhit/'+시트명)`로 치환한다. 가져오기 설정·줄 끝은 원본과 같고 GUID 12개는 모두 다르다.
+- `CombatImpactTimeline.Plan`의 원소 피격 이름만 `_v2`로 바꿨다. 폴백 `impact_basic_sheet`, Life 16틱, 9/16칸, Scale 1/2.5, 폭 곡선, 알파 .45/.62, 가산 합성은 그대로다. Core 파일은 수정하지 않았다.
+
+정점 칸(0-based, 전→후):
+
+| 원소 | 일반 알파 면적 정점 | 일반 휘도 합 정점 | 보스 알파 면적 정점 | 보스 휘도 합 정점 |
+|---|---|---|---|---|
+| 0 물리 | 1→1 | 1→1 | 2→2 | 2→2 |
+| 1 화염 | 3→1 | 1→1 | 5→2 | 2→1 |
+| 2 빙결 | 1→1 | 1→1 | 2→2 | 2→2 |
+| 3 암흑 | 2→1 | 1→1 | 2→2 | 2→2 |
+| 4 번개 | 1→1 | 1→1 | 2→2 | 2→2 |
+| 5 신성 | 1→1 | 1→1 | 3→2 | 2→1 |
+
+### 비교판 직접 확인
+
+`tmp/design-review/vfx-elhit/compare_el0.png`~`compare_el5.png`와 `compare_el0_boss.png`~`compare_el5_boss.png` **12장을 모두 직접 열었다**. 배경 `#262a22`, 좌 원본·우 v2의 원래 픽셀 크기 1x 시트와 0·1·각 버전 휘도 합 정점 칸의 3x 최근접 확대다. 일반/보스가 각각 별도 파일이다.
+
+- 물리: 첫 칸의 뼈색 코어가 명확하고 방향 파편을 유지한다. 초기 보정에서 보였던 코어 내부 갈색 점은 최고 밝기 보존 색상각 투영으로 없어졌다.
+- 화염: 첫 칸 흰 중심과 주황 가장자리가 읽히며, 늦게 커지던 본체가 일반 1·보스 2칸으로 옮겨졌다. 원래 감쇠 불꽃 조각은 유지했다.
+- 빙결: 흰 접점과 회청 본체가 분리된다. 네온 시안이나 녹색 가장자리는 보이지 않았다.
+- 암흑: 첫 칸 밝은 중심이 원본보다 분명하고 보라 파편을 유지한다. 마젠타 전환은 보이지 않았다.
+- 번개: 흰 접점·누런 전광 가지가 구분되며 라임 전환은 보이지 않았다.
+- 신성: 금빛 십자와 원래 파편을 유지하고 흰 접점이 첫 칸부터 보인다.
+
+최종 3x 확대에서 분리 잔점·코어 내부 점·눈에 띄는 잘림을 발견하지 못했다. 기존 원본의 방향 파편·호·별 모양과 저해상도 셀 픽셀은 유지된다. 이 비교는 시트의 일반 알파 합성 정적 검토이며, 게임 가산 합성·색보정·카메라에서의 시각 합격을 대신하지 않는다.
+
+### 검사 결과·남은 일
+
+- 생성 1차: 6/12 통과, 6장은 원본의 경계 알파 1~4 때문에 엄격 경계 검사 실패. 원인을 고쳐 재생성 12/12 통과. 그 뒤 3x에서 찾은 코어 내부 점의 원인(절대 중간색 혼합 시 최고 밝기 하락)을 고치고 같은 고정 경로에 재생성했다. 같은 검사를 수정 없이 반복하거나 두 번 실패한 뒤 진행하지 않았다.
+- `tools/vfx/remaster_element_hits_tests.py`: **6검사/0실패**. 늦은 정점·빈 끝 칸·6원소/일반/보스·순백 코어·색상각·분리 조각·CRLF meta·경계 알파·밝기 보존을 확인했다. 밝기 보존 회귀는 수정 전 실제 실패를 확인했다.
+- `C:/nvm4w/nodejs/node.exe unity/Tools/combat-impact-tests/run.cjs` **1회, 860검사/0실패**, 기존 피·원소구·물 PNG 검사 및 새 `--check-only` 연결 통과. 로그 `tools/combat-impact-check/checks.log`. 기존 `EnemyAi.cs:87`의 미사용 변수 경고 CS0219 2건은 범위 밖이라 유지했다.
+- `C:/nvm4w/nodejs/node.exe tools/vfx-missing-compile.cjs` **1회**, Core 126·Runtime 261 소스 **오류 0**. 로그 `tools/combat-impact-check/compile/Exoduser.Core.log`·`Exoduser.Runtime.log`. Roslyn 검사이며 Unity 실행·임포트 검사는 아니다.
+- `tmp/design-review/vfx-elhit/checks.json`: **12/12 PASS**, 정점 일반 ≤1·보스 ≤2, 중심 휘도 조건 충족, 색상각 범위 밖 0·분리 잔점 0·코어 밖 순백 0·경계 알파 0·빈 칸 0, meta 설정 동일·새 GUID 12개 고유. `--check-only`는 PNG/meta를 쓰지 않고 JSON과 한 줄 요약만 갱신한다.
+- 작업본 밖 쓰기·삭제, 원본 덮어쓰기, game.html/Core 변경, 커밋·push, 유료 API, Unity/Player·브라우저 실행은 하지 않았다. `LANES.md`는 11-03 기록이라 새 elhit 배정이 없지만, 현재 사용자 브리프의 브랜치·SHA와 깨끗한 시작 상태를 확인했다. 디스크 여유는 `Get-Volume` 권한 거부로 확인하지 못했다. 작업은 작은 PNG·비교판·검사 로그만 만들었다.
+
+**판정: PC 검사·정적 비교판 확인 통과 / RETOUCH_GAME_QA_PENDING.** 남은 일은 총괄의 diff 검수·경로 지정 커밋/push와 Mac의 Unity 임포트·1-1 34° 일반/보스 실제 피격 확인이다. 같은 빌드에서 1920×1080·3840×1080 1x/3x 및 10초 무음 영상으로 접점 시작, 정점 체감, .45/.62 알파에서의 가시성, 색보정 후 원소 구분, 겹친 적/탄막 가림과 잔점·잘림을 판정한다. PC에서는 최종 게임 화면 PASS나 실행본 반영을 선언하지 않는다.
+## 11-04 01:00 적 3D 접점 연결 바탕 (PC)
+
+[Unity 연결 기록](../8.0몬스터디자인/UNITY_ENEMY3D_WIRING_20261104.md)의 NativeEnemyRigRenderer.ImpactAnchor → CombatImpactView.EnemyRigAnchor를 연결했다. 기존 AnchorRatio·ImpactRatio·chestRatio/height/deathTicks·--enemy-render=rigpixel 이름/의미를 보존했다. TargetId 또는 etype+동일 좌표의 유일한 표시 개체만 사용하고, 모델/접점이 없거나 겹쳐 식별할 수 없으면 기존 Core 반경 경로다.
+
+리그 bounds의 투영 높이로 몸 안 접점과 시트 최종 폭(일반.6·치명/사망1.0·큰 적 상한1.2)을 정한다. Blood Stretch까지 최종 폭에 포함한다. 바닥 혈흔은 발밑에 유지하며 사망 관측 틱을 모델 사망 샘플링과 공유한다. Core 이벤트 X/Y/Size나 판정은 수정하지 않는다. deathTicks 뒤에도 기존 사망 피 시트가 발밑으로 튀지 않도록 마지막 리그 접점을 유지한다.
+
+PC 정책103/0·전체 참조 컴파일5개 오류0. 실제 임포트·접점 오차10%·피 실루엣 가림·먼 적1x·30마리 성능은 Mac 미판정. 공격/피격/사망 클립은 현재 제공되지 않아 bind pose이며 실제 무너짐 동기화 판정은 클립 제작 뒤다.
+
+### 피격 기준점 — 적 3D 레인과 합침 (11-04 총괄)
+
+unity/main에 적 3D 레인 `6f6d7dd6d`가 먼저 들어오면서 rig-pixel 적용 피격 위치 연결(`CombatImpactView.EnemyRigAnchor` ← `NativeEnemyRigRenderer.ImpactAnchor`)이 생겼다. 같은 기능이 두 벌이 되지 않게 나눴다.
+
+| 적 | 접점·크기를 정하는 곳 |
+|---|---|
+| rig-pixel 3D 적(`--enemy-render=rigpixel`, 모델 표에 있는 종) | 적 3D 레인 `EnemyRigAnchor`(그 레인 소유, 피격·사망 모두) |
+| 아틀라스 스프라이트 적(지금 대부분) | 이 브랜치 `EnemyBody`(아틀라스 실루엣 표 `enemy_body_extents.json`) — 렌더 직전 `DrawEnemyHits`, `EnemyRigAnchor`가 값을 주는 클립은 건너뜀 |
+| 평면 모드·TargetId 0·몸 정보 없음 | 기존 경로(바뀜 없음) |
+
+이 브랜치에 있던 rig용 제공자(`EnemyRigBody`·`EnemyChestRatio`)는 지웠다. 병합 뒤 combat-impact 865/0, Core·Runtime Roslyn 오류 0.
+### 11-04 01:20 1차5종 숫자 표 적용
+
+기존 적 rig-pixel 접점 콜백은 그대로 두고 enemy_rig_models.json에 제작자 측정 높이/가슴 비율을 등록했다: 가시1=1.35/.618(외눈 보정본), 현자7=1.27/.639, 덫16=1.27/.570, 그림자47=1.42/.641, 일반 갑각4 v2=1.49/.625. 시작4 EyeMass=1.05/.55는 기존 잠정값 유지. 일반4/시작4 키 분리를 유지해 서로의 접점 비율을 빌리지 않는다. 정책166/0·PC 참조 컴파일5개 오류0. 실제 bounds와 숫자 오차10%·눈 보정 후 접점·발 미끄러짐·1x/3x는 Mac 미판정이다.

@@ -29,6 +29,6 @@ namespace Exoduser.UnityPort
         }
 
         // arguments that must not turn the area title off (every other --unity- argument is a test fixture)
-        public static bool IsReviewArgument(string a) { return a == DruidRemodelArgument || a == BossDirectArgument; }
+        public static bool IsReviewArgument(string a) { return a == DruidRemodelArgument || a == BossDirectArgument || a=="--unity-parry-camera=shake" || a=="--unity-parry-camera=pushin"; }
     }
 }

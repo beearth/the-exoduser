@@ -327,16 +327,18 @@ PoE2 학습([POE2_REFERENCE_STUDY](POE2_REFERENCE_STUDY.md) §3.1·§6.5)의 층
 
 | 순서 | ID | 할 일 | 제작법 | 관문·상태 | 브랜치·근거 |
 |---:|---|---|---|---|---|
-| 1 | U-VFX-01 | **안 나오던 임팩트 이식** — Q 패링·방패(우클릭) 패링·적/보스 피격·치명·사망·구르기(Unity가 소리만 내고 그림 0이던 7종) | 웹 doParry·_addImpact·_addBoom 시트 그대로 반입 + CombatImpactView | **unity/main 병합 6b489edb9**(11-03, 기준판·브랜치 m1 23/23). RETOUCH 남음: 사망 피 밝은 적색, 방패 패링 네온 시안(웹 기본색), 구르기 먼지 약함 → U-VFX-04·06 | 브랜치 tip 9b6739760, 빌드 `I:/EXODUSER-Storage/codex-runs/vfx-missing/build3` |
+| 1 | U-VFX-01 | **안 나오던 임팩트 이식** — Q 패링·방패(우클릭) 패링·적/보스 피격·치명·사망·구르기(Unity가 소리만 내고 그림 0이던 7종) | 웹 doParry·_addImpact·_addBoom 시트 그대로 반입 + CombatImpactView | **unity/main 병합 6b489edb9**(11-03, 기준판·브랜치 m1 23/23). RETOUCH 남음: 사망 피 밝은 적색, 방패 패링 네온 시안(웹 기본색), 구르기 먼지 약함 → U-VFX-04·06. **11-04 RETOUCH 4**: 사망 입자(흰 링·분홍/주황/적색 점) 삭제, 물탄 패링 §2.2 물 램프 시트, 구르기 먼지 부드러운 덩이, 패링 표시 시계(히트스톱 중 진행). Mac 판정 대기 → [기록](UNITY_COMBAT_IMPACTS_20261103.md) | 브랜치 tip 9b6739760, 빌드 `I:/EXODUSER-Storage/codex-runs/vfx-missing/build3` |
 | 2 | U-VFX-02 | **대형 탄막 리마스터 1차** — 무지개 혜성·네온 원소구·라임 독구를 §2.2 원소 팔레트로 | 비용 0 재채색(새 생성 없음) | **unity/main 병합 0b5441130**(11-03, m1 23/23). 혜성 PASS(원소색), 원소구 RETOUCH(가는 실 형태), 독탄 라임 제거·가산 합성으로 밝음 → U-VFX-07 | 브랜치 tip 133cac854, 빌드 `I:/EXODUSER-Storage/codex-runs/vfx-bullets/build2` |
 | 3 | U-VFX-03 | **폐기 VFX 파일 정리**(VFX-06) — 참조 0·Unity 사본 아님만 삭제 | 정적·동적 참조 검사 → git rm | **완료** main 30bc2e2ce — 111개(121.6MB) git rm, 불확실 10개 유지 | `VFX_CLEANUP_VFX06_20261103.md` |
 | 4 | U-VFX-04 | **피 튐·피 데칼** — 일반 피격(S)·치명(M)·보스 피격·사망: 접점 방향으로 튀는 어두운 적갈 피(§2.2 피 팔레트, 광택 금지) 0.15~0.3s + 바닥 피 데칼(소형 2s / 3타·치명·사망 2.5s+1s 페이드, 화면 최대 6장) | 플립북 원화(이미지 생성은 비용 확인 후, 무료 대안 = 기존 승인 화염 원료 재채색) + Unity 데칼 | **다음 착수**: G0·G1(VFX_G1_TIMING_DESIGN §3.1 피 행 기준) | — |
 | 5 | U-VFX-05 | 기검참 1·2·3타 접점 백열 코어 + 궤적 얇고 짧게(웹 VFX-11의 Unity판) | 기존 ki_slash 시트 + 코어 스프라이트 + 점광원 | 대기 | VFX_G1_TIMING_DESIGN §3 |
-| 6 | U-VFX-06 | 원소 피격 시트 정점 앞당김·코어(VFX-02 Unity판) — U-VFX-01로 반입한 `impact_el*` 손질 | 시트 프레임 재배열 + 코어 1~3프레임 | 대기 | §2.7.4 |
-| 7 | U-VFX-07 | 대형 탄막 2차 — 재채색으로 안 되는 형태(가는 실·잔점·크기) | 새 생성 후보(유료면 사용자 승인 후) | U-VFX-02 판정 뒤 결정 | — |
+| 6 | U-VFX-06 | 원소 피격 시트 정점 앞당김·코어(VFX-02 Unity판) — U-VFX-01로 반입한 `impact_el*` 손질 | 시트 프레임 재배열 + 코어 1~3프레임 | **11-04 PC 검사·정적 비교 확인**: v2 12장·PNG 12/12, combat-impact 860/0, Core·Runtime 오류 0. 일반 정점 ≤1·보스 ≤2, 점·범위 밖 색 0. **RETOUCH_GAME_QA_PENDING**(Mac 34° 피격·가산·색보정 판정 대기) | `claude/unity-pc-vfx-elhit-20261104` / [U-VFX-06 기록](UNITY_COMBAT_IMPACTS_20261103.md#u-vfx-06-원소-피격-v2-2026-11-04) |
+| 7 | U-VFX-07 | 대형 탄막 2차 — 재채색으로 안 되는 형태(가는 실·잔점·크기) | 독탄: 일반 알파 본체+코어 가산 .6(orb2 93da00801) → 11-04 RETOUCH 4에서 코어 .35(선형 정점 휘도 .79→.67, Mac 대기). 원소구: 절차 생성 v2 FAIL(클립아트) → **07b 원화 생성**(Codex 내장 image_gen, 외부 비용 0) | 원소구 v3 시트 `proj_elem_orb_v3` 6원소 자체 1x·3x PASS, 브랜치 `claude/unity-pc-vfx-orb3-20261103`, Mac 07e·11a 판정 대기 | [G0·기록](VFX_ELEM_ORB_V3_G0_20261103.md) |
 | 8 | U-VFX-08 | 빛 깜빡임·포즈 홀드·흔들림·데칼 공통 시스템(G1 §3.2·§4.2 수치) | Unity 점광원·애니메이터 홀드·카메라 흔들림·URP 데칼 | **캐릭터 리깅 동작 반입 후**(CTO 11-03, Unity 실행 순번은 맵 다음) | VFX_G1_TIMING_DESIGN |
 | 9 | U-VFX-09 | 드루이드 예고 3종·공격 3종 접점(가지 채찍 3연·거름 내려찍기·독포자 부채) | G1 표 + 보스 3D 클립 접점 프레임 | 드루이드 3D 임포트 후 | RM-B1 §3·§10.2 |
 | 10 | U-VFX-10 | 필드 적 탄 미이식 아트 3종(VFX-14: 크라켄 물 오브·무지개 콩·암흑 구체) | 웹 원본 그리기 이식 | U-VFX-02와 묶어 판정 | VFX-D18 후속 |
+| 11 | U-VFX-11 | 피격 기준점 — 실제 보이는 몸 높이·가슴/눈 접점 | 8방향×idle/walk 아틀라스 실루엣 1,556셀 표 + 적 id 제공자 + Enemy3D 비율 정책 재사용. rigpixel 실제 렌더러 우선, 아틀라스, 기존 경로 순 | PC 865검사/0실패·Core/Runtime 참조 컴파일 오류0. **RETOUCH_GAME_QA_PENDING**; etype4 표현 키·실제 rig 렌더러는 적 3D 레인 연결 대기, 사망 지연 기본0 | [계약·Mac 컷](UNITY_COMBAT_IMPACTS_20261103.md#피격-기준점--보이는-몸-기준-u-vfx-11-2026-11-04) |
+| 12 | U-VFX-12 | 스킬·패링 팔레트 묶음 2 — 구슬·악의구·가시 덫·무지개 독/얼음 | §2.2 램프 _pal 5장, 암흑 원본 검사 | PC813검사/0실패·Core/Runtime 오류0. 빛은 만화 별/화살표/링 형태로 중단(원화 필요), 전체 시각 합격 아님·Mac 대기 | [기록](UNITY_COMBAT_IMPACTS_20261103.md#스킬패링-팔레트-묶음-2-2026-11-04-pc-u-vfx-12) |
 
 ## 7. 결정·작업 기록
 

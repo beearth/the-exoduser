@@ -1,4 +1,6 @@
 """Offline classifier controls; no new Unity/Player evidence is produced."""
+import sys
+sys.dont_write_bytecode = True
 import importlib.util
 from pathlib import Path
 import unittest
@@ -32,6 +34,12 @@ class InkControls(unittest.TestCase):
     def test_faint_green_below_old_g35_threshold_is_retained(self):
         row, image, expected = self.contrast_image('green',(18,18,18),(7,26,7))
         self.assertEqual(module.ink(image,row),expected)
+
+    def test_padding_does_not_make_an_incorrect_box_pass(self):
+        row, image, points = self.contrast_image('green',(18,18,18),(7,26,7))
+        box = module.bounds(points)
+        self.assertTrue(module.contains(box,points))
+        self.assertFalse(module.contains(dict(box,y=box['y']+1),points))
 
     def test_blank_or_solid_panel_cannot_pass(self):
         for mode in ['gray','green']:

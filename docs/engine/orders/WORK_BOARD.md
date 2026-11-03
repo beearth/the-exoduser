@@ -1,4 +1,16 @@
+## 진행 중 — UI-PARITY-1102-RECOVER (2026-11-03)
+
+| 담당 | 목표 | 소유 파일 | 상태 |
+|---|---|---|---|
+| codex/unity-parity-1102 | 21:50 BuildLoop 다중 패스 오탐 최우선 | NativeUiAudit·다중 패스 발행 함수, Tools/ui-overlap의 분석기/회귀/표본, 관련 UI 문서·CHANGELOG_SYNC 자기 절 | 공통8c5f967d74 추가 정상 병합·docs 양쪽 기록 보존·현재 충돌0, 실제 메뉴/CP 자기충돌0·회귀66/66. Core121/Runtime259 오류0, PC Player0. 기존1410장 재분석8363은 과거 계측 잔여로 보존. Mac 새 게이트 대기 |
+
 ## 2026-10-29 Mac 첫 연습 실입력 후속
+
+## 2026-11-03 PC P0 진행
+| 작업ID | 내용 | 담당·브랜치 | 소유 파일 | 상태 |
+|---|---|---|---|---|
+| UNITY-GROUND-AOE-P0 | 장판·대지치기 잘림 수정 본편 통합 | PC Codex / codex/unity-ground-aoe-decal-20261103 | NativeGroundSkillProjection, GroundSkillReceiverDepth.shader, NativeGame.GroundSkillCapture, tools/tests/unityGroundReceiverDepthBias.test.cjs, P0/관련SSOT·CHANGELOG·본인행 | 사용자 "다 최신으로": 최신공통f146df2b2까지 병합, docs4파일5블록 양쪽 보존/충돌0. wave/flash·셀4%·경사bias 수정 유지. 소스579d081d69 공용ec46a2a7 exit0/C#0/shader3/USER_SAVE0, 이후docs-only/Unity차이0. 검사중공통전진으로전체2입력각1회. CTO 즉시FF 인수대상, 새시각/실행본갱신 별도미확인 |
+
 
 ARM64 Settings QA 앱에서 웹 `mouse2`↔Unity 오른쪽 버튼 1을 입력/캡처 양쪽에 맞춰 수정했다. 실제 OS 오른쪽 클릭으로 마법 처치 5/5, 첫 연습 1~9단계 완료. 10단계 방향+Space 동시 키 입력은 현재 CUA가 일반키 2개 조합을 거부해 구르기 0/5 HOLD. 이어질 11~12단계·일반 1-1 몹/드롭은 미검증. PC A18 `NativePractice*` 변경0. [증거·다음 관문](../UNITY_MAC_PRACTICE_MOUSE_BRIDGE_20261029.md).
 
@@ -685,3 +697,17 @@ PC후보af70a6a2c5는정본버전매빌드읽기·직업X사슬/로어·실능�
 | PC Codex / codex/unity-death-screen-20261103 | 공통 SolidRect/ActionPlate·일시정지 바깥glow, NativeUiChrome/DeathUiCapture의 opacity probe, DeathScreen/DeathColorProbe/Revive.DeathScreen의 가로띠 제거·채도진단, death-ui-tests와 관련 UI docs | 생성 판 경로 폐기, 단색 흑철·강제alpha1·비블렌딩·실버 헬1px, Mac Scripting 탐색. PC5어셈블리 오류0·CPU 회귀 PASS. Unity/Player/빌드/캡처0. Mac 새 후보 RGB/불투명·전체 채도·톤 재검수 대기/RETOUCH |
 
 최신 unity/main d6c5bb89bb20 병합(7bc7a3518 규칙). NativeGame 촬영등록·incoming 일시정지 inputLive/명조·양쪽 번역 항목 보존해 충돌 해결. blackTexture가 RGBA0인 공식 API 근거와 현재 단색/실버 토큰은 버튼 SSOT에 기록. 최종 SHA/상대 Mac 인자: I:/EXODUSER-Storage/codex-takeover/death-screen/REPORT.md. 기존 guard.baseline.json WIP는 보존.
+
+## 2026-11-03 21:25 버튼 판 질감 RETOUCH
+| 담당/브랜치 | 소유 변경 | 현재/다음 |
+|---|---|---|
+| PC Codex / codex/unity-ui-plate-20261103 | NativeLobby.SilverHell 표면, DeathUiCapture expectedRgb, DeathScreenCapture의 실험 색 프로브 제거, DeathColorProbe.cs/meta 삭제, death-ui-tests 및 관련 UI SSOT | aa38bb877에서 새 브랜치.4차 Mac 기능 PASS 유지, 옅은 세로 명암/1px 음각·경사/선택8px 내부 빛 구현. 색 프로브는 필요 없어 폐기. PC5어셈블리 오류0·회귀 PASS, Unity/Player/빌드/캡처0. 새 질감1920/3840 1x·3x/BG3·웹 정본 비교는 Mac 대기/RETOUCH |
+
+오른쪽 띠는 V≈.002 근흑색 HSV 착시(4차 Mac 판정), V<.02 채도 비교 제외. 기존 guard.baseline.json WIP 보존. 최종 SHA/현재 실행 인자: I:/EXODUSER-Storage/codex-takeover/death-screen/REPORT.md.
+
+## 2026-11-03 23:05 디자인총괄 다섯 원화 복구 (22:55보다 우선)
+| 담당/브랜치 | 소유 변경 | 상태/다음 |
+|---|---|---|
+| PC Codex / codex/unity-ui-plate-20261103 | SilverLobby ENTER/슬롯/레일, SilverHell 공통9-slice, SilverCharacter/CharacterPresentation 원화, NativeUiChrome 기본 스킨 한정 제거, 원화11종 meta, DeathUiCapture/회귀/비교 도구 및 관련 docs | 최신385e76ce1 정상 병합. 원화 복구·밉맵OFF·밝기1.0 계약 회귀 PASS. 코드 판/세로명암 미사용. PC Player/빌드/캡처0. 실제1920/3840·1x/3x·4화면 비교는 Mac 대기/미검증 |
+
+10-28 로비 캡처와 원화8종은 직접 열어 확인했다. 원화 점검판은 I:/EXODUSER-Storage/codex-takeover/death-screen/review-current/original-assets.png이며 제품 캡처가 아니다. 실제 비교기는 unity/Tools/lobby-art-review/compare.cjs(실제PNG4개 필수). 최종SHA·Mac 인자/비교판 경로는 death-screen/REPORT.md. 기존 guard.baseline.json WIP 보존.

@@ -15,7 +15,7 @@
 | `_BIC` | game.html 16647 `location.search.includes('bic')` | **정의만 있고 읽는 곳이 없다**(주석에만 남음). CLAUDE.md의 BIC 규칙(데모, Lv100)은 데모 정의와 같다 | bic = demo 정의 복사 + 패키징 안 됨 표시 |
 | 레벨 캡 | `_DEMO_LV_CAP=100`(16649), `addExp`(43139·43150): 데모에서 레벨 ≥100이면 경험치 고정 | 100 | `LevelCap` 정의만(시스템 없음 → **미이식**) |
 | 데모 마지막 스테이지 | `_DEMO_LAST_STAGE=0`(16650) | stage 0 구역 클리어 뒤 데모 종료 | `DemoEndAtStage(0)` |
-| 클리어 문구 | 42003-42006: `_DEMO_MODE && stage===0` → 부제 "썩은 숲을 정복했습니다."(영 "You conquered the Rotten Forest."), 버튼 `_T('데모 종료')`. 버튼 동작 63665: 난이도 팝업 없이 `nextStage()` | 데모만 | A22 클리어 패널이 `BuildFlavor`를 읽어 DemoEnd 문구로 전환(트리거는 여전히 미연결) |
+| 클리어 문구 | 42003-42006: `_DEMO_MODE && stage===0` → 부제 "썩은 숲은 아직 끝나지 않았다.(2026-11-04 STY-23, 옛 "썩은 숲을 정복했습니다.")"(영 "The Rotten Forest is not finished yet."), 버튼 `_T('데모 종료')`. 버튼 동작 63665: 난이도 팝업 없이 `nextStage()` | 데모만 | A22 클리어 패널이 `BuildFlavor`를 읽어 DemoEnd 문구로 전환(트리거는 여전히 미연결) |
 | 어픽스 금지 | `_DEMO_AFFIX_BANNED` 7종(16652, 사용 15137) | 데모 아이템 굴림에서 제외 | 정의 JSON만(**미이식**: Unity에 아이템 굴림 없음) |
 | 합성 허용 | `_DEMO_FUSE_ALLOWED` 22종(16651, 사용 44612) | 데모는 목록 밖 합성 불가 | 정의 JSON만(**미이식**) |
 | 로비 복귀·시작 | 63683 `/?lobby=1&demo=1`, 63886-63892 데모 시작(`_startDemoNew`/`_startDemoTest`) | 데모만 | 정의에 entry 문자열로만 기록(미이식) |
@@ -75,7 +75,7 @@ NativeLobbyBuildLabels.Draw(float quitButtonCenterY, bool offline=true)   // 192
 |---|---|
 | patch 15개(1~13 + A26 2개) 순서 apply | 전부 통과, 역순 `-R` 15개 통과, `NativeGame*`·`NativePauseMenu*`·`NativeLobby.cs`·`PortVerification.cs` 변경 0 |
 | Win64 빌드(`-flavor` 없음) | errors 0, error CS 0, warning CS 0 (처음 빌드에서 `JsonUtility`가 JSON `null` 객체를 기본 객체로 만들어 full/ea가 데모 종료로 판정되는 결함을 캡처 검사가 잡아 `HasClearFinal`로 수정, 재빌드 1회) |
-| `--unity-overlay-capture flavor`를 `--unity-build-flavor full\|demo\|ea\|bic` 각각 | 4회 모두 종료 0, passed, failures 0. 클리어 패널: full·ea = Zone("정비 후 다음으로 이동하세요" / "다음 구역으로 ▶"), demo·bic = DemoEnd("썩은 숲을 정복했습니다." / "데모 종료"). stage 1은 모든 플레이버에서 Zone |
+| `--unity-overlay-capture flavor`를 `--unity-build-flavor full\|demo\|ea\|bic` 각각 | 4회 모두 종료 0, passed, failures 0. 클리어 패널: full·ea = Zone("정비 후 다음으로 이동하세요" / "다음 구역으로 ▶"), demo·bic = DemoEnd("썩은 숲은 아직 끝나지 않았다.(2026-11-04 STY-23, 옛 "썩은 숲을 정복했습니다.")" / "데모 종료"). stage 1은 모든 플레이버에서 Zone |
 | 인자 없는 실행 | 임베드 `build_flavor.json`(`full`)에서 선택, passed |
 | `-flavor demo`로 빌드한 플레이어 | errors 0, 로그 `UNITY_BUILD_FLAVOR demo`, 인자 없이 실행하면 `demo`("embedded Data/build_flavor.json"), 빌드 뒤 `build_flavor.json`은 `{"selected": "full"}`로 **복원됨**(저장소 상태 유지) |
 | `-flavor nonsense` | 빌드는 receipt 없이 종료 코드 2로 실패, 쓰기 전에 예외라 `build_flavor.json`은 `{"selected": "full"}` 그대로. (쓰기 뒤 빌드 실패 경로는 `try/finally` 구조로 복원, 이 경로를 일부러 깨 보지는 않음) |
