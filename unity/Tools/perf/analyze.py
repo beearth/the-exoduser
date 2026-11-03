@@ -8,7 +8,7 @@ Only the standard library is used.
 import csv, json, math, os, sys
 
 PHASES = {0: "frontend", 1: "field", 2: "arena", 3: "loading"}
-SECTIONS = ["Update", "FixedSim", "Views", "Chunks", "Gui", "Hud", "R3Late", "Qa"]
+SECTIONS = ["Update", "FixedSim", "Views", "Chunks", "Gui", "Hud", "R3Late", "Qa", "EnemyViews", "Objective", "FieldHud", "EnemyBars", "Floaters", "RegionHud"]
 
 
 def pct(values, q):
@@ -85,6 +85,8 @@ def summarize(rows):
         v = [r["ms" + name] for r in rows]
         s["sec" + name + "Avg"] = round(mean(v), 3)
         s["sec" + name + "P95"] = round(pct(v, .95), 3)
+        if ("alloc" + name) in rows[0]:
+            s["alloc" + name + "Avg"] = round(mean([r["alloc" + name] for r in rows]))
     return s
 
 
@@ -134,6 +136,10 @@ def main(argv):
         if sm:
             report["phases"][name] = sm
     report["longFrames"], report["longFrameCount"] = long_frames(rows, events)
+    play = report["phases"].get("play")
+    report["warnings"] = []
+    if play and play.get("gpuMsP50") is not None and play["gpuMsP50"] < 0.5:
+        report["warnings"].append("GPU time ~0 during play: display asleep / window not presented. Frame pacing of this run is not valid.")
     report["shaderEventCount"] = sum(len([e for e in v if "shader" in e.lower()]) for v in events.values())
     if base:
         b_rows, _, _ = load(base)
@@ -143,7 +149,7 @@ def main(argv):
         json.dump(report, f, indent=1, ensure_ascii=False)
     keys = ["frames", "seconds", "avgFps", "msP50", "msP95", "msP99", "msMax", "over33", "over100", "over500",
             "cpuMainMsP95", "cpuRenderMsP95", "gpuMsP95", "allocBytesPerFrameAvg", "gcPerMinute", "drawCallsAvg", "batchesAvg", "setPassAvg",
-            "enemiesAvg"] + ["sec%sAvg" % n for n in SECTIONS] + ["sec%sP95" % n for n in SECTIONS]
+            "enemiesAvg"] + ["sec%sAvg" % n for n in SECTIONS] + ["sec%sP95" % n for n in SECTIONS] + ["alloc%sAvg" % n for n in SECTIONS]
     names = [n for n in ("play", "field", "arena", "loading", "frontend") if n in report["phases"]]
     lines = ["# PERF-U0 " + os.path.basename(os.path.abspath(run)), "",
              "device %s / %s / %s / %dx%d / cap %s / remodel3d %s / dev %s" % (meta.get("device"), meta.get("api"), meta.get("quality"),
@@ -155,6 +161,8 @@ def main(argv):
         if base and report["baseline"]["play"]:
             row += " %s |" % fmt(report["baseline"]["play"].get(k))
         lines.append(row)
+    for w in report["warnings"]:
+        lines.insert(3, "**WARNING: %s**" % w)
     lines += ["", "Long frames > 50 ms: %d (top %d below). Shader log events: %d" % (report["longFrameCount"], len(report["longFrames"]), report["shaderEventCount"]), "",
               "| t s | ms | phase | enemies | fixed | gc | shader | sections ≥1ms | log |", "|---|---|---|---|---|---|---|---|---|"]
     for lf in report["longFrames"]:

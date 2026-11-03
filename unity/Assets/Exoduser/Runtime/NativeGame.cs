@@ -328,14 +328,14 @@ namespace Exoduser.UnityPort
             double windup=Math.Max(1,(int)(10/(Simulation.Config.WeaponSpeed!=0?Simulation.Config.WeaponSpeed:1)));
             double recovery=p.State=="sRecover"?Core.Combat.ParryRules.SRecoverTicks(Simulation.PParry):Math.Max(1,(int)(16/((Simulation.Config.WeaponSpeed!=0?Simulation.Config.WeaponSpeed:.3f)*Simulation.Config.AttackSpeedMultiplier)));
             int frame=attack?NativeHeroSpriteMotion.Frame(p.State,p.StateTicks,windup,recovery):moving?2+(int)(walkDistance/32)%8:(Simulation.TickCount/48)%2;
-            playerView.sprite=attack?SpriteFor("Art/player/attack-bat-v1",frame*80,direction*80,80,80,new Vector2(.5f,45f/80)):
-                SpriteFor("Art/player/"+directions[direction],frame*48,0,48,48,new Vector2(.5f,.5f));
+            playerView.sprite=attack?PlayerAttackSprite(frame,direction):PlayerWalkSprite(frame,direction);
             playerView.transform.position=Point(p.X,p.Y);playerView.transform.localScale=Vector3.one*2*heroPresentationScale;playerView.sortingOrder=(int)p.Y;
             // web roll: the body curls up and turns once (360 degrees) over the 18 frames, dust trail
             playerView.transform.rotation=Simulation.RollActive?Quaternion.Euler(0,0,-360f*(1f-(float)Simulation.RollMoveT/RollRules.Frames)):Quaternion.identity;
             heroView?.Sync(Simulation,playerMoving);}
             playerView.enabled=NativeHd2D.Enabled||heroView==null||!heroView.Ready;
             NativeHd2D.Actor(playerView,false,p.Radius*.02f*heroPresentationScale);
+            PerfProbe.Begin(PerfProbe.Section.EnemyViews);
             foreach(var e in Simulation.Enemies)
             {
                 if(Simulation.IsRemodelProp(e)){if(enemies.TryGetValue(e.Id,out var pv)){pv.body.enabled=false;pv.walk.enabled=false;if(pv.arc!=null)pv.arc.enabled=false;}continue;}   // RM-B0b: a boss prop (sprout, cord knot) is no enemy: the boss presentation draws it from Simulation.RemodelProps
@@ -353,8 +353,8 @@ namespace Exoduser.UnityPort
                 // One visual-facing writer for both idle and walk. Core facing
                 // is untouched; a tiny movement must not reveal its stale snapshot.
                 int dir=NativeEnemyVisualFacing.Direction(e,p),cellX=ev.skin%8,cellY=ev.skin/8;
-                ev.body.sprite=SpriteFor("Art/enemy/atlas_ch1_8dir_"+enemyDirections[dir],cellX*256,cellY*256,256,256,new Vector2(.5f,.5f));
-                ev.walk.sprite=SpriteFor("Art/enemy/atlas_ch1_8dir_walk_"+enemyDirections[dir],cellX*1024+((int)(ev.distance/128)%4)*256,cellY*256,256,256,new Vector2(.5f,.5f));
+                ev.body.sprite=EnemyBodySprite(dir,ev.skin,cellX,cellY);
+                ev.walk.sprite=EnemyWalkSprite(dir,ev.skin,cellX,cellY,(int)(ev.distance/128)%4);
                 float size=e.Radius*7/256;ev.body.transform.position=ev.walk.transform.position=Point(e.X,e.Y);ev.body.transform.localScale=ev.walk.transform.localScale=Vector3.one*size;
                 ev.body.sortingOrder=(int)e.Y;ev.walk.sortingOrder=(int)e.Y+1;ev.walk.enabled=e.Alive&&ev.moving;
                 Color tint=Color.white;if(e.IsGhoul&&e.Col!=null)ColorUtility.TryParseHtmlString(e.Col,out tint);if(e.IsGhoul)tint=Color.Lerp(Color.white,tint,.62f); // ghoul: no art of its own, a green-grey body (web draws it procedurally)
@@ -364,7 +364,7 @@ namespace Exoduser.UnityPort
                 NativeHd2D.Actor(ev.body,false,e.Radius*.035f);NativeHd2D.Overlay(ev.walk,ev.body);
                 UpdateEnemyShieldArc(e,ev);
             }
-            PruneEnemyViews();FieldBossViews();
+            PruneEnemyViews();FieldBossViews();PerfProbe.End(PerfProbe.Section.EnemyViews);
             UpdateDropViews();
             skillRemaster?.Update(Simulation,ImpactNow);
             if(skillRemaster!=null&&skillRemaster.Active)kiView?.Reset();else kiView?.Update(Simulation);
@@ -411,6 +411,30 @@ namespace Exoduser.UnityPort
         // PERF-U0: --unity-perf attaches the frame recorder (writes into -output, else <QA sandbox>/perf, else persistentDataPath/perf). -perf-cap N keeps an N fps cap; default uncapped.
         public bool FrontendBlocking {get {return lobby!=null&&lobby.IsBlocking;}}
         void AttachPerfRecorder(){var r=gameObject.AddComponent<PerfRecorder>();r.Game=this;string o=Argument("-output");if(string.IsNullOrEmpty(o)){string sb=Argument("--unity-qa-sandbox");if(!string.IsNullOrEmpty(sb))o=Path.Combine(sb,"perf");}r.Output=o;int cap;if(int.TryParse(Argument("-perf-cap"),out cap))r.FrameCap=cap;}
+        // PERF-U6: per-frame actor sprites come from index tables filled on first use through SpriteFor (same resource, rect, pivot and load moment),
+        // so the hot path builds no resource/key strings. These atlases are never released (ReleaseSprites only handles ground chunks).
+        const int SkinSlots=64,WalkFrames=4,PlayerFrames=16;
+        readonly Sprite[] enemyBodyTable=new Sprite[8*SkinSlots],enemyWalkTable=new Sprite[8*SkinSlots*WalkFrames],playerAttackTable=new Sprite[8*PlayerFrames],playerWalkTable=new Sprite[8*PlayerFrames];
+        Sprite EnemyBodySprite(int dir,int skin,int cellX,int cellY)
+        {
+            if(skin<0||skin>=SkinSlots)return SpriteFor("Art/enemy/atlas_ch1_8dir_"+enemyDirections[dir],cellX*256,cellY*256,256,256,new Vector2(.5f,.5f));
+            int i=dir*SkinSlots+skin;return enemyBodyTable[i]??(enemyBodyTable[i]=SpriteFor("Art/enemy/atlas_ch1_8dir_"+enemyDirections[dir],cellX*256,cellY*256,256,256,new Vector2(.5f,.5f)));
+        }
+        Sprite EnemyWalkSprite(int dir,int skin,int cellX,int cellY,int step)
+        {
+            if(skin<0||skin>=SkinSlots||step<0||step>=WalkFrames)return SpriteFor("Art/enemy/atlas_ch1_8dir_walk_"+enemyDirections[dir],cellX*1024+step*256,cellY*256,256,256,new Vector2(.5f,.5f));
+            int i=(dir*SkinSlots+skin)*WalkFrames+step;return enemyWalkTable[i]??(enemyWalkTable[i]=SpriteFor("Art/enemy/atlas_ch1_8dir_walk_"+enemyDirections[dir],cellX*1024+step*256,cellY*256,256,256,new Vector2(.5f,.5f)));
+        }
+        Sprite PlayerAttackSprite(int frame,int direction)
+        {
+            if(frame<0||frame>=PlayerFrames)return SpriteFor("Art/player/attack-bat-v1",frame*80,direction*80,80,80,new Vector2(.5f,45f/80));
+            int i=direction*PlayerFrames+frame;return playerAttackTable[i]??(playerAttackTable[i]=SpriteFor("Art/player/attack-bat-v1",frame*80,direction*80,80,80,new Vector2(.5f,45f/80)));
+        }
+        Sprite PlayerWalkSprite(int frame,int direction)
+        {
+            if(frame<0||frame>=PlayerFrames)return SpriteFor("Art/player/"+directions[direction],frame*48,0,48,48,new Vector2(.5f,.5f));
+            int i=direction*PlayerFrames+frame;return playerWalkTable[i]??(playerWalkTable[i]=SpriteFor("Art/player/"+directions[direction],frame*48,0,48,48,new Vector2(.5f,.5f)));
+        }
         Sprite SpriteFor(string resource,int x,int top,int width,int height,Vector2 pivot)
         {
             string key=resource+":"+x+":"+top+":"+width+":"+height+":"+pivot.x+":"+pivot.y;
@@ -479,16 +503,16 @@ namespace Exoduser.UnityPort
             float hudWidth=NativeUiSafeArea.DesignWidth,statusX=hudWidth-316;
             if(lobby.DiagnosticUiEnabled&&lobby.ActiveCharacterName.Length>0){Panel(new Rect(16,12,420,50));NativeUiAudit.Label(new Rect(28,20,396,40),lobby.ActiveCharacterName+" · "+(lobby.Language=="ko"?"미리보기":"Preview"),characterBadge);}
             // Web #mmLvl objective panel (game.html 2576-2586): level / experience / area kills / malice from Unity state; Unity has no area-kill total (shown as 미이식).
-            {int areaK,areaT;Simulation.AreaKills(regionHud.CurIdx,out areaK,out areaT);objective.Draw(hudWidth,new NativeObjectivePanel.Info{level=p.Level,exp=p.Experience,maxExp=p.MaxExperience,materials=Simulation.Materials,areaKills=areaK,areaTotal=areaT,english=lobby.Language!="ko"});}   // LT-5: "지역 처치" = current region min(kills,total)/total, else G._stageKills/G._totalSpawned (web 60584-60586), not G.kills
-            DrawFieldHud(hudWidth);
+            PerfProbe.Begin(PerfProbe.Section.Objective);{int areaK,areaT;Simulation.AreaKills(regionHud.CurIdx,out areaK,out areaT);objective.Draw(hudWidth,new NativeObjectivePanel.Info{level=p.Level,exp=p.Experience,maxExp=p.MaxExperience,materials=Simulation.Materials,areaKills=areaK,areaTotal=areaT,english=lobby.Language!="ko"});}PerfProbe.End(PerfProbe.Section.Objective);   // LT-5: "지역 처치" = current region min(kills,total)/total, else G._stageKills/G._totalSpawned (web 60584-60586), not G.kills
+            PerfProbe.Begin(PerfProbe.Section.FieldHud);DrawFieldHud(hudWidth);PerfProbe.End(PerfProbe.Section.FieldHud);
             hud.FeelHurtActive=impacts!=null&&impacts.HurtActive(Simulation.TickCount);PerfProbe.Begin(PerfProbe.Section.Hud);hud.Draw(hudWidth,NativeUiSafeArea.DesignHeight,Simulation.Config.ActiveAttack,Simulation);PerfProbe.End(PerfProbe.Section.Hud);DrawFirstPractice(hudWidth);GUI.matrix=baseMatrix;
             // 전환 중 전투 안내·지역 제목·레벨업이 중앙 명패를 덮지 않게 한다. 자원 HUD는 유지한다.
             if(Simulation.Stage.LoadPhase>0){StageFlowDrawLoad();GUI.matrix=old;return;}
             // game.html drawEn 54054: a 4 px bar (r*2+6 wide, r+16 above the centre) once the mob is hurt or its shield is down: black 60%, red hp, the blue shield laid over it
-            foreach(var e in Simulation.Enemies){if(NativeRemodel3D.Active&&a2Field!=null){A2DrawEnemyStatus(e);continue;}if(!e.Alive||e.IsBoss||!(e.Hp<e.MaxHp||e.MaxShield>0&&e.Shield<e.MaxShield))continue;float ebw=e.Radius*2+6;var ebA=ToGUI(e.X-ebw/2,e.Y-e.Radius-16);var ebB=ToGUI(e.X+ebw/2,e.Y-e.Radius-16);float ebWid=ebB.x-ebA.x,ebHgt=Mathf.Max(2,4*ebWid/ebw);
+            PerfProbe.Begin(PerfProbe.Section.EnemyBars);foreach(var e in Simulation.Enemies){if(NativeRemodel3D.Active&&a2Field!=null){A2DrawEnemyStatus(e);continue;}if(!e.Alive||e.IsBoss||!(e.Hp<e.MaxHp||e.MaxShield>0&&e.Shield<e.MaxShield))continue;float ebw=e.Radius*2+6;var ebA=ToGUI(e.X-ebw/2,e.Y-e.Radius-16);var ebB=ToGUI(e.X+ebw/2,e.Y-e.Radius-16);float ebWid=ebB.x-ebA.x,ebHgt=Mathf.Max(2,4*ebWid/ebw);
                 Fill(new Rect(ebA.x,ebA.y,ebWid,ebHgt),new Color(0,0,0,.6f));Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Clamp01((float)e.Hp/e.MaxHp),ebHgt),new Color(.8f,0,0));if(e.MaxShield>0&&e.Shield>0)Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Min(1,e.Shield/e.MaxShield),ebHgt),new Color(.267f,.667f,1f));}
-            DrawFieldBossBars();
-            floatingTextLayout.BeginFrame(Time.unscaledTime);
+            DrawFieldBossBars();PerfProbe.End(PerfProbe.Section.EnemyBars);
+            PerfProbe.Begin(PerfProbe.Section.Floaters);floatingTextLayout.BeginFrame(Time.unscaledTime);
             var textViewport=NativeUiViewport.ScreenInDesign;floatingTextLayout.SetHorizontalBounds(textViewport.x+8,textViewport.xMax-8);
             ReserveEdgeFeedback(new Rect(0,0,160,176));ReserveEdgeFeedback(new Rect(16,188,108,58.3f));ReserveEdgeFeedback(new Rect(NativeUiViewport.Edges.Width-NativeObjectivePanel.RightMargin-NativeObjectivePanel.Width,NativeObjectivePanel.Top,NativeObjectivePanel.Width,NativeObjectivePanel.Height));
             if(firstPractice!=null&&!menu&&gameFocused){var pr=PracticePanel(NativeUiViewport.Edges.Width);ReserveEdgeFeedback(new Rect(pr.x-8,pr.y-8,pr.width+16,pr.height+16));}
@@ -498,11 +522,11 @@ namespace Exoduser.UnityPort
             foreach(var n in damageFloaters.Live(Time.unscaledTime))NativeReviveHud.Offer(floatingTextLayout,n,ToGUI(n.X,n.Y),center);
             DrawPracticeShots();
             revive.Font=font;revive.English=lobby.Language!="ko";revive.CollectFloaters(ToGUI,center,floatingTextLayout);
-            floatingTextLayout.Resolve();NativeReviveHud.DrawRequests(floatingTextLayout,center);
+            floatingTextLayout.Resolve();NativeReviveHud.DrawRequests(floatingTextLayout,center);PerfProbe.End(PerfProbe.Section.Floaters);
             if(Time.unscaledTime<noticeUntil){var noticeMatrix=GUI.matrix;GUI.matrix=NativeUiViewport.EdgeMatrix;var noticeStyle=new GUIStyle(label){alignment=TextAnchor.UpperLeft,wordWrap=true};NativeUiAudit.Label(new Rect(20,270,440,noticeStyle.CalcHeight(new GUIContent(notice),440)),notice,noticeStyle);GUI.matrix=noticeMatrix;}
             if(levelUp.Active){var lp=HudCamera.WorldToScreenPoint(Point(p.X,p.Y));levelUp.Draw(new Vector2(lp.x,Screen.height-lp.y));}
             if(areaTitle.Active)areaTitle.Draw();
-            DrawRegionHud();   // M1 region HUD: entry/purge banner + direction arrow
+            PerfProbe.Begin(PerfProbe.Section.RegionHud);DrawRegionHud();PerfProbe.End(PerfProbe.Section.RegionHud);   // M1 region HUD: entry/purge banner + direction arrow
             // Boss bar: Unity has no boss actor / boss-entry event yet, so nothing calls bossBar.Show(); once one exists it passes name (BossNameForStage), hp, poise, groggy/immune state and status chips each frame.
             if(bossBar.Active)bossBar.Draw();
             StageFlowDrawWorld();

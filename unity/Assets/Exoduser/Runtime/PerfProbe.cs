@@ -17,17 +17,19 @@ namespace Exoduser.UnityPort
         public const string Argument = "--unity-perf";
         public static readonly bool Enabled = Array.IndexOf(Environment.GetCommandLineArgs(), Argument) >= 0;
         // Sections may nest (Views and Chunks run inside Update, Hud inside Gui); each is timed on its own.
-        public enum Section { Update, FixedSim, Views, Chunks, Gui, Hud, R3Late, Qa, Count }   // Qa = fullrun QA planner + policy file reads (not product cost)
+        public enum Section { Update, FixedSim, Views, Chunks, Gui, Hud, R3Late, Qa, EnemyViews, Objective, FieldHud, EnemyBars, Floaters, RegionHud, Count }   // Qa = fullrun QA planner + policy file reads (not product cost)
         static readonly long[] started = new long[(int)Section.Count];
         static readonly long[] total = new long[(int)Section.Count];
+        static readonly long[] heapStart = new long[(int)Section.Count], allocated = new long[(int)Section.Count];   // managed heap growth inside a section (a GC inside the section reads as 0)
         public static int FixedSteps, GuiCalls;
-        public static void Begin(Section s) { if (Enabled) started[(int)s] = Stopwatch.GetTimestamp(); }
-        public static void End(Section s) { if (Enabled) total[(int)s] += Stopwatch.GetTimestamp() - started[(int)s]; }
+        public static void Begin(Section s) { if (!Enabled) return; heapStart[(int)s] = UnityEngine.Profiling.Profiler.GetMonoUsedSizeLong(); started[(int)s] = Stopwatch.GetTimestamp(); }
+        public static void End(Section s) { if (!Enabled) return; total[(int)s] += Stopwatch.GetTimestamp() - started[(int)s]; long grown = UnityEngine.Profiling.Profiler.GetMonoUsedSizeLong() - heapStart[(int)s]; if (grown > 0) allocated[(int)s] += grown; }
         internal static void Drain(float[] ms)
         {
             double k = 1000.0 / Stopwatch.Frequency;
             for (int i = 0; i < total.Length; i++) { ms[i] = (float)(total[i] * k); total[i] = 0; }
         }
+        internal static void DrainAlloc(long[] bytes) { for (int i = 0; i < allocated.Length; i++) { bytes[i] = allocated[i]; allocated[i] = 0; } }
     }
 
     public sealed class PerfRecorder : MonoBehaviour
@@ -37,13 +39,16 @@ namespace Exoduser.UnityPort
             public int frame, fixedSteps, guiCalls, gcCount, enemies, loadPhase, phase;
             public float realMs, cpuMainMs, cpuRenderMs, gpuMs, time;
             public long gcAlloc, gcUsed, drawCalls, batches, setPass, triangles;
-            public float s0, s1, s2, s3, s4, s5, s6, s7;
         }
         public NativeGame Game;
         public string Output;
         public int FrameCap = -1;   // -1 = uncapped (measures cost, not the cap); -perf-cap N keeps the player's own cap
-        readonly List<Row> rows = new List<Row>(1 << 18);
+        const int Capacity = 400000;   // frames; a full uncapped 1-1 run is ~155k
+        readonly List<Row> rows = new List<Row>(Capacity);
+        static readonly int N = (int)PerfProbe.Section.Count;
+        float[] sectionMs; long[] sectionBytes;
         readonly float[] sections = new float[(int)PerfProbe.Section.Count];
+        readonly long[] sectionAlloc = new long[(int)PerfProbe.Section.Count];
         readonly FrameTiming[] timing = new FrameTiming[1];
         readonly object logLock = new object();
         readonly List<string> logEvents = new List<string>();
@@ -58,6 +63,7 @@ namespace Exoduser.UnityPort
             batches = ProfilerRecorder.StartNew(ProfilerCategory.Render, "Batches Count");
             setPass = ProfilerRecorder.StartNew(ProfilerCategory.Render, "SetPass Calls Count");
             triangles = ProfilerRecorder.StartNew(ProfilerCategory.Render, "Triangles Count");
+            sectionMs = new float[Capacity * N]; sectionBytes = new long[Capacity * N];
             Application.logMessageReceivedThreaded += OnLog;
             started = Time.realtimeSinceStartup; last = Stopwatch.GetTimestamp(); lastGc = GC.CollectionCount(0);
             StartCoroutine(EndOfFrameLoop());
@@ -83,7 +89,7 @@ namespace Exoduser.UnityPort
         // One row per rendered frame: wall time from the previous end-of-frame to this one, so the row holds that frame's own sections.
         void Sample()
         {
-            if (flushed) return;
+            if (flushed || rows.Count >= Capacity) return;
             if (Application.targetFrameRate != FrameCap) Application.targetFrameRate = FrameCap;
             if (FrameCap < 0 && QualitySettings.vSyncCount != 0) QualitySettings.vSyncCount = 0;
             long now = Stopwatch.GetTimestamp();
@@ -98,8 +104,8 @@ namespace Exoduser.UnityPort
             r.drawCalls = drawCalls.Valid ? drawCalls.LastValue : -1; r.batches = batches.Valid ? batches.LastValue : -1;
             r.setPass = setPass.Valid ? setPass.LastValue : -1; r.triangles = triangles.Valid ? triangles.LastValue : -1;
             r.fixedSteps = PerfProbe.FixedSteps; r.guiCalls = PerfProbe.GuiCalls; PerfProbe.FixedSteps = 0; PerfProbe.GuiCalls = 0;
-            PerfProbe.Drain(sections);
-            r.s0 = sections[0]; r.s1 = sections[1]; r.s2 = sections[2]; r.s3 = sections[3]; r.s4 = sections[4]; r.s5 = sections[5]; r.s6 = sections[6]; r.s7 = sections[7];
+            PerfProbe.Drain(sections); PerfProbe.DrainAlloc(sectionAlloc);
+            int at = rows.Count * N; for (int i = 0; i < N; i++) { sectionMs[at + i] = sections[i]; sectionBytes[at + i] = sectionAlloc[i]; }
             var sim = Game != null ? Game.Simulation : null;
             // phase: 0 frontend/lobby, 1 field, 2 arena, 3 stage loading
             if (sim == null || Game.FrontendBlocking) r.phase = 0;
@@ -122,16 +128,20 @@ namespace Exoduser.UnityPort
                 var csv = new StringBuilder(rows.Count * 160);
                 csv.Append("frame,time,phase,loadPhase,enemies,realMs,cpuMainMs,cpuRenderMs,gpuMs,fixedSteps,guiCalls,gcCount,gcAlloc,gcUsed,drawCalls,batches,setPass,triangles");
                 for (int i = 0; i < (int)PerfProbe.Section.Count; i++) csv.Append(",ms").Append(((PerfProbe.Section)i).ToString());
+                for (int i = 0; i < (int)PerfProbe.Section.Count; i++) csv.Append(",alloc").Append(((PerfProbe.Section)i).ToString());
                 csv.Append('\n');
                 var inv = System.Globalization.CultureInfo.InvariantCulture;
-                foreach (var r in rows)
+                for (int ri = 0; ri < rows.Count; ri++)
                 {
+                    var r = rows[ri];
                     csv.Append(r.frame).Append(',').Append(r.time.ToString("0.000", inv)).Append(',').Append(r.phase).Append(',').Append(r.loadPhase).Append(',').Append(r.enemies).Append(',')
                        .Append(r.realMs.ToString("0.###", inv)).Append(',').Append(r.cpuMainMs.ToString("0.###", inv)).Append(',').Append(r.cpuRenderMs.ToString("0.###", inv)).Append(',').Append(r.gpuMs.ToString("0.###", inv)).Append(',')
                        .Append(r.fixedSteps).Append(',').Append(r.guiCalls).Append(',').Append(r.gcCount).Append(',').Append(r.gcAlloc).Append(',').Append(r.gcUsed).Append(',')
-                       .Append(r.drawCalls).Append(',').Append(r.batches).Append(',').Append(r.setPass).Append(',').Append(r.triangles).Append(',')
-                       .Append(r.s0.ToString("0.###", inv)).Append(',').Append(r.s1.ToString("0.###", inv)).Append(',').Append(r.s2.ToString("0.###", inv)).Append(',').Append(r.s3.ToString("0.###", inv)).Append(',')
-                       .Append(r.s4.ToString("0.###", inv)).Append(',').Append(r.s5.ToString("0.###", inv)).Append(',').Append(r.s6.ToString("0.###", inv)).Append(',').Append(r.s7.ToString("0.###", inv)).Append('\n');
+                       .Append(r.drawCalls).Append(',').Append(r.batches).Append(',').Append(r.setPass).Append(',').Append(r.triangles);
+                    int at = ri * N;
+                    for (int i = 0; i < N; i++) csv.Append(',').Append(sectionMs[at + i].ToString("0.###", inv));
+                    for (int i = 0; i < N; i++) csv.Append(',').Append(sectionBytes[at + i]);
+                    csv.Append('\n');
                 }
                 File.WriteAllText(Path.Combine(dir, "perf-frames.csv"), csv.ToString());
                 lock (logLock) File.WriteAllLines(Path.Combine(dir, "perf-log-events.tsv"), logEvents.ToArray());

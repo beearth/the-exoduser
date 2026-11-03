@@ -14,10 +14,11 @@ while [ "$(others)" -gt 0 ]; do
 done
 echo "PERF_START waited=${waited}s $(date '+%F %T')"
 bundle=$(/usr/libexec/PlistBuddy -c 'Print CFBundleIdentifier' "$app/Contents/Info.plist")
+# caffeinate -d -u keeps the display awake (a sleeping display stops Metal presentation: GPU time reads ~0 and frame pacing is invalid).
 # App Nap would throttle a background window and distort frame times; disable it for this test bundle only, restore after.
 defaults write "$bundle" NSAppSleepDisabled -bool YES
 start=$(date +%s)
-open -g -n -W "$app" --args --remodel3d --unity-mute --unity-perf --unity-fullrun-qa \
+caffeinate -d -i -u open -g -n -W "$app" --args --remodel3d --unity-mute --unity-perf --unity-fullrun-qa \
   --unity-qa-sandbox "$out/sandbox" -output "$out" -qa-locale ko \
   -screen-width 1920 -screen-height 1080 -screen-fullscreen 0 -popupwindow -nosound -logFile "$out/player.log" "$@"
 code=$?
