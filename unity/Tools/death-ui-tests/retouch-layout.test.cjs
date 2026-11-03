@@ -12,7 +12,7 @@ const dimensions={btn_chip_1x:[150,32],btn_chip_2x:[300,64],lobby_enter_ready_1x
 for(const [name,size]of Object.entries(dimensions)){const png=fs.readFileSync(path.join(art,name+'.png'));assert.deepEqual([png.readUInt32BE(16),png.readUInt32BE(20)],size,name);const meta=fs.readFileSync(path.join(art,name+'.png.meta'),'utf8');assert(/enableMipMap: 0/.test(meta)&&/filterMode: 1/.test(meta),name+' import');}
 const lobby=read('NativeLobby.SilverLobby.cs');assert(lobby.includes('DrawEmptySilverSlot(card)'),'empty cards keep the rail');
 assert(lobby.includes('1676,card.y+17,88,20')&&lobby.includes('1788,card.y+21,24,34'),'class/delete gap');assert(lobby.includes('1738,609,76,64'),'count14px clear of card edge');
-assert(read('NativeLobby.CharacterPresentation.cs').includes('FrameOnly(panel,45)'),'name modal uses original thorn frame');
+assert(read('NativeLobby.CharacterPresentation.cs').includes('Panel(panel,45,0,iron:true)'),'name modal uses shared A face and original thorn frame');
 assert(read('NativePauseMenu.A15Web.cs').includes('PlateLabel(r,text'),'small settings buttons respect inset');
 assert(read('NativeKeyBindList.cs').includes('PlateLabel(r,text'),'keycaps respect inset');
 const capture=read('NativeGame.DeathUiCapture.cs');assert(capture.includes('entryPointerInside')&&capture.includes('entryHoverVisible'),'hover receipt measures pointer and actual light');

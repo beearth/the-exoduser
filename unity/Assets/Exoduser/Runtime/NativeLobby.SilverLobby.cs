@@ -109,12 +109,12 @@ namespace Exoduser.UnityPort
             NativeSilverHellUi.ArtImage(play,canEnter?lobbySilverEnter:lobbySilverDisabled);
             // ENTER is baked into the source painting. No duplicate translated label.
             GUI.enabled=canEnter;
-            var savedPointer=Event.current.mousePosition;
-            if(DeathUiEntryPointerCapture&&Event.current.type==EventType.Repaint){var screen=GUI.matrix.MultiplyPoint3x4(DeathUiEntryPointerInside?play.center:new Vector2(play.x-32,play.y-32));Event.current.mousePosition=GUI.matrix.inverse.MultiplyPoint3x4(screen);}
-            try{
-                if(Event.current.type==EventType.Repaint){EntryRect=play;EntryPointer=Event.current.mousePosition;EntryPointerScreen=GUI.matrix.MultiplyPoint3x4(EntryPointer);EntryPointerInside=play.Contains(EntryPointer);EntryHoverVisible=canEnter&&EntryPointerInside&&NativeSilverHellUi.EntryFocus(play);}
-                GUI.SetNextControlName("lobby-enter");DrawEntryHover(play,canEnter);if(EntrySoundButton(play))EnterSelectedCharacter();
-            }finally{Event.current.mousePosition=savedPointer;}
+            if(Event.current.type==EventType.Repaint){
+                EntryRect=play;EntryPointer=Event.current.mousePosition;EntryPointerScreen=GUI.matrix.MultiplyPoint3x4(EntryPointer);EntryPointerInside=play.Contains(EntryPointer);
+                bool hovered=EntryReviewState=="hover"||EntryReviewState==null&&EntryPointerInside;
+                EntryHoverVisible=canEnter&&hovered&&NativeSilverHellUi.EntryFocus(play);
+            }
+            GUI.SetNextControlName("lobby-enter");DrawEntryHover(play,canEnter);if(EntrySoundButton(play))EnterSelectedCharacter();
             GUI.enabled=controls;
             SilverLabel(new Rect(1424,866,100,42),K("▶ 시네마틱","▶ Cinematic"),silverMicro,TextAnchor.MiddleLeft);
             GUI.SetNextControlName("lobby-replay");if(NativeUiAudit.Button(new Rect(1424,866,100,42),"",GUIStyle.none))ReplayIntro();
@@ -129,6 +129,7 @@ namespace Exoduser.UnityPort
         void RefreshLobbyEntryArt(){int density=Screen.height>1080?2:1;if(lobbyEntryDensity==density)return;lobbyEntryDensity=density;lobbySilverEnter=Resources.Load<Texture2D>("Art/ui/silver_hell/lobby_enter_ready_"+density+"x");lobbySilverDisabled=Resources.Load<Texture2D>("Art/ui/silver_hell/lobby_enter_disabled_"+density+"x");}
         void DrawEmptySilverSlot(Rect card){Border(card,new Color(.61f,.62f,.62f,.13f),1);Border(new Rect(card.x+14,card.y+14,56,56),new Color(.61f,.62f,.62f,.12f),1);}
         internal bool DeathUiEntryPointerCapture,DeathUiEntryPointerInside,EntryPointerInside,EntryHoverVisible;
+        internal string EntryReviewState;
         internal Vector2 EntryPointer,EntryPointerScreen;internal Rect EntryRect;
     }
 }

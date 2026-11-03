@@ -279,3 +279,7 @@ HUD의 미착수 빌드 대기 한 건만 취소하고(타팀 잠금 보존), �
 ### 2026-11-04 01:45 작은 판과 입장 원화 표시밀도
 
 실버 헬에 btn_chip_1x/2x(150×32/300×64), lobby_enter_ready_1x/2x 및 lobby_enter_disabled_1x/2x(416×156/832×312)를 추가했다. 기존 리벳 테·어두운 원화 면/전체 인장을 Lanczos3으로 기계적으로 축소한 실행자산이다. 원본은 변경하지 않았다. 작은 ActionPlate(height<48 또는 width<160)만 칩, 나머지는 기존 가시 원화. 기본 IMGUI 스킨 제거·brightness1·OFF/Bilinear 유지. [제작법/실제 검수 대기](../3.1%20ui%20hud%20디자인/UNITY_SMALL_PLATE_RETOUCH_20261104.md).
+
+## 11-04 04:05 A등급 판 면 통일
+
+일시정지·이름입력·삭제확인은공통Panel(iron:true):RGB(16,15,15)/a.95→(8,8,9)/a.97+철14%+panel_frame_20261029. 원본철의3x미세낱점을확인해명시된sigma2 blur파생iron_480_blur2를공통A면에사용한다(원본/합성밝기불변). 이름본문/입력/오류는Hahmlet·명조fallback. B시스템창의window_base와인벤별도iron:false호출은불변이다. lobby_panel로드/필드만삭제,파일유지. [후보계약/캡처](../3.1%20ui%20hud%20디자인/UNITY_UI_CANDIDATE_20261104.md).

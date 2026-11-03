@@ -118,3 +118,7 @@ Mac 필수: 원화 프레임·텍스트칸과HUD/우측연습안내를전체1x/3
 - 91b95 소스의 최초 DLL참조 컴파일에서 NativePetBubbleCatalog.cs(28,34) CS0103(LobbyLanguage 이름 미확인) 1건을 검출했다. LobbyLanguage는Core 네임스페이스이므로 자기펫파일에using Exoduser.UnityPort.Core; 1줄만추가했다. 관련확인1회:Player Core126/Runtime279,Editor Core126/Runtime279/Editor61의5어셈블리exit0·오류0. 전체참조컴파일은오류검출1입력+원인수정후1입력이며무수정반복0. 기존38+53suite재실행0.
 - 전회공용Unity32dd8c55는C#시작전Upm-14180 IPC30초실패/exit1이다. 동일Unity6000.6.7f1의근접성공영수증c4505bef(시각기준205초전),d4c9bb48(477초전)은UPM연결0.2초/46패키지등록을확인했다. exe96002992B존재·실행인자(projectPath/method/nographics/mute/sandbox)정상전달은확인했지만작업본/그래픽인자/과거자식환경이다르다. 해당시점UPM전용로그부재로프로세스실패원인/Defender차단/PATHEXT문제는미확정이다. 현재전역Editor.log는5월다른버전이므로근접근거로쓰지않았다. Unity재실행/공용실행기·잠금·환경·권한·보안설정변경0.
 - DLL참조는기존NTFS Roslyn/패키지/DLL을읽기참조한C#검증이다. 실제Unityimport/UPM복구/플랫폼빌드/게임PASS가아니다. 표시·큐·문구·로비·폰트축소·Core/저장수치변경0. Mac동일SHA자연이벤트/1920·3840/글리프·RTL·1x/3x관문은그대로다. 고정compile-current의result/attempts/핵심로그로인계하고재생성DLL/PDB/RSP는정리한다.
+
+## 11-04 04:05 우상단 HUD 4키
+
+NativeObjectivePanel의info.english한영분기를없애No.0374레벨/0371경험치/3982지역처치/0415악의오브(3766같은키)의29언어를조회한다. 세키는웹기존번역,지역처치는웹非KO키28누락을기존EN+27번역으로보완했다. 원래77개행/R1·R2/입장이야기/보스·펫문구는불변,총81키다. export.cjs에동일objectiveArea매핑을넣었다. Thai등은조합문자를쪼개지않고기존명조/RTL전체문자열경로를쓴다. [후보캡처·미검증](UNITY_UI_CANDIDATE_20261104.md).

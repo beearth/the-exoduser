@@ -76,3 +76,7 @@ git status --porcelain -- unity/Assets/Exoduser/Resources/Art/ui/silver_hell
 - 수정 뒤 importer 테스트1회61PASS/0FAIL. 병합최종소스 DLL참조 Roslyn 컴파일1회:Player Core126/Runtime273,Editor Core126/Runtime273/Editor60,5어셈블리 exit0/오류0. Unity 에디터/import/Player/빌드/캡처0. 이 참조컴파일은 실제 Unity 임포트/플랫폼 빌드 판정이 아니다. Mac22종2회재임포트 meta불변/mip1 및 같은SHA 화면/폰트/RTL/선명도 판정은 대기다.
 - 앞 절의 컴파일미실행/검증중단은4cba 당시 이력이다. 이번 재개로PC 검증 중단을 해소했다. importer 규칙·meta·PNG·원화 디자인 신규변경0.
 - 이번 범위:기존 검사 안정화, 근거는 이전 오류줄과 현재 importer/meta, 직접패치→1회테스트→1회컴파일. 또 실패하면 즉시중단·오류원문REPORT가 재개절 조건이었다.
+
+## 11-04 04:05 후보 후속
+
+기존원화ENTER·밝기1.0·9-slice·작은칩·슬롯·생성원화·레일을보존한다. A면은일시정지/이름/삭제를Panel(iron:true)로통일,철은3x낱점검토뒤2px blur파생을14%합성한다. 이름본문명조,미사용lobby_panel로드제거(파일유지). EntryFocus의자연Rect.Contains결과와같은그리기경로에-ui-entry-state normal/hover를제공한다. 이전OnGUI마우스좌표주입은폐기했다. 영수증entryHoverForced/entryState는제어표본을명시한다. 후보고정빌드/1920·3840목록과실행결과위치는[04:05 계약](UNITY_UI_CANDIDATE_20261104.md).

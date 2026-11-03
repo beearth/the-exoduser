@@ -82,3 +82,9 @@ Mac에서는1920×1080·3840×1080·5120×1440의 HD2D/--remodel3d 양쪽에서 
 
 ## 23:05 원화 복구 우선
 공용 ActionPlate는 단색/음각 판에서 btn_primary_composed·btn_plaque_20261029의 원래9-slice로 복구했다. 밉맵OFF·밝기1.0·안쪽 호버 빛만 유지한다. 사망/부활/필터/전투 문구 숨김 규칙은 바꾸지 않는다. 최신 UI 촬영에는 lobby0/2명·character-create/name/delete와-ui-state가 추가됐으며 고정색/스킨 픽셀 probe는 원화 기준과 맞지 않아 제거했다. 현재 원화/촬영 계약은 UNITY_BUTTON_PLATE_MATERIAL_20261103.md를 따른다.
+
+## 11-04 04:05 지역 배너/29언어 후속
+
+NativeRegionHud.Draw의suppressArrow는배너를숨기지않았다. NativeGame.DrawRegionHud가DeathPresentationActive/fallen·부활전환·death.Active/PlayerDown에서전체지역레이어를조기return한다. 웹은regionBanner z19를전체#death z40아래에둔다. Core사망/부활시간과룰은그대로다.
+
+우상단4키는ko/en분기대신선택29언어Data/demo_text조회,Thai/아랍어등은전체문자열·명조fallback/RTL경로다. No.0374/0371/3982/0415(3766별칭)재사용,81카탈로그. death-screen-capture에objectiveThaiLabels/objectiveLabelsComplete/regionHiddenAtWait/regionHiddenInBoss를기록한다. 04:05 CTO승인예외③의고정후보에서만PC촬영하고일반PC Player금지는유지한다. [후보계약](UNITY_UI_CANDIDATE_20261104.md).

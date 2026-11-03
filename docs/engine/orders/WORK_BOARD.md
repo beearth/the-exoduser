@@ -741,3 +741,7 @@ R1/R2 별도 커밋 e9898f79538b5ab78d68b33422374c7b00eca4a9:9항PASS. button_ir
 ## 2026-11-04 death-ui 펫91b95 컴파일 관문 후속
 
 91b95 소스의 최초 DLL참조 컴파일에서 NativePetBubbleCatalog.cs(28,34) CS0103(LobbyLanguage 이름 미확인) 1건을 검출했다. LobbyLanguage는Core 네임스페이스이므로 자기펫파일에using Exoduser.UnityPort.Core; 1줄만추가했다. 관련확인1회:Player Core126/Runtime279,Editor Core126/Runtime279/Editor61의5어셈블리exit0·오류0. 전체참조컴파일은오류검출1입력+원인수정후1입력이며무수정반복0. 기존38+53suite재실행0. 전회공용Unity32dd8c55는C#시작전Upm-14180 IPC30초실패/exit1이다. 동일Unity6000.6.7f1의근접성공영수증c4505bef(시각기준205초전),d4c9bb48(477초전)은UPM연결0.2초/46패키지등록을확인했다. exe96002992B존재·실행인자(projectPath/method/nographics/mute/sandbox)정상전달은확인했지만작업본/그래픽인자/과거자식환경이다르다. 해당시점UPM전용로그부재로프로세스실패원인/Defender차단/PATHEXT문제는미확정이다. 현재전역Editor.log는5월다른버전이므로근접근거로쓰지않았다. Unity재실행/공용실행기·잠금·환경·권한·보안설정변경0. DLL참조PASS만인계하며실제Unity/UPM복구·Mac게임관문은미완료. 자기exactcode+docs비강제push뒤CTO local_7072229c가공통병합한다.
+
+## 2026-11-04 04:05 death-ui 승인 후보
+
+최신a53c34e939 병합0f2a57c910·CHANGELOG양쪽보존. 사망지역배너숨김/우상단4키29언어(81키)/A면통일·명조/철blur2/미사용로드제거/ReviewState입장호버를반영했다. 4그룹RED1→GREEN·기존칩/인장/슬롯회귀PASS,참조컴파일1회5어셈블리오류0. CTO예외③은I:/EXODUSER-Storage/ui-candidate/build 1회와G:/exoduser/tmp/design-review/20261104_ui_candidate/1920·3840각25컷만승인,바로가기/바탕화면교체0. 실제빌드·캡처결과/소스SHA/미검증은외부death-screen/REPORT.md가영수증정본이다. [설계계약](../../3.1%20ui%20hud%20디자인/UNITY_UI_CANDIDATE_20261104.md).

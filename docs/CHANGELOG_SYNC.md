@@ -57896,3 +57896,5 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 2026-11-04 death-ui펫말풍선1차:6ef1899cb3병합8b17b49122·문구감사양쪽보존. 전용single-bid큐/페어/T0~T5 CD20/12/8/6/4/0·T5하위5초억제·run/arena/가림,원화2장·기존14키29언어·HP3단계/첫보스/보수적환경연결. GB1자동위치·초기필드환경·전투패드안내보류,Core/타UI/저장/문구발명0. 관련suite1회38정책+53소스/데이터PASS;공용compile1회32dd8c55는UPM IPC30초실패로C#컴파일전종료,재시도0·PC Player/build0. [계약·Mac인계](3.1%20ui%20hud%20디자인/UNITY_DEMO_TEXT_20261104.md).
 
 2026-11-04 펫91b95 컴파일후속:최초DLL참조에서NativePetBubbleCatalog.cs CS0103검출→누락Core namespace import1줄보완→관련확인1회Player126/279·Editor126/279/61의5어셈블리오류0. 기존38+53suite/Unity재실행0. 전회UPM IPC30초실패는근접성공c4505bef/d4c9bb48·exe존재/인자와읽기대조했지만원인/Defender차단미확정·미복구. Core/저장/큐/문구/폰트/타UI변경0,Mac자연이벤트/시각대기. [증거구분](3.1%20ui%20hud%20디자인/UNITY_DEMO_TEXT_20261104.md).
+
+2026-11-04 04:05 death-ui RETOUCH묶음:a53c34e939 병합0f2a57c910·양쪽기록보존. 사망시지역배너전체숨김/우상단4키29언어(기존77보존·총81,No.0374/0371/3982/0415재사용)/일시정지·이름·삭제A면Panel iron:true·명조/철sigma2 blur14%/lobby_panel미사용로드삭제/입장-ui-entry-state hover 공통EntryFocus경로. 4그룹RED→GREEN·기존소형판/인장/슬롯회귀PASS·참조5어셈블리오류0. CTO승인고정후보빌드1회/1920·3840캡처결과는외부REPORT에기록,바로가기·바탕화면교체0·디자인판정은총괄대기. [후보계약](3.1%20ui%20hud%20디자인/UNITY_UI_CANDIDATE_20261104.md).

@@ -22,9 +22,11 @@ namespace Exoduser.UnityPort
             return new NativeRegionHud.Safe{screen=NativeUiViewport.ScreenInDesign,clock=new Rect(875,17,170,37),bottomTop=bottom,blocks=blocks.ToArray()};
         }
 
+        internal bool RegionHudHiddenByDeath {get;private set;}
         void DrawRegionHud()
         {
-            if (Simulation == null || firstPractice != null) return;
+            RegionHudHiddenByDeath=Simulation!=null&&(DeathPresentationActive||death.Active||PlayerDown);
+            if (Simulation == null || firstPractice != null || RegionHudHiddenByDeath) return;
             regionHud.English = English;regionHud.LocaleCode=lobby.Language;
             regionHud.Draw(Simulation, menu || stageClear.Active || death.Active || PlayerDown);
         }

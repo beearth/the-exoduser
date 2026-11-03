@@ -48,3 +48,7 @@ done
 Mac 공용 숨김 GPU 실행 경로에 이 인자를 전달한다. 호버는 ReviewState 값만으로 통과시키지 않는다. lobby hover 영수증에서 entryPointerInside/entryHoverVisible=true와 entryPointer가 entryRect 안에 있음을 확인한다. 기본컷과 입장 크롭을 직접 나란히 보며 붉은 빛이 보이는지 판정한다. pointerScope는 OnGUI 제어 포인터이며 OS 손조작이 아니다.
 
 원화17개 런타임 영수증은 loaded=true/mipCount=1. SilverUiImportCheck.Run은현재21종 재임포트 전/1회/2회 meta 불변을 확인한다. 배치/톤·가독성·축소잔점/계단은 화면만으로 판정한다. 새 번역 문구 추가0, Core/사망 흐름 변경0. 펫 말풍선 구현은 후속이다.
+
+## 11-04 04:05 승계
+
+작은판임계값48/160·6px·파생6원화·빈슬롯/간격계약을재검사PASS했다. 이름창은A등급Panel(iron:true)로바꾸되같은panel_frame 원화/edge45를유지한다. 입장호버QA는실제마우스이동/OnGUI좌표주입대신-ui-entry-state hover로EntryFocus공통그림경로를직접선택한다. entryPointerInside는자연입력관측값이고강제호버는entryHoverForced로구분한다. 전체후속은[후보계약](UNITY_UI_CANDIDATE_20261104.md).

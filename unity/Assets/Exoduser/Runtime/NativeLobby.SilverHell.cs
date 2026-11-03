@@ -100,7 +100,7 @@ namespace Exoduser.UnityPort
             if(textured&&!iron){var c=GUI.color;var face=new Color(12/255f,11/255f,12/255f);if(QualitySettings.activeColorSpace==ColorSpace.Linear)face=face.linear;GUI.color=new Color(face.r,face.g,face.b,.96f*c.a);NativeUiAudit.DrawTexture(box,Texture2D.whiteTexture);GUI.color=c;}
             else if(textured)NativeUiAudit.DrawTexture(box,panelBackground);
             else{var c=GUI.color;GUI.color=new Color(0,0,0,c.a);NativeUiAudit.DrawTexture(box,Texture2D.whiteTexture);GUI.color=c;}
-            if(panelIron==null)panelIron=Resources.Load<Texture2D>("Art/ui/inventory/iron_480");
+            if(panelIron==null)panelIron=Resources.Load<Texture2D>("Art/ui/inventory/iron_480_blur2");
             if(textured&&iron&&panelIron!=null){var c=GUI.color;GUI.color=new Color(c.r,c.g,c.b,c.a*.14f);NativeUiAudit.DrawTexture(box,panelIron,ScaleMode.StretchToFill,true);GUI.color=c;}
             Slice(new Rect(box.x-outset,box.y-outset,box.width+outset*2,box.height+outset*2),frame,150,150,edge,edge,false);
         }

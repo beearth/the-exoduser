@@ -48,7 +48,7 @@ namespace Exoduser.UnityPort
   void DrawCharacterDelete()
   {
    CharacterDeleteStyles();Fill(new Rect(0,0,1920,1080),new Color(0,0,0,.85f));
-   Rect panel=new Rect(727,425,466,230);NativeSilverHellUi.Panel(panel,28,8);
+   Rect panel=new Rect(727,425,466,230);NativeSilverHellUi.Panel(panel,28,8,iron:true);
    string message=deletingName+CharacterDialogLabel("deleteSuffix",K(" 캐릭터를 정말 삭제하시겠습니까?"," — Really delete this character?"));
    deleteMessageStyle.font=NativeSilverHellUi.TextFont(NativeSilverHellUi.Font(true),message);Label(new Rect(759,445,402,104),message,deleteMessageStyle,TextAnchor.MiddleCenter);
    var confirm=new Rect(784,562,170,46);var cancel=new Rect(966,562,170,46);

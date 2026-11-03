@@ -129,23 +129,25 @@ namespace Exoduser.UnityPort
    if(i==1){if(presentationChains!=null){Color old=GUI.color;GUI.color=new Color(1,1,1,.58f);NativeUiAudit.DrawTexture(new Rect(stageX,bodyY+bodyHeight*.18f,stageWidth,bodyHeight*.72f),presentationChains,ScaleMode.ScaleToFit,true);GUI.color=old;}Label(new Rect(stageX,railY-31,stageWidth,26),VisualSelectionLabel("출시 준비 중","COMING SOON"),presentationSubtitle,TextAnchor.MiddleCenter);}
    else if(i>=2){float releaseBottom=bodyY+bodyHeight-4,chainSize=Mathf.Min(72,bodyHeight*.20f);Rect chainRect=new Rect((w-chainSize)*.5f,releaseBottom-28-8-chainSize,chainSize,chainSize);if(presentationChains!=null){Color old=GUI.color;GUI.color=new Color(1,1,1,.78f);NativeUiAudit.DrawTexture(chainRect,presentationChains,ScaleMode.ScaleToFit,true);GUI.color=old;}Label(new Rect(w*.5f-150,releaseBottom-28,300,28),VisualSelectionLabel("출시 준비 중","COMING SOON"),presentationReleaseLabel,TextAnchor.MiddleCenter);}
   }
-  Texture2D silverNamePanel,silverNameInput,silverNameCreate,silverNameCancel;
+  Texture2D silverNameInput,silverNameCreate,silverNameCancel;
   void DrawCharacterNamePresentation()
   {
-   if(silverNamePanel==null){silverNamePanel=Resources.Load<Texture2D>("Art/ui/silver_hell/name_panel");silverNameInput=Resources.Load<Texture2D>("Art/ui/silver_hell/name_input");}
+   if(silverNameInput==null)silverNameInput=Resources.Load<Texture2D>("Art/ui/silver_hell/name_input");
    if(silverNameCreate==null){silverNameCreate=Resources.Load<Texture2D>("Art/ui/silver_hell/name_create");silverNameCancel=Resources.Load<Texture2D>("Art/ui/silver_hell/name_cancel");}
-   float w=NativeUiSafeArea.DesignWidth,h=NativeUiSafeArea.DesignHeight;Fill(new Rect(0,0,w,h),new Color(0,0,0,.90f));Rect panel=new Rect((w-440)/2,(h-335)/2,440,335);NativeUiAudit.Region(panel,"panel");NativeUiAudit.DrawTextureWithTexCoords(panel,silverNamePanel,new Rect(12f/silverNamePanel.width,12f/silverNamePanel.height,1-24f/silverNamePanel.width,1-24f/silverNamePanel.height));NativeSilverHellUi.FrameOnly(panel,45);
-   float x=panel.x+41,y=panel.y;var noto=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular");
+   float w=NativeUiSafeArea.DesignWidth,h=NativeUiSafeArea.DesignHeight;Fill(new Rect(0,0,w,h),new Color(0,0,0,.90f));Rect panel=new Rect((w-440)/2,(h-335)/2,440,335);NativeSilverHellUi.Panel(panel,45,0,iron:true);
+   float x=panel.x+41,y=panel.y;var serif=NativeSilverHellUi.Font()??Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular");
    string heading=CharacterDialogLabel("title",K("새 캐릭터 생성","Create Character"));
    var title=new GUIStyle(presentationNameTitle){font=NativeSilverHellUi.TextFont(NativeSilverHellUi.Font(),heading),fontStyle=FontStyle.Normal,fontSize=24,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset()};
    while(title.fontSize>16&&title.CalcSize(new GUIContent(heading)).x>358)title.fontSize--;
    title.normal.textColor=new Color(222/255f,219/255f,213/255f);Label(new Rect(x,y+35,358,42),heading,title,TextAnchor.MiddleCenter);
-   presentationNameDescription.font=noto;presentationNameDescription.normal.textColor=new Color(186/255f,183/255f,177/255f);Label(new Rect(x,y+89,358,19),CharacterDialogLabel("description",K("지옥에 보낼 캐릭터의 이름을 지어주세요","Choose a name for the character you will send to hell.")),presentationNameDescription,TextAnchor.MiddleCenter);
-   presentationNameLabel.font=noto;presentationNameLabel.normal.textColor=new Color(198/255f,195/255f,189/255f);Label(new Rect(x,y+136,358,21),CharacterDialogLabel("nameLabel",K("캐릭터 이름 (2~8자)","Character name (2–8 characters)")),presentationNameLabel,TextAnchor.MiddleLeft);
-   var input=new Rect(x,y+165,358,54);Image(input,silverNameInput,ScaleMode.StretchToFill);if(GUI.GetNameOfFocusedControl()=="character-name"){Border(input,new Color(191/255f,188/255f,182/255f),1);Border(new Rect(input.x-2,input.y-2,input.width+4,input.height+4),new Color(191/255f,188/255f,182/255f,.2f),1);}var field=new GUIStyle(GUIStyle.none){font=noto,fontSize=16,alignment=TextAnchor.MiddleLeft,padding=new RectOffset(18,18,14,14)};field.normal.textColor=field.focused.textColor=NativeSilverHellUi.TextColor(new Color(232/255f,229/255f,223/255f));
+   string description=CharacterDialogLabel("description",K("지옥에 보낼 캐릭터의 이름을 지어주세요","Choose a name for the character you will send to hell."));
+   string nameLabel=CharacterDialogLabel("nameLabel",K("캐릭터 이름 (2~8자)","Character name (2–8 characters)"));
+   presentationNameDescription.font=NativeSilverHellUi.TextFont(serif,description);presentationNameDescription.normal.textColor=new Color(186/255f,183/255f,177/255f);NativeDemoText.Label(new Rect(x,y+89,358,19),description,presentationNameDescription);
+   presentationNameLabel.font=NativeSilverHellUi.TextFont(serif,nameLabel);presentationNameLabel.normal.textColor=new Color(198/255f,195/255f,189/255f);NativeDemoText.Label(new Rect(x,y+136,358,21),nameLabel,presentationNameLabel);
+   var input=new Rect(x,y+165,358,54);Image(input,silverNameInput,ScaleMode.StretchToFill);if(GUI.GetNameOfFocusedControl()=="character-name"){Border(input,new Color(191/255f,188/255f,182/255f),1);Border(new Rect(input.x-2,input.y-2,input.width+4,input.height+4),new Color(191/255f,188/255f,182/255f,.2f),1);}var field=new GUIStyle(GUIStyle.none){font=NativeSilverHellUi.TextFont(serif,characterName),fontSize=16,alignment=TextAnchor.MiddleLeft,padding=new RectOffset(18,18,14,14)};field.normal.textColor=field.focused.textColor=NativeSilverHellUi.TextColor(new Color(232/255f,229/255f,223/255f));
    GUI.SetNextControlName("character-name");characterName=NativeUiAudit.TextField(input,characterName,8,field);
    if(characterFocus&&Event.current.type==EventType.Repaint){GUI.FocusControl("character-name");characterFocus=false;}
-   if(!string.IsNullOrEmpty(characterError))Label(new Rect(x,y+219,358,18),characterError,presentationNameError,TextAnchor.MiddleLeft);
+   if(!string.IsNullOrEmpty(characterError)){presentationNameError.font=NativeSilverHellUi.TextFont(serif,characterError);NativeDemoText.Label(new Rect(x,y+219,358,18),characterError,presentationNameError);}
    var cancel=new Rect(x,y+239,173,47);var create=new Rect(x+185,y+239,173,47);
    NativeSilverHellUi.ArtImage(cancel,silverNameCancel);NativeSilverHellUi.ArtImage(create,silverNameCreate);
    // Both original name-button labels are baked into their paintings.

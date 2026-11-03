@@ -19,6 +19,12 @@ namespace Exoduser.UnityPort {
   public static Rect Bounds(float width,bool hasGoal)=>new Rect(width-(hasGoal?GoalWidth:Width)-RightMargin,Top,hasGoal?GoalWidth:Width,Height+(hasGoal?GoalGap+GoalHeight:0));
   public static readonly string[] Words={"레벨","경험치","지역 처치","악의오브"};
   static readonly string[] WordsEn={"Level","Experience","Area kills","Orb of Malice"};
+  static readonly Dictionary<string,string[]> wordLocales=new Dictionary<string,string[]>();
+  public static string[] LabelsForLocale(string locale){
+   string code=string.IsNullOrEmpty(locale)?"ko":locale;
+   if(!wordLocales.TryGetValue(code,out var words)){words=new string[Words.Length];for(int i=0;i<words.Length;i++)words[i]=NativeDemoText.Get(Words[i],code,WordsEn[i]);wordLocales.Add(code,words);}
+   return words;
+  }
 
   static Color C(int r,int g,int b,float a=1f){return new Color(r/255f,g/255f,b/255f,a);}
   void Init(){
@@ -52,11 +58,18 @@ namespace Exoduser.UnityPort {
   }
   static string Num(int n){return Math.Max(0,n).ToString("N0",CultureInfo.InvariantCulture);}
   float PulseAge(float t){return ForcedPulseAge.HasValue?ForcedPulseAge.Value:(t<0?-1f:Time.unscaledTime-t);}
+  void Word(float x,float y,float h,string text,int size,Color color,float spacing,string locale,float width=140){
+   if(locale=="ko"||locale=="en"){Text(x,y,h,text,size,false,color,spacing);return;}
+   var style=NativeDemoText.Style(Style(size,false),text);
+   var box=new Rect(x,y-2,width,h+4);
+   style.normal.textColor=new Color(0,0,0,.55f*color.a);NativeDemoText.Label(new Rect(box.x,box.y+1,box.width,box.height),text,style);
+   style.normal.textColor=color;NativeDemoText.Label(box,text,style);
+  }
 
   // hudWidth = the HUD design width (screen width / HUD scale); the panel sits 20px from the right edge, 16px from the top.
   public void Draw(float hudWidth,Info info){
    var matrix=GUI.matrix;GUI.matrix=NativeUiViewport.EdgeMatrix;hudWidth=NativeUiViewport.Edges.Width;
-   Init();var W=info.english?WordsEn:Words;
+   Init();string locale=info.locale??(info.english?"en":"ko");var W=LabelsForLocale(locale);
    string lv=Num(info.level);
    string exp=Num(info.exp)+" / "+Num(info.maxExp);
    string kill=info.gate.Visible?Num(info.gate.Kills)+" / "+Num(info.gate.Required):(info.areaKills.HasValue?Num(info.areaKills.Value):NotPorted)+" / "+(info.areaTotal.HasValue?Num(info.areaTotal.Value):NotPorted);
@@ -69,20 +82,20 @@ namespace Exoduser.UnityPort {
    NativeSilverHellUi.Panel(r,12,0);GUI.color=oldColor;
    float L=x0+15,R=x0+201;   // content box x 1699..1885 in the web dump (panel x 1684)
    // 레벨 행: Hahmlet300 12/16px·은빛·자간.4px
-   Text(L,y0+15.8f,16.8f,W[0],12,false,C(192,189,183),.4f);
+   Word(L,y0+15.8f,16.8f,W[0],12,C(192,189,183),.4f,locale);
    RightText(R,y0+13,22.39f,lv,16,true,C(242,240,236),.4f,PulseAge(lvT));
    // experience row
-   Text(L,y0+38.55f,17.69f,W[1],13,false,C(192,189,183),0);
+   Word(L,y0+38.55f,17.69f,W[1],13,C(192,189,183),0,locale);
    RightText(R,y0+38.98f,16.8f,exp,12,false,C(217,214,208),0);
    // 은빛 분할선1px·경험치3px, 실제 진행률을 표시한다.
    Fill(new Rect(L,y0+68.39f,186,1),C(130,133,133,.48f));
    var bar=new Rect(L,y0+78.39f,186,3);Fill(bar,C(0,0,0,.5f));
    float pct=info.maxExp>0?Mathf.Clamp01((float)info.exp/info.maxExp):0;
    if(pct>0){var old=GUI.color;GUI.color=Color.white;NativeUiAudit.DrawTexture(new Rect(bar.x,bar.y,bar.width*pct,3),expTex);GUI.color=old;}
-   Text(L,y0+91.55f,17.69f,W[2],13,false,C(192,189,183),0);
+   Word(L,y0+91.55f,17.69f,W[2],13,C(192,189,183),0,locale);
    RightText(R,y0+91.55f,17.69f,kill,13,false,C(226,223,217),0,PulseAge(killT));
    var orbRect=new Rect(L,y0+111,32,32);NativeCurrencyOrb.Draw(orbRect,info.materials);
-   Text(L+38,y0+118.55f,17.69f,W[3],info.english?11:13,false,C(192,189,183),0);
+   Word(L+38,y0+118.55f,17.69f,W[3],locale=="en"?11:13,C(192,189,183),0,locale,104);
    NativeCurrencyOrb.DrawFlights(orbRect,hudWidth,Screen.height*hudWidth/Screen.width);
    RightText(R-6,y0+118.55f,17.69f,mat,13,false,C(226,223,217),0,PulseAge(matT));
    if(info.gate.Visible)DrawGoal(hudWidth,info);
