@@ -8,6 +8,12 @@ namespace Exoduser
     public static class A2RBuilder
     {
         [Serializable] sealed class Receipt{public string result;public int errors;public ulong bytes;}
+        public static int VerifyPartialHeroSight()
+        {
+            var scene=UnityEditor.SceneManagement.EditorSceneManager.NewPreviewScene();var go=new GameObject("PartialSightProbe");UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(go,scene);var mesh=new Mesh();var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));var tree=new GameObject("Original_Branch");tree.transform.SetParent(go.transform,false);mesh.vertices=new[]{new Vector3(-1,.35f,0),new Vector3(1,.35f,0),new Vector3(-1,1.8f,0),new Vector3(1,1.8f,0)};mesh.triangles=new[]{0,2,1,1,2,3};mesh.RecalculateBounds();tree.AddComponent<MeshFilter>().sharedMesh=mesh;tree.AddComponent<MeshRenderer>().sharedMaterial=material;var camera=new GameObject("ProbeCamera").AddComponent<Camera>();camera.transform.SetParent(go.transform,false);camera.transform.position=new Vector3(0,0,-5);camera.enabled=false;camera.pixelRect=new Rect(0,0,1920,1080);var fade=go.AddComponent<UnityPort.A2ROcclusion>();
+            try{fade.Initialize(go.transform,camera,()=>new Vector3(0,-1,1));fade.SetHeroBounds(()=>new Bounds(new Vector3(0,0,1),new Vector3(1,2,.2f)));fade.SetLook(true);fade.LateUpdate();Debug.Log("A2R_PARTIAL_HERO_TEST head blocked, center clear; heroSurfaces="+fade.HeroSightSurfaces);if(fade.HeroSightSurfaces==0)throw new Exception("A branch covering the hero's head must receive the hero hole even when the center ray is clear");return 0;}
+            finally{UnityEditor.SceneManagement.EditorSceneManager.ClosePreviewScene(scene);UnityEngine.Object.DestroyImmediate(mesh);UnityEngine.Object.DestroyImmediate(material);}
+        }
         public static int VerifyNearestSurface()
         {
             var format=SystemInfo.SupportsBlendingOnRenderTextureFormat(RenderTextureFormat.RFloat)?RenderTextureFormat.RFloat:RenderTextureFormat.ARGBHalf;var target=new RenderTexture(64,64,0,format);target.Create();var old=RenderTexture.active;var image=new Texture2D(64,64,TextureFormat.RGBAFloat,false,true);var mesh=new Mesh();mesh.vertices=new[]{new Vector3(-.8f,-.8f,-.25f),new Vector3(.8f,-.8f,-.25f),new Vector3(-.8f,.8f,-.25f),new Vector3(.8f,.8f,-.25f)};mesh.uv=new[]{Vector2.zero,Vector2.right,Vector2.up,Vector2.one};mesh.triangles=new[]{0,2,1,1,2,3};mesh.RecalculateNormals();mesh.RecalculateTangents();
