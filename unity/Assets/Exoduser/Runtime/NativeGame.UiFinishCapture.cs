@@ -14,8 +14,13 @@ namespace Exoduser.UnityPort
   IEnumerator UiFinishCapture()
   {
    string output=Argument("-output"),phase=Argument("-ui-phase");if(string.IsNullOrEmpty(output))yield break;
-   Directory.CreateDirectory(output);lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();
-   SetGameFocus(true);yield return new WaitForSecondsRealtime(.4f);
+   // Same entry as the UI overlap check: skip the startup presentation first, otherwise EnterNativeTest leaves the lobby on screen
+   // (2026-11-03 Mac: every pause/inventory shot of this fixture showed the lobby).
+   Directory.CreateDirectory(output);smokeActive=true;lobby.AutomatedInput=true;lobby.SetPlaybackFocus(true);SetGameFocus(true);
+   lobby.ShowLobby();lobby.StartupCaptureState.Skip();lobby.SelectPreview();lobby.EnterNativeTest();
+   frontendEntryInputFence=false;Running=false;menu=false;if(firstPractice!=null)EndFirstPractice(true);Running=false;areaTitle.Hide();levelUp.Hide();
+   yield return new WaitForSecondsRealtime(.4f);
+   if(lobby.IsBlocking){uiArtFailures++;Debug.LogError("UI_FINISH_LOBBY_STILL_BLOCKING");}
    var log=new System.Collections.Generic.List<string>();
    foreach(var size in new[]{new Vector2Int(1920,1080),new Vector2Int(1600,900)})
    {

@@ -1,4 +1,4 @@
-2026-11-03 Mac Unity UI 인계(인벤토리 분해·제목·일시정지): 클라우드 브리프를 unity 작업 브랜치로 옮기고 `--unity-ui-finish-capture -ui-phase pause,inventory` 전/후 캡처 단계를 추가했다. 제품 UI 변경과 결과는 후속 절에 기록한다. [브리프·기록](engine/UNITY_PAUSE_SILVER_BRIEF_20261103.md#4-mac-적용-기록-2026-11-03-pc-ui-총괄-mac-세션).
+2026-11-03 Mac Unity UI 인계(인벤토리 분해·제목·일시정지): 클라우드 브리프를 unity 작업 브랜치로 옮기고 `--unity-ui-finish-capture -ui-phase pause,inventory` 전/후 캡처 단계를 추가했다. 이 장치가 로비에 머물던 결함(시작 연출 미건너뜀)을 UI 겹침 검사와 같은 진입 순서로 고쳤다. 제품 UI 변경과 결과는 후속 절에 기록한다. [브리프·기록](engine/UNITY_PAUSE_SILVER_BRIEF_20261103.md#4-mac-적용-기록-2026-11-03-pc-ui-총괄-mac-세션).
 
 2026-10-29 Mac 로비 메타 대비 후보: 최신 웹 `main:7e0113fe4`의 좌상단 회색 alpha `.5`는 실제 1280/1600 1x에서 석재 배경 위 판독이 약했다. Mac 정의 JSON의 일반·한도 alpha만 `.9`로 변경, ARM64 Settings QA build Succeeded/오류0, 5/5 실제 화면·Tab/Return/Esc 유지·로스터 SHA 불변. 웹 세 위치 동기화와 물리 마우스 hit는 HOLD, 전체 VISUAL VERDICT RETOUCH. [수치·화면·후속](engine/UNITY_LOBBY_20261024.md#2026-10-29-좌상단-메타-대비-후보--mac-범위).
 

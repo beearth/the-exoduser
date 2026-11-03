@@ -132,3 +132,5 @@ Unity 인벤토리의 "인벤토리" 제목과 눈 메달이 상단 공통 탭 �
 ### 4.1 전/후 캡처 고정 장치
 
 `--unity-ui-finish-capture -output <dir> -ui-phase pause,inventory`에 인벤토리 단계를 추가했다. 1920×1080·1600×900마다 인벤토리 열림, 가방 아이템 선택, 가방 전체 쓰레기 지정 화면을 찍고 junk 표시와 선택은 원래대로 돌린다. 일시정지는 기존 `pause` 단계(보조메뉴·종료확인·ESC 설정 직행)를 쓴다. 같은 장치로 변경 전 빌드와 변경 후 빌드를 찍는다.
+
+첫 실행(빌드 76fd7aa2)에서 이 장치의 일시정지·인벤토리 화면 12장이 모두 로비로 찍혔다. 장치가 시작 연출 상태를 건너뛰지 않아 `EnterNativeTest` 뒤에도 로비가 남았다. UI 겹침 검사와 같은 진입 순서(`StartupCaptureState.Skip` → `SelectPreview` → `EnterNativeTest` → 입력 울타리 해제·실습 종료)로 고치고, 로비가 남으면 실패로 센다. 처음 두 빌드 시도는 작업본에 로비 영상 2개(`Tools/restore-lobby-media.cjs`, `Tools/restore-warrior-story.cjs`)가 없어 `VerifyLobby`에서 멈췄고, 바이트 동일 복원 뒤 성공했다.
