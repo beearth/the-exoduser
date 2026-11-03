@@ -12,7 +12,7 @@ namespace Exoduser.UnityPort
     {
         sealed class WorldText { public float x, y, until; public string text; public Color color; }
         readonly List<WorldText> worldTexts = new List<WorldText>();
-        NativeArenaView arenaView; bool arenaViewWasOpen;
+        NativeArenaView arenaView; bool arenaViewWasOpen; int arenaPrewarmStage = -1;
         readonly NativeNextDifficultyPanel nextDifficulty=new NativeNextDifficultyPanel();
         public NativeBossBar.Input LastBossBarInput; public bool BossBarShown;
         bool English { get { return lobby != null && lobby.Language != "ko"; } }
@@ -100,6 +100,7 @@ namespace Exoduser.UnityPort
         {
             var flow = Simulation.Stage;
             Remodel3DSync();   // RM-INT: remodel 3D layer on/off (no-op without --remodel3d)
+            if (!flow.InArena && arenaPrewarmStage != Simulation.Config.StageIndex) { arenaPrewarmStage = Simulation.Config.StageIndex; PrewarmArenaMasks(arenaPrewarmStage); }
             if (flow.InArena && arenaView == null)
             {
                 foreach (var c in chunks.Values) { Destroy(c.renderer.gameObject); ReleaseSprites(c.path); }
@@ -108,6 +109,7 @@ namespace Exoduser.UnityPort
                 foreach (var ev in enemies.Values) { Destroy(ev.body.gameObject); Destroy(ev.walk.gameObject); }
                 enemies.Clear(); damage.Clear(); ClearDropViews(); kiView?.Reset(); impacts?.Reset();
                 arenaView = new NativeArenaView(transform, flow.Arena); arenaView.Rebuild(false, 0, 0); arenaViewWasOpen = false;
+                if (PerfProbe.Enabled) Debug.Log("UNITY_PERF_ARENA_MASK enter hits=" + NativeArenaView.CacheHits + " misses=" + NativeArenaView.CacheMisses);
             }
             else if (!flow.InArena && arenaView != null)
             {
@@ -119,7 +121,23 @@ namespace Exoduser.UnityPort
             if (arenaView != null && !arenaViewWasOpen && flow.Exits.Count > 0)
             {
                 var ex = flow.Exits[0]; arenaView.Rebuild(true, ex.X, ex.Y); arenaViewWasOpen = true;
+                if (PerfProbe.Enabled) Debug.Log("UNITY_PERF_ARENA_MASK exit hits=" + NativeArenaView.CacheHits + " misses=" + NativeArenaView.CacheMisses);
             }
+        }
+
+        // PERF-U4: the arena mask is a pure function of the stage's arena tiles (BossArenaLayout.Generate is deterministic per stage) and the exit.
+        // Precompute the closed mask and the opened-exit mask while the player is still in the field. The opened tiles mirror StageFlow's exit opening;
+        // if they ever differ the cache key (tile content) misses and the mask is computed on demand, so a mismatch costs time, never pixels.
+        static void PrewarmArenaMasks(int stage)
+        {
+            var arena = BossArenaLayout.Generate(stage);
+            NativeArenaView.Prewarm(arena.Tiles, false, 0, 0);
+            var t = (int[])arena.Tiles.Clone(); int ex = arena.ExitX, ey = arena.ExitY, w = BossArenaLayout.Width;
+            if (ey < 0 || ey >= BossArenaLayout.Height || ex < 0 || ex >= w) return;
+            t[ey * w + ex] = 0;
+            if (ex > 0 && t[ey * w + ex - 1] == 1) t[ey * w + ex - 1] = 0;
+            if (ex < w - 1 && t[ey * w + ex + 1] == 1) t[ey * w + ex + 1] = 0;
+            NativeArenaView.Prewarm(t, true, ex, ey);
         }
 
         void DestroyArenaView() { if (arenaView != null) { arenaView.Dispose(); arenaView = null; } arenaViewWasOpen = false; }

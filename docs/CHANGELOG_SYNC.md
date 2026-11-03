@@ -1,3 +1,5 @@
+2026-11-03 Unity PERF-U4 아레나 바닥 마스크: `NativeArenaView` 마스크(1536×1376, CPU 셰이딩 + 분리 블러 6회)를 타일 내용·출구 키로 캐시하고, 필드에 있는 동안 낮은 우선순위 스레드에서 닫힘·출구 개방 마스크를 미리 계산한다. 미스는 행 단위 병렬 계산. 에디터 `PerfSelfTests.ArenaMask` 7스테이지 × 닫힘/개방 직렬=병렬 바이트 동일 PASS. Mac 기준선의 아레나 입장(재도전 포함) 약 140 ms 정지 대상. [총괄 문서](12퍼포먼스·최적화/UNITY_FRAME_OPT_MASTER_20261103.md).
+
 2026-11-03 Unity 프레임 최적화 PERF-U0 측정 장치: `--unity-perf`일 때만 켜지는 `PerfProbe`/`PerfRecorder`(프레임 벽시계·FrameTimingManager CPU/GPU·GC·드로우콜·구간 Update/FixedSim/Views/Chunks/Gui/Hud/R3Late/Qa)와 `unity/Tools/perf/{analyze.py,run-mac.sh}`. 완주 QA는 perf 모드에서 PNG·해상도 전환 캡처를 끄고 경로 탐색 배열을 재사용한다(결과 동일). `enableFrameTimingStats 1`, `m_LogWhenShaderIsCompiled 1`. 꺼짐 상태 동작·그림 불변. Mac 기준선과 후보: [UNITY_FRAME_OPT_MASTER_20261103](12퍼포먼스·최적화/UNITY_FRAME_OPT_MASTER_20261103.md).
 
 2026-10-29 Mac 로비 메타 대비 후보: 최신 웹 `main:7e0113fe4`의 좌상단 회색 alpha `.5`는 실제 1280/1600 1x에서 석재 배경 위 판독이 약했다. Mac 정의 JSON의 일반·한도 alpha만 `.9`로 변경, ARM64 Settings QA build Succeeded/오류0, 5/5 실제 화면·Tab/Return/Esc 유지·로스터 SHA 불변. 웹 세 위치 동기화와 물리 마우스 hit는 HOLD, 전체 VISUAL VERDICT RETOUCH. [수치·화면·후속](engine/UNITY_LOBBY_20261024.md#2026-10-29-좌상단-메타-대비-후보--mac-범위).
