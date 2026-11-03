@@ -1,17 +1,11 @@
-float4 _A2RTargets[128],_A2RBattle;float4x4 _A2RViewportVP;int _A2RTargetCount;float _A2RFade,_A2RMaskBattle,_A2RRearClip,_A2REdgeFade;
-TEXTURE2D(_A2RNearestDepth);SAMPLER(sampler_A2RNearestDepth);float4x4 _A2RNearestVP,_A2RNearestView;float _A2RNearestReady,_A2RDepthTolerance;
-float A2RBattleMask(float3 world){float4 p=mul(_A2RViewportVP,float4(world,1));return 1-smoothstep(0,1,length((p.xy/p.w*.5+.5-_A2RBattle.xy)/_A2RBattle.zw));}
+float4 _A2RHoles[33],_A2RHoleScreen;int _A2RHoleCount;uint _A2RHoleLo,_A2RHoleHi;float _A2RFade;
+float4x4 _A2RViewportVP,_A2RNearestVP,_A2RNearestView;float _A2RNearestReady,_A2RDepthTolerance;
+TEXTURE2D(_A2RNearestDepth);SAMPLER(sampler_A2RNearestDepth);
+float A2RHoleMask(float3 world){float4 p=mul(_A2RViewportVP,float4(world,1));float2 uv=p.xy/p.w*.5+.5;float depth=-mul(_A2RNearestView,float4(world,1)).z;float mask=0;for(int i=0;i<min(33,_A2RHoleCount);i++){bool enabled=i<32?((_A2RHoleLo&(1u<<i))!=0):((_A2RHoleHi&(1u<<(i-32)))!=0);if(!enabled||depth>=_A2RHoles[i].w-.02)continue;float d=length((uv-_A2RHoles[i].xy)*_A2RHoleScreen.xy)/max(1,_A2RHoles[i].z);mask=max(mask,1-smoothstep(.7,1,d));}return mask;}
 void A2RKeepNearest(float3 world){if(_A2RNearestReady<.5)return;float4 p=mul(_A2RNearestVP,float4(world,1));float2 uv=p.xy/p.w*.5+.5;
 #if UNITY_UV_STARTS_AT_TOP
 uv.y=1-uv.y;
 #endif
 float nearest=SAMPLE_TEXTURE2D(_A2RNearestDepth,sampler_A2RNearestDepth,uv).r;float own=-mul(_A2RNearestView,float4(world,1)).z;clip(nearest+_A2RDepthTolerance-own);}
-// Rear opaque trunks must also be removed. Otherwise they show through the nearest faded trunk.
-// No nearest foreground coverage => the cleared far depth retains the original background.
-void A2RRejectRear(float3 world){if(_A2RRearClip>.5&&A2RBattleMask(world)>.002)A2RKeepNearest(world);}
-float A2RFadeMask(float3 world,float4 positionCS)
-{
-    if((_A2RFade<=0&&_A2REdgeFade<=0)||_A2RNearestReady<.5)return 0;
-    // 20:40 supersedes target circles: outside the battle ellipse is fully opaque.
-    return max(A2RBattleMask(world)*saturate(_A2RFade),.8125*saturate(_A2REdgeFade));
-}
+void A2RRejectRear(float3 world){if(A2RHoleMask(world)>.002)A2RKeepNearest(world);}
+float A2RFadeMask(float3 world,float4 positionCS){return _A2RNearestReady>.5?A2RHoleMask(world)*saturate(_A2RFade):0;}

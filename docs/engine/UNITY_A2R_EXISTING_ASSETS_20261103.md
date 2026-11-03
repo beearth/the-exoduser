@@ -189,3 +189,11 @@ Resources/Shaders/HellHeightFog.shader의16step전체화면적분은RenderSettin
 proof-a2r-r2255-vs-4895bf9c6.png / proof-a2r-r2255-diagnostics.png 직접 확인. 네 핵심 컷의 남쪽 전경 제외7/7/9/9개·원본이름16종, 끝액자0/0(최대1·폭12%계약), 끝 전체반투명0. 각 원본 ID/이유/투영크기는 I:/EXODUSER-Storage/map25d/a2redesign/r2255-exclusions.json 및 REPORT.md에 기록했다. 북쪽 기존 숲/거목은 남긴다. 마른땅ROI 접지 진단은 30131픽셀 변화 중28573픽셀이 어두워졌고, 청회 반점이 사라지는 것을 1x로 확인. 발밑광OFF/ON은 따뜻한 원형/모서리0, 영웅3x 원본텍셀유지. 늪/땅/다리 고정ROI luma18.19/37.99/42.49, 늪에 주황 반사줄 확인(전체명도자동PASS판정은아님).
 
 이번1~4는 개선 후보로 전달 가능 판정, 맵 총괄 최종판정·Mac/Metal 미검증. 전체맵AAA/밀집전투성능/사람1판 검증완료 주장없음. 웹카드 원본173/3D중복16/바닥64/새카드뜸0/식생113/인접동일0 유지. 원화·Core·rigpixel·34도카메라·장판수신셰이더 변경0. 바로가기 rigpixel 플래그·격리세이브·무음을 유지한다.
+
+## 00:10 시야선 우선 — 앞 고목 복원 / 세이브 명시 격리
+
+- 23:20/본편준비/비교판은 이번 범위에서 제외한다. 앞 고목 화면밑동/55%/12%/최대1개 숨김 규칙은 삭제했다. 원래 고목/카드의 원본 위치·크기·가시성 복원. 전체알파0, 원형 구멍 밖은 불투명.
+- 대상은 실제 카메라→영웅몸중심/14m안적·탄/앞고목뒤먼적의 mesh 표면 시야선이다. 게임플레이와 분리한 LocalPhysics3D 질의 장면에서 원본 mesh의 양면 query proxy만 사용한다. 바닥·늪·장판수신재질·actor/HUD 제외. CPU mesh ray+원화 alpha 검사 후 해당 renderer/대상 bit만 활성.
+- 영웅원 반경=화면키1.6배, 적·탄=키1.2배/최소24px, 최대32/가까운순. 안쪽70% alpha.1, 바깥30% smoothstep로1.0. .2초 페이드/.12초히스테리시스, 현재카메라행렬로매프레임계산. 실제원형영역에서 nearest surface만그려뒤줄기누적을막는다. 기존영웅뼈색윤곽유지/actor텍셀불변.
+- A2RHumanSave.Bind의 CandidateDefault 격리 분기 삭제. --a2r-play-sandbox 있을 때만 사용자 샌드박스 binding, QA는 기존 명시 --unity-qa-sandbox 경로를 사용한다. 표현기본ON과저장경로분리, 실제세이브쓰기0.
+- --a2r-sight-smoke는 일반로비→Core캠프 뒤 실제나무3지점을 원래 Core StepInput/BFS 경로로 이동(보조이동은가속,플레이어좌표대입0), OFF/ON1920·3840 원본컷과 자연 mesh 가림수/GPU픽셀을 요구한다. 적탄은 명시한 Core projectile fixture다. 남→북10초영상은실시간60Hz Core보행. 작은테스트판으로실제나무검증을대체하지않으며바로가기에도sightVerified를요구한다.

@@ -19,7 +19,7 @@ namespace Exoduser.UnityPort
             a2rLighting=a2Root.AddComponent<A2RLighting>();a2rLighting.Initialize(a2Root.transform,r3Cam,FindObjectsByType<Light>(FindObjectsInactive.Include,FindObjectsSortMode.None),volumes,()=>NativeRemodel3D.Point(Simulation.Player.X,Simulation.Player.Y));
             a2rLighting.SetHeroSprite(playerView);a2rLighting.Readability.SetOverlaps(A2RCollectOverlapRenderers);
             foreach(var p in Map.Data.props){if(p.id=="m_c1camp"){var at=NativeRemodel3D.Point(p.x,p.y);a2rLighting.AddLamp("A2R1 C10 camp fire",at+Vector3.up*1.3f,7.5f,9.5f,new Color(1,.32f,.08f));a2rLighting.AddLamp("A2R1 C10 camp glow",at+Vector3.up*.8f,4.8f,5.2f,new Color(1,.52f,.20f),false);}else if(p.id=="m_ctree15"||p.id=="m_c1altar")a2rLighting.AddLamp("A2R1 C10 red "+p.id,NativeRemodel3D.Point(p.x,p.y)+Vector3.up*1.2f,4.4f,4.56f,new Color(.92f,.18f,.14f));}
-            a2rOcclusion=a2Root.AddComponent<A2ROcclusion>();a2rOcclusion.Initialize(a2Root.transform,r3Cam,()=>NativeRemodel3D.Point(Simulation.Player.X,Simulation.Player.Y));a2rOcclusion.SetCombatSource(A2RCollectCombat);a2rWeb=a2Root.AddComponent<A2RWebAssets>();a2rWeb.Initialize(a2Root.transform,r3Cam,props,a2FieldSoil,a2Water,a2rOcclusion);a2rLighting.AnchorCamp(a2rWeb.CampFoot);a2rNature=a2Root.AddComponent<A2RNatureDynamics>();a2rNature.Initialize(a2Root.transform,a2rWeb.CampFoot,()=>NativeRemodel3D.Point(Simulation.Player.X,Simulation.Player.Y),A2RCollectNature);A2RSetLook(true);
+            a2rOcclusion=a2Root.AddComponent<A2ROcclusion>();a2rOcclusion.Initialize(a2Root.transform,r3Cam,()=>NativeRemodel3D.Point(Simulation.Player.X,Simulation.Player.Y));a2rOcclusion.SetCombatSource(A2RCollectCombat);a2rOcclusion.SetHeroBounds(()=>a2rLighting.Readability.HeroBounds);a2rWeb=a2Root.AddComponent<A2RWebAssets>();a2rWeb.Initialize(a2Root.transform,r3Cam,props,a2FieldSoil,a2Water,a2rOcclusion);a2rLighting.AnchorCamp(a2rWeb.CampFoot);a2rNature=a2Root.AddComponent<A2RNatureDynamics>();a2rNature.Initialize(a2Root.transform,a2rWeb.CampFoot,()=>NativeRemodel3D.Point(Simulation.Player.X,Simulation.Player.Y),A2RCollectNature);A2RSetLook(true);
         }
         void A2RCollectOverlapRenderers(List<SpriteRenderer> result)
         {
@@ -36,10 +36,9 @@ namespace Exoduser.UnityPort
         void A2RCollectCombat(List<Vector4> points)
         {
             // Read-only presentation data: no actor material/drawing or Core behavior changes.
-            foreach(var e in Simulation.Enemies)if(e.Alive&&!Simulation.IsRemodelProp(e)){EnemyView ev;Vector3 at=enemies.TryGetValue(e.Id,out ev)&&ev.body.enabled?ev.body.bounds.center:NativeRemodel3D.Point(e.X,e.Y)+Vector3.up*.8f;points.Add(new Vector4(at.x,at.y,at.z,.055f));}
-            foreach(var p in Simulation.Bolts)if(p.Active){var at=NativeRemodel3D.Point(p.X,p.Y)+Vector3.up*.25f;points.Add(new Vector4(at.x,at.y,at.z,.025f));}
-            if(Simulation.Druid!=null)foreach(var p in Simulation.Druid.Projectiles)if(p.Active){var at=NativeRemodel3D.Point(p.X,p.Y)+Vector3.up*.35f;points.Add(new Vector4(at.x,at.y,at.z,.04f));}
-            if(Simulation.SpawnHoles!=null)foreach(var h in Simulation.SpawnHoles.Holes){var at=NativeRemodel3D.Point(h.X,h.Y)+Vector3.up*.1f;points.Add(new Vector4(at.x,at.y,at.z,.075f));}
+            foreach(var e in Simulation.Enemies)if(e.Alive&&!Simulation.IsRemodelProp(e)){EnemyView ev;Vector3 at=enemies.TryGetValue(e.Id,out ev)&&ev.body.enabled?ev.body.bounds.center:NativeRemodel3D.Point(e.X,e.Y)+Vector3.up*.8f;points.Add(new Vector4(at.x,at.y,at.z,enemies.TryGetValue(e.Id,out ev)&&ev.body.enabled?Mathf.Max(.2f,ev.body.bounds.size.y):1.4f));}
+            foreach(var p in Simulation.Bolts)if(p.Active){var at=NativeRemodel3D.Point(p.X,p.Y)+Vector3.up*.25f;points.Add(new Vector4(at.x,at.y,at.z,-.25f));}
+            if(Simulation.Druid!=null)foreach(var p in Simulation.Druid.Projectiles)if(p.Active){var at=NativeRemodel3D.Point(p.X,p.Y)+Vector3.up*.35f;points.Add(new Vector4(at.x,at.y,at.z,-.35f));}
         }
         void A2RSetLook(bool on){a2rLighting.SetLook(on);a2rWeb.SetLook(on);a2rOcclusion.SetLook(on);if(a2rNature!=null)a2rNature.SetLook(on);}
         [Serializable] sealed class A2RPoint {public string id,kind;public float x,y;public int region;}

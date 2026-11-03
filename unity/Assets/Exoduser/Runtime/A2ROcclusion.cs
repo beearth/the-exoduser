@@ -4,99 +4,47 @@ using UnityEngine;
 using UnityEngine.Rendering;
 namespace Exoduser.UnityPort
 {
-    [DefaultExecutionOrder(26000)]
-    public sealed class A2ROcclusion : MonoBehaviour
-    {
-        const int TargetCapacity=128;
-        sealed class Entry {public Renderer body,fade;public Transform foot;public Material[] original;public float progress,edgeProgress,holdUntil;public bool eligible,latched,rearClip;}
-        struct Target {public Vector4 circle;public float depth;public bool camp;}
-        readonly List<Entry> entries=new List<Entry>();readonly MaterialPropertyBlock block=new MaterialPropertyBlock();
-        readonly List<Vector4> combatWorld=new List<Vector4>();readonly List<Target> targets=new List<Target>();readonly Vector4[] localTargets=new Vector4[TargetCapacity];
-        RenderTexture nearest;public int NearestDrawCalls {get;private set;}
-        Renderer camp;Camera viewer;Func<Vector3> hero;Action<List<Vector4>> collectCombat;A2RForegroundComposition composition;
-        public A2RForegroundComposition.Receipt CompositionReport {get{return composition!=null?composition.Result:null;}}
-        public bool Applied {get;private set;}public bool MasksEnabled {get;private set;}=true;
-        public int EdgeFadedRenderers {get;private set;}public int VisibleTargets {get;private set;}public int FadedRenderers {get;private set;}public int PeakDroppedTargets {get;private set;}
-        static bool IsSkillReceiver(Material material){return material!=null&&material.shader!=null&&material.shader.name.IndexOf("GroundSkillReceiver",StringComparison.Ordinal)>=0;}
-        public void Initialize(Transform world,Camera camera,Func<Vector3> heroPosition)
-        {
-            viewer=camera;hero=heroPosition;composition=new A2RForegroundComposition(world,camera);RenderPipelineManager.beginCameraRendering+=NearestPass;Shader opaque=Resources.Load<Shader>("A2R/LitOpaque"),transparent=Resources.Load<Shader>("A2R/LitFade");if(opaque==null||transparent==null)throw new InvalidOperationException("A2R tree occlusion shaders missing");var cache=new Dictionary<Material,Material[]>();
-            var candidates=new Dictionary<MeshRenderer,Transform>();foreach(Transform child in world)if((child.name.IndexOf("Tree",StringComparison.OrdinalIgnoreCase)>=0||child.name.IndexOf("거목",StringComparison.Ordinal)>=0||child.name.IndexOf("Stump",StringComparison.OrdinalIgnoreCase)>=0||child.name.IndexOf("Log",StringComparison.OrdinalIgnoreCase)>=0||child.name.IndexOf("목질",StringComparison.Ordinal)>=0||child.name.IndexOf("外곽",StringComparison.Ordinal)>=0))foreach(var renderer in child.GetComponentsInChildren<MeshRenderer>())candidates[renderer]=child;
-            foreach(var candidate in candidates){var r=candidate.Key;var filter=r.GetComponent<MeshFilter>();if(filter==null||filter.sharedMesh==null)continue;var old=r.sharedMaterials;bool receiver=false;foreach(var material in old)if(IsSkillReceiver(material))receiver=true;if(receiver)continue;var a=new Material[old.Length];var b=new Material[old.Length];for(int i=0;i<old.Length;i++){if(old[i]==null)continue;Material[] pair;if(!cache.TryGetValue(old[i],out pair)){pair=new[]{new Material(opaque),new Material(transparent)};foreach(var m in pair){m.CopyPropertiesFromMaterial(old[i]);string map=old[i].HasProperty("_BaseMap")?"_BaseMap":old[i].HasProperty("_MainTex")?"_MainTex":null;if(map!=null){m.SetTexture("_BaseMap",old[i].GetTexture(map));m.SetTextureScale("_BaseMap",old[i].GetTextureScale(map));m.SetTextureOffset("_BaseMap",old[i].GetTextureOffset(map));}if(!old[i].HasProperty("_BaseColor")&&old[i].HasProperty("_Color"))m.SetColor("_BaseColor",old[i].GetColor("_Color"));}pair[0].renderQueue=2460;pair[1].renderQueue=3000;cache[old[i]]=pair;}a[i]=pair[0];b[i]=pair[1];}
-                var go=new GameObject("A2R existing tree faded portion");go.transform.SetParent(r.transform,false);go.AddComponent<MeshFilter>().sharedMesh=filter.sharedMesh;var f=go.AddComponent<MeshRenderer>();f.sharedMaterials=b;f.shadowCastingMode=ShadowCastingMode.Off;f.enabled=false;entries.Add(new Entry{body=r,fade=f,foot=candidate.Value,original=old,rearClip=true,eligible=candidate.Value.name.IndexOf("안개 원경",StringComparison.Ordinal)<0});composition.Track(r,f,candidate.Value);r.sharedMaterials=a;RearFlag(r,true);
-            }
-            // Original materials are restored for the same-package baseline capture.
-            SetLook(false);
-        }
-        void NearestPass(ScriptableRenderContext context,Camera camera)
-        {
-            Shader.SetGlobalFloat("_A2RNearestReady",0);if(camera!=viewer||!Applied||!MasksEnabled||FadedRenderers==0)return;
-            int width=camera.pixelWidth,height=camera.pixelHeight;if(nearest==null||nearest.width!=width||nearest.height!=height){if(nearest!=null){nearest.Release();Destroy(nearest);}nearest=new RenderTexture(width,height,0,SystemInfo.SupportsBlendingOnRenderTextureFormat(RenderTextureFormat.RFloat)?RenderTextureFormat.RFloat:RenderTextureFormat.ARGBHalf){name="A2R nearest occluder surface",filterMode=FilterMode.Point,wrapMode=TextureWrapMode.Clamp};nearest.Create();}
-            var cmd=CommandBufferPool.Get("A2R nearest surface once");var vp=GL.GetGPUProjectionMatrix(camera.projectionMatrix,true)*camera.worldToCameraMatrix;cmd.SetGlobalMatrix("_A2RNearestVP",vp);cmd.SetGlobalMatrix("_A2RNearestView",camera.worldToCameraMatrix);cmd.SetRenderTarget(nearest);cmd.SetViewport(new Rect(0,0,width,height));cmd.ClearRenderTarget(false,true,new Color(camera.farClipPlane,camera.farClipPlane,camera.farClipPlane,camera.farClipPlane));cmd.SetGlobalFloat("_A2RDepthTolerance",nearest.format==RenderTextureFormat.RFloat?.002f:.02f);NearestDrawCalls=0;
-            foreach(var e in entries){if(e.progress<=0&&e.edgeProgress<=0||e.body==null||!e.body.enabled||!e.body.gameObject.activeInHierarchy)continue;var materials=e.body.sharedMaterials;for(int i=0;i<materials.Length;i++){var m=materials[i];if(m==null)continue;int pass=m.FindPass("A2RNearest");if(pass>=0){var filter=e.body.GetComponent<MeshFilter>();if(filter!=null&&filter.sharedMesh!=null){cmd.DrawMesh(filter.sharedMesh,e.body.localToWorldMatrix,m,i,pass);NearestDrawCalls++;}}}}
-            cmd.SetGlobalTexture("_A2RNearestDepth",nearest);cmd.SetGlobalFloat("_A2RNearestReady",1);context.ExecuteCommandBuffer(cmd);CommandBufferPool.Release(cmd);
-        }
-        public int NearestCoveredPixels(){if(nearest==null)return 0;var old=RenderTexture.active;var sample=new Texture2D(nearest.width,nearest.height,TextureFormat.RGBAFloat,false,true);try{RenderTexture.active=nearest;sample.ReadPixels(new Rect(0,0,nearest.width,nearest.height),0,0);sample.Apply();var data=sample.GetRawTextureData<float>();int covered=0;for(int i=0;i<data.Length;i+=4)if(data[i]>0&&data[i]<viewer.farClipPlane-.1f)covered++;return covered;}finally{RenderTexture.active=old;Destroy(sample);}}
-        void OnDestroy(){RenderPipelineManager.beginCameraRendering-=NearestPass;Shader.SetGlobalFloat("_A2RNearestReady",0);if(nearest!=null){nearest.Release();Destroy(nearest);}}
-        public void Register(Renderer body,Renderer faded,bool eligible,bool rearClip){entries.Add(new Entry{body=body,fade=faded,foot=body.transform,eligible=eligible,rearClip=rearClip});if(eligible)composition.Track(body,faded,body.transform);RearFlag(body,rearClip);}
-        void RearFlag(Renderer renderer,bool enabled){renderer.GetPropertyBlock(block);block.SetFloat("_A2RRearClip",enabled?1:0);renderer.SetPropertyBlock(block);}
-        public void ProtectLandmark(Renderer card){camp=card;}
-        public void SetCombatSource(Action<List<Vector4>> source){collectCombat=source;}
-        public void SetMasksEnabled(bool on){MasksEnabled=on;FadedRenderers=0;VisibleTargets=0;foreach(var e in entries){e.progress=0;e.edgeProgress=0;e.holdUntil=0;e.latched=false;ClearMask(e.body);ClearMask(e.fade);}}
-        public void SetLook(bool on)
-        {
-            Applied=on;composition.Restore(on);foreach(var e in entries){if(e.original!=null){if(!on){var current=e.body.sharedMaterials;if(current.Length>0&&current[0]!=null&&current[0].shader.name.StartsWith("EXODUSER/A2R/",StringComparison.Ordinal))replacement[e.body]=current;e.body.sharedMaterials=e.original;}else{Material[] m;if(replacement.TryGetValue(e.body,out m))e.body.sharedMaterials=m;}}e.progress=0;e.edgeProgress=0;e.holdUntil=0;e.latched=false;ClearMask(e.body);ClearMask(e.fade);if(e.fade!=null)e.fade.enabled=on;}
-        }
-        void ClearMask(Renderer renderer){if(renderer==null)return;renderer.GetPropertyBlock(block);block.SetFloat("_A2RFade",0);block.SetFloat("_A2REdgeFade",0);block.SetFloat("_A2RMaskBattle",0);block.SetInt("_A2RTargetCount",0);renderer.SetPropertyBlock(block);}
-        readonly Dictionary<Renderer,Material[]> replacement=new Dictionary<Renderer,Material[]>();
-        void LateUpdate()
-        {
-            if(!Applied||!MasksEnabled||viewer==null||hero==null)return;var heroFoot=hero();composition.Update(heroFoot);var heroViewport=viewer.WorldToViewportPoint(heroFoot+Vector3.up*.9f);targets.Clear();AddTarget(heroFoot+Vector3.up*.9f,.12f,false);
-            if(camp!=null&&camp.enabled&&camp.gameObject.activeInHierarchy)AddTarget(camp.bounds.center,.18f,true);
-            combatWorld.Clear();if(collectCombat!=null)collectCombat(combatWorld);foreach(var t in combatWorld)AddTarget(new Vector3(t.x,t.y,t.z),t.w,false);VisibleTargets=targets.Count;FadedRenderers=0;EdgeFadedRenderers=0;int dropped=0;
-            // CPU viewport projection is used for BOTH fragment and target math, avoiding RT Y flips.
-            Shader.SetGlobalMatrix("_A2RViewportVP",viewer.projectionMatrix*viewer.worldToCameraMatrix);
-            Shader.SetGlobalVector("_A2RBattle",new Vector4(heroViewport.x,heroViewport.y,.225f,.20f));
-            foreach(var e in entries)
-            {
-                // Core Y grows south; world z=-CoreY/100, so the camera side has SMALLER world z.
-                if(e.body==null||e.fade==null||e.foot==null)continue;if(!e.eligible)continue;if(!composition.AllowsMask(e.body)){e.progress=0;e.edgeProgress=0;e.latched=false;ClearMask(e.body);ClearMask(e.fade);e.fade.enabled=false;continue;}if(!e.body.enabled||!e.body.gameObject.activeInHierarchy){e.progress=0;e.edgeProgress=0;e.latched=false;ClearMask(e.body);ClearMask(e.fade);continue;}float depth;var rect=ProjectBounds(e.body.bounds,out depth);bool south=e.foot.position.z<heroFoot.z+(e.latched?.10f:-.05f);float margin=e.latched?1.08f:1;int localCount=0;bool battle=false;
-                if(e.eligible&&south&&rect.width>0)
-                {
-                    var lower=Rect.MinMaxRect(rect.xMin,rect.yMin,rect.xMax,Mathf.Min(rect.yMax,.60f));
-                    battle=heroViewport.z>depth&&lower.height>0&&Intersects(lower,new Vector4(heroViewport.x,heroViewport.y,.225f,.20f),margin);
-
-                }
-                // Edge trunks use composition exclusion/one opaque frame, never whole-trunk alpha.
-                e.edgeProgress=0;
-                bool hit=battle;if(hit)e.holdUntil=Time.unscaledTime+.12f;else if(!south)e.holdUntil=0;
-                e.latched=hit||Time.unscaledTime<e.holdUntil;e.progress=Mathf.MoveTowards(e.progress,e.latched?1:0,Time.unscaledDeltaTime/.2f);if(e.progress>0||e.edgeProgress>0)FadedRenderers++;
-                ApplyMask(e.body,localCount,battle,hit,e.progress);ApplyMask(e.fade,localCount,battle,hit,e.progress);
-            }
-            PeakDroppedTargets=Mathf.Max(PeakDroppedTargets,dropped);
-        }
-        void AddTarget(Vector3 world,float radius,bool landmark)
-        {
-            var v=viewer.WorldToViewportPoint(world);float rx=radius/viewer.aspect;if(v.z<=0||v.x< -rx||v.x>1+rx||v.y< -radius||v.y>1+radius)return;
-            targets.Add(new Target{circle=new Vector4(v.x,v.y,radius/viewer.aspect,radius),depth=v.z,camp=landmark});
-        }
-        Rect ProjectBounds(Bounds bounds,out float depth)
-        {
-            float minX=1,minY=1,maxX=0,maxY=0;depth=float.PositiveInfinity;bool behind=false;
-            for(int n=0;n<8;n++){var p=viewer.WorldToViewportPoint(bounds.center+Vector3.Scale(bounds.extents,new Vector3((n&1)==0?-1:1,(n&2)==0?-1:1,(n&4)==0?-1:1)));if(p.z<=viewer.nearClipPlane){behind=true;continue;}depth=Mathf.Min(depth,p.z);minX=Mathf.Min(minX,p.x);minY=Mathf.Min(minY,p.y);maxX=Mathf.Max(maxX,p.x);maxY=Mathf.Max(maxY,p.y);}
-            if(float.IsPositiveInfinity(depth))return new Rect();if(behind)return new Rect(0,0,1,1);
-            return Rect.MinMaxRect(Mathf.Clamp01(minX),Mathf.Clamp01(minY),Mathf.Clamp01(maxX),Mathf.Clamp01(maxY));
-        }
-        static bool Intersects(Rect rect,Vector4 ellipse,float margin)
-        {
-            float dx=(Mathf.Clamp(ellipse.x,rect.xMin,rect.xMax)-ellipse.x)/(ellipse.z*margin),dy=(Mathf.Clamp(ellipse.y,rect.yMin,rect.yMax)-ellipse.y)/(ellipse.w*margin);return dx*dx+dy*dy<=1;
-        }
-        void ApplyMask(Renderer renderer,int count,bool battle,bool update,float progress)
-        {
-            renderer.GetPropertyBlock(block);
-            // Retain the last mask through the hysteresis hold and the 0.2s fade-out.
-            if(update){if(count>0)block.SetVectorArray("_A2RTargets",localTargets);block.SetInt("_A2RTargetCount",count);block.SetFloat("_A2RMaskBattle",battle?1:0);}
-            block.SetFloat("_A2RFade",progress);renderer.SetPropertyBlock(block);
-        }
-    }
+ [DefaultExecutionOrder(26000)] public sealed class A2ROcclusion:MonoBehaviour
+ {
+  const int Capacity=33;
+  sealed class Entry{public Renderer body,fade;public string id;public Material[] original,own;public float progress,hold;public uint lo,hi;}
+  readonly List<Entry> entries=new List<Entry>();readonly MaterialPropertyBlock block=new MaterialPropertyBlock();readonly Vector4[] circles=new Vector4[Capacity];readonly List<Vector4> combat=new List<Vector4>();readonly List<Vector3> points=new List<Vector3>();readonly List<bool> projectile=new List<bool>();
+  Camera viewer;Func<Vector3> hero;Func<Bounds> heroBounds;Action<List<Vector4>> collect;A2RSightQuery query;RenderTexture nearest;
+  public bool Applied{get;private set;}public bool MasksEnabled{get;private set;}=true;
+  public int NearestDrawCalls{get;private set;}public int FadedRenderers{get;private set;}public int VisibleTargets{get;private set;}public int PeakDroppedTargets{get;private set;}public int EdgeFadedRenderers{get{return 0;}}public int SightSurfaces{get;private set;}public int HeroSightSurfaces{get;private set;}public int ProjectileSightSurfaces{get;private set;}public int ForegroundFarTargets{get;private set;}
+  public readonly List<string> HitNames=new List<string>();
+  public A2RForegroundComposition.Receipt CompositionReport{get{return new A2RForegroundComposition.Receipt();}}
+  public void Initialize(Transform world,Camera camera,Func<Vector3> player){viewer=camera;hero=player;query=new A2RSightQuery();RenderPipelineManager.beginCameraRendering+=NearestPass;
+   var candidates=new List<MeshRenderer>(world.GetComponentsInChildren<MeshRenderer>(true));foreach(var r in candidates){if(r.bounds.size.y<1.1f||r.name.StartsWith("A2R",StringComparison.Ordinal))continue;bool skip=false;foreach(var m in r.sharedMaterials){if(m==null||m.shader==null)continue;string n=m.shader.name;if(n.Contains("Ground")||n.Contains("Water")||n.Contains("River")||n.Contains("Fog")||n.Contains("Atmosphere")||n.Contains("Contact")||n.Contains("RootSurface"))skip=true;}if(skip)continue;Wrap(r);}
+   SetLook(false);
+  }
+  void Wrap(Renderer r){var f=r.GetComponent<MeshFilter>();if(f==null||f.sharedMesh==null)return;var old=r.sharedMaterials;var a=new Material[old.Length];var b=new Material[old.Length];for(int i=0;i<old.Length;i++){if(old[i]==null)continue;a[i]=new Material(Resources.Load<Shader>("A2R/LitOpaque"));b[i]=new Material(Resources.Load<Shader>("A2R/LitFade"));foreach(var m in new[]{a[i],b[i]}){m.CopyPropertiesFromMaterial(old[i]);string key=old[i].HasProperty("_BaseMap")?"_BaseMap":old[i].HasProperty("_MainTex")?"_MainTex":null;if(key!=null){m.SetTexture("_BaseMap",old[i].GetTexture(key));m.SetTextureScale("_BaseMap",old[i].GetTextureScale(key));m.SetTextureOffset("_BaseMap",old[i].GetTextureOffset(key));}if(!old[i].HasProperty("_BaseColor")&&old[i].HasProperty("_Color"))m.SetColor("_BaseColor",old[i].GetColor("_Color"));}a[i].renderQueue=2460;b[i].renderQueue=3000;}
+   var go=new GameObject("A2R sight circle portion");go.transform.SetParent(r.transform,false);go.AddComponent<MeshFilter>().sharedMesh=f.sharedMesh;var fade=go.AddComponent<MeshRenderer>();fade.sharedMaterials=b;fade.shadowCastingMode=ShadowCastingMode.Off;fade.enabled=false;entries.Add(new Entry{body=r,fade=fade,original=old,own=a,id=PathOf(r.transform)});r.sharedMaterials=a;
+  }
+  public void Register(Renderer body,Renderer faded,bool eligible,bool rearClip){entries.Add(new Entry{body=body,fade=faded,id=PathOf(body.transform)});}
+  public void SetHeroBounds(Func<Bounds> bounds){heroBounds=bounds;}
+  public void ProtectLandmark(Renderer card){}
+  public void SetCombatSource(Action<List<Vector4>> source){collect=source;}
+  public void SetLook(bool on){Applied=on;foreach(var e in entries){if(e.body==null)continue;if(e.original!=null)e.body.sharedMaterials=on?e.own:e.original;e.progress=0;e.lo=e.hi=0;e.hold=0;Apply(e);e.fade.enabled=on;}Shader.SetGlobalInt("_A2RHoleCount",0);}
+  public void SetMasksEnabled(bool on){MasksEnabled=on;foreach(var e in entries){e.progress=0;e.lo=e.hi=0;e.hold=0;Apply(e);}Shader.SetGlobalInt("_A2RHoleCount",0);}
+  void Apply(Entry e){foreach(var r in new[]{e.body,e.fade}){if(r==null)continue;r.GetPropertyBlock(block);block.SetFloat("_A2RFade",e.progress);block.SetInt("_A2RHoleLo",unchecked((int)e.lo));block.SetInt("_A2RHoleHi",unchecked((int)e.hi));r.SetPropertyBlock(block);}}
+  public bool IsSightBlocked(Vector3 point,out string name){return IsSightBlockedFrom(viewer.transform.position,point,out name);}
+  public bool IsSightBlockedFrom(Vector3 eye,Vector3 point,out string name,string filter=null){foreach(var e in entries){if(e.body==null)continue;string id=e.id;if(filter!=null&&id.IndexOf(filter,StringComparison.OrdinalIgnoreCase)<0)continue;Vector3 hit;if(query.Hit(e.body,eye,point,out hit)){name=e.id;return true;}}name="";return false;}
+  public List<Bounds> LandmarkBounds(string contains){var result=new List<Bounds>();foreach(var e in entries)if(e.body!=null&&(e.body.name.IndexOf(contains,StringComparison.OrdinalIgnoreCase)>=0||e.body.transform.parent!=null&&e.body.transform.parent.name.IndexOf(contains,StringComparison.OrdinalIgnoreCase)>=0))result.Add(e.body.bounds);return result;}
+  public void LateUpdate(){if(!Applied||viewer==null)return;FadedRenderers=SightSurfaces=HeroSightSurfaces=ProjectileSightSurfaces=ForegroundFarTargets=0;HitNames.Clear();points.Clear();projectile.Clear();if(!MasksEnabled){Shader.SetGlobalInt("_A2RHoleCount",0);return;}
+   var bounds=heroBounds!=null?heroBounds():new Bounds(hero()+Vector3.up*.8f,new Vector3(.8f,1.6f,.2f));float height=ScreenHeight(bounds);Add(bounds.center,height*1.6f);combat.Clear();if(collect!=null)collect(combat);var at=hero();combat.Sort((a,b)=>(new Vector3(a.x,a.y,a.z)-at).sqrMagnitude.CompareTo((new Vector3(b.x,b.y,b.z)-at).sqrMagnitude));int used=0;foreach(var t in combat){var p=new Vector3(t.x,t.y,t.z);float distance=new Vector2(p.x-at.x,p.z-at.z).magnitude;bool far=distance>14;if(far&&t.w<0)continue;if(far){string id;if(!IsSightBlocked(p,out id))continue;ForegroundFarTargets++;}if(used>=32){PeakDroppedTargets++;continue;}var v=viewer.WorldToScreenPoint(p);if(v.z<=0||v.x<0||v.x>viewer.pixelWidth||v.y<0||v.y>viewer.pixelHeight)continue;float h=ScreenHeight(new Bounds(p,Vector3.one*Mathf.Abs(t.w)));if(Add(p,Mathf.Max(24,h*1.2f),t.w<0))used++;}
+   VisibleTargets=points.Count;Shader.SetGlobalMatrix("_A2RViewportVP",viewer.projectionMatrix*viewer.worldToCameraMatrix);Shader.SetGlobalMatrix("_A2RNearestView",viewer.worldToCameraMatrix);Shader.SetGlobalVector("_A2RHoleScreen",new Vector4(viewer.pixelWidth,viewer.pixelHeight,0,0));Shader.SetGlobalVectorArray("_A2RHoles",circles);Shader.SetGlobalInt("_A2RHoleCount",points.Count);
+   foreach(var e in entries){if(e.body==null||e.fade==null)continue;e.fade.enabled=Applied;uint lo=0,hi=0;if(e.body.enabled&&e.body.gameObject.activeInHierarchy){for(int i=0;i<points.Count;i++){Vector3 hit;if(!query.Hit(e.body,viewer.transform.position,points[i],out hit))continue;if(i<32)lo|=1u<<i;else hi|=1u<<(i-32);if(i==0)HeroSightSurfaces++;else if(projectile[i])ProjectileSightSurfaces++;} }
+    bool hitAny=(lo|hi)!=0;if(hitAny){e.lo=lo;e.hi=hi;e.hold=Time.unscaledTime+.12f;SightSurfaces++;HitNames.Add(e.id);}bool active=hitAny||Time.unscaledTime<e.hold;e.progress=Mathf.MoveTowards(e.progress,active?1:0,Time.unscaledDeltaTime/.2f);if(e.progress>0)FadedRenderers++;else e.lo=e.hi=0;Apply(e);
+   }
+  }
+  static string PathOf(Transform t){string n=t.name;for(int i=0;i<5&&t.parent!=null;i++){t=t.parent;n=t.name+"/"+n;}return n;}
+  bool Add(Vector3 world,float radius,bool isProjectile=false){if(points.Count>=Capacity)return false;var v=viewer.WorldToViewportPoint(world);if(v.z<=0)return false;circles[points.Count]=new Vector4(v.x,v.y,radius,v.z);points.Add(world);projectile.Add(isProjectile);return true;}
+  float ScreenHeight(Bounds b){float lo=float.PositiveInfinity,hi=float.NegativeInfinity;for(int i=0;i<8;i++){var p=viewer.WorldToScreenPoint(b.center+Vector3.Scale(b.extents,new Vector3((i&1)==0?-1:1,(i&2)==0?-1:1,(i&4)==0?-1:1)));if(p.z>0){lo=Mathf.Min(lo,p.y);hi=Mathf.Max(hi,p.y);}}return float.IsPositiveInfinity(lo)?48:Mathf.Max(4,hi-lo);}
+  void NearestPass(ScriptableRenderContext context,Camera camera){if(camera!=viewer)return;Shader.SetGlobalFloat("_A2RNearestReady",0);NearestDrawCalls=0;if(!Applied||!MasksEnabled||FadedRenderers==0)return;int width=camera.pixelWidth,height=camera.pixelHeight;if(nearest==null||nearest.width!=width||nearest.height!=height){if(nearest!=null){nearest.Release();Destroy(nearest);}nearest=new RenderTexture(width,height,0,SystemInfo.SupportsBlendingOnRenderTextureFormat(RenderTextureFormat.RFloat)?RenderTextureFormat.RFloat:RenderTextureFormat.ARGBHalf){filterMode=FilterMode.Point};nearest.Create();}
+   var cmd=CommandBufferPool.Get("A2R sight surface once");cmd.SetGlobalMatrix("_A2RNearestVP",GL.GetGPUProjectionMatrix(camera.projectionMatrix,true)*camera.worldToCameraMatrix);cmd.SetGlobalMatrix("_A2RNearestView",camera.worldToCameraMatrix);cmd.SetGlobalFloat("_A2RDepthTolerance",nearest.format==RenderTextureFormat.RFloat?.003f:.025f);cmd.SetRenderTarget(nearest);cmd.SetViewport(new Rect(0,0,width,height));cmd.ClearRenderTarget(false,true,new Color(camera.farClipPlane,camera.farClipPlane,camera.farClipPlane,camera.farClipPlane));foreach(var e in entries){if(e.progress<=0||e.body==null||!e.body.enabled||!e.body.gameObject.activeInHierarchy)continue;var filter=e.body.GetComponent<MeshFilter>();if(filter==null||filter.sharedMesh==null)continue;var materials=e.body.sharedMaterials;e.body.GetPropertyBlock(block);for(int i=0;i<materials.Length;i++){var m=materials[i];if(m==null)continue;int pass=m.FindPass("A2RNearest");if(pass>=0){cmd.DrawMesh(filter.sharedMesh,e.body.localToWorldMatrix,m,i,pass,block);NearestDrawCalls++;}}}cmd.SetGlobalTexture("_A2RNearestDepth",nearest);cmd.SetGlobalFloat("_A2RNearestReady",1);context.ExecuteCommandBuffer(cmd);CommandBufferPool.Release(cmd);
+  }
+  public int NearestCoveredPixels(){if(nearest==null||NearestDrawCalls==0)return 0;var old=RenderTexture.active;var sample=new Texture2D(nearest.width,nearest.height,TextureFormat.RGBAFloat,false,true);try{RenderTexture.active=nearest;sample.ReadPixels(new Rect(0,0,nearest.width,nearest.height),0,0);sample.Apply();var data=sample.GetRawTextureData<float>();int count=0;for(int i=0;i<data.Length;i+=4)if(data[i]>0&&data[i]<viewer.farClipPlane-.1f)count++;return count;}finally{RenderTexture.active=old;Destroy(sample);}}
+  void OnDestroy(){RenderPipelineManager.beginCameraRendering-=NearestPass;if(query!=null)query.Dispose();if(nearest!=null){nearest.Release();Destroy(nearest);}Shader.SetGlobalInt("_A2RHoleCount",0);Shader.SetGlobalFloat("_A2RNearestReady",0);}
+ }
 }

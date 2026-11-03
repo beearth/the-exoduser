@@ -1,0 +1,18 @@
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+namespace Exoduser.UnityPort
+{
+    // Isolated query scene: no colliders are added to gameplay, no Core/ground writer.
+    public sealed class A2RSightQuery
+    {
+        readonly Scene scene;readonly Dictionary<Renderer,MeshCollider> colliders=new Dictionary<Renderer,MeshCollider>();readonly Dictionary<Mesh,Mesh> meshes=new Dictionary<Mesh,Mesh>();readonly Dictionary<Texture,Texture2D> alpha=new Dictionary<Texture,Texture2D>();readonly Dictionary<Renderer,int> synced=new Dictionary<Renderer,int>();
+        public A2RSightQuery(){scene=SceneManager.CreateScene("A2R visibility queries only",new CreateSceneParameters(LocalPhysicsMode.Physics3D));}
+        MeshCollider Proxy(Renderer body){MeshCollider c;if(colliders.TryGetValue(body,out c))return c;var f=body.GetComponent<MeshFilter>();if(f==null||f.sharedMesh==null||!f.sharedMesh.isReadable)return null;Mesh mesh;if(!meshes.TryGetValue(f.sharedMesh,out mesh)){var source=f.sharedMesh;var indices=source.triangles;var both=new int[indices.Length*2];System.Array.Copy(indices,both,indices.Length);for(int i=0;i<indices.Length;i+=3){both[indices.Length+i]=indices[i];both[indices.Length+i+1]=indices[i+2];both[indices.Length+i+2]=indices[i+1];}mesh=new Mesh{name="A2R two-sided visibility mesh",indexFormat=UnityEngine.Rendering.IndexFormat.UInt32};mesh.vertices=source.vertices;mesh.uv=source.uv;mesh.triangles=both;mesh.RecalculateBounds();meshes[source]=mesh;}var go=new GameObject("A2R query: "+body.name);SceneManager.MoveGameObjectToScene(go,scene);c=go.AddComponent<MeshCollider>();c.cookingOptions=MeshColliderCookingOptions.CookForFasterSimulation|MeshColliderCookingOptions.UseFastMidphase;c.sharedMesh=mesh;colliders[body]=c;return c;}
+        public bool Hit(Renderer body,Vector3 camera,Vector3 target,out Vector3 hitPoint){hitPoint=Vector3.zero;if(body==null||!body.enabled||!body.gameObject.activeInHierarchy)return false;var delta=target-camera;float length=delta.magnitude;if(length<.05f)return false;var ray=new Ray(camera,delta/length);float distance;if(!body.bounds.IntersectRay(ray,out distance)||distance>=length-.03f)return false;var c=Proxy(body);if(c==null)return false;int frame;if(!synced.TryGetValue(body,out frame)||frame!=Time.frameCount){c.transform.SetPositionAndRotation(body.transform.position,body.transform.rotation);c.transform.localScale=body.transform.lossyScale;Physics.SyncTransforms();synced[body]=Time.frameCount;}RaycastHit hit;if(!c.Raycast(ray,out hit,length-.03f))return false;
+            var m=body.sharedMaterial;if(m!=null){string key=m.HasProperty("_MainTex")?"_MainTex":m.HasProperty("_BaseMap")?"_BaseMap":null;var texture=key!=null?m.GetTexture(key):null;if(texture!=null){Texture2D sample;if(!alpha.TryGetValue(texture,out sample)){var rt=RenderTexture.GetTemporary(256,256,0,RenderTextureFormat.ARGB32);var old=RenderTexture.active;try{Graphics.Blit(texture,rt);RenderTexture.active=rt;sample=new Texture2D(256,256,TextureFormat.RGBA32,false);sample.ReadPixels(new Rect(0,0,256,256),0,0);sample.Apply();sample.wrapMode=texture.wrapMode;alpha[texture]=sample;}finally{RenderTexture.active=old;RenderTexture.ReleaseTemporary(rt);}}var uv=Vector2.Scale(hit.textureCoord,m.GetTextureScale(key))+m.GetTextureOffset(key);if(sample.GetPixelBilinear(uv.x,uv.y).a<.12f)return false;}}
+            hitPoint=hit.point;return true;
+        }
+        public void Dispose(){foreach(var m in meshes.Values)Object.Destroy(m);foreach(var t in alpha.Values)Object.Destroy(t);if(scene.IsValid())SceneManager.UnloadSceneAsync(scene);}
+    }
+}

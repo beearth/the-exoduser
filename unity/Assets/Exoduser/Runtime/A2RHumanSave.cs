@@ -15,12 +15,12 @@ namespace Exoduser.UnityPort
         static void Bind()
         {
             var args=Environment.GetCommandLineArgs();int human=Array.IndexOf(args,Flag),qa=Array.IndexOf(args,NativeQaSandbox.Argument);
-            if(human<0&&!CandidateDefault)return;
+            // The art default must never redirect a normal player's character roster.
+            if(human<0)return;
             try
             {
-                int at=qa>=0?qa:human;string root;
-                if(at>=0){if(at+1>=args.Length||args[at+1].StartsWith("-",StringComparison.Ordinal)||!Path.IsPathRooted(args[at+1]))throw new ArgumentException("A2R save namespace requires an absolute directory");root=Path.GetFullPath(args[at+1]);}
-                else root=Application.platform==RuntimePlatform.WindowsPlayer||Application.platform==RuntimePlatform.WindowsEditor?"I:/EXODUSER-Storage/map25d/a2r-play-sandbox":Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),"Library/Application Support/EXODUSER-A2R-sandbox");
+                int at=human;string root;
+                if(at+1>=args.Length||args[at+1].StartsWith("-",StringComparison.Ordinal)||!Path.IsPathRooted(args[at+1]))throw new ArgumentException("A2R save namespace requires an absolute directory");root=Path.GetFullPath(args[at+1]);
                 if(human>=0&&qa<0&&(Application.platform==RuntimePlatform.WindowsPlayer||Application.platform==RuntimePlatform.WindowsEditor)&&!root.StartsWith(Path.GetFullPath("I:/EXODUSER-Storage/map25d/"),StringComparison.OrdinalIgnoreCase))throw new ArgumentException("A2R human save must remain in Map25D storage");
                 Directory.CreateDirectory(root);string probe=Path.Combine(root,".a2r-write-probe");File.WriteAllText(probe,"isolated A2R play");File.Delete(probe);
                 var flags=BindingFlags.Static|BindingFlags.NonPublic;var field=typeof(NativeQaSandbox).GetField("root",flags);var resolved=typeof(NativeQaSandbox).GetField("resolved",flags);
