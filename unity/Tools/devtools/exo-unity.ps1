@@ -32,6 +32,18 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+# install-bin and the explicit no-forward escape hatch must execute the local body.
+$SharedExoUnity='I:/EXODUSER-Storage/unity-jobs/bin/exo-unity.ps1'
+if($Command -ne 'install-bin' -and $env:EXO_UNITY_NO_FORWARD -ne '1' -and
+   [IO.Path]::GetFullPath($PSCommandPath) -ne [IO.Path]::GetFullPath($SharedExoUnity)){
+    if(-not (Test-Path -LiteralPath $SharedExoUnity -PathType Leaf)){
+        [Console]::Error.WriteLine('Shared Unity runner missing: '+$SharedExoUnity)
+        exit 1
+    }
+    & $SharedExoUnity @PSBoundParameters
+    exit $LASTEXITCODE
+}
+
 $ExoUnityVersion = '2026.11.03-slots3'
 $MaxPlayerSlots = 2
 Import-Module (Join-Path $PSScriptRoot 'QueueTurn.psm1') -Force

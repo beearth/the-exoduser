@@ -30,7 +30,7 @@ namespace Exoduser.UnityPort.Core
    else if(Page==FrontendEntryPage.Curtain&&Elapsed>=.9){Page=FrontendEntryPage.Complete;Elapsed=0;}
   }
   public void Advance(){if(Page==FrontendEntryPage.Nemesis){var l=Line;if(l!=null&&!string.IsNullOrEmpty(l.text)&&!string.IsNullOrEmpty(l.speaker)&&VisibleCharacters<l.text.Replace("\n","").Length&&!FullText){FullText=true;return;}NextLine();}else if(Page==FrontendEntryPage.Guide&&Elapsed>=guideReady){guideReady=Elapsed+.25;if(++GuideStep>=4)FinishGuide();}}
-  void NextLine(){LineIndex++;Elapsed=0;FullText=false;HoldProgress=0;if(lines==null||LineIndex>=lines.Length)ShowGuide();}
+  void NextLine(){LineIndex++;Elapsed=0;FullText=false;if(lines==null||LineIndex>=lines.Length)ShowGuide();}
   public void Skip(){if(Page==FrontendEntryPage.Nemesis)ShowGuide();else if(Page==FrontendEntryPage.Guide)FinishGuide();}
   void ShowGuide(){Page=FrontendEntryPage.Guide;GuideStep=0;Elapsed=0;guideReady=.25;HoldProgress=0;}
   void FinishGuide(){Page=FrontendEntryPage.Curtain;Elapsed=0;HoldProgress=0;}

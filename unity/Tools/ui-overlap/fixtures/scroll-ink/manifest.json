@@ -1,0 +1,94 @@
+{
+  "scope": "R3 실제 Player PNG에서 무보간 lossless crop. 제품 수정 후 PASS 근거 아님. 각 ROI는 1x 직접 육안 확인. 기준 소스 289a047f7; 기존 잘못된 감사 상자를 음성 대조군으로 보존.",
+  "sourceDirectory": "I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/fifth/resume-0912/r3/ui",
+  "rows": [
+    {
+      "stem": "2560x1600-ko-튜토리얼0",
+      "roi": [
+        1487,
+        655,
+        38,
+        60
+      ],
+      "text": "이",
+      "min": 100,
+      "mode": "gray",
+      "source": "NativeLobby.StartupPresentation.cs:167",
+      "legacyRect": {
+        "serializedVersion": "2",
+        "x": 1410.370361328125,
+        "y": 597.7977905273438,
+        "width": 24.38525390625,
+        "height": 45.05181884765625
+      },
+      "pngSha256": "df2bb7a76f59e980641d7f0a7bcaff453367bbd313fbb81277f9b7da3d91027f",
+      "jsonSha256": "375942dd5def0e68bfc083a51083ea7fbb39668b5f36a7913082e12026119087"
+    },
+    {
+      "stem": "1600x900-ko-튜토리얼0",
+      "roi": [
+        995,
+        380,
+        24,
+        38
+      ],
+      "text": "이",
+      "min": 60,
+      "mode": "gray",
+      "source": "NativeLobby.StartupPresentation.cs:167",
+      "legacyRect": {
+        "serializedVersion": "2",
+        "x": 1188.1666259765625,
+        "y": 424.1650085449219,
+        "width": 21.7083740234375,
+        "height": 33.791656494140625
+      },
+      "pngSha256": "19828033f0a990c1d59befd19d1da4ac61627e638ac32aeb187678d90f1dbcb1",
+      "jsonSha256": "49b61932f879d930ebd22d1fe77a95d1cad8a2b8b332656db9e363a36f9b645e"
+    },
+    {
+      "stem": "2560x1600-ko-보관함",
+      "roi": [
+        623,
+        738,
+        70,
+        16
+      ],
+      "text": "전기 전투화",
+      "min": 35,
+      "mode": "green",
+      "source": "NativeLobby.SilverHell.cs:11",
+      "legacyRect": {
+        "serializedVersion": "2",
+        "x": 552.8333129882812,
+        "y": 645.6599731445312,
+        "width": 67,
+        "height": 13.34661865234375
+      },
+      "pngSha256": "5c9ef4015b0bc259506c49688d8ece3160a514b611792e457e0c791d4f3bb433",
+      "jsonSha256": "59785d05541477a8a9a8468b117c173a6cba7f71a788c21e5a0ed96c98248ef2"
+    },
+    {
+      "stem": "1600x900-ko-보관함",
+      "roi": [
+        388,
+        411,
+        44,
+        11
+      ],
+      "text": "전기 전투화",
+      "min": 35,
+      "mode": "green",
+      "source": "NativeLobby.SilverHell.cs:11",
+      "legacyRect": {
+        "serializedVersion": "2",
+        "x": 425.3958435058594,
+        "y": 459.6625061035156,
+        "width": 41.875,
+        "height": 8.341644287109375
+      },
+      "pngSha256": "0408e759ba44f2b240c9df183671d163d0376fa7ef291361c1ee79b4f209974a",
+      "jsonSha256": "5fd434d1348299f798329ca34e915999e0640b181c665d3f4fba8807b4a2875e"
+    }
+  ]
+}

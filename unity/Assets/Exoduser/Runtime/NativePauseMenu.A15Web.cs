@@ -218,8 +218,17 @@ namespace Exoduser.UnityPort
    if(max>0&&sy<max-1)Fill(new Rect(PagesX,PagesY+PagesH-24,PagesW,24),new Color32(16,19,19,200));
    // Footer: autosave note + close.
    HLine(96,983,1728,LineSoft);
-   Txt(new Rect(96,1004,500,20),W("b.settingsAutoSaveLabel","✓ Settings saved automatically"),14,SettingsPersistenceProblem||!SettingsPersistenceEnabled?new Color32(127,130,130,255):new Color32(120,160,128,255));
-   if(SettingsHostApplyPending||SettingsHostApplyFailed||SettingsPersistenceProblem||!SettingsPersistenceEnabled)Txt(new Rect(96,1022,1200,18),SettingsPersistenceNotice(),11,Dim);
+   string savedLabel=W("b.settingsAutoSaveLabel","✓ Settings saved automatically");
+   var savedColor=SettingsPersistenceProblem||!SettingsPersistenceEnabled?new Color32(127,130,130,255):new Color32(120,160,128,255);
+   Txt(new Rect(96,1004,500,20),savedLabel,14,savedColor);
+   if(SettingsHostApplyPending||SettingsHostApplyFailed||SettingsPersistenceProblem||!SettingsPersistenceEnabled){
+    string notice=SettingsPersistenceNotice();
+    float savedH=St(14,FontStyle.Normal,savedColor,TextAnchor.MiddleLeft).CalcSize(new GUIContent(savedLabel)).y;
+    float noticeH=St(11,FontStyle.Normal,Dim,TextAnchor.MiddleLeft).CalcSize(new GUIContent(notice)).y;
+    // Keep the web autosave baseline; round only the extra native/QA notice below it.
+    float noticeY=Mathf.Max(1022,Mathf.Ceil(1004+(20+savedH)/2-(18-noticeH)/2));
+    Txt(new Rect(96,noticeY,1200,18),notice,11,Dim);
+   }
    if(Time.unscaledTime<presetNoteUntil)Txt(new Rect(260,1004,600,20),presetNote,14,new Color32(120,200,150,255));
    var close=new Rect(1644,994,180,40);int closeIdx=navigation.Count-1;
    DrawButton(close,W("b.setClose",T("닫기 [ESC]","Close [ESC]")),false,false);PointAt(close,closeIdx);FocusBorder(close,closeIdx);

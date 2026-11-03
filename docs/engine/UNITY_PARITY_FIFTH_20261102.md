@@ -123,3 +123,120 @@ NativeScreenTransition은준비timeout실패를빈error대신 prepare-timeout (1
 | 보존/실행기 | 자기생성857파일전부SHA백업/정확HEAD원본복원/해시검증,guard기존WIP보존. 공용실행기slots3업데이트때옛자기slots2대기PID67616/parent66480·자식0·자기Player미실행을확인후대기프로세스만재접속. 타프로세스/예약변경0,자기Editor/Player예약반납,Desktop직접교체0 |
 
 전체5차는진행중이다. 이번영수증은전환기술·홀드회귀묶음이며55스킬/32합체/추천전체·조건부패시브·살아있는화면·요약drawer·진짜1-2·글꼴/구슬/핵/광택/리셋전체완료가아니다. I:스킬준비본은제품채택0,복구스냅샷106521b84f31e6d396660340ce7cf2356b61c532(287파일·Gitblob전부/원격ref대조)은미채택자료로만보존한다. 이후준비본의상태수학130곳·사냥꾼72조건·소리196조건교정은별도I후속이며이번패키지내용과혼합하지않는다.
+
+## 11-03 05:10 CTO P0 — UI 겹침 회귀 우선 처리 (검수 중)
+
+| 항목 | 수정 후보 계약 | 현재 증거 |
+|---|---|---|
+| 우선순위 | 147건→0 확인 후 unity/main 비강제 반영, 그 다음 5차 잔여 | 이전 09192f7의 1395장/147건 원본 보존. 새 후보 전체 검수 전 PASS 금지 |
+| 스킬 이름 | 슬롯·제단 이름/레벨은 웹 CSS nowrap/overflow:hidden/text-overflow:ellipsis와 같은 지정 폭·행 높이 안에서 표시 | 웹3333 ko/de/fr ×1920/2560×1600 실물12장. 첫 browser7fdc5e0c는 오류0/창감지1 운영 FAIL, 재검수 중 |
+| 스크롤 판 | 제품의 기존 논리 그룹/GUI.matrix는 유지하고 계측의 그룹 원점만 화면 배율로 보정 | 물리 그룹 후보는 중복 배율 시각 FAIL로 철회. 부모 화면원점−새 그룹 API원점 차이를 중첩 스택으로 기록. 새 Player 전 미검증, 분석기 제외/임계 완화0 |
+| 제작 비용/확률 | 비용 y447.4/h20.4, 확률 y467.8/h20.4; 기존 h15/14,y465.4 수정. 그리드 y505.4 보존 | 웹 Hahmlet line-height normal 약 20px. 금액·확률·동작 변경0 |
+| 공용 실행기 | I:/EXODUSER-Storage/unity-jobs/bin/exo-unity.ps1만 실행. checkout 사본 위임, ui-overlap/check.ps1 절대 공용 경로 | 자기 evening/third 직접 호출39개 백업·SHA 후 치환. CTO45개와 수 차이는 정확 경로 재검색 필요 |
+
+P0 산출 fifth/p0-overlap. Core/Runtime 독립 컴파일0, 정식 빌드/M1/전체0건/같은 언어1x/원격 반영은 아직 미검증. 바탕화면 직접 교체0.
+
+### 05:35 KST 실행 경로 장애 — P0 완료 아님
+
+- G: 소스/로컬 Git 조회 및 C: powershell.exe 바이너리 읽기는 정상. 메모리 여유 약16GiB/63.76GiB.
+- I: 루트 stat·공용 bin/기존 작은 파일 읽기가 응답하지 않는다. PowerShell -NoProfile Get-Date/Console 조회, CMD type I:/.../COMMON_RULES.md와 Node fs가 각각 대기 상태다. CMD fsutil은 I: 고정 드라이브의 존재까지만 반환한다. 원인(장치/파일시스템/다른 I/O)은 미확정이다.
+- browser7fdc5e0c는 웹3333 ko/de/fr 12PNG·페이지 오류0이나 창 감지1로 운영 FAIL. disable-software-rasterizer를 추가한 재검수8887, Editor 예약73798는 완료 응답 미확인. 정식 새 빌드 시작/슬롯 취득을 주장하지 않는다.
+- 사용자의 I: 장치/복사 작업 여부를 비동기로 확인 요청. 다른 owner 예약·프로세스, 사용자 앱/세이브, 디스크 연결·복구 설정 변경0.
+- 현재 후보는 Core/Runtime 독립 컴파일 exit0까지만 확인했다. P0 전체0건·정식 빌드/M1·unity/main 반영은 미완료. 5차 잔여로 우선순위를 넘기지 않는다.
+- 외부 WIP tools/guard.baseline.json SHA256 9414ce48870885726bd4bd6db7df52d6d3ad8aa63edcb7f67c6cb3f63c4bb8ca를 보존하고 커밋 제외한다.
+
+### 05:41 KST 복구 지점과 대기 작업 정리
+
+| 구분 | 확인된 상태 |
+|---|---|
+| 로컬 P0 후보 | 0a864885b06043150de93ab2aa7185fc4b235e54, 코드/관련 문서 7파일만 커밋. guard WIP는 커밋 전후 SHA256 동일 |
+| GitHub 복구본 | codex/backup-unity-parity-p0-20261103의 8a896bf32ce3993c881d2d658da292bbeac5913b. 연결된 GitHub 도구로 7개 Git blob 전부 일치, 전체 tree ab364963cd9d5c1456831b35cbe90d6fb1afd1c2 일치, 생성 ref 재조회 확인. 미검증 후보이며 통합/인도 PASS 아님 |
+| 공통 원격 | 05:41 GitHub 직접 조회 unity/main=c741c11c27a76ae891cad7294adc24f28243314e. P0 후보 미반영 |
+| 지연 지속 | I: 파일 읽기는 PowerShell/CMD/Node에서 대기. C:·G: 로컬 Git은 정상. 원인 확정/디스크 복구 조작0 |
+| 자기 대기 정리 | WMI로 PID·부모·생성 시각·명령을 대조한 자기 fetch/push·PowerShell 진단·P0 예약 요청만 종료. Unity/Player 자식 없음 확인. 다른 owner/사용자 앱 종료0, 시스템 updater 보존 |
+| 남은 확인 | 자기 browser-bdf5cd91의 node9984/Chrome55356·68364·59056/cmd60272 종료 요청은 WMI 반환2로 거부. 추가 권한 우회0, 종료/잔여0 주장 금지. I: 응답 복구 후 공용 bin에서 자기 P0 예약 취득 여부·브라우저 잔여를 먼저 조회해야 함 |
+| 다음 게이트 | 공용 bin 정식 새 빌드→같은 패키지 M1→ko/de/fr/5해상도 전 화면 겹침0 및 3333 나란히1x→최신 unity/main 정상 merge·비강제 push·REPORT 갱신→5차 나머지. 현재는 전체 미완료 |
+
+I:의 REPORT를 현재 갱신할 수 없어 이 문서에 실제 중단 지점을 남긴다. 바탕화면 직접 교체0, 세이브 변경0. 복구본은 이전 I: 스킬 준비물의 인수나 5차 잔여 완료를 뜻하지 않는다.
+
+
+## 09시 재개 P0 첫 패키지와 전환 fixture 교정
+
+I:·PowerShell이 정상 응답해 fetch/소유/공용slots3 상태를 재확인했다. 입력02cae3be32의 정식3afaeebb는errors0/6,610,799,356B, M1 6829c139는23/23·창0·잔여0·USER_SAVE0. Core9efc2ba7…/Runtimeffc22ee5…는 실제Compiler DLL과 바이트동일, Runtime소스356개 변경0. 웹3333 browser726ace84는5해상도×ko/de/fr×3상태45PNG·오류0·창0·잔여0·USER_SAVE0이며 긴 이름의 실제줄바꿈과 비용/확률을직접1x확인. 폴더 evening/third의호출39개전수검색에서비공용0. 빌드자동857개 SHA보관·원HEAD바이트복원/해시확인,guard WIP보존.
+
+첫 전체 UI 8db8dd46은12장 후 실제 마우스 이름입력검사 FAIL(exit2)이다. 잠긴직업 차단true/이름열림false였으나 같은프레임의확인음·전환callback이뒤따라 fixture가새전환완료보다앞서검사했음을확인했다. UiWideClick에OnGUI프레임끝→실제전환Busy종료(최대15s) 대기를추가하고제품전환실패/기존좌표·차단assert는유지한다. 이는검수시계교정이며제품timeout완화나147건검사제외가아니다. 새정식패키지/M1/1395전체재검수전이며P0완료아님. 상세계약은UNITY_UI_OVERLAP_20261030.md 최신절.
+
+검수기소스전수확인에서신규입장도즉시Loading가정이남아있음을발견했다. 실제제품은onBlack의loadingAlreadyShown=true로Nemesis에진입하므로, 비동기실제입장callback까지기다리고Preparing의실제완전검정Repaint를로딩으로수집한뒤fade완료/Nemesis를assert하도록같은수정에포함했다. 1395페이지조건/분석기·입력격리검사유지, 제품화면전환변경0.
+
+
+## P0 두 번째 패키지 — 부분0건이어도 시각FAIL, 방식 변경
+
+입력91b3550464의 정식3a16d065·M1 d56318d4(23/23·창0·잔여0·USER_SAVE0)는통과했다. 실제마우스2560×1600의잠긴직업차단/nameOpened가모두true이고,로딩JSON의R4192×192영역(x2296,y1336)·alphaReaderVerified도확인했다. 첫3문제프레임을기존분석기로재분석하면0건/경고0이다. 그러나 원본PNG직접열람에서스킬정보와대장간내용물이배경판밖으로밀려나시각FAIL로판정했다. 물리그룹의원점을기존GUI.matrix가다시확대하는제작오류이며0건을합격으로쓰지않는다.
+
+제품의GUI.BeginGroup/GUI.matrix동작을원래대로복원한다. NativeUiAudit에만부모그룹화면원점과새그룹API원점의차이를쌓아ScreenRect/quad/실제clip좌표를보정하고그룹끝/프레임시작때복원한다. 이름말줄임/행높이·비용확률간격·실제전환검수교정은유지한다. 새방식의원본1x·PNG실제글자경계와JSON좌표·전체검사전까지미검증이다.
+
+실패bfb10503은447PNG까지보존하고정확실행경로/명령/생성시각/부모57996/자기슬롯을대조해자기Player56436만중단했다. 타인/사용자프로세스종료0. 공용실행기는강제종료의uint32 4294967295→Int32변환에서예외를기록했고finally로자기예약/슬롯을반환했다. 이실패를정상종료·전체0건·잔여0로승격하지않는다. stop근거 resume-0912/r3/stopped-invalid-ui.json.
+
+
+## P0 R3 실픽셀 대조 및 로딩 커버리지 후속
+
+정식15a8d294/errors0, M1 bf2bc125 23/23·32PNG·창0/잔여0/USER_SAVE0. 첫2560×1600ko 문제3장 원분석기각0/경고0. 실제제목잉크x215/y498/120×38/1484픽셀은이전정상그리기와동일하고새계측상자안포함, 실패R2와구수집기는음성대조불일치. ko/de/fr 9쌍을웹3333와원래픽셀로직접열람했다. 전체UX의한국어고정·폰트/전체크기차이는RETOUCH.
+
+로딩커버리지의실제Preparing검정은가시문자0으로기존분석기관측조건을못채운다. 검정은별도신규입장검정으로보존하고, 기존승인첫이미지1의실제스테이지로딩을필수로딩페이지로추가한다. 77×5×3+17×5×3=1410장,입력격리/틱정지1410·팁255·키30·미디어120. 분석기/임계/기존페이지/제품시간변경0. 같은R3표본으로검정false/실제스테이지로딩true 음양대조,새후보정식/M1/1410은미검증. 상세는UNITY_UI_OVERLAP_20261030.md 최신절.
+
+
+### 2026-11-03 P0 잔여18건 — 로드맵 칸 폭 교정 후보
+
+| 항목 | 실제 결과 / 수정 계약 | 상태 |
+|---|---|---|
+| R3 전체 | 1395PNG·입력격리/틱정지각1395, 겹침18/로딩관측누락15. Player65df27ef 정상exit0/창0/잔여0/USER_SAVE0 | 전체 FAIL 보존. 147→18이며0건아님 |
+| 18건 원인 | 슬롯04·09,1920×1080/1600×900/2560×1600×ko/de/fr. 안내의 마지막 ]와합성로드맵첫합실제겹침 | 실제1920원본에서확인. 분석기문자/소스제외없음 |
+| 웹 실제 칸 | 1920에서제단끝1587,격자간격12,로드맵바깥1599/270. 제목시작1622/폭224/오른끝1846 | 웹3333실제E모체로드맵DOM와PNG수집. 기존Native1562/284/끝1846가왼쪽60침범 |
+| 최소 수정 | DrawRoad의영역/제목/구분선/본문만x1622·폭224. 오른쪽끝1846·기존y/서체·제단안내·나머지배치유지 | 새정식/M1/1410장·실제1x전미검증 |
+| 실행 구분 | R4정식38489478/errors0. M1은23단계·32PNG결과후종료지연,새완료PASS로세지않음 | 정상종료/정리결과별도확인. R3/R4/R5증거혼용금지 |
+
+
+## 2026-11-03 재개 체크포인트 — 매뉴얼 v4 / 동일 패키지 인수
+
+| 항목 | 실제 확인과 경계 |
+|---|---|
+| 공통/소유 | 재fetch 공통c741c11c27, 자기소스fc3b03a445. 외부guard WIP보존·INDEX0. 요청한0a864885b/91b355046/289a047f7 뒤 로딩추가8095269d8·잔여18건교정fc3b03a445를 포함 |
+| 매뉴얼 | origin/main253ad0b1dce92379257cd398ccfb9a3496b45e22의WORK_MANUAL_20261029.md v4전체확인. 하루한번이상자기브랜치정상commit/push,공용bin만사용·Desktop직접교체0 |
+| 정식 입력 인수 | 완료된3bc29cde/errors0/6,610,800,380B 보존. 소스356개0불일치·Core/Runtime중단전해시일치 |
+| 실제 실행 패키지 | I정식보관본↔G활성런타임213파일전부SHA256일치. G:/exoduser-wt/codex-unity-parity-1102/unity/Temp/ParityP0Player-20261103-r5. 보관·캡처·로그는I |
+| 빌드 생성물 | 정확857경로전부백업검증/원HEAD입력복원검증. 외부guard·기존미추적보존 |
+| 남은 P0 | 같은패키지M1정상종료→1410UI중단0/겹침0/누락0→5해상도lockedBlocked/nameOpened실제마우스검증→최신공통정상병합/비강제push→REPORT상단SHA |
+
+R3 전체1395/18건/로딩관측누락15는FAIL그대로다. 새검수전0건이나사용자실행본반영으로세지않는다. 전체5차잔여는P0공통반영뒤이어간다.
+
+
+## 2026-11-03 12:30 CTO 검토 반영 — PC 컴파일 / Mac 검수 분리
+
+최신 사용자 지시가 위의 PC 정식 빌드·M1·전체 검수·공통 반영 순서를 대체한다. 이 후보는 자기 브랜치에 정상 commit/push하고 Mac에 넘긴다. Mac의 새 HEAD 검수가 끝나기 전 P0 겹침0·시각 PASS·unity/main 반영 완료로 보고하지 않는다.
+
+| 항목 | 수정 계약 | 확인 / 남은 게이트 |
+|---|---|---|
+| 실행기 위임 | install-bin, EXO_UNITY_NO_FORWARD=1, 자기 공용 경로는 로컬 본문. 그 외 공용 bin 존재를 먼저 확인하며 누락 시 stderr+exit1. Stop 설정은 위임 전 | 실제 스텁을 추출한 격리 PowerShell 5/5: 위임/인수·exit7 전달, install-bin, 명시 opt-out, 자기 경로, 누락 exit1. 실제 install/bin 배포/Unity 실행0 |
+| 제작 비용/확률 | 비용 y447.4/h20.4 → 확률 y467.8/h20.4, 두 Rect 동일. 웹 Hahmlet line-height normal 약 20px | PC Core/Runtime 컴파일 오류0. 실제 1x는 Mac 대기 |
+| 스크롤 계측 | 두 BeginScrollView 오버로드 호출 직전 부모 보정 포함 expected. GUI 호출이 반환한 clamped scroll로 p0=-Round(-scroll-view.position). 이전 보정을 push하고 expected−(GUIToScreenPoint(p0)−origin). EndScrollView에서 이전 보정 pop | 활성 Repaint 감사 좌표만 수정. 제품 그리기 호출·matrix·scroll 반환값·겹침 판정 임계/제외 규칙 변경0. 실제 새 캡처는 Mac 대기 |
+| 실제 잉크 대조 | ko 튜토리얼0의 이, 보관함 격자의 전기 전투화. 2560×1600/1600×900, 실제 R3 PNG 무보간 crop 4개와 원본 SHA256·기존 감사 Rect 보존 | scroll-ink.py --self-test: 알려진 잉크 상자 양성4/4, 구 감사 상자 음성 거부4/4. --candidate R3: 실제 경로 검사도 4/4 FAIL(exit1). 검사기 교정이며 새 제품 계측 PASS가 아님 |
+| PC 검증 범위 | Roslyn Core/Runtime compile exit0/0, 실행기 PowerShell 구문 및 격리 분기 검사 | cto-review-1230/Core.log·Runtime.log·compile.json·forwarding/receipt.json·ink-controls.json·ink-legacy-negative.json. 이 CTO 요청 후 정식 빌드/M1/Player/1410분석 실행0 |
+
+### Mac 필수 인수 게이트
+
+1. REPORT 맨 위 Mac 검수 요청 SHA를 fetch하여 실제 checkout/branch/INDEX/WORK·타 담당 WIP를 구분한다. ground-placement의 AltarHeaderRight1562·OrbLevelY·HeaderLayoutProgram은 인수하지 않았다. 선택 허용된 좌표 probe 커밋도 이번 후보에는 가져오지 않았다.
+2. 새 HEAD로 정식 빌드 1회, 같은 패키지 M1 23/23 + 정상 종료, ko/de/fr ×5해상도 1410장 issueCount0·로딩 관측 누락0·중단0. 다섯 해상도 모두 lockedBlocked/nameOpened=true. 기존 R5 결과는 스크롤 계측 양성 증거가 없으므로 새 후보 PASS로 재사용하지 않는다.
+3. 같은 패키지 캡처 폴더에 대해 unity/Tools/ui-overlap/scroll-ink.py --candidate <절대캡처폴더> --output <절대영수증경로>를 Mac Python3+Pillow로 실행한다. --self-test는 검사기 교정만이며 이를 제품 PASS로 쓰지 않는다. 누락된 글자/빈 잉크/해상도 불일치/글자 밖 감사 상자는 FAIL이다. 고정 ko4장은 겹침 분석의 허용오차나 문자열 제외를 바꾸지 않는 별도 게이트다.
+4. 슬롯04·09 및 대장간은 웹3333과 같은 크기로 나란히1x 확인한다. 모든 게이트 후 최신 unity/main 정상 병합·비강제 반영과 REPORT 공통 SHA를 별도로 기록한다. 바탕화면 직접 교체0. 전체5차 잔여·번역/폰트 등은 RETOUCH 유지.
+
+
+### Mac 인계 직전 공통 병합 확인
+
+재fetch에서 공통 원격은 c741c11c27 이후 b47885989692b81d63eeeb38ac5f8b50bd1b02f8로 전진했다. 자연1-1 fullrun·프런트엔드·미니맵·입력 보존과 devtools 종료 직후 창 오검출 교정을 자기 브랜치에 정상 병합했다. merge ebe1b5ca65ee82b2cb6887cb1c65b3adade26eae, CTO 수정 커밋 c94938d651. 위임 스텁과 창 감지 수정은 서로 보존했고 충돌0이었다. 새 Runtime 소스5개까지 포함한240개 + Core 전체를 병합 후 다시 컴파일하여 exit0/0, 실행기 격리5/5를 재확인했다. 최종 문서 커밋은 이와 같은 Runtime 입력이다. 공통 브랜치로 push하지 않고 자기 브랜치만 Mac 검수 후보로 push한다. guard WIP의 SHA256은 시작값9414ce48…과 동일하다.
+
+
+## 2026-11-03 13:20 Mac 게이트 FAIL 재작업
+
+Mac a049ef5c4/qa/unity-parity/5b6b4fce9의 실제6PNG·REPORT를 인수했다. 정식0오류/M1 23/23 정상종료/로딩270누락0은 유지되나 전체18건·가림증명누락30·scroll-ink1/4로 P0 FAIL이다. 현재 수정은 네이티브 텍스트 정렬 원점, 플랫폼 공통 GUIStyle 알파, 실제 높이에 따른 추가 QA 푸터 y 올림, fr/de QA 번역, 배경과 어두운 녹색을 분리하는 국소 잉크 대조다. 자세한 계약과 값은 UNITY_UI_OVERLAP_20261030.md의 같은 시각 절에 있다. 기존 forge y467.8/20.4 및 로드맵x1622/224는 유지했다.
+
+이름 입력은 --unity-name-gate-only의5해상도 전용 경로를 추가했다. Windows 실제 자기 HWND 마우스를 기본으로 유지하고, Mac은 sandbox QA Event를 실제 NativeLobby.OnGUI에 전달해 제품 hit-test로 판정한다. 사용자 마우스·전역 OS 입력을 조작하지 않으며 자동 입력 차단/제품 전환 정책은 유지한다. PC는 이름 전용 Player1회만 허용되며 정식 빌드/M1/전체UI검사는 Mac이 수행한다. 새 공통 입력 경로·새 잉크 네 건의 양성·전체18→0/누락30→0은 Mac 실제 후보 검수 전 미검증이다. 전체5차 잔여는 이 게이트 뒤에 계속한다.
