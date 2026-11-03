@@ -94,3 +94,23 @@ MAP PRODUCTION REPORT: STAGE=C10 전체원화·Windows후보 / MASTER·OUTER MAS
 Windows빌드1회job28c0bc2e Succeeded/errors0. 실제189 source→173 added/16 duplicates/64 ground/1moat/floating0. 일반입장은FullRun job056f2314의6경계·field샘플로검증(maxTicks1의의도된time-limit/exit2, 전체클리어검증아님). 새 --a2r-play-smoke 단독은전환대기누락으로실패했으므로타이틀부터자동검증PASS가아니다. 같은exe의기존 --unity-*-smoke 계약인 --unity-a2r-route-smoke와 --a2r-play-smoke를함께써서연출생략후Core도보별도검증. job89ff9ea2에서1829ticks/4974.3px/도달/errors0/순간이동0/정체0. 무적·튜토리얼Skip은fixture범위. 1920캠프3초91.5FPS, 밀집전투/3840성능미검증. 전용바로가기스크립트는일반진입과경로양쪽영수증을요구한다.
 
 캠프1920·3840직접확인/웹원화표시확인. 후보바로가기교체·원격SHA·종류별실수량은 I:/EXODUSER-Storage/map25d/a2redesign/REPORT.md 및 MAC_RUN.md, 실행web-assets-receipt.json. 실제세이브변경0/기존앱종료0/이전후보삭제0. VISUAL VERDICT: RETOUCH(후보전달과디자인합격별도).
+
+## 19:30 R1~R4 RETOUCH 계약
+
+| 항목 | 변경 | 보존 |
+|---|---|---|
+| R1 | HellLightingActive의전역청회선형안개가A2R설정을덮던원인제거: A2RLate에서fogOFF/중립흙색ambient고정. 별도DistanceHaze는22u이후density.004/alpha최대.13, 근중경맑게. WB16/tint6, moonRGB(.92,.90,.86)/.62. 캠프점광radius7.5/power9.5, 보조4.8/5.2, 횃불5.8/9. 보조광위치에서유도한부드러운역제곱바닥광+원화색RGB(1.10,1.03,.91) | 원근·먼적·원화디테일/새데칼없음 |
+| R2 | 각카드·3D가림대상에A2RNearest전용pass. 카메라별RFloat MIN-blend 선처리(지원안되면ARGBHalf), 투명pass는가장가까운표면깊이+.002u만허용(half fallback.02u). 겹친줄기누적합성방지 | 원·타원밖불투명/.35/.2초/히스테리시스/남쪽밑동/좌우끝규칙/장판수신제외 |
+| R3 | 원래113개좌표/ID를3.3001u(float여유)인접그래프로읽고DSATUR로기존고사리3종+덤불4종variationAsset배정. 실제3.3u인접동일0. 고정IDscale.8~1.2/yaw±17°/반전/tint.92~1.08, 선택원화footU/V 적용 | 원래웹좌표·기본원화데이터·수량·접지, 새원화/랜덤scatter없음 |
+| R4 | 원본SpriteRenderer읽기전용별도mesh에달빛쪽한면1source texel/boneRGB(.78,.81,.77)/alpha.82 윤곽, ZTestAlways로묻힌영웅실루엣. foot+.8u/range2.8/power1.1 중립약광 | 원본sprite/atlas/material/filter/scale/rig 경로변경0 |
+| 스모크 | 기존FullRun대기계약을A2R자체fixture에이식. 로비전환/생성/입장callback완료대기, startup skip callback후동일Core도보. 더이상legacy연출우회플래그필요없음. nearestRT실제covered pixel검사·각capture hero/distant/camera좌표기록 | 실제세이브·Core판정·액터방식변경0 |
+
+이전0fd8e9f19의같은도착위치1920/3840원본을비교근거로유지한다. 빌드후캠프·좌측거목1x·영웅3x·먼적을직접검수하고확인된범위만판정한다. 현재시각결과는미검증.
+
+19:30 검수중 보정: 캠프광원은원본이미지중심(1820,4020)이아닌웹캠프불투명발피벗(1805.75,4241)의전방으로재접지한다. 광원뿐아니라바닥광분석위치도같이이동. 고사리15/덤불98개전체변형, 선택원화의기존측정footU/V를재사용해투명하단여백차이로뜨지않게한다. MIN-depth pass는ZTestAlways/ZWriteOff/BlendOpMin으로역Z깊이상태에독립적이며명시Mesh/worldMatrix/viewport를사용한다. 빌드전64x64 GPU quarter-depth 테스트를통과해야BuildPipeline호출. 최초일반스모크는cold quick-start전환실패, legacy진단은도달했으나depthcoverage0이어서FAIL로기록. 새 --a2r-lobby-start 는초기로드뒤일반로비를열며legacy우회는영수증에서명시적으로불합격이다.
+
+R3 최종: 근접한 동일 원화 14쌍을 실측해 기존 greedy 선택을 폐지했다. 원래113개좌표/ID유지, 3.3u인접그래프를오프라인DSATUR로색칠해기존고사리3종+덤불4종 variationAsset을데이터로공급한다. 원래원화를우선하고인접동일원화0쌍을보장, scale/yaw/flip/tint는기존고정ID변형유지. 선택원화의불투명발피벗재사용. 새원화/랜덤배치0.
+
+## 19:30 최종 실행 영수증
+
+최종빌드84127006 Succeeded/errors0, MIN-depth GPU probe LitOpaque/CardOpaque 실측.25. Player ca2f988a는legacy우회없이일반로비8경계·도보1829ticks/4974.3px/캠프도착/오류0/순간이동0/정체0, public userSaveChanged0/windows0/leftovers0. 깊이411828pixels/51draws. 식생113/3.3u인접동일0/좌표변경0/떠있음0. 기본카드/강/지면값은0fd8기준그대로이며variationAsset만추가. tools/a2r-plant-variation.cjs --check로읽기검증, 인자없이수동배정(원래좌표쓰기없음). 최종비교판은I:/EXODUSER-Storage/map25d/a2redesign/proof-a2r-r1930-vs-0fd8e9f19.png. 최초오류·단기FPS범위·다른빌드Player.log감시건·미검증범위는같은REPORT. VISUAL VERDICT: RETOUCH/총괄판정대기.

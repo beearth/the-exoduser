@@ -23,4 +23,15 @@ HLSLPROGRAM
 #include "LitCommon.hlsl"
 half4 frag(V i):SV_Target{clip(SAMPLE_TEXTURE2D(_BaseMap,sampler_BaseMap,i.uv).a*_BaseColor.a-.05);clip(.002-A2RFadeMask(i.w,i.p));return 0;}
 ENDHLSL
-} }}
+}
+Pass {Name "A2RNearest" Tags{"LightMode"="A2RNearest"} ZWrite Off ZTest Always Cull Off Blend One One BlendOp Min
+HLSLPROGRAM
+#pragma target 3.5
+#pragma vertex nearestVert
+#pragma fragment nearestFrag
+#pragma multi_compile _ _ALPHATEST_ON
+#include "LitCommon.hlsl"
+V nearestVert(A a){V o=vert(a);o.p=mul(_A2RNearestVP,float4(o.w,1));return o;}
+float4 nearestFrag(V i):SV_Target{SurfaceData surface;InitializeStandardLitSurfaceData(i.uv,surface);clip(surface.alpha-.05);return -mul(_A2RNearestView,float4(i.w,1)).z;}
+ENDHLSL
+} } }

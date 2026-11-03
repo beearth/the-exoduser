@@ -17,8 +17,9 @@ namespace Exoduser.UnityPort
             if(!A2RRequested||a2rLighting!=null)return;
             var volumes=new List<Volume>();foreach(var root in r3Roots)volumes.AddRange(root.GetComponentsInChildren<Volume>(true));
             a2rLighting=a2Root.AddComponent<A2RLighting>();a2rLighting.Initialize(a2Root.transform,r3Cam,FindObjectsByType<Light>(FindObjectsInactive.Include,FindObjectsSortMode.None),volumes,()=>NativeRemodel3D.Point(Simulation.Player.X,Simulation.Player.Y));
-            foreach(var p in Map.Data.props){if(p.id=="m_c1camp"){var at=NativeRemodel3D.Point(p.x,p.y);a2rLighting.AddLamp("A2R1 C10 camp fire",at+Vector3.up*1.3f,6.5f,6.2f,new Color(1,.32f,.08f));a2rLighting.AddLamp("A2R1 C10 camp glow",at+Vector3.up*.8f,3.4f,3.6f,new Color(1,.52f,.20f),false);}else if(p.id=="m_ctree15"||p.id=="m_c1altar")a2rLighting.AddLamp("A2R1 C10 red "+p.id,NativeRemodel3D.Point(p.x,p.y)+Vector3.up*1.2f,4.4f,4.56f,new Color(.92f,.18f,.14f));}
-            a2rOcclusion=a2Root.AddComponent<A2ROcclusion>();a2rOcclusion.Initialize(a2Root.transform,r3Cam,()=>NativeRemodel3D.Point(Simulation.Player.X,Simulation.Player.Y));a2rOcclusion.SetCombatSource(A2RCollectCombat);a2rWeb=a2Root.AddComponent<A2RWebAssets>();a2rWeb.Initialize(a2Root.transform,r3Cam,props,a2FieldSoil,a2Water,a2rOcclusion);A2RSetLook(true);
+            a2rLighting.SetHeroSprite(playerView);
+            foreach(var p in Map.Data.props){if(p.id=="m_c1camp"){var at=NativeRemodel3D.Point(p.x,p.y);a2rLighting.AddLamp("A2R1 C10 camp fire",at+Vector3.up*1.3f,7.5f,9.5f,new Color(1,.32f,.08f));a2rLighting.AddLamp("A2R1 C10 camp glow",at+Vector3.up*.8f,4.8f,5.2f,new Color(1,.52f,.20f),false);}else if(p.id=="m_ctree15"||p.id=="m_c1altar")a2rLighting.AddLamp("A2R1 C10 red "+p.id,NativeRemodel3D.Point(p.x,p.y)+Vector3.up*1.2f,4.4f,4.56f,new Color(.92f,.18f,.14f));}
+            a2rOcclusion=a2Root.AddComponent<A2ROcclusion>();a2rOcclusion.Initialize(a2Root.transform,r3Cam,()=>NativeRemodel3D.Point(Simulation.Player.X,Simulation.Player.Y));a2rOcclusion.SetCombatSource(A2RCollectCombat);a2rWeb=a2Root.AddComponent<A2RWebAssets>();a2rWeb.Initialize(a2Root.transform,r3Cam,props,a2FieldSoil,a2Water,a2rOcclusion);a2rLighting.AnchorCamp(a2rWeb.CampFoot);A2RSetLook(true);
         }
         void A2RCollectCombat(List<Vector4> points)
         {

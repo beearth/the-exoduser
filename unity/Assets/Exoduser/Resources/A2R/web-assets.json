@@ -659,7 +659,8 @@
       "footU": 0.3802469135802469,
       "footV": 0.2928571428571428,
       "sway": 0.16,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r3_fern_2"
     },
     {
       "id": "fern_cluster_1",
@@ -674,7 +675,8 @@
       "footU": 0.3052380952380952,
       "footV": 0.25135135135135134,
       "sway": 0.16,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r3_fern_1"
     },
     {
       "id": "fern_cluster_2",
@@ -689,7 +691,8 @@
       "footU": 0.043233082706766915,
       "footV": 0.18108108108108112,
       "sway": 0.16,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r3_fern_2"
     },
     {
       "id": "fern_cluster_3",
@@ -704,7 +707,8 @@
       "footU": 0.3802469135802469,
       "footV": 0.2928571428571428,
       "sway": 0.16,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r3_fern_0"
     },
     {
       "id": "fern_cluster_4",
@@ -719,7 +723,8 @@
       "footU": 0.3052380952380952,
       "footV": 0.25135135135135134,
       "sway": 0.16,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r3_fern_1"
     },
     {
       "id": "fern_cluster_5",
@@ -734,7 +739,8 @@
       "footU": 0.043233082706766915,
       "footV": 0.18108108108108112,
       "sway": 0.16,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r3_fern_2"
     },
     {
       "id": "fern_cluster_6",
@@ -749,7 +755,8 @@
       "footU": 0.3802469135802469,
       "footV": 0.2928571428571428,
       "sway": 0.16,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r3_fern_0"
     },
     {
       "id": "fern_cluster_7",
@@ -764,7 +771,8 @@
       "footU": 0.3052380952380952,
       "footV": 0.25135135135135134,
       "sway": 0.16,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r3_fern_1"
     },
     {
       "id": "fern_cluster_8",
@@ -779,7 +787,8 @@
       "footU": 0.043233082706766915,
       "footV": 0.18108108108108112,
       "sway": 0.16,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r3_fern_2"
     },
     {
       "id": "fern_cluster_9",
@@ -794,7 +803,8 @@
       "footU": 0.3802469135802469,
       "footV": 0.2928571428571428,
       "sway": 0.16,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r3_fern_1"
     },
     {
       "id": "fern_cluster_10",
@@ -809,7 +819,8 @@
       "footU": 0.3052380952380952,
       "footV": 0.25135135135135134,
       "sway": 0.16,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r3_fern_0"
     },
     {
       "id": "fern_cluster_11",
@@ -824,7 +835,8 @@
       "footU": 0.043233082706766915,
       "footV": 0.18108108108108112,
       "sway": 0.16,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r3_fern_1"
     },
     {
       "id": "r4_low_brush_0",
@@ -839,7 +851,8 @@
       "footU": 0.23284040178571427,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_1"
     },
     {
       "id": "r4_low_brush_1",
@@ -854,7 +867,8 @@
       "footU": 0.3550502232142857,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "r4_low_brush_2",
@@ -869,7 +883,8 @@
       "footU": 0.8413783482142857,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_2"
     },
     {
       "id": "r4_low_brush_3",
@@ -884,7 +899,8 @@
       "footU": 0.016043526785714284,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_3"
     },
     {
       "id": "r4_low_brush_4",
@@ -899,7 +915,8 @@
       "footU": 0.23284040178571427,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "r4_low_brush_5",
@@ -914,7 +931,8 @@
       "footU": 0.3550502232142857,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_2"
     },
     {
       "id": "r4_low_brush_6",
@@ -929,7 +947,8 @@
       "footU": 0.8413783482142857,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_3"
     },
     {
       "id": "r4_low_brush_7",
@@ -944,7 +963,8 @@
       "footU": 0.016043526785714284,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_2"
     },
     {
       "id": "r4_low_brush_8",
@@ -959,7 +979,8 @@
       "footU": 0.23284040178571427,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "r4_low_brush_9",
@@ -974,7 +995,8 @@
       "footU": 0.3550502232142857,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_1"
     },
     {
       "id": "r4_low_brush_10",
@@ -989,7 +1011,8 @@
       "footU": 0.8413783482142857,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_2"
     },
     {
       "id": "r4_low_brush_11",
@@ -1004,7 +1027,8 @@
       "footU": 0.016043526785714284,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_3"
     },
     {
       "id": "r4_low_brush_12",
@@ -1019,7 +1043,8 @@
       "footU": 0.23284040178571427,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "r4_low_brush_13",
@@ -1034,7 +1059,8 @@
       "footU": 0.3550502232142857,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_1"
     },
     {
       "id": "r4_low_brush_14",
@@ -1049,7 +1075,8 @@
       "footU": 0.8413783482142857,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_2"
     },
     {
       "id": "r4_low_brush_15",
@@ -1064,7 +1091,8 @@
       "footU": 0.016043526785714284,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_1"
     },
     {
       "id": "r4_low_brush_16",
@@ -1079,7 +1107,8 @@
       "footU": 0.23284040178571427,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "r4_low_brush_17",
@@ -1094,7 +1123,8 @@
       "footU": 0.3550502232142857,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_1"
     },
     {
       "id": "r4_low_brush_18",
@@ -1109,7 +1139,8 @@
       "footU": 0.8413783482142857,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_2"
     },
     {
       "id": "r4_low_brush_19",
@@ -1124,7 +1155,8 @@
       "footU": 0.016043526785714284,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "r4_low_brush_20",
@@ -1139,7 +1171,8 @@
       "footU": 0.23284040178571427,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_3"
     },
     {
       "id": "r4_low_brush_21",
@@ -1154,7 +1187,8 @@
       "footU": 0.3550502232142857,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r3_fern_0"
     },
     {
       "id": "r4_low_brush_22",
@@ -1169,7 +1203,8 @@
       "footU": 0.8413783482142857,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r3_fern_0"
     },
     {
       "id": "r4_low_brush_23",
@@ -1184,7 +1219,8 @@
       "footU": 0.016043526785714284,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "r4_low_brush_24",
@@ -1199,7 +1235,8 @@
       "footU": 0.23284040178571427,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "r4_low_brush_25",
@@ -1214,7 +1251,8 @@
       "footU": 0.3550502232142857,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_2"
     },
     {
       "id": "r4_low_brush_26",
@@ -1229,7 +1267,8 @@
       "footU": 0.8413783482142857,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_2"
     },
     {
       "id": "r4_low_brush_27",
@@ -1244,7 +1283,8 @@
       "footU": 0.016043526785714284,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "r4_low_brush_28",
@@ -1259,7 +1299,8 @@
       "footU": 0.23284040178571427,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_2"
     },
     {
       "id": "r4_low_brush_29",
@@ -1274,7 +1315,8 @@
       "footU": 0.3550502232142857,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_1"
     },
     {
       "id": "r4_low_brush_30",
@@ -1289,7 +1331,8 @@
       "footU": 0.8413783482142857,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_2"
     },
     {
       "id": "r4_low_brush_31",
@@ -1304,7 +1347,8 @@
       "footU": 0.016043526785714284,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "r4_low_brush_32",
@@ -1319,7 +1363,8 @@
       "footU": 0.23284040178571427,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "r4_low_brush_33",
@@ -1334,7 +1379,8 @@
       "footU": 0.3550502232142857,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r3_fern_0"
     },
     {
       "id": "r4_low_brush_34",
@@ -1349,7 +1395,8 @@
       "footU": 0.8413783482142857,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "r4_low_brush_35",
@@ -1364,7 +1411,8 @@
       "footU": 0.016043526785714284,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_3"
     },
     {
       "id": "r4_low_brush_36",
@@ -1379,7 +1427,8 @@
       "footU": 0.23284040178571427,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_1"
     },
     {
       "id": "r4_low_brush_37",
@@ -1394,7 +1443,8 @@
       "footU": 0.3550502232142857,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_3"
     },
     {
       "id": "r4_low_brush_38",
@@ -1409,7 +1459,8 @@
       "footU": 0.8413783482142857,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_2"
     },
     {
       "id": "r4_low_brush_39",
@@ -1424,7 +1475,8 @@
       "footU": 0.016043526785714284,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "r4_low_brush_40",
@@ -1439,7 +1491,8 @@
       "footU": 0.23284040178571427,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "r4_low_brush_41",
@@ -1454,7 +1507,8 @@
       "footU": 0.3550502232142857,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_1"
     },
     {
       "id": "r4_low_brush_42",
@@ -1469,7 +1523,8 @@
       "footU": 0.8413783482142857,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_2"
     },
     {
       "id": "r4_low_brush_43",
@@ -1484,7 +1539,8 @@
       "footU": 0.016043526785714284,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_3"
     },
     {
       "id": "r4_low_brush_44",
@@ -1499,7 +1555,8 @@
       "footU": 0.23284040178571427,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "r4_low_brush_45",
@@ -1514,7 +1571,8 @@
       "footU": 0.3550502232142857,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_1"
     },
     {
       "id": "r4_low_brush_46",
@@ -1529,7 +1587,8 @@
       "footU": 0.8413783482142857,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_2"
     },
     {
       "id": "r4_low_brush_47",
@@ -1544,7 +1603,8 @@
       "footU": 0.016043526785714284,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_3"
     },
     {
       "id": "r4_low_brush_48",
@@ -1559,7 +1619,8 @@
       "footU": 0.23284040178571427,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "r4_low_brush_49",
@@ -1574,7 +1635,8 @@
       "footU": 0.3550502232142857,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_2"
     },
     {
       "id": "r4_low_brush_50",
@@ -1589,7 +1651,8 @@
       "footU": 0.8413783482142857,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_2"
     },
     {
       "id": "r4_low_brush_51",
@@ -1604,7 +1667,8 @@
       "footU": 0.016043526785714284,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_3"
     },
     {
       "id": "r4_low_brush_52",
@@ -1619,7 +1683,8 @@
       "footU": 0.23284040178571427,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "r4_low_brush_53",
@@ -1634,7 +1699,8 @@
       "footU": 0.3550502232142857,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_1"
     },
     {
       "id": "r4_low_brush_54",
@@ -1649,7 +1715,8 @@
       "footU": 0.8413783482142857,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_2"
     },
     {
       "id": "r4_low_brush_55",
@@ -1664,7 +1731,8 @@
       "footU": 0.016043526785714284,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_3"
     },
     {
       "id": "r4_low_brush_56",
@@ -1679,7 +1747,8 @@
       "footU": 0.23284040178571427,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_1"
     },
     {
       "id": "r4_low_brush_57",
@@ -1694,7 +1763,8 @@
       "footU": 0.3550502232142857,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_1"
     },
     {
       "id": "r4_low_brush_58",
@@ -1709,7 +1779,8 @@
       "footU": 0.8413783482142857,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_2"
     },
     {
       "id": "r4_low_brush_59",
@@ -1724,7 +1795,8 @@
       "footU": 0.016043526785714284,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_3"
     },
     {
       "id": "r4_low_brush_60",
@@ -1739,7 +1811,8 @@
       "footU": 0.23284040178571427,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "r4_low_brush_61",
@@ -1754,7 +1827,8 @@
       "footU": 0.3550502232142857,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_1"
     },
     {
       "id": "r4_low_brush_62",
@@ -1769,7 +1843,8 @@
       "footU": 0.8413783482142857,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_2"
     },
     {
       "id": "r4_low_brush_63",
@@ -1784,7 +1859,8 @@
       "footU": 0.016043526785714284,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_3"
     },
     {
       "id": "r4_low_brush_64",
@@ -1799,7 +1875,8 @@
       "footU": 0.23284040178571427,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "r4_low_brush_65",
@@ -1814,7 +1891,8 @@
       "footU": 0.3550502232142857,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_1"
     },
     {
       "id": "r4_low_brush_66",
@@ -1829,7 +1907,8 @@
       "footU": 0.8413783482142857,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_2"
     },
     {
       "id": "r4_low_brush_67",
@@ -1844,7 +1923,8 @@
       "footU": 0.016043526785714284,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_1"
     },
     {
       "id": "r4_low_brush_68",
@@ -1859,7 +1939,8 @@
       "footU": 0.23284040178571427,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_2"
     },
     {
       "id": "r4_low_brush_69",
@@ -1874,7 +1955,8 @@
       "footU": 0.3550502232142857,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_3"
     },
     {
       "id": "r4_low_brush_70",
@@ -1889,7 +1971,8 @@
       "footU": 0.8413783482142857,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_3"
     },
     {
       "id": "r4_low_brush_71",
@@ -1904,7 +1987,8 @@
       "footU": 0.016043526785714284,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r3_fern_1"
     },
     {
       "id": "r4_low_brush_72",
@@ -1919,7 +2003,8 @@
       "footU": 0.23284040178571427,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_1"
     },
     {
       "id": "r4_low_brush_73",
@@ -1934,7 +2019,8 @@
       "footU": 0.3550502232142857,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "r4_low_brush_74",
@@ -1949,7 +2035,8 @@
       "footU": 0.8413783482142857,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "r4_low_brush_75",
@@ -1964,7 +2051,8 @@
       "footU": 0.016043526785714284,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_3"
     },
     {
       "id": "r4_low_brush_76",
@@ -1979,7 +2067,8 @@
       "footU": 0.23284040178571427,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_2"
     },
     {
       "id": "r4_low_brush_77",
@@ -1994,7 +2083,8 @@
       "footU": 0.3550502232142857,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_3"
     },
     {
       "id": "r4_low_brush_78",
@@ -2009,7 +2099,8 @@
       "footU": 0.8413783482142857,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_2"
     },
     {
       "id": "r4_low_brush_79",
@@ -2024,7 +2115,8 @@
       "footU": 0.016043526785714284,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_3"
     },
     {
       "id": "r4_low_brush_80",
@@ -2039,7 +2131,8 @@
       "footU": 0.23284040178571427,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "r4_low_brush_81",
@@ -2054,7 +2147,8 @@
       "footU": 0.3550502232142857,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_1"
     },
     {
       "id": "r4_low_brush_82",
@@ -2069,7 +2163,8 @@
       "footU": 0.8413783482142857,
       "footV": 0.119140625,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_2"
     },
     {
       "id": "r4_low_brush_83",
@@ -2084,7 +2179,8 @@
       "footU": 0.016043526785714284,
       "footV": 0.115234375,
       "sway": 0.11,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "r4_forest_wall_0",
@@ -2144,7 +2240,8 @@
       "footU": 0.23284040178571427,
       "footV": 0.119140625,
       "sway": 0.13,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "R5_bank_brush_1",
@@ -2159,7 +2256,8 @@
       "footU": 0.3550502232142857,
       "footV": 0.115234375,
       "sway": 0.13,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_2"
     },
     {
       "id": "R5_bank_brush_2",
@@ -2174,7 +2272,8 @@
       "footU": 0.8413783482142857,
       "footV": 0.119140625,
       "sway": 0.13,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_2"
     },
     {
       "id": "R5_bank_brush_3",
@@ -2189,7 +2288,8 @@
       "footU": 0.016043526785714284,
       "footV": 0.115234375,
       "sway": 0.13,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "R5_bank_brush_4",
@@ -2204,7 +2304,8 @@
       "footU": 0.23284040178571427,
       "footV": 0.119140625,
       "sway": 0.13,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r3_fern_2"
     },
     {
       "id": "R5_bank_brush_5",
@@ -2219,7 +2320,8 @@
       "footU": 0.3550502232142857,
       "footV": 0.115234375,
       "sway": 0.13,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_1"
     },
     {
       "id": "R5_bank_brush_6",
@@ -2234,7 +2336,8 @@
       "footU": 0.8413783482142857,
       "footV": 0.119140625,
       "sway": 0.13,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_1"
     },
     {
       "id": "R5_bank_brush_7",
@@ -2249,7 +2352,8 @@
       "footU": 0.016043526785714284,
       "footV": 0.115234375,
       "sway": 0.13,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "R5_bank_brush_8",
@@ -2264,7 +2368,8 @@
       "footU": 0.23284040178571427,
       "footV": 0.119140625,
       "sway": 0.13,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_1"
     },
     {
       "id": "R5_bank_brush_9",
@@ -2279,7 +2384,8 @@
       "footU": 0.3550502232142857,
       "footV": 0.115234375,
       "sway": 0.13,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_1"
     },
     {
       "id": "R5_bank_brush_10",
@@ -2294,7 +2400,8 @@
       "footU": 0.8413783482142857,
       "footV": 0.119140625,
       "sway": 0.13,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "R5_bank_brush_11",
@@ -2309,7 +2416,8 @@
       "footU": 0.016043526785714284,
       "footV": 0.115234375,
       "sway": 0.13,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_3"
     },
     {
       "id": "R5_bank_brush_12",
@@ -2324,7 +2432,8 @@
       "footU": 0.23284040178571427,
       "footV": 0.119140625,
       "sway": 0.13,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_0"
     },
     {
       "id": "R5_bank_brush_13",
@@ -2339,7 +2448,8 @@
       "footU": 0.3550502232142857,
       "footV": 0.115234375,
       "sway": 0.13,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r4_brush_1"
     },
     {
       "id": "foreground_0",
@@ -2804,7 +2914,8 @@
       "sourceY": 3657.5,
       "footU": 0.5,
       "footV": 0.2928571428571428,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r3_fern_0"
     },
     {
       "id": "c10_builder_fern_1",
@@ -2819,7 +2930,8 @@
       "sourceY": 3962.5,
       "footU": 0.5,
       "footV": 0.25135135135135134,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r3_fern_1"
     },
     {
       "id": "c10_builder_fern_2",
@@ -2834,7 +2946,8 @@
       "sourceY": 4199,
       "footU": 0.5,
       "footV": 0.18108108108108112,
-      "emission": 0
+      "emission": 0,
+      "variationAsset": "A2R/C10/Art/r3_fern_2"
     }
   ],
   "groundTiles": [

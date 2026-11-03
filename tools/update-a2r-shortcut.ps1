@@ -5,8 +5,12 @@ $exe=Join-Path $BuildDir 'EXODUSER-A2R.exe'
 if(-not(Test-Path -LiteralPath $exe)){throw "A2R exe missing: $exe"}
 $proof=Get-Content -LiteralPath $SmokeReceipt -Raw -Encoding UTF8 | ConvertFrom-Json
 if(-not $proof.passed -or $proof.errors -ne 0 -or -not $proof.arrived -or -not $proof.noTeleport){throw 'A2R play-smoke must PASS with errors0 and noTeleport'}
-$entry=Get-Content -LiteralPath 'I:\EXODUSER-Storage\map25d\a2r-entry-check\fullrun.json' -Raw -Encoding UTF8 | ConvertFrom-Json
-if($entry.frontendFailure -or $entry.frontendBoundaries -notcontains 'lobby-game' -or -not($entry.samples | Where-Object {$_.scene -eq 'field'})){throw 'Same-package ordinary lobby entry proof is required'}
+if(-not $proof.ordinaryEntryVerified -or $proof.legacyFrontendBypass -or $proof.frontendBoundaries.Count -lt 2){throw 'Ordinary entry and route must both PASS in the current run'}
+if($proof.nearestCoveredPixels -le 0 -or $proof.nearestDrawCalls -le 0){throw 'Nearest surface depth must contain real pixels'}
+$assets=Get-Content -LiteralPath (Join-Path (Split-Path $SmokeReceipt) 'web-assets-receipt.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+$plants=@($assets.items | Where-Object {$_.added -and $_.kind -eq 'vegetation'})
+if($assets.floating -ne 0 -or $plants.Count -ne 113){throw 'Grounding/vegetation receipt mismatch'}
+for($i=0;$i -lt $plants.Count;$i++){for($j=0;$j -lt $i;$j++){if($plants[$i].variant -ne $plants[$j].variant){continue};$dx=$plants[$i].worldX-$plants[$j].worldX;$dz=$plants[$i].worldZ-$plants[$j].worldZ;if($dx*$dx+$dz*$dz -lt 10.89){throw 'Adjacent identical vegetation painting remains'}}}
 $sandbox='I:\EXODUSER-Storage\map25d\a2r-play-sandbox'
 New-Item -ItemType Directory -Force -Path $sandbox | Out-Null
 $lnk=Join-Path ([Environment]::GetFolderPath('Desktop')) '지옥의 길 1-1 맵 후보 (Unity).lnk'

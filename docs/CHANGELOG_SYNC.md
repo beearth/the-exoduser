@@ -57394,3 +57394,11 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 - 후보resource기본ON/NativeRemodel3D표현flag1줄, Map25DHumanSave기반fail-closed격리·실제타이틀→로비→Core도보캠프fixture. CTO가PC Windows1회빌드와후보바로가기교체를승인했다. 이전빌드삭제없음. [계약·MAP PRODUCTION REPORT](engine/UNITY_A2R_EXISTING_ASSETS_20261103.md). 실제실행결과는I:/EXODUSER-Storage/map25d/a2redesign/REPORT.md 및STATUS.md에기록.
 
 - A2R18:45 실검증: Windows1회/errors0, C10카드173/중복16/바닥64/떠있음0. 일반입장6경계+별도Core도보4974.3px/1829ticks/오류0. 캠프1920·3840직접검수/후보바로가기교체/실제세이브변경0. 최초새smoke전환대기실패기록, 기존fixture로검증분리. 시각RETOUCH/총괄판정대기.
+
+- A2R19:30 R1~R4: 청회전역안개덮어쓰기차단/먼거리haze제한·캠프주황광, nearest-depth1면가림, 좌표보존고사리변형, 원본액터읽기전용1texel윤곽/약광. A2R자체일반입장대기fixture수정. 수치·계약은UNITY_A2R_EXISTING_ASSETS_20261103.md. 실제화면판정은새Windows검수뒤기록.
+
+- R1/R2 실검수보정: 캠프이미지중심광원을불투명발피벗전방으로이동, 고사리15+덤불98전체원화변형/변형별발피벗. 역Z상태의영향없는MIN-depth와빌드전64²GPU실측게이트. cold-ready후일반로비진입, legacy우회검증불허.
+
+- A2R R3: 근접동일원화14쌍검출후오프라인DSATUR variationAsset데이터로교체. 기존7종/113식생/3.3u인접동일0, 원래좌표·ID보존.
+
+- A2R19:30 최종: 빌드84127006/errors0, Playerca2f988a 일반로비8경계/도보1829ticks·4974.3px/오류0·순간이동0·실제세이브변경0. 근접동일원화0/113식생/좌표변경0·새카드떠있음0. 캠프1920·3840/거목1x/영웅3x/먼적 비교판 확인. 후보바로가기갱신, 시각RETOUCH/총괄판정대기.

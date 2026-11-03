@@ -22,6 +22,7 @@ Shader "EXODUSER/A2R/GroundPainting"
    CBUFFER_START(UnityPerMaterial)
    float _Water;
    CBUFFER_END
+   float4 _A2RCampPositionRange;half4 _A2RCampRadiance;
    struct A {float4 p:POSITION;float2 uv:TEXCOORD0;float3 n:NORMAL;float4 color:COLOR;};
    struct V {float4 p:SV_POSITION;float3 w:TEXCOORD0;float2 uv:TEXCOORD1;half3 n:TEXCOORD2;half alpha:TEXCOORD3;};
    V vert(A a){V o;o.w=TransformObjectToWorld(a.p.xyz);o.p=TransformWorldToHClip(o.w);o.uv=a.uv;o.n=TransformObjectToWorldNormal(a.n);o.alpha=_Water>.5?a.color.a:1;return o;}
@@ -33,7 +34,8 @@ Shader "EXODUSER/A2R/GroundPainting"
     else{alpha*=1-smoothstep(.1,.9,water);float2 edge=min(float2(i.w.x,-i.w.z),80-float2(i.w.x,-i.w.z));alpha*=smoothstep(0,.35,min(edge.x,edge.y));}
     clip(alpha-.005);half3 normal=SAMPLE_TEXTURE2D(_NormalTex,sampler_NormalTex,i.uv).rgb*2-1;half3 n=normalize(i.n+half3(normal.x,0,-normal.y)*.35);Light main=GetMainLight(TransformWorldToShadowCoord(i.w));half3 light=half3(.08,.075,.065)+main.color*saturate(dot(n,main.direction))*main.shadowAttenuation;
     InputData inputData=(InputData)0;inputData.positionWS=i.w;inputData.normalizedScreenSpaceUV=GetNormalizedScreenSpaceUV(i.p);uint count=GetAdditionalLightsCount();LIGHT_LOOP_BEGIN(count)Light l=GetAdditionalLight(lightIndex,i.w);light+=l.color*l.distanceAttenuation*l.shadowAttenuation*saturate(dot(n,l.direction));LIGHT_LOOP_END
-    return half4(paint.rgb*min(light,half3(2.4,2.4,2.4)),alpha);
+    float3 toCamp=_A2RCampPositionRange.xyz-i.w;float d=length(toCamp);float pool=saturate(1-pow(d/max(.01,_A2RCampPositionRange.w),2));light+=_A2RCampRadiance.rgb*pool*pool*saturate(dot(n,normalize(toCamp)))/(1+d*d*.28);
+    return half4(paint.rgb*half3(1.10,1.03,.91)*min(light,half3(2.4,2.4,2.4)),alpha);
    }
    ENDHLSL
   }
