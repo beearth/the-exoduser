@@ -10,11 +10,12 @@ namespace Exoduser.UnityPort
 {
     public sealed partial class NativeGame
     {
-        A2RLighting a2rLighting;A2RWebAssets a2rWeb;A2ROcclusion a2rOcclusion;A2RNatureDynamics a2rNature;A2RProps3D a2rModels;
+        A2RLighting a2rLighting;A2RWebAssets a2rWeb;A2ROcclusion a2rOcclusion;A2RNatureDynamics a2rNature;A2RProps3D a2rModels;A2RDepthRelief a2rRelief;
         static bool A2RRequested {get {var a=Environment.GetCommandLineArgs();return A2RHumanSave.CandidateDefault||Array.IndexOf(a,"--a2r1-light")>=0||Array.IndexOf(a,"--a2r1-light-capture")>=0||Array.IndexOf(a,"--a2-plan-capture")>=0;}}
         void A2RSetup()
         {
             if(!A2RRequested||a2rLighting!=null)return;
+            if(A2RDepthRelief.Requested){var camp=new Vector2(2050,4400);foreach(var p in Map.Data.props)if(p.id=="m_c1camp"){camp=new Vector2(p.x,p.y);break;}a2rRelief=a2Root.AddComponent<A2RDepthRelief>();a2rRelief.Initialize(a2Root.transform,Map.Data,camp,(x,y)=>Map.CanMove(x,y,0),a2FieldSoil);}
             var volumes=new List<Volume>();foreach(var root in r3Roots)volumes.AddRange(root.GetComponentsInChildren<Volume>(true));
             a2rLighting=a2Root.AddComponent<A2RLighting>();a2rLighting.Initialize(a2Root.transform,r3Cam,FindObjectsByType<Light>(FindObjectsInactive.Include,FindObjectsSortMode.None),volumes,()=>NativeRemodel3D.Point(Simulation.Player.X,Simulation.Player.Y));
             a2rLighting.SetHeroSprite(playerView);a2rLighting.Readability.SetOverlaps(A2RCollectOverlapRenderers);
@@ -29,7 +30,7 @@ namespace Exoduser.UnityPort
         void A2RCollectNature(List<A2RNatureDynamics.Actor> result)
         {
             result.Add(new A2RNatureDynamics.Actor{id=int.MinValue,position=NativeRemodel3D.Point(Simulation.Player.X,Simulation.Player.Y),radius=1.2f});
-            foreach(var e in Simulation.Enemies)if(e.Alive&&!Simulation.IsRemodelProp(e))result.Add(new A2RNatureDynamics.Actor{id=e.Id,position=NativeRemodel3D.Point(e.X,e.Y),radius=.95f});
+            foreach(var e in Simulation.Enemies)if(e.Alive&&!Simulation.IsRemodelProp(e))result.Add(new A2RNatureDynamics.Actor{id=e.Id,position=NativeRemodel3D.Point(e.X,e.Y),radius=1.2f});
             var center=NativeRemodel3D.Point(Simulation.Player.X,Simulation.Player.Y);result.Sort((a,b)=>(a.position-center).sqrMagnitude.CompareTo((b.position-center).sqrMagnitude));if(result.Count>32)result.RemoveRange(32,result.Count-32);
             foreach(var p in Simulation.Bolts)if(p.Active)result.Add(new A2RNatureDynamics.Actor{id=1000000+p.Id,position=NativeRemodel3D.Point(p.X,p.Y),projectile=true});
         }
@@ -40,7 +41,7 @@ namespace Exoduser.UnityPort
             foreach(var p in Simulation.Bolts)if(p.Active){var at=NativeRemodel3D.Point(p.X,p.Y)+Vector3.up*.25f;points.Add(new Vector4(at.x,at.y,at.z,-.25f));}
             if(Simulation.Druid!=null)foreach(var p in Simulation.Druid.Projectiles)if(p.Active){var at=NativeRemodel3D.Point(p.X,p.Y)+Vector3.up*.35f;points.Add(new Vector4(at.x,at.y,at.z,-.35f));}
         }
-        void A2RSetLook(bool on){a2rLighting.SetLook(on);a2rWeb.SetLook(on);if(a2rModels!=null)a2rModels.SetLook(on&&A2RProps3D.Enabled);a2rOcclusion.SetLook(on);if(a2rNature!=null)a2rNature.SetLook(on);}
+        void A2RSetLook(bool on){if(a2rRelief!=null)a2rRelief.SetLook(on);a2rLighting.SetLook(on);a2rWeb.SetLook(on);if(a2rModels!=null)a2rModels.SetLook(on&&A2RProps3D.Enabled);a2rOcclusion.SetLook(on);if(a2rNature!=null)a2rNature.SetLook(on);}
         [Serializable] sealed class A2RPoint {public string id,kind;public float x,y;public int region;}
         [Serializable] sealed class A2RFrame {public string id,look;public float x,y,heroGroundY;public int width,height,fadedRenderers,maskTargets;public float cameraFov,cameraPitch;public Vector3 cameraPosition;public bool orthographic;}
         [Serializable] sealed class A2RReceipt {public string scope="Same-package fixed-position A/B assets/lighting fixture. Existing A2Field/SourceMap/actor renderer, no natural walk claim. Three occlusion poses are fixed-position samples. Structure uses a separate orthographic camera only.";public bool passed;public int errors;public List<A2RFrame> frames=new List<A2RFrame>();public List<A2RFrame> occlusionFrames=new List<A2RFrame>();public List<A2RFrame> foregroundFrames=new List<A2RFrame>();public List<Vector2> foregroundEnemies=new List<Vector2>();public int foregroundEnemyCount,foregroundVisibleEnemies,peakDroppedTargets;public Vector2 foregroundRequested,foregroundActual;public string foregroundPositionSource="Inferred from the user image's bridge torch; image has no Core coordinates. Verify same place on Mac; optional --a2r-foreground-x/y overrides are recorded.";}

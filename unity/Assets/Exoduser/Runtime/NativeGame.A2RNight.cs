@@ -10,11 +10,11 @@ namespace Exoduser.UnityPort
     {
         [Serializable] sealed class NightFrame {public string id,look;public Vector2 core;public Vector3 eye;public float pitch,fov;public int width,height,visibleEnemies,distantEnemies;public bool cameraUnchanged;}
         [Serializable] sealed class NightReceipt {public string scope="Same-package visual fixture AFTER ordinary no-teleport lobby/Core camp route. Five supplementary legal fixed poses, seeded original Core enemies, not natural travel. Native column restores this build's unity/main look; not a separately executed historical binary.";public List<NightFrame> frames=new List<NightFrame>();public int fixedPoseAssignments;public bool passed;public string[] failures;}
-        [Serializable] sealed class NightPerformance {public string scope="Unthrottled camp render frames, no readback/encoding in measured interval. Counters are real ProfilerRecorder values, unavailable counters are explicitly marked.";public int width,height,frames;public float seconds,fps;public long drawCalls,triangles;public bool drawCallsAvailable,trianglesAvailable;}
+        [Serializable] sealed class NightPerformance {public string scope="Unthrottled camp render frames, no readback/encoding in measured interval. Counters are real ProfilerRecorder values, unavailable counters are explicitly marked.";public int width,height,frames;public float seconds,fps;public bool cloudShadows,depthRelief;public int loweredVertices;public float campMoundRise;public long drawCalls,triangles;public bool drawCallsAvailable,trianglesAvailable;}
         [Serializable] sealed class NightCombat {public string scope="Ordinary camp arrival, original real-time 60Hz Core StepInput combat, fixture invulnerability, not human/balance QA.";public int frames,ticks,shotsRequested,movingEnemies;public float seconds;public List<float> times=new List<float>();}
         IEnumerator A2RNightProof()
         {
-            yield return A2RNatureSize(1920);var perf=new NightPerformance{width=Screen.width,height=Screen.height};
+            yield return A2RNatureSize(1920);var perf=new NightPerformance{width=Screen.width,height=Screen.height,cloudShadows=Array.IndexOf(Environment.GetCommandLineArgs(),"--a2r-cloud-shadows")>=0,depthRelief=a2rRelief!=null,loweredVertices=a2rRelief!=null?a2rRelief.LoweredVertices:0,campMoundRise=a2rRelief!=null?a2rRelief.MoundRise:0};
             using(var draws=ProfilerRecorder.StartNew(ProfilerCategory.Render,"Draw Calls Count",1))
             using(var tris=ProfilerRecorder.StartNew(ProfilerCategory.Render,"Triangles Count",1))
             {
