@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort {
    Directory.CreateDirectory(output);AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;
    int width;if(!int.TryParse(Argument("-review-width"),out width))width=1920;
    Screen.SetResolution(width,1080,FullScreenMode.Windowed);QualitySettings.vSyncCount=0;Application.targetFrameRate=-1;
-   smokeActive=true;pauseSmoke=true;Running=false;lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();EndFirstPractice(true);frontendEntryInputFence=false;menu=false;SetGameFocus(true);
+   smokeActive=true;pauseSmoke=true;Running=false;yield return RigPixelReviewEntry();if(!rigPixelEntryReady){Application.Quit(2);yield break;}
    yield return new WaitForSecondsRealtime(.5f);Running=false;
    float deadline=Time.realtimeSinceStartup+60;while(NativeRemodel3D.Requested&&!NativeRemodel3D.Active&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
    for(int warm=0;warm<120;warm++){UpdateViews();yield return null;}

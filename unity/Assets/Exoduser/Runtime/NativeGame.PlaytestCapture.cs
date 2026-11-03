@@ -14,7 +14,7 @@ namespace Exoduser.UnityPort {
   IEnumerator PlaytestCapture() {
    string output=Argument("-output"); if(string.IsNullOrEmpty(output)){Application.Quit(2);yield break;} Directory.CreateDirectory(output);
    AudioListener.volume=0;AudioListener.pause=true;smokeActive=true;dropSmoke=true;Running=false;
-   Screen.SetResolution(1600,900,FullScreenMode.Windowed);lobby.Flow.ShowLobby();lobby.Flow.SelectPreview();lobby.Flow.EnterTest();
+   if(RigPixelRequested){int w;if(!int.TryParse(Argument("-review-width"),out w))w=1920;Screen.SetResolution(w,1080,FullScreenMode.Windowed);yield return RigPixelReviewEntry();if(!rigPixelEntryReady){Application.Quit(2);yield break;}}else{Screen.SetResolution(1600,900,FullScreenMode.Windowed);lobby.Flow.ShowLobby();lobby.Flow.SelectPreview();lobby.Flow.EnterTest();}
    if(firstPractice!=null)EndFirstPractice(true);frontendEntryInputFence=false;menu=false;SetGameFocus(true);Running=false;
    yield return new WaitForSecondsRealtime(.5f);
    float deadline=Time.realtimeSinceStartup+40;while(NativeRemodel3D.Requested&&!NativeRemodel3D.Active&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}

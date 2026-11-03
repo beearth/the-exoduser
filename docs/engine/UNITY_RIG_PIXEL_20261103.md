@@ -18,3 +18,5 @@
 | 비교·합격 | 같은 EXE M1, 1920/3840 실제 Player, 전사3x·10초 무음영상·NRFTW/기존C10 나란히. 발미끄러짐/모자이크/관통/실루엣/점/60fps 핵심FAIL이면 미채택. Editor/정책 테스트로 PASS 선언 금지 |
 
 정책 테스트는 I:/EXODUSER-Storage/codex-takeover/rig-pixel/tests/run.ps1: 첫 RED policy 없음, GREEN23/23. Unity 첫 UPM 실패는 자식 ProgramData 환경 보완으로 해결; 64de26cf에서 실제 리그 Humanoid=true, renderer=false/shaders=false의 RED를 확인했다. 같은 검사 중 USER_SAVE changed3이 관측돼 정상 게이트 통과로 세지 않는다. 사용자 세이브를 수정/복원하지 않는다. 이후 실제 실행·시각 판정은 REPORT에 이어 기록한다.
+
+R1 실제 Player 진단: 첫 동작 캡처에서 FDG 화면이 게임을 가린 것을 직접 확인했다. 구형 fixture가 ShowLobby 비동기 전환 직후 SelectPreview/EnterNativeTest를 호출한 것이 원인이다. 해당 실행을 검수 실패로 두고 자기 Player만 종료했다(실행기의 UInt32 종료코드 변환 예외도 별도 기록). R2는 공개 로비 API의 전환 Busy/CinematicEntryPending을 최대30초 대기한 뒤 preview 입장·실제 !lobby.IsBlocking을 필수 확인한다. UI를 강제로 숨기지 않는다. HeroCapture/새 자연검수/rigpixel Shift Playtest에만 이 진입을 적용하고 일반 제품 UI는 변경하지 않는다. Shift는 --unity-playtest-capture -playtest-controls Shift -review-width1920으로 실제 InputSystem 사슬 이동을 확인한다.
