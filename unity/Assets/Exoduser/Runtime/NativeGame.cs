@@ -180,7 +180,7 @@ namespace Exoduser.UnityPort
         }
         void Update()
         {
-            if(hellGateCaptureActive){UpdateViews();return;}
+            if(hellGateCaptureActive){view.cullingMask=worldMask;UpdateViews();return;}
             UpdateSettingsPersistence();UpdateCombatSave();
             lobby.AutomatedInput=UiOverlapOwnsInput||lobbySmoke&&!introKeysSmoke;
             if(lobbySmoke&&!lobbyControlsSmoke)lobby.SetPlaybackFocus(true); // Natural-playback fixture only; controls fixture owns focus transitions.
@@ -447,6 +447,7 @@ namespace Exoduser.UnityPort
         void DrawFeelHurtEdge(){var prior=GUI.matrix;try{GUI.matrix=Matrix4x4.identity;var color=new Color(166/255f,50/255f,37/255f,.24f);Fill(new Rect(0,0,Screen.width,6),color);Fill(new Rect(0,Screen.height-6,Screen.width,6),color);Fill(new Rect(0,6,6,Screen.height-12),color);Fill(new Rect(Screen.width-6,6,6,Screen.height-12),color);}finally{GUI.matrix=prior;}}
         void OnGUI()
         {
+            if(hellGateCaptureActive&&Event.current.type==EventType.Repaint)hellGateCapturePaints++;
             if(groundReceiverQaActive)return;
             if(Simulation==null)return;
             if(lobby!=null&&lobby.IsBlocking){if(lobby.StartupHudVisible)DrawStartupWorldHud();return;}
