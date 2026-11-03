@@ -39,3 +39,5 @@ Mac §8 비율·회복·그로기·화면과 M1/자동3판/사람3판은 미확�
 - PC Unity Roslyn DLL 참조 컴파일 1회: Player Core126/Runtime263, Editor Core126/Runtime263/Editor58, 5개 어셈블리 오류0. Unity/Player 시작·게임 빌드 없음. 기존 다른 Unity 프로세스는 조작하지 않았다.
 - `.meta`의 로컬 수정으로 병합이 거부되지 않아 동일내용 스테이징 우회는 사용하지 않았다. 병합 전부터 있던 누락 에셋·0바이트 로딩 PNG·guard baseline 변경은 커밋에서 제외했다.
 - 최종 병합 SHA와 push 확인은 `I:/EXODUSER-Storage/codex-takeover/parry-g2/REPORT.md` 맨 위에 기록한다. CTO fast-forward·Mac 실게임/화면 판정은 별도다.
+
+전송 직후 본편에 문서 전용 `f146df2b29e98ecac7fdd03e08c888b07d3f7a8d`(적 3D 리깅 G0, 문서3개)가 추가되어 후속 병합했다. 충돌0이며 검증한 `916db5d3de`와 Unity 트리가 동일하다(`git diff --cached --exit-code 916db5d3de -- unity`=0). 따라서 규칙·oracle·PC 컴파일은 위 각1회 결과를 그대로 적용하며 반복 실행하지 않았다.
