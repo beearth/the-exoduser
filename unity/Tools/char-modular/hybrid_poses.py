@@ -78,6 +78,9 @@ class Poses:
             self.turn("Spine01",28,(1,0,0))
             for side in ("Left","Right"): self.ik(side,self.feet[side],(0,-1,0))
         elif label=="twist45": self.turn("Spine01",45,(0,0,1))
+        elif label=="head_left": self.turn("Head",35,(0,0,1))
+        elif label=="head_right": self.turn("Head",-35,(0,0,1))
+        elif label=="head_bow": self.turn("Head",20,(1,0,0))
         elif label.startswith("strike"):
             i=int(label[-1])-1
             self.turn("Spine01",(35,-40,10)[i],(0,0,1))

@@ -1,5 +1,13 @@
 # 전사 모듈 제작 도구
 
+최신은 **03:20 소켓 한정 rest 증가분 기준2회 실패·중단**. native37,628tri·59뼈·25묶음. `docs/engine/UNITY_CHAR_MODULAR_REST_GROWTH_20261104.md`와 REPORT 우선. Unity A+B 연결/컴파일·새34도판은 미진행이며 아래 ec76 설명은 이전 이력이다.
+
+- `cleanup_0320.py`: B 머리/머리카락 고정·스카프 내부 면 삭제/고리 여유/neck-Spine 가중치·국소 이상 면 보완. `inspect_cleanup.py`에서 잔류 선 원인4.38m solidify spike 확인.
+- `inspect_local_topology.py`, `finalize_cleanup_topology.py`: spike 제거 후5변 구멍, A104 접촉 내부 shell을 원 A 외면과 cap으로 고쳐4대상 manifold 확인.
+- `rest_contact_policy.py`, `test_rest_contact_policy.py`: 명시16소켓 허용표, 스카프 rest 면제 금지, 대검 범위. 열린 면을0/PASS로 치환하지 않는다.
+- `audit_rest_growth.py`: 원래 triangle ID로 rest 집합을 저장, 새 겹침의 폐체적 표본 깊이 증가분. Head4포즈 스카프 절대검사 포함.1차→한 번 보완→2차까지이며 현재2차 실패로 재실행 거부.
+- `refine_0320_contacts.py`:1차 원인 면 곡률/3판 접촉 보완.2차 결과를 무시하고 더 호출하지 않는다. `inventory_0320.py`와 `package_0320_report.py`는 이미 끝난 원본/측정값의 읽기·인수용이며 새 테스트/저장을 하지 않는다.
+
 현재 native는 **A+B_G0_20261104 / BVH2회 미통과·중단**이다. B 단독본 검사 금지. `hybrid-contract.json`, `docs/engine/UNITY_CHAR_MODULAR_HYBRID_20261104.md`와 외부 REPORT가 최신이다. 이전 FBX/Resources prefab은 B 단독본이며 새 A+B로 검수하면 안 된다.
 
 - `Warrior_Tripo_Parts.glb`: 채택한 A 원본107조각. B 머리/머리카락 이외 신체를 이 원본으로 교체했다. A 머리/머리카락3·27은 제외한다. `hybrid_contract.py`가 원 G0의25번호와 최신 브리프 축약번호를 대응한다.

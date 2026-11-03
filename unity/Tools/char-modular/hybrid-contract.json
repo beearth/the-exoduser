@@ -1,5 +1,5 @@
 {
-  "scope": "A+B authoring, numeric attempt2 not passed; no Unity A+B export/adoption",
+  "scope": "03:20 rest-growth attempt2 failed; authoring only, no Unity export/compile",
   "variant": "A+B_G0_20261104",
   "rawA": "I:\\EXODUSER-Storage\\char-modular\\warrior\\tripoA_20261104_0103\\warrior_tripo_parts_raw.glb",
   "rawPieces": 107,
@@ -248,7 +248,7 @@
   },
   "logicalGroups": 25,
   "meshObjects": 109,
-  "triangles": 35088,
+  "triangles": 37628,
   "bones": 59,
   "aScale": 1.8899459842319846,
   "capeRemovedFaces": 46139,
@@ -1489,7 +1489,7 @@
       "sourceId": 38,
       "role": "soft",
       "bone": "soft",
-      "triangles": 319
+      "triangles": 321
     },
     {
       "name": "W14_A_039",
@@ -1516,7 +1516,7 @@
       "sourceId": 41,
       "role": "rigid",
       "bone": "RightForeArm",
-      "triangles": 250
+      "triangles": 248
     },
     {
       "name": "W04_A_042",
@@ -1525,7 +1525,7 @@
       "sourceId": 42,
       "role": "rigid",
       "bone": "Spine01",
-      "triangles": 248
+      "triangles": 242
     },
     {
       "name": "W03_A_043",
@@ -1633,7 +1633,7 @@
       "sourceId": 54,
       "role": "soft",
       "bone": "soft",
-      "triangles": 265
+      "triangles": 361
     },
     {
       "name": "W15_A_055",
@@ -1705,7 +1705,7 @@
       "sourceId": 62,
       "role": "soft",
       "bone": "soft",
-      "triangles": 241
+      "triangles": 283
     },
     {
       "name": "W12_A_063",
@@ -1768,7 +1768,7 @@
       "sourceId": 69,
       "role": "soft",
       "bone": "soft",
-      "triangles": 224
+      "triangles": 270
     },
     {
       "name": "W23_A_070",
@@ -1777,7 +1777,7 @@
       "sourceId": 70,
       "role": "soft",
       "bone": "soft",
-      "triangles": 222
+      "triangles": 260
     },
     {
       "name": "W08_A_071",
@@ -1858,7 +1858,7 @@
       "sourceId": 79,
       "role": "soft",
       "bone": "soft",
-      "triangles": 205
+      "triangles": 330
     },
     {
       "name": "W13_A_080",
@@ -2056,7 +2056,7 @@
       "sourceId": 101,
       "role": "soft",
       "bone": "soft",
-      "triangles": 153
+      "triangles": 92
     },
     {
       "name": "W14_A_102",
@@ -2075,15 +2075,6 @@
       "role": "rigid",
       "bone": "LeftFoot",
       "triangles": 126
-    },
-    {
-      "name": "W13_A_104",
-      "group": "W13",
-      "source": "A",
-      "sourceId": 104,
-      "role": "rigid",
-      "bone": "RightHand",
-      "triangles": 114
     },
     {
       "name": "W12_A_105",
@@ -2129,11 +2120,153 @@
       "role": "rigid",
       "bone": "hand_r_weapon",
       "triangles": 3000
+    },
+    {
+      "name": "W13_A_104",
+      "group": "W13",
+      "source": "A",
+      "sourceId": 104,
+      "role": "rigid",
+      "bone": "RightHand",
+      "triangles": 2374
     }
   ],
   "preInnerRepairTriangles": 35126,
-  "numericStatus": "STOP_AFTER_TWO_NUMERIC_FAILURES",
+  "numericStatus": "STOP_AFTER_TWO_0320_REST_GROWTH_FAILURES",
   "numericSummary": {
+    "criterion": "0320_named_socket_rest_growth",
+    "attempt": 2,
+    "status": "FAIL",
+    "failedRows": 3,
+    "openSheetUnverifiedRows": 85,
+    "mandatoryScarfChecks": [
+      {
+        "pose": "rest",
+        "absoluteScarfInsideHeadDepthMm": 0.0,
+        "insideSamples": 0,
+        "minimumRingSurfaceClearanceMm": 6.732337176799774,
+        "restExempt": false,
+        "status": "PASS"
+      },
+      {
+        "pose": "head_left",
+        "absoluteScarfInsideHeadDepthMm": 0.0,
+        "insideSamples": 0,
+        "minimumRingSurfaceClearanceMm": 6.59222574904561,
+        "restExempt": false,
+        "status": "PASS"
+      },
+      {
+        "pose": "head_right",
+        "absoluteScarfInsideHeadDepthMm": 0.0,
+        "insideSamples": 0,
+        "minimumRingSurfaceClearanceMm": 3.487452631816268,
+        "restExempt": false,
+        "status": "PASS"
+      },
+      {
+        "pose": "head_bow",
+        "absoluteScarfInsideHeadDepthMm": 9.072666056454182,
+        "insideSamples": 1,
+        "minimumRingSurfaceClearanceMm": 6.517603527754545,
+        "restExempt": false,
+        "status": "FAIL"
+      }
+    ],
+    "failedPairs": [
+      {
+        "pose": "strike1",
+        "a": "W05_A_014",
+        "b": "W25_UCH03a_Greatsword",
+        "groupA": "W05",
+        "groupB": "W25",
+        "reasons": "lead-approved-sword-scope",
+        "restExempt": false,
+        "restTrianglePairs": 0,
+        "posedTrianglePairs": 43,
+        "newTrianglePairs": 43,
+        "testedTrianglePairs": 43,
+        "gateDepthMm": 3.084679367020726,
+        "status": "FAIL",
+        "depthLimitMm": 3,
+        "restDepthMm": 0.0,
+        "poseDepthMm": 3.084679367020726,
+        "newContactDepthMm": 3.084679367020726,
+        "depthScope": "CLOSED_TARGET_SAMPLES",
+        "newDepthScope": "CLOSED_TARGET_SAMPLES",
+        "insideSamples": 8,
+        "uncertainRaySamples": 0,
+        "topologyAClosed": true,
+        "topologyBClosed": false
+      },
+      {
+        "pose": "strike3",
+        "a": "W09_A_040",
+        "b": "W11_A_041",
+        "groupA": "W09",
+        "groupB": "W11",
+        "reasons": "named-socket",
+        "restExempt": true,
+        "restTrianglePairs": 0,
+        "posedTrianglePairs": 47,
+        "newTrianglePairs": 47,
+        "testedTrianglePairs": 47,
+        "gateDepthMm": 4.6400753781199455,
+        "status": "FAIL",
+        "depthLimitMm": 3,
+        "restDepthMm": 0.0,
+        "poseDepthMm": 4.6400753781199455,
+        "newContactDepthMm": 4.6400753781199455,
+        "depthScope": "BIDIRECTIONAL_CLOSED_TARGET_SAMPLES",
+        "newDepthScope": "BIDIRECTIONAL_CLOSED_TARGET_SAMPLES",
+        "insideSamples": 14,
+        "uncertainRaySamples": 0,
+        "topologyAClosed": true,
+        "topologyBClosed": true
+      },
+      {
+        "pose": "strike3",
+        "a": "W09_A_076",
+        "b": "W11_A_041",
+        "groupA": "W09",
+        "groupB": "W11",
+        "reasons": "named-socket",
+        "restExempt": true,
+        "restTrianglePairs": 0,
+        "posedTrianglePairs": 106,
+        "newTrianglePairs": 106,
+        "testedTrianglePairs": 106,
+        "gateDepthMm": 4.873274825513363,
+        "status": "FAIL",
+        "depthLimitMm": 3,
+        "restDepthMm": 0.0,
+        "poseDepthMm": 4.873274825513363,
+        "newContactDepthMm": 4.873274825513363,
+        "depthScope": "BIDIRECTIONAL_CLOSED_TARGET_SAMPLES",
+        "newDepthScope": "BIDIRECTIONAL_CLOSED_TARGET_SAMPLES",
+        "insideSamples": 58,
+        "uncertainRaySamples": 0,
+        "topologyAClosed": true,
+        "topologyBClosed": true
+      }
+    ],
+    "limits": [
+      "Only the named socket pairs may exclude existing rest triangle ID pairs",
+      "Scarf/head uses absolute fit; no rest exemption",
+      "Nearest outside vertices and vertex-spacing proxy are not penetration depths",
+      "Open-open sheet volume depths remain unverified; overlap counts are retained",
+      "This is a sampled closed-target surface gate, not a continuous maximum proof or Animator/game PASS"
+    ]
+  },
+  "innerRepairSummary": {
+    "plates": 67,
+    "closedAfter": 65,
+    "thicknessMm": 1.2
+  },
+  "rawAProjectSource": "unity/Tools/char-modular/Warrior_Tripo_Parts.glb",
+  "UnityPrefabStatus": "Existing prefab/FBX remain previous B-only; 0320 A+B is NOT connected or compiled",
+  "sourceFrameLimit": "A raw limb anchors are fitted from normalized part bounds; zero origin error is NOT anatomical/geometry acceptance",
+  "previousCriterionSummary": {
     "attempt": 2,
     "totalPairRows": 11440,
     "failedPairRows": 50,
@@ -2150,12 +2283,165 @@
       "socket boundary Hausdorff uses actual boundary vertices in named socket bands; absent boundaries never become zero gap"
     ]
   },
-  "innerRepairSummary": {
-    "plates": 67,
-    "closedAfter": 65,
-    "thicknessMm": 1.2
+  "revision": "0320_rest_growth",
+  "restSocketAllowlist": [
+    [
+      "W04",
+      "W05",
+      "흉갑/복부 겹판"
+    ],
+    [
+      "W05",
+      "W14",
+      "복부/벨트 안쪽 접합"
+    ],
+    [
+      "W06",
+      "W08",
+      "왼 견갑/상완 소켓"
+    ],
+    [
+      "W07",
+      "W09",
+      "오른 견갑/상완 소켓"
+    ],
+    [
+      "W08",
+      "W10",
+      "왼 상완/팔꿈치 컵"
+    ],
+    [
+      "W09",
+      "W11",
+      "오른 상완/팔꿈치 컵"
+    ],
+    [
+      "W10",
+      "W12",
+      "왼 팔꿈치/아대"
+    ],
+    [
+      "W11",
+      "W13",
+      "오른 팔꿈치/아대"
+    ],
+    [
+      "W12",
+      "W12",
+      "왼 아대/손등"
+    ],
+    [
+      "W13",
+      "W13",
+      "오른 아대/손등"
+    ],
+    [
+      "W15",
+      "W17",
+      "태싯/왼 허벅지 겹판"
+    ],
+    [
+      "W15",
+      "W18",
+      "태싯/오른 허벅지 겹판"
+    ],
+    [
+      "W17",
+      "W19",
+      "왼 허벅지/무릎 컵"
+    ],
+    [
+      "W18",
+      "W20",
+      "오른 허벅지/무릎 컵"
+    ],
+    [
+      "W19",
+      "W21",
+      "왼 정강이/장화 접합"
+    ],
+    [
+      "W20",
+      "W22",
+      "오른 정강이/장화 접합"
+    ]
+  ],
+  "BHeadHairGeometryChangeMm": 0,
+  "topology0320": [
+    {
+      "object": "W15_A_018",
+      "closed": true,
+      "boundaryVertices": 0,
+      "nonmanifoldEdges": 0
+    },
+    {
+      "object": "W04_A_042",
+      "closed": true,
+      "boundaryVertices": 0,
+      "nonmanifoldEdges": 0
+    },
+    {
+      "object": "W11_A_041",
+      "closed": true,
+      "boundaryVertices": 0,
+      "nonmanifoldEdges": 0
+    },
+    {
+      "object": "W13_A_104",
+      "closed": true,
+      "boundaryVertices": 0,
+      "nonmanifoldEdges": 0
+    }
+  ],
+  "scarf0320": {
+    "headWeight": 0,
+    "ringWeights": {
+      "neck": 0.75,
+      "Spine": 0.25
+    },
+    "chainNames": [
+      "scarf_0",
+      "scarf_1",
+      "scarf_2"
+    ],
+    "deletedInsideFaces": 348
   },
-  "rawAProjectSource": "unity/Tools/char-modular/Warrior_Tripo_Parts.glb",
-  "UnityPrefabStatus": "Existing prefab/FBX are obsolete B-only; A+B is NOT connected or compiled",
-  "sourceFrameLimit": "A raw limb anchors are fitted from normalized part bounds; zero origin error is NOT anatomical/geometry acceptance"
+  "plate0320Offsets": [
+    {
+      "pose": "arm90",
+      "moved": "W07_A_007",
+      "other": "W09_A_040",
+      "measuredDepthBeforeMm": 3.533631097525358,
+      "offsetMm": 2.033631097525358,
+      "restOffset": [
+        0.0009850228670984507,
+        0.0016865873476490378,
+        -0.0005663996562361717
+      ]
+    },
+    {
+      "pose": "strike3",
+      "moved": "W11_A_041",
+      "other": "W09_A_076",
+      "measuredDepthBeforeMm": 4.40179742872715,
+      "offsetMm": 2.90179742872715,
+      "restOffset": [
+        0.0015294966287910938,
+        -0.0003877390408888459,
+        0.002435308415442705
+      ]
+    },
+    {
+      "pose": "strike1",
+      "moved": "W05_A_014",
+      "other": "W25_UCH03a_Greatsword",
+      "measuredDepthBeforeMm": 3.803013823926449,
+      "offsetMm": 2.303013823926449,
+      "restOffset": [
+        0.0008497545495629311,
+        -0.0010949444258585572,
+        -0.001839262549765408
+      ]
+    }
+  ]
 }

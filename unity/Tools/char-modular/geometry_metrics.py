@@ -30,10 +30,12 @@ class Snapshot:
                 self.vertices.append(point)
             remap[v.index] = weld[key]
         self.triangles = []
+        self.triangle_ids = []
         for tri in mesh.loop_triangles:
             indices = tuple(remap[i] for i in tri.vertices)
             if len(set(indices)) == 3:
                 self.triangles.append(indices)
+                self.triangle_ids.append(tri.index)
         evaluated.to_mesh_clear()
         edges = Counter(tuple(sorted((tri[i], tri[(i+1) % 3]))) for tri in self.triangles for i in range(3))
         self.boundary_indices = sorted({i for edge, count in edges.items() if count == 1 for i in edge})
