@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: brush_2_0
+  m_Name: brush_2 foliage_brush_2
   m_Shader: {fileID: 4800000, guid: 80ca93c5ed079fa4c9504830f3a7de41, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -26,7 +26,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 0adaab9d9b44caf47b2cc6e78bb5b28a, type: 3}
+        m_Texture: {fileID: 2800000, guid: cab837a7b7be3dd49829c8791788e344, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
