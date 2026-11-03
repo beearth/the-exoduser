@@ -9,7 +9,7 @@ namespace Exoduser.UnityPort {
  public sealed class NativeRigPixelHero : MonoBehaviour {
   const int RigLayer=30;
   NativeHeroView hero;Func<Camera> cameraSource;SpriteRenderer fallback;
-  Camera capture;MeshRenderer image,contact;RenderTexture texture;Material composite,shadowMaterial;
+  Light moon;Camera capture;MeshRenderer image,contact;RenderTexture texture;Material composite,shadowMaterial;
   readonly List<Material> ownedMaterials=new List<Material>();
   readonly Dictionary<Camera,int> masks=new Dictionary<Camera,int>();
   UniversalRenderPipeline.SingleCameraRequest request;
@@ -31,6 +31,7 @@ namespace Exoduser.UnityPort {
      for(int i=0;i<materials.Length;i++){
       var old=sourceMaterials[i];var mat=new Material(toon){name="RigPixel: "+(old!=null?old.name:"body")};
       if(old!=null){if(old.HasProperty("_BaseMap")){mat.SetTexture("_BaseMap",old.GetTexture("_BaseMap"));mat.SetTextureScale("_BaseMap",old.GetTextureScale("_BaseMap"));mat.SetTextureOffset("_BaseMap",old.GetTextureOffset("_BaseMap"));}if(old.HasProperty("_BaseColor"))mat.SetColor("_BaseColor",old.GetColor("_BaseColor"));}
+      mat.SetColor("_PaletteColor",Palette(old!=null?old.name:"iron"));
       materials[i]=mat;ownedMaterials.Add(mat);
      }
      r.sharedMaterials=materials;
@@ -39,11 +40,20 @@ namespace Exoduser.UnityPort {
     var cameraObject=new GameObject("RigPixel orthographic camera");cameraObject.transform.SetParent(transform,false);capture=cameraObject.AddComponent<Camera>();
     capture.enabled=false;capture.orthographic=true;capture.clearFlags=CameraClearFlags.SolidColor;capture.backgroundColor=Color.clear;
     capture.cullingMask=1<<RigLayer;capture.nearClipPlane=.05f;capture.farClipPlane=24;capture.allowHDR=false;capture.allowMSAA=false;
-    var data=capture.GetUniversalAdditionalCameraData();data.renderPostProcessing=false;data.renderShadows=true;data.requiresColorOption=CameraOverrideOption.Off;data.requiresDepthOption=CameraOverrideOption.Off;data.volumeLayerMask=0;
+    var data=capture.GetUniversalAdditionalCameraData();data.renderPostProcessing=false;data.renderShadows=false;data.requiresColorOption=CameraOverrideOption.Off;data.requiresDepthOption=CameraOverrideOption.Off;data.volumeLayerMask=0;
     composite=new Material(shader){name="RigPixel Point composite"};image=Quad("RigPixel warrior",composite);
     var contactShader=Resources.Load<Shader>("Shaders/HD2DContact");if(contactShader!=null){shadowMaterial=new Material(contactShader);contact=Quad("RigPixel ground contact",shadowMaterial);}
     request=new UniversalRenderPipeline.SingleCameraRequest();
    } catch(Exception e){Fail(e);}
+  }
+  static Color Palette(string name){
+   name=name.ToLowerInvariant();
+   if(name.Contains("skin"))return new Color(.38f,.245f,.18f,1);
+   if(name.Contains("hair"))return new Color(.022f,.018f,.016f,1);
+   if(name.Contains("cloth")||name.Contains("cape"))return new Color(.16f,.033f,.028f,1);
+   if(name.Contains("leather"))return new Color(.075f,.046f,.030f,1);
+   if(name.Contains("sword")||name.Contains("weapon")||name.Contains("blade"))return new Color(.29f,.30f,.32f,1);
+   return new Color(.18f,.205f,.235f,1);
   }
   MeshRenderer Quad(string name,Material material){
    var go=GameObject.CreatePrimitive(PrimitiveType.Quad);go.name=name;go.transform.SetParent(transform,false);Destroy(go.GetComponent<Collider>());
@@ -76,6 +86,10 @@ namespace Exoduser.UnityPort {
     image.transform.SetPositionAndRotation(snapped+camera.transform.up*centre,camera.transform.rotation);image.transform.localScale=new Vector3(extent,extent,1);
     image.sortingOrder=fallback!=null?fallback.sortingOrder:0;
     var snappedScreen=camera.WorldToScreenPoint(snapped);AnchorScreenError=new Vector2(snappedScreen.x-screen.x,snappedScreen.y-screen.y).magnitude;
+    if(moon==null){moon=RenderSettings.sun;if(moon==null)foreach(var light in FindObjectsByType<Light>(FindObjectsSortMode.None))if(light.isActiveAndEnabled&&light.type==LightType.Directional&&(moon==null||light.intensity>moon.intensity))moon=light;}
+    var lightDirection=moon!=null?-moon.transform.forward:new Vector3(-.6f,1,-.4f);
+    composite.SetVector("_RimDirection",new Vector4(Vector3.Dot(lightDirection,camera.transform.right),Vector3.Dot(lightDirection,camera.transform.up),0,0));
+    composite.SetColor("_RimColor",(moon!=null?moon.color:new Color(.62f,.75f,.9f))*.08f);
     double before=Time.realtimeSinceStartupAsDouble;
     if(!RenderPipeline.SupportsRenderRequest(capture,request))throw new InvalidOperationException("URP SingleCameraRequest unsupported");
     RenderPipeline.SubmitRenderRequest(capture,request);

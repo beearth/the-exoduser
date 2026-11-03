@@ -1,5 +1,5 @@
 Shader "Exoduser/RigPixelToon" {
- Properties { _BaseMap("Albedo",2D)="white"{} _BaseColor("Tint",Color)=(1,1,1,1) }
+ Properties { _BaseMap("Albedo",2D)="white"{} _BaseColor("Tint",Color)=(1,1,1,1) _PaletteColor("Material plane",Color)=(.18,.205,.235,1) }
  SubShader {
   Tags { "RenderPipeline"="UniversalPipeline" "RenderType"="Opaque" "Queue"="Geometry" }
   Pass {
@@ -16,7 +16,7 @@ Shader "Exoduser/RigPixelToon" {
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
    TEXTURE2D(_BaseMap); SAMPLER(sampler_BaseMap);
    CBUFFER_START(UnityPerMaterial)
-   float4 _BaseMap_ST;half4 _BaseColor;
+   float4 _BaseMap_ST;half4 _BaseColor,_PaletteColor;
    CBUFFER_END
    struct A {float4 positionOS:POSITION;float3 normalOS:NORMAL;float2 uv:TEXCOORD0;};
    struct V {float4 positionCS:SV_POSITION;float3 world:TEXCOORD0;half3 normal:TEXCOORD1;float2 uv:TEXCOORD2;};
@@ -24,9 +24,9 @@ Shader "Exoduser/RigPixelToon" {
    half Band(half d){return floor(saturate(d)*3+.5h)/3;}
    half3 Irradiance(Light light,half3 normal){return light.color*(.12h+.88h*Band(dot(normal,light.direction)))*light.distanceAttenuation*light.shadowAttenuation;}
    half4 Frag(V i):SV_Target {
-    half4 albedo=SAMPLE_TEXTURE2D_BIAS(_BaseMap,sampler_BaseMap,i.uv,1.5)*_BaseColor;clip(albedo.a-.2h);
+    half4 albedo=SAMPLE_TEXTURE2D_BIAS(_BaseMap,sampler_BaseMap,i.uv,4)*_BaseColor;clip(albedo.a-.2h);albedo.rgb=lerp(_PaletteColor.rgb,albedo.rgb,.12h);
     half3 n=normalize(i.normal);Light moon=GetMainLight(TransformWorldToShadowCoord(i.world));
-    half3 diffuse=max(SampleSH(n),half3(.14h,.15h,.18h))+Irradiance(moon,n);
+    half3 diffuse=max(SampleSH(n),half3(.24h,.25h,.28h))+Irradiance(moon,n);
     InputData inputData=(InputData)0;inputData.positionWS=i.world;inputData.normalizedScreenSpaceUV=GetNormalizedScreenSpaceUV(i.positionCS);
     #if defined(_ADDITIONAL_LIGHTS) || USE_CLUSTER_LIGHT_LOOP
      #if USE_CLUSTER_LIGHT_LOOP
@@ -37,10 +37,8 @@ Shader "Exoduser/RigPixelToon" {
       Light light=GetAdditionalLight(lightIndex,i.world);diffuse+=Irradiance(light,n);
      LIGHT_LOOP_END
     #endif
-    half3 view=GetWorldSpaceNormalizeViewDir(i.world);
-    half edge=step(.68h,1-saturate(dot(n,view)))*step(.2h,dot(n,moon.direction));
-    // Large colour planes, four diffuse steps, moon-facing edge only; no normal-map speckle or dither.
-    half3 color=albedo.rgb*min(diffuse,half3(1.5h,1.5h,1.5h))+moon.color*edge*.12h;
+    // Low-frequency material planes; the silhouette rim is applied after rendering, never on interior mesh facets.
+    half3 color=albedo.rgb*min(diffuse,half3(1.35h,1.35h,1.35h));
     return half4(color,1);
    }
    ENDHLSL
