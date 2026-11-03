@@ -7,7 +7,7 @@ namespace Exoduser.UnityPort {
   static NativeDecisionSound current; static int sfxPercent=60;
   readonly NativeDecisionSoundPolicy policy=new NativeDecisionSoundPolicy();
   AudioSource source;AudioClip normal,dark;internal static int LastDecisionFrame=-1;internal static int Events;
-  internal static float MusicGain=>current==null?1:current.policy.MusicGain(Time.realtimeSinceStartupAsDouble);
+  internal static float MusicGain=>(current==null?1:current.policy.MusicGain(Time.realtimeSinceStartupAsDouble))*NativeScreenTransition.Gain;
   internal static void Ensure(GameObject owner){if(current==null)current=owner.AddComponent<NativeDecisionSound>();}
   internal static void SetSfxPercent(int percent){sfxPercent=Mathf.Clamp(percent,0,100);}
   void Awake(){current=this;source=gameObject.AddComponent<AudioSource>();source.playOnAwake=false;source.loop=false;source.spatialBlend=0;

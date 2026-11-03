@@ -34,7 +34,7 @@ namespace Exoduser.UnityPort
   {
    NativeSettingsJsonCodec.ApplyBindings(snapshot,NativeKeyBindInput.Bindings,SupportedNativeBinding);
   }
-  void ApplySettingsHostValues(){sound.SetVolumePercent(settings.SfxPercent);music.SetPercents(settings.SfxPercent,settings.BgmPercent);lobby.SetStartupSfxPercent(settings.SfxPercent);lobby.SetBgmPercent(settings.BgmPercent);ApplyFrameCap(settings.FrameCap);}
+  void ApplySettingsHostValues(){NativeScreenTransition.ReduceMotion=()=>settings.Options.ReduceMotion||NativeOsReducedMotion.Enabled;sound.SetVolumePercent(settings.SfxPercent);music.SetPercents(settings.SfxPercent,settings.BgmPercent);lobby.SetStartupSfxPercent(settings.SfxPercent);lobby.SetBgmPercent(settings.BgmPercent);ApplyFrameCap(settings.FrameCap);}
   void MarkCinematicSeen(){if(cinSeen)return;cinSeen=true;QueueSettingsSave();}
   void QueueSettingsSave(){if(nativeSettingsStore==null)return;settingsSavePending=true;settingsSaveAt=Time.unscaledTime+.25f;}
   void FlushNativeSettings()

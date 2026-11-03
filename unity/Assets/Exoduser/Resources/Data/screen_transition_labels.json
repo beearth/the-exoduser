@@ -1,0 +1,121 @@
+{
+  "webSha": "740722e1ac3a5f4b0143f55b6088b01b8517be0f",
+  "entries": [
+    {
+      "code": "ko",
+      "text": "불러오는 중..."
+    },
+    {
+      "code": "en",
+      "text": "Loading..."
+    },
+    {
+      "code": "zh",
+      "text": "加载中..."
+    },
+    {
+      "code": "zht",
+      "text": "載入中..."
+    },
+    {
+      "code": "ja",
+      "text": "読み込み中..."
+    },
+    {
+      "code": "vi",
+      "text": "Đang tải..."
+    },
+    {
+      "code": "th",
+      "text": "กำลังโหลด..."
+    },
+    {
+      "code": "id",
+      "text": "Memuat..."
+    },
+    {
+      "code": "ms",
+      "text": "Sedang memuatkan..."
+    },
+    {
+      "code": "es",
+      "text": "Cargando..."
+    },
+    {
+      "code": "fr",
+      "text": "Chargement..."
+    },
+    {
+      "code": "it",
+      "text": "Caricamento..."
+    },
+    {
+      "code": "ptbr",
+      "text": "Carregando..."
+    },
+    {
+      "code": "ro",
+      "text": "Se încarcă..."
+    },
+    {
+      "code": "de",
+      "text": "Laden..."
+    },
+    {
+      "code": "nl",
+      "text": "Laden..."
+    },
+    {
+      "code": "sv",
+      "text": "Laddar..."
+    },
+    {
+      "code": "da",
+      "text": "Indlæser..."
+    },
+    {
+      "code": "no",
+      "text": "Laster..."
+    },
+    {
+      "code": "ru",
+      "text": "Загрузка..."
+    },
+    {
+      "code": "uk",
+      "text": "Завантаження..."
+    },
+    {
+      "code": "pl",
+      "text": "Ładowanie..."
+    },
+    {
+      "code": "cs",
+      "text": "Načítání..."
+    },
+    {
+      "code": "hu",
+      "text": "Betöltés..."
+    },
+    {
+      "code": "bg",
+      "text": "Зареждане..."
+    },
+    {
+      "code": "el",
+      "text": "Φόρτωση..."
+    },
+    {
+      "code": "fi",
+      "text": "Ladataan..."
+    },
+    {
+      "code": "tr",
+      "text": "Yükleniyor..."
+    },
+    {
+      "code": "ar",
+      "text": "جارٍ التحميل..."
+    }
+  ]
+}
