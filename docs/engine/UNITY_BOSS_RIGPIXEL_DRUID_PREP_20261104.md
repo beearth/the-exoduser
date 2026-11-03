@@ -98,3 +98,65 @@
 검증: 정책46/0. Player Core126/Runtime281, Editor Core126/Runtime281/Editor60, 총5어셈블리 Roslyn 오류0. FBX 재임포트 수치는34본·4메시·78,323삼각형·Fist_L/소켓·Idle Head와 Walk LeftFoot 움직임을 확인했다. 초기 v6 수치 검사1회는 lantern_orb 액션을 골격 액션으로 잘못 검사해 실패했고, Armature 액션으로 범위를 고친 뒤 통과했다. v7 최종 검사는 통과했다. 같은 테스트2회 실패 없음. 이 수치는 Unity 임포트·게임 화면 PASS가 아니다.
 
 Mac은 먼저 Exoduser.CharacterLab.DruidRigPixelVerification.Verify를 Editor에서 실행해 Generic Avatar/보조본/Fist_L/팔레트/Idle·Walk 곡선/셰이더 임포트를 확인한다. PC 실행 금지. 같은 후보 Player의 기존 아레나 인수에 --hero-render=rigpixel --boss-render=rigpixel을 더하고1920/3840×1080을 따로 실행한다. 전체 인수와 별도 metrics-only는 [아레나 실행 문서](UNITY_BOSS_ARENA_RB1_7_8_20261103.md#11-04-0120-드루이드-rig-pixel-mac-인계)를 따른다. 실제 Unity Avatar·Metal 셰이더·RT 낱점/톤/크기·발/지팡이 접지·7기술 가독성·먼 적·10초 영상·60fps는 미검증이다.
+
+## 7. v7 GLB — 보조본·발광 마스크·idle/walk (2026-11-04 1시, 보스전 총괄 Blender 서브에이전트, 유료 0)
+
+레인은 v6 대신 이 파일을 쓴다. 치마 가중 수정본 v7.1이 나오면 이 절에 경로를 더한다.
+
+| 항목 | 값 |
+|---|---|
+| GLB | `I:/EXODUSER-Storage/boss/oldman-v2-20261104/v7/oldman_clean_v7.glb` (23.0MB, SHA-256 `711f9f6d82462218638e91b106bc68a729ac8b6439db051c8408d6008fffb92d`) |
+| 원본·검사 | 같은 폴더 `oldman_clean_v7.blend`, `v7_report.json`, `v7_check.json`, 스크립트 `build_v7.py`·`bake_walk.py`·`check_v7.py`·`render_v7.py` |
+| 뼈 | 34 = Meshy 24 + 보조 10. `StaffSocket_L` 그대로(재임포트 뒤에도 노드 유지) |
+| 보조본 가중 정점 | `Cloak_Back_1~4` 6,012 / 12,928 / 12,934 / 4,912(깃털 한 장 단위, 높이 기울기, 맨 위 원래 가중 50% 유지) · `Panel_Front_1~2` 60 / 60(맨 위 UpLeg 10% 유지) · `Beard_1~2` 368 / 259 · `Chain_L_1~2` 0(허리 사슬 형상 없음 — 뼈만 있음) |
+| 셰이프 키 | `Fist_L`: 왼손 1,296정점이 쥐는 점 쪽으로 최대 1.5cm |
+| 미가중 정점 | 0 (`char1` 99,407, `FrontPanel` 85) |
+| 삼각형 | 78,323 (본체 65,235 + 앞자락 128 + 지팡이 12,432 + 구슬 528) |
+| `druid_glow` 가슴 틈 | 43면, 131.3cm², 폭 ≤5.8cm·높이 28.5cm(z 1.56~1.85). 기본색 `#a8642a`, 발광 `#d49a5c`, 강도 0.5(GLB emissive ≈ 0.33, 0.16, 0.05). 34° 발광 픽셀(틈+구슬) 화면의 0.016~0.019%(LOCK 상한 0.5% 안) |
+| 클립 | `idle` 0~60f(2.0초, 오른다리 체중·고개 20° 숙임·호흡, 두 발과 왼손 고정, 보조본 흔들림), `walk` 0~32f(1.0667초, Meshy 걷기를 30fps 루프로 다시 뽑음, 루프 이음 오차 분산, 왼팔은 지팡이 때문에 25%만 반영 — `build_v7.py`의 `LEFT_ARM_DAMP`) |
+| 높이 | 뒤 뿌리 팔 끝 2.82m, 앞 최고점 2.736m(뿔 끝 근사, 문서 2.71m보다 2.6cm 큼) |
+| 미리보기 | `G:/exoduser/tmp/design-review/20261104_boss_1-1_oldman_cleanup/v7_idle_f00·f30`, `v7_walk_p00·p25·p50·p75`(`_1x`·`_3x`). EEVEE 근사·외곽선 없음이라 Unity RT 판정 근거가 아니다 |
+| 알려진 결함 | ① 걷기에서 깃털 치마가 한쪽 UpLeg 가중이라 옆에서 늘어난 조각이 보인다 → v7.1에서 Hips+양 UpLeg로 나눠 수정 중. ② Blender 임포터가 `StaffSocket_L`을 뼈 꼬리 기준으로 잘못 놓는다(GLB 노드 변환은 v6와 같아 Unity에는 영향 없음 — 확인은 Unity에서) |
+
+### 7.1 v7.1 — 치마 가중 수정 (같은 날 2시, 레인 입력은 이 파일)
+
+| 항목 | 값 |
+|---|---|
+| GLB | `I:/EXODUSER-Storage/boss/oldman-v2-20261104/v7_1/oldman_clean_v7_1.glb` (23.0MB, SHA-256 `f28a5027829eda72489ec9f75bdc632482b26fa3dee5ed7e6817d7788cf0875e`), 같은 폴더 `.blend`·`v7_1_report.json`·`v7_1_check.json`·`build_v7_1.py` |
+| 수정 | 치마 깃털(z<1.58, 망토 제외) 24,471정점을 깃털 한 장 단위로 같은 가중. 다리 몫 앞 60%·옆 42.5%·뒤 25%, 나머지 Hips, 방위각으로 부드럽게 잇고 좌우는 중심선 ±8cm에서 섞음. 아래 자락(z<0.9)은 가까운 Leg 최대 15%. 뼈·액션·`Fist_L`·재질은 v7 그대로 |
+| 늘어남(치마 변 45,362개, 걷기 프레임 0/8/16/24) | 1.5배 초과: v7 130/811/465/1,586 → **v7.1 0/0/0/0**. 최대 비율: v7 1.89/5.99/2.39/8.58 → v7.1 1.09/1.10/1.10/1.10 |
+| 검사 | 미가중 0, 뼈 34, `idle` 2.0초·`walk` 1.0667초 유지, 발광 0.016~0.019% |
+| 비교판 | `G:/exoduser/tmp/design-review/20261104_boss_1-1_oldman_cleanup/v7_1_walk_side_compare_before_after.png`(위 v7, 아래 v7.1, 옆 3x) |
+| 남은 결함(RETOUCH) | ① 걷기 옆 p25·p75에서 치마 끝단 깃털이 짧은 가로 막대처럼 뜬다(한 장씩 단단히 움직임). ② 다리가 뒤로 스칠 때 치마를 뚫는다. 둘 다 34° 1x에서의 크기는 Mac 캡처로 판정하고, 보이면 Unity 쪽 `CapeSpring` 계열 2차 움직임이나 깃털 카드 연결로 고친다. ③ `Chain_L`은 형상이 없어 가중 0 |
+
+## 8. 7기술 동작 클립 — 이름·틱 계약 (2026-11-04 2시, 제작 중: v7.2 치마 수정 → v8)
+
+- 산출 예정: `I:/EXODUSER-Storage/boss/oldman-v2-20261104/v8/oldman_druid_v8.glb`(idle·walk + 아래 클립). 완성되면 이 절에 SHA·발 미끄러짐 수치를 적는다.
+- 새 클립은 **60fps, 1프레임 = Core 1틱**이고 기술마다 **단계별로 나뉜다**. 레인은 Core 상태(예고·발동·회복 틱)에 맞춰 단계 클립을 잇고, Core 값이 바뀌면(RM1 §13.4 RB1-7 변경표) 단계 재생 속도 = 클립 길이 ÷ Core 틱으로 맞춘다. Core 수치·판정은 바꾸지 않는다.
+- 아래 길이는 현재 Core(`DruidRemodelData.cs` unity/main 5ce03758f) 값이다.
+- 제작 규칙(보스 보드 §8.5.1, 노레위): 발동 첫 프레임 = 타격 자세, 예고·발동 중 두 발 고정(루트 표시 클립만 이동), 회복 최저 자세는 회복 길이 1/3 이하, 왼손은 지팡이를 놓지 않음(내려찍기만 두 손), 보조본은 2차 움직임. 단계 끝 자세 = 다음 단계 첫 자세, `*_rec` 끝 = `idle` 첫 자세.
+
+| # | Core 기술 | 클립(길이 f) | Core 근거 |
+|---|---|---|---|
+| 1 | `slashCombo`(1·2타 패링 가능, 3타 불가) | `slash1_tele`(32) → `slash1_act`(8, 6f째 타격) → `slash2_tele`(24) → `slash2_act`(8) → `slash3_tele`(24) → `slash3_act`(8, 지팡이 큰 내려베기) → `slash_rec`(80) | Moves[0] tele 32·rec 80, `SlashActive 8`·`SlashHitAt 6`·`SlashLinkTele 24` |
+| 2 | `slam` | `slam_tele`(48, 두 손 지팡이 들기) → `slam_act`(6) → `slam_rec`(70) | Moves[1] 48/70, `SlamActive 6` |
+| 3 | `charge` | `charge_tele`(54) → `charge_run`(40 반복, 루트) → `charge_rec`(70) | Moves[2] 54/70, `ChargeTicks 40` |
+| 4 | `grab` | `grab_tele`(60) → `grab_lunge`(18, 루트) → 잡힘 `grab_hold`(120 반복) → `grab_throw`(60) / 빗나감 `grab_miss_rec`(80) | Moves[5] 60/80, `GrabLungeTicks 18`, `GrabTicks 120`, `GrabHeldRecovery 60`, `GrabMissRecovery 80` |
+| 5 | `burrowStrike` | `burrow_dive`(50, 루트 아래) → `burrow_erupt_warn`(30) → `burrow_erupt`(6) → `burrow_rec`(70) | Moves[6] 50/70, `BurrowEruptWarn 30`, `BurrowEruptPost 6` |
+| 6 | `groundFissure` | `fissure_tele`(40) → `fissure_act`(20, 꽂고 버팀) → `fissure_rec`(60) | Moves[3] 40/60(즉시형, 균열 이동은 VFX) |
+| 7 | `heartbeat`(강제, P3) | `heart_tele`(90) → `heart_beat`(60)×3 사이 `heart_pause`(30) → `heart_rec`(90) | Moves[11] 90/90, `HeartbeatBeats 3`·`BeatWind 60`·`Pause 30`·`Recover 90` |
+
+### 8.1 v8.1 완성본 — 레인 입력 (2026-11-04 3시)
+
+| 항목 | 값 |
+|---|---|
+| GLB | `I:/EXODUSER-Storage/boss/oldman-v2-20261104/v8_1/oldman_druid_v8_1.glb` (24.3MB, SHA-256 `a143a7deb7e144bf5dce55e7df730e0604b0e25ca22a88f7615808f6aad85477`), 같은 폴더 `.blend`·`v8_1_report.json` |
+| 바탕 | v7.2 치마(`.../v7_2/oldman_clean_v7_2.glb`, SHA-256 `93e2f7c2…`: 다리 몫 장 단위 재맞춤 3,376장·끝단 위 이웃과 최대 50% 섞기, 늘어남 1.5배 초과 0, 관통 1cm 초과 정점 v7.1 3,475~4,845 → v7.2 2,293~2,768 — 휴지에서 이미 허벅지 안인 정점 약 7.1k라 0은 아님) |
+| 클립 | `idle`·`walk`(시간 유지, 60fps 키로 2배) + §8 표 29개, 이름·길이 표와 같음(재임포트 확인). 미가중 0, 뼈 34 |
+| 이음 | 같은 기술 안 단계 끝↔다음 첫 = 몸 뼈 0°(예외 `heart_tele→beat`·`pause→rec` 2.2°), 보조본 최대 5.5°(`grab_lunge→hold`), `*_rec` 끝 = `idle` 첫(몸 0°) |
+| 발 | 루트 아닌 클립 발 미끄러짐 0.0cm. `charge_run` 루트 40틱 2.55m(접지 한 틱 최대 이동 0.000cm), `grab_lunge` 스텝 2회·루트 0.9m, `burrow_dive`/`burrow_erupt` 수직(-2.6m↔0) |
+| 예비 자세 폭(tele 최대) | 채찍 1타 몸통 56°·손 수평 폭 1.83m, 2타 66°·1.72m, 3타 28°·왼손 2.62m(지팡이 머리 위), 내려찍기·줄기 28°·2.62m, 돌진 상체 숙임 58°, 잡기 48°·손 궤적 2.46m, 심장 30.5° 가슴 펴기, 무게 중심 뒤로 0.12~0.22m |
+| 타격 | 채찍 act 6f째 판정·8f째 반대편 follow-through, 3타는 구슬이 위에서 원호(이동 3.5m), 내려찍기·줄기는 지팡이 아래 끝(뿌리 촉)으로 찍음(첫 프레임 촉 높이 0.0/-0.05m), 구슬은 전 구간 위 |
+| 띠 | `G:/exoduser/tmp/design-review/20261104_boss_1-1_oldman_cleanup/v8_1_<slash12·slash·slam·charge·grab·burrow·fissure·heart>_strip_1x·3x.png`(idle | tele 최대 | act 판정 | act 끝 | rec 최저, 위 34°·아래 옆 90°) |
+| 판정 | v8 RETOUCH(34°에서 단계 실루엣이 같음·지팡이 거꾸로) → **v8.1 제작자 조건부 PASS**: 34° 1x에서 채찍 감기·내려찍기 들어올림·돌진 숙임이 서로 다른 실루엣으로 읽힌다. 최종은 Unity rig-pixel Mac 캡처(§5) |
+| 남은 결함 | ① 채찍 팔 끝 도달 부족 8.9~14.2cm(목표가 팔 길이 밖), 심장 박동 왼손 6~8cm·돌진 예고 3.8cm. ② 잠행은 몸통 13.5°로 폭이 작다. ③ 가슴 틈 밝기 맥동은 Unity에서 `heart_beat` 시간에 맞춰 구동. ④ 치마 관통 잔여(위 바탕 행) |

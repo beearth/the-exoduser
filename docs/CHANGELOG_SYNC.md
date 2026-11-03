@@ -31,6 +31,33 @@
 2026-11-04 적 3D 연결 바탕 WIP 중단: 최신6d99d0c46에서 codex/unity-enemy3d-20261104 생성. 읽기 전용 상태 정책·etype1/4 모델표·0차 FBX 변환·검사 초안 보존. 같은 정책 검사 명령2회 실패(예상 RED, 이후 Core/Skills 소스 열거 누락 CS0234/CS0246)로 사용자 지시대로 중단. Unity 렌더/Animator/VFX 연결·meta·전체 PC 컴파일·Mac 판정 미완, 본편 병합 금지. 인계 UNITY_ENEMY3D_WIRING_20261104.md.
 
 
+2026-11-04 D-U1 사냥꾼 패시브 대상(디버깅 총괄, CTO 02:00): Unity Core `Simulation.EnemyBridge` HunterMul이 etype>=90(레어)만 보던 것을 웹 `_hunterMul`(D-002 뒤, main 06ac6882b 28306행)과 같이 보스(ib)·정예(elite 참)·레어에 +10%/랭크로 맞춤 → 새 `Simulation.HunterMul(w, rank)`. 수정 전 규칙은 D-002 이전 웹(안 쓰이는 isBoss/isElite)의 실제 동작을 이식한 것. 대조 `unity/Tools/hunter-oracle`: 웹 원문 280사례 불일치 0(수정 전 96/280), 실제 피격 경로 pHunter 3에서 보스·정예·레어 ×1.3·일반 ×1. 스탯창 pHunter "보스·정예 분기 미연결" 안내 삭제(표시 문자열 추가 없음). 디버깅 보드 정본을 unity/main으로 옮기고 D-012(09c)·D-013(canMv)·D-U1 기록, 방어 합산 차이는 D-U2 백로그. PC 컴파일만, Player 0.
+
+2026-11-04 U-VFX-11 피격 기준점: 실제 표시 몸 실루엣1,556셀·ID 제공자·Enemy3D 비율 재사용, PC865검사/0실패·Core/Runtime컴파일오류0, Mac 화면·실제rig연결 대기. 기록 docs/5.1임펙트디자인/UNITY_COMBAT_IMPACTS_20261103.md
+2026-11-04 적 3D 연결 바탕 WIP 중단: 최신6d99d0c46에서 codex/unity-enemy3d-20261104 생성. 읽기 전용 상태 정책·etype1/4 모델표·0차 FBX 변환·검사 초안 보존. 같은 정책 검사 명령2회 실패(예상 RED, 이후 Core/Skills 소스 열거 누락 CS0234/CS0246)로 사용자 지시대로 중단. Unity 렌더/Animator/VFX 연결·meta·전체 PC 컴파일·Mac 판정 미완, 본편 병합 금지. 인계 UNITY_ENEMY3D_WIRING_20261104.md.
+2026-11-04 U-VFX-12: 스킬·패링 _pal 5장·암흑 원본 검사, 빙결 구슬 중간 휘도 .449839·가시 덫 물리/붉은색0; PC813검사/0실패·Core/Runtime 오류0, 빛은 형태 문제로 중단(원화 필요), Mac 실게임 판정 대기.
+2026-11-04 U-VFX-06 원소 피격 v2: 일반/보스 12장 성장 프레임 압축·접점 코어(30→24%/30→26→22%)·원소 램프·잔점 정리, 원본/meta 설정·렌더 알파 .45/.62·Life/Scale 불변, v2 참조 및 PNG 검사 연결. PNG 12/12·combat-impact 860/0·Core/Runtime 오류 0, 비교판 12장 직접 확인, RETOUCH_GAME_QA_PENDING(Mac 34° 실게임 판정). 기록 docs/5.1임펙트디자인/UNITY_COMBAT_IMPACTS_20261103.md
+2026-11-04 적3D 01:20: 최신5c9dd3673 병합. 제작자 PASS1차5종 등록(가시 외눈 보정·현자·덫·그림자·갑각v2), 일반etype4는 갑각v2/시작4는 기존EyeMass 별도 유지. 제공24본 Walk와 총괄 높이·가슴 비율 적용, 빈7동작 명시. --enemy-render=rigpixel 기본값·Core·런타임 정책 무변경. 정책166/0·PC 전체 참조컴파일5개 오류0 각1회, Player0·Mac 미판정.
+
+2026-11-04 적 3D 01:00 연결 바탕: 최신ec89d5166 병합·하니스 Core/Skills 재귀 열거65/0 회복. etype4 공유 키를 시작 육괴 표현 태그로 분리해 일반 갑각 사도 아틀라스 유지. 영웅 공유 rig-pixel·Generic Animator/Core 틱·투영 bounds VFX 접점·사망 시작 연결, 고정meta 추가. 확장 정책103/0·전체 PC Roslyn5어셈블리 오류0 각1회, Player0. 미제공 동작은 bind pose로 기록하며 Mac 화면·임포트·동작·성능 미판정.
+
+2026-11-04 적 3D 연결 바탕 WIP 중단: 최신6d99d0c46에서 codex/unity-enemy3d-20261104 생성. 읽기 전용 상태 정책·etype1/4 모델표·0차 FBX 변환·검사 초안 보존. 같은 정책 검사 명령2회 실패(예상 RED, 이후 Core/Skills 소스 열거 누락 CS0234/CS0246)로 사용자 지시대로 중단. Unity 렌더/Animator/VFX 연결·meta·전체 PC 컴파일·Mac 판정 미완, 본편 병합 금지. 인계 UNITY_ENEMY3D_WIRING_20261104.md.
+
+
+2026-11-04 M1 09c 지옥문 개방 대기 수정(디버깅 총괄, CTO 01:20, SWAP2-M1-09c): eaf67fae9 스모크의 "아귀 전멸·지역 4/4·플래그인데 BossUnlocked=false"는 Core 결함이 아니라 검사 대기 부족. 마지막 지역은 15프레임 지역 판정에서 클리어되고 지옥문은 그 뒤 첫 30프레임 룸 판정에서 열려 1~44틱 걸린다(웹 `_regionTick`·`checkRooms`와 같음). M1 09c가 마지막 처치 뒤 30틱만 진행 → 그 뒤 개방까지 최대 +45틱 대기(강제 개방 없음). region-test 450위상 재현(최대 44틱, 30틱 시점 봉인 105/450) 124/0, Unity batch 컴파일 오류 0, PC Player 0. 기록 docs/engine/UNITY_M1_REGION_RB_20261028.md §9.
+
+2026-11-04 적 3D 01:00 연결 바탕: 최신ec89d5166 병합·하니스 Core/Skills 재귀 열거65/0 회복. etype4 공유 키를 시작 육괴 표현 태그로 분리해 일반 갑각 사도 아틀라스 유지. 영웅 공유 rig-pixel·Generic Animator/Core 틱·투영 bounds VFX 접점·사망 시작 연결, 고정meta 추가. 확장 정책103/0·전체 PC Roslyn5어셈블리 오류0 각1회, Player0. 미제공 동작은 bind pose로 기록하며 Mac 화면·임포트·동작·성능 미판정.
+
+2026-11-04 적 3D 연결 바탕 WIP 중단: 최신6d99d0c46에서 codex/unity-enemy3d-20261104 생성. 읽기 전용 상태 정책·etype1/4 모델표·0차 FBX 변환·검사 초안 보존. 같은 정책 검사 명령2회 실패(예상 RED, 이후 Core/Skills 소스 열거 누락 CS0234/CS0246)로 사용자 지시대로 중단. Unity 렌더/Animator/VFX 연결·meta·전체 PC 컴파일·Mac 판정 미완, 본편 병합 금지. 인계 UNITY_ENEMY3D_WIRING_20261104.md.
+
+
+2026-11-04 canMv 맵 충돌 oracle 정정(디버깅 총괄, CTO 02:05): Core 시험 36/1의 실패 1건 = `map-oracle.cjs` 2,523표본 중 2개(4018.5,104.7 r10 / 4042.9,207.9 r15, 둘 다 1-1 보스 게이트 뒤). 웹 맵 생성은 `MAP_OBJS`에 `boss_gate_col`(sz250 → 원 반경 100, 중심 (100.5,4)타일)을 넣는데 정적 맵 export에는 없어 oracle이 게이트 덩어리를 통과 가능으로 봤다. Unity는 3ed856bf6에서 같은 덩어리를 벽 13타일 + 게이트 타일(3) 차단으로 이식. oracle에 원문 sz와 게이트 타일로 같은 원을 추가 → 36/0. Unity Core·맵 무변경. 남은 차이: 게이트 주변 정밀 격자(2px, x3760~4280·y0~400, r10/15/22 15.7만 표본)에서 타일 근사와 원이 5,156표본 다름(x3898~4140·y52~280, Unity만 통과 4,767·Unity만 막힘 389). 열린 들판의 덩어리 테두리 모양 차이라 새 통로·막힌 길 없음, 출구 타일(7행 y280~)·아레나 진입 무영향. 정확 일치(원 충돌체로 교체)는 맵 데이터 변경이라 맵 총괄 판단 후보. 기록 unity/Tools/README.md 모델 검사.
+
+2026-11-04 적 3D 01:00 연결 바탕: 최신ec89d5166 병합·하니스 Core/Skills 재귀 열거65/0 회복. etype4 공유 키를 시작 육괴 표현 태그로 분리해 일반 갑각 사도 아틀라스 유지. 영웅 공유 rig-pixel·Generic Animator/Core 틱·투영 bounds VFX 접점·사망 시작 연결, 고정meta 추가. 확장 정책103/0·전체 PC Roslyn5어셈블리 오류0 각1회, Player0. 미제공 동작은 bind pose로 기록하며 Mac 화면·임포트·동작·성능 미판정.
+
+2026-11-04 적 3D 연결 바탕 WIP 중단: 최신6d99d0c46에서 codex/unity-enemy3d-20261104 생성. 읽기 전용 상태 정책·etype1/4 모델표·0차 FBX 변환·검사 초안 보존. 같은 정책 검사 명령2회 실패(예상 RED, 이후 Core/Skills 소스 열거 누락 CS0234/CS0246)로 사용자 지시대로 중단. Unity 렌더/Animator/VFX 연결·meta·전체 PC 컴파일·Mac 판정 미완, 본편 병합 금지. 인계 UNITY_ENEMY3D_WIRING_20261104.md.
+
+
 2026-11-04 03:30 1-1 드루이드 노인 코어 Blender 정리 v2~v6(CTO 야간 지시, 유료 0·PC Unity 실행 0): 매달린 랜턴 삭제, 지팡이 2.30m + 열린 뿌리 케이지 별도 소품(StaffSocket_L), 손 한 덩어리(왼 지팡이 감아 쥠·오른 갈고리), 새발 장화, 가면 정본 인장 굽기, 앞자락 추가, rig-pixel 팔레트 재질 7개 분할과 Blender 근사 미리보기. 문서 docs/8.1보스디자인바이블/BOSS_1-1_FIRST_BOSS_REPLAN_G0_20261103.md §26, LOCK §17.8, docs/engine/UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md. 코드 무변경.
 
 2026-11-04 00:35 3D 적 피격 위치 계획을 보스전 총괄 1차 일정(적 3D G0 §8, 773bf0238)에 맞춤: 1차 4종 G1~G3.5에서 Blender 숫자 3개(메시 높이·가슴 비율·34° 투영 높이) 요청, Unity 모델 표 연결 커밋에 피격 기준점(투영 bounds) 연결, 같은 Mac 판정 차례에 피격 컷 추가, 2차 다안 육괴는 눈 높이 접점. 문서만, 코드 무변경. 기록 docs/5.1임펙트디자인/UNITY_COMBAT_IMPACTS_20261103.md
@@ -57878,3 +57905,5 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 - 최종공통 f146df2b29e98ecac7fdd03e08c888b07d3f7a8d 포함. 최초8c 검사 중 패링/기검참 소스가8e로 전진해 추가병합·최종소스579d081d696660c87509be2f1c19c39ca8d4a9e1을1회 추가검사(전체2입력/동일소스반복0). 공용ec46a2a7 exit0/C#0/shader3/USER_SAVE0, 실행15206ms/wall167270ms, 종료Curl42 1건. 이후f146은기획docs3개뿐이며최종Unity파일차이0. 메타1개만자기checkpoint복원, 외부guard/미추적7보존. 사용자명시승인으로CTO즉시FF 인수대상, 시각/실행본교체미확인.
 
 2026-11-03 로비 원화 최신공통 통합 인계: 원화 복구7cdce2032d에 origin/unity/main 4d336665a4를 정상 병합. SilverCharacter의 이름 버튼 QA 추적과 상대 스토리/UI겹침 수정, 디자인총괄23:05 다섯 원화 항목·밝기1.0·11종 밉맵OFF를 함께 보존. docs 양쪽 기록 보존. PC DLL 참조 컴파일1회5어셈블리 오류0·소스 계약PASS, PC Player0·Mac 실제시각대기. [원화 계약](3.1%20ui%20hud%20디자인/UNITY_BUTTON_PLATE_MATERIAL_20261103.md).
+
+2026-11-04 01:00 원화 버튼 밉맵 긴급: SourceTextureImporter /ui/ 강제ON 원인을 고쳤다. 정책 정본 OriginalUiNoMipmaps로 실버 헬 판/버튼/프레임15종만OFF/Bilinear,4meta 동기화·버전4. 다른 UI·캐릭터·지형 규칙 보존.38회귀PASS·PC DLL참조1회5어셈블리 오류0, Unity import/Player0. Mac 재임포트2회 meta불변/loaded mip1 검수 메서드 준비, 실제 검수 대기. 문구 착수2e5a64b927과 분리. [원화 계약](3.1%20ui%20hud%20디자인/UNITY_BUTTON_PLATE_MATERIAL_20261103.md).
