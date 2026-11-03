@@ -47,7 +47,7 @@ namespace Exoduser.UnityPort
             var rotation=p.rotationOverLifetime;rotation.enabled=true;rotation.z=kind==1?.15f:.02f;
             var renderer=go.GetComponent<ParticleSystemRenderer>();renderer.sharedMaterial=new Material(Resources.Load<Shader>("A2R/Air"));renderer.sharedMaterial.SetFloat("_Kind",kind);renderer.renderMode=kind==2?ParticleSystemRenderMode.HorizontalBillboard:ParticleSystemRenderMode.Billboard;renderer.shadowCastingMode=ShadowCastingMode.Off;renderer.receiveShadows=false;renderer.maxParticleSize=.012f;renderer.minParticleSize=0;p.Play();return p;
         }
-        public void SetLook(bool on){Applied=on;if(effects!=null)effects.SetActive(on);Shader.SetGlobalFloat("_A2RNatureOn",on?1:0);}
+        public void SetLook(bool on){Applied=on;if(effects!=null)effects.SetActive(on&&Array.IndexOf(Environment.GetCommandLineArgs(),"--a2r-air-effects")>=0);Shader.SetGlobalFloat("_A2RNatureOn",on?1:0);}
         public void Ripple(Vector3 at,float strength,bool projectile=false){ripples[nextRipple++%24]=new Vector4(at.x,at.z,Time.time,strength);if(projectile)ProjectileRipples++;else FootRipples++;}
         void LateUpdate()
         {
