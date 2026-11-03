@@ -19,8 +19,9 @@ namespace Exoduser.UnityPort
         internal static string TextField(Rect rect,string text,GUIStyle style){return TextField(rect,text,-1,style);}
         internal static string TextField(Rect rect,string text,int max,GUIStyle style){var n=style.normal.textColor;var f=style.focused.textColor;try{style.normal.textColor=TextColor(n);style.focused.textColor=TextColor(f);return max<0?NativeUiAudit.TextField(rect,text,style):NativeUiAudit.TextField(rect,text,max,style);}finally{style.normal.textColor=n;style.focused.textColor=f;}}
         static Font light,regular;
-        static Texture2D frame,plaque,panelBackground,buttonGlow,primaryPlaque,panelIron;
-        internal static void ButtonFocus(Rect box){if(buttonGlow==null)buttonGlow=Resources.Load<Texture2D>("Art/ui/silver_hell/guide_button_glow");if(buttonGlow!=null)NativeUiAudit.DrawTexture(new Rect(box.x-34,box.y-20,box.width+68,box.height+40),buttonGlow); }
+        static Texture2D frame,plaque,panelBackground,panelIron;
+        // Focus lives inside ActionPlate; no red texture is drawn beyond its edge.
+        internal static void ButtonFocus(Rect box){}
         internal static Font Font(bool body=false)
         {
             if(light==null)light=Resources.Load<Font>("Art/fonts/Hahmlet-300-ko");
@@ -52,7 +53,10 @@ namespace Exoduser.UnityPort
                 filterMode=FilterMode.Bilinear,wrapMode=TextureWrapMode.Clamp
             };
             var pixels=new Color[w*h];
-            for(int y=0;y<h;y++)for(int x=0;x<w;x++)pixels[(h-y-1)*w+x]=sample((x+.5f)/w,(y+.5f)/h);
+            for(int y=0;y<h;y++)for(int x=0;x<w;x++){
+                var color=sample((x+.5f)/w,(y+.5f)/h);
+                pixels[(h-y-1)*w+x]=color;
+            }
             tex.SetPixels(pixels);
             tex.Apply(false,true);
             return tex;
@@ -105,17 +109,45 @@ namespace Exoduser.UnityPort
             if(plaque==null)plaque=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_plaque_20261029");
             Slice(new Rect(box.x-14,box.y,box.width+28,box.height),plaque,174,0,40,0,true);
         }
-        // 기존 금속 원화의 안쪽 표면만 착색한다. 테와 양끝 조각은 원본 은빛을 유지한다.
+        // 20:20 third FAIL: solid Silver Hell --iron face, silver 1px edge, inner selection only.
+        internal static readonly Color PlateText=new Color(230/255f,227/255f,220/255f),PlateTextHot=new Color(246/255f,245/255f,242/255f),PlateTextDanger=new Color(194/255f,26/255f,16/255f);
+        internal static readonly Color IronFace=new Color(15/255f,15/255f,16/255f,1),SteelEdge=new Color(138/255f,139/255f,136/255f,1),SteelHot=new Color(201/255f,199/255f,195/255f,1);
+        // The shared, already-measured Panel(iron:false) path supplies linear colour to IMGUI in Linear Players.
+        // No generated texture, transparent blackTexture, inherited alpha or material blending can own this face.
+        internal static void SolidRect(Rect rect,Color color,bool opaque)
+        {
+            var tint=GUI.color;var background=GUI.backgroundColor;
+            try{
+                if(opaque)color.a=1;
+                if(QualitySettings.activeColorSpace==ColorSpace.Linear)color=color.linear;
+                GUI.color=color;GUI.backgroundColor=Color.white;
+                NativeUiAudit.DrawTexture(rect,Texture2D.whiteTexture,ScaleMode.StretchToFill,!opaque);
+            }finally{GUI.color=tint;GUI.backgroundColor=background;}
+        }
+        static float SnapX(float x){var m=GUI.matrix;return m.m00>.0001f?(Mathf.Round(m.m00*x+m.m03)-m.m03)/m.m00:x;}
+        static float SnapY(float y){var m=GUI.matrix;return m.m11>.0001f?(Mathf.Round(m.m11*y+m.m13)-m.m13)/m.m11:y;}
+        static void SolidFrame(float x,float y,float w,float h,float inset,float pixel,Color color,bool opaque)
+        {
+            x+=inset;y+=inset;w-=inset*2;h-=inset*2;if(w<=pixel*2||h<=pixel*2)return;
+            SolidRect(new Rect(x,y,w,pixel),color,opaque);SolidRect(new Rect(x,y+h-pixel,w,pixel),color,opaque);
+            SolidRect(new Rect(x,y+pixel,pixel,h-pixel*2),color,opaque);SolidRect(new Rect(x+w-pixel,y+pixel,pixel,h-pixel*2),color,opaque);
+        }
         internal static void ActionPlate(Rect box,bool primary,float selection,bool pressed,float edge=40,float outset=14)
         {
-            NativeUiAudit.Region(box,"button");
-            var previous=GUI.color;
-            float light=pressed?.74f:Mathf.Lerp(.78f,1.18f,selection);
-            GUI.color=new Color(light,light,light,previous.a);
-            if(primaryPlaque==null&&primary)primaryPlaque=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_primary_composed");
-            if(plaque==null)plaque=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_plaque_20261029");
-            Slice(new Rect(box.x-outset,box.y,box.width+outset*2,box.height),primary&&primaryPlaque!=null?primaryPlaque:plaque,174,0,edge,0,true);
-            GUI.color=previous;
+            NativeUiAudit.Region(box,"button");if(box.width<=0||box.height<=0)return;
+            float scale=Mathf.Max(.0001f,GUI.matrix.m00),pixel=1/scale;
+            float x=SnapX(box.x),y=SnapY(box.y),w=SnapX(box.xMax)-x,h=SnapY(box.yMax)-y;
+            if(NativeUiChrome.OpacityProbe)SolidRect(new Rect(x,y,w,h),new Color(1,0,1,1),true);
+            // --iron #0f0f10 is always opaque, including disabled/fading parents.
+            SolidRect(new Rect(x,y,w,h),IronFace,true);
+            SolidFrame(x,y,w,h,0,pixel,primary||selection>0?SteelHot:SteelEdge,true);
+            float selected=Mathf.Clamp01(selection);
+            if(selected>0){
+                // Only three narrow inner lines, never a red centre/outer haze/always-on primary glow.
+                for(int i=1;i<=3;i++)SolidFrame(x,y,w,h,(i+1)*pixel,pixel,
+                    new Color(126/255f,13/255f,7/255f,selected*(pressed?.14f:.2f)*(4-i)/3f),false);
+            }
+            NativeUiChrome.DrawStockProbe(new Rect(x,y,w,h));
         }
     }
     public sealed partial class NativeLobby

@@ -423,7 +423,7 @@ function Invoke-Exo([string]$command, [string[]]$jobArgs, [string]$logBase, [str
   $argsText = $jobArgs -join ','
   $timeout = $Cfg.BuildTimeoutMin * 60; if ($command -eq 'player') { $timeout = $Cfg.SmokeTimeoutMin * 60 }
   $pa = @('-NoProfile','-NonInteractive','-WindowStyle','Hidden','-ExecutionPolicy','Bypass','-File', ('"{0}"' -f $launcher), $command, '-Worktree', ('"{0}"' -f $Cfg.Worktree), '-Owner','buildloop','-WaitMin',([string]$Cfg.WaitMaxMin),'-Json','-TimeoutSec', ([string]$timeout), '-Args', ('"{0}"' -f $argsText))
-  if ($exe) { $pa += @('-Exe', ('"{0}"' -f $exe), '-Desktop', $desktop) }
+  if ($exe) { $pa += @('-Exe', ('"{0}"' -f $exe), '-Desktop', $desktop, '-PcException', 'buildloop') }
   $pr = Start-Process -FilePath "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -ArgumentList $pa -WindowStyle Hidden -PassThru -RedirectStandardOutput ($logBase+'.out.log') -RedirectStandardError ($logBase+'.err.log')
   $null = $pr.Handle; $pr.WaitForExit(); $pr.Refresh()
   $rc = $pr.ExitCode; $receipt = $null
@@ -436,7 +436,7 @@ function Invoke-UiOverlapCheck([string]$check, [string]$exe, [string]$worktree, 
   # PS5.1 turns native stderr into NativeCommandError under & ... *> with EAP=Stop.
   # Redirect the child's raw streams directly, retaining the parent's error policy.
   $errLog = $log -replace '\.log$', '.err.log'
-  $pa = @('-NoProfile','-NonInteractive','-WindowStyle','Hidden','-File',('"{0}"' -f $check),'-Exe',('"{0}"' -f $exe),'-Worktree',('"{0}"' -f $worktree),'-Output',('"{0}"' -f $output),'-OverlapOnly')
+  $pa = @('-NoProfile','-NonInteractive','-WindowStyle','Hidden','-File',('"{0}"' -f $check),'-Exe',('"{0}"' -f $exe),'-Worktree',('"{0}"' -f $worktree),'-Output',('"{0}"' -f $output),'-OverlapOnly','-PcException','buildloop')
   $pr = Start-Process -FilePath "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -ArgumentList $pa -WindowStyle Hidden -PassThru -RedirectStandardOutput $log -RedirectStandardError $errLog
   try {
     $null = $pr.Handle; $pr.WaitForExit(); $pr.Refresh()

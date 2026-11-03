@@ -65,13 +65,10 @@ namespace Exoduser.UnityPort
                 if(name.Length==0)continue;
                 var card=new Rect(1428,421+n*94,390,84);
                 bool selected=index==Characters.SelectedIndex;
-                if(selected)
-                {
-                    Fill(card,new Color(194/255f,26/255f,16/255f,.1f));
-                    Fill(new Rect(card.x,card.y,2,card.height),new Color(194/255f,26/255f,16/255f));
-                }
+                bool hover=GUI.enabled&&card.Contains(Event.current.mousePosition);
+                NativeSilverHellUi.ActionPlate(card,false,selected||hover?1:0,!AutomatedInput&&hover&&ExoInput.Mouse(0));
                 Fill(new Rect(card.x,card.yMax-1,card.width,1),new Color(.61f,.62f,.62f,.13f));
-                DrawSpaced(1450,card.y+10,32,name,silverName.font,22,22*.08f,NativeSilverHellUi.Text,true);
+                DrawSpaced(1450,card.y+10,32,name,silverName.font,22,22*.08f,selected||hover?NativeSilverHellUi.PlateTextHot:NativeSilverHellUi.PlateText,true);
                 SilverLabel(new Rect(1600,card.y+20,160,20),K("전사","WARRIOR"),silverMicro,TextAnchor.MiddleLeft);
                 SilverLabel(new Rect(1450,card.y+52,342,24),SilverSlotCaption(name),silverBody,TextAnchor.MiddleLeft);
                 GUI.SetNextControlName("character-slot-"+index);if(NativeUiAudit.Button(new Rect(card.x,card.y,345,84),"",GUIStyle.none))SelectCharacter(index);
