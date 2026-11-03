@@ -247,3 +247,8 @@ proof-a2r-r2255-vs-4895bf9c6.png / proof-a2r-r2255-diagnostics.png 직접 확인
 같은 sight-1의 상반신 가림은 1920·3840 모두 남았다. 부분 가림 회귀 테스트는 통과했지만 실제 컷 partialHeroSurfaces는 모두0이라 실제 해결 증거가 아니다. sight-2·탄 구멍은 작동 유지. 실제 잔존 원인은 미확정이다. Core 도보는 웅덩이 목표 전에 (5189.3179,3689.4417)에서 멈췄으며 목표 거리2466.3px, floor-projection.arrived=false. 웅덩이 컷을 유효 증명으로 쓰지 않는다. 다리 구간 남→북10초/100프레임 영상은 최신 실행으로 완성했다. 원래 로비→캠프는 도착/순간이동0.
 
 실제 컷/1x/1920·3840/탄/무효 웅덩이 컷/영상/영수증: I:/EXODUSER-Storage/map25d/a2redesign/SIGHT_PROOF.md. 같은 실제 결함이 두 검증에서 남아 추가 후보 제작 중단. a2r-build-next만 덮어썼고 a2r-build·바로가기·이력은 변경하지 않았다. Core/카메라/rigpixel/원화 텍스처 불변. 다음 진단은 실제 영웅 화면 위치와 가림 draw call/시야선의 정합을 먼저 대조해야 한다.
+
+
+## 02:10 이후 야간 ① 시야선 확인
+
+빌드소스 c29d154c12ecffb9ff22bed611bfebdc3415ac5c, 공용빌드2b378876/Player58eff38d exit0·오류0·창0·세이브변경0. 맵 총괄 CoversCircle 수정으로 sight-1/2/탄 1920·3840 실제 구멍 열림 확인, 원주민986개 지원 재질 미지원0. 증명 I:/EXODUSER-Storage/map25d/a2redesign/NIGHT_1_SIGHT.md. 맵 총괄 판정 전/바로가기 변경0. 야간 ②~⑥ 계속, 항목 실패2회만 해당항목 중단.
