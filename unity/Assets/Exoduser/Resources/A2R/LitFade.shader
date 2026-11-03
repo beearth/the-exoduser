@@ -15,6 +15,6 @@ HLSLPROGRAM
 #pragma multi_compile_fragment _ _LIGHT_COOKIES
 #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
 #include "LitCommon.hlsl"
-half4 frag(V i):SV_Target{return shade(i,true);}
+half4 frag(V i,bool frontFace:SV_IsFrontFace):SV_Target{return shade(i,true,frontFace);}
 ENDHLSL
 } }}

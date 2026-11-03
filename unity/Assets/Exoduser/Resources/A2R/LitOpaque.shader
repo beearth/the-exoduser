@@ -15,7 +15,7 @@ HLSLPROGRAM
 #pragma multi_compile_fragment _ _LIGHT_COOKIES
 #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
 #include "LitCommon.hlsl"
-half4 frag(V i):SV_Target{return shade(i,false);}
+half4 frag(V i,bool frontFace:SV_IsFrontFace):SV_Target{return shade(i,false,frontFace);}
 ENDHLSL
 }UsePass "Universal Render Pipeline/Lit/ShadowCaster"
 Pass{Name "DepthOnly" Tags{"LightMode"="DepthOnly"}ZWrite On ColorMask 0

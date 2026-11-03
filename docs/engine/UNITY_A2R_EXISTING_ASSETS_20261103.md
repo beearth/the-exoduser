@@ -312,3 +312,8 @@ proof-a2r-r2255-vs-4895bf9c6.png / proof-a2r-r2255-diagnostics.png 직접 확인
 ## 11-04 야간 최종 결과
 
 야간 ①·② PASS / ③ 형태 RETOUCH 중단 / ④ 선택 효과 기본OFF·RETOUCH / ⑤ 자료 제출 / ⑥ 두 차례 FAIL로 게이트 중단. 빌드 d79f0968bc67fffe8810bec650470a4e1ce1a247 / main 6ef1899cb388e2378786eeb50e20fb325403a954 / 비교30컷·34도·동일카메라·새3D239·세운카드0·접지3cm초과0·원래재질986지원. 캠프34.16FPS/Draw3730/tri32977243, 최종영상10초2개·오디오0, 빠른렌더러반전0(픽셀전수판정아님). 전체스모크는 VFX 초기오류1(KiImpactView.cs:74)·보조경로정체로FAIL. Core/Common/ProjectSettings/Packages 수동diff0·원화경로diff0. 원경 적/현재1x/영웅3x 실물검수, 검은수풀면과거목경계RETOUCH 잔존. 바로가기·사용자실행본 변경0. 증명 I:/EXODUSER-Storage/map25d/a2redesign/night_6_comparison.png / NIGHT_6_FINAL.md.
+
+
+## A2R r13 재질·양면 법선 1차
+
+03:00 r13 범위: Models3D 57재질의 매끈함 배율을 유기물55개0.3/검더미·우리2개0.6으로, 임포터에도 같은 규칙을 넣었다. LitOpaque/LitFade의 SV_IsFrontFace를 전달해 양면 PBR/GI 법선을 뒤집는다. 원본 바탕/노멀/금속 텍스처와 정점색은 그대로이며 정점색은 바람에만 사용한다. 03:15 지시로 VFX 총괄90ba1ff70을 병합(8874ce76b, CHANGELOG 양쪽 유지); 포함된 정식 main309892b1d의 규칙 변경은 해당 레인 커밋이고 이 레인의 Core 수동 수정0. Core/Runtime/Editor 컴파일0. 실제 반사/덤불/시야 구멍은 같은 빌드 5장면3열과1x/3x로 확인 예정. 실사용 a2r-build/바로가기 변경0, 시험 a2r-build-next만. 지형·구름·공기 OFF 유지.
