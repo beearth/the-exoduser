@@ -90,6 +90,10 @@ R6c c65fe43e 실제Hero76d1e6a8(41/41·579PNG), Shift3840 279f9e85(4/4·700px·a
 | same-plane median | 중앙RT alpha<.9, 중앙과8이웃 alpha차<.02인3×3내부만 적용. RGB휘도 .2126R+.7152G+.0722B로정렬, 중앙샘플원RGB를선택. 5회 bubble pass로index4 산출 | 다른재질/투명외곽/머리/얼굴/얇은대검은median 제외. 흐림/색보간/노이즈/디더추가0. 기존4이웃고립점정리와달빛한쪽테유지 |
 | shader target | composite SM3.5 | D3D/Metal 실제컴파일·장면색·RT태그정밀도·성능은Mac및후속Windows검수전미검증 |
 | natural fallen | Running=!PlayerDown | 제품의5초fallen부활카운트와같이Core틱을유지. Hp>0만보던QA조기정지를교정, AI/HP/피해/부활규칙변경0 |
-| 검수 위치 | PC는공통규칙11:55에따라코드/커밋push·배치컴파일1회까지만. 정식빌드/Player/M1/UI/FPS는Mac담당 | R6c이미종료된영수증을새R6d검수로세지않음. 기본sprite유지, 공통/Desktop반영0 |
+| 검수 위치 | 11:55추가지시확인후PC는코드/커밋push·배치컴파일1회까지만. 정식빌드/Player/M1/UI/FPS는Mac담당 | R6c이미종료된영수증을새R6d검수로세지않음. 기본sprite유지, 공통/Desktop반영0 |
 
 Mac에서는 Editor RigPixelVerification.Verify 후 PortVerification.Build(-remodel-scenes 1), 같은패키지 Hero1920/3840·Shift·M1·natural1920/3840·spritebaseline·10초무음영상·C10/NRFTW동일크기비교를 수행한다. 새병합본 NativeGame 생성분기/실제fallen전환/RT태그/약한곳의점0/발접지/상체선행/3타접점/60fps가필수다. Mac검수/통합담당응답전공통반영/전달완료로보고하지않는다.
+
+R6d 배치665409d7은C#오류0/USER_SAVE0이지만renderer=true·humanoid=true·shaders=false로exit2, 전체PASS가아니다. 허용된PC Editor 배치1회를사용했으므로추가Unity기동0. 별도Windows D3DCompile로median함수구문을검사하여예약어pass 사용의실제X3000을확인했다(tests/red-r6d-hlsl.json). iteration으로교정한함수는ps_5_0 HRESULT0(tests/green-r6d-hlsl.json), 이는전체Unity/Metal/실제렌더검수PASS가아니다. Editor Verify는각shader의severity/line/platform/message를로그에추가해Mac실패진단이누락되지않게한다.
+
+직접본비교판: G:/exoduser/tmp/design-review/20261103_rig_pixel/r6c/comparison/C10-R6c-NRFTW-body-aligned.png 및-3x.png. 원본C10=다른R3패키지1600×900, R6c=1920×1080원1x, NRFTW원참조를수동몸높이114px로정렬한검토판이다. 같은패키지A/B 또는R6d결과가아니며manifest.json에crop/scale/범위를기록했다. C10대비실루엣/대검/큰면은좋아졌으나노레위와의입체명암/재질차와고립픽셀은남아시각완료를선언하지않는다.

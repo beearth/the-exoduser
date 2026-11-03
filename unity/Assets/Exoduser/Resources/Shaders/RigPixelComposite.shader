@@ -18,15 +18,15 @@ Shader "Exoduser/RigPixelComposite" {
    half Difference(half3 a,half3 b){half3 delta=abs(a-b);return max(delta.r,max(delta.g,delta.b));}
    bool Consensus(half4 a,half4 b,half4 c){return min(a.a,min(b.a,c.a))>.5h&&Difference(a.rgb,b.rgb)<.035h&&Difference(a.rgb,c.rgb)<.035h;}
    half Luma(half3 c){return dot(c,half3(.2126h,.7152h,.0722h));}
-   bool SamePlane(half tag,half4 sample){return abs(tag-sample.a)<.02h;}
+   bool SamePlane(half tag,half4 neighbourSample){return abs(tag-neighbourSample.a)<.02h;}
    half3 PlaneMedian(half4 c,half4 l,half4 r,half4 u,half4 b,half4 ul,half4 ur,half4 bl,half4 br){
     half4 samples[9];
     samples[0]=half4(c.rgb,Luma(c.rgb));samples[1]=half4(l.rgb,Luma(l.rgb));samples[2]=half4(r.rgb,Luma(r.rgb));
     samples[3]=half4(u.rgb,Luma(u.rgb));samples[4]=half4(b.rgb,Luma(b.rgb));samples[5]=half4(ul.rgb,Luma(ul.rgb));
     samples[6]=half4(ur.rgb,Luma(ur.rgb));samples[7]=half4(bl.rgb,Luma(bl.rgb));samples[8]=half4(br.rgb,Luma(br.rgb));
     // Five ascending bubble passes place the middle sample at index four. Keep the sampled RGB together.
-    [unroll]for(int pass=0;pass<5;pass++){
-     [unroll]for(int j=0;j<8-pass;j++){
+    [unroll]for(int iteration=0;iteration<5;iteration++){
+     [unroll]for(int j=0;j<8-iteration;j++){
       if(samples[j].a>samples[j+1].a){half4 swap=samples[j];samples[j]=samples[j+1];samples[j+1]=swap;}
      }
     }

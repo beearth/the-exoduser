@@ -48,7 +48,10 @@ namespace Exoduser.CharacterLab {
    var toon=Resources.Load<Shader>("Shaders/RigPixelToon");var composite=Resources.Load<Shader>("Shaders/RigPixelComposite");
    var prefab=Resources.Load<GameObject>("Characters/Warrior");var animator=prefab!=null?prefab.GetComponent<Animator>():null;
    bool renderer=type!=null&&typeof(MonoBehaviour).IsAssignableFrom(type);
-   bool shaders=toon!=null&&composite!=null&&!ShaderUtil.ShaderHasError(toon)&&!ShaderUtil.ShaderHasError(composite);
+   bool toonOk=toon!=null&&!ShaderUtil.ShaderHasError(toon),compositeOk=composite!=null&&!ShaderUtil.ShaderHasError(composite);
+   bool shaders=toonOk&&compositeOk;
+   foreach(var shader in new[]{toon,composite})if(shader!=null)foreach(var message in ShaderUtil.GetShaderMessages(shader))
+    Debug.Log("RIGPIXEL_SHADER "+shader.name+" "+message.severity+" line="+message.line+" platform="+message.platform+" "+message.message);
    bool rig=animator!=null&&animator.avatar!=null&&animator.avatar.isValid&&animator.avatar.isHuman;
    bool ok=renderer&&shaders&&rig;
    Directory.CreateDirectory(Path.GetDirectoryName(output));File.WriteAllText(output,"{\"passed\":"+ok.ToString().ToLowerInvariant()+",\"renderer\":"+renderer.ToString().ToLowerInvariant()+",\"shaders\":"+shaders.ToString().ToLowerInvariant()+",\"humanoid\":"+rig.ToString().ToLowerInvariant()+"}");
