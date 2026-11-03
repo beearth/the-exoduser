@@ -130,7 +130,7 @@ Core에 표시 전용 `CombatStats`를 둡니다. 규칙과 난수에는 영향�
 | 기회 | `meleeTellStarted[source]`(source = swing·slam·charge·combo·unparryable), `projChargeStarted[parryClass]`(physical·magic·forbidden) | 근접 예고 시작, `_projChargeT=60` 설정 지점 |
 | 패링 | `parrySuccess[kind]`(meleeE·meleeQ·projE·projQ), `parryWrongInput`(패링 불가에 입력, 색 틀림) | `MeleeParry`, `ApplyParrySuccess`(출처 인자 추가), 반사 경로 |
 | 피해 출처 | `dmgDealt[source]`(normal·skill·reflect·counter), `dmgTaken[source]`(meleeEnemy·proj·hazard·boss) | 적 피격·`HurtPlayer`의 `HurtOptions`에 출처 필드 추가 |
-| 자원 | `gain[kind][res]`(res = hp·st·mp·rage·malice·harp, kind = 근접·탄) | 보상 적용 지점 |
+| 자원 | `gain[kind][res]`(res = hp·st·mp·rage·malice·harp·hpMaxFrac, kind = 근접·탄). `hpMaxFrac`는 회복할 때마다 "그 순간 최대 HP 대비 회복량"을 더한 값(8절 회복 판정용, 2026-11-04 추가) | 보상 적용 지점 |
 | 그로기 | `groggy[cause]`(meleeParry·counter·hit·reflect) | `EnemyPoiseRules.PoiseHit` 호출자 |
 | 결과 | `deaths`, `clearSeconds`, `hurtCount` | 기존 `HurtCount` 확장 |
 
@@ -166,6 +166,7 @@ Core에 표시 전용 `CombatStats`를 둡니다. 규칙과 난수에는 영향�
 - 사망/클리어·M1/전체진행 종료에 combat-stats.json 작성. M1 save/continue 이전 통계를 보존한다. 적 피해는 실제 HP+쉴드 손실, 플레이어 피해는 HP 손실, 자원은 상한 적용 후 실제 증가량이다.
 - Mac: --unity-m1-check 1회, --unity-fullrun-qa --parry-g2-bot 격리출력3판, 사람3판과 1600×900 1x 겹침 장면. 봇은 기회별 목표 입력70%이며 실제 성공률은 카운터로 따로 판정한다. 강제 성공·자원 주입은 없다.
 - PC 범위는 구현·참조 컴파일. §8 실게임 비율/회복/그로기·화면 합격은 Mac 미판정.
+- 2026-11-04 판정 준비: combat-stats.json에 최대 HP가 없어 회복 기준(분당 최대 HP 30%)을 계산할 수 없던 공백을 `gain.*.hpMaxFrac`로 메웠다. `unity/Tools/parry-g2-tests/judge-stats.cjs <판 폴더>... --out <폴더>`가 판별 근접 비중·반사 비중·분당 회복·근접 그로기를 8절 합격선으로 PASS/FAIL/미측정 표(g2-judge.md·json)로 만든다. 시간은 clearSeconds, 사망으로 끝난 판은 ticks/60. 화면·회귀 줄은 이 표에 넣지 않는다.
 
 ### PC 검증 경계
 

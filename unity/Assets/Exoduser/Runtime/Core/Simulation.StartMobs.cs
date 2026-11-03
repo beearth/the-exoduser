@@ -41,6 +41,7 @@ namespace Exoduser.UnityPort.Core
                 if (e == null) continue;
                 var w = e.Web ?? SyncToWeb(e);
                 e.Elite = 0; w.elite = 0; w.mods = new List<string>(); w.aura = null; w._firstShot = false;   // elite=0; mods=[]; aura=null; _firstShot=false
+                e.IsStartEyeMass = true; // Presentation tag: etype 4 also belongs to ordinary carapace apostles.
                 StartEyeMasses++; LogStartMob("다안 육괴", e);
             }
 

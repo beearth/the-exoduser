@@ -333,3 +333,11 @@ CTO 야간 지시(11-03 밤). 작업본 `G:/exoduser-wt/codex-vfx-spark`, 브랜
 변경: `Vfx/CombatImpactTimeline.cs`, `Vfx/CombatImpactView.cs`, `NativeGame.cs`(홀드 프레임 한 줄), `NativeGame.Remodel3D.cs`(.08u 당김 줄 삭제), `NativeGame.MeleeParry.cs`(임시 성공 스파크 끔), `NativeGame.M1Check.cs`(A/B 컷 근접 이벤트), `NativeBossView.cs`·`NativeDruidArt.cs`(독탄 코어 .35), 새 PNG·meta 2쌍, `tools/vfx/recolor_parry_water.py`, 검사 `Program.cs`·`run.cjs`, 이 문서·VFX 마스터·CHANGELOG_SYNC.
 
 **판정: PC 검사·컴파일 통과 / RETOUCH_GAME_QA_PENDING.** Mac에서 볼 것: 물탄 방패 패링 색(06-parry-shield 계열), 일반·보스 사망 1x에 점 0, 구르기 먼지 1x 판독·탄 가림 없음, 드루이드 독탄 중심 밝기, M1 06 A/B, 근접 패링 스파크 정점 +3프레임.
+
+## 11-04 01:00 적 3D 접점 연결 바탕 (PC)
+
+[Unity 연결 기록](../8.0몬스터디자인/UNITY_ENEMY3D_WIRING_20261104.md)의 NativeEnemyRigRenderer.ImpactAnchor → CombatImpactView.EnemyRigAnchor를 연결했다. 기존 AnchorRatio·ImpactRatio·chestRatio/height/deathTicks·--enemy-render=rigpixel 이름/의미를 보존했다. TargetId 또는 etype+동일 좌표의 유일한 표시 개체만 사용하고, 모델/접점이 없거나 겹쳐 식별할 수 없으면 기존 Core 반경 경로다.
+
+리그 bounds의 투영 높이로 몸 안 접점과 시트 최종 폭(일반.6·치명/사망1.0·큰 적 상한1.2)을 정한다. Blood Stretch까지 최종 폭에 포함한다. 바닥 혈흔은 발밑에 유지하며 사망 관측 틱을 모델 사망 샘플링과 공유한다. Core 이벤트 X/Y/Size나 판정은 수정하지 않는다. deathTicks 뒤에도 기존 사망 피 시트가 발밑으로 튀지 않도록 마지막 리그 접점을 유지한다.
+
+PC 정책103/0·전체 참조 컴파일5개 오류0. 실제 임포트·접점 오차10%·피 실루엣 가림·먼 적1x·30마리 성능은 Mac 미판정. 공격/피격/사망 클립은 현재 제공되지 않아 bind pose이며 실제 무너짐 동기화 판정은 클립 제작 뒤다.
