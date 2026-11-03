@@ -298,3 +298,10 @@ R4는 필수 로딩팁 누락 FAIL을 유지한다. R5는 소스/빌드 준비�
 |보존|frozenCli68b7/Queue8a00·제품Core/Runtime소스·공용INDEX0/WORK635·원본3overlay불변. 새Unity/Player/빌드/브라우저/인코딩/대형검수·예약·대기자·재시도0. 진단보완은게임실행이나전체완료가아니다|
 
 원문근거와가설구분은 I:/EXODUSER-Storage/demo-art/unity-ui/ultrawide/R5_M1_읽기진단.json 및 recovery-20261101/m1-readonly/PowerShell_PID34712_기존이벤트.json을 따른다. 기존 R4 로딩팁누락FAIL·R5실화면/공통/Desktop미완료는유지한다.
+
+
+## 2026-11-03 P0 전환 통합 뒤 실제 마우스 검사
+
+실제 PostMessage 누름/해제와 잠긴직업 차단·이름입력 열림 검사는 유지한다. 해제 후0.2초만 기다리고 즉시 characterStep을 검사하던 fixture는 새500ms 검정→실제 준비→600ms 복귀보다 먼저 판정하여8db8dd46에서12프레임 뒤 FAIL했다. 이제 해제 이벤트가 처리되는 실제 OnGUI 프레임 끝을 통과한 다음 NativeScreenTransition.Busy가 종료될 때까지 최대15초(제품 준비12초+양쪽fade와프레임여유)를 기다리고, 제품 전환failed/timeout은 여전히 FAIL한다. 좌표·입력·제품500/600ms·12초제한·잠금검사·분석기 임계 변경0. 새패키지 전체검수 전 미검증이다.
+
+같은 fixture의 신규입장 즉시 Loading assert도 실제제품계약으로교정했다. BeginCharacterEntry(false)는검정경계를요청하고onBlack에서loadingAlreadyShown=true로Nemesis를연다. 이요청중에는검수의AutomatedInput 우회를해제한채실제callback을기다린다. callback실행뒤입력격리를복원하고Preparing의실제완전검정Repaint를로딩프레임으로즉시캡처한다(기존.18초정지대기없이). 이후fade완료와Nemesis를모두검사한다. 옛1.2초로고페이지를다시삽입하지않고, 전체페이지수/언어·해상도·클립/글자분석·입력격리assert는유지한다. 제품전환코드변경0.

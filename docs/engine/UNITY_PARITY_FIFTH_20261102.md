@@ -158,3 +158,12 @@ P0 산출 fifth/p0-overlap. Core/Runtime 독립 컴파일0, 정식 빌드/M1/전
 | 다음 게이트 | 공용 bin 정식 새 빌드→같은 패키지 M1→ko/de/fr/5해상도 전 화면 겹침0 및 3333 나란히1x→최신 unity/main 정상 merge·비강제 push·REPORT 갱신→5차 나머지. 현재는 전체 미완료 |
 
 I:의 REPORT를 현재 갱신할 수 없어 이 문서에 실제 중단 지점을 남긴다. 바탕화면 직접 교체0, 세이브 변경0. 복구본은 이전 I: 스킬 준비물의 인수나 5차 잔여 완료를 뜻하지 않는다.
+
+
+## 09시 재개 P0 첫 패키지와 전환 fixture 교정
+
+I:·PowerShell이 정상 응답해 fetch/소유/공용slots3 상태를 재확인했다. 입력02cae3be32의 정식3afaeebb는errors0/6,610,799,356B, M1 6829c139는23/23·창0·잔여0·USER_SAVE0. Core9efc2ba7…/Runtimeffc22ee5…는 실제Compiler DLL과 바이트동일, Runtime소스356개 변경0. 웹3333 browser726ace84는5해상도×ko/de/fr×3상태45PNG·오류0·창0·잔여0·USER_SAVE0이며 긴 이름의 실제줄바꿈과 비용/확률을직접1x확인. 폴더 evening/third의호출39개전수검색에서비공용0. 빌드자동857개 SHA보관·원HEAD바이트복원/해시확인,guard WIP보존.
+
+첫 전체 UI 8db8dd46은12장 후 실제 마우스 이름입력검사 FAIL(exit2)이다. 잠긴직업 차단true/이름열림false였으나 같은프레임의확인음·전환callback이뒤따라 fixture가새전환완료보다앞서검사했음을확인했다. UiWideClick에OnGUI프레임끝→실제전환Busy종료(최대15s) 대기를추가하고제품전환실패/기존좌표·차단assert는유지한다. 이는검수시계교정이며제품timeout완화나147건검사제외가아니다. 새정식패키지/M1/1395전체재검수전이며P0완료아님. 상세계약은UNITY_UI_OVERLAP_20261030.md 최신절.
+
+검수기소스전수확인에서신규입장도즉시Loading가정이남아있음을발견했다. 실제제품은onBlack의loadingAlreadyShown=true로Nemesis에진입하므로, 비동기실제입장callback까지기다리고Preparing의실제완전검정Repaint를로딩으로수집한뒤fade완료/Nemesis를assert하도록같은수정에포함했다. 1395페이지조건/분석기·입력격리검사유지, 제품화면전환변경0.

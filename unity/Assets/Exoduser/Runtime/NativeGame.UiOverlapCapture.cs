@@ -49,9 +49,9 @@ namespace Exoduser.UnityPort
         readonly List<UiWideInputCheck> wideInputChecks=new List<UiWideInputCheck>();
         UiOverlapCoverage overlapCoverage;
         string overlapOutput,overlapLanguage;
-        bool overlapPhysicalClick,overlapUiFreeze;
+        bool overlapPhysicalClick,overlapUiFreeze,overlapActualFrontend;
         bool UiOverlapFreezesSimulation=>overlapUiFreeze&&overlapCoverage!=null;
-        bool UiOverlapOwnsInput=>overlapCoverage!=null&&!overlapPhysicalClick;
+        bool UiOverlapOwnsInput=>overlapCoverage!=null&&!overlapPhysicalClick&&!overlapActualFrontend;
         [Serializable] sealed class OverlapOptionBundle {public string[] codes;public OverlapOptionEntry[] entries;}
         [Serializable] sealed class OverlapOptionEntry {public string key;public string[] texts;}
         [Serializable] sealed class OverlapVisualBundle {public OverlapVisualLanguage[] entries;}
@@ -82,10 +82,10 @@ namespace Exoduser.UnityPort
             if(!chosen.Contains(longest))chosen.Add(longest);overlapCoverage.languages=chosen.ToArray();
             File.WriteAllText(Path.Combine(overlapOutput,"최장언어_실측.json"),JsonUtility.ToJson(report,true));
         }
-        IEnumerator UiOverlapShot(string page)
+        IEnumerator UiOverlapShot(string page,bool settle=true)
         {
             int frozenTick=Simulation==null?0:Simulation.TickCount;
-            yield return new WaitForSecondsRealtime(.18f);NativeUiAudit.Active=true;yield return null;yield return new WaitForEndOfFrame();
+            if(settle)yield return new WaitForSecondsRealtime(.18f);NativeUiAudit.Active=true;if(settle)yield return null;yield return new WaitForEndOfFrame();
             if(lobby.enabled){if(!UiOverlapOwnsInput||!lobby.AutomatedInput)throw new InvalidOperationException("실제 캡처 입력 소유권 누락 "+page);overlapCoverage.inputIsolationChecks++;}
             if(UiOverlapFreezesSimulation){if(Simulation!=null&&Simulation.TickCount!=frozenTick)throw new InvalidOperationException("실제 UI 캡처 Simulation 틱 진행 "+page);overlapCoverage.simulationFrozenChecks++;}
             string name=Screen.width+"x"+Screen.height+"-"+overlapLanguage+"-"+page;
@@ -132,7 +132,17 @@ namespace Exoduser.UnityPort
             UiWideClient(own,out var after);Debug.Log("UI_CLIENT_RESIZE pid="+pid+" before="+(client.right-client.left)+"x"+(client.bottom-client.top)+" after="+(after.right-after.left)+"x"+(after.bottom-after.top)+" requested="+width+"x"+height+" flags=NOMOVE|NOZORDER|NOACTIVATE");
         }
         IEnumerator UiWideClick(float x,float y){IntPtr own=IntPtr.Zero;uint pid=(uint)System.Diagnostics.Process.GetCurrentProcess().Id;UiWideWindows((w,s)=>{UiWideProcess(w,out uint id);var c=new System.Text.StringBuilder(128);UiWideClass(w,c,128);if(id==pid&&c.ToString()=="UnityWndClass"){own=w;return false;}return true;},IntPtr.Zero);if(own==IntPtr.Zero)throw new InvalidOperationException("자기 숨은 Player 창 없음");var a=NativeUiViewport.Edges;int px=Mathf.RoundToInt(Screen.width-(1920-x)*a.Scale),py=Mathf.RoundToInt(y*a.Scale);IntPtr point=new IntPtr((py<<16)|(px&65535));overlapPhysicalClick=true;lobby.AutomatedInput=false;try{
-         if(!UiWidePost(own,0x200,IntPtr.Zero,point)||!UiWidePost(own,0x201,new IntPtr(1),point))throw new InvalidOperationException("자기 창 누름 전달 실패");yield return new WaitForSecondsRealtime(.12f);if(!UiWidePost(own,0x202,IntPtr.Zero,point))throw new InvalidOperationException("자기 창 해제 전달 실패");yield return new WaitForSecondsRealtime(.2f);}finally{overlapPhysicalClick=false;lobby.AutomatedInput=true;}
+         if(!UiWidePost(own,0x200,IntPtr.Zero,point)||!UiWidePost(own,0x201,new IntPtr(1),point))throw new InvalidOperationException("자기 창 누름 전달 실패");yield return new WaitForSecondsRealtime(.12f);if(!UiWidePost(own,0x202,IntPtr.Zero,point))throw new InvalidOperationException("자기 창 해제 전달 실패");yield return new WaitForSecondsRealtime(.2f);
+         // Posted mouse-up is handled by OnGUI after Update. Inspect the result only
+         // after that repaint and the product's full fade/preparation/reveal lifetime.
+         yield return new WaitForEndOfFrame();
+         float transitionDeadline=Time.realtimeSinceStartup+15;
+         while(NativeScreenTransition.Busy&&Time.realtimeSinceStartup<transitionDeadline)yield return null;
+         if(NativeScreenTransition.Busy)throw new InvalidOperationException("실제 클릭 뒤 화면 전환 미완료(15s)");
+         var history=NativeScreenTransition.History;
+         if(history!=null&&history.Count>0&&history[history.Count-1].failed)throw new InvalidOperationException("실제 클릭 뒤 제품 전환 실패: "+history[history.Count-1].error);
+         yield return new WaitForEndOfFrame();
+        }finally{overlapPhysicalClick=false;lobby.AutomatedInput=true;}
         }
 #endif
 
@@ -231,11 +241,18 @@ namespace Exoduser.UnityPort
                 else
 #endif
                 {lobby.ChooseCharacterVisual(0);lobby.ConfirmCharacterVisual();}yield return UiOverlapShot("이름입력");lobby.CloseCharacterCreation();
-                lobby.AutomatedInput=false;
-                if(!lobby.BeginCharacterEntry(false)||lobby.StartupCaptureState.Page!=FrontendEntryPage.Loading)throw new InvalidOperationException("실제 신규 캐릭터 로딩 진입 누락");lobby.AutomatedInput=true;
-                yield return UiOverlapShot("로딩");
-                float deadline=Time.realtimeSinceStartup+12;while(lobby.StartupCaptureState.Page!=FrontendEntryPage.Nemesis&&Time.realtimeSinceStartup<deadline)yield return null;
-                if(lobby.StartupCaptureState.Page!=FrontendEntryPage.Nemesis)throw new InvalidOperationException("신규 연출 실제 상태 누락");yield return new WaitForSecondsRealtime(1);yield return UiOverlapShot("신규연출");for(int attempt=0;attempt<32&&(lobby.StartupCaptureState.Line==null||string.IsNullOrEmpty(lobby.StartupCaptureState.Line.text)||string.IsNullOrEmpty(lobby.StartupCaptureState.Line.speaker));attempt++){lobby.StartupCaptureState.Advance();yield return null;}var line=lobby.StartupCaptureState.Line;if(line==null||string.IsNullOrEmpty(line.text)||string.IsNullOrEmpty(line.speaker))throw new InvalidOperationException("신규 연출 실제 대사 누락");if(lobby.StartupCaptureState.VisibleCharacters<line.text.Replace("\n","").Length)lobby.StartupCaptureState.Advance();lobby.ForceStartupContinue=true;yield return new WaitForSecondsRealtime(1);yield return UiOverlapShot("신규연출완료");lobby.ForceStartupContinue=null;lobby.StartupCaptureState.Skip();yield return null;
+                overlapActualFrontend=true;lobby.AutomatedInput=false;
+                try{
+                    if(!lobby.BeginCharacterEntry(false))throw new InvalidOperationException("실제 신규 캐릭터 입장 요청 실패");
+                    float entryDeadline=Time.realtimeSinceStartup+15;
+                    while(lobby.StartupCaptureState.Page!=FrontendEntryPage.Nemesis&&NativeScreenTransition.Busy&&Time.realtimeSinceStartup<entryDeadline)yield return null;
+                    if(lobby.StartupCaptureState.Page!=FrontendEntryPage.Nemesis||NativeScreenTransition.State==null||NativeScreenTransition.State.Phase!=ScreenTransitionPhase.Preparing)throw new InvalidOperationException("실제 신규 입장 검정/준비 경계 누락");
+                }finally{overlapActualFrontend=false;lobby.AutomatedInput=true;}
+                // The product now replaces the legacy logo loading page with its black
+                // preparation boundary. Capture its actual full-black repaint after swap.
+                yield return UiOverlapShot("로딩",false);
+                float deadline=Time.realtimeSinceStartup+15;while(NativeScreenTransition.Busy&&Time.realtimeSinceStartup<deadline)yield return null;
+                if(NativeScreenTransition.Busy||NativeScreenTransition.State.Failed||lobby.StartupCaptureState.Page!=FrontendEntryPage.Nemesis)throw new InvalidOperationException("신규 연출 실제 전환/상태 실패");yield return new WaitForSecondsRealtime(1);yield return UiOverlapShot("신규연출");for(int attempt=0;attempt<32&&(lobby.StartupCaptureState.Line==null||string.IsNullOrEmpty(lobby.StartupCaptureState.Line.text)||string.IsNullOrEmpty(lobby.StartupCaptureState.Line.speaker));attempt++){lobby.StartupCaptureState.Advance();yield return null;}var line=lobby.StartupCaptureState.Line;if(line==null||string.IsNullOrEmpty(line.text)||string.IsNullOrEmpty(line.speaker))throw new InvalidOperationException("신규 연출 실제 대사 누락");if(lobby.StartupCaptureState.VisibleCharacters<line.text.Replace("\n","").Length)lobby.StartupCaptureState.Advance();lobby.ForceStartupContinue=true;yield return new WaitForSecondsRealtime(1);yield return UiOverlapShot("신규연출완료");lobby.ForceStartupContinue=null;lobby.StartupCaptureState.Skip();yield return null;
                 for(int n=0;n<4;n++){yield return new WaitForSecondsRealtime(.3f);if(lobby.StartupCaptureState.Page!=FrontendEntryPage.Guide||lobby.StartupCaptureState.GuideStep!=n)throw new InvalidOperationException("튜토리얼 상태 누락 "+n);yield return UiOverlapShot("튜토리얼"+n);lobby.StartupCaptureState.Advance();}
                 lobby.StartupCaptureState.Skip();lobby.SelectPreview();lobby.EnterNativeTest();
                 frontendEntryInputFence=false;Running=false;menu=false;EndFirstPractice(true);Running=false;
