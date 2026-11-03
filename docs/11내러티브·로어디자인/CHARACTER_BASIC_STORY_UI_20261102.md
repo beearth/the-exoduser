@@ -52,3 +52,16 @@
 - 최초 Unity import/build가 갱신한 타 캐릭터 importer meta·URP prefilter 직렬화는 기능 커밋에 포함하지 않는다. 보존 패치 `unity-build-generated-and-source.patch`는 I: 증거 폴더에 있다.
 - 기본 스토리 패널의 내용·선택 갱신이 이번 범위다. 기존 헬거너 슬롯의 옛 표시명/원화, 타 캐릭터의 옛 소개·플레이 방식과 최신 디자인의 전체 동기화는 별도다. 기존 그림·전투·스킬·잠금은 바꾸지 않았다.
 - 원어민 감수·Unity 29언어 전체 조판·Unity 캐릭터 선택 5120×1440 화면·Mac 동기화는 미검수다. 사용자 수동 플레이와 자동 제품 API 캡처를 구분한다.
+
+## 게임 반영 (2026-11-03, 스토리 총괄)
+
+11-02 구현은 검수까지 끝났지만 `codex/character-basic-story-*` 브랜치에만 있어 게임 줄기에 들어가지 않았다. 사용자가 "시킨 거 하나도 안 됐다"고 지적해 확인·병합했다.
+
+| 줄기 | 커밋 | 내용 |
+|---|---|---|
+| Unity `unity/main` | `9dc27dea5` | 52563eeb8 병합. 왼쪽 패널 `DrawCharacterBasicStory`(EdgeMatrix x=40·폭 380·세로 중앙). 오른쪽 정보창 안의 STY-20 lore 2문장은 중복이라 제거. Roslyn Core 121·Runtime 243 파일 error 0 |
+| 웹 `main` | 이 커밋 묶음 | 83490cf17·fdf5565e6 병합. 단, 11-02 이후 `charselect-silver-hell.css`가 `#csLeft`를 오른쪽 레일에 붙이므로 `#csLeft` 재구성은 버리고 **별도 `#csStory`**를 왼쪽 x=40·폭 380·세로 중앙(1100px 이상)에 둔다. 오른쪽 레일(이름·플레이 방식)은 그대로. 본문 글꼴 `--font-hell`, 왼쪽 정렬. STY-20 `#csCharLore` 제거 |
+
+검수(웹): 오버레이 서버 headless·음소거, 1920×1080·3840×1080 × 실버테일·변성술사·창법사, pageerror 0, 스토리 x=40·오른쪽 레일과 비겹침, 캡처 `I:/EXODUSER-Storage/_out_sty22/web/`. `test/characterBasicStory.test.mjs` 3/3(웹·Unity 데이터 동일 포함). Unity는 바탕화면 빌드 루프 갱신 뒤 화면 검수.
+
+STY-20의 `CHAR_VISUALS[].lore`·`_LOBBY_EN`·lobby 번역 5문구(No.3840~3844)는 화면에서 쓰지 않는다(데이터만 남음). 실버테일 문구는 11-02 사용자 정정 정본과 다르므로 다시 쓰지 않는다.
