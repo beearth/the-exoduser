@@ -19,7 +19,7 @@ for(const build of ['full','demo','ea'])for(const gate of [true,false])test(buil
 test('lobby never loads or displays the retired door movie and background',()=>{
  assert.doesNotMatch(html,/<source[^>]+src=["']video\/intro\.mp4/);
  assert.doesNotMatch(html,/id=["']cinGate["']|class=["']cin-door-scene|url\(['"]?img\/hellgate\.png/);
- assert.match(html,/id="worldIntroVideo" src="video\/world_intro_v22b_steam\.mp4"/);
+ assert.match(html,/id="worldIntroVideo" src="video\/world_intro_v23_newopening_steam\.mp4"/);
 });
 test('preview and account seen contracts are preserved',()=>{
  const seen=html.slice(html.indexOf('function _cinSeenChk(){'),html.indexOf('// ═══ Prologue Script'));

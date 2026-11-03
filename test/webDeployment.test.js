@@ -149,14 +149,14 @@ function runtimeBuildFixture(t,{missing}={}) {
     'assets/vendor/three-r160/build/three.module.js',
     'assets/vendor/three-r160/examples/jsm/loaders/GLTFLoader.js',
     'assets/vendor/three-r160/examples/jsm/utils/BufferGeometryUtils.js'];
-  const media=['video/fdg_intro.mp4','video/world_intro_v22b_steam.mp4','video/warrior_story_v23_clean.mp4'];
+  const media=['video/fdg_intro.mp4','video/world_intro_v23_newopening_steam.mp4','video/warrior_story_v23_clean.mp4'];
   mkdirSync(join(dir,'tools'));
   for(const name of ['build-web.mjs','web-runtime-manifest.mjs','web-derived-assets.mjs'])copyFileSync(new URL('../tools/'+name,import.meta.url),join(dir,'tools',name));
   writeFileSync(join(dir,'build-nwjs.mjs'),'const FILES = ['+entries.map(name=>"'"+name+"'").join(',')+'];');
   for(const path of [...entries,...media]) {
     if(path===missing)continue;
     mkdirSync(join(dir,...path.split('/').slice(0,-1)),{recursive:true});
-    writeFileSync(join(dir,path),path==='index.html'?'<source src="video/fdg_intro.mp4"><video src="video/world_intro_v22b_steam.mp4?rev=current"></video>':path==='game.html'?"const story='video/warrior_story_v23_clean.mp4';":'fixture');
+    writeFileSync(join(dir,path),path==='index.html'?'<source src="video/fdg_intro.mp4"><video src="video/world_intro_v23_newopening_steam.mp4?rev=current"></video>':path==='game.html'?"const story='video/warrior_story_v23_clean.mp4';":'fixture');
   }
   if(missing)rmSync(join(dir,missing),{force:true});
   execFileSync('git',['init','--quiet'],{cwd:dir,windowsHide:true});
@@ -177,7 +177,7 @@ test('current web build rejects a missing required entry',t=>{
 });
 
 test('current web build rejects a missing video actually referenced by runtime HTML or JS',t=>{
-  for(const video of ['video/fdg_intro.mp4','video/world_intro_v22b_steam.mp4','video/warrior_story_v23_clean.mp4']){
+  for(const video of ['video/fdg_intro.mp4','video/world_intro_v23_newopening_steam.mp4','video/warrior_story_v23_clean.mp4']){
     const run=runtimeBuildFixture(t,{missing:video});
     assert.notEqual(run.status,0);
     assert.ok(run.stderr.includes('Missing required runtime file: '+video),run.stderr);

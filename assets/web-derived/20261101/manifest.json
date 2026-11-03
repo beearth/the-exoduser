@@ -722,13 +722,13 @@
       "mime": "image/webp"
     },
     {
-      "source_path": "video/world_intro_v22b_steam.mp4",
-      "source_git_blob": "2b4770ff9ccba8d496673af52bdd6c8f37e8491e",
-      "source_sha256": "3b99d59bca9d84a37bb6b49067148e1ed69fefb478ff206221b59c8c952d0b0f",
-      "source_bytes": 102204634,
-      "derivative_path": "assets/web-derived/20261101/video/world_intro_v22b_steam.web.mp4",
-      "sha256": "c2795c9014b8a2035f307807666a1a952b5c2962acb6c4f31d319cd73345ae28",
-      "bytes": 75253813,
+      "source_path": "video/world_intro_v23_newopening_steam.mp4",
+      "source_git_blob": "d0b8eb84ffd3ba3216b30dc1d1469d9d0b5a2722",
+      "source_sha256": "6abe88a5d4a5f829fb9f6c3e99cf488d79cd365ae58c52c8ddf6a469c05278c9",
+      "source_bytes": 90144119,
+      "derivative_path": "assets/web-derived/20261101/video/world_intro_v23_newopening_steam.web.mp4",
+      "sha256": "98026b4369a47ab2e2b2d589774677d4ef1aea1c84f25e730a5e5db1e5be0398",
+      "bytes": 68305338,
       "mime": "video/mp4"
     }
   ]

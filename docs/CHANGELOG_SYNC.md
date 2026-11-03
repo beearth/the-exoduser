@@ -2,6 +2,16 @@
 
 2026-11-03 규칙 정리(사용자 "전부 추천대로", 51항목): CLAUDE.md·AGENTS.md를 unity/main과 같은 본문으로 바꿨다(unity/main 7bc7a3518). docs 정본은 이제 origin/unity/main이다. main에서 매뉴얼 v4.1·운영 매뉴얼·품질 기준·REPO_SYNC·보스/캐릭터 보드·실버 헬·로비 조사·구르기 문서와 신규 DOCS_INDEX·TERMINAL_FAILURE_FALLBACK은 위치 안내만 남긴다(`git show origin/unity/main:<경로>`). 공통 문서 5개(API연결_가이드·BUILD_BACKUP_POLICY·2_3·IMAGE_PROVIDER_PRIORITY·MAP_OBJECT_SEEDREAM)는 두 브랜치에 같은 파일로 둔다. 웹(main)은 Steam 라이브판 유지보수만 한다(CLAUDE.md 부록 W).
 
+## 2026-11-04 세계관 인트로 v23 — 문 이전 새 도입부
+
+| 항목 | 내용 |
+|---|---|
+| 요청 | 사용자 "첫이미지 문나올때까지 저기만 바꿔서 넣어봐", "이제 게임에 적용해 배포" |
+| 변경 | `video/world_intro_v23_newopening_steam.mp4` 신규(v22b 0~13.15초만 새 영상 3컷, 이후 v22b 원본). `index.html` src, 웹 파생 매니페스트·파생 파일 교체, 인트로 테스트 4개 파일명 |
+| 유지 | 음성·BGM·29언어×32큐 자막·+0.4초 오프셋·컷 경계·로고. v22b 원본 파일 보존 |
+| 문서 | [인게임 인트로](cinematic/WORLD_INTRO_INGAME_20260907.md) 현행·2026-11-04 절, [v16 스타일락 기획](cinematic/WORLD_INTRO_V16_STYLELOCK_PLAN_20261103.md) |
+| 검증 | 테스트 56/62 PASS, 실패 6개는 변경 전 main 동일. 웹 파생 v23 해시 일치. Mac Chrome 실제 재생·자막 확인 |
+
 ## 2026-11-03 운영 매뉴얼 §2.2 — 빌드는 git이 관리
 
 - `docs/0마스터플랜/AGENT_OPERATIONS_MANUAL.md` §2.2에 추가: 확인이 끝난 빌드는 남기지 않고 보고서에 커밋 SHA를 적는다. 지킬 변경은 커밋·push로 지킨다(백업 사본·로컬 보관 빌드 금지). 작업 종료 시 미커밋 수정 0. 배포용 패키지만 예외.
