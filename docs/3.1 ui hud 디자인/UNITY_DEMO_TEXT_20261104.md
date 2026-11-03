@@ -19,9 +19,9 @@
 
 합격선:29언어 누락/한글 누출0(고유명사 원문 유지 제외), 전달 인자·자리표시자 보존, 보스 한 줄 이벤트의 실제 화면 연결, 원화 복구 퇴보0. PC 데이터 검사는 화면·자연 입력·원어민 감수를 대체하지 않는다.
 
-## 펫 말풍선 조사 (5항 · 구현은 다음 회차)
+## 펫 말풍선 조사 (00:40 조사 이력)
 
-조사 결과와 확정 범위는 아래 「펫 말풍선 후속 범위 확정」에 기록했다. 이번 회차의 게임 중 말풍선 구현은0이다.
+조사 결과와 확정 범위는 아래 「펫 말풍선 후속 범위 확정」에 기록했다. 00:40 조사 회차의 게임 중 말풍선 구현은0이었다. 현재는 아래 승인 백로그 1차 절을 따른다.
 
 ## 구현·확인 결과
 
@@ -32,7 +32,7 @@
 - hellgate_objectives의 빠진 ar8개(No.4250~4257)도 채워29언어가 됐다. 목표 패널·로딩 이름은 같은 RTL/명조 렌더 경로를 사용한다.
 - PC 데이터·소스8항 PASS(최초6FAIL→구현후PASS, 로딩 수명/촬영 진입 결함 검출 후 보강). 원화 importer38회귀PASS. 문구 최종 DLL 참조 컴파일1회: Player Core126/Runtime269, Editor Core126/Runtime269/Editor60,5어셈블리 오류0. Unity 실행/Player/빌드/캡처0. 따라서 시각/자연입력/런타임 동작은 아직 Mac 미검증이다.
 
-## 펫 말풍선 후속 범위 확정 (이번 구현0)
+## 펫 말풍선 후속 범위 확정 (00:40 조사 당시 구현0)
 
 - 웹 원본: game.html #petSubtitle2692, _petBubbleShow9534, _petSay9557, 우선순위 디스패처9580이후, _updatePetBubble9650부근. 까마귀는 실제 화면 왼쪽20px, 고양이는 오른쪽20px. 오른쪽 조작 안내가 열리면 반대편으로 이동한다. 아래 HUD 위220px,480px 초상/원화 말풍선, UI/text scale×1.5. 텍스트 칸은 까마귀(92,237,306,51), 고양이(122,250,190,42), 원화 안에서 줄바꿈한다. 현재 웹의 산세리프 선언은 그대로 복사하지 않고 Unity 실버 헬 명조/가독성 기준으로 대조해야 한다.
 - 동작: 한 번에1개. 원문키를 보존해 언어 변경/입력장치 변경 때 다시 번역·키바인딩 치환. 첫 대사 뒤 페어 대사를 순차 표시. 각 id의 쿨다운과 티어별 전역 쿨다운이 있다. T0분위기/T1튜토리얼/T2진행/T3조언/T4핵심전투/T5생존, 전역20/12/8/6/4/0초. T5는 가중치가 높은 경고로 현재 대사/페어를 인터럽트하고 낮은 티어를5초 억제한다. 보스 피날레에는 T0~T2를 차단한다.
@@ -63,3 +63,52 @@ PNG는 demo-lobby/demo-hud/demo-boss-intro/demo-boss-sink-controlled-언어_1920
 ## 11-04 01:40 실제시각 — 최종 컴파일 후속
 
 R1/R2 e9898f7953과button_iron4cba2a857의 검증 중단을 해소했다. 수정 뒤 importer 테스트1회61PASS/0FAIL. 병합최종소스 DLL참조 Roslyn 컴파일1회:Player Core126/Runtime273,Editor Core126/Runtime273/Editor60,5어셈블리 exit0/오류0. Unity 에디터/import/Player/빌드/캡처0. 이 참조컴파일은 실제 Unity 임포트/플랫폼 빌드 판정이 아니다. Mac22종2회재임포트 meta불변/mip1 및 같은SHA 화면/폰트/RTL/선명도 판정은 대기다. R1/R2 텍스트 신규변경0,9항PASS는 이전 데이터검사 이력이며 이번에 반복하지 않았다.
+
+## 승인 백로그 — 펫 말풍선 1차 G0/G1
+
+- 소유: NativeGame.PetBubble/PetBubbleCapture 신규 partial, NativePetBubbleQueue/Policy/Hints/Catalog/View helper, pet_bubble JSON·원화 Resources, pet-bubble-tests, 전용 Editor compile gate와 NativeGame.cs의 시작/Update/Draw 최소 호출. Core/저장/다른 레인 배치/보스 자막 변경0.
+- 기준 원본: latest-web game.html9534~9688/9832~9865와img/crow·cat_pet/portrait.png를 직접 읽고 두 원화를 열어 확인. 한 번에1개·페어·우선순위/쿨다운은 웹 공통 방식, 명조/RTL은 Unity 기존 경로. 원화 신규생성0.
+- 가장 큰 차이는 게임 중 표현 큐 부재다. 원문 키를 보존하는 단일 입찰 슬롯+현재/페어 큐를 순수 C#로 만들고 자연 Update 관찰과 제어된 Mac fixture를 분리한다.
+- 웹 bossAlive는 구역 단위로 false가 될 수 있고 Unity Stage.BossAlive는 미생성 필드부터true다. 환경 자동연결은 실제 보스 생존→처치가 관찰된 뒤30초초과/flag=false라는 보수적 공통부분만 사용한다. 초기 필드 환경은 조건 동등성 미확정으로자동발동하지않음. 보스 페어는live arena actor 존재. GB1 위치4줄은29언어카탈로그만,위치좌표추정/자동연결0.
+- 합격/중단: 관련suite1회(이전61항반복0),공용exo-unity 컴파일1회; 같은결함2FAIL중단. 테스트 계약을 먼저 작성하되 사용자suite1회 제한에 따라 구현전RED실행은하지않는다. 첫 실물/최종판정은동일SHA Mac1920/3840·1x/3x·언어/키변경/페어/T5/가림/새run. PC는게임실행0.
+
+## 11-04 승인 백로그: Unity 게임 중 펫 말풍선 1차
+
+범위: 원문 키를 보존하는 전용 큐·카탈로그·원화 표현과 최소 Update/Draw 연결. Core/로비·설정 배치/보스 자막/저장/플레이 수치 변경0,웹 readonly,새 문구·재번역·유료생성0.
+
+| 항목 | 이번 계약 |
+|---|---|
+| 카탈로그 | 기존14키×29언어,9cue. 웹10키+등록GB1 4키. GB1 JSON은 unity/main에 blob이 없어 latest-web의 기존 등록 JSON을 읽어 가져왔다 |
+| 생존 | 실제Hp/MaxHp 읽기.0<HP<10% critical(가중100,3+3초,30초CD);10%이상30%미만 crisis(60,4+4초,20초CD);30%이상50%미만 warn(40,3+3초,60초CD).50%이상은발화0 |
+| 큐 | 한 프레임 최고 입찰1개·현재1개·후속페어1개. 같은티어는먼저, T5는높은가중 우선. 현재T5보다낮거나같은가중은덮지않음. 경고를뒤늦게재생하는대기열없음 |
+| 전역CD | T0~T5=20/12/8/6/4/0초. T5는현재/페어교체·T0~T4를최소5초억제. id CD와동시에적용 |
+| 첫보스 | chapter1의실제InArena+Boss!=null+Alive+BossAlive를관찰해5초까마귀→4초고양이. 로딩종료뒤발화,수락된후1회처리 |
+| 환경 |4+4초,id CD99999초. 웹G.bossAlive는구역단위,Unity Stage.BossAlive는필드부터true라동등하지않음. 실제live보스관찰후flag=false처치관찰+허용시간30초초과라는공통부분만자동연결. 초기필드30초멘트는보류 |
+| GB1 | No.3855~3858카탈로그만연결. 새위치추정/자동발화0,경계/1회성은맵총괄확정뒤 |
+| 가림/수명 | 메뉴·로비·대화/인벤/스킬/능력치/대장간·로딩·클리어·포커스상실숨김/타이머정지.죽음은현재/페어삭제. 새Simulation/스테이지/아레나출입/틱역행에서쿨다운·1회성초기화. 구독이없어이전run이벤트잔여0 |
+| 피날레 | DemoMode·stage3·InArena·BossAlive에서T0~T2현재/새대사차단, T4/T5허용 |
+| 원화/문자 | 웹crow/cat_pet portrait.png1536×1024그대로,Resources Art/PetBubble(밉맵OFF/Bilinear).480×320기준×1.5=720×480,아래HUD위220·좌/우20. 까마귀문자(92,237,306,51),고양이(122,250,190,42)를같이×1.5. 오른쪽연습안내가있으면고양이도왼쪽. 명조22→최저12자동맞춤·기존RTL전체문자열경로 |
+| 표시 | 최대alpha.6,남은시간비율^0.6으로감쇠. 원화생성/코드판/잔점추가0. 실제1x가독성은Mac대기 |
+| 언어/키 | 현재와페어의원문키보존. Draw마다선택29언어/실제Bindings다시조회해언어·키변경에즉시따름,타이머재시작0. Unity전투패드GP_KEY매핑이없어웹LB등을임의표시하지않고실제키표시만사용(패드전투안내보류). 음성/SFX추가0 |
+
+실제트리거와QA는별도다. --unity-pet-bubble-smoke는자연HP/환경/보스이벤트를발생시키지않고전용큐를직접조작해원화/페어/언어변경/T5/메뉴숨김/현재키6컷을찍는다. storesDisabled/rosterUnchanged와scope를영수증에적는다. 자연보스진입·HP경고·사망/로딩/재진입은Mac실게임별도관문이다.
+
+검증: 관련suite1회=실제순수C#정책38항+소스/데이터53항PASS. 기존importer61항과aa7d컴파일반복0. 공용exo-unity compile1회(job32dd8c55)는UPM IPC30초연결실패/exit1로C#컴파일전종료(compileMs0). compile gate메서드미실행,최종Unity컴파일은미검증이다. 사용자1회제한으로재시도0,PC Player/build/바탕화면/Steam0·USER_SAVE변경0.
+
+
+### 펫 1차 Mac 인자와 남은 관문
+
+공용 숨김 GPU 실행 경로에서 동일 SHA Player에 아래 인자를 전달한다(PC 실행 금지). 각 해상도는 같은 고정 출력에 덮어쓴다. Player에는 nographics를 붙이지 않는다.
+
+~~~zsh
+for w in 1920 3840; do
+  out="$OUT/$w"; mkdir -p "$out"
+  "$PLAYER" -mute-audio -screen-fullscreen 0 -screen-width "$w" -screen-height 1080 \
+    --unity-pet-bubble-smoke --unity-boss-direct 0 -text-lang ko -pet-switch-lang ar \
+    --unity-qa-sandbox "$out/qa-save" -output "$out" -logFile "$out/player.log"
+done
+~~~
+
+출력: pet-env-crow / pet-env-cat / pet-language-ar / pet-T5-interrupt / pet-menu-hidden / pet-current-binding의6PNG(언어·실제해상도 접미사),pet-bubble-ko.json. ko 대신 en/ja/fr/ar 및 나머지29언어를 지정할 수 있다. passed는원화로드·페어·언어문자열갱신·인터럽트·메뉴guard·QA로스터불변의표현검사이며시각/자연발화PASS가아니다. 현재키컷은실제Bindings를읽는다. 재바인딩/입력장치전환자체를fixture가만들지않는다.
+
+Mac 필수: 원화 프레임·텍스트칸과HUD/우측연습안내를전체1x/3x에서대조,명조12~22px의29언어줄바꿈/태국어/아랍어RTL,현재·페어언어변경,키재바인딩,실제HP 50/30/10% 경계/T5,실제보스진입,메뉴·로딩·죽음가림/새run·아레나재진입을자연플레이로확인한다. 초기환경/GB1위치/패드전투힌트는보류범위라해당 컷을완료로세지않는다. PC공용컴파일이UPM전단에서실패했으므로Mac빌드전컴파일관문도미검증이다.

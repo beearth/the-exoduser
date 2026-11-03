@@ -57888,3 +57888,5 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 2026-11-04 02:00 button_iron meta:SourceTextureImporter 기본Bilinear 규칙에 filter2→1 정합, 원본PNG/밉맵OFF/버전4 유지. Mac2회재임포트 검사는21+1=22종으로 확대. R1/R2 e9898f7953의9항PASS와 초기importer52항PASS 뒤 추가검사 확장 SyntaxError2회로 중단. 확장분은 직전상태 복원·재실행0, 최종PC컴파일0/Player0/Mac미검증. 기존 컴파일은 이번근거아님. [중단인계](3.1%20ui%20hud%20디자인/UNITY_BUTTON_PLATE_MATERIAL_20261103.md).
 
 2026-11-04 01:40 실제시각 중단원인 해결:최신c4b388903을f60d55c1e3로병합·양쪽기록보존. 테스트 생성치환의달러+작은따옴표 suffix삽입 원인을 직접patch/YAML scalar비교로제거,기존52범위→61항1회PASS. PC DLL참조컴파일1회Player126/273·Editor126/273/60·5어셈블리오류0. 문구/PNG/meta/정책신규변경0, Unityimport/Player0·Mac22종import/시각대기. 이전중단이력을해소했으며실제Unity빌드PASS는아님. [검증후속](3.1%20ui%20hud%20디자인/UNITY_BUTTON_PLATE_MATERIAL_20261103.md).
+
+2026-11-04 death-ui펫말풍선1차:6ef1899cb3병합8b17b49122·문구감사양쪽보존. 전용single-bid큐/페어/T0~T5 CD20/12/8/6/4/0·T5하위5초억제·run/arena/가림,원화2장·기존14키29언어·HP3단계/첫보스/보수적환경연결. GB1자동위치·초기필드환경·전투패드안내보류,Core/타UI/저장/문구발명0. 관련suite1회38정책+53소스/데이터PASS;공용compile1회32dd8c55는UPM IPC30초실패로C#컴파일전종료,재시도0·PC Player/build0. [계약·Mac인계](3.1%20ui%20hud%20디자인/UNITY_DEMO_TEXT_20261104.md).

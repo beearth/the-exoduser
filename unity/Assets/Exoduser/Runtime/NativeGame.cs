@@ -205,6 +205,7 @@ namespace Exoduser.UnityPort
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-b07-smoke")>=0){dropSmoke=true;menu=false;Running=false;StartCoroutine(B07Smoke());}
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-rage-malice-smoke")>=0){dropSmoke=true;menu=false;Running=false;StartCoroutine(RageMaliceSmoke());}
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-drop-smoke")>=0){dropSmoke=true;menu=false;Running=false;StartCoroutine(DropSmoke());}
+            else if(Array.IndexOf(args,"--unity-pet-bubble-smoke")>=0){menu=false;Running=false;StartCoroutine(PetBubbleCaptureRun());}
             else if(Array.IndexOf(args,"--unity-demo-text-smoke")>=0){menu=false;Running=false;StartCoroutine(DemoTextCaptureRun());}
             else if(Array.IndexOf(args,"--unity-death-ui-smoke")>=0){menu=false;Running=false;StartCoroutine(DeathUiCaptureRun());}
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-death-screen-smoke")>=0){dropSmoke=true;menu=false;Running=false;StartCoroutine(DeathScreenCaptureRun());} // 사망 대기 화면 Mac 검수 캡처
@@ -254,6 +255,7 @@ namespace Exoduser.UnityPort
         }
         void Update()
         {
+            UpdatePetBubble();
             if(hellGateCaptureActive){UpdateViews();return;}
             UpdateSettingsPersistence();UpdateCombatSave();
             // 사망 대기 화면 상태·채도 Volume(연출 전용, Core 흐름 불변). 로비가 화면을 쥐면 필터를 걷는다.
@@ -598,6 +600,7 @@ namespace Exoduser.UnityPort
             DrawRegionHud();   // M1 region HUD: entry/purge banner + direction arrow
             // Boss bar: Unity has no boss actor / boss-entry event yet, so nothing calls bossBar.Show(); once one exists it passes name (BossNameForStage), hp, poise, groggy/immune state and status chips each frame.
             bossBar.LocaleCode=lobby.Language;if(bossBar.Active)bossBar.Draw();
+            DrawPetBubble();
             DrawBossDialogue();
             StageFlowDrawWorld();
             // 사망 대기 화면: 물리 화면 전체 필터·비네트 + 명조 제목·원형 게이지. 사망 확정 뒤 사망 패널은 이 위에 그린다.
