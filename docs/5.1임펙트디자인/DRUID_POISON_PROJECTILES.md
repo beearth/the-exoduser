@@ -1,4 +1,17 @@
 
+## 2026-11-03 Unity 독탄1b 정적 후보
+
+이 절은 `claude/unity-pc-vfx-bullets-20261103`의 Unity 후보에만 적용한다. 아래 웹의 grayscale×#66dd22·피해·중독·Q/E 계약은 그대로다.
+
+| 항목 | Unity 후보 계약 |
+|---|---|
+| 비행 아트 | `Art/vfx/boss/druid_poison_orb`,원본 `proj_firedevil_orb.png` 재채색. 적 독 #1c2810→#5f8a2e→#c8e8a8→#eef8e0. 1254×1254,4×4/16f,원본 alpha 보존 |
+| 셀 | `cw=t.width/4`,`ch=t.height/4`의 정수313. `ox=frame%4*cw`,`oy=(3-frame/4)*ch`,위2px/오른쪽2px 여백 유지. regrid/반올림 없음 |
+| 소비 | `NativeDruidArt.PoisonShot`은 새 텍스처 RGBA를 그대로 복사. 런타임 회색화/녹색 곱 제거,70ms/f·크기·속도·Core 변경0 |
+| 검증 경계 | 정적16셀 색/알파/메타 확인. Unity import·Player·실게임·실행본 반영은 미검증. 원본 위성 구체 형태는 유지 |
+
+비교판·수치·남은 문제: [1b 결과](VFX_BULLET_REMASTER_RESULT_20261103.md#1b--분리-잔점-제거와-독탄-완성).
+
 ## 2026-10-16 R 기존 VFX의 main 소비 연결
 
 | 항목 | 이번 현재 범위 |
