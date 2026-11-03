@@ -32,15 +32,17 @@ namespace Exoduser.UnityPort {
    if(!styles.TryGetValue(key,out var s)){s=new GUIStyle(GUI.skin.label){font=nanum,fontSize=size,fontStyle=FontStyle.Normal,alignment=TextAnchor.MiddleLeft,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};styles[key]=s;}
    return s;
   }
-  float Width_(string text,int size,bool bold,float ls){var st=Style(size,bold);float w=0;foreach(char ch in text)w+=st.CalcSize(new GUIContent(ch.ToString())).x+ls;return w;}
+  float Width_(string text,int size,bool bold,float ls){var st=Style(size,bold);return NativeUiTextRun.Layout(text,ls,g=>st.CalcSize(new GUIContent(g)).x);}
   // text-shadow: 0 1px 3px rgba(0,0,0,.95); letter-spacing applied per character (CSS adds it after every character).
   void Text(float x,float y,float h,string text,int size,bool bold,Color col,float ls,float dy=0,float opacity=1f){
-   var st=Style(size,bold);float xx=x;
-   foreach(char ch in text){
-    string g=ch.ToString();float cw=st.CalcSize(new GUIContent(g)).x;
-    st.normal.textColor=new Color(0,0,0,.55f*opacity*col.a);NativeSilverHellUi.Label(new Rect(xx,y+1+dy,60,h),g,st);
-    st.normal.textColor=new Color(col.r,col.g,col.b,col.a*opacity);NativeSilverHellUi.Label(new Rect(xx,y+dy,60,h),g,st);xx+=cw+ls;
-   }
+   var st=Style(size,bold);
+   NativeUiTextRun.Layout(text,ls,g=>st.CalcSize(new GUIContent(g)).x,(offset,g)=>{
+    var box=new Rect(x+offset,y+dy,ls==0?Mathf.Max(1,st.CalcSize(new GUIContent(g)).x):60,h);
+    using(var paint=NativeUiAudit.GroupText(box,g)){
+     st.normal.textColor=new Color(0,0,0,.55f*opacity*col.a);NativeSilverHellUi.Label(new Rect(box.x,box.y+1,box.width,box.height),g,st);
+     st.normal.textColor=new Color(col.r,col.g,col.b,col.a*opacity);NativeSilverHellUi.Label(box,g,st);
+    }
+   });
   }
   void RightText(float right,float y,float h,string text,int size,bool bold,Color col,float ls,float pulseAge=-1f){
    float w=Width_(text,size,bold,ls);float dy=0,op=1f;Color c=col;

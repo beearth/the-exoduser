@@ -459,3 +459,19 @@ PC 컴파일 결과: 추가 공통b04ddd73b를fe236a8bc로 정상 병합한 뒤 
 최종 공통 병합: origin/unity/main f579841cef를0241b147ca로 정상 병합했다(앞선0082cdfa84 포함). CHANGELOG_SYNC 충돌은 양쪽 기록을 보존했고 실제 코드 충돌은 없다. 추가 rigpixel 소스가 포함된 최종 Core121/Runtime259 컴파일 exit0·오류0, Core 경고2/Runtime 경고522. 컴파일만 수행했으며 셰이더/Player 판정은 Mac 대기다.
 
 사용자 최신 통합 지시 후 origin/unity/main 8c5f967d74를 자기 브랜치에 추가 병합했다. CHANGELOG_SYNC 두 충돌의 양쪽 원문을 모두 보존했고 docs/Unity/CLAUDE/AGENTS의 충돌 표시0·미해결 경로0을 확인했다. 공통에도 있던 game.html.bak_20260611_conflictfix의 오래된 표시6개는 해당 파일이 origin과 동일함을 확인하고 보존했다. .meta 로컬 수정 거부는 없었다. 병합된 실제 소스로 PC 컴파일1회: Core121/Runtime259 exit0·오류0, 경고2/522. Player0. 새 Mac 게이트 대기는 유지한다.
+
+
+## 2026-11-04 00:50 잔여 원인 분류 및 조판 수정 — G0/G1
+
+| 묶음 | 근거/수정 | 유지 계약 |
+|---|---|---|
+| 공통 출처5744 | NativeSilverHellUi.Label이 호출 파일/행을 소실해 모든 화면을 wrapper11행으로 기록했다. CallerFilePath/Line을 실제 NativeUiAudit.Label까지 전달해 다음 Mac에서 실제 발행부로 분류한다 | rect·텍스트·색·alpha·스타일·그리기 호출 불변 |
+| HUD 무자간 글자 | 경험치/지역 처치/악의오브·숫자를 한 글자씩 Label로 그려 각각의 native 원점 반올림/커닝이 갈라졌다. ls0은 전체 문자열1회 조판하고 Width도 같은 전체 CalcSize를 사용한다 | 기존 panel/row/좌우anchor/폰트/크기/색/문구/수치/그림자·원화 유지 |
+| 봉안함/비교판 폭 | Serif는 ls0에서 전체 문자열을 그리는데 SerifWidth는 글자별 폭 합이었다. 같은 NativeUiTextRun.Layout으로 측정/그리기를 통일해 중앙/우측 anchor가 실제 문자열 폭과 일치하도록 한다 | 기존 rect/좌우anchor/폰트/자간/색·장식 보존, 생략·font 축소·판정 완화0 |
+| Unicode | 자간이 있을 때도 결합문자/서로게이트를 쪼개지 않고 text element로 그린다. 기존 BMP 한 글자의 .4px 등 양수 자간과 trailing advance는 그대로 | 논리 문자열을 모든 출력 문자열 concat으로 원문과 정확히 대조 |
+
+기존 G0의 같은 게임 가독성/의미 라벨 관례와 이전 PNG를 기준으로 한다. 직접 본 cb77 실습안내2560 및 de 설정1600 PNG는 제목/상태/키 라벨이 실제로 분리되어 있다. 반대로 예전 계측은 실습 왼쪽/오른쪽 라벨을 동일x1919.999로 기록했다. 이전 TextCore/키 목록 수정은 보존하고 이 예전 좌표에 맞춰 정상 레이아웃을 임의 이동하지 않는다. Unity 공식 IMGUI/GUIStyle/TextHandle 참조는 글자 조판·cursor의 역할을 확인하는 용도로만 읽었다. 제품/폰트 코드 반입0.
+
+이번 수정은 판·원화·표시 문구·색·폰트·행/앵커를 없애지 않는다. 디자인 요소 손실0은 소스 요소/조판 문자열31개 대조의 범위다. 새 Player의 같은 해상도 PNG 전후 비교·디자인총괄 판정은 Mac 대기이며 PC에서 확인했다고 보고하지 않는다. .5px 충돌/알파/clip/화면 경계·원계측은 불변.
+
+참고한 엔진 계약: [GUIStyle cursor](https://github.com/Unity-Technologies/UnityCsReference/blob/master/Modules/IMGUI/GUIStyle.cs), [IMGUITextHandle](https://github.com/Unity-Technologies/UnityCsReference/blob/master/Modules/IMGUI/IMGUITextHandle.cs). 실제 설치본의 컴파일 확인과 공개 최신 참조의 범위를 구분하며, 참조 코드 복제0. PC 검증은 실제 NativeUiTextRun 소스로31검사PASS, Core126/Runtime262 컴파일 오류0·경고2/529.

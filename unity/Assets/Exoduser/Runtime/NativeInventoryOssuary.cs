@@ -48,14 +48,16 @@ namespace Exoduser.UnityPort {
             }
             return st;
         }
-        float SerifWidth(string s,int size,bool bold,float spacing){var st=SerifStyle(size,bold);float w=0;foreach(char ch in s)w+=st.CalcSize(new GUIContent(ch.ToString())).x+spacing;return w;}
+        float SerifWidth(string s,int size,bool bold,float spacing){var st=SerifStyle(size,bold);return NativeUiTextRun.Layout(s,spacing,g=>st.CalcSize(new GUIContent(g)).x);}
         void Serif(Rect r,string s,int size,Color c,bool bold=false,float spacing=0,TextAnchor anchor=TextAnchor.MiddleLeft,bool shadow=false){
             var st=SerifStyle(size,bold);float total=SerifWidth(s,size,bold,spacing),x=r.x;
             if(anchor==TextAnchor.MiddleCenter||anchor==TextAnchor.UpperCenter)x=r.x+(r.width-total)/2f;else if(anchor==TextAnchor.MiddleRight)x=r.xMax-total;
             for(int pass=shadow?0:1;pass<2;pass++){
-                float px=x;st.normal.textColor=pass==0?new Color(0,0,0,.8f):c;float oy=pass==0?1.5f:0;
-                if(spacing==0){NativeSilverHellUi.Label(new Rect(px,r.y+oy,r.width+total,r.height),s,st);continue;}
-                foreach(char ch in s){var g=ch.ToString();NativeSilverHellUi.Label(new Rect(px,r.y+oy,40,r.height),g,st);px+=st.CalcSize(new GUIContent(g)).x+spacing;}
+                st.normal.textColor=pass==0?new Color(0,0,0,.8f):c;float oy=pass==0?1.5f:0;
+                NativeUiTextRun.Layout(s,spacing,g=>st.CalcSize(new GUIContent(g)).x,(offset,g)=>{
+                    var box=new Rect(x+offset,r.y,spacing==0?r.width+total:40,r.height);
+                    using(var paint=NativeUiAudit.GroupText(box,g))NativeSilverHellUi.Label(new Rect(box.x,box.y+oy,box.width,box.height),g,st);
+                });
             }
         }
 

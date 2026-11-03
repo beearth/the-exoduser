@@ -283,3 +283,8 @@ PC 확인: 공통b04ddd73b까지 정상 병합(fe236a8bc). Core121/Runtime249 �
 동일 글자의 그림자·광휘·외곽선을 GroupText 논리 원점 ID로 연결했다. 문자열/source 전체 제외와 충돌 임계값 완화는 하지 않는다. 같은 원점의 중복 본문과 다른 글자 충돌은 계속 검출한다. 실제 메뉴/봉안함 실패 표본 자기 충돌0, 회귀66/66. 기존 cb77ca96f 1410장 재분석 잔여8363/동일내용819는 과거 metricProof 입력의 결과이며 새 제품 PASS가 아니다. 이전20:20 TextCore/키 문자열 조판/이름 입력 수정은 보존했다. 새 Mac 정식 패키지의 전체UI·nameOpened·scroll-ink 판정이 필요하다. PC Player/바탕화면 변경0. 상세는 UNITY_UI_OVERLAP_20261030.md 21:50절.
 
 최종 origin/unity/main f579841cef 병합0241b147ca. Core121/Runtime259 최종 PC 컴파일 오류0(Core 경고2/Runtime 경고522). 추가 공통 코드의 제품/셰이더 실행은 PC에서 하지 않았다.
+
+
+## 2026-11-04 00:50 UI 잔여 조판 후보
+
+공통6d99d0c46을 먼저 병합했다. SilverHell 라벨은 실제 caller 파일/행을 감사까지 전달해 wrapper11행5744건을 다음 Mac에서 실제 발행부별로 나눈다. HUD ls0은 전체 문자열1회로 그려 개별 문자 원점 반올림을 없애며, 봉안함/비교판 SerifWidth는 실제 전체 조판 폭과 일치시켰다. 자간이 있을 때는 결합문자·서로게이트를 하나의 text element로 유지한다. 31개 조판 계약 검사PASS, PC Core126/Runtime262 컴파일 exit0·오류0(경고2/529), Player0. 판/원화/문구/색/폰트/행·앵커 보존, 생략/축소/판정완화0. 기존JSON 재분석과 새 Mac PNG 판정을 구분한다. 상세는 UNITY_UI_OVERLAP_20261030.md 00:50절.
