@@ -23,9 +23,39 @@ class Program
   Check(s.Druid.LavaPools.Count==0&&s.Druid.Orbs.Count==0,"LT-8 sink clears lava pools and orbs immediately");
   Console.WriteLine("SINK_RESULT "+Rows.Count+" checks / "+failed+" failures");return failed==0?0:2;
  }
+ // Web game.html salvageVal oracle (unity/Tools/inv-salvage-oracle/oracle.json) + junk salvage behaviour of InventoryState.
+ static int SalvageChecks(string oraclePath)
+ {
+  using(var doc=JsonDocument.Parse(File.ReadAllText(oraclePath))){
+   int total=0,mismatches=0;string first="";
+   foreach(var row in doc.RootElement.GetProperty("rows").EnumerateArray()){
+    var it=new InventoryItem{rarity=row.GetProperty("rarity").GetInt32(),enh=row.GetProperty("enh").GetInt32(),tier=row.GetProperty("tier").GetInt32()};
+    int want=row.GetProperty("value").GetInt32(),got=InventoryState.SalvageValue(it);total++;
+    if(got!=want){mismatches++;if(first.Length==0)first=" first r"+it.rarity+" e"+it.enh+" t"+it.tier+" want"+want+" got"+got;}
+   }
+   Check(total==224&&mismatches==0,"web salvageVal oracle "+total+" rows mismatches"+mismatches+first);
+  }
+  Check(InventoryState.SalvageValue(null)==0,"salvage null item is 0");
+  var st=new InventoryState(new InventorySeedData{equipped=new InventoryItem[InventoryState.Slots.Length],bag=new InventoryItem[0]});
+  InventoryItem Mk(int r,int t,bool fav,bool junk){return new InventoryItem{slot="ring1",name="r"+r+"t"+t,rarity=r,tier=t,fav=fav,junk=junk};}
+  var a=Mk(0,0,false,true);var b=Mk(2,3,false,true);var fav=Mk(4,1,true,true);var keep=Mk(1,0,false,false);
+  st.Bag.Add(a);st.Bag.Add(b);st.Bag.Add(fav);st.Bag.Add(keep);st.Selected=keep;
+  var junk=st.JunkItems();
+  Check(junk.Count==2&&junk.Contains(a)&&junk.Contains(b),"junk list excludes favorites and unmarked");
+  int gained=st.SalvageJunk(out int count);
+  Check(count==2&&gained==1000+10006,"junk salvage count2 total 11006 ("+gained+")");
+  Check(st.Bag.Count==2&&st.Bag.Contains(fav)&&st.Bag.Contains(keep)&&st.Selected==null,"junk salvage keeps favorite/unmarked, clears selection like web");
+  Check(st.SalvageJunk(out count)==0&&count==0,"second junk salvage pays nothing");
+  Check(st.SalvageOne(fav)==0&&st.Bag.Contains(fav),"single salvage refuses favorite");
+  st.Selected=keep;int one=st.SalvageOne(keep);
+  Check(one==2000&&!st.Bag.Contains(keep)&&ReferenceEquals(st.Selected,fav),"single salvage pays 2000 and selects next bag item");
+  Check(st.SalvageOne(keep)==0,"single salvage of a removed item pays nothing");
+  Console.WriteLine("SALVAGE_RESULT "+Rows.Count+" checks / "+failed+" failures");return failed==0?0:2;
+ }
  static int Main(string[] args)
  {
   if(args.Length>0&&args[0]=="--sink-only")return SinkHazardChecks();
+  if(args.Length>1&&args[0]=="--salvage-only")return SalvageChecks(args[1]);
   var s=Make();var e=s.SpawnNormalEnemy(40,0);
   Check(e.Hp==875&&Near(e.Shield,875)&&e.Attack==31,"source lv1 etype0 HP875 shield875 attack31");
   Check(Near(e.Speed,.645)&&Near(e.Radius,22),"source .5 random movement/radius");

@@ -246,3 +246,6 @@ r4 빌드·M1 기술 PASS와 회복 바닥/가시 접지/강타 점선 테두리
 39f7071의 정식 eb92048d/errors0·동일 M1 4e5b70a1 23/23·전후 e88e49ec/4e5f26e7은 기술 통과했다. 원화8회·Core trace9a432b59…도 같다. 그러나 maxReactingTargets는 이전 타격의 아직 유효한 pulse까지 세므로 baseline/after 모두3일 수 있어 예상2→3의 증거가 아니다. 이 수치를 개선으로 보고하지 않는다.
 
 warriorOnly 첫 일반공격의 세 번째 QA 표적만 X+104→X+48로 놓아 세 표적 모두 실제 첫 근접명중을 받게 한다(Y -28/+28/0 유지). 기본16초전체스킬 fixture와 제품 스폰/판정은 변경0. 새 normalReactingTargets는 첫 일반공격 구간만 세며 같은패키지 이전방식 정확2/수정 정확3을 gate로 검사한다. maxReactingTargets는 보조 전체최대치로만 유지한다. 이 QA 입력 변경 때문에 이전 Core trace/영상은 새 장면과 직접 동등 비교하지 않는다. 새 정식빌드/M1/전후10초로 확인하며 사용자 세이브·피해공식·입력·전투시간·공격예산 변화0.
+## 2026-11-03 누락 전투 표시 후속
+
+Parry·Roll·일반/치명/보스 피격·사망을 별도 `CombatImpactView`로 연결한 소스 후보다. 기존 기검참 noImpact와 Core 수식은 유지한다. PNG26개/10.77MiB, 독립검사53/0·C# 사전오류0이며 실제 Unity 임포트·Player·M1·탄막 가독성은 미검증이다. [정확한 수치와 남은 범위](UNITY_COMBAT_IMPACTS_20261103.md).

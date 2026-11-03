@@ -41,7 +41,7 @@ namespace Exoduser.UnityPort.Core
         // doParry(dmg, x, y, false, el, mul, tag) of a reflection + P.parryBank (Q magic parry)
         public void PayReflectParry(in ParryReflect.ResolveResult r)
         {
-            ApplyParrySuccess(false, r.ResourceMul, r.ParryEl);
+            ApplyParrySuccess(false, r.ResourceMul, r.ParryEl, r.ParryTag, (float)r.ParryX, (float)r.ParryY);
             ParryBank += r.ParryBankAdd;
             ReflectCount++; LastReflectKind = r.Kind; LastReflectDamage = r.ParryDmg;
         }

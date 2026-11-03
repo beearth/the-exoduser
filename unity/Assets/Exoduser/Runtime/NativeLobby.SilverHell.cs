@@ -88,15 +88,20 @@ namespace Exoduser.UnityPort
                 NativeUiAudit.DrawTextureWithTexCoords(new Rect(dx[x],dy[y],dw,dh),tex,new Rect(sx[x]/tex.width,1-sy[y+1]/tex.height,(sx[x+1]-sx[x])/tex.width,(sy[y+1]-sy[y])/tex.height),true);
             }
         }
-        internal static void Panel(Rect box,float edge=75,float outset=24,bool textured=true)
+        // iron=false: web .sh-panel.sh-framed / #gcModal .gc-box face, linear-gradient(rgba(16,15,15,.95),rgba(8,8,9,.97)) with no iron layer.
+        // Measured 2026-11-03 (Mac Linear Player pause capture): both the generated gradient texture and GUI.color reach the screen
+        // without sRGB decoding, so web #0c0b0c drew as RGB ~60 grey. The face therefore passes the linear value of the web colour.
+        // The textured gradient is kept unchanged for the existing iron callers.
+        internal static void Panel(Rect box,float edge=75,float outset=24,bool textured=true,bool iron=true)
         {
             NativeUiAudit.Region(box,"panel");
             if(frame==null)frame=Resources.Load<Texture2D>("Art/ui/silver_hell/panel_frame_20261029");
             if(panelBackground==null)panelBackground=Effect(1,64,(u,v)=>Color.Lerp(new Color(16/255f,15/255f,15/255f,.95f),new Color(8/255f,8/255f,9/255f,.97f),v));
-            if(textured)NativeUiAudit.DrawTexture(box,panelBackground);
+            if(textured&&!iron){var c=GUI.color;var face=new Color(12/255f,11/255f,12/255f);if(QualitySettings.activeColorSpace==ColorSpace.Linear)face=face.linear;GUI.color=new Color(face.r,face.g,face.b,.96f*c.a);NativeUiAudit.DrawTexture(box,Texture2D.whiteTexture);GUI.color=c;}
+            else if(textured)NativeUiAudit.DrawTexture(box,panelBackground);
             else{var c=GUI.color;GUI.color=new Color(0,0,0,c.a);NativeUiAudit.DrawTexture(box,Texture2D.whiteTexture);GUI.color=c;}
             if(panelIron==null)panelIron=Resources.Load<Texture2D>("Art/ui/inventory/iron_480");
-            if(textured&&panelIron!=null){var c=GUI.color;GUI.color=new Color(c.r,c.g,c.b,c.a*.14f);NativeUiAudit.DrawTexture(box,panelIron,ScaleMode.StretchToFill,true);GUI.color=c;}
+            if(textured&&iron&&panelIron!=null){var c=GUI.color;GUI.color=new Color(c.r,c.g,c.b,c.a*.14f);NativeUiAudit.DrawTexture(box,panelIron,ScaleMode.StretchToFill,true);GUI.color=c;}
             Slice(new Rect(box.x-outset,box.y-outset,box.width+outset*2,box.height+outset*2),frame,150,150,edge,edge,false);
         }
         internal static void Button(Rect box)

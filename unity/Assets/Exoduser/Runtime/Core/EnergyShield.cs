@@ -2,7 +2,7 @@ using System;
 
 namespace Exoduser.UnityPort.Core
 {
-    // B08 energy shield = an extra HP bar (CLAUDE.md "에너지쉴드", game.html). Damage reaches the shield only after every DR / multiplier, the shield
+    // B08 energy shield = an extra HP bar (docs/2_5 부활+에너지쉴드시스템/2_5 부활+에너지쉴드시스템.md "에너지 쉴드"·"몬스터 에너지쉴드", game.html). Damage reaches the shield only after every DR / multiplier, the shield
     // is spent before HP, HP never moves while the shield holds, only the overflow reaches HP, DOT skips it unless the hit carries shieldHit.
     // Enemy: hurtE 42431-42440. Player (P.shield/P.mshield, separate from e.eShield): hurtP 43635-43657 and the regen tick 32840-32845.
     public static class EnergyShield
