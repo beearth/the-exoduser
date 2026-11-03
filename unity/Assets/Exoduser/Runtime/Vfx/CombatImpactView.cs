@@ -19,6 +19,9 @@ namespace Exoduser.UnityPort.Vfx
         readonly Dictionary<long,int> particleCells=new Dictionary<long,int>();
         static readonly HashSet<SpriteRenderer> owned=new HashSet<SpriteRenderer>();
         readonly CombatImpactTimeline timeline=new CombatImpactTimeline();
+        readonly CombatBloodDecals bloodDecals=new CombatBloodDecals();
+        readonly SpriteRenderer[] bloodGround=new SpriteRenderer[CombatBloodDecals.Capacity];
+        readonly Material bloodFloor;
         readonly Material add,alpha,whiteAlpha;
         readonly Sprite dot,ring;
         readonly Texture2D ringTexture;
@@ -37,6 +40,7 @@ namespace Exoduser.UnityPort.Vfx
             add=new Material(shader);add.SetFloat("_Flat",0);add.SetFloat("_DepthTest",8);
             alpha=new Material(shader);alpha.SetFloat("_Flat",0);alpha.SetFloat("_NormalBlend",1);alpha.SetFloat("_DstBlend",10);alpha.SetFloat("_DepthTest",8);
             whiteAlpha=new Material(alpha);whiteAlpha.SetFloat("_Flat",1);
+            bloodFloor=new Material(alpha);bloodFloor.SetFloat("_DepthTest",4); // LEqual in the legacy floor path
             dot=Sprite.Create(Texture2D.whiteTexture,new Rect(0,0,1,1),new Vector2(.5f,.5f),100);
             ringTexture=new Texture2D(32,32,TextureFormat.RGBA32,false){filterMode=FilterMode.Point};var px=new Color32[32*32];
             for(int y=0;y<32;y++)for(int x=0;x<32;x++)px[y*32+x]=new Color32(255,255,255,(byte)(x==0||x==31||y==0||y==31?255:0));
@@ -57,6 +61,8 @@ namespace Exoduser.UnityPort.Vfx
             sheets[id]=sheet;return sheet;
         }
         public void Handle(FeedbackEvent e) {
+            // Decals have their own pool and must survive the transient hit budget.
+            if(CombatBloodDecals.ShouldStamp(e))StampBlood(e);
             bool hit=e.VisualOnly&&(e.Kind==FeedbackKind.EnemyHit||e.Kind==FeedbackKind.EnemyCrit||e.Kind==FeedbackKind.BossHit);
             if(hit&&!timeline.AdmitHit(e.Tick,e.IsBoss))return;
             var plan=CombatImpactTimeline.Plan(e);
@@ -72,6 +78,7 @@ namespace Exoduser.UnityPort.Vfx
             }
             if(e.Kind==FeedbackKind.Roll){if(e.Step==0){RollStarts++;Shake(e.Tick,2);}else RollEnds++;Dust(e);}
             foreach(var spec in plan) {
+                if(spec.Mode==CombatClipMode.Blood)spec.Angle+=R(-35,70)*Math.PI/180;
                 var sheet=Load(spec.Sheet,spec.Cols,spec.Rows);
                 if(sheet==null&&spec.Fallback!=null){
                     int cols=spec.Mode==CombatClipMode.Death?4:9,rows=spec.Mode==CombatClipMode.Death?4:1;
@@ -86,6 +93,21 @@ namespace Exoduser.UnityPort.Vfx
                 var renderer=Make("Combat "+e.Kind+" "+spec.Sheet,spec.Flat?whiteAlpha:spec.Additive?add:alpha);
                 clips.Add(new Clip{renderer=renderer,spec=spec,sheet=sheet,source=e});
             }
+        }
+        void StampBlood(FeedbackEvent e) {
+            var sheet=Load("Blood_FBF_4x4_dark",4,4);if(sheet==null)return;
+            int slot=bloodDecals.Add(e,12+random.Next(4),R(0,Mathf.PI*2));
+            var stamp=bloodDecals.Slots[slot];var renderer=bloodGround[slot];
+            if(renderer==null){renderer=Make("Pooled ground blood",bloodFloor);renderer.sortingOrder=-18998;
+                renderer.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;renderer.receiveShadows=false;
+                bloodGround[slot]=renderer;NativeGroundSkillSurface.Mark(renderer);}
+            renderer.sprite=sheet.frames[stamp.Frame];
+            // GroundSkillSurface projects this XY footprint onto actual receiver
+            // depth in 3D (including slopes/deck gaps), rather than a floating card.
+            renderer.transform.SetPositionAndRotation(ImpactSpace.Point(stamp.X,stamp.Y,.002f),Quaternion.Euler(0,0,(float)stamp.Angle*Mathf.Rad2Deg));
+            renderer.transform.localScale=Vector3.one*(stamp.Width/renderer.sprite.rect.width);
+            renderer.color=new Color(.9f,.9f,.9f,1);renderer.enabled=!NativeRemodel3D.Active||NativeGroundSkillProjection.Available;
+            NativeGroundSkillSurface.Project(renderer);
         }
         void EnforceCapacity(CombatClipMode mode,FeedbackEvent incoming) {
             if(mode!=CombatClipMode.Boom&&mode!=CombatClipMode.Impact)return;
@@ -149,6 +171,8 @@ namespace Exoduser.UnityPort.Vfx
         }
         public void Update(Simulation simulation,Camera camera) {
             int tick=simulation.TickCount;
+            for(int i=0;i<bloodGround.Length;i++)if(bloodGround[i]!=null){var r=bloodGround[i];float fade=(float)bloodDecals.Alpha(i,tick);
+                r.enabled=fade>0&&(!NativeRemodel3D.Active||NativeGroundSkillProjection.Available);r.color=new Color(.9f,.9f,.9f,fade);NativeGroundSkillSurface.Project(r);}
             if(rollDustTick!=tick){
                 rollDustTick=tick;
                 if(simulation.RollActive&&random.NextDouble()>.4){var p=simulation.Player;var e=new FeedbackEvent{Kind=FeedbackKind.Roll,Tick=tick,X=p.X+R(-p.Radius*.5f,p.Radius),Y=p.Y+p.Radius*.6f};AddParticle(e,R(-1,2),-R(0,1.5f),Hex("#6e6050"),R(2,2),R(10,6),0);}
@@ -162,7 +186,16 @@ namespace Exoduser.UnityPort.Vfx
                 c.renderer.enabled=draw;if(!draw){i++;continue;}
                 c.renderer.sprite=c.sheet.frames[Mathf.Clamp(frame,0,c.sheet.frames.Length-1)];
                 float w=(float)c.spec.DrawWidth(age,c.renderer.sprite.rect.width),h=w*c.renderer.sprite.rect.height/c.renderer.sprite.rect.width;
-                Place(c.renderer,c.source.X,c.source.Y,w,h,(float)c.spec.Angle,camera);
+                float angle=(float)c.spec.Angle,x=c.source.X,y=c.source.Y;
+                if(c.spec.Mode==CombatClipMode.Blood){
+                    // Move the stream away from the contact, preserving its
+                    // attack-direction cone; never leave a body-sized centre blob.
+                    float offset=w*.3f*Mathf.Min(1,age/6);x+=Mathf.Cos(angle)*offset;y+=Mathf.Sin(angle)*offset;
+                    if(NativeRemodel3D.Active&&camera!=null){var a=camera.WorldToScreenPoint(NativeRemodel3D.Point(x,y));
+                        var b=camera.WorldToScreenPoint(NativeRemodel3D.Point(x+Mathf.Cos(angle)*100,y+Mathf.Sin(angle)*100));
+                        angle=-Mathf.Atan2(b.y-a.y,b.x-a.x);}
+                }
+                Place(c.renderer,x,y,w*(float)c.spec.Stretch,h,angle,camera);
                 c.renderer.color=new Color(1,1,1,(float)c.spec.Alpha(age));DrawnFrames++;i++;
             }
             particleCells.Clear();int drawnParticles=0;
@@ -193,7 +226,7 @@ namespace Exoduser.UnityPort.Vfx
         }
         static void Release(UnityEngine.Object o){if(Application.isPlaying)UnityEngine.Object.Destroy(o);else UnityEngine.Object.DestroyImmediate(o);}
         static void ReleaseRenderer(SpriteRenderer r){owned.Remove(r);Release(r.gameObject);}
-        public void Reset(){foreach(var c in clips)ReleaseRenderer(c.renderer);clips.Clear();foreach(var p in particles)ReleaseRenderer(p.renderer);particles.Clear();timeline.Reset();rollDustTick=-1;shakeBorn=flashBorn=-1000;shake=flashPeak=0;}
-        public void Dispose(){Reset();foreach(var sheet in sheets.Values)if(sheet!=null)foreach(var frame in sheet.frames)Release(frame);sheets.Clear();Release(dot);Release(ring);Release(ringTexture);Release(add);Release(alpha);Release(whiteAlpha);}
+        public void Reset(){foreach(var c in clips)ReleaseRenderer(c.renderer);clips.Clear();foreach(var p in particles)ReleaseRenderer(p.renderer);particles.Clear();timeline.Reset();bloodDecals.Reset();foreach(var r in bloodGround)if(r!=null){r.enabled=false;NativeGroundSkillSurface.Project(r);}rollDustTick=-1;shakeBorn=flashBorn=-1000;shake=flashPeak=0;}
+        public void Dispose(){Reset();foreach(var r in bloodGround)if(r!=null)ReleaseRenderer(r);foreach(var sheet in sheets.Values)if(sheet!=null)foreach(var frame in sheet.frames)Release(frame);sheets.Clear();Release(dot);Release(ring);Release(ringTexture);Release(add);Release(alpha);Release(whiteAlpha);Release(bloodFloor);}
     }
 }

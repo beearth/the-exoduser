@@ -117,3 +117,35 @@ VISUAL VERDICT: **미검증**. 이번 소스 연결을 전체 누락 연출 이�
 - 비교판 **4개 모두 직접 열어 확인**: `tmp/design-review/vfx-retouch/Blood_FBF_4x4_matte_compare.png`, `Lightning_ImpactLightning_Sheet_el4_compare.png`, `Lightning_Lightning_FBF_4x3_el4_compare.png`, `Lightning_BasicImpact_el4_compare.png`. 원본|수정 같은 배율 1x 시트+같은 첫 프레임 3x 크롭. 피의 탁한 적갈·번개의 누런 전광 변화를 확인했으며 작은 분리 성분과 기존 번개 형상은 남아 있다.
 
 **VISUAL VERDICT: RETOUCH 유지. 잔점 0 관문 FAIL / Unity 임포트·셰이더 컴파일·Player·실게임 1x·탄막 가독성 미검증.** 빌드·캡처·커밋·push·배포를 수행하지 않았으며 실행본 반영 완료로 보고하지 않는다. 원본·외부 파일·타 세션 변경·세이브·웹 game.html 변경 및 영구 삭제 0. 비교판과 핵심 로그는 브리프가 지정한 고정 폴더 하나에 두었다.
+
+## U-VFX-04 — 어두운 피·방향성 핏줄기·바닥 데칼 (2026-11-03 PC)
+
+작업본 `G:/exoduser-wt/codex-vfx-blood`, 브랜치 `claude/unity-pc-vfx-blood-20261103`, 기준 HEAD `b3cf7a682bd753d81952157ba2d5b7cd55392db4`. 착수 시 tracked·untracked·index 변경 없음. 브리프 `I:/EXODUSER-Storage/codex-runs/20261103-202313_vfx-blood/prompt.md`의 **commit·push·외부 쓰기·삭제·Unity·브라우저·유료 생성 금지**를 우선했다. 공유 Git 메타데이터에 쓰는 fetch는 실행하지 않았으므로 원격 최신 여부는 미확인이다. LANES.md에는 이 신규 레인의 개별 행이 없어 브리프를 소유 범위로 사용했다.
+
+### 작업 기준과 구현
+
+목표 장면은 일반·치명·보스 피격 직후의 방향성 피와 사망 후 바닥 혈흔이다. 근거는 [PBZ·도타 실측](IMPACT_REFERENCE_PBZ_DOTA2_20261103.md) §2 R6·R7, [G1](VFX_G1_TIMING_DESIGN_20261103.md) §3.1·§8, VFX 마스터 §2.2다. 공통 관례 중 어두운 무광 피·공격 방향성·지속하는 바닥 혈흔·짧은 대상 가림을 이번에 연결했다. 기존 가장 큰 차이는 밝은 matte 피와 바닥 혈흔 부재였다. 제공된 실측 문서를 읽었으며 원본 게임 클립을 이번에 다시 열어 보지는 않았다. 제작은 기존 PNG의 결정적 픽셀 변환과 기존 Unity 표시 시스템 재사용이다. 첫 실제 카메라 판정은 Mac G2/G4이며, 이 레인에서는 정적 비교판·독립 회귀까지만 확인한다.
+
+| 변경 | 구현 계약 |
+|---|---|
+| 새 시트 | `Resources/Art/vfx/combat/Blood_FBF_4x4_dark.png`, 512²·4×4·16셀. matte의 휘도(.299R+.587G+.114B)를 정규화해 그림자 `#2a0f0b` → 중간 `#5a231b` → 코어 `#7a3326`로 보간. 최고 휘도는 코어 이하. 새 GUID `205327068e4052ff90ae57e7334ddd1b`, 기존 임포트 설정 유지. 원본 matte·원본 boss 시트 불변 |
+| 잔점 정리 | 각 128² 셀의 8방향 연결 성분을 α>0·α>20에서 검사. 가장 큰 본체 외에 셀 면적 0.2%(32.768px) 미만인 성분만 제거. **178픽셀의 알파를 0으로 변경**, 나머지 알파 바이트 전부 동일. 두 임계값 모두 16프레임의 기준 이하 잔점 0. 0.2% 이상인 의도된 분리 혈흔은 보존하므로 모든 분리 성분 자체가 0이라는 뜻은 아니다 |
+| 피격 핏줄기 | `VisualOnly` EnemyHit/EnemyCrit/BossHit에 dark 16셀을 추가. 별도 표시 RNG로 `Angle ±35°`, 가로만 1.6배. 일반 9틱(.15s)·치명/보스 18틱(.3s), 기준 크기는 `2×Size`의 .6/1.0배. **Size는 Core 이벤트의 몸 반지름이므로 키는 몸 지름으로 근사**하며 실제 리깅 모델 높이 계측값이 아니다. 3D에서는 공격 방향을 카메라에 투영해 회전하고 접점에서 바깥쪽으로 조금 이동. `_NormalBlend=1 / _DstBlend=10` 일반 알파, 가산 없음 |
+| 대상 가림 제한 | 일반은 .15s에 소멸. 치명/보스는 12틱(.2s)에 알파 .35, 이후 18틱까지 감소. 이는 표시 알파 제한이며 실제 적·탄 실루엣 가독성 PASS 증거는 아니다 |
+| 사망 | 일반·보스 사망 모두 dark 16셀 사용. 일반 64틱·보스 96틱 수명과 폭 공식 유지. 보스는 기존 24셀 시트를 이번 분기에서 16셀 dark로 교체했고 원본 에셋은 보존. `druid_sink`는 피격/사망 혈흔 모두 제외 |
+| 바닥 혈흔 | 치명 피격·보스 피격·일반/보스 사망 시 생성. dark의 마지막 4프레임(12~15) 중 무작위 1셀·무작위 회전. RGB .9배, 일반 알파. 210틱(3.5s) 유지 + 60틱(1s) 선형 페이드, 270틱에 비표시. 시뮬레이션 틱 기준이라 일시정지 중 소모되지 않음 |
+| 풀·회수 | `CombatBloodDecals`의 고정 8슬롯과 재사용 SpriteRenderer 8개. 비활성/만료 슬롯 우선, 모두 살아 있으면 생성 순서가 가장 오래된 슬롯 회수(같은 틱도 순서 유지). transient hit 예산 전에 별도 처리하여 치명 혈흔이 일반 피격 예산에 묻히지 않음. Reset은 모두 숨기고 Dispose는 표시 객체·투영·재질 정리 |
+
+`ImpactGroundPatch.cs`를 먼저 확인했다. 해당 패치는 3D에서 실제 지형 데칼 프로젝터를 쓰지만 색/절차형 얼룩용이며 임의 프레임 텍스처 입력이 없다. 피 프레임에는 이미 있는 `NativeGroundSkillSurface.Mark/Project`를 재사용했다. 이는 같은 지형 밀착 목적의 **실제 receiver depth 투영**으로 경사·다리 판자 간격에 바닥 혈흔을 붙인다. legacy XY는 바닥 평면 스프라이트를 사용한다. 3D 투영이 준비되지 않으면 피 데칼을 숨겨 공중 카드로 대체하지 않는다. 공용 바닥 패치·공용 셰이더 파일은 수정하지 않았다. 실제 renderer/depth 결과는 Unity 금지로 미검증이다.
+
+### 검증과 인수 조건
+
+- `C:/Python314/python.exe tools/vfx/recolor_blood_dark.py < NUL`: 새 PNG/meta·고정 비교판 생성. 알파 예외 178픽셀 외 보존, 코어 초과 0, 기준 이하 잔점 0, 임포트 설정·새 GUID 검사 통과. `tmp/design-review/vfx-blood/checks.json`.
+- `C:/nvm4w/nodejs/node.exe unity/Tools/combat-impact-tests/run.cjs --red`: **29검사/6실패**로 새 시트·핏줄기·풀 누락을 확인. 구현 후 기본 명령 1회 **60검사/0실패**, 이어 실행되는 실제 PNG 검사도 통과. 피격 종류·일반 알파·1.6배·9/18틱·.2s 알파 제한, decal 210/270틱 경계·중간 페이드·8장·9/10번째 회수·만료 재사용·Reset·이벤트 제외 조건을 검사. 로그 `tools/combat-impact-check/red.log`, `checks.log`. 기존 Core `EnemyAi.cs:88`의 CS0219 경고 2개는 그대로다.
+- `C:/nvm4w/nodejs/node.exe tools/vfx-missing-compile.cjs`: 기존 Unity 참조 DLL을 **읽기만 하는 Roslyn 사전검사**. Core121소스·Runtime249소스 오류0, 로그 `tools/combat-impact-check/compile/`. Unity 실행·임포트·셰이더 컴파일·Player 증거가 아니다.
+- `git diff --check` 통과. Core·game.html·원본 matte PNG/meta 변경 0. git stage/commit/push·외부 파일 쓰기·영구 삭제·유료 호출·Unity/브라우저 실행 0.
+- 비교판 `tmp/design-review/vfx-blood/matte_dark_compare_3x.png`를 직접 열어 확인. 이전 matte | 새 dark 전체 시트 1x와 프레임 0/13의 동일 영역 3x를 배치했다. dark의 낮은 밝기·무광 적갈색을 확인했다. 이는 게임 캡처가 아니다.
+
+변경 파일은 `CombatImpactTimeline.cs`, `CombatImpactView.cs`, `unity/Tools/combat-impact-tests/Program.cs`, `run.cjs`, `tools/vfx/recolor_blood_dark.py`, 새 dark PNG/meta, 이 문서의 8개다. `tmp/design-review/vfx-blood/`에는 비교판·픽셀 검사 결과만 둔다. CHANGELOG_SYNC 인수용 초안: “U-VFX-04: 무광 dark 피 시트·피격 방향성 핏줄기·8장 풀의 3.5s+1s 지형 혈흔 연결, 회귀60/0·Roslyn 오류0; 실제 화면 미검증.” 공용 CHANGELOG는 총괄 커밋 시 반영한다.
+
+**판정: 소스·독립 회귀 통과 / RETOUCH_GAME_QA_PENDING.** 남은 것은 Mac Unity 임포트·실제 원근 카메라에서 핏줄기 방향/크기(몸 지름 근사 대 실제 키)·지형 접지·8장 교체·3.5s+1s·0.2s 이후 적/탄 가독성의 1x 검수다. 1920×1080·3840×1080, 10초 무음 영상과 3x 크롭으로 판정한다. 실행본 반영·통합·실게임 품질 완료로 처리하지 않는다.
