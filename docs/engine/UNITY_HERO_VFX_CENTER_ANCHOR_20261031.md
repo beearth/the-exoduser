@@ -66,10 +66,18 @@ UI 최종 Desktop 완료 전 Unity/Player/빌드/선예약0. 완료 후 최신�
 
 ## 2026-11-02 설치형 지면 배치 수정 진행
 
-사용자 요청으로 장판·지뢰·설치형 전체의 actor billboard/FootLift 오적용과 VfxWorld 지면 높이 미연결을 수정 중이다. 현재 후보는 실제 등록 바닥·목교·낮은 뿌리의 receiver depth와 scene depth가.02u 안에서 일치하는 픽셀에 원화/링을 투영한다. CPU 적응면은 실제제품 Late>=96초 지연으로 폐기하고 표시 update의Tessellate/대량GroundY 조회를 제거했다. 원화·합성수식·피해/반경/시간·공중/중심형·flat보스방은 유지한다. 원SkillAdditive/Ki shader는1403 byte이며 새전용shader만사용한다. 324 C# 정적오류0/경고477. Mac 첫 흙 실제 투영/독립깊이와1920원본을 확인했다. 기존mode2 weight차는 강제비등방성 footprint를 무시한bilinear 참조로 분리했고, 같은허용2/255의GPU gradient/RGBA 대조·전체 설치형/시각·통합/설치는 진행 중이다. 정확한 범위·원래실패·측정은 [설치형 지면 배치](UNITY_GROUND_EFFECT_PLACEMENT_20261102.md)를 따른다.
+사용자 요청으로 장판·지뢰·설치형 전체의 actor billboard/FootLift 오적용과 VfxWorld 지면 높이 미연결을 수정 중이다. 현재 후보는 실제 등록 바닥·목교·낮은 뿌리의 receiver depth로 좌표를 복원하고 sceneEye+.02-receiverEye>=0인 픽셀에 원화/링을 투영한다. 11-03 20:20 수정은 A2RootSurface receiver raster Offset만 원본 Forward와 같은-1,-1로 맞춘다(그 외0). 전역2cm 차폐/법선.2/수신범위는 유지하며 경사 Metal 재검수 대기다. CPU 적응면은 실제제품 Late>=96초 지연으로 폐기하고 표시 update의Tessellate/대량GroundY 조회를 제거했다. 원화·합성수식·피해/반경/시간·공중/중심형·flat보스방은 유지한다. 원SkillAdditive/Ki shader는1403 byte이며 새전용shader만사용한다. 324 C# 정적오류0/경고477. Mac 첫 흙 실제 투영/독립깊이와1920원본을 확인했다. 기존mode2 weight차는 강제비등방성 footprint를 무시한bilinear 참조로 분리했고, 같은허용2/255의GPU gradient/RGBA 대조·전체 설치형/시각·통합/설치는 진행 중이다. 정확한 범위·원래실패·측정은 [설치형 지면 배치](UNITY_GROUND_EFFECT_PLACEMENT_20261102.md)를 따른다.
 
 후속 실제161행은표시메타데이터/접지·UV실패0이나색상모델60행과ring정리1행FAIL을보존한다. 이미파괴된parent의orb.go에Reset이SetActive를호출한예외를확인해UnityGO생존검사guard를추가했다. 다음앱에서표적정리회귀·제품/clone/색상모델분리를검증하며공통설치/전체색상PASS는아직아니다.
 
 수명정정: statePassed161은표시메타데이터다. 정리예외로두수명행동의최종결과merge가미실행됐으므로pool행동완료PASS로간주하지않고, 수정앱에서원래두수명검사를별도완주·기록한다.
+
+최신 상태(2026-11-03): Mac 표적 정리/두수명행동·semantic 복원/동일앱 M1 23 통과는 후보 범위다. 사용자 PC 실행본131887780의 Runtime2bad5c6c8ace951017cee6c3673921692bc2a2a309ca5b5b0d23f1fbc471ff0a에는 접지 수정 타입 둘 다 없어 실제 전달 미완료를 확인했다. 최신 unity/main1d89b0c18와 정상 병합해 UI/사운드를 보존했으며, 새 실행본 검수·unity-latest 반영 뒤 다시 확인한다. 원full100/61·독립참조/미관측/oldref 한계는 그대로 보존한다.
+
+## 2026-11-03 14:20 P0 보충 — 지면 강타의 billboard 예외를 대체
+
+위 중심 registry는2D/기존 이력이다. 3D 대지치기 wave/flash는이제 NativeGroundSkillSurface.Mark로 등록해 실제 지면·다리·수면에 수신깊이 투영한다. centered 카드의 lift0만으로는 카드 하단이 지면에 묻혀 반쪽이 가려지므로, NativeGame.Remodel3D의 공용 tilt를 통과하기 전에 Project가 처리한다. Core 중심·반경·프레임·45틱 수명·색/알파는 그대로다. 실제 Mac1920/3840 연속 처음~끝 검수는미완료이며 정적3/3을시각PASS로올리지않는다. 상세 [P0](UNITY_GROUND_AOE_P0_20261103.md).
+
+### 공통 줄기 병합 보존 기록 — 이전 PC 후보·후속 검수 이력
 
 사용자 요청은 장판·지뢰·덫·설치형 전체의 공중 배치 해소다. 11/03 PC 후보09192/Runtimesha b66fcf8c648d2f7ba126fe0fd14fe992c5a623c62798685e6a7b641a8e2c89d8 일반빌드오류0, 자동2D·별도명시3D M1 각각23/23·세이브0. 원본1x에서 붉은원이흙과목교상판에붙음을확인했다. 필수UI1395장교차후보147/누락0 FAIL과큰상세JSON소비자OOM으로배포회차ABORT, 사용자실행본131887/바탕화면unity-latest는아직미교체다. 기존스킬창·devtools담당의수정과새최종패키지검수·실제전달을계속한다. 실제3D근거/147원본/보고서/현재미검증범위는 [전용기록](UNITY_GROUND_EFFECT_PLACEMENT_20261102.md)을따른다. SourceWindows후보상태·자연플레이·최종설치완료를혼동하지않고 원full100/61·독립색참조/미관측한계를보존한다. 현재기능후보RETOUCH이며 H5/Core전투수식은본변경범위밖이다.

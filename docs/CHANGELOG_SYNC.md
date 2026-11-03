@@ -57748,6 +57748,42 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 
 20:20 후속 PC 컴파일: 공통b04ddd73b 병합본(fe236a8bc)의 Core121/Runtime249 최종 exit0·오류0. 내부 GUI 픽셀 배율 속성 직접 접근2개 CS0117을 캐시한 PropertyInfo로 고치고 Runtime만 다시 확인했다. 경고531건은 별도다. 설치 DLL8타입 API 메타데이터 확인, 새 Mac UI/입력/잉크 미검증 유지.
 
+## 2026-11-03 PC P0 — 장판 공중 카드 제거와 실제 수면 투영
+
+- NativeGroundSkillSurface: 3D 투영 장애 시 source sprite/ring 숨김 유지·2D/풀 복원.
+- NativeGroundSkillProjection/ReceiverDepth: 전용 렌더링 bit30/수면bit31, 위쪽 법선0.2, 실제 수신깊이 좌표 및 앞쪽 opaque 차폐2cm.
+- A2Field/A2ToxicRiver: 실제 늪 MeshFilter 등록, 수면→장판→transparent 배우/탄 순서. 기존 물 높이·반사·거품·색 수식 유지.
+- NativeGroundWarningProjection/NativeDruidTelegraphView: 원형·부채·선형 under 삼각형을16m 투영 볼륨으로 표시, 원색/alpha·판정 경계·2D 복원 유지.
+- Core·패링·세이브·피해·반경·시간 변경0. PC는 GroundAoeCompileCheck 배치 컴파일1회만 하고 Mac에서 평지/경사/다리/늪·적탄 중첩·1920/21:9/3840을 판정한다.
+- [설계·수치·판정표](engine/UNITY_GROUND_AOE_P0_20261103.md). 시각 미검증·사용자 실행본 미반영.
+
+## 2026-11-03 PC 15:39 재개 — 대지치기 반쪽 가림
+
+| 범위 | 변경 | 검증·한계 |
+|---|---|---|
+| NativeSkillView SlamWaves | wave/flash 생성 시 NativeGroundSkillSurface.Mark에 등록해 지면 중심 billboard의 아래쪽 깊이 가림을 제거. 기존 실제 receiver-depth,16m 투영을 공유 | 원화4셀512px·1024²·FullRect 유지. 프레임min(3,floor(pow(p,.6)*4)),45틱=.75초,셀5/10/13/17틱,크기.9×(.72+.28min(1,p3.5)),alpha p<.62/이후(1-p)/.38 불변 |
+| Core·웹 정본 | 최신 origin/main 프레임·수명과 대조. Core/피해/판정/저장/Q/E 변경0 | 정적회귀 tools/tests/unitySlamGroundProjection.test.cjs 수정후3/3. GPU 시각PASS 아님 |
+| PC/Mac 분리 | PC는 공용exo 배치컴파일1회 후작업브랜치push. 장판·대지치기1920/3840·처음~끝 연속프레임/웹비교·M1은Mac검수요청 | 상세 docs/engine/UNITY_GROUND_AOE_P0_20261103.md, REPORT_1103.md. 사용자 실행본 자동변경 주장안함 |
+## 2026-11-03 19:00 PC — Mac AOE-GATE FAIL 3건 재작업
+
+| 항목 | 수정·계약 | 검증 |
+|---|---|---|
+| 슬램 셀 직선경계 | 원화셀2 오른쪽128px/최대alpha252·셀3왼쪽113px/최대252. GroundSkillProjection `_GroundEdgeFeather` 기본0, NativeSkillView 본체만.04. CellEdgeCoverage=smoothstep(0,feather,min(u,v,1-u,1-v)), premultipliedRGBA/weight에곱함. 셀512px의20.48px·내부92%불변 | 새정적검출FAIL→수정후5/5. 실제경계개선은Mac A/B대기 |
+| 실제4지형스킬QA | --unity-ground-map-capture --unity-ground-skills, 실제DispatchSlot, flat≤.04/slope>.06, actual bridge, walkable water-neighbour1m. spikeTrap/holyDome/giantSlam·1920/2560/3840. 기본all+bridge연속57PNG. runtimeAge/셀/alpha/flash/상자여유/높이·sandboxRoot 기록 | PC는컴파일까지만. Map/충돌/Core/피해/반경/45틱수명수정0 |
+| QA 가림분리 | --unity-ground-hide-actors는sandbox신규촬영경로에서만배우/접촉그림자/OnGUI숨김,finally복구. --unity-ground-edge-baseline은본체feather0, --unity-ground-projectiles는합성3탄실제Core이동. 정상제품화면불변 | Mac중앙섬광·정상배우+탄막컷을별도검수 |
+
+근거·G0 레퍼런스공통관례·Mac 전체인자: docs/engine/UNITY_GROUND_AOE_P0_20261103.md. 원격공통cbdcbc2822 선행병합. 이전 e96b137 Mac FAIL 상태를컴파일만으로PASS승격하지않는다.
+## 2026-11-03 20:20 PC — Mac 경사 대지치기 투영 누락 재작업
+
+| 항목 | 수정·계약 | 검증·한계 |
+|---|---|---|
+| 수신 raster 깊이 | A2RootSurface Forward Offset -1,-1과 수신패스 무보정 차이 확인. 해당원본 shader receiver에만 캐시재질 bias-1, 기본지면/물0. 등록/갱신 모두 적용 | 기존2cm 차폐·normalY.2·terrain+.9/목교범위·bit30/31·Core/45틱/원화 불변. Mac ec043b26d 경사 FAIL은 새 Metal 검수까지 유지 |
+| 무창 Mac QA | GPU batch RenderTexture 지원, Null GPU 거부·배우/UI 숨김 필수. 창 해상도/WaitForEndOfFrame 없이 기존실제 DispatchSlot/생산투영 촬영. batchMode/captureMode/biasMatchedReceivers 기록 | 정적4/4. PC는 공용bin 컴파일1회만. 새GPU 촬영/소품차폐/1920·3840은 Mac 검수 |
+
+공통9446618af 선행 정상병합. 최신 인자/근거는 docs/engine/UNITY_GROUND_AOE_P0_20261103.md. 이전창 촬영 인자는 최신무창규칙으로 대체. docs정본 unity/main.
+
+PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b30250 1회 exit0/C#0/shader3/USER_SAVE0. 실행279953ms(wall373445ms), errorLogs1(종료Curl42, entitlement확인). 정적4/4. meta850/mat29만 자기소스에서 복원, 외부guard/기존미추적63 보존. PC Player/빌드0, 최종Unity소스는컴파일입력과동일, 새Metal/시각은Mac대기.
+
 ## 2026-11-02 타이틀 후보 보드·왼쪽 안전 여백
 
 - 사용자 브리프1·2절: 3후보 비교 보드(전신1x/발3x/손/성/강/달)까지 제작, CTO 선택 대기·RETOUCH·새 아트 게임 미적용. 거대 마왕 요새와 원형 달 추가 지시 포함. 생성 원본/프롬프트/측정은 G:/exoduser/tmp/design-review/20261102_title_keyframe/ 및 담당 I: REPORT 보존.
@@ -57789,3 +57825,11 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 - origin/unity/main aa38bb8773274bd5f2c91fdc25c4eb2cf003565d(사망 화면 병합 포함)을 정상 merge. CHANGELOG 충돌은 리깅 픽셀14:25/19:00·20:20 기록과 사망UI 후속3개 기록을 모두 보존했다.
 - 39e52fe Mac 시각 PASS(검격 사각면0·망토낱픽셀0·흑철·1px검격)는 기존근거, 3840 성능은단독재측정대기. 기본sprite유지, 이번변경은통합/컴파일준비이며기본값전환0.
 - 병합본 c81bdc6455의공용PC컴파일952896b8 단일실행: renderer/네셰이더/Humanoid true·exit0·C#오류0·USER_SAVE0. 자기자동생성물정리, CTO fast-forward 인수준비. 기본값전환은성능단독재측정PASS뒤.
+
+## 2026-11-03 — 장판·대지치기 최신공통 통합 인계
+
+- 사용자 대지강타 스프라이트 반쪽 잘림 재지적 및 본편 반영 지시. 02ca363571에 최신 origin/unity/main 8c5f967d74f1622a0248096e958337573a099e80을 정상 병합. docs4파일5충돌블록 양쪽전체기록 보존·충돌표시/미해결0.
+- f579841ce importer metadata 포함, 로컬수정 거부0/불일치파일 임의stage0. wave/flash 지면투영·셀외곽4%·경사root bias 수정 핵심4파일은 기존02ca와 동일. Core수식 신규수정0.
+- 병합소스 공용PC컴파일1회 후자기브랜치 비강제push, CTO가 unity/main fast-forward 인수한다. 이번사용자지시는 과거 MacPASS전 공통대기 조건을 해제하며, 새시각/사용자실행본갱신 확인과는 구분한다.
+
+- 최종공통 f146df2b29e98ecac7fdd03e08c888b07d3f7a8d 포함. 최초8c 검사 중 패링/기검참 소스가8e로 전진해 추가병합·최종소스579d081d696660c87509be2f1c19c39ca8d4a9e1을1회 추가검사(전체2입력/동일소스반복0). 공용ec46a2a7 exit0/C#0/shader3/USER_SAVE0, 실행15206ms/wall167270ms, 종료Curl42 1건. 이후f146은기획docs3개뿐이며최종Unity파일차이0. 메타1개만자기checkpoint복원, 외부guard/미추적7보존. 사용자명시승인으로CTO즉시FF 인수대상, 시각/실행본교체미확인.

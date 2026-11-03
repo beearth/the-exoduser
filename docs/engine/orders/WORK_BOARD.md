@@ -6,6 +6,12 @@
 
 ## 2026-10-29 Mac 첫 연습 실입력 후속
 
+## 2026-11-03 PC P0 진행
+| 작업ID | 내용 | 담당·브랜치 | 소유 파일 | 상태 |
+|---|---|---|---|---|
+| UNITY-GROUND-AOE-P0 | 장판·대지치기 잘림 수정 본편 통합 | PC Codex / codex/unity-ground-aoe-decal-20261103 | NativeGroundSkillProjection, GroundSkillReceiverDepth.shader, NativeGame.GroundSkillCapture, tools/tests/unityGroundReceiverDepthBias.test.cjs, P0/관련SSOT·CHANGELOG·본인행 | 사용자 "다 최신으로": 최신공통f146df2b2까지 병합, docs4파일5블록 양쪽 보존/충돌0. wave/flash·셀4%·경사bias 수정 유지. 소스579d081d69 공용ec46a2a7 exit0/C#0/shader3/USER_SAVE0, 이후docs-only/Unity차이0. 검사중공통전진으로전체2입력각1회. CTO 즉시FF 인수대상, 새시각/실행본갱신 별도미확인 |
+
+
 ARM64 Settings QA 앱에서 웹 `mouse2`↔Unity 오른쪽 버튼 1을 입력/캡처 양쪽에 맞춰 수정했다. 실제 OS 오른쪽 클릭으로 마법 처치 5/5, 첫 연습 1~9단계 완료. 10단계 방향+Space 동시 키 입력은 현재 CUA가 일반키 2개 조합을 거부해 구르기 0/5 HOLD. 이어질 11~12단계·일반 1-1 몹/드롭은 미검증. PC A18 `NativePractice*` 변경0. [증거·다음 관문](../UNITY_MAC_PRACTICE_MOUSE_BRIDGE_20261029.md).
 
 같은 날 정식 보조키 UI 재시도: 격리 QA 조작 탭을 실제 Right 키로 열었으나 구르기 보조 버튼 CUA 클릭 2좌표가 키 대기 화면을 열지 못했다. QA 설정 SHA 불변, 보조키 `null` 유지. 제품 코드·새 빌드 없음. 실제 물리 마우스 클릭으로 대기 진입을 확인한 뒤 `ControlLeft` 지정·Control+W 구르기 검수로 이어갈 것. [추가 증거](../UNITY_MAC_PRACTICE_MOUSE_BRIDGE_20261029.md#같은-날-정식-구르기-보조키-경로-재시도).
