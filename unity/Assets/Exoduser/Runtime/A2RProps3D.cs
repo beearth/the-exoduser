@@ -43,6 +43,8 @@ namespace Exoduser.UnityPort
         [Serializable] public sealed class Receipt {public bool enabled;public string scope="r18: PASS9 plus supplied foliage7 at original web XY; far allowlist empty, original six forest walls retained. Baked near trees remain review-only. Unlisted kinds retain original paintings. Forest-wall replacement requires all repeating far species approved. Explicit isolated QA can review all models without editing the shipped allowlist. Core and game camera unchanged.";public int sourceCards,modelInstances,flatDecals,floating,standingCards,missing,omittedVegetation;public List<string> missingKinds=new List<string>();public List<Placement> items=new List<Placement>();}
         public Receipt Result=new Receipt();public bool Applied {get;private set;}public int RetainedCards {get;private set;}
         public static bool Enabled {get{return Array.IndexOf(Environment.GetCommandLineArgs(),"--a2r-3d-off")<0;}}
+        // --a2r-veg3d-off keeps foliage as painted cards while the other approved 3D props stay on (integrated preview).
+        public static bool VegetationEnabled {get{return Array.IndexOf(Environment.GetCommandLineArgs(),"--a2r-veg3d-off")<0;}}
         readonly Dictionary<string,Record> records=new Dictionary<string,Record>();readonly Dictionary<string,GameObject> prefabs=new Dictionary<string,GameObject>();readonly Dictionary<string,List<Vector3>> feet=new Dictionary<string,List<Vector3>>();readonly List<GameObject> cards=new List<GameObject>();readonly List<GameObject> forestCards=new List<GameObject>(),forestModels=new List<GameObject>();
         GameObject visuals;Transform originalRoot;A2ROcclusion occlusion;
         HashSet<string> allowed;readonly Dictionary<string,float> scales=new Dictionary<string,float>();
@@ -65,7 +67,7 @@ namespace Exoduser.UnityPort
             if(reviewAll){if(!NativeQaSandbox.Active||Array.IndexOf(Environment.GetCommandLineArgs(),"--a2r-r15-sheet")<0)throw new InvalidOperationException("R15 review override requires explicit isolated sheet run");foreach(var key in records.Keys)allowed.Add(key);}
             var input=JsonUtility.FromJson<Input>(Resources.Load<TextAsset>("A2R/web-assets").text);Result.sourceCards=input.cards.Length;int at=0;
             foreach(var c in input.cards){if(Floor(c.kind))continue;var source=web.Result.items.Find(x=>x.id==c.id);if(source==null||!source.added)continue;var card=originalRoot.Find(c.id+" "+c.kind+" web XY");if(card==null)throw new InvalidOperationException("A2R card lookup "+c.id);
-                if(c.kind=="vegetation"){string plant=FoliageModelName(c);if(plant==null||!allowed.Contains(plant)){RetainedCards++;continue;}cards.Add(card.gameObject);Place(c,plant,c.x/100,-c.y/100,FoliageHeight(c),c.id);continue;}
+                if(c.kind=="vegetation"){string plant=FoliageModelName(c);if(plant==null||!VegetationEnabled||!allowed.Contains(plant)){RetainedCards++;continue;}cards.Add(card.gameObject);Place(c,plant,c.x/100,-c.y/100,FoliageHeight(c),c.id);continue;}
                 if(c.kind=="corpse"||c.kind=="m_fbones"){RetainedCards++;continue;}
                 if(c.kind=="forest_wall"){bool all=Array.TrueForAll(ForestNames,n=>allowed.Contains(n+"_far"));if(all){cards.Add(card.gameObject);forestCards.Add(card.gameObject);Forest(c);}else RetainedCards++;continue;}
                 string name=Name(c,at++);if(name==null||!allowed.Contains(name)){RetainedCards++;continue;}
