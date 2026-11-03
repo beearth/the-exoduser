@@ -57380,3 +57380,10 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 - A2ROcclusion은 GroundSkillReceiver 재질 Renderer를 제외하고 HasProperty로 실제 텍스처 속성만 읽는다. 원형 마스크는 GPU 투영 기준 화면 높이12%/알파.30/0.2초, 픽셀 깊이 절단 제거. 캠프 원화 중심18% 마스크를 기존 3D 나무에만 추가했다.
 - 따뜻한 WB12/tint3, 중립 달빛.75·exposure.80, 캠프6.2/횃불7, 낮은 높이 안개.008·DOF.25로 보정했다. A2R 수면의 직접 정반사만 꺼 흰 타원을 억제하며 원본 A/B 상태는 복원한다. A/B와 가림 촬영에 추가.25초 안정 시간을 둔다.
 - PC는 Runtime·Editor C# 컴파일만 확인한다. 새 Mac 셰이더·촬영·시각 판정은 대기이며 이전31개 접지/floating0을 새 후보 PASS로 재사용하지 않는다. Core·구도·원근·배우·원화·장판 수신 셰이더 변경0. 상세 수치·범위·MAP PRODUCTION REPORT는 [A2R 계약](engine/UNITY_A2R_EXISTING_ASSETS_20261103.md).
+
+## 2026-11-03 A2R 전경 전장 가림 확대 (18:20·18:25)
+
+- 사용자32:9 원본을 직접 확인. 영웅 원 단독을 전장 타원45%W×40%H+화면 안 적/탄막/소환굴 원으로 확대하고 alpha.35·soft edge·디더링0으로 변경했다. 남쪽 밑동·실제 겹침만 대상, 북쪽 원경과 비중첩 끝 전경 유지.0.2초fade/남북·화면 여유·.12초hold 적용. 장판 수신 재질 미수정.
+- Core를 읽기만 하는 매 프레임 타깃 수집과 Renderer당128개/넘침 촬영FAIL을 연결했다. 기존 배우 그리기/구도/조명/배치 불변.
+- 같은 적·카메라·표현에서 maskOFF/ON의3840·1920 원본4장+비교2장을 기존 Mac fixture에 추가했다. 이미지에 Core 좌표가 없어3640,7420은 횃불 기준 추정이며 정확한 자리 일치는 Mac 판정 대상, --a2r-foreground-x/y 보정/실제 좌표 기록 지원.
+- PC C# 컴파일만, 새 셰이더/이미지/히스테리시스 시각 검수는 Mac 대기. [수치·파일·MAP PRODUCTION REPORT](engine/UNITY_A2R_EXISTING_ASSETS_20261103.md).

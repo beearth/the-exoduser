@@ -12,10 +12,10 @@
 | Volume | Neutral, exposure.80, contrast0, saturation0, white balance temperature12/tint3. split shadows(.48,.49,.51), highlights(.53,.51,.48), balance−15. bloom.055/threshold1.5/scatter.5. Gaussian24~38m/.25 |
 | 환경·안개 | Trilight sky(.105,.100,.090), equator(.075,.070,.058), ground(.018,.015,.012). 높이 안개 RGB(.040,.043,.045), density.008/falloff1.2. 기존 빛줄기 RGB(.60,.65,.70)/alpha.010. 달빛 spot은 시험 표현에서만 끄고 원본 A/B에서는 복원 |
 | 영웅 | 기존 윤곽광을 달빛 한 면으로 위치·세기 조정. 짧은 .78×.42 접지 그림자. 기존 메시·스프라이트·합성·아틀라스 미수정 |
-| 가림 | 기존 3D 나무·고목 및 큰 원화 카드. 영웅 중심 화면 높이12% 반경, 내부70%부터 가장자리까지 smoothstep. 원 안 알파.30/밖 불투명, 0.2초. 픽셀과 타깃을 같은 GPU 투영행렬로 계산해 Metal 축 차이를 배제. 깊이는 Renderer 후보 선정에만 사용하고 픽셀 면을 자르지 않음. 디더링 없음 |
-| 캠프 가림 | 고정 웹 XY 캠프 카드 중심의 화면 높이18% 원형 마스크를 기존 3D 나무·고목에만 추가. 원화 카드끼리의 가림에는 적용하지 않음. 지형·나무 위치·Core 불변 |
+| 가림 18:20 확대 | 영웅 원(화면 높이12% 반경) + 전장 타원(화면 폭45%·높이40%) + 화면 안 적·탄막·소환굴 작은 원의 합집합. 내부70%까지 alpha.35, 70~100% smoothstep, 밖 불투명. CPU viewport VP를 셰이더에도 명시해 Metal/RT 축 차이를 배제. 픽셀 깊이 절단·디더링 없음 |
+| 가림 대상·캠프 | 밑동이 영웅보다 남쪽(카메라 쪽)인 나무·고목·목질 카드만. worldZ=−CoreY/100이므로 south는 tree.z < hero.z. 진입 여유.05u/유지 여유.10u, 화면 겹침 유지 여유8%, 이탈 hold.12초+fade.2초. 북쪽 원경 및 마스크 밖 좌우 끝 전경 불투명. 캠프 중심18% 보호도 같은 남쪽 규칙, 기존3D 나무에만 |
 | 수면 밝기 | A2R 시험 재질만 `_SPECULARHIGHLIGHTS_OFF` 로 직접광 흰 정반사 제거, smoothness.18. 기존 실제 planar 반사·흐름·거품 유지. 원본 A/B는 원래 keyword와 smoothness 식 복원 |
-| 실행 | `--a2r1-light` 시험 적용. `--unity-field-screen --a2r1-light-capture --a2-plan-capture`는 같은 패키지 A/B 8컷+가림3컷+정사영 구조도. 일반 실행 기본값은 기존 장면 |
+| 실행 | `--a2r1-light` 시험 적용. `--unity-field-screen --a2r1-light-capture --a2-plan-capture`는 같은 패키지 A/B 8컷+가림3컷+전장 가림A/B4컷·비교2장+정사영 구조도. 일반 실행 기본값은 기존 장면 |
 | 구조도 | 별도 정사영 카메라4096², x[-4,84],z[-84,4]. image=(CoreXY+400)×4096/8800. 실제 Core walk0/actor 범위와 앵커 JSON. 게임 카메라 변경 없음 |
 
 산출: `I:/EXODUSER-Storage/map25d/a2redesign/`. 고정 build-current 하나. 실제 화면 검수 전 상태는 미검증이다. 2단계는 구조도 판정 뒤 진행한다.
@@ -27,7 +27,7 @@
 
 Mac 빌더는 Exoduser.A2RBuilder.Build이며 OSXEditor에서는 EXODUSER-A2R.app을 만든다. 같은 패키지 촬영은 A/B8컷, 고목 뒤3개 고정 위치, 4096 정사영 원본+좌표 JSON이다. 가림 위치가 막혔으면 인접 보행점으로 보정하고 실제 좌표를 기록한다. 3컷 누락/해상도 불일치/구조도 누락은 PASS가 아니다. 필드보스가 아직 생성되지 않았으면 Core의 정적 FieldBossSites 정의를 촬영 시 1회 읽어 실제4좌표를 기록한다. Core를 변경하거나 강제 소환하지 않는다.
 
-검증 경계: C# 컴파일과 별도로 새 후보의 셰이더·Mac 빌드·실제 화면·접지·투명화·성능은 미검증이다. 가림은 영웅·캠프(화면 안일 때) 포함 최대8개 타깃을 Renderer마다 선별한다. 밀집 전투 전체 적/탄막 커버는 후속 검수 대상이다. A/B8컷은 14프레임 뒤, 고목3컷은 24프레임 뒤 각각 추가.25초 대기해 정적 알파를 촬영한다. 자연 도보/연속0.2초 동작의 증거는 아니다.
+검증 경계: C# 컴파일과 별도로 새 후보의 셰이더·Mac 빌드·실제 화면·접지·투명화·성능은 미검증이다. 가림 CPU 수집은 매 프레임 현재 Core 적·Bolts·Druid.Projectiles·소환굴을 읽기만 한다. 화면 밖을 걸러 Renderer당 최대128개 원을 전달하며, 전장 타원 내부가 이미 덮는 원은 중복 제외한다. 넘친 수는 PeakDroppedTargets에 기록하고 촬영 PASS는0을 요구한다. 밀집 전투 전체 적/탄막 커버는 후속 검수 대상이다. A/B8컷은 14프레임 뒤, 고목3컷은 24프레임 뒤 각각 추가.25초 대기해 정적 알파를 촬영한다. 자연 도보/연속0.2초 동작의 증거는 아니다.
 
 ## Mac 8dce239 FAIL 후 CTO 수정
 
@@ -46,3 +46,23 @@ Mac 빌더는 Exoduser.A2RBuilder.Build이며 OSXEditor에서는 EXODUSER-A2R.ap
 MAP PRODUCTION REPORT: STAGE=Mac FAIL 원인 수정 / MASTER·OUTER MASS·LARGE·MEDIUM·PLAYABLE·LANDMARK=기존 A2Field LOCK / GROUND=기존 원화·접지 유지 / CAMERA QA=이전 A/B8·가림3·구조도 좌표 검수 인수, 새 촬영 대기 / TECH QA=PC C#만, Unity 실행0 / FILES=A2R 표현·기존 수면 옵션·관련 docs만 / GIT=정확한 자기 경로 commit·비강제 push / VISUAL VERDICT: RETOUCH (새 GPU 결과 미검증) / NEXT=Mac 같은 인자로 재촬영하여 오류0·원형 경계·흙색/불빛·다리 밝기·캠프 중첩 확인.
 
 MAP PRODUCTION REPORT: STAGE=기존 에셋 이식 코드 인계 / MASTER PLAN·OUTER MASS·GROUND=기존 A2Field LOCK / PLAYABLE=기존 Core 유지 / CAMERA=원근 유지, 구조도만 별도 정사영 / TECH QA=PC C# 컴파일 결과는 MAC_RUN.md / VISUAL VERDICT=미검증 / NEXT=Mac 동일 패키지 촬영 후 맵 총괄 판정. 실행 인자·실제 push SHA는 I:/EXODUSER-Storage/map25d/a2redesign/MAC_RUN.md에 기록한다.
+
+## 18:20 사용자 스크린샷·18:25 CTO 동의 — 전장 가림
+
+18:14의 영웅 원 단독/alpha.30 계약을 위 표의 전장 확대/alpha.35로 대체한다. 스크린샷 \images\1.webp를 직접 확인했다. 전장과 적을 덮는 카메라 쪽 거목을 흐리되 윤곽·원근·북쪽 깊이는 유지한다. 410e3fead의 조명·색·원화·장판 수신 제외 계약은 그대로다.
+
+| 항목 | 구현·Mac 검수 계약 |
+|---|---|
+| 전장 영역 | 영웅 중심 반지름(.225W,.20H), 즉 전체45%W×40%H. 아래60% 화면과 전장 타원의 교차가 있는 남쪽 Renderer만 전장 마스크 대상으로 선택. 실제 픽셀은 타원 안 부분만 alpha.35 |
+| 추가 원 | 영웅.12H, 적.055H, 아군 bolt.025H, 적/보스 탄.04H, 소환굴.075H 반경. 캠프.18H 원은 기존3D에만. 반경은 화면 높이 단위이며 x반경은 aspect로 보정 |
+| 북쪽·끝 전경 | 생성 루트 밑동으로 남북 판정. 안개 원경 루트 제외, 남쪽이어도 실제 마스크와 안 겹친 픽셀은 불투명. 접지·원화 XY·원근 카메라·충돌 불변 |
+| 깜빡임 억제 | 진입 z < hero.z−.05u, 유지 z < hero.z+.10u. 겹침 해제 범위8% 여유, 마지막 마스크 hold.12초, Renderer alpha fade.2초. 연속 동작/깜빡임 여부는 Mac에서 추가 확인 필요 |
+| 셰이더 | A2R4종만 target3.5 명시(128개 원 동적 반복), fade0 조기 return. 장판 수신 재질 Renderer는 복제/치환 제외. 모든 대상의 원 밖은 원래 불투명 |
+| 신규 전장 fixture | 같은 조명·웹 에셋·카메라·고정 적(최대12개)에서 mask OFF/ON만 비교. 3840·1920 각각2원본+나란히1장. 적 좌표/수·화면 내 적 수·fadedRenderers·maskTargets·누락 수를 영수증에 기록. 자연 전투 증거 아님 |
+| 재현 위치 | 원본 이미지에 Core 좌표가 없어 목교 동측 횃불의 상대 위치로 추정한(3640,7420) 사용. 막히면 WideLegal 인접 보행점. --a2r-foreground-x/y로 실제 좌표 지정 가능. 요청/실제 좌표와 추정임을 JSON에 기록. 사용자 컷과 정확히 같은 자리인지는 Mac에서 대조해야 하며 PC에서 확인했다고 주장하지 않음 |
+
+출력 추가: 3840-foreground-current.png / 3840-foreground-applied.png / 3840-foreground-current-vs-applied.png(7680×1080), 1920-foreground-current.png / 1920-foreground-applied.png / 1920-foreground-current-vs-applied.png(3840×1080). 비교판 왼쪽=가림OFF, 오른쪽=확대 가림ON, 각 열은 원본1x다. 일반 A/B8+고목3+구조도1까지 총18PNG. 별도 인자 없이 기존 촬영 인자로 함께 실행한다.
+
+기술 게이트: 기존8+3·구조도에 전장 원본4·비교2·화면 안 적1이상·가림 대상으로 들어간 Renderer1이상·타깃 누락0·해상도/카메라 불일치0을 추가한다. 시간·위치가 고정된 이미지로 자연 전투나 히스테리시스 연속 동작 PASS를 선언하지 않는다.
+
+MAP PRODUCTION REPORT: STAGE=전장 가림 확대 소스 인계 / MASTER·OUTER MASS·LARGE·MEDIUM·GROUND·PLAYABLE·LANDMARK=A2Field LOCK / CAMERA QA=사용자32:9 원본 직접 확인, 재현 위치/확대 가림은 Mac 대기 / TECH QA=PC Runtime·Editor C#만, Unity 실행0 / FILES=A2R 가림·readonly 타깃·촬영·관련 docs만 / GIT=자기 경로 commit·비강제 push / VISUAL VERDICT: RETOUCH (새 GPU 결과 미검증) / NEXT=Mac 적 포함1920·3840 비교/북쪽과 좌우 끝 원형 보존/0.2초 동작·깜빡임 재검수.

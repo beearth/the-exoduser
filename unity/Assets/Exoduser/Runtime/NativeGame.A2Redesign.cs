@@ -18,12 +18,20 @@ namespace Exoduser.UnityPort
             var volumes=new List<Volume>();foreach(var root in r3Roots)volumes.AddRange(root.GetComponentsInChildren<Volume>(true));
             a2rLighting=a2Root.AddComponent<A2RLighting>();a2rLighting.Initialize(a2Root.transform,r3Cam,FindObjectsByType<Light>(FindObjectsInactive.Include,FindObjectsSortMode.None),volumes,()=>NativeRemodel3D.Point(Simulation.Player.X,Simulation.Player.Y));
             foreach(var p in Map.Data.props){if(p.id=="m_c1camp"){var at=NativeRemodel3D.Point(p.x,p.y);a2rLighting.AddLamp("A2R1 C10 camp fire",at+Vector3.up*1.3f,6.5f,6.2f,new Color(1,.32f,.08f));a2rLighting.AddLamp("A2R1 C10 camp glow",at+Vector3.up*.8f,3.4f,3.6f,new Color(1,.52f,.20f),false);}else if(p.id=="m_ctree15"||p.id=="m_c1altar")a2rLighting.AddLamp("A2R1 C10 red "+p.id,NativeRemodel3D.Point(p.x,p.y)+Vector3.up*1.2f,4.4f,4.56f,new Color(.92f,.18f,.14f));}
-            a2rOcclusion=a2Root.AddComponent<A2ROcclusion>();a2rOcclusion.Initialize(a2Root.transform,r3Cam,()=>NativeRemodel3D.Point(Simulation.Player.X,Simulation.Player.Y));a2rWeb=a2Root.AddComponent<A2RWebAssets>();a2rWeb.Initialize(a2Root.transform,r3Cam,props,a2FieldSoil,a2Water,a2rOcclusion);A2RSetLook(true);
+            a2rOcclusion=a2Root.AddComponent<A2ROcclusion>();a2rOcclusion.Initialize(a2Root.transform,r3Cam,()=>NativeRemodel3D.Point(Simulation.Player.X,Simulation.Player.Y));a2rOcclusion.SetCombatSource(A2RCollectCombat);a2rWeb=a2Root.AddComponent<A2RWebAssets>();a2rWeb.Initialize(a2Root.transform,r3Cam,props,a2FieldSoil,a2Water,a2rOcclusion);A2RSetLook(true);
+        }
+        void A2RCollectCombat(List<Vector4> points)
+        {
+            // Read-only presentation data: no actor material/drawing or Core behavior changes.
+            foreach(var e in Simulation.Enemies)if(e.Alive&&!Simulation.IsRemodelProp(e)){EnemyView ev;Vector3 at=enemies.TryGetValue(e.Id,out ev)&&ev.body.enabled?ev.body.bounds.center:NativeRemodel3D.Point(e.X,e.Y)+Vector3.up*.8f;points.Add(new Vector4(at.x,at.y,at.z,.055f));}
+            foreach(var p in Simulation.Bolts)if(p.Active){var at=NativeRemodel3D.Point(p.X,p.Y)+Vector3.up*.25f;points.Add(new Vector4(at.x,at.y,at.z,.025f));}
+            if(Simulation.Druid!=null)foreach(var p in Simulation.Druid.Projectiles)if(p.Active){var at=NativeRemodel3D.Point(p.X,p.Y)+Vector3.up*.35f;points.Add(new Vector4(at.x,at.y,at.z,.04f));}
+            if(Simulation.SpawnHoles!=null)foreach(var h in Simulation.SpawnHoles.Holes){var at=NativeRemodel3D.Point(h.X,h.Y)+Vector3.up*.1f;points.Add(new Vector4(at.x,at.y,at.z,.075f));}
         }
         void A2RSetLook(bool on){a2rLighting.SetLook(on);a2rWeb.SetLook(on);a2rOcclusion.SetLook(on);}
         [Serializable] sealed class A2RPoint {public string id,kind;public float x,y;public int region;}
-        [Serializable] sealed class A2RFrame {public string id,look;public float x,y,heroGroundY;public int width,height;public float cameraFov,cameraPitch;public Vector3 cameraPosition;public bool orthographic;}
-        [Serializable] sealed class A2RReceipt {public string scope="Same-package fixed-position A/B assets/lighting fixture. Existing A2Field/SourceMap/actor renderer, no natural walk claim. Three occlusion poses are fixed-position samples. Structure uses a separate orthographic camera only.";public bool passed;public int errors;public List<A2RFrame> frames=new List<A2RFrame>();public List<A2RFrame> occlusionFrames=new List<A2RFrame>();}
+        [Serializable] sealed class A2RFrame {public string id,look;public float x,y,heroGroundY;public int width,height,fadedRenderers,maskTargets;public float cameraFov,cameraPitch;public Vector3 cameraPosition;public bool orthographic;}
+        [Serializable] sealed class A2RReceipt {public string scope="Same-package fixed-position A/B assets/lighting fixture. Existing A2Field/SourceMap/actor renderer, no natural walk claim. Three occlusion poses are fixed-position samples. Structure uses a separate orthographic camera only.";public bool passed;public int errors;public List<A2RFrame> frames=new List<A2RFrame>();public List<A2RFrame> occlusionFrames=new List<A2RFrame>();public List<A2RFrame> foregroundFrames=new List<A2RFrame>();public List<Vector2> foregroundEnemies=new List<Vector2>();public int foregroundEnemyCount,foregroundVisibleEnemies,peakDroppedTargets;public Vector2 foregroundRequested,foregroundActual;public string foregroundPositionSource="Inferred from the user image's bridge torch; image has no Core coordinates. Verify same place on Mac; optional --a2r-foreground-x/y overrides are recorded.";}
         [Serializable] sealed class A2RStructure
         {
             public string scope="Actual A2Field world rendered by separate orthographic camera. HUD and actors hidden only during this image. Core unchanged. Ground/scenery are original A2Field.";
@@ -75,7 +83,43 @@ namespace Exoduser.UnityPort
                 string id="1920-occlusion-"+(i+1);yield return KeyshotSave(output,id,keyshots);
                 receipt.occlusionFrames.Add(new A2RFrame{id=id,look="web assets + C10 + circular fade",x=p.x,y=p.y,heroGroundY=NativeRemodel3D.GroundY(p.x/100,-p.y/100),width=Screen.width,height=Screen.height,cameraFov=r3Cam.fieldOfView,cameraPitch=r3Cam.transform.eulerAngles.x,cameraPosition=r3Cam.transform.position,orthographic=r3Cam.orthographic});
             }
-            receipt.errors=keyshotErrors;receipt.passed=keyshotErrors==0&&receipt.frames.Count==8&&receipt.occlusionFrames.Count==3&&File.Exists(Path.Combine(output,"structure-original.png"))&&File.Exists(Path.Combine(output,"structure-coordinates.json"));File.WriteAllText(Path.Combine(output,"a2r1-capture.json"),JsonUtility.ToJson(receipt,true));Application.logMessageReceived-=KeyshotLog;lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();Application.Quit(receipt.passed?0:3);
+            yield return A2RForegroundCapture(output,receipt,keyshots);
+            receipt.errors=keyshotErrors;receipt.peakDroppedTargets=a2rOcclusion.PeakDroppedTargets;receipt.passed=keyshotErrors==0&&receipt.frames.Count==8&&receipt.occlusionFrames.Count==3&&receipt.foregroundFrames.Count==4&&receipt.foregroundVisibleEnemies>0&&receipt.peakDroppedTargets==0&&File.Exists(Path.Combine(output,"3840-foreground-current-vs-applied.png"))&&File.Exists(Path.Combine(output,"1920-foreground-current-vs-applied.png"))&&File.Exists(Path.Combine(output,"structure-original.png"))&&File.Exists(Path.Combine(output,"structure-coordinates.json"));File.WriteAllText(Path.Combine(output,"a2r1-capture.json"),JsonUtility.ToJson(receipt,true));Application.logMessageReceived-=KeyshotLog;lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();Application.Quit(receipt.passed?0:3);
+        }
+        IEnumerator A2RForegroundCapture(string output,A2RReceipt receipt,KeyshotReceipt keyshots)
+        {
+            // Same static scene for both sides: only masks toggle, not lighting/art/actors/camera.
+            A2RSetLook(true);var desired=new Vector2(3640,7420);float value;
+            if(float.TryParse(Argument("--a2r-foreground-x"),System.Globalization.NumberStyles.Float,System.Globalization.CultureInfo.InvariantCulture,out value))desired.x=value;
+            if(float.TryParse(Argument("--a2r-foreground-y"),System.Globalization.NumberStyles.Float,System.Globalization.CultureInfo.InvariantCulture,out value))desired.y=value;
+            receipt.foregroundRequested=desired;var point=WideLegal(desired.x,desired.y);receipt.foregroundActual=point;
+            Simulation.Player.X=point.x;Simulation.Player.Y=point.y;lastX=point.x;lastY=point.y;Simulation.Enemies.Clear();Simulation.SpawnHoles=null;Simulation.CrossbowAuto=false;
+            for(int n=0;n<128&&receipt.foregroundEnemyCount<12;n++){float angle=n*2.399963f;var at=point+new Vector2(Mathf.Cos(angle)*(220+n%4*40),-120-Mathf.Abs(Mathf.Sin(angle))*280);if(!Map.CanMove(at.x,at.y,20))continue;if(Simulation.SpawnEnemy(at.x,at.y,n%4,null,false)!=null){receipt.foregroundEnemyCount++;receipt.foregroundEnemies.Add(at);}}
+            if(receipt.foregroundEnemyCount<4){Debug.LogError("A2R foreground fixture has too few legal enemies");yield break;}
+            foreach(int width in new[]{3840,1920})
+            {
+                Screen.SetResolution(width,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.5f);
+#if UNITY_STANDALONE_WIN
+                if(Screen.width!=width||Screen.height!=1080)FieldCaptureResize(width,1080);
+#endif
+                float deadline=Time.realtimeSinceStartup+8;while((Screen.width!=width||Screen.height!=1080)&&Time.realtimeSinceStartup<deadline)yield return null;
+                if(Screen.width!=width||Screen.height!=1080){Debug.LogError("A2R foreground native size mismatch");yield break;}
+                Vector3 before=Vector3.zero;float fov=0;
+                foreach(bool on in new[]{false,true})
+                {
+                    a2rOcclusion.SetMasksEnabled(on);for(int j=0;j<24;j++){UpdateViews();yield return null;}yield return new WaitForSecondsRealtime(.35f);UpdateViews();yield return null;
+                    string id=width+"-foreground-"+(on?"applied":"current");yield return KeyshotSave(output,id,keyshots);
+                    var frame=new A2RFrame{id=id,look=on?"battle occlusion alpha .35":"same A2R look, masks OFF",x=point.x,y=point.y,width=Screen.width,height=Screen.height,cameraPosition=r3Cam.transform.position,cameraFov=r3Cam.fieldOfView,cameraPitch=r3Cam.transform.eulerAngles.x,orthographic=r3Cam.orthographic,heroGroundY=NativeRemodel3D.GroundY(point.x/100,-point.y/100),fadedRenderers=a2rOcclusion.FadedRenderers,maskTargets=a2rOcclusion.VisibleTargets};receipt.foregroundFrames.Add(frame);if(on&&frame.fadedRenderers==0)Debug.LogError("A2R foreground fixture did not exercise an occluding tree");
+                    if(!on){before=frame.cameraPosition;fov=frame.cameraFov;}else if(Vector3.Distance(before,frame.cameraPosition)>.0001f||Mathf.Abs(fov-frame.cameraFov)>.0001f||frame.orthographic)Debug.LogError("A2R foreground A/B camera mismatch");
+                    int visible=0;foreach(var e in Simulation.Enemies)if(e.Alive){var v=r3Cam.WorldToViewportPoint(NativeRemodel3D.Point(e.X,e.Y)+Vector3.up*.8f);if(v.z>0&&v.x>0&&v.x<1&&v.y>0&&v.y<1)visible++;}receipt.foregroundVisibleEnemies=visible;if(visible==0)Debug.LogError("A2R foreground image has no visible enemy targets");
+                }
+                A2RJoinForeground(output,width);
+            }
+        }
+        static void A2RJoinForeground(string output,int width)
+        {
+            var left=new Texture2D(2,2,TextureFormat.RGBA32,false);var right=new Texture2D(2,2,TextureFormat.RGBA32,false);Texture2D board=null;
+            try{if(!left.LoadImage(File.ReadAllBytes(Path.Combine(output,width+"-foreground-current.png")))||!right.LoadImage(File.ReadAllBytes(Path.Combine(output,width+"-foreground-applied.png")))||left.width!=width||right.width!=width||left.height!=1080||right.height!=1080)throw new InvalidOperationException("A2R foreground comparison input size mismatch");board=new Texture2D(width*2,1080,TextureFormat.RGB24,false);board.SetPixels32(0,0,width,1080,left.GetPixels32());board.SetPixels32(width,0,width,1080,right.GetPixels32());board.Apply();File.WriteAllBytes(Path.Combine(output,width+"-foreground-current-vs-applied.png"),board.EncodeToPNG());}finally{Destroy(left);Destroy(right);if(board!=null)Destroy(board);}
         }
         void A2RCaptureStructure(string output)
         {
