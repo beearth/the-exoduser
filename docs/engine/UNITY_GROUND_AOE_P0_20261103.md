@@ -1,5 +1,17 @@
 # 11-03 장판 공중 부유 P0 — Mac 실게임 판정 대기
 
+## 최신 공통 병합 재개 — 사용자 본편 반영 지시
+
+사용자가 대지강타 스프라이트 반쪽 잘림을 다시 지적하며 "다 최신으로 쓰지", CTO의 즉시 unity/main fast-forward 인수를 지시했다. 따라서 **이번 인계는 Mac 재판정 전에도 공통 줄기 병합하도록 명시 승인된 통합 작업**이다. 아래 과거의 "Mac PASS 전 공통 반영 대기"는 이번 인계 조건으로 사용하지 않는다. 시각 품질·사용자 실행본 전달 확인은 병합과 별개로 남긴다.
+
+| 항목 | 통합 계약/확인 |
+|---|---|
+| 기준 | 기존 브랜치02ca363571 위에 최신 origin/unity/main `8c5f967d74f1622a0248096e958337573a099e80` 정상 병합 |
+| 문서 충돌 | CHANGELOG_SYNC·GROUND_EFFECT_PLACEMENT·HERO_VFX_CENTER_ANCHOR·RM_INT_RUNTIME_HOOK의5블록. 양쪽 기록 전체를 보존하고 과거PC 후보 기록을 표제에서 구분. 충돌 표시/미해결경로0 |
+| f579841ce metadata | 공통의 실제 importer .meta 커밋을 통합. 이번 병합은 로컬 수정으로 거부되지 않았으며, 내용 불일치 파일의 임의 stage/덮어쓰기0. 기존 외부guard WORK 보존 |
+| 대지치기 잘림 수정 포함 | NativeSkillView wave/flash 둘 다 GroundSkillSurface.Mark, 본체 셀 외곽4% 감쇠,4셀 pow(p,.6)·45틱 유지. 수신깊이 투영·경사 root bias-1 수정도 유지. 이 핵심4파일은 기존02ca363571과 내용 차이0 확인 |
+| 다음 단계 | 병합 커밋에서 공용PC 컴파일1회→자기브랜치 비강제push→CTO unity/main fast-forward. PC Player/정식빌드0. 현재 실제 바탕화면 실행본 교체 여부·새Metal 경사 시각 판정은 미확인 |
+
 ## 20:20 Mac FAIL 1건 — 경사 접합부 재작업(최신)
 
 Mac `qa/mac-captures-20261103@39c3ae380`, `qa/unity-ground-aoe/ec043b2/02-slope-skills-x3.png`를 직접 열어 T15 흙 경사·뿌리 접합부의 검은 톱니/띠 누락을 확인했다. 이 후보는 **AOE-GATE FAIL**이다. Mac의 네 지형 실제3스킬·목교 T0~45 직선 경계0·중앙 섬광·GPU 오류0 PASS는 해당 ec043b26d 범위로 유지한다. 새 후보의 화면 해결은 미검증이다.

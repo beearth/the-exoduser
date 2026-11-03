@@ -24,7 +24,7 @@ P 좌표/행동/iframe/cooldown과 적·탄·zone runtime은 저장 whitelist �
 - `docs/15 세이브+데이터구조/`
 - `docs/engine/FDG_SOURCE_TRACE_SAVE_20261020.md`
 - `docs/engine/FDG_SOURCE_TRACE_INVENTORY_20261020.md` S01–S10
-- `docs/engine/DEMO11_COMPLETION_GAP_20261021.md` D02–D04, D30
+- `docs/_archive/engine/DEMO11_COMPLETION_GAP_20261021.md` D02–D04, D30
 
 ## 주의
 

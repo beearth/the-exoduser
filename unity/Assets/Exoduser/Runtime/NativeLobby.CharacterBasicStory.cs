@@ -39,10 +39,9 @@ namespace Exoduser.UnityPort
                 GUI.matrix=NativeUiViewport.EdgeMatrix;
                 const float width=380,inset=28,inner=324;
                 string text=row.stories[index];
-                var body=new GUIStyle(silverVisualDescription){fontSize=16,wordWrap=true,richText=false};
-                body.font=NativeSilverHellUi.TextFont(body.font,text);
-                body.normal.textColor=new Color(197/255f,194/255f,187/255f);
-                float contentHeight=body.CalcHeight(new GUIContent(text),inner-18);
+                // Word-boundary wrap (web keep-all): GUIStyle.wordWrap splits Korean words mid-syllable.
+                const float bodySize=16,bodyLine=29;
+                float contentHeight=SilverParagraphHeight(text,bodySize,inner-18,bodyLine);
                 float height=Mathf.Clamp(contentHeight+116,210,560);
                 var panel=new Rect(40,(1080-height)/2,width,height);
                 SilverCornerPanel(panel);
@@ -52,7 +51,7 @@ namespace Exoduser.UnityPort
                 var viewport=new Rect(panel.x+inset,panel.y+92,inner,height-116);
                 basicStoryScroll=NativeUiAudit.BeginScrollView(viewport,basicStoryScroll,
                     new Rect(0,0,inner-18,Mathf.Max(viewport.height,contentHeight)),false,false);
-                SilverLabel(new Rect(0,0,inner-18,contentHeight),text,body,TextAnchor.UpperLeft);
+                DrawSilverParagraph(0,0,inner-18,text,bodySize,bodyLine,new Color(197/255f,194/255f,187/255f));
                 NativeUiAudit.EndScrollView();
             }
             finally {GUI.matrix=matrix;}

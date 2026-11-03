@@ -1,6 +1,6 @@
 ## 2026-10-21 native DEMO11-50 현재 범위
 
-웹판 workspace와 별도로 native pause→4탭 설정을 연결했다. 기존 OPT owner·원본 설정 키/기존 demo IO, Hell Gothic/게임폰트/키변경UI0. S01 missing3 및 S10 저장 연결 차단을 해소한 허용 범위와 미연결 BGM 재생은 [현행 계약](../3.3%20키바인딩+설정/DEMO11_50_NATIVE_SETTINGS_20261021.md)을 따른다. 아래 DEMO11-09 BLOCKED와 웹판 완성 범위는 이력/별도 범위다.
+웹판 workspace와 별도로 native pause→4탭 설정을 연결했다. 기존 OPT owner·원본 설정 키/기존 demo IO, Hell Gothic/게임폰트/키변경UI0. S01 missing3 및 S10 저장 연결 차단을 해소한 허용 범위와 미연결 BGM 재생은 [현행 계약](../_archive/3.3%20키바인딩+설정/DEMO11_50_NATIVE_SETTINGS_20261021.md)을 따른다. 아래 DEMO11-09 BLOCKED와 웹판 완성 범위는 이력/별도 범위다.
 
 # 설정 UI 화면 확장 및 키 변경 조작 — 2026-09-29
 
@@ -163,9 +163,9 @@
 
 ## 2026-10-21 DEMO11-09 Godot 데모 일시정지 접점
 
-이 단위는 기존 Main pause/입력 profile 권위를 소비하는 최소 pause 메뉴·설정 진입/뒤로만 제공한다. 원본4탭·설정값·키변경·저장 복원 포팅 완료가 아니다. S01은 current OPT35의 missing3를 NOT_READY로 보존하고, S10 언어/inputMode bridge·허용 option writer는 main에 없어 설정 적용은 BLOCKED다. 실제 숫자/키를 바꿀 수 있는 UI를 꾸미지 않고 준비 중 안내를 표시한다. [소유 경계·필요 인터페이스·실행 근거](../engine/orders/reports/demo11-09_REPORT.md), `_out/demo11-09/captures/` 화면은 맥북총괄 검수 대기.
+이 단위는 기존 Main pause/입력 profile 권위를 소비하는 최소 pause 메뉴·설정 진입/뒤로만 제공한다. 원본4탭·설정값·키변경·저장 복원 포팅 완료가 아니다. S01은 current OPT35의 missing3를 NOT_READY로 보존하고, S10 언어/inputMode bridge·허용 option writer는 main에 없어 설정 적용은 BLOCKED다. 실제 숫자/키를 바꿀 수 있는 UI를 꾸미지 않고 준비 중 안내를 표시한다. [소유 경계·필요 인터페이스·실행 근거](../_archive/engine/orders/reports/demo11-09_REPORT.md), `_out/demo11-09/captures/` 화면은 맥북총괄 검수 대기.
 
 
 ## 2026-10-23 SWEEP-B3 재대조
 
-Godot T-03은 원본 첫 idle 셀 alpha>0/100 경계에서 본체72px·발선80px 정렬, CSS88px nearest 표시와 설명14px/line-height1.6을 사용한다. 원본 웹 수치는 변경하지 않았다. 상세 원본/수치/판정은 [SWEEP_B3_20261023.md](../engine/SWEEP_B3_20261023.md)를 따른다. 과거 검수 수치를 소급해서 성공으로 바꾸지 않는다.
+Godot T-03은 원본 첫 idle 셀 alpha>0/100 경계에서 본체72px·발선80px 정렬, CSS88px nearest 표시와 설명14px/line-height1.6을 사용한다. 원본 웹 수치는 변경하지 않았다. 상세 원본/수치/판정은 [SWEEP_B3_20261023.md](../_archive/engine/SWEEP_B3_20261023.md)를 따른다. 과거 검수 수치를 소급해서 성공으로 바꾸지 않는다.

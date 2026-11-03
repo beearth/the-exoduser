@@ -63,9 +63,27 @@ namespace Exoduser.UnityPort {
    CinematicStyles();float a=holdDelta>0?1:.5f;var center=new Vector2(1830,990);
    DrawCinematicArc(center,34,1,new Color(68/255f,68/255f,68/255f,a*.5f));
    if(holdDelta>0)DrawCinematicArc(center,34,holdDelta,new Color(228/255f,225/255f,219/255f,a));
-   cinematicMicro.normal.textColor=new Color(136/255f,136/255f,136/255f,a*.8f);Label(new Rect(1770,980,120,20),cinematicPadHolding?"Ⓑ":"SPACE / ESC",cinematicMicro,TextAnchor.MiddleCenter);
-   cinematicTiny.normal.textColor=new Color(.4f,.4f,.4f,a*.6f);Label(new Rect(1770,1030,120,20),"HOLD TO SKIP",cinematicTiny,TextAnchor.MiddleCenter);NativeUiAudit.Region(new Rect(1770,954.5f,120,95.5f),"component","cinematic-skip","실제 오른쪽 아래");
+   // 키 글자는 게임 라틴 글꼴 토큰(Cinzel)으로 링 안쪽에 든다(11-03 "SPACE / ESC가 링 밖으로 넘치고 산세리프"). SPACE·ESC를 두 줄로 쌓고
+   // 사이에 짧은 금빛 헤어라인. 링 안쪽 현 길이보다 넓으면 글자 크기를 줄인다.
+   if(cinematicSkipFont==null)cinematicSkipFont=Resources.Load<Font>("Art/fonts/Cinzel-400")??Resources.Load<Font>("Art/fonts/Cinzel-VariableFont_wght");
+   var keyColor=new Color(196/255f,188/255f,172/255f,a*.9f);
+   if(cinematicPadHolding)CinematicSkipLine(center.x,center.y,"Ⓑ",16,keyColor,40,0);
+   else
+   {
+    CinematicSkipLine(center.x,center.y-8.5f,"SPACE",11,keyColor,46,.08f);
+    Fill(new Rect(center.x-7,center.y-.5f,14,1),new Color(189/255f,169/255f,122/255f,a*.45f));
+    CinematicSkipLine(center.x,center.y+8.5f,"ESC",11,keyColor,46,.08f);
+   }
+   CinematicSkipLine(center.x,1040,"HOLD TO SKIP",9,new Color(150/255f,143/255f,130/255f,a*.75f),112,.14f);
+   NativeUiAudit.Region(new Rect(1770,954.5f,120,95.5f),"component","cinematic-skip","실제 오른쪽 아래 · 키 글자 Cinzel 링 안");
    }finally{GUI.matrix=savedMatrix;}
+  }
+  Font cinematicSkipFont;
+  void CinematicSkipLine(float cx,float cy,string text,int size,Color color,float maxWidth,float em)
+  {
+   int s=size;float sp=s*em,w=SpacedWidth(cinematicSkipFont,s,text,sp)-sp;
+   while(s>7&&w>maxWidth){s--;sp=s*em;w=SpacedWidth(cinematicSkipFont,s,text,sp)-sp;}
+   float h=s*1.8f;DrawSpaced(cx-w/2,cy-h/2,h,text,cinematicSkipFont,s,sp,color,false);
   }
   static void DrawCinematicArc(Vector2 center,float radius,float fraction,Color color){
    int n=Mathf.CeilToInt(120*fraction);for(int i=0;i<n;i++){float a=-Mathf.PI/2+2*Mathf.PI*i/120,b=-Mathf.PI/2+2*Mathf.PI*Mathf.Min(i+1,120*fraction)/120;Line(center+new Vector2(Mathf.Cos(a),Mathf.Sin(a))*radius,center+new Vector2(Mathf.Cos(b),Mathf.Sin(b))*radius,color,3);}

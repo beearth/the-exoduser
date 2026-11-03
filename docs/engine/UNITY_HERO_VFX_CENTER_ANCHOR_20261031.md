@@ -64,7 +64,7 @@ UI 최종 Desktop 완료 전 Unity/Player/빌드/선예약0. 완료 후 최신�
 
 일반Desktop은 `I:/EXODUSER-Storage/demo-art/hero/night-anchor-20261031/build/EXODUSER-Unity.exe`, 인자 `-force-d3d11 --remodel3d`, 작업폴더는EXE부모·아이콘EXE,0이다. 이전게임대조소스bce000073이현재제품조상임을확인한뒤현재링크SHA를CAS검사하고이전링크동일byteI백업→전달→별도PowerShell프로세스4속성/Runtime·Core·EXE SHAreadback을완료했다. 앱자동기동/사용자세이브쓰기0. 근거 night-anchor-20261031/validated-adoption.json·desktop-delivery.json·desktop-readback.json. Mac실제반영/실행은pending, 전체아트RETOUCH및위생성씬이전byte복구미완료는유지한다.
 
-## 2026-11-02 Unity 설치형 지면 배치 후보
+## 2026-11-02 설치형 지면 배치 수정 진행
 
 사용자 요청으로 장판·지뢰·설치형 전체의 actor billboard/FootLift 오적용과 VfxWorld 지면 높이 미연결을 수정 중이다. 현재 후보는 실제 등록 바닥·목교·낮은 뿌리의 receiver depth로 좌표를 복원하고 sceneEye+.02-receiverEye>=0인 픽셀에 원화/링을 투영한다. 11-03 20:20 수정은 A2RootSurface receiver raster Offset만 원본 Forward와 같은-1,-1로 맞춘다(그 외0). 전역2cm 차폐/법선.2/수신범위는 유지하며 경사 Metal 재검수 대기다. CPU 적응면은 실제제품 Late>=96초 지연으로 폐기하고 표시 update의Tessellate/대량GroundY 조회를 제거했다. 원화·합성수식·피해/반경/시간·공중/중심형·flat보스방은 유지한다. 원SkillAdditive/Ki shader는1403 byte이며 새전용shader만사용한다. 324 C# 정적오류0/경고477. Mac 첫 흙 실제 투영/독립깊이와1920원본을 확인했다. 기존mode2 weight차는 강제비등방성 footprint를 무시한bilinear 참조로 분리했고, 같은허용2/255의GPU gradient/RGBA 대조·전체 설치형/시각·통합/설치는 진행 중이다. 정확한 범위·원래실패·측정은 [설치형 지면 배치](UNITY_GROUND_EFFECT_PLACEMENT_20261102.md)를 따른다.
 
@@ -77,3 +77,7 @@ UI 최종 Desktop 완료 전 Unity/Player/빌드/선예약0. 완료 후 최신�
 ## 2026-11-03 14:20 P0 보충 — 지면 강타의 billboard 예외를 대체
 
 위 중심 registry는2D/기존 이력이다. 3D 대지치기 wave/flash는이제 NativeGroundSkillSurface.Mark로 등록해 실제 지면·다리·수면에 수신깊이 투영한다. centered 카드의 lift0만으로는 카드 하단이 지면에 묻혀 반쪽이 가려지므로, NativeGame.Remodel3D의 공용 tilt를 통과하기 전에 Project가 처리한다. Core 중심·반경·프레임·45틱 수명·색/알파는 그대로다. 실제 Mac1920/3840 연속 처음~끝 검수는미완료이며 정적3/3을시각PASS로올리지않는다. 상세 [P0](UNITY_GROUND_AOE_P0_20261103.md).
+
+### 공통 줄기 병합 보존 기록 — 이전 PC 후보·후속 검수 이력
+
+사용자 요청은 장판·지뢰·덫·설치형 전체의 공중 배치 해소다. 11/03 PC 후보09192/Runtimesha b66fcf8c648d2f7ba126fe0fd14fe992c5a623c62798685e6a7b641a8e2c89d8 일반빌드오류0, 자동2D·별도명시3D M1 각각23/23·세이브0. 원본1x에서 붉은원이흙과목교상판에붙음을확인했다. 필수UI1395장교차후보147/누락0 FAIL과큰상세JSON소비자OOM으로배포회차ABORT, 사용자실행본131887/바탕화면unity-latest는아직미교체다. 기존스킬창·devtools담당의수정과새최종패키지검수·실제전달을계속한다. 실제3D근거/147원본/보고서/현재미검증범위는 [전용기록](UNITY_GROUND_EFFECT_PLACEMENT_20261102.md)을따른다. SourceWindows후보상태·자연플레이·최종설치완료를혼동하지않고 원full100/61·독립색참조/미관측한계를보존한다. 현재기능후보RETOUCH이며 H5/Core전투수식은본변경범위밖이다.

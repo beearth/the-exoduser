@@ -4,6 +4,10 @@
 
 상태(2026-11-03): **수정 후보는 존재하지만 사용자 PC 실행본에는 미반영인 전달 결함 확인**. PID28152의 unity-latest/build는 source1318877800c93d622f521af76fb54b1cf20b92d6, Runtime SHA256 2bad5c6c8ace951017cee6c3673921692bc2a2a309ca5b5b0d23f1fbc471ff0a이며 NativeGroundSkillSurface/NativeGroundSkillProjection 타입이 모두 없다. 사용자 새 붉은 원 스크린샷은 해결 증거가 아니라 기존 결함 재현이다. 최신 origin/unity/main1d89b0c186281d5641156c3c8610679dadca253e와 충돌 없이 정상 병합했고 최신 UI/사운드를 보존했다. 병합 후 Player Core117/Runtime224, Editor Core117/Runtime224/Editor57 소스 Roslyn 검사 오류0(완전 입력 검사)이다. 처음 두 검사는 희소 작업본의 기존 Rm4/Rm3 모듈 누락으로 실패했고, 원격과 동일 바이트의 필수 코드 입력 인수 뒤 통과했다. 실제 Unity/셰이더 검사는 별도다. 기존 Mac 표적 접지·수명·M1 결과는 아래 한정 범위로 유지하며 PC 새 패키지 검수/실행본 갱신은 아직 미완료다.
 
+### 공통 줄기 병합 보존 기록 — 이전 PC 후보·후속 검수 이력
+
+상태(2026-11-03): **PC 3D 접지 원본 확인·동일 후보 3D M1 23/23 PASS, 실제 Desktop 배포는 UI 검사에서 차단**. 최신 공통을 보존한 빌드09192f7bbc4650d9ba17408bf2de7cdd95c4f28d는 Windows x64 오류0/6,585,477,002B이며 Runtime b66fcf8c648d2f7ba126fe0fd14fe992c5a623c62798685e6a7b641a8e2c89d8에 접지 타입2개를 실포함한다. 사용자 실제 실행본131887780에는 해당타입이 없었던 전달 결함을 확인했다. 새 후보의 --remodel3d 실제 화면에서 붉은 가시원이 흙·목교 상판에 붙음을 확인했으나, 필수 UI1395장 교차후보147건/누락0과 큰 진단본문 ReadJson 메모리 오류로 자동회차가 ABORT·미교체됐다. UI 담당 경계를 지키며 후속 수정·새 최종패키지 검수·실행본 전달을 계속한다.
+
 ## 원인과 현재 적용
 
 공용 Remodel3DBillboards가 중심형 강타·악의구 외 SpriteRenderer 전부에 actor FootLift와 카메라 tilt를 적용했다. 설치형 중심 pivot에도 반높이가 더해졌다. VfxWorld도 별도로 y=0 TODO였다. 설치형 생산자가 Mark를 명시 호출하며 이름/정렬/속도0으로 추정 분류하지 않는다. Core·판정·반경·시간·원화 파일은 변경하지 않는다.
@@ -147,3 +151,7 @@ PC에추가수신한정상전층PNG3개는images-full-822/received.json의원본
 ## 2026-11-03 19:00 Mac FAIL 재작업
 
 대지치기 시트의 불투명 셀 경계는 `_GroundEdgeFeather=.04`인 본체만 원래셀 UV 가장자리4%에서smoothstep 감쇠한다. 기본0(원화그대로), 중앙섬광·링·다른장판0 유지. 이는 수신면을 잘라내거나 Core반경/16m투영상자를 줄이는 처리가 아니다. 새 실제3스킬·4지형 촬영, QA 배우숨김/원화경계 baseline 인자는 [장판P0 19:00 절](UNITY_GROUND_AOE_P0_20261103.md)을 따른다. Mac e96b137의 AOE-GATE FAIL은 새 GPU판정 전까지 유지한다.
+
+### 공통 줄기 병합 보존 기록 — 이전 PC 후보·후속 검수 이력
+
+범위: 환경 제작이 아닌 설치형 지면 표현·실행본 전달. Reference는 사용자 11/03 공중 원 스크린샷과 동일 후보의 PC 실제3D 원본이다. 09192 일반빌드 오류0, 자동2D M1 23/23·Repaint1074와 별도명시3D M1 23/23·Repaint1041·Runner0873d9df/exit0/세이브0/창0/잔여0을 분리한다. 붉은원은 실제흙과목교상판에눕고actor앞표시를유지한다. 3D원본은 ground-placement/20261103/candidate-09192-3d-m1-01/caps/09b-skill-spike-trap.png·09b-skill-holy-dome.png, 전후criticalSHA는 candidate-09192-3d-identity-after.json이다. 1395장/5해상도/ko,de,fr UI후속은 교차후보147/누락0 FAIL이며 겹침원본·작은summary/1.39GB상세보고서를 보존한다. 큰본문을읽은실행기OOM은제품GPU메모리오류와구분한다. 후보는본인run/unadopted-build에동일byte로보존하고 사용자build·lnk는미교체다. 게임설정17개typed일치/Unitytelemetry4개차이/registrywrite0, 원세이브파일변경0. VISUAL VERDICT: RETOUCH(가시원 접지 두 실제 지면 한정 확인, 전체설치형 자연전투·색상/밀집·최종설치 미완료).

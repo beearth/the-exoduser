@@ -1,8 +1,13 @@
 # UI 구성 개편 — 2026-09-25
 
+> 2026-11-01 현행 사용자 결정: **캐릭터 개수 제한 없음**. 웹·Unity 소스 후보에 적용했으며 실제 실행본 갱신은 별도다. 아래 과거 검수의 5슬롯/개발자 전용 무제한 기록은 당시 이력이다. 최신 코드·검증 범위는 [세이브 SSOT](../15 세이브+데이터구조/15 세이브+데이터구조.md)의 마지막 절과 `I:/EXODUSER-Storage/character-capacity/20261101-unlimited/REPORT.md`를 따른다.
+
+
+> 2026-11-02 시작 메뉴 현행: C2 tall Kling 영상·폭포 보강·중앙 cover로 교체. 타이틀의 과거 영상/확장판·암부 수치는 [스플래시 현행 C2 계약](스플래시_인트로_시퀀스.md#2026-11-02-현행--c2-큰-화면-kling-반복-영상)이 우선한다. 기존 로고·문자 메뉴·입력·안쪽 여백은 보존하며 첫 ENTER 게이트는 이번 교체 범위 밖이다.
+
 ## 2026-10-10 K 스킬 창 = Skill Forge — 현행
 
-`#skillPanel` 본문은 `#skillForge`(skill-forge.css/js, 3D skill-forge-3d.js·three r186)로 전면 교체. 13 키 슬롯 원형·합성 제단·로드맵·트레이, 구 카드형 본문과 `#skSlotBar`는 숨김(폴백 `?skillForge=0`). 상세·검수: [SKILL_FORGE_20261010.md](SKILL_FORGE_20261010.md). 아래 2026-09-27~28 스킬 작업공간 절은 구 카드형 창 이력이다.
+`#skillPanel` 본문은 `#skillForge`(skill-forge.css/js, 3D skill-forge-3d.js·three r186)로 전면 교체. **2026-10-31 현행: 16키 슬롯(기존13+구르기/X/T), 설명270px·내용 높이, 빈 로드맵 접기, 초광폭 사이드는 실제 끝·중앙 최대1800px.** 떠다니는 구슬+합성 전류·기존 원화/표면 유지. 구 카드형 본문과 `#skSlotBar`는 숨김(폴백 `?skillForge=0`). 상세·검수·기존 치수의 대체 범위: [SKILL_FORGE_20261010.md §12](SKILL_FORGE_20261010.md#12-공간-재배분고정-기술-표시-2026-10-31-사용자-지시). 아래 스킬 작업공간·quiet-tier 수치는 날짜별 제작 이력이다.
 
 
 ## 2026-10-02 공통 제목 명패 S/M/L — 현행 SSOT
@@ -345,7 +350,7 @@ POE2 설정 화면과 Diablo IV 장비 화면을 참고한 최신 표현 계약�
 | 제목판 | 제목 컨테이너 선·배경·그림자 제거. 제목판 ::after는 1px #806944 단일 선, #3c3422→#191b12 배경, 외부0 3px5px 그림자. border-image 제거 |
 | 설정 본문 | 1px #716047 선 하나. outline/inset 그림자 제거. 기존 패딩과 스크롤 유지 |
 | 인벤 헤더 | 제목과 정보행을 한 열 grid로 분리. 제목 폭100%/최소88px/padding54px 12px 8px. 중앙 문장204×68px. 제목판 top53/좌우24%/bottom0, 폭560px 이하 좌우18% |
-| 정보행 | 전투력·악의·닫기 정렬. gap8px/padding0 4px 8px/아래선1px #65583f. 전투력·악의의 중첩 박스 삭제. 문장과 충돌하지 않음 |
+| 정보행 | 전투력·악의오브·닫기 정렬. gap8px/padding0 4px 8px/아래선1px #65583f. 전투력·악의오브의 중첩 박스 삭제. 문장과 충돌하지 않음 |
 | 장비 구획 | 섹션 선1px #65583f, 중복 inset선 제거. 슬롯 안쪽 iskin 등급 그림자 제거, 바깥 슬롯 희귀도 테두리 유지. 슬롯 음영 inset0 2px5px, 라벨#e0d2b2 |
 | 캐시 | ui-refinement.css?v=20260927-4, 게임 두 HTML 및 로비 동기화 |
 
@@ -702,11 +707,11 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 공통 등급 | _itemEconomyRarity(r): 0 이상 정수이면 min(r,4), 나머지는0. 아이템 rarity 자체는 변경하지 않음 |
 | 사용 위치 | salvageVal 기본액·강화 환수, enhCost, 장비 교체 시 old._enhRefund 계산 |
 | 유니크 기준 | 기존 최상위 경제 등급4를 사용: 기본 분해50,000/강화배율1.8. 일반~전설 값 변경 없음 |
-| 유골함 | tier0/enh0/_enhRefund없음인 기본 전대의 유골함:50,000 악의. 표시·개별분해·일괄분해 모두 salvageVal 공유 |
+| 유골함 | tier0/enh0/_enhRefund없음인 기본 전대의 유골함:50,000 악의오브. 표시·개별분해·일괄분해 모두 salvageVal 공유 |
 | dropItem | 없는 아이템·fav 잠금은 false. 지급액 비유한/음수이면 삭제·지급 없이false. 정상 삭제/저장 후true를 반환해 기존 onclick의 renderInv 실행 |
 | 상세 마감 | 빈 출처행 숨김,조작안내 받침,장착버튼 하단색,12px·34px최소높이·한줄 금속판 버튼,스크롤 거터. hover해도 선택/분해 테두리 유지 |
 
-앞선 슬롯과 상호작용 마감 절에서 기록한 유골함 분해 NaN 미해결 항목을 해결한다. 실제 소지품 화면의 유골함 선택에서 분해(악의 +50000) 표시를 확인했다. 아이템을 실제로 삭제하는 분해 동작은 실행하지 않았다. 기존 저장 데이터의 이미 손상된 악의 잔액은 이 변경으로 추정 복원하지 않는다. 자동 테스트 추가·실행 없음. 캐시 ui-refinement.css?v=20260927-4.
+앞선 슬롯과 상호작용 마감 절에서 기록한 유골함 분해 NaN 미해결 항목을 해결한다. 실제 소지품 화면의 유골함 선택에서 분해(악의오브 +50000) 표시를 확인했다. 아이템을 실제로 삭제하는 분해 동작은 실행하지 않았다. 기존 저장 데이터의 이미 손상된 악의오브 잔액은 이 변경으로 추정 복원하지 않는다. 자동 테스트 추가·실행 없음. 캐시 ui-refinement.css?v=20260927-4.
 
 
 ### 스타일 수치 원본
@@ -810,7 +815,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 항목 | 현재 계약 |
 |---|---|
 | 인벤토리 제목판 | 직계 헤더의 .ptitle display:none. 제목 이미지와 가상요소도 표시하지 않음 |
-| 정보행 | 전투력/악의/닫기 유지. gap0, margin4px 0 8px |
+| 정보행 | 전투력/악의오브/닫기 유지. gap0, margin4px 0 8px |
 | 높이 배분 | 장비 탭 inv-wrap 첫 행270px, 가방 행 minmax(min-content,1fr). invCenter height:auto/min-height260px,invGrid height140px/flex1 1 140px. 필터 높이를 반영하며 나머지 높이는 가방에 배정. 작은 화면은 기존 바깥 세로 스크롤 사용 |
 | 적용 범위 | 인벤토리 내부 장비/유골함/보석/보관함 페이지 공통. 다른 메뉴 제목 유지 |
 
@@ -1423,7 +1428,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 항목 | 현행 규격 |
 |---|---|
 | 사용자 지시 | 기존 좌상단 EXODUSER 이미지 로고를 캐릭터 목록 위 중앙으로 이동. 별도로 추가했던 게임명 텍스트 제거 |
-| DOM | index.html의 .lobby-divider 안에 img.lobby-brand-logo, src=img/logo_exoduser.png, alt=EXODUSER, draggable=false |
+| DOM | index.html의 .lobby-divider 안에 img.lobby-brand-logo, src=img/logo_exoduser_solid.png, alt=EXODUSER, draggable=false |
 | 문양 제거 | 해당 구분영역 background:none, opacity:1, flex 중앙정렬. 큰 배경 문양 유지 |
 | 헤더 | 기존 좌상단 로고 래퍼 제거. .lobby-header는 justify-content:flex-end, min-height:48px로 언어·계정 영역 정렬 |
 | 로고 규격 | display:block, height:100%, max-height:100%, max-width:100%, width:auto, object-fit:contain |
@@ -1616,7 +1621,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 공통 실패 UI | 현재 요청 번호일 때만 _showCreateFailure(name,message) 호출:버튼 잠금 해제,이름 보존,setStatus 오류,생성창 show,이름 입력 초점 |
 | 예외 | 기존 서버→localStorage 폴백 바깥에 저장 예외 처리 추가. getItem/setItem 용량·접근 예외 시 재시도 UI, finally에서 버튼 잠금 해제 |
 | 중복 보호 | 오프라인 버튼 override도 disabled이면 재진입 차단. localStorage hellsave_demo_0~4를 먼저 조사해 같은 이름이 있으면 빈 슬롯이 있어도 저장 없이 중단 |
-| 기존 제한 | 폴백5슬롯 유지. 가득참·중복 이름·명시적 서버 생성 실패 모두 공통 실패 UI로 복귀. 기존 캐릭터 삭제·덮어쓰기 없음 |
+| 기존 제한 | 2026-11-01 후보는 폴백 슬롯 수 제한을 제거. 중복 이름·실제 저장 오류·명시적 서버 생성 실패는 공통 실패 UI로 복귀. 기존 캐릭터 삭제·덮어쓰기 없음 |
 | 테스트 | 버튼/직접 경로×용량 예외/슬롯 가득참/중복 이름6건 추가. 중복은 첫 슬롯 동일 이름·나머지 빈 슬롯으로 확인. 저장 실패 시 스토리0회,기존 데이터 쓰기0회(용량 오류의 실패 시도1회) |
 | 검증 | 생성·삭제·스토리37개 통과, 보강한 중복 fixture 포함6건 재통과,inline4개 구문 통과. 수정 전 신규6건 실패. 모의 API/localStorage만 사용. tmp/lobby-offline-retry/changes.patch |
 
@@ -1915,7 +1920,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 항목 | 현행 계약 |
 |---|---|
 | 카테고리 | `renderSkillPanel()`이 4개 대분류 탭을 `#skillCategoryNav`에 렌더한다. 이 줄은 `.frame-inner-panel-stack` 첫 행에서 스킬 목록 스크롤 밖에 고정된다. 카테고리 전환과 강조는 기존 동작을 유지한다. |
-| 레벨·자원 정보 | `#skillInfo`(LV/SP/악의/사슬)는 `#skillGridWrap`의 첫 자식이다. 휠로 목록을 내리면 요약도 스킬 카드와 함께 위로 이동한다. |
+| 레벨·자원 정보 | `#skillInfo`(LV/SP/악의오브/사슬)는 `#skillGridWrap`의 첫 자식이다. 휠로 목록을 내리면 요약도 스킬 카드와 함께 위로 이동한다. |
 | 스크롤 경계 | `#skillGridWrap`과 우측 `#skillDetail`만 각각 내부 스크롤한다. 높이 620px 이하에서도 바깥 `.skill-pbox`는 스크롤하지 않고 중앙 영역이 남는 높이를 사용한다. 게임패드 기본 스크롤 대상도 `#skillGridWrap`이다. |
 | 연결·검증 | `skill-workspace.css?v=20260928-fixed-categories5`를 사용한다. 1940×1158, 970×579, 390×844에서 휠 후 탭의 화면 y좌표 유지, 정보 y좌표 감소, 목록 scrollTop 증가, pageerror 0을 확인했다. 스킬 데이터·레벨업·합체·저장 형식은 변경하지 않았다. |
 
@@ -2432,7 +2437,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | _lobbyCardLeaf | 지정한 카드 내부 셀렉터의 children.length===0일 때만 textContent 변경. 부모 컨테이너·이미지·하위 DOM 보존. 삭제 버튼은 title 속성만 갱신 |
 | _lobbyCharacterCardLabel | 기존 CHAR_VISUALS 직업/클래스와 _formatLobbyStageProgress(stage,_TL) 재사용. .char-cls/.char-info/삭제 title 번역. 사용자 저장 이름, charIdx, 레벨, 스테이지 유지. 로컬 구분자 · /온라인 구분자 | 유지 |
 | _lobbyDemoCardLabel | 표시 이름은 KO 묘왕 바르칸 / 그 외 Varkan, the Tomb King, 표제는 전대 소환 / ANCESTRAL SUMMON. 기존 렌더에서 캡처한 진행으로 레벨·Stage 1-1·처치·브라우저 저장 안내 재번역. 초기 Lv.1 START · Stage 1-1 · Lv.100 Cap 유지. 언어 전환 중 세이브 다시 읽기/쓰기 없음 |
-| _lobbyNewCardLabel | 새 캐릭터/슬롯 가득참 및 기존 최대 개수 안내 재번역. 기존 공개5개·개발 Infinity 제한 유지. 가득찬 비활성 카드도 콜백 등록하되 버튼/생성 이벤트를 새로 만들지 않음 |
+| _lobbyNewCardLabel | 2026-11-01 후보: 캐릭터 개수 제한 없이 새 캐릭터 라벨만 재번역. 개수에 따른 비활성/최대 표시는 제거, 기존 노드·초점·번역 키 유지 |
 | 상태 보존 | 같은 카드·선택 버튼·이미지·초점 유지. _selectedSlot/_selectedSlotName/_slotScrollIdx/_onlineScrollIdx/_characterLoadSeq 변경 없음. 번역 카탈로그 신규 키·전투/저장 형식 변경 없음 |
 | 회귀 | test/lobbyCardLanguage.test.js 신규11건: 데모2·온라인/로컬2·생성/가득참3·중첩 노드2·초기 적용1·기존 문자열 호환1. 원본7실패/4통과→수정 후11통과. $ 없는 초기화 검사도 수정 전1실패/10통과. 관련 통합239건 및 inline script4개 구문 통과 |
 | 실제 언어 검증 | 960×540/1920×1080에서29언어×데모1·로컬 생성가능/가득참2·온라인 생성가능/가득참2=290조합. 동일 카드/버튼/이미지·선택·스크롤·초점 보존 및 가로 넘침 없음, pageerror0. 생성/삭제 저장 요청0 |
@@ -2714,7 +2719,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 
 | 대상 / id | 현행 구현·검수 |
 |---|---|
-| 사용자 기준 | 획득 배지가 없으면 HUD에 배지0/3·빈 버튼·자리 표시를 남기지 않는다. 지역 처치·악의 수치를 가리지 않는다 |
+| 사용자 기준 | 획득 배지가 없으면 HUD에 배지0/3·빈 버튼·자리 표시를 남기지 않는다. 지역 처치·악의오브 수치를 가리지 않는다 |
 | 표시 조건 | tutorial-badges.js의 init에서 button.hidden=true로 시작. render에서 count=Object.keys(earned).length; count===0이면 button/panel hidden=true 및 aria-expanded=false. 1~3개 획득·복원 시 button.hidden=false. 언어 갱신에도 같은 조건 적용 |
 | 모음 열기 | toggle(open)은 button.hidden이면 열기를 거부하며 숨긴 버튼에 focus하지 않는다. 배지가 있으면 기존 닫기 초점/버튼 복귀·aria-expanded·3개 카드 정책 유지 |
 | 위치 | button과 collection을 #mmLvl의 자식으로 연결. 둘 모두 position:absolute/right0/pointer-events:auto; 버튼 top:calc(100% + 8px),모음 top:calc(100% + 46px). 상태창의 기존 크기·UI배율·safe-area 이동을 따라가며 수치 행과 겹치지 않음 |
@@ -2824,10 +2829,10 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | id / 적용 위치 | 현재 계약 |
 |---|---|
 | 예약 시작 | index.html showCharGate(charId,storySeen=false) 진입 시 const request=_characterLoadSeq 캡처. 이 함수는 요청 번호를 증가시키지 않는다 |
-| 예약 실행 | 기존 setTimeout 1200ms 유지. callback 첫머리에서 request!==_characterLoadSeq이면 return. 같을 때만 기존 window.location.href 대입 |
+| 예약 실행 | 공통 fadeOut500ms 완료 뒤 request===_characterLoadSeq를 재확인해 ScreenTransition.navigate로 이동. 취소하면 fadeIn으로 복귀 |
 | 기존 취소·재요청 | _goLogin/_goCinematic 및 loadCharacters/loadLocalCharacters의 기존 ++_characterLoadSeq가 이전 예약을 무효화. 새 취소 writer나 timer clear·debouncer 없음 |
 | 반복 요청 의미 | 요청 번호가 달라진 두 예약은 실행 순서에 관계없이 새 번호만 이동. 같은 번호에서 두 번 호출한 경우 두 callback 모두 허용하는 기존 R 의미 유지 |
-| 정상 경로 | offline test slot 인코딩, online char/선택 slot 이름, demo의 slot=demo&demo=1, storySeen의 story=warrior-v21 suffix 유지. 1200ms/로고 preload/선택·remaster 변경 없음 |
+| 정상 경로 | offline test slot 인코딩, online char/선택 slot 이름, demo의 slot=demo&demo=1, storySeen의 story=warrior-v21 suffix 유지. 로고 preload/선택·remaster 유지. 1200ms 고정대기는 SCREEN_TRANSITIONS_20261102.md의 공통500ms 경계로 대체 |
 | 부수효과 경계 | demo 활성화·loading·로고 preload는 기존처럼 예약 전에 수행. stale callback은 이동만 중단하며 기존 activation·loading을 되돌리지 않는다. demo 활성화 실패는 기존 hideLoading/오류/예약0 유지 |
 | 새 검수 | 격리 실제 showCharGate/직접 callback의 정상URL·demo실패·늦은취소·서로 다른 요청의 양쪽 실행순서·같은번호반복·가드외본문불변6묶음 PASS. 해당 inline script1개 구문 PASS. 전체 Startup/실브라우저·사용자 save/API 실행은 아님 |
 | 보호 범위 | 3387/classic/ch1Three/ch1Rig/webgpu carry 미채택. MAP·package·패링별도dependency·game-easy-test/Godot/HUD 변경0. PC/잔여R전체이식 미완료 |
@@ -2963,15 +2968,15 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 
 중앙980×780, 좌측 가방/우측 선택 수익·악의·자동 규칙, 하단 파괴 행동/취소 확인을 분리했다. 기존 hell_gothic frame/crest, 흑철·뼈색#dfd6c2·금빛 hairline·붉은 위험 버튼을 사용한다. 최신 사용자 지시대로 전 controls의 기본 font는 hell(명조), 제목/숫자는 cinzel_hell이며 sans를 쓰지 않는다. 한글 첫 행 glyph를 scroll 경계에서 잘리지 않도록 12px inset, check/행 버튼은 수직 중앙 정렬. 추가 UI emoji0(아이템 name emoji도 표시 제외), 번역3338–3366 등록.
 
-G/Esc·확인/취소·잠금/장착 보호 및 실제 wallet/INV readback은 검수했다. 실제 GUI1920×1080 선택/확인/결과 전체3장과 unscaled crops9개는 ~/exoduser-wt/_out/demo11-28/captures/. 첫 oversize art 실패와 후속 retouch도 보존했다. 맥북총괄 눈 검수 대기이며 최종 시각 승인으로 간주하지 않는다. [범위/캡처/검증](../engine/orders/reports/demo11-28_REPORT.md).
+G/Esc·확인/취소·잠금/장착 보호 및 실제 wallet/INV readback은 검수했다. 실제 GUI1920×1080 선택/확인/결과 전체3장과 unscaled crops9개는 ~/exoduser-wt/_out/demo11-28/captures/. 첫 oversize art 실패와 후속 retouch도 보존했다. 맥북총괄 눈 검수 대기이며 최종 시각 승인으로 간주하지 않는다. [범위/캡처/검증](../_archive/engine/orders/reports/demo11-28_REPORT.md).
 
 ### DEMO11-28 RETOUCH — 미연결 섹션 숨김·희귀도 표식 (2026-10-21)
 
-이 절이 위 native 분해 초기 캡처 설명보다 우선한다. 자동 분해/연결 대기 섹션을 제거하고 게임 문구에 개발 상태를 노출하지 않는다. 저장 실패는 일반 오류로, 분해 불가 장비는 플레이어 관점으로 표시한다. 아이템명은 뼈색#dfd6c2, 원본 rarity palette는 왼쪽3px 표식과 등급명으로 전달한다(기존 웹 INV borderLeft G50299 재사용). 흑철/금빛선/hell·Cinzel/확인 대화상자·레이아웃 크기는 유지한다. 새 1920×1080 3장·1x9크롭은 `_out/demo11-28/retouch/captures/`, 맥북총괄 눈 검수 대기. [RETOUCH 보고서](../engine/orders/reports/demo11-28_RETOUCH_REPORT.md).
+이 절이 위 native 분해 초기 캡처 설명보다 우선한다. 자동 분해/연결 대기 섹션을 제거하고 게임 문구에 개발 상태를 노출하지 않는다. 저장 실패는 일반 오류로, 분해 불가 장비는 플레이어 관점으로 표시한다. 아이템명은 뼈색#dfd6c2, 원본 rarity palette는 왼쪽3px 표식과 등급명으로 전달한다(기존 웹 INV borderLeft G50299 재사용). 흑철/금빛선/hell·Cinzel/확인 대화상자·레이아웃 크기는 유지한다. 새 1920×1080 3장·1x9크롭은 `_out/demo11-28/retouch/captures/`, 맥북총괄 눈 검수 대기. [RETOUCH 보고서](../_archive/engine/orders/reports/demo11-28_RETOUCH_REPORT.md).
 
 ## 2026-10-21 LOBBY-01 native 생성 화면
 
-Godot 시연판 생성 화면은 웹 CHAR_VISUALS의 원본 5인 초상·전사 원화를 동일 byte로 재사용한다. 기존 Hell Gothic hell/hell_title·뼈색·흑철·금선·붉은 행동 버튼 계약을 유지하며, 웹 UI의 CSS·동작은 바꾸지 않는다. 대형 초상/소개/잠긴4인 벡터 자물쇠/이름/생성·취소의 실제 native 규격과 검수는 [LOBBY-01](../engine/LOBBY_01_20261021.md)에 기록한다.
+Godot 시연판 생성 화면은 웹 CHAR_VISUALS의 원본 5인 초상·전사 원화를 동일 byte로 재사용한다. 기존 Hell Gothic hell/hell_title·뼈색·흑철·금선·붉은 행동 버튼 계약을 유지하며, 웹 UI의 CSS·동작은 바꾸지 않는다. 대형 초상/소개/잠긴4인 벡터 자물쇠/이름/생성·취소의 실제 native 규격과 검수는 [LOBBY-01](../_archive/engine/LOBBY_01_20261021.md)에 기록한다.
 
 
 ## 2026-10-23 SWEEP-B2 네이티브 웹 동일화
@@ -2986,4 +2991,193 @@ Godot 시연판 생성 화면은 웹 CHAR_VISUALS의 원본 5인 초상·전사 
 | 성장 | 중심44/54px (패시브 원형·스탯radius9)·원점27px/별17px, 경로1.35/학습2/선택2.5px. 시각 잔차 미완료 | growth-tree-detail.css |
 | 설정 설명 | 원본245.28125px카드·184×44.78125px설명, deferred size. 일부 한글 줄 경계 잔여 | ui-refinement.css1182–1185 |
 
-전체 시각 동일 완료가 아니다. 항목별 판정과 테스트는 [SWEEP-B2](../engine/SWEEP_B2_20261023.md), 정본 상태는 [PC 인수표](../engine/PARITY_SWEEP_B_PC_20261022.md).
+전체 시각 동일 완료가 아니다. 항목별 판정과 테스트는 [SWEEP-B2](../_archive/engine/SWEEP_B2_20261023.md), 정본 상태는 [PC 인수표](../_archive/engine/PARITY_SWEEP_B_PC_20261022.md).
+
+## 2026-10-27 첫 화면(타이틀·ENTER) 재디자인 기록
+
+| 항목 | 내용 |
+|---|---|
+| 진단 | 로고 RGB 검정판(런타임 키잉 실패 시 검은 사각형)·검이 U를 관통해 EXODIUSER로 읽힘·화면 전체 무채색·로고와 문 분리·첫 화면과 로비 로고 불일치 |
+| 결정 | 후보 A/B/C 중 사용자가 **C(지옥왕의 관)** 선택, 로비 로고도 C로 통일 |
+| 로고 파일 | `img/logo_exoduser.png` 1551×740 RGBA(첫 화면·로비 `.lobby-brand-logo`·게이트 `#chGateImg`·인트로 컷 `#cinImg19`·`game.html` 타이틀 컷 공용). 이전 해골 로고는 `img/logo_exoduser_v1_skull.png` |
+| 첫 화면 구성 | 로고=문 아치 위 여백·프레임 폭 46%·위 1/3, 로고 뒤 진홍 후광(알파 ≤.15)+검정 drop-shadow, 문 상부 어둡게, 문 가운데 틈에만 진홍 빛줄기(알파 .26), ENTER=녹슨 황동 RGBA, 펄스 진홍·약하게 |
+| 규칙 | 로고 이미지는 항상 RGBA로 굳혀서 쓴다(런타임 캔버스 키잉·밝기 키 금지 — 어두운 철 면이 같이 지워짐). 하이라이트는 진홍·잉걸불, 흰·중성 회색 금지 |
+| 로비 | `.lobby-divider` 높이 104→148px(index.html 507행, 761px 이상 높이)로 키워 1920·1600 모두 로고 폭 310px. 문구·찜 블록과 겹침 없음. 미검증: 캐릭터 목록이 있는 로비 화면 |
+| 상세 | `docs/cinematic/ENTER_ENGRAVED_20260907.md` §2026-10-27 개정, `docs/17게임아트팀/ART_TEAM_MASTER.md` 현황표·로그 |
+
+## 2026-10-27 첫 화면 타이틀 메뉴 (와일드하트급 시안 채택)
+
+사용자 지시 "이 시안 그대로 실제 첫 화면에 넣어줘". 시안 = `E:/exoduser-wt/_out/title-menu/title_menu_mock.html`(디자인총괄). 레퍼런스는 Wyldheart 타이틀(금속 로고 + 반투명 판 버튼 세로 줄)이고, 색·글꼴은 이 게임 기준으로 바꿨다.
+
+| 항목 | 내용 |
+|---|---|
+| 위치 | `index.html` 스플래시 3단계(타이틀 영상 `video/title_motion_20261028.mp4` 위, 2026-10-28 교체 — 이전 `title_motion_hd_20260929.mp4`). `#splashTitleUI` > `#splashTitleStage`(1920×1080 무대, `min(w/1920,h/1080)` 축소·가운데) |
+| 제거 | 옛 SVG 세리프 제목 `#splashTitleBrand`(EXODUSER·HELL LORD·THOSE WHO DEFY THE FALL)와 "아무 키나 눌러 계속" `#splashTitlePrompt` — 타이틀 화면에서는 아무 키로 넘어가지 않는다 |
+| 로고 | `img/logo_exoduser.png` 폭 760px, 무대 (92,118). 검정 drop-shadow 2겹. 2026-10-28부터 눈알 로고 A(1506×719, HELL LORD 부제 포함) — 아래 §2026-10-28 |
+| 어둠 | 왼쪽 기둥 방사형(알파 .62→0)+왼쪽 가로 그라데이션(.55→0, 55%)+바닥(.7→0, 26%)+가장자리 비네트(.55) — 로고·버튼 가독성용, 오른쪽 기사는 가리지 않는다 |
+| 버튼 판 | 440×52, 간격 9px, 무대 (252,548)부터. 양 끝 뾰족한 6각 판: 바탕 `rgba(13,10,9,.8)`, 바깥선 `rgba(164,147,115,.55)` 1px, 안쪽 4px 들여 `rgba(164,147,115,.17)`, 양 끝 마름모(황동 선) |
+| 선택 | 바깥선 `#c9a86a`, 판 가운데 진홍 방사 `#7a1610`(.62)→투명, 양 끝 마름모 `#b52e25` 채움, 글자 `#f3e8cf` + 진홍 그림자. 마우스 올림·↑↓/W S·패드 십자키/왼쪽 스틱으로 이동, Enter/Space/패드 A로 실행 |
+| 글자 | `'Nanum Myeongjo','Noto Serif KR','Noto Serif',serif` 500 20px 자간 .16em `#dfd6c2`. 긴 번역은 판 안(390px)에 맞을 때까지 자간 .04em → 17px → 15px(글꼴 로딩 끝날 때마다 다시 맞춤) |
+| 항목 | 게임 시작(→ 로그인/입장, 기존 "아무 키" 진행과 같음) · 인트로 다시 보기(`_goCinematic`) · STEAM 위시리스트 추가(데모 빌드만) · 게임 종료(NW.js/Electron 실행본만). 제작진·설정·이어하기는 아직 그 화면이 없어 넣지 않았다(가짜 버튼 금지) |
+| 아래 장식 | 마지막 버튼 12px 아래 금빛 헤어라인 + 진홍 마름모 `#splashTitleRule`. 오른쪽 아래 빌드 표기 `#splashTitleBuild` = `DEMO/EARLY ACCESS/OFFICIAL · v버전` + `FOR DEAR GAMERS`(Cinzel 12px) |
+| 번역 | 신규 3개 No.3386~3388, `_TITLE_MENU_I18N` 28개 언어 |
+| 검수 | 1920·1600 실제 index.html 캡처, 1x 크롭(기본·선택 이동), hu/bg/en/ar 언어별 판 안 맞춤 확인, 키보드 이동·Enter 진행·인트로 진입·빈 곳 클릭 무시, pageerror 0. 미검증: 실제 NW.js 실행본의 종료 버튼, 게임패드 실기 |
+
+## 2026-10-28 첫 화면 로고·배경 리마스터 (디자인총괄)
+
+사용자 지적: "엑소듀서 눈알 디자인 엠블럼 같은 건 이전이 더 좋은데 / 지금 건 촌스러운 것 같은데 / 한 차원 더 높은 디자인 수준". C안(지옥왕의 관, 주황 용암 균열 글자)은 흔한 모바일 RPG 로고 형태·평평함·흑백 배경과 따로 노는 주황 때문에 폐기.
+
+| 항목 | 내용 |
+|---|---|
+| 로고 | 눈알 로고(X=뿔 달린 악마 해골, O=가시 고리 속 붉은 세로 눈동자)를 OpenAI API `gpt-image-2` 편집으로 3D 리마스터. 시안 A(은빛 단조강)·B(흑철, 평평해 제외)·C(뼈·흑철) 중 **A 채택**(사용자 "둘 다 비슷" → 디자인총괄 결정: 은빛이 배경 하이라이트·은발과 이어짐). HELL LORD 부제가 그림 안에 들어 있다 |
+| 파일 | `img/logo_exoduser.png` = A, 1506×719 RGBA. 검정 배경을 `alpha=clamp((max(r,g,b)-6)/42)` + 역곱(언프리멀티플라이)으로 투명화, 알파 bbox+30px 여백. C안은 `img/logo_exoduser_c_crown_20261027.png`, 그 전 해골 로고는 `img/logo_exoduser_v1_skull.png`·`img/logo_exoduser_old_20260727.png`로 보존. 같은 파일을 쓰는 로비 `.lobby-brand-logo`·게이트·인트로 컷·`game.html` 타이틀 컷 로고도 함께 A로 바뀐다 |
+| 규칙 정정 | 위 10-27 기록의 "하이라이트는 진홍·잉걸불, 흰·중성 회색 금지"는 **로고에는 적용하지 않는다**. 로고는 은빛 금속이 주인공이고, 빨강은 해골 눈·눈동자 두 곳만 |
+| 배경 | 여캐는 그대로, 배경을 붉은 태양·절벽·핏빛 강으로 다시 그림 + Kling 4.0 영상. 상세 [스플래시_인트로_시퀀스.md §타이틀 영상 교체 (2026-10-28)](스플래시_인트로_시퀀스.md) |
+| 비용 | OpenAI API 로고 3장+배경 2장 약 $1.4, Kling 94크레딧 |
+| 검수 | 1920·1600·2560×1080·1280×1024 실제 index.html 캡처, 로고 1x 크롭. 미검증: 실제 NW.js 실행본, 로비 화면(캐릭터 목록 있는 상태)의 A 로고 크기 |
+
+### 2026-10-29 타이틀 초광폭 구도 분리 후보
+
+`index.html`의 화면비 `w/h>2` 타이틀 배경만 중앙 height-fit으로 바꾼다. 5120×1440 영상/정지 원화의 본그림은 `(1280,0,2560,1440)`에 두고 남는 양옆은 기존 정지 원화의 어두운 블러 캐시로 채운다. 1600×900은 이전과 동일한 `(0,0,1600,900)` cover이며 로고·메뉴의 실제 DOM 좌표도 변하지 않았다. 격리 1600×900·5120×1440 전후 1x와 영상 재생/실패 폴백·탭 숨김/복귀를 확인했고 pageerror 0(`I:/EXODUSER-Storage/design/title-wide-layout-20261029/`). CTO가 후보 `866887a500edcfef7ebf6143f51aab616355068b`의 소스·화면을 검수 인수한 **32:9 구도 한정 PASS**이며 H5 main 소스에 반영했다. 영상의 구름·강·태양 움직임, 전체 타이틀 RETOUCH, 실제 32:9 모니터·NW.js·DEMO/EA·배포 검수는 별도다.
+
+## 조용한 단계 — 설정 [ESC] 웹 반영 (2026-10-27)
+
+컨셉 5장 U13(두 밀도 단계)의 첫 적용. 시안 v1(`E:/exoduser-wt/_out/ui-quiet-tier/quiet_settings_*.png`)을 현행 [ESC] 창에 CSS로 옮겼다.
+
+| 항목 | 내용 |
+|---|---|
+| 파일 | 새 `ui-quiet-tier.css` 1개(범위 = `#settings` 안쪽만, 모든 규칙이 `#settings#settings.panel.ui-composed .pbox …`로 시작). `game.html` 변경은 `<link rel="stylesheet" href="ui-quiet-tier.css?v=20261027-settings">` 1줄(`inventory-gems-balance.css` 링크 바로 뒤, 마지막 스타일 링크) |
+| 바깥 | 바깥 이중 레일 `.pbox`·상단 탭바 `.panel-nav`는 그대로. 안쪽 바탕만 `linear-gradient(180deg,#100d0c,#151110)`(흑철 질감·장미창 제거) |
+| 제목(T7) | 큰 돌 명패 `.ptitle`(크레스트·명패 ::before/::after)를 분류 줄 + 세리프 제목 + 헤어라인으로 교체. 분류 줄은 `::before{content:'SETTINGS'}` 영문 고정(번역 불요), 제목 `800 40px var(--font-hell)` `#ebdaba`, 헤어라인 폭 120% `rgba(164,147,115,.5)`. "· 게임" 같은 하위 탭명은 붙이지 않는다(JS 복사 없음) |
+| 하위 탭(T1) | 돌 판 4개 → 글자 탭(18px `#b6a58f`), 선택 탭 `#ebdaba` + 2px 진홍 `#b0281c` 밑줄. 진홍은 "바깥 상단 탭 1곳 + 창 안 1곳(하위 탭 밑줄)"까지 |
+| 구역(T2)·행(T3) | 구역 제목 15px `#b6a58f` + 헤어라인, 행 48px(시안 값) 이름 왼쪽·조작 오른쪽, 행 사이 `rgba(164,147,115,.18)`. 페이지 제목 줄 `h3.ui-section-heading`은 숨김(사운드 탭만 구역 제목으로 표시), 게임 탭의 "시스템/게임 설정" 점프 버튼도 이 h3 안이라 함께 숨겨진다 |
+| 조작부(T4) | 드롭다운 38px `#0e0c0b` + 황동 헤어라인 + 벡터 화살표, 슬라이더 = 1px 레일 + 9px 마름모 손잡이(채움 없음), 체크박스 = 기존 `<input type=checkbox>`를 18px 정사각 + 켜짐이면 안쪽 10px 황동 마름모(SVG 배경). **새 글자 없음**("켜짐/꺼짐" 칩 안 씀) |
+| 버튼(T5) | 전부 테두리 칩(높이 40, 1px `rgba(164,147,115,.5)`). 위험 행동(게임 리셋·게임 종료·확인)은 `#6b2a20` 테두리 + `#c9a39a` 글자. 위험 구역은 구역명 없이 위 헤어라인(`#6b2a20`) + 22px 간격으로만 구분하고 게임 탭 맨 아래에 둔다 |
+| 카드(T6) | 캐릭터·커서 카드: 노랑 이름·금 테두리 제거, 선택 카드 = 1px `rgba(223,214,194,.8)` + 오른쪽 위 벡터 마름모(`clip-path`), 이름 `#dfd6c2`(선택 `#ebdaba`), 설명 14px `#8f8170` |
+| 레이아웃 | 게임 탭은 `#settings-system-options{display:contents}`로 자식을 페이지 그리드(2열, 열 간격 64px)에 올려 시스템·프리셋(왼) / 캐릭터 선택(오른) / 게임 설정(전체 폭 2열) / 위험(맨 아래, 리셋=왼 열·종료=오른 열)으로 배치. 화면 탭 = 화면 효과(왼) / 그래픽 품질(오른) / 하드웨어 진단(아래), 조작 탭 = 커서 / 키 설정 2열 |
+| 특이도 | 기존 규칙이 `:is(#settings,…) :is(.frame-inner-panel,#skillInfo)`처럼 ID 2개 + `!important`, 또 `#settings.panel .pbox #charSelectGrid>.settings-choice` 같은 ID 포함 선택자라, 선택자 앞을 `#settings#settings`(ID 2개)로 맞췄다. game.html 인라인 `style`(버튼 색·카드 테두리·이름 색 등)과 JS가 쓰는 인라인 값은 `!important`로만 덮을 수 있어 해당 속성에 `!important`를 썼다(전체 약 330곳, 모두 `#settings` 범위 안) |
+| 1600×900 | 현행처럼 본문 영역 내부 스크롤. 1920×1080 게임 탭은 스크롤 없이 위험 구역까지 보인다. 스크롤이 생기면 스크롤 영역 맨 아래 24px에 바탕색(`#141110`)으로 사라지는 페이드(`.settings-pages::after`, sticky·`pointer-events:none`, scroll-driven animation `qtScrollFade`)가 "아래가 더 있다"를 알리고, 스크롤이 없거나 맨 아래면 투명 |
+| 숨김 상태 | "화면 설정"(`#optScreenSection`)은 웹에서 인라인 `display:none`이라 그대로 숨김, 게임 리셋 확인 문구(`#resetConfirm`)도 숨김 상태 그대로 |
+
+### 번역 문자열에 붙어 있어 이번에 바꾸지 못한 기호(번역 작업은 따로)
+| 기호 포함 문자열 | 위치 |
+|---|---|
+| `✓ 선택됨` | 캐릭터 카드 `.settings-choice-selected`(`game.html` 48767행, 번역 키 7044행) |
+| `✓ 설정 자동 저장` | `#settingsAutoSaveLabel`(2889행, 번역 키 7226행, 49027행) |
+| `⌨ 키보드·마우스` · `🎮 게임패드` | 조작 탭 `.bind-mode`(48779행 배열) |
+
+### 검증(2026-10-27, headless·음소거·격리 save, 실제 game.html)
+- [ESC] 4탭 × 1920·1600 캡처 pageerror 0. 설정 저장 회귀: 체크박스 1개(보스 AI 디버그)·슬라이더 2개(난이도·효과음, 트랙 클릭)·언어 드롭다운(English) 변경 후 새로고침해도 값·`OPT` 유지.
+- 다른 패널(인벤토리·대장간·스킬·능력치) 반영 전/후 캡처 차이는 같은 상태 두 번 찍은 차이(랜덤 드롭·3D 합성 창)와 같은 수준이고, 능력치 창은 최대 12(밝기 0~255) 차이 1,449픽셀뿐.
+- 캐릭터 카드·슬라이더 채움: 슬라이더 채움(값 왼쪽 황동 선)은 CSS만으로 값을 알 수 없어 넣지 않았다(시안과 다른 점).
+- 미검증: 캐릭터 3명 이상일 때 카드 줄바꿈, 설정 값이 매우 긴 언어(아랍어 RTL·태국어) 레이아웃.
+
+### 유지보수 메모 (조용한 단계 — 설정)
+- `!important` 약 331곳은 기존 CSS(ui-refinement.css 1162~1300행대 등)와 game.html 인라인 style을 덮기 위한 것이다. 장기적으로는 기존 settings 규칙을 걷어내고 이 파일로 일원화하는 정리가 필요하다.
+- 그래픽 품질 선택 칩(`#gfxPresetRow button`)의 선택 상태는 JS가 인라인 style에 `border: 1px solid …`를 쓰는 것을 `[style*="border: 1px"]`로 매칭한다 — 인라인 문자열 형식에 의존해 취약하다. JS가 선택 칩에 `aria-pressed`나 클래스를 달도록 바꾸는 것을 권장(game.html 수정이 필요해 이번에는 하지 않음).
+- 새 글자: 분류 줄 `SETTINGS`(`::before` 영문 고정)뿐. 번역 목록에는 등록하지 않았다(영문 고정 관례).
+## 2026-10-27 STY-12 보스 한 줄 자막 `#bossLine` (game.html)
+
+보스 한 줄 대사 전용 자막. 펫 말풍선(`_petSay`)과 별개 UI이며 `#areaTitle` 계열 Hell Gothic 토큰을 그대로 쓴다. 이모지·산세리프 없음.
+
+| 항목 | 현재 계약 |
+|---|---|
+| DOM | `#bossLine`(`#areaTitle` 바로 뒤) > `#bossLineName`(화자=`_T(STG[G.stage].bn)`) + `#bossLineText`(대사). 리프 노드만 `textContent` 교체 |
+| 위치·크기 | `position:fixed` 하단 중앙 `bottom:19%`, `width:min(80vw,860px)`, `z-index:19`(`#stageClear` 25·`#demoEnd` 99 아래), `pointer-events:none` |
+| 표면 | 좌우 페이드 흑철 반투명 띠 `rgba(7,6,6,.74)`, 위·아래 1px 금빛 헤어라인 `rgba(164,147,115,.5)`, 그림자 `drop-shadow(0 5px 12px)` |
+| 글꼴·색 | 화자: `'Cinzel',var(--font-hell)` `clamp(.52rem,.72vw,.7rem)` 자간.32em `rgba(168,153,127,.72)`. 대사: `var(--font-hell)` `clamp(.95rem,1.4vw,1.3rem)` 자간.05em 뼈색 `rgba(223,214,194,.93)` |
+| 표시 | `.show` 애니메이션 `hudBossLine` 3.2s(14%까지 페이드 인·78%부터 아웃, 위로 4px). 재표시 시 class 제거→reflow→추가 |
+| 호출 | `_bossLine(key)` — 키 `intro0/sink0/die1/die2/die3` + 2장 `intro4/die4/die5/die6/die8/intro9/die9`(STY-15, 2026-10-28, `die7` 없음 — 사운드 처리). 등장·사망 트리거는 스테이지 범위 조건 없이 `_BOSS_LINES` 키 존재로 거르며(키 없으면 즉시 return), 아레나 진입(`_enterBossArena`) 시 `G._bossLineSeen` 초기화, 키별 1회. 보스 대사 5줄·번역: `번역대상_전체목록.md` No.3343~3349 |
+| 불변 | 순수 DOM — 보스 생사·`G.bossAlive`·출구 개방 틱과 무관(헤드리스 A/B 209/210틱·29틱 동일) |
+
+## 조용한 단계 — 스킬 창 [K] 웹 반영 (2026-10-27)
+
+설정([ESC])에 이은 두 번째 적용. 시안 v0의 "두 보기 분리"는 채택하지 않고(`skill-forge.js` 상태·전환 로직을 새로 만들어야 해 위험·범위가 큼), **한 화면 안에서 밀도를 나눈다**. 가운데 합성 제단(3D 링·구슬)·13칸 슬롯 줄·바깥 틀·상단 탭바는 무거운 단계 그대로이고, 좌우 읽는 판·제목·제단 명패·버튼만 조용한 단계다. 명세 `E:/exoduser-wt/_out/ui-quiet-tier/SPEC_QUIET_SKILLFORGE_20261027.md`(K1~K8).
+
+| 항목 | 내용 |
+|---|---|
+| 파일 | `ui-quiet-tier.css`의 `#skillPanel` 절(설정 절 뒤에 추가). 선택자는 `#skillPanel#skillPanel …`(ID 2개, 기존 `skill-forge.css`·`skill-workspace.css`·`ui-refinement.css`와 특이도를 맞춤). `game.html`·`skill-forge.js` 변경 없음, `build-nwjs.mjs` 목록 변경 없음(같은 CSS 파일) |
+| 제목(K2) | 큰 돌 명패 "전투 스킬"(크레스트·명패 ::before/::after, `zoom:.78/.6`)을 분류 줄 + 세리프 제목 + 헤어라인으로 교체. 분류 줄은 `::before{content:'SKILL'}` 영문 고정(새 글자 없음, 번역 불요), 제목 `800 30px var(--font-hell)` `#ebdaba`. 줄어든 높이(약 43px)만큼 제단 상자가 커진다(`#skillForge`는 flex:1) |
+| 왼쪽 상세 판(K3) | `.sf-info`: 1px `rgba(164,147,115,.22)` + 바탕 `rgba(12,10,9,.72)`, 스킬 이름 `800 28px var(--font-hell)` `#ebdaba` + 헤더 헤어라인, Lv 줄 Cinzel 13px 보조색, 설명 `16px/1.75 #dfd6c2`, "강화 SP … / Lv50 도달 시 해금"은 2열 행(해금 조건 `#c9a39a`), 하단 `SP · 악의오브 · LV` 줄 Cinzel |
+| 오른쪽 로드맵(K4) | `.sf-road`: 같은 판 규칙, 제목 "합성 로드맵" = 구역 제목 서식(15px `#b6a58f` + 헤어라인), 행은 선만(왼쪽 2px 황동·행 아래 헤어라인), 진행 중/가능 행만 `rgba(172,121,83,.1)` |
+| 제단 명패(K5) | `.sf-field-head`(오른쪽 "넣을 수 있는 스킬 [LMB]")·`.sf-core-name`(왼쪽 모체 이름·★)에서 진홍 세로 막대·그라데이션 판 제거, 분류 줄 크기 글자 + 보조 문구. 진홍은 창 안에서 선택 슬롯 링 한 곳(현행 그대로) |
+| 버튼(K6) | `.sf-btn`(강화 +/−/리셋/분해/합성)·하단 `.pclose`(닫기·일괄 레벨업·추천 자동) = 높이 40 테두리 칩(`rgba(164,147,115,.5)`). 주 행동(`.sf-btn-fire`)만 `rgba(172,121,83,.18)`. 하단 버튼 줄은 `#skillForge{margin-bottom:18px}`·`.skill-close{margin:0 0 20px}`로 올려 바깥 틀에 걸려 잘리던 것도 정리 |
+| 건드리지 않은 것 | `#skillForge` 3D 캔버스·슬롯 원형·제단 링·구슬(`.sf-orb`)·드래그 고스트·슬롯 키/이름 글자 |
+| K8 스킬 그림 | v1 미적용. 조사 결과 **CSS만으로 가능**: 왼쪽 판 머리 `.sf-info-ico`(JS `skill-forge.js` 480행 `icon(head,id,'sf-info-ico')`, 이미지 URL은 53~57행 `iconUrl()` = 게임 `_skIcon()` 결과)가 이미 같은 `img/skillskin_upscaled/<id>.png`를 쓰므로, `.sf-info-ico`를 판 폭으로 키우는 것은 CSS만으로 된다. 원본 크기가 840×1024 27장 / 420×512 16장 / 210×256 11장 / 768×768 7장이라 2배 이내 확대 규칙(Q7)을 지키면 폭 약 420px까지, 왼쪽 판(폭 약 330px)에는 충분. 다만 판 높이가 줄어 설명·버튼이 아래로 밀리므로 별도 레이아웃 결정 필요. JS 수정은 불필요 |
+
+### 검증(2026-10-27, headless·음소거·격리 save, 실제 game.html)
+- 1920×1080·1600×900, 기검참(합성 계열 없음)·회복의 영역(로드맵 있음) 캡처 pageerror 0.
+- 회귀: 강화 +(기검참 Lv 1→2, SP 20→19)·강화 −(Lv 2→1, SP 복구), 구슬을 빈 슬롯으로 끌어 놓기(슬롯 2번에 얼음보주 장착), 일괄 레벨업(SP 20→11), 3D 제단 캔버스 1842×805 렌더(스크린샷 육안, 슬롯·구슬·전류 정상). 다른 패널 인벤토리·대장간·능력치는 반영 전/후 차이가 같은 상태 두 번 찍은 차이 이하.
+- 미검증: 합성 실행(제단에 재료 넣고 "합성" 칩), 합성 계열 완성 상태의 "분해" 칩, 영어·긴 글자 언어에서 왼쪽 판 줄바꿈, 한 줄에 칩이 많은 낮은 화면(1280×720)의 하단 버튼.
+- **백로그**: K8 스킬 그림 — `.sf-info-ico`가 이미 `skillskin_upscaled` 원본을 쓰고 있으므로(`skill-forge.js` 480행), 왼쪽 판 아래 빈 공간을 채우는 배치로 후속 검토.
+
+## 2026-10-28 실버 헬 2차 — 로비 전체·UI 색 토큰 교체 (index.html·game.html)
+- 최신 색 기준은 `DESIGN_CONCEPT_SILVER_HELL_20261028.md` §3 토큰이다. 이 문서의 이전 절에 남은 금·황동·주황 수치(예: 제목 `#e8c87a`, 강조 `#ff8a43`)는 **이력**이며 화면에는 더 이상 쓰지 않는다.
+- 전역 토큰(game.html `:root`): `--c-border:#3a3d3d` · `--c-border-hover:#727575` · `--c-border-active:#c21a10` · `--c-accent:#c21a10` · `--c-accent-dim:#7a1410` · `--ui-metal:#2b2e2e` · `--ui-metal-hi:#9b9e9e` · `--ui-glow:rgba(194,26,16,.34)`. 테두리 = 흑철, 활성·강조 = 지옥의 눈 진홍.
+- 로비: 캐릭터 선택 제목·선택 아이콘·특성 메달 은빛, 캐릭터 특성 아이콘 = 은빛 선 SVG(`_TRAIT_SVG`), 선대 이름 은빛 + 진홍 빛무리, 언어 선택·가상 키보드·게임패드 초점 테두리 은빛.
+- 글꼴: 레벨업 제목·로딩 장 이름 = `var(--font-hell-title)`.
+- 변환 범위·보존 목록·검수 판정 전체: `DESIGN_CONCEPT_SILVER_HELL_20261028.md` §6.3.
+
+## 2026-10-29 — 실버 헬 원화 UI 1차 (사용자 "손그림이냐", "그림판으로 만든거냐", "퀄리티는 항상 최상")
+
+CSS 선·도형으로 그린 판·버튼을 생성 원화로 교체했다. 모두 gpt-image-2.5-sunburst images/edits(참조 = 눈알 로고 A·첫 화면 인장), 은빛 단조강 + 진홍 보석, 점·금·보라 없음, 1x 확인.
+
+| 자산 | 크기 | 쓰는 곳 | 방식 |
+|---|---|---|---|
+| `assets/lobby/lobby_enter_btn_silver_20261029.png` | 1536×576 | 로비 `#enterGameBtn` img | 원래 보라 ENTER 원화를 같은 형태로 리마스터(육망성 → 일곱 고리·끊어진 사슬 인장). 바탕만 투명(가장자리 연결 검정 플러드 키), 비활성 = 흑백·어둡게, 호버 = 밝기 1.14 + 진홍 번짐 |
+| `img/ui/silver_hell/panel_frame_20261029.png` | 1024×768 | `.sh-panel.sh-framed` (첫 적용: 튜토리얼 `#introKeys .intro-key-panel`), 캐릭터 선택 `#csLeft`·`.cs-frame-box`(2026-11-02, slice150/60px/18px, SVG 선 테두리 대체) | 9-slice `150 / 75px / 24px stretch`, 검정 휘도 키(색 보정 포함). 4:3 근처 창용 |
+| `img/ui/silver_hell/btn_plaque_20261029.png` | 1024×198 | 튜토리얼 건너뛰기·다음 | 3-slice `0 174 fill / 0 40px`, 글자 Hahmlet 400 16px 뼈색 자간 .24em |
+
+다음: 같은 프레임·버튼판을 공통 창(설정·인벤·대장간 등)과 로비 패널로 넓힌다. 창 비율이 4:3에서 멀면 가운데 장식이 늘어나므로 가로형 프레임을 따로 만든다.
+
+
+## 2026-10-31 성장 창과 공통 다섯 창의 얇은 제목 띠
+
+사용자 statwindow-brief의 “머리 부분 축소·가운데 눈알” 지시에 따른 현행 계약이다. 이 절은 앞선 투구 문장+큰 제목판의 세로 적층 및 인벤토리 제목 숨김 규격을 대체한다. 상세 작업은 web-uiux.css, game.html의 해당 CSS 캐시 URL, tools/check-stat-window.mjs에 한정한다. 스킬 창은 제목 높이만 공통화하며 제단·슬롯·본문 담당은 codex-web-skillwin이다.
+
+| id / 적용 위치 | 현행 값·방법 |
+|---|---|
+| --web-ui-title-height / 설정·인벤토리·대장간·스킬·능력치 .ptitle | 높이·최소높이64px, zoom1, 최대폭520px/부모100%, Hahmlet300 22px/1.2, 자간.04em. display:grid, 행40px/24px, 가로·세로중앙 정렬, gap0, 위아래padding0·좌우12px, 아래margin0. 폭≤780은18px·gap0·좌우4px |
+| 제목 중앙 위의 원화 눈 ::before | title_eye_medallion_20261031.png, 256×256 RGBA. 첫째 grid행 중앙40×40px, relative, inset:auto·transform:none, z-index1, center/contain. 실제 투명 알파를 사용하고 CSS 마스크·screen 합성·밝기 필터 없음. 은색 음각 메달·연속 원형 림·세로 동공 하나 |
+| 제목 ::after | absolute, inset:20px 0 auto, 폭100%·높이1px·z-index0. 금빛 rgba(189,169,122,.65) 헤어라인이 중앙 ±26px 구간에서 끊김. 큰 투구와 제목판은 표시하지 않음 |
+| 성장 .growth-header | 높이·최소높이64px, padding0, 아래margin4px, gap16px, 한 줄. growth-kicker·growth-subtitle는 DOM/번역을 보존하고 숨김 |
+| 성장 .growth-wallet | 가로 정렬, 높이64px, gap12px, 좌우padding12px, 숫자24px/1.2. 좁은 화면은gap6px·padding6px·라벨11px. 기존 SP 숨김·AP 잔고 의미 유지 |
+| 성장 .growth-shell 배경 | 중복 눈을 만들던 gate_sigil 이미지 레이어 제거. 상부감광 #14131570→하부 #09090ae6 + 기존 iron.png 320px 반복 폴백. background-blend-mode:normal,normal |
+| 대장간 .pbox 배경 | 기존 #141315d9→#09090af2 감광·iron.png 320px 표면을 보존하고 큰 eye_crest 이미지 레이어만 제거 |
+| 인벤토리 | 제목64px, 폭auto·오른쪽margin16px·20px. 제목 포함행 최소64px, 기본nowrap·폭≤780 wrap. 기존 전투력/악의/닫기 보존 |
+| 캐시 | game.html web-uiux.css?v=20261031-round-medallion |
+| 원화 근거 | 보정2의 명시적 내장 이미지 편집 허용에 따라 gate_sigil_20261028.jpg를 참조해 투명 원형 메달 1장 생성. 검은 세로 동공·동심 고리·은빛 림을 유지. 생성 원본1254×1254 RGBA를256×256으로 축소. 기존 미채택 성장나무/스탯서랍 반입 없음 |
+
+제작 전 직접 열람: 20261028_growth_tree/current_1920.png, 20261028_stat_summary/runtime_1920.png, gate_sigil 및 eye_crest 원본. 목표는 머리 장식보다 트리·양쪽 정보를 우선하고, 1x 제목·노드 가독성을 유지하는 것이다. 조기 실물 판정은 1920×1080의 머리/본문 높이와 인장 바탕 경계이며, 머리/본문·제목/AP 충돌 또는 가로 넘침·노드 잘림이면 FAIL로 되돌린다.
+
+검수 증거·최종 수치: G:/exoduser/tmp/design-review/20261031_stat_window/REPORT.md와 geometry.json. 강제 보스 테스트 상태·격리 API·headless 브라우저 검수이며 자연 플레이/Unity/NW.js/DEMO·EA 배포 검수와 구분한다. 같은 해상도의 전후 전체 화면과1x 크롭을 직접 판정한다.
+
+## 2026-10-31 악의오브 최종 정정
+
+화폐를 악의오브 / Orb of Malice로 개명하고 내장 imagegen의 둥근 유리 오브 4단계를 HUD·대장간·스킬 창·툴팁·획득 합체 연출에 연결했다. 색·구간·파일·픽셀 규격과 실패 폴백은 [화폐 SSOT](../3.2메타·진행시스템/CURRENCY_RENAME_20261031.md)를 따른다. 32/48px 원화와 실제 HUD 1x 판정 보드는 G:/exoduser/tmp/design-review/20261031_malice_orb/review-board.png. 웹의 UI 검수와 Unity 컴파일·Player/M1은 별도이며 최종 증거·원격 SHA는 I:/EXODUSER-Storage/demo-art/currency-rename/REPORT.md에 남긴다.
+
+### 2026-10-31 CTO 최종 보정 — 제목 중앙 눈의 1x 가시성
+
+statwindow-brief 마지막 보정만 수행한다. 시작 원격/HEAD는 9f5db2ac6223cd1696870865057f37721922ecae, tracked INDEX/WORK는 깨끗했다. 직접 본 gate_sigil 원본·현재 1920/3840의 다섯 창에서 왼쪽 치우침과 낮은 휘도 마스크를 확인했다. 목표는 통과한 44px 머리를 유지하며 제목 바로 위 중앙에 금속 눈을 분리 표시하는 것이다. 기존 원화의 눈 중심을 CSS로 확대해 screen 합성하며 신규 이미지·유료 생성은 없다. 눈/제목 중심 불일치·눈과 글자/탭 충돌·1x 동공 불명료이면 FAIL이다. 실제 브라우저 전후 전체·1x와 수치/기능 판정, 최신 원격 SHA는 I:/EXODUSER-Storage/codex-web-statwin/eye-center-20261031/REPORT.md에 남긴다. 이 보정은 앞 절의 최초 자체 눈 가시성 PASS를 대체하며 총괄 재판정은 별도다.
+
+### 2026-10-31 보정2 — 투명 원형 메달·단일 눈
+
+앞 절의64×20px JPEG 잘림 방식은 CTO가09eec0076에서 사각 경계와 중복 눈으로 반려했다. 현행 계약은 위 표다. 최신 origin/main09eec007658c169e1b9ce8edb3b20ceced9b5fe4에서 새 브랜치codex/web-statwin-medallion-20261031을 만들었다. 직접 본 원화와 같은 후보의 수정 전10개 화면을 기준으로, 투명 PNG 원형 외곽·40px 은색 음각 메달·금빛 헤어라인의 중앙 단절·단일 눈을 목표로 삼았다. 첫3배 크롭에서 사각 잘림·검은 판·중복 눈·제목 충돌 중 하나라도 남으면 반영하지 않는다. 40px 메달과24px 글자를 분리하기 위해 제목64px, 아래 여백0/성장4px로 조정했다. 스킬 본문은 수정하지 않는다.
+
+내장 image_gen 편집 프롬프트: 기존 gate_sigil의 세로 검은 동공과 동심 고리를 보존한 단일 정면 원형 은색/백랍 메달, 48px 사용에서도 읽히도록 단순화, 연속된 부드러운 원형 림라이트, 실제 투명 알파, 사슬·외부 돌기·잔점·추가 눈·붉은 발광·글자·사각 바탕 금지. 실제 표시 크기는 브리프 허용 범위의40px다. 생성 원본과 정확 프롬프트·전후 전체/1x/3x·기능·Git 영수증은 I:/EXODUSER-Storage/codex-web-statwin/medallion-20261031/REPORT.md. 제목/메달 부분 판정이며 전체 게임 아트·자연 플레이·Unity/NW.js 검수로 확대하지 않는다.
+
+
+
+## 2026-10-31 전체 화면 원화 확장 적용
+
+이 문서의 과거 이미지·영상 제작 및 판정은 당시 이력이다. 현행 웹은 `fullscreen-art.js`의 경로 등록으로 64종의 원본/21:9/32:9 판을 선택한다. 화면비 2 이하의 원본 경로와 MP4 파일은 보존하고, 초광폭에서는 확장판을 배경으로 쓰고 원래 영상·카메라·CSS 움직임을 유지한다. 로비·캐릭터 영상은 manifest 중앙 좌표와 높이에 맞춰 겹치며 양끝14%를 크로스페이드한다. 전체 폭 분위기 효과는 움직임 줄이기·저사양·숨김 화면에서 정지한다. 출력·사용 위치·규격·생성 정보·검수 근거는 `docs/3.1 ui hud 디자인/FULLSCREEN_ART_ULTRAWIDE_20261031.md` 및 `assets/fullscreen-wide/20261031/manifest.json`이 현행 기준이다. 로딩35장은 별도 담당이며 Unity 반영·실행 검수는 이 웹 적용으로 완료되지 않는다.
+
+
+## 2026-11-01 슬롯 안내 후보 대체
+
+사용자 “우리도 다 풀어버려”에 따라 앞선 가득 참 안내 후보028260c89는 단독 인수하지 않는다. 후속 후보는 최대5 생성·복원·저장 제한을 제거하고 현재 개수만 표시한다. 웹 온라인·공개·DEMO도 생성 칸을 항상 활성화한다. 실제 빌드·공통 반영 상태는 아래 SSOT와 최종 인계 영수증을 따른다.
+
+
+## 2026-11-02 살아 있는 대기 화면
+
+로비·영웅5종·허용 로딩32장·클리어/사망/데모 종료는 living-scenes.js/.css의 부드러운 큰 연무로 전환한다. 이 범위에서는 앞 절의 기존 MP4/점 입자 모션 복원 계약을 대체하며, 시작 메뉴와 첫 화면은 보존한다. 저사양·움직임 줄이기·분위기 끄기·숨김·프록시에서 정지. 전사 불씨 국소 보정/사망 무잔점 판, 정확한 수치와 검수 경계는 [현행 계약](LIVING_SCENES_20261102.md), 최종 반영/영상/FPS는 외부 living-1102/REPORT.md를 따른다.

@@ -97,3 +97,6 @@
 | FILES | stage 소유: `game.html`, `assets/sprites/boss/boss_dark_druid_8dir_v3.png`, 이 문서, `CH1_1_DRUID_BOSS_ASSIGNMENT.md`, 애니메이션 파이프라인/몬스터 기준 문서, `CHANGELOG_SYNC.md`; 동시 작업 파일이 많은 작업트리에서 무관 변경 보존 |
 | GIT | 작업트리에서 타 작업 변경이 계속 추가된다. `exec_command`가 명령 시작 전 `CreateProcessW` 오류로 실패해 이번 조명·테스트 구도 수정은 커밋하지 못했다. 타 작업 변경은 보존; 푸시·배포 없음 |
 | VISUAL VERDICT / NEXT PASS | **RETOUCH**. walk/attack 원본 외곽 재작업, 23종 패턴의 타격 정점·프레임별 시각 QA 및 성능 측정 필요 |
+
+## 2026-10-27 STY-D9 추가
+- `emerge.png`는 순간이동 침강 외에 1-1(si0) 드루이드 마지막 사망 침강 도주에도 쓰인다(표시만, 수치 무변경). 이 경우 사망 피·고어·시체·사망 문구를 끄고 침강 시트 0→7→유지→페이드로 대체. 상세: `../2_5 부활+에너지쉴드시스템/2_5 부활+에너지쉴드시스템.md` "STY-D9" 절.

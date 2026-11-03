@@ -49,7 +49,7 @@
 | corpse | 24915: 풀120. 54531: 화면 draw 최대25. 54532: 마지막 mt×.4 구간 페이드 | 풀 용량과 draw 상한을 같은 수치로 해석하지 않음. P2-001b/g 연출 기록 참조 |
 | giantSlam | 46492~46501: 지면 kind=giant, 기본 강타 영웅 시트 vfxKind=inferno, maxT45 | 구 기본 강타 earth 시트 표기는 현재 영웅 시트 기준 아님. 2_1의 현행 시각 계약으로 정정 |
 
-정적 원본·문서 대조이며 새 화면/실플레이 PASS가 아니다. 통합 범위·잔여는 `docs/engine/orders/reports/DOC-SYNC_REPORT.md` 참조.
+정적 원본·문서 대조이며 새 화면/실플레이 PASS가 아니다. 통합 범위·잔여는 `docs/_archive/engine/orders/reports/DOC-SYNC_REPORT.md` 참조.
 | 검수 | 인라인 JS 구문 PASS. 2D 경로 실화면 A/B(밝기 팝). **GL 경로 코드 동작=QA 정규 런타임 확인**(`_ensGLMode=1` 22,877샘플). 수명 주사율 독립은 루프 누산기 Node 재현으로 60/144/240/30Hz≈100ms 검증. 가독성(기검참 VFX·데미지 숫자 가림)·수정본 GL 실화면·부활 실캡처는 QA 재캡처/후속 |
 
 ## 2026-09-13 불꽃칼날 이름·불꽃 스윙
@@ -354,14 +354,14 @@ WebGL 가산 및 Canvas2D 폴백에 동일한 baseAlpha를 전달한다. RGB `[2
 
 | 타입 | 지속시간 | 애니 프레임 수 | 시트 | 성능 영향 |
 |------|---------|-------------|------|----------|
-| fire | 66 (1.1초) | 16 | Fire_FBF_4x4 | 낮음 (drawImage 1회/프레임) |
-| black(폭독혈) | 66 (1.1초) | 16 | Dark_DarkSmoke_FBF_4x4 | 낮음 |
-| redbean(빨콩) | 72 (1.2초) | 16 | Fire_FBF_4x4 | 낮음 |
-| rainbow_light(무지개 적중) | 72 (1.2초) | 16×4 (4레이어) | Fire_FBF + Poison_Medium + Dark_DarkSmoke + Light_Impact (각 90° 회전+시차+lighter 합성, 알록달록) | 중간 (drawImage 4회/프레임) |
-| rainbow(무지개 소멸) | 72 (1.2초) | 16+36+9 (3레이어) | Dark_DarkSmoke_FBF + Dark_Smoke_6x6 + Dark_BasicImpact | 중간 |
-| dark02(패링) | 72 (1.2초) | 16 | Dark_MediumImpact | 낮음 |
-| physical_parry(물리탄 E패링) | 12f(0.2초) | 4 | `Fire_ImpactFire_Sheet.png` 첫 행 흰 틴트, `_addBoom(x,y,60,12,'physical')`, 최대180px | `redBean+EL.P`·일반/관통 입탄·`titanEye`의 physicalProjectile 분기. 파편12개·flash0.25도 #ffffff. Q·무지개·기타 E 효과 불변 |
-| fire_medium | 66 (1.1초, min보정) | 16 (4×4) | Fire_MediumImpact | 낮음 — 빨콩 패링 적중, 보호막 흡수, **동물형 돌진(22/30/43) 적중 임팩트** (`_addBoom 80,48`, 2026-06-28) |
+| fire | 66 (1.1초) | 16 | Fire_FBF_4x4 (2026-10-27 C2 교체(VFX_LEAD_MASTER §3.5)) | 낮음 (drawImage 1회/프레임) |
+| black(폭독혈) | 66 (1.1초) | 16 | Dark_DarkSmoke_FBF_4x4 (2026-10-27 F안 교체(VFX_LEAD_MASTER §3.6): Ice 안개 재채색·반투명 보라 연기, 알파 최대 0.58, 코어 없음) | 낮음 |
+| redbean(빨콩) | 72 (1.2초) | 16 | Fire_FBF_4x4 (2026-10-27 C2 교체(VFX_LEAD_MASTER §3.5)) | 낮음 |
+| rainbow_light(무지개 적중) | 72 (1.2초) | 16×4 (4레이어) | Fire_FBF + Poison_Medium + Dark_DarkSmoke + Light_Impact (각 90° 회전+시차+lighter 합성, 알록달록; Poison_MediumImpact는 2026-10-27 3묶음 A안 교체(VFX_LEAD_MASTER §3.7): Fire_MediumImpact C2를 독 램프 `#1c2810`/`#5f8a2e`/`#c8e8a8`로 재채색·프레임별 좌우 반전 — 라임 형광 별→탁한 녹색 소용돌이) | 중간 (drawImage 4회/프레임) |
+| rainbow(무지개 소멸) | 72 (1.2초) | 16+36+9 (3레이어) | Dark_DarkSmoke_FBF (2026-10-27 F안 교체(VFX_LEAD_MASTER §3.6): Ice 안개 재채색·반투명 보라 연기, 알파 최대 0.58, 코어 없음) + Dark_Smoke_6x6 (2026-10-27 F안 교체(VFX_LEAD_MASTER §3.6): BW 사망 연기 재채색·밀도=알파, 최대 0.58) + Dark_BasicImpact (2026-10-27 F안 교체(VFX_LEAD_MASTER §3.6): Fire_BasicImpact C2 재채색) | 중간 |
+| dark02(패링) | 72 (1.2초) | 16 | Dark_MediumImpact (2026-10-27 F안 교체(VFX_LEAD_MASTER §3.6): Fire_MediumImpact C2 재채색 — 라벤더 코어→찢긴 보라 소용돌이, 마젠타 별 제거) | 낮음 |
+| physical_parry(물리탄 E패링) | 12f(0.2초) | 4 | `Fire_ImpactFire_Sheet.png` 첫 행 흰 틴트(2026-10-27 C2 교체(VFX_LEAD_MASTER §3.5): 첫 행 = 코어 별→불덩이 팽창 4프레임, 반영 확인 캡처로 흰 스플래시 가독 확인), `_addBoom(x,y,60,12,'physical')`, 최대180px | `redBean+EL.P`·일반/관통 입탄·`titanEye`의 physicalProjectile 분기. 파편12개·flash0.25도 #ffffff. Q·무지개·기타 E 효과 불변 |
+| fire_medium | 66 (1.1초, min보정) | 16 (4×4) | Fire_MediumImpact (2026-10-27 C2 교체(VFX_LEAD_MASTER §3.5): 좌우 반전+90° 회전) | 낮음 — 빨콩 패링 적중, 보호막 흡수, **동물형 돌진(22/30/43) 적중 임팩트** (`_addBoom 80,48`, 2026-06-28) |
 | explosion | 66 (1.1초) | 프로시저럴 | arms 기반 렌더 | 낮음 |
 | ice/lightning/dark | 66 (1.1초) | 프로시저럴 | 원+링 렌더 | 낮음 |
 
@@ -413,8 +413,10 @@ WebGL 가산 및 Canvas2D 폴백에 동일한 baseAlpha를 전달한다. RGB `[2
 
 | id/경로 | 시트 | 선택 조건 | 프레임·화면 크기 | 폴백·전투 영향 |
 |---|---|---|---|---|
-| `giant` / `assets/vfx/giant_slam_impact_sheet.png` | 1024×1024 RGBA, 2×2, 셀 512px | 지옥강타 2가 아닌 `giantSlam2` | `_slamFrame=min(3,floor((t/maxT)×4))`; 지옥강타 2 크기=`maxR×0.9×(0.72→1.0)` | 로딩 실패 시 기존 `img/crater.png` 2×2 크레이터. 피해·범위·포이즈·자원·쿨다운 불변 |
+| `giant` / `assets/vfx/giant_slam_impact_sheet.png` | 1024×1024 RGBA, 2×2, 셀 512px | 지옥강타 2가 아닌 `giantSlam2` | `_slamFrame=min(3,floor(pow(t/maxT,.6)×4))`(VFX-10 이후; 이전 `floor((t/maxT)×4)`); 지옥강타 2 크기=`maxR×0.9×(0.72→1.0)` | 로딩 실패 시 기존 `img/crater.png` 2×2 크레이터. 피해·범위·포이즈·자원·쿨다운 불변 |
 | `inferno` / `assets/vfx/inferno_slam_impact_sheet.png` | 1024×1024 RGBA, 2×2, 셀 512px | `srcId==='giantSlam'`, 또는 `srcId==='giantSlam2' && _isFused('infernoSlam')` | 같은 4프레임 진행; 지옥강타 1 크기=`maxR×0.9×(0.72→1.0)`, 지옥진 크기=`maxR×0.98×(0.72→1.0)`. 진행률 62%까지 alpha 1, 이후 38% 동안 페이드 | 같은 크레이터 폴백. 지옥진 자동 발동 등 기존 합체 전투 로직 불변 |
+
+**VFX-10 (2026-10-27)**: 프레임 진행식은 `_slamFrame=min(3,floor(pow(t/maxT,.6)×4))`로 바뀌어 프레임 1(용암 몸체)이 +0.074초, 2가 +0.236초, 3이 +0.46초에 시작한다(기존 +0.19/+0.375/+0.56초). 진동파 렌더의 중앙 플래시는 반지름 `min(maxR×.4,42)×(.55+.45×flashP)`, 색 `#fff4d0`, 알파 `.9×flashP²×fade`(`flashP=max(0,1−4t/maxT)`)의 국소 백열 코어이며 기존 `maxR×.4` 베이지 원판은 삭제됐다. 크기·알파·판정은 불변. 상세 [VFX_LEAD_MASTER §3.8](VFX_LEAD_MASTER_20261026.md).
 
 두 시트는 `_loadSlamVfx()`가 1024×1024와 실제 디코딩 가능 여부를 확인한다. `_gSlamWave`의 `kind`만 시각 재질을 선택하며, 기존 진동파 링과 충돌·피해 처리는 그대로 유지한다.
 
@@ -544,7 +546,7 @@ path: '/v1/images/generations'
 | 프레임 | `((p._sprFr||0)|0)%16`, 기존 프레임 진행 유지 |
 | 렌더 분기 | pass-2 `if(p.fbEnergy){_fbDrawFly(p)}` (elemBall glow 앞). pass-1 글로우 언더레이 `p.fbEnergy` skip |
 | 로더 | `_fbFlyImg` |
-| Q패링 출력 | 거대 시트 제거 후 동일 속성 **혜성형 일반 마법탄 5발**. `magic` 충돌 경로와 r8 규격은 유지하되 `_parryMagicShot` 전용 시각 분기로 기존 `img/balls/proj_bolt_comet.png` 8프레임 시트를 `_drawCometBullet` 길이 **246.4px**(일반 마법탄 최종 sz4 실크기 `20×2.8×2.2=123.2px`의 2배)로 그린다. 일반탄과 `_normalMagicCometLength`를 공유하되 대형탄 분열 연출에만 ×2를 적용한다. `arcMissile`·발사 잠금·튕김과 일반 `_projEmit` 먼지는 사용하지 않는다. 총 반사 피해를 5등분하며 `EL.F` 빨강, `EL.I` 파랑, 암/뇌는 `ELC` 속성색. HP/ST/MP·작살 게이지·분노·악의·parryBank 자원회수는 일반 Q의 ×10(각 자원 상한 적용) |
+| Q패링 출력 | 거대 시트 제거 후 동일 속성 **혜성형 일반 마법탄 5발**. `magic` 충돌 경로와 r8 규격은 유지하되 `_parryMagicShot` 전용 시각 분기로 기존 `img/balls/proj_bolt_comet.png` 8프레임 시트를 `_drawCometBullet` 길이 **246.4px**(일반 마법탄 최종 sz4 실크기 `20×2.8×2.2=123.2px`의 2배)로 그린다. 일반탄과 `_normalMagicCometLength`를 공유하되 대형탄 분열 연출에만 ×2를 적용한다. `arcMissile`·발사 잠금·튕김과 일반 `_projEmit` 먼지는 사용하지 않는다. 총 반사 피해를 5등분하며 `EL.F` 빨강, `EL.I` 파랑, 암/뇌는 `ELC` 속성색. HP/ST/MP·작살 게이지·분노·악의오브·parryBank 자원회수는 일반 Q의 ×10(각 자원 상한 적용) |
 | 충돌 VFX 보장 | 플레이어 상대 스윕 접촉, 중심+원주 8점 벽 스윕 접촉, 평화의보호 비패링 흡수 모두 `_fbEnergyBoom` r220+blast light 280+`bigImpact` 방향 링/스파크+속성 `doHitFlash(col,0.32)`/`_flashT=8`+`_chromaT=8`+파티클 42+shake 32를 호출하고 원본을 즉시 회수. 히트스톱·슬로모 전역 비활성 정책 유지. 무적/돌진은 피해만 0 |
 | 패링 소유권 | 기본 Q/평화의보호 Q만 `_resolveBigEnergyParry`로 5분열. E·기동파괴·파워웨이브·일반 방패던지기는 대형탄을 `friendly`로 바꾸지 않음. friendly 대형탄 30관통 연출은 폐기 |
 
@@ -582,7 +584,7 @@ path: '/v1/images/generations'
 | 크기 | `dw=240`, `dh=dw×(ch/cw)=240` |
 | 합성 | 실제 RGBA 투명도를 유지하고 `lighter` 합성 |
 | 적용 | `p.fdEnergy` 탄. 일반 `elemBall` 분기보다 먼저 그림. 시트 미로드 시 `EL.F`의 `proj_elem_orb` 속성행 폴백 |
-| 판정 | 스폰 r18→23.4, 최종 sz96. 플레이어 상대 스윕 히트 `P.r+max(p.r,sz)`=`P.r+96`(보이는 핵). 벽은 이동 구간의 중심+원주 8점 스윕. Q패링 `P.r+sz+90`→기본 `magic` 판정 r8의 빨간 혜성형 마법탄 5발(`_parryMagicShot`, `_drawCometBullet` 246.4px, 일반 먼지 없음, 총 반사 피해 5등분)+HP/ST/MP·작살·분노·악의·parryBank 자원회수 ×10. 플레이어·벽 접촉은 항상 `_fbEnergyBoom` r220+`bigImpact` 방향 링/스파크+속성 플래시/색수차+파티클42+흔들림32 후 소멸한다. 비무적·비돌진 접촉은 피해 계산 전 진행 방향 슬라이드100을 시작하므로 민첩 회피에도 관성이 유지되고 평화의보호 비패링 흡수도 동일하다. 첫 프레임 50px, 열린 공간 감쇠 누적 약 142.9px다. 무적 프레임/돌진 중에는 폭발만 하고 피해·슬라이드는 0 |
+| 판정 | 스폰 r18→23.4, 최종 sz96. 플레이어 상대 스윕 히트 `P.r+max(p.r,sz)`=`P.r+96`(보이는 핵). 벽은 이동 구간의 중심+원주 8점 스윕. Q패링 `P.r+sz+90`→기본 `magic` 판정 r8의 빨간 혜성형 마법탄 5발(`_parryMagicShot`, `_drawCometBullet` 246.4px, 일반 먼지 없음, 총 반사 피해 5등분)+HP/ST/MP·작살·분노·악의오브·parryBank 자원회수 ×10. 플레이어·벽 접촉은 항상 `_fbEnergyBoom` r220+`bigImpact` 방향 링/스파크+속성 플래시/색수차+파티클42+흔들림32 후 소멸한다. 비무적·비돌진 접촉은 피해 계산 전 진행 방향 슬라이드100을 시작하므로 민첩 회피에도 관성이 유지되고 평화의보호 비패링 흡수도 동일하다. 첫 프레임 50px, 열린 공간 감쇠 누적 약 142.9px다. 무적 프레임/돌진 중에는 폭발만 하고 피해·슬라이드는 0 |
 | 비행 | raw 6×1.8=10.8, **직선(무유도)**. 공격 텀 180f(3초) |
 | 제외 | 올챙이 머리 원은 **전 탄** 폐기(2026-09-01). 화마귀는 패스1 글로우도 스킵 |
 | 원본 | 유저 제공 Downloads `ChatGPT Image 2026년 9월 2일 오후 03_47_47.png`를 픽셀 손실 없이 사용 |
@@ -957,10 +959,10 @@ Ori 수준 대기 깊이감. 광원 근처에서 존재감 나는 미세 입자.
 | 어둠탄 이동 | 기존 마법500~600px/s·유도 규칙. 피해·sz/r 원본값은 변경하지 않음 |
 | _projHitFx | r60, 물리12f/기타48f. 실제 el 우선. isRed는 EL.F일 때만 redbean 폭발·붉은 파티클14개·플래시0.18. 물리는 #ffffff, 나머지는 ELC[el] 파티클12개·플래시0.15, shake6 |
 | 물리탄 수명 만료 (2026-09-08) | 공통 만료 분기의 `p.redBean && _projectileParryClass(p)==='physical'`만 `_addBoom(x,y,60,12,'physical')`: 기존 흰 Fire Impact 첫 행4프레임, 최대180px/0.2초. 흰 파편 `#ffffff` 12개·shake3, 화염 boom·추가 explosion 임팩트·피격 플래시 없음. `redBean+EL.P`와 물리 정체성의 titanEye(EL.F 포함)에 적용. 비물리 redBean은 기존 r40/72f redbean·붉은 파편12·explosion·shake3 유지 |
-| 물리 P | physical → Fire_ImpactFire_Sheet.png 첫 행 섬광·파편4프레임(index0~3) 흰색 틴트. 원본4×4 중 나머지12셀 제외, 최대180px, 12f(0.2초). _physicalImpactSheet는 이미지별 WeakMap 캐시, _tintHolyDome(img,255,255,255): RGB255/alpha=반올림(max(원본RGB)×원본alpha/255). 기존 Fire FBF 흰 연기 연결 제거. 원본/다른 속성/탄 비행/패링 효과 유지 |
-| 화염 F | fire 또는 redbean → Fire_FBF_4x4.png |
-| 얼음 I | ice → Ice_ImpactIce_Sheet.png + Ice_MistSmoke_FBF_4x4.png (물파란콩은 기존 별도 Water Impact 경로 유지) |
-| 어둠 D | dark → Dark_MediumImpact.png + Dark_DarkSmoke_FBF_4x4.png |
+| 물리 P | physical → Fire_ImpactFire_Sheet.png 첫 행 4프레임(index0~3, 2026-10-27 C2 교체(VFX_LEAD_MASTER §3.5): 이제 백열 코어 별→불덩이 팽창 프레임 — 옛 섬광·파편 아님) 흰색 틴트. 원본4×4 중 나머지12셀 제외, 최대180px, 12f(0.2초). _physicalImpactSheet는 이미지별 WeakMap 캐시, _tintHolyDome(img,255,255,255): RGB255/alpha=반올림(max(원본RGB)×원본alpha/255). 기존 Fire FBF 흰 연기 연결 제거. 원본/다른 속성/탄 비행/패링 효과 유지 |
+| 화염 F | fire 또는 redbean → Fire_FBF_4x4.png (2026-10-27 C2 교체(VFX_LEAD_MASTER §3.5): 승인 필드보스 화염 임팩트 재격자, 180° 회전) |
+| 얼음 I | ice → Ice_ImpactIce_Sheet.png + Ice_MistSmoke_FBF_4x4.png (물파란콩은 기존 별도 Water Impact 경로 유지); 두 시트는 2026-10-27 VFX-02 4묶음에서 서리 흰색·회청 램프로 재채색(네온 별·원판 제거, 규격 불변, VFX_LEAD_MASTER §3.9) |
+| 어둠 D | dark → Dark_MediumImpact.png (2026-10-27 F안 교체(VFX_LEAD_MASTER §3.6): Fire_MediumImpact C2 재채색 — 라벤더 코어→찢긴 보라 소용돌이, 마젠타 별 제거) + Dark_DarkSmoke_FBF_4x4.png (2026-10-27 F안 교체(VFX_LEAD_MASTER §3.6): Ice 안개 재채색·반투명 보라 연기, 알파 최대 0.58, 코어 없음) |
 | 번개 L | lightning → Lightning_ImpactLightning_Sheet.png + Lightning_Lightning_FBF_4x3.png |
 | 신성 H / 대지 E | holy → Light_ImpactLight_Sheet.png / earth → Earth_ImpactEarth_Sheet.png |
 | 다크볼 추가 피격 파편 | 기존 초록/파랑 대신 #a44cff 6개 + #6d21ad 6개 |
@@ -1007,7 +1009,7 @@ Ori 수준 대기 깊이감. 광원 근처에서 존재감 나는 미세 입자.
 | 분열 / _splitParriedBigEnergy | 크라켄 fbEnergy와 화마귀 fdEnergy 공통. 5발·원형 균등 72° 간격·반지름12px 스폰·속도7.5·r8·사거리900·발당 max(1,floor(totalDmg/5))·magic/_parryMagicShot·혜성 길이246.4px 유지. Q 보상×10 유지 |
 | 탐색 / 플레이어 투사체 유도 루프 | _parryMagicShot만 탐색 반경900px, 최대 선회0.7×_dtSp rad/갱신, (G._gcT+i)%2===0에서 갱신. 일반 magic은 기존250px/0.35 유지. 반사 쿨다운 동안 유도 중단 유지 |
 | 필드 타깃 / _parryMagicFieldTarget | 일반 적 후보와 G._fieldBosses(없으면 G._fieldBoss)·G._fireDevils·G._worms를 거리로 비교. asleep, 사망, _fmCanHit 불가, _hitSet 포함 대상 제외. 크라켄 TP 중 _fmXY의 tpX/tpY를 추적하며 화마귀·뱀장어는 실제 충돌과 동일한 x/y 사용. 타깃이 사라지면 다음 갱신에 재탐색 |
-| 물 적중 / _parryMagicHitFx | EL.I: waterImpact r72/66f, Water_ImpactWater_Sheet.png 전체16프레임, 최대 표시216px. 분열 시작 Q 물보라는 기존 r96/72f·최대288px. 임팩트 위치는 탄 접촉 x/y |
+| 물 적중 / _parryMagicHitFx | EL.I: waterImpact r72/66f, Water_ImpactWater_Sheet.png 전체16프레임, 최대 표시216px. 분열 시작 Q 물보라는 기존 r96/72f·최대288px. 임팩트 위치는 탄 접촉 x/y; `Water_ImpactWater_Sheet.png`는 2026-10-27 VFX-02 4묶음에서 깊은 청회색 물 램프로 재채색(규격·프레임 불변, VFX_LEAD_MASTER §3.9) |
 | 기타 속성·소리 | 물 이외에는 기존 _projHitFx(x,y,el,false). 모든 분열탄 적중에 playSampleAt('bullet_hit',0.3,1,x,y). 일반 적 magic 타격음 중복 호출 제외 |
 | 필드 접촉 / _hurtFieldMobs(...,parryShot) | 선택적 여섯째 인수에 분열탄 전달. 유효한 필드몹 접촉 시 임팩트·음향·탄 회수를 보장하고 일반 적 충돌까지 중복 진행하지 않음. 기존 _fmApply의 hitCd=8 피해 간격 유지: 쿨다운 중에는 추가 피해 없이 접촉 효과 후 소멸. 기존 다른 호출은 피해 적용 횟수 반환 유지 |
 | 적용 / 검증 | game.html 및 game-easy-test.html. test/parryMagicTrackingImpact.test.js: 5발 모두600px 크라켄 도달, 일반 적600px 포착, 일반 magic 범위 보존, 필드 쿨다운 접촉 효과·소멸 계약, TP 좌표·비활성 타깃 제외. 백업 tmp/kraken_parry_20260916/ |
@@ -1045,6 +1047,7 @@ Ori 수준 대기 깊이감. 광원 근처에서 존재감 나는 미세 입자.
 - 선택 함수는 `_impactSpriteFor(im)`이다. `im.boss`가 참이면 보스 시트와 16프레임, 아니면 일반 시트와 9프레임을 사용한다.
 - 속성·피해·포이즈·패링·히트스톱·VFX 풀 상한(12)·GL 인스턴싱 경로는 바꾸지 않았다. 시트 너비를 프레임 수로 나눠 셀을 계산하므로 일반 시트(대부분 765×85, EL5 1152×128)와 보스 시트(2048×128)를 모두 지원한다.
 - 회귀: `test/elementalImpactSprites.test.js`; 인라인 문법 및 VFX GL 회귀도 함께 검증한다.
+- **2026-10-26 시트 13종 재제작(임팩트 총괄)**: 위 표의 `impact_el0~5_sheet`·`impact_el0~5_boss_sheet`·`impact_basic_sheet`를 원본과 같은 규격으로 교체했다(코드·선택 로직 불변). 원본은 별 모양 9개 나열+단색 원판 마지막 프레임, 번개·신성이 시안이었다. 새 시트는 `tools/vfx/gen_hit_impacts.py` 절차 생성(코어→파편 줄기→끊긴 링→잔광), 색은 [VFX_LEAD_MASTER §2.2](VFX_LEAD_MASTER_20261026.md). 전후 캡처·판정은 같은 문서 §3.4.
 
 ## 2026-09-23 엘리트 등급·공격 전조 가독성
 
@@ -1366,7 +1369,7 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 |---|---|
 | gate | 기존 own r4 storage.active + fdgDruidCombat=r9, QA contactVfxReadability:true && native-ai. framing/readability 계승·old branches 유지 |
 | 대상 | kind dark/dark02+exact basename Dark_MediumImpact.png 4×4/16f core0..7 native alpha 그대로·late8..15 잔광만 overlap gain. kinddark+exact Dark_DarkSmoke_FBF_4x4.png secondarysmoke0..15; dark02 secondary추가0 |
-| 현행 source / 개요 구분 | 현재 commonboom dark=[Dark_MediumImpact,Dark_DarkSmoke_FBF_4x4],dark02=[Dark_MediumImpact]. 기존 총정리의 dark procedural 표기는 일반 과거 개요이며 이 실제dark/dark02 sheet 소비와 구분한다. 타kind 확대수정0 |
+| 현행 source / 개요 구분 | **시트 내용 변경 주의(2026-10-27 F안 교체(VFX_LEAD_MASTER §3.6)):** 이 표의 core0..7·late8..15 구분은 옛 네온(마젠타 별) 시트 기준이었다. 현재 Dark_MediumImpact는 C2 화염 시트를 암흑 램프로 재채색한 것(0프레임 라벤더 코어 별 → 찢긴 보라 소용돌이 팽창 → 어두운 잔광 소멸)이며 프레임 인덱스·격자(4×4/16)는 동일하다. 현재 commonboom dark=[Dark_MediumImpact,Dark_DarkSmoke_FBF_4x4],dark02=[Dark_MediumImpact]. 기존 총정리의 dark procedural 표기는 일반 과거 개요이며 이 실제dark/dark02 sheet 소비와 구분한다. 타kind 확대수정0 |
 | policy | mediumTailStartFrame8/mediumFrameCount16/mediumTailGain.16/darkSmokeGain.12/fadeStart.60/fadeEnd1/fadeTailGain.25. modifier=gain×(1−.75×clamp((progress−.60)/.40,0,1)), renderAlpha=nativeAlpha×modifier |
 | tail / passthrough | 끝 medium modifier.04/smoke.03은 절대alpha하한 아님. 원alpha0은0. inactive/unlisted/hazard/invalid는 Object.is native scalar 유지, 삭제/hide/drop0 |
 | 보존 | boomt/mt(원66/72 등)·worldxy/r·size3.0+si*.4/power scale·frameUV/색/material/blend·비행탄·위험/독/QE/AI/time/피해/포이즈/pets/map/save 그대로 |
@@ -1397,7 +1400,7 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | local flags / 예외 | _druidThornVolley pooled 기본/reset false, _druidThornLane 기본/reset−1. 해당 flag탄만 기존 modulo3 drop 및 생성 직후 decoy/ancestor aim 재지정에서 제외. 공용 후처리 배율은 적용하며 전역 drop/decoy/seek 변경0 |
 | 입력 / 최종 속도 | 입력4.4px/native tick. 기존 후처리 최종 physical5px/tick=300px/s(60Hz), magic500/60..600/60px/tick=500..600px/s. 이 값은 clip24FPS와 별개이며 신규 속도 배율0 |
 | 피해 | n=floor(atk×1.3), 최종 physical=floor(floor(2n)×.5), magic=floor(2n). atk103이면 n133/physical133/magic266. native poison wrapper는 원 class 보존 후 EL.P/col#66dd22, 실제 HP 피해시 기존 poison+3 |
-| 수명 / 판정 | life/ml400은 nominal native-frame metadata. 기존 감소 life−=sp×.667 및 magic의 기존 카메라2500px 범위 안 life<=0→life1 연장/공용 제거 규칙 유지, 정확400tick 종료/초 단위로 승격0. 후처리 sz2.4·pool.r5.2; 일반탄 player collision base=P.r+7.2/기본 gate=P.r+11.2(base+4), 기존 Q/E 확장·현재/이전 P/shot 선분 sweep 유지, 저작 silhouette로 판정변경0 |
+| 수명 / 판정 | life/ml400은 nominal native-frame metadata. 기존 감소 life−=sp×.667 및 magic의 카메라2500px 이내 또는 실제 가시 영역+100px 이내에서 life<=0→life1 연장. 원거리 정리는 두 범위 밖에서만 수행(2026-10-31 웹 기준), 정확400tick 종료/초 단위로 승격0. 후처리 sz2.4·pool.r5.2; 일반탄 player collision base=P.r+7.2/기본 gate=P.r+11.2(base+4), 기존 Q/E 확장·현재/이전 P/shot 선분 sweep 유지, 저작 silhouette로 판정변경0 |
 | 준비 / 회복 / cd | wind=floor(25×BOSS_PHASES[phase].teleM)+extraDelay, phase0/1의 base18/16native f(추가 delay 별도). 발사 직후 recover45, 다음 기존 보스 recover update에서20으로 clamp. 기존 fan cd100 유지. authored1.6초를 native 준비·수명·회복 시간으로 덮어쓰지 않는다 |
 | 보존 | 기존 E physical/Q magic/black Q-only·반사 friendly blue 유도·피해/poise·자원 유지. phase2+의 기존 count/black/modulo3 drop·피날레·다른 보스·기본 main·사용자 save 유지 |
 | hostile physical 아트 | _drawDruidThornShot의 ENGINE_AUTHORING 목질가시. localX[-27,32] 길이59worldpx, 최대Y±10 폭20. 몸체 quad/측면 triangular barbs/밝은 ridge, fill path당 vertex<=4로 기존 X WebGPU fill 소비 |
@@ -1473,6 +1476,29 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | 3 / 원 상수 | EL P=0/F=1/I=2/D=3/L=4/H=5/E=6. F→I, I→F, D→L, L→D, D→H, H→D, E→L, L→E는2. 동일 속성은 P0 제외0.5, 나머지는1. 기존 원 elMul/producer 분기·수치 변경0. |
 | 4 / 현재 완료 범위 | 실제 제품 entry의 SourceState→Player→기존 projectile 배율 consumer 연결까지. full inventory/equip UI·affix·저장/장비복원·보상·전체 bootstrap·모든 탄/보스·시각/청감·240FPS·최신 전체게임 완료는 아니다. 기존 HOLD/2_3·MAP/ART/STORY/rig/native3387/NativeHUD 등 보호 불변. |
 
+> **2026-10-29 사용자 지시 "모든지뢰는 어둠지뢰 저걸로 바꿔라 디자인을 일단":** 지뢰 외형을 탄막 시험장 "어둠 지뢰"(진홍 결계진, `img/vfx/mine_trap_ward_sheet.png` 왼쪽 칸)로 통일했다. `p.mine` 탄(보스 지뢰 설치 포함)은 원래 이 외형이고, 이번에 **추적지뢰 `G._seekerMines`**(일반 보스의 주황 원 + 드루이드 si0/si3의 녹색 독 구슬)도 같은 결계진(지름 = 폭발 반경 r×2, 무장 전 불투명도 .46·무장 뒤 .78~.96 맥동, 0.00035rad/ms 회전)으로 그린다. 위 "드루이드 독탄 녹색 통일" 계약 중 **추적지뢰만 예외**로 바뀐다(이동탄 독탄은 그대로). 판정·이동·피해는 변경 없음. 코드 `game.html` "추적지뢰 렌더". 검수 `tmp/design-review/20261029_mines/mines_1600.png`.
+
+## 웹 전투 표현 A/B — 2026-10-31
+
+| id / 적용 위치 | 값·공식 | 계약 |
+|---|---|---|
+| _FEEL_ENABLED | feel=0 OFF / feel=1 또는 생략 ON | 전투 시계·HP·피해·쿨다운·패링·사슬 규칙 불변 |
+| contactHold / contactLife | 2 / 8틱 (60Hz: 33.33 / 133.33ms) | 접점 스프라이트 첫 셀만 유지. 전역 hitStop은 계속 0, 입력·AI·탄막은 멈추지 않음 |
+| contactMax | 8 | 같은 적은 갱신, 초과 시 가장 오래된 항목 교체 |
+| contactSize / killSize | 64 / 72px | 기존 실버/블랙 2×2·4프레임 시트 재사용, 적 탄막·예고 전에 렌더 |
+| contactAlpha / contactPop | .88 / .04 | alpha=.88×(1-age/8), size×(1+.04×shakeScale×(1-age/8)) |
+| 프레임·앵커 | min(3,floor(max(0,age-hold)×4/(8-hold))); x=e.x,y=e.y-.35×(e.r 또는20) | age=(_gameTime-born)/(1000/60). stage 변경·8틱 만료 시 제거, RNG 소비0 |
+| _feelShakeScale | clamp(OPT.shake/100,0,1), 움직임 줄이기면0 | 화면 흔들림0에서 추가 크기 팝0. 추가 카메라 흔들림 없음 |
+| hurtMs / edgePx / edgeAlpha | 140ms / 6px / .24 | 비DOT 피격은 전체 화면 색 덮기 대신 가장자리 #a63225와 HP 구슬 고정 표식. 실제 피격음·포이즈·넉백 불변 |
+| HP 표식 | inset 3px #dfb49c + inset 22px #b83022 | 이동·레이아웃 재배치·점멸 애니메이션 없음. 140ms 뒤 제거 |
+| deathVoices | 일반 동시 처치 보이스6→2, 보스1 유지 | 기존 분기·피치/종류 RNG를 모두 소비한 뒤 오디오 노드 생성만 제한. 큐·음량 설정은 기존 경로 사용 |
+| 움직임 줄이기 | OPT.reduceMotion=true 또는 prefers-reduced-motion | 새 접점 홀드0·크기 팝0, 카메라 흔들림·큰 피격 색수차 억제. 접점/HP 정적 표식 유지 |
+| 제외 | DOT·beam·bladeShard·maliceHunt·iceBlade·lightning·ltnChaser | 연속 피해는 새 접점 누적에서 제외. 기존 표현 유지 |
+
+비교 서버: http://127.0.0.1:3347/game.html?feel=0 / ?feel=1. 전용 저장소는 I:/EXODUSER-Storage/combat-feel/20261031/saves. 실제 검수와 남은 한계는 같은 폴더 REPORT.md 및 전용 인계 combat-feel.md. 재미의 최종 판정은 사용자 직접 플레이다.
+
+- 실물 재작업: 접점 그림자 전체→가산광 전체 두 패스로 묶어 8접점에서 합성 전환16→2회. HP 표식은 외곽 아트의 사각 바운드 대신 원형 globe-liquid-wrap::after 안쪽에만 표시한다.
+
 ## 2026-11-02 Unity 설치형 지면 배치 후보
 
 사용자 요청으로 장판·지뢰·설치형 전체의 actor billboard/FootLift 오적용과 VfxWorld 지면 높이 미연결을 수정 중이다. 현재 후보는 실제 등록 바닥·목교·낮은 뿌리의 receiver depth로 좌표를 복원하고 sceneEye+.02-receiverEye>=0인 픽셀에 원화/링을 투영한다. 11-03 20:20 수정은 A2RootSurface receiver raster Offset만 원본 Forward와 같은-1,-1로 맞춘다(그 외0). 전역2cm 차폐/법선.2/수신범위는 유지하며 경사 Metal 재검수 대기다. CPU 적응면은 실제제품 Late>=96초 지연으로 폐기하고 표시 update의Tessellate/대량GroundY 조회를 제거했다. 원화·합성수식·피해/반경/시간·공중/중심형·flat보스방은 유지한다. 원SkillAdditive/Ki shader는1403 byte이며 새전용shader만사용한다. 324 C# 정적오류0/경고477. Mac 첫 흙 실제 투영/독립깊이와1920원본을 확인했다. 기존mode2 weight차는 강제비등방성 footprint를 무시한bilinear 참조로 분리했고, 같은허용2/255의GPU gradient/RGBA 대조·전체 설치형/시각·통합/설치는 진행 중이다. 정확한 범위·원래실패·측정은 [설치형 지면 배치](../engine/UNITY_GROUND_EFFECT_PLACEMENT_20261102.md)를 따른다.
@@ -1482,3 +1508,7 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 수명정정: statePassed161은표시메타데이터다. 정리예외로두수명행동의최종결과merge가미실행됐으므로pool행동완료PASS로간주하지않고, 수정앱에서원래두수명검사를별도완주·기록한다.
 
 최신 상태(2026-11-03): Mac 표적 정리/두수명행동·semantic 복원/동일앱 M1 23 통과는 후보 범위다. 사용자 PC 실행본131887780의 Runtime2bad5c6c8ace951017cee6c3673921692bc2a2a309ca5b5b0d23f1fbc471ff0a에는 접지 수정 타입 둘 다 없어 실제 전달 미완료를 확인했다. 최신 unity/main1d89b0c18와 정상 병합해 UI/사운드를 보존했으며, 새 실행본 검수·unity-latest 반영 뒤 다시 확인한다. 원full100/61·독립참조/미관측/oldref 한계는 그대로 보존한다.
+
+## 2026-11-02 설치형 지면 배치 수정 진행
+
+사용자 요청은 장판·지뢰·덫·설치형 전체의 공중 배치 해소다. 11/03 PC 후보09192/Runtimesha b66fcf8c648d2f7ba126fe0fd14fe992c5a623c62798685e6a7b641a8e2c89d8 일반빌드오류0, 자동2D·별도명시3D M1 각각23/23·세이브0. 원본1x에서 붉은원이흙과목교상판에붙음을확인했다. 필수UI1395장교차후보147/누락0 FAIL과큰상세JSON소비자OOM으로배포회차ABORT, 사용자실행본131887/바탕화면unity-latest는아직미교체다. 기존스킬창·devtools담당의수정과새최종패키지검수·실제전달을계속한다. 실제3D근거/147원본/보고서/현재미검증범위는 [전용기록](../engine/UNITY_GROUND_EFFECT_PLACEMENT_20261102.md)을따른다. SourceWindows후보상태·자연플레이·최종설치완료를혼동하지않고 원full100/61·독립색참조/미관측한계를보존한다. 현재기능후보RETOUCH이며 H5/Core전투수식은본변경범위밖이다.

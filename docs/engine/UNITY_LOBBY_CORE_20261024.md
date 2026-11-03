@@ -132,13 +132,13 @@ Direct는 `AudioSource.GetOutputData` 및 Unity AudioListener 믹서를 우회�
 2026-10-25 언어 후속: 로비 29자막 선택·메뉴 ko/en 구분과 원본 locale alias/unknown→en을 연결. 순수536/536·NativeLobby42/42, 실제 선택 렌더는 OS 직접 클릭과 구분. 자국어명/폰트/RTL 미완료. [Mac 통합 검수](UNITY_MAC_LOBBY_LANGUAGE_20261025.md).
 
 
-2026-10-25 팝업 후속: L/방향키/Enter/Esc·Tab순환과 바깥 클릭 닫기를 실제 Mac 키 입력으로 확인. 종료 확인도 하위 버튼 입력을 차단. 작은 마우스 selector 직접 입력은 미확인. [검수와 경계](UNITY_MAC_LOBBY_POPUP_20261025.md).
+2026-10-25 팝업 후속: L/방향키/Enter/Esc·Tab순환과 바깥 클릭 닫기를 실제 Mac 키 입력으로 확인. 종료 확인도 하위 버튼 입력을 차단. 작은 마우스 selector 직접 입력은 미확인. [검수와 경계](../_archive/engine/UNITY_MAC_LOBBY_POPUP_20261025.md).
 
 
 2026-10-25 언어 이름 후속: 29개 목록을2열 이름+코드로 변경. 기존폰트23원문 이름 지원, 나머지6개 ko/en 대체 이름. 실제 한/영 목록과2열 키보드 이동 확인, build0오류. 전체자막/RTL과 구분. [근거](UNITY_MAC_LANGUAGE_NAMES_20261025.md).
 
 
-2026-10-25 시네마틱 후속: 로비와29개 이름/2열 키보드 목록을 공유. 실제 EN 자막 선택, 목록 Esc6초의 skip 차단, 키 해제 후 정상 skip·KO 로비복귀 확인. 일반 build errors0. 전체29자막 글꼴/RTL·정밀 마우스와 구분. [검수](UNITY_MAC_CINEMATIC_LANGUAGE_20261025.md).
+2026-10-25 시네마틱 후속: 로비와29개 이름/2열 키보드 목록을 공유. 실제 EN 자막 선택, 목록 Esc6초의 skip 차단, 키 해제 후 정상 skip·KO 로비복귀 확인. 일반 build errors0. 전체29자막 글꼴/RTL·정밀 마우스와 구분. [검수](../_archive/engine/UNITY_MAC_CINEMATIC_LANGUAGE_20261025.md).
 
 
 2026-10-25 Mac 캐릭터 후속: 생성/선택의 세션 UI와 native preview 이름 전달을 연결했다. 원본 전사만 생성·최대5슬롯·이름 규칙 유지. 영속 저장/기존 슬롯/계정은 미연결. 최신 범위와 검수는 [UNITY_MAC_CHARACTER_UI_20261025](UNITY_MAC_CHARACTER_UI_20261025.md)를 따른다.

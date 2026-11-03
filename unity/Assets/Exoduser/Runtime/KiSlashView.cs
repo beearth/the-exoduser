@@ -16,12 +16,13 @@ namespace Exoduser.UnityPort
         readonly SpriteRenderer[] tiers=new SpriteRenderer[3];
         readonly Sprite line;
         readonly MaterialPropertyBlock properties=new MaterialPropertyBlock();
-        static readonly int Opacity=Shader.PropertyToID("_Opacity");
+        static readonly int Opacity=Shader.PropertyToID("_Opacity"),FrameRect=Shader.PropertyToID("_PixelFrameRect");
 
         public KiSlashView(Transform parent,Func<int,Sprite> frame)
         {
             this.parent=parent;this.frame=frame;
             additive=Material("Shaders/KiSlashAdditive");ink=Material("Shaders/KiSlashInk");
+            if(NativeRigPixelPolicy.Requested(Environment.GetCommandLineArgs())){additive.SetFloat("_RigPixelMode",1);ink.SetFloat("_RigPixelMode",1);}
             line=Sprite.Create(Texture2D.whiteTexture,new Rect(0,0,1,1),new Vector2(.5f,.5f),100);
             for(int i=0;i<2;i++)charge[i]=Renderer("Ki third charge "+i,additive,26000+i);
             for(int i=0;i<3;i++){tiers[i]=Renderer("Ki charge tier "+i,null,26002+i);tiers[i].sprite=line;}
@@ -93,7 +94,10 @@ namespace Exoduser.UnityPort
             r.transform.localScale=new Vector3(width/r.sprite.rect.width,height/r.sprite.rect.height,1);r.color=Color.white;
             // Explicit per-renderer opacity avoids relying on pipeline-specific
             // SpriteRenderer color uniforms or multiplying its alpha twice.
-            r.GetPropertyBlock(properties);properties.SetFloat(Opacity,alpha);r.SetPropertyBlock(properties);
+            r.GetPropertyBlock(properties);properties.SetFloat(Opacity,alpha);
+            var rect=r.sprite.textureRect;var texture=r.sprite.texture;
+            properties.SetVector(FrameRect,new Vector4(rect.xMin/texture.width,rect.yMin/texture.height,rect.xMax/texture.width,rect.yMax/texture.height));
+            r.SetPropertyBlock(properties);
         }
         static Vector3 Point(float x,float y){return NativeRemodel3D.Point(x,y);}
         public void Dispose(){Reset();foreach(var r in charge)UnityEngine.Object.Destroy(r.gameObject);foreach(var r in tiers)UnityEngine.Object.Destroy(r.gameObject);UnityEngine.Object.Destroy(line);UnityEngine.Object.Destroy(additive);UnityEngine.Object.Destroy(ink);}
