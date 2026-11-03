@@ -1,3 +1,5 @@
+2026-11-03 19:00 지옥문 조건 목표 표시: 최신 unity/main `9dc27dea5` 병합 후 실제 Core 비율/보너스의 필요 처치 수(23마리→19, 문지기 보너스→17), 아귀 상태·정화 N/4·다음 지역·문 열린 뒤 보스방 안내를 우측 두 줄과 미니맵에 연결. 기존 serif/뼈색·금색 선·웹 아귀/자물쇠 문법, 새 문구224개/28언어. 표시 모델33검사·Core 최소수400조합·언어형식 통과, 공용bin 컴파일 `3920a25c` 오류0/USER_SAVE0. PC Player·새 빌드·게임 캡처0, Mac 1920/3840 1x·3x와 자연 진행 미검증. [G0 근거·구현·Mac 인자](engine/UNITY_HELLGATE_OBJECTIVES_20261103.md).
+
 2026-10-29 Mac 로비 메타 대비 후보: 최신 웹 `main:7e0113fe4`의 좌상단 회색 alpha `.5`는 실제 1280/1600 1x에서 석재 배경 위 판독이 약했다. Mac 정의 JSON의 일반·한도 alpha만 `.9`로 변경, ARM64 Settings QA build Succeeded/오류0, 5/5 실제 화면·Tab/Return/Esc 유지·로스터 SHA 불변. 웹 세 위치 동기화와 물리 마우스 hit는 HOLD, 전체 VISUAL VERDICT RETOUCH. [수치·화면·후속](engine/UNITY_LOBBY_20261024.md#2026-10-29-좌상단-메타-대비-후보--mac-범위).
 
 2026-10-29 Mac 로비 패치노트 hit/focus 정합: 좌상단 3/4줄의 실제 glyph 폭·행 높이를 공통 `OverlayBounds`로 계산해 표시·클릭·키보드 초점 테두리에 사용. 빈 초점의 첫 Tab을 패치노트 버튼에 연결. ARM64 Settings QA build Succeeded/오류0, 1280에서 Tab→Return 열기·N 뒤입력 차단·Esc 닫기/초점 복귀, 1600에서 표시·테두리 정합을 실제 확인. 마우스 hit 미검증·기존 메타 대비 RETOUCH 유지. [로비 문서](engine/UNITY_LOBBY_20261024.md#2026-10-29-표시패치노트-hitfocus-범위-정합).

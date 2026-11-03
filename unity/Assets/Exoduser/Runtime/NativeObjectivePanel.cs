@@ -6,14 +6,17 @@ using UnityEngine;
 namespace Exoduser.UnityPort {
  // Web top-right objective panel #mmLvl (game.html markup 2576-2586, CSS 372-379 + 1008, values 60319-60330): level, experience text + bar,
  // "지역 처치" (area kills) and "악의" (malice). Layout numbers are the computed-style dump of the web panel at 1920x1080. All values are passed by the
- // caller from Unity state; a null value is drawn as "미이식" (Unity has no area-kill total, so the kill row is "N / 미이식").
+ // caller from Unity state; null values keep the legacy fallback. Regional fields show the actual purification target, plus two persistent goal lines.
  public sealed class NativeObjectivePanel {
-  public struct Info {public int level,exp,maxExp,materials;public int? areaKills,areaTotal;public bool english;}
+  public struct Info {public int level,exp,maxExp,materials;public int? areaKills,areaTotal;public bool english;public string locale;public NativeHellGateObjective gate;}
   const string NotPorted="미이식";
   Font nanum;bool ready;Texture2D expTex;readonly Dictionary<long,GUIStyle> styles=new Dictionary<long,GUIStyle>();
   string lvText,killText,matText;float lvT=-9,killT=-9,matT=-9;
   public float? ForcedPulseAge;   // verification only: freeze the count-pulse animation at this age
+  public bool GoalTextFits {get;private set;}=true;
   public const float Width=216f,Height=153.39f,RightMargin=20f,Top=16f;
+  public const float GoalWidth=480f,GoalHeight=68f,GoalGap=6f;
+  public static Rect Bounds(float width,bool hasGoal)=>new Rect(width-(hasGoal?GoalWidth:Width)-RightMargin,Top,hasGoal?GoalWidth:Width,Height+(hasGoal?GoalGap+GoalHeight:0));
   public static readonly string[] Words={"레벨","경험치","지역 처치","악의오브"};
   static readonly string[] WordsEn={"Level","Experience","Area kills","Orb of Malice"};
 
@@ -56,7 +59,7 @@ namespace Exoduser.UnityPort {
    Init();var W=info.english?WordsEn:Words;
    string lv=Num(info.level);
    string exp=Num(info.exp)+" / "+Num(info.maxExp);
-   string kill=(info.areaKills.HasValue?Num(info.areaKills.Value):NotPorted)+" / "+(info.areaTotal.HasValue?Num(info.areaTotal.Value):NotPorted);
+   string kill=info.gate.Visible?Num(info.gate.Kills)+" / "+Num(info.gate.Required):(info.areaKills.HasValue?Num(info.areaKills.Value):NotPorted)+" / "+(info.areaTotal.HasValue?Num(info.areaTotal.Value):NotPorted);
    string mat=Num(info.materials);
    if(lvText!=null&&lv!=lvText)lvT=Time.unscaledTime;if(killText!=null&&kill!=killText)killT=Time.unscaledTime;if(matText!=null&&mat!=matText)matT=Time.unscaledTime;
    lvText=lv;killText=kill;matText=mat;
@@ -81,7 +84,24 @@ namespace Exoduser.UnityPort {
    var orbRect=new Rect(L,y0+111,32,32);NativeCurrencyOrb.Draw(orbRect,info.materials);
    Text(L+38,y0+118.55f,17.69f,W[3],info.english?11:13,false,C(192,189,183),0);
    NativeCurrencyOrb.DrawFlights(orbRect,hudWidth,Screen.height*hudWidth/Screen.width);
-   RightText(R-6,y0+118.55f,17.69f,mat,13,false,C(226,223,217),0,PulseAge(matT));GUI.matrix=matrix;
+   RightText(R-6,y0+118.55f,17.69f,mat,13,false,C(226,223,217),0,PulseAge(matT));
+   if(info.gate.Visible)DrawGoal(hudWidth,info);
+   GUI.matrix=matrix;
+  }
+  void DrawGoal(float hudWidth,Info info){
+   NativeHellGateLabels.Lines(info.gate,info.locale??(info.english?"en":"ko"),out string heading,out string detail);
+   var box=new Rect(hudWidth-GoalWidth-RightMargin,Top+Height+GoalGap,GoalWidth,GoalHeight);
+   NativeUiAudit.Region(box,"component","hud-hellgate-objective","지옥문 조건 두 줄");
+   NativeSilverHellUi.Panel(box,12,0);
+   Fill(new Rect(box.x+15,box.y+10,1,GoalHeight-20),C(183,166,129,.48f));
+   GoalTextFits=GoalLine(new Rect(box.x+25,box.y+9,box.width-40,23),heading,C(226,223,217))&GoalLine(new Rect(box.x+25,box.y+34,box.width-40,23),detail,C(192,189,183));
+  }
+  bool GoalLine(Rect rect,string text,Color color){
+   var style=new GUIStyle(Style(13,false)){font=NativeSilverHellUi.TextFont(nanum,text),clipping=TextClipping.Clip};
+   while(style.fontSize>11&&style.CalcSize(new GUIContent(text)).x>rect.width)style.fontSize--;
+   style.normal.textColor=new Color(0,0,0,.95f);NativeSilverHellUi.Label(new Rect(rect.x,rect.y+1,rect.width,rect.height),text,style);
+   style.normal.textColor=color;NativeSilverHellUi.Label(rect,text,style);
+   return style.CalcSize(new GUIContent(text)).x<=rect.width;
   }
  }
 }
