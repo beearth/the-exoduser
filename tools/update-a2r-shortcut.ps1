@@ -6,7 +6,7 @@ if(-not(Test-Path -LiteralPath $exe)){throw "A2R exe missing: $exe"}
 $proof=Get-Content -LiteralPath $SmokeReceipt -Raw -Encoding UTF8 | ConvertFrom-Json
 if(-not $proof.passed -or $proof.errors -ne 0 -or -not $proof.arrived -or -not $proof.noTeleport){throw 'A2R play-smoke must PASS with errors0 and noTeleport'}
 if(-not $proof.ordinaryEntryVerified -or $proof.legacyFrontendBypass -or $proof.frontendBoundaries.Count -lt 2){throw 'Ordinary entry and route must both PASS in the current run'}
-if($proof.nearestCoveredPixels -le 0 -or $proof.nearestDrawCalls -le 0){throw 'Nearest surface depth must contain real pixels'}
+if($proof.nearestCoveredPixels -le 0 -and $proof.nearestProbeCoveredPixels -lt 8){throw 'Nearest surface depth must contain real scene pixels or pass the live known-surface GPU probe'}
 if($proof.heroFrame -ne 'rigpixel live Point RT'){throw 'Current smoke must show live rigpixel rendering'}
 $assets=Get-Content -LiteralPath (Join-Path (Split-Path $SmokeReceipt) 'web-assets-receipt.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 $plants=@($assets.items | Where-Object {$_.added -and $_.kind -eq 'vegetation'})

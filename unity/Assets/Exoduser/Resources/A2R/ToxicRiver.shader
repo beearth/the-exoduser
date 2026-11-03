@@ -20,6 +20,8 @@ Shader "EXODUSER/A2R/ToxicRiver"
     #pragma multi_compile_fragment _ _SHADOWS_SOFT _SHADOWS_SOFT_LOW _SHADOWS_SOFT_MEDIUM _SHADOWS_SOFT_HIGH
    #pragma multi_compile_fog
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+   // Keep the explicit real planar reflection below; the default sky cubemap made dark poison blue-gray.
+   #define _ENVIRONMENTREFLECTIONS_OFF 1
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
    #include "Nature.hlsl"
@@ -56,8 +58,9 @@ Shader "EXODUSER/A2R/ToxicRiver"
     reflectionUV+=n.xz*.12;
     float valid=step(0,reflectionUV.x)*step(reflectionUV.x,1)*step(0,reflectionUV.y)*step(reflectionUV.y,1);
     half3 reflectedColor=SAMPLE_TEXTURE2D(_PlanarReflection,sampler_PlanarReflection,reflectionUV).rgb;
+    half reflectedValue=dot(saturate(reflectedColor),half3(.2126,.7152,.0722));
      float fresnel=.12+.24*pow(1-saturate(dot(n,data.viewDirectionWS)),3);
-    c.rgb=lerp(c.rgb,reflectedColor*half3(.40,.32,.18),_PlanarStrength*valid*fresnel*(1-foam));
+    c.rgb=lerp(c.rgb,reflectedValue*half3(.15,.12,.065),_PlanarStrength*valid*fresnel*(1-foam));
     for(int k=0;k<min(8,_A2RWaterFireCount);k++){float2 axis=normalize(_WorldSpaceCameraPos.xz-_A2RWaterFires[k].xz);float2 v=p-_A2RWaterFires[k].xz;float along=dot(v,axis),side=dot(v,float2(-axis.y,axis.x));float width=.12+.05*abs(along);float streak=exp(-side*side/(width*width))*exp(-abs(along)*.35)*(1-smoothstep(5,8,abs(along)));float breakup=.4+.6*(sin(p.x*5+p.y*4-t*.3)*.5+.5);c.rgb+=_A2RWaterFireColors[k].rgb*streak*breakup*.09*(1-foam*.6);}
     c.rgb=MixFog(c.rgb,i.fog);return c;
    }

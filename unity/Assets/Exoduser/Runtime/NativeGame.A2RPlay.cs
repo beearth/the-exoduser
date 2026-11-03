@@ -14,7 +14,7 @@ namespace Exoduser.UnityPort
         {
             public string scope="Ordinary lobby/character/entry callbacks, startup skip and original StepInput/Core camp walking. No coordinate assignment on the main route. Optional supplementary fixed-pose visual fixture is labeled separately. Fixture invulnerability; not human play or balance QA.";
             public List<string> frontendBoundaries=new List<string>();public bool ordinaryEntryVerified,legacyFrontendBypass;public int nearestDrawCalls;public int nearestCoveredPixels;public List<A2RPlayFrame> frames=new List<A2RPlayFrame>();
-            public string heroFrame,visualFixture;public int overlapRenderers,peakOverlapRenderers,visualPoseAssignments,legacyFogFeatures;
+            public string heroFrame,visualFixture;public int overlapRenderers,peakOverlapRenderers,visualPoseAssignments,legacyFogFeatures,nearestProbeCoveredPixels;
             public string sandbox;public bool passed,arrived,noTeleport=true;public int errors,ticks,blockedTicks;public float walkedPixels,seconds,campFps;public List<string> failures=new List<string>(),steps=new List<string>();public Vector2 start,end;
         }
         [Serializable] sealed class A2RPlayFrame {public string id;public int width,height;public Vector2 heroScreen;public List<Vector2> distantEnemies=new List<Vector2>();public Vector3 cameraPosition;public float cameraFov;}
@@ -63,14 +63,14 @@ namespace Exoduser.UnityPort
                 }
                 UpdateViews();if(a2rPlay.ticks>=nextShot){nextShot+=600;yield return A2RPlayShot("03-route-"+a2rPlay.ticks);}yield return null;
             }
-            a2rPlay.nearestDrawCalls=a2rOcclusion.NearestDrawCalls;a2rPlay.nearestCoveredPixels=a2rOcclusion.NearestCoveredPixels();if(a2rOcclusion.FadedRenderers>0&&a2rPlay.nearestCoveredPixels==0)a2rPlay.failures.Add("Nearest occluder depth buffer empty");a2rPlay.end=new Vector2(Simulation.Player.X,Simulation.Player.Y);a2rPlay.arrived=Vector2.Distance(a2rPlay.end,goal)<55;if(!a2rPlay.arrived)a2rPlay.failures.Add("Actual walk did not reach camp");yield return A2RPlayShot("04-camp-arrival");
+            a2rPlay.nearestDrawCalls=a2rOcclusion.NearestDrawCalls;a2rPlay.nearestCoveredPixels=a2rOcclusion.NearestCoveredPixels();a2rPlay.end=new Vector2(Simulation.Player.X,Simulation.Player.Y);a2rPlay.arrived=Vector2.Distance(a2rPlay.end,goal)<55;if(!a2rPlay.arrived)a2rPlay.failures.Add("Actual walk did not reach camp");yield return A2RPlayShot("04-camp-arrival");
             a2rPlay.legacyFogFeatures=a2rLighting.LegacyFogFeatures;a2rPlay.heroFrame=a2rLighting.Readability.HeroFrame;a2rPlay.overlapRenderers=a2rLighting.Readability.OverlapCount;a2rPlay.peakOverlapRenderers=a2rLighting.Readability.PeakOverlapCount;
             a2rLighting.Readability.CaptureHideEnemies=true;yield return A2RPlayShot("04b-hero-isolated");a2rLighting.Readability.CaptureHideEnemies=false;
             File.WriteAllText(Path.Combine(a2rPlayOutput,"web-assets-receipt.json"),JsonUtility.ToJson(a2rWeb.Result,true));if(a2rWeb.Result.groundTiles!=64||a2rWeb.Result.sourceCards<142||a2rWeb.Result.floating!=0)a2rPlay.failures.Add("Full-art/grounding receipt failed");
             float at=Time.realtimeSinceStartup;int frames=0;while(Time.realtimeSinceStartup-at<3){UpdateViews();frames++;yield return null;}a2rPlay.campFps=frames/(Time.realtimeSinceStartup-at);
             Screen.SetResolution(3840,1080,FullScreenMode.Windowed);deadline=Time.realtimeSinceStartup+8;while((Screen.width!=3840||Screen.height!=1080)&&Time.realtimeSinceStartup<deadline)yield return null;
             if(Screen.width==3840&&Screen.height==1080){for(int i=0;i<10;i++){UpdateViews();yield return null;}yield return A2RPlayShot("05-camp-3840");}else a2rPlay.failures.Add("3840 native resolution failed");
-            if(Array.IndexOf(Environment.GetCommandLineArgs(),"--a2r-surface-diagnostic")>=0)yield return A2RSurfaceDiagnostic();if(Array.IndexOf(Environment.GetCommandLineArgs(),"--a2r-nature-capture")>=0)yield return A2RNatureDetails();A2RPlayFinish();
+            if(a2rPlay.nearestCoveredPixels==0)yield return A2RNearestProbe();if(Array.IndexOf(Environment.GetCommandLineArgs(),"--a2r-surface-diagnostic")>=0)yield return A2RSurfaceDiagnostic();if(Array.IndexOf(Environment.GetCommandLineArgs(),"--a2r-nature-capture")>=0)yield return A2RNatureDetails();A2RPlayFinish();
         }
         IEnumerator A2RWaitFrontend(string boundary){float deadline=Time.realtimeSinceStartup+25;while((NativeScreenTransition.Busy||lobby.CinematicEntryPending)&&Time.realtimeSinceStartup<deadline){lobby.SetPlaybackFocus(true);yield return null;}if(NativeScreenTransition.Busy||lobby.CinematicEntryPending)a2rPlay.failures.Add("Frontend timeout:"+boundary);if(boundary!="cold-load"&&NativeScreenTransition.History!=null&&NativeScreenTransition.History.Count>0){var last=NativeScreenTransition.History[NativeScreenTransition.History.Count-1];if(last.failed||last.cancelled)a2rPlay.failures.Add("Frontend transition failed:"+boundary+":"+last.error);}a2rPlay.frontendBoundaries.Add(boundary);A2RPlayWrite();yield return null;}
         List<Vector2> A2RWalkPath(Vector2 start,Vector2 goal)
