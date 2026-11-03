@@ -1,4 +1,6 @@
-2026-11-04 char-modular 전사 후보: 독립11종+견갑수정1회 생성(실차감360/500cr),25객체/46뼈/전체30,670tri로 조립. 기본24뼈 보존·판금 단일100%·천/머리만 스킨, 망토3×4·머리카락3·태싯/견갑/무기 소켓. Blender34도11검사포즈·기존/새모델 native1x/3x 비교판 생성, 금속 edge 오차최대3.93e-7m. 4재질계열+흑발5슬롯/2K atlas, 기존Animator 재사용 후보 접점·명시 --hero-rig=modular 선택7검사·비용보호6검사 PASS. R7 전신용 표면 재분류는 새 후보에서 생략. PC Unity 공용 컴파일/임포트 검증 전 checkpoint이며 실제Animator/게임/디자인PASS·기본채택 아님. 기록 docs/engine/UNITY_CHAR_MODULAR_20261104.md, 외부 char-modular/REPORT.md.
+2026-11-04 char-modular 최신: 팔꿈치 측후면 시각 검증2회에서 관통/가림 분리 실패로 추가 렌더·수정 중단, RETOUCH. 새 G0/Tripo A안 직접 대조, B의 앞치마/스카프 독립 체인·허벅지판·5태싯 등 차이 명시. A/B 중립3뷰와 측후면8뷰 판 전달, 추가 유료0. G0 적합/변형PASS/게임PASS 아님. docs/engine/UNITY_CHAR_MODULAR_G0_DELTA_20261104.md.
+
+2026-11-04 char-modular 전사 후보: 독립11종+견갑수정1회 생성(실차감360/500cr),25객체/46뼈/전체30,670tri로 조립. 기본24뼈 보존·판금 단일100%·천/머리만 스킨, 망토3×4·머리카락3·태싯/견갑/무기 소켓. Blender34도11검사포즈·기존/새모델 native1x/3x 비교판 생성, 금속 edge 오차최대3.93e-7m. 4재질계열+흑발5슬롯/2K atlas, 명시 --hero-rig=modular 선택7검사·비용보호6검사 PASS. 소스068be0a19b의 공용 PC 컴파일/임포트1회 exit0, Humanoid/기존Animator동일참조/금속100%/규격 확인·새prefab 저장. 작업 외 자동 UI메타12/URP1 복구, 자기메타만 인수. R7 전신용 표면 재분류는 새 후보에서 생략. 실제Animator/게임/디자인PASS·기본채택 아님, PC Player/빌드0. 기록 docs/engine/UNITY_CHAR_MODULAR_20261104.md, 외부 char-modular/REPORT.md.
 
 2026-11-04 00:35 3D 적 피격 위치 계획을 보스전 총괄 1차 일정(적 3D G0 §8, 773bf0238)에 맞춤: 1차 4종 G1~G3.5에서 Blender 숫자 3개(메시 높이·가슴 비율·34° 투영 높이) 요청, Unity 모델 표 연결 커밋에 피격 기준점(투영 bounds) 연결, 같은 Mac 판정 차례에 피격 컷 추가, 2차 다안 육괴는 눈 높이 접점. 문서만, 코드 무변경. 기록 docs/5.1임펙트디자인/UNITY_COMBAT_IMPACTS_20261103.md
 

@@ -11,6 +11,7 @@ p = argparse.ArgumentParser()
 p.add_argument("--model", type=Path, required=True)
 p.add_argument("--out", type=Path, required=True)
 p.add_argument("--variant", choices=("modular", "legacy"), required=True)
+p.add_argument("--inspection", action="store_true", help="Close side/rear views of occluded elbow/crouch joints; not a 1x game comparison")
 a = p.parse_args(sys.argv[sys.argv.index("--") + 1:])
 if a.model.suffix.lower() == ".blend":
     bpy.ops.wm.open_mainfile(filepath=str(a.model.resolve()))
@@ -113,8 +114,12 @@ def pose(label):
         for bone in rig.pose.bones:
             bone.matrix_basis = Matrix.Identity(4)
         bpy.context.view_layer.update()
-        turn("LeftForeArm", -140, (0, 0, 1))
-        turn("RightForeArm", 140, (0, 0, 1))
+        for side in ("Left", "Right"):
+            direction = world_head(side + "Hand") - world_head(side + "ForeArm")
+            # Anatomical flexion towards the character's front, rather than
+            # world-Z rotation through the torso. This is still a manual fixture.
+            axis = direction.normalized().cross(Vector((0, -1, 0))).normalized()
+            turn(side + "ForeArm", 140, axis)
     elif label == "knee120":
         turn("LeftLeg", 120, (1, 0, 0))
     elif label == "crouch":
@@ -173,6 +178,14 @@ target = Vector((0, 0, .7))
 camera.location = target + Vector((0, -math.cos(math.radians(34)), math.sin(math.radians(34)))) * 16.5
 camera.rotation_euler = (target - camera.location).to_track_quat("-Z", "Y").to_euler()
 labels = ("idle", "run", "arm90", "elbow140", "knee120", "crouch", "twist45", "strike1", "strike2", "strike3", "roll_mid")
+views = (("front", 0, False),)
+distance = 16.5
+if a.inspection:
+    labels = ("elbow140", "crouch")
+    views = (("left", 90, False), ("right", -90, False), ("rear", 180, False), ("rear_open", 180, True))
+    distance = 5.5
+    scene.render.border_min_x = 704 / 1920; scene.render.border_max_x = 1216 / 1920
+    scene.render.border_min_y = 284 / 1080; scene.render.border_max_y = 796 / 1080
 a.out.mkdir(parents=True, exist_ok=True)
 rigid = [o for o in bpy.context.scene.objects if o.type == "MESH" and o.get("char_modular_role") == "rigid"]
 base_lengths = {o.name: [(o.data.vertices[e.vertices[0]].co - o.data.vertices[e.vertices[1]].co).length for e in o.data.edges] for o in rigid}
@@ -186,17 +199,37 @@ for label in labels:
         for edge, original in zip(evaluated.data.edges, base_lengths[obj.name]):
             length = (evaluated.data.vertices[edge.vertices[0]].co - evaluated.data.vertices[edge.vertices[1]].co).length
             worst = max(worst, abs(length - original))
-    scene.render.filepath = str(a.out / (label + ".png"))
-    bpy.ops.render.render(write_still=True)
-    metrics.append({"pose": label, "maxRigidEdgeError": worst})
+    for view, azimuth, open_cape in views:
+        radians = math.radians(azimuth)
+        camera.location = target + Vector((math.sin(radians) * math.cos(math.radians(34)),
+                                           -math.cos(radians) * math.cos(math.radians(34)),
+                                           math.sin(math.radians(34)))) * distance
+        camera.rotation_euler = (target - camera.location).to_track_quat("-Z", "Y").to_euler()
+        hidden = []
+        for obj in scene.objects:
+            if obj.type == "MESH" and obj.name.startswith("Warrior_CapeScarf"):
+                obj.hide_render = open_cape
+                if open_cape:
+                    hidden.append(obj.name)
+        filename = label + ("_" + view if a.inspection else "") + ".png"
+        scene.render.filepath = str(a.out / filename)
+        bpy.ops.render.render(write_still=True)
+        if a.inspection:
+            metrics.append({"pose": label, "view": view, "azimuth": azimuth, "hiddenForInspection": hidden,
+                            "file": filename, "maxRigidEdgeError": worst})
+    if not a.inspection:
+        metrics.append({"pose": label, "maxRigidEdgeError": worst})
 receipt = {"scope": "Blender geometry validation poses, NOT existing Animator clips or Unity/game renders",
-           "variant": a.variant, "pitch": 34, "verticalFov": 46.9453, "distance": 16.5,
+           "variant": a.variant, "pitch": 34, "verticalFov": 46.9453, "distance": distance,
            "viewport": [1920, 1080], "nativeCrop": [320, 320], "scale": 1.31 / 1.85,
            "poses": metrics, "rigidNumericalPass": all(m["maxRigidEdgeError"] < 2e-5 for m in metrics),
            "visualPassed": False, "animatorVerified": False}
 receipt["weaponScope"] = "same separately generated sword fixture; game socket/orientation require Animator QA"
 receipt["nativeCropNominal"] = receipt.pop("nativeCrop")
-measured = bpy.data.images.load(str((a.out / "idle.png").resolve()), check_existing=False)
+receipt["inspectionOnly"] = a.inspection
+receipt["nativeCropNominal"] = [512, 512] if a.inspection else receipt["nativeCropNominal"]
+first = metrics[0].get("file", "idle.png")
+measured = bpy.data.images.load(str((a.out / first).resolve()), check_existing=False)
 receipt["nativeCropActual"] = list(measured.size)
 bpy.data.images.remove(measured)
 (a.out / "receipt.json").write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

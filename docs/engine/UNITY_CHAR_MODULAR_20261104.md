@@ -1,6 +1,7 @@
 # 전사 파트 제작·조립 리깅 — char-modular
 
-상태: G0/G1 제작 계약 초안·입력 시범. 디자인 총괄 PASS/게임 채택 아님.
+상태: **RETOUCH / 팔꿈치 시각 검증2회 실패로 추가 검사·수정 중단**. PC 컴파일/임포트는 통과했으나 새 G0의 파트/보조뼈 차이와 관통 판정이 남아 있다. 디자인 PASS/게임 채택 아님.
+최신 대조·중단 근거: [G0 차이와 검사 중단](UNITY_CHAR_MODULAR_G0_DELTA_20261104.md). Tripo A안 원본을 수신·직접 렌더해 파트별 대조했으며, 미수신이라는 아래 과거 기록은 대체한다. B 객체25개가 G0 W01~W25 충족을 뜻하지 않는다.
 기준: `origin/unity/main cfd8e248453dc102f5a6182a4aa98998230e7b71`.
 소유: `codex/unity-char-modular-20261104`, 전사 `Art/Characters/Warrior/Modular/`, 전용 `unity/Tools/char-modular/`, 전용 Editor/Runtime 접점과 이 문서. Core·클립·기존 renderer·카메라 변경 금지.
 
@@ -61,3 +62,9 @@ Mac에서 같은 패키지·기존 rig-pixel 경로로 실제 대기/달리기/3
 - `--hero-render=rigpixel --hero-rig=modular`로 후보를 요청한다. `--hero-rig=legacy`는 같은 패키지의 기존 모델 비교용이며 기본값은 유지한다. 순수 선택7사례 PASS. Unity 연결/공용 컴파일은 별도 영수증을 확인해야 한다.
 - 34도11포즈 비교판: `I:/EXODUSER-Storage/char-modular/poses/warrior_compare_34_1x.png` 및 `_3x.png`. Blender의 border 반올림 때문에 실제 native 크롭320×319, 재배율 없이 합성했다. 동일34도/46.9453 FOV/거리16.5/1920×1080 기준이며 검사 포즈를 쓴다. 기존 Animator/Unity GPU/실게임 비교판으로 주장하지 않는다. 금속 edge 길이 최대 오차3.93e-7m, 수치 PASS.
 - 최종 시각 상태: **RETOUCH_GAME_QA_PENDING**. 디자인 총괄 G1/Tripo 비교·Mac 실제 Animator/1x/3x/점0/관통0/이음새0/60fps·사용자 실행본 채택은 아직 완료하지 않았다.
+
+## PC 컴파일·임포트 검증
+
+검증 소스 `068be0a19be1e4722ab65dfa66e301492d555af8`. 공용 실행기 batch job1회 exit0, Player/빌드0. `ModularWarriorImport.Run`이 Humanoid 유효성·기존 Animator 동일 참조·금속 정점 단일100%·30,670tri·46뼈·망토12/머리카락3·5재질을 확인하고 `Resources/Characters/Warrior_Modular.prefab`를 저장했다. 실제 동작·GPU·시각 PASS는 아니다. 영수증: `I:/EXODUSER-Storage/char-modular/compile-current/modular-import.json`.
+
+컴파일이 자동 변경한 작업 외 UI메타12개/URP설정1개는 검증 전 소스 상태로 복구하고 자기 생성물만 인수한다. Mac은 최종 자기 브랜치의 모델/프리팹/메타를 같은 패키지에 빌드해 후보 플래그로 검수한다. 별도 `I:/EXODUSER-Storage/codex-takeover/char-modular/MAC_REVIEW.md` 참조.
