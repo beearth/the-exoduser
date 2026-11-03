@@ -1,3 +1,7 @@
+## 2026-11-04 드루이드 입력 v8.1 → v8.2 교체·오브 소켓 읽기 API (보스전 총괄 배정, Claude 이어받기)
+
+최신 origin/unity/main 병합(CHANGELOG/PREP 충돌은 양쪽 기록 보존). 입력 GLB를 v8.2(SHA-256 313bb238…98c, 24,299,904B)로 교체: import-oldman.py를 v8.2 이름으로 바꿔 v8.1과 같은 절차(무창 Blender, 소켓 월드 행렬 복원, Icosphere 제외)로 OldmanV82.fbx(15,581,516B) 생성, meta를 이름만 바꿔 GUID 유지, OldmanV81.fbx 삭제, NativeDruidRigPixelView·DruidRigPixelVerification·oldman-import.json·druid-rigpixel-tests의 참조 갱신. 클립 31개·이름·틱 계약·34본·78,323삼각형·Fist_L·StaffSocket_L 불변. 추가: NativeDruidRigPixelView.HasOrbSocket / OrbSocketWorldPosition / 정적 TryGetOrbSocketWorldPosition(out Vector3) — StaffSocket_L 아래 lantern_orb 변환의 실시간 월드 위치(VFX 슬래시3 예고용, 읽기 전용, 임의 오프셋 없음). Core 변경 0. 검사: 정책 4,672/0, FBX 수치 계약 통과(31클립, 정지 발 수평 최대 0.0046cm, 소켓 오차 1.08e-6m), 전체 PC Roslyn 1회 5어셈블리 오류 0(Core126/Runtime281/Editor62 포함). PC Unity/Player/빌드 0. 실제 Unity 임포트·화면·60fps 판정은 Mac 대기. docs/engine/UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md §9.3.
+
 ## 2026-11-04 03:00 실제시각 드루이드 v8.1 7기술 연결
 
 최신origin/unity/main309892b1da 병합(51e0b30e77), CHANGELOG/PREP 양쪽 충돌 기록 보존. OldmanV81.fbx로교체·34본/보조10본/Fist_L/왼손소켓과29기술 단계+Idle/Walk=31클립 보존. Core 상태·남은틱으로 Generic Playable 샘플, 현재Core와원본길이 차이 보정·채찍 타격6f=Core2틱·균열 act를 기존회복안에 배치·잡힘/탈출/심장/잠행 분기. 수평 루트 중복 제거, 심장가슴맥동·영수증 확장. Core/기본값/카메라/8b 변경0. 정책4,672/0·FBX 수평발 최대.00461cm·전체Roslyn1회5어셈블리 오류0. 첫발 검사는 의도된20cm발들기를3D미끄러짐으로오인한원인을GLB에서확정하고 수평기준으로고쳐통과. PC Unity/Player0, 실제Avatar/RT/7기술1x·10초·세계발/FPS Mac대기. [계약·한계](engine/UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md#9-0300-실제시각-cto--v81-7기술-연결-소스-후보).

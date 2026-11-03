@@ -1,6 +1,6 @@
 # 1-1 드루이드 노인 코어 rig-pixel 준비 — 2026-11-04
 
-상태: 11-04 03:00 실제시각 CTO 배정으로 v8.1의29기술 단계+Idle/Walk=31클립을 소스에 연결했다(§9). 정책4,672/0·FBX 수치 계약 통과·전체Roslyn1회5어셈블리 오류0. 실제 Unity 임포트/Avatar/Metal/게임 화면/성능은 Mac 대기. §7의 v7 연결은 이전 후보 이력이다.
+상태: [11-04 v8.2 교체 §9.3 — 현재 입력은 OldmanV82.fbx, 아래 v8.1 수치는 이력] 11-04 03:00 실제시각 CTO 배정으로 v8.1의29기술 단계+Idle/Walk=31클립을 소스에 연결했다(§9). 정책4,672/0·FBX 수치 계약 통과·전체Roslyn1회5어셈블리 오류0. 실제 Unity 임포트/Avatar/Metal/게임 화면/성능은 Mac 대기. §7의 v7 연결은 이전 후보 이력이다.
 
 ## 1. v6 입력 자산 이력 (최신 v7은 §7)
 
@@ -212,5 +212,28 @@ Mac은 먼저 Exoduser.CharacterLab.DruidRigPixelVerification.Verify를 Editor�
 - 첫 발 검사1회는 발 들기를 포함한3D 변위를 미끄러짐으로 잘못 세어 charge_tele/rec 약20cm FAIL이었다. 원본 GLB 진단에서 수평은 유지되고 오른발만20cm 들리는 원인을 확정한 후 수평 거리로 고쳐 재검사 통과. 소스 동작은 고치지 않았다. 같은 검사2회 실패 없음.
 - 전체 PC Roslyn은 요청대로1회: Player Core126/Runtime281, Editor Core126/Runtime281/Editor61, 총5어셈블리 오류0. PC Unity/Player/빌드/렌더/캡처0. Blender는 무창2스레드 포맷 변환·숫자 검사만 했다. python stdin·유료·USER_SAVE 접근0.
 - 위 수평 발 수치는 고정 루트의 변환 자산 계약이다. Core의 전진/감속/조준 회전·루트 보정·스킨/아바타·게임 지면을 포함한 실제 발 접지를 증명하지 않는다. Mac Editor Verify는 실제 Unity31클립 길이/곡선/Generic·보조본·Fist_L·수평 발 계약을 검사하도록 확장했고 PC에서는 실행하지 않았다.
+
+### 9.3 v8.2 교체와 오브 소켓 API (11-04, 보스전 총괄 배정)
+
+| 항목 | 내용 |
+|---|---|
+| 입력 | §8.2 GLB `I:/EXODUSER-Storage/boss/oldman-v2-20261104/v8_2/oldman_druid_v8_2.glb` SHA-256 313bb238185919b69dd9233fade9f12185e803cb6e72d9a807ae0d781bd3798c 확인(24,299,904B). 원본 미수정 |
+| 변환 | `unity/Tools/druid-rigpixel/import-oldman.py`를 v8.1과 같은 절차로 사용(이름만 v8.2/OldmanV82.fbx): 무창 Blender 5.2.3 `-b --factory-startup --threads 2`, 소켓 월드 행렬 복원, Icosphere 제외. 결과 OldmanV82.fbx 15,581,516B, 소켓 보정 후 오차 3.9e-6m |
+| 파일 | OldmanV81.fbx 삭제, `.meta`는 이름만 바꿔 GUID 유지(V7→V81과 같음). 갱신한 참조: NativeDruidRigPixelView(Resource), DruidRigPixelVerification(PathName), oldman-import.json(sourceVersion/SHA/bytes), druid-rigpixel-tests(sourceVersion==v8.2) |
+| 불변 | 31클립·이름·틱 계약(§9.1), 34본, 4메시, 78,323삼각형, Fist_L, StaffSocket_L(LeftHand). Core 변경 0 |
+| 검사 | 정책 4,672검사/0실패. verify-fbx.py: 31클립·34본·78,323삼각형 통과, 정지 발 수평 최대 0.00461cm(허용 0.02cm), 소켓 rest 오차 1.08e-6m. 전체 PC Roslyn 1회: Player Core126/Runtime281, Editor Core126/Runtime281/Editor62, 총5어셈블리 오류 0 |
+| 한계 | v8.2의 §8.2 남은 결함(치마 관통 788~1,094정점 등)은 Mac 1x 캡처 판정 대기. PC Unity/Player/빌드/캡처 0 |
+
+**오브 소켓 읽기 API** (VFX 총괄 슬래시3 예고용, `NativeDruidRigPixelView`, Core 무관): 모델에서 `StaffSocket_L` 아래 `lantern_orb` 변환을 찾아 보관(없으면 기존 보스 폴백). 오브 메시 원점=메시 중심(Blender 확인), 위치는 클립이 샘플한 실시간 변환 그대로이며 손으로 잡은 오프셋은 없다.
+
+| 이름 | 의미 |
+|---|---|
+| `bool HasOrbSocket` | 뷰가 정상(실패 아님)이고 `Ready`(이번 활성 구간에 렌더됨)이며 오브를 찾았을 때 true |
+| `Vector3 OrbSocketWorldPosition` | `lantern_orb.position`(월드). 값은 LateUpdate(실행순서1002)의 `motion.Sample` 뒤 최신이며, 그보다 앞선 Update에서 읽으면 직전 프레임 값 |
+| `static NativeDruidRigPixelView Current` | 초기화 성공 뒤 현재 뷰, 파기 시 null |
+| `static bool TryGetOrbSocketWorldPosition(out Vector3)` | VFX가 새 의존 없이 호출. `Current`가 있고 `HasOrbSocket`이면 true와 위치, 아니면 false와 zero |
+
+rigpixel 플래그(`--boss-render=rigpixel`)가 꺼져 있으면 뷰가 없어 항상 false다.
+
 
 Mac 전체 인수·7기술별1x 캡처/10초 영상 수집 요청은 [03:00 인계](UNITY_BOSS_ARENA_RB1_7_8_20261103.md#11-04-0300-실제시각-v81-7기술-mac-인계)에 있다. 실제 Unity/Metal RT·원근/크기·타격/예고 경계·실루엣·발/지팡이접지·치마 관통·1x/3x·영상·60fps 판정은 미검증이다. 제작자 조건부 PASS나 숫자/컴파일을 디자인 PASS로 올리지 않는다.

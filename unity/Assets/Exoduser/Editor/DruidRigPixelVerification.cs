@@ -5,7 +5,7 @@ namespace Exoduser.CharacterLab
     // Mac batch import/contract gate only. PC compiles this code without running Unity.
     public static class DruidRigPixelVerification
     {
-        const string PathName="Assets/Exoduser/Resources/Art/Bosses/Druid/OldmanV81.fbx";
+        const string PathName="Assets/Exoduser/Resources/Art/Bosses/Druid/OldmanV82.fbx";
         [Serializable] sealed class ClipReceipt {public string name;public float seconds,expectedSeconds,footSlipHorizontalCm;public bool rootOrLocomotion;}
         [Serializable] sealed class Receipt
         {

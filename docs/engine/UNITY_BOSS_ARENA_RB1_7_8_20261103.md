@@ -1,5 +1,7 @@
 # RB1-7 / RB1-8 구현 기록 — 2026-11-03
 
+11-04 갱신: 드루이드 입력을 v8.2(OldmanV82.fbx)로 교체하고 NativeDruidRigPixelView에 lantern_orb 월드 위치 읽기 API(HasOrbSocket/OrbSocketWorldPosition/TryGetOrbSocketWorldPosition)를 추가했다. 정책4,672/0·FBX 계약 통과·Roslyn5어셈블리 오류0, Core 변경0, Mac 판정 대기([PREP §9.3](UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md)). 아래 03:00 절의 v8.1 서술은 이력이다.
+
 최신 병합: origin/unity/main 309892b1da390a6ac7218d2935ca0e808157c7a8 (merge 51e0b30e77). 작업본 G:/exoduser-wt/codex-boss-arena, 브랜치 codex/unity-boss-arena-20261103. 20:25/21:00/21:35/21:45 및11-04 00:50/01:20/03:00 실제시각 CTO 결정을 적용한다. PC는 CPU 하니스·Roslyn 컴파일, Player 빌드·화면·성능 판정은 Mac 담당이다.
 
 ## RB1-7 현재 상태
