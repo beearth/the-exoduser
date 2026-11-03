@@ -22,14 +22,14 @@
 |---|---|---|
 | Q 패링 | `doParry`38956~38984, `_dark02Impact`8941, `_addBoom`8946~8949, draw57523~57621 | `Dark_MediumImpact`, 4×4/16셀, 일반 알파. r80→최대240px, 시작60%, `.6+.4*sqrt(min(1,p*8))`, 72틱, alpha `1-p*.5` |
 | 물리 패링 | 같은 함수 `_impactKind==='physicalProjectile'`, `_physicalImpactSheet`8927 | `Fire_ImpactFire_Sheet`, 4×4 중 첫4셀, 흰색 `_Flat=1`(밝기×원본alpha). r60→최대180px. **요청12틱이 `_addBoom`에서 최소66틱으로 늘어나는 현행 동작을 적용** |
-| 그 밖의 패링 | `_TVFX2_COMBOS[2]`19151~19154, draw55221~55240 | Lightning Impact 4×4 sc1.2/delay0/5틱; Lightning FBF 4×3 sc1.32/delay1/7틱; Lightning Basic 3×3 sc.6/delay0/7틱. 가산, 크기 `cell*sc*(1+p*.4)`, alpha .7·60%부터 페이드 |
+| 그 밖의 패링 | `_TVFX2_COMBOS[2]`19151~19154, draw55221~55240 | Lightning Impact/FBF/Basic은 RETOUCH 2의 `*_el4` 시트 사용. 4×4 sc1.2/delay0/5틱; 4×3 sc1.32/delay1/7틱; 3×3 sc.6/delay0/7틱. 가산, 크기 `cell*sc*(1+p*.4)`, alpha .7·60%부터 페이드 |
 | 물콩 Q | `_waterBeanIceBurst`8933~8938 및 `doParry`38958 | Ice Impact+Mist 4×4, r96→288/326.4px, 72틱. 두 번째 지연3틱/alpha×.8. Dark02 중복 없음 |
 | 무지개 Q | `_rainbowImpact`8945, draw57563~57579 | Poison Medium/Dark Smoke/Light Impact/Ice Impact 4층, 72틱, r80×(2.8/3.1/3.4/3.7), 회전0/90/180/270°, alpha×(1/.85/.7/.55). 지연을 가장 가까운 정수 틱으로 샘플링 |
 | 패링 공통 | `doParry`38982~38984, `doHitFlash`20314, draw55373 | 방사12개, speed3~7/size2~5/life10~16, 3개당 흰색1개. 플래시 strength .25→실제alpha+.125(누적상한.5), 틱당-.08. 흔들림14×설정, 감쇠.86/틱·.3px 미만 종료. Core 히트스톱 추가0 |
 | 일반·치명·보스 피격 | `_addImpact`25777~25805, `_impactSpriteFor`19232, draw55166~55218 | `impact_el0..5_sheet`9셀 / `impact_el0..5_boss_sheet`16셀, 16틱, boss×2.5. `drawSz=cell*scale*(boss?.92:.8+p*.6)`에서 괄호는 `(boss?.92:.8)+p*.6`. alpha `(1-p)*(boss?.62:.45)`, 가산. 원소6/누락 시 basic9셀 폴백 |
 | 피격 버스트 | `spawnHolyBurst`19533 / `spawnElecBurst`19476 | basic9셀×2.4틱(22틱 샘플), 일반sc.4/보스.7, alpha.45. 번개는 `boss/vfx_holy_burst`3×3/9셀×3틱, sc.1/.18, 5셀 뒤 감쇠. 역방향6~8파편과 원소별 추가입자 |
-| 일반 사망 | `deathFX`25197~25223, `_deathBloodScale`25163, `_spawnLargeMonsterDeathFx`25759 | `Blood_FBF_4x4`, 4×4/16셀×4틱=64틱, 일반 알파. 폭 `128*clamp(.35+max(1,r)*.075,.8,4.8)`, alpha `min(1,1.5*(1-p*.3))`. 중심 사각 플래시·팽창 테두리·피 파편. 큰 몹(r≥18) 추가16입자 |
-| 보스 사망 | 위 함수와 `_drawBossDeathBloodClip`20088 | `boss/boss_death_blood_24_20261010`, 6×4/24셀을 기존16셀×6틱=96틱 수명에 매핑. 원본 blood16셀 폴백. 추가26입자, 중심 플래시·외곽 테두리. `druid_sink` 제외 |
+| 일반 사망 | `deathFX`25197~25223, `_deathBloodScale`25163, `_spawnLargeMonsterDeathFx`25759 | `Blood_FBF_4x4_matte`(RETOUCH 1), 4×4/16셀×4틱=64틱, `Additive=false` 일반 알파. 폭 `128*clamp(.35+max(1,r)*.075,.8,4.8)`, alpha `min(1,1.5*(1-p*.3))`. 중심 사각 플래시·팽창 테두리·피 파편. 큰 몹(r≥18) 추가16입자 |
+| 보스 사망 | 위 함수와 `_drawBossDeathBloodClip`20088 | `boss/boss_death_blood_24_20261010` 원본 유지, 6×4/24셀을 기존16셀×6틱=96틱 수명에 매핑. `Blood_FBF_4x4_matte` 16셀 폴백, `Additive=false`. 추가26입자, 중심 플래시·외곽 테두리. `druid_sink` 제외 |
 | Roll | `activateRoll`45813~45815 / `_finishRoll`45817~45819 / 이동45840 | 흙색 `#6e6050`, 시작요청5→실제3입자/끝4→실제2입자(`addParts`×.6 절삭), size2~6/life12~24. 이동 중 확률.6로 발밑 먼지1개(size2~4/life10~16). 시작 흔들림2. 빛·별도 잔상 추가 없음(현행 웹 roll과 비roll bladeDash 구분) |
 
 ## 풀·정렬·임포트
@@ -68,3 +68,52 @@ VISUAL VERDICT: **미검증**. 이번 소스 연결을 전체 누락 연출 이�
 | 중단·남은 검증 | 읽은 `origin/main:docs/0마스터플랜/AGENT_OPERATIONS_MANUAL.md` §2.3의 동일 검사 2회 실패 중단 규칙에 따라 추가 수정·테스트를 중단했다. 기존 combat-impact25/0·feedback28/0은 이전 작업의 기록이며 **이번 변경 후 재실행하지 않았다**. 기존 지역 회귀, Runtime 정적 컴파일, Player M1도 미실행이다. |
 
 **판정: 컷 상태·RNG 복원은 독립 검사 통과, 09c 회귀 수정 전체는 미완료.** 총괄 인수 전 통합·완료로 처리하지 않는다. 다른 세션의 기존 WIP·인덱스·`game.html`은 수정하지 않았다.
+
+## RETOUCH 1·2 — 사망 피 적갈·방패 패링 누런 전광 (2026-11-03 PC)
+
+작업본 `G:/exoduser-wt/codex-vfx-retouch`, 브랜치 `claude/unity-pc-vfx-retouch-20261103`, 기준 HEAD `0b5441130a0fdb3bf5a2439b38b3d4e2c74ce288`. 착수 시 INDEX/WORK·미추적 변경 없음. 원격 fetch는 worktree 외부 `FETCH_HEAD` 쓰기 권한 거부로 실행되지 않아 원격 최신 여부는 미확인이다. 읽을 수 있는 `origin/main`의 운영 매뉴얼·WORK_MANUAL v4·AAA 기준·VFX 마스터 §2.2/2.5와 `regrid_arcpoi_pack.py`를 확인했다. WORK_BOARD에는 이 레인 행이 없어 이 절과 브리프를 소유 범위 기록으로 남긴다. **최신 브리프의 commit·push·Unity·브라우저·외부 쓰기·영구 삭제 금지 준수.**
+
+### 변경 계약
+
+경로 접두사는 `unity/Assets/Exoduser/Resources/Art/vfx/combat/`. 아래 4개 PNG와 각 `.png.meta`를 새로 추가했다. 원본 PNG/meta와 보스 승인 PNG는 수정하지 않았다. 추가 에셋+meta 총 409,046B. 초기 26개 PNG에 4개가 추가되며, 앞 절의 26개/10.77MiB는 최초 이식 당시 기록이다.
+
+| 새 PNG | 규격·격자 | 램프·밝기 | 새 GUID |
+|---|---|---|---|
+| `Blood_FBF_4x4_matte.png` | 512², 4×4/16셀 | `#2a0a08` → `#6e1e16` → `#c0503a`; 보이는 원본 최고 휘도로 정규화, 정지점 0/.45/1. 최고색도 피 코어 이하, 흰 코어 추가 없음 | `83d3353b1430581fa812cdc72286eb48` |
+| `Lightning_ImpactLightning_Sheet_el4.png` | 512², 4×4/16셀 | `#2e2814` → `#c8a848` → `#fff4d0`; 원본 휘도 97백분위까지 중간색, 이를 초과하는 상위 3% 안에서만 코어로 보간 | `b6a3399a05655529a165d1469839fde5` |
+| `Lightning_Lightning_FBF_4x3_el4.png` | 512², 4×3/12셀, 셀128×170·나머지2px 유지 | 같은 번개 램프·상위3% 조건 | `f94978475623526588e2408f1559ec3d` |
+| `Lightning_BasicImpact_el4.png` | 256², 3×3/9셀, 셀85²·나머지1px 유지 | 같은 번개 램프·상위3% 조건 | `589e0c4b982a571380e81a18f0bf5587` |
+
+- `tools/vfx/recolor_combat_retouch.py`: 기존 도구와 같은 `L=.299R+.587G+.114B`, `np.interp`, uint8 최근접 반올림. 형상 회전·재격자화·알파 수정·그레인 없음. **알파 전 바이트 동일**. `.meta`는 원본 임포트 설정 그대로, 이름별 UUID5 새 GUID. Python3.14의 numpy/Pillow/scipy 사용; 3.13에는 numpy가 없어 3.14로 실행했다.
+- `CombatImpactTimeline.cs`: 일반 사망과 보스 폴백을 matte로 변경. 두 사망 클립 모두 `Additive=false` 명시(기존에도 bool 기본값 false). 보스 승인 시트·수명·크기·프레임·판정 불변. Step0의 Lightning 3층은 새 el4 시트로 교체하고 기존 가산·시각 수치는 유지.
+- `CombatImpactView.cs`: 기존 `spec.Flat?whiteAlpha:spec.Additive?add:alpha`, alpha 재질 `_NormalBlend=1`, `_DstBlend=10`, 셰이더 `Blend One [_DstBlend]`와 프리멀티 출력으로 일반 알파 합성을 확인. 재질 분기는 수정하지 않았다. 패링의 `ParryColor`만 새 팔레트로 변경하여 Flash와 공통 패링 파편에 함께 적용.
+
+| 패링 표시 식별자(우선순위 순) | 새 색 |
+|---|---|
+| `Source=waterBean` | 물 코어 `#dcebf0` |
+| `Source=physicalProjectile` | 물리 코어 `#efe6d2` |
+| `SampleKey=red` | 화염 코어 `#ffd9a0` |
+| `SampleKey=rainbow` | 단일 원소가 없는 4층 합성의 신성 코어 `#fff2d6`를 대표색으로 사용. 마젠타 제거 |
+| 그 외 `Element=0..6` | 물리 `#efe6d2`, 화염 `#ffd9a0`, 빙결 `#e8f3f8`, 암흑 `#cdb2e0`, 번개 `#fff4d0`, 신성 `#fff2d6`, 대지 `#dcc8a4`(범위 밖 clamp) |
+
+**이벤트 한계:** 현행 Core의 패링 enqueue는 `Element`를 설정하지 않아 기본 0이다. 기존 Source/SampleKey 태그가 없는 원소 투사체의 실제 원소는 이 뷰만으로 알 수 없어 뼈색으로 표시된다. Core 변경 금지에 따라 전파 코드를 확장하지 않았다. 기존 사망 중심 흰 플래시·분홍 보스 입자 등은 이번 시트 재채색 밖의 남은 RETOUCH다.
+
+### 검사·비교판·판정
+
+| 시트 | 색상각 범위 | 번개 중간색 초과 비율 | 원본과 같은 외부 분리 성분 합(α>0 / α>20) |
+|---|---|---|---|
+| 피 matte | 4.21~9.92° | 해당 없음. 평균 HSV 채도 .977→.793, 최대 .812(지정 피 램프 상한 이내) | 190 / 200 |
+| Lightning Impact el4 | 44.52~47.59° | 1.584%, 원본 상위3% 밖 밝은 픽셀 0 | 12 / 46 |
+| Lightning FBF el4 | 44.59~47.14° | 2.544%, 원본 상위3% 밖 밝은 픽셀 0 | 24 / 22 |
+| Lightning Basic el4 | 44.52~47.59° | 2.485%, 원본 상위3% 밖 밝은 픽셀 0 | 3 / 0 |
+
+8방향 연결 성분을 프레임마다 검사해 가장 큰 성분을 제외한 개수를 합산했다. 임계값에 따라 얇은 연결이 갈라져 α>20의 개수가 더 많을 수 있다. 원본에도 위 성분이 존재한다. **알파 보존과 외부 분리 성분 0은 이 원본에서 양립하지 않으므로, 알파 보존을 우선하고 잔점 기준을 FAIL로 공개한다.** 새 분리 성분은 0이며 원본을 조용히 정리하거나 알파를 바꾸지 않았다. 잔점 제거는 후속 브리프에서 원본 대비 알파 변경을 명시하고 진행해야 한다.
+
+실행과 증거(모두 현재 worktree 안):
+
+- `C:\Python314\python.exe tools\vfx\recolor_combat_retouch.py < NUL`: 재채색·색상각·알파·meta 검사 4/4 통과. 비교판 크롭을 전체 셀 3x로 보완한 뒤 `--check-only --strict`로 검사: exit1, 4개 모두 기존 분리 성분 때문에 strict FAIL. 결과 `tmp/design-review/vfx-retouch/checks.json`, `tmp/recolor-combat-retouch*.log`.
+- `C:\nvm4w\nodejs\node.exe unity\Tools\combat-impact-tests\run.cjs --red`: 시트 이름 관련 기존 검사만 갱신해 **25검사/3실패** 확인. 소스 수정 후 기본 명령 1회 **25검사/0실패**. `tools/combat-impact-check/red.log`, `checks.log`. 기존 Core `EnemyAi.cs:88` CS0219 경고 2개는 별개로 남아 있다. --m1/전체 E2E·feedback suite 재실행 없음.
+- 실제 `CombatImpactView.ParryColor` 본문을 추출한 독립 C# 검사 **13/0**(7원소·태그 우선순위·범위 밖), `tmp/vfx_flash_check.cjs`, `tmp/design-review/vfx-retouch/flash-check.log`. 색 분기 검사이며 Unity 화면 플래시 증거가 아니다.
+- 비교판 **4개 모두 직접 열어 확인**: `tmp/design-review/vfx-retouch/Blood_FBF_4x4_matte_compare.png`, `Lightning_ImpactLightning_Sheet_el4_compare.png`, `Lightning_Lightning_FBF_4x3_el4_compare.png`, `Lightning_BasicImpact_el4_compare.png`. 원본|수정 같은 배율 1x 시트+같은 첫 프레임 3x 크롭. 피의 탁한 적갈·번개의 누런 전광 변화를 확인했으며 작은 분리 성분과 기존 번개 형상은 남아 있다.
+
+**VISUAL VERDICT: RETOUCH 유지. 잔점 0 관문 FAIL / Unity 임포트·셰이더 컴파일·Player·실게임 1x·탄막 가독성 미검증.** 빌드·캡처·커밋·push·배포를 수행하지 않았으며 실행본 반영 완료로 보고하지 않는다. 원본·외부 파일·타 세션 변경·세이브·웹 game.html 변경 및 영구 삭제 0. 비교판과 핵심 로그는 브리프가 지정한 고정 폴더 하나에 두었다.
