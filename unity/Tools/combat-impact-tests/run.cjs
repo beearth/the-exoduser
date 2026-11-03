@@ -32,5 +32,7 @@ if(status===0&&name==='checks'){
   log+=(orb.stdout||'')+(orb.stderr||'')+(orb.error?.message||'');status=orb.status??1;}
  if(status===0){const water=cp.spawnSync('C:/Python314/python.exe',[path.join(root,'tools/vfx/recolor_parry_water.py'),'--check-only'],{cwd:root,encoding:'utf8',windowsHide:true,env:{...env,PYTHONDONTWRITEBYTECODE:'1'},timeout:60000});
   log+=(water.stdout||'')+(water.stderr||'')+(water.error?.message||'');status=water.status??1;}
+ if(status===0){const hits=cp.spawnSync('C:/Python314/python.exe',['-B',path.join(root,'tools/vfx/remaster_element_hits.py'),'--check-only'],{cwd:root,encoding:'utf8',windowsHide:true,stdio:['ignore','pipe','pipe'],env:{...env,PYTHONDONTWRITEBYTECODE:'1'},timeout:60000});
+  log+=(hits.stdout||'')+(hits.stderr||'')+(hits.error?.message||'');status=hits.status??1;}
 }
 fs.writeFileSync(path.join(out,process.argv.includes('--red')?'red.log':name+'.log'),log);process.stdout.write(log);process.exitCode=status;
