@@ -1,5 +1,13 @@
 # Unity 캐릭터 총괄 보드 (2026-10-27~)
 
+## 2026-11-03 리깅 픽셀 R6d — Mac 실게임 검수 요청
+
+- **Mac 검수 요청:** codex/unity-rigpixel-20261103 / 22918886ea67f0097e1dbabecf4a5fd2d3ea7848. [실행 명세](UNITY_RIG_PIXEL_MAC_REVIEW_20261103.md). 공통 898ac2b960을 정상 merge했고 자기 브랜치 commit/push 및 원격 SHA 대조를 마쳤다. 사용자 실행본 반영은 0, 기본 sprite 유지다.
+- R6c의 실제 1-1 Hero76d1e6a8은 41/41·579PNG, 3840 Shift279f9e85는 4/4, 같은 패키지 M1f13ca186은 23/23이었다. 모두 정상 종료·창/잔여/USER_SAVE변경0. 실제 1x/3x에서 큰 재질면·붉은 망토·대검은 개선됐으나 종아리 고립 명암이 남아 **점0 FAIL·미채택**이다. 기능 검사를 아트 합격으로 올리지 않는다.
+- R6d는 같은 큰 재질면의 내부에만 3×3 median을 적용하고 얼굴·머리·얇은 칼·외곽선을 보존한다. 단일 PC 배치665409d7은 C#0이나 shaderfalse/exit2였다. HLSL 예약어 pass를 iteration으로 고친 뒤 별도 함수 컴파일은 HRESULT0이며, 수정 후 전체 Unity/Metal은 미검증이다. 11:55 추가지시 확인 뒤 새 PC 빌드/Player 요청 없이 Mac으로 인계한다.
+- 직접 본 비교판: G:/exoduser/tmp/design-review/20261103_rig_pixel/r6c/comparison/C10-R6c-NRFTW-body-aligned.png 및 -3x.png. C10은 다른 패키지이므로 같은 패키지 A/B는 Mac에서 다시 만든다. [렌더 계약](UNITY_RIG_PIXEL_20261103.md)·[후속 영웅/적/드루이드](UNITY_RIG_PIXEL_FOLLOWUP_20261103.md).
+- 다음은 Mac의 동일 패키지 1920/3840 동작·Shift·M1/UI·60fps·10초 무음 영상·점0 판정이다. Mac 착수/회신은 미확인이다. 통과 뒤 통합 담당이 공통 줄기와 승인 후보 바로가기를 전달한다. 과거 아래 R7 3D 전달은 현 실시간 픽셀 후보의 합격 증거가 아니다.
+
 ## 2026-10-31 R7 새 모델·물성·운반·실제 검수
 
 - 현재 제품 `4c9cddec0e557b34c111f9a2dcbb023106b49e7e`, 검수문서 포함 원격 `15c8ed3c522de317d22cdbfd185b1ceca494b56f`(`codex/pc-hero-quality-20261030`). R6 발 회전은 R7 실제검수에서 확인됐으며 더 이상 단독 미검증 후보가 아니다. 원화3뷰→Meshy7.1 모델35cr+리깅5cr→Blender망토9본/손/재질 보정. 전사 실제지출40cr, 다른담당A2 35cr는별도·공용합계75cr/승인500cr(10:05:39KST 조회잔액4303, 리셋11-20T17:41:54Z). 추가유료호출0.

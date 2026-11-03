@@ -424,3 +424,9 @@
 - **동선 우선**: 로비 → 1-1 진입 → 이동 → 공격 → 몹 사망 → 드랍 → 레벨업 → 보스 → 클리어. 앞에서부터 막힌 곳을 하나씩 뚫는다. 동선 밖 행은 뒤로 미룬다.
 - **연결 소유 변경(M1 동안)**: PC가 맡은 M1 행(B03·B05·B07·B08·B10·B11·D01·D05·E03)은 PC가 `Simulation*`·`NativeGame*`·`NativeHud*` 연결까지 `unity/main`에 직접 넣는다(fetch → merge → PC 6000.6.7f1 컴파일 오류 0 → 비강제 push, Codex가 최근 고친 줄은 지우지 않음). **Codex는 `Simulation*`·`NativeGame*`·`NativeHud*`를 고치기 전에 반드시 fetch/merge한다.** 협약 §2에 같은 행을 추가했다.
 - **수학 함수 규칙(전체총괄 결정)**: 결과가 게임 상태에 남는 삼각·초월 함수(facing·이동각·좌표·스폰 오프셋 등)는 `Runtime/Core/JsMath.cs`(fdlibm 포트, V8과 비트 일치)를 쓴다. .NET `Math`는 표시 전용에만 쓴다. **Codex 요청**: `Math.Pow`와 IL2CPP 빌드에서의 비트 일치를 Mac 빌드에서 확인해 Mac→PC 회신에 1줄로 남긴다.
+
+## 2026-11-03 — 리깅 픽셀 R6d Mac 검수 요청 (PC 비정상 종료 후)
+
+- 대상: codex/unity-rigpixel-20261103 / 22918886ea67f0097e1dbabecf4a5fd2d3ea7848. [동일 패키지 검수 순서와 인자](../UNITY_RIG_PIXEL_MAC_REVIEW_20261103.md). PC 추가 정식빌드/Player는 하지 않는다.
+- R6c 기능41/41·M1 23/23·3840 Shift4/4이나 3x 잔점 FAIL로 미채택. R6d 문법 수정 후 전체 Unity/Metal 미검증이며 기본 sprite/공통/Desktop 유지. Mac 1920/3840 실제 동작·점0·60fps·M1/UI·10초 무음영상·같은 패키지 C10/노레위 비교를 요청한다.
+- 결과는 정확 source SHA·패키지·영수증·실제 비교판과 함께 회신한다. 요청 게시를 착수/검수 완료로 세지 않는다. Unity 줄기 병합은 지정 통합 담당만 한다.

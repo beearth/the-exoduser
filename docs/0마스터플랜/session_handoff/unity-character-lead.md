@@ -1,5 +1,13 @@
 # 유니티 캐릭터 총괄 인계 — 2026-11-03 HD2D 후보 갱신
 
+## 2026-11-03 R6d 리깅 픽셀 재개 / Mac 검수 대기
+
+- 우선 요청은 전사 실제 1-1 실시간 픽셀 렌더다. 브랜치 codex/unity-rigpixel-20261103, 원격 확인 SHA 22918886ea67f0097e1dbabecf4a5fd2d3ea7848. 공통898ac2b960 정상 merge·정확 경로 commit/push 완료. 사용자 codex-hero의 522 WORK와 세이브·타팀 예약은 보존했다.
+- R6c 같은 패키지 Hero41/41·579PNG / 3840 Shift4/4 / M1 23/23·정상 종료·창/잔여/USER_SAVE0. 제작자가 12동작 1x·3x와 C10/노레위 비교판을 직접 봤고 잔점으로 FAIL, 미채택이다. R6d는 재질면 내부 median과 alpha 태그·불투명 복구, 자연 QA의 정상 fallen 카운트를 보강했다.
+- 허용 PC 배치1회665409d7은 C#0·세이브0이나 셰이더false/exit2. 실제 HLSL 컴파일러가 pass 예약어 X3000을 보여 iteration으로 수정했고 함수만 HRESULT0이다. 전체 Unity/Metal/실제 렌더는 미검증이다. 11:55 추가 규칙을 확인한 뒤 새 PC 빌드·Player/M1은 시작하지 않는다.
+- **Mac 요청:** [정확 인자·순서·합격 조건](../../engine/UNITY_RIG_PIXEL_MAC_REVIEW_20261103.md). Mac fetch/착수/회신 미확인. 1920/3840·점0·발/칼/타이밍·60fps·M1/UI·영상·같은 패키지 C10 비교를 통과한 뒤 통합 담당에게 넘긴다. 기본 sprite / 공통·Desktop·후보 바로가기 반영0. 결과와 복구 상태는 I:/EXODUSER-Storage/codex-takeover/rig-pixel/REPORT.md·TASK_STATE.json.
+- [후속 계획](../../engine/UNITY_RIG_PIXEL_FOLLOWUP_20261103.md): 실버테일 허브·치마와 아이반 드레드 LOCK 결함 확인, 적5종 리그 미확인으로 Tripo 사용자 웹 로그인 요청만 기록, 드루이드 비인간 Generic 수동 리깅은 계획만. 유료 호출0, 후속을 런타임 완료로 보고하지 않는다.
+
 ## 현재 HD2D 스프라이트 인수 / 2026-10-31 R7 검수 이력 보존
 
 - **11-03 05시 CTO 드루이드 RETOUCH:** D2 하관/수염·발광·마른체형·긴머리 위반으로 기존 드루이드 r23/r29 채택 보류. 남향 r40 정지 시안 D2/D3/발광/체형/머리 제작자 대조 후 대기8 확장 중이나 후면3개 모발 결함이 남아 신규6군 완료0. I: 파일조회 및 PowerShell 시작 응답 지연으로 native 검증은 미완이며 원격 복구기록을 보존한다. 전사·일반몹은 승인대기, 제품반영0. [재교정 SSOT](../../4.0케릭터스프라이트%20디자인/DRUID_LOCK_RETOUCH_20261103.md). 다음=대기후면 수정·군검수→보행→공격→잠복/출현→야수/변신. **아래 30군은 이전 후보 제출 이력이며 드루이드 LOCK 통과가 아니다.**
