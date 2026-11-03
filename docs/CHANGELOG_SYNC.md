@@ -57385,3 +57385,4 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 
 - RigPixelSlashSampling.hlsl과KiSlashInk.shader: alpha255인검은원시트배경을투명영역으로분류하도록C=saturate(max(RGB×alpha)×2.4) coverage/ink alpha를공유. 중앙·이웃·섬정리모두같은C, 원화변경0.
 - 망토/흑철/동일픽셀격자/원시트/5레이어/Core·카메라타이밍유지. UNITY_RIG_PIXEL의현행식과Mac재검수좌표·인자·WORK_BOARD를동기화. docs정본unity/main, PC컴파일만수행.
+- 단일PC컴파일4c477254: source0fa44094ed, renderer/네셰이더/Humanoid true·exit0·C#0·세이브0. 자동생성물정리후Mac사각면0 재검수대기, 기본/공통전환0.
