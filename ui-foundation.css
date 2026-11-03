@@ -195,33 +195,66 @@ body:has(:is(#settings,#invPanel,#forge,#skillPanel,#storagePanel,#statPanel).on
 #invPanel :is(#invCenter,.inv-equip){background-color:#100d0e!important;}
 #statPanel.panel .pbox.growth-shell{padding:88px 38px 28px!important;background:radial-gradient(ellipse at 50% 0,#42151166,transparent 46%),#100d0e!important;}
 
-/* Tutorial: opaque text, ornamental edges and a pinned footer. Gameplay colours stay semantic. */
+/* Tutorial — 실버 헬 (2026-11-02 UI 총괄, 사용자 "최신버전으로 만들어라 프레임 지저분하네").
+   옛 hell_gothic 붉은 날개 틀·문장·적갈 바탕·보라 키캡·흰 상자 건너뛰기 → 승인 원화 부품만 사용:
+   틀 = panel_frame_20261029를 세로 실습창용으로 재조립한 lesson_frame_20261102(tools/make_lesson_frame.py, 새 그림 없음),
+   버튼 = btn_plaque_20261029. 금속·선·바탕은 무채색, 진홍은 현재 단계 표식·연습 중 마름모·시작 버튼 빛만.
+   틀은 ::after(안쪽 inset0, 부모 overflow:hidden 안), 판은 ::before(레일 아래 15px 안쪽). */
 #parryLesson{
-  opacity:1;padding:68px 24px 20px;color:#e8e5df;
-  background:transparent;
-  border:0;box-shadow:none;text-shadow:0 1px 3px #000,0 0 6px #000;
+  --lf-w:48px;
+  opacity:1;padding:56px 28px 40px;color:#e6e3dc;
+  background:transparent;border:0;box-shadow:none;text-shadow:0 1px 2px #000,0 0 5px #000;
 }
-#parryLesson::before{content:'';position:absolute;inset:0;border:40px solid transparent;border-image:var(--ui-frame) 22% / 40px / 0 stretch;z-index:-1;pointer-events:none;}
-#parryLesson::after{content:'';position:absolute;top:6px;left:50%;transform:translateX(-50%);width:174px;height:58px;background:var(--ui-crest) center/contain no-repeat;pointer-events:none;z-index:-1;}
-#parryLesson .lesson-eyebrow{color:#bab7b1;letter-spacing:.08em;flex-wrap:wrap;gap:4px 12px;}
-#parryLesson .lesson-art{height:64px;margin:12px 0 16px;}
-#parryLesson[data-phase="practice"] .lesson-art{height:50px;margin:10px 0 14px;}
-#parryLesson .lesson-key{background:linear-gradient(#332c2c,#100e10);color:#f5f2ec;box-shadow:0 4px 0 #050405,inset 0 0 0 3px #080708;}
-#parryLesson h2{color:#ebe8e2;text-shadow:0 2px 3px #000;}
-#parryLesson .lesson-subtitle{color:#bbb8b2;line-height:1.6;}
-#parryLesson .lesson-checklist{gap:6px;border-color:#65453c;}
-#parryLesson .lesson-row{padding:7px 8px;align-items:flex-start;color:#b8b5af;font-size:14px;line-height:1.6;border:1px solid transparent;}
-#parryLesson .lesson-row input{margin-top:3px;border-color:#848787;}
-#parryLesson .lesson-row[data-current="true"]{color:#f5f2ec;background:linear-gradient(90deg,#551819aa,#13161666);border-color:#a34d3f;box-shadow:inset 2px 0 #ec7958;}
-#parryLesson .lesson-row[data-complete="true"]{color:#b2d6ac;}
-#parryLesson .lesson-details{padding-left:8px;}
-#parryLesson .lesson-hint{color:#dedbd5;line-height:1.7;}
-#parryLesson .lesson-safety{color:#bbb8b2;}
-#parryLesson .lesson-footer{border-top:1px solid #57413c;background:#100d0e;padding-top:12px;}
-#parryLesson .lesson-primary{min-height:44px;background:var(--ui-button);border:1px solid #b6614b;color:#f5f2ec;box-shadow:inset 0 0 0 2px #0b0e0e;}
-#parryLesson .lesson-skip{min-height:36px;margin-top:8px;border:1px solid #525555;background:#141717;color:#d0cdc7;}
-#parryLesson .lesson-skip:hover{background:#232626;color:#f5f2ec;}
-#parryLesson .lesson-progress{margin-top:12px;background:#333636;}
+#parryLesson[data-kind],#parryLesson[data-phase]{--lesson-accent:#c9c7c3;--lesson-glow:rgba(201,199,195,.10);}
+#parryLesson::before{content:'';position:absolute;inset:15px;z-index:-2;pointer-events:none;border:0;border-image:none;
+  background:radial-gradient(ellipse 90% 34% at 50% 0,rgba(201,199,195,.06),transparent 72%),linear-gradient(180deg,rgba(20,20,23,.96),rgba(10,10,12,.97));}
+#parryLesson::after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
+  border:var(--lf-w) solid transparent;border-image:url('img/ui/silver_hell/lesson_frame_20261102.png') 160 / var(--lf-w) / 0 stretch round;}
+#parryLesson .lesson-content{scrollbar-color:#4f5352 transparent;}
+#parryLesson .lesson-eyebrow{align-items:center;color:#a7a49d;font-size:11px;letter-spacing:.14em;flex-wrap:wrap;gap:4px 12px;}
+#parryLesson .lesson-state{display:inline-flex;align-items:center;gap:7px;color:#c9c7c3;letter-spacing:.08em;}
+#parryLesson[data-phase="practice"] .lesson-state::before{content:'';width:5px;height:5px;transform:rotate(45deg);background:#c21a10;box-shadow:0 0 6px rgba(194,26,16,.55);}
+#parryLesson .lesson-art{height:64px;margin:12px 0 14px;}
+#parryLesson[data-phase="practice"] .lesson-art{height:50px;margin:8px 0 12px;}
+#parryLesson .lesson-key{border:1px solid #8a8b88;border-radius:2px;color:#f2f0ec;background:linear-gradient(180deg,#1d1d21,#0b0b0d);
+  box-shadow:inset 0 0 0 3px #0b0b0d,inset 0 0 0 4px rgba(201,199,195,.16),0 3px 0 #050506,0 6px 16px rgba(0,0,0,.6);text-shadow:0 1px 2px #000;}
+#parryLesson h2{margin:0 0 6px;color:#e6e3dc;font-size:clamp(20px,calc(1.25vw + 2px),25px);line-height:1.4;letter-spacing:.02em;word-break:keep-all;overflow-wrap:anywhere;text-shadow:0 2px 3px #000;}
+#parryLesson .lesson-subtitle{margin-bottom:16px;color:#a7a49d;line-height:1.6;}
+#parryLesson .lesson-checklist{gap:3px;padding:12px 0;border:0;
+  background:linear-gradient(90deg,transparent,rgba(201,199,195,.4) 50%,transparent) top/100% 1px no-repeat,linear-gradient(90deg,transparent,rgba(201,199,195,.4) 50%,transparent) bottom/100% 1px no-repeat;}
+#parryLesson .lesson-row{padding:7px 10px;align-items:flex-start;color:#b6b3ad;font-size:14px;line-height:1.6;border:0;}
+#parryLesson .lesson-row input{margin-top:3px;border:1px solid #8a8b88;border-radius:0;background:#0b0b0d;box-shadow:inset 0 0 0 2px #0b0b0d;}
+#parryLesson .lesson-row input:checked{background:#c9c7c3;border-color:#c9c7c3;box-shadow:none;}
+#parryLesson .lesson-row input:checked::after{border-color:#0b0b0d;}
+#parryLesson .lesson-row[data-complete="true"]{color:#8f8c86;}
+#parryLesson .lesson-row[data-current="true"]{color:#f2f0ec;border:0;box-shadow:inset 2px 0 #c21a10;background:linear-gradient(90deg,rgba(126,13,7,.36),rgba(126,13,7,.1) 55%,transparent);}
+#parryLesson .lesson-row[data-current="true"] input:not(:checked){border-color:#c9c7c3;}
+#parryLesson .lesson-details{padding:2px 10px 6px 12px;}
+#parryLesson .lesson-hint{color:#e6e3dc;line-height:1.75;}
+#parryLesson .lesson-hold{color:#c9c7c3;}
+#parryLesson .lesson-rage{color:#d9a6a0;}
+#parryLesson :is(.lesson-hold,.lesson-rage) progress{appearance:none;-webkit-appearance:none;height:6px;border:1px solid #3a3b3c;border-radius:0;background:#1b1b1e;}
+#parryLesson :is(.lesson-hold,.lesson-rage) progress::-webkit-progress-bar{background:#1b1b1e;}
+#parryLesson .lesson-hold progress::-webkit-progress-value{background:linear-gradient(90deg,#4f5352,#c9c7c3);}
+#parryLesson .lesson-hold progress::-moz-progress-bar{background:linear-gradient(90deg,#4f5352,#c9c7c3);}
+#parryLesson .lesson-rage progress::-webkit-progress-value{background:linear-gradient(90deg,#7e0d07,#c21a10);}
+#parryLesson .lesson-rage progress::-moz-progress-bar{background:linear-gradient(90deg,#7e0d07,#c21a10);}
+#parryLesson .lesson-safety{color:#a7a49d;}
+#parryLesson .lesson-resource-readout{color:#d6d3cd;}
+#parryLesson .lesson-resource-guide>p{border-left:2px solid #4f5352;background:rgba(20,20,23,.9);color:#d6d3cd;}
+#parryLesson .lesson-resource-guide>p[data-current="true"]{border-color:#c21a10;color:#f2f0ec;background:linear-gradient(90deg,rgba(126,13,7,.45),rgba(20,20,23,.9) 60%);}
+#parryLesson .lesson-footer{border:0;padding-top:14px;background:linear-gradient(90deg,transparent,rgba(201,199,195,.36) 50%,transparent) top/100% 1px no-repeat;}
+#parryLesson .lesson-primary{min-height:46px;padding:10px 46px;border:0;border-radius:0;background:none;box-shadow:none;
+  border-image:url('img/ui/silver_hell/btn_plaque_20261029.png') 0 174 fill / 0 40px / 0 stretch;
+  color:#f2f0ec;font-size:15px;letter-spacing:.06em;filter:drop-shadow(0 0 8px rgba(194,26,16,.24));}
+#parryLesson .lesson-primary:hover{filter:brightness(1.15) drop-shadow(0 0 8px rgba(194,26,16,.3));}
+#parryLesson .lesson-skip{min-height:36px;min-width:168px;margin:10px auto 0;padding:6px 34px;border:0;border-radius:0;background:none;box-shadow:none;
+  border-image:url('img/ui/silver_hell/btn_plaque_20261029.png') 0 174 fill / 0 30px / 0 stretch;color:#d6d3cd;font-size:13px;letter-spacing:.06em;}
+#parryLesson .lesson-skip:hover{background:none;color:#f2f0ec;filter:brightness(1.18);}
+/* 초점: 사각 외곽선(흰 상자) 대신 버튼판 모양 그대로 밝힘 + 은빛 빛. 키보드 초점 표시는 유지한다. */
+#parryLesson :is(.lesson-primary,.lesson-skip):focus-visible{outline:0;color:#f2f0ec;filter:brightness(1.22) drop-shadow(0 0 5px rgba(201,199,195,.5));}
+#parryLesson .lesson-progress{height:2px;margin:12px 26px 0;background:#2c2e31;}
+#parryLesson .lesson-progress-fill{background:linear-gradient(90deg,#4f5352,#c9c7c3);}
 
 /* Secondary teaching and collection panels share the same legible material. */
 #systemLesson,#tutorialBadgeCollection{opacity:1;color:#e8e5df;background:linear-gradient(135deg,#161919f5,#100d0ef5);border:1px solid #805443;box-shadow:0 12px 32px #0008;}
@@ -262,14 +295,8 @@ body:has(#parryLesson) :is(#mmLvl,#tutorialBadgeButton){visibility:hidden;}
   #invPanel .pbox>.panel-nav+div{min-height:44px;margin-bottom:10px!important;}
   #invPanel .inv-wrap{grid-template-rows:minmax(220px,1fr) minmax(170px,.65fr)!important;overflow-y:auto!important;}
 }
-@media(max-height:700px) and (min-width:761px){#parryLesson{padding:54px 20px 16px;}#parryLesson::after{width:120px;height:40px;top:6px;}}
+@media(max-height:700px) and (min-width:761px){#parryLesson{--lf-w:40px;padding:48px 24px 34px;}}
 @media(max-width:760px){
-  #parryLesson{padding:18px 20px 16px;}
-  #parryLesson::after{display:none;}
-  #parryLesson .lesson-row{font-size:12px;padding:5px;}
+  #parryLesson{--lf-w:34px;padding:38px 22px 30px;}
+  #parryLesson .lesson-row{font-size:12px;padding:5px 8px;}
 }
-
-
-
-/* Keep the tutorial interior opaque; only the ornament exterior is transparent. */
-#parryLesson::before{border-width:18px;border-image-width:40px;background:radial-gradient(ellipse at 50% 0,#47171288,transparent 48%),#100d0ef5;background-clip:padding-box;}
