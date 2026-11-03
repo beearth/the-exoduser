@@ -14,6 +14,8 @@ Shader "Exoduser/RigPixelComposite" {
    struct A {float4 positionOS:POSITION;float2 uv:TEXCOORD0;};
    struct V {float4 positionCS:SV_POSITION;float2 uv:TEXCOORD0;half fog:TEXCOORD1;};
    V Vert(A v){V o;o.positionCS=TransformObjectToHClip(v.positionOS.xyz);o.uv=v.uv;o.fog=ComputeFogFactor(o.positionCS.z);return o;}
+   half Difference(half3 a,half3 b){half3 delta=abs(a-b);return max(delta.r,max(delta.g,delta.b));}
+   bool Consensus(half4 a,half4 b,half4 c){return min(a.a,min(b.a,c.a))>.5h&&Difference(a.rgb,b.rgb)<.035h&&Difference(a.rgb,c.rgb)<.035h;}
    half4 Frag(V i):SV_Target {
     float2 d=_MainTex_TexelSize.xy;
     half4 c=SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,i.uv);
@@ -28,8 +30,12 @@ Shader "Exoduser/RigPixelComposite" {
      else {clip(max(max(l.a,r.a),max(u.a,b.a))-.5h);return half4(MixFog(half3(.035h,.025h,.035h),i.fog),1);}
     }
     else {
-     half centreL=dot(c.rgb,half3(.2126h,.7152h,.0722h));half aroundL=dot(average,half3(.2126h,.7152h,.0722h));
-     if(count>=3&&centreL>aroundL+.045h)c.rgb=average; // reject isolated interior highlights; never erase a thin blade
+     half3 plane=c.rgb;
+     if(Consensus(l,r,u))plane=(l.rgb+r.rgb+u.rgb)/3;
+     else if(Consensus(l,r,b))plane=(l.rgb+r.rgb+b.rgb)/3;
+     else if(Consensus(l,u,b))plane=(l.rgb+u.rgb+b.rgb)/3;
+     else if(Consensus(r,u,b))plane=(r.rgb+u.rgb+b.rgb)/3;
+     if(Difference(c.rgb,plane)>.045h)c.rgb=plane; // isolated light/dark texel only; a connected thin blade has no three-neighbour consensus
      float2 direction=_RimDirection.xy;half neighbour=abs(direction.x)>abs(direction.y)?(direction.x>0?r.a:l.a):(direction.y>0?u.a:b.a);
      if(neighbour<.5h&&count>=2)c.rgb+=_RimColor.rgb; // continuous moon-facing silhouette only
     }

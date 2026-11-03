@@ -10,7 +10,7 @@
 | RT | ARGB32 Linear, depth24, AA1, Point, Clamp, mip 없음, HDR/후처리 없음. URP17.6 SingleCameraRequest. 정사영 near .05/far24, 카메라 후퇴8u |
 | 크기·정수배 | n=max(1,floor(camera.pixelHeight/1080)). 1920/3840×1080 n1. canvas=ceil(5.6/(worldUnitsPerPixel×n)/32)×32, 최소64/최대1024. 범위를 넘기면 기존 sprite 폴백. orthoSize=canvas×worldUnitsPerPixel×n/2 |
 | 기준선 | Core가 정한 기존 hero root를 원점으로 사용. 캡처 중심은 view.up×round(.65/(wpp×n))×wpp×n. 최종 발밑은 NativeHd2D.SnapAnchor, 텍셀1개가 화면정수n픽셀. 맵 NativeHd2D/Remodel3D writer 변경0 |
-| 명암·테 | floor(saturate(NdotL)×3+.5)/3의4단 셀 명암. normal/specular 디테일 미사용, albedo mip bias4, 원본12%+소재별색면88%. 표면 Fresnel 윤곽광은 제거하고 실제 달빛 방향의 알파 실루엣 한쪽만 추가. 최종 알파 바깥 4이웃1텍셀 검은 외곽선. 디더링/그레인/노이즈 추가0 |
+| 명암·테 | floor(saturate(NdotL)×3+.5)/3의4단 셀 명암. normal/specular 디테일 미사용, alpha mip bias4, 소재팔레트100%/원본RGB0%. 실제광의 최대RGB로1.1/(1+maxRGB) 압축 후4단명암. 표면 Fresnel 윤곽광은 제거하고 실제 달빛 방향의 알파 실루엣 한쪽만 추가. 최종 알파 바깥 4이웃1텍셀 검은 외곽선. 디더링/그레인/노이즈 추가0 |
 | 접지 | HD2DContact 셰이더의 별도 .62×.36u 지면 quad, 지면오프셋 .018u. 기존 스프라이트는 RT 첫 성공 뒤에만 숨김. 리소스/투영/렌더 실패 시 모델 숨김+sprite 폴백, 오류1회 |
 | 수명 | RT는32텍셀 canvas 구간이 바뀔 때만 재생성. 종료 시 RT·자기 재질 해제와 자신이 바꾼 layer30 카메라 비트만 복원 |
 | 제어 동작 검수 | --unity-hero-review --hero-render=rigpixel -review-width 1920 또는3840. 높이1080, 12개 구간 1156틱/2틱당PNG. 기존 fixture 유지하되 rigpixel의 방향 구간은 실제8방향 이동, 공격·피격·사망은 기존 제어 fixture. OS손조작/자연사망 증거가 아님 |
@@ -40,3 +40,13 @@ R3 실제 몸통ROI의 고립고휘도점46→1이며0이 아니고 3x에서 검
 위 세1차제작자료는 공정/코드 대조 근거이며 결과를 복제하거나 독립시각검수 PASS로 세지 않는다. G2 기능실물은 실제R1/R3 M1에서 확인했고, 현재G3 표면/명암 재작업 후 R4 G4 실제해상도·동작/점0검수 대기다. G5 사용자실행본 반영은 아직0이다.
 
 R4 G4 실제 cabb8cd4는 실제1-1 진입/40검사/579PNG/USER_SAVE0을 확인했지만 1x보드·3x에서 갑옷/망토 재질 사이 잔점이 보여 시각FAIL이다. 기본sprite/공통/바탕화면 반영0. R3/R4 표면노멀 방법으로 핵심결함이 계속되어 R5는 원형의 재질분할 단계로 돌아간다. R7 importer의5부위 색분류 삼각형에 대해, 복제mesh의 모델공간 위치를0.01mm단위로 용접한 변인접 그래프에서 같은재질 연결성분을 구한다. 면적<.0025m²인 작은섬만, 큰이웃성분(면적≥.0025m²)의 경계지원≥60%인 소재로 재분류하며3회 수행한다. 위치/스킨가중/바인드/UV/전체삼각형은 유지하고 submesh 소속만 이동한다. 좁은화면에서 점을 만드는 원형재질조각을 제거하는 보강이며, 시각PASS는 새 실제Player검수까지 미검증이다.
+
+G3 보조 검사 Exoduser.CharacterLab.RigPixelVerification.SurfacePreview: Editor 중립광/1920×1080/55도 정사영에서 같은리그·RT·합성을 사용한다. 전후 정점/가중/전체삼각형 동일성과 RT Ready를 확인하고 surface-preflight.json/PNG를 출력한다. 실제1-1/제품광/동작/성능 판정을 대신하지 않는다. Player슬롯 대기 중 표면수정을 빠르게 검토하기 위한 도구다.
+
+R5 실제871ab83e 첫3x에서 갑옷/망토의 작은섬 일부는 줄었으나 연결된 가는재질조각이 남아 아트FAIL이다. 런타임정리4623/93437삼각형을 확인했다. 강한월드달빛3.2가 이전diffuse최대1.35에 포화되어 셀명암 대부분이 평탄해지는 원인도 코드에서 확인했다. R6은 그래프작은섬 정리 전에 모델공간8cm/6법선군/인접27셀에서 면적·거리제곱 가중으로 큰소재면을2회 분류(평균법선내적≥.3, 지지≥60%)한다. Skin/Hair는 작은얼굴·머리영역 보존을 위해 재분류에서 제외한다. 피부/머리 보호는 작은섬 단계에도 적용한다. 색은 소재팔레트100%(원본albedo색0%, alpha만사용)로 고정해 잘린UV의 색미세잡티를 제거한다. 실제 장면light.color는1.1/(1+maxRGB)로 압축한 뒤 기존4단NdotL과 실제거리/감쇠를 적용하여 큰곡면의 명암이 상한에 한꺼번에 포화되지 않게 한다. 월드광원/바닥/카메라/전투코어 변경0.
+
+R6 표면사전검사23c37b66는 정점/가중/전체삼각형 동일·RT Ready·컴파일0·USER_SAVE0을 확인했지만 중립조명3x가 지나치게 어두워 조명검수 통과로 쓰지 않는다. Quad Collider의 Editor Destroy 경고도 발견해 Editor에서만 DestroyImmediate로 수정했다. 렌더요청 카메라의 URP 전역광/그림자 상태에 의존하지 않도록 실제활성 Scene Light를120렌더프레임마다 캐시하고, 매렌더 최고강도Directional1개+범위내가장가까운Point4개의 실제 위치/색.linear×intensity/range를 전용셰이더 전역값으로 전달한다. Point감쇠=(1-d²/range²)²/(1+d²), 범위밖0, 광량은1.1/(1+maxRGB) 압축, ambientEquator.linear와 기존ambient하한 사용. 새장식광0/월드광원변경0. 합성은 불투명4이웃 중3개가 최대RGB차<.035로 일치하고 중앙과>.045 차이면 그3개평균으로 고립된 밝은/어두운텍셀을 제거한다. 연결된얇은검은3이웃일치가 없어 보존. R6 실제Player 판정은 여전히 대기다.
+
+R6 실제광원 보강에 맞춘 최종후보 팔레트(alpha1): Iron(.17,.19,.22), Skin(.45,.28,.20), Hair(.025,.020,.015), Cloth/Cape(.18,.035,.025), Leather(.08,.045,.025), Sword(.36,.38,.40). R4의 ambient-only 보상색을 유지해 흑철이 회색판금으로 뜨지 않도록 조정하며, 제품실제화면 판정 전 후보값이다.
+
+Editor사전검사 최종카메라만sRGB RenderTexture로 저장한다(내부리그RT는Linear 유지). Linear최종바이트를 gamma변환 없이 PNG로 내보내 어둡게 보이던 사전미리보기 한계를 수정했다. T포즈 정면으로 표면의큰면/재질만 대조하며 실제제품색/모션 판정은 아니다.

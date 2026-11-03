@@ -10,6 +10,9 @@ namespace Exoduser.UnityPort {
   const int RigLayer=30;
   NativeHeroView hero;Func<Camera> cameraSource;SpriteRenderer fallback;
   Light moon;Camera capture;MeshRenderer image,contact;RenderTexture texture;Material composite,shadowMaterial;
+  Light[] sceneLights=Array.Empty<Light>();int nextLightScan;
+  readonly Vector4[] pointPositions=new Vector4[4],pointColors=new Vector4[4];
+  readonly float[] pointDistances=new float[4];
   readonly List<Material> ownedMaterials=new List<Material>();
   readonly List<Mesh> ownedMeshes=new List<Mesh>();
   readonly Dictionary<Camera,int> masks=new Dictionary<Camera,int>();
@@ -49,6 +52,7 @@ namespace Exoduser.UnityPort {
    } catch(Exception e){Fail(e);}
   }
   sealed class NormalCell {public Vector3 position,normal;public int count;}
+  sealed class MaterialCell {public Vector3 position,normal;public float area;public float[] support;}
   // R7's colour-classified triangles contain tiny disconnected material islands.
   // Clean their labels on the welded surface, before lighting; screen-space blur cannot fix them.
   void CleanMaterialRegions(SkinnedMeshRenderer skin){
@@ -68,6 +72,37 @@ namespace Exoduser.UnityPort {
     }
    }
    int count=labels.Count;var neighbours=new List<int>[count];var edges=new Dictionary<ulong,List<int>>();
+   // Texture-derived face labels must form broad surface planes, not threads of tiny facets.
+   // Protect the small face/hair regions, and filter only clothing/armour labels in model space.
+   var protectedPart=new bool[parts];for(int p=0;p<parts;p++){string name=skin.sharedMaterials[p].name.ToLowerInvariant();protectedPart[p]=name.Contains("skin")||name.Contains("hair");}
+   var centres=new Vector3[count];var directions=new Vector3[count];var normals=mesh.normals;
+   for(int i=0;i<count;i++){
+    int a=indices[i*3],b=indices[i*3+1],c=indices[i*3+2];centres[i]=(local[a]+local[b]+local[c])/3;
+    directions[i]=hero.Model.transform.InverseTransformDirection(skin.transform.TransformDirection(normals[a]+normals[b]+normals[c])).normalized;
+   }
+   const float radius=.08f;
+   for(int pass=0;pass<2;pass++){
+    var cells=new Dictionary<Vector3Int,MaterialCell[]>();
+    for(int i=0;i<count;i++)if(!protectedPart[labels[i]]){
+     var centre=centres[i];var key=new Vector3Int(Mathf.FloorToInt(centre.x/radius),Mathf.FloorToInt(centre.y/radius),Mathf.FloorToInt(centre.z/radius));
+     if(!cells.TryGetValue(key,out var groups)){groups=new MaterialCell[6];cells.Add(key,groups);}
+     var n=directions[i];int axis=Mathf.Abs(n.x)>Mathf.Abs(n.y)&&Mathf.Abs(n.x)>Mathf.Abs(n.z)?(n.x>0?0:1):Mathf.Abs(n.y)>Mathf.Abs(n.z)?(n.y>0?2:3):(n.z>0?4:5);
+     var cell=groups[axis];if(cell==null){cell=new MaterialCell{support=new float[parts]};groups[axis]=cell;}
+     float area=areas[i];cell.area+=area;cell.position+=centre*area;cell.normal+=n*area;cell.support[labels[i]]+=area;
+    }
+    foreach(var groups in cells.Values)foreach(var cell in groups)if(cell!=null){cell.position/=Mathf.Max(.0000001f,cell.area);cell.normal.Normalize();}
+    var result=labels.ToArray();
+    for(int i=0;i<count;i++)if(!protectedPart[labels[i]]){
+     var centre=centres[i];var key=new Vector3Int(Mathf.FloorToInt(centre.x/radius),Mathf.FloorToInt(centre.y/radius),Mathf.FloorToInt(centre.z/radius));var support=new float[parts];float total=0;
+     for(int x=-1;x<=1;x++)for(int y=-1;y<=1;y++)for(int z=-1;z<=1;z++)if(cells.TryGetValue(key+new Vector3Int(x,y,z),out var groups))foreach(var cell in groups){
+      if(cell==null||Vector3.Dot(directions[i],cell.normal)<.3f)continue;float distance=(centre-cell.position).sqrMagnitude;if(distance>=radius*radius)continue;
+      float weight=1-distance/(radius*radius);for(int p=0;p<parts;p++){float value=cell.support[p]*weight;support[p]+=value;total+=value;}
+     }
+     int best=0;for(int p=1;p<parts;p++)if(support[p]>support[best])best=p;
+     if(total>0&&support[best]>=total*.6f)result[i]=best;
+    }
+    for(int i=0;i<count;i++)labels[i]=result[i];
+   }
    for(int i=0;i<count;i++){
     neighbours[i]=new List<int>(3);for(int j=0;j<3;j++){
      uint a=(uint)weld[indices[i*3+j]],b=(uint)weld[indices[i*3+(j+1)%3]];ulong key=((ulong)Math.Min(a,b)<<32)|Math.Max(a,b);
@@ -85,7 +120,7 @@ namespace Exoduser.UnityPort {
      groups.Add(group);groupAreas.Add(area);
     }
     var result=labels.ToArray();
-    for(int g=0;g<groups.Count;g++)if(groupAreas[g]<.0025f){
+    for(int g=0;g<groups.Count;g++)if(groupAreas[g]<.0025f&&!protectedPart[labels[groups[g][0]]]){
      var support=new float[parts];float total=0;
      foreach(int face in groups[g])foreach(int next in neighbours[face])if(component[next]!=g&&groupAreas[component[next]]>=.0025f){float weight=Mathf.Sqrt(areas[next]);support[labels[next]]+=weight;total+=weight;}
      int best=0;for(int p=1;p<parts;p++)if(support[p]>support[best])best=p;
@@ -127,19 +162,36 @@ namespace Exoduser.UnityPort {
   }
   static Color Palette(string name){
    name=name.ToLowerInvariant();
-   if(name.Contains("skin"))return new Color(.62f,.42f,.32f,1);
-   if(name.Contains("hair"))return new Color(.06f,.045f,.035f,1);
-   if(name.Contains("cloth")||name.Contains("cape"))return new Color(.34f,.085f,.065f,1);
-   if(name.Contains("leather"))return new Color(.18f,.11f,.07f,1);
-   if(name.Contains("sword")||name.Contains("weapon")||name.Contains("blade"))return new Color(.48f,.50f,.52f,1);
-   return new Color(.34f,.38f,.42f,1);
+   if(name.Contains("skin"))return new Color(.45f,.28f,.20f,1);
+   if(name.Contains("hair"))return new Color(.025f,.020f,.015f,1);
+   if(name.Contains("cloth")||name.Contains("cape"))return new Color(.18f,.035f,.025f,1);
+   if(name.Contains("leather"))return new Color(.08f,.045f,.025f,1);
+   if(name.Contains("sword")||name.Contains("weapon")||name.Contains("blade"))return new Color(.36f,.38f,.40f,1);
+   return new Color(.17f,.19f,.22f,1);
   }
   MeshRenderer Quad(string name,Material material){
-   var go=GameObject.CreatePrimitive(PrimitiveType.Quad);go.name=name;go.transform.SetParent(transform,false);Destroy(go.GetComponent<Collider>());
+   var go=GameObject.CreatePrimitive(PrimitiveType.Quad);go.name=name;go.transform.SetParent(transform,false);if(Application.isPlaying)Destroy(go.GetComponent<Collider>());else DestroyImmediate(go.GetComponent<Collider>());
    var renderer=go.GetComponent<MeshRenderer>();renderer.sharedMaterial=material;renderer.shadowCastingMode=ShadowCastingMode.Off;renderer.receiveShadows=false;renderer.enabled=false;return renderer;
   }
   void HideRig(Camera camera){if(camera==null||camera==capture)return;if(!masks.ContainsKey(camera))masks[camera]=camera.cullingMask;camera.cullingMask&=~(1<<RigLayer);}
   void LateUpdate(){RenderNow();}
+  void SceneLighting(Vector3 ground){
+   if(sceneLights.Length==0||Time.frameCount>=nextLightScan){sceneLights=FindObjectsByType<Light>(FindObjectsSortMode.None);nextLightScan=Time.frameCount+120;}
+   moon=null;for(int i=0;i<4;i++){pointPositions[i]=pointColors[i]=Vector4.zero;pointDistances[i]=float.MaxValue;}
+   foreach(var light in sceneLights){
+    if(light==null||!light.isActiveAndEnabled||light.intensity<=0)continue;
+    if(light.type==LightType.Directional){if(moon==null||light.intensity>moon.intensity)moon=light;continue;}
+    if(light.type!=LightType.Point)continue;
+    float distance=(light.transform.position-ground).sqrMagnitude;if(distance>light.range*light.range)continue;
+    int slot=3;if(distance>=pointDistances[slot])continue;while(slot>0&&distance<pointDistances[slot-1]){pointDistances[slot]=pointDistances[slot-1];pointPositions[slot]=pointPositions[slot-1];pointColors[slot]=pointColors[slot-1];slot--;}
+    pointDistances[slot]=distance;var p=light.transform.position;pointPositions[slot]=new Vector4(p.x,p.y,p.z,light.range);
+    Color c=light.color.linear*light.intensity;pointColors[slot]=new Vector4(c.r,c.g,c.b,1);
+   }
+   var direction=moon!=null?-moon.transform.forward:Vector3.up;Color color=moon!=null?moon.color.linear*moon.intensity:Color.black;
+   Shader.SetGlobalVector("_RigPixelMoonDirection",direction);Shader.SetGlobalColor("_RigPixelMoonColor",color);
+   Shader.SetGlobalColor("_RigPixelAmbient",RenderSettings.ambientEquatorColor.linear);
+   Shader.SetGlobalVectorArray("_RigPixelPointPositions",pointPositions);Shader.SetGlobalVectorArray("_RigPixelPointColors",pointColors);
+  }
   public void RenderNow(){
    if(failed||capture==null||hero==null||!hero.Ready||renderedFrame==Time.frameCount)return;
    var camera=cameraSource!=null?cameraSource():null;
@@ -165,7 +217,7 @@ namespace Exoduser.UnityPort {
     image.transform.SetPositionAndRotation(snapped+camera.transform.up*centre,camera.transform.rotation);image.transform.localScale=new Vector3(extent,extent,1);
     image.sortingOrder=fallback!=null?fallback.sortingOrder:0;
     var snappedScreen=camera.WorldToScreenPoint(snapped);AnchorScreenError=new Vector2(snappedScreen.x-screen.x,snappedScreen.y-screen.y).magnitude;
-    if(moon==null){moon=RenderSettings.sun;if(moon==null)foreach(var light in FindObjectsByType<Light>(FindObjectsSortMode.None))if(light.isActiveAndEnabled&&light.type==LightType.Directional&&(moon==null||light.intensity>moon.intensity))moon=light;}
+    SceneLighting(ground);
     var lightDirection=moon!=null?-moon.transform.forward:new Vector3(-.6f,1,-.4f);
     composite.SetVector("_RimDirection",new Vector4(Vector3.Dot(lightDirection,camera.transform.right),Vector3.Dot(lightDirection,camera.transform.up),0,0));
     composite.SetColor("_RimColor",(moon!=null?moon.color:new Color(.62f,.75f,.9f))*.08f);
