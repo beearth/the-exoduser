@@ -2,6 +2,7 @@
 
 2026-11-04 적 3D 연결 바탕 WIP 중단: 최신6d99d0c46에서 codex/unity-enemy3d-20261104 생성. 읽기 전용 상태 정책·etype1/4 모델표·0차 FBX 변환·검사 초안 보존. 같은 정책 검사 명령2회 실패(예상 RED, 이후 Core/Skills 소스 열거 누락 CS0234/CS0246)로 사용자 지시대로 중단. Unity 렌더/Animator/VFX 연결·meta·전체 PC 컴파일·Mac 판정 미완, 본편 병합 금지. 인계 UNITY_ENEMY3D_WIRING_20261104.md.
 
+2026-11-04 05:20 공용 실행기 Windows 기본 환경 보정(맵 총괄 r15 막힘): exo-unity `2026.11.04-winenv`가 Editor·run 기동 직전 빈 SystemRoot·ComSpec·APPDATA·LOCALAPPDATA·ProgramData·ALLUSERSPROFILE·ProgramFiles 계열·TEMP 등을 이 프로세스 범위에서 채우고 `.EXE` 없는 PATHEXT·System32 없는 Path를 고친다. 원인=Codex node_repl 자식 환경에 ProgramData·ProgramFiles·APPDATA·ComSpec이 비어 UnityPackageManager.exe가 IPC를 못 열고 30초 뒤 exit 1(r14 03:56·r15 04:20). 시험 windows-env-test.ps1 추가, args-test.ps1 player DryRun에 -PcException candidate(11-03 거부 뒤 깨져 있던 것). 문서 unity/Tools/devtools/README.md·docs/engine/PC_CODEX_EXECUTION_20261028.md.
 
 2026-11-04 KiImpactView 시작 오류 수정(임펙트 총괄, CTO 03:05): 접점 원판 `coreShape.OverrideGeometry`가 피벗 기준 ±0.5 정점을 넘겨 1×1 스프라이트 사각형(0~1 픽셀 좌표) 밖이라 NativeGame.Awake에서 "Invalid vertex array" 오류 1회(A2R 스모크 FAIL). 중심 (.5,.5)·반지름 .499·0.0005~0.9995 클램프로 모든 정점을 사각형 안에, 경계 1.0에 닿지 않게 함. 화면 크기(반지름 0.5 유닛) 동일, Core 무변경. PC Core/Runtime 컴파일 오류 0, Player 0.
 
