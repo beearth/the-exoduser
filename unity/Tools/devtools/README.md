@@ -180,13 +180,13 @@ $task = 'I:\EXODUSER-Storage\unity-latest\loop\bin\install-task.ps1'
 | buildloop | 빌드 전 reserve -Kind editor, 스모크 전 -Kind player -Owner buildloop. WaitMin 기본60분. 예약/Editor잠금/Player슬롯/티켓 시간초과는 WAIT, 실패0·lastAttemptSha 보존·회색 배지 |
 | 사전 검사 | buildloop/compile-check.ps1: asmdef·이름/GUID asmref 경계별 수집, 어셈블리 참조 순서, Player/Editor 정의별 별도 출력. Library/Bee RSP는 참조용 읽기만. 결과는 참고용, 최종은 Unity 컴파일 |
 
-Unity 없는 시험: selftest/idle-yield-test.ps1, windows-env-test.ps1, exit-code-test.ps1, shared-log-test.ps1, zombie-guard-test.ps1, buildloop-wait-test.ps1, assembly-sources-test.cjs. 사전 검사 출력은 -Output I:/EXODUSER-Storage/...로 지정하며 기본값도 I:다.
+Unity 없는 시험: selftest/idle-yield-test.ps1, windows-env-test.ps1, exit-code-test.ps1, shared-log-test.ps1, zombie-guard-test.ps1, user-game-test.ps1, buildloop-wait-test.ps1, assembly-sources-test.cjs. 사전 검사 출력은 -Output I:/EXODUSER-Storage/...로 지정하며 기본값도 I:다.
 
 ## slots1 — Editor 1개 / Player 2개 (2026-11-03)
 
 | 항목 | 계약 |
 |---|---|
-| 버전 | `$ExoUnityVersion='2026.11.04-zombieguard'`, status 첫 줄·JSON runnerVersion·슬롯 JSON |
+| 버전 | `$ExoUnityVersion='2026.11.04-usergame'`, status 첫 줄·JSON runnerVersion·슬롯 JSON |
 | Player 상한 | `$MaxPlayerSlots=2`. CreateNew 원자 획득, 슬롯 보유자 + 살아 있는 구버전 owner=devtools-player의 _pc_lock을 1개로 계산. 사용자 직접 연 Player는 제외 |
 | 시작 경합 | _player_admission.guard의 파일 핸들로 새 실행기의 슬롯 획득→실제 자식 생성까지만 직렬화. 생성 뒤 즉시 반환해 두 Player는 병렬 실행. _pc_lock은 잡지 않음 |
 | stale | pid 사망 또는 프로세스 생성 시각 > startedAt이면 동일 token·pid·startedAt 재확인 후 회수. 해제는 자기 pid+token만 |
@@ -198,6 +198,7 @@ Unity 없는 시험: selftest/idle-yield-test.ps1, windows-env-test.ps1, exit-co
 | 종료 코드 (11-04) | 숨은 데스크톱 Player 종료 코드는 uint32 비트 그대로 부호 있는 Int32로 읽는다(0xFFFFFFFF → -1). 예전 `[int]` 변환은 밖에서 강제 종료된 Player(4294967295)에서 예외를 내 정리·숨은 데스크톱 닫기·영수증을 건너뛰었다(A2R r17 2회). 종료 코드를 못 읽으면 -1과 warnings 한 줄로 기록하고 나머지 단계는 계속한다 |
 | Player 로그 공유 읽기 (11-04) | Player 종료 뒤 GPU 이름 확인은 `Read-SharedText`(FileShare.ReadWrite·Delete)로 읽는다. 종료 중 커널 대기에 걸린 Player는 강제 종료 뒤에도 스레드 1개로 남아 -logFile 쓰기 핸들을 쥐고, 예전 ReadAllText는 IOException으로 영수증 전에 끝났다(UI 후보 57be03df·02ef0c30, 2회). 읽기 실패는 warnings, 강제 종료 뒤 3초에도 남은 프로세스는 '커널 대기 의심' warnings로 영수증에 남긴다 |
 | 좀비 Player 가드 (11-04) | `player`는 시작 전에 스레드 1개 이하이고 1.5초 동안 CPU 시간이 그대로인 EXODUSER-* 프로세스를 찾는다. 하나라도 있으면 '재부팅 필요' 영수증(_exec/done, rejected)과 HALT를 만들고 exit 2로 거부한다. 실행 뒤 '커널 대기 의심' 프로세스가 남아도 HALT를 만든다. 원인=Quit 뒤 'Input System … Shutdown'에서 커널 드라이버(HID/GPU) 교착, 05:06 뒤 4번 더 띄워 좀비 5개(11-04 07:32 재부팅으로 해소). 해제=재부팅 뒤 HALT 파일 삭제 |
+| 사용자 게임 실행 중 미룸 (11-04) | `player`는 시작 전에 부모가 explorer.exe인 EXODUSER* 프로세스(사용자가 바탕화면·바로가기로 띄운 게임)를 찾는다. 있으면 Player를 띄우지 않고 '사용자 게임 실행 중, 미룸' 영수증(ok=False, deferred=user-game)을 _exec/done과 stdout JSON 한 줄로 남기고 exit 3. BuildLoop는 이를 WAIT로 받아 다음 회차에 다시 한다. 세이브 감시는 그대로다. 원인=사용자 게임(PID 35348)이 실제 세이브에 저장해 UI 후보 촬영이 USER_SAVE changed=3으로 실패 |
 | 굶주림 방지 | editor 선두 등록 후 20분 이상이고 _pc_lock이 비어 있으면 새 Player 통과를 막아 0개까지 배출. status/대기 사유에 owner 표시 |
 | idle 양보 | editor 예약·티켓만 계산(kind 없음=editor). player 대기자는 서버 양보를 유발하지 않음 |
 | 독립 출력 | Player별 GUID 로그·sandbox, 숨은 데스크톱은 PID+GUID. 사용자 창 0·--unity-mute·USER_SAVE 비교·크래시 HALT·자기 자손 정리 유지 |
