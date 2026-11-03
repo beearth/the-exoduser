@@ -24,6 +24,8 @@ namespace Exoduser.UnityPort
   }
   public bool ConfirmCharacterDelete()
   {
+   // This visual fixture may open the real dialog, but must never commit a deletion, even from accidental input.
+   if(System.Array.IndexOf(System.Environment.GetCommandLineArgs(),"--unity-death-ui-smoke")>=0)return false;
    if(!CharacterDeleteOpen||Flow.Page!=LobbyPage.Lobby)return false;
    // Bind confirmation to the identity displayed, not a slot that may have moved.
    var candidate=CopyCharacters();

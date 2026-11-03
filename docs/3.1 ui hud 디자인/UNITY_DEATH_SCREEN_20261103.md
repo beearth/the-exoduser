@@ -33,8 +33,22 @@ Diablo IV · Path of Exile 2 · No Rest for the Wicked · Elden Ring 사망 화�
 ## 검수 (Mac)
 PC는 Unity 에디터·Player를 돌리지 않았다(11-03 PC 비정상 종료 3회). PC 확인 = Unity 6000.4.8 엔진 DLL·URP 패키지 DLL을 참조한 `Exoduser.Core`·`Exoduser.Runtime` 어셈블리 csc 컴파일 0 오류.
 
-무음 캡처: `--unity-death-screen-smoke -output <dir>` + `-screen-width/-screen-height`를 1920x1080·3840x1080·5120x1440으로 각각 실행.
-결과: `death_01_impact`·`death_02_wait`·`death_03_last`·`death_04_cannot`·`death_05_revive_mid`·`death_06_revived`·`death_07_panel_enter`·`death_lang_{ko,en,ja,ru,th,el}` + `death-screen-capture.json`(라벨 29코드 완비·2s 필터 1·Volume 1·부활 후 0).
+무음 캡처: `--unity-death-screen-smoke --unity-boss-direct 0 --unity-qa-sandbox <절대 QA루트> -output <절대 출력경로>` + `-screen-width/-screen-height`를 1920x1080·3840x1080·5120x1440으로 각각 실행한다. 기본 HD2D와 `--remodel3d`를 별도 실행해 비교한다. `-batchmode`는 프레임 끝 촬영과 양립하지 않으므로 Player 촬영에는 쓰지 않는다. `-mute-audio`와 fixture AudioListener 음소거를 함께 쓴다.
+예정 결과: `death_01_impact`·`death_02_wait`·`death_03_last`·`death_05_revive_mid`·`death_06_revived`·`death_08_boss_wait`·`death_04_cannot`·`death_07_panel_enter`·`death_lang_{ko,en,ja,ru,th,el}` + `death-screen-capture.json`. 18:40 Mac 이전 후보는 필터0/위상None으로 FAIL이었고, 후속 후보는 Mac 미검증이다.
+
+## 18:40 Mac FAIL 후속 — 실제 필드 진입과 Core 상태 전이
+
+| 항목 | 교정/영수증 조건 |
+|---|---|
+| 로비 우회 | `NativeGame.cs`의 `legacyFixture`에 `--unity-death-screen-smoke`와 `--unity-death-ui-smoke`를 등록. 사망 촬영은 `lobby.IsBlocking=false`와 실제 필드 culling mask를 확인 |
+| 필드 쓰러짐 | `HurtPlayer`로 실제 fallen 진입. AI를 끄고 `RevivePow=1`·고정 난수0을 사용해 재현 가능하게 함. Player State/Hp·StateTicks·FallenCanRevive를 직접 조작해 결과를 만들지 않음 |
+| 대기 | Core `StepInput`으로 300→180→12틱 진행. 화면 연출 경과만 .25s·2s·4.8s로 고정. 2s 필터/Volume 각각 >.99 |
+| 부활 | 실제 남은 Core 12틱을 진행해 idle/최대HP 확인. `Reviving` 위상·.25s 필터 .45~.55 확인, .5s 페이드 이후(.7s 대기) 위상None/필터0 확인 |
+| 보스 사망 | 같은 실행에서 `--unity-boss-direct 0`으로 실제 보스 아레나를 로드. 살아 있는 보스·아레나·활성 HUD 카메라 후처리·필터/Volume >.99를 확인하고 `death_08_boss_wait` 촬영 |
+| 부활 불가/사망 패널 | 첫 부활의 Core 쿨다운으로 두 번째 fallen은 부활 불가. 150→0틱을 실제 진행해 dead를 확인한 뒤 패널 진입 촬영 |
+| 세이브 격리 | 두 smoke는 설정·로스터·전투 저장소 비활성. `DEATH_UI_SAVE_BINDING`에 실제 QA 루트·저장소 상태를 출력하고 `saveBinding`·`persistenceDisabled`를 JSON에 기록 |
+
+PC 검증은 DLL 참조 Roslyn 컴파일과 소스/색 변환 회귀까지만이다. Unity 에디터/Player·GPU·Mac 실제 화면·1x 디자인은 별도 미검증이다. 실행 인자 전체와 최종 SHA는 외부 `death-screen/REPORT.md`를 따른다.
 
 Mac 판정 항목:
 1. 슈퍼와이드 좌우 끝까지 채도·명도가 빠지는가(16:9 밖 밝은 띠 0).
