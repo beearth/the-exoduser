@@ -1,3 +1,22 @@
+## 12:36 사용자가 여는 검증 후보 전달
+
+- 바탕화면 지옥의 길 (1-1 완주 검증 b8214e5).lnk가 검증한 I:/EXODUSER-Storage/codex-takeover/unity-11-fullrun/formal-14-build/EXODUSER-Unity.exe를 가리키도록 새로 추가했다. TargetPath/인수/실제 파일을 다시 읽어 대조했다. 코드sourceb8214e5095, Runtime SHA256 c5ac6c20dd77b5abe2a4f581c01425e0fa7ea07118401e36941249516e1c41fa. 무음·별도 빈 세이브 profile(review-profile-b8214e5), 자동조작 플래그 없는 사용자 직접 플레이 인수다. 바로가기 파일만 만들었으며 자동 Player/창 실행0. 기존 주 바로가기/사용자 세이브는 변경0.
+- 실제 정상 정식14 cdb7c8a4, M1 8ab9ebcb23/23, 자연12 0824c38e 최종클리어/로비복귀/USER_SAVE0과 직접1920·2560·3840 검수는 동일 후보 패키지의 증거다. 총18분46초/Core11:56/정상사망7·재도전7/후반 입력전략1회변경 포함이다. 전체UI/아트/성능/무사망 PASS를 뜻하지 않는다.
+- unity/main은898ac2b9605e8238d21ba5b4bfe33286f83daf6a까지 비강제 반영·원격SHA대조 완료. 이후이번후속은문서만이다. Assets/Packages/ProjectSettings는 실제검수sourceb821과동일하다. 검증된 코드의 사용자가 여는 후보를 제공했으며, 주 실행본 자동교체와 구분한다.
+- 12:25 자동작업(20261103-122554428_b478859)은14초안에 전용 G:/exoduser-wt/codex-buildloop의 INDEX/WORK 변경 보호로ABORT했다. 이전c741의UI실패와다른차단이다. 읽기전용조회에서 주로임포트메타/URP/씬/재질변경이보였지만다른소유작업본을복원/스태시/강제정리하지않았다. 예약작업주기와Source.json/검사조건은그대로다. UI역변환/겹침은담당P0검증진행중이며공통에미검증코드를임의병합하지않았다.
+- 남은품질7·성능조사1·패링우선초기설정새판재현/청취미검증을 유지한다. 본범위의초반회귀→드루이드처치·클리어→저장·로비→공통소스반영→검증후보전달은확인됐고, 주바탕화면자동교체/전체품질합격은미완료다.
+
+확인: candidate-shortcut.json, 검증후보_실행안내.txt, natural-12/{verification-summary.json,visual-review-complete.json}, integration-adopted.json.
+
+## 12:31 전달 경로 — 공용 실행기 호출 통일
+
+- 원격unity/main b47885989692b81d63eeeb38ac5f8b50bd1b02f8에 실제 검증 결과까지 비강제 반영하고ls-remote를 대조했다. sourceb8214e5095 이후 당시 변경은문서뿐이며 실제 정식14/M1/자연12 검증과 구분한다.
+- 자동 빌드기 Set-UnityReservation/Invoke-Exo와 UI 겹침 check.ps1이 작업본 실행기 사본을 참조했다. 실제 소스 AST의 호출 경로를 평가한 RED3/3→GREEN3/3으로 공용 I:/EXODUSER-Storage/unity-jobs/bin/exo-unity.ps1 상수만 연결했다. Unity 실행/스왑 없는 경로 회귀다. 설치된 buildloop.ps1도 정확한 두 호출만 백업·전체바이트경합검사 후 반영해3/3을 확인했다. 기존owner worktree G:/exoduser-wt/codex-buildloop, source.json, 예약작업/주기/스모크 규칙/사용자 세이브/바탕화면 build는 변경0.
+- 기존 바탕화면 실행본1318877800의 갱신 차단은9시 c741 자동검수의 UI_OVERLAP_FAILED 실제 마우스 안전영역 역변환 실패였다. M1은23/23이며 겹침 요약은 생성되지 않아FAIL이다. 이 문제는 UI 담당 P0의91b355/fc3b03a 계열이 별도로 전환대기를 교정하고1410장 검증중이다. 해당C#을중복수정하거나 실패조건을 완화하지 않는다. 새 자동작업의 결과와 과거FAIL은 구분한다.
+- 이번 추가 변경은 Tools 호출/자체검사/문서뿐이며 Assets/Packages/ProjectSettings는 검증 sourceb821과 동일하다. 통과한 같은 패키지 검사를 재분류하거나 재빌드 영수증을 만들지 않는다. 전체UI게이트를 통과한 주 실행본 자동교체와 별도로, 무음·별도 세이브를 쓰는 완주검증 후보 바로가기 제공을 진행한다. 실행본 자동교체/사용자 앱 자동실행은 하지 않는다.
+
+근거: buildloop-common-runner-{red,green,installed-green}.json, installed-buildloop-common-runner-patch.json, 원본 installed-buildloop-before-common-runner.ps1, 기존loop/runs/20261103-091054098_c741c11/run.json.
+
 ## 12:20 같은 패키지 자연12 실제 완주
 
 - 소스b8214e50957100f82fe80da9df4569b87060b054, 정식14 cdb7c8a4(6000.6.7f1/x64/오류0), 같은M1 8ab9ebcb23/23/USER_SAVE0, 자연12 0824c38e가 실제 GPU에서 드루이드 최종 처치·출구 개방·클리어·난이도 모달 취소/재개방/확인·저장·로비 복귀를 끝냈다. 실제 벽시계1125.949초(18분46초), 클리어 월드1119.513초, 정상 사망/재도전각7회. Core 클리어 화면의 전투 시간은11:56으로 벽시계와 구분한다. 무사망/고정정책 완주라고 적지 않는다.
