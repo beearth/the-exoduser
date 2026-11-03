@@ -84,7 +84,7 @@ namespace Exoduser.UnityPort
   void DrawCharacterVisualPresentation()
   {
    if(NativeUiSafeArea.DesignWidth>=1100){DrawSilverCharacterVisual();return;}
-   CharacterStyles();float w=NativeUiSafeArea.DesignWidth,h=NativeUiSafeArea.DesignHeight;int i=Mathf.Clamp(characterVisual,0,4);bool locked=i!=0;
+   CharacterStyles();float w=NativeUiSafeArea.DesignWidth,h=NativeUiSafeArea.DesignHeight;int i=Mathf.Clamp(characterVisual,0,4);bool locked=!RigPixelVisualAllowed(i);
    float px=Mathf.Min(w*.04f,64),side=Mathf.Min(w*.26f,340),gap=Mathf.Min(w*.02f,28);
    float bodyY=Mathf.LerpUnclamped(128.467f,143.992f,(h-720f)/360f),actionY=h-Mathf.Min(h*.03f,30)-46.5f;
    float railHeight=122.5f+(h-720f)*.004167f,railY=actionY-18-railHeight,bodyHeight=Mathf.LerpUnclamped(384.211f,717.508f,(h-720f)/360f);
@@ -121,6 +121,7 @@ namespace Exoduser.UnityPort
    DrawCharacterRail(w,px,railY);
    float actionX=(w-760)/2,cancelWidth=98.563f;Rect cancel=new Rect(actionX,actionY+1.25f,cancelWidth,44),create=new Rect(w*.5f+247.063f,actionY,132.938f,46.5f);
    TrackQaNameButton(create);
+   if(RigPixelVisualReview)Label(new Rect(0,actionY-30,w,26),K("표현 검수 · 전사 규칙 / 저장 클래스 변경 없음","VISUAL REVIEW · Warrior rules / class unchanged"),presentationSubtitle,TextAnchor.MiddleCenter);
    bool priorEnabled=GUI.enabled;GUI.enabled=priorEnabled;GUI.SetNextControlName("visual-cancel");if(NativeUiAudit.Button(cancel,CharacterDialogLabel("cancel",K("취소","CANCEL")),presentationAction))CloseCharacterCreation();
    GUI.enabled=priorEnabled&&!locked;GUI.SetNextControlName("visual-create");if(NativeUiAudit.Button(create,locked?CharacterDialogLabel("comingSoon",K("출시 준비 중","COMING SOON")):CharacterDialogLabel("create",K("생성","CREATE")),presentationCreateAction))ConfirmCharacterVisual();GUI.enabled=priorEnabled;
    if(GUI.GetNameOfFocusedControl()=="visual-cancel")Border(cancel,new Color(.92f,.78f,.53f),2);

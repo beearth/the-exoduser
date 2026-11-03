@@ -9,7 +9,7 @@ namespace Exoduser.UnityPort {
  public sealed partial class NativeGame {
   [Serializable] sealed class RigPixelNaturalReport {
    public string scope="1-1 actual Player; virtual Input System devices -> normal FixedUpdate -> Core. AI/spawns/collision/health unchanged. OS manual input unverified.";
-   public string device;public bool passed,rigpixel,world3D;public int width,height,ticks,kills,maxEnemies,textureWidth,texelScale,renderCount;
+   public string device,heroResource;public int selectedVisual;public bool passed,rigpixel,world3D;public int width,height,ticks,kills,maxEnemies,textureWidth,texelScale,renderCount;
    public float fps,p95Milliseconds,maxAnchorError,travel,hp,entryScreenX,entryScreenY;public List<float> frameMilliseconds=new List<float>();
   }
   IEnumerator RigPixelNaturalCapture(){
@@ -21,7 +21,7 @@ namespace Exoduser.UnityPort {
    yield return new WaitForSecondsRealtime(.5f);Running=false;
    float deadline=Time.realtimeSinceStartup+60;while(NativeRemodel3D.Requested&&!NativeRemodel3D.Active&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
    for(int warm=0;warm<120;warm++){UpdateViews();yield return null;}
-   var sim=Simulation;var report=new RigPixelNaturalReport{device=SystemInfo.graphicsDeviceName,rigpixel=RigPixelRequested,world3D=NativeRemodel3D.Active,width=Screen.width,height=Screen.height};
+   var sim=Simulation;var report=new RigPixelNaturalReport{device=SystemInfo.graphicsDeviceName,selectedVisual=lobby.RigPixelSelectedVisual,heroResource=heroView!=null?NativeRigPixelPolicy.HeroResource(heroView.Visual):"missing",rigpixel=RigPixelRequested,world3D=NativeRemodel3D.Active,width=Screen.width,height=Screen.height};
    yield return new WaitForEndOfFrame();var entry=ScreenCapture.CaptureScreenshotAsTexture();File.WriteAllBytes(Path.Combine(output,"natural-entry.png"),entry.EncodeToPNG());Destroy(entry);
    var anchor=HudCamera.WorldToScreenPoint(NativeRemodel3D.Point(sim.Player.X,sim.Player.Y));report.entryScreenX=anchor.x;report.entryScreenY=Screen.height-anchor.y;
    var oldKeyboard=Keyboard.current;var oldMouse=Mouse.current;var keyboard=InputSystem.AddDevice<Keyboard>();var mouse=InputSystem.AddDevice<Mouse>();
@@ -49,7 +49,7 @@ namespace Exoduser.UnityPort {
    report.frameMilliseconds.Sort();report.fps=sampleSeconds>0?samples/sampleSeconds:0;report.p95Milliseconds=report.frameMilliseconds.Count>0?report.frameMilliseconds[(int)((report.frameMilliseconds.Count-1)*.95f)]:0;
    report.ticks=sim.TickCount-firstTick;report.kills=sim.Kills;report.hp=sim.Player.Hp;
    if(rigPixelHero!=null){report.textureWidth=rigPixelHero.TextureWidth;report.texelScale=rigPixelHero.TexelScale;report.renderCount=rigPixelHero.RenderCount;}
-   report.passed=(!RigPixelRequested||rigPixelHero!=null&&rigPixelHero.Ready&&report.maxAnchorError<=.71f)&&report.world3D&&report.travel>100&&report.ticks>=500&&report.fps>=60;
+   report.passed=(heroView!=null&&heroView.Visual==report.selectedVisual)&&(!RigPixelRequested||rigPixelHero!=null&&rigPixelHero.Ready&&report.maxAnchorError<=.71f)&&report.world3D&&report.travel>100&&report.ticks>=500&&report.fps>=60;
    File.WriteAllText(Path.Combine(output,"rigpixel-natural.json"),JsonUtility.ToJson(report,true));
    lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(.8f);Application.Quit(report.passed?0:2);
   }

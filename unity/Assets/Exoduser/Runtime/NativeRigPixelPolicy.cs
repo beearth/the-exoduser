@@ -12,6 +12,13 @@ namespace Exoduser.UnityPort {
    }
    return enabled;
   }
+  public static string HeroResource(int visual){return visual==1?"Characters/Silvertail":visual==2?"Characters/Ivan":"Characters/Warrior";}
+  public static bool ReviewSelectionAllowed(string[] args,int visual){
+   if(visual==0)return true;
+   if((visual!=1&&visual!=2)||!Requested(args)||args==null)return false;
+   for(int i=0;i<args.Length-1;i++)if(args[i]=="--unity-qa-sandbox"&&!string.IsNullOrWhiteSpace(args[i+1])&&!args[i+1].StartsWith("-"))return true;
+   return false;
+  }
   public static int TexelScale(int screenHeight){return System.Math.Max(1,screenHeight/1080);}
   public static int TextureSize(float worldUnitsPerPixel,int texelScale,float worldExtent){
    if(float.IsNaN(worldUnitsPerPixel)||float.IsInfinity(worldUnitsPerPixel)||worldUnitsPerPixel<=0||texelScale<1||worldExtent<=0)return 0;

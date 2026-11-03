@@ -108,7 +108,7 @@ namespace Exoduser.UnityPort
             EnsureSilverVisual();
             float w=NativeUiSafeArea.DesignWidth,h=NativeUiSafeArea.DesignHeight;
             int i=Mathf.Clamp(characterVisual,0,4);
-            bool locked=i!=0,shortScreen=h<=940;
+            bool locked=!RigPixelVisualAllowed(i),shortScreen=h<=940;
             float x=w-420,bodyY=62,top=bodyY+(shortScreen?190:300),size=shortScreen?54:64;
             string[] railLabels={"전사","실버테일","헬거너","변성술사","창법사"};
             string[] railEnglish={"Warrior","Silvertail","Hellgunner","Transmuter","Spearmage"};
@@ -208,7 +208,9 @@ namespace Exoduser.UnityPort
             GUI.enabled=prior&&!locked;
             GUI.SetNextControlName("visual-create");
             if(DecisionSoundButton(create))ConfirmCharacterVisual();
-            GUI.enabled=prior;GUI.matrix=centerMatrix;
+            GUI.enabled=prior;
+            if(RigPixelVisualReview)GUI.Label(new Rect(x,h-124,650,32),K("표현 검수 · 전사 규칙 / 저장 클래스 변경 없음","VISUAL REVIEW · Warrior rules / class unchanged"));
+            GUI.matrix=centerMatrix;
             if(characterVisualFocusPending&&Event.current.type==EventType.Repaint)
             {
                 GUI.FocusControl("visual-icon-"+i);

@@ -73,15 +73,16 @@ namespace Exoduser.UnityPort
   }
   public bool ConfirmCharacterVisual()
   {
-   if(characterStep!=1||characterVisual!=0)return false;if(TransitionPage("select-name",()=>ConfirmCharacterVisual()))return true;
+   if(characterStep!=1||!RigPixelVisualAllowed(characterVisual))return false;if(TransitionPage("select-name",()=>ConfirmCharacterVisual()))return true;
    NativeUiSounds.Current?.SuppressConfirm();NativeDecisionSound.Play("hero");CloseCharacterPresentationVideo();characterStep=2;characterVisualFocusPending=false;characterFocus=true;characterError="";return true;
   }
   public bool CreateCharacter(string name)
   {
    if(Flow.Page!=LobbyPage.Lobby||characterStep!=2)return false;
    var candidate=CopyCharacters();
-   if(!candidate.TryCreate(name,characterVisual,out var error)){characterError=CharacterError(error);return false;}
+   if(!candidate.TryCreate(name,RigPixelVisualReview?0:characterVisual,out var error)){characterError=CharacterError(error);return false;}
    if(!CommitCharacters(candidate))return false;
+   if(RigPixelVisualReview)rigPixelVisuals[Characters.SelectedName]=characterVisual;
    NativeDecisionSound.Play("create");System.Action present=()=>{RevealSelectedCharacter();CloseCharacterCreation(false);NativeUiSounds.Current?.SuppressConfirm();characterRestoreCreateFocus=false;if(characterVisual==0)BeginCreatedCharacterStory();};if(TransitionPage("create-story",present,true))return true;present();return true;
   }
   string CharacterError(CharacterCreateError error)
@@ -115,7 +116,7 @@ namespace Exoduser.UnityPort
     if(characterStep==1){
      string focused=GUI.GetNameOfFocusedControl();
      if(e.keyCode==KeyCode.Tab){
-      string[] controls=characterVisual==0?new[]{"visual-info-left","visual-info-right","visual-icon-0","visual-icon-1","visual-icon-2","visual-icon-3","visual-icon-4","visual-cancel","visual-create"}:new[]{"visual-info-left","visual-info-right","visual-icon-0","visual-icon-1","visual-icon-2","visual-icon-3","visual-icon-4","visual-cancel"};
+      string[] controls=RigPixelVisualAllowed(characterVisual)?new[]{"visual-info-left","visual-info-right","visual-icon-0","visual-icon-1","visual-icon-2","visual-icon-3","visual-icon-4","visual-cancel","visual-create"}:new[]{"visual-info-left","visual-info-right","visual-icon-0","visual-icon-1","visual-icon-2","visual-icon-3","visual-icon-4","visual-cancel"};
       int at=System.Array.IndexOf(controls,focused);FocusUiControl(controls[at<0?(e.shift?controls.Length-1:0):(at+(e.shift?controls.Length-1:1))%controls.Length]);
      }
      else if(e.keyCode==KeyCode.Return||e.keyCode==KeyCode.KeypadEnter||e.keyCode==KeyCode.Space){

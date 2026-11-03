@@ -177,7 +177,7 @@ namespace Exoduser.UnityPort
             // D01: mkItem drops are real; R picks the highest rarity on screen (web 32936) into the bag. Persistent saves stay unimplemented.
             Simulation.TryCollectLoot=CollectLoot;ClearDropViews();
             if(playerView==null)playerView=CreateRenderer("Player");
-            if((!NativeHd2D.Enabled||RigPixelRequested)&&heroView==null)heroView=new NativeHeroView(transform);
+            EnsureHeroView();
             AttachRigPixel();
             lastX=config.StartX;lastY=config.StartY;walkDistance=0;renderedTick=-1;playerMoving=false;
             hud.Refresh(Simulation.Player,Simulation.TickCount,true);
