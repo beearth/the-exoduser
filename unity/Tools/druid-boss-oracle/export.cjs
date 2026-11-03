@@ -46,7 +46,9 @@ const iUpdate=at('function updateE(e,sp){');
 const T0=at('const BOSS_MOVES=['),T1=at("_BOSS_MOVESET[0]=new Set(_BOSS_MOVESET[3]);");
 const SRC_TABLES=between(T0,T1,'BOSS tables');
 const SRC_AIFN=[fn('function _bossScore('),line('const _HELL_ABERRANT_FACE'),line('const _PARRYABLE_ATK'),fn('function _bossStartPattern('),fn('function _bossPhaseCheck('),fn('function _bossIdleMove('),fn('function _bossAI(')].join('');
-const SRC_HELP=[line('function _isNormalDruidBoss('),fn('function _isDruidFinale('),fn('function _spawnBossProjectile('),fn('function spawnProj('),fn('function _mkProj('),fn('function _resetProj('),fn('function _projectileParryClass('),
+// Newer web movement checks chest bodies; keep the real helper and an empty chest fixture.
+const SRC_CHEST=lines.some(l=>l.trimStart().startsWith('function _chestBlocks('))?fn('function _chestBlocks('):'';
+const SRC_HELP=[SRC_CHEST,line('function _isNormalDruidBoss('),fn('function _isDruidFinale('),fn('function _spawnBossProjectile('),fn('function spawnProj('),fn('function _mkProj('),fn('function _resetProj('),fn('function _projectileParryClass('),
  line('function _isEnemyMagicBullet('),line('function _normalizeEnemyBulletSpeed('),line('const ENEMY_BULLET_SPEED_MIN'),line('const ENEMY_BULLET_SPEED_MAX'),line('const ENEMY_MAGIC_BULLET_SPEED_MIN'),line('const ENEMY_MAGIC_BULLET_SPEED_MAX'),
  line('const ENEMY_RAINBOW_BULLET_SPEED_MIN'),line('const ENEMY_RAINBOW_BULLET_SPEED_MAX'),line('function _rollEnemyBulletSpeed('),line('function _rollEnemyMagicBulletSpeed('),line('function _rollEnemyRainbowBulletSpeed('),
  fn('function _prepareDarkSphere('),fn('function _druidPoisonPoolTargets('),fn('function _druidParryVolleySpec('),fn('function _fireChargedProj('),fn('function _tickProjCharge('),fn('function _cancelProjCharge('),line('function elMul('),fn('function safePt('),line('function canMv('),fn('function _ffMoveE('),fn('function _poiseReset(')].join('');
@@ -98,7 +100,7 @@ function makeScope(c,rng,vrng,out){
   shake:0,hitStop:0,slowMo:0,_flashT:0,atkTickets:0,maxAtkTickets:4};
  const projs=[];const st={parryOpen:false};
  const rec=(...a)=>out.ev.push(a);
- const scope={Math:Object.assign(Object.create(Math),{random:rng}),_vr:vrng,_NOP:0,e,P,G,projs,_projFree:[],T:Tn,EL:{P:0,F:1,I:2,D:3,L:4,H:5,E:6},ELC:['#bbbbbb','#ff5522','#3388ff','#9933cc','#ffee00','#ff88cc','#88aa44'],
+ const scope={Math:Object.assign(Object.create(Math),{random:rng}),_vr:vrng,_NOP:0,e,P,G,projs,worldItems:[],_projFree:[],T:Tn,EL:{P:0,F:1,I:2,D:3,L:4,H:5,E:6},ELC:['#bbbbbb','#ff5522','#3388ff','#9933cc','#ffee00','#ff88cc','#88aa44'],
   window:{},OPT:{bossDebug:false,hitStop:100,shake:100},_HS:{bossPhase:12},_BOSS_PHASE_AURA:['#fff','#fa0','#f80','#f40','#f00'],
   _T:a=>a,_L:(a,b)=>a,addTxt:noop,addParts:noop,poolPart:noop,deathFX:noop,shake:noop,playVFXAng:noop,playSample:noop,_r:()=>1,_reviveVFX:noop,_bossSfx:()=>null,_bossTellSfx:noop,_playDruidSfx:noop,setTimeout:noop,
   _addBlastLight:noop,_addTpSmoke:noop,_addTpImpact:noop,_addTpBolt:noop,_addTpStar:noop,_addTpVland:noop,

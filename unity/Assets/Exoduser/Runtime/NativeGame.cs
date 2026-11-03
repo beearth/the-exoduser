@@ -36,7 +36,7 @@ namespace Exoduser.UnityPort
         readonly string[] directions={"south","south-east","east","north-east","north","north-west","west","south-west"};
         readonly string[] enemyDirections={"east","south_east","south","south_west","west","north_west","north","north_east"};
         float walkDistance,lastX,lastY;int renderedTick=-1;bool playerMoving;
-        bool menu=true; string notice=""; float noticeUntil; int lastKillCount;
+        bool menu=true; string notice=""; float noticeUntil;
         GUIStyle label,small,title,center,button,characterBadge,statusTitle,statusDetail; bool guiReady;
         public static NativeGame Instance {get;private set;}
         sealed class ChunkView {public SpriteRenderer renderer;public string path;}
@@ -156,7 +156,7 @@ namespace Exoduser.UnityPort
             Simulation.TryCollectLoot=CollectLoot;ClearDropViews();
             if(playerView==null)playerView=CreateRenderer("Player");
             if(!NativeHd2D.Enabled&&heroView==null)heroView=new NativeHeroView(transform);
-            lastX=config.StartX;lastY=config.StartY;walkDistance=0;lastKillCount=0;renderedTick=-1;playerMoving=false;
+            lastX=config.StartX;lastY=config.StartY;walkDistance=0;renderedTick=-1;playerMoving=false;
             hud.Refresh(Simulation.Player,Simulation.TickCount,true);
             StageFlowAttach();   // C07: gate/exit tiles, arena flow reset for this run
             // C01-AI: the natural 1-1 field spawns come from the 14 소환굴 of initStage(0) (rollEtype pool), not from a fixed ring of etype0.
@@ -195,6 +195,8 @@ namespace Exoduser.UnityPort
             if(WaitForFrontendEntryInput())return;
             if(traceInventoryKeys)TraceInventoryKeys();
             if(!gameFocused){Running=false;return;}
+            // Web nextDiffPop consumes its keys before background window handlers.
+            if(nextDifficulty.Active){UpdateViews();return;}
             if(a15DirectReview&&HandleA15DirectKeys())return;
             if(HandlePanelHotkeys())return;
             // Web stat window: ESC blurs the search box first, then closes; K/TAB switch straight to skills/inventory (not while typing).
@@ -253,7 +255,7 @@ namespace Exoduser.UnityPort
             StageFlowPump(statPointsBeforeTick);DispatchFeedback();
             if(Simulation.Materials>currencyBeforeTick){var at=HudCamera.WorldToViewportPoint(Point(p.X,p.Y));NativeCurrencyOrb.Emit(new Vector2(at.x,at.y));}
             if(PlayerDown){Running=false;Toast("쓰러졌습니다");}
-            if(Simulation.Kills>lastKillCount){lastKillCount=Simulation.Kills;Toast("처치 · 악의오브 +4");}
+            // Web normal play omits kill reward text; the actual currency HUD/orb feedback above owns it.
         }
         public void StepInput(float x,float y,float aimX,float aimY,bool attack,bool pickup)
         {Simulation.Stage.Enabled=firstPractice==null;int statPointsBeforeTick=Simulation.Player.StatPoints;Simulation.Tick(x,y,aimX,aimY,attack,pickup);StageFlowPump(statPointsBeforeTick);DispatchFeedback();UpdateViews();}
