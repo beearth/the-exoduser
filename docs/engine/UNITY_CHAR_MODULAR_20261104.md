@@ -1,7 +1,7 @@
 # 전사 파트 제작·조립 리깅 — char-modular
 
-최신 상태: **03:20 소켓 한정 rest 증가분 기준도2회 실패·중단 / RETOUCH**. [스카프·비다양체 보완/실패 쌍·포즈·깊이](UNITY_CHAR_MODULAR_REST_GROWTH_20261104.md). 실제 native는37,628tri·25논리묶음·59뼈. B 머리/머리카락 고정, 고리/안쪽 면·가는 선·국소 위상 보완을 반영했으나 숙임/오른 팔꿈치/복부판 접촉이 남았다. [이전 A+B 묶음·G0 정렬](UNITY_CHAR_MODULAR_HYBRID_20261104.md)은 ec76 이력이다.
-**이 문서 아래의 Unity FBX/prefab·068be 컴파일 PASS는 이전 B 단독 후보의 이력이다. 새 A+B는 Unity 미연결·미컴파일이며 디자인/게임 채택 없음.** 새 G0 고칠 목록과02:40/02:5x 재개 지시를 반영했다. [과거 B 대조·중단 근거](UNITY_CHAR_MODULAR_G0_DELTA_20261104.md)는 역사 기록이다.
+최신 상태: **11-04 Sonnet 마무리 — Blender rest 증가분 검사 attempt `sonnet1` 통과, A+B Unity 연결·PC 컴파일 1건 통과 / 디자인·게임 판정 미실시(RETOUCH)**. [수정 내역·실측 숙임·검사 표](UNITY_CHAR_MODULAR_REST_GROWTH_20261104.md) 하단. 실제 native는37,628tri·25논리묶음·61뼈(elbow_l/r_couter 추가). Unity는 `Warrior_Modular.fbx/prefab`이 이제 **A+B**(24묶음 draw mesh 34,626tri+대검 3,000tri), 재질은 텍스처 없는 단색 타일(흑철·가죽·천)과 B 머리/머리카락 텍스처. 이전 B 단독 이력과 [이전 A+B 묶음·G0 정렬](UNITY_CHAR_MODULAR_HYBRID_20261104.md)은 아래 역사 기록이다.
+**이 문서 아래쪽의 068be 컴파일 PASS·B 단독 수치는 이전 후보의 이력이다.** [과거 B 대조·중단 근거](UNITY_CHAR_MODULAR_G0_DELTA_20261104.md)는 역사 기록이다.
 기준: `origin/unity/main cfd8e248453dc102f5a6182a4aa98998230e7b71`.
 소유: `codex/unity-char-modular-20261104`, 전사 `Art/Characters/Warrior/Modular/`, 전용 `unity/Tools/char-modular/`, 전용 Editor/Runtime 접점과 이 문서. Core·클립·기존 renderer·카메라 변경 금지.
 

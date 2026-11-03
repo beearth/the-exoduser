@@ -1,6 +1,11 @@
 # 전사 모듈 제작 도구
 
-최신은 **03:20 소켓 한정 rest 증가분 기준2회 실패·중단**. native37,628tri·59뼈·25묶음. `docs/engine/UNITY_CHAR_MODULAR_REST_GROWTH_20261104.md`와 REPORT 우선. Unity A+B 연결/컴파일·새34도판은 미진행이며 아래 ec76 설명은 이전 이력이다.
+최신은 **11-04 Sonnet 마무리**: 03:20 소켓 한정 rest 증가분 기준을 그대로 두고 수정 뒤 attempt `sonnet1`에서 **실패 쌍 0·스카프/머리 0**(14포즈, 최대 gate 1.896mm). native 37,628tri·61뼈(couter 2 추가)·25묶음. 수정 내역·실측 숙임 각도·검사 표는 `I:/EXODUSER-Storage/char-modular/numeric/sonnet-summary.md`, `docs/engine/UNITY_CHAR_MODULAR_REST_GROWTH_20261104.md` 하단. 이 통과는 Blender 수동 포즈 표본 검사이며 Animator/Unity 실게임 판정이 아니다.
+
+- `fix_sonnet_ab.py`: 11-04 수정 3종+가중치 누락 정점 1개(대검 소켓 2mm·elbow_l/r_couter·W13_A_077 띠 22mm·스카프 목 Head 10%). 후보 파일은 인수로 받은 경로에만 저장한다.
+- `measured-bow.json`: Unity 에디터 배치(`WarriorClipNeckMeasure`)로 잰 컨트롤러 클립 neck·Head 최대 앞숙임. `head_bow_measured` 포즈가 읽는다.
+- `export_unity.py`: A+B 24묶음→한 draw mesh(흑철 단일 100%), 텍스처 없는 A는 단색 타일, 대검은 월드 정렬 별도 FBX, `Socket_Weapon_R`(칼날=-up)·`Grip_L` 소켓 생성. `export_texture_input.py`: A포즈 rest 24묶음 회색 GLB.
+- `audit_rest_growth.py`: attempt 라벨 `sonnet1`/`sonnet2`(같은 라벨 재실행·세 번째 거부), `head_bow_measured` 포즈, 닫힌 머리 AABB 밖 표본은 내부로 세지 않는 가드. 기준값(3mm/2mm·소켓 허용표) 변경 없음.
 
 - `cleanup_0320.py`: B 머리/머리카락 고정·스카프 내부 면 삭제/고리 여유/neck-Spine 가중치·국소 이상 면 보완. `inspect_cleanup.py`에서 잔류 선 원인4.38m solidify spike 확인.
 - `inspect_local_topology.py`, `finalize_cleanup_topology.py`: spike 제거 후5변 구멍, A104 접촉 내부 shell을 원 A 외면과 cap으로 고쳐4대상 manifold 확인.

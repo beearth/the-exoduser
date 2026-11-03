@@ -65,3 +65,50 @@ rest 고리 최소6.732mm, 좌35도6.592mm다. 우35도에서는 내부 표본0�
 Unity FBX·prefab 교체/컴파일, 최신34도1x 정면·뒤 LOCK 비교판, 머리카락의1x 눈 가림·망토 뒤 찢김/점0 판정은 하지 못했다. 새 그림을 만들지 않아 이전 ec76 진단판은 현재03:20 원본의 증거가 아니다. 캐릭터 총괄의 텍스처①도 미진행이다.
 
 소스 보존 SHA·원격 일치·중단 보고는 `I:/EXODUSER-Storage/codex-takeover/char-modular/REPORT.md` 마지막 기록을 따른다.
+
+---
+
+## 11-04 Sonnet 마무리 (총괄 지시: Codex 레인 대신 Sonnet 서브에이전트가 이어받음)
+
+상태: attempt `sonnet1` **통과** (14포즈, 단단판 FAIL 0·스카프/머리 FAIL 0, 최대 gate 1.896mm). 기준값·소켓 허용표 불변. 열린 천끼리 체적 91행은 미검증으로 남는다. Blender 수동 포즈 표본 검사이며 Animator/Unity 실게임·디자인 판정이 아니다. 전체 표: `I:/EXODUSER-Storage/char-modular/numeric/sonnet-summary.md`.
+
+| 이전 실패 | 이전 mm | sonnet1 gate mm | 수정 |
+|---|---:|---:|---|
+| strike1 W05_A_014 ↔ 대검 | 3.085 | 1.773 | 대검 소켓 로컬 상수 2mm (방향은 strike1 검사 범위 깊이 최소로 선택) |
+| strike3 W09_A_040 ↔ W11_A_041 | 4.640 | 1.174 이하 | 팔꿈치 덮개 couter 뼈 |
+| strike3 W09_A_076 ↔ W11_A_041 | 4.873 | 1.174 이하 | 팔꿈치 덮개 couter 뼈 |
+| head_bow 20° 스카프 ↔ B 머리 | 9.073 | 0.000 | 스카프 목 정점 Head 10% |
+
+수정 표 (코드 `fix_sonnet_ab.py`):
+
+| 항목 | 값 |
+|---|---|
+| 대검 | hand_r_weapon 뼈·W25 메시·W25 빈 오브젝트를 같이 월드 rest 기준 2mm 이동(변형은 자식 뼈 rest 위치와 무관). 우손 조각과 틈 0.12→0.09mm |
+| 팔꿈치 | `elbow_l_couter`/`elbow_r_couter`: 부모 상완, 머리=전완 rest 머리, 전완과 같은 rest 방향, 길이 4cm. W10 4조각·W11 2조각 단일 100%. Blender 검사용 Copy Rotation(전완, local, influence 0.5), 상완·전완 중간 회전과 오차 0.000° |
+| 오른 전완 띠 | 오른 덮개 W11_A_041이 W13_A_077과 arm90 5.45mm·strike3 7.42mm로 새로 겹침 → W13_A_077을 팔꿈치 쪽 가장자리에서 22mm 선형 압축(폭·두께 유지). 지시에 없던 추가 수정 |
+| 스카프 | 머리 표면 30mm 이내·neck/Spine-only 정점에 Head 10%(지시는 25%였으나 head_right 4.9mm 실패, 8~12.5%는 전 포즈 0) |
+| 가중치 누락 | W15_A_018 정점 197 → tasset_fl 100% |
+
+실측 neck·Head 앞숙임(Unity 에디터 배치, `WarriorClipNeckMeasure`, 60Hz): 컨트롤러 클립 3개 중 neck 최대 5.21°(Run), Head 앞숙임 없음(최대 뒤젖힘 23.2°). 런타임 구르기가 Head를 +20° 더 숙이므로 head_bow 20°를 유지하고 `head_bow_measured`(neck 5.207°)를 추가했다.
+
+### Unity 연결 (PC 컴파일·에셋 임포트만, Player/빌드 0)
+
+`export_unity.py` → `Art/Characters/Warrior/Modular/Warrior_Modular.fbx`·`Warrior_Modular_Sword.fbx`·atlas·`assembly-contract.json`, `ModularWarriorImport.Run` → `Resources/Characters/Warrior_Modular.prefab`. 영수증 `I:/EXODUSER-Storage/char-modular/compile-current/ab-import.json`.
+
+| 항목 | 값 |
+|---|---|
+| Humanoid·기존 Animator | 통과, 기존 `Warrior_Locomotion.controller` 같은 참조 |
+| 삼각형 | 몸 34,626(Blender 34,628, 임포터가 퇴화 2개 제거)+대검 3,000 |
+| 뼈 | 61 (couter 2 포함), 망토 12, 머리카락 6 |
+| 금속 | 정점 10,098 모두 단일 뼈 100% |
+| 재질 | 5슬롯(흑철·가죽·천·피부·흑발), atlas 2K, 텍스처 없는 A는 단색 타일 |
+| 소켓 | `Socket_Weapon_R`(RightHand 자식, 칼날=-up, 칼날과 -up 각 0.03°, 원점-대검 24mm), `Grip_L`(왼손, 좌우 반사). Unity는 빈 오브젝트의 로컬 축을 그대로 유지하므로 Blender 로컬 Y가 Unity up이다 |
+| couter | `RotationConstraint` 2개(상완 0.5+전완 0.5, rest에서 오프셋으로 현재 회전 보존), 새 C# 런타임 코드 없음 |
+| tasset | `RotationConstraint` 4개(Hips 0.1+허벅지 0.9, 감사 포즈의 follow 0.9에 대응). 지시에 없던 추가 |
+| 미검증 | 에디터 배치에서는 구속이 평가되지 않아(전완 40° 회전 시 couter 0°) 실제 평가는 확인하지 못했다. 오프셋 수식은 `상위 회전×offset=rest`를 가정한다. 실제 Animator 평가는 Mac 판정에서 확인 필요 |
+
+런타임 `NativeModularSecondaryMotion`은 `Modular_Tasset_*` 이름만 찾으므로 새 tasset_* 뼈는 위 구속이 아니면 Hips에 붙어 있다. 컴파일 중 자동 변경된 UI 메타 12개·URP 설정은 커밋하지 않고 복구했다.
+
+텍스처 입력: `I:/EXODUSER-Storage/char-modular/warrior/texture-input/warrior_ab_apose.glb` (A포즈 rest, 24묶음, 108개 파트 이름 유지, 34,628tri, 회색 재질 1개, 대검 제외).
+
+남은 일: 디자인 총괄 G1/LOCK 1x 비교판, Mac 실제 Animator 판정(couter/tasset 구속 평가, 대기·달리기·3타·구르기), 텍스처, 열린 천 체적 검사, 오른 전완 띠 22mm 압축·덮개 주변 시각 확인.

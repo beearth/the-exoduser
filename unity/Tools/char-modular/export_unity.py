@@ -5,7 +5,7 @@ The native .blend stays the authoring SSOT. This script never saves it. It
  - joins W01..W24 (everything except the W25 greatsword) into one skinned draw mesh,
  - gives the textured B head/hair their own atlas tiles and every untextured A part a flat
    family colour tile (Iron/Leather/Cloth); no texture is generated or painted,
- - adds the runtime sockets Socket_Weapon_R / Grip_L as bone children (blade = -up),
+ - adds the runtime sockets Socket_Weapon_R / Grip_L as bone children (blade = -local Y = Unity up),
  - exports the sword as a world-aligned rest mesh (Unity places it at world identity under the socket).
 Blender runs headless only. The couter Copy Rotation constraints are not exported; Unity builds
 RotationConstraints on elbow_l_couter / elbow_r_couter in the import step.
@@ -180,7 +180,7 @@ for obj in parts:
     for face in obj.data.polygons:
         face.material_index = families.index(kind_family)
 
-# ----------------------------------------------------------------------------- sockets (blade = -up)
+# ----------------------------------------------------------------------------- sockets (blade = -local Y = Unity up)
 bpy.context.view_layer.update()
 grip_world = rig.matrix_world @ rig.data.bones["hand_r_weapon"].head_local
 sword_world = [sword.matrix_world @ v.co for v in sword.data.vertices]
@@ -190,11 +190,11 @@ blade = (tip - grip_world).normalized()
 expected = Vector((0, -.82, -.55)).normalized()
 if blade.angle(expected) > math.radians(3):
     raise RuntimeError("blade direction differs from the authored fixture: %.2f deg" % math.degrees(blade.angle(expected)))
-up = -blade
+up = -blade   # pommel direction; Unity keeps the empty's local axes, so this must be the local +Y (Unity up), not Blender's +Z
 x_axis = (Vector((1, 0, 0)) - up * Vector((1, 0, 0)).dot(up)).normalized()
-y_axis = up.cross(x_axis).normalized()
-socket_world = Matrix(((x_axis.x, y_axis.x, up.x, grip_world.x), (x_axis.y, y_axis.y, up.y, grip_world.y),
-                       (x_axis.z, y_axis.z, up.z, grip_world.z), (0, 0, 0, 1)))
+z_axis = x_axis.cross(up).normalized()
+socket_world = Matrix(((x_axis.x, up.x, z_axis.x, grip_world.x), (x_axis.y, up.y, z_axis.y, grip_world.y),
+                       (x_axis.z, up.z, z_axis.z, grip_world.z), (0, 0, 0, 1)))
 mirror = Matrix.Diagonal((-1, 1, 1, 1))
 grip_left_world = mirror @ socket_world @ mirror   # reflected position and axes, x flipped back so the rotation stays proper (det +1)
 
