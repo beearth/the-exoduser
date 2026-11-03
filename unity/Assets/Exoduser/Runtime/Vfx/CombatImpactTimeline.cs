@@ -4,6 +4,24 @@ using Exoduser.UnityPort.Core;
 
 namespace Exoduser.UnityPort.Vfx
 {
+    // Screen pixels, Y up. The enemy lane owns the ratios; no duplicate formula.
+    public struct CombatHitAnchor
+    {
+        public bool UseBody;
+        public double OffsetY,DrawWidth;
+        public static CombatHitAnchor Resolve(double footY,double bottomY,double topY,FeedbackKind kind,double chestRatio=double.NaN,bool large=false) {
+            if(double.IsNaN(footY)||double.IsInfinity(footY)||double.IsNaN(bottomY)||double.IsInfinity(bottomY)||
+                double.IsNaN(topY)||double.IsInfinity(topY)||topY<=bottomY)return default;
+            double height=topY-bottomY;
+            bool heavy=kind==FeedbackKind.EnemyCrit||kind==FeedbackKind.BossHit||kind==FeedbackKind.EnemyDeath||kind==FeedbackKind.BossDeath;
+            return new CombatHitAnchor{UseBody=true,OffsetY=bottomY-footY+height*NativeEnemyRigPolicy.AnchorRatio(chestRatio),
+                DrawWidth=height*NativeEnemyRigPolicy.ImpactRatio(heavy?1:0,large)};
+        }
+        public static bool Applies(bool perspective,int targetId,FeedbackKind kind,CombatClipMode mode) {
+            return perspective&&targetId!=0&&(kind==FeedbackKind.EnemyHit||kind==FeedbackKind.EnemyCrit||kind==FeedbackKind.BossHit)&&
+                (mode==CombatClipMode.Impact||mode==CombatClipMode.SlashBurst||mode==CombatClipMode.Electric||mode==CombatClipMode.Blood);
+        }
+    }
     // Web game.html: _addBoom/_boomGrow, _addImpact/_impactSpriteFor,
     // doParry TVFX2, deathFX and activateRoll/_finishRoll. No Unity or gameplay state.
     public enum CombatClipMode { Boom, Impact, Flipbook, Death, Electric, SlashBurst, Blood }
@@ -67,14 +85,14 @@ namespace Exoduser.UnityPort.Vfx
                     result.Add(Boom("Ice_ImpactIce_Sheet_water",72,96*3,12));
                     var mist=Boom("Ice_MistSmoke_FBF_4x4_water",72,96*3.4);mist.Delay=3;mist.Life=69;mist.Opacity=.6;result.Add(mist);
                 }else if(e.SampleKey=="rainbow") {
-                    string[] sheets={"Poison_MediumImpact","Dark_DarkSmoke_FBF_4x4","Light_ImpactLight_Sheet","Ice_ImpactIce_Sheet"};
+                    string[] sheets={"Poison_MediumImpact_pal","Dark_DarkSmoke_FBF_4x4","Light_ImpactLight_Sheet","Ice_ImpactIce_Sheet_pal"};
                     for(int i=0;i<4;i++){var c=Boom(sheets[i],72,80*(2.8+i*.3));c.Additive=true;c.Delay=(int)Math.Round(72*i*.03);c.Life=72-c.Delay;c.Angle=i*Math.PI*.5;c.Opacity=1-i*.15;result.Add(c);}
                 }else if(e.Step!=1&&e.Source=="physicalProjectile")result.Add(Boom("Fire_ImpactFire_Sheet",12,60*3,4,true));
                 // Other bullet parries: warm line sparks only (CombatParryPresentation). The web's dark02 purple star and the
                 // three yellow lightning sheets read as an element hit, not a parry (user 11-03 "패링구현이 엉망").
             }else if(e.VisualOnly&&(e.Kind==FeedbackKind.EnemyHit||e.Kind==FeedbackKind.EnemyCrit||e.Kind==FeedbackKind.BossHit)) {
                 int el=e.Element;bool hasElement=el>=0&&el<=5;
-                result.Add(new CombatClip{Sheet=hasElement?"impact_el"+el+(e.IsBoss?"_boss_sheet":"_sheet"):"impact_basic_sheet",Fallback="impact_basic_sheet",Cols=e.IsBoss&&hasElement?16:9,Rows=1,Frames=e.IsBoss&&hasElement?16:9,Life=16,Scale=e.IsBoss?2.5:1,Mode=CombatClipMode.Impact,Additive=true});
+                result.Add(new CombatClip{Sheet=hasElement?"impact_el"+el+(e.IsBoss?"_boss_sheet_v2":"_sheet_v2"):"impact_basic_sheet",Fallback="impact_basic_sheet",Cols=e.IsBoss&&hasElement?16:9,Rows=1,Frames=e.IsBoss&&hasElement?16:9,Life=16,Scale=e.IsBoss?2.5:1,Mode=CombatClipMode.Impact,Additive=true});
                 if(el==4){var c=Flip("boss/vfx_holy_burst",3,3,e.IsBoss?.18:.1,0,3);c.Mode=CombatClipMode.Electric;result.Add(c);}
                 else{var c=Flip("impact_basic_sheet",9,1,e.IsBoss?.7:.4,0,3);c.FrameTicks=2.4;c.Life=22;c.Mode=CombatClipMode.SlashBurst;result.Add(c);}
                 bool heavy=e.Kind==FeedbackKind.EnemyCrit||e.Kind==FeedbackKind.BossHit||e.IsBoss;
@@ -178,7 +196,7 @@ namespace Exoduser.UnityPort.Vfx
     public sealed class CombatBloodDecals
     {
         public const int Capacity=8, HoldTicks=210, FadeTicks=60;
-        public sealed class Stamp {public int Born,Frame;public float X,Y,Width;public double Angle;public bool Active;public long Serial;}
+        public sealed class Stamp {public int Born,Frame,Delay;public float X,Y,Width;public double Angle;public bool Active;public long Serial;}
         public readonly Stamp[] Slots=new Stamp[Capacity];long serial;
         public CombatBloodDecals(){for(int i=0;i<Capacity;i++)Slots[i]=new Stamp();}
         public static bool ShouldStamp(FeedbackEvent e) {
@@ -186,13 +204,13 @@ namespace Exoduser.UnityPort.Vfx
             return e.Kind==FeedbackKind.EnemyDeath||e.Kind==FeedbackKind.BossDeath||
                 (e.VisualOnly&&(e.Kind==FeedbackKind.EnemyCrit||e.Kind==FeedbackKind.BossHit));
         }
-        public int Add(FeedbackEvent e,int frame,double angle) {
+        public int Add(FeedbackEvent e,int frame,double angle,int delay=0) {
             int index=0;long oldest=long.MaxValue;
             for(int i=0;i<Capacity;i++) {
-                if(Alpha(i,e.Tick)<=0){index=i;break;}
+                if(Alpha(i,e.Tick)<=0&&(!Slots[i].Active||Slots[i].Delay==0||e.Tick>=Slots[i].Born)){index=i;break;}
                 if(Slots[i].Serial<oldest){oldest=Slots[i].Serial;index=i;}
             }
-            var s=Slots[index];s.Born=e.Tick;s.X=e.X;s.Y=e.Y;s.Width=Math.Max(1,e.Size)*2;
+            var s=Slots[index];s.Delay=Math.Max(0,delay);s.Born=e.Tick+s.Delay;s.X=e.X;s.Y=e.Y;s.Width=Math.Max(1,e.Size)*2;
             s.Frame=Math.Max(12,Math.Min(15,frame));s.Angle=angle;s.Active=true;s.Serial=++serial;return index;
         }
         public double Alpha(int index,int tick) {
