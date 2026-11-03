@@ -68,18 +68,12 @@ namespace Exoduser.UnityPort
   bool MetalAction(Rect rect,string text,bool primary,bool selected,GUIStyle style){
    bool live=GUI.enabled&&inputLive;bool hover=live&&rect.Contains(Event.current.mousePosition);bool pressed=hover&&ExoInput.Mouse(0);bool lit=hover||selected;
    if(live&&lit&&!pressed)NativeSilverHellUi.ButtonFocus(rect);
-   // web #gcModal .gc-ok: the primary keeps the silver plaque and only gains a small crimson glow (drop-shadow 0 0 8px rgba(194,26,16,.22)).
-   if(primary)PrimaryGlow(rect,lit);
+   // The shared solid iron face owns opacity; emphasis stays inside its silver edge.
    NativeSilverHellUi.ActionPlate(rect,false,lit?1:0,pressed,36,8);
    // .sh-btn text: Hahmlet 400, letter-spacing .16em, #d6d3cd (selected/primary #f2f0ec). GUIStyle.none: no skin background behind the plate.
    Color col=lit||primary?NativeSilverHellUi.Bright:new Color(214/255f,211/255f,205/255f);
    SpacedLabel(rect,text,17,col);
    bool clicked=NativeUiAudit.Button(rect,GUIContent.none,GUIStyle.none);return clicked&&live;
-  }
-  static Texture2D crimsonGlow;
-  static void PrimaryGlow(Rect r,bool lit){
-   if(crimsonGlow==null)crimsonGlow=NativeSilverHellUi.Effect(64,32,(u,v)=>{float dx=(u-.5f)*2,dy=(v-.5f)*2;float d=Mathf.Sqrt(dx*dx+dy*dy);float a=Mathf.Clamp01(1-d);a=a*a*(3-2*a);return new Color(194/255f,26/255f,16/255f,a);});
-   var c=GUI.color;GUI.color=new Color(1,1,1,lit?.42f:.3f);NativeUiAudit.DrawTexture(new Rect(r.x-22,r.y-14,r.width+44,r.height+28),crimsonGlow);GUI.color=c;
   }
   GUIStyle spaced;
   void SpacedLabel(Rect r,string text,int size,Color col){

@@ -197,10 +197,12 @@ public static class PortVerification {
  }
  static string HudPixelText(Color c){return "("+c.r.ToString("R",System.Globalization.CultureInfo.InvariantCulture)+","+c.g.ToString("R",System.Globalization.CultureInfo.InvariantCulture)+","+c.b.ToString("R",System.Globalization.CultureInfo.InvariantCulture)+","+c.a.ToString("R",System.Globalization.CultureInfo.InvariantCulture)+")";}
  static string MakeScene(){
-  var scene=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
-  new GameObject("EXODUSER Native CSharp").AddComponent<NativeGame>();
   const string name="Assets/Scenes/FirstPlayable.unity";
-  EditorSceneManager.SaveScene(scene,name);EditorBuildSettings.scenes=new[]{new EditorBuildSettingsScene(name,true)};
+  // 11-03: reuse the committed scene when it already holds only the NativeGame root. Saving a fresh scene every build gave it new fileIDs and lighting defaults, so the tracked file changed on every build and the loop worktree never stayed clean.
+  bool reuse=false;
+  if(File.Exists(name)){var opened=EditorSceneManager.OpenScene(name,OpenSceneMode.Single);var roots=opened.GetRootGameObjects();reuse=roots.Length==1&&roots[0].name=="EXODUSER Native CSharp"&&roots[0].GetComponent<NativeGame>()!=null&&roots[0].GetComponents<Component>().Length==2;}
+  if(!reuse){var scene=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);new GameObject("EXODUSER Native CSharp").AddComponent<NativeGame>();EditorSceneManager.SaveScene(scene,name);}
+  EditorBuildSettings.scenes=new[]{new EditorBuildSettingsScene(name,true)};
   PlayerSettings.companyName="ForDearGamers";PlayerSettings.productName="EXODUSER · Unity 이식 검증판";
   PlayerSettings.defaultScreenWidth=1920;PlayerSettings.defaultScreenHeight=1080;PlayerSettings.fullScreenMode=FullScreenMode.Windowed;
   PlayerSettings.runInBackground=true;
