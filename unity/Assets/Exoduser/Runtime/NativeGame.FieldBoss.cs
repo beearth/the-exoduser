@@ -37,7 +37,7 @@ namespace Exoduser.UnityPort
             foreach (var fb in list)
             {
                 if (fb == null || fb.Hp <= 0) continue;
-                double last; if (anglerLastHp.TryGetValue(fb.Index, out last) && last - fb.Hp >= 1) damage.Add(new DamageText { x = (float)fb.X, y = (float)(fb.Y - fb.R * .5), amount = (int)(last - fb.Hp), until = Time.unscaledTime + 1 });   // _fmApply's floater
+                double last; if (!DeathPresentationActive && anglerLastHp.TryGetValue(fb.Index, out last) && last - fb.Hp >= 1) damage.Add(new DamageText { x = (float)fb.X, y = (float)(fb.Y - fb.R * .5), amount = (int)(last - fb.Hp), until = Time.unscaledTime + 1 });   // _fmApply's floater
                 anglerLastHp[fb.Index] = fb.Hp;
                 if (fb.Asleep || fb.Hid || fb.TpT > 0) continue;   // `if(fb.tpT>0) ...vanish frames; return` / `if(fb.hid) return`: the body is not drawn
                 SpriteRenderer r; if (!anglerViews.TryGetValue(fb.Index, out r) || r == null) { r = CreateRenderer("Angler " + fb.Index); anglerViews[fb.Index] = r; }

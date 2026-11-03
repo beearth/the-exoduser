@@ -384,6 +384,20 @@ function Set-UnityReservation([string]$command, [string]$kind = 'editor') {
   foreach ($file in @(($base+'.out.log'),($base+'.err.log'))) { if (Test-Path $file) { foreach ($line in @(Get-Content $file -Encoding UTF8)) { Log ([string]$line) } } }
   if ($pr.ExitCode -ne 0) { throw ('Unity 예약 명령 실패: ' + $command) }
 }
+# Unity가 import·빌드 중 다시 쓰는 추적 파일만 'kept', 그 밖의 변경(INDEX 포함)은 'foreign'.
+function Get-ReserializeDirt([string]$worktree) {
+  $kept = @(); $foreign = @()
+  foreach ($line in @(& git.exe -C $worktree -c core.quotePath=false status --porcelain --untracked-files=no)) {
+    if (-not $line) { continue }
+    $path = $line.Substring(3)
+    if ($line.Substring(0,2) -eq ' M' -and $path -match '^unity/(Assets|ProjectSettings)/.+\.(meta|mat|asset|unity)$') { $kept += $path } else { $foreign += $line }
+  }
+  return [pscustomobject]@{ kept = $kept; foreign = $foreign }
+}
+function Get-ReserializeOverlap([string]$worktree, [string[]]$kept, [string]$target) {
+  $incoming = @(& git.exe -C $worktree -c core.quotePath=false diff --name-only HEAD $target)
+  return @($kept | Where-Object { $incoming -contains $_ })
+}
 function Get-BlockingUnityOwner([string]$kind = 'editor', [string]$root = 'I:\EXODUSER-Storage\unity-jobs') {
   foreach ($f in @(Get-ChildItem (Join-Path $root 'queue') -Filter '*.json' -ErrorAction SilentlyContinue | Sort-Object Name)) {
     $r = ReadJson $f.FullName
@@ -409,7 +423,7 @@ function Invoke-Exo([string]$command, [string[]]$jobArgs, [string]$logBase, [str
   $argsText = $jobArgs -join ','
   $timeout = $Cfg.BuildTimeoutMin * 60; if ($command -eq 'player') { $timeout = $Cfg.SmokeTimeoutMin * 60 }
   $pa = @('-NoProfile','-NonInteractive','-WindowStyle','Hidden','-ExecutionPolicy','Bypass','-File', ('"{0}"' -f $launcher), $command, '-Worktree', ('"{0}"' -f $Cfg.Worktree), '-Owner','buildloop','-WaitMin',([string]$Cfg.WaitMaxMin),'-Json','-TimeoutSec', ([string]$timeout), '-Args', ('"{0}"' -f $argsText))
-  if ($exe) { $pa += @('-Exe', ('"{0}"' -f $exe), '-Desktop', $desktop) }
+  if ($exe) { $pa += @('-Exe', ('"{0}"' -f $exe), '-Desktop', $desktop, '-PcException', 'buildloop') }
   $pr = Start-Process -FilePath "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -ArgumentList $pa -WindowStyle Hidden -PassThru -RedirectStandardOutput ($logBase+'.out.log') -RedirectStandardError ($logBase+'.err.log')
   $null = $pr.Handle; $pr.WaitForExit(); $pr.Refresh()
   $rc = $pr.ExitCode; $receipt = $null
@@ -422,7 +436,7 @@ function Invoke-UiOverlapCheck([string]$check, [string]$exe, [string]$worktree, 
   # PS5.1 turns native stderr into NativeCommandError under & ... *> with EAP=Stop.
   # Redirect the child's raw streams directly, retaining the parent's error policy.
   $errLog = $log -replace '\.log$', '.err.log'
-  $pa = @('-NoProfile','-NonInteractive','-WindowStyle','Hidden','-File',('"{0}"' -f $check),'-Exe',('"{0}"' -f $exe),'-Worktree',('"{0}"' -f $worktree),'-Output',('"{0}"' -f $output),'-OverlapOnly')
+  $pa = @('-NoProfile','-NonInteractive','-WindowStyle','Hidden','-File',('"{0}"' -f $check),'-Exe',('"{0}"' -f $exe),'-Worktree',('"{0}"' -f $worktree),'-Output',('"{0}"' -f $output),'-OverlapOnly','-PcException','buildloop')
   $pr = Start-Process -FilePath "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -ArgumentList $pa -WindowStyle Hidden -PassThru -RedirectStandardOutput $log -RedirectStandardError $errLog
   try {
     $null = $pr.Handle; $pr.WaitForExit(); $pr.Refresh()
@@ -776,8 +790,18 @@ function Cmd-Run {
 
     # Update only a clean detached checkout/explicit unity/main checkout; never force or touch a lane branch.
     $actual = ([string](GitR rev-parse HEAD)).Trim()
-    $dirty = & git.exe -C $Cfg.Worktree status --porcelain --untracked-files=no
-    if ($dirty) { throw '작업본 INDEX/WORK 변경이 있어 이번 회차 중단' }
+    # 11-03: 빌드 자체가 Unity 직렬화 파일(.meta·.mat·.asset·.unity)을 다시 쓴다. 이것만 남은 작업본은 버리지 않고 그대로 진행하고,
+    # 새 커밋과 겹칠 때만 중단한다(정리는 사용자 확인 사항). INDEX 변경·그 밖의 파일은 예전처럼 중단.
+    $dirt = Get-ReserializeDirt $Cfg.Worktree
+    if ($dirt.foreign.Count) { throw ('작업본 INDEX/WORK 변경이 있어 이번 회차 중단: ' + (($dirt.foreign | Select-Object -First 5) -join ', ')) }
+    if ($dirt.kept.Count) {
+      $run.reserializedKept = $dirt.kept.Count
+      if ($actual -ne $head.full) {
+        $overlap = @(Get-ReserializeOverlap $Cfg.Worktree $dirt.kept $head.full)
+        if ($overlap.Count) { throw ('Unity 재직렬화 파일이 새 커밋과 겹침(' + $overlap.Count + '개, 사용자 정리 필요): ' + (($overlap | Select-Object -First 5) -join ', ')) }
+      }
+      Log ('Unity 재직렬화 파일 ' + $dirt.kept.Count + '개 유지(새 커밋과 겹침 0, 버리지 않음)')
+    }
     if ($actual -ne $head.full) {
       $branch = "$(GitR branch --show-current)".Trim()
       if ($branch -and $branch -ne 'unity/main') { throw '다른 담당 브랜치는 자동 갱신하지 않음' }
