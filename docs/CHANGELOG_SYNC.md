@@ -1,3 +1,5 @@
+2026-11-04 F-1 저장 이전 staging 복구: 소유·최신공통 확인, 잠금→해제→재시도/원본·writer·destination 보존 회귀 초안 추가. NuGet path1 초기화 오류가 SDK10/8에서2회 발생해 동일2FAIL 규칙으로 중지. production 미수정·테스트 미실행·PC 컴파일 미실행. Desktop385/eaf실패·원복 기록 보존. [차단 근거](engine/UNITY_DEMO_FLAVOR_F1_20261104.md).
+
 2026-11-04 00:00 Desktop 수동 교체2회차: eaf67fae9 Windows 빌드1회/오류0 뒤 M1 09c 실패(기록17/18, 필수23미달)·UI 원화11종 mipmap8/11로 거부. 기존385e76ce1 원복·자기 브랜치 복귀, 사용자 저장0. 같은 실패후보1920 캡처11장·대지강타1회46프레임을 확보하고 build-commit.smoke.visual.rejectedCandidate에 source/adopted=false로 연결. [근거](engine/UNITY_DESKTOP_CTO_SWAP_20261104.md).
 
 2026-11-03 22:35 바탕화면 Unity 1회 수동 교체(CTO cto-swap): 정확한 unity/main385e76ce1 detached에서 공용 bin Windows 빌드1회·오류0·USER_SAVE0, M1 23/23·홀드3.0초·필드 목표2줄·실제 사망 진입 통과 후 build-commit 갱신. 9f0d00cf8은 build_prev 하나로 보존, 바로가기 유지·자기 브랜치 복귀. 전체 UI 겹침/미술/자연 완주 후속은 유지. [근거](engine/UNITY_DESKTOP_CTO_SWAP_20261103.md).
