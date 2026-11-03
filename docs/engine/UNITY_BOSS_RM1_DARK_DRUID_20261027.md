@@ -430,7 +430,7 @@
 
 | 항목 | 값 |
 |---|---|
-| 현재 아레나 | 아레나에 들어가면 3D 층이 물러나고 2D 정사영 뷰가 나온다(`Remodel3DSetActive(!InArena)`). 보스가 살아 있으면 웹 줌 0.80을 따라 `orthographicSize` 5.4/0.8이다(`NativeGame.BossView.cs` `BossCameraZoom`, HD-2D면 `Hd2dArenaFrame`이 보스·영웅 경계로 맞춘다). **3D 아레나 카메라는 아직 없다.** 이 표는 3D 아레나(RM-3 등 아레나 3D 경로)가 들어갈 때의 계약이다 |
+| 현재 아레나 | 아레나에 들어가면 3D 층이 물러나고 2D 정사영 뷰가 나온다(`Remodel3DSetActive(!InArena)`). 보스가 살아 있으면 웹 줌 0.80을 따라 `orthographicSize` 5.4/0.8이다(`NativeGame.BossView.cs` `BossCameraZoom`, HD-2D면 `Hd2dArenaFrame`이 보스·영웅 경계로 맞춘다). **3D 아레나 카메라는 아직 없다.** 이 표는 3D 아레나(RM-3 등 아레나 3D 경로)가 들어갈 때의 계약이다. 코드 확정(unity/main `9f0d00cf8`): `ForestA2`는 `NativeGame.A2Field.cs:17`·`NativeGame.A2Forest.cs:29`에서 true로만 설정되고 false로 되돌리는 코드가 없어, 아레나에서도 true로 남는다. 다만 아레나에서는 `Remodel3DSetActive(false)`로 `Active=false`가 되고 r3 루트(LOOK-001 3D 카메라 포함)가 꺼진다. 2D `view` 카메라(`NativeGame.cs:54` `orthographic=true`, 기본 size 5.4)만 그리므로 34°/16.5 값은 지금 아레나 화면에 쓰이지 않는다 |
 | 적용 범위 | **보스 아레나 안에서만.** 필드 카메라(34°/16.5)는 그대로다(원근 LOCK) |
 | 피치·세로 FOV·전방 | **바꾸지 않음**: `NativeRemodel3D.Pitch`(ForestA2 34°), 46.9453°, `TargetOffset` 1.45 |
 | 거리 | 16.5 → **18.3**(줌 **0.90**). 웹 0.80(거리 20.6)은 34°에서 P1 22.6%로 합격선(≥24%) 미달이라 0.90으로 정했다(보스전 총괄, CTO 조건 "피치 유지·거리만" 안) |
