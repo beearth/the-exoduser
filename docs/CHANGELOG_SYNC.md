@@ -1,3 +1,5 @@
+2026-11-04 Mac Unity 사망 확정 화면 교체 "안식은 없다": 웹 #death 이식판(원화·펫·이모지·미이식 표시) 대신 검정 → 제목·진홍 헤어라인·THERE IS NO REST → "포기할 것인가?" 결정(보스방 3 선택지, 필드 2 선택지). 끊겨 있던 로비 버튼과 숨은 일시정지 키 경로를 바로잡음. 번짐 PNG 선형화로 Linear 색 보정. ARM64 빌드 오류0, 사망 스모크 1920·1600 PASS. 번역 목록 4264–4272. [기록](3.1%20ui%20hud%20디자인/UNITY_DEATH_SCREEN_20261103.md#2026-11-04-사망-확정-패널-교체--안식은-없다-결정-화면-mac-pc-ui-총괄).
+
 2026-11-04 08:10 공용 실행기 좀비 Player 가드(CTO 07:45, 재부팅 뒤): 스레드 1개·CPU 정지 EXODUSER-* 프로세스가 있으면 새 Player를 거부하고 '재부팅 필요' 영수증·HALT를 남긴다. 실행 뒤 남은 경우에도 HALT. 원인=Quit 뒤 Input System Shutdown 단계 커널 드라이버 교착(HID 1순위·AMD GPU 2순위, Unity 코드 무관), 05:06 뒤 4번 더 띄워 좀비 5개. 실행기 `2026.11.04-zombieguard`, 시험 zombie-guard-test.ps1. 문서 unity/Tools/devtools/README.md.
 
 2026-11-04 08:00 BuildLoop 겹침 자동 폐기·배포 기록 정정(사용자 "알아서 자동으로 버려"): 새 커밋과 다른 Unity 재직렬화 파일 중 공백만 다른 것·빈 .meta를 같은 guid로 채운 것만 원본을 runs/<id>/discarded에 보존하고 restore 뒤 fast-forward, 값·guid·미추적·스테이징 차이는 예전처럼 중단. Load-State가 build-commit.json이 더 최신이면 deployed로 받아들임(EXTERNAL). 시험 buildloop-autodiscard-test.ps1(16), buildloop-common-runner-test는 경로 표기 차이를 정규화해 비교. 문서 unity/Tools/devtools/buildloop/README.md.

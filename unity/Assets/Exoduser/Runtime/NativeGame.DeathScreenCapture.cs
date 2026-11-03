@@ -93,6 +93,16 @@ namespace Exoduser.UnityPort
             revive.ForcedAge=5f;DeathAdvanceTo(0);rec.actualDeath=p.State=="dead";check(rec.actualDeath,"Core death failed: "+p.State);
             yield return new WaitForSecondsRealtime(.6f);
             yield return DeathCapture(output,"death_07_panel_enter",files);
+            // "안식은 없다" decision screen (2026-11-04): title, decision, keyboard focus through the real death-screen key path.
+            death.ForcedAge=1.4f;yield return null;yield return DeathCapture(output,"death_09_title",files);
+            death.ForcedAge=3.5f;yield return null;yield return DeathCapture(output,"death_10_decision",files);
+            check(death.ActionsReady&&death.ChoiceCount==3&&death.FocusedChoice==NativeDeathOverlay.Choice.Rise,"boss-room death offers 3 choices, rise focused ("+death.ChoiceCount+")");
+            var kb=UnityEngine.InputSystem.InputSystem.AddDevice<UnityEngine.InputSystem.Keyboard>();
+            try{kb.MakeCurrent();UnityEngine.InputSystem.LowLevel.InputState.Change(kb,new UnityEngine.InputSystem.LowLevel.KeyboardState(UnityEngine.InputSystem.Key.DownArrow));var cmd=death.PollKeys();
+                check(death.FocusedChoice==NativeDeathOverlay.Choice.Restart&&cmd==NativeDeathOverlay.Choice.None,"Down moves focus to restart without acting");UnityEngine.InputSystem.LowLevel.InputState.Change(kb,new UnityEngine.InputSystem.LowLevel.KeyboardState());}
+            finally{UnityEngine.InputSystem.InputSystem.RemoveDevice(kb);}
+            yield return null;yield return DeathCapture(output,"death_11_restart_focus",files);
+            death.ForcedAge=null;
             revive.ForcedAge=null;
             rec.files=files.ToArray();rec.failures=string.Join(" | ",fails.ToArray());rec.passed=fails.Count==0;
             File.WriteAllText(Path.Combine(output,"death-screen-capture.json"),JsonUtility.ToJson(rec,true));
