@@ -1,5 +1,7 @@
 # CLAUDE.md — 지옥의 길 (Hell Road)
 
+> **에이전트 운영 매뉴얼(필독):** [docs/0마스터플랜/AGENT_OPERATIONS_MANUAL.md](docs/0마스터플랜/AGENT_OPERATIONS_MANUAL.md) — Claude 총괄·Codex·PC·서브에이전트의 역할, 작업 방식(복사본 말고 직접 수정, 최신만 남기기), 테스트·토큰·Git·디스크 규칙, 지시문 템플릿. 이 파일과 충돌하는 운영 규칙은 매뉴얼을 따른다.
+
 ## MCP와 API 공통 사용 — 2026-10-31 사용자 지시
 
 - 모든 팀은 [MCP·API 공통 목록과 기간별 예산](docs/API연결_가이드.md)을 사용한다. 도구 노출·인증·유료 실행을 구분하고 키·토큰·개인 청구 내역을 공개 저장소에 넣지 않는다.
