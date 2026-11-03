@@ -102,8 +102,29 @@ namespace Exoduser.UnityPort
    var st=inventory.State;var priorSel=st.Selected;var priorJunk=new List<bool>();foreach(var b in st.Bag)priorJunk.Add(b.junk);
    st.Selected=null;yield return UiCapture(output,"Unity_인벤토리_열림_"+tag);
    var first=st.Bag.Count>0?st.Bag[0]:null;st.Select(first);yield return UiCapture(output,"Unity_인벤토리_가방선택_"+tag);
-   st.Selected=null;int marked=0;foreach(var b in st.Bag)if(!b.fav){b.junk=true;marked++;}
+   // Half marked first: web shows both invJunkSelBtn and invJunkBtn in one row.
+   st.Selected=null;int half=0;foreach(var b in st.Bag)if(!b.fav&&half<st.Bag.Count/2){b.junk=true;half++;}
+   yield return UiCapture(output,"Unity_인벤토리_쓰레기일부_"+tag);
+   int marked=0;foreach(var b in st.Bag)if(!b.fav){b.junk=true;marked++;}
    yield return UiCapture(output,"Unity_인벤토리_쓰레기지정_"+tag);log.Add("inventory bag="+st.Bag.Count+" junkMarked="+marked+" mats="+Simulation.Materials+" "+tag);
+   // invJunkBtn -> gameConfirm. ESC through the real PollKeys path closes only the confirm.
+   var bagBefore=new List<InventoryItem>(st.Bag);int matsBefore=Simulation.Materials;int expected=0;foreach(var j in st.JunkItems())expected+=InventoryState.SalvageValue(j);
+   inventory.OpenJunkConfirm();yield return UiCapture(output,"Unity_인벤토리_분해확인_"+tag);
+   bool confirmShown=inventory.JunkConfirmOpen;if(!confirmShown)uiArtFailures++;log.Add((confirmShown?"PASS ":"FAIL ")+"쓰레기 분해 확인창 표시 "+tag);
+   var keyboard=UnityEngine.InputSystem.InputSystem.AddDevice<UnityEngine.InputSystem.Keyboard>();
+   try{
+    keyboard.MakeCurrent();UnityEngine.InputSystem.LowLevel.InputState.Change(keyboard,new UnityEngine.InputSystem.LowLevel.KeyboardState(UnityEngine.InputSystem.Key.Escape));
+    inventory.Navigation.ObserveReleased(false);bool closeInventory=inventory.PollKeys(Simulation.Player.Level);
+    bool escOk=!inventory.JunkConfirmOpen&&!closeInventory&&inventory.Open;if(!escOk)uiArtFailures++;log.Add((escOk?"PASS ":"FAIL ")+"확인창 ESC는 확인창만 닫음(인벤토리 유지) "+tag);
+    UnityEngine.InputSystem.LowLevel.InputState.Change(keyboard,new UnityEngine.InputSystem.LowLevel.KeyboardState());
+   }finally{UnityEngine.InputSystem.InputSystem.RemoveDevice(keyboard);}
+   yield return null;
+   inventory.OpenJunkConfirm();int gained=inventory.ConfirmJunkSalvage();
+   bool salvaged=gained==expected&&Simulation.Materials==matsBefore+expected&&st.JunkItems().Count==0&&st.Bag.Count==bagBefore.Count-marked&&st.Selected==null&&!inventory.JunkConfirmOpen;
+   if(!salvaged)uiArtFailures++;log.Add((salvaged?"PASS ":"FAIL ")+"쓰레기 "+marked+"개 분해 악의오브 +"+gained+" (기대 +"+expected+", "+matsBefore+"->"+Simulation.Materials+") 가방 "+bagBefore.Count+"->"+st.Bag.Count+" "+tag);
+   yield return UiCapture(output,"Unity_인벤토리_분해후_"+tag);
+   // Restore the fixture state for the next resolution (same item objects, same cells, same orbs).
+   st.Bag.Clear();st.Bag.AddRange(bagBefore);Simulation.Materials=matsBefore;
    for(int i=0;i<priorJunk.Count&&i<st.Bag.Count;i++)st.Bag[i].junk=priorJunk[i];st.Selected=priorSel;
    SetInventory(false);Running=false;
   }

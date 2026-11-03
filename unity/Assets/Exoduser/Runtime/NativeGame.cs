@@ -219,7 +219,7 @@ namespace Exoduser.UnityPort
                 UpdateViews();return;
             }
             // Web togglePanel: pressing another window's key while a window is open switches directly to that window.
-            if(inventory.Open&&!inventoryKeysSmoke&&NativeKeyBindInput.Down("skill")){OnPanelHotkeyRequested("skillPanel");return;}
+            if(inventory.Open&&!inventoryKeysSmoke&&!inventory.JunkConfirmOpen&&NativeKeyBindInput.Down("skill")){OnPanelHotkeyRequested("skillPanel");return;}
             if(inventory.Open){if(!inventoryKeysSmoke&&inventory.PollKeys(Simulation.Player.Level))SetInventory(false);UpdateViews();return;}
             if(skillInputFence&&!ExoInput.Mouse(0))skillInputFence=false;
             if(ExoInput.KeyDown(KeyCode.Escape)||NativeKeyBindInput.Down("settings")){
@@ -590,7 +590,7 @@ namespace Exoduser.UnityPort
         // Web update() 32117~32122: window keys are processed while paused. G = forge, J = stats, F10 = settings toggle.
         // TAB/K switching between inventory and skills is in OnPanelRequested's callers; ESC follows _panelBack (close the open window, else open settings).
         bool HandlePanelHotkeys(){
-            if(Simulation==null||Simulation.Player.Hp<=0||firstPractice!=null||stats.TextInputActive||pauseMenu.KeyCaptureActive)return false;   // A16: a key waiting in the binding page must not open windows
+            if(Simulation==null||Simulation.Player.Hp<=0||firstPractice!=null||stats.TextInputActive||pauseMenu.KeyCaptureActive||inventory.JunkConfirmOpen)return false;   // junk confirm is modal; A16: a key waiting in the binding page must not open windows
             if(NativeKeyBindInput.Down("forge")){OnPanelHotkeyRequested("forge");return true;}
             if(NativeKeyBindInput.Down("stats")){OnPanelHotkeyRequested("statPanel");return true;}
             if(ExoInput.KeyDown(KeyCode.F10)){

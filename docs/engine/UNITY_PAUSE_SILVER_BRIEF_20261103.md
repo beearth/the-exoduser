@@ -134,3 +134,55 @@ Unity 인벤토리의 "인벤토리" 제목과 눈 메달이 상단 공통 탭 �
 `--unity-ui-finish-capture -output <dir> -ui-phase pause,inventory`에 인벤토리 단계를 추가했다. 1920×1080·1600×900마다 인벤토리 열림, 가방 아이템 선택, 가방 전체 쓰레기 지정 화면을 찍고 junk 표시와 선택은 원래대로 돌린다. 일시정지는 기존 `pause` 단계(보조메뉴·종료확인·ESC 설정 직행)를 쓴다. 같은 장치로 변경 전 빌드와 변경 후 빌드를 찍는다.
 
 첫 실행(빌드 76fd7aa2)에서 이 장치의 일시정지·인벤토리 화면 12장이 모두 로비로 찍혔다. 장치가 시작 연출 상태를 건너뛰지 않아 `EnterNativeTest` 뒤에도 로비가 남았다. UI 겹침 검사와 같은 진입 순서(`StartupCaptureState.Skip` → `SelectPreview` → `EnterNativeTest` → 입력 울타리 해제·실습 종료)로 고치고, 로비가 남으면 실패로 센다. 처음 두 빌드 시도는 작업본에 로비 영상 2개(`Tools/restore-lobby-media.cjs`, `Tools/restore-warrior-story.cjs`)가 없어 `VerifyLobby`에서 멈췄고, 바이트 동일 복원 뒤 성공했다.
+
+### 4.2 적용 내용
+
+**1) 쓰레기 전부 분해 (브리프 3절)**
+
+| 위치 | 변경 |
+|---|---|
+| Core `InventoryState.cs` | `SalvageValue(it,table=null)`(웹 `salvageVal` 그대로, 기본 표 = 웹 `[1000,2000,10000,20000,50000]`), `JunkItems()`, `SalvageJunk(out count)`(즐겨찾기 제외, 웹처럼 선택 해제), `SalvageOne(it)`(웹 `dropItem`: 즐겨찾기 거부, 같은 인덱스 다음 칸 선택) |
+| `NativeForgeData.cs` | `ForgeFormulas.SalvageValue`는 Core 함수에 `forge_web.json` 표를 넘기기만 한다. 공식은 한 곳 |
+| `NativeInventoryDock.cs` 하단 줄 | 웹 flex 줄과 같이 `전체 쓰레기 지정 (N개)`·`쓰레기 전부 분해 (N개 -> 악의오브 +T)`를 함께 가운데 정렬. 분해 버튼은 웹 `#invJunkBtn` 색(바탕 rgba(196,36,24,.15)·테 #cc2d22·글자 #b8b5af) |
+| 같은 줄 단일 분해 | 자리표시 `분해 (악의오브+미이식)` → `분해 (악의오브+N)` 실제 동작(확인창 없음·즐겨찾기 거부·1초 연타 방지) |
+| 확인창 `DrawJunkConfirm` | 웹 `gameConfirm` 문구 4줄(휴지통·오브·경고 글리프 포함), 취소 왼쪽·확인 오른쪽, 은빛 판 버튼, 확인만 진홍 빛. 판은 `#gcModal .gc-box`처럼 실버 헬 테 + 흑철 바탕 |
+| 입력 차단 | 확인창이 떠 있으면 마우스 이벤트는 확인창만 받고, 아래 창은 그리기만 한다. G/C/F10/K 창 전환 단축키도 막는다. ESC는 확인창만 닫는다(`PollKeys`) |
+| 확인 결과 | 가방에서 제거, `Simulation.Materials += T`, `changed()`로 장비 재계산·저장 요청(웹 `dbSaveNow` 대응) |
+
+**2) 인벤토리 제목 제거** — `DrawDock`의 `NativePanelTitle.Draw(...,"인벤토리")` 삭제. 전투력·악의오브·닫기 줄은 그대로다. 탭 바 `대장간 [G]`가 온전히 보인다.
+
+**3) 일시정지 실버 헬 마감 (브리프 1절)** — 원인 가설 5개를 화면으로 확인했다.
+
+| 증상 | 확인된 원인 | 변경 |
+|---|---|---|
+| 판 전체 회색 흐림 | (a) 보조메뉴·종료확인에 `GUI.enabled=false` 비활성 틴트 (b) 판 바탕이 RGB ~62 회색. 코드로 만든 그라데이션 텍스처와 `GUI.color`가 Linear Player에서 sRGB 변환 없이 그려져 웹 #0c0b0c가 62로 나왔다(픽셀 측정) | (a) 그리기는 정상 대비, 클릭만 `inputLive`로 막음. 설정 페이지는 기존 게이트 유지 (b) `NativeSilverHellUi.Panel(...,iron:false)` 새 선택 인자: 웹 `.sh-framed` 바탕을 Linear 보정값으로 칠함. 측정 13/13/13 |
+| 버튼판 뒤 회색 사각형 | `MetalAction` 글자 스타일이 `GUI.skin.button`을 복사해 기본 버튼 배경을 함께 그렸다 | 글자는 `GUIStyle.none` 기반 자간 글자 |
+| 계속하기 = 진홍 판 통째 | `btn_primary_composed` | 은빛 `btn_plaque` + 작은 진홍 빛(웹 `.gc-ok` drop-shadow). 종료확인의 `종료`도 같은 규칙 |
+| 폭·정렬 불일치 | 504/456, 안내 왼쪽 정렬 | 네 버튼 456×56·간격 18, 은빛 구분선, 안내 두 줄 가운데 |
+| 글꼴·색 | 제목 32px 단독 라벨, 버튼 20px | 제목 = Unity 공통 제목 띠 `NativePanelTitle`(눈 메달·헤어라인), 버튼 Hahmlet 400 17px 자간 .16em `#d6d3cd`(선택·주 버튼 `#f2f0ec`), 안내 Hahmlet 400 14/13px `#a7a49d` |
+
+공용 `Panel`의 기본값(`iron:true`)과 공용 `ActionPlate`는 바꾸지 않아 로비·다른 창은 그대로다.
+
+### 4.3 검수 결과 (Mac, Unity 6000.6.7f1 StandaloneOSX ARM64)
+
+| 항목 | 결과 |
+|---|---|
+| 변경 전 빌드 | 소스 `8c1e1d47`, Succeeded·오류 0, 6,446,262,926 B (`_out/.../b1b-before`) |
+| 최종 빌드 | 아래 커밋 소스와 동일한 작업본, Succeeded·오류 0·C# error 0, 6,446,270,606 B (`_out/.../b5-after`). 중간 b2~b4는 눈 검수 수정 반복 |
+| 마감 캡처 장치 `pause,inventory` | 1920·1600 각 16항목 PASS·실패 0. 확인창 표시, 확인창 ESC는 확인창만 닫음(인벤토리 유지), 쓰레기 10개 분해 악의오브 +20000(기대 +20000, 1000→21000), 가방 10→0 |
+| Core `--salvage-only` | 9/9 PASS. 웹 `salvageVal` oracle 224행 불일치 0(`unity/Tools/inv-salvage-oracle`, main `30bc2e2ceb`) |
+| `--unity-inventory-keys-smoke` | 17/17 PASS. 단 프로세스가 스스로 끝나지 않아 300초에 종료. 변경 전 빌드도 같다(기존 동작) |
+| `--unity-pause-input-check` | 첫 단계 `일반 미리보기 진입`에서 FAIL. 변경 전 빌드도 같은 단계에서 같은 FAIL(기존 결함, 이 변경과 무관). 일시정지 키 경로는 마감 캡처 장치의 PASS 4항목(종료확인 진입·취소 복귀·ESC 설정 직행·두 번째 ESC 재개)으로만 확인 |
+| 눈 검수 | 1920×1080·1600×900 전/후 18장과 1x 크롭(`_out/.../crops`)을 직접 봤다. 흑철 판·은빛 테·은빛 판 버튼·작은 진홍 강조로 웹 실버 헬 창과 같은 계열. 개발 상태 문구 노출 0. **판정: PASS** |
+
+전/후 대표 파일: `b1b-before/cap/Unity_일시정지_보조메뉴_1920.png` ↔ `b5-after/cap/Unity_일시정지_보조메뉴_1920.png`, `b1b-before/cap/Unity_인벤토리_쓰레기지정_1920.png` ↔ `b5-after/cap/Unity_인벤토리_쓰레기일부_1920.png`·`…_분해확인_1920.png`·`…_분해후_1920.png` (모두 `/Users/fordeargamers/exoduser-wt/_out/UNITY-INV-SALVAGE-20261103/` 아래).
+
+빌드 import가 만든 `.meta`·재질·씬·ProjectSettings 변경 860개와 새 파일 57개는 커밋하지 않았다. `build-generated.patch`·`build-generated-untracked.tar.gz`로 보존한 뒤 HEAD 바이트로 되돌렸다.
+
+### 4.4 남은 일
+
+- 선택분해(`#invSalvageBtn`, Ctrl 다중 선택) 미이식.
+- 웹 버튼은 현재 필터 범위만 대상인데 Unity는 가방 전체가 대상이다. 필터 펼침 이식 때 맞춘다.
+- 분해 효과음 `ui_salvage` 미연결(Unity 리소스 없음).
+- **범위 밖 발견(중요)**: 이 Linear Player는 IMGUI `GUI.color`와 코드 생성 텍스처를 sRGB 변환 없이 그린다. 웹 색을 그대로 넣은 Unity 창 바탕들(인벤토리 등)이 웹보다 밝게 보이는 공통 원인일 가능성이 높다. 이번에는 일시정지·확인창 판만 보정했다. 전체 적용은 별도 단위로 측정 후 결정한다.
+- `--unity-pause-input-check` 첫 단계 실패와 `--unity-inventory-keys-smoke` 미종료는 기존 결함이다. 이번에 고치지 않았다.

@@ -11,6 +11,7 @@ namespace Exoduser.UnityPort {
   public bool PollKeys(int level){
    bool held=ExoInput.Mouse(0)||ExoInput.Mouse(1);foreach(var key in inventoryKeys)held|=ExoInput.Key(key);held|=NativeKeyBindInput.Held("inventory");Navigation.ObserveReleased(held);   // A16: the inventory key is a web binding
    if(!Navigation.Focused||Navigation.WaitingForRelease)return false;
+   if(junkConfirm){if(ExoInput.KeyDown(KeyCode.Escape)){junkConfirm=false;Navigation.Fence();}return false;}
    InventoryKey? input=null;
    if(NativeKeyBindInput.Down("inventory")||ExoInput.KeyDown(KeyCode.Escape))input=InventoryKey.Close;   // web: BINDS.inventory toggles the window, ESC is the fixed back key
    else if(ExoInput.KeyDown(KeyCode.LeftArrow))input=InventoryKey.Left;else if(ExoInput.KeyDown(KeyCode.RightArrow))input=InventoryKey.Right;
