@@ -112,6 +112,7 @@ namespace Exoduser.UnityPort
             else if(Array.IndexOf(args,"--unity-world-ultrawide-check")>=0){Running=false;StartCoroutine(WorldWideCapture());}
             else if(Array.IndexOf(args,"--unity-ui-overlap-check")>=0){Running=false;StartCoroutine(UiOverlapCapture());}
             else if(Array.IndexOf(args,"--unity-loading-tip-capture")>=0){Running=false;StartCoroutine(LoadingTipCapture());}
+            else if(Array.IndexOf(args,"--unity-rigpixel-natural")>=0){Running=false;StartCoroutine(RigPixelNaturalCapture());}
             else if(Array.IndexOf(args,"--unity-hero-review")>=0){Running=false;StartCoroutine(HeroCapture());}
             else if(Array.IndexOf(args,"--unity-impact-review")>=0){Running=false;StartCoroutine(ImpactReview());}
             else if(Array.IndexOf(args,"--unity-m1-check")>=0){Running=false;StartCoroutine(M1Check());}
@@ -163,7 +164,8 @@ namespace Exoduser.UnityPort
             // D01: mkItem drops are real; R picks the highest rarity on screen (web 32936) into the bag. Persistent saves stay unimplemented.
             Simulation.TryCollectLoot=CollectLoot;ClearDropViews();
             if(playerView==null)playerView=CreateRenderer("Player");
-            if(!NativeHd2D.Enabled&&heroView==null)heroView=new NativeHeroView(transform);
+            if((!NativeHd2D.Enabled||RigPixelRequested)&&heroView==null)heroView=new NativeHeroView(transform);
+            AttachRigPixel();
             lastX=config.StartX;lastY=config.StartY;walkDistance=0;renderedTick=-1;playerMoving=false;
             hud.Refresh(Simulation.Player,Simulation.TickCount,true);
             StageFlowAttach();   // C07: gate/exit tiles, arena flow reset for this run
@@ -344,7 +346,7 @@ namespace Exoduser.UnityPort
             // web roll: the body curls up and turns once (360 degrees) over the 18 frames, dust trail
             playerView.transform.rotation=Simulation.RollActive?Quaternion.Euler(0,0,-360f*(1f-(float)Simulation.RollMoveT/RollRules.Frames)):Quaternion.identity;
             heroView?.Sync(Simulation,playerMoving);}
-            playerView.enabled=NativeHd2D.Enabled||heroView==null||!heroView.Ready;
+            playerView.enabled=rigPixelHero!=null?!rigPixelHero.Ready:NativeHd2D.Enabled||heroView==null||!heroView.Ready;
             NativeHd2D.Actor(playerView,false,p.Radius*.02f*heroPresentationScale);
             foreach(var e in Simulation.Enemies)
             {
