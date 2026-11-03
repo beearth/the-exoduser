@@ -1,3 +1,5 @@
+2026-11-04 KiImpactView 시작 오류 수정(임펙트 총괄, CTO 03:05): 접점 원판 `coreShape.OverrideGeometry`가 피벗 기준 ±0.5 정점을 넘겨 1×1 스프라이트 사각형(0~1 픽셀 좌표) 밖이라 NativeGame.Awake에서 "Invalid vertex array" 오류 1회(A2R 스모크 FAIL). 중심 (.5,.5)·반지름 .499·0.0005~0.9995 클램프로 모든 정점을 사각형 안에, 경계 1.0에 닿지 않게 함. 화면 크기(반지름 0.5 유닛) 동일, Core 무변경. PC Core/Runtime 컴파일 오류 0, Player 0.
+
 2026-11-04 D-U1 사냥꾼 패시브 대상(디버깅 총괄, CTO 02:00): Unity Core `Simulation.EnemyBridge` HunterMul이 etype>=90(레어)만 보던 것을 웹 `_hunterMul`(D-002 뒤, main 06ac6882b 28306행)과 같이 보스(ib)·정예(elite 참)·레어에 +10%/랭크로 맞춤 → 새 `Simulation.HunterMul(w, rank)`. 수정 전 규칙은 D-002 이전 웹(안 쓰이는 isBoss/isElite)의 실제 동작을 이식한 것. 대조 `unity/Tools/hunter-oracle`: 웹 원문 280사례 불일치 0(수정 전 96/280), 실제 피격 경로 pHunter 3에서 보스·정예·레어 ×1.3·일반 ×1. 스탯창 pHunter "보스·정예 분기 미연결" 안내 삭제(표시 문자열 추가 없음). 디버깅 보드 정본을 unity/main으로 옮기고 D-012(09c)·D-013(canMv)·D-U1 기록, 방어 합산 차이는 D-U2 백로그. PC 컴파일만, Player 0.
 
 2026-11-04 U-VFX-11 피격 기준점: 실제 표시 몸 실루엣1,556셀·ID 제공자·Enemy3D 비율 재사용, PC865검사/0실패·Core/Runtime컴파일오류0, Mac 화면·실제rig연결 대기. 기록 docs/5.1임펙트디자인/UNITY_COMBAT_IMPACTS_20261103.md
