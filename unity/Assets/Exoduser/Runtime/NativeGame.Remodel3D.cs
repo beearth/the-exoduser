@@ -13,7 +13,7 @@ namespace Exoduser.UnityPort
     // Presentation hook. The 2D logic camera still supplies clamp/boss zoom; screen visibility now uses HudCamera (NativeGame.WorldViewport). Off = no code of this file runs
     // (NativeRemodel3D.Active stays false, Point() is the old 2D mapping). On: the RM-1 scene (RM1_Slice, additive) draws the ground; the 2D ground chunks and props are hidden;
     // the existing sprites become billboards standing on the terrain; the scene's LOOK-001 rig (Main Camera + CinemachineBrain + CM LOOK-001, follow target "Player Marker") renders.
-    // In the boss arena (`Stage.InArena`) the 3D layer steps back and the 2D arena view is shown as before (A1 / RM-3 / RM-2 / RM-4 hook in here later).
+    // RB1-8a: ForestA2 arenas keep this camera/actor path; preparation failure keeps the original 2D arena.
     public sealed partial class NativeGame
     {
         const string R3SceneName = "RM1_Slice";
@@ -35,10 +35,12 @@ namespace Exoduser.UnityPort
         void Remodel3DSync()
         {
             if (!NativeRemodel3D.Requested || Simulation == null) return;
-            if (r3Late == null) { r3Late = gameObject.AddComponent<R3Late>(); r3Late.Late = Remodel3DLate; }
+            if (r3Late == null) { r3Late = gameObject.AddComponent<R3Late>(); r3Late.Late = () => { Remodel3DLate(); BossArenaReviewLate(); }; }
             bool field = !Simulation.Stage.InArena;
             if (field && !r3Loaded && !r3Loading && !r3Failed) StartCoroutine(Remodel3DLoad());
-            bool want = field && r3Loaded;
+            bool arena = !field && RemodelArenaPrepare();
+            RemodelArenaMode(arena);
+            bool want = r3Loaded && (field || arena);
             if (want != NativeRemodel3D.Active) Remodel3DSetActive(want);
         }
 
@@ -65,6 +67,8 @@ namespace Exoduser.UnityPort
                 if (volume.profile != null && volume.profile.TryGet<ColorAdjustments>(out var tone))
                 { tone.postExposure.Override(1f); tone.saturation.Override(-18f); tone.colorFilter.Override(new Color(.82f,.9f,1f)); }
             if (System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "--unity-keyshot-baseline") < 0) HellLightingSetup();
+            r3Cam.enabled=false;
+            yield return RemodelArenaPrewarm();
             r3Loaded = true; r3Loading = false;
             Remodel3DSetActive(!Simulation.Stage.InArena);
         }
@@ -99,6 +103,7 @@ namespace Exoduser.UnityPort
         {
             HellArenaLate();
             if (!NativeRemodel3D.Active || r3Cam == null || Simulation == null) return;
+            RemodelArenaCameraStep();
             NativeGroundSkillProjection.BeginFrame(r3Cam);
             bool hidden = view.cullingMask == 0;   // the lobby / startup hides the world through the 2D camera mask: mirror it
             view.cullingMask = 0;                  // the 2D camera only clears the frame while the 3D one draws
@@ -106,13 +111,21 @@ namespace Exoduser.UnityPort
             Remodel3DViewport();
             var p = Simulation.Player; r3Marker.position = NativeRemodel3D.Point(p.X, p.Y) + NativeRemodelCamera.TargetOffset;   // CM LOOK-001 follows the marker (offset 0, 10.52, -9.24, no damping)
             r3Marker.position += ImpactCameraOffset();
-            if(NativeHd2D.Enabled&&r3Brain!=null)r3Brain.ManualUpdate(); // 최종 카메라 pose 뒤에만 픽셀 스냅한다.
+            if(NativeRemodel3D.ArenaActive)
+            {
+                var shake=hd2dCameraShake;
+                if(combatImpacts!=null)shake-=combatImpacts.CameraOffset(Simulation.TickCount); // already included by ImpactCameraOffset
+                r3Marker.position+=new Vector3(shake.x,0,shake.y);
+            }
+            if((NativeHd2D.Enabled||NativeRemodel3D.ArenaActive)&&r3Brain!=null)r3Brain.ManualUpdate(); // 최종 카메라 pose 뒤에만 픽셀 스냅한다.
             combatImpacts?.DrawMeleeParry(Simulation.TickCount,r3Cam,playerView);
             foreach (var r in props) if (r != null) r.enabled = false;
             foreach (var c in chunks.Values) if (c.renderer != null) c.renderer.enabled = false;
             Remodel3DBillboards();
             HellLightingLate();
-            A2EnemyGrounding();
+            if(NativeRemodel3D.ArenaActive)r3Arena?.Late(NativeRemodel3D.Point(p.X,p.Y));
+            if(!NativeRemodel3D.ArenaActive)A2EnemyGrounding();
+            else if(a2EnemyShadowRoot!=null)a2EnemyShadowRoot.SetActive(false);
             ApplyMeleePresentation(r3Cam);
         }
 
@@ -152,6 +165,7 @@ namespace Exoduser.UnityPort
             foreach (var sr in FindObjectsByType<SpriteRenderer>(FindObjectsSortMode.None))
             {
                 if (sr != null && (Exoduser.UnityPort.Vfx.NativeImpactView.IsContactSprite(sr)||Exoduser.UnityPort.Vfx.CombatImpactView.IsSprite(sr)||NativeGroundSkillSurface.Project(sr)||meleeSprites.Contains(sr))) continue;
+                if (NativeArena3DView.IsArenaFlame(sr))continue;
                 if (sr == null || !sr.enabled || sr.sprite == null || sr.gameObject.scene == r3Scene) continue;
                 var tr = sr.transform;
                 r3Base[sr] = new R3Base { localPosition = tr.localPosition, localRotation = tr.localRotation };

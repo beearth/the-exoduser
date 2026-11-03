@@ -11,7 +11,7 @@ namespace Exoduser.UnityPort
         void HellArenaLate()
         {
             bool compare=System.Array.IndexOf(System.Environment.GetCommandLineArgs(),"--unity-keyshot-baseline")>=0&&System.Array.IndexOf(System.Environment.GetCommandLineArgs(),"--unity-keyshot-fixed-camera")>=0;
-            bool active=(hellActorMaterial!=null||compare)&&Simulation!=null&&Simulation.Stage.InArena;
+            bool active=!NativeRemodel3D.ArenaActive&&(hellActorMaterial!=null||compare)&&Simulation!=null&&Simulation.Stage.InArena;
             if(!active){if(druidBody!=null)druidBody.PresentationScale=1f;if(hellArenaRig!=null)hellArenaRig.SetActive(false);return;}
             if(hellArenaRig==null)
             {

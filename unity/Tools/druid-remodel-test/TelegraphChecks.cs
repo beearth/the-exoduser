@@ -111,7 +111,7 @@ static partial class P
     // end of run: coverage + the flag-off list is empty
     static void VerifyTelegraphs()
     {
-        for (int m = 1; m <= 12; m++) Check(seenMoves.Contains(m), "telegraph list never carried move " + m + " (" + DruidRemodelData.Moves[m - 1].Id + ")");
+        for (int m = 1; m <= 12; m++) if (DruidRemodelData.Moves[m - 1].Phase.Length > 0) Check(seenMoves.Contains(m), "telegraph list never carried move " + m + " (" + DruidRemodelData.Moves[m - 1].Id + ")");
         Check(teleEvents >= 20, "telegraph spawn checks " + teleEvents);
         var off = new Simulation(new SimulationConfig { StageIndex = 0, DifficultyIndex = 5, EnemyAiEnabled = true, PlayerMaxHp = 2000000, PlayerBaseAttack = 40 }, 1u);
         off.AttachDruidBoss(); var l = new List<DruidTelegraph> { new DruidTelegraph() }; off.DruidTelegraphs(l);

@@ -4,6 +4,58 @@
 
 2026-11-04 SND-12 드루이드 v8.1 7기술 효과음 G1 장면 목록(사운드 총괄, CTO 순회 배정): VFX G1(55cac6960)과 같은 Core 틱(보스 아레나 85a0c3557 RB1-7)으로 기술별 예고→접점→본체→잔여 소리·키·채택 상태를 정리했다(docs/6사운드디자인/DRUID_V81_SKILL_SFX_G1_20261104.md). 빈 순간 15키(slash3_ground·slam_lift·debris·charge_kick·wall_crash·grab_step·grab_bind·absorb·grab_throw·burrow_move·erupt_warn·root_spikes·staff_tap·heart_vein·heart_wave). 시각 제안 2건: druid_slam 58→54, druid_erupt 101→135(소리 코드 지연만, Core 무변경). R7 청음 후보 133줄 pick_r7.html(v8.2 동작 영상 동기). SOUND_LEAD_MASTER에 R6·R7 절 추가. 코드 변경 없음, 청음·Unity 반영 전.
 2026-11-04 D-U2 Unity 피격 방어 웹 정합(디버깅 총괄, CTO 순회): Unity 물리방어에 망토·왕관 def·장비 근성(bGrit·gritFlatN/R)이 빠지고 에너지방어(마법·패링 피해)는 0 고정, 장비 방어 어픽스(physDR·barrier·healthyDef·injuredDR·dotDR·farDR)는 무효였다. `InventoryState.CalculateStats`가 웹 `_playerDefTotals()`(main 8a0141485: 7칸 def + 15칸 eDef + defFlat/eDefFlat + 강화 + ⌊(⌊Lv/2⌋+장비 근성)/2⌋)를 계산하고, `Simulation.Growth`가 SP 근성·pArmor를 더하며, `ApplyEquipment`가 `PlayerEnergyDefense`를 연결. `HurtPlayer`는 웹 순서대로 physDR(물리만, 캡 .75) → barrier → 조건부 DR(캡 .50). 웹 `opts.src`는 라벨 문자열이라 bossDR은 죽은 경로, far/close는 원점 거리라 라벨 붙은 독 DOT에만 farDR — Unity도 `HurtOptions.Labeled`로 같게. burnDR은 Unity에 플레이어 화상 DOT가 없어 미연결. 전투력(calcCP)은 장착 def 차감을 `EquippedDefense()`로 맞춤. 검증 `unity/Tools/defense-oracle`: 웹 원문 장비 240건·피격 11,520건 불일치 0(수정 전 239/240·8,601/11,520), Unity 컴파일 오류 0, PC Player 미실행. 새 백로그 D-U3(최대 HP·MP·ST 장비 근성 누락). 문서: DEBUG_LEAD_BOARD D-U2·D-U3, UNITY_B07_CORE §5, UNITY_B07_WEB_EXTRACT 피격 공식, unity/Tools/README.
+2026-11-04 U-VFX-09 ① 채찍 3타 예고 구슬 호박빛(임펙트 총괄): 보스 아레나 4c077e30c 병합, rig `lantern_orb` 소켓 월드 위치에 마지막 12틱 0→.8 `#d49a5c` 가산(지름 0.15H), 소켓 없으면 생략. druid-skill-vfx-tests 203/0, Core 무수정.
+
+## 2026-11-04 06:00 드루이드 ① 가지 채찍 3연(slashCombo) 본체 VFX 구현 (U-VFX-09 2번째 기술)
+
+`Runtime/Vfx/DruidSlashVfxTimeline.cs`(Unity 없는 순수 계산)·`DruidSkillVfxView.cs` 확장(②와 같은 뷰, `NativeGame` 연결 줄 추가 0). Core(`bossSlashWind`→`bossSlash` St2 10→0, 판정 St2==8=act +2, 부채꼴 Facing ±1.2·R+pr+300, `SlashIdx` 0/1/2)는 읽기만 하고 수정 0. 1·2타: 앞날이 act 0에 Facing −1.2에서 시작해 판정 틱 +2에 +1.2, +4에 +1.5까지 휩쓸고 +8에 사라지는 뼈색(`#efe6d2`→`#9a8a72`→`#4a3826`) 가산 띠(바닥에서 0.35H 든 수평 메시, 두께 ≤17 Core px, 바깥 = 판정 경계). 3타: 궤적 대신 +2에 지팡이 끝 코어 0.8H(5틱)·파편 6~8개(±35°)·먼지 4덩이(알파 ≤.5, 0.5초 이하) + 패인 자국 데칼 150틱(알파 .35, 몸 가장자리→판정 경계). 1·2타 잔여 0. 데칼 8·본체 스프라이트 24 상한은 ②와 공유. 3타 예고 구슬 호박빛은 rig가 구슬/지팡이 소켓 위치를 공개하지 않아 만들지 않았다. 검사 `unity/Tools/druid-skill-vfx-tests` 197/0, combat-impact 914/0, PC Roslyn(Remodel 소스 포함 사본) 오류 0. 화면 판정(G2)은 Mac 대기. [G1 표](5.1임펙트디자인/DRUID_V81_SKILL_VFX_G1_20261104.md).
+
+## 2026-11-04 05:15 드루이드 ② 내려찍기(slam) 본체 VFX 구현 (U-VFX-09 1번째 기술)
+
+`Runtime/Vfx/DruidSkillVfxView.cs`(보기)·`DruidSlamVfxTimeline.cs`(Unity 없는 순수 계산) 신설, `NativeGame.BossView.cs`·`NativeGame.cs`에 생성·Update 연결 4줄. Core(`bossSlamWind`→`bossSlam` St2 6→0, 판정 반경 260, `StaffReachExtra` 70)는 읽기만 하고 수정 0. 예고 마지막 12틱 흙 조각 6개 1~3px 들썩임, act 0 접점 코어(1.2H, +2틱 정점, 5틱, #fff4d0→#d49a5c 가산), 흙 충격 고리(act 0 r0 → 판정 틱 +6 r260 → +26 r286, 띠 ≤30, 알파 ≤.48), 방사 균열 7줄(r260까지 같은 속도, 가운데 #1c2418·가장자리 #364327), 흙 파편 10~14개, 낮은 흙먼지 8개(알파 ≤.5, 높이 ≤0.4H), 균열 데칼 180틱(마지막 60틱 페이드, 알파 ≤.42). 동시 24스프라이트·데칼 8개 상한. 새 텍스처·유료 생성 0(절차 스프라이트). 검사 `unity/Tools/druid-skill-vfx-tests` 106/0, 기존 combat-impact 914/0. PC Roslyn 오류 0(`tools/vfx-missing-compile.cjs`는 `Assets/Exoduser/Remodel` 소스를 포함하지 않아 기존 `NativeArena3DView.Materials.cs` 1건이 남는다. 같은 스크립트에 Remodel 소스를 더해 한 번 돌리면 0). 화면 판정(G2: 34° 1920·3840×1080 1x·3x, 단계 띠, 10초 영상)은 Mac 대기. [G1 표](5.1임펙트디자인/DRUID_V81_SKILL_VFX_G1_20261104.md).
+
+## 2026-11-04 드루이드 입력 v8.1 → v8.2 교체·오브 소켓 읽기 API (보스전 총괄 배정, Claude 이어받기)
+
+최신 origin/unity/main 병합(CHANGELOG/PREP 충돌은 양쪽 기록 보존). 입력 GLB를 v8.2(SHA-256 313bb238…98c, 24,299,904B)로 교체: import-oldman.py를 v8.2 이름으로 바꿔 v8.1과 같은 절차(무창 Blender, 소켓 월드 행렬 복원, Icosphere 제외)로 OldmanV82.fbx(15,581,516B) 생성, meta를 이름만 바꿔 GUID 유지, OldmanV81.fbx 삭제, NativeDruidRigPixelView·DruidRigPixelVerification·oldman-import.json·druid-rigpixel-tests의 참조 갱신. 클립 31개·이름·틱 계약·34본·78,323삼각형·Fist_L·StaffSocket_L 불변. 추가: NativeDruidRigPixelView.HasOrbSocket / OrbSocketWorldPosition / 정적 TryGetOrbSocketWorldPosition(out Vector3) — StaffSocket_L 아래 lantern_orb 변환의 실시간 월드 위치(VFX 슬래시3 예고용, 읽기 전용, 임의 오프셋 없음). Core 변경 0. 검사: 정책 4,672/0, FBX 수치 계약 통과(31클립, 정지 발 수평 최대 0.0046cm, 소켓 오차 1.08e-6m), 전체 PC Roslyn 1회 5어셈블리 오류 0(Core126/Runtime281/Editor62 포함). PC Unity/Player/빌드 0. 실제 Unity 임포트·화면·60fps 판정은 Mac 대기. docs/engine/UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md §9.3.
+
+## 2026-11-04 03:00 실제시각 드루이드 v8.1 7기술 연결
+
+최신origin/unity/main309892b1da 병합(51e0b30e77), CHANGELOG/PREP 양쪽 충돌 기록 보존. OldmanV81.fbx로교체·34본/보조10본/Fist_L/왼손소켓과29기술 단계+Idle/Walk=31클립 보존. Core 상태·남은틱으로 Generic Playable 샘플, 현재Core와원본길이 차이 보정·채찍 타격6f=Core2틱·균열 act를 기존회복안에 배치·잡힘/탈출/심장/잠행 분기. 수평 루트 중복 제거, 심장가슴맥동·영수증 확장. Core/기본값/카메라/8b 변경0. 정책4,672/0·FBX 수평발 최대.00461cm·전체Roslyn1회5어셈블리 오류0. 첫발 검사는 의도된20cm발들기를3D미끄러짐으로오인한원인을GLB에서확정하고 수평기준으로고쳐통과. PC Unity/Player0, 실제Avatar/RT/7기술1x·10초·세계발/FPS Mac대기. [계약·한계](engine/UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md#9-0300-실제시각-cto--v81-7기술-연결-소스-후보).
+
+## 2026-11-04 01:20 드루이드 v7 rig-pixel 어댑터 소스 후보
+
+최신origin/unity/main5c9dd3673 병합(0c22494993)·CHANGELOG 양쪽 기록 보존. 작업 중 도착한v7을 Generic FBX로 교체하고34본·보조10본·Fist_L·왼손소켓·가슴43면·Idle/Walk 보존. --boss-render=rigpixel만 공통 Point RT/4단 셀/팔레트·Core tick Animator 사용, 미제공7기술/Run/피격·사망은 Idle@0 대기·누락 영수증. 기본 보스/8b/카메라34°16.5/Core 수치 불변. 정책46/0·Roslyn5어셈블리 오류0·FBX 수치 통과. PC Unity/Player/렌더0, 실제 Unity Avatar·셰이더·RT·화면·FPS는 Mac 대기. [상태/클립 표](engine/UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md#7-11-04-0120-cto--v7-unity-어댑터-소스-후보).
+
+## 2026-11-04 00:50 RB1-8b 조명·재질 소스 후보
+
+최신6d99d0c46 병합 후 기존 필드 HellLighting/A2Field 달빛·후처리를 공유하고 A2R 원화2종/노멀/마스크·흙/뿌리 혼합, 세워진 횃불2개/점광, Core 외곽 독액·지면 투영을 연결했다. --unity-boss-arena-material-review는 같은 Player 필드/아레나34° PNG/JSON·조명 ID·나란히1x 페이지를 남긴다. arena73/0·Roslyn5어셈블리 오류0, PC실행0·자기Core변경0·Mac 시각/성능 미검증. Meshy 저LOD/아레나 실제반사/P3수위상승/8d는 후속. [정본 §14.6](engine/UNITY_BOSS_RM1_DARK_DRUID_20261027.md#146-rb1-8b-조명재질-소스-후보-11-04-0050-cto).
+
+## 2026-11-03 21:35 Mac FAIL 수정·21:45 카메라 정정
+
+2b1bbf2a0 병합 후 34°/16.5 고정·영웅 필드 크기 유지·보스 실제 영웅 모델 높이×2.8, 4정점 지면/A2 숲 덩어리/낮은 남쪽/뿌리 기둥·nearest 표면 알파0.2·분할 사전 준비를 적용. 새 --unity-boss-arena-review는 7기술 실제 발동·예고 경계·same-frame PNG/pose·0.6초 연속 프레임·3D 영웅 GPU 실루엣을 기록한다. metrics-only로 캡처 비용을 분리. CPU44/0·Roslyn5어셈블리 오류0, PC실행0·Core변경0·Mac 화면/60fps 미검증. [정본 §14.5](engine/UNITY_BOSS_RM1_DARK_DRUID_20261027.md#145-2135-mac-fail-수정-및-2145-거리-정정--mac-재검수-후보), [새 인자 전체](engine/UNITY_BOSS_ARENA_RB1_7_8_20261103.md).
+
+## 2026-11-03 21:00 RB1-7 선택 거리·타격 도달 정정
+
+채찍 도달480 해석을 폐기하고 AI RangeMax160 / 실제 타격·예고300으로 맞췄다. 최신 §13.4와 함께 SlashActive/HitAt=10/8(시작 후2틱), 내려찍기 RangeMax260, 돌진 추가 접촉120(몸체 전체 배율 아님)을 적용했다. 최종 하니스99210/0·frame124/0, 실제 Player는 Mac 검수 대기다. 이전480·SFX40/30 표기는 당시 후보 기록으로 대체한다. [정본 §13.5](engine/UNITY_BOSS_RM1_DARK_DRUID_20261027.md#135-2100-정정-적용--선택-거리와-타격-도달-분리).
+
+## 2026-11-03 RB1-8a 회색3D 보스방·카메라 연결
+
+--remodel3d/ForestA2의아레나3D유지·실패2D폴백·평지GroundY·기존필드표시복원,타일회색벽3~6m/overscan51.2m·Core기둥3.2m,34°/FOV46.9453/전방1.45고정·거리16.5↔18.3/0.6초를연결. CPU13/0·Player/Editor Roslyn5어셈블리오류0. PC Player실행0·실화면/60fps판정Mac대기,8b~d미구현. [정본§14.4](engine/UNITY_BOSS_RM1_DARK_DRUID_20261027.md#144-rb1-8a-소스-구현mac-판정-대기-11-03-2025-결정).
+
+## 2026-11-03 20:25 RB1-7 Core 최소 연결·잠행 원인 확정
+
+최신unity/main d6c5bb89b 정상병합. 채찍추가거리480·돌진판정폭×1.5를 드루이드 리모델세트만 연결하고 예고와 공유. 잠행출현은 정확하며 이후 넉백을 고정반경으로 검사하던 하니스 전제 수정(Core잠행0). 전투100385/0·frame124/0·OFF웹oracle5421635/0. [정본§13.4](engine/UNITY_BOSS_RM1_DARK_DRUID_20261027.md#134-rb1-7-구현원인-확정-11-03-2025-cto-결정-반영). PC컴파일·Mac판정 경계 유지, 8a는 독립 착수.
+
+## 2026-11-03 RB1-7 보스 기술 데이터 부분 적용 — FAIL 체크포인트
+
+활성7기술·예고/회복/쿨다운·잡기/잠행·슬램r260·정지거리220·4콤보를 반영했다. 전투100375검사 중 잠행18실패, 프레임124/0. Player/Editor Roslyn5어셈블리 오류0. 채찍×1.6·돌진폭×1.5는 Core고정값 때문에 미적용, RB1-8 미착수. 동일 하니스2회 실패 중단 규칙 적용, 통합 금지. [정확한 수치와 증거](engine/UNITY_BOSS_ARENA_RB1_7_8_20261103.md).
+
+2026-11-04 적 3D 01:00 연결 바탕: 최신ec89d5166 병합·하니스 Core/Skills 재귀 열거65/0 회복. etype4 공유 키를 시작 육괴 표현 태그로 분리해 일반 갑각 사도 아틀라스 유지. 영웅 공유 rig-pixel·Generic Animator/Core 틱·투영 bounds VFX 접점·사망 시작 연결, 고정meta 추가. 확장 정책103/0·전체 PC Roslyn5어셈블리 오류0 각1회, Player0. 미제공 동작은 bind pose로 기록하며 Mac 화면·임포트·동작·성능 미판정.
+
+2026-11-04 적 3D 연결 바탕 WIP 중단: 최신6d99d0c46에서 codex/unity-enemy3d-20261104 생성. 읽기 전용 상태 정책·etype1/4 모델표·0차 FBX 변환·검사 초안 보존. 같은 정책 검사 명령2회 실패(예상 RED, 이후 Core/Skills 소스 열거 누락 CS0234/CS0246)로 사용자 지시대로 중단. Unity 렌더/Animator/VFX 연결·meta·전체 PC 컴파일·Mac 판정 미완, 본편 병합 금지. 인계 UNITY_ENEMY3D_WIRING_20261104.md.
+
+
+2026-11-04 D-U1 사냥꾼 패시브 대상(디버깅 총괄, CTO 02:00): Unity Core `Simulation.EnemyBridge` HunterMul이 etype>=90(레어)만 보던 것을 웹 `_hunterMul`(D-002 뒤, main 06ac6882b 28306행)과 같이 보스(ib)·정예(elite 참)·레어에 +10%/랭크로 맞춤 → 새 `Simulation.HunterMul(w, rank)`. 수정 전 규칙은 D-002 이전 웹(안 쓰이는 isBoss/isElite)의 실제 동작을 이식한 것. 대조 `unity/Tools/hunter-oracle`: 웹 원문 280사례 불일치 0(수정 전 96/280), 실제 피격 경로 pHunter 3에서 보스·정예·레어 ×1.3·일반 ×1. 스탯창 pHunter "보스·정예 분기 미연결" 안내 삭제(표시 문자열 추가 없음). 디버깅 보드 정본을 unity/main으로 옮기고 D-012(09c)·D-013(canMv)·D-U1 기록, 방어 합산 차이는 D-U2 백로그. PC 컴파일만, Player 0.
 
 2026-11-04 07:00 공용 실행기 Player 로그 잠금 수정(CTO P0, UI 후보 재촬영): 57be03df·02ef0c30 Player가 Application.Quit 뒤 'Input System Shutdown' 다음에서 멈추고 강제 종료 뒤에도 스레드 1개·CPU 정지로 남아 player.log 쓰기 핸들을 쥠 → Cmd-Player ReadAllText IOException으로 영수증 전 종료. 실행기 `2026.11.04-sharedlog`가 FileShare.ReadWrite·Delete로 읽고, 읽기 실패·강제 종료 뒤 남은 프로세스를 warnings로 남긴다. 시험 shared-log-test.ps1. 05:06 이후 UI·A2R Player 4회가 같은 지점에서 멈춰 빌드 하나가 아니라 기계 쪽(GPU 드라이버 대기 의심) 문제로 본다. 문서 unity/Tools/devtools/README.md.
 
@@ -25,6 +77,8 @@
 2026-11-04 05:20 공용 실행기 Windows 기본 환경 보정(맵 총괄 r15 막힘): exo-unity `2026.11.04-winenv`가 Editor·run 기동 직전 빈 SystemRoot·ComSpec·APPDATA·LOCALAPPDATA·ProgramData·ALLUSERSPROFILE·ProgramFiles 계열·TEMP 등을 이 프로세스 범위에서 채우고 `.EXE` 없는 PATHEXT·System32 없는 Path를 고친다. 원인=Codex node_repl 자식 환경에 ProgramData·ProgramFiles·APPDATA·ComSpec이 비어 UnityPackageManager.exe가 IPC를 못 열고 30초 뒤 exit 1(r14 03:56·r15 04:20). 시험 windows-env-test.ps1 추가, args-test.ps1 player DryRun에 -PcException candidate(11-03 거부 뒤 깨져 있던 것). 문서 unity/Tools/devtools/README.md·docs/engine/PC_CODEX_EXECUTION_20261028.md.
 
 2026-11-04 KiImpactView 시작 오류 수정(임펙트 총괄, CTO 03:05): 접점 원판 `coreShape.OverrideGeometry`가 피벗 기준 ±0.5 정점을 넘겨 1×1 스프라이트 사각형(0~1 픽셀 좌표) 밖이라 NativeGame.Awake에서 "Invalid vertex array" 오류 1회(A2R 스모크 FAIL). 중심 (.5,.5)·반지름 .499·0.0005~0.9995 클램프로 모든 정점을 사각형 안에, 경계 1.0에 닿지 않게 함. 화면 크기(반지름 0.5 유닛) 동일, Core 무변경. PC Core/Runtime 컴파일 오류 0, Player 0.
+
+2026-11-04 D-U1 사냥꾼 패시브 대상(디버깅 총괄, CTO 02:00): Unity Core `Simulation.EnemyBridge` HunterMul이 etype>=90(레어)만 보던 것을 웹 `_hunterMul`(D-002 뒤, main 06ac6882b 28306행)과 같이 보스(ib)·정예(elite 참)·레어에 +10%/랭크로 맞춤 → 새 `Simulation.HunterMul(w, rank)`. 수정 전 규칙은 D-002 이전 웹(안 쓰이는 isBoss/isElite)의 실제 동작을 이식한 것. 대조 `unity/Tools/hunter-oracle`: 웹 원문 280사례 불일치 0(수정 전 96/280), 실제 피격 경로 pHunter 3에서 보스·정예·레어 ×1.3·일반 ×1. 스탯창 pHunter "보스·정예 분기 미연결" 안내 삭제(표시 문자열 추가 없음). 디버깅 보드 정본을 unity/main으로 옮기고 D-012(09c)·D-013(canMv)·D-U1 기록, 방어 합산 차이는 D-U2 백로그. PC 컴파일만, Player 0.
 
 2026-11-04 D-U1 사냥꾼 패시브 대상(디버깅 총괄, CTO 02:00): Unity Core `Simulation.EnemyBridge` HunterMul이 etype>=90(레어)만 보던 것을 웹 `_hunterMul`(D-002 뒤, main 06ac6882b 28306행)과 같이 보스(ib)·정예(elite 참)·레어에 +10%/랭크로 맞춤 → 새 `Simulation.HunterMul(w, rank)`. 수정 전 규칙은 D-002 이전 웹(안 쓰이는 isBoss/isElite)의 실제 동작을 이식한 것. 대조 `unity/Tools/hunter-oracle`: 웹 원문 280사례 불일치 0(수정 전 96/280), 실제 피격 경로 pHunter 3에서 보스·정예·레어 ×1.3·일반 ×1. 스탯창 pHunter "보스·정예 분기 미연결" 안내 삭제(표시 문자열 추가 없음). 디버깅 보드 정본을 unity/main으로 옮기고 D-012(09c)·D-013(canMv)·D-U1 기록, 방어 합산 차이는 D-U2 백로그. PC 컴파일만, Player 0.
 

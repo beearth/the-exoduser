@@ -1,0 +1,339 @@
+{
+  "sourceVersion": "v8.2",
+  "sourceSha256": "313bb238185919b69dd9233fade9f12185e803cb6e72d9a807ae0d781bd3798c",
+  "sourceBytes": 24299904,
+  "rig": "Generic selected for exact 34-bone authored actions/socket; Unity Avatar.isHuman/isValid pending Mac import",
+  "bones": [
+    "Beard_1",
+    "Beard_2",
+    "Chain_L_1",
+    "Chain_L_2",
+    "Cloak_Back_1",
+    "Cloak_Back_2",
+    "Cloak_Back_3",
+    "Cloak_Back_4",
+    "Head",
+    "Hips",
+    "LeftArm",
+    "LeftFoot",
+    "LeftForeArm",
+    "LeftHand",
+    "LeftLeg",
+    "LeftShoulder",
+    "LeftToeBase",
+    "LeftUpLeg",
+    "Panel_Front_1",
+    "Panel_Front_2",
+    "RightArm",
+    "RightFoot",
+    "RightForeArm",
+    "RightHand",
+    "RightLeg",
+    "RightShoulder",
+    "RightToeBase",
+    "RightUpLeg",
+    "Spine",
+    "Spine01",
+    "Spine02",
+    "head_end",
+    "headfront",
+    "neck"
+  ],
+  "boneCount": 34,
+  "triangles": 78323,
+  "materials": [
+    "druid_bark",
+    "druid_beard",
+    "druid_bone",
+    "druid_feather",
+    "druid_glow",
+    "druid_hair",
+    "front_panel_cloth",
+    "lantern_orb",
+    "staff_bark",
+    "staff_bone",
+    "staff_leather"
+  ],
+  "chestEmissionFaces": 43,
+  "chestEmissionScope": "Authored v8.2 druid_glow material faces preserved; screen glow <=0.5% pending Mac",
+  "objects": [
+    "Armature",
+    "FrontPanel",
+    "StaffSocket_L",
+    "Staff_L",
+    "char1",
+    "lantern_orb"
+  ],
+  "socketParent": "LeftHand",
+  "socketRestMetres": [
+    0.6211404800415039,
+    -0.24139992892742157,
+    1.2365225553512573
+  ],
+  "socketImportOffsetMetres": 32.93271945376083,
+  "socketCorrectedErrorMetres": 3.897415730752426e-06,
+  "hornHeight": 2.71,
+  "meshHeight": 2.82,
+  "blendShapes": [
+    "Fist_L"
+  ],
+  "clips": [
+    {
+      "name": "Idle",
+      "sourceAction": "idle",
+      "firstFrame": 0.0,
+      "lastFrame": 120.0,
+      "fps": 60.0,
+      "duration": 2.0
+    },
+    {
+      "name": "Walk",
+      "sourceAction": "walk",
+      "firstFrame": 0.0,
+      "lastFrame": 64.0,
+      "fps": 60.0,
+      "duration": 1.0666666666666667
+    },
+    {
+      "name": "slash1_tele",
+      "sourceAction": "slash1_tele",
+      "firstFrame": 0.0,
+      "lastFrame": 32.0,
+      "fps": 60.0,
+      "duration": 0.5333333333333333
+    },
+    {
+      "name": "slash1_act",
+      "sourceAction": "slash1_act",
+      "firstFrame": 0.0,
+      "lastFrame": 8.0,
+      "fps": 60.0,
+      "duration": 0.13333333333333333
+    },
+    {
+      "name": "slash2_tele",
+      "sourceAction": "slash2_tele",
+      "firstFrame": 0.0,
+      "lastFrame": 24.0,
+      "fps": 60.0,
+      "duration": 0.4
+    },
+    {
+      "name": "slash2_act",
+      "sourceAction": "slash2_act",
+      "firstFrame": 0.0,
+      "lastFrame": 8.0,
+      "fps": 60.0,
+      "duration": 0.13333333333333333
+    },
+    {
+      "name": "slash3_tele",
+      "sourceAction": "slash3_tele",
+      "firstFrame": 0.0,
+      "lastFrame": 24.0,
+      "fps": 60.0,
+      "duration": 0.4
+    },
+    {
+      "name": "slash3_act",
+      "sourceAction": "slash3_act",
+      "firstFrame": 0.0,
+      "lastFrame": 8.0,
+      "fps": 60.0,
+      "duration": 0.13333333333333333
+    },
+    {
+      "name": "slash_rec",
+      "sourceAction": "slash_rec",
+      "firstFrame": 0.0,
+      "lastFrame": 80.0,
+      "fps": 60.0,
+      "duration": 1.3333333333333333
+    },
+    {
+      "name": "slam_tele",
+      "sourceAction": "slam_tele",
+      "firstFrame": 0.0,
+      "lastFrame": 48.0,
+      "fps": 60.0,
+      "duration": 0.8
+    },
+    {
+      "name": "slam_act",
+      "sourceAction": "slam_act",
+      "firstFrame": 0.0,
+      "lastFrame": 6.0,
+      "fps": 60.0,
+      "duration": 0.1
+    },
+    {
+      "name": "slam_rec",
+      "sourceAction": "slam_rec",
+      "firstFrame": 0.0,
+      "lastFrame": 70.0,
+      "fps": 60.0,
+      "duration": 1.1666666666666667
+    },
+    {
+      "name": "charge_tele",
+      "sourceAction": "charge_tele",
+      "firstFrame": 0.0,
+      "lastFrame": 54.0,
+      "fps": 60.0,
+      "duration": 0.9
+    },
+    {
+      "name": "charge_run",
+      "sourceAction": "charge_run",
+      "firstFrame": 0.0,
+      "lastFrame": 40.0,
+      "fps": 60.0,
+      "duration": 0.6666666666666666
+    },
+    {
+      "name": "charge_rec",
+      "sourceAction": "charge_rec",
+      "firstFrame": 0.0,
+      "lastFrame": 70.0,
+      "fps": 60.0,
+      "duration": 1.1666666666666667
+    },
+    {
+      "name": "grab_tele",
+      "sourceAction": "grab_tele",
+      "firstFrame": 0.0,
+      "lastFrame": 60.0,
+      "fps": 60.0,
+      "duration": 1.0
+    },
+    {
+      "name": "grab_lunge",
+      "sourceAction": "grab_lunge",
+      "firstFrame": 0.0,
+      "lastFrame": 18.0,
+      "fps": 60.0,
+      "duration": 0.3
+    },
+    {
+      "name": "grab_hold",
+      "sourceAction": "grab_hold",
+      "firstFrame": 0.0,
+      "lastFrame": 120.0,
+      "fps": 60.0,
+      "duration": 2.0
+    },
+    {
+      "name": "grab_throw",
+      "sourceAction": "grab_throw",
+      "firstFrame": 0.0,
+      "lastFrame": 60.0,
+      "fps": 60.0,
+      "duration": 1.0
+    },
+    {
+      "name": "grab_miss_rec",
+      "sourceAction": "grab_miss_rec",
+      "firstFrame": 0.0,
+      "lastFrame": 80.0,
+      "fps": 60.0,
+      "duration": 1.3333333333333333
+    },
+    {
+      "name": "burrow_dive",
+      "sourceAction": "burrow_dive",
+      "firstFrame": 0.0,
+      "lastFrame": 50.0,
+      "fps": 60.0,
+      "duration": 0.8333333333333334
+    },
+    {
+      "name": "burrow_erupt_warn",
+      "sourceAction": "burrow_erupt_warn",
+      "firstFrame": 0.0,
+      "lastFrame": 30.0,
+      "fps": 60.0,
+      "duration": 0.5
+    },
+    {
+      "name": "burrow_erupt",
+      "sourceAction": "burrow_erupt",
+      "firstFrame": 0.0,
+      "lastFrame": 6.0,
+      "fps": 60.0,
+      "duration": 0.1
+    },
+    {
+      "name": "burrow_rec",
+      "sourceAction": "burrow_rec",
+      "firstFrame": 0.0,
+      "lastFrame": 70.0,
+      "fps": 60.0,
+      "duration": 1.1666666666666667
+    },
+    {
+      "name": "fissure_tele",
+      "sourceAction": "fissure_tele",
+      "firstFrame": 0.0,
+      "lastFrame": 40.0,
+      "fps": 60.0,
+      "duration": 0.6666666666666666
+    },
+    {
+      "name": "fissure_act",
+      "sourceAction": "fissure_act",
+      "firstFrame": 0.0,
+      "lastFrame": 20.0,
+      "fps": 60.0,
+      "duration": 0.3333333333333333
+    },
+    {
+      "name": "fissure_rec",
+      "sourceAction": "fissure_rec",
+      "firstFrame": 0.0,
+      "lastFrame": 60.0,
+      "fps": 60.0,
+      "duration": 1.0
+    },
+    {
+      "name": "heart_tele",
+      "sourceAction": "heart_tele",
+      "firstFrame": 0.0,
+      "lastFrame": 90.0,
+      "fps": 60.0,
+      "duration": 1.5
+    },
+    {
+      "name": "heart_beat",
+      "sourceAction": "heart_beat",
+      "firstFrame": 0.0,
+      "lastFrame": 60.0,
+      "fps": 60.0,
+      "duration": 1.0
+    },
+    {
+      "name": "heart_pause",
+      "sourceAction": "heart_pause",
+      "firstFrame": 0.0,
+      "lastFrame": 30.0,
+      "fps": 60.0,
+      "duration": 0.5
+    },
+    {
+      "name": "heart_rec",
+      "sourceAction": "heart_rec",
+      "firstFrame": 0.0,
+      "lastFrame": 90.0,
+      "fps": 60.0,
+      "duration": 1.5
+    }
+  ],
+  "missingClips": [
+    "Run",
+    "Hit",
+    "Stagger",
+    "Death",
+    "Sink"
+  ],
+  "fallbackPose": "Idle time zero, held; no synthetic skill action",
+  "scope": "Format conversion only; v8.2 meshes/weights/parents/auxiliary bones/blendshape retained. Importer helper Icosphere excluded. No Unity/Player/render execution"
+}

@@ -1,3 +1,13 @@
+> 2026-11-04 03:00 실제시각 CTO — v8.1 7기술 연결 소스 후보. 최신309892b1da 병합·충돌 양쪽 보존.29기술 단계+Idle/Walk=31클립·Generic34본·원본 소켓 좌표 보존, Core 상태/틱으로 예고→발동→회복 샘플. 채찍 타격6f를 Core2틱에 맞추고 즉시 균열 act를 기존 회복 안에 배치. Core 변경0·기본값 유지. 정책4,672/0·FBX 수평 발 최대0.00461cm·전체Roslyn1회5어셈블리 오류0, PC Unity/Player0. 실제 Unity/RT/7기술1x·10초·세계 발접지/FPS Mac 대기. [정본 §9](UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md#9-0300-실제시각-cto--v81-7기술-연결-소스-후보).
+
+> 2026-11-04 01:20 CTO rig-pixel 소스 후보: 최신5c9dd3673 병합·CHANGELOG 양쪽 보존. 새 v7 Generic34본/Fist_L/Idle·Walk를 들여오고 --boss-render=rigpixel opt-in·공통 Point RT/4단 셀·Core 틱 샘플 연결. 미제공7기술/Run은 Idle@0 대기. 정책46/0·Roslyn5어셈블리 오류0, PC Unity/Player0. 실제 Avatar/RT/화면/FPS와 기존8b Mac 판정 대기. [정본](UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md#7-11-04-0120-cto--v7-unity-어댑터-소스-후보).
+
+> 2026-11-04 00:50 RB1-8b 소스 후보: 필드 최종 달빛/후처리 공유·A2R 지면 원화2종 혼합·Y-up 횃불2개/점광·외곽 독액·같은 빌드 필드/아레나34° 비교 촬영 연결. arena73/0·Roslyn5어셈블리 오류0. PC Player0, 8a/8c 및8b Mac 화면/성능 판정 대기. [정본 §14.6](UNITY_BOSS_RM1_DARK_DRUID_20261027.md#146-rb1-8b-조명재질-소스-후보-11-04-0050-cto).
+
+> 2026-11-03 21:35 Mac FAIL 수정 후보: 거리16.5(필드 동일), 3D 영웅 표시 모델 기준 보스2.8배, 회색 수직벽 제거·A2 숲 외곽/낮은 남쪽 뿌리·최전방 알파0.2·로딩 중 prewarm·7기술 실제 발동/pose/연속 프레임 촬영. CPU44/0·Roslyn5어셈블리 오류0. 새 GPU/셰이더·화면·60fps는 Mac 미검증. [정본 §14.5](UNITY_BOSS_RM1_DARK_DRUID_20261027.md#145-2135-mac-fail-수정-및-2145-거리-정정--mac-재검수-후보).
+
+> 2026-11-03 21:00 정정: 채찍 AI160·실제 도달/예고300, 스윙 시작 후2틱. 돌진 추가 접촉120·내려찍기 AI260 정본 일치. 하니스99210/0·frame124/0. RB1-8a Mac 화면 판정은 새 SHA로 요청한다. [정본 §13.5](UNITY_BOSS_RM1_DARK_DRUID_20261027.md#135-2100-정정-적용--선택-거리와-타격-도달-분리).
+
 # Unity 보스전 이식 보드 — 보스전 총괄 (2026-10-26 신설)
 
 이 문서는 Unity 이식 마스터 보드(`UNITY_PORT_MASTER_20261026.md`)의 보스 관련 행을 쪼갠 하위 보드다. 진행률은 마스터 보드 행 상태(0/1/2/3)로만 말하고, 이 표는 그 행을 채우기 위한 작업 단위 목록이다.

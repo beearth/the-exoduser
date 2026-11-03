@@ -14,9 +14,9 @@ using Exoduser.UnityPort.Core;
 static partial class P
 {
     // spec §10.2: telegraph (tele), recovery (rec), cooldown (cd) per move, Moves[] order
-    static readonly int[] SpecTele = { 32, 48, 54, 40, 38, 60, 50, 30, 60, 70, 40, 90 };
-    static readonly int[] SpecRec = { 80, 70, 70, 60, 60, 80, 70, 60, 60, 70, 60, 90 };   // 2026-10-28 M3 unification: #4 and #5 -> 60, #10 -> 70
-    static readonly int[] SpecCd = { 110, 160, 130, 160, 120, 200, 220, 200, 320, 180, 200, 2400 };
+    static readonly int[] SpecTele = { 36, 52, 58, 42, 38, 64, 56, 30, 60, 70, 40, 90 };
+    static readonly int[] SpecRec = { 84, 76, 74, 60, 60, 84, 76, 60, 60, 70, 60, 90 };   // 2026-10-28 M3 unification: #4 and #5 -> 60, #10 -> 70
+    static readonly int[] SpecCd = { 120, 160, 130, 160, 120, 200, 220, 200, 320, 180, 200, 2400 };
     static readonly List<string> motionNotes = new List<string>();
     static double maxWalkEver, maxTurnWalkEver, maxTurnWindEver, maxVelEver, maxDashEver; static int parryBonusChecks, burrowPillarChecks;
     static int gapSamples, gapNear12, gapNearPhase, heartProbes;
@@ -24,6 +24,16 @@ static partial class P
     static void VerifyMoveTable()
     {
         var mv = DruidRemodelData.Moves;
+        Check(mv[0].RangeMax == 160 && mv[1].RangeMax == 260, "RB1-7 AI selection ranges slash160/slam260");
+        Check(DruidRemodelData.SlashActive == 10 && DruidRemodelData.SlashHitAt == 8 && DruidRemodelData.SlashLinkTele == 26, "RB1-7 lash active/hit-at/link 10/8/26");
+        Check(DruidRemodelData.SlamRadius == 260 && DruidRemodelData.WalkStandOff == 220, "RB1-7 slam radius / stand-off 260/220");
+        Check(DruidRemodelData.GrabLungeTicks == 20 && DruidRemodelData.GrabContact == 150 && DruidRemodelData.GrabMissRecovery == 84 && DruidRemodelData.BurrowEruptWarn == 34, "RB1-7 grab / burrow timing");
+        for (int phase = 0; phase < 3; phase++) {
+            Check(DruidRemodelData.MovesOfPhase(phase).OrderBy(x=>x).SequenceEqual(AllowedByLife[phase].OrderBy(x=>x)), "RB1-7 exact phase moves " + phase);
+            foreach (var combo in DruidRemodelData.Combos.Where(c=>c.InPhase(phase)))
+                Check(combo.Seq.All(id=>AllowedByLife[phase].Contains(id)), "RB1-7 combo contains only phase-allowed moves " + phase);
+        }
+        Check(DruidRemodelData.Combos.Length == 4, "RB1-7 four combos");
         Check(mv.Length == 12, "move table has 12 rows");
         for (int i = 0; i < mv.Length && i < 12; i++)
         {
@@ -155,7 +165,9 @@ static partial class P
                 if (t.MoveId == "burrowStrike" && t.Shape == DruidTeleShape.Circle && s.DruidPillars.Count > 0)
                 {   // RB1-3: he comes up on the side of a pillar, just outside it (pillar radius + body + 24)
                     double want = 80 + d.R + 24; bool onPillar = s.DruidPillars.Any(pi => Math.Abs(Math.Sqrt((t.X - pi.X) * (t.X - pi.X) + (t.Y - pi.Y) * (t.Y - pi.Y)) - want) < 3.0);
-                    Check(onPillar, name + ": burrow circle at " + t.X.ToString("0") + "," + t.Y.ToString("0") + " is not on the side of a pillar");
+                    if (d.S == "bossDruidErupt" && ps == "bossDruidErupt")
+                        Check(Math.Abs(t.X-d.X)<.001 && Math.Abs(t.Y-d.Y)<.001, name + ": burrow live erupt centre follows boss after knockback");
+                    else Check(onPillar, name + ": burrow circle at " + t.X.ToString("0") + "," + t.Y.ToString("0") + " is not on the side of a pillar");
                     burrowPillarChecks++;
                 }
             }

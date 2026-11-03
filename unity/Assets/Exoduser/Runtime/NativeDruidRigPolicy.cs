@@ -1,0 +1,148 @@
+using System;
+using Exoduser.UnityPort.Core;
+namespace Exoduser.UnityPort
+{
+    // Read-only presentation decisions. Never changes a Core state, timer or RNG.
+    public static class NativeDruidRigPolicy
+    {
+        public static bool Requested(string[] args)
+        {
+            bool enabled=false;if(args==null)return false;
+            for(int i=0;i<args.Length;i++)
+            {
+                string value=null;
+                if(args[i]!=null&&args[i].StartsWith("--boss-render=",StringComparison.Ordinal))value=args[i].Substring(14);
+                else if(args[i]=="--boss-render"&&i+1<args.Length)value=args[++i];
+                if(value!=null)enabled=value=="rigpixel";
+            }
+            return enabled;
+        }
+        public struct Plan
+        {
+            public string Name; public double CoreTicks, ElapsedTicks, Frame;
+            public bool Loop, Held, StripHorizontalRoot;
+        }
+        public static readonly string[] AllClips = {
+            "Idle","Walk","slash1_tele","slash1_act","slash2_tele","slash2_act","slash3_tele","slash3_act","slash_rec",
+            "slam_tele","slam_act","slam_rec","charge_tele","charge_run","charge_rec",
+            "grab_tele","grab_lunge","grab_hold","grab_throw","grab_miss_rec",
+            "burrow_dive","burrow_erupt_warn","burrow_erupt","burrow_rec",
+            "fissure_tele","fissure_act","fissure_rec","heart_tele","heart_beat","heart_pause","heart_rec"
+        };
+        public static int Frames(string name)
+        {
+            switch(name) {
+                case "Idle":case "grab_hold":return 120; case "Walk":return 64;
+                case "slash1_tele":return 32; case "slash2_tele":case "slash3_tele":return 24;
+                case "slash1_act":case "slash2_act":case "slash3_act":return 8;
+                case "slash_rec":case "grab_miss_rec":return 80;
+                case "slam_tele":return 48;case "slam_act":case "burrow_erupt":return 6;
+                case "slam_rec":case "charge_rec":case "burrow_rec":return 70;
+                case "charge_tele":return 54;case "charge_run":case "fissure_tele":return 40;
+                case "grab_tele":case "grab_throw":case "fissure_rec":case "heart_beat":return 60;
+                case "grab_lunge":return 18;case "burrow_dive":return 50;
+                case "burrow_erupt_warn":case "heart_pause":return 30;
+                case "fissure_act":return 20;case "heart_tele":case "heart_rec":return 90;
+                default:return 0;
+            }
+        }
+        static double Clamp(double x,double max){return Math.Max(0,Math.Min(max,x));}
+        static Plan Phase(string name,double duration,double elapsed,bool loop=false,bool held=false)
+        {
+            duration=Math.Max(1,duration);elapsed=Clamp(elapsed,duration);
+            return new Plan{Name=name,CoreTicks=duration,ElapsedTicks=elapsed,Frame=Frames(name)*elapsed/duration,Loop=loop,Held=held,
+                StripHorizontalRoot=name=="charge_run"||name=="grab_lunge"};
+        }
+        static double Tele(DruidData d,int slot){return d.RmTeleTotal>0?d.RmTeleTotal:DruidRemodelData.Moves[slot].Tele;}
+        public static string StateMove(string state)
+        {
+            switch(state){
+                case "bossSlashWind":case "bossSlash":return "slashCombo";
+                case "bossSlamWind":case "bossSlam":return "slam";
+                case "bossChargeWind":case "bossCharge":case "bossShock":return "charge";
+                case "bossGrabWind":case "bossGrabLunge":case "bossGrab":return "grab";
+                case "bossDruidDive":case "bossDruidUnder":case "bossDruidErupt":return "burrowStrike";
+                case "bossHeartWind":case "bossHeartPause":return "heartbeat";
+                case "bossRmWind":return "groundFissure";
+                default:return null;
+            }
+        }
+        // All numbers below are read from current Core counters. Source clips never change Core timing.
+        public static Plan Select(DruidData d,bool moving,bool grabbed=false,string recoveryMove=null)
+        {
+            if(d==null)return Phase("Idle",1,0,false,true);
+            double duration,elapsed;string name;int hit=Math.Max(1,Math.Min(3,d.SlashIdx+1));
+            switch(d.S){
+                case "idle":case "eWalk":case "eChase":case "eApproach":
+                    name=moving||d.S!="idle"?"Walk":"Idle";return Phase(name,Frames(name),0,true);
+                case "bossSlashWind":
+                    duration=d.SlashIdx==0?Tele(d,0):DruidRemodelData.SlashLinkTele;
+                    return Phase("slash"+hit+"_tele",duration,duration-d.St2);
+                case "bossSlash":
+                    duration=DruidRemodelData.SlashActive;elapsed=Clamp(duration-d.St2,duration);
+                    var slash=Phase("slash"+hit+"_act",duration,elapsed);
+                    double strike=Math.Max(1,duration-DruidRemodelData.SlashHitAt);
+                    slash.Frame=elapsed<=strike?6*elapsed/strike:6+2*(elapsed-strike)/Math.Max(1,duration-strike);
+                    return slash;
+                case "bossSlamWind":duration=Tele(d,1);return Phase("slam_tele",duration,duration-d.St2);
+                case "bossSlam":duration=DruidRemodelData.SlamActive;return Phase("slam_act",duration,duration-d.St2);
+                case "bossChargeWind":duration=Tele(d,2);return Phase("charge_tele",duration,duration-d.St2);
+                case "bossCharge":duration=DruidRemodelData.ChargeTicks;return Phase("charge_run",duration,duration-d.St2);
+                case "bossShock":return Phase("charge_rec",20,20-d.St2);
+                case "bossGrabWind":duration=Tele(d,5);return Phase("grab_tele",duration,duration-d.St2);
+                case "bossGrabLunge":duration=DruidRemodelData.GrabLungeTicks;return Phase("grab_lunge",duration,duration-d.St2);
+                case "bossGrab":duration=DruidRemodelData.GrabTicks;return Phase("grab_hold",duration,duration-d.St2);
+                case "bossDruidDive":duration=d.DiveMax>0?d.DiveMax:Tele(d,6);return Phase("burrow_dive",duration,duration-d.St2);
+                case "bossDruidUnder":return Phase("burrow_dive",1,1,false,true);
+                case "bossDruidErupt":
+                    elapsed=(d.EruptMax>0?d.EruptMax:DruidRemodelData.BurrowEruptWarn+DruidRemodelData.BurrowEruptPost)-d.St2;
+                    if(!d.EruptHit&&elapsed<DruidRemodelData.BurrowEruptWarn)return Phase("burrow_erupt_warn",DruidRemodelData.BurrowEruptWarn,elapsed);
+                    return Phase("burrow_erupt",DruidRemodelData.BurrowEruptPost,elapsed-DruidRemodelData.BurrowEruptWarn);
+                case "bossRmWind":
+                    if(d.RmMoveId!="groundFissure")break;
+                    duration=Tele(d,3);return Phase("fissure_tele",duration,duration-d.St2);
+                case "bossHeartWind":
+                    duration=d.HbBeat==0?Tele(d,11):DruidRemodelData.HeartbeatBeatWind;
+                    return Phase(d.HbBeat==0?"heart_tele":"heart_beat",duration,duration-d.St2);
+                case "bossHeartPause":duration=DruidRemodelData.HeartbeatPause;return Phase("heart_pause",duration,duration-d.St2);
+                case "recover":
+                    if(d.RmMoveId=="grab")return Phase("grab_miss_rec",40,40-d.St2);
+                    break;
+                case "bossRec":
+                    duration=40;
+                    foreach(var move in DruidRemodelData.Moves)if(move.Id==d.RmMoveId)duration=move.Rec;
+                    if(d.RmMoveId=="grab")duration=grabbed?DruidRemodelData.GrabHeldRecovery:DruidRemodelData.GrabMissRecovery;
+                    if(d.RmBonusApplied)duration+=DruidRemodelData.ParryRecoveryBonus;
+                    elapsed=duration-d.St2;
+                    switch(recoveryMove??d.RmMoveId){
+                        case "slashCombo":name="slash_rec";break;case "slam":name="slam_rec";break;case "charge":name="charge_rec";break;
+                        case "grab":name=grabbed?"grab_throw":"grab_miss_rec";break;
+                        case "burrowStrike":name="burrow_rec";break;case "heartbeat":name="heart_rec";break;
+                        case "groundFissure":
+                            // Core fires instantly and enters bossRec. Fit act+rec inside that same existing window.
+                            if(elapsed<20)return Phase("fissure_act",20,elapsed);
+                            return Phase("fissure_rec",Math.Max(1,duration-20),elapsed-20);
+                        default:return Phase("Idle",1,0,false,true);
+                    }
+                    return Phase(name,duration,elapsed);
+            }
+            return Phase("Idle",1,0,false,true);
+        }
+        public static string Palette(string name)
+        {
+            switch(name)
+            {
+                case "druid_bone":case "staff_bone":return "#b9ad90";
+                case "druid_bark":case "staff_bark":return "#4a3826";
+                case "druid_feather":return "#1c2024";
+                case "druid_hair":return "#2a2624";
+                case "druid_beard":return "#8f8a82";
+                case "druid_glow":case "lantern_orb":return "#a8642a";
+                case "druid_moss":return "#36421f";
+                case "staff_leather":return "#2e231b";
+                case "front_panel_cloth":return "#26211d";
+                default:return null;
+            }
+        }
+    }
+}

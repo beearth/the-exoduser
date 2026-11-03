@@ -235,7 +235,7 @@ namespace Exoduser.UnityPort.Core
                         else if (host.CanMove(d.X + d.EchDx * spd, d.Y, d.R)) { d.X += d.EchDx * spd; }
                         else if (host.CanMove(d.X, d.Y + d.EchDy * spd, d.R)) { d.Y += d.EchDy * spd; }
                         else { d.ShockR = 0; d.ShockMax = 800; d.S = "bossShock"; d.St2 = 20; host.Shake(25); host.Fx("wallSlam", d.X, d.Y, 150); break; }
-                        if (Dst(px, py, d.X, d.Y) < pr + d.R + 80 && host.PIframes <= 0)
+                        if (Dst(px, py, d.X, d.Y) < ChargeHitRadius(d, pr) && host.PIframes <= 0)
                         {
                             if (Parry(e, d, 5, 90, 20, d.Facing + Math.PI))
                             {
@@ -435,7 +435,7 @@ namespace Exoduser.UnityPort.Core
                         double smx = Cos(d.Facing) * 2.5, smy = Sin(d.Facing) * 2.5;
                         if (host.CanMove(d.X + smx, d.Y + smy, d.R)) { d.X += smx; d.Y += smy; }
                         if (Remodel) d.AtkParryable = d.SlashIdx < 2;   // spec #1: the big third swing cannot be parried
-                        if ((Remodel ? d.St2 == DruidRemodelData.SlashHitAt : swProg > .3 && swProg < .7) && Dst(px, py, d.X, d.Y) < d.R + pr + 300 && host.PIframes <= 0)
+                        if ((Remodel ? d.St2 == DruidRemodelData.SlashHitAt : swProg > .3 && swProg < .7) && Dst(px, py, d.X, d.Y) < d.R + pr + SlashHitReach && host.PIframes <= 0)
                         {
                             double toP = Atan2(py - d.Y, px - d.X), aDiff = Math.Abs(((toP - d.Facing) % (Math.PI * 2) + (Math.PI * 3)) % (Math.PI * 2) - Math.PI);
                             if (aDiff < 1.2) { if ((Remodel && d.SlashIdx >= 2) || !Parry(e, d, 3, 60, 20, d.Facing + Math.PI)) PlayerHit(e, d, 1.5, 7); }

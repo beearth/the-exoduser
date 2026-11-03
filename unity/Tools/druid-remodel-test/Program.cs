@@ -127,9 +127,9 @@ static partial class P
     }
 
     static readonly string[][] AllowedByLife = {
-        new[] { "slashCombo", "slam", "charge", "groundFissure", "fan", "grab" },
-        new[] { "slashCombo", "slam", "charge", "groundFissure", "fan", "grab", "burrowStrike", "chaseAoe", "summon" },
-        new[] { "slashCombo", "slam", "charge", "groundFissure", "grab", "burrowStrike", "chaseAoe", "tideWave", "seekerMines", "heartbeat" },
+        new[] { "slashCombo", "slam", "charge", "grab" },
+        new[] { "slashCombo", "slam", "charge", "grab", "burrowStrike", "groundFissure" },
+        new[] { "slashCombo", "slam", "charge", "grab", "burrowStrike", "groundFissure", "heartbeat" },
     };
 
     static void Verify(Run r)
@@ -170,7 +170,7 @@ static partial class P
     {
         string dir = args.Length > 0 ? args[0] : "remodel-out"; Directory.CreateDirectory(dir);
         var a = Fight("A-root-cut", true, 20261027u); var b = Fight("B-root-not-hit", false, 20261028u);
-        Verify(a); Verify(b); VerifyTelegraphs(); ParryGuard(); PillarChecks(); VerifyMoveTable(); VerifyMotionTotals();
+        ReachChecks(); Verify(a); Verify(b); VerifyTelegraphs(); ParryGuard(); PillarChecks(); VerifyMoveTable(); VerifyMotionTotals();
         int druidChecks = checks, druidBad = bad;
         FrameworkChecks();
         int fwChecks = checks - druidChecks, fwBad = bad - druidBad;
