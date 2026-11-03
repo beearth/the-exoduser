@@ -13,15 +13,39 @@ FIXTURES = HERE / 'fixtures' / 'scroll-ink'
 def read_json(path):
     return json.loads(path.read_text(encoding='utf-8-sig'))
 
+def otsu(values):
+    histogram = [0] * 256
+    for value in values:
+        histogram[value] += 1
+    total, weighted = len(values), sum(i*n for i, n in enumerate(histogram))
+    left_n = left_sum = 0
+    best, cutoff = -1, 0
+    for i, count in enumerate(histogram):
+        left_n += count
+        left_sum += i*count
+        right_n = total-left_n
+        if not left_n or not right_n:
+            continue
+        variance = left_n*right_n*(left_sum/left_n-(weighted-left_sum)/right_n)**2
+        if variance > best:
+            best, cutoff = variance, i
+    return cutoff
+
 def ink(image, row):
-    points = []
-    for y in range(image.height):
-        for x in range(image.width):
-            r, g, b = image.getpixel((x, y))[:3]
-            selected = (min(r, g, b) >= row['min'] and max(r, g, b) - min(r, g, b) <= 35) if row['mode'] == 'gray' else (g >= row['min'] and g > r * 1.5 and g > b * 1.3)
-            if selected:
-                points.append((x + row['roi'][0] + .5, y + row['roi'][1] + .5))
-    return points
+    # Classify local contrast, not absolute brightness: Metal's background can
+    # exceed the old gray>=60 threshold; faint green letters can be below G=35.
+    scores = []
+    rgb = image.convert('RGB')
+    pixels = rgb.load()
+    for i in range(rgb.width*rgb.height):
+        r, g, b = pixels[i % rgb.width, i // rgb.width]
+        scores.append(min(r,g,b) if row['mode'] == 'gray' and max(r,g,b)-min(r,g,b) <= 35 else max(0,g-max(r,b)) if row['mode'] == 'green' else 0)
+    if not scores or max(scores)-min(scores) < 12:
+        return []
+    cutoff = otsu(scores)
+    points = [(i % image.width + row['roi'][0] + .5, i // image.width + row['roi'][1] + .5) for i, value in enumerate(scores) if value > cutoff]
+    # A solid panel selected as "ink" is a failed control, never a PASS.
+    return points if .01 <= len(points)/len(scores) <= .70 else []
 
 def bounds(points):
     if not points:
@@ -55,8 +79,9 @@ def run(candidate=None):
             # Guard against a missing/blank glyph, or a huge substitute audit box.
             visible = len(actual) >= max(8, len(frozen)*.5)
             bounded = bool(rect) and rect['width'] <= w*1.5 and rect['height'] <= h*1.5
+            native_metric = bool(records) and 'Internal_GetTextRectOffset' in records[0].get('metricProof', '')
             result.update(actualInkPixels=len(actual), actualInkBounds=bounds(actual), auditRect=rect,
-                          productionPassed=visible and bounded and contains(rect, actual))
+                          nativeMetric=native_metric, productionPassed=visible and bounded and contains(rect, actual))
         results.append(result)
     calibrated = len(results) == 4 and all(r['fixtureInkPixels'] >= 8 and r['knownInkPositive'] and r['legacyAuditNegativeRejected'] for r in results)
     return dict(scope='ko tutorial0 + stash, 2560x1600/1600x900; actual ink vs audit box. Frozen checker positive is NOT runtime PASS.',

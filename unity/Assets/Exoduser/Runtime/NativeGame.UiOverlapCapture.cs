@@ -44,7 +44,7 @@ namespace Exoduser.UnityPort
         }
         [Serializable] sealed class UiWideCue {public int width,height;public string language,caption;public double start,end,requested,observed;}
         [Serializable] sealed class UiWideMovie {public int width,height,visual,textureWidth,textureHeight;public string language,file;public long frameBefore,frameAfter;public double timeBefore,timeAfter;public bool prepared,playing;}
-        [Serializable] sealed class UiWideInputCheck {public int width,height;public bool lockedBlocked,nameOpened;}
+        [Serializable] sealed class UiWideInputCheck {public int width,height;public bool lockedBlocked,nameOpened;public string inputPath;}
         [Serializable] sealed class UiWideInputReport {public List<UiWideInputCheck> checks;}
         readonly List<UiWideInputCheck> wideInputChecks=new List<UiWideInputCheck>();
         UiOverlapCoverage overlapCoverage;
@@ -131,20 +131,81 @@ namespace Exoduser.UnityPort
             if(!UiWideResize(own,IntPtr.Zero,0,0,outerWidth,outerHeight,0x16))throw new InvalidOperationException("자기 창 크기 보정 실패 "+System.Runtime.InteropServices.Marshal.GetLastWin32Error());
             UiWideClient(own,out var after);Debug.Log("UI_CLIENT_RESIZE pid="+pid+" before="+(client.right-client.left)+"x"+(client.bottom-client.top)+" after="+(after.right-after.left)+"x"+(after.bottom-after.top)+" requested="+width+"x"+height+" flags=NOMOVE|NOZORDER|NOACTIVATE");
         }
-        IEnumerator UiWideClick(float x,float y){IntPtr own=IntPtr.Zero;uint pid=(uint)System.Diagnostics.Process.GetCurrentProcess().Id;UiWideWindows((w,s)=>{UiWideProcess(w,out uint id);var c=new System.Text.StringBuilder(128);UiWideClass(w,c,128);if(id==pid&&c.ToString()=="UnityWndClass"){own=w;return false;}return true;},IntPtr.Zero);if(own==IntPtr.Zero)throw new InvalidOperationException("자기 숨은 Player 창 없음");var a=NativeUiViewport.Edges;int px=Mathf.RoundToInt(Screen.width-(1920-x)*a.Scale),py=Mathf.RoundToInt(y*a.Scale);IntPtr point=new IntPtr((py<<16)|(px&65535));overlapPhysicalClick=true;lobby.AutomatedInput=false;try{
-         if(!UiWidePost(own,0x200,IntPtr.Zero,point)||!UiWidePost(own,0x201,new IntPtr(1),point))throw new InvalidOperationException("자기 창 누름 전달 실패");yield return new WaitForSecondsRealtime(.12f);if(!UiWidePost(own,0x202,IntPtr.Zero,point))throw new InvalidOperationException("자기 창 해제 전달 실패");yield return new WaitForSecondsRealtime(.2f);
-         // Posted mouse-up is handled by OnGUI after Update. Inspect the result only
-         // after that repaint and the product's full fade/preparation/reveal lifetime.
-         yield return new WaitForEndOfFrame();
-         float transitionDeadline=Time.realtimeSinceStartup+15;
-         while(NativeScreenTransition.Busy&&Time.realtimeSinceStartup<transitionDeadline)yield return null;
-         if(NativeScreenTransition.Busy)throw new InvalidOperationException("실제 클릭 뒤 화면 전환 미완료(15s)");
-         var history=NativeScreenTransition.History;
-         if(history!=null&&history.Count>0&&history[history.Count-1].failed)throw new InvalidOperationException("실제 클릭 뒤 제품 전환 실패: "+history[history.Count-1].error);
-         yield return new WaitForEndOfFrame();
-        }finally{overlapPhysicalClick=false;lobby.AutomatedInput=true;}
+        IEnumerator UiWidePostClick(int px,int py)
+        {
+            IntPtr own=IntPtr.Zero;uint pid=(uint)System.Diagnostics.Process.GetCurrentProcess().Id;
+            UiWideWindows((w,s)=>{UiWideProcess(w,out uint id);var c=new System.Text.StringBuilder(128);UiWideClass(w,c,128);if(id==pid&&c.ToString()=="UnityWndClass"){own=w;return false;}return true;},IntPtr.Zero);
+            if(own==IntPtr.Zero)throw new InvalidOperationException("자기 숨은 Player 창 없음");
+            IntPtr point=new IntPtr((py<<16)|(px&65535));
+            if(!UiWidePost(own,0x200,IntPtr.Zero,point)||!UiWidePost(own,0x201,new IntPtr(1),point))throw new InvalidOperationException("자기 창 누름 전달 실패");
+            yield return new WaitForSecondsRealtime(.12f);
+            if(!UiWidePost(own,0x202,IntPtr.Zero,point))throw new InvalidOperationException("자기 창 해제 전달 실패");
+            yield return new WaitForSecondsRealtime(.2f);
         }
 #endif
+
+        static bool UiUsesGuiClicks {
+            get {
+#if UNITY_STANDALONE_WIN
+                return Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-gui-clicks")>=0;
+#else
+                return true;
+#endif
+            }
+        }
+        IEnumerator UiWideClick(float x,float y)
+        {
+            var a=NativeUiViewport.Edges;int px=Mathf.RoundToInt(Screen.width-(1920-x)*a.Scale),py=Mathf.RoundToInt(y*a.Scale);
+            var history=NativeScreenTransition.History;int before=history==null||history.Count==0?0:history[history.Count-1].id;
+            overlapPhysicalClick=true;lobby.AutomatedInput=false;
+            try {
+                if(UiUsesGuiClicks){
+                    foreach(var type in new[]{EventType.MouseDown,EventType.MouseUp}){
+                        int serial=lobby.QueueQaPointer(type,new Vector2(px,py));float deliveredBy=Time.realtimeSinceStartup+2;
+                        while(lobby.QaPointerDelivered<serial&&Time.realtimeSinceStartup<deliveredBy)yield return null;
+                        if(lobby.QaPointerDelivered<serial)throw new InvalidOperationException("제품 OnGUI QA pointer 수신 시간초과");
+                        yield return null;
+                    }
+                }
+#if UNITY_STANDALONE_WIN
+                else yield return UiWidePostClick(px,py);
+#endif
+                yield return new WaitForEndOfFrame();float deadline=Time.realtimeSinceStartup+15;
+                while(NativeScreenTransition.Busy&&Time.realtimeSinceStartup<deadline)yield return null;
+                if(NativeScreenTransition.Busy)throw new InvalidOperationException("클릭 뒤 화면 전환 미완료(15s)");
+                history=NativeScreenTransition.History;
+                if(history!=null)foreach(var record in history)if(record.id>before&&(record.failed||record.cancelled))throw new InvalidOperationException("이번 클릭 뒤 제품 전환 실패: "+record.error);
+                yield return new WaitForEndOfFrame();
+            }finally{overlapPhysicalClick=false;lobby.AutomatedInput=true;}
+        }
+        IEnumerator UiNameGateAtCurrentSize()
+        {
+            var field=typeof(NativeLobby).GetField("characterStep",BindingFlags.Instance|BindingFlags.NonPublic);
+            var check=new UiWideInputCheck{width=Screen.width,height=Screen.height,inputPath=UiUsesGuiClicks?"Unity IMGUI event via actual NativeLobby.OnGUI":"Windows own hidden HWND WM mouse"};
+            yield return UiWideClick(1790,1018);check.lockedBlocked=(int)field.GetValue(lobby)==1;
+            lobby.ChooseCharacterVisual(0);yield return null;yield return UiWideClick(1790,1018);check.nameOpened=(int)field.GetValue(lobby)==2;
+            wideInputChecks.Add(check);File.WriteAllText(Path.Combine(overlapOutput,"실제_마우스_역변환.json"),JsonUtility.ToJson(new UiWideInputReport{checks=wideInputChecks},true));
+            if(!check.lockedBlocked||!check.nameOpened)throw new InvalidOperationException("잠긴 직업/이름 열기 실제 OnGUI hit-test 실패");
+        }
+        IEnumerator UiNameGateOnly()
+        {
+            overlapCoverage.languages=new[]{"ko"};overlapCoverage.scope="이름 열기 전용 1회 Player: 잠긴 직업 차단/실제 OnGUI hit-test 5해상도; 전투·M1·전체 UI 검사 아님";
+            overlapLanguage="ko";lobby.SetLanguage("ko");
+            foreach(var size in new[]{new Vector2Int(2560,1600),new Vector2Int(1920,1080),new Vector2Int(2560,1080),new Vector2Int(3840,1080),new Vector2Int(1600,900)}){
+                Screen.SetResolution(size.x,size.y,FullScreenMode.Windowed);yield return null;yield return null;
+#if UNITY_STANDALONE_WIN
+                if(Screen.width!=size.x||Screen.height!=size.y){UiWideSetClientSize(size.x,size.y);yield return null;}
+#endif
+                float deadline=Time.realtimeSinceStartup+5;
+                while((Screen.width!=size.x||Screen.height!=size.y)&&Time.realtimeSinceStartup<deadline)yield return null;
+                if(Screen.width!=size.x||Screen.height!=size.y)throw new InvalidOperationException("이름 검사 실제 해상도 불일치");
+                menu=false;Running=false;pauseMenu.Reset();stageClear.Hide();lobby.ShowLobby();
+                float lobbyDeadline=Time.realtimeSinceStartup+15;while(NativeScreenTransition.Busy&&Time.realtimeSinceStartup<lobbyDeadline)yield return null;
+                if(NativeScreenTransition.Busy)throw new InvalidOperationException("이름 검사 로비 전환 시간초과");
+                if(!lobby.OpenCharacterCreation())throw new InvalidOperationException("이름 검사 직업 선택 열기 실패");yield return null;lobby.ChooseCharacterVisual(4);yield return null;
+                yield return UiOverlapShot("이름검사-잠긴직업");yield return UiNameGateAtCurrentSize();yield return UiOverlapShot("이름입력");lobby.CloseCharacterCreation();
+            }
+        }
 
         IEnumerator UiWaitCharacterMovie(int visual)
         {
@@ -208,6 +269,12 @@ namespace Exoduser.UnityPort
             overlapCoverage.unityVersion=Application.unityVersion;overlapCoverage.device=SystemInfo.graphicsDeviceName;overlapCoverage.deviceType=SystemInfo.graphicsDeviceType.ToString();
             smokeActive=true;pauseSmoke=true;lobby.AutomatedInput=true;lobby.SetPlaybackFocus(true);SetGameFocus(true);
             gameObject.AddComponent<NativeUiAudit.Host>();NativeUiAudit.Active=false;yield return null;yield return null;
+            if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-name-gate-only")>=0){
+                yield return UiNameGateOnly();NativeUiAudit.Active=false;
+                File.WriteAllText(Path.Combine(overlapOutput,"coverage.json"),JsonUtility.ToJson(overlapCoverage,true));
+                lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);
+                Debug.Log("QA_MEDIA_DRAIN_COMPLETE NAME_GATE");NativeLobbyVideo.RequestQuit(0);yield break;
+            }
             if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-parity-third-check")>=0)
             {
                 yield return ParityThirdCapture();NativeUiAudit.Active=false;
@@ -236,11 +303,8 @@ namespace Exoduser.UnityPort
                 lobby.ShowLobby();lobby.Characters.TryRestore(new[]{"검수"+overlapCoverage.frames.Count.ToString("000")},0);yield return UiOverlapShot("로비");
                 lobby.OpenCharacterCreation();
                 for(int n=0;n<5;n++){lobby.ChooseCharacterVisual(n);yield return UiWaitCharacterMovie(n);yield return UiOverlapShot("캐릭터선택"+n);}
-                #if UNITY_STANDALONE_WIN
-                if(language=="ko"){var field=typeof(NativeLobby).GetField("characterStep",BindingFlags.Instance|BindingFlags.NonPublic);var check=new UiWideInputCheck{width=Screen.width,height=Screen.height};yield return UiWideClick(1790,1018);check.lockedBlocked=(int)field.GetValue(lobby)==1;lobby.ChooseCharacterVisual(0);yield return null;yield return UiWideClick(1790,1018);check.nameOpened=(int)field.GetValue(lobby)==2;wideInputChecks.Add(check);File.WriteAllText(Path.Combine(overlapOutput,"실제_마우스_역변환.json"),JsonUtility.ToJson(new UiWideInputReport{checks=wideInputChecks},true));if(!check.lockedBlocked||!check.nameOpened)throw new InvalidOperationException("실제 마우스 안전영역 역변환 실패");}
-                else
-#endif
-                {lobby.ChooseCharacterVisual(0);lobby.ConfirmCharacterVisual();}yield return UiOverlapShot("이름입력");lobby.CloseCharacterCreation();
+                if(language=="ko")yield return UiNameGateAtCurrentSize();
+                else {lobby.ChooseCharacterVisual(0);lobby.ConfirmCharacterVisual();}yield return UiOverlapShot("이름입력");lobby.CloseCharacterCreation();
                 overlapActualFrontend=true;lobby.AutomatedInput=false;
                 try{
                     if(!lobby.BeginCharacterEntry(false))throw new InvalidOperationException("실제 신규 캐릭터 입장 요청 실패");

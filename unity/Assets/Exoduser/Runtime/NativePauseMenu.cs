@@ -183,7 +183,7 @@ namespace Exoduser.UnityPort
    if(SettingsHostApplyPending)return T("화면 설정을 적용하는 중입니다.","Applying display settings.");
    if(SettingsHostApplyFailed)return T("화면 변경을 적용하지 못했습니다. 현재 화면을 유지합니다.","Display change failed. The current display is retained.");
    if(SettingsPersistenceProblem)return T("설정 저장에 문제가 있습니다. 이번 실행의 값은 유지됩니다.","Settings could not be saved. Current session values are retained.");
-   if(!SettingsPersistenceEnabled)return T("검수 실행의 설정은 저장하지 않습니다.","Settings are not saved during this QA run.");
+   if(!SettingsPersistenceEnabled)return QaSettingsPersistenceNotice(LocaleCode);
    if(SettingsPersistenceRecovered)return T("설정 백업을 복원했습니다. 변경은 "+NativePlatformLabel.Ko+"에 저장됩니다.","Settings backup restored. Changes are saved on "+NativePlatformLabel.En+".");
    return T("설정은 "+NativePlatformLabel.Ko+"에 저장되어 다음 실행에도 적용됩니다.","Settings are saved on "+NativePlatformLabel.En+" for the next launch.");
   }

@@ -340,3 +340,19 @@ BeginGroup 보정만으로 BeginScrollView 안의 글자 위치를 보장할 수
 실제 잉크 대조는 Tools/ui-overlap/scroll-ink.py 및 fixtures/scroll-ink/manifest.json에 있다. 실제 R3 ko 튜토리얼0/보관함의 2560×1600·1600×900 무보간 crop4개(원본 PNG/JSON SHA 포함)를 직접 보고 선택했다. 알려진 잉크 상자 양성4/4와 기존 실제 감사 Rect 음성4/4를 구분하며, R3 전체 PNG/JSON에 --candidate를 실행하면 네 건 모두 FAIL을 반환한다. 글자 선택 source·text와 물리 ROI는 manifest에 명시한다. 이 대조군은 제품 새 캡처를 만들거나 좌표를 수정한 증거가 아니다.
 
 Mac은 새 HEAD 정식 패키지의 실제 캡처 폴더에 --candidate를 실행하여 네 실제 글자가 계측 Rect 안에 포함되는지 확인해야 한다. 누락·빈 잉크·거대한 대체 상자·해상도 불일치는 실패한다. 새 양성 결과는 Mac 대기다. --self-test만으로 제품 PASS를 선언하지 않는다. PC는 Core/Runtime compile0/0 및 오프라인 대조군만 실행했고, 최신 CTO 요청 후 정식 빌드·M1·Player·1410분석은 실행하지 않았다. Mac 정식1회→동일 패키지 M1 23/23 정상종료→1410장 issue0/로딩누락0/중단0·5해상도 실제잠김/이름열기true·웹3333 슬롯04/09/제작1x를 모두 통과해야 공통 병합을 진행한다. 이전 계측의 부분0건·R5 실행 정상 종료를 새 교정 검증으로 승격하지 않는다.
+
+
+## 2026-11-03 13:20 CTO Mac FAIL 후속
+
+근거는 qa/mac-captures-20261103@a049ef5c40e5bb442027b9ef3cc37abd56dc1367의 qa/unity-parity/5b6b4fce9/이다. REPORT와 실제 settings_footer_x3·stash_ink_x3·tutorial_ink_x3를 직접 열었다. Mac 정식 오류0/M1 23/23 정상종료/로딩270관측은 PASS지만 겹침18·가림증명누락30·scroll-ink1/4로 전체 FAIL이다. 기존 결과를 새 SHA의 PASS로 세지 않는다.
+
+| 항목 | 변경 | 확인 경계 |
+|---|---|---|
+| GUIStyle 바탕 | GUI.Label의 hover/normal 선택은 플랫폼 공통 Unity DoLabel 계약으로 계측. Windows 전용 제한 제거. 나머지 상태 불명 표면은 TextField와 공통으로8상태·노출 HiDPI·모든 밉 GPU 알파의 공통 하한을 기록 | null 바탕은 하한0, disabled는 하한0. 실제 알파를 모르면 unknown 유지. 불투명하다고 추정하거나 분석기 제외/임계 변경하지 않음. 누락30→0은 Mac 대기 |
+| 글자 원점 | 수동 padding/center 계산 대신 GUIStyle.Internal_GetTextRectOffset에 실제 CalcSize/CalcHeight를 전달해 네이티브 정렬·반올림 원점을 기록. metricProof 추가. API 부재는 fail-closed | BeginGroup/BeginScrollView 원점 스택 및 p0 계약 유지. 제품 그리기·matrix/scroll 반환값 변경0. 보관함 상단 ink 포함은 새 Mac 캡처로 판정 |
+| 설정 하단 | 웹 autosave Rect(96,1004,500,20)는 유지. 추가 native/QA 안내의 y만 savedH·noticeH 실제 조판 높이로 다음 경계를 계산해 올림하고 최소1022. 안내 Rect(96,noticeY,1200,18), 서체11 유지 | 2560ko/fr의0.620px 교차 재검수. 전역 겹침 허용오차 변경0 |
+| QA 번역 | NativePauseMenu.QaLabels.cs의 native QA 전용 표: ko/en/de/fr. qa settings-not-saved 문장을 Normalize(locale)로 조회, 다른 언어는 영어 fallback | fr: Les paramètres ne sont pas enregistrés pendant ce test QA. de: Einstellungen werden während dieses QA-Tests nicht gespeichert. 웹 정본43 exact ID 및29언어 원본 카탈로그 변경0 |
+| 잉크 선택 | 절대 gray60/G35 대신 ROI 안의 gray 밝기/green 우세도 분포를 Otsu로 분리. dynamic range12 미만·빈 ROI·전체70% 초과 선택은 실패. 최소 픽셀 조건과 실제 감사 상자 포함 판정은 유지 | 밝은 회색 배경·G35 미만 녹색·빈/단색 판 음성·실제4개 crop 회귀4/4. 구 R3 좌표 음성은 계속 실패. Mac 원본4쌍 PNG/JSON 추가 요청 중. 표시선이 있는 x3 진단 이미지를 제품 양성으로 쓰지 않음 |
+| 이름 검사 | --unity-ui-overlap-check --unity-name-gate-only로 같은 Player에서5해상도 ko의 잠긴 직업/이름 열기만 검사, 정상 종료. Windows 기본은 자기 숨은 HWND WM 클릭. Mac은 sandbox 전용 NativeLobby.OnGUI 입력 Event down/up 큐, Windows에서도 --unity-gui-clicks로 선택 가능 | 실제 제품 Draw/hit-test/전환을 통과하며 결과를 API로 설정하지 않음. queue는 명시 QA sandbox/overlap run에서만 허용. 입력 차단·전환대기15s·전달2s·이번 클릭 이후 전환 id 범위 실패 확인. Mac 공통 입력 경로는 런타임 미검증 |
+
+PC는 Core/Runtime 컴파일 오류0, UNITY_STANDALONE_OSX 조건부 소스 컴파일0(PC 컴파일러이며 Mac 런타임 증거 아님)까지 확인했다. 이름 열기만 PC Player1회로 확인할 계획이며, 정식 빌드·M1·1410장 실행/분석은 하지 않는다. 이름 전용은 기존 자기 R5 격리 패키지에 이번 컴파일 DLL만 임시 결합한 별도 fixture이며 정식 패키지 PASS로 승격하지 않는다. 원본 DLL은 정확 SHA 백업/검증 후 사용하고 실행 종료 finally에서 원래 바이트로 복원한다. 최종 결과와 push SHA는 I: REPORT 맨 위에 기록한다.

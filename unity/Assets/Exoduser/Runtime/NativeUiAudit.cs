@@ -11,7 +11,7 @@ namespace Exoduser.UnityPort
     internal static class NativeUiAudit
     {
         [Serializable] internal sealed class Element {
-            public string id,kind,text,source,ownerId,opacityProof,textureName,opacitySampling;
+            public string id,kind,text,source,ownerId,opacityProof,textureName,opacitySampling,metricProof;
             public Rect rect,unclippedRect,clipRect;public Vector2[] quad;public int order,depth;
             public bool shadow,hasClip,clipKnown,opacityKnown,axisAligned;
             public float effectiveOpacity;
@@ -167,24 +167,25 @@ namespace Exoduser.UnityPort
             GUI.DrawTexture(r,texture,mode,alphaBlend,imageAspect);
         }
         internal static void DrawTextureWithTexCoords(Rect r,Texture texture,Rect uv,bool alphaBlend=true,[CallerFilePath]string file="",[CallerLineNumber]int line=0){Surface(r,texture,uv,alphaBlend,Source(file,line));GUI.DrawTextureWithTexCoords(r,texture,uv,alphaBlend);}
+        static readonly MethodInfo textRectOffset=typeof(GUIStyle).GetMethod("Internal_GetTextRectOffset",BindingFlags.Instance|BindingFlags.NonPublic,null,new[]{typeof(Rect),typeof(GUIContent),typeof(Vector2)},null);
         static void Text(Rect rect,GUIContent content,GUIStyle style,string source)
         {
             if(!Active||frame==null||content==null||string.IsNullOrWhiteSpace(content.text)||GUI.color.a*GUI.contentColor.a*style.normal.textColor.a<.01f)return;
-            // 레이아웃 상자 대신 실제 서체의 조판 폭과 높이를 사용한다.
-            Vector2 measured=style.CalcSize(content);float available=Mathf.Max(1,rect.width-style.padding.horizontal);
+            // Use the same native alignment/rounding offset as GUIStyle drawing. The
+            // previous hand-written centering disagreed with small bitmap fonts on Metal.
+            Vector2 measured=style.CalcSize(content);
+            float naturalWidth=Mathf.Max(0,measured.x-style.padding.horizontal);
+            float naturalHeight=Mathf.Max(0,(style.wordWrap?style.CalcHeight(content,rect.width):measured.y)-style.padding.vertical);
+            var textSize=new Vector2(naturalWidth,naturalHeight);
+            if(textRectOffset==null)throw new NotSupportedException("GUIStyle native text alignment unavailable");
+            Vector2 offset=(Vector2)textRectOffset.Invoke(style,new object[]{rect,content,textSize});
             bool overflow=style.clipping==TextClipping.Overflow;
-            float width=overflow&&!style.wordWrap?measured.x-style.padding.horizontal:Mathf.Min(available,measured.x-style.padding.horizontal);
-            float height=(style.wordWrap?style.CalcHeight(content,rect.width):measured.y)-style.padding.vertical;
-            height=overflow?Mathf.Max(0,height):Mathf.Min(Mathf.Max(0,height),Mathf.Max(0,rect.height-style.padding.vertical));
-            int align=(int)style.alignment;
-            float x=rect.x+style.padding.left+(align%3==1?(available-width)/2:align%3==2?available-width:0);
-            float innerH=rect.height-style.padding.vertical;
-            float y=rect.y+style.padding.top+(align/3==1?(innerH-height)/2:align/3==2?innerH-height:0);
+            Rect inkRect=new Rect(offset.x,offset.y,naturalWidth,naturalHeight);
+            if(!overflow)inkRect=Intersect(inkRect,rect);
             Color ink=style.normal.textColor;
-            Rect inkRect=new Rect(x+style.contentOffset.x,y+style.contentOffset.y,width,height);if(!overflow)inkRect=Intersect(inkRect,rect);
             Color actualInk=ink*GUI.color*GUI.contentColor;
             var e=Record(inkRect,"text",content.text,source+(DrawingTextShadow?" / 명시 CSS text-shadow 광휘 패스"+(DrawingTextShadowProfile==null?"":" / "+DrawingTextShadowProfile):""),DrawingTextShadow||(actualInk.r<.001f&&actualInk.g<.001f&&actualInk.b<.001f));
-            if(e!=null){e.opacityKnown=true;e.effectiveOpacity=GUI.color.a*GUI.contentColor.a*ink.a;e.opacityProof="GUI.color × GUI.contentColor × 실제 글자색 알파";}
+            if(e!=null){e.metricProof="GUIStyle.Internal_GetTextRectOffset native alignment + CalcSize/CalcHeight + actual GUI clip";e.opacityKnown=true;e.effectiveOpacity=GUI.color.a*GUI.contentColor.a*ink.a;e.opacityProof="GUI.color × GUI.contentColor × 실제 글자색 알파";}
         }
         internal static void Save(string path,string page,string language)
         {
@@ -203,14 +204,14 @@ namespace Exoduser.UnityPort
             if(!Repainting||style==GUIStyle.none)return;
             // IMGUI 내부 hot/focus 상태를 추측해 불투명 판으로 만들지 않는다.
             if(style.normal.background==null&&style.hover.background==null&&style.active.background==null&&style.focused.background==null&&style.onNormal.background==null&&style.onHover.background==null&&style.onActive.background==null&&style.onFocused.background==null)return;
-            if(label&&GUI.enabled&&Application.platform==RuntimePlatform.WindowsPlayer){
+            if(label&&GUI.enabled){
                 // GUI.DoLabel과 같은 hover/normal 상태. 글자용 contentColor는 바탕에 곱하지 않는다.
                 bool hovered=r.Contains(Event.current.mousePosition);var state=hovered?style.hover:style.normal;var background=state.background??style.normal.background;
                 if(background==null)return;var old=GUI.color;
                 try{GUI.color=old*GUI.backgroundColor;Surface(new Rect(r.x-style.overflow.left,r.y-style.overflow.top,r.width+style.overflow.horizontal,r.height+style.overflow.vertical),background,new Rect(0,0,1,1),true,"GUI.Label 실제 "+(hovered?"hover":"normal")+" 바탕");}finally{GUI.color=old;}
                 return;
             }
-            var e=Record(r,"surface","","GUIStyle 내부 상태 바탕");if(e!=null){e.opacityKnown=false;e.opacityProof="내부 상태별 GUIStyle 바탕 알파 미증명";}
+            StateBackground(r,style,"GUIStyle 모든 상태 바탕 알파 공통 하한");
         }
         internal static void Label(Rect r,string s,GUIStyle style,[CallerFilePath]string file="",[CallerLineNumber]int line=0){if(Active){StyleBackground(r,style,true);Text(r,new GUIContent(s),style,Source(file,line));}GUI.Label(r,s,style);}
         internal static void Label(Rect r,GUIContent s,GUIStyle style,[CallerFilePath]string file="",[CallerLineNumber]int line=0){StyleBackground(r,style,true);Text(r,s,style,Source(file,line));GUI.Label(r,s,style);}
@@ -222,7 +223,7 @@ namespace Exoduser.UnityPort
         internal static bool Button(Rect r,GUIContent s){return Button(r,s,GUI.skin.button);}
         internal static void Box(Rect r,string s,GUIStyle style){StyleBackground(r,style);Region(r,"panel");Text(r,new GUIContent(s),style,"판 글자");GUI.Box(r,s,style);}
         internal static void Box(Rect r,string s){Box(r,s,GUI.skin.box);}
-        static void TextFieldBackground(Rect r,GUIStyle style)
+        static void StateBackground(Rect r,GUIStyle style,string source)
         {
             if(!Repainting||style==GUIStyle.none)return;
             // The internal focus/hot state is not guessed: read every possible state/HiDPI background.
@@ -234,11 +235,11 @@ namespace Exoduser.UnityPort
             if(textures.Count==0)return;
             foreach(var texture in textures){var alpha=Alpha(texture);known&=alpha.known;minimum=Mathf.Min(minimum,alpha.minimum);maximum=Mathf.Max(maximum,alpha.maximum);levels+=alpha.levels;}
             if(!GUI.enabled)minimum=0;
-            var e=Record(new Rect(r.x-style.overflow.left,r.y-style.overflow.top,r.width+style.overflow.horizontal,r.height+style.overflow.vertical),"surface","","GUI.TextField 모든 상태 바탕 알파 공통 하한");
+            var e=Record(new Rect(r.x-style.overflow.left,r.y-style.overflow.top,r.width+style.overflow.horizontal,r.height+style.overflow.vertical),"surface","",source);
             if(e!=null){e.opacityKnown=known;e.minimumTextureAlpha=minimum;e.maximumTextureAlpha=maximum;e.mipLevels=levels;e.effectiveOpacity=Mathf.Clamp01(GUI.color.a*GUI.backgroundColor.a)*minimum;e.textureName="GUIStyleState backgrounds";e.opacitySampling="8상태 및 노출된 HiDPI 텍스처의 모든 밉 실측; null 상태는 하한0";e.opacityProof=known?"실제 GPU RGBAFloat 대조군 및 "+textures.Count+"개 상태별 텍스처 알파 범위 검증":"상태별 바탕 알파 읽기 불명";}
         }
-        internal static string TextField(Rect r,string s,GUIStyle style){TextFieldBackground(r,style);Region(r,"button");Text(r,new GUIContent(s),style,"입력 글자");return GUI.TextField(r,s,style);}
-        internal static string TextField(Rect r,string s,int max,GUIStyle style){TextFieldBackground(r,style);Region(r,"button");Text(r,new GUIContent(s),style,"입력 글자");return GUI.TextField(r,s,max,style);}
+        internal static string TextField(Rect r,string s,GUIStyle style){StateBackground(r,style,"GUI.TextField 모든 상태 바탕 알파 공통 하한");Region(r,"button");Text(r,new GUIContent(s),style,"입력 글자");return GUI.TextField(r,s,style);}
+        internal static string TextField(Rect r,string s,int max,GUIStyle style){StateBackground(r,style,"GUI.TextField 모든 상태 바탕 알파 공통 하한");Region(r,"button");Text(r,new GUIContent(s),style,"입력 글자");return GUI.TextField(r,s,max,style);}
         static void PushClip(Rect r){if(!Active||Event.current.type!=EventType.Repaint)return;Rect next=ScreenRect(r);if(clips.Count>0){Rect p=clips.Peek();next=Rect.MinMaxRect(Mathf.Max(next.xMin,p.xMin),Mathf.Max(next.yMin,p.yMin),Mathf.Min(next.xMax,p.xMax),Mathf.Min(next.yMax,p.yMax));}clips.Push(next);}
         static void PopClip(){if(Active&&Event.current.type==EventType.Repaint)clips.Pop();}
         // Keep product drawing unchanged. GUIToScreenPoint leaves BeginGroup's

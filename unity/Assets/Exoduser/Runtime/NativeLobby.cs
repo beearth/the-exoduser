@@ -126,7 +126,20 @@ namespace Exoduser.UnityPort
    return UseNotoCaptionForLanguage(Language)&&ukCaptionShadow!=null?ukCaptionShadow:captionShadow;
   }
   public void Draw(){if(!IsBlocking||!ready)return;Styles();var old=GUI.matrix;var tint=GUI.color;bool enabled=GUI.enabled;int priorDepth=GUI.depth;GUI.matrix=Matrix4x4.identity;if(!StartupWorldVisible)Fill(new Rect(0,0,Screen.width,Screen.height),Color.black);float fit=Mathf.Min(Screen.width/1920f,Screen.height/1080f);GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*fit)/2,(Screen.height-1080*fit)/2,0),Quaternion.identity,new Vector3(fit,fit,1));OriginalArtDrawn=false;CaptionVisible=false;if(!StartupWorldVisible)Fill(new Rect(0,0,1920,1080),Color.black);if(StartupEntryActive)DrawStartupEntry();else if(CharacterStoryActive)DrawCharacterStory();else if(splash==1){if(fdgWatchdog.FallingBack)Image(new Rect(0,0,1920,1080),fdgEmblem);else DrawMovie(new Rect(0,0,1920,1080),fdgEmblem,false);Label(new Rect(0,955,1920,60),K("아무 키나 눌러 계속","Press any key to continue"),small,TextAnchor.MiddleCenter);}else if(splash==2){DrawTitleSplash();}else if(Flow.Page==LobbyPage.Lobby)DrawLobby();else{DrawCinematicMovie();NativeUiViewport.MaskFrontend();if(Flow.Page==LobbyPage.Title||Flow.Page==LobbyPage.Gate)DrawGatePresentation();if(Flow.Page==LobbyPage.WorldIntro)DrawWorldIntro();if(Flow.Page!=LobbyPage.Lobby&&Flow.Page!=LobbyPage.Title){DrawCinematicSkip();}}if(!StartupWorldVisible&&splash==1)NativeUiViewport.MaskFrontend();GUI.color=tint;GUI.enabled=enabled;GUI.depth=priorDepth;GUI.matrix=old;}
-  void OnGUI(){if((AutomatedInput||NativeScreenTransition.InputBlocked)&&(Event.current.isKey||Event.current.isMouse||Event.current.type==EventType.ScrollWheel))Event.current.Use();Draw();}
+  Event qaPointer;int qaPointerSerial,qaPointerDelivered,qaPointerFrame=-1;
+  internal int QaPointerDelivered=>qaPointerDelivered;
+  internal int QueueQaPointer(EventType type,Vector2 position){
+   if(!NativeQaSandbox.Active||Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-ui-overlap-check")<0)throw new InvalidOperationException("QA pointer requires explicit isolated overlap run");
+   if(type!=EventType.MouseDown&&type!=EventType.MouseUp)throw new ArgumentException("QA pointer down/up only");
+   if(qaPointer!=null)throw new InvalidOperationException("QA pointer still pending");
+   qaPointer=new Event{type=type,button=0,mousePosition=position,clickCount=1};return ++qaPointerSerial;
+  }
+  void OnGUI(){
+   Event original=Event.current;bool injected=qaPointer!=null&&original.type==EventType.Layout&&qaPointerFrame!=Time.frameCount;
+   if(injected){Event.current=qaPointer;qaPointer=null;qaPointerFrame=Time.frameCount;}
+   try{if((AutomatedInput||NativeScreenTransition.InputBlocked)&&(Event.current.isKey||Event.current.isMouse||Event.current.type==EventType.ScrollWheel))Event.current.Use();Draw();}
+   finally{if(injected){qaPointerDelivered=qaPointerSerial;Event.current=original;}}
+  }
   string K(string ko,string en){return Language=="ko"?ko:en;}
   static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;NativeUiAudit.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
   static void Label(Rect r,string text,GUIStyle style,TextAnchor alignment){var old=style.alignment;var color=style.normal.textColor;try{style.alignment=alignment;style.normal.textColor=NativeSilverHellUi.TextColor(color);NativeUiAudit.Label(r,text,style);}finally{style.alignment=old;style.normal.textColor=color;}}
