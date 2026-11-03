@@ -737,3 +737,7 @@ R1/R2 별도 커밋 e9898f79538b5ab78d68b33422374c7b00eca4a9:9항PASS. button_ir
 ## 2026-11-04 death-ui 승인 백로그 펫 말풍선 1차 인계
 
 최신6ef1899cb3 정상병합8b17b49122·감사docs양쪽보존. NativeGame최소3호출+전용partial/큐/원화/14키29언어카탈로그,실제HP/첫보스·보수적환경조건. GB1자동위치/초기필드환경/전투패드안내보류. 관련suite1회38+53PASS,공용exo-unity compile1회32dd8c55 UPM IPC30초실패(exit1/C#미착수),재실행0. Player/build/Steam/바탕화면/USER_SAVE변경0. 자기exact커밋·비강제push후PC Claude CTO local_7072229c가공통병합,Mac자연이벤트/글리프/1x/3x대기.
+
+## 2026-11-04 death-ui 펫91b95 컴파일 관문 후속
+
+91b95 소스의 최초 DLL참조 컴파일에서 NativePetBubbleCatalog.cs(28,34) CS0103(LobbyLanguage 이름 미확인) 1건을 검출했다. LobbyLanguage는Core 네임스페이스이므로 자기펫파일에using Exoduser.UnityPort.Core; 1줄만추가했다. 관련확인1회:Player Core126/Runtime279,Editor Core126/Runtime279/Editor61의5어셈블리exit0·오류0. 전체참조컴파일은오류검출1입력+원인수정후1입력이며무수정반복0. 기존38+53suite재실행0. 전회공용Unity32dd8c55는C#시작전Upm-14180 IPC30초실패/exit1이다. 동일Unity6000.6.7f1의근접성공영수증c4505bef(시각기준205초전),d4c9bb48(477초전)은UPM연결0.2초/46패키지등록을확인했다. exe96002992B존재·실행인자(projectPath/method/nographics/mute/sandbox)정상전달은확인했지만작업본/그래픽인자/과거자식환경이다르다. 해당시점UPM전용로그부재로프로세스실패원인/Defender차단/PATHEXT문제는미확정이다. 현재전역Editor.log는5월다른버전이므로근접근거로쓰지않았다. Unity재실행/공용실행기·잠금·환경·권한·보안설정변경0. DLL참조PASS만인계하며실제Unity/UPM복구·Mac게임관문은미완료. 자기exactcode+docs비강제push뒤CTO local_7072229c가공통병합한다.
