@@ -1,19 +1,23 @@
-# WEB3D-R9 — 검수 대기
+# WEB3D-R9 재개 — RETOUCH·현재 성능 보류
 
-사용자 직접 지시의 R8 국소 hue·뿌리 접합과 GAP_ANALYSIS 1·2·5·6을 수정했다. NW 달빛/SE 긴 그림자, 원래 길·캠프의 온기 대비, 전경 가지/시차·환경 DOF, native 현재 프레임의 영웅 림/접촉 그림자. 기본 r3d OFF·원본 PNG/맵/충돌/전투/AI/저장/HUD 보존·유료0.
+① 사용자 경로: 런타임 d57366de83, 바탕화면 EXODUSER - 웹 3D R9 후보.lnk · [3377 갤러리](http://127.0.0.1:3377/tmp/web3d-r9-review/index.html). 최신 작업 SHA는 PC R9/delivery.json.resume.
+② G4 현재120FPS 미달·전체 맵 VISUAL RETOUCH. G5 후보 접근 복구, 기본 r3d OFF 유지.
+③ 총괄이 공유 부하/native 프레임 지연을 먼저 분리하고 재판정. main 채택 보류.
 
-- 13뷰×1920/3840 OFF|ON: 실제ON 가시 바닥 hue최대7.18°/4.82°, 빈바닥6.86~34.40%. 새 물리 군락·전경 등의 실제alpha를 분리하고 같은 원재질을 비교했다. 제단 점 정리는 radius6 opening·동일채널 감산으로 유지했다.
-- Core/AI64적96탄·12초×8조건: ON평균142.93~226.62FPS/1초창최저120.35. Unity/Player 실행 관측·종료0. 회귀81/81·project113/113·guard.
-- 1920동작4편+3840실제WASD보행1편 각10초. 보행1601.54px·맵불변, 무적 fixture·자연완주 아님. 1x재생5편각120프레임/드롭0. 3840표시CSS 제한을 고쳐 해당영상만3840×1080 nativeScale재검수. 새 native 실행에서 r3d생략시OFF확인.
+최신 origin/main 253ad0b1d 매뉴얼v4·문서/번역 자료를 자기 브랜치에 정상 병합한다. 게임·표시 모듈·원화는 제작 d57366de83과 같아 이전26뷰 hue·5영상1x·회귀81/81·project113/113 증거를 재사용했다. 새 아트 개선으로 계산하지 않는다.
 
-**VISUAL VERDICT: PASS — R9 지정 표현 범위 제작자 판정 / 독립 CTO 대기.** 원근3D·지형두께·본격재질반사·모든영웅·자연보스완주·전체AAA 완료와 구분한다.
+종료된3377 R9서버만 무창·격리저장으로 다시 띄웠다. 3333은 기존 예약작업으로 HTTP200이어서 건드리지 않았다. 새1920캠프·3840제단 OFF|ON에서 오류0·맵불변·proxy=false·R9조명/1797접촉그림자/영웅림 활성 확인. 레퍼런스|결과 동일표시크기 비교판과 전체 두해상도 나란히 파일을 제공한다.
 
-브랜치 codex/web3d-trial-20261031. 런타임 제작 d57366de83, 최신 main b1979b5b1을 후보에 정상병합했고 runtime byte동일. 최종 원격 SHA/현재소스·3377 HTTP대조는 아래 delivery.json. 최신 [운영 매뉴얼 §2.5](../../../0마스터플랜/AGENT_OPERATIONS_MANUAL.md)의 “main 병합은 Claude 총괄만”을 적용해 검수 대기로 전달했다. main·3333·DEMO·EA에 후보 쓰기0, Steam 게시0.
+| 현재12초·64적96탄 조건 | 평균 FPS | 1초 구간 최저 FPS |
+|---|---:|---:|
+| high ON1920 |133.56|105.47|
+| high ON3840 |126.28|99.90|
+| OFF3840 통제 |130.66|52.91|
 
-바탕화면 EXODUSER - 웹 3D R9 후보.lnk, [실제 비교·영상](http://127.0.0.1:3377/tmp/web3d-r9-review/index.html), [후보 인게임](http://127.0.0.1:3377/game.html?classic=1&r3d=1&tutorial=0&resourceTutorial=0). Chrome headless/--mute-audio·음량0·API쓰기 차단·I:프로필/격리세이브. 서버는 사용자 확인용으로 유지한다.
+현재120기준 미달. 당시 Dota2·Unity에디터2·Player2를 관측하고 모두 보존했다. 추가레이어 제출CPU는 약1ms였고 OFF도 미달하므로 R9 전용 회귀나 GPU 원인으로 단정하지 않는다. 추측 수정·사용자 앱 종료·무수정 재시험0. 이전 부하 PASS를 현재로 재명명하지 않는다.
 
-PC 근거: I:/EXODUSER-Storage/codex-takeover/web3d-r9/REPORT.md, final-1920/qa.json, final-3840/qa.json, performance/qa.json, motion/qa.json, motion-3840/qa.json, playback.json, default-off.json, delivery.json. 중간 캡처/원시프레임 정리3.090GiB, 목록은 cleanup.json. 직전 제단 크롭 한 장과 원로그만 비교 근거로 남겼다.
+**VISUAL VERDICT: RETOUCH.** R9 지정표현의 이전 기능 통과와 제품 전체 PASS를 구분한다. A2의 실제 원근/높낮이·실재질 구도 차이도 남는다. 상세 MAP PRODUCTION REPORT와 현재 원로그는 I:/EXODUSER-Storage/codex-takeover/web3d-r9/REPORT.md 및 resume-current/ 아래에 있다.
 
-Unity 반영: 대기(웹 인게임 월드 표현). UI·UX·소리 변경0.
+일일 자기브랜치 정상commit/push·원격일치 확인. main·DEMO·EA·Steam 후보반영0. LANES 자기행의 오래된 R8 REPORT 포인터를 R9로 정정했다. Unity 실행0·사용자 프로세스 종료0. Unity 반영: 대기(웹 월드 표현). UI·UX·소리 변경0.
 
 END

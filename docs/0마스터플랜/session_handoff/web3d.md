@@ -1,5 +1,7 @@
 # 웹 3D 인계 — 2026-11-03 9라운드
 
+현재 재개상태: 최신main253ad0b1d(v4) 정상병합·런타임d57366de83불변. 3377 후보서버/바탕화면복구,3333은예약복구되어수동재시작0. 새캠프1920/제단3840 OFF|ON 오류0·맵불변. 현재high ON1초최저105.47/99.90FPS,OFF3840도52.91FPS로120미달(평균133.56/126.28/130.66). Dota2+Unity에디터2+Player2보존. **현행RETOUCH/G4성능보류**이며아래중단전PASS는현재성능PASS가아님. 총괄의공유부하/native지연분리후재판정. R9/REPORT.md·resume-current/원로그·delivery.json.resume을본다. 기본OFF·main채택보류·일일자기브랜치commit/push.
+
 착수 origin/main e0e6716c228f8ccfa5ad5834a2bce0a7d2aa3216 정상병합·INDEX/WORK 비어 있음 확인. **기본 r3d OFF 유지.** GAP_ANALYSIS 1·2·5·6의 탑다운 대체 계약을 적용한다. [현행 R9 수치·계약](../../4.1맵디자인+설정/WEB3D_TRIAL_20261031.md). 원본PNG·1797군락 배치·충돌·카메라·전투/AI/저장·HUD 보존, 유료0.
 
 R9: NW 달빛/SE 긴 실루엣 그림자(2048 atlas), 원화의 따뜻한 길·캠프 대비, 하단 가지 시차/환경 DOF, 현재 native sprite frame의 alpha 차분 윤곽광과 발밑 shadow. 뿌리 crop rim alpha 전이/1797밑동 접촉그림자. 단순RGB 배율의 국소 hue 실패를 동일채널 ΔY 합성으로 수정. 밝아진 제단 미세 자국은 기존 radius6 opening을 RGB 공통 감산 방식으로 유지하여 고유색과 함께 보존한다.
