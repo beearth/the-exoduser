@@ -16,7 +16,7 @@ if(m1){
  const gate=source.slice(source.indexOf('            levelUp.Hide(); sim.Config.EnemyAiEnabled = false; sim.Enemies.Clear(); sim.Loot.Clear();\n            var flow'),source.indexOf('            if (!naturalUnlock)'));
  if(!gate.includes('bool naturalUnlock ='))throw new Error('M1 09c not found');
  const generated=path.join(out,'M1Source.cs');
- fs.writeFileSync(generated,'using System;using Exoduser.UnityPort.Core;static partial class M1ParryTests{static void ShieldCut(Simulation sim,Action capture){var p=sim.Player;'+cut.replace(/yield return M1Shot\("06-parry-shield"\);/g,'capture();')+'}static void GateRoute(Simulation sim){active=sim;var p=sim.Player;'+gate.replace('levelUp.Hide();','')+'}}');files.push(generated);
+ fs.writeFileSync(generated,'using System;using Exoduser.UnityPort.Core;static partial class M1ParryTests{static void ShieldCut(Simulation sim,Action capture){var p=sim.Player;'+cut.replace(/yield return M1Shot\("06-parry-shield"\);/g,'capture();').replace('yield return M1ParryCameraComparison(qContact);','')+'}static void GateRoute(Simulation sim){active=sim;var p=sim.Player;'+gate.replace('levelUp.Hide();','')+'}}');files.push(generated);
 }
 const policy=path.join(root,'unity/Assets/Exoduser/Runtime/Vfx/CombatImpactTimeline.cs');if(fs.existsSync(policy))files.push(policy);
 const args=['/nologo','/target:exe','/langversion:latest','/out:'+path.join(out,name+'.dll'),...fs.readdirSync(path.join(ref,tfm)).filter(f=>f.endsWith('.dll')).map(f=>'/r:'+path.join(ref,tfm,f)),...files];
