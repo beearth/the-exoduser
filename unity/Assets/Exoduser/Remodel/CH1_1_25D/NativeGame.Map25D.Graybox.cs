@@ -7,7 +7,8 @@ namespace Exoduser.UnityPort
     public sealed partial class NativeGame
     {
         public static bool GrayboxConnected {get {var t=Resources.Load<TextAsset>("Map25D/active-presentation");return t!=null&&t.text.Trim()=="GB1";}}
-        public static bool GrayboxRequested {get {var t=Resources.Load<TextAsset>("Map25D/active-presentation");return t!=null&&(t.text.Trim()=="GB1"||t.text.Trim()=="GB1a");}}
+        public static bool GrayboxCompositionB {get {var t=Resources.Load<TextAsset>("Map25D/active-presentation");return t!=null&&t.text.Trim()=="GB1b";}}
+        public static bool GrayboxRequested {get {var t=Resources.Load<TextAsset>("Map25D/active-presentation");return t!=null&&(t.text.Trim()=="GB1"||t.text.Trim()=="GB1a"||t.text.Trim()=="GB1b");}}
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         static void GrayboxSupplyMapInput()
         {
@@ -17,7 +18,7 @@ namespace Exoduser.UnityPort
             if(!GrayboxConnected){
                 var original=JsonUtility.FromJson<MapData>(Resources.Load<TextAsset>("Data/ch1_map").text);bool same=original.tiles.Length==game.Map.Data.tiles.Length;for(int i=0;i<original.tiles.Length&&same;i++)if(original.tiles[i]!=game.Map.Data.tiles[i])same=false;
                 foreach(var c in game.chunks.Values)if(c.renderer!=null)Destroy(c.renderer.gameObject);game.chunks.Clear();foreach(var p in game.props)if(p!=null)Destroy(p.gameObject);game.props.Clear();game.Map.Data.chunks=Array.Empty<MapChunk>();
-                int at=Array.IndexOf(args,"-output");if(at>=0&&at+1<args.Length){Directory.CreateDirectory(args[at+1]);File.WriteAllText(Path.Combine(args[at+1],"gb1a-runtime-map-input.json"),"{\"mode\":\"GB1a\",\"originalWalkTilesIdentical\":"+(same?"true":"false")+",\"newCoreInputApplied\":false,\"originalTileCount\":40000,\"onlyOriginalArtRenderersRemoved\":true}");}
+                int at=Array.IndexOf(args,"-output");if(at>=0&&at+1<args.Length){Directory.CreateDirectory(args[at+1]);File.WriteAllText(Path.Combine(args[at+1],GrayboxCompositionB?"gb1b-runtime-map-input.json":"gb1a-runtime-map-input.json"),"{\"mode\":\""+(GrayboxCompositionB?"GB1b":"GB1a")+"\",\"originalWalkTilesIdentical\":"+(same?"true":"false")+",\"newCoreInputApplied\":false,\"originalTileCount\":40000,\"onlyOriginalArtRenderersRemoved\":true}");}
                 if(!same)throw new InvalidOperationException("GB1a original walking input changed");Debug.Log("[GB1a] Original walk input verified, new Core adapter disabled; only art renderers omitted.");return;
             }
             var input=Resources.Load<TextAsset>("Map25D/GB1/gb1-map");if(input==null)throw new InvalidOperationException("GB1 map input missing");

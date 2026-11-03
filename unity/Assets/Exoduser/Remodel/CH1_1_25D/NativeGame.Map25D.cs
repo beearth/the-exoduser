@@ -46,9 +46,9 @@ namespace Exoduser.UnityPort
             var active=Resources.Load<TextAsset>("Map25D/active-presentation");var prefab=Resources.Load<GameObject>(GrayboxRequested?"Map25D/GrayboxWorld":active!=null&&active.text.Trim()=="5"?"Map25D/UnityComposition":"Map25D/KeyScene");
             if(prefab==null){Debug.LogError("Map25D key scene prefab missing");throw new InvalidOperationException("Map25D key scene prefab missing");}
             map25D=Instantiate(prefab).GetComponent<Map25DEnvironment>();map25D.name="Map25D World";map25D.Configure(r3Cam);map25D.Reframe=Map25DReframe;
-            RenderSettings.fog=false;RenderSettings.ambientMode=AmbientMode.Flat;RenderSettings.ambientLight=new Color(.003f,.006f,.014f);
+            RenderSettings.fog=false;RenderSettings.ambientMode=AmbientMode.Flat;RenderSettings.ambientLight=map25D.Recipe.grayboxB?new Color(.025f,.025f,.028f):new Color(.003f,.006f,.014f);
             // Existing actors, impacts, HUD and Core views keep their production code and materials.
-            var localLight=new GameObject("Map25D small hero light").AddComponent<Light>();map25DHeroLight=localLight;localLight.transform.SetParent(map25D.transform,false);map25D.HeroLamp=localLight;localLight.transform.localPosition=new Vector3(-.22f,.6f,-.5f);localLight.type=LightType.Point;localLight.color=new Color(.62f,.76f,1);localLight.intensity=.65f;localLight.range=2.4f;
+            var localLight=new GameObject("Map25D small hero light").AddComponent<Light>();map25DHeroLight=localLight;localLight.transform.SetParent(map25D.transform,false);map25D.HeroLamp=localLight;localLight.transform.localPosition=new Vector3(-.22f,.6f,-.5f);localLight.type=LightType.Point;localLight.color=map25D.Recipe.grayboxB?new Color(.9f,.88f,.82f):new Color(.62f,.76f,1);localLight.intensity=map25D.Recipe.grayboxB?.18f:.65f;localLight.range=2.4f;
             r3Cam.backgroundColor=new Color(.002f,.004f,.009f);r3Cam.clearFlags=CameraClearFlags.SolidColor;
             if(map25D.Recipe.round4&&map25D.Recipe.pixelActors){r4PixelActors=gameObject.AddComponent<R4PixelActors>();r4PixelActors.Configure(r3Cam,playerView,map25D.Recipe.heroPixels1080);}
         }
@@ -127,7 +127,7 @@ namespace Exoduser.UnityPort
                     p.X=shot.x;p.Y=shot.y;lastX=p.X;lastY=p.Y;
                     for(int warm=0;warm<12;warm++){UpdateViews();yield return null;}
                     yield return new WaitForEndOfFrame();SaveMap25DScreen(Path.Combine(output,width+"-"+shot.id+".png"));if(r4PixelActors!=null)r4PixelActors.WriteReceipt(Path.Combine(output,width+"-"+shot.id+"-pixels.json"));
-                    File.WriteAllText(Path.Combine(output,width+"-"+shot.id+"-camera.json"),"{\"worldX\":"+shot.x+",\"worldY\":"+shot.y+",\"orthographic\":"+(!layout.perspective?"true":"false")+",\"pitch\":"+(layout.cameraPitch>0?layout.cameraPitch:55)+"}");
+                    WriteMap25DCameraProof(Path.Combine(output,width+"-"+shot.id+"-camera.json"),shot.x,shot.y);
                 }
                 p.X=layout.hero[0];p.Y=layout.hero[1];lastX=p.X;lastY=p.Y;
             }

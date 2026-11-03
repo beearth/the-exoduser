@@ -59,7 +59,7 @@ namespace Exoduser.UnityPort
         }
         // Mac review players cannot resize after launch; -screen-width/-screen-height then sets the capture size for the whole run.
         const string Map25DWorldOnlyNote="Captures are world-only RenderTexture renders (batchmode); OnGUI HUD not in images";
-        static bool Map25DLaunchSizeFixed=>!string.IsNullOrEmpty(Argument("-screen-width"))&&!string.IsNullOrEmpty(Argument("-screen-height"));
+        static bool Map25DLaunchSizeFixed=>Array.IndexOf(Environment.GetCommandLineArgs(),"--map25d-resize-proof")<0&&!string.IsNullOrEmpty(Argument("-screen-width"))&&!string.IsNullOrEmpty(Argument("-screen-height"));
         void Map25DWritePlay(){if(Map25DCaptureWorldOnly&&!map25DPlayReceipt.notes.Contains(Map25DWorldOnlyNote))map25DPlayReceipt.notes.Add(Map25DWorldOnlyNote);File.WriteAllText(Path.Combine(map25DPlayOutput,"play-smoke.json"),JsonUtility.ToJson(map25DPlayReceipt,true));}
         IEnumerator Map25DInputKey(Key key)
         {

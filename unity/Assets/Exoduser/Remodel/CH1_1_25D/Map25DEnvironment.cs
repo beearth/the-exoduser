@@ -22,7 +22,7 @@ namespace Exoduser.UnityPort
         public Map25DShaft[] shaftPoints;
         public Map25DBubble[] bubbleVents;
         public Map25DFrame[] frameCards;
-        public Map25DTile[] groundTiles;public Map25DReviewCamera[] reviewCameras;public float chunkWorld,worldSize,tileSize,cameraPitch,floorBase,cardBase,treeBase,fernBase,waterBase,fogFootDensity;public float[] fogFootColor;public bool perspective,projectedCards,groundConnections,round4,round5,solidForms,pixelActors,graybox;public float cameraFov,heroScale,heroPixels1080,waterHeight,moonIntensity;
+        public Map25DTile[] groundTiles;public Map25DReviewCamera[] reviewCameras;public float chunkWorld,worldSize,tileSize,cameraPitch,floorBase,cardBase,treeBase,fernBase,waterBase,fogFootDensity;public float[] fogFootColor;public bool perspective,projectedCards,groundConnections,round4,round5,solidForms,pixelActors,graybox,grayboxB;public float cameraFov,heroScale,heroPixels1080,waterHeight,moonIntensity;
     }
 
     // Presentation only. Installation is explicit, source collision and simulation never belong to this component.
@@ -62,6 +62,7 @@ namespace Exoduser.UnityPort
                 var renderer=go.GetComponent<MeshRenderer>();renderer.sharedMaterial=mat;renderer.shadowCastingMode=ShadowCastingMode.Off;renderer.receiveShadows=false;frames.Add(go.transform);
             }
             camera.allowHDR=true;var extra=camera.GetUniversalAdditionalCameraData();extra.renderPostProcessing=true;extra.requiresDepthTexture=true;
+            if(layout.grayboxB){extra.requiresColorTexture=true;var fade=GetComponent<GB1bWallFade>();if(fade!=null)fade.Viewer=camera;}
             if(layout.groundTiles==null&&Water!=null){var reflection=gameObject.AddComponent<A2RiverReflection>();reflection.Viewer=camera;reflection.Surface=Water;reflection.Height=layout.round5?layout.waterHeight:-.55f;}
             var camp=Array.Find(layout.lights,l=>l.id=="camp_fire_0");var fire=camp!=null?new Vector3(camp.x/100,.55f,-camp.y/100):new Vector3(18.2f,.55f,-40.1f);
             // No point particles: the review forbids residual bright specks. Flame light and continuous mist move instead.
@@ -99,7 +100,7 @@ namespace Exoduser.UnityPort
                 if(s.id=="camp_fire_0")Shader.SetGlobalVector("_Map25DCampReflection",new Vector4(s.x/100,-s.y/100,ReviewLightsOff?0:AnimatedLights[i].intensity,0));
                 if(s.id=="tree_glow_m_ctree15")Shader.SetGlobalVector("_Map25DPortalReflection",new Vector4(s.x/100,-s.y/100,ReviewLightsOff?0:AnimatedLights[i].intensity,0));
             }
-            if(NativeGame.Instance!=null&&NativeGame.Instance.Simulation!=null){var p=NativeGame.Instance.Simulation.Player;Shader.SetGlobalVector("_Map25DHero",new Vector4(p.X/100,0,-p.Y/100,1));if(HeroLamp!=null)HeroLamp.transform.position=NativeRemodel3D.Point(p.X,p.Y)+new Vector3(-.22f,.6f,-.5f);}
+            if(NativeGame.Instance!=null&&NativeGame.Instance.Simulation!=null){var p=NativeGame.Instance.Simulation.Player;Shader.SetGlobalVector("_Map25DHero",new Vector4(p.X/100,0,-p.Y/100,1));if(HeroLamp!=null){var foot=NativeRemodel3D.Point(p.X,p.Y);if(Recipe!=null&&Recipe.grayboxB)foot=Map25DContactShadows.GroundedPoint(foot);HeroLamp.transform.position=foot+new Vector3(-.22f,.6f,-.5f);}}
             if(Configured&&Viewer!=null)CullLights(Viewer.transform.position+Viewer.transform.forward*12);
         }
         void ReprojectCards(){if(Viewer==null)return;var forward=Viewer.transform.forward;var up=Viewer.transform.up;var groundForward=new Vector3(forward.x,0,forward.z).normalized;var right=Vector3.Cross(Vector3.up,groundForward);Shader.SetGlobalVector("_Map25DViewForward",new Vector4(forward.x,forward.y,forward.z,Viewer.orthographic?1:0));if(ProjectedProps==null)return;foreach(var entry in ProjectedProps){var c=entry.spec;if(Recipe!=null&&Recipe.round4){if(entry.body!=null){float groundY=CardGround(c.drawX/100,-c.footY/100)-.04f-CardFoot(c)*c.height/100;entry.body.SetPositionAndRotation(new Vector3(c.drawX/100,groundY,-c.footY/100),Quaternion.Euler(0,Viewer.transform.eulerAngles.y,0));entry.body.localScale=new Vector3(1,c.type=="vegetation"?Mathf.Min(1,(c.layer=="low"?1.3f:.9f)/(c.height/100)):1,1);}continue;}float originalH=c.height/100,h=originalH*(Viewer.orthographic?Mathf.Max(.1f,-forward.y):1);var anchor=new Vector3(c.x/100,0,-c.y/100)+right*((c.drawX-c.x)/100)-groundForward*((c.footY-c.height*.5f-c.y)/100);if(c.type=="vegetation")h=Mathf.Min(.9f,h);var ray=Viewer.orthographic?forward:(anchor-Viewer.transform.position).normalized;float lift=h*.5f*up.y/Mathf.Max(.05f,-ray.y);var root=anchor-ray*lift-up*h*.5f;if(c.type=="vegetation")root=new Vector3(c.drawX/100,0,-c.footY/100);foreach(var tr in new[]{entry.body,entry.ground})if(tr!=null){tr.SetPositionAndRotation(root,Viewer.transform.rotation);tr.localScale=new Vector3(1,h/originalH,1);var renderer=tr.GetComponent<MeshRenderer>();var block=new MaterialPropertyBlock();renderer.GetPropertyBlock(block);block.SetVector("_SwayAnchor",new Vector4(root.x,0,root.z,1));renderer.SetPropertyBlock(block);}}}

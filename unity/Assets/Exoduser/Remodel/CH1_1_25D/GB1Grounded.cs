@@ -9,5 +9,6 @@ namespace Exoduser.UnityPort
         public float embed=.04f,positiveGap;
         public bool queryHit;
         public string role;
+        public Vector3[] groundContacts;
     }
 }
