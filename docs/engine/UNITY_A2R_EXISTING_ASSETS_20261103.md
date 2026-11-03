@@ -312,3 +312,11 @@ proof-a2r-r2255-vs-4895bf9c6.png / proof-a2r-r2255-diagnostics.png 직접 확인
 ## 11-04 야간 최종 결과
 
 야간 ①·② PASS / ③ 형태 RETOUCH 중단 / ④ 선택 효과 기본OFF·RETOUCH / ⑤ 자료 제출 / ⑥ 두 차례 FAIL로 게이트 중단. 빌드 d79f0968bc67fffe8810bec650470a4e1ce1a247 / main 6ef1899cb388e2378786eeb50e20fb325403a954 / 비교30컷·34도·동일카메라·새3D239·세운카드0·접지3cm초과0·원래재질986지원. 캠프34.16FPS/Draw3730/tri32977243, 최종영상10초2개·오디오0, 빠른렌더러반전0(픽셀전수판정아님). 전체스모크는 VFX 초기오류1(KiImpactView.cs:74)·보조경로정체로FAIL. Core/Common/ProjectSettings/Packages 수동diff0·원화경로diff0. 원경 적/현재1x/영웅3x 실물검수, 검은수풀면과거목경계RETOUCH 잔존. 바로가기·사용자실행본 변경0. 증명 I:/EXODUSER-Storage/map25d/a2redesign/night_6_comparison.png / NIGHT_6_FINAL.md.
+
+## 11-04 시야·바닥 증명 경로 정체 원인 (디버깅 총괄, CTO 03:05)
+
+- 증상: 바닥 증명(독 웅덩이 6700,1740로 가는 경로)에서 플레이어가 (5189.318, 3689.442)에 멈춤. 노드 (5180, 3700), state=idle, 정적 pass=True. `floor-projection.json`에서도 arrived=false, core가 같은 좌표다.
+- 원인: Core 결함이 아니라 QA 경로가 살아 있는 심연의 앵글러 몸통을 몰랐다. 깨어난 앵글러는 600틱마다 플레이어가 서 있던 곳(TpX/TpY)으로 순간이동하고, 착지 뒤 몸통(R 120 + 플레이어 반경 15 = 135px) 안의 플레이어를 매 틱 원 둘레로 밀어낸다(Core `TickFieldBoss`, 웹 `_fbTickOne`와 같음, fieldboss-oracle 대조). 경로 BFS와 `pass` 표기는 정적 맵만 보므로 노드가 몸통 안이어도 통과로 나왔고, 걷기는 밀려난 자리에서 120틱 정체로 끝났다. 늪 패치·데칼 충돌, 도착 반경(5px) 문제가 아니다. 정적 맵에서는 그 지점에서 16방향 모두 이동 가능하다.
+- 재현(.NET, A2R d79f0968b Core + 실제 1-1 맵): 몸통을 노드 위에 두면 몸통에서 정확히 135px 떨어진 곳에서 state=idle·정적 pass=True로 정체한다. 몸통이 없으면 4틱 만에 도착한다.
+- 수정(`NativeGame.A2RSightSmoke.cs`, QA만): `A2RRouteCanMove` = 정적 판정 + 살아 있는 앵글러 몸통(순간이동 중이면 착지점) 회피. 경로·연결 칸 BFS에 사용하고, 시작 칸은 이미 서 있는 곳이라 출발 표본을 다시 검사하지 않으며, 몸통 안의 첫 노드는 건너뛴다. 정체하면 현재 위치에서 최대 3회 재계획하고(`walkReplans`), 실패 메시지에 몸통(`body=angler N@(x,y)`)을 남긴다. Core·맵은 바꾸지 않았다.
+- 검증: 실제 QA 코드(A2RSightPath·A2RRouteCanMove·A2RAnglerBody)를 추출해 Core와 실행했다. 같은 몸통에서 바닥 목표(6580,1540)까지 90노드 1,411틱 만에 도착했다. 순간이동 착지점은 막힘으로, 잠든 앵글러는 막지 않음으로 판정된다. Unity batch 컴파일 오류 0, PC Player 실행 0. 실제 A2R 스모크 재실행은 Mac 또는 맵 레인 몫이다.
