@@ -59,3 +59,22 @@
 ## 6. Blender 근사 미리보기 (참고, PASS 근거 아님)
 
 `pixel_preview.py`(Cycles CPU 1샘플, 무창)로 위 2·3절을 흉내 냈다. 결과 `G:/exoduser/tmp/design-review/20261104_boss_1-1_oldman_cleanup/07_rigpixel_preview_1x.png`·`08_rigpixel_preview_3x.png`: 보스 알파 높이 318행(1080의 29%, A포즈·뿌리 팔 포함), 가면·뿔·구슬·치마·장화 읽힘, 3x 낱점 0. 걷기 클립은 Blender 5.2 액션 슬롯 연결이 안 돼 A포즈로만 봤다.
+
+## 7. v7 GLB — 보조본·발광 마스크·idle/walk (2026-11-04 1시, 보스전 총괄 Blender 서브에이전트, 유료 0)
+
+레인은 v6 대신 이 파일을 쓴다. 치마 가중 수정본 v7.1이 나오면 이 절에 경로를 더한다.
+
+| 항목 | 값 |
+|---|---|
+| GLB | `I:/EXODUSER-Storage/boss/oldman-v2-20261104/v7/oldman_clean_v7.glb` (23.0MB, SHA-256 `711f9f6d82462218638e91b106bc68a729ac8b6439db051c8408d6008fffb92d`) |
+| 원본·검사 | 같은 폴더 `oldman_clean_v7.blend`, `v7_report.json`, `v7_check.json`, 스크립트 `build_v7.py`·`bake_walk.py`·`check_v7.py`·`render_v7.py` |
+| 뼈 | 34 = Meshy 24 + 보조 10. `StaffSocket_L` 그대로(재임포트 뒤에도 노드 유지) |
+| 보조본 가중 정점 | `Cloak_Back_1~4` 6,012 / 12,928 / 12,934 / 4,912(깃털 한 장 단위, 높이 기울기, 맨 위 원래 가중 50% 유지) · `Panel_Front_1~2` 60 / 60(맨 위 UpLeg 10% 유지) · `Beard_1~2` 368 / 259 · `Chain_L_1~2` 0(허리 사슬 형상 없음 — 뼈만 있음) |
+| 셰이프 키 | `Fist_L`: 왼손 1,296정점이 쥐는 점 쪽으로 최대 1.5cm |
+| 미가중 정점 | 0 (`char1` 99,407, `FrontPanel` 85) |
+| 삼각형 | 78,323 (본체 65,235 + 앞자락 128 + 지팡이 12,432 + 구슬 528) |
+| `druid_glow` 가슴 틈 | 43면, 131.3cm², 폭 ≤5.8cm·높이 28.5cm(z 1.56~1.85). 기본색 `#a8642a`, 발광 `#d49a5c`, 강도 0.5(GLB emissive ≈ 0.33, 0.16, 0.05). 34° 발광 픽셀(틈+구슬) 화면의 0.016~0.019%(LOCK 상한 0.5% 안) |
+| 클립 | `idle` 0~60f(2.0초, 오른다리 체중·고개 20° 숙임·호흡, 두 발과 왼손 고정, 보조본 흔들림), `walk` 0~32f(1.0667초, Meshy 걷기를 30fps 루프로 다시 뽑음, 루프 이음 오차 분산, 왼팔은 지팡이 때문에 25%만 반영 — `build_v7.py`의 `LEFT_ARM_DAMP`) |
+| 높이 | 뒤 뿌리 팔 끝 2.82m, 앞 최고점 2.736m(뿔 끝 근사, 문서 2.71m보다 2.6cm 큼) |
+| 미리보기 | `G:/exoduser/tmp/design-review/20261104_boss_1-1_oldman_cleanup/v7_idle_f00·f30`, `v7_walk_p00·p25·p50·p75`(`_1x`·`_3x`). EEVEE 근사·외곽선 없음이라 Unity RT 판정 근거가 아니다 |
+| 알려진 결함 | ① 걷기에서 깃털 치마가 한쪽 UpLeg 가중이라 옆에서 늘어난 조각이 보인다 → v7.1에서 Hips+양 UpLeg로 나눠 수정 중. ② Blender 임포터가 `StaffSocket_L`을 뼈 꼬리 기준으로 잘못 놓는다(GLB 노드 변환은 v6와 같아 Unity에는 영향 없음 — 확인은 Unity에서) |
