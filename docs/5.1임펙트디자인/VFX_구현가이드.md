@@ -1,4 +1,19 @@
 
+## 2026-11-03 Unity 대형 탄막 1차 재채색 후보
+
+웹/Godot의 기존 경로·팔레트는 유지한다. 이번 worktree Unity 시트 fallback 경로만 아래와 같다. 기준 SHA `9dc27dea561269bfc6639a6419de0bc0224479d3`, 커밋·빌드·실게임 검수 없음. [G0/G1 명세](VFX_BULLET_REMASTER_G1_20261103.md), [결과/미완료](VFX_BULLET_REMASTER_RESULT_20261103.md).
+
+| 항목 | 후보 구현 |
+|---|---|
+| 혜성 resource | `Art/vfx/field/proj_bolt_comet_el`, 2032×1096, 8列×8行, 254×137、8f、피벗(.62,.5). 행0..7=물리/화염/빙결/암흑/번개/신성/대지/적 독. 유효하지 않은 행은0. 기존 무지개 계열 caller는 기존 el0 선택을 유지하므로 이 후보에서는 물리 팔레트로 표시 |
+| 혜성 색 | 원본 RGB에 ELC .65를 덧씌우는 런타임 경로 제거. VFX §2.2 램프를 시트에 베이크. 1b는 본체 알파와1차 RGB 보존, 분리 잔점 알파만0. 기존 크기·속도·tick 프레임 선택 불변 |
+| 원소구 resource | `Art/vfx/field/proj_elem_orb_el`, 3072×1536, 셀512×256, 6列×6行, 6f. 행0..5=화염/빙결/암흑/번개/신성/대지, EL→행={-1,0,1,2,3,4,5}; 원본 행={0,2,1,3,5,4} 재배치. 물리 -1은 혜성 폴백 |
+| 1b 잔점 | 혜성/오브 모두 alpha>0.05(바이트13 이상),8연결 성분. 최대 본체 외 면적<셀0.5% 제거; 혜성은 bbox 최대변<6px도 제거. 기존 오브5×5 opening 후 추가 적용. 저알파 주변은 가장 가까운 성분 소유로 나눠 제거하며 본체와1px 간격인 점을 dilation으로 재연결하지 않음. 본체 알파·연결된 가는 실 유지,3x 검사100셀 본체 밖 성분0 |
+| 코어 | 프레임별 alpha>20인 픽셀의 p97(higher)→코어, 최대휘도→백열. 1차240+ RGB 픽셀 예산은 제거 전 가시 픽셀의3% 이하. 1b는 RGB/밝은 픽셀 수 증가0, 분모 감소 후 실제 최대비율 혜성3.03893%/오브3.16114%. 합성 코어240+·실게임 품질 미검증 |
+| importer | 원본 .meta 복사, 새 GUID만 변경. 8192/비압축/NPOT 유지. 원본 PNG·meta 보존 |
+| 드루이드1b | `Art/vfx/boss/druid_poison_orb` 생성,1254×1254/4×4/16f. 적 독 램프 #1c2810→#5f8a2e→#c8e8a8→#eef8e0. PoisonShot은 grayscale×#66dd22 대신 RGBA 그대로 복사. cw=t.width/4,ch=t.height/4=313,ox=frame%4*cw,oy=(3-frame/4)*ch 불변. 위2px·오른쪽2px/원본 alpha 유지. 웹의 기존 녹색화 경로는 변경0 |
+| 소비 경계 | `NativeSkillRemaster.Current.Drawn(p)`가 true면 기존 NativeBossView 시트 경로를 건너뜀. 해당 runtime Vfx 폴더 수정0. remodel3d 노출·07e/11a·밀집전 가독성 미검증 |
+
 ## 2026-10-16 R 기존 VFX의 main 소비 연결
 
 | 항목 | 이번 현재 범위 |

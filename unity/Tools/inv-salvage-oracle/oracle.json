@@ -1,0 +1,1351 @@
+{
+ "source": "game.html salvageVal",
+ "sourceSha": "30bc2e2ceb",
+ "count": 224,
+ "rows": [
+  {
+   "rarity": -1,
+   "enh": 0,
+   "tier": 0,
+   "value": 1000
+  },
+  {
+   "rarity": -1,
+   "enh": 0,
+   "tier": 1,
+   "value": 1002
+  },
+  {
+   "rarity": -1,
+   "enh": 0,
+   "tier": 2,
+   "value": 1004
+  },
+  {
+   "rarity": -1,
+   "enh": 0,
+   "tier": 3,
+   "value": 1006
+  },
+  {
+   "rarity": -1,
+   "enh": 0,
+   "tier": 4,
+   "value": 1008
+  },
+  {
+   "rarity": -1,
+   "enh": 0,
+   "tier": 5,
+   "value": 1010
+  },
+  {
+   "rarity": -1,
+   "enh": 0,
+   "tier": 6,
+   "value": 1012
+  },
+  {
+   "rarity": -1,
+   "enh": 0,
+   "tier": 7,
+   "value": 1014
+  },
+  {
+   "rarity": -1,
+   "enh": 1,
+   "tier": 0,
+   "value": 1000
+  },
+  {
+   "rarity": -1,
+   "enh": 1,
+   "tier": 1,
+   "value": 1002
+  },
+  {
+   "rarity": -1,
+   "enh": 1,
+   "tier": 2,
+   "value": 1004
+  },
+  {
+   "rarity": -1,
+   "enh": 1,
+   "tier": 3,
+   "value": 1006
+  },
+  {
+   "rarity": -1,
+   "enh": 1,
+   "tier": 4,
+   "value": 1008
+  },
+  {
+   "rarity": -1,
+   "enh": 1,
+   "tier": 5,
+   "value": 1010
+  },
+  {
+   "rarity": -1,
+   "enh": 1,
+   "tier": 6,
+   "value": 1012
+  },
+  {
+   "rarity": -1,
+   "enh": 1,
+   "tier": 7,
+   "value": 1014
+  },
+  {
+   "rarity": -1,
+   "enh": 5,
+   "tier": 0,
+   "value": 1003
+  },
+  {
+   "rarity": -1,
+   "enh": 5,
+   "tier": 1,
+   "value": 1005
+  },
+  {
+   "rarity": -1,
+   "enh": 5,
+   "tier": 2,
+   "value": 1007
+  },
+  {
+   "rarity": -1,
+   "enh": 5,
+   "tier": 3,
+   "value": 1009
+  },
+  {
+   "rarity": -1,
+   "enh": 5,
+   "tier": 4,
+   "value": 1011
+  },
+  {
+   "rarity": -1,
+   "enh": 5,
+   "tier": 5,
+   "value": 1013
+  },
+  {
+   "rarity": -1,
+   "enh": 5,
+   "tier": 6,
+   "value": 1015
+  },
+  {
+   "rarity": -1,
+   "enh": 5,
+   "tier": 7,
+   "value": 1017
+  },
+  {
+   "rarity": -1,
+   "enh": 20,
+   "tier": 0,
+   "value": 1022
+  },
+  {
+   "rarity": -1,
+   "enh": 20,
+   "tier": 1,
+   "value": 1024
+  },
+  {
+   "rarity": -1,
+   "enh": 20,
+   "tier": 2,
+   "value": 1026
+  },
+  {
+   "rarity": -1,
+   "enh": 20,
+   "tier": 3,
+   "value": 1028
+  },
+  {
+   "rarity": -1,
+   "enh": 20,
+   "tier": 4,
+   "value": 1030
+  },
+  {
+   "rarity": -1,
+   "enh": 20,
+   "tier": 5,
+   "value": 1032
+  },
+  {
+   "rarity": -1,
+   "enh": 20,
+   "tier": 6,
+   "value": 1034
+  },
+  {
+   "rarity": -1,
+   "enh": 20,
+   "tier": 7,
+   "value": 1036
+  },
+  {
+   "rarity": 0,
+   "enh": 0,
+   "tier": 0,
+   "value": 1000
+  },
+  {
+   "rarity": 0,
+   "enh": 0,
+   "tier": 1,
+   "value": 1002
+  },
+  {
+   "rarity": 0,
+   "enh": 0,
+   "tier": 2,
+   "value": 1004
+  },
+  {
+   "rarity": 0,
+   "enh": 0,
+   "tier": 3,
+   "value": 1006
+  },
+  {
+   "rarity": 0,
+   "enh": 0,
+   "tier": 4,
+   "value": 1008
+  },
+  {
+   "rarity": 0,
+   "enh": 0,
+   "tier": 5,
+   "value": 1010
+  },
+  {
+   "rarity": 0,
+   "enh": 0,
+   "tier": 6,
+   "value": 1012
+  },
+  {
+   "rarity": 0,
+   "enh": 0,
+   "tier": 7,
+   "value": 1014
+  },
+  {
+   "rarity": 0,
+   "enh": 1,
+   "tier": 0,
+   "value": 1000
+  },
+  {
+   "rarity": 0,
+   "enh": 1,
+   "tier": 1,
+   "value": 1002
+  },
+  {
+   "rarity": 0,
+   "enh": 1,
+   "tier": 2,
+   "value": 1004
+  },
+  {
+   "rarity": 0,
+   "enh": 1,
+   "tier": 3,
+   "value": 1006
+  },
+  {
+   "rarity": 0,
+   "enh": 1,
+   "tier": 4,
+   "value": 1008
+  },
+  {
+   "rarity": 0,
+   "enh": 1,
+   "tier": 5,
+   "value": 1010
+  },
+  {
+   "rarity": 0,
+   "enh": 1,
+   "tier": 6,
+   "value": 1012
+  },
+  {
+   "rarity": 0,
+   "enh": 1,
+   "tier": 7,
+   "value": 1014
+  },
+  {
+   "rarity": 0,
+   "enh": 5,
+   "tier": 0,
+   "value": 1003
+  },
+  {
+   "rarity": 0,
+   "enh": 5,
+   "tier": 1,
+   "value": 1005
+  },
+  {
+   "rarity": 0,
+   "enh": 5,
+   "tier": 2,
+   "value": 1007
+  },
+  {
+   "rarity": 0,
+   "enh": 5,
+   "tier": 3,
+   "value": 1009
+  },
+  {
+   "rarity": 0,
+   "enh": 5,
+   "tier": 4,
+   "value": 1011
+  },
+  {
+   "rarity": 0,
+   "enh": 5,
+   "tier": 5,
+   "value": 1013
+  },
+  {
+   "rarity": 0,
+   "enh": 5,
+   "tier": 6,
+   "value": 1015
+  },
+  {
+   "rarity": 0,
+   "enh": 5,
+   "tier": 7,
+   "value": 1017
+  },
+  {
+   "rarity": 0,
+   "enh": 20,
+   "tier": 0,
+   "value": 1022
+  },
+  {
+   "rarity": 0,
+   "enh": 20,
+   "tier": 1,
+   "value": 1024
+  },
+  {
+   "rarity": 0,
+   "enh": 20,
+   "tier": 2,
+   "value": 1026
+  },
+  {
+   "rarity": 0,
+   "enh": 20,
+   "tier": 3,
+   "value": 1028
+  },
+  {
+   "rarity": 0,
+   "enh": 20,
+   "tier": 4,
+   "value": 1030
+  },
+  {
+   "rarity": 0,
+   "enh": 20,
+   "tier": 5,
+   "value": 1032
+  },
+  {
+   "rarity": 0,
+   "enh": 20,
+   "tier": 6,
+   "value": 1034
+  },
+  {
+   "rarity": 0,
+   "enh": 20,
+   "tier": 7,
+   "value": 1036
+  },
+  {
+   "rarity": 1,
+   "enh": 0,
+   "tier": 0,
+   "value": 2000
+  },
+  {
+   "rarity": 1,
+   "enh": 0,
+   "tier": 1,
+   "value": 2002
+  },
+  {
+   "rarity": 1,
+   "enh": 0,
+   "tier": 2,
+   "value": 2004
+  },
+  {
+   "rarity": 1,
+   "enh": 0,
+   "tier": 3,
+   "value": 2006
+  },
+  {
+   "rarity": 1,
+   "enh": 0,
+   "tier": 4,
+   "value": 2008
+  },
+  {
+   "rarity": 1,
+   "enh": 0,
+   "tier": 5,
+   "value": 2010
+  },
+  {
+   "rarity": 1,
+   "enh": 0,
+   "tier": 6,
+   "value": 2012
+  },
+  {
+   "rarity": 1,
+   "enh": 0,
+   "tier": 7,
+   "value": 2014
+  },
+  {
+   "rarity": 1,
+   "enh": 1,
+   "tier": 0,
+   "value": 2001
+  },
+  {
+   "rarity": 1,
+   "enh": 1,
+   "tier": 1,
+   "value": 2003
+  },
+  {
+   "rarity": 1,
+   "enh": 1,
+   "tier": 2,
+   "value": 2005
+  },
+  {
+   "rarity": 1,
+   "enh": 1,
+   "tier": 3,
+   "value": 2007
+  },
+  {
+   "rarity": 1,
+   "enh": 1,
+   "tier": 4,
+   "value": 2009
+  },
+  {
+   "rarity": 1,
+   "enh": 1,
+   "tier": 5,
+   "value": 2011
+  },
+  {
+   "rarity": 1,
+   "enh": 1,
+   "tier": 6,
+   "value": 2013
+  },
+  {
+   "rarity": 1,
+   "enh": 1,
+   "tier": 7,
+   "value": 2015
+  },
+  {
+   "rarity": 1,
+   "enh": 5,
+   "tier": 0,
+   "value": 2006
+  },
+  {
+   "rarity": 1,
+   "enh": 5,
+   "tier": 1,
+   "value": 2008
+  },
+  {
+   "rarity": 1,
+   "enh": 5,
+   "tier": 2,
+   "value": 2010
+  },
+  {
+   "rarity": 1,
+   "enh": 5,
+   "tier": 3,
+   "value": 2012
+  },
+  {
+   "rarity": 1,
+   "enh": 5,
+   "tier": 4,
+   "value": 2014
+  },
+  {
+   "rarity": 1,
+   "enh": 5,
+   "tier": 5,
+   "value": 2016
+  },
+  {
+   "rarity": 1,
+   "enh": 5,
+   "tier": 6,
+   "value": 2018
+  },
+  {
+   "rarity": 1,
+   "enh": 5,
+   "tier": 7,
+   "value": 2020
+  },
+  {
+   "rarity": 1,
+   "enh": 20,
+   "tier": 0,
+   "value": 2034
+  },
+  {
+   "rarity": 1,
+   "enh": 20,
+   "tier": 1,
+   "value": 2036
+  },
+  {
+   "rarity": 1,
+   "enh": 20,
+   "tier": 2,
+   "value": 2038
+  },
+  {
+   "rarity": 1,
+   "enh": 20,
+   "tier": 3,
+   "value": 2040
+  },
+  {
+   "rarity": 1,
+   "enh": 20,
+   "tier": 4,
+   "value": 2042
+  },
+  {
+   "rarity": 1,
+   "enh": 20,
+   "tier": 5,
+   "value": 2044
+  },
+  {
+   "rarity": 1,
+   "enh": 20,
+   "tier": 6,
+   "value": 2046
+  },
+  {
+   "rarity": 1,
+   "enh": 20,
+   "tier": 7,
+   "value": 2048
+  },
+  {
+   "rarity": 2,
+   "enh": 0,
+   "tier": 0,
+   "value": 10000
+  },
+  {
+   "rarity": 2,
+   "enh": 0,
+   "tier": 1,
+   "value": 10002
+  },
+  {
+   "rarity": 2,
+   "enh": 0,
+   "tier": 2,
+   "value": 10004
+  },
+  {
+   "rarity": 2,
+   "enh": 0,
+   "tier": 3,
+   "value": 10006
+  },
+  {
+   "rarity": 2,
+   "enh": 0,
+   "tier": 4,
+   "value": 10008
+  },
+  {
+   "rarity": 2,
+   "enh": 0,
+   "tier": 5,
+   "value": 10010
+  },
+  {
+   "rarity": 2,
+   "enh": 0,
+   "tier": 6,
+   "value": 10012
+  },
+  {
+   "rarity": 2,
+   "enh": 0,
+   "tier": 7,
+   "value": 10014
+  },
+  {
+   "rarity": 2,
+   "enh": 1,
+   "tier": 0,
+   "value": 10001
+  },
+  {
+   "rarity": 2,
+   "enh": 1,
+   "tier": 1,
+   "value": 10003
+  },
+  {
+   "rarity": 2,
+   "enh": 1,
+   "tier": 2,
+   "value": 10005
+  },
+  {
+   "rarity": 2,
+   "enh": 1,
+   "tier": 3,
+   "value": 10007
+  },
+  {
+   "rarity": 2,
+   "enh": 1,
+   "tier": 4,
+   "value": 10009
+  },
+  {
+   "rarity": 2,
+   "enh": 1,
+   "tier": 5,
+   "value": 10011
+  },
+  {
+   "rarity": 2,
+   "enh": 1,
+   "tier": 6,
+   "value": 10013
+  },
+  {
+   "rarity": 2,
+   "enh": 1,
+   "tier": 7,
+   "value": 10015
+  },
+  {
+   "rarity": 2,
+   "enh": 5,
+   "tier": 0,
+   "value": 10006
+  },
+  {
+   "rarity": 2,
+   "enh": 5,
+   "tier": 1,
+   "value": 10008
+  },
+  {
+   "rarity": 2,
+   "enh": 5,
+   "tier": 2,
+   "value": 10010
+  },
+  {
+   "rarity": 2,
+   "enh": 5,
+   "tier": 3,
+   "value": 10012
+  },
+  {
+   "rarity": 2,
+   "enh": 5,
+   "tier": 4,
+   "value": 10014
+  },
+  {
+   "rarity": 2,
+   "enh": 5,
+   "tier": 5,
+   "value": 10016
+  },
+  {
+   "rarity": 2,
+   "enh": 5,
+   "tier": 6,
+   "value": 10018
+  },
+  {
+   "rarity": 2,
+   "enh": 5,
+   "tier": 7,
+   "value": 10020
+  },
+  {
+   "rarity": 2,
+   "enh": 20,
+   "tier": 0,
+   "value": 10041
+  },
+  {
+   "rarity": 2,
+   "enh": 20,
+   "tier": 1,
+   "value": 10043
+  },
+  {
+   "rarity": 2,
+   "enh": 20,
+   "tier": 2,
+   "value": 10045
+  },
+  {
+   "rarity": 2,
+   "enh": 20,
+   "tier": 3,
+   "value": 10047
+  },
+  {
+   "rarity": 2,
+   "enh": 20,
+   "tier": 4,
+   "value": 10049
+  },
+  {
+   "rarity": 2,
+   "enh": 20,
+   "tier": 5,
+   "value": 10051
+  },
+  {
+   "rarity": 2,
+   "enh": 20,
+   "tier": 6,
+   "value": 10053
+  },
+  {
+   "rarity": 2,
+   "enh": 20,
+   "tier": 7,
+   "value": 10055
+  },
+  {
+   "rarity": 3,
+   "enh": 0,
+   "tier": 0,
+   "value": 20000
+  },
+  {
+   "rarity": 3,
+   "enh": 0,
+   "tier": 1,
+   "value": 20002
+  },
+  {
+   "rarity": 3,
+   "enh": 0,
+   "tier": 2,
+   "value": 20004
+  },
+  {
+   "rarity": 3,
+   "enh": 0,
+   "tier": 3,
+   "value": 20006
+  },
+  {
+   "rarity": 3,
+   "enh": 0,
+   "tier": 4,
+   "value": 20008
+  },
+  {
+   "rarity": 3,
+   "enh": 0,
+   "tier": 5,
+   "value": 20010
+  },
+  {
+   "rarity": 3,
+   "enh": 0,
+   "tier": 6,
+   "value": 20012
+  },
+  {
+   "rarity": 3,
+   "enh": 0,
+   "tier": 7,
+   "value": 20014
+  },
+  {
+   "rarity": 3,
+   "enh": 1,
+   "tier": 0,
+   "value": 20001
+  },
+  {
+   "rarity": 3,
+   "enh": 1,
+   "tier": 1,
+   "value": 20003
+  },
+  {
+   "rarity": 3,
+   "enh": 1,
+   "tier": 2,
+   "value": 20005
+  },
+  {
+   "rarity": 3,
+   "enh": 1,
+   "tier": 3,
+   "value": 20007
+  },
+  {
+   "rarity": 3,
+   "enh": 1,
+   "tier": 4,
+   "value": 20009
+  },
+  {
+   "rarity": 3,
+   "enh": 1,
+   "tier": 5,
+   "value": 20011
+  },
+  {
+   "rarity": 3,
+   "enh": 1,
+   "tier": 6,
+   "value": 20013
+  },
+  {
+   "rarity": 3,
+   "enh": 1,
+   "tier": 7,
+   "value": 20015
+  },
+  {
+   "rarity": 3,
+   "enh": 5,
+   "tier": 0,
+   "value": 20008
+  },
+  {
+   "rarity": 3,
+   "enh": 5,
+   "tier": 1,
+   "value": 20010
+  },
+  {
+   "rarity": 3,
+   "enh": 5,
+   "tier": 2,
+   "value": 20012
+  },
+  {
+   "rarity": 3,
+   "enh": 5,
+   "tier": 3,
+   "value": 20014
+  },
+  {
+   "rarity": 3,
+   "enh": 5,
+   "tier": 4,
+   "value": 20016
+  },
+  {
+   "rarity": 3,
+   "enh": 5,
+   "tier": 5,
+   "value": 20018
+  },
+  {
+   "rarity": 3,
+   "enh": 5,
+   "tier": 6,
+   "value": 20020
+  },
+  {
+   "rarity": 3,
+   "enh": 5,
+   "tier": 7,
+   "value": 20022
+  },
+  {
+   "rarity": 3,
+   "enh": 20,
+   "tier": 0,
+   "value": 20057
+  },
+  {
+   "rarity": 3,
+   "enh": 20,
+   "tier": 1,
+   "value": 20059
+  },
+  {
+   "rarity": 3,
+   "enh": 20,
+   "tier": 2,
+   "value": 20061
+  },
+  {
+   "rarity": 3,
+   "enh": 20,
+   "tier": 3,
+   "value": 20063
+  },
+  {
+   "rarity": 3,
+   "enh": 20,
+   "tier": 4,
+   "value": 20065
+  },
+  {
+   "rarity": 3,
+   "enh": 20,
+   "tier": 5,
+   "value": 20067
+  },
+  {
+   "rarity": 3,
+   "enh": 20,
+   "tier": 6,
+   "value": 20069
+  },
+  {
+   "rarity": 3,
+   "enh": 20,
+   "tier": 7,
+   "value": 20071
+  },
+  {
+   "rarity": 4,
+   "enh": 0,
+   "tier": 0,
+   "value": 50000
+  },
+  {
+   "rarity": 4,
+   "enh": 0,
+   "tier": 1,
+   "value": 50002
+  },
+  {
+   "rarity": 4,
+   "enh": 0,
+   "tier": 2,
+   "value": 50004
+  },
+  {
+   "rarity": 4,
+   "enh": 0,
+   "tier": 3,
+   "value": 50006
+  },
+  {
+   "rarity": 4,
+   "enh": 0,
+   "tier": 4,
+   "value": 50008
+  },
+  {
+   "rarity": 4,
+   "enh": 0,
+   "tier": 5,
+   "value": 50010
+  },
+  {
+   "rarity": 4,
+   "enh": 0,
+   "tier": 6,
+   "value": 50012
+  },
+  {
+   "rarity": 4,
+   "enh": 0,
+   "tier": 7,
+   "value": 50014
+  },
+  {
+   "rarity": 4,
+   "enh": 1,
+   "tier": 0,
+   "value": 50002
+  },
+  {
+   "rarity": 4,
+   "enh": 1,
+   "tier": 1,
+   "value": 50004
+  },
+  {
+   "rarity": 4,
+   "enh": 1,
+   "tier": 2,
+   "value": 50006
+  },
+  {
+   "rarity": 4,
+   "enh": 1,
+   "tier": 3,
+   "value": 50008
+  },
+  {
+   "rarity": 4,
+   "enh": 1,
+   "tier": 4,
+   "value": 50010
+  },
+  {
+   "rarity": 4,
+   "enh": 1,
+   "tier": 5,
+   "value": 50012
+  },
+  {
+   "rarity": 4,
+   "enh": 1,
+   "tier": 6,
+   "value": 50014
+  },
+  {
+   "rarity": 4,
+   "enh": 1,
+   "tier": 7,
+   "value": 50016
+  },
+  {
+   "rarity": 4,
+   "enh": 5,
+   "tier": 0,
+   "value": 50012
+  },
+  {
+   "rarity": 4,
+   "enh": 5,
+   "tier": 1,
+   "value": 50014
+  },
+  {
+   "rarity": 4,
+   "enh": 5,
+   "tier": 2,
+   "value": 50016
+  },
+  {
+   "rarity": 4,
+   "enh": 5,
+   "tier": 3,
+   "value": 50018
+  },
+  {
+   "rarity": 4,
+   "enh": 5,
+   "tier": 4,
+   "value": 50020
+  },
+  {
+   "rarity": 4,
+   "enh": 5,
+   "tier": 5,
+   "value": 50022
+  },
+  {
+   "rarity": 4,
+   "enh": 5,
+   "tier": 6,
+   "value": 50024
+  },
+  {
+   "rarity": 4,
+   "enh": 5,
+   "tier": 7,
+   "value": 50026
+  },
+  {
+   "rarity": 4,
+   "enh": 20,
+   "tier": 0,
+   "value": 50078
+  },
+  {
+   "rarity": 4,
+   "enh": 20,
+   "tier": 1,
+   "value": 50080
+  },
+  {
+   "rarity": 4,
+   "enh": 20,
+   "tier": 2,
+   "value": 50082
+  },
+  {
+   "rarity": 4,
+   "enh": 20,
+   "tier": 3,
+   "value": 50084
+  },
+  {
+   "rarity": 4,
+   "enh": 20,
+   "tier": 4,
+   "value": 50086
+  },
+  {
+   "rarity": 4,
+   "enh": 20,
+   "tier": 5,
+   "value": 50088
+  },
+  {
+   "rarity": 4,
+   "enh": 20,
+   "tier": 6,
+   "value": 50090
+  },
+  {
+   "rarity": 4,
+   "enh": 20,
+   "tier": 7,
+   "value": 50092
+  },
+  {
+   "rarity": 5,
+   "enh": 0,
+   "tier": 0,
+   "value": 50000
+  },
+  {
+   "rarity": 5,
+   "enh": 0,
+   "tier": 1,
+   "value": 50002
+  },
+  {
+   "rarity": 5,
+   "enh": 0,
+   "tier": 2,
+   "value": 50004
+  },
+  {
+   "rarity": 5,
+   "enh": 0,
+   "tier": 3,
+   "value": 50006
+  },
+  {
+   "rarity": 5,
+   "enh": 0,
+   "tier": 4,
+   "value": 50008
+  },
+  {
+   "rarity": 5,
+   "enh": 0,
+   "tier": 5,
+   "value": 50010
+  },
+  {
+   "rarity": 5,
+   "enh": 0,
+   "tier": 6,
+   "value": 50012
+  },
+  {
+   "rarity": 5,
+   "enh": 0,
+   "tier": 7,
+   "value": 50014
+  },
+  {
+   "rarity": 5,
+   "enh": 1,
+   "tier": 0,
+   "value": 50002
+  },
+  {
+   "rarity": 5,
+   "enh": 1,
+   "tier": 1,
+   "value": 50004
+  },
+  {
+   "rarity": 5,
+   "enh": 1,
+   "tier": 2,
+   "value": 50006
+  },
+  {
+   "rarity": 5,
+   "enh": 1,
+   "tier": 3,
+   "value": 50008
+  },
+  {
+   "rarity": 5,
+   "enh": 1,
+   "tier": 4,
+   "value": 50010
+  },
+  {
+   "rarity": 5,
+   "enh": 1,
+   "tier": 5,
+   "value": 50012
+  },
+  {
+   "rarity": 5,
+   "enh": 1,
+   "tier": 6,
+   "value": 50014
+  },
+  {
+   "rarity": 5,
+   "enh": 1,
+   "tier": 7,
+   "value": 50016
+  },
+  {
+   "rarity": 5,
+   "enh": 5,
+   "tier": 0,
+   "value": 50012
+  },
+  {
+   "rarity": 5,
+   "enh": 5,
+   "tier": 1,
+   "value": 50014
+  },
+  {
+   "rarity": 5,
+   "enh": 5,
+   "tier": 2,
+   "value": 50016
+  },
+  {
+   "rarity": 5,
+   "enh": 5,
+   "tier": 3,
+   "value": 50018
+  },
+  {
+   "rarity": 5,
+   "enh": 5,
+   "tier": 4,
+   "value": 50020
+  },
+  {
+   "rarity": 5,
+   "enh": 5,
+   "tier": 5,
+   "value": 50022
+  },
+  {
+   "rarity": 5,
+   "enh": 5,
+   "tier": 6,
+   "value": 50024
+  },
+  {
+   "rarity": 5,
+   "enh": 5,
+   "tier": 7,
+   "value": 50026
+  },
+  {
+   "rarity": 5,
+   "enh": 20,
+   "tier": 0,
+   "value": 50078
+  },
+  {
+   "rarity": 5,
+   "enh": 20,
+   "tier": 1,
+   "value": 50080
+  },
+  {
+   "rarity": 5,
+   "enh": 20,
+   "tier": 2,
+   "value": 50082
+  },
+  {
+   "rarity": 5,
+   "enh": 20,
+   "tier": 3,
+   "value": 50084
+  },
+  {
+   "rarity": 5,
+   "enh": 20,
+   "tier": 4,
+   "value": 50086
+  },
+  {
+   "rarity": 5,
+   "enh": 20,
+   "tier": 5,
+   "value": 50088
+  },
+  {
+   "rarity": 5,
+   "enh": 20,
+   "tier": 6,
+   "value": 50090
+  },
+  {
+   "rarity": 5,
+   "enh": 20,
+   "tier": 7,
+   "value": 50092
+  }
+ ]
+}

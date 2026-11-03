@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Exoduser.UnityPort.Core;
 namespace Exoduser.UnityPort {
- public enum NativeMinimapObjectiveKind { Hole,Angler,Gate }
+ public enum NativeMinimapObjectiveKind { Hole,Angler,Gate,Region }
  public readonly struct NativeMinimapObjective {
   public readonly NativeMinimapObjectiveKind Kind;public readonly int Index;public readonly double X,Y;public readonly float Radius;public readonly string Color;public readonly bool Unlocked;
   public NativeMinimapObjective(NativeMinimapObjectiveKind kind,int index,double x,double y,float radius,string color,bool unlocked=false){Kind=kind;Index=index;X=x;Y=y;Radius=radius;Color=color;Unlocked=unlocked;}
@@ -17,6 +17,11 @@ namespace Exoduser.UnityPort {
    if(result==null)throw new ArgumentNullException(nameof(result));result.Clear();
    if(sim==null||!sim.Stage.Enabled||sim.Stage.InArena)return;
    if(sim.Regions!=null){
+    for(int i=0;i<sim.Regions.Length;i++)if(!sim.Regions[i].Cleared){
+     double x0=(i&1)==0?0:sim.RegMidX,x1=(i&1)==0?sim.RegMidX:sim.MapTilesWide;
+     double y0=i<2?0:sim.RegMidY,y1=i<2?sim.RegMidY:sim.MapTilesHigh;
+     result.Add(new NativeMinimapObjective(NativeMinimapObjectiveKind.Region,i,(x0+x1)*.5*StageFlow.T,(y0+y1)*.5*StageFlow.T,5,"#b7a681"));
+    }
     if(sim.Config.StageIndex==0&&sim.FieldBossesEnabled&&!sim.Stage.FieldBossDone){
      if(sim.FieldBosses!=null){foreach(var fb in sim.FieldBosses)if(fb!=null&&fb.Hp>0&&Finite(fb.X)&&Finite(fb.Y))result.Add(new NativeMinimapObjective(NativeMinimapObjectiveKind.Angler,fb.Index,fb.X,fb.Y,3,Simulation.ElementColor(fb.El)));}
      else if(!sim.FieldBossSpawned)for(int i=0;i<4;i++)result.Add(new NativeMinimapObjective(NativeMinimapObjectiveKind.Angler,i,(sites[i,0]+.5)*StageFlow.T,(sites[i,1]+.5)*StageFlow.T,3,Simulation.ElementColor(elements[i])));

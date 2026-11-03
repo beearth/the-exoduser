@@ -233,7 +233,7 @@ namespace Exoduser.UnityPort.Core
         }
 
         // hurtE: the oracle-checked Core head + middle (EnemyHurt) and, at zero HP, the death part (EnemyHurt.DeathHead + DeathTail, Simulation.Death.cs).
-        private void ApplyEnemyDamage(EnemyState enemy, int damage, float angle, bool poiseHit, float knockbackMultiplier, bool dot = false, bool shieldHit = false, double typeDamagePct = 0, double critRateBonus = 0, bool arrow = false, int atkEl = 0, bool iceBlade = false, bool blueBean = false, bool parryBlueBean = false, bool magicHit = false, double? poiseMult = null)
+        private void ApplyEnemyDamage(EnemyState enemy, int damage, float angle, bool poiseHit, float knockbackMultiplier, bool dot = false, bool shieldHit = false, double typeDamagePct = 0, double critRateBonus = 0, bool arrow = false, int atkEl = 0, bool iceBlade = false, bool blueBean = false, bool parryBlueBean = false, bool magicHit = false, double? poiseMult = null, bool visualImpact = true)
         {
             if (enemy == null || !enemy.Alive || enemy.Hp <= 0) return;
             // Source parryLesson.hurtEnemy: a valid hit defeats this lesson actor
@@ -256,6 +256,12 @@ namespace Exoduser.UnityPort.Core
             SyncFromWeb(enemy, web); ApplyHurtPlayerBack(player);
             int total = (int)((shieldBefore - enemy.Shield) + (hpBefore - enemy.Hp));
             LastHitDamage = total; TotalDamage += total; BossPainCheck(enemy);
+            // Presentation only. Audio notifications are throttled and noImpact is
+            // deliberately true above; neither may suppress the actual hit art.
+            if (visualImpact && !dot && total > 0)
+                Feedback.Enqueue(new FeedbackEvent { Kind = head._isCrit ? FeedbackKind.EnemyCrit : enemy.IsBoss ? FeedbackKind.BossHit : FeedbackKind.EnemyHit,
+                    VisualOnly = true, Source = "combat-impact", Tick = TickCount, TargetId = enemy.Id, X = enemy.X, Y = enemy.Y,
+                    Angle = angle, Element = atkEl, Size = enemy.Radius, IsBoss = enemy.IsBoss });
             if (enemy.Hp <= 0) OnEnemyZeroHp(enemy, context, web, angle, opts, body);
             if (live) { web.alive = enemy.Alive; web.hp = enemy.Hp; }
         }

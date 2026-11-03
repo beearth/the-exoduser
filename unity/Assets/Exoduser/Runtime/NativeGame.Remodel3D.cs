@@ -148,7 +148,7 @@ namespace Exoduser.UnityPort
             var tilt = Quaternion.Euler(pitch * Mathf.Rad2Deg, 0, 0);
             foreach (var sr in FindObjectsByType<SpriteRenderer>(FindObjectsSortMode.None))
             {
-                if (sr != null && (Exoduser.UnityPort.Vfx.NativeImpactView.IsContactSprite(sr)||NativeGroundSkillSurface.Project(sr))) continue;
+                if (sr != null && (Exoduser.UnityPort.Vfx.NativeImpactView.IsContactSprite(sr)||Exoduser.UnityPort.Vfx.CombatImpactView.IsSprite(sr)||NativeGroundSkillSurface.Project(sr))) continue;
                 if (sr == null || !sr.enabled || sr.sprite == null || sr.gameObject.scene == r3Scene) continue;
                 var tr = sr.transform;
                 r3Base[sr] = new R3Base { localPosition = tr.localPosition, localRotation = tr.localRotation };
