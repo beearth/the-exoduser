@@ -57853,3 +57853,5 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 - 야간 A2R ①: 맵 총괄 c29d154c1 CoversCircle 빌드/실제 sight-1·2·탄 구멍 확인, Player58eff38d PASS. ②~⑥ 계속, 바로가기 미변경.
 
 - 야간 ② 바닥 투영 2차: 기존 투영이 Field.TerrainHeight+1.2cm라 GroundY+1.2cm 원화 지면에 묻히거나 깊이가 겹쳤다. 원래 XY/크기/텍스처 그대로 실제 GroundY+2.8cm/renderQueue2480으로 지형에 붙인다. Core 도보가 막히면 02:10 허용 QA 카메라 시점만 이동하며 Core 위치 불변을 별도 영수증에 쓴다. 컴파일0. ② 두 번째 촬영이며 실패하면 해당 항목만 멈추고③계속.
+
+- 야간 A2R ②: 3967a7562 실제 지면 위 독 웅덩이 투영 확인, Player083e529d PASS. NIGHT_2_FLOOR.md, ③3D배치 계속.

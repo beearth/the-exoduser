@@ -257,3 +257,8 @@ proof-a2r-r2255-vs-4895bf9c6.png / proof-a2r-r2255-diagnostics.png 직접 확인
 ## 야간 ② 바닥 투영 2차
 
 기존 투영이 Field.TerrainHeight+1.2cm라 GroundY+1.2cm 원화 지면에 묻히거나 깊이가 겹쳤다. 원래 XY/크기/텍스처 그대로 실제 GroundY+2.8cm/renderQueue2480으로 지형에 붙인다. Core 도보가 막히면 02:10 허용 QA 카메라 시점만 이동하며 Core 위치 불변을 별도 영수증에 쓴다. 컴파일0. ② 두 번째 촬영이며 실패하면 해당 항목만 멈추고③계속.
+
+
+### 야간 ② 실제 투영 확인
+
+빌드3967a7562/공용30403420/Player083e529d exit0. 실제 GroundY+2.8cm 보정 후 독 웅덩이 원화가 지면에 누워 보임을 1920·3840/1x로 확인했다. Core 도보 도착/QA카메라 미사용/순간이동0. 바닥형4개 투영상태·세운바닥형0, 나머지3종 별도현장컷 미촬영. 증명 I:/EXODUSER-Storage/map25d/a2redesign/NIGHT_2_FLOOR.md. 맵 총괄 판정 전/바로가기 미변경, ③계속.
