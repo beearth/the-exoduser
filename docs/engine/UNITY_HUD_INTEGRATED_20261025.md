@@ -42,3 +42,15 @@ ROOT 시각 인수(source9dd5991057da5d8db116e4fae73db6f258ca6a77): 실제720/10
 통합 `1afffb9`의 `startup-capture-1afffb9/startup-gameplay-hud-720p.png`와 `startup-gameplay-hud-1080p.png`를 직접 확인했다. ROOT는 공통 받침·연결 실루엣을 인수 가능으로 판단했다. 720p에서 LMB/RMB/Shift가 연속 문자열처럼 붙는 문제는 기존 각 label이 키판폭 끝까지 채워졌기 때문이다. 위 좌우3px 내용 inset만 추가했으며 key13문자·키판·hitrect·ArtScale·원본이미지·수치는 유지한다. 이 라벨 후보의 실제 PNG는 ROOT의 다음 통합 빌드에서 확인하며, worker의 GPU/GUI/빌드·기존 suite 재실행은 없다. 현재 라벨 최종 시각 인수는 대기다.
 
 10/26 후속 보정 실행 인수: [낮고 투명한 HUD](UNITY_MAC_HUD_BLEND_20261026.md)와 [영수증](UNITY_MAC_HUD_BLEND_ACCEPTANCE_20261026.json).9dd의큰판은최종안에서대체됨. 새4PNG/55검사통과,OS마우스callback확인은남음.
+
+## 2026-11-03 기동게이지 표시 이식 (사용자 "왜 기동게이지가 안나오냐 유니티버전")
+
+원인: 웹은 기동게이지(`_harpGauge/_HARP_GAUGE_MAX`)를 MP 구슬 둘레 고리와 Shift 홀드·사슬 이동 중 머리 위 숫자+막대로 보여 주는데, Unity는 Shift 슬롯 아래 3px 막대만 이식돼 사실상 안 보였다.
+
+| 웹 원본 | Unity 구현 | 값 |
+|---|---|---|
+| `#mobilityRing` + `.mobility-ring-ticks` (MP 구슬, `globe-ring-wrap` inset 11px·translateY 5%) | `HudOrb.shader` `_Mode` 4 → RenderTexture `Mobility ring`, `NativeHud.Globe(right)`에서 HP 보호막 고리와 같은 사각형(액체+11, +18.65, 153×153 ×0.9) | 홈 rgba(0,0,0,.28) 4px, 채움 rgba(207,204,198,.95) 위에서 시계 방향, 칸 눈금 rgba(18,12,3,.9) 3° — Shift 1칸 = `ChainDash.GaugeCost[1]`(45)/`HarpGaugeMax`, -90°부터. 값이 바뀔 때만 Blit |
+| 머리 위 "gauge/max" + 32px 막대 (`_dashHold‖_harpActive‖_dashActive`) | `NativeGame.MobilityGauge.cs` `DrawMobilityOverhead()`, `DrawFieldBossBars()` 뒤 | 발밑 화면점 +118px×(화면높이/1080), 막대 36×3, 색 ≥100% #44ffaa · >50% #88ccff · >20% #ffaa44 · 이하 #ff4444 |
+| Shift 슬롯 아래 3px 막대 | 기존 `DrawChainGauge` 유지 | — |
+
+검수: `--unity-hud-smoke`에 기동게이지 가득/53%(Shift 홀드)/빈 상태 추가, 숨은 데스크톱 플레이어 1920×1080 캡처(`tmp/design-review/20261103_mobility_ring/`). 고리 채움·눈금·빈 홈, 머리 위 게이지 위치 1x 확인.

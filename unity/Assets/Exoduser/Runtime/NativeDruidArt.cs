@@ -88,19 +88,18 @@ namespace Exoduser.UnityPort
             sprites[key] = s; return s;
         }
 
-        // _druidPoisonFly: proj_firedevil_orb.png (4x4, 16 frames) turned grey, multiplied by #66dd22, original alpha kept
+        // Precolored enemy-poison ramp, 4x4/16f. Keep the original integer-cell origin.
         public static Sprite PoisonShot(int frame)
         {
             string key = "poisonShot:" + frame;
             Sprite s; if (sprites.TryGetValue(key, out s) && s != null) return s;
-            var t = Tex(VfxDir + "proj_firedevil_orb"); int cw = t.width / 4, ch = t.height / 4;
+            var t = Tex(VfxDir + "druid_poison_orb"); int cw = t.width / 4, ch = t.height / 4;
             var src = t.GetPixels32(); var px = new Color32[cw * ch];
             int ox = frame % 4 * cw, oy = (3 - frame / 4) * ch;
             for (int y = 0; y < ch; y++) for (int x = 0; x < cw; x++)
             {
                 var c = src[(oy + y) * t.width + ox + x];
-                float g = (c.r * .299f + c.g * .587f + c.b * .114f) / 255f;   // canvas filter grayscale(1) uses the same luma weights
-                px[y * cw + x] = new Color32((byte)Mathf.RoundToInt(g * 0x66), (byte)Mathf.RoundToInt(g * 0xdd), (byte)Mathf.RoundToInt(g * 0x22), c.a);
+                px[y * cw + x] = c;
             }
             var cell = new Texture2D(cw, ch, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp };
             cell.SetPixels32(px); cell.Apply(false, true);

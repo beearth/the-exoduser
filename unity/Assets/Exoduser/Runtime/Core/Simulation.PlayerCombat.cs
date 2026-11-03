@@ -193,7 +193,28 @@ namespace Exoduser.UnityPort.Core
             return false;
         }
 
-        private void ApplyParrySuccess(bool qParry, double resourceMul = 1, string parryEl = null)   // ResourceMul / ParryEl: the doParry arguments of a reflected bullet (ParryReflect)
+        // M1's additional shield-parry shot is a no-tick probe, not another
+        // gameplay contact. Keep its real feedback, but restore rewards AND the
+        // dodge draw HurtPlayer makes before checking the parry window.
+        public Action CaptureParryProbeState()
+        {
+            if (Random01 != null || Player.State != "sBash" ||
+                !ParryRules.IsParryWindow(Player.State, Player.StateTicks, 0, SbParryT, CapeParry))
+                throw new InvalidOperationException("Parry capture requires the native RNG and an active shield-strike window.");
+            var p = Player;
+            float hp = p.Hp, shield = p.Shield, stamina = p.Stamina, mana = p.Mana, poise = p.Poise, iframes = p.Iframes, stateTicks = p.StateTicks;
+            string state = p.State;
+            double rage = Rage, harp = HarpGauge, lastHp = LastParryHp;
+            int materials = Materials, parries = ParryCount, dodges = DodgeCount;
+            uint rng = randomState;
+            return () => {
+                p.Hp = hp; p.Shield = shield; p.Stamina = stamina; p.Mana = mana; p.Poise = poise; p.Iframes = iframes; p.State = state; p.StateTicks = stateTicks;
+                Rage = rage; HarpGauge = harp; LastParryHp = lastHp;
+                Materials = materials; ParryCount = parries; DodgeCount = dodges; randomState = rng;
+            };
+        }
+
+        private void ApplyParrySuccess(bool qParry, double resourceMul = 1, string parryEl = null, string visualSource = null, float? visualX = null, float? visualY = null)   // trailing parameters are presentation only
         {
             var r = ParryRewards.Apply(new ParryRewards.Input
             {
@@ -204,7 +225,8 @@ namespace Exoduser.UnityPort.Core
             Player.Iframes = (float)r.Iframes; Player.Hp = (float)r.Hp; Player.Stamina = (float)r.St; Player.Mana = (float)r.Mp; Player.Poise = (float)r.Poise; HarpGauge = r.HarpGauge; AddMalice((int)r.Mats - Materials); SetRage(r.Rage);
             ParryCount++; LastParryHp = r.Hp;
             // RM-1 sound: web doParry plays q_parry for a Q parry (_forceQ || sBlock || peaceShield || _sbParryT>0) and sword_parry + sword_back otherwise (Step 1 = Q parry)
-            Feedback.Enqueue(new FeedbackEvent { Kind = FeedbackKind.Parry, Step = (qParry || Player.State == "sBlock" || Player.State == "peaceShield" || SbParryT > 0) ? 1 : 0, Tick = TickCount, X = Player.X, Y = Player.Y });
+            Feedback.Enqueue(new FeedbackEvent { Kind = FeedbackKind.Parry, Step = (qParry || Player.State == "sBlock" || Player.State == "peaceShield" || SbParryT > 0) ? 1 : 0, Tick = TickCount, X = visualX ?? Player.X, Y = visualY ?? Player.Y,
+                Source = visualSource, SampleKey = parryEl, Angle = Player.Facing });
             RaisePlayerText(Player.X, Player.Y - 42, "PARRY!", "#ffdd00", 45);   // web '⚡PARRY!' (addTxt 45f)
         }
 

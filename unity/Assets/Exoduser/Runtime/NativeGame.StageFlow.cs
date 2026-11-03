@@ -46,7 +46,8 @@ namespace Exoduser.UnityPort
                 switch (e.Kind)
                 {
                     case StageEventKind.GateUnlocked:
-                        WorldTextAdd(e.X, e.Y - 60, "지옥문이 열렸습니다", "The Hell Gate has opened", new Color(.55f, .75f, .95f), 3f); break;
+                        string gateNotice=NativeHellGateLabels.OpenNotice(lobby.Language);
+                        WorldTextAdd(e.X, e.Y - 60, gateNotice, gateNotice, new Color(.55f, .75f, .95f), 3f); break;
                     case StageEventKind.GateSealed:        // web 42106 addTxt: the floating text is not on the web's draw whitelist (55092-55100: only 시전/그로기/무적/CRIT/사망/탈출 pass outside the test bed),
                     case StageEventKind.GateAnglerBlocked: // so the web player only sees the portal label ("▼ 지옥문 봉인 (지역 N/4) ▼", NativeRegionHud.DrawGateLabel); the event stays for logs / harness
                         break;
@@ -132,9 +133,9 @@ namespace Exoduser.UnityPort
             foreach (var t in worldTexts)
             {
                 var pt = ToGUI(t.x, t.y); float a = Mathf.Clamp01((t.until - Time.unscaledTime) / .5f);
-                var c = t.color; c.a = a; var st = center; var keep = st.normal.textColor;
+                var c = t.color; c.a = a; var st = center; var keep = st.normal.textColor;var keepFont=st.font;st.font=NativeSilverHellUi.TextFont(keepFont,t.text);
                 st.normal.textColor = new Color(0, 0, 0, .85f * a); NativeUiAudit.Label(new Rect(pt.x - 301, pt.y - 49, 600, 40), t.text, st);
-                st.normal.textColor = c; NativeUiAudit.Label(new Rect(pt.x - 300, pt.y - 50, 600, 40), t.text, st); st.normal.textColor = keep;
+                st.normal.textColor = c; NativeUiAudit.Label(new Rect(pt.x - 300, pt.y - 50, 600, 40), t.text, st); st.normal.textColor = keep;st.font=keepFont;
             }
             if (flow.InArena && flow.Exits.Count > 0 && !flow.StageCleared)
             {
