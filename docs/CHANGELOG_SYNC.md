@@ -1,3 +1,5 @@
+2026-11-03 20:45 지시 2_3 사실 동기화: 무지개 반사×1.5·AoE0 폴백(기본 반경100/중심×1.5)과 Unity A안 보상 분리를 main·G2 브랜치와 같은 본문으로 동기화. 구현 커밋 f6ff63e333d6b6a15aeac28ef3b824eb22f3b223는 codex/unity-parry-g2-20261103에 있으며 Mac 검수·총괄 병합 대기다. 이 커밋은 docs 2개뿐이며 게임 코드는 변경하지 않는다.
+
 2026-11-03 21:40 PC Player 차단·무음 누수 수정(사용자 "백그라운드 테스트 사운드가 들린다, 맥에서만"): exo-unity player는 -PcException buildloop|cto-swap|candidate 없으면 거부, BuildLoop·UI 겹침 check.ps1은 buildloop로 넘김. 원인=--unity-mute를 M1 스모크·캡처별 EarlyMute만 따라 UI 겹침 검사 모드에서 소리 발생 → Runtime NativeMuteGuard가 모든 모드에서 AudioListener.volume=0·Direct 영상 mute. 문서 unity/Tools/devtools/README.md.
 
 2026-11-03 21:00 BuildLoop 재직렬화 정체 수정: 빌드가 다시 쓰는 Unity 직렬화 추적 파일(.meta·.mat·.asset·.unity)만 남은 작업본은 버리지 않고 진행, 새 커밋과 겹치면 목록으로 중단. 원인=guid만 커밋된 .meta 824개·손으로 쓴 재질 29개·URP prefilter·MakeScene의 FirstPlayable.unity 저장. 문서 unity/Tools/devtools/buildloop/README.md.
