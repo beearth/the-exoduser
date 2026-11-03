@@ -89,3 +89,20 @@
 | 검사 | 미가중 0, 뼈 34, `idle` 2.0초·`walk` 1.0667초 유지, 발광 0.016~0.019% |
 | 비교판 | `G:/exoduser/tmp/design-review/20261104_boss_1-1_oldman_cleanup/v7_1_walk_side_compare_before_after.png`(위 v7, 아래 v7.1, 옆 3x) |
 | 남은 결함(RETOUCH) | ① 걷기 옆 p25·p75에서 치마 끝단 깃털이 짧은 가로 막대처럼 뜬다(한 장씩 단단히 움직임). ② 다리가 뒤로 스칠 때 치마를 뚫는다. 둘 다 34° 1x에서의 크기는 Mac 캡처로 판정하고, 보이면 Unity 쪽 `CapeSpring` 계열 2차 움직임이나 깃털 카드 연결로 고친다. ③ `Chain_L`은 형상이 없어 가중 0 |
+
+## 8. 7기술 동작 클립 — 이름·틱 계약 (2026-11-04 2시, 제작 중: v7.2 치마 수정 → v8)
+
+- 산출 예정: `I:/EXODUSER-Storage/boss/oldman-v2-20261104/v8/oldman_druid_v8.glb`(idle·walk + 아래 클립). 완성되면 이 절에 SHA·발 미끄러짐 수치를 적는다.
+- 새 클립은 **60fps, 1프레임 = Core 1틱**이고 기술마다 **단계별로 나뉜다**. 레인은 Core 상태(예고·발동·회복 틱)에 맞춰 단계 클립을 잇고, Core 값이 바뀌면(RM1 §13.4 RB1-7 변경표) 단계 재생 속도 = 클립 길이 ÷ Core 틱으로 맞춘다. Core 수치·판정은 바꾸지 않는다.
+- 아래 길이는 현재 Core(`DruidRemodelData.cs` unity/main 5ce03758f) 값이다.
+- 제작 규칙(보스 보드 §8.5.1, 노레위): 발동 첫 프레임 = 타격 자세, 예고·발동 중 두 발 고정(루트 표시 클립만 이동), 회복 최저 자세는 회복 길이 1/3 이하, 왼손은 지팡이를 놓지 않음(내려찍기만 두 손), 보조본은 2차 움직임. 단계 끝 자세 = 다음 단계 첫 자세, `*_rec` 끝 = `idle` 첫 자세.
+
+| # | Core 기술 | 클립(길이 f) | Core 근거 |
+|---|---|---|---|
+| 1 | `slashCombo`(1·2타 패링 가능, 3타 불가) | `slash1_tele`(32) → `slash1_act`(8, 6f째 타격) → `slash2_tele`(24) → `slash2_act`(8) → `slash3_tele`(24) → `slash3_act`(8, 지팡이 큰 내려베기) → `slash_rec`(80) | Moves[0] tele 32·rec 80, `SlashActive 8`·`SlashHitAt 6`·`SlashLinkTele 24` |
+| 2 | `slam` | `slam_tele`(48, 두 손 지팡이 들기) → `slam_act`(6) → `slam_rec`(70) | Moves[1] 48/70, `SlamActive 6` |
+| 3 | `charge` | `charge_tele`(54) → `charge_run`(40 반복, 루트) → `charge_rec`(70) | Moves[2] 54/70, `ChargeTicks 40` |
+| 4 | `grab` | `grab_tele`(60) → `grab_lunge`(18, 루트) → 잡힘 `grab_hold`(120 반복) → `grab_throw`(60) / 빗나감 `grab_miss_rec`(80) | Moves[5] 60/80, `GrabLungeTicks 18`, `GrabTicks 120`, `GrabHeldRecovery 60`, `GrabMissRecovery 80` |
+| 5 | `burrowStrike` | `burrow_dive`(50, 루트 아래) → `burrow_erupt_warn`(30) → `burrow_erupt`(6) → `burrow_rec`(70) | Moves[6] 50/70, `BurrowEruptWarn 30`, `BurrowEruptPost 6` |
+| 6 | `groundFissure` | `fissure_tele`(40) → `fissure_act`(20, 꽂고 버팀) → `fissure_rec`(60) | Moves[3] 40/60(즉시형, 균열 이동은 VFX) |
+| 7 | `heartbeat`(강제, P3) | `heart_tele`(90) → `heart_beat`(60)×3 사이 `heart_pause`(30) → `heart_rec`(90) | Moves[11] 90/90, `HeartbeatBeats 3`·`BeatWind 60`·`Pause 30`·`Recover 90` |
