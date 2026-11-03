@@ -203,3 +203,51 @@ END
 - 검사: combat-impact **508 checks 0 failures**(탄 패링 시트 0개·스파크 개수·섬광 없음 포함), blood-dark PASS, Runtime Roslyn 오류 0(249 소스), m1-parry 11개 중 실패 2건은 기존 09c 오프라인 하네스(위 「09c 회귀 조사」)와 같은 것.
 - 판정: PC는 컴파일까지. Mac M1 06(06-parry-q-shake/pushin·06-parry-shield)·07e(탄 패링 장면 있으면) 1x·3x 판정 뒤 병합.
 - 규칙 쪽(패링 판정 창·보상·히트스톱·적 밀림)은 이 브랜치가 건드리지 않는다. 손맛 결함은 유니티 총괄에 따로 전달.
+
+
+## U-VFX-05 — 기검참 접점·얇은 초승달·명중 흔들림 (2026-11-03 PC 후속)
+
+기준 HEAD d37fb2a0ddd1a17c98ddb6454e26f980aae612b2, 브랜치 claude/unity-pc-vfx-ki-20261103, 작업본 G:/exoduser-wt/codex-vfx-ki. 후속 브리프 I:/EXODUSER-Storage/codex-runs/20261103-205915_vfx-ki-2/prompt.md에 따라 1차 미커밋 변경을 이어서 직접 수정했다. **stage·commit·push·fetch·Unity·브라우저·유료 API·외부 쓰기·영구 삭제 없음.** 시작 HEAD는 로컬 origin/unity/main보다 2커밋 뒤였고, 마감 status에서는 공유 원격 추적 ref가 갱신되어 13커밋 뒤로 표시됐다. 브랜치 전환·병합은 하지 않았으며 원격 최신 여부와 해당 추가 커밋 통합 결과는 미확인이다. LANES에 개별 소유 행이 없어 두 브리프를 소유 범위로 사용했다. 프로세스 조회는 접근 거부여서 생존·잠금 상태를 확정하지 않는다.
+
+### 목표와 실제 경로
+
+목표는 기존 04-attack의 오래 남는 두꺼운 회백 초승달을 줄이고, 실제 KiSlashHit에 5틱 코어·방향성 선 스파크·작은 명중 반동을 넣는 것이다. G1 §3·§8 및 PBZ·도타2 실측 R1·R4·R5를 기준으로 기존 원화·가산 재질을 재사용한다. 이번에 원본 게임 클립·04-attack Player 캡처를 다시 열지는 않았다. 원본 초승달 PNG는 직접 열어 오른쪽 앞날을 확인했다. 실제 카메라 판정은 Mac G2/G4에 남긴다.
+
+- 일반 게임은 NativeGame.Awake → KiSlashView, Art/vfx/ki_slash_silver_sheet를 사용한다. NativeSkillRemaster.Enabled=false여서 이 경로가 기본이다.
+- Vfx/KiSlashVfxView.cs(RM1 Graph)는 생성자 호출이 없고 미연결 NativeGame.VfxCheck.cs의 인자로만 등장한다. 현재 일반 게임에 사용되지 않아 수정하지 않았다. 향후 활성화 시 같은 표시 규칙 이식이 필요하다.
+- Core 기검참은 ShakeAmount를 만들지 않는다. 기존 큰 반동은 HP 감소 관찰기 NativeImpactView → ImpactResponse에서 발생한다(일반 .022world=2.2px, heavy .045world=4.5px). 평면은 projection, 원근은 NativeGame.Impact.cs → ImpactCameraOffset → Remodel3DLate에서 적용된다. 이 부분 클래스의 카메라 누적부도 이번 수정 범위에 포함했다. 공용 ImpactResponse·NativeImpactView·CombatImpactView/Timeline은 수정하지 않았다.
+
+### 파일별 최종 표시 계약
+
+| 파일 | 변경 |
+|---|---|
+| Runtime/KiImpactView.cs | 1차 코어 유지: 5틱(첫 틱 차오름·뒤 4틱 감소), 키×.35 / 3타 키×.6×충전배율. 색 #fff4d0→#ffd9a0, SkillAdditive 가산. 명중 시트 원본·크기·수명 유지, 0번 셀 시작·1번 셀 +3틱 도달. 명중 잉크 상한 .35. 접점 보정 등록과 Reset/Dispose 회수 유지 |
+| 같은 파일 스파크 | 최종 길이 = clamp(height*(.08+.07*(index%8)/7), height*.05, height*.15). 기존 결정적 분산을 유지하며 **최종 키 단위에서 clamp, 충전배율은 길이에 적용하지 않음**. 1·2타12개, 3타 기본24개×충전배율 반올림(티어0/1/2/3: 24/34/43/53개). 1차의 20~30개는 충전 전 기본 개수로 두고 후속의 개수 배율 지시를 적용했다. 공격 방향 ±60°, 12~18틱, 길이 고정·알파만 감소, 카메라 환산 두께1.5px 유지 |
+| Runtime/KiSlashView.cs | 실제 원화의 진행 방향 폭 .45배, 높이 유지, 앞날 쪽으로 이동. 잉크·잔상·몸통은 각각 알파 .35 이하·3틱에0. 앞날은 나이0~5틱 진하게, 6틱 .35 → 7틱 .2333 → 8틱 .1167 → 9틱0(비표시). 표시 나이를 MaxLife-Life로 읽기만 한다. Core 판정·속도·수명·위치·트레일 불변. 최종 형상은 실제 1x 검수 필요 |
+| Runtime/NativeGame.cs | 1차 생성부의 SkinnedMeshRenderer 캐시·bounds 키 계측·HudCamera 전달 유지. 명중/관찰 틱으로 기검참이 만든 공용 관찰 반동을 식별해 대체한다. 뒤의 비기검참 관찰 접점은 공용 반동을 다시 사용한다. 전용 기검참 반동을 평면 카메라에 연결, 시작/재시작에서 식별 상태 초기화 |
+| Runtime/NativeGame.Impact.cs | 같은 반동 대체를 원근 marker와 평면 projection에 연결. 기검참 유발 반동: 1·2타0, 3타2px/최대충전3px, .86/틱 감쇠. OptionShakeScale 최종1회·ReducedMotion이면0. 기존 Core 피격·패링·구르기 반동 별도 유지 |
+| unity/Tools/combat-impact-tests/KiPresentationTests.cs / run-ki.cjs | 실제 KiImpactPresentation을 추출해 Roslyn 실행. 키4종·96인덱스·충전별 개수·길이·수명·부채·코어·시트·흔들림·옵션 검사. 길이 허용오차1e-4. 실제 표시/카메라 연결 소스 검사·원본 PNG 셀 휘도 계측 추가. Unity 렌더링 검사 아님 |
+
+### 원인과 검증
+
+1차 413검사/20실패의 직접 원인은 인덱스7/15/23에서 **160*(.08+.07*7/7)=24.000000000000004 > 160*.15=24**가 된 엄격 비교다. 당시 길이 식에는 충전배율이 없었다. 최종 clamp와 허용오차1e-4를 적용했다. 새 검사의 첫 실행은 기존 SparkCount 인자 차이로 Reflection 예외가 났고, 이를 검사 실패로 기록하도록 하네스를 고친 뒤 RED를 확인했다. 구현 수정 후 GREEN이며 같은 방법으로 두 번 수정 실패하지 않았다.
+
+아래 명령의 Node는 C:/nvm4w/nodejs/node.exe이며 모든 산출물은 이 worktree 내부다.
+
+| 실행·증거 | 결과 |
+|---|---|
+| unity/Tools/combat-impact-tests/run-ki.cjs --red | 정책2311검사/36실패, 연결6검사/6실패로 충전 개수·짧은 앞날·카메라 연결 누락 확인. tools/combat-impact-check/ki/red.log |
+| 같은 명령, --red 제외 | **2722검사/0실패**, 연결·시트 **7검사/0실패**. tools/combat-impact-check/ki/checks.log |
+| tools/vfx-missing-compile.cjs | **Core121소스·Runtime250소스 Roslyn 오류0**. 기존 Unity 참조 DLL은 읽기만 하고 현재 worktree 전체 Core/Runtime 소스를 컴파일. tools/combat-impact-check/compile/Exoduser.Core.log 및 Exoduser.Runtime.log. Unity 실행·임포트·셰이더·Player 검증 아님 |
+| unity/Tools/combat-impact-tests/run.cjs | **60검사/0실패**, 기존 dark 피 PNG 검사 통과. tools/combat-impact-check/checks.log |
+| 같은 도구 --feedback | **28검사/0실패**. tools/combat-impact-check/feedback.log. 위 두 회귀에서 기존 EnemyAi.cs:88의 미사용 gb/water 경고 CS0219는 남음 |
+| 원본 명중 PNG 계측 | RGB8·1254²·2×2. 셀 총휘도: 0번5,347,752 / **1번12,257,303** / 2번6,517,537 / 3번2,516,441. 실제 최대 정점은1번이며 +3틱에 표시됨. 원본 텍셀 peak255는 Player 코어240+ 증거가 아님. tools/combat-impact-check/ki/sheet-measurements.json. PIL 미설치로 Python 계측 실패 후, 설치 없이 Node zlib로 PNG 필터를 해독해 계측 |
+| 범위·형식 | git diff --check 통과. Core·CombatImpactView.cs·CombatImpactTimeline.cs·RM1 Graph·웹·원본 에셋 변경0. 생성물은 기존 고정 tools/combat-impact-check에 작은 DLL·로그로 덮어씀. 대형 빌드·캡처·백업 없음. G: 여유 약93.5GiB, 영구 삭제 금지에 따라 정리하지 않음 |
+
+### 남은 인수 조건
+
+**판정: 소스·Roslyn·관련 회귀 통과 / RETOUCH_GAME_QA_PENDING.** Unity 임포트·셰이더·Player·실게임 판정·실행본 반영은 수행하지 않았다. Mac의 1920×1080·3840×1080, 1x/3x·10초 무음 영상으로 .45배 앞날 형상·9틱 소멸·접점 코어240+·실제 키/포즈 변동·1.5px 스파크·120°·적/탄 가독성을 확인해야 한다. 공용 관찰 반동 분류는 같은 관찰 배치의 기검참 피드백 기준이므로 **동일 배치에 기검참과 다른 공격이 겹치는 경우**도 확인해야 한다. 독립 정책/연결 검사가 화면 검수를 대신하지 않는다.
+
+변경 파일은 위 Runtime4개·검사2개·이 문서의 **7개**이며 미커밋으로 인계한다. CHANGELOG_SYNC 인수용 초안: “U-VFX-05: 스파크 최종 키 길이 clamp·충전 개수, 실제 KiSlashView .45배 앞날/6틱 진한 구간/9틱 소멸, 1·2타0·3타2/최대충전3의 평면·원근 반동 연결; 기검참2722/0·연결7/0·임팩트60/0·피드백28/0·Core/Runtime Roslyn 오류0, 실게임 검수 대기.” 공용 CHANGELOG는 총괄 인수 커밋 시 반영한다.
+
+END
