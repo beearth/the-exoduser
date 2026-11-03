@@ -236,7 +236,9 @@ namespace Exoduser.UnityPort
                 {
                     // _drawDruidPoisonShot: 16-frame orb at 70 ms/frame, 96..180 px by Sz (240 for mines / element balls), doubled for physical-parry shots
                     double size = (p.Mine || p.ElemBall ? 240 : Math.Max(96, Math.Min(180, p.Sz * 24))) * (p.ParryClass == "physical" ? 2 : 1);
+                    // Muted alpha body; only the compact central quarter adds light.
                     PutBox(NativeDruidArt.PoisonShot((int)(nowMs / 70) % 16), p.X, p.Y, size, size, Color.white, (int)p.Y + 6);
+                    PutAdd(NativeDruidArt.PoisonCore(), p.X, p.Y, size * .25, size * .25, .6f, (int)p.Y + 7);
                     continue;
                 }
                 DrawFieldBullet(p, t);   // VFX-D18: field enemies' bullets, per kind as game.html pass 2 (NativeBossView.FieldBullets.cs)
