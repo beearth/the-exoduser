@@ -11,7 +11,7 @@ namespace Exoduser.UnityPort
     public sealed partial class NativeGame
     {
         A2RLighting a2rLighting;A2RWebAssets a2rWeb;A2ROcclusion a2rOcclusion;
-        static bool A2RRequested {get {var a=Environment.GetCommandLineArgs();return Array.IndexOf(a,"--a2r1-light")>=0||Array.IndexOf(a,"--a2r1-light-capture")>=0||Array.IndexOf(a,"--a2-plan-capture")>=0;}}
+        static bool A2RRequested {get {var a=Environment.GetCommandLineArgs();return A2RHumanSave.CandidateDefault||Array.IndexOf(a,"--a2r1-light")>=0||Array.IndexOf(a,"--a2r1-light-capture")>=0||Array.IndexOf(a,"--a2-plan-capture")>=0;}}
         void A2RSetup()
         {
             if(!A2RRequested||a2rLighting!=null)return;

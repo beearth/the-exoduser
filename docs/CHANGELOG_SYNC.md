@@ -57387,3 +57387,10 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 - Core를 읽기만 하는 매 프레임 타깃 수집과 Renderer당128개/넘침 촬영FAIL을 연결했다. 기존 배우 그리기/구도/조명/배치 불변.
 - 같은 적·카메라·표현에서 maskOFF/ON의3840·1920 원본4장+비교2장을 기존 Mac fixture에 추가했다. 이미지에 Core 좌표가 없어3640,7420은 횃불 기준 추정이며 정확한 자리 일치는 Mac 판정 대상, --a2r-foreground-x/y 보정/실제 좌표 기록 지원.
 - PC C# 컴파일만, 새 셰이더/이미지/히스테리시스 시각 검수는 Mac 대기. [수치·파일·MAP PRODUCTION REPORT](engine/UNITY_A2R_EXISTING_ASSETS_20261103.md).
+
+## 2026-11-03 18:45 A2R C10 전체 원화·Windows 후보
+
+- props교집합34필터를폐지하고C10 layout142/R5신규14/foreground27/빌더추가6, 합계189카드와r3_ground64투영·원본moat/water를연결했다. Art PNG369원본·독립meta, 3D중복제외/종류별접지영수증. 기존Core/카메라/배우/수신셰이더불변.
+- 후보resource기본ON/NativeRemodel3D표현flag1줄, Map25DHumanSave기반fail-closed격리·실제타이틀→로비→Core도보캠프fixture. CTO가PC Windows1회빌드와후보바로가기교체를승인했다. 이전빌드삭제없음. [계약·MAP PRODUCTION REPORT](engine/UNITY_A2R_EXISTING_ASSETS_20261103.md). 실제실행결과는I:/EXODUSER-Storage/map25d/a2redesign/REPORT.md 및STATUS.md에기록.
+
+- A2R18:45 실검증: Windows1회/errors0, C10카드173/중복16/바닥64/떠있음0. 일반입장6경계+별도Core도보4974.3px/1829ticks/오류0. 캠프1920·3840직접검수/후보바로가기교체/실제세이브변경0. 최초새smoke전환대기실패기록, 기존fixture로검증분리. 시각RETOUCH/총괄판정대기.

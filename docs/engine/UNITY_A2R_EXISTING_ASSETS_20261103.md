@@ -66,3 +66,31 @@ MAP PRODUCTION REPORT: STAGE=기존 에셋 이식 코드 인계 / MASTER PLAN·O
 기술 게이트: 기존8+3·구조도에 전장 원본4·비교2·화면 안 적1이상·가림 대상으로 들어간 Renderer1이상·타깃 누락0·해상도/카메라 불일치0을 추가한다. 시간·위치가 고정된 이미지로 자연 전투나 히스테리시스 연속 동작 PASS를 선언하지 않는다.
 
 MAP PRODUCTION REPORT: STAGE=전장 가림 확대 소스 인계 / MASTER·OUTER MASS·LARGE·MEDIUM·GROUND·PLAYABLE·LANDMARK=A2Field LOCK / CAMERA QA=사용자32:9 원본 직접 확인, 재현 위치/확대 가림은 Mac 대기 / TECH QA=PC Runtime·Editor C#만, Unity 실행0 / FILES=A2R 가림·readonly 타깃·촬영·관련 docs만 / GIT=자기 경로 commit·비강제 push / VISUAL VERDICT: RETOUCH (새 GPU 결과 미검증) / NEXT=Mac 적 포함1920·3840 비교/북쪽과 좌우 끝 원형 보존/0.2초 동작·깜빡임 재검수.
+
+## 18:45 최우선 — C10 전체 이식·Windows 실제 후보
+
+이 절은 앞의 props교집합34개/PC컴파일만/일반실행미적용 방침을 대체한다. CTO가 Windows Player1회 빌드·격리 스모크·후보 바로가기 교체를 직접 승인했다.
+
+| 항목 | 현재 계약 |
+|---|---|
+| 원본 | a5c287157 Art PNG369개(약433MiB)와 layout/r5-layout/maplook-source 원문, 독립GUID .meta로 Resources/A2R/C10에 이식 |
+| 카드 | C10 layout142 + R5 신규ID14(동일ID는 C10 위치 유지) + 원본foreground27 + C10빌더의숲3/고사리3 =189. SourceMap props 교집합 필터 폐지. 종류별 source/added/duplicates와 중복3D이름·접지 결과를 영수증 기록 |
+| 위치 | 원본drawX/footY/width/height, 알파 발피벗에 따른 수평offset만 적용해 이미지중심 유지. world x=px/100,z=−py/100. 아래ray에서4cm묻기·Y축billboard·AO. vegetation 높이는 C10의low1.3u/나머지.9u상한 유지. 무작위 배치 없음 |
+| 지면 | r3_ground8×8 타일64, 타일당10u/40×40분할. NativeRemodel3D.GroundY를 샘플하고1.2cm올린 표현 mesh. 실제 지형높이·Core·충돌 불변. 원본water mask/전체외곽35cmsoft blend. Queue2475로 기존 장판투영 이전에 그리며 수신재질은 변경0 |
+| 늪 | 원본riverPoints에r3_moat_strip/normal/mask와r3_water를 연결. 기존 높이와−.44u중높은표면으로투영, Core걷기위는alpha0. Queue3010으로기존수면뒤. 네이티브수면반사·움직임 유지 |
+| 3D·가림 | 대응3D고목/다리/횃불은 유지하고 같은좌표웹나무는 제외표 작성. 새 큰 카드도 기존남쪽전장가림.35/.2초에등록. 구도·원근·액터그리기·리마스터영웅 변경0 |
+| 기본 후보 | A2R/default-enabled.json 있는 후보에서 A2R/3D가 기본ON. NativeRemodel3D.Requested에 후보기본값 1줄만 연결. 소스일반제품채택아님 |
+| 세이브 | Map25DHumanSave방식의 A2RHumanSave가 BeforeSplashScreen에 fail-closed바인딩. --a2r-play-sandbox 절대경로. 공용Runner의--unity-qa-sandbox가있으면그격리root우선. 인자없는Windows후보도I:/EXODUSER-Storage/map25d/a2r-play-sandbox로격리. 실제세이브fallback금지 |
+| 빌드 | 공용bin exo-unity.ps1/Editor예약은빌드때만. A2RBuilder.Build Windows1회, 고정I:/EXODUSER-Storage/map25d/a2r-build/EXODUSER-A2R.exe. 무창·무음/D3D11. 이전후보빌드보존 |
+| 스모크 | --a2r-play-smoke -output <절대경로>. 실제타이틀LobbyKeys→로비→격리캐릭터/제품진입callback→Core StepInput으로캠프2050,4400. 좌표순간이동0. TutorialSkipcallback/무적갱신은검수용이며전투밸런스검증아님. 오류0·도달·전체에셋/접지영수증을요구 |
+| 바로가기 | 지옥의 길1-1맵후보(Unity)만 교체. --remodel3d --a2r1-light --a2r-play-sandbox ... --unity-mute -force-d3d11. Description=1-1 A2R 후보: 조명·웹 에셋·나무 투명화, 영웅=리마스터 미적용. history에SHA/이전대상 기록 |
+
+사전 소스 검사: 카드189/바닥64, 참조PNG누락0. 현재종류별수: {"m_c1sbone":3,"m_ctree17":1,"m_ctree16":1,"corpse":2,"m_fbones":2,"m_c1pool":1,"m_hang_cage":1,"m_c1cocoon":1,"m_c1spod":2,"m_c1groot":1,"m_c1tree":1,"m_ctree15":1,"m_ctree18":1,"m_penta_circle":1,"m_c1altar":1,"m_c1camp":1,"m_skull_totem":1,"m_fyellow":1,"m_sword_pile":1,"m_c1sroot":4,"m_c1gtoxicf":1,"pit_poison":1,"m_ctree19":1,"m_ctree14":1,"m_bone_arch":1,"m_ctree20":1,"m_ctree13":1,"boundary_tree":8,"vegetation":113,"forest_wall":6,"foreground_tree":27}. r3_bank/thicket/rootfan 등 보관변종은원문Art에보존하되 a5의실제배치에없는변종을새좌표로흩뿌리지않는다. C10이사용한고사리/덤불/숲/나무/소품/낙엽·뿌리바닥표현은전체배치·바닥으로연결한다.
+
+MAP PRODUCTION REPORT: STAGE=C10 전체원화·Windows후보 / MASTER·OUTER MASS·LARGE·MEDIUM·PLAYABLE·LANDMARK=A2Field구도LOCK, C10표현전체이식 / GROUND=원래높이에투영·접지ray/AO / CAMERA QA=같은Player캠프1920·3840검수예정 / TECH QA=PC C#후 Windows1회빌드·로비도보스모크 / FILES=A2R소스·데이터·원화·자기meta·후보기본표현flag1줄·관련docs만 / GIT=정확경로commit·비강제push / VISUAL VERDICT: RETOUCH(동일빌드검수결과는I:REPORT) / NEXT=스모크오류0후후보바로가기교체, 일반제품·Steam배포없음.
+
+## 18:45 실제 후보 검증 결과
+
+Windows빌드1회job28c0bc2e Succeeded/errors0. 실제189 source→173 added/16 duplicates/64 ground/1moat/floating0. 일반입장은FullRun job056f2314의6경계·field샘플로검증(maxTicks1의의도된time-limit/exit2, 전체클리어검증아님). 새 --a2r-play-smoke 단독은전환대기누락으로실패했으므로타이틀부터자동검증PASS가아니다. 같은exe의기존 --unity-*-smoke 계약인 --unity-a2r-route-smoke와 --a2r-play-smoke를함께써서연출생략후Core도보별도검증. job89ff9ea2에서1829ticks/4974.3px/도달/errors0/순간이동0/정체0. 무적·튜토리얼Skip은fixture범위. 1920캠프3초91.5FPS, 밀집전투/3840성능미검증. 전용바로가기스크립트는일반진입과경로양쪽영수증을요구한다.
+
+캠프1920·3840직접확인/웹원화표시확인. 후보바로가기교체·원격SHA·종류별실수량은 I:/EXODUSER-Storage/map25d/a2redesign/REPORT.md 및 MAC_RUN.md, 실행web-assets-receipt.json. 실제세이브변경0/기존앱종료0/이전후보삭제0. VISUAL VERDICT: RETOUCH(후보전달과디자인합격별도).
