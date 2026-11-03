@@ -26,6 +26,7 @@ param(
     [int]$KillAfterSec = 0,
     [switch]$KeepReservation,
     [switch]$AllowPlayer,
+    [ValidateSet('', 'buildloop', 'cto-swap', 'candidate')][string]$PcException = '',
     [switch]$DryRun,
     [ValidateSet("hidden", "batch")][string]$Desktop = "hidden",
     [string]$NodeModules = 'G:\exoduser\node_modules'
@@ -1195,6 +1196,8 @@ function Finish-Guarded([string]$kind, [string]$id, $g, $extra, [bool]$extraOk, 
 }
 
 function Cmd-Player {
+    # 11-03 사용자 "백그라운드 테스트는 맥에서만": PC Player 실행은 CLAUDE.md 3.4 예외 3가지만 허용한다(편집기 batchmode 컴파일·임포트는 그대로).
+    if (-not $PcException) { Reject 'PC에서는 player 실행을 기본 거부한다. Player 테스트·캡처는 Mac에서 실행한다. 예외(BuildLoop 바탕화면 교체·CTO 1회 교체·CTO 승인 후보 바로가기)만 -PcException buildloop|cto-swap|candidate' }
     if ([string]::IsNullOrWhiteSpace($Exe)) { throw '-Exe 가 필요합니다.' }
     if (-not (Test-Path -LiteralPath $Exe)) { throw "플레이어를 찾을 수 없음: $Exe" }
     $exeFull = (Resolve-Path -LiteralPath $Exe).Path
