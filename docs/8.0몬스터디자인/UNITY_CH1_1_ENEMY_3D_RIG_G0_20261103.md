@@ -255,6 +255,8 @@
 
 사람이 아닌 7종은 가슴 뼈가 없어, 피격 기준점은 Unity에서 메시 높이 × 0.55를 임시값으로 쓰고 종마다 G5에서 맞춘다.
 
+- **다안 육괴(시작 etype 4 EyeMass) 피격 기준점 = 0.49**(임시, 11-04): 3D 입력 시트 정면의 큰 눈 흰자 무리 중심 ÷ 전체 높이(촉수 끝 포함)다. 적 3D 레인은 `enemy_rig_models.json`의 EyeMass 행 `chestRatio` 0.55 → **0.49**로 바꾼다(임펙트 총괄 확인: VFX `EnemyRigAnchor`가 자동으로 따라감, 코드 수정 0). 확정값은 Mac 34° 캡처에서 눈 위치로 다시 잰다.
+
 **적 3D 전체 상태(11-04 4시)**
 
 | 항목 | 상태 |
@@ -264,7 +266,37 @@
 | 동작 클립 | 1차 5종 v1 완료(4.1.5). 2·3차 25종은 Meshy 걷기·달리기만 있음 → 다음 일 |
 | 판정 | 전부 Blender 근사 기준 제작자 판정. "영웅과 같은 질" 최종 판정은 Unity 연결(레인 `codex/unity-enemy3d-20261104`) 뒤 Mac 캡처 |
 
-- 1차 동작의 남은 결함: ① 갑각 사도 `attack_tele` 끝 → `attack_act` 첫(충격 자세)의 관절 점프가 최대 약 80°다. Unity에서 1~2프레임 크로스페이드가 필요하고, 충격 때 주먹이 땅에 완전히 닿지 않는다(무릎 아래까지). ② 덫·쌍둥이·갑각 일부 지면 목표에서 팔 도달이 0.17~0.29m 모자란다. ③ 쌍둥이 `tp_vanish`·`slam`은 바닥에 13~16cm 묻힌다(의도). `death` 전이에는 7~8cm 관통이 남는다. ④ 가시·망토·지팡이 보조 뼈가 없어 몸통·손으로만 표현했다. `block`은 진입·유지·복귀가 20f에 들어 있어 유지 구간은 Unity에서 멈춘다.
+#### 4.1.7 2·3차 25종 동작 클립 (11-04 4~5시, Blender 서브에이전트 3개, 유료 0) — 30종 동작 v1 전부 끝
+
+브리프: `I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/BRIEF_anim_2nd_3rd.md`. 산출: `.../anim/<key>_anim_v1.glb`·`.blend`·`<key>_anim_report.json`, 띠 `G:/exoduser/tmp/design-review/20261104_enemy3d_pilot/anim_<key>_strip_1x·3x.png`. 60fps, 1프레임 = Core 1틱. 공통 `idle` 120·`walk`·`hit` 12·`stagger` 40·`death` 45.
+
+| 묶음 | 종(공격 클립 틱) | 비고 |
+|---|---|---|
+| 2차 사람형 10 | lesser `attack` 24/2/36 · ironclad `shield_tele` 24→`charge_run` 20(루트 2.3m/s)→`charge_hit` 4→`attack_rec` 40 · warden `combo1` 30/3 `combo_gap` 10 `combo2` 16/3 `combo3` 16/3 `attack_rec` 45, `charge_tele` 40→`charge_run` 20(3.2m/s)→`charge_hit` 4 · zombie·cleaver·duelist 24/3/30 · hexer·bloated·ritual 60/6/30 · berserk 24/3/30 + `rage` 40 | 무기 3종은 전용 걷기: warden 망치 끌기 72f(0.9m/s), ritual 지팡이 짚기 64f, duelist 60f. 소켓 위치 오차 0 |
+| 3차 사람형 6 | shadow 24/3/30 + `vanish`·`appear` 20 · winged `dive_tele` 24/`dive_act` 12(루트 2.2m)/`attack_rec` 30 · imp·vampire·golem 24/3/30 · giant `attack1` 18/2 → `attack1_gap` 22 → `attack2` 40/1 → `attack_rec` 36 | 단계 연결 오차 ≤0.09° |
+| 비사람형 9 (Tripo 뼈) | slime·hexer형 60/6/30 · eyemass·wraith·spider·worm 24/3/30 · fetal 24/3/30 + `explode_tele` 30/`explode_act` 6 · mother·womb 60/6/30 + `summon` 40/10/30 · bat `dive` 24/12(루트 1.6)/30 | 모두 새 `walk`(구르기·부유·8다리 보행·물결 기기·날갯짓). 덩어리형은 뼈 스케일 찌그러짐 |
+
+- 예고 정점 몸통 회전은 모두 ≥19°다(womb 몸 축 19°, 나머지 ≥20°). 회복 최저 자세는 회복 길이의 1/3 이하다. 예고·발동 발 미끄러짐은 사람형 ≤0.5cm, 비사람형 접지 정점 평균 2.2~3.7cm(덩어리 변형 때문).
+- 판정: **제작자 조건부 PASS**. 34° 1x에서 25종 모두 예고 정점이 대기와 다르게 읽힌다. RETOUCH(경미)는 둘이다: 철갑 사도 `shield_tele`(방패 들기가 대기와 차이가 작음), 거미 사도 `attack_tele`(앞다리 들기가 작음).
+- **Unity 연결 주의**: ① 비사람형 9종은 앞 방향이 월드 -X다(사람형은 Meshy 정면). 모델 표에서 90° 돌려 맞춘다. ② 루트 이동량 임시값 — 날개 사도 `dive_act` 2.2m, 뼈 박쥐 1.6(원본 단위), 철갑·문지기 `charge_run` 속도 — 는 Core 이동값과 맞춰 레인이 스케일한다. ③ 대형 사도 `attack1_gap`, 문지기 `charge_hit`·`combo_gap`(2회 재사용)은 브리프에 없던 이음 클립이다. ④ 무기 GLB를 Blender로 다시 읽으면 소켓이 어긋나 보이지만 GLB 노드 값은 맞다.
+- 남은 결함: 문지기 `idle`·`stagger`에서 망치 머리 4~8cm, 의식 `stagger` 지팡이 8cm 바닥 관통. 손 도달 부족 최대 0.21~0.27m(문지기·골렘·대형). 사망 착지 반동 최대 8cm. 덩어리형(slime·eyemass·womb)은 지면에 붙인 뒤 한쪽이 들린다.
+- 사고 기록: 3차 사람형 서브에이전트가 `python -` 명령으로 멈춘 뒤 `taskkill /IM python.exe`로 PC의 python 프로세스 3개를 모두 끝냈다. 다른 작업의 python이 함께 끊겼을 수 있다. 이후 서브에이전트 브리프에 "프로세스를 이름으로 일괄 종료하지 않는다"를 넣는다.
+
+#### 4.1.8 경미 RETOUCH v2 (11-04, CTO 배정, Blender 서브에이전트, 유료 0) — 연결 쪽은 아래 5종을 v2로 바꾼다
+
+| 종 | v2 파일 | 고친 것(전 → 후) |
+|---|---|---|
+| 6 철갑 사도 | `.../anim/ironclad_anim_v2.glb` | `shield_tele` 정점 f16~18에서 방패를 얼굴 앞까지 들어 올림(방패 손 높이 1.46 → 1.83, 대기 1.00), 몸통 회전 22.6° → 29.8°. 끝 6프레임은 `charge_run` 첫 자세로 내려옴(연결 0.056°) |
+| 13 거미 사도 | `.../anim/spider_anim_v2.glb` | `attack_tele` 앞몸 들기 32° → 42°, 앞다리 두 쌍 높이 치켜듦, 뒷다리 미끄러짐 0. `attack_act`는 새 예고 끝에서 시작(연결 0.079°) |
+| 4 갑각 사도 v2 | `.../anim/carapace2_anim_v2.glb` | 예고→발동 경계 관절 점프 약 80° → 프레임당 최대 23.9°. f30까지 머리 위 정점, f30~36에 내려치기 시작, 충격은 `attack_act` f2(주먹 높이 0.41, 메시 최저 바닥 위 약 8cm — 더 내리면 관통). 내려치기 띠 `carapace2_v2_swing_3x.png` |
+| 29 문지기 | `.../anim/warden_anim_v2.glb` | 망치 최저점 `idle` -3.71 → +0.20cm, `stagger` -8.43 → +0.20cm(무기 손 IK로 올림), `death` 등 다른 프레임도 ≥0 |
+| 9 의식 사도 | `.../anim/ritual_anim_v2.glb` | 지팡이 최저점 `stagger` -5.75 → +0.14cm, `idle` -2.23 → +0.14cm |
+| 21 쌍낫 | v1 유지 | `death` 최저 +0.85cm, 전 클립 최저 -0.37cm(허용치 안) |
+
+- 모두 클립 이름·길이·60fps·뼈 수·소켓이 v1과 같다(재임포트 확인). 띠: `G:/exoduser/tmp/design-review/20261104_enemy3d_pilot/anim_<key>_v2_strip_1x·3x.png`. 스크립트: `.../anim/work_retouch/`.
+- 판정: 34° 1x에서 거미 예고가 확실히 달라졌고, 철갑은 f16에 방패를 얼굴 앞으로 드는 자세가 읽힌다. 갑각 내려치기는 끊김 없이 이어진다 → 제작자 PASS(Mac 판정 대기). 갑각 사도의 충격 프레임은 f1~f2 조건과 관절 25° 조건이 같이 안 돼 f2로 잡았다.
+
+- 1차 동작의 남은 결함(v1 기준, 위 v2에서 ①은 해소): ① 갑각 사도 `attack_tele` 끝 → `attack_act` 첫(충격 자세)의 관절 점프가 최대 약 80°다. Unity에서 1~2프레임 크로스페이드가 필요하고, 충격 때 주먹이 땅에 완전히 닿지 않는다(무릎 아래까지). ② 덫·쌍둥이·갑각 일부 지면 목표에서 팔 도달이 0.17~0.29m 모자란다. ③ 쌍둥이 `tp_vanish`·`slam`은 바닥에 13~16cm 묻힌다(의도). `death` 전이에는 7~8cm 관통이 남는다. ④ 가시·망토·지팡이 보조 뼈가 없어 몸통·손으로만 표현했다. `block`은 진입·유지·복귀가 20f에 들어 있어 유지 구간은 Unity에서 멈춘다.
 
 - 맵 범위: 사용자 "맵에 들어가는 모든 에셋은 3D로"는 맵 총괄 범위다. 이 비교의 결과표(도구별 형태·면 수·잔점·비용)를 맵 총괄에 넘겨 소품 도구 선택에 쓰게 한다.
 - Meshy 호출·키 처리는 보스전 총괄 원 세션만 한다(보스와 같은 규칙, 스크립트 = `meshy_boss11_m1.py` 구조: `--dry-run`·1회 표시 파일·원장 예약/완료).
@@ -349,3 +381,7 @@
 ## 11-04 01:20 1차5종 Unity 등록
 
 [연결 표](UNITY_ENEMY3D_WIRING_20261104.md)에 제작자 PASS5종(1 외눈 보정본·7·16·47·일반4 갑각v2)과 시작4 EyeMass를 별도 키로 등록했다. G0의 표시 높이/가슴 비율을 적용하고 모두 Core 틱 Walk만 연결했다. 나머지7동작은 미제공이며 EyeMass는 걷기도 없다. --enemy-render=rigpixel opt-in과 기본값을 유지한다. 정책166/0·전체 PC 참조 컴파일5개 오류0, Mac 임포트·화면·동작·성능 미판정이다.
+
+## 11-04 Unity 연결 — 30종
+
+30종 `anim_v1.glb`를 Unity 모델 표 30행(`enemy_rig_models.json`)에 연결했다(변환 `unity/Tools/enemy3d/import-anim-v1.py`, 비사람형 9종 정면 +90°·루트 고정 winged/bat dive_act·무기 소켓 3종·일반 갑각 사도 크로스페이드 2틱). PC 정책 1046/0·참조 컴파일 5어셈블리 오류 0, Mac 임포트·화면·동작 판정 전. 상세·30행 표·남은 일은 [Unity 연결 기록](UNITY_ENEMY3D_WIRING_20261104.md)의 "11-04 30종 연결" 절이다.
