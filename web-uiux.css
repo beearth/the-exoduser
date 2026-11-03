@@ -135,3 +135,8 @@ html body #invPanel#invPanel#invPanel.panel .pbox .ptitle{width:auto!important;m
  html body #statPanel#statPanel#statPanel .growth-wallet span{font-size:11px!important}
  html body #invPanel#invPanel#invPanel.panel .pbox>div:has(>.ptitle){flex-wrap:wrap!important}
 }
+
+/* 2026-11-03 사용자 "인벤토리 저 허접한 텍스트는 빼버려": 상단 공통 탭(인벤토리 [TAB])이 이미 창 이름을 표시하므로
+   인벤토리 창의 제목 띠(눈 메달+"인벤토리" 글자)만 뺀다. 같은 줄의 전투력·악의오브·닫기는 유지, 줄 높이 64px→44px. */
+html body #invPanel#invPanel#invPanel.panel .pbox>div:has(>.ptitle)>.ptitle{display:none!important}
+html body #invPanel#invPanel#invPanel.panel .pbox>div:has(>.ptitle){min-height:44px!important}
