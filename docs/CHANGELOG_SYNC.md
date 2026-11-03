@@ -1,3 +1,5 @@
+2026-11-04 STY-23 데모 v0 1-1 이야기 문구 점검: 체험판 종료 부제 `demoSub`를 옛 "썩은 숲을 정복했습니다."(27언어 영어)에서 웹 정본 No.3473 "썩은 숲은 아직 끝나지 않았다." 29언어로 교체(`stageclear_labels.json`, 대체 경로 `stageclear_web.json`·`buildflavor_web.json`·`NativeStageClearOverlay.cs` 영문 기본값 포함). 목표 패널 ko "심연 아귀"→정본 "심연의 앵글러". 미등록 9문구 No.4250~4258 등록. 점검표 [DEMO_V0_1_1_TEXT_AUDIT](11내러티브·로어디자인/DEMO_V0_1_1_TEXT_AUDIT_20261104.md). PC 컴파일만, Player 실행 0, 화면은 Mac 검수 대기.
+
 2026-11-03 UI-PARITY 최신 공통 통합: 사용자 지시로 origin/unity/main 8c5f967d74를 자기 브랜치에 병합. CHANGELOG_SYNC 두 충돌은 양쪽 원문을 보존했다. 현재 docs/Unity 충돌 표시0, PC 컴파일1회 Core121/Runtime259 오류0(경고2/522), Player0. 21:50 다중 패스 수정과66회귀 증거 보존. 새 통합본 Mac 게이트 대기.
 
 2026-11-03 21:50 BuildLoop UI 겹침 오탐 수정: 다중 패스의 실제 논리 원점 ID/본문1개/클립/발행 source로 장식 패스를 묶는다. 기존 JSON은 선언 offset+픽셀 양자화만 복원하고 .5px 충돌 기준과 중복 본문/다른 글자 검출은 유지한다. 메뉴·봉안함 실제 표본0, 회귀66/66. 기존1410장 재분석8363은 과거 계측 입력의 잔여로 보존하며 Mac 새 게이트 필요. PC 컴파일만, Player0. 문서 docs/engine/UNITY_UI_OVERLAP_20261030.md.

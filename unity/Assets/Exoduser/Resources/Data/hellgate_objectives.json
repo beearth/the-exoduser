@@ -1,6 +1,6 @@
 {
   "entries": [
-    {"code":"ko","sealedGate":"지옥문 봉인 — 정화한 지역 {0}/4","openGate":"지옥문 열림 — 정화한 지역 {0}/4","progress":"이 지역: 처치 {0}/{1} · {2}","progressNoAngler":"이 지역: 처치 {0}/{1}","anglerAlive":"심연 아귀 남음","anglerDead":"아귀 처치됨","purified":"이 지역 정화됨 — 남은 지역으로","direction":"보스방으로 — 미니맵 지옥문 표식을 따라 이동"},
+    {"code":"ko","sealedGate":"지옥문 봉인 — 정화한 지역 {0}/4","openGate":"지옥문 열림 — 정화한 지역 {0}/4","progress":"이 지역: 처치 {0}/{1} · {2}","progressNoAngler":"이 지역: 처치 {0}/{1}","anglerAlive":"심연의 앵글러 남음","anglerDead":"앵글러 처치됨","purified":"이 지역 정화됨 — 남은 지역으로","direction":"보스방으로 — 미니맵 지옥문 표식을 따라 이동"},
     {"code":"en","sealedGate":"Hell Gate sealed — regions purified {0}/4","openGate":"Hell Gate open — regions purified {0}/4","progress":"This region: kills {0}/{1} · {2}","progressNoAngler":"This region: kills {0}/{1}","anglerAlive":"Abyssal Angler remains","anglerDead":"Angler slain","purified":"Region purified — move to the remaining regions","direction":"To the boss room — follow the gate on the minimap"},
     {"code":"zh","sealedGate":"地狱之门封印中 — 已净化区域 {0}/4","openGate":"地狱之门已开启 — 已净化区域 {0}/4","progress":"本区域：击杀 {0}/{1} · {2}","progressNoAngler":"本区域：击杀 {0}/{1}","anglerAlive":"深渊鮟鱇尚存","anglerDead":"鮟鱇已击杀","purified":"本区域已净化 — 前往剩余区域","direction":"前往首领房间 — 跟随小地图上的门标记"},
     {"code":"zht","sealedGate":"地獄之門封印中 — 已淨化區域 {0}/4","openGate":"地獄之門已開啟 — 已淨化區域 {0}/4","progress":"本區域：擊殺 {0}/{1} · {2}","progressNoAngler":"本區域：擊殺 {0}/{1}","anglerAlive":"深淵鮟鱇尚存","anglerDead":"鮟鱇已擊殺","purified":"本區域已淨化 — 前往剩餘區域","direction":"前往首領房間 — 跟隨小地圖上的門標記"},
