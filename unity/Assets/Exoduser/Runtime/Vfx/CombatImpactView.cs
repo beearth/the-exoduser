@@ -82,9 +82,8 @@ namespace Exoduser.UnityPort.Vfx
             bool hit=e.VisualOnly&&(e.Kind==FeedbackKind.EnemyHit||e.Kind==FeedbackKind.EnemyCrit||e.Kind==FeedbackKind.BossHit);
             if(hit&&!timeline.AdmitHit(e.Tick,e.IsBoss))return;
             var plan=CombatImpactTimeline.Plan(e);
-            if(e.Kind==FeedbackKind.Parry){Parries++;if(parry.IsMelee(e)){
-                parryBorn=e.Tick;MeleeParryParts(e);Shake(e.Tick,ParryPushIn?2:6);
-            }else{ParryParts(e);Shake(e.Tick,ParryPushIn?2:4);parryBorn=e.Tick;}}
+            // Every parry: warm line sparks (no round dot particles: they read as stray dots at 1x/3x).
+            if(e.Kind==FeedbackKind.Parry){Parries++;parryBorn=e.Tick;ParryLines(e);Shake(e.Tick,ParryPushIn?2:parry.IsMelee(e)?6:4);}
             if(hit){Hits++;HitParts(e);}
             if((e.Kind==FeedbackKind.EnemyDeath||e.Kind==FeedbackKind.BossDeath)&&e.Source!="druid_sink") {
                 Deaths++;
@@ -137,15 +136,6 @@ namespace Exoduser.UnityPort.Vfx
         }
         static Color Hex(string value){ColorUtility.TryParseHtmlString(value,out var c);return c;}
         static Color ElementColor(int el){return Hex(new[]{"#bbbbbb","#ff5522","#3388ff","#9933cc","#ffee00","#ff88cc","#88aa44"}[Mathf.Clamp(el,0,6)]);}
-        static Color ParryColor(FeedbackEvent e){
-            // Existing feedback tags take precedence; rainbow has no single
-            // element, so use the sacred core of its four-layer contact.
-            if(e.Source=="waterBean")return Hex("#dcebf0");
-            if(e.Source=="physicalProjectile")return Hex("#efe6d2");
-            if(e.SampleKey=="red")return Hex("#ffd9a0");
-            if(e.SampleKey=="rainbow")return Hex("#fff2d6");
-            return Hex(new[]{"#efe6d2","#ffd9a0","#e8f3f8","#cdb2e0","#fff4d0","#fff2d6","#dcc8a4"}[Mathf.Clamp(e.Element,0,6)]);
-        }
         float R(float low,float span){return low+(float)random.NextDouble()*span;}
         void Shake(int tick,float amount){float current=shake*Mathf.Pow(.86f,Mathf.Max(0,tick-shakeBorn));shakeBorn=tick;shake=Mathf.Max(current,amount);}
         public Vector3 CameraOffset(int tick) {
@@ -159,10 +149,7 @@ namespace Exoduser.UnityPort.Vfx
             var r=Make("Combat particle "+e.Kind,alpha);r.sprite=type==3?ring:dot;
             particles.Add(new Particle{renderer=r,born=e.Tick,x=e.X,y=e.Y,vx=vx,vy=vy,color=col,size=size,life=life,gravity=gravity,type=type,angle=angle});
         }
-        void ParryParts(FeedbackEvent e) {
-            for(int i=0;i<12;i++){float a=Mathf.PI*2*i/12;AddParticle(e,Mathf.Cos(a)*R(3,4),Mathf.Sin(a)*R(3,4),i%3==0?Color.white:ParryColor(e),R(2,3),R(10,6),0);}
-        }
-        void MeleeParryParts(FeedbackEvent e) {
+        void ParryLines(FeedbackEvent e) {
             var specs=parry.Sparks(e,unchecked(e.Tick*397+e.Step*17+(int)e.X));
             // Four complete contacts maximum; no per-cell culling of the 130-line peak.
             if(parryLines.Count+specs.Length>520){foreach(var p in parryLines)ReleaseRenderer(p.renderer);parryLines.Clear();}
@@ -287,10 +274,11 @@ namespace Exoduser.UnityPort.Vfx
         int flashBorn=-1000;float flashPeak;Color flashColor;
         public float FlashAlpha(int tick){return Mathf.Max(0,flashPeak-Mathf.Max(0,tick-flashBorn)*.08f);}
         public void Flash(FeedbackEvent e){
-            if(parry.IsMelee(e)){if(parry.HasFlash(e))meleeFlashBorn=e.Tick;return;}
-            if(e.Kind!=FeedbackKind.Parry&&!e.VisualOnly)return;
-            float strength=e.Kind==FeedbackKind.Parry?.25f:e.IsBoss?.2f:.1f;
-            flashPeak=Mathf.Min(.5f,FlashAlpha(e.Tick)+strength*.5f);flashBorn=e.Tick;flashColor=e.Kind==FeedbackKind.Parry?ParryColor(e):ElementColor(e.Element);
+            // Screen flash only for a perfect melee parry (R2); bullet parries and blocks get none.
+            if(e.Kind==FeedbackKind.Parry){if(parry.HasFlash(e))meleeFlashBorn=e.Tick;return;}
+            if(!e.VisualOnly)return;
+            float strength=e.IsBoss?.2f:.1f;
+            flashPeak=Mathf.Min(.5f,FlashAlpha(e.Tick)+strength*.5f);flashBorn=e.Tick;flashColor=ElementColor(e.Element);
         }
         static void Release(UnityEngine.Object o){if(Application.isPlaying)UnityEngine.Object.Destroy(o);else UnityEngine.Object.DestroyImmediate(o);}
         static void ReleaseRenderer(SpriteRenderer r){owned.Remove(r);Release(r.gameObject);}
