@@ -8,7 +8,7 @@ namespace Exoduser.UnityPort
     public sealed class A2ROcclusion : MonoBehaviour
     {
         const int TargetCapacity=128;
-        sealed class Entry {public Renderer body,fade;public Transform foot;public Material[] original;public float progress,holdUntil;public bool eligible,latched;}
+        sealed class Entry {public Renderer body,fade;public Transform foot;public Material[] original;public float progress,holdUntil;public bool eligible,latched,rearClip;}
         struct Target {public Vector4 circle;public float depth;public bool camp;}
         readonly List<Entry> entries=new List<Entry>();readonly MaterialPropertyBlock block=new MaterialPropertyBlock();
         readonly List<Vector4> combatWorld=new List<Vector4>();readonly List<Target> targets=new List<Target>();readonly Vector4[] localTargets=new Vector4[TargetCapacity];
@@ -20,16 +20,16 @@ namespace Exoduser.UnityPort
         public void Initialize(Transform world,Camera camera,Func<Vector3> heroPosition)
         {
             viewer=camera;hero=heroPosition;RenderPipelineManager.beginCameraRendering+=NearestPass;Shader opaque=Resources.Load<Shader>("A2R/LitOpaque"),transparent=Resources.Load<Shader>("A2R/LitFade");if(opaque==null||transparent==null)throw new InvalidOperationException("A2R tree occlusion shaders missing");var cache=new Dictionary<Material,Material[]>();
-            var candidates=new Dictionary<MeshRenderer,Transform>();foreach(Transform child in world)if(child.name.IndexOf("안개 원경",StringComparison.Ordinal)<0&&(child.name.IndexOf("Tree",StringComparison.OrdinalIgnoreCase)>=0||child.name.IndexOf("거목",StringComparison.Ordinal)>=0||child.name.IndexOf("Stump",StringComparison.OrdinalIgnoreCase)>=0||child.name.IndexOf("Log",StringComparison.OrdinalIgnoreCase)>=0||child.name.IndexOf("목질",StringComparison.Ordinal)>=0||child.name.IndexOf("外곽",StringComparison.Ordinal)>=0))foreach(var renderer in child.GetComponentsInChildren<MeshRenderer>())candidates[renderer]=child;
+            var candidates=new Dictionary<MeshRenderer,Transform>();foreach(Transform child in world)if((child.name.IndexOf("Tree",StringComparison.OrdinalIgnoreCase)>=0||child.name.IndexOf("거목",StringComparison.Ordinal)>=0||child.name.IndexOf("Stump",StringComparison.OrdinalIgnoreCase)>=0||child.name.IndexOf("Log",StringComparison.OrdinalIgnoreCase)>=0||child.name.IndexOf("목질",StringComparison.Ordinal)>=0||child.name.IndexOf("外곽",StringComparison.Ordinal)>=0))foreach(var renderer in child.GetComponentsInChildren<MeshRenderer>())candidates[renderer]=child;
             foreach(var candidate in candidates){var r=candidate.Key;var filter=r.GetComponent<MeshFilter>();if(filter==null||filter.sharedMesh==null)continue;var old=r.sharedMaterials;bool receiver=false;foreach(var material in old)if(IsSkillReceiver(material))receiver=true;if(receiver)continue;var a=new Material[old.Length];var b=new Material[old.Length];for(int i=0;i<old.Length;i++){if(old[i]==null)continue;Material[] pair;if(!cache.TryGetValue(old[i],out pair)){pair=new[]{new Material(opaque),new Material(transparent)};foreach(var m in pair){m.CopyPropertiesFromMaterial(old[i]);string map=old[i].HasProperty("_BaseMap")?"_BaseMap":old[i].HasProperty("_MainTex")?"_MainTex":null;if(map!=null){m.SetTexture("_BaseMap",old[i].GetTexture(map));m.SetTextureScale("_BaseMap",old[i].GetTextureScale(map));m.SetTextureOffset("_BaseMap",old[i].GetTextureOffset(map));}if(!old[i].HasProperty("_BaseColor")&&old[i].HasProperty("_Color"))m.SetColor("_BaseColor",old[i].GetColor("_Color"));}pair[0].renderQueue=2460;pair[1].renderQueue=3000;cache[old[i]]=pair;}a[i]=pair[0];b[i]=pair[1];}
-                var go=new GameObject("A2R existing tree faded portion");go.transform.SetParent(r.transform,false);go.AddComponent<MeshFilter>().sharedMesh=filter.sharedMesh;var f=go.AddComponent<MeshRenderer>();f.sharedMaterials=b;f.shadowCastingMode=ShadowCastingMode.Off;f.enabled=false;entries.Add(new Entry{body=r,fade=f,foot=candidate.Value,original=old,eligible=true});r.sharedMaterials=a;
+                var go=new GameObject("A2R existing tree faded portion");go.transform.SetParent(r.transform,false);go.AddComponent<MeshFilter>().sharedMesh=filter.sharedMesh;var f=go.AddComponent<MeshRenderer>();f.sharedMaterials=b;f.shadowCastingMode=ShadowCastingMode.Off;f.enabled=false;entries.Add(new Entry{body=r,fade=f,foot=candidate.Value,original=old,rearClip=true,eligible=candidate.Value.name.IndexOf("안개 원경",StringComparison.Ordinal)<0});r.sharedMaterials=a;
             }
             // Original materials are restored for the same-package baseline capture.
             SetLook(false);
         }
         void NearestPass(ScriptableRenderContext context,Camera camera)
         {
-            if(camera!=viewer)return;Shader.SetGlobalFloat("_A2RNearestReady",0);if(!Applied||!MasksEnabled||FadedRenderers==0)return;
+            Shader.SetGlobalFloat("_A2RNearestReady",0);if(camera!=viewer||!Applied||!MasksEnabled||FadedRenderers==0)return;
             int width=camera.pixelWidth,height=camera.pixelHeight;if(nearest==null||nearest.width!=width||nearest.height!=height){if(nearest!=null){nearest.Release();Destroy(nearest);}nearest=new RenderTexture(width,height,0,SystemInfo.SupportsBlendingOnRenderTextureFormat(RenderTextureFormat.RFloat)?RenderTextureFormat.RFloat:RenderTextureFormat.ARGBHalf){name="A2R nearest occluder surface",filterMode=FilterMode.Point,wrapMode=TextureWrapMode.Clamp};nearest.Create();}
             var cmd=CommandBufferPool.Get("A2R nearest surface once");var vp=GL.GetGPUProjectionMatrix(camera.projectionMatrix,true)*camera.worldToCameraMatrix;cmd.SetGlobalMatrix("_A2RNearestVP",vp);cmd.SetGlobalMatrix("_A2RNearestView",camera.worldToCameraMatrix);cmd.SetRenderTarget(nearest);cmd.SetViewport(new Rect(0,0,width,height));cmd.ClearRenderTarget(false,true,new Color(camera.farClipPlane,camera.farClipPlane,camera.farClipPlane,camera.farClipPlane));cmd.SetGlobalFloat("_A2RDepthTolerance",nearest.format==RenderTextureFormat.RFloat?.002f:.02f);NearestDrawCalls=0;
             foreach(var e in entries){if(e.progress<=0||e.body==null||!e.body.enabled||!e.body.gameObject.activeInHierarchy)continue;var materials=e.body.sharedMaterials;for(int i=0;i<materials.Length;i++){var m=materials[i];if(m==null)continue;int pass=m.FindPass("A2RNearest");if(pass>=0){var filter=e.body.GetComponent<MeshFilter>();if(filter!=null&&filter.sharedMesh!=null){cmd.DrawMesh(filter.sharedMesh,e.body.localToWorldMatrix,m,i,pass);NearestDrawCalls++;}}}}
@@ -37,7 +37,7 @@ namespace Exoduser.UnityPort
         }
         public int NearestCoveredPixels(){if(nearest==null)return 0;var old=RenderTexture.active;var sample=new Texture2D(nearest.width,nearest.height,TextureFormat.RGBAFloat,false,true);try{RenderTexture.active=nearest;sample.ReadPixels(new Rect(0,0,nearest.width,nearest.height),0,0);sample.Apply();var data=sample.GetRawTextureData<float>();int covered=0;for(int i=0;i<data.Length;i+=4)if(data[i]>0&&data[i]<viewer.farClipPlane-.1f)covered++;return covered;}finally{RenderTexture.active=old;Destroy(sample);}}
         void OnDestroy(){RenderPipelineManager.beginCameraRendering-=NearestPass;Shader.SetGlobalFloat("_A2RNearestReady",0);if(nearest!=null){nearest.Release();Destroy(nearest);}}
-        public void Register(Renderer body,Renderer faded,bool eligible){entries.Add(new Entry{body=body,fade=faded,foot=body.transform,eligible=eligible});}
+        public void Register(Renderer body,Renderer faded,bool eligible,bool rearClip){entries.Add(new Entry{body=body,fade=faded,foot=body.transform,eligible=eligible,rearClip=rearClip});}
         public void ProtectLandmark(Renderer card){camp=card;}
         public void SetCombatSource(Action<List<Vector4>> source){collectCombat=source;}
         public void SetMasksEnabled(bool on){MasksEnabled=on;FadedRenderers=0;VisibleTargets=0;foreach(var e in entries){e.progress=0;e.holdUntil=0;e.latched=false;ClearMask(e.body);ClearMask(e.fade);}}
@@ -58,7 +58,7 @@ namespace Exoduser.UnityPort
             foreach(var e in entries)
             {
                 // Core Y grows south; world z=-CoreY/100, so the camera side has SMALLER world z.
-                if(e.body==null||e.fade==null||e.foot==null)continue;if(!e.body.enabled||!e.body.gameObject.activeInHierarchy){e.progress=0;e.latched=false;ClearMask(e.body);ClearMask(e.fade);continue;}float depth;var rect=ProjectBounds(e.body.bounds,out depth);bool south=e.foot.position.z<heroFoot.z+(e.latched?.10f:-.05f);float margin=e.latched?1.08f:1;int localCount=0;bool battle=false;
+                if(e.body==null||e.fade==null||e.foot==null)continue;e.body.GetPropertyBlock(block);block.SetFloat("_A2RRearClip",e.rearClip?1:0);e.body.SetPropertyBlock(block);if(!e.eligible)continue;if(!e.body.enabled||!e.body.gameObject.activeInHierarchy){e.progress=0;e.latched=false;ClearMask(e.body);ClearMask(e.fade);continue;}float depth;var rect=ProjectBounds(e.body.bounds,out depth);bool south=e.foot.position.z<heroFoot.z+(e.latched?.10f:-.05f);float margin=e.latched?1.08f:1;int localCount=0;bool battle=false;
                 if(e.eligible&&south&&rect.width>0)
                 {
                     var lower=Rect.MinMaxRect(rect.xMin,rect.yMin,rect.xMax,Mathf.Min(rect.yMax,.60f));
@@ -72,7 +72,7 @@ namespace Exoduser.UnityPort
                         if(localCount<TargetCapacity)localTargets[localCount++]=t.circle;else dropped++;
                     }
                 }
-                bool hit=battle||localCount>0;if(hit)e.holdUntil=Time.unscaledTime+.12f;else if(!south)e.holdUntil=0;
+                bool hit=battle;if(hit)e.holdUntil=Time.unscaledTime+.12f;else if(!south)e.holdUntil=0;
                 e.latched=hit||Time.unscaledTime<e.holdUntil;e.progress=Mathf.MoveTowards(e.progress,e.latched?1:0,Time.unscaledDeltaTime/.2f);if(e.progress>0)FadedRenderers++;
                 ApplyMask(e.body,localCount,battle,hit,e.progress);ApplyMask(e.fade,localCount,battle,hit,e.progress);
             }

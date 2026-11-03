@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 namespace Exoduser.UnityPort
@@ -7,21 +8,59 @@ namespace Exoduser.UnityPort
     [DefaultExecutionOrder(27000)]
     public sealed class A2RHeroReadability : MonoBehaviour
     {
-        SpriteRenderer source;Sprite previous;MeshRenderer contour;Mesh mesh;Material material;Light fill;Func<Vector3> foot;
-        public void Initialize(SpriteRenderer actor,Func<Vector3> ground)
+        SpriteRenderer source;Sprite previous;MeshRenderer contour,ring;Mesh mesh;Material material,ringMaterial;Light fill;Func<Vector3> foot;Camera viewer;
+        Action<List<SpriteRenderer>> collect;readonly List<SpriteRenderer> candidates=new List<SpriteRenderer>();
+        struct State{public SpriteRenderer renderer;public int order,layer;public Material material;}
+        readonly List<State> restored=new List<State>();readonly Dictionary<Material,Material> behind=new Dictionary<Material,Material>();
+        public int OverlapCount {get;private set;}public int PeakOverlapCount {get;private set;}
+        public bool CaptureHideEnemies;static A2RHeroReadability active;readonly List<SpriteRenderer> hidden=new List<SpriteRenderer>();
+        public string HeroFrame {get {return source!=null&&source.sprite!=null?source.sprite.name:"";}}
+        public static void AvoidHeroStatus(ref float x,ref float y,float width)
         {
-            source=actor;foot=ground;var go=new GameObject("A2R moon-side one texel hero contour");go.transform.SetParent(transform,false);go.layer=actor.gameObject.layer;
+            if(active==null||!active.isActiveAndEnabled||active.source==null)return;var p=active.Project(active.source.bounds);var heroRect=Rect.MinMaxRect(p.xMin-5,Screen.height-p.yMax-5,p.xMax+5,Screen.height-p.yMin+5);
+            if(new Rect(x-width*.5f,y-1,width,9).Overlaps(heroRect))x=x<heroRect.center.x?heroRect.xMin-width*.5f-5:heroRect.xMax+width*.5f+5;
+        }
+        public void SetOverlaps(Action<List<SpriteRenderer>> sourceRenderers){collect=sourceRenderers;}
+        public void Initialize(SpriteRenderer actor,Func<Vector3> ground,Camera camera)
+        {
+            source=actor;foot=ground;viewer=camera;active=this;var go=new GameObject("A2R soft 1.5 screen pixel bone rim");go.transform.SetParent(transform,false);go.layer=actor.gameObject.layer;
             mesh=new Mesh{name="A2R source frame contour quad"};go.AddComponent<MeshFilter>().sharedMesh=mesh;contour=go.AddComponent<MeshRenderer>();material=new Material(Resources.Load<Shader>("A2R/HeroReadability"));contour.sharedMaterial=material;contour.shadowCastingMode=ShadowCastingMode.Off;contour.receiveShadows=false;
-            fill=new GameObject("A2R hero weak ground light").AddComponent<Light>();fill.transform.SetParent(transform,false);fill.type=LightType.Point;fill.range=2.8f;fill.intensity=1.1f;fill.color=new Color(.89f,.88f,.80f);fill.shadows=LightShadows.None;
+            fill=new GameObject("A2R hero weak ground light").AddComponent<Light>();fill.transform.SetParent(transform,false);fill.type=LightType.Point;fill.range=4;fill.intensity=1.1f;fill.color=new Color(.89f,.88f,.80f);fill.shadows=LightShadows.None;
+            var disk=GameObject.CreatePrimitive(PrimitiveType.Quad);Destroy(disk.GetComponent<Collider>());disk.name="A2R soft foot light pool";disk.transform.SetParent(transform,false);ring=disk.GetComponent<MeshRenderer>();ringMaterial=new Material(Resources.Load<Shader>("A2R/FootLight"));ring.sharedMaterial=ringMaterial;ring.shadowCastingMode=ShadowCastingMode.Off;
+            RenderPipelineManager.beginCameraRendering+=BeforeCamera;RenderPipelineManager.endCameraRendering+=AfterCamera;
         }
         void LateUpdate()
         {
             if(source==null)return;contour.enabled=source.enabled&&source.gameObject.activeInHierarchy&&source.sprite!=null;
-            if(!contour.enabled)return;var sprite=source.sprite;
+            ring.enabled=contour.enabled;if(!contour.enabled)return;var sprite=source.sprite;
             if(previous!=sprite){previous=sprite;var b=sprite.bounds;float pad=1.1f/sprite.pixelsPerUnit;float x0=b.min.x-pad,x1=b.max.x+pad,y0=b.min.y-pad,y1=b.max.y+pad;var uv=sprite.uv;var lo=new Vector2(1,1);var hi=Vector2.zero;foreach(var p in uv){lo=Vector2.Min(lo,p);hi=Vector2.Max(hi,p);}var texel=new Vector2(1f/sprite.texture.width,1f/sprite.texture.height)*1.1f;mesh.Clear();mesh.vertices=new[]{new Vector3(x0,y0,0),new Vector3(x1,y0,0),new Vector3(x0,y1,0),new Vector3(x1,y1,0)};mesh.uv=new[]{lo-texel,new Vector2(hi.x+texel.x,lo.y-texel.y),new Vector2(lo.x-texel.x,hi.y+texel.y),hi+texel};mesh.triangles=new[]{0,2,1,1,2,3};mesh.RecalculateBounds();material.SetTexture("_MainTex",sprite.texture);material.SetVector("_UVRect",new Vector4(lo.x,lo.y,hi.x,hi.y));}
             contour.transform.SetPositionAndRotation(source.transform.position,source.transform.rotation);var scale=source.transform.lossyScale;if(source.flipX)scale.x=-scale.x;if(source.flipY)scale.y=-scale.y;contour.transform.localScale=scale;
-            fill.transform.position=foot()+Vector3.up*.8f;
+            var p0=foot();fill.transform.position=p0+Vector3.up*.8f;ring.transform.SetPositionAndRotation(p0+Vector3.up*.035f,Quaternion.Euler(90,0,0));ring.transform.localScale=new Vector3(1.8f,1.35f,1);Restore();PrepareSorting();
         }
-        void OnDestroy(){if(mesh!=null)Destroy(mesh);if(material!=null)Destroy(material);}
+        Rect Project(Bounds bounds)
+        {
+            Vector2 lo=new Vector2(float.PositiveInfinity,float.PositiveInfinity),hi=-lo;
+            for(int n=0;n<8;n++){var p=viewer.WorldToScreenPoint(bounds.center+Vector3.Scale(bounds.extents,new Vector3((n&1)==0?-1:1,(n&2)==0?-1:1,(n&4)==0?-1:1)));if(p.z<=0)continue;lo=Vector2.Min(lo,p);hi=Vector2.Max(hi,p);}return Rect.MinMaxRect(lo.x,lo.y,hi.x,hi.y);
+        }
+        void BeforeCamera(ScriptableRenderContext context,Camera camera)
+        {
+            if(camera!=viewer||!isActiveAndEnabled||source==null||!source.enabled||collect==null)return;
+            if(restored.Count==0)PrepareSorting();
+            if(CaptureHideEnemies)foreach(var r in candidates)if(r!=null&&r.enabled){hidden.Add(r);r.enabled=false;}
+        }
+        void PrepareSorting()
+        {
+            if(collect==null||source==null||!source.enabled)return;candidates.Clear();collect(candidates);var rect=Project(source.bounds);OverlapCount=0;int queue=source.sharedMaterial.renderQueue;
+            foreach(var r in candidates){if(r==null||r==source||!r.enabled||!r.gameObject.activeInHierarchy||!Project(r.bounds).Overlaps(rect))continue;
+                restored.Add(new State{renderer=r,order=r.sortingOrder,layer=r.sortingLayerID,material=r.sharedMaterial});r.sortingLayerID=source.sortingLayerID;r.sortingOrder=Mathf.Min(r.sortingOrder,source.sortingOrder-8);OverlapCount++;
+                // Keep source shader/texels/blending; only this camera's overlapping higher queue changes.
+                if(r.sharedMaterial!=null&&r.sharedMaterial.renderQueue>queue){Material copy;if(!behind.TryGetValue(r.sharedMaterial,out copy)){copy=new Material(r.sharedMaterial){name=r.sharedMaterial.name+" A2R order only",renderQueue=queue};behind[r.sharedMaterial]=copy;}r.sharedMaterial=copy;}
+            }
+            PeakOverlapCount=Mathf.Max(PeakOverlapCount,OverlapCount);
+        }
+        void AfterCamera(ScriptableRenderContext context,Camera camera){if(camera==viewer)Restore();}
+        void Restore(){foreach(var r in hidden)if(r!=null)r.enabled=true;hidden.Clear();foreach(var s in restored)if(s.renderer!=null){s.renderer.sortingOrder=s.order;s.renderer.sortingLayerID=s.layer;s.renderer.sharedMaterial=s.material;}restored.Clear();}
+        void OnDisable(){Restore();}
+        void OnDestroy(){RenderPipelineManager.beginCameraRendering-=BeforeCamera;RenderPipelineManager.endCameraRendering-=AfterCamera;Restore();if(mesh!=null)Destroy(mesh);if(material!=null)Destroy(material);if(ringMaterial!=null)Destroy(ringMaterial);foreach(var m in behind.Values)Destroy(m);}
     }
 }

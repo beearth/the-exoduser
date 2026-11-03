@@ -114,3 +114,18 @@ R3 최종: 근접한 동일 원화 14쌍을 실측해 기존 greedy 선택을 �
 ## 19:30 최종 실행 영수증
 
 최종빌드84127006 Succeeded/errors0, MIN-depth GPU probe LitOpaque/CardOpaque 실측.25. Player ca2f988a는legacy우회없이일반로비8경계·도보1829ticks/4974.3px/캠프도착/오류0/순간이동0/정체0, public userSaveChanged0/windows0/leftovers0. 깊이411828pixels/51draws. 식생113/3.3u인접동일0/좌표변경0/떠있음0. 기본카드/강/지면값은0fd8기준그대로이며variationAsset만추가. tools/a2r-plant-variation.cjs --check로읽기검증, 인자없이수동배정(원래좌표쓰기없음). 최종비교판은I:/EXODUSER-Storage/map25d/a2redesign/proof-a2r-r1930-vs-0fd8e9f19.png. 최초오류·단기FPS범위·다른빌드Player.log감시건·미검증범위는같은REPORT. VISUAL VERDICT: RETOUCH/총괄판정대기.
+
+## 20:40 R2/R4 후속 계약
+
+| 항목 | 현행 값/구현 | 보호 범위 |
+|---|---|---|
+| R2 | 전장 타원 폭45%/높이40%, 중심alpha .20→경계1.0 smoothstep(0,1), 밖불투명. MIN 선처리 앞줄기 깊이 뒤의 투명+불투명 줄기 픽셀 모두 버림. 북쪽은 스스로 흐려지지 않고 앞줄기와겹친픽셀만제외 | 남쪽밑동/.2초/히스테리시스/디더링0/장판수신제외. 식생·캠프카드는줄기제거대상제외 |
+| R4 | 같은카메라 렌더 전 영웅screen bounds와겹치는적·탄 SpriteRenderer를영웅sortingOrder-8이하. 높은큐만같은source shader/material복제에서queue를맞춤. 렌더후즉시복원 | 액터atlas/텍셀/filter/rig/투영/소스shader변경0 |
+| R4 윤곽 | 기존흰1texel step삭제. 별도companion에1.5screen px 선형alpha샘플 뼈색(.76,.72,.61) alpha .36 한면림. source Point는불변. 발밑1.8×1.35u 부드러운additive pool최대.12. 개인광4u/1.1 | Core·판정·원근LOCK 보존 |
+| 다리 | 회청전역fogOFF 유지. 중립distance haze시작34u/density .002/상한.05. 국소A2빛줄기alpha0으로베이지안개덩어리제외 | 캠프주황광·갈색/올리브·R3원화변형보존 |
+
+화면판정은같은Player후기록. 기존19:30수치는이절에서대체한다.
+
+20:40 검수 보정: 첫Player0a618546 도보/오류0, 원화접지0/인접동일0/좌표이탈0. 영웅3x에서 적HP바가몸을덮어후보교체보류. 정렬을LateUpdate(컬링전)에도적용하고카메라렌더후복원한다. NativeGame.A2Enemies.cs에는A2R이켜진경우만HP바가영웅screen bounds를덮지않게좌우로밀어내는호출1줄추가(HP·Core·표시조건불변). 영웅원본프레임명/겹침정렬개수와동일위치적sprite숨긴04b보조컷추가. 반사카메라는가림대상아니며전용깊이마스크를끄고주카메라에서만재활성화한다.
+
+20:40 R2/R4 첫 제출: Windows build c89d8894/errors0, Player2749eb26/exit0/무창/실제세이브변경0. 일반로비8경계·Core1829ticks/4974.3px·순간이동0·캠프같은좌표. 겹침정렬10개/피크33개. 영웅3x와적sprite숨긴보조컷직접대조: 몸통·망토·무기가앞에보임/흰계단림없음/체력바회피. 32:9먼적29/16:9먼적15. 새웹카드떠있음0, 식생113/인접동일0/좌표변경0. proof-a2r-r2040-vs-e67a46f86.png. VISUAL VERDICT: RETOUCH(총괄최종판정및다리추가컷대기), R2/R4방향개선으로후보갱신가능판정. 다음REFERENCE_CONVENTIONS4·5·6.

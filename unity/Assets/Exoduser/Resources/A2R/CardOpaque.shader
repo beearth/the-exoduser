@@ -24,7 +24,7 @@ HLSLPROGRAM
 #pragma vertex vert
 #pragma fragment frag
 #include "CardCommon.hlsl"
-half4 frag(V i):SV_Target{clip(SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,i.uv).a-.12);clip(.002-A2RFadeMask(i.w,i.p));return 0;}
+half4 frag(V i):SV_Target{clip(SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,i.uv).a-.12);clip(.002-A2RFadeMask(i.w,i.p));A2RRejectRear(i.w);return 0;}
 ENDHLSL
 }
 Pass {Name "A2RNearest" Tags{"LightMode"="A2RNearest"} ZWrite Off ZTest Always Cull Off Blend One One BlendOp Min
