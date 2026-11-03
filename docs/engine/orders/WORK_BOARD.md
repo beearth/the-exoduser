@@ -3,7 +3,7 @@
 ## 2026-11-03 PC P0 진행
 | 작업ID | 내용 | 담당·브랜치 | 소유 파일 | 상태 |
 |---|---|---|---|---|
-| UNITY-GROUND-AOE-P0 | 1-1 장판 투영 + 14:20 대지치기 반쪽 가림 | PC Codex / codex/unity-ground-aoe-decal-20261103 | Runtime/NativeGroundSkillProjection·Surface·WarningProjection·NativeDruidTelegraphView·NativeSkillView, NativeGame.A2Field 수면등록, Shaders/GroundSkillProjection·ReceiverDepth·A2ToxicRiver, Editor/GroundAoeCompileCheck, tools/tests/unitySlamGroundProjection.test.cjs, P0/관련SSOT·CHANGELOG·본인행 | 15:39 재부팅 후 최신공통 정상병합. 대지치기 wave/flash 투영 연결, 정적회귀3/3. PC 배치컴파일 준비. Mac GPU/Player/M1 검수 대기 |
+| UNITY-GROUND-AOE-P0 | 1-1 장판 투영 + 14:20 대지치기 반쪽 가림 | PC Codex / codex/unity-ground-aoe-decal-20261103 | Runtime/NativeGroundSkillProjection·Surface·WarningProjection·NativeDruidTelegraphView·NativeSkillView, NativeGame.A2Field 수면등록, Shaders/GroundSkillProjection·ReceiverDepth·A2ToxicRiver, Editor/GroundAoeCompileCheck, tools/tests/unitySlamGroundProjection.test.cjs, P0/관련SSOT·CHANGELOG·본인행 | 소스e13b6b58c0: 정적3/3·PC公用배치a1bc6e3c exit0/C#0/shader3. 종료Curl23 1건기록. Mac1920/3840 연속/웹비교·GPU/Player/M1 대기. 공통·사용자실행본 미반영 |
 
 
 ARM64 Settings QA 앱에서 웹 `mouse2`↔Unity 오른쪽 버튼 1을 입력/캡처 양쪽에 맞춰 수정했다. 실제 OS 오른쪽 클릭으로 마법 처치 5/5, 첫 연습 1~9단계 완료. 10단계 방향+Space 동시 키 입력은 현재 CUA가 일반키 2개 조합을 거부해 구르기 0/5 HOLD. 이어질 11~12단계·일반 1-1 몹/드롭은 미검증. PC A18 `NativePractice*` 변경0. [증거·다음 관문](../UNITY_MAC_PRACTICE_MOUSE_BRIDGE_20261029.md).

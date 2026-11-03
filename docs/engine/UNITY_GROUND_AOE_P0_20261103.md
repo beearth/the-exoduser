@@ -57,3 +57,11 @@ PC compile-only 결과는 REPORT_1103.md와 고정 `ground-aoe-current/compile.j
 | 대지치기1920 연속 처음~끝 + 웹 동장면 비교 | 각 셀과중앙섬광 모두 반쪽 가림0. 0/5/15/28/44틱과종료45틱을 확인. 다리·늪·경사와3840도확인. 직립폭발로되돌아가거나수명이조기종료되면FAIL |
 
 현재 G2/G4/G5는 Mac 검수 대기. `VISUAL VERDICT: 미검증`. 이전 탄막/드루이드 작업은 개인 원격 d58f7663a7에 보존하고 이 P0 뒤로 둔다.
+
+## 재개 결과 — PC 컴파일까지만 완료
+
+소스 checkpoint `e13b6b58c0`에서 공용slots3 `exo-unity.ps1 run`의 `Exoduser.UnityPort.Editor.GroundAoeCompileCheck.Run`을 배치1회 실행했다. 작업 `a1bc6e3c`: exit0, C# compileErrors0,105557ms, refresh86518ms/compile17430ms, shaderImports3, USER_SAVE 변경0. `ground-aoe-current/compile.json`의 passed/compileOnly=true, visualVerified/playerRun=false다. Editor 예약 해제·해당Unity 종료를 확인했다. PC 정식빌드·Player·M1·비교영상 실행0.
+
+runner의 errorLogs=1을 숨기지 않는다. 로그에는 라이선스 Access token 갱신 메시지 뒤 entitlement 정상 확인과, batch 종료 시 `Curl error23: Failure writing output to destination`이 있다. C# 및 대상셰이더 오류는0이며 이 네트워크/종료 메시지를 이유로 같은 컴파일을 반복하지 않았다. Mac의 Player/RenderGraph 검수는 별도다. 핵심 로그: `I:/EXODUSER-Storage/unity-jobs/codex-impact/logs/a1bc6e3c.log`.
+
+임포트가 자동으로 덧쓴 `.meta`824개·`.mat`29개는 사전 WORK 목록과 대조해 자기 작업본의 checkpoint에서 정확한 경로만 복원했다. 컴파일 전부터 있던 외부 `tools/guard.baseline.json`은 변경·스테이징하지 않는다. 신규 빌드/프로젝트 복사본 없음. 완료 산출물 정리 총량은 REPORT의 최신 영수증을 따른다. 정적3/3·컴파일통과는 시각PASS가 아니며 위 Mac 행을 모두 확인한 뒤에만 통합 판단한다.
