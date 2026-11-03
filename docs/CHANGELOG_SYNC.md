@@ -80,6 +80,36 @@
 
 2026-11-04 05:20 공용 실행기 Windows 기본 환경 보정(맵 총괄 r15 막힘): exo-unity `2026.11.04-winenv`가 Editor·run 기동 직전 빈 SystemRoot·ComSpec·APPDATA·LOCALAPPDATA·ProgramData·ALLUSERSPROFILE·ProgramFiles 계열·TEMP 등을 이 프로세스 범위에서 채우고 `.EXE` 없는 PATHEXT·System32 없는 Path를 고친다. 원인=Codex node_repl 자식 환경에 ProgramData·ProgramFiles·APPDATA·ComSpec이 비어 UnityPackageManager.exe가 IPC를 못 열고 30초 뒤 exit 1(r14 03:56·r15 04:20). 시험 windows-env-test.ps1 추가, args-test.ps1 player DryRun에 -PcException candidate(11-03 거부 뒤 깨져 있던 것). 문서 unity/Tools/devtools/README.md·docs/engine/PC_CODEX_EXECUTION_20261028.md.
 
+## 2026-11-04 A2R 통합 미리보기용 식생 3D 끄기 인자
+
+- `--a2r-veg3d-off`를 넣으면 식생 3D(고사리·덤불 7종)만 끄고 원화 카드를 남긴다. 승인된 3D 소품(허용 목록), 원화 숲 벽, 반사 경로 OFF는 그대로다. 식생 3D 색이 FAIL이라(r18 판정) 통합 미리보기에서만 쓴다. 기준 r18 bb4b74965, 바뀐 파일은 A2RProps3D.cs 한 개. Core·카메라 변경 0.
+
+## 2026-11-04 A2R r16 증명 제출
+
+- 소스 4a4a009fc7cfa9ff251b3949d8c009d45723e5ae. 빌드 05eb8296·Player d6661971 오류 0·창 0·세이브 변경 0·잔류 0. 5장면 2열·PASS 11종 r15 동일 조건 쌍 시트·sight-1 OFF|ON 제출. 맵 총괄 판정 대기.
+- 일반 캠프 46.8 FPS. 적 제거 QA draw 2219/tri 20979772로 성능 예산 미달. 그림자 차분 10531510 tri. Core·바로가기 변경 0. 자동 생성 447개 원복·기존 WIP 3개 보존. 상세 UNITY_A2R_R16_20261104.md.
+
+## 2026-11-04 A2R r16 PASS11 화면 폭 보정
+
+- 총괄 PASS11종만 허용. r15 동일 앵커/34도/FOV에서 원화 알파 실루엣과 화면 LOD0 폭을 비교한0.6~1.0 균일 축척을 JSON/실배치에 적용. sroot_b 상한 잔차-1.26%. FAIL 종류 원화 유지.
+- r16 동일 조건11쌍·5장면2열·sight1·캠프 성능 촬영 장치. Core/카메라/바로가기 변경0, 시험 빌드는 a2r-build-next만. 상세 UNITY_A2R_R16_20261104.md.
+
+## 2026-11-04 A2R r15 증거 제출
+
+- 소스 46bc4906faa687db54361ef0b4bb5399da4ba318, 빌드71891e51/Player6747aee2 오류0·창0·세이브변경0·정상 Core 도보 4974.3px. 50종 원화|3D 34도·1x 시트 제출, 기본 빈 허용 목록 유지/총괄 판정 대기.
+- 그림자 제출 차이 10922673→10811076(1.02% 감소). 전체 QA 예산은 미달·캐스케이드 분리 미검증. 이전 캡처 정리·타인WIP3개 보존·자기예약 해제·바로가기 변경0.
+
+## 2026-11-04 A2R r15 재개 — 빈 허용 목록·LOD·그림자·종류별 시트
+
+- 05:05 브리프 환경 변수 보정 후 공용 Editor 정상 기동. 기본 빈 JSON 허용 목록으로 미승인 원화 유지, 명시적 격리 QA에서만 50종 비교. 원본 LOD1/2를 화면 LOD0/1로, 원경·1m 미만 그림자 OFF.
+- RED→GREEN 정책 테스트와 최종 컴파일 오류 0(740925b2). 시험 빌드는 a2r-build-next만 사용하며 바로가기는 총괄 소관. 판정 대기·증거 범위는 `UNITY_A2R_R15_20261104.md`, 외부 result-a2r-r15.md.
+- 첫 촬영의 고목→축척 영웅 겹침을 실제 bounds 간격·카메라 중심 보정으로 수정. 간격 테스트 RED→GREEN(8814e6e1→9d7aad1c). 같은 고정 폴더에 1회 재촬영하며 종류별 품질 판정은 총괄 대기.
+
+## 2026-11-04 A2R r15 환경 중단
+
+- 기준6fd65341c. 공용 Editor UPM IPC 30초 연결 실패가 2회 발생해 사용자 지시대로 중단. 임시 테스트 복원·자기 예약 해제.
+- 전 종류 원화|3D 시트와 기본빈허용목록은 미완료·테스트미실행. 런타임/Core/빌드/Player/바로가기변경0. 상세·로그는 UNITY_A2R_EXISTING_ASSETS_20261103.md의 r15 절과 외부 result-a2r-r15.md.
+
 ## 2026-11-04 A2R 00:10 검증 FAIL·갱신 보류
 
 - build0e994de9e/e1dc1c88 오류0이나 Playerc203801e exit3: 실제 화면 큰 줄기 원형 구멍 미해결, 세번째 실제나무 지점 미발견. 첫b2abb29e 포함두번실패로중단(§9),바로가기승인/이력SHA미갱신.
@@ -115893,3 +115923,24 @@ r14 03:45/03:50 인계: 회색 막은 원인 확정 전 무수정. 공용 Editor
 ## A2R r14 원인분리·보정 후보
 
 r14 원인분리 Player8f1ea3fb: 창0/세이브변경0/오류0/실제로비→캠프4974.28px 도보 PASS. DistanceHaze OFF는 회색막 변함없음, tone OFF는 대비/DOF OFF는 세부 회복. 기준 A2 .55EV/대비16과 달리 A2R .80EV/대비0/DOF 및 .62 저광량이 함께 평탄화했다. 최종 후보는 .55EV/대비16·DOF OFF·원래 방향광 세기/방향 복구(색은기존중립색), 동일패키지 r13막ON|OFF 촬영 추가. 원화 불투명/모델 base57재질50모델 측정에 따른 선형채널배율을 실제재질과재임포터 공통JSON에 저장. 평균은탈락필터/시각합격아님. 성능기준31,275,786tri→반사OFF26,269,109→반사·그림자OFF10,269,663. 원거리LOD0 108개/글로벌bias2 확인, 맵모델만bias배율.25(유효.5) 적용. 그밖의 최적화0·sight2알고리즘수정0. 캐스케이드별·깊이 단독GPU이벤트수는미측정으로기록하고전체프리미티브카운터와혼동하지않는다.
+
+
+## A2R r14 실제 Player 결과 — 색 FAIL·정밀 패스 분해 미완
+
+r14 제출/맵 총괄 판정 전: 실제 빌드3e96685265e4f1b814c38012ca332e4a4322c3c0, 공용 Build b5af0bdd 오류0/Player549adc60 PASS·창0·세이브변경0·초기/전체오류0. 일반 로비→캠프Core도보4974.28px/순간이동0 뒤 보조고정포즈4개(원화대조3곳+sight2진단), 1920/3840 18컷 모두3열카메라위치/FOV동일·카메라소스수정0. 회색막/흐림은 후처리(대비0/노출.80/DOF)와 약한키광을보정한동일패키지ON/OFF에서줄었으나 main보다밝고따뜻해최종톤PASS주장안함. 소품색은57재질/50모델평균RGB→HSV 전후표·재임포터규칙저장에도 캠프밝은분홍/앞3D고목회색면이남아FAIL. r13에이어같은색비교관문2회FAIL로추가보정/재빌드중단. 전체tri31,275,786→28,088,572/Draw2168→2036/FPS46.40→45.58(향상주장없음), 맵유효LOD bias2→.5/원거리LOD0 108→59. 반사OFF23,303,128·반사/그림자OFF9,779,012, 그림자합계차분13,524,116/반사기여차분4,785,444. 화면bounds/LOD제출상한5,549,513; 실제메인GPU패스·3캐스케이드각각·깊이프리패스단독은미측정(정밀분해미완). sight2(4895.76,6300) 실제차폐A2_Hollow_Loft_Tree/3재질LitOpaque·래핑True/NearestPass3·fadeShaderLitFade이나로그시점fade0/bits0, 수정0/원인단정없음. a2r-build-next만/실사용d79f0968b와바로가기변경0. 증명I:/EXODUSER-Storage/map25d/a2redesign/r14-{camp,foreground,bridge}-{1920,3840}-comparison.png, r14-grey-ON-OFF-1x.png, r14-foreground-1x.png, r14-camp-prop-1x.png,r14-distant-1x.png; 색표r14-color-table.md/성능r14-triangles.md/검사r14-checks.json. 최종FAIL_COLOR_RETOUCH_TONE_PERF_SPLIT_PENDING/총괄·Mac판정대기. 기존타인WIP3개보존·이레인미커밋0·보호경로Core/Common/ProjectSettings/Packages/원화커밋diff0. Editor자동재직렬화만원복, 이전레인생성캡처51개627MB정리내역r14-cleanup.json.
+
+
+## 2026-11-04 A2R r17
+- Models3D 정반사·환경반사 경로를 키워드로 차단. 원경 빈 LOD 복구와 far15 배치 허용. 준비된 구운 나무8종은 반입만 하고 근거리 허용은 보류. 34도 캠프·원경·쌍 시트와 세운 카드 집계는 전용 r17 fixture로 제출한다. Core·바로가기 변경 없음. 상세: 4.1맵디자인+설정/UNITY_A2R_R17_20261104.md.
+
+- r17 최종: sbone·sword_pile 제외, 근거리9종 유지. 원경 시야선 제외 후 세 위치 먼 적6/가림0·90표본, 세운 카드153/바닥투영4. 구운8종 미채택. 게임 fixture 오류0, Player 종료2회 실패 및 시험 폴더 DLL 잠금으로 전체 PASS 보류. 상세 결과: UNITY_A2R_R17_20261104.md.
+
+
+## 2026-11-04 A2R r18
+
+- 원경 far 허용 제거·원화 숲 벽6, 식생113개를 준비된 fern0~2/brush0~3 GLB로 교체. 높이 .40/.54/.45m, 카드 id 시드 ±25°, 기존 바람·반사OFF·그림자OFF·3LOD.
+- A2RBuilder/검사·실게임 비교 fixture와 UNITY_A2R_R18_20261104 기록을 동기화. Core·카메라·바로가기 무변경.
+
+- r18 실측: 원화숲벽6·식생113·세운46/바닥4, 가림·배치 fixture 통과. 5장면/3크롭/sight1 제출. 황록 식생 톤 RETOUCH, 성능 예산·Mac·자연플레이 미검증. 상세는 UNITY_A2R_R18_20261104.
+
+- r18 Player 게임 fixture는 통과했으나 종료 shutdown 정지 및 공용 taskkill CantActivateDocumentInPipeline으로 최종 영수증 유실. 정확한 QA PID만 종료, CIM 잔류·최종 창/세이브 감사 미확인. 추가 실행 없이 별도 결함으로 인계.

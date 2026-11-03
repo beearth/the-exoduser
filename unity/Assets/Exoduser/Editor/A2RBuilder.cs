@@ -8,6 +8,44 @@ namespace Exoduser
     public static class A2RBuilder
     {
         [Serializable] sealed class Receipt{public string result;public int errors;public ulong bytes;}
+        public static int VerifyR15Policy()
+        {
+            var type=typeof(UnityPort.A2RProps3D);
+            var parse=type.GetMethod("ParseAllowedModels");
+            if(parse==null)throw new Exception("R15 RED: missing default-deny model allowlist");
+            Func<string,System.Collections.Generic.HashSet<string>> read=json=>(System.Collections.Generic.HashSet<string>)parse.Invoke(null,new object[]{json});
+            foreach(var json in new[]{null,"","{}","{\"models\":[]}","broken"})if(read(json).Count!=0)throw new Exception("R15 malformed/missing allowlist must deny all");
+            var allowed=read("{\"models\":[\"camp\",\"camp\",\"ctree13_far\",\"\",null]}");
+            if(allowed.Count!=2||!allowed.Contains("camp")||!allowed.Contains("ctree13_far")||allowed.Contains("altar")||allowed.Contains("Camp"))throw new Exception("R15 allowlist must match exact model names");
+            var defaults=Resources.Load<TextAsset>("A2R/Models3D/allowed-models");
+            if(defaults==null||!read(defaults.text).SetEquals(A2RR18Checks.ExpectedModels()))throw new Exception("R16 shipped allowlist must contain exactly the 11 map-lead PASS kinds");
+            var apply=type.GetMethod("ApplyRenderBudget");if(apply==null)throw new Exception("R15 RED: missing LOD/shadow policy");
+            foreach(var spec in new[]{new object[]{.9f,false},new object[]{2f,true},new object[]{2f,false}})
+            {
+                var root=new GameObject("R15 budget test");var renderers=new Renderer[3];
+                try{for(int i=0;i<3;i++){var child=new GameObject("LOD"+i);child.transform.SetParent(root.transform,false);renderers[i]=child.AddComponent<MeshRenderer>();renderers[i].shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.On;}
+                    var group=root.AddComponent<LODGroup>();group.SetLODs(new[]{new LOD(.18f,new[]{renderers[0]}),new LOD(.06f,new[]{renderers[1]}),new LOD(.00001f,new[]{renderers[2]})});
+                    apply.Invoke(null,new[]{(object)root,spec[0],spec[1]});var levels=group.GetLODs();
+                    if(levels.Length!=2||levels[0].renderers[0]!=renderers[1]||levels[1].renderers[0]!=renderers[2]||renderers[0].gameObject.activeSelf)throw new Exception("R15 source LOD0 must never render; source LOD1/2 must become display LOD0/1");
+                    bool off=(float)spec[0]<1||(bool)spec[1];if((renderers[1].shadowCastingMode==UnityEngine.Rendering.ShadowCastingMode.Off)!=off)throw new Exception("R15 far/sub-1m shadow policy failed");
+                    apply.Invoke(null,new[]{(object)root,spec[0],spec[1]});if(group.GetLODs()[0].renderers[0]!=renderers[1])throw new Exception("R15 budget must be idempotent");
+                }finally{UnityEngine.Object.DestroyImmediate(root);}
+            }
+            Debug.Log("A2R_R15_POLICY_PASS empty/malformed/exact-name allowlist + LOD promotion + sub-1m/far shadows + idempotence");return 0;
+        }
+        public static int VerifyR15StageSeparation()
+        {
+            var method=typeof(UnityPort.A2RR15CameraLock).GetMethod("Separation");if(method==null)throw new Exception("R15 stage RED: wide model obscures scale hero");
+            foreach(var axis in new[]{Vector3.right,Vector3.forward})
+            {
+                var model=new Bounds(axis*3+Vector3.up*5,new Vector3(10,10,10));var hero=new Bounds(Vector3.up*.7f,new Vector3(1,1.4f,1));
+                var shift=(Vector3)method.Invoke(null,new object[]{model,hero,axis});model.center+=shift;
+                float low=Vector3.Dot(model.center,axis)-5,high=Vector3.Dot(hero.center,axis)+.5f;
+                if(low<high+.599f)throw new Exception("R15 hero must stand outside both source/model bounds");
+                if(((Vector3)method.Invoke(null,new object[]{model,hero,axis})).sqrMagnitude>.0001f)throw new Exception("R15 separated stage must not keep moving");
+            }
+            Debug.Log("A2R_R15_STAGE_PASS hero clear of wide-model bounds at either camera yaw");return 0;
+        }
         public static int VerifyPartialHeroSight()
         {
             var scene=UnityEditor.SceneManagement.EditorSceneManager.NewPreviewScene();var go=new GameObject("PartialSightProbe");UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(go,scene);var mesh=new Mesh();var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));var tree=new GameObject("Original_Branch");tree.transform.SetParent(go.transform,false);mesh.vertices=new[]{new Vector3(-1,.35f,0),new Vector3(1,.35f,0),new Vector3(-1,1.8f,0),new Vector3(1,1.8f,0)};mesh.triangles=new[]{0,2,1,1,2,3};mesh.RecalculateBounds();tree.AddComponent<MeshFilter>().sharedMesh=mesh;tree.AddComponent<MeshRenderer>().sharedMaterial=material;var camera=new GameObject("ProbeCamera").AddComponent<Camera>();camera.transform.SetParent(go.transform,false);camera.transform.position=new Vector3(0,0,-5);camera.enabled=false;camera.pixelRect=new Rect(0,0,1920,1080);var fade=go.AddComponent<UnityPort.A2ROcclusion>();
@@ -32,7 +70,7 @@ namespace Exoduser
         {
             var args=Exoduser.DevTools.ExoArgs.Get();int at=Array.IndexOf(args,"-output");string output=at>=0?args[at+1]:"I:/EXODUSER-Storage/map25d/a2r-build-next";Directory.CreateDirectory(output);
             foreach(var name in new[]{"CardOpaque","CardFade","LitOpaque","LitFade","GroundPainting","DistanceHaze","HeroReadability","FootLight","Contact","Air","ToxicRiver"}){var shader=Resources.Load<Shader>("A2R/"+name);if(shader==null)throw new Exception("A2R shader missing: "+name);if(ShaderUtil.ShaderHasError(shader)){foreach(var message in ShaderUtil.GetShaderMessages(shader))Debug.LogError(name+":"+message.line+":"+message.message);throw new Exception("A2R shader error: "+name);}}
-            VerifyNearestSurface();
+            A2RR18Checks.VerifyImported();A2RR17Checks.VerifyForestReadability();A2RR17Checks.VerifyFarLods();A2RR17Checks.VerifyMaterials();A2RR16Checks.VerifyScalePolicy();VerifyR15Policy();VerifyR15StageSeparation();VerifyNearestSurface();
             var target=Application.platform==RuntimePlatform.OSXEditor?BuildTarget.StandaloneOSX:BuildTarget.StandaloneWindows64;
             var player=target==BuildTarget.StandaloneOSX?"EXODUSER-A2R.app":"EXODUSER-A2R.exe";
             var r=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=new[]{"Assets/Scenes/FirstPlayable.unity","Assets/Exoduser/Remodel/CH1_1/RM1_Slice.unity"},locationPathName=Path.Combine(output,player),target=target,options=BuildOptions.None});
