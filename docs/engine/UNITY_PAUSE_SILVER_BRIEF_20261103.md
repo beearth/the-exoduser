@@ -27,3 +27,97 @@ Unity 인벤토리의 "인벤토리" 제목과 눈 메달이 상단 공통 탭 �
 - 실제 Unity 플레이어에서 일시정지·종료 확인·인벤토리를 1920×1080·1600×900으로 캡처해 before/after·1x 크롭으로 직접 판정한다. 기준은 "웹 실버 헬 창 옆에 놓아도 같은 게임처럼 보이는가".
 - 키보드 탐색(↑↓·Enter·ESC·TAB)과 포커스 표시가 그대로 동작한다.
 - 컴파일·테스트 통과만으로 완료라고 하지 않는다. 결과는 이 문서 아래에 이어서 기록한다.
+
+## 3. 인벤토리 "쓰레기 전부 분해" 미이식 (2026-11-03 사용자: "전체 쓰레기 지정 다음 지정 전체 분해가 안 뜨냐 왜", "그대로 웹버전 이식하라고 했을텐데")
+
+### 원인 (`unity/main` cbdcbc28)
+
+- 웹(`game.html` renderInv): `#invJunkSelBtn`을 누르면 즐겨찾기를 뺀 가방 전부가 `junk=true`가 된다. 다시 그리면 `#invJunkBtn` "쓰레기 전부 분해 (N개 -> 악의오브 +T)"가 나타나고, `gameConfirm`을 거쳐 가방에서 제거하고 `G.mats += T`를 더한다. 2026-11-03 실제 웹 게임에서 확인: 6개 지정 → "쓰레기 전부 분해 (6개 -> 악의오브 +6000)".
+- Unity `NativeInventoryDock.cs` `DrawActionRow`에는 **지정 버튼만** 옮겨져 있다. 분해 버튼·확인창·분해값 공식(`salvageVal`)이 없다. 같은 줄의 단일 분해 버튼도 `"분해 (악의오브+미이식)"` 자리표시로 남아 있고, 코드 주석에 `salvage ... not ported, shape only`라고 적혀 있다. 선택분해(`#invSalvageBtn`)도 없다.
+- 그래서 지정을 누르면 `n==0`이 되어 지정 버튼마저 사라지고, 줄에 아무것도 남지 않는다.
+
+### 이식 패치 (컴파일·실기 미검증 — Unity 세션이 적용 후 검수)
+
+**Core `InventoryState.cs`** (클래스 안에 추가):
+```csharp
+  // Web salvageVal (game.html): base by economy rarity (_itemEconomyRarity = min(r,4), negative -> 0)
+  // + 50% of the legacy per-level enhance cost (truncated, web ~~) + tier*2.
+  // The web _enhRefund (legacy migrated items) has no Unity field; Unity items never carry it.
+  static readonly int[] SalvageBase={1000,2000,10000,20000,50000};
+  static readonly double[] SalvageRarityMul={0.5,0.7,1.0,1.3,1.8};
+  public static int SalvageValue(InventoryItem it){
+   if(it==null)return 0;int r=it.rarity>=0?Math.Min(it.rarity,4):0;int refund=0;
+   if(it.enh>0){double total=0;for(int i=0;i<it.enh;i++)total+=Math.Ceiling(Math.Max(1,Math.Ceiling((1+i*0.15)*1.5))*SalvageRarityMul[r]);refund=(int)(total*0.5);}
+   return SalvageBase[r]+refund+it.tier*2;
+  }
+  public List<InventoryItem> JunkItems(){var list=new List<InventoryItem>();foreach(var it in Bag)if(it!=null&&it.junk&&!it.fav)list.Add(it);return list;}
+  // Web invJunkBtn: favorites excluded, equipped items are never in Bag. Returns the orbs gained.
+  public int SalvageJunk(out int count){
+   count=0;int total=0;
+   for(int i=Bag.Count-1;i>=0;i--){var it=Bag[i];if(it==null||!it.junk||it.fav)continue;total+=SalvageValue(it);Bag.RemoveAt(i);count++;}
+   if(count>0&&Selected!=null&&!Owns(Selected))Selected=null;
+   return total;
+  }
+```
+
+**`NativeInventoryDock.cs` `DrawActionRow`** — 맨 끝의 `int n=0;...` 블록을 아래로 바꾼다:
+```csharp
+            var junkList=State.JunkItems();
+            int n=0;foreach(var b in State.Bag)if(!b.junk&&!b.fav)n++;
+            if(n==0&&junkList.Count==0)return;
+            int tot=0;foreach(var j in junkList)tot+=InventoryState.SalvageValue(j);
+            // Web flex row: invJunkSelBtn (nonJunk>0) then invJunkBtn (junk>0), centred together in the remaining width.
+            string sel=n>0?"전체 쓰레기 지정 ("+n+"개)":null;
+            string jk=junkList.Count>0?"쓰레기 전부 분해 ("+junkList.Count+"개 -> 악의오브 +"+tot+")":null;
+            float sw=sel!=null?TextWidth(sel,12,500)+28:0,kw=jk!=null?TextWidth(jk,12,500)+28:0,gap=sel!=null&&jk!=null?8:0;
+            float x=startX+(1882-startX)/2f-(sw+gap+kw)/2f;
+            if(sel!=null&&PlateButton(new Rect(x,1004,sw,34),sel,12)){foreach(var b in State.Bag)if(!b.fav)b.junk=true;}
+            if(jk!=null&&PlateButton(new Rect(x+sw+gap,1004,kw,34),jk,12,true))junkConfirm=true;
+```
+
+**`NativeInventoryDock.cs`** — 확인창(웹 `gameConfirm` 문구 그대로)을 추가한다:
+```csharp
+        bool junkConfirm;
+        void DrawJunkConfirm(){
+            if(!junkConfirm)return;
+            var junkList=State.JunkItems();if(junkList.Count==0){junkConfirm=false;return;}
+            int tot=0;foreach(var j in junkList)tot+=InventoryState.SalvageValue(j);
+            Fill(new Rect(0,0,1920,1080),C(0,0,0,.55f));
+            var box=new Rect(660,380,600,300);NativeSilverHellUi.Panel(box,52,18);
+            Txt(new Rect(box.x+40,box.y+52,box.width-80,28),"쓰레기 "+junkList.Count+"개를 일괄 분해합니다.",16,C(230,227,220),400,TextAnchor.MiddleCenter,true);
+            Txt(new Rect(box.x+40,box.y+86,box.width-80,28),"악의오브 +"+tot+" 획득.",16,C(230,227,220),400,TextAnchor.MiddleCenter,true);
+            Txt(new Rect(box.x+40,box.y+132,box.width-80,22),"중요잠금 아이템은 제외됩니다.",13,C(167,164,157),400,TextAnchor.MiddleCenter,true);
+            Txt(new Rect(box.x+40,box.y+158,box.width-80,22),"복구 불가!",13,C(194,26,16),400,TextAnchor.MiddleCenter,true);
+            if(PlateButton(new Rect(box.x+86,box.yMax-76,200,40),"취소",14))junkConfirm=false;   // web: cancel left, confirm right
+            if(PlateButton(new Rect(box.xMax-286,box.yMax-76,200,40),"확인",14,true)){
+                int count;int gained=State.SalvageJunk(out count);
+                var g=NativeGame.Instance;if(g!=null&&g.Simulation!=null)g.Simulation.Materials+=gained;
+                junkConfirm=false;AfterOwnershipChange();
+            }
+        }
+```
+
+**`DrawDock`** — 확인창이 떠 있는 동안 아래 창 입력을 막는다:
+```csharp
+            bool en=GUI.enabled;if(junkConfirm)GUI.enabled=false;
+            ... 기존 DrawWindow ~ DrawActionRow ...
+            GUI.enabled=en;DrawJunkConfirm();
+            GUI.matrix=old;
+```
+
+**`NativeInventory.Keyboard.cs` `PollKeys`** — `WaitingForRelease` 검사 바로 다음에 넣는다(확인창의 ESC는 인벤토리를 닫지 않고 확인창만 닫는다):
+```csharp
+   if(junkConfirm){if(ExoInput.KeyDown(KeyCode.Escape)){junkConfirm=false;Navigation.Fence();}return false;}
+```
+
+### 남은 미이식 (같은 줄)
+
+- 단일 분해 `"분해 (악의오브+미이식)"` → 위의 `SalvageValue`로 웹 `"분해 (악의오브+N)"`과 같은 동작으로 바꾼다.
+- 선택분해 `#invSalvageBtn`(Ctrl 다중 선택 `_invSalSel`) 없음.
+- 웹 버튼은 현재 필터(`filtered`) 범위만 대상으로 하고, Unity는 가방 전체를 대상으로 한다(기존 지정 버튼과 같음). 필터 이식 때 함께 맞춘다.
+- 분해 효과음 `ui_salvage`, 즉시 저장(`dbSaveNow`)은 Unity 저장 범위에 맞춰 연결한다.
+
+### 검수
+
+- 전/후 캡처(1920×1080·1600×900, 1x 크롭): 지정 → 분해 버튼 표시 → 확인창 → 악의오브 증가·가방 제거.
+- `SalvageValue`를 웹 `salvageVal`과 대조한다. rarity 0~5, enh 0/1/5/20, tier 0~7 조합의 oracle 테스트를 Core 테스트에 추가.
