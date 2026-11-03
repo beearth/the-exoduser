@@ -315,6 +315,7 @@ DEMO11-44: Mac Codex / `codex/demo11-44-20261021` / NativePets·catalog/generato
 
 | 작업ID | 내용 | 담당·환경 | 브랜치 | 소유 파일(다른 담당 수정 금지) | 상태 |
 |---|---|---|---|---|---|
+| RIGPIXEL-1425 | 21:20 최신공통 병합·CHANGELOG 양쪽보존·컴파일 준비 | PC Codex / CTO 통합 | codex/unity-rigpixel-20261103 | 자기 CHANGELOG 충돌 구역·리깅 SSOT·자기 행 | CTO 인수 대기 — aa38bb877 포함·PC952896b8 오류0/네셰이더·세이브0, Mac 시각PASS/단독성능대기, 기본sprite |
 | DEMO11-32 | 화마귀 family tick·탄·사망·aggro 소비자 | Mac Codex | codex/demo11-32-20261021 | 신규 FD전용2파일·Main342/3058–3064·State1589–1594·자기 테스트/docs | **부분 구현·통합 BLOCKED** — source18사례/초기8·실제35 작은탄 검증. 큰탄 specialized/PC contact·hit/실제clock·MAP11 Marker 미인수, 31과 통합 후보 기록. 신규906/0·예산2/0·기존51/0(총959/0), 최종 수치는 [보고서](reports/demo11-32_REPORT.md), 보호/35/맵0줄 |
 | DEMO11-21fix | pending draw의 Main/State 해제 수명 보호 | Mac Codex | codex/demo11-21-20261021 | native_world_drops·신규 수명 테스트·자기 docs | **검수 대기** — mainac3764bfe 정상merge, 수명9/0·starter148/0·관련드랍60/0. ERROR/ObjectDB/resource0, Main/State/전투0줄. [보고서](reports/demo11-21fix_REPORT.md) |
 | DEMO11-21 | P2-006a/b 기존 제품 journal→실제 INV 자연 연결 | Mac Codex | codex/demo11-21-20261021 | Main252–257·State432/565–566/584–659 기존 추가분, 새 통합 테스트 | **검수 대기** — P2 수락 원격48f0d8e7/e69fe444 정상 merge·표시 byte 재사용, 신규24/0·관련회귀36/0. 보호 전투·맵·저장0. [보고서](reports/demo11-21_REPORT.md) |
@@ -662,3 +663,25 @@ PC 담당이 I:/EXODUSER-Storage/character-capacity/20261101-unlimited/receiver/
 ## 2026-11-02 3차 CTO parity 검수·공통 반영
 
 PC후보af70a6a2c5는정본버전매빌드읽기·직업X사슬/로어·실능력치계획/예약/저장·지원6스킬관리·대장간배치·클리어난이도확정창을연결했다. 정식53412e1f오류0·같은패키지M1653caf5c23/23·UI6699ddaa3해상도76PNG/기능14PASS·USER_SAVE0, PDB338소스일치다. 두차례난이도GPU캐시시각FAIL뒤원본규격sRGB무손실PNG로방법을바꿔잔점/계조를해결했고제단RGB도보존했다. 전체UI는42스킬/일부패시브/요약drawer/다음1-2미이식과세부획/광택차이로RETOUCH유지. 바탕화면은개발툴자동빌드소유·직접교체0. 자기예약반환·Mac실제반영/실행미검증. 반영SHA/15개1x비교/3x/세부영수증은 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md. Mac기존WIP·앱미접촉, 4/5차전체범위는이번3차와구분한다.
+
+## 2026-11-03 Unity 사망 UI — 18:40 Mac FAIL 후속
+
+| 담당/브랜치 | 소유 경로 | 상태 | 검증/다음 |
+|---|---|---|---|
+| PC Codex / codex/unity-death-screen-20261103 | NativeGame.cs(촬영 인자 등록), NativeGame.DeathScreenCapture.cs, NativeGame.DeathUiCapture.cs(+meta), NativeLobby.SilverHell.cs, NativeLobby.SilverLobby.cs, NativeLobby.CharacterDelete.cs(촬영 삭제 차단), unity/Tools/death-ui-tests, UNITY_DEATH_SCREEN/UNITY_BUTTON_PLATE_MATERIAL 문서 | 구현·PC 컴파일 완료, Mac 검수 요청 | origin/unity/main 9dc27dea5612 병합(cbdcbc282 조상). Player/Editor 참조 Roslyn 5어셈블리 오류0, 로비 우회·Linear/Gamma 색 회귀 PASS. PC Unity/Player/빌드/캡처0. 실제 필드/보스 사망·부활과 6개 UI 직접 촬영은 Mac 미검증 |
+
+세이브 로그는 smoke의 파일 IO 비활성 때문에 기존 일반 바인딩 로그 경로를 지나지 않았다. 실제 QA 루트와 저장소 상태를 DEATH_UI_SAVE_BINDING 및 JSON에 기록한다. 개인 세이브·웹/main·바탕화면 실행본 변경0. 인계/최종 SHA·Mac 인자 전체: I:/EXODUSER-Storage/codex-takeover/death-screen/REPORT.md. VISUAL VERDICT: RETOUCH (이전 Mac FAIL, 새 후보 미검증).
+
+## 2026-11-03 19:10 Unity 사망 UI 재검수7항 후속
+| 담당/브랜치 | 소유 경로 | 상태/검증 | 다음 |
+|---|---|---|---|
+| PC Codex / codex/unity-death-screen-20261103 | 기존 사망/UI 촬영·NativeGame.cs·FieldBoss의 문구 억제, NativeLobby.SilverHell, NativeRevive(.DeathScreen), NativeUiAudit와 신규 NativeUiChrome(+meta), death-ui-tests, 해당 UI SSOT/CHANGELOG | 스킨8상태 제거·검정 판·물리1px·외부 번짐 제거, URP Vignette·사망 문구 억제·fade5프레임·Mac 경로 탐색 구현. Player/Editor DLL 참조5어셈블리 오류0, 스킨 회귀 PASS. 이전 색 보정 방법 폐기 | Mac 실제 재검수 대기/RETOUCH. 기존 입장버튼은 none이므로 회색 원인 단정하지 않음. 새 스킨/판 동일 좌표 PNG·RGB 진단으로 확인. PC 제한으로 Windows GPU 원인 증명은 미실행 |
+
+브리프: I:/EXODUSER-Storage/codex-takeover/death-screen-brief.md 19:10. 최종 SHA와 Mac 상대/자리표시자 인자: death-screen/REPORT.md. 본인 코드·docs만 commit/push, 기존 guard.baseline.json WIP 보존. 에디터/Player/빌드/PC 캡처0.
+
+## 2026-11-03 20:20 사망 UI3차 FAIL 후속
+| 담당/브랜치 | 본인 수정 | 현재/다음 |
+|---|---|---|
+| PC Codex / codex/unity-death-screen-20261103 | 공통 SolidRect/ActionPlate·일시정지 바깥glow, NativeUiChrome/DeathUiCapture의 opacity probe, DeathScreen/DeathColorProbe/Revive.DeathScreen의 가로띠 제거·채도진단, death-ui-tests와 관련 UI docs | 생성 판 경로 폐기, 단색 흑철·강제alpha1·비블렌딩·실버 헬1px, Mac Scripting 탐색. PC5어셈블리 오류0·CPU 회귀 PASS. Unity/Player/빌드/캡처0. Mac 새 후보 RGB/불투명·전체 채도·톤 재검수 대기/RETOUCH |
+
+최신 unity/main d6c5bb89bb20 병합(7bc7a3518 규칙). NativeGame 촬영등록·incoming 일시정지 inputLive/명조·양쪽 번역 항목 보존해 충돌 해결. blackTexture가 RGBA0인 공식 API 근거와 현재 단색/실버 토큰은 버튼 SSOT에 기록. 최종 SHA/상대 Mac 인자: I:/EXODUSER-Storage/codex-takeover/death-screen/REPORT.md. 기존 guard.baseline.json WIP는 보존.

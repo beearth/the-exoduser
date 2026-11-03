@@ -1,3 +1,19 @@
+2026-11-03 21:50 Unity 직렬화 근본 정리: guid만 있던 .meta 854개를 Unity 6000.6.7f1이 만든 전체 importer 설정으로, 손으로 쓴 a2 재질 29개를 URP 정식 직렬화(AssetVersion 10)로, URP_PC_High·Mac_Balanced·GlobalSettings와 FirstPlayable.unity를 커밋. 빠졌던 추적 에셋·폴더 .meta 56개와 ProjectSettings/SceneTemplateSettings.json 추가(작업본마다 guid가 달라지던 결함). 원본=BuildLoop 작업본 cb77ca96f 빌드 산출물, 그 사이 위에서 고친 button_iron.png.meta는 커밋본 유지. BuildLoop는 작업본 사본이 새 커밋과 같은 내용이면 스테이징 후 갱신. 문서 unity/Tools/devtools/buildloop/README.md.
+
+2026-11-03 20:45 지시 2_3 사실 동기화: 무지개 반사×1.5·AoE0 폴백(기본 반경100/중심×1.5)과 Unity A안 보상 분리를 main·G2 브랜치와 같은 본문으로 동기화. 구현 커밋 f6ff63e333d6b6a15aeac28ef3b824eb22f3b223는 codex/unity-parry-g2-20261103에 있으며 Mac 검수·총괄 병합 대기다. 이 커밋은 docs 2개뿐이며 게임 코드는 변경하지 않는다.
+
+2026-11-03 21:40 PC Player 차단·무음 누수 수정(사용자 "백그라운드 테스트 사운드가 들린다, 맥에서만"): exo-unity player는 -PcException buildloop|cto-swap|candidate 없으면 거부, BuildLoop·UI 겹침 check.ps1은 buildloop로 넘김. 원인=--unity-mute를 M1 스모크·캡처별 EarlyMute만 따라 UI 겹침 검사 모드에서 소리 발생 → Runtime NativeMuteGuard가 모든 모드에서 AudioListener.volume=0·Direct 영상 mute. 문서 unity/Tools/devtools/README.md.
+
+2026-11-03 21:00 BuildLoop 재직렬화 정체 수정: 빌드가 다시 쓰는 Unity 직렬화 추적 파일(.meta·.mat·.asset·.unity)만 남은 작업본은 버리지 않고 진행, 새 커밋과 겹치면 목록으로 중단. 원인=guid만 커밋된 .meta 824개·손으로 쓴 재질 29개·URP prefilter·MakeScene의 FirstPlayable.unity 저장. 문서 unity/Tools/devtools/buildloop/README.md.
+
+2026-11-03 규칙 정리(사용자 "전부 추천대로", 51항목): CLAUDE.md를 main·unity/main 같은 본문(233줄)으로 다시 쓰고 AGENTS.md는 CLAUDE.md 안내만 둔다. 핵심: 새 개발은 unity/main만·웹은 Steam 유지보수(부록 W), 11-05부터 Claude 구현, PC 컴파일·Mac 판정(PC 예외 ①BuildLoop ②루프 정지 중 1회 교체 ③승인 후보), 1-1 원근 LOCK 34°, docs 정본=unity/main. main에만 있던 매뉴얼·보드·실버 헬 등 9개 문서를 unity/main으로 옮기고 v4.1·운영 매뉴얼 v1.1·TERMINAL_FAILURE_FALLBACK·DOCS_INDEX를 추가했다. 딸린 문서 5개(API연결_가이드·BUILD_BACKUP_POLICY·2_3 상단 노트·IMAGE_PROVIDER_PRIORITY·MAP_OBJECT_SEEDREAM)와 EnergyShield.cs 주석 출처를 고쳤다. 원문은 [docs/_archive/rules-20261103](_archive/rules-20261103/README.md).
+
+2026-11-03 Mac Unity 인벤토리 쓰레기 분해 웹 이식·제목 제거·일시정지 실버 헬 마감: Core `InventoryState.SalvageValue/JunkItems/SalvageJunk/SalvageOne`(웹 `salvageVal` oracle 224행 일치), 하단 지정·분해 두 버튼, 웹 `gameConfirm` 확인창(입력 차단·ESC는 확인창만), 단일 분해 실제 동작, `인벤토리` 제목 띠 삭제. 일시정지는 비활성 틴트 제거, 버튼 skin 배경 제거, 은빛 판+작은 진홍 빛, 공통 제목 띠, Hahmlet 자간 글자, 판 바탕 Linear 보정(`Panel(...,iron:false)`). ARM64 빌드 오류0, 캡처 장치 1920·1600 PASS, 눈 검수 PASS. 키 회귀 두 개의 기존 결함은 변경 전 빌드와 동일. 번역 목록 3662–3666 등록. [기록](engine/UNITY_PAUSE_SILVER_BRIEF_20261103.md#42-적용-내용).
+
+2026-11-03 Mac Unity UI 인계(인벤토리 분해·제목·일시정지): 클라우드 브리프를 unity 작업 브랜치로 옮기고 `--unity-ui-finish-capture -ui-phase pause,inventory` 전/후 캡처 단계를 추가했다. 이 장치가 로비에 머물던 결함(시작 연출 미건너뜀)을 UI 겹침 검사와 같은 진입 순서로 고쳤다. 제품 UI 변경과 결과는 후속 절에 기록한다. [브리프·기록](engine/UNITY_PAUSE_SILVER_BRIEF_20261103.md#4-mac-적용-기록-2026-11-03-pc-ui-총괄-mac-세션).
+
+2026-11-03 19:00 지옥문 조건 목표 표시: 최신 unity/main `9dc27dea5` 병합 후 실제 Core 비율/보너스의 필요 처치 수(23마리→19, 문지기 보너스→17), 아귀 상태·정화 N/4·다음 지역·문 열린 뒤 보스방 안내를 우측 두 줄과 미니맵에 연결. 기존 serif/뼈색·금색 선·웹 아귀/자물쇠 문법, 새 문구224개/28언어. 표시 모델33검사·Core 최소수400조합·언어형식 통과, 공용bin 컴파일 `3920a25c` 오류0/USER_SAVE0. PC Player·새 빌드·게임 캡처0, Mac 1920/3840 1x·3x와 자연 진행 미검증. [G0 근거·구현·Mac 인자](engine/UNITY_HELLGATE_OBJECTIVES_20261103.md).
+
 2026-10-29 Mac 로비 메타 대비 후보: 최신 웹 `main:7e0113fe4`의 좌상단 회색 alpha `.5`는 실제 1280/1600 1x에서 석재 배경 위 판독이 약했다. Mac 정의 JSON의 일반·한도 alpha만 `.9`로 변경, ARM64 Settings QA build Succeeded/오류0, 5/5 실제 화면·Tab/Return/Esc 유지·로스터 SHA 불변. 웹 세 위치 동기화와 물리 마우스 hit는 HOLD, 전체 VISUAL VERDICT RETOUCH. [수치·화면·후속](engine/UNITY_LOBBY_20261024.md#2026-10-29-좌상단-메타-대비-후보--mac-범위).
 
 2026-10-29 Mac 로비 패치노트 hit/focus 정합: 좌상단 3/4줄의 실제 glyph 폭·행 높이를 공통 `OverlayBounds`로 계산해 표시·클릭·키보드 초점 테두리에 사용. 빈 초점의 첫 Tab을 패치노트 버튼에 연결. ARM64 Settings QA build Succeeded/오류0, 1280에서 Tab→Return 열기·N 뒤입력 차단·Esc 닫기/초점 복귀, 1600에서 표시·테두리 정합을 실제 확인. 마우스 hit 미검증·기존 메타 대비 RETOUCH 유지. [로비 문서](engine/UNITY_LOBBY_20261024.md#2026-10-29-표시패치노트-hitfocus-범위-정합).
@@ -57412,3 +57428,27 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 - A2R최종07f88b3e/7b61aa6d: 오류0·일반입장/Core캠프도보PASS·실제세이브변경0. e67비교/동일패키지안개ON-OFF/4·5·6전후판·10초영상2개검수. 발19/탄1·실제지지목8·원화접지0/인접동일0. 전체미술상태RETOUCH/총괄·Mac판정대기.
 
 - A2R21:45 1~5: 거대전경줄기거리·화면높이기준.35fade, 실제수면/바닥밖마스크·해자높이고정, 어두운늪/실제횃불주황반사, groot원본좌표·크기/색틴트, 림.50/발밑반경1.3×. 21:55 rigpixel연동은원본코드수정없이A2R RT/bounds읽기adapter, 병합후검증예정.
+## 2026-11-03 — 리깅 픽셀 14:25·19:00 재작업
+
+- NativeRigPixelHero/Composite/Toon: 망토1~2텍셀 분리 섬과 외곽테 제거, 중성 흑철(.18,.185,.195)과 실제광의2단 금속하이라이트, 공통 화면픽셀격자 전달.
+- KiSlashView·KiSlashAdditive/Ink·RigPixelSlashSampling: rigpixel opt-in Point/4단색/알파정리/동일격자/1픽셀 ink. sprite기본·원본시트·5레이어opacity·Core판정/타이밍 유지.
+- UNITY_RIG_PIXEL_20261103의 G0 공통관례·현행 수치표와 Mac 검수 명세를 동기화. PC 컴파일만, 실게임 점0/팔레트/검격/FPS는 Mac 판정 대기.
+- PC 공용 단일 컴파일7d38fa45는네셰이더/renderer/Humanoid true·exit0·C#오류0·USER_SAVE0. 자동직렬화/CLI임시물은정리, Mac실게임판정전기본값/공통반영0.
+
+## 2026-11-03 — 20:20 rigpixel 검격 검은 사각 면 수정
+
+- RigPixelSlashSampling.hlsl과KiSlashInk.shader: alpha255인검은원시트배경을투명영역으로분류하도록C=saturate(max(RGB×alpha)×2.4) coverage/ink alpha를공유. 중앙·이웃·섬정리모두같은C, 원화변경0.
+- 망토/흑철/동일픽셀격자/원시트/5레이어/Core·카메라타이밍유지. UNITY_RIG_PIXEL의현행식과Mac재검수좌표·인자·WORK_BOARD를동기화. docs정본unity/main, PC컴파일만수행.
+- 단일PC컴파일4c477254: source0fa44094ed, renderer/네셰이더/Humanoid true·exit0·C#0·세이브0. 자동생성물정리후Mac사각면0 재검수대기, 기본/공통전환0.
+
+2026-11-03 Unity 사망 UI Mac FAIL 후속: death-screen-smoke 로비 우회 등록, Core 실제 쓰러짐→대기→부활/0.5s 필터 해제와 보스 아레나 사망 촬영, 사망 UI 6개 직접 촬영(삭제 확인은 삭제 차단), 생성 흑철판 Linear/sRGB·틴트 교정(RGBAHalf) 및 로비 슬롯 빨간 채움 제거. QA 저장소 비활성 상태를 DEATH_UI_SAVE_BINDING/JSON으로 기록. origin/unity/main 9dc27dea5612 정상 병합. PC Player/Editor DLL 참조 Roslyn 5어셈블리 오류0·색/로비 우회 회귀 PASS; Unity 에디터/Player·빌드·캡처 미실행, Mac 1920/3840/5120 및 실제 디자인은 미검증/RETOUCH. [사망 계약](3.1%20ui%20hud%20디자인/UNITY_DEATH_SCREEN_20261103.md), [공통 버튼/직접 촬영](3.1%20ui%20hud%20디자인/UNITY_BUTTON_PLATE_MATERIAL_20261103.md).
+
+2026-11-03 19:10 Mac 재검수7항 후속: 색 공간 보정 방법 폐기. Label/Button/Box 공통 스킨8상태 배경 제거(Editor HiDPI 포함), 불투명 검정 판·물리1px·외부 붉은 번짐 제거. URP 검정 Vignette로 IMGUI256×144 타원 대체, 사망 중 기존/신규 전투 문구 억제, 실제 Core 부활 뒤0/.125/.25/.375/.5 연출 시각 고정5프레임 촬영, 스킨/커스텀 판 동일 좌표 RGB·PNG 진단 추가. death-ui-tests의 Mac Unity/.NET 경로 인자/자동 탐색. PC DLL 참조5어셈블리 오류0·스킨 회귀 PASS, Mac 실제 화면 및 Windows GPU 미검증/RETOUCH. [버튼 계약](3.1%20ui%20hud%20디자인/UNITY_BUTTON_PLATE_MATERIAL_20261103.md), [사망 계약](3.1%20ui%20hud%20디자인/UNITY_DEATH_SCREEN_20261103.md).
+
+2026-11-03 20:20 사망 UI3차 FAIL 후속: transparent blackTexture(RGBA0) 사용을 확인하고 생성 텍스처 판 경로를 폐기. whiteTexture×실버 헬 #0f0f10·alpha1·비블렌딩 단색, 은빛 #8a8b88/#c9c7c3 1px·선택 안쪽 진홍3선. 일시정지 inputLive/명조 배치 보존, PrimaryGlow 제거. 스킨 probe에 자홍 underlay와 RGB(15,15,16)±3 검사. URP 뒤 따뜻한 DeathBand 제거, 동일 색3패치의 실제 카메라 before/after 채도 probe 추가. Mac Contents/Resources/Scripting SDK/runtime 탐색. origin/unity/main d6c5bb89bb20(규칙7bc7a3518 포함) 정상 병합, 번역/입력 충돌 양쪽 보존. PC DLL 참조5어셈블리 오류0·단색/스킨/경로 회귀 PASS, GPU·Mac 판정 미검증/RETOUCH. [버튼](3.1%20ui%20hud%20디자인/UNITY_BUTTON_PLATE_MATERIAL_20261103.md), [사망](3.1%20ui%20hud%20디자인/UNITY_DEATH_SCREEN_20261103.md).
+
+## 2026-11-03 — 21:20 rigpixel 공통 병합 준비
+
+- origin/unity/main aa38bb8773274bd5f2c91fdc25c4eb2cf003565d(사망 화면 병합 포함)을 정상 merge. CHANGELOG 충돌은 리깅 픽셀14:25/19:00·20:20 기록과 사망UI 후속3개 기록을 모두 보존했다.
+- 39e52fe Mac 시각 PASS(검격 사각면0·망토낱픽셀0·흑철·1px검격)는 기존근거, 3840 성능은단독재측정대기. 기본sprite유지, 이번변경은통합/컴파일준비이며기본값전환0.
+- 병합본 c81bdc6455의공용PC컴파일952896b8 단일실행: renderer/네셰이더/Humanoid true·exit0·C#오류0·USER_SAVE0. 자기자동생성물정리, CTO fast-forward 인수준비. 기본값전환은성능단독재측정PASS뒤.

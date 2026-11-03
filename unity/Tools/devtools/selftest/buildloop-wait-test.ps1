@@ -37,7 +37,7 @@ if($st.lastAttemptSha -ne 'next'){throw 'FAIL: branch modified deployment attemp
 'PASS: '+($n+5)+' wait classification/state decisions; Unity launches=0'
 
 # Exercise the real Cmd-Run finally path with only environment boundaries replaced.
-foreach($name in 'Cmd-Run','WriteJson','ReadJson'){
+foreach($name in 'Cmd-Run','WriteJson','ReadJson','Get-ReserializeDirt','Get-ReserializeOverlap','Get-IncomingCollision'){
  $f=$ast.FindAll({param($n) $n -is [Management.Automation.Language.FunctionDefinitionAst]},$true)|Where-Object Name -eq $name|Select-Object -First 1
  . ([scriptblock]::Create($f.Extent.Text))
 }

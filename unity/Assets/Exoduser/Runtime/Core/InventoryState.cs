@@ -55,6 +55,33 @@ namespace Exoduser.UnityPort.Core {
   }
   static bool Finite(double v)=>!double.IsNaN(v)&&!double.IsInfinity(v);
   public InventoryItem GetEquipped(string slot){int i=Array.IndexOf(Slots,slot);return i<0?null:Equipped[i];}
+  // Web salvageVal (game.html): base by economy rarity (_itemEconomyRarity: integer >=0 -> min(r,4), else 0)
+  // + 50% (truncated, web ~~) of the legacy per-level enhance cost + tier*2. The web _enhRefund of migrated legacy items has no Unity field.
+  // ForgeFormulas.SalvageValue passes the forge_web.json valueTable; the default table is the same web array.
+  public static readonly int[] SalvageBase={1000,2000,10000,20000,50000};
+  static readonly double[] SalvageRarityMul={0.5,0.7,1.0,1.3,1.8};
+  public static int EconomyRarity(int r){return r>=0?Math.Min(r,4):0;}
+  public static int SalvageValue(InventoryItem it,int[] table=null){
+   if(it==null)return 0;int r=EconomyRarity(it.rarity),refund=0;
+   if(it.enh>0){double total=0;for(int i=0;i<it.enh;i++)total+=Math.Ceiling(Math.Max(1,Math.Ceiling((1+i*0.15)*1.5))*SalvageRarityMul[r]);refund=(int)(total*0.5);}
+   return (table??SalvageBase)[r]+refund+it.tier*2;
+  }
+  // Web invJunkBtn candidates: bag items marked junk, favorites excluded (equipped items are never in Bag).
+  public List<InventoryItem> JunkItems(){var list=new List<InventoryItem>();foreach(var it in Bag)if(it!=null&&it.junk&&!it.fav)list.Add(it);return list;}
+  // Web invJunkBtn confirm: removes every junk item, returns the orbs gained; the web clears the selection (INV.selected=null).
+  public int SalvageJunk(out int count){
+   count=0;int total=0;
+   for(int i=Bag.Count-1;i>=0;i--){var it=Bag[i];if(it==null||!it.junk||it.fav)continue;total+=SalvageValue(it);Bag.RemoveAt(i);count++;}
+   if(count>0)Selected=null;
+   return total;
+  }
+  // Web dropItem(idx): favorites refused; removes the item and selects the bag slot at the same index (or the last one).
+  public int SalvageOne(InventoryItem it){
+   int idx=it==null?-1:Bag.IndexOf(it);if(idx<0||it.fav)return 0;
+   int gained=SalvageValue(it);Bag.RemoveAt(idx);
+   Selected=Bag.Count==0?null:Bag[Math.Min(idx,Bag.Count-1)];
+   return gained;
+  }
   public bool Owns(InventoryItem it)=>it!=null&&(Bag.Contains(it)||Array.IndexOf(Equipped,it)>=0);
   public bool Select(InventoryItem it){if(it!=null&&!Owns(it))return false;Selected=it;return true;}
   // All admitted source slots use 2x2; source unknown 1x1 and ossuary category are not admitted.
