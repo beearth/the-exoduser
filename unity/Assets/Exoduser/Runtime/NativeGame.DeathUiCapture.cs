@@ -16,101 +16,91 @@ namespace Exoduser.UnityPort
                 +" combat="+(combatStore==null?"disabled":"bound-to-roster");
             Debug.Log("DEATH_UI_SAVE_BINDING "+binding);return binding;
         }
+        [Serializable] sealed class UiArtReceipt {public string path;public bool loaded;public int mipCount;}
         [Serializable] sealed class DeathUiReceipt
         {
             public bool passed,dialogOpen,rosterUnchanged,persistenceDisabled;
-            public int width,height,rosterBefore,rosterAfter;public string screen,page,saveBinding,failures;public string[] files;
-            public SkinPixelProbe[] skinProbes;
+            public int width,height,rosterBefore,rosterAfter;public string screen,state,page,saveBinding,failures;public string[] files;
+            public UiArtReceipt[] art;public float artworkBrightness=1;public int strippedSkinStates;
         }
-        [Serializable] sealed class SkinPixelProbe
-        {
-            public string label,platform,gpu,colorSpace,stockStates;public int strippedStates;
-            public int[] points,rgb;public bool customPlateDark,opacityUnderlayUsed;
-        }
-        IEnumerator DeathSkinProbe(string output,string label,List<string> files,Action<SkinPixelProbe> save)
-        {
-            yield return new WaitForEndOfFrame();
-            var frame=ScreenCapture.CaptureScreenshotAsTexture();
-            var rec=new SkinPixelProbe{label=label,platform=Application.platform.ToString(),gpu=SystemInfo.graphicsDeviceType.ToString(),
-                colorSpace=QualitySettings.activeColorSpace.ToString(),stockStates=NativeUiChrome.StockStates,strippedStates=NativeUiChrome.StrippedStates,
-                points=new int[4],rgb=new int[6],customPlateDark=true,opacityUnderlayUsed=NativeUiChrome.OpacityProbe};
-            for(int i=0;i<2;i++){
-                // Same design-space points as the Mac FAIL, transformed into this exact framebuffer.
-                var pos=NativeUiViewport.RightMatrix.MultiplyPoint3x4(new Vector3(1500,i==0?735:775,0));
-                int x=Mathf.Clamp(Mathf.RoundToInt(pos.x),0,frame.width-1),y=Mathf.Clamp(Mathf.RoundToInt(pos.y),0,frame.height-1);
-                Color32 pixel=frame.GetPixel(x,frame.height-1-y);rec.points[i*2]=x;rec.points[i*2+1]=y;
-                rec.rgb[i*3]=pixel.r;rec.rgb[i*3+1]=pixel.g;rec.rgb[i*3+2]=pixel.b;
-                if(Mathf.Abs(pixel.r-15)>3||Mathf.Abs(pixel.g-15)>3||Mathf.Abs(pixel.b-16)>3)rec.customPlateDark=false;
-            }
-            File.WriteAllBytes(Path.Combine(output,label+"_"+Screen.width+"x"+Screen.height+".png"),frame.EncodeToPNG());Destroy(frame);files.Add(label);
-            Debug.Log("DEATH_UI_SKIN_PROBE "+JsonUtility.ToJson(rec));save(rec);
-        }
-        // Mac only: --unity-death-ui-smoke -ui-screen pause|settings|quit|character-delete|lobby|lobby-quit.
-        // Real UI at the requested Player resolution. No settings, roster or combat-save IO.
+        // Mac Player only. -ui-screen lobby|character-create|character-name|character-delete|pause|settings|quit|lobby-quit
+        // -ui-state normal|hover|selected|disabled; -ui-characters 0|2. States are visual fixture overrides, not physical input QA.
         IEnumerator DeathUiCaptureRun()
         {
             AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;
             pauseSmoke=true;lobbySmoke=true;lobby.AutomatedInput=true;Running=false;
-            string output=Argument("-output"),screen=Argument("-ui-screen");
-            if(string.IsNullOrEmpty(output)||!Path.IsPathRooted(output)){Debug.LogError("death UI capture requires absolute -output");Application.Quit(2);yield break;}
+            string output=Argument("-output"),screen=Argument("-ui-screen"),state=Argument("-ui-state");
+            if(string.IsNullOrEmpty(state))state="normal";
+            if(string.IsNullOrEmpty(output)||!Path.IsPathRooted(output)){Debug.LogError("UI capture requires absolute -output");Application.Quit(2);yield break;}
             Directory.CreateDirectory(output);var failures=new List<string>();var files=new List<string>();
-            var rec=new DeathUiReceipt{screen=screen,width=Screen.width,height=Screen.height,saveBinding=DeathUiSaveBinding()};
+            if(state!="normal"&&state!="hover"&&state!="selected"&&state!="disabled")failures.Add("unsupported -ui-state");
+            NativeSilverHellUi.ReviewState=state;
+            int count=-1;string rawCount=Argument("-ui-characters");
+            if(rawCount.Length>0&&(!int.TryParse(rawCount,out count)||(count!=0&&count!=2)))failures.Add("-ui-characters must be 0 or 2");
+            var rec=new DeathUiReceipt{screen=screen,state=state,width=Screen.width,height=Screen.height,saveBinding=DeathUiSaveBinding()};
             rec.persistenceDisabled=nativeSettingsStore==null&&string.IsNullOrEmpty(lobby.CharacterStoreDirectory)&&combatStore==null;
-            if(!rec.persistenceDisabled){Debug.LogError("death UI fixture refused persistent stores");Application.Quit(2);yield break;}
-            bool frontend=screen=="character-delete"||screen=="lobby"||screen=="lobby-quit";
-            if(frontend){menu=false;if(!lobby.PrepareDeathUiDialog(screen))failures.Add("frontend dialog not opened");}
+            if(!rec.persistenceDisabled){Debug.LogError("UI fixture refused persistent stores");Application.Quit(2);yield break;}
+            var assets=new List<UiArtReceipt>();
+            foreach(var name in new[]{"lobby_enter_btn_silver_20261029","lobby_enter_disabled","btn_primary_composed","btn_plaque_20261029","guide_button_glow",
+                "visual_create","visual_cancel","visual_disabled","name_create","name_cancel","panel_frame_20261029"}){
+                string path="Art/ui/silver_hell/"+name;var texture=Resources.Load<Texture2D>(path);
+                assets.Add(new UiArtReceipt{path=path,loaded=texture!=null,mipCount=texture==null?0:texture.mipmapCount});
+                if(texture==null||texture.mipmapCount!=1)failures.Add("art missing or mipmapped: "+path);
+            }
+            rec.art=assets.ToArray();
+            bool frontend=screen=="lobby"||screen=="lobby-quit"||screen.StartsWith("character-",StringComparison.Ordinal);
+            if(frontend){menu=false;if(!lobby.PrepareDeathUiDialog(screen,count,state))failures.Add("frontend dialog not opened");}
             else if(screen=="pause"||screen=="settings"||screen=="quit"){
                 lobby.ShowLobby();lobby.SelectPreview();if(!lobby.EnterNativeTest())failures.Add("field entry failed");
                 Running=false;menu=true;pauseMenu.Reset();
-                if(screen=="settings")pauseMenu.ShowSettings();
-                else if(screen=="quit")pauseMenu.Navigation.Open(PausePage.Quit);
+                if(screen=="settings")pauseMenu.ShowSettings();else if(screen=="quit")pauseMenu.Navigation.Open(PausePage.Quit);
                 pauseMenu.Navigation.ObserveReleased(false);
-            }
-            else failures.Add("unsupported -ui-screen");
+            }else failures.Add("unsupported -ui-screen");
             rec.rosterBefore=lobby.Characters.Count;string selected=lobby.Characters.SelectedName;
-            rec.page=frontend?lobby.Flow.Page.ToString():pauseMenu.Navigation.Page.ToString();
-            rec.dialogOpen=screen=="character-delete"?lobby.CharacterDeleteOpen:screen=="lobby-quit"?lobby.DeathUiQuitOpen:frontend?!lobby.CharacterDeleteOpen:
-                !lobby.IsBlocking&&pauseMenu.Navigation.Page==(screen=="settings"?PausePage.Settings:screen=="quit"?PausePage.Quit:PausePage.Main);
+            rec.page=frontend?lobby.Flow.Page+"/"+lobby.DeathUiModalPage:pauseMenu.Navigation.Page.ToString();
+            rec.dialogOpen=screen=="character-delete"?lobby.CharacterDeleteOpen:screen=="character-create"?lobby.DeathUiModalPage=="visual":
+                screen=="character-name"?lobby.DeathUiModalPage=="name":screen=="lobby-quit"?lobby.DeathUiQuitOpen:
+                frontend?!lobby.CharacterModalOpen:!lobby.IsBlocking&&pauseMenu.Navigation.Page==(screen=="settings"?PausePage.Settings:screen=="quit"?PausePage.Quit:PausePage.Main);
             if(!rec.dialogOpen)failures.Add("requested screen not active");
-            yield return new WaitForSecondsRealtime(.6f);
-            if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-death-ui-skin-probe")>=0){
-                if(screen!="lobby")failures.Add("skin probe requires -ui-screen lobby");
-                else{
-                    var probes=new List<SkinPixelProbe>();
-                    NativeUiChrome.StockProbe=true;yield return null;yield return null;
-                    yield return DeathSkinProbe(output,"ui_skin_control",files,p=>probes.Add(p));
-                    NativeUiChrome.StockProbe=false;NativeUiChrome.OpacityProbe=true;yield return null;yield return null;
-                    yield return DeathSkinProbe(output,"ui_skinless",files,p=>probes.Add(p));
-                    NativeUiChrome.OpacityProbe=false;
-                    rec.skinProbes=probes.ToArray();if(!probes[1].customPlateDark)failures.Add("custom-only plate still gray at FAIL coordinates");
-                }
-            }
+            yield return new WaitForSecondsRealtime(.8f);
+            string tag=screen+"_"+state+"_"+rec.rosterBefore+"chars";
             if(screen=="settings"){
                 for(int tab=0;tab<4;tab++){
-                    pauseMenu.Navigation.SelectTab(tab);pauseMenu.Navigation.ObserveReleased(false);
-                    yield return new WaitForSecondsRealtime(.15f);
-                    yield return DeathCapture(output,"ui_settings_"+tab,files);
+                    pauseMenu.Navigation.SelectTab(tab);pauseMenu.Navigation.ObserveReleased(false);yield return new WaitForSecondsRealtime(.15f);
+                    yield return DeathCapture(output,"ui_"+tag+"_tab"+tab,files);
                 }
-            }else yield return DeathCapture(output,"ui_"+screen,files);
+            }else yield return DeathCapture(output,"ui_"+tag,files);
             rec.rosterAfter=lobby.Characters.Count;rec.rosterUnchanged=rec.rosterBefore==rec.rosterAfter&&selected==lobby.Characters.SelectedName;
             if(!rec.rosterUnchanged)failures.Add("roster changed");
-            rec.files=files.ToArray();rec.failures=string.Join(" | ",failures.ToArray());rec.passed=failures.Count==0;
-            File.WriteAllText(Path.Combine(output,"death-ui-"+screen+".json"),JsonUtility.ToJson(rec,true));
-            lobby.CloseStartupCaptureMedia();sound?.Reset();Application.Quit(rec.passed?0:2);
+            rec.strippedSkinStates=NativeUiChrome.StrippedStates;rec.files=files.ToArray();rec.failures=string.Join(" | ",failures.ToArray());rec.passed=failures.Count==0;
+            File.WriteAllText(Path.Combine(output,"death-ui-"+tag+".json"),JsonUtility.ToJson(rec,true));
+            NativeSilverHellUi.ReviewState=null;lobby.CloseStartupCaptureMedia();sound?.Reset();Application.Quit(rec.passed?0:2);
         }
     }
     public sealed partial class NativeLobby
     {
         internal bool DeathUiQuitOpen{get{return lobbyQuitPrompt;}}
-        internal bool PrepareDeathUiDialog(string screen)
+        internal string DeathUiModalPage{get{return characterStep==1?"visual":characterStep==2?"name":characterStep==3?"delete":"none";}}
+        internal bool PrepareDeathUiDialog(string screen,int count=-1,string state="normal")
         {
             if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-death-ui-smoke")<0||!string.IsNullOrEmpty(CharacterStoreDirectory))return false;
             ShowLobby();
-            if(Characters.Count==0&&!Characters.TryCreate("검수전사",0,out _))return false;
-            SelectCharacter(0);
-            if(screen=="character-delete")return RequestCharacterDelete(0);
+            if(count>=0){
+                var names=count==0?Array.Empty<string>():new[]{"검수전사","검수여행자"};
+                if(!Characters.TryRestore(names,count==0?-1:state=="selected"?1:0))return false;
+                RevealSelectedCharacter();
+            }else{
+                if(Characters.Count==0&&!Characters.TryCreate("검수전사",0,out _))return false;SelectCharacter(0);
+            }
+            if(screen=="character-delete")return RequestCharacterDelete(Characters.SelectedIndex);
+            if(screen=="character-create"||screen=="character-name"){
+                if(!OpenCharacterCreation())return false;
+                if(screen=="character-name"){ChooseCharacterVisual(0);return ConfirmCharacterVisual();}
+                if(state=="disabled")ChooseCharacterVisual(1);
+                return true;
+            }
             if(screen=="lobby-quit")lobbyQuitPrompt=true;
-            return true;
+            return screen=="lobby"||screen=="lobby-quit";
         }
     }
 }
