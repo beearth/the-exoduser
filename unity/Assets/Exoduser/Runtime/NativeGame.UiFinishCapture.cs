@@ -24,9 +24,10 @@ namespace Exoduser.UnityPort
     if(phase=="art")yield return UiFinishArt(output,tag,log);
     if(phase=="settings")yield return UiFinishSettings(output,tag,log);
     if(phase=="hud")yield return UiFinishHud(output,tag,log);
-    if(phase=="pause")yield return UiFinishPause(output,tag,log);
+    if(phase=="pause"||phase=="pause,inventory")yield return UiFinishPause(output,tag,log);
+    if(phase=="inventory"||phase=="pause,inventory")yield return UiFinishInventory(output,tag,log);
    }
-   File.WriteAllText(Path.Combine(output,"ui-finish-"+phase+".json"),"{\"phase\":\""+phase+"\",\"passed\":"+(uiArtFailures==0?"true":"false")+",\"failures\":"+uiArtFailures+",\"log\":["+string.Join(",",log.ConvertAll(x=>"\""+x.Replace("\"","'")+"\""))+"]}");
+   File.WriteAllText(Path.Combine(output,"ui-finish-"+phase.Replace(',','+')+".json"),"{\"phase\":\""+phase+"\",\"passed\":"+(uiArtFailures==0?"true":"false")+",\"failures\":"+uiArtFailures+",\"log\":["+string.Join(",",log.ConvertAll(x=>"\""+x.Replace("\"","'")+"\""))+"]}");
    lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);
    Debug.Log("QA_MEDIA_DRAIN_COMPLETE UI_FINISH");Application.Quit(uiArtFailures==0?0:2);
   }
@@ -87,6 +88,19 @@ namespace Exoduser.UnityPort
    yield return UiCapture(output,"unity-pause-open-"+tag);
    pauseMenu.Navigation.ObserveReleased(false);ApplyPauseCommand(pauseMenu.HandleKey(PauseKey.Back,false,false));
    bool resumed=!menu&&Running;if(!resumed)uiArtFailures++;log.Add((resumed?"PASS ":"FAIL ")+"두 번째 ESC 게임 재개 "+tag);
+  }
+  // Inventory action row (web #invActionBtns + #invJunkSelBtn/#invJunkBtn): open window, a selected bag item, then every non-favorite bag item marked junk.
+  // The junk flags and the selection are restored afterwards so the second resolution starts from the same state.
+  IEnumerator UiFinishInventory(string output,string tag,System.Collections.Generic.List<string> log)
+  {
+   menu=false;Running=false;pauseMenu.Reset();SetInventory(true);inventory.Navigation.ObserveReleased(false);
+   var st=inventory.State;var priorSel=st.Selected;var priorJunk=new List<bool>();foreach(var b in st.Bag)priorJunk.Add(b.junk);
+   st.Selected=null;yield return UiCapture(output,"Unity_인벤토리_열림_"+tag);
+   var first=st.Bag.Count>0?st.Bag[0]:null;st.Select(first);yield return UiCapture(output,"Unity_인벤토리_가방선택_"+tag);
+   st.Selected=null;int marked=0;foreach(var b in st.Bag)if(!b.fav){b.junk=true;marked++;}
+   yield return UiCapture(output,"Unity_인벤토리_쓰레기지정_"+tag);log.Add("inventory bag="+st.Bag.Count+" junkMarked="+marked+" mats="+Simulation.Materials+" "+tag);
+   for(int i=0;i<priorJunk.Count&&i<st.Bag.Count;i++)st.Bag[i].junk=priorJunk[i];st.Selected=priorSel;
+   SetInventory(false);Running=false;
   }
   IEnumerator UiFinishArt(string output,string tag,System.Collections.Generic.List<string> log)
   {
