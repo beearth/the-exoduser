@@ -482,6 +482,7 @@ namespace Exoduser.UnityPort
             foreach(var e in Simulation.Enemies){if(NativeRemodel3D.Active&&a2Field!=null){A2DrawEnemyStatus(e);continue;}if(!e.Alive||e.IsBoss||!(e.Hp<e.MaxHp||e.MaxShield>0&&e.Shield<e.MaxShield))continue;float ebw=e.Radius*2+6;var ebA=ToGUI(e.X-ebw/2,e.Y-e.Radius-16);var ebB=ToGUI(e.X+ebw/2,e.Y-e.Radius-16);float ebWid=ebB.x-ebA.x,ebHgt=Mathf.Max(2,4*ebWid/ebw);
                 Fill(new Rect(ebA.x,ebA.y,ebWid,ebHgt),new Color(0,0,0,.6f));Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Clamp01((float)e.Hp/e.MaxHp),ebHgt),new Color(.8f,0,0));if(e.MaxShield>0&&e.Shield>0)Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Min(1,e.Shield/e.MaxShield),ebHgt),new Color(.267f,.667f,1f));}
             DrawFieldBossBars();
+            DrawMobilityOverhead();
             floatingTextLayout.BeginFrame(Time.unscaledTime);
             var textViewport=NativeUiViewport.ScreenInDesign;floatingTextLayout.SetHorizontalBounds(textViewport.x+8,textViewport.xMax-8);
             ReserveEdgeFeedback(new Rect(0,0,160,176));ReserveEdgeFeedback(new Rect(16,188,108,58.3f));ReserveEdgeFeedback(new Rect(NativeUiViewport.Edges.Width-NativeObjectivePanel.RightMargin-NativeObjectivePanel.Width,NativeObjectivePanel.Top,NativeObjectivePanel.Width,NativeObjectivePanel.Height));
@@ -665,13 +666,13 @@ namespace Exoduser.UnityPort
             for(int i=0;i<3;i++){
                 p.Hp=i==0?p.MaxHp:i==1?263.9f:0;p.Mana=i==0?p.MaxMana:i==1?82.9f:0;p.Stamina=i==0?p.MaxStamina:i==1?180:0;
                 p.Shield=i==0?p.MaxShield:i==1?p.MaxShield/2:0;p.Poise=i==0?4:i==1?2:0;
-                p.Experience=i==1?4:0;hud.Refresh(p,Simulation.TickCount,true);
+                p.Experience=i==1?4:0;Simulation.HarpGauge=i==0?Simulation.HarpGaugeMax:i==1?Simulation.HarpGaugeMax*.53:0;Simulation.DashHold=i==1;hud.Refresh(p,Simulation.TickCount,true);   // mobility ring full / 53% (2.4 of 5 Shift cells, overhead gauge on) / empty
                 yield return new WaitForSecondsRealtime(.7f);yield return new WaitForEndOfFrame();
                 string name=i==0?"full":i==1?"partial":"empty";
                 ScreenCapture.CaptureScreenshot(Path.Combine(output,"unity-hud-"+name+".png"));cases.Add(hud.Probe(name));yield return null;
             }
             File.WriteAllText(Path.Combine(output,"hud-smoke.json"),JsonUtility.ToJson(new HudSmokeReceipt{scope="actual_native_player_controlled_HUD_fixture",activeSkill=hud.ActiveSkill,iconResource="Art/ui/skill_icons/kiSlash",iconDrawn=hud.IconDrawn,cases=cases.ToArray()},true));
-            hudSmoke=false;ResetRun();menu=true;Running=false;
+            Simulation.DashHold=false;hudSmoke=false;ResetRun();menu=true;Running=false;
             // DBT-6: this smoke never quit (the receipt was written, then the pause menu stayed up until the caller killed the player). Unattended -batchmode runs end themselves; a windowed manual run is unchanged.
             if(Application.isBatchMode||Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-mute")>=0)Application.Quit(0);   // the build loop's hidden-desktop run is windowed but unattended (--unity-mute)
         }
