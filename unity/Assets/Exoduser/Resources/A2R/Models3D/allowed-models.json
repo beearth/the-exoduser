@@ -1,13 +1,11 @@
 {
-  "scope": "r17 far silhouette visibility repair; near baked species remain excluded pending map-lead judgment; r16 scales unchanged",
+  "scope": "r17: sbone/sword_pile excluded after reflection-OFF white blowout; other PASS9 and far15 with actor-sightline conservative whole-tree exclusion; baked near species remain unapproved",
   "models": [
     "cocoon",
     "hang_cage",
     "skull_totem",
-    "sword_pile",
     "sroot_a",
     "sroot_b",
-    "sbone",
     "bone_arch",
     "c1tree",
     "ctree15",

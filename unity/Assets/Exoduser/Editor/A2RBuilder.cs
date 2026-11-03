@@ -70,7 +70,7 @@ namespace Exoduser
         {
             var args=Exoduser.DevTools.ExoArgs.Get();int at=Array.IndexOf(args,"-output");string output=at>=0?args[at+1]:"I:/EXODUSER-Storage/map25d/a2r-build-next";Directory.CreateDirectory(output);
             foreach(var name in new[]{"CardOpaque","CardFade","LitOpaque","LitFade","GroundPainting","DistanceHaze","HeroReadability","FootLight","Contact","Air","ToxicRiver"}){var shader=Resources.Load<Shader>("A2R/"+name);if(shader==null)throw new Exception("A2R shader missing: "+name);if(ShaderUtil.ShaderHasError(shader)){foreach(var message in ShaderUtil.GetShaderMessages(shader))Debug.LogError(name+":"+message.line+":"+message.message);throw new Exception("A2R shader error: "+name);}}
-            A2RR17Checks.VerifyFarLods();A2RR17Checks.VerifyMaterials();A2RR16Checks.VerifyScalePolicy();VerifyR15Policy();VerifyR15StageSeparation();VerifyNearestSurface();
+            A2RR17Checks.VerifyForestReadability();A2RR17Checks.VerifyFarLods();A2RR17Checks.VerifyMaterials();A2RR16Checks.VerifyScalePolicy();VerifyR15Policy();VerifyR15StageSeparation();VerifyNearestSurface();
             var target=Application.platform==RuntimePlatform.OSXEditor?BuildTarget.StandaloneOSX:BuildTarget.StandaloneWindows64;
             var player=target==BuildTarget.StandaloneOSX?"EXODUSER-A2R.app":"EXODUSER-A2R.exe";
             var r=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=new[]{"Assets/Scenes/FirstPlayable.unity","Assets/Exoduser/Remodel/CH1_1/RM1_Slice.unity"},locationPathName=Path.Combine(output,player),target=target,options=BuildOptions.None});
