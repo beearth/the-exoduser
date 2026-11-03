@@ -1,19 +1,53 @@
 const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process');
 const root=path.resolve(__dirname,'../..'),runtime=path.join(root,'Assets/Exoduser/Runtime');
-const output=process.argv[2];if(!output||!path.isAbsolute(output))throw Error('absolute output required');fs.mkdirSync(output,{recursive:true});
+const argv=process.argv.slice(2),options={};let positional;
+for(let i=0;i<argv.length;i++){if(argv[i].startsWith('--'))options[argv[i]]=argv[++i];else positional=argv[i];}
+const output=path.resolve(options['--output']||positional||path.join(__dirname,'../../../_out/death-ui-tests-current'));
+fs.mkdirSync(output,{recursive:true});
 const read=name=>fs.readFileSync(path.join(runtime,name),'utf8');
-let failures=0;function check(ok,name){console.log(`${ok?'PASS':'FAIL'} ${name}`);if(!ok)failures++;}
+let failures=0;const results=[];
+function check(ok,name){const line=(ok?'PASS ':'FAIL ')+name;results.push(line);console.log(line);if(!ok)failures++;}
 const game=read('NativeGame.cs'),registry=game.slice(game.indexOf('bool legacyFixture='),game.indexOf('InitializeEntryFlowCapture(args)'));
 for(const flag of ['--unity-death-screen-smoke','--unity-death-ui-smoke'])check(registry.includes('"'+flag+'"'),flag+' bypasses lobby.Begin');
+const audit=read('NativeUiAudit.cs');
+check(audit.includes('NativeUiChrome.ClearBackgrounds(style,'),'native draw boundary removes all skin backgrounds');
 function method(source,name){const start=source.indexOf(name);if(start<0)throw Error('missing '+name);let at=source.indexOf('{',start),depth=1,end=at+1;for(;depth&&end<source.length;end++){if(source[end]==='{')depth++;if(source[end]==='}')depth--;}return source.slice(start,end);}
-const silver=read('NativeLobby.SilverHell.cs');
-const body=method(silver,'internal static Texture2D Effect(')+'\n'+method(silver,'static void PlateTextures()')+'\n'+method(silver,'static void PlateTint(');
-const test=fs.readFileSync(path.join(__dirname,'MaterialProbe.cs'),'utf8').replace('/*PRODUCTION*/',body);
-fs.writeFileSync(path.join(output,'Probe.cs'),test);
-const data='G:/unity/Editor/6000.6.7f1/Editor/Data',dotnet=data+'/NetCoreRuntime/dotnet.exe',refs=data+'/DotNetSdk/packs/Microsoft.NETCore.App.Ref/8.0.21/ref/net8.0';
-fs.writeFileSync(path.join(output,'probe.runtimeconfig.json'),JSON.stringify({runtimeOptions:{tfm:'net8.0',framework:{name:'Microsoft.NETCore.App',version:'8.0.21'}}}));
-const rsp=['-nologo','-nostdlib+','-target:exe','-out:"'+output+'/probe.dll"',...fs.readdirSync(refs).filter(x=>x.endsWith('.dll')).map(x=>'-r:"'+refs+'/'+x+'"'),'"'+output+'/Probe.cs"'].join('\n');fs.writeFileSync(output+'/probe.rsp',rsp);
-let r=cp.spawnSync(dotnet,[data+'/DotNetSdk/sdk/8.0.318/Roslyn/bincore/csc.dll','@'+output+'/probe.rsp'],{windowsHide:true,encoding:'utf8'});
-if(r.status===0)r=cp.spawnSync(dotnet,[output+'/probe.dll'],{windowsHide:true,encoding:'utf8'});
-console.log((r.stdout||'')+(r.stderr||''));check(r.status===0,'production plate texture: explicit color space and dark display range');
-process.exitCode=failures?2:0;
+function dirs(p){return fs.existsSync(p)?fs.readdirSync(p,{withFileTypes:true}).filter(x=>x.isDirectory()).map(x=>path.join(p,x.name)).sort((a,b)=>b.localeCompare(a,undefined,{numeric:true})):[];}
+function first(candidates){return candidates.find(p=>p&&fs.existsSync(p));}
+function toolchain(){
+ const exe=process.platform==='win32'?'dotnet.exe':'dotnet';
+ const hub=process.platform==='darwin'?'/Applications/Unity/Hub/Editor':null;
+ const roots=[options['--unity-data'],process.env.UNITY_EDITOR_DATA,...(hub?dirs(hub).map(p=>path.join(p,'Unity.app/Contents')):[]),...(process.platform==='win32'?['G:/unity/Editor/6000.6.7f1/Editor/Data']:[])].filter(Boolean);
+ for(const data of roots){
+  const sdk=dirs(path.join(data,'DotNetSdk/sdk'))[0],ref=dirs(path.join(data,'DotNetSdk/packs/Microsoft.NETCore.App.Ref'))[0];
+  const refs=ref&&dirs(path.join(ref,'ref'))[0],dotnet=first([options['--dotnet'],path.join(data,'NetCoreRuntime',exe),path.join(data,'DotNetSdk',exe)]);
+  const csc=first([options['--csc'],sdk&&path.join(sdk,'Roslyn/bincore/csc.dll')]);
+  if(dotnet&&csc&&(options['--refs']||refs))return {dotnet,csc,refs:options['--refs']||refs};
+ }
+ if(options['--dotnet']&&options['--csc']&&options['--refs'])return {dotnet:options['--dotnet'],csc:options['--csc'],refs:options['--refs']};
+ // A system .NET SDK is also supported, including Apple Silicon installations.
+ const dotnet=first([options['--dotnet'],...(process.env.PATH||'').split(path.delimiter).map(p=>path.join(p,exe)),'/usr/local/share/dotnet/dotnet','/opt/homebrew/bin/dotnet']);
+ if(dotnet){
+  const sdk=cp.spawnSync(dotnet,['--list-sdks'],{windowsHide:true,encoding:'utf8'});
+  const lines=(sdk.stdout||'').trim().split(/\r?\n/).reverse();
+  for(const line of lines){const m=/^(\S+) \[(.+)\]/.exec(line);if(!m)continue;const home=path.dirname(m[2]),ref=dirs(path.join(home,'packs/Microsoft.NETCore.App.Ref'))[0];
+   if(ref)return {dotnet,csc:path.join(m[2],m[1],'Roslyn/bincore/csc.dll'),refs:dirs(path.join(ref,'ref'))[0]};}
+ }
+ throw Error('No .NET toolchain: use --unity-data <Unity.app/Contents or Editor/Data>, or --dotnet <exe> --csc <dll> --refs <ref directory>');
+}
+try{
+ const tc=toolchain(),version=path.basename(path.dirname(path.dirname(tc.refs))),tfm=path.basename(tc.refs);
+ const source=read('NativeUiChrome.cs');
+ const body=method(source,'static void ClearState(')+'\n'+method(source,'internal static GUIStyle ClearBackgrounds(');
+ const test=fs.readFileSync(path.join(__dirname,'MaterialProbe.cs'),'utf8').replace('/*PRODUCTION*/',body);
+ fs.writeFileSync(output+'/Probe.cs',test);
+ fs.writeFileSync(output+'/probe.runtimeconfig.json',JSON.stringify({runtimeOptions:{tfm,framework:{name:'Microsoft.NETCore.App',version}}}));
+ fs.writeFileSync(output+'/probe.rsp',['-nologo','-nostdlib+','-target:exe','-out:"'+output+'/probe.dll"',...fs.readdirSync(tc.refs).filter(x=>x.endsWith('.dll')).map(x=>'-r:"'+tc.refs+'/'+x+'"'),'"'+output+'/Probe.cs"'].join('\n'));
+ for(const mode of ['Player','Editor']){
+  let r=cp.spawnSync(tc.dotnet,[tc.csc,...(mode==='Editor'?['-define:UNITY_EDITOR']:[]),'@'+output+'/probe.rsp'],{windowsHide:true,encoding:'utf8'});
+  if(r.status===0)r=cp.spawnSync(tc.dotnet,[output+'/probe.dll'],{windowsHide:true,encoding:'utf8'});
+  const log=(r.stdout||'')+(r.stderr||'')+(r.error?String(r.error):'');console.log(log);results.push(log);
+  check(r.status===0,mode+' sanitizer: 8 native states / Editor HiDPI; text/input preserved');
+ }
+}catch(e){check(false,e.message);}
+fs.writeFileSync(output+'/result.txt',results.join('\n'));process.exitCode=failures?2:0;

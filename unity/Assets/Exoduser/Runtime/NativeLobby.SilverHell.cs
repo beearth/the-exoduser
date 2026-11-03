@@ -19,9 +19,9 @@ namespace Exoduser.UnityPort
         internal static string TextField(Rect rect,string text,GUIStyle style){return TextField(rect,text,-1,style);}
         internal static string TextField(Rect rect,string text,int max,GUIStyle style){var n=style.normal.textColor;var f=style.focused.textColor;try{style.normal.textColor=TextColor(n);style.focused.textColor=TextColor(f);return max<0?NativeUiAudit.TextField(rect,text,style):NativeUiAudit.TextField(rect,text,max,style);}finally{style.normal.textColor=n;style.focused.textColor=f;}}
         static Font light,regular;
-        static Texture2D frame,plaque,panelBackground,buttonGlow,panelIron;
-        // 판 바깥의 붉은 번짐은 옅게만 둔다(선택 표시는 ActionPlate 안쪽 불빛이 맡는다). 빨간 판처럼 보이지 않게 원화 알파의 35%.
-        internal static void ButtonFocus(Rect box){if(buttonGlow==null)buttonGlow=Resources.Load<Texture2D>("Art/ui/silver_hell/guide_button_glow");if(buttonGlow==null)return;var c=GUI.color;GUI.color=new Color(c.r,c.g,c.b,c.a*.35f);NativeUiAudit.DrawTexture(new Rect(box.x-24,box.y-14,box.width+48,box.height+28),buttonGlow);GUI.color=c;}
+        static Texture2D frame,plaque,panelBackground,panelIron;
+        // Focus lives inside ActionPlate; no red texture is drawn beyond its edge.
+        internal static void ButtonFocus(Rect box){}
         internal static Font Font(bool body=false)
         {
             if(light==null)light=Resources.Load<Font>("Art/fonts/Hahmlet-300-ko");
@@ -46,18 +46,16 @@ namespace Exoduser.UnityPort
             foreach(var font in fallbackFonts)if(Covers(font,text))return font;
             return preferred;
         }
-        internal static Texture2D Effect(int w,int h,Func<float,float,Color> sample,bool displayColor=false)
+        internal static Texture2D Effect(int w,int h,Func<float,float,Color> sample)
         {
-            // IMGUI's texture blit does not decode these generated sRGB samples.
-            // Explicit linear storage avoids a final framebuffer encode lifting dark iron to gray.
-            var tex=new Texture2D(w,h,displayColor?TextureFormat.RGBAHalf:TextureFormat.RGBA32,false,displayColor)
+            var tex=new Texture2D(w,h,TextureFormat.RGBA32,false)
             {
                 filterMode=FilterMode.Bilinear,wrapMode=TextureWrapMode.Clamp
             };
             var pixels=new Color[w*h];
             for(int y=0;y<h;y++)for(int x=0;x<w;x++){
                 var color=sample((x+.5f)/w,(y+.5f)/h);
-                pixels[(h-y-1)*w+x]=displayColor&&QualitySettings.activeColorSpace==ColorSpace.Linear?color.linear:color;
+                pixels[(h-y-1)*w+x]=color;
             }
             tex.SetPixels(pixels);
             tex.Apply(false,true);
@@ -115,15 +113,15 @@ namespace Exoduser.UnityPort
         static void PlateTextures()
         {
             if(plateBase!=null)return;
-            Color top=new Color(22/255f,20/255f,19/255f),mid=new Color(14/255f,13/255f,13/255f),bottom=new Color(9/255f,8/255f,8/255f);
-            plateBase=Effect(1,32,(u,v)=>v<.5f?Color.Lerp(top,mid,v*2):Color.Lerp(mid,bottom,(v-.5f)*2),true);plateBase.name="흑철 버튼 판";
+            // Opaque native black: independent of color-space transfer. Skin controls cannot own this surface.
+            plateBase=Texture2D.blackTexture;
             plateEdgeV=Effect(1,32,(u,v)=>{float a=1-v;return new Color(1,1,1,a*a);});plateEdgeV.name="버튼 가장자리 빛(세로)";
             plateEdgeH=Effect(32,1,(u,v)=>{float a=1-u;return new Color(1,1,1,a*a);});plateEdgeH.name="버튼 가장자리 빛(가로)";
             plateHaze=Effect(128,32,(u,v)=>{float x=(u-.5f)*2,y=(v-.5f)*2,a=Mathf.Clamp01(1-Mathf.Sqrt(x*x+y*y));return new Color(1,1,1,a*a*(3-2*a));});plateHaze.name="버튼 글자 뒤 숨";
         }
         static float SnapX(float x){var m=GUI.matrix;return m.m00>.0001f?(Mathf.Round(m.m00*x+m.m03)-m.m03)/m.m00:x;}
         static float SnapY(float y){var m=GUI.matrix;return m.m11>.0001f?(Mathf.Round(m.m11*y+m.m13)-m.m13)/m.m11:y;}
-        static void PlateTint(Color srgb){GUI.color=QualitySettings.activeColorSpace==ColorSpace.Linear?srgb.linear:srgb;}
+        static void PlateTint(Color srgb){GUI.color=srgb;}
         static void PlateFrame(float x,float y,float w,float h,float inset,float t,Color c)
         {
             float ix=x+inset,iy=y+inset,iw=w-inset*2,ih=h-inset*2;if(iw<=t*2||ih<=t*2)return;
@@ -141,9 +139,9 @@ namespace Exoduser.UnityPort
             var previous=GUI.color;float alpha=previous.a,sel=Mathf.Clamp01(selection);
             try
             {
-                float s=Mathf.Max(.0001f,GUI.matrix.m00),p=1/s,t=Mathf.Max(1,Mathf.Round(s))*p;
+                float s=Mathf.Max(.0001f,GUI.matrix.m00),p=1/s,t=p;
                 float x0=SnapX(box.x),x1=SnapX(box.xMax),y0=SnapY(box.y),y1=SnapY(box.yMax),w=x1-x0,h=y1-y0;if(w<=t*4||h<=t*4)return;
-                // 1 흑철 바탕(불투명, 위가 아주 조금 밝은 낮은 대비)
+                // 1 흑철 바탕(불투명 검정, 스킨 그라데이션 없음)
                 float shade=pressed?.78f:1f;PlateTint(new Color(shade,shade,shade,alpha));NativeUiAudit.DrawTexture(new Rect(x0,y0,w,h),plateBase,ScaleMode.StretchToFill,true);
                 // 2 붉은 지옥불 빛: 선택·호버 때 금빛 헤어라인 안쪽 가장자리와 글자 뒤로만 스민다(바깥 테는 흑철 그대로). 주요 버튼은 아래 가장자리에 늘 아주 약한 불씨.
                 bool small=h<30;float inset=Mathf.Max(1,Mathf.Round((small?2:3)*s))*p,hair=small?inset:inset+t,ix=x0+hair+t,iy=y0+hair+t,iw=w-(hair+t)*2,ih=h-(hair+t)*2;
@@ -161,7 +159,7 @@ namespace Exoduser.UnityPort
                 float bottomGlow=Mathf.Max(glow,primary?.4f:0);
                 if(bottomGlow>0&&iw>0&&ih>0){PlateTint(Alpha(ember,.24f*bottomGlow*alpha));NativeUiAudit.DrawTextureWithTexCoords(new Rect(ix,iy+ih-g,iw,g),plateEdgeV,new Rect(0,1,1,-1),true);}
                 // 3 음각 판 가장자리: 바깥 절단선, 위 모서리 빛 받이, 아래 안쪽 그림자
-                PlateFrame(x0,y0,w,h,0,t,Alpha(Color.Lerp(new Color(2/255f,2/255f,2/255f),new Color(40/255f,9/255f,6/255f),sel*.5f),.96f*alpha));
+                PlateFrame(x0,y0,w,h,0,t,new Color(0,0,0,.96f*alpha));
                 var prior=GUI.color;
                 if(!pressed){PlateTint(new Color(64/255f,57/255f,48/255f,.55f*alpha));NativeUiAudit.DrawTexture(new Rect(x0+t,y0+t,w-t*2,t),Texture2D.whiteTexture);}
                 else{PlateTint(new Color(0,0,0,.6f*alpha));NativeUiAudit.DrawTexture(new Rect(x0+t,y0+t,w-t*2,t),Texture2D.whiteTexture);}
@@ -172,6 +170,7 @@ namespace Exoduser.UnityPort
                 if(!small)PlateFrame(x0,y0,w,h,inset,t,new Color(0,0,0,.72f*alpha));
                 PlateFrame(x0,y0,w,h,hair,t,Alpha(Color.Lerp(gold,hot,sel*.5f),alpha));
                 if(primary&&h>=40)PlateFrame(x0,y0,w,h,hair+t*3,t,Alpha(gold,.35f*alpha));
+                NativeUiChrome.DrawStockProbe(new Rect(x0,y0,w,h));
             }
             finally{GUI.color=previous;}
         }

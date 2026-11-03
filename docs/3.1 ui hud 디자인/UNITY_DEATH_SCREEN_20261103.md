@@ -18,7 +18,7 @@ Diablo IV · Path of Exile 2 · No Rest for the Wicked · Elden Ring 사망 화�
 | 단계 | 시각(실시간) | 내용 | 코드 |
 |---|---|---|---|
 | ① 충격 | 0~0.4s | 비네트만 0→0.6으로 조여 든다. 시뮬레이션은 멈추지 않는다(흐름·판정 불변). | `VignetteAmount` |
-| ② 필터 | 0.4~1.6s | 물리 화면 전체 채도 1→0.15(URP 전역 Volume `ColorAdjustments.saturation -85`, priority 1000, 가중치로 섞음), 명도 1→0.55(IMGUI 검은 합성, Linear 색 공간은 알파 `1-0.55^2.2`로 환산), 검붉은 타원 비네트 | `TickScreen`·`ApplyVolume`·`DrawDeathScreen` |
+| ② 필터 | 0.4~1.6s | 물리 화면 전체 채도 1→0.15(URP 전역 Volume `ColorAdjustments.saturation -85`, priority 1000, 가중치로 섞음), 명도 1→0.55(IMGUI 검은 명도 합성(비네트는 URP), Linear 색 공간은 알파 `1-0.55^2.2`로 환산), 검정 URP 카메라 비네트(19:10 변경) | `TickScreen`·`ApplyVolume`·`DrawDeathScreen` |
 | ③ 제목 | 0.5~1.5s | 명조 큰 제목(한글 Hahmlet 400 74px, 라틴 Cinzel 62px, 그 밖은 지역 명조 대체), 뼈색 #dfd6c2, 자간 .34em(CJK)/.2em(라틴), 들어오며 자간이 조금 좁아짐. 양옆 금빛 헤어라인(189,169,122) 바깥으로 사라짐 + 안쪽 세로 획 | `DrawDeathTexts` |
 | ④ 부활 대기 | 1.0~1.8s | 부제(Hahmlet 300 22px), 얇은 원형 게이지 Ø92(트랙 1.25px·호 2.4px, 12시부터 시계 방향, 남은 비율 = StateTicks/300), 가운데 남은 초(Cinzel 34px), "부활력 11.2%"(명조 19px + Cinzel 21px) | `Ring`·`DrawDeathTexts` |
 | ⑤ 부활 불가 | 같은 시각 | 부제 "이번에는 일어설 수 없다", 게이지 호·숫자 검붉은 색, "부활 불가" + "잠시 후 재도전 또는 로비" | `lastCanRevive=false` 분기 |
@@ -33,8 +33,8 @@ Diablo IV · Path of Exile 2 · No Rest for the Wicked · Elden Ring 사망 화�
 ## 검수 (Mac)
 PC는 Unity 에디터·Player를 돌리지 않았다(11-03 PC 비정상 종료 3회). PC 확인 = Unity 6000.4.8 엔진 DLL·URP 패키지 DLL을 참조한 `Exoduser.Core`·`Exoduser.Runtime` 어셈블리 csc 컴파일 0 오류.
 
-무음 캡처: `--unity-death-screen-smoke --unity-boss-direct 0 --unity-qa-sandbox <절대 QA루트> -output <절대 출력경로>` + `-screen-width/-screen-height`를 1920x1080·3840x1080·5120x1440으로 각각 실행한다. 기본 HD2D와 `--remodel3d`를 별도 실행해 비교한다. `-batchmode`는 프레임 끝 촬영과 양립하지 않으므로 Player 촬영에는 쓰지 않는다. `-mute-audio`와 fixture AudioListener 음소거를 함께 쓴다.
-예정 결과: `death_01_impact`·`death_02_wait`·`death_03_last`·`death_05_revive_mid`·`death_06_revived`·`death_08_boss_wait`·`death_04_cannot`·`death_07_panel_enter`·`death_lang_{ko,en,ja,ru,th,el}` + `death-screen-capture.json`. 18:40 Mac 이전 후보는 필터0/위상None으로 FAIL이었고, 후속 후보는 Mac 미검증이다.
+무음 캡처: `--unity-death-screen-smoke --unity-death-revive-frames --unity-boss-direct 0 --unity-qa-sandbox <절대 QA루트> -output <절대 출력경로>` + `-screen-width/-screen-height`를 1920x1080·3840x1080·5120x1440으로 각각 실행한다. 기본 HD2D와 `--remodel3d`를 별도 실행해 비교한다. `-batchmode`는 프레임 끝 촬영과 양립하지 않으므로 Player 촬영에는 쓰지 않는다. `-mute-audio`와 fixture AudioListener 음소거를 함께 쓴다.
+예정 결과: `death_01_impact`·`death_02_wait`·`death_03_last`·`death_05_revive_mid`·`death_06_revived`·`death_08_boss_wait`·`death_04_cannot`·`death_07_panel_enter`·`death_lang_{ko,en,ja,ru,th,el}` + `death-screen-capture.json`. 18:40 이전 후보는 필터0/위상None FAIL. 19:10의 1ea269a72는 필드/보스 감광·부활중간 .5·해제0 PASS였지만, 비네트/전투 문구/버튼은 FAIL. 새 후보는 Mac 미검증이다.
 
 ## 18:40 Mac FAIL 후속 — 실제 필드 진입과 Core 상태 전이
 
@@ -53,7 +53,21 @@ PC 검증은 DLL 참조 Roslyn 컴파일과 소스/색 변환 회귀까지만이
 Mac 판정 항목:
 1. 슈퍼와이드 좌우 끝까지 채도·명도가 빠지는가(16:9 밖 밝은 띠 0).
 2. 채도 Volume이 HD2D·3D 필드·보스전 카메라 모두에 먹는가(`renderPostProcessing` 켜진 카메라).
-3. 빨간 단색 판 0, 비네트가 "빨간 판"으로 읽히지 않는가.
+3. 빨간 단색 판 0, 비네트가 붉은 판/타원 계단 띠로 읽히지 않는가.
 4. 1x에서 제목·부제·부활력·숫자가 읽히는가, 3x 크롭에 점·계단 0.
 5. 부활 0.5s 페이드, 사망 확정 시 사망 패널로 끊김 없이 넘어가는가.
 6. 레퍼런스(Diablo IV·PoE2·NRftW·Elden Ring) 같은 크기 나란히 비교.
+
+## 19:10 Mac 재검수7항 후속 (현재 계약)
+
+| 항목 | 변경 |
+|---|---|
+| 비네트 | 기존256×144 IMGUI 타원 텍스처/DeathVignette 함수·그리기 제거. URP Volume priority1000의 Vignette(color=black, center=.5/.5, smoothness=.85, rounded=false, 최대intensity .48). 붉은 RGB를 더하지 않아 가장자리의 인위적 채도 증가를 없앰 |
+| Volume 혼합 | weight=max(Filter,VignetteAmount). ColorAdjustments saturation=-85×Filter/weight, Vignette intensity=.48×VignetteAmount/weight. 충격 .4s 동안에도 비네트만 먼저 적용되고 채도는 유지. weight0이면 비활성. 기존 명도 .55 IMGUI 검정 합성은 유지 |
+| 전투 문구 | fallen/dead/부활 페이드(None 전) 동안 CombatTextSuppressed. 기존 revive·damage 버퍼/notice를 비우고, 새 ReviveText/Toast·일반/필드보스 피해 글자 생성을 막음. floatingText/notice/레벨업/지역 제목 그리기도 생략. Core 이벤트/전투 판정은 불변 |
+| 부활5프레임 | 기존 사망 smoke에 --unity-death-revive-frames 추가. 실제 Core 부활 뒤 연출 시각0/.125/.25/.375/.5s를 고정해 death_revive_000/125/250/375/500 PNG. reviveTimes/Filters/Volumes 배열 기록, 감소·시작1·끝0 검사. 연출 시각 고정 샘플이며 실제 벽시계 간격 영상이 아님 |
+| 문구 억제 영수증 | 2s 대기에서 새 쉴드 파괴/Toast 입력도 거부되는지 검사해 combatTextHidden 기록 |
+| 버튼/슬롯/1px | 별도 UNITY_BUTTON_PLATE_MATERIAL_20261103 문서. 색 공간 보정 폐기, 공통 스킨 배경 제거, 검정 판, 외부 붉은 번짐 제거, 물리1px |
+| Mac 검사 도구 | run.cjs의 --unity-data 또는 --dotnet/--csc/--refs 및 자동 탐색. 상대 출력도 허용. 실제 Mac 실행은 아직 미검증 |
+
+Mac에서는1920×1080·3840×1080·5120×1440의 HD2D/--remodel3d 양쪽에서 가장자리 채도≤중앙·타원 계단0·점/디더0·전투 문구0·5개 fade 샘플을 직접 확인한다. PC 컴파일 제한을 지켜 Windows GPU 측정은 하지 않았고, 두 플랫폼 스킨/판 측정 인자는 REPORT에 남긴다.

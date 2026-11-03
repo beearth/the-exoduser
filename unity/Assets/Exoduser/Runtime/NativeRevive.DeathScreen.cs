@@ -12,7 +12,7 @@ namespace Exoduser.UnityPort
     // 여기서는 연출만 바꾼다. 레퍼런스 공통점(Diablo IV·PoE2·No Rest for the Wicked·Elden Ring 사망 화면): 화면 끝까지 채도와 밝기가 빠지고
     // 비네트가 진해진다, 가운데 큰 명조 제목 한 줄과 짧은 부제, 부활 정보는 작고 정돈된 보조 정보, 단색 빨간 판 없음.
     //  ① 0~0.4s  충격 정지 구간: 시뮬레이션은 멈추지 않는다(흐름 불변). 화면에서는 비네트만 먼저 조여 든다.
-    //  ② 0.4~1.6s 물리 화면 전체(16:9 밖 슈퍼와이드 좌우 포함) 채도 0.15(URP Volume)·명도 0.55(IMGUI 합성)·붉은 비네트.
+    //  ② 0.4~1.6s 물리 화면 전체(16:9 밖 슈퍼와이드 좌우 포함) 채도 0.15(URP Volume)·명도 0.55(IMGUI 합성)·검정 URP 비네트.
     //  ③ 명조 큰 제목 + 양옆 금빛 헤어라인.  ④ 뼈색 부활력·남은 초 + 얇은 원형 게이지.  ⑤ 부활 불가: 부제·문구와 다음 행동(재도전·로비) 안내.
     //  ⑥ 부활 순간 0.5s에 걸쳐 필터를 걷는다.  사망 확정(dead) 뒤에는 필터를 유지한 채 글자만 빼고 사망 패널(NativeDeathOverlay)이 그 위로 들어온다.
     public sealed partial class NativeReviveHud
@@ -29,6 +29,7 @@ namespace Exoduser.UnityPort
         public string ScreenPhase{get{return phase.ToString();}}
         public float FilterAmount{get{return Filter(Time.unscaledTime);}}
         public float VolumeWeight{get{return deathVolume!=null&&deathVolume.enabled?deathVolume.weight:0;}}
+        public bool CombatTextSuppressed{get{return phase!=Phase.None;}}
 
         [Serializable] sealed class DeathLabel{public string code,title,waiting,cannotSub,power,cannot,next;}
         [Serializable] sealed class DeathLabels{public DeathLabel[] entries;}
@@ -59,7 +60,8 @@ namespace Exoduser.UnityPort
             }
             else if(phase==Phase.Fallen||phase==Phase.Dead){filterFrom=Filter(now);vignetteFrom=VignetteAmount(now);textFrom=TextAlpha(now);phase=Phase.Reviving;reviveStart=now;}
             else if(phase==Phase.Reviving&&!ForcedReviveAge.HasValue&&now-reviveStart>=ReviveFade)phase=Phase.None;
-            ApplyVolume(host,Filter(now));
+            if(CombatTextSuppressed)floaters.Clear();
+            ApplyVolume(host,Filter(now),VignetteAmount(now));
         }
         float Age(float now){return ForcedAge??(now-downStart);}
         float ReviveT(float now){return Mathf.Clamp01((ForcedReviveAge??(now-reviveStart))/ReviveFade);}
@@ -94,25 +96,33 @@ namespace Exoduser.UnityPort
 
         // 채도는 카메라 후처리에서만 뺄 수 있다. 우선순위 높은 전역 Volume 하나를 가중치로 섞는다(맵 Volume 값 위에 lerp).
         Volume deathVolume;
-        void ApplyVolume(Transform host,float f)
+        ColorAdjustments deathTone;Vignette deathCameraVignette;
+        void ApplyVolume(Transform host,float f,float vignette)
         {
-            if(f<=.0005f){if(deathVolume!=null&&deathVolume.enabled){deathVolume.weight=0;deathVolume.enabled=false;}return;}
+            float weight=Mathf.Max(f,vignette);
+            if(weight<=.0005f){if(deathVolume!=null&&deathVolume.enabled){deathVolume.weight=0;deathVolume.enabled=false;}return;}
             if(deathVolume==null)
             {
                 if(host==null)return;
                 var go=new GameObject("사망 채도 필터");go.transform.SetParent(host,false);
                 var profile=ScriptableObject.CreateInstance<VolumeProfile>();profile.name="사망 채도 필터";
-                var tone=profile.Add<ColorAdjustments>(false);tone.saturation.Override((TargetSaturation-1f)*100f);
+                deathTone=profile.Add<ColorAdjustments>(false);
+                deathCameraVignette=profile.Add<Vignette>(false);
+                // Camera-space analytic vignette. Pure black cannot add red saturation at the edges.
+                deathCameraVignette.color.Override(Color.black);deathCameraVignette.center.Override(new Vector2(.5f,.5f));
+                deathCameraVignette.smoothness.Override(.85f);deathCameraVignette.rounded.Override(false);
                 deathVolume=go.AddComponent<Volume>();deathVolume.isGlobal=true;deathVolume.priority=1000;deathVolume.sharedProfile=profile;
             }
-            deathVolume.enabled=true;deathVolume.weight=f;
+            deathTone.saturation.Override((TargetSaturation-1f)*100f*f/weight);
+            deathCameraVignette.intensity.Override(.48f*vignette/weight);
+            deathVolume.enabled=true;deathVolume.weight=weight;
         }
 
         // ---- 그리기: OnGUI에서 HUD 위, 사망 패널·일시정지 메뉴 아래 ----
         public void DrawDeathScreen(PlayerState p)
         {
             if(phase==Phase.None||Event.current==null||Event.current.type!=EventType.Repaint)return;
-            float now=Time.unscaledTime,f=Filter(now),v=VignetteAmount(now),t=TextAlpha(now),info=InfoAlpha(now);
+            float now=Time.unscaledTime,f=Filter(now),t=TextAlpha(now),info=InfoAlpha(now);
             var oldMatrix=GUI.matrix;var oldColor=GUI.color;
             try
             {
@@ -124,8 +134,7 @@ namespace Exoduser.UnityPort
                     float keep=Mathf.Lerp(1,TargetBrightness,f),a=QualitySettings.activeColorSpace==ColorSpace.Linear?1-Mathf.Pow(keep,2.2f):1-keep;
                     GUI.color=new Color(0,0,0,a);NativeUiAudit.DrawTexture(screen,Texture2D.whiteTexture);
                 }
-                if(v>0){GUI.color=new Color(1,1,1,v);NativeUiAudit.DrawTexture(screen,DeathVignette(),ScaleMode.StretchToFill,true);}
-                NativeUiAudit.Region(screen,"component","death-filter","물리 화면 전체 명도 0.55·붉은 비네트(채도 0.15 = URP Volume)");
+                NativeUiAudit.Region(screen,"component","death-filter","물리 화면 전체 명도 0.55; 채도 0.15·검정 비네트 = URP Volume");
                 if(t<=.002f)return;
                 {var a=NativeUiViewport.Current;float top=a.Y+(418-200)*a.Scale,height=520*a.Scale;GUI.color=new Color(1,1,1,t);NativeUiAudit.DrawTexture(new Rect(0,top,Screen.width,height),DeathBand(),ScaleMode.StretchToFill,true);}
                 GUI.color=Color.white;GUI.matrix=NativeUiViewport.Matrix;
@@ -226,17 +235,7 @@ namespace Exoduser.UnityPort
         }
 
         // ---- 절차 텍스처: 모두 매끈한 그라데이션(노이즈·디더 없음) ----
-        Texture2D deathVignette,hairRamp,softDisc,ringTex;Color32[] ringPixels;int ringSize=-1,ringKey=-1;
-        // 화면 상자를 따라 늘어나는 타원 비네트. 16:9 가운데는 비우고, 슈퍼와이드 좌우와 모서리일수록 어둡다. 가장자리 띠는 검붉고 모서리는 거의 검다.
-        Texture2D DeathVignette()
-        {
-            if(deathVignette!=null)return deathVignette;
-            deathVignette=NativeSilverHellUi.Effect(256,144,(u,v)=>{
-                float x=(u-.5f)*2,y=(v-.5f)*2,d=Mathf.Sqrt((x*x+y*y)*.5f);
-                float a=Smooth((d-.36f)/.6f)*.88f,edge=Smooth((d-.58f)/.4f);
-                var c=Color.Lerp(new Color(36/255f,6/255f,4/255f),new Color(4/255f,2/255f,2/255f),edge);c.a=a;return c;});
-            deathVignette.name="사망 비네트";return deathVignette;
-        }
+        Texture2D hairRamp,softDisc,ringTex;Color32[] ringPixels;int ringSize=-1,ringKey=-1;
         // 제목·게이지 뒤 가로 띠 그림자(화면 전체 폭). 밝은 안개·바닥 위에서도 1x 글자가 읽히게 한다.
         Texture2D deathBand;
         Texture2D DeathBand()

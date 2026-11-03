@@ -17,6 +17,7 @@ namespace Exoduser.UnityPort
         public int SourceEvents{get{return floaters.InputEvents;}}
         public IEnumerable<string> Texts{get{foreach(var f in floaters.Live(Time.unscaledTime))yield return f.DisplayText;}}
         public void Add(ReviveText t){
+            if(CombatTextSuppressed)return;
             string text=Clean(English?t.En:t.Ko);if(text.Length==0)return;
             long value;bool numeric=long.TryParse(text,System.Globalization.NumberStyles.AllowLeadingSign,System.Globalization.CultureInfo.InvariantCulture,out value);
             string color=t.Color??"#ffffff";

@@ -152,7 +152,7 @@ namespace Exoduser.UnityPort
             foreach(var e in enemies.Values){Destroy(e.body.gameObject);Destroy(e.walk.gameObject);}enemies.Clear();damage.Clear();damageFloaters.Clear();ResetFieldBossViews();
             kiView?.Reset();boltView?.Reset();impacts?.Reset();skillView?.Reset();skillRemaster?.Reset();sound?.Reset();
             var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;if(settings!=null)config.DifficultyIndex=settings.Options.Get("diff");if(BuildFlavor.Current.DemoMode)config.LevelCap=BuildFlavor.Current.LevelCap;CombatBeginRun(config);
-            Simulation=new Simulation(config,SourceStarterFixture.Seed);revive.Reset();Simulation.ReviveTextRaised+=revive.Add;Simulation.Config.DemoMode=BuildFlavor.Current.DemoMode;Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.ProjectileBlocked;Simulation.LevelledUp+=OnLevelledUp;ReviewArgsApply();ApplySettingsOptions();
+            Simulation=new Simulation(config,SourceStarterFixture.Seed);revive.Reset();Simulation.ReviveTextRaised+=t=>{if(!DeathPresentationActive)revive.Add(t);};Simulation.Config.DemoMode=BuildFlavor.Current.DemoMode;Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.ProjectileBlocked;Simulation.LevelledUp+=OnLevelledUp;ReviewArgsApply();ApplySettingsOptions();
             inventory.Reset();CombatRestoreState();skills.SetOpen(false);stats.SetOpen(false);forge.SetOpen(false);levelUp.Hide();levelUpSeen=Simulation.Player.Level;death.Hide();deathShown=false;stageClear.Hide();bossBar.Hide();areaTitle.Hide();areaTitleShown=false;skillInputFence=false;Simulation.ApplyEquipment(inventory.State);CombatRestoreResources();
             Simulation.IsLootOnScreen=l=>WorldPointVisible(l.X,l.Y,0);   // Actual 2D/3D camera viewport; pickup distance rules remain in Core.
             // D01: mkItem drops are real; R picks the highest rarity on screen (web 32936) into the bag. Persistent saves stay unimplemented.
@@ -184,6 +184,7 @@ namespace Exoduser.UnityPort
             UpdateSettingsPersistence();UpdateCombatSave();
             // 사망 대기 화면 상태·채도 Volume(연출 전용, Core 흐름 불변). 로비가 화면을 쥐면 필터를 걷는다.
             {var downPlayer=Simulation!=null&&!(lobby!=null&&lobby.IsBlocking)?Simulation.Player:null;revive.TickScreen(downPlayer,downPlayer!=null&&PlayerDown,transform);}
+            if(DeathPresentationActive){damage.Clear();damageFloaters.Clear();notice="";noticeUntil=0;}
             lobby.AutomatedInput=UiOverlapOwnsInput||lobbySmoke&&!introKeysSmoke;
             if(lobbySmoke&&!lobbyControlsSmoke)lobby.SetPlaybackFocus(true); // Natural-playback fixture only; controls fixture owns focus transitions.
             if(lobby!=null&&lobby.IsBlocking){if(firstPractice!=null)EndFirstPractice(true);Running=false;view.cullingMask=lobby.StartupWorldVisible?worldMask:0;UpdateGameMusic();return;}
@@ -347,7 +348,7 @@ namespace Exoduser.UnityPort
                     ev=new EnemyView{body=CreateRenderer("Enemy "+e.Id),walk=CreateRenderer("Enemy walk "+e.Id),skin=idx,lastX=e.X,lastY=e.Y,hp=e.Hp,shield=e.Shield};enemies.Add(e.Id,ev);
                 }
                 ev.body.enabled=e.Alive;ev.walk.enabled=e.Alive;if(ev.arc!=null&&!e.Alive)ev.arc.enabled=false;if(!e.Alive){BossSinkDraw(e,ev);continue;}
-                int dealtHp=Mathf.RoundToInt(ev.hp-e.Hp),dealtShield=Mathf.RoundToInt(ev.shield-e.Shield);if(dealtShield>0)damage.Add(new DamageText{x=e.X,y=e.Y-24,amount=dealtShield,shield=true,until=Time.unscaledTime+1});if(dealtHp>0)damage.Add(new DamageText{x=e.X,y=e.Y,amount=dealtHp,until=Time.unscaledTime+1});ev.hp=e.Hp;ev.shield=e.Shield;
+                int dealtHp=Mathf.RoundToInt(ev.hp-e.Hp),dealtShield=Mathf.RoundToInt(ev.shield-e.Shield);if(!DeathPresentationActive&&dealtShield>0)damage.Add(new DamageText{x=e.X,y=e.Y-24,amount=dealtShield,shield=true,until=Time.unscaledTime+1});if(!DeathPresentationActive&&dealtHp>0)damage.Add(new DamageText{x=e.X,y=e.Y,amount=dealtHp,until=Time.unscaledTime+1});ev.hp=e.Hp;ev.shield=e.Shield;
                 if(newTick){float ex=e.X-ev.lastX,ey=e.Y-ev.lastY;float travel=Mathf.Sqrt(ex*ex+ey*ey);ev.distance+=travel;ev.lastX=e.X;ev.lastY=e.Y;ev.moving=travel>.001f;}
                 if(BossBodyDraw(e,ev,newTick))continue;   // BX: the 1-1 druid has its own sheets (damage numbers and walk bookkeeping above already ran)
                 // Keep the struck body's last drawn pose for 55/75/90ms; Core movement and knockback continue unchanged.
@@ -435,7 +436,8 @@ namespace Exoduser.UnityPort
         }
         // Web: _xbowEquipped toggle + showPH('석궁 자동발사 ON/OFF'). OPT.xbowAuto persistence belongs to the settings owner and is not wired here.
         public void ToggleCrossbow(){Toast(Simulation.ToggleCrossbowAuto()?"석궁 자동발사 ON":"석궁 자동발사 OFF");}
-        void Toast(string text){notice=text;noticeUntil=Time.unscaledTime+3;}
+        bool DeathPresentationActive{get{return Simulation!=null&&(Simulation.Player.State=="fallen"||PlayerDown||revive.CombatTextSuppressed);}}
+        void Toast(string text){if(DeathPresentationActive)return;notice=text;noticeUntil=Time.unscaledTime+3;}
         void InitGUI()
         {
             if(guiReady)return;guiReady=true;
@@ -487,6 +489,7 @@ namespace Exoduser.UnityPort
                 Fill(new Rect(ebA.x,ebA.y,ebWid,ebHgt),new Color(0,0,0,.6f));Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Clamp01((float)e.Hp/e.MaxHp),ebHgt),new Color(.8f,0,0));if(e.MaxShield>0&&e.Shield>0)Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Min(1,e.Shield/e.MaxShield),ebHgt),new Color(.267f,.667f,1f));}
             DrawFieldBossBars();
             floatingTextLayout.BeginFrame(Time.unscaledTime);
+            if(!DeathPresentationActive){
             var textViewport=NativeUiViewport.ScreenInDesign;floatingTextLayout.SetHorizontalBounds(textViewport.x+8,textViewport.xMax-8);
             ReserveEdgeFeedback(new Rect(0,0,160,176));ReserveEdgeFeedback(new Rect(16,188,108,58.3f));ReserveEdgeFeedback(new Rect(NativeUiViewport.Edges.Width-NativeObjectivePanel.RightMargin-NativeObjectivePanel.Width,NativeObjectivePanel.Top,NativeObjectivePanel.Width,NativeObjectivePanel.Height));
             if(firstPractice!=null&&!menu&&gameFocused){var pr=PracticePanel(NativeUiViewport.Edges.Width);ReserveEdgeFeedback(new Rect(pr.x-8,pr.y-8,pr.width+16,pr.height+16));}
@@ -500,6 +503,7 @@ namespace Exoduser.UnityPort
             if(Time.unscaledTime<noticeUntil){var noticeMatrix=GUI.matrix;GUI.matrix=NativeUiViewport.EdgeMatrix;var noticeStyle=new GUIStyle(label){alignment=TextAnchor.UpperLeft,wordWrap=true};NativeUiAudit.Label(new Rect(20,270,440,noticeStyle.CalcHeight(new GUIContent(notice),440)),notice,noticeStyle);GUI.matrix=noticeMatrix;}
             if(levelUp.Active){var lp=HudCamera.WorldToScreenPoint(Point(p.X,p.Y));levelUp.Draw(new Vector2(lp.x,Screen.height-lp.y));}
             if(areaTitle.Active)areaTitle.Draw();
+            }
             DrawRegionHud();   // M1 region HUD: entry/purge banner + direction arrow
             // Boss bar: Unity has no boss actor / boss-entry event yet, so nothing calls bossBar.Show(); once one exists it passes name (BossNameForStage), hp, poise, groggy/immune state and status chips each frame.
             if(bossBar.Active)bossBar.Draw();

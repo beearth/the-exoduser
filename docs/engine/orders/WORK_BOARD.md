@@ -670,3 +670,10 @@ PC후보af70a6a2c5는정본버전매빌드읽기·직업X사슬/로어·실능�
 | PC Codex / codex/unity-death-screen-20261103 | NativeGame.cs(촬영 인자 등록), NativeGame.DeathScreenCapture.cs, NativeGame.DeathUiCapture.cs(+meta), NativeLobby.SilverHell.cs, NativeLobby.SilverLobby.cs, NativeLobby.CharacterDelete.cs(촬영 삭제 차단), unity/Tools/death-ui-tests, UNITY_DEATH_SCREEN/UNITY_BUTTON_PLATE_MATERIAL 문서 | 구현·PC 컴파일 완료, Mac 검수 요청 | origin/unity/main 9dc27dea5612 병합(cbdcbc282 조상). Player/Editor 참조 Roslyn 5어셈블리 오류0, 로비 우회·Linear/Gamma 색 회귀 PASS. PC Unity/Player/빌드/캡처0. 실제 필드/보스 사망·부활과 6개 UI 직접 촬영은 Mac 미검증 |
 
 세이브 로그는 smoke의 파일 IO 비활성 때문에 기존 일반 바인딩 로그 경로를 지나지 않았다. 실제 QA 루트와 저장소 상태를 DEATH_UI_SAVE_BINDING 및 JSON에 기록한다. 개인 세이브·웹/main·바탕화면 실행본 변경0. 인계/최종 SHA·Mac 인자 전체: I:/EXODUSER-Storage/codex-takeover/death-screen/REPORT.md. VISUAL VERDICT: RETOUCH (이전 Mac FAIL, 새 후보 미검증).
+
+## 2026-11-03 19:10 Unity 사망 UI 재검수7항 후속
+| 담당/브랜치 | 소유 경로 | 상태/검증 | 다음 |
+|---|---|---|---|
+| PC Codex / codex/unity-death-screen-20261103 | 기존 사망/UI 촬영·NativeGame.cs·FieldBoss의 문구 억제, NativeLobby.SilverHell, NativeRevive(.DeathScreen), NativeUiAudit와 신규 NativeUiChrome(+meta), death-ui-tests, 해당 UI SSOT/CHANGELOG | 스킨8상태 제거·검정 판·물리1px·외부 번짐 제거, URP Vignette·사망 문구 억제·fade5프레임·Mac 경로 탐색 구현. Player/Editor DLL 참조5어셈블리 오류0, 스킨 회귀 PASS. 이전 색 보정 방법 폐기 | Mac 실제 재검수 대기/RETOUCH. 기존 입장버튼은 none이므로 회색 원인 단정하지 않음. 새 스킨/판 동일 좌표 PNG·RGB 진단으로 확인. PC 제한으로 Windows GPU 원인 증명은 미실행 |
+
+브리프: I:/EXODUSER-Storage/codex-takeover/death-screen-brief.md 19:10. 최종 SHA와 Mac 상대/자리표시자 인자: death-screen/REPORT.md. 본인 코드·docs만 commit/push, 기존 guard.baseline.json WIP 보존. 에디터/Player/빌드/PC 캡처0.

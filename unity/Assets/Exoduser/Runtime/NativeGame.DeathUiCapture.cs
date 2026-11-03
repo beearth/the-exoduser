@@ -20,6 +20,30 @@ namespace Exoduser.UnityPort
         {
             public bool passed,dialogOpen,rosterUnchanged,persistenceDisabled;
             public int width,height,rosterBefore,rosterAfter;public string screen,page,saveBinding,failures;public string[] files;
+            public SkinPixelProbe[] skinProbes;
+        }
+        [Serializable] sealed class SkinPixelProbe
+        {
+            public string label,platform,gpu,colorSpace,stockStates;public int strippedStates;
+            public int[] points,rgb;public bool customPlateDark;
+        }
+        IEnumerator DeathSkinProbe(string output,string label,List<string> files,Action<SkinPixelProbe> save)
+        {
+            yield return new WaitForEndOfFrame();
+            var frame=ScreenCapture.CaptureScreenshotAsTexture();
+            var rec=new SkinPixelProbe{label=label,platform=Application.platform.ToString(),gpu=SystemInfo.graphicsDeviceType.ToString(),
+                colorSpace=QualitySettings.activeColorSpace.ToString(),stockStates=NativeUiChrome.StockStates,strippedStates=NativeUiChrome.StrippedStates,
+                points=new int[4],rgb=new int[6],customPlateDark=true};
+            for(int i=0;i<2;i++){
+                // Same design-space points as the Mac FAIL, transformed into this exact framebuffer.
+                var pos=NativeUiViewport.RightMatrix.MultiplyPoint3x4(new Vector3(1500,i==0?735:775,0));
+                int x=Mathf.Clamp(Mathf.RoundToInt(pos.x),0,frame.width-1),y=Mathf.Clamp(Mathf.RoundToInt(pos.y),0,frame.height-1);
+                Color32 pixel=frame.GetPixel(x,frame.height-1-y);rec.points[i*2]=x;rec.points[i*2+1]=y;
+                rec.rgb[i*3]=pixel.r;rec.rgb[i*3+1]=pixel.g;rec.rgb[i*3+2]=pixel.b;
+                if(pixel.r>40||pixel.g>40||pixel.b>40)rec.customPlateDark=false;
+            }
+            File.WriteAllBytes(Path.Combine(output,label+"_"+Screen.width+"x"+Screen.height+".png"),frame.EncodeToPNG());Destroy(frame);files.Add(label);
+            Debug.Log("DEATH_UI_SKIN_PROBE "+JsonUtility.ToJson(rec));save(rec);
         }
         // Mac only: --unity-death-ui-smoke -ui-screen pause|settings|quit|character-delete|lobby|lobby-quit.
         // Real UI at the requested Player resolution. No settings, roster or combat-save IO.
@@ -49,6 +73,17 @@ namespace Exoduser.UnityPort
                 !lobby.IsBlocking&&pauseMenu.Navigation.Page==(screen=="settings"?PausePage.Settings:screen=="quit"?PausePage.Quit:PausePage.Main);
             if(!rec.dialogOpen)failures.Add("requested screen not active");
             yield return new WaitForSecondsRealtime(.6f);
+            if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-death-ui-skin-probe")>=0){
+                if(screen!="lobby")failures.Add("skin probe requires -ui-screen lobby");
+                else{
+                    var probes=new List<SkinPixelProbe>();
+                    NativeUiChrome.StockProbe=true;yield return null;yield return null;
+                    yield return DeathSkinProbe(output,"ui_skin_control",files,p=>probes.Add(p));
+                    NativeUiChrome.StockProbe=false;yield return null;yield return null;
+                    yield return DeathSkinProbe(output,"ui_skinless",files,p=>probes.Add(p));
+                    rec.skinProbes=probes.ToArray();if(!probes[1].customPlateDark)failures.Add("custom-only plate still gray at FAIL coordinates");
+                }
+            }
             if(screen=="settings"){
                 for(int tab=0;tab<4;tab++){
                     pauseMenu.Navigation.SelectTab(tab);pauseMenu.Navigation.ObserveReleased(false);
