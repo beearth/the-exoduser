@@ -36,3 +36,5 @@
 Blender 실행은 지정된 5.2.3 `-b -t 2 --python-exit-code 2 --python <파일> -- <인수>`만 쓴다. Python은 파일로만 넘기며 stdin 실행을 쓰지 않는다. 같은 테스트2회 실패면 멈추고 REPORT에 기록한다. PC Unity는 공용 실행기로 컴파일까지만, Player/빌드/실게임 판정은 하지 않는다.
 
 Unity 연결과 비교판은 전체 파트·보조뼈·변형 렌더가 준비된 뒤에 한다. 단독 시트·모델·수치 검사로 완료나 디자인 PASS를 보고하지 않는다.
+
+머리 비율(11-04): `head_fix.py`는 두피~턱이 0.135H보다 크면 B 머리·머리카락·Head 하위 뼈를 Head 관절 기준 균일 축소하고 스카프 고리 틈(3~10mm)을 잰다(`measure_proportion.head_metrics`). `render_proportion_front.py --pose arm_hang`은 위팔을 수직으로 내린 비교판용 포즈, `audit_rest_growth.py --attempt head1|head2`는 14포즈 재검사(`Snapshot.inside(confirm=True)`는 3레이가 갈릴 때만 40레이 재확인).

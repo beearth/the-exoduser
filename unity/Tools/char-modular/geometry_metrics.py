@@ -65,7 +65,7 @@ class Snapshot:
     def in_box(self, point, padding=1e-7):
         return all(self.low[i]-padding <= point[i] <= self.high[i]+padding for i in range(3))
 
-    def inside(self, point):
+    def inside(self, point, confirm=False):
         hit, normal, index, distance = self.tree.find_nearest(point)
         if hit is None or distance <= 1e-7:
             return False, False
@@ -83,7 +83,28 @@ class Snapshot:
                 count += 1
                 origin = location + direction*1e-6
             answers.append(count % 2 == 1)
-        return sum(answers) >= 2, len(set(answers)) > 1
+        verdict, ambiguous = sum(answers) >= 2, len(set(answers)) > 1
+        if confirm and verdict and ambiguous:
+            # 11-04 head1: the 3-ray vote disagreed (2 of 3). Re-vote with 40 fixed Fibonacci-sphere directions; a point 12 mm outside
+            # the head (surface normal side +12 mm, 39 of 40 rays even) was counted as 12 mm deep. Unanimous 3-ray verdicts are unchanged.
+            import math
+            odd = 0
+            for k in range(40):
+                z = 1 - 2 * (k + .5) / 40
+                r = math.sqrt(1 - z * z)
+                a = k * 2.399963229728653
+                direction = Vector((r * math.cos(a), r * math.sin(a), z))
+                origin = point.copy()
+                count = 0
+                for _ in range(512):
+                    location, _, _, _ = self.tree.ray_cast(origin, direction, self.diagonal*3+1)
+                    if location is None:
+                        break
+                    count += 1
+                    origin = location + direction*1e-6
+                odd += count % 2
+            verdict = odd * 2 > 40
+        return verdict, ambiguous
 
 
 def pair_metrics(a, b):

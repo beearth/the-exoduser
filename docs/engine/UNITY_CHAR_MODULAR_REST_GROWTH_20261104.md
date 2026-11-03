@@ -123,3 +123,13 @@ Unity FBX·prefab 교체/컴파일, 최신34도1x 정면·뒤 LOCK 비교판, �
 - Unity: export_unity → 컴파일·임포트 1회 exit 0, errorLogs 0, Humanoid·기존 Animator 동일 참조·금속 10,098 단일 100%·37,626tri·61뼈·couter RotationConstraint(소스 4) `compile-current/ab-prop-import.json`.
 - 텍스처 입력 GLB `char-modular/warrior/texture-input/warrior_ab_apose_prop.glb` 890,772B, 34,628tri, sha256 ca131d8b…e993. `proportion_fix.py --in`은 부품 이름이 W08_A_xxx이면 판별 변환, 그 밖 단일 메시는 연속 변형(미검증, 근사). 옛 GLB로 판별 변환 30개 실행만 확인.
 - 남은 일: 실제 Animator·실게임 판정(Mac), 손 확대(1.098배) 뒤 손가락 외형, 텍스처 베이크.
+
+## 11-04 머리 비율 보완
+- 원인: 팔 수정 뒤 정면 비교판에서 머리(두피~턱)가 0.1383H(7.23등신, 목표 7.4 이상)라 큰 머리와 짧은 팔이 함께 아이 비율로 보임. 두 번째 결함: 비교판 5칸 "팔 내림"이 실제로는 A포즈 그림이었다(수치만 계산).
+- 실측(`measure_proportion.py head_metrics`, H=1.85m): 머리 높이 = B 머리 메시 두피 최고점(머리카락 제외) ~ 턱 끝 최저점(얼굴 앞면, 목 기둥 제외). 수정 전 두피 1.8200m·턱 1.5641m·높이 0.2560m = 0.1383H = 7.23등신, 머리카락 최고점 1.8500m. 기준 0.135H(0.250m) 초과라 축소.
+- 조정(`head_fix.py`): B 머리(W01)·머리카락(W02)을 Head 뼈 머리(목-머리 관절, Unity Y-up (0, 1.5939, -0.0023))를 중심으로 균일 축소 k=0.9577, 목표 0.1325H. Head(꼬리)·head_end·headfront·RigHair_* 뼈도 같은 중심·비율로 이동(이름·부모·roll 불변, 축 행렬 변화 2e-5 이하). 결과 머리 0.2451m = 0.1325H = 7.55등신, 두피 1.8104m·턱 1.5653m, 머리카락 최고점 1.8392m(7.50등신). 키는 1.85m에서 1.1cm 낮아져 2cm 미만이라 몸은 그대로 두었다. g0-rest.json은 head_end·headfront 두 점만 갱신(Head 관절 불변).
+- 스카프 고리↔머리·목 최소 거리(mm): rest 6.73→7.01, head_left 2.87→6.14, head_right 2.27→4.77, head_bow 4.70→8.83, head_bow_measured 7.76→9.05. 전 포즈 3~10mm 안이라 고리 당김은 하지 않았다(스카프 변경 0).
+- 관통 재검사: head1 스카프 2행 FAIL(head_left W23_A_054 12.01mm, head_bow W23_A_069 11.07mm). 원인은 형상이 아니라 측정 오탐: 두 표본은 머리 표면 밖 12.0/11.1mm(표면 법선 쪽 +, 레이 40개 중 홀수 1개)인데 `Snapshot.inside`의 3레이 다수결이 2:1로 안쪽 판정. `inside(confirm=True)`를 추가해 3레이가 갈릴 때만 피보나치 구 40방향 다수결로 재확인(만장일치 판정과 3mm 기준은 그대로) → head2(14포즈) **FAIL 0, 최대 1.958mm, 스카프 안쪽 0**. 열린 천 91행 미검증은 그대로.
+- 비교판: `G:/exoduser/tmp/design-review/20261104_char_modular/warrior_proportion_front.png` 다시 그림. 5칸은 LeftArm/RightArm을 돌려 위팔이 수직인 포즈(손·태싯 겹침 때문에 바깥 5°, 0°는 406쌍 겹침)이며 2칸과 다른 그림. 모든 칸에 머리 기준선 2개(두피·턱)와 등신. LOCK 칸 머리는 눈금 추정(약 0.137H, 7.3등신). `arm_down`(어깨-손목 수직) 포즈는 판정에서 빼고 값만 기록(옛 모델도 실패하는 기존 조건, Mac 실클립에서 확인할 항목).
+- Unity: export_unity → 컴파일·임포트 1회 exit 0, errorLogs 0, Humanoid·기존 Animator 동일 참조·금속 10,098 단일 100%·37,626tri·61뼈·couter RotationConstraint(소스 4) `compile-current/ab-head-import.json`. 텍스처 입력 GLB `warrior_ab_apose_prop.glb` 890,772B, 34,628tri, sha256 f05cf45a…7eff17(머리카락 상단 1.839m).
+- 남은 일: Mac 실제 Animator·실게임 판정(머리 크기 인상, 스카프 틈 시각), 텍스처 베이크.

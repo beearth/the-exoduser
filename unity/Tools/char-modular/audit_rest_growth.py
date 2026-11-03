@@ -15,15 +15,18 @@ from hybrid_poses import Poses,LABELS
 from rest_contact_policy import SOCKETS,SOCKET_ROWS,weapon_pair_required,decide
 from hybrid_contract import SOFT_GROUPS
 
-p=argparse.ArgumentParser();p.add_argument("--blend",type=Path,required=True);p.add_argument("--out",type=Path,required=True);p.add_argument("--attempt",choices=("1","2","sonnet1","sonnet2","prop1","prop2"),required=True)
+p=argparse.ArgumentParser();p.add_argument("--blend",type=Path,required=True);p.add_argument("--out",type=Path,required=True);p.add_argument("--attempt",choices=("1","2","sonnet1","sonnet2","prop1","prop2","head1","head2"),required=True)
 a=p.parse_args(sys.argv[sys.argv.index("--")+1:]);a.out.mkdir(parents=True,exist_ok=True)
 old_path=a.out/"rest-growth.json"
-ORDER={"1":1,"2":2,"sonnet1":1,"sonnet2":2,"prop1":1,"prop2":2}
+ORDER={"1":1,"2":2,"sonnet1":1,"sonnet2":2,"prop1":1,"prop2":2,"head1":1,"head2":2}
 old=json.loads(old_path.read_text(encoding="utf-8")) if old_path.exists() else None
 if old and ORDER[str(old["attempt"])]>=ORDER[a.attempt]:raise RuntimeError("No unchanged repeat or third same-criterion test")
 if a.attempt=="prop2":
     first=a.out.parent/"prop1"/"rest-growth.json"
     if not first.exists() or json.loads(first.read_text(encoding="utf-8"))["attempt"]!="prop1" or json.loads(first.read_text(encoding="utf-8"))["measuredCriterionPassed"]:raise RuntimeError("prop2 only follows a failed prop1 with a changed model")
+if a.attempt=="head2":
+    first=a.out.parent/"head1"/"rest-growth.json"
+    if not first.exists() or json.loads(first.read_text(encoding="utf-8"))["attempt"]!="head1" or json.loads(first.read_text(encoding="utf-8"))["measuredCriterionPassed"]:raise RuntimeError("head2 only follows a failed head1 after the cause was fixed")
 if a.attempt=="sonnet2":
     first=a.out.parent/"sonnet1"/"rest-growth.json"
     if not first.exists() or json.loads(first.read_text(encoding="utf-8"))["attempt"]!="sonnet1" or json.loads(first.read_text(encoding="utf-8"))["measuredCriterionPassed"]:raise RuntimeError("sonnet2 only follows a failed sonnet1 with a changed model")
@@ -105,7 +108,7 @@ for label in labels:
                 points=list(ss.vertices)
                 for tri in ss.triangles:points.append(sum((ss.vertices[i] for i in tri),Vector())/3)
                 for point in points:
-                    inside,ambiguous=hs.inside(point) if hs.in_box(point) else (False,False)  # outside the closed head's AABB can never be inside (11-04: removes ray-parity false positives, threshold unchanged)
+                    inside,ambiguous=hs.inside(point,confirm=True) if hs.in_box(point) else (False,False)  # outside the closed head's AABB can never be inside (11-04: removes ray-parity false positives, threshold unchanged)
                     dist=hs.tree.find_nearest(point)[3]*1000
                     if point.z>=1.46:minimum=dist if minimum is None else min(minimum,dist)
                     if inside:maximum=max(maximum,dist);inside_total+=1

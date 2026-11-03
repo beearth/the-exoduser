@@ -181,6 +181,25 @@ def measure(scene, rig, label):
     return res
 
 
+def head_metrics(scene, rig):
+    """11-04 head proportion (rest pose, world metres). Head height = scalp top (B head mesh, hair excluded) -> chin bottom.
+    Chin = lowest vertex of the B head mesh in front of the neck column (y at least 7 cm in front of the Head bone, |x| <= 5 cm).
+    Also the hair top (W02, the character height) and heads = H / head height."""
+    head = scene.objects["Warrior_Head"]
+    hair = scene.objects["Warrior_Hair"]
+    hp = rig.matrix_world @ rig.data.bones["Head"].head_local
+    pts = [head.matrix_world @ v.co for v in head.data.vertices]
+    hair_pts = [hair.matrix_world @ v.co for v in hair.data.vertices]
+    scalp = max(p.z for p in pts)
+    chin_pts = [p for p in pts if p.y <= hp.y - 0.07 and abs(p.x) <= 0.05]
+    low = min(chin_pts, key=lambda p: p.z)
+    hair_top = max(p.z for p in hair_pts)
+    h = scalp - low.z
+    return {"scalpTopM": scalp, "chinBottomM": low.z, "headHeightM": h, "headHeightH": h / HEIGHT, "headsTall": HEIGHT / h,
+            "hairTopM": hair_top, "hairTopHeadsTall": hair_top / h, "scalpToHairTopM": hair_top - scalp,
+            "headJointM": [hp.x, hp.y, hp.z], "chinPointCount": len(chin_pts), "chinPointXY": [low.x, low.y]}
+
+
 def to_markdown(res_list):
     lines = ["# 팔 비율 실측 (전사 A+B, H=1.85m)", "", "정의는 measure_proportion.py 머리 주석. 단위 m 또는 ×H.", ""]
     keys = [("위팔(L)", lambda r: r["Left"]["upperM"]), ("위팔(R)", lambda r: r["Right"]["upperM"]),

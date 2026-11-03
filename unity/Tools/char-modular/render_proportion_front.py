@@ -1,6 +1,8 @@
 """Front orthographic grey render of the warrior authoring file for the proportion comparison board.
 Blender headless, Cycles CPU, no texture, greatsword hidden. Pose: rest (A pose) or arm_down (each arm chain turned about the
-shoulder joint so shoulder->wrist points straight down, a static fixture, not an Animator clip). Also writes a json with the
+shoulder joint so shoulder->wrist points straight down, a static fixture, not an Animator clip).
+Pose arm_hang (11-04 head revision): each Arm bone is turned so the UPPER arm hangs vertical in the front plane (the forearm keeps its rest elbow bend);
+if a hand part overlaps a tasset plate the arms are opened outward in 5 degree steps (max 20) until no hand/tasset triangle pair overlaps. Also writes a json with the
 pixel rows of the landmarks (shoulder, elbow, wrist, fingertip, hip, knee) so the board can draw the same lines in every column.
 """
 import argparse
@@ -17,11 +19,42 @@ import measure_proportion as mp
 
 p = argparse.ArgumentParser()
 p.add_argument("--blend", type=Path, required=True)
-p.add_argument("--pose", choices=("rest", "arm_down"), required=True)
+p.add_argument("--pose", choices=("rest", "arm_down", "arm_hang"), required=True)
 p.add_argument("--out", type=Path, required=True)
 a = p.parse_args(sys.argv[sys.argv.index("--") + 1:])
 scene, rig = mp.open_scene(a.blend)
-Poses(rig).apply(a.pose)
+poses = Poses(rig)
+hang_deg = 0
+if a.pose == "arm_hang":
+    from geometry_metrics import Snapshot
+    base_dirs = {s: (rig.data.bones[s + "ForeArm"].head_local - rig.data.bones[s + "Arm"].head_local).normalized() for s in ("Left", "Right")}
+    hands = [o for o in scene.objects if o.type == "MESH" and o.get("char_modular_role") == "rigid" and o.get("char_modular_bone") in ("LeftHand", "RightHand")]
+    tassets = [o for o in scene.objects if o.type == "MESH" and o.get("char_modular_group") == "W15"]
+    overlaps = {}
+    for hang_deg in (0, 5, 10, 15, 20):
+        poses.apply("rest")
+        for side, sign in (("Left", 1), ("Right", -1)):
+            cur = poses.head(side + "ForeArm") - poses.head(side + "Arm")
+            ang = math.radians(hang_deg)
+            poses.aim(side + "Arm", cur, Vector((sign * math.sin(ang), 0, -math.cos(ang))))
+        poses.follow()
+        hs = [Snapshot(o) for o in hands]
+        ts = [Snapshot(o) for o in tassets]
+        count = 0
+        try:
+            for h in hs:
+                for s_ in ts:
+                    if all(h.low[i] <= s_.high[i] + 1e-7 and s_.low[i] <= h.high[i] + 1e-7 for i in range(3)):
+                        count += len(h.tree.overlap(s_.tree))
+        finally:
+            for x in hs + ts:
+                x.close()
+        overlaps[hang_deg] = count
+        print("HANG_TRY outward_deg", hang_deg, "hand_tasset_overlapping_triangle_pairs", count)
+        if count == 0:
+            break
+else:
+    poses.apply(a.pose)
 for o in scene.objects:
     if o.type == "MESH" and o.get("char_modular_group") == "W25":
         o.hide_render = True
@@ -79,7 +112,8 @@ def pxx(x):
     return SIZE / 2 + x / SCALE * SIZE
 
 
-info = {"pose": a.pose, "pxPerMetre": SIZE / SCALE, "rowFloor": px(0.0), "rowTop": px(1.85), "centreX": pxx(0)}
+hm = mp.head_metrics(scene, rig)
+info = {"pose": a.pose, "hangOutwardDeg": hang_deg, "head": hm, "scalpRow": px(hm["scalpTopM"]), "chinRow": px(hm["chinBottomM"]), "pxPerMetre": SIZE / SCALE, "rowFloor": px(0.0), "rowTop": px(1.85), "centreX": pxx(0)}
 for side in ("Left", "Right"):
     info[side] = {"shoulderRow": px(head(side + "Arm").z), "elbowRow": px(head(side + "ForeArm").z), "wristRow": px(head(side + "Hand").z),
                   "hipRow": px(head(side + "UpLeg").z), "kneeRow": px(head(side + "Leg").z)}
