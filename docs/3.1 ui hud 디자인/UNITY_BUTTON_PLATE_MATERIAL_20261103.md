@@ -34,3 +34,9 @@ GUID·sRGB·기존 원화/크기·압축의 나머지 설정은 유지한다. Ma
 - unity/Tools/lobby-art-review/compare.cjs는 실제 PNG4개(--reference/--web/--regression/--restored)를 받아1x 전체·동일 크기 레일1x·레일3x HTML 비교판을 만든다. 과거1920 원본은3840으로 확대하지 않고 자연 크기로 남긴다. 실제 높이가 다르면 오류, 누락 화면을 가짜 캡처로 대체하지 않음.
 - Mac1920×1080·3840×1080에서10-28 웹/현재 웹/385e76ce1 퇴보/복구본을 나란히. 기본·호버·선택·비활성,0/2명, 생성·이름·삭제·일시정지 창 포함. 합격선은 디자인된 요소가 하나도 사라지지 않음.
 - PC는 Player 실행 금지/컴파일까지만. 실제 복구 캡처/완성 비교판/시각 합격은 Mac 대기. 이전13/13/13 고정색/1px 코드 판 합격은 원화 복구 기준이 아니므로 폐기한다.
+
+## 최신 공통 병합 인계
+
+- 원화 복구7cdce2032dcc42c07749a23c91d3ddcbec5121f3에 origin/unity/main 4d336665a4e617a2097b92c8e3551deccbf4645d를 정상 병합했다. SilverCharacter 충돌은 TrackQaNameButton(create)를 보존하면서 visual_cancel/create/disabled 원화를 유지했다. CharacterPresentation의 이름 버튼 검수 추적, NativeLobby/TitleMenu의 스토리·겹침 수정은 상대 변경 그대로다.
+- ENTER·밝기1.0 원화9-slice·슬롯 카드·생성/이름 원화·레일 테두리와11종 밉맵OFF를 보존했다. CHANGELOG는 줄바꿈을 맞춰3-way 병합하고21:25/23:05 원화 이력과 최신 공통 기록을 모두 보존했다.
+- 병합 소스 PC DLL 참조 Roslyn 컴파일1회: Player Core126/Runtime264, Editor Core126/Runtime264/Editor59,5어셈블리 오류0. 소스 계약 확인PASS. Unity 에디터/Player/빌드/게임 캡처0, 실제 Mac 시각 판정은 대기. CTO가 자기 브랜치를 fast-forward로 통합한다.

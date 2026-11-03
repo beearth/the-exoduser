@@ -240,3 +240,46 @@ R3 전체1395/18건/로딩관측누락15는FAIL그대로다. 새검수전0건이
 Mac a049ef5c4/qa/unity-parity/5b6b4fce9의 실제6PNG·REPORT를 인수했다. 정식0오류/M1 23/23 정상종료/로딩270누락0은 유지되나 전체18건·가림증명누락30·scroll-ink1/4로 P0 FAIL이다. 현재 수정은 네이티브 텍스트 정렬 원점, 플랫폼 공통 GUIStyle 알파, 실제 높이에 따른 추가 QA 푸터 y 올림, fr/de QA 번역, 배경과 어두운 녹색을 분리하는 국소 잉크 대조다. 자세한 계약과 값은 UNITY_UI_OVERLAP_20261030.md의 같은 시각 절에 있다. 기존 forge y467.8/20.4 및 로드맵x1622/224는 유지했다.
 
 이름 입력은 --unity-name-gate-only의5해상도 전용 경로를 추가했다. Windows 실제 자기 HWND 마우스를 기본으로 유지하고, Mac은 sandbox QA Event를 실제 NativeLobby.OnGUI에 전달해 제품 hit-test로 판정한다. 사용자 마우스·전역 OS 입력을 조작하지 않으며 자동 입력 차단/제품 전환 정책은 유지한다. PC는 이름 전용 Player1회만 허용되며 정식 빌드/M1/전체UI검사는 Mac이 수행한다. 새 공통 입력 경로·새 잉크 네 건의 양성·전체18→0/누락30→0은 Mac 실제 후보 검수 전 미검증이다. 전체5차 잔여는 이 게이트 뒤에 계속한다.
+
+
+### PC 단독 이름 검사 인수
+
+Player7603230d 1회에서5해상도 모두 lockedBlocked/nameOpened=true, native exit0·10PNG·창0·잔여0. 기존 R5 패키지+컴파일DLL의 이름 전용 fixture이고 정식 빌드 아님. Runtime9d1244ea…를 대조하고 원본 DLL 두 개를 정확 SHA로 복원했다. 단, 사용자 영역 Player.log 하나 변경이 감지되어 공용 가드 전체 ok=false/runner exit5/USER_SAVE changed1이다. 원인 미확정·가드 완화0·로그 덮어쓰기0·추가 Player0. 이름 기능 PASS와 안전 가드 FAIL을 분리한다. 상세5행표·경로는 UNITY_UI_OVERLAP 최신절에 보존한다. PC 컴파일 Core/Runtime0오류·Mac 조건부 소스0, 잉크 회귀5/5. 새 후보의 Mac 전체 겹침·잉크·공통 입력 경로는 아직 미검증이다.
+
+
+## 2026-11-03 15:39 복구 후 인계
+
+최신 공통044c82d760 정상 병합. 복구 HEAD72c395db5의 13:20 수정은 보존했고, NativeUiAudit.TextLayoutBounds를 감사와 푸터에서 공용으로 사용해 수동 가운데 정렬식 차이를 없앴다. 웹 autosave 위치는 유지하며 추가 안내만 y1022부터 네이티브 경계 뒤 한 화면 픽셀 간격으로 올림(최대4회)한다. fr QA 문구·scroll-ink/표면 알파 수정 유지, 검사 임계 완화0. PC 현재 Core/Runtime 오류0, Player/정식 빌드/M1/1410/새 캡처 실행0. 새 Mac 게이트 전 P0 PASS나 전체5차 완료로 올리지 않는다.
+
+
+## 2026-11-03 19:00 Mac 게이트 후속 후보
+
+직전366826269의 Mac 정식 빌드 오류0/M1 23/23은 그 커밋의 결과다. 전체UI는12/1410 중단·메뉴48+직업선택10이며 새 후보의 PASS로 사용하지 않는다. G0 공식 Diablo IV/Last Epoch 공통 UI 관례, 원인·수치·입력 판정은 [UI 겹침 문서의19:00절](UNITY_UI_OVERLAP_20261030.md#2026-11-03-1900-mac-fail--g0수정-경계)에 기록했다.
+
+NativeLobby 실제 생성 버튼 좌표→Unity 네이티브 Event.QueueEvent→실제 OnGUI/GUI.Button을 PC/Mac 공통 기본으로 사용한다. 수신 실패는 UNVERIFIED, 실제 동작 불일치는 FAIL이며 나머지 전체 캡처를 계속한다. 수집 전용 API 준비는 capturePreparedByApi로 표시하고 실제 입력 성공에 포함하지 않는다. DrawSpaced 검정 외곽 그림자 두 패스의 y는3→2 디자인px, alpha.3/좌우±.5px와 본문·자간·검사 임계값은 보존한다.
+
+PC는 컴파일만 한다. Mac 새 정식 빌드1회·같은 패키지 M1 23/23 정상 종료·ko/de/fr×5해상도1410장 issue0/가림 누락0·로딩270장 관측 누락0·scroll-ink4/4·이름 입력5해상도PASS가 다음 관문이다. 입력 UNVERIFIED는 해당 항목만 미검증으로 남기며 전체 게이트 PASS로 승격하지 않는다. 바탕화면·사용자 저장·타인 Player 변경0.
+
+PC 최종 후보: 추가 공통9dc27dea5 병합 d746ea4b6에서 Core121/Runtime243 컴파일 exit0·오류0. 새 스토리 왼쪽 패널/오른쪽 lore 제거와 충돌 없이 통합. 관련 UI 실측은 새 Mac 입력으로 판단한다.
+
+
+## 2026-11-03 20:20 Mac FAIL 후속
+
+규칙 정리7bc7a3518의 CLAUDE.md를 재독했다. docs 정본은 unity/main이다. 공통d6c5bb89를8eabd14ec로 정상 병합했다. 실패1e810024dd는1410장 완주·M1/로딩/관측 누락0을 확인했지만 이름 입력5/5 UNVERIFIED·교차9103건·잉크2/4였다. 실패 SHA의 KeyBindList/InventoryDock/SilverHell은5b6b4fce9와 동일하며, 새 분해·일시정지febeb55b2는 그 조상이 아니다.
+
+| 수정 | 현행 계약 |
+|---|---|
+| 이름 입력 | 실제 OnGUI의 GUI.Button 호출 직전에 local Event를 주입한다. 서로 다른 프레임의 down/up·inside/disabled/clicked·hotControl·최근64회 OnGUI를 기록한다. 제품 API로 수집 화면을 준비한 것은 PASS에서 제외한다 |
+| 상위 충돌 출처 | TextCore의 정렬·줄바꿈이 포함된 실제 행 데이터와 public GUIStyle cursor 원점으로 계측한다. 키 목록의 무자간/비atlas 문자열은 한 번 조판하고 같은 전체 폭으로 측정한다. 글꼴·크기·Core 수치·분석기 임계값은 유지한다 |
+| 잉크 | 고정 ROI623/388은 유지한다. 감사 좌표를 고치고 새 metricProof와 기존 엄격한 포함 조건을 함께 요구한다 |
+
+19:00절의 Event.QueueEvent는 실패 이력이다. PC에서는 컴파일까지만 하고, Mac 새 정식 패키지의 M1·1410장 issue0·scroll-ink4/4·이름 입력5해상도 PASS로 판정한다.
+
+PC 확인: 공통b04ddd73b까지 정상 병합(fe236a8bc). Core121/Runtime249 최종 컴파일 exit0·오류0, Runtime 경고531. 내부 pixel density 접근2개 컴파일 오류를 PropertyInfo 경로로 수정한 뒤 Runtime만 재확인했다. 새 Mac 입력·겹침·잉크는 미검증이다.
+
+
+## 2026-11-03 21:50 BuildLoop 다중 패스 후속
+
+동일 글자의 그림자·광휘·외곽선을 GroupText 논리 원점 ID로 연결했다. 문자열/source 전체 제외와 충돌 임계값 완화는 하지 않는다. 같은 원점의 중복 본문과 다른 글자 충돌은 계속 검출한다. 실제 메뉴/봉안함 실패 표본 자기 충돌0, 회귀66/66. 기존 cb77ca96f 1410장 재분석 잔여8363/동일내용819는 과거 metricProof 입력의 결과이며 새 제품 PASS가 아니다. 이전20:20 TextCore/키 문자열 조판/이름 입력 수정은 보존했다. 새 Mac 정식 패키지의 전체UI·nameOpened·scroll-ink 판정이 필요하다. PC Player/바탕화면 변경0. 상세는 UNITY_UI_OVERLAP_20261030.md 21:50절.
+
+최종 origin/unity/main f579841cef 병합0241b147ca. Core121/Runtime259 최종 PC 컴파일 오류0(Core 경고2/Runtime 경고522). 추가 공통 코드의 제품/셰이더 실행은 PC에서 하지 않았다.

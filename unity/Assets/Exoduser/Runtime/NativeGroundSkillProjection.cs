@@ -13,10 +13,13 @@ namespace Exoduser.UnityPort
     // Receiver proxies only participate in our depth pass; the original scene is untouched.
     public static class NativeGroundSkillProjection
     {
+        // Internal render-list channel; actors/props retain their existing masks.
+        public const uint ProjectionRenderingLayer = 1u << 30;
+        public const uint WaterRenderingLayer = 1u << 31;
         sealed class Receiver
         {
             public MeshFilter Source, Filter; public MeshRenderer Owner, Draw;
-            public Mesh SourceMesh, OwnedMesh; public GameObject Go; public bool Bounded;
+            public Mesh SourceMesh, OwnedMesh; public GameObject Go; public bool Bounded,Water;
         }
         static readonly Dictionary<MeshFilter,Receiver> receivers=new Dictionary<MeshFilter,Receiver>();
         static readonly HashSet<MeshFilter> proxies=new HashSet<MeshFilter>();
@@ -24,7 +27,7 @@ namespace Exoduser.UnityPort
         static readonly Dictionary<int,Material> blends=new Dictionary<int,Material>();
         static readonly HashSet<ScriptableRenderer> installed=new HashSet<ScriptableRenderer>();
         static readonly PropertyInfo featureList=typeof(ScriptableRenderer).GetProperty("rendererFeatures",BindingFlags.Instance|BindingFlags.NonPublic);
-        static Material depthMaterial, probeMaterial;
+        static Material depthMaterial, rootDepthMaterial, probeMaterial;
         static readonly MaterialPropertyBlock receiverBlock=new MaterialPropertyBlock();
         static Mesh cube;
         static Camera camera;
@@ -35,12 +38,14 @@ namespace Exoduser.UnityPort
         public static int ReceiverCount { get { return receivers.Count; } }
         public static string Error { get; private set; }
         public static bool Available { get; private set; }
+        public static int ActiveWaterCount { get; private set; }
+        public static int BiasedReceiverCount { get; private set; }
         public static int ActiveVolumeCount
         {
             get { int count=0;foreach(var v in volumes)if(v!=null&&v.enabled&&v.gameObject.activeInHierarchy)count++;return count; }
         }
         public static bool IsProxy(MeshFilter filter) { return filter!=null&&proxies.Contains(filter); }
-        public static void RegisterVolume(MeshRenderer renderer) { if(renderer!=null&&!volumes.Contains(renderer))volumes.Add(renderer); }
+        public static void RegisterVolume(MeshRenderer renderer) { if(renderer!=null){renderer.renderingLayerMask=ProjectionRenderingLayer;if(!volumes.Contains(renderer))volumes.Add(renderer);} }
         public static void UnregisterVolume(MeshRenderer renderer) { volumes.Remove(renderer); }
         public static Material MaterialFor(int destinationBlend)
         {
@@ -62,18 +67,36 @@ namespace Exoduser.UnityPort
                 cube=new Mesh { name="Ground projection volume",hideFlags=HideFlags.DontSave };
                 cube.vertices=new[]{new Vector3(-.5f,-.5f,-.5f),new Vector3(.5f,-.5f,-.5f),new Vector3(.5f,.5f,-.5f),new Vector3(-.5f,.5f,-.5f),new Vector3(-.5f,-.5f,.5f),new Vector3(.5f,-.5f,.5f),new Vector3(.5f,.5f,.5f),new Vector3(-.5f,.5f,.5f)};
                 cube.triangles=new[]{0,2,1,0,3,2,4,5,6,4,6,7,0,1,5,0,5,4,3,7,6,3,6,2,0,4,7,0,7,3,1,2,6,1,6,5};cube.RecalculateBounds();
+                cube.colors=new Color[8];cube.uv2=new Vector2[8];cube.uv3=new Vector2[8];
                 return cube;
             }
+        }
+        static Material ReceiverDepthMaterial(MeshRenderer owner)
+        {
+            var material=owner!=null?owner.sharedMaterial:null;
+            // Match the visible Forward pass raster bias, rather than widening the
+            // scene-depth occlusion guard for every receiver/foreground object.
+            if(material!=null&&material.shader!=null&&material.shader.name=="EXODUSER/A2RootSurface")
+            {
+                if(rootDepthMaterial==null)
+                {
+                    rootDepthMaterial=new Material(Resources.Load<Shader>("Shaders/GroundSkillReceiverDepth")) { name="Ground receiver matched A2 root bias",hideFlags=HideFlags.DontSave };
+                    rootDepthMaterial.SetFloat("_ReceiverDepthBias",-1);
+                }
+                return rootDepthMaterial;
+            }
+            if(depthMaterial==null)depthMaterial=new Material(Resources.Load<Shader>("Shaders/GroundSkillReceiverDepth")) { hideFlags=HideFlags.DontSave };
+            return depthMaterial;
         }
         public static void RegisterReceiver(MeshFilter source,float[] world=null,int[] indices=null,Func<float,float,float> terrain=null,bool deck=false,float ceiling=0)
         {
             if(source==null||source.sharedMesh==null||IsProxy(source))return;
             Receiver existing;if(receivers.TryGetValue(source,out existing))return;
             var owner=source.GetComponent<MeshRenderer>();if(owner==null)return;
-            if(depthMaterial==null)depthMaterial=new Material(Resources.Load<Shader>("Shaders/GroundSkillReceiverDepth")) { hideFlags=HideFlags.DontSave };
             var go=new GameObject("Ground effect receiver depth") { hideFlags=HideFlags.DontSave };go.transform.SetParent(source.transform,false);go.layer=source.gameObject.layer;
             var filter=go.AddComponent<MeshFilter>();var draw=go.AddComponent<MeshRenderer>();
-            draw.sharedMaterial=depthMaterial;draw.shadowCastingMode=ShadowCastingMode.Off;draw.receiveShadows=false;draw.allowOcclusionWhenDynamic=false;
+            draw.renderingLayerMask=ProjectionRenderingLayer;
+            draw.sharedMaterial=ReceiverDepthMaterial(owner);draw.shadowCastingMode=ShadowCastingMode.Off;draw.receiveShadows=false;draw.allowOcclusionWhenDynamic=false;
             var record=new Receiver { Source=source,Filter=filter,Owner=owner,Draw=draw,Go=go,SourceMesh=source.sharedMesh,Bounded=terrain!=null||deck };
             if(record.Bounded)
             {
@@ -96,11 +119,18 @@ namespace Exoduser.UnityPort
                     triangles.Add(a);triangles.Add(b);triangles.Add(c);
                 }
                 var mesh=new Mesh { name="Explicit walkable receiver mask",indexFormat=points.Length>65535?IndexFormat.UInt32:IndexFormat.UInt16,hideFlags=HideFlags.DontSave };
-                mesh.vertices=points;mesh.uv2=range;mesh.triangles=triangles.ToArray();mesh.RecalculateBounds();record.OwnedMesh=mesh;filter.sharedMesh=mesh;
+                mesh.vertices=points;mesh.uv2=range;mesh.triangles=triangles.ToArray();
+                var normals=original.normals;if(normals.Length==points.Length)mesh.normals=normals;else mesh.RecalculateNormals();
+                mesh.RecalculateBounds();record.OwnedMesh=mesh;filter.sharedMesh=mesh;
                 var block=new MaterialPropertyBlock();block.SetFloat("_Bounded",1);draw.SetPropertyBlock(block);
             }
             else filter.sharedMesh=source.sharedMesh;
             receivers.Add(source,record);proxies.Add(filter);
+        }
+        public static void RegisterWaterReceiver(MeshFilter source)
+        {
+            RegisterReceiver(source);Receiver record;
+            if(source!=null&&receivers.TryGetValue(source,out record)){record.Water=true;if(record.Owner!=null)record.Owner.renderingLayerMask|=WaterRenderingLayer;}
         }
         public static void BeginFrame(Camera value)
         {
@@ -117,14 +147,16 @@ namespace Exoduser.UnityPort
                 }
                 Available=true;Error="";
             }
-            catch(Exception exception) { Available=false;Error=exception.Message;Debug.LogError("[Ground projection] "+Error); }
-            var dead=new List<MeshFilter>();
+            catch(Exception exception) { Available=false;if(Error!=exception.Message)Debug.LogError("[Ground projection] "+exception.Message);Error=exception.Message; }
+            ActiveWaterCount=0;BiasedReceiverCount=0;var dead=new List<MeshFilter>();
             foreach(var item in receivers)
             {
                 var record=item.Value;
                 if(record.Source==null||record.Owner==null) { dead.Add(item.Key);continue; }
                 record.Draw.enabled=record.Owner.enabled&&!record.Owner.forceRenderingOff&&record.Owner.gameObject.activeInHierarchy;
-                record.Draw.sharedMaterial=depthMaterial;
+                if(record.Water&&record.Draw.enabled)ActiveWaterCount++;
+                record.Draw.sharedMaterial=ReceiverDepthMaterial(record.Owner);
+                if(record.Draw.enabled&&rootDepthMaterial!=null&&record.Draw.sharedMaterial==rootDepthMaterial)BiasedReceiverCount++;
                 record.Draw.GetPropertyBlock(receiverBlock);receiverBlock.SetFloat("_Bounded",record.Bounded?1:0);record.Draw.SetPropertyBlock(receiverBlock);
                 if(!record.Bounded&&record.Filter.sharedMesh!=record.Source.sharedMesh)record.Filter.sharedMesh=record.Source.sharedMesh;
             }
@@ -147,26 +179,40 @@ namespace Exoduser.UnityPort
             public override void Create() { pass=new ProjectionPass(); }
             public override void AddRenderPasses(ScriptableRenderer renderer,ref RenderingData data)
             {
-                if(NativeRemodel3D.Active&&data.cameraData.camera==camera&&ActiveVolumeCount>0)renderer.EnqueuePass(pass);
+                if(NativeRemodel3D.Active&&data.cameraData.camera==camera&&(ActiveVolumeCount>0||ActiveWaterCount>0))renderer.EnqueuePass(pass);
             }
         }
         sealed class ProjectionPass : ScriptableRenderPass
         {
             static readonly int ReceiverDepth=Shader.PropertyToID("_ExoduserGroundDepth"),ProbeMode=Shader.PropertyToID("_ExoduserGroundProbe");
             static readonly ShaderTagId receiverTag=new ShaderTagId("ExoduserGroundReceiver"),projectionTag=new ShaderTagId("ExoduserGroundProjection");
+            static readonly ShaderTagId waterTag=new ShaderTagId("ExoduserGroundWater");
             sealed class PassData { public RendererListHandle List;public int Probe; }
             public ProjectionPass() { renderPassEvent=RenderPassEvent.BeforeRenderingTransparents;requiresIntermediateTexture=true;ConfigureInput(ScriptableRenderPassInput.Depth); }
-            RendererListHandle List(RenderGraph graph,UniversalRenderingData rendering,UniversalCameraData cam,UniversalLightData light,ShaderTagId tag,Material material=null)
+            RendererListHandle List(RenderGraph graph,UniversalRenderingData rendering,UniversalCameraData cam,UniversalLightData light,ShaderTagId tag,Material material=null,uint layer=ProjectionRenderingLayer)
             {
                 var settings=RenderingUtils.CreateDrawingSettings(tag,rendering,cam,light,SortingCriteria.CommonTransparent);
                 settings.enableInstancing=false;
                 settings.overrideMaterial=material;settings.overrideMaterialPassIndex=0;
-                return graph.CreateRendererList(new RendererListParams(rendering.cullResults,settings,new FilteringSettings(RenderQueueRange.all)));
+                var filtering=new FilteringSettings(RenderQueueRange.all){renderingLayerMask=layer};
+                return graph.CreateRendererList(new RendererListParams(rendering.cullResults,settings,filtering));
             }
             public override void RecordRenderGraph(RenderGraph graph,ContextContainer context)
             {
                 var resources=context.Get<UniversalResourceData>();var cam=context.Get<UniversalCameraData>();var rendering=context.Get<UniversalRenderingData>();var light=context.Get<UniversalLightData>();
                 FrameSize=new Vector2Int(cam.cameraTargetDescriptor.width,cam.cameraTargetDescriptor.height);
+                if(ActiveWaterCount>0)
+                {
+                    using(var builder=graph.AddRasterRenderPass<PassData>("Ground water before projected ink",out var data))
+                    {
+                        data.List=List(graph,rendering,cam,light,waterTag,null,WaterRenderingLayer);builder.UseRendererList(data.List);
+                        builder.UseAllGlobalTextures(true);
+                        if(resources.cameraDepthTexture.IsValid())builder.UseTexture(resources.cameraDepthTexture,AccessFlags.Read);
+                        builder.SetRenderAttachment(resources.activeColorTexture,0,AccessFlags.ReadWrite);builder.SetRenderAttachmentDepth(resources.activeDepthTexture,AccessFlags.ReadWrite);
+                        builder.SetRenderFunc((PassData value,RasterGraphContext state)=>state.cmd.DrawRendererList(value.List));
+                    }
+                }
+                if(ActiveVolumeCount==0&&probe==null)return;
                 var desc=cam.cameraTargetDescriptor;desc.msaaSamples=1;desc.graphicsFormat=GraphicsFormat.None;desc.depthStencilFormat=GraphicsFormat.D32_SFloat;
                 var mask=UniversalRenderer.CreateRenderGraphTexture(graph,desc,"Ground receiver depth",true);
                 using(var builder=graph.AddRasterRenderPass<PassData>("Ground receiver depth",out var data))

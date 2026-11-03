@@ -1,4 +1,16 @@
+## 진행 중 — UI-PARITY-1102-RECOVER (2026-11-03)
+
+| 담당 | 목표 | 소유 파일 | 상태 |
+|---|---|---|---|
+| codex/unity-parity-1102 | 21:50 BuildLoop 다중 패스 오탐 최우선 | NativeUiAudit·다중 패스 발행 함수, Tools/ui-overlap의 분석기/회귀/표본, 관련 UI 문서·CHANGELOG_SYNC 자기 절 | 공통8c5f967d74 추가 정상 병합·docs 양쪽 기록 보존·현재 충돌0, 실제 메뉴/CP 자기충돌0·회귀66/66. Core121/Runtime259 오류0, PC Player0. 기존1410장 재분석8363은 과거 계측 잔여로 보존. Mac 새 게이트 대기 |
+
 ## 2026-10-29 Mac 첫 연습 실입력 후속
+
+## 2026-11-03 PC P0 진행
+| 작업ID | 내용 | 담당·브랜치 | 소유 파일 | 상태 |
+|---|---|---|---|---|
+| UNITY-GROUND-AOE-P0 | 장판·대지치기 잘림 수정 본편 통합 | PC Codex / codex/unity-ground-aoe-decal-20261103 | NativeGroundSkillProjection, GroundSkillReceiverDepth.shader, NativeGame.GroundSkillCapture, tools/tests/unityGroundReceiverDepthBias.test.cjs, P0/관련SSOT·CHANGELOG·본인행 | 사용자 "다 최신으로": 최신공통f146df2b2까지 병합, docs4파일5블록 양쪽 보존/충돌0. wave/flash·셀4%·경사bias 수정 유지. 소스579d081d69 공용ec46a2a7 exit0/C#0/shader3/USER_SAVE0, 이후docs-only/Unity차이0. 검사중공통전진으로전체2입력각1회. CTO 즉시FF 인수대상, 새시각/실행본갱신 별도미확인 |
+
 
 ARM64 Settings QA 앱에서 웹 `mouse2`↔Unity 오른쪽 버튼 1을 입력/캡처 양쪽에 맞춰 수정했다. 실제 OS 오른쪽 클릭으로 마법 처치 5/5, 첫 연습 1~9단계 완료. 10단계 방향+Space 동시 키 입력은 현재 CUA가 일반키 2개 조합을 거부해 구르기 0/5 HOLD. 이어질 11~12단계·일반 1-1 몹/드롭은 미검증. PC A18 `NativePractice*` 변경0. [증거·다음 관문](../UNITY_MAC_PRACTICE_MOUSE_BRIDGE_20261029.md).
 

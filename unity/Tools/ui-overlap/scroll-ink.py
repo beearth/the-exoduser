@@ -73,15 +73,28 @@ def run(candidate=None):
             if image.size != (width, height) or (frame['width'], frame['height']) != image.size:
                 raise ValueError('PNG/JSON resolution mismatch: '+row['stem'])
             x, y, w, h = row['roi']
-            actual = ink(image.crop((x,y,x+w,y+h)), row)
             records = [e for e in frame['elements'] if e.get('kind') == 'text' and not e.get('shadow') and e.get('text') == row['text'] and e.get('source') == row['source']]
             rect = records[0]['rect'] if records else None
+            # Padded sampling does not imply containment: every selected pixel is
+            # still tested against the UNPADDED audit rect. Keep an independent
+            # frozen location bound to reject large coordinate mistakes or other labels.
+            near_reference = bool(rect) and abs(rect['x']+rect['width']/2-(x+w/2)) <= 24 and abs(rect['y']+rect['height']/2-(y+h/2)) <= 24
+            actual = []
+            sample_roi = None
+            if near_reference:
+                import math
+                sx, sy = max(0, math.floor(rect['x'])-2), max(0, math.floor(rect['y'])-2)
+                ex, ey = min(width, math.ceil(rect['x']+rect['width'])+2), min(height, math.ceil(rect['y']+rect['height'])+2)
+                sample_roi = [sx,sy,ex-sx,ey-sy]
+                sample_row = dict(row, roi=sample_roi)
+                if ex > sx and ey > sy:
+                    actual = ink(image.crop((sx,sy,ex,ey)), sample_row)
             # Guard against a missing/blank glyph, or a huge substitute audit box.
             visible = len(actual) >= max(8, len(frozen)*.5)
             bounded = bool(rect) and rect['width'] <= w*1.5 and rect['height'] <= h*1.5
-            native_metric = bool(records) and 'Internal_GetTextRectOffset' in records[0].get('metricProof', '')
-            result.update(actualInkPixels=len(actual), actualInkBounds=bounds(actual), auditRect=rect,
-                          nativeMetric=native_metric, productionPassed=visible and bounded and contains(rect, actual))
+            native_metric = bool(records) and all(token in records[0].get('metricProof', '') for token in ('GUIStyle.GetCursorPixelPosition', 'IMGUITextHandle'))
+            result.update(actualInkPixels=len(actual), actualInkBounds=bounds(actual), auditRect=rect, sampleROI=sample_roi, nearReference=near_reference,
+                          nativeMetric=native_metric, productionPassed=near_reference and native_metric and visible and bounded and contains(rect, actual))
         results.append(result)
     calibrated = len(results) == 4 and all(r['fixtureInkPixels'] >= 8 and r['knownInkPositive'] and r['legacyAuditNegativeRejected'] for r in results)
     return dict(scope='ko tutorial0 + stash, 2560x1600/1600x900; actual ink vs audit box. Frozen checker positive is NOT runtime PASS.',

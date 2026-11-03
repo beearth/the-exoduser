@@ -280,6 +280,13 @@ namespace Exoduser.UnityPort
         }
         IEnumerator GroundMapCaptureBody()
         {
+            if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-ground-skills")>=0)
+            {
+                var skills=GroundSkillMapCapture();
+                try{while(skills.MoveNext())yield return skills.Current;}
+                finally{(skills as IDisposable)?.Dispose();}
+                yield break;
+            }
             string output=Argument("-output");
             if(Application.isBatchMode||!NativeQaSandbox.Active||!NativeRemodel3D.Requested||!NativeHd2D.Enabled||
                string.IsNullOrEmpty(output)||!Path.IsPathRooted(output))

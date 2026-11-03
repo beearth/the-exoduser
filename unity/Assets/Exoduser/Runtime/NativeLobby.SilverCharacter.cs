@@ -199,6 +199,7 @@ namespace Exoduser.UnityPort
             }
             bool prior=GUI.enabled;
             Rect cancel=new Rect(x,h-84,180,44),create=new Rect(x+200,h-84,180,44);
+            TrackQaNameButton(create);
             NativeSilverHellUi.ArtImage(cancel,silverVisualCancel);
             NativeSilverHellUi.ArtImage(create,locked?silverVisualDisabled:silverVisualCreate);
             // The original KO labels are baked into these assets; do not print a second label.

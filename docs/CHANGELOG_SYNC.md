@@ -1,3 +1,12 @@
+2026-11-03 UI-PARITY 최신 공통 통합: 사용자 지시로 origin/unity/main 8c5f967d74를 자기 브랜치에 병합. CHANGELOG_SYNC 두 충돌은 양쪽 원문을 보존했다. 현재 docs/Unity 충돌 표시0, PC 컴파일1회 Core121/Runtime259 오류0(경고2/522), Player0. 21:50 다중 패스 수정과66회귀 증거 보존. 새 통합본 Mac 게이트 대기.
+
+2026-11-03 21:50 BuildLoop UI 겹침 오탐 수정: 다중 패스의 실제 논리 원점 ID/본문1개/클립/발행 source로 장식 패스를 묶는다. 기존 JSON은 선언 offset+픽셀 양자화만 복원하고 .5px 충돌 기준과 중복 본문/다른 글자 검출은 유지한다. 메뉴·봉안함 실제 표본0, 회귀66/66. 기존1410장 재분석8363은 과거 계측 입력의 잔여로 보존하며 Mac 새 게이트 필요. PC 컴파일만, Player0. 문서 docs/engine/UNITY_UI_OVERLAP_20261030.md.
+2026-11-03 패링 G2 최신 본편 병합: 87a77a11f 위에 origin/unity/main 8e4e358e6(8c5f967d7 이후) 통합. Core 충돌0, 문서 양쪽 기록·최신 번역 재번호와 G2 DANGER 이력 보존. 최신 RETOUCH 3 선 스파크/섬광 제한과 G2 근접·흔들림 데이터 연결. 병합 뒤 규칙86/0·oracle 6,066,962검사 기존2318/신규0·PC Roslyn5어셈블리 오류0 각1회. CTO fast-forward·Mac 판정 대기.
+
+2026-11-03 22:45 U-VFX-07b 필드 원소구 v3: 실 묶음 형태(1차 재채색)·평면 클립아트(2차 절차) 연속 FAIL로 방법을 원화 생성으로 바꿈. Codex 내장 image_gen 6회(외부 비용 0)로 원소별 측면 탄두+꼬리 원화 → tools/vfx/make_elem_orb_v3.py가 크로마 키잉·despill·원소 색상 범위·차가운 계열 코어 채도 상한·탄두 124px를 발사 지점 중심(268,128)에 맞춰 Resources/Art/vfx/field/proj_elem_orb_v3.png(3072×1536, 6열×6행 F/I/D/L/H/E, 알파 6프레임 동일·무늬만 흐름) 생성. NativeBossView.FieldBullets.cs OrbRes만 교체(크기·속도·판정·일반 알파 합성 불변). combat-impact run.cjs에 v3 수치 검사 연결(60/0, blood-dark·orb v3 PASS), Runtime Roslyn 오류 0. 1x·3x 총괄 자체 PASS, Mac 07e·11a 판정 대기. 기록 docs/5.1임펙트디자인/VFX_ELEM_ORB_V3_G0_20261103.md
+
+2026-11-03 23:10 Unity 패링 RETOUCH 3(사용자 "패링구현이 엉망이네"): 실행본 385e76ce1 캡처에서 Q 패링 보라 별(Dark_MediumImpact)·둥근 점 입자 잔점·방패 탄 패링 누런 번개 3장·탄 패링 원소색 섬광·영문 PARRY! 노랑 글자 두 줄을 확인. 브랜치 claude/unity-pc-vfx-spark-20261103에서 모든 패링을 따뜻한 흰 선 스파크로(근접 80~130/30~60, 탄 36~50/20~30), 보라 별·번개·점 입자·탄 패링 섬광 삭제, PARRY! 글자 표시 안 함(Core 문자열 불변). combat-impact 508/0, Runtime Roslyn 오류 0. Mac M1 06 판정 대기. 기록 docs/5.1임펙트디자인/UNITY_COMBAT_IMPACTS_20261103.md
+
 2026-11-03 21:50 Unity 직렬화 근본 정리: guid만 있던 .meta 854개를 Unity 6000.6.7f1이 만든 전체 importer 설정으로, 손으로 쓴 a2 재질 29개를 URP 정식 직렬화(AssetVersion 10)로, URP_PC_High·Mac_Balanced·GlobalSettings와 FirstPlayable.unity를 커밋. 빠졌던 추적 에셋·폴더 .meta 56개와 ProjectSettings/SceneTemplateSettings.json 추가(작업본마다 guid가 달라지던 결함). 원본=BuildLoop 작업본 cb77ca96f 빌드 산출물, 그 사이 위에서 고친 button_iron.png.meta는 커밋본 유지. BuildLoop는 작업본 사본이 새 커밋과 같은 내용이면 스테이징 후 갱신. 문서 unity/Tools/devtools/buildloop/README.md.
 
 2026-11-03 20:45 지시 2_3 사실 동기화: 무지개 반사×1.5·AoE0 폴백(기본 반경100/중심×1.5)과 Unity A안 보상 분리를 main·G2 브랜치와 같은 본문으로 동기화. 구현 커밋 f6ff63e333d6b6a15aeac28ef3b824eb22f3b223는 codex/unity-parry-g2-20261103에 있으며 Mac 검수·총괄 병합 대기다. 이 커밋은 docs 2개뿐이며 게임 코드는 변경하지 않는다.
@@ -5,6 +14,10 @@
 2026-11-03 21:40 PC Player 차단·무음 누수 수정(사용자 "백그라운드 테스트 사운드가 들린다, 맥에서만"): exo-unity player는 -PcException buildloop|cto-swap|candidate 없으면 거부, BuildLoop·UI 겹침 check.ps1은 buildloop로 넘김. 원인=--unity-mute를 M1 스모크·캡처별 EarlyMute만 따라 UI 겹침 검사 모드에서 소리 발생 → Runtime NativeMuteGuard가 모든 모드에서 AudioListener.volume=0·Direct 영상 mute. 문서 unity/Tools/devtools/README.md.
 
 2026-11-03 21:00 BuildLoop 재직렬화 정체 수정: 빌드가 다시 쓰는 Unity 직렬화 추적 파일(.meta·.mat·.asset·.unity)만 남은 작업본은 버리지 않고 진행, 새 커밋과 겹치면 목록으로 중단. 원인=guid만 커밋된 .meta 824개·손으로 쓴 재질 29개·URP prefilter·MakeScene의 FirstPlayable.unity 저장. 문서 unity/Tools/devtools/buildloop/README.md.
+
+2026-11-03 21:40 패링 G2 oracle 감사: 분기점 b3cf7a682 동일6,066,962검사1회로 기존2318건(보스대사1300·악의오브문구1018), A안 공통탄 의도372건, 비대상NoProj 결함6건을 분리. 5종만9999최종고정하도록 결함 수정, G1 §6 별도 기대값·전체실패다중집합 대조 추가. 기존2318건과 정확히 동일·신규0, 규칙86/0·PC 참조컴파일5개 오류0. G1·밸런스·감사문서 동기화, Mac 미판정.
+
+2026-11-03 패링 A안 G2: 근접 통합·5종 예고/연타·반격1회(1.75/2)·독립 정지·보상분리·공통 탄 정책·CombatStats, 최소 예고/자세/DANGER·피드백6/4 대2+밀기 데이터·70% 목표입력 봇·영수증 출력. 2_3/G1/몬스터/밸런스 동기화, 무지개1.5·옛6 표기 정정(웹 Q _npDmg·AoE0 폴백). Mac §8·화면·실행본 미판정.
 
 2026-11-03 규칙 정리(사용자 "전부 추천대로", 51항목): CLAUDE.md를 main·unity/main 같은 본문(233줄)으로 다시 쓰고 AGENTS.md는 CLAUDE.md 안내만 둔다. 핵심: 새 개발은 unity/main만·웹은 Steam 유지보수(부록 W), 11-05부터 Claude 구현, PC 컴파일·Mac 판정(PC 예외 ①BuildLoop ②루프 정지 중 1회 교체 ③승인 후보), 1-1 원근 LOCK 34°, docs 정본=unity/main. main에만 있던 매뉴얼·보드·실버 헬 등 9개 문서를 unity/main으로 옮기고 v4.1·운영 매뉴얼 v1.1·TERMINAL_FAILURE_FALLBACK·DOCS_INDEX를 추가했다. 딸린 문서 5개(API연결_가이드·BUILD_BACKUP_POLICY·2_3 상단 노트·IMAGE_PROVIDER_PRIORITY·MAP_OBJECT_SEEDREAM)와 EnergyShield.cs 주석 출처를 고쳤다. 원문은 [docs/_archive/rules-20261103](_archive/rules-20261103/README.md).
 
@@ -57718,6 +57731,59 @@ Mac 원본4장 몬스터16종 공통·배송: 실기동 검수후 개인/`unity/
 
 Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반 build errors0, 정규화·strict/deep 서명 PASS, 이전앱3SHA CAS/보존 후 `/Users/fordeargamers/Applications/EXODUSER.app` 설치. 원본/stage/설치 211파일 전체 manifest SHA `54d8ae1b…` 동일, QA/일반 Runtime·Core DLL SHA 동일. 일반 저장11·QA plist2 최종 원문 동일, 일반 앱 실행0. 실제 A2 지면/뿌리/목교 기술 수신 VISUAL PASS 범위만 해당, 맵 전체 RETOUCH/Impact R4 FAIL 유지. [상세](engine/UNITY_A2_DECAL_RECEIVER_20261101.md#일반-mac-앱-파일-전달-2026-11-02).
 
+
+## 2026-11-03 UI-PARITY-1102-RECOVER — Mac 13:20 FAIL 후속
+
+- 실제 자기 worktree의 NativeUiAudit.cs·NativePauseMenu.A15Web.cs를 직접 수정. TextLayoutBounds를 공용으로 써 설정 푸터와 감사의 네이티브 글자 정렬을 일치시킨다. 웹 autosave Rect 유지, 추가 안내만 최소 한 화면 픽셀 간격으로 올림(최대4회). 기존 fr QA 언어표·표면 알파/스크롤/ink 수정 보존.
+- 현재 Core121/Runtime241 PC 컴파일 오류0. 이번 재개에서 Unity Player·정식 빌드·M1·UI 캡처/전체 검사 실행0. Mac issue0·가림누락0·실제 ink4/4는 미검증. 과거 이름5/5 및 Player.log 가드 FAIL은 분리 기록.
+- 관련 SSOT: [UNITY_UI_OVERLAP_20261030](engine/UNITY_UI_OVERLAP_20261030.md), [UNITY_PARITY_FIFTH_20261102](engine/UNITY_PARITY_FIFTH_20261102.md). 최신 공통044c82d760 정상 병합, 외부 guard WIP 보존.
+
+
+2026-11-03 PC UI-PARITY 19:00 Mac FAIL 후속: G0 공식 Diablo IV/Last Epoch UI 입력·서체 관례 확인. Layout 이벤트 치환을 Unity Event.QueueEvent 네이티브 루프로 교체하고 실제 생성 버튼 Repaint 좌표·down/up/hotControl 수신 영수증을 사용한다. 이름 입력 PASS/FAIL/UNVERIFIED와 수집 전용 API 준비를 구분해 나머지1410장 수집을 입력 도구 실패로 중단하지 않는다. 자간 글자 외곽 검정 그림자 y3→2 디자인px, 기존 검사 임계값 유지. 최신 공통 cbdcbc282 정상 병합 후 구현 체크포인트이며 PC 컴파일·추가 공통 병합은 후속 기록. 새 Mac 실행 전 issue58→0/nameOpened/시각 PASS 미검증. [범위·G0·수치](engine/UNITY_UI_OVERLAP_20261030.md#2026-11-03-1900-mac-fail--g0수정-경계).
+
+같은19:00 후보의 PC 확인: 추가 공통9dc27dea5를 d746ea4b6로 정상 병합(새 캐릭터 스토리 포함), 실제 Core121/Runtime243 소스를 Unity6000.6.7f1 Roslyn으로 컴파일한 결과 두 exit0·C# 오류0. 초광폭 SSOT의 검정 외곽 그림자 현행값도3→2px로 동기화. 새 Mac 빌드/Player/겹침/이름 입력은 미검증으로 유지한다.
+
+
+2026-11-03 PC UI-PARITY 20:20 Mac FAIL 후속: 정리된 CLAUDE7bc7a3518 재독·docs 정본 unity/main·공통d6c5bb89 정상 병합. 실패 SHA에는 새 분해/일시정지febeb55b2가 없으며 상위 라벨3파일은 이전 검수본과 diff0임을 확인했다. NativeUiAudit를 public GUIStyle cursor+같은 TextCore의 실제 행 좌표로 바꾸고, 키 목록 무자간 문자열은 한 번 조판한다. 실제 OnGUI의 GUI.Button 경계에서 local Event를 주입하며 inside/disabled/clicked·hotControl·반복 프레임을 기록한다. 입력 PASS와 수집 API 준비를 구분한다. scroll-ink ROI/임계값은 유지하고 새 metric 증명을 필수 조건에 추가했다. 설치 DLL PE 메타데이터의 필수 API 존재를 확인했으며 네이티브 실행 증거와 구분한다. PC 컴파일 후 Mac 실제 판정 대기. [범위·원인·수치](engine/UNITY_UI_OVERLAP_20261030.md#2026-11-03-2020-mac-fail--g0g1-원인-확정).
+
+20:20 후속 PC 컴파일: 공통b04ddd73b 병합본(fe236a8bc)의 Core121/Runtime249 최종 exit0·오류0. 내부 GUI 픽셀 배율 속성 직접 접근2개 CS0117을 캐시한 PropertyInfo로 고치고 Runtime만 다시 확인했다. 경고531건은 별도다. 설치 DLL8타입 API 메타데이터 확인, 새 Mac UI/입력/잉크 미검증 유지.
+
+## 2026-11-03 PC P0 — 장판 공중 카드 제거와 실제 수면 투영
+
+- NativeGroundSkillSurface: 3D 투영 장애 시 source sprite/ring 숨김 유지·2D/풀 복원.
+- NativeGroundSkillProjection/ReceiverDepth: 전용 렌더링 bit30/수면bit31, 위쪽 법선0.2, 실제 수신깊이 좌표 및 앞쪽 opaque 차폐2cm.
+- A2Field/A2ToxicRiver: 실제 늪 MeshFilter 등록, 수면→장판→transparent 배우/탄 순서. 기존 물 높이·반사·거품·색 수식 유지.
+- NativeGroundWarningProjection/NativeDruidTelegraphView: 원형·부채·선형 under 삼각형을16m 투영 볼륨으로 표시, 원색/alpha·판정 경계·2D 복원 유지.
+- Core·패링·세이브·피해·반경·시간 변경0. PC는 GroundAoeCompileCheck 배치 컴파일1회만 하고 Mac에서 평지/경사/다리/늪·적탄 중첩·1920/21:9/3840을 판정한다.
+- [설계·수치·판정표](engine/UNITY_GROUND_AOE_P0_20261103.md). 시각 미검증·사용자 실행본 미반영.
+
+## 2026-11-03 PC 15:39 재개 — 대지치기 반쪽 가림
+
+| 범위 | 변경 | 검증·한계 |
+|---|---|---|
+| NativeSkillView SlamWaves | wave/flash 생성 시 NativeGroundSkillSurface.Mark에 등록해 지면 중심 billboard의 아래쪽 깊이 가림을 제거. 기존 실제 receiver-depth,16m 투영을 공유 | 원화4셀512px·1024²·FullRect 유지. 프레임min(3,floor(pow(p,.6)*4)),45틱=.75초,셀5/10/13/17틱,크기.9×(.72+.28min(1,p3.5)),alpha p<.62/이후(1-p)/.38 불변 |
+| Core·웹 정본 | 최신 origin/main 프레임·수명과 대조. Core/피해/판정/저장/Q/E 변경0 | 정적회귀 tools/tests/unitySlamGroundProjection.test.cjs 수정후3/3. GPU 시각PASS 아님 |
+| PC/Mac 분리 | PC는 공용exo 배치컴파일1회 후작업브랜치push. 장판·대지치기1920/3840·처음~끝 연속프레임/웹비교·M1은Mac검수요청 | 상세 docs/engine/UNITY_GROUND_AOE_P0_20261103.md, REPORT_1103.md. 사용자 실행본 자동변경 주장안함 |
+## 2026-11-03 19:00 PC — Mac AOE-GATE FAIL 3건 재작업
+
+| 항목 | 수정·계약 | 검증 |
+|---|---|---|
+| 슬램 셀 직선경계 | 원화셀2 오른쪽128px/최대alpha252·셀3왼쪽113px/최대252. GroundSkillProjection `_GroundEdgeFeather` 기본0, NativeSkillView 본체만.04. CellEdgeCoverage=smoothstep(0,feather,min(u,v,1-u,1-v)), premultipliedRGBA/weight에곱함. 셀512px의20.48px·내부92%불변 | 새정적검출FAIL→수정후5/5. 실제경계개선은Mac A/B대기 |
+| 실제4지형스킬QA | --unity-ground-map-capture --unity-ground-skills, 실제DispatchSlot, flat≤.04/slope>.06, actual bridge, walkable water-neighbour1m. spikeTrap/holyDome/giantSlam·1920/2560/3840. 기본all+bridge연속57PNG. runtimeAge/셀/alpha/flash/상자여유/높이·sandboxRoot 기록 | PC는컴파일까지만. Map/충돌/Core/피해/반경/45틱수명수정0 |
+| QA 가림분리 | --unity-ground-hide-actors는sandbox신규촬영경로에서만배우/접촉그림자/OnGUI숨김,finally복구. --unity-ground-edge-baseline은본체feather0, --unity-ground-projectiles는합성3탄실제Core이동. 정상제품화면불변 | Mac중앙섬광·정상배우+탄막컷을별도검수 |
+
+근거·G0 레퍼런스공통관례·Mac 전체인자: docs/engine/UNITY_GROUND_AOE_P0_20261103.md. 원격공통cbdcbc2822 선행병합. 이전 e96b137 Mac FAIL 상태를컴파일만으로PASS승격하지않는다.
+## 2026-11-03 20:20 PC — Mac 경사 대지치기 투영 누락 재작업
+
+| 항목 | 수정·계약 | 검증·한계 |
+|---|---|---|
+| 수신 raster 깊이 | A2RootSurface Forward Offset -1,-1과 수신패스 무보정 차이 확인. 해당원본 shader receiver에만 캐시재질 bias-1, 기본지면/물0. 등록/갱신 모두 적용 | 기존2cm 차폐·normalY.2·terrain+.9/목교범위·bit30/31·Core/45틱/원화 불변. Mac ec043b26d 경사 FAIL은 새 Metal 검수까지 유지 |
+| 무창 Mac QA | GPU batch RenderTexture 지원, Null GPU 거부·배우/UI 숨김 필수. 창 해상도/WaitForEndOfFrame 없이 기존실제 DispatchSlot/생산투영 촬영. batchMode/captureMode/biasMatchedReceivers 기록 | 정적4/4. PC는 공용bin 컴파일1회만. 새GPU 촬영/소품차폐/1920·3840은 Mac 검수 |
+
+공통9446618af 선행 정상병합. 최신 인자/근거는 docs/engine/UNITY_GROUND_AOE_P0_20261103.md. 이전창 촬영 인자는 최신무창규칙으로 대체. docs정본 unity/main.
+
+PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b30250 1회 exit0/C#0/shader3/USER_SAVE0. 실행279953ms(wall373445ms), errorLogs1(종료Curl42, entitlement확인). 정적4/4. meta850/mat29만 자기소스에서 복원, 외부guard/기존미추적63 보존. PC Player/빌드0, 최종Unity소스는컴파일입력과동일, 새Metal/시각은Mac대기.
+
 ## 2026-11-02 타이틀 후보 보드·왼쪽 안전 여백
 
 - 사용자 브리프1·2절: 3후보 비교 보드(전신1x/발3x/손/성/강/달)까지 제작, CTO 선택 대기·RETOUCH·새 아트 게임 미적용. 거대 마왕 요새와 원형 달 추가 지시 포함. 생성 원본/프롬프트/측정은 G:/exoduser/tmp/design-review/20261102_title_keyframe/ 및 담당 I: REPORT 보존.
@@ -57762,3 +57828,12 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 - 병합본 c81bdc6455의공용PC컴파일952896b8 단일실행: renderer/네셰이더/Humanoid true·exit0·C#오류0·USER_SAVE0. 자기자동생성물정리, CTO fast-forward 인수준비. 기본값전환은성능단독재측정PASS뒤.
 
 2026-11-03 23:05 디자인총괄 합격표 원화 복구: 22:55/21:25 코드 판 지시를 대체. ENTER 인장 원화Rect(1428,702,416,156)·불가 원화/중복 라벨 제거, 공통 주요/일반9-slice 원화·밝기1.0·안쪽 호버 빛, 슬롯의 붉은 선택2px/옅은 바탕·초상/헤어라인, 생성/이름창 원화, 오른쪽 원화 레일 테두리 복구. 원화11종 밉맵OFF/Bilinear. 기본 IMGUI 스킨 텍스처만 제거하고 사용자 원화 GUIStyle 배경 보존. Mac0/2명·표시4상태·생성/이름/삭제/일시정지 촬영 인자와 실제4캡처 비교기 추가. PC Player0·기능/원화 계약 회귀 PASS, 새 실제 비교/시각 판정은 Mac 대기. [현재 계약](3.1%20ui%20hud%20디자인/UNITY_BUTTON_PLATE_MATERIAL_20261103.md).
+## 2026-11-03 — 장판·대지치기 최신공통 통합 인계
+
+- 사용자 대지강타 스프라이트 반쪽 잘림 재지적 및 본편 반영 지시. 02ca363571에 최신 origin/unity/main 8c5f967d74f1622a0248096e958337573a099e80을 정상 병합. docs4파일5충돌블록 양쪽전체기록 보존·충돌표시/미해결0.
+- f579841ce importer metadata 포함, 로컬수정 거부0/불일치파일 임의stage0. wave/flash 지면투영·셀외곽4%·경사root bias 수정 핵심4파일은 기존02ca와 동일. Core수식 신규수정0.
+- 병합소스 공용PC컴파일1회 후자기브랜치 비강제push, CTO가 unity/main fast-forward 인수한다. 이번사용자지시는 과거 MacPASS전 공통대기 조건을 해제하며, 새시각/사용자실행본갱신 확인과는 구분한다.
+
+- 최종공통 f146df2b29e98ecac7fdd03e08c888b07d3f7a8d 포함. 최초8c 검사 중 패링/기검참 소스가8e로 전진해 추가병합·최종소스579d081d696660c87509be2f1c19c39ca8d4a9e1을1회 추가검사(전체2입력/동일소스반복0). 공용ec46a2a7 exit0/C#0/shader3/USER_SAVE0, 실행15206ms/wall167270ms, 종료Curl42 1건. 이후f146은기획docs3개뿐이며최종Unity파일차이0. 메타1개만자기checkpoint복원, 외부guard/미추적7보존. 사용자명시승인으로CTO즉시FF 인수대상, 시각/실행본교체미확인.
+
+2026-11-03 로비 원화 최신공통 통합 인계: 원화 복구7cdce2032d에 origin/unity/main 4d336665a4를 정상 병합. SilverCharacter의 이름 버튼 QA 추적과 상대 스토리/UI겹침 수정, 디자인총괄23:05 다섯 원화 항목·밝기1.0·11종 밉맵OFF를 함께 보존. docs 양쪽 기록 보존. PC DLL 참조 컴파일1회5어셈블리 오류0·소스 계약PASS, PC Player0·Mac 실제시각대기. [원화 계약](3.1%20ui%20hud%20디자인/UNITY_BUTTON_PLATE_MATERIAL_20261103.md).

@@ -8,13 +8,14 @@ namespace Exoduser.UnityPort
     // VFX-D18: the ordinary field enemies' bullets share the druid's projectile list (Core: SpawnFieldProjectile -> Druid.SpawnProjectile), but only the 1-1 druid's own shots carry
     // DruidPoison. Everything else used to be drawn as the druid's green poison disc (07c-field-ai: a ~500 px lime plate). game.html draws them per kind in the enemy-projectile
     // pass 2 (54371..54581), with the user-made sheets this file cuts the same way: the toothed mouth for physical (E-parry) bullets, the per-element comet (8 frames, head at
-    // 62 % of the width) for magic bullets, the element orb sheet for element balls. 2026-11-03: baked Hell Gothic palette rows replace rainbow + ELC runtime tint.
+    // 62 % of the width) for magic bullets, the element orb sheet for element balls. 2026-11-03: baked Hell Gothic palette rows replace rainbow + ELC runtime tint;
+    // U-VFX-07b: element balls use proj_elem_orb_v3 (generated art, keyed by tools/vfx/make_elem_orb_v3.py; head centred on the shot point, same box).
     // The druid poison orb stays in NativeBossView.Update. Geometry, animation, and Core projectile classification are unchanged.
     // Not ported (no art in Unity yet, drawn as the nearest sheet instead): the kraken water orb of physical / ice element balls (elem orb sheet row), the procedural classic rainbow
     // of black / blue beans (physical-palette comet), the dark sphere of the Q bean (dark-palette comet).
     public sealed partial class NativeBossView
     {
-        const string MouthRes = "Art/vfx/field/proj_phys_mouth", OrbRes = "Art/vfx/field/proj_elem_orb_el", CometRes = "Art/vfx/field/proj_bolt_comet_el";
+        const string MouthRes = "Art/vfx/field/proj_phys_mouth", OrbRes = "Art/vfx/field/proj_elem_orb_v3", CometRes = "Art/vfx/field/proj_bolt_comet_el";
         const int MouthW = 768, MouthH = 384, OrbW = 512, OrbH = 256, CometFrameCount = 8;
         static readonly int[] MouthFrameCount = { 8, 6, 6 };
         static readonly int[] ElemOrbRow = { -1, 0, 1, 2, 3, 4, 5 };   // baked rows {F,I,D,L,H,E}; physical still uses the comet

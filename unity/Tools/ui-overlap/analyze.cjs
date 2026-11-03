@@ -1,5 +1,6 @@
 const fs=require('node:fs'),path=require('node:path');
 const geometry=require('./geometry.cjs');
+const {groupTextPasses}=require('./text-paint-groups.cjs');
 const requiredPages=['첫화면','브랜드인트로','메뉴','로비',...Array.from({length:5},(_,i)=>'캐릭터선택'+i),'이름입력','로딩',...Array.from({length:4},(_,i)=>'튜토리얼'+i),'HUD','일시정지','종료확인',...Array.from({length:4},(_,i)=>'설정'+i),...Array.from({length:4},(_,i)=>'설정스크롤'+i),'설정목록','인벤토리','스킬','대장간','능력치','클리어'];
 requiredPages.push(...Array.from({length:16},(_,i)=>i).filter(i=>i!==6).map(i=>'스킬슬롯'+String(i).padStart(2,'0')),'실습안내','실습진행','실습스크롤','봉안함','결정체','보관함',...['potion','salvage','reroll','crystal','craft'].map(t=>'대장간-'+t),'일반알림','부활대기','사망',...Array.from({length:8},(_,i)=>'지역유도'+i),'지역진입','지역정화','시네마틱','시네마틱언어','시네마틱일시정지','신규연출','신규연출완료');
 const loadingImages=[1,2,3,4,5,6,7,8,9,10,11,12,15,16,18,19];
@@ -28,14 +29,9 @@ function analyze(frame){
   if(e.hasClip){if(!e.clipRect)continue;e.rect=intersection(e.rect,e.clipRect);if(!positive(e.rect))continue;}
   elements.push(e);
  }
- // Small black stroke passes must match the final body directly, never a transitive shadow cluster.
- for(const e of elements){if(e.kind!=='text'||e.shadow!==true||e.source?.includes(' / 명시 CSS text-shadow 광휘 패스')||e.opacityKnown===false)continue;const body=elements.find(p=>p.kind==='text'&&!p.shadow&&p.text===e.text&&p.depth===e.depth&&p.order>e.order&&p.source?.split(':')[0]===e.source?.split(':')[0]&&JSON.stringify(p.clipRect)===JSON.stringify(e.clipRect)&&['x','y'].every(k=>Math.abs(p.rect[k]-e.rect[k])<=3.1)&&['width','height'].every(k=>Math.abs(p.rect[k]-e.rect[k])<=3.1)&&!elements.some(s=>s.kind==='surface'&&s.order>e.order&&s.order<p.order&&above(s,e)&&geometry.valid(geometry.intersect(shape(s),shape(e)))));if(body)e.decorativeOwnerId=body.id;}
- // Explicit production TxtGlow passes belong to their following body glyph. Keep ordinary duplicates and foreign text visible.
- const glowSuffix=' / 명시 CSS text-shadow 광휘 패스',regionSuffix=glowSuffix+' / region-banner-black-shadow',strokeSuffix=glowSuffix+' / death-black-outline',frontSuffix=glowSuffix+' / frontend-black-shadow',scale=Math.min(frame.width/1920,frame.height/1080);
- for(const e of elements){const region=e.source?.endsWith(regionSuffix),stroke=e.source?.endsWith(strokeSuffix),front=e.source?.endsWith(frontSuffix),suffix=region?regionSuffix:stroke?strokeSuffix:front?frontSuffix:glowSuffix,glowRadius=(front?3.1*frame.height/1080:(region?9.2:stroke?4.2:5.5)*scale)+.01;if(e.kind!=='text'||e.shadow!==true||!e.source?.endsWith(suffix)||e.opacityKnown!==true||e.effectiveOpacity<0||e.effectiveOpacity>(region ? .064 : stroke||front ? 1.001 : .03))continue;
-  const source=e.source.slice(0,-suffix.length),body=elements.find(p=>p.kind==='text'&&!p.shadow&&p.text===e.text&&p.source===source&&p.depth===e.depth&&p.order>e.order&&JSON.stringify(p.clipRect)===JSON.stringify(e.clipRect)&&Math.hypot(p.rect.x-e.rect.x,p.rect.y-e.rect.y)<=glowRadius&&Math.abs(p.rect.width-e.rect.width)<.01&&Math.abs(p.rect.height-e.rect.height)<.01&&!elements.some(s=>s.kind==='surface'&&s.order>e.order&&s.order<p.order&&above(s,e)&&geometry.valid(geometry.intersect(shape(s),shape(e)))));
-  if(body)e.decorativeOwnerId=body.id;
- }
+ // Keep every paint pass in the receipt; only a proved single logical glyph
+ // suppresses internal self-collisions. Foreign/duplicate body text stays visible.
+ const paintGrouping=groupTextPasses(elements,frame,(e,body)=>elements.some(s=>s.kind==='surface'&&s.order>e.order&&s.order<body.order&&above(s,e)&&opaque(s)&&geometry.valid(geometry.intersect(shape(s),shape(e)))));
  const masks=elements.filter(e=>(e.kind==='surface'||e.kind==='panel')&&opaque(e));
  const visible=elements.filter(e=>e.kind!=='surface').map(e=>{
   let visiblePolygons=[shape(e)].filter(geometry.valid);
@@ -54,13 +50,13 @@ function analyze(frame){
    else if(b.kind==='control')issues.push({type:'글자-조작부',a,b,intersections,intersectionPolygons});
   }
  }
- const auditWarnings=[];
+ const auditWarnings=[...paintGrouping.warnings];
  if(frame.schemaVersion!==2)auditWarnings.push('구 스키마: 실제 가림 정보 미충족');
  for(const e of elements){
   if(!Number.isFinite(e.depth)||!e.orderKnown||e.clipKnown!==true)auditWarnings.push(e.id+': 깊이/순서/클립 미충족');
   if(e.kind==='surface'&&(!e.opacityKnown||!e.opacityProof||!shapeKnown(e)))auditWarnings.push(e.id+': 불투명도 또는 칠 도형 증명 불명');
  }
- return {...frame,elements:visible.filter(e=>!e.decorativeOwnerId),decorationElements:visible.filter(e=>e.decorativeOwnerId),surfaces:elements.filter(e=>e.kind==='surface'),issues,auditWarnings,visibilityComplete:auditWarnings.length===0};
+ return {...frame,textGroups:paintGrouping.groups,elements:visible.filter(e=>!e.decorativeOwnerId),decorationElements:visible.filter(e=>e.decorativeOwnerId),surfaces:elements.filter(e=>e.kind==='surface'),issues,auditWarnings,visibilityComplete:auditWarnings.length===0};
 }
 function run(dir){
  const manifest=JSON.parse(fs.readFileSync(path.join(dir,'coverage.json'),'utf8')),missing=[],observed=new Set();
