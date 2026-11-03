@@ -171,7 +171,7 @@ namespace Exoduser.UnityPort
             kiContactCamera=false;kiContactObserved=-1;
             kiView?.Reset();boltView?.Reset();impacts?.Reset();skillView?.Reset();skillRemaster?.Reset();sound?.Reset();
             var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;if(settings!=null)config.DifficultyIndex=settings.Options.Get("diff");if(BuildFlavor.Current.DemoMode)config.LevelCap=BuildFlavor.Current.LevelCap;CombatBeginRun(config);
-            Simulation=new Simulation(config,SourceStarterFixture.Seed);revive.Reset();Simulation.ReviveTextRaised+=t=>{if(!DeathPresentationActive)revive.Add(t);};Simulation.Config.DemoMode=BuildFlavor.Current.DemoMode;Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.ProjectileBlocked;Simulation.LevelledUp+=OnLevelledUp;ReviewArgsApply();ApplySettingsOptions();
+            Simulation=new Simulation(config,SourceStarterFixture.Seed);ConfigureParryFeedback();revive.Reset();Simulation.ReviveTextRaised+=t=>{if(!DeathPresentationActive)revive.Add(t);};Simulation.Config.DemoMode=BuildFlavor.Current.DemoMode;Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.ProjectileBlocked;Simulation.LevelledUp+=OnLevelledUp;ReviewArgsApply();ApplySettingsOptions();
             inventory.Reset();CombatRestoreState();skills.SetOpen(false);stats.SetOpen(false);forge.SetOpen(false);levelUp.Hide();levelUpSeen=Simulation.Player.Level;death.Hide();deathShown=false;stageClear.Hide();bossBar.Hide();areaTitle.Hide();areaTitleShown=false;skillInputFence=false;Simulation.ApplyEquipment(inventory.State);CombatRestoreResources();
             Simulation.IsLootOnScreen=l=>WorldPointVisible(l.X,l.Y,0);   // Actual 2D/3D camera viewport; pickup distance rules remain in Core.
             // D01: mkItem drops are real; R picks the highest rarity on screen (web 32936) into the bag. Persistent saves stay unimplemented.
@@ -266,6 +266,7 @@ namespace Exoduser.UnityPort
         }
         void FixedUpdate()
         {
+            if(Time.unscaledTime<parryHoldUntil)return;
             if(hellGateCaptureActive||NativeScreenTransition.InputBlocked||practiceScripted||UiOverlapFreezesSimulation||!Running||!gameFocused||Simulation==null||lobby!=null&&lobby.IsBlocking)return;
             var p=Simulation.Player;var aim=AimWorld();
             float x=(NativeKeyBindInput.Held("right")?1:0)-(NativeKeyBindInput.Held("left")?1:0);
@@ -279,13 +280,13 @@ namespace Exoduser.UnityPort
             SetSkillKeys();}
             int statPointsBeforeTick=Simulation.Player.StatPoints;int currencyBeforeTick=Simulation.Materials;
             if(!HandleFirstPracticeTick(x,y,aim.x*100,-aim.y*100,attack,PointerOverPractice()))Simulation.Tick(x,y,aim.x*100,-aim.y*100,attack,NativeKeyBindInput.Held("interact"));
-            StageFlowPump(statPointsBeforeTick);DispatchFeedback();
+            StageFlowPump(statPointsBeforeTick);DispatchFeedback();ObserveCombatStatsEnd();
             if(Simulation.Materials>currencyBeforeTick){var at=HudCamera.WorldToViewportPoint(Point(p.X,p.Y));NativeCurrencyOrb.Emit(new Vector2(at.x,at.y));}
             if(PlayerDown){Running=false;Toast("쓰러졌습니다");}
             // Web normal play omits kill reward text; the actual currency HUD/orb feedback above owns it.
         }
         public void StepInput(float x,float y,float aimX,float aimY,bool attack,bool pickup)
-        {Simulation.Stage.Enabled=firstPractice==null;int statPointsBeforeTick=Simulation.Player.StatPoints;Simulation.Tick(x,y,aimX,aimY,attack,pickup);StageFlowPump(statPointsBeforeTick);DispatchFeedback();UpdateViews();}
+        {Simulation.Stage.Enabled=firstPractice==null;int statPointsBeforeTick=Simulation.Player.StatPoints;Simulation.Tick(x,y,aimX,aimY,attack,pickup);StageFlowPump(statPointsBeforeTick);DispatchFeedback();ObserveCombatStatsEnd();UpdateViews();}
         // RM-1 sound A1/A2: web BGM.play(key) -- hell<N> while exploring, boss in the arena, victory after the boss, death when the player is down; silent in the lobby
         string DesiredMusic()
         {
@@ -306,7 +307,7 @@ namespace Exoduser.UnityPort
         void DispatchFeedback()
         {
             sound.CurrentTick=Simulation.TickCount;
-            while(Simulation.Feedback.Count>0){var e=Simulation.Feedback.Dequeue();if(!ImpactActive||e.Kind!=FeedbackKind.FeelContact)impacts.Handle(e);combatImpacts?.Handle(e);combatImpacts?.Flash(e);if(!e.VisualOnly)sound.Handle(e);}
+            while(Simulation.Feedback.Count>0){var e=Simulation.Feedback.Dequeue();ParryFeedbackEvent(e);if(!ImpactActive||e.Kind!=FeedbackKind.FeelContact)impacts.Handle(e);combatImpacts?.Handle(e);combatImpacts?.Flash(e);if(!e.VisualOnly)sound.Handle(e);}
             sound.Flush();
         }
         void BuildProps()
@@ -335,6 +336,7 @@ namespace Exoduser.UnityPort
         Vector2 KiContactCameraOffset()=>ImpactActive&&!kiContactCamera?contactVfx.CameraOffset(ImpactNow)*OptionShakeScale:Vector2.zero;
         void UpdateViews()
         {
+            RestoreMeleePoses();
             if(Simulation==null||view==null)return;BindWorldViewport();Remodel3DRestoreBillboards();NativeHd2D.RestoreSourcePoses();var p=Simulation.Player;
             if(contactVfx!=null){contactVfx.RenderCamera=HudCamera;contactVfx.ReducedMotion=impacts!=null&&impacts.ReducedMotion;}
             if(skillRemaster!=null)skillRemaster.RenderCamera=HudCamera;
@@ -411,6 +413,7 @@ namespace Exoduser.UnityPort
             teleView?.Update(Simulation,view); // 최종 flat camera의 화면 장판 clip 경계를 사용한다.
             if(NativeHd2D.Enabled&&!NativeRemodel3D.Active)NativeHd2D.ProjectFlatActors(view);
             combatImpacts?.Update(Simulation,HudCamera,playerView);
+            if(!NativeRemodel3D.Active)ApplyMeleePresentation(HudCamera);
             renderedTick=Simulation.TickCount;damage.RemoveAll(d=>Time.unscaledTime>d.until);
         }
         // game.html drawEn (53853-53870): every mob with an energy shield carries a pulsing pale-blue arc (radius r+5, +-1.0 rad around shieldAng, 5 px stroke, 25% wedge fill);

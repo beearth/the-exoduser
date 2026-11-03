@@ -496,6 +496,8 @@ namespace Exoduser.UnityPort
 
             // ---- 14 save and continue ----
             p.Hp = p.MaxHp; sim.Materials = 4321; bool saved = SaveCombatNow(); var before = SnapshotCombat("before");
+            string m1CombatStats=sim.CombatStatsJson();File.WriteAllText(Path.Combine(output,"combat-stats.json"),m1CombatStats);
+            m1StatsSnapshot=m1CombatStats;
             string name = lobby.ActiveCharacterName; bool hasSave = HasCombatSave(name);
             lobby.ShowLobby();yield return M1WaitFrontend("save return lobby");
             bool continueRequested=lobby.BeginCharacterEntry(false);yield return M1WaitFrontend("saved continue reveal");bool continueOk=continueRequested&&!lobby.StartupEntryActive&&!lobby.IsBlocking;
@@ -508,6 +510,7 @@ namespace Exoduser.UnityPort
         }
 
         IEnumerator M1WaitFrontend(string label) {float until=Time.realtimeSinceStartup+25;while((NativeScreenTransition.Busy||lobby.CinematicEntryPending)&&Time.realtimeSinceStartup<until){lobby.SetPlaybackFocus(true);yield return null;}if(NativeScreenTransition.Busy||lobby.CinematicEntryPending)M1Add("00","frontend boundary "+label,"fail","boundary timeout","");else if(NativeScreenTransition.History!=null&&NativeScreenTransition.History.Count>0){var record=NativeScreenTransition.History[NativeScreenTransition.History.Count-1];if(record.failed||record.cancelled)M1Add("00","frontend boundary "+label,"fail",record.boundary+" "+record.error,"");}yield return null;}
+        string m1StatsSnapshot;
         IEnumerator M1Finish(string output)
         {
             m1.guiRepaints = m1GuiRepaints; m1.guiBridged = m1GuiBridged;
@@ -515,6 +518,7 @@ namespace Exoduser.UnityPort
                 var paused = new List<string>(); foreach (var kv in m1Overlays) if (kv.Value.Contains("pause")) paused.Add(kv.Key);
                 M1Add("99", "captures free of the pause menu", paused.Count == 0 ? "ok" : "fail", m1Overlays.Count + " captures, " + (paused.Count == 0 ? "none under the pause menu" : "pause menu over: " + string.Join(", ", paused.ToArray())), "");
             }
+            if(m1StatsSnapshot!=null)File.WriteAllText(Path.Combine(output,"combat-stats.json"),m1StatsSnapshot);else WriteCombatStats(output);
             File.WriteAllText(Path.Combine(output, "m1-check.json"), JsonUtility.ToJson(m1, true), new UTF8Encoding(false));
             // UI 캡처와 동일하게 영상 컴포넌트의 지연 파괴를 먼저 끝낸다.
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);

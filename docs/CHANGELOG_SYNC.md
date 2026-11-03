@@ -1,6 +1,7 @@
 2026-11-03 UI-PARITY 최신 공통 통합: 사용자 지시로 origin/unity/main 8c5f967d74를 자기 브랜치에 병합. CHANGELOG_SYNC 두 충돌은 양쪽 원문을 보존했다. 현재 docs/Unity 충돌 표시0, PC 컴파일1회 Core121/Runtime259 오류0(경고2/522), Player0. 21:50 다중 패스 수정과66회귀 증거 보존. 새 통합본 Mac 게이트 대기.
 
 2026-11-03 21:50 BuildLoop UI 겹침 오탐 수정: 다중 패스의 실제 논리 원점 ID/본문1개/클립/발행 source로 장식 패스를 묶는다. 기존 JSON은 선언 offset+픽셀 양자화만 복원하고 .5px 충돌 기준과 중복 본문/다른 글자 검출은 유지한다. 메뉴·봉안함 실제 표본0, 회귀66/66. 기존1410장 재분석8363은 과거 계측 입력의 잔여로 보존하며 Mac 새 게이트 필요. PC 컴파일만, Player0. 문서 docs/engine/UNITY_UI_OVERLAP_20261030.md.
+2026-11-03 패링 G2 최신 본편 병합: 87a77a11f 위에 origin/unity/main 8e4e358e6(8c5f967d7 이후) 통합. Core 충돌0, 문서 양쪽 기록·최신 번역 재번호와 G2 DANGER 이력 보존. 최신 RETOUCH 3 선 스파크/섬광 제한과 G2 근접·흔들림 데이터 연결. 병합 뒤 규칙86/0·oracle 6,066,962검사 기존2318/신규0·PC Roslyn5어셈블리 오류0 각1회. CTO fast-forward·Mac 판정 대기.
 
 2026-11-03 22:45 U-VFX-07b 필드 원소구 v3: 실 묶음 형태(1차 재채색)·평면 클립아트(2차 절차) 연속 FAIL로 방법을 원화 생성으로 바꿈. Codex 내장 image_gen 6회(외부 비용 0)로 원소별 측면 탄두+꼬리 원화 → tools/vfx/make_elem_orb_v3.py가 크로마 키잉·despill·원소 색상 범위·차가운 계열 코어 채도 상한·탄두 124px를 발사 지점 중심(268,128)에 맞춰 Resources/Art/vfx/field/proj_elem_orb_v3.png(3072×1536, 6열×6행 F/I/D/L/H/E, 알파 6프레임 동일·무늬만 흐름) 생성. NativeBossView.FieldBullets.cs OrbRes만 교체(크기·속도·판정·일반 알파 합성 불변). combat-impact run.cjs에 v3 수치 검사 연결(60/0, blood-dark·orb v3 PASS), Runtime Roslyn 오류 0. 1x·3x 총괄 자체 PASS, Mac 07e·11a 판정 대기. 기록 docs/5.1임펙트디자인/VFX_ELEM_ORB_V3_G0_20261103.md
 
@@ -13,6 +14,10 @@
 2026-11-03 21:40 PC Player 차단·무음 누수 수정(사용자 "백그라운드 테스트 사운드가 들린다, 맥에서만"): exo-unity player는 -PcException buildloop|cto-swap|candidate 없으면 거부, BuildLoop·UI 겹침 check.ps1은 buildloop로 넘김. 원인=--unity-mute를 M1 스모크·캡처별 EarlyMute만 따라 UI 겹침 검사 모드에서 소리 발생 → Runtime NativeMuteGuard가 모든 모드에서 AudioListener.volume=0·Direct 영상 mute. 문서 unity/Tools/devtools/README.md.
 
 2026-11-03 21:00 BuildLoop 재직렬화 정체 수정: 빌드가 다시 쓰는 Unity 직렬화 추적 파일(.meta·.mat·.asset·.unity)만 남은 작업본은 버리지 않고 진행, 새 커밋과 겹치면 목록으로 중단. 원인=guid만 커밋된 .meta 824개·손으로 쓴 재질 29개·URP prefilter·MakeScene의 FirstPlayable.unity 저장. 문서 unity/Tools/devtools/buildloop/README.md.
+
+2026-11-03 21:40 패링 G2 oracle 감사: 분기점 b3cf7a682 동일6,066,962검사1회로 기존2318건(보스대사1300·악의오브문구1018), A안 공통탄 의도372건, 비대상NoProj 결함6건을 분리. 5종만9999최종고정하도록 결함 수정, G1 §6 별도 기대값·전체실패다중집합 대조 추가. 기존2318건과 정확히 동일·신규0, 규칙86/0·PC 참조컴파일5개 오류0. G1·밸런스·감사문서 동기화, Mac 미판정.
+
+2026-11-03 패링 A안 G2: 근접 통합·5종 예고/연타·반격1회(1.75/2)·독립 정지·보상분리·공통 탄 정책·CombatStats, 최소 예고/자세/DANGER·피드백6/4 대2+밀기 데이터·70% 목표입력 봇·영수증 출력. 2_3/G1/몬스터/밸런스 동기화, 무지개1.5·옛6 표기 정정(웹 Q _npDmg·AoE0 폴백). Mac §8·화면·실행본 미판정.
 
 2026-11-03 규칙 정리(사용자 "전부 추천대로", 51항목): CLAUDE.md를 main·unity/main 같은 본문(233줄)으로 다시 쓰고 AGENTS.md는 CLAUDE.md 안내만 둔다. 핵심: 새 개발은 unity/main만·웹은 Steam 유지보수(부록 W), 11-05부터 Claude 구현, PC 컴파일·Mac 판정(PC 예외 ①BuildLoop ②루프 정지 중 1회 교체 ③승인 후보), 1-1 원근 LOCK 34°, docs 정본=unity/main. main에만 있던 매뉴얼·보드·실버 헬 등 9개 문서를 unity/main으로 옮기고 v4.1·운영 매뉴얼 v1.1·TERMINAL_FAILURE_FALLBACK·DOCS_INDEX를 추가했다. 딸린 문서 5개(API연결_가이드·BUILD_BACKUP_POLICY·2_3 상단 노트·IMAGE_PROVIDER_PRIORITY·MAP_OBJECT_SEEDREAM)와 EnergyShield.cs 주석 출처를 고쳤다. 원문은 [docs/_archive/rules-20261103](_archive/rules-20261103/README.md).
 
