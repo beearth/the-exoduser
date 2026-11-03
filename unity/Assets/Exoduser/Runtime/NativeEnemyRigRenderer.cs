@@ -41,7 +41,10 @@ namespace Exoduser.UnityPort {
     a.model.transform.localPosition=Vector3.zero;a.model.transform.localRotation=Quaternion.identity;a.model.transform.localScale=Vector3.one;
     foreach(var tr in a.model.GetComponentsInChildren<Transform>(true))tr.gameObject.layer=Layer;
     a.skins=a.model.GetComponentsInChildren<Renderer>(true);if(a.skins.Length==0)throw new InvalidOperationException("Model has no renderer");
-    var b=a.skins[0].bounds;foreach(var r in a.skins)b.Encapsulate(r.bounds);if(b.size.y<.001f)throw new InvalidOperationException("Model height is zero");
+    // Table height/ground are the BODY: weapon props (ritual staff reaches above the head) must not shrink the model, so size by the skinned meshes when there are any.
+    var b=default(Bounds);bool hasSkin=false;foreach(var r in a.skins)if(r is SkinnedMeshRenderer){if(hasSkin)b.Encapsulate(r.bounds);else{b=r.bounds;hasSkin=true;}}
+    if(!hasSkin){b=a.skins[0].bounds;foreach(var r in a.skins)b.Encapsulate(r.bounds);}
+    if(b.size.y<.001f)throw new InvalidOperationException("Model height is zero");
     float scale=d.height/b.size.y;a.model.transform.localScale=Vector3.one*scale;a.model.transform.localPosition=-new Vector3(b.center.x,b.min.y,b.center.z)*scale;
     foreach(var r in a.skins){var old=r.sharedMaterials;var materials=new Material[old.Length];for(int i=0;i<old.Length;i++)materials[i]=ToonMaterial(old[i]);r.sharedMaterials=materials;r.shadowCastingMode=ShadowCastingMode.Off;r.receiveShadows=false;r.forceRenderingOff=true;if(r is SkinnedMeshRenderer skin)skin.updateWhenOffscreen=true;}
     a.motion=new NativeEnemyRigAnimator(a.model,d);a.composite=new Material(compositeShader);a.image=Quad("Enemy rig-pixel "+e.Id,a.composite);if(shadow!=null)a.contact=Quad("Enemy rig ground "+e.Id,shadow);return a;

@@ -5,12 +5,14 @@ namespace Exoduser.UnityPort.Core
 {
     // Optional `opts` of the web hurtP(dmg, opts): damage over time, energy (magic / parry) damage type, knock-back direction.
     // The etype0 contact attack calls hurtP(dmg) without opts, so the knock-back direction is a random angle (game.html 43745).
-    public struct HurtOptions { public bool Dot, Magic, HasAngle, HasSource, Unparryable; public float Angle, SrcX, SrcY; public EnemyState MeleeEnemy; public string MeleeSource, Source; }
+    // Labeled = the web call passes opts.src (always a label string such as '중독'), which turns on the far / close conditional DR test.
+    public struct HurtOptions { public bool Dot, Magic, HasAngle, HasSource, Unparryable, Labeled; public float Angle, SrcX, SrcY; public EnemyState MeleeEnemy; public string MeleeSource, Source; }
 
     // PC-B09: the player-hurt pipeline of hurtP (game.html 43563-43754): guards, dodge, shield-block branch (B07), defence / hit cap / minimum, B08 energy shield, HP,
-    // poise stagger (B07 PlayerPoise), damage floater, damage-proportional knock-back, screen flash and shake, hit sound. Not ported (inputs the equipment / affix /
-    // unique layers do not feed yet, all 0 or absent in the web state they stand for): barrier, healthy / injured / dot / burn / boss / close / far conditional DR,
-    // counterHit / thorns / reflect, lastStand, _uArmorRage, pet hit, ice-orb / ghost-walk invulnerability, whirlwind guard, P.s==='charge' (no such Unity state),
+    // poise stagger (B07 PlayerPoise), damage floater, damage-proportional knock-back, screen flash and shake, hit sound, and (D-U2) physDR / barrier /
+    // healthy / injured / dot / close / far conditional DR. Not ported (inputs the equipment / affix / unique layers do not feed yet, all 0 or absent in the web
+    // state they stand for): burnDR (no player burn DOT in Unity), counterHit / thorns / reflect, lastStand, _uArmorRage, pet hit, ice-orb / ghost-walk
+    // invulnerability, whirlwind guard, P.s==='charge' (no such Unity state),
     // chromatic-aberration pulse (state kept, no renderer), G.hitStop (the web resets it every frame before use), gamepad vibration, particles.
     public sealed partial class Simulation
     {
@@ -33,6 +35,7 @@ namespace Exoduser.UnityPort.Core
         }
 
         private void DoHitFlash(string color, double strength) { HitFlashAlpha = (float)Math.Min(.5, HitFlashAlpha + strength * .5); HitFlashColor = color ?? "#ffffff"; }
+        private double HurtAffix(string id) { return EquippedInventory != null ? EquippedInventory.AffixTotal(id) : 0; }   // _eqAffix(id)
         private void HurtShake(double n) { ShakeAmount = (float)Math.Max(ShakeAmount, n * OptShake / 100); }   // shake(n)
 
         // playSample('player_hit'+(1+~~(random*4)), vol, _r(1,.15)): draw order index, _r, then playSample's own .92+random*.16 jitter
@@ -79,11 +82,22 @@ namespace Exoduser.UnityPort.Core
             else if (!o.Dot) QueueHurtSample(.6);
             // defence (physical, or energy for magic / parry damage), DR cap 75 %
             double def = o.Magic ? Config.PlayerEnergyDefense : Config.PlayerPhysicalDefense;
-            double dr = Math.Min(.75, def / (def + 2500.0));
+            double dr = Math.Min(.75, def / (def + 2500.0) + (o.Magic ? 0 : HurtAffix("physDR")));
             int a = damage;
             int hitCap = Js.Int(Player.MaxHp * .33);
             if (a > hitCap) { a = hitCap; Player.Iframes = Math.Max(Player.Iframes, 60); HurtText(Player.X, Player.Y - 35, "한방캡!", "One-hit Cap!", "#ff8800", 40); }
             a = Math.Max(1, Js.Int(a * (1 - dr)));
+            // D-U2 affix layer: barrier (flat), then the conditional DR sum capped at 50 %. The web passes opts.src only as a label string, so
+            // src.ib is never set (bossDR dead) and the distance is |P.x|+|P.y| from the origin: farDR on every labelled hit, closeDR never on a real map.
+            int barrier = Js.Int(HurtAffix("barrier")); if (barrier > 0) a = Math.Max(0, a - barrier);
+            {
+                double cdr = 0;
+                if (Player.Hp >= Player.MaxHp * .7) { double hd = HurtAffix("healthyDef"); cdr += hd / (hd + 2500); }
+                if (Player.Hp <= Player.MaxHp * .3) cdr += HurtAffix("injuredDR");
+                if (o.Dot) cdr += HurtAffix("dotDR");
+                if (o.Labeled) { double sd = Math.Abs(Player.X) + Math.Abs(Player.Y); if (sd <= 120) cdr += HurtAffix("closeDR"); if (sd > 300) cdr += HurtAffix("farDR"); }
+                if (cdr > 0) a = Math.Max(0, Js.Int(a * (1 - Math.Min(.5, cdr))));
+            }
             int minDamage = Math.Max(1, Js.Int(Player.MaxHp * 0.005));
             if (a < minDamage) a = minDamage;
             // B08 energy shield: after every reduction, spent before HP; only the overflow reaches HP

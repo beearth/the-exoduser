@@ -30,10 +30,10 @@ Run-Case 'build' 'no-method' { & $x build -Worktree $wt -Args '-output,I:/x,-rec
 Run-Case 'build' 'has-buildTarget' { & $x build -Worktree $wt -Method PortVerification.Build -Args '-buildTarget,Win64,-output,I:/x,-receipt,I:/y' -DryRun } $want['build']
 # player: --unity-hud-smoke -output I:/x
 $pexp = $want['player']
-Run-Case 'player' 'comma' { & $x player -Exe $exe -Args '--unity-hud-smoke,-output,I:/x' -DryRun } $pexp
-Run-Case 'player' 'array' { & $x player -Exe $exe -Args '--unity-hud-smoke', '-output', 'I:/x' -DryRun } $pexp
-Run-Case 'player' 'json'  { & $x player -Exe $exe -ArgsJson '["--unity-hud-smoke","-output","I:/x"]' -DryRun } $pexp
-Run-Case 'player' 'file-comma' { powershell -NoProfile -ExecutionPolicy Bypass -File $x player -Exe $exe -Args '--unity-hud-smoke,-output,I:/x' -DryRun } $pexp
+Run-Case 'player' 'comma' { & $x player -PcException candidate -Exe $exe -Args '--unity-hud-smoke,-output,I:/x' -DryRun } $pexp
+Run-Case 'player' 'array' { & $x player -PcException candidate -Exe $exe -Args '--unity-hud-smoke', '-output', 'I:/x' -DryRun } $pexp
+Run-Case 'player' 'json'  { & $x player -PcException candidate -Exe $exe -ArgsJson '["--unity-hud-smoke","-output","I:/x"]' -DryRun } $pexp
+Run-Case 'player' 'file-comma' { powershell -NoProfile -ExecutionPolicy Bypass -File $x player -PcException candidate -Exe $exe -Args '--unity-hud-smoke,-output,I:/x' -DryRun } $pexp
 $cases | ForEach-Object { '{0,-7} {1,-16} {2}' -f $_.cmd, $_.form, $(if ($_.pass) { 'PASS' } else { 'FAIL ' + $_.got }) }
 $bad = @($cases | Where-Object { -not $_.pass }).Count
 'total={0} fail={1}' -f $cases.Count, $bad
