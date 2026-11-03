@@ -252,3 +252,8 @@ proof-a2r-r2255-vs-4895bf9c6.png / proof-a2r-r2255-diagnostics.png 직접 확인
 ## 02:10 이후 야간 ① 시야선 확인
 
 빌드소스 c29d154c12ecffb9ff22bed611bfebdc3415ac5c, 공용빌드2b378876/Player58eff38d exit0·오류0·창0·세이브변경0. 맵 총괄 CoversCircle 수정으로 sight-1/2/탄 1920·3840 실제 구멍 열림 확인, 원주민986개 지원 재질 미지원0. 증명 I:/EXODUSER-Storage/map25d/a2redesign/NIGHT_1_SIGHT.md. 맵 총괄 판정 전/바로가기 변경0. 야간 ②~⑥ 계속, 항목 실패2회만 해당항목 중단.
+
+
+## 야간 ② 바닥 투영 2차
+
+기존 투영이 Field.TerrainHeight+1.2cm라 GroundY+1.2cm 원화 지면에 묻히거나 깊이가 겹쳤다. 원래 XY/크기/텍스처 그대로 실제 GroundY+2.8cm/renderQueue2480으로 지형에 붙인다. Core 도보가 막히면 02:10 허용 QA 카메라 시점만 이동하며 Core 위치 불변을 별도 영수증에 쓴다. 컴파일0. ② 두 번째 촬영이며 실패하면 해당 항목만 멈추고③계속.
