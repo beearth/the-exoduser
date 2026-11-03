@@ -20,6 +20,8 @@ namespace Exoduser.UnityPort
         internal static string TextField(Rect rect,string text,int max,GUIStyle style){var n=style.normal.textColor;var f=style.focused.textColor;try{style.normal.textColor=TextColor(n);style.focused.textColor=TextColor(f);return max<0?NativeUiAudit.TextField(rect,text,style):NativeUiAudit.TextField(rect,text,max,style);}finally{style.normal.textColor=n;style.focused.textColor=f;}}
         static Font light,regular;
         static Texture2D frame,plaque,primaryPlaque,chipOne,chipTwo,innerButtonGlow,panelBackground,panelIron;
+        internal static int IronDrawCount;
+        internal static Rect LastIronRect;
         // Focus lives inside ActionPlate; no red texture is drawn beyond its edge.
         internal static void ButtonFocus(Rect box){}
         internal static Font Font(bool body=false)
@@ -101,7 +103,7 @@ namespace Exoduser.UnityPort
             else if(textured)NativeUiAudit.DrawTexture(box,panelBackground);
             else{var c=GUI.color;GUI.color=new Color(0,0,0,c.a);NativeUiAudit.DrawTexture(box,Texture2D.whiteTexture);GUI.color=c;}
             if(panelIron==null)panelIron=Resources.Load<Texture2D>("Art/ui/inventory/iron_480_blur2");
-            if(textured&&iron&&panelIron!=null){var c=GUI.color;GUI.color=new Color(c.r,c.g,c.b,c.a*.14f);NativeUiAudit.DrawTexture(box,panelIron,ScaleMode.StretchToFill,true);GUI.color=c;}
+            if(textured&&iron&&panelIron!=null){IronDrawCount++;LastIronRect=box;var c=GUI.color;GUI.color=new Color(c.r,c.g,c.b,c.a*.14f);NativeUiAudit.DrawTexture(box,panelIron,ScaleMode.StretchToFill,true);GUI.color=c;}
             Slice(new Rect(box.x-outset,box.y-outset,box.width+outset*2,box.height+outset*2),frame,150,150,edge,edge,false);
         }
         internal static void Button(Rect box)

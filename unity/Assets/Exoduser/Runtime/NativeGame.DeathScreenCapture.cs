@@ -19,6 +19,7 @@ namespace Exoduser.UnityPort
             public float[] reviveTimes,reviveFilters,reviveVolumes;
             public bool regionHiddenAtWait,regionHiddenInBoss,objectiveLabelsComplete;
             public string[] objectiveThaiLabels;
+            public bool objectiveLayoutFits;public NativeObjectivePanel.LabelMetric[] objectiveLayoutAudit;
         }
 
         // Mac only: a stopped simulation is advanced through real Core ticks; only the presentation age is pinned for stills.
@@ -43,7 +44,10 @@ namespace Exoduser.UnityPort
             var englishWords=NativeObjectivePanel.LabelsForLocale("en");
             for(int i=0;i<rec.objectiveThaiLabels.Length;i++)if(rec.objectiveThaiLabels[i]==englishWords[i])rec.objectiveLabelsComplete=false;
             check(rec.objectiveLabelsComplete,"objective labels missing or Thai fell back to English");
-            string language=lobby.Language;yield return null;yield return null;
+            string language=lobby.Language;objective.VerifyLabelLayout=true;yield return null;yield return null;
+            rec.objectiveLayoutAudit=objective.LayoutAudit;rec.objectiveLayoutFits=rec.objectiveLayoutAudit!=null&&rec.objectiveLayoutAudit.Length==29*4;
+            if(rec.objectiveLayoutAudit!=null)foreach(var metric in rec.objectiveLayoutAudit)if(!metric.fits||metric.gap<NativeObjectivePanel.MinimumLabelGap-.01f)rec.objectiveLayoutFits=false;
+            check(rec.objectiveLayoutFits,"29-language measured HUD labels violate the 16px value gap");
             rec.fieldVisible=!lobby.IsBlocking&&view.cullingMask!=0;check(rec.fieldVisible,"lobby blocks field");
             var p=sim.Player;
             for(int i=0;i<400&&p.State!="fallen"&&p.State!="dead";i++){p.Iframes=0;sim.HurtPlayer(99999);}

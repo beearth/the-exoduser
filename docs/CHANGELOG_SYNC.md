@@ -57908,3 +57908,8 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 - CTO지정 e3b3bc977를고정ui-candidate/build에공용1922c0fa로1회덮어쓰기: Win64 Succeeded/errors0/errorLogs0,USER_SAVE0. 시작null수정포함,추가재시도0.
 - 동일실행본18 hidden Player/제품검증PASS,1920×1080 25장+3840×1080 25장=50장. 사망지역HUD숨김·th4키·A3면·원화mip1/밝기1·명시hover빛확인,1x/3x비교판확보. 모든사용자창/세이브변경/잔류0.
 - runtime/Core/에셋변경0,자기docs만결과동기화. 바탕화면/바로가기/Steam교체0. 기술관문과디자인총괄/Mac자연입력·펫이벤트관문은구분한다.
+
+## 2026-11-04 05:40 UI 독립 대조 후속
+- 기준선 인자 --remodel3d/-force-d3d11을 촬영 드라이버에 복구. HUD4행은 라벨/숫자 폭 기반216~480px·최소16px 간격,11px 축소/줄바꿈 규칙과 실제29언어116행 계측을 추가했다.
+- 이름 바탕18px inset/프레임 외곽 유지, 이름·삭제 질문 나눔명조 우선 선택. 승인된 compact 칩/A면·blur2/14% 원화는 유지하고 공통 철 draw 계측만 추가. Core/저장/문구/유료생성 변경0.
+- 신규4그룹 RED1→PASS1·관련계약PASS, 공용 PC 컴파일222c77f8 PASS/C#0/USER_SAVE0. exact 코드+관련 docs 커밋 후 고정 후보1회/동일 인자50장, 결과는 REPORT/audit-current에 기록한다.

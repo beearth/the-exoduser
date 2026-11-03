@@ -751,3 +751,6 @@ codex/unity-demo-text-20261104: a53c34e939 병합/1~4 수정/후보 a02cb84850 �
 
 ## 2026-11-04 05:00 death-ui 후보50장 인수 대기
 codex/unity-demo-text-20261104: CTO지정 e3b3bc977 추가후보빌드1회/공용1922c0fa PASS,18 Player제품검증PASS,1920/3840 각25장=50장확보. 시작nullHOLD해소. 전부사용자창0/USER_SAVE0/잔류0,바로가기·바탕화면·Steam교체0. 고정G:/exoduser/tmp/design-review/20261104_ui_candidate 원본/1x·3x비교/audit-current.json. 이번runtime/에셋변경0,docs만자기exact커밋/push. CTO/디자인총괄및Mac자연입력·펫이벤트관문대기(3840모달차광경계는기존관측으로별도판정).
+
+## 2026-11-04 05:40 death-ui 독립 대조 후속
+1촬영 --remodel3d/-force-d3d11,2HUD29언어16px 실측 간격,3이름면18px inset·프레임 경계 유지/명조,4공통Panel 철14% draw 계측.5디자인총괄 결정대로 compact칩/A면 유지. 공통60b7 병합46fed7·docs양쪽 보존, 소스/관련계약PASS·공용222c77f8 컴파일PASS. 다음 고정후보빌드1회/50장, 실제 결과 REPORT. Core/저장/공용bin/타guard WIP/바탕화면·바로가기 변경0.

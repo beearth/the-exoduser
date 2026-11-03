@@ -8,6 +8,7 @@ namespace Exoduser.UnityPort
   string deletingName="";
   bool deleteSelected,deleteFocus;
   GUIStyle deleteMessageStyle,deleteConfirmStyle,deleteCancelStyle;
+  internal string DeleteDialogFontName;
   void CharacterDeleteStyles()
   {
    if(deleteMessageStyle!=null)return;
@@ -50,7 +51,7 @@ namespace Exoduser.UnityPort
    CharacterDeleteStyles();Fill(new Rect(0,0,1920,1080),new Color(0,0,0,.85f));
    Rect panel=new Rect(727,425,466,230);NativeSilverHellUi.Panel(panel,28,8,iron:true);
    string message=deletingName+CharacterDialogLabel("deleteSuffix",K(" 캐릭터를 정말 삭제하시겠습니까?"," — Really delete this character?"));
-   deleteMessageStyle.font=NativeSilverHellUi.TextFont(NativeSilverHellUi.Font(true),message);Label(new Rect(759,445,402,104),message,deleteMessageStyle,TextAnchor.MiddleCenter);
+   deleteMessageStyle.font=CharacterDialogFont(message);DeleteDialogFontName=deleteMessageStyle.font==null?"missing":deleteMessageStyle.font.name;Label(new Rect(759,445,402,104),message,deleteMessageStyle,TextAnchor.MiddleCenter);
    var confirm=new Rect(784,562,170,46);var cancel=new Rect(966,562,170,46);
    bool overConfirm=confirm.Contains(Event.current.mousePosition),overCancel=cancel.Contains(Event.current.mousePosition);
    NativeSilverHellUi.ActionPlate(confirm,false,deleteSelected||overConfirm?1:0,!AutomatedInput&&overConfirm&&ExoInput.Mouse(0),22,2);

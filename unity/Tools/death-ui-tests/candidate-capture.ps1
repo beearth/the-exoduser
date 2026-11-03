@@ -24,7 +24,7 @@ foreach($width in @(1920,3840)){
  foreach($case in $cases){
   $out=Join-Path (Join-Path $OutputRoot $width) $case['folder']
   New-Item -ItemType Directory -Force -Path $out | Out-Null
-  $argsList=@('-mute-audio','-screen-fullscreen','0','-screen-width',"$width",'-screen-height','1080','--unity-boss-direct','0','-output',$out,'-logFile',(Join-Path $out 'player.log'))
+  $argsList=@('--remodel3d','-force-d3d11','-mute-audio','-screen-fullscreen','0','-screen-width',"$width",'-screen-height','1080','--unity-boss-direct','0','-output',$out,'-logFile',(Join-Path $out 'player.log'))
   if($case['screen'] -eq 'death'){$argsList+='--unity-death-screen-smoke'}
   else{
    $argsList+=@('--unity-death-ui-smoke','-ui-screen',$case['screen'],'-ui-characters',$case['count'],'-ui-state',$case['state'])

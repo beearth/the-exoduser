@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort
         {
             var dock = NativeHudDockLayout.Create(1920, 1080);
             float bottom=Mathf.Min(dock.LeftFrame.y,dock.RightFrame.y);
-            var blocks=new System.Collections.Generic.List<Rect>{NativeUiViewport.FromEdge(new Rect(8,8,141.1f,141.1f)),NativeUiViewport.FromEdge(new Rect(16,188,108,58.3f)),NativeUiViewport.FromEdge(NativeObjectivePanel.Bounds(NativeUiViewport.Edges.Width,NativeHellGateObjective.Read(Simulation).Visible))};
+            var blocks=new System.Collections.Generic.List<Rect>{NativeUiViewport.FromEdge(new Rect(8,8,141.1f,141.1f)),NativeUiViewport.FromEdge(new Rect(16,188,108,58.3f)),NativeUiViewport.FromEdge(NativeObjectivePanel.Bounds(NativeUiViewport.Edges.Width,NativeHellGateObjective.Read(Simulation).Visible,objective.PanelWidth,objective.OverflowHeight))};
             if(Time.unscaledTime<noticeUntil){var ns=new GUIStyle(label){alignment=TextAnchor.UpperLeft,wordWrap=true};blocks.Add(NativeUiViewport.FromEdge(new Rect(20,270,440,ns.CalcHeight(new GUIContent(notice),440))));}
             return new NativeRegionHud.Safe{screen=NativeUiViewport.ScreenInDesign,clock=new Rect(875,17,170,37),bottomTop=bottom,blocks=blocks.ToArray()};
         }

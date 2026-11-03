@@ -83,3 +83,6 @@ git status --porcelain -- unity/Assets/Exoduser/Resources/Art/ui/silver_hell
 
 ## 05:00 후보 실물 증거
 e3b3bc977 단일실행본의1920/3840 원본50장및1x/3x비교를확보했다. A3면로드/철14%·원화밉맵1·밝기1.0·강제입장호버빛을제품receipt와실물로확인. 자연포인터/Mac/디자인총괄합격은별도다. [고정경로·수량·관측](UNITY_UI_CANDIDATE_20261104.md).
+
+## 05:40 디자인총괄 결정
+JUDGEMENT(e3b3)에서 가시 없는 작은 칩 가족과 A면이 PASS됐다. 삭제/HUD/보스의 compact 판을 가시로 복원하지 않는다. 공통 Panel(iron:true)의 blur2/14%는 유지하며 실제 IronDrawCount/LastIronRect를 제품 receipt에 추가했다. 이름창은 바탕/철 면만18px inset, 프레임 위치/원화는 유지한다. [후속 계약](UNITY_UI_CANDIDATE_20261104.md).

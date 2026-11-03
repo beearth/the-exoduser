@@ -289,3 +289,6 @@ HUD의 미착수 빌드 대기 한 건만 취소하고(타팀 잠금 보존), �
 
 ## 05:00 후보50장 최신 검증
 e3b3bc977 공용1922c0fa 후보빌드1회 Succeeded/errors0/errorLogs0. 이어18 hidden Player제품receiptPASS,1920/3840 각25장=50장,원화17종/축소본mipCount1·artworkBrightness1·blur2로드확인. 이번import후추적에셋변경0,코드변경0. [실제실행본·원본/비교판·미검증](../3.1%20ui%20hud%20디자인/UNITY_UI_CANDIDATE_20261104.md).
+
+## 05:40 이름 면과 승인 재질
+이름 바탕+철 면을18px inset하고 frame outset을18px로 두어 기존440×335 프레임 외곽을 유지한다. 이름/삭제 본문은 기존 NanumMyeongjo를 우선 사용, 실제 font.name을 기록한다. 철 blur2 원화/14%/밝기·작은 칩 가족은 디자인총괄 PASS에 따라 불변이며 draw 계측만 추가한다. 신규/복제 원화0. [계약](../3.1%20ui%20hud%20디자인/UNITY_UI_CANDIDATE_20261104.md).

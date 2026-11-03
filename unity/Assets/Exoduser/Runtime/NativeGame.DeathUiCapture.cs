@@ -23,6 +23,7 @@ namespace Exoduser.UnityPort
             public int width,height,rosterBefore,rosterAfter;public string screen,state,page,saveBinding,failures;public string[] files;
             public UiArtReceipt[] art;public float artworkBrightness=1;public int strippedSkinStates;
             public UiArtReceipt panelFace;public float panelIronAlpha=.14f;
+            public int panelIronDraws;public Rect panelIronRect,namePanelFace,nameFrameBounds;public string dialogFont;
             public bool entryPointerInside,entryHoverVisible,entryHoverForced;public Vector2 entryPointer,entryPointerScreen;public Rect entryRect;
             public string entryState,pointerScope="direct entry ReviewState fixture through the same EntryFocus draw as natural Rect.Contains hover; no OS/Event mouse movement";
         }
@@ -83,6 +84,11 @@ namespace Exoduser.UnityPort
                 }
             }else yield return DeathCapture(output,"ui_"+tag,files);
             rec.entryPointerInside=lobby.EntryPointerInside;rec.entryHoverVisible=lobby.EntryHoverVisible;rec.entryPointer=lobby.EntryPointer;rec.entryPointerScreen=lobby.EntryPointerScreen;rec.entryRect=lobby.EntryRect;
+            rec.panelIronDraws=NativeSilverHellUi.IronDrawCount;rec.panelIronRect=NativeSilverHellUi.LastIronRect;
+            rec.dialogFont=screen=="character-name"?lobby.NameDialogFontName:screen=="character-delete"?lobby.DeleteDialogFontName:"";
+            rec.namePanelFace=lobby.NameDialogFace;rec.nameFrameBounds=lobby.NameDialogFrame;
+            if((screen=="pause"||screen=="character-name"||screen=="character-delete")&&rec.panelIronDraws==0)failures.Add("shared Panel iron pass not drawn");
+            if(lobby.Language=="ko"&&(screen=="character-name"||screen=="character-delete")&&(rec.dialogFont==null||!rec.dialogFont.Contains("NanumMyeongjo")))failures.Add("judged Korean dialog serif not selected");
             if(screen=="lobby"&&entryState=="hover"&&rec.rosterBefore>0&&!rec.entryHoverVisible)failures.Add("entry ReviewState hover light missing");
             rec.rosterAfter=lobby.Characters.Count;rec.rosterUnchanged=rec.rosterBefore==rec.rosterAfter&&selected==lobby.Characters.SelectedName;
             if(!rec.rosterUnchanged)failures.Add("roster changed");

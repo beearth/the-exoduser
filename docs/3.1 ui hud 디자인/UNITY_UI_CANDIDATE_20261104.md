@@ -42,3 +42,15 @@
 - G:/exoduser/tmp/design-review/20261104_ui_candidate/{1920,3840}의 원본50장, capture-current/audit-current.json. 루트 comparison-{1920,3840}-{1x,3x}.png는 swap3 db26d55f6와 같은 좌표를 나란히 둔 비교판, 3x는 nearest, 노출/색보정0. entry-state-{1920,3840}-1x.png는 같은빌드 normal/강제hover 비교다.
 - 직접 검수: 1920 보스사망의 북동·번개/처치배너 겹침이 사라짐, th4키가 영어 대신태국어, 이름공통frame/명조·A3면과호버진홍빛을1x/3x에서확인. 미세철면의두드러진잔점은보이지않았다. 설정게임/조작칩에서도 SPACE/L-SHIFT/F11 글자가면안에남는다.
 - 최종디자인/Mac·자연입력·펫자연이벤트PASS는 별도다. 3840 이름창의 중앙1920폭차광/양옆밝기경계는 swap3에도있는기존상태로 남아있어 디자인총괄에게판정항목으로넘긴다. 이번은 승인된빌드/50장확보만수행했다.
+
+## 05:40 독립 대조 후속 — 계약과 소유
+- 기준: death-screen-brief 05:40 1~5 및 디자인총괄 JUDGEMENT.md(e3b3bc977). 5번은 작은 칩 유지가 확정됐다. 삭제 확인/HUD 타이머/보스 이름판을 다시 가시 판으로 바꾸지 않는다. A면도 디자인총괄 PASS이므로 낱점을 늘려 표준편차를 올리는 수정은 하지 않는다.
+- 최신 공통60b7f746e를 병합46fed7ef95, CHANGELOG 충돌은 양쪽 기록 보존. 공통 변경은 실행기 프로세스 환경 보완과 문서이며 이 레인에서 공용 bin/환경/잠금은 수정하지 않았다.
+- 원인1: 기존 촬영 인자에 --remodel3d/-force-d3d11 누락. swap3 runner-output.log의 실제 인자를 대조해 둘 다 고정 드라이버에 추가했다. 같은 고정 출력의 50장은 이 조건으로 덮어쓰며 2D 촬영을 3D 기준선과 동등하다고 하지 않는다.
+- 원인2: 악의오브 라벨 칸104px가 숫자 폭과 무관했다. 4행 모두 실제 글꼴의 라벨/현재 숫자 폭으로 판 폭을216~480px에서 정하고 최소16px 간격을 예약한다. 넘치면 라벨을11px까지 축소하고, 여전히 길면 줄바꿈한 높이만 아래 행/판/목표를 밀어낸다. 숫자/원화/수치 의미는 그대로다. 지역 화살표와 부유 문구 예약 영역도 실제 판 폭/추가 높이를 받는다.
+- 29언어×4키의 실제 GUI 글꼴 측정은 사망 fixture의 objectiveLayoutAudit 116행에 남긴다. 스트레스 값은 int.MaxValue 표기이며 Simulation 수치를 바꾸지 않는다. minGap16/fits/wrapped/fontSize/locale를 검증한다. 데이터 키/번역81개와 No.등록은 불변이다.
+- 원인3: 이름 판은 프레임 PNG 투명 여백보다 바탕 사각형이 컸다. 바탕+철 면만18px 안으로 넣고 같은18px outset으로 프레임 외곽440×335 위치를 유지했다. 내용 좌표도 그대로다. 디자인총괄의 이름/삭제 명조 RETOUCH는 기존 NanumMyeongjo 원화를 글꼴 우선순위로 명시하며, 실제 선택 font.name을 제품 영수증에 남긴다.
+- 4번 경로 확인: 일시정지/로비/이름/삭제 모두 같은 NativeSilverHellUi.Panel(iron:true), iron_480_blur2/14% 경로였다. 승인된 A면 그림은 유지하고 IronDrawCount/LastIronRect 계측만 더해 실제 draw를 확인한다. 철 원본/블러/밝기/공용 색 공간 보정 변경0.
+- 소유: NativeObjectivePanel, 이름/삭제/공통Panel, 사망/UI fixture, 두 최소 HUD 예약 연결, 촬영/관련 tests/docs. Core/저장/로비 배치/유료 생성/다른 레인 변경0. 새 회차 폴더/프로젝트 사본0.
+- 소스 검사: 신규4그룹 RED1회(3누락 검출)→수정 후PASS1회, 기존 candidate4그룹/소형칩 계약PASS1회. 공용 PC 컴파일222c77f8 exit0/C#0/errorLogs0/USER_SAVE0. 그 뒤 소스 수정0. CorePresence 메서드 자체는 존재 확인이며 UI 실제 측정은 후보 Player 관문이다.
+- 다음: exact 커밋 HEAD의 공용 후보 빌드1회, 동일 fixed EXE의1920/3840 50장. 실제 SHA/성패/미검증은 REPORT와 audit-current.json에 기록한다. 디자인총괄 나머지 경미 RETOUCH(빈 슬롯 면, 호버 강화, 사운드 줄 끝, 전환 제목)는 이번1~5 범위 밖으로 남긴다.

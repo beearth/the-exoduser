@@ -15,7 +15,7 @@ test('four objective labels have 29 locales and whole-script rendering',()=>{
 test('A faces share iron path and name uses serif without lobby_panel load',()=>{
  assert(/Panel\(panel,36,12,iron:true\)/.test(read('NativePauseMenu.cs')),'pause A face');
  const name=read('NativeLobby.CharacterPresentation.cs'),body=name.slice(name.indexOf('void DrawCharacterNamePresentation()'),name.indexOf('void DrawCharacterVisualVignette'));
- assert(body.includes('Panel(panel,45,0,iron:true)'),'name A face and shared frame');
+ assert(body.includes('Panel(face,45,NameFaceInset,iron:true)'),'name A face inside the unchanged shared frame');
  assert(!body.includes('NativeLobbyNotoSansKR')&&!body.includes('font=noto'),'name body serif');
  assert(read('NativeLobby.CharacterDelete.cs').includes('Panel(panel,28,8,iron:true)'),'delete A face');
  assert(!read('NativeLobby.cs').includes('Art("lobby_panel")'),'unused loader removed');
