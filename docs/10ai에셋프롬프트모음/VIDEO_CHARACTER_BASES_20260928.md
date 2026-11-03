@@ -148,7 +148,7 @@
 | 변성술사 남녀 — 주무기 장갑 + 에너지 낫 v4 / 영상 테스트 입력 승인 | 12-transmuter-gauntlet-scythe-v4.png | 여캐의 큰 코어 장갑이 주무기, 낫은 장갑에서 형성하는 순수 에너지 형태. 남캐는 기존 푸른 활. Seedance 2.5 최고 출력 설정 대기 영상 1개 완료, 결과 사용자 검토 대기 |
 | 아케인 랜서 | 03-arcane-lancer-idle-v2.png | 창 전체와 발이 보이는 준비 자세 → 시전 / 한 차례 동작 |
 | 실버테일 | 04-silvertail-idle.png | 원형 등 허브와 넓은 등검이 보이는 후면 사선 대기 → 등검 작동 |
-| 총사 이전 정면 참고 | 06-cruciform-front-open-v2.png / 07-cruciform-front-closed.png | 구조 참고로 보존. 최신 남녀 구도의 시작·끝 쌍으로 사용하지 않음. [기록](CRUCIFORM_FRONT_BASE_20260928.md) |
+| 총사 이전 정면 참고 | 06-cruciform-front-open-v2.png / 07-cruciform-front-closed.png | 구조 참고로 보존. 최신 남녀 구도의 시작·끝 쌍으로 사용하지 않음. [기록](../_archive/10ai에셋프롬프트모음/CRUCIFORM_FRONT_BASE_20260928.md) |
 
 아케인 랜서 후속 영상 08은 사용자가 새로 첨부한 `hf_20260928_011117_d25ad6a4-dcbb-46d4-aa19-e9c9eb5e65bc.png`를 사용한다. 입력은 `assets/video-tests/hailuo-20260928/08-arcane-lancer-source.png`에 보존했다. `03-arcane-lancer-idle-v2.png`의 영상 승인으로 확대 해석하지 않는다. 생성 원본과 창 찌르기 검수는 `HAILUO_CHARACTER_VIDEO_TEST_20260928.md`에 기록한다.
 

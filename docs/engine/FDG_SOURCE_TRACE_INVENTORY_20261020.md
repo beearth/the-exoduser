@@ -21,7 +21,7 @@
 | `docs/engine/orders/WORK_BOARD.md:25` | P2-006a 드랍 바닥 표시·줍기·인벤 반입은 PC WIP 중단·인계 대기 | 그 WIP나 다른 worktree는 열거나 수정하지 않았다. 아래 획득 단위는 해당 담당 인수 후에만 연결한다. |
 | 같은 문서 `:24`, `:35` | 레슨 입력·펫 대사는 타 담당 진행 중 | 인벤 단축키 설계가 Q/E·레슨 입력이나 펫 담당 변경을 요구하지 않도록 접점만 기록한다. |
 | 같은 문서 `:38` | FEATURE-INVENTORY 전체 기능 분모는 PC 담당 | 이 문서는 한 시스템의 원본 추적이다. 전체 기능 목록·진행률·ETA를 만들지 않는다. |
-| `docs/engine/FDG_GAME_DEVELOPMENT_PLAN.md:35`, `:83` | P4 게임 흐름·진행, P4-001은 데이터/UI/저장 exactscope 미배정·개별 HOLD 유지 | 아래 단위는 **설계 순서안**이며 구현 승인·작업 배정·HOLD 해제가 아니다. |
+| `docs/_archive/engine/FDG_GAME_DEVELOPMENT_PLAN.md:35`, `:83` | P4 게임 흐름·진행, P4-001은 데이터/UI/저장 exactscope 미배정·개별 HOLD 유지 | 아래 단위는 **설계 순서안**이며 구현 승인·작업 배정·HOLD 해제가 아니다. |
 | 같은 문서 `:61` | P2-001c 아이템 생성·드랍 레코드는 격리 검수 보고, 바닥 표시·줍기·인벤 반입·세이브는 미이식 명시 | 이미 있는 생성자와 없는 플레이어 획득 경로를 분리한다. |
 
 ## 1. 원본 데이터 구조·상수·필드
@@ -438,7 +438,7 @@ setter·`make_read_only()`·필드 보충·schema 정규화·item whitelist·rea
 
 ### 2026-10-21 DEMO11-22r — TI-04 runtime 선행 조건 해소
 
-과거 위 runtime refresh 미인수/HOLD는 당시 main 기준의 기록이다. main `45be76e4`에서 PC `a28117c1` 및 `PC_RUNTIME_STAT_REFRESH_CONTRACT_20261021.md` 인수를 확인했다. 일반17슬롯 transaction은 기존 TI-00/01 reader/grid를 재사용하고 PC `equipment_refresh` 호출로만 실제 스탯을 갱신한다. 상세 검증·남은 inventory UI/SFX/lesson/저장 접점은 [DEMO11-22r 보고서](orders/reports/demo11-22r_REPORT.md)를 따른다. 전투 핵심/초기화 guard/저장 형식은 변경하지 않는다.
+과거 위 runtime refresh 미인수/HOLD는 당시 main 기준의 기록이다. main `45be76e4`에서 PC `a28117c1` 및 `PC_RUNTIME_STAT_REFRESH_CONTRACT_20261021.md` 인수를 확인했다. 일반17슬롯 transaction은 기존 TI-00/01 reader/grid를 재사용하고 PC `equipment_refresh` 호출로만 실제 스탯을 갱신한다. 상세 검증·남은 inventory UI/SFX/lesson/저장 접점은 [DEMO11-22r 보고서](../_archive/engine/orders/reports/demo11-22r_REPORT.md)를 따른다. 전투 핵심/초기화 guard/저장 형식은 변경하지 않는다.
 
 
 ## PARITY-HS-01 — 2026-10-22 현행 스냅샷 일치
@@ -455,4 +455,4 @@ setter·`make_read_only()`·필드 보충·schema 정규화·item whitelist·rea
 | HS-M6 임플리싯/어픽스 | G49807–49822 | native_ossuary_workspace.show_item: ◆ 전대 위력 +10%, 계승의: 전대 최대HP … +90% (원본 presenter 표현). name_for는 원본 it.name 그대로; 이름 뒤 [계승의] 합성 없음 |
 | 번역 | 기존 획득!/자동 장착!/원본 항목 키 재사용 | 신규 바인딩 유니크: 번역목록3513·3514(원본 카드 footer), lang26종, Godot UI catalog Unique. 번역목록 CRLF 보존 |
 
-검수·격자·남은 차이는 `docs/engine/PARITY_HS_01_20261022.md`와 외부 `_out/PARITY-HS-01/DONE.txt`를 참조한다. UI 숫자는 서로 다른 새 게임 RNG 절대값이므로 동일 상태 증명으로 사용하지 않는다.
+검수·격자·남은 차이는 `docs/_archive/engine/PARITY_HS_01_20261022.md`와 외부 `_out/PARITY-HS-01/DONE.txt`를 참조한다. UI 숫자는 서로 다른 새 게임 RNG 절대값이므로 동일 상태 증명으로 사용하지 않는다.

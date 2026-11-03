@@ -12,6 +12,14 @@ namespace Exoduser.UnityPort.Vfx
         sealed class Sheet {public Texture2D texture;public Sprite[] frames;public int cols,rows;}
         sealed class Clip {public SpriteRenderer renderer;public CombatClip spec;public Sheet sheet;public FeedbackEvent source;}
         sealed class Particle {public SpriteRenderer renderer;public int born,type;public float x,y,vx,vy,size,life,gravity,angle;public Color color;}
+        sealed class ParryLine {public SpriteRenderer renderer;public FeedbackEvent source;public CombatParryPresentation.Spark spec;}
+        readonly CombatParryPresentation parry=new CombatParryPresentation();
+        readonly List<ParryLine> parryLines=new List<ParryLine>();
+        readonly Sprite line;readonly Texture2D lineTexture;
+        readonly SpriteRenderer meleeFlash;readonly Material meleeFlashMaterial;
+        int parryBorn=-1000,meleeFlashBorn=-1000;
+        public bool ParryPushIn;
+        public float ParryCameraScale(int tick){return ReducedMotion?1:(float)parry.CameraScale(tick-parryBorn,ParryPushIn);}
         readonly Transform parent;
         readonly Dictionary<string,Sheet> sheets=new Dictionary<string,Sheet>();
         readonly List<Clip> clips=new List<Clip>();
@@ -31,7 +39,7 @@ namespace Exoduser.UnityPort.Vfx
         public float ShakeScale=1;
         int shakeBorn=-1000;float shake;
         int rollDustTick=-1;
-        public int ActiveCount {get{return clips.Count+particles.Count;}}
+        public int ActiveCount {get{return clips.Count+particles.Count+parryLines.Count;}}
         public static bool IsSprite(SpriteRenderer r){return owned.Contains(r);}
         public CombatImpactView(Transform parent) {
             this.parent=parent;
@@ -42,6 +50,14 @@ namespace Exoduser.UnityPort.Vfx
             whiteAlpha=new Material(alpha);whiteAlpha.SetFloat("_Flat",1);
             bloodFloor=new Material(alpha);bloodFloor.SetFloat("_DepthTest",4); // LEqual in the legacy floor path
             dot=Sprite.Create(Texture2D.whiteTexture,new Rect(0,0,1,1),new Vector2(.5f,.5f),100);
+            ParryPushIn=parry.ParsePushIn(Environment.GetCommandLineArgs());
+            lineTexture=new Texture2D(64,4,TextureFormat.RGBA32,false){filterMode=FilterMode.Bilinear,wrapMode=TextureWrapMode.Clamp};
+            var linePixels=new Color32[64*4];
+            for(int y=0;y<4;y++)for(int x=0;x<64;x++)linePixels[y*64+x]=new Color32(255,255,255,(byte)(255*Mathf.Min(1,Mathf.Min(x,63-x)/8f)*(y==0||y==3?.35f:1)));
+            lineTexture.SetPixels32(linePixels);lineTexture.Apply();line=Sprite.Create(lineTexture,new Rect(0,0,64,4),new Vector2(.5f,.5f),100);
+            // Before transparent danger sprites (queue3000), after opaque terrain.
+            meleeFlashMaterial=new Material(alpha){renderQueue=2999};
+            meleeFlash=Make("Melee parry screen flash below danger",meleeFlashMaterial);meleeFlash.sprite=dot;meleeFlash.sortingOrder=-32700;meleeFlash.enabled=false;
             ringTexture=new Texture2D(32,32,TextureFormat.RGBA32,false){filterMode=FilterMode.Point};var px=new Color32[32*32];
             for(int y=0;y<32;y++)for(int x=0;x<32;x++)px[y*32+x]=new Color32(255,255,255,(byte)(x==0||x==31||y==0||y==31?255:0));
             ringTexture.SetPixels32(px);ringTexture.Apply();ring=Sprite.Create(ringTexture,new Rect(0,0,32,32),new Vector2(.5f,.5f),100);
@@ -66,7 +82,9 @@ namespace Exoduser.UnityPort.Vfx
             bool hit=e.VisualOnly&&(e.Kind==FeedbackKind.EnemyHit||e.Kind==FeedbackKind.EnemyCrit||e.Kind==FeedbackKind.BossHit);
             if(hit&&!timeline.AdmitHit(e.Tick,e.IsBoss))return;
             var plan=CombatImpactTimeline.Plan(e);
-            if(e.Kind==FeedbackKind.Parry){Parries++;ParryParts(e);Shake(e.Tick,14);}
+            if(e.Kind==FeedbackKind.Parry){Parries++;if(parry.IsMelee(e)){
+                parryBorn=e.Tick;MeleeParryParts(e);Shake(e.Tick,ParryPushIn?2:6);
+            }else{ParryParts(e);Shake(e.Tick,ParryPushIn?2:4);parryBorn=e.Tick;}}
             if(hit){Hits++;HitParts(e);}
             if((e.Kind==FeedbackKind.EnemyDeath||e.Kind==FeedbackKind.BossDeath)&&e.Source!="druid_sink") {
                 Deaths++;
@@ -144,6 +162,45 @@ namespace Exoduser.UnityPort.Vfx
         void ParryParts(FeedbackEvent e) {
             for(int i=0;i<12;i++){float a=Mathf.PI*2*i/12;AddParticle(e,Mathf.Cos(a)*R(3,4),Mathf.Sin(a)*R(3,4),i%3==0?Color.white:ParryColor(e),R(2,3),R(10,6),0);}
         }
+        void MeleeParryParts(FeedbackEvent e) {
+            var specs=parry.Sparks(e,unchecked(e.Tick*397+e.Step*17+(int)e.X));
+            // Four complete contacts maximum; no per-cell culling of the 130-line peak.
+            if(parryLines.Count+specs.Length>520){foreach(var p in parryLines)ReleaseRenderer(p.renderer);parryLines.Clear();}
+            foreach(var spec in specs){var r=Make("Melee parry line",add);r.sprite=line;parryLines.Add(new ParryLine{renderer=r,source=e,spec=spec});}
+        }
+        public void DrawMeleeParry(int tick,Camera camera,SpriteRenderer hero) {
+            if(camera==null)return;
+            float height=96*camera.pixelHeight/900f;
+            if(hero!=null&&hero.enabled){var b=hero.bounds;float lo=float.MaxValue,hi=float.MinValue;
+                for(int corner=0;corner<8;corner++){var point=b.center+Vector3.Scale(b.extents,new Vector3((corner&1)==0?-1:1,(corner&2)==0?-1:1,(corner&4)==0?-1:1));
+                    float y=camera.WorldToScreenPoint(point).y;lo=Mathf.Min(lo,y);hi=Mathf.Max(hi,y);}height=Mathf.Max(1,hi-lo);}
+            float plane=camera.nearClipPlane+.1f;
+            for(int i=0;i<parryLines.Count;) {
+                var p=parryLines[i];float age=tick-p.source.Tick;var spec=p.spec;
+                if(age<0||age>=spec.Life){ReleaseRenderer(p.renderer);parryLines.RemoveAt(i);continue;}
+                float opacity=(float)parry.SparkAlpha(spec,age);var origin=camera.WorldToScreenPoint(NativeRemodel3D.Point(p.source.X,p.source.Y));
+                p.renderer.enabled=opacity>0&&origin.z>0;if(!p.renderer.enabled){i++;continue;}
+                var aim=camera.WorldToScreenPoint(NativeRemodel3D.Point(p.source.X+Mathf.Cos((float)spec.Angle)*100,p.source.Y+Mathf.Sin((float)spec.Angle)*100));
+                var direction=new Vector2(aim.x-origin.x,aim.y-origin.y).normalized;
+                float a=Mathf.Max(0,age-spec.Delay),travel=height*(float)spec.Speed*a;
+                var centre=new Vector2(origin.x,origin.y)+direction*travel+Vector2.down*(height*.00065f*a*a);
+                float length=height*(float)parry.SparkLength(spec,age),thickness=(float)spec.Thickness*camera.pixelHeight/900f;
+                // Lifetime taper never shrinks below one reference pixel or key length×.05.
+                thickness=Mathf.Max(camera.pixelHeight/900f,thickness*(1-age/spec.Life*.5f));
+                var at=camera.ScreenToWorldPoint(new Vector3(centre.x,centre.y,plane));
+                var right=camera.ScreenToWorldPoint(new Vector3(centre.x+length,centre.y,plane));
+                var up=camera.ScreenToWorldPoint(new Vector3(centre.x,centre.y+thickness,plane));
+                p.renderer.transform.SetPositionAndRotation(at,camera.transform.rotation*Quaternion.Euler(0,0,Mathf.Atan2(direction.y,direction.x)*Mathf.Rad2Deg));
+                p.renderer.transform.localScale=new Vector3(Vector3.Distance(at,right)/line.bounds.size.x,Vector3.Distance(at,up)/line.bounds.size.y,1);
+                var color=Color.Lerp(Hex("#f5e5d5"),Hex("#f0debd"),(float)spec.Color);color.a=opacity;p.renderer.color=color;i++;
+            }
+            float flash=ReducedMotion?0:(float)parry.FlashAlpha(tick-meleeFlashBorn,QualitySettings.activeColorSpace==ColorSpace.Linear);
+            meleeFlash.enabled=flash>0;
+            if(flash>0){var centre=camera.ViewportToWorldPoint(new Vector3(.5f,.5f,plane));var corner=camera.ViewportToWorldPoint(new Vector3(1,1,plane));
+                meleeFlash.transform.SetPositionAndRotation(centre,camera.transform.rotation);
+                meleeFlash.transform.localScale=new Vector3(Vector3.Dot(corner-centre,camera.transform.right)*2/dot.bounds.size.x,Vector3.Dot(corner-centre,camera.transform.up)*2/dot.bounds.size.y,1);
+                meleeFlash.color=new Color(1,244/255f,208/255f,flash);}
+        }
         void HitParts(FeedbackEvent e) {
             var ec=ElementColor(e.Element);var ep=e.Element>=0&&e.Element<6?Hex(new[]{"#dddddd","#ff6622","#44aaff","#bb55ee","#ffee44","#ffdd55"}[e.Element]):ec;
             int n=6+random.Next(3);
@@ -169,8 +226,9 @@ namespace Exoduser.UnityPort.Vfx
             else r.transform.rotation=Quaternion.Euler(0,0,-angle*Mathf.Rad2Deg);
             r.transform.position=position;r.transform.localScale=new Vector3(width/r.sprite.rect.width,height/r.sprite.rect.height,1);
         }
-        public void Update(Simulation simulation,Camera camera) {
+        public void Update(Simulation simulation,Camera camera,SpriteRenderer hero=null) {
             int tick=simulation.TickCount;
+            DrawMeleeParry(tick,camera,hero);
             for(int i=0;i<bloodGround.Length;i++)if(bloodGround[i]!=null){var r=bloodGround[i];float fade=(float)bloodDecals.Alpha(i,tick);
                 r.enabled=fade>0&&(!NativeRemodel3D.Active||NativeGroundSkillProjection.Available);r.color=new Color(.9f,.9f,.9f,fade);NativeGroundSkillSurface.Project(r);}
             if(rollDustTick!=tick){
@@ -217,16 +275,26 @@ namespace Exoduser.UnityPort.Vfx
             float alphaFlash=FlashAlpha(tick);
             if(alphaFlash>0){var c=flashColor;c.a=alphaFlash;NativeUiViewport.FillScreen(c);}
         }
+        // M1 uses a separate deterministic view without consuming the live view's
+        // RNG or clocks. Preserve the exact enabled flags of its existing sprites.
+        public Action HideForProbe() {
+            var saved=new List<KeyValuePair<SpriteRenderer,bool>>();
+            Action<SpriteRenderer> hide=r=>{if(r!=null){saved.Add(new KeyValuePair<SpriteRenderer,bool>(r,r.enabled));r.enabled=false;}};
+            foreach(var c in clips)hide(c.renderer);foreach(var p in particles)hide(p.renderer);foreach(var p in parryLines)hide(p.renderer);
+            foreach(var r in bloodGround)hide(r);hide(meleeFlash);
+            return ()=>{foreach(var pair in saved)if(pair.Key!=null)pair.Key.enabled=pair.Value;};
+        }
         int flashBorn=-1000;float flashPeak;Color flashColor;
         public float FlashAlpha(int tick){return Mathf.Max(0,flashPeak-Mathf.Max(0,tick-flashBorn)*.08f);}
         public void Flash(FeedbackEvent e){
+            if(parry.IsMelee(e)){if(parry.HasFlash(e))meleeFlashBorn=e.Tick;return;}
             if(e.Kind!=FeedbackKind.Parry&&!e.VisualOnly)return;
             float strength=e.Kind==FeedbackKind.Parry?.25f:e.IsBoss?.2f:.1f;
             flashPeak=Mathf.Min(.5f,FlashAlpha(e.Tick)+strength*.5f);flashBorn=e.Tick;flashColor=e.Kind==FeedbackKind.Parry?ParryColor(e):ElementColor(e.Element);
         }
         static void Release(UnityEngine.Object o){if(Application.isPlaying)UnityEngine.Object.Destroy(o);else UnityEngine.Object.DestroyImmediate(o);}
         static void ReleaseRenderer(SpriteRenderer r){owned.Remove(r);Release(r.gameObject);}
-        public void Reset(){foreach(var c in clips)ReleaseRenderer(c.renderer);clips.Clear();foreach(var p in particles)ReleaseRenderer(p.renderer);particles.Clear();timeline.Reset();bloodDecals.Reset();foreach(var r in bloodGround)if(r!=null){r.enabled=false;NativeGroundSkillSurface.Project(r);}rollDustTick=-1;shakeBorn=flashBorn=-1000;shake=flashPeak=0;}
-        public void Dispose(){Reset();foreach(var r in bloodGround)if(r!=null)ReleaseRenderer(r);foreach(var sheet in sheets.Values)if(sheet!=null)foreach(var frame in sheet.frames)Release(frame);sheets.Clear();Release(dot);Release(ring);Release(ringTexture);Release(add);Release(alpha);Release(whiteAlpha);Release(bloodFloor);}
+        public void Reset(){foreach(var c in clips)ReleaseRenderer(c.renderer);clips.Clear();foreach(var p in particles)ReleaseRenderer(p.renderer);particles.Clear();foreach(var p in parryLines)ReleaseRenderer(p.renderer);parryLines.Clear();meleeFlash.enabled=false;parryBorn=meleeFlashBorn=-1000;timeline.Reset();bloodDecals.Reset();foreach(var r in bloodGround)if(r!=null){r.enabled=false;NativeGroundSkillSurface.Project(r);}rollDustTick=-1;shakeBorn=flashBorn=-1000;shake=flashPeak=0;}
+        public void Dispose(){Reset();ReleaseRenderer(meleeFlash);Release(meleeFlashMaterial);Release(line);Release(lineTexture);foreach(var r in bloodGround)if(r!=null)ReleaseRenderer(r);foreach(var sheet in sheets.Values)if(sheet!=null)foreach(var frame in sheet.frames)Release(frame);sheets.Clear();Release(dot);Release(ring);Release(ringTexture);Release(add);Release(alpha);Release(whiteAlpha);Release(bloodFloor);}
     }
 }

@@ -1,4 +1,8 @@
+2026-11-03 UI-PARITY 최신 공통 통합: 사용자 지시로 origin/unity/main 8c5f967d74를 자기 브랜치에 병합. CHANGELOG_SYNC 두 충돌은 양쪽 원문을 보존했다. 현재 docs/Unity 충돌 표시0, PC 컴파일1회 Core121/Runtime259 오류0(경고2/522), Player0. 21:50 다중 패스 수정과66회귀 증거 보존. 새 통합본 Mac 게이트 대기.
+
 2026-11-03 21:50 BuildLoop UI 겹침 오탐 수정: 다중 패스의 실제 논리 원점 ID/본문1개/클립/발행 source로 장식 패스를 묶는다. 기존 JSON은 선언 offset+픽셀 양자화만 복원하고 .5px 충돌 기준과 중복 본문/다른 글자 검출은 유지한다. 메뉴·봉안함 실제 표본0, 회귀66/66. 기존1410장 재분석8363은 과거 계측 입력의 잔여로 보존하며 Mac 새 게이트 필요. PC 컴파일만, Player0. 문서 docs/engine/UNITY_UI_OVERLAP_20261030.md.
+
+2026-11-03 22:45 U-VFX-07b 필드 원소구 v3: 실 묶음 형태(1차 재채색)·평면 클립아트(2차 절차) 연속 FAIL로 방법을 원화 생성으로 바꿈. Codex 내장 image_gen 6회(외부 비용 0)로 원소별 측면 탄두+꼬리 원화 → tools/vfx/make_elem_orb_v3.py가 크로마 키잉·despill·원소 색상 범위·차가운 계열 코어 채도 상한·탄두 124px를 발사 지점 중심(268,128)에 맞춰 Resources/Art/vfx/field/proj_elem_orb_v3.png(3072×1536, 6열×6행 F/I/D/L/H/E, 알파 6프레임 동일·무늬만 흐름) 생성. NativeBossView.FieldBullets.cs OrbRes만 교체(크기·속도·판정·일반 알파 합성 불변). combat-impact run.cjs에 v3 수치 검사 연결(60/0, blood-dark·orb v3 PASS), Runtime Roslyn 오류 0. 1x·3x 총괄 자체 PASS, Mac 07e·11a 판정 대기. 기록 docs/5.1임펙트디자인/VFX_ELEM_ORB_V3_G0_20261103.md
 
 2026-11-03 21:50 Unity 직렬화 근본 정리: guid만 있던 .meta 854개를 Unity 6000.6.7f1이 만든 전체 importer 설정으로, 손으로 쓴 a2 재질 29개를 URP 정식 직렬화(AssetVersion 10)로, URP_PC_High·Mac_Balanced·GlobalSettings와 FirstPlayable.unity를 커밋. 빠졌던 추적 에셋·폴더 .meta 56개와 ProjectSettings/SceneTemplateSettings.json 추가(작업본마다 guid가 달라지던 결함). 원본=BuildLoop 작업본 cb77ca96f 빌드 산출물, 그 사이 위에서 고친 button_iron.png.meta는 커밋본 유지. BuildLoop는 작업본 사본이 새 커밋과 같은 내용이면 스테이징 후 갱신. 문서 unity/Tools/devtools/buildloop/README.md.
 
@@ -15,6 +19,156 @@
 2026-11-03 Mac Unity UI 인계(인벤토리 분해·제목·일시정지): 클라우드 브리프를 unity 작업 브랜치로 옮기고 `--unity-ui-finish-capture -ui-phase pause,inventory` 전/후 캡처 단계를 추가했다. 이 장치가 로비에 머물던 결함(시작 연출 미건너뜀)을 UI 겹침 검사와 같은 진입 순서로 고쳤다. 제품 UI 변경과 결과는 후속 절에 기록한다. [브리프·기록](engine/UNITY_PAUSE_SILVER_BRIEF_20261103.md#4-mac-적용-기록-2026-11-03-pc-ui-총괄-mac-세션).
 
 2026-11-03 19:00 지옥문 조건 목표 표시: 최신 unity/main `9dc27dea5` 병합 후 실제 Core 비율/보너스의 필요 처치 수(23마리→19, 문지기 보너스→17), 아귀 상태·정화 N/4·다음 지역·문 열린 뒤 보스방 안내를 우측 두 줄과 미니맵에 연결. 기존 serif/뼈색·금색 선·웹 아귀/자물쇠 문법, 새 문구224개/28언어. 표시 모델33검사·Core 최소수400조합·언어형식 통과, 공용bin 컴파일 `3920a25c` 오류0/USER_SAVE0. PC Player·새 빌드·게임 캡처0, Mac 1920/3840 1x·3x와 자연 진행 미검증. [G0 근거·구현·Mac 인자](engine/UNITY_HELLGATE_OBJECTIVES_20261103.md).
+
+2026-11-03 패링 G2 사실 동기화: 사용자 승인 A안의 Unity 보상 분리 구현과 웹 차이를 2_3에 명시하고 무지개 반사×1.5·옛×6/AoE 표기를 웹 원문대로 정정. main 게임 코드는 변경하지 않으며 2_3 본문은 G2 브랜치와 동일하다.
+
+2026-11-03 규칙 정리(사용자 "전부 추천대로", 51항목): CLAUDE.md·AGENTS.md를 unity/main과 같은 본문으로 바꿨다(unity/main 7bc7a3518). docs 정본은 이제 origin/unity/main이다. main에서 매뉴얼 v4.1·운영 매뉴얼·품질 기준·REPO_SYNC·보스/캐릭터 보드·실버 헬·로비 조사·구르기 문서와 신규 DOCS_INDEX·TERMINAL_FAILURE_FALLBACK은 위치 안내만 남긴다(`git show origin/unity/main:<경로>`). 공통 문서 5개(API연결_가이드·BUILD_BACKUP_POLICY·2_3·IMAGE_PROVIDER_PRIORITY·MAP_OBJECT_SEEDREAM)는 두 브랜치에 같은 파일로 둔다. 웹(main)은 Steam 라이브판 유지보수만 한다(CLAUDE.md 부록 W).
+
+## 2026-11-03 운영 매뉴얼 §2.2 — 빌드는 git이 관리
+
+- `docs/0마스터플랜/AGENT_OPERATIONS_MANUAL.md` §2.2에 추가: 확인이 끝난 빌드는 남기지 않고 보고서에 커밋 SHA를 적는다. 지킬 변경은 커밋·push로 지킨다(백업 사본·로컬 보관 빌드 금지). 작업 종료 시 미커밋 수정 0. 배포용 패키지만 예외.
+- 근거: 사용자 "빌드는 항상 깃에서 관리가 되는데". 게임 코드 변경 없음.
+
+## 2026-11-03 에이전트 운영 매뉴얼 신설·작업 방식 정정
+
+| 항목 | 내용 |
+|---|---|
+| 신설 | `docs/0마스터플랜/AGENT_OPERATIONS_MANUAL.md` — Claude 총괄·PC Claude·Codex·heavy·서브에이전트 역할, 공통 원칙(직접 수정·최신만 남기기·테스트·토큰·Git·리소스·화면 품질), 총괄 배정·지시문 템플릿·검수·정기 점검, Codex 절차, PC 절차, 사고 기록 |
+| AGENTS.md | 맨 위에 매뉴얼 필독 링크 + "복사본이 아니라 프로젝트를 직접 수정" 절(아래 모든 규칙보다 우선) 추가 |
+| CLAUDE.md | 맨 위에 매뉴얼 필독 링크 추가. 충돌하는 운영 규칙은 매뉴얼 우선 |
+| .codex/agents/heavy.toml | 운영 규칙 절 추가(매뉴얼 §2·§4 준수) |
+| 배경 | 2026-11-02 Mac 디스크 100%(남은 6.6GB). QA 작업이 원본 보호를 이유로 시도마다 4GB 빌드·17GB 프로젝트 복사본·before-* 사본을 새로 만들어 작업당 100~200GB를 남김. 사용자 지시 "수정하는 방식으로 해", "최신을 만들면 구버전을 지워라" |
+| 게임 코드 | 변경 없음 |
+
+## 2026-11-03 웹 2.5D 8라운드 원화 군락·실동작
+
+- origin/main 029a157b7 착수 병합 후 R7 CTO 지적의 밀도·유령나무·생동감 재작업. 표시용 원화15종/1797군락·10구역, 보호통로·밑동 접합·수풀12.5px/군락2px·어두운 목질과 청백 윤곽광. 단일부채꼴 반복 후보 폐기, 원본PNG/맵/충돌/전투/저장/HUD/음량 계약 보존, 비용0.
+- WEB3D_TRIAL·MAP_SSOT_INDEX·web3d 인계에 수치/배치/검수 정의 동기화. 원재질 분리 hue와 실제ON 잔여바닥 국소평균을 별도 공개. 1920/3840 13구도, 10초4편/1x재생/프레임차, 활성64적96탄 FPS·회귀·합병 뒤 스모크 근거는 I:/EXODUSER-Storage/codex-takeover/web3d-r8/REPORT.md와 delivery.json. 제작자 RETOUCH/기본OFF, 전체AAA·Unity·Steam 완료 아님.
+- 검수 중 main b1a26271c의 로딩인장/UI 대장을 정상병합. game.html의 critical header/리소스 query 외 원본 본문 동일은 merge-proof.json으로 대조한다. 필수 동기화 로그 누락 검사는 이 추가 커밋에서 보완하며 우회하지 않는다.
+- 합병 뒤 guard가 생성한 정확한 행수 baseline66201→66207을 별도 정상 커밋으로 동기화. 해시/보스인덱스 등 다른 baseline값 보존. DEMO/EA 도구의 dirty검사를 우회하지 않고 이 변경을 먼저 보존한 뒤 dry-run을 재개한다.
+- 실제전달 차단도인계에기록: 3333관리작업본의미인수 API/CHANGELOG/캐릭터WIP로ff미진행. 타인WORK보존·3377현재후보제공,main반영과3333갱신을구분한다. 설치본의실제갱신/백업/바이트는외부delivery.json기준.
+- R8 설치본동기화완료: DEMO5갱신+3추가/EA4갱신+3추가,새런타임/필수원화58항목씩 byte일치·package/build-target보존. 3377동일58항목HTTP일치. 삭제/Steam게시0,3333의미갱신은별도유지.
+
+## 2026-11-02 타이틀 마지막 세 결함 동시 마감
+
+## 2026-11-02 시작 메뉴 최종 Kling 원본 재생
+
+- final-main/loop.mp4를 재인코딩 없이 video/title_motion_C2_final_20261102.mp4로 복사(2036×1016,8.583008초,무음,6,192,566bytes). 영상/원본 SHA-256 동일.
+- 정지 원화·인물/하늘/달 합성·WebGL 변위·구름 보강·그레인·샤프닝 제거,새 영상에 정렬한 해골 폭포만 유지. 낮은 품질/모션 감소는 같은 영상 프레임 정지,영상 오류는 메뉴 유지.
+- 수치/패키지/검수 범위: 스플래시_인트로_시퀀스.md 현행 계약. 실물 근거 title-final-as-is-20261102/REPORT.md.
+
+- 기존 점제거·흰마스크 확장 WIP 보존 후 최신 origin/main 병합. 원본 타이틀+Silvertail LOCK에 맞춰 상부 등 회전 허브·관절·몸 뒤 종아리 길이 흑철/은색 대검으로 국소 편집,양손 비움. 편집 영역 밖 원화 byte 변경0. 내장 이미지편집2회,외부유료API0.
+- B 확정: 영상 인물 전체를 교정 정지원화로 가리고 머리/망토 끝만3840×1920 GLSL 역샘플. 허브·몸·손·검·발 고정,최대2.4/1.1px,주기206/24초. 같은B를3개영상에사전렌더해WebGL불가시도보존. Kling하늘+이동정지달+구름흐름유지,그레인/샤프닝0.
+- 세부수치/해시: 스플래시C2계약과manifest.bladeCorrection/cleanup/variants. 실제3비율10초·구름/바위0.1초·고정장비/머리/망토·인물1x/바위3x·오류/정지/입력/해제·원격증거는 I:/EXODUSER-Storage/codex-takeover/title-final-three-20261102/REPORT.md. NW.js/Unity/물리모니터·외부배포별도.
+
+## 2026-11-02 시작 메뉴 긴급/추가 결함 동시 수정
+
+- 기존 codex-web-keyart-wide에서 최신origin/main 62f9fac20을먼저병합. 유료생성0·그레인/샤프닝0,원화고립잔점·바위점주변제거. A(인물전체영상)/B(전체원화+미세변위)실물비교후선명한B채택. 몸/망토/머리/검은한소스,보호box4K(2390,430,1140,1060).
+- 하늘은Kling픽셀+사전계산구름흐름/런타임WebGL셰이더. 기존달자리는같이흐르는기존복원구름,옮긴달만정지원반으로합성해정지하늘/광범위정지판제거. 중앙cover·달/부츠·10초약맥동/폭포/정지정책유지. 기존MP4는별도I:백업후3판교체,저장/다른WIP 보존.
+- 수치·해시는스플래시C2계약/manifest.cleanup. 이번실제3비율10초·구름0.1초/바위비교·인물1x/바위3x·정지/오류/입력/원격근거는 I:/EXODUSER-Storage/codex-takeover/title-cleanup-20261102/final/REPORT.md. 물리모니터/NW.js/Unity·외부배포별도.
+
+## 2026-11-02 보물상자 크기 축소·몸통 충돌
+
+- 캐릭터보다 크게 보이던160px 표시를64px로 축소했다. 동적 몸통44×24worldpx는 닫힘/열림 모두 유지하며, 기존 지형 판정 뒤 일반/빠른 이동을 막는다. 이전 좌표 선분 검사와 생성 겹침의 바깥 탈출을 지원한다.
+- 최종 자체 검수: 상자/패키징12건 + 기존 이동/전리품18건 PASS. 실제 WASD 양면 정지·우회와 R 개봉 뒤 몸통 유지, 제거 시 충돌 해제를 확인했다. game.html 행수66142→66163(+21), 가드 자동 기준선 동기화.
+- 자기 상자의 전리품 분출 경로만 몸통 검사에서 제외하고 다른 상자는 검사한다.2D 폴백 크기/열림도 맞췄다. GLB·보상/장비 RNG·저장·Q/E 수치/정적 맵은 보존. 상세는 [상자 최신 계약](4.1맵디자인+설정/TRIPO_CHEST_GAME_20261102.md)을 따른다.
+
+## 2026-11-02 C2 큰 화면 타이틀 영상
+
+- CTO 최종 tall-final 반복본과 중앙 cover·폭포 흐름 보강. 달·두 해골·실버테일 전신과 기존 로고/메뉴 여백을16/21/32:9에서 보존한다. 이전 A·crop32는 현행 런타임에서 제외. 같은 C2 정지 폴백·저사양·모션 감소·정상 해제.
+- 실제1920/2560/3840×1080·각10초·1x·나란히 비교 자체 PASS. 0.1초 폭포 근4.01~4.24/원2.77~3.03>하늘.42~.81. 회귀39/39·project111/111·guard PASS. 세부 수치는 스플래시 C2 계약, 증거/원격은 I:/EXODUSER-Storage/codex-takeover/title-motion-final-20261102/REPORT.md. 유료 생성/Steam/외부 게시0, NW.js·Unity·물리32:9 미검수.
+
+## 2026-11-02 상자 전리품 외곽 분산·순차 분출
+
+- 겹치던 중심 ±25px 드롭을 반지름150px의 좌우/앞 부채꼴로 변경했다. 장비 간64px·벽/이동 경로 검사와 공간 부족 폴백, .55초 이후 순차 포물선 분출 및 착지 전 R 수거 대기를 적용한다.
+- game.html 라인수66095→66142(+47), 필수 가드 통과 후 자동 기준선 동기화. 보상 수량/등급·추가 보상·장비 RNG 호출 순서·보스 스폰/저장 보존. 실제 R 개봉 검수와 자동8건의 범위·실측은 [상자 현행 계약](4.1맵디자인+설정/TRIPO_CHEST_GAME_20261102.md) 및 소유 검수 REPORT를 따른다.
+
+## 2026-11-02 Tripo 보물상자 실제 경첩 개봉
+
+- 웹 본편 기존 보스 상자에 원본 보존한 Tripo 파생 GLB(몸통·뚜껑·내부)를 연결했다. 19,452삼각형·2,679,056B로 기존 런타임 대비3,005,924B 감소. `chest3d.mjs`를 출고 FILES에 추가하며 70MB 생성 master는 출고하지 않는다.
+- 0.4초 흔들림+0.9초 실제 뚜껑 개봉·열린 상태 유지·접지·일시정지·스테이지 수명 동기화. 준비/실패 시 native2D 폴백. 보상/스폰/저장 설계와 해당 코드 조각은 보존한다.
+- 모듈 분리로 game.html 라인수66234→66095(-139), 필수 guard 전체통과 후 자동 생성된 guard baseline을 관련 문서와 동기화했다.
+- 세부 제작·수치·실게임/패키징 검수·잔여 판정은 [Tripo 상자 계약](4.1맵디자인+설정/TRIPO_CHEST_GAME_20261102.md)을 따른다.
+
+## 2026-11-02 Tripo Studio 공통 도구·별도 구독 원장
+
+- 사용자 Tripo 구독·사용 지시를 반영해 Meshy 직접 MCP와 Tripo 웹의 사용 경로·인증 경계를 분리했다. 웹 로그인·회원/사용 내역 조회, Meshy 무료 잔액 조회를 확인했다. Tripo 직접 MCP/API 인증은 미검증이다.
+- H3.1 비공개 텍스트→3D 보급상자 1개를 생성·GLB 다운로드했고 정확한 프롬프트·작업/결과·채택 여부는 내부 시험 근거에 기록한다. 게임 채택이나 런타임 PASS로 확대하지 않는다.
+- Tripo 월간 지급분·추가 크레딧·표시 만료일을 내부 원장에 기록하고 고정 예비분·일일/주간 배분·단일 시험 예약을 적용한다. 개인 결제액·잔액은 공개 MD에 넣지 않았다.
+- 11/01 최신 지시에 따라 사용 도구 목록에서 MagicLight를 제외하고 이미지 생성·편집 도구는 작업 적합성에 따라 선택하도록 공통 목록을 정리했다. 세부 사용 근거와 시험 판정은 [MCP·API 공통 목록](API연결_가이드.md)을 따른다.
+
+## 2026-10-31 사용자 선택 A 시작 메뉴·Steam 키트
+
+- 단일 7680×2160 A 마스터의 16/21/32:9 시작 메뉴, 구름3깊이·붉은 달빛·강·망자 손6개·머리/천 모션. 임시 영상/겹침/crossfade 제거, 동일 A 정지 폴백·모션 감소·자원 해제. 새 title-signboard.js를 Steam 빌드 FILES에 포함한다.
+- 실제1920/2560/3840 캡처·1920/3840 각10초 영상·1x/6연속프레임·같은 크기 승인원본 비교. 최신 main 병합 후 타이틀/인트로 회귀50건·project-check111건·guard PASS, 페이지 오류/로컬404=0. 자체 시각 판정은 웹 시작 메뉴와13종 키트 범위 PASS이며 NW.js·실제32:9모니터·Unity/배포 검수를 대신하지 않는다.
+- 정확한 수치/생성 이력은 `3.1 ui hud 디자인/스플래시_인트로_시퀀스.md` 현행 A 계약. 실제 파일은 `G:/exoduser/tmp/design-review/20261031_title_signboard/steam_kit/`, 증거·최종 원격 SHA는 `I:/EXODUSER-Storage/codex-takeover/title-signboard/REPORT.md`. 게시·업로드·새 유료 생성0. 기존 unrelated game/living-scene WIP는 납품에서 제외하고 정확 bytes 보존.
+
+## 2026-10-31 세계관 인트로 — 모든 경로 문 없는 v22b
+
+| 항목 | 변경·검수 |
+|---|---|
+| 재생 | `gateLock` 존재 조건 제거. 첫 실행·타이틀/로비 다시 보기·계정 첫 진입·미리보기 모두 ENTER → v22b. 언어/full·demo·ea 분기와 독립 |
+| 폐지·보존 | v22b 102,204,634B 정본 동일 byte, 자막/컷 +0.4초 보정. 구 `intro.mp4` source/프리로드/재생 분기·문 배경 CSS/DOM·문 열림 예약 진동 폐지. 원본 파일·승인 인장·29언어×32큐·계정/로컬 seen·다음 컷/홀드 종료·개인사 v23 보존 |
+| 검증 | 29언어×3시점87/87·113.701초 자연끝/재생중seek0·기시청/미리보기 보존 PASS. v22b 경로·928큐/컷 오프셋 RED → GREEN 33/33. 음성5/51/99초 각각 +0.4초 실측. 최종 확대 회귀351 PASS·2 SKIP, 기존 실패2건은 원격 main 동일성을 확인해 최종 실행에서 제외(Chrome 채널 부재/nw-boot 기대값). [현행 계약](cinematic/WORLD_INTRO_INGAME_20260907.md), 경로별 첫 3초/1920·2560·3840 캡처와 실동작 영수증은 `G:/exoduser/tmp/design-review/20261031_intro_nodoor/REPORT.md` |
+
+## 2026-10-31 중요한 결정 두둥 사운드
+
+| 범위 | 변경·검수 |
+|---|---|
+| 확정 | 영웅·이름 생성·슬롯 입장·새 게임·캐릭터 삭제, 실제 다음 난관 난이도 확정. 일반 이동/탭/설정/호버/취소/종료 제외 |
+| 오디오 | 후보3종+삭제변형3종 PCM16 44.1kHz stereo 1.8초, 간격 .42/.46/.38초. 임시 기본1·청음선택 전. gain=.8×sfxVol/100, 1850ms 중복방지, BGM -6dB/800ms 원본음량 보존 |
+| 패키징 | decision-sound.js 및 기존 entry 참조 fullscreen-art4/currency-orb2 누락을 NW FILES에 포함. 동시 main 보강을 정상 병합하며 중복 목록 제거. 새 NW/Steam 배포는 없음 |
+| 근거 | 회귀341/341, 프로젝트110/110, guard PASS, 실제생성→이야기건너뛰기→게임URL·삭제/취소·난이도 UI fixture, 소리포함 영상3개. [계약·파일표](6사운드디자인/DECISION_SOUND_20261031.md) |
+
+## 2026-10-31 웹 3D 풀 배치 설계·레이어2 통합
+
+| 항목 | 변경·검수 |
+|---|---|
+| 풀 | 기존 WIP 인수: 8구역113다각형 JSON·3비움 영역·종/밀도/크기·디버그오버레이. 코드 전맵scatter를 제거하고 명시구역만 시드고정 표본. 배치도·구역표는 I:/EXODUSER-Storage/web3d-lighting-20261031/foliage |
+| 접지 | 늪 깊은 중심 제외/얕은물가갈대만, 원본색샘플·뿌리gradient·72×18접촉그림자. 풀/뿌리/물을 환경광 앞에 합성해 동일 수광. 기존미풍/물/포자·불씨/구름/소품높이·native가림 유지 |
+| 리사이즈 | 1920→3840에서 입력 texture immutable GPU 저장소가 갱신되지 않던 결함을 frame-sampler의 크기변경 dispose/재할당으로 수정. 환경 입력/출력 edge NCC .024→.739, 현재 카메라 지형으로 복귀. 실패한 입력복사/합성분리 시도는 채택0 |
+| BACK 질량 | 뿌리 아래 alpha 빈틈을 기존 숲 원화+어두운 회청 안개로 연결. 경계 밖 mask만·추가1draw, 새 원화/텍스처/충돌 변경0 |
+| 검수 | 원본계약·Core·표현·프레임수명78/78 PASS, tools/web3d-final-qa.cjs와web3d-route-qa.cjs의1920/3840·1x·10초·밀집·정상입력/디버그를 구분. [수치·영역표·성능계약](4.1맵디자인+설정/WEB3D_TRIAL_20261031.md) |
+| 경로 범위 | 정상HP 자동경로는 사망2회로 중단. 보조 시각 route의무적/자동회복·AI/충돌/native입력 활성 조건을 영상에 표시하고 자연완주와 구분. 실제 결과/정체·사망 기록은 REPORT와 원로그에 남김 |
+
+## 2026-10-31 웹 3D 유령 — 새 조명에서 동작 재검수
+
+기존6d866468b의12유령나무/6영혼을 새 조명·경계 숲에서 재검수했다. 유령만 OFF/ON1920·3840 각각10초 영상/0·3·6·9초1x, 오류/HTTP실패0, 적·오브젝트 수/충돌맵 동일, 회귀3/3. 자동 하니스는 tools/web3d-ghost-motion-qa.cjs이며 산출은 I:/EXODUSER-Storage/web3d-lighting-20261031/ghost-motion. 표현시계 fixture/자연플레이 구분. [현행 계약](4.1맵디자인+설정/WEB3D_TRIAL_20261031.md).
+
+## 2026-10-31 웹 3D CTO 판정 보정 — 깊은 경계 숲
+
+| 항목 | 변경·검수 |
+|---|---|
+| 숲 | 지면 감광 뒤 자체 회청 안개/가지림 합성·최종×.62. 경계 마스크5px feather로 직선 잘림 완화. 기존238 낮은질량/236나무·충돌선 ±40px 밑동0·보행/원화 유지 |
+| 검수 | 경계 배치·숲 수광2/2 PASS, 실제3840 SIDE L 전후. I:/EXODUSER-Storage/web3d-lighting-20261031/forest-corrected 이후 증거. 첫 이중감광 후보는 미채택. [수치·렌더순서](4.1맵디자인+설정/WEB3D_TRIAL_20261031.md) |
+
+## 2026-10-31 웹 3D 최우선 조명 정정
+
+| 항목 | 변경·검수 |
+|---|---|
+| 환경 | 기존 원화에 RGB(.26,.28,.36) 차가운 감광 후 국소광 복원. 원본 라이트맵/비네트 이중 어둠은 정상 stage0 r3d에만 생략. 인물·탄막·HUD 원본 순서·sprite 유지 |
+| 빛 웅덩이 | authored×1.45/player×.8/fx×.7, 감쇠 max(0,1−d²)², 반경 밖0. 캠프·제단·시체나무·고치의 같은영역 밝기비8.48/3.33/4.15/3.90, Godot3.29/2.03/2.10/1.84. RGB8 화면 지표이며 물리조도 아님 |
+| 검수 | 조명/원본계약10·Core/패링37 PASS·guard PASS. 실제1920/3840 OFF·ON과 Godot 비교·1x·밀집64적96탄/격리sprite·HUD 검수: I:/EXODUSER-Storage/web3d-lighting-20261031/. [현행계약](4.1맵디자인+설정/WEB3D_TRIAL_20261031.md) |
+
+## 2026-10-31 웹 3D 방향 정정 — 원본 1-1 수풀·물 흐름
+
+| 항목 | 변경·검수 |
+|---|---|
+| 범위/원본 | 최신 main afcb65b0a 병합 확인/시작 e1e79ae. 기본 OFF의 r3d=1은 원본1-1·native draw·인물·VFX·HUD 유지. 기존 목교 지형 대체·2x인물/독자조명은 r3dLegacy=1 뒤의 퇴역 이력으로 분리 |
+| 수풀 | 실제1-1 경계·손배치나무·제단물가에 시드고정배치. 내장imagegen 투명4종 atlas1254²/셀627²,112×100분할card 인스턴싱1draw·고정밑동/미풍·hero접촉/공격충격·화면밖cull·저사양/성능밀도조절 |
+| 물 | 원래 제단 도랑·서쪽crossing/늪·독액 이미지 색/위치불변, 물영역만 흐름·약한반사·거품/기포·옅은안개. 실제entity 이동·투사체/impact진입의 잔물결·splash8개풀. 기존탄막/VFX는native그대로 |
+| 검수 | 관련38/38·guard PASS/라인66139→66144 외 보호영역불변. 확장50중48PASS/cloud저장harness2실패는시작SHA에서도동일. 원본sprite격리6draw/픽셀변경0·HUD DOM/스타일/배치동일·브라우저오류0 |
+| 실물/성능 | 1920/3840 OFF·ON각10초/동구도1x·native시작점 실제10초입력/피해75629·패링1. 녹화없는물가OFF/ON≈239FPS,64적96탄시작활성stress(HP100만)164.96FPS/최종122적11탄. 자연입력·시연fixture구분 |
+| 인수 | 자기미커밋 height-ray/painted-forest/alpha-frame-bounds·테스트/추출도구도 정확경로보존커밋. 현행renderer에서사용하지 않는퇴역지원기능. [현행수치·출처](4.1맵디자인+설정/WEB3D_TRIAL_20261031.md) |
+| 영수증/판정 | tools/web3d-living-qa.cjs·extra·delivery가 소스SHA/실제게임/격리sprite/영상·HTTP동일byte검증. I:/EXODUSER-Storage/web3d-layer1-20261031/REPORT.md 맨위3377URL/증거. 움직임레이어한정PASS/전체맵RETOUCH·Unity/Steam미채택 |
+
+## 2026-10-31 웹 스킬 창 마지막 보정 — 잠김 기술·빈 소켓 원화
+
+| 항목 | 변경·근거 |
+|---|---|
+| 범위 | 최신 origin/main `9f5db2ac6`에서 새 브랜치. 마지막 보정 절만: Z·Space에 실제 후보의 어두운 원화/이름/습득 비용과 후보 툴팁, 자유2·3·4에 음각 숫자의 흑철 소켓 PNG3종. 기존 장착·습득·합체·레이아웃 규칙 유지 |
+| 원화·표시 | 내장 image_gen으로 가로3셀 원화 생성 후256px RGBA 준비. 해당 빈칸의3D 회색 orb만 숨겨 DOM 원화를2D/3D 공통 표시. 기존 번역 키만 재사용. 상세 [스킬 창 §13](3.1%20ui%20hud%20디자인/SKILL_FORGE_20261010.md) |
+| 검수 | 관련 회귀35/35·guard PASS. 실제1920/3840 forgelab 1x 전후·29언어 경계·상태 불변·습득/장착 전환 근거와 최종 판정은 `I:/EXODUSER-Storage/codex-takeover/skillwindow-correction/REPORT.md`. UI 검수 범위이며 자연 전투·Unity·배포는 제외 |
 
 2026-10-29 Mac 로비 메타 대비 후보: 최신 웹 `main:7e0113fe4`의 좌상단 회색 alpha `.5`는 실제 1280/1600 1x에서 석재 배경 위 판독이 약했다. Mac 정의 JSON의 일반·한도 alpha만 `.9`로 변경, ARM64 Settings QA build Succeeded/오류0, 5/5 실제 화면·Tab/Return/Esc 유지·로스터 SHA 불변. 웹 세 위치 동기화와 물리 마우스 hit는 HOLD, 전체 VISUAL VERDICT RETOUCH. [수치·화면·후속](engine/UNITY_LOBBY_20261024.md#2026-10-29-좌상단-메타-대비-후보--mac-범위).
 
@@ -46,13 +200,22 @@
 
 2026-10-27 Mac A03/A04 실창 검수 후보: `PortVerification.Build -a03a04UiQa true` 전용 ARM64 빌드 identity `EXODUSER A03 A04 QA` / `com.fordeargamers.exoduser.a03a04qa20261027`를 추가했다. 기존 Settings QA와 동시 사용을 거부하고 빌드 뒤 product/id/override를 복원한다. 별도 앱·새 절대 output·`--unity-frontend-review`로 QA 실행을 격리한다. 실제 빌드와 실창 판정은 후속 영수증에 기록한다. [계약](engine/UNITY_MAC_A03A04_UI_REVIEW_20261027.md).
 
-2026-10-27 Mac A03/A04 UI 최소 인수: PC 후보 `97227ceb7`/전달 `d132f425b`의 패치노트 0.7.5·0.7.0, 라벨 29언어×3=87, 생성·삭제 29×14=406, 시각선택 29×42=1,218을 원본 JSON/meta 및 partial 3개로 인수했다. Mac `NativeLobby.cs`는 패치노트 입력·launcher·modal과 생성 카드 초점 hunk만 연결해 아랍어 caption overlay·build label을 보존했다. Unity6000.6.7f1 batch import·compile exit0/C# 오류·경고0(기존 UAC1001). Player·GUI·실제 입력 검수0, A01 원화·raw title·콘텐츠 차이7곳은 미인수. [세부·검증](engine/UNITY_MAC_A03A04_INTEGRATION_20261027.md).
+2026-10-27 Mac A03/A04 UI 최소 인수: PC 후보 `97227ceb7`/전달 `d132f425b`의 패치노트 0.7.5·0.7.0, 라벨 29언어×3=87, 생성·삭제 29×14=406, 시각선택 29×42=1,218을 원본 JSON/meta 및 partial 3개로 인수했다. Mac `NativeLobby.cs`는 패치노트 입력·launcher·modal과 생성 카드 초점 hunk만 연결해 아랍어 caption overlay·build label을 보존했다. Unity6000.6.7f1 batch import·compile exit0/C# 오류·경고0(기존 UAC1001). Player·GUI·실제 입력 검수0, A01 원화·raw title·콘텐츠 차이7곳은 미인수. [세부·검증](_archive/engine/UNITY_MAC_A03A04_INTEGRATION_20261027.md).
 
 2026-10-27 Mac A15/A16 Editor IO fixture: Mac 소유 `NativeSettingsIoVerification.Run`을 추가했다. 고유 `_out/UNITY-MAC-A15A16-IO-*`·marker·절대 출력·QA 플래그를 요구한다. 소스152378099 Unity6000.6.7f1 독립 Editor write50/50·read45/45, 양쪽 종료0. v1 기본20동작→v2 revision8 재읽기와 기존 4설정·중첩 패드 JSON 보존을 전용 파일에서 확인했다. Player/GUI/OS 입력/19패치 런타임은 HOLD. [영수증·계약](engine/UNITY_MAC_KEYBIND_PERSISTENCE_20261027.md).
 
 2026-10-27 Mac A15/A16 후속: Unity6000.6.7f1 batchmode import·compile exit0/C# 오류0. 새 settings JSON 보존 dictionary의 UAC1015를 `[NonSerialized]`로 수리하고 재컴파일 exit0·새 경고0(기존 UAC1001 유지). Resources import `.meta` churn 411개 원래 bytes 복원. v2 write/read 기존 fixture는 화면·오디오·PNG를 요구해 headless Player 검증 불가; Player 빌드/실행0, runtime HOLD. [근거](engine/UNITY_MAC_KEYBIND_PERSISTENCE_20261027.md).
 
 2026-10-27 Mac A15/A16: native 설정 JSON v2에 20개 `binds`/`binds2` 웹 keycode|null, v1 기본값 읽기, 유효하지 않은 동작값 기본값 유지, 미지원·unknown 항목 무시, 기존 gamepad 상위 JSON 보존, 키 변경 시 저장 예약을 구현했다. 격리 모델/IO 90와 별도 write3/read2 PASS. Player/Editor 빌드·GUI 실기 인수는 보류. [계약](engine/UNITY_MAC_KEYBIND_PERSISTENCE_20261027.md).
+
+## 2026-10-27 전사 킬루 피눈물 v3 웹 실행본 재적용
+
+| 항목 | 상태 |
+|---|---|
+| 영상 | `video/warrior_story_v23_clean.mp4`를 보관 후보 v3와 동일 SHA-256 `8b8248424b63d808dc225576fda44e39d459709963f97923ffaa38a51dba28ab`로 교체. 기존 원본은 I:에 보존 |
+| 캐시·자막 | player·index 캐시 `20261027-killu-bloodtears-v3`, VTT 29언어×22큐 유지 |
+| 범위 | 웹 실행본 적용. 패키지·Godot·Steam 공개 상태는 별도 검수 |
+| 근거 | [킬루 재제작 기록](cinematic/WARINTRO_KILLU_REBUILD_20261025.md) 및 I: 배포 영수증 |
 
 ## 2026-10-26 Mac Unity 자막 20+4 언어·일반 게임 이름표 gate
 
@@ -98,7 +261,7 @@
 
 ## 2026-10-26 Unity inventory equipped-item hint
 
-- Shortened the current-equipped guide's second sentence so its final punctuation stays on the line within the existing 520px content width. Added an `equipped-guide` phase to the explicit UI smoke for two-resolution capture only. [Scope](engine/UNITY_MAC_INVENTORY_HINT_20261026.md).
+- Shortened the current-equipped guide's second sentence so its final punctuation stays on the line within the existing 520px content width. Added an `equipped-guide` phase to the explicit UI smoke for two-resolution capture only. [Scope](_archive/engine/UNITY_MAC_INVENTORY_HINT_20261026.md).
 
 ## 2026-10-25 Unity 캐릭터 생성 표시·미디어 경로
 
@@ -158,7 +321,7 @@
 
 ## 2026-10-24 UNITY-UI-DOCK 화면 가장자리 일체감
 
-- 사용자 첨부 구조 참고로 HUD를 alpha실루엣 기준 양끝/바닥에 고정하고 원본 금속 bar를 재사용한 전체폭44px 받침으로 연결. 중앙 슬롯/수치/shader/아이콘 계약 보존. 인벤토리는 전체 화면 공유 iron shell/header/footer/rail로3개개별박스 제거, 정적400/600폰트·기사투명패딩crop·실제입력rect 유지. NativeGame의 공중 개발라벨/조작힌트 제거, 우상단 상태판 가장자리 부착·균등스케일. geometry36PASS/정적compile0오류는 실제 Player 검수와 구분하며 통합build0오류·실제3해상도6런/18PNG·기존자원/인벤동작PASS, 독립시각이번도킹PASS. 고정E:152파일SHA갱신·이전본I:보존. OS직접입력/전체UI는별도. Godot/로비인트로/세이브/공유WIP 보존. [소유·배치·한계](engine/UNITY_UI_DOCK_20261024.md).
+- 사용자 첨부 구조 참고로 HUD를 alpha실루엣 기준 양끝/바닥에 고정하고 원본 금속 bar를 재사용한 전체폭44px 받침으로 연결. 중앙 슬롯/수치/shader/아이콘 계약 보존. 인벤토리는 전체 화면 공유 iron shell/header/footer/rail로3개개별박스 제거, 정적400/600폰트·기사투명패딩crop·실제입력rect 유지. NativeGame의 공중 개발라벨/조작힌트 제거, 우상단 상태판 가장자리 부착·균등스케일. geometry36PASS/정적compile0오류는 실제 Player 검수와 구분하며 통합build0오류·실제3해상도6런/18PNG·기존자원/인벤동작PASS, 독립시각이번도킹PASS. 고정E:152파일SHA갱신·이전본I:보존. OS직접입력/전체UI는별도. Godot/로비인트로/세이브/공유WIP 보존. [소유·배치·한계](_archive/engine/UNITY_UI_DOCK_20261024.md).
 
 ## 2026-10-24 UNITY-LOBBY-01 최종 실제 검수 기록
 
@@ -233,72 +396,72 @@
 - G04-02 `9734e2e79` 위에 PC 보존 WIP의 일반 etype3/7/13/14/16/17/20/21/47 및 문지기와 분리된 일반29 owner를 3way 결합. 원 폴더·공용 INDEX/WORK 무수정, 별도 후보 브랜치만 사용한다.
 - 거미줄/덫의 기존 Player 감속·retry 초기화, 원본 child 생성/World 등록/기존 피해 owner·29 사망탄 인계. 수치 변경·Q/E 재설계·저장 필드 추가0.
 - 원본 VM 대조2,775,483/0, headless runtime 첫141/1→거리 fixture 수정141/0, GUI 첫1실패·후속6실패를 보존. AI 관찰용 생존 fixture와 소환 직후 상태 검사 시점을 고쳐 최종 GUI148/0·ERROR0. 테스트 PASS를 자연 플레이/시각 PASS로 해석하지 않는다.
-- 이동 SFX/charge·groggy·magic 소리·blast light/hitStop 및 웹1x 대조 미완. [인수 보고서](engine/orders/reports/PORT-TAKEOVER-01_REPORT.md).
+- 이동 SFX/charge·groggy·magic 소리·blast light/hitStop 및 웹1x 대조 미완. [인수 보고서](_archive/engine/orders/reports/PORT-TAKEOVER-01_REPORT.md).
 
 ## 2026-10-23 ENEMY-VIS-01 — 사망 적 차징 경고 잔상 제거
 
 - crawler 사망 `_draw`에서도 별도 `SourceShotWarning` redraw를 요청한다. 원본 G20100 alive 제외를 반영하며 본체·링·라벨 수치/판정은 유지한다.
 - GUI 자연 차징 본체 공존·5마리 실제 처치 후 경고 제거, 웹 원본 1x 비교 캡처. PC combat_kill 47/0, m29_parry 101/0, move_skills 271/0 각 1회. E2E 최종 1회 11 PASS / 7 NOT_READY / 0 FAIL.
-- [원인·수정·검수·미완료 범위](engine/ENEMY_VIS_01_20261023.md).
+- [원인·수정·검수·미완료 범위](_archive/engine/ENEMY_VIS_01_20261023.md).
 
 ## 2026-10-22 PC-BOOT01 — 필드 진입 다중 프레임화·웹 로딩 화면·Esc 일시정지 키 유지 (PC Claude)
 
 - 기준 bdc8ba4a1(pc-input-parity), branch claude/pc-boot01-20261022. 진입 한 반복 7.6~8.0 s(launch 8.5 s + 첫 onload 큐 6.7 s) → 170~280 ms. Space 홀드 넘침 0×4, 영상 건너뛰기→Main 12.8~15.5 s → 3.0~5.0 s.
 - 방법(순서·계약 불변): 로비 동안 리소스 980개 백그라운드 예열(manifest)·onload/드랍/인트로 이미지 처리를 같은 정적 함수로 워커 예열, Main `_ready` 본문을 로비 진입일 때만 11곳에서 프레임 양보(단계 사이만 트리 정지+하위 콜백 끄기, 진입 권한 직전 해제). 하니스 직접 부팅은 예전처럼 동기.
 - 진입 화면 = 웹 #stageTransition 부트 로딩(랜덤 img/lording, 문구·막대·팁) 그대로. Esc 일시정지가 눌림을 지우지 않음(원본 13184), 정지 중 뗌 기록 확장.
-- 같은 시드 상태 동일, 신규 test_pc_boot01_prewarm 90/0, PC 회귀 0실패, E2E 11/7/0. Mac 07/04/09/50·intro E2E 실패는 기준판 동일. Mac 파일: main·world·lobby_entry·lobby_screen·world_drops·story_intro·parity_video_intro. [상세](engine/BOOT01_MULTI_FRAME_STARTUP_20261022.md), [보고](engine/orders/reports/pc-boot01_REPORT.md).
+- 같은 시드 상태 동일, 신규 test_pc_boot01_prewarm 90/0, PC 회귀 0실패, E2E 11/7/0. Mac 07/04/09/50·intro E2E 실패는 기준판 동일. Mac 파일: main·world·lobby_entry·lobby_screen·world_drops·story_intro·parity_video_intro. [상세](engine/BOOT01_MULTI_FRAME_STARTUP_20261022.md), [보고](_archive/engine/orders/reports/pc-boot01_REPORT.md).
 ## 2026-10-22 PC-BOSS-CHASE — B-01 보스 추적 원인·수정, C-06·A-02·K-13 같은 조건 재측정 (PC Claude)
 
 - branch `claude/pc-boss-chase-20261022`(기준 `291b7edb2`). B-01: 보스 생성 위치·RNG 순서는 원본과 같다. B02 실패는 생성 facing(Math.random) 때문에 원본에서도 생긴다(비어그로 접근 0.64~2.24px/틱, 패턴은 d≤500에서만 시작, facing 72분할 중 45개는 900틱 창이 성립 불가) → 시험은 사거리 진입부터 창을 세고 원본 VM 궤적과 틱마다 대조하도록 교정.
 - 이식 차이 2건 수정: 보스방 `_ffDir`를 원본 8방향 BFS(31849)로(PC `native_demo11_arena_flow.gd` + World arena 분기 최소 훅), 진입 첫 프레임 워커 지연(필드 맵 흐름 1틱). 실제 웹(헤드리스, 같은 생성 단위)과 Godot 궤적이 869틱 최대 3.2e-10px로 같다.
 - C-06: 같은 RNG 주입 원본 VM rollDrop 대조 200×2모드 0불일치, 처치 드랍의 데모 금지 어픽스 필터 누락 수정. A-02: 같은 장면 공격 간격 40~59틱 평균 49.33/49.28 같음. K-13: 정지 더미 +160 배치로 700px 같음.
-- 일치율 34/36=94%(수정 전 26/36). 신규 oracle `pc_boss_chase_oracle.cjs`·`pc_drop_oracle.cjs`, 신규 시험 `test_pc_drop_rng_parity`·`test_pc_enemy_attack_cycle`. [보고](engine/orders/reports/pc-boss-chase_REPORT.md), [전수](engine/PARITY_FULL_SWEEP_1_1_20261022.md).
+- 일치율 34/36=94%(수정 전 26/36). 신규 oracle `pc_boss_chase_oracle.cjs`·`pc_drop_oracle.cjs`, 신규 시험 `test_pc_drop_rng_parity`·`test_pc_enemy_attack_cycle`. [보고](_archive/engine/orders/reports/pc-boss-chase_REPORT.md), [전수](_archive/engine/PARITY_FULL_SWEEP_1_1_20261022.md).
 ## 2026-10-23 PC-SYS 잔여 6건 — 시계·사망·통계·AI 강화·물약·키 캡 (PC Claude)
 
 - 기준 065068322, branch claude/pc-sys-leftovers-20261023. 웹 846889174와 나란히 대조.
 - SYS-1 update() 횟수를 원본 PHYS_STEP 누산기로(웹 00:03 = Godot 00:03). SYS-2 쓰러짐 카운트다운 틱당 2 감소(G32794+G32991, 웹 2506ms)·부활력 문구 원문·오버레이 레이어. SYS-3 G._sStats 리터럴·원본 증분 지점. SYS-4 aiEnhance·_doAiEnhance 이식(웹 값 일치). SYS-5 원본도 퀵슬롯 물약 표시 폐지 — 변경 없음. SYS-6 키 캡 패드·재바인딩 표기.
-- INTEG-17: 07 lobby_entry Main 대기 = 도착 또는 60초. 회귀 표·범위 밖 발견(플레이어 에너지쉴드 흡수 없음): [보고](engine/orders/reports/pc-sys-leftovers_REPORT.md)
+- INTEG-17: 07 lobby_entry Main 대기 = 도착 또는 60초. 회귀 표·범위 밖 발견(플레이어 에너지쉴드 흡수 없음): [보고](_archive/engine/orders/reports/pc-sys-leftovers_REPORT.md)
 
 ## 2026-10-23 SWEEP-B PC — 웹 UI 전 화면 동일화 인수 (PC Claude)
 
 - 기준 Mac 8d9dc158, branch claude/pc-sweep-b-20261022. 로비·캐릭터 선택·이름 창·레슨·HUD·인벤·스킬·성장·대장간·설정·클리어를 웹 계산값으로 맞춤. 공통 글꼴: 한글 대체 글꼴 자간 복제·Nanum Myeongjo 굵기 보정.
 - 성장 트리 배경 기사 일러스트를 웹 원본 바이트(sha256 6be0fa2c…1645, 사용자 승인 후 수령)로 추가. 낡은 UI 테스트 5종(04/07/09/50/e2e intro)을 웹 기준으로 갱신(판정 약화 없음).
-- 장면 짝 39개 중 같음 24(61.5%), 남은 P0 0·P1 1(레슨 표시 시점), PC-SYS 6. 회귀 각 1회 실패 0. [상세](engine/PARITY_SWEEP_B_PC_20261022.md)
+- 장면 짝 39개 중 같음 24(61.5%), 남은 P0 0·P1 1(레슨 표시 시점), PC-SYS 6. 회귀 각 1회 실패 0. [상세](_archive/engine/PARITY_SWEEP_B_PC_20261022.md)
 
 ## 2026-10-22 TEST-FIX-01 — 웹 맵 전환 테스트 전제/하니스 교정
 
 - 필드보스: PC 요청 배치 fixture만 수정. 웹 1-1 전체 비행 통로 및 일반 적 비접촉 배치를 고르고 기존 원문 oracle/관통 단정 유지. 3회 168/0.
 - B02: 부팅 시 seed(20261022), 기존 RNG 소비 경로·판정 유지. 3회 37/0; 비동기 장면 히스토그램의 완전 동일성은 미주장.
 - Mac 지역 adapter: 기존 맵 fixture의 null MAP11 provider 검사 후 원래 sites/totals 분기. combat_kill 47/0, 지역 귀속/전투 공식 불변.
-- Mac 하니스: 실패 count0/list[] 모두 허용, 실제 실패·잘못된 타입 거절. 상세/단회 map04 결과: [TEST-FIX-01](engine/TEST_FIX_01_20261022.md).
+- Mac 하니스: 실패 count0/list[] 모두 허용, 실제 실패·잘못된 타입 거절. 상세/단회 map04 결과: [TEST-FIX-01](_archive/engine/TEST_FIX_01_20261022.md).
 
 ## 2026-10-22 INTEG-15b — PC 전투·보행 + Mac 충돌·귀속 인수
 
 - INTEG15 98ca5fc7 + PC f8caec955 merge. CHANGELOG 양쪽 이력 보존, 요청1~3 인수/일반 적 생성·부활 mask1·보스34349 유지.
-- importERROR0·HS-M7 19/19·nw7215/0; combat_kill 지역fixture33/1·map04원문16PASS/schemaFAIL 보존. E2E13PASS/5NR/0FAIL. GUI 근접·줍기 확인/석궁lastkill 미확인, 비교3장 RETOUCH. 성능·무효호출·재촬영 이력 포함 [상세](engine/INTEG15B_PC_COMBAT_MAC_20261022.md).
+- importERROR0·HS-M7 19/19·nw7215/0; combat_kill 지역fixture33/1·map04원문16PASS/schemaFAIL 보존. E2E13PASS/5NR/0FAIL. GUI 근접·줍기 확인/석궁lastkill 미확인, 비교3장 RETOUCH. 성능·무효호출·재촬영 이력 포함 [상세](_archive/engine/INTEG15B_PC_COMBAT_MAC_20261022.md).
 
 ## 2026-10-22 INTEG-14 — PC HUD·새 원본·HS-M7
 
 - PC HUD1a2e88b2f merge, source state 충돌0. 원본91e2774b7/dee094fd로 교체 인수.
 - 행 고정 oracle/source_line metadata +2·출처 10종 원래 도구 재추출, 19종 최종 PASS. MP/SP 최댓값 공백 정렬. PC 테스트 원본 유지.
-- PC fieldboss154/1·기존 unify14/3 잔여, E2E 단회7PASS/11NOT_READY/0FAIL·처치0. 독립 시작 HUD 숫자 불일치/동일 fixture199/0 구분, 1x 캡처 VISUAL RETOUCH. [상세](engine/INTEG14_HUD_SNAPSHOT_HS_M7_20261022.md).
+- PC fieldboss154/1·기존 unify14/3 잔여, E2E 단회7PASS/11NOT_READY/0FAIL·처치0. 독립 시작 HUD 숫자 불일치/동일 fixture199/0 구분, 1x 캡처 VISUAL RETOUCH. [상세](_archive/engine/INTEG14_HUD_SNAPSHOT_HS_M7_20261022.md).
 
 ## 2026-10-22 PC-COMBAT-KILL — 웹 맵 시작 필드 처치 0·보행 감속 (PC Claude)
 
 - 기준 INTEG-13 06f3db984, branch claude/pc-combat-kill-20261022. 원인: kiSlash 42490 포이즈가 flesh_crawler를 무조건 v3 field call로 보냈고 v3 domain(exact ch1_initial_015)이 닫혀 있어 커튼 5링·Group-A·자연 etype0/5가 HP 쓰기 뒤 정지 → hp<0 좀비. etype6은 42136 정지 목록. 보행은 move_and_slide가 일반 적 몸체(layer4)에 막힘.
 - 수정: domain은 유지하고 domain 밖 actor는 공용 _poiseHit 코어(19973~19983) owner로, etype6 42167~42170 방패 경감 이식, 보행·넉백 canMv(G33022~33028/G32762). Mac 어댑터에 origin 없는 처치의 _regKill(60728~60731) 귀속 최소 훅(검토 요청).
-- 웹 대비 같은 무기 공격력에서 석궁·kiSlash·weapon 피해와 처치 타수 일치, 보행 1.8초 298.4/294.3px(수정 전 276.2). 신규 test_pc_combat_kill 47/0(수정 전 30실패), 회귀 표·E2E 11/7/0(enemy_kill PASS). [상세](engine/PC_COMBAT_KILL_20261022.md), [보고](engine/orders/reports/pc-combat-kill_REPORT.md).
+- 웹 대비 같은 무기 공격력에서 석궁·kiSlash·weapon 피해와 처치 타수 일치, 보행 1.8초 298.4/294.3px(수정 전 276.2). 신규 test_pc_combat_kill 47/0(수정 전 30실패), 회귀 표·E2E 11/7/0(enemy_kill PASS). [상세](_archive/engine/PC_COMBAT_KILL_20261022.md), [보고](_archive/engine/orders/reports/pc-combat-kill_REPORT.md).
 
 ## 2026-10-22 PARITY-SKILL-01
 
 - PC writer b6050641c merge(CHANGELOG 충돌만 양쪽 보존). Forge 두 버튼 활성/공개 API·최종 source_feedback 연결, 미습득 표기·비활성색 및 원판 오프라인2D 추출. 런타임3D0.
 - pack_b_mac 옛 polygon wall 입력을 실제 웹 tile/hill/prop/gate 모델로 복구. PC 코어·원본 테스트/oracle 보존, 단회402/0. skill105/0·writer80/0·VM14행0불일치.
-- E2E 단회9PASS/9NOT_READY/0FAIL(overall NOT_READY). 해골번개 격자 원인 확정 미완·3D 재질/동적 합성/글꼴 잔여로 VISUAL RETOUCH. [전체 근거](engine/PARITY_SKILL_01_20261022.md).
+- E2E 단회9PASS/9NOT_READY/0FAIL(overall NOT_READY). 해골번개 격자 원인 확정 미완·3D 재질/동적 합성/글꼴 잔여로 VISUAL RETOUCH. [전체 근거](_archive/engine/PARITY_SKILL_01_20261022.md).
 
 ## 2026-10-22 INTEG-12 통합 검수 마감
 - BOSS-02 1b86c02f / INTRO-01b 015d4034 / DONE 수신 뒤 VRAM-01 50900cfd merge. PC HUD stats 제외, PC core/테스트 원본 보존. 문서 충돌은 양쪽 이력 및 번역 CRLF 유지.
 - life retry의 표시 캡처만 headless 생략·GUI null/empty guard. 판정/EXP/save/reload 변경0.
-- suites58각1회49PASS/9non-PASS, import ERROR0. E2E1회2PASS/1FAIL/15NR, 실제 bossroom 이후 미도달. 비교8장 VISUAL RETOUCH. GUI60초focus 미확보로 성능/VRAM 미측정. [전체 근거](engine/INTEG12_WEB_PARITY_20261022.md).
+- suites58각1회49PASS/9non-PASS, import ERROR0. E2E1회2PASS/1FAIL/15NR, 실제 bossroom 이후 미도달. 비교8장 VISUAL RETOUCH. GUI60초focus 미확보로 성능/VRAM 미측정. [전체 근거](_archive/engine/INTEG12_WEB_PARITY_20261022.md).
 
 ## 2026-10-22 PARITY-BOSS-01 — Mac 보스 표시·웹 기반 아레나 후보
 
@@ -306,16 +469,16 @@
 - M5 이름/220×10HP·TP54역재생/additive/charge180, M6 source_line61085/61119 정정, M7 주황 UI 예고 제거·원본 corruption/pool수명, M8 8방향 motion 프레임, M9 BlackHan/HP·포이즈/면역·부활/29locale, M10 사각124×104·흙청크·collision/Markers 계약, M11 원본 녹색16프레임 탄, M12 원본 남색 합성/로딩층, M13 실제 입력/flow·로딩완료 대기 하니스.
 - 신규 생성/런타임3D/전투 수치 변경0. 원본 genBossArena at0 원형 내부와124×104 metadata를 구분하며 사용자 사각 요청을 우선한 차이는 명시. 컨셉판은 삭제 없이 제품참조만 중단.
 - 관련 테스트 단1회273검사/0실패. E2E 단1회13PASS/5NOT_READY/0FAIL, overall NOT_READY(부활 관측 뒤 dead). 프로세스 exit0을 종주 PASS로 대체하지 않는다. 나란히1920×1080·1x/crop을 직접 검수하며 남은 표시/같은 상태 정렬 차이는 기록한다. 동일성 완료/main 인수 아님.
-- [원본행·수치·소유·검수·남은 차이](engine/PARITY_BOSS_01_20261022.md), 산출물 ~/exoduser-wt/_out/PARITY-BOSS-01/. 정상hook·비강제 branch push, 원격SHA 재조회 후 clean WT 제거. main/Steam 배포0.
+- [원본행·수치·소유·검수·남은 차이](_archive/engine/PARITY_BOSS_01_20261022.md), 산출물 ~/exoduser-wt/_out/PARITY-BOSS-01/. 정상hook·비강제 branch push, 원격SHA 재조회 후 clean WT 제거. main/Steam 배포0.
 
 ## 2026-10-22 PARITY-INTRO-01b
 
-- Mac 하니스 PC 이동 fixture의 누락된 storage=off 진입을 복구. PC 테스트·제품 3구간 인트로·저장 namespace 검증은 유지. 원인 및 단회 검증: engine/PARITY_INTRO_01b_20261022.md.
+- Mac 하니스 PC 이동 fixture의 누락된 storage=off 진입을 복구. PC 테스트·제품 3구간 인트로·저장 namespace 검증은 유지. 원인 및 단회 검증: _archive/engine/PARITY_INTRO_01b_20261022.md.
 
 ## 2026-10-22 PARITY-HUD-02b
 
 - native_move_skills.gd의 toast_unported 원문 로그 3줄 복구, 각 emit 직전 순서 유지. UNPORTED_BRANCHES showPH 제외 유지.
-- 단회 PC 회귀8검사/3실패: intro 부팅 setup owner 미설치로 목표256/0 미달. Mac HUD 토스트26/0. 격리 override 원복·자기 Godot 종료, PID81277 보존. 상세: engine/PARITY_HUD_02_20261022.md.
+- 단회 PC 회귀8검사/3실패: intro 부팅 setup owner 미설치로 목표256/0 미달. Mac HUD 토스트26/0. 격리 override 원복·자기 Godot 종료, PID81277 보존. 상세: _archive/engine/PARITY_HUD_02_20261022.md.
 
 
 ## 2026-10-22 PARITY-INTRO-01
@@ -333,20 +496,20 @@
 - 원본 G3090 → `_skillBatchUp` G47192–47233, `_skillRecAuto` G47299–47326. 원본 VM oracle 14행 0불일치(SP 부족·레벨락·악의 0·일시정지·Lv20 fixture). 실제 웹 버튼 클릭 후 원장 = Godot 원장(2장면).
 - 원본 사실: 모든 `upMat`=0, SP 0이어도 chainSlash(spCost 0)는 추천 자동이 습득한다. 2_1 문서의 pick 단계 4→6 정정.
 - 회귀: 신규 80/0, Mac skill 105/0, recalc 49/0, runtime_stat 288/0, qe 155/0, pack_b 378/0, life 101/0, final_death 61/0, revive 51/0(`--demo11-storage=off`, INTEG-11 기본 저장소가 PC 격리명에서 부팅을 막기 때문). pack_b_mac 306/29와 E2E 204행 정지는 base에서도 같다. pms 256/1은 렌더 타이밍 검사 flaky다(base 8회 중 4회, 이 브랜치 8회 중 6회 실패).
-- 화면 전체는 Mac 표시 차이가 남아 RETOUCH다. [계약](engine/PC_SKILL_WRITERS_CONTRACT_20261022.md)·[보고서](engine/orders/reports/pc-skill-writers_REPORT.md). 로그 `G:/exoduser-wt/_out/pc-skill-writers/`.
+- 화면 전체는 Mac 표시 차이가 남아 RETOUCH다. [계약](engine/PC_SKILL_WRITERS_CONTRACT_20261022.md)·[보고서](_archive/engine/orders/reports/pc-skill-writers_REPORT.md). 로그 `G:/exoduser-wt/_out/pc-skill-writers/`.
 ## 2026-10-22 PARITY-UI-02 — 인벤토리·사망/재시작 원본 부분 이식
 
 - 원본fb67658b branch 계속. 웹 snapshot4d911cdd, main 차이표d79ee3e67의 PC 원문 보존. 맵·카메라·PC 코어/테스트·main.tscn 변경 없음.
 - 인벤토리 기사 컷아웃·EQ_POS16칸(ossuary 별도)·전면 프레임/가방/필터·상세2열 비교, 사망 전체 원화·펫·세 버튼·리플레이·재시작 원본 결계/장면 fade 부분 이식. 모든 신규 bitmap은 원본과 byte 동일이며 manifest에 원본 경로/SHA256 기록.
 - 실제 관련 테스트1회1277/0. E2E1회는 상세 보고서 후속 결과 참조. 1920×1080 및1x 비교 직접 검수. 별도 유골함 제단·도감·비교 delta/소켓·피해로그/replay bars·폰트/미세 외형 미완료이므로 **PARTIAL / VISUAL FAIL**.
-- [원본 행·적용 위치·수치·검수·남은 차이](engine/PARITY_UI_02_20261022.md). main push/force/reset/rebase/hook bypass 없음.
+- [원본 행·적용 위치·수치·검수·남은 차이](_archive/engine/PARITY_UI_02_20261022.md). main push/force/reset/rebase/hook bypass 없음.
 ## 2026-10-22 PC-HUD-STATS 2차 — 유골함 원시 효과 키 삭제(웹 91e2774b7 따름)·고정 스냅샷 갱신
 
 - 사용자 결정 “유골함은 특수효과 없는 게 설계”. 웹 main 91e2774b7이 mkItem 유골함 분기 첫머리에서 전설/유니크 롤이 남긴 `item[stat]`를 지운다(새 G16156–16157). 포트 `drop_item_source.gd`도 같은 위치·순서로 삭제. RNG 소비·고정값 변화 0. 2_7 문서 행은 main 그대로 반영.
 - 고정 스냅샷 `godot/source_snapshot/game.html` → 91e2774b7 바이트(SHA256 dee094fd…1f05209), SNAPSHOT.json·snapshot.gd 갱신. G16156 이상 +2: 포트·oracle 라벨은 이전 좌표 유지, PC 행 고정 oracle 3종은 읽을 때만 +2. sha 상수 교체: PC 테스트 3종 + Mac `tools/nw01~03`(상수만). 출처 기록 데이터·fixture의 이전 SHA는 재추출 없이 바꾸지 않음.
 - 결과(각 1회): **fieldboss 130/3 → 167/0**, hud 199/0(원시 키 0 단정 + 시드 8×3, 음성 대조 199/50), pms 256/0·packb 378/0·_mac 396/0·m29 101/0·bc09 56664/0·etype15/b/f·보스 투사체 4종·22r·starter 전부 0실패, E2E storage=on PASS11/NR7/FAIL0. p1002f 1회차 네이티브 크래시(exit 139) → 재실행 358/0.
 - **주의: 스냅샷 갱신으로 Mac 소유 테스트 19종이 새로 실패**(이전 스냅샷 통과): 행 고정 oracle 9종(bc10·bc2_02~07·bc3_01·demo11_16), 출처 SHA 고정 10종(ch2_01·p3004a·p3004c, sound 7종). Mac 조치(HS-M7) 전 main 병합 금지.
-- 웹↔Godot 유골함 장착 상세 1x 나란히: 특수효과 블록 양쪽 없음·원시 키 양쪽 0. 표시 줄 차이(추가MP·전대 위력 줄 없음 등)는 Mac 패널 소관 HS-M6. [보고서 §9](engine/orders/reports/pc-hud-stats_REPORT.md)·[스냅샷 갱신 이력](engine/INTEG5_SOURCE_SNAPSHOT_20261021.md#갱신-이력).
+- 웹↔Godot 유골함 장착 상세 1x 나란히: 특수효과 블록 양쪽 없음·원시 키 양쪽 0. 표시 줄 차이(추가MP·전대 위력 줄 없음 등)는 Mac 패널 소관 HS-M6. [보고서 §9](engine/orders/reports/pc-hud-stats_REPORT.md)·[스냅샷 갱신 이력](_archive/engine/INTEG5_SOURCE_SNAPSHOT_20261021.md#갱신-이력).
 
 ## 2026-10-22 PC-HUD-STATS — HUD 수치(H-03) 원인 추적·유골함 자동 지급 이식
 
@@ -365,14 +528,14 @@
 - 차이 목록의 웹 "+34~37px/−126~−130px"는 하네스 `_harpGauge=5` 탓(정정). Space: 방향+Space는 전격이동 우선, 단독은 슬롯 owner 전달, 사슬기동 중 차단.
 - 원본 VM oracle 16시나리오·259프레임·벽 질의 798건·hurtE 인자 일치, 원본 RNG는 표현 전용. test_pc_move_skills 256/0. 필드 600틱 벤치 전후 차이 없음(노이즈 범위).
 - NOT_READY: 전류장판 피해·_shockDR(hurtE G42290), 합체·유니크 분기(사전 거절), showPH·HUD 기동 링(Mac 요청 PMS-M1~M3), 레슨 step 4/5 연습.
-- [계약](engine/PC_MOVE_SKILLS_CONTRACT_20261022.md)·[보고서](engine/orders/reports/pc-move-skills_REPORT.md)·DEMO11-10/11 부분·PARITY V-01/V-02 브랜치 해결. 로그 `G:/exoduser-wt/_out/pc-move-skills-v2/`.
+- [계약](engine/PC_MOVE_SKILLS_CONTRACT_20261022.md)·[보고서](_archive/engine/orders/reports/pc-move-skills_REPORT.md)·DEMO11-10/11 부분·PARITY V-01/V-02 브랜치 해결. 로그 `G:/exoduser-wt/_out/pc-move-skills-v2/`.
 ## 2026-10-22 PC-BOSS-PARITY — 1-1 필드보스·보스방 진입·보스전 웹 동일화
 
 - base INTEG-10 9133e2782 + pc-boss-core 16e1ff825 병합, branch claude/pc-boss-parity-20261022. 사용자 결정대로 카메라 줌 ×2.5·보스 공간 축소 S=0.4 폐기: `native_boss_space.gd`·core 경계 변환·`test_pc_boss_core_space`·×2.5 캡처 도구 삭제(제품 effective S 는 원래 1 → 동작 동일). 원본 VM oracle 재대조 0실패.
 - E-01: 앵글러 몸 충돌·착지 강타 PC interaction(61085–61086, 61119–61122)을 부팅 때 바인딩(없으면 근접 시 개체 정지), 근접 무기→앵글러 37646 을 player telemetry 로 연결. 근접 4처치 → `_fbDone`.
 - B-01: 자연 문 경로는 원래 OPT.diff·_stageDiffOff·room 0 을 넣었다(parity NOT_READY 는 하니스 빈 인자). 빠져 있던 checkRooms 41768–41925(30호출 cadence·봉인 문구·로딩 50/130/50/100·입장 stun 90/110)과 `_enterBossArena` PC 부분·로딩 오버레이(52089–52122)를 신규 `native_demo11_boss_entry(.._overlay).gd` 로 이식. encounter·MAP11 파일 수정 0.
 - B-02: 보스 몸통 충돌 34348–34349 미이식으로 보스가 플레이어 위에 겹쳐 패턴이 막히던 것(idle 91%) 해결(41%, 웹 31~40%). 사망 직후 actor 동기화(죽은 보스가 계속 그려지던 문제). 소환 mkEn 은 NOT_READY(etype3 actor·엘리트 롤 없음).
-- 나란히 캡처 19장 `G:/exoduser-wt/_out/pc-boss-parity/compare_*.png`: 동작은 같은 순서·같은 수치, 화면은 맵·보스 스프라이트·텔레그래프·HUD·후처리 차이(Mac 요청 M5~M13). test_pc_boss_parity 37/0, 회귀 26종 0실패·SCRIPT ERROR 0, E2E PASS11/NR7/FAIL0(변경 전과 같음). [보고서](engine/orders/reports/pc-boss-parity_REPORT.md) · [계약 §9](engine/PC_BOSS_CORE_CONTRACT_20261022.md).
+- 나란히 캡처 19장 `G:/exoduser-wt/_out/pc-boss-parity/compare_*.png`: 동작은 같은 순서·같은 수치, 화면은 맵·보스 스프라이트·텔레그래프·HUD·후처리 차이(Mac 요청 M5~M13). test_pc_boss_parity 37/0, 회귀 26종 0실패·SCRIPT ERROR 0, E2E PASS11/NR7/FAIL0(변경 전과 같음). [보고서](_archive/engine/orders/reports/pc-boss-parity_REPORT.md) · [계약 §9](engine/PC_BOSS_CORE_CONTRACT_20261022.md).
 
 ## 2026-10-22 INTEG-9 전제 갱신 — PC 소유 테스트(묶음 B·M29·P1-002 E/F/G)
 
@@ -382,7 +545,7 @@
 - p1002e/f/g: 테스트 안에서 native_map11="off" 명시 + 부팅 맵 단정 1개(test_pc_final_death 방식). 기본 실행 94/0·358/0·221/0(= 93/357/220 + 단정 1).
 - 결과(각 1회): 묶음 B 직접 362/14→378/0, Mac 래퍼 380/14→396/0, m29 100/2→101/0. 회귀 PC 11종·Mac etype15/b/f 전부 0실패·ERROR 0, E2E storage=on PASS13/NR5/FAIL0·SCRIPT ERROR 0.
 - 보고만: starter_state 148/1은 현재 G의 _fbDone(Mac anglers, 원본 G31569)이 키 목록 밖 — 테스트 전제 문제지만 키 계약·writer가 Mac 소유라 미수정. regeneration_phase SCRIPT ERROR 1은 제품 Mac arrow_view.gd:11이 read_native_player_projectiles의 null을 Array에 넣는 것.
-- [상세](engine/orders/reports/pc-followups_REPORT.md#8-integ-9-전제-갱신-2026-10-22-pc-claude), 로그 `G:/exoduser-wt/_out/pc-tests-integ9/`. main push·실행 중 창 갱신 주장 없음.
+- [상세](_archive/engine/orders/reports/pc-followups_REPORT.md#8-integ-9-전제-갱신-2026-10-22-pc-claude), 로그 `G:/exoduser-wt/_out/pc-tests-integ9/`. main push·실행 중 창 갱신 주장 없음.
 
 ## 2026-10-22 INTEG-9 — PC 후속 병합·Mac E2E 하니스
 
@@ -390,24 +553,24 @@
 - Mac E2E 접촉 순위의 없는/null 타이머는 기본0, attack 숫자형 검사. 접촉 공격 없는 etype1은 배치 후보 제외. 석궁45000ms 시간 초과도 기존 근접 request_attack fallback 허용. kill/region 판정 불변·피해/HP/사망 주입0. 사격구간 fired/hits 증가량·physics p95/max 증거 기록.
 - import ERROR0. 회귀40종 1회: 나머지38종 실패0, PC 묶음 B 직접·Mac 각각14실패(원본SHA6+기등록C15 consumer8), guard 종료로 perf 최종그룹 미완료. PC 테스트 수정/재실행0. p1002e/f/g는 PC 기존 맵 배치 전제로 --map11=off 93/0·357/0·220/0.
 - 저장ON E2E PASS13/NR5/FAIL0·SCRIPT ERROR0. 석궁20발/16명중/1처치·근접0. headless 사격구간 physics4583표본 p95 8.265ms/max23.423ms. timeout 분기는 이번 실측 미도달; GUI 별도성능 미측정·PC source-perf 대기.
-- [상세 상태](engine/DEMO11_STATUS_20261021.md#integ-9--2026-10-22-통합-검수-완료pc-묶음-b-실패-보존), 외부 `~/exoduser-wt/_out/INTEG-9/DONE.txt`. 정상 hook 유지, main/PC 실행 동기화 주장 없음.
+- [상세 상태](_archive/engine/DEMO11_STATUS_20261021.md#integ-9--2026-10-22-통합-검수-완료pc-묶음-b-실패-보존), 외부 `~/exoduser-wt/_out/INTEG-9/DONE.txt`. 정상 hook 유지, main/PC 실행 동기화 주장 없음.
 
 ## 2026-10-22 ZOOM-01b — 새 필드 줌 비교 재촬영(부분)
 
 - 기존 zoom branch + MAP11-32c merge, 테스트 전용 offset 보정·표시 보스1/배수·원본12/비교판3. 플레이어 전신/HUD 가림 확인.
 - 실제 move_up 접근600ticks/약591world, 보스 source clock owner_gap_no_receipt/ticks0/idle. 근접 실전은 미완료, 주입·PC core 수정0, exit6 보존. 제품 기본/UI/맵 비주얼 불변.
-- [픽셀표·장면 구분·눈검수·한계](engine/ZOOM_01B_REPORT_20261022.md), 외부 ~/exoduser-wt/_out/ZOOM-01b/.
+- [픽셀표·장면 구분·눈검수·한계](_archive/engine/ZOOM_01B_REPORT_20261022.md), 외부 ~/exoduser-wt/_out/ZOOM-01b/.
 ## 2026-10-21 PC-FOLLOWUPS — 석궁 필드보스 정지 해제 · PC 묶음 B/A 테스트 전제
 
 - 기준 Mac integ6 d5b842df, branch claude/pc-followups-20261021. carrier가 `_fieldBosses` 존재만으로 거절하던 경계를 제거하고 원본 35279 `_hurtFieldMobs`(G18733–18756)를 이식: 신규 PC owner `native_field_mob_hit_owner.gd`가 hitSet 선기록→hitCd(18700)→`max(1,ToInt32(dmg))`·hitCd8(18702)→고어 롤 RNG 3회(18692–18694)→최종 사망을 처리하고, HP·사망 반영은 Mac family 기존 seam `bind_pc_source`(index,hp,final_death,serial)로만 쓴다. 필드몹 적중은 hit=true, 적 루프 관통 분기가 원본처럼 hit=false로 되돌림. 웜/화마귀·단독 `_fieldBoss`는 실제 접촉 스텝만 쓰기 전 거절(NOT_READY 사유: 제품 PC hit owner·hitSet 키 계약 없음). 표현(숫자·처치 연출) 미이식.
 - 실제 MAP11: Mac 자동 석궁 fired23/hits23/kills1(필드보스 존재 중), 원본 VM 대조 3사례 일치. 신규 test_pc_followups_fieldboss 167/0.
 - 테스트 전제: 묶음 B pci02는 Mac 생성 시 자동 bind를 인정하고 unbound 검사는 새 actor를 명시 해제해 사용(Mac 래퍼 MAP11 408/0, 직접 362/0). 묶음 A final_death/enemy_revive는 부팅 배치 기존 맵 적 전제를 Main 메타 `native_map11="off"`로 테스트 안에서 명시(60/0·51/0). 판정 약화 0.
-- E2E storage=on 1회 PASS10/NR8/FAIL0·exit0, Mac 하니스 `test_demo11_47h_e2e.gd:161` float(null) SCRIPT ERROR 7507(etype1 자연 actor에 `_contact_ticks` 없음) — Mac 수정 필요, PC 미수정. 600틱 벤치 mean 전 9.77/10.03 → 후 10.03/10.27/10.51ms(변동 폭 안), MAP11 hurtE 접촉 1회 10~14ms(치명 50ms) 스파이크 HOLD. [계약 §5a](engine/PC_COMBAT_PACK_B_CONTRACT_20261021.md) · [보고서](engine/orders/reports/pc-followups_REPORT.md).
+- E2E storage=on 1회 PASS10/NR8/FAIL0·exit0, Mac 하니스 `test_demo11_47h_e2e.gd:161` float(null) SCRIPT ERROR 7507(etype1 자연 actor에 `_contact_ticks` 없음) — Mac 수정 필요, PC 미수정. 600틱 벤치 mean 전 9.77/10.03 → 후 10.03/10.27/10.51ms(변동 폭 안), MAP11 hurtE 접촉 1회 10~14ms(치명 50ms) 스파이크 HOLD. [계약 §5a](engine/PC_COMBAT_PACK_B_CONTRACT_20261021.md) · [보고서](_archive/engine/orders/reports/pc-followups_REPORT.md).
 ## 2026-10-22 PC-SOURCE-PERF — PC source 검증 중복 제거(검증 패스 메모)
 
 - Services→Providers→State→Resources 검증이 서로를 반복 호출(필드 렌더 프레임당 State 183회·Resources 797회)하던 것을 "바깥 검증 1회" 범위 메모로 바꿨다(`native_source_validation_pass.gd`). 호출 사이·틱 이월 0, 검사 항목/순서/반환 문자열 변경 0. State 판정용 resource packet 생성은 동치 bool로 교체.
 - Windows 헤드리스 `--fixed-fps 120` 교차 3회: 필드 p95 21.06→9.93ms, 평균 14.02→5.68ms, process 8.71→2.20ms. 단독 회차 6.18ms. 부하 동시 실행 회차는 8.33ms 목표 미달이라 재측정 필요. hurtE 비치명 9.9→4.1~4.3ms, 치명 32.9→16.7~17.5ms(부분 적용, 남은 원인 기록).
-- 신규 test_pc_source_validation_cache 280/0. 회귀 18종 실패 행은 기준선과 MAP11 ON/OFF 모두 동일. E2E PASS13/NR5/FAIL0. [보고서](engine/orders/reports/pc-source-perf_REPORT.md)·[원인/수치](12퍼포먼스·최적화/GODOT_SOURCE_VALIDATION_PASS_MEMO_20261022.md).
+- 신규 test_pc_source_validation_cache 280/0. 회귀 18종 실패 행은 기준선과 MAP11 ON/OFF 모두 동일. E2E PASS13/NR5/FAIL0. [보고서](_archive/engine/orders/reports/pc-source-perf_REPORT.md)·[원인/수치](_archive/12퍼포먼스·최적화/GODOT_SOURCE_VALIDATION_PASS_MEMO_20261022.md).
 
 ## 2026-10-21 AUDIO-01 — Godot 1-1 ARPG 오디오 믹스
 
@@ -420,32 +583,32 @@
 - SHARP-01 6da38c312326635fcb1424bebbac2b26b4a41350 부모. 로컬 Real-ESRGAN x4plus로 최초 원화/북소품 원본 처리, 필드1.5×/보스2×실사용 밀도·55PNG 무손실·최대2048tile. 원본/재현스크립트/해시 보존, 평균RGB·chroma복원·새샤픈0. anime비교 제외.
 - 북 root판 irregular alpha·blood/moss source균열따라fade, 중복확대그림자 제거·skull16world foot그림자. 카메라/캐릭터·보스scale/PCcore/runtime3D/실제저장 변경0. before/after3곳1920+literal1x 선명도/접합 제한범위PASS.
 - 지정5종각1회182checks/0fail. 유효field단회native1440 p95 9.798/p99 10.732ms/focus0, VRAM3706543901bytes. 동일1080capture before3268263209→after3683076161(+395.596458MiB),120fps미달. 전체map/PC인수 아님.
-- [파이프라인·해상도·보정·메모리·MAP REPORT](4.1맵디자인+설정/MAP11_TARGET_FRAMES_20261021.md#upscale-01--로컬-real-esrgan-적용-2026-10-22-10-21-지시), art현황표 갱신. 외부 `~/exoduser-wt/_out/UPSCALE-01/DONE.txt`.
+- [파이프라인·해상도·보정·메모리·MAP REPORT](_archive/4.1맵디자인+설정/MAP11_TARGET_FRAMES_20261021.md#upscale-01--로컬-real-esrgan-적용-2026-10-22-10-21-지시), art현황표 갱신. 외부 `~/exoduser-wt/_out/UPSCALE-01/DONE.txt`.
 
 ## 2026-10-21 — SHARP-01 렌더·임포트 선명도
 
 - c335f345 기준 새 codex/sharp-01-20261021. Retina effective HiDPI는이미true, fixed viewport확대문제를canvas_items/native framebuffer로정정. base/카메라/actor scale보존, default window1920×1080. 지면26import Lossless0·원본PNG불변, transform-only snap, HUD아래약한5tap screen pass1개(이웃범위/변화량제한).
 - before/afterSTART·보스입장1920×1080+바닥/껍질/캐릭터1x, 선명도PASS. field/provider/seam각1회113/0. 최종 native2560 p95 9.793/p99 11.219ms/focus0, video_mem3291730949bytes; 120fps미달. 포커스전표본0/타작업겹침2표본무효보존, 단독유효1회만판정.
-- PCcore·runtime3D·tick로딩/할당·신규이미지/외부업스케일·번역수정0. [현재값/조치/효과와검수](4.1맵디자인+설정/SHARP_01_RENDER_CLARITY_20261021.md), 외부 `~/exoduser-wt/_out/SHARP-01/`.
+- PCcore·runtime3D·tick로딩/할당·신규이미지/외부업스케일·번역수정0. [현재값/조치/효과와검수](_archive/4.1맵디자인+설정/SHARP_01_RENDER_CLARITY_20261021.md), 외부 `~/exoduser-wt/_out/SHARP-01/`.
 
 ## 2026-10-21 — MAP11-32c 계측·VRAM 압축·북쪽 관광 디테일
 
 - 기준 f85cfb9a, 동일 codex/map11-32-20261021 검토 후보. 수정 전30c/current 및7층A/B·내장함수 프로파일로 source clock/domain 검증 CPU 비용 확인, PC 코어 변경0.
 - 맵 질의 중복 runtime_ready scan만 제거, provider의 기존 전체 유효성·충돌/경로/스폰 검사 유지. 지면26import compress/mode2 S3TC/BC, 원본PNG 불변. 기존1-1 root/pool/blood/skull로 북쪽 비대칭3무리·foot/contact·저채도 전이, tick 로딩/할당·runtime3D·신규생성0.
 - 6종 각1회237checks/0fail. 최종 단회p95 9.122ms/p99 10.247ms/focus0, VRAM p95 3257505721→2825851708bytes(−411.657MiB). 성능8.33ms 미달 FAIL, GPU API0은 미계측. VISUAL RETOUCH, main/PC 인수·배포 아님.
-- SSOT/계측표/함수명/캡처: [MAP11_32C_MEASURED_FIELD_20261021.md](4.1맵디자인+설정/MAP11_32C_MEASURED_FIELD_20261021.md), 외부 `~/exoduser-wt/_out/MAP11-32c/`.
+- SSOT/계측표/함수명/캡처: [MAP11_32C_MEASURED_FIELD_20261021.md](_archive/4.1맵디자인+설정/MAP11_32C_MEASURED_FIELD_20261021.md), 외부 `~/exoduser-wt/_out/MAP11-32c/`.
 
 ## 2026-10-21 MAP11-23
 
 - 신규 검수 스크립트2개의 Godot UID도 함께 보존.
 
 - 기존 PNG만 사용해 외곽 반복 변형·일부 소품 교체, 입구4주 간격/각도/크기, 처형장 기존 fade, pit offline 음영 보정. 신규 runtime draw/pass0, cached cull/fade rows+4. PCcore/실제저장/main 무변경.
-- before/after 각7시점1600×900+literal1x, 보충가림2컷. suite단회495/4(카메라 미이동 probe 오류), 실제카메라 capture37/0. before focus/보행 요건 실패, after9.449/8.509ms focus_lost0. 비용 비증가 미검증, **RETOUCH**. [수치·검수·MAP PRODUCTION REPORT](4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#28-map11-23--남은-retouch-마감-2026-10-21).
+- before/after 각7시점1600×900+literal1x, 보충가림2컷. suite단회495/4(카메라 미이동 probe 오류), 실제카메라 capture37/0. before focus/보행 요건 실패, after9.449/8.509ms focus_lost0. 비용 비증가 미검증, **RETOUCH**. [수치·검수·MAP PRODUCTION REPORT](_archive/4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#28-map11-23--남은-retouch-마감-2026-10-21).
 
 ## 2026-10-21 MAP11-22d
 
 - 기존 field crack36+inward7을2048² 정적 bake로 재사용, R1470 링을 약한 진홍 unshaded로 명확히 표시. 보조 multiply .62→.14, arena ambient 중심(.70,.60,.61), player instance rim(.92,.82,.70,.62). PC코어/공유shader/충돌 변경0.
-- entry/center before660a9dc2·after·literal1x 보존, 관련검사 단회308/0·capture9/0. PID81277 존재로 성능 표본0/p95 N/A, 유효 성능 미검증. 전체 RETOUCH. [현행 수치·제약·MAP PRODUCTION REPORT](4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#25-map11-22d--입장에서-읽히는-붉은-의식의-원-4차).
+- entry/center before660a9dc2·after·literal1x 보존, 관련검사 단회308/0·capture9/0. PID81277 존재로 성능 표본0/p95 N/A, 유효 성능 미검증. 전체 RETOUCH. [현행 수치·제약·MAP PRODUCTION REPORT](_archive/4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#25-map11-22d--입장에서-읽히는-붉은-의식의-원-4차).
 
 ## 2026-10-21 DEMO11-47l — E2E 기능 회귀·정직한 PC 의존 구분
 
@@ -453,35 +616,35 @@
 
 - 47k 위 별도 branch. actual natural target ID/복수hole 방문, 실제 CD/iframe 이후 hurtP로 enemy_kill·auto_potion 복구. gate 뒤 blocked_by; 47j의 직접 defeat contract 입력은 복구하지 않음.
 - physical carrier 동일 텍스처 선로딩, MAP11 A 생성자자료 부팅 준비, family scratch/원clock 및 opt-in 계측, drop음향 IO/bus deferred. PC 전투/readonly모듈/맵 룩·조명/번역 무수정.
-- E2E1회12 PASS/6 NOT_READY/0 FAIL·ERROR0. physics14.035→21.343ms로8.333ms 목표 미달; 최종 재실행0. 추가 기존 검사 실패/오류도 [상세 보고](engine/DEMO11_47L_REGRESSION_20261021.md)에 보존. 전체 완료 주장0.
+- E2E1회12 PASS/6 NOT_READY/0 FAIL·ERROR0. physics14.035→21.343ms로8.333ms 목표 미달; 최종 재실행0. 추가 기존 검사 실패/오류도 [상세 보고](_archive/engine/DEMO11_47L_REGRESSION_20261021.md)에 보존. 전체 완료 주장0.
 
 ## 2026-10-21 DEMO11-INTEG 보충: 최신 적 기반·24b·MAP11-10
 
 - bb3ced49→049cc1aa→e8888106 정상merge, 기존기능 보존·F공통화/문지기29 경계/장비cache/맵seam 인수. 번역CRLF 보존.
-- 대표104/0+131/0+18/0=253/0 ERROR0·각1회. 기존실패/하니스미검증/MAP11 progression HOLD 유지. [보고서](engine/orders/reports/demo11-integ_REPORT.md)에 충돌/공용hunk/범위 기록.
+- 대표104/0+131/0+18/0=253/0 ERROR0·각1회. 기존실패/하니스미검증/MAP11 progression HOLD 유지. [보고서](_archive/engine/orders/reports/demo11-integ_REPORT.md)에 충돌/공용hunk/범위 기록.
 
 ## 2026-10-21 DEMO11-INTEG 보충: MAP11-PROD
 
 - a5ad5e4e 마지막 merge, 공용 기존 기능 보존. MAP11의 legacy region 부재 시37 연결 HOLD, Main 부팅 scope 교정.
-- 대표37/0 ERROR0, 기존 테스트 무수정1회. [보고서](engine/orders/reports/demo11-integ_REPORT.md)에 충돌/공용 hunk/기존 미검증 인계 기록.
+- 대표37/0 ERROR0, 기존 테스트 무수정1회. [보고서](_archive/engine/orders/reports/demo11-integ_REPORT.md)에 충돌/공용 hunk/기존 미검증 인계 기록.
 
 ## 2026-10-21 DEMO11-INTEG 보충 — 최신 A/B/D 공통 기반
 
 - 사용자 지정1f0a71fb를 기존2500b677 위에 정상 merge, A/B 중복 merge0. Main 기존 기능/F 경로·보호 코드 보존.
-- 대표 base2 원문89/0·ERROR0·15spawn/13death, PC death2종 HOLD와 이전 실패/하니스 인계 유지. [보충 보고](engine/orders/reports/demo11-integ_REPORT.md).
+- 대표 base2 원문89/0·ERROR0·15spawn/13death, PC death2종 HOLD와 이전 실패/하니스 인계 유지. [보충 보고](_archive/engine/orders/reports/demo11-integ_REPORT.md).
 
 ## 2026-10-21 DEMO11-INTEG — Mac 33후보 통합 검증용 브랜치
 
 - 최신origin/main0138c5bb9에서 지정33개SHA 순차 merge,31은44 의존 포함/no-op. 코드 통합c6932a85·모든 target ancestor. main push/rebase/force0, 기능 추가보다 기존 각 owner/PC 코드·수명/분기 보존. 표에 충돌 파일/해소 근거/단계SHA/대표 검사 기록.
 - 대표 suite 각1회:29개 ERROR0 PASS.41 BGM55검사8실패,EL-01 class 준비 중단·19ui/37 SVG import ERROR는 하니스 미검증으로 인계(재실행0·원로그 보존). 전체 E2E/최종 인수 PASS 아님. 후속 class/asset 준비 import ERROR0.
-- 번역 CRLF4,975/loneLF0·원본game blob불변·중복함수/선언/marker0. [통합 보고서·수정/검증 인계](engine/orders/reports/demo11-integ_REPORT.md), _out/demo11-integ/manifest·audit·author_actions·원로그. 자기branch 정상push/remoteSHA/DONE 뒤 자기WT제거, R불변 확인.
+- 번역 CRLF4,975/loneLF0·원본game blob불변·중복함수/선언/marker0. [통합 보고서·수정/검증 인계](_archive/engine/orders/reports/demo11-integ_REPORT.md), _out/demo11-integ/manifest·audit·author_actions·원로그. 자기branch 정상push/remoteSHA/DONE 뒤 자기WT제거, R불변 확인.
 
 ## 2026-10-21 DEMO11-38 PC 반송 merge 충돌 해소
 
 | 항목 | 근거 |
 |---|---|
 | 병합 | 최신main45be76e49(969c194e6 이후) 정상merge. Main/State EOF 충돌 양쪽함수 보존·중복/누락0, main17/PC refresh/물약/오디오 유지 |
-| 검증·인계 | 관련38 46/0·17 100/0·PC runtime293/0=439/0·각1회·ERROR0. 상세는 [보고서](engine/orders/reports/demo11-38_REPORT.md)와 추가DONE. 자기branch 일반push·remote일치 후WT제거 |
+| 검증·인계 | 관련38 46/0·17 100/0·PC runtime293/0=439/0·각1회·ERROR0. 상세는 [보고서](_archive/engine/orders/reports/demo11-38_REPORT.md)와 추가DONE. 자기branch 일반push·remote일치 후WT제거 |
 
 ## 2026-10-21 DEMO11-38 마지막 데모 clear→종료·위시리스트/로비
 
@@ -489,7 +652,7 @@
 |---|---|
 | 범위·계약 | main8dbbf2b0e. DEMO11-37 호출 계약 Main.native_demo_boss_defeated(stage_index:int), 최종 사망 뒤 emit 필요. 이번에는 신호 직접 주입, 보스 사망 구현0 |
 | 전환·권한 | Main 추가20/State 추가15·기존줄수정0. clear/end/복귀 중복 거부·stage 증가0·난이도 창0. Main 비활성화+Tree pause로 실제 World/Player 정지, 새 최소 데모 로비에서 해제/새 stage0 재시작. 보호 전투/맵/저장0 |
-| UI·검증 | Hell Gothic·기존 crest/폰트 토큰·이모지0. 번역목록/3.1 UI 갱신. 신규46/0·기존22/0+115/0=183/0, 예상 거부ERROR1 외0, 기존각1회·실패신규만재실행. 결과와 캡처는 [보고서](engine/orders/reports/demo11-38_REPORT.md), 맥북총괄 시각 판정 대기 |
+| UI·검증 | Hell Gothic·기존 crest/폰트 토큰·이모지0. 번역목록/3.1 UI 갱신. 신규46/0·기존22/0+115/0=183/0, 예상 거부ERROR1 외0, 기존각1회·실패신규만재실행. 결과와 캡처는 [보고서](_archive/engine/orders/reports/demo11-38_REPORT.md), 맥북총괄 시각 판정 대기 |
 | 제출 | 자기branch 일반push·remote SHA/DONE 뒤 자기worktree제거, R 불변. 원로그 ~/exoduser-wt/_out/demo11-38/, Godot2이상30초gate·격리·override0 |
 
 
@@ -499,7 +662,7 @@
 |---|---|
 | 기준 | 기존 DEMO11-41 8939bbd1에 최신 origin/main45be76e4(969c194e6 이후)를 정상 merge. Main 기존 모든 줄 순서 보존, 보스 actor/투사체 설치·PC runtime-stat API와 BGM bind/API 공존 |
 | 범위 | 신규 기능·전투·State 수정0. sound owner tick 목록 생성 API0. 기존 관련 테스트만 각1회, 수치는 보고서 참조 |
-| 문서 | [병합 보고서](engine/orders/reports/demo11-41m_REPORT.md), 원로그 _out/demo11-41m/. 자기 branch 일반 push·원격 SHA·DONE 후 worktree 제거 |
+| 문서 | [병합 보고서](_archive/engine/orders/reports/demo11-41m_REPORT.md), 원로그 _out/demo11-41m/. 자기 branch 일반 push·원격 SHA·DONE 후 worktree 제거 |
 
 ## 2026-10-21 DEMO11-41 실제 BGM/voice media lifecycle
 
@@ -508,7 +671,7 @@
 | 기준·의존 | main8dbbf2b0e(DEMO11-01) + DEMO11-40 85d57b39 정상 merge. SND05/06 원모듈 무수정. Main 음향+23/-0·인트로 음향 signal·기상 voice 재생 함수만, State/보호 전투/저장/맵0 |
 | 연결 | 실제 AudioStreamPlayer/Timer·원음 lazy read·별도 BGM OPT bus/기존 SND08 voice bus. guide/opening/player_died 구독, fade·cache6·pause/복귀·오류·종료 정리. 소리 전용 RNG, tick 목록 API0 |
 | 검수 | 최종 CoreAudio55/0, 기존 무수정 SND05 1308/0·SND06 2400/0·DEMO11-40 44/0·P2007A115/0. 첫 하니스 API/숨김·작은 창 좌표 실패는 보고서에 구분, 기존40 ObjectDB4 경고는 과거에도 동일/verbose 재검0·새55검사 누수경고0, 성공 합산0 |
-| HOLD·제출 | 로비/전체 영화 owner 요청 API만, DEMO11-34는 native_boss_music_changed(phase,stage) 계약만. 외부 bgm export 포함·청감/PCM 미확인. [공용 행·보고서](engine/orders/reports/demo11-41_REPORT.md), 원로그~/exoduser-wt/_out/demo11-41/. 원격일치/DONE 후 WT 제거 |
+| HOLD·제출 | 로비/전체 영화 owner 요청 API만, DEMO11-34는 native_boss_music_changed(phase,stage) 계약만. 외부 bgm export 포함·청감/PCM 미확인. [공용 행·보고서](_archive/engine/orders/reports/demo11-41_REPORT.md), 원로그~/exoduser-wt/_out/demo11-41/. 원격일치/DONE 후 WT 제거 |
 
 ## 2026-10-21 DEMO11-08M — 최신 main 병합·번역 CRLF 보존
 
@@ -516,7 +679,7 @@
 |---|---|
 | 병합 | 기존592a983e에 최신main0138c5bb(DEMO11-21·04 포함) 정상 merge. Main 음악/PC runtime API 양쪽 보존, 전투 변경0 |
 | CRLF | 번역 최신main 바이트 접두부 보존+기존08 추가28줄만 CRLF 접합. CRLF4,253·단독LF0, 최신main 대비 번역+28/−0. file/stat 원로그 확인 |
-| 문서·검증 | [병합 보고서](engine/orders/reports/demo11-08m_REPORT.md)·기존08 눈 검수PASS 기록. 기존 관련 테스트 각1회, 자기 branch 일반 push·원격 일치·DONE 후 worktree 제거 |
+| 문서·검증 | [병합 보고서](_archive/engine/orders/reports/demo11-08m_REPORT.md)·기존08 눈 검수PASS 기록. 기존 관련 테스트 각1회, 자기 branch 일반 push·원격 일치·DONE 후 worktree 제거 |
 
 ## 2026-10-21 DEMO11-08 — 세계관·전사·INTRO 단일 수명 경계
 
@@ -524,7 +687,7 @@
 |---|---|
 | 구현 | 원본 정지 이미지·자막80 cue, 단발 종료/2초 skip/오류 retry/cancel → 기존 P2-001i/P2-007a 인계. DEMO11-41 INTRO BGM 재사용, 전투·State·저장·맵 변경0 |
 | 검증 | 원본161/0·최종 신규36/0·기존 P2001i18/0/P2007a115/0/DEMO11-41 55/0 각1회, 최종385/0. 내부 viewport1920×1080 6장+1x crop12장. 사용자 눈 검수 대기 |
-| 문서 | [수명 경계](engine/DEMO11_INTRO_LIFECYCLE_20261021.md)·[보고서](engine/orders/reports/demo11-08_REPORT.md)·sound·번역21문구 동기화. 영화 음성/연출 동등성 미확인·export 패키징 HOLD |
+| 문서 | [수명 경계](_archive/engine/DEMO11_INTRO_LIFECYCLE_20261021.md)·[보고서](_archive/engine/orders/reports/demo11-08_REPORT.md)·sound·번역21문구 동기화. 영화 음성/연출 동등성 미확인·export 패키징 HOLD |
 
 ## 2026-10-21 DEMO11-07 — 로비 char0 생성·active·INTRO 경계
 
@@ -532,7 +695,7 @@
 |---|---|
 | 구현 | 기존 DEMO11-04 생성 성공/actual active readback → 기존 char0 인터페이스 → DEMO11-08. 이름2–8·4잠금·중복/늦은 rollback 차단·S10 언어·기존 cutsceneDone 전용 State 접점 |
 | 보호 | PC 전투·Player/HUD/world·저장 형식·맵0. 저장 Player 복원/이전 game save 동기화는 DEMO11-06 접점. 신규 바이너리0 |
-| 검수·문서 | [보고서](engine/orders/reports/demo11-07_REPORT.md)·[계약](engine/DEMO11_LOBBY_ENTRY_20261021.md)·LOBBY/INTRO·번역16문구 동기화. 내부 viewport1920×1080 2장+1x crop2장. 기존 관련 회귀 각1회, 수치는 보고서 참조 |
+| 검수·문서 | [보고서](_archive/engine/orders/reports/demo11-07_REPORT.md)·[계약](_archive/engine/DEMO11_LOBBY_ENTRY_20261021.md)·LOBBY/INTRO·번역16문구 동기화. 내부 viewport1920×1080 2장+1x crop2장. 기존 관련 회귀 각1회, 수치는 보고서 참조 |
 
 
 
@@ -543,17 +706,17 @@
 | 의존 | main0138+승인22r d276/진단2e0d. 명시06c 완료93f118fb가 main 미포함이므로 중복 owner 방지용 정상merge fb76706. State 끝 양측 함수 보존 |
 | 연결 | 기존 State INV/STORAGE·06c IO/복원 단일owner. UI 선택/drag/필터/정렬·두 카드/상세·22r 장착. Main+12/State+14 추가만, 전투0·저장형식0. native JSON 소수ID exact decoder·원문 계산 유지 |
 | 검증 | 신규/집중1305/0(기능1286·저장10·guide5·null4), 직접회귀4종 각1회150073/0. 원문16가방160아이템·510 JS Number bit 일치. 최종ERROR/누수/잔류0 |
-| 화면·번역 | 실창1920×1080 3장+1x크롭3개, source factory/실제 입출고 fixture. 87 KO/EN·번역 CRLF prefix 보존. 화면 비교 자료 준비·총괄 검수 대기. [보고서](engine/orders/reports/demo11-23b_REPORT.md) |
+| 화면·번역 | 실창1920×1080 3장+1x크롭3개, source factory/실제 입출고 fixture. 87 KO/EN·번역 CRLF prefix 보존. 화면 비교 자료 준비·총괄 검수 대기. [보고서](_archive/engine/orders/reports/demo11-23b_REPORT.md) |
 
 ## 2026-10-21 DEMO11-06c — PC 복원 handoff·단일 자원 writer·loaded 시작
 
 - main0138c5bb(PC a28117c1 포함) + 06b 재통합cadd5311 기반. PC 보호3종 관측을 기존 `_handoff`에 연결, State 임시 직접 HP/ST/MP·cap/rate writer를 PC raw restore writer로 대체했다. 지급 없는 실제 초기화 dispatcher 완료 후 restore→PC applyStats→기존 stage-entry refill→전체 Main boot→loaded 시작·저장 gate 해제. 신규 지급/슬롯/fresh intro 혼합0.
-- 신규47/0·별도 재시작6/0·기존 집중32/0·PC 보호4,830/0·PC runtime290/0, 합계5,205/0·ERROR0·기존 Camera WARN5(각1회). 격리 EXODUSER-demo11-06c-Isolated-20261021 및 기존 파일 상수, First 접근0. 전투/PC owner/Player/World·맵/형식 수정0, 틱 목록 API0. 최종 수치·공용 줄 범위는 [보고서](engine/orders/reports/demo11-06c_REPORT.md), docs15/SAVE 추적 동기화. 원로그 `_out/demo11-06c/`.
+- 신규47/0·별도 재시작6/0·기존 집중32/0·PC 보호4,830/0·PC runtime290/0, 합계5,205/0·ERROR0·기존 Camera WARN5(각1회). 격리 EXODUSER-demo11-06c-Isolated-20261021 및 기존 파일 상수, First 접근0. 전투/PC owner/Player/World·맵/형식 수정0, 틱 목록 API0. 최종 수치·공용 줄 범위는 [보고서](_archive/engine/orders/reports/demo11-06c_REPORT.md), docs15/SAVE 추적 동기화. 원로그 `_out/demo11-06c/`.
 
 ## 2026-10-21 DEMO11-06b — 최신 main 충돌 재통합
 
 - `e8fd0a59`에 최신 origin/main `0138c5bb9188d27cee10cb1a901d075092ddb88f` 정상 merge(969c194e6 이상). State 끝의 load-only 절과 main potion/forge 절을 모두 보존했다. Main 자동 병합 및 PC runtime/stat/restore API도 보존했다.
-- 관련 actual session34/0·집중 lifecycle32/0·별도 프로세스 재시작6/0, 합계72/0·ERROR0·기존 Camera WARN2(각1회). 보호3종 연결과 임시 자원 writer 대체는 후속 DEMO11-06c로 분리한다. 재검증 수치는 [06b 재통합 보고서](engine/orders/reports/demo11-06b_merge_REPORT.md)에 기록한다. 원로그 `_out/demo11-06c/merge-*`.
+- 관련 actual session34/0·집중 lifecycle32/0·별도 프로세스 재시작6/0, 합계72/0·ERROR0·기존 Camera WARN2(각1회). 보호3종 연결과 임시 자원 writer 대체는 후속 DEMO11-06c로 분리한다. 재검증 수치는 [06b 재통합 보고서](_archive/engine/orders/reports/demo11-06b_merge_REPORT.md)에 기록한다. 원로그 `_out/demo11-06c/merge-*`.
 
 ## 2026-10-21 DEMO11-06b — load-only State writer·실제 저장/비보호 복원
 
@@ -562,7 +725,7 @@
 | 기준·재사용 | main8dbbf2b0 + 05f2889355/06계약0924b94a 정상merge ffb92ed2. 기존 SV collector/Player/INV/Shared/flow 비보호 stage 및 원문 catalog 재사용 |
 | 연결 | opt-in Main→실제 native IO/새 Main actual Player·State·INV·resource. State 1회 load writer만 추가, 전투 경로0. 공유 별도 allowlist/폴더, max/legacy200·실패 보존. 05 lifecycle 실제 collector/IO 연결 |
 | 검증 | 신규34/0·집중32/0·별도 프로세스6/0, 기존79/0·36,204/0·78,620/0·126,863/0·819,262/0·149,486/0 각1회. 최신 합계1,210,586/0·ERROR0·기존 Camera WARN2, 초기 실패 로그 보존 |
-| 보호·현황 | PC handoff3종은 인터페이스 대기, loaded 시작/저장 차단. fresh 지급과 혼합0. [보고서](engine/orders/reports/demo11-06b_REPORT.md)·docs/15·SAVE 추적 보충. _out/demo11-06b/ 원로그·격리/gate·자기 branch push/remote/DONE 후 자기 WT 제거 |
+| 보호·현황 | PC handoff3종은 인터페이스 대기, loaded 시작/저장 차단. fresh 지급과 혼합0. [보고서](_archive/engine/orders/reports/demo11-06b_REPORT.md)·docs/15·SAVE 추적 보충. _out/demo11-06b/ 원로그·격리/gate·자기 branch push/remote/DONE 후 자기 WT 제거 |
 
 ## 2026-10-21 DEMO11-06 — 복원 보호 접점 BLOCKED
 
@@ -570,41 +733,41 @@
 |---|---|
 | 기준·의존 | main8dbbf2b0에 05최종f2889355 정상merge=6949a2b1. source_restore_flow 보호3단계와 실제 resource restore writer 부재를 확인 |
 | 범위 | Main/State/전투/런타임/테스트0줄. fixture 관측을 제품으로 대체하지 않음. XP20·INV21·skills16/17은 미인수 저장 필드 계약만 표시 |
-| 문서·검증 | [차단·인터페이스 요청](engine/orders/reports/demo11-06_REPORT.md), docs/15 현행 보충. 원본 제한 행·정적 소유/호출점 점검, Godot/테스트0·PASS 주장0. _out/demo11-06/ 증거·DONE 후 자기WT 제거 |
+| 문서·검증 | [차단·인터페이스 요청](_archive/engine/orders/reports/demo11-06_REPORT.md), docs/15 현행 보충. 원본 제한 행·정적 소유/호출점 점검, Godot/테스트0·PASS 주장0. _out/demo11-06/ 증거·DONE 후 자기WT 제거 |
 
 ## 2026-10-21 DEMO11-enemy-base 후속 — D9fd31a64 공통 이관
 
 | 항목 | 동작 보존·범위 |
 |---|---|
 | 병합·공통화 | 정상merge9157697c(9fd31a64). D5종 factory prepared entry→common World/origin admission·동일35 탄/World epoch. 기존 Main D facade·D actor/ctor RNG/탄 수치 body·PC 보호 경로 byte 보존 |
-| 후행·검증 | D selected-only/자동schedulerHOLD·25 death/이동탄 PC contact 후행 유지. 이관집중21/0+기존D158/0+공통0 31/0+35 43/0=253/0·ERROR0, 관련suite 각1회. 30actor600틱 mean2.824/p993.980/max8.380ms(최대예산초과). 결과는 [보고서](engine/orders/reports/demo11-enemy-base_REPORT.md). [8.0 계약](8.0몬스터디자인/DEMO11_NATURAL_ENEMY_BASE_20261021.md), [9AI clock](9적ai패턴디자인/DEMO11_NATURAL_ENEMY_CLOCK_20261021.md) |
+| 후행·검증 | D selected-only/자동schedulerHOLD·25 death/이동탄 PC contact 후행 유지. 이관집중21/0+기존D158/0+공통0 31/0+35 43/0=253/0·ERROR0, 관련suite 각1회. 30actor600틱 mean2.824/p993.980/max8.380ms(최대예산초과). 결과는 [보고서](_archive/engine/orders/reports/demo11-enemy-base_REPORT.md). [8.0 계약](_archive/8.0몬스터디자인/DEMO11_NATURAL_ENEMY_BASE_20261021.md), [9AI clock](_archive/9적ai패턴디자인/DEMO11_NATURAL_ENEMY_CLOCK_20261021.md) |
 
 ## 2026-10-21 DEMO11-perf-enemy — 다수 적 진단·동치 최적화
 
 - 요청4커밋99e6fe7b/d931ebe2/c6d19973/9fd31a64를 순차 merge, EOF 등록/API 모두 보존. Mac World 기하 질의·Flesh 분리 계산만 최적화, PC 보호/State/자원 권위 byte 동일.
 - 원본 함수 동치6473/0+관련2352/0. 30/60 native CPU 평균9.58%/10.31% 감소. 전체30개체 최대 headless18.975ms·실창20.652ms로8.333ms 목표 FAIL, 기존 사용자 Godot 동시 조건·단독 미인증 명시.
 - 느린 profiler frame에서 PC 펫 show_bubble 약14.9ms 추적, portrait cold load15.735/15.305ms→보유 재로드4µs 재현(별도probe3/0). PC 파일 무수정·초기화 강한참조 cache 제안.
-- 전후8행/상위10 profiler·공용 줄 범위·PC OLD/NEW·P3 ObjectDB8 경고는 [보고서](engine/orders/reports/demo11-perf-enemy_REPORT.md), [성능 문서](12퍼포먼스·최적화/DEMO11_ENEMY_FIXED_TICK_PROFILE_20261021.md). normal hook·경로 stage·자기branch push/remote/DONE 후 자기WT 제거.
+- 전후8행/상위10 profiler·공용 줄 범위·PC OLD/NEW·P3 ObjectDB8 경고는 [보고서](_archive/engine/orders/reports/demo11-perf-enemy_REPORT.md), [성능 문서](_archive/12퍼포먼스·최적화/DEMO11_ENEMY_FIXED_TICK_PROFILE_20261021.md). normal hook·경로 stage·자기branch push/remote/DONE 후 자기WT 제거.
 
 ## 2026-10-21 DEMO11-enemy-base — 자연 소환 단일 기반
 
 | 항목 | 구현·검수 근거 |
 |---|---|
 | 기준·경로 | 하니스 공백만 최종 교정(실행문 불변). main0138c5bb9 +439b763da9 +Acf7408d4 정상FF. P3 constructor body 동일 추출→factory EOF append19/0→실제 World registry→43 origin, 기존 World clock·scheduler·동일35 registry 재사용 |
-| 검증·경계 | 신규31/0+관련415/0=446/0 각suite1회(신규 초기실패 제외), 실제 자연0 spawn/tick/legacy PC interface 처치/origin1, 실제30 actor600틱 벤치 유효1회 mean2.904/p994.221/max8.669ms(최대는8.333예산 초과). 보호경로/저장/에셋0, 전체타입/fullv3/전체120fps 완료 아님. 관련회귀·범위·대체위치 [보고서](engine/orders/reports/demo11-enemy-base_REPORT.md), [8.0](8.0몬스터디자인/DEMO11_NATURAL_ENEMY_BASE_20261021.md), [9AI](9적ai패턴디자인/DEMO11_NATURAL_ENEMY_CLOCK_20261021.md) |
+| 검증·경계 | 신규31/0+관련415/0=446/0 각suite1회(신규 초기실패 제외), 실제 자연0 spawn/tick/legacy PC interface 처치/origin1, 실제30 actor600틱 벤치 유효1회 mean2.904/p994.221/max8.669ms(최대는8.333예산 초과). 보호경로/저장/에셋0, 전체타입/fullv3/전체120fps 완료 아님. 관련회귀·범위·대체위치 [보고서](_archive/engine/orders/reports/demo11-enemy-base_REPORT.md), [8.0](_archive/8.0몬스터디자인/DEMO11_NATURAL_ENEMY_BASE_20261021.md), [9AI](_archive/9적ai패턴디자인/DEMO11_NATURAL_ENEMY_CLOCK_20261021.md) |
 
 ## 2026-10-21 DEMO11-etype-a 승인 재개 — factory5종 append-only
 
 - 사용자 판정으로 factory EOF680–688에 etype0/1/4/5/6 등록9행만 추가. 기존prefix/생성로직 byte 동일·PC9/11/47 겹침0. 기존kernel 및 World phase 재사용,5/6 누락 상태만 추가.
 - 원본mkEn90사례·실제5종 등록/탄/PC접촉/사망1952/0, 경계48/0. 120Hz240틱 벤치1회 벽시계5.312초·actor p95 311µs/max38.677ms: 지속120fps 통과 아님. source scheduler·type6 보호owner는 미완 유지.
 - 직접 회귀43 40/0·P3 298/0·factory3그룹/0실패, P3 종료ObjectDB8 경고 원문 보존.
-- 공용 범위/검증/회귀·인계 한계는 [보고서](engine/orders/reports/demo11-etype-a_REPORT.md), 몬스터 관리·WORK_BOARD 동기화. 이전cf740 부분 제출 기록은 아래와 외부 원로그에 보존.
+- 공용 범위/검증/회귀·인계 한계는 [보고서](_archive/engine/orders/reports/demo11-etype-a_REPORT.md), 몬스터 관리·WORK_BOARD 동기화. 이전cf740 부분 제출 기록은 아래와 외부 원로그에 보존.
 
 ## 2026-10-21 DEMO11-etype-a selected0 P3→MAP11→43 origin 인계
 
 - main0138c5bb9에 DEMO11-43 9b763da9 정상 fast-forward merge. Main+8/State0·신규 얇은 consumer만. 기존 P3 type0 constructor/World 등록/43 immutable origin 재사용, source pool/RNG/HP/AI/16좌표 복제0.
 - 부분 구현·통합 BLOCKED:1/4 자연 constructor/등록·5/6 미구현·PC 보호 도메인·자연 source scheduler 미완. 5종 동시 스폰 벤치0회(미충족 명시), 요청 거절 시간을 대체 성능으로 제출하지 않음.
-- 신규48/0·직접회귀338/0(총386/0), P3 종료ObjectDB8 경고원문 보존. etype별 전후/경계 테스트 수·공용 줄 범위·검증은 [보고서](engine/orders/reports/demo11-etype-a_REPORT.md), docs/8.0 최신 Native 상태 동기화. 정상훅·자기branch push/remote/DONE 후 자기WT 제거.
+- 신규48/0·직접회귀338/0(총386/0), P3 종료ObjectDB8 경고원문 보존. etype별 전후/경계 테스트 수·공용 줄 범위·검증은 [보고서](_archive/engine/orders/reports/demo11-etype-a_REPORT.md), docs/8.0 최신 Native 상태 동기화. 정상훅·자기branch push/remote/DONE 후 자기WT 제거.
 
 ## 2026-10-21 DEMO11-etype-b 재개 — append-only 등록·실제 actor5
 
@@ -614,19 +777,19 @@
 | 항목 | 범위·검증 |
 |---|---|
 | 의존·구현 | 1f0a71fb 위 F ef64bd17/E70d1ca22 정상merge. F registration→common/43, 별도 Mac29 forced constructor/World actor/warning60/실제35 carrier·8사망 packet 모델.3/7은 실제 PC readiness 거절 |
-| 보호·근거 | PC damage/parry/final death/gate writer·State/World0, F actor/constructor body·factory679 prefix byte 보존. 신규543/0+관련126/0=669/0·factory3그룹/실패0·최종ERROR0. 실제18종spawn/tick·16PC처치/origin, 별도29실제8탄/terminal PCI-11 HOLD. 30actor600tick mean2.869/p994.010/max8.526ms(최대예산초과, 최적화0). 공용 hunk는 [보고서](engine/orders/reports/demo11-enemy-base3_REPORT.md). [8.0 기반](8.0몬스터디자인/DEMO11_NATURAL_ENEMY_BASE_20261021.md)·[9AI clock](9적ai패턴디자인/DEMO11_NATURAL_ENEMY_CLOCK_20261021.md) 동기화 |
+| 보호·근거 | PC damage/parry/final death/gate writer·State/World0, F actor/constructor body·factory679 prefix byte 보존. 신규543/0+관련126/0=669/0·factory3그룹/실패0·최종ERROR0. 실제18종spawn/tick·16PC처치/origin, 별도29실제8탄/terminal PCI-11 HOLD. 30actor600tick mean2.869/p994.010/max8.526ms(최대예산초과, 최적화0). 공용 hunk는 [보고서](_archive/engine/orders/reports/demo11-enemy-base3_REPORT.md). [8.0 기반](_archive/8.0몬스터디자인/DEMO11_NATURAL_ENEMY_BASE_20261021.md)·[9AI clock](_archive/9적ai패턴디자인/DEMO11_NATURAL_ENEMY_CLOCK_20261021.md) 동기화 |
 
 ## 2026-10-21 DEMO11-enemy-base2 — A·B·D 공통 기반 이관
 
 | 항목 | 범위·검증 |
 |---|---|
 | 의존·공통화 | 26406969 위 A d931ebe2·B c6d19973 정상 merge. 단일 factory 표15종, common prepared World/43 admission·A physical/D raw carrier 동일35 registry clock. B 탄 owner 미구현/HOLD 유지 |
-| 검증·보호 | 신규89/0+관련2336/0=2425/0·factory3그룹/실패0, 15종spawn/tick·13처치/2사망HOLD. 30actor600tick mean2.820/p994.009/max8.188ms(관측만, 최적화0). 공용 줄 범위는 [보고서](engine/orders/reports/demo11-enemy-base2_REPORT.md). PC 보호/World/State0, 성능 최적화0. [8.0](8.0몬스터디자인/DEMO11_NATURAL_ENEMY_BASE_20261021.md)·[9AI clock](9적ai패턴디자인/DEMO11_NATURAL_ENEMY_CLOCK_20261021.md) 동기화 |
+| 검증·보호 | 신규89/0+관련2336/0=2425/0·factory3그룹/실패0, 15종spawn/tick·13처치/2사망HOLD. 30actor600tick mean2.820/p994.009/max8.188ms(관측만, 최적화0). 공용 줄 범위는 [보고서](_archive/engine/orders/reports/demo11-enemy-base2_REPORT.md). PC 보호/World/State0, 성능 최적화0. [8.0](_archive/8.0몬스터디자인/DEMO11_NATURAL_ENEMY_BASE_20261021.md)·[9AI clock](_archive/9적ai패턴디자인/DEMO11_NATURAL_ENEMY_CLOCK_20261021.md) 동기화 |
 
 ## 2026-10-21 DEMO11-etype-b — 8~12 Marker·factory 인수 경계
 
 - main0138c5bb9 + DEMO11-43 9b763da9 정상 merge. B 전용 직접호출 preflight·기존 하니스 상속, 공통 helper 재작성/A 파일 변경0. **5종 모두 NOT_READY**, 실제 자연 스폰·특수 상태·전투 구현 완료 아님.
-- 신규27/0·기존43 40/0 각1회. 기존 회귀 내 adapter 벽시계만 측정, 5종 실제 스폰 벤치 미실행. Main/State/PC 전투·피해/저장/맵/tick/목록 생성API0. [보고서](engine/orders/reports/demo11-etype-b_REPORT.md)·docs/8.0 종별 근거·묶음 A 통합 후보·_out/demo11-etype-b/ 원로그.
+- 신규27/0·기존43 40/0 각1회. 기존 회귀 내 adapter 벽시계만 측정, 5종 실제 스폰 벤치 미실행. Main/State/PC 전투·피해/저장/맵/tick/목록 생성API0. [보고서](_archive/engine/orders/reports/demo11-etype-b_REPORT.md)·docs/8.0 종별 근거·묶음 A 통합 후보·_out/demo11-etype-b/ 원로그.
 
 
 ## 2026-10-21 DEMO11-enemy-base 후속 — D9fd31a64 공통 이관
@@ -634,26 +797,26 @@
 | 항목 | 동작 보존·범위 |
 |---|---|
 | 병합·공통화 | 정상merge9157697c(9fd31a64). D5종 factory prepared entry→common World/origin admission·동일35 탄/World epoch. 기존 Main D facade·D actor/ctor RNG/탄 수치 body·PC 보호 경로 byte 보존 |
-| 후행·검증 | D selected-only/자동schedulerHOLD·25 death/이동탄 PC contact 후행 유지. 이관집중21/0+기존D158/0+공통0 31/0+35 43/0=253/0·ERROR0, 관련suite 각1회. 30actor600틱 mean2.824/p993.980/max8.380ms(최대예산초과). 결과는 [보고서](engine/orders/reports/demo11-enemy-base_REPORT.md). [8.0 계약](8.0몬스터디자인/DEMO11_NATURAL_ENEMY_BASE_20261021.md), [9AI clock](9적ai패턴디자인/DEMO11_NATURAL_ENEMY_CLOCK_20261021.md) |
+| 후행·검증 | D selected-only/자동schedulerHOLD·25 death/이동탄 PC contact 후행 유지. 이관집중21/0+기존D158/0+공통0 31/0+35 43/0=253/0·ERROR0, 관련suite 각1회. 30actor600틱 mean2.824/p993.980/max8.380ms(최대예산초과). 결과는 [보고서](_archive/engine/orders/reports/demo11-enemy-base_REPORT.md). [8.0 계약](_archive/8.0몬스터디자인/DEMO11_NATURAL_ENEMY_BASE_20261021.md), [9AI clock](_archive/9적ai패턴디자인/DEMO11_NATURAL_ENEMY_CLOCK_20261021.md) |
 
 ## 2026-10-21 DEMO11-enemy-base — 자연 소환 단일 기반
 
 | 항목 | 구현·검수 근거 |
 |---|---|
 | 기준·경로 | 하니스 공백만 최종 교정(실행문 불변). main0138c5bb9 +439b763da9 +Acf7408d4 정상FF. P3 constructor body 동일 추출→factory EOF append19/0→실제 World registry→43 origin, 기존 World clock·scheduler·동일35 registry 재사용 |
-| 검증·경계 | 신규31/0+관련415/0=446/0 각suite1회(신규 초기실패 제외), 실제 자연0 spawn/tick/legacy PC interface 처치/origin1, 실제30 actor600틱 벤치 유효1회 mean2.904/p994.221/max8.669ms(최대는8.333예산 초과). 보호경로/저장/에셋0, 전체타입/fullv3/전체120fps 완료 아님. 관련회귀·범위·대체위치 [보고서](engine/orders/reports/demo11-enemy-base_REPORT.md), [8.0](8.0몬스터디자인/DEMO11_NATURAL_ENEMY_BASE_20261021.md), [9AI](9적ai패턴디자인/DEMO11_NATURAL_ENEMY_CLOCK_20261021.md) |
+| 검증·경계 | 신규31/0+관련415/0=446/0 각suite1회(신규 초기실패 제외), 실제 자연0 spawn/tick/legacy PC interface 처치/origin1, 실제30 actor600틱 벤치 유효1회 mean2.904/p994.221/max8.669ms(최대는8.333예산 초과). 보호경로/저장/에셋0, 전체타입/fullv3/전체120fps 완료 아님. 관련회귀·범위·대체위치 [보고서](_archive/engine/orders/reports/demo11-enemy-base_REPORT.md), [8.0](_archive/8.0몬스터디자인/DEMO11_NATURAL_ENEMY_BASE_20261021.md), [9AI](_archive/9적ai패턴디자인/DEMO11_NATURAL_ENEMY_CLOCK_20261021.md) |
 ## 2026-10-21 DEMO11-etype-a 승인 재개 — factory5종 append-only
 
 - 사용자 판정으로 factory EOF680–688에 etype0/1/4/5/6 등록9행만 추가. 기존prefix/생성로직 byte 동일·PC9/11/47 겹침0. 기존kernel 및 World phase 재사용,5/6 누락 상태만 추가.
 - 원본mkEn90사례·실제5종 등록/탄/PC접촉/사망1952/0, 경계48/0. 120Hz240틱 벤치1회 벽시계5.312초·actor p95 311µs/max38.677ms: 지속120fps 통과 아님. source scheduler·type6 보호owner는 미완 유지.
 - 직접 회귀43 40/0·P3 298/0·factory3그룹/0실패, P3 종료ObjectDB8 경고 원문 보존.
-- 공용 범위/검증/회귀·인계 한계는 [보고서](engine/orders/reports/demo11-etype-a_REPORT.md), 몬스터 관리·WORK_BOARD 동기화. 이전cf740 부분 제출 기록은 아래와 외부 원로그에 보존.
+- 공용 범위/검증/회귀·인계 한계는 [보고서](_archive/engine/orders/reports/demo11-etype-a_REPORT.md), 몬스터 관리·WORK_BOARD 동기화. 이전cf740 부분 제출 기록은 아래와 외부 원로그에 보존.
 
 ## 2026-10-21 DEMO11-etype-a selected0 P3→MAP11→43 origin 인계
 
 - main0138c5bb9에 DEMO11-43 9b763da9 정상 fast-forward merge. Main+8/State0·신규 얇은 consumer만. 기존 P3 type0 constructor/World 등록/43 immutable origin 재사용, source pool/RNG/HP/AI/16좌표 복제0.
 - 부분 구현·통합 BLOCKED:1/4 자연 constructor/등록·5/6 미구현·PC 보호 도메인·자연 source scheduler 미완. 5종 동시 스폰 벤치0회(미충족 명시), 요청 거절 시간을 대체 성능으로 제출하지 않음.
-- 신규48/0·직접회귀338/0(총386/0), P3 종료ObjectDB8 경고원문 보존. etype별 전후/경계 테스트 수·공용 줄 범위·검증은 [보고서](engine/orders/reports/demo11-etype-a_REPORT.md), docs/8.0 최신 Native 상태 동기화. 정상훅·자기branch push/remote/DONE 후 자기WT 제거.
+- 신규48/0·직접회귀338/0(총386/0), P3 종료ObjectDB8 경고원문 보존. etype별 전후/경계 테스트 수·공용 줄 범위·검증은 [보고서](_archive/engine/orders/reports/demo11-etype-a_REPORT.md), docs/8.0 최신 Native 상태 동기화. 정상훅·자기branch push/remote/DONE 후 자기WT 제거.
 ## 2026-10-21 DEMO11-etype-d 재개 — factory append-only·실제 D5종 등록
 
 | 항목 | 결과·경계 |
@@ -661,7 +824,7 @@
 | 사용자 판정 반영 | 이전9627cf75에서 같은branch 재개. factory EOF D등록+18/−0·Main+7/−0, 기존등록/생성/P2-008b/registry+30/−0(D clock 인계)·State/World/PC 보호/저장/맵0줄 |
 | 실제 경로 | 기존 enemy.gd HP/poise owner·World phase/RNG·BC09/35 carrier·43 origin 재사용. 5종실스폰·tick/비치명hurtE,4종최종사망→지역kill,18 Player HP감소·24둔화·25생존zone.25사망prefix/이동탄PCcontact·29종autoscheduler 후행 |
 | 검증 | 신규158/0(런타임29·ctor8+원문90·사망18·clock13), 기존factory3그룹/0·관련83/0 각1회. clock 인계 수정 후 최종 벤치14/0·5actor각270tick max4.252ms<8.333ms, 기존Camera WARNING1/ERROR0·렌더FPS미검증. 실패 하니스 로그보존·실패만수정 |
-| 문서·제출 | [타입별 결과/공용줄/A·B·C 통합안](engine/orders/reports/demo11-etype-d_REPORT.md),8.0·자기WORK_BOARD 갱신. 새공통helper0·보호경로0, 자기push/remoteSHA/DONE 후 WT정리·R불변, _out/demo11-etype-d/resume-* 원로그 |
+| 문서·제출 | [타입별 결과/공용줄/A·B·C 통합안](_archive/engine/orders/reports/demo11-etype-d_REPORT.md),8.0·자기WORK_BOARD 갱신. 새공통helper0·보호경로0, 자기push/remoteSHA/DONE 후 WT정리·R불변, _out/demo11-etype-d/resume-* 원로그 |
 
 ## 2026-10-21 DEMO11-etype-d — 자연 D 5종 NOT_READY·원문/admission 검증
 
@@ -670,31 +833,31 @@
 | 기준 | main0138c5bb9 +43/9b763da9 정상FF, gap61ab71be §4.1 읽기참조. A/B/C 파일 읽기만·새 공통helper0 |
 | 판정 | 18/19/23/24/25 **NOT_READY·실제 actor0·구현 완료 아님**. 기존 Marker adapter query와 factory/PC 옵션 거부 확인. 24 freeze 공개API는 존재,18 drainHeal 소비0,25 생존D/사망I 원문 보존 |
 | 검증 | 새 Godot34/0+원문JS349/0은 admission/source 계약 검사뿐. 기존43 각1회40/0, **5종 실제 벤치 NOT_RUN_NO_ACTORS**·가짜 성능/전투 PASS0 |
-| 범위 | 제품/Main/State/World/Player/PC 보호·맵·저장0줄, 새 tests·8.0·자기 docs만. [타입별 근거/필요 접점](engine/orders/reports/demo11-etype-d_REPORT.md). 자기branch push/remoteSHA/DONE 후 WT정리·R불변, _out/demo11-etype-d 원로그 |
+| 범위 | 제품/Main/State/World/Player/PC 보호·맵·저장0줄, 새 tests·8.0·자기 docs만. [타입별 근거/필요 접점](_archive/engine/orders/reports/demo11-etype-d_REPORT.md). 자기branch push/remoteSHA/DONE 후 WT정리·R불변, _out/demo11-etype-d 원로그 |
 
 ## 2026-10-21 DEMO11-etype-f — 26~28 append-only 등록·동작별 NOT_READY
 
 - main0138c5bb9 + adapter9b763da9/Bc6d19973 체인 정상merge. Main 끝8줄·factory 끝15줄만 추가(기존 byte 보존), 기존 profile/atlas/hurtE kernel 재사용. State/World/Player/보호 전투·저장·맵 배치0. 새 공통 helper0; ttys006 enemy-base 이관 후보를 종별 기록.
 - 신규 실제 actor3 runtime33/0, hurtE3 HP875→874·기존 freeze API120틱. 물리120Hz 고정120틱 벽시계26/0: 생성2.176ms·평균0.108467/p99 0.183/최대0.193ms. 실제 탄/강타/돌진 접촉은 NOT_READY, 제품 MAP11 provider·자연 자동scheduler/전체FPS 인수 아님.
-- [보고서](engine/orders/reports/demo11-etype-f_REPORT.md)·[몬스터 인수 경계](8.0몬스터디자인/DEMO11_ETYPE_F_자연소환_20261021.md)·_out/demo11-etype-f/ 원로그/캡처. 기존 관련 테스트 무수정1회·정상훅·경로 지정 stage·자기 push/원격일치/DONE 후 자기WT제거.
+- [보고서](_archive/engine/orders/reports/demo11-etype-f_REPORT.md)·[몬스터 인수 경계](_archive/8.0몬스터디자인/DEMO11_ETYPE_F_자연소환_20261021.md)·_out/demo11-etype-f/ 원로그/캡처. 기존 관련 테스트 무수정1회·정상훅·경로 지정 stage·자기 push/원격일치/DONE 후 자기WT제거.
 
 ## 2026-10-21 DEMO11-etype-b 재개 — append-only 등록·실제 actor5
 
 - 맥북총괄 후속 승인으로49a250ef 위 재개. factory 기존679줄 byte 보존·B등록17줄, Main 기존3068줄 보존·source-selected entry8줄. PC P2-008b/피해/패링·State/World/Player0. 실제 Marker adapter→factory→ens/phase→origin5개 확인, 원소undefined 보존. A 공통 helper 재작성0.
 - runtime42/0·캐시/contact35/0(9~12 hurtE HP875→874, B12 PC Player553→530)·factory3그룹/0·강화 preflight27/0·viewport34/0. 생성11.408ms 실패 보존→설치 factory/profile 재사용 확인: 생성3.862ms,5종tick max0.718ms. 전체 렌더120fps/자연 자동scheduler·MAP11 제품 provider 인수 아님.
-- 8 death-blast 피해NOT_READY,9 actual deadPool,11 type3/MAP11 자식,공통 탄/보호 반사 접점 유지. full_combat_ready=false. [최종 보고서](engine/orders/reports/demo11-etype-b_REPORT.md)·docs/8.0·_out/demo11-etype-b/resume-*·내부viewport/1x·원실패 로그 보존. 경로 지정 stage·정상훅·자기 push/원격일치/DONE 후 자기WT제거.
+- 8 death-blast 피해NOT_READY,9 actual deadPool,11 type3/MAP11 자식,공통 탄/보호 반사 접점 유지. full_combat_ready=false. [최종 보고서](_archive/engine/orders/reports/demo11-etype-b_REPORT.md)·docs/8.0·_out/demo11-etype-b/resume-*·내부viewport/1x·원실패 로그 보존. 경로 지정 stage·정상훅·자기 push/원격일치/DONE 후 자기WT제거.
 
 ## 2026-10-21 DEMO11-etype-b — 8~12 Marker·factory 인수 경계
 
 - main0138c5bb9 + DEMO11-43 9b763da9 정상 merge. B 전용 직접호출 preflight·기존 하니스 상속, 공통 helper 재작성/A 파일 변경0. **5종 모두 NOT_READY**, 실제 자연 스폰·특수 상태·전투 구현 완료 아님.
-- 신규27/0·기존43 40/0 각1회. 기존 회귀 내 adapter 벽시계만 측정, 5종 실제 스폰 벤치 미실행. Main/State/PC 전투·피해/저장/맵/tick/목록 생성API0. [보고서](engine/orders/reports/demo11-etype-b_REPORT.md)·docs/8.0 종별 근거·묶음 A 통합 후보·_out/demo11-etype-b/ 원로그.
+- 신규27/0·기존43 40/0 각1회. 기존 회귀 내 adapter 벽시계만 측정, 5종 실제 스폰 벤치 미실행. Main/State/PC 전투·피해/저장/맵/tick/목록 생성API0. [보고서](_archive/engine/orders/reports/demo11-etype-b_REPORT.md)·docs/8.0 종별 근거·묶음 A 통합 후보·_out/demo11-etype-b/ 원로그.
 ## 2026-10-21 DEMO11-etype-e 자연 kernel 등록 전제 BLOCKED
 
-- main0138c5bb에43/9b763da9·EL/654845e4·37/05f41cc7 정상 merge, 양쪽 기능 보존. type3 PC hurtE owner·type7 실제 M29·29 attack/death/gate 경계 미준비를 etype별 보고. PC factory 중첩 건너뜀, own 제품0줄·자연 등록0. 거절 계약 검증과 3종 벤치 미실행 근거는 [보고서](engine/orders/reports/demo11-etype-e_REPORT.md). 8.0/8.2 갱신, 가짜 READY/성능 PASS0.
+- main0138c5bb에43/9b763da9·EL/654845e4·37/05f41cc7 정상 merge, 양쪽 기능 보존. type3 PC hurtE owner·type7 실제 M29·29 attack/death/gate 경계 미준비를 etype별 보고. PC factory 중첩 건너뜀, own 제품0줄·자연 등록0. 거절 계약 검증과 3종 벤치 미실행 근거는 [보고서](_archive/engine/orders/reports/demo11-etype-e_REPORT.md). 8.0/8.2 갱신, 가짜 READY/성능 PASS0.
 
 ## 2026-10-21 DEMO11-43 최신 main 충돌 해소 후속
 
-- 같은 브랜치 c5551464에 main0138c5bb 정상 merge. Main의 PC runtime-stat refresh와 기존 adapter 공개 진입점을 모두 보존, 추가 제품 변경0. 번역 목록은 main byte 동일·CRLF 유지. 관련 재검증 및 원격 일치는 [보고서](engine/orders/reports/demo11-43_REPORT.md) 후속 절과 _out/demo11-43/merge-*에 기록한다.
+- 같은 브랜치 c5551464에 main0138c5bb 정상 merge. Main의 PC runtime-stat refresh와 기존 adapter 공개 진입점을 모두 보존, 추가 제품 변경0. 번역 목록은 main byte 동일·CRLF 유지. 관련 재검증 및 원격 일치는 [보고서](_archive/engine/orders/reports/demo11-43_REPORT.md) 후속 절과 _out/demo11-43/merge-*에 기록한다.
 
 ## 2026-10-21 DEMO11-43 — MAP11 동적 spawn·지역 예산·origin kill 공통 접점
 
@@ -703,7 +866,7 @@
 | 기준·구현 | main969c194e6. MAP11 plan b085407d 현재§7 읽기 참조(지시의 map11-01은 프리뷰). 새 consumer ABI v1, 실제 Marker/region/group/revision만 수락. P3-002 count/State writer·P3-003 region writer 재사용 |
 | 경계·보호 | Main 공개 opt-in. 실제 etype 생성/등록·새 MAP11 provider·스케줄러 재개 후행, legacy 좌표 검색 차단. origin 불변/중복 kill 거절, 예정 분모 단1회. State·World·PC 전투/피해·저장·맵 제작0줄, 공용 줄 범위 보고 |
 | 검증·성능 | 신규40/0·P3-002 298/0·P3-003 43/0 각1회(381/0). 최종 ERROR0, Camera 경고각1 및 P3-002 ObjectDB8 종료 경고 보존. 최초 Main 들여쓰기 import parse 실패 교정 이력 보존. 후보요청10,000틱×3 벽시계1회: 평균0.1204ms/p99 0.202ms(실제 적 생성/전체게임 제외) |
-| 근거·제출 | [소비자 ABI](engine/DEMO11_STAGE_SPAWN_ADAPTER_20261021.md)·P3 docs·[보고서](engine/orders/reports/demo11-43_REPORT.md). 신규 틱 목록API0. 원로그 _out/demo11-43/, pgrep 2이상30초 대기·격리명·override finally제거. 자기branch push/원격일치/DONE 후 WT제거 |
+| 근거·제출 | [소비자 ABI](_archive/engine/DEMO11_STAGE_SPAWN_ADAPTER_20261021.md)·P3 docs·[보고서](_archive/engine/orders/reports/demo11-43_REPORT.md). 신규 틱 목록API0. 원로그 _out/demo11-43/, pgrep 2이상30초 대기·격리명·override finally제거. 자기branch push/원격일치/DONE 후 WT제거 |
 
 ## 2026-10-21 DEMO11-23 — BLOCKED / 실제 공유창고 owner 필요
 
@@ -711,7 +874,7 @@
 |---|---|
 | 기준 | main0138c5bb + 승인22r d276e02e 정상FF merge |
 | BLOCKED | SV-SHARED 계산 전용·실제 STORAGE/입출고/공유 setter 부재. 새 owner 금지 준수. 제품·Main/State·테스트·전투·저장0줄 |
-| 검증 | 기존 shared-read1회149486/0·ERROR/누수/잔류0, 실제 IO0. UI/3캡처 미생성·텍스트0·번역 CRLF 보존. [인수 요청](engine/orders/reports/demo11-23_REPORT.md) |
+| 검증 | 기존 shared-read1회149486/0·ERROR/누수/잔류0, 실제 IO0. UI/3캡처 미생성·텍스트0·번역 CRLF 보존. [인수 요청](_archive/engine/orders/reports/demo11-23_REPORT.md) |
 
 
 ## 2026-10-21 DEMO11-24b — 306id 분류·게임 시스템13 소비
@@ -729,7 +892,7 @@
 | 런타임 | 장착/해제 refresh 값 cache에 `potionCdRed`를 추가하고, 실제 자동 사용 때만 cache를 조회한다. 틱마다 원본 affix reader 재구축·새 INV/저장/UI/수동 퀵슬롯 owner 생성0 |
 | 검사 | `test_demo11_25b_auto_potion.gd`에 0·최대 tier·장착 해제 복귀 경계와 cache read 순서를 추가. 이 sparse worktree의 실제 Main 구동은 기존 `assets/vfx/ki_slash_silver_sheet.png` import 부재로 완료되지 않았으며, 해당 외부 에셋/import 문제를 제품 수정으로 우회하지 않음 |
 | 실제 회복·공용 | intro/lesson ens 교체 뒤 기존 phase가 부팅 identity를 고정해 회복 진입0인 문제를 검출. 실제 완료·같은 Main/World/Player/State·원본 script/binding·1회 사용을 검사하는 명시 identity 인계. 기존 advance clock/sink guard 유지. Main+23/-3·State0·World/lesson/Player/hurtE/저장0, 순수 수식/테이블 변경0 |
-| 검증·제출 | 신규131/0·13id 원문13사례 exact JS 불일치0. 직접 회귀6종 각1회4,167/0(639+442+2560+88+45+393), 기존6파일 동일. 최종ERROR/누수/잔류0·격리/pgrep gate/override0byte. [보고서](engine/orders/reports/demo11-24b_REPORT.md)·[306행 분류표](7아이템디자인/DEMO11_24B_SYSTEM_CONSUMERS_20261021.md)·원로그 _out/demo11-24b/ |
+| 검증·제출 | 신규131/0·13id 원문13사례 exact JS 불일치0. 직접 회귀6종 각1회4,167/0(639+442+2560+88+45+393), 기존6파일 동일. 최종ERROR/누수/잔류0·격리/pgrep gate/override0byte. [보고서](_archive/engine/orders/reports/demo11-24b_REPORT.md)·[306행 분류표](_archive/7아이템디자인/DEMO11_24B_SYSTEM_CONSUMERS_20261021.md)·원로그 _out/demo11-24b/ |
 
 ## 2026-10-21 DEMO11-24 — 데모 affix 소비·빈도·보호 경로 인계
 
@@ -737,13 +900,13 @@
 |---|---|
 | 기준·분모 | fetch main0138c5bb + 인수22r d276e02e 정상merge(FF). 원본 G14364–14856/G15131–15178/G16646–16650/G32002–32033에서 데모 후보398레코드/396id. 원본 롤 등급별100,000회·총400,000회 고정seed 관측 빈도 표, 실제 한 판 혼합 빈도는 미확인 |
 | 연결 | 기존 PC equipment_refresh1회만 재사용. 장착 receipt에 id별 실제 합산·before/after·READY/NOT_READY/PARTIAL 추가. 스탯18 검증, hurtE 직접72id·기타306id는 미완료. 원본 수식/tiers 복제0·Main/State/전투/저장0줄·기존 장착 파일+1줄(:135) |
-| 검증·인계 | 신규639/0·원문18사례360필드 exact Number 불일치0. 직접 회귀2종 각1회735/0(22r442+PC293). ERROR/누수/잔류0. 데모필터 native 차이7id·hurtE72id는 보호 owner에 계약 요청. [보고서](engine/orders/reports/demo11-24_REPORT.md)·[빈도/전수표](7아이템디자인/DEMO11_24_EFFECT_CONSUMPTION_20261021.md)·원로그 _out/demo11-24/. tick/목록 API/공유 RNG0·각 격리 상수·override0byte |
+| 검증·인계 | 신규639/0·원문18사례360필드 exact Number 불일치0. 직접 회귀2종 각1회735/0(22r442+PC293). ERROR/누수/잔류0. 데모필터 native 차이7id·hurtE72id는 보호 owner에 계약 요청. [보고서](_archive/engine/orders/reports/demo11-24_REPORT.md)·[빈도/전수표](_archive/7아이템디자인/DEMO11_24_EFFECT_CONSUMPTION_20261021.md)·원로그 _out/demo11-24/. tick/목록 API/공유 RNG0·각 격리 상수·override0byte |
 
 ## 2026-10-21 DEMO11-29 — 데모 소켓·유물·장비 제작 실제 거래
 
 - main0138c5bb + 장착22r d276e02e 정상merge 기준. 원본 _DEMO_MODE/forge 확인 후 유골함 제작 제외·데모 금지 affix7종 opt-in, actual State 재료/악의/가루/INV 단일 lock 및 실패 참조·캐시 rollback 연결.
 - 소켓·유물 거래/이미 장착한 종류 제작 READY. 재련·빈 슬롯 자동장착은 원본 recalcSt→applyStats의 PC 단독 recalcSt writer 부재로 HOLD(차감/RNG0). 직접 apply_stats와 장착용 clamp를 혼동하지 않음. PC 자원/피해/저장IO0행.
-- Hell Gothic 작업대·본문/숫자 hell 폰트·이모지/개발 상태 문구0, 번역 CRLF 보존. 관련 실행 수치·2장/1x 캡처·공용 변경 줄·HOLD 인터페이스는 [보고서](engine/orders/reports/demo11-29_REPORT.md), 원로그 _out/demo11-29/.
+- Hell Gothic 작업대·본문/숫자 hell 폰트·이모지/개발 상태 문구0, 번역 CRLF 보존. 관련 실행 수치·2장/1x 캡처·공용 변경 줄·HOLD 인터페이스는 [보고서](_archive/engine/orders/reports/demo11-29_REPORT.md), 원로그 _out/demo11-29/.
 
 
 ## 2026-10-21 DEMO11-22r — 일반17슬롯 장착·PC runtime refresh 연결
@@ -753,7 +916,7 @@
 | 기준·의존 | 초기 main45be76e4→최신 main0138c5bb 정상merge da098350. PC a28117c1·DEMO11-21/종료수정72e602d1 포함 확인. 미병합 branch 반입0·ec694742 blocker 해소. TI00/01·기존 forge prefix·PC 계약 재사용 |
 | 연결 | 실제 State bag↔17slot·reqLv/귀걸이/좌표·강화/결정 이전 후 PC equipment_refresh1회. 실패 INV/악의/결정/3캐시 참조 rollback·재진입 거부. 실제 공격/방어 readback, 전투식/피해/actor 직접쓰기0 |
 | 검증 | 신규442/0·원문42사례168필드 exact 비교 불일치0·ERROR/누수/잔류0. 최종 직접 회귀6종 각1회2614/0(PC286/TI238/forge1918/starter148/drop24), 모두 ERROR/누수/잔류0. JSON 소수 ID 하니스 실패는 허용오차 없이 Node exact Number 비교로 수정·실패 suite만 재실행 |
-| 범위·인계 | Main+29/State+20-1·다른 공용0. 실장착 강화이전 continuation 검증, forge panel 정적 HOLD 안내·inventory UI/SFX/lesson/save는 owner 인계. tick/목록생성API0·격리 gate·override0byte. [보고서](engine/orders/reports/demo11-22r_REPORT.md) |
+| 범위·인계 | Main+29/State+20-1·다른 공용0. 실장착 강화이전 continuation 검증, forge panel 정적 HOLD 안내·inventory UI/SFX/lesson/save는 owner 인계. tick/목록생성API0·격리 gate·override0byte. [보고서](_archive/engine/orders/reports/demo11-22r_REPORT.md) |
 
 ## 2026-10-21 EL-01 — hell0 선택기·단일 lock·forced constructor 후처리
 
@@ -762,7 +925,7 @@
 | 기준·의존 | main45be76e4(969c194e6 이후)에 DEMO11-30 94d26012 정상 merge(b46dd5f2), CHANGELOG 양쪽 절 보존. PC parry 원격 ref 없음/merge0, 실제 M29 binding NOT_READY 유지 |
 | 구현 | stage0..3 선택기·원본 constructor RNG prefix를 type3/인트로/굴에서 재사용. M29→M30 owner lock1회·M30 standalone 호환·forced raw 후처리 API. 후속장 mod/실제 guard 등록/PC Q/E·피해·Main/State·저장·맵 변경0 |
 | 검증 | 신규3327/0(원본466사례), M29 143/0·recipe1982/0·binder4그룹/0·curtain124/0·굴298/0 각1회. M30 4그룹/0·의도된 누락자원 ERROR1 보존. type7 낡은 count 기대2실패는 기준 main 실패그룹에서도 동일 재현; 테스트 약화/수정0. Camera/굴 ObjectDB8 경고 보존. 틱 목록 API 추가0 |
-| 근거·제출 | [EL-01 보고서](engine/orders/reports/el-01_REPORT.md), 8.0/8.2·ELITES/CH1 trace·type3 실행 의존 보충. Node --node-bin·UTF8 oracle·Acorn readonly 의존, pgrep/30초 gate·격리명·원로그 _out/el-01/. 자기branch push/원격일치/DONE 후 WT제거, R 불변 |
+| 근거·제출 | [EL-01 보고서](_archive/engine/orders/reports/el-01_REPORT.md), 8.0/8.2·ELITES/CH1 trace·type3 실행 의존 보충. Node --node-bin·UTF8 oracle·Acorn readonly 의존, pgrep/30초 gate·격리명·원로그 _out/el-01/. 자기branch push/원격일치/DONE 후 WT제거, R 불변 |
 
 ## 2026-10-21 DEMO11-30 — hell0 정예 자연 연결 선행 접점 BLOCKED
 
@@ -770,7 +933,7 @@
 |---|---|
 | 기준·판정 | main ac3764bfe. EL-01 제품 경로 부재·M29 비투사체 패링 실제 PC 인터페이스 부재. constructor all-ready 위조/투사체 반사 대체/PC 전투 복제 없이 BLOCKED |
 | 범위·검증 | 제품·테스트·Main/State·저장·전투·맵 0줄. 최신 game 원본/기존 kernel 정적 대조만; Godot·런타임 테스트·캡처 미실행, PASS 주장0 |
-| 근거·제출 | [보고서](engine/orders/reports/demo11-30_REPORT.md)·ELITES 추적 보충. 단일 busy tick·forced 후대입 원순서·재개 인터페이스 기록. 원로그 _out/demo11-30/, 자기 branch 정상 push/원격 일치/DONE 후 자기 WT 제거 |
+| 근거·제출 | [보고서](_archive/engine/orders/reports/demo11-30_REPORT.md)·ELITES 추적 보충. 단일 busy tick·forced 후대입 원순서·재개 인터페이스 기록. 원로그 _out/demo11-30/, 자기 branch 정상 push/원격 일치/DONE 후 자기 WT 제거 |
 
 
 ## 2026-10-21 DEMO11-04b — 로비 삭제 확인 슬롯 숫자 명조
@@ -787,7 +950,7 @@
 |---|---|
 | 기준·권위 | main0138c5bb9 + 19r0c136318 정상 merge. 기존 POINT/19r/PC apply_stats 재사용, UI 별도 writer·틱 호출0 |
 | 화면·범위 | 웹31중심·260단계/원본 인체 선화/효과 추출. 계획·리셋 확인·예약/취소, 숫자 hell 명조·개발 문구0. Main 설치+5만, State/보호 전투0 |
-| 검증 | 신규36/0·19r383/0·PC290/0, 최종 렌더12/0·전체2장/1x4장(사용자 눈 검수 대기), 상세는 [보고서](engine/orders/reports/demo11-19ui_REPORT.md). CRLF·격리 OS 경로·실행 gate 원로그 보존. 실창 수동/사용자 디자인 승인과 구분 |
+| 검증 | 신규36/0·19r383/0·PC290/0, 최종 렌더12/0·전체2장/1x4장(사용자 눈 검수 대기), 상세는 [보고서](_archive/engine/orders/reports/demo11-19ui_REPORT.md). CRLF·격리 OS 경로·실행 gate 원로그 보존. 실창 수동/사용자 디자인 승인과 구분 |
 | docs | 3.1 UI·3.2 메타·번역목록·자기 작업판 동기화. 자기 branch 정상 push/원격 SHA/DONE 후 자기 WT 제거 |
 
 ## 2026-10-21 DEMO11-19r 실제 성장 투자·예약→PC runtime refresh
@@ -796,7 +959,7 @@
 |---|---|
 | 기준·권위 | main45be76e49에 PC a28117c1 포함, 별도merge0. 기존 META04/05·rawgrit실제holder·PC Main API만 사용, 보호전투/원본0 |
 | 연결 | Main+12/State+31/-2. stat/passive/grit/plan/reset/queue→실제commit·PCstatus/readback, 실패시할당/XP복구. XP 큐→재계산→새cap heal→handoff. 틱호출/새목록API0 |
-| 검증·인계 | 신규383/0·원문24사례·실제PC거부복구2, 초기숫자비교하니스25실패보존·실패suite만재실행. 기존6suite2827/0 각1회·합3210/0(skip0/ERROR0). 관련회귀결과·줄범위·plan 2→1pass 근거는 [보고서](engine/orders/reports/demo11-19r_REPORT.md). 기존HUD최소표시/새full UI·세이브IO0 |
+| 검증·인계 | 신규383/0·원문24사례·실제PC거부복구2, 초기숫자비교하니스25실패보존·실패suite만재실행. 기존6suite2827/0 각1회·합3210/0(skip0/ERROR0). 관련회귀결과·줄범위·plan 2→1pass 근거는 [보고서](_archive/engine/orders/reports/demo11-19r_REPORT.md). 기존HUD최소표시/새full UI·세이브IO0 |
 | 제출 | META·번역목록·자기WORK_BOARD 갱신, 정상훅·정확경로staging·자기branch push/remote/DONE 뒤WT제거, R불변 |
 
 ## 2026-10-21 DEMO11-50 — 사운드 탭 개발 상태 문구 제거
@@ -804,14 +967,14 @@
 | 항목 | 구현·검수 근거 |
 |---|---|
 | 화면·번역 | music_note KO/EN 및 Label 제거, 기존 슬라이더·토글 테마 유지. 번역1행만 byte 삭제, CRLF4225개 보존/전체 개행 변환0 |
-| 범위 | 최신main0138c5bb9 merge 확인(이미 조상). BGM 연결은 사용자 인수한 DEMO11-41 담당, 재생/공용/전투/저장 변경0. [보고서](engine/orders/reports/demo11-50_REPORT.md), [설정 계약](3.3%20키바인딩+설정/DEMO11_50_NATIVE_SETTINGS_20261021.md). 관련1회 검사·사운드 캡처·최종SHA는 보고서/DONE |
+| 범위 | 최신main0138c5bb9 merge 확인(이미 조상). BGM 연결은 사용자 인수한 DEMO11-41 담당, 재생/공용/전투/저장 변경0. [보고서](_archive/engine/orders/reports/demo11-50_REPORT.md), [설정 계약](_archive/3.3%20키바인딩+설정/DEMO11_50_NATIVE_SETTINGS_20261021.md). 관련1회 검사·사운드 캡처·최종SHA는 보고서/DONE |
 
 ## 2026-10-21 DEMO11-50 RETOUCH — 설정 슬라이더·토글
 
 | 항목 | 구현·검수 근거 |
 |---|---|
 | UI | 보고서 최종 변경줄75·112·127·150–173 반영. PASS 패널/탭/폰트 유지, 흑철 트랙·금빛 채움/손잡이·88×40 가독 토글. native 입력/설정 writer 유지, 새 문구0 |
-| 병합·검증 | main0138c5bb 정상 merge, 로비 bridge 보존·자체 설정 저장 모듈 이름 분리. 실제 GPU 관련 suite 각1회53/0, 캡처2장+1x크롭, 눈 재검수 대기. [보고서](engine/orders/reports/demo11-50_REPORT.md), [설정 계약](3.3%20키바인딩+설정/DEMO11_50_NATIVE_SETTINGS_20261021.md) |
+| 병합·검증 | main0138c5bb 정상 merge, 로비 bridge 보존·자체 설정 저장 모듈 이름 분리. 실제 GPU 관련 suite 각1회53/0, 캡처2장+1x크롭, 눈 재검수 대기. [보고서](_archive/engine/orders/reports/demo11-50_REPORT.md), [설정 계약](_archive/3.3%20키바인딩+설정/DEMO11_50_NATIVE_SETTINGS_20261021.md) |
 
 ## 2026-10-21 DEMO11-50 — 설정 차단 해소·허용 OPT 저장/복원·UI
 
@@ -819,7 +982,7 @@
 |---|---|
 | 기준 | origin/main45be76e49 + DEMO11-09dc9f34ea 정상 merge319ca387. Main/State/전투 핵심 자체 변경0 |
 | S01/S10 | 기존 OPT owner에 원본 초기textScale100/panelFittrue/diffV2=1 추가(38필드), 허용7필드 writer. 기존 demo11-05 IO에 원본settings/lang/screen 키 추가, 실제 user 폴더 거절·전용demo namespace. 보호 저장필드 보존/키복원0/저장 실패prefix 명시 |
-| UI/문서 | pause 설정→4탭, 볼륨/ko-en/120포함render cap/전체화면/접근성. Q 패링·E 방패(불꽃칼날) 안내 수정. 기존crest·Hell Gothic·폰트, 번역대상 등록. [현행계약](3.3%20키바인딩+설정/DEMO11_50_NATIVE_SETTINGS_20261021.md), [수치·공용줄·캡처 보고서](engine/orders/reports/demo11-50_REPORT.md) |
+| UI/문서 | pause 설정→4탭, 볼륨/ko-en/120포함render cap/전체화면/접근성. Q 패링·E 방패(불꽃칼날) 안내 수정. 기존crest·Hell Gothic·폰트, 번역대상 등록. [현행계약](_archive/3.3%20키바인딩+설정/DEMO11_50_NATIVE_SETTINGS_20261021.md), [수치·공용줄·캡처 보고서](_archive/engine/orders/reports/demo11-50_REPORT.md) |
 | 경계 | 키변경/BINDS·inputMode 이관/난이도·QE/Player save0, BGM 재생 owner HOLD 명시. tick 목록생성API0. 관련회귀각1회/격리GPU·캡처 및 최종 SHA는 보고서와 _out/demo11-50/DONE.txt |
 
 ## 2026-10-21 DEMO11-09 pause·입력 안내 / 설정 반영 BLOCKED
@@ -828,7 +991,7 @@
 |---|---|
 | 기준·범위 | mainac3764bfe, Main+10/-0만 공용추가. 기존 pause/clear입력/review guard 유지, 메뉴→settings back 계층·기존 프로필 읽기. State/전투/저장/맵0 |
 | 설정 권위 | S01 재사용·missing3 NOT_READY 유지. S10 구현/S08 writer 부재로 설정 반영·언어/inputMode 복원 BLOCKED. 임의 기본값 채움·키변경·별도OPT writer0 |
-| 화면·검증 | Hell Gothic/기존폰트·crest/이모지0, 번역·3.1UI 갱신. 신규29/0+S01unit112/0+actual12/0=153/0·각1회·재실행0. [보고서](engine/orders/reports/demo11-09_REPORT.md)에 결과·공용줄·인계 제안, captures 시각 검수 대기 |
+| 화면·검증 | Hell Gothic/기존폰트·crest/이모지0, 번역·3.1UI 갱신. 신규29/0+S01unit112/0+actual12/0=153/0·각1회·재실행0. [보고서](_archive/engine/orders/reports/demo11-09_REPORT.md)에 결과·공용줄·인계 제안, captures 시각 검수 대기 |
 | 제출 | 원로그 _out/demo11-09/, Godot gate/격리/override0. 정상훅·자기branch push/remote/DONE 뒤 WT제거, R 불변 |
 
 
@@ -836,7 +999,7 @@
 
 - 같은 branch884ddc66에 origin/main0138c5bb 정상 merge. Main/State의 양쪽 독립 추가 절을 보존, 전투/PC owner 수정0. 번역 목록 main prefix 바이트 보존 + 자기 절 CRLF 추가, 기존 인트로/다른 작업 번역 보존.
 - 미연결 자동 분해 섹션/개발 대기 문구 제거. 이름은 뼈색, G14350 원본 palette는 G50299식3px 왼쪽 희귀도 표식+등급명에 재사용. ‘녹슨’ tier접두사는 rarity와 무관; 실제 시작 bag은 rarity1/고급, 기본 장착은 rarity0/일반. docs7 유니크 색 과거#ff4466 셀을 현재 source#8e55e9로 정합. 확인 대화상자 변경0, 수식/가격/writer 변경0.
-- 신규35/0·가격68/0·INV142/0 합계245/0·ERROR0·기존 Camera WARN1, 캡처 별도22/0·기존 Camera WARN1. 관련 각1회·실창3장+1x9크롭·원로그는 `_out/demo11-28/retouch/`. 화면 비교 자료 준비, 최종 눈 검수 대기. [RETOUCH 보고서](engine/orders/reports/demo11-28_RETOUCH_REPORT.md), docs2_7/3.1/번역/7 동기화.
+- 신규35/0·가격68/0·INV142/0 합계245/0·ERROR0·기존 Camera WARN1, 캡처 별도22/0·기존 Camera WARN1. 관련 각1회·실창3장+1x9크롭·원로그는 `_out/demo11-28/retouch/`. 화면 비교 자료 준비, 최종 눈 검수 대기. [RETOUCH 보고서](_archive/engine/orders/reports/demo11-28_RETOUCH_REPORT.md), docs2_7/3.1/번역/7 동기화.
 
 ## 2026-10-21 DEMO11-28 — 분해 policy→단일 State writer·INV/cache/UI
 
@@ -844,23 +1007,23 @@
 |---|---|
 | 기준·범위 | main ac3764bfe. 기존 native_meta_salvage_policy 0줄, Main +23/State +41만 접점 추가. 잠금/장착/identity 재검증·단일 입금/제거/picked, G키 Hell Gothic UI·번역3338–3366 |
 | 검증 | 실제 Main29/0·경계6/0·입력6/0·기존 policy68/0·INV142/0 각1회, 합계251/0/ERROR0·기존Camera WARN2. 최종 GUI/crop16/0·WARN1 별도. 초기 시각 RETOUCH 보존 |
-| 인계 | [보고서](engine/orders/reports/demo11-28_REPORT.md), _out/demo11-28/captures/ 전체3+1x9. 눈 검수·자연 줍기/저장 소비자 대기. R/First 불변·정상 훅·자기branch push/remote/DONE 후 자기WT 제거 |
+| 인계 | [보고서](_archive/engine/orders/reports/demo11-28_REPORT.md), _out/demo11-28/captures/ 전체3+1x9. 눈 검수·자연 줍기/저장 소비자 대기. R/First 불변·정상 훅·자기branch push/remote/DONE 후 자기WT 제거 |
 
 ## 2026-10-21 DEMO11-44 기존 펫 owner 연결
 
-- main0138c5bb +37/05f41cc7 +31/76bcae8d 정상 merge, 양쪽 기능 보존. Main 설치1줄·NativePets 읽기/신호 소비, 기존9 ID 추가69/102. 펫 피해/회복0, State writer 재사용 검증. 신규75/0·Node10/0, 관련 회귀·공용 범위는 [보고서](engine/orders/reports/demo11-44_REPORT.md). 번역4문장 추가·main bytes/CRLF 보존.
+- main0138c5bb +37/05f41cc7 +31/76bcae8d 정상 merge, 양쪽 기능 보존. Main 설치1줄·NativePets 읽기/신호 소비, 기존9 ID 추가69/102. 펫 피해/회복0, State writer 재사용 검증. 신규75/0·Node10/0, 관련 회귀·공용 범위는 [보고서](_archive/engine/orders/reports/demo11-44_REPORT.md). 번역4문장 추가·main bytes/CRLF 보존.
 
 
 ## 2026-10-21 fieldboss-unify — 31·32·33 공통 helper 한 파일
 
 - 최신main0138c5bb9 +31/76bcae8d·32/4a10102a·33/f650c8d7 정상merge b51e2c78, 충돌은 양쪽 추가 보존. `native_fieldboss_common.gd`로 math/provider/PC readback/CD8/단일 registry field facade·clock 비교 이동. HP/공격/면역·슬롯null/보상·warning/즉시탄·FD continuation 차이 유지. 자기 Main/State·보호 경로0줄.
 - 기존 테스트 byte 무수정·각1회31 1402/0·32 906/0·33 7874/0, 관련PC11/0·35 29/0. 신규 provider-loss 경계 ScriptError3건은 실패 기록 후 수명 인자만 수정·실패 suite만 재실행14/0·ERROR0(기능 합10,236/0). 최신main에MAP11 제품provider 없으므로 Marker 이름/순서 표만, 맵/자동bind/원본좌표0.
-- [보고서](engine/orders/reports/fieldboss-unify_REPORT.md)에 단일 helper의6영역·보존 정책·MAP11 계약·검사/실패/공용 범위 기록. _out/fieldboss-unify/ 원로그, 정상훅·경로 지정stage·자기push/remoteSHA/DONE 뒤 자기WT제거, R불변.
+- [보고서](_archive/engine/orders/reports/fieldboss-unify_REPORT.md)에 단일 helper의6영역·보존 정책·MAP11 계약·검사/실패/공용 범위 기록. _out/fieldboss-unify/ 원로그, 정상훅·경로 지정stage·자기push/remoteSHA/DONE 뒤 자기WT제거, R불변.
 
 ## 2026-10-21 DEMO11-32 화마귀 family 소비자·실제35 registry 인계
 
 - 최신main0138c5bb9 기준 FD 전용 source tick/4슬롯·MAP11 Marker 소비자 구현. Main+8/State+6 추가만, 31 공통코드·PC 보호 피해/QE·35 registry·맵0줄.
-- 원본 G61460/61632–61725·18628–18711 기반. 원본 JS 스트리밍 oracle·실제 Main/State/35 carrier 신규906/0·예산2/0(평균0.030/최대0.155ms)·직접회귀51/0. 고정N 벽시계 kernel 예산1회(PC/registry/render 제외). 결과·공용 줄 범위·실패 로그는 [보고서](engine/orders/reports/demo11-32_REPORT.md).
+- 원본 G61460/61632–61725·18628–18711 기반. 원본 JS 스트리밍 oracle·실제 Main/State/35 carrier 신규906/0·예산2/0(평균0.030/최대0.155ms)·직접회귀51/0. 고정N 벽시계 kernel 예산1회(PC/registry/render 제외). 결과·공용 줄 범위·실패 로그는 [보고서](_archive/engine/orders/reports/demo11-32_REPORT.md).
 - 부분 구현·통합 BLOCKED: 실제 source clock/Marker·PC contact/hit ingress·35 specialized elemBall terminal 미인수. 큰탄을 일반탄으로 우회하지 않음. "31과 통합 후보" 기록. Godot gate/격리·정상훅·자기branch push/remote/DONE 후 자기WT 제거.
 ## 2026-10-21 DEMO11-33 — 곰치 family·실제 tick/혈안탄·PC 물기/사망·aggro 인계
 
@@ -869,7 +1032,7 @@
 | 기준·연결 | main0138c5bb9+31/76bcae8d 정상merge50f31d37. Main 설치/Marker4·같은G/World RNG·기존35/31 registry 실제 auxiliary owner/탄/homing·PC contact readback·WM HP/CD8/null death. |
 | 보호·범위 | Main+6/0·registry+45/12−, State/World/Player/PC 피해·패링·저장·맵·32파일0. i32/registry 재사용,31·32·33 helper 통합안은 후행 제안만. source 좌표0·원본시트 byte재사용. |
 | 검증 | 신규7,874/0+관련기존1,465/0=9,339/0. 벤치1회265/0 cleanPASS·WM4/256→264탄/240틱 max2.460ms<8.333ms. 초기 하니스 실패 원로그 보존·실패만 재실행·검사/기존테스트 약화0. |
-| 문서·제출 | [계약/공용줄/실패/통합안](engine/orders/reports/demo11-33_REPORT.md), FIELD visibility/fieldboss 추적 갱신. 실제MAP Marker/PC producer·자연전투·연출/전체FPS 인수 후행. 자기push/remoteSHA/DONE 후 WT정리·R불변, _out/demo11-33 원로그. |
+| 문서·제출 | [계약/공용줄/실패/통합안](_archive/engine/orders/reports/demo11-33_REPORT.md), FIELD visibility/fieldboss 추적 갱신. 실제MAP Marker/PC producer·자연전투·연출/전체FPS 인수 후행. 자기push/remoteSHA/DONE 후 WT정리·R불변, _out/demo11-33 원로그. |
 
 ## 2026-10-21 DEMO11-31 — 앵글러 family·실제 탄·PC final→지역 gate
 
@@ -878,22 +1041,22 @@
 | 기준·연결 | main45be76e4+37/05f41cc7 정상 merge8992ef35. Main 설치/Marker API·실제 World phase/동일G·35 registry field birth/에너지 sweep·PC readback→P3→37. source 좌표 복제0·원본 PNG byte재사용. |
 | 보호·원문 | Main+6/0·registry field접점31+/4−, State/World/Player/PC 피해·패링·저장·맵0. 180/180 재충전 burst 구간·혈안 drop 면제·에너지 출생후18/96·r26 그대로. |
 | 검증 | 신규1402/0+PC집중11/0+기존200/0=기능1613/0. 벤치1회263/0 cleanPASS, 4actor/256energy·240틱 mean1.133850/max4.649ms<8.333ms. 초기2실행 예외/기대값 실패·자기PID종료 원문보존/실패만수정, PC후속은집중11만. |
-| 문서·제출 | [계약·범위·실패/성능](engine/orders/reports/demo11-31_REPORT.md), FIELD cadence/visibility·fieldboss 추적 현행 보충. 자기branch 일반push/원격일치/DONE 후 WT제거·R불변, _out/demo11-31 원로그. |
+| 문서·제출 | [계약·범위·실패/성능](_archive/engine/orders/reports/demo11-31_REPORT.md), FIELD cadence/visibility·fieldboss 추적 현행 보충. 자기branch 일반push/원격일치/DONE 후 WT제거·R불변, _out/demo11-31 원로그. |
 
 ## 2026-10-21 type7-fix — 낡은 지원 집계 기대값
 
-- 원본16행/supportfalse/runtimeNULL 불변. 현재 factory 얼음전사3행 지원 근거로 기본9/7·type7 명시 설치10/6 정확 기대값을 교정하고 order집합 검사를 추가했다. 제품0줄·검사 완화0. [보고서](engine/orders/reports/type7-fix_REPORT.md).
+- 원본16행/supportfalse/runtimeNULL 불변. 현재 factory 얼음전사3행 지원 근거로 기본9/7·type7 명시 설치10/6 정확 기대값을 교정하고 order집합 검사를 추가했다. 제품0줄·검사 완화0. [보고서](_archive/engine/orders/reports/type7-fix_REPORT.md).
 
 ## 2026-10-21 DEMO11-32 화마귀 family 소비자·실제35 registry 인계
 
 - 최신main0138c5bb9 기준 FD 전용 source tick/4슬롯·MAP11 Marker 소비자 구현. Main+8/State+6 추가만, 31 공통코드·PC 보호 피해/QE·35 registry·맵0줄.
-- 원본 G61460/61632–61725·18628–18711 기반. 원본 JS 스트리밍 oracle·실제 Main/State/35 carrier 신규906/0·예산2/0(평균0.030/최대0.155ms)·직접회귀51/0. 고정N 벽시계 kernel 예산1회(PC/registry/render 제외). 결과·공용 줄 범위·실패 로그는 [보고서](engine/orders/reports/demo11-32_REPORT.md).
+- 원본 G61460/61632–61725·18628–18711 기반. 원본 JS 스트리밍 oracle·실제 Main/State/35 carrier 신규906/0·예산2/0(평균0.030/최대0.155ms)·직접회귀51/0. 고정N 벽시계 kernel 예산1회(PC/registry/render 제외). 결과·공용 줄 범위·실패 로그는 [보고서](_archive/engine/orders/reports/demo11-32_REPORT.md).
 - 부분 구현·통합 BLOCKED: 실제 source clock/Marker·PC contact/hit ingress·35 specialized elemBall terminal 미인수. 큰탄을 일반탄으로 우회하지 않음. "31과 통합 후보" 기록. Godot gate/격리·정상훅·자기branch push/remote/DONE 후 자기WT 제거.
 
 ## 2026-10-21 — MAP11-14 랜드마크·관문·필드/보스룸 시각 접합
 - a5ad5e4e + 1ec7b7f3 + e8888106 정상merge. 기존RGBA만으로 D01 시체나무/낮은제단·철창/뼈관문, G3/G4 필드를 실제Main에 연결. 새이미지0.
 - arena 균열은 field형 RGBA15fragment; 실제Main actor에 양공간 가림fade 연결. Marker/geometry/State/전투 writer 유지. .22초 전환fade/제품카메라.70·offset(0,-180).
-- [수치·소유권·MAP PRODUCTION REPORT](4.1맵디자인+설정/MAP11_LANDMARK_GATE_20261021.md). 1080p4장+1x·실Main gate입장 증거 제출, VISUAL RETOUCH/맥북총괄 눈검수 대기. 자연 지역클리어/보스완료/Windows·밀집전투120fps 미검수.
+- [수치·소유권·MAP PRODUCTION REPORT](_archive/4.1맵디자인+설정/MAP11_LANDMARK_GATE_20261021.md). 1080p4장+1x·실Main gate입장 증거 제출, VISUAL RETOUCH/맥북총괄 눈검수 대기. 자연 지역클리어/보스완료/Windows·밀집전투120fps 미검수.
 
 ## 2026-10-21 MAP11-PROD 제품 Main 맵 연결 / DEMO11-45 상자 재개
 
@@ -901,36 +1064,36 @@
 
 - 실제 Main 인트로 종료·시작 적5개체 유효 위치 검사15/0을 추가했다. 관련 합248/0과 map contract1case.
 - 제품 인트로 이후 벽시계 벤치는 종료 actor0임을 명시하여 전투 부하 성능과 구분했다. 제품 코드 추가 변경 없음.
-- 관련 문서: `docs/engine/orders/reports/map11-prod_REPORT.md`.
+- 관련 문서: `docs/_archive/engine/orders/reports/map11-prod_REPORT.md`.
 
 | 항목 | 구현·근거 |
 |---|---|
 | 기준·선택 | main0138c5bb9 + MAP11 263498f6(6bcc483d 포함) 정상 merge. demo stage0 기본 새 MAP11, --map11=off 기존 경로 보존 |
 | 실제 경로 | 실제 World script identity 보존·map-only 위임→Start Marker/field→gate→arena. PC 완료 전 exit/상자 NOT_READY. 실제 provider/Marker 참조 공개, canonical 좌표/미니맵·스폰 혼합0. art 새 제작0 |
 | 상자 | 원본 stage0 장비3~5·악의+7, 기존 mkItem/journal/INV writer 재사용·새 save key0. 실제 PC 완료 부재를 가짜 신호로 대체0 |
-| 검증 | 최종 Main37/0·상자26/0·관련170/0 + contract map1case/0. 고정 physics600틱씩 평균5.433415/5.401905ms(headless/무전투, GPU120fps 주장0). 캡처/공용 줄 범위·proto 교정 원문은 [보고서](engine/orders/reports/map11-prod_REPORT.md) |
+| 검증 | 최종 Main37/0·상자26/0·관련170/0 + contract map1case/0. 고정 physics600틱씩 평균5.433415/5.401905ms(headless/무전투, GPU120fps 주장0). 캡처/공용 줄 범위·proto 교정 원문은 [보고서](_archive/engine/orders/reports/map11-prod_REPORT.md) |
 | docs·제출 | docs/4.1 바인딩 계약·provider 후속·NPC_WORLD·45보고서·작업판 동기화. 신규 게임 텍스트/번역 수정0(CRLF 유지). 정상 훅·정확 경로 staging·자기 branch 일반push/remote/DONE 후 자기 WT 제거 |
 
 ## 2026-10-21 MAP11-10 G2 보충 — 숲 반복·원경 깊이·서동 하단 반사
 
 - 총괄 G2 숲 링 PASS를 기록하고 같은 branch의 독립 G3/G4 씬에만 높이7·폭5·명도6·회전6·좌우반전 변주, BACK/MID fog .48/.13, 서쪽 마른 심재와 동쪽 약한 황록 하단 반사를 추가했다. 회전/폭을 반영하는 가림 AABB는 setup 1회 캐시. 밑동/형상·공용·원본PNG 변경0, 새아트/새표시문구0.
-- 중앙 재질·불규칙 균열·오염의 1x 증거를 포함해 8시점+보충/크롭을 다시 제출. 관련18/0·GUI ERROR0/WARNING0·seam 두 표본오차0. 최종 상태 벤치1회600tick/10.000172s/평균1404.28fps/p95≤0.85ms·p99≤0.99ms(독립 preview, 제품 전투/GPU timer 아님). [G3/G4 보고서](4.1맵디자인+설정/MAP11_SURFACE_SEAM_G3G4_20261021.md), 원로그·최종 캡처 `_out/map11-10/g2-followup/`. 후속 눈 검수 REVIEW_PENDING.
+- 중앙 재질·불규칙 균열·오염의 1x 증거를 포함해 8시점+보충/크롭을 다시 제출. 관련18/0·GUI ERROR0/WARNING0·seam 두 표본오차0. 최종 상태 벤치1회600tick/10.000172s/평균1404.28fps/p95≤0.85ms·p99≤0.99ms(독립 preview, 제품 전투/GPU timer 아님). [G3/G4 보고서](_archive/4.1맵디자인+설정/MAP11_SURFACE_SEAM_G3G4_20261021.md), 원로그·최종 캡처 `_out/map11-10/g2-followup/`. 후속 눈 검수 REVIEW_PENDING.
 
 ## 2026-10-21 MAP11-10 — G3/G4 root shoulder·수피/피부 접합
 
 - main0138c5bb + MAP11-09 283c2077 정상merge(FF). 독립 field_seam_preview에서 기존 RGBA 바닥3회전/3스케일·필터·월드 origin 연속 UV, root shoulder60개/오염·부드러운 접지 그림자, 어두운 분기 alpha 균열30조각. 새이미지/AI생성0·원본PNG0줄.
-- 승인 geometry/provider·Main/State/World/제품카메라·전투/저장·기존G1/G2소스0줄. 8시점/1x와 실제 source shader split·master crop/bleed tile 재조립 표본, 600tick 벤치1회는 [G3/G4 보고서](4.1맵디자인+설정/MAP11_SURFACE_SEAM_G3G4_20261021.md). 제품 World streamer 설치/전체 맵 bake 완료 아님.
+- 승인 geometry/provider·Main/State/World/제품카메라·전투/저장·기존G1/G2소스0줄. 8시점/1x와 실제 source shader split·master crop/bleed tile 재조립 표본, 600tick 벤치1회는 [G3/G4 보고서](_archive/4.1맵디자인+설정/MAP11_SURFACE_SEAM_G3G4_20261021.md). 제품 World streamer 설치/전체 맵 bake 완료 아님.
 - 초기 신규14/0 이후 접지/마스크 시각 수정, 최종14/0·actual walk49/0, source split/baked bleed tile 표본 오차0·최종final-04 재검증ERROR0/WARNING0. 벤치1회600tick/9.999748s/평균1399.44fps/p95≤0.92ms·p99≤1.51ms이며 마지막 균열 소스/마스크/크기 교체 전 표본(재측정0); 상세 범위는 보고서. 밝은 입자/점무늬 균열 추출 proof는 폐기·로그보존. 기존 고해상도 균열 alpha/음영만 재사용, G3/G4 RETOUCH·총괄 눈 검수 대기. 격리 실경로/pgrep·30초/override0byte·자기branch push/원격SHA/DONE뒤자기WT제거.
 
 ## 2026-10-21 MAP11-09 — G2 외곽 BACK/MID/FRONT 생체 숲 조립
 
 - G1 구조 PASS(임시 승인)를 인수. main0138c5bb + MAP11-11 263498f6 merge(FF), field_outer_preview 독립 씬에서 LEFT/RIGHT/TOP/START 외곽을 세 겹으로 조립. 기존 보스룸 rotforest RGBA8종 공유, 152instance(BACK48/MID59/FRONT45), 시작/보스문 시야 개방·밑동 y정렬·캐시 rect 가림/복구·map-look 방사 그림자 재사용. 아트 생성0.
 - 승인 field geometry/지역/anchor·provider·Main/State/World/제품 카메라·전투·저장0줄(인수 의존 기준). G1 내부 회색 blockout은 그대로이며 새 검수 텍스트만 번역 목록에 등록.
-- 신규 headless26/0·직접 actual walk49/0 각1회, ERROR0/WARNING0. 8시점+전체/가림 보충과 literal1x, 600tick 벤치1회10.000054s/평균1438.29fps/p95≤1.17ms·p99≤1.66ms(독립 preview·제품 전투 성능 주장0); 직접 회귀 결과는 [G2 보고서](4.1맵디자인+설정/MAP11_OUTER_ASSEMBLY_G2_20261021.md). G2 눈 검수 대기 RETOUCH, G1 구조 임시 승인과 구별. 격리 user dir/pgrep·30초/override0byte·자기branch push/remoteSHA/DONE후자기WT제거.
+- 신규 headless26/0·직접 actual walk49/0 각1회, ERROR0/WARNING0. 8시점+전체/가림 보충과 literal1x, 600tick 벤치1회10.000054s/평균1438.29fps/p95≤1.17ms·p99≤1.66ms(독립 preview·제품 전투 성능 주장0); 직접 회귀 결과는 [G2 보고서](_archive/4.1맵디자인+설정/MAP11_OUTER_ASSEMBLY_G2_20261021.md). G2 눈 검수 대기 RETOUCH, G1 구조 임시 승인과 구별. 격리 user dir/pgrep·30초/override0byte·자기branch push/remoteSHA/DONE후자기WT제거.
 
 ## 2026-10-21 MAP11-11 — 필드·아레나 collider/LOS/flow provider
 
-- main0138c5bb + 인수된6bcc483d·3f9c87a4 정상merge. 승인 geometry 동일. 독립 runtime의 static collider/4지역/22anchor/field↔arena gate callback과 DEMO11-37·43 이름 계약은 [보고서 첫 표](4.1맵디자인+설정/MAP11_FIELD_PROVIDER_20261021.md).
+- main0138c5bb + 인수된6bcc483d·3f9c87a4 정상merge. 승인 geometry 동일. 독립 runtime의 static collider/4지역/22anchor/field↔arena gate callback과 DEMO11-37·43 이름 계약은 [보고서 첫 표](_archive/4.1맵디자인+설정/MAP11_FIELD_PROVIDER_20261021.md).
 - 기존 compiler와 source spawn_hole_count API 재사용(4 S굴 예정32), boss mw128/mh108/T40 유지. flow는 setup에서 준비, 질의는 캐시·scalar sweep; 틱 목록 생성0. Main/State/World/카메라/아트/전투/저장 및 기존 preview 변경0. 제품 설치/kill writer는 기존 owner 범위. 아트·기존 preview 변경0은 의존 merge 이후 기준이며, 승인된 의존 에셋 반입과 구분한다.
 - 신규49/0·직접회귀4종147/0 각1회, 최종ERROR0/WARNING0. 초기 class cache ERROR6 원문보존 후 import·실패 스위트 재실행. 벤치1회2000묶음165.167ms(82.5835µs/묶음), 준비1184node152.132ms는 tick 밖. headless 격리실경로/매실행pgrep·30초/override0byte. G1 시각검수대기 RETOUCH 상속.
 
@@ -941,13 +1104,13 @@
 | 기준·공간 | main0138c5bb + MAP11-02 6bcc483d merge8bb1ed5f. 새hand-authored9050×8250 polygon/4지역·14anchor/15route/2cycle. 남쪽기상→서dry·동wet고리→북중부D01시체나무+낮은심장제단→보스문. 웹좌표복제0·아트생성0 |
 | 재사용·보호 | 기존StageRecipe/compiler/adapter재사용, Mac소유basegeometry hook+fieldsubclass·동일recipe 실제physics/LOS/sweep·foot y정렬/캐시rect fade. 제품Main/State/World/factory/Player/카메라·전투·저장·원본자산0줄. 보스룸01c방향임시승인/아트3문제는기록만 |
 | 검증 | 초기compiler41/0, 최종윤곽compile·실제body step12003회/4지역·가림복구49/0. 기존Arena54/0·schema3/0 각1회, 최종ERROR/WARNING0. 초기preload ERROR3는실패로그보존후수정. 8장면+전체/가림2보충1920×1080·literal1x10장 |
-| 성능·인계 | 600tick@60Hz 벽시계벤치1회9.999356s/평균1311.88fps/p95≤1.84ms·p99≤2.34ms(M5Pro/gray기준선·제품성능주장0). [보고서2표·G1검수계약](4.1맵디자인+설정/MAP11_FIELD_BLOCKOUT_20261021.md). G1/아트RETOUCH·맥북총괄검수대기, pgrep/30초·격리/override0byte·자기branch push/remoteSHA/DONE후자기WT제거·R불변 |
+| 성능·인계 | 600tick@60Hz 벽시계벤치1회9.999356s/평균1311.88fps/p95≤1.84ms·p99≤2.34ms(M5Pro/gray기준선·제품성능주장0). [보고서2표·G1검수계약](_archive/4.1맵디자인+설정/MAP11_FIELD_BLOCKOUT_20261021.md). G1/아트RETOUCH·맥북총괄검수대기, pgrep/30초·격리/override0byte·자기branch push/remoteSHA/DONE후자기WT제거·R불변 |
 
 ## 2026-10-21 MAP11-02 — arena StageRecipe·geometry/revision provider
 
 | 항목 | 구현·검수 경계 |
 |---|---|
-| 기준·ABI | main45be76e49 + 인수된1b b12bf9a1 merge048c5201. R1700/4Marker Entry·Boss·Exit·Return 유지, arena 전용 region0/namespace·identity/revision·legacy mw128/mh108/T40 계약. [소비자 인계/보고서](4.1맵디자인+설정/MAP11_STAGE_PROVIDER_20261021.md) 첫 표는 DEMO11-37/43용 |
+| 기준·ABI | main45be76e49 + 인수된1b b12bf9a1 merge048c5201. R1700/4Marker Entry·Boss·Exit·Return 유지, arena 전용 region0/namespace·identity/revision·legacy mw128/mh108/T40 계약. [소비자 인계/보고서](_archive/4.1맵디자인+설정/MAP11_STAGE_PROVIDER_20261021.md) 첫 표는 DEMO11-37/43용 |
 | 구현 | 새 StageRecipe Resource·analytic circle/solid·LOS/연속sweep·저작route 도달성 검증·runtime revision adapter. content_valid와 NOT_READY 분리, missing/중복/외부/막힌route/잘못된extent 거부. Main/State/World/factory/카메라/아트·기존preview·전투·저장 변경0 |
 | 검증 | 신규54/0·집중 malformed schema3/0 각1회, 최종ERROR/WARNING0. 첫 하니스 typed Array SCRIPT ERROR1 원문 보존·수정후해당실패만재실행. 직접 CPU질의30000회 벽시계37.282ms/3질의평균3.7282µs 벤치1회, 실제데모FPS주장0 |
 | 인계 | field4지역·일반flow·소비자제품연결은 미제공/미연결 명시. pgrep≥2/30초 gate·격리userdir·override0byte. 자기branch 정상push/remoteSHA/DONE뒤자기WT제거, R불변 |
@@ -958,7 +1121,7 @@
 | 기준·범위 | 같은 codex/map11-01-20261021에 main45be76e49·인수1b b12bf9a1 정상merge e71b6567. R1700/zoom.65/Marker·충돌·공격범위 유지. Main/State/전투·저장·카메라·원본RGBA byte변경0 |
 | 표현 | 기존root/tissue RGBA4patch·가변폭 곡선동맥/좁은심장색·배우접지2·ambient/vignette·8→4광원(적색2+작은온광+냉광). 캐시rect 기반foregroundfade. 4시점+body/탄막1920×1080 6장·literal1x8장, 01b 비교보드 |
 | 검증 | 신규35/0·직접회귀16/0 각1회, ERROR0·회귀 기존Camera WARNING1(main261). GPU캡처ERROR/WARNING0, 고정600tick 벽시계벤치1회10.000049s/평균513.10fps/p95≤2.24ms·p99≤2.36ms(M5Pro/preview한정) |
-| 인계 | [3차 보고서·전후2표·D03 미실행prompt2안](4.1맵디자인+설정/MAP11_ARENA_PREVIEW_PASS3_20261021.md). 서비스로그인/잔액미확인·생성0, 시각 RETOUCH/인수대기·실제Q/E 동시전투미검수. pgrep/30초 gate·override0byte, 자기branch push/remoteSHA/DONE후자기WT제거·R불변 |
+| 인계 | [3차 보고서·전후2표·D03 미실행prompt2안](_archive/4.1맵디자인+설정/MAP11_ARENA_PREVIEW_PASS3_20261021.md). 서비스로그인/잔액미확인·생성0, 시각 RETOUCH/인수대기·실제Q/E 동시전투미검수. pgrep/30초 gate·override0byte, 자기branch push/remoteSHA/DONE후자기WT제거·R불변 |
 
 ## 2026-10-21 MAP11-01b — D05 원형 축소·바닥 조명 proof
 
@@ -967,7 +1130,7 @@
 | 기준·공간 | main ac3764bfe + 인수된 MAP11-01 3c2b1ea4 정상merge f612dbee. 독립 preview R2200→1700/회피고리1300·입장zoom.42→.65. 원본 공격 범위 고정, tide50·fissure전체1295.2 벽 밖 표시 |
 | 표현·보호 | 기존 RGBA 피부 재착색 shader·균열 심장선·main MAP-LOOK/hell·Cinzel 글꼴 토큰 재사용, 4시점+body/탄막 1920×1080 및1x6장. 생성0·Main/State/전투·저장0줄, 새 표시문구 번역목록 등록 |
 | 검수 | 신규34/0·직접회귀16/0 각1회, ERROR0·회귀 기존Camera WARNING1. 600tick@60Hz 벽시계벤치1회10.000336s/평균501.48fps/p95≤2.36ms·p99≤2.81ms(M5Pro/preview한정). 캡처ERROR/WARNING0 |
-| 인계 | [2차 보고서](4.1맵디자인+설정/MAP11_ARENA_PREVIEW_PASS2_20261021.md) 비교2표. 외곽 가지 겹침·재질 최종 아트 RETOUCH/시각검수대기. 자기branch push/remoteSHA/DONE후 자기WT제거, R불변 |
+| 인계 | [2차 보고서](_archive/4.1맵디자인+설정/MAP11_ARENA_PREVIEW_PASS2_20261021.md) 비교2표. 외곽 가지 겹침·재질 최종 아트 RETOUCH/시각검수대기. 자기branch push/remoteSHA/DONE후 자기WT제거, R불변 |
 
 
 ## 2026-10-21 MAP11-01 독립 보스룸 blockout·GPU 카메라 보드
@@ -978,14 +1141,14 @@
 | 재사용·범위 | 기존MAP-LOOK 광원/그림자/sway shader·원process 그대로 조립, prop51/light8/shadow2. 기존RGBA/단색만·생성0. BC01 실제si0 23무브·BC01~10 몸체/탄막공간 표시, 공격약화/실제AI·탄·피해·보상writer0 |
 | 증거 | GPU1920×1080 4시점+body/탄막2·각1x크롭=12PNG·BOARD.html을 _out/map11-01/captures/에 보존. R2200은D05대기, fissure2304+691.2가rim밖795.2임을그대로표시. 벽가대비/최종피부재질RETOUCH |
 | 검수·성능 | 신규34/0·ERROR/WARNING0, MAP-LOOK회귀16/0·ERROR0·미수정main Camera2D WARNING1. sparse누락PNG2보충후실패회귀만재실행. 고정600물리tick@60Hz 벽시계벤치1회 9.999128s/7691render/평균769.17fps·p95≤1.46ms/p99≤1.54ms(M5Pro24GB/uncapped). preview측정이며전체데모/PC120fps·GPU3ms검증아님 |
-| 보고·인계 | [MAP11-01 보고서](4.1맵디자인+설정/MAP11_ARENA_PREVIEW_20261021.md) 표2개. 틱경로목록API0·매Godot pgrep/2이상30초대기/override0byte. 자기branch push/remoteSHA/DONE후자기WT제거, R불변·D05_PENDING |
+| 보고·인계 | [MAP11-01 보고서](_archive/4.1맵디자인+설정/MAP11_ARENA_PREVIEW_20261021.md) 표2개. 틱경로목록API0·매Godot pgrep/2이상30초대기/override0byte. 자기branch push/remoteSHA/DONE후자기WT제거, R불변·D05_PENDING |
 
 ## 2026-10-21 DEMO11-i18n — Native UI KO/EN 전수 점검
 
 - 기준 main0138c5bb. 현재 표시189키/204회+동적 경계5개=194키를 cached KO-key→EN으로 연결. 직접 무번역105키·기존 EN누락57키/장비명3개 보완. State/전투/저장/원본 번역 데이터0행.
 - 등록 누락99·무번호50을 No.3338–3486 신규149개로 연결, 기존45번호 재사용·No.3334 EN 보완. 번역 목록 CRLF/기존 본문(No.3334 외) bytes 보존.
 - 신규735/0·관련5회귀 최종2187/0·원문 EN exact Node3/0·추출기 Python4/0. 최초 HUD 종료 ERROR는 원본 main에서도 drop_common.mp3 잔류 재현, 제품 오디오 수정0. 실패 기록 보존.
-- 영어 로비+1x 및 보조 인트로/대장간 캡처8/0·자체 눈 검수. 인벤토리23b·종료38·설정50 등 미병합 UI는 목록만(12파일/312후보), 요청 캡처2종 NOT_READY. [보고서](engine/orders/reports/demo11-i18n_REPORT.md)·[전수표521행](engine/orders/reports/demo11-i18n_STRINGS.csv), _out/demo11-i18n/.
+- 영어 로비+1x 및 보조 인트로/대장간 캡처8/0·자체 눈 검수. 인벤토리23b·종료38·설정50 등 미병합 UI는 목록만(12파일/312후보), 요청 캡처2종 NOT_READY. [보고서](_archive/engine/orders/reports/demo11-i18n_REPORT.md)·[전수표521행](engine/orders/reports/demo11-i18n_STRINGS.csv), _out/demo11-i18n/.
 ## 2026-10-21 PC-LIFE-PACK — PCI-01 생명주기·PCI-11 최종 처치·PCI-10 시체 부활·PCI-12 recalcSt·PCI-13 펫 초상 캐시
 
 | 항목 | 구현·검수 근거 |
@@ -993,7 +1156,7 @@
 | 범위 | Mac DEMO11-39/37·B9·29·perf 차단 해제용 PC API. 신규 `native_source_player_life.gd`(HP0 death_token·op 6종·원본 G43721–43751/43847–43872/63476–63477/63521–63526/63678)·`native_final_enemy_death.gd`(hurtE G42733 단회 final/revival_pending/cancel, clear_blocked)·`native_enemy_corpse_revive.gd`(G38944–38958 같은 identity). refresh `recalc_st` 모드(G16425–16431). native_pets 초상 강한 참조 캐시. 공용 파일은 끝 추가 위주(기존 줄 수정: pets 3·refresh 3) |
 | 검증 | 신규 5종 101/60/50/49/23 단정 0실패(원본 VM oracle 41+14+16필드 일치). 회귀 18종 merge 전후 각1회 0실패(의도 ERROR: demo11_authority 1). 틱 경로 코드0. 펫 발화 17~30ms→15~65µs, configure +41~45ms |
 | HOLD | 보스(ib) final death NOT_READY(G42124 boss hurtE·HP/부활 owner 부재), 일반몹 재스폰 미이식, u_d21 분노 writer 미연결. Mac 호출자 연결 미구현 |
-| 인계 | [계약](engine/PC_LIFECYCLE_CONTRACT_20261021.md)·[보고서](engine/orders/reports/pc-life-pack_REPORT.md)·docs/2_5 이식 상태 절. 원로그 `_out/pc-life-pack/` |
+| 인계 | [계약](engine/PC_LIFECYCLE_CONTRACT_20261021.md)·[보고서](_archive/engine/orders/reports/pc-life-pack_REPORT.md)·docs/2_5 이식 상태 절. 원로그 `_out/pc-life-pack/` |
 
 
 ## 2026-10-21 PC-COMBAT-PACK-B — normalBow hurtE·신규 actor hurtE owner·normalBow 탄 carrier·사망 중간 prefix
@@ -1003,7 +1166,7 @@
 | 범위 | 요청 PCI-03/02/05/06/09(pc-iface-pack). 기준 main c06184592, 브랜치 claude/pc-combat-pack-b2-20261021. 신규 `native_combat_pack_b.gd`(facade·bind·admit/pass·interaction·death-effect 등록, token 재생)·`native_player_arrow_carrier.gd`(G35176–35628 normalBow: 벽 반사·통일/패시브/킬 관통·재활용, 기존 World 플레이어 탄 store 재사용)·`native_bound_enemy_hurte_owner.gd`. 공용: hurtE 실행자 +130/−5(기존 줄 5개, 동작 동일)·Main +29·type3_native_binding +51 순수 추가 |
 | 상태 | PCI-03·02·05(플레이어)·09 완료, PCI-06 부분(적 탄 Q는 기존 Q 반사 위임, E/접촉 NOT_READY), beam NOT_READY, PCI-07/08 미구현(설계). type3는 bind 전 hurtE 0행 정지(폴백 없음) |
 | 검증 | 신규 349/0(원본 game.html VM oracle: hurtE 비치명/치명·carrier 킬관통/재사용 관통/벽 반사 궤적·접촉·RNG 행 순서 일치). 회귀 19종 각 1회 0실패·ERROR 0, type7_runtime은 base와 같은 2실패. 30발 300틱 16.59ms/틱(실시간) |
-| 인계 | [계약](engine/PC_COMBAT_PACK_B_CONTRACT_20261021.md)·[보고서](engine/orders/reports/pc-combat-pack-b_REPORT.md)·2_2 석궁 절·FDG type3/P1-002E 절. 실제 발사 owner(DEMO11-48)·source sp·화면 확인 미실행 |
+| 인계 | [계약](engine/PC_COMBAT_PACK_B_CONTRACT_20261021.md)·[보고서](_archive/engine/orders/reports/pc-combat-pack-b_REPORT.md)·2_2 석궁 절·FDG type3/P1-002E 절. 실제 발사 owner(DEMO11-48)·source sp·화면 확인 미실행 |
 
 ## 2026-10-21 DEMO11-18 일반 데모 합체·흡수·성급·되돌리기 원장
 
@@ -1012,7 +1175,7 @@
 | 기준 | main33755331 + DEMO11-17 c698aa86 정상merge85e4485d. CHANGELOG main byte 보존·의존17절 추가. 새 합체키/정책식 변경0 |
 | 연결·HOLD | 기존 fusion_rules/fuse_commit guarded+demo true→실제State. 원 허용22/금지10키·shieldFuse 별도HOLD, 성급override·SP선지급/멤버환불·흡수·host/최대그룹undo. Main+12/State+18 추가만. 피해/방패 실행·PC UI 배치·맵·저장0 |
 | 검증 | 실제Main378/0+집중7/0, 관련4회귀 각1회36,804/0. 실제 원장26건·기존S05 9,358건 원문JS 불일치0. StringName fixture/ScriptError 로그보존·강화인계key 누락1건→집중만7/0. 최종ERROR/SKIP0 |
-| 제출 | [보고서](engine/orders/reports/demo11-18_REPORT.md)·docs/2_1 성급/15체크리스트 적용·원로그 _out/demo11-18/. tick/목록생성API0·격리/gate/override0byte·정상훅·경로지정stage·자기branch push/remoteSHA/DONE 후 자기WT제거 |
+| 제출 | [보고서](_archive/engine/orders/reports/demo11-18_REPORT.md)·docs/2_1 성급/15체크리스트 적용·원로그 _out/demo11-18/. tick/목록생성API0·격리/gate/override0byte·정상훅·경로지정stage·자기branch push/remoteSHA/DONE 후 자기WT제거 |
 
 ## 2026-10-21 DEMO11-17 K/L 학습·강화·환불 State 원장 연결
 
@@ -1021,7 +1184,7 @@
 | 기준·의존 | main8dbbf2b0 + DEMO11-16 3be8055f 정상merge d4e71d79. CHANGELOG main bytes 보존. XP726cf925는 readonly/검증용3way모델만, 제품 반입0 |
 | 연결 | SK-S01~05 식 그대로 learn_up/minus/reset·실제SP/악의·skills/선택/slots commit. Main+23/State+78 추가만. 최종 handoff 실패prefix 보존·최근32요청 재생·paused UI 허용/시전 가드유지. PC UI 배치/전투핵심/피해/저장/맵 변경0 |
 | 검증 | 신규100/0·관련4회귀 각1회24,110/0·원문JS 기존9,358+실제8건 불일치0. XPsignal SP12→학습SP2 모델16/0. paused경계2실패 재현→해당 신규만100/0. 최종ERROR/SKIP0·목록생성API/tick추가0 |
-| 제출·경계 | [보고서](engine/orders/reports/demo11-17_REPORT.md), docs/2_1 Native절 갱신·원로그 _out/demo11-17/. shieldFuse 전용reset HOLD·UI/save pending 유지. 정상훅·경로지정stage·자기branch push/remoteSHA/DONE 후 자기WT제거 |
+| 제출·경계 | [보고서](_archive/engine/orders/reports/demo11-17_REPORT.md), docs/2_1 Native절 갱신·원로그 _out/demo11-17/. shieldFuse 전용reset HOLD·UI/save pending 유지. 정상훅·경로지정stage·자기branch push/remoteSHA/DONE 후 자기WT제거 |
 
 ## 2026-10-21 PC-RUNTIME-STATS — 런타임 applyStats 재계산·DEMO11-06 보호 handoff/자원 restore writer
 
@@ -1029,23 +1192,23 @@
 |---|---|
 | 범위 | DEMO11-19/22/06 BLOCKED 인터페이스 해제. 초기화 단회 guard 수정0. 새 `native_source_player_runtime_stat_refresh.gd`(원본 producer 6종 pass별 신규·overlay 단계 적용·3 sink 사전검증→동기 일괄 commit→readback, 모드 apply_stats/equipment_refresh=G16287–16292), `native_source_protected_restore_handoff.gd`(protected_qe/active_sync/wing). 공용 순수 추가: Main+39·Player+56·State+47·authority+106 |
 | 검증 | 신규 300/0(원본 JS oracle 200필드 일치·무료충전0·clamp·재진입/외부 owner/실패 무변이)·4830/0(321 fixture 직접 대조+flow e2e 321/321). 회귀 11종+restore flow 각1회 0실패. refresh 1회 약15ms(이벤트 전용), 틱 경로 코드0→300틱 벤치 생략 |
-| 인계 | [계약](engine/PC_RUNTIME_STAT_REFRESH_CONTRACT_20261021.md)·[보고서](engine/orders/reports/pc-runtime-stats_REPORT.md). Mac 호출자 연결·결정 장착 oracle·HUD 화면 확인은 미실행 |
+| 인계 | [계약](engine/PC_RUNTIME_STAT_REFRESH_CONTRACT_20261021.md)·[보고서](_archive/engine/orders/reports/pc-runtime-stats_REPORT.md). Mac 호출자 연결·결정 장착 oracle·HUD 화면 확인은 미실행 |
 
 
 ## 2026-10-21 DEMO11-21fix 수명 회귀 하니스 제출
 
-- 같은 브랜치에 실제 실행한 신규 owner 수명 테스트9/0 원문을 포함한다. root test_* ignore에는 자기 파일만 경로 지정 추가, 훅 우회0. 기존 검사·제품 코드 추가 변경0. [근거](engine/orders/reports/demo11-21fix_REPORT.md).
+- 같은 브랜치에 실제 실행한 신규 owner 수명 테스트9/0 원문을 포함한다. root test_* ignore에는 자기 파일만 경로 지정 추가, 훅 우회0. 기존 검사·제품 코드 추가 변경0. [근거](_archive/engine/orders/reports/demo11-21fix_REPORT.md).
 
 ## 2026-10-21 DEMO11-21fix pending draw owner 수명 보호
 
 - 기존 demo11-21 branch에 mainac3764bfe 정상 merge. 드랍 owner(Main/State) tree exit 즉시 configured=false, draw/beam/input/physics/snapshot live guard. 이전 에셋/드랍 식/피해·Main/State0줄.
-- 새 수명9검사·기존 starter148 및 드랍 직접 관련 스위트 결과는 [보고서](engine/orders/reports/demo11-21fix_REPORT.md), 원로그 _out/demo11-21fix/. 스위트별1회·기존 검사 유지, 목록 생성 API0. 로비 RETOUCH는 자기 기존04 branch에서 별도 진행.
+- 새 수명9검사·기존 starter148 및 드랍 직접 관련 스위트 결과는 [보고서](_archive/engine/orders/reports/demo11-21fix_REPORT.md), 원로그 _out/demo11-21fix/. 스위트별1회·기존 검사 유지, 목록 생성 API0. 로비 RETOUCH는 자기 기존04 branch에서 별도 진행.
 
 ## 2026-10-21 DEMO11-21 성능 수정 main 후속 통합
 
 - 같은 브랜치에 main8dbbf2b0(aa1eaea5a 포함)을 정상 merge11a617f5. rebase·force0.
 - 드랍·State·production source·신규 테스트 목록 생성 API0, PC 캐시3곳 확인. 자체 제품 변경0행, 로컬 성능 실측 주장0.
-- 신규24/0·관련 기존36/0 각각1회, import 포함5회 ERROR/ObjectDB/resource0. [후속 보고](engine/orders/reports/demo11-21_REPORT.md), followup-* 로그·기존 DONE에 새 SHA 추가.
+- 신규24/0·관련 기존36/0 각각1회, import 포함5회 ERROR/ObjectDB/resource0. [후속 보고](_archive/engine/orders/reports/demo11-21_REPORT.md), followup-* 로그·기존 DONE에 새 SHA 추가.
 
 ## 2026-10-21 DEMO11-21 기존 드랍 제품 자연 INV 연결
 
@@ -1054,33 +1217,33 @@
 | 기준 / 제품 | main01051599에서 원격 P2-006a48f0d8e7/P2-006be69fe444 정상 merge. main tree 미반영을 확인하고 기존 제품 회수, 표시 byte 재사용·재구현0 |
 | 공용 / 원본 | Main252–257 +6행, State432/565–566/584–659 +79행, 삭제0. G32002–32034/16721/32935–32941/16411–16424 journal→R→동일 실제 INV. 보호 전투·맵·저장0 |
 | 검증 | 신규24/0·직접 관련 P2 회귀3종 36/0, 각1회. 실제 Main·Input 이벤트·production rollDrop RNG fixture, 동일 객체/좌표/비자동장착/중복차단. 자연 처치·시각 PASS 주장0 |
-| 제출 | [보고서](engine/orders/reports/demo11-21_REPORT.md), 원로그 ~/exoduser-wt/_out/demo11-21/. Godot7회(최초 종료실패2 보존·MP3 소유자 수는 보고서 구분), 최종/관련 종료 ERROR/ObjectDB/resource0, gate30초 대기9회·override0byte. 자기 push/remote SHA/DONE 후 worktree 제거 |
+| 제출 | [보고서](_archive/engine/orders/reports/demo11-21_REPORT.md), 원로그 ~/exoduser-wt/_out/demo11-21/. Godot7회(최초 종료실패2 보존·MP3 소유자 수는 보고서 구분), 최종/관련 종료 ERROR/ObjectDB/resource0, gate30초 대기9회·override0byte. 자기 push/remote SHA/DONE 후 worktree 제거 |
 
 ## 2026-10-20 P2-006b — 효과 종료 후 드랍·LMB 관측
 
 - 지정 b933b2da5에 A 구현이 빠져 있어 승인된 A 제출 3커밋을 작업 브랜치에만 cherry-pick했다. 충돌한 설계/변경로그는 기존 DOC-SYNC·P3 기록과 A 기록을 모두 보존했다. main 변경·병합 없음.
 - game.html51736의 nearest 계약을 드랍 어댑터 1줄로 명시(수치·원본 에셋 불변). 189/189 원본·대상 SHA-256 재대조. 기능 회귀18/0·17/0·HUD36/0·스킬27/0, 필터 RED1/1→GREEN1/0.
 - LMB 빈 칸은 기존 A 검수 하니스의 activeLMBSk='weapon' 주입 결과. 원본44118/44134에도 weapon 아이콘이 없고 idle/공격/복귀 모두 빈 칸, kiSlash 복원 시 아이콘 복원(6/0). 제품 입력·HUD 수정 없음.
-- death_blood 렌더 클록 종료까지 기다려 transient0 뒤 자연 드랍·6등급 1x 캡처. 빔 밝기/그림자·전체 장면 동등성은 RETOUCH, Native Computer Use 거부로 OS 캡처/수동 키 미확인. 상세 `docs/engine/orders/reports/P2-006b_REPORT.md`.
+- death_blood 렌더 클록 종료까지 기다려 transient0 뒤 자연 드랍·6등급 1x 캡처. 빔 밝기/그림자·전체 장면 동등성은 RETOUCH, Native Computer Use 거부로 OS 캡처/수동 키 미확인. 상세 `docs/_archive/engine/orders/reports/P2-006b_REPORT.md`.
 
 
 # 2026-10-20 P2-006a PC 드랍·줍기 부분 이식
 
 - `native_world_drops.gd` 신규 어댑터와 main 시작 hook 6줄, state 런타임 드랍 식별·가방 반입 연결. 스킨·고유 누끼·ADD 빔·R 프레스/9틱 홀드·가득 참·원본 SFX를 이식했다. 게임 설계 수치·Q/E·레슨·세이브 형식은 변경하지 않았다.
 - 원본 에셋 189개 SHA-256 동일. 17+18+39=74 assertions/0 failures, 실제 창의 자연 처치 후 일반 드랍 viewport 1920×1080 보존. 수동 R 입력/OS 창 캡처 권한은 거부돼 미확인이다.
-- 유골 도감/첫 유골함·full applyStats·인벤 창/정렬/영구저장은 미이식. 유물·소켓석은 원본 즉시 지급 그대로이며 이전 인수 보고서의 ‘바닥 연결 필요’ 추정은 정정한다. 상세: `docs/engine/orders/reports/P2-006a_REPORT.md`.
+- 유골 도감/첫 유골함·full applyStats·인벤 창/정렬/영구저장은 미이식. 유물·소켓석은 원본 즉시 지급 그대로이며 이전 인수 보고서의 ‘바닥 연결 필요’ 추정은 정정한다. 상세: `docs/_archive/engine/orders/reports/P2-006a_REPORT.md`.
 
 ## 2026-10-21 DEMO11-04 로비 명조·Cinzel / 아트 겹침 RETOUCH
 
 - 같은04 branch026a2e00에 최신main969c194e 정상 merge e20fbaf6. drop72e602d1 push·remote 확인 후 별도 진행, 공통 새 branch명보다 명시 같은 branch 지시 우선.
 - 자기 view5행만 치환: 본문/버튼/입력 hell명조·제목hell_title(Cinzel)·#dfd6c2, 아트 y290 아래로 분리. Main/State/전투/저장owner0줄·이미지/문구 변경0. 기존48+폰트/경계4=52/0, 관련스위트1회.
-- 목록/삭제1920×1080+1x3곳은 _out/demo11-21fix/captures/. [기존 보고서 후속](engine/orders/reports/demo11-04_REPORT.md), UI_FOUNDATION 최신 로비 한정 토큰 갱신. **화면 비교 자료 준비·맥북총괄 재검수 대기**, 시각 승인 주장0.
+- 목록/삭제1920×1080+1x3곳은 _out/demo11-21fix/captures/. [기존 보고서 후속](_archive/engine/orders/reports/demo11-04_REPORT.md), UI_FOUNDATION 최신 로비 한정 토큰 갱신. **화면 비교 자료 준비·맥북총괄 재검수 대기**, 시각 승인 주장0.
 
 ## 2026-10-21 DEMO11-04 실제 로컬5슬롯 요청 UI·화면 비교 자료 준비
 
 - main8dbbf2b0 + DEMO11-05 f2889355 정상merge61d4d92e. 기존 actual storage/slot reader 재사용, 새로하기 metadata/이어하기 payload 요청·확인 삭제. IO 성공+readback만 목록 반영, stale/lock/읽기 실패 보호. 복원/입장 성공 주장0.
 - 독립 demo_lobby 씬·SV-LOBBY-VIEW/S10 후보 구현, Main/State/전투/맵/저장 adapter·project0줄. 원본 에셋3개 byte동일·Hell Gothic·NativeUIFont·이모지0, 번역23쌍/3.1UI 현황 갱신.
-- 신규 최종48/0, 관련 기존 저장79/0·reader5952/0 각1회, 최신 ERROR/ObjectDB/resource0. 초기 import/parse·46/11·시각 RETOUCH/중단 로그 보존. 목록/삭제확인1920×1080·각1x크롭은 _out/demo11-04/captures/, 눈검수 대기. [보고서](engine/orders/reports/demo11-04_REPORT.md).
+- 신규 최종48/0, 관련 기존 저장79/0·reader5952/0 각1회, 최신 ERROR/ObjectDB/resource0. 초기 import/parse·46/11·시각 RETOUCH/중단 로그 보존. 목록/삭제확인1920×1080·각1x크롭은 _out/demo11-04/captures/, 눈검수 대기. [보고서](_archive/engine/orders/reports/demo11-04_REPORT.md).
 
 ## 2026-10-21 DEMO11-09 pause·입력 안내 / 설정 반영 BLOCKED
 
@@ -1088,7 +1251,7 @@
 |---|---|
 | 기준·범위 | mainac3764bfe, Main+10/-0만 공용추가. 기존 pause/clear입력/review guard 유지, 메뉴→settings back 계층·기존 프로필 읽기. State/전투/저장/맵0 |
 | 설정 권위 | S01 재사용·missing3 NOT_READY 유지. S10 구현/S08 writer 부재로 설정 반영·언어/inputMode 복원 BLOCKED. 임의 기본값 채움·키변경·별도OPT writer0 |
-| 화면·검증 | Hell Gothic/기존폰트·crest/이모지0, 번역·3.1UI 갱신. 신규29/0+S01unit112/0+actual12/0=153/0·각1회·재실행0. [보고서](engine/orders/reports/demo11-09_REPORT.md)에 결과·공용줄·인계 제안, captures 시각 검수 대기 |
+| 화면·검증 | Hell Gothic/기존폰트·crest/이모지0, 번역·3.1UI 갱신. 신규29/0+S01unit112/0+actual12/0=153/0·각1회·재실행0. [보고서](_archive/engine/orders/reports/demo11-09_REPORT.md)에 결과·공용줄·인계 제안, captures 시각 검수 대기 |
 | 제출 | 원로그 _out/demo11-09/, Godot gate/격리/override0. 정상훅·자기branch push/remote/DONE 뒤 WT제거, R 불변 |
 
 ## 2026-10-21 DEMO11-08 — 세계관·전사·INTRO 단일 수명 경계
@@ -1097,7 +1260,7 @@
 |---|---|
 | 구현 | 원본 정지 이미지·자막80 cue, 단발 종료/2초 skip/오류 retry/cancel → 기존 P2-001i/P2-007a 인계. DEMO11-41 INTRO BGM 재사용, 전투·State·저장·맵 변경0 |
 | 검증 | 원본161/0·최종 신규36/0·기존 P2001i18/0/P2007a115/0/DEMO11-41 55/0 각1회, 최종385/0. 내부 viewport1920×1080 6장+1x crop12장. 사용자 눈 검수 대기 |
-| 문서 | [수명 경계](engine/DEMO11_INTRO_LIFECYCLE_20261021.md)·[보고서](engine/orders/reports/demo11-08_REPORT.md)·sound·번역21문구 동기화. 영화 음성/연출 동등성 미확인·export 패키징 HOLD |
+| 문서 | [수명 경계](_archive/engine/DEMO11_INTRO_LIFECYCLE_20261021.md)·[보고서](_archive/engine/orders/reports/demo11-08_REPORT.md)·sound·번역21문구 동기화. 영화 음성/연출 동등성 미확인·export 패키징 HOLD |
 
 ## 2026-10-21 DEMO11-37 — 지역 gate·arena·최종 사망 이후 진행 인계
 
@@ -1106,7 +1269,7 @@
 | 기준·연결 | mainac3764bf +35/727f6a02 +38/ae49b21c 정상 merge=e7d855b6. P3-003 실제 귀속/gate 재사용, MAP11-01 Marker 계약만 읽기. PC36/49 최종 사망 신호 수신·기존 State chest 저장·SP/TA/랭크 기록→38 clear/demoEnd. |
 | 공용·보호 | Main 설치/API 추가14/삭제0, State progression 신규32줄+기존상자축출1줄수정(diff+33/−1). 전투 핵심/HP·poise·부활·Q/E·저장IO/형식·맵지형·원본0. 자연 map/PC producer 후행, 가짜 사망/보상ACK0. |
 | 검증·벤치 | 신규148/0+관련기존262/0=기능410/0. 기존bench 정확히1회260/0·ERROR/WARNING0 cleanPASS, mean.763442/p95.920/max1.512ms<8.333ms. 초기import2실패·신규148/120 JSON숫자경계 실패 원문 보존/실패만정정. 전체게임fps未. |
-| 문서·제출 | [계약·공용 줄·최종 판정](engine/orders/reports/demo11-37_REPORT.md), BOSS_BATTLE_SETTINGS·P3 지역 후속 상태 갱신. _out/demo11-37 원로그, 자기branch push/remoteSHA/DONE 뒤 자기WT제거·R불변. |
+| 문서·제출 | [계약·공용 줄·최종 판정](_archive/engine/orders/reports/demo11-37_REPORT.md), BOSS_BATTLE_SETTINGS·P3 지역 후속 상태 갱신. _out/demo11-37 원로그, 자기branch push/remoteSHA/DONE 뒤 자기WT제거·R불변. |
 
 ## 2026-10-21 DEMO11-42 눈 검수 RETOUCH — MP/ST·선택 툴팁
 
@@ -1114,7 +1277,7 @@
 |---|---|
 | 수정 | 같은749d0c6e branch. 개발 MP미이식 문구 제거, 실제 MP 파랑/ST 초록 독립 반구·ST 명칭, 상시 중복 자원 띠 삭제→원본705–708 skBarTip 축소. 보스 PASS 생성/갱신 byte 동일 |
 | 범위 | HUD+20/-6, owner view+29/-16. Main/State/전투/저장0. 게임폰트·기존 자산 byte 재사용, 번역2문구 등록 |
-| 검증 | 실제Main GPU46/0·기존HUD36/0 각 관련scope, 하니스 준비 오류5실패 수정 후 해당suite만 재실행. 3뷰1920×1080+1x9개, 총12PNG. [현재 보고서](engine/orders/reports/demo11-42_REPORT.md)·[현재 UI 계약](3.1%20ui%20hud%20디자인/DEMO11_42_NATIVE_OWNER_HUD_20261021.md), Mac 재눈검수 대기 |
+| 검증 | 실제Main GPU46/0·기존HUD36/0 각 관련scope, 하니스 준비 오류5실패 수정 후 해당suite만 재실행. 3뷰1920×1080+1x9개, 총12PNG. [현재 보고서](_archive/engine/orders/reports/demo11-42_REPORT.md)·[현재 UI 계약](3.1%20ui%20hud%20디자인/DEMO11_42_NATIVE_OWNER_HUD_20261021.md), Mac 재눈검수 대기 |
 
 ## 2026-10-21 DEMO11-42 — HUD 새 owner 연결
 
@@ -1122,7 +1285,7 @@
 |---|---|
 | 범위 | main ac3764bfe의 DEMO11-34 보스 actor HP readback·선택 슬롯/쿨/State 자원·dispatcher 실패 표시. 기존 HUD/4cast 유지, UI 창·전투·저장 writer0 |
 | 공용 | Main +1, HUD selector +6, NativeSkillSlots 결과 관찰 wrapper +7, State0. 기존 dispatcher 본문·전투 실행부 바이트 동일 |
-| 문서·검증 | [UI 계약](3.1%20ui%20hud%20디자인/DEMO11_42_NATIVE_OWNER_HUD_20261021.md), [보고서](engine/orders/reports/demo11-42_REPORT.md). 신규 문구 번역대상_전체목록 등록. 격리 Main 통합·직접 관련 회귀·GPU 캡처/1x 크롭 결과는 보고서 참조 |
+| 문서·검증 | [UI 계약](3.1%20ui%20hud%20디자인/DEMO11_42_NATIVE_OWNER_HUD_20261021.md), [보고서](_archive/engine/orders/reports/demo11-42_REPORT.md). 신규 문구 번역대상_전체목록 등록. 격리 Main 통합·직접 관련 회귀·GPU 캡처/1x 크롭 결과는 보고서 참조 |
 ## 2026-10-21 PC-M29-PARRY — M29 비투사체 접촉 패링 제공자(DEMO11-30 재개 접점1)
 
 | 항목 | 구현·검수 근거 |
@@ -1130,7 +1293,7 @@
 | 기준·범위 | origin/main969c194e6, PC 전투 핵심. 신규 native_m29_contact_services.gd: player_context(live isPWin G38469)·handle_m29_parry(parryBank→doParry 기존 writer→_poiseHit20)·emit_m29_event(warning/impact/detonate 단일소유 라우팅)·m29_readiness. 투사체 facade·반사 경로 호출0, projectile:true 거부 |
 | 공용 | main.gd +22/−5: preload·필드·준비구역 설치1줄·보상식/bank읽기/서비스 getter. 기존 Q반사 bank읽기·Q/E 보상식 3곳을 같은 식 helper로 단일화(동작 동일). type3_summoned_actor.gd +25/−0 `_poiseHit` 코어. 2_3 수정금지 docs·Q/E 판정·피해식·저장 변경0 |
 | 검증 | 원문 VM oracle(isPWin 480행·패링/피해 순서·보상·poise 코어) 일치, 실제 Main 신규100/0(실접촉 패링·피해·거부·재진입). 회귀 qe155/0·type3binding4그룹·m29 143/0·type3actor118/0·m30 4그룹·p1002g220/0·starter148/0·regen88/0·demo34 166/0·contracts5/0, type7 runtime 2실패는 base부터 동일(무관). 물리틱 16.66ms(M29 actor 有) |
-| 인계·HOLD | [계약](engine/PC_M29_PARRY_CONTRACT_20261021.md)·[보고서](engine/orders/reports/pc-m29-parry_REPORT.md). 자연스폰·EL-01·단일lock·실제 FX 소비자·doParry 나머지·is_tile_wall 확정은 미연결 |
+| 인계·HOLD | [계약](_archive/engine/PC_M29_PARRY_CONTRACT_20261021.md)·[보고서](_archive/engine/orders/reports/pc-m29-parry_REPORT.md). 자연스폰·EL-01·단일lock·실제 FX 소비자·doParry 나머지·is_tile_wall 확정은 미연결 |
 
 ## 2026-10-21 DEMO11-05 — main 성능 수정 병합·tick 경로 점검
 
@@ -1138,7 +1301,7 @@
 |---|---|
 | 병합·범위 | 기존 fc8ceaa0에 origin/main8dbbf2b0(aa1eaea5a 포함) 정상 merge. CHANGELOG 양쪽 절 보존, adapter 추가 코드 변경0 |
 | 검증 | save_adapter 목록 생성 API0건, advance/poll 경로 확인. 관련79/0·5/0·8/0·10,388/0·5,952/0 각1회, 합계16,432/0. 별도 성능 벤치 없음 |
-| 제출 | [후속 근거](engine/orders/reports/demo11-05_REPORT.md), 원로그 _out/demo11-05/merge-*. 같은 branch 일반 push·원격 일치·DONE 추가 후 자기 worktree 제거 |
+| 제출 | [후속 근거](_archive/engine/orders/reports/demo11-05_REPORT.md), 원로그 _out/demo11-05/merge-*. 같은 branch 일반 push·원격 일치·DONE 추가 후 자기 worktree 제거 |
 
 ## 2026-10-21 DEMO11-05 — demo native local 저장소 IO adapter
 
@@ -1147,16 +1310,16 @@
 | 기준·원본 | 최신main01051599·gap61ab71be DEMO11-05. G62111/62128–62173·I3486–3520·G3935–3944/62212, 평문 JSON/게임 단일 키·active·5슬롯·auto/boot 경계 |
 | 구현 | 새 demo_local_storage.gd, 고정7키·UTF-8 bytes 보존·실제 native 파일 IO·독점 writer/temp/readback/rename·중복/충돌/재진입/실패 settlement. 기존 SV reader/primitive ACK/lifecycle 실제 재사용, 기존 모듈 HOLD는 불변 |
 | 검증 | 신규79/0·별도 프로세스 재읽기5/0·경로 IO 실패 집중8/2→수리 후8/0. 기존 primitive10,388/0·reader5,952/0 각1회, 정상 ERROR/WARNING0. 최초 신규75/0과 집중 실패 로그 보존/중복 합산0 |
-| 보호·제출 | Main/State/전투/맵/기존 SV/사용자 First 저장소 변경0. demo 전용 namespace만 IO, 새 adapter/test/UID·SAVE 추적 보충·[DEMO11-05 보고서](engine/orders/reports/demo11-05_REPORT.md). 원로그 ~/exoduser-wt/_out/demo11-05/, pgrep/30초 gate·각 격리명·override 종료0byte. 정상 훅·자기 branch push/원격 일치/DONE 뒤 자기 worktree 제거 |
+| 보호·제출 | Main/State/전투/맵/기존 SV/사용자 First 저장소 변경0. demo 전용 namespace만 IO, 새 adapter/test/UID·SAVE 추적 보충·[DEMO11-05 보고서](_archive/engine/orders/reports/demo11-05_REPORT.md). 원로그 ~/exoduser-wt/_out/demo11-05/, pgrep/30초 gate·각 격리명·override 종료0byte. 정상 훅·자기 branch push/원격 일치/DONE 뒤 자기 worktree 제거 |
 
 ## 2026-10-21 DEMO11-27 G 대장간 실제 결제·결과 UI / 이전 caller HOLD
 
 | 항목 | 구현·검수 근거 |
 |---|---|
 | 기준·의존 | main8dbbf2b0에서 인수25b최종a03a0cbc 정상merge. META-02 견적·META-03 refund 재사용. META-07의 과거 State 권한 BLOCKED를 이번 허용 범위에서 해소. DEMO11-26은 원본 폐지로 불필요/취소 |
-| 구현 | 장비 live견적→악의차감→World RNG1→성공+1, 실패단계유지. HP물약Lv100/cost3/회복150 연결. Main18/86/294–296 추가5행·State1261–1302 추가42행, 전투핵심0. 이전은 실제equip caller 없으므로 거래prefix/API·견적만/실장착 HOLD |
+| 구현 | 장비 live견적→악의오브차감→World RNG1→성공+1, 실패단계유지. HP물약Lv100/cost3/회복150 연결. Main18/86/294–296 추가5행·State1261–1302 추가42행, 전투핵심0. 이전은 실제equip caller 없으므로 거래prefix/API·견적만/실장착 HOLD |
 | 검증·화면 | 신규1918/0·원본336강화+48이전, 직접회귀 META02 70/0·META03 68/0·auto2560/0·contracts5그룹/0 각1회. Camera 기존WARNING 기록·ERROR0. Hell Gothic/게임폰트/이모지0, KO/EN35쌍등록. 1920×1080+1320×960 1x crop, 실제UI/State+촬영자금fixture/총괄눈검수대기 |
-| 잔여·인계 | SFX/입자/펫/실저장·교체후통계는 별도. [DEMO11-27 보고서](engine/orders/reports/demo11-27_REPORT.md) 2표, 3.2메타·2_8 갱신. 자기branch push/원격SHA/DONE 후 자기WT제거, R보호 |
+| 잔여·인계 | SFX/입자/펫/실저장·교체후통계는 별도. [DEMO11-27 보고서](_archive/engine/orders/reports/demo11-27_REPORT.md) 2표, 3.2메타·2_8 갱신. 자기branch push/원격SHA/DONE 후 자기WT제거, R보호 |
 
 ## 2026-10-21 DEMO11-25 성능 규칙 후속 — 최신 main 정상 merge
 
@@ -1172,7 +1335,7 @@
 | 기준·구현 | main01051599, 사용자 정정으로 QS-02/03 신규 구현 허용. QS-01 재사용 auto_phase/runtime, State→HP-only authority, Main physics deferred 한 줄. 원본 G35893–35910 read/write 순서·임계/음수CD·재조회 보존 |
 | 공용·보호 | Main17/84/1007 추가3줄, State1227–1260 추가34줄, authority672–685 추가14줄. 기존 줄 수정/삭제0, 피해·PC 전투 핵심·저장·맵·웹 원본·R0. 관련 2_8 docs 갱신 |
 | 검증 | 원본 JS UTF8 oracle420사례·신규2560/0. 직접 회귀 각1회 QS318/0·regen10/0·lessonclock21/0·contracts5그룹/0. 최종 ERROR/종료누수0, 기존 Camera2D WARNING 기록. 최초 하니스5실패/MP3 누수 진단·수정 이력 보존 |
-| 잔여·제출 | SFX 미연결·native 시스템 튜토리얼·전설벨트 피해 consumer HOLD를 명시, 활성벨트 timer 생성/피해 수정0. [DEMO11-25 보고서](engine/orders/reports/demo11-25_REPORT.md). codex/demo11-25b-20261021 자기branch push/원격일치/DONE 후 자기WT제거 |
+| 잔여·제출 | SFX 미연결·native 시스템 튜토리얼·전설벨트 피해 consumer HOLD를 명시, 활성벨트 timer 생성/피해 수정0. [DEMO11-25 보고서](_archive/engine/orders/reports/demo11-25_REPORT.md). codex/demo11-25b-20261021 자기branch push/원격일치/DONE 후 자기WT제거 |
 
 
 
@@ -1183,7 +1346,7 @@
 | 기준·연결 | main8dbbf2b0 + demo11-34 e1f51f67 정상merge(FF). BC09·기존FULL class·ordinary motion 재사용, 실제Node append뒤만ack. Main+2/actor+6, 일반kernel motion추출+34/-21·기존피해블록byte보존. State/PC피해·패링·HP·저장·맵0. |
 | 검증 | 신규53/0·BC09 56664/0·일반탄4그룹/0·actor162/phase28/권위22/intro18 모두0실패. 실패기능29/4(thorn원문12)·격리28/1·VM JSON경계는 해당실패만 정정. pool84/rate7/SHA3그룹 불일치0. |
 | 벤치1회·한계 | 256탄·실제물리240틱 벽시계: mean.723392/p95.830/max1.049ms(<8.333ms). 빈색drawERROR256으로 전체cleanPASS집계제외; 색fallback수정 후 실제draw6/0, 재벤치0. 자연clock/arena·특수owner·PCcontact/정식렌더 후행. |
-| 문서·제출 | [공개API·공용줄·보고서](engine/orders/reports/demo11-35_REPORT.md), 8.1보스디자인바이블 코드상태 갱신. _out/demo11-35/ 원문 보존, 자기push/remoteSHA/DONE 후 자기WT제거·R불변. |
+| 문서·제출 | [공개API·공용줄·보고서](_archive/engine/orders/reports/demo11-35_REPORT.md), 8.1보스디자인바이블 코드상태 갱신. _out/demo11-35/ 원문 보존, 자기push/remoteSHA/DONE 후 자기WT제거·R불변. |
 
 ## 2026-10-21 DEMO11-34 최신 main 성능 캐시 수정 정상 merge
 
@@ -1191,7 +1354,7 @@
 |---|---|
 | 기준·범위 | abb80c75 + origin/main8dbbf2b0(aa1eaea5a 포함) 정상merge. PC cache3파일 main과동일; Main/actor/BC 직접13파일 목록생성API0, 자체제품변경0. 문서충돌 양쪽기록 보존. |
 | 검증 | 관련8종 각1회 **654/0**, 기존 테스트byte무수정·skip0·예상밖ERROR0. 권위 stage거부 의도ERROR1 별도. actor163/0은 실제RNG ack단정수 변동. Mac 성능측정은하지않음; 필요시고정N물리틱벽시계벤치. |
-| 제출 | [보고서](engine/orders/reports/demo11-34_REPORT.md), 원로그 _out/demo11-34/main-perf-merge/. 자기branch 일반push·remoteSHA/DONE추가후자기WT제거, R불변. |
+| 제출 | [보고서](_archive/engine/orders/reports/demo11-34_REPORT.md), 원로그 _out/demo11-34/main-perf-merge/. 자기branch 일반push·remoteSHA/DONE추가후자기WT제거, R불변. |
 
 ## 2026-10-21 DEMO11-34 stage0 보스 actor·요청 assembler
 
@@ -1199,7 +1362,7 @@
 |---|---|
 | 기준·범위 | main01051599 + DEMO11-01 65f55e76 + BC08 체인adc90ec7 정상merge=4fd1323c. Main +17/-0로 actor 설치·spawn·조회·owner API. BC01~10/State/피해·패링·HP/poise·저장·맵0줄. |
 | 검증 | 신규167/0 + phase PC readback28/0, 기존BC01~10 354093/0·데모권위22/0·인트로18/0. 실패165/4 및28/1 원문 보존·해당 실패 검사만 수정 재실행. 통과 기존 각1회·검사 약화0. |
-| 인계·한계 | [공개 계약·공용 줄·보고서](engine/orders/reports/demo11-34_REPORT.md). 자연 arena·source clock/prefix·탄/VFX/SFX 및 PC36/49 보호 owner는 미연결 대기, 가짜 ack 없음. 원로그 ~/exoduser-wt/_out/demo11-34/, 자기push/remoteSHA/DONE뒤WT제거·R불변. |
+| 인계·한계 | [공개 계약·공용 줄·보고서](_archive/engine/orders/reports/demo11-34_REPORT.md). 자연 arena·source clock/prefix·탄/VFX/SFX 및 PC36/49 보호 owner는 미연결 대기, 가짜 ack 없음. 원로그 ~/exoduser-wt/_out/demo11-34/, 자기push/remoteSHA/DONE뒤WT제거·R불변. |
 ## 2026-10-21 DEMO11-41 실제 BGM/voice media lifecycle
 
 | 항목 | 구현·검수 근거 |
@@ -1207,7 +1370,7 @@
 | 기준·의존 | main8dbbf2b0e(DEMO11-01) + DEMO11-40 85d57b39 정상 merge. SND05/06 원모듈 무수정. Main 음향+23/-0·인트로 음향 signal·기상 voice 재생 함수만, State/보호 전투/저장/맵0 |
 | 연결 | 실제 AudioStreamPlayer/Timer·원음 lazy read·별도 BGM OPT bus/기존 SND08 voice bus. guide/opening/player_died 구독, fade·cache6·pause/복귀·오류·종료 정리. 소리 전용 RNG, tick 목록 API0 |
 | 검수 | 최종 CoreAudio55/0, 기존 무수정 SND05 1308/0·SND06 2400/0·DEMO11-40 44/0·P2007A115/0. 첫 하니스 API/숨김·작은 창 좌표 실패는 보고서에 구분, 기존40 ObjectDB4 경고는 과거에도 동일/verbose 재검0·새55검사 누수경고0, 성공 합산0 |
-| HOLD·제출 | 로비/전체 영화 owner 요청 API만, DEMO11-34는 native_boss_music_changed(phase,stage) 계약만. 외부 bgm export 포함·청감/PCM 미확인. [공용 행·보고서](engine/orders/reports/demo11-41_REPORT.md), 원로그~/exoduser-wt/_out/demo11-41/. 원격일치/DONE 후 WT 제거 |
+| HOLD·제출 | 로비/전체 영화 owner 요청 API만, DEMO11-34는 native_boss_music_changed(phase,stage) 계약만. 외부 bgm export 포함·청감/PCM 미확인. [공용 행·보고서](_archive/engine/orders/reports/demo11-41_REPORT.md), 원로그~/exoduser-wt/_out/demo11-41/. 원격일치/DONE 후 WT 제거 |
 
 ## 2026-10-21 DEMO11-38 마지막 데모 clear→종료·위시리스트/로비
 
@@ -1215,7 +1378,7 @@
 |---|---|
 | 범위·계약 | main8dbbf2b0e. DEMO11-37 호출 계약 Main.native_demo_boss_defeated(stage_index:int), 최종 사망 뒤 emit 필요. 이번에는 신호 직접 주입, 보스 사망 구현0 |
 | 전환·권한 | Main 추가20/State 추가15·기존줄수정0. clear/end/복귀 중복 거부·stage 증가0·난이도 창0. Main 비활성화+Tree pause로 실제 World/Player 정지, 새 최소 데모 로비에서 해제/새 stage0 재시작. 보호 전투/맵/저장0 |
-| UI·검증 | Hell Gothic·기존 crest/폰트 토큰·이모지0. 번역목록/3.1 UI 갱신. 신규46/0·기존22/0+115/0=183/0, 예상 거부ERROR1 외0, 기존각1회·실패신규만재실행. 결과와 캡처는 [보고서](engine/orders/reports/demo11-38_REPORT.md), 맥북총괄 시각 판정 대기 |
+| UI·검증 | Hell Gothic·기존 crest/폰트 토큰·이모지0. 번역목록/3.1 UI 갱신. 신규46/0·기존22/0+115/0=183/0, 예상 거부ERROR1 외0, 기존각1회·실패신규만재실행. 결과와 캡처는 [보고서](_archive/engine/orders/reports/demo11-38_REPORT.md), 맥북총괄 시각 판정 대기 |
 | 제출 | 자기branch 일반push·remote SHA/DONE 뒤 자기worktree제거, R 불변. 원로그 ~/exoduser-wt/_out/demo11-38/, Godot2이상30초gate·격리·override0 |
 
 ## 2026-10-21 DEMO11-01 Main 부팅의 1-1 데모 권위
@@ -1224,7 +1387,7 @@
 |---|---|
 | 범위·공용 | main0105159934 기준. Main +26/-0로 demo=true/stage0/last0 manifest 선택·실제 World/State stage 대조. State/전투/저장/지형0. 개발 route 거부, manifest deep copy. |
 | 재사용·검증 | 기존 META-06 cap100/entry/loop 그대로 위임. 신규22/0·META06 1034/0·인트로18/0·원문JS995/0, 각1회. 잘못된 stage 거부 의도 ERROR1 외 예상 밖 오류0. 실제 XP writer는 DEMO11-20 후속. |
-| 인계 | [공개 API·공용 변경 줄·보고서](engine/orders/reports/demo11-01_REPORT.md), 원로그 ~/exoduser-wt/_out/demo11-01/. 자기 branch push/remote SHA/DONE 뒤 자기 WT 제거; R 불변. |
+| 인계 | [공개 API·공용 변경 줄·보고서](_archive/engine/orders/reports/demo11-01_REPORT.md), 원로그 ~/exoduser-wt/_out/demo11-01/. 자기 branch push/remote SHA/DONE 뒤 자기 WT 제거; R 불변. |
 
 ## 2026-10-21 DEMO11-20 후속 — 성능 수정 main merge·틱 목록 API 점검
 
@@ -1233,7 +1396,7 @@
 | 기준 / 병합 | 기존726cf925의 같은 branch에 최신main aa1eaea5a 정상merge(rebase0·충돌0). PC 정적arity캐시3모듈·성능규칙문서 인수 |
 | 자기 코드 점검 | State/META01/06/신규테스트·oracle 목록생성API0, 자기 제품/테스트 바이트726cf925와동일·추가수정0. PC Q/E/회복 코드 별도수정0 |
 | 검증 / 측정 | 후속 직접관련4suite 각1회: 214/0+1034/0+20/0+45/0=1313/0, skip0·ERROR0. P2001c ObjectDB2 WARNING 원문보존. 별도성능수치 주장0·Performance미사용·벤치미실행, 필요시고정물리N틱벽시계만 |
-| 제출 | [후속 보고서](engine/orders/reports/demo11-20_REPORT.md), 원로그 followup-*·기존로그보존. 정상훅·자기branch 일반push·원격SHA·기존DONE에새SHA추가후자기worktree제거 |
+| 제출 | [후속 보고서](_archive/engine/orders/reports/demo11-20_REPORT.md), 원로그 followup-*·기존로그보존. 정상훅·자기branch 일반push·원격SHA·기존DONE에새SHA추가후자기worktree제거 |
 
 ## 2026-10-21 DEMO11-20 실제 State addExp cap100·레벨업 인계
 
@@ -1243,7 +1406,7 @@
 | 연결 | META-06 entry/loop cap100·META-01 curve 재사용(수식신규0). 99→100·대량XP/이미100·full mode, 회복은 기존authority1회·HUDpull/SPAPtext 유지 |
 | 인계 | 임시 State demo=true·DEMO11-01 setter 접점, native_level_up_handoff는 회복/해금 뒤1회·detached/재진입거부. save requested=true/committed=false, actualcollector save_globals미소유HOLD 유지·새IO0 |
 | 회귀 | 각1회 신규214/0(원본10사례)·META06 1034/0·META01 20/0·P2001c45/0=1313/0, exit0/skip0/ERROR0. Camera2D WARNING·P2001c ObjectDB2 WARNING 원문 기록, 누수0 주장0 |
-| 제출 | [DEMO11-20 보고서](engine/orders/reports/demo11-20_REPORT.md)·META추적 소비 갱신. 원로그 ~/exoduser-wt/_out/demo11-20/, 매Godot gate/override0·정상훅·자기branch push·remoteSHA/DONE뒤자기worktree제거 |
+| 제출 | [DEMO11-20 보고서](_archive/engine/orders/reports/demo11-20_REPORT.md)·META추적 소비 갱신. 원로그 ~/exoduser-wt/_out/demo11-20/, 매Godot gate/override0·정상훅·자기branch push·remoteSHA/DONE뒤자기worktree제거 |
 
 ## 2026-10-21 DEMO11-17 K/L 학습·강화·환불 State 원장 연결
 
@@ -1252,7 +1415,7 @@
 | 기준·의존 | main8dbbf2b0 + DEMO11-16 3be8055f 정상merge d4e71d79. CHANGELOG main bytes 보존. XP726cf925는 readonly/검증용3way모델만, 제품 반입0 |
 | 연결 | SK-S01~05 식 그대로 learn_up/minus/reset·실제SP/악의·skills/선택/slots commit. Main+23/State+78 추가만. 최종 handoff 실패prefix 보존·최근32요청 재생·paused UI 허용/시전 가드유지. PC UI 배치/전투핵심/피해/저장/맵 변경0 |
 | 검증 | 신규100/0·관련4회귀 각1회24,110/0·원문JS 기존9,358+실제8건 불일치0. XPsignal SP12→학습SP2 모델16/0. paused경계2실패 재현→해당 신규만100/0. 최종ERROR/SKIP0·목록생성API/tick추가0 |
-| 제출·경계 | [보고서](engine/orders/reports/demo11-17_REPORT.md), docs/2_1 Native절 갱신·원로그 _out/demo11-17/. shieldFuse 전용reset HOLD·UI/save pending 유지. 정상훅·경로지정stage·자기branch push/remoteSHA/DONE 후 자기WT제거 |
+| 제출·경계 | [보고서](_archive/engine/orders/reports/demo11-17_REPORT.md), docs/2_1 Native절 갱신·원로그 _out/demo11-17/. shieldFuse 전용reset HOLD·UI/save pending 유지. 정상훅·경로지정stage·자기branch push/remoteSHA/DONE 후 자기WT제거 |
 
 
 ## 2026-10-21 DEMO11-16 성능 규칙 후속·동일 브랜치 재검증
@@ -1261,7 +1424,7 @@
 |---|---|
 | main·감사 | 명시 fetch 최신aa1eaea5, a894bf49에 이미 포함되어 merge up-to-date. 이번 단위5파일 목록 생성API0·main의3검증기 static cache 확인, 후속 런타임 변경0 |
 | 검증 | 최신main 관련6스위트 각1회12,625/0·SKIP/ERROR0·override0byte. 실제Main 물리300틱 벽시계 5004.509ms/틱당16.6817ms·render719회. headless/60Hz페이싱포함·Performance API0·실창/CPU비용 주장0 |
-| 제출 | [보고서](engine/orders/reports/demo11-16_REPORT.md) 후속 절·[현재 계약](engine/DEMO11_SKILL_DISPATCH_20261021.md). 원로그 _out/demo11-16/perf-followup/. 동일branch 정상push/remoteSHA·기존DONE 새SHA 추가 후 자기WT 제거. 보호 active/ULT HOLD 유지 |
+| 제출 | [보고서](_archive/engine/orders/reports/demo11-16_REPORT.md) 후속 절·[현재 계약](_archive/engine/DEMO11_SKILL_DISPATCH_20261021.md). 원로그 _out/demo11-16/perf-followup/. 동일branch 정상push/remoteSHA·기존DONE 새SHA 추가 후 자기WT 제거. 보호 active/ULT HOLD 유지 |
 
 ## 2026-10-21 DEMO11-16 실제 슬롯·4cast 비용/쿨 단일화 (보호 active HOLD)
 
@@ -1270,7 +1433,7 @@
 | 기준 | 최신 main aa1eaea5 정상merge(FF), gap61ab71be는 지시서 readonly. 제한 fetch 발견 후 명시 main 갱신·검증 의존2파일 차이/최종Main 검증 기록 |
 | 연결 | 실제 skillSlots/activeCtSk/ultSlot→SK-S04→기존4cast. 비용 quote/State·ResourceAuthority 단일 commit·배정별 HUD 같은 쿨. 피해/보호전투/맵/UI 배치/저장/에셋 변경0 |
 | 검증 | 최신main 신규393/0·원문72조합. 01051599 기준 직접 기존5스위트 각1회 합계12,232/0. 최초 하니스 실패·교정·캐시병합 후 신규만 확인. 최종ERROR/SKIP0·고정4키·atomic 실패prefix 검사 |
-| 경계·제출 | 보호 active 인계·pStun·Space 분노 우선순위 인터페이스 HOLD, 조건부 ULT96/97 실제효과 미완료. [현재 계약](engine/DEMO11_SKILL_DISPATCH_20261021.md)·[보고서](engine/orders/reports/demo11-16_REPORT.md)에 공용 diff 구역. 자기branch push/remoteSHA/DONE 후 자기WT 제거 |
+| 경계·제출 | 보호 active 인계·pStun·Space 분노 우선순위 인터페이스 HOLD, 조건부 ULT96/97 실제효과 미완료. [현재 계약](_archive/engine/DEMO11_SKILL_DISPATCH_20261021.md)·[보고서](_archive/engine/orders/reports/demo11-16_REPORT.md)에 공용 diff 구역. 자기branch push/remoteSHA/DONE 후 자기WT 제거 |
 
 ## 2026-10-21 DEMO11-40 성능 규칙 후속 main merge
 
@@ -1278,7 +1441,7 @@
 |---|---|
 | 기준·통합 | 같은 branch에 main aa1eaea5a 정상 merge, rebase0. PC 캐시 수정3파일은 main 동일 byte, 이번 단위 제품/테스트1888729c와 동일 |
 | tick 규칙 | Main/skill 음향/consumer/graph/backend/mix/sound_source 목록 생성 API0건. 신규 캐시 불필요, Performance 수치 주장0·필요 시 물리 N틱 벽시계 벤치 |
-| 검증·기록 | 직접 관련 스위트만1회 재실행, 수치는 [보고서](engine/orders/reports/demo11-40_REPORT.md). 원로그 followup-*; 앞 정리 순서 예외도 보존. 정상 push/remote SHA/DONE 추가 후 WT 제거 |
+| 검증·기록 | 직접 관련 스위트만1회 재실행, 수치는 [보고서](_archive/engine/orders/reports/demo11-40_REPORT.md). 원로그 followup-*; 앞 정리 순서 예외도 보존. 정상 push/remote SHA/DONE 추가 후 WT 제거 |
 
 ## 2026-10-21 DEMO11-40 전투 sample consumer 연결
 
@@ -1287,7 +1450,7 @@
 | 기준·권한 | main01051599, gap61ab71be DEMO11-40/D35/D36 참조. 사용자 “나눠서” 승인 내 Main 음향 접점·기존 skill 음향 함수만 수정, State/PC 보호 전투/저장/맵0줄 |
 | 연결 | 기존 queued event 구독→SND03 flush→SND07 단일 backend→SND08 graph/OPT. legacy voice 사용0·기존 RNG 유지·현재 skill sample도 공유·종료 unsubscribe/voice/timer/bus 정리 |
 | 검수 | 신규44/0(실제 Main 공격1회·중복거절·스킬·OPT0·bus순서·종료원복). 기존 무수정03 606/0·07 2004/0·08mix5728/0. 실패 후 수정·격리명 오류는 보고서 보존, 관련 회귀만 실행 |
-| 제한·제출 | EQ/comp 역할 bus는 명시적 bypass, DSP/PCM/청감 동등성 HOLD. [보고서](engine/orders/reports/demo11-40_REPORT.md), 관련 사운드 SSOT·추적 갱신. 원로그~/exoduser-wt/_out/demo11-40/. 자기 branch push/remoteSHA/DONE 뒤 WT 제거 |
+| 제한·제출 | EQ/comp 역할 bus는 명시적 bypass, DSP/PCM/청감 동등성 HOLD. [보고서](_archive/engine/orders/reports/demo11-40_REPORT.md), 관련 사운드 SSOT·추적 갱신. 원로그~/exoduser-wt/_out/demo11-40/. 자기 branch push/remoteSHA/DONE 뒤 WT 제거 |
 
 ## 2026-10-21 BC-CHAIN-M 03-bc-integ-01 — 보스 브랜치 정상 merge
 
@@ -1304,7 +1467,7 @@
 | 원문 색 | G14333/14338/31163/16679–16712: 고정#bbbbbb→ELC[boss.element_id]. CH1/2 물리#bbbbbb 유지, CH3 얼음#3388ff 정정, CH4 화염#ff5522·CH5~7 암흑#9933cc 원문 규칙. 잘못된 원소는 reads/RNG 전에 NOT_READY |
 | BC08 / 보존 | 마지막 optional chapter_catalog 인자·begin/next 문맥 검증·phase reader 변경. null의 CH1 packet/continuation은 인수본과 var_to_bytes 동일 검사. 실제 si·드루이드0/3·원본 RNG/충돌/owner readback 조건 유지 |
 | 검증 | 신규 73394/0·BC01~10 354093/0·CH2 4종 119182/0·contracts5그룹/0·cold import exit0/ERROR0. 기존 회귀14파일 byte 무수정, 색35stage·이동3617사례·CH1 byte/장 경계 검사 |
-| 보호 / 제출 | Main/State/저장·Q/E·2_3·웹 원본·설계/LOCK0줄. 자기 WORK_BOARD 행·보고서·이 절만 docs 변경. 신규 지정 격리dir/기존 상수·Godot gate30초·UTF8 파일/node 인자. [보고서](engine/orders/reports/bc-integ-01_REPORT.md), 원로그 ~/exoduser-wt/_out/bc-integ-01/. 정상 훅·자기 push/remote SHA/DONE 후 자기 worktree 제거 |
+| 보호 / 제출 | Main/State/저장·Q/E·2_3·웹 원본·설계/LOCK0줄. 자기 WORK_BOARD 행·보고서·이 절만 docs 변경. 신규 지정 격리dir/기존 상수·Godot gate30초·UTF8 파일/node 인자. [보고서](_archive/engine/orders/reports/bc-integ-01_REPORT.md), 원로그 ~/exoduser-wt/_out/bc-integ-01/. 정상 훅·자기 push/remote SHA/DONE 후 자기 worktree 제거 |
 
 ## 2026-10-21 BC-CHAIN-M 02-bc09 — 보스 브랜치 정상 merge
 
@@ -1336,7 +1499,7 @@
 | 범위 | 신규 `native_ch1_boss_spawn_contract.gd`·`test_boss_ch1_bc02_spawn.gd`·`bc02_REPORT.md`. BC01 e4396da5 의존 브랜치에서 구현. 공용·기존 테스트·보호 설계·R 수정0 |
 | 원본 | 최신 main 284d7faf game.html:9272/9276·31033–31037·31119–31185·31210·31260·31300. HP 두 floor·보스24배·speed.5·몸r44/배치r22·부활력200/206/212/218·초기 cooldown59개를 보존 |
 | 공개 계약 | source_receipt와 build_spawn_packet. 81개 공통/보스 필드·배치 read ledger·source순서 RNG6회. provider/입력 부재는 NOT_READY, 원본 null 생성은 REJECTED, dummy actor·전역 RNG·IO 없음 |
-| 검증·한계 | 독립 원본 mkEn oracle56case×81필드 및 격리 경계 검사. 신규 최종5,257/0·BC01 681/0·contracts5/5·factory3/3·소환굴298/0·지역43/0, 최종/회귀 ERROR0. 첫 실패와 수정 후 실행·회귀 로그는 `docs/engine/orders/reports/bc02_REPORT.md`에 기록. actor/factory·실제 보스전·시각/성능 완료 아님 |
+| 검증·한계 | 독립 원본 mkEn oracle56case×81필드 및 격리 경계 검사. 신규 최종5,257/0·BC01 681/0·contracts5/5·factory3/3·소환굴298/0·지역43/0, 최종/회귀 ERROR0. 첫 실패와 수정 후 실행·회귀 로그는 `docs/_archive/engine/orders/reports/bc02_REPORT.md`에 기록. actor/factory·실제 보스전·시각/성능 완료 아님 |
 
 ## 2026-10-20 BC01 — 1장 보스 정적 등록 catalog
 
@@ -1346,7 +1509,7 @@
 | 원본 | main c3cf8ce6b0cc1a5c381240260e03dff71c68af8d의 game.html:9820–9967/10009–10010/16688–16695; SHA256 4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4 |
 | 등록 | 전체59 move manifest/68 combo 중 CH1 union24 move·27 combo·5 phase. 최종 Set [23,21,10,23], sparse idx30/59 없음·max60. 원순서·필드·문구·수치 보존 |
 | API | source_receipt/boss_for_stage/moves_for_stage/move_by_id/phase_by_index/combos_for_stage. 중첩 복사 반환, 범위 밖 명시 거절/빈값, 전역 전체기술 fallback 없음 |
-| 검수 | 신규 첫 parse 실패(exit0/ERROR2/RESULT없음) 보존 → 명시 bool 수정 후 681단정/0실패/ERROR0. 회귀 contracts5/5·regions43/0·spawn_holes298/0·factory3/3, p1002g220/1(지정 선재). 원로그·격리는 [bc01 보고서](engine/orders/reports/bc01_REPORT.md) 참조 |
+| 검수 | 신규 첫 parse 실패(exit0/ERROR2/RESULT없음) 보존 → 명시 bool 수정 후 681단정/0실패/ERROR0. 회귀 contracts5/5·regions43/0·spawn_holes298/0·factory3/3, p1002g220/1(지정 선재). 원로그·격리는 [bc01 보고서](_archive/engine/orders/reports/bc01_REPORT.md) 참조 |
 | 보호·한계 | 2_3/Q·E/세이브 형식 보호. 실제 보스전·공용 배선·Godot 화면·성능·PC 인수 아님 |
 
 > 2026-10-17 ENGINE 현행: callback **12/25·미13**. play_time은 el_mul 바로 다음에 동일 Services self의 arity0 Callable로 등록했다. owner 첫 격리 공개 API 검수는 인수됐으며 자연 clock·실게임 인수는 미확인이다. D9는 직전 공통 소스 인수이며, 이번 main/I/R 소스 정렬은 아래 통합 정본과 단위 receipt의 실제 HEAD·tree를 기준으로 확인한다. V12 후보는 소스 인수·첫 FAIL·별도 보완 한정성공으로 구분하며 제품 copy·World hook은 수행하지 않았다. 아래 이전 단계 숫자·원검수 결과는 당시 이력으로 보존한다. 실제 local/remote commit 상태는 단위 receipt를 따른다.
@@ -1406,7 +1569,7 @@
 |---|---|
 | 범위·공용 | main0105159934 기준. Main +26/-0로 demo=true/stage0/last0 manifest 선택·실제 World/State stage 대조. State/전투/저장/지형0. 개발 route 거부, manifest deep copy. |
 | 재사용·검증 | 기존 META-06 cap100/entry/loop 그대로 위임. 신규22/0·META06 1034/0·인트로18/0·원문JS995/0, 각1회. 잘못된 stage 거부 의도 ERROR1 외 예상 밖 오류0. 실제 XP writer는 DEMO11-20 후속. |
-| 인계 | [공개 API·공용 변경 줄·보고서](engine/orders/reports/demo11-01_REPORT.md), 원로그 ~/exoduser-wt/_out/demo11-01/. 자기 branch push/remote SHA/DONE 뒤 자기 WT 제거; R 불변. |
+| 인계 | [공개 API·공용 변경 줄·보고서](_archive/engine/orders/reports/demo11-01_REPORT.md), 원로그 ~/exoduser-wt/_out/demo11-01/. 자기 branch push/remote SHA/DONE 뒤 자기 WT 제거; R 불변. |
 
 
 ## 2026-10-20 BC2-07 shieldBash2 독립 wind/dash/contact 계산
@@ -1419,7 +1582,7 @@
 | 원본·범위 | G30823–30920 catalog10·G31300–31309의23필드만. stage14..20/etype50..59·모든type angle1draw·매58buffer fresh/나머지null·speed0분기. HP/elite/mods/aura/전체actor복제0 |
 | 검증 | 원본JS1,750사례·신규61,739/0, EC4선택22,364/0·EC3catalog12,602/0·선택10,234/0·EC2constructor159,902/0·선택7,483/0·factory3그룹/0·contracts5그룹/0. ERROR/WARNING/SKIP0 |
 | 검출·보호 | 변이5종10040/1575/1584/1/176실패검출→byte복원→최종재실행. UTF-8파일oracle/명시node인자/진단join·단정별행근거. 기존1,620파일동일·공용export2/Main/State/저장/다른담당/R0줄 |
-| 제출 | [EC4-02 보고서](engine/orders/reports/ec4-02_REPORT.md), 원로그 ~/exoduser-wt/_out/ec4-02/. 매Godot pgrep/2이상30초대기·각격리명·정상훅·자기branch push/remoteSHA/DONE뒤자기worktree제거. 실actor/공용연결HOLD |
+| 제출 | [EC4-02 보고서](_archive/engine/orders/reports/ec4-02_REPORT.md), 원로그 ~/exoduser-wt/_out/ec4-02/. 매Godot pgrep/2이상30초대기·각격리명·정상훅·자기branch push/remoteSHA/DONE뒤자기worktree제거. 실actor/공용연결HOLD |
 
 ## 2026-10-20 EC4-01 4장 유형·원소 선택 순수 정책
 
@@ -1429,7 +1592,7 @@
 | 원본 | G41337–41351,wind facing추적→active18·locked9sp/단일XY·post-move strict접촉. isPWin먼저·charge도contact30·timeout25·poise25/KB10·stun45/min.5/max기존 보존 |
 | 검증 | 원문1,494상황/5,695event. 신규30,191/0·기존BC01~08 131,655/0·BC2-01~06포함332,010/0. 기존수·조건·기대값무수정, exit0/ERROR0/skip0 |
 | 검출·보호 | 격리8결함검출·인자누락2종거절은통과합계제외. 공용6·타담당·원본·저장·형식·바이너리0. 실제투사체/hurtP/패링/Main/State/KB/스턴연결HOLD,화면/전투/PC미확인 |
-| 제출 | [BC2-07 보고서](engine/orders/reports/bc2-07_REPORT.md), 원로그~/exoduser-wt/_out/bc2-07/. node-bin/source-game·UTF8자기fixture·매Godot pgrep/30초gate·각격리명/override종료0byte. 자기branch push/원격일치/DONE후자기WT제거 |
+| 제출 | [BC2-07 보고서](_archive/engine/orders/reports/bc2-07_REPORT.md), 원로그~/exoduser-wt/_out/bc2-07/. node-bin/source-game·UTF8자기fixture·매Godot pgrep/30초gate·각격리명/override종료0byte. 자기branch push/원격일치/DONE후자기WT제거 |
 
 ## 2026-10-20 BC2-06 fanWave 독립 상태 계산
 
@@ -1439,7 +1602,7 @@
 | 원본 | G40571–40605,고정lock·strict90도/pd<R·이중ToInt32·contact전체readback·ordered shQuery alias KB12·fx20·25입자·bossRec40. 실제피해/패링/적KB/Main/렌더연결HOLD |
 | 검증 | 원문647상황/46,822event/32,079RNG. 신규46,009/0·기존BC01~08 131,655/0·BC2-01~05포함286,001/0. 기존수·조건·기대값무수정, 최종exit0/ERROR0/skip0 |
 | 실패·보호 | 신규하니스배열타입338실패보존후동일검사수0. 격리7결함검출·인자누락2종거절은통과합계제외. 공용6·타담당·원본·저장·형식·바이너리0. 실제화면/전투/PC미확인 |
-| 제출 | [BC2-06 보고서](engine/orders/reports/bc2-06_REPORT.md), 원로그~/exoduser-wt/_out/bc2-06/. node-bin/source-game·UTF-8자기fixture·매Godot pgrep/30초gate·격리override종료0byte. 자기branch push/원격일치/DONE후자기WT제거 |
+| 제출 | [BC2-06 보고서](_archive/engine/orders/reports/bc2-06_REPORT.md), 원로그~/exoduser-wt/_out/bc2-06/. node-bin/source-game·UTF-8자기fixture·매Godot pgrep/30초gate·격리override종료0byte. 자기branch push/원격일치/DONE후자기WT제거 |
 
 
 
@@ -1447,7 +1610,7 @@
 | 계약 / 원본 | G16633–16666/30976–31022, si14..20·31풀/총165/R9·36/비R22·129. strict .5·원CDF기각12/fallback2·F .45+6원소·주입RNG/NOT_READY. actor/HP/정예/World연결0 |
 | 원문 대조 | 원본JS2,814사례·63golden·각ULP경계·소비binary64/잔여tail/sentinel 정확대조. UTF-8파일oracle·한글emoji·모든22,364단정의행근거JSONL. --node-bin/진단join, 공용export2파일무수정 |
 | 검증 | 신규22,364/0. EC2선택7,483/0·constructor159,902/0·EC3선택10,234/0·factory3그룹/0·contracts5그룹/0. 최종ERROR/WARNING0. 변이5종에서347/2499/112/6/154실패검출후byte복원 |
-| 보호 / 제출 | 기존1,607파일byte동일. Godot13launch 매회count1·2이상30초대기, 지정/기존상수격리·override복원. [EC4-01 보고서](engine/orders/reports/ec4-01_REPORT.md), 원로그 ~/exoduser-wt/_out/ec4-01/. 자기branch push·원격SHA/DONE뒤자기worktree제거 |
+| 보호 / 제출 | 기존1,607파일byte동일. Godot13launch 매회count1·2이상30초대기, 지정/기존상수격리·override복원. [EC4-01 보고서](_archive/engine/orders/reports/ec4-01_REPORT.md), 원로그 ~/exoduser-wt/_out/ec4-01/. 자기branch push·원격SHA/DONE뒤자기worktree제거 |
 
 
 ## 2026-10-20 TRACE-ENEMIES-CH4 4장 적 원본 추적·작은 이식 단위
@@ -1469,7 +1632,7 @@
 | 원본 / 소유 | G9976–9981/10009–10010/16691. 4Set32/34/36/37·union37=공유30+신규7·combo44=공유36+신규8. CH2 공개 API/공통phase 재사용·global manifest 전달, 신규 literal만 소유 |
 | 검증 | 원문 전용 Node oracle·전체/구간hash·UTF-8 파일·OS.execute 전체 join/명시 --node-bin·정수/binary64 정확 대조. 신규43491/0, BC01 681/0·CH2catalog7169/0·CH2reuse44891/0·contracts5그룹/0. 정상 실행 --verbose 종료 ERROR/ObjectDB/resource0 |
 | 결함 / 격리 | 값·해금·seq중복제거 결함3종 6/515/2실패 검출, 정확 복원 후43491/0. Godot10회 매실행 gate/override0, count2에서30초×2대기. 새 USERDIR는 EXODUSER-bc3-01r-Isolated-20261020, 기존 회귀는 파일 상수 |
-| HOLD / 제출 | spawn 색·BC08은 다른 창 소유, 공용 Main/State/hurtE·저장·기존 제품/테스트0줄. 실전/실창/저장/PC검수 아님. [BC3-01r 보고서](engine/orders/reports/bc3-01r_REPORT.md), 원로그 ~/exoduser-wt/_out/bc3-01r/. push·원격SHA·DONE 후 자기 worktree 제거 |
+| HOLD / 제출 | spawn 색·BC08은 다른 창 소유, 공용 Main/State/hurtE·저장·기존 제품/테스트0줄. 실전/실창/저장/PC검수 아님. [BC3-01r 보고서](_archive/engine/orders/reports/bc3-01r_REPORT.md), 원로그 ~/exoduser-wt/_out/bc3-01r/. push·원격SHA·DONE 후 자기 worktree 제거 |
 
 
 ## 2026-10-20 EC3-03 etype40 위상 순수 상태·명령
@@ -1480,7 +1643,7 @@
 | 원본 | G39289–39316·42154. idle 외곽/2회T감소/진입60+30U후같은tick감소/Cd대입·d30/50/1200 엄격경계/해제후추가일반이동. cached d와 현재좌표재조준·canMv순서·FX/shot raw요청 보존 |
 | 순수 범위 | 신규phase leaf/test·UID2·보고서만. EC2-02 Draws 직접재사용·EC3-02 init 연속stream 검사. HP/CH2식복제0·실actor/피격/이동/projectile writer0·Main/State/공용/다른담당/저장0줄, 실제소비HOLD |
 | 검수·실패 | 최종33177/0·원문2688tick+hurt16조합, 회귀8종190519단정/0·12그룹/0, 전부exit0/ERROR0. 초기수치비교61→2실패 원문보존, 입력scale·재조준조건수로forward error 정정·기존33029단정유지+148추가. trig최대차3.41e−13, timer/분기/순서/소비exact. 종료Camera2/ObjectDB8누수1 WARNING보존 |
-| 격리·인계 | 신규EXODUSER-ec3-03-Isolated-20261020/기존각상수·매Godot pgrep2이상30초대기·override0byte. 명시node인자/출력join/UTF8임시JSON/binary64·원본pin. [보고서](engine/orders/reports/ec3-03_REPORT.md), 원로그 ~/exoduser-wt/_out/ec3-03/. 자기branch push/remote일치/DONE후자기WT제거 |
+| 격리·인계 | 신규EXODUSER-ec3-03-Isolated-20261020/기존각상수·매Godot pgrep2이상30초대기·override0byte. 명시node인자/출력join/UTF8임시JSON/binary64·원본pin. [보고서](_archive/engine/orders/reports/ec3-03_REPORT.md), 원로그 ~/exoduser-wt/_out/ec3-03/. 자기branch push/remote일치/DONE후자기WT제거 |
 
 ## 2026-10-20 EC3-02 3장 catalog·초기38필드 projection
 
@@ -1489,7 +1652,7 @@
 | 신규 범위 | native_ch3_enemy_catalog_policy.gd·test_ch3_enemy_catalog_policy.gd·자기UID2개. catalog10행/31263–31298의38필드만. 기존EC2-02 Draws/API형식재사용·CH2필드/HP식복제0,complete_actor=false |
 | 원본 | 40..49각matching draw2/4/3/2/2/2/4/3/4/6,offtimer9999/phase−1/bleed0/상수flag·coords0draw,orbit31260뒤/erratic31300앞. raw46speed0분기·44R10(기획8과불일치),catalogshield%와실HP방어구분 |
 | 검수 | 최종신규12,602/0·원문1,000·38키값/순서/소비binary64/잘못된샘플위치검사. 회귀6종최종실패0/ERROR0/SKIP0. 최초importSIGSEGV−11/이후캐시누락ERROR50·실패단정10 원문보존,동일명령재import0/0및해당회귀4종재실행통과. 원인미확인·숨김0 |
-| 경계·기반 | main6d987cb8a에EC2-02 a10924eb포함하여main분기,EC3-01은미병합/미소비. 전체HP/coreprovider통합은HOLD·공용Main/State/저장/다른담당0줄. Node필수인자/출력join·UTF8임시JSON,새EXODUSER-ec3-02-Isolated-20261020·기존각상수/Godot전pgrep2이상30초대기/override0byte. [보고서](engine/orders/reports/ec3-02_REPORT.md)·원로그 ~/exoduser-wt/_out/ec3-02/ |
+| 경계·기반 | main6d987cb8a에EC2-02 a10924eb포함하여main분기,EC3-01은미병합/미소비. 전체HP/coreprovider통합은HOLD·공용Main/State/저장/다른담당0줄. Node필수인자/출력join·UTF8임시JSON,새EXODUSER-ec3-02-Isolated-20261020·기존각상수/Godot전pgrep2이상30초대기/override0byte. [보고서](_archive/engine/orders/reports/ec3-02_REPORT.md)·원로그 ~/exoduser-wt/_out/ec3-02/ |
 
 ## 2026-10-20 EC4-01 4장 유형·원소 선택 순수 정책
 
@@ -1499,14 +1662,14 @@
 | 계약 / 원본 | G16633–16666/30976–31022, si14..20·31풀/총165/R9·36/비R22·129. strict .5·원CDF기각12/fallback2·F .45+6원소·주입RNG/NOT_READY. actor/HP/정예/World연결0 |
 | 원문 대조 | 원본JS2,814사례·63golden·각ULP경계·소비binary64/잔여tail/sentinel 정확대조. UTF-8파일oracle·한글emoji·모든22,364단정의행근거JSONL. --node-bin/진단join, 공용export2파일무수정 |
 | 검증 | 신규22,364/0. EC2선택7,483/0·constructor159,902/0·EC3선택10,234/0·factory3그룹/0·contracts5그룹/0. 최종ERROR/WARNING0. 변이5종에서347/2499/112/6/154실패검출후byte복원 |
-| 보호 / 제출 | 기존1,607파일byte동일. Godot13launch 매회count1·2이상30초대기, 지정/기존상수격리·override복원. [EC4-01 보고서](engine/orders/reports/ec4-01_REPORT.md), 원로그 ~/exoduser-wt/_out/ec4-01/. 자기branch push·원격SHA/DONE뒤자기worktree제거 |
+| 보호 / 제출 | 기존1,607파일byte동일. Godot13launch 매회count1·2이상30초대기, 지정/기존상수격리·override복원. [EC4-01 보고서](_archive/engine/orders/reports/ec4-01_REPORT.md), 원로그 ~/exoduser-wt/_out/ec4-01/. 자기branch push·원격SHA/DONE뒤자기worktree제거 |
 
 
 ## 2026-10-20 CH-MAP-PIN — CH1 출처 비교·CH2 재추출 pin 정합성
 
 | id / 적용 위치 | 현재 정확 계약·증거 |
 |---|---|
-| 기준 / 담당 | 최신 origin/main249c26fad. Mac CH1-04/CH2-02 소유 도구·테스트만, Main/State/저장·Godot reader/World·공유맵·PNG·data0줄. 작업판 자기행·[보고서](engine/orders/reports/ch-map-pin_REPORT.md) 갱신 |
+| 기준 / 담당 | 최신 origin/main249c26fad. Mac CH1-04/CH2-02 소유 도구·테스트만, Main/State/저장·Godot reader/World·공유맵·PNG·data0줄. 작업판 자기행·[보고서](_archive/engine/orders/reports/ch-map-pin_REPORT.md) 갱신 |
 | CH1 si1 Node | 실패4/1의 실제 차이는 source.main_sha e556b617→249c26fad 하나. 두 commit:game.html SHA4d911cdd… 동일을 증명한 경우만 그 필드를 정규화해 **전체** deepEqual. props13/hand12/lore1/meta77·좌표/자산/313벽/5충돌/원본질의 기존 단정 모두 유지 →5/0 |
 | CH2 si4 추출기 | 깨끗한4bf1a8ca… pin은 유효하지만 기존CLI가 provenance8524bbbb→249c26fad만 다시 써40a3d3ff…가 돼 scene_ready/pin 실패 재현. 전체 native payload·두 원문 commit SHA가 같을 때 버전관리된 승인본까지 전체비교해 기존 JSON byte와진짜과거기록 보존/복구. 실제깨진40a3… 파일도수정CLI로4bf1… 복구·수동정상본복원0. 새 oracle만 현재원문 실행에서 생성, 다른native필드변경은 기존재추출·exact pin 거부 유지 |
 | pin / 거부 | RESOURCE_SHA·reader literal·데이터 변경0. 잘못된 recorded commit/원문 SHA는 쓰기 전 거부. 새 격리 Node4종은 최초RED1/2·복구강화RED2/2→GREEN4/0, 신규Node는 격리복사본만 변조·symlink 전제0. 별도CLI 경로에서 실제 실패산출물 재현/복구 검증 |
@@ -1533,7 +1696,7 @@
 | 원문 / 계약 | G40837–40867·41047–41072. grab60/%10/tick .4/throw1.8/KB대입18·iframe30, Under45→Erupt40·8f후1회/r+120/.06sp. 실제 player·hurtP/boss_hurtE·패링·Main 집행0, 완전 owner readback 미수신은 NOT_READY |
 | 검증 | 최종 원문1,083사례·신규165774/0, BC01~09 회귀188319/0·contracts5그룹/0·cold import exit0/ERROR0. BC04~07 일반화 a3b5391c는 외부 읽기 전용 회귀에만 사용, 작업 기준/제품 의존으로 병합0 |
 | 실패 / 보호 | 최초 내장 Control 별칭 파싱 실패 보존·정정. 중복 자기 비교 제거 전207956/0과 최종 수치를 구분. 잠행 e.iframes를 실제 무적 성공으로 세지 않음. player 강제위치·KB대입/상태 owner·boss_hurtE 연결은 미확인 |
-| 격리 / 제출 | 신규 지정 userdir·기존 파일 상수·Godot pgrep gate/30초 대기 준수, UTF-8 임시 oracle 파일·node 인자·bc02/03 source-game. [BC10 보고서](engine/orders/reports/bc10_REPORT.md), 원로그 ~/exoduser-wt/_out/bc10/. 정상 훅·자기 branch push/원격 일치/DONE 후 자기 worktree 제거 |
+| 격리 / 제출 | 신규 지정 userdir·기존 파일 상수·Godot pgrep gate/30초 대기 준수, UTF-8 임시 oracle 파일·node 인자·bc02/03 source-game. [BC10 보고서](_archive/engine/orders/reports/bc10_REPORT.md), 원로그 ~/exoduser-wt/_out/bc10/. 정상 훅·자기 branch push/원격 일치/DONE 후 자기 worktree 제거 |
 
 ## 2026-10-20 EC3-01 3장 유형·원소 선택 순수 정책
 
@@ -1542,7 +1705,7 @@
 | 신규 범위 | native_ch3_enemy_spawn_policy.gd·test_ch3_enemy_spawn_policy.gd·자기UID2개. EC2-01 API/진단/원문검사형식재사용,기존EC2/공용/다른담당/저장0줄. 실actor/World/factory연결0 |
 | 원본 | game.html30974–31022/16633–16666. stage10..13·pool30/136·R11/28·비R108,순서있는weight/total CDF·최대12기각→2/13draw,themeI .45·나머지6원소(보조I포함)/E0 |
 | 검수 | 신규10,234/0·원문1,632·36golden·모든유효경계nextDown/동일/nextUp·소비double비트열/늦은실패진단. 회귀5종실패0/ERROR0/SKIP0, 종료경고원문보존. 실등록/4필드지원PASS아님 |
-| 기반·하니스 | main6d987cb8a에서분기(필요EC2-01은main포함), 지시서원격20b2139a §4.1. Node필수인자/UTF8임시JSON·원본/함수hash핀·binary64·허용오차0. 새EXODUSER-ec3-01-Isolated-20261020·기존각상수/Godot전pgrep2이상30초대기/override0byte.  [보고서](engine/orders/reports/ec3-01_REPORT.md)·원로그 ~/exoduser-wt/_out/ec3-01/ |
+| 기반·하니스 | main6d987cb8a에서분기(필요EC2-01은main포함), 지시서원격20b2139a §4.1. Node필수인자/UTF8임시JSON·원본/함수hash핀·binary64·허용오차0. 새EXODUSER-ec3-01-Isolated-20261020·기존각상수/Godot전pgrep2이상30초대기/override0byte.  [보고서](_archive/engine/orders/reports/ec3-01_REPORT.md)·원로그 ~/exoduser-wt/_out/ec3-01/ |
 
 ## 2026-10-20 QA-007b Windows UTF-8 파일 수송·junction·CLI 경로
 
@@ -1564,7 +1727,7 @@
 | 계산 | G41207~41231 wind/active. 원문cnt1+ToInt32(phase*.3), angle→speed→coin→x→y·black도속도draw소비, rawblack/red·sourceundefined메타데이터, XY질의1회·recover30 유지 |
 | 검증 | 원본1,988상황/19,275event/8,771RNG/1,138raw탄/1,246충돌. 신규35,164/0, 기존BC01~08 무수정131,655/0·BC2-01~04포함250,837/0. 최종exit0/skip0/ERROR0/stderr0byte |
 | 검출·보호 | 격리6결함 모두실패검출, raw로그보존·검사약화0. OS.execute출력join·node인자·UTF-8파일. 공용6·타담당·기존제품/테스트·원본·저장·바이너리0. 실제spawn/hurtP/parry/Main연결HOLD |
-| 제출 | [BC2-05 보고서](engine/orders/reports/bc2-05_REPORT.md). 원로그~/exoduser-wt/_out/bc2-05/. 매Godot gate/30초대기·각격리명·override종료0byte. 자기branch push/remote일치/DONE후자기WT제거 |
+| 제출 | [BC2-05 보고서](_archive/engine/orders/reports/bc2-05_REPORT.md). 원로그~/exoduser-wt/_out/bc2-05/. 매Godot gate/30초대기·각격리명·override종료0byte. 자기branch push/remote일치/DONE후자기WT제거 |
 
 ## 2026-10-20 BC2-04 vortex wind/active 순수 상태 계산
 
@@ -1580,7 +1743,7 @@
 | 원본계산 | G40905~40940 wind/active. XY→X→Y, 15<pd<R, magic30f tick/옵션생략폭발·owner전체readback, 입력시각/난수/KB순서·recover65 유지. 실제집행0·full_tick=false |
 | 최종검증 | 원본1,304상황/15,877event/4,488RNG/1,724충돌/654피해요청. 신규41,373/0, 기존BC01~08 무수정131,655/0·BC2-01~03포함209,464/0, 최종exit0/skip0/ERROR0/stderr0byte |
 | 검출·보호 | 격리5결함 모두실패검출(원문보존). Node인자·UTF-8파일·source-game. 공용6·타담당·기존제품/테스트·원본·저장·바이너리0. 실제hurtP/P.kb/Main/State연결HOLD, 후속미착수 |
-| 제출 | [BC2-04 보고서](engine/orders/reports/bc2-04_REPORT.md). 원로그~/exoduser-wt/_out/bc2-04/. 매Godot gate/30초대기·각격리명·override종료0byte. 자기branch push/remote일치/DONE후자기WT제거 |
+| 제출 | [BC2-04 보고서](_archive/engine/orders/reports/bc2-04_REPORT.md). 원로그~/exoduser-wt/_out/bc2-04/. 매Godot gate/30초대기·각격리명·override종료0byte. 자기branch push/remote일치/DONE후자기WT제거 |
 
 ## 2026-10-20 BC2-03 2장 신규 10기술 시작 계산
 
@@ -1590,7 +1753,7 @@
 | 소유 | 신규10의4state시작/6queue요청만 자체 계산. tele/actorphase 구분, fanWave90, 물리spiral60/240/nextShot60, fire x→y→r→append·delay6, raw피해/참조/순서 유지 |
 | 검증 | Node인자·source-game·자기UTF-8 fixture 파일. 신규845상황/14,225event/5,640RNG, 25,749검사/0실패. 기존BC01~08 무수정131,655/0, BC2-01 7,169/0·BC2-02 44,891/0 |
 | 검출·경계 | 격리5결함주입 모두실패검출(상세보고서). 실제집행0/explicitack/full_tick=false. 공용6·타담당·기존테스트·원본·저장·바이너리0, 실제Main/State/전투dispatch HOLD |
-| 산출·정리 | [BC2-03 보고서](engine/orders/reports/bc2-03_REPORT.md), 원로그~/exoduser-wt/_out/bc2-03/. 매Godot gate/30초대기·각격리명·override종료0byte. 자기branch push/원격일치/DONE후자기WT제거 |
+| 산출·정리 | [BC2-03 보고서](_archive/engine/orders/reports/bc2-03_REPORT.md), 원로그~/exoduser-wt/_out/bc2-03/. 매Godot gate/30초대기·각격리명·override종료0byte. 자기branch push/원격일치/DONE후자기WT제거 |
 
 ## 2026-10-20 BC2-02 승인 반영: 장 catalog 일반화·2장 재사용
 
@@ -1601,7 +1764,7 @@
 | 2장 계산 | 실제si4~9 생성·score·선택·phase/clock·공통22시작·근접6state 재사용. dropTier 원본 hell+1 cap4, 내부 phase 전달. 신규10start는 owner_required |
 | 전후 회귀 | 기존 BC01~BC08 파일·검사 무수정, 전후 각각131,655검사/0실패. BC2-01 전후7,169/0. 신규최종44,891/0·원본fixture3,725개, skip0·exit0·ERROR0 |
 | 실패·경계 | 초기1,674·36실패 원문/수정 보존. Node인자·출력join/UTF-8·IEEE754 RNG전송. 공용6·타담당·원본·저장·기존테스트·바이너리0. 실제전투/Main 연결HOLD, 후속 미착수 |
-| 제출 | [BC2-02 보고서](engine/orders/reports/bc2-02_REPORT.md), 원로그~/exoduser-wt/_out/bc2-02/approved/. 매Godot pgrep/30초대기·상수격리명·override종료0byte. 자기branch push/원격일치/DONE후자기WT제거 |
+| 제출 | [BC2-02 보고서](_archive/engine/orders/reports/bc2-02_REPORT.md), 원로그~/exoduser-wt/_out/bc2-02/approved/. 매Godot pgrep/30초대기·상수격리명·override종료0byte. 자기branch push/원격일치/DONE후자기WT제거 |
 
 ## 2026-10-20 BC2-02 chapter 데이터 수용 접점 HOLD
 
@@ -1611,7 +1774,7 @@
 | 차단·필요위치 | BC02~06의CH1 catalog고정/진입guard,BC07의si0~3직접guard로CH2계산수용불가. BC04의59전역manifest요구·BC06의새10start미소유도구분. 기존owner의데이터인수·guard·token/ack계약결정필요 |
 | 보호·판정 | 공용·타담당0줄조건상기존모듈수정불가. 공통식복제·stage위장·continuation우회·부분helper를전체구현으로보고0. **BC2-02 HOLD/기능미구현**,후속단위/실전/Main진행0 |
 | 검토·실행 | 정적파일/행/caller/인수분석만. Godot/게임/Node원본하니스/신규·회귀테스트0,실행PASS0. R HEAD/branch/tracked INDEX/WORK·원본·제품·기존테스트·저장형식·바이너리변경0 |
-| 산출 | [BC2-02 보고서](engine/orders/reports/bc2-02_REPORT.md)+이절만commit. QA-007 출력전체join/UTF-8·node인자규칙을후속검증조건에기록. 원로그~/exoduser-wt/_out/bc2-02/,push·원격일치·DONE후자기worktree제거 |
+| 산출 | [BC2-02 보고서](_archive/engine/orders/reports/bc2-02_REPORT.md)+이절만commit. QA-007 출력전체join/UTF-8·node인자규칙을후속검증조건에기록. 원로그~/exoduser-wt/_out/bc2-02/,push·원격일치·DONE후자기worktree제거 |
 
 ## 2026-10-20 BC2-01 2장 보스 읽기 전용 catalog
 
@@ -1621,7 +1784,7 @@
 | 등록·재사용 | si4~9/6이름/물리속성/최종Set27~32·union32. main의BC01에서22기술·5phase·25combo 읽기,신규10기술·13combo만 추가. 유효combo38,ordinal순서/Set순서·모든원본필드·깊은복사·의존실패닫힘 보존 |
 | 실제 검증 | 신규7,169/0·BC01~07 회귀합106,867/0·contracts5그룹/0. 합114,036단정/0,skip0/exit0/ERROR0/stderr빈값. bc02/bc03 source-game 절대경로 인수. 각상수격리명·전호출pgrep/2이상30초대기·Godot동시1·override종료0byte |
 | 경계·HOLD | 실제전투/Main·State·World·부활·저장연결0. 다음B2C02의BC02~07 chapter데이터/guard/ack 통합결정은HOLD,공용모듈수정·stage위장·후속구현0. 시각·실전·성능·PC 미검수 |
-| 인계 | [BC2-01 보고서](engine/orders/reports/bc2-01_REPORT.md). 원로그 `~/exoduser-wt/_out/bc2-01/`,정상hook·자기branch push·원격SHA대조·DONE후자기worktree제거 |
+| 인계 | [BC2-01 보고서](_archive/engine/orders/reports/bc2-01_REPORT.md). 원로그 `~/exoduser-wt/_out/bc2-01/`,정상hook·자기branch push·원격SHA대조·DONE후자기worktree제거 |
 
 
 ## 2026-10-20 TRACE-BOSS-CH4 원본 추적·BC4 구현 지시서
@@ -1653,7 +1816,7 @@
 | 객체·생성 위치 | 음성 Node는 native_intro_key_guide_panel.gd625 new/628 MP3 load/633 add_child/635 play. 실제 경로·생성stack·Stream/Playback ID 추적. Main Node727→0, 현행 대기 뒤 음성 WeakRef2개 무효·voice_cachedfalse |
 | 음성 대조 / 판정 | 저장소 밖 동일18단정 진단본에서만 종료12프레임+200ms 제거 → ERROR1·ObjectDB2객체·MP3리소스1·Orphan StringName1. Stream/Playback ID 각각9223372280157967279/9223372280225076142 정확일치. 비동기 오디오 정리 전 quit 문제; 원문 main 오류 재현으로 포장0·레슨 제품 결함 주장0 |
 | 이미 반영 / 소유 | QA-004 680a2758이 기준조상, I 원문 SHA88840f7a…는 QA-004 최종본과byte동일. 기존 보관 적 해제/하니스 대기 유지, 다른 담당 P2-007a 제품 패치0. 별도 총괄 원로그와의 동일건 여부 미확정 |
-| 실패·제출 | 첫 외부 probe 들여쓰기 Parse Error는 로그/초안 보존·통과 제외. [보고서](engine/orders/reports/p2001i-diag_REPORT.md)에 원문·전후/OLD·NEW·소유·제한. ~/exoduser-wt/_out/p2001i-diag/. 자기branch 정상훅/push·원격일치·DONE 뒤 자기WT 제거, R 보존 |
+| 실패·제출 | 첫 외부 probe 들여쓰기 Parse Error는 로그/초안 보존·통과 제외. [보고서](_archive/engine/orders/reports/p2001i-diag_REPORT.md)에 원문·전후/OLD·NEW·소유·제한. ~/exoduser-wt/_out/p2001i-diag/. 자기branch 정상훅/push·원격일치·DONE 뒤 자기WT 제거, R 보존 |
 
 
 ## 2026-10-20 EC3-02 3장 catalog·초기38필드 projection
@@ -1663,7 +1826,7 @@
 | 신규 범위 | native_ch3_enemy_catalog_policy.gd·test_ch3_enemy_catalog_policy.gd·자기UID2개. catalog10행/31263–31298의38필드만. 기존EC2-02 Draws/API형식재사용·CH2필드/HP식복제0,complete_actor=false |
 | 원본 | 40..49각matching draw2/4/3/2/2/2/4/3/4/6,offtimer9999/phase−1/bleed0/상수flag·coords0draw,orbit31260뒤/erratic31300앞. raw46speed0분기·44R10(기획8과불일치),catalogshield%와실HP방어구분 |
 | 검수 | 최종신규12,602/0·원문1,000·38키값/순서/소비binary64/잘못된샘플위치검사. 회귀6종최종실패0/ERROR0/SKIP0. 최초importSIGSEGV−11/이후캐시누락ERROR50·실패단정10 원문보존,동일명령재import0/0및해당회귀4종재실행통과. 원인미확인·숨김0 |
-| 경계·기반 | main6d987cb8a에EC2-02 a10924eb포함하여main분기,EC3-01은미병합/미소비. 전체HP/coreprovider통합은HOLD·공용Main/State/저장/다른담당0줄. Node필수인자/출력join·UTF8임시JSON,새EXODUSER-ec3-02-Isolated-20261020·기존각상수/Godot전pgrep2이상30초대기/override0byte. [보고서](engine/orders/reports/ec3-02_REPORT.md)·원로그 ~/exoduser-wt/_out/ec3-02/ |
+| 경계·기반 | main6d987cb8a에EC2-02 a10924eb포함하여main분기,EC3-01은미병합/미소비. 전체HP/coreprovider통합은HOLD·공용Main/State/저장/다른담당0줄. Node필수인자/출력join·UTF8임시JSON,새EXODUSER-ec3-02-Isolated-20261020·기존각상수/Godot전pgrep2이상30초대기/override0byte. [보고서](_archive/engine/orders/reports/ec3-02_REPORT.md)·원로그 ~/exoduser-wt/_out/ec3-02/ |
 
 
 
@@ -1685,10 +1848,10 @@
 |---|---|
 | 기준 / 의존 | 최신main8524bbbb, NW-02 미병합으로2cc27d09 끝에서 분기. 신규 producer/test/oracle·자기UID2·보고서만. 공용6·다른 담당·기존 제품/테스트·저장·원본·R 변경0 |
 | 계약 / 원본 | NW01 첫 대상 query 재사용. G32829–32853 lore/breakable/altar/bonfire의 쓰기/FX 순서, mat U1·선택 buff .15/.20/.15·리필4필드. 실제 난수/HP/State/입력 연결0 |
-| 의존 경계 | sample/mats/addPotion bool 반환은 명시 주입. 원문 HP addPotion은 악의+1/true 별도 관측, 본문 복제0. 의존 부족은 부분 명령 없는 NR, actual writer/epoch/owner 연결 BLOCKED |
+| 의존 경계 | sample/mats/addPotion bool 반환은 명시 주입. 원문 HP addPotion은 악의오브+1/true 별도 관측, 본문 복제0. 의존 부족은 부분 명령 없는 NR, actual writer/epoch/owner 연결 BLOCKED |
 | 검수 | 원문VM141상황+native 계약98상황, 신규3060/0. NW01 2304/0·NW02 1851/0·contracts5그룹/0·물약계산318/0. 결함주입5종에서27/204/36/24/2실패 검출 |
 | 선재 종료 문제 / 실패 기록 | p2001c 45/0이나 MP3/PlaybackMP3 각1 누수(ObjectDB1). 신규 파일 제외 부모 기준도 동일, 종료 깨끗함 PASS 아님. 초기 Node 발췌/하니스 비교 오류 로그 보존, 검사 약화0 |
-| 격리 / 제출 | Godot15회 매launch count1, count2시30초 대기2회·파일상수 userdir·override finally0byte. AppSupport68파일 보존. [NW-03 보고서](engine/orders/reports/nw-03_REPORT.md), 원로그 `~/exoduser-wt/_out/nw-03/`. push·원격SHA·DONE 후 자기worktree 제거 |
+| 격리 / 제출 | Godot15회 매launch count1, count2시30초 대기2회·파일상수 userdir·override finally0byte. AppSupport68파일 보존. [NW-03 보고서](_archive/engine/orders/reports/nw-03_REPORT.md), 원로그 `~/exoduser-wt/_out/nw-03/`. push·원격SHA·DONE 후 자기worktree 제거 |
 
 ## 2026-10-20 NW-02 개인 포탈 순수 상태전이 proposal
 
@@ -1699,7 +1862,7 @@
 | 원본 / 신규 검수 | 최신main game 전체/발췌hash 고정, 실제 원문VM68상황+native 계약107상황. 최종1851/0(exit0). 경계2종/역순/vx/zone guard 결함주입에서 각각12/9/15/48/11실패 검출 |
 | 회귀 / 실패 기록 | NW01 2304/0·contracts5그룹/0·regions43/0. 최종 ERROR/ObjectDB/resource0, region 기존 Camera2D WARNING1. 최초 `_set` 상속 충돌 컴파일 실패 원문 보존 후 함수명 수정, 가짜 PASS/검사 약화0 |
 | 격리 / 제한 | Godot12회 매run pgrep count1, 지정/기존상수 userdir·override finally0byte. AppSupport 기존68파일 백업·변경0. 실제 제품 포탈/GUI/PC 동등성 미검증, NW03 미착수 |
-| 상세 / 제출 | [NW-02 보고서](engine/orders/reports/nw-02_REPORT.md), 원로그 `~/exoduser-wt/_out/nw-02/`. 정상 훅·자기branch push/원격SHA/DONE 뒤 자기worktree 제거 |
+| 상세 / 제출 | [NW-02 보고서](_archive/engine/orders/reports/nw-02_REPORT.md), 원로그 `~/exoduser-wt/_out/nw-02/`. 정상 훅·자기branch push/원격SHA/DONE 뒤 자기worktree 제거 |
 
 ## 2026-10-20 NW-01 MAP_OBJS 첫 상호작용 대상 읽기 질의
 
@@ -1710,7 +1873,7 @@
 | 원본 검수 | 재현용 `tools/nw01_world_interaction_oracle.cjs` 포함. G 전체/발췌hash·고유마커·distance/gate 검증, 실제 원문VM104상황+native 계약94상황. 최종2304/0(exit0), strict포함 경계/역순 오류는 각각16/72실패 검출 |
 | 회귀 / 초기 실패 | contracts5그룹/실패0·regions43/0, ERROR/ObjectDB/resource0. region Camera2D WARNING1 보존. 첫2200/138은 JSON float index 비교 하니스이며 정수·범위104단정 추가 후 수정, 원문 로그 보존 |
 | 격리 / 범위 | Godot 매run 전 pgrep 2이상이면30초 대기, 신규 지정 userdir/기존 파일상수·override finally0byte. 실제 NPC/포탈/상점/State 연결 없음, 다음 단위 미착수 |
-| 상세 / 제출 | [NW-01 보고서](engine/orders/reports/nw-01_REPORT.md), 원로그 `~/exoduser-wt/_out/nw-01/`. 정상 훅·자기branch push/원격SHA/DONE 뒤 자기worktree 제거 |
+| 상세 / 제출 | [NW-01 보고서](_archive/engine/orders/reports/nw-01_REPORT.md), 원로그 `~/exoduser-wt/_out/nw-01/`. 정상 훅·자기branch push/원격SHA/DONE 뒤 자기worktree 제거 |
 
 ## 2026-10-20 TRACE-NPC-WORLD NPC·상점·월드 상호작용 원본 추적
 
@@ -1727,7 +1890,7 @@
 | 신규 검사 | Node7/0·headless894/0·GPU1232/0, 실제8PNG1920×1080/Apple M5 Pro. ERROR0. 84렌더프레임1366.826ms@60cap는 fixture sweep이며 전투FPS아님 |
 | 회귀 | sourceNode29/0·asset6/0·pit6/0, Godot CH2-01 362/0·CH1 63/0·75/0·189/0·88/0·contracts5그룹/0·굴298/0·지역43/0. 맵28/9선재동일. 기존CH1-04 Node4/1은 공유origin/main 출처SHA차이1건 그대로 기록, 두game byte/나머지전체깊은대조0차이 |
 | 보호 / 한계 | selected기존2397파일SHA동일. prop Physics shape0/원analytic fixture만, Main/실P/전투/굴·지역·전환미연결/full_stage_ready=false. Camera2D/ObjectDB8경고·로비8선재원문 보존. VISUAL RETOUCH(겹침·자산끝선·바닥반복/접지/조명) |
-| 상세 | [CH2-02 보고서](engine/orders/reports/ch2-02_REPORT.md), ~/exoduser-wt/_out/ch2-02/. 매Godot전2이상30초대기·suite상수격리·override finally0byte. 자기branch만push, main/force/전체add0 |
+| 상세 | [CH2-02 보고서](_archive/engine/orders/reports/ch2-02_REPORT.md), ~/exoduser-wt/_out/ch2-02/. 매Godot전2이상30초대기·suite상수격리·override finally0byte. 자기branch만push, main/force/전체add0 |
 
 ## 2026-10-20 CH2-01 si4 원본 snapshot·읽기 전용 계약
 
@@ -1740,7 +1903,7 @@
 | 자산 / 보호 | CH2 원화29개·47참조의 byte/hash만 기록, 이미지 가공·제품 복사0. 기존 selected tracked2359파일 SHA 동일. Godot 자동 생성 sidecar111개는 OUT 보존, 신규 UID2만 제출 |
 | 신규 검수 | Node11/0·Godot362/0, 신규 격리 EXODUSER-ch2-01-Isolated-20261020. Node는 원 AST/IIFE·path 함수·파일 bytes·CLI 음성검사, Godot는 JSON/순수 계약·오염 거절. Main/World/runtime 연결0 |
 | 회귀 | CH1 Node18/0·asset6/0·pit6/0. Godot CH1-01/02/03=63/0·189/0·75/0, contracts5그룹/실패0, P3002 298/0·P3003 43/0. 맵 Node37건28통과/9실패는 baseline 실패명 동일·새 실패0. 기존 ObjectDB8누수/Camera2D 경고·미이식 전투 보존 |
-| 제출 / 경계 | [CH2-01 보고서](engine/orders/reports/ch2-01_REPORT.md), 원로그 ~/exoduser-wt/_out/ch2-01/. 시각·플레이 가능 인수 아님. 자기 branch push·원격 일치·DONE 후 자기 sparse WT/임시 cache 정리, R 불변 |
+| 제출 / 경계 | [CH2-01 보고서](_archive/engine/orders/reports/ch2-01_REPORT.md), 원로그 ~/exoduser-wt/_out/ch2-01/. 시각·플레이 가능 인수 아님. 자기 branch push·원격 일치·DONE 후 자기 sparse WT/임시 cache 정리, R 불변 |
 
 ## 2026-10-20 CH1-04 si1 standalone World·실리소스 소비
 
@@ -1751,7 +1914,7 @@
 | 리소스 / 충돌 | 원본10asset 8683434byte 동일 복사+import10. si1 source tile c7994170…/200²/T40·START4020/7420·gate metadata31/exits33·nearFloor12보정0·LANDMARK5/GAMEPLAY7. 실제 Sprite12중심pivot/keepAR/layer0 소비. wall25590cell exact union313 RectangleShape2D, props5원문 analytic. stage0 hill/chunks64복제0·Physics2D prop shape0 |
 | 신규 검증 | Node5/0, headless88/0, GPU410/0·8PNG1920×1080/Apple M5 Pro. physics40000센터/union0오차, 원문 isW6966/canMv6966/LOS400 차이0·BFS157/fixture왕복314성공·80렌더프레임1302.098ms(60cap). 원본 double 입력 IEEE754 carrier로 JSON849입력 반올림/경계12차이 해소·실패원로그보존 |
 | 회귀 | CH1-01 9/0·63/0, CH1-02 6/0·189/0, CH1-03 9/0·75/0, P3001 Node6/0, contracts5그룹/0·P3002 298/0·P3003 43/0·encounter3그룹/0. 맵Node28/9기준 동일·새실패0. Godot ERROR0, 기존Camera2D/ObjectDB8경고잔존 |
-| 경계 / 상세 | 독립World1·Main/제품World/실P/저장0, 제품지역·굴·적/보스·전환/clear미연결·full_stage_ready=false. 공유맵/공용6/타인파일0줄, 기존1371파일SHA동일·R보존. VISUAL RETOUCH(확대vista/반복바닥/접지/광원). [보고서](engine/orders/reports/ch1-04_REPORT.md), ~/exoduser-wt/_out/ch1-04/. 매Godot전2이상30초대기·suite상수격리·override finally0byte |
+| 경계 / 상세 | 독립World1·Main/제품World/실P/저장0, 제품지역·굴·적/보스·전환/clear미연결·full_stage_ready=false. 공유맵/공용6/타인파일0줄, 기존1371파일SHA동일·R보존. VISUAL RETOUCH(확대vista/반복바닥/접지/광원). [보고서](_archive/engine/orders/reports/ch1-04_REPORT.md), ~/exoduser-wt/_out/ch1-04/. 매Godot전2이상30초대기·suite상수격리·override finally0byte |
 
 ## 2026-10-20 CH1-03 si1 원본 데이터·순수 계약
 
@@ -1762,7 +1925,7 @@
 | 정확 값 | si1/T40/200²/최종tile40000 SHA c7994170…;0/1/2/3/4=13588/25590/3/0/819, START4020/7420·gate metadata31/exits33. rawhand12=LANDMARK5/GAMEPLAY7·region이름7. holes13/1000·분면250/300/250/200. rawmask40000/RLE930과최종tile별도·timer14회소비후최종13 |
 | 검사 | 신규 Node9/0·Godot75/0. CH1-01 9/0·63/0, CH1-02 6/0·189/0, P3-001 Node6/0, contracts5그룹/0·P3002 298/0·P3003 43/0·encounter3그룹/0. 맵Node28/9기준동일·새실패0. 첫Node8/1 ENOBUFS·Godot66/1 타입비교오류 보존후수정 |
 | 경계 / 보호 | source_snapshot_only·runtime_bound/full_stage_ready/visual=false. Main/World 소비·save·에셋생성·새기하0. 보호1243파일 SHA동일·map/si0/공용6/P3owner/adapter/export_world0줄. 로비8실패는 사용자제공 선재원문만 기록·미수정. P3002 ObjectDB8누수/Camera2D 경고 잔존 |
-| 상세 | [CH1-03 보고서](engine/orders/reports/ch1-03_REPORT.md), ~/exoduser-wt/_out/ch1-03/. 매Godot전프로세스2이상이면30초대기·suite고정격리명·override finally0byte. 시각미실행/인수FAIL을데이터단위와구분. R·Q/E·세이브·원본byte보존, main/force/전체add/배포0 |
+| 상세 | [CH1-03 보고서](_archive/engine/orders/reports/ch1-03_REPORT.md), ~/exoduser-wt/_out/ch1-03/. 매Godot전프로세스2이상이면30초대기·suite고정격리명·override finally0byte. 시각미실행/인수FAIL을데이터단위와구분. R·Q/E·세이브·원본byte보존, main/force/전체add/배포0 |
 
 ## 2026-10-20 CH1-02 map8필드 승인 후 정적 환경 동기화
 
@@ -1773,7 +1936,7 @@
 | 원본 근거 | server95–116 wx→write/close→rename·자기temp finally, NW129–139 직접write·예외500 차이. game3580–3585 cloud 현재charId 비교·63932–63940 local j.ok/폴백·64089–64092 web 성공시각. X10 catch scope의 setter0/시각미갱신을 fixture 재현, 오류타입 자체는정적추론·원문수정0 |
 | 보호·HOLD | 실제First 저장폴더 접근0·공용6/형식/원본4/기존모듈 변경0. product_write_authorized=false·network/hostIO0. 실제namespace/path/codec/SDK/LS/서버/State/Main/lifecycle연결·내구성 미구현HOLD, fixture 통과를제품저장PASS로승격0 |
 | 검수 | 신규10388/실패0(쓰기29·가상경쟁4·cloud21/local48/web2 ACK), 기존SV-CONTRACT3023/0·선행FLOW819262/0. 최종종별exit0·ERROR/SCRIPT ERROR/경고0. 최초exit0이나RESULT없는파싱오류는PASS아님·예약어수정·원로그보존 |
-| 제출 | Godot전역2이상30초대기·자기순차1개. 신규EXODUSER-sv-save-primitive-Isolated-20261020·회귀각상수·종료override0byte. 정상훅·자기branch push/원격일치/DONE 뒤 자기worktree제거. [보고서](engine/orders/reports/sv-save-primitive_REPORT.md), ~/exoduser-wt/_out/sv-save-primitive/ |
+| 제출 | Godot전역2이상30초대기·자기순차1개. 신규EXODUSER-sv-save-primitive-Isolated-20261020·회귀각상수·종료override0byte. 정상훅·자기branch push/원격일치/DONE 뒤 자기worktree제거. [보고서](_archive/engine/orders/reports/sv-save-primitive_REPORT.md), ~/exoduser-wt/_out/sv-save-primitive/ |
 
 ## 2026-10-20 SV-RESTORE-FLOW 복원 순서·부분 실패 계산 6번 단위
 
@@ -1784,7 +1947,7 @@
 | 원본 근거 | game3771–3908/3499–3530·SKILL_LIST55/pairs32/groups32·cap9999·Lv300/700. holy 한 번 순회·슬롯0–3/4/5·문자열/0·rename/흡수·2회 복원 원래 순서 보존, 기존 저장 형식/마이그레이션 정책 변경0 |
 | 보호·HOLD | Q/E inline·active sync·WingStrike는 owner before/after 관측 없거나 stale/허용밖이면HOLD. 제품 보호 helper/writer 호출0. 모든 READY는계산만, 실제 State/Main/표인수/applyStats/initStage·표시 미연결HOLD. 실제 저장/서버/IO0 |
 | 검수 | 최종 신규819262/실패0(321fixture×2=642 원본 평가·각12단계), 기존SV-CONTRACT3023/0·선행SHARED149486/0. 최종종별 exit0·ERROR/SCRIPT ERROR/경고0. 초기137실패·음의0 1실패·확장2실패/SCRIPT ERROR2 수정·원로그 보존 |
-| 제출 | Godot전역2이상30초대기·자기순차1개. 신규EXODUSER-sv-restore-flow-Isolated-20261020·회귀각상수·종료override0byte. 정상훅·자기branch push/원격일치/DONE 뒤 자기worktree제거. [보고서](engine/orders/reports/sv-restore-flow_REPORT.md), ~/exoduser-wt/_out/sv-restore-flow/ |
+| 제출 | Godot전역2이상30초대기·자기순차1개. 신규EXODUSER-sv-restore-flow-Isolated-20261020·회귀각상수·종료override0byte. 정상훅·자기branch push/원격일치/DONE 뒤 자기worktree제거. [보고서](_archive/engine/orders/reports/sv-restore-flow_REPORT.md), ~/exoduser-wt/_out/sv-restore-flow/ |
 
 ## 2026-10-20 SV-SHARED-READ 공유 읽기·이관 계산 5번 단위
 
@@ -1795,7 +1958,7 @@
 | 원본 근거 | game3726–3729/3741–3752/48521–48548, STORAGE_MAX16259. 일반 parseInt/QA Number·일반 Array 검증/QA JSON 타입·예외 차이, MAX_SAFE9007199254740991·재조회 순서 보존. 상한은 정확한 int64→double, 저장 형식/마이그레이션 정책 변경0 |
 | 보호·HOLD | 모든 candidate execute_authorized=false, IO/서버/실제연결0. namespace/live G/STORAGE/세터·캐시·dirty/timer·ACK 미연결HOLD. 실제 성공을 가정하지 않고 관측값으로 계산, 비지원 정밀도/형태는 정상 빈 값으로 제조하지 않음 |
 | 검수 | 신규149486/실패0(읽기100/store17/복원131×2), SV-CONTRACT3023/0·선행ITEMS126863/0. 최종3실행 exit0·ERROR/SCRIPT ERROR/경고0. 초기59실패·확장188실패 상한/음의0/문자열 변환 오류 수정·원로그 보존 |
-| 제출 | Godot 전역2이상30초대기·자기순차1개. 신규 EXODUSER-sv-shared-read-Isolated-20261020·회귀각상수·종료override0byte. 정상훅·자기branch push/원격일치/DONE 뒤 자기worktree제거. [보고서](engine/orders/reports/sv-shared-read_REPORT.md), ~/exoduser-wt/_out/sv-shared-read/ |
+| 제출 | Godot 전역2이상30초대기·자기순차1개. 신규 EXODUSER-sv-shared-read-Isolated-20261020·회귀각상수·종료override0byte. 정상훅·자기branch push/원격일치/DONE 뒤 자기worktree제거. [보고서](_archive/engine/orders/reports/sv-shared-read_REPORT.md), ~/exoduser-wt/_out/sv-shared-read/ |
 
 ## 2026-10-20 SV-RESTORE-ITEMS 아이템 복원 계산 4번 단위
 
@@ -1806,7 +1969,7 @@
 | 원본 근거 | 최신main game3628–3683/3735/3754–3769. 17칸 fallback과 기존5키 보충·br/???/shield/bow·affixes·weapon 공속/표시 marker·uniqueArt·ID18·crystal q50/socketQ1/stone q number1–100·upgrades/potLv 순서 유지. 동적 필드·중복/alias 보존 |
 | 보호·한계 | 공용6·타 담당·기존 테스트·원본4파일·데이터·project.godot·R 직접수정0. 누락 owner/비지원 carrier는HOLD, READY는계산만. shared load/legacy storage transfer/clamp/persist 및 실제 인벤/효과/재시작 연결HOLD. IT 품질/효과를 복원 보정에 대입하지 않음 |
 | 검수 | 신규126863/실패0(272fixture·원본544평가), 기존SV-CONTRACT3023/0·선행player78620/0. 최종3실행 exit0·ERROR/SCRIPT ERROR/경고0. 첫110161/36+SCRIPT ERROR1은 fixture alias 전달/strict 문자열 비교 수정·원로그 보존 |
-| 제출 | 전역Godot2이상30초대기·자기순차1개. 신규 EXODUSER-sv-restore-items-Isolated-20261020, 회귀각상수·종료override0byte. 정상훅·자기branch push/원격일치/DONE 뒤 자기worktree제거. [보고서](engine/orders/reports/sv-restore-items_REPORT.md), ~/exoduser-wt/_out/sv-restore-items/ |
+| 제출 | 전역Godot2이상30초대기·자기순차1개. 신규 EXODUSER-sv-restore-items-Isolated-20261020, 회귀각상수·종료override0byte. 정상훅·자기branch push/원격일치/DONE 뒤 자기worktree제거. [보고서](_archive/engine/orders/reports/sv-restore-items_REPORT.md), ~/exoduser-wt/_out/sv-restore-items/ |
 
 ## 2026-10-20 SV-RESTORE-PLAYER 읽기·복원 계산 3번 단위
 
@@ -1817,7 +1980,7 @@
 | 원본 근거 | game3597–3602/3611–3623/3685–3715/43128–43133 최신main byte동일. EXP finite Number/수치문자 구분·SP/AP 보너스 원값·queue 배열 원값·현재 자원 후 cap 대입·legacy pShield→pDef→skills→rawgrit 순서와 JS + 유지 |
 | 보호·한계 | 공용6·타 담당·기존 테스트·원본4파일·project.godot·R 직접수정0. charIdx/rage/mask/atlas/Q/E writer 미연결. READY는 계산만·full_restore_verified=false. actor HP/ST·authority MP 실제 적용/readback은 연결 HOLD. raw_grit_restore writer 호출0 |
 | 검수 | 신규78620/실패0(201fixture·원본603평가)·SV-CONTRACT3023/실패0·선행 슬롯읽기5952/실패0, 최종3실행 exit0·ERROR/경고0. 576실패 StringName 키 수정과 큰수 oracle 전달6/3실패 원로그 보존. 로비 전체 회귀 8실패(main에서도 동일, QA-005 진단 중)는 원문만 기록 |
-| 실행·제출 | Godot 전역2이상30초대기·자기작업 순차1개. 신규 EXODUSER-sv-restore-player-Isolated-20261020·기존각USERDIR상수, 종료override0byte. 정상훅·자기경로 stage·자기branch만push. [보고서](engine/orders/reports/sv-restore-player_REPORT.md), ~/exoduser-wt/_out/sv-restore-player/DONE.txt |
+| 실행·제출 | Godot 전역2이상30초대기·자기작업 순차1개. 신규 EXODUSER-sv-restore-player-Isolated-20261020·기존각USERDIR상수, 종료override0byte. 정상훅·자기경로 stage·자기branch만push. [보고서](_archive/engine/orders/reports/sv-restore-player_REPORT.md), ~/exoduser-wt/_out/sv-restore-player/DONE.txt |
 
 ## 2026-10-20 SV-TRANSPORT-READ fixture 슬롯 읽기 2번 단위
 
@@ -1829,7 +1992,7 @@
 | 결과·HOLD | 404/500/transport/parse/rejected/metadata/player candidate 구분. full_save_verified=false·쓰기/restore권한없음. unknown target/context/status·비배열slots·lone UTF16 surrogate/depth128초과는HOLD(빈슬롯/손상으로제조하지않음). _demoSyncActiveSave writer 미연결 |
 | 실제 검수 | 신규5952검사/실패0·기존SV-CONTRACT3023/실패0, 전2실행exit0·ERROR/SCRIPT ERROR/경고0. 원본서버12·JSON37·로비156·load32상황 대조. 첫5950/12실패는 StringName development key를 문자열로 변환해 수정·원로그보존 |
 | 기존 회귀 BLOCKED | developerCharacterSlots 전체30건/22통과/8실패. origin/main 원본만 별도평가해같은30/22/8·실패이름동일. _demoSyncActiveSave 미정의 등 기존하니스/UI범위. 해당파일수정0·전체PASS승격0 |
-| 실행·제출 | 매Godot실행전전역count확인·2이상30초대기·작업내순차1개. 신규EXODUSER-sv-transport-read-Isolated-20261020, 기존회귀각상수·종료override0byte. 정상훅·자기branch push만. [보고서](engine/orders/reports/sv-transport-read_REPORT.md), ~/exoduser-wt/_out/sv-transport-read/DONE.txt에SHA/수치 |
+| 실행·제출 | 매Godot실행전전역count확인·2이상30초대기·작업내순차1개. 신규EXODUSER-sv-transport-read-Isolated-20261020, 기존회귀각상수·종료override0byte. 정상훅·자기branch push만. [보고서](_archive/engine/orders/reports/sv-transport-read_REPORT.md), ~/exoduser-wt/_out/sv-transport-read/DONE.txt에SHA/수치 |
 
 ## 2026-10-20 SV-COLLECT 원본 저장 수집 읽기 전용 collector
 
@@ -1841,7 +2004,7 @@
 | 순차 레시피 | click/pickup→potion0/55/110/170ms→forge/crystal65ms를각소단위검수. crystal equip_rare/.38/1.12/true 요청은실제sample미연결. 정상중첩보존·명시owner취소oldcallback무효·dispatch THREW prefix보존 |
 | 실측 | 최종mix5728/0·26사례55단계/19477leaf불일치0, cue133/0·11사례25단계/854leaf불일치0. noise/curve고유8배열3421Float32 byte동일(전체출력PCM검증아님). 초기Object.disconnect충돌/테스트비교식실패보존·최종stderr비어있음 |
 | 회귀 / 보존 | contracts5그룹/0·SND01~07 1194/0·687/0·606/0·2435/0·1308/0·2400/0·2004/0·웹3파일7pass/0fail. 기존tracked game.html/godot1337파일byte불변·cache1006동일byte/import0·지정격리/기존상수·override후0byte·Godot2이상30초대기 |
-| 미완 / 다음 경계 | 실제native EQ/Q/knee/ramp/oscillator/FM adapter·청감/출력PCM/PC미완. 다음SND09 Main owner/configure/exit/postStage BGM2callback필요하므로미착수·필요위치와후보줄만보고. [보고서](engine/orders/reports/snd-08_REPORT.md) |
+| 미완 / 다음 경계 | 실제native EQ/Q/knee/ramp/oscillator/FM adapter·청감/출력PCM/PC미완. 다음SND09 Main owner/configure/exit/postStage BGM2callback필요하므로미착수·필요위치와후보줄만보고. [보고서](_archive/engine/orders/reports/snd-08_REPORT.md) |
 | 제출 / 정리 | 정상훅·자기branch push/원격일치→DONE→자기WT제거. branch/원로그/보고서사본보존, main push/force/add-A0 |
 
 ## 2026-10-20 SND-07 독립 sample backend·수명·공간음
@@ -1854,7 +2017,7 @@
 | 공간 / 로딩 | 30ms stamp→거리1200/800·falloff²·pan dx/600±.7·gx감소·.01 gate/RNG. buffer미준비drop/key별pending1·READY/PENDING/실패완료·retry·과거요청replay0. vol0은원본(vol\|\|1), sfx0은0 |
 | 실측 | 최종2004/0·JS29시나리오458단계/65827leaf불일치0. 실제원본MP3 SHA동일43821byte·Dummy재생/자연finished/실제timeout/예약시작/owner손실·bus1→1. 초기ObjectDB8/6경고는기록후mixer drain검사보완·최종stderr비어있음 |
 | 회귀 / 보존 | contracts5그룹/0·SND01~06 1194/0·687/0·606/0·2435/0·1308/0·2400/0·웹3파일7pass/0fail. 기존tracked game.html/godot1332파일byte불변·cache1006파일동일byte/import0. 지정격리/기존상수/override후0byte·Godot2이상30초대기 |
-| 제출 / 한계 | 정상훅·자기branch push/원격일치→DONE→자기WT제거. branch/원로그/보고서사본보존. 청감/PCM/실게임/PC미확인, 실제footstep원음검증·233개전체media이식아님. [보고서](engine/orders/reports/snd-07_REPORT.md) |
+| 제출 / 한계 | 정상훅·자기branch push/원격일치→DONE→자기WT제거. branch/원로그/보고서사본보존. 청감/PCM/실게임/PC미확인, 실제footstep원음검증·233개전체media이식아님. [보고서](_archive/engine/orders/reports/snd-07_REPORT.md) |
 
 ## 2026-10-20 SND-06 원본 BGM 전이·수명 모델
 
@@ -1866,7 +2029,7 @@
 | 전이 / 비동기 | t잠금·force옵션우회/INTRO우회불가, death/victory ended없음, act/allRandom예외·null선곡보존. listener5종·pendingExtra FIFO. 늦은reject의pending재설정/old interact success/ended의loop미재대입까지원본동일 |
 | 실측 | 신규2400/0·JS93시나리오483단계·20339leaf불일치0. contracts5그룹/0·기존SND01~05 1194/0·687/0·606/0·2435/0·1308/0·웹2파일4pass/0fail. 최종실행exit0/stderr비어있음. 최초예약어parse실패RESULT없음은PASS제외·원로그보존 |
 | 환경 / 보존 | 기존tracked game.html/godot1328파일byte불변. 엔진cache1006파일동일byte복사·import0. 매Godot직전count1, 2이상30초대기runner·새지정격리/기존상수·override매회후0byte. 정상훅·자기branch만push |
-| 한계 / 정리 | fake media/명시Promise·timer모델이며browser autoplay/실곡/장치/청감/실게임/PC미확인. 로비8실패선재원문만보존. push·원격일치→DONE→자기WT제거, branch/원로그/보고서사본보존. [보고서](engine/orders/reports/snd-06_REPORT.md) |
+| 한계 / 정리 | fake media/명시Promise·timer모델이며browser autoplay/실곡/장치/청감/실게임/PC미확인. 로비8실패선재원문만보존. push·원격일치→DONE→자기WT제거, branch/원로그/보고서사본보존. [보고서](_archive/engine/orders/reports/snd-06_REPORT.md) |
 
 ## 2026-10-20 SND-05 BGM 카탈로그·순수 선곡
 
@@ -1878,7 +2041,7 @@
 | 선곡 | random/all/actFirst/mixed, bad필터·last재추첨·played Set·해당장reset만. random의1entry는RNG0, 나머지3함수는1entry도RNG1. helper는last를쓰지않음. duplicate entry/Set고유수/소진actDone보존. 재추첨cap/dedup/대체곡0 |
 | 실측 | 신규1308/0·46시나리오225단계·1327leaf 불일치0. 19풀/50/57·35SI·재입장·all bad null·RNG258회재추첨포함. contracts5그룹/0·기존사운드1194/0/687/0/606/0/2435/0·웹2파일4pass/0fail, 모든실행exit0·stderr비어있음 |
 | 환경·보존 | 기존tracked game.html/godot1322파일byte불변. 엔진cache1006파일byte복사만·Godot import0. count2이상30초대기·지정격리·기존USERDIR·override매회후0byte. 정상훅·자기branch만push |
-| 한계·정리 | 로비 전체 회귀 8실패(main에서도 동일, QA-005 진단 중)는전달원문만보존. 실곡/청감/실게임/PC미확인. push·원격SHA확인→DONE→자기WT remove --force(사용자지정), branch/원로그/보고서사본보존. [보고서](engine/orders/reports/snd-05_REPORT.md) |
+| 한계·정리 | 로비 전체 회귀 8실패(main에서도 동일, QA-005 진단 중)는전달원문만보존. 실곡/청감/실게임/PC미확인. push·원격SHA확인→DONE→자기WT remove --force(사용자지정), branch/원로그/보고서사본보존. [보고서](_archive/engine/orders/reports/snd-05_REPORT.md) |
 
 ## 2026-10-20 SND-04 원본 보이스 선택·10초 stamp 상태
 
@@ -1890,7 +2053,7 @@
 | API | constructor(catalog), select_key(key,char,clock_ms,rng), status, snapshot_last_at. READY/key·SILENT/reason·NOT_READY 구분. 자체Node/오디오/IO/실clock/RNG/캐릭터owner0 |
 | 실측 | 신규2435/0·exit0·stderr비어있음. 원본JS71시나리오387단계/1459leaf 불일치0(수치≤1e−12). 첫2435/1은정수Dict↔JSON실수Dict 비교문제·테스트만정정·원로그보존. contracts5그룹/0·정책1194/0·catalog687/0·queue606/0·웹10pass/0fail |
 | 보존·환경 | 기존tracked game.html/godot1318파일byte불변. 전체WT디스크부족실패후자기브랜치sparse재구성·staged삭제0·타WIP삭제0. 기존엔진cache1006파일동일byte복사·Godot import0·원본에셋생성변환0 |
-| 제출·한계 | Godot전count2이상30초대기, 새지정격리·기존USERDIR·override매회후0byte. 정상훅·자기branch만push. [보고서·실패 이력·정확 정책·원로그](engine/orders/reports/snd-04_REPORT.md). 실청취·실게임·PC 인수미확인 |
+| 제출·한계 | Godot전count2이상30초대기, 새지정격리·기존USERDIR·override매회후0byte. 정상훅·자기branch만push. [보고서·실패 이력·정확 정책·원로그](_archive/engine/orders/reports/snd-04_REPORT.md). 실청취·실게임·PC 인수미확인 |
 
 ## 2026-10-20 SND-03 원본 frame queue 순수 phase
 
@@ -1902,7 +2065,7 @@
 | 실패·정리 | dispatch 성공후seen/cnt증가. 성공·skip·실패 모두queue폐기/frame count기존key값0/sb_cd양수감소, last stamp유지. JS throw는backend실패packet으로명시, 임의 GDScript예외catch·실제재생기보장아님 |
 | 실측 | 신규606단정/0실패, 원본JS32시나리오76단계·2107leaf 불일치0(수치오차≤1e−12). contracts5그룹/0·정책1194/0·catalog687/0, 위4종stderr비어있음. 웹10pass/0fail |
 | 기존 Main 회귀 | p2001c 45/0·skipped0·exit0·ERROR0·death sound dispatch1. Camera2D WARNING1/ObjectDB WARNING1(객체2개)잔류를보존하며 종료clean PASS로합산하지않음 |
-| 보존·제출 | 기존tracked game.html/godot1314파일byte불변. 에셋생성/복사/변환0, 검증엔진cache1006파일만동일byte준비·import0. Godot전count2이상30초대기·매회override후0byte. 정상훅·자기branch만push. [보고서·원로그·한계](engine/orders/reports/snd-03_REPORT.md) |
+| 보존·제출 | 기존tracked game.html/godot1314파일byte불변. 에셋생성/복사/변환0, 검증엔진cache1006파일만동일byte준비·import0. Godot전count2이상30초대기·매회override후0byte. 정상훅·자기branch만push. [보고서·원로그·한계](_archive/engine/orders/reports/snd-03_REPORT.md) |
 
 ## 2026-10-20 SND-02 원본 샘플·보이스 치환·선언 라우팅 카탈로그
 
@@ -1914,7 +2077,7 @@
 | API | status/snapshot/lookup_sample/lookup_voice_mapping/lookup_route. READY와 count, MISSING과 namespace/key, NOT_READY와 reason/path 구분. 반환 Dictionary·중첩 route는 깊은 복사. IO는 JSON 읽기뿐이며 RNG/clock/재생·변환·보이스 선택·게임 연결 없음 |
 | 실측 | 새 테스트687단정/0실패, 기존 정책1194/0, 모두exit0·stderr비어있음·격리true·Main미부팅. 원본JS↔JSON↔Godot293 key/value 불일치0. 웹5파일10pass/0fail. 기존tracked 에셋974개 동일byte |
 | 격리 / 과부하 | 새 EXODUSER-snd-02-Isolated-20261020, 정책은 원 USERDIR. override 매번 사용 후0byte. pgrep count2 이상30초 대기 준수, 실행직전 각각count1. catalog 대기5회 |
-| 제출 / 한계 | 정상 훅·경로 지정stage·자기브랜치만 비강제push. 실청취·전체샘플 이식·실게임·PC 인수는 미확인. [보고서·실패 이력·원로그](engine/orders/reports/snd-02_REPORT.md), ~/exoduser-wt/_out/snd-02/DONE.txt에 최종SHA·수치 |
+| 제출 / 한계 | 정상 훅·경로 지정stage·자기브랜치만 비강제push. 실청취·전체샘플 이식·실게임·PC 인수는 미확인. [보고서·실패 이력·원로그](_archive/engine/orders/reports/snd-02_REPORT.md), ~/exoduser-wt/_out/snd-02/DONE.txt에 최종SHA·수치 |
 
 ## 2026-10-20 SND-01 최신 main merge·선재 결함 재확인
 
@@ -1922,7 +2085,7 @@
 |---|---|
 | 기준 | SND-01 ea1dcd8a에 최신 main284d7faf(QA-002 073c7a6a 포함)을 정상 merge477a387a. 실행HEAD2c0bc0cb. 제품·기존 테스트 자체 변경0, force·rebase 없음 |
 | 재확인 | p2005b 12단정/0실패/skipped0/exit0/stderr ERROR0/ObjectDB0. 기존 Camera2D WARNING1. 최초 캐시 부재 부팅 실패는 INVALID로 보존 후 WT 캐시 준비 |
-| 선재 결함 | test_p1002g_kislash_hurte 검기 halt(P2-008a, merge9528ea35/제출46409ee4e), test_p2005b 종료 ERROR(QA-002 이전 base9528ea35/원 SND-01 ea1dcd8a). QA-002 반영 뒤 종료 ERROR 소멸로 사용자 기준의 SND-01 완료. [상세 SHA·원로그](engine/orders/reports/snd-01_REPORT.md) |
+| 선재 결함 | test_p1002g_kislash_hurte 검기 halt(P2-008a, merge9528ea35/제출46409ee4e), test_p2005b 종료 ERROR(QA-002 이전 base9528ea35/원 SND-01 ea1dcd8a). QA-002 반영 뒤 종료 ERROR 소멸로 사용자 기준의 SND-01 완료. [상세 SHA·원로그](_archive/engine/orders/reports/snd-01_REPORT.md) |
 | 격리·과부하 | p2005b USERDIR 그대로 override 매번 사용 후0byte. 실행 전 pgrep count2 이상이면30초 대기. count2 대기9회→count1에서 실행. 원본 음원·공용6파일 자체 변경0 |
 
 ## 2026-10-20 SND-01 순수 사운드 분류·플랫폼 한도 정책
@@ -1935,7 +2098,7 @@
 | 플랫폼 한도 | desktop/mobile: active_nodes 48/16, category_per_frame 2/1, samples_per_frame 6/3, proj_nodes 5/2, hit_nodes 3/2, step_nodes 2/2. 매 호출 독립 Dictionary |
 | 분기 경계 | m_*·monster_crawl/1은 PROJ1. death_ghoul*은 앞 death_* 분기에 따라 g_death. monster_die2는 priority2/category g_death. raw player_dead1은 VOICE9/category 자기 key. 분기 순서·대소문자·미등록 key fallback 보존 |
 | 구현 검수 | 새 테스트 1,194단정/0실패, 원본 샘플233개×4필드=932개 Node oracle/Godot 출력 일치. 추가 경계60개·복사 격리·typed 시그니처·Main 미부팅 확인. 첫 테스트 parse 오류(정적 클래스 대상 Script 메서드 호출)는 테스트만 정정했고 원로그 보존 |
-| 격리 | 새 테스트 `EXODUSER-snd-01-Isolated-20261020`, 프로세스 내 ProjectSettings로 effective OS userdir 확인. Main 부팅0이므로 override.cfg 사용0. 회귀 격리·수치·원로그는 [snd-01 보고서](engine/orders/reports/snd-01_REPORT.md) 참조 |
+| 격리 | 새 테스트 `EXODUSER-snd-01-Isolated-20261020`, 프로세스 내 ProjectSettings로 effective OS userdir 확인. Main 부팅0이므로 override.cfg 사용0. 회귀 격리·수치·원로그는 [snd-01 보고서](_archive/engine/orders/reports/snd-01_REPORT.md) 참조 |
 | 기존 회귀 | Godot 8종 실행: contracts5그룹/0실패, 7개 테스트 합계619단정/1실패. 검기220/1(halt6), 지옥강타12/0이나 종료 리소스 ERROR1. **회귀 인수 BLOCKED**, 기존 파일 수정·skip·단정 완화 없음 |
 | 인수 한계 | 순수 정책 모듈까지이며 기존 전투음에 연결하지 않음. 경로·볼륨 공식·원본 음원은 변경하지 않음. 실청취·실게임 사운드·PC 실행은 미확인 |
 
@@ -1947,7 +2110,7 @@
 | 원본 | game.html9272/9276·30823–30920·31119–31364. catalog HP/ATK/POISE/SHIELD와 생성값 분리, HP두번floor·poise/shield=생성HP·M02처리순서·전용timer24개의base/span 및 무조건orbit/erratic draw보존 |
 | 공통 권한 | elite→조건부mods→speed/r→st2/facing→조건부aura→projT/bossPatT→전용timer→orbit/erratic. 세 supplier Callable과 RNG를 호출자주입, common 추첨알고리즘 복제0. 미연결/잘못된입력은NOT_READY·실제소비보존 |
 | 실제 검증 | 최종 신규159,902/0·원본oracle2,708사례(명시 champion fixture60 포함). EC2-01 7,483/0·contracts5군/0·factory3군/0·p1002f357/0·소환굴298/0. 전6suite exit0/ERROR0/SKIP0. 경고 원문은 보고서/err.log에 별도 보존 |
-| 기준·격리 | 최신main299e48ac 원본byte 일치, EC2-01 미병합으로 c7e02549에 의존 분기. 새 EXODUSER-ec2-02-Isolated-20261020·기존은각상수. Godot전 pgrep2이상30초대기, override최종0byte. [보고서](engine/orders/reports/ec2-02_REPORT.md)·원로그 ~/exoduser-wt/_out/ec2-02/ |
+| 기준·격리 | 최신main299e48ac 원본byte 일치, EC2-01 미병합으로 c7e02549에 의존 분기. 새 EXODUSER-ec2-02-Isolated-20261020·기존은각상수. Godot전 pgrep2이상30초대기, override최종0byte. [보고서](_archive/engine/orders/reports/ec2-02_REPORT.md)·원로그 ~/exoduser-wt/_out/ec2-02/ |
 
 ## 2026-10-20 EC2-01 2장 유형·원소 선택 독립 정책
 
@@ -1958,7 +2121,7 @@
 | 진단·범위 | 주입Callable만 사용. 미지원 stage/무효Callable은NOT_READY·0소비, 잘못된 샘플은 실제 소비 수 보존·수치 보정0. actor/정예/실제spawn/지역/저장 미연결, CH2 플레이 완료 아님 |
 | 실제 검증 | 원본 함수 oracle2,406사례·신규7,483/0. contracts5군/0·encounter_factory3군/0·p1002f357/0·소환굴298/0·원소탄4군/0. 최종 전6suite exit0·ERROR0·SKIP0. Camera2D와 종료 ObjectDB2/8 경고 원문 보존 |
 | 이전 실패 보존 | unit첫7,452/20(JSON숫자 타입·경계전달)→binary64 전달/정확 비교 후7,483/0. 최초 p1002f/소환굴의 리소스ERROR각282는 sparse경로 보완/import 후 재실행, 깨끗한 통과로 소급하지 않음 |
-| 격리·증거 | 새 테스트 EXODUSER-ec2-01-Isolated-20261020, 기존은 파일 상수 이름. Godot 전 pgrep2이상30초 대기, override매회 설정/최종0byte. [보고서](engine/orders/reports/ec2-01_REPORT.md)·원로그 ~/exoduser-wt/_out/ec2-01/ |
+| 격리·증거 | 새 테스트 EXODUSER-ec2-01-Isolated-20261020, 기존은 파일 상수 이름. Godot 전 pgrep2이상30초 대기, override매회 설정/최종0byte. [보고서](_archive/engine/orders/reports/ec2-01_REPORT.md)·원로그 ~/exoduser-wt/_out/ec2-01/ |
 
 ## 2026-10-20 QA-002 테스트 결정성·종료·조명 하니스
 
@@ -1970,13 +2133,13 @@
 | 실측 | 시드 9종 31회 모두 그룹별·총 검사 수 일치. 조명 headless 10/0·GUI 12/0을 포함한 fixed 33회 모두 exit 0·검사 실패 0·stderr ERROR 0 |
 | 종료 진단 | B/C 각 3회 ERROR·ObjectDB 경고 0. 각 테스트 verbose 1회씩에서 개별 잔존 객체·리소스 0. 다른 E/F/G ObjectDB 경고 7/33은 미해결로 보존 |
 | 보존 / 한계 | Godot 4.7.2 원본·격리 override 사용 후 삭제, import 전 App Support 68파일 백업. R 불변. 전체 RNG 결정성·PC 같은 seed 재검증·제품 오디오 전면 해결은 주장하지 않음 |
-| 상세 | [QA-002 보고서](engine/orders/reports/QA-002_REPORT.md), 원로그 `/Users/fordeargamers/exoduser-wt/_out/qa-002/` |
+| 상세 | [QA-002 보고서](_archive/engine/orders/reports/QA-002_REPORT.md), 원로그 `/Users/fordeargamers/exoduser-wt/_out/qa-002/` |
 
 ## 2026-10-20 SV-CONTRACT 원본 저장 5생산자 key set·타입 계약 테스트
 
 | id / 적용 위치 | 현재 정확 계약 |
 |---|---|
-| 새 파일·기준 | `godot/tests/test_native_save_contract.gd` 및 `docs/engine/orders/reports/sv-contract_REPORT.md`. 기준 main `f84e26ee0bbc929fb595b4c0af292b423588f325`, 병합된 SAVE 추적 문서 부록 C. 제품·기존 테스트·공용6파일 직접 수정0행 |
+| 새 파일·기준 | `godot/tests/test_native_save_contract.gd` 및 `docs/_archive/engine/orders/reports/sv-contract_REPORT.md`. 기준 main `f84e26ee0bbc929fb595b4c0af292b423588f325`, 병합된 SAVE 추적 문서 부록 C. 제품·기존 테스트·공용6파일 직접 수정0행 |
 | 원본 행 | 최신 WT `game.html`: Cloud3543–3575, Local63905–63931, Web64062–64088, Demo62131–62159, Demo50061996–62017. 예약 helper51219–51221. 저장 object 리터럴과 순수 helper만 읽기·평가하며 저장/API/복원 본문은 실행하지 않음 |
 | 필드·타입 | player/inv/game만 한 단계 펼쳐 67/67/67/67/49필드·union68·부록 C317표현식 대조. 5생산자×5입력=25평가에서 key/type·기본값·예약큐260상한·불투명 아이템 필드·JSON Number/bool/null 구분·음성 검출 확인 |
 | 실제 검수 | 최종 main에서 저장 계약3023검사/실패0, test_contracts 전체5그룹/실패단정0, 시간 생산자 계약17/0, EXP4건/실패0, 지역 fixture core27/0·display7/0. 각각 exit0. 최초 setup exit2 및 비교 오류3020/10은 원로그에 실패로 보존·최종 성공과 합산하지 않음 |
@@ -1993,13 +2156,13 @@
 | 관측값 | 지역 total23/60/53/32(합168), 현재지역3, 실제 초기 HUD 0 / 32. 원본·기존 테스트 기대값/제품 수치 수정0. HUD suite의 기존 fixture actor필드쓰기2회는 자연 플레이 증거와 구분 |
 | 기존 증거 | 앞선 QS-01 318/0·contracts5그룹/0·자원회복173/0은 동일 코드의 선행 실행으로 보존. 승인 전 미실행 기록과 별도 probe 실패/진단을 이번 suite 성공으로 소급하지 않음 |
 | 보존·범위 밖 | 기존 제품·공용6·기존 테스트 변경0. 이 신규 절만 prepend해 기존 변경로그 바이트 보존. 자동 물약 런타임·실플레이 인수는 범위 밖. 훅 우회/main push/force/rebase/reset0 |
-| 제출 근거 | 기준main9528ea35b429498fcf42fe3723008219ed0ed7e1, 테스트HEAD e38c083cd64a3f8d830d6579f5a7d700b083a7c2. [QS-01 보고서](engine/orders/reports/qs-01_REPORT.md)·원로그 ~/exoduser-wt/_out/qs-01/*-approved-01.* |
+| 제출 근거 | 기준main9528ea35b429498fcf42fe3723008219ed0ed7e1, 테스트HEAD e38c083cd64a3f8d830d6579f5a7d700b083a7c2. [QS-01 보고서](_archive/engine/orders/reports/qs-01_REPORT.md)·원로그 ~/exoduser-wt/_out/qs-01/*-approved-01.* |
 
 ## 2026-10-20 QS-01 물약 정의·회복량·자동 CD 순수 계산 이식
 
 | id / 적용 위치 | 현재 정확 계약 |
 |---|---|
-| 신규 파일 | potion_recovery_source/producer.gd·test_p4001a_potion_recovery_source.gd 및 자기 UID2개. hp_definition/pot_heal/enhanced_heal/auto_cooldown만 구현. [QS-01 보고서](engine/orders/reports/qs-01_REPORT.md) |
+| 신규 파일 | potion_recovery_source/producer.gd·test_p4001a_potion_recovery_source.gd 및 자기 UID2개. hp_definition/pot_heal/enhanced_heal/auto_cooldown만 구현. [QS-01 보고서](_archive/engine/orders/reports/qs-01_REPORT.md) |
 | 원본 근거 | 최신 통합 main 9528ea35b429498fcf42fe3723008219ed0ed7e1의 game.html:27677~27679(POT.hp 7필드),28072(0강100/1강150/그 외 lv×100),35894·35903(회복량 ToInt32),35898~35902(자동 CD) |
 | 정확 수치 | CD=max(6,ToInt32(420×(((1−장갑)−벨트)−회복력))). 장갑/벨트는 unary+ 뒤 falsy0·각 상한0.2, 회복력 min(pRegen×0.03,0.3)에는 기본0 추가 없음. 문자열0.10/0.20·pRegen5→230f, 각 상한 조합→126f. 기존 helper read-only 재사용 |
 | 최종 검수 | 원본 Godot4.7.2: 신규318/0, contracts5그룹/0, 관련 자원회복173/0(exit0). 원본 발췌 Node CD18입력/0불일치. 자원회복에 Camera2D WARNING1·ERROR0. 이전 실행 수치/독립 Main probe 실패·진단은 보고서에 분리 보존 |
@@ -2014,7 +2177,7 @@
 | 새 파일·원본 근거 | `native_settings_read_view.gd`·`test_native_settings_read_view.gd` 기존 제출 그대로. 원본 game.html:6311의38필드 비교용 reference·raw 읽기 view, 48752–48753 reset18/초기20 생략 근거만 기록(S03 적용) |
 | 전체 실제 재실행 | unit112/0·actualMain12/0·기존OPT11/0·starter148/0·지역43/0·HUD36/0·소환굴298/0 = 660/0, 계약5군/실패0·관찰자2군/실패0. 전9회 exit0/ERROR0, Camera2D 기존 WARNING는 상세 보고서에 분리 |
 | G·지역·HUD / 보존 | G48키·지역23/60/53/32 합168·시작HUD0/32 확인. 기존 OPT owner·공용6파일·제품·테스트 변경0, override0byte. 보호 docs/2_3·Q/E·세이브 형식 변경0 |
-| 범위 밖·원로그 | OPT35/누락3 NOT_READY 유지. UI·저장복원·리바인딩·FPS cap 적용·Tier·S03 reset·실플레이 미구현/미검수. 원로그 `~/exoduser-wt/_out/settings-s01/main-9528ea35-userdir-confirmed/`, [보고서](engine/orders/reports/settings-s01_REPORT.md). 정상 훅·자기 branch push만 수행 |
+| 범위 밖·원로그 | OPT35/누락3 NOT_READY 유지. UI·저장복원·리바인딩·FPS cap 적용·Tier·S03 reset·실플레이 미구현/미검수. 원로그 `~/exoduser-wt/_out/settings-s01/main-9528ea35-userdir-confirmed/`, [보고서](_archive/engine/orders/reports/settings-s01_REPORT.md). 정상 훅·자기 branch push만 수행 |
 
 ## 2026-10-20 SETTINGS-S01 원본 설정 default·읽기 전용 view
 
@@ -2027,7 +2190,7 @@
 | 최종 main / 기존 회귀 | 기준 `9528ea35b429498fcf42fe3723008219ed0ed7e1` ff merge 후 기존 OPT11/0·starter148/0·지역43/0·HUD36/0·소환굴298/0. 신규 포함 합660단정·check/0실패 + contracts5군/실패0. 기존 회귀는 각 guard의 전용 격리 이름 사용 |
 | G·지역·HUD | starter G48(원본40+지역7+`_totalSpawned`1, 원본30625), 지역 total23/60/53/32 합168, 시작 HUD0/32를 실제 회귀 로그로 확인 |
 | 범위 밖·보호 | 설정 UI·저장복원·리바인딩·FPS cap 적용·Tier 자동검출·실물 패드·실플레이/시각 검수 미구현·미검수. docs/2_3·Q/E·세이브 형식 보호, 변경0 |
-| 제출·원로그 | 구현 `517825ebf017f105484fb81b01fe98f31fb8f21f`, 자기 branch `codex/settings-s01-20261020`. 원로그 `~/exoduser-wt/_out/settings-s01/main-9528ea35/`, [상세 보고서](engine/orders/reports/settings-s01_REPORT.md). 최초 실패·보완 이력 보존, 훅 우회0 |
+| 제출·원로그 | 구현 `517825ebf017f105484fb81b01fe98f31fb8f21f`, 자기 branch `codex/settings-s01-20261020`. 원로그 `~/exoduser-wt/_out/settings-s01/main-9528ea35/`, [상세 보고서](_archive/engine/orders/reports/settings-s01_REPORT.md). 최초 실패·보완 이력 보존, 훅 우회0 |
 
 > 2026-10-17 ENGINE 현행: callback **12/25·미13**. play_time은 el_mul 바로 다음에 동일 Services self의 arity0 Callable로 등록했다. owner 첫 격리 공개 API 검수는 인수됐으며 자연 clock·실게임 인수는 미확인이다. D9는 직전 공통 소스 인수이며, 이번 main/I/R 소스 정렬은 아래 통합 정본과 단위 receipt의 실제 HEAD·tree를 기준으로 확인한다. V12 후보는 소스 인수·첫 FAIL·별도 보완 한정성공으로 구분하며 제품 copy·World hook은 수행하지 않았다. 아래 이전 단계 숫자·원검수 결과는 당시 이력으로 보존한다. 실제 local/remote commit 상태는 단위 receipt를 따른다.
 
@@ -2401,7 +2564,7 @@ MagicLight Toolbox `GPT Image 2.5 sunburst`로 생체나무 4종을 생성하고
 | NW.js 실측 | high/100%/fpsCap0, CH1-1 적42~44개. 각 해상도에서 유골함·보관함2회, 설정4회 왕복. 1600×900은239.05→239.75FPS, 전체화면5120×1440은238.42→239.75FPS |
 | 검수 범위 | 일반 필드 고정 위치에서 전·후 각12초×2해상도 총48초, >34ms 공백0·Long Task0·Long Animation Frame0. 인트로·튜토리얼 표본 제외. 이동·전체 스킬·보스·장시간 전투 미검수 |
 | 경계 | 사용자 게임·세이브·프로필 변경0. 이전 퍼블리셔 r2·1005에는 패널 수정 없음. 이번 ZIP/외부 업로드0 |
-| 근거 | [패널 렉 실측](12퍼포먼스·최적화/PANEL_HIDDEN_DOM_LAG_20260929.md), [실행 사본 구분](13출시·마케팅/DESKTOP_LATEST_BUILD_20260929.md) |
+| 근거 | [패널 렉 실측](12퍼포먼스·최적화/PANEL_HIDDEN_DOM_LAG_20260929.md), [실행 사본 구분](_archive/13출시·마케팅/DESKTOP_LATEST_BUILD_20260929.md) |
 
 ## 2026-09-30 — 이미지 생성 폴백을 MagicLight로 변경
 
@@ -3112,7 +3275,7 @@ test/eliteTelegraphVisibility.test.js와 test/rareMobNameplates.test.js에서 �
 | 인벤 | 결정 버튼·상시 목록·관리 버튼 제거, 헤더 악의만 표시. 장비 소켓 장착/탈착 유지 |
 | 대장간 | 전체/공격/방어/자원 필터, 동일 종류·성급·강화 묶음, 단일 분해 명시. 일괄 작업은 선택 분류만 처리 |
 | 보존 | `CRYSTAL_BAG` 구조·객체·배열 순서, 한도9999, 강화/합성/제작/분해 비용·재료 규칙 보존 |
-| 테스트 | 신규 회귀8개(번역 포함) 수정 전 실패 → 수정 후 통과. 인라인 구문·장착 SFX 포함 관련10개 PASS. 저장 IO 없는 252개 결정 UI에서 필터·강화·단일 분해·장착/탈착·영문·1280×720 표시 확인. 악의 회귀의 기존 패링 assertion 1개는 수정 전 백업에서도 실패 |
+| 테스트 | 신규 회귀8개(번역 포함) 수정 전 실패 → 수정 후 통과. 인라인 구문·장착 SFX 포함 관련10개 PASS. 저장 IO 없는 252개 결정 UI에서 필터·강화·단일 분해·장착/탈착·영문·1280×720 표시 확인. 악의오브 회귀의 기존 패링 assertion 1개는 수정 전 백업에서도 실패 |
 | 문서 | 결정·인벤·3파트·UI·번역 문서 동기화. grep 미설치 확인 후 docs 전체 rg 검색 (`tmp/crystal_forge_20260918/docs-matches.txt`) |
 
 ## 2026-09-18 — 개발용 캐릭터 슬롯 식별·무제한
@@ -3124,7 +3287,7 @@ test/eliteTelegraphVisibility.test.js와 test/rareMobNameplates.test.js에서 �
 | 로비 | 개발용 `MAX_CHARS=Infinity`, 기존 2개 표시·스크롤 유지. `developerSaveNotice`에 ‘개발자용 · 테스트 캐릭터 · 슬롯 무제한’ 표시. 공개 오프라인·온라인5개, 데모 고정1개 유지 |
 | 보호 | 조회 실패·온라인 진입 시 개발 상태 해제. 출하 서버 `node-main.js` 미수정. Steam Build25341487 재패키징·재업로드 없음 |
 | 저장 | ASDASDAS 레벨10 개발 원본·백업 보존. 승인 후 APPDATA 테스트3개를 개발 `steam_` 접두 사본과 원본 보관 폴더로 분리, 해시 검증. 기존 슬롯 덮어쓰기 없음. saves/userdata 업로드 제외, 이번 보관 폴더 Git 제외 |
-| 검증 | 수정 전2개 실패 확인 → 신규6개 및 기존 캐릭터 생성·동기화·공유악의 포함34개 PASS. 서버 구문·diff 검사 통과. 재시작 후 실제 API와 브라우저 로비에서 development:true, 8개 슬롯, Lv.10, 개발자용 표시, 새 캐릭터 칸 확인 |
+| 검증 | 수정 전2개 실패 확인 → 신규6개 및 기존 캐릭터 생성·동기화·공유악의오브 포함34개 PASS. 서버 구문·diff 검사 통과. 재시작 후 실제 API와 브라우저 로비에서 development:true, 8개 슬롯, Lv.10, 개발자용 표시, 새 캐릭터 칸 확인 |
 | docs | 전체 관련 키워드 rg 검색, 저장 구조·캐릭터 선택 UI·API 가이드 동기화 |
 
 ## 2026-09-17 — Shift 홀드 잔여 게이지 비례 이동
@@ -3223,7 +3386,7 @@ test/eliteTelegraphVisibility.test.js와 test/rareMobNameplates.test.js에서 �
 | 작업 | 전투·시네마틱·자원 실습·스프라이트와 관련 docs/test의 미커밋 작업 보존 |
 | 정리 | 동일 내용 줄바꿈 차이·중복 blur 제거, 물리탄0.55배와 자원 실습 캐시20260916-recovery2 문서 동기화 |
 | 검증 | 회귀147개, 자원/패링 실습 전체, 양쪽 HTML 구문·guard PASS |
-| 기록 | `docs/13출시·마케팅/WORKTREE_CHECKPOINT_20260916.md` |
+| 기록 | `docs/_archive/13출시·마케팅/WORKTREE_CHECKPOINT_20260916.md` |
 
 ## 2026-09-16 소스 제어753개 변경 정리
 
@@ -3396,8 +3559,8 @@ test/eliteTelegraphVisibility.test.js와 test/rareMobNameplates.test.js에서 �
 |---|---|
 | doParry | Q기본100/E기본60 → Q/E 모두50. HP/MP/ST 각각 적용, 기존 최종2배 제거 |
 | 보정 | 장비·회복력 패시브·빨콩0.5/무지개1.5·물리탄3/대형탄10 배율 유지. 각 최대치 캡 |
-| 유지 | 기동력·분노·악의2배 수급, 해골눈1개, 쿨다운 회복 및 반사 피해·판정 |
-| 검증 | 패링 수급·대형탄·악의29개 검사 PASS. 두 HTML 공통 적용 |
+| 유지 | 기동력·분노·악의오브2배 수급, 해골눈1개, 쿨다운 회복 및 반사 피해·판정 |
+| 검증 | 패링 수급·대형탄·악의오브29개 검사 PASS. 두 HTML 공통 적용 |
 | 문서 | docs/14밸런스+수치테이블/PARRY_RESOURCE_DOUBLE_20260912.md |
 
 ## 2026-09-13 자원2단 자동 연결 복구
@@ -3916,20 +4079,20 @@ MAP PRODUCTION REPORT: CH1-1 native resource admission만 변경. MASTER→OUTER
 
 | 모듈 / 공개 API | 원본 수치·순서 | 이번 보존 범위와 잔여 연결 |
 |---|---|---|
-| `source_init_stage_entry_owner` — `Owner.new(services,sink).run_entry(si)`, `resume_after_gap(null)`, `StageEntryGSink.consume/as_sink/read_current_same_g/pinned_g_is` | `TOTAL_STAGES=35`, 상한34; 원본 normal `G.stage` 뒤 실제24단계 gap, 이후 tail10. 외부 metadata/true를 resume 완료로 수락하지 않는다. | 첫9그룹/87검증 기술 PASS 제출을 보존. 현재 `PARTIAL_PENDING_GAP`, 실제 gap owner 부재로 `_fireZones` 쓰기0·전체 entry 완료0. actual Main 연결·`G.on` 활성화 미완료. [세부 계약](engine/FDG_GODOT_PORT_SOURCE_INIT_STAGE_ENTRY_OWNER_FIRST_20261014.md). |
-| `source_object_sprite_wait_owner` — `bind_source_providers`, `begin_wait(timeout_ms)` 또는 `await wait_obj_sprites(timeout_ms)`, `cancel_wait`, `dispose_pending` | post-stage caller8000ms; poll50000µs, 최소 Timer0.001초, query log 상한1024. timeout은 실제 wall clock의 strict `elapsed>timeout`, poll은 monotonic guard. OBJ는 매 check 현재값, extras는 시작 시14+실제bossGateImgs.length 참조 캡처. | 첫10그룹/870검증 기술 제출을 보존. 정상 `SOURCE_WAIT_COMPLETED/TIMED_OUT`과 constructor `UNVERIFIED_*`를 구분. 실제 image publisher3API 및 Main caller 없음. `authority_owner`는 wait Node 실행만 증명하며 `texture_ready/full_stage_ready=false`; 실패 이미지·timeout 종료를 texture 완료로 승격하지 않는다. [세부 계약](engine/FDG_GODOT_PORT_SOURCE_OBJECT_SPRITE_WAIT_OWNER_FIRST_20261014.md). |
-| `source_prepare_start_map_view_owner` — `configure(bindings)`, `await run_prepare_start_map_view()`, `cancel/is_running/current_deadline_usec` | 실제 Callables9개와 zero-argument visibility signal; loading98, deadline12000000µs, poll30000µs/0.03초. visible에서 deadline 재설정, hidden 동안 timeout 판정 억제. | 첫13그룹/332검증 기술 PASS 제출을 보존. `SOURCE_RETURNED`는 source body 반환이며 실제 callback owner를 별도 확인한다. return_path는 disabled2/ready/실제 empty IDs/error fallback/timeout fallback. 현재 CH1 enabled/IDs/preload/cache/fallback, loading/localizer/warn, document visibility 공급·Main caller 없음. texture/GPU/full-map/Main-ready claims=false. [세부 계약](engine/FDG_GODOT_PORT_SOURCE_PREPARE_START_MAP_VIEW_OWNER_FIRST_20261014.md). |
-| `source_save_lifecycle_owner` — `configure/readiness/start_auto_save/schedule_boot_save/poll/settle/rift_save_busy/snapshot` | 실제 Callables6개; auto30000ms, 성공 간격10000ms, boot3000ms. 실제 Date.now-domain clock·현재 상태/collector/slot/RIFT/primitive가 필요하며 host가 `poll()`을 호출한다. | 고유5case/112검증 제출은 첫4valid81+실패 rift oracle case31 수정 통과 이력을 보존하며 first-all-clean으로 쓰지 않는다. `SETTLED`는 실패도 소비하므로 저장 성공은 `result.ok`로 구분. 실제 Main collector/slot/backend/pump 미연결; Main_connected/stageReady=false·기존 저장소/API 접근0. [세부 계약](engine/FDG_GODOT_PORT_SOURCE_SAVE_LIFECYCLE_OWNER_FIRST_20261014.md). |
+| `source_init_stage_entry_owner` — `Owner.new(services,sink).run_entry(si)`, `resume_after_gap(null)`, `StageEntryGSink.consume/as_sink/read_current_same_g/pinned_g_is` | `TOTAL_STAGES=35`, 상한34; 원본 normal `G.stage` 뒤 실제24단계 gap, 이후 tail10. 외부 metadata/true를 resume 완료로 수락하지 않는다. | 첫9그룹/87검증 기술 PASS 제출을 보존. 현재 `PARTIAL_PENDING_GAP`, 실제 gap owner 부재로 `_fireZones` 쓰기0·전체 entry 완료0. actual Main 연결·`G.on` 활성화 미완료. [세부 계약](_archive/engine/FDG_GODOT_PORT_SOURCE_INIT_STAGE_ENTRY_OWNER_FIRST_20261014.md). |
+| `source_object_sprite_wait_owner` — `bind_source_providers`, `begin_wait(timeout_ms)` 또는 `await wait_obj_sprites(timeout_ms)`, `cancel_wait`, `dispose_pending` | post-stage caller8000ms; poll50000µs, 최소 Timer0.001초, query log 상한1024. timeout은 실제 wall clock의 strict `elapsed>timeout`, poll은 monotonic guard. OBJ는 매 check 현재값, extras는 시작 시14+실제bossGateImgs.length 참조 캡처. | 첫10그룹/870검증 기술 제출을 보존. 정상 `SOURCE_WAIT_COMPLETED/TIMED_OUT`과 constructor `UNVERIFIED_*`를 구분. 실제 image publisher3API 및 Main caller 없음. `authority_owner`는 wait Node 실행만 증명하며 `texture_ready/full_stage_ready=false`; 실패 이미지·timeout 종료를 texture 완료로 승격하지 않는다. [세부 계약](_archive/engine/FDG_GODOT_PORT_SOURCE_OBJECT_SPRITE_WAIT_OWNER_FIRST_20261014.md). |
+| `source_prepare_start_map_view_owner` — `configure(bindings)`, `await run_prepare_start_map_view()`, `cancel/is_running/current_deadline_usec` | 실제 Callables9개와 zero-argument visibility signal; loading98, deadline12000000µs, poll30000µs/0.03초. visible에서 deadline 재설정, hidden 동안 timeout 판정 억제. | 첫13그룹/332검증 기술 PASS 제출을 보존. `SOURCE_RETURNED`는 source body 반환이며 실제 callback owner를 별도 확인한다. return_path는 disabled2/ready/실제 empty IDs/error fallback/timeout fallback. 현재 CH1 enabled/IDs/preload/cache/fallback, loading/localizer/warn, document visibility 공급·Main caller 없음. texture/GPU/full-map/Main-ready claims=false. [세부 계약](_archive/engine/FDG_GODOT_PORT_SOURCE_PREPARE_START_MAP_VIEW_OWNER_FIRST_20261014.md). |
+| `source_save_lifecycle_owner` — `configure/readiness/start_auto_save/schedule_boot_save/poll/settle/rift_save_busy/snapshot` | 실제 Callables6개; auto30000ms, 성공 간격10000ms, boot3000ms. 실제 Date.now-domain clock·현재 상태/collector/slot/RIFT/primitive가 필요하며 host가 `poll()`을 호출한다. | 고유5case/112검증 제출은 첫4valid81+실패 rift oracle case31 수정 통과 이력을 보존하며 first-all-clean으로 쓰지 않는다. `SETTLED`는 실패도 소비하므로 저장 성공은 `result.ok`로 구분. 실제 Main collector/slot/backend/pump 미연결; Main_connected/stageReady=false·기존 저장소/API 접근0. [세부 계약](_archive/engine/FDG_GODOT_PORT_SOURCE_SAVE_LIFECYCLE_OWNER_FIRST_20261014.md). |
 
 실제 World는 prop Texture2D와 native plate `_chunks`를 보유하지만 원 JS image의 `src/complete/naturalWidth`·ERROR 상태 및 CH1 view IDs/cache ledger를 게시하지 않는다. HUD 상태 문구와 Tree pause도 원 로딩 완료·document.hidden 서비스가 아니다. 이 값을 임의 생성하거나 비어 있는 IDs로 완료시키지 않는다. 현재 수정 중인 PostStage와 canonical 불일치가 확인된 구버전 Intro22는 이번 보존 목록에서 제외한다.
 
-> **2026-10-14 실제 Main 커튼 그림자 연결:** 원 R25 view에 ART R26 shadow child를 bind했다. 새actualMain1/8checks firstPASS(1.977740209초), product수리·oldsuccess재연0. blur80/alpha.95/sigma40/hairline잔여~.014; z45 mapping/visibleGPU/publicpixel/controller는미완. SKILL old22는canonical불일치로Main미채택/Gwriter0. [그림자 연결 정본](engine/FDG_GODOT_NATIVE_MAIN_INTRO_SHADOW_FIRST_20261014.md).
+> **2026-10-14 실제 Main 커튼 그림자 연결:** 원 R25 view에 ART R26 shadow child를 bind했다. 새actualMain1/8checks firstPASS(1.977740209초), product수리·oldsuccess재연0. blur80/alpha.95/sigma40/hairline잔여~.014; z45 mapping/visibleGPU/publicpixel/controller는미완. SKILL old22는canonical불일치로Main미채택/Gwriter0. [그림자 연결 정본](_archive/engine/FDG_GODOT_NATIVE_MAIN_INTRO_SHADOW_FIRST_20261014.md).
 
-> **2026-10-14 실제 Main 커튼 서비스:** 기존 HUD에 ART 원view를 hidden bind하고 실제900ms callback을 소비했다. 첫15 중14valid/1FAIL→실패only1clean(906ms callback1), 제품수리0·성공재연0. sourcecontroller/G.on/600frames/GPU/fullMain 미연결, shadow80px/z45 gap 유지. 함께Root G-only publicplanner9/292와 Startup 원producer14/791를 동결기술scope로 정상 보존하며 실제Gwriter/18fields 일괄ACK0. [Main 커튼 정본](engine/FDG_GODOT_NATIVE_MAIN_INTRO_CURTAIN_FIRST_20261014.md).
+> **2026-10-14 실제 Main 커튼 서비스:** 기존 HUD에 ART 원view를 hidden bind하고 실제900ms callback을 소비했다. 첫15 중14valid/1FAIL→실패only1clean(906ms callback1), 제품수리0·성공재연0. sourcecontroller/G.on/600frames/GPU/fullMain 미연결, shadow80px/z45 gap 유지. 함께Root G-only publicplanner9/292와 Startup 원producer14/791를 동결기술scope로 정상 보존하며 실제Gwriter/18fields 일괄ACK0. [Main 커튼 정본](_archive/engine/FDG_GODOT_NATIVE_MAIN_INTRO_CURTAIN_FIRST_20261014.md).
 
-> **2026-10-14 실제 Main 자원 실패 시작 중단:** 현재 Main은 sprite 검사 NOT_READY에서 새Player/source holders/World를 정리하고 physics/input off 후 camera/HUD/capture 생성 전 종료한다. 새 실제Main negative episode1/원Warrior public lifecycle fault1/첫12검증 PASS(1.851974083초), 예상push_error1·예상밖ERROR0/SCRIPT0/WARNING0/수리재연0. 이전99f6의29검증은 동결. 캐릭터24장·24FPS/model/치마 품질·source startup/GPU 미완은 유지한다. [실패 경로 정본](engine/FDG_GODOT_NATIVE_MAIN_SPRITE_STARTUP_LOSS_FIRST_20261014.md).
+> **2026-10-14 실제 Main 자원 실패 시작 중단:** 현재 Main은 sprite 검사 NOT_READY에서 새Player/source holders/World를 정리하고 physics/input off 후 camera/HUD/capture 생성 전 종료한다. 새 실제Main negative episode1/원Warrior public lifecycle fault1/첫12검증 PASS(1.851974083초), 예상push_error1·예상밖ERROR0/SCRIPT0/WARNING0/수리재연0. 이전99f6의29검증은 동결. 캐릭터24장·24FPS/model/치마 품질·source startup/GPU 미완은 유지한다. [실패 경로 정본](_archive/engine/FDG_GODOT_NATIVE_MAIN_SPRITE_STARTUP_LOSS_FIRST_20261014.md).
 
-> **2026-10-14 실제 Main 캐릭터 자원 검사 연결:** 기존 Player/Warrior에 source-backed 기대 정의와 읽기 전용 Inspector를 연결했다. 새 실제 Main 첫4그룹/29검증 PASS(2.2916115초), native_loaded_resources READY. 현재 방향8×모드4=32 animations/216frames/9텍스처, 방향별2/8/8/9장·1.25/7.5FPS; 목표24고유장·24FPS 충족0/32. region bounds 오류0은 원화·치마/모델 품질 해결 증거가 아니다. source wait/GPU/전체 startup·공개 플레이는 NOT_PROVEN/미인수; 성공 suite 재실행0. [Main 연결 정본](engine/FDG_GODOT_NATIVE_MAIN_SPRITE_READINESS_FIRST_20261014.md).
+> **2026-10-14 실제 Main 캐릭터 자원 검사 연결:** 기존 Player/Warrior에 source-backed 기대 정의와 읽기 전용 Inspector를 연결했다. 새 실제 Main 첫4그룹/29검증 PASS(2.2916115초), native_loaded_resources READY. 현재 방향8×모드4=32 animations/216frames/9텍스처, 방향별2/8/8/9장·1.25/7.5FPS; 목표24고유장·24FPS 충족0/32. region bounds 오류0은 원화·치마/모델 품질 해결 증거가 아니다. source wait/GPU/전체 startup·공개 플레이는 NOT_PROVEN/미인수; 성공 suite 재실행0. [Main 연결 정본](_archive/engine/FDG_GODOT_NATIVE_MAIN_SPRITE_READINESS_FIRST_20261014.md).
 
 ## 실제 Main lesson file-init/current guard 연결 — 2026-10-14
 
@@ -3979,7 +4142,7 @@ Main은 실제 새 Player가 Tree에 들어가기 전에 SourceResourceAuthority
 | 검증 범위 | 실제 Main/Player/World Tree와 실제 scalar/pair sink. G/INV/PASSIVES/lesson/hpR/main-init witness는 constructor fixtures; 전체 실제 Main authority 완료가 아님 |
 | 아직 미인수 | 실제 시작 장비25/RNG/post-applyStats HP·MP·ST/전체bootstrap/캐릭터24장24FPS/화면·최저240. QE 양수HP<1 공개Q 요청은 이번에 미측정 |
 
-SSOT: docs/engine/FDG_GODOT_SOURCE_PLAYER_REGEN_PHASE_20261014.md 및 FDG_GODOT_FRACTIONAL_HP_SINK_20261014.md. 새 UID6은 Godot ResourceUID 실제 생성, metadata-only0groups/0imports/0.620797667초로 분리한다. Native60·원 Q/E/poise/DOT/전투수치·source16/geometry·기존 저장·사용자 paused 화면/서버는 보존한다.
+SSOT: docs/_archive/engine/FDG_GODOT_SOURCE_PLAYER_REGEN_PHASE_20261014.md 및 FDG_GODOT_FRACTIONAL_HP_SINK_20261014.md. 새 UID6은 Godot ResourceUID 실제 생성, metadata-only0groups/0imports/0.620797667초로 분리한다. Native60·원 Q/E/poise/DOT/전투수치·source16/geometry·기존 저장·사용자 paused 화면/서버는 보존한다.
 
 ## ENGINE actual Main source resource construction - 2026-10-14
 
@@ -3998,7 +4161,7 @@ Main now constructs one SourcePlayerResources Node before its new Player enters 
 | Source Main scope | Supported6/unsupported10 preserved. Empty17slot reset is not final currentINV; original actual15 equipped +10 bag factory still needed. No fake currentG/PASSIVES/grit neutral readiness |
 | Whole phase / visual | holy predicate -> holyflat -> MP/ST precompute -> HP -> ST/MP writes not yet installed. Public pixel/model/240 proof pending; VISUAL RETOUCH |
 
-Exact API and first evidence: [Main source authority SSOT](engine/FDG_GODOT_MAIN_SOURCE_AUTHORITY_20261014.md).
+Exact API and first evidence: [Main source authority SSOT](_archive/engine/FDG_GODOT_MAIN_SOURCE_AUTHORITY_20261014.md).
 
 ---
 
@@ -4017,7 +4180,7 @@ The new optional binding uses the SAME Player and World. It replaces the partial
 | Integration proof | 7 unique groups / 170 clean checks: first5/139, repaired clock13, repaired provider-loss18. Actual checks219 across 3 attempts; initial FAIL1 and SCRIPT_ERROR2/6 preserved. Clean success groups and old source suites rerun0 |
 | Main / visual | Actual MP/current G and holyflat->rate precompute->HP->STMP phase unadopted. Constructor witness is not full source-phase proof. Main/character/pixel/240FPS remain unproven; VISUAL RETOUCH |
 
-Exact contracts and first runtime evidence: [Resource regeneration binding SSOT](engine/FDG_GODOT_RESOURCE_REGENERATION_BINDING_20261014.md).
+Exact contracts and first runtime evidence: [Resource regeneration binding SSOT](_archive/engine/FDG_GODOT_RESOURCE_REGENERATION_BINDING_20261014.md).
 
 ---
 
@@ -4033,7 +4196,7 @@ Exact contracts and first runtime evidence: [Resource regeneration binding SSOT]
 | lifecycle / snapshot | before/after await 실제 World/adapter/producer/baker parent·Tree·queued guard. `number_atlas_startup_status/bake_calls/supply_calls/supplier_live/runtime_texture_size/build_report/clock_owner` 추가. late completion은 교체된 backend에 전달하지 않음 |
 | 경계 | 실제 native supply가 연결되었으므로 supplier 부재 gap과 구분한다. headless gap·원 Pirata font/baseline/crop/browser raster fidelity·본편 자연 피해숫자 caller·공개 pixels/최저240는 미완. 원 source6/미10·frozen shipping5/미11, 기존 numeric pool40/post3 clock 보존 |
 
-두 실행의 각각 Camera interpolation warning1건은 실제 ledger에 별도로 보존했다. 정상 코드 검사에서 error는 없으며 기존 atlas9/105·8probe, Ctxt4·Cground3 등 기인수 성공 재실행0/원 PNG hash·copy·import0이다. startup 공급자의 새 UID는 actual Godot ResourceUID metadata1회로 생성했으며 코드 검사/asset import가 아니다. [정확한 새 SSOT](FDG_GODOT_NUMBER_ATLAS_BINDING_20261014.md)의 **VISUAL VERDICT: RETOUCH**를 유지한다.
+두 실행의 각각 Camera interpolation warning1건은 실제 ledger에 별도로 보존했다. 정상 코드 검사에서 error는 없으며 기존 atlas9/105·8probe, Ctxt4·Cground3 등 기인수 성공 재실행0/원 PNG hash·copy·import0이다. startup 공급자의 새 UID는 actual Godot ResourceUID metadata1회로 생성했으며 코드 검사/asset import가 아니다. [정확한 새 SSOT](_archive/engine/FDG_GODOT_NUMBER_ATLAS_BINDING_20261014.md)의 **VISUAL VERDICT: RETOUCH**를 유지한다.
 
 ---
 
@@ -4053,7 +4216,7 @@ Exact contracts and first runtime evidence: [Resource regeneration binding SSOT]
 | 실제 clock | World priority−1의 `dt_sp/frame/ens`를 Player physics의 HP0 early-return 앞에서 1회 전달. 살아 있는 World의 원 global burst는 Player 사망 후에도 해당 시계로 전개·소멸하며 추가 owner-death 회수0. adapter는 실제 reference·epoch·pause·중복을 검사하고 `Runtime.tick(ticks/60)`만 실행. 추가 자동 physics0. 이 slice는 counter/ring을 Player0에서 함께 처리하므로 원 post-projectile burst phase의 전체 순서까지 완료로 주장하지 않으며 `full_source_phase_order_ready=false` |
 | 보존 / 미완 | 실제 6탄 kernel의 기존 receive_damage 호출·후속 상태이상·impact·끝처리는 현재 변경0. 새 facade/birth actor attribution·E 이동/완료·실 source provider·본편 입력·공개 pixels/240FPS는 미완 |
 
-새 코드의 최초 검사 결과와 정확한 provider 계약은 [Q/E 연결 SSOT](FDG_GODOT_QE_BINDING_20261014.md)에 기록한다. 블랙콩 성공 Q 반사는 원 공식 불일치 때문에 `blackbean_source_carrier_not_adopted`로 상태·탄·HP 변경 전에 거절한다. 현재 Source Runtime의 과거19 검사는 canonical 피해/bank 식의 PASS 증거가 아니며 소유자가 같은 affected 분기를 수리 중이다. 원식은 변이 전 `pParryProjDmg(incoming,_sbPW)`→`trunc(base×1.5)`→탄 피해→`bank+=(탄피해||10)`→`doParry(탄피해)`이다. 실제 root `apply_source_q_reflection` 소비는 미연결이며 proposed `spawn_reflected`는 새 탄 발사 권한이 아니다.
+새 코드의 최초 검사 결과와 정확한 provider 계약은 [Q/E 연결 SSOT](_archive/engine/FDG_GODOT_QE_BINDING_20261014.md)에 기록한다. 블랙콩 성공 Q 반사는 원 공식 불일치 때문에 `blackbean_source_carrier_not_adopted`로 상태·탄·HP 변경 전에 거절한다. 현재 Source Runtime의 과거19 검사는 canonical 피해/bank 식의 PASS 증거가 아니며 소유자가 같은 affected 분기를 수리 중이다. 원식은 변이 전 `pParryProjDmg(incoming,_sbPW)`→`trunc(base×1.5)`→탄 피해→`bank+=(탄피해||10)`→`doParry(탄피해)`이다. 실제 root `apply_source_q_reflection` 소비는 미연결이며 proposed `spawn_reflected`는 새 탄 발사 권한이 아니다.
 
 기인수한 성공 suite, 원PNG, 보호된 플레이 세션과 `2_3` 확정 문서의 변경0.
 
@@ -4731,7 +4894,7 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 | 실제 실행 | USB NW.js0.111.2, WebGL2 게임 진입·네메시아 INTRO, 전사 영상1920×1080/96.4초·오디오 신호 확인 |
 | 웹 | the-exoduser.vercel.app READY, 핵심8파일 해시·브라우저 진입·누락에셋0 PASS |
 | 업로드 보완 | Windows prebuilt에서 빠진 비ASCII83파일을 ASCII 업로드명+overrides 공개URL로 보완. normalize-web-paths.py와 계약 기록 |
-| 상세 | docs/13출시·마케팅/USB_WEB_RELEASE_20260910.md |
+| 상세 | docs/_archive/13출시·마케팅/USB_WEB_RELEASE_20260910.md |
 
 ## 2026-09-10 레벨업 표시·이펙트 지속시간 보강
 
@@ -4957,7 +5120,7 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 | 청취 | 탄막_피격음_후보/여기서_들어보기.html, 개별 및 전체 비교 WAV |
 | 적용 상태 | 현재 게임 소리 유지, 후보 선택 전 |
 | 검증 | 제작 규격 및 기존 파일 보존 PASS, 5개 프리뷰 재생·동시 재생 방지 PASS |
-| 상세 | docs/6사운드디자인/PROJECTILE_HIT_CANDIDATES_20260910.md |
+| 상세 | docs/_archive/6사운드디자인/PROJECTILE_HIT_CANDIDATES_20260910.md |
 
 ## 2026-09-10 플레이어 탄막 피격 사운드 추가
 
@@ -5006,7 +5169,7 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 ## 2026-09-10 최신 전체 변경 배포 및 Mac 광선 분리 비교
 
 - 사용자 요청으로 최신 게임·로비·영상·문서 변경 취합. ray=0만 화면 고정 광선 OFF, 기본/1 기존 유지. 관련 회귀66개 PASS. Mac 실기 결과 미확정.
-- 배포 범위와 검증: [최신 배포](13출시·마케팅/LATEST_WEB_RELEASE_20260910.md), [광선 계약](12퍼포먼스·최적화/MAC_FIXED_RAY_ISOLATION_20260910.md).
+- 배포 범위와 검증: [최신 배포](_archive/13출시·마케팅/LATEST_WEB_RELEASE_20260910.md), [광선 계약](12퍼포먼스·최적화/MAC_FIXED_RAY_ISOLATION_20260910.md).
 
 ## 2026-09-10 온라인 캐릭터 삭제·저장 응답 검증
 
@@ -5035,7 +5198,7 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 | 빌드 수정 | Vercel ignore로 제거됐지만 Git 목록에 남은 파일은 existsSync로 제외. 필수5파일 검증 유지. 실제 누락 추적 파일 fixture PASS |
 | 배포 | hell-smoky.vercel.app, dpl_95FTUns7y3nzYwFFCnxX2767e4yr READY. bb67f07 고정 파일5519개 전수 Git blob 대조 후 prebuilt 업로드 |
 | 검증 | 공개 game/index SHA256 일치. Windows Chrome 기본·webgpu=0 실제 WebGL2 컨텍스트와 url-opt-in 시작 로그 확인, pageerror0. 타이틀 HD 영상 HTTP200 |
-| 한계 | Mac Chrome/Safari 세로 띠·이동·전투·FPS 실기 비교 PENDING. [배포 기록](13출시·마케팅/WEB_RENDERER_REDEPLOY_20260910.md) |
+| 한계 | Mac Chrome/Safari 세로 띠·이동·전투·FPS 실기 비교 PENDING. [배포 기록](_archive/13출시·마케팅/WEB_RENDERER_REDEPLOY_20260910.md) |
 
 ## 2026-09-10 대검전사 컷씬 대사별 부분 스킵
 
@@ -5073,7 +5236,7 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 | 첫 실패 | Vercel 루트 정적 빌드 출력9310MB·Git pack7280MB·node_modules651MB로 ENOSPC. 게임 코드 오류와 구분 |
 | 보정 | Node 내장 모듈로 NW 런타임 목록만 web-dist에 스테이징, 같은 볼륨 hard link. Vercel outputDirectory 지정·불필요 의존성 설치 생략. 제작 영상/백업/도구 제외, 실제 BGM·동적 이미지 유지 |
 | 검증 | 추적 에셋5566개·약5.40GB 스테이징, 배포 커밋의 기존 직접 참조84개 누락0, 패키징 테스트2 PASS |
-| 상태 | [배포 기록](13출시·마케팅/WEB_RENDERER_REDEPLOY_20260910.md). Mac 실기 세로 띠·이동·전투·FPS 검증은 별도 PENDING |
+| 상태 | [배포 기록](_archive/13출시·마케팅/WEB_RENDERER_REDEPLOY_20260910.md). Mac 실기 세로 띠·이동·전투·FPS 검증은 별도 PENDING |
 
 ## 2026-09-10 대검전사 생성 → v21 스토리 → 게임 진입
 
@@ -5102,7 +5265,7 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 | 로그 | 실제 백엔드·어댑터 요약에 policy=url-opt-in-20260910 및 URL webgpu 값 추가 |
 | 검증 | 변경 전 Mac 기본/0/true 3건 실패 → 선택·폴백11 PASS, 텍스처 회귀9 PASS. Windows Chrome RX9070XT에서 기본/0 실제 WebGL2 컨텍스트·시작 로그·pageerror0 확인 |
 | 상태 | 테스트 버전만 준비. Mac Chrome/Safari 같은 장면의 세로 띠·이동·전투·FPS 미확인, 해결 완료 아님. 과거 swizzle 성능 기록 보존 |
-| 문서 | [비교 절차·결과표](12퍼포먼스·최적화/MAC_RENDERER_OPTIN_TEST_20260910.md), 렌더러·Mac 감사·성능 문서 동기화 |
+| 문서 | [비교 절차·결과표](_archive/12퍼포먼스·최적화/MAC_RENDERER_OPTIN_TEST_20260910.md), 렌더러·Mac 감사·성능 문서 동기화 |
 
 ## 2026-09-10 대검전사 — 엔딩1초·1.5초 쉼 v20
 
@@ -5335,7 +5498,7 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 | 변경 | W16-C 제거. 질문2초·침묵3.55초·탈출길5.95초, 총27컷. W16 원화2장 교정 후 느린 카메라 이동 |
 | 보존 | W09/W10 교정 포함,101초6060프레임·21cue·질문 뒤3.7초·원음 동일 |
 | 전달 | 대검전사_스토리_총합본.mp4 및 엔딩 MP4/WebM 갱신. 이전 파일 백업, 게임 런타임 미적용 |
-| 기록 | [v6 제작·QA](cinematic/WARINTRO_ENDING_V6_20260909.md), ending_v6/render_ending.py·manifest.json·qa.json·prompts.md |
+| 기록 | [v6 제작·QA](_archive/cinematic/WARINTRO_ENDING_V6_20260909.md), ending_v6/render_ending.py·manifest.json·qa.json·prompts.md |
 
 ## 2026-09-09 대검전사 스토리 v5 — 두 장면 주인공 통일
 
@@ -5355,7 +5518,7 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 | 경로 | 프로젝트 루트에 대검전사_엔딩.mp4·대검전사_스토리_총합본.mp4·대검전사_엔딩_소리포함.webm 제공. 사용자 요청에 따라 전체 영상을 ‘대검전사_스토리_총합본.mp4’로 명확히 이름 변경. 중복 복사본은 Git 제외 |
 | 호환본 | 기존11.5초 엔딩을 VP9/Opus WebM으로 변환, 원본 MP4·대사·정적 시계 유지. full_review_v4/ending_with_opus.webm 보관 |
 | 음성 | MP4·WebM 모두 Chrome에서 음소거 해제 재생·오디오 디코딩·Web Audio 신호 확인. 사용자 실제 플레이어·스피커 출력 원인은 미확정. before_after.mp4는 무음 비교본 |
-| 기록 | [간단한 재생 경로·실측](cinematic/WARINTRO_FINAL_CUT_V4_20260909.md), browser_audio_qa.json |
+| 기록 | [간단한 재생 경로·실측](_archive/cinematic/WARINTRO_FINAL_CUT_V4_20260909.md), browser_audio_qa.json |
 
 ## 2026-09-09 대검전사 스토리 엔딩 끊김 보정 재개·완성
 
@@ -5367,7 +5530,7 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 | 검증 | 3출력 전체 디코딩/음성 상관/정적/자막 동일성/최종 프레임 변화 PASS, 향상본15표본·최종15표본 시각 확인. 실시간 전체 시청·청취 승인은 별도 |
 | 파일 | full_review_v4/resume_windows.py, 향상본·완성본·검수 기록. 원래 render_final.py 보존. 중복 입력·대용량 무자막 마스터·글꼴은 로컬 보존/Git 제외 |
 | 범위 | 별도 스토리 영상 완성. 게임 런타임·기존 음성 변경 없음, 신규 생성 요청·배포 없음 |
-| 상세 | [v4 제작·실측·제한](cinematic/WARINTRO_FINAL_CUT_V4_20260909.md) |
+| 상세 | [v4 제작·실측·제한](_archive/cinematic/WARINTRO_FINAL_CUT_V4_20260909.md) |
 
 > **2026-09-09 Steam 언어 목표 구현:** 31개 상점 항목→29개 내부 언어. 말레이어 추가, 세계관29×32큐·캐릭터28언어×39문장, UI779키 등록 및18,781개 번역 보완. 로비4선택창·게임29언어·성장1,247상태·관련45검사 PASS. 더빙 추가 없음. [현행 계약](16번역·로컬라이제이션/STEAM_LANGUAGE_SCOPE_20260909.md).
 
@@ -5392,7 +5555,7 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 | 원격 백업 완료 | 재시작 후 전체 체크포인트 및 성장 검색·배치 수정 포함 `f393ca9d6f785fbf35806c81c75541b994ff8e83`을 GitHub main에 푸시하고 원격 해시 일치 확인. Steam 재배포는 별도 후속 단계 |
 | 보존 | 현재 소스·번역·성장 UI·인트로 제작 자료·문서 전체. 140,210,012-byte 중복 ZIP만 추가 제외하고 동일한 내부 원본 79개 보존 |
 | 검증 | 관련 테스트 57개와 guard 전체 PASS. 원격 푸시 완료 여부는 별도 확인 |
-| 상세 | [전체 소스 기준](13출시·마케팅/FULL_SOURCE_CHECKPOINT_20260909.md) |
+| 상세 | [전체 소스 기준](_archive/13출시·마케팅/FULL_SOURCE_CHECKPOINT_20260909.md) |
 
 ## 2026-09-09 성장의 각인 — 시각 디자인 재작업
 
@@ -5481,7 +5644,7 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 | 도구 | `tools/trailer_session_20260909.mjs`, `tools/build_gameplay_trailer_20260909.py`. 기존 게임/맵 코드는 이 작업에서 편집하지 않음 |
 | 영상 | 1920×1080 / 30fps / 70초 / H.264 + AAC. 실제 캡처 14개 편집 구간, 기존 로고 엔드카드4초, 한국어 자막·색 보정·기존 BGM/SFX 믹스 |
 | 저장 | 로컬 `captures/gameplay_trailer_20260909/`. 촬영 탭 종료 전에 `_dbReady=false`로 이탈 저장 방지, 전용 탭 닫기·뷰포트 복원 |
-| 상세 계약 | [제작·검수 기록](13출시·마케팅/GAMEPLAY_TRAILER_20260909_PRODUCTION.md). 테스트 캐릭터/HP 보호/군집 배치/후반 보스 HP 세팅을 기록 |
+| 상세 계약 | [제작·검수 기록](_archive/13출시·마케팅/GAMEPLAY_TRAILER_20260909_PRODUCTION.md). 테스트 캐릭터/HP 보호/군집 배치/후반 보스 HP 세팅을 기록 |
 
 
 ## 2026-09-08 남전사 아이들 0.75배속 / 화로 움직임 조사
@@ -5607,7 +5770,7 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 | 렌더 | 기존 `_makeGreenChromaCutout` 1회 캐시, 지름 `p.r×6.2`, 맥동 ±3.5%, 회전 `now×.0012+p.x×.002`, 1.08배 보조광·alpha `fa×.18` 유지 |
 | 전투 | 피해·속도·사거리·폭발·중독·MP 및 타 캐릭터 렌더 변경 없음 |
 | 검증 | 관련 테스트 5개 통과, 인라인 JS 6개 문법 파싱 통과. 실제 게임 렌더 분기를 별도 Canvas에서 실행해 밝고 어두운 배경·반경 12/24/36 확인. 브라우저 연결 불가로 인게임 조작 검증은 미실시 |
-| 생성 이력 | `docs/5.1임펙트디자인/SILVERTAIL_MALICE_ORB_MOONBLADE_V2.md` |
+| 생성 이력 | `docs/_archive/5.1임펙트디자인/SILVERTAIL_MALICE_ORB_MOONBLADE_V2.md` |
 ## 2026-09-08 전체 변경 커밋·운영 배포 준비
 
 | 항목 | 적용 내용 |
@@ -5867,7 +6030,7 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 | 이미지 | `img/cin_enter_forged_green_v1.png`, 검붉은 철제 판·은색 ENTER |
 | 연결 | `index.html` → `cin-enter-art.js`, 녹색 배경 투명화 완료 후 교체, 기존 이미지 폴백 |
 | 검증 | 실제 페이지 렌더·클릭 전환 확인, pageerror 없음 |
-| 문서 | `cinematic/ENTER_FORGED_20260906.md`, `cinematic/PROLOGUE_STORYBOARD_v1.md` 동기화 |
+| 문서 | `_archive/cinematic/ENTER_FORGED_20260906.md`, `cinematic/PROLOGUE_STORYBOARD_v1.md` 동기화 |
 
 ## 2026-09-06 — 전대 탄막 흡수 오라
 
@@ -6063,7 +6226,7 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 
 | ID | 한글명 | 최상위 탭 | 하위 분류 | 선택 슬롯 | 적용 위치 | 전투 수치·공식 |
 |---|---|---|---|---|---|---|
-| `giantSlam` | 지옥강타 1 | 특수 (`spec`) | 분노 (`rage`) | Space (`SKILL_SLOTS[4]`) 전용 | `SKILL_LIST`, `SKILL_HIER`, `_isRageBurstSkillId()` | 변경 없음: ST+악의20, 범위·포이즈·피해·쿨다운·`_rageMul` 유지 |
+| `giantSlam` | 지옥강타 1 | 특수 (`spec`) | 분노 (`rage`) | Space (`SKILL_SLOTS[4]`) 전용 | `SKILL_LIST`, `SKILL_HIER`, `_isRageBurstSkillId()` | 변경 없음: ST+악의오브20, 범위·포이즈·피해·쿨다운·`_rageMul` 유지 |
 | `giantSlam2` | 지옥강타 2 / 기둥강타 호스트 | 특수 (`spec`) | 분노 (`rage`) | Space (`SKILL_SLOTS[4]`) 전용 | `SKILL_LIST`, `SKILL_HIER`, `pillarSlam` | 변경 없음: `giantSlam` 복제 공식, `pillarSlam`/`infernoSlam` 호스트 유지 |
 | `skyCrusher` | 천공쇄기 | 특수 (`spec`) | 분노 (`rage`) | Space (`SKILL_SLOTS[4]`) 전용 | 기존 분노 목록 | 변경 없음: MP80, 3충전, 충전당 900f |
 
@@ -6438,8 +6601,8 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 
 | ID/대상 | 이전 시각 | 현재 시각 | 프레임·크기 | 적용 위치 | 게임플레이 불변 |
 |---|---|---|---|---|---|
-| `boneWall` 해골무덤 | 원주에 8px 사각 뼈기둥·해골 문자 반복 | 보스 `cageTrap`과 같은 투명 3×2/6f 뼈감옥 링 | `riseT=60f` 동안 0→5, 유지 frame5, 마지막 60f `5→0` 역재생+페이드; `size=ringR×3.35` | `G._boneWalls` 렌더 | 반경·생성 피해·지속·스택·악의12·적/투사체 차단 |
-| `boneStorm` 해골번개 | 절차식 해골벽 + 내부 녹색 이오닉 스톰 | 공용 6f 뼈감옥 링 + 기존 내부 이오닉 스톰/DOT | 해골무덤과 동일 | `maliceStorm` 합체가 생성하는 `G._boneWalls` + `G._fireZones(type='boneStorm')` | MP50·악의12·10초·DOT·합체 판정 |
+| `boneWall` 해골무덤 | 원주에 8px 사각 뼈기둥·해골 문자 반복 | 보스 `cageTrap`과 같은 투명 3×2/6f 뼈감옥 링 | `riseT=60f` 동안 0→5, 유지 frame5, 마지막 60f `5→0` 역재생+페이드; `size=ringR×3.35` | `G._boneWalls` 렌더 | 반경·생성 피해·지속·스택·악의오브12·적/투사체 차단 |
+| `boneStorm` 해골번개 | 절차식 해골벽 + 내부 녹색 이오닉 스톰 | 공용 6f 뼈감옥 링 + 기존 내부 이오닉 스톰/DOT | 해골무덤과 동일 | `maliceStorm` 합체가 생성하는 `G._boneWalls` + `G._fireZones(type='boneStorm')` | MP50·악의오브12·10초·DOT·합체 판정 |
 | 로딩 실패 | 절차식 렌더만 사용 | 새 시트 미준비 시 기존 절차식 해골벽 유지 | `pilCnt=floor(2π×ringR/18)` | 플레이어 해골벽 렌더 폴백 | 기능 유지 |
 
 - 원인: 직전 뼈감옥 시트 교체는 보스 배열 `G._cageTraps`에만 연결되어, 플레이어 해골무덤/해골번개의 별도 배열 `G._boneWalls`는 계속 구형 절차식 렌더를 사용했다. 합체가 시트를 막은 것이 아니라 두 렌더 경로가 분리되어 있던 것이 원인이다.
@@ -6493,7 +6656,7 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 | 분열탄 피해 | 총 반사 피해 ÷10 | **총 반사 피해 ÷5** | 개별 `dmg=max(1,floor(totalDmg/5))`; 총 피해 배율 불변 |
 | HP/ST/MP 회복 | 일반 Q ×1 | **일반 Q ×10** | `doParry(...,_resourceMul=10)`, 각 최대치 캡 |
 | 작살/분노 | +10 / +10 | **+100 / +100** | 각 게이지 상한 적용; `_uShieldRage`는 배율 뒤 가산 |
-| 악의 | +1000 | **+10000** | `G.mats`, 일반 Q 기본값 ×10 |
+| 악의오브 | +1000 | **+10000** | `G.mats`, 일반 Q 기본값 ×10 |
 | `parryBank` | 반사 피해량 ×1 | **반사 피해량 ×10** | `_resolveBigEnergyParry`; 기폭용 |
 | 제외 대상 | — | 분열탄 총 피해, 포이즈 +1, 무적 25f, VFX/사운드 | 자원회수 배율과 분리 |
 
@@ -7538,7 +7701,7 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 - LEFT는 낮고 넓은 horizontal root/corpse wall, RIGHT는 높고 뒤틀린 vertical corpse/root wall, TOP은 비대칭 dense funnel, SOUTH는 낮은 open threshold로 합성했다.
 - `bound_*`, `corner_*`, `mega_ribs/head`, `cursed_tree_03/11`을 30~50% overlap·crop·flip·scale로 먼저 구성하고 `prop_g_edge/root/corpse`, `prop_rootcage`, `prop_rib`은 접합부에만 사용했다. small prop은 0이다.
 - full-map 육안 검사에서 기존 빈 외곽이 continuous organic environment mass로 바뀌고 중앙 playable ground와 기존 landmark는 유지됐다. 최종 산출물: `captures/ch1_outer_mass_first_20260829/FINAL_OUTPUT/`.
-- 상세 SSOT: `4.1맵디자인+설정/CH1_OUTER_MASS_FIRST_PASS.md`.
+- 상세 SSOT: `_archive/4.1맵디자인+설정/CH1_OUTER_MASS_FIRST_PASS.md`.
 
 ## 2026-08-29 — CH1 si1 ACTUAL STAGE GEOMETRY REDESIGN
 
@@ -7609,7 +7772,7 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 - 중앙 보호 폭은 master x `3450..4800`, **1350px=33.75 tile**이며 대형 구조물을 추가하지 않고 ground paint만 허용했다. `m_c1pool`과 `m_c1cocoon` landmark는 B에서도 유지한다.
 - CURRENT/A/B 동일 카메라 5종, LEFT/RIGHT close-up, full SOUTH overview와 실제 전투 장면을 `captures/ch1_south_canary_side_mass_20260829/`에 보존했다. B에서 side hole·sticker·block-placement 인상이 해소되고 중앙 player/enemy/projectile/parry/skill VFX는 판독 가능하다.
 - 브라우저 실측 A/B 모두 baked request/ready/error `20/20/0`, pageerror `0`, asset 404 `0`; GPU warm 최대 A `12.7ms`, B `12.1ms`, baked draw 최대 A `0.2ms`, B `0.1ms`. 1px 인접 chunk seam 회귀도 exact-pixel PASS다.
-- 코드/빌드: `game.html`, `tools/build_ch1_south_mass.mjs`, `assets/map/ch1/baked_spike/south_visual_pass/{composition.json,CH1_SOUTH_BASE.png,CH1_SOUTH_MASTER.png,chunk_*.png}`. 회귀: `test/ch1SouthCanaryVisualPass.test.js`, `test/ch1PaintedStartSpike.test.js`. 상세 SSOT: `4.1맵디자인+설정/CH1_PAINTED_PHASE2_SOUTH_CANARY.md`.
+- 코드/빌드: `game.html`, `tools/build_ch1_south_mass.mjs`, `assets/map/ch1/baked_spike/south_visual_pass/{composition.json,CH1_SOUTH_BASE.png,CH1_SOUTH_MASTER.png,chunk_*.png}`. 회귀: `test/ch1SouthCanaryVisualPass.test.js`, `test/ch1PaintedStartSpike.test.js`. 상세 SSOT: `_archive/4.1맵디자인+설정/CH1_PAINTED_PHASE2_SOUTH_CANARY.md`.
 
 ## 2026-08-29 (몬스터 크기 비례 사망 혈흔 폭발)
 
@@ -7744,7 +7907,7 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 ### 신규 스킬: 인간성 (`humanity`)
 - **카테고리**: 패시브 탭 (`cat:'passive'`, noDmg, emoji:'✦')
 - **효과**: 부활력 -10/Lv, 전체 데미지 +5%/Lv, HP/MP/ST +100/Lv
-- **습득비**: SP 10, 악의 100 / 강화비: SP 5/Lv
+- **습득비**: SP 10, 악의오브 100 / 강화비: SP 5/Lv
 - **적용 위치**: _passDmgSum (전체뎀), mhp/mmp/mst (자원), _demonPow (부활력)
 - **컨셉**: 악마화를 거부하고 인간의 의지로 전투력+생존력 강화하는 트레이드오프
 
@@ -8094,7 +8257,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 ## 2026-04-12
 
-### 악의 과수급/누적 폭증 회귀 수정
+### 악의오브 과수급/누적 폭증 회귀 수정
 - 코드: game.html`r
 - 변경:
   - doParry() 공통 패링 보상 악의를 +100에서 +10으로 복구
@@ -8170,7 +8333,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
   - `game.html`
   - `test/ch1FloorSoilRestore.test.js`
 - 문서:
-  - `docs/4.1맵디자인+설정/CH1_녹색노이즈_버그리포트.md`
+  - `docs/_archive/4.1맵디자인+설정/CH1_녹색노이즈_버그리포트.md`
 - 변경:
   - CH1 바닥 녹색 노이즈의 실제 원인이 `buildMapCache()`의 `Pass 4` ambient radial glow였다는 점을 문서화
   - 최종 수정과 회귀 테스트 위치를 기록
@@ -52434,7 +52597,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 ## 2026-09-10 물리탄 표시·패링 자원 3배
 - 적대 physical 본체·꼬리 굵기×3; 원본 물리 드루이드 독탄도 전용 렌더×3. 반사/마법/장판은 기존 표시.
-- 일반 충돌, 칼등치기, 실버테일 전진, 파워웨이브의 기존 보상 호출에 반사 전 물리 배율3을 전달. 기본 빨콩 HP/MP/ST 각45·작살/분노15·악의1500, 일반 물리 각90·30·3000. 상한/장비/패시브 적용, 판정·피해·탄속·포이즈 불변.
+- 일반 충돌, 칼등치기, 실버테일 전진, 파워웨이브의 기존 보상 호출에 반사 전 물리 배율3을 전달. 기본 빨콩 HP/MP/ST 각45·작살/분노15·악의오브1500, 일반 물리 각90·30·3000. 상한/장비/패시브 적용, 판정·피해·탄속·포이즈 불변.
 - docs 전체 관련 키워드 검색 후 탄막/몬스터 공격/총관리/VFX/드루이드 계약 동기화. 수정 금지 2_3 문서는 보존, 최신 물리 배율은 전용 계약을 우선.
 - 새 회복/상한/분류/실제 Canvas 스프라이트 크기 테스트 및 관련 회귀 검증. 기존 대형탄 테스트의 오래된 hurtP 정규식을 현행 _hurtProjectilePlayer 호출에 맞춤(작업 전에도 존재한 호출, 구현 변경 없음).
 
@@ -52444,7 +52607,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 |---|---|
 | `_physicalProjectileMultiplier(p,physicalScale=3)` | 적대 physical은 지정 배율, 그 외1. 렌더 3곳만 `(p,2)` 호출 |
 | 본체 `_sSc` / 궤적 `_hr` / 드루이드 dw·dh | 원래 크기의2배 (직전3배에서 축소) |
-| 패링 자원 `_physicalResourceMul` | 인자 없는 기본3배 유지; HP/MP/ST 빨콩45·일반90, 작살/분노15·30, 악의1500·3000 |
+| 패링 자원 `_physicalResourceMul` | 인자 없는 기본3배 유지; HP/MP/ST 빨콩45·일반90, 작살/분노15·30, 악의오브1500·3000 |
 | 판정·피해·속도·수명 | 기존값 유지 |
 | 검증 | `physicalProjectileScaleReward.test.js` 7개 통과: 실제 Canvas 크기2배·자원3배·드루이드·기타 분류 유지 |
 
@@ -52481,7 +52644,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 |---|---|
 | 입력 / 적용 위치 | `boneWall`, `_dispatchSkillSlot`: KBM은 스킬 키 입력 즉시 `fireBoneWall(tx,ty)` 호출. 추가 클릭 없음 |
 | 좌표 / 사거리 | `mouse.x-VW/2+G.cam.x`, `mouse.y-VH/2+G.cam.y`; 플레이어 기준1000px 밖은 같은 방향으로 클램프 |
-| 기존 제한 | 스택0·악의부족·일시정지·사망·얼음보주 안에서는 생성/소모 없음. 패드 조준 확정 유지 |
+| 기존 제한 | 스택0·악의오브부족·일시정지·사망·얼음보주 안에서는 생성/소모 없음. 패드 조준 확정 유지 |
 | 자원 / 충전 | `_malCost(12)` 악의, 스택1. 최대2개(Lv10부터3), 충전1500f=25초 |
 | 기존 실제 수치 문서 정정 | 반경 `floor((400+(Lv-1)×18)×0.7)`; 지속 `min(1800,180+(Lv-1)×12)`f. 게임의 수치는 변경하지 않음 |
 | 검증 | `boneWallQuickCast.test.js` 4개 + `bossCageTrapSprite.test.js` 4개 통과. 즉발 좌표·사거리·차단 조건·패드·공용 시트/음향 확인 |
@@ -52544,14 +52707,14 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 | 설명 | KO/EN 및 localization-data.js 28언어의 해당 스킬 설명 지속값만5→10초, 한국어 조회키도 동기화. 쿨15초 유지 |
 | 검증 | 실제 생성 함수와80f 순차 큐 실행으로9개 모두 t0/maxT600 확인. 기존 시각/소환음 회귀 검증 |
 
-## 2026-09-10 우측 HUD 숫자에 레벨·경험치·지역 처치·악의 라벨
+## 2026-09-10 우측 HUD 숫자에 레벨·경험치·지역 처치·악의오브 라벨
 
 | 변경 전 | 변경 후 |
 |---|---|
 | X | 레벨10 |
 | 7 / 45 | 경험치7 / 45 |
 | ☠ 0 / 1100 | 지역 처치0 / 1,100 |
-| ◆ 6.60M | 악의6,600,000 |
+| ◆ 6.60M | 악의오브6,600,000 |
 
 기존 ID/수치 원본/이벤트를 보존하며 리프 라벨4개만 추가했다. 전체 숫자 천단위 쉼표 포맷, 로마숫자 제거, 패널 최소200px·opacity1·.75rem 라벨로 가독성을 높였다. 기존 `_L` 언어 폴백을 적용하고 정보 패널의 aria-hidden을 제거했다. HUD 테스트5개·인라인 JS 문법 검사 통과, 실제 CSS/DOM Chrome 미리보기에서 네 행 확인. 상세 수치·색상·DOM 계약은 UI HUD 문서에 동기화했다.
 
@@ -52654,13 +52817,13 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 - ec7bf70d8 게임/맵 보존. 원본 전후 화면과 기존/신규 영상을 로컬 검수 HTML에 공개.
 - 기존 시각 PASS를 RETOUCH로 정정. 기본 지급 Lv1 일반 플레이2회 모두 사망; 일반 클리어/1-2 미확인. 초기 로그 유실을 포함한 범위를 구분.
-- 상세: `4.1맵디자인+설정/CH1_1_FINAL_REVIEW_20260916.md`. 코드/맵 변경, push/배포/Steam 업로드 없음.
+- 상세: `_archive/4.1맵디자인+설정/CH1_1_FINAL_REVIEW_20260916.md`. 코드/맵 변경, push/배포/Steam 업로드 없음.
 
 ## 2026-09-16 CH1-1 흙길·낙엽 바닥 구성 적용
 
 - 사용자 후속 지시로 ground-2 bake 적용(낙엽 타일512²). 고정 흙길/공터 마스크와 자체 신규 이끼·낙엽 재질, geometry/배치/진행 유지.
 - 실제9카메라 전후,최종 START→북측 접근 입력 영상124.347초. 보정 전 ground-1 입력164.533초/적 활성 QA는 이력으로 구분. 26검사/112bleed 확인. VISUAL RETOUCH,일반 클리어 미검증.
-- 수치/좌표/한계/증거: `4.1맵디자인+설정/CH1_1_GROUND_STRUCTURE_20260916.md`. push/배포 없음.
+- 수치/좌표/한계/증거: `_archive/4.1맵디자인+설정/CH1_1_GROUND_STRUCTURE_20260916.md`. push/배포 없음.
 
 ## 2026-09-23 플레이어 설치형 지면 쌍 포탈 프로토타입
 
@@ -52786,7 +52949,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 | 항목 | 현재 계약 |
 |---|---|
 | 인벤토리 제목판 | 직계 헤더의 .ptitle display:none. 제목 이미지와 가상요소도 표시하지 않음 |
-| 정보행 | 전투력/악의/닫기 유지. gap0, margin4px 0 8px |
+| 정보행 | 전투력/악의오브/닫기 유지. gap0, margin4px 0 8px |
 | 높이 배분 | 장비 탭 inv-wrap 첫 행270px, 가방 행 minmax(min-content,1fr). invCenter height:auto/min-height260px,invGrid height140px/flex1 1 140px. 필터 높이를 반영하며 나머지 높이는 가방에 배정. 작은 화면은 기존 바깥 세로 스크롤 사용 |
 | 적용 범위 | 인벤토리 내부 장비/유골함/보석/보관함 페이지 공통. 다른 메뉴 제목 유지 |
 
@@ -53111,7 +53274,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 
 | 대상 | 현행 변경·검증 |
 |---|---|
-| `game.html` | 일반 단일 옵션 결정 18종을 각각 2~3개 실효 옵션의 이름 있는 보석으로 교체. 드롭/가루 제작/악의 제작은 신규 id만 사용. 기존 id는 `dbRestore()`에서 보유·장착·가방·창고 홈 모두 1:1 변환하며 성급/강화/위치를 보존 |
+| `game.html` | 일반 단일 옵션 결정 18종을 각각 2~3개 실효 옵션의 이름 있는 보석으로 교체. 드롭/가루 제작/악의오브 제작은 신규 id만 사용. 기존 id는 `dbRestore()`에서 보유·장착·가방·창고 홈 모두 1:1 변환하며 성급/강화/위치를 보존 |
 | `inventory-gems-finish.css`, 보석 UI | 18개 고유 실루엣·각인·색, 성급 테두리 분리. 보석함·피커·장비 상세·대장간 강화 전후에 모든 옵션 표시. CSS 캐시 `20260927-unique1` |
 | 검증 | 메인 JS 구문, 18종 모두 2~3옵션과 5성+20강 배율, 실제 게임 세이브 보유17/장착1 변환 및 능력치 3개 적용, 보석함 17부위 확인. `test/crystalForgeManagement.test.js` 11개·`test/crystalEquipment.browser.js` 1개 통과 |
 | 문서 | `docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md` 현행 18종 표, 장비 파트·UI·번역 문서 동기화. 이전 일반 결정표는 이력으로 명시 |
@@ -54979,7 +55142,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 
 | 대상 / id | 현행 구현·검수 |
 |---|---|
-| 사용자 기준 | 획득 배지가 없으면 HUD에 배지0/3·빈 버튼·자리 표시를 남기지 않는다. 지역 처치·악의 수치를 가리지 않는다 |
+| 사용자 기준 | 획득 배지가 없으면 HUD에 배지0/3·빈 버튼·자리 표시를 남기지 않는다. 지역 처치·악의오브 수치를 가리지 않는다 |
 | 표시 조건 | tutorial-badges.js의 init에서 button.hidden=true로 시작. render에서 count=Object.keys(earned).length; count===0이면 button/panel hidden=true 및 aria-expanded=false. 1~3개 획득·복원 시 button.hidden=false. 언어 갱신에도 같은 조건 적용 |
 | 모음 열기 | toggle(open)은 button.hidden이면 열기를 거부하며 숨긴 버튼에 focus하지 않는다. 배지가 있으면 기존 닫기 초점/버튼 복귀·aria-expanded·3개 카드 정책 유지 |
 | 위치 | button과 collection을 #mmLvl의 자식으로 연결. 둘 모두 position:absolute/right0/pointer-events:auto; 버튼 top:calc(100% + 8px),모음 top:calc(100% + 46px). 상태창의 기존 크기·UI배율·safe-area 이동을 따라가며 수치 행과 겹치지 않음 |
@@ -55098,7 +55261,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 |---|---|
 | stage0 authoring | 승인 설계START100.5,185.5/T40/world4020,7420(native UNKNOWN), exact evaluator→40000논리샘플, 명시승인이미지배치1..128. [정본](engine/FDG_SOURCE_SCENE_EXECUTION.md) |
 | runtime / UI | observeSourceImages(binding whitelist1..128)의실제decode치수·release; UI새버튼0/listener12유지, v0.11.0 해당모듈cache. pending SOURCE3+AUTHORING2 |
-| 계획 / 검증 | [게임 전용 계획](engine/FDG_GAME_DEVELOPMENT_PLAN.md). 신규authoring7고유조건/관측8PASS, 최초fixture2FAIL과관련4수리로그보존. 실제CH1 install/draw/보행/save-reopen0, VISUAL FAIL |
+| 계획 / 검증 | [게임 전용 계획](_archive/engine/FDG_GAME_DEVELOPMENT_PLAN.md). 신규authoring7고유조건/관측8PASS, 최초fixture2FAIL과관련4수리로그보존. 실제CH1 install/draw/보행/save-reopen0, VISUAL FAIL |
 | 보호 | 원본game/nav/geometry/LOCK/save/PNG·server 변경0, 기존23/16재실행0, foreign WIP보존. 새MAPv3 정확식/충돌 미제출만 최초회수 |
 
 ## 2026-10-10 FDG v0.12 원본 이미지 제작 미리보기
@@ -55538,7 +55701,7 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | 최종 판정 / 중간 실패 | 연속동작 단위 구현 완료·전체VISUAL RETOUCH. 정확 잔여1 WHOLE_COMBAT_VISUAL_UNIFICATION(플레이어 tiny·기존걷기/다른패턴4frame·ambient edge crop·trueflip/8방향·true24이미지). overlay 전slam120·사망 전/잔존fade restart 자료는 INVALID 이력 보존; 최종증거 사용0 |
 | 보호 / 미인수 | native actor시간/AI/판정/damage/Q-E/PNG/19본/mesh/UV/weights/fixture/맵/사용자save 유지. true24 실제 캐릭터 이미지·전체1280×72060FPS 미인수; 효과24cell/clip24FPS/단일98FPS를 목표PASS로 확대0 |
 
-[2026-10-12 smooth-motion 정본](FDG_DARK_DRUID_SMOOTH_MOTION_20261012.md). 실제 최종 결과·§23은 이 정본의 새 관측 표를 따른다.
+[2026-10-12 smooth-motion 정본](engine/FDG_DARK_DRUID_SMOOTH_MOTION_20261012.md). 실제 최종 결과·§23은 이 정본의 새 관측 표를 따른다.
 <!-- DARK_DRUID_SMOOTH_MOTION_20261012_APPENDIX_END -->
 
 <!-- FDG_WORLD_CAMERA_20261012_BEGIN -->
@@ -55862,7 +56025,7 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | 항목 | 현행 계약 |
 |---|---|
 | 위치 / id | _invBuildCompare의 _xferNote, 후보 장착 시 강화 자동 이전 설명 |
-| 표시 문구 | 기존 '악의 부족 → 강화 소멸'을 원 R대로 '악의 부족 → 장착 불가'로 수정 |
+| 표시 문구 | 기존 '악의오브 부족 → 강화 소멸'을 원 R대로 '악의오브 부족 → 장착 불가'로 수정 |
 | 표시 조건 | _fromE=curEq.enh 또는0. _fromE>0일 때 이전 안내를 만들고 _xc=xferCost(_fromE). (G.mats 또는0)<_xc일 때 위 경고 표시 |
 | 실제 권위 | 기존 equipItem은 이전 비용이 부족하면 알림 후 return하여 교체를 차단. 문구를 이 기존 동작에 맞췄으며 새 장착/강화/차감/소멸 규칙은 없음 |
 | 보존 | 금액·비용식·조건·원 강화 값·아이템/자원/저장·반환/예외·CP 공식/공급자·스타일·화살표/기존 표시 포맷·locale/사전 코드는 그대로 |
@@ -56101,7 +56264,7 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | caller | 실제 native RMB held/기존 Player 물리 phase 끝→World dt_sp/frame→v3 source. 같은 frame st2 중복 감소 거부 |
 | 거부 | 실제 projectile/current lesson/sample dispatcher 권위 미연결이면 start부터 NOT_READY. 유효 dispatcher의 sample 미로드 drop은 finish를 막지 않음 |
 | 미완 | 실제 projectile/원 시각·샘플, recovery Q/타 magic handler/GP. 실Actor 전체/GPU/저장/API/PC 및 최신 전체 완료 아님 |
-| 상세 | docs/engine/FDG_NATIVE_FIREBALL_ACTUAL_OWNER_20261017.md |
+| 상세 | docs/_archive/engine/FDG_NATIVE_FIREBALL_ACTUAL_OWNER_20261017.md |
 
 새 actual-owner 검수:39 PASS 후 entered-case/중복 phase 경계의 수정 영향6 PASS(39 재연 없음). 첫39 종료 WARNING 한 줄에 ObjectDB3 instances leak, ERROR0/원인 미확정; phase6 종료 WARNING/ERROR0. 준비 regex 실패를 포함 firstWholeClean=false. 현재 main/R/실게임 반영·실시각 완료는 아니며 세부 계약과 실패 이력은 FDG_NATIVE_FIREBALL_ACTUAL_OWNER_20261017.md에 기록한다.
 
@@ -56126,7 +56289,7 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | sample | 실제 기존 queue void front로 연결. caller _r(1,.08) 후 queue .92+U×.16, 원 gx volume skip이면 후자 없음. 신규 fireball stream 미로드 drop은 voice/cap eviction 전, finish/recover 계속 |
 | 현재 미완 | actual projectile 및 current _gxVolMul provider unbound, sample loader_bound=false. file-init1/dummyAudio/noop-ready 없음, 실제 발사/가청/최신 전체 게임 완료 아님 |
 | 원8키 | 기존8 stream 필수는 유지하되 추가 fireball key 허용. 정상8 queue/flush/voice 본체·RNG 순서 불변 |
-| 상세 / 검수 | docs/engine/FDG_NATIVE_FIREBALL_FINISH_DISPATCH_20261017.md. 새 영향32/32 및 별도 lesson 경계6/6 PASS, 첫 fixture 들여쓰기 parse 실패 보존/wholeClean=false, 과거 통과 suite 재연0 |
+| 상세 / 검수 | docs/_archive/engine/FDG_NATIVE_FIREBALL_FINISH_DISPATCH_20261017.md. 새 영향32/32 및 별도 lesson 경계6/6 PASS, 첫 fixture 들여쓰기 parse 실패 보존/wholeClean=false, 과거 통과 suite 재연0 |
 
 | 범위 | exact code2/docs9 총11path. actual _gxVolMul current context 계약은 아직 미연결, source file-init 또는 권위 모르는 null을 ready로 사용하지 않음. R/main/served/asset/audio원본/저장/API/사용자창 변경0 |
 
@@ -56151,7 +56314,7 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | 실제 unique reader | 현재INV/SLOT_NAMES 첫JS-truthy item[stat] 원값. 합산·음수clamp/unknown→0 없음 |
 | carrier / owner | 실제 World 동일 Node handle과별도 read_enemy view 구분. 실제 hurtE/fieldmob/poison owner 및Set key계약 미연결은NR, rawdamage 대체/noopready0 |
 | clock / 미완 | source sp/dt_sp/gc_t의 실제현재권위필수, World epoch/fxdt/상수1 대입0. source clock/피해/VFX/delivery/gx 未·현재게임완료아님 |
-| 상세 | docs/engine/FDG_NATIVE_FIREBALL_WORLD_CONSUMER_20261017.md. 새첫31중30PASS/spy기대1FAIL→실패1만교정1PASS, 새혼합4PASS·sourceunique17slot독립대조. 이전통과suite재연0 |
+| 상세 | docs/_archive/engine/FDG_NATIVE_FIREBALL_WORLD_CONSUMER_20261017.md. 새첫31중30PASS/spy기대1FAIL→실패1만교정1PASS, 새혼합4PASS·sourceunique17slot독립대조. 이전통과suite재연0 |
 
 | 새 검수(2026-10-17) | 실제 관측 / 한계 |
 |---|---|
@@ -56221,7 +56384,7 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 기존 context | _source_owner_error로 기존 ownership prefix만 추출하고 _context_error의 current_g→current_p→current_stats→current_passives→current_inventory→OPT 검사 순서를 유지한다. |
 | 검증/미완 | 새 method-extraction/명시 holder·provider 대역 fixture 첫31/31 PASS/양로그0. 실제 전체 Main/configure/원 provider 수식·V4 caller·다른21 owner·전체 normal hurtE·게임/export/PC는 미검증/미연결이다. 후보 V4 첫108중3FAIL 이력은 별도 보존하며 제품 채택0. |
 
-정확 API·raw status/metadata·수명 reason·검수 범위는 [FDG_NATIVE_NORMAL_ENEMY_PROVIDER_BINDING_20261017.md](engine/FDG_NATIVE_NORMAL_ENEMY_PROVIDER_BINDING_20261017.md)를 따른다. 앞선 개별 단위의 당시 미연결/실패/검수 기록은 이력으로 유지한다.
+정확 API·raw status/metadata·수명 reason·검수 범위는 [FDG_NATIVE_NORMAL_ENEMY_PROVIDER_BINDING_20261017.md](_archive/engine/FDG_NATIVE_NORMAL_ENEMY_PROVIDER_BINDING_20261017.md)를 따른다. 앞선 개별 단위의 당시 미연결/실패/검수 기록은 이력으로 유지한다.
 
 최초 정적 diff --check는 CHANGELOG에 새로 추가한 CRLF 행을 trailing whitespace로 판정해 실패했다. 기존 CHANGELOG byte prefix는 보존하고 이 단위의 추가분만 LF로 수리했다. 실패한 lint만 다시 확인하며 첫 기능31 PASS/성공한 정적7개는 재실행하지 않는다. 전체 최초 정적 clean=false 이력을 보존한다.
 
@@ -56275,7 +56438,7 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 새 검사 / 제한 | 실제 formula script/새 reader와 정확 추출 Services graph + 명시적 holder stand-in의 첫 신규25/25 PASS, exit0·오류/leak0. full Main 자연 configure·실제 gameplay 미검증, 기존 성공 검사 재실행0. |
 | 다음 연결 | 현 V5 stat_str 세 scalar 위치는 typed 미지원이라 실제 바인딩0. 기존 ENEMY V6의 세 위치 typed 처리·인수 후 실제 caller를 연결해야 한다. latest_full_game=false 유지. |
 
-상세 API·raw 예·실패 이유·검수 한계는 [stat_str 실제 소유자 계약](engine/FDG_NATIVE_NORMAL_ENEMY_STAT_STR_OWNER_20261017.md)을 따른다. 기존 State player_view/read_current_p 및 다른 수치·계산식·저장 계약은 변경하지 않았다.
+상세 API·raw 예·실패 이유·검수 한계는 [stat_str 실제 소유자 계약](_archive/engine/FDG_NATIVE_NORMAL_ENEMY_STAT_STR_OWNER_20261017.md)을 따른다. 기존 State player_view/read_current_p 및 다른 수치·계산식·저장 계약은 변경하지 않았다.
 
 
 ## p_dot_pool 실제 소유자 추가 — 2026-10-17
@@ -56289,10 +56452,10 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 현행 / 검수 | map8/25·미17, 25 presence 불변. 첫 신규 행동76/76+setup37/37 PASS/exit0/양로그 오류·leak0. 실제 Formula/Passives binding·정확 Services +명시 holder/current-reader stand-in 범위, 전체 State/Main·자연 수명·실전 미검증. setup bind query1/runtime query1과 실제 rawgrit/resource 부수조회未검증을 구분한다. |
 | 다음 | V6 p_dot_pool scalar 전체4곳(170/173/566/570) typed 미지원·직결0. 첫 접점은170/173이다. 별도 consumer 인수 전 실제 kernel 등록/full25/full hurtE/latest 게임 완료0. |
 
-상세는 [p_dot_pool 실제 소유자 계약](engine/FDG_NATIVE_NORMAL_ENEMY_PDOTPOOL_OWNER_20261017.md)을 따른다. 원 State/Providers getter 및 Q/E·저장·이전 승인 byte와 source sync 이력을 보존한다.
+상세는 [p_dot_pool 실제 소유자 계약](_archive/engine/FDG_NATIVE_NORMAL_ENEMY_PDOTPOOL_OWNER_20261017.md)을 따른다. 원 State/Providers getter 및 Q/E·저장·이전 승인 byte와 source sync 이력을 보존한다.
 
 
-2026-10-17 사용처 정정: V6 p_dot_pool 전체는4곳(170/173/566/570, 원42163/42164/42426/42429)이며 첫 접점만170/173이다. 모두 not DOT이고, 뒤 두 곳은 각각 poisonDot/fireDot 어픽스값>0 및 해당 스택 write 후 결과<10에서 독립 조회한다. 각 지점 당시의 dmg×0.10 누적식·원 순서·lazy를 보존하며 네 곳 모두 typed 미전파다. [네 곳의 정확 조건](engine/FDG_NATIVE_NORMAL_ENEMY_PDOTPOOL_OWNER_20261017.md)을 따른다. 원 API/코드·이전 PASS는 변경하지 않는다.
+2026-10-17 사용처 정정: V6 p_dot_pool 전체는4곳(170/173/566/570, 원42163/42164/42426/42429)이며 첫 접점만170/173이다. 모두 not DOT이고, 뒤 두 곳은 각각 poisonDot/fireDot 어픽스값>0 및 해당 스택 write 후 결과<10에서 독립 조회한다. 각 지점 당시의 dmg×0.10 누적식·원 순서·lazy를 보존하며 네 곳 모두 typed 미전파다. [네 곳의 정확 조건](_archive/engine/FDG_NATIVE_NORMAL_ENEMY_PDOTPOOL_OWNER_20261017.md)을 따른다. 원 API/코드·이전 PASS는 변경하지 않는다.
 
 
 ## 2026-10-17 ENGINE WIP: Main 소유 l_eq 이식
@@ -56308,7 +56471,7 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 등록/검수 | 현재 ENGINE WIP callback map **9/25·미16**. 기존8 뒤 실제 l_eq=Callable(self,read_normal_enemy_legendary_equipment) 하나를 추가했다. 원 첫 fixture parse 실패·행동0은 보존하고 header5줄만 수정한 새 namespace의 최초 신규 행동41/41 PASS도 별도 유지한다. 이번 등록 경계만 새 static9/9, 기존 행동·parser·static 검수 재실행0. 전체 hurtE 연결·실게임·main/R/served 반영은 미완이다. |
 | 범위/한계 | full Main/Services.configure/State 자연 lifecycle·실 INV/save·원 JS boot/restore·게임/export/PC 최신판 완료 증거 없음. 초기 plan metadata에 불필요한 Q/E 선언·필드 및 Main876 Q currentOptions 할당 한 줄/Frame metadata도 포함됐으며 원본 보존·캐시 권위에서 제외. 실제 Q/E 실행·변경 없음. |
 
-정확한 API·17 slot·최초 실패 로그·미소유 범위는 [Main 전설 장비 캐시 계약](engine/FDG_NATIVE_MAIN_LEGENDARY_EQUIPMENT_CACHE_20261017.md)에 기록한다.
+정확한 API·17 slot·최초 실패 로그·미소유 범위는 [Main 전설 장비 캐시 계약](_archive/engine/FDG_NATIVE_MAIN_LEGENDARY_EQUIPMENT_CACHE_20261017.md)에 기록한다.
 
 
 ## 2026-10-17 ENGINE WIP: typed rand 실제 소유 경계
@@ -56323,7 +56486,7 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 첫 검수 | 신규정적9/9·신규격리행동30/30/exit0/result존재·양로그diagnostics0. primitiveleaf대역·명시holder/Statepredicate·default0/typedmalformedreturn모사범위, 실RNG/엔진abort/자연fullMainWorld동등아님. old41/95/진단/통과parse재연0. |
 | 보존 | sourceWIP는I만·최종ROOT인수전main/R/served0. 원첫실패/selector·thread과대범위이력과그한계를새성공으로소급수정하지않는다. |
 
-정확signature·schema·freshreceipt구조한계·검수범위는[typed rand 소유경계](engine/FDG_NATIVE_NORMAL_ENEMY_RAND_OWNER_20261017.md)에기록한다.
+정확signature·schema·freshreceipt구조한계·검수범위는[typed rand 소유경계](_archive/engine/FDG_NATIVE_NORMAL_ENEMY_RAND_OWNER_20261017.md)에기록한다.
 
 
 ## 2026-10-17 ENGINE WIP: rand 10번째 실제 등록
@@ -56369,7 +56532,7 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 문서 검색 범위 | 이전 uncapped928후보/100matchinglines41paths는 matching-line 단위(한줄내keyword dedup)이며 after-scan은append/newownerdoc 작성 전이다. regex전체횟수/성공decode파일수/UnicodeDecodeError 경로는未기록. 이번에는 허용18문서의 현재상태만 새경계1회로 확인하며 전수완결을 발명하지 않는다. |
 
 
-상세: docs/engine/FDG_NATIVE_NORMAL_ENEMY_EL_MUL_OWNER_20261017.md. 과거 단계의 완료/실패 기록은 해당 당시 범위로 보존한다.
+상세: docs/_archive/engine/FDG_NATIVE_NORMAL_ENEMY_EL_MUL_OWNER_20261017.md. 과거 단계의 완료/실패 기록은 해당 당시 범위로 보존한다.
 
 
 ## 2026-10-17 현재 normal hurtE el_mul 11번째 provider 등록
@@ -56431,7 +56594,7 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 후속 consumer | V12 후보 소스3+첫parse2 ROOT 인수. 첫11case43행동true지만 setup5중signed-zero1false·exit1 전체FAIL은 보존. 별도 보완4case19행동+setup4 true·exit0는 첫actual+0 및 둘째 NRnestedREADY/SOURCE_THROW/UNSUPPORTED→UNKNOWN_STATUS에만 한정. 과거 실패와 합산 PASS 금지. 네 준비식 평가 뒤 public 호출 전 검사이므로 fail-fast 실제 고장주입 증명은 아님. 실제 clock/자연MainState/JS/fullgame 미확인. 제품 V12 copy·World hook 없음; callback12 등록은 이번 별도 경계 |
 | 보존 단위 | 소유 브랜치 codex/native-play-time-owner-20261017. 문서의 자체 commit SHA를 선행 선언하지 않으며 실제 local/remote SHA·tree·parent·비강제 보존 결과는 아래 단위 receipt를 기준으로 확인 |
 
-[체크포인트 단위 receipt](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-OWNER-VALIDATED-WIP-20261017/receipt.json>) · [사용자용 이식 현황](FDG_GODOT_PORT_STATUS.md)
+[체크포인트 단위 receipt](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-OWNER-VALIDATED-WIP-20261017/receipt.json>) · [사용자용 이식 현황](_archive/engine/FDG_GODOT_PORT_STATUS.md)
 
 
 ## 2026-10-17 play_time 열두 번째 provider 등록 — 현재 경계
@@ -56456,7 +56619,7 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 값·실패·참조 | finite native int/float 부분지원·safe int ±9007199254740991·raw-0·원 type/ref/prefix·postloss read_result·NOT_READY 계약 그대로. dummy13/25 gate 우회·clock writer/default0 추가 없음 |
 | 검수 분리 | 기존 owner34case477(설정163·행동314) 인수, 원17 중15통과2실패와 별도2true는 보존. V12 후보 원11case43행동true/setup signedzero1false·exit1 전체FAIL과 별도4case19행동+setup4 true의 한정 보완은 각각 유지. 원성공 검수·parse 재실행 없음 |
 | 실제 실행·보류 | 이번은 소스 정렬이다. 사용자 열린 앱·compiled export·PC 실행·실제 Main/State clock·자연 전투·JS·최신 게임 인수는 미확인. V12 제품 copy·World hook·build/reload/import/PC 전달 없음 |
-| 정본 / 증거 | [FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_MAIN_SYNC_20261017.md](engine/FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_MAIN_SYNC_20261017.md) · [소스 통합 final receipt](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-MAIN-SOURCE-SYNC-20261017/receipt.json>) |
+| 정본 / 증거 | [FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_MAIN_SYNC_20261017.md](_archive/engine/FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_MAIN_SYNC_20261017.md) · [소스 통합 final receipt](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-MAIN-SOURCE-SYNC-20261017/receipt.json>) |
 
 ## 2026-10-18 — P1-002.C 일반 적 HP 효과 owner 부분 인수 / WIP
 
@@ -56464,7 +56627,7 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 - HP 실제 쓰기 경로와 일부 거절 경계는 격리 검수 인수, 첫 전투 전체 연결은 진행 중이다. clock/currentview/real13/typed effects/자연 첫피격 연결은 남아 있다.
 - 실행별 증거는 분리한다: V1 17case77check true; V2 weak-expiry 준비조건 실패; 별도 current Script 제거 2case34check true + draw SCRIPT ERROR2회; draw 격리 후속 2case34check true·양로그 오류/경고/누수진단0. 이를 합산 PASS나 전체 V2·실게임 draw·자연GC 증명으로 표시하지 않는다.
 - V1→V2 직전 fresh currentWORK savedPRE 누락을 보존하며 새 사본을 소급 PRE로 삼지 않는다. 최초 커밋은 2026-10-17 15:50:14.573049~796774 UTC에 문서 동기화 훅으로 exit1이었다. 이 필수 변경로그 추가는 그 실패의 수리이며 과거 성공으로 소급하지 않는다.
-- [HP owner 계약·실행별 근거](engine/FDG_NATIVE_NORMAL_ENEMY_FIELD_OWNER_20261017.md) · [단계별 현황](engine/FDG_GODOT_PORT_STATUS.md). 별도 WIP 보존이며 main/R/실행판 갱신·P1-002 완료가 아니다.
+- [HP owner 계약·실행별 근거](_archive/engine/FDG_NATIVE_NORMAL_ENEMY_FIELD_OWNER_20261017.md) · [단계별 현황](_archive/engine/FDG_GODOT_PORT_STATUS.md). 별도 WIP 보존이며 main/R/실행판 갱신·P1-002 완료가 아니다.
 
 ## 2026-10-20 — P3-003 지역 상태·미니맵 부분 연결(검수 대기)
 
@@ -56474,7 +56637,7 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 새 검사 | core27/0, 실제Main 최초9/0(PID742)·생성순서정정9/0(PID1015)는 별개 실행. 실제G same-ref/초기사이트/미스폰미정화·가짜킬0 범위만. 표시 최초7중6통과1실패는RGBA8 alpha 반올림 기대 오류, 제품.45 변경 없이truncate114 단일경계1/0. 원실패 보존·합산전체PASS0. |
 | 환경·미완 | 원앱4.7.2 import1회 asset[DONE] 후 전역 editor_settings 저장 차단ERROR/TERM−15 보존. 추가import·전역권한변경0. 실제 사용자 save/app_userdata 읽기·복사0. C처치 hook/소환굴확정 후 분모init·FB전투/후속SFX·펫/실창1x·전체게임 인수 미완. |
 | 정상 보존 | 첫commit은 필수변경로그 누락으로docs-sync-check가거부, 우회없이본append와함께정상체크포인트. 타인stage/R제품/main병합0. |
-| 상세 | [현행 원본행·수치·원로그](engine/FDG_P3_003_REGIONS_20261020.md) · [검수대기 보고서](engine/orders/reports/P3-003_REPORT.md). 기존 P2 미이식 기록은당시이력으로보존. |
+| 상세 | [현행 원본행·수치·원로그](_archive/engine/FDG_P3_003_REGIONS_20261020.md) · [검수대기 보고서](_archive/engine/orders/reports/P3-003_REPORT.md). 기존 P2 미이식 기록은당시이력으로보존. |
 
 ## 2026-10-20 — STARTER-REGIONS boot G40·현재 지역 키 계약 정정
 
@@ -56484,12 +56647,12 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 테스트 한정 | test_native_main_source_starter_state.gd의 boot40 정확 집합·보존 전체 packet 동등성과 current40+지역7 정확 집합 검사. 지역 키는 _regions/_regMidX/_regMidY/_regCurIdx/_regBannerCd/_regGateIdx/_bossClearT. STATS5/PAS26·기존 same-ref 및 모든 후속 단정 유지. 제품 수정0. |
 | 새 검수 | 최신 origin/main c7c910fd 동일 worktree에서 전체5그룹 148/1→148/0, 수정 후 exit0·ERROR0; 외부 exact-key 양성2·음성8=10/0. import1회17.890초·ERROR0, Godot 설정68파일 사전 백업·테스트 격리·override 종료0바이트. |
 | 보존·제출 | 첫 커밋 시 docs-sync-check가 진행로그 누락을 거부해 이 최소 append를 추가했다. 우회0·main push0·R 수정0. 과거145/148·G40 검수 이력 보존. PC의 oracle/Windows-export 전제 판정만 기존 sweep 보고서에 별도 추가, visual9 실행0. |
-| 상세 | [STARTER-REGIONS 보고서](engine/orders/reports/STARTER-REGIONS_REPORT.md), 원로그 ~/exoduser-wt/_out/starter-regions-fix/. 자기 codex 브랜치 검수 대기. |
+| 상세 | [STARTER-REGIONS 보고서](_archive/engine/orders/reports/STARTER-REGIONS_REPORT.md), 원로그 ~/exoduser-wt/_out/starter-regions-fix/. 자기 codex 브랜치 검수 대기. |
 
 ## 2026-10-20 P2-008a PC — etype20 세 exact 적 소비자 후보
 - 원본 초기 미지원10개체의 수치·AI·투사체·스킨을 정리하고, 시작점 거리상 최초인 type20 및 동일 원분기 order4/10/12를 전용 consumer로 등록했다. 이 브랜치 source16은 지원9/미지원7이며 main/배포 갱신 주장이 아니다.
 - 원본 _meleeET에서20 제외·_noProjEtypes[20]=1을 보존하여 가짜 근접 피해/탄막/빙결을 만들지 않았다. 쉴드·포이즈·hurtE owner·원본 atlas16개의 byte 동일 복사본을 재사용했다. 공용 main/player/world/피해 집행자·Q/E·레슨·세이브·맵 수정0.
-- 필수 회귀4종 379 assertions+8케이스/0fail, 신규72check는 최초45성공+이동3개 한정 재검+별도 bridge8/경계16 ledger다. 실제 화면/public 플레이 미검수. 정본 `docs/engine/FDG_P2_008A_CH1_ENEMIES_20261020.md`, 제출 `docs/engine/orders/reports/P2-008a_REPORT.md`.
+- 필수 회귀4종 379 assertions+8케이스/0fail, 신규72check는 최초45성공+이동3개 한정 재검+별도 bridge8/경계16 ledger다. 실제 화면/public 플레이 미검수. 정본 `docs/_archive/engine/FDG_P2_008A_CH1_ENEMIES_20261020.md`, 제출 `docs/_archive/engine/orders/reports/P2-008a_REPORT.md`.
 
 
 ## 2026-10-20 — SETTINGS-S01 원본 설정 기본값·읽기 전용 view
@@ -56498,7 +56661,7 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 - game.html:48752–48753 reset18/초기20 및 irisToggle/bladeToggle 생략을 원본 그대로 source evidence로 기록. 실제 reset은S03이며 이번 구현0.
 - 최신 main `9528ea35b429498fcf42fe3723008219ed0ed7e1`을 자기 branch에 ff merge 후 신규 unit112/0·actualMain12/0·contracts5군/실패0 재확인. 기존 OPT11/0·starter148/0·지역43/0·HUD36/0·소환굴298/0, 수치 출력 합660/0. G48/지역23·60·53·32/합168·시작HUD0/32 확인. 실행별 근거는 아래 보고서를 따른다.
 - 최초 unit1단정 실패·보완, 최초 커밋의 필수 변경로그 누락 거부·기존 초기화 회귀의 격리guard 거부는 과거 실행으로 보존한다. 이 append는 필수 문서 동기화 정상 경로이며 훅 우회0.
-- [원본 행·API·실행별 결과·기준 SHA·남은 범위](engine/orders/reports/settings-s01_REPORT.md). 설정 UI/저장복원·실플레이·전체 이식 완료 증거가 아니다.
+- [원본 행·API·실행별 결과·기준 SHA·남은 범위](_archive/engine/orders/reports/settings-s01_REPORT.md). 설정 UI/저장복원·실플레이·전체 이식 완료 증거가 아니다.
 ## 2026-10-21 i18n-title-fix — 영문 로비 타이틀
 
 | 항목 | 동기화 내용 |
@@ -56513,17 +56676,17 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 
 기반121a15b7에82ad1813(potion-cd), db9219b4(MAP11-14),973f96ef(i18n)를 정상 merge했다. bb3ced49/e8888106은 기존 ancestor다. Main 독립 locale callback과 기존 API를 병존하고 HUD 실제 MP owner를 유지했다. 번역 목록은 normalized3-way 비교 후CRLF9495/loneLF0으로 보존했다.
 
-41의8실패는 hidden headless→정상 media/Timer suspend 하니스 오류이며 제품 음악 모듈 변경0. 전체 editor import로 EL global class와19ui/37 SVG 누락을 해결했다. 재사용 runner는 실제41 창·명시Node/현재source·테스트상수격리·pgrep/30초 gate를 제공한다. 추가 potion 테스트의 paused owner read/비사용 affix 기대만 수정하며 oracle/제품 guard/식은 유지했다. 최종41 55/0·EL3327/0·19ui36/0·37148/0·24b138/0·25b2569/0·map product37/0=6310/0, 각exit0/ERROR0. 최초 추가 potion 실패는 별도 보존, 요청4suite 각1회. docs 전수 관련 검색/현재14id 설명 동기화. 상세 원인 파일:행·전후 표·범위/한계는 [integ-fix 보고서](engine/orders/reports/integ-fix_REPORT.md). 시각RETOUCH·PC/전체E2E 미확인 유지.
+41의8실패는 hidden headless→정상 media/Timer suspend 하니스 오류이며 제품 음악 모듈 변경0. 전체 editor import로 EL global class와19ui/37 SVG 누락을 해결했다. 재사용 runner는 실제41 창·명시Node/현재source·테스트상수격리·pgrep/30초 gate를 제공한다. 추가 potion 테스트의 paused owner read/비사용 affix 기대만 수정하며 oracle/제품 guard/식은 유지했다. 최종41 55/0·EL3327/0·19ui36/0·37148/0·24b138/0·25b2569/0·map product37/0=6310/0, 각exit0/ERROR0. 최초 추가 potion 실패는 별도 보존, 요청4suite 각1회. docs 전수 관련 검색/현재14id 설명 동기화. 상세 원인 파일:행·전후 표·범위/한계는 [integ-fix 보고서](_archive/engine/orders/reports/integ-fix_REPORT.md). 시각RETOUCH·PC/전체E2E 미확인 유지.
 
 
 ## 2026-10-21 integ-fix 보충 — Dummy 관측 분리·perf/etype9 경계
 
-41은 실제AudioServer driver가Dummy일 때 재생/비동기콜백13관측을 이유와 함께skip하며, 모든driver 공통 요청·상태/handle 정리9검사를 추가했다. Dummy51/0/skip13·CoreAudio64/0/skip0, 기존etype-B42/0으로deadPool owner 거부 확인. 각조건1회·ERROR0·exit0, runner는PASS_WITH_SKIPS와JSON.skipped를명시한다. 제품SND06/media/visibility코드 변경0. perf aaf52dc0cb4439e828c9fe1a6560b0dd3e8ab1e7은이미ancestor(추가merge0);PC약22ms/tick 해결·120fps인수주장0. etype9는PC P2-008b 확인전NOT_READY유지. 실제청음은사용자실창검수. [근거·한계·로그](engine/orders/reports/integ-fix_AUDIO_SUPPLEMENT.md).
+41은 실제AudioServer driver가Dummy일 때 재생/비동기콜백13관측을 이유와 함께skip하며, 모든driver 공통 요청·상태/handle 정리9검사를 추가했다. Dummy51/0/skip13·CoreAudio64/0/skip0, 기존etype-B42/0으로deadPool owner 거부 확인. 각조건1회·ERROR0·exit0, runner는PASS_WITH_SKIPS와JSON.skipped를명시한다. 제품SND06/media/visibility코드 변경0. perf aaf52dc0cb4439e828c9fe1a6560b0dd3e8ab1e7은이미ancestor(추가merge0);PC약22ms/tick 해결·120fps인수주장0. etype9는PC P2-008b 확인전NOT_READY유지. 실제청음은사용자실창검수. [근거·한계·로그](_archive/engine/orders/reports/integ-fix_AUDIO_SUPPLEMENT.md).
 
 
 ## DEMO11-47i (2026-10-21)
 
-- b07f5c56 + 47h merge, isolated E2E 1회 13 PASS / 5 NOT_READY / 0 FAIL. field_MAP11 actual product 관측, headless logical visibility 보정, Mac callback opt-in 계측. 자동물약/적 처치/전투 gate/보스 최종사망 미해소, revival PCI 묶음 A 대기. 전체 E2E 완료 아님. 상세 docs/engine/orders/reports/demo11-47i_REPORT.md 및 DEMO11_STATUS_20261021.md.
+- b07f5c56 + 47h merge, isolated E2E 1회 13 PASS / 5 NOT_READY / 0 FAIL. field_MAP11 actual product 관측, headless logical visibility 보정, Mac callback opt-in 계측. 자동물약/적 처치/전투 gate/보스 최종사망 미해소, revival PCI 묶음 A 대기. 전체 E2E 완료 아님. 상세 docs/_archive/engine/orders/reports/demo11-47i_REPORT.md 및 DEMO11_STATUS_20261021.md.
 
 
 ## 2026-10-21 DEMO11-47j — Mac 연결·펫 틱
@@ -56532,7 +56695,7 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 - `native_natural_enemy_base.gd`: 난수로 이미 선택된 A군 1/4/5/6을 기존 생성기로 전달.
 - `native_pets.gd`: 초상 2장 preload 보유, 발화 틱 ResourceLoader 호출 제거.
 - 47h 하네스의 레슨 시작 대기 및 실제 origin 집계 관측, 계약 신호 주입 제거. 47j 집중 검증 추가. 18단계 재실행은 1회로 제한했으며 최종 후속 검증과 구분한다.
-- 현재 범위·수치·잔여: `docs/engine/orders/reports/demo11-47j_REPORT.md`, 상태 표 `DEMO11_STATUS_20261021.md`.
+- 현재 범위·수치·잔여: `docs/_archive/engine/orders/reports/demo11-47j_REPORT.md`, 상태 표 `DEMO11_STATUS_20261021.md`.
 
 ## 2026-10-21 DEMO11-47k
 
@@ -56552,27 +56715,27 @@ MAP11 fieldboss Marker 4개/실제 family bind, 실제 transport spawn_options�
 
 - 기반 db9219b4 / codex/map11-15-20261021. R1700 collision·provider·Marker·전투/저장 불변. 제품 arena만 시각 바닥 불규칙 감쇠+root32/BACK forest32로 큰 검은 원호 제거, 랜드마크 보존.
 - 제품 field 화면 밖 row/decal cull. 기존 바닥 5tap1024² cache로15→3lookup, 기존 fog5octave2048² cache로60hash/sin→3lookup. 원 NativeScreenLighting 소스/단일패스/UV·TIME·색·alpha 유지, cache근사 오차는 별도 fixed-TIME 비교.
-- 1920×1080 실창 실제 Player 입력600틱/공간, 최종24/0. field 평균189.38fps/p95 6.987ms, arena188.81fps/p95 6.741ms. 이번 표본120fps p95 목표PASS; 전체밀집/Windows 미검수. [현행 수치·원본·§23 보고](4.1맵디자인+설정/MAP11_FINISH_PERFORMANCE_20261021.md). 전후2쌍+1x는 ~/exoduser-wt/_out/map11-15/captures/.
+- 1920×1080 실창 실제 Player 입력600틱/공간, 최종24/0. field 평균189.38fps/p95 6.987ms, arena188.81fps/p95 6.741ms. 이번 표본120fps p95 목표PASS; 전체밀집/Windows 미검수. [현행 수치·원본·§23 보고](_archive/4.1맵디자인+설정/MAP11_FINISH_PERFORMANCE_20261021.md). 전후2쌍+1x는 ~/exoduser-wt/_out/map11-15/captures/.
 
 
 ## 2026-10-21 — MAP11-17 조명 룩 패스
 
 - 기준1f797a8b, 보류MAP11-16/16b 미사용. 텍스처/배치 불변, MAP11전용ambient·최대5등·지역냉/온광·접지AO·외곽안개. NativeMapLook 기존광원/실루엣helper 재사용, 중복generic설치guard.
-- p95 field7.857ms/arena7.580ms(1080p/600틱/각1회), 최종17/0·이전렌더19/0. 3뷰1600×900 before/after+1x. VISUAL VERDICT RETOUCH, 밀집전투/Windows미검수. [현행수치·§23보고](4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#14-map11-17--조명-룩-패스-2026-10-21).
+- p95 field7.857ms/arena7.580ms(1080p/600틱/각1회), 최종17/0·이전렌더19/0. 3뷰1600×900 before/after+1x. VISUAL VERDICT RETOUCH, 밀집전투/Windows미검수. [현행수치·§23보고](_archive/4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#14-map11-17--조명-룩-패스-2026-10-21).
 
 
 ## 2026-10-21 INTEG-2 — 1-1 PC 전달 통합
 
-47m/Map11-15/17 순차 정상 merge;CHANGELOG 독립 추가 양쪽 보존. auto_potion E2E의 HP/iframe·대기·실제 hurtP 요청 전후 관측만 추가(공식/HP쓰기/core 변경0). import1회/관련 단위3989 PASS0 FAIL/E2E12 PASS6 NOT_READY0 FAIL. benchmark1회 exit4,시간 미수집;physics max22.414ms 예산초과. 과거0요청 증상 미재현·원인 확정 불가,PC blocked_by 유지. [원인·18단계·검수·남은 일](engine/INTEG2_DEMO11_20261021.md).
+47m/Map11-15/17 순차 정상 merge;CHANGELOG 독립 추가 양쪽 보존. auto_potion E2E의 HP/iframe·대기·실제 hurtP 요청 전후 관측만 추가(공식/HP쓰기/core 변경0). import1회/관련 단위3989 PASS0 FAIL/E2E12 PASS6 NOT_READY0 FAIL. benchmark1회 exit4,시간 미수집;physics max22.414ms 예산초과. 과거0요청 증상 미재현·원인 확정 불가,PC blocked_by 유지. [원인·18단계·검수·남은 일](_archive/engine/INTEG2_DEMO11_20261021.md).
 
 ## 2026-10-21 INTEG-2b MAP11 perf
 
-벤치 G.on 주입 제거·제품 guide/lesson 경로 사용, 공간별 즉시 JSON/600틱 p95 및 실제 gate receipt 기록. field p95 15.391ms(미달), arena gate_or_provider로 미측정; 제품 gate/PC 미인수 우회0. 상세: engine/INTEG2b_MAP11_PERF_20261021.md.
+벤치 G.on 주입 제거·제품 guide/lesson 경로 사용, 공간별 즉시 JSON/600틱 p95 및 실제 gate receipt 기록. field p95 15.391ms(미달), arena gate_or_provider로 미측정; 제품 gate/PC 미인수 우회0. 상세: _archive/engine/INTEG2b_MAP11_PERF_20261021.md.
 ## 2026-10-21 MAP11-18 — 바닥 군락·캐릭터 림
 
 - 채택 ff59c3c7 직계, 기존 RGBA5종/군락9+나무 발치 총130sprite. 신규생성·텍스처교체0.
 - 공유 actor rim material1개/약1.35screenpx inner edge, player뼈색/적암적색 setup-only. player.gd/전투코어 불변. 숲 prelight RGB하한(.075,.069,.072).
-- 현행 수치·금지구역·에셋·검수·MAP PRODUCTION REPORT: [MAP11 설계서 §15](4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#15-map11-18--바닥-장식캐릭터-림-2026-10-21).
+- 현행 수치·금지구역·에셋·검수·MAP PRODUCTION REPORT: [MAP11 설계서 §15](_archive/4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#15-map11-18--바닥-장식캐릭터-림-2026-10-21).
 
 
 ## 2026-10-21 MAP11-19 큰 바닥 패치
@@ -56634,24 +56797,24 @@ MAP11 fieldboss Marker 4개/실제 family bind, 실제 transport spawn_options�
 
 ## 2026-10-21 INTEG-3 지옥 관광 코스 통합
 
-MAP11-21d→20p 순차 merge, append 양쪽 보존. 공통16개 접지 마스크 atlas 참조와 신규 관광 마스크 병합. 최초 충돌해결 구조오류 복원 및 단회 검수 실패·oracle 인수 누락은 숨기지 않고 기록한다. [검수·충돌 근거](engine/INTEG3_DEMO11_20261021.md). 외부 DONE에 최종 SHA/18단계/성능/6장면 증거.
+MAP11-21d→20p 순차 merge, append 양쪽 보존. 공통16개 접지 마스크 atlas 참조와 신규 관광 마스크 병합. 최초 충돌해결 구조오류 복원 및 단회 검수 실패·oracle 인수 누락은 숨기지 않고 기록한다. [검수·충돌 근거](_archive/engine/INTEG3_DEMO11_20261021.md). 외부 DONE에 최종 SHA/18단계/성능/6장면 증거.
 
 
 ## 2026-10-21 INTEG-3b — 통합 실패 원인 분리
 
 | 변경 | 검증 / 남은 문제 |
 |---|---|
-| benchmark_map11_21 focus 대기10초·최대3시도·손실시600틱 전체제외·실제 공간/입력 궤적 기록; low_processor 해제·240cap·VSync OFF는 벤치에만 적용 | 재import ERROR0·chest26/0·anglers1402/0·auto_potion2569/0. product 선재4실패+_bossArena 오류 baseline85415a66 재현. E2E12PASS/6NOT_READY·ERROR0. 유효field9.265/9.596ms로8.33ms FAIL; arena명목·PC대기. 별도 render thread crash 미채택. 제품/맵/보호core 수정0. 상세 docs/engine/INTEG3B_DEMO11_20261021.md |
+| benchmark_map11_21 focus 대기10초·최대3시도·손실시600틱 전체제외·실제 공간/입력 궤적 기록; low_processor 해제·240cap·VSync OFF는 벤치에만 적용 | 재import ERROR0·chest26/0·anglers1402/0·auto_potion2569/0. product 선재4실패+_bossArena 오류 baseline85415a66 재현. E2E12PASS/6NOT_READY·ERROR0. 유효field9.265/9.596ms로8.33ms FAIL; arena명목·PC대기. 별도 render thread crash 미채택. 제품/맵/보호core 수정0. 상세 docs/_archive/engine/INTEG3B_DEMO11_20261021.md |
 
 
 ## 2026-10-21 MAP11-22 보스룸 관광 종착지
 
-R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원·북 혈조/고문바퀴 무대·4광원을 구성했다. 전투면 바닥 shader opacity .16/.12, 남측 가림 완화. 상세 수치/좌표/검수 경계는 `4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md` §22. VISUAL RETOUCH; 독립 울타리 에셋 미제공, PC gate/실전전투 미검수. 단회 성능 실측과 원격SHA는 외부 MAP11-22 DONE 및 설계서에 기록.
+R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원·북 혈조/고문바퀴 무대·4광원을 구성했다. 전투면 바닥 shader opacity .16/.12, 남측 가림 완화. 상세 수치/좌표/검수 경계는 `_archive/4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md` §22. VISUAL RETOUCH; 독립 울타리 에셋 미제공, PC gate/실전전투 미검수. 단회 성능 실측과 원격SHA는 외부 MAP11-22 DONE 및 설계서에 기록.
 
 
 ## 2026-10-21 MAP11-22b 보스룸 2차 보정
 - ce5bec02 계열: dark flesh/blood 전투면, 기존32 root 의식 링, legacy 반복8개/AO 제거 및 제단 cull 현재 bounds 정정, finale PNG LOD−.6, 짧은 arena 입장 카메라. PC core/provider/save/신규이미지0.
-- 설계·전체 수치·4컷/1x·범위표본·단회 성능·RETOUCH 한계: `4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md` §23. 실제 SHA/p95/captures/정리는 외부 MAP11-22b/DONE.txt.
+- 설계·전체 수치·4컷/1x·범위표본·단회 성능·RETOUCH 한계: `_archive/4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md` §23. 실제 SHA/p95/captures/정리는 외부 MAP11-22b/DONE.txt.
 
 
 ## 2026-10-21 MAP11-22c
@@ -56671,31 +56834,31 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 
 - cb154e8d 기준 신규 상수·fixture만 추가. 기존 보스 idle atlas·실제 DEMO11-42 HP 위젯·공유 림과 범위 도형의 before/after20뷰+1x20크롭. 제품 보스 렌더/전투·게이트·HP·패링·최종사망 변경0.
 - **RETOUCH/요청 미완료**: 6범위 도형 후보 외17패턴 실제 렌더 미검수, 실제 탄/HPreadback 증거0. BC01~10 각1회354093assertions/실패0; 추가 actor fixture spawn 거부→hp접근 오류. 단회 명목arena p95 8.383ms/focus0, 목표8.33 초과. PID81277 보존.
-- 수치·가독성 표·캡처 의미·운영 예외·MAP PRODUCTION REPORT: `8.1보스디자인바이블/BOSS11_01_READABILITY_20261021.md`. 외부 `~/exoduser-wt/_out/BOSS11-01/DONE.txt`에 SHA/원격 보존/증거 경로 기록.
+- 수치·가독성 표·캡처 의미·운영 예외·MAP PRODUCTION REPORT: `_archive/8.1보스디자인바이블/BOSS11_01_READABILITY_20261021.md`. 외부 `~/exoduser-wt/_out/BOSS11-01/DONE.txt`에 SHA/원격 보존/증거 경로 기록.
 
 ## 2026-10-21 BOSS11-02 — 채움 텔레그래프·카메라 검토 후보
 
 - 391158e3 기준 공통 shader/material1개·progress instance uniform1개·32mark pool·source enemy/G 읽기 전용 renderer. 원/부채/띠/빈틈 도넛·충전·섬광, arena zoom.28/1초 전환 및 퇴장/기존 clear 신호 복귀. PC 코어·판정·피해·패링·저장·번역 byte·기존 보스 atlas/림 불변.
 - before/after12보드(전용11패턴+기존 projectile 도형), 0/50/95% 및 flash 포함56PNG. 전23패턴 자연 실행 미검수, fissure 종착 가림·작은 플레이어가 남아 **RETOUCH/전체 요청 미완료**. BC01~10 각1회354093assertions/실패0, visual18검사/실패0.
-- arena 명목 단회는 focus_lost1449로 INVALID. 원시p95 8.628ms는 유효 결과가 아니며 기존8.383ms 대비 악화 없음 미입증. 재측정0·PID81277 보존. 상세 규칙/전체 수치/한계/맵 보고는 `8.1보스디자인바이블/BOSS11_02_TELEGRAPH_20261021.md`, SHA/정리는 외부 BOSS11-02/DONE.txt.
+- arena 명목 단회는 focus_lost1449로 INVALID. 원시p95 8.628ms는 유효 결과가 아니며 기존8.383ms 대비 악화 없음 미입증. 재측정0·PID81277 보존. 상세 규칙/전체 수치/한계/맵 보고는 `_archive/8.1보스디자인바이블/BOSS11_02_TELEGRAPH_20261021.md`, SHA/정리는 외부 BOSS11-02/DONE.txt.
 
 
 ## 2026-10-21 BOSS11-03 — 카메라·색감 격리 조정
 
 - 기준 cae51580, branch codex/boss11-03-20261021. arena .36 단일 값, 채움 RGB(1,.46,.24)/alpha.07→.17, 충전 RGB(1,.94,.72)/전면+.38, 외곽선 유지. 화면 밖 화살표와 발 접촉 표시 추가. PC 코어/판정/번역/저장 변경0.
-- 2640×.36=950.4px이므로 900px 전체 최대 원 수용은 불가; 요청 구간에서 잘림 최소 값 선택. VISUAL VERDICT RETOUCH. 현재 수치/검수 경계는 `8.1보스디자인바이블/BOSS11_03_CAMERA_COLOR_20261021.md`, SHA/성능/캡처/정리는 외부 BOSS11-03/DONE.txt.
+- 2640×.36=950.4px이므로 900px 전체 최대 원 수용은 불가; 요청 구간에서 잘림 최소 값 선택. VISUAL VERDICT RETOUCH. 현재 수치/검수 경계는 `_archive/8.1보스디자인바이블/BOSS11_03_CAMERA_COLOR_20261021.md`, SHA/성능/캡처/정리는 외부 BOSS11-03/DONE.txt.
 
 ## 2026-10-21 DEMO-PLAY Mac 시연 실행 준비
 
 - cb154e8d 기준 전체 worktree에 boss11-03(8e45a9bc) fast-forward 및 audio-01(aa8e4c60) merge(cad3fe18). 총괄 문서 append 충돌은 양쪽 보고 보존.
 - godot/override.cfg에 시연 전용 EXODUSER-DEMO-PLAY-20261021 userdir 지정. 기존 새 게임 로비를 별도 scene 인수로 실행하며 제품 플래그 주입 없음.
 - import ERROR0, 일반 로비 headless ERROR0. 각1회 검사 31개 중28개 통과, BC 통합 baseline 인수 누락·구 BOSS11-02 기대값·기존 map11_product 실패는 별도 기록. 재실행 없음.
-- 상세: engine/DEMO_PLAY_20261021.md. RUN/DONE은 ~/exoduser-wt/_out/DEMO-PLAY/. worktree 유지, GUI 미실행, PC/main 변경 없음.
+- 상세: _archive/engine/DEMO_PLAY_20261021.md. RUN/DONE은 ~/exoduser-wt/_out/DEMO-PLAY/. worktree 유지, GUI 미실행, PC/main 변경 없음.
 
 ## 2026-10-21 LOBBY-01 — Godot 시연판 로비·생성 화면
 
 - 첫 빈 슬롯 새로하기 초기 포커스/강조, 웹 원본 5인 초상 및 전사 대형 원화·소개, 잠긴4인 감광/벡터 자물쇠, 이름 Enter 제출·취소 포커스 구현.
-- 저장/active/인트로 및 전투 코드 변경 없음. 기존 Hell Gothic 폰트/색, 한영 catalog·번역 목록3487–3489(CRLF 보존), `docs/engine/LOBBY_01_20261021.md` 동기화.
+- 저장/active/인트로 및 전투 코드 변경 없음. 기존 Hell Gothic 폰트/색, 한영 catalog·번역 목록3487–3489(CRLF 보존), `docs/_archive/engine/LOBBY_01_20261021.md` 동기화.
 - 기존 로비 회귀 1회60/60 PASS, 격리 UI 입력·검증·metadata 캡처 하니스 PASS. 1600×900 5장 직접 검수: VISUAL PASS. 실물 패드 미검증. 근거 `~/exoduser-wt/_out/LOBBY-01/`.
 
 
@@ -56703,9 +56866,9 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 
 - Merge lobby-01 b977c5ff then field-BGM db6539b7e; no conflicts.
 - 76 existing files (tests54/products12/port_modules7/tools3) now identify the immutable source snapshot. Product runtime logic unchanged.
-- Source contract and refresh steps: docs/engine/INTEG5_SOURCE_SNAPSHOT_20261021.md. Live web game.html and protected combat/map visual files unchanged.
+- Source contract and refresh steps: docs/_archive/engine/INTEG5_SOURCE_SNAPSHOT_20261021.md. Live web game.html and protected combat/map visual files unchanged.
 
-- INTEG-5 validation: import ERROR0; SND02/05/06, BC01-10, AUDIO01, lobby and field suites pass. BGM/41 harness missing source-root -> unverified; map11 product existing gate/key error retained; E2E NOT_READY, FAIL0/ERROR0 with PC blocked_by preserved. See docs/engine/INTEG5_VALIDATION_20261021.md.
+- INTEG-5 validation: import ERROR0; SND02/05/06, BC01-10, AUDIO01, lobby and field suites pass. BGM/41 harness missing source-root -> unverified; map11 product existing gate/key error retained; E2E NOT_READY, FAIL0/ERROR0 with PC blocked_by preserved. See docs/_archive/engine/INTEG5_VALIDATION_20261021.md.
 ## 2026-10-21 ctx-pack — 1-1 Godot 이식 원본 context pack
 
 | 항목 | 동기화 내용 |
@@ -56722,7 +56885,7 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 | 코드 | W01/자동석궁 owner·World 기존 sp→PCI05·동일 opts PCI03, actor 등록 직후 PCI02 bind, B8/29 PCI09 consumer 및 B8/29 옛 Mac 사망 거절 연결. PC 전투 core·MAP11 시각 무수정. |
 | 검증 | 최종 import ERROR0, W01 361/0, 새 Mac 호출31/0·B8 prefix1회, BC01~10 PASS. 기존 B/F fixture6/5실패, PC suite12실패+SCRIPT ERROR4. normalBow30 단위16.63912ms/tick. |
 | 미완 | E2E10PASS/8NOT_READY/0FAIL·ERROR0. MAP11 _fieldBosses 때문에 PC normalBow admit가 전부 거절되어 실제 발사/처치0. C15 constructor/Marker child 부재로 consumer 미등록. 적 탄 E/접촉·PCI07/08·B/F hostile emission 미완. |
-| 근거 | engine/PCIB_WIRE_REPORT_20261021.md 및 DEMO11_STATUS_20261021.md. 오류·재검증·초기 R cwd 이탈도 기록. 최종SHA/18단계 표는 ~/exoduser-wt/_out/PCIB-WIRE/DONE.txt. |
+| 근거 | _archive/engine/PCIB_WIRE_REPORT_20261021.md 및 DEMO11_STATUS_20261021.md. 오류·재검증·초기 R cwd 이탈도 기록. 최종SHA/18단계 표는 ~/exoduser-wt/_out/PCIB-WIRE/DONE.txt. |
 
 ### 2026-10-21 PCIB-WIRE-b
 - 지정 e9ca8aa0의 화살 view 배열 var 수정이 이미 포함됨을 확인: 새 import ERROR0, Main 실제 생성 Mac 호출부31/31.
@@ -56742,14 +56905,14 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 
 ## 2026-10-21 MAP11-30
 - 보스룸 목표 원화 paint-over split 첫 시제품. target30 룩/측정RGB curve/층/2shader, 기존 arena 시각 hide와 source-adapter 보존, 원형R1700·외곽충돌·BOSS11예고/카메라 불변.
-- 관련 수치/원본/실제 캡처/FAIL 차이표는 `4.1맵디자인+설정/MAP11_30_TARGET_SPLIT_20261021.md`, 목표 문서 하단 누적. p95단회7.747ms/focus_lost0. BC source 인수누락 실패와 시각 FAIL을 숨기지 않음. 독립branch, main/PC 배포 없음.
+- 관련 수치/원본/실제 캡처/FAIL 차이표는 `_archive/4.1맵디자인+설정/MAP11_30_TARGET_SPLIT_20261021.md`, 목표 문서 하단 누적. p95단회7.747ms/focus_lost0. BC source 인수누락 실패와 시각 FAIL을 숨기지 않음. 독립branch, main/PC 배포 없음.
 
 ## 2026-10-21 MAP11-30b — 보스룸 축척·투영 대응
 
 - source2000px→화면1920px/world2.6666666667, logicalY .6 역/정투영 쌍으로 원화 타원 비율 유지. 같은 크기 미러clone, BACK 역floor mask,7소품 화면기준 배치/외곽7충돌원(반경90,min>1700),R1700/provider/PC전투코어 유지.
 - 전체 vertex호흡 제거,pod3영역국소UV±.006/.16Hz,입2영역2자세UV .018/.55Hz. 신규이미지생성/inpaint/3D/틱목록API/ResourceLoader0.
 - 실제Main1920×1080/1x비교 RETOUCH. 관련검사1회33/34PASS,마지막preview노드가정FAIL→recipe반경assert로수정/재실행0. p95단회8.734ms/p99 9.768/focus_lost0,8.33예산FAIL. 자연보스전/PC/접촉일치 검수아님.
-- 정확한수치/경계/차이표/MAP PRODUCTION REPORT: `4.1맵디자인+설정/MAP11_30B_PROJECTION_20261021.md`. 목표문서차이표누적. 외부증거 `_out/MAP11-30b/`.
+- 정확한수치/경계/차이표/MAP PRODUCTION REPORT: `_archive/4.1맵디자인+설정/MAP11_30B_PROJECTION_20261021.md`. 목표문서차이표누적. 외부증거 `_out/MAP11-30b/`.
 
 
 ## 2026-10-21 MAP11-30p — 보스룸 장면 유지 성능 후보
@@ -56765,17 +56928,17 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 | 표시/카메라 | 같은 전사source2.0, 보스r×14.1/620, 웹프레이밍입장.563700169/근접최대.8; R1700/속도/충돌/사거리/PCcore 보존 |
 | 접지/팔레트 | 공유ambient(.89,.77,.81)/red rim(.62,.20,.22,.36), soft analytic128² AO. 기존root crack 재보정·정적floor합성, 새이미지생성/점/디더링0 |
 | 검수 | MAP30b34/34,arena35/35,BOSS03 18/18,BC08 24788/0. BOSS02 17/18: 이전midpoint.49 기대1fail→상수참조로 수정/재실행0. 유효성능1회p95 7.738ms/focus_lost0; 후검토소규모보정 경계 별도 |
-| 인수 | 목표비교/근접/3종1x/실제Main live0·2초 보존. VISUAL RETOUCH: 원화결부드러움/기존overview접합/자연전투 미검수. [상세계약·측정·MAP REPORT](4.1맵디자인+설정/MAP11_30C_SCALE_INTEGRATION_20261021.md), 외부 `_out/MAP11-30c/DONE.txt`에SHA/원격/정리 |
+| 인수 | 목표비교/근접/3종1x/실제Main live0·2초 보존. VISUAL RETOUCH: 원화결부드러움/기존overview접합/자연전투 미검수. [상세계약·측정·MAP REPORT](_archive/4.1맵디자인+설정/MAP11_30C_SCALE_INTEGRATION_20261021.md), 외부 `_out/MAP11-30c/DONE.txt`에SHA/원격/정리 |
 
 ## 2026-10-21 INTEG-6 merge
 
 - PCIB-WIRE `660d6b433927a13fbe9fecffdeb185a64b3d9fc9` + MAP11-30c `0f0a2888d07cbadb01f366b0f77d8b506a60bb30` merge only.
 - main.gd 충돌 3곳은 PC preload/필드/부팅 배선을 보존. 음향 문서는 PC 추가 내용을 유지하고 CHANGELOG는 양쪽 이력을 별도 절로 보존.
-- INTEG-6 validation results will be recorded in engine/DEMO11_STATUS_20261021.md and external INTEG-6/DONE.txt.
+- INTEG-6 validation results will be recorded in _archive/engine/DEMO11_STATUS_20261021.md and external INTEG-6/DONE.txt.
 
 - 자동 병합이 충돌 표시 없이 제거한 PC API EOF/M29·type3와 관련 docs/ctx/SFX 도구/package 변경은 기준 브랜치 바이트 그대로 보존했다. 첫 import ERROR2(preload 누락) 뒤 수정·재import하며 관련 테스트/E2E 실행 전 발견했다. 최종 main.gd는 PC 기준과 동일 바이트다.
 
-- INTEG-6 final validation: import ERROR0; relevant suites once (map11_product 4 assertion failures + _bossArena SCRIPT ERROR preserved); PCIB31/31, PCIA and BC01-10 pass. E2E once PASS12/NOT_READY6/FAIL0, natural HP0 not observed in 45s; PASS13 target unmet. Bossroom once valid focus_lost0 p95 9.827ms >8.33ms budget FAIL. Details: engine/DEMO11_STATUS_20261021.md.
+- INTEG-6 final validation: import ERROR0; relevant suites once (map11_product 4 assertion failures + _bossArena SCRIPT ERROR preserved); PCIB31/31, PCIA and BC01-10 pass. E2E once PASS12/NOT_READY6/FAIL0, natural HP0 not observed in 45s; PASS13 target unmet. Bossroom once valid focus_lost0 p95 9.827ms >8.33ms budget FAIL. Details: _archive/engine/DEMO11_STATUS_20261021.md.
 
 
 ## 2026-10-21 — INTEG-6b 제품 회귀 하니스·자연 HP0·authoritative arena 계측
@@ -56784,7 +56947,7 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 - 원인: 660d6b43·0f0a2888·c0b71595 각각1회 모두4실패+Dictionary SCRIPT ERROR1. 구형 owner 미설치·열린 gate 전제와 거절 뒤 키 직접 접근을 교정. default PC gate 차단은 유지, 별도 map-only transport 실제 Player/Entry/camera/arena 검증43/0.
 - E2E: 자연 소유 actor0/1/4/6/18/19·can_move 검증+(24,0) 위치만 배치. 자동물약 단계 직접피해/물약추가 제거, 정상 자동소비 유지. 부활 최대120000ms+resolution15000ms; 최종 PASS13/NOT_READY5/FAIL0·ERROR0·validator[]. 자연접촉1478프레임·HP0/fallen_enter/final_death 실측. 총E2E2회(초기 배치 후보누락 후 보정), gate13은PC 미완료.
 - 성능1회: actual Main/World/Player의 test-only transport로 authoritative arena,1920×1080·실제입력600틱,focus_lost0,p95 9.261ms/p99 10.989ms. 30c7.738 대비+1.523ms,8.33ms 미달. TIME_PROCESS/PHYSICS·draw·viewport CPU/GPU·3callback 분해와 측정한계 기록. PC 함수 수정0.
-- 문서: `docs/engine/INTEG6B_REGRESSION_20261021.md`, `DEMO11_STATUS_20261021.md` INTEG-6 행, `PCIB_WIRE_REPORT_20261021.md`, `docs/4.1맵디자인+설정/MAP11_PRODUCTION_BINDING_20261021.md`. 이전 수치는 이력 보존. 원자료·최종SHA: `~/exoduser-wt/_out/INTEG-6b/DONE.txt`.
+- 문서: `docs/_archive/engine/INTEG6B_REGRESSION_20261021.md`, `DEMO11_STATUS_20261021.md` INTEG-6 행, `PCIB_WIRE_REPORT_20261021.md`, `docs/_archive/4.1맵디자인+설정/MAP11_PRODUCTION_BINDING_20261021.md`. 이전 수치는 이력 보존. 원자료·최종SHA: `~/exoduser-wt/_out/INTEG-6b/DONE.txt`.
 
 ## 2026-10-21 INTEG-6c BGM merge
 - PC `3baceb7340fe578fccc63bacfe38737d236eeec0`를 merge로 통합. 데모 boss 카탈로그 = `bgm/1장_썩은숲/Ashen Druid - Boss.mp3` (−12.4 LUFS). AUDIO-01 믹스 코드는 무변경. 사운드 문서 충돌은 SFX Forge·보스 BGM 양쪽 기록 보존.
@@ -56792,10 +56955,10 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 ## 2026-10-21 INTEG-6c Mac harness / override
 - override.cfg 추적 해제·로컬byte보존·ignore, project user dir은 origin/main abc3dd44의 기존 EXODUSER-Godot-Native-First. stage/export에서 로컬override 제외. 실제 저장소 사용0.
 - MAP11 제품 검증37/44/23b와 legacy 계약42/43/41 모드 분리, 판정 유지. 공용 Mac helper에 격리복원/3PID게이트/오류·감시종료/headless캡처skip; E2E timer-null 하니스 오류수정.
-- 최종 회귀 실패0·import ERROR0·E2E PASS13/NR5/FAIL0·validator[]; 최초 실패·재실행과 한계는 [INTEG6C_REGRESSION_20261021.md](engine/INTEG6C_REGRESSION_20261021.md). PC코어/PC테스트/맵비주얼/번역 수정0.
+- 최종 회귀 실패0·import ERROR0·E2E PASS13/NR5/FAIL0·validator[]; 최초 실패·재실행과 한계는 [INTEG6C_REGRESSION_20261021.md](_archive/engine/INTEG6C_REGRESSION_20261021.md). PC코어/PC테스트/맵비주얼/번역 수정0.
 ## 2026-10-21 ZOOM-01
 - 제품 기본값 변경 없이 테스트 전용 `capture_zoom01.gd -- --zoom-preview=1.0|2.0|2.5|3.0` 및 원본 비교판 생성기 추가.
-- Mac etype-b 테스트를 PC 자동 bind·lifecycle 빈 시체 풀 계약에 맞춤. 1회 42 checks / 0 failures. PC 구현·PC 테스트·번역 미수정. 상세: `docs/engine/ZOOM_01_REPORT_20261021.md`.
+- Mac etype-b 테스트를 PC 자동 bind·lifecycle 빈 시체 풀 계약에 맞춤. 1회 42 checks / 0 failures. PC 구현·PC 테스트·번역 미수정. 상세: `docs/_archive/engine/ZOOM_01_REPORT_20261021.md`.
 
 ## 2026-10-21 — MAP11-32 필드 입구 목표 장면 분해
 
@@ -56804,14 +56967,14 @@ R1700 원형 전투면을 보존하고 외곽 PNG+normal 소품19개·발치원�
 | 소유 | 30c 기반 격리 branch/WT MAP11-32, START~첫통로1곳 |
 | 표시 | source2000×1125→1920×1080, 줌.70·배율1.3714285714·투영.6; floor/source clone/고목5구간/rootAO/전경/낮은안개/흰빛/핏줄펄스 |
 | 권위 | 입구tour4개 제거+source foot3개 provider/physics 동일, 나머지13개 유지. outer/route/spawn/arena/actor scale/PCcore/save 불변 |
-| 근거 | [정확값·실제Main비교·단회 관련검사/성능·MAP REPORT](4.1맵디자인+설정/MAP11_32_FIELD_TARGET_SPLIT_20261021.md), 외부 `_out/MAP11-32/DONE.txt`에SHA/원격/정리. 새생성·inpaint·runtime3D0 |
+| 근거 | [정확값·실제Main비교·단회 관련검사/성능·MAP REPORT](_archive/4.1맵디자인+설정/MAP11_32_FIELD_TARGET_SPLIT_20261021.md), 외부 `_out/MAP11-32/DONE.txt`에SHA/원격/정리. 새생성·inpaint·runtime3D0 |
 
 MAP11-32 최종: 관련6종 각1회237checks/0fail. 실제Main 동일구도/1x·북경계·좌우뿌리 캡처. **VISUAL RETOUCH**, 유효1회p95 **11.676ms**/focus_lost0·118draw **성능FAIL**. background1666focuslost 선행표본은 전부무효/통과값으로 사용0. 제품/에셋 최종바이트를 유효측정했고 이후 수정0.
 
 
 ## 2026-10-21 — MAP11-32b 북접합 / 성능 FAIL 후보 보존
 
-[최종 계약·검수·MAP REPORT](4.1맵디자인+설정/MAP11_32B_FIELD_BAKE_20261021.md). 같은branch/기준d953e349, START zoom.70·provider/PCcore/actor스케일 보존. 북접합 무반사native패치·정적지면22tile·전경trim. 관련6종 각1회237/0. 유효field1회 p95 **11.806ms**,p99 **12.905ms**,focus_lost0; draw/objects **118/219→124/225**. **VISUAL RETOUCH / 성능 FAIL, 해소 완료 아님**. 유효 느린표본 재측정0. 외부 `_out/MAP11-32b/DONE.txt`에 최종SHA·원격·clean WT제거 기록; main/PC/배포0.
+[최종 계약·검수·MAP REPORT](_archive/4.1맵디자인+설정/MAP11_32B_FIELD_BAKE_20261021.md). 같은branch/기준d953e349, START zoom.70·provider/PCcore/actor스케일 보존. 북접합 무반사native패치·정적지면22tile·전경trim. 관련6종 각1회237/0. 유효field1회 p95 **11.806ms**,p99 **12.905ms**,focus_lost0; draw/objects **118/219→124/225**. **VISUAL RETOUCH / 성능 FAIL, 해소 완료 아님**. 유효 느린표본 재측정0. 외부 `_out/MAP11-32b/DONE.txt`에 최종SHA·원격·clean WT제거 기록; main/PC/배포0.
 
 
 ## 2026-10-22 — MAP11-33 고해상도 마감·텍스처 예산
@@ -56822,7 +56985,7 @@ MAP11-32 최종: 관련6종 각1회237checks/0fail. 실제Main 동일구도/1x·
 | 리터치 | 좌하단foreground하단 불규칙fade/북고목공통수평선 분산/해골피벗578·582/AO높이24·alpha.68/하부흙오염. 원화RGB·밀도·카메라·전투core보존 |
 | 메모리 | 정적field22tile 무손실trim/불투명5장RGB/legacy아레나제품상속로드제거. 1-1보수GPU1,267,507,176→988,351,648bytes. Main타장포함cache보수1,574,538,764bytes는별도잔류 |
 | 검수 | 지정5종각1회182checks/0fail. 실제Main3곳1920×1080/1x13board 선명도유지·국소리터치PASS, 전체맵RETOUCH. 성능1회시도는loginwindow/포커스실패로측정시작전종료(p95 N/A/유효0) |
-| SSOT | [전체수치·텍스처전후목록·§23](4.1맵디자인+설정/MAP11_TARGET_FRAMES_20261021.md#map11-33--고해상도-마감-리터치맵-텍스처-예산-2026-10-22), ART_TEAM_MASTER 현황, 외부 _out/MAP11-33/DONE.txt·REPORT.md·captures. main/PC/배포0 |
+| SSOT | [전체수치·텍스처전후목록·§23](_archive/4.1맵디자인+설정/MAP11_TARGET_FRAMES_20261021.md#map11-33--고해상도-마감-리터치맵-텍스처-예산-2026-10-22), ART_TEAM_MASTER 현황, 외부 _out/MAP11-33/DONE.txt·REPORT.md·captures. main/PC/배포0 |
 ## 2026-10-22 — ETYPE-C15 Mac actor·분열 PCI09 연결
 
 |항목|변경/검수|
@@ -56831,12 +56994,12 @@ MAP11-32 최종: 관련6종 각1회237checks/0fail. 실제Main 동일구도/1x·
 |제품|전용 etype15 actor/constructor·자연 dispatch·부모 Marker provenance를 잇는 자식 admission·World 생성 직후 PCI02(existing owner NOT_REQUIRED)·PCI09 consumer 등록. `_splitDone` 실제 readback; PC 사망/보상 writer 복제0|
 |oracle/회귀|원본 constructor/분열 블록 VM 대조 + 최종 C15 151/0. 기존 B1회42/2(부재 기대 stale 검사, ERROR0), F1회33/0, pcib_mac_calls1회31/0. baseline 기존 C suite 없음|
 |E2E|storage=on 단1회 PASS13/NR5/FAIL0·ERROR0, 주입0. 이후 C15 tick const/kb 제자리 갱신 정리 및 최종 C15 재확인; E2E 추가0|
-|보존/남은 범위|PC core/계약/PC 테스트·game.html·번역·맵 visual 변경0. projectile consumer·분열 라벨·공통 부활 재스폰 남음. R 실수 문서 쓰기는 원래 bytes로 복원, tracked diff0 확인. 상세: docs/8.0몬스터디자인/ETYPE15_NATIVE_20261022.md|
+|보존/남은 범위|PC core/계약/PC 테스트·game.html·번역·맵 visual 변경0. projectile consumer·분열 라벨·공통 부활 재스폰 남음. R 실수 문서 쓰기는 원래 bytes로 복원, tracked diff0 확인. 상세: docs/_archive/8.0몬스터디자인/ETYPE15_NATIVE_20261022.md|
 
 
 ## 2026-10-22 INTEG-8
 - INTEG-7 기준 C15→ZOOM 순서 merge 2회. 문서 충돌은 양쪽 원문 합집합; PC 계약/구현/PC 테스트·맵 비주얼·project.godot·제품 카메라/스케일 보존. etype-b stale 기대 갱신본42/0, C15 151/0·F33/0.
-- import ERROR0, 회귀33종355,135checks/0fail/ERROR0, E2E 저장ON·주입0 각1회 PASS13/NR5/FAIL0. 성능은60초 포커스 미확보 — 미측정(유효0). 상세: docs/engine/DEMO11_STATUS_20261021.md INTEG-8, ~/exoduser-wt/_out/INTEG-8/DONE.txt.
+- import ERROR0, 회귀33종355,135checks/0fail/ERROR0, E2E 저장ON·주입0 각1회 PASS13/NR5/FAIL0. 성능은60초 포커스 미확보 — 미측정(유효0). 상세: docs/_archive/engine/DEMO11_STATUS_20261021.md INTEG-8, ~/exoduser-wt/_out/INTEG-8/DONE.txt.
 
 
 ## 2026-10-22 INTEG-10 — PC source 검증 패스 메모 통합 및 Mac 수명 검증
@@ -56844,14 +57007,14 @@ MAP11-32 최종: 관련6종 각1회237checks/0fail. 실제Main 동일구도/1x·
 - INTEG-9를 부모로 PC source-perf 9310d52a7 및 PC tests f9475ab1e를 merge. CHANGELOG 충돌은 양쪽 보존, PC 구현·테스트 byte/INTEG-9 맵·project·override 미추적 계약 보존.
 - boss_actor는 옛 맵 고정 좌표 assembler fixture로 분류, INTEG-6c suite에 --map11=off 명시. 과거 원로그 spawn 실패→빈 enemy.hp SCRIPT ERROR→quit 미도달 확인. 공용 외부 감시 타이머 유지.
 - Mac starter exact G에 원본 G31569의 `_fbDone` 한 키를 추가(boot40+region7+spawnHole1+fieldBoss1). Array/null arrow 조회 및 HUD 해제된 source_state를 유효성 검사 전에 typed 대입하던 오류 수정. 판정 완화·전투 코어/맵/카메라 변경0.
-- 단회 회귀·E2E·GUI 측정 및 최초 HUD 오류/실패 suite 재검수 근거는 [DEMO11_STATUS INTEG-10](engine/DEMO11_STATUS_20261021.md)와 외부 INTEG-10 DONE.txt 참조. PC Windows 최종 검증은 별도.
+- 단회 회귀·E2E·GUI 측정 및 최초 HUD 오류/실패 suite 재검수 근거는 [DEMO11_STATUS INTEG-10](_archive/engine/DEMO11_STATUS_20261021.md)와 외부 INTEG-10 DONE.txt 참조. PC Windows 최종 검증은 별도.
 
 
 ## 2026-10-22 — PARITY-MAP-01 원본 1-1 복귀 후보 (동일성 미완료)
 
 - 제품 MAP11 컨셉 바닥/조명/카메라/TOUR 연결을 끊고 원본 64청크·36손배치·타일/제단/소품 충돌·14소환굴(total168, 지역23/60/53/32)·40px 경로·zoom1/offset0으로 복귀했다. 기존 파일·PC 코어/스폰/테스트는 보존했다. Windows/Mac 실행의 강제 원근 인자를 제거했다.
 - 원본 JS 빌더에서 파생한 경계 나무/feature·AO/뿌리·숲 흔들림·gate/portal 텍스처와 원본 수치의 2D 표시만 추가했다. PP .18/.10/.55는 원본 기본 스위치0을 유지한다. 시체나무 tone은 원본 brightness1.24/contrast1.1/saturate1.06이다.
-- 원본 대응 100항목/파생408 PNG manifest, M-01~M-07 상태, 4좌표 1x 비교와 미이식 생체 디테일/제단/얼굴·보스 finale 경계를 docs/engine/PARITY_MAP_01_20261022.md 및 PARITY_DIFF_LIST_20261022.md §4에 기록했다. **VISUAL RETOUCH / 동일성 미완료**, main/PC 인수 완료가 아니다.
+- 원본 대응 100항목/파생408 PNG manifest, M-01~M-07 상태, 4좌표 1x 비교와 미이식 생체 디테일/제단/얼굴·보스 finale 경계를 docs/_archive/engine/PARITY_MAP_01_20261022.md 및 PARITY_DIFF_LIST_20261022.md §4에 기록했다. **VISUAL RETOUCH / 동일성 미완료**, main/PC 인수 완료가 아니다.
 - 제품 회귀19771/0, 레거시 전용 맵 표현16/0·소환굴298/0·조명10/0. test_map_look은 레거시 전용으로 명시했다. 새로운 제품 test/uid 두 경로만 ignore 예외를 추가했다.
 - 주입0 최종 E2E는 자연 field 진입 뒤 사망, boss→clear→lobby 미완주 NOT_READY. 단회 GUI 시작 필드 p95 5.032ms/p99 5.721ms/focus0 및 엔진 memory 값을 기록하되, 이후 표시 수정의 최종 비용·밀집 전투/PC 성능은 미측정으로 남겼다. 세이브는 임시 격리 namespace만 사용했다.
 
@@ -56859,7 +57022,7 @@ MAP11-32 최종: 관련6종 각1회237checks/0fail. 실제Main 동일구도/1x·
 
 | 항목 | 코드·문서 동기화 |
 |---|---|
-| 판정 | 맵 구조/시스템은 웹 동일 + 비주얼 웹 이상으로 정정. 기존 PC 본문/후보 이력 보존. docs/engine/PARITY_MAP_01_20261022.md 2차 표가 원본 행·레이어·에셋 대응 SSOT |
+| 판정 | 맵 구조/시스템은 웹 동일 + 비주얼 웹 이상으로 정정. 기존 PC 본문/후보 이력 보존. docs/_archive/engine/PARITY_MAP_01_20261022.md 2차 표가 원본 행·레이어·에셋 대응 SSOT |
 | 구조 | 원본 boss_gate_col (4020,160), r100을 provider와 실제 물리 원에 복귀. 실 웹40,000타일/36손배치/14소환굴/10,000canMv 대조. PC 보스·전투·스폰 코어 변경 없음 |
 | 비주얼 | 웹 공개 canvas 빌더에서 재질5곳/동맥6atlas/접지20장/언덕·해자4장을 추출. web_living.gd에 원본 좌표·크기·알파·위상·해자 기포 수식 적용. 개별35PNG provenance.json. Real-ESRGAN x2는 질감 소실로 미적용 |
 | 캡처 | fae057f7f tools/parity는 _out에만 추출/맵 검수용 수정. 제품에 merge하지 않음. 별도3399서버/격리 저장 사용 |
@@ -56868,7 +57031,7 @@ MAP11-32 최종: 관련6종 각1회237checks/0fail. 실제Main 동일구도/1x·
 
 웹 1-1 구조/충돌/36손배치·14소환굴·게이트·카메라1.0을 보존하고, 원본61군락 얼굴·소품국소변형/시체나무매듭5/야영지손3·늪/독구덩이/pool 버블, 실제half960×540·정적12광원/iris색층·원본clock/DOM안개 합성을 연결했다. 원본64청크의 이웃64px 문맥을 x4plus로 처리해 색/알파 보존 core1334/1000world·공통1px bleed로 사용한다. 원본64장은 보존/폴백이다. UI/인트로/PC/저장 변경0.
 
-회귀19,978/0, alpha64/64·bleed224/224, 새 웹40000타일/36앵커집합 불일치0. 지정4지점 1x 구조·VISUAL PASS. E2E주입0 단회는HP0/처치0으로NOT_READY; GUI단회는60초포커스실패로성능/VRAM미측정. 원본행·수치·147PNG 출처·비교경로·남은차이·MAP PRODUCTION REPORT는 `docs/engine/PARITY_MAP_02_20261022.md`, No.별현황은 PARITY_DIFF_LIST 최신절을 따른다. main/PC/Steam 반영 없음.
+회귀19,978/0, alpha64/64·bleed224/224, 새 웹40000타일/36앵커집합 불일치0. 지정4지점 1x 구조·VISUAL PASS. E2E주입0 단회는HP0/처치0으로NOT_READY; GUI단회는60초포커스실패로성능/VRAM미측정. 원본행·수치·147PNG 출처·비교경로·남은차이·MAP PRODUCTION REPORT는 `docs/_archive/engine/PARITY_MAP_02_20261022.md`, No.별현황은 PARITY_DIFF_LIST 최신절을 따른다. main/PC/Steam 반영 없음.
 ## 2026-10-22 PARITY-UI-01 — 접근/일반 필드 재시작 부분 수정, 동일성 FAIL
 
 | 범위 | 변경·검수 |
@@ -56879,7 +57042,7 @@ MAP11-32 최종: 관련6종 각1회237checks/0fail. 실제Main 동일구도/1x·
 | 보존 | 맵·카메라·run.cmd·main.tscn·PC core/계약/PC 테스트·번역 bytes 변경0. 새 화면 문구0 |
 | 검수 | 최종 관련 테스트7/0(앞선 제거 K 초안 탐색8/0과 구분). 종료 시 기존 auto-crossbow Nil 1건. E2E1회 PASS13/NOT_READY5/FAIL0, continuous=false. 전체 무오류/완주 주장0 |
 | 시각 | 1920×1080 원본5쌍, 왼쪽웹/오른쪽Godot 1x 격자+640px 1x크롭 직접 검수 FAIL. 인벤토리 외형/비교/툴팁, K 전체, 사망 화면·재시작 소환진 남음 |
-| 기록 | engine/PARITY_UI_01_20261022.md, PC 원문 보존 PARITY_DIFF_LIST 상태표. 외부 ~/exoduser-wt/_out/PARITY-UI-01/DONE.txt·captures/ |
+| 기록 | _archive/engine/PARITY_UI_01_20261022.md, PC 원문 보존 PARITY_DIFF_LIST 상태표. 외부 ~/exoduser-wt/_out/PARITY-UI-01/DONE.txt·captures/ |
 
 
 ## 2026-10-22 PARITY-UI-03 — E2E 관측 복구·원본 UI 부분 이식
@@ -56889,7 +57052,7 @@ MAP11-32 최종: 관련6종 각1회237checks/0fail. 실제Main 동일구도/1x·
 - 기존 State UI 경계의 Forge 실제 선택/저장 writer, K·13슬롯·원본 CSS2D 제단/트레이/로드맵/설명·기존 관리 caller, 원본 이미지61개 byte 복사와 해시 manifest. 원본3D의 r186/build 모듈 부재로 웹 CSS 폴백만 비교,3D 인수 아님.
 - 유골함 제단·선대 portrait·4부위와 r/t/itemLv0 회수/기존 저장,39 base field 비교 펼침. 사망 대사 원본 폭/폰트·페이드, game-only480×270 replay/자원 바·wall-clock 타이머·게임패드 skip.
 - 테스트 각1회: inventory1281/0, skill105/0.1920×1080+1x 비교는 _out/PARITY-UI-03에 보존. 전체 visual PASS 아님.
-- 문자열 원본60쌍·누락 No.3496–3506·lang26개 원본 EN 폴백 전파. 전체목록 기존 prefix/CRLF 보존. 상세/잔여: docs/engine/PARITY_UI_03_20261022.md 및 PARITY_DIFF_LIST 후속 상태.
+- 문자열 원본60쌍·누락 No.3496–3506·lang26개 원본 EN 폴백 전파. 전체목록 기존 prefix/CRLF 보존. 상세/잔여: docs/_archive/engine/PARITY_UI_03_20261022.md 및 PARITY_DIFF_LIST 후속 상태.
 
 ## 2026-10-22 PARITY-HUD-01 표시 이식
 
@@ -56903,7 +57066,7 @@ MAP11-32 최종: 관련6종 각1회237checks/0fail. 실제Main 동일구도/1x·
 - 기준9133e278 위 parity-map/UI/HUD·PC move/boss 최신5개 branch merge. docs 충돌은 양쪽 이력 보존. project.godot/override 계약 유지, PC 최소훅 동일byte.
 - test_demo11_boss_actor.gd Main tree 진입 전 native_pc_boss_core=off 한줄(M4), --map11=off 실제166/0(요청167과1차이). 최초 잘못된 위치 실패 원로그 보존.
 - import ERROR0; parity 3 suite PASS, 인벤토리1281/0·스킬105/0. legacy/PC namespace·provider/HUD 기대 불일치 실패는 미수정 기록.
-- E2E 무주입1회: 2PASS 뒤 line204 natural owner Nil, 나머지16미도달. M13 수정0. 나란히4캡처: field/inventory/HUD RETOUCH, bossroom black void/DORMANT FAIL. 동일성 완료 아님. 상세 docs/engine/DEMO11_STATUS_20261021.md INTEG-11, 외부 _out/INTEG-11.
+- E2E 무주입1회: 2PASS 뒤 line204 natural owner Nil, 나머지16미도달. M13 수정0. 나란히4캡처: field/inventory/HUD RETOUCH, bossroom black void/DORMANT FAIL. 동일성 완료 아님. 상세 docs/_archive/engine/DEMO11_STATUS_20261021.md INTEG-11, 외부 _out/INTEG-11.
 
 ### PARITY-BOSS-01 bossroom 입력 edge 검토
 
@@ -56912,7 +57075,7 @@ MAP11-32 최종: 관련6종 각1회237checks/0fail. 실제Main 동일구도/1x·
 
 ## 2026-10-22 — PARITY-MAP-03
 
-BOSS-01 760b7ea8 기준 전용 worktree/branch. 시체나무의 native 전용 밝기필터 제거, 실제1336² 청크 표기 정정. 64세트 전역GPU 상주를 가시+1링 고정25slot/75texture로 변경하고 원본 파생 BC7(Windows)/S3TC(Mac) Image를 사전 준비(원본PNG 불변/fallback 로드0/런타임3D0/틱load·목록API·새노드0). 맵 보수적 VRAM 상한946513324bytes, Mac전체texture4.081→2.997GB. 웹 원본 Worker 이웃 순서를 사전 컴파일해 BFS19.4→6.2ms, 실제160000방향 포함 suite180629/0. 14소환굴/총168/지역[23,60,53,32]/자연 적 공급은 기준본 복구 확인만. 7카메라1x/PC기준m01·m04 crop 보존. VISUAL RETOUCH·Windows실측 미확인, GUI1회 사망 포함/peak51.776ms 미귀속. OS W0.9초 웹145.356px/native pStun55/55라 보행 비교 부적합, PC코어/HUD/UI/보스M10 변경0. 상세·범위·한계: [PARITY_MAP_03_20261022.md](engine/PARITY_MAP_03_20261022.md).
+BOSS-01 760b7ea8 기준 전용 worktree/branch. 시체나무의 native 전용 밝기필터 제거, 실제1336² 청크 표기 정정. 64세트 전역GPU 상주를 가시+1링 고정25slot/75texture로 변경하고 원본 파생 BC7(Windows)/S3TC(Mac) Image를 사전 준비(원본PNG 불변/fallback 로드0/런타임3D0/틱load·목록API·새노드0). 맵 보수적 VRAM 상한946513324bytes, Mac전체texture4.081→2.997GB. 웹 원본 Worker 이웃 순서를 사전 컴파일해 BFS19.4→6.2ms, 실제160000방향 포함 suite180629/0. 14소환굴/총168/지역[23,60,53,32]/자연 적 공급은 기준본 복구 확인만. 7카메라1x/PC기준m01·m04 crop 보존. VISUAL RETOUCH·Windows실측 미확인, GUI1회 사망 포함/peak51.776ms 미귀속. OS W0.9초 웹145.356px/native pStun55/55라 보행 비교 부적합, PC코어/HUD/UI/보스M10 변경0. 상세·범위·한계: [PARITY_MAP_03_20261022.md](_archive/engine/PARITY_MAP_03_20261022.md).
 
 PARITY-MAP-03 메모리 범위 보충: 0.947GB는 `/assets/map/` cached 상한+필드 pool이며, 변경 금지 BOSS arena105021504bytes를 더한 전체 맵 관련 상한1.052GB는 목표1.0GB 입증 미완이다. 전체3.0GB monitor와 구분한다.
 
@@ -56920,14 +57083,14 @@ PARITY-MAP-03 메모리 범위 보충: 0.947GB는 `/assets/map/` cached 상한+�
 ## 2026-10-22 — PARITY-BOSS-02
 
 - MAP-03 f6272399 위 아레나 실제 PP gate0, source 보스 r520/560 광원, 강타/회전/충격 원형 예고, 독립 orb24frame·poison30slot trail·teleDropY 표시 연결. PC core/수치/mkEn 변경0.
-- 원본행·상수·에셋 출처·펫 조건·M5–M13 잔여는 engine/PARITY_BOSS_02_20261022.md 및 PARITY_DIFF_LIST에 동기화. HS-M4 시작 id3/32·14굴·지역23/60/53/32 실측, 공급변경0.
+- 원본행·상수·에셋 출처·펫 조건·M5–M13 잔여는 _archive/engine/PARITY_BOSS_02_20261022.md 및 PARITY_DIFF_LIST에 동기화. HS-M4 시작 id3/32·14굴·지역23/60/53/32 실측, 공급변경0.
 - suite 단1회276/0. 최종GUI/errors0·main parser/errors0. 실제 E2E 단계1회12PASS 뒤 Retry headless null-image 오류로 중단, 별도 기동parse 실패도 보존. 전체 PARITY RETOUCH/E2E FAIL, PC 인수·main 반영 아님.
 - BOSS-01 참조24장(full20/crop4) quality88 JPG 보존. 외부 _out/PARITY-BOSS-02/captures에 pc19 대응19개·1x crop·상태audit 보존. 같은셀3종과 전체상태 불일치를 구분.
 ## 2026-10-22 PARITY-UI-04
 
 - 기준6c389948, 웹 G58907 쓰러짐 표시·HUD 유지, 원본 로비 첫 프레임/기록 목록 및 사망 후 같은 로비, guide 입력 선전달, 인벤토리 power/CP/X/filter·스킬 표시 잔여를 반영했다.
 - potion/feel deferred callback이 로비 전환 뒤 detached Main의 null SceneTree.paused를 읽지 않도록 보호했다. PC 부활 판정·코어·보스·아레나·맵은 변경하지 않았다.
-- 상세 원본 행·제한·검수 결과: `engine/PARITY_UI_04_20261022.md`, 외부 `_out/PARITY-UI-04/DONE.txt`. 영상은 원본 t0 정지 HOLD, batch/recommend writer 기능 HOLD, visual RETOUCH를 유지한다. 번역목록3507–3513·lang26 EN fallback 및 에셋 해시 동기화.
+- 상세 원본 행·제한·검수 결과: `_archive/engine/PARITY_UI_04_20261022.md`, 외부 `_out/PARITY-UI-04/DONE.txt`. 영상은 원본 t0 정지 HOLD, batch/recommend writer 기능 HOLD, visual RETOUCH를 유지한다. 번역목록3507–3513·lang26 EN fallback 및 에셋 해시 동기화.
 
 - PARITY-UI-04 후속 틱 감사: fallen 표시의 초/부활력 문자열과 색상 테마를 초 변경 이벤트로 캐시했다. 원본300tick 판정·52px 카운트 값 불변. 정적 검토만 추가하고 관련 suite/E2E는 사용자 지정1회로 유지한다.
 
@@ -56936,7 +57099,7 @@ PARITY-MAP-03 메모리 범위 보충: 0.947GB는 `/assets/map/` cached 상한+�
 - UI-04 원격 e867f9b3 기반 별도 브랜치. read_native_move_gauge()만 소비해 MP 구슬 노란 링/가변칸·slot0 바 표시. SP 액체는 원본 초록, 수치=PC 계산.
 - 이동 owner에는 기존 showPH 지점 UI 신호만 추가. 원본500ms/fade100ms·색·위치·기존번역 소비. frame PNG glow/레이어순서/액체 easing·숫자 shadow 반영. 이동/자원 수식·맵/보스/인트로 변경0.
 - 관련 HUD 회귀1회26검사/0실패/SCRIPT ERROR0. 무주입 storage-on E2E1회 캐릭터생성→필드 진입/SCRIPT ERROR0, HP0으로 자연완주 NOT_READY. 1x 비교·잔여표/최종 SHA는 _out/PARITY-HUD-02/DONE.txt. CSS Gaussian·분수폰트/AA·타이밍은 RETOUCH.
-- 상세 계약: docs/engine/PARITY_HUD_02_20261022.md, PARITY_DIFF_LIST와 PC_MOVE_SKILLS_CONTRACT 갱신. 새 제품문구0, 번역 번호/CRLF 보존.
+- 상세 계약: docs/_archive/engine/PARITY_HUD_02_20261022.md, PARITY_DIFF_LIST와 PC_MOVE_SKILLS_CONTRACT 갱신. 새 제품문구0, 번역 번호/CRLF 보존.
 
 
 ## INTEG-12 — 2026-10-22 통합 검수 진행
@@ -56948,28 +57111,28 @@ PARITY-MAP-03 메모리 범위 보충: 0.947GB는 `/assets/map/` cached 상한+�
 ## 2026-10-22 — VRAM-01 맵 외 텍스처 수명·예산 분해 (PARTIAL)
 
 - 기준 015d40344a8abd9f0e59148b91638b113c00a140. 인벤토리 최초 열기 구성/닫기 그림 참조 해제, Surface WeakRef 캐시, 스킬 header/sigil 이벤트 로드/닫기 stage·아이콘 해제. 아트/수치/저장·전투/맵·보스 변경0.
-- `docs/12퍼포먼스·최적화/VRAM_01_TEXTURE_BUDGET_20261022.md`에 큰 순 표·예산·전후 monitor·수명 계약·미분해 차액 기록. 관련 UI02/UI03 문서 연결. 재현용 one-shot 원격 GPU 덤프/캡처 도구 추가.
+- `docs/_archive/12퍼포먼스·최적화/VRAM_01_TEXTURE_BUDGET_20261022.md`에 큰 순 표·예산·전후 monitor·수명 계약·미분해 차액 기록. 관련 UI02/UI03 문서 연결. 재현용 one-shot 원격 GPU 덤프/캡처 도구 추가.
 - 관련 inventory suite 단회1281 checks 실패0; storage=on 입력 E2E 단회 PASS/주입0/SCRIPT ERROR0. 필수 정적 1x 크롭 차이0, 재열기 인벤토리 내부 전체 차이0(12px 바깥 필드 애니메이션 차이 보존). 자기 child 종료·override 복원. PID81277 보존.
 - 맵 외 ≤1.0GB 목표는 미달·미검증. MAP03은 기준 조상에 없고 보호 범위라 미통합. monitor와 목록의 약0.94GB 차이는 원인 미분해로 남김. 완료/동기화/배포 주장 없음. 근거 `~/exoduser-wt/_out/VRAM-01/`.
 
 
 ## 2026-10-22 INTEG-12b — 하니스 회귀
 
-제품 화면/PC 코어/PC 테스트 수정0. 42 HUD·44 펫·47h 입력 prefix·map runtime/product 기대값 및 Mac 결과 수집/fixture storage 경계를 교정. 각 suite/E2E 1회 제한을 지켜 실패 원로그와 후속 미검증 수정을 분리한다. [원본행·수정표·검수](engine/INTEG12B_HARNESS_REGRESSION_20261022.md).
+제품 화면/PC 코어/PC 테스트 수정0. 42 HUD·44 펫·47h 입력 prefix·map runtime/product 기대값 및 Mac 결과 수집/fixture storage 경계를 교정. 각 suite/E2E 1회 제한을 지켜 실패 원로그와 후속 미검증 수정을 분리한다. [원본행·수정표·검수](_archive/engine/INTEG12B_HARNESS_REGRESSION_20261022.md).
 
 ## 2026-10-22 INTEG-12c — 영상 pause·리플레이 수명 안전
 
 - 로비가 영화 소유자를 하나만 유지하고 다음 영화 전에 이전 pause를 복원한다. finish/exit에서 pause 반납은 1회이며 Main initialization 계약을 우회하지 않는다.
 - 리플레이 캡처는 headless를 먼저 거부하고 Main/State·렌더 대기 후 뷰포트/Image 수명을 확인한다. starter148/0·intro12/0·p1002f358/0·44_pets75/0·product47/0. 실제 GUI 부팅·필드 이동 및 자연 사망 리플레이 표시 확인.
 - intro/E2E에 fresh UUID 격리 namespace. PC 테스트/스킬창 변경0. 42는 실행 인자 누락으로 시작 전 거부, 재실행0; 완료로 주장하지 않는다.
-- 최종 E2E18단계·남은 제약: [INTEG12C_BOOT_REPLAY_20261022.md](engine/INTEG12C_BOOT_REPLAY_20261022.md), 외부 `_out/INTEG-12c/DONE.txt` 참조.
+- 최종 E2E18단계·남은 제약: [INTEG12C_BOOT_REPLAY_20261022.md](_archive/engine/INTEG12C_BOOT_REPLAY_20261022.md), 외부 `_out/INTEG-12c/DONE.txt` 참조.
 - 최종 E2E18단계: overall NOT_READY, PASS7/NOT_READY11/FAIL0·SCRIPT ERROR0·native crash0. 실제 Retry 후 scene reload/HP복원 확인. 마지막 State reader null guard는 최종 check-only exit0으로 구분, suite 재실행0.
 
 ## 2026-10-22 INTEG-13 — 스킬 merge 및 Mac 전투 접근 하니스
 
 - 기준32d1684d + SKILL-01 0c8fd56f를 merge. 문서 충돌 양쪽 이력 보존, 제품 UI·PC writer·부팅/life 원소유 코드 유지.
 - `godot/tests/test_demo11_47h_e2e.gd`: 실제 웹 BFS 접근·실제 registry 최근접 적(커튼5마리 포함)·더 가까운 타겟 재선택·드랍 좌표 접근·자연 XP 전투 대기. HP/피해/드랍/XP 주입 없음. PC 코어/PC 테스트/hud-stats 수정 없음.
-- [INTEG-13 검수](engine/INTEG13_SKILL_COMBAT_20261022.md): suite 각1회 ERROR0, 단회 E2E7PASS/11NOT_READY. 최종 접근 보강 GUI14회 공격 승인/처치0·자연 사망. PASS13 회복/종주 완료로 주장하지 않음.
+- [INTEG-13 검수](_archive/engine/INTEG13_SKILL_COMBAT_20261022.md): suite 각1회 ERROR0, 단회 E2E7PASS/11NOT_READY. 최종 접근 보강 GUI14회 공격 승인/처치0·자연 사망. PASS13 회복/종주 완료로 주장하지 않음.
 
 
 ## 2026-10-22 PARITY-HS-01 — 유골함 표시·신규 장비0홈
@@ -56982,7 +57145,7 @@ PARITY-MAP-03 메모리 범위 보충: 0.947GB는 `/assets/map/` cached 상한+�
 | i18n/lang26 | 번역목록3513 유니크·3514 원본 footer, CRLF보존, Godot catalog·lang26전파 | 목록bareLF0, 새 한국어 문구 창작0 |
 | E2E/보고 | E2E1회7PASS/11NOT_READY/0FAIL, overall NOT_READY | 1x격자4장·crop2장, RETOUCH. 자연 웹 첫지급은 loading overlay에 가림; 별도 UI-only notify 재연을 자연 지급으로 주장하지 않음 |
 
-기준SHA de6cccf88e345c09ac98164543c83f0c06518d34 / snapshot dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209. 상세 [PARITY_HS_01_20261022.md](engine/PARITY_HS_01_20261022.md), 외부 `_out/PARITY-HS-01/DONE.txt`. main push/배포0, R Godot/import0, PC동기화미확인.
+기준SHA de6cccf88e345c09ac98164543c83f0c06518d34 / snapshot dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209. 상세 [PARITY_HS_01_20261022.md](_archive/engine/PARITY_HS_01_20261022.md), 외부 `_out/PARITY-HS-01/DONE.txt`. main push/배포0, R Godot/import0, PC동기화미확인.
 
 
 ## 2026-10-22 PARITY-UI-05 — 웹 UI·연출 재대조
@@ -56990,14 +57153,14 @@ PARITY-MAP-03 메모리 범위 보충: 0.947GB는 `/assets/map/` cached 상한+�
 - HS-01 8a6adb05 기준 별도 worktree. 가이드 뒤 필드/소환진, Esc 직접 설정, 웹 탭/항목 DOM 배치, 필드 위 clear 결과, 선택→이름 모달, 누락 detonate art. 기존 SKILL01 원판·배너·화살표 존재 확인, 레슨 중 화살표 source guard. 컷02 현행 같은 clock에서 1.8배 미재현.
 - 원문/EN 대응 및 번역목록3515–3522(CRLF 보존), lang26 결측 영어 폴백. 신규 test gd/uid 두 경로만 ignore 예외. 생성 아트 없음.
 - 관련 테스트1회 15 checks/0 failures. E2E1회 7 PASS/11 NOT_READY/0 FAIL(종주 미완). 최종 GUI capture ERROR0. 설정 owner 기능·영상·CSS 픽셀 세부는 RETOUCH.
-- 상세 원본 행/실제 적용/남은 차이: [PARITY_UI_05_20261022.md](engine/PARITY_UI_05_20261022.md). 외부 captures/DONE는 ~/exoduser-wt/_out/PARITY-UI-05/. MAP04 파일·보호PID81277·실사용저장소 변경 안 함.
+- 상세 원본 행/실제 적용/남은 차이: [PARITY_UI_05_20261022.md](_archive/engine/PARITY_UI_05_20261022.md). 외부 captures/DONE는 ~/exoduser-wt/_out/PARITY-UI-05/. MAP04 파일·보호PID81277·실사용저장소 변경 안 함.
 
 PARITY-UI-05 readback correction: native initial parry and web activeQSk=detonate/initial gold DOM are distinct states; Q natural-start visual equality remains RETOUCH. See the UI05 report.
 ## 2026-10-22 PARITY-MAP-04 — PC 맵·필드 잔여 대응
 
 - 웹 field_runtime만 원본 지역 초기화·60px 경계 유지·미니맵 지역 표식 경로 복원. 북문32/문앞53 나란히 확인. 드루이드 proxy source-over 재드로우, 첫사용 시트·ground GPU warm draw, 표시 최대µs 계측.
 - native 슬롯 메뉴 startup의 활성 저장 회수/metadata 보존, 실제 격리 IO 재시작·다음 생성 regression16/0 단회. `.gitignore`는 해당 test 진입점 한 파일만 예외 추가.
-- 원본 행·1x 비교·실제 OS W·성능1회 오염 한계·PC 이동/덩굴 요청은 [PARITY_MAP_04_20261022](engine/PARITY_MAP_04_20261022.md). 고스트 .55/.62 유지, VISUAL RETOUCH. B snapshot/HUD·유골함 파일·원본 맵/카메라·PC 전투 변경0. main/PC 인수·배포 아님.
+- 원본 행·1x 비교·실제 OS W·성능1회 오염 한계·PC 이동/덩굴 요청은 [PARITY_MAP_04_20261022](_archive/engine/PARITY_MAP_04_20261022.md). 고스트 .55/.62 유지, VISUAL RETOUCH. B snapshot/HUD·유골함 파일·원본 맵/카메라·PC 전투 변경0. main/PC 인수·배포 아님.
 
 
 ## 2026-10-22 INTEG-15 — UI05/MAP04 merge·nw 새 스냅샷 발췌
@@ -57008,30 +57171,30 @@ PARITY-UI-05 readback correction: native initial parry and web activeQSk=detonat
 | tools/nw01~03 | 16156행 이후 원문 +2 인덱스5줄만 갱신. 14개 경계행 byte 대조·모든 fragment hash 유지. nw2304/2·1851/2·3060/1 기존 dependency scope 실패는 고치지 않음 |
 | 검수 | HS-M7 19PASS, importERROR0, fieldboss167/0(이전154/1 미재현), E2E 단회7PASS/11NR·0kill, 나란히7장 RETOUCH. map16PASS의 []결과 하니스schema FAIL 및 GUIfocus60초미확보 미측정 유지 |
 
-[전체 기록](engine/INTEG15_WEB_PARITY_20261022.md). main/PC 인수·배포·자연종주·전체동일성 완료 선언0.
+[전체 기록](_archive/engine/INTEG15_WEB_PARITY_20261022.md). main/PC 인수·배포·자연종주·전체동일성 완료 선언0.
 
 ## 2026-10-22 NW-FIX-01 — snapshot readonly 의존 검사
 
 - NW01/02는 정확한 res://source_snapshot/snapshot.gd 상수 preload만 허용하고 load/preload 단어 경계를 구분한다. NW03은 정확한 NW01 query 1개+snapshot 1개만 허용한다. 다른 IO/씬/RNG/입력 금지 및 producer/oracle 유지.
-- 근거·계약·단회 검증 한계: engine/orders/reports/NW-FIX-01_REPORT.md. 세 suite 각1회는 잘못 지정한 Node 경로로 각각4검사/2실패, scope 미도달·0실패 검증 미완료. 재실행0. 격리 override/테스트 namespace 복원, 보호81277 유지·자기Godot 잔여0.
+- 근거·계약·단회 검증 한계: _archive/engine/orders/reports/NW-FIX-01_REPORT.md. 세 suite 각1회는 잘못 지정한 Node 경로로 각각4검사/2실패, scope 미도달·0실패 검증 미완료. 재실행0. 격리 override/테스트 namespace 복원, 보호81277 유지·자기Godot 잔여0.
 
 ## 2026-10-22 — PARITY-BOSS-03
 
 - INTEG15B bea4597064 / snapshot dee094fd… . 잡기 예고·실행, 돌진 레인·차징·3잔상 표시 이식. 원본 WebGPU 큰 링의 UV falloff·실선 proxy 출력도 보존.
 - 아레나 포털을 원본120px·회전/역회전2층·12%맥동으로 수정. 큰 파란250px 필드 보스문은 별도 원본 경로. 실제 웹 exit-center 캐시 잔여와 renderer fixture를 구분한다.
 - 보스색광 ADD→MIX, 누락된 플레이어 바닥광, Mac WebGPU THREE fog 비활성 게이트 적용. 필드·전투코어·저장·정본 변경0. 신규 번역문장0.
-- 원본행·모든 표시 계수·초기화 풀8/할당 경계·1x 비교·남은 차이는 docs/engine/PARITY_BOSS_03_20261022.md. 관련suite1회285/0; 입력E2E1회13PASS/5NOT_READY/0FAIL, 실제종주 미완료.
+- 원본행·모든 표시 계수·초기화 풀8/할당 경계·1x 비교·남은 차이는 docs/_archive/engine/PARITY_BOSS_03_20261022.md. 관련suite1회285/0; 입력E2E1회13PASS/5NOT_READY/0FAIL, 실제종주 미완료.
 
 ## PARITY-UI-06 후속 — 2026-10-22
 
-스킬 제단 배경 광/2D emissive·결과 카드 배지/장식·잠금 캐릭터 상세 전환 후속은 `docs/engine/PARITY_UI_06_20261022.md`를 따른다. 이전 수치는 이력이며 전체 동일성은 RETOUCH, 영상 HOLD 유지. 보스/아레나 owner 변경0.
+스킬 제단 배경 광/2D emissive·결과 카드 배지/장식·잠금 캐릭터 상세 전환 후속은 `docs/_archive/engine/PARITY_UI_06_20261022.md`를 따른다. 이전 수치는 이력이며 전체 동일성은 RETOUCH, 영상 HOLD 유지. 보스/아레나 owner 변경0.
 
 ## 2026-10-22 SWEEP-B B1 — 로비·생성·데모 종료 원문 대응
 
 - index360–394/801–868/3471–3476/3839–3865/4725 및 G3212–3218에 따라 이름 모달440×335·문구/폰트/입력·blur/취소·슬롯별 삭제·KO/EN 저장·위시리스트/종료 확인을 연결.
 - 데모 종료는 원문 중앙5행과 .92 검정 배경, 복귀는 실제 demo_lobby.tscn. 저장 full restore·27언어 gate·main/PCcore는 보호.
 - 번역 기존1629/1630/2825 재사용,3530–3531 신규 원문·CRLF 보존·lang26/i18n 전파. 내부viewport 생성 재캡처 exit0/ERROR0. 전체 동일성 미완료.
-- 근거/초기 번호표·잔여: engine/SWEEP_B_20261022.md 및 외부 _out/SWEEP-B. 관련 테스트·무주입E2E는 마지막 단회 예정.
+- 근거/초기 번호표·잔여: _archive/engine/SWEEP_B_20261022.md 및 외부 _out/SWEEP-B. 관련 테스트·무주입E2E는 마지막 단회 예정.
 
 ## SWEEP-B B2 — 설정 현재값 표시
 
@@ -57043,7 +57206,7 @@ G49041/49065/49336–49369: parity_settings_page가 DOM순서로 range 뒤의 �
 
 ## SWEEP-B 검증 인수
 
-UI18+UI06 24+성장36=78/0 단회. sweep_b_ui_check.gd는 실행된 외부 사본과 동일 byte. 102행/73개1x비교판·전체 미완료/RETOUCH 및 남은 Mac 차이는 engine/SWEEP_B_20261022.md, 외부 DIFFS_FULL.md/json에 기록. E2E 단회 진행 중이며 전체100% 동일 완료 선언0.
+UI18+UI06 24+성장36=78/0 단회. sweep_b_ui_check.gd는 실행된 외부 사본과 동일 byte. 102행/73개1x비교판·전체 미완료/RETOUCH 및 남은 Mac 차이는 _archive/engine/SWEEP_B_20261022.md, 외부 DIFFS_FULL.md/json에 기록. E2E 단회 진행 중이며 전체100% 동일 완료 선언0.
 
 ## 2026-10-23 INTEG-16b — merge 통합·거인강타 표시 후보
 
@@ -57055,19 +57218,19 @@ integ16 98a0df8f6 + PC 291b7edb2 + SWEEP-B 8d9dc1586을 merge로 보존. 로비 
 - Retry 후 현재 Main source_state.read_current_p()와 저장 lv 비교(G62131–62159, G62135). 조준 후보 제외.
 - starter_state HP 검사 시작 시 shield=0 사전조건만 추가; HP/ST/MP 단정 보존.
 - import ERROR0; 지정9테스트 각 첫1회 PASS. 최종 E2E 단1회 13 PASS / 5 NOT_READY / FAIL0, save_handoff PASS.
-- 상세: engine/INTEG17C_PLAYER_SHIELD_SAVE_HANDOFF_20261023.md. 보스방 이후 미도달 및 07 ObjectDB warning 보존.
+- 상세: _archive/engine/INTEG17C_PLAYER_SHIELD_SAVE_HANDOFF_20261023.md. 보스방 이후 미도달 및 07 ObjectDB warning 보존.
 
 ## 2026-10-23 INTEG-17d
 
 - INTEG-17c + PC spawn parity 정상 merge(충돌0), Mac 스폰 두 파일 리뷰·최종 B/F/D/29 HOLD와 PC 보고서 중간결과 차이 정정.
 - import ERROR0, 요청 단위 첫1회씩(8 PASS/기존 실패5), 마지막 E2E 13 PASS/5 NOT_READY/0 FAIL. 새 namespace GUI 한 세션·링5처치/레슨/라벨·163FPS 단1회·viewport2장, VISUAL RETOUCH 및 미검수 한계 기록.
-- 원본/판정/기준 HUD·로딩 보존, main 배포·PC 실행 동기화 없음. 상세 `docs/engine/INTEG17D_PC_SPAWN_MERGE_20261023.md`.
+- 원본/판정/기준 HUD·로딩 보존, main 배포·PC 실행 동기화 없음. 상세 `docs/_archive/engine/INTEG17D_PC_SPAWN_MERGE_20261023.md`.
 
 
 ## 2026-10-23 SWEEP-B2 웹 UI 동일화
 
 - 기준5b6dcce2,별도SWEEP-B2 worktree만수정. 초기구역제목·레슨대사정지·로비패치노트/슬롯화살표/삭제radius·인벤/설정줄바꿈·성장링/경로/원점·스킬정보아이콘·종료자막z순서.
-- 원본출처·수치·잔여시각차이: docs/engine/SWEEP_B2_20261023.md. 상태정본PARITY_SWEEP_B_PC_20261022.md.
+- 원본출처·수치·잔여시각차이: docs/_archive/engine/SWEEP_B2_20261023.md. 상태정본PARITY_SWEEP_B_PC_20261022.md.
 - 번역대상3550–3661추가,CRLF보존. 패치노트KO외EN전파는웹원본규칙. 테스트고정USERDIR만새namespace로변경,단정완화없음.
 - 테스트/최종E2E/캡처판정은최종검증기록참조. PC동기화·사용자열린실행본·전체이식완료주장없음.
 
@@ -57078,33 +57241,33 @@ integ16 98a0df8f6 + PC 291b7edb2 + SWEEP-B 8d9dc1586을 merge로 보존. 로비 
 
 - 기준 b9f7deff, 독립 codex/sweep-b3-20261023. 정상 GPU/WebGL2와 지정 dee094fd snapshot으로 1x 비교 재촬영. 누락 r186 build는 기존 로컬 공식 사본을 캡처 route에만 제공.
 - K-03 원본 DOM70/원근/선택배율·배경ACES, G-04 상태별 그라디언트·다중 링·그림자, B-05 원문 줄높이/블록간격/overlay 스크롤바, T-03 원본 alpha bounds/72px 본체/80px 발선/14px 설명face 이식. R-02는 fixture 진입조건 차이만 기록.
-- UI 테스트 각1회 300검사/0실패, 최종 import ERROR0. 자연 E2E 마지막1회 결과 및 항목별 남음 판정은 [SWEEP_B3_20261023.md](engine/SWEEP_B3_20261023.md), 외부 DONE/캡처를 따른다. 전체 UI 동일 완료를 선언하지 않는다. 새 화면문구0·번역목록 원byte/CRLF 보존·기대값 완화0.
+- UI 테스트 각1회 300검사/0실패, 최종 import ERROR0. 자연 E2E 마지막1회 결과 및 항목별 남음 판정은 [SWEEP_B3_20261023.md](_archive/engine/SWEEP_B3_20261023.md), 외부 DONE/캡처를 따른다. 전체 UI 동일 완료를 선언하지 않는다. 새 화면문구0·번역목록 원byte/CRLF 보존·기대값 완화0.
 
-- SWEEP-B3 final E2E: exit0 / PASS11 / NOT_READY7 / FAIL0 / ERROR0, no injection, one run. Full continuous E2E not complete; details in engine/SWEEP_B3_20261023.md.
+- SWEEP-B3 final E2E: exit0 / PASS11 / NOT_READY7 / FAIL0 / ERROR0, no injection, one run. Full continuous E2E not complete; details in _archive/engine/SWEEP_B3_20261023.md.
 
 ## 2026-10-23 E2E-TAIL-02 조준
 
-기존 47h 조준을 실제 MouseMotion global_position·position 변환과 Input 전달로 수정하고 두 물리 경계 뒤 실제 pointer/facing을 검사한다. 좁은 4방향 확인 1회 PASS. 자연 성장·보스 접근/순회/출구 하니스는 보류. [조준 기록](engine/E2E_TAIL_02_AIM_20261023.md).
+기존 47h 조준을 실제 MouseMotion global_position·position 변환과 Input 전달로 수정하고 두 물리 경계 뒤 실제 pointer/facing을 검사한다. 좁은 4방향 확인 1회 PASS. 자연 성장·보스 접근/순회/출구 하니스는 보류. [조준 기록](_archive/engine/E2E_TAIL_02_AIM_20261023.md).
 
 ## 2026-10-23 E2E-TAIL-02 종료 복귀
 
-clear leave는 원본 G41920–42003처럼 아레나를 유지한다. lobby_return은 G63676–63685처럼 현재 저장을 먼저 수행하고 기존 demo11_lobby 해제·언어 브리지를 거쳐 슬롯 로비로 복귀한다. 기존38 소스 오라클에 경로 계약 검사 추가, 지정 PC/Mac 회귀 통과. 자연 성장·전체 E2E는 보류/미검증. [원인·검수 표](engine/E2E_TAIL_02_20261023.md).
+clear leave는 원본 G41920–42003처럼 아레나를 유지한다. lobby_return은 G63676–63685처럼 현재 저장을 먼저 수행하고 기존 demo11_lobby 해제·언어 브리지를 거쳐 슬롯 로비로 복귀한다. 기존38 소스 오라클에 경로 계약 검사 추가, 지정 PC/Mac 회귀 통과. 자연 성장·전체 E2E는 보류/미검증. [원인·검수 표](_archive/engine/E2E_TAIL_02_20261023.md).
 
 ## 2026-10-23 G04-02 — 성장 트리 노드 표시 원본 수치 대조
 
 - 기준 688aa4bebf28b06ae34bd86ec4b9d950273ad478. native_growth_panel/growth_node_surface: 44/54px·좌표 유지, SVG24%/52% currentColor·Georgia14px·1.5px 테·다중 링·Gaussian·선택 parent 경로·route 실제 opacity.72/.95·11/14px rank·값 badge 이식.
 - 기존 capture harness에 node/CSS geometry 기록과 G04-02 격리 namespace만 추가; 기존 test_demo11_growth_ui assertions 보존, namespace만 변경. 새 진단 테스트/전체 E2E0.
 - test_demo11_growth_ui 단1회 36/0, 최종 import ERROR0. 창 GPU Chrome ↔ Godot 내부 viewport 1920×1080씩 1x 대조. 글꼴/edge/blur/badge 래스터 잔차 남아 정본 G-04 남음 유지.
-- 상세 수치·판정: engine/G04_02_20261023.md. 외부 _out/G04-02/DONE.txt 및 captures/G-04_compare_1x.png·G-04_detail_1x.png. 원본 보호·R 읽기전용·PID81277 보존·override 복원.
+- 상세 수치·판정: _archive/engine/G04_02_20261023.md. 외부 _out/G04-02/DONE.txt 및 captures/G-04_compare_1x.png·G-04_detail_1x.png. 원본 보호·R 읽기전용·PID81277 보존·override 복원.
 
 ## 2026-10-24 PORT-TAKEOVER-02 — Godot G 이동음
 
-G 원본 MP3 7종(231,434 bytes)을 실제 Main/SND03/SND07 큐에 연결했다. 기존 30ms 억제·공유 jitter·프레임6/저우선순위 노드5·OPT/캐릭터/source guard 유지. 이동 조건은 원본 d<1000, max(.03,.35*(1-d/1000)), CD60~119로 관련 사운드 문서 정정. [검수·원실패·미완료](engine/orders/reports/PORT-TAKEOVER-02_REPORT.md). 전체 보스/클리어·청감 인수 아님.
+G 원본 MP3 7종(231,434 bytes)을 실제 Main/SND03/SND07 큐에 연결했다. 기존 30ms 억제·공유 jitter·프레임6/저우선순위 노드5·OPT/캐릭터/source guard 유지. 이동 조건은 원본 d<1000, max(.03,.35*(1-d/1000)), CD60~119로 관련 사운드 문서 정정. [검수·원실패·미완료](_archive/engine/orders/reports/PORT-TAKEOVER-02_REPORT.md). 전체 보스/클리어·청감 인수 아님.
 
 
 ## 2026-10-24 PORT-TAKEOVER-03 — G17 산란 마법 샘플
 
-G17 모체의 SFX.magic(3) 중 원본 fire_magic1(257,280 bytes) 샘플만 Main 공용 큐에 연결. volume .35, .6±6%와 sample jitter의 공유 난수2회·skill priority·기존 owner guard 유지. noise/sub/FM/dist·돌진/그로기 native PCM 출력과 전체 RNG/청감 동일성은 미완료. [구현·검수·한계](engine/orders/reports/PORT-TAKEOVER-03_REPORT.md).
+G17 모체의 SFX.magic(3) 중 원본 fire_magic1(257,280 bytes) 샘플만 Main 공용 큐에 연결. volume .35, .6±6%와 sample jitter의 공유 난수2회·skill priority·기존 owner guard 유지. noise/sub/FM/dist·돌진/그로기 native PCM 출력과 전체 RNG/청감 동일성은 미완료. [구현·검수·한계](_archive/engine/orders/reports/PORT-TAKEOVER-03_REPORT.md).
 
 ### 2026-10-24 Unity Mac 인수 준비
 
@@ -57144,7 +57307,7 @@ G17 모체의 SFX.magic(3) 중 원본 fire_magic1(257,280 bytes) 샘플만 Main 
 
 ## 2026-10-25 Mac 로비 팝업 조작
 
-- L 열기·방향키/Enter 선택·Esc 취소·Tab순환·바깥 클릭 닫기·하위 로비 입력 차단. 일반 빌드 오류0와 CUA 실제 키 입력/화면 확인, 작은 마우스 selector와 종료 확인 직접 조작은 구분. [근거](engine/UNITY_MAC_LOBBY_POPUP_20261025.md).
+- L 열기·방향키/Enter 선택·Esc 취소·Tab순환·바깥 클릭 닫기·하위 로비 입력 차단. 일반 빌드 오류0와 CUA 실제 키 입력/화면 확인, 작은 마우스 selector와 종료 확인 직접 조작은 구분. [근거](_archive/engine/UNITY_MAC_LOBBY_POPUP_20261025.md).
 
 
 ## 2026-10-25 Mac 로비 언어 이름
@@ -57154,7 +57317,7 @@ G17 모체의 SFX.magic(3) 중 원본 fire_magic1(257,280 bytes) 샘플만 Main 
 
 ## 2026-10-25 Mac 시네마틱 언어 조작
 
-- 로비와 이름/키보드 메뉴 공유, 목록 입력의 cut/holdskip 전파 차단 및 키 해제 후 복귀. 일반build 오류0, 실제 EN자막·Esc6초취소·다시긴누름skip·KO로비 복귀 검수. [근거](engine/UNITY_MAC_CINEMATIC_LANGUAGE_20261025.md).
+- 로비와 이름/키보드 메뉴 공유, 목록 입력의 cut/holdskip 전파 차단 및 키 해제 후 복귀. 일반build 오류0, 실제 EN자막·Esc6초취소·다시긴누름skip·KO로비 복귀 검수. [근거](_archive/engine/UNITY_MAC_CINEMATIC_LANGUAGE_20261025.md).
 
 
 ## 2026-10-25 Mac 장비 비교·일시정지 설정
@@ -57252,28 +57415,28 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 
 2026-10-26 Mac ar A02 전수 게이트: 최종 fit 720p 32큐를 새 Player에서 확인하려 했으나, 동일 제품 ID의 다중 앱과 CUA의 PID·시작 인자↔창 미제공 및 플래그 없는 자동 실행 이력으로 안전한 캡처 대상 확정 불가. 새 Player/빌드0, 기존 앱·개인 저장 접근0. 읽기 전용 JSON32큐와 이전 전수 manifest의 원문/start/end 32×3 일치, 최종 코드 SHA와 기존 빌드 일치, 폭 상한84% 불변·padding8→2 정적 대조. 이 근거를 새 32/32 시각 PASS로 확대하지 않고 일반 ar 채택 HOLD. [관문표](engine/UNITY_MAC_ARABIC_CAPTION_PREVIEW_20261026.md).
 
-2026-10-26 Mac PC UI U04B 첫 적응: 최신 `a48faf9ea` 19patch 중 1번 원본 hunk는 Mac inventory smoke 기본 선택 장면 차이로 충돌. 기존 fixture 흐름을 유지하면서 QA `inventory-smoke.json`에 실제 Player `maxMana`·`mana`를 장착 조작 전 영수증 시점에 기록하는 두 줄만 `NativeGame.cs`에 반영. 2→3 U08 tab bar는 수정 소스 임시 사본에서 문맥 검사·임시 적용 2/2 PASS, 제품 적용0. 13·14 충돌 유지. 빌드·Player0, A02 최종 fit32 HOLD. [키·시점·백업](engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md).
+2026-10-26 Mac PC UI U04B 첫 적응: 최신 `a48faf9ea` 19patch 중 1번 원본 hunk는 Mac inventory smoke 기본 선택 장면 차이로 충돌. 기존 fixture 흐름을 유지하면서 QA `inventory-smoke.json`에 실제 Player `maxMana`·`mana`를 장착 조작 전 영수증 시점에 기록하는 두 줄만 `NativeGame.cs`에 반영. 2→3 U08 tab bar는 수정 소스 임시 사본에서 문맥 검사·임시 적용 2/2 PASS, 제품 적용0. 13·14 충돌 유지. 빌드·Player0, A02 최종 fit32 HOLD. [키·시점·백업](_archive/engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md).
 
 2026-10-26 Mac PC UI 누적 소스 checkpoint: 원격 `a48faf9ea` PC 브랜치의 소유 파일·자료·문서를 merge로 인수. `NativeGame.cs` inventory smoke 단일 충돌은 Mac U04B 영수증 두 필드와 기존 QA 장면을 보존해 해소했다. PC 원본의 기본 선택 해제 장면은 가져오지 않았다. 후속 2–12 hook 적용·Mac 컴파일은 다음 단계이며 13·14 충돌 보류. [소유 기록](engine/orders/WORK_BOARD.md).
 
-2026-10-26 Mac PC UI U08 hook 2→3: PC 소스 인수 후 `NativeGame.cs` 탭 요청 라우팅, `NativePauseMenu.cs` 설정 탭바 patch를 순서대로 문맥 검사·실제 적용. PC `NativePanelTabBar` 원본 blob 유지. 파일별 diff 검사 통과, 4–12/컴파일/Player는 다음 단계·13·14 충돌 보류. [연결표](engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md).
+2026-10-26 Mac PC UI U08 hook 2→3: PC 소스 인수 후 `NativeGame.cs` 탭 요청 라우팅, `NativePauseMenu.cs` 설정 탭바 patch를 순서대로 문맥 검사·실제 적용. PC `NativePanelTabBar` 원본 blob 유지. 파일별 diff 검사 통과, 4–12/컴파일/Player는 다음 단계·13·14 충돌 보류. [연결표](_archive/engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md).
 
-2026-10-26 Mac PC UI hook 4→6: 원본 patch 순서로 스킬 스모크 focus 조정, 웹 창 단축키 G/J/F10, 인벤토리 선택 없음/G 무전환 스모크 기대값, 일시정지 TAB/K 요청을 Mac 소유 `NativeGame*`·`NativePauseMenu*`에 연결. 각 문맥 검사·적용 및 diff 검사 통과. OS 입력·Player 미판정; 7–12/13 경계 후속. [표](engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md).
+2026-10-26 Mac PC UI hook 4→6: 원본 patch 순서로 스킬 스모크 focus 조정, 웹 창 단축키 G/J/F10, 인벤토리 선택 없음/G 무전환 스모크 기대값, 일시정지 TAB/K 요청을 Mac 소유 `NativeGame*`·`NativePauseMenu*`에 연결. 각 문맥 검사·적용 및 diff 검사 통과. OS 입력·Player 미판정; 7–12/13 경계 후속. [표](_archive/engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md).
 
-2026-10-26 Mac PC UI hook 7→12: PC 원본 A13/A14/A20/A21/A22/A23을 순서대로 Mac `NativeGame.cs`에 적용; A22 클리어·A23 보스바는 이벤트가 없어 Show 호출 없이 배선만. 13 A24는 Mac 진단 배지 조건에서 `git apply --check` 실패로 미적용, 14 이후 순서상 보류. Unity6000.6.7f1 비대화형 compile exit0·CS오류0/경고0(기존 UAC1001 한 종류); Player/OS 키/화면 미검증. Editor `.meta` churn은 사전 상태로 복원. [단계표·로그](engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md).
+2026-10-26 Mac PC UI hook 7→12: PC 원본 A13/A14/A20/A21/A22/A23을 순서대로 Mac `NativeGame.cs`에 적용; A22 클리어·A23 보스바는 이벤트가 없어 Show 호출 없이 배선만. 13 A24는 Mac 진단 배지 조건에서 `git apply --check` 실패로 미적용, 14 이후 순서상 보류. Unity6000.6.7f1 비대화형 compile exit0·CS오류0/경고0(기존 UAC1001 한 종류); Player/OS 키/화면 미검증. Editor `.meta` churn은 사전 상태로 복원. [단계표·로그](_archive/engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md).
 
-2026-10-26 Mac PC UI hook 13→14 적응: 최신 PC 답신/대체 patch 없음. A24는 Mac `DiagnosticUiEnabled` 배지 조건만 문맥에 맞추고 구역 제목 첫 진입1회·실제 목표 수치 패널을 독립 연결(지역 총량 미이식). A26은 정상 로비 전원 버튼 뒤에 `NativeLobbyBuildLabels.Draw(913f)` 1회 삽입; 세계관/ATG 분기와 기존 debug preview 보존. 적용·정적 diff PASS, 화면·Player·컴파일은 다음 단계. [적응 근거](engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md).
+2026-10-26 Mac PC UI hook 13→14 적응: 최신 PC 답신/대체 patch 없음. A24는 Mac `DiagnosticUiEnabled` 배지 조건만 문맥에 맞추고 구역 제목 첫 진입1회·실제 목표 수치 패널을 독립 연결(지역 총량 미이식). A26은 정상 로비 전원 버튼 뒤에 `NativeLobbyBuildLabels.Draw(913f)` 1회 삽입; 세계관/ATG 분기와 기존 debug preview 보존. 적용·정적 diff PASS, 화면·Player·컴파일은 다음 단계. [적응 근거](_archive/engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md).
 
-2026-10-26 Mac PC UI hook 15→19: A26 flavor build 인자, A16 실행 중 키 설정/QA hook, B11 자동 물약 Simulation 틱·장비 입력·웹식 킬 드랍을 순서대로 연결. 설정 저장 schema v2·새 Player/빌드0. B11 일반 킬 RNG 1→2회(기존 악의+4 유지, hp 종류만 +1), 자동 회복 악의−1·기본CD420f. Mac oracle2438/0, Unity6000.6.7f1 비대화형 컴파일 exit0·CS오류/경고0(기존 UAC1001). 검사 중 `.meta` churn을 사전 상태로 복원. 코드 1–19 통합·컴파일 PASS, 실제 Player·키 입력·로비 라벨·자동 물약·저장 회귀 미검증. [전체 관문](engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md).
+2026-10-26 Mac PC UI hook 15→19: A26 flavor build 인자, A16 실행 중 키 설정/QA hook, B11 자동 물약 Simulation 틱·장비 입력·웹식 킬 드랍을 순서대로 연결. 설정 저장 schema v2·새 Player/빌드0. B11 일반 킬 RNG 1→2회(기존 악의+4 유지, hp 종류만 +1), 자동 회복 악의−1·기본CD420f. Mac oracle2438/0, Unity6000.6.7f1 비대화형 컴파일 exit0·CS오류/경고0(기존 UAC1001). 검사 중 `.meta` churn을 사전 상태로 복원. 코드 1–19 통합·컴파일 PASS, 실제 Player·키 입력·로비 라벨·자동 물약·저장 회귀 미검증. [전체 관문](_archive/engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md).
 2026-10-27 Mac A06 HUD 좌표 인수: PC 고정 `741d97ba1`의 `NativeHudDockLayout.cs`/`NativeHudSkills.cs` byte-exact 두 파일만 적용. ArtScale .78→.9, 웹 액체 중심519/1401·하단10, slot/key rect13개 공통화. 고유 ARM64 QA build Succeeded/errors0, 격리 Player 720p/1080p 네 PNG·55/55 기하 PASS. 실제 화면의 구슬/바 접점·키라벨 VISUAL PASS; 물리 마우스 HOLD. 구형 `VerifyUiComposition` assertion은 웹 clipping과 충돌하여 미수정. [수치·화면·경계](engine/UNITY_MAC_A06_HUD_COORDINATE_20261027.md).
-2026-10-27 Mac 시작→필드 실키보드 QA: 기존 고유 ARM64 QA 앱으로 실제 타이틀→문→정본 v22b→격리 로비→전사 생성 취소/생성→전사 스토리→안내4단계→필드 HUD·W 이동 PASS. 직접 점프 fixture·새 빌드0. FDG 개별 frame/이번 청음·세계관 자연완주·실습 완료·OS 물리 마우스는 HOLD. [원본 PNG·단계별 판정](engine/UNITY_MAC_START_TO_FIELD_QA_20261027.md).
-2026-10-27 Mac 정본 세계관 자연완주 후속: 동일 고유 ARM64 앱의 새 격리 QA 출력에서 제목문 Return 이후 추가 입력 없이 정본 v22b 초반·중간 frame과 자동 로비0/5를 확인. gate→로비 관찰 wall129.133초(문/준비 포함), 실제 파일102204634B/SHA 일치. 자연 전환 PASS; 마지막 영상 frame 별도 PNG·정밀 시간/오디오 계측 HOLD. [관찰 시간표](engine/UNITY_MAC_NATURAL_WORLD_INTRO_20261027.md).
+2026-10-27 Mac 시작→필드 실키보드 QA: 기존 고유 ARM64 QA 앱으로 실제 타이틀→문→정본 v22b→격리 로비→전사 생성 취소/생성→전사 스토리→안내4단계→필드 HUD·W 이동 PASS. 직접 점프 fixture·새 빌드0. FDG 개별 frame/이번 청음·세계관 자연완주·실습 완료·OS 물리 마우스는 HOLD. [원본 PNG·단계별 판정](_archive/engine/UNITY_MAC_START_TO_FIELD_QA_20261027.md).
+2026-10-27 Mac 정본 세계관 자연완주 후속: 동일 고유 ARM64 앱의 새 격리 QA 출력에서 제목문 Return 이후 추가 입력 없이 정본 v22b 초반·중간 frame과 자동 로비0/5를 확인. gate→로비 관찰 wall129.133초(문/준비 포함), 실제 파일102204634B/SHA 일치. 자연 전환 PASS; 마지막 영상 frame 별도 PNG·정밀 시간/오디오 계측 HOLD. [관찰 시간표](_archive/engine/UNITY_MAC_NATURAL_WORLD_INTRO_20261027.md).
 
 2026-10-27 Mac A15 조작/저장 QA 후속: 표시된 전용 `_out` 루트에 직접 조작 키 캡처 진입을 추가하고, 캡처된 Esc/Tab의 같은 키가 메뉴로 재전달되는 문제를 소비 프레임 가드로 수정. ARM64 Settings QA 최종 빌드 오류0, 두 Player 실행에서 실제 Esc 취소, Tab 지정, SFX60→61%, v2 JSON 저장과 재시작 복원 PASS. 내용 높이 기준 스크롤 상한으로 변경. 입력 버그 수정 때문에 QA 빌드는 총2회; 일반 경로 마우스 클릭/좁은 창/청각/패드 HOLD. [계약·증거](engine/UNITY_MAC_A15_4TAB_20261027.md#2026-10-27-조작-키-캡처격리-저장-player-후속).
 
 2026-10-27 Mac A15/A05 저장 보존 회귀: 기존 고유 Settings QA Player·새 marker 루트 사용, 빌드/코드 변경0. v2 seed의 `cinSeen:true`, `gpKeyMap` 중첩 패드 JSON, 별도 unknown sentinel, 보조 `up=KeyX`는 실제 SFX35→36·주 `up=KeyZ→Tab` 저장(revision3→5)과 동일 루트 재시작 뒤에도 보존. 요청한 물리 1099px 창은 JPEG1100px·사운드2열이어서 1열/scroll 화면 게이트 HOLD. [영수증·판정](engine/UNITY_MAC_A15_4TAB_20261027.md#2026-10-27-a15-저장-시-a05미지원-데이터-보존-회귀).
 
-2026-10-27 Mac A15 1098px/29언어 preflight: 기존 QA Player 1회에서 실제 1098px 사운드 1열 첫·끝 카드와 고정 footer, 휠 뒤 동일 위치 PASS. PC 고정 `157e3e8f…`의 62 ID·29 locale 후보는 공통373값만 감사되고 원 QA 27 script 누락이 있어 제품 채택0. 현재 Mac boolean ko/en·IMGUI KR 폰트와 PC 소유 키 목록의 최소 hook 경계만 기록했다. 빌드/코드 변경0, 전체 A15·RTL·물리 마우스·청각은 HOLD. [판정](engine/UNITY_MAC_A15_LABEL_PREFLIGHT_20261027.md).
+2026-10-27 Mac A15 1098px/29언어 preflight: 기존 QA Player 1회에서 실제 1098px 사운드 1열 첫·끝 카드와 고정 footer, 휠 뒤 동일 위치 PASS. PC 고정 `157e3e8f…`의 62 ID·29 locale 후보는 공통373값만 감사되고 원 QA 27 script 누락이 있어 제품 채택0. 현재 Mac boolean ko/en·IMGUI KR 폰트와 PC 소유 키 목록의 최소 hook 경계만 기록했다. 빌드/코드 변경0, 전체 A15·RTL·물리 마우스·청각은 HOLD. [판정](_archive/engine/UNITY_MAC_A15_LABEL_PREFLIGHT_20261027.md).
 
 2026-10-27 Mac A15 exact 라벨 부분 연결: PC 최신 `766250b64…` QA v2의 직접 대응43 ID/1247값 중 Mac 설정 제목·4탭 5 ID와 전체43 자료/provider만 제품에 연결. 저장/입력·semantic6/native-only13 불변, ar 영어 fallback. 고유 ARM64 QA 빌드1회 오류0, 단일 QA Player ko/en/ja/es/cs에서 제목 ko `설정`/en `Settings`/ja `設定`/es `Ajustes`/cs `Nastavení` 실화면 확인. PC 소유 키 목록38 ID는 조회 로그만 PASS, 실제 화면 영어이며 좁은 검토용 patch만 전달; 전체29언어 UI/RTL/A15 완료 HOLD. [ID 표·증거](engine/UNITY_MAC_A15_LABEL_ADAPTER_20261027.md).
 
@@ -57291,15 +57454,15 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 
 2026-10-27 Mac A15 1280 tail/Greek/Thai review: reused the final Settings QA app with a new isolated marker and flagged PID, build/code change 0. 1280 viewport top rows and fixed footer visible; one supported scroll attempt left first rows unchanged, so bottom/scroll HOLD. Greek shield representative row fits on two lines before the E button. Thai representative rows render visible glyphs without obvious row/button collision or tofu, while combining-mark shaping remains HOLD. Physical mouse and all-language GUI remain HOLD. [Player cuts and verdict](engine/UNITY_MAC_A15_FONT_COVERAGE_20261027.md#1280-bottom-scroll-and-greekthai-representative-player-review--2026-10-27).
 
-2026-10-27 Mac U08 tab bar keyboard Player review: reused the final Settings QA build in isolated 1280 and 1920 Players, build/product change 0. Settings K→Skill, Skill TAB→Inventory, 1280 Inventory K→Skill, ESC closure/reopen paths, and active-tab/body separation were visually verified with actual OS keyboard input. 1280/1920 representative keyboard/layout PASS; mouse tab click, Forge/Stat, and pixel parity remain HOLD. [Captures and scope](engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md#u08-keyboard-tab-transition-player-review--2026-10-27).
+2026-10-27 Mac U08 tab bar keyboard Player review: reused the final Settings QA build in isolated 1280 and 1920 Players, build/product change 0. Settings K→Skill, Skill TAB→Inventory, 1280 Inventory K→Skill, ESC closure/reopen paths, and active-tab/body separation were visually verified with actual OS keyboard input. 1280/1920 representative keyboard/layout PASS; mouse tab click, Forge/Stat, and pixel parity remain HOLD. [Captures and scope](_archive/engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md#u08-keyboard-tab-transition-player-review--2026-10-27).
 
-2026-10-27 Mac U04B inventory Player screen acceptance: reused the final ARM64 Settings QA app/postossuary seed with build0/product change0. Equipment 1280/1920 (prior U08 captures) and ossuary 1280/1920 (new isolated fixture captures) show header/tab/body/bag/equipment/resources/footer inside their viewports. Player receipts: equipped16 including ossuary, bag10, maxMana480, mana330, maxHp526; UI combat power1656 and ordinary equipment15/16 as contracted. Representative screen PASS; physical mouse item clicks/moves/equips remain HOLD and PC-U04b collection/unequip/unimplemented subtabs stay deferred. U08 historical Settings TAB wording corrected to current focus movement versus pause-root inventory transition, without key code change. QA PIDs stopped. [Evidence and limits](engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md#u04b-inventory-player-screen-acceptance--2026-10-27).
+2026-10-27 Mac U04B inventory Player screen acceptance: reused the final ARM64 Settings QA app/postossuary seed with build0/product change0. Equipment 1280/1920 (prior U08 captures) and ossuary 1280/1920 (new isolated fixture captures) show header/tab/body/bag/equipment/resources/footer inside their viewports. Player receipts: equipped16 including ossuary, bag10, maxMana480, mana330, maxHp526; UI combat power1656 and ordinary equipment15/16 as contracted. Representative screen PASS; physical mouse item clicks/moves/equips remain HOLD and PC-U04b collection/unequip/unimplemented subtabs stay deferred. U08 historical Settings TAB wording corrected to current focus movement versus pause-root inventory transition, without key code change. QA PIDs stopped. [Evidence and limits](_archive/engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md#u04b-inventory-player-screen-acceptance--2026-10-27).
 
-2026-10-27 Mac U05 K skill window representative acceptance: reused the final Settings QA app's existing 1280/1920 actual K-key U08 captures, with no new Player/build/product edit. Skill tab/title, all 13 slot discs and labels, LMB KiSlash Lv1 versus 12 unported slots, malice1,000/LV1, three body columns and footer stay in viewport; representative layout PASS. Existing U08 ESC and pause K observations are cited without a new key run. Physical mouse acquisition/equip/hover and U05's unported SP, upgrades and synthesis stay HOLD; no new owner layout hunk was needed. [Screens, source and scope](engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md#u05-k-skill-window-representative-player-acceptance--2026-10-27).
+2026-10-27 Mac U05 K skill window representative acceptance: reused the final Settings QA app's existing 1280/1920 actual K-key U08 captures, with no new Player/build/product edit. Skill tab/title, all 13 slot discs and labels, LMB KiSlash Lv1 versus 12 unported slots, malice1,000/LV1, three body columns and footer stay in viewport; representative layout PASS. Existing U08 ESC and pause K observations are cited without a new key run. Physical mouse acquisition/equip/hover and U05's unported SP, upgrades and synthesis stay HOLD; no new owner layout hunk was needed. [Screens, source and scope](_archive/engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md#u05-k-skill-window-representative-player-acceptance--2026-10-27).
 
-2026-10-27 Mac A14 G forge Player acceptance: reused the final ARM64 Settings QA app at 1280/1920 in separate marker roots. Actual OS G opened Forge at both sizes, G closed it at 1280 and ESC at 1920. Forge active tab, title, six left tabs, default upgrade body, current malice1,000, three seed equipment cards, 99% rate/cost7500 and footer fit inside the viewport. Long list uses an inner scroll panel. Build/product/Core/save change0; flagged PIDs stopped. Other five tab screens, mouse and actual upgrade action remain HOLD. [Cuts and limits](engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md#a14-g-forge-window-player-acceptance--2026-10-27).
+2026-10-27 Mac A14 G forge Player acceptance: reused the final ARM64 Settings QA app at 1280/1920 in separate marker roots. Actual OS G opened Forge at both sizes, G closed it at 1280 and ESC at 1920. Forge active tab, title, six left tabs, default upgrade body, current malice1,000, three seed equipment cards, 99% rate/cost7500 and footer fit inside the viewport. Long list uses an inner scroll panel. Build/product/Core/save change0; flagged PIDs stopped. Other five tab screens, mouse and actual upgrade action remain HOLD. [Cuts and limits](_archive/engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md#a14-g-forge-window-player-acceptance--2026-10-27).
 
-2026-10-27 Mac A13 J stat panel Player acceptance: reused the same isolated 1280/1920 Settings QA Players sequentially after A14. Actual OS J opened the panel at both sizes; J closed at 1280 and ESC at 1920. Stat active tab/title, path list/search, 265/265 definition tree, default analysis and footer fit the viewport; AP/investment/effects show the contracted unported state. Build/product/Core/save change0; QA PIDs stopped. Node/search/filter/zoom/drag physical input and investment execution remain HOLD; no new layout owner hunk needed. [Cuts and limits](engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md#a13-j-stat-panel-player-acceptance--2026-10-27).
+2026-10-27 Mac A13 J stat panel Player acceptance: reused the same isolated 1280/1920 Settings QA Players sequentially after A14. Actual OS J opened the panel at both sizes; J closed at 1280 and ESC at 1920. Stat active tab/title, path list/search, 265/265 definition tree, default analysis and footer fit the viewport; AP/investment/effects show the contracted unported state. Build/product/Core/save change0; QA PIDs stopped. Node/search/filter/zoom/drag physical input and investment execution remain HOLD; no new layout owner hunk needed. [Cuts and limits](_archive/engine/UNITY_MAC_PC_UI_PREFLIGHT_20261026.md#a13-j-stat-panel-player-acceptance--2026-10-27).
 
 2026-10-27 Mac A05-IO 전사 이야기 자연완주: 기존 최종 Settings QA 앱 일반 타이틀→세계관→새 전사 생성 뒤 무입력 영상 완주를 관찰했다. 끝의 네메시아 화면은 별도 입장 시네마틱의 대사 입력 대기로 판별. 추적 ARM64 빌드1회/오류0에서 96.400초 정본 영상 time95.000까지 증가·종료 우회0, 입장 대사를 정상 진행해 첫 시작 안내1/4 화면 PASS. 소스/앱 영상 SHA 일치, 격리 roster 각1명/revision1, 중복·재생 오류0. 임시 추적 코드를 복원해 최종 제품 변경0; 청음 HOLD. [증거](engine/UNITY_MAC_WARRIOR_NATURAL_QA_20261027.md).
 
@@ -57333,7 +57496,184 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 
 2026-10-29 Mac A15 일반 실창 후속: 동일 ARM64 QA 앱·binary SHA로 정상 UI 타이틀→세계관 지원 스킵→로비 전사 `A15Mac29` 생성→전사 이야기/네메시스/안내 지원 스킵→1-1 첫 연습 HUD. OS Right 한 번씩 SFX/BGM 60→61%, 사운드 탭 유지, 격리 v2 revision3 저장과 동일 root 재시작 61/61 실창 복원 PASS. GUI PID49910/50137 종료, 개인 앱3 보존, 신규 제품 코드/빌드/자동검사0. M1 headless 전투와 구분하며 PC 실행 앱·영상 자연 완주/청음/실전투는 pending. PC·GitHub·Mac 소스 checkout은 `79907fac` 공통 byte 일치. [실창 PNG·argv·영수증](engine/UNITY_MAC_A15_M1_FINAL_20261029.md#같은-최종-앱의-일반-실창-os-키-후속).
 
+## 2026-10-29 22시 — PC Unity 작업·캐시 NTFS 정책 정합성
+
+| 항목 | 동기화 내용·검수 경계 |
+|---|---|
+| 변경 | AGENTS.md·CLAUDE.md의 저장 정책과 기존 WORK_MANUAL·WORK_QUALITY_STANDARD·BUILD_BACKUP_POLICY·PC_CODEX_EXECUTION을 정정. Unity 작업본·Library·DOTNET_CLI_HOME·UPM 캐시는 NTFS(G:/exoduser-wt 우선·확인한 E: 차선), H5/docs·산출물·보관은 I: 유지 |
+| 보존 | G:/exoduser 사용자 파일 readonly, 승인된 별도 G:/exoduser-wt 쓰기 허용. 기존 I: 트리·에셋·과거 영수증 경로·실패 카운터·중단 이력·FAIL 비채택·같은 제작법 중단·통합/배포 권한·Mac 독립 작업 유지 |
+| 근거 | COMMON_RULES 마지막 NTFS 정책·CLAUDE_REVIEW §4-보완과 중앙 CTO 위임을 대조. 담당 Get-Volume 조회에서 G:/E: NTFS·I: exFAT 확인. 원인 가설과 root가 인수한 UPM IPC 200을 구분하며 컴파일·빌드·실게임 품질 PASS로 확대하지 않음 |
+| 비실행 | 코드·모델·사용자 전역 설정·CTO_STATE·자동화 변경, 기존 작업본 이동·삭제·전체 복제, Unity 실행·빌드·새 비용·배포 0. safe.directory는 자기 정확 경로의 명령 범위만 사용 |
+
+## 2026-10-30 — 기획부터 최상 품질·노레위 맵/임팩트 실물 학습
+
+| 항목 | 변경·검증 범위 |
+|---|---|
+| 현행 지침 | AGENTS·CLAUDE·WORK_MANUAL을 기존 WORK_QUALITY_STANDARD §1.1에 연결. 직접 본 기준·완성 장면/경험·현재 차이·제작 방법·조기 실물 판정·합격/방법 변경/중단 조건을 기존 브리프에 구체화. 목적 없는 저품질 양산·동일 실패·계획/보고 반복 금지 |
+| 실제 자료 | 공식 Steam 스크린샷 21장과 공식 트레일러 4편을 I:/EXODUSER-Storage/codex-takeover/quality-reference-20261030/에 보존. 전체 개요 보드·스크린샷 4개 원본·임팩트 6구간 216표본 프레임을 직접 확인. 출처/해시/확인 범위는 manifest.json, 배운 특징과 EXODUSER 적용/탈락 조건은 기존 품질 기준 §1.2 |
+| 적용 경계 | 참고작의 자산·좁은 전투·색·판정 수치를 복제하지 않음. 맵 가이드 전체·CH1-1 피부/동맥/부패 생체나무·VFX 마스터의 기존 수치·Q/E·FAIL/RETOUCH·실패 카운터·NTFS·Mac·단일 writer·승인 경계 보존. 영상 편집 컷/시네마틱/검정 화면과 실제 플레이를 구분 |
+| 완료 경계 | 자료 수집·분석·지침 반영이며 게임 코드/에셋·실행본·게임 시각 품질 개선 완료는 아님. 외부 미디어 Git 반입·Unity 실행·새 비용·배포 0 |
+
 2026-10-31 Mac `ui_tab` 검수 Tools 이식성: 현재 공통 제품 `b9491cf58`의 `UiTabAudioCheck.cs`만 Mac 조건부로 수정했다. Windows WM 클릭/창 없는 GUI 화면을 미지원으로 따로 기록하고 전체 PASS를 막는다. 새 ARM64 앱 오류0, 실제 무음·격리 Player 지원 46/46(클립·전환·F10·AudioSource/UI버스·SFX 0/60/100%) 통과, 미지원2·`partial-unsupported`·의도적 exit4. 같은 새 앱 M1 Metal 23/23·exit0. 제품 오디오/샘플/Core 변경0, 물리 마우스·실제 GUI·청음은 미검증. [Mac 결과·보존](engine/UNITY_MAC_A15_M1_FINAL_20261029.md#0634-후속--mac-오디오-검수-tools의-이식성), [오디오 계약](engine/UNITY_UI_TAB_AUDIO_20261031.md#mac-무창-player-검수-tools-이식성--2026-10-31).
+
+## 2026-10-31 웹 UI·UX 최신화 — 타이틀·로비
+
+| 범위 | 동기화·검증 |
+|---|---|
+| UI | 승인 타이틀 은빛 16×1px 선택선, 키보드 실제 포커스/Tab/Home/End·패드 공통 click, 로비/캐릭터선택 16:9 안전영역과 명조·원화버튼 적용. 맵·캐릭터 원본·전투·저장 데이터 변경 없음 |
+| 소리 | Unity 대조표의 hover/confirm 샘플을 로비에도 연결. 효과음 설정·무음·장치/disabled·입장 전용 중복 제외. NW FILES에 새 모듈 포함 |
+| 검수 | 신규6 + 기존 UI/로비/설정 합325개 통과. 시작 SHA에서 같은12실패를 재현하고 오래된 금색 기대값과 누락된 window/QA-storage/input-reset/canvas 테스트 어댑터만 현행화. 제품 로직·보호 설계 변경0 |
+| 근거 | LOBBY_AAA_REFERENCE_STUDY 최신 표, I:/EXODUSER-Storage/design/web-uiux-20261031/ 전후1920/2560/3840·baseline/회귀 로그. 후속 공통 게임 UI와 최종 전체 캡처는 별도 단위 |
+
+## 2026-10-31 웹 UI·UX — 공통 창·HUD 최종
+
+| 범위 | 최종 구현·검수 |
+|---|---|
+| 공통 UI | web-uiux.css/js 및 game.html·NW FILES 연결. 중앙16:9 HUD/창/가이드·Hahmlet300/400·원화행동버튼·즉시도움말·동적키보드·초점복귀 |
+| 입력 수정 | 난이도 뒤로 Enter의 잘못된 진행을 기존버튼click으로 분리. 확인창 기본취소·반복키 차단·animationend초점복귀. 보스이름/시간겹침은 보스표시중타이머만아래로 |
+| 테스트 | 앞묶음의 신규6·325통과는 초기관측. 최종 로비신규9(title5+feedback4)·공통16 및 기존 관련분+패드HUD 포함347/347, project-check103/103. Chrome채널만고집하던패드HUD검수는설치Chromium/headless/mute로3/3 |
+| 시각 근거 | 33화면×1920/3840=66장·유효텍스트사각형겹침0, 21:9별도앵커확인. 타이틀/메뉴·로비·공통창요구/코드품질검토PASS. 원격/실제실행본/Steam은다른증거 |
+| 한계·보존 | 맵/캐릭터/몬스터/VFX원화·전투/경제/저장형식·사용자메인tracked변경0. 새번역키/28개lang변경0. UI상태를직접표시한격리headless검수이며 실제패드/NW실기/전체28언어/청취/자연전투완료주장안함 |
+| 산출·실행 | G:/exoduser/tmp/design-review/20261031_web_uiux/REPORT.md, 원본은I:/EXODUSER-Storage/design/web-uiux-20261031/. localhost3366자기작업본서버·격리save유지, Steam/DEMO/EA/외부배포0 |
+
+- 최종 커밋 훅이 자동 생성한 tools/guard.baseline.json의 lines를 기존65880→현행66030으로 동기화했다. 게임루프136행·보스idx·강화확률 해시는 그대로이며 guard PASS, 새 검사 우회0이다.
+
+
+## 2026-10-31 초광폭 사이드 판·인게임 가장자리 사용자 정정
+
+| 범위 | 구현·검수 계약 |
+|---|---|
+| 로비·캐릭터 선택·타이틀 메뉴 | 사이드 정보판은 실제 화면 끝, 높이 기준 축척. 중앙 제목·무대·모달 유지. 로비 어둠은 판 폭, 선택창 우측 비네트480px 한정 |
+| 인게임 전체 UI | 미니맵·자원·레벨/처치·튜토리얼·시스템/키 안내·알림·펫은 화면 가장자리. HP/MP·스킬바 묶음과 큰 메뉴는 중앙16:9 유지. 실습 중 상태판 표시, 실제 bounds로 상태판 아래·구슬 위 공간 예약 |
+| 검수·인계 | test/webUiux.test.mjs의 21개 회귀, tools/check-web-sidepanel.mjs의 네 해상도 실제 페이지·텍스트/컴포넌트 충돌·HTTP 입력 일치 검사. 기존 원본에서도 실패하는 inventoryPaperdollLayout/petGateLockedDialogue 2건은 별도 기록. Unity ui-ultrawide-brief.md 끝에 확장 지시 추가 |
+
+상세 좌표·수치·최종 캡처/원격 근거는 WEB_UIUX_GAME_20261031.md 및 지정 sidepanel/REPORT.md를 따른다.
+
+# 2026-10-31 전투 스킬 창 공간·고정 기술
+
+- `skill-forge.js/css`: 설명판270px/내용 높이, 빈 로드맵 접기, 초광폭 좌우 끝·중앙1800px. 구르기·X처형·T자동석궁을 추가 표시하고 E/RMB 실제 배정·기절 탈출·미습득 조건을 맞췄다. 전투·6개 장착 슬롯·세이브 구조는 유지한다.
+- No.3820~3827를 EN+27개 lang에 전파. `SKILL_FORGE_20261010.md` §12, 스킬2_1·키바인딩3.3·번역 목록/가이드 동기화. 캐시 `20261031-fixed-layout1`, guard 기준선은 실제 줄 수만 갱신.
+- 검수 근거·서버·정확 SHA: `G:/exoduser/tmp/design-review/20261031_skill_window/REPORT.md`. Unity 브리프에 같은 지시 인계, 웹 검수를 Unity 검수로 세지 않음.
+
+
+
+## 2026-10-31 웹 성장 창 머리 축소·인장의 눈
+
+| 항목 | 변경·검수 |
+|---|---|
+| 코드 | web-uiux.css의 다섯 창44px 제목띠·성장44px 머리·기존 gate_sigil 원화 합성. game.html 해당 CSS 캐시만 변경 |
+| 화면 | 1920/3840×1080·5창10건, 성장 본문181px 반환. 제목/본문/AP 충돌·가로넘침·노드이탈0, 원화/제목/트리1x 직접 비교 |
+| 검수 | tools/check-stat-window.mjs·검색/미리보기/요약 ESC/J 재열기·저장0·pageerror0, 기존관련39/39·project-check103/103·guard PASS |
+| 문서·인계 | UI_COMPOSITION 최신 절·능력치 SSOT·WEB_UIUX·디자인 인계·총괄 동기화. ui-ultrawide-brief 끝에 Unity 전달. 원격 SHA와 서버 주소는 20261031_stat_window/REPORT.md |
+| 범위 | 웹 변경 부위 자체 시각판정 PASS. 자연플레이·Unity·NW.js·DEMO/EA·전체 게임/디자인총괄 별도 판정은 미검증 |
+
+성장 검수 보강: 최초 통합1920 캡처의 외부 갑옷 배경이 로딩 중인 것을 직접 확인해 최종 시각 증거에서 제외했다. tools/check-stat-window.mjs는 CSS 배경 원화 decode를30초 한도로 기다린 뒤 캡처하며, 같은 소스의1920/3840 화면을 다시 검수한다.
+
+사이드 판 통합 후 HUD 회귀의 화폐 라벨 기대값을 현행 악의구슬 SSOT로 동기화했다. 숫자·지역 처치 검증과 런타임은 바꾸지 않았다.
+
+## 2026-10-31 CTO 최종 보정 — 다섯 창 제목 중앙의 눈
+
+| 항목 | 보정 범위·근거 |
+|---|---|
+| 코드 | web-uiux.css의 공통 제목띠44px 안에 눈20px/글자24px 두 행을 중앙 배치. 기존 gate_sigil 중심부64×20px·원화폭240px, grayscale1·brightness3·contrast1.1·screen·가장자리 알파 감쇠. 왼쪽 휘도마스크/오른쪽 flex장식 대체. game.html CSS 캐시20261031-centered-eye2 |
+| 경계 | statwindow-brief 마지막 보정만 수행. 머리 전체 크기·트리·스킬 본문·전투·세이브·신규 이미지 생성 변경0 |
+| 문서 | UI_COMPOSITION 현행 표·WEB_UIUX·디자인 인계에서 위치/재질 및 최초 자체 눈 가시성 판정 경계를 정정 |
+| 검수·원격 | 두 해상도×다섯 창10건·기능 PASS, 중심오차≤0.0078125px·제목44px·탭/제목/노드 경계·저장0 확인. 관련 회귀36/36·guard PASS. 전후1x 직접 판정(변경 부위 PASS)·정확 SHA는 I:/EXODUSER-Storage/codex-web-statwin/eye-center-20261031/REPORT.md. 확인 서버127.0.0.1:3417, 격리 save 유지 |
+
+
+## 2026-10-31 MCP와 API 목록 팀 공통 사용
+
+- 기존 API 연결 가이드를 26개 MCP 그룹·직접 API·주력 용도·연결 증거·월간 크레딧 분할 사용 기준으로 갱신했다. Kling은 10/31 인증과 회원/크레딧 조회를 확인했고, OpenAI는 10/30 모델 목록 인증만 확인했다.
+- AGENTS.md·CLAUDE.md·공통 작업 매뉴얼·총괄대장에 같은 목록을 연결했다. 공개 저장소에는 인증값·개인 결제·계정 잔액을 추가하지 않고 내부 지출 MD/JSON을 참조한다.
+- 범위는 문서와 사용자 승인 팀 공유이며 생성·결제·Unity·빌드·배포·공용 인덱스 변경은 없다. 실제 전달 수락과 팀 인수·적용은 별도 기록한다.
+
+사이드 판 최종 검수는 구슬 .globe-glass 외곽 장식까지 포함한 실제 경계로 강화했다. 안내창이 장식 프레임 위16px를 비우고 내부 목록만 스크롤한다.
+
+사이드 판 검수 도구는 중앙 정렬용 구슬 본체와 충돌용 외곽 원화 좌표를 분리해 기록한다. 실제 UI 배치는 유지하고 이 구분의 회귀2건을 검수한다.
+
+
+## 2026-10-31 웹 제목 인장 보정2 — 투명 원형 메달
+
+| 항목 | 내용 |
+|---|---|
+| 범위 | statwindow-brief.md 마지막 보정2만, 최신 origin/main09eec0076에서 새 브랜치 |
+| 코드·자산 | web-uiux.css의40px 투명 은색 원형 눈 메달·중앙을 끊은 금빛 헤어라인·성장·대장간 배경 중복 눈 제거. title_eye_medallion_20261031.png 256×256 RGBA, 기존 gate_sigil 참조 내장 이미지 편집1장. 제목64px/40+24행·아래margin0·성장margin4px·본문845px. game.html CSS 캐시20261031-round-medallion |
+| 검수 | tools/check-stat-window.mjs는 현행 규격과1x/3x 크롭 기록. 실제 game.html1920/3840×5창10건·기능 PASS, pageerror/저장0·관련 회귀36/36·guard PASS. 두3배 비교판 직접 열람 후 사각 모서리·검은 판·중복 눈·눈에 띄는 잔점/계단0 |
+| 판정·한계 | 제목 메달 부분 VISUAL PASS. 보스 테스트 강제 상태·headless·격리 API, 자연 플레이/Unity/NW.js/배포 증거 아님. 스킬 본문 변경0 |
+| 증거 | I:/EXODUSER-Storage/codex-web-statwin/medallion-20261031/REPORT.md·review_1920_3x.png·review_3840_3x.png·after/geometry.json·regression-final.log·guard.log |
+
+## 2026-10-31 악의오브 최종 개명·원화·음성 검수
+
+| 변경 | 동기화·검수 |
+|---|---|
+| 악의오브 / Orb of Malice | 기존 No.3761–3839, 27 lang 파일·EN·localization 원본/번들·관련 docs 전체 갱신. 스킬 악의구 / Malice Orb 유지 |
+| 원화·연출 | 내장 imagegen 유리 오브 4단계, HUD·대장간·스킬·툴팁·R 수거→HUD 합체 적용. 32/48px 및 실제 HUD 1x 판정 보드 |
+| 긴 번역명 | HUD 줄바꿈, 독일어 대장간 아이콘 잘림 수정·재캡처 |
+| 음성 | 일본어 일반/비용형 어순 차이를 포함해 29언어 부족 문구 7종 검수 |
+| 검사 | 핵심 회귀47/47, 언어 gaps0, guard PASS. 기존 대장간 fixture 실패4건은 원본8/12와 동일. 원본 스킬 합성 3D의 음수 반지름도 동일 재현해 별도 기록 |
+| 보존 | 웹 G.mats 대입/가감69곳 동일, Unity Core 문자열 제외 byte 동일. 빌드·Player·M1은 별도 영수증 |
+
+상세: [화폐 SSOT](3.2메타·진행시스템/CURRENCY_RENAME_20261031.md), 증거 I:/EXODUSER-Storage/demo-art/currency-rename/REPORT.md.
+
+최신 스킬 창 병합에서 추가된 미습득 소켓의 비용 번역 키도 악의오브로 정렬했다. test/skillForge.test.js를 포함한 통합 회귀29/29가 통과했다. 스킬 창 기능·새 빈 소켓 원화는 원작성자 변경을 보존한다.
+
+
+## 2026-10-31 웹 로딩 초광폭 원본 보존
+
+| 변경 | 내용 | 정본/근거 |
+|---|---|---|
+| 로딩 표시 | game/index의 원본 contain, 공통 loading-art.js/css, 별도 하단 상태 영역. 폭에 따른 글자 확대 제거 | 1전체그래픽세팅/LOADING_ULTRAWIDE_20261031.md |
+| 배경 확장 | 내장 image_gen으로 네메시아·핵터·디로이 좌우 배경, 무손실21/32 WebP6개. 기존 원본35장 유지, 미생성/실패는 동일 원본 블러 폴백 | img/lording/wide/ |
+| 패키지·검수 | FILES 공통런타임 명시, 회귀 test/loadingWide.test.js 및 tools/check-loading-wide.mjs. 전면 가시성·전체구도·하단 비중첩·비동기 요청/실패 검사 | I:/EXODUSER-Storage/web-loading/20261031-wide/ |
+| Unity 인계 | ui-ultrawide-brief.md 끝에 같은 이미지·표시계약·해상도 및 별도 Unity 검수 지시 | 웹 검수와 Unity 실행은 분리 |
+
+## 2026-10-31 웹 로딩 최종 보정 — 전체35장
+
+| 변경 | 내용 | 정본/근거 |
+|---|---|---|
+| 전체 배경 | 모든35장 내장 배경 생성과 접합/중복 보정, 16/21/32 무손실 WebP105개. 인물·펫·로고 원본 전경 복원, 정상 화면의 블러 제거 | 1전체그래픽세팅/LOADING_ULTRAWIDE_20261031.md 최종 보정 |
+| 전체 높이·상태 | 그림 inset0, 하단 별도 검은 띠 제거. 투명 시작 어두운 그라데이션 위 font-hell/title·뼈색·금빛1px 진행 선 | loading-art.css |
+| 선택·폴백 | rd11.jpg 포함 전수 선택, resize/최신 요청 보호. 실제 다운로드 실패에만 원본 contain+블러 폴백 | loading-art.js, test/loadingWide.test.js |
+| 검수·인계 | 실제 로딩35×4해상도·로비·실패·1x 및 원격 영수증, 기존 Unity 브리프 최종 계약 전달 | I:/EXODUSER-Storage/web-loading/20261031-final35/ |
+
+## 2026-10-31 웹 초광폭 월드
+
+stage=0은 실제200×200 본편으로 정정하고 과거 원화 판은 명시적 mapTest/plate 옵션으로 보존했다. 작은 판에는 production 청크/8000px 나무를 섞지 않는다. 본편 전체 VW/VH·세로 시야·1920 렌더는 유지한다. 리시는 기존2500px 초과·800~1200px 링을 유지하며 가시 영역+적 반경+100px 안 후보를 건너뛴다. 투사체 원거리 정리는 기존 거리제곱6250000 초과와 가시 영역+100px 밖을 모두 요구한다(즉시/일반탄 수명 연장 종료). 공격 수명·사거리·어그로는 유지한다. Unity/Godot 실행 반영을 의미하지 않는다. [정확한 현행 계약·검수](12퍼포먼스·최적화/WORLD_ULTRAWIDE_20261031.md).
+
+
+## 2026-10-31 — EXODUSER 로고 불투명 흑철 바탕
+
+- `img/logo_exoduser.png` byte와 원래 불투명 금속 115,815픽셀을 보존하고, 같은1506×719 `img/logo_exoduser_solid.png`를 추가했다. 글자·눈 고리·머리 내부 흑철 바탕과 어두운 외곽/그림자로 인장 관통을 막는다.
+- `index.html` 10곳·`game.html` 1곳 PNG 참조 교체. 위치·크기·fade·게임 규칙은 유지. 규격·검수 도구: `docs/3.1 ui hud 디자인/LOGO_SOLID_20261031.md`, `tools/build-logo-solid.py`, `tools/verify-logo-solid.py`.
+- main 소스 반영만 수행하고 DEMO/EA 복사·배포·Unity 실행·유료 생성은 하지 않는다. 실제 원격·캡처·겹침·회귀·guard 결과는 `G:/exoduser/tmp/design-review/20261031_logo_solid/REPORT.md`에 기록한다. 과거 원본/영상 제작 영수증은 보존한다.
+
+- 2026-10-31 combat-feel: game.html 접점 그림2틱·피격 가장자리/HP 표시140ms·동시 처치음2보이스, feel=0/1 비교 및 reduceMotion 설정. 보호된 전투 규칙 불변. VFX·스킬·설정·기본공격 문서 동기화, test/combatFeel.test.js.
+- 검수 보충: 피격음 VM의 OFF 표현 환경을 명시. 기존 Ki 홀드 VM은 _uEq/ _eqAffix 의존성 누락으로 2회 실패해 해당 단위를 중단하고 원본 byte를 복원; 실제 기검참 함수 무변경을 대조.
+- 같은 후보 실물 재작업: HP 피격 사각 외곽 제거→구슬 원형 내부 표식, 밀집 접점 합성 상태 전환16→2회로 배치. 실패 재현 테스트 후 수정 통과.
+- web3d 병합: 원본 함수 보존 검사의 기준을 검수한 feel0206fb14d로 갱신, 맵 연결 예외4개·500개 이상 함수 byte 일치 검사는 유지한다. 원격929169caa의 맵/3D 자산·코드는 보존한다.
+- combat-feel 전달: 빈 저장 고정 OFF/ON30초·슬로3편·슈퍼와이드·접근성·FPS/입력 측정과 f1ba81fec 병합 실게임 영수증을 전용 인계 combat-feel.md 및 요청 REPORT에 기록했다. 전체 회귀 PASS·자연 완주·실청취/재미 완료와 구분한다.
+
+## 2026-10-31 전체 화면 원화 확장 적용
+
+이 문서의 과거 이미지·영상 제작 및 판정은 당시 이력이다. 현행 웹은 `fullscreen-art.js`의 경로 등록으로 64종의 원본/21:9/32:9 판을 선택한다. 화면비 2 이하의 원본 경로와 MP4 파일은 보존하고, 초광폭에서는 중앙 원본 픽셀을 보존한 확장 정지판을 쓴다. 출력·사용 위치·규격·생성 정보·검수 근거는 `docs/3.1 ui hud 디자인/FULLSCREEN_ART_ULTRAWIDE_20261031.md` 및 `assets/fullscreen-wide/20261031/manifest.json`이 현행 기준이다. 로딩35장은 별도 담당이며 Unity 반영·실행 검수는 이 웹 적용으로 완료되지 않는다.
+
+
+## 2026-10-31 웹 3D 최종 원격 동기화
+
+- 최신 main b14b9ca1b 와이드 원화/시네마틱·타 팀 docs를 정상 병합. 전투/AI/저장 보존은 기존 기준, 수정된 시네마틱 두 callback은 upstream byte를 별도 대조한다.83/83 회귀·109/109 프로젝트 검사 PASS.
+- 32:9 시각 route9/9·144.08초·오류0, 무적/자동회복·AI/충돌/native입력 조건과 자연완주 미검증을 보고서/영상에 명시. 최종 QA는 와이드 입력4파일+manifest도 SHA256 기록.
+
+- 웹 3D 병합본 최종 실화면:25입력 SHA·8카메라·유령/물/풀10초·저사양·밀집·정상입력 재검수. 오류0/HTTP0, 주인공 픽셀차이0·HUD/맵 동일. 밀집 ON1920 179.37 FPS·3840 160.68 FPS. Godot4장 명암비/9구역 시각 경로/자연완주 미검증은 WEB3D_TRIAL과 REPORT에 기록.
+
+## 2026-10-31 와이드 원본 애니메이션 복원
+
+- `fullscreen-art.js`·DOM/CSS가 manifest 중앙 좌표/높이로 원본 영상을 확장판 위에 표시하고 양끝14%를 혼합한다. 기존 로비 입자를 전체 canvas에 초기화하며, 컷신 안개/재·가독성 명암도 전체 폭이다. 추가 효과는20Hz·가로최대960px·톤별256px 캐시, 저사양/동작줄이기/숨김에서 정지한다.
+- 63b31bb3f 기준 신규 동작 검사13개 PASS, 브라우저 계약17/17 PASS, game함수1630개 중 컷신 렌더 외 byte 해시 동일, guard PASS. 전체 테스트 신규 실패0/기존281실패·35skip은 보존한다. 초기 RED3개는 이번 신규 검사였으며 기존 결함을 고친 수치로 세지 않는다.
+- 검수/전후표·최종 원격SHA는 `G:/exoduser/tmp/design-review/20261031_wide_animation/REPORT.md`, 실제 영상/1x·실패 근거는 `I:/EXODUSER-Storage/wide-animation/20261031/`. 최신 승인 타이틀A·게이트 검정 배경·v22b 인트로를 정상 병합해 보존하고 영향 범위를 재검수한다. Steam/Unity 배포0.
+- 후속 연결: 입장/로그인 배경도 전체 폭 분위기를 사용하되 로비·시네마틱·타이틀 뒤에서는 정지한다. 게임은 하드웨어C/OPT.atmos0, 메뉴는 저장 hellcave_settings.opt.atmos0을 존중한다. 새 저장옵션2검사를 포함해 표적27/27·브라우저19/19 PASS, 최종 전체2482검사에서 신규 실패0·기존277실패/35skip. 영상은 시스템Chrome GPU 경로로 정리하며 초기 headless-shell/RED 이력은 보존한다.
+- 마감 검수:22유형×1920/2560/3840의 약10초66편(9.96~10.00초),0·4·8초 동작·전후·1x 및 기존63원화 경계 확인. 스킬 창에 가린 초기 클리어/종료 표본은 native closeAllPanels·_showClearResult·버튼hit-test 후 교체하고 이력 보존. 자체 시각 PASS는 이번 원본 모션/경계 범위이며 컷신 시간 유지·정지 월드 fixture와 자연 플레이를 구분한다. SSOT 최종 검수 표와 인계 design-director.md, REPORT/Git 영수증을 동기화한다.
+
+
 2026-11-01 Mac 게임 전환 로딩 팁: PC 후보 `0a60cbcee273e1150ba7df8909acb77dd9f18edc`에서 승인된 4종 문구·stage 순환·현재 바인딩 이름·영어 폴백만 `NativeGame.StageFlow.cs`로 이식했다. 구역명 아래 물리 px 크기와 2px 그림자를 적용했다. 로비 게이트/맵/Core/세이브는 변경하지 않았다. [계약·제한](engine/UNITY_MAC_LOADING_TIPS_20261101.md).
 2026-11-01 Mac 로딩 팁 Player 검수 준비: `--unity-loading-tip-capture`를 비배치·격리 Player 전용으로 추가했다. 1920×1080과 Mac 내장 화면, ko/en/fr의 팁·변경키·미지정키 실제 GUI/audit 캡처를 생성한다. [검수 계약](engine/UNITY_MAC_LOADING_TIPS_20261101.md#실제-player-전환-화면-검수-도구).
 2026-11-01 Mac 로딩 팁 실제 Player 검수: 기존 앱 3개 일반 Quit·잔여0 뒤 새 ARM64 빌드 오류0, 같은 앱 M1 23/23·exit0, 비배치 실제 GUI PNG/audit 각48·exit0. 1920×1080·3024×1964 물리 글자14/16px, ko/en/fr·V/F2 변경·미지정 대체·팁 텍스트 교차0을 확인해 팁 영역 1x PASS. 무음은 Listener 출력peak0/Direct Video0까지, OS 청음·자연 stage1~3은 미검증. [새 바이너리 SHA·영수증·한계](engine/UNITY_MAC_LOADING_TIPS_20261101.md#mac-새-player-결과--2026-11-01-kst).
@@ -57400,6 +57740,23 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 2026-11-03 PC UI-PARITY 20:20 Mac FAIL 후속: 정리된 CLAUDE7bc7a3518 재독·docs 정본 unity/main·공통d6c5bb89 정상 병합. 실패 SHA에는 새 분해/일시정지febeb55b2가 없으며 상위 라벨3파일은 이전 검수본과 diff0임을 확인했다. NativeUiAudit를 public GUIStyle cursor+같은 TextCore의 실제 행 좌표로 바꾸고, 키 목록 무자간 문자열은 한 번 조판한다. 실제 OnGUI의 GUI.Button 경계에서 local Event를 주입하며 inside/disabled/clicked·hotControl·반복 프레임을 기록한다. 입력 PASS와 수집 API 준비를 구분한다. scroll-ink ROI/임계값은 유지하고 새 metric 증명을 필수 조건에 추가했다. 설치 DLL PE 메타데이터의 필수 API 존재를 확인했으며 네이티브 실행 증거와 구분한다. PC 컴파일 후 Mac 실제 판정 대기. [범위·원인·수치](engine/UNITY_UI_OVERLAP_20261030.md#2026-11-03-2020-mac-fail--g0g1-원인-확정).
 
 20:20 후속 PC 컴파일: 공통b04ddd73b 병합본(fe236a8bc)의 Core121/Runtime249 최종 exit0·오류0. 내부 GUI 픽셀 배율 속성 직접 접근2개 CS0117을 캐시한 PropertyInfo로 고치고 Runtime만 다시 확인했다. 경고531건은 별도다. 설치 DLL8타입 API 메타데이터 확인, 새 Mac UI/입력/잉크 미검증 유지.
+
+## 2026-11-02 타이틀 후보 보드·왼쪽 안전 여백
+
+- 사용자 브리프1·2절: 3후보 비교 보드(전신1x/발3x/손/성/강/달)까지 제작, CTO 선택 대기·RETOUCH·새 아트 게임 미적용. 거대 마왕 요새와 원형 달 추가 지시 포함. 생성 원본/프롬프트/측정은 G:/exoduser/tmp/design-review/20261102_title_keyframe/ 및 담당 I: REPORT 보존.
+- index.html _fitTitleStage: 화면 높이4.5%·최소48px에 로고 시작점을 고정, 메뉴는20k 뒤. 실제7크기 경계·키보드 선택·pageerror0, 타이틀8/8·project-check111/111. splash/FULLSCREEN_ART 현행 수치·design-director 인계·ART 현황 동기화. 기존 living-scenes 3개 WIP 보존.
+
+## 2026-11-02 웹 3D 3라운드·4라운드 CTO 색 정정
+
+3라운드 이력: 기존 맵/인물/VFX/HUD를 보존하며 유령 수피·가지 가시성/일렁임,10구역118낮은 군락,캠프·제단 국소광 범위/입사광 상한을 반영했다. 시작 맨바닥 표본43.46%; 실제1920/3840 OFF·ON/1x/각10초·주인공RGBA0/HUD·맵동일/오류0. 밀집 ON168.48/191.52FPS·관련57/57·project111/111·guard PASS. 3840 무적 시각 이동9/9·123.80초·18,448.59px,AI/충돌/native입력 유지. 원격 단계604cd2ca6→e7ac4d3e5→09ab11e59/6db15a40b;3377 분리 서버HTTP200·QA/디스크/HTTP27파일 SHA동일. [현행 계약](4.1맵디자인+설정/WEB3D_TRIAL_20261031.md),근거 I:/EXODUSER-Storage/web3d-round3-20261102/REPORT.md. 원격 시작main 동일 실패3건/자연 보스완주/NW.js 재빌드·Steam 배포는 별도다. 4라운드 CTO 색 정정: 제단343.2px/기준energy.5742·가산 조명·원래 독액10광원/self-glow.62·해자원화.4 복원, 남동 독액self_glow .22/.15·소환굴 보라(.48,.18,.82), 물 위 뿌리2배치 제거/132군락. 최종12구도×1920/3840 OFF/ON·가시61영역 hue 최대13.96°≤15°·오류0/map동일·81회귀/111프로젝트/guard PASS. 근거 I:/EXODUSER-Storage/web3d-round4-20261102/hue-color-pass/REPORT.md 및3377 /tmp/web3d-hue-review/index.html. 이번 밀집120FPS·영상/자연완주·NW.js/Steam/Unity는 미실행/보류, 기본OFF 유지.
+
+### 2026-11-02 C2 타이틀 선명도 합성
+
+- C2-tall-fixed 정지 원화와 tall-final의206프레임 움직임지도·정합/페더 합성으로3840×1920 루프(13.03MB),2560/1920판을 제작·자동선택. 구름은수정원화+제한된시간별명암변화,피강/폭포/머리/망토끝은영상. 기존메뉴여백/흐름보강/모션감소/오류폴백유지. 실제3비율각10초·전후1x·접지0px·오류/404/세이브쓰기0,관련회귀18/18+합성3/3. source/원격SHA·가드·최종판정은 title-clarity-20261102/REPORT.md. Unity반영대기.
+
+## 2026-11-02 — 시작 메뉴 C2 close 최종 교체
+
+- 승인 C2-close 원화의정지영역과close-final 루프206프레임의움직임을정합합성한4K/2560/1920판으로교체. 얼굴·발·요새 선명도,폭포/구름보강,3비율전신·입력/폴백·각10초를검수했다.32:9달상단은중앙cover크롭이며원생성4K가아님. 상세수치/검수/원격SHA는스플래시C2계약과 title-close-20261102/REPORT.md. Unity·외부배포별도.
 
 ## 2026-11-03 — 리깅 픽셀 14:25·19:00 재작업
 

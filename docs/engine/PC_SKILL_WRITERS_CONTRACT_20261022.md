@@ -1,7 +1,7 @@
 # PC-SKILL-WRITERS 계약 — SkillForge '일괄 레벨업'·'추천 자동' writer
 
 2026-10-22 KST, PC Claude. 기준 Mac PARITY-UI-04 `e867f9b3`(base INTEG-11 `6c389948`), 브랜치 `claude/pc-skill-writers-20261022`, worktree `G:\exoduser-wt\pc-skill-writers`.
-원본 = 고정 스냅샷 `godot/source_snapshot/game.html`(SHA256 `4d911cdd…85e5d4`, main `game.html`과 같음). 보고서: [orders/reports/pc-skill-writers_REPORT.md](orders/reports/pc-skill-writers_REPORT.md).
+원본 = 고정 스냅샷 `godot/source_snapshot/game.html`(SHA256 `4d911cdd…85e5d4`, main `game.html`과 같음). 보고서: [../_archive/engine/orders/reports/pc-skill-writers_REPORT.md](../_archive/engine/orders/reports/pc-skill-writers_REPORT.md).
 
 UI-04는 스킬창 하단 두 버튼을 PC writer가 없어 비활성(HOLD)으로 두었다. 이 작업은 **writer와 Mac이 부를 API만** 제공한다. 버튼 표시·활성화·피드백 그리기는 Mac 소유다.
 
@@ -77,4 +77,4 @@ main.request_skill_recommend_auto(request_id: String) -> Dictionary
 
 ## Mac PARITY-SKILL-01 인수
 
-`b6050641c584407e413c04665a6ec6c77b59f0b5`를 merge(코어 충돌0). Forge 두 버튼은 활성화되어 공개 API를 부른다. source_feedback의 최종 addTxt/showPH/SFX 소비는 Mac Forge 표시 owner에 추가했으며 PC writer/테스트는 보존했다. 같은 request_id 재차감0 및 VM14행 불일치0. PC 문서의 pending 필드는 PC 영수증 원문이며, Mac 표시 연결 완료/잔여 범위는 [후속](PARITY_SKILL_01_20261022.md)를 따른다.
+`b6050641c584407e413c04665a6ec6c77b59f0b5`를 merge(코어 충돌0). Forge 두 버튼은 활성화되어 공개 API를 부른다. source_feedback의 최종 addTxt/showPH/SFX 소비는 Mac Forge 표시 owner에 추가했으며 PC writer/테스트는 보존했다. 같은 request_id 재차감0 및 VM14행 불일치0. PC 문서의 pending 필드는 PC 영수증 원문이며, Mac 표시 연결 완료/잔여 범위는 [후속](../_archive/engine/PARITY_SKILL_01_20261022.md)를 따른다.

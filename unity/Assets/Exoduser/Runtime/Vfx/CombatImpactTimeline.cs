@@ -60,6 +60,7 @@ namespace Exoduser.UnityPort.Vfx
         public static List<CombatClip> Plan(FeedbackEvent e) {
             var result=new List<CombatClip>();
             if(e.Kind==FeedbackKind.Parry){
+                if(new CombatParryPresentation().IsMelee(e))return result;
                 if(e.Source=="waterBean") {
                     result.Add(Boom("Ice_ImpactIce_Sheet",72,96*3));
                     var mist=Boom("Ice_MistSmoke_FBF_4x4",72,96*3.4);mist.Delay=3;mist.Life=69;mist.Opacity=.8;result.Add(mist);
@@ -88,6 +89,45 @@ namespace Exoduser.UnityPort.Vfx
                     Life=e.IsBoss?96:64,Width=128*scale,Angle=e.Angle,Additive=false,Mode=CombatClipMode.Death});
             }
             return result;
+        }
+    }
+
+    // Pure presentation policy. Never reads/writes simulation rules or its RNG.
+    public sealed class CombatParryPresentation
+    {
+        public sealed class Spark {public int Delay,Life;public double Angle,Length,Thickness,Speed,Color;public bool ReverseFan;}
+        public bool IsMelee(FeedbackEvent e) {
+            if(e.Kind!=FeedbackKind.Parry||!string.IsNullOrEmpty(e.SampleKey))return false;
+            return string.IsNullOrEmpty(e.Source)||e.Source=="contact"||e.Source=="swing"||e.Source=="slam"||e.Source=="charge"||e.Source=="combo"||e.Source.StartsWith("melee",StringComparison.Ordinal);
+        }
+        public bool HasFlash(FeedbackEvent e){return IsMelee(e)&&e.Step==1;}
+        public Spark[] Sparks(FeedbackEvent e,int seed) {
+            if(!IsMelee(e))return Array.Empty<Spark>();
+            var rng=new Random(seed);int n=e.Step==1?rng.Next(80,131):rng.Next(30,61);
+            var lines=new Spark[n];int initial=(int)Math.Round(n*.3),fan=(int)Math.Round(n*.7);
+            for(int i=0;i<n;i++) {
+                bool reverse=i<fan;
+                lines[i]=new Spark{Delay=i<initial?0:1+(i-initial)*3/(n-initial),Life=rng.Next(18,31),
+                    ReverseFan=reverse,Angle=e.Angle+Math.PI+(rng.NextDouble()-.5)*(reverse?Math.PI:Math.PI*2),
+                    Length=.10+rng.NextDouble()*.15,Thickness=1+rng.NextDouble(),Speed=.025+rng.NextDouble()*.04,Color=rng.NextDouble()};
+            }
+            return lines;
+        }
+        public double SparkAlpha(Spark s,double age) {
+            if(age<s.Delay||age>=s.Life)return 0;
+            return age<=3?.3+.7*age/3:Math.Pow((s.Life-age)/(s.Life-3),1.5);
+        }
+        public double SparkLength(Spark s,double age){return Math.Max(.05,s.Length*(1-Math.Max(0,age-3)/(s.Life-3)*.7));}
+        public double FlashAlpha(double age,bool linear) {
+            if(age<0||age>=6)return 0;
+            // Linear framebuffer blending needs the stricter cap: sRGB(0.02)*255
+            // is 38.7 even over black. Gamma framebuffer maximum is 38.25.
+            return (linear?.02:.15)*(age<1?age:1-(age-1)/5);
+        }
+        public bool ParsePushIn(string[] args){return Array.IndexOf(args,"--unity-parry-camera=pushin")>=0;}
+        public double CameraScale(double age,bool pushIn) {
+            if(!pushIn||age<=0||age>=28)return 1;
+            return 1-.025*(age<=8?age/8:1-(age-8)/20);
         }
     }
 

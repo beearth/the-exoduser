@@ -1,5 +1,14 @@
 # 전사 3D 모션 표현 — 2026-10-30
 
+## 2026-10-31 R7 공통 반영·검증 실행본·Desktop 전달 완료
+
+지정Unity통합담당이expected `0ced574ef082bcef1e6969a329b91e5454d49574`에서 `15c8ed3c522de317d22cdbfd185b1ceca494b56f`로비강제FF했고,전사담당도fetch/원격readback을확인했다. 검증입력4c9cddec와공통의Unity tree `5c6d87809eae0c0b69fc0f1214acc9b87e81ffa7`동일,아래정확Git입력빌드5b3b6d6c/Playera6c94a87/영상/M13112dc4f를채택했다. 새통합빌드/중복M1실행0이다.
+
+통합담당이새빌드212파일·3,102,299,948바이트를staging에복사하고전파일SHA256일치212/212를확인한뒤 `I:/EXODUSER-Storage/unity-latest/build`에채택했다. 이전실행본은 `build_prev_before_heroR7_20261031`에보존했고삭제하지않았다. 일반바탕화면 `C:/Users/심도진/Desktop/지옥의 길 (Unity).lnk`의Target은위폴더 `EXODUSER-Unity.exe`,인자 `-force-d3d11 --remodel3d`,작업폴더EXE부모·아이콘EXE,0이다. 기존일반링크는통합담당조회시없었고다른바로가기는변경하지않았다. 전사담당의별도PowerShell프로세스도실제네속성/Runtime·Core·EXE SHA를독립readback해검증본과일치를확인했다. 앱자동기동/사용자세이브쓰기0.
+
+근거 `I:/EXODUSER-Storage/codex-takeover/integrator-final/hero-r7-adoption-20261031.md`·`I:/EXODUSER-Storage/unity-latest/hero-r7-stage-verify.json`, 전사 `r7-gitinput-20261031/공통반영-실측.json`·`desktop-readback.json`·`gate-evidence.json`·`판정.md`,최종보고 `I:/EXODUSER-Storage/codex-takeover/hero/REPORT.md`. 전사브리프의제작/실제검수/공통/실행본전달순서를완료했으며,**전체화면RETOUCH(VFX기존가림/잘림)**·Mac반영/실행pending·첫Player시작실패원인미확정은유지한다. 전체게임AAA·독립디자인PASS로올리지않는다.
+
+
 ## 2026-10-31 R7 정확 Git 입력 최종 검수
 
 현재 채택 요청의 입력은 `4c9cddec0e557b34c111f9a2dcbb023106b49e7e`, Unity tree `5c6d87809eae0c0b69fc0f1214acc9b87e81ffa7`이다. 이전 WIP포함 빌드52ace112의검수는정확Git입력검수로재사용하지않았다. 기존NTFS소유작업본에서521개Unity파생tracked/56개미추적을I백업·해시/CAS후일시격리하고, **실행전Unity tracked WORK0·빌드영향미추적0**을증명했다.

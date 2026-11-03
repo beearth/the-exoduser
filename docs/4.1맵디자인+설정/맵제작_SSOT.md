@@ -411,7 +411,7 @@ CH1 야생 지옥 → CH2 생태계 → CH3 고대 → CH4 재해
 **키트 필드 테스트:** `http://localhost:3333/game.html?stage=0` → 기본 `CH1_MASTER_16x9_v2_PROD.jpg` (native 1:1, 55×31).  
 복구: `?stage=0&plate=fieldone` → `CH1_FIELD_ONE.png` 36×27. `?classic=1`이면 본편 1-1.  
 **35맵 본편 QA 허브:** `npm run serve:map` → `http://127.0.0.1:3334/`. 모든 맵에 `classic=1&mapqa=1`을 강제하며 `si 0~34`를 무전투 상태로 선택·새로고침·새 창·에디터로 열 수 있다. 세부 계약은 `MAP_TEST_SERVER.md`.
-인게임 구도 QA: `qa_ch1_master_16x9/QA_REPORT_INGAME.md` (**NEEDS_REVISION**, 한 화면≈맵).
+인게임 구도 QA: `../_archive/4.1맵디자인+설정/qa_ch1_master_16x9/QA_REPORT_INGAME.md` (**NEEDS_REVISION**, 한 화면≈맵).
 
 둘째 장(스트립)이 **카메라 정답**. 첫째 장은 **1장 소품·색**. 플레이트는 스트립처럼 길을 위에서 그리고, 비스타의 독녹·철창·성을 넣는다. 강한 소실점 한 장으로 밟지 않는다.
 
@@ -422,7 +422,7 @@ CH1 야생 지옥 → CH2 생태계 → CH3 고대 → CH4 재해
 | 0 | `CH1_MASTER.png` | 4×3가 한눈에 들어오는 전체. 8192×6144 권장. 6시 시작·12시 문 |
 | 0b | `CH1_MASTER_16x9.jpg` | v1 레퍼런스. 원형 분지. 쓰지 말 것 |
 | 0c | `CH1_MASTER_16x9_v2.jpg` | COMPOSITION LOCK. 1280×720. 재생성 금지 |
-| 0d | `CH1_MASTER_16x9_v2_PROD.jpg` | 2176×1224 조립. `?stage=0` 구도 QA용. FINAL 아님. 보고: `qa_ch1_master_16x9/QA_REPORT_INGAME.md` |
+| 0d | `CH1_MASTER_16x9_v2_PROD.jpg` | 2176×1224 조립. `?stage=0` 구도 QA용. FINAL 아님. 보고: `../_archive/4.1맵디자인+설정/qa_ch1_master_16x9/QA_REPORT_INGAME.md` |
 | 1–12 | `CH1_A1.png` … `CH1_C4.png` | 각 2048×2048, 인접 12% 겹침, MASTER와 같은 카메라 |
 | G | `CH1_ground.png` | 이음매 없는 흙 타일 512 또는 1024. 작은 뼈·균열 bake |
 | P | props 폴더 | 거목, 철창, 교수대, 폐허 아치 등 **배경에서 뺀** 개별 PNG, 배경 투명 |
@@ -490,3 +490,8 @@ North of the rotten forest, hell gate or ruined chapel silhouette on the horizon
 완성 production_finish 화면이 전체 뷰포트를 불투명 ready청크로 덮으면 _ch1StartOuterCoversView가 가려진 _fillVoidWithFloor·20개 _oriFireflies·기존 맵캐시 분기3그룹을 렌더에서 제외한다. 매 프레임 줌/흔들림/가장자리·1026² ready를 검사하며, 로딩·오류·맵 밖 노출·다른stage/보스아레나/outer·Rootworld·초기폴백은 원래 바닥을 유지한다. ?ch1LegacyUnderlay=1은 비교용. visible 생체/언덕/소품/ATMO·19빌드레이어/이미지·충돌 삭제0. 캐시 메모리 전체해제나FPS개선율을 주장하지 않는다.
 
 현행 공식·수치·검수는 [가려진 레이어 정리 SSOT](CH1_HIDDEN_UNDERLAY_20260929.md)를 따른다. 앞선 날짜별 회귀·FPS·아트 수치는 당시 검수 이력이다.
+
+
+### 2026-10-31 키트 테스트 URL 현행 정정
+
+위 stage=0→55×31 PROD는 과거 임시 경로다. 현행 stage=0은 실제 200×200 본편이다. PROD 원화 검토는 mapTest=1/v4 또는 stage=0&plate=prod, FIELD_ONE은 stage=0&plate=fieldone/v1로 열며 classic=1은 원화 판을 끈다. 16:9 원화 테스트를 본편 초광폭 검수로 사용하지 않는다. [현행 런타임·검수](../12퍼포먼스·최적화/WORLD_ULTRAWIDE_20261031.md).

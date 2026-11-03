@@ -457,3 +457,5 @@ PC 컴파일 결과: 추가 공통b04ddd73b를fe236a8bc로 정상 병합한 뒤 
 기존 cb77ca96f 1410장 JSON 읽기 전용 재분석: 논리 그룹75936, 잔여8363(글자-글자7784/글자-버튼152/화면이탈250/글자-판177), 같은 내용 쌍819. 실제 메뉴/봉안함 표본 자기 충돌0. 잔여 상위는 SilverHell5744·KeyBindList1469이며 TextCore 이전 metricProof와 개별 글자 조판을 담은 과거 데이터다. 20:20 수정은 이번 코드에 보존되어 있지만 기존 JSON을 새 좌표로 변조하거나 임의로 제외하지 않는다. 원점 ID가 없는 예전 사망/지역 그림자는 보수적 매칭을 못 한357/92건도 남긴다. 새 패키지의 실제 잔여/이름/잉크는 Mac에서 판정한다. PC Player 실행0, BuildLoop 원본/바탕화면 수정0.
 
 최종 공통 병합: origin/unity/main f579841cef를0241b147ca로 정상 병합했다(앞선0082cdfa84 포함). CHANGELOG_SYNC 충돌은 양쪽 기록을 보존했고 실제 코드 충돌은 없다. 추가 rigpixel 소스가 포함된 최종 Core121/Runtime259 컴파일 exit0·오류0, Core 경고2/Runtime 경고522. 컴파일만 수행했으며 셰이더/Player 판정은 Mac 대기다.
+
+사용자 최신 통합 지시 후 origin/unity/main 8c5f967d74를 자기 브랜치에 추가 병합했다. CHANGELOG_SYNC 두 충돌의 양쪽 원문을 모두 보존했고 docs/Unity/CLAUDE/AGENTS의 충돌 표시0·미해결 경로0을 확인했다. 공통에도 있던 game.html.bak_20260611_conflictfix의 오래된 표시6개는 해당 파일이 origin과 동일함을 확인하고 보존했다. .meta 로컬 수정 거부는 없었다. 병합된 실제 소스로 PC 컴파일1회: Core121/Runtime259 exit0·오류0, 경고2/522. Player0. 새 Mac 게이트 대기는 유지한다.
