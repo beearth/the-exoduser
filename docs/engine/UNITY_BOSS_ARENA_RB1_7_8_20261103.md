@@ -1,6 +1,6 @@
 # RB1-7 / RB1-8 구현 기록 — 2026-11-03
 
-최신 병합: origin/unity/main 618052f6b → 28cc98ecc0. 작업본 G:/exoduser-wt/codex-boss-arena, 브랜치 codex/unity-boss-arena-20261103. 20:25 CTO 결정을 적용한다. PC는 CPU 하니스·Roslyn 컴파일, Player 빌드·화면·성능 판정은 Mac 담당이다.
+최신 병합: origin/unity/main 2b1bbf2a0. 작업본 G:/exoduser-wt/codex-boss-arena, 브랜치 codex/unity-boss-arena-20261103. 20:25/21:00/21:35/21:45 CTO 결정을 적용한다. PC는 CPU 하니스·Roslyn 컴파일, Player 빌드·화면·성능 판정은 Mac 담당이다.
 
 ## RB1-7 현재 상태
 
@@ -26,24 +26,39 @@ fan/chaseAoe/summon/tideWave/seekerMines는 슬롯·실행기를 남기고 Phase
 - 21:00 정정 후 최종 druid-remodel99210/0, remodel-frame124/0. 이전 후보의 flag-off 웹 oracle은48케이스·54400틱·5421635검사/0불일치(이번 미재실행). 로그는 레인 폴더 DruidRemodelTests.out.log·DruidBossTests.out.log·burrow-origin-probe.out.log.
 - 전체 디자인·Player·60fps PASS 아님. Mac 같은 SHA1920/3840 실제 플레이 판정 대기.
 
-## RB1-8a
+## RB1-8 Mac FAIL 수정 후보 (21:35/21:45)
 
-소스 구현·Roslyn 컴파일 완료, Mac 실게임 판정 대기: 34°/FOV46.9453/전방1.45 고정, 보스 생존~침강동안18.3·복귀16.5·0.6초 전환. BossArenaLayout 기반 회색 바닥·외곽3~6m·Core 기둥4개3.2m. GroundY 아레나 분기·2D 폴백. 미술마감8d는 맵 총괄이며8b·8c로 승격하지 않는다.
+origin/unity/main 2b1bbf2a0 병합. 정본 [RM1 §14.5](UNITY_BOSS_RM1_DARK_DRUID_20261027.md#145-2135-mac-fail-수정-및-2145-거리-정정--mac-재검수-후보)의 7개 항목을 구현했다. 34°/16.5/FOV46.9453/전방1.45 고정·영웅 필드 크기 유지·보스 영웅 모델 높이×2.8. 원근이 같은 필드±5%가 영웅 판정 기준이며10~12%는 폐기됐다. 회색 수직벽/실린더 대신 기존 A2 숲과 뿌리 모델, 남쪽 낮은 뿌리, 최전방 알파0.2 가림을 쓴다.
 
-## Mac 검수 인자
+CPU arena44/0, 전체Roslyn5어셈블리 오류0(Core121/Runtime265/Editor57). Core 규칙 변경0, PC Player/Unity/빌드/캡처0, Library 복사0, 유료0. GPU/셰이더·필드 대비 크기·외곽 덩어리/그림자·가림·전환·7기술 실제 수집·60fps는 Mac 재검수 전이다. 8b 독액·횃불·최종 재질 혼합,8d 미술 마감은 남았다.
 
-<Player경로> --remodel3d --unity-druid-remodel --unity-boss-direct 0 --unity-mute --unity-qa-sandbox <격리프로필경로> -screen-width 1920 -screen-height 1080 -logFile <로그경로>. 같은 SHA3840×1080도 검수한다. 보스직행 강제검수와 자연진입·퇴장 판정을 구분한다.
+## Mac 실행 인자 전체
 
+Mac의 기존 무창 GPU 실행 경로에 아래 Player 인자를 전달한다. 실제 GPU 캡처이므로 -nographics를 쓰지 않는다. 동시 Player 없이 아래 실행을 하나씩 한다. 사용자 세이브 대신 별도 QA sandbox를 쓴다. 출력 폴더는 해상도/종류별 고정 폴더로, 재실행 때 recorder 자신의 이전 파일만 정리한다. 정상 게임 키보드·마우스 입력 수집이며 강제 직행은 기존 --unity-boss-direct의 범위다.
 
-## RB1-8a 검증 범위와 다음 관문
+1920×1080 촬영:
 
-- NativeArena3DPlan은BossArenaLayout4/5/0의평지·벽1의3~6m연속회색외곽·경계면을만든다. 128타일(51.2m) overscan, UInt32메시. 실제Core기둥반경·위치로높이3.2m기둥표시. 충돌격자변경0.
-- NativeGame.RemodelArena는3D진입·2D폴백·필드표시복원·GroundY평지분기·생존/침강뒤카메라복귀를연결한다. 기존필드카메라의피치/FOV/전방/배우크기를보존한다.
-- CPU13검사/0실패: 충돌타일불변,전체top커버·floor수,벽3~6m,유효정점·인덱스·상향면,출구벽→바닥,16.5→17.4→18.3및복귀0.6초·전환첫순간튐0. 이검사는화면증거가아니다.
-- 최종Roslyn Player/Editor5어셈블리오류0(Core121/Runtime255/Editor57). 동일컴파일호출의PowerShell대기가먼저끝나완료영수증·실제새로그·프로세스종료를읽어확인했으며컴파일재실행은하지않았다.
-- Mac최우선: 남쪽진입·네모서리에서높은전경벽이영웅·보스를가리는지,1920/3840의검은틈·영웅크기10~12%·빌보드접지·암전진입/출구/재시도/침강복귀·60fps. 현재회색벽은컷어웨이없음,기둥반투명·7기술장판투영은8c미구현. 화면이없어기능통합·visual PASS아님.
-- 8b(필드와같은톤/재질·독액·똑바른횃불)·8c(장판·가림)·8d(맵총괄미술)는미착수. 무료,USER_SAVE0,Library복사0,사용자실행본교체0.
+```text
+"<Mac Player 실행경로>" --remodel3d --unity-druid-remodel --unity-boss-direct 0 --unity-fullrun-qa --unity-boss-arena-review --unity-mute -nosound --unity-qa-sandbox "<QA 루트>/profile-1920" -screen-fullscreen 0 -screen-width 1920 -screen-height 1080 -qa-width 1920 -qa-max-ticks 36000 -qa-retries 3 -output "<QA 루트>/capture-1920" -logFile "<QA 루트>/capture-1920/Player.log"
+```
 
-## MAP PRODUCTION REPORT
+3840×1080 촬영:
 
-STAGE=1-1 보스 아레나8a; MASTER=기존Core원형방·남진입·북출구; OUTER MASS=4방향닫힌회색상부3~6m·overscan51.2m; LARGE/MEDIUM=타일연속면·보행경계수직면(최종숲미술미구현); GROUND=y0평지·그림자·재질미착수; PLAYABLE=Core충돌/동선불변·전투가독성Mac미검증; LANDMARK=실제Core4기둥3.2m; CAMERA QA=START/ARENA/SIDE L/R/EXIT모두Mac대기; TECH QA=CPU13/0·Roslyn오류0·실성능/그림자/로딩/시임미검증; FILES=자기아레나표현·정본만; GIT=자기브랜치비강제push·줄기병합0·배포0; VISUAL VERDICT=미검증; NEXT PASS=Mac8a판정→결함수정후8b.
+```text
+"<Mac Player 실행경로>" --remodel3d --unity-druid-remodel --unity-boss-direct 0 --unity-fullrun-qa --unity-boss-arena-review --unity-mute -nosound --unity-qa-sandbox "<QA 루트>/profile-3840" -screen-fullscreen 0 -screen-width 3840 -screen-height 1080 -qa-width 3840 -qa-max-ticks 36000 -qa-retries 3 -output "<QA 루트>/capture-3840" -logFile "<QA 루트>/capture-3840/Player.log"
+```
+
+성능 계측(촬영/격리 GPU 측정/encode 없음):
+
+```text
+"<Mac Player 실행경로>" --remodel3d --unity-druid-remodel --unity-boss-direct 0 --unity-fullrun-qa --unity-boss-arena-review --unity-boss-arena-metrics-only --unity-mute -nosound --unity-qa-sandbox "<QA 루트>/profile-perf-1920" -screen-fullscreen 0 -screen-width 1920 -screen-height 1080 -qa-width 1920 -qa-max-ticks 36000 -qa-retries 3 -output "<QA 루트>/metrics-1920" -logFile "<QA 루트>/metrics-1920/Player.log"
+"<Mac Player 실행경로>" --remodel3d --unity-druid-remodel --unity-boss-direct 0 --unity-fullrun-qa --unity-boss-arena-review --unity-boss-arena-metrics-only --unity-mute -nosound --unity-qa-sandbox "<QA 루트>/profile-perf-3840" -screen-fullscreen 0 -screen-width 3840 -screen-height 1080 -qa-width 3840 -qa-max-ticks 36000 -qa-retries 3 -output "<QA 루트>/metrics-3840" -logFile "<QA 루트>/metrics-3840/Player.log"
+```
+
+각 출력/arena-review/review.json의 missing·missingScreenshots가 빈 배열인지 먼저 확인한다(metrics-only는 PNG 미요청). 7/7 라벨은 시각 판정이 아니다. moves.jsonl의 actual-activation과 마지막 예고 경계, same-frame PNG/JSON을 대조한다. warning만 포착한 기술은 수집 완료로 세지 않는다. 기본 7기술이 자연 AI에서 나오지 않거나 사망하면 명시적 FAIL이므로 Mac에서 새 증거 없이 PASS로 올리지 않는다.
+
+camera-frames.jsonl에는 실제 position/quaternion/Euler/FOV/marker 거리, 해상도, 영웅 표시 경로와 투영 bounds, 장면 상태·frame/tick·가림수·meshBuilds가 있다. 촬영 JSON의 heroGpuSilhouetteHeightPx/HeightFraction은 실제3D 모델 격리 렌더 계측(무기/망토 포함)이며, 투영 bounds와 별개다. 7기술 active-hero-isolated.png와 본 화면을 나란히 보고 몸만의 높이·가림을 판정한다. source PNG 알파 높이는 HD2D/fallback 전용이다.
+
+진입 load/visible·퇴장·침강 start/end의0.6초 동안 매 렌더 프레임을 남긴다. PNG encode/격리GPU readback은 성능을 오염시키므로 촬영 실행의 장프레임으로175ms 개선을 단정하지 않는다. metrics-only 단독 실행의 long-frames.jsonl/Player.log에서 prepare phase·meshBuilds1·prepare/sync/mode/shader CPU 시간을 확인한다. GPU 드라이버 stall·전체 shader variants·동시 Player 오염의 최종 원인은 Mac 계측 전 미확정이다.
+
+리뷰용 직행 인자는 CombatSaveAllowed=false라 fullrun.json의 clearSaveExists=false 및 stage-cleared-transition-blocked가 나올 수 있다. 이는 기존 fullrun 저장 기대값과 리뷰 인자의 차이다. 별도 arena-review/review.json, 실제 입장→사망/침강→출구→로비 증거 및 격리 경로를 함께 판정한다.

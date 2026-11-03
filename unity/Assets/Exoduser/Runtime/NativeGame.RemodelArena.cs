@@ -8,18 +8,31 @@ namespace Exoduser.UnityPort
     {
         NativeArena3DView r3Arena;
         bool r3ArenaFailed,r3ArenaMode;
+        float r3ArenaPrepareMs,r3ArenaModeMs;
         readonly NativeArena3DCameraState r3ArenaCamera=new NativeArena3DCameraState();
         readonly Dictionary<Renderer,bool> r3FieldRenderers=new Dictionary<Renderer,bool>();
         bool r3TerrainDraw,r3TerrainFoliage;
         CinemachineBrain.UpdateMethods r3FieldCameraUpdate;
+        System.Collections.IEnumerator RemodelArenaPrewarm(){
+            if(!A2Requested)yield break;
+            NativeArenaActorMetrics.CalibrateHero(heroView==null?null:heroView.Model);
+            try{r3Arena=new NativeArena3DView(transform,Exoduser.UnityPort.Core.BossArenaLayout.Generate(0),r3Cam);}catch(Exception e){r3ArenaFailed=true;Debug.LogWarning("[RB1-8] prewarm constructor failed "+e.Message);yield break;}
+            var work=RemodelArenaPrewarmAssets();while(true){bool more=false;try{more=work.MoveNext();}catch(Exception e){r3ArenaFailed=true;r3Arena.Dispose();r3Arena=null;Debug.LogWarning("[RB1-8] prewarm failed,2D fallback "+e.Message);yield break;}if(!more)break;yield return work.Current;}
+        }
+        System.Collections.IEnumerator RemodelArenaPrewarmAssets(){
+            foreach(string sheet in new[]{"base8_v3","walk","attack","beast","transform","dive","emerge"}){var timer=System.Diagnostics.Stopwatch.StartNew();NativeDruidArt.Tex(NativeDruidArt.BodyDir+sheet);Debug.Log("[RB1-8] actor-prewarm "+sheet+" cpuMs="+timer.Elapsed.TotalMilliseconds);yield return null;}
+            for(int i=0;i<8;i++){NativeDruidArt.EmergeCell(i);yield return null;}
+            var work=r3Arena.Prewarm();while(work.MoveNext())yield return work.Current;
+        }
         bool RemodelArenaPrepare()
         {
+            var timer=System.Diagnostics.Stopwatch.StartNew();
             if(r3ArenaFailed||!r3Loaded||!NativeRemodel3D.ForestA2||Simulation.Stage.Arena==null)return false;
             try
             {
                 if(r3Cam==null||r3Vcam==null||r3Marker==null||r3Vcam.GetComponent<CinemachineFollow>()==null)throw new InvalidOperationException("LOOK-001 camera rig missing");
-                if(r3Arena==null||r3Arena.Layout!=Simulation.Stage.Arena){r3Arena?.Dispose();r3Arena=new NativeArena3DView(transform,Simulation.Stage.Arena);}
-                r3Arena.Sync(Simulation);return true;
+                if(r3Arena==null||!r3Arena.Bind(Simulation.Stage.Arena))return false;
+                r3Arena.Sync(Simulation);r3ArenaPrepareMs=(float)timer.Elapsed.TotalMilliseconds;return true;
             }
             catch(Exception e)
             {
@@ -31,6 +44,7 @@ namespace Exoduser.UnityPort
         {
             if(r3ArenaMode!=on)
             {
+                var timer=System.Diagnostics.Stopwatch.StartNew();
                 Remodel3DRestoreBillboards();NativeGroundSkillSurface.RestoreAll();
                 if(on)
                 {
@@ -47,7 +61,8 @@ namespace Exoduser.UnityPort
                     if(r3Brain!=null)r3Brain.UpdateMethod=r3FieldCameraUpdate;
                     if(a2EnemyShadowRoot!=null)a2EnemyShadowRoot.SetActive(NativeRemodel3D.Active);
                 }
-                r3ArenaMode=on;
+                r3ArenaMode=on;r3ArenaModeMs=(float)timer.Elapsed.TotalMilliseconds;
+                Debug.Log("[RB1-8] mode="+on+" tick="+Simulation.TickCount+" cpuMs="+r3ArenaModeMs+" prepareMs="+r3ArenaPrepareMs+" meshBuilds="+(r3Arena==null?0:r3Arena.MeshBuilds));
             }
             NativeRemodel3D.ArenaActive=on;r3Arena?.SetActive(on);arenaView?.SetVisible(!on);
         }

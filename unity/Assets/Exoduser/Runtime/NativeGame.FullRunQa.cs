@@ -45,13 +45,13 @@ namespace Exoduser.UnityPort
             public string clearUiScope = "After natural clear: actual panel callbacks and virtual Escape through NativeGame.Update; not OS/IMGUI button injection.";
             public List<FullRunSample> samples = new List<FullRunSample>();
         }
-        [Serializable] sealed class FullRunLongFrame {public float seconds,ms;public int tick,loadPhase;public bool arena;public string capture,state;}
+        [Serializable] sealed class FullRunLongFrame {public float seconds,ms;public int tick,loadPhase;public bool arena;public string capture,state,arenaPreparePhase;public int arenaMeshBuilds;public float arenaPrepareMs,arenaSyncMs,arenaModeMs,arenaShaderWarmupMs;}
         sealed class FullRunFrameProbe : MonoBehaviour
         {
             public readonly List<float> milliseconds=new List<float>();
             public NativeGame game;public string output;public float started;
             readonly List<FullRunLongFrame> longFrames=new List<FullRunLongFrame>();
-            void Update(){float ms=Time.unscaledDeltaTime*1000;milliseconds.Add(ms);if(ms>100&&game!=null&&game.Simulation!=null){var s=game.Simulation;longFrames.Add(new FullRunLongFrame{seconds=Time.realtimeSinceStartup-started,ms=ms,tick=s.TickCount,loadPhase=s.Stage.LoadPhase,arena=s.Stage.InArena,capture=FullRunFrameCapture(game.fullRunCaptureActivity,game.fullRunLastCaptureFrame,Time.frameCount,game.fullRunLastCaptureActivity),state=s.Player.State});}}
+            void Update(){float ms=Time.unscaledDeltaTime*1000;milliseconds.Add(ms);if(ms>100&&game!=null&&game.Simulation!=null){var s=game.Simulation;longFrames.Add(new FullRunLongFrame{seconds=Time.realtimeSinceStartup-started,ms=ms,tick=s.TickCount,loadPhase=s.Stage.LoadPhase,arena=s.Stage.InArena,capture=FullRunFrameCapture(game.fullRunCaptureActivity,game.fullRunLastCaptureFrame,Time.frameCount,game.fullRunLastCaptureActivity),state=s.Player.State,arenaPreparePhase=NativeArena3DView.PreparePhase,arenaMeshBuilds=game.r3Arena==null?0:game.r3Arena.MeshBuilds,arenaPrepareMs=game.r3ArenaPrepareMs,arenaModeMs=game.r3ArenaModeMs,arenaSyncMs=game.r3Arena==null?0:game.r3Arena.SyncCpuMs,arenaShaderWarmupMs=game.r3Arena==null?0:game.r3Arena.ShaderWarmupMs});}}
             public void Flush(){var text=new System.Text.StringBuilder();foreach(var row in longFrames)text.AppendLine(JsonUtility.ToJson(row));File.WriteAllText(Path.Combine(output,"long-frames.jsonl"),text.ToString());}
         }
 
@@ -60,6 +60,7 @@ namespace Exoduser.UnityPort
             string output = Argument("-output");
             if (string.IsNullOrEmpty(output)) { NativeLobbyVideo.RequestQuit(2); yield break; }
             Directory.CreateDirectory(output); Directory.CreateDirectory(Path.Combine(output, "caps"));
+            BossArenaReviewBegin(output);
             AudioListener.volume = 0; AudioListener.pause = true;
             smokeActive = true; dropSmoke = true; Running = false;
             areaTitleAllowed = true; // Natural input review includes the ordinary area title UI.
@@ -269,6 +270,7 @@ namespace Exoduser.UnityPort
                         catch(Exception ex)when(ex is IOException||ex is ArgumentException){Debug.LogWarning("FULLRUN_POLICY_RETAINED "+ex.GetType().Name);}
                     }
                     FullRunControlInputs.Apply(sim,controlPolicy,navigation,FullRunCanMove,keys,ref move,ref aim,ref attack,ref magic,evade,aux,ref lastChainTick);
+                    BossArenaReviewInputs(navigation,keys,ref move,ref aim,ref attack,ref magic,evade);
                     InputState.Change(keyboard,new KeyboardState(keys.ToArray()));
                     var aimPoint = NativeRemodel3D.Active ? NativeRemodel3D.Point(aim.x,aim.y) : Point(aim.x,aim.y);
                     if (NativeRemodel3D.Active) aimPoint.y = NativeRemodel3D.Point(p.X,p.Y).y;
@@ -276,7 +278,7 @@ namespace Exoduser.UnityPort
                     var ms = new MouseState { position = new Vector2(screen.x,screen.y) };
                     if (attack) ms=ms.WithButton(MouseButton.Left); if (magic) ms=ms.WithButton(MouseButton.Right);
                     InputState.Change(mouse,ms);fullRunAimX=aim.x;fullRunAimY=aim.y;
-                    Running=true; FixedUpdate(); Running=false; UpdateViews();
+                    Running=true; FixedUpdate(); Running=false; UpdateViews(); BossArenaReviewTick();
                     if (Vector2.Distance(destination,new Vector2(p.X,p.Y))>80 && Mathf.Abs(p.X-previousX)+Mathf.Abs(p.Y-previousY)<.01f) stalled++; else stalled=0;
                     previousX=p.X;previousY=p.Y;
                     if (stalled==300) Debug.LogWarning("FULLRUN_STALL " + objective + " " + p.X + "," + p.Y);
@@ -414,6 +416,7 @@ namespace Exoduser.UnityPort
         }
         IEnumerator FullRunShot(string output,string name)
         {
+            if(BossArenaReviewRequested)yield break; // fixed-resolution arena recorder owns screenshots
             bool wide=name=="00-lobby"||name=="combat"||name=="boss-entry"||name=="death"||name=="clear"||name=="clear-difficulty"||name=="clear-lobby";name=fullRunCapturePrefix+name;fullRunCaptureActivity=name;
             yield return new WaitForEndOfFrame();
             fullRunLastCaptureActivity=name;fullRunLastCaptureFrame=Time.frameCount;
@@ -438,6 +441,8 @@ namespace Exoduser.UnityPort
         }
         IEnumerator FullRunEnd(string output,FullRunReceipt receipt,float started)
         {
+            if(BossArenaReviewRequested){yield return new WaitForSecondsRealtime(.65f);yield return new WaitForEndOfFrame();}
+            BossArenaReviewEnd();
             receipt.seconds=Time.realtimeSinceStartup-started;
             File.WriteAllText(Path.Combine(output,"fullrun.json"),JsonUtility.ToJson(receipt,true));
             Debug.Log("FULLRUN_RESULT "+receipt.result+" seconds="+receipt.seconds);

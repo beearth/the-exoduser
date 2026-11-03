@@ -3,54 +3,82 @@ using System.Collections.Generic;
 using Exoduser.UnityPort.Core;
 namespace Exoduser.UnityPort
 {
-    // RB1-8a presentation only. No collision, RNG, player or arena tile writes.
+    // Presentation only: a sealed ground sheet, existing forest meshes on the collision contour.
     public static class NativeArena3DPlan
     {
-        public const int Margin = 128; // 51.2m of closed background beyond each Core edge, including 32:9.
-        public const float Tile = BossArenaLayout.TileSize / 100f, GroundHeight = 0;
-        public struct Vertex { public float X,Y,Z; public Vertex(float x,float y,float z){X=x;Y=y;Z=z;} }
+        public const int Margin=128;
+        public const float Tile=BossArenaLayout.TileSize/100f,GroundHeight=0;
+        public struct Vertex
+        {
+            public float X,Y,Z;
+            public Vertex(float x,float y,float z)
+            {
+                X=x;
+                Y=y;
+                Z=z;
+            }
+        }
+        public struct Grove
+        {
+            public float X,Z,Yaw,Height;
+            public bool South;
+        }
         public sealed class Geometry
         {
-            public readonly List<Vertex> Vertices = new List<Vertex>();
-            public readonly List<int> Triangles = new List<int>();
-            public int TopCells,FloorCells,WallCells;
-            public float MinWallHeight=6,MaxWallHeight=3;
-            internal void Quad(Vertex a,Vertex b,Vertex c,Vertex d)
-            {int n=Vertices.Count;Vertices.Add(a);Vertices.Add(b);Vertices.Add(c);Vertices.Add(d);Triangles.Add(n);Triangles.Add(n+1);Triangles.Add(n+2);Triangles.Add(n);Triangles.Add(n+2);Triangles.Add(n+3);}
+            public readonly List<Vertex> Vertices=new List<Vertex>();
+            public readonly List<int> Triangles=new List<int>();
         }
-        static bool Wall(BossArenaLayout a,int x,int y){return x<0||y<0||x>=BossArenaLayout.Width||y>=BossArenaLayout.Height||a.Tiles[y*BossArenaLayout.Width+x]==1;}
-        static float Height(int x,int y){return (float)(4.5+1.5*Math.Sin(x*.093)*Math.Cos(y*.081));}
         public static Geometry Build(BossArenaLayout a)
         {
             if(a==null||a.Tiles==null||a.Tiles.Length!=BossArenaLayout.Width*BossArenaLayout.Height)throw new ArgumentException("Invalid BossArenaLayout");
             var g=new Geometry();
-            for(int y=-Margin;y<BossArenaLayout.Height+Margin;y++)for(int x=-Margin;x<BossArenaLayout.Width+Margin;x++)
+            float x=-Margin*Tile,z=Margin*Tile,xx=(BossArenaLayout.Width+Margin)*Tile,zz=-(BossArenaLayout.Height+Margin)*Tile;
+            g.Vertices.AddRange(new[]
             {
-                bool wall=Wall(a,x,y);float x0=x*Tile,x1=(x+1)*Tile,z0=-y*Tile,z1=-(y+1)*Tile;
-                float h0=wall?Height(x,y):GroundHeight,h1=wall?Height(x+1,y):GroundHeight,h2=wall?Height(x+1,y+1):GroundHeight,h3=wall?Height(x,y+1):GroundHeight;
-                var p0=new Vertex(x0,h0,z0);var p1=new Vertex(x1,h1,z0);var p2=new Vertex(x1,h2,z1);var p3=new Vertex(x0,h3,z1);
-                g.Quad(p0,p1,p2,p3);g.TopCells++;
-                if(!wall){g.FloorCells++;continue;}
-                g.WallCells++;g.MinWallHeight=Math.Min(g.MinWallHeight,Math.Min(Math.Min(h0,h1),Math.Min(h2,h3)));g.MaxWallHeight=Math.Max(g.MaxWallHeight,Math.Max(Math.Max(h0,h1),Math.Max(h2,h3)));
-                if(!Wall(a,x,y-1))g.Quad(new Vertex(x0,0,z0),new Vertex(x1,0,z0),p1,p0);
-                if(!Wall(a,x+1,y))g.Quad(new Vertex(x1,0,z0),new Vertex(x1,0,z1),p2,p1);
-                if(!Wall(a,x,y+1))g.Quad(new Vertex(x1,0,z1),new Vertex(x0,0,z1),p3,p2);
-                if(!Wall(a,x-1,y))g.Quad(new Vertex(x0,0,z1),new Vertex(x0,0,z0),p0,p3);
+                new Vertex(x,0,z),new Vertex(xx,0,z),new Vertex(xx,0,zz),new Vertex(x,0,zz)
             }
+            );
+            g.Triangles.AddRange(new[]
+            {
+                0,1,2,0,2,3
+            }
+            );
             return g;
+        }
+        public static List<Grove> Forest(BossArenaLayout a)
+        {
+            var result=new List<Grove>();
+            float cx=(a.RoomCx+.5f)*Tile,cy=(a.RoomCy+.5f)*Tile;
+            for(int i=0;i<72;i++)
+            {
+                double angle=i*Math.PI*2/72;
+                float dx=(float)Math.Cos(angle),dy=(float)Math.Sin(angle),r=0;
+                while(r<80&&!a.Blocked((cx+dx*r)*100,(cy+dy*r)*100))r+=.2f;
+                float bx=cx+dx*r,by=cy+dy*r;
+                if(Math.Abs(bx-(a.ExitX+.5f)*Tile)<2.2f&&by<cy)continue;
+                bool south=dy>.35f;
+                float offset=south?4:1.6f;
+                result.Add(new Grove
+                {
+                    X=bx+dx*offset,Z=-(by+dy*offset),Yaw=i*137.507f,Height=3+(float)(1+Math.Sin(i*2.399)) *1.5f,South=south
+                }
+                );
+            }
+            return result;
         }
     }
     public sealed class NativeArena3DCameraState
     {
-        public const float FieldDistance=16.5f,BossDistance=18.3f,TransitionSeconds=.6f;
-        public float Distance { get; private set; } = FieldDistance;
-        float start=FieldDistance,target=FieldDistance,elapsed=TransitionSeconds;
+        public const float FieldDistance=16.5f,BossDistance=16.5f,TransitionSeconds=.6f;
+        public float Distance
+        {
+            get
+            {
+                return FieldDistance;
+            }
+        }
         public void Step(bool bossOrSink,float seconds)
         {
-            float next=bossOrSink?BossDistance:FieldDistance;
-            if(next!=target){start=Distance;target=next;elapsed=0;}
-            elapsed=Math.Min(TransitionSeconds,elapsed+Math.Max(0,seconds));
-            float t=elapsed/TransitionSeconds;t=t*t*(3-2*t);Distance=start+(target-start)*t;
         }
     }
 }

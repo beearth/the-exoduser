@@ -17,6 +17,8 @@ namespace Exoduser.UnityPort
         readonly MaterialPropertyBlock block = new MaterialPropertyBlock();
         float lastX, lastY, contactWidth; bool haveLast;
         public int Stamp;
+        float arenaReferenceBoxHeight;
+        public SpriteRenderer Renderer {get{return main;}}
         public bool Visible { get { return main != null && main.enabled; } }
         public Bounds Bounds { get { return main.bounds; } }
         public Vector3 Anchor { get { return main.transform.position; } }
@@ -71,7 +73,9 @@ namespace Exoduser.UnityPort
         void Put(SpriteRenderer r, Sprite s, float x, float y, float widthPx, float heightPx, int order, float alpha)
         {
             r.enabled = true; r.sprite = s; r.sortingOrder = order;
-            r.transform.position = Point(x, y); r.transform.localScale = new Vector3(widthPx / s.rect.width*PresentationScale, heightPx / s.rect.height*PresentationScale, 1);
+            float scale=PresentationScale;
+            if(NativeRemodel3D.ArenaActive){if(arenaReferenceBoxHeight<=0)arenaReferenceBoxHeight=heightPx/100;scale*=NativeArenaActorMetrics.HeroIdleWorld*2.8f/(arenaReferenceBoxHeight*NativeArenaActorMetrics.BossIdleFraction);}else arenaReferenceBoxHeight=0;
+            r.transform.position = Point(x, y); r.transform.localScale = new Vector3(widthPx / s.rect.width*scale, heightPx / s.rect.height*scale, 1);
             r.color = new Color(1, 1, 1, alpha);
             if(r==main)NativeHd2D.Actor(r,true,contactWidth);
         }

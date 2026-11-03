@@ -35,7 +35,7 @@ namespace Exoduser.UnityPort
         void Remodel3DSync()
         {
             if (!NativeRemodel3D.Requested || Simulation == null) return;
-            if (r3Late == null) { r3Late = gameObject.AddComponent<R3Late>(); r3Late.Late = Remodel3DLate; }
+            if (r3Late == null) { r3Late = gameObject.AddComponent<R3Late>(); r3Late.Late = () => { Remodel3DLate(); BossArenaReviewLate(); }; }
             bool field = !Simulation.Stage.InArena;
             if (field && !r3Loaded && !r3Loading && !r3Failed) StartCoroutine(Remodel3DLoad());
             bool arena = !field && RemodelArenaPrepare();
@@ -67,6 +67,8 @@ namespace Exoduser.UnityPort
                 if (volume.profile != null && volume.profile.TryGet<ColorAdjustments>(out var tone))
                 { tone.postExposure.Override(1f); tone.saturation.Override(-18f); tone.colorFilter.Override(new Color(.82f,.9f,1f)); }
             if (System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "--unity-keyshot-baseline") < 0) HellLightingSetup();
+            r3Cam.enabled=false;
+            yield return RemodelArenaPrewarm();
             r3Loaded = true; r3Loading = false;
             Remodel3DSetActive(!Simulation.Stage.InArena);
         }
@@ -120,6 +122,7 @@ namespace Exoduser.UnityPort
             foreach (var c in chunks.Values) if (c.renderer != null) c.renderer.enabled = false;
             Remodel3DBillboards();
             HellLightingLate();
+            if(NativeRemodel3D.ArenaActive)r3Arena?.Late(NativeRemodel3D.Point(p.X,p.Y));
             if(!NativeRemodel3D.ArenaActive)A2EnemyGrounding();
             else if(a2EnemyShadowRoot!=null)a2EnemyShadowRoot.SetActive(false);
         }

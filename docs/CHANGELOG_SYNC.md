@@ -1,3 +1,7 @@
+## 2026-11-03 21:35 Mac FAIL 수정·21:45 카메라 정정
+
+2b1bbf2a0 병합 후 34°/16.5 고정·영웅 필드 크기 유지·보스 실제 영웅 모델 높이×2.8, 4정점 지면/A2 숲 덩어리/낮은 남쪽/뿌리 기둥·nearest 표면 알파0.2·분할 사전 준비를 적용. 새 --unity-boss-arena-review는 7기술 실제 발동·예고 경계·same-frame PNG/pose·0.6초 연속 프레임·3D 영웅 GPU 실루엣을 기록한다. metrics-only로 캡처 비용을 분리. CPU44/0·Roslyn5어셈블리 오류0, PC실행0·Core변경0·Mac 화면/60fps 미검증. [정본 §14.5](engine/UNITY_BOSS_RM1_DARK_DRUID_20261027.md#145-2135-mac-fail-수정-및-2145-거리-정정--mac-재검수-후보), [새 인자 전체](engine/UNITY_BOSS_ARENA_RB1_7_8_20261103.md).
+
 ## 2026-11-03 21:00 RB1-7 선택 거리·타격 도달 정정
 
 채찍 도달480 해석을 폐기하고 AI RangeMax160 / 실제 타격·예고300으로 맞췄다. 최신 §13.4와 함께 SlashActive/HitAt=10/8(시작 후2틱), 내려찍기 RangeMax260, 돌진 추가 접촉120(몸체 전체 배율 아님)을 적용했다. 최종 하니스99210/0·frame124/0, 실제 Player는 Mac 검수 대기다. 이전480·SFX40/30 표기는 당시 후보 기록으로 대체한다. [정본 §13.5](engine/UNITY_BOSS_RM1_DARK_DRUID_20261027.md#135-2100-정정-적용--선택-거리와-타격-도달-분리).
