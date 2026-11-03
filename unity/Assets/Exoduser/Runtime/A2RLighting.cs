@@ -1,0 +1,62 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+
+namespace Exoduser.UnityPort
+{
+    // Presentation only. A2 geometry, camera, Core and actor drawing stay owned by their existing paths.
+    [DefaultExecutionOrder(25000)]
+    public sealed class A2RLighting : MonoBehaviour
+    {
+        sealed class LightState
+        {
+            public Light light;public Color color;public float intensity,range,strength,bias,normalBias;public Quaternion rotation;public bool enabled;public LightShadows shadows;
+            public LightState(Light l){light=l;color=l.color;intensity=l.intensity;range=l.range;strength=l.shadowStrength;bias=l.shadowBias;normalBias=l.shadowNormalBias;rotation=l.transform.rotation;enabled=l.enabled;shadows=l.shadows;}
+            public void Restore(){if(light==null)return;light.color=color;light.intensity=intensity;light.range=range;light.shadowStrength=strength;light.shadowBias=bias;light.shadowNormalBias=normalBias;light.transform.rotation=rotation;light.enabled=enabled;light.shadows=shadows;}
+        }
+        sealed class FogState{public Renderer renderer;public Material original,replacement;}
+        readonly List<LightState> originalLights=new List<LightState>();
+        readonly List<FogState> fog=new List<FogState>();
+        readonly List<Light> lamps=new List<Light>();readonly List<float> powers=new List<float>();
+        readonly List<Volume> sourceVolumes=new List<Volume>();readonly List<bool> volumeEnabled=new List<bool>();
+        AmbientMode ambientMode;Color sky,equator,ground,ambient;Color background;Camera viewer;Light moon,heroRim,heroFill;GameObject effects;Volume tone;MeshRenderer contact;Func<Vector3> foot;
+        public bool Applied {get;private set;}
+        public void Initialize(Transform world,Camera camera,IEnumerable<Light> lights,IEnumerable<Volume> volumes,Func<Vector3> heroFoot)
+        {
+            viewer=camera;foot=heroFoot;ambientMode=RenderSettings.ambientMode;sky=RenderSettings.ambientSkyColor;equator=RenderSettings.ambientEquatorColor;ground=RenderSettings.ambientGroundColor;ambient=RenderSettings.ambientLight;background=camera.backgroundColor;
+            var unique=new HashSet<Light>();foreach(var l in lights)if(l!=null&&unique.Add(l)){originalLights.Add(new LightState(l));if(l.type==LightType.Directional&&l.enabled)moon=l;if(l.name=="Hero cool edge")heroRim=l;if(l.name=="Hero neutral fill")heroFill=l;}
+            foreach(var v in volumes)if(v!=null&&!sourceVolumes.Contains(v)){sourceVolumes.Add(v);volumeEnabled.Add(v.enabled);}
+            foreach(var r in world.GetComponentsInChildren<Renderer>(true)){var m=r.sharedMaterial;if(m==null)continue;bool height=m.shader.name=="EXODUSER/A2HeightFog",shaft=m.shader.name=="EXODUSER/A2Atmosphere";if(!height&&!shaft)continue;var copy=new Material(m);if(height){copy.SetColor("_Color",new Color(.025f,.045f,.061f,1));copy.SetFloat("_Density",.032f);copy.SetFloat("_Falloff",.8f);}else copy.SetColor("_Color",new Color(.50f,.68f,.78f,.042f));fog.Add(new FogState{renderer=r,original=m,replacement=copy});}
+            effects=new GameObject("A2R1 C10 lighting only");effects.transform.SetParent(world,true);
+            tone=new GameObject("A2R1 C10 color and depth").AddComponent<Volume>();tone.transform.SetParent(effects.transform,false);tone.isGlobal=true;tone.priority=150;
+            var profile=ScriptableObject.CreateInstance<VolumeProfile>();profile.name="A2R1 Neutral C10 transfer";profile.Add<Tonemapping>(true).mode.Override(TonemappingMode.Neutral);
+            var color=profile.Add<ColorAdjustments>(true);color.postExposure.Override(1.30f);color.contrast.Override(0);color.saturation.Override(0);
+            var balance=profile.Add<WhiteBalance>(true);balance.temperature.Override(-6);balance.tint.Override(-4);
+            var split=profile.Add<SplitToning>(true);split.shadows.Override(new Color(.47f,.49f,.53f));split.highlights.Override(new Color(.52f,.51f,.49f));split.balance.Override(-15);
+            var bloom=profile.Add<Bloom>(true);bloom.intensity.Override(.055f);bloom.threshold.Override(1.5f);bloom.scatter.Override(.5f);
+            var depth=profile.Add<DepthOfField>(true);depth.mode.Override(DepthOfFieldMode.Gaussian);depth.gaussianStart.Override(24);depth.gaussianEnd.Override(38);depth.gaussianMaxRadius.Override(.6f);depth.highQualitySampling.Override(true);tone.sharedProfile=profile;
+            var quad=GameObject.CreatePrimitive(PrimitiveType.Quad);quad.name="A2R1 short hero ground contact";Destroy(quad.GetComponent<Collider>());quad.transform.SetParent(effects.transform,true);contact=quad.GetComponent<MeshRenderer>();contact.sharedMaterial=new Material(Resources.Load<Shader>("Shaders/HD2DContact"));contact.sharedMaterial.SetFloat("_Opacity",1.25f);contact.shadowCastingMode=ShadowCastingMode.Off;contact.receiveShadows=false;
+            SetLook(false);
+        }
+        public void AddLamp(string id,Vector3 position,float radius,float power,Color color)
+        {
+            var l=new GameObject(id).AddComponent<Light>();l.transform.SetParent(effects.transform,true);l.transform.position=position;l.type=LightType.Point;l.range=radius;l.intensity=power;l.color=color;l.shadows=LightShadows.Soft;l.shadowStrength=.9f;l.shadowBias=.025f;l.shadowNormalBias=.04f;lamps.Add(l);powers.Add(power);
+        }
+        public void SetLook(bool on)
+        {
+            Applied=on;foreach(var s in originalLights)s.Restore();for(int i=0;i<sourceVolumes.Count;i++)sourceVolumes[i].enabled=on?false:volumeEnabled[i];foreach(var f in fog)if(f.renderer!=null)f.renderer.sharedMaterial=on?f.replacement:f.original;
+            RenderSettings.ambientMode=on?AmbientMode.Trilight:ambientMode;RenderSettings.ambientSkyColor=on?new Color(.045f,.060f,.085f):sky;RenderSettings.ambientEquatorColor=on?new Color(.018f,.027f,.045f):equator;RenderSettings.ambientGroundColor=on?new Color(.006f,.010f,.018f):ground;if(!on)RenderSettings.ambientLight=ambient;viewer.backgroundColor=on?new Color(.002f,.004f,.009f):background;
+            effects.SetActive(on);if(!on)return;
+            foreach(var s in originalLights){var l=s.light;if(l.type==LightType.Directional&&l.enabled){l.color=new Color(.36f,.56f,.65f);l.intensity=1.05f;l.transform.rotation=Quaternion.Euler(32,-44,0);l.shadows=LightShadows.Soft;l.shadowStrength=.9f;l.shadowBias=.025f;l.shadowNormalBias=.04f;RenderSettings.sun=l;}else if(l.name=="A2 횃불 불꽃"){l.color=new Color(1,.46f,.16f);l.range=6.5f;l.intensity=4.8f;l.shadowStrength=.9f;l.shadowBias=.025f;l.shadowNormalBias=.04f;}else if(l.name=="Hero neutral fill"){l.intensity=2.4f;l.color=new Color(.94f,.96f,1);}else if(l.name=="Hero cool edge"){l.color=new Color(.78f,.85f,.91f);l.intensity=2.2f;l.range=3.2f;}}
+        }
+        void LateUpdate()
+        {
+            if(!Applied||foot==null)return;var p=foot();var away=moon!=null?moon.transform.forward:new Vector3(-.6f,0,.6f);away.y=0;away.Normalize();contact.transform.SetPositionAndRotation(p+Vector3.up*.018f+away*.09f,Quaternion.Euler(90,Mathf.Atan2(away.x,away.z)*Mathf.Rad2Deg,0));contact.transform.localScale=new Vector3(.78f,.42f,1);
+            if(heroRim!=null)heroRim.transform.position=p-away*.85f+Vector3.up*1.4f;
+            for(int i=0;i<lamps.Count;i++)lamps[i].intensity=powers[i]*(1+.035f*Mathf.Sin(Time.unscaledTime*4.7f+i*.9f)+.02f*Mathf.Sin(Time.unscaledTime*7.3f+i));
+        }
+        void OnDestroy(){foreach(var f in fog)if(f.replacement!=null)Destroy(f.replacement);if(tone!=null&&tone.sharedProfile!=null)Destroy(tone.sharedProfile);}
+    }
+}

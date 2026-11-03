@@ -1,0 +1,2 @@
+float4 _A2RTargets[8];int _A2RTargetCount;float _A2RAspect,_A2RFade;
+float A2RFadeMask(float3 world,float4 positionCS){float2 uv=GetNormalizedScreenSpaceUV(positionCS);float eye=-TransformWorldToView(world).z;float fade=0;for(int k=0;k<min(8,_A2RTargetCount);k++){float4 t=_A2RTargets[k];float2 d=(uv-t.xy)*float2(_A2RAspect,1);float circle=1-smoothstep(.065,.12,length(d));fade=max(fade,circle*(1-smoothstep(t.z-.12,t.z+.12,eye)));}return fade*saturate(_A2RFade);}

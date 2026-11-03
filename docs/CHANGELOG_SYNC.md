@@ -57365,3 +57365,11 @@ Mac 원본4장 몬스터16종 공통·배송: 실기동 검수후 개인/`unity/
 2026-11-02 Mac 공통 6ad의 A2 지면 데칼 수신 기술 후보: `HellGroundPBR`·`A2RootSurface` 각각 DBuffer 변종·설치 URP 표준 수신 호출 6줄만 추가. 격리 QA 플래그/실제 DBuffer ShaderGraph 재질을 분리해 기존 평면 `M_Decal_blood`를 잘못된 양성 대조로 쓰지 않는다. 정확 소스 `afdd4ab` Settings QA ARM64 빌드 Succeeded/오류0·같은 앱 Metal M1 23/23·평면과 실제 A2 흙/뿌리/목교 1920 실창 및 3840 직접 RT 수신 기술 PASS. raw outside 차분은 비0이며 `effect>self+4` 필터 outside0과 구분한다. 일반 앱 파일 전달 후에도 Impact R4 VISUAL FAIL·맵 전체 RETOUCH 보존. [계약·수치·검증 경계](engine/UNITY_A2_DECAL_RECEIVER_20261101.md).
 
 Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반 build errors0, 정규화·strict/deep 서명 PASS, 이전앱3SHA CAS/보존 후 `/Users/fordeargamers/Applications/EXODUSER.app` 설치. 원본/stage/설치 211파일 전체 manifest SHA `54d8ae1b…` 동일, QA/일반 Runtime·Core DLL SHA 동일. 일반 저장11·QA plist2 최종 원문 동일, 일반 앱 실행0. 실제 A2 지면/뿌리/목교 기술 수신 VISUAL PASS 범위만 해당, 맵 전체 RETOUCH/Impact R4 FAIL 유지. [상세](engine/UNITY_A2_DECAL_RECEIVER_20261101.md#일반-mac-앱-파일-전달-2026-11-02).
+
+
+## 2026-11-03 A2R 기존 원화·C10 조명·원형 가림 소스 인계
+
+- NativeGame.A2Field의 초기화/기존 촬영 fixture 연결부에 A2R 플래그 경로만 추가. A2Field 구도·원근·Core·배우 그리기는 유지한다.
+- Runtime A2RLighting/A2RWebAssets/A2ROcclusion/NativeGame.A2Redesign, Resources/A2R의 기존 원화34개·기존 노멀/바닥/늪 및 데이터·가림 셰이더, 기존 A2ToxicRiver의 기본값0 원화 혼합 옵션을 추가했다. 원화는 a5c287157에서 복용했고 SourceMap ID·XY를 유지한다.
+- Editor A2RBuilder는 플랫폼에 맞는 빌드 경로와 자기 원화 import 설정만 소유한다. Mac 촬영 계약은 A/B8컷+고정 위치 가림3컷+4096 구조도 원본/실제 Core 좌표 JSON이다. PC에서는 컴파일만 확인하며 Unity 빌드·촬영·시각 PASS를 주장하지 않는다.
+- 수치·경계: [UNITY_A2R_EXISTING_ASSETS_20261103.md](engine/UNITY_A2R_EXISTING_ASSETS_20261103.md). 커밋은 CTO 직접 승인. 일반 실행·바로가기·배포 반영 없음.
