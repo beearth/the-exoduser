@@ -1,3 +1,5 @@
+2026-11-03 규칙 정리(사용자 "전부 추천대로", 51항목): CLAUDE.md·AGENTS.md를 unity/main과 같은 본문으로 바꿨다(unity/main 7bc7a3518). docs 정본은 이제 origin/unity/main이다. main에서 매뉴얼 v4.1·운영 매뉴얼·품질 기준·REPO_SYNC·보스/캐릭터 보드·실버 헬·로비 조사·구르기 문서와 신규 DOCS_INDEX·TERMINAL_FAILURE_FALLBACK은 위치 안내만 남긴다(`git show origin/unity/main:<경로>`). 공통 문서 5개(API연결_가이드·BUILD_BACKUP_POLICY·2_3·IMAGE_PROVIDER_PRIORITY·MAP_OBJECT_SEEDREAM)는 두 브랜치에 같은 파일로 둔다. 웹(main)은 Steam 라이브판 유지보수만 한다(CLAUDE.md 부록 W).
+
 ## 2026-11-03 운영 매뉴얼 §2.2 — 빌드는 git이 관리
 
 - `docs/0마스터플랜/AGENT_OPERATIONS_MANUAL.md` §2.2에 추가: 확인이 끝난 빌드는 남기지 않고 보고서에 커밋 SHA를 적는다. 지킬 변경은 커밋·push로 지킨다(백업 사본·로컬 보관 빌드 금지). 작업 종료 시 미커밋 수정 0. 배포용 패키지만 예외.
