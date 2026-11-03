@@ -199,6 +199,8 @@ namespace Exoduser.UnityPort
             // Web nextDiffPop consumes its keys before background window handlers.
             if(nextDifficulty.Active){UpdateViews();return;}
             if(a15DirectReview&&HandleA15DirectKeys())return;
+            // Web #gcModal over the inventory is modal: window hotkeys wait until the salvage confirm closes.
+            if(inventory.Open&&inventory.JunkConfirmOpen&&!inventoryKeysSmoke){inventory.PollKeys(Simulation.Player.Level);UpdateViews();return;}
             if(HandlePanelHotkeys())return;
             // Web stat window: ESC blurs the search box first, then closes; K/TAB switch straight to skills/inventory (not while typing).
             if(stats.Open){

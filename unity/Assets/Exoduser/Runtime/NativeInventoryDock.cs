@@ -78,7 +78,9 @@ namespace Exoduser.UnityPort {
             float wx=oss?518:12,ww=oss?1390:1896,lx=oss?548:42,lw=oss?1330:1836;
             DrawWindow(new Rect(wx,12,ww,1056),oss);
             DrawNavigation(lx,lw);
-            NativePanelTitle.Draw(new Rect(700,72,520,64),"인벤토리");DrawHeaderLine(power,lx-42,close);
+            // Web 872f7326: the "인벤토리" title + eye medallion are gone (they covered the shared tab bar's 대장간 [G]); the header line stays.
+            DrawHeaderLine(power,lx-42,close);
+            bool enabledBelow=GUI.enabled;if(junkConfirm)GUI.enabled=false;   // web #gcModal covers the window: nothing below takes input
             DrawBody(new Rect(lx,182,lw,tall?858:802),lx,lw);
             if(oss)DrawOssuaryPage(level,power);
             else if(Page==PageCrystals)DrawCrystalsPage(level,power);
@@ -89,6 +91,7 @@ namespace Exoduser.UnityPort {
                 DrawRightPanel(level,power);
                 DrawActionRow(level);
             }
+            GUI.enabled=enabledBelow;DrawJunkConfirm();
             GUI.matrix=old;
         }
 
@@ -383,19 +386,23 @@ namespace Exoduser.UnityPort {
                 if(NativeSilverHellUi.Button(r1,GUIContent.none,GUIStyle.none)&&!reqFail){if(bag)Equip(it,level);else Unequip(it.slot);}
                 startX=r1.xMax;
                 if(bag){
-                    // salvage (악의+N) needs the salvage value table: not ported, shape only
-                    string sal="분해 (악의오브+미이식)";var r2=new Rect(r1.xMax+6,1004,TextWidth(sal,12,500)+28,34);
-                    PlateFace(r2,false);Txt(r2,sal,12,C(194,191,185),500,TextAnchor.MiddleCenter,true);startX=r2.xMax;
+                    // Web invActionBtns: "분해 (악의오브+N)" = dropItem(idx) (favourite refused, 1 s repeat guard).
+                    string sal="분해 (악의오브+"+InventoryState.SalvageValue(it)+")";var r2=new Rect(r1.xMax+6,1004,TextWidth(sal,12,500)+28,34);
+                    if(PlateButton(r2,sal,12))SalvageSelected();startX=r2.xMax;
                 }
                 startX+=8;
             }
+            // Web flex row: #invJunkSelBtn (non-junk > 0) then #invJunkBtn (junk > 0), centred together in the remaining width.
             int n=0;foreach(var b in State.Bag)if(!b.junk&&!b.fav)n++;
-            if(n==0)return;
-            // Web invJunkSelBtn: every non-favorite bag item becomes junk.
-            string junk="전체 쓰레기 지정 ("+n+"개)";float jw=156;float jx=startX+(1882-startX)/2f-jw/2f;
-            if(PlateButton(new Rect(jx,1004,jw,34),junk,12)){
-                foreach(var b in State.Bag)if(!b.fav)b.junk=true;
-            }
+            var junkList=State.JunkItems();
+            if(n==0&&junkList.Count==0)return;
+            string sel=n>0?"전체 쓰레기 지정 ("+n+"개)":null;
+            string jk=junkList.Count>0?"쓰레기 전부 분해 ("+junkList.Count+"개 -> 악의오브 +"+State.JunkSalvageTotal()+")":null;
+            float sw=sel!=null?TextWidth(sel,12,500)+28:0,kw=jk!=null?TextWidth(jk,12,500)+28:0,gap=sel!=null&&jk!=null?8:0;
+            float x=startX+(1882-startX)/2f-(sw+gap+kw)/2f;
+            // Web invJunkSelBtn: every non-favourite bag item becomes junk.
+            if(sel!=null&&PlateButton(new Rect(x,1004,sw,34),sel,12)){foreach(var b in State.Bag)if(!b.fav)b.junk=true;}
+            if(jk!=null&&PlateButton(new Rect(x+sw+gap,1004,kw,34),jk,12))OpenJunkConfirm();
         }
     }
 }

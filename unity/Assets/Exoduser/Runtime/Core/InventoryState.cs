@@ -76,6 +76,33 @@ namespace Exoduser.UnityPort.Core {
   public bool TryUnequip(string slot,out string reason){int index=Array.IndexOf(Slots,slot);reason="No equipped item";if(index<0||Equipped[index]==null)return false;if(slot=="ossuary"){reason="The ossuary is not unequipped from the equipment page";return false;}var item=Equipped[index];if(!Admitted(item,out reason))return false;
    // Original unequip checks the grid, not BAG_MAX: the 300-item grid is the limit.
    Bag.Add(item);int x,y;if(!FindSpace(Bag.Count-1,out x,out y)){Bag.RemoveAt(Bag.Count-1);reason="No bag space";return false;}item._gx=x;item._gy=y;Equipped[index]=null;reason=null;return true;}
+  // Web salvageVal (game.html): base by economy rarity (_itemEconomyRarity: min(r,4), negative/non-integer -> 0)
+  // + 50% of the legacy per-level enhance cost (truncated like the web ~~) + tier*2.
+  // The web _enhRefund (enhance moved from a legacy item) has no Unity field, so that max() branch never applies here.
+  static readonly int[] SalvageBase={1000,2000,10000,20000,50000};
+  static readonly double[] SalvageRarityMul={0.5,0.7,1.0,1.3,1.8};
+  public static int SalvageValue(InventoryItem it){
+   if(it==null)return 0;int r=it.rarity>=0?Math.Min(it.rarity,4):0;int refund=0;
+   if(it.enh>0){double total=0;for(int i=0;i<it.enh;i++)total+=Math.Ceiling(Math.Max(1,Math.Ceiling((1+i*0.15)*1.5))*SalvageRarityMul[r]);refund=(int)(total*0.5);}
+   return SalvageBase[r]+refund+it.tier*2;
+  }
+  // Web invJunkBtn candidates: junk-marked, not favourite (equipped items are never in Bag).
+  public List<InventoryItem> JunkItems(){var list=new List<InventoryItem>();foreach(var it in Bag)if(it!=null&&it.junk&&!it.fav)list.Add(it);return list;}
+  public int JunkSalvageTotal(){int total=0;foreach(var it in Bag)if(it!=null&&it.junk&&!it.fav)total+=SalvageValue(it);return total;}
+  // Web invJunkBtn confirm: removes every junk non-favourite bag item and returns the orbs gained (caller adds them to G.mats).
+  public int SalvageJunk(out int count){
+   count=0;int total=0;
+   for(int i=Bag.Count-1;i>=0;i--){var it=Bag[i];if(it==null||!it.junk||it.fav)continue;total+=SalvageValue(it);Bag.RemoveAt(i);count++;}
+   if(count>0&&Selected!=null&&!Owns(Selected))Selected=null;
+   return total;
+  }
+  // Web dropItem(idx): one non-favourite bag item; returns the orbs gained, or -1 when refused.
+  public int SalvageOne(InventoryItem it){
+   int idx=it==null?-1:Bag.IndexOf(it);if(idx<0||it.fav)return -1;
+   int value=SalvageValue(it);Bag.RemoveAt(idx);
+   if(ReferenceEquals(Selected,it))Selected=Bag.Count==0?null:Bag[Math.Min(idx,Bag.Count-1)];
+   return value;
+  }
   public void Sort(){var order=new Dictionary<InventoryItem,int>();for(int i=0;i<Bag.Count;i++)order.Add(Bag[i],i);Bag.Sort((a,b)=>{int d=b.fav.CompareTo(a.fav);if(d!=0)return d;d=a.junk.CompareTo(b.junk);if(d!=0)return d;d=b.rarity.CompareTo(a.rarity);if(d!=0)return d;d=ItemPower(b).CompareTo(ItemPower(a));if(d!=0)return d;d=b.itemLv.CompareTo(a.itemLv);if(d!=0)return d;d=b.enh.CompareTo(a.enh);return d!=0?d:order[a].CompareTo(order[b]);});for(int i=0;i<Bag.Count;i++){Bag[i]._gx=i%5*2;Bag[i]._gy=i/5*2;}}
   public static int ItemPower(InventoryItem i){if(i==null)return 0;double p=i.enh*80+i.itemLv*3;
    p+=i.slot=="weapon"&&i.spd>0?i.atk*i.spd*6:i.slot=="bow"&&i.bowSpd>0?i.atk*i.bowSpd*6:i.atk*6;
