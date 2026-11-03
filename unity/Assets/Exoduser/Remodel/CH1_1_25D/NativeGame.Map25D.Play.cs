@@ -58,8 +58,9 @@ namespace Exoduser.UnityPort
             map25DPlayReceipt.steps.Add(new Map25DPlayStep{id=id,lobby=lobby.StageName,practice=FirstPracticeStage,note=note,player=new Vector2(Simulation.Player.X,Simulation.Player.Y),seconds=Time.realtimeSinceStartup-map25DPlayStart,simulationTick=Simulation.TickCount,instances=FindObjectsByType<Map25DEnvironment>(FindObjectsInactive.Include).Length,fieldActive=map25DPresentationOn,fps=1/Mathf.Max(.0001f,Time.unscaledDeltaTime)});Map25DWritePlay();
         }
         // Mac review players cannot resize after launch; -screen-width/-screen-height then sets the capture size for the whole run.
+        const string Map25DWorldOnlyNote="Captures are world-only RenderTexture renders (batchmode); OnGUI HUD not in images";
         static bool Map25DLaunchSizeFixed=>!string.IsNullOrEmpty(Argument("-screen-width"))&&!string.IsNullOrEmpty(Argument("-screen-height"));
-        void Map25DWritePlay(){File.WriteAllText(Path.Combine(map25DPlayOutput,"play-smoke.json"),JsonUtility.ToJson(map25DPlayReceipt,true));}
+        void Map25DWritePlay(){if(Map25DCaptureWorldOnly&&!map25DPlayReceipt.notes.Contains(Map25DWorldOnlyNote))map25DPlayReceipt.notes.Add(Map25DWorldOnlyNote);File.WriteAllText(Path.Combine(map25DPlayOutput,"play-smoke.json"),JsonUtility.ToJson(map25DPlayReceipt,true));}
         IEnumerator Map25DInputKey(Key key)
         {
             var keyboard=Keyboard.current;if(keyboard==null)keyboard=InputSystem.AddDevice<Keyboard>();

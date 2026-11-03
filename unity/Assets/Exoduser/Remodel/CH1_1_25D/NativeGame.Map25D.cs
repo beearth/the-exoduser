@@ -145,7 +145,7 @@ namespace Exoduser.UnityPort
                         StepInput(dx,dy,p.X,p.Y-100,false,false);nextTick+=1/60f;
                     }
                     UpdateViews();yield return null;
-                    if(Time.realtimeSinceStartup-start>=shot/20f){yield return new WaitForEndOfFrame();var texture=ScreenCapture.CaptureScreenshotAsTexture();pixels.Add(texture.GetPixels32());Destroy(texture);rc.videoTimes.Add(Time.realtimeSinceStartup-start);shot++;}
+                    if(Time.realtimeSinceStartup-start>=shot/20f){yield return new WaitForEndOfFrame();var texture=Map25DGrabTexture();pixels.Add(texture.GetPixels32());Destroy(texture);rc.videoTimes.Add(Time.realtimeSinceStartup-start);shot++;}
                 }
                 rc.frames=shot;rc.realSeconds=Time.realtimeSinceStartup-start;rc.fps=shot/rc.realSeconds;rc.p50Ms=rc.p95Ms=0;rc.scope+=". motion.json fps는 화면 readback 표본율(목표20Hz)이며 GPU FPS는 별도 1920/3840-fps.json. BMP 저장은 동작 측정 후 실행";
                 File.WriteAllText(Path.Combine(output,"motion.json"),JsonUtility.ToJson(rc,true));
@@ -155,7 +155,21 @@ namespace Exoduser.UnityPort
             File.WriteAllText(Path.Combine(output,"player.json"),JsonUtility.ToJson(rc,true));
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(.4f);Application.Quit(rc.failures.Count==0?0:2);
         }
-        static void SaveMap25DScreen(string path){var t=ScreenCapture.CaptureScreenshotAsTexture();File.WriteAllBytes(path,t.EncodeToPNG());Destroy(t);}
+        static void SaveMap25DScreen(string path){var t=Map25DGrabTexture();File.WriteAllBytes(path,t.EncodeToPNG());Destroy(t);}
+        // Windowed players can read the back buffer. A -batchmode GPU player returns null there, so render the
+        // base camera (its stack carries the pixel-actor overlay) into a RenderTexture instead. OnGUI HUD is absent
+        // from that path; it is recorded as a note so judges compare world-only proofs. Both failing stops loudly.
+        public static bool Map25DCaptureWorldOnly {get;private set;}
+        static Texture2D Map25DGrabTexture()
+        {
+            if(!Application.isBatchMode){var screen=ScreenCapture.CaptureScreenshotAsTexture();if(screen!=null)return screen;}
+            Camera cam=null;foreach(var c in Camera.allCameras){if(c==null||!c.isActiveAndEnabled||c.targetTexture!=null)continue;var data=c.GetUniversalAdditionalCameraData();if(data!=null&&data.renderType!=CameraRenderType.Base)continue;if(cam==null||c.depth>cam.depth)cam=c;}
+            int width=Screen.width>0?Screen.width:1920,height=Screen.height>0?Screen.height:1080;
+            if(cam==null){Debug.LogError("[Map25D] MAP25D_CAPTURE_NULL: no back buffer and no base camera to render");Application.Quit(4);throw new InvalidOperationException("MAP25D_CAPTURE_NULL");}
+            var rt=new RenderTexture(width,height,24,RenderTextureFormat.ARGB32,RenderTextureReadWrite.sRGB){name="Map25D world-only capture"};rt.Create();var old=RenderTexture.active;
+            try{RenderPipeline.SubmitRenderRequest(cam,new RenderPipeline.StandardRequest{destination=rt});RenderTexture.active=rt;var image=new Texture2D(width,height,TextureFormat.RGBA32,false);image.ReadPixels(new Rect(0,0,width,height),0,0);image.Apply();Map25DCaptureWorldOnly=true;return image;}
+            finally{RenderTexture.active=old;rt.Release();Destroy(rt);}
+        }
         static void SaveMap25DBmp(string path,Color32[] pixels,int width,int height){
             // Texture2D pixel rows and positive-height BMP both run from bottom to top.
             var bytes=new byte[54+width*height*4];using(var stream=new MemoryStream(bytes))using(var writer=new BinaryWriter(stream)){writer.Write((ushort)0x4d42);writer.Write(bytes.Length);writer.Write(0);writer.Write(54);writer.Write(40);writer.Write(width);writer.Write(height);writer.Write((ushort)1);writer.Write((ushort)32);writer.Write(0);writer.Write(width*height*4);writer.Write(0);writer.Write(0);writer.Write(0);writer.Write(0);}
