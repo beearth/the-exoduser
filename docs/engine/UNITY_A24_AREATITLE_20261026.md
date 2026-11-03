@@ -82,3 +82,8 @@ panel.ForcedPulseAge                                                            
 | 역순 `git apply -R` 13개 | 전부 통과, 되돌린 뒤 `NativeGame*`·`NativePauseMenu*` 변경 0 |
 
 산출물: `E:/exoduser-wt/_out/pc-a24/v13/`(`build/`, `build.log`, `receipt.json`, `caps_area/`, `caps_boss/`, 실행 스크립트 `run_area.ps1`·`run_boss.ps1`). A24 원본·untracked 파일은 건드리지 않았다.
+
+
+## 2026-11-04 00:50 목표 패널 문자열 조판
+
+NativeObjectivePanel은 ls0의 경험치·지역 처치·악의오브/수치 문자열을 하나의 GUI.Label로 조판한다. Width_와 그리기는 NativeUiTextRun.Layout의 같은 전체 GUIStyle.CalcSize 폭을 사용한다. ls.4 등 자간이 있으면 text element별 기존 간격/trailing advance를 유지하고 결합문자/서로게이트를 분리하지 않는다. panel/row Rect·좌우anchor·폰트·크기·색·그림자·수치/Core는 보존한다. 조판31검사PASS·PC 컴파일 오류0이며 새 Mac 같은 해상도 전후 화면 판정은 대기다.

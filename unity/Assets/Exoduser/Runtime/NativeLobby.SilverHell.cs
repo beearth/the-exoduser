@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 namespace Exoduser.UnityPort
 {
@@ -8,10 +9,10 @@ namespace Exoduser.UnityPort
         internal static readonly Color Text=new Color(214/255f,211/255f,205/255f),Dim=new Color(138/255f,141/255f,141/255f),Bright=new Color(242/255f,240/255f,236/255f);
         // Linear Player의 IMGUI 글자 채널은 sRGB→Linear 변환을 한 번 더 적용한다. 텍스처·GUI.color에는 적용하지 않는다.
         internal static Color TextColor(Color srgb){return QualitySettings.activeColorSpace==ColorSpace.Linear?srgb.gamma:srgb;}
-        internal static void Label(Rect rect,string text,GUIStyle style){var c=style.normal.textColor;try{style.normal.textColor=TextColor(c);NativeUiAudit.Label(rect,text,style);}finally{style.normal.textColor=c;}}
-        internal static void Label(Rect rect,GUIContent text,GUIStyle style){var c=style.normal.textColor;try{style.normal.textColor=TextColor(c);NativeUiAudit.Label(rect,text,style);}finally{style.normal.textColor=c;}}
-        internal static void Label(Rect rect,string text){Label(rect,text,GUI.skin.label);}
-        internal static void Label(Rect rect,GUIContent text){Label(rect,text,GUI.skin.label);}
+        internal static void Label(Rect rect,string text,GUIStyle style,[CallerFilePath]string file="",[CallerLineNumber]int line=0){var c=style.normal.textColor;try{style.normal.textColor=TextColor(c);NativeUiAudit.Label(rect,text,style,file,line);}finally{style.normal.textColor=c;}}
+        internal static void Label(Rect rect,GUIContent text,GUIStyle style,[CallerFilePath]string file="",[CallerLineNumber]int line=0){var c=style.normal.textColor;try{style.normal.textColor=TextColor(c);NativeUiAudit.Label(rect,text,style,file,line);}finally{style.normal.textColor=c;}}
+        internal static void Label(Rect rect,string text,[CallerFilePath]string file="",[CallerLineNumber]int line=0){Label(rect,text,GUI.skin.label,file,line);}
+        internal static void Label(Rect rect,GUIContent text,[CallerFilePath]string file="",[CallerLineNumber]int line=0){Label(rect,text,GUI.skin.label,file,line);}
         internal static bool Button(Rect rect,string text,GUIStyle style){return Button(rect,new GUIContent(text),style);}
         internal static bool Button(Rect rect,GUIContent text,GUIStyle style){if(text==GUIContent.none||string.IsNullOrEmpty(text.text))return NativeUiAudit.Button(rect,text,style);var n=style.normal.textColor;var h=style.hover.textColor;var a=style.active.textColor;var f=style.focused.textColor;try{style.normal.textColor=TextColor(n);style.hover.textColor=TextColor(h);style.active.textColor=TextColor(a);style.focused.textColor=TextColor(f);return NativeUiAudit.Button(rect,text,style);}finally{style.normal.textColor=n;style.hover.textColor=h;style.active.textColor=a;style.focused.textColor=f;}}
         internal static bool Button(Rect rect,string text){return Button(rect,text,GUI.skin.button);}
