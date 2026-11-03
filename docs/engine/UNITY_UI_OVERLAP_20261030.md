@@ -331,3 +331,12 @@ R2의물리픽셀그룹+기존배율은실제그리기의그룹원점을중복�
 | 웹 실제 칸 | 1920에서제단끝1587,격자간격12,로드맵바깥1599/270. 제목시작1622/폭224/오른끝1846 | 웹3333실제E모체로드맵DOM와PNG수집. 기존Native1562/284/끝1846가왼쪽60침범 |
 | 최소 수정 | DrawRoad의영역/제목/구분선/본문만x1622·폭224. 오른쪽끝1846·기존y/서체·제단안내·나머지배치유지 | 새정식/M1/1410장·실제1x전미검증 |
 | 실행 구분 | R4정식38489478/errors0. M1은23단계·32PNG결과후종료지연,새완료PASS로세지않음 | 정상종료/정리결과별도확인. R3/R4/R5증거혼용금지 |
+
+
+## 2026-11-03 CTO 스크롤 원점 누락 교정 / Mac 게이트
+
+BeginGroup 보정만으로 BeginScrollView 안의 글자 위치를 보장할 수 없었다. 두 스크롤 오버로드에서 호출 전 expected를 부모의 groupCorrection까지 포함해 구하고, 실제 GUI.BeginScrollView 반환 clamped scroll와 view.position으로 p0=-Round(-scroll-view.position)을 구한다. Repaint 계측일 때 이전 보정을 push하고 expected−(GUIToScreenPoint(p0)−origin)을 적용하며 EndScrollView에서 pop한다. GUI 그리기·matrix·반환 scroll·겹침 분석기의 임계·문자/소스 제외는 바꾸지 않는다.
+
+실제 잉크 대조는 Tools/ui-overlap/scroll-ink.py 및 fixtures/scroll-ink/manifest.json에 있다. 실제 R3 ko 튜토리얼0/보관함의 2560×1600·1600×900 무보간 crop4개(원본 PNG/JSON SHA 포함)를 직접 보고 선택했다. 알려진 잉크 상자 양성4/4와 기존 실제 감사 Rect 음성4/4를 구분하며, R3 전체 PNG/JSON에 --candidate를 실행하면 네 건 모두 FAIL을 반환한다. 글자 선택 source·text와 물리 ROI는 manifest에 명시한다. 이 대조군은 제품 새 캡처를 만들거나 좌표를 수정한 증거가 아니다.
+
+Mac은 새 HEAD 정식 패키지의 실제 캡처 폴더에 --candidate를 실행하여 네 실제 글자가 계측 Rect 안에 포함되는지 확인해야 한다. 누락·빈 잉크·거대한 대체 상자·해상도 불일치는 실패한다. 새 양성 결과는 Mac 대기다. --self-test만으로 제품 PASS를 선언하지 않는다. PC는 Core/Runtime compile0/0 및 오프라인 대조군만 실행했고, 최신 CTO 요청 후 정식 빌드·M1·Player·1410분석은 실행하지 않았다. Mac 정식1회→동일 패키지 M1 23/23 정상종료→1410장 issue0/로딩누락0/중단0·5해상도 실제잠김/이름열기true·웹3333 슬롯04/09/제작1x를 모두 통과해야 공통 병합을 진행한다. 이전 계측의 부분0건·R5 실행 정상 종료를 새 교정 검증으로 승격하지 않는다.

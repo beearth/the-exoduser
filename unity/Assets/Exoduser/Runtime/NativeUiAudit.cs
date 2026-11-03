@@ -254,8 +254,33 @@ namespace Exoduser.UnityPort
         {
             GUI.EndGroup();if(Repainting)groupCorrection=groupCorrections.Pop();PopClip();
         }
-        internal static Vector2 BeginScrollView(Rect r,Vector2 scroll,Rect view,bool horizontal,bool vertical){PushClip(r);return GUI.BeginScrollView(r,scroll,view,horizontal,vertical);}
-        internal static Vector2 BeginScrollView(Rect r,Vector2 scroll,Rect view,bool horizontal,bool vertical,GUIStyle hs,GUIStyle vs){PushClip(r);return GUI.BeginScrollView(r,scroll,view,horizontal,vertical,hs,vs);}
-        internal static void EndScrollView(){GUI.EndScrollView();PopClip();}
+        // GUI's scroll clip rounds its translation after clamping the requested scroll.
+        // Correct audit coordinates only; keep the product call and returned scroll intact.
+        static void CorrectScrollOrigin(Vector2 expected,Vector2 scroll,Rect view)
+        {
+            var p0=new Vector2(-Mathf.Round(-scroll.x-view.x),-Mathf.Round(-scroll.y-view.y));
+            groupCorrections.Push(groupCorrection);
+            groupCorrection=expected-(GUIUtility.GUIToScreenPoint(p0)-origin);
+        }
+        internal static Vector2 BeginScrollView(Rect r,Vector2 scroll,Rect view,bool horizontal,bool vertical)
+        {
+            bool measuring=Repainting;
+            Vector2 expected=measuring?GUIUtility.GUIToScreenPoint(r.position)-origin+groupCorrection:Vector2.zero;
+            PushClip(r);scroll=GUI.BeginScrollView(r,scroll,view,horizontal,vertical);
+            if(measuring)CorrectScrollOrigin(expected,scroll,view);
+            return scroll;
+        }
+        internal static Vector2 BeginScrollView(Rect r,Vector2 scroll,Rect view,bool horizontal,bool vertical,GUIStyle hs,GUIStyle vs)
+        {
+            bool measuring=Repainting;
+            Vector2 expected=measuring?GUIUtility.GUIToScreenPoint(r.position)-origin+groupCorrection:Vector2.zero;
+            PushClip(r);scroll=GUI.BeginScrollView(r,scroll,view,horizontal,vertical,hs,vs);
+            if(measuring)CorrectScrollOrigin(expected,scroll,view);
+            return scroll;
+        }
+        internal static void EndScrollView()
+        {
+            GUI.EndScrollView();if(Repainting)groupCorrection=groupCorrections.Pop();PopClip();
+        }
     }
 }

@@ -224,8 +224,8 @@ namespace Exoduser.UnityPort {
    x+=Txt(new Rect(x,447.4f,300,20.4f),t1,F.NM,13.6f,C(119,122,122));x+=Txt(new Rect(x,447.4f,100,20.4f),cost,F.NM,13.6f,C(255,170,68),true);
    x+=Txt(new Rect(x,447.4f,300,20.4f),t2,F.NM,13.6f,C(119,122,122));Txt(new Rect(x,447.4f,100,20.4f),mats,F.NM,13.6f,C(204,102,255),true);
    string r1=c.rates[0].name+c.rates[0].pct+"%",r2=c.rates[1].name+c.rates[1].pct+"%";float rw=Meas(r1,F.NM,13.6f)+Meas("  ",F.NM,13.6f)+Meas(r2,F.NM,13.6f);x=CX+(CW-rw)/2f;
-   x+=Txt(new Rect(x,471.8f,200,20.4f),r1,F.NM,13.6f,new Color32((byte)c.rates[0].col[0],(byte)c.rates[0].col[1],(byte)c.rates[0].col[2],255))+Meas("  ",F.NM,13.6f);
-   Txt(new Rect(x,471.8f,200,20.4f),r2,F.NM,13.6f,new Color32((byte)c.rates[1].col[0],(byte)c.rates[1].col[1],(byte)c.rates[1].col[2],255));
+   x+=Txt(new Rect(x,467.8f,200,20.4f),r1,F.NM,13.6f,new Color32((byte)c.rates[0].col[0],(byte)c.rates[0].col[1],(byte)c.rates[0].col[2],255))+Meas("  ",F.NM,13.6f);
+   Txt(new Rect(x,467.8f,200,20.4f),r2,F.NM,13.6f,new Color32((byte)c.rates[1].col[0],(byte)c.rates[1].col[1],(byte)c.rates[1].col[2],255));
    // 3-column slot grid (210x80, gap 6)
    for(int i=0;i<c.slots.Length;i++){
     var s=c.slots[i];var r=new Rect(750+216*(i%3),505.4f+86*(i/3),210,80);

@@ -110,3 +110,8 @@ root 인수 후 통합 경계(2026-11-03): 기존 private 브랜치에서 공통
 | 시험 | ui-overlap-invocation-test.ps1: 실제두구호출RED→GREEN24검증(공백경로·stderr보존·실native0/2·FAIL147·기동실패/종료값미확인). 기존요약48·WAIT·보관/NoSwap회귀 PASS. 실제UI/Player/GPU실행0 |
 
 원본·오류stream·소스/설치대조·private SHA·한국어결과는 I:/EXODUSER-Storage/devtools/fix-1103-ui-invocation/REPORT.md. source candidate는 제품/설치 검증과 구분하며 원본run과0B로그·예약을 수정하지 않는다.
+
+
+### 2026-11-03 CTO 위임 분기 수정
+
+checkout exo-unity.ps1은 install-bin 및 EXO_UNITY_NO_FORWARD=1을 로컬 본문에 남긴다. 실제 공용 경로로 실행한 경우에도 재위임하지 않는다. 일반 호출은 Stop 설정 후 공용 bin Test-Path Leaf를 먼저 확인하고 누락 시 stderr와 exit1로 중단한 뒤, 존재할 때만 인수를 그대로 위임하고 exit 코드를 전달한다. tests/forwarding.test.ps1이 실제 스텁 블록을 추출해 격리된 가짜 bin으로 위임 인수/exit7, install-bin 로컬, opt-out 로컬, 자기 경로 로컬, 누락 exit1의5분기를 확인했다. 실제 install-bin·공용 bin 갱신·Unity 실행은 수행하지 않았다. Unity 실행은 계속 I:/EXODUSER-Storage/unity-jobs/bin/exo-unity.ps1만 사용한다.

@@ -131,7 +131,7 @@ NativeScreenTransition은준비timeout실패를빈error대신 prepare-timeout (1
 | 우선순위 | 147건→0 확인 후 unity/main 비강제 반영, 그 다음 5차 잔여 | 이전 09192f7의 1395장/147건 원본 보존. 새 후보 전체 검수 전 PASS 금지 |
 | 스킬 이름 | 슬롯·제단 이름/레벨은 웹 CSS nowrap/overflow:hidden/text-overflow:ellipsis와 같은 지정 폭·행 높이 안에서 표시 | 웹3333 ko/de/fr ×1920/2560×1600 실물12장. 첫 browser7fdc5e0c는 오류0/창감지1 운영 FAIL, 재검수 중 |
 | 스크롤 판 | 제품의 기존 논리 그룹/GUI.matrix는 유지하고 계측의 그룹 원점만 화면 배율로 보정 | 물리 그룹 후보는 중복 배율 시각 FAIL로 철회. 부모 화면원점−새 그룹 API원점 차이를 중첩 스택으로 기록. 새 Player 전 미검증, 분석기 제외/임계 완화0 |
-| 제작 비용/확률 | 비용 y447.4/h20.4, 확률 y471.8/h20.4; 기존 h15/14,y465.4 수정. 그리드 y505.4 보존 | 실제 한 줄 높이+4px 간격. 금액·확률·동작 변경0 |
+| 제작 비용/확률 | 비용 y447.4/h20.4, 확률 y467.8/h20.4; 기존 h15/14,y465.4 수정. 그리드 y505.4 보존 | 웹 Hahmlet line-height normal 약 20px. 금액·확률·동작 변경0 |
 | 공용 실행기 | I:/EXODUSER-Storage/unity-jobs/bin/exo-unity.ps1만 실행. checkout 사본 위임, ui-overlap/check.ps1 절대 공용 경로 | 자기 evening/third 직접 호출39개 백업·SHA 후 치환. CTO45개와 수 차이는 정확 경로 재검색 필요 |
 
 P0 산출 fifth/p0-overlap. Core/Runtime 독립 컴파일0, 정식 빌드/M1/전체0건/같은 언어1x/원격 반영은 아직 미검증. 바탕화면 직접 교체0.
@@ -208,3 +208,23 @@ I:·PowerShell이 정상 응답해 fetch/소유/공용slots3 상태를 재확인
 | 남은 P0 | 같은패키지M1정상종료→1410UI중단0/겹침0/누락0→5해상도lockedBlocked/nameOpened실제마우스검증→최신공통정상병합/비강제push→REPORT상단SHA |
 
 R3 전체1395/18건/로딩관측누락15는FAIL그대로다. 새검수전0건이나사용자실행본반영으로세지않는다. 전체5차잔여는P0공통반영뒤이어간다.
+
+
+## 2026-11-03 12:30 CTO 검토 반영 — PC 컴파일 / Mac 검수 분리
+
+최신 사용자 지시가 위의 PC 정식 빌드·M1·전체 검수·공통 반영 순서를 대체한다. 이 후보는 자기 브랜치에 정상 commit/push하고 Mac에 넘긴다. Mac의 새 HEAD 검수가 끝나기 전 P0 겹침0·시각 PASS·unity/main 반영 완료로 보고하지 않는다.
+
+| 항목 | 수정 계약 | 확인 / 남은 게이트 |
+|---|---|---|
+| 실행기 위임 | install-bin, EXO_UNITY_NO_FORWARD=1, 자기 공용 경로는 로컬 본문. 그 외 공용 bin 존재를 먼저 확인하며 누락 시 stderr+exit1. Stop 설정은 위임 전 | 실제 스텁을 추출한 격리 PowerShell 5/5: 위임/인수·exit7 전달, install-bin, 명시 opt-out, 자기 경로, 누락 exit1. 실제 install/bin 배포/Unity 실행0 |
+| 제작 비용/확률 | 비용 y447.4/h20.4 → 확률 y467.8/h20.4, 두 Rect 동일. 웹 Hahmlet line-height normal 약 20px | PC Core/Runtime 컴파일 오류0. 실제 1x는 Mac 대기 |
+| 스크롤 계측 | 두 BeginScrollView 오버로드 호출 직전 부모 보정 포함 expected. GUI 호출이 반환한 clamped scroll로 p0=-Round(-scroll-view.position). 이전 보정을 push하고 expected−(GUIToScreenPoint(p0)−origin). EndScrollView에서 이전 보정 pop | 활성 Repaint 감사 좌표만 수정. 제품 그리기 호출·matrix·scroll 반환값·겹침 판정 임계/제외 규칙 변경0. 실제 새 캡처는 Mac 대기 |
+| 실제 잉크 대조 | ko 튜토리얼0의 이, 보관함 격자의 전기 전투화. 2560×1600/1600×900, 실제 R3 PNG 무보간 crop 4개와 원본 SHA256·기존 감사 Rect 보존 | scroll-ink.py --self-test: 알려진 잉크 상자 양성4/4, 구 감사 상자 음성 거부4/4. --candidate R3: 실제 경로 검사도 4/4 FAIL(exit1). 검사기 교정이며 새 제품 계측 PASS가 아님 |
+| PC 검증 범위 | Roslyn Core/Runtime compile exit0/0, 실행기 PowerShell 구문 및 격리 분기 검사 | cto-review-1230/Core.log·Runtime.log·compile.json·forwarding/receipt.json·ink-controls.json·ink-legacy-negative.json. 이 CTO 요청 후 정식 빌드/M1/Player/1410분석 실행0 |
+
+### Mac 필수 인수 게이트
+
+1. REPORT 맨 위 Mac 검수 요청 SHA를 fetch하여 실제 checkout/branch/INDEX/WORK·타 담당 WIP를 구분한다. ground-placement의 AltarHeaderRight1562·OrbLevelY·HeaderLayoutProgram은 인수하지 않았다. 선택 허용된 좌표 probe 커밋도 이번 후보에는 가져오지 않았다.
+2. 새 HEAD로 정식 빌드 1회, 같은 패키지 M1 23/23 + 정상 종료, ko/de/fr ×5해상도 1410장 issueCount0·로딩 관측 누락0·중단0. 다섯 해상도 모두 lockedBlocked/nameOpened=true. 기존 R5 결과는 스크롤 계측 양성 증거가 없으므로 새 후보 PASS로 재사용하지 않는다.
+3. 같은 패키지 캡처 폴더에 대해 unity/Tools/ui-overlap/scroll-ink.py --candidate <절대캡처폴더> --output <절대영수증경로>를 Mac Python3+Pillow로 실행한다. --self-test는 검사기 교정만이며 이를 제품 PASS로 쓰지 않는다. 누락된 글자/빈 잉크/해상도 불일치/글자 밖 감사 상자는 FAIL이다. 고정 ko4장은 겹침 분석의 허용오차나 문자열 제외를 바꾸지 않는 별도 게이트다.
+4. 슬롯04·09 및 대장간은 웹3333과 같은 크기로 나란히1x 확인한다. 모든 게이트 후 최신 unity/main 정상 병합·비강제 반영과 REPORT 공통 SHA를 별도로 기록한다. 바탕화면 직접 교체0. 전체5차 잔여·번역/폰트 등은 RETOUCH 유지.
