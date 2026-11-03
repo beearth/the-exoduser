@@ -31,9 +31,17 @@ static class Program
         Check(CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.Parry,Step=1,Source="physicalProjectile"}).Count==0,"physical bullet Q parry: no purple star either");
         Check(CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.EnemyHit}).Count==0,"audio hit cannot duplicate a visual hit");
         var normal=CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.EnemyHit,VisualOnly=true,Element=2});
-        Check(normal[0].Sheet=="impact_el2_sheet"&&normal[0].Frames==9&&normal[0].Life==16,"normal impact chooses real elemental 9-cell strip for16ticks");
+        Check(normal[0].Sheet=="impact_el2_sheet_v2"&&normal[0].Frames==9&&normal[0].Life==16,"normal impact chooses remastered elemental 9-cell strip for16ticks");
         var boss=CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.BossHit,IsBoss=true,VisualOnly=true,Element=4});
-        Check(boss[0].Sheet=="impact_el4_boss_sheet"&&boss[0].Frames==16&&boss[0].Scale==2.5,"boss impact retains 16cells and2.5scale");
+        Check(boss[0].Sheet=="impact_el4_boss_sheet_v2"&&boss[0].Frames==16&&boss[0].Scale==2.5,"boss impact retains 16cells and2.5scale");
+        for(int el=0;el<6;el++)foreach(bool isBoss in new[]{false,true}) {
+            var hit=CombatImpactTimeline.Plan(new FeedbackEvent{Kind=isBoss?FeedbackKind.BossHit:FeedbackKind.EnemyHit,VisualOnly=true,IsBoss=isBoss,Element=el})[0];
+            Check(hit.Sheet=="impact_el"+el+(isBoss?"_boss_sheet_v2":"_sheet_v2")&&hit.Fallback=="impact_basic_sheet","v2 sheet and basic fallback "+el+" boss="+isBoss);
+            Check(hit.Life==16&&hit.Frames==(isBoss?16:9)&&hit.Cols==hit.Frames&&hit.Rows==1&&hit.Scale==(isBoss?2.5:1)&&hit.Additive&&hit.Mode==CombatClipMode.Impact,"v2 retains lifecycle, layout, scale and additive blend "+el+" boss="+isBoss);
+            Check(hit.Frame(0)==0&&hit.Frame(16)==-1&&Math.Abs(hit.Alpha(0)-(isBoss?.62:.45))<1e-9&&Math.Abs(hit.Alpha(8)-(isBoss?.31:.225))<1e-9,"v2 retains frame and alpha curve "+el+" boss="+isBoss);
+            double cell=85,scale=isBoss?2.5:1,start=isBoss?.92:.8;
+            Check(Math.Abs(hit.DrawWidth(0,cell)-cell*scale*start)<1e-9&&Math.Abs(hit.DrawWidth(8,cell)-cell*scale*(start+.3))<1e-9,"v2 retains width curve "+el+" boss="+isBoss);
+        }
         Check(boss[1].Mode==CombatClipMode.Electric&&boss[1].Scale==.18,"lightning impact adds exact electric burst");
         var budget=new CombatImpactTimeline();Check(budget.AdmitHit(1,false)&&budget.AdmitHit(1,false)&&!budget.AdmitHit(1,false)&&budget.AdmitHit(1,true)&&budget.AdmitHit(2,false),"same tick limits two ordinary hits; bosses bypass; next tick renews");
         budget.Reset();Check(budget.AdmitHit(1,false),"restart resets budget even when ticks rewind");
