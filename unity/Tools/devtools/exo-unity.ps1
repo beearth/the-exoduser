@@ -45,7 +45,7 @@ if($Command -ne 'install-bin' -and $env:EXO_UNITY_NO_FORWARD -ne '1' -and
     exit $LASTEXITCODE
 }
 
-$ExoUnityVersion = '2026.11.04-zombieguard'
+$ExoUnityVersion = '2026.11.04-usergame'
 $MaxPlayerSlots = 2
 Import-Module (Join-Path $PSScriptRoot 'QueueTurn.psm1') -Force
 try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false) } catch { }
@@ -1275,11 +1275,35 @@ function Stop-ForZombies($zombies, [string]$what) {
     Reject ($cause + '. 새 Player를 띄우지 않았다. 재부팅 뒤 ' + $HaltPath + '를 지우면 풀린다')
 }
 
+# 11-04: 사용자가 바탕화면에서 띄운 게임(부모 explorer)은 실제 세이브 폴더에 저장하므로, 그동안 돈 QA Player가 USER_SAVE 변경으로 실패했다.
+# 세이브 감시는 그대로 두고, 사용자 게임이 떠 있으면 Player를 시작하지 않고 미룬다(ok=False, deferred=user-game, exit 3).
+function Find-UserGames {
+    $all = @(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue)
+    $byId = @{}; foreach ($p in $all) { $byId[[int]$p.ProcessId] = $p }
+    $out = @()
+    foreach ($p in @($all | Where-Object { $_.Name -like 'EXODUSER*' })) {
+        $par = $byId[[int]$p.ParentProcessId]
+        if ($par -and $par.Name -ieq 'explorer.exe') { $out += [pscustomobject]@{ pid = [int]$p.ProcessId; exe = [string]$p.ExecutablePath } }
+    }
+    return $out
+}
+
+function Defer-ForUserGames($games) {
+    $list = (@($games) | ForEach-Object { [string]$_.pid + ' ' + $_.exe }) -join ', '
+    $id = [guid]::NewGuid().ToString('N').Substring(0, 8)
+    $r = [ordered]@{ runnerVersion = $ExoUnityVersion; id = $id; kind = 'player'; ok = $false; deferred = 'user-game'; note = '사용자 게임 실행 중, 미룸: ' + $list; userGames = @($games); exe = [string]$Exe; finishedAt = (NowIso) }
+    try { Write-JsonAtomic (Join-Path $ExecDir ('done\' + $id + '.json')) $r } catch { }
+    Say ('사용자 게임 실행 중, 미룸: ' + $list + ' (세이브 감시를 지키려고 Player를 띄우지 않았다)')
+    Write-Output ($r | ConvertTo-Json -Compress -Depth 4)
+    exit 3
+}
+
 function Cmd-Player {
     # 11-03 사용자 "백그라운드 테스트는 맥에서만": PC Player 실행은 CLAUDE.md 3.4 예외 3가지만 허용한다(편집기 batchmode 컴파일·임포트는 그대로).
     if (-not $PcException) { Reject 'PC에서는 player 실행을 기본 거부한다. Player 테스트·캡처는 Mac에서 실행한다. 예외(BuildLoop 바탕화면 교체·CTO 1회 교체·CTO 승인 후보 바로가기)만 -PcException buildloop|cto-swap|candidate' }
     $zombies = @(Find-ZombiePlayers)
     if ($zombies.Count) { Stop-ForZombies $zombies 'player' }
+    if (-not $DryRun) { $games = @(Find-UserGames); if ($games.Count) { Defer-ForUserGames $games } }
     if ([string]::IsNullOrWhiteSpace($Exe)) { throw '-Exe 가 필요합니다.' }
     if (-not (Test-Path -LiteralPath $Exe)) { throw "플레이어를 찾을 수 없음: $Exe" }
     $exeFull = (Resolve-Path -LiteralPath $Exe).Path

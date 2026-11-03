@@ -1,3 +1,7 @@
+2026-11-04 08:30 전투 통계 세이브 격리 누수 수정(도구 총괄, BuildLoop 08:05 FAIL 원인): ObserveCombatStatsEnd가 -output 없을 때 Application.persistentDataPath/combat-stats에 바로 써서 --a2r-play-sandbox·--unity-qa-sandbox 실행(사용자 맵 후보 PID 11048)이 사용자 실제 세이브 폴더 combat-stats.json을 바꿨고, 같은 시각 루프 빌드가 USER_SAVE changed=1로 FAIL. NativeQaSandbox.Resolve(Application.persistentDataPath)를 거치도록 한 줄 수정(Runtime, Core 무변경). 저장 내용·시점은 그대로.
+
+2026-11-04 08:20 공용 실행기 사용자 게임 실행 중 Player 미룸(CTO 추가): 부모 explorer인 EXODUSER* 프로세스가 있으면 Player를 띄우지 않고 '사용자 게임 실행 중, 미룸'(ok=False, deferred=user-game, exit 3), BuildLoop는 WAIT. 세이브 감시 완화 없음. 원인=사용자 바탕화면 게임이 실제 세이브에 저장해 UI 후보 USER_SAVE changed=3. 실행기 `2026.11.04-usergame`, 시험 user-game-test.ps1·player-slots-test는 실제 프로세스 검사를 대체 함수로 고정. 문서 unity/Tools/devtools/README.md.
+
 2026-11-04 08:10 공용 실행기 좀비 Player 가드(CTO 07:45, 재부팅 뒤): 스레드 1개·CPU 정지 EXODUSER-* 프로세스가 있으면 새 Player를 거부하고 '재부팅 필요' 영수증·HALT를 남긴다. 실행 뒤 남은 경우에도 HALT. 원인=Quit 뒤 Input System Shutdown 단계 커널 드라이버 교착(HID 1순위·AMD GPU 2순위, Unity 코드 무관), 05:06 뒤 4번 더 띄워 좀비 5개. 실행기 `2026.11.04-zombieguard`, 시험 zombie-guard-test.ps1. 문서 unity/Tools/devtools/README.md.
 
 2026-11-04 08:00 BuildLoop 겹침 자동 폐기·배포 기록 정정(사용자 "알아서 자동으로 버려"): 새 커밋과 다른 Unity 재직렬화 파일 중 공백만 다른 것·빈 .meta를 같은 guid로 채운 것만 원본을 runs/<id>/discarded에 보존하고 restore 뒤 fast-forward, 값·guid·미추적·스테이징 차이는 예전처럼 중단. Load-State가 build-commit.json이 더 최신이면 deployed로 받아들임(EXTERNAL). 시험 buildloop-autodiscard-test.ps1(16), buildloop-common-runner-test는 경로 표기 차이를 정규화해 비교. 문서 unity/Tools/devtools/buildloop/README.md.
