@@ -1,0 +1,20 @@
+[
+  {
+    "model": "SpineApostle",
+    "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/spine_rig_20261104_0024/basic_animations_walking_glb.glb",
+    "bones": 24,
+    "triangles": 12575,
+    "actions": [
+      "Walk"
+    ],
+    "palettePlanes": 8
+  },
+  {
+    "model": "EyeMass",
+    "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/tripo/eyemass_meshy_tripo_rigged.glb",
+    "bones": 20,
+    "triangles": 12584,
+    "actions": [],
+    "palettePlanes": 8
+  }
+]
