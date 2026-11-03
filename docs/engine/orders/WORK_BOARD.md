@@ -721,3 +721,7 @@ PC후보af70a6a2c5는정본버전매빌드읽기·직업X사슬/로어·실능�
 
 - codex/unity-demo-text-20261104, 최신489af88e5 병합a39ba3e8c2. 작은 가시 없는 칩6px/입장 사전축소/빈 슬롯/이름창 가시테/직업×·개수 간격을 고쳤다.17런타임 원화·21import대상, 원본PNG·큰원화·Core 보존.
 - 배치/자산PASS·importer50항PASS·PC DLL참조1회5어셈블리 오류0, Player0. 동일 SHA Mac1920/3840·1x/3x와 실제 입장 hover 영수증 대기. [계약·목록](../../3.1%20ui%20hud%20디자인/UNITY_SMALL_PLATE_RETOUCH_20261104.md). 펫 말풍선은 후속. 병합한 스토리총괄R1/R2 기록도 유지한다.
+
+## 2026-11-04 01:50 Codex 문구 RETOUCH
+
+R1 9언어36cue 악의 화폐용어/R2 킬루29언어·키·stage33·추출 도구·KO atlas fallback 반영. 목록No.3477/3876/3877/3881/3885·CRLF 정합.9소스/데이터PASS,02:00 meta뒤PC 최종컴파일1회 예정. Player0,Mac 실제 UI/원어민 판정대기. [감사§6](../../11내러티브·로어디자인/DEMO_V0_1_1_TEXT_AUDIT_20261104.md).

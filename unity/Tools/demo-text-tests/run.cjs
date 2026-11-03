@@ -52,4 +52,16 @@ test('Mac capture entry is registered and refuses persistent stores',()=>{
  assert(s.includes('BossLineLog.Contains("intro0")'));assert(s.includes('sink0')&&s.includes('controlled'));
  const gate=JSON.parse(fs.readFileSync(path.join(data,'hellgate_objectives.json'),'utf8'));assert.equal(gate.entries.length,29);assert(/[\u0600-\u06ff]/.test(gate.entries.find(e=>e.code==='ar').sealedGate));
 });
+test('STY-23 R1 malice currency terms and R2 Killu canonical names survive data export',()=>{
+ const intro=JSON.parse(fs.readFileSync(path.join(data,'startup_intro.json'),'utf8')),ko=intro.languages.find(l=>l.code==='ko');
+ const ids=ko.lines.filter(l=>l.text.includes('악의')).map(l=>l.id);
+ const terms={fr:[/malveillance/iu,/malice/iu],tr:[/kötül/iu,/hın/iu],th:[/เจตนาร้าย/u,/อาฆาต/u],id:[/niat jahat/iu,/kedengkian/iu],ar:[/خبث/u,/ضغين/u],sv:[/ondsk/iu,/illvilja/iu],fi:[/pahu/iu,/ilkey/iu],nl:[/kwaadaardigheid/iu,/boosaardigheid/iu],el:[/κακί/iu,/μοχθηρί/iu]};
+ for(const[code,[old,term]]of Object.entries(terms))for(const cue of intro.languages.find(l=>l.code===code).lines.filter(l=>ids.includes(l.id))){assert(!old.test(cue.text),code+'/'+cue.id+' obsolete malice word');assert(term.test(cue.text),code+'/'+cue.id+' missing canonical term');}
+ const entry=catalog.entries.find(e=>e.key==='킬루');assert(entry,'canonical Korean key');assert(!catalog.entries.some(e=>e.key==='Killu'));
+ const names={ko:'킬루',zh:'基路',zht:'基路',ja:'キルル',th:'คิลลู',ru:'Киллу',uk:'Кіллу',bg:'Килу',el:'Κίλου',ar:'كيلو'};
+ catalog.codes.forEach((code,i)=>assert.equal(entry.texts[i],names[code]||'Killu',code));
+ const boss=JSON.parse(fs.readFileSync(path.join(data,'bossbar_web.json'),'utf8'));assert.equal(boss.stages.find(s=>s.si===33).boss,'킬루');
+ assert(!boss.sharp.some(g=>g.c==='킬'),'fixture retains old atlas without 킬');assert(read('NativeBossBar.cs').includes('LocaleCode!="ko"||missingGlyph'),'Korean canonical name must also escape an incomplete atlas');
+ assert(fs.readFileSync(path.join(__dirname,'export.cjs'),'utf8').includes("key==='킬루'"),'regeneration must preserve canonical override');
+});
 console.log(JSON.stringify({checks,failed,passed:failed===0,scope:'data and source contracts; no Unity/Player execution'}));process.exitCode=failed?1:0;

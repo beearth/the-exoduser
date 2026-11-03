@@ -55,3 +55,7 @@ done
 ~~~
 
 PNG는 demo-lobby/demo-hud/demo-boss-intro/demo-boss-sink-controlled-언어_1920x1080.png, 영수증 demo-text-언어.json. coreIntroEvent/visibleIntro/storesDisabled/rosterUnchanged=true와 선택언어 이름을 확인한다. 마지막 sink0는 표현 호출을 직접 준 제어 표본이며 자연 처치의 증거가 아니다. 실제 입장 이야기27cue의29언어·아랍어 연결/타자노출, 자연 보스 진입→침강퇴장/재도전/사망/메뉴 가림은 별도 Mac 게임 관문이다. 소스 계약8PASS나 JSON passed는 시각 합격을 뜻하지 않는다.
+
+## 11-04 01:50 문구 R1·R2
+
+9언어 악의 용어를 화폐 용어로 맞추고(cue13/14/18b/23,36문장),No.3477 킬루를 데이터 키·KO·7장 stage33·29언어에 연결했다. 원본 KO27cue와 나머지20언어/타이밍·이미지·화자는 그대로다. 기존 보스 이름 atlas에는 킬 글자가 없어 KO도 누락 glyph일 때 명조 전체 문자열로 그린다. 추출 도구가 킬루 키를 유지한다. 데이터/소스9항PASS. 스토리총괄이 허용한 다른26개 표기는 변경하지 않았고, 실제 화면 검수는 Mac 대기다. [상세](../11내러티브·로어디자인/DEMO_V0_1_1_TEXT_AUDIT_20261104.md#6-11-04-0150-r1r2-반영).

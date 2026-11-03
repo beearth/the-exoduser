@@ -199,7 +199,8 @@ namespace Exoduser.UnityPort {
   }
 
   void DrawName(string name,float cx,float y,float spacing,float alpha,float blurW){
-   if(LocaleCode!="ko")
+   bool missingGlyph=false;foreach(char ch in name)if(!sharp.ContainsKey(ch.ToString())){missingGlyph=true;break;}
+   if(LocaleCode!="ko"||missingGlyph)
    {
     var st=NativeDemoText.Style(Style(26),name);st.font=NativeSilverHellUi.TextFont(NativeSilverHellUi.Font(true),name);st.alignment=TextAnchor.MiddleCenter;
     float width=Mathf.Min(860,st.CalcSize(new GUIContent(name)).x+24);while(st.fontSize>16&&st.CalcSize(new GUIContent(name)).x>836)st.fontSize--;
