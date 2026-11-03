@@ -13,3 +13,7 @@
 - **범위 밖**: 적 투사체의 비행·충돌 루프(Q/E 패링 반사 포함 450줄 공용 코드)는 추출하지 않았다 → 투사체는 생성 직후 인자만 대조. 비행·플레이어 충돌은 `UpdateProjectiles`(B09 `HurtPlayer`가 E 창/Q 막기를 처리, 반사는 흡수로 대체)가 맡는다. 소환체는 etype0 몸체(웹은 etype `[0,2,3,3,3]`). 균열 충돌, `_pushOutWall`, 피날레(`_isDruidFinale`, 원본에서 도달 불가), 오라는 제외.
 - 허용 오차: 위치류 1e-3 px + 상대 1.2e-7(EnemyState의 `float` 필드 때문). HP가 int 범위를 넘는 보스(Lv≈480↑)는 케이스에서 제외.
 - `run.cjs`는 `DOTNET_CLI_HOME`을 고정 폴더(`E:/exoduser-wt/_dotnet-home`)로 쓰고 `DOTNET_ADD_GLOBAL_TOOLS_TO_PATH=false`를 건다.
+
+2026-11-03: 최신 웹의 `canMv`가 추가 호출하는 실제 `_chestBlocks` 함수도 추출한다.
+보스 대조 fixture의 `worldItems`는 빈 배열이다. 상자 충돌 자체의 웹/Unity 일치나
+자연 진행을 이 검사 통과로 판정하지 않는다. 함수가 없는 이전 웹 원본도 지원한다.

@@ -77,3 +77,5 @@ R6c 상체선행회전은 HERO_MOTION의R6c절을따른다. R6b 광량/팔레트
 | default iron | .34 / .38 / .42 |1|갑옷|
 
 실제Point광: 거리감쇠A=(1-d²/range²)²/(1+d²); E=light.color.linear×intensity×A; 압축E×1.1/(1+maxRGB(E)); 최종4단NdotL에적용. Directional A=1. 상체회전보강은게임root/조준/판정각을바꾸지않고자식모델에만적용하며실제영상판정전미검증이다.
+
+공통898ac2b960 정상merge: NativeGame 생성분기의 opt-in/AttachRigPixel을 유지하며 공통에서 제거한 lastKillCount 초기화는 다시 넣지 않는다. 새 공통의 자연완주/실제사망전환/전면UI/숨김영상포커스/공용실행기 변경을 그대로 인수한다. R6c 영수증은 merge 전 c65fe43 패키지 범위이며 새병합본 실게임검수는 Mac에 요청한다. 공통규칙11:55에 따라 PC의 새빌드/Player/M1 시작0.

@@ -31,7 +31,7 @@ namespace Exoduser.UnityPort
         {
             foreach(var e in enemies.Values){Destroy(e.body.gameObject);Destroy(e.walk.gameObject);}enemies.Clear();damage.Clear();
             kiView?.Reset();impacts?.Reset();sound?.Reset();renderedTick=-1;
-            lastX=Simulation.Player.X;lastY=Simulation.Player.Y;walkDistance=0;lastKillCount=Simulation.Kills;
+            lastX=Simulation.Player.X;lastY=Simulation.Player.Y;walkDistance=0;
             hud.Refresh(Simulation.Player,Simulation.TickCount,true);UpdateViews();
         }
         void OnFirstPracticeHit(FirstPracticeCombat hit)
