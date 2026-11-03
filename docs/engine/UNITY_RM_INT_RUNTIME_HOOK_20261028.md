@@ -485,3 +485,8 @@ Shore는 고정앵글러 주변을 피한 후 z−52~−42에서 다시28u 굽�
 수명정정: statePassed161은표시메타데이터다. 정리예외로두수명행동의최종결과merge가미실행됐으므로pool행동완료PASS로간주하지않고, 수정앱에서원래두수명검사를별도완주·기록한다.
 
 최신 상태(2026-11-03): Mac 표적 정리/두수명행동·semantic 복원/동일앱 M1 23 통과는 후보 범위다. 사용자 PC 실행본131887780의 Runtime2bad5c6c8ace951017cee6c3673921692bc2a2a309ca5b5b0d23f1fbc471ff0a에는 접지 수정 타입 둘 다 없어 실제 전달 미완료를 확인했다. 최신 unity/main1d89b0c18와 정상 병합해 UI/사운드를 보존했으며, 새 실행본 검수·unity-latest 반영 뒤 다시 확인한다. 원full100/61·독립참조/미관측/oldref 한계는 그대로 보존한다.
+
+
+### 2026-11-03 P0 지면 장판 투영 연결
+
+3D 등록 지면 sprite/ring은 수신 투영 장애 시 원본 직립 카드를 다시 켜지 않는다. 2D 복귀는 이전 forceRenderingOff를 복원한다. 수면 color→실제 수신깊이 장판→transparent 배우/탄 순서이며, 실제A2 수면도 수신한다. vertex-colour 원형/부채/선형 예고는 기존 under 삼각형의 볼륨 투영만 사용한다. 판정은 Core 그대로이고 일반 카메라/배우 FootLift는 변경하지 않는다. [P0 계약·Mac 검수](UNITY_GROUND_AOE_P0_20261103.md). PC 컴파일 결과는 GPU·접지 PASS가 아니며 이 후속은 Mac 검수 대기다.

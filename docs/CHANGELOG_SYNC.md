@@ -57365,3 +57365,13 @@ Mac 원본4장 몬스터16종 공통·배송: 실기동 검수후 개인/`unity/
 2026-11-02 Mac 공통 6ad의 A2 지면 데칼 수신 기술 후보: `HellGroundPBR`·`A2RootSurface` 각각 DBuffer 변종·설치 URP 표준 수신 호출 6줄만 추가. 격리 QA 플래그/실제 DBuffer ShaderGraph 재질을 분리해 기존 평면 `M_Decal_blood`를 잘못된 양성 대조로 쓰지 않는다. 정확 소스 `afdd4ab` Settings QA ARM64 빌드 Succeeded/오류0·같은 앱 Metal M1 23/23·평면과 실제 A2 흙/뿌리/목교 1920 실창 및 3840 직접 RT 수신 기술 PASS. raw outside 차분은 비0이며 `effect>self+4` 필터 outside0과 구분한다. 일반 앱 파일 전달 후에도 Impact R4 VISUAL FAIL·맵 전체 RETOUCH 보존. [계약·수치·검증 경계](engine/UNITY_A2_DECAL_RECEIVER_20261101.md).
 
 Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반 build errors0, 정규화·strict/deep 서명 PASS, 이전앱3SHA CAS/보존 후 `/Users/fordeargamers/Applications/EXODUSER.app` 설치. 원본/stage/설치 211파일 전체 manifest SHA `54d8ae1b…` 동일, QA/일반 Runtime·Core DLL SHA 동일. 일반 저장11·QA plist2 최종 원문 동일, 일반 앱 실행0. 실제 A2 지면/뿌리/목교 기술 수신 VISUAL PASS 범위만 해당, 맵 전체 RETOUCH/Impact R4 FAIL 유지. [상세](engine/UNITY_A2_DECAL_RECEIVER_20261101.md#일반-mac-앱-파일-전달-2026-11-02).
+
+
+## 2026-11-03 PC P0 — 장판 공중 카드 제거와 실제 수면 투영
+
+- NativeGroundSkillSurface: 3D 투영 장애 시 source sprite/ring 숨김 유지·2D/풀 복원.
+- NativeGroundSkillProjection/ReceiverDepth: 전용 렌더링 bit30/수면bit31, 위쪽 법선0.2, 실제 수신깊이 좌표 및 앞쪽 opaque 차폐2cm.
+- A2Field/A2ToxicRiver: 실제 늪 MeshFilter 등록, 수면→장판→transparent 배우/탄 순서. 기존 물 높이·반사·거품·색 수식 유지.
+- NativeGroundWarningProjection/NativeDruidTelegraphView: 원형·부채·선형 under 삼각형을16m 투영 볼륨으로 표시, 원색/alpha·판정 경계·2D 복원 유지.
+- Core·패링·세이브·피해·반경·시간 변경0. PC는 GroundAoeCompileCheck 배치 컴파일1회만 하고 Mac에서 평지/경사/다리/늪·적탄 중첩·1920/21:9/3840을 판정한다.
+- [설계·수치·판정표](engine/UNITY_GROUND_AOE_P0_20261103.md). 시각 미검증·사용자 실행본 미반영.
