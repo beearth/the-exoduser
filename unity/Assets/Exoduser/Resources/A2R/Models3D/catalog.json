@@ -499,6 +499,76 @@
             "depth": 1.576915979385376,
             "lods": 1,
             "triangles": 3125
+        },
+        {
+            "name": "fern_0",
+            "resource": "A2R/Models3D/Prefabs/fern_0",
+            "source": "I:/EXODUSER-Storage/map25d/prop3d-foliage/out/fern_0.glb",
+            "prepared": true,
+            "width": 3.3861820697784424,
+            "depth": 2.7576310634613037,
+            "lods": 3,
+            "triangles": 1860
+        },
+        {
+            "name": "fern_1",
+            "resource": "A2R/Models3D/Prefabs/fern_1",
+            "source": "I:/EXODUSER-Storage/map25d/prop3d-foliage/out/fern_1.glb",
+            "prepared": true,
+            "width": 1.8783941268920898,
+            "depth": 1.9468517303466797,
+            "lods": 3,
+            "triangles": 2142
+        },
+        {
+            "name": "fern_2",
+            "resource": "A2R/Models3D/Prefabs/fern_2",
+            "source": "I:/EXODUSER-Storage/map25d/prop3d-foliage/out/fern_2.glb",
+            "prepared": true,
+            "width": 1.966101884841919,
+            "depth": 2.2545154094696045,
+            "lods": 3,
+            "triangles": 2124
+        },
+        {
+            "name": "brush_0",
+            "resource": "A2R/Models3D/Prefabs/brush_0",
+            "source": "I:/EXODUSER-Storage/map25d/prop3d-foliage/out/brush_0.glb",
+            "prepared": true,
+            "width": 4.094828128814697,
+            "depth": 2.407258987426758,
+            "lods": 3,
+            "triangles": 3976
+        },
+        {
+            "name": "brush_1",
+            "resource": "A2R/Models3D/Prefabs/brush_1",
+            "source": "I:/EXODUSER-Storage/map25d/prop3d-foliage/out/brush_1.glb",
+            "prepared": true,
+            "width": 4.583938121795654,
+            "depth": 2.945326566696167,
+            "lods": 3,
+            "triangles": 3848
+        },
+        {
+            "name": "brush_2",
+            "resource": "A2R/Models3D/Prefabs/brush_2",
+            "source": "I:/EXODUSER-Storage/map25d/prop3d-foliage/out/brush_2.glb",
+            "prepared": true,
+            "width": 4.332178115844727,
+            "depth": 2.745388984680176,
+            "lods": 3,
+            "triangles": 3976
+        },
+        {
+            "name": "brush_3",
+            "resource": "A2R/Models3D/Prefabs/brush_3",
+            "source": "I:/EXODUSER-Storage/map25d/prop3d-foliage/out/brush_3.glb",
+            "prepared": true,
+            "width": 3.801363706588745,
+            "depth": 2.496065855026245,
+            "lods": 3,
+            "triangles": 3696
         }
     ]
 }

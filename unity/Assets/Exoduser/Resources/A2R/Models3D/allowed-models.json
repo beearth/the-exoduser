@@ -1,5 +1,5 @@
 {
-  "scope": "r17: sbone/sword_pile excluded after reflection-OFF white blowout; other PASS9 and far15 with actor-sightline conservative whole-tree exclusion; baked near species remain unapproved",
+  "scope": "r18 PASS9 + supplied foliage7; far0; sbone/sword_pile and baked near trees excluded",
   "models": [
     "cocoon",
     "hang_cage",
@@ -10,21 +10,13 @@
     "c1tree",
     "ctree15",
     "ctree18",
-    "bnd0_far",
-    "bnd3_far",
-    "bnd5_far",
-    "bnd18_far",
-    "c1tree_far",
-    "ctree13_far",
-    "ctree14_far",
-    "ctree15_far",
-    "ctree16_far",
-    "ctree17_far",
-    "ctree18_far",
-    "ctree19_far",
-    "ctree20_far",
-    "fg_rot01_far",
-    "fg_rot03_far"
+    "fern_0",
+    "fern_1",
+    "fern_2",
+    "brush_0",
+    "brush_1",
+    "brush_2",
+    "brush_3"
   ],
   "scales": [
     {
