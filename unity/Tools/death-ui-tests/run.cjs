@@ -10,8 +10,18 @@ function check(ok,name){const line=(ok?'PASS ':'FAIL ')+name;results.push(line);
 const game=read('NativeGame.cs'),registry=game.slice(game.indexOf('bool legacyFixture='),game.indexOf('InitializeEntryFlowCapture(args)'));
 for(const flag of ['--unity-death-screen-smoke','--unity-death-ui-smoke'])check(registry.includes('"'+flag+'"'),flag+' bypasses lobby.Begin');
 const silver=read('NativeLobby.SilverHell.cs');
-check(!silver.includes('plateBase=Texture2D.blackTexture'),'plate cannot use transparent built-in blackTexture');
-const vm=require('node:vm');
+check(!read('NativeGame.DeathScreenCapture.cs').includes('colorProbe')&&!fs.existsSync(path.join(runtime,'NativeGame.DeathColorProbe.cs')),'retired colour probe and shader dependency removed');
+const lobby=read('NativeLobby.SilverLobby.cs'),visual=read('NativeLobby.SilverCharacter.cs'),name=read('NativeLobby.CharacterPresentation.cs');
+check(lobby.includes('new Rect(1428,702,416,156)')&&lobby.includes('canEnter?lobbySilverEnter:lobbySilverDisabled')&&!lobby.includes('ActionPlate('),'ENTER art/rect and slot cards restored; no procedural plate');
+check(visual.includes('ArtImage(cancel,silverVisualCancel)')&&visual.includes('locked?silverVisualDisabled:silverVisualCreate')
+ &&name.includes('ArtImage(cancel,silverNameCancel)')&&name.includes('ArtImage(create,silverNameCreate)'),'visual and name button artwork drawn');
+check(lobby.includes('FrameOnly(new Rect(1368,8,544,1064))'),'decorated right rail frame restored');
+let imported=true;
+for(const asset of ['btn_primary_composed','btn_plaque_20261029','guide_button_glow','lobby_enter_btn_silver_20261029','lobby_enter_disabled','visual_create','visual_cancel','visual_disabled','name_create','name_cancel','panel_frame_20261029']){
+ const meta=fs.readFileSync(path.join(root,'Assets/Exoduser/Resources/Art/ui/silver_hell',asset+'.png.meta'),'utf8');
+ imported&&=/enableMipMap: 0/.test(meta)&&!/filterMode: 2/.test(meta);
+}
+check(imported,'all restored artwork: mipmaps OFF, no trilinear filtering');const vm=require('node:vm');
 function macLayoutProbe(){
  const base='/Applications/Unity/Hub/Editor/Test/Unity.app/Contents',scripting=base+'/Resources/Scripting';
  const directories=new Map([
@@ -58,7 +68,7 @@ function toolchain(){
 try{
  const tc=toolchain(),version=path.basename(path.dirname(path.dirname(tc.refs))),tfm=path.basename(tc.refs);
  const source=read('NativeUiChrome.cs');
- const body=method(source,'static void ClearState(')+'\n'+method(source,'internal static GUIStyle ClearBackgrounds(')+'\n'+method(silver,'internal static void SolidRect(');
+ const body=method(source,'static void ClearState(')+'\n'+method(source,'internal static GUIStyle ClearBackgrounds(')+'\n'+method(silver,'internal static float ArtSelection(')+'\n'+method(silver,'internal static void ActionPlate(');
  const test=fs.readFileSync(path.join(__dirname,'MaterialProbe.cs'),'utf8').replace('/*PRODUCTION*/',body);
  fs.writeFileSync(output+'/Probe.cs',test);
  fs.writeFileSync(output+'/probe.runtimeconfig.json',JSON.stringify({runtimeOptions:{tfm,framework:{name:'Microsoft.NETCore.App',version}}}));
@@ -67,7 +77,7 @@ try{
   let r=cp.spawnSync(tc.dotnet,[tc.csc,...(mode==='Editor'?['-define:UNITY_EDITOR']:[]),'@'+output+'/probe.rsp'],{windowsHide:true,encoding:'utf8'});
   if(r.status===0)r=cp.spawnSync(tc.dotnet,[output+'/probe.dll'],{windowsHide:true,encoding:'utf8'});
   const log=(r.stdout||'')+(r.stderr||'')+(r.error?String(r.error):'');console.log(log);results.push(log);
-  check(r.status===0,mode+' sanitizer: 8 native states / Editor HiDPI; text/input preserved');
+  check(r.status===0,mode+' stock-only sanitizer / original art and brightness contract');
  }
 }catch(e){check(false,e.message);}
 fs.writeFileSync(output+'/result.txt',results.join('\n'));process.exitCode=failures?2:0;

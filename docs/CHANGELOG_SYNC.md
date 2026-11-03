@@ -1,3 +1,5 @@
+2026-11-04 STY-23 데모 v0 1-1 이야기 문구 점검: 체험판 종료 부제 `demoSub`를 옛 "썩은 숲을 정복했습니다."(27언어 영어)에서 웹 정본 No.3473 "썩은 숲은 아직 끝나지 않았다." 29언어로 교체(`stageclear_labels.json`, 대체 경로 `stageclear_web.json`·`buildflavor_web.json`·`NativeStageClearOverlay.cs` 영문 기본값 포함). 목표 패널 ko "심연 아귀"→정본 "심연의 앵글러". 미등록 9문구 No.4250~4258 등록. 점검표 [DEMO_V0_1_1_TEXT_AUDIT](11내러티브·로어디자인/DEMO_V0_1_1_TEXT_AUDIT_20261104.md). PC 컴파일만, Player 실행 0, 화면은 Mac 검수 대기.
+
 2026-11-03 UI-PARITY 최신 공통 통합: 사용자 지시로 origin/unity/main 8c5f967d74를 자기 브랜치에 병합. CHANGELOG_SYNC 두 충돌은 양쪽 원문을 보존했다. 현재 docs/Unity 충돌 표시0, PC 컴파일1회 Core121/Runtime259 오류0(경고2/522), Player0. 21:50 다중 패스 수정과66회귀 증거 보존. 새 통합본 Mac 게이트 대기.
 
 2026-11-03 21:50 BuildLoop UI 겹침 오탐 수정: 다중 패스의 실제 논리 원점 ID/본문1개/클립/발행 source로 장식 패스를 묶는다. 기존 JSON은 선언 offset+픽셀 양자화만 복원하고 .5px 충돌 기준과 중복 본문/다른 글자 검출은 유지한다. 메뉴·봉안함 실제 표본0, 회귀66/66. 기존1410장 재분석8363은 과거 계측 입력의 잔여로 보존하며 Mac 새 게이트 필요. PC 컴파일만, Player0. 문서 docs/engine/UNITY_UI_OVERLAP_20261030.md.
@@ -57821,12 +57823,14 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 
 2026-11-03 20:20 사망 UI3차 FAIL 후속: transparent blackTexture(RGBA0) 사용을 확인하고 생성 텍스처 판 경로를 폐기. whiteTexture×실버 헬 #0f0f10·alpha1·비블렌딩 단색, 은빛 #8a8b88/#c9c7c3 1px·선택 안쪽 진홍3선. 일시정지 inputLive/명조 배치 보존, PrimaryGlow 제거. 스킨 probe에 자홍 underlay와 RGB(15,15,16)±3 검사. URP 뒤 따뜻한 DeathBand 제거, 동일 색3패치의 실제 카메라 before/after 채도 probe 추가. Mac Contents/Resources/Scripting SDK/runtime 탐색. origin/unity/main d6c5bb89bb20(규칙7bc7a3518 포함) 정상 병합, 번역/입력 충돌 양쪽 보존. PC DLL 참조5어셈블리 오류0·단색/스킨/경로 회귀 PASS, GPU·Mac 판정 미검증/RETOUCH. [버튼](3.1%20ui%20hud%20디자인/UNITY_BUTTON_PLATE_MATERIAL_20261103.md), [사망](3.1%20ui%20hud%20디자인/UNITY_DEATH_SCREEN_20261103.md).
 
+2026-11-03 21:25 버튼 판 질감 RETOUCH: 새 브랜치 codex/unity-ui-plate-20261103(aa38bb877 기준). Mac4차 불투명/1px PASS를 보존하고 공통 ActionPlate에 옅은 세로 명암18/18/19→12/12/13,1px 위/아래 경사·음각, 선택 내부8px 진홍 감쇠를 추가했다. 생성 텍스처·점/노이즈/그레인/디더 없음. Shader/camera unavailable이던 실험 색 프로브 인자·C#·meta·콜백·영수증 필드를 삭제하고 실행 문서 정리. 스킨/불투명 probe·Core 사망/fade는 유지. PC5어셈블리 DLL 참조 컴파일 오류0·관련 회귀 PASS, 새 질감의 Mac1x/3x 디자인은 미검증/RETOUCH. [표면 계약](3.1%20ui%20hud%20디자인/UNITY_BUTTON_PLATE_MATERIAL_20261103.md).
 ## 2026-11-03 — 21:20 rigpixel 공통 병합 준비
 
 - origin/unity/main aa38bb8773274bd5f2c91fdc25c4eb2cf003565d(사망 화면 병합 포함)을 정상 merge. CHANGELOG 충돌은 리깅 픽셀14:25/19:00·20:20 기록과 사망UI 후속3개 기록을 모두 보존했다.
 - 39e52fe Mac 시각 PASS(검격 사각면0·망토낱픽셀0·흑철·1px검격)는 기존근거, 3840 성능은단독재측정대기. 기본sprite유지, 이번변경은통합/컴파일준비이며기본값전환0.
 - 병합본 c81bdc6455의공용PC컴파일952896b8 단일실행: renderer/네셰이더/Humanoid true·exit0·C#오류0·USER_SAVE0. 자기자동생성물정리, CTO fast-forward 인수준비. 기본값전환은성능단독재측정PASS뒤.
 
+2026-11-03 23:05 디자인총괄 합격표 원화 복구: 22:55/21:25 코드 판 지시를 대체. ENTER 인장 원화Rect(1428,702,416,156)·불가 원화/중복 라벨 제거, 공통 주요/일반9-slice 원화·밝기1.0·안쪽 호버 빛, 슬롯의 붉은 선택2px/옅은 바탕·초상/헤어라인, 생성/이름창 원화, 오른쪽 원화 레일 테두리 복구. 원화11종 밉맵OFF/Bilinear. 기본 IMGUI 스킨 텍스처만 제거하고 사용자 원화 GUIStyle 배경 보존. Mac0/2명·표시4상태·생성/이름/삭제/일시정지 촬영 인자와 실제4캡처 비교기 추가. PC Player0·기능/원화 계약 회귀 PASS, 새 실제 비교/시각 판정은 Mac 대기. [현재 계약](3.1%20ui%20hud%20디자인/UNITY_BUTTON_PLATE_MATERIAL_20261103.md).
 ## 2026-11-03 — 장판·대지치기 최신공통 통합 인계
 
 - 사용자 대지강타 스프라이트 반쪽 잘림 재지적 및 본편 반영 지시. 02ca363571에 최신 origin/unity/main 8c5f967d74f1622a0248096e958337573a099e80을 정상 병합. docs4파일5충돌블록 양쪽전체기록 보존·충돌표시/미해결0.
@@ -57834,3 +57838,5 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 - 병합소스 공용PC컴파일1회 후자기브랜치 비강제push, CTO가 unity/main fast-forward 인수한다. 이번사용자지시는 과거 MacPASS전 공통대기 조건을 해제하며, 새시각/사용자실행본갱신 확인과는 구분한다.
 
 - 최종공통 f146df2b29e98ecac7fdd03e08c888b07d3f7a8d 포함. 최초8c 검사 중 패링/기검참 소스가8e로 전진해 추가병합·최종소스579d081d696660c87509be2f1c19c39ca8d4a9e1을1회 추가검사(전체2입력/동일소스반복0). 공용ec46a2a7 exit0/C#0/shader3/USER_SAVE0, 실행15206ms/wall167270ms, 종료Curl42 1건. 이후f146은기획docs3개뿐이며최종Unity파일차이0. 메타1개만자기checkpoint복원, 외부guard/미추적7보존. 사용자명시승인으로CTO즉시FF 인수대상, 시각/실행본교체미확인.
+
+2026-11-03 로비 원화 최신공통 통합 인계: 원화 복구7cdce2032d에 origin/unity/main 4d336665a4를 정상 병합. SilverCharacter의 이름 버튼 QA 추적과 상대 스토리/UI겹침 수정, 디자인총괄23:05 다섯 원화 항목·밝기1.0·11종 밉맵OFF를 함께 보존. docs 양쪽 기록 보존. PC DLL 참조 컴파일1회5어셈블리 오류0·소스 계약PASS, PC Player0·Mac 실제시각대기. [원화 계약](3.1%20ui%20hud%20디자인/UNITY_BUTTON_PLATE_MATERIAL_20261103.md).
