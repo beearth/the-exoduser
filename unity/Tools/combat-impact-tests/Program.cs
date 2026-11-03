@@ -94,7 +94,8 @@ static class Program
         }
         Check(!CombatRollDust.Trail(0)&&CombatRollDust.Trail(4)&&!CombatRollDust.Trail(5)&&CombatRollDust.TrailPuff(9).Peak<.3,"trail puff every four roll ticks, fainter");
         var rainbow=CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.Parry,Step=1,SampleKey="rainbow"});
-        Check(rainbow.Count==4&&rainbow.All(c=>c.Additive)&&Math.Abs(rainbow[3].Opacity-.55)<1e-9,"rainbow Q uses four original layered sheets and attenuation");
+        Check(rainbow.Count==4&&rainbow.All(c=>c.Additive)&&Math.Abs(rainbow[3].Opacity-.55)<1e-9,"rainbow Q preserves four layers and attenuation");
+        Check(rainbow.Select(c=>c.Sheet).SequenceEqual(new[]{"Poison_MediumImpact_pal","Dark_DarkSmoke_FBF_4x4","Light_ImpactLight_Sheet","Ice_ImpactIce_Sheet_pal"}),"rainbow Q uses palette copies; dark original is audited, cartoon light awaits artwork");
         var kiSim=new Simulation(SourceStarterFixture.CreateKiSlash(),456);kiSim.Config.EnemyAiEnabled=false;
         var kiTarget=kiSim.SpawnNormalEnemy(kiSim.Player.X+35,kiSim.Player.Y);if(kiTarget==null)throw new Exception("ki fixture spawn failed");
         kiSim.Player.Facing=0;kiSim.SpawnKiSlash(1,0);kiSim.Feedback.Clear();kiSim.Tick(0,0,kiSim.Player.X+100,kiSim.Player.Y,false,false);
