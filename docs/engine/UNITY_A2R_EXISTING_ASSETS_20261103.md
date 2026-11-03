@@ -210,3 +210,10 @@ proof-a2r-r2255-vs-4895bf9c6.png / proof-a2r-r2255-diagnostics.png 직접 확인
 - 실패증명 I:/EXODUSER-Storage/map25d/a2redesign/SIGHT_PROOF.md: 나무2곳OFF/ON1920·3840/영웅1x,적탄컷,남→북10초100frame영상. 세번째컷없음을명시했다. 비교판·본편준비·23:20작업은수행하지않았다.
 - 앞고목숨김규칙삭제/원래고목복원, HumanSave의기본격리삭제는반영했다. --a2r-play-sandbox인자가없으면Bind즉시반환. 실제LocalLow로스터3파일의크기/수정시각/캐릭터수읽기전후동일,실제쓰기0. 무인자일반Player를띄운것은아니므로일반로비UI검증주장없음.
 - 다음진단후보: HLSL uint비트마스크/정수count를MaterialPropertyBlock.SetInt/Shader.SetGlobalInt로전달하고있다. 설치Unity6 XML은이API가폐기됐고SetInteger/SetGlobalInteger를사용하도록명시한다. 타입전달문제가원형중앙누락원인인지추가확인이필요하며현재미수정·미검증. source단계컴파일0을시각PASS로바꾸지않는다.
+
+
+## 00:50 재검증 + 00:30 바닥 원화
+
+맵 총괄 a5bec4992의 float 3분할 마스크를 그대로 사용한다. 지정 바닥형 m_c1groot/m_c1gtoxicf/m_c1pool/pit_poison만 원본 sourceX/Y·크기·UV를 보존한 32×32 지형 메시로 바꾼다. 지형과 수면 중 높은 곳 위 1.2cm에 놓고 바람·원통 빌보드·물체 AO·가림 등록에서 제외한다. m_penta_circle 등 나머지는 세운다. 원화 55종(189항목) 직접 검토표는 I:/EXODUSER-Storage/map25d/a2redesign/REPORT.md에 기록한다.
+
+00:50 지시의 실제 나무 2~3곳 중 두 곳(캠프 원화 나무·다리 옆 네이티브 고목)을 Core 도보로 방문해 1920/3840 OFF/ON을 검증한다. 적 탄막 1곳·10초 실제 도보·독 웅덩이 서있음/투영 원본 캡처도 같은 빌드에서 낸다. 00:55에 따라 신규 시도는 고정 a2r-build-next, 승인 실행본 a2r-build와 분리한다. Runtime/Editor C# 컴파일 오류 0. 빌드/실제 구멍/스모크는 아직 미검증이며 다시 실패하면 중단한다.

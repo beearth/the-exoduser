@@ -16,7 +16,7 @@ namespace Exoduser
         }
         public static int Build()
         {
-            var args=Exoduser.DevTools.ExoArgs.Get();int at=Array.IndexOf(args,"-output");if(at<0)throw new Exception("A2R output missing");string output=args[at+1];Directory.CreateDirectory(output);
+            var args=Exoduser.DevTools.ExoArgs.Get();int at=Array.IndexOf(args,"-output");string output=at>=0?args[at+1]:"I:/EXODUSER-Storage/map25d/a2r-build-next";Directory.CreateDirectory(output);
             foreach(var name in new[]{"CardOpaque","CardFade","LitOpaque","LitFade","GroundPainting","DistanceHaze","HeroReadability","FootLight","Contact","Air","ToxicRiver"}){var shader=Resources.Load<Shader>("A2R/"+name);if(shader==null)throw new Exception("A2R shader missing: "+name);if(ShaderUtil.ShaderHasError(shader)){foreach(var message in ShaderUtil.GetShaderMessages(shader))Debug.LogError(name+":"+message.line+":"+message.message);throw new Exception("A2R shader error: "+name);}}
             VerifyNearestSurface();
             var target=Application.platform==RuntimePlatform.OSXEditor?BuildTarget.StandaloneOSX:BuildTarget.StandaloneWindows64;
