@@ -201,3 +201,12 @@ proof-a2r-r2255-vs-4895bf9c6.png / proof-a2r-r2255-diagnostics.png 직접 확인
 00:10 첫 Playerb2abb29e: 일반로비/Core캠프1829ticks·오류0/창0/세이브변경0. 실제가림표면/GPU>0과적탄원은확인했으나, 원래Collider의원점내부/비균일계층변환 때문에 앞줄기일부가 빠졌고, 보조Core도보가필러에서막혀FAIL. 바로가기갱신보류.
 
 보정: 실제Renderer.worldToLocalMatrix/원본triangle+UV를직접읽는양면BVHray로교체(게임물리콜라이더/씬추가0). 렌더와동일한shear/scale, 내부시점도검사한다. 보조BFS는기존FullRunCanMove와동일한Core필러차단을읽어피한다. Core수정/순간이동0. 불필요한shader hole bits0순회즉시반환. 이수정후한번검증하며다시실패하면중단·보고.
+
+## 00:10 결과 — FAIL / 두 차례 실패로 중단
+
+- 최신 빌드 0e994de9efd0be6f3f14c7e3aae48764d868c53b, 공용 build e1dc1c88 오류0 / Playerc203801e exit3. 첫 Playerb2abb29e도실패. 창0·실제세이브변경0·잔여프로세스0, 로비→캠프1829ticks/정체0/좌표대입0은통과했으나P0시각검증은실패했다.
+- 실제나무2지점과적탄에서CPU가림수/GPU픽셀>0은기록됐지만, 원본화면의큰줄기중앙이불투명해영웅은뼈색윤곽만보였다. 표면수>0만으로통과시키지않았다. 세번째지점도미발견(No legal real-tree sight point:3).
+- CLAUDE.md §9의두번실패규칙에따라추가구현·빌드중단/바로가기승인갱신보류. 고정a2r-build는실패후보로덮인상태이며,바로가기대상경로는같지만메타데이터/이력SHA는갱신하지않았다. 이전승인바이너리가유지된다고주장하지않는다.
+- 실패증명 I:/EXODUSER-Storage/map25d/a2redesign/SIGHT_PROOF.md: 나무2곳OFF/ON1920·3840/영웅1x,적탄컷,남→북10초100frame영상. 세번째컷없음을명시했다. 비교판·본편준비·23:20작업은수행하지않았다.
+- 앞고목숨김규칙삭제/원래고목복원, HumanSave의기본격리삭제는반영했다. --a2r-play-sandbox인자가없으면Bind즉시반환. 실제LocalLow로스터3파일의크기/수정시각/캐릭터수읽기전후동일,실제쓰기0. 무인자일반Player를띄운것은아니므로일반로비UI검증주장없음.
+- 다음진단후보: HLSL uint비트마스크/정수count를MaterialPropertyBlock.SetInt/Shader.SetGlobalInt로전달하고있다. 설치Unity6 XML은이API가폐기됐고SetInteger/SetGlobalInteger를사용하도록명시한다. 타입전달문제가원형중앙누락원인인지추가확인이필요하며현재미수정·미검증. source단계컴파일0을시각PASS로바꾸지않는다.
