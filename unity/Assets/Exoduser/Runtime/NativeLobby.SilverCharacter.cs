@@ -63,11 +63,6 @@ namespace Exoduser.UnityPort
             });
             silverVisualSideShade=NativeSilverHellUi.Effect(256,1,(u,v)=>new Color(0,0,0,.66f*u));
         }
-        string SilverLore(int index)
-        {
-            if(!visualLabelCatalogLoaded){visualLabelCatalogLoaded=true;var data=Resources.Load<TextAsset>("Data/visual_select_labels");if(data!=null)visualLabelCatalog=JsonUtility.FromJson<VisualLabelCatalog>(data.text);}
-            var keys=visualLabelCatalog==null?null:visualLabelCatalog.characterLoreKeys;if(keys==null||index<0||index>=keys.Length)return "";return VisualSelectionLabel(keys[index],keys[index]);
-        }
         List<string> SilverParagraphLines(string text,float size,float width,out GUIStyle style)
         {
             int integerSize=Mathf.CeilToInt(size);float scale=size/integerSize;style=new GUIStyle(silverBody){font=NativeSilverHellUi.TextFont(silverBody.font,text),fontSize=integerSize,wordWrap=false,padding=new RectOffset(),margin=new RectOffset(),alignment=TextAnchor.UpperLeft};var lines=new List<string>();int start=0;
@@ -140,10 +135,11 @@ namespace Exoduser.UnityPort
             DrawSpaced((w-headingWidth)/2,30,26,headingText,silverVisualTitle.font,18,3.6f,NativeSilverHellUi.Text,true);
             Image(new Rect((w-headingWidth)/2-238,45,220,1),silverHeadingLine,ScaleMode.StretchToFill);
             NativeUiAudit.DrawTextureWithTexCoords(new Rect((w+headingWidth)/2+18,45,220,1),silverHeadingLine,new Rect(1,0,-1,1),true);
+            DrawCharacterBasicStory(i);
             if(locked)DrawSilverReleaseLock();
             var centerMatrix=GUI.matrix;GUI.matrix=NativeUiViewport.RightMatrix;NativeUiAudit.Region(new Rect(1500,0,420,1080),"component","frontend-right","캐릭터 선택 오른쪽 레일");
-            string description=VisualSelectionLabel(presentationDescriptions[i],presentationDescriptions[i]),lore=SilverLore(i);float descHeight=SilverParagraphHeight(description,14,308,24.5f),loreY=bodyY+110.6f+descHeight+14,loreHeight=SilverParagraphHeight(lore,12.5f,308,21.25f);
-            var info=new Rect(x,bodyY,380,shortScreen?156:Mathf.Max(165.5f,loreY-bodyY+15+loreHeight+30));top=bodyY+Mathf.Max(info.height+44,shortScreen?190:300);
+            string description=VisualSelectionLabel(presentationDescriptions[i],presentationDescriptions[i]);float descHeight=SilverParagraphHeight(description,14,308,24.5f);
+            var info=new Rect(x,bodyY,380,shortScreen?156:Mathf.Max(165.5f,110.6f+descHeight+30));top=bodyY+Mathf.Max(info.height+44,shortScreen?190:300);
             SilverCornerPanel(info);
             SilverLabel(new Rect(x+36,bodyY+34,308,16),VisualSelectionLabel(presentationJobs[i],new[]
             {
@@ -156,7 +152,6 @@ namespace Exoduser.UnityPort
             }
             [i]),silverVisualName.font,28,3.36f,NativeSilverHellUi.Bright,true);
             DrawSilverParagraph(x+36,bodyY+110.6f,308,description,14,24.5f,new Color(185/255f,182/255f,176/255f));
-            if(!string.IsNullOrEmpty(lore)){Fill(new Rect(x+36,loreY,308,1),new Color(164/255f,147/255f,115/255f,.5f));DrawSilverParagraph(x+36,loreY+15,308,lore,12.5f,21.25f,new Color(223/255f,214/255f,194/255f,.82f));NativeUiAudit.Region(new Rect(x+36,loreY,308,loreHeight+15),"component","character-lore","웹 정본 catalog lookup·현재언어");}
             var traitTitles=new string[3];var traitBodies=new string[3];var traitHeights=new float[3];float traitContentHeight=72;
             for(int n=0;n<3;n++)
             {
