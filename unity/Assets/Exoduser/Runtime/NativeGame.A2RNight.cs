@@ -8,10 +8,24 @@ namespace Exoduser.UnityPort
 {
     public sealed partial class NativeGame
     {
-        [Serializable] sealed class NightFrame {public string id,look;public Vector2 core;public Vector3 eye;public float pitch,fov;public int width,height,visibleEnemies,distantEnemies;public bool cameraUnchanged;}
-        [Serializable] sealed class NightReceipt {public string scope="Same-package visual fixture AFTER ordinary no-teleport lobby/Core camp route. Five supplementary legal fixed poses, seeded original Core enemies, not natural travel. Native column restores this build's unity/main look; not a separately executed historical binary.";public List<NightFrame> frames=new List<NightFrame>();public int fixedPoseAssignments;public bool passed;public string[] failures;}
+        [Serializable] sealed class NightElement {public string key;public int active,visible;}
+        [Serializable] sealed class NightDefaults {public string baseUnityMain;}
+        [Serializable] sealed class NightFrame {public List<NightElement> elements;public string id,look;public Vector2 core;public Vector3 eye;public float pitch,fov;public int width,height,visibleEnemies,distantEnemies;public bool cameraUnchanged;}
+        [Serializable] sealed class NightReceipt {public string scope="Same-package visual fixture AFTER ordinary no-teleport lobby/Core camp route. Five supplementary legal fixed poses, seeded original Core enemies, not natural travel. Native column restores this build's unity/main look; not a separately executed historical binary.";public List<NightFrame> frames=new List<NightFrame>();public string mainSha;public int fixedPoseAssignments;public bool passed;public string[] failures;}
         [Serializable] sealed class NightPerformance {public string scope="Unthrottled camp render frames, no readback/encoding in measured interval. Counters are real ProfilerRecorder values, unavailable counters are explicitly marked.";public int width,height,frames;public float seconds,fps;public bool cloudShadows,depthRelief;public int loweredVertices;public float campMoundRise;public long drawCalls,triangles;public bool drawCallsAvailable,trianglesAvailable;}
         [Serializable] sealed class NightCombat {public string scope="Ordinary camp arrival, original real-time 60Hz Core StepInput combat, fixture invulnerability, not human/balance QA.";public int frames,ticks,shotsRequested,movingEnemies;public float seconds;public List<float> times=new List<float>();}
+        List<NightElement> A2RNightElements()
+        {
+            var result=new List<NightElement>();foreach(var key in new[]{"bridge","torches","swamp","trees","light-shafts","portal","camp","spawn-holes"})result.Add(new NightElement{key=key});var planes=GeometryUtility.CalculateFrustumPlanes(r3Cam);
+            foreach(var renderer in FindObjectsByType<Renderer>(FindObjectsInactive.Exclude,FindObjectsSortMode.None))
+            {
+                if(!renderer.enabled||renderer.forceRenderingOff||!renderer.gameObject.activeInHierarchy||renderer.name=="A2R sight circle portion"||renderer.name=="A2R card faded portion"||NativeGroundSkillProjection.IsProxy(renderer.GetComponent<MeshFilter>()))continue;
+                string path=renderer.name;var node=renderer.transform;for(int i=0;i<8&&node.parent!=null;i++){node=node.parent;path=node.name+"/"+path;}path=path.ToLowerInvariant();var material=renderer.sharedMaterial;string shader=material!=null&&material.shader!=null?material.shader.name:"";
+                bool shaft=shader.Contains("A2Atmosphere");if(shaft&&material.HasProperty("_Color")&&material.GetColor("_Color").a<=.001f)continue;
+                bool[] hit={path.Contains("bridge")||path.Contains("목교"),path.Contains("횃불")||path.Contains("torch"),shader.Contains("ToxicRiver")||path.Contains("늪")||path.Contains("수면"),path.Contains("tree")||path.Contains("거목"),shaft,path.Contains("portal")||path.Contains("포탈"),path.Contains("camp")||path.Contains("캠프"),path.Contains("spawnhole")||path.Contains("spawn hole")||path.Contains("소환굴")};bool visible=GeometryUtility.TestPlanesAABB(planes,renderer.bounds);for(int i=0;i<hit.Length;i++)if(hit[i]){result[i].active++;if(visible)result[i].visible++;}
+            }
+            return result;
+        }
         IEnumerator A2RNightProof()
         {
             yield return A2RNatureSize(1920);var perf=new NightPerformance{width=Screen.width,height=Screen.height,cloudShadows=Array.IndexOf(Environment.GetCommandLineArgs(),"--a2r-cloud-shadows")>=0,depthRelief=a2rRelief!=null,loweredVertices=a2rRelief!=null?a2rRelief.LoweredVertices:0,campMoundRise=a2rRelief!=null?a2rRelief.MoundRise:0};
@@ -26,7 +40,7 @@ namespace Exoduser.UnityPort
             yield return A2RNightCombatVideo();
             // Independent northbound real Core walk. No fixed-pose assignment precedes this video.
             var previousSight=sight;sight=new SightReceipt();yield return A2RSightVideo();File.WriteAllText(Path.Combine(a2rPlayOutput,"night-northbound.json"),JsonUtility.ToJson(sight,true));sight=previousSight;
-            var receipt=new NightReceipt();var failures=new List<string>();bool ai=Simulation.Config.EnemyAiEnabled;Simulation.Config.EnemyAiEnabled=false;
+            var receipt=new NightReceipt{mainSha=JsonUtility.FromJson<NightDefaults>(Resources.Load<TextAsset>("A2R/default-enabled").text).baseUnityMain};var failures=new List<string>();bool ai=Simulation.Config.EnemyAiEnabled;Simulation.Config.EnemyAiEnabled=false;
             var points=new[]{new Vector2(Map.Data.startX,Map.Data.startY),new Vector2(4320,7180),new Vector2(4320,7460),new Vector2(2200,4400),new Vector2(3640,7420)};
             var names=new[]{"start","bridge","swamps","distant-enemies","foreground"};
             for(int s=0;s<points.Length;s++)
@@ -43,7 +57,7 @@ namespace Exoduser.UnityPort
                         string id="night-"+names[s]+"-"+width+"-"+look;yield return A2RPlayShot(id);int visible=0,far=0;
                         foreach(var e in Simulation.Enemies)if(e.Alive){var v=r3Cam.WorldToViewportPoint(NativeRemodel3D.Point(e.X,e.Y)+Vector3.up*.8f);if(v.z>0&&v.x>0&&v.x<1&&v.y>0&&v.y<1){visible++;if(Vector2.Distance(p,new Vector2(e.X,e.Y))>=800)far++;}}
                         if(look==0){eye=r3Cam.transform.position;fov=r3Cam.fieldOfView;}bool same=Vector3.Distance(eye,r3Cam.transform.position)<.001f&&Mathf.Abs(fov-r3Cam.fieldOfView)<.001f;
-                        receipt.frames.Add(new NightFrame{id=id,look=look==0?"native main look restored":look==1?"A2R only; 3D placement OFF":"A2R + supplied 3D",core=p,eye=r3Cam.transform.position,pitch=r3Cam.transform.eulerAngles.x,fov=r3Cam.fieldOfView,width=Screen.width,height=Screen.height,visibleEnemies=visible,distantEnemies=far,cameraUnchanged=same});if(!same)failures.Add(id+": camera changed");if(s==3&&far<3)failures.Add(id+": fewer than three distant enemies");
+                        receipt.frames.Add(new NightFrame{elements=A2RNightElements(),id=id,look=look==0?"native main look restored":look==1?"A2R only; 3D placement OFF":"A2R + supplied 3D",core=p,eye=r3Cam.transform.position,pitch=r3Cam.transform.eulerAngles.x,fov=r3Cam.fieldOfView,width=Screen.width,height=Screen.height,visibleEnemies=visible,distantEnemies=far,cameraUnchanged=same});if(!same)failures.Add(id+": camera changed");if(s==3&&far<3)failures.Add(id+": fewer than three distant enemies");
                     }
                 }
             }
