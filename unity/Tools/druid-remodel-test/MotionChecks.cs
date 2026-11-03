@@ -164,7 +164,9 @@ static partial class P
                 if (t.MoveId == "burrowStrike" && t.Shape == DruidTeleShape.Circle && s.DruidPillars.Count > 0)
                 {   // RB1-3: he comes up on the side of a pillar, just outside it (pillar radius + body + 24)
                     double want = 80 + d.R + 24; bool onPillar = s.DruidPillars.Any(pi => Math.Abs(Math.Sqrt((t.X - pi.X) * (t.X - pi.X) + (t.Y - pi.Y) * (t.Y - pi.Y)) - want) < 3.0);
-                    Check(onPillar, name + ": burrow circle at " + t.X.ToString("0") + "," + t.Y.ToString("0") + " is not on the side of a pillar");
+                    if (d.S == "bossDruidErupt" && ps == "bossDruidErupt")
+                        Check(Math.Abs(t.X-d.X)<.001 && Math.Abs(t.Y-d.Y)<.001, name + ": burrow live erupt centre follows boss after knockback");
+                    else Check(onPillar, name + ": burrow circle at " + t.X.ToString("0") + "," + t.Y.ToString("0") + " is not on the side of a pillar");
                     burrowPillarChecks++;
                 }
             }

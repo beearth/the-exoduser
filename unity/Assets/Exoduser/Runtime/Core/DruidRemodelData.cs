@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Exoduser.UnityPort.Core
 {
-    // RB1-7: seven active moves in the original twelve slots; see UNITY_BOSS_ARENA_RB1_7_8_20261103.md for incomplete reach/width and harness FAIL.
+    // RB1-7: seven active moves in the original twelve slots; druid-only reach/width approved by CTO 2026-11-03 20:25.
     // RM-B1 (RB1-1 / RB1-2): the remodelled 1-1 dark druid. SSOT = docs/engine/UNITY_BOSS_RM1_DARK_DRUID_20261027.md (§2 lives, §3 moves, §4 telegraph).
     // Everything here is data; the behaviour lives in DruidBoss.Remodel.cs (moves) and Simulation.DruidRemodel.cs (lives, collapse, sink).
     // The web-port tables in DruidBossData.cs stay untouched: the remodel is switched on per fight (DruidBoss.Remodel / Simulation.DruidRemodel), the default is off.
@@ -24,6 +24,7 @@ namespace Exoduser.UnityPort.Core
         public const int GrabTicks = 120;                  // 2 s of absorption
         public const double GrabHealFraction = 0.03;       // boss +3 % of the current life HP over the whole grab
         public const int GrabEscapeHits = 3;               // player hits during the grab that break it
+        public const double SlashReach = 300 * 1.6, ChargeWidthMultiplier = 1.5; // druid set only; total charge judgement width scales with body + player +80
         public const double SlamRadius = 260;              // RB1-7 §13.2 #2 (the web value is a 1000 px arena wave)
         public const int PoisonTrailTicks = 180;           // spec §3 #8 "독 흔적 3초"
         public const double ChaseZoneRadius = 150;         // initial value: the web uses 450, unreadable with a short warning

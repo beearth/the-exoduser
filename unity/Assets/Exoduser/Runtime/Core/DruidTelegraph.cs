@@ -44,6 +44,9 @@ namespace Exoduser.UnityPort.Core
         public const double ChargeSpeed = DruidRemodelData.ChargeSpeed, ChargeTicks = DruidRemodelData.ChargeTicks, SlashReach = 300, SlashHalfAngle = 1.2, EruptReachExtra = 120, FanRange = 2000, SummonSpread = 80;
         // lead = ticks between the end of the wind state and the damage check of the move (slam: bossSlam 8; first slash: bossSlash 10 -> window at <= 6; burrow: 45 under + 8 erupt)
         const int SlamLead = DruidRemodelData.SlamActive, SlashLead = DruidRemodelData.SlashActive - DruidRemodelData.SlashHitAt, BurrowUnder = 45, BurrowEruptLead = DruidRemodelData.BurrowEruptWarn, FissureMaxT = 140;   // ticks from the end of the wind to the damage check (slam swing 6, slash swing -> check at St2 == 6, erupt warning 30)
+        // Keep the web and other remodel sets' ranges unchanged.
+        double SlashHitReach { get { return Remodel && Set.Id == DruidRemodelData.SetId ? DruidRemodelData.SlashReach : SlashReach; } }
+        double ChargeHitRadius(DruidData d, double playerRadius) { return (d.R + playerRadius + 80) * (Remodel && Set.Id == DruidRemodelData.SetId ? DruidRemodelData.ChargeWidthMultiplier : 1); }
         public int TeleSerial;               // counts move starts (remodel only)
 
         // groundFissure: how far the head may crawl (also read by the telegraph)
@@ -119,7 +122,7 @@ namespace Exoduser.UnityPort.Core
                 case "bossChargeWind":
                     {   // move 3; a grab picked from 120 px or farther runs this same wind (BossMove "grab" falls back to the charge) and is reported as move 6
                         string cm = mid == "grab" ? "grab" : "charge";
-                        double w = 2 * (d.R + pr + 80);
+                        double w = 2 * ChargeHitRadius(d, pr);
                         t = Tele(into, cm, DruidTeleKind.ParryGlint, DruidTeleShape.Line, d.RmTeleTotal, d.St2, 0);
                         t.X = d.X; t.Y = d.Y; t.Dir = d.Facing; t.Length = ChargeSpeed * ChargeTicks; t.Width = w; StaffTip(t, d);
                         t = Tele(into, cm, DruidTeleKind.GroundDecal, DruidTeleShape.Line, d.RmTeleTotal, d.St2, 1);
@@ -207,7 +210,7 @@ namespace Exoduser.UnityPort.Core
         // (see SlashTele)
         void AddSlash(List<DruidTelegraph> into, DruidData d, double pr, int idx, double total, double remaining)
         {
-            double reach = d.R + pr + SlashReach, angle = SlashHalfAngle * 2;
+            double reach = d.R + pr + SlashHitReach, angle = SlashHalfAngle * 2;
             var kind = idx < 2 ? DruidTeleKind.ParryGlint : DruidTeleKind.GroundDecal;   // spec #1: hits 1 and 2 are parryable (red -> bone glint), the big third one is dodged
             var t = Tele(into, "slashCombo", kind, DruidTeleShape.Cone, total, remaining, idx);
             t.X = d.X; t.Y = d.Y; t.Dir = d.Facing; t.Angle = angle; t.Radius = reach;

@@ -2,7 +2,7 @@
 
 | 작업ID | 내용 | 담당·환경 | 브랜치 | 소유 파일 | 상태 |
 |---|---|---|---|---|---|
-| RB1-7/8 | 기술7개 데이터·3D 보스방 | PC Codex, 지정 브리프 수행 | codex/unity-boss-arena-20261103 | Core/DruidRemodelData.cs, Tools/druid-remodel-test/{MotionChecks,Program,TelegraphChecks}.cs, UNITY_BOSS_ARENA_RB1_7_8_20261103.md·관련 docs | **중단·통합 금지**: 수치 부분적용, 하니스100375/18실패(잠행), Roslyn5어셈블리 오류0. 두 배율의 Core 최소연결 승인 대기. RB1-8 미착수. [기록](../UNITY_BOSS_ARENA_RB1_7_8_20261103.md) |
+| RB1-7/8 | 기술7개 데이터·3D 보스방 | PC Codex, 지정 브리프 수행 | codex/unity-boss-arena-20261103 | Core/DruidRemodelData.cs, Tools/druid-remodel-test/{MotionChecks,Program,TelegraphChecks}.cs, UNITY_BOSS_ARENA_RB1_7_8_20261103.md·관련 docs | **RB1-7 CPU PASS·Mac 판정 대기**: 20:25 승인Core최소연결, 전투100385/0·frame124/0·OFForacle5421635/0. 잠행18건 검사전제오류 확정. RB1-8a 독립 진행. [기록](../UNITY_BOSS_ARENA_RB1_7_8_20261103.md) |
 
 ## 2026-10-29 Mac 첫 연습 실입력 후속
 
