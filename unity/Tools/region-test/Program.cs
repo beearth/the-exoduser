@@ -280,6 +280,31 @@ class Program
                 s.Stage.ForceUnlock(); s.Player.X = (exit.X + .5f) * 40; s.Player.Y = (exit.Y + .5f) * 40; s.Player.Iframes = 99999; Run(s, 100);
                 Check(s.Stage.Events.Any(e => e.Kind == StageEventKind.GateAnglerBlocked) && !s.Stage.InArena && s.Stage.LoadPhase == 0, "exit tile with the flag down: blocked, no arena");
             }
+            // M1 09c (11-04 SWAP2 eaf67fae9): the last angler's death clears its region on the next 15-frame region check (_regionTick, web 61283), and the gate
+            // opens on the first 30-frame room check after that (checkRooms _crT, web 42069). Kills add room checks (pendingKillRoomChecks), so the two phases drift
+            // apart run by run and the wait is 1..44 ticks. The M1 check stepped a fixed 30 ticks after the last hit: 4/4 regions + flag up, gate still sealed.
+            {
+                int phases = 0, sealedAt30 = 0, maxWait = 0; bool allOpened = true;
+                for (int pre = 0; pre < 15; pre++)
+                for (int checkT = 0; checkT < 30; checkT++)
+                {
+                    var s = MakeB(2027, 1); Run(s, 1);
+                    s.HarnessKill(s.Stage.GateGuard); KillBornIn(s, 1, 41); KillBornIn(s, 0, need[0]); KillBornIn(s, 2, need[2]); KillBornIn(s, 3, need[3]); Run(s, 45);
+                    for (int k = 0; k < 4; k++)   // the M1 check order: site 0..3, 70 ticks beside it, the hit, 30 ticks
+                    {
+                        var fb = s.FieldBosses[k]; s.Player.X = (float)(fb.X + 500); s.Player.Y = (float)fb.Y; s.Player.Iframes = 99999; Run(s, 70);
+                        if (k == 3) { Run(s, pre); s.Stage.CheckT = checkT; }
+                        s.HurtFieldMobs(fb.X, fb.Y, 10, 1e9, null);
+                        if (k < 3) Run(s, 30);
+                    }
+                    int wait = 0; while (!s.Stage.BossUnlocked && wait < 90) { Run(s, 1); wait++; }
+                    phases++; if (wait > 30) sealedAt30++; maxWait = Math.Max(maxWait, wait);
+                    if (!s.Stage.BossUnlocked || !s.Stage.FieldBossDone || s.RegionClearedCount() != 4) allOpened = false;
+                }
+                Say("09c: last angler -> gate open wait over " + phases + " region/room phases: max " + maxWait + " ticks, still sealed after 30 ticks in " + sealedAt30);
+                Check(allOpened && maxWait <= 44, "09c: every phase opens the gate naturally within one region check + one room check (max " + maxWait + " <= 44 ticks)");
+                Check(sealedAt30 > 0, "09c: a fixed 30-tick wait after the last angler misses the gate for some phases (" + sealedAt30 + "/" + phases + "): the M1 check must wait for the room check");
+            }
         }
 
 

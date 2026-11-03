@@ -25,6 +25,20 @@
 2026-11-04 적 3D 연결 바탕 WIP 중단: 최신6d99d0c46에서 codex/unity-enemy3d-20261104 생성. 읽기 전용 상태 정책·etype1/4 모델표·0차 FBX 변환·검사 초안 보존. 같은 정책 검사 명령2회 실패(예상 RED, 이후 Core/Skills 소스 열거 누락 CS0234/CS0246)로 사용자 지시대로 중단. Unity 렌더/Animator/VFX 연결·meta·전체 PC 컴파일·Mac 판정 미완, 본편 병합 금지. 인계 UNITY_ENEMY3D_WIRING_20261104.md.
 
 
+2026-11-04 M1 09c 지옥문 개방 대기 수정(디버깅 총괄, CTO 01:20, SWAP2-M1-09c): eaf67fae9 스모크의 "아귀 전멸·지역 4/4·플래그인데 BossUnlocked=false"는 Core 결함이 아니라 검사 대기 부족. 마지막 지역은 15프레임 지역 판정에서 클리어되고 지옥문은 그 뒤 첫 30프레임 룸 판정에서 열려 1~44틱 걸린다(웹 `_regionTick`·`checkRooms`와 같음). M1 09c가 마지막 처치 뒤 30틱만 진행 → 그 뒤 개방까지 최대 +45틱 대기(강제 개방 없음). region-test 450위상 재현(최대 44틱, 30틱 시점 봉인 105/450) 124/0, Unity batch 컴파일 오류 0, PC Player 0. 기록 docs/engine/UNITY_M1_REGION_RB_20261028.md §9.
+
+2026-11-04 적 3D 01:00 연결 바탕: 최신ec89d5166 병합·하니스 Core/Skills 재귀 열거65/0 회복. etype4 공유 키를 시작 육괴 표현 태그로 분리해 일반 갑각 사도 아틀라스 유지. 영웅 공유 rig-pixel·Generic Animator/Core 틱·투영 bounds VFX 접점·사망 시작 연결, 고정meta 추가. 확장 정책103/0·전체 PC Roslyn5어셈블리 오류0 각1회, Player0. 미제공 동작은 bind pose로 기록하며 Mac 화면·임포트·동작·성능 미판정.
+
+2026-11-04 적 3D 연결 바탕 WIP 중단: 최신6d99d0c46에서 codex/unity-enemy3d-20261104 생성. 읽기 전용 상태 정책·etype1/4 모델표·0차 FBX 변환·검사 초안 보존. 같은 정책 검사 명령2회 실패(예상 RED, 이후 Core/Skills 소스 열거 누락 CS0234/CS0246)로 사용자 지시대로 중단. Unity 렌더/Animator/VFX 연결·meta·전체 PC 컴파일·Mac 판정 미완, 본편 병합 금지. 인계 UNITY_ENEMY3D_WIRING_20261104.md.
+
+
+2026-11-04 canMv 맵 충돌 oracle 정정(디버깅 총괄, CTO 02:05): Core 시험 36/1의 실패 1건 = `map-oracle.cjs` 2,523표본 중 2개(4018.5,104.7 r10 / 4042.9,207.9 r15, 둘 다 1-1 보스 게이트 뒤). 웹 맵 생성은 `MAP_OBJS`에 `boss_gate_col`(sz250 → 원 반경 100, 중심 (100.5,4)타일)을 넣는데 정적 맵 export에는 없어 oracle이 게이트 덩어리를 통과 가능으로 봤다. Unity는 3ed856bf6에서 같은 덩어리를 벽 13타일 + 게이트 타일(3) 차단으로 이식. oracle에 원문 sz와 게이트 타일로 같은 원을 추가 → 36/0. Unity Core·맵 무변경. 남은 차이: 게이트 주변 정밀 격자(2px, x3760~4280·y0~400, r10/15/22 15.7만 표본)에서 타일 근사와 원이 5,156표본 다름(x3898~4140·y52~280, Unity만 통과 4,767·Unity만 막힘 389). 열린 들판의 덩어리 테두리 모양 차이라 새 통로·막힌 길 없음, 출구 타일(7행 y280~)·아레나 진입 무영향. 정확 일치(원 충돌체로 교체)는 맵 데이터 변경이라 맵 총괄 판단 후보. 기록 unity/Tools/README.md 모델 검사.
+
+2026-11-04 적 3D 01:00 연결 바탕: 최신ec89d5166 병합·하니스 Core/Skills 재귀 열거65/0 회복. etype4 공유 키를 시작 육괴 표현 태그로 분리해 일반 갑각 사도 아틀라스 유지. 영웅 공유 rig-pixel·Generic Animator/Core 틱·투영 bounds VFX 접점·사망 시작 연결, 고정meta 추가. 확장 정책103/0·전체 PC Roslyn5어셈블리 오류0 각1회, Player0. 미제공 동작은 bind pose로 기록하며 Mac 화면·임포트·동작·성능 미판정.
+
+2026-11-04 적 3D 연결 바탕 WIP 중단: 최신6d99d0c46에서 codex/unity-enemy3d-20261104 생성. 읽기 전용 상태 정책·etype1/4 모델표·0차 FBX 변환·검사 초안 보존. 같은 정책 검사 명령2회 실패(예상 RED, 이후 Core/Skills 소스 열거 누락 CS0234/CS0246)로 사용자 지시대로 중단. Unity 렌더/Animator/VFX 연결·meta·전체 PC 컴파일·Mac 판정 미완, 본편 병합 금지. 인계 UNITY_ENEMY3D_WIRING_20261104.md.
+
+
 2026-11-04 03:30 1-1 드루이드 노인 코어 Blender 정리 v2~v6(CTO 야간 지시, 유료 0·PC Unity 실행 0): 매달린 랜턴 삭제, 지팡이 2.30m + 열린 뿌리 케이지 별도 소품(StaffSocket_L), 손 한 덩어리(왼 지팡이 감아 쥠·오른 갈고리), 새발 장화, 가면 정본 인장 굽기, 앞자락 추가, rig-pixel 팔레트 재질 7개 분할과 Blender 근사 미리보기. 문서 docs/8.1보스디자인바이블/BOSS_1-1_FIRST_BOSS_REPLAN_G0_20261103.md §26, LOCK §17.8, docs/engine/UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md. 코드 무변경.
 
 2026-11-04 00:35 3D 적 피격 위치 계획을 보스전 총괄 1차 일정(적 3D G0 §8, 773bf0238)에 맞춤: 1차 4종 G1~G3.5에서 Blender 숫자 3개(메시 높이·가슴 비율·34° 투영 높이) 요청, Unity 모델 표 연결 커밋에 피격 기준점(투영 bounds) 연결, 같은 Mac 판정 차례에 피격 컷 추가, 2차 다안 육괴는 눈 높이 접점. 문서만, 코드 무변경. 기록 docs/5.1임펙트디자인/UNITY_COMBAT_IMPACTS_20261103.md
