@@ -45,7 +45,7 @@ if($Command -ne 'install-bin' -and $env:EXO_UNITY_NO_FORWARD -ne '1' -and
     exit $LASTEXITCODE
 }
 
-$ExoUnityVersion = '2026.11.04-winenv'
+$ExoUnityVersion = '2026.11.04-exitcode'
 $MaxPlayerSlots = 2
 Import-Module (Join-Path $PSScriptRoot 'QueueTurn.psm1') -Force
 try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false) } catch { }
@@ -1173,8 +1173,11 @@ function Invoke-Guarded([string]$File, [string[]]$ArgList, [string]$Cwd, [int]$l
     }
     $exit = 0
     if ($proc.HasExited) {
-        if ($HiddenDesktop) { $exit = Get-DesktopProcessExitCode $dproc }
-        else { $exit = $proc.ExitCode }
+        # 종료 코드를 못 읽어도 아래 정리·숨은 데스크톱 닫기·영수증은 계속한다(11-04 r17 영수증 유실).
+        try {
+            if ($HiddenDesktop) { $exit = Get-DesktopProcessExitCode $dproc }
+            else { $exit = $proc.ExitCode }
+        } catch { $warnings += ('종료 코드 읽기 실패: ' + $_.Exception.Message); $exit = -1 }
     }
     else {
         & taskkill.exe /PID $proc.Id /T /F 2>&1 | Out-Null
