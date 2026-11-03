@@ -40,7 +40,7 @@
 ## 검증·전달
 
 팔90°/팔꿈치140°/무릎120°/웅크림/허리45°/각3타 타격/구르기 중간을 렌더해 직접 검사한다. 정적/수치 검사만으로 시각 PASS를 쓰지 않는다.
-Unity는 공용 실행기로 컴파일까지만. PC Player·빌드0. 기존 리그/조립 리그의 34° 1x·3x 비교판은 `I:/EXODUSER-Storage/char-modular/`에 최신만 둔다. 브리프의 사용자 메인 사본 경로는 readonly 규칙과 충돌하므로 우선 이 경로를 전달하며 메인 추적 파일을 고치지 않는다.
+Unity는 공용 실행기로 컴파일까지만. PC Player·빌드0. 기존 리그/조립 리그의 34° 1x·3x 비교판은 `I:/EXODUSER-Storage/char-modular/`에 최신만 둔다. 브리프가 명시한 `G:/exoduser/tmp/design-review/20261104_char_modular/`에는 검토 결과 사본만 전달하고 main 추적 파일을 고치지 않는다.
 Mac에서 같은 패키지·기존 rig-pixel 경로로 실제 대기/달리기/3타/구르기 비교와 게임 판정을 별도 수행해야 완료다. 디자인 총괄 G1 판정/Tripo 결과는 미수신.
 
 ## 제작 중간 영수증
@@ -51,3 +51,13 @@ Mac에서 같은 패키지·기존 rig-pixel 경로로 실제 대기/달리기/3
 - 강체 결합의 실제 평가 정점 간 거리 오차6.30e-8m. 새 몸 바탕6,668정점 A포즈 역스킨 왕복 최대1.03e-6m, 가중치 합/개수 검사 PASS. 이런 수치는 시각 관통/틈0이나 실제 Animator PASS를 의미하지 않는다.
 - 생성 스크립트의 비용/배타 잠금/모호 POST/수정 이력6검사 PASS. 내장 imagegen 입력11종+견갑수정1회. 잔액/키는 저장소 밖에서만 처리한다.
 - 저작 파일은 `unity/Tools/char-modular/Warrior_Modular.blend` 하나에 덮어쓴다. 기존 전신 메시 재사용0, 기본24뼈 이름/부모/행렬 검사. 전체 파트/보조뼈/변형 렌더/Unity 연결/전체34도 비교판은 아직 진행 중이다.
+
+## 전체 전사 후보와 Unity 접점
+
+- 생성/조립: 독립11종+견갑 수정1회=12건, 실차감360cr. 별도 생성된 기존 대검 원본을3000tri로 경량 파생한다. 전체25개 저작 객체/46뼈, runtime draw mesh27,670tri+대검3,000tri=30,670tri.
+- 원본 GLB는2K 텍스처를 포함한다. native 저작 파일은1K 작업용 맵, Unity 파생은2K base-color atlas1장이다. 흑철·가죽/속바탕·암적색 천·피부4계열과 흑발 전용 슬롯을 분리한다(실제5슬롯). 기존 rig-pixel 셰이더가 재질 이름으로 고정 팔레트를 선택하므로 흑발을 천 슬롯에 합치지 않는다.
+- `NativeRigPixelHero`는 모듈 후보에서 R7 전신용 표면/재질 재분류를 생략하고 작성한 경계를 유지한다. 기존 카메라·실시간 렌더·픽셀 합성 경로와 기본 전사 경로는 유지한다.
+- 추가 소유 접점: `NativeModularHeroPolicy.cs`, `NativeModularSecondaryMotion.cs`, `NativeHeroView.cs` 후보 선택·초기화, `NativeRigPixelHero.cs` 후보 표면 보존, `Editor/CharacterLab/ModularWarriorImport.cs`, `Resources/Characters/Warrior_Modular.prefab`와 자기 생성 자산/메타. Core·기존 Animator 클립·기본 선택/저장 클래스 수정0.
+- `--hero-render=rigpixel --hero-rig=modular`로 후보를 요청한다. `--hero-rig=legacy`는 같은 패키지의 기존 모델 비교용이며 기본값은 유지한다. 순수 선택7사례 PASS. Unity 연결/공용 컴파일은 별도 영수증을 확인해야 한다.
+- 34도11포즈 비교판: `I:/EXODUSER-Storage/char-modular/poses/warrior_compare_34_1x.png` 및 `_3x.png`. Blender의 border 반올림 때문에 실제 native 크롭320×319, 재배율 없이 합성했다. 동일34도/46.9453 FOV/거리16.5/1920×1080 기준이며 검사 포즈를 쓴다. 기존 Animator/Unity GPU/실게임 비교판으로 주장하지 않는다. 금속 edge 길이 최대 오차3.93e-7m, 수치 PASS.
+- 최종 시각 상태: **RETOUCH_GAME_QA_PENDING**. 디자인 총괄 G1/Tripo 비교·Mac 실제 Animator/1x/3x/점0/관통0/이음새0/60fps·사용자 실행본 채택은 아직 완료하지 않았다.

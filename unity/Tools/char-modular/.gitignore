@@ -1,3 +1,5 @@
 __pycache__/
+!test_*.py
+!test_*.ps1
 *.pyc
 *.blend1

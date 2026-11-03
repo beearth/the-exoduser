@@ -1,5 +1,13 @@
 # Unity 캐릭터 총괄 보드 (2026-10-27~)
 
+## 2026-11-04 전사 파트별 재제작 — 후보·게임 검수 대기
+
+- 사용자 판정: 기존 전사/실버테일/아이반 단일 전신 자동 리깅 **FAIL**. 아래 과거 전달/검수 이력은 새 모듈 리그의 합격 근거가 아니다.
+- 전사 LOCK 기반 독립 파트11종을 새로 제작, 견갑 입력 수정1회 포함 Meshy 실차감360cr/승인500cr. 별도 제작되어 있던 대검 원본은 경량 파생한다. 새 저작물은 자기 실제 worktree의 `unity/Assets/Exoduser/Art/Characters/Warrior/Modular/`, native 조립은 `unity/Tools/char-modular/Warrior_Modular.blend`.
+- 조립25객체, 기본24뼈 이름/부모/행렬 보존, 망토3×4·머리카락3·견갑/태싯·무기 소켓 포함46뼈. 금속은 판마다 한 뼈100%, 부드러운 바탕/천/머리카락만 혼합 스킨. 전체30,670tri.
+- Blender34도 같은 원근의 기존/새 리그11개 검사 포즈·1x/3x 비교판 생성. 금속 강체 거리 보존 수치 PASS, 실제 Animator/Unity/실게임 캡처를 대신하지 않는다. 최종 관통/틈0·실제 게임1x/점0·Mac 성능은 미판정이다.
+- 후보 연결: `--hero-render=rigpixel --hero-rig=modular`, 기존 Animator 재사용 예정·기본값 채택 없음. PC는 공용 컴파일/임포트 검증까지만. 상세/비용/실행 영수증은 [전사 모듈 계약](UNITY_CHAR_MODULAR_20261104.md)과 `I:/EXODUSER-Storage/codex-takeover/char-modular/REPORT.md`. 상태 **RETOUCH_GAME_QA_PENDING**.
+
 ## 2026-11-03 리깅 픽셀 R6d — Mac 실게임 검수 요청
 
 - **Mac 검수 요청:** codex/unity-rigpixel-20261103 / 22918886ea67f0097e1dbabecf4a5fd2d3ea7848. [실행 명세](UNITY_RIG_PIXEL_MAC_REVIEW_20261103.md). 공통 898ac2b960을 정상 merge했고 자기 브랜치 commit/push 및 원격 SHA 대조를 마쳤다. 사용자 실행본 반영은 0, 기본 sprite 유지다.

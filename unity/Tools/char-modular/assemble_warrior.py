@@ -11,7 +11,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent))
 from modular_bind import (fit_static, import_part, rigid_bind, soft_bind_body, auxiliary,
-                          duplicate, face_part, fit_limb, cloth_weights)
+                          duplicate, face_part, fit_limb, cloth_weights, orient_boot)
 
 p = argparse.ArgumentParser()
 p.add_argument("--source-rig", type=Path, required=True)
@@ -52,14 +52,16 @@ if (a.parts / "body" / "model.glb").is_file():
             vertex.co.x += math.copysign(.07 * (1 - vertex.co.z / 1.055) * min(1, abs(vertex.co.x) / .06), vertex.co.x)
         elif abs(vertex.co.x) > .22:
             vertex.co.x = math.copysign(.22 + (abs(vertex.co.x) - .22) * .8, vertex.co.x)
+        if vertex.co.z < .17:
+            vertex.co.x = math.copysign(.25 + max(-.055, min(.055, abs(vertex.co.x) - .25)), vertex.co.x)
+            vertex.co.y = max(-.23, min(.02, vertex.co.y))
     if (a.parts / "gauntlet" / "model.glb").is_file() or (a.parts / "boot" / "model.glb").is_file():
         has_gloves = (a.parts / "gauntlet" / "model.glb").is_file()
-        has_boots = (a.parts / "boot" / "model.glb").is_file()
         covered = body
         body = face_part(covered, "Warrior_Underbody", lambda point: not
-                         (has_gloves and abs(point.x) > .48 and point.z > .85) and not
-                         (has_boots and point.z < .16))
+                         (has_gloves and abs(point.x) > .48 and point.z > .85))
         bpy.data.objects.remove(covered, do_unlink=True)
+        body.name = "Warrior_Underbody"
     soft_bind_body(body, rig)
     assembled.append(body)
 if (a.parts / "cuirass" / "model.glb").is_file():
@@ -141,6 +143,7 @@ if (a.parts / "boot" / "model.glb").is_file():
     source = import_part(a.parts / "boot" / "model.glb", "New_Boot_Source")
     for side, sign in (("Left", 1), ("Right", -1)):
         boot = duplicate(source, "Warrior_Boot_" + side, mirror=sign < 0)
+        orient_boot(boot)
         foot = rig.matrix_world @ rig.data.bones[side + "Foot"].head_local
         fit_static(boot, (foot.x, foot.y - .06, .095), (.15, .31, .19))
         rigid_bind(boot, rig, side + "Foot")
@@ -179,6 +182,9 @@ if (a.parts / "cape" / "model.glb").is_file():
     cloth_weights(cape, rig, centers, fixed_top=(1.49, "neck"))
     assembled.append(cape)
 
+hand = rig.matrix_world @ rig.data.bones["RightHand"].head_local
+auxiliary(rig, "hand_r_weapon", hand, hand + Vector((0, 0, -.1)), "RightHand")
+
 for name, (parent, matrix) in original.items():
     bone = rig.data.bones[name]
     assert (bone.parent.name if bone.parent else None) == parent
@@ -190,7 +196,9 @@ for obj in assembled:
     assert all(len(v.groups) == 1 and abs(v.groups[0].weight - 1) < 1e-7 for v in obj.data.vertices)
 bpy.data.orphans_purge(do_recursive=True)
 for image in bpy.data.images:
-    if image.users and image.source == "FILE" and not image.packed_file:
+    if image.users and max(image.size) > 1024:
+        image.scale(1024, 1024)
+    if image.users and image.source == "FILE":
         image.pack()
 a.blend.parent.mkdir(parents=True, exist_ok=True)
 bpy.ops.wm.save_as_mainfile(filepath=str(a.blend), compress=True)
@@ -198,6 +206,7 @@ receipt = {"scope": "partial new-parts assembly, not a complete character or run
            "sourceSkeleton": str(a.source_rig), "sourceGeometryReused": False,
            "referenceBoneCount": len(original), "referenceBonesPreserved": True,
            "totalBoneCount": len(rig.data.bones),
+           "authoringTextureMax": 1024, "originalPartTextures": "2K retained in source GLBs",
            "parts": [{"name": o.name, "role": o["char_modular_role"], "bone": o.get("char_modular_bone", "soft skin"),
                       "triangles": sum(len(poly.vertices) - 2 for poly in o.data.polygons)} for o in assembled],
            "blend": str(a.blend), "runtimeApplied": False, "visualPassed": False}

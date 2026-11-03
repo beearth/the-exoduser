@@ -180,6 +180,22 @@ def fit_limb(obj, rig, bone, width, depth, extra=0):
     obj.data.update()
 
 
+def orient_boot(obj):
+    """Meshy prop orientation is unconstrained. Put long sole/toe on front -Y."""
+    obj.data.transform(obj.matrix_world.copy())
+    obj.matrix_world = Matrix.Identity(4)
+    low = [min(v.co[i] for v in obj.data.vertices) for i in range(3)]
+    high = [max(v.co[i] for v in obj.data.vertices) for i in range(3)]
+    axis = 0 if high[0] - low[0] > high[1] - low[1] else 1
+    span = high[axis] - low[axis]
+    end_low = max(v.co.z for v in obj.data.vertices if v.co[axis] < low[axis] + span * .2)
+    end_high = max(v.co.z for v in obj.data.vertices if v.co[axis] > high[axis] - span * .2)
+    toe_low = end_low < end_high
+    angle = (90 if toe_low else -90) if axis == 0 else (0 if toe_low else 180)
+    obj.data.transform(Matrix.Rotation(math.radians(angle), 4, "Z"))
+    obj.data.update()
+
+
 def cloth_weights(obj, rig, centers, role="soft", fixed_top=None):
     """Up to four nearby auxiliary bones on soft cloth/hair only."""
     for group in list(obj.vertex_groups):

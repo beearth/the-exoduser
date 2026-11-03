@@ -1,4 +1,4 @@
-2026-11-04 char-modular 제작 착수: 전사 LOCK 기반 파트별 이미지·정적 Meshy 모델을 새로 제작하고 기존24뼈만 재사용하는 Blender headless 저작 경로 추가. 흉갑 단일 rigid 거리 보존·천 바탕 실제6668정점 A포즈 역스킨 왕복·비용/배타 잠금/중복 보호6검사 PASS. 견갑 첫 형상 FAIL을 기록하고 입력 수정1회, 실패비용도500cr 상한에 포함. 아직 부분 조립이며 런타임 채택/Unity 컴파일/Mac 시각 판정/34도 전체 비교판 완료가 아니다. 기록 docs/engine/UNITY_CHAR_MODULAR_20261104.md, 외부 char-modular/REPORT.md.
+2026-11-04 char-modular 전사 후보: 독립11종+견갑수정1회 생성(실차감360/500cr),25객체/46뼈/전체30,670tri로 조립. 기본24뼈 보존·판금 단일100%·천/머리만 스킨, 망토3×4·머리카락3·태싯/견갑/무기 소켓. Blender34도11검사포즈·기존/새모델 native1x/3x 비교판 생성, 금속 edge 오차최대3.93e-7m. 4재질계열+흑발5슬롯/2K atlas, 기존Animator 재사용 후보 접점·명시 --hero-rig=modular 선택7검사·비용보호6검사 PASS. R7 전신용 표면 재분류는 새 후보에서 생략. PC Unity 공용 컴파일/임포트 검증 전 checkpoint이며 실제Animator/게임/디자인PASS·기본채택 아님. 기록 docs/engine/UNITY_CHAR_MODULAR_20261104.md, 외부 char-modular/REPORT.md.
 
 2026-11-04 00:35 3D 적 피격 위치 계획을 보스전 총괄 1차 일정(적 3D G0 §8, 773bf0238)에 맞춤: 1차 4종 G1~G3.5에서 Blender 숫자 3개(메시 높이·가슴 비율·34° 투영 높이) 요청, Unity 모델 표 연결 커밋에 피격 기준점(투영 bounds) 연결, 같은 Mac 판정 차례에 피격 컷 추가, 2차 다안 육괴는 눈 높이 접점. 문서만, 코드 무변경. 기록 docs/5.1임펙트디자인/UNITY_COMBAT_IMPACTS_20261103.md
 

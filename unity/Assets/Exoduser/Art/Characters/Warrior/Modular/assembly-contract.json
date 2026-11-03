@@ -1,0 +1,54 @@
+{
+  "scope": "modular authoring parts -> combined draw mesh; not automatic whole-body rigging",
+  "parts": [
+    "Warrior_Underbody",
+    "Warrior_Cuirass_0",
+    "Warrior_Cuirass_1",
+    "Warrior_Cuirass_2",
+    "Warrior_Cuirass_3",
+    "Warrior_Head",
+    "Warrior_Hair",
+    "Warrior_Pauldron_Left",
+    "Warrior_Pauldron_Right",
+    "Warrior_Arm_Left",
+    "Warrior_Arm_Right",
+    "Warrior_Greave_Left",
+    "Warrior_Greave_Right",
+    "Warrior_Vambrace_Left",
+    "Warrior_Gauntlet_Left",
+    "Warrior_Vambrace_Right",
+    "Warrior_Gauntlet_Right",
+    "Warrior_Boot_Left",
+    "Warrior_Boot_Right",
+    "Warrior_Belt",
+    "Warrior_Tasset_LeftFront",
+    "Warrior_Tasset_LeftBack",
+    "Warrior_Tasset_RightFront",
+    "Warrior_Tasset_RightBack",
+    "Warrior_CapeScarf"
+  ],
+  "triangles": 27670,
+  "bones": 46,
+  "materials": [
+    "Iron",
+    "Leather",
+    "Cloth",
+    "Skin",
+    "Hair"
+  ],
+  "materialTriangles": [
+    16333,
+    4843,
+    2057,
+    3391,
+    1046
+  ],
+  "baseColorAtlas": [
+    2048,
+    2048
+  ],
+  "atlasSources": 11,
+  "runtimeApplied": false,
+  "swordTriangles": 3000,
+  "totalTriangles": 30670
+}

@@ -10,13 +10,15 @@ namespace Exoduser.UnityPort {
   readonly Light fill,rim;
   readonly Transform leftFoot,rightFoot;
   readonly Exoduser.CharacterLab.CapeSpring cape;
+  readonly NativeModularSecondaryMotion modularSecondary;
   Simulation previousSimulation;Vector3 previousGround;bool previousWorld3D;
   public bool Ready {get{return model!=null&&motion!=null;}}
   public NativeHeroMotion Motion {get{return motion;}}
   public GameObject Model {get{return model;}}
   public NativeHeroView(Transform parent){
-   var prefab=Resources.Load<GameObject>("Characters/Warrior");
-   if(prefab==null){Debug.LogError("[전사3D] 런타임 프리팹 누락: Characters/Warrior");return;}
+   string resource=NativeModularHeroPolicy.Resource(System.Environment.GetCommandLineArgs());
+   var prefab=Resources.Load<GameObject>(resource);
+   if(prefab==null){Debug.LogError("[전사3D] 런타임 프리팹 누락: "+resource);return;}
    root=new GameObject("Hero 3D");root.transform.SetParent(parent,false);
    model=Object.Instantiate(prefab,root.transform);model.name="Warrior";model.transform.localPosition=Vector3.zero;model.transform.localRotation=Quaternion.identity;model.transform.localScale=Vector3.one;
    foreach(var t in model.GetComponentsInChildren<Transform>(true))t.gameObject.layer=30;
@@ -24,6 +26,7 @@ namespace Exoduser.UnityPort {
    var a=model.GetComponent<Animator>();leftFoot=a.GetBoneTransform(HumanBodyBones.LeftFoot);rightFoot=a.GetBoneTransform(HumanBodyBones.RightFoot);
    motion=model.GetComponent<NativeHeroMotion>()??model.AddComponent<NativeHeroMotion>();
    cape=model.GetComponent<Exoduser.CharacterLab.CapeSpring>();
+   modularSecondary=model.GetComponent<NativeModularSecondaryMotion>();
    fill=MakeLight("Hero neutral fill",new Color(1,.97f,.94f),6f,5f);
    rim=MakeLight("Hero cool edge",new Color(.62f,.75f,.86f),1.6f,4f);
   }
@@ -41,7 +44,7 @@ namespace Exoduser.UnityPort {
    float yaw=Mathf.Atan2(Mathf.Cos(p.Facing),-Mathf.Sin(p.Facing))*Mathf.Rad2Deg;
    root.transform.SetPositionAndRotation(ground,floor*Quaternion.Euler(0,yaw,0));
    root.transform.localScale=Vector3.one*(world3D?.87f:.80f);
-   if(!ReferenceEquals(previousSimulation,simulation)||previousWorld3D!=world3D||Vector3.Distance(previousGround,ground)>2f)cape?.ResetState();
+   if(!ReferenceEquals(previousSimulation,simulation)||previousWorld3D!=world3D||Vector3.Distance(previousGround,ground)>2f){cape?.ResetState();modularSecondary?.ResetState();}
    previousSimulation=simulation;previousWorld3D=world3D;previousGround=ground;
    motion.Sync(simulation,moving);
    fill.transform.position=ground+floor*new Vector3(-.7f,1.8f,-1.4f);

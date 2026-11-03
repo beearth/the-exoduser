@@ -30,8 +30,11 @@ namespace Exoduser.UnityPort {
    try {
     var toon=Resources.Load<Shader>("Shaders/RigPixelToon");var shader=Resources.Load<Shader>("Shaders/RigPixelComposite");
     if(hero==null||!hero.Ready||toon==null||shader==null)throw new InvalidOperationException("Warrior rig or pixel shaders missing");
-    foreach(var skin in hero.Model.GetComponentsInChildren<SkinnedMeshRenderer>(true)){SmoothSurfaceNormals(skin);CleanMaterialRegions(skin);}
-    foreach(var filter in hero.Model.GetComponentsInChildren<MeshFilter>(true))filter.sharedMesh=SmoothMeshNormals(filter.sharedMesh,filter.transform);
+    // Modular parts have authored normals and material boundaries; R7's whole-surface repair would relabel them.
+    if(hero.Model.GetComponent<NativeModularSecondaryMotion>()==null){
+     foreach(var skin in hero.Model.GetComponentsInChildren<SkinnedMeshRenderer>(true)){SmoothSurfaceNormals(skin);CleanMaterialRegions(skin);}
+     foreach(var filter in hero.Model.GetComponentsInChildren<MeshFilter>(true))filter.sharedMesh=SmoothMeshNormals(filter.sharedMesh,filter.transform);
+    }
     foreach(var r in hero.Model.GetComponentsInChildren<Renderer>(true)){
      var sourceMaterials=r.sharedMaterials;var materials=new Material[sourceMaterials.Length];
      for(int i=0;i<materials.Length;i++){
