@@ -461,7 +461,7 @@ namespace Exoduser.UnityPort
             yield return M1Finish(output);
         }
 
-        IEnumerator M1WaitFrontend(string label) {float until=Time.realtimeSinceStartup+25;while((NativeScreenTransition.Busy||lobby.CinematicEntryPending)&&Time.realtimeSinceStartup<until)yield return null;if(NativeScreenTransition.Busy||lobby.CinematicEntryPending)M1Add("00","frontend boundary "+label,"fail","boundary timeout","");else if(NativeScreenTransition.History!=null&&NativeScreenTransition.History.Count>0){var record=NativeScreenTransition.History[NativeScreenTransition.History.Count-1];if(record.failed||record.cancelled)M1Add("00","frontend boundary "+label,"fail",record.boundary+" "+record.error,"");}yield return null;}
+        IEnumerator M1WaitFrontend(string label) {float until=Time.realtimeSinceStartup+25;while((NativeScreenTransition.Busy||lobby.CinematicEntryPending)&&Time.realtimeSinceStartup<until){lobby.SetPlaybackFocus(true);yield return null;}if(NativeScreenTransition.Busy||lobby.CinematicEntryPending)M1Add("00","frontend boundary "+label,"fail","boundary timeout","");else if(NativeScreenTransition.History!=null&&NativeScreenTransition.History.Count>0){var record=NativeScreenTransition.History[NativeScreenTransition.History.Count-1];if(record.failed||record.cancelled)M1Add("00","frontend boundary "+label,"fail",record.boundary+" "+record.error,"");}yield return null;}
         IEnumerator M1Finish(string output)
         {
             m1.guiRepaints = m1GuiRepaints; m1.guiBridged = m1GuiBridged;
