@@ -100,6 +100,25 @@ namespace Exoduser.UnityPort
             if(plaque==null)plaque=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_plaque_20261029");
             Slice(new Rect(box.x-14,box.y,box.width+28,box.height),plaque,174,0,40,0,true);
         }
+        // 웹 #gcModal .gc-ok filter: drop-shadow(0 0 8px rgba(194,26,16,.22)) — 은빛 판 둘레의 옅은 진홍 빛(실버 헬 §7: 빨강은 작게).
+        static Texture2D primaryGlow;
+        internal static void PrimaryGlow(Rect box)
+        {
+            if(primaryGlow==null)primaryGlow=Effect(128,48,(u,v)=>{float d=Mathf.Sqrt((u-.5f)*(u-.5f)*4+(v-.5f)*(v-.5f)*4);return new Color(194/255f,26/255f,16/255f,.22f*Mathf.Clamp01(1-d));});
+            NativeUiAudit.DrawTexture(new Rect(box.x-16,box.y-10,box.width+32,box.height+20),primaryGlow);
+        }
+        static Font latin;
+        // --sh-latin: 영문·키 이름은 Cinzel.
+        internal static Font Latin(){if(latin==null)latin=Resources.Load<Font>("Art/fonts/Cinzel-400")??Resources.Load<Font>("Art/fonts/Cinzel-VariableFont_wght");return latin??Font(true);}
+        // CSS letter-spacing: 글자마다 spacing px을 더해 그린다. style.alignment의 가로 정렬(왼쪽/가운데)만 따른다.
+        internal static float SpacedWidth(string text,GUIStyle style,float spacing){float w=0;foreach(char ch in text)w+=style.CalcSize(new GUIContent(ch.ToString())).x+spacing;return text.Length>0?w-spacing:0;}
+        internal static void SpacedLabel(Rect r,string text,GUIStyle style,float spacing)
+        {
+            float w=SpacedWidth(text,style,spacing);var a=style.alignment;bool center=a==TextAnchor.MiddleCenter||a==TextAnchor.UpperCenter||a==TextAnchor.LowerCenter;
+            float x=center?r.center.x-w/2f:r.x;
+            var one=new GUIStyle(style){alignment=TextAnchor.MiddleLeft,wordWrap=false,clipping=TextClipping.Overflow};
+            foreach(char ch in text){string g=ch.ToString();float cw=one.CalcSize(new GUIContent(g)).x;Label(new Rect(x,r.y,cw+2,r.height),g,one);x+=cw+spacing;}
+        }
         // 기존 금속 원화의 안쪽 표면만 착색한다. 테와 양끝 조각은 원본 은빛을 유지한다.
         internal static void ActionPlate(Rect box,bool primary,float selection,bool pressed,float edge=40,float outset=14)
         {
