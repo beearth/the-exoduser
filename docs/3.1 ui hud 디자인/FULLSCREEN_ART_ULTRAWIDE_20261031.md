@@ -233,8 +233,24 @@ root 정확파일 인수: cold-profile-closeout/cold-render-REPORT.md 8871B/SHA 
 | B/1 |617 ON|4.7|2.7|15.9|63.8|148.9|21.5|
 | B/2 |07081 ON|23.8|0|0|61.8|98.4|40.0|
 
-첫순서끼리후보의GLB→제출+4.0ms/fixture→제출+14.1ms,두번째순서끼리-16.9/-21.8ms로혼재한다. 첫observer이전공백65.2/68.8ms·LongTask57/58ms가남았고 인접rAF만으로이를숨기지않았다. 네case의cache·순서변동으로제품인과/전체지연합격을확정하지않음. 첫3D제출은CSSvisible render복귀proxy이며OS/compositor표시시각이아니다. warm10CPU mean/p95 A-baseline .220/.400,candidate .340/.400;B-candidate .270/.400,baseline .370/.500ms는개별overlay표본이다. 전체FPS/1%low/VRAM/physicalmonitor 인증0. 과거271.2ms/이전4case24.1~25.5는그대로보존하고새측정으로재라벨하지않는다.
+첫순서끼리후보의GLB→제출+4.0ms/fixture→제출+14.1ms,두번째순서끼리-16.9/-21.8ms로혼재한다. fixture 직전 mark→첫 관측 rAF callback 경과65.2/68.8ms(설치 시각 아님)·LongTask57/58ms가남았고 인접rAF만으로이를숨기지않았다. 네case의cache·순서변동으로제품인과/전체지연합격을확정하지않음. 첫3D제출은CSSvisible render복귀proxy이며OS/compositor표시시각이아니다. warm10CPU mean/p95 A-baseline .220/.400,candidate .340/.400;B-candidate .270/.400,baseline .370/.500ms는개별overlay표본이다. 전체FPS/1%low/VRAM/physicalmonitor 인증0. 과거271.2ms/이전4case24.1~25.5는그대로보존하고새측정으로재라벨하지않는다.
 
 현재root인수근거: recovery/heartbeat-1655-mac-qa-raw.json 및 chest-local-material-final-title-20261102/prepare-617807-final-root-intake. 원본·최종REPORT/receipt를별도인수하고다음최소한건은남은최초초기화구간원인검토로한정한다. 동일4case재실행·미세poll/색/노출값탐색으로성능PASS를만들지않는다. main/public·Windows/Desktop/일반앱·Unity전달은없다.
 
 root 추가 인수: 최종 REPORT11948B/SHA5a27f13443f54377f4749375040c42fa89df02f3a754f4a76e982a028359b3de 및 FINAL_RECEIPT85683B/SHA656518842a6b8dda68c5da8f10520c493de0267e4201b411279b279d2146a209 포함16파일9162403B 전수SHA일치·PNG6 IHDR일치. root 비교strip4+1920open/3840closed 원본2를 직접 보아 목재·철테·내측·접지의 눈에 띄는 회귀 없음으로 한정 시각PASS. 성능RETOUCH/미채택 유지. 서로 다른시각 합성RGBA차이를 0으로 덮지 않았다. 소형sender61185/62555는새READY뒤만시작·/done200 정상종료요청,최종PID/listen종료인수는별도영수증. 후속은같은기존sourceowner의57/58ms초기화·observer시작점 읽기분석 한 건뿐이며제품변경/새GPU재측정0.
+
+## 2026-11-03 09:13 — 617807 초기 구간 읽기 감사 원문 인수
+
+기존 읽기 감사의 REPORT.md 14,211B와 receipt.json 14,619B를 root가 정확히 인수하고 재결합·디스크 readback SHA를 대조했다. 이번 문서 정정은 새 측정이나 제품 개선이 아니다. 검수 runtime617807과 기존 네 case·271.2ms 원문을 보존하며 **전체 성능 RETOUCH / 미채택**을 유지한다. 앞선 단계의 후속 읽기 분석 대기는 이 원문 인수로 마감한다.
+
+| 항목 | 확정한 범위와 해석 제한 |
+|---|---|
+| 시계·mark | raw에 performance.timeOrigin이 없어 페이지 간 UTC/절대시각 교차 비교 불가. F는 fixture 삽입 직전, L/D는 loader wrapper 진입/Promise 해소 관측, E/S는 renderer.render 진입/CPU 반환이다. 삽입 완료·GPU 완료·실제 presentation 시각이 아니다 |
+| 초기 LongTask | A1 11661.7→11718.7ms(57.0), B1 11477.3→11535.3ms(58.0)는 각각 getContext 시작11720.5/11537.0보다1.8/1.7ms 먼저 끝난다. 해당 getContext나 이후1×1 texture upload로 귀속 불가. constructor 진입 mark도 없어 context 이전 constructor 부분/공유 초기화 원인은 미확정 |
+| 첫 rAF callback | F→첫 관측 callback은 A1 65.2/A2 25.6/B1 68.8/B2 30.4ms다. observer 설치 시각이나 callback 두 개의 간격이 아니다. rAF 인자 timestamp 대신 callback 중 performance.now()를 기록했고 초기 전체 frame gap은 복원 불가 |
+| ready·native2D proxy | native2DPossibleWaitProxyMs=min(readyObserved,E)-F. baseline은 E(107.9/74.6ms), candidate는 중첩 microtask sample(71.3/130.1ms)을 선택해 endpoint가 다르다. 실제 ready 대입·active/isShowing 전환·native2D 마지막 draw 지속시간 비교에 사용하지 않는다. B1 sample→E14.1ms도 준비 CPU/2D 종료로 합치지 않는다 |
+| analyzer 경계 | maxRafGapWhollyAfterGlbStartThroughFirst3D는 start>=L/start<=S만 선택하고 end<=S를 검사하지 않는다. 기존 이름·값을 전체 구간 최대 task나 정확한 구간 내부 gap으로 확대하지 않는다. analyzer/summary 원본 수정·새 실행0 |
+| 유지하는 실제 관측 | E→S baseline26.9/23.8ms·candidate4.8/4.7ms와 F→S134.8/98.4ms·76.6/148.9ms는 기존 네 case의 CPU 호출/elapsed 관측이다. 전체 표시 지연 개선의 통계·인과·완전 cold cache·FPS/1%low/VRAM/physical monitor PASS가 아니다 |
+| 보존·다음 | 기존 입력8개 SHA와 캡처 정밀도의 metadata 동일. 원 capture가 JS Number를 거쳐 ns 정밀도가 반올림돼 원본 ns 완전 동일 주장은 하지 않는다. 읽기 원문 두 파일의 이번 before/after size·SHA·mtime/inode는 동일. 새 Chrome/GPU/build/server·측정 case0. 다음 계측이 필요하면 별도 한정 후속에서 같은 clock/phase mark·최대1case만 검토하며 이번 인수가 실행 허가는 아니다 |
+
+원문 SHA: REPORT.md `04543a75ae5a1c72dc0f5692663dec166867e59a1a04fe4c040feb47315a9683`; receipt.json `b884639803e88db8572cde2a89abacfdd0601dc008cd143a6afee919af835e00`. root 보존·검산 근거: recovery/web-617-initial-audit-exact-intake-20261103-0004/{REPORT.md,receipt.json,root-receipt.json}. 코드·자산·94파생매핑·실제 산출물은 바꾸지 않았고 main/public/Windows/Desktop 전달도 없다.
