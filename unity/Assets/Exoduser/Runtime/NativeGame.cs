@@ -463,6 +463,7 @@ namespace Exoduser.UnityPort
             if(NativeHd2D.Enabled&&!NativeRemodel3D.Active)Hd2dArenaFrame();
             if(combatImpacts!=null)view.orthographicSize*=combatImpacts.ParryCameraScale(Simulation.TickCount);
             teleView?.Update(Simulation,view); // 최종 flat camera의 화면 장판 clip 경계를 사용한다.
+            skillVfx?.Update(Simulation,view);
             if(NativeHd2D.Enabled&&!NativeRemodel3D.Active)NativeHd2D.ProjectFlatActors(view);
             combatImpacts?.Update(Simulation,HudCamera,playerView);
             if(!NativeRemodel3D.Active)ApplyMeleePresentation(HudCamera);

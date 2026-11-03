@@ -157,3 +157,4 @@
 | 날짜 | 내용 |
 |---|---|
 | 2026-11-04 | G1 표 작성. 근거: 보스 아레나 `85a0c3557` Core·PREP §8~9, RM1 명세 v2.1 §3.3, 마스터 §2.2~2.7. 마스터 §6.1 U-VFX-09(드루이드 공격 3종 접점)를 7기술로 넓혀 이 문서로 옮김. 구현 전 |
+| 2026-11-04 | 구현 1번째 ② slam: `Runtime/Vfx/DruidSkillVfxView.cs`·`DruidSlamVfxTimeline.cs`(순수 계산)·`NativeGame.BossView.cs`/`NativeGame.cs` 연결 4줄. 표대로 예고 끝 흙 조각 6·접점 코어·흙 충격 고리(+6 r260, +26 r286)·방사 균열 7·파편 10~14·먼지 8·균열 데칼 180틱. 표와 다른 점 둘: ① 코어 위치는 act 0의 `Facing + WeaponAng`(Core는 이 틱에 WeaponAng를 -1.2 부근 뒤로 젖힌 값으로 둠) 대신 판정 틱에 Core가 쓰는 `WeaponAng = 0`(정면)으로 `R + 70`을 잡았다. 지팡이가 땅에 닿는 자리가 정면이라서다. ② 코어는 스프라이트 1장(가운데 백열은 act 0 색 #fff4d0)이며, 틱당 새 스프라이트 2개 상한은 파편·먼지에 적용했다(코어 1장은 act 0에 별도). 검사 `unity/Tools/druid-skill-vfx-tests` 106/0, 기존 combat-impact 914/0, PC Roslyn 오류 0. 남은 일: Mac G2 판정(단계 띠·1x/3x·10초 영상), 그 뒤 ① slashCombo |
