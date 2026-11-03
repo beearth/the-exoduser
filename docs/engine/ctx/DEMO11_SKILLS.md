@@ -24,7 +24,7 @@
 
 - `docs/2_1 스킬관리+합체시스템+자원/`
 - `docs/engine/FDG_SOURCE_TRACE_SKILLS_20261020.md` §1, §3–4
-- `docs/engine/DEMO11_COMPLETION_GAP_20261021.md` D14–D15
+- `docs/_archive/engine/DEMO11_COMPLETION_GAP_20261021.md` D14–D15
 
 ## 주의
 

@@ -99,4 +99,4 @@
 
 ## 2026-10-21 type7-fix 회귀 집계 정정
 
-현재 factory 기본 지원은9/미7(기존6 + etype20 order4·10·12), 별도 type7 order3 명시 설치 fixture는10/미6이다. 과거6/10·7/9 기술 이력과 동결 source support/runtime는 유지한다. 테스트 기대값2곳을 현재 exact-source admission에 맞추고 지원 order집합을 추가 검증한다. 제품 변경0. [판정·검증](orders/reports/type7-fix_REPORT.md).
+현재 factory 기본 지원은9/미7(기존6 + etype20 order4·10·12), 별도 type7 order3 명시 설치 fixture는10/미6이다. 과거6/10·7/9 기술 이력과 동결 source support/runtime는 유지한다. 테스트 기대값2곳을 현재 exact-source admission에 맞추고 지원 order집합을 추가 검증한다. 제품 변경0. [판정·검증](../_archive/engine/orders/reports/type7-fix_REPORT.md).

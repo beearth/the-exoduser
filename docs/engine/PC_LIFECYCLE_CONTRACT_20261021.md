@@ -1,7 +1,7 @@
 # PC 생명주기·최종 처치·시체 부활·recalcSt·펫 초상 계약 (2026-10-21, PC-LIFE-PACK)
 
 Mac 담당(DEMO11-39 사망/부활 화면, DEMO11-37 clear/gate, B9 주술사, DEMO11-29 재련, perf aaf52dc0)이 **이 문서만 보고 연결**할 수 있도록 PC 공개 API를 고정한다. 브랜치 `claude/pc-life-pack-20261021`. 요청 원문: `codex/pc-iface-pack-20261021:docs/engine/PC_INTERFACE_REQUESTS_DEMO11_20261021.md` §3. 원본 행(G)은 `game.html` 65,692행 sha256 `4d911cdd…e5d4` 기준이다.
-> **2026-10-22 스냅샷 갱신(행 +2 이동)**: 고정 스냅샷이 main `91e2774b7`(SHA256 `dee094fd…1f05209`)로 바뀌었다(유골함 mkItem 원시 효과 키 삭제 2줄 삽입, 새 G16156–16157). 이 문서의 G행은 이전 스냅샷 `e556b617`(`4d911cdd…85e5d4`) 좌표이고, 포트 영수증·oracle 라벨도 같은 좌표를 쓴다. 새 스냅샷에서 실제 행은 **G16156 이상 +2**(G16155 이하 그대로). PC oracle(.cjs)은 읽을 때만 옮긴다 — [INTEG5 스냅샷 계약 갱신 이력](INTEG5_SOURCE_SNAPSHOT_20261021.md#갱신-이력).
+> **2026-10-22 스냅샷 갱신(행 +2 이동)**: 고정 스냅샷이 main `91e2774b7`(SHA256 `dee094fd…1f05209`)로 바뀌었다(유골함 mkItem 원시 효과 키 삭제 2줄 삽입, 새 G16156–16157). 이 문서의 G행은 이전 스냅샷 `e556b617`(`4d911cdd…85e5d4`) 좌표이고, 포트 영수증·oracle 라벨도 같은 좌표를 쓴다. 새 스냅샷에서 실제 행은 **G16156 이상 +2**(G16155 이하 그대로). PC oracle(.cjs)은 읽을 때만 옮긴다 — [INTEG5 스냅샷 계약 갱신 이력](../_archive/engine/INTEG5_SOURCE_SNAPSHOT_20261021.md#갱신-이력).
 
 공통 원칙(기존 [PC_RUNTIME_STAT_REFRESH_CONTRACT](PC_RUNTIME_STAT_REFRESH_CONTRACT_20261021.md)와 같은 방식):
 - 모든 API는 **이벤트 호출 전용**이다. 틱 경로에 새 코드 0, `get_method_list/get_property_list/get_signal_list` 호출 0.
@@ -85,7 +85,7 @@ fallen 300 countdown(`P.st2`, G43729·G32989–32992, source-sp, 정지 중 0) �
 | u_d21 `_uDemonRekindle` 재점화(G43860–43861, P.rage) | 값>0이면 `revive_resolve`가 쓰기 전 `NOT_READY:unported_branch_active:_uDemonRekindle_rage_writer`. 분노 writer PC 미연결 |
 | die() 첫 3줄 ultUnmute/_esAutoFire/_alActive(G43722–43724) | Godot 미이식 상태라 쓰기 0 |
 | chargeStocks/chargeCd(G63522)·maxChargeStocks/_HARP_GAUGE(G63456–63462)·poison/bleed(G63455) | Godot Player에 대응 필드 없음 — 쓰기 0, `mac_followups` 표기 |
-| _webSlow/_trapSlowT(G63458), PC-ENEMY-ACTORS 후보(2026-10-23) | `player.gd` `_native_web_slow_ticks`·`_native_trap_slow_ticks` 대응. 기존 생명주기 commit의 reset에서 0으로 초기화. main 미반영 후보이며 [인수 범위·검수](orders/reports/PORT-TAKEOVER-01_REPORT.md) 참조 |
+| _webSlow/_trapSlowT(G63458), PC-ENEMY-ACTORS 후보(2026-10-23) | `player.gd` `_native_web_slow_ticks`·`_native_trap_slow_ticks` 대응. 기존 생명주기 commit의 reset에서 0으로 초기화. main 미반영 후보이며 [인수 범위·검수](../_archive/engine/orders/reports/PORT-TAKEOVER-01_REPORT.md) 참조 |
 | 기존 HP0 블록의 `charge_frames=0`/입력 해제 | 원본 die() reviveOnce 경로에는 없지만 기존 Godot terminal 코드가 토큰 발급 전에 이미 수행(수정 금지 범위) |
 
 ### 1.8 연결 예 (DEMO11-39)

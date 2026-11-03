@@ -35,7 +35,11 @@
 
 기준 이미지 경로는 `docs/11내러티브·로어디자인/` 기준.
 
+**신규 총기 캐릭터 슬롯 (2026-10-26 사용자 결정 [STY-D1])**: "총기 캐릭터 슬롯은 검은 연기 아이반으로 간다. 갤럭시 헌터는 보관." 원화 제작 대상은 검은 연기 아이반(작업명 토랜스, 이력 `TORRANCE_FIRST_CONCEPT_20261026.md`)이며 외형 LOCK은 아직 없다(디자인 총괄 채택 대기). 헬거너/갤럭시 헌터 시안(R02~R15, `GALAXY_HUNTER_*.md`)은 보관 이력으로 두고 삭제하지 않는다. 근거: `docs/11내러티브·로어디자인/STORY_LEAD_MASTER_20261026.md`
+
 **색 규칙**: 보라 = 네메시아·디로이·실버테일 / 붉은 눈 = 킬루 / 전사는 안광 없음.
+
+**세계 표현 LOCK**: 지옥의 하늘·날씨(붉은 태양·얼음달·피의 오로라·핏빛 비·칼날 우박·독액의 강·용암 바다) = [HELL_SKY_DESIGN_LOCK_20261027.md](HELL_SKY_DESIGN_LOCK_20261027.md). 태양은 진홍 원반(주황 금지), 얼음달은 창백한 청백(네온 청록·보라 금지), 피의 오로라는 태양보다 어두운 검붉은 장막(초록·청록·보라 금지, 3장 컷신·로딩·원경 전용), 핏빛 비는 인트로 피 톤과 같은 탁한 적갈, 주황은 용암에만.
 
 ---
 
@@ -123,7 +127,7 @@
 
 | 대상 | 상태 |
 |---|---|
-| 대검전사 스토리 영상 `video/warrior_story_v23_clean.mp4` (신규 캐릭터 생성 직후 재생) | ✅ v25 + 2026-10-06 첫 0~5초 칼을 쥔 오른손 교정. 이후 5484프레임·전체 오디오 동일, 실제 브라우저 재생기·KO 자막·Enter 검수. 캐시 `20261006-hand-grip`. 신규 캐릭터 생성 전체 흐름·NW.js 패키지 재검수 및 배포 미실시 — `docs/cinematic/WARINTRO_HAND_FIX_20261006.md` |
+| 대검전사 스토리 영상 `video/warrior_story_v23_clean.mp4` (신규 캐릭터 생성 직후 재생) | ✅ 2026-10-27 로컬 웹 실행본에 킬루 피눈물 v3 적용. 96.4초/5784프레임, 얼굴 컷 51.1~53.5초·56~58초 교체, 검 0.6초·화로·29언어 자막 유지. 캐시 `20261027-killu-bloodtears-v3`. 신규 캐릭터 생성 전체 흐름·NW.js·Steam은 별도 검수 — `docs/cinematic/WARINTRO_KILLU_REBUILD_20261025.md` |
 | 구 전쟁 인트로 정지 이미지 `assets/cutscene/warintro/` 12장 (`?cutscene=1` 미리보기 전용) | 🟡 2026-10-01 마감: 12장 중 6장 교체(nemesia_hd·remember·war·throne·demonbattle·fallhell_custom), emg1 원본 유지(후보만 보존), 5장 미착수. 캐시 `?v=20261001-warstills2` — `docs/cinematic/WARINTRO_STILLS_AUDIT_20261001.md` |
 | 유니크 아이템 외관 27종 `assets/unique-items/ui-01~27.png`(원본) → `img/ui/unique-items/`(256px) | 🟡 2026-10-08 원화 채택·생성 완료(1x·4배 확대 점 검수 통과). 게임 연결(부위별 무작위 외관·이름·보라 등급색)은 진행 중 |
 | 캐릭터 선택 `portrait_warrior.png`(bust — 로비 캐릭터 썸네일·선택창 초상) | ✅ 2026-09-30 평범한 눈으로 교체 (`?v=20260930-eyefix`, 원본 `output/charselect_remaster_20260930/original/`) |
@@ -131,6 +135,9 @@
 | CH1 썩은 생체나무 변형 05~12 | ✅ 채택·배치 (2026-10-08, Seedream 5.0 Pro 1:1 1920² 8장) `assets/map/ch1/collision/rotforest_tree_05~12.png` — 원본·컷 `output/rotforest_variants_20261008/`, 배정·생성 id·검수 [PASS98](../4.1맵디자인+설정/CH1_ROTTEN_FOREST_RUNTIME_TREES_PASS98_20261008.md) |
 | 캐릭터 선택 실버테일(`portrait_silvertail.png`·`silvertail_cut.png`)·배경(`bg_scene1/2.png`)·로비 포스터·엠블럼 | ✅ 점검(2026-10-01): 잔점 없음 |
 | 출시 예정 3종 `portrait_/poster_idle_` spearmage·hellgunner·transmuter (JPG 96~213KB) | ⚠ 압축으로 흐릿함 — 디자인 확정 후 고화질 재제작 필요 |
+| 아이반(검은 연기) T8 키아트 V35 `E:/exoduser-wt/_out/ivan-keyart-t8/` (Git 밖) | ✅ 2026-10-26 디자인총괄 확정 = r4(V29 잔점 제거판 1152×1536). 투명 컷 `ivan_t8_final_cut.png` 1010×1386·가슴 위 초상 `ivan_t8_portrait.png` 1024², halo 검수 통과. 로비·게임 미연결 — [기록](IVAN_T8_KEYART_V35_20261026.md) |
+| 첫 화면·로비 공용 로고 `img/logo_exoduser_solid.png`(2026-10-31 불투명 흑철 보정본, 원본 `img/logo_exoduser.png` 보존)(2026-10-28~ 눈알 로고 A 1506×719 RGBA; 이전 C안 1551×740 → `img/logo_exoduser_c_crown_20261027.png`) + ENTER `img/ui/enter_gothic_brass.png`(1536×1024 RGBA) | ✅ 2026-10-27 사용자 선택 안 C(지옥왕의 관: 흑철 대문자+낮은 뿔 왕관, 진홍 빛은 틈에서만)로 교체·통일. 원본(해골 로고 835×348)은 `img/logo_exoduser_v1_skull.png`로 보존, 기존 첫 화면 RGB 로고 `output/imagegen/exoduser-hell-lord-logo-api-v1.png`·ENTER `enter-gothic-api-v1.png`는 미참조 보존. 후보 A/B/C·목업 `E:/exoduser-wt/_out/title-logo-redesign/`(Git 밖), 적용 캡처 `…/apply/`. 런타임 캔버스 키잉(`cin-logo-art.js`)은 참조 제거. 상세: `docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md` 말미 · `docs/cinematic/ENTER_ENGRAVED_20260907.md` §2026-10-27 개정 |
+| 시작 메뉴 최종 Kling `video/title_motion_C2_final_20261102.mp4` + `title-signboard.js` | 2026-11-02 최종 지시: final-main/loop.mp4 원본 byte 그대로 2036×1016 cover. 정지원화·하늘/인물/달 마스크·변위셰이더·그레인·샤프닝 모두 제거. 예외는 새 영상 좌표의 해골 폭포 흐름2개만. 16/21/32:9 각10초·달/부츠·여백·1x/3x·입력/모션감소/오류 검수는 title-final-as-is-20261102/REPORT.md. 수치 SSOT는 스플래시_인트로_시퀀스.md 현행 계약 |
 
 ### 4.4 배포·동기화 상태 (2026-10-01 실측, 조회 시점 기준)
 
@@ -166,6 +173,10 @@
 
 ## 6. 작업 로그
 
+2026-10-27: 첫 화면(간판) 재디자인 — 로고 후보 A/B/C 생성(gpt-image 2.5 sunburst, 약 $0.13) 후 사용자가 C 선택, `img/logo_exoduser.png`를 C안(알파 bbox 크롭+사방 30px 투명 여백, 1551×740)으로 교체해 첫 화면·로비·게이트·인트로 컷 로고 통일. ENTER 그림은 오프라인 키잉(alpha=clamp((max(r,g,b)-8)/24)+구멍 메움)·녹슨 황동 리컬러로 RGBA 신규 파일화. 점·가장자리 회색 테두리 없음(검정·진홍 배경 3x 확인).
+2026-10-28: 첫 화면 리마스터(디자인총괄) — 사용자가 C안 로고를 "촌스럽다·이전 눈알 로고가 낫다·한 차원 높게"로 반려. 눈알 로고를 OpenAI API gpt-image-2 편집으로 3D 리마스터(A 은빛 단조강 채택, $0.6), 배경은 여캐 유지·붉은 태양 절벽으로 재묘사(2장 $0.8), Kling 4.0 첫=끝 프레임 1080p 7초 영상(94크레딧) → 0.4초 교차로 반복 이음새 처리. 영상 서비스 현황: Sora API 2026-09-24 종료, MagicLight VIP 10-24 만료로 이미지·영상 생성 차단(포인트 30,390 잔존), Higgsfield 잔액 0.13(11-09 충전 예정), Kling은 Pro 구독(무료 체험 결과물은 워터마크·상업 이용 불가 → 미사용). 점·회색 테두리 없음 1x 확인.
+2026-10-28 밤: 첫 화면(ENTER) 인장 락업 — 사용자 "올드버전은 버리고 다시해보자" + 엘든링 타이틀 기준. OpenAI gpt-image-2.5-sunburst images/edits(참조=눈알 로고 A)로 일곱 지옥 고리·끊어진 사슬 인장 `img/ui/silver_hell/gate_sigil_20261028.jpg` 생성·채택(1장), 로고 A 눈과 인장 눈을 겹쳐 검정 첫 화면에 적용. 월드 키아트 후보 k1(3840×1280, 전사)은 보류. 상세 `docs/3.1 ui hud 디자인/LOBBY_AAA_REFERENCE_STUDY_20261028.md` §17-1. 1x 잔점 없음.
+
 2026-10-06: 사용자 스크린샷의 첫 장면 손 교정 완료. PC 작업 허용 지시에 따라 Seedream 5.0 Pro 이미지 1장 + Hailuo 2.3 영상 1개만 생성·채택. MagicLight 잔액 58,340→57,990(350 감소). 1920×1080/60fps/96.4초 유지, 첫 300프레임만 교체하고 원본·후보 보존. 재생기·index 캐시 갱신, 관련 테스트 67/69 통과(2건 변경 전 동일 실패), Steam/NW.js/웹 배포 없음. 상세 검수·프롬프트·해시는 `docs/cinematic/WARINTRO_HAND_FIX_20261006.md`.
 
 | 날짜 | 내용 | 크레딧 |
@@ -185,6 +196,7 @@
 | 2026-10-08 | 막힌 보석 홈 그림 `img/ui/gem_socket_sealed_v1.png` 256×256 RGBA — gem_socket_v1 raw를 Seedream 5.0 Pro 1:1 edit(흑철 봉인 뚜껑, 빈 홈을 막은 형태)로 파생, 회색 배경 원형 마스크 키잉, 원본 `output/gem_socket_20261008/seedream_sealed_raw_1920.png`. 보석 탭 5홈 고정 배치의 미개방 자리 표시 — UI_COMPOSITION 2026-10-08 소켓석 절 | MagicLight 100 |
 | 2026-10-08 | 유니크 아이템 외관: UI-01~22 최종 채택(Higgsfield 원본, UI-05만 하이힐 실루엣 때문에 Seedream 후보), 빈 부위 5종 UI-23 바지·24 도끼·25 메이스·26 곤봉·27 창 Seedream 5.0 Pro 1:1 생성(카탈로그 공통 프롬프트), 27종 게임용 256px `img/ui/unique-items/` — `docs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md` 2026-10-08 절 | MagicLight 500 (5장, 표시 54,390 기준) |
 | 2026-10-08 | CH1 생체나무 변형 8종 생성(MagicLight Seedream 5.0 Pro, 1:1, 100pt×8 성공, 서비스 일시 불가 실패 4건 환불 후 재시도) — 레퍼런스=기존 tree_01~04 회색 합성, 원본별 2종씩. 회색 키잉·잔편 제거·하단 정렬 1024²·기존 4종 평균색 게인 보정, 1x 확대로 점·회색 테두리 없음 확인(tree_11 회색 잔편 3구역 수동 제거). 12종 눈·입·혹 좌표 등록, 런타임 흔들림·전체 깜빡임 적용 — [PASS98](../4.1맵디자인+설정/CH1_ROTTEN_FOREST_RUNTIME_TREES_PASS98_20261008.md) |
+| 2026-10-26 | 아이반 T8 키아트: V29 → GPT Image 2.5 sunburst edits 4회(r1 총구 잘림·r2 천 붉게 이탈 반려, r3 잔점 조건부, **r4 확정**), 로컬 누끼 투명 컷 + 가슴 위 초상 1024², 검정·진홍 합성 halo 검수 — [IVAN_T8_KEYART_V35_20261026.md](IVAN_T8_KEYART_V35_20261026.md) | GPT Image API 약 $0.0999 (MagicLight·Higgsfield 0) |
 
 ### 지시 수신 기록
 
@@ -322,7 +334,7 @@ MAP11-19 런타임 최종 판정 **RETOUCH**: 원화의 큰 형태는 읽히나 
 
 ## MAP11-21 현황표 — 1-1 지옥 관광 코스 (2026-10-21)
 
-MAP11-20/25Db의 패치12·소품8/해골3 및 룩 수치는 해당 후보 이력. 이번 전용branch의 현행은 [설계서 §20](../4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#20-map11-21--1-1-지옥-관광-코스-2026-10-21).
+MAP11-20/25Db의 패치12·소품8/해골3 및 룩 수치는 해당 후보 이력. 이번 전용branch의 현행은 [설계서 §20](../_archive/4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#20-map11-21--1-1-지옥-관광-코스-2026-10-21).
 
 | 산출물 | 출처 | 규격·적용 | 판정 |
 |---|---|---|---|
@@ -340,25 +352,25 @@ MAP11-20/25Db의 패치12·소품8/해골3 및 룩 수치는 해당 후보 이�
 
 ### MAP11-21b (2026-10-21)
 
-지옥 관광 6무리/17소품, 대표1.3배·GLB offline 받침 높이절단·채도1.06/대비1.10·대야 순적색 감쇠. 원본/PC보존, PNG runtime. [설계서 §20.5](../4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#205-map11-21b--관광-무리받침-제거-보정-2026-10-21)의 좌표/수치/검수 계약을 따른다.
+지옥 관광 6무리/17소품, 대표1.3배·GLB offline 받침 높이절단·채도1.06/대비1.10·대야 순적색 감쇠. 원본/PC보존, PNG runtime. [설계서 §20.5](../_archive/4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#205-map11-21b--관광-무리받침-제거-보정-2026-10-21)의 좌표/수치/검수 계약을 따른다.
 
 최종 단회96checks/0fail, focus이탈0, p95 field7.344/arena7.003ms. VISUAL VERDICT: RETOUCH(고치/해골 바닥판 제거·무리 개선, 구덩이 평면림/원GLB 빈면·외곽가림 잔여). 비교6장면+1x·발치2장 _out/MAP11-21b/captures/.
 
 
 ### MAP11-21c (2026-10-21)
 
-해골 회갈/아이보리chroma.20·cut.055/대야chroma.72·04광원.58/05광원.72, 입구·처형장·관문무리보정. 02보존. [설계서 §20.6](../4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#206-map11-21c--관광-코스-2차-보정-2026-10-21) 수치·좌표 SSOT. field p95 7.581ms/p99 8.742ms/focus_lost 0/draw 133.0; arena p95 7.286ms/p99 7.752ms/focus_lost 0/draw 136.0. 96checks/0fail, **VISUAL RETOUCH**(04내부평면/06림·01반복/03부분가림 잔여). 캡처 _out/MAP11-21c/captures/.
+해골 회갈/아이보리chroma.20·cut.055/대야chroma.72·04광원.58/05광원.72, 입구·처형장·관문무리보정. 02보존. [설계서 §20.6](../_archive/4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#206-map11-21c--관광-코스-2차-보정-2026-10-21) 수치·좌표 SSOT. field p95 7.581ms/p99 8.742ms/focus_lost 0/draw 133.0; arena p95 7.286ms/p99 7.752ms/focus_lost 0/draw 136.0. 96checks/0fail, **VISUAL RETOUCH**(04내부평면/06림·01반복/03부분가림 잔여). 캡처 _out/MAP11-21c/captures/.
 
 
 ### MAP11-21d (2026-10-21) 마감
-04 왼쪽 정상변형0으로 교체. 06 죄수variant2는yaw0+불투명depth로재렌더(0/1 PNG보존), pit height300/radius157.5/foot(-590,-3770)로1.5배. 게이트뒤3072×640 root-dark PNG로직선경계은폐. 01/02승인보존,03/05확인만. [설계서 §20.7](../4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#207-map11-21d--지옥-관광-코스-3차-보정-마감-2026-10-21)가현행SSOT. **VISUAL RETOUCH**(03가림/05질감/06림·암부). 단회96checks/3fail; p95 field9.530/arena7.212ms, focus_lost1648/1749로성능검수FAIL. 캡처 _out/MAP11-21d/captures/, SHA·최종판정 DONE.txt.
+04 왼쪽 정상변형0으로 교체. 06 죄수variant2는yaw0+불투명depth로재렌더(0/1 PNG보존), pit height300/radius157.5/foot(-590,-3770)로1.5배. 게이트뒤3072×640 root-dark PNG로직선경계은폐. 01/02승인보존,03/05확인만. [설계서 §20.7](../_archive/4.1맵디자인+설정/MAP11_NEW_MAP_LOGIC_PLAN_20261021.md#207-map11-21d--지옥-관광-코스-3차-보정-마감-2026-10-21)가현행SSOT. **VISUAL RETOUCH**(03가림/05질감/06림·암부). 단회96checks/3fail; p95 field9.530/arena7.212ms, focus_lost1648/1749로성능검수FAIL. 캡처 _out/MAP11-21d/captures/, SHA·최종판정 DONE.txt.
 
 
 ## UPSCALE-01 현황표 (2026-10-22)
 
 | 작업 | 적용·규격 | 검수·판정 |
 |---|---|---|
-| 최초원화2장 업스케일 | 로컬 Real-ESRGAN x4plus, x4추론→field1.5×/arena2×밀도. anime비교 제외. floor/clone/고목/둘레/전경을 같은logical source좌표에서 재분해,55PNG 무손실·최대2048 | 1920×1080 3곳+literal1x. 선명도 PASS; model/source/해상도/보정·메모리 SSOT는 [목표화면 UPSCALE-01](../4.1맵디자인+설정/MAP11_TARGET_FRAMES_20261021.md#upscale-01--로컬-real-esrgan-적용-2026-10-22-10-21-지시) |
+| 최초원화2장 업스케일 | 로컬 Real-ESRGAN x4plus, x4추론→field1.5×/arena2×밀도. anime비교 제외. floor/clone/고목/둘레/전경을 같은logical source좌표에서 재분해,55PNG 무손실·최대2048 | 1920×1080 3곳+literal1x. 선명도 PASS; model/source/해상도/보정·메모리 SSOT는 [목표화면 UPSCALE-01](../_archive/4.1맵디자인+설정/MAP11_TARGET_FRAMES_20261021.md#upscale-01--로컬-real-esrgan-적용-2026-10-22-10-21-지시) |
 | 북접합 | root판 irregular alpha, blood/moss 기존균열을 따라fade, 넓은복제그림자 제거·skull foot16world 짧은접촉. 새생성/inpaint/runtime3D0 | 제한범위 PASS, 전체map clone/crop/다른zoom·PC 미검수 |
 | 성능·메모리 | 유효field1회p95 9.798/p99 10.732ms/focus0/native1440. 실제VRAM 1080before3268263209→after3683076161bytes(+395.596458MiB). 새PNG145.523388MiB/RGBA429.890106MiB | 지정5종각1회182checks/0fail. **120fps 미달**. 기존81277 보존/자기Godot종료·main배포0 |
 | 인계 | `codex/upscale-01-20261021`, parent6da38c312326635fcb1424bebbac2b26b4a41350 | exactSHA/원격readback/captures: `~/exoduser-wt/_out/UPSCALE-01/DONE.txt` |
@@ -369,6 +381,35 @@ MAP11-20/25Db의 패치12·소품8/해골3 및 룩 수치는 해당 후보 이�
 | 항목 | 현행 | 검수/경계 |
 |---|---|---|
 | 마감 리터치 | START foreground 하단 불규칙fade/북쪽 고목5컷 공통수평선 분산/해골dense-foot578·582+짧은AO24·alpha.68+국소soil | 3장면1920×1080·literal1x13board, UPSCALE선명도유지PASS. 전체맵RETOUCH유지 |
-| 메모리 | 필드bake353.376343→223.464821MiB data, legacy아레나renderer 상속/로드제거. 1-1전체보수GPU1,267,507,176→988,351,648bytes(≤1.0GB) | Main타장포함cache보수1,574,538,764bytes는1GB초과·별도잔류. 전체목록·경계·공식은 [목표화면 MAP11-33](../4.1맵디자인+설정/MAP11_TARGET_FRAMES_20261021.md#map11-33--고해상도-마감-리터치맵-텍스처-예산-2026-10-22) |
+| 메모리 | 필드bake353.376343→223.464821MiB data, legacy아레나renderer 상속/로드제거. 1-1전체보수GPU1,267,507,176→988,351,648bytes(≤1.0GB) | Main타장포함cache보수1,574,538,764bytes는1GB초과·별도잔류. 전체목록·경계·공식은 [목표화면 MAP11-33](../_archive/4.1맵디자인+설정/MAP11_TARGET_FRAMES_20261021.md#map11-33--고해상도-마감-리터치맵-텍스처-예산-2026-10-22) |
 | 검수 | field41/provider54/seam18/30b34/arena35=182checks/0fail, 각1회 | 필드성능1회시도는 macOS loginwindow/포커스미확보로측정시작전종료. p95 N/A·유효샘플0, 재측정필요 |
 | 인계 | 같은codex/upscale-01-20261021, parent24662224dd40a5de45e68b5dec9d5d2c4a2736b1 | SHA/원격검증/캡처/표: ~/exoduser-wt/_out/MAP11-33/DONE.txt·REPORT.md. main/PC인수/배포아님 |
+
+
+## 2026-10-31 악의오브 최종 정정
+
+화폐를 악의오브 / Orb of Malice로 개명하고 내장 imagegen의 둥근 유리 오브 4단계를 HUD·대장간·스킬 창·툴팁·획득 합체 연출에 연결했다. 색·구간·파일·픽셀 규격과 실패 폴백은 [화폐 SSOT](../3.2메타·진행시스템/CURRENCY_RENAME_20261031.md)를 따른다. 32/48px 원화와 실제 HUD 1x 판정 보드는 G:/exoduser/tmp/design-review/20261031_malice_orb/review-board.png. 웹의 UI 검수와 Unity 컴파일·Player/M1은 별도이며 최종 증거·원격 SHA는 I:/EXODUSER-Storage/demo-art/currency-rename/REPORT.md에 남긴다.
+
+### 2026-10-31 로딩 초광폭 표시 후속
+
+활성 로딩 원화19장·대기 후보16장을 전수 조사했다. 네메시아·핵터·디로이 원본 보존 배경 확장6개와 나머지 원본 contain/블러 폴백, 별도 하단 상태 영역은 [로딩 초광폭 정본](../1전체그래픽세팅/LOADING_ULTRAWIDE_20261031.md)을 따른다. 인물 디자인 리마스터·Unity 적용·배포 완료와 구분한다.
+
+
+## 2026-10-31 전체 화면 원화 확장 적용
+
+이 문서의 과거 이미지·영상 제작 및 판정은 당시 이력이다. 현행 웹은 `fullscreen-art.js`의 경로 등록으로 64종의 원본/21:9/32:9 판을 선택한다. 화면비 2 이하의 원본 경로와 MP4 파일은 보존하고, 초광폭에서는 확장판을 배경으로 쓰고 원래 영상·카메라·CSS 움직임을 유지한다. 로비·캐릭터 영상은 manifest 중앙 좌표와 높이에 맞춰 겹치며 양끝14%를 크로스페이드한다. 전체 폭 분위기 효과는 움직임 줄이기·저사양·숨김 화면에서 정지한다. 출력·사용 위치·규격·생성 정보·검수 근거는 `docs/3.1 ui hud 디자인/FULLSCREEN_ART_ULTRAWIDE_20261031.md` 및 `assets/fullscreen-wide/20261031/manifest.json`이 현행 기준이다. 로딩35장은 별도 담당이며 Unity 반영·실행 검수는 이 웹 적용으로 완료되지 않는다.
+
+
+## 2026-11-02 타이틀 키프레임 3후보 (선택용)
+
+원본 A와 전신1x·발3x·손/성/피강/달1x 비교: `G:/exoduser/tmp/design-review/20261102_title_keyframe/BOARD.png`. 사용자 지정 내장 image_gen 편집 후보3장, 달 교정1회 후 C2만 국소 원형 보정. 원생성2171~2172×724, 32:9 2144×603 크롭→관람3840×1080 균등 확대(네이티브4K 아님). 달 지름비1.0136/1.0000/.9936. **CTO 선택 대기·RETOUCH·게임 미적용**, 고해상도 디테일/32:9 피강 잔해는 최종 채택 전 보완. 기존 손/힐부츠가 남은 런타임 A를 이번 결과로 교체하지 않았다. 프롬프트·측정·검수·한계는 I:/EXODUSER-Storage/codex-takeover/title-keyframe-20261102/REPORT.md.
+
+
+## 2026-11-02 살아 있는 대기 화면
+
+웹 살아 있는 대기 화면용 전사 불씨 보정과 사망 무잔점 보정판을 기존 원화에서 내장 imagegen으로 편집했다. 전사는35개 국소 마스크만 소비하고 원본 얼굴/체형/금속을 보존한다. 사망 원화의 동일 구도 cleanup은 원본 삽입 구간에만 적용한다. 원본 파일·승인 타이틀/게이트 불변. 생성2회/별도 유료 API0, 실제1672×941·1932×814이며 네이티브4K 주장 없음. assets/living-scenes/20261102/provenance.json과 ../3.1 ui hud 디자인/LIVING_SCENES_20261102.md 및 외부 living-1102/REPORT.md에서 최종1x/3x·전수·채택 상태 확인.
+
+
+## 2026-11-02 살아 있는 화면 최종 검수
+
+로비·선택5종·로딩32종(13/14/17 제외)·결과3종에 점 없는 canvas 연무를 적용했다.시작 메뉴/게이트는 보존했다.원본 파일 보존, 별도 정리판26개로 기존 부유 점/그레인을 제거하고 캐릭터 사이드의 점 박힌 금속판을 숨겼다.4비율164화면·82편10초무음·1x전후/3x·121검사/project112/guard PASS.실제화면의 흰 가장자리까지 전수 검사했다.자체 PASS는 환경 모션·잔점/경계 제거 범위이며 정리판 미세 재질은 원본과 동일하지 않고 네이티브4K가 아니다.최종SHA·실행본·동기화는 I:/EXODUSER-Storage/codex-takeover/living-1102/REPORT.md.상수/원화규격 SSOT는 docs/3.1 ui hud 디자인/LIVING_SCENES_20261102.md.자연 전투/NW.js/오디오/독립 총괄 검수와 구분. Unity 반영: 대기.

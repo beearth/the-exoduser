@@ -80,4 +80,4 @@ App ID `4749590`, Store Item ID `1189321`, EXODUSER: HELL LORD. 사용자가 지
 | all_upload.json | `a93464daf188b5f419bc8aa647ad61df8f8a69534b98b154ae24a1402376f60f` |
 | final_verified_all.json | `d00a844f4035e2b3f2f598342a31c137be3bccb7856853b5d1042d32ac2d792c` |
 
-기존 [상점 설명 현지화 기록](STEAM_STORE_LOCALIZATION_20260909.md)을 이어받으며, [대시보드 감사](STEAM_DASHBOARD_AUDIT_20260909.md)의 A12 영어 답변 오입력은 이번 작업으로 해결됐다. 게임 내부의31지원항목·29코드와 상점 편집기의30언어는 별도 범위다.
+기존 [상점 설명 현지화 기록](STEAM_STORE_LOCALIZATION_20260909.md)을 이어받으며, [대시보드 감사](../_archive/13출시·마케팅/STEAM_DASHBOARD_AUDIT_20260909.md)의 A12 영어 답변 오입력은 이번 작업으로 해결됐다. 게임 내부의31지원항목·29코드와 상점 편집기의30언어는 별도 범위다.
