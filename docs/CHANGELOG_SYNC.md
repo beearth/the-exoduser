@@ -1,3 +1,5 @@
+2026-11-04 M1 09c 지옥문 개방 대기 수정(디버깅 총괄, CTO 01:20, SWAP2-M1-09c): eaf67fae9 스모크의 "아귀 전멸·지역 4/4·플래그인데 BossUnlocked=false"는 Core 결함이 아니라 검사 대기 부족. 마지막 지역은 15프레임 지역 판정에서 클리어되고 지옥문은 그 뒤 첫 30프레임 룸 판정에서 열려 1~44틱 걸린다(웹 `_regionTick`·`checkRooms`와 같음). M1 09c가 마지막 처치 뒤 30틱만 진행 → 그 뒤 개방까지 최대 +45틱 대기(강제 개방 없음). region-test 450위상 재현(최대 44틱, 30틱 시점 봉인 105/450) 124/0, Unity batch 컴파일 오류 0, PC Player 0. 기록 docs/engine/UNITY_M1_REGION_RB_20261028.md §9.
+
 2026-11-04 적 3D 01:00 연결 바탕: 최신ec89d5166 병합·하니스 Core/Skills 재귀 열거65/0 회복. etype4 공유 키를 시작 육괴 표현 태그로 분리해 일반 갑각 사도 아틀라스 유지. 영웅 공유 rig-pixel·Generic Animator/Core 틱·투영 bounds VFX 접점·사망 시작 연결, 고정meta 추가. 확장 정책103/0·전체 PC Roslyn5어셈블리 오류0 각1회, Player0. 미제공 동작은 bind pose로 기록하며 Mac 화면·임포트·동작·성능 미판정.
 
 2026-11-04 적 3D 연결 바탕 WIP 중단: 최신6d99d0c46에서 codex/unity-enemy3d-20261104 생성. 읽기 전용 상태 정책·etype1/4 모델표·0차 FBX 변환·검사 초안 보존. 같은 정책 검사 명령2회 실패(예상 RED, 이후 Core/Skills 소스 열거 누락 CS0234/CS0246)로 사용자 지시대로 중단. Unity 렌더/Animator/VFX 연결·meta·전체 PC 컴파일·Mac 판정 미완, 본편 병합 금지. 인계 UNITY_ENEMY3D_WIRING_20261104.md.
