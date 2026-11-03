@@ -3,7 +3,7 @@ namespace Exoduser.UnityPort.Core {
  // Observational only: no simulation RNG, timers or gameplay writes.
  public sealed class CombatStats {
   public readonly Dictionary<string,double> meleeTellStarted=Map("swing","slam","charge","combo","unparryable"),projChargeStarted=Map("physical","magic","forbidden"),parrySuccess=Map("meleeE","meleeQ","projE","projQ"),dmgDealt=Map("normal","skill","reflect","counter"),dmgTaken=Map("meleeEnemy","proj","hazard","boss"),groggy=Map("meleeParry","counter","hit","reflect");
-  public readonly Dictionary<string,double> meleeGain=Map("hp","st","mp","rage","malice","harp"),projGain=Map("hp","st","mp","rage","malice","harp");
+  public readonly Dictionary<string,double> meleeGain=Map("hp","st","mp","rage","malice","harp","hpMaxFrac"),projGain=Map("hp","st","mp","rage","malice","harp","hpMaxFrac");   // hpMaxFrac: sum of each hp gain / max HP at that moment (G1 section 8 recovery line)
   public int parryWrongInput,deaths,hurtCount;public double clearSeconds;
   static Dictionary<string,double> Map(params string[] keys){var d=new Dictionary<string,double>();foreach(var k in keys)d[k]=0;return d;}
   public static void Add(Dictionary<string,double> d,string key,double value=1){if(value==0)return;if(!d.ContainsKey(key))d[key]=0;d[key]+=value;}

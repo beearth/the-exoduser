@@ -165,6 +165,7 @@ namespace Exoduser.UnityPort
         public void ResetRun()
         {
             ResetFirstPractice();
+            enemyRig?.Reset();
             contactVfx?.Reset();
             combatImpacts?.Reset();
             startupResetCount++;
@@ -179,7 +180,7 @@ namespace Exoduser.UnityPort
             Simulation.TryCollectLoot=CollectLoot;ClearDropViews();
             if(playerView==null)playerView=CreateRenderer("Player");
             if((!NativeHd2D.Enabled||RigPixelRequested)&&heroView==null)heroView=new NativeHeroView(transform);
-            AttachRigPixel();
+            AttachRigPixel();AttachEnemyRig();
             lastX=config.StartX;lastY=config.StartY;walkDistance=0;renderedTick=-1;playerMoving=false;
             hud.Refresh(Simulation.Player,Simulation.TickCount,true);
             StageFlowAttach();   // C07: gate/exit tiles, arena flow reset for this run
@@ -308,7 +309,7 @@ namespace Exoduser.UnityPort
         void DispatchFeedback()
         {
             sound.CurrentTick=Simulation.TickCount;
-            while(Simulation.Feedback.Count>0){var e=Simulation.Feedback.Dequeue();ParryFeedbackEvent(e);if(!ImpactActive||e.Kind!=FeedbackKind.FeelContact)impacts.Handle(e);combatImpacts?.Handle(e);combatImpacts?.Flash(e);if(!e.VisualOnly)sound.Handle(e);}
+            while(Simulation.Feedback.Count>0){var e=Simulation.Feedback.Dequeue();enemyRig?.Observe(e,Simulation.TickCount);ParryFeedbackEvent(e);if(!ImpactActive||e.Kind!=FeedbackKind.FeelContact)impacts.Handle(e);combatImpacts?.Handle(e);combatImpacts?.Flash(e);if(!e.VisualOnly)sound.Handle(e);}
             sound.Flush();
         }
         void BuildProps()
@@ -401,7 +402,7 @@ namespace Exoduser.UnityPort
                 NativeHd2D.Actor(ev.body,false,e.Radius*.035f);NativeHd2D.Overlay(ev.walk,ev.body);
                 UpdateEnemyShieldArc(e,ev);
             }
-            PruneEnemyViews();FieldBossViews();
+            PruneEnemyViews();FieldBossViews();enemyRig?.Sync(Simulation);
             UpdateDropViews();
             skillRemaster?.Update(Simulation,ImpactNow);
             if(skillRemaster!=null&&skillRemaster.Active)kiView?.Reset();else kiView?.Update(Simulation);

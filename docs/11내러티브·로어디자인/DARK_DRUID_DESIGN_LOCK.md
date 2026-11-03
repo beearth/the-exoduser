@@ -345,3 +345,19 @@ M1 껍질은 형태 PASS(조건부), 노인 코어 시트는 RETOUCH(경미)다.
 
 - **v0.5 PASS(디자인총괄 11-03, D5 조건 위 17.5).** 유료 G1 시트는 사용자 승인 뒤에 만든다.
 - 회색 박스 v2: `I:/EXODUSER-Storage/boss/greybox-20261103/out_v2/boss_1-1_husk_greybox_v2.blend` (SHA-256 `79acc965562a51460f74874804e3b91b2c66c65a4fb78ea7766cae2071767e12`).
+
+### 17.8 노인 코어 정리 결과 (2026-11-04, 보스전 기획 세션)
+
+§17.6 표 중 노인 항목의 처리 결과다. 상세·판정은 [G0 §26](../8.1보스디자인바이블/BOSS_1-1_FIRST_BOSS_REPLAN_G0_20261103.md), Unity 인계는 [rig-pixel 준비](../engine/UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md).
+
+| §17.6 대상 | 상태 |
+|---|---|
+| 노인 지팡이·랜턴(M2) | 매달린 랜턴 삭제. 지팡이 2.30m 별도 소품을 `StaffSocket_L`(LeftHand, 끝에서 0.85m)에 붙임. 머리는 Blender로 직접 만든 열린 뿌리 케이지(5가닥, 위 열림, 금속 없음) |
+| 노인 손 | 원호 골격 메타볼 한 덩어리: 왼손 = 지팡이를 감아 쥔 덩어리, 오른손 = 갈고리. 손가락 사이 틈 0 |
+| 노인 발 | 새발 장화(발톱 셋, 장화와 한 덩어리, 발톱 ≤12cm) |
+| 인장 | 가면 이마: 시트 변형 인장을 지우고 정본 디칼을 구움. 앞자락: 메시에 없어서 앞자락을 새로 달고 같은 인장 + 세로 룬 한 줄 |
+| 노인 랜턴 심지 | 구슬 `#a8642a`·Emission `#d49a5c`(D5 상한 그대로) |
+| 노인 가면 | 미처리 — Unity 1x 판정 뒤 |
+| 껍질 항목 전부 | 미처리(다음 단계) |
+
+- rig-pixel 팔레트용 재질 이름: `druid_bone`·`druid_bark`·`druid_feather`·`druid_hair`·`druid_beard`·`druid_glow`·`druid_moss`(색은 §5 토큰). 디자인 PASS는 실제 Unity 보스방 34° 픽셀 렌더 1x 캡처 뒤다.
