@@ -55,6 +55,7 @@ namespace Exoduser.UnityPort
         }
         IEnumerator A2FieldCapture()
         {
+            if(A2RRequested){yield return A2RedesignCapture();yield break;}
             string output=Argument("-output");
             if(string.IsNullOrEmpty(output)||!NativeQaSandbox.Active){Application.Quit(2);yield break;}
             Directory.CreateDirectory(output);AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;

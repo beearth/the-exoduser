@@ -1,0 +1,698 @@
+{
+  "scope": "r14 opaque source-card/base-texture rejection screen; visual acceptance requires same-position 34-degree 1x. Source textures unchanged.",
+  "materials": [
+    {
+      "key": "cocoon_0",
+      "multiplier": [
+        0.9111040115356446,
+        0.89936580657959,
+        0.7871313095092776
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_9.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "hang_cage_0",
+      "multiplier": [
+        1.1455556869506835,
+        0.9301469802856444,
+        0.7913564682006837
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_8.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "penta_full_0",
+      "multiplier": [
+        1.4101190567016602,
+        1.0770307540893556,
+        0.9664476394653321
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_16.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "skull_totem_0",
+      "multiplier": [
+        1.2994466781616212,
+        1.0803632736206055,
+        0.993390464782715
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_19.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "sword_pile_0",
+      "multiplier": [
+        1.1250398635864258,
+        0.8605955123901368,
+        0.7044580459594727
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_21.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "bnd0_0",
+      "multiplier": [
+        0.8186117172241212,
+        1.224970817565918,
+        1.074769401550293
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_tree_0.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "bnd18_0",
+      "multiplier": [
+        0.8204565048217773,
+        0.7978281021118163,
+        0.6986558914184571
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_tree_18.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "bnd3_0",
+      "multiplier": [
+        0.997451972961426,
+        1.3902578353881838,
+        1.1236116409301757
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_tree_3.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "bnd5_0",
+      "multiplier": [
+        0.5147424697875977,
+        0.6334932327270508,
+        0.5279237747192385
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_tree_5.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "c1tree_0",
+      "multiplier": [
+        1.0177297592163088,
+        0.9672510147094726,
+        0.8155172348022461
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_13.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "ctree13_0",
+      "multiplier": [
+        1.213277244567871,
+        1.5345380783081055,
+        1.25634708404541
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_36.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "ctree14_0",
+      "multiplier": [
+        1.247867012023926,
+        1.381643867492676,
+        1.22309627532959
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_28.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "ctree15_0",
+      "multiplier": [
+        1.1336984634399412,
+        1.208918190002441,
+        1.1793272018432617
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_14.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "ctree16_0",
+      "multiplier": [
+        0.8848306655883789,
+        1.2258039474487303,
+        1.2112688064575194
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_3.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "ctree17_0",
+      "multiplier": [
+        1.1251291275024413,
+        1.1062349319458005,
+        0.9719820022583008
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_2.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "ctree18_0",
+      "multiplier": [
+        1.0304349899291994,
+        1.2491910934448243,
+        1.1113080978393555
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_15.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "ctree19_0",
+      "multiplier": [
+        1.0546106338500976,
+        1.200274467468262,
+        0.9446672439575194
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_27.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "ctree20_0",
+      "multiplier": [
+        1.2242715835571287,
+        1.6146970748901366,
+        1.3045495986938478
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_33.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "fg_rot01_0",
+      "multiplier": [
+        0.7469476699829103,
+        0.8385324478149414,
+        0.8625295639038089
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/rotforest_tree_01.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "fg_rot03_0",
+      "multiplier": [
+        0.615818977355957,
+        0.9659566879272463,
+        0.9464078903198243
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/rotforest_tree_03.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "fyellow_0",
+      "multiplier": [
+        0.36708507537841795,
+        0.698224449157715,
+        0.32572612762451175
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_20.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "sbone_0",
+      "multiplier": [
+        1.975710105895996,
+        1.7287912368774412,
+        1.4971216201782225
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_1.png",
+        "A2R/C10/Art/r3_prop_23.png",
+        "A2R/C10/Art/r3_prop_24.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "spod_0",
+      "multiplier": [
+        1.5884088516235355,
+        1.684590721130371,
+        1.5959516525268556
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_10.png",
+        "A2R/C10/Art/r3_prop_11.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "sroot_a_0",
+      "multiplier": [
+        0.9379278182983399,
+        0.8895318984985352,
+        0.897193717956543
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_22.png",
+        "A2R/C10/Art/r3_prop_30.png",
+        "A2R/C10/Art/r3_prop_31.png",
+        "A2R/C10/Art/r3_prop_32.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "sroot_b_0",
+      "multiplier": [
+        1.0326219558715821,
+        0.9598421096801757,
+        0.9211610794067382
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_22.png",
+        "A2R/C10/Art/r3_prop_30.png",
+        "A2R/C10/Art/r3_prop_31.png",
+        "A2R/C10/Art/r3_prop_32.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "altar_0",
+      "multiplier": [
+        1.610843849182129,
+        1.1632596969604492,
+        1.0677621841430662
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_17.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "bone_arch_0",
+      "multiplier": [
+        1.4196554183959962,
+        1.0395250320434568,
+        0.8479646682739259
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_29.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "camp_0",
+      "multiplier": [
+        1.4076345443725586,
+        1.1871675491333005,
+        1.0548784255981443
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_18.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "r3_fern_0_0",
+      "multiplier": [
+        1.8049928665161132,
+        1.9655935287475585,
+        2.01323070526123
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_fern_0.png"
+      ],
+      "usedInCandidate": false
+    },
+    {
+      "key": "r3_fern_0_1",
+      "multiplier": [
+        0.10020494451118324,
+        0.12795857580372258,
+        0.058463731118779345
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_fern_0.png"
+      ],
+      "usedInCandidate": false
+    },
+    {
+      "key": "r3_fern_1_0",
+      "multiplier": [
+        1.9482614517211914,
+        2.0761915206909176,
+        2.1140542984008794
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_fern_1.png"
+      ],
+      "usedInCandidate": false
+    },
+    {
+      "key": "r3_fern_1_1",
+      "multiplier": [
+        0.10915255711657856,
+        0.13671106804837754,
+        0.06222819662661974
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_fern_1.png"
+      ],
+      "usedInCandidate": false
+    },
+    {
+      "key": "r3_fern_2_0",
+      "multiplier": [
+        1.4765016555786132,
+        1.6154855728149415,
+        1.7277944564819336
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_fern_2.png"
+      ],
+      "usedInCandidate": false
+    },
+    {
+      "key": "r3_fern_2_1",
+      "multiplier": [
+        0.08197132538590819,
+        0.10516902475187502,
+        0.05017846084731386
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_fern_2.png"
+      ],
+      "usedInCandidate": false
+    },
+    {
+      "key": "r4_brush_0_0",
+      "multiplier": [
+        1.5499658584594729,
+        1.6602365493774411,
+        1.716026496887207
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r4_brush_0.png"
+      ],
+      "usedInCandidate": false
+    },
+    {
+      "key": "r4_brush_0_1",
+      "multiplier": [
+        0.0859439845360865,
+        0.10819855855428001,
+        0.049972196946857894
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r4_brush_0.png"
+      ],
+      "usedInCandidate": false
+    },
+    {
+      "key": "r4_brush_1_0",
+      "multiplier": [
+        1.6048929214477539,
+        1.7192995071411132,
+        1.7841497421264645
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r4_brush_1.png"
+      ],
+      "usedInCandidate": false
+    },
+    {
+      "key": "r4_brush_1_1",
+      "multiplier": [
+        0.08898943854263897,
+        0.11204708240096188,
+        0.051954796580842504
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r4_brush_1.png"
+      ],
+      "usedInCandidate": false
+    },
+    {
+      "key": "r4_brush_2_0",
+      "multiplier": [
+        1.4461816787719726,
+        1.5421701431274413,
+        1.6043424606323244
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r4_brush_2.png"
+      ],
+      "usedInCandidate": false
+    },
+    {
+      "key": "r4_brush_2_1",
+      "multiplier": [
+        0.08019119095928529,
+        0.10050506761229906,
+        0.04672176424906761
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r4_brush_2.png"
+      ],
+      "usedInCandidate": false
+    },
+    {
+      "key": "r4_brush_3_0",
+      "multiplier": [
+        1.4971811294555661,
+        1.6035688400268557,
+        1.6604448318481442
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r4_brush_3.png"
+      ],
+      "usedInCandidate": false
+    },
+    {
+      "key": "r4_brush_3_1",
+      "multiplier": [
+        0.08301767049363287,
+        0.10450577350741626,
+        0.04835427855225582
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r4_brush_3.png"
+      ],
+      "usedInCandidate": false
+    },
+    {
+      "key": "bnd0_far_0",
+      "multiplier": [
+        0.8186117172241212,
+        1.224970817565918,
+        1.074769401550293
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_tree_0.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "bnd3_far_0",
+      "multiplier": [
+        0.997451972961426,
+        1.3902578353881838,
+        1.1236116409301757
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_tree_3.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "bnd5_far_0",
+      "multiplier": [
+        0.5147424697875977,
+        0.6334932327270508,
+        0.5279237747192385
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_tree_5.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "bnd18_far_0",
+      "multiplier": [
+        0.8204565048217773,
+        0.7978281021118163,
+        0.6986558914184571
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_tree_18.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "c1tree_far_0",
+      "multiplier": [
+        1.0177297592163088,
+        0.9672510147094726,
+        0.8155172348022461
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_13.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "fg_rot01_far_0",
+      "multiplier": [
+        0.7469476699829103,
+        0.8385324478149414,
+        0.8625295639038089
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/rotforest_tree_01.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "fg_rot03_far_0",
+      "multiplier": [
+        0.615818977355957,
+        0.9659566879272463,
+        0.9464078903198243
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/rotforest_tree_03.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "ctree13_far_0",
+      "multiplier": [
+        1.213277244567871,
+        1.5345380783081055,
+        1.25634708404541
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_36.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "ctree14_far_0",
+      "multiplier": [
+        1.247867012023926,
+        1.381643867492676,
+        1.22309627532959
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_28.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "ctree15_far_0",
+      "multiplier": [
+        1.1336984634399412,
+        1.208918190002441,
+        1.1793272018432617
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_14.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "ctree16_far_0",
+      "multiplier": [
+        0.8848306655883789,
+        1.2258039474487303,
+        1.2112688064575194
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_3.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "ctree17_far_0",
+      "multiplier": [
+        1.1251291275024413,
+        1.1062349319458005,
+        0.9719820022583008
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_2.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "ctree18_far_0",
+      "multiplier": [
+        1.0304349899291994,
+        1.2491910934448243,
+        1.1113080978393555
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_15.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "ctree19_far_0",
+      "multiplier": [
+        1.0546106338500976,
+        1.200274467468262,
+        0.9446672439575194
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_27.png"
+      ],
+      "usedInCandidate": true
+    },
+    {
+      "key": "ctree20_far_0",
+      "multiplier": [
+        1.2242715835571287,
+        1.6146970748901366,
+        1.3045495986938478
+      ],
+      "sourceCards": [
+        "A2R/C10/Art/r3_prop_33.png"
+      ],
+      "usedInCandidate": true
+    }
+  ]
+}
