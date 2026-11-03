@@ -1,4 +1,27 @@
-# F-1 staging 복구 — 01:55 테스트 공유 잠금 수정 후 중단 (2026-11-04)
+# F-1 staging 복구 — 02:10 경로 키 수정 후 중단 (2026-11-04)
+
+**최신 상태: 지정 테스트 1회·25검사 통과 뒤 `staging file preserved` 실패. 전체 회귀/PC 컴파일 미실행, 병합/Mac 검수 요청 보류.**
+
+## 02:10 실제시각 지시 수행
+
+- CLAUDE.md와 브리프 지정 절을 확인하고 미커밋 0에서 시작했다. fetch 후 origin/unity/main `5ce03758f57daca409cb18876e75ab48f6df705a`은 이미 병합된 상태였다.
+- Snapshot 키를 만드는 한 곳에만 `Path.GetRelativePath(root,p).Replace('\\','/')`를 적용했다. 조회 키는 변경하지 않았다. NativeFlavorSavePaths/NativeFlavorStorage에는 상대 경로 dictionary 키 비교가 없어 제품 코드는 수정하지 않았다.
+- 수정 후 지정 테스트 1회: 잠금 실패→catch staging 정리→해제 후 재시도 성공·원본3파일 바이트 일치, 구형 staging 복구, 잠긴 원본의 재실패 정리, 미지 내용 보존, 다른 importer 및 staging-file writer 보존/해제 후 복구, 기존 목적 저장/잔류 staging 불변, staging 파일 충돌 거부까지 25검사 통과.
+- 다음 전체 파일 집합 보존 비교에서 실패했다. 읽기 전용 fixture 확인 결과 충돌 staging 파일은 8바이트 `preserve` 그대로였으나, Prepare가 충돌을 거부하기 전에 0바이트 `.EXODUSER-HELL-FULL.legacy-import.lock`을 새로 만들어 Snapshot 파일 수가 달라졌다. 원본 save 손상 증거는 아니며, 실패 경로의 lease 생성 부작용과 테스트의 전체 파일 집합 보존 계약이 불일치한다.
+
+오류 원문:
+
+```text
+FAIL after 25 checks: staging file preserved
+```
+
+브리프의 "또 실패하면 멈추고 오류 원문을 남긴다"에 따라 제품/테스트 추가 수정·재실행·전체 회귀·PC 공용 bin 컴파일은 하지 않았다. 전체 시나리오 종료 시점의 원본 비교는 미도달이다. Player/Windows 빌드/바탕화면/Steam 변경 0, 사용자 저장 경로 접근 0.
+
+다음 검토 대상: 충돌 staging 파일은 lease를 생성하기 전에 거부할지 결정하고, 원본 및 기존 파일 바이트 보존 검사를 유지한 채 검증한다. 로그 `I:/EXODUSER-Storage/codex-takeover/unity-11-fullrun/f1-tests/result.log`, SHA는 REPORT 맨 위.
+
+---
+
+## 01:55 이력 (아래는 당시 상태)
 
 **최신 상태: 공유 잠금 수정 및 핵심 이전/원본 보존 10검사 통과. 구형 staging 비교의 Windows 경로 키 오류로 전체 회귀 미통과, PC 컴파일 0회. 병합/Mac 검수 요청 보류.**
 

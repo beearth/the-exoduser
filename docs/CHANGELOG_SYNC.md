@@ -1,3 +1,5 @@
+2026-11-04 F-1 02:10 경로 키 통일: Snapshot 키 생성 한 곳에서 역슬래시를 슬래시로 변환, 제품 코드에 같은 키 비교 없음. 지정 테스트1회·25검사 통과 뒤 staging-file 충돌 거부가 새0바이트 lease를 만들어 전체 파일 집합 불변 검사 실패. 충돌 파일8바이트 preserve 유지 직접 확인. 지시대로 재실패 즉시정지, 전체 회귀/PC 컴파일0·Player0·Desktop0. [오류 원문·다음 검토](engine/UNITY_DEMO_FLAVOR_F1_20261104.md).
+
 2026-11-04 F-1 01:55 테스트 공유 잠금 수정: 최신 unity/main5ce03758f 병합(4b0bef66c), Snapshot 읽기를 FileShare.ReadWrite로 수정. 지정 테스트1회에서 잠금 실패→catch정리→해제 후1회 재시도 성공·원본3파일 바이트 불변 등10검사 통과 뒤, 구형 staging 비교의 Windows 경로 dictionary 키 구분자 불일치로 실패. 브리프 재실패 즉시정지 준수, 추가 수정/전체 회귀/PC 컴파일0·Player0·Desktop0. [오류 원문·범위](engine/UNITY_DEMO_FLAVOR_F1_20261104.md).
 
 2026-11-04 F-1 이어받기: 시작 시 최신 unity/main c4b388903 병합(c8bf42cd8), catch staging 정리·구형 staging 회수 후 복사1회·배타 lease 초안. 설치된 Roslyn 직접 회귀에서 수정 전 F-1 RED, 수정 후 catch 정리까지3검사 통과 뒤 원본 비교 테스트의 공유 잠금 충돌로 실패. 같은 테스트2FAIL 정지, PC 컴파일0·Player0·Desktop0·원본 바이트 불변 미검증, 병합 보류. [실패/재개 근거](engine/UNITY_DEMO_FLAVOR_F1_20261104.md).
