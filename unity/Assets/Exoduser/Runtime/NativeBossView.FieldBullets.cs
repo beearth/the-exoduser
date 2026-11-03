@@ -7,16 +7,17 @@ namespace Exoduser.UnityPort
 {
     // VFX-D18: the ordinary field enemies' bullets share the druid's projectile list (Core: SpawnFieldProjectile -> Druid.SpawnProjectile), but only the 1-1 druid's own shots carry
     // DruidPoison. Everything else used to be drawn as the druid's green poison disc (07c-field-ai: a ~500 px lime plate). game.html draws them per kind in the enemy-projectile
-    // pass 2 (54371..54581), with the user-made sheets this file cuts the same way: the toothed mouth for physical (E-parry) bullets, the per-element comet (the rainbow comet sheet
-    // tinted with ELC at .65, 8 frames, head at 62 % of the width) for magic bullets, the element orb sheet for element balls. The druid poison orb stays in NativeBossView.Update.
+    // pass 2 (54371..54581), with the user-made sheets this file cuts the same way: the toothed mouth for physical (E-parry) bullets, the per-element comet (8 frames, head at
+    // 62 % of the width) for magic bullets, the element orb sheet for element balls. 2026-11-03: baked Hell Gothic palette rows replace rainbow + ELC runtime tint.
+    // The druid poison orb stays in NativeBossView.Update. Geometry, animation, and Core projectile classification are unchanged.
     // Not ported (no art in Unity yet, drawn as the nearest sheet instead): the kraken water orb of physical / ice element balls (elem orb sheet row), the procedural classic rainbow
-    // of black / blue beans (the untinted comet), the dark sphere of the Q bean (the comet tinted dark).
+    // of black / blue beans (physical-palette comet), the dark sphere of the Q bean (dark-palette comet).
     public sealed partial class NativeBossView
     {
-        const string MouthRes = "Art/vfx/field/proj_phys_mouth", OrbRes = "Art/vfx/field/proj_elem_orb", CometRes = "Art/vfx/field/proj_bolt_comet";
+        const string MouthRes = "Art/vfx/field/proj_phys_mouth", OrbRes = "Art/vfx/field/proj_elem_orb_el", CometRes = "Art/vfx/field/proj_bolt_comet_el";
         const int MouthW = 768, MouthH = 384, OrbW = 512, OrbH = 256, CometFrameCount = 8;
         static readonly int[] MouthFrameCount = { 8, 6, 6 };
-        static readonly int[] ElemOrbRow = { -1, 0, 2, 1, 3, 5, 4 };   // EL {P,F,I,D,L,H,E} -> sheet row (-1: no orb for physical)
+        static readonly int[] ElemOrbRow = { -1, 0, 1, 2, 3, 4, 5 };   // baked rows {F,I,D,L,H,E}; physical still uses the comet
         static readonly Dictionary<int, Sprite[]> cometSprites = new Dictionary<int, Sprite[]>();
         static readonly Dictionary<string, bool> artPresent = new Dictionary<string, bool>();
         /// <summary>Per Update: field bullets drawn with the web art, per kind (the capture receipt reads these).</summary>
@@ -28,34 +29,17 @@ namespace Exoduser.UnityPort
             ok = Resources.Load<Texture2D>(res) != null; artPresent[res] = ok; return ok;
         }
 
-        // _drawCometBullet's source: el 1..6 gets the ELC overlay (source-atop at .65 over the original: rgb * .35 + tint * .65, alpha kept); 0 / anything else = the original rainbow
+        // Top-down rows {P,F,I,D,L,H,E,enemy poison}; no runtime ELC multiplication.
         static Sprite[] Comet(int el)
         {
-            int key = el >= 1 && el <= 6 ? el : 0; Sprite[] frames;
+            int key = el >= 0 && el <= 7 ? el : 0; Sprite[] frames;
             if (cometSprites.TryGetValue(key, out frames)) return frames;
             frames = null;
             var src = Resources.Load<Texture2D>(CometRes);
             if (src != null)
             {
-                var tex = src;
-                if (key != 0)
-                {
-                    try
-                    {
-                        var px = src.GetPixels32(); Color tint; ColorUtility.TryParseHtmlString(EnemyFactory.ElementColors[key], out tint);
-                        float tr = tint.r * 255f * .65f, tg = tint.g * 255f * .65f, tb = tint.b * 255f * .65f;
-                        for (int i = 0; i < px.Length; i++)
-                        {
-                            if (px[i].a == 0) continue;
-                            px[i].r = (byte)Mathf.Min(255, px[i].r * .35f + tr); px[i].g = (byte)Mathf.Min(255, px[i].g * .35f + tg); px[i].b = (byte)Mathf.Min(255, px[i].b * .35f + tb);
-                        }
-                        tex = new Texture2D(src.width, src.height, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp };
-                        tex.SetPixels32(px); tex.Apply(false, false);
-                    }
-                    catch (Exception) { tex = src; }   // texture not readable: the untinted comet is still the right shape
-                }
-                int fw = tex.width / CometFrameCount; frames = new Sprite[CometFrameCount];
-                for (int i = 0; i < CometFrameCount; i++) frames[i] = Sprite.Create(tex, new Rect(i * fw, 0, fw, tex.height), new Vector2(.62f, .5f), 100, 0, SpriteMeshType.FullRect);   // head (right) is the travel direction, drawn from -dw * .62
+                int fw = src.width / CometFrameCount, fh = src.height / 8; frames = new Sprite[CometFrameCount];
+                for (int i = 0; i < CometFrameCount; i++) frames[i] = NativeDruidArt.Rect(CometRes, i * fw, key * fh, fw, fh, new Vector2(.62f, .5f));   // same head pivot and 254x137 cells
             }
             cometSprites[key] = frames; return frames;
         }

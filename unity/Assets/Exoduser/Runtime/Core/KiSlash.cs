@@ -94,7 +94,7 @@ namespace Exoduser.UnityPort.Core
                     // Admitted ordinary physical profile has no impact/element
                     // reaction owner. Never invent noElReact (absent in source).
                     bool wasAlive=enemy.Alive;
-                    ApplyEnemyDamage(enemy, projectile.Damage, angle, true, .5f);
+                    ApplyEnemyDamage(enemy, projectile.Damage, angle, true, .5f, visualImpact: false); // web noImpact:true; retain the dedicated QueueKiHit sheet only
                     EmitFirstPracticeHit(enemy,"kiSlash",projectile.Step,projectile.FirstPracticeChargeTier,wasAlive,projectile.FirstPracticeBornInTick);
                     // Source updateCrescents calls _playKiSlashHit after hurtE, including lethal hits.
                     QueueKiHit(projectile, enemy);
