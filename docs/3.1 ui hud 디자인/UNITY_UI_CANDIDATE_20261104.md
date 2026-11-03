@@ -25,3 +25,11 @@
 - 캡처고정:G:/exoduser/tmp/design-review/20261104_ui_candidate/{1920,3840}. 각death14컷+로비0/2·생성·이름·삭제·일시정지·설정4탭·명시입장hover,기준swap3과같은25장(총50장).
 - 재현: unity/Tools/death-ui-tests/candidate-capture.ps1이같은EXE를공용player -PcException candidate/hidden/무음/격리sandbox로순차호출한다. pointerScope는ReviewState표본이며물리마우스입력PASS가아니다.
 - 실제소스/빌드SHA·성패·캡처/1x·3x비교판은실행후REPORT최상단에기록한다. 컴파일/영수증PASS만으로디자인합격이라하지않는다.
+
+## 실제 후보 1회 결과와 시작 관문
+- a02cb84850의 공용 f803480e 빌드1회는 Succeeded/errors0, Win64 6,819,812,394B. 실제 Unity compile26,104ms/UPM연결 통과. errorLogs2는 초기 Licensing validation/access-token 경고이며 빌드 오류0이다. 재빌드0.
+- 첫 Player c21ffb38(1920 로비0명)이 Awake에서 NullReferenceException. 초기 ResetRun→UpdateViews→StageFlowBossBar가 로비 생성보다 먼저 호출되는데, 기존2cca15bef2의 bossBar.LocaleCode=lobby.Language가 null을 읽었다. 150초 뒤 공용실행기가 종료: 외부 창0/USER_SAVE0/leftovers0. 캡처0장, 나머지17작업·3840 미실행.
+- 최소 후속: NativeGame.StageFlow의 첫 locale 접근에 lobby!=null?lobby.Language:"ko". 기존 NativeBossBar의 기본ko를 유지하다 로비 생성 후 실제29언어를 따른다. Core/초기화 순서/보스 수치·문구·자막 변경0, 기존 자기 문구 연결1줄의 안전성 수정이다.
+- startup-locale.test.cjs가 제품의 실제 locale 표현식을 읽어 null과29언어를 검사: 수정전 null 실패1회→수정후30조건PASS1회. 이는 소스 표현식 계약이며 Unity 실행 증거가 아니다. 수정 후 기존 참조도구가 방금 생성된 자기 NTFS Library/DLL을 읽어5어셈블리 오류0.
+- 후보 EXE는 a02cb84850 그대로라 이 후속 수정을 포함하지 않는다. 승인된 빌드1회 상한 때문에 추가 Unity/Player 실행0. 1920·3840 50장/1x·3x·Mac 자연입력·디자인 판정은 모두 미완료이며 CTO의 다음 빌드/검수가 필요하다. 소스와 실행본이 같다고 보고하지 않는다.
+- 임포트가 button_iron/cat/crow meta의 YAML 빈 값 뒤 공백만 재직렬화했다. 의미 차이0(필터/밉맵/원화 불변), 세 파일을 실제 출력대로 기록한다. guard.baseline WIP 불간섭. 실행본/로그/최종SHA는 외부 REPORT와 고정 result-current.md.

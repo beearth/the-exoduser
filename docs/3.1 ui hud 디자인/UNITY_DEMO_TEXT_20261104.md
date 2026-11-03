@@ -122,3 +122,6 @@ Mac 필수: 원화 프레임·텍스트칸과HUD/우측연습안내를전체1x/3
 ## 11-04 04:05 우상단 HUD 4키
 
 NativeObjectivePanel의info.english한영분기를없애No.0374레벨/0371경험치/3982지역처치/0415악의오브(3766같은키)의29언어를조회한다. 세키는웹기존번역,지역처치는웹非KO키28누락을기존EN+27번역으로보완했다. 원래77개행/R1·R2/입장이야기/보스·펫문구는불변,총81키다. export.cjs에동일objectiveArea매핑을넣었다. Thai등은조합문자를쪼개지않고기존명조/RTL전체문자열경로를쓴다. [후보캡처·미검증](UNITY_UI_CANDIDATE_20261104.md).
+
+## 04:05 후보 시작 결함 후속
+실제 a02cb84850 후보는 빌드PASS 뒤 첫 로비 시작에서 StageFlowBossBar의 초기 locale 접근이 실패했다. Awake는 ResetRun/UpdateViews 뒤에 NativeLobby를 생성한다. 기존 문구 연결의 locale1줄만 null일 때 기본ko를 유지하도록 고쳤고, null+29언어 회귀30조건/참조5어셈블리 오류0. 새 Unity/Player 확인은 없으며 후보 EXE는 수정 전이다. 캡처0/50, 디자인·Mac 관문 대기. [빌드SHA·실패·제한](UNITY_UI_CANDIDATE_20261104.md).

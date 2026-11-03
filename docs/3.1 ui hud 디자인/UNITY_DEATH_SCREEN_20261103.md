@@ -88,3 +88,6 @@ Mac에서는1920×1080·3840×1080·5120×1440의 HD2D/--remodel3d 양쪽에서 
 NativeRegionHud.Draw의suppressArrow는배너를숨기지않았다. NativeGame.DrawRegionHud가DeathPresentationActive/fallen·부활전환·death.Active/PlayerDown에서전체지역레이어를조기return한다. 웹은regionBanner z19를전체#death z40아래에둔다. Core사망/부활시간과룰은그대로다.
 
 우상단4키는ko/en분기대신선택29언어Data/demo_text조회,Thai/아랍어등은전체문자열·명조fallback/RTL경로다. No.0374/0371/3982/0415(3766별칭)재사용,81카탈로그. death-screen-capture에objectiveThaiLabels/objectiveLabelsComplete/regionHiddenAtWait/regionHiddenInBoss를기록한다. 04:05 CTO승인예외③의고정후보에서만PC촬영하고일반PC Player금지는유지한다. [후보계약](UNITY_UI_CANDIDATE_20261104.md).
+
+## 04:05 실제 후보 촬영 중단
+a02cb84850 후보 빌드1회는 성공했으나 첫 로비의 기존 StageFlow locale 초기화 NRE로 촬영 진입 전 중단됐다. 사망 지역HUD 숨김·태국어 4키의 실제 화면 증거는 이번0장이다. 최소 null 접근 수정은 소스/참조검사만 통과했고 승인 빌드1회 소진으로 추가빌드0. [후속 관문과 정확한 실행본 구분](UNITY_UI_CANDIDATE_20261104.md).

@@ -745,3 +745,6 @@ R1/R2 별도 커밋 e9898f79538b5ab78d68b33422374c7b00eca4a9:9항PASS. button_ir
 ## 2026-11-04 04:05 death-ui 승인 후보
 
 최신a53c34e939 병합0f2a57c910·CHANGELOG양쪽보존. 사망지역배너숨김/우상단4키29언어(81키)/A면통일·명조/철blur2/미사용로드제거/ReviewState입장호버를반영했다. 4그룹RED1→GREEN·기존칩/인장/슬롯회귀PASS,참조컴파일1회5어셈블리오류0. CTO예외③은I:/EXODUSER-Storage/ui-candidate/build 1회와G:/exoduser/tmp/design-review/20261104_ui_candidate/1920·3840각25컷만승인,바로가기/바탕화면교체0. 실제빌드·캡처결과/소스SHA/미검증은외부death-screen/REPORT.md가영수증정본이다. [설계계약](../../3.1%20ui%20hud%20디자인/UNITY_UI_CANDIDATE_20261104.md).
+
+## 2026-11-04 04:05 death-ui 후보 후속 — 촬영 HOLD
+codex/unity-demo-text-20261104: a53c34e939 병합/1~4 수정/후보 a02cb84850 공용 f803480e 빌드1회 PASS. 첫 Player c21ffb38이 StageFlow 초기 lobby null로150초타임아웃, 창0/USER_SAVE0/잔류0/캡처0장. 기존 자기 문구 locale1줄 안전성 수정·30조건 회귀/참조5어셈블리 오류0, 새실행본 미검증. 빌드1회 상한 준수, 추가빌드/촬영0. CTO 다음 승인 빌드와1920·3840/1x·3x·Mac 자연검수 대기. 소유 StageFlow locale1줄/test/meta3/doc만 추가, Core/타guard WIP/바탕화면·바로가기 변경0.

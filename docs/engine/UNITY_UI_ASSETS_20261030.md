@@ -283,3 +283,6 @@ HUD의 미착수 빌드 대기 한 건만 취소하고(타팀 잠금 보존), �
 ## 11-04 04:05 A등급 판 면 통일
 
 일시정지·이름입력·삭제확인은공통Panel(iron:true):RGB(16,15,15)/a.95→(8,8,9)/a.97+철14%+panel_frame_20261029. 원본철의3x미세낱점을확인해명시된sigma2 blur파생iron_480_blur2를공통A면에사용한다(원본/합성밝기불변). 이름본문/입력/오류는Hahmlet·명조fallback. B시스템창의window_base와인벤별도iron:false호출은불변이다. lobby_panel로드/필드만삭제,파일유지. [후보계약/캡처](../3.1%20ui%20hud%20디자인/UNITY_UI_CANDIDATE_20261104.md).
+
+## 04:05 후보 실제 임포트 기록
+후보 a02cb84850의 Unity Win64 빌드 Succeeded/errors0. button_iron.png.meta와 PetBubble/cat·crow.png.meta가 YAML 빈 값 뒤 공백만 재직렬화되어 그 결과를 기록했다(필터/밉맵/원화 의미 변경0). 첫 Player의 기존 locale 초기화 NRE로 UI 캡처0장이며 A면·글리프·호버 실물 PASS는 아니다. [사실·미검증](../3.1%20ui%20hud%20디자인/UNITY_UI_CANDIDATE_20261104.md).

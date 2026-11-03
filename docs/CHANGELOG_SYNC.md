@@ -57898,3 +57898,7 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 2026-11-04 펫91b95 컴파일후속:최초DLL참조에서NativePetBubbleCatalog.cs CS0103검출→누락Core namespace import1줄보완→관련확인1회Player126/279·Editor126/279/61의5어셈블리오류0. 기존38+53suite/Unity재실행0. 전회UPM IPC30초실패는근접성공c4505bef/d4c9bb48·exe존재/인자와읽기대조했지만원인/Defender차단미확정·미복구. Core/저장/큐/문구/폰트/타UI변경0,Mac자연이벤트/시각대기. [증거구분](3.1%20ui%20hud%20디자인/UNITY_DEMO_TEXT_20261104.md).
 
 2026-11-04 04:05 death-ui RETOUCH묶음:a53c34e939 병합0f2a57c910·양쪽기록보존. 사망시지역배너전체숨김/우상단4키29언어(기존77보존·총81,No.0374/0371/3982/0415재사용)/일시정지·이름·삭제A면Panel iron:true·명조/철sigma2 blur14%/lobby_panel미사용로드삭제/입장-ui-entry-state hover 공통EntryFocus경로. 4그룹RED→GREEN·기존소형판/인장/슬롯회귀PASS·참조5어셈블리오류0. CTO승인고정후보빌드1회/1920·3840캡처결과는외부REPORT에기록,바로가기·바탕화면교체0·디자인판정은총괄대기. [후보계약](3.1%20ui%20hud%20디자인/UNITY_UI_CANDIDATE_20261104.md).
+
+## 2026-11-04 04:05 후보 시작 locale 안전성 후속
+- a02cb84850 후보 Win64 빌드1회 PASS(errors0), 첫 Player 시작 NRE로 캡처0/50. Awake의 ResetRun이 lobby 생성보다 빠른 기존 순서에 맞춰 StageFlowBossBar locale의 null 접근1줄을 수정했다. 새 문구/수치/Core/저장 변경0.
+- null+29언어 소스 회귀 RED1→30조건PASS1, 후속 DLL참조5어셈블리 오류0. 후보 EXE는 수정 전 SHA이며 추가 Unity/Player/빌드0, Mac/시각·자연입력 관문 미완료. 실제 임포트 meta3의 공백만 재직렬화 보존, 관련 UI/문구/WORK_BOARD 동기화.

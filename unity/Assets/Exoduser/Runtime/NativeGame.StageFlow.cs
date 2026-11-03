@@ -87,7 +87,7 @@ namespace Exoduser.UnityPort
         // Boss bar: web 35966-35972 shows it as soon as a boss exists (the bar owns the 2 s intro); it stays off the black load screen.
         void StageFlowBossBar()
         {
-            bossBar.LocaleCode=lobby.Language;
+            bossBar.LocaleCode=lobby!=null?lobby.Language:"ko";
             var flow = Simulation.Stage; EnemyState boss = flow.InArena && (flow.LoadPhase == 0 || flow.LoadPhase == 4) ? flow.FindBoss() : null;
             if (boss == null) { if (BossBarShown) { bossBar.Hide(); BossBarShown = false; } return; }
             var input = new NativeBossBar.Input {
