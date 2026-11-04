@@ -18,7 +18,7 @@ namespace Exoduser.CharacterLab {
    public bool passed,compileOnly=true,playerRun=false,humanoid,existingAnimator,rigidIron=true,defaultAdopted=false;
    public bool couterConstraintsPresent,tassetConstraintsPresent,constraintEvaluated;
    public int atlasWidth,atlasHeight,totalTriangles,bodyTriangles,swordTriangles,bones,capeBones,hairBones,materials,metalVertices,couterConstraintSources,tassetConstraints;
-   public float bladeVsRight,bladeVsUp,bladeVsForward,bladeAngleDeg,gripToSwordMm,constraintHalfAngleDeg,constraintRestDeviationDeg,socketDeterminant;
+   public float swordTipHeightRest,swordMeshWorldErrorMm,bladeVsRight,bladeVsUp,bladeVsForward,bladeAngleDeg,gripToSwordMm,constraintHalfAngleDeg,constraintRestDeviationDeg,socketDeterminant;
    public string prefab,sourceCommit,flag="--hero-render=rigpixel --hero-rig=modular",visualStatus="RETOUCH_GAME_QA_PENDING",variant,note;
   }
   static Transform Find(GameObject root,string name)=>root.GetComponentsInChildren<Transform>(true).FirstOrDefault(t=>t.name==name);
@@ -187,7 +187,14 @@ namespace Exoduser.CharacterLab {
    receipt.bladeVsRight=Vector3.Dot(blade,socket.right);receipt.bladeVsUp=Vector3.Dot(blade,socket.up);receipt.bladeVsForward=Vector3.Dot(blade,socket.forward);
    receipt.gripToSwordMm=world.Min(p=>(p-grip).magnitude)*1000f;
    weapon.transform.SetParent(null,false);weapon.transform.SetPositionAndRotation(Vector3.zero,Quaternion.identity);weapon.transform.localScale=Vector3.one;
+   // Root cause 11-04: the legacy weapon prefab keeps a child "Model" at local scale 100 / y -0.8 (cm-authored legacy mesh).
+   // The sword mesh above is already baked in world meters, so that child must be identity or the blade renders 100x off (tip -30 m).
+   var meshNode=old[0].transform;meshNode.localPosition=Vector3.zero;meshNode.localRotation=Quaternion.identity;meshNode.localScale=Vector3.one;
    weapon.transform.SetParent(socket,true);
+   var finalMatrix=meshNode.localToWorldMatrix;float worstError=0;Vector3 finalTipPoint=Vector3.zero;float lowest=float.MaxValue;
+   for(int i=0;i<points.Length;i++){var q=finalMatrix.MultiplyPoint3x4(existing.vertices[i]);worstError=Mathf.Max(worstError,(q-points[i]).magnitude);if(q.y<lowest)lowest=q.y;}
+   receipt.swordMeshWorldErrorMm=worstError*1000f;receipt.swordTipHeightRest=lowest-socket.root.position.y;
+   Require(receipt.swordMeshWorldErrorMm<1f,"Sword mesh is not at its baked world position: error "+receipt.swordMeshWorldErrorMm+" mm (child Model transform not identity?)");
    return (int)existing.GetIndexCount(0)/3;
   }
  }
