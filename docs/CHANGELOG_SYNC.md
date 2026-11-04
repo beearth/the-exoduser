@@ -1,3 +1,5 @@
+2026-11-04 09:10 임펙트 리뷰 촬영 로비 결함 수정: NativeGame.ImpactReview.cs가 EnterNativeTest 뒤 로비를 끄지 않아 480프레임이 전부 로비였던 문제 — lobby.enabled=false·CloseStartupCaptureMedia·SetGameFocus(true) 추가, 30프레임 뒤 로비가 보이면 영수증 lobbyVisible=true·종료 코드 실패. 촬영 전용, Core 변경 0.
+
 2026-11-04 08:30 전투 통계 세이브 격리 누수 수정(도구 총괄, BuildLoop 08:05 FAIL 원인): ObserveCombatStatsEnd가 -output 없을 때 Application.persistentDataPath/combat-stats에 바로 써서 --a2r-play-sandbox·--unity-qa-sandbox 실행(사용자 맵 후보 PID 11048)이 사용자 실제 세이브 폴더 combat-stats.json을 바꿨고, 같은 시각 루프 빌드가 USER_SAVE changed=1로 FAIL. NativeQaSandbox.Resolve(Application.persistentDataPath)를 거치도록 한 줄 수정(Runtime, Core 무변경). 저장 내용·시점은 그대로.
 
 2026-11-04 08:20 공용 실행기 사용자 게임 실행 중 Player 미룸(CTO 추가): 부모 explorer인 EXODUSER* 프로세스가 있으면 Player를 띄우지 않고 '사용자 게임 실행 중, 미룸'(ok=False, deferred=user-game, exit 3), BuildLoop는 WAIT. 세이브 감시 완화 없음. 원인=사용자 바탕화면 게임이 실제 세이브에 저장해 UI 후보 USER_SAVE changed=3. 실행기 `2026.11.04-usergame`, 시험 user-game-test.ps1·player-slots-test는 실제 프로세스 검사를 대체 함수로 고정. 문서 unity/Tools/devtools/README.md.
