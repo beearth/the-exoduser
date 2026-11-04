@@ -1,12 +1,29 @@
 using System;using System.IO;using System.Collections.Generic;using Exoduser.UnityPort;using Exoduser.UnityPort.Core;
 static class Program {
  static int count;static void Check(bool b,string message){if(!b)throw new Exception(message);count++;Console.WriteLine("PASS "+message);}
+ static void ResetEndText(){typeof(NativeDemoEndText).GetField("bundle",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Static).SetValue(null,null);}
  static int Main(string[] args){try{
   string work=Path.GetFullPath(args[0]),resources=Path.GetFullPath(args[1]);
   // Caller supplies one dedicated fixture path. Never enumerate or touch persistent user data.
   if(!work.Replace('\\','/').EndsWith("/Library/demo-flavor-tests-fixture",StringComparison.Ordinal))throw new Exception("Dedicated fixture path required");
   if(Directory.Exists(work))Directory.Delete(work,true);Directory.CreateDirectory(work);
   Environment.SetEnvironmentVariable("EXO_TEST_RESOURCE_ROOT",resources);
+  // R08: missing or broken stageclear_labels never throws or returns null; fallback = en, then ko, then built-in English (same text as the en row)
+  string emptyRes=Path.Combine(work,"r08-empty"),brokenRes=Path.Combine(work,"r08-broken"),koOnlyRes=Path.Combine(work,"r08-ko");
+  Directory.CreateDirectory(Path.Combine(emptyRes,"Data"));Directory.CreateDirectory(Path.Combine(brokenRes,"Data"));Directory.CreateDirectory(Path.Combine(koOnlyRes,"Data"));
+  File.WriteAllText(Path.Combine(brokenRes,"Data","stageclear_labels.json"),"{ not json");
+  File.WriteAllText(Path.Combine(koOnlyRes,"Data","stageclear_labels.json"),"{\"entries\":[null,{\"code\":\"ko\",\"demoSub\":\"KO-SUB\",\"demoNext\":\"KO-NEXT\",\"demoWishlist\":\"KO-WISH\"}]}");
+  Environment.SetEnvironmentVariable("EXO_TEST_RESOURCE_ROOT",resources);
+  var enRow=NativeDemoEndText.ForLocale("en");
+  foreach(var res in new[]{emptyRes,brokenRes}){
+   Environment.SetEnvironmentVariable("EXO_TEST_RESOURCE_ROOT",res);ResetEndText();
+   var fb=NativeDemoEndText.ForLocale("ko");
+   Check(fb!=null&&fb.demoSub==enRow.demoSub&&fb.demoNext==enRow.demoNext&&fb.demoWishlist==enRow.demoWishlist,"R08 "+Path.GetFileName(res)+": no throw, built-in English equals data en row");
+  }
+  Environment.SetEnvironmentVariable("EXO_TEST_RESOURCE_ROOT",koOnlyRes);ResetEndText();
+  Check(NativeDemoEndText.ForLocale("fr").demoSub=="KO-SUB","R08 requested and en missing -> ko row");
+  Environment.SetEnvironmentVariable("EXO_TEST_RESOURCE_ROOT",resources);ResetEndText();
+  Check(NativeDemoEndText.ForLocale("ko").demoSub!=enRow.demoSub,"R08 good data still loads after a failed load (failure is not cached)");
   string support=Path.Combine(work,"Application Support"),lowRoot=Path.Combine(work,"LocalLow","ForDearGamers"),oldName=NativeFlavorSavePaths.LegacyProductName;
   const string macBundle="com.ForDearGamers.EXODUSER----Unity-----------------";
   // Pure root calculation, chosen by platform (never by probing which folder exists).
@@ -14,7 +31,7 @@ static class Program {
   Check(NativeFlavorSavePaths.FullRoot(winNew,"ForDearGamers",NativeFlavorSavePaths.RootKind.Windows)==winOld,"Windows full root = LocalLow/company/old product folder");
   Check(NativeFlavorSavePaths.FullRoot(winOld,"ForDearGamers",NativeFlavorSavePaths.RootKind.Windows)==winOld,"Windows full root is the same from the old product path (old and new builds share one folder)");
   Check(NativeFlavorSavePaths.BundleIdentifier("ForDearGamers",oldName)==macBundle,"bundle id rule reproduces the real old Mac Player folder name");
-  string macPlayer=Path.Combine(support,"com.ForDearGamers.EXODUSER---HELL-LORD"),macEditor=Path.Combine(support,"ForDearGamers","EXODUSER-HELL-LORD");
+  string macPlayer=Path.Combine(support,"com.ForDearGamers.EXODUSER--HELL-LORD"),macEditor=Path.Combine(support,"ForDearGamers","EXODUSER-HELL-LORD");
   Check(NativeFlavorSavePaths.FullRoot(macPlayer,"ForDearGamers",NativeFlavorSavePaths.RootKind.MacPlayer)==Path.Combine(support,macBundle),"Mac Player full root = Application Support/bundle id folder");
   Check(NativeFlavorSavePaths.FullRoot(macEditor,"ForDearGamers",NativeFlavorSavePaths.RootKind.MacPlayer)==Path.Combine(support,macBundle),"Mac Player full root is the same when persistentDataPath is company/product shaped");
   Check(NativeFlavorSavePaths.FullRoot(macEditor,"ForDearGamers",NativeFlavorSavePaths.RootKind.Other)==macEditor&&NativeFlavorSavePaths.FullRoot(winNew,"ForDearGamers",NativeFlavorSavePaths.RootKind.Other)==winNew,"other platforms (Editor) keep persistentDataPath");

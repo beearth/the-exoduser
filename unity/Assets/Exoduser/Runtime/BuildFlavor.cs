@@ -40,10 +40,11 @@ namespace Exoduser.UnityPort {
    known=false;return Kind.Full;
   }
   static Def DefOf(Kind k){switch(k){case Kind.Demo:return defs.flavors.demo;case Kind.Bic:return defs.flavors.bic;case Kind.Ea:return defs.flavors.ea;default:return defs.flavors.full;}}
-  // The flavor name that will be used and where it came from ("command line", "embedded build_flavor.json", "default").
+  // --unity-build-flavor counts only in development builds or QA/automated runs; release builds use the embedded build_flavor.json alone.
   public static bool CommandLineHonored(string[] args,bool debugBuild,bool batchMode){return args!=null&&Array.IndexOf(args,Argument)>=0&&(debugBuild||Core.QaRunPolicy.IsAutomated(args,batchMode));}
   // True when this run takes its flavor from the command line (NativeQaSandbox then isolates every save path).
   public static bool UsesCommandLine{get{return CommandLineHonored(Environment.GetCommandLineArgs(),Debug.isDebugBuild,Application.isBatchMode);}}
+  // The flavor name that will be used and where it came from ("command line", "embedded build_flavor.json", "default").
   public static string ResolveName(out string source){return ResolveName(Environment.GetCommandLineArgs(),Debug.isDebugBuild,Application.isBatchMode,out source);}
   public static string ResolveName(string[] a,bool debugBuild,bool batchMode,out string source){
    int i=Array.IndexOf(a,Argument);
