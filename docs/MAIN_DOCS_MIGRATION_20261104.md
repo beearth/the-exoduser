@@ -89,7 +89,7 @@
 - 웹 v23 검증 세부와 PARITY_DIFF_LIST의 10-31 원화 확장 절을 출처 범위대로 보충했다.
 - web3d 인계의 현재 위치는 `docs/_archive/0마스터플랜/session_handoff/web3d.md`이며 원본 blob은 보존했다.
 
-| main 출처 | Unity 반영 경로 | 결과 | 명칭 행 | 링크 |
+| main 출처 | Unity 반영 경로 | 결과 | 명칭 치환 횟수 | 링크 |
 |---|---|---|---:|---:|
 | docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md | docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md | 이미 반영 또는 차이 없음 | 0 | 0 |
 | docs/11내러티브·로어디자인/11내러티브·로어디자인.md | docs/11내러티브·로어디자인/11내러티브·로어디자인.md | 이미 반영 또는 차이 없음 | 0 | 0 |
