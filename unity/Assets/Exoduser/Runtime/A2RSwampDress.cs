@@ -191,6 +191,9 @@ namespace Exoduser.UnityPort
             {
                 f.renderer.enabled = false;
                 if (!GeometryUtility.TestPlanesAABB(planes, f.renderer.bounds)) continue;
+                // Reject HUD-covered and clipped edges before applying the six-per-screen cap.
+                Vector3 viewport = camera.WorldToViewportPoint(f.position);
+                if (viewport.z <= 0 || viewport.x < .04f || viewport.x > .96f || viewport.y < .20f || viewport.y > .92f) continue;
                 Vector3 a = camera.WorldToScreenPoint(f.position), b = camera.WorldToScreenPoint(f.position + camera.transform.right * .65f);
                 if (a.z <= 0 || Vector2.Distance(a, b) < 8) continue;
                 f.distance = (camera.transform.position - f.position).sqrMagnitude; visible.Add(f);
