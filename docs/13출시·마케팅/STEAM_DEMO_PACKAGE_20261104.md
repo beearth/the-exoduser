@@ -78,7 +78,7 @@ Steam 상점 갤러리는 16:9를 보여 준다. 업로드본은 **1920×1080**�
 | B1 | 소스 = unity/main의 정확한 SHA에 flavor 수정(F-1·U-D1/3/4/5)이 들어 있음 | `codex/unity-demo-flavor-20261103`(`3f90d1b78`)이 **아직 unity/main에 없음** | 병합·Mac 판정 |
 | B2 | 제품 이름 `EXODUSER: HELL LORD` | unity/main `ProjectSettings.asset` productName이 아직 "EXODUSER · Unity 이식 검증판" | flavor 병합분에 포함. 병합 뒤 다시 확인 |
 | B3 | 버전 표기: 타이틀이 `Application.version`(`BuildFlavor.UnityVersion`)을 보여 줌 | bundleVersion `0.1.0` | 체험판 첫 공개는 `0.1.0`으로 하고, 빌드 SHA는 `content\demo-unity.build-commit.json`에 적는다. 화면 표기와 build-commit SHA가 같은지 확인한다 |
-| B4 | 체험판 flavor: `--unity-build-flavor demo` 또는 내장 `build_flavor.json` → 저장 이름공간 EXODUSER-HELL-DEMO, 레벨 상한 100, 끝 화면 "정식판 위시리스트에 추가"(No.4261) | VDF 머리말 실행 인수에 적혀 있음 | Steamworks 체험판 실행 옵션의 인수 칸 확인(사용자 화면) |
+| B4 | 체험판 flavor: **빌드 때 `PortVerification` `-flavor demo`로 내장 `build_flavor.json`에 demo를 넣는다**(11-04 3차: 배포 빌드는 명령줄 `--unity-build-flavor`를 무시) → 저장 이름공간 EXODUSER-HELL-DEMO, 레벨 상한 100, 끝 화면 "정식판 위시리스트에 추가"(No.4261) | 실행 인수의 `--unity-build-flavor demo`는 배포 빌드에서 효과 없음 | 체험판 빌드 명령에 `-flavor demo`가 있는지, 빌드 결과 `Resources/Data/build_flavor.json` selected=demo인지 확인 |
 | B5 | 콘텐츠 복사: 빌드 → `G:\exoduser-steam\content\demo-unity\` | 지금 `9f0d00cf8`(6.16GB) | `robocopy /MIR /XJ`, `BackUpThisFolder*`·`*_DoNotShip`·`*.pdb` 제외 |
 | B6 | 업로드 스크립트 `G:\exoduser-steam\scripts\app_build_5337590_unity.vdf`(setlive `""`) + `depot_build_5337591_unity.vdf`, desc의 SHA 갱신 | desc = 9f0d00cf8 | steamcmd 로그인과 실행은 사용자. 본편 unity-beta용 `G:\exoduser-steam\run_build_unity_beta.bat`은 앱 4749590 전용이라 체험판에 쓰지 않는다 |
 | B7 | **크래시 0 조건** | 아래 표 | Mac에서 판정 |
