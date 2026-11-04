@@ -1,3 +1,5 @@
+2026-11-04 SND-13 1-1 데모 한 판 소리 장면 목록(사운드 총괄, CTO 10:05): docs/6사운드디자인/DEMO_1-1_SOUND_SCENES_20261104.md 신설. 필드·보스·출구 장면별 키·지금 상태·청음 라운드를 정리했다. 빈칸은 생체나무 맥동·호흡, 보스 처치 순간, 출구 열림·진입, 드루이드 등장(staff_tap 4회 불채택 → 등장 전체 한 소리). R8 청음 후보 74줄 pick_r8.html(카드마다 장면 영상 동기 재생). SOUND_LEAD_MASTER에 R8 절 추가. 코드 변경 없음, 청음·Unity 반영 전.
+
 2026-11-04 UI 판정 ⑥ 경미 5건 반영(codex/unity-demo-text-20261104): 로비 빈 슬롯 어두운 면, 입장 호버 ENTER 글자 뒤 타원 광(사각 테 외곽 광은 총괄 검수에서 되돌림), 그리스어 경험치 ΕΜΠ→Εμπειρία, 펫 말풍선 본문 명조, 사운드 탭 줄 끝 960→818(914), 사망 제목 크로스페이드 앞 제목 선소거. PC 검사 judge6 6/0·컴파일 오류 0만, 화면 판정 전.
 
 2026-11-04 10:15 공용 실행기 BuildLoop Player 단독 실행(CTO A안): -PcException buildloop/-Exclusive Player는 다른 Player가 끝날 때까지 기다린 뒤 혼자 돌고, 그동안 새 Player를 받지 않는다(돌던 Player는 끊지 않음, 다른 레인 동시 2슬롯 유지). 원인=QA Player 동시 4K 영상 디코드로 52a39f8f6 회차 M1 로비 영상 준비 12초 초과 33회·08:44 회차 UI 겹침 영상 준비 실패, 바탕화면 교체 막힘. 실행기 `2026.11.04-exclusive`, 시험 exclusive-test.ps1. 문서 unity/Tools/devtools/README.md.
