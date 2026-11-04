@@ -1,5 +1,12 @@
 2026-11-04 SND-17 Unity BGM 반입 후보 목록(사운드 총괄, CTO 배정): docs/6사운드디자인/UNITY_BGM_IMPORT_CANDIDATES_20261104.md 신설. 웹 bgm 79파일(설정 57 + 큐 22)의 경로·길이·용량·형식·Vorbis 반입 추정·BGM.tracks 쓰임·출처(메타데이터: 76파일 made with suno, beearthone, 생성일·곡 id)를 정리했다. 바이트 대조로 Unity 보유 10·제외 사본 6. P0 반입 권장 3곡(1-1 필드 회전, Ashes Under the Banner·Cathedral of Steel·Iron Oath Under Ash Remastered, 15.9분·약 15MB), P1 52, P2 8. Suno 상업 권리 사용자 확인 필요. 반입·코드 변경 없음.
 
+2026-11-04 FIX-1 이전 표 집계 단위 정정: 명칭 통계는 변경된 행 수가 아니라 악의오브 치환 횟수이므로 MAIN_DOCS_MIGRATION의 열 제목을 바로잡음. 표 값·게임 수치·판정 무변경.
+
+2026-11-04 FIX-1 web3d 보관 마무리: 1037ffec1에서 보관 경로 추가·색인 정정은 반영됐으나 경로 지정 커밋의 rename 출력에 원래 경로 삭제가 포함되지 않았다. 후속 새 커밋에서 docs/0마스터플랜/session_handoff/web3d.md 삭제를 반영하며 보관 파일 바이트는 유지한다. 이력 재작성 없음.
+
+2026-11-04 FIX-1 main 문서 이전 정정: 최신 unity/main 정상 병합, 악의오브 정본 명칭(자원표·패시브표·44개 대조), 웹 v23·전체 화면 원화 확장 누락 기록 보충, 루트 색인·web3d 보관·integ12 이미지 위치 정정. Core·게임 코드 변경 없음. 상세 MAIN_DOCS_MIGRATION_20261104.md.
+
+2026-11-04 main 문서 정리 선행 이전: main 06ac6882b550cb6373f2953ede3b2acc6f69e211 고유 자료 71개(신규 67·기존 경로 보충 4)를 보존. 자원표·패시브표의 웹 oracle 정정은 Core 동일성 미대조로 표시. 수신 JSON·UI 인계 기록은 Unity 후속 내용을 유지해 합침. 게임 코드·Core·실행본 변경 없음. 상세 MAIN_DOCS_MIGRATION_20261104.md.
 2026-11-04 SND-16 1-1 한 판 소리 커버리지(사운드 총괄, CTO 배정 — 데모 v0 ③): DEMO_1-1_SOUND_SCENES §0에 타이틀·로비·캐릭터 선택·필드·드루이드·클리어·사망 순간별 키·상태(채택/웹 이식/임시/없음)·청음 라운드 표를 추가했다. 빈 칸·임시 칸 10개(구르기 임시, 플레이어 사망·포션·아이템 드랍·악의 오브·지역 클리어·지옥문 열림·봉인 문·아레나 진입·스테이지 클리어 패널 없음)는 R10 청음 후보 91줄 pick_r10.html로 묶었다(웹 동작 녹화 10클립 동기). 웹 봉인 문 문구 미표시 결함 후보를 기록했다. 코드 변경 없음, 청음·Unity 반영 전.
 
 2026-11-04 D-014 oracle 일괄 점검 판정(디버깅 총괄, Codex 레인 debug-oracle-sweep 14ae05cbb 병합): Core bea021bcf·웹 06ac6882b 기준 C# 76개 PASS 56/FAIL 10/입력 대기 9/SKIP 1/빌드 깨짐 0. FAIL 10개는 게임 결함 0 — 패링 A안 투사체 정책(적 AI 61,645·생성 7,543·분열 372, 적 종류×필드 전수 집계로 확인), Unity 의도 확장(저장 stageDiffOff, 로캘 이름 Killu), 표현 분기(피격 플래시는 feel 꺼짐 때만 그림, 웹 ?feel=0과 같음), 낡은 기대값 4개, 웹 10-31 스킬창 고정 기술 3칸(D-U4). Tools만 수정: 생성 oracle AI 값형 필드 예외, 저장 Unity 전용 키, 피격 export feel=0, 어픽스 기준 문구 2·키 21·인트로 29언어×27줄, 적 AI 시나리오별 실패 집계. 재실행 피격 47,559/0·저장 2,604/0·설정 91/0·인트로 29/0·어픽스 PASS. 새 백로그 D-T3(A안 기대값 층)·D-U4. Core·Unity 실행 0. 문서: DEBUG_LEAD_BOARD D-014·D-T2·D-T3·D-U4, unity/Tools/README.

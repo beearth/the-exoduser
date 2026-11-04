@@ -1,6 +1,6 @@
 # docs 폴더 색인
 
-2026-11-03 기준. docs 정본은 origin/unity/main이다. 하위 폴더는 39개이고, origin/main과 origin/unity/main의 폴더 구성은 같다(`git ls-tree -d` 확인). 폴더 안의 파일은 두 브랜치가 아직 다르다. main에만 있는 문서는 unity/main으로 옮기는 중이므로, unity/main에 없으면 `git show origin/main:<경로>`로 확인한다.
+2026-11-04 기준. docs 정본은 origin/unity/main이며 최상위 하위 폴더는 38개다. main에는 웹 Steam 라이브판 유지보수 문서와 코드 호환 참조·위치 안내만 남긴다. 공통·Unity 개발 문서는 `git show "origin/unity/main:<경로>"`로 읽고, 보관 기록은 `_archive/INDEX.md`에서 찾는다.
 
 규칙은 [CLAUDE.md](../CLAUDE.md), 작업 순서와 품질 기준은 [작업 매뉴얼 v4](0마스터플랜/WORK_MANUAL_20261029.md)를 따른다. 폴더나 대표 문서가 바뀌면 이 표를 함께 고친다.
 
@@ -64,11 +64,12 @@
 | `13출시·마케팅/` | Steam·itch 출시, `STEAM_UPDATE_RULES.md`·패치노트·빌드·백업 정책, 통합·빌드 팀 마스터 |
 | `12퍼포먼스·최적화/` | 성능 진단·Tier·핫패스, QA·성능 팀 마스터 |
 | `16번역·로컬라이제이션/` | 번역 가이드·번역대상 전체목록(29개 언어) |
-| `16영문화(i18n)/` | 옛 영문화 진행 기록. 현행은 `16번역·로컬라이제이션/` |
 | `최종기획서/` | 최종 기획서 안내(`README.md`)와 기획 이미지 |
 | `_archive/` | 지난 기록 보관(AUTOLOOP 상태, 11-03 이전 규칙 원문 `rules-20261103/`) |
 
 ## docs 루트 파일
+
+- `MAIN_DOCS_MIGRATION_20261104.md`: main 고유 자료 이전·명칭 정정·보관 위치 및 FIX-1 반영 기록.
 
 - `API연결_가이드.md`: MCP·API 공통 목록과 기간별 예산.
 - `CHANGELOG_SYNC.md`: 코드·docs 동기화 기록. 커밋마다 절을 추가한다.
