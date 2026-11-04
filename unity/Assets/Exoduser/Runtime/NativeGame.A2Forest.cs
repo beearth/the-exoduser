@@ -17,10 +17,10 @@ namespace Exoduser.UnityPort
         GameObject a2Root;
         Material a2Water;
         readonly System.Collections.Generic.HashSet<string> a2UnreadableMeshes=new System.Collections.Generic.HashSet<string>();
-        void A2ForestSetup(Terrain ground)
+        System.Collections.IEnumerator A2ForestSetup(Terrain ground)
         {
-            if (!A2Requested) return;
-            A2FieldSetup(ground);
+            if (!A2Requested) yield break;
+            yield return A2FieldSetup(ground);
         }
         // 이전 단일 키샷 제작 경로는 비교 근거용으로 보존한다. 일반 필드는 전체 배치를 쓴다.
         void A2LegacyKeyshotSetup(Terrain ground)
