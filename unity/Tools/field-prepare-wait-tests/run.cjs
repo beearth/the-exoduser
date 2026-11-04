@@ -8,6 +8,7 @@ const evidence=p.resolve(process.argv[3]||'I:/EXODUSER-Storage/codex-takeover/fi
 const work=evidence+'/work';fs.mkdirSync(work+'/temp',{recursive:true});
 const runtime=root+'/Assets/Exoduser/Runtime';
 const program=`using System;using System.Collections.Generic;using Exoduser.UnityPort;using Exoduser.UnityPort.Core;
+sealed class Obj{public string Name;public bool Destroyed;public Obj(string n){Name=n;}}
 static class P{
  static int checks,failures;static List<string> log=new List<string>();
  static void C(bool ok,string name,string detail=""){checks++;if(!ok)failures++;log.Add((ok?"PASS ":"FAIL ")+name+(detail.Length>0?" | "+detail:""));}
@@ -139,25 +140,36 @@ static class P{
    while(s.Busy&&s.wall<60)s.Frame(F);
    C(s.doneAt>=1.0&&s.doneAt<=1.8&&!s.flow.Failed&&!TransitionPrepareWatchdog.FieldBound("splash-menu")&&TransitionPrepareWatchdog.FieldBound("lobby-game")&&TransitionPrepareWatchdog.FieldBound("story-game"),"(f) non-field transitions ignore assembly and pending",s.doneAt.ToString("F2"));}
   // 10 (g). One 125 s frame (debugger stop, sleep) counts as at most 2 s: no hard-cap, no abort.
-  {var s=new Sim();bool begun=false,hit=false;int tk=0;bool aborted=false;s.onFail=r=>aborted=true;
-   while(s.Busy&&s.wall<400){double d=F;
+  {var s=new Sim();bool begun=false,hit=false;int tk=0;bool aborted=false;double maxTotal=0;s.onFail=r=>aborted=true;
+   while(s.Busy&&s.wall<400){double d=F;maxTotal=Math.Max(maxTotal,s.dog.Total);
     if(s.swapped&&!begun){tk=NativeTransitionProgress.Begin("test-pause");NativeTransitionProgress.Report("a",.1f);begun=true;}
     if(begun&&!hit&&NativeTransitionProgress.Active){d=125;hit=true;NativeTransitionProgress.Report("b",.2f);NativeTransitionProgress.End(tk);}
     s.Frame(d);}
-   C(hit&&!aborted&&!s.flow.Failed&&s.doneAt>0&&s.dog.Total<5,"(g) a single 125s frame is not a hard-cap",s.dog.Total.ToString("F2")+" "+(s.recorded??""));}
+   C(hit&&!aborted&&!s.flow.Failed&&s.doneAt>0&&maxTotal<5,"(g) a single 125s frame is not a hard-cap (counted as at most 2s)",maxTotal.ToString("F2")+" "+(s.recorded??""));}
   // 10 (h). 0.2 fps (5 s frames) with a report each frame for 30 frames: counted at 2 s each (60 s), no hard-cap.
   {var d=new TransitionPrepareWatchdog();d.Begin(0);bool fail=false;for(int i=0;i<30;i++)fail|=d.Tick(5,i+1,true);
    C(!fail&&Math.Abs(d.Total-60)<1e-9,"(h) 0.2fps throttled frames are clamped to 2s each (30 frames = 60s)",d.Total.ToString("F2"));
    var e=new TransitionPrepareWatchdog();e.Begin(0);bool cap=false;int n=0;for(;n<100&&!cap;n++)cap=e.Tick(5,n+1,true);
    C(cap&&n==60&&e.Reason=="prepare-hard-cap(120s)","(h) sustained reports still hit the cap (60 clamped frames)",n+" "+e.Reason);}
-  // 10 (i). Abort retry policy: stall/hard-cap defers to the next field entry; first exception retried once; second exception ends retries; orphan ops block restart.
+  // 10 (i). Retry policy: ONE shared counter for every abort kind. First abort (stall/hard-cap/owner-disabled/exception) defers one retry to the next field entry; the second is permanent.
   {var g=new FieldLoadGate();C(g.CanStart,"(i) fresh gate may start");
-   g.Abort(false);C(!g.CanStart&&g.Deferred&&!g.Permanent,"(i) hard-cap/stall abort defers, not permanent");
-   g.FieldEntry();C(g.CanStart,"(i) next field entry retries after a hard-cap/stall abort");
-   g.Abort(false);g.FieldEntry();g.Abort(false);g.FieldEntry();C(g.CanStart&&!g.Permanent,"(i) stall/hard-cap aborts can retry at every entry");
+   g.Abort(false);C(!g.CanStart&&g.Deferred&&!g.Permanent,"(i) first non-exception abort defers, not permanent");
+   g.FieldEntry();C(g.CanStart,"(i) next field entry retries once after a non-exception abort");
+   g.Abort(false);C(g.Permanent&&!g.Deferred&&!g.CanStart,"(i) second non-exception abort: permanent 2D");
+   g.FieldEntry();C(!g.CanStart&&g.Aborts==2,"(i) third field entry: no retry, 2D");
    var x=new FieldLoadGate();x.Abort(true);C(!x.CanStart&&!x.Permanent,"(i) first exception defers");x.FieldEntry();C(x.CanStart,"(i) first exception retried once at the next entry");
-   x.Abort(true);x.FieldEntry();C(x.Permanent&&!x.CanStart,"(i) second exception: permanent 2D for the session (no endless retry)");
+   x.Abort(true);x.FieldEntry();C(x.Permanent&&!x.CanStart,"(i) second exception: permanent 2D");
+   var m=new FieldLoadGate();m.Abort(true);m.FieldEntry();C(m.CanStart,"(i) combo: exception then retry allowed");m.Abort(false);m.FieldEntry();C(m.Permanent&&!m.CanStart,"(i) combo: exception + non-exception = permanent");
+   var m2=new FieldLoadGate();m2.Abort(false);m2.FieldEntry();m2.Abort(true);m2.FieldEntry();C(m2.Permanent&&!m2.CanStart,"(i) combo: non-exception + exception = permanent");
+   var p=new FieldLoadGate();p.MarkPermanent();p.FieldEntry();C(p.Permanent&&!p.CanStart,"(i) MarkPermanent holds across field entries");
    var o=new FieldLoadGate();o.OpStarted();o.OpStarted();C(!o.CanStart,"(i) pending scene load/unload blocks a restart");o.OpDone();C(!o.CanStart,"(i) still blocked while one op remains");o.OpDone();o.OpDone();C(o.CanStart&&o.PendingOps==0,"(i) restart allowed after all ops finished");}
+  // 10 (i3). Two hard-cap aborts, then the third entry opens in 2D without waiting (no pending, no retry).
+  {var gate=new FieldLoadGate();bool loaded=false;int started=0;double[] done=new double[3];
+   for(int run=0;run<3;run++){
+    gate.FieldEntry();var sm=new Sim(run==0);sm.pending=()=>!loaded&&!gate.Deferred&&!gate.Permanent;sm.onFail=r=>{gate.Abort(false);NativeTransitionProgress.Release();};bool begun=false;
+    while(sm.Busy&&sm.wall<200){if(sm.swapped&&!begun&&gate.CanStart){begun=true;started++;NativeTransitionProgress.Begin("t"+run);}if(begun&&NativeTransitionProgress.Active)NativeTransitionProgress.Report("r",.1f);sm.Frame(F);}
+    done[run]=sm.doneAt;}
+   C(started==2&&gate.Permanent&&done[0]>100&&done[1]>100&&done[2]>=1.0&&done[2]<=1.8,"(i3) 2 aborted tries, third entry is 2D with no retry and no long black screen",started+" "+done[0].ToString("F0")+" "+done[1].ToString("F0")+" "+done[2].ToString("F2"));}
   // 10 (i2). End to end: first transition aborts by hard-cap, the next field entry completes with the 3D field.
   {var gate=new FieldLoadGate();bool loaded=false;
    var a=new Sim();bool begun=false;a.pending=()=>!loaded&&!gate.Deferred&&!gate.Permanent;a.onFail=r=>{gate.Abort(false);NativeTransitionProgress.Release();};
@@ -171,6 +183,65 @@ static class P{
   // 10 (j). Failure freezes the loading line instead of running it to 100%; success still fills.
   {C(TransitionProgressBar.Target(true,false,.4f,true,.4f)==.4f&&TransitionProgressBar.Target(true,true,.7f,true,.3f)==.3f,"(j) failed transition: line does not run to 100%");
    C(TransitionProgressBar.Target(true,false,.4f,false,.4f)==1f&&TransitionProgressBar.Target(true,true,.7f,false,.3f)==.7f&&TransitionProgressBar.Target(false,false,0,false,0)==0f,"(j) normal: fills to 1 after assembly, follows fraction while it runs, 0 without assembly");}
+  // 11 (k). Bramble cache: an abort after the bramble stage destroys the tracked objects; the retry must rebuild them (C# non-null but Unity-dead is not reusable).
+  {var mat=new Obj("mat");var meshes=new[]{new Obj("m0"),new Obj("m1"),new Obj("m2")};
+   Func<Obj,bool> dead=o=>o.Destroyed;
+   C(!CacheValidity.NeedsRebuild(mat,meshes,dead),"(k) healthy cache is reused");
+   mat.Destroyed=true;meshes[0].Destroyed=true;meshes[1].Destroyed=true;meshes[2].Destroyed=true; // R3DestroyMade
+   C(CacheValidity.NeedsRebuild(mat,meshes,dead),"(k) destroyed (Unity-null) cache objects are not reused although the C# references remain");
+   C(CacheValidity.NeedsRebuild<Obj>(null,null,dead)&&CacheValidity.NeedsRebuild(new Obj("x"),new Obj[]{null},dead),"(k) cleared (null) cache is rebuilt");
+   // Whole story: attempt 1 builds + aborts after the bramble stage, teardown clears; attempt 2 rebuilds (bramble present), a never-cleared cache would show none.
+   Obj cMat=null;Obj[] cMesh=null;int rebuilds=0;Action build=()=>{if(CacheValidity.NeedsRebuild(cMat,cMesh,dead)){rebuilds++;cMat=new Obj("b");cMesh=new[]{new Obj("a"),new Obj("b"),new Obj("c")};}};
+   build();var oldMat=cMat;var oldMesh=cMesh;oldMat.Destroyed=true;foreach(var o in oldMesh)o.Destroyed=true;cMat=null;cMesh=null;build();
+   C(rebuilds==2&&!cMat.Destroyed&&!cMesh[0].Destroyed,"(k) retry after an abort past the bramble stage rebuilds the bramble cache");
+   var stale=new Obj("stale");Obj sMat=stale;Obj[] sMesh=new[]{new Obj("s")};stale.Destroyed=true;sMesh[0].Destroyed=true;int r2=0;if(CacheValidity.NeedsRebuild(sMat,sMesh,dead))r2++;
+   C(r2==1,"(k) even a cache that was not nulled is rebuilt by the Unity-null check");}
+  // 11 (l). Destroyed TerrainLayer guard: clone from the untouched original; if both are dead, no source (no exception).
+  {var orig=new[]{new Obj("L0"),new Obj("L1")};var cur=new[]{new Obj("c0"),new Obj("c1")};Func<Obj,bool> dead=o=>o.Destroyed;
+   cur[0].Destroyed=true;cur[1].Destroyed=true;
+   var p0=CacheValidity.PickSource(orig,cur,0,dead);C(p0==orig[0],"(l) destroyed current layer -> the original is used");
+   orig[1].Destroyed=true;var p1=CacheValidity.PickSource(orig,cur,1,dead);C(p1==null,"(l) both dead -> null source (caller skips instead of throwing)");
+   var ok=new[]{new Obj("k0")};C(CacheValidity.PickSource((Obj[])null,ok,0,dead)==ok[0],"(l) no originals captured yet -> current layer");}
+  // 11 (m). Idle stall while only a scene unload is pending does not use up the retry.
+  {var g=new FieldLoadGate();g.OpStarted();C(g.WaitingOnOps(false)&&!g.WaitingOnOps(true),"(m) waiting on unload only counts when no assembly is running");g.OpDone();C(!g.WaitingOnOps(false),"(m) no pending ops -> a stall counts");}
+  // 12 (n). Unload-only wait: the stall opens the screen in 2D, the retry count stays, the assembly is deferred (not started outside a transition); the next field entry assembles.
+  {var g=new FieldLoadGate();bool loaded=false;g.OpStarted();int abortsBefore=g.Aborts;
+   var a=new Sim();a.pending=()=>!loaded&&!g.Deferred&&!g.Permanent;bool begun=false;
+   a.onFail=r=>{if(g.WaitingOnOps(false))g.Defer();else g.Abort(false);};
+   while(a.Busy&&a.wall<100){if(a.swapped&&!begun&&g.CanStart){begun=true;NativeTransitionProgress.Begin("must-not-start");}a.Frame(F);}
+   C(a.flow.Failed&&a.recorded.StartsWith("prepare-stalled")&&a.doneAt>0,"(n) unload-only wait ends by stall and opens",a.recorded??"");
+   C(g.Aborts==abortsBefore&&g.Deferred&&!g.Permanent,"(n) retry count unchanged, deferred set",g.Aborts+"");
+   g.OpDone();C(!g.CanStart&&!begun,"(n) unload finished: assembly still not started outside a transition");
+   g.FieldEntry();C(g.CanStart,"(n) next field entry may assemble");
+   bool started=false;int tk=0;double began=-1;var b=new Sim(false);b.pending=()=>!loaded&&!g.Deferred&&!g.Permanent;
+   while(b.Busy&&b.wall<100){if(b.swapped&&g.CanStart&&!started){started=true;began=b.wall;tk=NativeTransitionProgress.Begin("n2");}if(started&&!loaded&&b.wall-began>=4){NativeTransitionProgress.End(tk);loaded=true;}b.Frame(F);}
+   C(started&&loaded&&!b.flow.Failed&&b.doneAt>=began+4&&g.Aborts==abortsBefore,"(n) next transition assembles through the normal path with a watchdog and waits for it",b.doneAt.ToString("F1"));
+   var p=new FieldLoadGate();p.MarkPermanent();p.Defer();C(!p.Deferred,"(n) Defer never overrides permanent");}
+  // 13 (o). R06: a required ground asset missing is an assembly failure (not a half-built success): r3Loaded stays false, the shared abort counter is used, 2D opens safely.
+  {C(FieldRequirements.FirstMissing(true,n=>true)==null,"(o) all required assets present -> nothing missing");
+   C(FieldRequirements.FirstMissing(false,n=>true)==FieldRequirements.SoilMaterial,"(o) soil material missing is reported first");
+   C(FieldRequirements.FirstMissing(true,n=>n!="A2_ForestSoil_BaseColor")=="A2_ForestSoil_BaseColor","(o) a missing base-colour ground scan is reported by name");
+   C(FieldRequirements.GroundScans.Length==2,"(o) required list is explicit in code");
+   var gate=new FieldLoadGate();bool r3Loaded=false,r3Failed=false;int done2D=0;string reason=null;
+   System.Collections.IEnumerator Assembly(){var tk=NativeTransitionProgress.Begin("a2-field");try{yield return null;var missing=FieldRequirements.FirstMissing(false,n=>true);if(missing!=null)throw new InvalidOperationException("A2 field required asset missing: "+missing);r3Loaded=true;}finally{NativeTransitionProgress.End(tk);}}
+   for(int entry=0;entry<3;entry++){
+    gate.FieldEntry();var sm=new Sim(entry==0);sm.pending=()=>!r3Loaded&&!r3Failed&&!gate.Deferred&&!gate.Permanent;bool started=false;System.Collections.IEnumerator run=null;
+    while(sm.Busy&&sm.wall<60){
+     if(sm.swapped&&!started&&gate.CanStart){started=true;run=AssemblyGuard.Run(Assembly(),e=>{reason=e.Message;NativeTransitionProgress.Fail(e.Message);gate.Abort(true);if(gate.Permanent)r3Failed=true;});}
+     if(run!=null&&!r3Loaded)run.MoveNext();
+     sm.Frame(F);}
+    if(sm.doneAt>0&&!r3Loaded)done2D++;}
+   C(!r3Loaded&&done2D==3,"(o) required asset missing -> r3Loaded=false and every entry still opens (2D)");
+   C(gate.Aborts==2&&gate.Permanent&&r3Failed,"(o) counted by the shared abort counter: one retry, then permanent 2D",gate.Aborts+"");
+   C(reason!=null&&reason.Contains("required asset missing"),"(o) reason recorded",reason??"");}
+  // 13 (p). R04: stopping the routine (Dispose of the guard) runs the finally blocks of the iterators underneath it.
+  {bool innerFinally=false,midFinally=false;
+   System.Collections.IEnumerator Inner(){try{yield return null;yield return null;}finally{innerFinally=true;}}
+   System.Collections.IEnumerator Mid(){try{yield return Inner();}finally{midFinally=true;}}
+   var g=AssemblyGuard.Run(Mid(),e=>{});g.MoveNext();g.MoveNext();((IDisposable)g).Dispose();
+   C(innerFinally&&midFinally,"(p) disposing the guard disposes nested iterators (finally blocks run)");
+   bool failed=false;var g2=AssemblyGuard.Run(Mid(),e=>failed=true);while(g2.MoveNext()){}
+   C(!failed,"(p) normal completion unchanged");}
   foreach(var l in log)Console.WriteLine(l);
   Console.WriteLine("checks="+checks+" failures="+failures);Environment.Exit(failures==0?0:1);}
 }

@@ -29,7 +29,7 @@ namespace Exoduser.UnityPort
             a2Root.transform.SetParent(ground.transform,true);
             foreach(var root in r3Roots)if(root!=null)foreach(var r in root.GetComponentsInChildren<MeshRenderer>(true))
             {
-                if(r.name=="지옥 바닥 PBR 표면")a2FieldSoil=new Material(r.sharedMaterial);
+                if(r.name=="지옥 바닥 PBR 표면")a2FieldSoil=R3Track(new Material(r.sharedMaterial));
                 r.enabled=false;
             }
             if(hellEnvironment!=null)hellEnvironment.SetActive(false);
@@ -49,7 +49,9 @@ namespace Exoduser.UnityPort
                 if(profile.TryGet<ColorAdjustments>(out tone)){tone.postExposure.Override(.55f);tone.contrast.Override(16);}
             }
             NativeTransitionProgress.Report("a2-lights",.04f);yield return null;
-            if(a2FieldSoil==null){Debug.LogError("[A2 필드] 지면 재질 누락");yield break;}
+            // Required assets (FieldRequirements): a missing one fails the assembly (exception -> abort policy -> 2D) instead of opening a half-built field as ready.
+            {var missing=FieldRequirements.FirstMissing(a2FieldSoil!=null,n=>Resources.Load<Texture2D>("Art/map/a2/ground/"+n)!=null);
+             if(missing!=null){Debug.LogError("[A2 필드] 필수 자원 누락 "+missing);throw new InvalidOperationException("A2 field required asset missing: "+missing);}}
             a2FieldSoil.SetFloat("_ForestBlend",1);a2FieldSoil.SetFloat("_ForestTextureMix",.65f);a2FieldSoil.SetFloat("_SoilTextureMix",1);a2FieldSoil.SetFloat("_FullField",1);
             foreach(var pair in new[]{new[]{"_ForestMap","A2_ForestFloor_BaseColor"},new[]{"_ForestNormal","A2_ForestFloor_Normal"},new[]{"_ForestRough","A2_ForestFloor_Roughness"},new[]{"_SoilMap","A2_ForestSoil_BaseColor"},new[]{"_SoilNormal","A2_ForestSoil_Normal"},new[]{"_SoilRough","A2_ForestSoil_Roughness"},new[]{"_RootMap","A2_ExposedRoots_BaseColor"},new[]{"_RootNormal","A2_ExposedRoots_Normal"},new[]{"_RootRough","A2_ExposedRoots_Roughness"}})
             {
@@ -60,12 +62,12 @@ namespace Exoduser.UnityPort
             foreach(var pair in new[]{new[]{"_FieldMoss","BaseColor"},new[]{"_FieldMossNormal","Normal"},new[]{"_FieldMossRough","Roughness"}})
             {var moss=Resources.Load<Texture2D>("Art/map/a2/ground/A2_FieldMoss_"+pair[1]);if(moss==null)Debug.LogError("[A2 필드] 이끼 지면 누락 "+pair[1]);else a2FieldSoil.SetTexture(pair[0],moss);}
             NativeTransitionProgress.Report("a2-textures",.08f);yield return null;
-            var sdf=new Texture2D(200,200,TextureFormat.RGBA32,false,true){name="원본 보행 경계 시각 거리장",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};
+            var sdf=R3Track(new Texture2D(200,200,TextureFormat.RGBA32,false,true){name="원본 보행 경계 시각 거리장",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear});
             var pixels=new Color[40000];
             for(int y=0;y<200;y++)for(int x=0;x<200;x++)pixels[y*200+x]=new Color(.5f+a2Field.Distance((x+.5f)*.4f,-(y+.5f)*.4f)/40,0,0,1);
             sdf.SetPixels(pixels);sdf.Apply(false,true);a2FieldSoil.SetTexture("_FieldSdf",sdf);
             NativeTransitionProgress.Report("a2-sdf",.12f);yield return null;
-            var cover=new Texture2D(256,256,TextureFormat.RGBA32,false,true){name="A2 전투중심을 비운 연결 이끼 지면",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};
+            var cover=R3Track(new Texture2D(256,256,TextureFormat.RGBA32,false,true){name="A2 전투중심을 비운 연결 이끼 지면",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear});
             var coverPixels=new Color[256*256];for(int y=0;y<256;y++)for(int x=0;x<256;x++)coverPixels[y*256+x]=new Color(a2Field.GroundCover((x+.5f)/256*80,-(y+.5f)/256*80)*Mathf.Lerp(1,.45f,Mathf.SmoothStep(0,1,Mathf.Clamp01(a2Field.Distance((x+.5f)/256*80,-(y+.5f)/256*80)/2))),0,0,1);
             cover.SetPixels(coverPixels);cover.Apply(false,true);a2FieldSoil.SetTexture("_FieldCover",cover);
             NativeTransitionProgress.Report("a2-cover",.16f);yield return null;
@@ -77,6 +79,7 @@ namespace Exoduser.UnityPort
             A2FieldGroundCover();NativeTransitionProgress.Report("a2-ground-cover",.95f);yield return null;
             A2BridgeMoss();NativeTransitionProgress.Report("a2-bridge-moss",.97f);yield return null;
             A2FieldAtmosphere();NativeTransitionProgress.Report("a2-atmosphere",.99f);yield return null;
+            if(r3Cam==null)throw new InvalidOperationException("A2 field camera destroyed during assembly");   // Unity null: scene reclaimed while yielding
             var aa=r3Cam.GetUniversalAdditionalCameraData();aa.antialiasing=NativeHd2D.Enabled?AntialiasingMode.None:AntialiasingMode.SubpixelMorphologicalAntiAliasing;aa.antialiasingQuality=AntialiasingQuality.High;
             aa.requiresDepthTexture=true;r3Cam.depthTextureMode|=DepthTextureMode.Depth;
             r3Cam.backgroundColor=new Color(.105f,.145f,.17f);r3Cam.farClipPlane=220;
@@ -94,7 +97,7 @@ namespace Exoduser.UnityPort
                 if(x==nx-1||y==nz-1)continue;
                 triangles[k++]=i;triangles[k++]=i+nx;triangles[k++]=i+1;triangles[k++]=i+1;triangles[k++]=i+nx;triangles[k++]=i+nx+1;
             }
-            var mesh=new Mesh{name="1-1 전체 젖은 흙·침식 둑",indexFormat=IndexFormat.UInt32};mesh.vertices=vertices;mesh.uv=uv;mesh.triangles=triangles;mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();
+            var mesh=R3Track(new Mesh{name="1-1 전체 젖은 흙·침식 둑",indexFormat=IndexFormat.UInt32});mesh.vertices=vertices;mesh.uv=uv;mesh.triangles=triangles;mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();
             var terrainRoot=new GameObject("A2 전체 필드 지면");terrainRoot.transform.SetParent(a2Root.transform,false);
             var normals=mesh.normals;var tangents=mesh.tangents;int chunkCount=0;
             // 경계 정점/노멀/탄젠트는 같은 전체 격자에서 그대로 복사해 틈과 조명 이음을 없앤다.
@@ -107,15 +110,15 @@ namespace Exoduser.UnityPort
                     if(x==cw-1||y==ch-1)continue;
                     ci[index++]=local;ci[index++]=local+cw;ci[index++]=local+1;ci[index++]=local+1;ci[index++]=local+cw;ci[index++]=local+cw+1;
                 }
-                var chunk=new Mesh{name="A2 지면 "+x0+"/"+y0};chunk.vertices=cv;chunk.normals=cn;chunk.tangents=ct;chunk.uv=cu;chunk.triangles=ci;chunk.RecalculateBounds();
+                var chunk=R3Track(new Mesh{name="A2 지면 "+x0+"/"+y0});chunk.vertices=cv;chunk.normals=cn;chunk.tangents=ct;chunk.uv=cu;chunk.triangles=ci;chunk.RecalculateBounds();
                 var go=new GameObject(chunk.name);go.transform.SetParent(terrainRoot.transform,false);go.AddComponent<MeshFilter>().sharedMesh=chunk;
                 var r=go.AddComponent<MeshRenderer>();r.sharedMaterial=a2FieldSoil;r.receiveShadows=true;chunkCount++;
                 NativeGroundSkillProjection.RegisterReceiver(go.GetComponent<MeshFilter>());
             }
             Debug.Log("[A2 전체 지면] "+nx+"x"+nz+"/삼각형 "+triangles.Length/3+"/64셀청크 "+chunkCount+"/근경.25u·먼외곽2u/공유경계노멀·탄젠트");
             Destroy(mesh);
-            a2Water=new Material(Shader.Find("EXODUSER/A2ToxicRiver"));A2ShoreField();
-            var waterMesh=new Mesh{name="숲 외곽 독액 수면"};waterMesh.vertices=new[]{new Vector3(A2FieldLayout.GroundMinX,-.45f,A2FieldLayout.GroundMinZ),new Vector3(A2FieldLayout.GroundMaxX,-.45f,A2FieldLayout.GroundMinZ),new Vector3(A2FieldLayout.GroundMinX,-.45f,A2FieldLayout.GroundMaxZ),new Vector3(A2FieldLayout.GroundMaxX,-.45f,A2FieldLayout.GroundMaxZ)};
+            a2Water=R3Track(new Material(Shader.Find("EXODUSER/A2ToxicRiver")));A2ShoreField();
+            var waterMesh=R3Track(new Mesh{name="숲 외곽 독액 수면"});waterMesh.vertices=new[]{new Vector3(A2FieldLayout.GroundMinX,-.45f,A2FieldLayout.GroundMinZ),new Vector3(A2FieldLayout.GroundMaxX,-.45f,A2FieldLayout.GroundMinZ),new Vector3(A2FieldLayout.GroundMinX,-.45f,A2FieldLayout.GroundMaxZ),new Vector3(A2FieldLayout.GroundMaxX,-.45f,A2FieldLayout.GroundMaxZ)};
             waterMesh.uv=new[]{Vector2.zero,Vector2.right,Vector2.up,Vector2.one};waterMesh.triangles=new[]{0,2,1,1,2,3};waterMesh.RecalculateNormals();waterMesh.RecalculateBounds();
             var water=new GameObject("A2 원본 보행 밖 독액 개울");water.transform.SetParent(a2Root.transform,false);water.layer=4;
             water.AddComponent<MeshFilter>().sharedMesh=waterMesh;var wr=water.AddComponent<MeshRenderer>();wr.sharedMaterial=a2Water;wr.shadowCastingMode=ShadowCastingMode.Off;
@@ -221,7 +224,7 @@ namespace Exoduser.UnityPort
             {
                 var sourceMaterial=Resources.Load<Material>("Art/map/a2/rootrelief/Materials/A2_Root_Cluster_Patch");
                 if(sourceMaterial==null){Debug.LogError("[A2 필드] 스캔 뿌리 재질 누락");return;}
-                a2FieldRootMaterial=new Material(sourceMaterial);
+                a2FieldRootMaterial=R3Track(new Material(sourceMaterial));
                 foreach(var key in new[]{"_BaseMap","_BumpMap","_RockMap","_AshMap","_RockNormal","_RockRough","_ForestMap","_ForestNormal","_ForestRough","_SoilMap","_SoilNormal","_SoilRough","_RootMap","_RootNormal","_RootRough","_FieldSdf","_FieldCover","_FieldMoss","_FieldMossNormal","_FieldMossRough"})
                     if(a2FieldRootMaterial.HasProperty(key))a2FieldRootMaterial.SetTexture(key,a2FieldSoil.GetTexture(key));
                 foreach(var key in new[]{"_ForestBlend","_ForestTextureMix","_SoilTextureMix","_FullField"})if(a2FieldRootMaterial.HasProperty(key))a2FieldRootMaterial.SetFloat(key,a2FieldSoil.GetFloat(key));
@@ -232,7 +235,7 @@ namespace Exoduser.UnityPort
             foreach(var mf in go.GetComponentsInChildren<MeshFilter>())
             {
                 if(mf.sharedMesh==null||!mf.sharedMesh.isReadable){Debug.LogError("[A2 필드] 뿌리 메시 읽기 누락");continue;}
-                var mesh=Instantiate(mf.sharedMesh);var vertices=mesh.vertices;var center=mf.transform.TransformPoint(mesh.bounds.center);var shift=new Vector3(center.x-x,0,center.z-z);
+                var mesh=R3Track(Instantiate(mf.sharedMesh));var vertices=mesh.vertices;var center=mf.transform.TransformPoint(mesh.bounds.center);var shift=new Vector3(center.x-x,0,center.z-z);
                 for(int i=0;i<vertices.Length;i++){var v=mf.transform.TransformPoint(vertices[i])-shift;v.y=a2Field.TerrainHeight(v.x,v.z)+Mathf.Max(0,v.y-baseY)+.006f;vertices[i]=mf.transform.InverseTransformPoint(v);}
                 mesh.vertices=vertices;mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();mf.sharedMesh=mesh;
             }
@@ -285,18 +288,18 @@ namespace Exoduser.UnityPort
         void A2FieldAtmosphere()
         {
             var haze=new GameObject("A2 지면 높이 안개");haze.transform.SetParent(a2Root.transform,false);haze.layer=4;
-            var screen=new Mesh{name="높이 안개 화면 적분"};screen.vertices=new[]{new Vector3(-1,-1,0),new Vector3(1,-1,0),new Vector3(-1,1,0),new Vector3(1,1,0)};screen.triangles=new[]{0,2,1,1,2,3};
+            var screen=R3Track(new Mesh{name="높이 안개 화면 적분"});screen.vertices=new[]{new Vector3(-1,-1,0),new Vector3(1,-1,0),new Vector3(-1,1,0),new Vector3(1,1,0)};screen.triangles=new[]{0,2,1,1,2,3};
             screen.bounds=new Bounds(Vector3.zero,Vector3.one*10000);
-            haze.AddComponent<MeshFilter>().sharedMesh=screen;var fog=haze.AddComponent<MeshRenderer>();fog.sharedMaterial=new Material(Shader.Find("EXODUSER/A2HeightFog"));fog.shadowCastingMode=ShadowCastingMode.Off;
+            haze.AddComponent<MeshFilter>().sharedMesh=screen;var fog=haze.AddComponent<MeshRenderer>();fog.sharedMaterial=R3Track(new Material(Shader.Find("EXODUSER/A2HeightFog")));fog.shadowCastingMode=ShadowCastingMode.Off;
             var shader=Shader.Find("EXODUSER/A2Atmosphere");
             var moonDirection=Quaternion.Euler(49,-32,0)*Vector3.forward;
             foreach(var root in r3Roots)if(root!=null)foreach(var light in root.GetComponentsInChildren<Light>(true))if(light.enabled&&light.type==LightType.Directional)moonDirection=light.transform.forward;
             foreach(var p in new[]{new Vector2(39,-70),new Vector2(26,-60),new Vector2(60,-58),new Vector2(21,-40),new Vector2(43,-34),new Vector2(64,-39),new Vector2(30,-18),new Vector2(53,-16),new Vector2(40,-6)})
             {
                 var bottom=new Vector3(p.x,a2Field.Height(p.x,p.y),p.y);var top=bottom-moonDirection*(13/Mathf.Max(.1f,-moonDirection.y));
-                var side=Vector3.right;var mesh=new Mesh{name="수관 사이 달빛"};mesh.vertices=new[]{top-side*.3f,top+side*.3f,bottom-side*1.5f,bottom+side*1.5f};mesh.uv=new[]{Vector2.zero,Vector2.right,Vector2.up,Vector2.one};mesh.triangles=new[]{0,2,1,1,2,3};mesh.RecalculateBounds();
+                var side=Vector3.right;var mesh=R3Track(new Mesh{name="수관 사이 달빛"});mesh.vertices=new[]{top-side*.3f,top+side*.3f,bottom-side*1.5f,bottom+side*1.5f};mesh.uv=new[]{Vector2.zero,Vector2.right,Vector2.up,Vector2.one};mesh.triangles=new[]{0,2,1,1,2,3};mesh.RecalculateBounds();
                 var go=new GameObject("A2 필드 국소 빛기둥");go.transform.SetParent(a2Root.transform,false);go.AddComponent<MeshFilter>().sharedMesh=mesh;
-                var r=go.AddComponent<MeshRenderer>();r.sharedMaterial=new Material(shader);r.sharedMaterial.SetColor("_Color",new Color(1.1f,1.4f,1.65f,.065f));r.shadowCastingMode=ShadowCastingMode.Off;
+                var r=go.AddComponent<MeshRenderer>();r.sharedMaterial=R3Track(new Material(shader));r.sharedMaterial.SetColor("_Color",new Color(1.1f,1.4f,1.65f,.065f));r.shadowCastingMode=ShadowCastingMode.Off;
             }
         }
     }

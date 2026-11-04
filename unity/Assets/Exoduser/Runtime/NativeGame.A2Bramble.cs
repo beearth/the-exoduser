@@ -10,11 +10,12 @@ namespace Exoduser.UnityPort
 
         void A2Bramble(GameObject root,float x,float z)
         {
-            if(a2BrambleMeshes==null)
+            // Unity null checks: a failed assembly destroys these (R3Track) and R3Teardown also clears them; a destroyed one must be rebuilt, not reused.
+            if(CacheValidity.NeedsRebuild<UnityEngine.Object>(a2BrambleMaterial,a2BrambleMeshes,o=>o==null))
             {
                 var bark=Resources.Load<Material>("Art/map/a2/hollow/Materials/A2_Loft_Bark");
                 if(bark==null){Debug.LogError("[A2] 고사 덤불 목질 누락. 기존 사진 덤불 유지");return;}
-                a2BrambleMaterial=new Material(bark);a2BrambleMaterial.name="A2 마른 잔가지 목질";
+                a2BrambleMaterial=R3Track(new Material(bark));a2BrambleMaterial.name="A2 마른 잔가지 목질";
                 a2BrambleMaterial.SetColor("_BaseColor",new Color(1.1f,.8f,.5f));
                 a2BrambleMaterial.SetFloat("_Smoothness",0);a2BrambleMaterial.SetFloat("_BumpScale",.45f);
                 a2BrambleMaterial.SetFloat("_SpecularHighlights",0);a2BrambleMaterial.EnableKeyword("_SPECULARHIGHLIGHTS_OFF");
@@ -51,7 +52,7 @@ namespace Exoduser.UnityPort
                     }
                 }
             }
-            var mesh=new Mesh{name="A2 고사 가지 군집 "+variant};mesh.SetVertices(points);mesh.SetUVs(0,uv);mesh.SetTriangles(triangles,0);mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();return mesh;
+            var mesh=R3Track(new Mesh{name="A2 고사 가지 군집 "+variant});mesh.SetVertices(points);mesh.SetUVs(0,uv);mesh.SetTriangles(triangles,0);mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();return mesh;
         }
 
         static void A2Twig(List<Vector3> points,List<Vector2> uv,List<int> triangles,Vector3 from,Vector3 to,Vector3 bend,float radius,int rings,int sides)

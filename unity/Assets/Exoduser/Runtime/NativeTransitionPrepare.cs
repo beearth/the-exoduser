@@ -68,20 +68,42 @@ namespace Exoduser.UnityPort {
    return error;
   }
  }
- // Decides when the 3D field assembly may (re)start. A stall or hard-cap abort, or the first exception, defers the retry to the next field entry;
- // a second exception ends retries for the session. Scene loads/unloads still in flight (orphans) block a restart so RM1_Slice is never loaded twice.
+ // Decides when the 3D field assembly may (re)start. One shared counter for every kind of abort (stall, hard-cap, owner disabled, exception):
+ // the first abort defers one retry to the next field entry, the second abort makes it permanent (2D for the session). Scene loads/unloads still in flight (orphans) block a restart so RM1_Slice is never loaded twice.
  internal sealed class FieldLoadGate {
-  internal const int MaxExceptionRetries=1;
-  int exceptionFails,pendingOps;bool deferred,permanent;
+  internal const int MaxRetries=1;
+  int aborts,pendingOps;bool deferred,permanent;
   internal bool Permanent{get{return permanent;}}
   internal bool Deferred{get{return deferred;}}
   internal int PendingOps{get{return pendingOps;}}
   internal bool CanStart{get{return !permanent&&!deferred&&pendingOps==0;}}
-  internal void Abort(bool exception){if(exception&&++exceptionFails>MaxExceptionRetries)permanent=true;else deferred=true;}
-  internal void MarkPermanent(){permanent=true;}
+  internal int Aborts{get{return aborts;}}
+  internal void Abort(bool exception){if(++aborts>MaxRetries)MarkPermanent();else deferred=true;}
+  internal void MarkPermanent(){permanent=true;deferred=false;}
   internal void FieldEntry(){deferred=false;}
+  // Unload-only wait: no retry is used, but nothing may start the assembly outside a transition either; the next field entry clears this.
+  internal void Defer(){if(!permanent)deferred=true;}
+  // Waiting only for a scene unload (no assembly running): an idle stall there is not an assembly failure and must not use up the retry.
+  internal bool WaitingOnOps(bool loading){return !loading&&pendingOps>0;}
   internal void OpStarted(){pendingOps++;}
   internal void OpDone(){if(pendingOps>0)pendingOps--;}
+ }
+ // Assets the 3D field cannot open without. A missing one is an assembly failure (exception -> shared abort counter -> 2D), never a half-built "success".
+ // Required: the ground PBR surface material the soil material is cloned from, and the two base-colour ground scans. (Normal / roughness / moss / root maps stay optional.)
+ internal static class FieldRequirements {
+  internal const string SoilMaterial="ground PBR surface material (지옥 바닥 PBR 표면)";
+  internal static readonly string[] GroundScans={"A2_ForestFloor_BaseColor","A2_ForestSoil_BaseColor"};
+  internal static string FirstMissing(bool soilPresent,Func<string,bool> scanPresent){
+   if(!soilPresent)return SoilMaterial;foreach(var n in GroundScans)if(!scanPresent(n))return n;return null;}
+ }
+ // Cached assembly objects may have been destroyed by an abort; callers pass a Unity-null predicate (a plain C# null check would miss them).
+ internal static class CacheValidity {
+  internal static bool NeedsRebuild<T>(T single,T[] many,Func<T,bool> dead)where T:class{
+   if(single==null||dead(single)||many==null)return true;foreach(var m in many)if(m==null||dead(m))return true;return false;}
+  // Prefer the untouched original; fall back to the current entry; default when both are dead.
+  internal static T PickSource<T>(T[] originals,T[] current,int i,Func<T,bool> dead)where T:class{
+   if(originals!=null&&current!=null&&originals.Length==current.Length&&originals[i]!=null&&!dead(originals[i]))return originals[i];
+   return current!=null&&i<current.Length&&current[i]!=null&&!dead(current[i])?current[i]:null;}
  }
  // Loading line target: on failure it freezes where it was (no run to 100%), the flow's fade-in then takes it away.
  internal static class TransitionProgressBar {
@@ -92,15 +114,18 @@ namespace Exoduser.UnityPort {
  internal static class AssemblyGuard {
   internal static System.Collections.IEnumerator Run(System.Collections.IEnumerator root,Action<Exception> fail){
    var stack=new System.Collections.Generic.Stack<System.Collections.IEnumerator>();stack.Push(root);Exception error=null;
-   while(stack.Count>0){
-    var top=stack.Peek();bool more=false;object current=null;
-    try{more=top.MoveNext();if(more)current=top.Current;}catch(Exception e){error=e;}
-    if(error!=null)break;
-    if(!more){stack.Pop();continue;}
-    var inner=current as System.Collections.IEnumerator;if(inner!=null){stack.Push(inner);continue;}
-    yield return current;
-   }
-   if(error!=null){while(stack.Count>0){var d=stack.Pop() as IDisposable;try{if(d!=null)d.Dispose();}catch(Exception){}}fail(error);}
+   // finally: every pending iterator is disposed on an error AND when the guard itself is disposed (StopCoroutine / caller Dispose), so inner finally blocks run.
+   try{
+    while(stack.Count>0){
+     var top=stack.Peek();bool more=false;object current=null;
+     try{more=top.MoveNext();if(more)current=top.Current;}catch(Exception e){error=e;}
+     if(error!=null)break;
+     if(!more){stack.Pop();continue;}
+     var inner=current as System.Collections.IEnumerator;if(inner!=null){stack.Push(inner);continue;}
+     yield return current;
+    }
+   }finally{while(stack.Count>0){var d=stack.Pop() as IDisposable;try{if(d!=null)d.Dispose();}catch(Exception){}}}
+   if(error!=null)fail(error);
   }
  }
  // The same curve ScreenTransitionFlow uses for its ember pulse, kept host-side so the pulse keeps breathing
