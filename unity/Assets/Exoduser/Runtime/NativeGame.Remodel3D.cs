@@ -66,7 +66,7 @@ namespace Exoduser.UnityPort
             foreach (var root in r3Roots) foreach (var volume in root.GetComponentsInChildren<Volume>(true))
                 if (volume.profile != null && volume.profile.TryGet<ColorAdjustments>(out var tone))
                 { tone.postExposure.Override(1f); tone.saturation.Override(-18f); tone.colorFilter.Override(new Color(.82f,.9f,1f)); }
-            if (System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "--unity-keyshot-baseline") < 0) HellLightingSetup();
+            if (System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "--unity-keyshot-baseline") < 0) yield return HellLightingSetup();
             r3Cam.enabled=false;
             yield return RemodelArenaPrewarm();
             r3Loaded = true; r3Loading = false;

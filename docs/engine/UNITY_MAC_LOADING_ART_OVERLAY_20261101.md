@@ -39,3 +39,17 @@ PC R5 `0a60cbcee273e1150ba7df8909acb77dd9f18edc`에서 게임 구역 전환 화�
 같은 소스의 별도 APFS 프로젝트와 자기 Unity Library 캐시에서 **일반** ARM64 `PortVerification.Build`를 실행했다. `build-product-receipt.json`은 `settingsQa=false`, `uiQa=false`, `Succeeded`, errors0, product `EXODUSER · Unity 이식 검증판`, bundle ID `com.ForDearGamers.EXODUSER----Unity-----------------`이다. 새 앱은 `/Users/fordeargamers/exoduser-wt/_out/mac-loading-art-overlay-20261101/build-product/EXODUSER-Unity.app`에만 있고 기존 사용자 앱/런처를 교체하지 않았다. 실행 파일 SHA-256 `601a185a881b0916450d73ad6970262786663e996d0bb3d8f61187dd639a7eb7`, Runtime `60188a4bc849245d72865771f5936d34a9d6113e4a73f15e75efb59949b1f194`, Core `836f58db9575a0a68429bd94c8cc25405248a2a7cf0f4f37eaed91b706c90bce`. 두 DLL SHA는 앞선 Settings QA 앱과 각각 같다.
 
 일반 제품 앱의 격리 M1은 23/23·firstBlocked 빈 문자열·정상 drain·exit0이지만, 일반 사용자 저장 11항목 중 `~/Library/Preferences/com.ForDearGamers.EXODUSER----Unity-----------------.plist` 834B의 SHA가 첫 실행에서 변경됐다. roster/combat 등 나머지 10항목은 동일. 새 OS sandbox로 Preferences 쓰기를 막는 방법도 M1 exit0이었으나 동일 plist SHA가 다시 바뀌었다. **두 번 실패해 제품 앱 추가 실행을 중단**했고 두 번째 실행 직전 보존한 plist bytes를 복원하여 해당 직전 SHA와 11항목 전체 일치를 확인했다. 첫 실행 *전* SHA로 되돌릴 원본 bytes는 보유하지 않아 그 초기 상태의 복원은 주장하지 않는다. 원인은 Unity/macOS의 제품 번들 ID Preferences 세션 갱신으로 관측됐으며 게임 roster/combat 저장 변경은 없었다. 이 저장 게이트 때문에 일반 앱의 실제 title/loading GUI·무음은 미완이고 QA 앱의 GUI 통과를 일반 앱 통과로 대체하지 않는다. 기존 설치 실행 경로가 특정되지 않아 자동 교체도 하지 않았다.
+
+## 11-04 필드 조립 대기 — 로비→필드 전환에서 3D 필드 조립 중 되돌리지 않기
+
+상태: PC 검사·컴파일만, 화면 판정 전(Mac 판정 필요).
+
+| 항목 | 내용 |
+|---|---|
+| 원인 | `Remodel3DLoad` 코루틴이 `HellLightingSetup`→`A2FieldSetup`을 한 프레임에 동기로 끝냈다(실측 15471ms). 전환 흐름(`ScreenTransitionFlow`, Core)은 Preparing 12초 상한을 실시간 델타로 재서, 긴 프레임 하나가 상한을 넘기거나 12초 안에 준비가 안 되면 곧바로 `Failed`→`SCREEN_TRANSITION_RECOVER`로 로비에 되돌렸다. 다만 근거 로그(`capture-1920/Player.log`)의 되돌림 12건은 `return-lobby`(영상 경계)이고 조립 완료 줄 뒤에 찍혀 있어, 조립 시간이 그 12건의 유일한 원인이라고는 확정하지 못했다. 조립 동기 블록과 한 프레임 델타 실패는 코드로 확정. |
+| 되돌림 조건 | 오류(예외·디코더 오류) 즉시, 또는 진행 보고가 멈춘 채 프레임이 도는 시간이 조립 중 20초·조립 아닐 때 12초일 때만. Preparing 동안 Core 흐름 시계는 호스트(`NativeScreenTransition`)가 0으로 고정해 Core의 12초·한 프레임 실패가 발동하지 않는다. Core는 수정하지 않았다. |
+| 멈춤 판정 | `TransitionPrepareWatchdog`: 프레임 시간을 프레임당 0.25초로 잘라 누적, 진행 보고(`NativeTransitionProgress.Beats`)가 바뀌면 0으로. 20초는 이전 상한 12초와 실측 조립 15.5초보다 길고, 한 프레임 긴 끊김은 0.25초로만 센다. 조립이 아닐 때(영상 대기 등)는 기존 12초 유지. 20초·12초는 설계 값이며 느린 PC 실측은 없다. |
+| 준비 완료 조건 | 기존 `prepared()`에 "조립 진행 중 아님"을 더했다. 조립이 끝나야 reveal. |
+| 조립 분할 | `A2FieldSetup`을 단계 사이에 `yield return null`로 프레임을 넘기는 코루틴으로 바꿨다(`A2FieldSetupSteps`). 단계 순서·호출·인자·수치는 그대로이며 `A2FieldOuterMass→A2Foreground→A2FieldLandmarks→A2FieldConnections→A2FieldGround→A2FieldGroundCover→A2BridgeMoss→A2FieldAtmosphere` 호출 순서도 같다. 조립 중에는 `r3Cam`을 끄고 끝나면 이전 상태로 되돌려, 반쯤 만든 필드가 비치지 않는다. `HellLightingSetup`·`A2ForestSetup`·`Remodel3DLoad`는 이 코루틴을 `yield return`으로 이어 받는다. |
+| 진행 표시 | 문구 없음(번역 항목 없음). 로딩 문구 아래 가는 은빛 선: 바탕 `--sv-dk #4f5352`(.55), 채움 `--sv-lt #c9c7c3`(.85)과 끝 `--sv-hi #f6f5f2`. 폭 max(160, 화면높이×.2), 두께 1px(1080 기준), 우측·하단 여백은 기존 문구와 같다. 채움은 조립 단계 보고(추정 가중치)를 완만하게 따라가며, 조립이 없는 전환에서는 그리지 않는다. 기존 인장·불씨·후광·문구는 그대로이고, 불씨·후광 호흡은 호스트 시계로 계속 움직인다(곡선은 Core와 같은 식). |
+| 검사 | `unity/Tools/field-prepare-wait-tests/run.cjs`(Unity 없이 Roslyn/dotnet, 20초 조립 지연·15초 한 프레임 끊김·20초 한 프레임·보고 멈춤 20초 뒤 실패·비조립 12초·오류 즉시·보고 단조 증가). 지연 주입은 검사 코드 안에서만 한다. |

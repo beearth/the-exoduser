@@ -10,9 +10,18 @@ namespace Exoduser.UnityPort
     {
         A2FieldLayout a2Field;
         Material a2FieldSoil;
-        void A2FieldSetup(Terrain ground)
+        // The assembly below is unchanged and runs in the same order; it now yields a frame between its stages and reports each one,
+        // so a transition can wait on real progress instead of a wall-clock cap. The 3D camera stays off while the field is half built.
+        System.Collections.IEnumerator A2FieldSetup(Terrain ground)
         {
-            if(ground==null||a2Root!=null)return;
+            bool camWas=r3Cam!=null&&r3Cam.enabled;if(r3Cam!=null)r3Cam.enabled=false;
+            NativeTransitionProgress.Begin("a2-field");
+            try{var steps=A2FieldSetupSteps(ground);while(steps.MoveNext())yield return steps.Current;}
+            finally{if(r3Cam!=null)r3Cam.enabled=camWas;NativeTransitionProgress.End();}
+        }
+        System.Collections.IEnumerator A2FieldSetupSteps(Terrain ground)
+        {
+            if(ground==null||a2Root!=null)yield break;
             var timer=System.Diagnostics.Stopwatch.StartNew();
             a2Field=new A2FieldLayout(Map.Data);NativeRemodel3D.Field=a2Field;NativeRemodel3D.ForestA2=true;
             a2Root=new GameObject("A2 1-1 전체 썩은 숲");
@@ -39,7 +48,8 @@ namespace Exoduser.UnityPort
                 var profile=volume.profile;if(profile==null)continue;ColorAdjustments tone;
                 if(profile.TryGet<ColorAdjustments>(out tone)){tone.postExposure.Override(.55f);tone.contrast.Override(16);}
             }
-            if(a2FieldSoil==null){Debug.LogError("[A2 필드] 지면 재질 누락");return;}
+            NativeTransitionProgress.Report("a2-lights",.04f);yield return null;
+            if(a2FieldSoil==null){Debug.LogError("[A2 필드] 지면 재질 누락");yield break;}
             a2FieldSoil.SetFloat("_ForestBlend",1);a2FieldSoil.SetFloat("_ForestTextureMix",.65f);a2FieldSoil.SetFloat("_SoilTextureMix",1);a2FieldSoil.SetFloat("_FullField",1);
             foreach(var pair in new[]{new[]{"_ForestMap","A2_ForestFloor_BaseColor"},new[]{"_ForestNormal","A2_ForestFloor_Normal"},new[]{"_ForestRough","A2_ForestFloor_Roughness"},new[]{"_SoilMap","A2_ForestSoil_BaseColor"},new[]{"_SoilNormal","A2_ForestSoil_Normal"},new[]{"_SoilRough","A2_ForestSoil_Roughness"},new[]{"_RootMap","A2_ExposedRoots_BaseColor"},new[]{"_RootNormal","A2_ExposedRoots_Normal"},new[]{"_RootRough","A2_ExposedRoots_Roughness"}})
             {
@@ -49,14 +59,24 @@ namespace Exoduser.UnityPort
             }
             foreach(var pair in new[]{new[]{"_FieldMoss","BaseColor"},new[]{"_FieldMossNormal","Normal"},new[]{"_FieldMossRough","Roughness"}})
             {var moss=Resources.Load<Texture2D>("Art/map/a2/ground/A2_FieldMoss_"+pair[1]);if(moss==null)Debug.LogError("[A2 필드] 이끼 지면 누락 "+pair[1]);else a2FieldSoil.SetTexture(pair[0],moss);}
+            NativeTransitionProgress.Report("a2-textures",.08f);yield return null;
             var sdf=new Texture2D(200,200,TextureFormat.RGBA32,false,true){name="원본 보행 경계 시각 거리장",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};
             var pixels=new Color[40000];
             for(int y=0;y<200;y++)for(int x=0;x<200;x++)pixels[y*200+x]=new Color(.5f+a2Field.Distance((x+.5f)*.4f,-(y+.5f)*.4f)/40,0,0,1);
             sdf.SetPixels(pixels);sdf.Apply(false,true);a2FieldSoil.SetTexture("_FieldSdf",sdf);
+            NativeTransitionProgress.Report("a2-sdf",.12f);yield return null;
             var cover=new Texture2D(256,256,TextureFormat.RGBA32,false,true){name="A2 전투중심을 비운 연결 이끼 지면",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};
             var coverPixels=new Color[256*256];for(int y=0;y<256;y++)for(int x=0;x<256;x++)coverPixels[y*256+x]=new Color(a2Field.GroundCover((x+.5f)/256*80,-(y+.5f)/256*80)*Mathf.Lerp(1,.45f,Mathf.SmoothStep(0,1,Mathf.Clamp01(a2Field.Distance((x+.5f)/256*80,-(y+.5f)/256*80)/2))),0,0,1);
             cover.SetPixels(coverPixels);cover.Apply(false,true);a2FieldSoil.SetTexture("_FieldCover",cover);
-            A2FieldOuterMass();A2Foreground(true);A2FieldLandmarks();A2FieldConnections();A2FieldGround();A2FieldGroundCover();A2BridgeMoss();A2FieldAtmosphere();
+            NativeTransitionProgress.Report("a2-cover",.16f);yield return null;
+            A2FieldOuterMass();NativeTransitionProgress.Report("a2-outer-mass",.46f);yield return null;
+            A2Foreground(true);NativeTransitionProgress.Report("a2-foreground",.56f);yield return null;
+            A2FieldLandmarks();NativeTransitionProgress.Report("a2-landmarks",.64f);yield return null;
+            A2FieldConnections();NativeTransitionProgress.Report("a2-connections",.74f);yield return null;
+            A2FieldGround();NativeTransitionProgress.Report("a2-ground",.90f);yield return null;
+            A2FieldGroundCover();NativeTransitionProgress.Report("a2-ground-cover",.95f);yield return null;
+            A2BridgeMoss();NativeTransitionProgress.Report("a2-bridge-moss",.97f);yield return null;
+            A2FieldAtmosphere();NativeTransitionProgress.Report("a2-atmosphere",.99f);yield return null;
             var aa=r3Cam.GetUniversalAdditionalCameraData();aa.antialiasing=NativeHd2D.Enabled?AntialiasingMode.None:AntialiasingMode.SubpixelMorphologicalAntiAliasing;aa.antialiasingQuality=AntialiasingQuality.High;
             aa.requiresDepthTexture=true;r3Cam.depthTextureMode|=DepthTextureMode.Depth;
             r3Cam.backgroundColor=new Color(.105f,.145f,.17f);r3Cam.farClipPlane=220;
