@@ -33,6 +33,7 @@ namespace Exoduser.UnityPort
             int o = Array.IndexOf(a, "-output"); if (o < 0 || o + 1 >= a.Length) { Debug.LogWarning("PERF_PROBE needs -output"); return; }
             var go = new GameObject("QA perf probe"); DontDestroyOnLoad(go);
             var p = go.AddComponent<NativePerfProbe>(); p.output = a[o + 1];
+            WindowsHardExit.RegisterFinalFlush(p.HardExitFlush);
             for (int i = 0; i < a.Length - 1; i++) if (a[i] == "--perf-off") p.offs += (p.offs.Length > 0 ? "," : "") + a[i + 1];
         }
 
@@ -59,6 +60,8 @@ namespace Exoduser.UnityPort
         }
 
         void OnApplicationQuit() { Write(); }
+        // PC-QUIT-1: perf-probe.json is rewritten from the hard-exit final flush too (idempotent), in case OnApplicationQuit ordering is reversed.
+        void HardExitFlush() { if (this != null) Write(); }
         void OnDestroy() { if (recorders != null) foreach (var r in recorders) r.Dispose(); }
 
         void Write()

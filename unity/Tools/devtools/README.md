@@ -180,7 +180,7 @@ $task = 'I:\EXODUSER-Storage\unity-latest\loop\bin\install-task.ps1'
 | buildloop | 빌드 전 reserve -Kind editor, 스모크 전 -Kind player -Owner buildloop. WaitMin 기본60분. 예약/Editor잠금/Player슬롯/티켓 시간초과는 WAIT, 실패0·lastAttemptSha 보존·회색 배지 |
 | 사전 검사 | buildloop/compile-check.ps1: asmdef·이름/GUID asmref 경계별 수집, 어셈블리 참조 순서, Player/Editor 정의별 별도 출력. Library/Bee RSP는 참조용 읽기만. 결과는 참고용, 최종은 Unity 컴파일 |
 
-Unity 없는 시험: selftest/idle-yield-test.ps1, windows-env-test.ps1, exit-code-test.ps1, shared-log-test.ps1, zombie-guard-test.ps1, user-game-test.ps1, exclusive-test.ps1, halt-wait-test.ps1, buildloop-wait-test.ps1, assembly-sources-test.cjs. 사전 검사 출력은 -Output I:/EXODUSER-Storage/...로 지정하며 기본값도 I:다.
+Unity 없는 시험: selftest/idle-yield-test.ps1, windows-env-test.ps1, exit-code-test.ps1, shared-log-test.ps1, zombie-guard-test.ps1, user-game-test.ps1, exclusive-test.ps1, halt-wait-test.ps1, buildloop-wait-test.ps1, assembly-sources-test.cjs, quit-wrapper-source-test.cjs(Application.Quit 직접 호출 금지 소스 검사). 사전 검사 출력은 -Output I:/EXODUSER-Storage/...로 지정하며 기본값도 I:다.
 
 ## slots1 — Editor 1개 / Player 2개 (2026-11-03)
 

@@ -17,14 +17,17 @@ namespace Exoduser.UnityPort
     // Contract:
     //  * Every quit in the Runtime goes through Quit(code) so the requested exit code survives (Unity exposes no way to read it later). Non-zero wins over zero.
     //  * X button / Alt+F4 never call Quit; they use the default code 0 and reach the same Application.quitting hook.
-    //  * Application.quitting is the last managed callback. By then wantsToQuit (video decoder cleanup) and OnApplicationQuit (settings + combat save, perf log,
-    //    QA receipts) have run. All of them are synchronous on the main thread, so no save can still be in flight; the registered flush callbacks run only as a
-    //    fallback if the engine ordered quitting before OnApplicationQuit.
+    //  * Application.quitting is the last managed callback. Whether OnApplicationQuit always runs BEFORE quitting is UNVERIFIED (not confirmed against Unity docs or a
+    //    Player log). So the owners of game data register RegisterFlush (fallback, skipped when MarkApplicationQuitSeen ran) and files normally written from
+    //    OnDestroy/OnDisable (which never run under a hard exit) register RegisterFinalFlush (always runs). Then PlayerPrefs.Save() and TerminateProcess.
+    //  * QA capture writer: NativeQaCaptureWriter drains on a Task.Run background thread (QA only); its owner's final flush waits for Idle (bounded) before exit.
+    //  * Application.Quit(int) must not be called directly from Runtime or Player-built Tools (source check in tools/ tests); a direct call turns exit code 2 into 0.
     //  * `--unity-no-hard-exit` restores the original Unity shutdown (diagnostics). Editor and non-Windows players are never affected.
     public static class WindowsHardExit
     {
         public const string DisableFlag = "--unity-no-hard-exit";
         static readonly List<Action> flushes = new List<Action>();
+        static readonly List<Action> finalFlushes = new List<Action>();
         static int requestedCode;
         static bool codeRequested, appQuitSeen, installed;
 
@@ -45,6 +48,12 @@ namespace Exoduser.UnityPort
             if (flush != null && !flushes.Contains(flush)) flushes.Add(flush);
         }
 
+        /// <summary>Flush that ALWAYS runs just before the hard exit, even if OnApplicationQuit ran. For files normally written from OnDestroy/OnDisable and for QA receipts. Must be idempotent and null-safe.</summary>
+        public static void RegisterFinalFlush(Action flush)
+        {
+            if (flush != null && !finalFlushes.Contains(flush)) finalFlushes.Add(flush);
+        }
+
         /// <summary>Called from every OnApplicationQuit that writes game data, so the fallback flush is skipped when the normal path already ran.</summary>
         public static void MarkApplicationQuitSeen() { appQuitSeen = true; }
 
@@ -56,6 +65,14 @@ namespace Exoduser.UnityPort
             foreach (var flush in flushes.ToArray())
             {
                 try { flush(); } catch (Exception e) { Debug.LogWarning("[HardExit] flush failed: " + e.Message); }
+            }
+        }
+
+        internal static void RunFinalFlushes()
+        {
+            foreach (var flush in finalFlushes.ToArray())
+            {
+                try { flush(); } catch (Exception e) { Debug.LogWarning("[HardExit] final flush failed: " + e.Message); }
             }
         }
 
@@ -80,6 +97,9 @@ namespace Exoduser.UnityPort
             int code = requestedCode;
             string reason = DescribeReason() + (appQuitSeen ? "" : "+fallback-flush");
             try { RunFallbackFlushes(); } catch { }
+            try { RunFinalFlushes(); } catch { }
+            // Engine Screenmanager keys (resolution, window position, fullscreen) can otherwise be lost if the engine writes them only during native teardown.
+            try { PlayerPrefs.Save(); } catch { }
             string line = "[HardExit] code=" + code + " reason=" + reason;
             Debug.Log(line);
             AppendToLogFile(line);

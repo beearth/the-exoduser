@@ -20,11 +20,11 @@ public sealed class LanguageRuntimeProbe:MonoBehaviour
  {
   yield return null;
   var args=Environment.GetCommandLineArgs();int ix=Array.IndexOf(args,"-output");
-  if(ix<0||ix+1>=args.Length){Application.Quit(2);yield break;}
+  if(ix<0||ix+1>=args.Length){WindowsHardExit.Quit(2);yield break;}
   string output=args[ix+1];Directory.CreateDirectory(output);
   var lobby=UnityEngine.Object.FindFirstObjectByType<NativeLobby>();
   CheckValue("native_lobby_exists",lobby!=null);
-  if(lobby==null){Write(output);Application.Quit(2);yield break;}
+  if(lobby==null){Write(output);WindowsHardExit.Quit(2);yield break;}
   lobby.AutomatedInput=true;lobby.SetPlaybackFocus(true);lobby.ShowLobby();
   var captions=JsonUtility.FromJson<LobbySubtitleData>(Resources.Load<TextAsset>("Data/lobby_frontend").text).captions;
   CheckValue("29_caption_languages",captions.Length==29);
@@ -42,7 +42,7 @@ public sealed class LanguageRuntimeProbe:MonoBehaviour
    yield return new WaitForEndOfFrame();
    ScreenCapture.CaptureScreenshot(Path.Combine(output,"languages-"+code+".png"));yield return null;
   }
-  Write(output);Application.Quit(result.passed?0:2);
+  Write(output);WindowsHardExit.Quit(result.passed?0:2);
  }
  void Write(string output){result.passed=result.checks.TrueForAll(c=>c.passed);File.WriteAllText(Path.Combine(output,"runtime-result.json"),JsonUtility.ToJson(result,true));}
 }

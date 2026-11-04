@@ -8,6 +8,8 @@ namespace Exoduser.UnityPort.Tools {
   bool running;Exception error;string receiptPath,receiptText;
   internal NativeQaCaptureWriter(int capacity=4,Action<string,byte[]> binary=null,Action<string,string> text=null,Action<string,string> append=null){if(capacity<1)throw new ArgumentOutOfRangeException(nameof(capacity));this.capacity=capacity;this.binary=binary??File.WriteAllBytes;this.text=text??File.WriteAllText;this.append=append??File.AppendAllText;}
   internal Exception Error{get{lock(sync)return error;}}internal bool Idle{get{lock(sync)return !running&&frames.Count==0&&receiptPath==null;}}
+  // PC-QUIT-1: the hard exit must not cut the Task.Run drain mid-write. Blocks the main thread for at most timeoutMs; returns whether the queue drained.
+  internal bool WaitIdle(int timeoutMs){var until=DateTime.UtcNow.AddMilliseconds(timeoutMs);while(!Idle&&DateTime.UtcNow<until)System.Threading.Thread.Sleep(10);return Idle;}
   internal bool TryFrame(string path,byte[] bytes,string timeline,string line){lock(sync){if(error!=null||frames.Count>=capacity)return false;frames.Enqueue(new FrameWrite{path=path,bytes=bytes,timeline=timeline,line=line});StartLocked();return true;}}
   internal void Latest(string path,string value){lock(sync){if(error!=null)return;receiptPath=path;receiptText=value;StartLocked();}}
   void StartLocked(){if(running)return;running=true;Task.Run((Action)Drain);}

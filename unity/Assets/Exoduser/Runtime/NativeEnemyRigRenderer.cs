@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort {
   Light[] lights=Array.Empty<Light>();int nextLights;readonly Vector4[] lightPositions=new Vector4[4],lightColors=new Vector4[4];readonly float[] lightDistances=new float[4];Light moon;
   public int RenderCount {get;private set;}public int Fallbacks {get;private set;}public int ActiveCount {get{return actors.Count;}}public float RenderMilliseconds {get;private set;}
   public void Initialize(Func<Camera> cameraSource,Func<int,EnemyRigSprites> spriteSource,string output,Func<int,bool> poseFrozen=null){
-   this.cameraSource=cameraSource;this.spriteSource=spriteSource;this.output=output;this.poseFrozen=poseFrozen;
+   this.cameraSource=cameraSource;this.spriteSource=spriteSource;this.output=output;this.poseFrozen=poseFrozen;WindowsHardExit.RegisterFinalFlush(HardExitFlush);
    try {
     var data=Resources.Load<TextAsset>("Data/enemy_rig_models");if(data==null)throw new InvalidOperationException("enemy_rig_models missing");definitions=JsonUtility.FromJson<EnemyRigCatalog>(data.text).models??Array.Empty<EnemyRigDefinition>();
     var keys=new HashSet<string>();foreach(var d in definitions){if(d==null||d.baseRadius<=0||d.height<=0||string.IsNullOrEmpty(d.modelResource)||!keys.Add(d.etype+":"+d.startEyeMass))throw new InvalidOperationException("Invalid/duplicate enemy rig model key");}
@@ -110,6 +110,8 @@ namespace Exoduser.UnityPort {
   public void WriteReceipt(string directory){if(string.IsNullOrEmpty(directory))return;var rows=new List<Entry>();int missing=0;foreach(var a in actors.Values){missing+=a.motion.MissingStates;rows.Add(new Entry{id=a.enemy.Id,etype=a.enemy.Etype,startEyeMass=a.enemy.IsStartEyeMass,ready=a.ready,model=a.def.modelResource,state=a.sample.State.ToString(),deathStartTick=a.deathTick,deathTicks=a.def.deathTicks,height=a.def.height,chestRatio=a.def.chestRatio,missingClips=a.motion.MissingStates});}Directory.CreateDirectory(directory);File.WriteAllText(Path.Combine(directory,"enemy3d-render.json"),JsonUtility.ToJson(new Receipt{renders=RenderCount,fallbacks=Fallbacks,actors=actors.Count,missingClips=missing,renderMs=RenderMilliseconds,entries=rows.ToArray()},true));}
   void Release(Actor a){Fallback(a);a.motion?.Dispose();if(a.texture!=null){a.texture.Release();Destroy(a.texture);}if(a.composite!=null)Destroy(a.composite);if(a.image!=null)Destroy(a.image.gameObject);if(a.contact!=null)Destroy(a.contact.gameObject);if(a.root!=null)Destroy(a.root);}
   public void Reset(){foreach(var a in actors.Values)Release(a);actors.Clear();failedIds.Clear();simulation=null;}
+  // PC-QUIT-1: OnDestroy never runs under the hard exit; the enemy3d-render.json receipt is written from the final flush instead.
+  void HardExitFlush(){if(this!=null)WriteReceipt(output);}
   void OnDestroy(){WriteReceipt(output);Reset();foreach(var p in masks)if(p.Key!=null)p.Key.cullingMask=(p.Key.cullingMask&~(1<<Layer))|(p.Value&(1<<Layer));foreach(var m in toonMaterials.Values)if(m!=null)Destroy(m);if(shadow!=null)Destroy(shadow);}
  }
 }
