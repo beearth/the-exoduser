@@ -1,3 +1,5 @@
+2026-11-04 09:20 UI 겹침 검사 전면 영상 대기 10→30초(도구 총괄, BuildLoop 08:44 FAIL): 빌드·스모크 PASS 뒤 전 화면 UI 겹침 검사 14분째 UiWaitRootMovie가 world_intro_v22b_steam.mp4 준비를 10초 안에 못 봐 실패, 바탕화면 교체 안 됨. 그 시각 다른 레인 Player 2~3개가 GPU 영상 디코더를 함께 씀. QA 경로만 30초로 늘리고 실패 메시지에 prepared·frame·url을 남긴다(Runtime QA, Core·게임 화면 무변경). 11-03 09:20 실패(마우스 안전영역 역변환)는 다른 원인.
+
 2026-11-04 바닥 예고 투영 색 수정(임펙트 총괄, CTO 요청 단독 브랜치): NativeGroundWarningProjection이 sRGB 정점색을 선형 변환 없이 셰이더에 넘겨 Linear 프로젝트에서 드루이드 바닥 예고(어두운 독액 얼룩 #1c3307 계열)가 밝은 민트 초록 원판·부채꼴로 보였다(PC 무창 후보 d7f5c3a1e 1920 촬영). Linear일 때 Color.linear로 변환. 쓰는 곳 NativeDruidTelegraphView(unity/main) 1곳. 같은 파일 내용으로 PC Roslyn Core·Runtime 컴파일 확인(기존 무관 Remodel 1건 외 0).
 
 2026-11-04 08:30 전투 통계 세이브 격리 누수 수정(도구 총괄, BuildLoop 08:05 FAIL 원인): ObserveCombatStatsEnd가 -output 없을 때 Application.persistentDataPath/combat-stats에 바로 써서 --a2r-play-sandbox·--unity-qa-sandbox 실행(사용자 맵 후보 PID 11048)이 사용자 실제 세이브 폴더 combat-stats.json을 바꿨고, 같은 시각 루프 빌드가 USER_SAVE changed=1로 FAIL. NativeQaSandbox.Resolve(Application.persistentDataPath)를 거치도록 한 줄 수정(Runtime, Core 무변경). 저장 내용·시점은 그대로.
