@@ -6,10 +6,10 @@
 
 | # | 복구/계약 | 검수 |
 |---|---|---|
-|1 입장|Art/ui/silver_hell/lobby_enter_btn_silver_20261029 또는 lobby_enter_disabled를 Rect(1428,702,416,156)에 표시. 원화 ENTER 글자가 있으므로 입장/ENTER를 덧그리지 않음. 클릭/호버 소리 유지|캐릭터0명 불가·2명 가능, normal/hover/selected/disabled|
-|2 ActionPlate|주요 btn_primary_composed, 일반 btn_plaque_20261029를 원래 Slice(box.x-outset, box.y, width+2×outset,height), sourceX174/sourceY0/edge/edgeY0/center=true로9-slice. 기본edge40/outset14. 일시정지의 primary도 주요 원화로 전달|모든 상태 GUI.color=white, 밝기1.0. .78/.74/1.18 배율 및 코드 판 없음|
-|3 슬롯|카드(1428,421+n×94,390,84)에 ActionPlate 없음. 선택 붉은 바탕(194,26,16)α.1·왼쪽2px. 가는 α.13 헤어라인·56×56 초상 칸/원본 전사 초상. 새 캐릭터 칸은 얇은 테와40×40 +칸|0명/2명, 선택 카드·초상·이름·삭제 버튼 가독성|
-|4 생성 창|visual_cancel/create/disabled를180×44 Rect에 직접 표시. name_cancel/create도 기존 이름창 버튼 Rect에 표시. KO 문구가 원화에 있으므로 추가 텍스트 없음|생성 가능/잠금, 이름창, 삭제확인|
+|1 입장|원본 lobby_enter_btn_silver_20261029/disabled의 사전축소 lobby_enter_ready_1x/2x·lobby_enter_disabled_1x/2x를 Rect(1428,702,416,156)에 표시(11-04 01:45). 원화 ENTER 글자가 있으므로 입장/ENTER를 덧그리지 않음. 클릭/호버 소리 유지|캐릭터0명 불가·2명 가능, normal/hover/selected/disabled|
+|2 ActionPlate|height<48 또는 width<160은 btn_chip_1x/2x(리벳 원화 테·어두운 원화 면), 글자6px 안쪽. 나머지는 주요 btn_primary_composed, 일반 btn_plaque_20261029를 원래 Slice(box.x-outset, box.y, width+2×outset,height), sourceX174/sourceY0/edge/edgeY0/center=true로9-slice. 기본edge40/outset14. 일시정지의 primary도 주요 원화로 전달|모든 상태 GUI.color=white, 밝기1.0. .78/.74/1.18 배율 및 코드 판 없음|
+|3 슬롯|카드(1428,421+n×94,390,84)에 ActionPlate 없음. 선택 붉은 바탕(194,26,16)α.1·왼쪽2px. 가는 α.13 헤어라인·56×56 초상 칸/원본 전사 초상. 빈 슬롯2개도 가는 카드/초상 테 유지. 직업/×24px 분리·개수 오른쪽14px. 새 캐릭터 칸은 얇은 테와40×40 +칸|0명/2명, 선택 카드·초상·이름·삭제 버튼 가독성|
+|4 생성 창|visual_cancel/create/disabled를180×44 Rect에 직접 표시. name_cancel/create도 기존 이름창 버튼 Rect에 표시. 이름창은 원화 안쪽 면+panel_frame 가족 테(edge45). KO 문구가 원화에 있으므로 추가 텍스트 없음|생성 가능/잠금, 이름창, 삭제확인|
 |5 레일|panel_frame_20261029를 Rect(1368,8,544,1064)에 source150/150, edge75/75, center=false로 그려 모서리/테두리만 복구. 기존 그림자·배경·로고 보존|1920/3840 실제 오른쪽 레일·모서리·ENTER와 충돌0|
 
 상태별 원화 밝기와 알파 틴트는1.0이다. 원화 자체의 투명 영역/각인/문구를 보존한다. 원화에 구워진 ENTER/KO 문구는 원본 그대로이며 번역 문자를 겹쳐 쓰지 않는다. 호버/선택은 안쪽에 클립한 guide_button_glow만 α.18×selection로 표시한다. 바깥 새 판/새 프레임/새 질감은 생성하지 않는다.
@@ -53,3 +53,43 @@ GUID·sRGB·기존 원화/크기·압축의 나머지 설정은 유지한다. Ma
 "$UNITY" -batchmode -nographics -quit -projectPath "$PROJECT/unity" -executeMethod SilverUiImportCheck.Run -output "$OUT" -logFile "$OUT/import.log"
 git status --porcelain -- unity/Assets/Exoduser/Resources/Art/ui/silver_hell
 ~~~
+
+## 11-04 01:45 작은 판/인장 축소/로비 RETOUCH
+
+- 최신 origin/unity/main489af88e5를 a39ba3e8c2로 병합, docs의 Codex 구현 기록과 스토리총괄 RETOUCH 기록 양쪽 보존.
+- ActionPlate는 height<48 또는 width<160에서 가시 없는 작은 원화만 쓴다. 원본 inventory plate의 리벳 테를 보존하고 btn_plaque의 어두운 내부 면을 기계적으로 옮긴 뒤 Lanczos3으로150×32/300×64 축소했다. 코드 판·명암/음각·점/그레인 생성0. 큰 판 원화/밝기1.0은 유지. 설정 버튼·키 칩은6px 안쪽에 글자를 맞추고, 보조키 삭제22px는 별도 확보한다.
+- 입장 인장 가능/불가 원본 전체를416×156/832×312로 사전축소. 원본 PNG 변경0. 신규6종도 SourceTextureImporter의 기존 원화 예외에 자동 포함되어OFF/Bilinear(현재21종).
+- 로비 빈 슬롯2개의 카드/초상 헤어라인, 이름창 원화 panel_frame 가족 테, 직업/삭제24px·개수14px 여백을 복구했다. 실제 포인터 hover는 기존 guide_button_glow를 인장 안쪽에만alpha.18로 표시한다.
+- --unity-death-ui-smoke의 lobby hover는 실제 Repaint 좌표 변환→Rect.Contains→EntryFocus 그림 경로를 지나며 entryPointerInside/entryHoverVisible과 좌표를 기록한다. OS 마우스를 움직인 증거는 아니다. 상세 Mac 캡처목록은 [01:45 작업표](UNITY_SMALL_PLATE_RETOUCH_20261104.md).
+- PC 배치/자산 계약PASS·importer50항PASS·DLL참조 컴파일1회5어셈블리 오류0. Player/에디터 임포트/게임 캡처0. 실제1920/3840의 잔점/계단·6px/가독성/hover는 Mac 미검증이다.
+
+## 11-04 02:00 button_iron meta 정합 / 검증 중단
+
+- CharacterSelect/UI/button_iron은 lowercase /ui/ 분기가 아닌 기본 Art 분기에서 mipmap=false/Bilinear를 지정한다. importer 버전/규칙은 유지하고 meta filterMode만2(Trilinear)→1(Bilinear)로 맞췄다. PNG/GUID/밝기/원화9-slice 불변. 기존 임포트 후 값과 일치시키는 수정이며 선명도/축소 샘플링은 Mac 디자인 판정에 남긴다. DefaultTexturePlatform의8192/무압축·Clamp 설정도 기존 규칙과 일치한다. root의 구형4096 필드는 그대로 보존했다.
+- SilverUiImportCheck는 기존21원화+button_iron 총22종의 임포트 전/1회/2회 meta 완전일치, loaded mip1, OFF/Bilinear를 검사한다. 실제 Unity 실행 증거는 아직 없다.
+- PC 검증 중단: importer.test.cjs의 추가 확장 코드에서 SyntaxError가 2회 연속 발생해 사용자 중단 규칙을 적용했다. 확장분은 직전52항PASS 상태로 되돌렸고 재실행하지 않았다. 이번 최종 소스의 PC 컴파일/Unity import/Player는 실행하지 않았다. 이전 컴파일 결과를 이번 근거로 사용하지 않는다. 재개 후 컴파일과 Mac22종 재임포트·실제 화면 검수가 필요하다.
+
+## 11-04 01:40 실제시각 — 중단 원인 해결
+
+- 최신 origin/unity/main c4b388903c54cab88d0fcddec9df5ef51eea9d48을 f60d55c1e3로 병합. CHANGELOG 양쪽 기록 보존.
+- 01:40 실제시각 재개: 추가 확장 코드를 만드는 String.replace의 replacement 문자열에서 달러+작은따옴표($')가 suffix 삽입으로 해석돼 RegExp 리터럴과 중복 조각을 깨뜨렸다. 4cba2a857에는 직전52항 복원본만 들어 있었으며 구문이 깨진 확장분은 미커밋이었다. 이번에는 생성 치환 없이 직접 패치로 YAML scalar/DefaultTexturePlatform 비교를 작성했다. 기존52항 중button_iron의1검사를10개 속성검사로 보강해61항이며 유용한 기존검사를 삭제하지 않았다.
+- 수정 뒤 importer 테스트1회61PASS/0FAIL. 병합최종소스 DLL참조 Roslyn 컴파일1회:Player Core126/Runtime273,Editor Core126/Runtime273/Editor60,5어셈블리 exit0/오류0. Unity 에디터/import/Player/빌드/캡처0. 이 참조컴파일은 실제 Unity 임포트/플랫폼 빌드 판정이 아니다. Mac22종2회재임포트 meta불변/mip1 및 같은SHA 화면/폰트/RTL/선명도 판정은 대기다.
+- 앞 절의 컴파일미실행/검증중단은4cba 당시 이력이다. 이번 재개로PC 검증 중단을 해소했다. importer 규칙·meta·PNG·원화 디자인 신규변경0.
+- 이번 범위:기존 검사 안정화, 근거는 이전 오류줄과 현재 importer/meta, 직접패치→1회테스트→1회컴파일. 또 실패하면 즉시중단·오류원문REPORT가 재개절 조건이었다.
+
+## 11-04 04:05 후보 후속
+
+기존원화ENTER·밝기1.0·9-slice·작은칩·슬롯·생성원화·레일을보존한다. A면은일시정지/이름/삭제를Panel(iron:true)로통일,철은3x낱점검토뒤2px blur파생을14%합성한다. 이름본문명조,미사용lobby_panel로드제거(파일유지). EntryFocus의자연Rect.Contains결과와같은그리기경로에-ui-entry-state normal/hover를제공한다. 이전OnGUI마우스좌표주입은폐기했다. 영수증entryHoverForced/entryState는제어표본을명시한다. 후보고정빌드/1920·3840목록과실행결과위치는[04:05 계약](UNITY_UI_CANDIDATE_20261104.md).
+
+## 05:00 후보 실물 증거
+e3b3bc977 단일실행본의1920/3840 원본50장및1x/3x비교를확보했다. A3면로드/철14%·원화밉맵1·밝기1.0·강제입장호버빛을제품receipt와실물로확인. 자연포인터/Mac/디자인총괄합격은별도다. [고정경로·수량·관측](UNITY_UI_CANDIDATE_20261104.md).
+
+## 05:40 디자인총괄 결정
+JUDGEMENT(e3b3)에서 가시 없는 작은 칩 가족과 A면이 PASS됐다. 삭제/HUD/보스의 compact 판을 가시로 복원하지 않는다. 공통 Panel(iron:true)의 blur2/14%는 유지하며 실제 IronDrawCount/LastIronRect를 제품 receipt에 추가했다. 이름창은 바탕/철 면만18px inset, 프레임 위치/원화는 유지한다. [후속 계약](UNITY_UI_CANDIDATE_20261104.md).
+
+## 05:40 실제 면/글꼴 확인
+1920 이름면404×299/18px inset·원래 frame440×335 유지, 이름/삭제 NanumMyeongjo-Regular, 공통 iron draw>0를 실제제품receipt로 확인했다. A면14%/blur2·compact칩은 디자인총괄 결정대로 유지했다. 공용 후처리2FAIL로3840미실행이며 새 회차 디자인 합격은 미완료다. [증거](UNITY_UI_CANDIDATE_20261104.md).
+
+## 11-04 새 실행 — 05:50 판정 반영
+
+기하 크기 자동 칩 분기를 폐기하고 설정 조작 요소만 명시적으로 칩을 선택한다. 기본 가시 원화/20개 Lanczos3 1x·2x 파생본과 공통 철 면의 화면 픽셀 기준 샘플링을 반영했다. 소스·재질 검사/5어셈블리 참조 컴파일 오류0. 새 Unity 임포트·후보 빌드·50장 촬영은 이전 공용 로그 잠금 2FAIL과 G: 여유 기준 때문에 미실행이며 이전 540fdcde2 캡처를 새 증거로 재사용하지 않는다. 상세는 UNITY_UI_CANDIDATE_20261104.md의 새 실행 정정 절.

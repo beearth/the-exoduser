@@ -18,6 +18,8 @@ namespace Exoduser.UnityPort
   static readonly double[,] FbSites = { { 52, 42 }, { 148, 42 }, { 58, 158 }, { 148, 150 } };   // _FB_SITES by region idx (angler spawn site; used until the angler exists)
 
   public bool English;
+  string localeCode;public string LocaleCode {get{return localeCode??(English?"en":"ko");}set{localeCode=value;}}
+  int bannerIdx;string bannerLocale;
   // ---- banner state (web G._regCurIdx / G._regBannerCd + the DOM element)
   RegionState[] seen; bool[] prevCleared = new bool[4]; int curIdx = -1, bannerCd;
   bool bannerOn, bannerPurge; float bannerStart; string bKr, bEn, bSub; Color bGem;
@@ -39,7 +41,7 @@ namespace Exoduser.UnityPort
   readonly Dictionary<string, GUIStyle> styles = new Dictionary<string, GUIStyle>();
   readonly Dictionary<Color32, Texture2D> glowCache = new Dictionary<Color32, Texture2D>();
 
-  string L(string ko, string en) { return English ? en : ko; }
+  string L(string ko, string en) { return NativeDemoText.Get(ko,LocaleCode,en); }
   static Color Hex(string h) { Color c; ColorUtility.TryParseHtmlString(h, out c); return c; }
   static Color C(int r, int g, int b, float a = 1f) { return new Color(r / 255f, g / 255f, b / 255f, a); }
   // _raDesat: 60 % of the colour + 40 % of the bone grey (154,143,128)
@@ -54,6 +56,7 @@ namespace Exoduser.UnityPort
   public void OnTick(Simulation sim)
   {
    var R = sim.Regions;
+   if(bannerOn&&bannerLocale!=LocaleCode){float previousStart=bannerStart;ShowBanner(sim,bannerIdx,bannerPurge);bannerStart=previousStart;}
    if (R == null) { seen = null; return; }
    var flow = sim.Stage; var P = sim.Player;
    if (!ReferenceEquals(seen, R))   // _regionInit: new region set -> G._regCurIdx = the region the player stands in, cooldown 0
@@ -98,7 +101,7 @@ namespace Exoduser.UnityPort
      if (sim.RegionFbAlive(r)) bSub += " · " + L("앵글러 생존", "Angler alive");
     }
    }
-   bannerPurge = purge; bannerOn = true; bannerStart = Time.unscaledTime;
+   bannerIdx=idx;bannerLocale=LocaleCode;bannerPurge = purge; bannerOn = true; bannerStart = Time.unscaledTime;
   }
 
   // ---------------- drawing ----------------
@@ -135,6 +138,7 @@ namespace Exoduser.UnityPort
   // text with CSS letter-spacing (ls in px added after every glyph, the trailing one included as the browser does); Latin runs use Cinzel Decorative, Hangul Nanum Myeongjo.
   float SpacedWidth(string s, int size, float ls, Font latin)
   {
+   if(LocaleCode!="ko"){var text=NativeDemoText.Style(St(latin??nanum,size,TextAnchor.MiddleCenter),s);return Mathf.Min(BannerW-24,text.CalcSize(new GUIContent(s)).x);}
    float w = 0; foreach (char ch in s) w += CharW(ch, size, latin) + ls; return w;
   }
   FontStyle latinFs = FontStyle.Normal;   // weight of the Latin glyphs (web Cinzel 500 for the English line: Bold is the closest face IMGUI can pick)
@@ -145,6 +149,7 @@ namespace Exoduser.UnityPort
   }
   void SpacedLine(string s, float cx, float cy, int size, float ls, Color col, Font latin, Vector2 off)
   {
+   if(LocaleCode!="ko"){var st=NativeDemoText.Style(St(latin??nanum,size,TextAnchor.MiddleCenter),s);while(st.fontSize>10&&st.CalcSize(new GUIContent(s)).x>BannerW-24)st.fontSize--;st.normal.textColor=col;NativeDemoText.Label(new Rect(cx-BannerW/2+12+off.x,cy-size+off.y,BannerW-24,size*2),s,st);return;}
    float w = SpacedWidth(s, size, ls, latin); float logicalX = cx - w / 2f; float x = logicalX + off.x;
    foreach (char ch in s)
    {
@@ -359,10 +364,10 @@ namespace Exoduser.UnityPort
   }
   void OutlinedCenter(string s, float x, float y, Font f, int size, FontStyle fs, Color col, float o)
   {
-   var st = St(f, size, TextAnchor.MiddleCenter, fs); var keep = st.normal.textColor;
+   var st = NativeDemoText.Style(St(f, size, TextAnchor.MiddleCenter, fs),s); var keep = st.normal.textColor;
    st.normal.textColor = new Color(0, 0, 0, .9f);
-   for (int i = 0; i < 8; i++) { float a = i * Mathf.PI / 4; NativeSilverHellUi.Label(new Rect(x - 300 + Mathf.Cos(a) * o, y - 20 + Mathf.Sin(a) * o, 600, 40), s, st); }
-   st.normal.textColor = col; NativeSilverHellUi.Label(new Rect(x - 300, y - 20, 600, 40), s, st); st.normal.textColor = keep;
+   for (int i = 0; i < 8; i++) { float a = i * Mathf.PI / 4; NativeDemoText.Label(new Rect(x - 300 + Mathf.Cos(a) * o, y - 20 + Mathf.Sin(a) * o, 600, 40), s, st); }
+   st.normal.textColor = col; NativeDemoText.Label(new Rect(x - 300, y - 20, 600, 40), s, st); st.normal.textColor = keep;
   }
 
   // ---------------- gate label (web 52263-52271) ----------------
@@ -385,7 +390,7 @@ namespace Exoduser.UnityPort
    Vector2 pt = ToGUI(pcx, pcy - psz * .45f);
    var st = St(notoSans, 13, TextAnchor.LowerCenter, FontStyle.Normal); var keep = st.normal.textColor;   // web: bold 13px "Noto Sans KR" (Bold face)
    Color col = unlocked ? Hex("#66ccff") : Hex("#ff6644"); col.a = alpha;
-   st.normal.textColor = col; NativeSilverHellUi.Label(new Rect(pt.x - 300, pt.y - 40, 600, 40), text, st); st.normal.textColor = keep;
+   st.normal.textColor = col; NativeDemoText.Label(new Rect(pt.x - 300, pt.y - 40, 600, 40), text, st); st.normal.textColor = keep;
   }
 
   // ---------------- entry ----------------

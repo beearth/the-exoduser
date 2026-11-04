@@ -48,14 +48,20 @@ namespace Exoduser.UnityPort {
             }
             return st;
         }
-        float SerifWidth(string s,int size,bool bold,float spacing){var st=SerifStyle(size,bold);float w=0;foreach(char ch in s)w+=st.CalcSize(new GUIContent(ch.ToString())).x+spacing;return w;}
+        // 11-04: "가방 (0/300)" is drawn in 5 runs of two fonts. CalcSize and the audit's xAdvance differ by a few hundredths of a pixel, so touching runs
+        // read as overlapping (30 regressions in the desktop-swap check). One pixel between runs keeps them apart; not visible at 1x.
+        internal const float CountRunGap=1f;
+        float SerifWidth(string s,int size,bool bold,float spacing){var st=SerifStyle(size,bold);return NativeUiTextRun.Layout(s,spacing,g=>st.CalcSize(new GUIContent(g)).x);}
         void Serif(Rect r,string s,int size,Color c,bool bold=false,float spacing=0,TextAnchor anchor=TextAnchor.MiddleLeft,bool shadow=false){
             var st=SerifStyle(size,bold);float total=SerifWidth(s,size,bold,spacing),x=r.x;
             if(anchor==TextAnchor.MiddleCenter||anchor==TextAnchor.UpperCenter)x=r.x+(r.width-total)/2f;else if(anchor==TextAnchor.MiddleRight)x=r.xMax-total;
             for(int pass=shadow?0:1;pass<2;pass++){
-                float px=x;st.normal.textColor=pass==0?new Color(0,0,0,.8f):c;float oy=pass==0?1.5f:0;
-                if(spacing==0){NativeSilverHellUi.Label(new Rect(px,r.y+oy,r.width+total,r.height),s,st);continue;}
-                foreach(char ch in s){var g=ch.ToString();NativeSilverHellUi.Label(new Rect(px,r.y+oy,40,r.height),g,st);px+=st.CalcSize(new GUIContent(g)).x+spacing;}
+                st.normal.textColor=pass==0?new Color(0,0,0,.8f):c;float oy=pass==0?1.5f:0;
+                NativeUiTextRun.Layout(s,spacing,g=>st.CalcSize(new GUIContent(g)).x,(offset,g)=>{
+                    // 11-04: tight text box (own advance, no slack: adjacent runs touch, never overlap). r.width+total / 40 boxes overlapped the next run in the UI overlap audit (30 regressions on "가방 (0/300)").
+                    var box=new Rect(x+offset,r.y,(spacing==0?total:st.CalcSize(new GUIContent(g)).x),r.height);
+                    using(var paint=NativeUiAudit.GroupText(box,g))NativeSilverHellUi.Label(new Rect(box.x,box.y+oy,box.width,box.height),g,st);
+                });
             }
         }
 
@@ -98,11 +104,11 @@ namespace Exoduser.UnityPort {
             Fill(new Rect(head.x,head.y,head.width,1),C(87,90,90));Fill(new Rect(head.x,head.yMax-1,head.width,1),C(87,90,90));
             // Ossuary-category items only (bone parts are not collected yet): 0 / 300.
             float x=573;string count=State.Bag.FindAll(i=>i.slot=="ossuary").Count.ToString();   // ossuary-category items in the bag (Unity admits none)
-            Txt(new Rect(x,204,300,23),"가방 (",14,C(216,213,207),500);x+=TextWidth("가방 (",14,500);
-            Serif(new Rect(x,204,300,23),count,14,C(240,223,189),true);x+=SerifWidth(count,14,true,0);
-            Txt(new Rect(x,204,300,23),"/",14,C(216,213,207),500);x+=TextWidth("/",14,500);
-            Serif(new Rect(x,204,300,23),InventoryState.BagMax.ToString(),14,C(156,159,159),false);x+=SerifWidth("300",14,false,0);
-            Txt(new Rect(x,204,300,23),")",14,C(216,213,207),500);
+            Txt(new Rect(x,204,TextWidth("가방 (",14,500),23),"가방 (",14,C(216,213,207),500);x+=TextWidth("가방 (",14,500)+CountRunGap;
+            Serif(new Rect(x,204,SerifWidth(count,14,true,0),23),count,14,C(240,223,189),true);x+=SerifWidth(count,14,true,0)+CountRunGap;
+            Txt(new Rect(x,204,TextWidth("/",14,500),23),"/",14,C(216,213,207),500);x+=TextWidth("/",14,500)+CountRunGap;
+            Serif(new Rect(x,204,SerifWidth(InventoryState.BagMax.ToString(),14,false,0),23),InventoryState.BagMax.ToString(),14,C(156,159,159),false);x+=SerifWidth("300",14,false,0)+CountRunGap;
+            Txt(new Rect(x,204,TextWidth(")",14,500),23),")",14,C(216,213,207),500);
             var sort=new Rect(836,201,66,28);
             PlateFace(sort,false);
             Txt(sort,"↕ 정렬",12,C(194,191,185),500,TextAnchor.MiddleCenter,true);

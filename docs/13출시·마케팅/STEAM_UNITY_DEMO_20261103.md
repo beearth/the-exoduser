@@ -1,5 +1,10 @@
 # Steam 체험판 앱(5337590) Unity 전환 — 2026-11-03
 
+## 2026-11-04 소스 대조 — Unity 버전
+
+Unity 데모 v0의 제품 버전은 **0.1.0**(`ProjectSettings.asset: bundleVersion`, 3eab55186/병합1fe5c4366)이다. 타이틀·로비는 `Application.version`을 조회하며 체험판 제목은 DEMO · v0.1.0으로 표시한다. 웹 `release_web.json`의 버전과 별도이고, 로비 날짜는 해당 스냅샷에서 읽는다. 이 기록은 상점 게시·Steam 업로드·설치 실행본 확인이 아니다. [빌드 종류 현행 계약](../engine/UNITY_A26_BUILDFLAVOR_20261026.md#2026-11-04-표시-버전-정정--unity-데모-v0).
+
+
 스팀 총괄 작성. 사용자 결정(11-03 20:5x, CTO 전달): **"체험판 앱에"** — Unity 1-1 빌드를 체험판 앱 5337590에 먼저 올린다. 본편 4749590의 default는 웹판 25482996을 유지하고, 본편 `unity-beta`는 비공개 시험용으로 둔다.
 Steamworks의 공개(Set Live)·게시·상점 문구 게시는 사용자가 누른다(Claude 세션의 자동 안전 검사가 운영 배포 클릭을 막는다). 업로드는 `setlive ""`로 공개 없이 한다.
 본편 전환 준비(반려 3항목 대조)는 `STEAM_UNITY_DEFAULT_READINESS_20261103.md`.
@@ -152,7 +157,7 @@ B. 공개 전환 (U-D1·U-D3 수정 빌드로, 사용자 확인 뒤)
 | K7 | 환경·적이 다른 지옥을 지나며 점점 강한 보스와 싸운다(en "7장·35+ 스테이지·35+ 보스") | 1-1 한 지역 + 보스 다크드루이드 | C04=1(1-1), C03=0(드루이드만 진행), `StageFlow.cs`는 1-1 흐름 | 체험판 범위 밖 | 체험판 소개에 "1-1·첫 보스"로 명시한다 |
 | K8 | 다크 판타지 싱글플레이 캠페인 | 싱글플레이, 세계관 인트로·29개 언어 자막 | A01·A02=1 | 있음 | 그대로 |
 | E1 | (en) 복수·등 뒤의 칼·아이들·네메시아 서사 | 세계관 인트로, 시작 대사에 네메시아 화자 | A02, `NativeLobby.StartupPresentation.cs` | 있음 | 그대로 |
-| E2 | (en) 검은 고양이 디로이·까마귀 헥터가 **함께 다닌다** | 필드 펫 없음. 시작 대사·사망 화면 초상과 대사로만 나옴 | B12 펫=0, `NativeDeathOverlay.cs` 펫 초상 | **없음**(대사만) | 체험판 소개에서 동행 펫을 언급하지 않는다 |
+| E2 | (en) 검은 고양이 디로이·까마귀 헥터가 **함께 다닌다** | 자유 이동 동행 펫 없음. 시작 대사와 필드 상황 말풍선(`NativeGame.PetBubble.cs`)은 있음. 현행 사망 결정 화면에는 펫 초상·대사를 그리지 않음 | B12 동행 펫=0. `NativeDeathOverlay.Draw`는 결정 화면으로 교체됨(1301432f0) | **없음**(동행 이동체) | 체험판 소개에서 동행 펫을 언급하지 않는다 |
 | E3 | (en) 유령의 석궁이 함께한다 | 자동 석궁(120프레임 타이머, T 토글) | `Simulation.Crossbow.cs`, B05=0이지만 자동 석궁 Core 있음 | 있음(Mac 확인 필요) | 그대로 |
 | E4 | (en) 아키타입 6종 | 전사만 선택 가능 | A04 "전사만, 신규 3영웅 미이식" | **없음** | 체험판은 "전사"로 명시한다 |
 | E5 | (en) 희귀도 5단계 | 아이템 희귀도 굴림은 있음, 전설·유니크 상자는 미이식 | `ItemFactory.cs`, D03=0 | 일부 | 쓰지 않는다 |
@@ -264,4 +269,47 @@ B. 공개 전환 (U-D1·U-D3 수정 빌드로, 사용자 확인 뒤)
 | C5 | 체험판 범위 | 본문은 정식판 기능(합체·전설·유니크·보석 소켓·펫 동행)을 소개한다 | 1-1 체험판에는 이 기능이 없다(9.1) | 10.2 단락이 "합체·다른 영웅·더 깊은 지옥은 정식판"이라고 따로 밝힌다. 본문은 바꾸지 않는다 |
 
 "핵터" 표기는 오타가 아니다. 스토리 정본(STORY_LEAD_MASTER, 10-28 "헥터→핵터" 정정)이 이 표기다.
+
+### 10.4 체험판 앱 5337590 상점 페이지 (11-04 10시, CTO 지시로 대상 확정)
+
+CTO가 붙일 곳을 체험판 앱 5337590으로 정했다. 11-04 10시대에 Steamworks 체험판 상점 편집(Store Item **1346593**)을 읽기만 해서 확인했다. Description 탭에는 **About This Demo**와 **Short Description**(200~300자) 두 칸이 있고, 상점 30개 언어가 모두 비어 있다(0자). 그래서 두 칸을 함께 채운다.
+
+- About This Demo = No.4263 본문을 `[p]…[/p]`로 감싼 것. 칸 제목이 이미 "About This Demo"라서 `[h2]` 제목(No.4262)은 넣지 않는다.
+- Short Description = No.4273(4263 본문을 줄인 것). 길이는 118~297자다. 일본어·중국어는 200자보다 짧은데, 본편도 같은 언어가 111~139자다.
+- 파일: `docs/13출시·마케팅/steam_store_demo_app_5337590_20261104/`에 언어별 `.about.txt`·`.short.txt` 31쌍, `localization_upload_1346593.json`(Localization 탭 업로드 형식, 두 칸만), `demo_app_store_all.json`이 있다. 업로드 사본은 `I:\EXODUSER-Storage\steam_store\demo_5337590_localization_upload_20261104.json`에 있다.
+- 업로드 JSON 형식은 09-09 본편 내보내기(`{itemid, languages:{<코드>:{"app[content][about]", "app[content][short_description]"}}}`)와 같다. 이 업로드 방식은 아직 실제로 성공한 적이 없다(09-09에는 확장 권한 때문에 손 입력으로 대신했다). 업로드가 거부되면 손 붙여 넣기(B)로 한다.
+- 10.1~10.2의 본편 4749590 단락(`steam_store_demo_paragraph_20261104/`)은 선택 사항으로 남긴다. 본편 상점에도 체험판 안내를 넣을지는 공개 때 정한다.
+
+| 언어 | 언어 목록 이름 | About This Demo | Short Description | 짧은 설명 글자 수 |
+|---|---|---|---|---:|
+| 영어 | `English` | `english.about.txt` | `english.short.txt` | 291 |
+| 프랑스어 | `French` | `french.about.txt` | `french.short.txt` | 293 |
+| 이탈리아어 | `Italian` | `italian.about.txt` | `italian.short.txt` | 295 |
+| 독일어 | `German` | `german.about.txt` | `german.short.txt` | 291 |
+| 스페인어 - 스페인 | `Spanish - Spain` | `spanish.about.txt` | `spanish.short.txt` | 295 |
+| 불가리아어 | `Bulgarian` | `bulgarian.about.txt` | `bulgarian.short.txt` | 292 |
+| 체코어 | `Czech` | `czech.about.txt` | `czech.short.txt` | 293 |
+| 덴마크어 | `Danish` | `danish.about.txt` | `danish.short.txt` | 291 |
+| 네덜란드어 | `Dutch` | `dutch.about.txt` | `dutch.short.txt` | 294 |
+| 핀란드어 | `Finnish` | `finnish.about.txt` | `finnish.short.txt` | 280 |
+| 그리스어 | `Greek` | `greek.about.txt` | `greek.short.txt` | 296 |
+| 헝가리어 | `Hungarian` | `hungarian.about.txt` | `hungarian.short.txt` | 294 |
+| 인도네시아어 | `Indonesian` | `indonesian.about.txt` | `indonesian.short.txt` | 297 |
+| 일본어 | `Japanese` | `japanese.about.txt` | `japanese.short.txt` | 159 |
+| 한국어 | `Korean` | `koreana.about.txt` | `koreana.short.txt` | 219 |
+| 말레이어 | `Malay` | `malay.about.txt` | `malay.short.txt` | 294 |
+| 노르웨이어 | `Norwegian` | `norwegian.about.txt` | `norwegian.short.txt` | 290 |
+| 폴란드어 | `Polish` | `polish.about.txt` | `polish.short.txt` | 290 |
+| 포르투갈어 - 브라질 | `Portuguese - Brazil` | `brazilian.about.txt` | `brazilian.short.txt` | 289 |
+| 포르투갈어 - 포르투갈 | `Portuguese - Portugal` | `portuguese.about.txt` | `portuguese.short.txt` | 294 |
+| 루마니아어 | `Romanian` | `romanian.about.txt` | `romanian.short.txt` | 290 |
+| 러시아어 | `Russian` | `russian.about.txt` | `russian.short.txt` | 287 |
+| 중국어 간체 | `Simplified Chinese` | `schinese.about.txt` | `schinese.short.txt` | 118 |
+| 스페인어 - 중남미 | `Spanish - Latin America` | `latam.about.txt` | `latam.short.txt` | 295 |
+| 스웨덴어 | `Swedish` | `swedish.about.txt` | `swedish.short.txt` | 293 |
+| 태국어 | `Thai` | `thai.about.txt` | `thai.short.txt` | 269 |
+| 중국어 번체 | `Traditional Chinese` | `tchinese.about.txt` | `tchinese.short.txt` | 118 |
+| 튀르키예어 | `Turkish` | `turkish.about.txt` | `turkish.short.txt` | 282 |
+| 우크라이나어 | `Ukrainian` | `ukrainian.about.txt` | `ukrainian.short.txt` | 290 |
+| 베트남어 | `Vietnamese` | `vietnamese.about.txt` | `vietnamese.short.txt` | 286 |
 

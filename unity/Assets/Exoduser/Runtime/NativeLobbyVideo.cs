@@ -22,6 +22,9 @@ namespace Exoduser.UnityPort
   public double Time{get{return Prepared?player.time:0;}}
   public double Duration{get{return Prepared?player.length:0;}}
   public long Frame{get{return player==null?-1:player.frame;}}
+  // Poster hand-over: true only after the decoder raised frameReady and a later Unity frame has passed (so the RenderTexture holds a real picture), or several frames have played. Draw code shows the poster until then; QA waits keep using Prepared/Frame.
+  long frameReadyAt=-1;
+  public bool Presentable{get{return Error.Length==0&&Prepared&&texture!=null&&player.frame>=0&&((frameReadyAt>=0&&UnityEngine.Time.frameCount>frameReadyAt)||player.frame>=3);}}
   // DBT-8 measurement: how often a movie is requested / prepared / reported broken, and `--unity-lobby-hide-movie <file>` points one file at a name that does not exist.
   public static int OpenCalls,PrepareCalls,ErrorEvents;
   public static string HiddenMovie;
@@ -54,7 +57,7 @@ namespace Exoduser.UnityPort
   public void Open(string filename,bool loop,bool muted,bool freeze)
   {
    OpenCalls++;if(OpenCalls<=12)Debug.Log("LOBBY_VIDEO_OPEN #"+OpenCalls+" "+filename+(HiddenMovie==filename?" (hidden)":""));
-   Close();Error="";Ended=false;currentFile=filename;gaveUpLogged=false;
+   Close();Error="";Ended=false;frameReadyAt=-1;currentFile=filename;gaveUpLogged=false;
    int failed;if(failures.TryGetValue(filename,out failed)&&failed>=MaxRequests){Error="Video unavailable: "+filename;return;}
    freezeFirst=freeze;wantsPlayback=true;int token=generation;
    player=owner.AddComponent<VideoPlayer>();voice=owner.AddComponent<AudioSource>();voice.playOnAwake=false;voice.spatialBlend=0;
@@ -69,7 +72,7 @@ namespace Exoduser.UnityPort
    player.frameReady+=OnFrame;player.loopPointReached+=OnEnd;player.errorReceived+=OnError;
    PrepareCalls++;try{player.Prepare();}catch(Exception e){Error=e.Message;NoteFailure();}
   }
-  void OnFrame(VideoPlayer p,long frame){if(p!=player)return;if(freezeFirst){freezeFirst=false;wantsPlayback=false;p.Pause();PauseIntroAudio();}}
+  void OnFrame(VideoPlayer p,long frame){if(p!=player)return;if(frameReadyAt<0)frameReadyAt=UnityEngine.Time.frameCount;if(freezeFirst){freezeFirst=false;wantsPlayback=false;p.Pause();PauseIntroAudio();}}
   void OnEnd(VideoPlayer p){if(p==player&&!p.isLooping){Ended=true;wantsPlayback=false;PauseIntroAudio();}}
   // One failed request counts once: the decoder keeps raising errorReceived for the same broken url (90 events in 10 s were measured), so repeats are only counted, not handled.
   void OnError(VideoPlayer p,string message){if(p!=player)return;ErrorEvents++;if(Error.Length>0)return;if(ErrorEvents<=5)Debug.Log("LOBBY_VIDEO_ERROR #"+ErrorEvents+" "+message);Error=message;NoteFailure();wantsPlayback=false;p.Pause();PauseIntroAudio();}

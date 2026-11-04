@@ -275,3 +275,27 @@ HUD 후보를 보존본 SHA 대조 후 복원했다. 새 제품에는 검수 종
 HUD의 미착수 빌드 대기 한 건만 취소하고(타팀 잠금 보존), 남은 세 화면은 같은 최종 바이너리에서 각자 실제 화면·1x·회귀를 검수한다. 같은 소스/바이너리의 공통 M1 근거를 재사용하며 종료 안전 실패는 별도 유지한다. 아직 공통 반영·시각 PASS 전이다.
 
 2026-10-30 위 후속UI는 진입 복구10c49850f에 포함되어 공통 반영됐다. 실제90장·M123/23·HUD24PNG/8검사 및 추가일시정지메모리게이트미실행은 UNITY_UI_PHASE2_20261030.md 최신절과 entry-flow/REPORT.md를 따른다. 전체UI/환경RETOUCH 유지.
+
+### 2026-11-04 01:45 작은 판과 입장 원화 표시밀도
+
+실버 헬에 btn_chip_1x/2x(150×32/300×64), lobby_enter_ready_1x/2x 및 lobby_enter_disabled_1x/2x(416×156/832×312)를 추가했다. 기존 리벳 테·어두운 원화 면/전체 인장을 Lanczos3으로 기계적으로 축소한 실행자산이다. 원본은 변경하지 않았다. 작은 ActionPlate(height<48 또는 width<160)만 칩, 나머지는 기존 가시 원화. 기본 IMGUI 스킨 제거·brightness1·OFF/Bilinear 유지. [제작법/실제 검수 대기](../3.1%20ui%20hud%20디자인/UNITY_SMALL_PLATE_RETOUCH_20261104.md).
+
+## 11-04 04:05 A등급 판 면 통일
+
+일시정지·이름입력·삭제확인은공통Panel(iron:true):RGB(16,15,15)/a.95→(8,8,9)/a.97+철14%+panel_frame_20261029. 원본철의3x미세낱점을확인해명시된sigma2 blur파생iron_480_blur2를공통A면에사용한다(원본/합성밝기불변). 이름본문/입력/오류는Hahmlet·명조fallback. B시스템창의window_base와인벤별도iron:false호출은불변이다. lobby_panel로드/필드만삭제,파일유지. [후보계약/캡처](../3.1%20ui%20hud%20디자인/UNITY_UI_CANDIDATE_20261104.md).
+
+## 04:05 후보 실제 임포트 기록
+후보 a02cb84850의 Unity Win64 빌드 Succeeded/errors0. button_iron.png.meta와 PetBubble/cat·crow.png.meta가 YAML 빈 값 뒤 공백만 재직렬화되어 그 결과를 기록했다(필터/밉맵/원화 의미 변경0). 첫 Player의 기존 locale 초기화 NRE로 UI 캡처0장이며 A면·글리프·호버 실물 PASS는 아니다. [사실·미검증](../3.1%20ui%20hud%20디자인/UNITY_UI_CANDIDATE_20261104.md).
+
+## 05:00 후보50장 최신 검증
+e3b3bc977 공용1922c0fa 후보빌드1회 Succeeded/errors0/errorLogs0. 이어18 hidden Player제품receiptPASS,1920/3840 각25장=50장,원화17종/축소본mipCount1·artworkBrightness1·blur2로드확인. 이번import후추적에셋변경0,코드변경0. [실제실행본·원본/비교판·미검증](../3.1%20ui%20hud%20디자인/UNITY_UI_CANDIDATE_20261104.md).
+
+## 05:40 이름 면과 승인 재질
+이름 바탕+철 면을18px inset하고 frame outset을18px로 두어 기존440×335 프레임 외곽을 유지한다. 이름/삭제 본문은 기존 NanumMyeongjo를 우선 사용, 실제 font.name을 기록한다. 철 blur2 원화/14%/밝기·작은 칩 가족은 디자인총괄 PASS에 따라 불변이며 draw 계측만 추가한다. 신규/복제 원화0. [계약](../3.1%20ui%20hud%20디자인/UNITY_UI_CANDIDATE_20261104.md).
+
+## 05:40 부분 실물 기록
+540fdcde20 실제후보1회 PASS,1920 원본25장/제품9건PASS. 이름404×299 면은18px 안으로 들어갔고 실제 명조/공통철draw를 확인했다. 공용 ReadAllText 종료결함2FAIL로3840촬영은미실행. 원화/폰트파일/compact가족/14%이미지변경0, 최종디자인미완료. [근거](../3.1%20ui%20hud%20디자인/UNITY_UI_CANDIDATE_20261104.md).
+
+## 11-04 새 실행 — 05:50 판정 반영
+
+기하 크기 자동 칩 분기를 폐기하고 설정 조작 요소만 명시적으로 칩을 선택한다. 기본 가시 원화/20개 Lanczos3 1x·2x 파생본과 공통 철 면의 화면 픽셀 기준 샘플링을 반영했다. 소스·재질 검사/5어셈블리 참조 컴파일 오류0. 새 Unity 임포트·후보 빌드·50장 촬영은 이전 공용 로그 잠금 2FAIL과 G: 여유 기준 때문에 미실행이며 이전 540fdcde2 캡처를 새 증거로 재사용하지 않는다. 상세는 UNITY_UI_CANDIDATE_20261104.md의 새 실행 정정 절.

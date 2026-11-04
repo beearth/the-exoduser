@@ -46,7 +46,8 @@ namespace Exoduser.UnityPort
         // adopted start volumes (RM1_AUDIO_KEYS.json); the final values are set by ear
         static readonly Dictionary<string,float> StartVolume=new Dictionary<string,float>{
             {"tell_melee",.45f},{"tell_ranged",.45f},{"tell_boss",.45f},{"tell_grab",.45f},{"tell_parry",.45f},{"druid_erupt",.5f},{"druid_sink",.55f},{"druid_tide",.5f},{"druid_roots_rise",.5f},{"druid_heartbeat",.5f},{"druid_burrow",.45f},{"druid_staff_tap",.5f},{"druid_root_pierce",.5f},
-            {"druid_vo_pain",.6f},{"druid_vo_attack",.7f},{"druid_vo_phase",1f},{"druid_vo_fall",.7f},{"druid_vo_last",.75f},{"druid_drag",.6f},{"druid_fissure",.6f},{"druid_pod",.5f},{"druid_summon",.6f},{"druid_hit",.3f},{"druid_hit_heavy",.6f},{"druid_whip",.55f},{"druid_spore",.55f},{"druid_slam",.7f}};
+            {"druid_vo_pain",.6f},{"druid_vo_attack",.7f},{"druid_vo_phase",1f},{"druid_vo_fall",.7f},{"druid_vo_last",.75f},{"druid_drag",.6f},{"druid_fissure",.6f},{"druid_pod",.5f},{"druid_summon",.6f},{"druid_hit",.3f},{"druid_hit_heavy",.6f},{"druid_whip",.55f},{"druid_spore",.55f},{"druid_slam",.7f},
+            {"druid_slash3_ground",.5f},{"druid_slam_lift",.5f},{"druid_debris",.5f},{"druid_charge_kick",.5f},{"druid_wall_crash",.5f},{"druid_grab_bind",.5f},{"druid_grab_throw",.5f},{"druid_erupt_warn",.5f},{"druid_root_spikes",.5f},{"druid_heart_vein",.5f}};   // R7 skill sounds
         readonly Dictionary<string,int> lastTellTick=new Dictionary<string,int>();
         int lastPlayerHitTick=-1000;
         public NativeFeedbackAudio(Transform parent,Camera camera)
@@ -101,7 +102,7 @@ namespace Exoduser.UnityPort
                 case FeedbackKind.BossHit:Receipt.requested++;Queue(BossHitRequest(e));break;   // _BOSS_SFX[0].hit pitch .7
                 case FeedbackKind.EnemyCrit:Receipt.requested++;if(e.IsBoss&&HasClip("druid_hit_heavy"))HeavyHit(e);else Queue(Make("crit_heavy",e.Volume,Jitter(1,.05f),World(e),e));break;
                 case FeedbackKind.EnemyDeath:HandleDeath(e);break;
-                case FeedbackKind.BossDeath:Receipt.requested++;direct.Add(HasClip("druid_vo_last")?Make("druid_vo_last",.75f,Jitter(1,.03f),World(e),e):Make("death_boss",.75f,Jitter(.7f,.15f),World(e),e));break;   // _BOSS_SFX[0].die
+                case FeedbackKind.BossDeath:Receipt.requested++;direct.Add(HasClip("druid_vo_last")?Make("druid_vo_last",.75f,Jitter(1,.03f),World(e),e):Make("death_boss",.75f,Jitter(.7f,.15f),World(e),e));PlayWire(NativeSoundWire.DruidBossKill,e.X,e.Y,e.Tick,"Core BossDeath (last life)");break;   // _BOSS_SFX[0].die; R8 druid_boss_kill layers on the same moment
                 case FeedbackKind.Parry:   // game.html doParry (38667): Q parry -> q_parry .9 (1+-.08); otherwise sword_parry 1 (1+-.1) + one sword_back* .5 (1.1+-.1); then 50 % voice_parry1-4 (1+-.03) else male_grunt (1+-.15)
                     Receipt.requested++;
                     if(e.Step==1)direct.Add(Make("q_parry",.9f,Jitter(1,.08f),World(e),e));
@@ -165,12 +166,39 @@ namespace Exoduser.UnityPort
             var r=Make("druid_spore",.55f,Jitter(1,.05f),World(e),e);r.logical="druid_spore";r.group="Skill";r.priority=PriSkill;r.delay=after/60f;r.tick=e.Tick+after;r.source="#5 fan fires (telegraph +"+after+" f)";r.note="file ok (adopted "+AdoptedSource("druid_spore")+")";
             Receipt.requested++;direct.Add(r);
         }
-        // SND-09 round 4 druid_slam: the dung slam (move #2 "slam") landing. The Core's "#2 slam telegraph" event is the cue; the swing starts when the telegraph ends (move data Tele 48) and lands SlamActive (6) ticks later (shock wave + damage check).
+        // SND-09 round 4 druid_slam: the dung slam (move #2 "slam"). The Core's "#2 slam telegraph" event is the cue; R7: the staff touches the ground 2 ticks after the telegraph ends (the heard contact), debris 4 ticks after.
         void SlamOnLanding(FeedbackEvent e)
         {
             if(e.Source!="#2 slam telegraph"||!HasClip("druid_slam"))return;
-            int after=Array.Find(DruidRemodelData.Moves,m=>m.Id=="slam").Tele+DruidRemodelData.SlamActive;
-            var r=Make("druid_slam",.7f,Jitter(1,.04f),World(e),e);r.logical="druid_slam";r.group="Skill";r.priority=PriSkill;r.delay=after/60f;r.tick=e.Tick+after;r.source="#2 slam lands (telegraph +"+after+" f)";r.note="file ok (adopted "+AdoptedSource("druid_slam")+")";
+            int tele=Array.Find(DruidRemodelData.Moves,m=>m.Id=="slam").Tele,after=tele+2;
+            var r=Make("druid_slam",.7f,Jitter(1,.04f),World(e),e);r.logical="druid_slam";r.group="Skill";r.priority=PriSkill;r.delay=after/60f;r.tick=e.Tick+after;r.source="#2 slam staff contact (telegraph +"+after+" f)";r.note="file ok (adopted "+AdoptedSource("druid_slam")+")";
+            Receipt.requested++;direct.Add(r);
+            DruidAt("druid_debris",.5f,1,.05f,e.X,e.Y,e.Tick,tele+4,"#2 slam debris (telegraph +"+(tele+4)+" f)");
+        }
+        static int MoveNo(string id){return Array.FindIndex(DruidRemodelData.Moves,m=>m.Id==id)+1;}
+        // R7 skill sounds that ride on a Core event plus a fixed delay: slash hit 3 ground, erupt (warn now, blast and root spikes BurrowEruptWarn later), heartbeat veins. Returns true when the event is the erupt (the plain druid_erupt is replaced).
+        bool DruidExtras(FeedbackEvent e)
+        {
+            string s=e.Source;if(s==null)return false;
+            if(s.EndsWith("slashCombo hit 3 telegraph",StringComparison.Ordinal))DruidAt("druid_slash3_ground",.5f,1,.04f,e.X,e.Y,e.Tick,DruidRemodelData.SlashLinkTele+(DruidRemodelData.SlashActive-DruidRemodelData.SlashHitAt),"#1 slashCombo hit 3 ground (telegraph +"+(DruidRemodelData.SlashLinkTele+(DruidRemodelData.SlashActive-DruidRemodelData.SlashHitAt))+" f)");
+            else if(s=="#"+MoveNo("heartbeat")+" heartbeat telegraph")DruidAt("druid_heart_vein",.5f,1,0,e.X,e.Y,e.Tick,0,"#12 heartbeat telegraph");
+            else if(s.StartsWith("#"+MoveNo("heartbeat")+" heartbeat beat ",StringComparison.Ordinal)&&(s.EndsWith("beat 1",StringComparison.Ordinal)||s.EndsWith("beat 2",StringComparison.Ordinal)))DruidAt("druid_heart_vein",.5f,1.5f,0,e.X,e.Y,e.Tick,DruidRemodelData.HeartbeatPause,"#12 heartbeat pause vein (beat +"+DruidRemodelData.HeartbeatPause+" f)");
+            else if(e.SampleKey=="druid_erupt"&&s=="#7 burrowStrike erupt"){
+                int after=DruidRemodelData.BurrowEruptWarn;
+                DruidAt("druid_erupt_warn",.5f,1,0,e.X,e.Y,e.Tick,0,s+" (warning starts)");
+                DruidAt("druid_erupt",.5f,1,0,e.X,e.Y,e.Tick,after,s+" blast (warning +"+after+" f)");   // same volume and rate as before, only later
+                DruidAt("druid_root_spikes",.5f,1,.04f,e.X,e.Y,e.Tick,after,s+" root spikes (warning +"+after+" f)");
+                return true;
+            }
+            return false;
+        }
+        // R7: one druid skill sound at a Core tick plus a delay; the cue watcher (NativeDruidSoundCues) and the event hooks both come here (Receipt, Lines, queue rules as every other skill sound)
+        public void PlayDruidCue(string key,float volume,float pitch,float spread,float x,float y,int tick,int delayTicks,string source){DruidAt(key,volume,pitch,spread,x,y,tick,delayTicks,source);}
+        void DruidAt(string key,float volume,float pitch,float spread,float x,float y,int tick,int delayTicks,string source)
+        {
+            if(!HasClip(key))return;
+            var r=Make(key,volume,spread>0?Jitter(pitch,spread):pitch,new Vector3(x/100,-y/100,0));
+            r.logical=key;r.group="Skill";r.priority=PriSkill;r.delay=delayTicks/60f;r.tick=tick+delayTicks;r.source=source;r.note="file ok (adopted "+AdoptedSource(key)+")";
             Receipt.requested++;direct.Add(r);
         }
         // _hitSfxForEtype: Core names the category (EnemySoundTables.Hit) and the base pitch; the variant is drawn here, never in the Core
@@ -224,11 +252,12 @@ namespace Exoduser.UnityPort
         // a logical sound key from the boss / enemy logic: tell_* (120 ms per key, at most 2 at once, off-screen skipped) and druid_* (mapped to a file or logged as "no file")
         void HandleLogical(FeedbackEvent e)
         {
-            string[] files;if(!LogicalFiles.TryGetValue(e.SampleKey,out files))files=new[]{e.SampleKey};
-            float volume;if(e.Volume>0)volume=e.Volume;else if(!StartVolume.TryGetValue(e.SampleKey,out volume))volume=.5f;
-            string adopted=AdoptedSource(e.SampleKey);string note=files.Length==0?"no file yet (3rd-round pending, left empty)":(files[0]!=e.SampleKey?"temporary file "+string.Join("+",files):"file ok"+(adopted!=null?" (adopted "+adopted+")":""));
+            string[] files=NativeSoundWire.ResolveFiles(e.SampleKey,HasClip,LogicalFiles,NativeSoundWire.Fallbacks);   // R8/R9: RM1/<key>.mp3 first, then the temporary file, then log only
+            float volume;if(e.Volume>0)volume=e.Volume;else if(!StartVolume.TryGetValue(e.SampleKey,out volume)&&!NativeSoundWire.StartVolume.TryGetValue(e.SampleKey,out volume))volume=.5f;
+            string adopted=AdoptedSource(e.SampleKey);string note=files.Length==0?NativeSoundWire.NoFileNote(e.SampleKey):(files[0]!=e.SampleKey?"temporary file "+string.Join("+",files):"file ok"+(adopted!=null?" (adopted "+adopted+")":""));
             WhipOnSwing(e);SporeOnFan(e);SlamOnLanding(e);
-            var pos=World(e);bool tell=e.SampleKey.StartsWith("tell_",StringComparison.Ordinal);bool druid=e.SampleKey.StartsWith("druid_",StringComparison.Ordinal);
+            if(DruidExtras(e))return;   // the Core erupt event is replaced by the warn / blast / spikes set (no double sound)
+            var pos=World(e);bool tell=e.SampleKey.StartsWith("tell_",StringComparison.Ordinal);bool druid=e.SampleKey.StartsWith("druid_",StringComparison.Ordinal)||e.SampleKey.StartsWith("exit_",StringComparison.Ordinal);   // exit_* ride the Skill group like the druid skill sounds
             if(tell){
                 int last;if(lastTellTick.TryGetValue(e.SampleKey,out last)&&e.Tick-last<8){Receipt.dropped++;Lines.Add(Line(e.Tick,e.SampleKey,e.Source,"Tell",volume,"DROPPED same key within 120 ms"));return;}
                 if(OnScreen!=null&&!OnScreen(pos)){Receipt.dropped++;Lines.Add(Line(e.Tick,e.SampleKey,e.Source,"Tell",volume,"DROPPED off-screen"));return;}
@@ -249,7 +278,9 @@ namespace Exoduser.UnityPort
             {"druid_vo_pain","_preview_druid/druid_vo_pain_v2a_proc"},{"druid_vo_attack","_preview_druid/druid_vo_attack_v2a_proc"},{"druid_vo_phase","_preview_druid/druid_vo_phase_v2c_proc"},
             {"druid_vo_fall","_preview_druid/druid_vo_fall_v2a_proc"},{"druid_vo_last","_preview_druid/druid_vo_last_v2a_proc"},{"druid_drag","_preview_druid/druid_drag_v2a_proc"},
             {"druid_fissure","_preview_druid/druid_fissure_v2b_proc"},{"druid_pod","_preview_druid/druid_pod_v2d_proc"},{"druid_summon","_preview_druid/druid_summon_v2c_proc"},
-            {"druid_hit","_preview_druid2/druid_hit_v3d_proc"},{"druid_hit_heavy","_preview_druid2/druid_hit_heavy_v3d_proc"},{"druid_whip","_preview_druid2/druid_whip_v3a_proc"},{"druid_spore","_preview_r3/druid_spore_r3a_proc"},{"druid_slam","_preview_r4/druid_slam_r4e2_proc"},{"druid_burrow","_preview_s3/druid_burrow_s3d_proc"}};
+            {"druid_hit","_preview_druid2/druid_hit_v3d_proc"},{"druid_hit_heavy","_preview_druid2/druid_hit_heavy_v3d_proc"},{"druid_whip","_preview_druid2/druid_whip_v3a_proc"},{"druid_spore","_preview_r3/druid_spore_r3a_proc"},{"druid_slam","_preview_r4/druid_slam_r4e2_proc"},{"druid_burrow","_preview_s3/druid_burrow_s3d_proc"},
+            {"druid_slash3_ground","_r7/single/slash3_ground_b2"},{"druid_slam_lift","_r7/single/slam_lift_b1"},{"druid_debris","_r7/single/debris_c3"},{"druid_charge_kick","_r7/single/charge_kick_c3"},{"druid_wall_crash","_r7/single/wall_crash_c1"},
+            {"druid_grab_bind","_r7/single/grab_bind_c3"},{"druid_grab_throw","_r7/single/grab_throw_b3"},{"druid_erupt_warn","_r7/single/erupt_warn_a2"},{"druid_root_spikes","_r7/single/root_spikes_a3"},{"druid_heart_vein","_r7/single/heart_vein_c2"}};
         static string AdoptedSource(string key){string s;return Adopted.TryGetValue(key,out s)?s:null;}
         static string Line(int tick,string key,string source,string group,float volume,string file){return "frame="+tick+" key="+key+" from=\""+source+"\" group="+group+" vol="+volume.ToString("0.00",System.Globalization.CultureInfo.InvariantCulture)+" file="+file;}
         int lastBossHitTick = -1000;
@@ -263,7 +294,11 @@ namespace Exoduser.UnityPort
         // host-driven one-shot (boss howl at the arena intro, tell keys, A8 bubbles): same routing as a Core event
         public const string SinkCoreSource="third fall: sink escape",SinkViewSource="view: sink hole opens (body sink 55 %)";
         // 1-1 druid sink: called by the sink drawing (NativeGame.BossSinkDraw) when the hole shows; same routing and Receipt line as a Core sample event
-        public void PlaySinkHole(float x,float y,int tick){Handle(new FeedbackEvent{Kind=FeedbackKind.Sample,Tick=tick,X=x,Y=y,SampleKey="druid_sink",Source=SinkViewSource,Rate=1,QueuedRate=1});}
+        public void PlaySinkHole(float x,float y,int tick){Handle(new FeedbackEvent{Kind=FeedbackKind.Sample,Tick=tick,X=x,Y=y,SampleKey=NativeSoundWire.DruidDeathSink,Source=SinkViewSource,Rate=1,QueuedRate=1});}   // R9: RM1/druid_death_sink.mp3 if present, else the druid_sink file (NativeSoundWire.Fallbacks)
+        // R8/R9 wiring: a host / stage / boss-state trigger asks for one logical sound at a Core tick (same routing and Receipt line as a Core sample event)
+        public void PlayWire(string key,float x,float y,int tick,string source){Handle(new FeedbackEvent{Kind=FeedbackKind.Sample,Tick=tick,X=x,Y=y,SampleKey=key,Source=source,Rate=1,QueuedRate=1});}
+        // a Receipt line written by a looping source outside this class (forest bed, tree breath, heap)
+        public void AddLine(int tick,string key,string source,string group,float volume,string file){Lines.Add(Line(tick,key,source,group,volume,file));}
         // UI 탭은 전투 Tick이 멈춘 패널에서도 즉시 1회. SFX/UI와 기존 사용자 음량을 따른다.
         [Serializable] public sealed class UiAudioEvent {public string key,group;public int frame;public double time,dspTime;public float gain,sourceVolume,pitch;}
         public readonly List<UiAudioEvent> UiEvents=new List<UiAudioEvent>();
@@ -279,6 +314,18 @@ namespace Exoduser.UnityPort
         public void PlayItemPickup(){PlayUiSample(new[]{"pickup_item","pickup_rummage1","pickup_rummage2","pickup_rummage3","pickup_rummage4","pickup_rummage5"}[rng.Next(6)],.5f,Jitter(1,.05f));}
         public void PlayLevelUp(){UiRevision++;Receipt.requested++;Play(Make("ui_levelup",1f,1f,Vector3.zero));}
         public void PlayNow(string key,float volume,float pitch,Vector3 world){Receipt.requested++;direct.Add(Make(key,volume,pitch,world));}
+        // Walking footsteps (web game.html walk: _walkDist grows by the walked distance, the 8-frame walk cycle is 32 px a frame and
+        // frames 0 and 4 play footstep / footstep2 at .55, rate _r(.9,.15) -- one step every 128 px). Rolls and knockback don't count.
+        float walkLastX,walkLastY,walkDist;bool walkHas;
+        public void TrackWalk(float x,float y,bool walking){
+            if(!walkHas){walkLastX=x;walkLastY=y;walkHas=true;return;}
+            float dx=x-walkLastX,dy=y-walkLastY;walkLastX=x;walkLastY=y;
+            float d=Mathf.Sqrt(dx*dx+dy*dy);
+            if(!walking||d<=0f||d>48f)return;   // more than 48 px in one frame is a teleport or stage swap, not a step
+            int before=(int)(walkDist/128f);walkDist+=d;int after=(int)(walkDist/128f);
+            if(after==before)return;
+            Receipt.requested++;direct.Add(Make(after%2==1?"footstep2":"footstep",.55f,Jitter(.9f,.15f),new Vector3(x/100,-y/100,0)));
+        }
         public void Flush()
         {
             if(ListenerAt!=null)listenerObject.transform.position=ListenerAt();
@@ -340,7 +387,7 @@ namespace Exoduser.UnityPort
             AudioListener.GetOutputData(output,0);
             foreach(float value in output)Receipt.listenerPeak=Mathf.Max(Receipt.listenerPeak,Mathf.Abs(value));
         }
-        public void Reset(){pending.Clear();direct.Clear();lastAt.Clear();lastPlayerHitTick=-1000;lastBossHitTick=-1000;lastBossHitVariant=-1;lastComboTick=-1000;comboAtten=1;foreach(var v in voices){v.source.Stop();v.ends=0;}}
+        public void Reset(){pending.Clear();direct.Clear();lastAt.Clear();walkHas=false;walkDist=0;lastPlayerHitTick=-1000;lastBossHitTick=-1000;lastBossHitVariant=-1;lastComboTick=-1000;comboAtten=1;foreach(var v in voices){v.source.Stop();v.ends=0;}}
         public void Dispose(){Reset();foreach(var v in voices)UnityEngine.Object.Destroy(v.source.gameObject);voices.Clear();if(listenerObject!=null)UnityEngine.Object.Destroy(listenerObject);}
     }
 }

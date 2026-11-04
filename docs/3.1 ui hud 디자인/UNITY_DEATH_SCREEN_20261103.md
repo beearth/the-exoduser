@@ -82,3 +82,119 @@ Mac에서는1920×1080·3840×1080·5120×1440의 HD2D/--remodel3d 양쪽에서 
 
 ## 23:05 원화 복구 우선
 공용 ActionPlate는 단색/음각 판에서 btn_primary_composed·btn_plaque_20261029의 원래9-slice로 복구했다. 밉맵OFF·밝기1.0·안쪽 호버 빛만 유지한다. 사망/부활/필터/전투 문구 숨김 규칙은 바꾸지 않는다. 최신 UI 촬영에는 lobby0/2명·character-create/name/delete와-ui-state가 추가됐으며 고정색/스킨 픽셀 probe는 원화 기준과 맞지 않아 제거했다. 현재 원화/촬영 계약은 UNITY_BUTTON_PLATE_MATERIAL_20261103.md를 따른다.
+
+## 2026-11-04 사망 확정 패널 교체 — "안식은 없다" 결정 화면 (Mac, PC UI 총괄)
+
+사용자 지시: "죽으면 나오는 화면 팬텀블레이드 따라해라, 우리는 뭔가 조잡한데" → "카피하라는 게 아니고, 어떻게 UX가 진행되는지 보라고", "저게 다크소울 YOU DIED 뜨는 거랑 같잖아", "우리는 there is no rest 이런 걸로", "포기할 것인가 등 여러 가지 옵션들이 있잖아". 선택(사용자 확정): 질문 + 3 선택지, 메인 문구 "안식은 없다".
+
+**바꾼 범위**: 사망이 확정된 뒤의 패널(`NativeDeathOverlay.Draw`)만 바꿨다. 위 쓰러짐 대기 화면(부활력·원형 게이지)은 그대로다. 웹 `#death` 이식판(정지 원화·펫 초상 대사·이모지 정보 줄·피해 기록·리플레이 버튼·"미이식" 표시)은 더 이상 그리지 않는다. 데이터 쪽(대사 고르기·제목 맥동·리플레이 모양)은 기존 영수증 호환을 위해 남겼다. Unity 전용이며 웹 `game.html`은 손대지 않았다.
+
+**팬텀 블레이드 제로에서 가져온 것은 진행 방식뿐이다**: 검은 공백 → 한 문장 → 짧은 결정. 붓글씨·"DEAD" 같은 겉모양은 쓰지 않는다(첫 시안 絶命·DEAD는 사용자 지적으로 폐기). 글꼴·색·장식은 Hell Gothic 실버 헬 규칙을 따른다.
+
+| 시각(사망 확정 후) | 내용 |
+|---|---|
+| 0~0.45s | 물리 화면 전체(초광폭 좌우 포함)를 검정으로 덮는다. 아래 쓰러짐 필터는 그대로 가려진다 |
+| 0.3~0.9s | 검붉은 피먹 번짐(`Art/ui/death/death_splatter`, 560→640px, 불투명도 .62)이 제목 뒤에 퍼진다 |
+| 0.5~1.5s | "안식은 없다" Hahmlet 300 68px, 뼈색 #dfd6c2, 자간 .36em→.28em으로 모이며 나타남 |
+| 0.9~1.6s | 진홍 헤어라인(460px, #c21a10)이 가운데에서 양옆으로 자란다 |
+| 1.3~1.9s | "THERE IS NO REST" Cinzel 15px, 자간 .42em, 어두운 진홍 |
+| 2.0~2.6s | 제목 묶음이 위로 130px 올라가고 "포기할 것인가?" Hahmlet 400 24px #e6e3dc |
+| 2.35s~ | 선택지가 0.12s 간격으로 하나씩. Hahmlet 400 21px 자간 .16em, 평상 #a7a49d, 초점 #f2f0ec + 양옆 진홍 마름모. 초점 선택지의 결과 한 줄만 아래에 14px로 |
+| 입력 | 마지막 선택지 표시 시작 0.2초 뒤부터(`ActionsReady`, 보스방2.79초/필드2.67초). 선택지 fade0.45초가 끝나기 전부터 입력 가능. ↑↓/W S/Tab 이동, Enter/Space 확정, 마우스 오버·클릭. 뒤에 숨은 일시정지 페이지 대신 사망 화면이 키를 받는다 |
+
+| 상황 | 선택지 → 동작 (기존 함수) |
+|---|---|
+| 보스방 | 다시 일어선다 → `RetryFromDeath`(보스방 앞 필드, 체력 전부) · 처음부터 다시 → `PauseMenuCommand.Restart`(`ResetRun`) · 포기한다 → `ReturnLobby` |
+| 필드 | 다시 일어선다 → `RetryFromDeath`(필드에서는 여정 처음부터) · 포기한다 → `ReturnLobby`. 필드에는 거점 부활이 없어 "처음부터 다시"와 같은 동작이 되므로 뺐다 |
+
+고친 결함: 기존 사망 패널의 "로비로 돌아가기"는 `OnLobby`가 연결되지 않아 눌러도 아무 일이 없었다. 키보드는 숨은 일시정지 메뉴가 받아 Enter가 `ResetRun`으로 갔다(보스방에서도 처음부터). 지금은 둘 다 위 표대로 연결된다.
+
+색 처리: 이 Linear Player는 IMGUI 텍스처와 `GUI.color`를 sRGB 변환 없이 그린다(측정: 원본 187 → 화면 222, 진홍이 분홍으로 바뀜). 번짐 PNG는 채널값을 미리 선형화(`pow(c/255,2.2)`)해 구웠다. 단색 칠(헤어라인·마름모)은 `.linear` 값을 넘긴다. 글자는 기존 `NativeSilverHellUi.Label` 보정을 쓴다. 생성기: `unity/Tools/death-art`.
+
+### 검수 (Mac, Unity 6000.6.7f1 ARM64)
+
+| 항목 | 결과 |
+|---|---|
+| 빌드 | Succeeded·오류 0 (`_out/UNITY-DEATH-PBZ-20261104/b3-norest`) |
+| `--unity-death-screen-smoke --unity-boss-direct 0` | 1920×1080·1600×900 모두 PASS. 실제 Core 사망 전이 뒤 보스방 3 선택지·초점 "다시 일어선다", 실제 키 경로(InputSystem 주입) ↓로 "처음부터 다시" 이동·동작 없음 확인 |
+| `--unity-overlay-capture death` | PASS(대사 고르기·리플레이 모양 영수증 유지) |
+| 눈 검수 | 전/후 1920·1600 직접 확인. 전: 원화·펫·이모지·"미이식"이 겹친 웹 이식판. 후: 검정·한 문장·결정. 진홍은 측정대로 검붉게 나온다. 개발 상태 문구 0 |
+| 미검증 | 필드 사망(2 선택지)은 캡처 경로가 없어 코드로만 확인. 마우스 실클릭, 초광폭 21:9·32:9, 다국어(문구는 한국어 고정) |
+
+## 11-04 04:05 지역 배너/29언어 후속
+
+NativeRegionHud.Draw의suppressArrow는배너를숨기지않았다. NativeGame.DrawRegionHud가DeathPresentationActive/fallen·부활전환·death.Active/PlayerDown에서전체지역레이어를조기return한다. 웹은regionBanner z19를전체#death z40아래에둔다. Core사망/부활시간과룰은그대로다.
+
+우상단4키는ko/en분기대신선택29언어Data/demo_text조회,Thai/아랍어등은전체문자열·명조fallback/RTL경로다. No.0374/0371/3982/0415(3766별칭)재사용,81카탈로그. death-screen-capture에objectiveThaiLabels/objectiveLabelsComplete/regionHiddenAtWait/regionHiddenInBoss를기록한다. 04:05 CTO승인예외③의고정후보에서만PC촬영하고일반PC Player금지는유지한다. [후보계약](UNITY_UI_CANDIDATE_20261104.md).
+
+## 04:05 실제 후보 촬영 중단
+a02cb84850 후보 빌드1회는 성공했으나 첫 로비의 기존 StageFlow locale 초기화 NRE로 촬영 진입 전 중단됐다. 사망 지역HUD 숨김·태국어 4키의 실제 화면 증거는 이번0장이다. 최소 null 접근 수정은 소스/참조검사만 통과했고 승인 빌드1회 소진으로 추가빌드0. [후속 관문과 정확한 실행본 구분](UNITY_UI_CANDIDATE_20261104.md).
+
+## 05:00 실제 후보 촬영 확보
+시작 null 수정 포함 e3b3bc977의 공용 추가빌드1회 PASS. 1920/3840 각각사망14장, 합28장(전체UI포함50장)을확보했다. 두해상도실제receipt의 regionHiddenAtWait/regionHiddenInBoss/objectiveLabelsComplete=true, 보스부활불가위지역배너숨김과태국어HUD를직접열어확인했다. 사용자창/세이브변경/잔류0. 아래0/50은a02이전기록이며 최신은 [후보50장근거](UNITY_UI_CANDIDATE_20261104.md)다. 디자인총괄/Mac자연게임관문은별도.
+
+## 05:40 촬영 조건·HUD 후속
+swap3와 같은 --remodel3d -force-d3d11 인자로 고정50장을 다시 촬영한다. Greek 포함29언어 HUD4키의 실제 측정 gap≥16px/116행을 사망 영수증에 남긴다. 기존 e3b3의50장은 2D 배경 인자 누락 상태였으며 3D 기준선과 같은 조건의 판정으로 쓰지 않는다. 새 결과는 REPORT가 정본이다. [계약](UNITY_UI_CANDIDATE_20261104.md).
+
+## 05:40 촬영 후처리 중단
+540fdcde20/--remodel3d/-force-d3d11로1920 사망14장·제품검증PASS,29언어116행 최소간격16px를 확인했다. 사망/입장hover의 공용 종료 후 ReadAllText(player.log) 파일잠금 예외가2회 발생해 STOP,3840은 미실행이다. 원본 총25/50, 공용 최종영수증7/9와 제품9/9를 구분한다. [근거와 미완료 관문](UNITY_UI_CANDIDATE_20261104.md).
+
+## 11-04 새 실행 — 05:50 판정 반영
+
+기하 크기 자동 칩 분기를 폐기하고 설정 조작 요소만 명시적으로 칩을 선택한다. 기본 가시 원화/20개 Lanczos3 1x·2x 파생본과 공통 철 면의 화면 픽셀 기준 샘플링을 반영했다. 소스·재질 검사/5어셈블리 참조 컴파일 오류0. 새 Unity 임포트·후보 빌드·50장 촬영은 이전 공용 로그 잠금 2FAIL과 G: 여유 기준 때문에 미실행이며 이전 540fdcde2 캡처를 새 증거로 재사용하지 않는다. 상세는 UNITY_UI_CANDIDATE_20261104.md의 새 실행 정정 절.
+
+## 11-04 RETOUCH D2·경미 (death-pbz, PC 검사·컴파일만, 화면 판정 전)
+
+판정표: `20261104_branch3/JUDGEMENT.md` ③ D2, `20261104_ui_candidate/JUDGEMENT.md` ⑥. Core·결정 화면 디자인(검정 → 한 문장 → 결정, 진홍 헤어라인, 마름모 초점)·쓰러짐 대기 화면은 바꾸지 않았다.
+
+### D2 결정 화면 문구 29개 언어
+
+- 데이터: `unity/Assets/Exoduser/Resources/Data/death_decision_text.json`. 코드(`NativeDeathOverlay`)는 `LocaleCode`(NativeGame이 `lobby.Language`를 넘김)로 한 줄을 골라 키로 읽는다. ar는 IMGUI RTL 미지원이라 en으로 그린다(`death_screen_labels`와 같은 규칙).
+- 키 9개 × 29개 언어(ko·en + 27개, Core `LobbyLanguage` 순서):
+
+| 키 | 화면 위치 | 번역 목록 No. |
+|---|---|---|
+| title | 제목(Hahmlet 300, 68px) | 4264 |
+| caption | 진홍 선 아래 장식 영문 행(Cinzel 15px) | 4265 |
+| ask | 질문(Hahmlet 24px) | 4266 |
+| rise | 선택지 "다시 일어선다" | 4267 |
+| restart | 선택지 "처음부터 다시" | 4268 |
+| giveUp | 선택지 "포기한다" | 4269 |
+| outArena | 보스방 사망 때 rise 결과 줄 | 4270 |
+| outRestart | 필드 사망 때 rise·restart 결과 줄 | 4271 |
+| outLobby | giveUp 결과 줄 | 4272 |
+
+- **영문 장식 행 판단:** `caption`은 29개 언어 모두 영문 "THERE IS NO REST" 그대로다. 이유: ① 번역 목록 4265가 KO 키=EN 값으로 같은 문구다(번역할 한국어 원문이 따로 없다). ② Cinzel은 라틴 전용이라 번역하면 키릴·그리스·태국·아랍 글자가 다른 글꼴로 떨어져 장식 행의 질감이 깨진다. ③ 로고(EXODUSER: HELL LORD)처럼 영문 장식은 고정한다. 단점: en에서는 제목과 같은 문장이 한 번 더 나온다(영문 제목 "There is no rest" + 장식 "THERE IS NO REST"). 총괄이 보고 싫으면 en만 장식 행을 바꾼다.
+- 용어: 로비는 `death_screen_labels`와 같은 말(es vestíbulo, fr salon, hu előcsarnok, bg фоайе, fi aula, th ล็อบบี้, vi sảnh 등).
+- 폭: `FitSize`가 제목(최대 1500px, 자간 .36em 기준)·장식(700)·질문(1200)·선택지(820)·결과 줄(1400)을 정수 pt씩 줄여 맞춘다. 바닥은 설계 크기의 60%, 말줄임·줄바꿈 없음. 모자라는 글자(ru·el·th·vi 악센트)는 `NativeSilverHellUi.TextFont`가 명조 계열 폴백으로 잇는다.
+
+### 경미 ① 로비 빈 슬롯 면 밝기
+
+`SilverSlotFace` (5,5,7,.94) → (8,8,12,.94). 알파 .94는 그대로다. 식 `Y_out=(1-a)·Y_bg+a·Y_face`에서 알파만 낮추면 Y가 배경 쪽으로만 간다. 0명 로비 빈 칸 뒤 배경은 Y 4.3~5.8(3840 baseline 5.77·5.72, 1920 5.09·4.32)이라 알파로는 목표 8.5에 닿지 못한다(알파 0이어도 5.8). 그래서 면 색을 올렸다. 예상 Y: 배경 4.3 → 8.21, 5.8 → 8.30, 8.7 → 8.50, 15.3(패널 바탕) → 8.87. 알파를 낮추는 쪽(.67)은 15.3 위에서만 8.5이고 0명 로비에서는 5.4이며 등불·깃발이 33% 비친다. 모델 검증: 현재 .94·(5,5,7)의 예측 5.26이 3840·1920 후보 실측 5.24~5.26과 같다.
+
+### 경미 ② 사망 화면 산세리프
+
+`NativeDeathOverlay.Draw()`·`DrawChoice()`는 `sans`·`sansBold`를 쓰지 않는다(Hahmlet 300·400, Cinzel만). 판정표가 지목한 펫 대사(HECTOR·DIROI)는 결정 화면 교체(02f83a1a3)로 그리기에서 빠졌고 `CrowLine`·`CatLine` 데이터만 남아 있다. `sans`·`sansBold`가 남은 곳은 `Init()` 로드와 `DrawReplayShape()`(`--unity-overlay-capture death`의 옛 리플레이 모양 영수증용, 게임 화면에서는 호출되지 않음)뿐이라 "옛 데이터용 코드"로 그대로 뒀다.
+
+### 코드 정정
+
+merge 52fce6875가 `Spaced()`의 닫는 괄호를 `TitleGate` 상수 뒤로 밀어 둔 상태(참조 컴파일 CS1513·CS1022)여서, `Spaced()`를 먼저 닫고 상수·`TitleGate`를 클래스 수준으로 되돌렸다. 값은 그대로(.4·.8).
+
+### 검사
+
+`unity/Tools/death-ui-tests/death-d2.test.cjs` 7/0(29개 언어·9키·빈 칸 없음·한글 섞임 없음·장식 행·코드 키 읽기·번역 목록 행·산세리프·슬롯 면), `judge6.test.cjs` 6/0(1번은 알파 .94 고정 대신 예측 Y 7~10 모델), `run.cjs`·`retouch-layout`·`candidate`·`importer`·`review-0540` 전부 통과. 참조 컴파일 5어셈블리 오류 0. 작업본 Library에 Player 템플릿이 없어 Player Bee 데이터가 있는 `claude-integration-preview`의 Library를 읽기만 했다.
+
+### 총괄 촬영 확인
+
+사망 결정 화면 1920·3840에서 ko·en·ja·ru·th·el(`--unity-death-screen-smoke`의 `death_lang_*`), 추가로 de·vi·fi·hu(긴 단어). 제목 폭·자간 수렴, 결과 줄(보스방 3선택지, 필드 2선택지) 폭, 폴백 글꼴 이음새. 로비 0명 3840·1920 빈 슬롯 면 Y 7~10과 등불·깃발 비침 0.
+
+## 2026-11-04 병합 상태·태국어 조판 대조
+
+기준 unity/main `8ad7fa322`: 결정 화면은 `1301432f0`으로 병합됐고, `NativeDeathOverlay`는 `death_decision_text.json`의 9키×29언어(No.4264~4272)를 조회한다. ar는 en으로 표시하며, 영문 장식행 THERE IS NO REST는 모든 언어에서 고정이다. 위 02시대의 "한국어 고정·다국어 미검증"은 당시 기록이고 현행 데이터 구현을 뜻하지 않는다.
+
+| 코드 계약 | 현행 값 |
+|---|---|
+| 선택지 | 보스방 Rise/Restart/GiveUp 3개, 필드 Rise/GiveUp 2개 |
+| 제목·입력 시간 | BlackIn .45초, TitleAt .5초/TitleDur1초, AskAt2초/AskDur.6초, OptAt2.35초/OptStep.12초/OptDur.45초. 입력은 `OptAt+OptStep×(선택지수−1)+.2`초부터(보스방2.79초/필드2.67초), 마지막 fade 완료를 기다리지 않음 |
+| 조판 | Thai·Lao·Khmer·Myanmar·Indic·Arabic 범위는 자간 없이 전체 문자열 1회. 나머지는 결합문자를 포함한 text element 단위. 폭 측정과 실제 그리기에 같은 advance 사용(682affa3d) |
+| 검수 경계 | 본 절은 Git 소스·데이터 대조다. 기존 디자인 판정은 해당 SHA/조건의 기록이며 새 29언어 전체 글리프·Mac 자연 플레이 통과로 확대하지 않음 |
