@@ -2,7 +2,7 @@
 
 | 담당 | 목표 | 소유 파일 | 상태 |
 |---|---|---|---|
-| codex/unity-parity-1102 | 21:50 BuildLoop 다중 패스 오탐 최우선 | NativeUiAudit·다중 패스 발행 함수, Tools/ui-overlap의 분석기/회귀/표본, 관련 UI 문서·CHANGELOG_SYNC 자기 절 | 공통8c5f967d74 추가 정상 병합·docs 양쪽 기록 보존·현재 충돌0, 실제 메뉴/CP 자기충돌0·회귀66/66. Core121/Runtime259 오류0, PC Player0. 기존1410장 재분석8363은 과거 계측 잔여로 보존. Mac 새 게이트 대기 |
+| codex/unity-parity-1102 | 11-04 01:20 폭 초과 이름/자원/조작 흐름 배치 | NativeSkills/NativeKeyBindList/NativeUiTextRun/NativeUiTextFlow, ui-text-run-tests, 관련 docs 자기 절 | 공통5c9dd3673 선병합·양쪽 이력 보존·충돌0. CPU67/67·PC Core126/Runtime267 오류0. 화면별 모델표 기록. 로비/실버 헬 원화 수정0·실제 Mac/디자인 판정 대기 |
 
 ## 2026-10-29 Mac 첫 연습 실입력 후속
 
