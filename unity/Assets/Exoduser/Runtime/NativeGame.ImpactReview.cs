@@ -33,11 +33,15 @@ namespace Exoduser.UnityPort
             smokeActive=true;dropSmoke=true;pauseSmoke=true;Running=false;
             int width,height;if(!int.TryParse(Argument("-impact-width"),out width))width=1600;if(!int.TryParse(Argument("-impact-height"),out height))height=900;
             width=Mathf.Clamp(width,1600,3840);height=Mathf.Clamp(height,900,2160);
-            Screen.SetResolution(width,height,FullScreenMode.Windowed);lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();
-            EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;lobby.CloseStartupCaptureMedia();lobby.enabled=false;SetGameFocus(true);
+            Screen.SetResolution(width,height,FullScreenMode.Windowed);
+            // 리깅 픽셀·3D 촬영은 HeroCapture·PlaytestCapture와 같은 정식 입장 경로(RigPixelReviewEntry)로 들어간다. 단순 EnterNativeTest는 필드 조립(16초) 중 12초 전환 타임아웃으로 로비 복귀한다.
+            if(RigPixelRequested){yield return RigPixelReviewEntry();if(!rigPixelEntryReady){Debug.LogError("임팩트 검수: 리깅 픽셀 정식 입장 실패");Application.Quit(2);yield break;}}
+            else{lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();}
+            if(firstPractice!=null)EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;lobby.CloseStartupCaptureMedia();lobby.enabled=false;SetGameFocus(true);
             yield return new WaitForSecondsRealtime(.6f);
             float deadline=Time.realtimeSinceStartup+45;
             while(NativeRemodel3D.Requested&&!NativeRemodel3D.Active&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
+            if(Screen.width!=width||Screen.height!=height){Screen.SetResolution(width,height,FullScreenMode.Windowed);for(int w=0;w<60&&(Screen.width!=width||Screen.height!=height);w++)yield return null;}
             var sim=Simulation;var p=sim.Player;
             sim.Config.EnemyAiEnabled=true;sim.SpawnHoles=null;sim.CrossbowAuto=false;sim.Stage.Enabled=false;
             sim.Enemies.Clear();p.Iframes=10000;sim.Materials=1000;
