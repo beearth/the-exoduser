@@ -48,7 +48,7 @@ if($Command -ne 'install-bin' -and $env:EXO_UNITY_NO_FORWARD -ne '1' -and
     exit $LASTEXITCODE
 }
 
-$ExoUnityVersion = '2026.11.04-rank'
+$ExoUnityVersion = '2026.11.04-zombiehalt'
 $MaxPlayerSlots = 2
 Import-Module (Join-Path $PSScriptRoot 'QueueTurn.psm1') -Force
 try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false) } catch { }
@@ -356,15 +356,41 @@ function Test-HaltExempt {
     $e = Read-Json (Join-Path $Root '_halt_exempt.json'); if (-not $e -or -not $e.owners) { return $false }
     $exp = $null; try { $exp = [DateTime]::Parse([string]$e.expiresAt).ToUniversalTime() } catch { }
     if (-not $exp -or $exp -lt [DateTime]::UtcNow) { return $false }
+    if ($e.PSObject.Properties['maxRuns'] -and $null -ne $e.maxRuns -and [int]$(if ($e.PSObject.Properties['used']) { $e.used } else { 0 }) -ge [int]$e.maxRuns) { return $false }
     return (@($e.owners) -contains [string]$Owner)
+}
+function Add-HaltExemptRun {
+    $p = Join-Path $Root '_halt_exempt.json'; $e = Read-Json $p; if (-not $e) { return }
+    $used = 0; if ($e.PSObject.Properties['used']) { $used = [int]$e.used }
+    $e | Add-Member -NotePropertyName used -NotePropertyValue ($used + 1) -Force
+    Write-JsonAtomic $p $e
+    Say ('HALT 예외 실행 ' + ($used + 1) + '/' + $(if ($e.PSObject.Properties['maxRuns']) { $e.maxRuns } else { '-' }))
+}
+# zombie-halt(11-04 CTO 오염 상태): 좀비 때문에 생긴 HALT(what=player)는 창 모드 Player만 위험하다(batchmode 정지 0/61).
+# 그 HALT 동안 build(Editor batch)는 그대로 진행하고, 예외가 아닌 owner의 player는 거부하지 않고 HALT가 풀릴 때까지(최대 -WaitMin) 기다린다.
+function Test-ZombieHalt {
+    if (-not (Test-Path -LiteralPath $HaltPath)) { return $false }
+    $h = Read-Json $HaltPath; if (-not $h) { return $false }
+    return ([string]$h.what -eq 'player' -and [string]$h.cause -like '*좀비*')
+}
+function Wait-HaltCleared([string]$where) {
+    if (-not $script:HaltWaitDeadline) { $script:HaltWaitDeadline = (Get-Date).AddMinutes([math]::Max(0, $WaitMin)); Say ('HALT(좀비) 동안 ' + $where + ' 대기: 재부팅·해제까지 최대 ' + $WaitMin + '분, 거부하지 않음') }
+    while ((Test-Path -LiteralPath $HaltPath) -and -not (Test-HaltExempt)) {
+        if ((Get-Date) -gt $script:HaltWaitDeadline) { Show-Halt; Write-Output ('[halt] ' + $where + ' HALT 대기 시간 초과(' + $WaitMin + '분) - 시작하지 않음'); exit 3 }
+        Start-Sleep -Seconds ([math]::Max(5, $PollSec))
+    }
 }
 function Assert-HaltClear([string]$where) {
     if ((Test-Path -LiteralPath $HaltPath) -and (Test-HaltExempt)) { return }
+    if ((Test-ZombieHalt) -and $Command -eq 'build') { return }
+    if ((Test-ZombieHalt) -and $Command -eq 'player') { Wait-HaltCleared $where; return }
     if (Test-Path -LiteralPath $HaltPath) { Say ('HALT가 생겨 ' + $where + ' 대기를 멈춘다(실행하지 않음)'); Show-Halt; Write-Output ('[halt] ' + $where + ' 대기 중 HALT - 시작 거부'); exit 3 }   # exit도 finally(예약·슬롯 반환)를 거친다
 }
 
 function Test-HaltGate {
     if (($Command.ToLower() -in 'build', 'player') -and (Test-Path -LiteralPath $HaltPath) -and (Test-HaltExempt)) { Say ('HALT 예외 owner ' + $Owner + ': HALT 중에도 실행(CTO 결정, _halt_exempt.json)'); return }
+    if ($Command.ToLower() -eq 'build' -and (Test-ZombieHalt)) { Say 'HALT(좀비, 창 모드 Player 위험) 중: Editor batch build는 진행(CTO 결정)'; return }
+    if ($Command.ToLower() -eq 'player' -and (Test-ZombieHalt)) { Wait-HaltCleared 'Player 시작'; return }
     if (($Command.ToLower() -in 'start', 'run', 'build', 'player', 'browser') -and (Test-Path -LiteralPath $HaltPath)) {
         Say 'HALT 파일이 있어 실행하지 않음'
         Show-Halt
@@ -1569,7 +1595,8 @@ function Cmd-Player {
     # 11-03 사용자 "백그라운드 테스트는 맥에서만": PC Player 실행은 CLAUDE.md 3.4 예외 3가지만 허용한다(편집기 batchmode 컴파일·임포트는 그대로).
     if (-not $PcException) { Reject 'PC에서는 player 실행을 기본 거부한다. Player 테스트·캡처는 Mac에서 실행한다. 예외(BuildLoop 바탕화면 교체·CTO 1회 교체·CTO 승인 후보 바로가기)만 -PcException buildloop|cto-swap|candidate' }
     $zombies = @(Find-ZombiePlayers)
-    if ($zombies.Count -and (Test-Path -LiteralPath $HaltPath) -and (Test-HaltExempt)) { Say ('HALT 예외 owner: 좀비 ' + (($zombies | ForEach-Object { $_.name + ':' + $_.pid }) -join ',') + '는 진단 증거로 두고 진행(죽이지 않음)') }
+    if ($zombies.Count -ge 4 -and (Test-HaltExempt)) { Reject ('HALT 예외 A/B 자동 중단: 좀비 ' + $zombies.Count + '개(4개 이상, CTO 조건) - ' + (($zombies | ForEach-Object { $_.name + ':' + $_.pid }) -join ',')) }
+    if ($zombies.Count -and (Test-HaltExempt)) { Say ('HALT 예외 owner: 좀비 ' + (($zombies | ForEach-Object { $_.name + ':' + $_.pid }) -join ',') + '는 진단 증거로 두고 진행(죽이지 않음)') }
     elseif ($zombies.Count) { Stop-ForZombies $zombies 'player' }
     if (-not $DryRun) { $games = @(Find-UserGames); if ($games.Count) { Defer-ForUserGames $games } }
     if ([string]::IsNullOrWhiteSpace($Exe)) { throw '-Exe 가 필요합니다.' }
@@ -1606,6 +1633,7 @@ function Cmd-Player {
     try {
         if ($Owner) { Cmd-Reserve | Out-Null }
         Acquire-PlayerSlot $exeFull $PID
+        if ((Test-Path -LiteralPath $HaltPath) -and (Test-HaltExempt)) { Add-HaltExemptRun }
         $diskWait = Wait-DiskIdle $exeFull
         $script:SaveBefore = Get-UserSaveSnapshot
         $g = $null; $crashCause = $null; $logsUsed = @($log); $t0c = Get-Date
