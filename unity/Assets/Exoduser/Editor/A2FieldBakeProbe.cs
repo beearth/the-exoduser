@@ -71,10 +71,12 @@ public static class A2FieldBakeProbe
     {
             using(var writer=new BinaryWriter(File.Create(file)))
             {
+                writer.Write(0x41324647);writer.Write(3); // Geometry comparison schema; reject stale snapshots.
                 var filters=root.GetComponentsInChildren<MeshFilter>(true);writer.Write(filters.Length);
                 foreach(var filter in filters)
                 {
                     var mesh=filter.sharedMesh;writer.Write(filter.gameObject.name);
+                    var matrix=filter.transform.localToWorldMatrix;for(int i=0;i<16;i++)writer.Write(matrix[i]);
                     writer.Write(mesh.isReadable);
                     // Unchanged imported meshes stay shared and keep their import flags.
                     if(!mesh.isReadable)
@@ -88,6 +90,7 @@ public static class A2FieldBakeProbe
                     var normals=mesh.normals;writer.Write(normals.Length);
                     foreach(var n in normals){writer.Write(n.x);writer.Write(n.y);writer.Write(n.z);}
                     var uv=mesh.uv;writer.Write(uv.Length);foreach(var u in uv){writer.Write(u.x);writer.Write(u.y);}
+                    var range=mesh.uv2;writer.Write(range.Length);foreach(var u in range){writer.Write(u.x);writer.Write(u.y);}
                     var tangents=mesh.tangents;writer.Write(tangents.Length);foreach(var t in tangents){writer.Write(t.x);writer.Write(t.y);writer.Write(t.z);writer.Write(t.w);}
                     var indices=mesh.triangles;writer.Write(indices.Length);foreach(int index in indices)writer.Write(index);
                 }
@@ -97,28 +100,31 @@ public static class A2FieldBakeProbe
     }
     public static void Compare(string output)
     {
-        float maxPosition=0,maxNormal=0,maxTangent=0,maxHeight=0;
+        float maxPosition=0,maxNormal=0,maxTangent=0,maxHeight=0,maxWorld=0;
         using(var a=new BinaryReader(File.OpenRead(Path.Combine(output,"baseline-geometry.bin"))))
         using(var b=new BinaryReader(File.OpenRead(Path.Combine(output,"optimized-geometry.bin"))))
         {
+            if(a.ReadInt32()!=0x41324647||b.ReadInt32()!=0x41324647||a.ReadInt32()!=3||b.ReadInt32()!=3)throw new InvalidDataException("Geometry comparison schema mismatch");
             int count=a.ReadInt32();if(count!=b.ReadInt32())throw new Exception("Mesh count changed");
             for(int mesh=0;mesh<count;mesh++)
             {
                 var name=a.ReadString();if(name!=b.ReadString())throw new Exception("Traversal changed: "+name);
+                for(int i=0;i<16;i++)maxWorld=Mathf.Max(maxWorld,Mathf.Abs(a.ReadSingle()-b.ReadSingle()));
                 bool readable=a.ReadBoolean();if(readable!=b.ReadBoolean())throw new Exception("Readability changed: "+name);
                 if(!readable){if(a.ReadString()!=b.ReadString()||a.ReadInt64()!=b.ReadInt64())throw new Exception("Shared asset changed: "+name);continue;}
                 maxPosition=Mathf.Max(maxPosition,CompareChannel(a,b,3,false));
                 maxNormal=Mathf.Max(maxNormal,CompareChannel(a,b,3,false));
                 if(CompareChannel(a,b,2,false)!=0)throw new Exception("UV changed: "+name);
+                if(CompareChannel(a,b,2,false)!=0)throw new Exception("Receiver UV2 changed: "+name);
                 maxTangent=Mathf.Max(maxTangent,CompareChannel(a,b,4,false));
                 CompareChannel(a,b,1,true);
             }
             for(int i=0;i<161*161;i++)maxHeight=Mathf.Max(maxHeight,Mathf.Abs(a.ReadSingle()-b.ReadSingle()));
             if(a.BaseStream.Position!=a.BaseStream.Length||b.BaseStream.Position!=b.BaseStream.Length)throw new Exception("Geometry data length changed");
         }
-        var summary="정점 최대 차="+maxPosition+", 법선="+maxNormal+", 탄젠트="+maxTangent+", 표시 높이="+maxHeight+"; UV·인덱스 동일. Player 시간·화면·끄기 인자 미검증. Editor 후측정은 리소스 캐시가 데워진 조건.\n";
+        var summary="월드 행렬 최대 차="+maxWorld+", 정점 최대 차="+maxPosition+", 법선="+maxNormal+", 탄젠트="+maxTangent+", 표시 높이="+maxHeight+"; UV·수신면 UV2·인덱스 동일. Player 시간·화면·끄기 인자 미검증. Editor 후측정은 리소스 캐시가 데워진 조건.\n";
         File.WriteAllText(Path.Combine(output,"comparison.txt"),summary);
-        if(maxPosition>1e-5f||maxNormal>1e-4f||maxTangent>1e-4f||maxHeight>1e-5f)throw new Exception(summary);
+        if(maxWorld>1e-5f||maxPosition>1e-5f||maxNormal>1e-4f||maxTangent>1e-4f||maxHeight>1e-5f)throw new Exception(summary);
         File.WriteAllText(Path.Combine(output,"probe-ok.txt"),summary);
     }
     static float CompareChannel(BinaryReader a,BinaryReader b,int stride,bool indices)
