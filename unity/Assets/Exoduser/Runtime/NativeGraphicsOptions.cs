@@ -32,6 +32,7 @@ namespace Exoduser.UnityPort
   public static void Tick(NativeOptionSet o)
   {
    if(o==null||Application.isBatchMode)return;
+   PruneDestroyed();
    bool idle=o.Check("postfx")&&o.Check("bloom")&&o.Check("fog")&&savedWeight.Count==0&&savedBloom.Count==0&&!fogSuppressed;
    if(idle||++sinceScan<ScanFrames)return;
    sinceScan=0;ApplyVolumes(o.Check("postfx"),o.Check("bloom"));ApplyFog(o.Check("fog"));
@@ -48,8 +49,21 @@ namespace Exoduser.UnityPort
    if(!scaleSaved){if(percent>=100)return;savedScale=asset.renderScale;scaleSaved=true;}
    asset.renderScale=percent>=100?savedScale:savedScale*NativeGraphicsPolicy.RenderScale(percent);
   }
+  // R10: a scene change destroys the Volumes and Blooms we remembered. Unity-null keys are dropped here so they are never touched again and never keep the scan alive.
+  static readonly List<Volume> deadVolumes=new List<Volume>();
+  static readonly List<Bloom> deadBlooms=new List<Bloom>();
+  static void PruneDestroyed()
+  {
+   deadVolumes.Clear();deadBlooms.Clear();
+   foreach(var kv in savedWeight)if(kv.Key==null)deadVolumes.Add(kv.Key);
+   foreach(var kv in savedBloom)if(kv.Key==null)deadBlooms.Add(kv.Key);
+   foreach(var k in deadVolumes)savedWeight.Remove(k);
+   foreach(var k in deadBlooms)savedBloom.Remove(k);
+   deadVolumes.Clear();deadBlooms.Clear();
+  }
   static void RestoreVolumes()
   {
+   PruneDestroyed();
    foreach(var kv in savedWeight)if(kv.Key!=null&&kv.Key.weight==0f)kv.Key.weight=kv.Value;
    savedWeight.Clear();
    foreach(var kv in savedBloom)if(kv.Key!=null)kv.Key.active=kv.Value;
@@ -58,6 +72,7 @@ namespace Exoduser.UnityPort
   static void ApplyVolumes(bool post,bool bloom)
   {
    if(post&&bloom){RestoreVolumes();return;}
+   PruneDestroyed();
    foreach(var v in Object.FindObjectsByType<Volume>(FindObjectsSortMode.None))
    {
     if(!post){if(!savedWeight.ContainsKey(v))savedWeight[v]=v.weight;v.weight=0f;}

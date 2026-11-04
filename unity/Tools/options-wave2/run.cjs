@@ -37,6 +37,10 @@ ok(/W\("m\.unavailable"/.test(menu),'P18 unavailable note text from the 29-langu
 // camera LOCK / far enemies: no camera, vignette or pitch changes in the new files
 for(const [n,t] of [['NativeGraphicsOptions',gfx],['NativeCursorOption',cursor]])ok(!/Camera\.|fieldOfView|Vignette|eulerAngles|orthographic/.test(t),'LOCK '+n+' touches no camera / vignette / pitch');
 ok(!/FilmGrain|grain/i.test(gfx),'dot rule: no grain effect is added');
+// R10: destroyed Volume/Bloom keys are dropped and skipped, defaults still return before touching anything
+ok(/static void PruneDestroyed\(\)/.test(gfx)&&/kv\.Key==null\)deadVolumes\.Add/.test(gfx)&&/kv\.Key==null\)deadBlooms\.Add/.test(gfx),'R10 destroyed (Unity-null) saved Volume/Bloom keys are pruned');
+ok(/PruneDestroyed\(\);\s*bool idle=/.test(gfx)&&/static void RestoreVolumes\(\)\s*\{\s*PruneDestroyed\(\);/.test(gfx)&&/if\(post&&bloom\)\{RestoreVolumes\(\);return;\}\s*PruneDestroyed\(\);/.test(gfx),'R10 pruned before the idle test, before restoring and before every new scan (new scene targets are captured again)');
+ok(/kv\.Key!=null&&kv\.Key\.weight==0f/.test(gfx)&&/kv\.Key!=null\)kv\.Key\.active=kv\.Value/.test(gfx),'R10 restore skips destroyed targets');
 // forbidden files untouched (basis = the demo-flavor commit merged into this branch)
 const basis=cp.execFileSync('git',['-C',project,'rev-parse','78cef36f9^2'],{encoding:'utf8'}).trim();
 const names=cp.execFileSync('git',['-C',project,'diff','--name-only',basis,'--','Assets/Exoduser/Runtime/NativeHud.cs','Assets/Exoduser/Runtime/NativePanelTabBar.cs','Assets/Exoduser/Runtime/NativeForgePanel.cs','Assets/Exoduser/Runtime/NativeFlavorSavePaths.cs','Assets/Exoduser/Runtime/NativeFlavorStorage.cs','Assets/Exoduser/Runtime/NativeGame.CombatSave.cs'],{encoding:'utf8',stdio:['ignore','pipe','pipe']}).trim();
