@@ -33,22 +33,52 @@ Shader "EXODUSER/Arena8b/Ground"
    struct A {float4 p:POSITION;float3 n:NORMAL;};
    struct V {float4 p:SV_POSITION;float3 w:TEXCOORD0;half3 n:TEXCOORD1;half fog:TEXCOORD2;};
    V vert(A a){V o;o.w=TransformObjectToWorld(a.p.xyz);o.p=TransformWorldToHClip(o.w);o.n=TransformObjectToWorldNormal(a.n);o.fog=ComputeFogFactor(o.p.z);return o;}
+   float2 TurnUv(int t,float2 u,float d){if(t==1)return float2(u.y,d-u.x);if(t==2)return d-u;if(t==3)return float2(d-u.y,u.x);return u;}
+   float2 TurnDetail(int t,float2 v){if(t==1)return float2(-v.y,v.x);if(t==2)return -v;if(t==3)return float2(v.y,-v.x);return v;}
+   // One painted-tile layer. p = tile-space position (1 unit = 1 tile). m = layer weight (0 at the tile seam).
+   void GroundLayer(float2 p,float blend,int variant,out half3 paint,out float alpha,out float2 detail,out float water,out float m)
+   {
+    float2 cell=floor(p),uv=frac(p),dx=ddx(p),dy=ddy(p);
+    int t=(int)abs(variant==0?cell.x+cell.y*3:cell.x*2+cell.y*5)%4;
+    float2 e=min(uv,1-uv);m=smoothstep(.02,.22,min(e.x,e.y));
+    uv=TurnUv(t,uv,1);dx=TurnUv(t,dx,0);dy=TurnUv(t,dy,0);
+    half4 pa=SAMPLE_TEXTURE2D_GRAD(_PaintA,sampler_PaintA,uv,dx,dy),pb=SAMPLE_TEXTURE2D_GRAD(_PaintB,sampler_PaintB,uv,dx,dy);
+    half4 painted=lerp(pa,pb,blend);paint=painted.rgb;alpha=painted.a;
+    half3 na=SAMPLE_TEXTURE2D_GRAD(_NormalA,sampler_NormalA,uv,dx,dy).rgb,nb=SAMPLE_TEXTURE2D_GRAD(_NormalB,sampler_NormalB,uv,dx,dy).rgb;
+    float2 nd=TurnDetail(t,(lerp(na,nb,blend)*2-1).xy);
+    if(variant==1){float c=cos(.52),s=sin(.52);nd=float2(c*nd.x+s*nd.y,-s*nd.x+c*nd.y);}
+    detail=nd;
+    water=lerp(SAMPLE_TEXTURE2D_GRAD(_MaskA,sampler_MaskA,uv,dx,dy).r,SAMPLE_TEXTURE2D_GRAD(_MaskB,sampler_MaskB,uv,dx,dy).r,blend);
+   }
    half4 frag(V i):SV_Target
    {
-    float2 world=float2(i.w.x,-i.w.z),cell=floor(world/10),uv=frac(world/10);
-    // Rotation varies only per ten-metre patch; no pixel grain/dither is introduced.
-    int turn=(int)abs(cell.x+cell.y*3)%4;
-    if(turn==1)uv=float2(uv.y,1-uv.x);else if(turn==2)uv=1-uv;else if(turn==3)uv=float2(1-uv.y,uv.x);
+    float2 world=float2(i.w.x,-i.w.z);
     float blend=smoothstep(-.65,.65,sin(i.w.x*.137)+cos(i.w.z*.171));
-    half4 painted=lerp(SAMPLE_TEXTURE2D(_PaintA,sampler_PaintA,uv),SAMPLE_TEXTURE2D(_PaintB,sampler_PaintB,uv),blend);half3 paint=painted.rgb;
-    half3 normal=lerp(SAMPLE_TEXTURE2D(_NormalA,sampler_NormalA,uv).rgb,SAMPLE_TEXTURE2D(_NormalB,sampler_NormalB,uv).rgb,blend)*2-1;
-    float water=lerp(SAMPLE_TEXTURE2D(_MaskA,sampler_MaskA,uv).r,SAMPLE_TEXTURE2D(_MaskB,sampler_MaskB,uv).r,blend);
-    float2 edge=min(uv,1-uv);float coverage=smoothstep(.06,.20,min(edge.x,edge.y))*(1-smoothstep(.1,.9,water))*painted.a;
+    // Two painted-tile layers (10u grid, and a 13u grid rotated 0.52 rad + offset). Each layer's weight is 0 at its own tile
+    // seam, and the other layer is full there, so no straight seam survives. Low-frequency sine noise (periods >= 45u)
+    // picks the mix and the paint coverage. No pixel grain/dither is introduced.
+    float cr=cos(.52),sr=sin(.52);
+    float2 p1=world/10,p2=float2(cr*world.x-sr*world.y,sr*world.x+cr*world.y)/13+float2(3.7,8.1);
+    half3 paint1,paint2;float a1,a2,wa1,wa2,m1,m2;float2 d1,d2;
+    GroundLayer(p1,blend,0,paint1,a1,d1,wa1,m1);
+    GroundLayer(p2,blend,1,paint2,a2,d2,wa2,m2);
+    float2 q=world;
+    float nMix=.5+.5*(sin(dot(q,float2(.0611,.0323))+1.3)+sin(dot(q,float2(-.0467,.0829))+.4)+sin(dot(q,float2(.0974,-.0531))+2.1))/3;
+    float nCov=.5+.5*(sin(dot(q,float2(.0713,-.0419))+.9)+sin(dot(q,float2(.0389,.1093))+3.0)+sin(dot(q,float2(-.1013,-.0617))+1.7))/3;
+    float mix2=.2+.6*smoothstep(.25,.75,nMix);
+    m1*=1-mix2;m2*=mix2;
+    float msum=m1+m2,inv=1/max(msum,1e-4);
+    float presence=smoothstep(0,.25,msum);
+    half3 paint=(paint1*m1+paint2*m2)*inv;
+    float alpha=(a1*m1+a2*m2)*inv;
+    float water=(wa1*m1+wa2*m2)*inv;
+    float2 detail=(d1*m1+d2*m2)*inv;
+    float cov=lerp(.78,1,smoothstep(.2,.8,nCov));
+    float coverage=presence*cov*(1-smoothstep(.1,.9,water))*alpha;
     half3 soil=SAMPLE_TEXTURE2D(_Soil,sampler_Soil,world*.20).rgb;
     half3 roots=SAMPLE_TEXTURE2D(_Roots,sampler_Roots,world*.12+float2(.27,.63)).rgb;
     float rootWeight=.12*smoothstep(.15,.85,.5+.5*sin(world.x*.23+sin(world.y*.17)));
     half3 albedo=lerp(lerp(soil,roots,rootWeight),paint,coverage);
-    float2 detail=normal.xy;if(turn==1)detail=float2(-detail.y,detail.x);else if(turn==2)detail=-detail;else if(turn==3)detail=float2(detail.y,-detail.x);
     half3 n=normalize(i.n+half3(detail.x,0,-detail.y)*(.35*coverage));
     Light main=GetMainLight(TransformWorldToShadowCoord(i.w));
     half3 light=half3(.08,.075,.065)+main.color*saturate(dot(n,main.direction))*main.shadowAttenuation;
