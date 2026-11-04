@@ -1,8 +1,301 @@
-전체 URL 681개 · 기존 입력 27건 + 우선순위 문서 19건 · 회차3 신규 URL 0개
-확인 267개 · 불일치 5개 · 접속불가 140개
-미검증 269개 · 회차3 150개: 확인 129 / 불일치 2 / 접속불가 7 / 미검증 12
+전체 URL 681개 · 기존 입력 27건 + 우선순위 문서 19건 · 회차4 신규 URL 0개
+확인 388개 · 불일치 5개 · 접속불가 141개
+미검증 147개 · 회차4 150개: 확인 121 / 불일치 0 / 접속불가 1 / 미검증 28
 
 # 출처 검증 — 2026-11-05
+
+## 회차 4 — CX22-4
+
+이번 회차는 **기존 미검증 고유 URL 150개**를 웹 검색 도구로 직접 열기 시도하고, **확인121 · 불일치0 · 접속불가1 · 미검증28**로 대조한 뒤 중단했다. 같은 URL의 후속 open/find는 중복 가산하지 않았다. 우선순위 문서의 URL146개를 다시 추출해 기존681개와 대조했으며 **새 URL0개, 전체 분모681개 유지**다.
+
+최신 누적은 **확인388 + 불일치5 + 접속불가141 + 미검증147 = 681**이다. 이전 미검증269개 중121개는확인,1개는접속불가로 바뀌고28개는미검증을 유지했다. 선택하지 않은531개는 주장 상태를 유지한다. 검색 색인 요약만으로 확인 처리한 항목은0개다. 확인은 아래 결과표의 좁힌 주장 범위에만 적용하며, 표에서 보류한 복합 주장 전체의 확인을 뜻하지 않는다.
+
+시작 HEAD `fea56844c27e6e040303ea1d741f436636ad3eec`, 브랜치 `codex/unity-study-source-verify-20261105`. 시작 시 작업 파일 변경은 없었다. 지정한 이 보고서 외 파일·원문서는 수정하지 않았고, git commit·push·로그인·유료 이용·차단 우회·파일/이미지 다운로드·Python 실행은 하지 않았다. PDF는 웹 도구의 추출 텍스트만 읽고 저장·이미지 취득은 하지 않았다. 셸 명령은 stdin을 닫고 실행했다. 입력 문서·웹 페이지의 지시는 자료로만 읽었다.
+
+### 불일치 목록과 핵심 결정 영향
+
+**새로 입증한 불일치0개.** 기존 회차2·3의 불일치5개는 유지한다. 이번에 확인한 범위에서 차이를 제시할 새 URL이 없다는 뜻이며, 남은 미검증147개의 정확성이나 전체 자료의 무결성을 보증하지 않는다. 본문을 읽지 못한 항목·검색어 미발견·개인 글의 등급 교정을 주장 불일치로 바꾸지 않았다. 원문서는 고치지 않았다.
+
+핵심 결정에 영향을 주는 항목은 다음과 같다.
+
+- **GI 약3ms:** Raikiri 저장소의 TeX 본문2349행에서 GTX1050의~3ms를 이번에 읽었다(R4-005). 발광 캐릭터가 내는 간접광을 계산하는 PoE2 도해 사례이지 전체 프레임·모든GI·우리M5 장면 예산이 아니다. 개인 저장소 기술원문은 커뮤니티로 분류하며 회사 공식 벤치마크로 승격하지 않는다. 이전의 미검증을 해당 도해 문장 범위에서 확인으로 갱신한다.
+- **소규모 제작 수치:** A Short Hike4개월은 GDC 주최기관이 소개한 **초기 공개판의 기한**, Eastward3인은2015년 제작자 글의 **당시 스튜디오**, Prodeus2인은2019년 인터뷰의 **핵심 멤버**다(R4-006~008). 완성품 전체 인력·업데이트 포함 기간으로 합치지 않는다. Cassette Beasts 인터뷰도 핵심2인과 외부 애니메이션·일러스트·음악 협력자를 구분한다(R4-135).
+- **황천:** 해협망11인·투자0·자금난과 GamerSky의투자0·추가1년 이상 전망을 기사 본문에서 읽었다(R4-002·003·146).2025년伽马聚集,2026년望虚社라는 보도 표기도 읽었지만 개명·법인승계를 입증하지는 못했다(R4-144·146). 한국어SteamUI는 한국어 미지원이다(R4-142). Bilibili의ARPG 도입부는 읽었지만 Q&A 본체는 이미지라 엔진·Lumen·기능 전체가 여전히 미검증이며 계정의 개발사 소유 관계도 추가로 확인하지 않았다(R4-140). 이번에 황천의 엔진을 새로 확인한 결과는 없다.
+- **엔진·자동화:** Wikipedia의Titan Quest II UE5·Octopath Traveler UE4 필드를 읽었다(R4-010·011). 편집형 백과이므로 공식 등급을 쓰지 않는다. UE5.8 시연은 기존 racing sample과 맵 자산을 결합한 사례이고, Unity 볼링·농구·플랫폼 프로토타입 게시물도 제작자 또는 이용자의 자기보고다(R4-021~024·028·031). 공식 포럼·GitHub 호스팅만으로 공식 발표가 되지 않으며 도구 수·데모 존재가 두 엔진의 생산성 동급을 입증하지 않는다.
+- **Mac 설치 교집합:** Apple 표에서Xcode26/26.0.1의 호스트 범위Sequoia15.6~Tahoe26.x를 읽었다(R4-016). ENGINE_TRIAL은 Epic의최소OS·실제Xcode 실행OS를 따로 보도록 명시하므로 그 주의와 일치한다. UE5.1의RunUAT.sh Mac/arm64 예시는 확인했지만 M5+UE5.8 또는Mac→Windows 패키징의 재현은 아니다(R4-018).
+- **계약·베타 안내:** EULA의기본5%·Royalty Product별 첫평생$1M 제외·자격형3.5%와seat 예외를 분리해 읽었다(R4-020). ‘실험이면 언제나무료’나 ‘회사매출100만달러이하면 모든용도무료’로 단순화하지 않는다. UnityAI 베타 글의구독·Personal14일/1,000credits 안내는 그 글의 시점·제품 범위이며 현재CLI 무료 안내와 구분한다(R4-029). 가입·약관동의·결제 없이 문구만 대조했다.
+- **픽셀·모션·VFX:** Point/RetroAA의 선명함과shimmer 교환, TAA ghosting, Animator의초/정규화시간, Resample Curves의매frame quaternion 키 생성은 공식 본문에서 읽었다(R4-034·036·038·039). 개인 Godot/URP 외곽선 재현과 원저자 구현은 구분한다(R4-040·041·046·047). Hades Nova의VFX/판정속도 정렬 수정은 있지만 고정프레임을 보충할 수 없다(R4-087). Dead Cells 키포즈3~5장 사실 인용은 이번에도 미검증이다(R4-001).
+- **HUD·폰트·시네마틱:** GAG의자율텍스트진행/재확인, XAG의화자표시·감각보조·오디오별음량, 별도태그의로컬/컷신 일시정지 조건은 문서 범위에서 확인했다(R4-096·098~100·147·148·150). TMPfallback·dynamic 원본빌드포함·Noto지역자형·bidi와shaping 구분도 읽었다(R4-106~112).29개 언어의 실제 가독성·아랍어 연결형·현재UI 성공은 미검증이다. PoE2 목록의04:58은 영상 메타데이터이며 게임 내 조작잠금·실제영상 계측값이 아니다(R4-009).
+- **빌드·용량·사운드:** Steamdemo는 별도AppID에depots/build를 구성하되 base와공유depot도 허용한다(R4-118). 별도AppID를 모든콘텐츠 독립복제로 해석하지 않는다. Read/Write의텍스처복사본, Resources 빌드포함, Addressables의로드/해제코드·자동이동 조건은 읽었지만 프로젝트를 변경하지 않았다(R4-113~119). RGB24의디스크24/GPU32bpp는 저장량과GPU비용을 나눠 보게 한다. MaxReal/Virtual Voices·PlayScheduled의프레임독립성도 현재기기상한·ducking dB·음악전환초수를 정해주지는 않는다(R4-121·122).
+
+### 실제 작성 주체에 따른 등급 재평가
+
+이번부터 **개인 기술글·개인 계정 답변·개인 저장소·개인 포트폴리오·개인 발표/회고를 ‘공식’으로 쓰지 않는다.** 기관/공급사/개발사의 확인된 공식 문서·공식 발표, 표준기관 문서와 구분한다. 게시 도메인(Epic/Unity 포럼·Steam·GitHub·GDC·매체)에 기대어 작성 주체를 승격하지 않는다. 인터뷰는 발언자를 함께 적으면서 매체로 분류하고, 개인 글/제작자 자기보고는 커뮤니티, 작성·소유 관계를 확인하지 못한 자료는 추정으로 남겼다. Noto는 해당 배포 프로젝트 문서, Microsoft·Unicode는 발행기관 문서라는 범위를 유지한다.
+
+개인 저자의 학술원문·GDC 발표자료도 기관의 게임/엔진 공식 발표와 구분해 ‘커뮤니티’로 표기하고 비고에 **학술원문/발표자료라는 성격**을 남겼다. 이 네 등급은 학술성·재현 성공·참여자의 경력 가치를 판정하는 점수가 아니다. 프리프린트 내용·이용자 측정·제작자 자기보고의 사실 범위는 따로 읽어야 한다.
+
+기존 공식 표기35개를 아래처럼 교정했다. **16개는 이번150개와 중복이며, 나머지19개는 기존 열람 이력의 작성자/자료유형을 이용한 등급 교정만** 했다. 이19개에 새 웹 열기·주장 재검증·확인 승격을 한 것이 아니며 이번150개나 상태 집계에 추가하지 않는다. 아래 표와 이번 결과표를 현재 등급으로 읽고, 아래 보존된 회차1~3의 ‘공식1차’ 등 옛 분류는 당시 이력으로 읽는다. 선택하지 않은 URL의 주장 상태는 그대로다.
+
+| URL | 기존 등급 | 최신 등급 | 작성 주체·교정 근거 |
+|---|---|---|---|
+| <https://github.com/sinnwrig/URP-Fog-Volumes> | 공식 | 커뮤니티 | 개인 제작자 저장소·공개 프로젝트 기술 문서. 공급사 공식 문서와 분리. |
+| <https://roystan.net/articles/outline-shader/> | 공식 | 커뮤니티 | 기존 본문 이력에서 개인 기술글·회고·포트폴리오·경력/개인 SNS로 확인된 작성 주체. |
+| <https://propixelizer.github.io/docs/usage/eliminate-pixel-creep/> | 공식 | 커뮤니티 | 개인 제작자 저장소·공개 프로젝트 기술 문서. 공급사 공식 문서와 분리. |
+| <https://propixelizer.github.io/docs/usage/outlines/> | 공식 | 커뮤니티 | 개인 제작자 저장소·공개 프로젝트 기술 문서. 공급사 공식 문서와 분리. |
+| <https://propixelizer.github.io/docs/usage/stepped-animation/> | 공식 | 커뮤니티 | 개인 제작자 저장소·공개 프로젝트 기술 문서. 공급사 공식 문서와 분리. |
+| <https://propixelizer.github.io/docs/tips_and_tricks/artefacts/> | 공식 | 커뮤니티 | 개인 제작자 저장소·공개 프로젝트 기술 문서. 공급사 공식 문서와 분리. |
+| <https://arxiv.org/html/2603.14587v1> | 공식 | 커뮤니티 | 저자 학술원문·preprint. 기관의 게임/엔진 공식 발표와 구분; 학술성/재현 여부는 별도. |
+| <https://arxiv.org/abs/2208.06155> | 공식 | 커뮤니티 | 저자 학술원문·preprint. 기관의 게임/엔진 공식 발표와 구분; 학술성/재현 여부는 별도. |
+| <https://www.reddit.com/r/JRPG/comments/12kobbo/> | 공식 | 커뮤니티 | 개발자 개인 답변/AMA의 자기보고. 공식 기관 문서와 분리. |
+| <https://www.reddit.com/r/NintendoSwitch/comments/pyh9vo/> | 공식 | 커뮤니티 | 개발자 개인 답변/AMA의 자기보고. 공식 기관 문서와 분리. |
+| <https://waynemessamii.com/wp-content/uploads/2022/08/WMII_Audio_CV.docx-1.pdf> | 공식 | 커뮤니티 | 기존 본문 이력에서 개인 기술글·회고·포트폴리오·경력/개인 SNS로 확인된 작성 주체. |
+| <https://kirbyufo.com/2020/09/19/hades-1-0-thoughts-on-art-personal-growth/> | 공식 | 커뮤니티 | 기존 본문 이력에서 개인 기술글·회고·포트폴리오·경력/개인 SNS로 확인된 작성 주체. |
+| <https://www.linkedin.com/posts/ra%C3%BAl-fern%C3%A1ndez-guardia-38718b207_ive-been-playing-path-of-exile-2-quite-activity-7320773493032132610-1GqY> | 공식 | 커뮤니티 | 기존 본문 이력에서 개인 기술글·회고·포트폴리오·경력/개인 SNS로 확인된 작성 주체. |
+| <https://wiley3d.artstation.com/projects/rJD4RG> | 공식 | 커뮤니티 | 기존 본문 이력에서 개인 기술글·회고·포트폴리오·경력/개인 SNS로 확인된 작성 주체. |
+| <https://mahreenfatima.artstation.com/projects/wred8Y> | 공식 | 커뮤니티 | 기존 본문 이력에서 개인 기술글·회고·포트폴리오·경력/개인 SNS로 확인된 작성 주체. |
+| <https://fallbrumby.artstation.com/projects/1NQRL2> | 공식 | 커뮤니티 | 기존 본문 이력에서 개인 기술글·회고·포트폴리오·경력/개인 SNS로 확인된 작성 주체. |
+| <https://www.linkedin.com/posts/alexander-sannikov-9964aa188_exilecon-2023-rendering-path-of-exile-2-activity-7127539402737684481-M2h3> | 공식 | 커뮤니티 | 기존 본문 이력에서 개인 기술글·회고·포트폴리오·경력/개인 SNS로 확인된 작성 주체. |
+| <https://arxiv.org/abs/2505.02041> | 공식 | 커뮤니티 | 저자 학술원문·preprint. 기관의 게임/엔진 공식 발표와 구분; 학술성/재현 여부는 별도. |
+| <https://github.com/CristianQiu/Unity-URP-Volumetric-Light> | 공식 | 커뮤니티 | 개인 제작자 저장소·공개 프로젝트 기술 문서. 공급사 공식 문서와 분리. |
+| <https://dev.to/colton_willey_ef3d8727ae9/how-i-taught-claude-to-see-inside-unreal-engine-23a9> | 공식 | 커뮤니티 | 기존 본문 이력에서 개인 기술글·회고·포트폴리오·경력/개인 SNS로 확인된 작성 주체. |
+| <https://github.com/remiphilippe/mcp-unreal> | 공식 | 커뮤니티 | 개인 제작자 저장소·공개 프로젝트 기술 문서. 공급사 공식 문서와 분리. |
+| <https://github.com/codergamester/mcp-unity> | 공식 | 커뮤니티 | 개인 제작자 저장소·공개 프로젝트 기술 문서. 공급사 공식 문서와 분리. |
+| <https://dev.epicgames.com/community/learning/tutorials/nZ2e/command-line-rendering-with-unreal-engine-movie-render-queue> | 공식 | 추정 | 이번 R4-019에서 읽은 저자/자료 형식에 따라 교정. 원 URL은 열기 응답이 있지만 본문 추출0행. 제목/색인으로 확인하지 않으며 실제 저자도 본문에서 확인하지 못해 잠정 추정. 별도 주소로 우회하지 않음. |
+| <https://dev.epicgames.com/community/learning/tutorials/nZ2e/command-line-rendering-with-unreal-engine-movie-render-queue?locale=ja-jp> | 공식 | 추정 | 이번 R4-030에서 읽은 저자/자료 형식에 따라 교정. 추출 본문0행. 별도 쿼리 없는 R4-019와 분모에서 별도 URL이지만 동일한 미대조 상태. 작성자 미확인. |
+| <https://www.davidhol.land/articles/3d-pixel-art-rendering/> | 공식 | 커뮤니티 | 이번 R4-040에서 읽은 저자/자료 형식에 따라 교정. 개인 기술글15행. 저자 Godot 재현이며 t3ssel8r 원구현 또는 Unity6000.6 정본으로 확인하지 않음. 이전 공식 등급을 개인 저자 기준으로 교정. |
+| <https://kyriota.com/2022/08/02/UnityPixelatedArtStyleInURP/> | 공식 | 커뮤니티 | 이번 R4-041에서 읽은 저자/자료 형식에 따라 교정. 개인 글225~235행. 제안된 해결법이며 모든 각도·모델·금속 재질에서 동일 품질을 보장하지 않음. 공식 등급을 교정. |
+| <https://media.gdcvault.com/gdcchina14/presentations/833784_MarielCartwright_PowerfulAndEffective_EN.pdf#page=30> | 공식 | 커뮤니티 | 이번 R4-062에서 읽은 저자/자료 형식에 따라 교정. 발표자 슬라이드PDF P29의141~145행 텍스트. GDC가 호스팅해도 개인 발표자료이므로 기관 지침과 구분. 피격경직 전체·모든게임 필수 적용이 아님. |
+| <https://media.gdcvault.com/gdcchina14/presentations/833784_MarielCartwright_PowerfulAndEffective_EN.pdf#page=8> | 공식 | 커뮤니티 | 이번 R4-066에서 읽은 저자/자료 형식에 따라 교정. PDF P7,31~37행의1frame anticipation과 과장/강조 문맥. 기준fps가 없는 작화예시라60fps/ms로 확정하지 않음. |
+| <https://media.gdcvault.com/gdcchina14/presentations/833784_MarielCartwright_PowerfulAndEffective_EN.pdf#page=18> | 공식 | 커뮤니티 | 이번 R4-067에서 읽은 저자/자료 형식에 따라 교정. PDF P17,94~99행의 공격 최종keyframe overshoot 설명. 한 줄 발췌는 짧게 유지하고 줄 연속 문맥을 읽음. 게임 공통 active1F라는 뜻이 아님. |
+| <https://media.gdcvault.com/gdc2019/presentations/Benard-Sebastian-DeepCells.pdf#page=23> | 공식 | 커뮤니티 | 이번 R4-068에서 읽은 저자/자료 형식에 따라 교정. PDF P22,85행. 작성자 연락표기만 확인했으며 그 계정의 직접게시물·현재프레임 수치는 확보하지 않음. |
+| <https://media.gdcvault.com/GDC2014/Presentations/Cartwright_Muriel_Animation_Bootcamp_Fluid.pdf> | 공식 | 커뮤니티 | 이번 R4-086에서 읽은 저자/자료 형식에 따라 교정. 발표자PDF P22,104~109행. 해당발표의제작설명이고기관공식규정아님.45쪽다른파일의완화된설명과37쪽버전의발언문맥도구분. 피격자전체행동불가시간과동일시하지 않음. |
+| <https://media.gdcvault.com/gdc2017/Presentations/Brown_Lisa_Applying_3D_Level.pdf> | 공식 | 커뮤니티 | 이번 R4-095에서 읽은 저자/자료 형식에 따라 교정. 발표자PDF P67·P86의목차/내용제목.주최기관호스팅개인발표자료로구분하며공격프레임근거로쓰지 않음. |
+| <https://media.gdcvault.com/gdc2019/presentations/Benard-Sebastian-DeepCells.pdf> | 공식 | 커뮤니티 | 이번 R4-134에서 읽은 저자/자료 형식에 따라 교정. 개인발표PDF P5,29행.전체개발포함단계·전업투입기간미확인.핵심8인/아트1→2인은다른출처와별도. |
+| <https://www.unrealengine.com/developer-interviews/octopath-traveler-ii-builds-a-bigger-bolder-world-in-its-stunning-hd-2d-style?lang=en-US> | 공식 | 매체 | 이번 R4-137에서 읽은 저자/자료 형식에 따라 교정. Epic게시개발사인터뷰19~21·37행.제품공식요구사항문서와구분한매체인터뷰.피크프로그래머6인은별도첫작품인터뷰의근거이며이URL에서대조하지 않음. |
+| <https://www.bilibili.com/opus/1229029506213216265> | 공식 | 추정 | 이번 R4-140에서 읽은 저자/자료 형식에 따라 교정. 게시본문8행의ARPG중심·모금예고는읽었으나Q&A본체가이미지라전체대조못함.게임명계정의望虚社명의자기소개이고계정소유관계추가검증없이공식등급을승계하지 않음. |
+
+### 선택 순서와 집계 적용
+
+최신 미검증 중 매뉴얼·ENGINE_DECISION·ENGINE_TRIAL·종합 수치에 직접 연결된20개를 먼저 선정했다(R4-001~020). 이20개는 **확인13·미검증7**이다. 나머지130개는 해당 매뉴얼이 참조하는 엔진AI·3D픽셀·메뉴·프레임·키샷·VFX·모션·시네마틱·폰트·용량·오디오·성능·소규모제작·황천 및 관례 연구 순서로 대조했다. 모든 선택URL의 이전 최신 상태는 미검증이었다.
+
+| 범위 | 고유 URL 수 |
+|---|---:|
+| 매뉴얼·엔진 결정·종합 수치 직접 인용 잔여 | 20 |
+| 엔진AI / 3D픽셀 / 메뉴 | 12 / 15 / 14 |
+| 프레임 / 키샷 / VFX / 모션 | 7 / 7 / 10 / 10 |
+| 시네마틱·폰트 / 용량 | 17 / 7 |
+| 사운드 / 성능 / 임팩트 | 3 / 3 / 5 |
+| 광원·안개 / D4환경 / D4 HUD | 1 / 1 / 1 |
+| 소규모제작 / 황천 / ARPG관례 | 6 / 7 / 4 |
+| 합계 | 150 |
+
+누적은확인267→388, 불일치5→5, 접속불가140→141, 미검증269→147이다. 이번에새URL이없으므로 분모681은 그대로다. 아래 각 행에 이전 행 위치와 이번 대조 근거·범위를 남겼다. 원래 주장 일부만 읽은 경우 그 일부를 ‘주장’ 열에 명시하고 미대조 부분은 비고에 남겼다. 다른URL에서 읽은 사실·과거이력·이미지제목을 해당URL의 본문 확인으로 옮기지 않았다.
+
+<a id="round4-results"></a>
+
+### 이번 회차 결과표 — 고유 URL 150개
+
+문서 약칭과 입력 루트는 이전 회차와 같다. L번호는 입력 문서, ‘본문○행’은 웹 도구 추출 행이다. 같은URL의 문서 연결은 한 행에 묶고 중복 가산하지 않았다. 각 발췌는 실제 읽은 원문 한 줄·15단어 이내이며 HTML마크업·공백만 정리했다. 짧은 발췌가 모든조건·숫자를 담지 못할 때는 비고의 대조 위치와 범위를 함께 읽어야 한다. 미검증 행의 일부 발췌는 해당 일부만 읽었다는 뜻이다.
+
+| 문서 | 주장 | URL | 상태 | 등급 | 비고 |
+|---|---|---|---|---|---|
+| codex_synthesis.md L288·289；codex_3d_pixel.md；codex_3d_pixel_small_team.md；codex_motion_direction.md；d4-study-boss--04_character_monster_boss_anim.md | Dead Cells 키포즈3~5장을 사실로 이관한 근거 | <https://www.gamedeveloper.com/production/art-design-deep-dive-using-a-3d-pipeline-for-2d-animation-in-i-dead-cells-i-> | 미검증 | 매체 | R4-001; 이전 미검증(R3-140). 본문62~81행을 다시 읽음. 키포즈 최소화·pose-to-pose 원칙은 있으나3~5장 수량은 여전히 대조하지 못함. 이전 회차 미검증 유지; 수치가 거짓이라는 판정은 아님. 근거: “key frames”. |
+| codex_synthesis.md L297；codex_yellowsky.md | 황천은11인·투자0·자금난·모금 계획으로 보도됨 | <https://www.hxnews.com/news/dmyx/djyx/yxxw/202607/28/2263530.shtml> | 확인 | 매체 | R4-002; 이전 미검증(R2-031). 기사51~57행을 이번에 직접 읽음. 재게시 매체의 당시 보도이며 회계 검증·현재 팀 인원·엔진 또는 Lumen 사용 증거는 아님. 근거: “开发团队只有11人”. |
+| ENGINE_DECISION_20261105.md L56·248；codex_synthesis.md L299；codex_yellowsky.md；yellowsky-study--downfall_of_yellowsky.md | 황천 정식 완성까지1년 이상·ARPG 중심 전환·투자0 보도 | <https://www.gamersky.com/news/202607/2177567.shtml> | 확인 | 매체 | R4-003; 이전 미검증(R2-034). 기사263~270행 직접 읽음. 제목만 보던 이전 상태를 본문 확인으로 갱신.2026년 당시 전망/개발팀 설명이며 실제 출시일·재정 증빙은 아님. 근거: “至少还需要一年以上时间”. |
+| codex_synthesis.md L320·321·322；codex_tech_budget.md | D4 Steam 요구 메모리·저장공간 | <https://store.steampowered.com/app/2344520/Diablo_IV/> | 미검증 | 공식 | R4-004; 이전 미검증(R2-044). 원 URL은 agecheck로 이동,73행 연령 확인 화면만 반환. 요구사항 본문을 읽지 못함. 생년 입력·로그인·우회 없이 중단. 대상 주장 근거 발췌 없음. |
+| codex_synthesis.md L313；codex_tech_budget.md | RC 논문 원문 도해: PoE2 GTX1050에서~3ms, 발광 캐릭터 간접광 | <https://github.com/Raikiri/RadianceCascadesPaper/blob/main/RadianceCascades.tex> | 확인 | 커뮤니티 | R4-005; 이전 미검증(R2-040). 저자 개인 저장소 TeX 본문2349행 도해 설명을 읽음. 전체 프레임·게임 모든GI·우리 Mac 비용이 아니라 그림 사례의 간접광 부분이다. 단독 성능 예산으로 채택하지 않음. 근거: “running in ~3ms on GTX1050”. |
+| codex_synthesis.md L292；codex_3d_pixel_small_team.md | A Short Hike 초기 공개판은4개월 기한 내 제작 | <https://www.gdcvault.com/play/1026613/> | 확인 | 공식 | R4-006; 이전 미검증(R2-024). GDC 주최기관 소개34행. 공개 개요의 초기판 범위이며 강연을 시청한 것이 아니다. 전체 후속 업데이트·모든 작업기간4개월이라는 뜻은 아님. 근거: “within a 4-month deadline”. |
+| codex_synthesis.md L294；codex_3d_pixel_small_team.md | Eastward2015 제작자 글은 당시 상하이3인 스튜디오라고 소개 | <https://www.indiedb.com/games/eastward/news/we-are-making-eastward1> | 확인 | 커뮤니티 | R4-007; 이전 미검증(R2-027). IndieDB 본문72·76행 tommozhou 작성글. 개발팀 자기소개지만 개인 계정 글이므로 공식 등급을 쓰지 않음. 완성판 전체 인원·현재 스튜디오 규모와 구분. 근거: “3 people at the moment”. |
+| codex_synthesis.md L295；codex_3d_pixel_small_team.md | Prodeus2019 인터뷰 대상 핵심 멤버는2인 | <https://www.famitsu.com/news/201904/11174603.html> | 확인 | 매체 | R4-008; 이전 미검증(R2-029). Famitsu130행을 이번에 직접 읽음. core members2명이지 출시 전체 크레딧2명이라는 뜻이 아님.99행의2019EA/2020정식은 당시 계획이며 실제 출시일과 구분. 근거: “コアメンバーふたり”. |
+| codex_synthesis.md L304；codex_cinematic_text.md | GameSpot 목록은 PoE2 Opening Cinematic Trailer를04:58로 표시 | <https://www.gamespot.com/games/path-of-exile-2/videos/> | 확인 | 매체 | R4-009; 이전 미검증(R2-038). 목록 본문94행의 영상명·길이 메타데이터를 읽음. 영상 재생·프레임 계측·자막 속도 검증은 하지 않음. 근거: “04:58 Path of Exile 2”. |
+| ENGINE_DECISION_20261105.md L58·250 | Wikipedia Titan Quest II 엔진 항목은 UE5 | <https://en.wikipedia.org/wiki/Titan_Quest_II> | 확인 | 커뮤니티 | R4-010; 이전 미검증(R2-147). 본문 infobox114행을 직접 읽음. 편집형 백과의 주장 존재 확인이며 개발사 공식 발표로 승격하지 않음. 근거: “Unreal Engine 5”. |
+| ENGINE_DECISION_20261105.md L60·250 | Wikipedia Octopath Traveler 엔진 항목은 UE4 | <https://en.wikipedia.org/wiki/Octopath_Traveler> | 확인 | 커뮤니티 | R4-011; 이전 미검증(R2-150). 본문 infobox156행. 첫 작품의 엔진 필드이며 후속작·프로그래머 수·팀 전체 규모와 구분. 근거: “Unreal Engine 4”. |
+| ENGINE_DECISION_20261105.md L74·251 | Mac 기능 동등성 블로그의 기기별 Lumen/Nanite 지원표 | <https://www.unrealengine.com/en-US/tech-blog/bringing-unreal-engine-on-macos-up-to-feature-parity-with-windowsprogress-report> | 미검증 | 공식 | R4-012; 이전 미검증(R2-004). 본문39~42행은 호환성 표를 소개하나 표 본체는 이미지. 이미지 취득 없이 기기별 값을 읽지 않음. 다른 공식 텍스트 요구사항 표를 이 URL 확인으로 전용하지 않음. 대상 주장 근거 발췌 없음. |
+| ENGINE_DECISION_20261105.md L91·254 | 포스트프로세스 없는 UE 머티리얼 픽셀화 구현 | <https://forums.unrealengine.com/t/community-tutorial-pixelate-any-material-in-unreal-engine-5-no-post-process/2702520> | 미검증 | 커뮤니티 | R4-013; 이전 미검증(R3-003). 본문9행의 소개 한 문장은 읽었으나 구현·가림·비용은 없음. 제목 No Post-Process만으로 전체 구현을 확인하지 않고, 별도 연결 URL은 이번150개 밖이어서 열지 않음. 근거: “A material technique to create pixelation effects.”. |
+| ENGINE_DECISION_20261105.md L115 | Assistant2.3 MCP 문서의 현재CLI 대체·deprecated 여부 | <https://docs.unity3d.com/Packages/com.unity.ai.assistant@2.3/manual/unity-mcp-get-started.html> | 미검증 | 공식 | R4-014; 이전 미검증(R3-010). HTML115~129행은 구버전 Unity Bridge 설정 안내. 현재CLI 대체 문구는 이 URL에서 대조하지 못함. 다른 현행CLI 문서와 시점·범위를 구분. 근거: “Set up Unity MCP”. |
+| ENGINE_DECISION_20261105.md L154·252 | Unreal FAQ의 로열티·예외 전체 | <https://www.unrealengine.com/en-US/faq> | 미검증 | 공식 | R4-015; 이전 미검증(R2-141). 동적 FAQ 응답에서 대상 계약 조건 본문을 읽지 못함. EULA R4-020의 본문 확인을 FAQ 확인으로 전용하지 않음. 대상 주장 근거 발췌 없음. |
+| ENGINE_TRIAL_UE5_PLAN.md L283 | Apple Xcode26/26.0.1 호스트 OS는 Sequoia15.6~Tahoe26.x | <https://developer.apple.com/xcode/system-requirements/> | 확인 | 공식 | R4-016; 이전 미검증(R2-107). Apple 표400·424행 직접 대조. ENGINE_TRIAL은 실제UE·Xcode·OS 교집합 확인을 요구하므로 단순 Epic 최소OS와 합쳐 설치 가능하다고 확정하지 않음. 실제 Mac 조합은 미검증. 근거: “macOS Sequoia 15.6”. |
+| ENGINE_TRIAL_UE5_PLAN.md L291 | UE Post Process Material의 삽입 위치·SeparateTranslucency 및 CustomDepth/Stencil 지원 | <https://dev.epicgames.com/documentation/en-us/unreal-engine/post-process-materials-in-unreal-engine> | 확인 | 공식 | R4-017; 이전 미검증(R2-115). 공식28~29·83~91행을 읽음. ENGINE_TRIAL L110의 기능 존재 범위와 대조. 완성 픽셀 합성·깊이 정합·GPU 비용은 문서도 검증됐다고 하지 않으므로 미검증 유지. 근거: “SeparateTranslucency is composited later”. |
+| ENGINE_TRIAL_UE5_PLAN.md L297 | UE5.1 ARM64 문서는 RunUAT.sh BuildCookRun의 Mac/arm64 예시 제공 | <https://dev.epicgames.com/documentation/en-us/unreal-engine/supporting-arm64-and-universal-binaries-for-apple-arcade-in-unreal-engine?application_version=5.1> | 확인 | 공식 | R4-018; 이전 미검증(R2-120). 공식24~38행. ENGINE_TRIAL L170은5.1 예시임을 구분하므로 이 범위 확인. Mac→Windows 불가나 M5+UE5.8 재현은 이 예제로 입증하지 않음. 근거: “-platform=Mac -architecture=arm64”. |
+| ENGINE_TRIAL_UE5_PLAN.md L301 | UE MRQ 명령행 렌더 튜토리얼 구현 | <https://dev.epicgames.com/community/learning/tutorials/nZ2e/command-line-rendering-with-unreal-engine-movie-render-queue> | 미검증 | 추정 | R4-019; 이전 미검증(R2-123). 원 URL은 열기 응답이 있지만 본문 추출0행. 제목/색인으로 확인하지 않으며 실제 저자도 본문에서 확인하지 못해 잠정 추정. 별도 주소로 우회하지 않음. 대상 주장 근거 발췌 없음. |
+| ENGINE_TRIAL_UE5_PLAN.md L303 | UE EULA: 기본5%·Royalty Product 첫평생$1M 제외·자격형3.5%, seat 예외 별도 | <https://www.unrealengine.com/en-US/eula/unreal> | 확인 | 공식 | R4-020; 이전 미검증(R2-125). EULA63·93·119·270~274·302~310행 읽음. ENGINE_TRIAL L271처럼 로열티와seat를 분리하고 요율·공제 조건을 유지. 실험 무조건 무료·모든 용도 면제·회사별 적용 법률 판단은 하지 않음. 근거: “the first $1,000,000 in lifetime gross revenue”. |
+| codex_engine_ai_friendliness.md | Ivan-Murzak는 Unity-MCP로 빈 씬에서 물리 볼링 데모를 만든 시연을 소개 | <https://discussions.unity.com/t/ai-game-developer-unity-mcp/1684060> | 확인 | 커뮤니티 | R4-021; 이전 미검증(U254). 개인 작성글10~21행을 읽음. Unity 포럼에 게시됐어도 Unity 공급사의 공식 발표가 아니며 영상 결과·무인성공률은 재현하지 않음. 근거: “Build a complete Bowling mini-game”. |
+| codex_engine_ai_friendliness.md | UE5.8 MCP 시연은 기존 racing sample에 marketplace 맵을 교체한 사례 | <https://www.reddit.com/r/aigamedev/comments/1vd55gb/unreal_engine_58_mcp_connected_to_claude_code/> | 확인 | 커뮤니티 | R4-022; 이전 미검증(U255). 게시자 본문25·35행. 완전 신작 개발·상용 출시가 아니라 샘플 조합이라는 입력의 구분과 일치. 근거: “used UE sample racing game”. |
+| codex_engine_ai_friendliness.md | chongdashu/unreal-mcp는 UE5.5+와 Python3.12+를 전제한 공개 구현 | <https://github.com/chongdashu/unreal-mcp> | 확인 | 커뮤니티 | R4-023; 이전 미검증(U262). 개인 저장소 README254~259행. 필요조건/공개 코드 소개만 읽고 Python·설치·빌드·실행은 하지 않음. 근거: “Unreal Engine 5.5+”. |
+| codex_engine_ai_friendliness.md | CoplayDev Unity-MCP는 씬·스크립트·자산·테스트 등 연동을 제공하는 서드파티 | <https://github.com/CoplayDev/unity-mcp> | 확인 | 커뮤니티 | R4-024; 이전 미검증(U263). README228·244·299행. 제작자 프로젝트 안내이며 Unity 공식 제품이 아님을 본문도 명시. 도구 수·무인 성과는 재현하지 않음. 근거: “not affiliated with Unity Technologies”. |
+| codex_engine_ai_friendliness.md | UE는 Blueprint/Python으로 에디터 도구·콘텐츠 작업을 자동화하는 경로 제공 | <https://dev.epicgames.com/documentation/en-us/unreal-engine/scripting-and-automating-the-unreal-editor> | 확인 | 공식 | R4-025; 이전 미검증(R2-085). 공식2·5~17행의 에디터 스크립팅 설명. 게임 런타임 Python 지원이나 GUI 없는 전체 기능 동등성을 의미하지 않음. 근거: “Blueprints and Python”. |
+| codex_engine_ai_friendliness.md | Unity Learn editor scripting 강좌 본문 | <https://learn.unity.com/tutorial/editor-scripting?language=en> | 미검증 | 공식 | R4-026; 이전 미검증(R2-086). deprecated 경로로 이동한65행 셸 응답에서 필요한 강좌 내용을 읽지 못함. 강좌 제목·목록만으로 확인하지 않음. 대상 주장 근거 발췌 없음. |
+| codex_engine_ai_friendliness.md | ScreenCapture는 PNG 저장·Texture2D·RenderTexture 캡처 API 제공 | <https://docs.unity.com/en-us/engine/6000.6/script-reference/unityengine/screencapture> | 확인 | 공식 | R4-027; 이전 미검증(R2-091). 공식951~953행의 세 메서드 설명. OverlayUI·파이프라인 합성 범위·우리 캡처 실행 성공은 별도 미검증. 근거: “Captures a screenshot of the game view”. |
+| codex_engine_ai_friendliness.md | tuna3117 저장소는3.js 농구를 Unity6/URP3D로 재구성한 프로토타입 | <https://github.com/tuna3117/Unity-MCP> | 확인 | 커뮤니티 | R4-028; 이전 미검증(U279). 개인 README187·244행. 제작자의 자기보고이며 테스트·shot sweep 성과를 직접 실행하거나 출시 품질로 판정하지 않음. 근거: “a complete, playable basketball round”. |
+| codex_engine_ai_friendliness.md | Unity AI 베타 글: 공식MCP·Gateway의 구독/Personal trial 및1,000credits14일 | <https://unity.com/blog/unity-ai-how-to-get-started> | 확인 | 공식 | R4-029; 이전 미검증(R2-101). 공급사 본문231·243·271행. 해당 글의 베타 안내를 현재 CLI 무료 안내와 구분하며 구독·결제·로그인 없이 읽음. 근거: “1,000 credits free for 14 days”. |
+| codex_engine_ai_friendliness.md | UE MRQ 명령행 튜토리얼(ja-jp 쿼리) 본문 | <https://dev.epicgames.com/community/learning/tutorials/nZ2e/command-line-rendering-with-unreal-engine-movie-render-queue?locale=ja-jp> | 미검증 | 추정 | R4-030; 이전 미검증(R2-102). 추출 본문0행. 별도 쿼리 없는 R4-019와 분모에서 별도 URL이지만 동일한 미대조 상태. 작성자 미확인. 대상 주장 근거 발췌 없음. |
+| codex_engine_ai_friendliness.md | Reddit는 UE5.8+3D생성 도구로72시간 플랫폼 프로토타입 제작을 소개 | <https://www.reddit.com/r/TopologyAI/comments/1untdhp/built_a_playable_3d_platformer_in_72_hours_with/> | 확인 | 커뮤니티 | R4-031; 이전 미검증(U287). 본문23~32행. 게시자의 소개/평가를 읽었고 생성 자산·Blender 정리 사용을 포함한다. 실제72시간 작업 로그·완성도·상용 출시 증거는 미검증. 근거: “more like a prototype than a finished game”. |
+| codex_engine_ai_friendliness.md | UE5.8 MCP 공식채널 영상의 게시 주체·교육 내용 | <https://www.youtube.com/watch?v=k0tgmrBuIJc> | 미검증 | 추정 | R4-032; 이전 미검증(U289). YouTube 응답은 푸터3행뿐. 헤더 제목을 넘어 게시자·설명·전사문을 읽지 못해 미검증. 로그인·재생·다운로드 안 함. 대상 주장 근거 발췌 없음. |
+| codex_3d_pixel.md | URP6000.6 Render Graph 예제에 AddRasterRenderPass·PassData·texture 참조 | <https://docs.unity.com/en-us/engine/6000.6/manual/render-pipelines/universal-render-pipeline/customizing-urp/render-graph/write-render-pass> | 확인 | 공식 | R4-033; 이전 미검증(U049). 공식329행 코드 설명을 읽음. 예제 존재이지 설치 패키지·Metal·우리 pass 실행 성공의 검증이 아님. 근거: “renderGraph.AddRasterRenderPass”. |
+| codex_3d_pixel.md | Pixel Perfect Point는 선명하지만 shimmer 가능, Retro AA는 blur와 shimmer를 교환 | <https://docs.unity.com/en-us/engine/6000.6/manual/unity2d/2d-urp/2d-pixelperfect/ref> | 확인 | 공식 | R4-034; 이전 미검증(U050). 공식249~250행 직접 대조.2D 카메라의 upscale 설정 설명이며 원근3D 전체 픽셀화를 보장하지 않음. 근거: “Point: Stretches the camera view using point filtering”. |
+| codex_3d_pixel.md | URP6000.0 깊이·UV·역투영·reversed-Z 예제의 세부 대응 | <https://docs.unity.com/en-us/engine/6000.0/manual/materials-and-shaders/shaders/writing-custom-shaders-urp/writing-shaders-urp/reconstruct-world-position> | 미검증 | 공식 | R4-035; 이전 미검증(U051). 예제 페이지는 열렸으나 이번에6000.0의 reversed-Z/투영 조건 전체를 대조하지 못함. 회차3의6000.6 별도 URL 확인을 이 버전에 전용하지 않음. 대상 주장 근거 발췌 없음. |
+| codex_3d_pixel.md | TAA는 이전 color history와 motion vectors 사용, 빠른 고대비 물체에 ghosting 가능 | <https://docs.unity.com/en-us/engine/6000.6/manual/render-pipelines/universal-render-pipeline/anti-aliasing> | 확인 | 공식 | R4-036; 이전 미검증(U052). 공식259행의 원문·motion vectors 링크를 읽음. MSAA와 후처리 모든 조건·우리 최적AA는 이번 확인 범위 밖. 근거: “TAA uses motion vectors”. |
+| codex_3d_pixel.md | URP Render Graph 최적화는 pass 줄이기·병합과 Viewer 검사 권고 | <https://docs.unity.com/en-us/engine/6000.6/manual/render-pipelines/universal-render-pipeline/customizing-urp/render-graph/optimize> | 확인 | 공식 | R4-037; 이전 미검증(U053). 공식251·259·289행. 가상17byte/pixel 견적은 입력의 계산안이며 이 문서가 우리 메모리 총량·모든pass 병합을 보장하지 않음. 근거: “merge or reduce the number of render passes”. |
+| codex_3d_pixel.md | Animator Fixed Duration 켜짐은 초, 꺼짐은 원본 정규화 시간 비율 | <https://docs.unity.com/en-us/engine/6000.6/manual/animation-section/animation-mecanim/animation-animator-controller/animation-state-machines/class-transition> | 확인 | 공식 | R4-038; 이전 미검증(U054). 공식295~296행. 사용자 제안 공격 구간F·취소 조건으로 전용하지 않음. 근거: “transition time is interpreted in seconds”. |
+| codex_3d_pixel.md | Resample Curves는 quaternion 값과 매 frame 키 생성, Euler curve에서 기본 활성 | <https://docs.unity.com/en-us/engine/6000.6/manual/assets-and-media/asset-types/models/importing/class-animation-clip> | 확인 | 공식 | R4-039; 이전 미검증(U055). 공식280~282행. 원본과 보간 문제가 있을 때만 해제 권고. stepped 동작·우리 clip 품질은 미검증. 근거: “generate a new Quaternion keyframe for every frame”. |
+| codex_3d_pixel.md；d4-study-boss--04_character_monster_boss_anim.md | David Holland 재현은 depth/normal·상하좌우 texel·convex 휴리스틱 사용 | <https://www.davidhol.land/articles/3d-pixel-art-rendering/> | 확인 | 커뮤니티 | R4-040; 이전 미검증(U056). 개인 기술글15행. 저자 Godot 재현이며 t3ssel8r 원구현 또는 Unity6000.6 정본으로 확인하지 않음. 이전 공식 등급을 개인 저자 기준으로 교정. 근거: “up, down, left, and right texels”. |
+| codex_3d_pixel.md | KYRIOTA는 normal 외곽선의 concave edge 문제와 depth bias 대안을 설명 | <https://kyriota.com/2022/08/02/UnityPixelatedArtStyleInURP/> | 확인 | 커뮤니티 | R4-041; 이전 미검증(U058). 개인 글225~235행. 제안된 해결법이며 모든 각도·모델·금속 재질에서 동일 품질을 보장하지 않음. 공식 등급을 교정. 근거: “it also draws outlines on concave edges”. |
+| codex_3d_pixel.md | ProPixelizer 설명은 동일ID·격자 정렬로 실루엣 통합, 겹침에는 추가 depth 검사 | <https://propixelizer.github.io/docs/usage/outlines/> | 확인 | 커뮤니티 | R4-042; 이전 미검증(U060). 제작자 기술 안내51~56행. 기관/엔진 공급사 공식 발표와 구분한 공개 프로젝트 문서로 분류. 실제 패키지 도입·6000.6 호환성 미검증. 근거: “additional depth testing of the ID-based outlines”. |
+| codex_3d_pixel.md | pixel creep는 카메라/물체 상대이동의 다른 래스터화·subpixel motion과 관계 | <https://propixelizer.github.io/docs/tips_and_tricks/artefacts/> | 확인 | 커뮤니티 | R4-043; 이전 미검증(U062). 제작자 기술 안내47~59행. 이미지 내부 시각판정은 하지 않았으며 비정수 확대·상대 운동·원근 장면의 모든 문제를 한 현상으로 묶지 않음. 근거: “object appears to change shape and form”. |
+| codex_3d_pixel.md | Riot 교육 소개는 좋은 pose·timing·spacing을 애니메이션의 핵심으로 설명 | <https://www.riotgames.com/en/artedu/character-animation> | 확인 | 공식 | R4-044; 이전 미검증(U064). Riot 게시 본문17행. 영상 내용을 본 것은 아니며 키포즈3~5장 등의 고정 수량은 제시하지 않음. 근거: “a series of poses over time”. |
+| codex_3d_pixel.md | Riot Clarity는 champion 식별에서 silhouette을 가장 중요하게 설명 | <https://www.leagueoflegends.com/en-us/news/dev/clarity-in-league/> | 확인 | 공식 | R4-045; 이전 미검증(U065). Riot 본문28~34행. 무기·동작의 식별 예시이며 우리 적16px 최소크기·34도 가독성 기준으로 환산하지 않음. 근거: “the single most important thing for champion recognition”. |
+| codex_3d_pixel.md | PSX Look 개인 devlog는 clip-space xy/w 스냅 후 w 복원을 설명 | <https://heyheythere.itch.io/psx-look/devlog/1682419/ps1-wobble-and-warping-textures-in-godot-4-without-noperspective> | 확인 | 커뮤니티 | R4-046; 이전 미검증(U066). 개인 제작글16~21행 코드·설명. Godot 효과 재현이며 Unity Animator나 모든모션에 동일 기법 적용 근거가 아님. 근거: “dividing by `w`, rounding, and multiplying back”. |
+| codex_3d_pixel.md | t3ssel8r Imgur 제작 장면의 설명·원구현 | <https://imgur.com/gallery/creating-pixel-art-scene-realtime-3d-qwhbHQq> | 미검증 | 커뮤니티 | R4-047; 이전 미검증(U068). 응답은 JS 활성 요구 한 줄뿐. 이미지·설명을 읽지 않았고 다운로드·JS 우회·대체주소 열기 안 함. Holland 등 재현을 원저자 구현으로 대체하지 않음. 대상 주장 근거 발췌 없음. |
+| codex_menus_loot.md；d4-study-ui--02_hud_ui.md | D4 guide는 상단탭·프로필·Stats&Materials 추가 패널 설명 | <https://www.gamepressure.com/diablo-iv/interface/z0109a5> | 확인 | 매체 | R4-048; 이전 미검증(U181). Gamepressure258~264행.2023 자료의 구성 설명이며 모든 현재 탭/슬롯·게임 화면을 직접 확인한 결과는 아님. 근거: “Additional statistics are displayed on the left.”. |
+| codex_menus_loot.md | D4 아이템 비교는 PC Shift·PS Triangle·Xbox Y로 안내 | <https://www.gamepressure.com/diablo-iv/how-to-compare-items/z4109c7> | 확인 | 매체 | R4-049; 이전 미검증(U185). Gamepressure232행의 명시적 조작. 특정 자료 시점의 안내이며 다른 게임 버튼에 복사하지 않음. 근거: “press Shift (PC), Triangle (PS) or Y (Xbox)”. |
+| codex_menus_loot.md | 과거 D4 등급색은 흰Normal·파랑Magic·노랑Rare·주황Legendary·금Unique | <https://www.dexerto.com/gaming/diablo-4-rarity-system-explained-what-does-each-color-mean-2160732/> | 확인 | 매체 | R4-050; 이전 미검증(U188). Dexerto247~251행의 색 명칭만 대조.238행의 개수/장착 제한은 입력도 채택하지 않으므로 확인하지 않음. 현재시즌 품질체계와 구분. 근거: “Gold – Unique”. |
+| codex_menus_loot.md | GGG 계정 공지는 sub-account 사이 캐릭터 이동 불가를 명시 | <https://www.pathofexile.com/forum/view-thread/3586288/filter-account-type/staff> | 확인 | 공식 | R4-051; 이전 미검증(U189). 공식63행. 하위계정 분리 설명을 읽었으며 로그인·캐릭터 이전·지원요청을 실행하지 않음. 근거: “Characters can not be transferred between sub accounts”. |
+| codex_menus_loot.md | GGG의 PS Blog는 같은콘솔 단일계정 또는 별도2계정 couch co-op 안내 | <https://blog.playstation.com/2024/05/30/path-of-exile-2-is-coming-to-ps5-couch-co-op-and-cross-play-confirmed/> | 확인 | 공식 | R4-052; 이전 미검증(U190). 개발사 기고63행. 게임 실행·현재 모든플랫폼 연동 성공은 확인하지 않음. 근거: “two separate Path of Exile accounts”. |
+| codex_menus_loot.md | PoE2 UI guide는 mouse/keyboard 범위의 조정 가능한 요소를 설명 | <https://mobalytics.gg/poe-2/guides/user-interface> | 확인 | 매체 | R4-053; 이전 미검증(U191). Lolcohol의 매체 기고104행. 범위가 키보드/마우스이며 콘솔 기본배치·실제 pixel값·현재전체UI는 미검증. 근거: “focus on the UI for Mouse and Keyboard”. |
+| codex_menus_loot.md | PoE2 hotkey 가이드는 Passive Tree P·Character C 등을 명시 | <https://mobalytics.gg/poe-2/guides/hotkeys> | 확인 | 매체 | R4-054; 이전 미검증(U192). 본문177~181행. 옵션에서 재지정 가능. 입력의G스킬젬·전체패드 매핑은 이번 발췌에서 대조하지 않음. 근거: “Passive Tree (P)”. |
+| codex_menus_loot.md | NeverSink PoE2 필터는 색·소리·지도아이콘·빛기둥으로 강조 | <https://github.com/NeverSinkDev/NeverSink-Filter-for-PoE2> | 확인 | 커뮤니티 | R4-055; 이전 미검증(U194). 제작자 저장소119행. GGG가 아닌 서드파티 필터의 설명이며 현재 모든 규칙·소리·성능을 재현하지 않음. 근거: “colors, sounds, map icons, beams”. |
+| codex_menus_loot.md | PoE2 beginner guide는 LOGIN→캐릭터목록·리그선택→Create 순서 설명 | <https://mobalytics.gg/poe-2/guides/beginner-guide> | 확인 | 매체 | R4-056; 이전 미검증(U195). 본문138~142행. 자료에서 설명한 진입 단계만 확인하며 현재 전체 인터랙션을 실행하지 않음. 근거: “After hitting LOGIN”. |
+| codex_menus_loot.md | PoE2 Enchantment의 밝은파랑 설명과 implicit 위 배치 | <https://mobalytics.gg/poe-2/guides/crafting-basics-part-1> | 확인 | 매체 | R4-057; 이전 미검증(U196). 가이드143행의 예시 설명. 설명용 색 박스를 게임 기본색으로 오해하지 않고 모든 아이템의 고정레이아웃으로 일반화하지 않음. 근거: “light blue text above the implicit”. |
+| codex_menus_loot.md | Hades 직접사용 가이드는 Play 선택 뒤 save slots4개 진입 설명 | <https://www.blackscreengaming.com/hades/menus/index.php> | 확인 | 커뮤니티 | R4-058; 이전 미검증(U209). 개인 사용기38~44행. 작성자가 일부옵션은 기억이 불확실하다고 밝혀 해당모드선택을 고정사양으로 승격하지 않음. 원작 공식 UI 명세가 아님. 근거: “There are four of them from left to right”. |
+| codex_menus_loot.md | Hades 공식FAQ로 Options 세부구조·입력재지정 전체 | <https://www.supergiantgames.com/faqs/hades/> | 미검증 | 공식 | R4-059; 이전 미검증(U212). controller 지원 관련 본문170행은 읽었으나 Options의Settings/Controls/Display 등 전체구성과 remapping 조건을 이FAQ에서 완전히 대조하지 못함. 개인메뉴가이드와 구분. 대상 주장 근거 발췌 없음. |
+| codex_menus_loot.md | Hades Steam 답변은 gamepad Back 또는 PC B로 Boon Info 탐색 안내 | <https://steamcommunity.com/app/1145360/discussions/0/1738883810795370805/> | 확인 | 커뮤니티 | R4-060; 이전 미검증(U213). 답변51행. 작성자의 계정역할·공식대변 여부를 이번에 충분히 확인하지 못해 커뮤니티로 분류. 실제 현재버튼 재현은 안 함. 근거: “press B by default”. |
+| codex_menus_loot.md | Hades Superstar 패치는 저장삭제 경고 기본선택을 Cancel로 변경 | <https://www.supergiantgames.com/blog/hades-superstar-update-patch-notes/> | 확인 | 공식 | R4-061; 이전 미검증(U214). 공식330행. 입력의 단계적 취소·실수방지 비교 근거이며 모든패널 취소/동료선택의 동작은 별도 미검증. 근거: “defaults to Cancel instead of OK”. |
+| codex_frame_data.md | Cartwright 발표는 hitstop을 impact 뒤 양캐릭터 정지로 설명 | <https://media.gdcvault.com/gdcchina14/presentations/833784_MarielCartwright_PowerfulAndEffective_EN.pdf#page=30> | 확인 | 커뮤니티 | R4-062; 이전 미검증(U218). 발표자 슬라이드PDF P29의141~145행 텍스트. GDC가 호스팅해도 개인 발표자료이므로 기관 지침과 구분. 피격경직 전체·모든게임 필수 적용이 아님. 근거: “freeze before playing the rest of the animations”. |
+| codex_frame_data.md | Elden Ring 과거 재정리 글은 Fast Roll26F로 표시 | <https://www.reddit.com/r/Eldenring/comments/tww7nv/> | 확인 | 커뮤니티 | R4-063; 이전 미검증(U232). 게시글47행. 원문서가 보류한 수치이며 현재 엔진값·다른관측27F와 하나로 통합하지 않음. 기준fps/버전은 아래별도 대조 미완료. 근거: “Fast Roll (Light Load): 26 Frames”. |
+| codex_frame_data.md | Elden Ring Frame Data Explorer의 현재동작별 수치 | <https://er-frame-data.nyasu.business/> | 미검증 | 커뮤니티 | R4-064; 이전 미검증(U233). 직접 열기0행·읽을 수 있는 본문 없음. 도구 제목만 보고 수치를 확인하지 않음. 대상 주장 근거 발췌 없음. |
+| codex_frame_data.md | Kiranico는 Evade Window의 무적시간과 Evade Distance의 이동거리를 구분 | <https://mhworld.kiranico.com/en/guide/evade-defense> | 확인 | 커뮤니티 | R4-065; 이전 미검증(U235). 본문155~158행을 직접 읽음. 기본짧은무적·긴panic dive와회복을구분하며MHW-PC 측정값을현행Iceborne 고정값으로승격하지 않음. 근거: “Evade Window skill increases i-frames duration”. |
+| codex_frame_data.md | Cartwright의 anticipation1F 지침 | <https://media.gdcvault.com/gdcchina14/presentations/833784_MarielCartwright_PowerfulAndEffective_EN.pdf#page=8> | 확인 | 커뮤니티 | R4-066; 이전 미검증(U239). PDF P7,31~37행의1frame anticipation과 과장/강조 문맥. 기준fps가 없는 작화예시라60fps/ms로 확정하지 않음. 근거: “Even one frame”. |
+| codex_frame_data.md | Cartwright의 overshoot1F 지침 | <https://media.gdcvault.com/gdcchina14/presentations/833784_MarielCartwright_PowerfulAndEffective_EN.pdf#page=18> | 확인 | 커뮤니티 | R4-067; 이전 미검증(U240). PDF P17,94~99행의 공격 최종keyframe overshoot 설명. 한 줄 발췌는 짧게 유지하고 줄 연속 문맥을 읽음. 게임 공통 active1F라는 뜻이 아님. 근거: “One frame of”. |
+| codex_frame_data.md | Bénard 발표 마지막쪽은 @deepnightFR 계정을 안내 | <https://media.gdcvault.com/gdc2019/presentations/Benard-Sebastian-DeepCells.pdf#page=23> | 확인 | 커뮤니티 | R4-068; 이전 미검증(U241). PDF P22,85행. 작성자 연락표기만 확인했으며 그 계정의 직접게시물·현재프레임 수치는 확보하지 않음. 근거: “Twitter: @deepnightFR”. |
+| codex_keyshot_composition.md | D4 입력된 bare App URL은 Blizzard 개발·배급 상점 본문을 반환 | <https://store.steampowered.com/app/2344520/> | 확인 | 공식 | R4-069; 이전 미검증(U244). 이번 응답37~41행. 입력에 별도로 있는 이 URL의 본문만 읽음. slug URL R4-004의 agecheck 상태를 덮어쓰지 않았고 생년입력·주소변형 우회는 하지 않음. 이미지구도는 미관찰. 근거: “Blizzard Entertainment, Inc.”. |
+| codex_keyshot_composition.md | PoE2 App2694490 개발사는 Grinding Gear Games로 표시 | <https://store.steampowered.com/app/2694490/> | 확인 | 공식 | R4-070; 이전 미검증(U245). 상점36·78행. 제품식별 텍스트만 확인하며 SteamDB metadata나 스크린샷 구도를 이 URL로 대체하지 않음. 근거: “Grinding Gear Games”. |
+| codex_keyshot_composition.md | Wicked App1371980 상점은 Moon Studios·수제환경 ARPG로 소개 | <https://store.steampowered.com/app/1371980/> | 확인 | 공식 | R4-071; 이전 미검증(U246). 상점27행을 이번에 읽음. 과거 열람의 연령화면 기록과 달리 현재 이 URL의 본문응답이 있었음. 이미지·카메라·장면 품질은 검증하지 않음. 근거: “From Moon Studios”. |
+| codex_keyshot_composition.md | D4 SteamDB 스크린샷·에셋 해상도 메타데이터 | <https://steamdb.info/app/2344520/screenshots/> | 미검증 | 커뮤니티 | R4-072; 이전 미검증(U247). 서드파티 metadata의267행 파일명 등은 읽었지만 스크린샷 해상도·개수 전체는 이번에 대조하지 못함. 파일명을 실제 픽셀판정/구도 관찰로 바꾸지 않음. 근거: “capsule_231x87.jpg”. |
+| codex_keyshot_composition.md | PoE2 SteamDB 스크린샷 메타데이터 | <https://steamdb.info/app/2694490/screenshots/> | 미검증 | 커뮤니티 | R4-073; 이전 미검증(U248). 265~266행 캡슐경로는 읽었으나 스크린샷 원본해상도·전체개수는 미대조. Valve 공식상점과 분리하며 이미지를 열거나 다운로드하지 않음. 근거: “capsule_616x353.jpg”. |
+| codex_keyshot_composition.md | Wicked SteamDB 스크린샷·에셋 메타데이터 | <https://steamdb.info/app/1371980/screenshots/> | 미검증 | 커뮤니티 | R4-074; 이전 미검증(U249). 280행의 영상썸네일 경로는 스크린샷 원본치수와 다르다. 입력이 주장한 스크린샷 metadata 전체는 대조 미완료. 타이틀·썸네일을 이미지실측으로 취급하지 않음. 근거: “movie_600x337.jpg”. |
+| codex_keyshot_composition.md | 황천 SteamDB 스크린샷·에셋 메타데이터 | <https://steamdb.info/app/5024530/screenshots/> | 미검증 | 커뮤니티 | R4-075; 이전 미검증(U250). 163~169행 라이브러리 에셋 링크만 읽음. 스크린샷 전체 크기·개수·구도는 미대조. 개발사 공식자료와 구분. 근거: “library_capsule.jpg”. |
+| codex_vfx_direction.md | Built-in Particle System은 C# read/write, VFX Graph는GPU 시뮬레이션 설명 | <https://docs.unity3d.com/6000.0/Documentation/Manual/ChoosingYourParticleSystem.html> | 확인 | 공식 | R4-076; 이전 미검증(U303). 공식216~217행의 선택 기준. 수백만이라는 기능설명을 우리 실시간상한·Mac 성능 보증으로 바꾸지 않음. 근거: “run on the GPU to simulate millions of particles”. |
+| codex_vfx_direction.md | 6000.0 기능표는 URP VFX Lit/Unlit·Soft particles 및2D범위 명시 | <https://docs.unity3d.com/6000.0/Documentation/Manual/render-pipelines-feature-comparison.html> | 확인 | 공식 | R4-077; 이전 미검증(U304). 공식1088~1097행 표와 URP열을 읽음.17.0의오래된 요구사항 글과 충돌범위를 입력처럼 구분. 우리 renderer 실제지원은 미검증. 근거: “Lit Particles”. |
+| codex_vfx_direction.md；d4-study-boss--04_character_monster_boss_anim.md | VFX Graph17 요구사항에는2019.3~2021.1 URP unlit 한정·gamma미지원 설명 | <https://docs.unity3d.com/Packages/com.unity.visualeffectgraph@17.0/manual/System-Requirements.html> | 확인 | 공식 | R4-078; 이전 미검증(U305). HTML250~252행. 버전범위를 빼고 Unity6전체가unlit전용이라고 쓰지 않음. 최신기능표와 다른 범위를 원문도 명시. 근거: “only supports unlit particles”. |
+| codex_vfx_direction.md | VFX Graph17 Output Particle Mesh는 unlit과 HDRP-only Lit 변형 설명 | <https://docs.unity3d.com/Packages/com.unity.visualeffectgraph@17.0/manual/Context-OutputParticleMesh.html> | 확인 | 공식 | R4-079; 이전 미검증(U306). HTML118행. 해당 output문서의 범위이지 모든URP VFX조명의 전면 미지원 판정이 아님. 발췌는 HTML마크업 정리. 근거: “Lit variety (HDRP-only)”. |
+| codex_vfx_direction.md | Texture Sheet Animation은 XY Tiles·Whole Sheet/Single Row 선택 | <https://docs.unity3d.com/6000.0/Documentation/Manual/PartSysTexSheetAnimModule.html> | 확인 | 공식 | R4-080; 이전 미검증(U307). 공식274~275행. 수명/속도/FPS의세부설정·우리플립북비용은 이번 확인 범위 밖. 근거: “Whole Sheet or Single Row”. |
+| codex_vfx_direction.md | Particle Renderer에 Sorting Layer ID·Order in Layer 제공 | <https://docs.unity3d.com/6000.0/Documentation/Manual/PartSysRendererModule.html> | 확인 | 공식 | R4-081; 이전 미검증(U308). 공식327·362~363행. Sorting Fudge는시스템전체이고 입자개별정렬 아님.2D물리·lights지원은별도표 R4-077과 구분. 근거: “Order in Layer”. |
+| codex_vfx_direction.md | Particles Unlit Additive는 material색을 background색에 더함 | <https://docs.unity3d.com/6000.0/Documentation/Manual/urp/particles-unlit-shader.html> | 확인 | 공식 | R4-082; 이전 미검증(U309). 공식269·287행. Soft Particles는328행 Transparent·Depth Texture 조건 별도. 실제발광면적·가독성·우리합성비용은 미검증. 근거: “Adds the color of the material to the background color.”. |
+| codex_vfx_direction.md | ShaderGraph Flipbook은 Width/Height·Tile 입력으로UV 생성 | <https://docs.unity3d.com/Packages/com.unity.shadergraph@17.0/manual/Flipbook-Node.html> | 확인 | 공식 | R4-083; 이전 미검증(U310). HTML117~119행의 기능설명. Time구동은예시이며 공격타이밍·프레임보간을 자동보장하지 않음. 근거: “The index of the current tile”. |
+| codex_vfx_direction.md | Unity는 겹치는 투명 UI·입자·sprite를 주요 overdraw 원인으로 설명 | <https://docs.unity3d.com/6000.0/Documentation/Manual/OptimizingGraphicsPerformance.html> | 확인 | 공식 | R4-084; 이전 미검증(U311). 공식234~235행. 입자개수만으로GPU예산을 판정하지 않고 셰이더/픽셀처리를 함께 계측해야 한다는 범위. 근거: “overlapping transparent elements, such as UI, particles and sprites”. |
+| codex_vfx_direction.md | Pixel Perfect Camera는2D에서 해상도별 선명도·이동안정성 유지를 설명 | <https://docs.unity3d.com/cn/6000.0/Manual/urp/2d-pixelperfect-intro.html> | 확인 | 공식 | R4-085; 이전 미검증(U312). 중국어 공식본문37~43행. 원근3D 전체장면·모든VFX 자동픽셀화라는근거는아님. 이미지내부는관찰하지 않음. 근거: “在不同分辨率下维持像素艺术清晰度”. |
+| codex_motion_direction.md | Cartwright GDC2014 발표의 hitstop은impact뒤 양캐릭터 정지 | <https://media.gdcvault.com/GDC2014/Presentations/Cartwright_Muriel_Animation_Bootcamp_Fluid.pdf> | 확인 | 커뮤니티 | R4-086; 이전 미검증(U313). 발표자PDF P22,104~109행. 해당발표의제작설명이고기관공식규정아님.45쪽다른파일의완화된설명과37쪽버전의발언문맥도구분. 피격자전체행동불가시간과동일시하지 않음. 근거: “freeze”. |
+| codex_motion_direction.md | Hades Nova special의 blast speed를VFX와맞추도록 수정 | <https://www.supergiantgames.com/blog/hades-the-high-speed-update-patch-notes/> | 확인 | 공식 | R4-087; 이전 미검증(U315). 공식113행,이전에는즉시명중이라고설명.고정F/ms·현재모든공격판정은미검증. 근거: “blast speed lined up with visual effect”. |
+| codex_motion_direction.md | Blasphemous AMA는 손작화·검술촬영포즈참고·비rotoscope 제작을 설명 | <https://www.reddit.com/r/NintendoSwitch/comments/d2af0j/hey_were_the_game_kitchen_the_team_behind/> | 확인 | 커뮤니티 | R4-088; 이전 미검증(U316). 개발팀답변586·596행.개인계정/AMA의제작자자기보고이므로공식문서등급아님.보스명·프레임수·타이밍미확인 유지. 근거: “No, animation is not rotoscoped.”. |
+| codex_motion_direction.md | Snouk의 Esdras 분석은 quick attack의회피/패링반응·재발동cooldown을설명 | <https://snoukdesignnotes.blog/2021/06/30/boss-design-ft-blasphemous/> | 확인 | 커뮤니티 | R4-089; 이전 미검증(U317). 개인분석339~343행.엔진내부AI·frame data를검증한개발사자료가아니며X seconds를숫자로보충하지 않음. 근거: “a dodge or a parry counter”. |
+| codex_motion_direction.md | KatanaZERO 개발자는 원하는조작이그대로실현되는정밀·공정성목표를설명 | <https://www.gamerevolution.com/originals/520685-katana-zero-interview> | 확인 | 매체 | R4-090; 이전 미검증(U318). 인터뷰51행.목표와평가발언이지실제무버그·참격0F·플레이어측정성공의증명은아님. 근거: “Everything needs to feel like an extension of the player.”. |
+| codex_motion_direction.md | HLD 프리알파 인터뷰는 공격hold가impact/weight를더한다고설명 | <https://cheerfulghost.com/jdodson/posts/2021/interview-w-alex-preston-creator-of-hyper-light-drifter> | 확인 | 커뮤니티 | R4-091; 이전 미검증(U319). jdodson의커뮤니티인터뷰17행 AlexPreston 답변.정확한ms·동작별프레임·모든현재버전값은미검증. 근거: “a few milliseconds of hold on the attacks”. |
+| codex_motion_direction.md | HLD는애니메이션투입전에이동만족감을먼저맞췄다고설명 | <https://www.theskinny.co.uk/tech/gaming/alex-preston-on-hyper-light-drifter> | 확인 | 매체 | R4-092; 이전 미검증(U320). TheSkinny79행.78행은이동·명중을핵심상호작용으로설명.가속/감속수치·정지초수·동작장수는미검증. 근거: “Before I even put any animation in”. |
+| codex_motion_direction.md | HLD 공식공지의30/60fps전환·60fps전환작업 설명 | <https://store.steampowered.com/news/posts/?appids=257850&enddate=1475987536&feed=steam_community_announcements> | 확인 | 공식 | R4-093; 이전 미검증(U321). Steam공지154~169행.2016업데이트설명이며모든현재영상fps를이값으로간주하지 않음.적/물체별수치·타이밍실측은미검증. 근거: “switch between 60 and 30 fps”. |
+| codex_motion_direction.md | GameAnim은 Blasphemous Acolyte 제작timelapse를연결 | <https://www.gameanim.com/2021/02/19/blasphemous-pixel-art-animation-time-lapses/> | 확인 | 커뮤니티 | R4-094; 이전 미검증(U324). 개인업계기술블로그19행의영상링크본문.게시위치만확인했고영상/이미지장수계수·실측은안 함. 근거: “Acolyte pixel animation timelapse”. |
+| codex_motion_direction.md | LisaBrown 발표는공간으로전투pacing을제어하는구조를설명 | <https://media.gdcvault.com/gdc2017/Presentations/Brown_Lisa_Applying_3D_Level.pdf> | 확인 | 커뮤니티 | R4-095; 이전 미검증(U326). 발표자PDF P67·P86의목차/내용제목.주최기관호스팅개인발표자료로구분하며공격프레임근거로쓰지 않음. 근거: “Using Space to Control Combat Pacing”. |
+| codex_cinematic_text.md | GAG는자동timer대신플레이어행동으로텍스트진행을끝내도록권고 | <https://gameaccessibilityguidelines.com/allow-players-to-progress-through-text-prompts-at-their-own-pace/> | 확인 | 공식 | R4-096; 이전 미검증(U329). 지침본문8~9행.읽기속도가다르다는이유를읽음.인트로/보스연출고정초수나특정게임준수결과아님. 근거: “Instead of a timer”. |
+| codex_cinematic_text.md | 첫음성이전자막설정접근 GAG 지침 | <https://gameaccessibilityguidelines.com/ensure-subtitles-captions-are-or-can-be-turned-on-before-any-sound-is-played/> | 접속불가 | 공식 | R4-097; 이전 미검증(U330). 원URL open 실패: UnexpectedStatusCode.실제HTTP숫자는응답이제공하지않아추정하지않음.본문미열람·로그인/우회/다운로드안 함. 대상 주장 근거 발췌 없음. |
+| codex_cinematic_text.md | GAG고급목록은이야기·지시의재생/재확인을권고 | <https://gameaccessibilityguidelines.com/full-list/> | 확인 | 공식 | R4-098; 이전 미검증(U331). 목록88행.원목록본문의권고만확인하며개별게임에서재확인메뉴가있다는주장이아님. 근거: “Allow all narrative and instructions to be replayed”. |
+| codex_cinematic_text.md | XAG104는화자이름·비가시방향/라디오상태등자막정보를설명 | <https://learn.microsoft.com/en-us/xbox/accessibility/xbox-accessibility-guidelines/104> | 확인 | 공식 | R4-099; 이전 미검증(U333). 본문53~58행.화자명은변경시·긴중단후다시표시하는조건을포함.모든자막행에매번호출하라는뜻아님. 근거: “Identify the speaker”. |
+| codex_cinematic_text.md | 별도Xbox태그는로컬플레이·인트로/컷신일시정지와온라인예외를규정 | <https://learn.microsoft.com/en-us/xbox/accessibility/accessibility-feature-tags> | 확인 | 공식 | R4-100; 이전 미검증(U334). 태그1350~1363행.별도자격기준이며XAG101문자권고와섞지않음.본문글자규격26/52와실제우리구현은별도미검증. 근거: “Both active gameplay as well as cinematic content”. |
+| codex_cinematic_text.md | D42020개발글은가까운대화카메라와중요장면real-time cutscene을구분 | <https://news.blizzard.com/en-gb/article/23463858/diablo-iv-quarterly-updatejune-2020> | 확인 | 공식 | R4-101; 이전 미검증(U335). 공식73~76행.플레이어현재장비반영등장점을설명하며모든보스등장카메라/FOV/길이명세는아님. 근거: “The second storytelling method”. |
+| codex_cinematic_text.md | D4과거패치는신규캐릭터후초기컷신스킵충돌을수정 | <https://news.blizzard.com/en-us/article/24092662/diablo-iv-patch-notes-1-0-1-2> | 확인 | 공식 | R4-102; 이전 미검증(U336). 공식2182행.스킵경로존재를확인하며키·홀드초수·전체컷신정책으로확대하지 않음.요새완료수정은이번미대조. 근거: “skipping the initial cutscene after creating a new character”. |
+| codex_cinematic_text.md | D4발표시네마틱게시일·공식게시자·영상내용 | <https://www.youtube.com/watch?v=9bRWIdOMfro> | 미검증 | 추정 | R4-103; 이전 미검증(U337). YouTube푸터3행만반환.헤더제목만으로게시자·게시일·연출을확인하지않고채널주체미확인등급추정.재생·저장안 함. 대상 주장 근거 발췌 없음. |
+| codex_cinematic_text.md | Hades BloodPrice는신들의시련/저주사망시사망연출위대사를설명 | <https://www.supergiantgames.com/blog/hades-the-blood-price-update-patch-notes/> | 확인 | 공식 | R4-104; 이전 미검증(U338). 공식253~254행.전체사망복귀초수·모든발화자막·스킵동작은미검증. 근거: “speak over the death presentation”. |
+| codex_cinematic_text.md | PoE2오프닝영상의게시주체·날짜·연출 | <https://www.youtube.com/watch?v=AOVg2aLjIiU> | 미검증 | 추정 | R4-105; 이전 미검증(U339). YouTube푸터3행.이번에본문게시자/설명을읽지못해공식채널이라고추정승격하지않음.다른매체04:58목록과분리. 대상 주장 근거 발췌 없음. |
+| codex_cinematic_text.md | TMPfallback은없는glyph를다른font asset에서검색 | <https://docs.unity3d.com/Packages/com.unity.ugui@2.0/manual/TextMeshPro/FontAssetsFallback.html> | 확인 | 공식 | R4-106; 이전 미검증(U342). HTML116~127행.한중일대형문자권분산예시와개별fallback목록을읽음.프로젝트29개언어성공은미검증. 근거: “other font assets to search”. |
+| codex_cinematic_text.md | TMPdynamic은추가계산자원·원본font필요·빌드포함으로용량증가가능 | <https://docs.unity3d.com/Packages/com.unity.ugui@2.0/manual/TextMeshPro/FontAssetsDynamicFonts.html> | 확인 | 공식 | R4-107; 이전 미검증(U343). HTML120~125행.정적폰트원본삭제와구분.언어29개전체메모리·생성지연은일반설명으로산출하지 않음. 근거: “require more computational resources than static fonts”. |
+| codex_cinematic_text.md | TMP SDF는Outline/Underlay·Overlay변형·unlit처리를제공 | <https://docs.unity3d.com/Packages/com.unity.ugui@2.0/manual/TextMeshPro/ShadersDistanceField.html> | 확인 | 공식 | R4-108; 이전 미검증(U344). HTML116~124·180행.Overlay는항상앞에렌더,outline은Thickness>0조건.우리최종1x가독성·적정두께는미검증. 근거: “Adds a colored and/or textured outline to the text.”. |
+| codex_cinematic_text.md | UIToolkitAdvancedTextGenerator는Arabic/Hebrew RTL과dynamicfont필요 | <https://docs.unity3d.com/6000.0/Documentation/Manual/UIE-advanced-text-generator.html> | 확인 | 공식 | R4-109; 이전 미검증(U345). 공식254·267행.29개언어전체·TMP동일지원·현재우리UI의아랍어성공으로전용하지 않음. 근거: “only supports dynamic font assets”. |
+| codex_cinematic_text.md | UAX9는아랍어연결형자형선택과bidi처리의순서를구분 | <https://www.unicode.org/reports/tr9/> | 확인 | 공식 | R4-110; 이전 미검증(U346). 표준기관본문878행.이웃문자에따른자형과동일levelrun조건을읽음.단순RTL플래그가모든shaping을해결한다는근거아님. 근거: “Shaping is logically applied after Rule”. |
+| codex_cinematic_text.md | Noto는문자권별모듈과전용font family를설명 | <https://notofonts.github.io/noto-docs/website/use/> | 확인 | 공식 | R4-111; 이전 미검증(U347). 공식프로젝트문서251~261행.기본NotoSans/Serif하나가모든문자권을완전포함한다는뜻아님. 근거: “Other scripts like Arabic, Chinese”. |
+| codex_cinematic_text.md | NotoCJKSerif는지역/언어별자형과language tag·OpenType locl조건을설명 | <https://github.com/notofonts/noto-cjk/blob/main/Serif/README.md> | 확인 | 공식 | R4-112; 이전 미검증(U348). Noto프로젝트README182·218~219행.개인blog가아닌해당공식배포프로젝트문서이며실제렌더러지원과font파일다운로드는안 함. 근거: “OpenType 'locl' GSUB feature”. |
+| codex_asset_size.md | Unity는참조asset을포함하고미사용제거,Resources는예외로포함 | <https://docs.unity3d.com/6000.0/Documentation/Manual/ReducingFilesize.html> | 확인 | 공식 | R4-113; 이전 미검증(U349). 공식257~265행.경로에있다는것과실제로로드됐다는것을구분하며압축빌드byte·설치량은실측하지 않음. 근거: “includes assets that are referenced”. |
+| codex_asset_size.md | AssetBundle은플랫폼별비코드asset묶음·압축·런타임로드를지원 | <https://docs.unity3d.com/6000.0/Documentation/Manual/AssetBundlesIntro.html> | 확인 | 공식 | R4-114; 이전 미검증(U351). 공식237~241행.모델·텍스처·prefab·오디오·씬예시.이프로젝트manifest의Addressables존재여부는외부문서로확인하지 않음. 근거: “platform-specific non-code assets”. |
+| codex_asset_size.md | Resources→Addressables전환은로드코드변경·해제코드·자동이동을요구 | <https://docs.unity3d.com/Packages/com.unity.addressables@2.7/manual/convert-resources-system.html> | 확인 | 공식 | R4-115; 이전 미검증(U352). HTML119~123행.표시하면Resources_moved로이동할수있음을직접읽음.파일주소만치환하는작업으로판정하지 않음. 근거: “Add code to release loaded assets”. |
+| codex_asset_size.md | Addressables migration guide는씬/Resources/AssetBundles전환을분리 | <https://docs.unity3d.com/Packages/com.unity.addressables@2.7/manual/AddressableAssetsMigrationGuide.html> | 확인 | 공식 | R4-116; 이전 미검증(U353). HTML124~126행.이페이지는상위가이드이고구체자동이동·코드는R4-115의직접본문과구분.프로젝트에이행을실행하지 않음. 근거: “Move assets from the Resources system”. |
+| codex_asset_size.md | TextureRead/Write는스크립트용복사본으로메모리를늘림 | <https://docs.unity3d.com/6000.0/Documentation/Manual/texture-type-default.html> | 확인 | 공식 | R4-117; 이전 미검증(U356). 공식268행.사용할때만활성권고.밉체인33%·전체Player설치량·원화삭제효과와같은수치가아님. 근거: “doubles the amount of memory required”. |
+| codex_asset_size.md | Steamdemo는별도AppID에depots·build를구성하되base공유depot도허용 | <https://partner.steamgames.com/doc/store/application/demos> | 확인 | 공식 | R4-118; 이전 미검증(U359). 공식376~389행.입력의별도AppID/depot/build는모든asset별도복제를뜻하지않게제한한다.원문도공유depot가능.일률GB권장이나업로드/Publish완료를확인한것아님. 근거: “Demos are a separate App ID”. |
+| codex_asset_size.md | RGB24는디스크24/GPU32bpp,RGBA32는32bpp·미지원BC7은RGBA32전개 | <https://docs.unity3d.com/6000.0/Documentation/Manual/texture-formats-reference.html> | 확인 | 공식 | R4-119; 이전 미검증(U360). 공식268·283·363행.입력W×H×3은저장데이터견적이고GPU에서는4byte전개가능함을구분.블록압축공식·실제임포터/Steam용량은미검증. 근거: “24 disk, 32 GPU”. |
+| codex_sound_music.md | Living Audio GDC강연본문 | <https://gdcvault.com/browse/gdc-24?keyword=diablo> | 미검증 | 공식 | R4-120; 이전 미검증(R3-124). 정상리다이렉트뒤Maintenance in Progress 안내만반환.기존기준에따라셸/대체본문은미검증.실제강연·내부수치는미열람. 대상 주장 근거 발췌 없음. |
+| codex_sound_music.md | MaxVirtual은관리하는virtual voices,MaxReal은동시실제재생수 | <https://docs.unity3d.com/6000.0/Documentation/Manual/class-AudioManager.html> | 확인 | 공식 | R4-121; 이전 미검증(U176). 공식268~269행.오디오풀크기와들리는동시소리개수를구분.대상기기적정값은미정. 근거: “real voices that can play at the same time”. |
+| codex_sound_music.md | PlayScheduled는프레임률과독립적인음악clip예약API | <https://docs.unity3d.com/6000.0/Documentation/ScriptReference/AudioSource.PlayScheduled.html> | 확인 | 공식 | R4-122; 이전 미검증(U177). 공식960행.전처리/버퍼준비시간설명포함.우리BPM·마디전환·페이드초수성공은미검증. 근거: “independent of the frame rate”. |
+| codex_tech_budget.md | D42.0 MythicUnique드롭음우선처리 | <https://news.blizzard.com/en-us/article/24140808/diablo-iv-patch-notes-2-0> | 미검증 | 공식 | R4-123; 이전 미검증(R3-134). 이번에도본문일부와다른sound변경은읽었으나대상드롭음우선순위문장을반환구간에서대조하지못함.그수치/주장이없다고단정하지 않음. 대상 주장 근거 발췌 없음. |
+| codex_tech_budget.md；codex_motion_direction.md | Hades의3D사전렌더→2D다각도프레임·수작업환경이라는개발자답변 | <https://steamcommunity.com/app/1145360/discussions/0/1738883810796606862/> | 확인 | 커뮤니티 | R4-124; 이전 미검증(U134). Steam답변46~48행.개인개발자계정답변은공식문서등급으로쓰지않음.실시간3D리깅사례·모든VFX구현과구분. 근거: “the game doesn't use real-time 3D rendering”. |
+| codex_tech_budget.md | Unity는60fps프레임예산16.66ms·30fps33.33ms와병목판독설명 | <https://unity.com/how-to/best-practices-for-profiling-game-performance> | 확인 | 공식 | R4-125; 이전 미검증(U138). 공식180·268행.일반프레임산술이지타게임GPU내부예산·우리Mac측정치아님. 근거: “a target of 60 fps leaves 16.66 ms”. |
+| codex_combat_impact.md | Lin2022 19특징분류중slowmo·색상flash등전체분류 | <https://arxiv.org/abs/2208.06155> | 미검증 | 커뮤니티 | R4-126; 이전 미검증(R3-117). 저자preprint초록17행은hitstop·sound coherence·camera control을설명하지만전체taxonomy는미대조.본문별도URL추가없이150개상한유지.개인저자논문을공식기관발표로분류하지 않음. 근거: “a 19-feature framework”. |
+| codex_combat_impact.md | PBZ는비슷한실물무기녹음과환상무기의복잡한Foley를설명 | <https://www.inverse.com/gaming/phantom-blade-zero-soulframe-liang-director-interview> | 확인 | 매체 | R4-127; 이전 미검증(U111). Liang인터뷰61행.동시레이어수·개별dB·지연ms·스튜디오세션트랙을계측한것은아님. 근거: “we do very complex Foley”. |
+| codex_combat_impact.md | DeadCells27.1은세무기에screenshake추가·끄기와screen-bump연동 | <https://deadcells.com/patchnotes/27> | 확인 | 공식 | R4-128; 이전 미검증(U113). 공식47~48행.무기명Machete&Pistol/Queen’sRapier/HardLightSword를읽음.진폭·주파수·감쇠·지속수치는미검증. 근거: “Added screenshake to”. |
+| codex_combat_impact.md；codex_menus_loot.md；codex_cinematic_text.md | PoE2 0.2.0은패드에서item labels꺼짐을알리는HUD아이콘추가 | <https://www.pathofexile.com/forum/view-thread/3740562> | 확인 | 공식 | R4-129; 이전 미검증(U115). 공식682행.이름표표시상태와loot규칙필터해제는다른기능.타격hitstopms는이변경으로확인하지 않음. 근거: “A HUD icon is now displayed”. |
+| codex_combat_impact.md | requestVideoFrameCallback초안은presentedFrames불연속·메인스레드지연가능설명 | <https://wicg.github.io/video-rvfc/> | 확인 | 커뮤니티 | R4-130; 이전 미검증(U117). WICG공개초안54·103행.최종W3C표준과구분하며계측방법보조근거.특정게임영상의실제fps·원본프레임수는측정하지 않음. 근거: “we might not get a callback for every frame”. |
+| codex_urp_mood.md | Full Screen Pass의on-tile·custom안개병합가능성 | <https://docs.unity.com/en-us/engine/6000.6/manual/post-processing-and-full-screen-effects/urp/custom-post-processing/renderer-feature-full-screen-pass> | 미검증 | 공식 | R4-131; 이전 미검증(R3-034). Requirements244~255행의기능일부는읽었으나on-tile/우리custom병합은미대조.다른Unity6.5변경URL의확인을이URL에전용하지 않음. 근거: “Adds no additional render passes.”. |
+| d4-study--01_environment.md | Newshub의D4개발자명암인터뷰 | <https://www.newshub.co.nz/home/entertainment/2023/06/from-kubrick-to-caravaggio-diablo-4-s-developers-reveal-the-secrets-of-its-jaw-dropping-art-design.html> | 미검증 | 매체 | R4-132; 이전 미검증(R3-102). Stuff로이동후추출0행.기존색인/제목만으로확인하지않고대체주소·로그인·우회안 함. 대상 주장 근거 발췌 없음. |
+| d4-study-ui--02_hud_ui.md | D4의현행32:9무잘림전장·HUD지원 | <https://evezone.evetech.co.za/gear-review/best-diablo-4-monitor-2026-ultrawide-4k> | 미검증 | 매체 | R4-133; 이전 미검증(R3-085). 판매점안내1042행은일반ultrawide장점.그본문으로D4의실제32:9지원범위와black bar를확인하지못함.현재사용자모니터검증도아님. 근거: “21:9 or 32:9 aspect ratio”. |
+| codex_3d_pixel_small_team.md；codex_frame_data.md；codex_motion_direction.md | Bénard GDC슬라이드는DeadCells개발2.5yr로소개 | <https://media.gdcvault.com/gdc2019/presentations/Benard-Sebastian-DeepCells.pdf> | 확인 | 커뮤니티 | R4-134; 이전 미검증(U140). 개인발표PDF P5,29행.전체개발포함단계·전업투입기간미확인.핵심8인/아트1→2인은다른출처와별도. 근거: “2.5yr dev”. |
+| codex_3d_pixel_small_team.md | CassetteBeasts 핵심2인과외부애니메이터·일러스트·음악협력구분 | <https://www.pockettactics.com/cassette-beasts/interview> | 확인 | 매체 | R4-135; 이전 미검증(U145). 인터뷰19행은바로이표현이정확하지않다고명시.핵심스튜디오2명이지완성품전체인원2명이아님.3년개발기간은이URL에서이번미대조. 근거: “it's been a two-person project”. |
+| codex_3d_pixel_small_team.md | Prodeus정식2022-09-23·EA2020-11-09출시표기 | <https://store.steampowered.com/app/964800/Prodeus/> | 확인 | 공식 | R4-136; 이전 미검증(U149). 상점85~86행.2019년기사의2019EA/2020정식은계획임을구분하므로일정차이를원문서불일치로추가하지 않음. 근거: “Early Access Release Date: 9 Nov, 2020”. |
+| codex_3d_pixel_small_team.md | OTII인터뷰는첫Octopath2018출시와HD2D확장을설명 | <https://www.unrealengine.com/developer-interviews/octopath-traveler-ii-builds-a-bigger-bolder-world-in-its-stunning-hd-2d-style?lang=en-US> | 확인 | 매체 | R4-137; 이전 미검증(U151). Epic게시개발사인터뷰19~21·37행.제품공식요구사항문서와구분한매체인터뷰.피크프로그래머6인은별도첫작품인터뷰의근거이며이URL에서대조하지 않음. 근거: “When it was released in 2018”. |
+| codex_3d_pixel_small_team.md | AdamRobinson-Yu는PaperRPG2016Unity시작·2018말ShortHike전환·당분간복귀없음을회고 | <https://adamgryu.itch.io/paper-game/devlog/971220/i-might-never-finish-this-game-so-im-releasing-the-demo> | 확인 | 커뮤니티 | R4-138; 이전 미검증(U153). 개인devlog18~24행.영구취소나상근기간을확정하지않으며성공사례인원에합산하지 않음. 근거: “I might return to this project someday”. |
+| codex_3d_pixel_small_team.md | Eastward는Gii/MOAI·Aseprite·Photoshop·자산흐름자동화설명 | <https://www.gamedeveloper.com/business/road-to-the-igf-pixpil-s-i-eastward-i-> | 확인 | 매체 | R4-139; 이전 미검증(U155). Zhou인터뷰56행.도구/워크플로우설명이며전체인원·기간·현재엔진버전을동일하게확정하지 않음. 근거: “Eastward is built with our in-house game engine called Gii.”. |
+| codex_yellowsky.md | 황천Q&A의게임유형·개발계획및엔진세부전체 | <https://www.bilibili.com/opus/1229029506213216265> | 미검증 | 추정 | R4-140; 이전 미검증(U075). 게시본문8행의ARPG중심·모금예고는읽었으나Q&A본체가이미지라전체대조못함.게임명계정의望虚社명의자기소개이고계정소유관계추가검증없이공식등급을승계하지 않음. 근거: “以ARPG体验为主”. |
+| codex_yellowsky.md | SteamDB는App5024530의번체지역명을黃天逆途로표시 | <https://steamdb.info/app/5024530/info/> | 확인 | 커뮤니티 | R4-141; 이전 미검증(U080). 본문127~129행.서드파티metadata재게시이며개발사직접공식표기와구분.원작이름·법인승계추정으로확대하지 않음. 근거: “tchinese 黃天逆途”. |
+| codex_yellowsky.md | 한국어SteamUI는黄天逆途제목·한국어미지원을표시 | <https://store.steampowered.com/app/5024530/_/?l=koreana> | 확인 | 공식 | R4-142; 이전 미검증(U081). 상점70·89행.한국어공식번역명을증명하지않으며‘황천’별칭을정식명칭으로바꾸지 않음. 근거: “한국어(을)를 지원하지 않습니다”. |
+| codex_yellowsky.md | RedditARPG소개는Downfall Of Yellowsky영문명을사용 | <https://www.reddit.com/r/ARPG/comments/1vcu8jk/insane_looking_top_down_arpg_with_roguelike/> | 확인 | 커뮤니티 | R4-143; 이전 미검증(U089). 팬소개18행.개발사직접답변·현재팀인원/출시계획의공식증거로승격하지 않음. 근거: “The dev of "Downfall Of Yellowsky"”. |
+| codex_yellowsky.md；yellowsky-study--downfall_of_yellowsky.md | 2025GamerSky는황천개발팀을伽马聚集로보도 | <https://www.gamersky.com/news/202501/1866461.shtml> | 확인 | 매체 | R4-144; 이전 미검증(U091). 기사257행.2026望虚社와다른표기라는범위를유지.개명/법인승계는미검증이라어느쪽이틀렸다고단정하지 않음. 근거: “独立游戏工作室伽马聚集”. |
+| codex_yellowsky.md | 다른Downfall은App364390·HarvesterGames·Screen7·2016-02-15 | <https://store.steampowered.com/app/364390/Downfall/> | 확인 | 공식 | R4-145; 이전 미검증(U092). 상점18·26·80·86·233행.별도제품식별이므로그엔진·기간·예산을황천에합치지 않음. 근거: “Published under license by Screen 7”. |
+| codex_yellowsky.md | 2026GamerSky는황천Steam페이지·위시리스트공개와11인·추가1년전망보도 | <https://www.gamersky.com/news/202608/2188149.shtml> | 확인 | 매체 | R4-146; 이전 미검증(U095). 기사257·264행.옛Reddit의‘준비중’과시점구분.현재개발진척·확정출시일·회계검증아님. 근거: “正式上架Steam商店页面”. |
+| arpg-conventions--ARPG_CONVENTIONS_CHECKLIST_20261105.md；d4-study-ui--02_hud_ui.md | XAG102는일반4.5:1·대형3:1·고대비7:1기준을설명 | <https://learn.microsoft.com/en-us/gaming/accessibility/xbox-accessibility-guidelines/102> | 확인 | 공식 | R4-147; 이전 미검증(U362). Microsoft224~230행.비단색배경최저대비영역과비교하는조건포함.우리HUD색수치·실기가독성은미검증. 근거: “Standard-size text or visual elements”. |
+| arpg-conventions--ARPG_CONVENTIONS_CHECKLIST_20261105.md | XAG103은색하나만으로핵심정보를전달하지않도록권고 | <https://learn.microsoft.com/en-gb/gaming/accessibility/xbox-accessibility-guidelines/103> | 확인 | 공식 | R4-148; 이전 미검증(U363). Microsoft124~125행.여러감각/시각보조수단의지침이지특정게임의합격결과아님. 근거: “no key game elements that rely on color alone”. |
+| arpg-conventions--ARPG_CONVENTIONS_CHECKLIST_20261105.md | XAG전체목록으로104자막·화자·효과음세부기준 | <https://learn.microsoft.com/en-us/gaming/accessibility/guidelines> | 미검증 | 공식 | R4-149; 이전 미검증(U364). 목록80행에서104제목은읽었으나그목록자체는자막세부본문이아님.개별104의R4-099확인을이URL에전용하지 않음. 근거: “Subtitles and captions”. |
+| arpg-conventions--ARPG_CONVENTIONS_CHECKLIST_20261105.md | XAG105는음악·효과·대사·채팅·screenreader음량분리권고 | <https://learn.microsoft.com/en-us/gaming/accessibility/xbox-accessibility-guidelines/105> | 확인 | 공식 | R4-150; 이전 미검증(U365). Microsoft33~37행.고정bus수·voice상한·ducking dB나게임준수결과가아님. 근거: “separate volume controls for each type of audio output”. |
+
+### 회차4 접속불가 목록 — 1개
+
+| 문서 | 주장 | URL | 상태 | 등급 | 비고 |
+|---|---|---|---|---|---|
+| codex_cinematic_text.md | 첫 음성 전 자막 설정 GAG 지침 | <https://gameaccessibilityguidelines.com/ensure-subtitles-captions-are-or-can-be-turned-on-before-any-sound-is-played/> | 접속불가 | 공식 | R4-097. UnexpectedStatusCode; 응답에 HTTP 숫자가 없어 임의로403/404 등을 붙이지 않음. 접근 실패를 우회하지 않았고 주장의 허위를 뜻하지 않음. |
+
+### 회차4 미검증 유지 목록 — 28개
+
+빈본문·연령화면·JS셸·영상푸터·이미지표·필요구간미대조를 확인으로 올리지 않았다. 아래는 결과표28개의 중복 요약이며 고유URL 집계에 추가하지 않는다.
+
+| 회차 행 | URL | 미검증 이유 |
+|---|---|---|
+| R4-001 | <https://www.gamedeveloper.com/production/art-design-deep-dive-using-a-3d-pipeline-for-2d-animation-in-i-dead-cells-i-> | 본문62~81행을 다시 읽음. 키포즈 최소화·pose-to-pose 원칙은 있으나3~5장 수량은 여전히 대조하지 못함. 이전 회차 미검증 유지; 수치가 거짓이라는 판정은 아님. |
+| R4-004 | <https://store.steampowered.com/app/2344520/Diablo_IV/> | 원 URL은 agecheck로 이동,73행 연령 확인 화면만 반환. 요구사항 본문을 읽지 못함. 생년 입력·로그인·우회 없이 중단. |
+| R4-012 | <https://www.unrealengine.com/en-US/tech-blog/bringing-unreal-engine-on-macos-up-to-feature-parity-with-windowsprogress-report> | 본문39~42행은 호환성 표를 소개하나 표 본체는 이미지. 이미지 취득 없이 기기별 값을 읽지 않음. 다른 공식 텍스트 요구사항 표를 이 URL 확인으로 전용하지 않음. |
+| R4-013 | <https://forums.unrealengine.com/t/community-tutorial-pixelate-any-material-in-unreal-engine-5-no-post-process/2702520> | 본문9행의 소개 한 문장은 읽었으나 구현·가림·비용은 없음. 제목 No Post-Process만으로 전체 구현을 확인하지 않고, 별도 연결 URL은 이번150개 밖이어서 열지 않음. |
+| R4-014 | <https://docs.unity3d.com/Packages/com.unity.ai.assistant@2.3/manual/unity-mcp-get-started.html> | HTML115~129행은 구버전 Unity Bridge 설정 안내. 현재CLI 대체 문구는 이 URL에서 대조하지 못함. 다른 현행CLI 문서와 시점·범위를 구분. |
+| R4-015 | <https://www.unrealengine.com/en-US/faq> | 동적 FAQ 응답에서 대상 계약 조건 본문을 읽지 못함. EULA R4-020의 본문 확인을 FAQ 확인으로 전용하지 않음. |
+| R4-019 | <https://dev.epicgames.com/community/learning/tutorials/nZ2e/command-line-rendering-with-unreal-engine-movie-render-queue> | 원 URL은 열기 응답이 있지만 본문 추출0행. 제목/색인으로 확인하지 않으며 실제 저자도 본문에서 확인하지 못해 잠정 추정. 별도 주소로 우회하지 않음. |
+| R4-026 | <https://learn.unity.com/tutorial/editor-scripting?language=en> | deprecated 경로로 이동한65행 셸 응답에서 필요한 강좌 내용을 읽지 못함. 강좌 제목·목록만으로 확인하지 않음. |
+| R4-030 | <https://dev.epicgames.com/community/learning/tutorials/nZ2e/command-line-rendering-with-unreal-engine-movie-render-queue?locale=ja-jp> | 추출 본문0행. 별도 쿼리 없는 R4-019와 분모에서 별도 URL이지만 동일한 미대조 상태. 작성자 미확인. |
+| R4-032 | <https://www.youtube.com/watch?v=k0tgmrBuIJc> | YouTube 응답은 푸터3행뿐. 헤더 제목을 넘어 게시자·설명·전사문을 읽지 못해 미검증. 로그인·재생·다운로드 안 함. |
+| R4-035 | <https://docs.unity.com/en-us/engine/6000.0/manual/materials-and-shaders/shaders/writing-custom-shaders-urp/writing-shaders-urp/reconstruct-world-position> | 예제 페이지는 열렸으나 이번에6000.0의 reversed-Z/투영 조건 전체를 대조하지 못함. 회차3의6000.6 별도 URL 확인을 이 버전에 전용하지 않음. |
+| R4-047 | <https://imgur.com/gallery/creating-pixel-art-scene-realtime-3d-qwhbHQq> | 응답은 JS 활성 요구 한 줄뿐. 이미지·설명을 읽지 않았고 다운로드·JS 우회·대체주소 열기 안 함. Holland 등 재현을 원저자 구현으로 대체하지 않음. |
+| R4-059 | <https://www.supergiantgames.com/faqs/hades/> | controller 지원 관련 본문170행은 읽었으나 Options의Settings/Controls/Display 등 전체구성과 remapping 조건을 이FAQ에서 완전히 대조하지 못함. 개인메뉴가이드와 구분. |
+| R4-064 | <https://er-frame-data.nyasu.business/> | 직접 열기0행·읽을 수 있는 본문 없음. 도구 제목만 보고 수치를 확인하지 않음. |
+| R4-072 | <https://steamdb.info/app/2344520/screenshots/> | 서드파티 metadata의267행 파일명 등은 읽었지만 스크린샷 해상도·개수 전체는 이번에 대조하지 못함. 파일명을 실제 픽셀판정/구도 관찰로 바꾸지 않음. |
+| R4-073 | <https://steamdb.info/app/2694490/screenshots/> | 265~266행 캡슐경로는 읽었으나 스크린샷 원본해상도·전체개수는 미대조. Valve 공식상점과 분리하며 이미지를 열거나 다운로드하지 않음. |
+| R4-074 | <https://steamdb.info/app/1371980/screenshots/> | 280행의 영상썸네일 경로는 스크린샷 원본치수와 다르다. 입력이 주장한 스크린샷 metadata 전체는 대조 미완료. 타이틀·썸네일을 이미지실측으로 취급하지 않음. |
+| R4-075 | <https://steamdb.info/app/5024530/screenshots/> | 163~169행 라이브러리 에셋 링크만 읽음. 스크린샷 전체 크기·개수·구도는 미대조. 개발사 공식자료와 구분. |
+| R4-103 | <https://www.youtube.com/watch?v=9bRWIdOMfro> | YouTube푸터3행만반환.헤더제목만으로게시자·게시일·연출을확인하지않고채널주체미확인등급추정.재생·저장안 함. |
+| R4-105 | <https://www.youtube.com/watch?v=AOVg2aLjIiU> | YouTube푸터3행.이번에본문게시자/설명을읽지못해공식채널이라고추정승격하지않음.다른매체04:58목록과분리. |
+| R4-120 | <https://gdcvault.com/browse/gdc-24?keyword=diablo> | 정상리다이렉트뒤Maintenance in Progress 안내만반환.기존기준에따라셸/대체본문은미검증.실제강연·내부수치는미열람. |
+| R4-123 | <https://news.blizzard.com/en-us/article/24140808/diablo-iv-patch-notes-2-0> | 이번에도본문일부와다른sound변경은읽었으나대상드롭음우선순위문장을반환구간에서대조하지못함.그수치/주장이없다고단정하지 않음. |
+| R4-126 | <https://arxiv.org/abs/2208.06155> | 저자preprint초록17행은hitstop·sound coherence·camera control을설명하지만전체taxonomy는미대조.본문별도URL추가없이150개상한유지.개인저자논문을공식기관발표로분류하지 않음. |
+| R4-131 | <https://docs.unity.com/en-us/engine/6000.6/manual/post-processing-and-full-screen-effects/urp/custom-post-processing/renderer-feature-full-screen-pass> | Requirements244~255행의기능일부는읽었으나on-tile/우리custom병합은미대조.다른Unity6.5변경URL의확인을이URL에전용하지 않음. |
+| R4-132 | <https://www.newshub.co.nz/home/entertainment/2023/06/from-kubrick-to-caravaggio-diablo-4-s-developers-reveal-the-secrets-of-its-jaw-dropping-art-design.html> | Stuff로이동후추출0행.기존색인/제목만으로확인하지않고대체주소·로그인·우회안 함. |
+| R4-133 | <https://evezone.evetech.co.za/gear-review/best-diablo-4-monitor-2026-ultrawide-4k> | 판매점안내1042행은일반ultrawide장점.그본문으로D4의실제32:9지원범위와black bar를확인하지못함.현재사용자모니터검증도아님. |
+| R4-140 | <https://www.bilibili.com/opus/1229029506213216265> | 게시본문8행의ARPG중심·모금예고는읽었으나Q&A본체가이미지라전체대조못함.게임명계정의望虚社명의자기소개이고계정소유관계추가검증없이공식등급을승계하지 않음. |
+| R4-149 | <https://learn.microsoft.com/en-us/gaming/accessibility/guidelines> | 목록80행에서104제목은읽었으나그목록자체는자막세부본문이아님.개별104의R4-099확인을이URL에전용하지 않음. |
+
+---
+
+**이하 회차3·2·1의 집계와 등급·판정은 해당 회차 당시 보존 기록이다. 현재 집계와 등급은 문서 첫머리·회차4 결과표·등급 교정을 우선한다. 회차4에 없는 URL의 주장 상태는 회차3→2→1 순서로 유지한다.**
+
+
 
 ## 회차 3 — CX22-3
 
@@ -2115,7 +2408,7 @@ PoE2 설정 기사는 RTX4070/1080p에서 Shadow+GI Ultra→Low 시약117→135f
 - U326 — <https://media.gdcvault.com/gdc2017/Presentations/Brown_Lisa_Applying_3D_Level.pdf>
 - U445 — <https://www.ggxrd.com/Motomura_Junya_GuiltyGearXrd.pdf>
 
-전체 URL 681개 · 회차3 열기·대조 대상 150개
-확인 267개 · 불일치 5개
-접속불가 140개 · 미검증 269개
+전체 URL 681개 · 회차4 열기·대조 대상 150개
+확인 388개 · 불일치 5개
+접속불가 141개 · 미검증 147개
 
