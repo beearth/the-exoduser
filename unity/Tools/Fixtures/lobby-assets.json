@@ -64,7 +64,7 @@
     }
   ],
   "assetCount": 30,
-  "bytes": 210378505,
+  "bytes": 198003133,
   "assets": [
     {
       "source": "video/fdg_intro.mp4",
@@ -244,10 +244,11 @@
     {
       "source": "img/logo_exoduser.png",
       "destination": "Exoduser/Resources/Art/lobby/brand_logo.png",
-      "bytes": 241583,
-      "sourceSha256": "dffad452cffa7aaf074ff80d2fbb9258858fdef1cbde750e8b07f3f3b264efbd",
-      "sha256": "dffad452cffa7aaf074ff80d2fbb9258858fdef1cbde750e8b07f3f3b264efbd",
-      "transform": "byte_exact"
+      "bytes": 749787,
+      "sourceSha256": "4b1e403817dc10c31c636c1051799b54bb581677fabdd9d136645b8d5b20c50a",
+      "sha256": "4b1e403817dc10c31c636c1051799b54bb581677fabdd9d136645b8d5b20c50a",
+      "transform": "byte_exact",
+      "sourceRevision": "b94c8fbff29d01fa94c9cd7a51a7f4eadc4d7fc8"
     },
     {
       "source": "assets/lobby/lobby_enter_btn.png",
@@ -306,12 +307,13 @@
       "transform": "byte_exact"
     },
     {
-      "source": "output/imagegen/exoduser-hell-lord-logo-api-v1.png",
+      "source": "img/logo_exoduser.png",
       "destination": "Exoduser/Resources/Art/lobby/title_logo.png",
-      "bytes": 1572848,
-      "sourceSha256": "185abb93942ea45a21dcc2d80564e44e1895afa14127d4eac110faeb979a85ba",
-      "sha256": "92ca6eea0c1840bf6e0eb8e30bd7e9eb96052796101f2e121488fed587d81541",
-      "transform": "cin-logo-art.js exact alpha=round(255*clamp((maxRGB-8)/24)); RGB unchanged"
+      "bytes": 749787,
+      "sourceSha256": "4b1e403817dc10c31c636c1051799b54bb581677fabdd9d136645b8d5b20c50a",
+      "sha256": "4b1e403817dc10c31c636c1051799b54bb581677fabdd9d136645b8d5b20c50a",
+      "transform": "byte_exact",
+      "sourceRevision": "b94c8fbff29d01fa94c9cd7a51a7f4eadc4d7fc8"
     },
     {
       "source": "output/imagegen/enter-gothic-api-v1.png",

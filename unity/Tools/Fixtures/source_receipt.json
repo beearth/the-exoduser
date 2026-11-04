@@ -3,7 +3,7 @@
   "sourceSha256": "dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209",
   "mapSourceSha256": "c76238beda26087b6faa5cf65dfc3140dccfa9519d6ef30bd458cf11f949e5bb",
   "assetCount": 143,
-  "bytes": 189544099,
+  "bytes": 191513922,
   "assets": [
     {
       "source": "godot/assets/map/production_finish/chunk_0_0.png",
@@ -708,52 +708,76 @@
       "sha256": "4801bd016a0804fedbfaa5d7b97eda7924cb093565d2a7864402570df6add64e"
     },
     {
-      "source": "godot/assets/enemy/atlas_ch1_8dir_walk_east.png",
+      "source": "img/atlas_ch1_8dir_walk_east.png",
       "destination": "Art/enemy/atlas_ch1_8dir_walk_east.png",
-      "bytes": 1972388,
-      "sha256": "95acdda361d2d74add386083fc51dd44c8ea20d7883b299d1a00be618343c854"
+      "bytes": 2206104,
+      "sha256": "214e48ec040190892cfb664a2ee47c8cd110316fe8c1f873ba5814d079e8509b",
+      "sourceSha256": "214e48ec040190892cfb664a2ee47c8cd110316fe8c1f873ba5814d079e8509b",
+      "transform": "byte_exact",
+      "sourceRevision": "be138919f677a6e1c017b033e03febd240451425"
     },
     {
-      "source": "godot/assets/enemy/atlas_ch1_8dir_walk_north.png",
+      "source": "img/atlas_ch1_8dir_walk_north.png",
       "destination": "Art/enemy/atlas_ch1_8dir_walk_north.png",
-      "bytes": 2119638,
-      "sha256": "04471ea9d4b695cc79dd8285ce78316c4bb01749d24c4319936befa066d96538"
+      "bytes": 2359161,
+      "sha256": "c2ce54229dffab6475d36cc222840e5e43b5067f7cf5185871a78c64fd4c6635",
+      "sourceSha256": "c2ce54229dffab6475d36cc222840e5e43b5067f7cf5185871a78c64fd4c6635",
+      "transform": "byte_exact",
+      "sourceRevision": "be138919f677a6e1c017b033e03febd240451425"
     },
     {
-      "source": "godot/assets/enemy/atlas_ch1_8dir_walk_north_east.png",
+      "source": "img/atlas_ch1_8dir_walk_north_east.png",
       "destination": "Art/enemy/atlas_ch1_8dir_walk_north_east.png",
-      "bytes": 2060929,
-      "sha256": "ebc2ba5f5f995e0c104c81829d97162d39b888ed92ffca35f016715a9396e41f"
+      "bytes": 2299434,
+      "sha256": "936080003050d0efc9b5bbc0cafc4d17ea76f4727845cbaefce63c6e0469a6ce",
+      "sourceSha256": "936080003050d0efc9b5bbc0cafc4d17ea76f4727845cbaefce63c6e0469a6ce",
+      "transform": "byte_exact",
+      "sourceRevision": "be138919f677a6e1c017b033e03febd240451425"
     },
     {
-      "source": "godot/assets/enemy/atlas_ch1_8dir_walk_north_west.png",
+      "source": "img/atlas_ch1_8dir_walk_north_west.png",
       "destination": "Art/enemy/atlas_ch1_8dir_walk_north_west.png",
-      "bytes": 2102807,
-      "sha256": "6a89356bb56928a991f5e7f8dd0f0234ff0597d064af271fbe6673f3f4000e6c"
+      "bytes": 2335058,
+      "sha256": "8a613d0cfdf1e79ae022637fe48aa29e82bb12457dda1604bebd0795fb3467b5",
+      "sourceSha256": "8a613d0cfdf1e79ae022637fe48aa29e82bb12457dda1604bebd0795fb3467b5",
+      "transform": "byte_exact",
+      "sourceRevision": "be138919f677a6e1c017b033e03febd240451425"
     },
     {
-      "source": "godot/assets/enemy/atlas_ch1_8dir_walk_south.png",
+      "source": "img/atlas_ch1_8dir_walk_south.png",
       "destination": "Art/enemy/atlas_ch1_8dir_walk_south.png",
-      "bytes": 2232971,
-      "sha256": "5de3eb47f666d60c72da13b9cee90a1544b1f325db62e9ce2624551205f58429"
+      "bytes": 2493613,
+      "sha256": "cf2e9512f9fe36324f38ba72cc0a1b0b5c81fc6fc9e0966d122bb509e8e3f644",
+      "sourceSha256": "cf2e9512f9fe36324f38ba72cc0a1b0b5c81fc6fc9e0966d122bb509e8e3f644",
+      "transform": "byte_exact",
+      "sourceRevision": "be138919f677a6e1c017b033e03febd240451425"
     },
     {
-      "source": "godot/assets/enemy/atlas_ch1_8dir_walk_south_east.png",
+      "source": "img/atlas_ch1_8dir_walk_south_east.png",
       "destination": "Art/enemy/atlas_ch1_8dir_walk_south_east.png",
-      "bytes": 2174353,
-      "sha256": "b5c16fd3b82d402e33d42cb087bdaf85aa1459b423aab9f8f654f74ea0142070"
+      "bytes": 2425791,
+      "sha256": "9a8adb7083b7327d18ffe563eab018f9de283b4982fa84539ae70b7546b9fc48",
+      "sourceSha256": "9a8adb7083b7327d18ffe563eab018f9de283b4982fa84539ae70b7546b9fc48",
+      "transform": "byte_exact",
+      "sourceRevision": "be138919f677a6e1c017b033e03febd240451425"
     },
     {
-      "source": "godot/assets/enemy/atlas_ch1_8dir_walk_south_west.png",
+      "source": "img/atlas_ch1_8dir_walk_south_west.png",
       "destination": "Art/enemy/atlas_ch1_8dir_walk_south_west.png",
-      "bytes": 2090379,
-      "sha256": "2bcf554056a6cc4fa8bd250b69644d251d85366b645fb726399ec3b1b7fa50e3"
+      "bytes": 2373359,
+      "sha256": "c10aceee1b05d77997a5dacaa48ac7a420084b8981ab4f7c3486c1e50bab1132",
+      "sourceSha256": "c10aceee1b05d77997a5dacaa48ac7a420084b8981ab4f7c3486c1e50bab1132",
+      "transform": "byte_exact",
+      "sourceRevision": "be138919f677a6e1c017b033e03febd240451425"
     },
     {
-      "source": "godot/assets/enemy/atlas_ch1_8dir_walk_west.png",
+      "source": "img/atlas_ch1_8dir_walk_west.png",
       "destination": "Art/enemy/atlas_ch1_8dir_walk_west.png",
-      "bytes": 2008571,
-      "sha256": "564b5f56042aaeb73e585ff1b68ab44faaac08f2f07abc3b1431710c2f30ac58"
+      "bytes": 2239339,
+      "sha256": "af60edae9d1cdc2aa8295bfcaa346c49bda3d5cd791c852a2490e9e697a75d98",
+      "sourceSha256": "af60edae9d1cdc2aa8295bfcaa346c49bda3d5cd791c852a2490e9e697a75d98",
+      "transform": "byte_exact",
+      "sourceRevision": "be138919f677a6e1c017b033e03febd240451425"
     },
     {
       "source": "godot/assets/enemy/atlas_ch1_8dir_west.png",

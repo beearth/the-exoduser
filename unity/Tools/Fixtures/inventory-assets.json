@@ -11,14 +11,20 @@
     {
       "source": "img/ui/ossuary_socket_hf_v2.png",
       "destination": "Art/ui/inventory/socket.png",
-      "sha256": "e8dacf6c56f4fa7c439cf7880bcaaa88659364e70561cbf034c09b5ff72117bd",
-      "bytes": 1566065
+      "sha256": "2f34a20cac5deca75962e5cf07fd943571c9544d9f3a68b0a07d7b5496c751cb",
+      "bytes": 1312891,
+      "sourceSha256": "2f34a20cac5deca75962e5cf07fd943571c9544d9f3a68b0a07d7b5496c751cb",
+      "transform": "byte_exact",
+      "sourceRevision": "b94c8fbff29d01fa94c9cd7a51a7f4eadc4d7fc8"
     },
     {
       "source": "img/ui/hell_gothic/iron.png",
       "destination": "Art/ui/inventory/iron.png",
-      "sha256": "002b14f29ad42ea031d7fdc159cbed19e8a066377a2f1605b90be3450d91437d",
-      "bytes": 2763927
+      "sha256": "09d66985dad678990b6b316bc3b6614664c7d771e9c3c6cbd247b2f23330d0bd",
+      "bytes": 2717038,
+      "sourceSha256": "09d66985dad678990b6b316bc3b6614664c7d771e9c3c6cbd247b2f23330d0bd",
+      "transform": "byte_exact",
+      "sourceRevision": "b94c8fbff29d01fa94c9cd7a51a7f4eadc4d7fc8"
     },
     {
       "source": "img/ui/item-cutouts/sword_phys_cutout.png",

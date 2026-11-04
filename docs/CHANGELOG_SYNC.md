@@ -1,3 +1,5 @@
+2026-11-05 자산 영수증 정합화(코덱스 레인 asset-sync): 판정표 12건 영수증을 현재 파일 기준으로 갱신, 집계 bytes를 행 합계에 맞춤. export-lobby-assets.cjs의 title_logo 원본을 img/logo_exoduser.png로 바꾸고, 로고 두 개는 입증된 SHA·바이트와 다르면 쓰기 전에 중단. 자산 바이트 변경 0.
+
 2026-11-05 자산 영수증 불일치 12건 판정(코덱스 레인 asset-triage, 표만): 의도된 갱신 12, 의도치 않은 변경 0, 판단 불가 0. 자산·영수증 수정 0, 이력 판정이며 화면 검증 아님. docs/engine/ASSET_RECEIPT_TRIAGE_20261105.md.
 
 2026-11-05 D-T2 하니스 갱신(기준 9196a515d): 기존 입력 대기 24개를 현행 Git 웹 입력과 SDK10.0.400/net10.0·빈 외부 NuGet 공급원으로 점검. C# 8 PASS/1 BUILD-BREAK(참조 누락 2회 후 중단), 추출기 11 PASS/4 폐기(자산 영수증 대체 검사·현행 A안 근거). 인벤토리 방어 기대값은 현행 원문 _playerDefTotals를 직접 실행하고, 로비 3초 스킵·포이즈 T1 시나리오·누락 VM 경계를 갱신했다. sweep에 ENVIRONMENT/RETIRED/NOT-RUN 및 선택 범위 집계 추가. Core·Runtime 수정/Unity/Python/commit/push 0. 보드는 미반영, 초안과 상세 결과는 I:/EXODUSER-Storage/codex-takeover/debug-t2-harness/REPORT.md.

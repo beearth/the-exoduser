@@ -8,7 +8,11 @@ const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
 fs.mkdirSync(qa,{recursive:true});fs.mkdirSync(stream,{recursive:true});
 function write(dest,b){fs.mkdirSync(path.dirname(dest),{recursive:true});fs.writeFileSync(dest,b);if(hash(fs.readFileSync(dest))!==hash(b))throw Error(dest);}
 function read(src){const file=live+'/'+src,b=fs.readFileSync(file);if(hash(fs.readFileSync(file))!==hash(b))throw Error('Source drift '+src);return b;}
-function copy(src,dest){const b=read(src);write(project+'/Assets/'+dest,b);rows.push({source:src,destination:dest,bytes:b.length,sourceSha256:hash(b),sha256:hash(b),transform:'byte_exact'});}
+// Verified against b94c8fbff29d01fa94c9cd7a51a7f4eadc4d7fc8:img/logo_exoduser.png.
+// Fail closed if --live-root still contains the old logo; never replace current logos with it.
+function copy(src,dest){const b=read(src);
+ if(/^Exoduser\/Resources\/Art\/lobby\/(brand|title)_logo\.png$/.test(dest)&&(b.length!==749787||hash(b)!=='4b1e403817dc10c31c636c1051799b54bb581677fabdd9d136645b8d5b20c50a'))throw Error('Unverified logo source '+src+'; preserve current '+dest+' (expected b94c8fbff:img/logo_exoduser.png, byte_exact).');
+ write(project+'/Assets/'+dest,b);rows.push({source:src,destination:dest,bytes:b.length,sourceSha256:hash(b),sha256:hash(b),transform:'byte_exact'});}
 function derived(src,dest,b,transform){const original=read(src);write(project+'/Assets/'+dest,b);write(qa+'/source-art/'+path.basename(src),original);rows.push({source:src,destination:dest,bytes:b.length,sourceSha256:hash(original),sha256:hash(b),transform});}
 function exportCompatibleLobby(){
  const src='assets/lobby/lobby_varkan_crypt_loop_v2.mp4',original=read(src),sourceSha256=hash(original),dir=qa+'/lobby-compatibility/'+sourceSha256,source=dir+'/source.mp4',encoded=dir+'/lobby_varkan_crypt_loop_v2_unity.mp4',receiptPath=dir+'/receipt.json';
@@ -36,7 +40,8 @@ async function main(){
  exportCompatibleLobby();
  const images={'img/logo_exoduser.png':'brand_logo','assets/lobby/lobby_enter_btn.png':'lobby_enter','assets/lobby/lobby_banner_btn.png':'lobby_banner','img/fdg_intro/fdg_reference.png':'fdg_poster','img/fdg_wolf/fdg_wolf_emblem.png':'fdg_emblem','img/title_clean_plate_20260929.png':'splash_title','assets/lobby/varkan_idle_v3.png':'varkan_idle','assets/lobby/varkan_idle_first_v3.png':'varkan_first'};
  for(const [src,name]of Object.entries(images))copy(src,'Exoduser/Resources/Art/lobby/'+name+'.png');
- for(const [src,name]of [['output/imagegen/exoduser-hell-lord-logo-api-v1.png','title_logo'],['output/imagegen/enter-gothic-api-v1.png','enter_art']]){
+ copy('img/logo_exoduser.png','Exoduser/Resources/Art/lobby/title_logo.png');
+ for(const [src,name]of [['output/imagegen/enter-gothic-api-v1.png','enter_art']]){
   const raw=await sharp(read(src)).ensureAlpha().raw().toBuffer({resolveWithObject:true});for(let i=0;i<raw.data.length;i+=4)raw.data[i+3]=Math.round(255*Math.max(0,Math.min(1,(Math.max(raw.data[i],raw.data[i+1],raw.data[i+2])-8)/24)));
   const out=await sharp(raw.data,{raw:{width:raw.info.width,height:raw.info.height,channels:4}}).png().toBuffer();derived(src,'Exoduser/Resources/Art/lobby/'+name+'.png',out,'cin-logo-art.js exact alpha=round(255*clamp((maxRGB-8)/24)); RGB unchanged');
  }
