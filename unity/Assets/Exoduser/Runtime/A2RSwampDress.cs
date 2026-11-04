@@ -162,7 +162,7 @@ namespace Exoduser.UnityPort
             {
                 f.renderer.enabled = false;
                 if (!GeometryUtility.TestPlanesAABB(planes, f.renderer.bounds)) continue;
-                var a = camera.WorldToScreenPoint(f.position), b = camera.WorldToScreenPoint(f.position + camera.transform.right * .65f);
+                Vector3 a = camera.WorldToScreenPoint(f.position), b = camera.WorldToScreenPoint(f.position + camera.transform.right * .65f);
                 if (a.z <= 0 || Vector2.Distance(a, b) < 8) continue;
                 f.distance = (camera.transform.position - f.position).sqrMagnitude; visible.Add(f);
             }
