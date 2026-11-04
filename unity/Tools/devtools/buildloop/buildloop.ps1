@@ -508,6 +508,8 @@ function Invoke-Exo([string]$command, [string[]]$jobArgs, [string]$logBase, [str
   foreach ($line in @(Get-Content -LiteralPath ($logBase+'.out.log') -Encoding UTF8)) { if ($line.Trim().StartsWith('{')) { try { $receipt = $line | ConvertFrom-Json } catch { } } }
   $waitReason = ''
   if ($rc -ne 0 -and $null -eq $receipt) { $waitReason = Get-UnityWaitReason ([IO.File]::ReadAllText($logBase+'.err.log')) }
+  # 11-04: 사용자가 바탕화면 게임을 띄워 둔 동안 실행기는 Player를 미룬다. 실패가 아니라 다음 회차에 다시 한다.
+  if ([string](Prop $receipt 'deferred' '') -eq 'user-game') { $waitReason = [string](Prop $receipt 'note' '사용자 게임 실행 중, 미룸'); $receipt = $null }
   return [pscustomobject]@{ exit = $rc; receipt = $receipt; stdout = ($logBase+'.out.log'); stderr = ($logBase+'.err.log'); waitReason = $waitReason }
 }
 function Invoke-UiOverlapCheck([string]$check, [string]$exe, [string]$worktree, [string]$output, [string]$log) {

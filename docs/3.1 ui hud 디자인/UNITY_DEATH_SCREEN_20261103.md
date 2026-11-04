@@ -120,3 +120,25 @@ Mac에서는1920×1080·3840×1080·5120×1440의 HD2D/--remodel3d 양쪽에서 
 | `--unity-overlay-capture death` | PASS(대사 고르기·리플레이 모양 영수증 유지) |
 | 눈 검수 | 전/후 1920·1600 직접 확인. 전: 원화·펫·이모지·"미이식"이 겹친 웹 이식판. 후: 검정·한 문장·결정. 진홍은 측정대로 검붉게 나온다. 개발 상태 문구 0 |
 | 미검증 | 필드 사망(2 선택지)은 캡처 경로가 없어 코드로만 확인. 마우스 실클릭, 초광폭 21:9·32:9, 다국어(문구는 한국어 고정) |
+
+## 11-04 04:05 지역 배너/29언어 후속
+
+NativeRegionHud.Draw의suppressArrow는배너를숨기지않았다. NativeGame.DrawRegionHud가DeathPresentationActive/fallen·부활전환·death.Active/PlayerDown에서전체지역레이어를조기return한다. 웹은regionBanner z19를전체#death z40아래에둔다. Core사망/부활시간과룰은그대로다.
+
+우상단4키는ko/en분기대신선택29언어Data/demo_text조회,Thai/아랍어등은전체문자열·명조fallback/RTL경로다. No.0374/0371/3982/0415(3766별칭)재사용,81카탈로그. death-screen-capture에objectiveThaiLabels/objectiveLabelsComplete/regionHiddenAtWait/regionHiddenInBoss를기록한다. 04:05 CTO승인예외③의고정후보에서만PC촬영하고일반PC Player금지는유지한다. [후보계약](UNITY_UI_CANDIDATE_20261104.md).
+
+## 04:05 실제 후보 촬영 중단
+a02cb84850 후보 빌드1회는 성공했으나 첫 로비의 기존 StageFlow locale 초기화 NRE로 촬영 진입 전 중단됐다. 사망 지역HUD 숨김·태국어 4키의 실제 화면 증거는 이번0장이다. 최소 null 접근 수정은 소스/참조검사만 통과했고 승인 빌드1회 소진으로 추가빌드0. [후속 관문과 정확한 실행본 구분](UNITY_UI_CANDIDATE_20261104.md).
+
+## 05:00 실제 후보 촬영 확보
+시작 null 수정 포함 e3b3bc977의 공용 추가빌드1회 PASS. 1920/3840 각각사망14장, 합28장(전체UI포함50장)을확보했다. 두해상도실제receipt의 regionHiddenAtWait/regionHiddenInBoss/objectiveLabelsComplete=true, 보스부활불가위지역배너숨김과태국어HUD를직접열어확인했다. 사용자창/세이브변경/잔류0. 아래0/50은a02이전기록이며 최신은 [후보50장근거](UNITY_UI_CANDIDATE_20261104.md)다. 디자인총괄/Mac자연게임관문은별도.
+
+## 05:40 촬영 조건·HUD 후속
+swap3와 같은 --remodel3d -force-d3d11 인자로 고정50장을 다시 촬영한다. Greek 포함29언어 HUD4키의 실제 측정 gap≥16px/116행을 사망 영수증에 남긴다. 기존 e3b3의50장은 2D 배경 인자 누락 상태였으며 3D 기준선과 같은 조건의 판정으로 쓰지 않는다. 새 결과는 REPORT가 정본이다. [계약](UNITY_UI_CANDIDATE_20261104.md).
+
+## 05:40 촬영 후처리 중단
+540fdcde20/--remodel3d/-force-d3d11로1920 사망14장·제품검증PASS,29언어116행 최소간격16px를 확인했다. 사망/입장hover의 공용 종료 후 ReadAllText(player.log) 파일잠금 예외가2회 발생해 STOP,3840은 미실행이다. 원본 총25/50, 공용 최종영수증7/9와 제품9/9를 구분한다. [근거와 미완료 관문](UNITY_UI_CANDIDATE_20261104.md).
+
+## 11-04 새 실행 — 05:50 판정 반영
+
+기하 크기 자동 칩 분기를 폐기하고 설정 조작 요소만 명시적으로 칩을 선택한다. 기본 가시 원화/20개 Lanczos3 1x·2x 파생본과 공통 철 면의 화면 픽셀 기준 샘플링을 반영했다. 소스·재질 검사/5어셈블리 참조 컴파일 오류0. 새 Unity 임포트·후보 빌드·50장 촬영은 이전 공용 로그 잠금 2FAIL과 G: 여유 기준 때문에 미실행이며 이전 540fdcde2 캡처를 새 증거로 재사용하지 않는다. 상세는 UNITY_UI_CANDIDATE_20261104.md의 새 실행 정정 절.

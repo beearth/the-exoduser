@@ -237,9 +237,9 @@ namespace Exoduser.UnityPort
 
         IEnumerator UiWaitRootMovie(int visual,string expected)
         {
-            yield return null;var video=lobby.CurrentVideo;float deadline=Time.realtimeSinceStartup+10;
+            yield return null;var video=lobby.CurrentVideo;float deadline=Time.realtimeSinceStartup+30; // 11-04: 10s timed out while other QA Players shared the GPU decoder
             while(Time.realtimeSinceStartup<deadline&&(!video.Prepared||video.Frame<0)){lobby.SetPlaybackFocus(true);if(video.Error.Length>0)throw new InvalidOperationException("전면 영상 오류 "+expected+" "+video.Error);yield return null;}
-            if(!video.Prepared||video.Frame<0||Path.GetFileName(video.Player.url)!=expected)throw new InvalidOperationException("실제 전면 영상 준비 실패 "+expected);
+            if(!video.Prepared||video.Frame<0||Path.GetFileName(video.Player.url)!=expected)throw new InvalidOperationException("실제 전면 영상 준비 실패 "+expected+" prepared="+video.Prepared+" frame="+video.Frame+" url="+(video.Player!=null?Path.GetFileName(video.Player.url):"null"));
             var movie=new UiWideMovie{width=Screen.width,height=Screen.height,visual=visual,language=overlapLanguage,file=Path.GetFileName(video.Player.url),frameBefore=video.Frame,timeBefore=video.Time,prepared=true,textureWidth=video.Texture.width,textureHeight=video.Texture.height};yield return new WaitForSecondsRealtime(.35f);movie.frameAfter=video.Frame;movie.timeAfter=video.Time;movie.playing=video.Player.isPlaying;overlapCoverage.movies.Add(movie);if(!movie.playing||movie.frameAfter<0||movie.frameAfter==movie.frameBefore||Path.GetFileName(video.Player.url)!=expected)throw new InvalidOperationException("전면 영상 프레임 정지/교체 "+expected);
         }
         IEnumerator UiCinematicShots()
