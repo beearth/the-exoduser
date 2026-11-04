@@ -1,0 +1,2 @@
+[h2]Giới thiệu bản demo[/h2]
+[p]Trong bản demo, bạn có thể chơi trọn vẹn 1-1, vùng đầu tiên của địa ngục, từ đầu đến cuối. Bắt đầu với Chiến Binh cấp 1, tự mình trải nghiệm đại kiếm, các kỹ năng khởi đầu, đỡ đạn, di chuyển bằng xích và nhặt trang bị, rồi đối đầu với trùm đầu tiên của vùng, Druid Bóng Tối. Cấp tối đa trong bản demo là 100, và tiến trình bản demo được lưu riêng với bản đầy đủ. Hợp nhất kỹ năng, thêm nhiều anh hùng cùng những tầng sâu hơn của địa ngục và các trùm của chúng đang chờ bạn trong bản đầy đủ.[/p]

@@ -1,0 +1,2 @@
+[h2]Informazioni sulla demo[/h2]
+[p]La demo ti permette di giocare 1-1, la prima regione dell'inferno, dall'inizio alla fine. Inizia come Guerriero di livello 1, prova lo spadone, le abilità iniziali, la parata dei proiettili, la mobilità con la catena e il bottino, poi affronta il primo boss della regione, il Druido Oscuro. Il livello massimo della demo è 100 e i progressi della demo vengono salvati separatamente dal gioco completo. La fusione delle abilità, altri eroi e gli strati più profondi dell'inferno con i loro boss ti aspettano nel gioco completo.[/p]

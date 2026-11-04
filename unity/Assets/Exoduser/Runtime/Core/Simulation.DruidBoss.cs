@@ -71,7 +71,7 @@ namespace Exoduser.UnityPort.Core
             if (PlayerPoison > 0 && Player.Hp > 0)
             {
                 PlayerPoison -= .02f;
-                if ((int)Math.Floor(PlayerPoison * 10) % 6 < 1) { int pd = Js.Int(Player.MaxHp * .008); HurtPlayer(pd, new HurtOptions { Dot = true }); }
+                if ((int)Math.Floor(PlayerPoison * 10) % 6 < 1) { int pd = Js.Int(Player.MaxHp * .008); HurtPlayer(pd, new HurtOptions { Dot = true, Labeled = true }); }   // web hurtP(pd,{dot:true,src:_T('중독')})
             }
             if (Druid == null) return;
             TickRemodelRules();   // RM-B0b: ended props leave Enemies, obstacles end with the arena
