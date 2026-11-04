@@ -18,7 +18,7 @@ namespace Exoduser.UnityPort.Vfx
     // Every number is DruidSlamVfxTimeline / DruidSlashVfxTimeline (pure, checked by unity/Tools/druid-skill-vfx-tests). Clock = Core ticks, so pause / frame stepping cannot consume the effect.
     // Draw order: decals (projected on the real floor, sorting -8994) < dust -8989 < debris -8988 < telegraph decal -8985 < actors; only the contact core and the ribbon are additive
     // above the actors. Limits (shared by both moves): 24 body sprites at once (oldest dropped first), 8 decals.
-    public sealed class DruidSkillVfxView : IDisposable
+    public sealed partial class DruidSkillVfxView : IDisposable
     {
         const int DecalOrder = -8994, DustOrder = -8989, ShardOrder = -8988, CoreOrder = 29999, MaxBodySprites = 24, MaxDecals = 8;
         const string EarthDir = "Art/vfx/boss/earth/";
@@ -86,6 +86,7 @@ namespace Exoduser.UnityPort.Vfx
             bgo.AddComponent<MeshFilter>().sharedMesh = trailMesh;
             trailBlendR = bgo.AddComponent<MeshRenderer>(); trailBlendR.sharedMaterial = spriteMaterial;   // alpha blend: vertex colour (tint + alpha along the ribbon) x texture
             trailBlendR.sortingOrder = CoreOrder - 2; trailBlendR.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; trailBlendR.receiveShadows = false; trailBlendR.enabled = false;
+            InitializeRemaining();
         }
 
         static Color Hex(uint c, float a) { var k = new Color(((c >> 16) & 0xFF) / 255f, ((c >> 8) & 0xFF) / 255f, (c & 0xFF) / 255f, a); return LinearSpace ? new Color(k.linear.r, k.linear.g, k.linear.b, a) : k; }   // mesh vertex colours are not converted by Unity
@@ -116,6 +117,7 @@ namespace Exoduser.UnityPort.Vfx
 
         public void Dispose()
         {
+            DisposeRemaining();
             foreach (var r in alphaPool) owned.Remove(r);
             foreach (var r in addPool) owned.Remove(r);
             foreach (var r in decalPool) owned.Remove(r);
@@ -128,7 +130,7 @@ namespace Exoduser.UnityPort.Vfx
             foreach (var s in gougeSprites) if (s != null) UnityEngine.Object.Destroy(s);
         }
 
-        public void Reset() { slams.Clear(); slashes.Clear(); prevState = null; windStart = -1; chunks = null; lastTick = int.MinValue; }
+        public void Reset() { slams.Clear(); slashes.Clear(); prevState = null; windStart = -1; chunks = null; lastTick = int.MinValue; ResetRemaining(); }
 
         // call every frame after the Simulation tick; `cam` = the world camera (billboards face it while the 3D floor is on)
         public void Update(Simulation sim, Camera cam)
@@ -140,6 +142,7 @@ namespace Exoduser.UnityPort.Vfx
             projected = NativeRemodel3D.Active && NativeGroundSkillProjection.Available; lyingOn3D = NativeRemodel3D.Active && !projected;
             var druid = sim.Druid; DruidData dd = null;
             bool live = druid != null && druid.Remodel && druid.Boss != null && druid.Boss.Alive && druid.Data.TryGetValue(druid.Boss, out dd);
+            UpdateRemainingSignals(sim, live ? dd : null, tick);
             double windAge = -1;
             if (live)
             {
@@ -160,7 +163,7 @@ namespace Exoduser.UnityPort.Vfx
             }
             else { prevState = null; windStart = -1; chunks = null; }
 
-            int body = 0;
+            int body = DrawRemaining(sim, live ? dd : null, tick, cam);
             if (live && chunks != null && DruidSlamVfxTimeline.ChunkActive(windAge)) body = DrawChunks(dd, windAge, cam, body);
             for (int i = slams.Count - 1; i >= 0; i--) if (tick - slams[i].Born > DruidSlamVfxTimeline.ActTicks + DruidSlamVfxTimeline.DecalLife) slams.RemoveAt(i);
             for (int i = slashes.Count - 1; i >= 0; i--) if (tick - slashes[i].Born > slashes[i].Life) slashes.RemoveAt(i);
@@ -175,7 +178,7 @@ namespace Exoduser.UnityPort.Vfx
             }
             DrawRibbon(tick, cam);
             if (live && dd.S == "bossSlashWind" && DruidSlashVfxTimeline.HasOrbGlow(dd.SlashIdx)) DrawOrbGlow(dd.St2, cam);
-            BodySpritesDrawn = body; if (body > MaxBodySpritesDrawn) MaxBodySpritesDrawn = body;
+            BodySpritesDrawn = alphaUsed + addUsed; if (BodySpritesDrawn > MaxBodySpritesDrawn) MaxBodySpritesDrawn = BodySpritesDrawn;
             for (int i = alphaUsed; i < alphaPool.Count; i++) alphaPool[i].enabled = false;
             for (int i = addUsed; i < addPool.Count; i++) addPool[i].enabled = false;
             for (int i = decalUsed; i < decalPool.Count; i++) decalPool[i].enabled = false;
@@ -253,7 +256,7 @@ namespace Exoduser.UnityPort.Vfx
             SpriteRenderer d;
             if (projected)
             {
-                if (decalUsed >= MaxDecals) return;
+                if (decalUsed + groundUsed >= MaxDecals) return;
                 if (decalUsed >= decalPool.Count)
                 {
                     var go = new GameObject("fxGround"); go.transform.SetParent(root, false);
@@ -266,7 +269,7 @@ namespace Exoduser.UnityPort.Vfx
             }
             else
             {
-                if (flatUsed >= MaxDecals) return;
+                if (flatUsed + groundUsed >= MaxDecals) return;
                 if (flatUsed >= flatPool.Count)
                 {
                     var go = new GameObject("fxGroundFlat"); go.transform.SetParent(root, false);
@@ -451,7 +454,7 @@ namespace Exoduser.UnityPort.Vfx
 
         void Put(bool additive, Sprite sprite, Vector3 pos, double wCore, double hCore, float screenAngle, Color tint, float opacity, int order, Camera cam)
         {
-            if (sprite == null) return;
+            if (sprite == null || alphaUsed + addUsed >= MaxBodySprites) return;
             SpriteRenderer r;
             if (additive)
             {

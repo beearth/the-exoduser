@@ -107,6 +107,7 @@ namespace Exoduser.UnityPort
         [Serializable] sealed class ArenaReviewVfx
         {
             public int tick,slashIdx,slamN,slashN,slamsStarted,slashesStarted,bodySpritesDrawn,maxBodySpritesDrawn;
+            public int chargesStarted,fissuresStarted,burrowsStarted,grabsStarted,heartbeatsStarted,remainingSpritesDrawn,groundBodiesDrawn;
             public string state;public double st2,bossX,bossY,facing;public bool orbGlowDrawn,orbSocket,decalsProjected;public string trailSource;public int ribbonSamplesRig,ribbonSamplesFormula,flatDecalsDrawn;public int seqSlam,seqSlash;
         }
         sealed class ArenaVfxPending{public int due;public string name;}
@@ -161,6 +162,7 @@ namespace Exoduser.UnityPort
             {
                 tick=Simulation.TickCount,state=d.S,st2=d.St2,slashIdx=d.SlashIdx,bossX=d.X,bossY=d.Y,facing=d.Facing,slamN=arenaVfxSlamN,slashN=arenaVfxSlashN,
                 slamsStarted=v==null?-1:v.SlamsStarted,slashesStarted=v==null?-1:v.SlashesStarted,bodySpritesDrawn=v==null?-1:v.BodySpritesDrawn,maxBodySpritesDrawn=v==null?-1:v.MaxBodySpritesDrawn,orbGlowDrawn=v!=null&&v.OrbGlowDrawn,orbSocket=NativeDruidRigPixelView.TryGetOrbSocketWorldPosition(out orbProbe),trailSource=v==null?"":v.RibbonSamplesRig>0&&v.RibbonSamplesFormula==0?"rig":v.RibbonSamplesFormula>0&&v.RibbonSamplesRig==0?"formula":v.RibbonSamplesRig>0?"mixed":"none",ribbonSamplesRig=v==null?0:v.RibbonSamplesRig,ribbonSamplesFormula=v==null?0:v.RibbonSamplesFormula,decalsProjected=v!=null&&v.DecalsProjected,flatDecalsDrawn=v==null?0:v.FlatDecalsDrawn,
+                chargesStarted=v==null?0:v.ChargesStarted,fissuresStarted=v==null?0:v.FissuresStarted,burrowsStarted=v==null?0:v.BurrowsStarted,grabsStarted=v==null?0:v.GrabsStarted,heartbeatsStarted=v==null?0:v.HeartbeatsStarted,remainingSpritesDrawn=v==null?0:v.RemainingSpritesDrawn,groundBodiesDrawn=v==null?0:v.GroundBodiesDrawn,
                 seqSlam=arenaVfxSeq[0],seqSlash=arenaVfxSeq[1]
             };
         }

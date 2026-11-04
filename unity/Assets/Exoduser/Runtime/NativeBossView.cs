@@ -133,6 +133,7 @@ namespace Exoduser.UnityPort
 
         void OnFx(string kind, double x, double y, double r)
         {
+            if(bound!=null&&bound.Druid!=null&&bound.Druid.Remodel&&(kind=="druidDust"||kind=="druidRoots"))return; // textured body view owns remodel dust/roots
             int born = boundTick;
             switch (kind)
             {
@@ -187,6 +188,7 @@ namespace Exoduser.UnityPort
             int fi = 0;
             foreach (var f in druid.Fissures)
             {
+                if(druid.Remodel&&f.Druid&&f.Straight)continue; // continuous textured strip replaces the old disc chain
                 int steps = (int)(f.Len / 50) + 1;
                 // three stroke layers of the web crack (#1c2418 w / #364327 .56w / #a5c568 max(7,.09w) at .31 / .56 / .84)
                 double[] lw = { f.W, f.W * .56, Math.Max(7, f.W * .09) }; float[] la = { .31f, .56f, .84f };

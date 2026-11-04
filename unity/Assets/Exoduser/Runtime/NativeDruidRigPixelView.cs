@@ -22,6 +22,15 @@ namespace Exoduser.UnityPort
         public bool HasOrbSocket {get{return !failed&&Ready&&orb!=null;}}
         public Vector3 OrbSocketWorldPosition {get{return orb!=null?orb.position:Vector3.zero;}}
         public static NativeDruidRigPixelView Current {get;private set;}
+        Transform grabHand,drainChest,huskGrabHand,huskDrainChest;int drainChestTick=int.MinValue;
+        readonly List<Renderer> bodyVfx=new List<Renderer>();
+        public event Action BodyVfxPoseReady;
+        public void RegisterBodyVfx(Renderer renderer)
+        {if(renderer==null||bodyVfx.Contains(renderer))return;renderer.gameObject.layer=Layer;renderer.forceRenderingOff=true;bodyVfx.Add(renderer);}
+        public void UnregisterBodyVfx(Renderer renderer){bodyVfx.Remove(renderer);}
+        public void PulseDrainChest(int coreTick){drainChestTick=coreTick;}
+        public bool TryGetGrabSockets(out Vector3 hand,out Vector3 chest)
+        {var h=lifeIndex<2?huskGrabHand:grabHand;var c=lifeIndex<2?huskDrainChest:drainChest;hand=h==null?Vector3.zero:h.position;chest=c==null?Vector3.zero:c.position;return h!=null&&c!=null;}
         public static bool TryGetOrbSocketWorldPosition(out Vector3 position)
         {
             var view=Current;if(view!=null&&view.HasOrbSocket){position=view.OrbSocketWorldPosition;return true;}
@@ -43,6 +52,7 @@ namespace Exoduser.UnityPort
                 if(huskSkins.Length<10||manSkins.Length!=4)throw new InvalidOperationException("v9.1 renderer split unexpected: husk "+huskSkins.Length+" old man "+manSkins.Length);
                 Renderer body=null;Transform left=null,right=null,socket=null;
                 foreach(var tr in model.GetComponentsInChildren<Transform>(true)){if(tr.name=="LeftFoot")left=tr;if(tr.name=="RightFoot")right=tr;if(tr.name=="StaffSocket_L")socket=tr;}
+                foreach(var tr in model.GetComponentsInChildren<Transform>(true)){if(tr.name=="RightHand")grabHand=tr;if(tr.name=="Spine02")drainChest=tr;if(tr.name=="HK_RightHand")huskGrabHand=tr;if(tr.name=="HK_Spine02")huskDrainChest=tr;}
                 foreach(var r in skins)if(r.name=="char1")body=r;
                 if(body==null||left==null||right==null||socket==null)throw new InvalidOperationException("v9.1 body/feet/staff socket missing");
                 if(socket.parent==null||socket.parent.name!="OM_Staff"||socket.parent.parent==null||socket.parent.parent.name!="LeftHand")throw new InvalidOperationException("StaffSocket_L must hang under OM_Staff under LeftHand");
@@ -207,9 +217,11 @@ namespace Exoduser.UnityPort
                 if(heap.activeSelf!=showHeap)heap.SetActive(showHeap);
                 var drawList=new List<Renderer>();
                 if(showMan)drawList.AddRange(manSkins);if(showHusk)drawList.AddRange(huskSkins);if(showHeap)drawList.AddRange(heapSkins);
+                BodyVfxPoseReady?.Invoke();
+                foreach(var renderer in bodyVfx)if(renderer!=null&&renderer.enabled&&renderer.gameObject.activeInHierarchy)drawList.Add(renderer);
                 if(drawList.Count==0){Hide();return;}
                 drawnParts=(showHusk?"husk ":"")+(showMan?"oldman ":"")+(showHeap?"heap":"");
-                foreach(var mat in materials){mat.SetFloat("_DruidGroundY",ground.y);mat.SetFloat("_DruidGlowStrength",mat.name.EndsWith("druid_glow",StringComparison.Ordinal)?(motion==null?1:motion.ChestPulse):1);}
+                foreach(var mat in materials){mat.SetFloat("_DruidGroundY",ground.y);mat.SetFloat("_DruidGlowStrength",mat.name.EndsWith("druid_glow",StringComparison.Ordinal)?(tick==drainChestTick?1:motion==null?1:motion.ChestPulse):1);}
                 bounds=TightBounds(drawList);
                 if(!heapOnly)
                 {

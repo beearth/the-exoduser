@@ -1,6 +1,6 @@
 // No Unity process, network, package restore, or writes outside this worktree.
 const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process');
-const root=path.resolve(__dirname,'../../..'),out=path.join(root,'tools/combat-impact-check');
+const root=path.resolve(__dirname,'../../..'),out=process.env.EXO_COMBAT_CHECK_OUT||path.join(root,'tools/combat-impact-check');
 fs.mkdirSync(out,{recursive:true});
 const latest=p=>fs.readdirSync(p).filter(x=>/^\d/.test(x)).sort((a,b)=>a.localeCompare(b,undefined,{numeric:true})).at(-1);
 const sdk='C:/Program Files/dotnet/sdk',pack='C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Ref';
@@ -28,7 +28,7 @@ function run(a){return cp.spawnSync('C:/Program Files/dotnet/dotnet.exe',a,{enco
 let r=run([path.join(sdk,latest(sdk),'Roslyn/bincore/csc.dll'),...args]);let log=(r.stdout||'')+(r.stderr||'')+(r.error?.message||'');
 if(r.status===0){fs.writeFileSync(path.join(out,name+'.runtimeconfig.json'),JSON.stringify({runtimeOptions:{tfm,framework:{name:'Microsoft.NETCore.App',version:tfm.slice(3)+'.0'},rollForward:'LatestMajor'}}));r=run([path.join(out,name+'.dll'),...(feedback?[path.join(out,'feedback.json'),path.join(__dirname,'../feedback-oracle/oracle.json')]:m1||region?[path.join(root,'unity/Assets/Exoduser/Resources/Data/ch1_map.json')]:[])]);log+=(r.stdout||'')+(r.stderr||'')+(r.error?.message||'');}
 let status=r.status??1;
-if(status===0&&name==='checks'){
+if(status===0&&name==='checks'&&!process.argv.includes('--pure')){
  const art=cp.spawnSync('C:/Python314/python.exe',[path.join(root,'tools/vfx/recolor_blood_dark.py'),'--check-only'],{cwd:root,encoding:'utf8',windowsHide:true,env:{...env,PYTHONDONTWRITEBYTECODE:'1'},timeout:60000});
  log+=(art.stdout||'')+(art.stderr||'')+(art.error?.message||'');status=art.status??1;
  if(status===0){const orb=cp.spawnSync('C:/Python314/python.exe',[path.join(root,'tools/vfx/make_elem_orb_v3.py'),'--check-only'],{cwd:root,encoding:'utf8',windowsHide:true,env:{...env,PYTHONDONTWRITEBYTECODE:'1'},timeout:60000});

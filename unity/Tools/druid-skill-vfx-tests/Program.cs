@@ -261,6 +261,7 @@ static partial class Program
         }
 
         SlashChecks();
+        RemainingChecks();
         Console.WriteLine("druid skill vfx checks: " + checks + " run, " + bad + " failed");
         return bad == 0 ? 0 : 1;
     }
