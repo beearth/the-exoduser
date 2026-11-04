@@ -48,7 +48,7 @@ namespace Exoduser.UnityPort
                 }
             }
             var texture=new Texture2D(n,n,TextureFormat.RFloat,false,true){name="A2 전체 실제 지면 물가 거리장",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};
-            texture.SetPixelData(distance,0);texture.Apply(false,true);
+            texture.SetPixelData(distance,0);texture.Apply(false,!Application.isEditor);
             a2Water.SetTexture("_ShoreField",texture);a2Water.SetVector("_ShoreBounds",new Vector4(A2FieldLayout.GroundMinX,A2FieldLayout.GroundMinZ,size,size));a2Water.SetFloat("_ShoreReady",1);
             Debug.Log("[A2 필드] 실제 지면·수면 물가1024x1024/원본 XY 경계 불변");
         }

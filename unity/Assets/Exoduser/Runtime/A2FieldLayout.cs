@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Exoduser.UnityPort
 {
@@ -264,6 +265,55 @@ namespace Exoduser.UnityPort
             }
             float grove=.72f+.2f*(float)Math.Sin(x*.23+Math.Sin(z*.19));
             return clear*Lerp(1,grove,Smooth(Clamp(d/5,0,1)));
+        }
+        // The cache contains presentation heights only. MapData, signed distance,
+        // SourceMap and every Core query continue to use their original inputs.
+        public void WriteVisualSurfaces(BinaryWriter writer)
+        {
+            writer.Write(0x41324631);WriteSurfaceArray(writer,surfaces);WriteSurfaceArray(writer,terrainSamples);
+            writer.Write(deckMinX);writer.Write(deckMaxX);writer.Write(deckMinZ);writer.Write(deckMaxZ);
+            writer.Write(deckTriangles.Count);
+            foreach(var t in deckTriangles)
+            {
+                writer.Write(t.ax);writer.Write(t.ay);writer.Write(t.az);writer.Write(t.bx);writer.Write(t.by);writer.Write(t.bz);writer.Write(t.cx);writer.Write(t.cy);writer.Write(t.cz);
+                writer.Write(t.inverse);writer.Write(t.minX);writer.Write(t.maxX);writer.Write(t.minZ);writer.Write(t.maxZ);
+            }
+            writer.Write(deckCells.Count);
+            foreach(var pair in deckCells){writer.Write(pair.Key);writer.Write(pair.Value.Count);foreach(int index in pair.Value)writer.Write(index);}
+        }
+        public void ReadVisualSurfaces(BinaryReader reader)
+        {
+            if(reader.ReadInt32()!=0x41324631)throw new InvalidDataException("A2 field surface cache version");
+            var nextSurfaces=ReadSurfaceArray(reader);var nextTerrain=ReadSurfaceArray(reader);
+            if((nextSurfaces==null)!=(nextTerrain==null))throw new InvalidDataException("A2 field surface cache arrays");
+            float minX=reader.ReadSingle(),maxX=reader.ReadSingle(),minZ=reader.ReadSingle(),maxZ=reader.ReadSingle();
+            int count=reader.ReadInt32();if(count<0||count>1000000)throw new InvalidDataException("A2 field deck count");
+            var triangles=new List<DeckTriangle>(count);
+            for(int i=0;i<count;i++)triangles.Add(new DeckTriangle{ax=reader.ReadSingle(),ay=reader.ReadSingle(),az=reader.ReadSingle(),bx=reader.ReadSingle(),by=reader.ReadSingle(),bz=reader.ReadSingle(),cx=reader.ReadSingle(),cy=reader.ReadSingle(),cz=reader.ReadSingle(),inverse=reader.ReadSingle(),minX=reader.ReadSingle(),maxX=reader.ReadSingle(),minZ=reader.ReadSingle(),maxZ=reader.ReadSingle()});
+            int cells=reader.ReadInt32();if(cells<0||cells>1000000)throw new InvalidDataException("A2 field deck cells");
+            var lookup=new Dictionary<long,List<int>>(cells);
+            for(int i=0;i<cells;i++)
+            {
+                long key=reader.ReadInt64();int members=reader.ReadInt32();if(members<0||members>count)throw new InvalidDataException("A2 field deck members");
+                var list=new List<int>(members);
+                for(int j=0;j<members;j++){int index=reader.ReadInt32();if(index<0||index>=count)throw new InvalidDataException("A2 field deck index");list.Add(index);}
+                lookup.Add(key,list);
+            }
+            // Commit only after the complete record has been read and validated.
+            surfaces=nextSurfaces;terrainSamples=nextTerrain;deckMinX=minX;deckMaxX=maxX;deckMinZ=minZ;deckMaxZ=maxZ;
+            deckTriangles.Clear();deckTriangles.AddRange(triangles);deckCells.Clear();foreach(var pair in lookup)deckCells.Add(pair.Key,pair.Value);
+        }
+        static void WriteSurfaceArray(BinaryWriter writer,float[] values)
+        {
+            writer.Write(values==null?-1:values.Length);if(values==null)return;
+            var bytes=new byte[values.Length*4];Buffer.BlockCopy(values,0,bytes,0,bytes.Length);writer.Write(bytes);
+        }
+        static float[] ReadSurfaceArray(BinaryReader reader)
+        {
+            int count=reader.ReadInt32();if(count==-1)return null;
+            if(count!=SurfaceCells*SurfaceCells)throw new InvalidDataException("A2 field surface dimensions");
+            var bytes=reader.ReadBytes(count*4);if(bytes.Length!=count*4)throw new EndOfStreamException();
+            var values=new float[count];Buffer.BlockCopy(bytes,0,values,0,bytes.Length);return values;
         }
         public static SourceMap CreateMap(MapData map) { return new SourceMap(map); }
         public static bool ShowEnemyStatus(bool alive,bool boss,bool damaged,bool targeted) { return alive&&!boss&&(damaged||targeted); }

@@ -35,7 +35,12 @@ public static class A2FieldBakeProbe
         try
         {
             var game=host.AddComponent(type("NativeGame"));
-            var data=JsonUtility.FromJson(Resources.Load<TextAsset>("Data/ch1_map").text,type("MapData"));
+            var registered=JsonUtility.FromJson<MapData>(Resources.Load<TextAsset>("Data/ch1_map").text);
+            if(registered.colliders==null||registered.props==null||registered.chunks==null)throw new InvalidDataException("Registered map arrays missing");
+            // JsonUtility cannot build nested classes from a reference-only assembly.
+            // Parse its registered project type and copy every public data field.
+            var data=CopyData(registered,type("MapData"));
+            UnityEngine.Debug.Log("[A2 전체필드] 검사 맵 "+version+" tiles="+registered.tiles.Length+" colliders="+registered.colliders.Length+" props="+registered.props.Length+" chunks="+registered.chunks.Length);
             type("NativeGame").GetProperty("Map").SetValue(game,Activator.CreateInstance(type("SourceMap"),new[]{data}));
             var field=Activator.CreateInstance(type("A2FieldLayout"),new[]{data});fieldSlot.SetValue(null,field);forestSlot.SetValue(null,true);
             Set(game,"a2Field",field);Set(game,"a2Root",root);Set(game,"r3Roots",new GameObject[0]);Set(game,"r3Cam",camera.AddComponent<Camera>());
@@ -53,23 +58,7 @@ public static class A2FieldBakeProbe
             UnityEngine.Debug.Log("[A2 전체필드] 에셋 조립 검사 "+total.ElapsedMilliseconds+"ms / Player 측정 아님");
             // Store actual geometry in traversal order for before/after comparison.
             // Hidden receiver meshes are included; material, camera and visual gates remain separate.
-            using(var writer=new BinaryWriter(File.Create(Path.Combine(output,version+"-geometry.bin"))))
-            {
-                var filters=root.GetComponentsInChildren<MeshFilter>(true);writer.Write(filters.Length);
-                foreach(var filter in filters)
-                {
-                    var mesh=filter.sharedMesh;writer.Write(filter.gameObject.name);
-                    var points=mesh.vertices;writer.Write(points.Length);
-                    foreach(var p in points){writer.Write(p.x);writer.Write(p.y);writer.Write(p.z);}
-                    var normals=mesh.normals;writer.Write(normals.Length);
-                    foreach(var n in normals){writer.Write(n.x);writer.Write(n.y);writer.Write(n.z);}
-                    var uv=mesh.uv;writer.Write(uv.Length);foreach(var u in uv){writer.Write(u.x);writer.Write(u.y);}
-                    var tangents=mesh.tangents;writer.Write(tangents.Length);foreach(var t in tangents){writer.Write(t.x);writer.Write(t.y);writer.Write(t.z);writer.Write(t.w);}
-                    var indices=mesh.triangles;writer.Write(indices.Length);foreach(int index in indices)writer.Write(index);
-                }
-                var height=type("A2FieldLayout").GetMethod("Height");
-                for(int y=0;y<=160;y++)for(int x=0;x<=160;x++)writer.Write((float)height.Invoke(field,new object[]{x*.5f,-y*.5f}));
-            }
+            WriteGeometry(Path.Combine(output,version+"-geometry.bin"),root,field);
         }
         finally
         {
@@ -78,7 +67,35 @@ public static class A2FieldBakeProbe
             if(soil!=null)UnityEngine.Object.DestroyImmediate(soil);
         }
     }
-    static void Compare(string output)
+    public static void WriteGeometry(string file,GameObject root,object field)
+    {
+            using(var writer=new BinaryWriter(File.Create(file)))
+            {
+                var filters=root.GetComponentsInChildren<MeshFilter>(true);writer.Write(filters.Length);
+                foreach(var filter in filters)
+                {
+                    var mesh=filter.sharedMesh;writer.Write(filter.gameObject.name);
+                    writer.Write(mesh.isReadable);
+                    // Unchanged imported meshes stay shared and keep their import flags.
+                    if(!mesh.isReadable)
+                    {
+                        string guid;long localId;
+                        if(!AssetDatabase.TryGetGUIDAndLocalFileIdentifier(mesh.GetEntityId(),out guid,out localId))throw new InvalidDataException("Unreadable mesh has no asset identity: "+mesh.name);
+                        writer.Write(guid);writer.Write(localId);continue;
+                    }
+                    var points=mesh.vertices;writer.Write(points.Length);
+                    foreach(var p in points){writer.Write(p.x);writer.Write(p.y);writer.Write(p.z);}
+                    var normals=mesh.normals;writer.Write(normals.Length);
+                    foreach(var n in normals){writer.Write(n.x);writer.Write(n.y);writer.Write(n.z);}
+                    var uv=mesh.uv;writer.Write(uv.Length);foreach(var u in uv){writer.Write(u.x);writer.Write(u.y);}
+                    var tangents=mesh.tangents;writer.Write(tangents.Length);foreach(var t in tangents){writer.Write(t.x);writer.Write(t.y);writer.Write(t.z);writer.Write(t.w);}
+                    var indices=mesh.triangles;writer.Write(indices.Length);foreach(int index in indices)writer.Write(index);
+                }
+                var height=field.GetType().GetMethod("Height");
+                for(int y=0;y<=160;y++)for(int x=0;x<=160;x++)writer.Write((float)height.Invoke(field,new object[]{x*.5f,-y*.5f}));
+            }
+    }
+    public static void Compare(string output)
     {
         float maxPosition=0,maxNormal=0,maxTangent=0,maxHeight=0;
         using(var a=new BinaryReader(File.OpenRead(Path.Combine(output,"baseline-geometry.bin"))))
@@ -88,6 +105,8 @@ public static class A2FieldBakeProbe
             for(int mesh=0;mesh<count;mesh++)
             {
                 var name=a.ReadString();if(name!=b.ReadString())throw new Exception("Traversal changed: "+name);
+                bool readable=a.ReadBoolean();if(readable!=b.ReadBoolean())throw new Exception("Readability changed: "+name);
+                if(!readable){if(a.ReadString()!=b.ReadString()||a.ReadInt64()!=b.ReadInt64())throw new Exception("Shared asset changed: "+name);continue;}
                 maxPosition=Mathf.Max(maxPosition,CompareChannel(a,b,3,false));
                 maxNormal=Mathf.Max(maxNormal,CompareChannel(a,b,3,false));
                 if(CompareChannel(a,b,2,false)!=0)throw new Exception("UV changed: "+name);
@@ -112,5 +131,24 @@ public static class A2FieldBakeProbe
             else {float x=a.ReadSingle(),y=b.ReadSingle();if(float.IsNaN(x)||float.IsNaN(y))throw new Exception("NaN mesh channel");max=Mathf.Max(max,Mathf.Abs(x-y));}
         }
         return max;
+    }
+    static object CopyData(object source,Type target)
+    {
+        if(source==null)return null;
+        if(target.IsPrimitive||target.IsEnum||target==typeof(string))return source;
+        if(target.IsArray)
+        {
+            var input=(Array)source;var element=target.GetElementType();var result=Array.CreateInstance(element,input.Length);
+            for(int i=0;i<input.Length;i++)result.SetValue(CopyData(input.GetValue(i),element),i);
+            return result;
+        }
+        var copy=Activator.CreateInstance(target);
+        foreach(var field in target.GetFields(BindingFlags.Public|BindingFlags.Instance))
+        {
+            var original=source.GetType().GetField(field.Name,BindingFlags.Public|BindingFlags.Instance);
+            if(original==null)throw new InvalidDataException("Map schema mismatch: "+field.Name);
+            field.SetValue(copy,CopyData(original.GetValue(source),field.FieldType));
+        }
+        return copy;
     }
 }

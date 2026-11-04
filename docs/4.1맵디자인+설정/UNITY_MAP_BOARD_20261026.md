@@ -1,3 +1,11 @@
+## 2026-11-04 map-fieldbuild 2차 — 검사 도구 복구·수신면 정밀도 수정
+
+- CTO 재개: 1차 실패 계수 폐기, 새 계수 적용. 등록된 MapData 공개 필드·배열 재귀 복사, GetEntityId→GUID/local ID로 읽기 불가 메시 동일 자산 비교. 실제 컴파일된 CopyData 검사에서 리프 41,100개·독립 배열 4개·충돌체 19개 동일.
+- 완전한 맵의 첫 에디터 검사 7ace41f9: 기존 4175.355ms, 일괄 변환 적용본 3174.157ms였으나 Ground effect receiver depth(메시 97)의 인덱스 11082→11088 차이로 FAIL. 성능 PASS 자료로 쓰지 않는다. 민감한 정점/방향 변환을 기존 TransformPoint/InverseTransformPoint/TransformDirection 연산으로 환원했고 수피 부착 쿼리만 같은 스칼라 결과를 재사용한다. 지면·물가 분류 병렬화는 유지한다. 두 번째 동일성 검사 대기 중.
+- 굽기 준비: A2FieldLayout 표시 높이·다리 자료의 버전 직렬화 API 추가, 641,601개 표시 높이 비트 동일 검사 통과. MapData·SourceMap·Core 수치/판정은 변경하지 않았다. 8단계 prefab·표시 높이·수신면 샘플·MaterialPropertyBlock 저장/로드 도구 및 같은 Player의 절차식/구운 결과 고정 시점·프레임 계측 fixture를 준비했다. **단계 로더는 게임 조립 경로에 아직 연결하지 않았고 구운 에셋도 만들지 않았다.**
+- 참조 컴파일 Runtime 301개·Editor 69개 통과. 준비 코드 검증 도중 EntityId의 암시적 int 변환 1회 실패를 ToString 명시 호출로 수정했다. 2차 예상 밖 실패 계수: 참조 컴파일 1, 원본/최적화 에셋 비교 1. 이후 실패하면 해당 검사 2회 중단 규칙을 따른다.
+- 목표 1.5초·단일 프레임·3840 1x 전후·픽셀 차·먼 적·기존 끄기 인자·Mac 판정은 미검증. Core·D4·webcards·바람 셰이더·바로가기·기존 실행본 변경 없음. 결과 정본 REPORT.md의 2차 절.
+
 ## 2026-11-04 map-fieldbuild 중단 — 성능·화면 미검증
 
 - 소스 보존 커밋 6f019c8b0c11795e6339443c99acf247761c18b3(지정 브랜치 push·원격 일치). BRIEF의 같은 검사 2회 실패 중단 조건을 에디터 참조 컴파일에 적용한다. CS0246은 검사 스크립트가 Remodel의 Rm4PoolLightCuller를 제외한 원인이었으며 3개 참조 소스를 포함해 통과했다. 이후 검사 도구 보완에서 GetInstanceID의 CS0619가 발생했다. 해당 미커밋 도구 보완은 폐기해 6f019c8b0c의 컴파일 확인본으로 돌렸다. 추가 검사·Player·빌드는 실행하지 않는다.
