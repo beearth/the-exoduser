@@ -55,7 +55,7 @@
 |---|---|---|---|---|
 | Z01 | 추가 | 좌표 | 월드 X=웹 X/100, Z=-웹 Y/100. Core 보행 판정은 Map.CanMove(X×100,-Z×100,0). | A2RWebAssets.Initialize / A2RProps3D.Initialize |
 | Z02 | 추가 | 전체 시각 지면 | X=-105..185, Z=-185..105m. 근거리 축 X=-45..125, Z=-125..45는 .25m, 바깥은 2m 간격. | A2FieldLayout.GroundAxis |
-| Z03 | 추가 | 웹 바닥·독늪 | 입력 바닥 64장(8×8, 한 장 10m), 40×40 세분화, GroundY+.012m. riverPoints=8, ribbon=1, 수면 Y=-.445m. 카드 입력 189장과 별도. | A2RGroundPainting.Build / web-assets.json |
+| Z03 | 추가 | 웹 바닥·독늪 | 입력 바닥 64장(8×8, 한 장 10m, D4: `C10/Art/r3_ground_x_y.png` 색을 terrain-skin 8k로 교체·1000px·알파 유지; 전투 레인 S p50 .184 lumSD 6.3, 레인 밖 피부막 S p50 .324 lumSD 7.2, 전이 약 3.7m), 40×40 세분화, GroundY+.012m. riverPoints=8, ribbon=1, 수면 Y=-.445m. 카드 입력 189장과 별도. | A2RGroundPainting.Build / web-assets.json |
 | Z04 | 추가 | 북쪽 Terrain | X=18..52, Z=-74..-40m(34×34). 높이맵 257², span=max(1,max-min+1), 호스트 TerrainCollider 제거, drawHeightmap=false가 기본. | A2RProps3D.Terrain.BuildTerrainDress |
 | Z05 | 추가 | 선택 피부 표면 | skin-on일 때만 +.006m, 4레이어: macro(34×34m)·skin·bruise·vein(각8×8m), alpha 512², normalScale 1/1.8/1.4/1.4. 다리 bounds+.3m 구멍. 현재 기본 OFF. | A2RTerrainSkin.Apply / A2RProps3D.Terrain |
 | Z06 | 추가 | 바닥 카드 4종 | m_c1groot·m_c1gtoxicf·m_c1pool·pit_poison 각1. sourceX/sourceY로 위치 복원, max(GroundY,-.45)+.028m, 32×32 세분화, Y 회전 없음·그림자 OFF. | A2RWebAssets.IsFloor / FloorMesh |
@@ -209,7 +209,7 @@ H비는 브리프·캐릭터 정본의 **영웅 H=1.61u** 기준이다. Terrain.
 | P4 | 추가 | 포자 줄기 | spore_stalk_a/b | 0.43 | 0.14 | min(0.43×(.9+.2×H01),0.4,1.4/max(.05,width)) | 0.267081 / 0.248447 (반올림) |
 | P5 | 추가 | 종양 혹 | pustule_cluster_a/b | 0.17 | 0.12 | min(0.17×(.9+.2×H01),0.4,1.4/max(.05,width)) | 0.105590 / 0.248447 (반올림) |
 
-후보 셀은3m 격자(12×12=144셀), 각 셀 안3m jitter. walkable·GroundY≥-.2·KeepPlantRule·H01(key,3)≤.5를 모두 만족해야 한다. KeepPlantRule은 나무거리<3m **또는** 비보행점 **또는** 반경2m 8방향 중 하나 비보행이면 참이다. 산포 중심은 walkable 선검사가 있어 비보행점 자체에는 놓지 않는다. 나무 가까운 레인 내부가 예외로 통과할 수 있으므로 “모든 레인 중앙0”을 증명한 것은 아니다.
+후보 셀은3m 격자(12×12=144셀), 각 셀 안3m jitter. walkable·GroundY≥-.2·KeepPlantRule·H01(key,3)≤.85(D4, 이전 .5)를 모두 만족해야 한다. KeepPlantRule은 나무거리<3m **또는** 비보행점 **또는** 반경2m 8방향 중 하나 비보행이면 참이다. 산포 중심은 walkable 선검사가 있어 비보행점 자체에는 놓지 않는다. 나무 가까운 레인 내부가 예외로 통과할 수 있으므로 “모든 레인 중앙0”을 증명한 것은 아니다.
 
 군락 반경 .4.. .9m, 덤불1~2개·나머지2~4개 후보. 자식이 walkable이어야 하며 반경 덤불 .7m/기타 .3m의8방향 모두 walkable일 때 유지한다. 직전 계열이면 다른 계열로 재선택, 같은 군락 variant는 a/b 번갈음; 촉수 계열은 추가25%로 뿌리 싹으로 바뀌므로 첫 추첨 비율은 최종 배치 비율이 아니다. 자식은 KeepPlantRule을 다시 검사하지 않는다. 배치Y=GroundY-.02m, yaw=(prepared?180:0)+H01×360°, 폭상한1.4m. 실제 생성 수·계열 비율은 런타임 측정 필요.
 
@@ -231,6 +231,7 @@ H비는 브리프·캐릭터 정본의 **영웅 H=1.61u** 기준이다. Terrain.
 | L10 | 추가 | 이끼·잔가지·캠프 | 이끼 property block(.065,0,0,0)으로 상단 고정, D4 배율 대상 아님. 고사 잔가지 D2 재질값(.04,.15,0,0)은 이력. camp 3D 경로 .018m이나 기본은 camp 미허용 카드, 카드 sway는 tree/vegetation 외0이다. |
 | L11 | 추가 | WindZone | Directional yaw35°, main.35, turbulence.25, pulseMagnitude.6, pulseFrequency.12. 정점 바람은 Wind.hlsl 별도 경로다. |
 | L12 | 추가 | 맥동·접촉 | _WIND_PULSE R=굽힘,G=위상,B=맥동 마스크. period=lerp(3,8,frac(seed×7.137)), 각 정점 법선 이동 .015×최소로컬치수×B×pulse, 양면 크기상한3%. 접촉 반경1.2m, 식생 벡터y=.18, 최대 actor32, ripple24. 바람OFF에도 물결 기록 유지. |
+| L13 | 추가 | AddBioTree(R8 소리) | D4: Place에서 fg_rot01/03·ctree13~20·bnd0/3/5/18·c1tree·r3_tree_19/24 배치 시 `NativeAmbientSources.AddBioTree(월드 위치)` 1회. `_far`·카드 제외. 로그 `[A2R_BIOTREE] AddBioTree registered=`, 코드 `A2RProps3D.D4.cs`. |
 
 출처: `NativeGame.A2Field.cs`·`A2RLighting.cs`·`A2RProps3D.cs`·`A2RProps3D.Terrain.cs`·`A2RProps3D.D4.cs`·`A2RNatureDynamics.cs`·`Resources/A2R/Wind.hlsl`·`LitCommon.hlsl`.D2의 수치/컴파일 PASS는 당시 기록이며 현행 D4 화면·자연 플레이 PASS가 아니다.
 
