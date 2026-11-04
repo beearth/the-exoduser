@@ -1,3 +1,7 @@
+## 2026-11-05 B2 봇 보스전 6사망 원인 분석 (보고/수정 중단)
+- Mac a5b17febf의 main·combo4 원본 로그 대조: 각6사망/5재시도, 개별 치명타 기술 필드 없음. fallen/종료 표본 bossState를 원인 기술로 단정하지 않음. 실제 두 빌드 봇의 근접 예고·패턴 무대응은 코드로 확인, 화면 예고 부재·난이도는 미확인.
+- 집중검사2회 실패(16/9 → 16/1)로 중단. 실패 후보는 QA Tools로 격리, 실행 봇·게임·Core 변경0. 사망 즉시 QA 기록 방법과 Mac 재실행 인자 제안: `docs/0마스터플랜/worklog/cloud-lanes/B2-botdeath_20261105.md`.
+
 ## 2026-11-04 L10 드루이드 rig-pixel 회색 평면 실루엣 (Core 변경 0)
 - `DruidRigPixelToon.shader`: 셰이딩 법선을 보이는 면 쪽으로 뒤집은 뒤 조명·B4 시선 림 계산. 양면 망토·깃털 카드에서 법선이 반대인 면이 facing=0 → 림 전 단계로 회청색 단색이 되던 문제(보스 문서 7e96e04d6 ①). 림 수치·Cull·합성·카메라 무변경. 컴파일 미확인·화면 미검수(Mac). 상세 `docs/0마스터플랜/worklog/cloud-lanes/L10-druid-silhouette_20261104.md`.
 
