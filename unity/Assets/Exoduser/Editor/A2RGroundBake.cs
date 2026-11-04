@@ -41,6 +41,12 @@ namespace Exoduser
         }
         public static void Bake()
         {
+            int limit=QualitySettings.globalTextureMipmapLimit;
+            try{QualitySettings.globalTextureMipmapLimit=0;BakeFullResolution();}
+            finally{QualitySettings.globalTextureMipmapLimit=limit;}
+        }
+        static void BakeFullResolution()
+        {
             Directory.CreateDirectory(Root);
             var groups=new Dictionary<string,List<SourceTexture>>(StringComparer.Ordinal);
             foreach(string id in SourceIds())
@@ -50,7 +56,7 @@ namespace Exoduser
                 string role=id.EndsWith("_normal",StringComparison.Ordinal)?"normal":id.EndsWith("_mask",StringComparison.Ordinal)?"mask":"paint";
                 string key=role+":"+texture.graphicsFormat+":"+texture.width+":"+texture.height+":"+texture.mipmapCount+
                     ":"+texture.filterMode+":"+texture.anisoLevel+":"+texture.wrapModeU+":"+texture.wrapModeV+":"+texture.wrapModeW+
-                    ":"+texture.mipMapBias.ToString("R",System.Globalization.CultureInfo.InvariantCulture);
+                    ":"+texture.mipMapBias.ToString("R",System.Globalization.CultureInfo.InvariantCulture)+":"+texture.ignoreMipmapLimit+":"+texture.mipmapLimitGroup;
                 List<SourceTexture> group;if(!groups.TryGetValue(key,out group))groups.Add(key,group=new List<SourceTexture>());
                 group.Add(new SourceTexture{id=id,texture=texture});
             }
@@ -58,7 +64,7 @@ namespace Exoduser
             foreach(var group in groups.Values)for(int start=0;start<group.Count;start+=SlicesPerPack)
             {
                 int count=Math.Min(SlicesPerPack,group.Count-start);var reference=group[start].texture;
-                var array=new Texture2DArray(reference.width,reference.height,count,reference.graphicsFormat,reference.mipmapCount>1?TextureCreationFlags.MipChain:TextureCreationFlags.None)
+                var array=new Texture2DArray(reference.width,reference.height,count,reference.graphicsFormat,reference.mipmapCount>1?TextureCreationFlags.MipChain:TextureCreationFlags.None,reference.mipmapCount,new MipmapLimitDescriptor(!reference.ignoreMipmapLimit,reference.mipmapLimitGroup))
                     {name="A2R exact ground "+packNumber,filterMode=reference.filterMode,anisoLevel=reference.anisoLevel,
                         wrapModeU=reference.wrapModeU,wrapModeV=reference.wrapModeV,wrapModeW=reference.wrapModeW,mipMapBias=reference.mipMapBias};
                 string name="pack-"+packNumber.ToString("D2"),asset=Root+"/"+name+".asset";

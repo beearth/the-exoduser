@@ -37,6 +37,12 @@ namespace Exoduser
         }
         public static void VerifyBake()
         {
+            int limit=QualitySettings.globalTextureMipmapLimit;
+            try{QualitySettings.globalTextureMipmapLimit=0;VerifyFullResolution();}
+            finally{QualitySettings.globalTextureMipmapLimit=limit;}
+        }
+        static void VerifyFullResolution()
+        {
             var text=Resources.Load<TextAsset>("A2R/Baked/Ground/manifest");
             Require(text!=null,"missing baked manifest");
             var layout=JsonUtility.FromJson<Layout>(text.text);

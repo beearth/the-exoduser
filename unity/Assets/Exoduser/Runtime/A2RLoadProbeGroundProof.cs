@@ -20,7 +20,7 @@ namespace Exoduser.UnityPort
         [Serializable] sealed class Frame
         {
             public string scene, originalPath, bakedPath;
-            public int width,height,frame,groundRenderers,changedPixels,maxChannelDelta;
+            public int width,height,frame,groundRenderers,changedPixels,maxChannelDelta,nonBlackPixels;
             public Vector3 cameraPosition;
         }
         [Serializable] sealed class Receipt
@@ -107,7 +107,9 @@ namespace Exoduser.UnityPort
                 {
                     bool changed=false;for(int c=0;c<4;c++){int delta=Math.Abs(a[i+c]-b[i+c]);if(delta!=0)changed=true;frame.maxChannelDelta=Math.Max(frame.maxChannelDelta,delta);}
                     if(changed)frame.changedPixels++;
+                    if(a[i]!=0||a[i+1]!=0||a[i+2]!=0)frame.nonBlackPixels++;
                 }
+                if(frame.nonBlackPixels==0)throw new InvalidOperationException("Ground game-camera proof is empty");
                 Save(frame.originalPath,a,target.width,target.height);Save(frame.bakedPath,b,target.width,target.height);
                 receipt.frames.Add(frame);File.WriteAllText(Path.Combine(output,"proof.json"),JsonUtility.ToJson(receipt,true));
                 Debug.Log("A2R_GROUND_PIXEL_PROOF scene="+scene+" frame="+frame.frame+" size="+frame.width+"x"+frame.height+
