@@ -1,3 +1,13 @@
+2026-11-05 레인 YS 엔진 등급 확정(CTO 전달, Mac 원문 확인): 황천 엔진 UE5 = 사실(개발사 자기 신고 1건, indienova 103287 2024-09-29 "引擎：虚幻5"). 엔진 버전·Lumen·Nanite·렌더 방식·2024 이후 유지 여부는 미확인, 3D 렌더는 추정 유지. 코드 무변경.
+
+2026-11-05 레인 YS 등급 정정(CTO 지시): 황천 엔진 UE5는 indienova 103287 검색 요약 단일 출처이고 원문 재확인 실패(이 세션·CX25) → "미확인(단일 출처, 원문 미재확인)"으로 내림. Lumen·Fog 서술은 UE5 가정 위 추정으로, 3D 렌더는 추정으로, 사실은 100% 실시간·탑다운·시야 거리 조절까지만. URP 레시피(우리 기준)는 엔진 판정과 무관하게 유지. Mac 원문 확인 대기. 코드 무변경.
+
+2026-11-05 레인 YS 엔진·렌더 확정(CTO 지시, CX3 2008f8a4d 교차): 엔진 UE5 = 개발사 2024-09 indienova 모집글(1차 출처 1건, 독립 2차 없음, CX3는 미확인), 렌더 = 완전 3D 실시간·탑다운 고정 피치 + 사용자 시야 거리 조절(自定义视距, GamerSky 2025-01·百科). 3D→픽셀·굽기 단계 근거 없음. 데모 v0에 거리 조절 미도입(LOCK). 영문 표기·HypoFront·기간 2년은 CX3 값으로 표기, Steam 미대조. 코드 무변경.
+
+2026-11-05 레인 YS 개정(사용자 확정 "분위기·광원·안개를 황천처럼"): downfall_of_yellowsky.md를 분위기 중심으로 재구성 — 규칙 10개를 높이 안개·적 안개 상한 15%·주광 1개·색온도 2축·그림자 최저 휘도·Bloom 좁게·대기 원근 지형만·빛줄기 배치·후처리 순서(DoF·그레인 금지)·먼 적 판정으로 교체, 장면별(숲·늪·실내·보스방) 레시피[기준], URP 대체 구성(APV·커스텀 높이 안개 Feature), 카메라 LOCK 충돌 C1~C9, 도구 결정안 7.1~7.7. 공개 근거에 기술 해설 없음 — 영상 사람 판정 필수. 코드 무변경.
+
+2026-11-05 레인 YS 게임 연구(클라우드, 문서만): Downfall of Yellowsky《黄天逆途》 확정(望虚社·11인·UE5 단일출처·완전 3D 탑다운, 픽셀 렌더 아님, Steam 5024530 발매일 미정). 사용자 영상 AHCgx-Z0tBc = "New Gameplay Demo" 실기 데모. 적용 규칙 10개(破刃 원형 충격파·신호색·이펙트 절제·이동 체감·적 분리·보스 카메라 거리만)·도구 결정안. 코드 무변경. docs/0마스터플랜/GAME_STUDY/downfall_of_yellowsky.md
+
 2026-11-04 L13 데모 통합 병합 브랜치(클라우드, CTO 결정): unity/main 9196a515d 위에 demo-flavor-fix ac4e187ae → field-prepare-merge 79d4d14f1 → options-wave2 2cd42d3ab → first-impression-tone 479634337 → ui-minor6 19216c411 → white-disc(D2) 17967874a → crash-p1-fix 50f530c02를 --no-ff로 병합(끝 ec8561386). 충돌은 L1 해결안대로(CHANGELOG 양쪽, 번역대상 4274~4287 브랜치 쪽, SilverCharacter 주석 unity/main 쪽). combo4 대비 unity/Assets·ProjectSettings 차이는 D2·P1 4파일뿐. node review-0540 1건 FAIL(options-wave2 리셋 확인창 settingsChip, combo4에도 있음). 컴파일·빌드·화면 미확인 — Mac 판정 대기. 기록: docs/0마스터플랜/worklog/cloud-lanes/L13-demo-integration_20261104.md
 
 2026-11-04 L9 D2 피격·처치 지점 베이지 다각형 원판(클라우드 레인): 원인 1순위 KiImpactView 접점 코어(16각 평면·#fff4d0→#ffd9a0·알파 .35/1/.75/.5/.25·ZTest Always 가산)가 3D 전용 ACES·Bloom(임계 1.1)에서 흰 섬광+베이지 원판으로 읽힘. 3D 경로에서만 코어 비표시(접점은 NativeImpactView 은빛 플립북이 담당), 2D·Core 불변. 컴파일 미확인(PC)·화면 미검수(Mac). docs/0마스터플랜/worklog/cloud-lanes/L9-white-disc_20261104.md
