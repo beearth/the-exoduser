@@ -3,9 +3,9 @@ const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),cryp
 function arg(key,fallback){let i=process.argv.indexOf(key);return i<0?fallback:process.argv[i+1];}
 const project=path.resolve(arg('--project',path.resolve(__dirname,'../..'))),root=path.resolve(arg('--source-root',path.join(project,'..')));
 const dep=path.resolve(arg('--dependency-root',root));const acorn=require(require.resolve('acorn',{paths:[dep]}));
-const source=fs.readFileSync(path.join(root,'godot/source_snapshot/game.html'),'utf8');
+const source=fs.readFileSync(arg('--source',path.join(root,'godot/source_snapshot/game.html')),'utf8');
 const hash=s=>crypto.createHash('sha256').update(s).digest('hex');
-const expected='dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209';if(hash(source)!==expected)throw Error('Source snapshot pin mismatch');
+const expected=hash(source);if(arg('--expect-source-sha',null)&&expected!==arg('--expect-source-sha'))throw Error('Source snapshot pin mismatch');
 const fixture=JSON.parse(fs.readFileSync(path.join(project,'Tools/Fixtures/starter-fixture.json'),'utf8'));
 const anchors=[];const ctx=vm.createContext({Math,console,fixture});const run=s=>vm.runInContext(s,ctx,{timeout:1000});
 function exp(name){let m=new RegExp('(?:const|let|var)\\s+'+name+'\\s*=').exec(source);if(!m)throw Error(name);let n=acorn.parseExpressionAt(source,m.index+m[0].length,{ecmaVersion:'latest'});run('var '+name+'=('+source.slice(n.start,n.end)+');');anchors.push({name,line:source.slice(0,m.index).split('\n').length});}
@@ -31,5 +31,5 @@ const wall=run('({active:_crescents[0].active,packets:packets.length,x:_crescent
 run(`for(var c of _crescents)c.active=false;packets=[];wall=false;los=false;_fireKiSlashCrescent(1);updateCrescents(1);`);const los=run('packets.length');
 const livePath=arg('--live-source',null);let liveComparison=null;
 if(livePath){const live=fs.readFileSync(livePath,'utf8');function body(text,name){const m=new RegExp('function\\s+'+name+'\\s*\\(').exec(text);if(!m)return null;const n=acorn.parseExpressionAt(text,m.index,{ecmaVersion:'latest'});return text.slice(n.start,n.end);}const names=['spawnCrescent','_fireKiSlashCrescent','_kiSlashHoldTier','_kiSlashHoldMultiplier','_beginKiSlashThirdCharge','_updateKiSlashThirdCharge','updateCrescents','_poiseHit'];liveComparison={path:livePath,sha256:hash(live),functions:names.map(name=>({name,equals_snapshot:body(source,name)===body(live,name)}))};}
-const result={schema:'exoduser.unity.ki-slash-source-oracle.v1',source:{sha256:expected,anchors},scenarios,hits,boundary,wall,blocked_los_hit_count:los,live_comparison:liveComparison,scope:{source_numeric_functions:true,hurtE_executed:false,full_game_rng:false}};
+const result={schema:'exoduser.unity.ki-slash-source-oracle.v1',source:{head:arg('--head',''),sha256:expected,anchors},scenarios,hits,boundary,wall,blocked_los_hit_count:los,live_comparison:liveComparison,scope:{source_numeric_functions:true,hurtE_executed:false,full_game_rng:false}};
 const out=arg('--out',path.join(__dirname,'oracle.json'));fs.writeFileSync(out,JSON.stringify(result,null,2));console.log(JSON.stringify({out,scenarios:scenarios.length,starterdamage:scenarios[0].spawn.dmg,hits:hits.length,wall,los}));

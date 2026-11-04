@@ -1,6 +1,7 @@
 // Read-only import of existing web translations. Unity runtime data is the output.
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),cp=require('node:child_process');
-const root=path.resolve(__dirname,'../..'),web=path.resolve(process.argv[2]||'G:/exoduser-wt/latest-web');
+const arg=(k,d)=>{const i=process.argv.indexOf(k);return i<0?d:process.argv[i+1]};
+const root=path.resolve(arg('--project',path.resolve(__dirname,'../..'))),web=path.resolve(process.argv[2]||'G:/exoduser-wt/latest-web');
 const source=fs.readFileSync(path.join(web,'game.html'),'utf8'),at=source.indexOf('const _EN={'),end=source.indexOf('\n};',at)+3;
 if(at<0||end<3)throw Error('EN table boundary missing');
 const tables={en:vm.runInNewContext(source.slice(at,end)+'\n'+[...source.matchAll(/Object\.assign\(_EN,\{[\s\S]*?\}\);/g)].map(x=>x[0]).join('\n')+'\n_EN',{},{timeout:2000})};
@@ -16,6 +17,6 @@ const entries=keys.map(key=>({key,texts:codes.map(code=>{if(code==='ko')return k
 // Registered STY-23 No.4258. The exact complete sentence is Unity-only; its components already exist in the web catalogue.
 const slain={ko:'보스 처치 · 출구가 열렸다',en:'Boss slain · The exit is open',zh:'首领已击败 · 出口已开启',ja:'ボス討伐 · 出口が開いた',es:'Jefe derrotado · La salida está abierta',zht:'首領已擊敗 · 出口已開啟',ru:'Босс повержен · Выход открыт',de:'Boss besiegt · Der Ausgang ist offen',ptbr:'Chefe derrotado · A saída está aberta',fr:'Boss vaincu · La sortie est ouverte',pl:'Boss pokonany · Wyjście otwarte',it:'Boss sconfitto · L’uscita è aperta',uk:'Боса переможено · Вихід відкрито',tr:'Boss yenildi · Çıkış açıldı',vi:'Đã hạ trùm · Lối ra đã mở',th:'ปราบบอสแล้ว · ทางออกเปิดแล้ว',id:'Bos dikalahkan · Jalan keluar terbuka',ar:'هُزم الزعيم · فُتح المخرج',sv:'Bossen besegrad · Utgången är öppen',da:'Boss besejret · Udgangen er åben',no:'Bossen er beseiret · Utgangen er åpen',fi:'Pomo kukistettu · Uloskäynti on auki',cs:'Boss poražen · Východ je otevřený',hu:'Főellenfél legyőzve · A kijárat nyitva',ro:'Șef învins · Ieșirea este deschisă',nl:'Baas verslagen · De uitgang is open',el:'Το αφεντικό νικήθηκε · Η έξοδος άνοιξε',bg:'Босът е победен · Изходът е отворен',ms:'Bos ditewaskan · Jalan keluar terbuka'};
 entries.push({key:slain.ko,texts:codes.map(c=>slain[c])});
-const sourceCommit=cp.spawnSync('git',['-C',web,'rev-parse','HEAD'],{encoding:'utf8',windowsHide:true}).stdout.trim();
+const sourceCommit=arg('--head',null)||cp.spawnSync('git',['-C',web,'rev-parse','HEAD'],{encoding:'utf8',windowsHide:true,stdio:['ignore','pipe','pipe']}).stdout.trim();
 fs.writeFileSync(path.join(data,'demo_text.json'),JSON.stringify({sourceCommit,codes,bossLines:Object.entries(bossLines).map(([key,text])=>({key,text})),entries},null,2)+'\n');
 console.log('Imported '+entries.length+' entries x '+codes.length+' languages from '+sourceCommit);

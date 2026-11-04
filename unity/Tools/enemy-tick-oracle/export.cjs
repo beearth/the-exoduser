@@ -34,6 +34,7 @@ add(stmt('rollElite','function rollElite('));add(stmt('rollMods','function rollM
 add(single('_enemyHpPacing','function _enemyHpPacing('));add(stmt('_assignBossSkin','function _assignBossSkin('));add(stmt('_assignMobSkin','function _assignMobSkin('));
 add(stmt('safePt','function safePt('));
 // ---- functions the CX-03a code calls and that ARE ported (executed as written) ----
+add(stmt('_outsideWorldView','function _outsideWorldView('));
 add(stmt('_isDruidFinale','function _isDruidFinale('));add(stmt('_druidFinaleHp','function _druidFinaleHp('));
 add(single('_isNormalDruidBoss','function _isNormalDruidBoss('));add(stmt('_poiseReset','function _poiseReset('));
 add(single('_spikeTrapSlowPct','function _spikeTrapSlowPct('));add(single('dst','function dst('));add(single('dst2','function dst2('));

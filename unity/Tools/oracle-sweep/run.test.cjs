@@ -25,6 +25,7 @@ test('다양한 영수증의 검사 수와 실제 실패 값을 보존한다', (
   assert.equal(m.total, 2); assert.equal(m.failed, 1); assert.equal(m.details[0].web, 4);
   assert.deepEqual(api.extractMetrics({ checks: 150, failures: 2, first: ['a', 'b'] }, '').names, ['a', 'b']);
   assert.equal(api.extractMetrics(null, 'FAIL name x\nDIFF 2').failed, 2);
+  assert.equal(api.extractMetrics(null, 'COMPARISON 156 passed').total, 156);
 });
 test('원격 입력 의존 항목도 목록에서 빠지지 않는다', () => {
   const inventory = api.discover(path.resolve(__dirname, '..'));
@@ -39,4 +40,15 @@ test('MSBuild의 세미콜론 경로 목록을 개별 파일로 해석한다', (
 });
 test('실제 Unity 엔진 없이는 컴파일할 수 없는 GUI 검사는 SKIP이다', () => {
   assert.equal(api.classifyResult({code:1,output:"error CS0246: 'UnityEngine' could not be found"}), 'SKIP');
+});
+
+test('설치 SDK나 NuGet 공급원 실패는 하니스 FAIL과 구분한다', () => {
+  for (const output of ['error NU1100: Unable to resolve Microsoft.NETCore.App.Ref', 'error NETSDK1045: SDK does not support target', 'error MSB4236: SDK not found'])
+    assert.equal(api.classifyResult({code:1,output}), 'ENVIRONMENT');
+});
+test('예전 자산 복사와 역사 감사 도구에는 대체 검사 근거가 있다', () => {
+  for(const id of ['export-assets.cjs','export-inventory-assets.cjs','export-lobby-assets.cjs','parry-g2-tests/classify-oracle.cjs']) {
+    const r=api.retirementFor(id); assert.ok(r.reason); assert.ok(r.replacement);
+  }
+  assert.equal(api.retirementFor('enemy-tick-oracle/export.cjs'), null);
 });

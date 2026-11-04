@@ -1,9 +1,9 @@
 // Executes pinned original functions offline. Never shipped as native runtime JS.
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),crypto=require('node:crypto');
 const flag=(name,fallback)=>{const i=process.argv.indexOf(name);return i<0?fallback:process.argv[i+1]};
-const root=path.resolve(flag('--source-root',path.resolve(__dirname,'../../..'))),source=fs.readFileSync(path.join(root,'godot/source_snapshot/game.html'),'utf8');
+const root=path.resolve(flag('--source-root',path.resolve(__dirname,'../../..'))),source=fs.readFileSync(flag('--source',path.join(root,'godot/source_snapshot/game.html')),'utf8');
 const acorn=require(require.resolve('acorn',{paths:[flag('--dependency-root',root)]})),hash=s=>crypto.createHash('sha256').update(s).digest('hex');
-if(hash(source)!=='dee094fd165e9b2fb3fbf0eb9cacc3bc3eddeb2c8eeea9c4772ba6cbc1f05209')throw Error('snapshot pin');
+if(flag('--expect-source-sha',null)&&hash(source)!==flag('--expect-source-sha'))throw Error('snapshot pin');
 const anchors=[];function body(text,name){const m=new RegExp('function\\s+'+name+'\\s*\\(').exec(text);if(!m)throw Error(name);const n=acorn.parseExpressionAt(text,m.index,{ecmaVersion:'latest'});return {code:text.slice(n.start,n.end),line:text.slice(0,m.index).split('\n').length};}
 const math=Object.create(Math),ctx=vm.createContext({Math:math,console});const run=s=>vm.runInContext(s,ctx,{timeout:1000});
 math.random=()=>run('randomCalls++;randomValues[(randomCalls-1)%randomValues.length]');
@@ -22,6 +22,6 @@ const hits=[];for(const step of [1,3]){run(`reset();_gameFrame=3;var c={step:${s
 run(`reset();_fireKiSlashCrescent(1);events=[];ens=[{x:40,y:20,r:22,alive:true}];updateCrescents(1);updateCrescents(1)`);const killed=run('({events,shadows:_kiHitShadows})');
 run(`reset();_fireKiSlashCrescent(1);events=[];ens=[{x:40,y:20,r:22,alive:true}];wall=true;updateCrescents(1)`);const blockedWall=run('events');
 run(`reset();_fireKiSlashCrescent(1);events=[];ens=[{x:40,y:20,r:22,alive:true}];los=false;updateCrescents(1)`);const blockedLos=run('events');
-const live=fs.readFileSync('G:/exoduser/game.html','utf8');const comparison=names.map(name=>({name,equals_snapshot:body(source,name).code===body(live,name).code}));
-const result={source:{sha256:hash(source),anchors},casts,fullPool,charges,release,hits,killed,blockedWall,blockedLos,live_comparison:comparison,scope:'isolated original function execution; admitted ordinary profile; not full game RNG/audio/backend'};
-fs.writeFileSync(path.join(__dirname,'oracle.json'),JSON.stringify(result,null,2));console.log(JSON.stringify({casts:casts.length,charges:charges.length,liveEqual:comparison.every(x=>x.equals_snapshot),anchors}));
+const livePath=flag('--live-source',null),comparison=livePath?names.map(name=>({name,equals_snapshot:body(source,name).code===body(fs.readFileSync(livePath,'utf8'),name).code})):null;
+const result={source:{head:flag('--head',''),sha256:hash(source),anchors},casts,fullPool,charges,release,hits,killed,blockedWall,blockedLos,live_comparison:comparison,scope:'isolated original function execution; admitted ordinary profile; not full game RNG/audio/backend'};
+fs.writeFileSync(flag('--out',path.join(__dirname,'oracle.json')),JSON.stringify(result,null,2));console.log(JSON.stringify({casts:casts.length,charges:charges.length,liveEqual:comparison?.every(x=>x.equals_snapshot)??null,anchors}));

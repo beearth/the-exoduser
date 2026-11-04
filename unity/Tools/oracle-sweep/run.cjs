@@ -5,7 +5,7 @@ const path = require('node:path');
 const cp = require('node:child_process');
 const crypto = require('node:crypto');
 const slash = s => s.replaceAll('\\', '/');
-const categories = ['PASS', 'FAIL', 'BUILD-BREAK', 'NEEDS-INPUT', 'SKIP'];
+const categories = ['PASS', 'FAIL', 'BUILD-BREAK', 'NEEDS-INPUT', 'SKIP', 'ENVIRONMENT', 'RETIRED', 'NOT-RUN'];
 const mapPaths = (value, resolve) => value.split(';').map(resolve).join(';');
 
 function discover(root) {
@@ -36,7 +36,7 @@ function extractMetrics(receipt, output) {
   const count = /(?:RESULT |SIM |Tests: )?(\d+) checks\s*[/,]\s*(\d+) failures/i.exec(output);
   if (count) { total ??= +count[1]; failed ??= +count[2]; }
   const diff = /(?:^|\n)DIFF (\d+)/.exec(output); if (diff) failed ??= +diff[1];
-  const pass = /(?:PASS\s+|passed[":\s]+)(\d+)|(?:^|\n)(\d+) passed/i.exec(output);
+  const pass = /(?:PASS\s+|passed[":\s]+)(\d+)|(?:^|\n)(?:COMPARISON )?(\d+) passed/i.exec(output);
   if (total === null && pass && failed === null) { total = +(pass[1] || pass[2]); failed = 0; }
   if (total === null && typeof r.passed === 'number') total = r.passed + (failed || 0);
   const failLines = output.split(/\r?\n/).filter(x => /^(?:FAIL\b|  .*differs|Unhandled exception\.|.*=> DIFF)/.test(x));
@@ -44,7 +44,14 @@ function extractMetrics(receipt, output) {
   return { total, failed, names, details };
 }
 
+function retirementFor(id) {
+  const assets = {'export-assets.cjs':'source_receipt.json','export-inventory-assets.cjs':'inventory-assets.json','export-lobby-assets.cjs':'lobby-assets.json'};
+  if(assets[id]) return {reason:'자산을 Runtime에 쓰는 이식 도구이며 oracle가 아님. 자동 sweep 대상에서 폐기; 수동 도구 파일은 보존',replacement:'oracle-sweep/asset-receipt-check.cjs '+assets[id]};
+  if(id==='parry-g2-tests/classify-oracle.cjs') return {reason:'고정 b3cf7a682/f6ff63e33 실패 다중집합(372개)을 감사하던 일회성 도구. 현행 A안 기대값 층으로 대체',replacement:'enemy-hurt-oracle/export.cjs --expectation-mode a-plan + EnemyHurtTests.csproj; parry-g2-tests/run.cjs'};
+  return null;
+}
 function classifyResult(r) {
+  if (/error NU\d+|error NETSDK\d+|error MSB4236|compatible .NET SDK was not found|You must install or update .NET/i.test(r.output)) return 'ENVIRONMENT';
   if (r.timedOut) return 'NEEDS-INPUT';
   if (/error CS0246:.*['"]UnityEngine['"]/.test(r.output)) return 'SKIP';
   if (/error (?:CS\d+|MSB\d+|NETSDK\d+)|Build FAILED|build failed/i.test(r.output)) return 'BUILD-BREAK';
@@ -82,7 +89,7 @@ async function main() {
   const argv = process.argv.slice(2), option = (k, fallback) => argv.includes(k) ? argv[argv.indexOf(k) + 1] : fallback;
   const repo = path.resolve(option('--repo', path.join(__dirname, '../../..'))), unity = path.join(repo, 'unity'), tools = path.join(unity, 'Tools');
   const out = path.resolve(option('--out', 'I:/EXODUSER-Storage/debug/oracle-sweep-20261104'));
-  const library = path.join(unity, 'Library/OracleSweep');
+  const library = path.resolve(option('--library', path.join(out, 'build-current')));
   fs.mkdirSync(out, { recursive: true }); fs.mkdirSync(library, { recursive: true });
   function git(args, optional = false) {
     const r = cp.spawnSync('git', ['-C', repo, ...args], { windowsHide: true, stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 64 * 1024 * 1024 });
@@ -140,9 +147,11 @@ async function main() {
     for (const rel of tree.filter(x => x.startsWith('unity/Tools/' + folder + '/') && /\.(cs|csproj|cjs|js|json|config)$/i.test(x) && !/\/(runs|bin|obj)\//.test(x))) {
       const target = path.join(project, rel.slice(6)); fs.mkdirSync(path.dirname(target), { recursive: true }); fs.copyFileSync(path.join(repo, rel), target);
     }
-    // A number of old harness NuGet.Config files clear all feeds. Select the
-    // installed .NET 8 SDK rather than SDK 10's missing net8 targeting pack.
-    fs.writeFileSync(path.join(dir,'global.json'),JSON.stringify({sdk:{version:option('--sdk','8.0.301'),rollForward:'latestPatch'}}));
+    // Use the installed SDK/ref pack offline. Only temporary project metadata is changed; no package feeds.
+    fs.writeFileSync(path.join(dir,'global.json'),JSON.stringify({sdk:{version:option('--sdk','10.0.400'),rollForward:'latestPatch'}}));
+    fs.writeFileSync(path.join(dir,'NuGet.Config'),'<configuration><packageSources><clear /></packageSources></configuration>');
+    fs.mkdirSync(path.join(project,'Tools/Fixtures'),{recursive:true});
+    for(const rel of tree.filter(x=>x.startsWith('unity/Tools/Fixtures/')&&x.endsWith('.json'))) blob(rel,path.join(project,rel.slice(6)));
     const result = path.join(home, 'result.json');
     // Historical receipts are not fresh results.
     if (fs.existsSync(result)) fs.unlinkSync(result);
@@ -152,12 +161,16 @@ async function main() {
   function data(c, name) { return blob('unity/Assets/Exoduser/Resources/Data/' + name, path.join(c.project, 'Assets/Exoduser/Resources/Data', name)); }
   function writeSummary() {
     snapshot.updated = new Date().toISOString();
+    for(const row of snapshot.results)if(!want(row.id)&&!row.commands?.length&&!row.command)row.classification='NOT-RUN';
+    const scoped=snapshot.results.filter(row=>want(row.id));
+    const counts=rows=>Object.fromEntries(categories.map(k=>[k,rows.filter(x=>x.classification===k).length]));
+    snapshot.scope={only,counts:counts(scoped),projectCounts:counts(scoped.filter(x=>x.kind==='project')),scriptCounts:counts(scoped.filter(x=>x.kind==='script'))};
     snapshot.counts = Object.fromEntries(categories.map(k => [k, snapshot.results.filter(x => x.classification === k).length]));
     snapshot.projectCounts = Object.fromEntries(categories.map(k => [k,snapshot.results.filter(x=>x.kind==='project'&&x.classification===k).length]));
     snapshot.scriptCounts = Object.fromEntries(categories.map(k => [k,snapshot.results.filter(x=>x.kind==='script'&&x.classification===k).length]));
     fs.writeFileSync(summaryFile, JSON.stringify(snapshot, null, 2) + '\n');
     const cell = v => String(v ?? '미집계').replaceAll('|', '\\|').replace(/\r?\n/g, ' ');
-    const lines = ['# Unity Core oracle 일괄 점검', '', `- Core 기준: ${snapshot.coreSha}`, `- 하니스: ${coreSha}`, `- 웹 원문: ${webSha}`, `- 프로젝트 ${inventory.projects.length}개, 추출기/보조 스크립트 ${inventory.scripts.length}개. 스크립트는 별도 행이며 게임 규칙 검사 수에 합산하지 않는다.`, `- 분류: ${Object.entries(snapshot.counts).map(([k,v]) => k+' '+v).join(', ')}`, '', '| 이름 | 분류 | 검사 수/실패 수 | 실패 검사 이름 1~3개 또는 입력/오류 | 걸린 시간 |', '|---|---|---:|---|---:|'];
+    const lines = ['# Unity Core oracle 일괄 점검', '', `- Core 기준: ${snapshot.coreSha}`, `- 하니스: ${coreSha}`, `- 웹 원문: ${webSha}`, `- 프로젝트 ${inventory.projects.length}개, 추출기/보조 스크립트 ${inventory.scripts.length}개. 스크립트는 별도 행이며 게임 규칙 검사 수에 합산하지 않는다.`, `- 선택 범위: ${only.join(', ')||'전체'}; ${Object.entries(snapshot.scope.counts).map(([k,v])=>k+' '+v).join(', ')}`, `- 전체 목록 분류: ${Object.entries(snapshot.counts).map(([k,v]) => k+' '+v).join(', ')}`, '', '| 이름 | 분류 | 검사 수/실패 수 | 실패 검사 이름 1~3개 또는 입력/오류 | 걸린 시간 |', '|---|---|---:|---|---:|'];
     for (const r of snapshot.results) lines.push(`| ${cell(r.id)} | ${r.classification} | ${cell(r.metrics?.total)}/${cell(r.metrics?.failed)} | ${cell((r.metrics?.names?.slice(0,3).join('; ') || r.reason || '').slice(0,550))} | ${r.seconds.toFixed(2)}초 |`);
     lines.push('', '## FAIL 상세', '');
     for (const r of snapshot.results.filter(x => x.classification === 'FAIL')) lines.push(`### ${r.id}`, '', '```text', r.evidence, '```', '');
@@ -209,9 +222,11 @@ async function main() {
         exporter=null;
         if (path.basename(id)==='LobbyTests.csproj') {
           for(const f of ['world-intro-player.js','world-intro-subtitles-data.js','world-intro-subtitles.js']) webFile(f);
-          exporter='export.cjs'; exArgs=[web]; args=[c.result];
+          exporter='export.cjs'; exArgs=[web]; args=[c.result,oracle];
         }
-      } else if (folder === 'comparison-oracle') return needs('inventory-oracle의 고정 과거 스냅샷 seed가 필요함. 현재 웹 seed로 재수출 필요');
+      } else if (folder === 'comparison-oracle') {
+        exArgs=[path.join(web,'game.html'),'--seed',data(c,'inventory_seed.json'),'--out',oracle];
+      }
       else if (folder === 'c01-field-oracle') {
         const frozen = git(['rev-parse','origin/godot/main']).toString().trim();
         const holes=blob('godot/data/ch1_map_source/si0.json',path.join(c.home,'si0.json'),frozen);
@@ -222,8 +237,9 @@ async function main() {
       else if (folder === 'save-oracle') { blob('unity/Assets/Exoduser/Runtime/Core/InventoryData.cs',path.join(c.project,'Assets/Exoduser/Runtime/Core/InventoryData.cs')); }
       else if (folder === 'damage-parity-oracle') exArgs.push('--project',unity,'--dependency-root',dependency);
       else if (['feedback-oracle','hud-oracle','inventory-oracle','ki-slash-oracle'].includes(folder)) {
-        // These exporters deliberately pin old source hashes or hard-code a working copy.
-        return needs('고정 과거 스냅샷/공유 working-copy 경로 의존. 현재 origin/main 입력 계약으로 갱신 필요');
+        // These source-backed exporters accept the pinned web blob and record its SHA; no shared working copy.
+        exArgs=['--source',path.join(web,'game.html'),'--out',oracle,'--head',webSha,'--project',c.project,'--dependency-root',dependency];
+        if(folder==='ki-slash-oracle'&&path.basename(id)==='PoiseTests.csproj'){exporter='poise-oracle.cjs';}
       } else if (['druid-remodel-test','parry-reflect-test','rm1-sound-timeline'].includes(folder)) args=[path.join(c.home,'output')];
       else if (['skill-sim-test','kill-wire-test','visual-parity-tests'].includes(folder)) args=[c.result];
 
@@ -235,7 +251,7 @@ async function main() {
         if(!args.length && folder!=='character-ui') args=reverseArgs.has(folder)?[oracle,c.result]:[c.result,oracle];
       }
       // Resolve relative Compile/Exists paths in the temporary project only.
-      const stagedProj=path.join(c.dir,path.basename(id)); let xml=fs.readFileSync(stagedProj,'utf8');
+      const stagedProj=path.join(c.dir,path.basename(id)); let xml=fs.readFileSync(stagedProj,'utf8').replace(/<TargetFramework>[^<]+<\/TargetFramework>/g,'<TargetFramework>'+option('--framework','net10.0')+'</TargetFramework>');
       function resolveSource(value) {
         const normalized=value.replaceAll('$(ExoduserProject)',slash(unity));
         if(normalized.startsWith('$(')) return value;
@@ -262,12 +278,12 @@ async function main() {
     // Preparation errors do not run a C# check. Permit its first corrected
     // compile, but never repeat two failed executions of the same phase.
     const preparationOnly = (before?.reason?.startsWith('입력 없음:') && !before?.commands?.some(c=>c.phase==='dotnet')) || (id==='character-storage/StoreTests.csproj'&&/IndexOutOfRangeException/.test(before?.evidence||'')&&/NU1100/.test(before?.previous?.evidence||''));
-    if(before && ((!preparationOnly && before.attempts>=2) || before.classification==='FAIL')) continue;
+    if(before && ((!preparationOnly && before.attempts>=2) || (before.classification==='FAIL' && !argv.includes('--retry-failed')))) continue;
     const t=Date.now(), r=await runProject(id), runs=r.runs||[];
     const output=runs.map(x=>x.output).join('\n');
     const entry={id,kind:'project',...r,seconds:(Date.now()-t)/1000,fingerprint:sig,attempts:(before?.attempts||0)+1,evidence:output,previous:before?{classification:before.classification,reason:before.reason,evidence:before.evidence}:undefined};
     delete entry.runs;
-    entry.commands=runs.map(({output,...x})=>x);
+    entry.commands=runs;
     snapshot.results=snapshot.results.filter(x=>x.id!==id);snapshot.results.push(entry);writeSummary();
     console.log(`${id}: ${entry.classification} (${entry.seconds.toFixed(1)}초)`);
   }
@@ -275,13 +291,21 @@ async function main() {
   for(const id of inventory.scripts) {
     const before=snapshot.results.find(x=>x.id===id);
     snapshot.results=snapshot.results.filter(x=>x.id!==id);
-    if(before?.command){snapshot.results.push(before);continue;}
+    const retired=retirementFor(id);
+    if(retired){snapshot.results.push({id,kind:'script',classification:'RETIRED',seconds:0,...retired});continue;}
+    if(before?.command && !before.owner){snapshot.results.push(before);continue;}
     const folder=id.includes('/')?id.split('/')[0]:null;
     const owner=snapshot.results.find(x=>x.kind==='project'&&(!folder||x.id.startsWith(folder+'/'))&&x.commands?.some(c=>c.command?.[1]?.endsWith('/'+id.split('/').at(-1))||c.command?.[1]?.endsWith('\\'+id.split('/').at(-1))));
-    const command=owner?.commands?.find(c=>c.phase==='export');
-    if(!command&&want(id)&&['inv-salvage-oracle/export.cjs','character-ui/export.cjs','drop-oracle/export-tables.cjs','enemy-hurt-oracle/make-h3-oracle.cjs'].includes(id)) {
+    const command=owner?.commands?.find(c=>c.phase==='export' && path.basename(c.command?.[1]||'')===path.basename(id));
+    if(!command&&want(id)&&['inv-salvage-oracle/export.cjs','character-ui/export.cjs','drop-oracle/export-tables.cjs','enemy-hurt-oracle/make-h3-oracle.cjs','demo-text-tests/export.cjs','pet-bubble-tests/export.cjs'].includes(id)) {
       const c=stage('script-'+id,folder);fs.mkdirSync(path.join(c.project,'Assets/Exoduser/Resources/Data'),{recursive:true});
       let args;
+      if(id==='demo-text-tests/export.cjs'||id==='pet-bubble-tests/export.cjs') {
+        for(const code of 'zh ja es zht ru de ptbr fr pl it uk tr vi th id ar sv da no fi cs hu ro nl el bg ms'.split(' '))webFile('lang_'+code+'.js');
+        args=[web,'--project',c.project,'--head',webSha];
+        if(id==='demo-text-tests/export.cjs')data(c,'bossbar_web.json');
+        else args.push('--locations',blob('docs/11내러티브·로어디자인/ch1_1_plan_v2_text_i18n.json',path.join(c.home,'locations.json')));
+      }
       if(id==='inv-salvage-oracle/export.cjs')args=[path.join(web,'game.html'),c.oracle,webSha];
       if(id==='character-ui/export.cjs')args=[webFile('index.html')];
       if(id==='drop-oracle/export-tables.cjs')args=[path.join(web,'game.html'),path.join(c.home,'DropTablesData.cs'),webSha];
@@ -291,12 +315,12 @@ async function main() {
       }
       if(args){const r=await execute(process.execPath,[path.join(c.dir,path.basename(id)),...args],c.dir,c.env,Math.min(600000,deadline-Date.now()));snapshot.results.push({id,kind:'script',classification:classifyResult({...r,phase:'export'}),seconds:r.seconds,command:r.command,evidence:r.output,reason:'격리 폴더에서 추출/파생 생성만 검증. Core 대조 검사가 아님'});continue;}
     }
-    const status=command?(command.code===0?'PASS':'NEEDS-INPUT'):'NEEDS-INPUT';
-    snapshot.results.push({id,kind:'script',classification:status,seconds:command?.seconds||0,reason:owner?'프로젝트 선행 추출 단계: '+owner.id:'별도 입력/자산/영수증 또는 보조 파생 입력 필요; 미실행',owner:owner?.id});
+    const status=command?classifyResult({...command,phase:'export',output:command.output||(command.code===0?'':owner.evidence||'')}):'NEEDS-INPUT';
+    snapshot.results.push({id,kind:'script',classification:status,seconds:command?.seconds||0,command:command?.command,evidence:command?(command.output||(command.code===0?'':owner.evidence)):undefined,reason:owner?'프로젝트 선행 추출 단계: '+owner.id:'별도 입력/자산/영수증 또는 보조 파생 입력 필요; 미실행',owner:owner?.id});
   }
-  for(const id of inventory.projects) if(!snapshot.results.some(x=>x.id===id)) snapshot.results.push({id,kind:'project',classification:'NEEDS-INPUT',seconds:0,reason:'전체 2시간 상한 또는 --only 범위 밖; 미실행'});
+  for(const id of inventory.projects) if(!snapshot.results.some(x=>x.id===id)) snapshot.results.push({id,kind:'project',classification:want(id)?'NEEDS-INPUT':'NOT-RUN',seconds:0,reason:'전체 2시간 상한 또는 --only 범위 밖; 미실행'});
   writeSummary();
   console.log(JSON.stringify(snapshot.counts));
 }
-module.exports={discover,extractMetrics,classifyResult,mapPaths};
+module.exports={discover,extractMetrics,classifyResult,mapPaths,retirementFor};
 if(require.main===module) main().catch(e=>{console.error(e.stack);process.exitCode=1;});

@@ -1,6 +1,7 @@
 // Read-only existing web/registered copy import. Never adds translations or edits web.
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),cp=require('node:child_process');
-const root=path.resolve(__dirname,'../..'),web=path.resolve(process.argv[2]||'G:/exoduser-wt/latest-web');
+const arg=(k,d)=>{const i=process.argv.indexOf(k);return i<0?d:process.argv[i+1]};
+const root=path.resolve(arg('--project',path.resolve(__dirname,'../..'))),web=path.resolve(process.argv[2]||'G:/exoduser-wt/latest-web');
 const source=fs.readFileSync(path.join(web,'game.html'),'utf8'),at=source.indexOf('const _EN={'),end=source.indexOf('\n};',at)+3;
 if(at<0||end<3)throw Error('EN boundaries');
 const tables={en:vm.runInNewContext(source.slice(at,end)+'\n'+[...source.matchAll(/Object\.assign\(_EN,\{[\s\S]*?\}\);/g)].map(m=>m[0]).join('\n')+'\n_EN',{}, {timeout:2000})};
@@ -20,15 +21,15 @@ for(const key of new Set(cues.flatMap(c=>[c.key,c.pairKey]).filter(Boolean))){
  entries.push({key,texts:codes.map(code=>{const value=code==='ko'?key:tables[code][key];if(!value)throw Error('Missing '+code+': '+key);return value;})});
 }
 const locPath='docs/11내러티브·로어디자인/ch1_1_plan_v2_text_i18n.json';
-const registered=cp.spawnSync('C:/Program Files/Git/cmd/git.exe',['show','origin/unity/main:'+locPath],{cwd:path.resolve(root,'..'),encoding:'utf8',windowsHide:true});
-const locationSource=registered.status===0?'origin/unity/main:'+locPath:'latest-web:'+locPath;
+const registered=arg('--locations',null)?{status:0,stdout:fs.readFileSync(arg('--locations'),'utf8')}:cp.spawnSync('C:/Program Files/Git/cmd/git.exe',['show','origin/unity/main:'+locPath],{cwd:path.resolve(root,'..'),encoding:'utf8',windowsHide:true,stdio:['ignore','pipe','pipe']});
+const locationSource=arg('--locations',null)|| (registered.status===0?'origin/unity/main:'+locPath:'latest-web:'+locPath);
 const locations=JSON.parse(registered.status===0?registered.stdout:fs.readFileSync(path.join(web,locPath),'utf8'));
 for(const [id,who] of [['ch11.line.crow.01','crow'],['ch11.line.cat.03','cat'],['ch11.line.crow.04','crow'],['ch11.line.crow.07','crow']]){
  const row=locations[id];if(!row)throw Error(id);
  cues.push({id,who,key:row.ko,tier:0,weight:0,seconds:4,cooldown:99999,pairWho:'',pairKey:'',pairSeconds:0});
  entries.push({key:row.ko,number:row.num,texts:codes.map(c=>{if(!row[c])throw Error(id+'/'+c);return row[c];})});
 }
-const sourceCommit=cp.execFileSync('C:/Program Files/Git/cmd/git.exe',['-C',web,'rev-parse','HEAD'],{encoding:'utf8',windowsHide:true}).trim();
+const sourceCommit=arg('--head',null)||cp.execFileSync('C:/Program Files/Git/cmd/git.exe',['-C',web,'rev-parse','HEAD'],{encoding:'utf8',windowsHide:true,stdio:['ignore','pipe','pipe']}).trim();
 const data={sourceCommit,locationSource,codes,cues,entries};
 if(require.main===module){fs.writeFileSync(path.join(root,'Assets/Exoduser/Resources/Data/pet_bubble.json'),JSON.stringify(data,null,2)+'\n');console.log('Existing pet copy imported: '+cues.length+' cues / '+entries.length+' keys x '+codes.length+' locales; GB1 automatic triggers held.');}
 module.exports=data;

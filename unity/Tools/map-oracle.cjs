@@ -11,9 +11,9 @@ const gateMeta=source.match(/'boss_gate_col':\{sz:(\d+)/),gate=m.tiles.map((v,i)
 if(!gateMeta||!gate.length)throw Error('Original boss_gate_col source or gate tiles missing');
 {const xs=gate.map(i=>i%m.width),gy=Math.floor(gate[0]/m.width),cx=(Math.min(...xs)+Math.max(...xs))/2;
  col.push({type:'boss_gate_col',x:(cx+.5)*m.tile_size,y:(gy-1)*m.tile_size,_colSz:+gateMeta[1]*.4});meta.boss_gate_col={sz:+gateMeta[1],col:1};}
-const ctx={G,T:m.tile_size,_FDG_RUINED_FOREST_FIRST:false,_ensureColObjs:()=>{},_colObjs:col,_OBJ_META:meta};
+const ctx={G,worldItems:[],T:m.tile_size,_FDG_RUINED_FOREST_FIRST:false,_ensureColObjs:()=>{},_colObjs:col,_OBJ_META:meta};
 vm.createContext(ctx);vm.runInContext(source.slice(start,end),ctx);
 let seed=0x23aa10;function random(){seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;}
 const samples=[];for(let i=0;i<2500;i++){const x=Math.fround(random()*8000),y=Math.fround(random()*8000),r=[0,10,15,22][i%4];samples.push([x,y,r,ctx.canMv(x,y,r)]);}
 for(const [x,y,r] of [[4020,7420,15],[0,0,15],[5200,3920,15],[5880,3560,15],...m.prop_colliders.map(c=>[c.position[0],c.position[1],15])])samples.push([x,y,r,ctx.canMv(x,y,r)]);
-fs.writeFileSync(process.argv[3],JSON.stringify({sourceSha256:crypto.createHash('sha256').update(source).digest('hex'),scope:'original isW/canMv against exported static map + the map build boss_gate_col; dynamic bone walls excluded',samples}));console.log(JSON.stringify({samples:samples.length}));
+fs.writeFileSync(process.argv[3],JSON.stringify({sourceSha256:crypto.createHash('sha256').update(source).digest('hex'),scope:'original isW/canMv against exported static map + the map build boss_gate_col; dynamic bone walls and chest items excluded (worldItems=[])',samples}));console.log(JSON.stringify({samples:samples.length}));

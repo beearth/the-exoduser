@@ -229,6 +229,7 @@ class EnemyTickProgram
             };
             if (w.GetProperty("bonfire").ValueKind != JsonValueKind.Null) { var b = w.GetProperty("bonfire"); c.Bonfire = new EnemyBonfire { x = b.GetProperty("x").GetDouble(), y = b.GetProperty("y").GetDouble(), r = b.GetProperty("r").GetDouble(), t = b.GetProperty("t").GetDouble() }; }
             foreach (var rf in w.GetProperty("rifts").EnumerateArray()) c.Rifts.Add(new EnemyRift { x = rf.GetProperty("x").GetDouble(), y = rf.GetProperty("y").GetDouble(), t = rf.GetProperty("t").GetDouble(), maxT = rf.GetProperty("maxT").GetDouble() });
+            c.WorldPointVisible = (x,y,margin) => Math.Abs(x-c.CamX)<=c.ViewW/2+margin && Math.Abs(y-c.CamY)<=c.ViewH/2+margin; // same unzoomed source _outsideWorldView; no render dependency
             c.Random = () => { if (used >= seq.Length) throw new InvalidOperationException("random sequence exhausted (C# draws more than the web)"); return seq[used++]; };
             c.Now = () => { Log("now"); if (clockUsed >= clock.Length) throw new InvalidOperationException("clock exhausted"); return clock[clockUsed++]; };
             c.CanMove = (x, y, r) => { Log("canMv", x, y, r); return rCanMv.Move(x, y, r); };
