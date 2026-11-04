@@ -20,7 +20,7 @@ namespace Exoduser.UnityPort
             if(a2Field!=null&&a2Field.Water(x,z)||NativeRemodel3D.GroundY(x,z)<-.2f)return null;
             var go=A2Module("Withered_Shrub",x,z,.8f,.8f,.8f,yaw,0,false);if(go==null)throw new InvalidOperationException("D5 Withered_Shrub module missing");
             // A2Module suppresses native shrubs inside A2R terrain; the owned replacement opts back in.
-            go.transform.SetParent(parent,true);go.SetActive(true);go.name="D5 Withered_Shrub "+x.ToString("F2")+","+z.ToString("F2");
+            go.transform.SetParent(parent,true);go.SetActive(true);if(go.transform.Find("A2 입체 고사 덤불")==null)A2Bramble(go,x,z);go.name="D5 Withered_Shrub "+x.ToString("F2")+","+z.ToString("F2");
             var bounds=A2RProps3D.D5GeometryBounds(go);float factor=Mathf.Min(A2RProps3D.D5ShrubHeight/Mathf.Max(.001f,bounds.size.y),1.4f/Mathf.Max(.001f,Mathf.Max(bounds.size.x,bounds.size.z)));
             go.transform.localScale*=factor;bounds=A2RProps3D.D5GeometryBounds(go);go.transform.position+=Vector3.up*(NativeRemodel3D.GroundY(x,z)-.02f-bounds.min.y);
             foreach(var collider in go.GetComponentsInChildren<Collider>(true)){if(Application.isPlaying)Destroy(collider);else DestroyImmediate(collider);}
