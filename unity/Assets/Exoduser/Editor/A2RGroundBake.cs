@@ -18,6 +18,7 @@ namespace Exoduser
     {
         const string Root="Assets/Exoduser/Resources/A2R/Baked/Ground";
         const string Source="Assets/Exoduser/Resources/A2R/C10/Art/";
+        internal static string Disk(string asset){return Path.GetFullPath(Path.Combine(Application.dataPath,"..",asset));}
         const int SlicesPerPack=16; // Raw RGBA32 1000px full-mip pack stays below Git's 100 MiB limit.
         [Serializable] sealed class Input { public Tile[] groundTiles; }
         [Serializable] sealed class Tile { public string asset; }
@@ -47,7 +48,7 @@ namespace Exoduser
         }
         static void BakeFullResolution()
         {
-            Directory.CreateDirectory(Root);
+            Directory.CreateDirectory(Disk(Root));
             var groups=new Dictionary<string,List<SourceTexture>>(StringComparer.Ordinal);
             foreach(string id in SourceIds())
             {
@@ -87,14 +88,14 @@ namespace Exoduser
                     var serialized=new SerializedObject(array);var readable=serialized.FindProperty("m_IsReadable");
                     if(readable==null)throw new InvalidOperationException("Texture2DArray readable serialization contract missing");
                     readable.boolValue=false;serialized.ApplyModifiedPropertiesWithoutUndo();
-                    InternalEditorUtility.SaveToSerializedFileAndForget(new UnityEngine.Object[]{array},asset,false);
+                    InternalEditorUtility.SaveToSerializedFileAndForget(new UnityEngine.Object[]{array},Disk(asset),false);
                 }
                 finally{UnityEngine.Object.DestroyImmediate(array);}
                 AssetDatabase.ImportAsset(asset,ImportAssetOptions.ForceSynchronousImport|ImportAssetOptions.ForceUpdate);
-                if(new FileInfo(asset).Length>=100L*1024*1024)throw new InvalidOperationException("Ground pack exceeds 100 MiB: "+asset);
+                if(new FileInfo(Disk(asset)).Length>=100L*1024*1024)throw new InvalidOperationException("Ground pack exceeds 100 MiB: "+asset);
                 manifest.packs.Add(pack);packNumber++;
             }
-            File.WriteAllText(Root+"/manifest.json",JsonUtility.ToJson(manifest,true));
+            File.WriteAllText(Disk(Root+"/manifest.json"),JsonUtility.ToJson(manifest,true));
             AssetDatabase.ImportAsset(Root+"/manifest.json",ImportAssetOptions.ForceSynchronousImport|ImportAssetOptions.ForceUpdate);
             AssetDatabase.SaveAssets();
             Debug.Log("A2R_GROUND_BAKED sourceImages=192 packs="+packNumber+" mipGeneration=0 recompression=0 resampling=0");
@@ -127,7 +128,7 @@ namespace Exoduser
         public int callbackOrder {get{return 0;}}
         public void OnPreprocessBuild(BuildReport report)
         {
-            if(File.Exists("Assets/Exoduser/Resources/A2R/Baked/Ground/manifest.json"))A2RGroundBake.ValidateFresh();
+            if(File.Exists(A2RGroundBake.Disk("Assets/Exoduser/Resources/A2R/Baked/Ground/manifest.json")))A2RGroundBake.ValidateFresh();
         }
     }
 }
