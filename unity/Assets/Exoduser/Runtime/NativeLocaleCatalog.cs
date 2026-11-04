@@ -73,7 +73,7 @@ namespace Exoduser.UnityPort
    string id=node.Str("key")??node.Str("id"),identity=id??path;
    var texts=node.Get("texts");
    // Audit overlays identify the original field by path, never by shared KO text.
-   if(texts?.Items!=null&&node.Str("path")!=null&&table.Paths.TryGetValue(node.Str("path"),out var target))identity=target;
+   if(texts?.Items!=null&&node.Str("path")!=null)identity=table.Paths.TryGetValue(node.Str("path"),out var target)?target:node.Str("path");
    else table.Paths[path]=identity;
    if(codes?.Items!=null&&texts?.Items!=null)for(int i=0;i<codes.Items.Count&&i<texts.Items.Count;i++)table.Put(identity,String(codes.Items[i]),String(texts.Items[i]));
    if(locale!=null){

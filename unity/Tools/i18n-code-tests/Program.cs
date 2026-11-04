@@ -33,6 +33,9 @@ class Program {
   Equal("Name",NativeLocaleCatalog.Get("regression-suffix","n.name","fr"),"field aliases stay within field key");
   Equal("Remarque",NativeLocaleCatalog.Get("regression-suffix","n.note","fr"),"field path selects note overlay");
   Equal("Einstellungen",NativeLocaleCatalog.Get("a15_settings_labels_exact","설정","de"),"nativeKo metadata aliases the locale row, not a competing field");
+  UnityEngine.Resources.Fixtures["Data/regression-overlay-only"]="{\"tabs\":[\"같은 탭\",\"같은 탭\"],\"localization\":{\"codes\":[\"ko\",\"en\",\"fr\"],\"entries\":[{\"path\":\"tabs[0]\",\"key\":\"같은 탭\",\"texts\":[\"같은 탭\",\"First tab\",\"\"]},{\"path\":\"tabs[1]\",\"key\":\"같은 탭\",\"texts\":[\"같은 탭\",\"Second tab\",\"Deuxième onglet\"]}]}}";
+  Equal("First tab",NativeLocaleCatalog.Get("regression-overlay-only","tabs[0]","fr"),"primitive source overlay uses its own structural path");
+  Equal("Deuxième onglet",NativeLocaleCatalog.Get("regression-overlay-only","tabs[1]","fr"),"same KO on another overlay path stays isolated");
  }
  static void Main(string[] args){
   Console.OutputEncoding=System.Text.Encoding.UTF8;
