@@ -224,7 +224,7 @@ namespace Exoduser.UnityPort.Core
             new EnemyStageDef { N = "APOSTLE LAIR", Kr = "사도의 마굴 5구역", W = "#2a1e3e", F = "#0c0a18", Ac = "#bb77ff", Bn = "불완전 사도", Be = 3, MonLv = 600, Hell = 5, HellFloor = 4, IsHellBoss = false, Chapter = 5 },
             new EnemyStageDef { N = "APOSTLE LAIR", Kr = "사도의 마굴 6구역", W = "#2a1e3e", F = "#0c0a18", Ac = "#bb77ff", Bn = "대사도", Be = 3, MonLv = 600, Hell = 5, HellFloor = 5, IsHellBoss = true, Chapter = 5 },
             new EnemyStageDef { N = "HELL CASTLE", Kr = "지옥성 1구역", W = "#1c1038", F = "#060410", Ac = "#cc88ff", Bn = "검은 성의 수호자", Be = 3, MonLv = 700, Hell = 6, HellFloor = 0, IsHellBoss = false, Chapter = 6 },
-            new EnemyStageDef { N = "HELL CASTLE", Kr = "지옥성 2구역", W = "#1c1038", F = "#060410", Ac = "#cc88ff", Bn = "Killu", Be = 3, MonLv = 700, Hell = 6, HellFloor = 1, IsHellBoss = false, Chapter = 6 },
+            new EnemyStageDef { N = "HELL CASTLE", Kr = "지옥성 2구역", W = "#1c1038", F = "#060410", Ac = "#cc88ff", Bn = "킬루", Be = 3, MonLv = 700, Hell = 6, HellFloor = 1, IsHellBoss = false, Chapter = 6 },
             new EnemyStageDef { N = "HELL CASTLE", Kr = "지옥성 3구역", W = "#1c1038", F = "#060410", Ac = "#cc88ff", Bn = "지옥 군주", Be = 3, MonLv = 700, Hell = 6, HellFloor = 2, IsHellBoss = true, Chapter = 6 }
         };
     }
