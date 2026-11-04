@@ -6,6 +6,8 @@ namespace Exoduser.UnityPort
     // 완료 화면의 읽기 전용 표시 모델과 단일 표시/입력 좌표. 저장 데이터가 아니다.
     public static class NativeStageClearPresentation
     {
+        public const string WishlistUrl="steam://store/4749590";
+        public static bool RequestWishlist(bool active,bool demo,float age,Action<string> open){if(!active||!demo||age<.5f||open==null)return false;open(WishlistUrl);return true;}
         public struct Area
         {
             public float X,Y,Width,Height;
@@ -44,20 +46,21 @@ namespace Exoduser.UnityPort
         public sealed class Layout
         {
             public float Scale,LogicalHeight,DetailY,ScoreY,RewardY;
-            public Area Panel,Next;
+            public Area Panel,Next,Wishlist;
             public Area ToScreen(float x,float y,float width,float height){return new Area(Panel.X+x*Scale,Panel.Y+y*Scale,width*Scale,height*Scale);}
             public bool HitNext(float x,float y){return Next.Contains(x,y);}
         }
-        public static Layout Arrange(float screenWidth,float screenHeight,Model model)
+        public static Layout Arrange(float screenWidth,float screenHeight,Model model,bool demoWishlist=false)
         {
             float y=272;var l=new Layout();l.RewardY=y;
             if(model.Reward!=null)y+=78;
             l.ScoreY=y;if(model.Score!=null)y+=56;
             l.DetailY=y;y+=model.Details.Count*30;
-            float buttonY=y+22;l.LogicalHeight=buttonY+56+28;
+            float buttonY=y+22;l.LogicalHeight=buttonY+56+28+(demoWishlist?68:0);
             l.Scale=Math.Min(1,Math.Min(Math.Max(1,screenWidth-32)/560,Math.Max(1,screenHeight-32)/l.LogicalHeight));
             l.Panel=new Area((screenWidth-560*l.Scale)/2,(screenHeight-l.LogicalHeight*l.Scale)/2,560*l.Scale,l.LogicalHeight*l.Scale);
-            l.Next=l.ToScreen(28,buttonY,504,56);return l;
+            l.Next=l.ToScreen(28,buttonY,504,56);
+            if(demoWishlist)l.Wishlist=l.ToScreen(28,buttonY+68,504,56);return l;
         }
         public sealed class NextAction
         {
