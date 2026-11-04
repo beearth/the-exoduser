@@ -121,7 +121,7 @@ namespace Exoduser.UnityPort
                 if(!records.ContainsKey(name)){Result.missing++;Result.missingKinds.Add(c.id+":"+c.kind);continue;}
                 cards.Add(card.gameObject);float px3=c.x/100,pz3=-c.y/100,h3=name.StartsWith("r3_",StringComparison.Ordinal)?LandmarkHeight(c,name):c.height;if(A2RD3.On)D3Adjust(c.id,name,ref px3,ref pz3,ref h3);var model=Place(c,name,px3,pz3,h3,c.id);if(model!=null&&A2RD3.On)D3Look(model,name);if(c.kind=="m_c1altar"&&model!=null&&!name.StartsWith("r3_",StringComparison.Ordinal))Rune(model,c);
             }
-            if(Result.missing>0)throw new InvalidOperationException("A2R 3D unmapped kinds: "+string.Join(",",Result.missingKinds));BuildTerrainDress(world,treeSpots,walkable);SetLook(Enabled);SetClean(A2RClean.On);Debug.Log("A2R_3D_READY models="+Result.modelInstances+" flat="+Result.flatDecals+" standing="+Result.standingCards+" floating="+Result.floating);
+            if(Result.missing>0)throw new InvalidOperationException("A2R 3D unmapped kinds: "+string.Join(",",Result.missingKinds));d3Camp=web.CampFoot;BuildTerrainDress(world,treeSpots,walkable);SetLook(Enabled);SetClean(A2RClean.On);Debug.Log("A2R_3D_READY models="+Result.modelInstances+" flat="+Result.flatDecals+" standing="+Result.standingCards+" floating="+Result.floating);
         }
         GameObject Place(A2RWebAssets.Card c,string name,float x,float z,float height,string id)
         {

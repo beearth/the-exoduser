@@ -10,7 +10,7 @@ namespace Exoduser.UnityPort
         public static readonly bool TerrainEnabled=Array.IndexOf(Environment.GetCommandLineArgs(),"--a2r-terrain-off")<0;
         const float FieldX0=18,FieldX1=52,FieldZ0=-74,FieldZ1=-40;
         public static bool InTerrainField(float x,float z){return x>=FieldX0&&x<=FieldX1&&z>=FieldZ0&&z<=FieldZ1;}
-        GameObject terrainRoot;readonly List<Material> terrainMats=new List<Material>();public int TerrainDetails,TerrainGrass,TerrainShrubs,SkinLayers,D3Pustules,D3Spores;
+        Vector3 d3Camp;GameObject terrainRoot;readonly List<Material> terrainMats=new List<Material>();public int TerrainDetails,TerrainGrass,TerrainShrubs,SkinLayers,D3Pustules,D3Spores;
         // D2: fern/brush removed. Hell-rot scatter (catalog 8 kinds) registers here once the CTO GLBs are imported; empty = no detail.
         static readonly string[] FernNames=new string[0],BrushNames=new string[0];
         public static readonly string[] HellRotGrass={"vein_grass_a","vein_grass_b","root_sprout_a","root_sprout_b"},HellRotShrubs={"bonethorn_bush_a","bonethorn_bush_b"};
@@ -30,7 +30,9 @@ namespace Exoduser.UnityPort
             var host=Terrain.CreateTerrainGameObject(data);host.name="A2R detail Terrain host";host.transform.SetParent(terrainRoot.transform,false);host.transform.position=new Vector3(FieldX0,min,FieldZ0);
             var col=host.GetComponent<TerrainCollider>();if(col!=null)Destroy(col);var terrain=host.GetComponent<Terrain>();terrain.drawHeightmap=false;terrain.drawTreesAndFoliage=true;
             // D3: the skin Terrain draws the real floor 6 mm above the ground (below decals at +12 mm, above the soil mesh). The tile painting skips this rectangle.
-            SkinLayers=0;if(A2RD3.On){host.transform.position=new Vector3(FieldX0,min+.006f,FieldZ0);SkinLayers=A2RTerrainSkin.Apply(terrain,data,FieldX0,FieldZ0,FieldX1-FieldX0,FieldZ1-FieldZ0,(x,z)=>NativeRemodel3D.GroundY(x,z),walkable);}
+            SkinLayers=0;var bridge=Vector4.zero;{var bt=world.Find("A2 시작 목교");if(bt!=null){Bounds bb=new Bounds();bool first=true;foreach(var br in bt.GetComponentsInChildren<Renderer>()){if(first){bb=br.bounds;first=false;}else bb.Encapsulate(br.bounds);}if(!first){bb.Expand(.3f);bridge=new Vector4(bb.min.x,bb.min.z,bb.max.x,bb.max.z);}}}
+            Shader.SetGlobalVector("_A2RTerrainHole",bridge);
+            if(A2RD3.On){host.transform.position=new Vector3(FieldX0,min+.006f,FieldZ0);SkinLayers=A2RTerrainSkin.Apply(terrain,data,FieldX0,FieldZ0,FieldX1-FieldX0,FieldZ1-FieldZ0,(x,z)=>NativeRemodel3D.GroundY(x,z),walkable,bridge,d3Camp);}
             Shader.SetGlobalVector("_A2RTerrainRect",new Vector4(FieldX0,FieldZ0,FieldX1,FieldZ1));Shader.SetGlobalFloat("_A2RTerrainSkin",SkinLayers>0?1f:0f);
             // Detail: clusters near trees (3 m) and field edges (2 m). The open centre stays empty.
             int idx=0;var detail=new GameObject("detail");detail.transform.SetParent(terrainRoot.transform,false);int lastFamily=-1;
