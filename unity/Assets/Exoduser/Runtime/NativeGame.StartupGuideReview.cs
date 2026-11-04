@@ -15,6 +15,9 @@ namespace Exoduser.UnityPort
    Directory.CreateDirectory(output);string seq=Path.Combine(output,"seq");Directory.CreateDirectory(seq);var log=new System.Text.StringBuilder();
    Action<string> note=s=>{log.AppendLine(s);Debug.Log("[guide-review] "+s);};
    Screen.SetResolution(1920,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.5f);
+   // Cause of create=False: TransitionPage() only runs the lobby callbacks synchronously for AutomatedInput/legacy fixtures; otherwise it queues a screen transition
+   // that waits for video readiness (never ready in a capture), so characterStep stayed 0. Scripted QA must mark the lobby as automated.
+   lobby.AutomatedInput=true;
    lobby.ShowLobby();yield return new WaitForSecondsRealtime(1.5f);
    if(lobby.Characters.Count==0){
     note("open="+lobby.OpenCharacterCreation());

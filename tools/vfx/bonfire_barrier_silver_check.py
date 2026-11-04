@@ -45,6 +45,18 @@ dome = (yy < edge - 14)
 check(px[..., 3][dome].max() / 255 <= .18 + .005, 'dome shell alpha <= .18 (%.3f)' % (px[..., 3][dome].max() / 255))
 hero = (np.abs(xx - rb.CX) <= rb.HERO_HALF_W * .7) & (yy >= rb.HERO_TOP) & (yy <= rb.HERO_BOTTOM)
 check(px[..., 3][hero].max() / 255 <= .12 + .005, 'hero body column alpha <= .12 (%.3f)' % (px[..., 3][hero].max() / 255))
+# silver overlay alpha .5*.6 = .3; crimson keeps .5 (texture alpha 1.0)
+rr0 = np.sqrt(nx * nx + ((yy - rb.CY) / rb.RY) ** 2)
+wc0 = rb.smooth(rr0, rb.CRIMSON_BAND[0] - .04, rb.CRIMSON_BAND[0] + .02) * (1 - rb.smooth(rr0, rb.CRIMSON_BAND[1] - .02, rb.CRIMSON_BAND[1] + .04))
+sil = vis & (wc0 < .02)
+check(px[..., 3][sil].max() / 255 <= rb.SILVER_ALPHA + .01, 'silver texture alpha <= %.2f -> overlay %.2f (max %.3f)' % (rb.SILVER_ALPHA, .5 * rb.SILVER_ALPHA, px[..., 3][sil].max() / 255))
+# no particles on the rim fringe: alpha islands (a>26) smaller than 60 px outside r>.92 must not exist
+from scipy import ndimage as ndi
+rr = np.sqrt(nx * nx + ((yy - rb.CY) / rb.RY) ** 2)
+lab, n = ndi.label(px[..., 3] > 26, structure=np.ones((3, 3)))
+sizes = np.bincount(lab.ravel())
+small = [i for i in range(1, n + 1) if sizes[i] < 120 and rr[lab == i].mean() > .92]
+check(len(small) == 0, 'rim fringe point particles = 0 (found %d)' % len(small))
 # code constants
 size = float(re.search(r'BarrierSize=([\d.]+)', text).group(1))
 alpha = float(re.search(r'BarrierAlpha=([\d.]+)f', text).group(1))

@@ -30,11 +30,15 @@ CRIMSON_LO, CRIMSON_HI = np.array([0x7a, 0x1e, 0x22], float), np.array([0xa8, 0x
 CRIMSON_SHADOW = np.array([0x2a, 0x0a, 0x0c], float)
 
 # Ellipse of the circle inside the 1536x1024 sheet (measured from the rim).
-CX, CY, RX, RY = 770.0, 600.0, 555.0, 270.0
+CX, CY, RX, RY = 770.0, 645.0, 560.0, 290.0
 CRIMSON_BAND = (.28, .46)     # elliptical radius of the single inner crimson band
 DOME_ALPHA = .18              # dome shell alpha ceiling (texture alpha, drawn at 1.0)
 TEXTURE_PEAK = .90            # silver ramp is entered only up to this t
 SPECK_PIXELS = 700            # connected alpha islands smaller than this are removed
+FRINGE_R = .80                # elliptical radius from which the rim fringe is rebuilt as one continuous soft line
+OPEN_RADIUS = 9               # grey opening radius (px): features thinner than 2*radius (sparks, tendrils) vanish
+SOFT_SIGMA = 2.2              # soft edge of the rebuilt rim line
+SILVER_ALPHA = .60            # silver part drawn at .5 * .6 = .3 overlay alpha; crimson keeps 1.0 (= .5 overlay)
 
 # hero body column (texture px): the lesson hero stands at the sheet centre; alpha <= .12 inside
 HERO_HALF_W, HERO_TOP, HERO_BOTTOM, HERO_ALPHA = 190.0, 215.0, 690.0, .12
@@ -56,6 +60,18 @@ def build(src):
     sizes = np.bincount(labels.ravel())
     small = np.isin(labels, np.nonzero(sizes < SPECK_PIXELS)[0]) & (labels > 0)
     alpha[small] = 0
+    # rim fringe: replace spark/tendril particles by a continuous soft line (grey opening + gaussian), no point particles
+    disk = (np.hypot(*np.mgrid[-OPEN_RADIUS:OPEN_RADIUS + 1, -OPEN_RADIUS:OPEN_RADIUS + 1]) <= OPEN_RADIUS)
+    opened = ndi.grey_dilation(ndi.grey_erosion(alpha, footprint=disk), footprint=disk)
+    opened = ndi.gaussian_filter(opened, SOFT_SIGMA)
+    fringe = smooth(r, FRINGE_R, FRINGE_R + .04)
+    alpha = alpha * (1 - fringe) + np.minimum(alpha, opened) * fringe
+    alpha *= 1 - smooth(r, 1.04, 1.10)   # dust outside the ring fades out
+    lab2, n2 = ndi.label(alpha > .1, structure=np.ones((3, 3)))
+    sz2 = np.bincount(lab2.ravel())
+    for i in range(1, n2 + 1):   # leftover tiny islands on the rim fringe
+        if sz2[i] < 120 and r[lab2 == i].mean() > .88:
+            alpha[lab2 == i] = 0
     # dome shell = everything above the upper edge of the ellipse
     edge = CY - RY * np.sqrt(np.clip(1 - nx * nx, 0, 1))
     dome = 1 - smooth(yy, edge - 12, edge + 6)
@@ -79,6 +95,7 @@ def build(src):
     rgb = silver * (1 - wc) + crimson * wc
     out = np.zeros((h, w, 4), np.uint8)
     out[..., :3] = np.clip(rgb.round(), 0, 255).astype(np.uint8)
+    alpha = alpha * (SILVER_ALPHA * (1 - wc[..., 0]) + wc[..., 0])
     out[..., 3] = np.clip((alpha * 255).round(), 0, 255).astype(np.uint8)
     out[out[..., 3] == 0, :3] = 0
     return out
