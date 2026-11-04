@@ -69,6 +69,32 @@ class DruidRigTests
   Check(!DruidRemodelSettings.Default,"Core default stays off");Check(!new Simulation(SourceStarterFixture.CreateKiSlash(),SourceStarterFixture.Seed).DruidRemodel,"a directly constructed Simulation keeps the web-port druid");
   Check(NativeReviewArgs.IsReviewArgument("--unity-druid-legacy")&&NativeReviewArgs.IsReviewArgument("--unity-druid-remodel"),"druid args are review arguments");
  }
+ static void EnemyCanvas()
+ {
+  int before=checks;float texel;
+  foreach(var c in new[]{new[]{1069,1,1088,1},new[]{4000,1,2016,2},new[]{30000,3,1280,24},new[]{500,1,512,1},new[]{500,3,192,3},new[]{2044,1,2048,1},new[]{2045,1,1056,2}})
+  {
+   int size=NativeRigPixelPolicy.EnemyTextureSize(.01f,c[1],c[0],out texel);
+   Check(size==c[2]&&texel==c[3],"enemy box "+c[0]+" base="+c[1]+" size="+size+" texel="+texel);
+   Check(size>=64&&size<=NativeRigPixelPolicy.EnemyMaxRt&&size%32==0&&(size-4)*texel>=c[0],"enemy bounded canvas includes box and padding "+c[0]);
+  }
+  NativeRigPixelPolicy.EnemyTextureSize(.01f,1,4000,out texel);
+  Check(NativeRigPixelPolicy.EnemyTextureSize(.01f,1,500,out texel)==512&&texel==1,"enemy next small frame restores texel 1");
+  foreach(float invalid in new[]{0f,-1f,float.NaN,float.PositiveInfinity,float.NegativeInfinity})
+  {
+   Check(NativeRigPixelPolicy.EnemyTextureSize(invalid,1,500,out texel)==0,"enemy invalid wpp "+invalid);
+   Check(NativeRigPixelPolicy.EnemyTextureSize(.01f,1,invalid,out texel)==0,"enemy invalid box "+invalid);
+  }
+  Check(NativeRigPixelPolicy.EnemyTextureSize(.01f,0,500,out texel)==0&&NativeRigPixelPolicy.EnemyTextureSize(.01f,-1,500,out texel)==0,"enemy invalid base texel");
+  foreach(float wpp in new[]{float.Epsilon,.01f,float.MaxValue})foreach(float box in new[]{float.Epsilon,1069f,4000f,30000f,float.MaxValue})
+  {
+   int size=NativeRigPixelPolicy.EnemyTextureSize(wpp,1,box,out texel);
+   Check(size>=64&&size<=2048&&size%32==0&&texel>=1&&!float.IsInfinity(texel)&&(size-4)*(double)texel>=box,"enemy finite inputs never overflow wpp="+wpp+" box="+box);
+  }
+  Check(NativeRigPixelPolicy.TextureSize(.01f,1,10.73f)==0,"hero TextureSize retains 1024 cap");
+  int druidTexel;Check(NativeRigPixelPolicy.DruidMaxRt==2048&&NativeRigPixelPolicy.DruidCanvas(.01f,1,4000,out druidTexel)==2016&&druidTexel==2,"druid canvas unchanged");
+  Console.WriteLine("enemy-rt checks="+(checks-before)+" cap="+NativeRigPixelPolicy.EnemyMaxRt);
+ }
  static int Main()
  {
   Check(!NativeDruidRigPolicy.Requested(null),"default off");Check(!NativeDruidRigPolicy.Requested(new string[0]),"empty off");
@@ -132,7 +158,7 @@ class DruidRigTests
     Check(NativeArenaReviewPolicy.ContactAt(192,out pr)==NativeArenaReviewPolicy.ContactStep.Dash&&pr&&NativeArenaReviewPolicy.ContactAt(206,out pr)==NativeArenaReviewPolicy.ContactStep.Dash&&NativeArenaReviewPolicy.ContactAt(207,out pr)==NativeArenaReviewPolicy.ContactStep.Attack,"seq contact dash then repeat");
    }
    var none=NativeArenaReviewPolicy.EdgeLives(new string[0]);Check(!none[0]&&!none[1]&&!none[2],"edge arg absent = none");
-   {   // arena fix 11-04: canvas never 0 for the druid (cap 2048, texel steps), enemies keep the 1024 cap
+   {   // arena fix 11-04: canvas never 0 for the druid (cap 2048, texel steps), the shared TextureSize keeps the 1024 cap
     int tx;float wpp=.01f;
     int s1069=NativeRigPixelPolicy.DruidCanvas(wpp,1,1069,out tx);Check(s1069>0&&s1069<=NativeRigPixelPolicy.DruidMaxRt&&tx>=1,"druid canvas 1069px box nonzero size="+s1069+" texel="+tx);
     int s4000=NativeRigPixelPolicy.DruidCanvas(wpp,1,4000,out tx);Check(s4000>0&&s4000<=NativeRigPixelPolicy.DruidMaxRt&&tx>=2,"druid canvas 4000px box nonzero size="+s4000+" texel="+tx);
@@ -172,6 +198,7 @@ class DruidRigTests
   Check(NativeDruidRigPolicy.Phase23HuskOffFrame==108&&NativeDruidRigPolicy.IntroTicks==90,"authored switch frames");
   DruidSetRule();
   RetouchB();
+  EnemyCanvas();
   Console.WriteLine("druid-rigpixel checks="+checks+" failed="+bad);return bad==0?0:1;
  }
 }

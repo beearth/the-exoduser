@@ -6,7 +6,7 @@ namespace Exoduser.UnityPort {
  [DefaultExecutionOrder(1001)] public sealed class NativeEnemyRigRenderer:MonoBehaviour {
   const int Layer=28;
   sealed class Actor {
-   public EnemyState enemy;public EnemyRigDefinition def;public GameObject root,model;public Renderer[] skins;public MeshRenderer image,contact;public Material composite;
+   public EnemyState enemy;public EnemyRigDefinition def;public GameObject root,model;public Renderer[] skins;public Transform[][] bones;public MeshRenderer image,contact;public Material composite;
    public RenderTexture texture;public NativeEnemyRigAnimator motion;public NativeEnemyRigPolicy policy=new NativeEnemyRigPolicy();public EnemyRigSample sample;public EnemyRigSprites sprites;
    public int deathTick=-1,lastSeen;public bool ready,hasFrame,failed;public Vector3 ground;public Bounds bounds;
   }
@@ -47,13 +47,29 @@ namespace Exoduser.UnityPort {
     if(b.size.y<.001f)throw new InvalidOperationException("Model height is zero");
     float scale=d.height/b.size.y;a.model.transform.localScale=Vector3.one*scale;a.model.transform.localPosition=-new Vector3(b.center.x,b.min.y,b.center.z)*scale;
     foreach(var r in a.skins){var old=r.sharedMaterials;var materials=new Material[old.Length];for(int i=0;i<old.Length;i++)materials[i]=ToonMaterial(old[i]);r.sharedMaterials=materials;r.shadowCastingMode=ShadowCastingMode.Off;r.receiveShadows=false;r.forceRenderingOff=true;if(r is SkinnedMeshRenderer skin)skin.updateWhenOffscreen=true;}
+    // SkinnedMeshRenderer.bones allocates a copy: cache it once, never in the frame loop.
+    a.bones=new Transform[a.skins.Length][];for(int i=0;i<a.skins.Length;i++)if(a.skins[i] is SkinnedMeshRenderer skin)a.bones[i]=skin.bones;
     a.motion=new NativeEnemyRigAnimator(a.model,d);a.composite=new Material(compositeShader);a.image=Quad("Enemy rig-pixel "+e.Id,a.composite);if(shadow!=null)a.contact=Quad("Enemy rig ground "+e.Id,shadow);return a;
    }catch{Release(a);throw;}
+  }
+  static Bounds TightBounds(Actor a){
+   // Imported skin bounds include every clip. Only trim the capture canvas, never model scale/ground.
+   var result=default(Bounds);bool haveResult=false;var scale=a.root.transform.lossyScale;
+   float pad=a.def.height*.25f*Mathf.Max(Mathf.Abs(scale.x),Mathf.Max(Mathf.Abs(scale.y),Mathf.Abs(scale.z)));
+   for(int i=0;i<a.skins.Length;i++){
+    var bounds=a.skins[i].bounds;var bones=a.bones[i];
+    if(bones!=null){var live=default(Bounds);bool haveBone=false;foreach(var bone in bones){if(bone==null)continue;if(haveBone)live.Encapsulate(bone.position);else{live=new Bounds(bone.position,Vector3.zero);haveBone=true;}}
+     if(haveBone){live.Expand(pad*2);var lo=Vector3.Max(bounds.min,live.min);var hi=Vector3.Min(bounds.max,live.max);if(hi.x>lo.x&&hi.y>lo.y&&hi.z>lo.z)bounds.SetMinMax(lo,hi);}
+    }
+    // Rigid weapons/props, skins without bones and empty intersections keep their original bounds.
+    if(haveResult)result.Encapsulate(bounds);else{result=bounds;haveResult=true;}
+   }
+   return result;
   }
   void SyncActor(Actor a,int tick){
    a.sprites=spriteSource(a.enemy.Id);if(a.enemy.Alive&&a.hasFrame&&poseFrozen!=null&&poseFrozen(a.enemy.Id))return;a.ground=NativeRemodel3D.Point(a.enemy.X,a.enemy.Y);a.root.transform.SetPositionAndRotation(a.ground,Quaternion.Euler(0,Mathf.Atan2(Mathf.Cos(a.enemy.Facing),-Mathf.Sin(a.enemy.Facing))*Mathf.Rad2Deg,0));a.root.transform.localScale=Vector3.one*Mathf.Max(.01f,a.enemy.Radius/a.def.baseRadius);
    a.sample=a.policy.Sample(a.enemy,tick,a.sprites.Distance);if(!a.enemy.Alive&&a.deathTick<0)a.deathTick=tick;else if(a.enemy.Alive)a.deathTick=-1;
-   a.motion.Sample(a.sample,a.sprites.Distance);a.bounds=a.skins[0].bounds;foreach(var r in a.skins)a.bounds.Encapsulate(r.bounds);
+   a.motion.Sample(a.sample,a.sprites.Distance);a.bounds=TightBounds(a);
   }
   public void Sync(Simulation current){
    if(failed||current==null)return;if(!ReferenceEquals(simulation,current)){Reset();simulation=current;}int tick=current.TickCount;
@@ -93,8 +109,7 @@ namespace Exoduser.UnityPort {
    RenderMilliseconds=(float)((Time.realtimeSinceStartupAsDouble-before)*1000);
   }
   void Render(Actor a,Camera camera,Vector3 foot){
-   var box=ScreenBounds(camera,a.bounds);float wpp=(camera.ScreenToWorldPoint(foot+Vector3.up)-a.ground).magnitude;if(wpp<=0)throw new InvalidOperationException("Invalid projection");int texel=NativeRigPixelPolicy.TexelScale(camera.pixelHeight);
-   int size=NativeRigPixelPolicy.TextureSize(wpp,texel,(Mathf.Max(box.width,box.height)+4*texel)*wpp);if(size==0)throw new InvalidOperationException("Model exceeds safe RT canvas");
+   var box=ScreenBounds(camera,a.bounds);float wpp=(camera.ScreenToWorldPoint(foot+Vector3.up)-a.ground).magnitude;float texel;int size=NativeRigPixelPolicy.EnemyTextureSize(wpp,NativeRigPixelPolicy.TexelScale(camera.pixelHeight),Mathf.Max(box.width,box.height),out texel);if(size==0)throw new InvalidOperationException("Invalid enemy canvas inputs");
    if(a.texture==null||a.texture.width!=size){if(a.texture!=null){a.texture.Release();Destroy(a.texture);}a.texture=new RenderTexture(size,size,24,RenderTextureFormat.ARGB32,RenderTextureReadWrite.Linear){name="Enemy "+a.enemy.Id+" Point RT",filterMode=FilterMode.Point,wrapMode=TextureWrapMode.Clamp,antiAliasing=1,useMipMap=false,autoGenerateMips=false};a.texture.Create();a.composite.SetTexture("_MainTex",a.texture);}
    float extent=size*wpp*texel,cx=Mathf.Round((box.center.x-foot.x)/texel)*wpp*texel,cy=Mathf.Round((box.center.y-foot.y)/texel)*wpp*texel;
    capture.orthographicSize=extent*.5f;capture.aspect=1;capture.transform.SetPositionAndRotation(a.ground+camera.transform.right*cx+camera.transform.up*cy-camera.transform.forward*8,camera.transform.rotation);request.destination=a.texture;
