@@ -20,6 +20,7 @@ namespace Exoduser.UnityPort.Core
         public float WeaponFlatAttack = 0;
         public float WeaponSpeed = .45f, WeaponRange = 50, WeaponArc = .95f;
         public int PlayerMaxHp = 300, PlayerBaseAttack = 15;
+        public float PlayerOocSpeed;   // web P._oocSpeed = _eqAffix('movSpeedOOC'); G._combat is never set, so the sBlock walk always gets it
         public float PlayerSpeed = 2.6f, PlayerMaxStamina = 100, PlayerMaxMana = 100;
         public float PlayerMaxShield = 100, PlayerStartingShield = 0;
         public float InitialIframes = 0;

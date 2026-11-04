@@ -22,7 +22,7 @@ const slots=Array.from(run('SLOT_NAMES')).filter(s=>s!=='ossuary');
 const pool=JSON.parse(JSON.stringify(run('AFFIX_POOL'))),slotMap=JSON.parse(JSON.stringify(run('_AFSLOT')));
 // 최대치뿐 아니라 회복·흡수·획득·소모·보호막 관련 항도 모두 단독 대조한다.
 // 이 중 최대치에서 양쪽 모두 0인 항은 누락으로 오판하지 않고 별도로 표시한다.
-const resource=a=>/hp|life|mana|shield|grit|stamina|heal|regen|leech|revive|potion|potCd/i.test(a.id)||/MP|ST|[Mm]p(?=[A-Z]|$)|[Ss]t(?=[A-Z]|$)/.test(a.id)||/^(strFlat|dexFlat|intFlat|vitFlat|allStat|endSTR|endDEX|endINT|arcMageInt)/.test(a.id);
+const resource=a=>/hp|life|mana|shield|grit|stamina|heal|regen|leech|revive|potion|potCd/i.test(a.id)||/MP|ST|[Mm]p(?=[A-Z]|$)|[Ss]t(?=[A-Z]|$)/.test(a.id)||/^(strFlat|dexFlat|intFlat|vitFlat|allStat|endSTR|endDEX|endINT|arcMageInt)/.test(a.id)||/^(movSpeed|movSpeedCombat|movSpeedOOC|injuredSpeed)$/.test(a.id);
 const relevant=pool.filter(resource),affixes=[...new Map(relevant.map(a=>[a.id,a])).values()];
 const cases=[];
 function base(id,group='단독'){return {id,group,level:1,stage:1,difficulty:0,stats:{str:0,dex:0,int:0,vit:0,grit:0},passives:{pHuman:0,pFortify:0,pVital:0,pStamina:0,pMelee:0},items:[]};}
@@ -42,7 +42,7 @@ function add(c){
   ctx.PASSIVES={...c.passives};ctx.INV={equipped:Object.fromEntries(c.items.map(i=>[i.slot,JSON.parse(JSON.stringify(i))]))};
   run('_eqStatCache=null;_eqAffixCache=null;_lEqCache=null;applyStats()');
   if(c.items.some(i=>i.affixes.some(a=>!Number.isFinite(a.value))))throw Error('비정상 어픽스 값: '+c.id);
-  c.web=Array.from(run('[P.mhp,P.mmp,P.mst,P.mshield]'));if(!c.web.every(Number.isFinite))throw Error('비정상 원문 값: '+c.id);
+  c.web=Array.from(run('[P.mhp,P.mmp,P.mst,P.mshield,P.speed,P.hpR,P._oocSpeed||0]'));if(!c.web.every(Number.isFinite))throw Error('비정상 원문 값: '+c.id);
   cases.push(c);
 }
 add(base('baseline','기준'));

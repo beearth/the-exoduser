@@ -15,7 +15,7 @@ namespace Exoduser.UnityPort.Core {
     s.PlayerMaxMana+=intel*2+grit+human*100+Growth.Value("pVital")*50;
     s.PlayerMaxStamina+=dex*2+grit+human*100+Growth.Value("pStamina")*50;
     s.PlayerMaxShield+=intel*5;
-    s.PlayerSpeed+=dex*.005*(1+inventory.ImplicitTotal("_iMovSpd")*.01);
+    s.PlayerSpeed+=dex*.005*(1+inventory.SpeedBonus());
     s.PlayerHpRegen+=str*.002;s.PlayerStaminaRegen+=dex*.005;s.PlayerManaRegen+=intel*.005;
     s.PlayerStaminaRegen*=1+Growth.Value("pStamina")*.01;s.PlayerManaRegen*=1+Growth.Value("pVital")*.01;
     // ~~(_gritTotal()*.5) feeds both pDef and eDef; CalculateStats already holds the level + equipment part (D-U2)

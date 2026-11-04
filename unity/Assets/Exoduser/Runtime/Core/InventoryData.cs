@@ -24,6 +24,8 @@ namespace Exoduser.UnityPort.Core {
   public double PlayerEnergyDefense,EquipmentGrit;
   // D-U3: web applyStats s.str without SP str (equipment + level + ~~strFlat) and s.vit (~~vitFlat), for the max HP that Growth recomputes.
   public double EffectiveStr,VitFlat;
+  // D-U5: web P._oocSpeed (movSpeedOOC), the shield-hold walk bonus.
+  public double MoveSpeedOoc;
   // B08: web _eqAffix(antiRevive / reviveOnce / revivePow + _iRevPow*.01 / reviveCd) feed the revive rules and the stat panel rows.
   public double AntiRevive,ReviveOnce,RevivePow,ReviveCd;
   // B05: web STATS.dex-side total (level bonus + equipment bDex) that bowRef() and the auto crossbow read.

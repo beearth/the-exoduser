@@ -7,7 +7,7 @@ namespace Exoduser.UnityPort.Core {
             var s=inventory.CalculateStats(Player.Level,Config.StageIndex+1,Config.DifficultyIndex-5);
             ApplyGrowthEquipment(s,inventory);
             Config.PlayerMaxHp=s.PlayerMaxHp;Config.PlayerMaxStamina=(float)s.PlayerMaxStamina;Config.PlayerMaxMana=(float)s.PlayerMaxMana;Config.PlayerMaxShield=(float)s.PlayerMaxShield;
-            Config.PlayerBaseAttack=s.PlayerBaseAttack;Config.PlayerSpeed=(float)s.PlayerSpeed;Config.PlayerHpRegen=(float)s.PlayerHpRegen;Config.PlayerStaminaRegen=(float)s.PlayerStaminaRegen;Config.PlayerManaRegen=(float)s.PlayerManaRegen;
+            Config.PlayerBaseAttack=s.PlayerBaseAttack;Config.PlayerSpeed=(float)s.PlayerSpeed;Config.PlayerOocSpeed=(float)s.MoveSpeedOoc;Config.PlayerHpRegen=(float)s.PlayerHpRegen;Config.PlayerStaminaRegen=(float)s.PlayerStaminaRegen;Config.PlayerManaRegen=(float)s.PlayerManaRegen;
             Config.PlayerPhysicalDefense=(float)s.PlayerPhysicalDefense;Config.PlayerEnergyDefense=(float)s.PlayerEnergyDefense;Config.PlayerCriticalChance=s.PlayerCriticalChance;Config.PlayerCriticalMultiplier=s.PlayerCriticalMultiplier;
             Config.AttackSpeedMultiplier=(float)s.AttackSpeedMultiplier;Config.DamageMultiplier=s.DamageMultiplier;Config.AccessoryDamageBonus=s.AccessoryDamageBonus;Config.AccessoryDamageSum=s.AccessoryDamageSum;EquippedInventory=inventory;Config.DropBonus=(float)s.DropBonus;Config.ExpBonus=inventory.AffixTotal("expBonus");
             // KiSlash already adds level-derived STR; this config stores equipment STR only.

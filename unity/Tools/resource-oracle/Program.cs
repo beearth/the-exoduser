@@ -9,7 +9,7 @@ using Exoduser.UnityPort.Core;
 class Program
 {
     static readonly JsonSerializerOptions Json = new JsonSerializerOptions { IncludeFields = true, WriteIndented = true };
-    static readonly string[] Resources = { "HP", "MP", "ST", "쉴드" };
+    static readonly string[] Resources = { "HP", "MP", "ST", "쉴드", "이속", "HP리젠", "비전투이속" };   // D-U5: + P.speed, P.hpR, P._oocSpeed
     static double[] Values(JsonElement row) { var a = new List<double>(); foreach (var x in row.EnumerateArray()) a.Add(x.GetDouble()); return a.ToArray(); }
     static bool Near(double a, double b) => Math.Abs(a - b) <= .001;
     static int Main(string[] args)
@@ -24,10 +24,10 @@ class Program
         if (args.Length != 2) throw new ArgumentException("ResourceOracleTests.dll oracle.json result.json");
         using var doc = JsonDocument.Parse(File.ReadAllText(args[0]));
         var rows = new List<object>(); var isolated = new List<object>();
-        var termCounts = new SortedDictionary<string, int>(); var resourceCounts = new int[4];
+        var termCounts = new SortedDictionary<string, int>(); var resourceCounts = new int[Resources.Length];
         int total = 0, mismatches = 0, adapterMismatches = 0, isolatedMismatches = 0, mixedMismatches = 0;
-        var baselineWeb = new double[4]; var baselineUnity = new double[4];
-        var allocatedWeb = new double[4]; var allocatedUnity = new double[4];
+        var baselineWeb = new double[Resources.Length]; var baselineUnity = new double[Resources.Length];
+        var allocatedWeb = new double[Resources.Length]; var allocatedUnity = new double[Resources.Length];
         foreach (var c in doc.RootElement.GetProperty("cases").EnumerateArray())
         {
             string id = c.GetProperty("id").GetString(), group = c.GetProperty("group").GetString();
@@ -46,10 +46,10 @@ class Program
             }
             simulation.ApplyEquipment(new InventoryState(new InventorySeedData { equipped = equipment, bag = Array.Empty<InventoryItem>() }));
             double[] web = Values(c.GetProperty("web"));
-            double[] unity = { config.PlayerMaxHp, config.PlayerMaxMana, config.PlayerMaxStamina, config.PlayerMaxShield };
-            double[] player = { simulation.Player.MaxHp, simulation.Player.MaxMana, simulation.Player.MaxStamina, simulation.Player.MaxShield };
-            var different = new List<string>(); var delta = new double[4];
-            for (int i = 0; i < 4; i++) { if (!Near(unity[i], player[i])) adapterMismatches++; delta[i] = unity[i] - web[i]; if (!Near(web[i], unity[i])) { resourceCounts[i]++; different.Add(Resources[i]); } }
+            double[] unity = { config.PlayerMaxHp, config.PlayerMaxMana, config.PlayerMaxStamina, config.PlayerMaxShield, config.PlayerSpeed, config.PlayerHpRegen, config.PlayerOocSpeed };
+            double[] player = { simulation.Player.MaxHp, simulation.Player.MaxMana, simulation.Player.MaxStamina, simulation.Player.MaxShield, simulation.Player.Speed, config.PlayerHpRegen, config.PlayerOocSpeed };
+            var different = new List<string>(); var delta = new double[Resources.Length];
+            for (int i = 0; i < Resources.Length; i++) { if (!Near(unity[i], player[i])) adapterMismatches++; delta[i] = unity[i] - web[i]; if (!Near(web[i], unity[i])) { resourceCounts[i]++; different.Add(Resources[i]); } }
             total++; bool failed = different.Count != 0;
             if (failed) { mismatches++; if (group == "단독") isolatedMismatches++; if (group == "혼합") mixedMismatches++; }
             rows.Add(new { id, group, web, unity, player, delta, different, matched = !failed });
@@ -57,8 +57,8 @@ class Program
             if (id == "allocated:baseline") { allocatedWeb = web; allocatedUnity = unity; }
             if (group == "단독")
             {
-                var webEffect = new double[4]; var unityEffect = new double[4];
-                for (int i = 0; i < 4; i++) { webEffect[i] = web[i] - (id.StartsWith("allocated:") ? allocatedWeb[i] : baselineWeb[i]); unityEffect[i] = unity[i] - (id.StartsWith("allocated:") ? allocatedUnity[i] : baselineUnity[i]); }
+                var webEffect = new double[Resources.Length]; var unityEffect = new double[Resources.Length];
+                for (int i = 0; i < Resources.Length; i++) { webEffect[i] = web[i] - (id.StartsWith("allocated:") ? allocatedWeb[i] : baselineWeb[i]); unityEffect[i] = unity[i] - (id.StartsWith("allocated:") ? allocatedUnity[i] : baselineUnity[i]); }
                 isolated.Add(new { term = id, web, unity, webEffect, unityEffect, delta, different });
                 string term = id.StartsWith("allocated:") ? "field:" + id.Substring("allocated:".Length) : id;
                 if (failed) { if (!termCounts.ContainsKey(term)) termCounts[term] = 0; termCounts[term]++; }
@@ -69,7 +69,7 @@ class Program
         var result = new { scope = "원문 applyStats/recalcSt 대 실제 Core ApplyEquipment; 화면·플레이·드랍확률 미검증", source = doc.RootElement.GetProperty("source"), total, mismatches, isolatedMismatches, mixedMismatches, adapterMismatches, resources = Resources, resourceCounts, termCounts, isolated, cases = rows };
         File.WriteAllText(args[1], JsonSerializer.Serialize(result, Json));
         Console.WriteLine("자원 대조 " + total + "건 / 불일치 " + mismatches + "건 / 단독 " + isolatedMismatches + "건 / 혼합 " + mixedMismatches + "건 / Config-Player 불일치 " + adapterMismatches);
-        Console.WriteLine("자원별 불일치 HP/MP/ST/쉴드: " + string.Join("/", resourceCounts));
+        Console.WriteLine("자원별 불일치 " + string.Join("/", Resources) + ": " + string.Join("/", resourceCounts));
         foreach (var term in termCounts) Console.WriteLine("단독 원인 항별 불일치 " + term.Key + ": " + term.Value + "건");
         return mismatches == 0 && adapterMismatches == 0 ? 0 : 2;
     }

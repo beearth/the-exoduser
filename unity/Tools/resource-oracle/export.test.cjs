@@ -8,12 +8,12 @@ test('웹 원문 자원 oracle 계약',()=>{
   assert.equal(r.status,0,r.stderr);
   const o=JSON.parse(fs.readFileSync(out,'utf8'));
   assert.ok(o.cases.length>=300);
-  assert.deepEqual(o.cases.find(c=>c.id==='baseline').web,[300,100,100,100]);
-  assert.deepEqual(o.cases.find(c=>c.id==='field:bGrit').web,[320,120,120,100]);
-  assert.deepEqual(o.cases.find(c=>c.id==='affix:maxHPFlat').web,[360,100,100,100]);
-  assert.deepEqual(o.cases.find(c=>c.id==='affix:maxSTFlat').web,[300,100,120,100]);
-  assert.deepEqual(o.cases.find(c=>c.id==='affix:maxMPFlat').web,[300,120,100,100]);
-  assert.deepEqual(o.cases.find(c=>c.id==='sp:vit').web,[300,100,100,100]);
+  assert.deepEqual(o.cases.find(c=>c.id==='baseline').web.slice(0,4),[300,100,100,100]);
+  assert.deepEqual(o.cases.find(c=>c.id==='field:bGrit').web.slice(0,4),[320,120,120,100]);
+  assert.deepEqual(o.cases.find(c=>c.id==='affix:maxHPFlat').web.slice(0,4),[360,100,100,100]);
+  assert.deepEqual(o.cases.find(c=>c.id==='affix:maxSTFlat').web.slice(0,4),[300,100,120,100]);
+  assert.deepEqual(o.cases.find(c=>c.id==='affix:maxMPFlat').web.slice(0,4),[300,120,100,100]);
+  assert.deepEqual(o.cases.find(c=>c.id==='sp:vit').web.slice(0,4),[300,100,100,100]);
   assert.ok(o.affixCoverage.length>20);
   for(const id of ['extraST','helmMPPct','hybMPST','ringMPOnKill','beltSTMax','beltSTRegen','headbandMPMax','headbandMPRegen','arcMageMP'])assert.ok(o.affixCoverage.some(a=>a.id===id),id);
   assert.ok(o.affixCoverage.every(a=>o.cases.some(c=>c.id==='affix:'+a.id)));

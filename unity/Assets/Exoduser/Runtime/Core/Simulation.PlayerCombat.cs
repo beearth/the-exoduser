@@ -59,7 +59,7 @@ namespace Exoduser.UnityPort.Core
                     s.SbHoldT = SbHoldT; ParryRules.SBlockRelease(ref s);
                     Player.State = "idle"; SbParryT = s.SbParryT; SbReleaseR = s.SbReleaseR; SbHoldT = 0;
                 }
-                else MovePlayerAction(.35f, false, false);
+                else MovePlayerAction(.35f * (1 + Config.PlayerOocSpeed), false, false);   // web P.speed*(1+_oocBonus)*.35, no boots
             }
             // ---- E strike moment (st2 crosses 12): the circular hit of _gSlamHit ----
             if (Player.State == "sBash" || Player.State == "sRecover") MovePlayerAction(.8f);
