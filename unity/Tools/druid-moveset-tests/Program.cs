@@ -116,7 +116,8 @@ class DruidMovesetTests
             Near(count, 38, "all source clips including seven move families and overlays");
         }
 
-        Console.WriteLine("B1 focused timing: checks=" + checks + " failures=" + failures);
+        BlendChecks.Run(Near);
+        Console.WriteLine("B1+B3 focused timing: checks=" + checks + " failures=" + failures);
         return failures == 0 ? 0 : 1;
     }
 }

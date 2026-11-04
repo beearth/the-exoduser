@@ -16,6 +16,9 @@ namespace Exoduser.UnityPort
         readonly Transform[] bones;
         readonly Vector3[] positions,scales;
         readonly Quaternion[] rotations;
+        readonly Vector3[] blendPositions,blendScales;
+        readonly Quaternion[] blendRotations;
+        bool poseValid,blendActive; int blendStartTick,blendTicks; double blendElapsedStart;
         readonly Dictionary<string,AnimationClip> clips=new Dictionary<string,AnimationClip>(StringComparer.OrdinalIgnoreCase);
         readonly HashSet<string> missing=new HashSet<string>();
         // v9.1 state layer: the 1-frame state_P1/2/3 clips own these bones (old-man lift/hide, husk root scale, husk plate/skull/crown hinges); the 31 skill clips only carry the P1 constants for them.
@@ -52,6 +55,7 @@ namespace Exoduser.UnityPort
             }
             basePosition=model.localPosition;baseRotation=model.localRotation;baseScale=model.localScale;
             bones=source.GetComponentsInChildren<Transform>(true);positions=new Vector3[bones.Length];rotations=new Quaternion[bones.Length];scales=new Vector3[bones.Length];
+            blendPositions=new Vector3[bones.Length];blendRotations=new Quaternion[bones.Length];blendScales=new Vector3[bones.Length];
             for(int i=0;i<bones.Length;i++)
             {
                 positions[i]=bones[i].localPosition;rotations[i]=bones[i].localRotation;scales[i]=bones[i].localScale;
@@ -91,6 +95,39 @@ namespace Exoduser.UnityPort
             if(omLift!=null&&Mathf.Abs(OldManScale-1)>.00001f){omLift.localScale*=OldManScale;omLift.localPosition*=OldManScale;}   // the old man grows about his own origin and keeps the authored distance in his own body lengths (P3: 2.7 m in front of the husk origin)
         }
         void ResetRoot(){model.localPosition=basePosition;model.localRotation=baseRotation;model.localScale=baseScale;}
+        void BeginBlend(int tick,string state,NativeDruidRigPolicy.Plan plan)
+        {
+            // Hidden-view gaps, retries and first samples must not resurrect a stale pose.
+            bool continuous=poseValid&&previousTick!=int.MinValue&&tick>=previousTick&&(long)tick-previousTick<=1;
+            blendTicks=continuous&&!MissingClip?NativeDruidBlendPolicy.Duration(state,plan):0;
+            blendActive=blendTicks>0;blendStartTick=tick;blendElapsedStart=plan.ElapsedTicks;
+            if(!blendActive)return;
+            // Fold outgoing root-strip translation below the model/state-owned bones.
+            var origin=model.parent==null?basePosition:model.parent.TransformPoint(basePosition);
+            var shift=model.position-origin;
+            for(int i=0;i<bones.Length;i++)
+            {
+                var parent=bones[i].parent;
+                bool belowState=bones[i]!=model&&!IsOverlayBone(bones[i].name)&&parent!=null
+                    &&(parent==model||IsOverlayBone(parent.name));
+                blendPositions[i]=bones[i].localPosition+(belowState?parent.InverseTransformVector(shift):Vector3.zero);
+                blendRotations[i]=bones[i].localRotation;blendScales[i]=bones[i].localScale;
+            }
+        }
+        void ApplyBlend(int tick,NativeDruidRigPolicy.Plan plan)
+        {
+            if(!blendActive)return;
+            double elapsed=Math.Max((long)tick-blendStartTick,plan.ElapsedTicks-blendElapsedStart);
+            float weight=(float)NativeDruidBlendPolicy.Weight(elapsed,blendTicks);
+            for(int i=0;i<bones.Length;i++)
+            {
+                var bone=bones[i];if(bone==model||IsOverlayBone(bone.name))continue;
+                bone.localPosition=Vector3.Lerp(blendPositions[i],bone.localPosition,weight);
+                bone.localRotation=Quaternion.Slerp(blendRotations[i],bone.localRotation,weight);
+                bone.localScale=Vector3.Lerp(blendScales[i],bone.localScale,weight);
+            }
+            if(weight>=1)blendActive=false;
+        }
         NativeDruidRigPolicy.Plan? forcedPlan; bool remodel=true; int collapseElapsed=-1;
         // remodel/collapseElapsed come from Simulation.DruidLife (Core, read only); forced = the view's intro/death clip plan (null = Core-selected action).
         public void Configure(bool remodel,int collapseElapsed,NativeDruidRigPolicy.Plan? forced){this.remodel=remodel;this.collapseElapsed=collapseElapsed;forcedPlan=forced;}
@@ -123,14 +160,19 @@ namespace Exoduser.UnityPort
             string skill=NativeDruidRigPolicy.StateMove(state);if(skill!=null)recoveryMove=skill;
             var plan=forcedPlan.HasValue?forcedPlan.Value:AlignPlan(NativeDruidRigPolicy.Select(data,moving,grabbed,recoveryMove,remodel,collapseElapsed),data);
             string role=plan.Name+(plan.Held?" (held)":"");
+            bool changed=role!=previousRole||state!=previousState;
             if(role!=previousRole){entered=tick;previousRole=role;hasFootSample=false;}
-            Phase=plan;Role=role;MissingClip=plan.Held||!clips.ContainsKey(plan.Name);
+            Phase=plan;Role=role;MissingClip=NativeDruidBlendPolicy.Missing(state,plan,clips.ContainsKey(plan.Name));
             if(MissingClip&&missing.Add((data==null?"":data.RmMoveId)+":"+state))Debug.Log("[DruidRig] no authored action for "+state+"; hold Idle@0");
             string desired=MissingClip?"Idle":plan.Name;AnimationClip clip;
+            if(changed||!poseValid)BeginBlend(tick,state,plan);
+            else if(previousTick!=int.MinValue&&(tick<previousTick||(long)tick-previousTick>1))blendActive=false;
+            ResetBones();
             ResetRoot();
             if(!clips.TryGetValue(desired,out clip))
             {
                 MissingClip=true;Clip="bind";animator.enabled=false;
+                blendActive=false;poseValid=false;
                 for(int i=0;i<bones.Length;i++){bones[i].localPosition=positions[i];bones[i].localRotation=rotations[i];bones[i].localScale=scales[i];}
             }
             else
@@ -144,6 +186,7 @@ namespace Exoduser.UnityPort
                 }
                 double time=MissingClip?0:plan.Loop?((tick-entered)/60.0)%Math.Max(.0001,clip.length):plan.Frame/60.0;
                 SampleSeconds=(float)Math.Max(0,Math.Min(clip.length,time));playable.SetTime(SampleSeconds);graph.Evaluate(0);ResetRoot();
+                ApplyBlend(tick,plan);
                 if(plan.StripHorizontalRoot&&hips!=null)
                 {
                     var delta=model.InverseTransformPoint(hips.position)-clipRootStart;
@@ -151,6 +194,7 @@ namespace Exoduser.UnityPort
                 }
                 Clip=MissingClip?"Idle@0 (held)":clip.name;
                 ApplyOverlay(plan.Transition?null:plan.Overlay);
+                poseValid=true;
             }
             FootDeltaCm=hasFootSample?Mathf.Max(Vector3.Distance(LeftFoot,lastLeft),Vector3.Distance(RightFoot,lastRight))*100:0;
             feintRecovery=state=="bossRec"&&(previousState=="bossChargeWind"||previousState=="bossRec"&&feintRecovery);

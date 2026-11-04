@@ -1,3 +1,7 @@
+## 2026-11-05 B3 드루이드 애니메이션 연결 (표현만)
+- Animator에 일반 9틱(0.15초) 자세 crossfade와 Core 접촉 경계 보호, 지하 Held의 burrow_dive 끝50f 유지 추가. Core·금지 소유 파일 변경0.
+- 확장 타이밍5,328/0·연결1/0·오프라인5어셈블리 오류0. Unity 실행0, 화면 미검수(Mac). 짧은 공격의 M6 예외와 Mac 확인 목록: `docs/0마스터플랜/worklog/cloud-lanes/B3-anim_20261105.md`.
+
 ## 2026-11-05 B1-docs 잡기 타이밍 문서 정정 (코드 변경0)
 - PREP §9.1: 탈출 실효 recover20으로 정정(초기40 → 다음 틱20 clamp), Core DruidBoss.Remodel.cs:109·DruidBoss.Moves.cs:538 근거 추가.
 - G0 §13.2: 성공 rec60 < tele64는 M3 공통 기준의 승인된 예외로 명시. DruidRemodelData.cs:79·:57 및 DruidBoss.Motion.cs:108과 일치, 값 유지.
