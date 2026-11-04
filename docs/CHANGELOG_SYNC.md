@@ -1,3 +1,7 @@
+## 2026-11-04 A2R 스모크 촬영 null 가드
+
+- 통합 미리보기 6차 스모크가 타이틀에서 멈춤(player-0d6673d4.log). 필드 전환 변경 뒤 r3Cam이 시작 화면부터 생겨 첫 촬영(00-startup)에서 a2rLighting이 null. NativeGame.A2RPlay.cs:27 A2RPlayShot 조건에 `a2rLighting!=null` 추가. 게임 로직·Core 변경 0.
+
 ## 2026-11-04 D2 바람·맥동 (map-wind)
 
 - `Wind.hlsl`에 W1 공용 바람·위상·3~8초 맥동 함수를 추가하고 카드·3D·매달린 이끼에 연결했다. 풀 진폭=현재 키×.15, 나무 .06m, 잔가지 .04m, 이끼 .065m(방향 포함 상한 9.923cm). 비교 인자 `--a2r-wind-off`.
