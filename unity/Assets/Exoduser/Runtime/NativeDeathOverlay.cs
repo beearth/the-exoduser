@@ -123,6 +123,7 @@ namespace Exoduser.UnityPort {
   // Options: boss room = 다시 일어선다 (field in front of the gate, full HP) / 처음부터 다시 / 포기한다; field = 다시 일어선다 (run restart) / 포기한다.
   public enum Choice{None,Rise,Restart,GiveUp}
   const float BlackIn=.45f,BloomAt=.3f,BloomDur=.6f,TitleAt=.5f,TitleDur=1f,LineAt=.9f,LineDur=.7f,CapAt=1.3f,CapDur=.6f,AskAt=2.0f,AskDur=.6f,OptAt=2.35f,OptStep=.12f,OptDur=.45f;
+  const float BreathPeriod=5f,HairlineMin=460f;
   int focus;Texture2D splat,diamond;Font cinzel,hahmletLight,hahmlet;
   public Action OnRestart;
   Choice[] choices=new Choice[0];
@@ -151,9 +152,9 @@ namespace Exoduser.UnityPort {
   string Outcome(Choice c){var t=Tx;return c==Choice.Rise?(info.inArena?t.outArena:t.outRestart):c==Choice.Restart?t.outRestart:t.outLobby;}
   // Long languages (th, el, ru, de ...) shrink by whole point sizes until the run fits maxW at the widest tracking; no ellipsis, no wrap. Floor = 60% of the design size.
   readonly Dictionary<string,int> fitCache=new Dictionary<string,int>();
-  int FitSize(string t,Font f,int size,float lsEm,float maxW){
-   string key=f.name+"|"+size+"|"+lsEm+"|"+maxW+"|"+t;if(fitCache.TryGetValue(key,out var hit))return hit;
-   int min=Mathf.Max(9,Mathf.RoundToInt(size*.6f)),s=size;while(s>min&&SpacedWidth(t,f,s,s*lsEm)>maxW)s--;
+  int FitSize(string t,Font f,int size,float lsEm,float maxW,int floor=0){
+   string key=f.name+"|"+size+"|"+lsEm+"|"+maxW+"|"+floor+"|"+t;if(fitCache.TryGetValue(key,out var hit))return hit;
+   int min=Mathf.Min(size,Mathf.Max(9,floor,Mathf.RoundToInt(size*.6f))),s=size;while(s>min&&SpacedWidth(t,f,s,s*lsEm)>maxW)s--;
    fitCache[key]=s;return s;
   }
   // Keyboard: ↑↓ / W S / Tab move, Enter / Space confirm. Nothing is accepted before every option is on screen.
@@ -178,15 +179,19 @@ namespace Exoduser.UnityPort {
     float rise=EaseOut((age-AskAt)/AskDur);float ty=Mathf.Lerp(430,300,rise);   // title block centre line
     // blood-ink bloom behind the title (baked dark crimson, pre-linearised PNG)
     float bp=EaseOut((age-BloomAt)/BloomDur);
-    if(bp>0&&splat!=null){float w=Mathf.Lerp(560,640,bp),h=w;GUI.color=new Color(1,1,1,.62f*bp*(1-.35f*rise));NativeUiAudit.DrawTexture(new Rect(960-w/2,ty-h*.47f,w,h),splat,ScaleMode.StretchToFill,true);}
+    // 11-04 lead review: once every option is on screen the blood-ink bloom breathes (period 5s, brightness +-5%, size +-1.5%) so the settled screen is not a still frame.
+    // Driven by Age (ForcedAge in captures); title, options and focus never move. Amplitude eases in after the last option, so earlier frames are unchanged.
+    float settle=Mathf.Clamp01((age-(OptAt+OptStep*Mathf.Max(0,choices.Length-1)+OptDur))/1.5f);float breath=Mathf.Sin((age-OptAt)*Mathf.PI*2/BreathPeriod)*settle;
+    if(bp>0&&splat!=null){float w=Mathf.Lerp(560,640,bp)*(1+.015f*breath),h=w;GUI.color=new Color(1,1,1,.62f*bp*(1-.35f*rise)*(1+.05f*breath));NativeUiAudit.DrawTexture(new Rect(960-w/2,ty-h*.47f,w,h),splat,ScaleMode.StretchToFill,true);}
     GUI.color=Color.white;
     // title: tracking settles from .36em to .28em while it fades in
     float tp=EaseOut((age-TitleAt)/TitleDur);
     var tx=Tx;
-    if(tp>0){int ts=FitSize(tx.title,hahmletLight,68,.36f,1500);Spaced(960,ty-48,96,tx.title,hahmletLight,ts,C(223,214,194,tp),ts*Mathf.Lerp(.36f,.28f,tp));}
-    // crimson hairline grows from the centre
+    int ts=FitSize(tx.title,hahmletLight,68,.36f,1500);float tls=ts*Mathf.Lerp(.36f,.28f,tp);
+    if(tp>0)Spaced(960,ty-48,96,tx.title,hahmletLight,ts,C(223,214,194,tp),tls);
+    // crimson hairline grows from the centre; 460px minimum, widened to the title width for long languages (11-04 lead review)
     float lp=EaseOut((age-LineAt)/LineDur);
-    if(lp>0){float lw=460*lp;Fill(new Rect(960-lw/2,ty+62,lw,1),Lin(C(194,26,16,.85f*lp)));Fill(new Rect(960-lw*.18f,ty+61,lw*.36f,3),Lin(C(194,26,16,.35f*lp)));}
+    if(lp>0){float lw=Mathf.Max(HairlineMin,SpacedWidth(tx.title,hahmletLight,ts,tls))*lp;Fill(new Rect(960-lw/2,ty+62,lw,1),Lin(C(194,26,16,.85f*lp)));Fill(new Rect(960-lw*.18f,ty+61,lw*.36f,3),Lin(C(194,26,16,.35f*lp)));}
     float cp=EaseOut((age-CapAt)/CapDur);
     if(cp>0){int cs=FitSize(tx.caption,cinzel,15,.42f,700);Spaced(960,ty+76,30,tx.caption,cinzel,cs,C(176,44,40,.9f*cp),cs*.42f);}
     // the decision
@@ -201,7 +206,8 @@ namespace Exoduser.UnityPort {
    bool hover=GUI.enabled&&ActionsReady&&r.Contains(Event.current.mousePosition);if(hover)focus=i;bool on=focus==i&&ActionsReady;
    if(on){var dc=Lin(C(194,26,16,a));Diamond(new Vector2(960-w/2-22,y+(rowH-14)/2),dc);Diamond(new Vector2(960+w/2+22,y+(rowH-14)/2),dc);}
    Spaced(960,y,rowH-14,label,hahmlet,size,on?C(242,240,236,a):C(167,164,157,.82f*a),ls);
-   if(on){float oy=top+choices.Length*rowH+14;string oc=Outcome(c);int os=FitSize(oc,hahmlet,14,.06f,1400);Spaced(960,oy,26,oc,hahmlet,os,C(167,164,157,.9f*a),os*.06f);}
+   // 11-04 lead review: outcome line 14 -> 16px (floor 14 so long languages never drop below the old size; width limit 1400 -> 1600).
+   if(on){float oy=top+choices.Length*rowH+14;string oc=Outcome(c);int os=FitSize(oc,hahmlet,16,.06f,1600,14);Spaced(960,oy,28,oc,hahmlet,os,C(167,164,157,.9f*a),os*.06f);}
    if(ActionsReady&&NativeUiAudit.Button(r,GUIContent.none,GUIStyle.none))Act(c);
   }
   // 9x9 design-px diamond from a baked alpha texture (no matrix rotation, so it stays put under any GUI scale).

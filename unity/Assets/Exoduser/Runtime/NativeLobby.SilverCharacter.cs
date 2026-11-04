@@ -121,7 +121,7 @@ namespace Exoduser.UnityPort
             string[] railLabels={"전사","실버테일","헬거너","변성술사","창법사"};
             string[] railEnglish={"Warrior","Silvertail","Hellgunner","Transmuter","Spearmage"};
             var railName=new GUIStyle(silverBody){fontSize=13,fontStyle=FontStyle.Normal,wordWrap=true,alignment=TextAnchor.UpperCenter};
-            var railSoon=new GUIStyle(silverVisualCaption){fontSize=10,wordWrap=true,alignment=TextAnchor.UpperCenter};
+            var railSoon=new GUIStyle(silverVisualCaption){fontSize=14,fontStyle=FontStyle.Normal,wordWrap=true,alignment=TextAnchor.UpperCenter};
             railSoon.normal.textColor=new Color(111/255f,114/255f,114/255f);
             const float labelWidth=76,labelGap=9,footerGap=9,actionGap=18;
             float nameHeight=0,soonHeight=0;
@@ -159,7 +159,11 @@ namespace Exoduser.UnityPort
                 "Exoduser Warrior","Silvertail","Hellgunner","Transmuter","Spearmage"
             }
             [i]);
-            DrawSpaced(x+36,bodyY+59.4f,39.2f,nameText,CharacterTitleFont(nameText),28,3.36f,NativeSilverHellUi.Bright,true);
+            // 11-04 overlap ratchet: Latin names now use Cinzel (wider than Hahmlet), so fr "Guerrier Exoduser" ran 2px past the panel edge.
+            // Shrink in whole points (tracking scales with size) until the run fits the 308px text column; no ellipsis, no wrap.
+            var nameFont=CharacterTitleFont(nameText);int nameSize=28;
+            while(nameSize>18&&SpacedWidth(nameFont,nameSize,nameText,3.36f*nameSize/28f)-3.36f*nameSize/28f>308f)nameSize--;
+            DrawSpaced(x+36,bodyY+59.4f,39.2f,nameText,nameFont,nameSize,3.36f*nameSize/28f,NativeSilverHellUi.Bright,true);
             DrawSilverParagraph(x+36,bodyY+110.6f,308,description,14,24.5f,new Color(185/255f,182/255f,176/255f));
             var traitTitles=new string[3];var traitBodies=new string[3];var traitHeights=new float[3];float traitContentHeight=72;
             for(int n=0;n<3;n++)
@@ -209,9 +213,9 @@ namespace Exoduser.UnityPort
             bool prior=GUI.enabled;
             Rect cancel=new Rect(x,h-84,180,44),create=new Rect(x+200,h-84,180,44);
             TrackQaNameButton(create);
-            NativeSilverHellUi.ArtImage(cancel,silverVisualCancel);
-            NativeSilverHellUi.ArtImage(create,locked?silverVisualDisabled:silverVisualCreate);
-            // The original KO labels are baked into these assets; do not print a second label.
+            // 11-04 lead review: the flat hexagon plates are replaced by the shared thorn ActionPlate (create = crimson primary). Labels are drawn here (Hahmlet / Cinzel) with the existing character-dialog keys.
+            DrawVisualActionPlate(cancel,CharacterDialogLabel("cancel",K("취소","Cancel")),false,"visual-cancel",true);
+            DrawVisualActionPlate(create,locked?CharacterDialogLabel("comingSoon",K("출시 준비 중","Coming soon")):CharacterDialogLabel("create",K("생성","Create")),!locked,"visual-create",!locked);
             GUI.SetNextControlName("visual-cancel");
             if(NativeUiAudit.Button(cancel,"",GUIStyle.none))CloseCharacterCreation();
             GUI.enabled=prior&&!locked;
@@ -223,6 +227,15 @@ namespace Exoduser.UnityPort
                 GUI.FocusControl("visual-icon-"+i);
                 characterVisualFocusPending=false;
             }
+        }
+        void DrawVisualActionPlate(Rect r,string text,bool primary,string control,bool enabled)
+        {
+            bool hover=enabled&&r.Contains(Event.current.mousePosition);bool focus=enabled&&GUI.GetNameOfFocusedControl()==control;
+            bool pressed=!AutomatedInput&&hover&&ExoInput.Mouse(0);
+            NativeSilverHellUi.ActionPlate(r,primary,focus||hover?1:0,pressed,28,6);
+            var f=CharacterTitleFont(text);float spacing=15*.2f,width=SpacedWidth(f,15,text,spacing)-spacing;
+            var color=!enabled?new Color(138/255f,141/255f,141/255f):(focus||hover)?new Color(242/255f,237/255f,226/255f):new Color(223/255f,214/255f,194/255f);
+            DrawSpaced(r.center.x-width/2,r.y,r.height,text,f,15,spacing,color,true);
         }
         // 웹 .cs-ico.locked .cs-ico-ring::after의 같은 X 사슬 원본을 슬롯 전체에 표시한다.
         static string SilverRailName(string text,GUIStyle style,float width)
