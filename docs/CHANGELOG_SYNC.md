@@ -1,3 +1,7 @@
+2026-11-04 09:20 UI 겹침 검사 전면 영상 대기 10→30초(도구 총괄, BuildLoop 08:44 FAIL): 빌드·스모크 PASS 뒤 전 화면 UI 겹침 검사 14분째 UiWaitRootMovie가 world_intro_v22b_steam.mp4 준비를 10초 안에 못 봐 실패, 바탕화면 교체 안 됨. 그 시각 다른 레인 Player 2~3개가 GPU 영상 디코더를 함께 씀. QA 경로만 30초로 늘리고 실패 메시지에 prepared·frame·url을 남긴다(Runtime QA, Core·게임 화면 무변경). 11-03 09:20 실패(마우스 안전영역 역변환)는 다른 원인.
+
+2026-11-04 바닥 예고 투영 색 수정(임펙트 총괄, CTO 요청 단독 브랜치): NativeGroundWarningProjection이 sRGB 정점색을 선형 변환 없이 셰이더에 넘겨 Linear 프로젝트에서 드루이드 바닥 예고(어두운 독액 얼룩 #1c3307 계열)가 밝은 민트 초록 원판·부채꼴로 보였다(PC 무창 후보 d7f5c3a1e 1920 촬영). Linear일 때 Color.linear로 변환. 쓰는 곳 NativeDruidTelegraphView(unity/main) 1곳. 같은 파일 내용으로 PC Roslyn Core·Runtime 컴파일 확인(기존 무관 Remodel 1건 외 0).
+
 2026-11-04 08:30 전투 통계 세이브 격리 누수 수정(도구 총괄, BuildLoop 08:05 FAIL 원인): ObserveCombatStatsEnd가 -output 없을 때 Application.persistentDataPath/combat-stats에 바로 써서 --a2r-play-sandbox·--unity-qa-sandbox 실행(사용자 맵 후보 PID 11048)이 사용자 실제 세이브 폴더 combat-stats.json을 바꿨고, 같은 시각 루프 빌드가 USER_SAVE changed=1로 FAIL. NativeQaSandbox.Resolve(Application.persistentDataPath)를 거치도록 한 줄 수정(Runtime, Core 무변경). 저장 내용·시점은 그대로.
 
 2026-11-04 08:20 공용 실행기 사용자 게임 실행 중 Player 미룸(CTO 추가): 부모 explorer인 EXODUSER* 프로세스가 있으면 Player를 띄우지 않고 '사용자 게임 실행 중, 미룸'(ok=False, deferred=user-game, exit 3), BuildLoop는 WAIT. 세이브 감시 완화 없음. 원인=사용자 바탕화면 게임이 실제 세이브에 저장해 UI 후보 USER_SAVE changed=3. 실행기 `2026.11.04-usergame`, 시험 user-game-test.ps1·player-slots-test는 실제 프로세스 검사를 대체 함수로 고정. 문서 unity/Tools/devtools/README.md.
@@ -74,6 +78,12 @@
 2026-11-04 06:40 적 3D 30종 Unity 연결(유니티 총괄 브리프, Sonnet 서브에이전트, PC 정책·컴파일만): 1-1 적 30종 `anim_v1.glb`를 `Resources/Enemies3D/<이름>.fbx`로 변환(`unity/Tools/enemy3d/import-anim-v1.py`, 클립 이름 GLB 그대로·60fps·팔레트 8면, FBX 합계 99.6MB)하고 `enemy_rig_models.json` 30행으로 늘림(새 필드 blendTicks·sockets·extras·retouch·source, 비사람형 height는 raw 높이×scale_to_display 환산, eyemass height 1.05→0.585·chestRatio .49, warden 1.84). 비사람형 9종 정면 -X→-Y(+90° 적용), 루트 고정 winged·bat dive_act, 무기 소켓 3종(ritual·duelist·warden). 런타임: Animator에 blendTicks 크로스페이드(일반 etype4=2, 믹서 입력2·Core 틱 가중), 렌더러 모델 크기를 스킨 메시 bounds로 한정(무기 소품이 높이를 줄이지 않게). Core 수치·판정 변경 0. 시험 `enemy3d-tests` 1046/0, 참조 컴파일 5어셈블리 오류 0, Editor 임포트 검사 `Enemy3DImportCheck.cs` 추가, 총괄 PC 공용 실행기 1회 30/0·컴파일 오류 0. 문서 `docs/8.0몬스터디자인/UNITY_ENEMY3D_WIRING_20261104.md` "11-04 30종 연결"·G0 §8 끝. Mac 판정 전, 완료 아님. 06:30 RETOUCH v2 5종(철갑·거미·갑각·문지기·의식) 원본으로 다시 변환·표 retouch 갱신. 이 브랜치가 바꾼 CHANGELOG 줄 끝(LF)은 병합에서 원래 CRLF로 되돌림.
 
 2026-11-04 Unity 펫 말풍선 P1~P3: 첫 보스·환경 대사 seen을 런 단위(새 Simulation에서만 초기화)로, 환경 대사는 스테이지 0 필드 `!InArena` 누적 30초 뒤 런당 1회, `warn_hp50` 짝 대사(No.0924) Unity 미사용으로 비움(번역 목록 행 유지·비고만 추가). Core 변경 0, 펫 말풍선 검사 38/0·59/0·5어셈블리 컴파일 오류 0, Mac 화면 확인 전.
+
+2026-11-04 death-ui 새 실행: 05:50 JUDGEMENT가 이전 칩 유지 해석을 대체. 크기 자동 칩 분기를 제거하고 설정 조작만 명시 선택, 기본 가시/20개 Lanczos3 1x·2x 파생본 복원. 공통 Panel 철14%는 StretchToFill 대신 화면 픽셀 기준 Mirror UV로 통일. 관련 검사 및 Roslyn 5어셈블리 오류0, 새 Unity·후보 빌드·촬영0(이전 공용 ReadAllText 2FAIL 미해결/G: 여유 기준). 자기 캐시6,453,436,611B 정리, 기존 guard WIP·후보 실행본·세이브 보존. docs UI 후보/작은판/재질/사망/에셋/WORK_BOARD 동기화.
+
+2026-11-04 적 3D 01:00 연결 바탕: 최신ec89d5166 병합·하니스 Core/Skills 재귀 열거65/0 회복. etype4 공유 키를 시작 육괴 표현 태그로 분리해 일반 갑각 사도 아틀라스 유지. 영웅 공유 rig-pixel·Generic Animator/Core 틱·투영 bounds VFX 접점·사망 시작 연결, 고정meta 추가. 확장 정책103/0·전체 PC Roslyn5어셈블리 오류0 각1회, Player0. 미제공 동작은 bind pose로 기록하며 Mac 화면·임포트·동작·성능 미판정.
+
+2026-11-04 적 3D 연결 바탕 WIP 중단: 최신6d99d0c46에서 codex/unity-enemy3d-20261104 생성. 읽기 전용 상태 정책·etype1/4 모델표·0차 FBX 변환·검사 초안 보존. 같은 정책 검사 명령2회 실패(예상 RED, 이후 Core/Skills 소스 열거 누락 CS0234/CS0246)로 사용자 지시대로 중단. Unity 렌더/Animator/VFX 연결·meta·전체 PC 컴파일·Mac 판정 미완, 본편 병합 금지. 인계 UNITY_ENEMY3D_WIRING_20261104.md.
 
 2026-11-04 death-ui 새 실행: 05:50 JUDGEMENT가 이전 칩 유지 해석을 대체. 크기 자동 칩 분기를 제거하고 설정 조작만 명시 선택, 기본 가시/20개 Lanczos3 1x·2x 파생본 복원. 공통 Panel 철14%는 StretchToFill 대신 화면 픽셀 기준 Mirror UV로 통일. 관련 검사 및 Roslyn 5어셈블리 오류0, 새 Unity·후보 빌드·촬영0(이전 공용 ReadAllText 2FAIL 미해결/G: 여유 기준). 자기 캐시6,453,436,611B 정리, 기존 guard WIP·후보 실행본·세이브 보존. docs UI 후보/작은판/재질/사망/에셋/WORK_BOARD 동기화.
 
