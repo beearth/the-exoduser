@@ -13,13 +13,14 @@ namespace Exoduser.UnityPort
         readonly List<SpriteRenderer> hellFlames=new List<SpriteRenderer>();
         Sprite[] hellFlameFrames;
         AmbientMode hellOldAmbient; Color hellOldSky,hellOldEquator,hellOldGround,hellOldFog; bool hellOldFogOn; float hellOldFogDensity,hellOldFogStart,hellOldFogEnd; FogMode hellOldFogMode;
-        void HellLightingSetup()
+        System.Collections.IEnumerator HellLightingSetup()
         {
             hellOldAmbient=RenderSettings.ambientMode;hellOldSky=RenderSettings.ambientSkyColor;hellOldEquator=RenderSettings.ambientEquatorColor;hellOldGround=RenderSettings.ambientGroundColor;
             hellOldFogOn=RenderSettings.fog;hellOldFog=RenderSettings.fogColor;hellOldFogDensity=RenderSettings.fogDensity;hellOldFogMode=RenderSettings.fogMode;
             hellOldFogStart=RenderSettings.fogStartDistance;hellOldFogEnd=RenderSettings.fogEndDistance;
             foreach(var root in r3Roots)
             {
+                if(root==null)continue;   // 11-04: a2/lighting steps yield between frames; roots Destroy()ed by an earlier step read as null
                 foreach(var v in root.GetComponentsInChildren<Volume>(true))
                 {
                     var profile=v.profile;if(profile==null)continue;hellProfile=profile;
@@ -71,7 +72,7 @@ namespace Exoduser.UnityPort
                     var fr=flame.AddComponent<SpriteRenderer>();fr.sprite=hellFlameFrames[0];fr.color=new Color(1.5f,1.2f,1,1);hellFlames.Add(fr);
                 }
             }else Debug.LogError("[키샷] 실제 화로 리소스 누락");
-            A2ForestSetup(g);
+            yield return A2ForestSetup(g);
         }
         void HellLightingActive(bool on)
         {

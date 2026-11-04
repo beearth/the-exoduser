@@ -177,6 +177,7 @@ namespace Exoduser.UnityPort
             else if(Array.IndexOf(args,"--unity-world-ultrawide-check")>=0){Running=false;StartCoroutine(WorldWideCapture());}
             else if(Array.IndexOf(args,"--unity-ui-overlap-check")>=0){Running=false;StartCoroutine(UiOverlapCapture());}
             else if(Array.IndexOf(args,"--unity-loading-tip-capture")>=0){Running=false;StartCoroutine(LoadingTipCapture());}
+            else if(Array.IndexOf(args,"--unity-transition-loading-capture")>=0){Running=false;StartCoroutine(TransitionLoadingCapture());}
             else if(Array.IndexOf(args,"--unity-rigpixel-natural")>=0){Running=false;StartCoroutine(RigPixelNaturalCapture());}
             else if(Array.IndexOf(args,"--unity-hero-review")>=0){Running=false;StartCoroutine(HeroCapture());}
             else if(Array.IndexOf(args,"--unity-impact-review")>=0){Running=false;StartCoroutine(ImpactReview());}

@@ -10,22 +10,31 @@ namespace Exoduser.UnityPort
     {
         A2FieldLayout a2Field;
         Material a2FieldSoil;
-        void A2FieldSetup(Terrain ground)
+        // The assembly below is unchanged and runs in the same order; it now yields a frame between its stages and reports each one,
+        // so a transition can wait on real progress instead of a wall-clock cap. The 3D camera stays off while the field is half built.
+        System.Collections.IEnumerator A2FieldSetup(Terrain ground)
         {
-            if(ground==null||a2Root!=null)return;
+            bool camWas=r3Cam!=null&&r3Cam.enabled;if(r3Cam!=null)r3Cam.enabled=false;
+            int token=NativeTransitionProgress.Begin("a2-field");
+            try{var steps=A2FieldSetupSteps(ground);while(steps.MoveNext())yield return steps.Current;}
+            finally{if(r3Cam!=null)r3Cam.enabled=camWas;NativeTransitionProgress.End(token);}
+        }
+        System.Collections.IEnumerator A2FieldSetupSteps(Terrain ground)
+        {
+            if(ground==null||a2Root!=null)yield break;
             var timer=System.Diagnostics.Stopwatch.StartNew();
             a2Field=new A2FieldLayout(Map.Data);NativeRemodel3D.Field=a2Field;NativeRemodel3D.ForestA2=true;
             a2Root=new GameObject("A2 1-1 전체 썩은 숲");
             UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(a2Root,r3Scene);
             a2Root.transform.SetParent(ground.transform,true);
-            foreach(var root in r3Roots)foreach(var r in root.GetComponentsInChildren<MeshRenderer>(true))
+            foreach(var root in r3Roots)if(root!=null)foreach(var r in root.GetComponentsInChildren<MeshRenderer>(true))
             {
                 if(r.name=="지옥 바닥 PBR 표면")a2FieldSoil=new Material(r.sharedMaterial);
                 r.enabled=false;
             }
             if(hellEnvironment!=null)hellEnvironment.SetActive(false);
             var oldFire=GameObject.Find("실제 철제 지옥불 화로");if(oldFire!=null)oldFire.SetActive(false);
-            foreach(var root in r3Roots)foreach(var light in root.GetComponentsInChildren<Light>(true))
+            foreach(var root in r3Roots)if(root!=null)foreach(var light in root.GetComponentsInChildren<Light>(true))
             {
                 if(light.type==LightType.Directional)
                 {
@@ -34,12 +43,13 @@ namespace Exoduser.UnityPort
                 }
                 else if(light.name.StartsWith("Pool_",StringComparison.Ordinal))light.enabled=false;
             }
-            foreach(var root in r3Roots)foreach(var volume in root.GetComponentsInChildren<Volume>(true))
+            foreach(var root in r3Roots)if(root!=null)foreach(var volume in root.GetComponentsInChildren<Volume>(true))
             {
                 var profile=volume.profile;if(profile==null)continue;ColorAdjustments tone;
                 if(profile.TryGet<ColorAdjustments>(out tone)){tone.postExposure.Override(.55f);tone.contrast.Override(16);}
             }
-            if(a2FieldSoil==null){Debug.LogError("[A2 필드] 지면 재질 누락");return;}
+            NativeTransitionProgress.Report("a2-lights",.04f);yield return null;
+            if(a2FieldSoil==null){Debug.LogError("[A2 필드] 지면 재질 누락");yield break;}
             a2FieldSoil.SetFloat("_ForestBlend",1);a2FieldSoil.SetFloat("_ForestTextureMix",.65f);a2FieldSoil.SetFloat("_SoilTextureMix",1);a2FieldSoil.SetFloat("_FullField",1);
             foreach(var pair in new[]{new[]{"_ForestMap","A2_ForestFloor_BaseColor"},new[]{"_ForestNormal","A2_ForestFloor_Normal"},new[]{"_ForestRough","A2_ForestFloor_Roughness"},new[]{"_SoilMap","A2_ForestSoil_BaseColor"},new[]{"_SoilNormal","A2_ForestSoil_Normal"},new[]{"_SoilRough","A2_ForestSoil_Roughness"},new[]{"_RootMap","A2_ExposedRoots_BaseColor"},new[]{"_RootNormal","A2_ExposedRoots_Normal"},new[]{"_RootRough","A2_ExposedRoots_Roughness"}})
             {
@@ -49,14 +59,24 @@ namespace Exoduser.UnityPort
             }
             foreach(var pair in new[]{new[]{"_FieldMoss","BaseColor"},new[]{"_FieldMossNormal","Normal"},new[]{"_FieldMossRough","Roughness"}})
             {var moss=Resources.Load<Texture2D>("Art/map/a2/ground/A2_FieldMoss_"+pair[1]);if(moss==null)Debug.LogError("[A2 필드] 이끼 지면 누락 "+pair[1]);else a2FieldSoil.SetTexture(pair[0],moss);}
+            NativeTransitionProgress.Report("a2-textures",.08f);yield return null;
             var sdf=new Texture2D(200,200,TextureFormat.RGBA32,false,true){name="원본 보행 경계 시각 거리장",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};
             var pixels=new Color[40000];
             for(int y=0;y<200;y++)for(int x=0;x<200;x++)pixels[y*200+x]=new Color(.5f+a2Field.Distance((x+.5f)*.4f,-(y+.5f)*.4f)/40,0,0,1);
             sdf.SetPixels(pixels);sdf.Apply(false,true);a2FieldSoil.SetTexture("_FieldSdf",sdf);
+            NativeTransitionProgress.Report("a2-sdf",.12f);yield return null;
             var cover=new Texture2D(256,256,TextureFormat.RGBA32,false,true){name="A2 전투중심을 비운 연결 이끼 지면",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};
             var coverPixels=new Color[256*256];for(int y=0;y<256;y++)for(int x=0;x<256;x++)coverPixels[y*256+x]=new Color(a2Field.GroundCover((x+.5f)/256*80,-(y+.5f)/256*80)*Mathf.Lerp(1,.45f,Mathf.SmoothStep(0,1,Mathf.Clamp01(a2Field.Distance((x+.5f)/256*80,-(y+.5f)/256*80)/2))),0,0,1);
             cover.SetPixels(coverPixels);cover.Apply(false,true);a2FieldSoil.SetTexture("_FieldCover",cover);
-            A2FieldOuterMass();A2Foreground(true);A2FieldLandmarks();A2FieldConnections();A2FieldGround();A2FieldGroundCover();A2BridgeMoss();A2FieldAtmosphere();
+            NativeTransitionProgress.Report("a2-cover",.16f);yield return null;
+            A2FieldOuterMass();NativeTransitionProgress.Report("a2-outer-mass",.46f);yield return null;
+            A2Foreground(true);NativeTransitionProgress.Report("a2-foreground",.56f);yield return null;
+            A2FieldLandmarks();NativeTransitionProgress.Report("a2-landmarks",.64f);yield return null;
+            A2FieldConnections();NativeTransitionProgress.Report("a2-connections",.74f);yield return null;
+            A2FieldGround();NativeTransitionProgress.Report("a2-ground",.90f);yield return null;
+            A2FieldGroundCover();NativeTransitionProgress.Report("a2-ground-cover",.95f);yield return null;
+            A2BridgeMoss();NativeTransitionProgress.Report("a2-bridge-moss",.97f);yield return null;
+            A2FieldAtmosphere();NativeTransitionProgress.Report("a2-atmosphere",.99f);yield return null;
             var aa=r3Cam.GetUniversalAdditionalCameraData();aa.antialiasing=NativeHd2D.Enabled?AntialiasingMode.None:AntialiasingMode.SubpixelMorphologicalAntiAliasing;aa.antialiasingQuality=AntialiasingQuality.High;
             aa.requiresDepthTexture=true;r3Cam.depthTextureMode|=DepthTextureMode.Depth;
             r3Cam.backgroundColor=new Color(.105f,.145f,.17f);r3Cam.farClipPlane=220;
@@ -199,7 +219,9 @@ namespace Exoduser.UnityPort
             if(source==null){Debug.LogError("[A2 필드] 스캔 뿌리 지면 누락");return;}
             if(a2FieldRootMaterial==null)
             {
-                a2FieldRootMaterial=new Material(Resources.Load<Material>("Art/map/a2/rootrelief/Materials/A2_Root_Cluster_Patch"));
+                var sourceMaterial=Resources.Load<Material>("Art/map/a2/rootrelief/Materials/A2_Root_Cluster_Patch");
+                if(sourceMaterial==null){Debug.LogError("[A2 필드] 스캔 뿌리 재질 누락");return;}
+                a2FieldRootMaterial=new Material(sourceMaterial);
                 foreach(var key in new[]{"_BaseMap","_BumpMap","_RockMap","_AshMap","_RockNormal","_RockRough","_ForestMap","_ForestNormal","_ForestRough","_SoilMap","_SoilNormal","_SoilRough","_RootMap","_RootNormal","_RootRough","_FieldSdf","_FieldCover","_FieldMoss","_FieldMossNormal","_FieldMossRough"})
                     if(a2FieldRootMaterial.HasProperty(key))a2FieldRootMaterial.SetTexture(key,a2FieldSoil.GetTexture(key));
                 foreach(var key in new[]{"_ForestBlend","_ForestTextureMix","_SoilTextureMix","_FullField"})if(a2FieldRootMaterial.HasProperty(key))a2FieldRootMaterial.SetFloat(key,a2FieldSoil.GetFloat(key));
@@ -209,7 +231,7 @@ namespace Exoduser.UnityPort
             go.transform.SetPositionAndRotation(new Vector3(x,baseY,z),Quaternion.Euler(0,yaw,0));go.transform.localScale=new Vector3(scale,.8f,scale);
             foreach(var mf in go.GetComponentsInChildren<MeshFilter>())
             {
-                if(!mf.sharedMesh.isReadable){Debug.LogError("[A2 필드] 뿌리 메시 읽기 누락");continue;}
+                if(mf.sharedMesh==null||!mf.sharedMesh.isReadable){Debug.LogError("[A2 필드] 뿌리 메시 읽기 누락");continue;}
                 var mesh=Instantiate(mf.sharedMesh);var vertices=mesh.vertices;var center=mf.transform.TransformPoint(mesh.bounds.center);var shift=new Vector3(center.x-x,0,center.z-z);
                 for(int i=0;i<vertices.Length;i++){var v=mf.transform.TransformPoint(vertices[i])-shift;v.y=a2Field.TerrainHeight(v.x,v.z)+Mathf.Max(0,v.y-baseY)+.006f;vertices[i]=mf.transform.InverseTransformPoint(v);}
                 mesh.vertices=vertices;mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();mf.sharedMesh=mesh;
@@ -221,7 +243,7 @@ namespace Exoduser.UnityPort
             foreach(var mf in go.GetComponentsInChildren<MeshFilter>())
             {
                 if(NativeGroundSkillProjection.IsProxy(mf))continue;
-                var mesh=mf.sharedMesh;if(!mesh.isReadable){Debug.LogError("[A2 필드] 접지 표면 읽기 누락 "+go.name);continue;}
+                var mesh=mf.sharedMesh;if(mesh==null||!mesh.isReadable){Debug.LogError("[A2 필드] 접지 표면 읽기 누락 "+go.name);continue;}
                 var vertices=mesh.vertices;var xyz=new float[vertices.Length*3];
                 for(int i=0;i<vertices.Length;i++){var p=mf.transform.TransformPoint(vertices[i]);xyz[i*3]=p.x;xyz[i*3+1]=p.y;xyz[i*3+2]=p.z;}
                 var indices=mesh.triangles;
@@ -234,15 +256,16 @@ namespace Exoduser.UnityPort
             var filters=tree.GetComponentsInChildren<MeshFilter>();
             foreach(var mf in filters)
             {
-                if(!mf.sharedMesh.isReadable)continue;
+                if(mf.sharedMesh==null||!mf.sharedMesh.isReadable)continue;
                 var points=mf.sharedMesh.vertices;var normals=mf.sharedMesh.normals;
+                if(normals.Length!=points.Length){Debug.LogError("[A2 필드] 수피 메시 노멀 누락");continue;}
                 for(int j=0;j<3;j++)
                 {
                     var desired=tree.transform.position+new Vector3((j-1)*.45f,1.5f+j*.8f,-.8f);float best=float.MaxValue;var hit=Vector3.zero;var hitNormal=Vector3.back;
                     for(int i=0;i<points.Length;i++){var p=mf.transform.TransformPoint(points[i]);var n=mf.transform.TransformDirection(normals[i]);if(n.z>-.12f)continue;float score=(p-desired).sqrMagnitude;if(score<best){best=score;hit=p;hitNormal=n.normalized;}}
                     if(best>9)continue;
                     var moss=A2Module("Hanging_Moss",hit.x,hit.z,.4f,.55f,.4f,variation*37+j*67);if(moss==null)continue;
-                    var rs=moss.GetComponentsInChildren<Renderer>();var bounds=rs[0].bounds;foreach(var r in rs)bounds.Encapsulate(r.bounds);
+                    var rs=moss.GetComponentsInChildren<Renderer>();if(rs.Length==0){Destroy(moss);continue;}var bounds=rs[0].bounds;foreach(var r in rs)bounds.Encapsulate(r.bounds);
                     moss.transform.position+=hit-new Vector3(bounds.center.x,bounds.max.y,bounds.center.z);moss.name="A2 수피 표면에 붙은 이끼";
                     foreach(var renderer in rs){var tint=new MaterialPropertyBlock();renderer.GetPropertyBlock(tint);tint.SetColor("_BaseColor",new Color(.60f,.62f,.40f,1));renderer.SetPropertyBlock(tint);}
                     if(j==0)
@@ -267,7 +290,7 @@ namespace Exoduser.UnityPort
             haze.AddComponent<MeshFilter>().sharedMesh=screen;var fog=haze.AddComponent<MeshRenderer>();fog.sharedMaterial=new Material(Shader.Find("EXODUSER/A2HeightFog"));fog.shadowCastingMode=ShadowCastingMode.Off;
             var shader=Shader.Find("EXODUSER/A2Atmosphere");
             var moonDirection=Quaternion.Euler(49,-32,0)*Vector3.forward;
-            foreach(var root in r3Roots)foreach(var light in root.GetComponentsInChildren<Light>(true))if(light.enabled&&light.type==LightType.Directional)moonDirection=light.transform.forward;
+            foreach(var root in r3Roots)if(root!=null)foreach(var light in root.GetComponentsInChildren<Light>(true))if(light.enabled&&light.type==LightType.Directional)moonDirection=light.transform.forward;
             foreach(var p in new[]{new Vector2(39,-70),new Vector2(26,-60),new Vector2(60,-58),new Vector2(21,-40),new Vector2(43,-34),new Vector2(64,-39),new Vector2(30,-18),new Vector2(53,-16),new Vector2(40,-6)})
             {
                 var bottom=new Vector3(p.x,a2Field.Height(p.x,p.y),p.y);var top=bottom-moonDirection*(13/Mathf.Max(.1f,-moonDirection.y));
