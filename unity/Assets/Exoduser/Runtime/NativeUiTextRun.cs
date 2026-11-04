@@ -41,6 +41,12 @@ namespace Exoduser.UnityPort {
    }
    return x;
   }
+  // Independent IMGUI labels snap their origins to physical pixels. Keep an
+  // integer-pixel native advance when CSS's rounded px would overlap the next
+  // label. Extra existing tracking and all shaped runs stay unchanged.
+  internal static float PixelAdvance(float nativeWidth,float desiredAdvance,float pixelsPerUnit){
+   return Math.Max(desiredAdvance,(float)(Math.Ceiling(nativeWidth*pixelsPerUnit-.001f)/pixelsPerUnit));
+  }
   internal static float Layout(string text,float spacing,Func<string,float> measure,Action<float,string> paint=null){
    if(string.IsNullOrEmpty(text))return 0;
    if(spacing==0){float width=measure(text);paint?.Invoke(0,text);return width;}

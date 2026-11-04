@@ -159,7 +159,11 @@ namespace Exoduser.UnityPort
                 "Exoduser Warrior","Silvertail","Hellgunner","Transmuter","Spearmage"
             }
             [i]);
-            DrawSpaced(x+36,bodyY+59.4f,39.2f,nameText,CharacterTitleFont(nameText),28,3.36f,NativeSilverHellUi.Bright,true);
+            // 11-04 overlap ratchet: Latin names now use Cinzel (wider than Hahmlet), so fr "Guerrier Exoduser" ran 2px past the panel edge.
+            // Shrink in whole points (tracking scales with size) only while the run is wider than the 308px text column; names that fit stay 28pt.
+            var nameFont=CharacterTitleFont(nameText);int nameSize=28;
+            while(nameSize>18&&SpacedWidth(nameFont,nameSize,nameText,3.36f*nameSize/28f)-3.36f*nameSize/28f>308f)nameSize--;
+            DrawSpaced(x+36,bodyY+59.4f,39.2f,nameText,nameFont,nameSize,3.36f*nameSize/28f,NativeSilverHellUi.Bright,true);
             DrawSilverParagraph(x+36,bodyY+110.6f,308,description,14,24.5f,new Color(185/255f,182/255f,176/255f));
             var traitTitles=new string[3];var traitBodies=new string[3];var traitHeights=new float[3];float traitContentHeight=72;
             for(int n=0;n<3;n++)

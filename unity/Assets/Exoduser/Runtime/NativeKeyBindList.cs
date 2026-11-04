@@ -115,16 +115,21 @@ namespace Exoduser.UnityPort {
    return regionalFont;
   }
   bool NativeRun(string text,int context,float spacing){if(spacing!=0)return false;foreach(var g in Elements(text)){var id=GlyphId(g,context);if(id!=null&&glyph.ContainsKey(id))return false;}return true;}
+  static float TextScale()=>Mathf.Max(.01f,Mathf.Abs(GUIUtility.GUIToScreenPoint(Vector2.right).x-GUIUtility.GUIToScreenPoint(Vector2.zero).x));
+  static float GlyphAdvance(string g,GUIStyle style,int px,float css,float spacing,float scale){
+   float native=style.CalcSize(new GUIContent(g)).x,desired=native*(css/px)+spacing;
+   return string.IsNullOrWhiteSpace(g)?desired:NativeUiTextRun.PixelAdvance(native,desired,scale);
+  }
   // width of a run (css advance incl. letter spacing)
   float Width(string text,Font f,int px,float css,float ls,int ctx=0){
-   f=LabelFont(text,f);var st=Style(f,px);float w=0;
+   f=LabelFont(text,f);var st=Style(f,px);float w=0,scale=TextScale();
    if(NativeRun(text,ctx,ls))return st.CalcSize(new GUIContent(text)).x;
-   foreach(var g in Elements(text)){var id=GlyphId(g,ctx);if(id!=null&&glyph.TryGetValue(id,out var t)){w+=t.adv;continue;}w+=st.CalcSize(new GUIContent(g)).x*(css/px)+ls;}
+   foreach(var g in Elements(text)){var id=GlyphId(g,ctx);if(id!=null&&glyph.TryGetValue(id,out var t)){w+=t.adv;continue;}w+=GlyphAdvance(g,st,px,css,ls,scale);}
    return w;
   }
   // draws a run with its vertical centre at cy; returns the advance
   float Run(float x,float cy,string text,Font f,int px,float css,float ls,Color col,float shadow=0,int ctx=0){
-   f=LabelFont(text,f);var st=Style(f,px);float w=0;
+   f=LabelFont(text,f);var st=Style(f,px);float w=0,scale=TextScale();
    // Zero letter-spacing is one shaped string, not overlapping separately
    // rounded glyph labels. Atlas symbols retain their existing dedicated path.
    if(NativeRun(text,ctx,ls)){
@@ -141,13 +146,12 @@ namespace Exoduser.UnityPort {
      if(shadow>0&&t.tint)DrawGlyph(t,x+w,cy+1,new Color(0,0,0,shadow*col.a),true);
      DrawGlyph(t,x+w,cy,col,t.tint);w+=t.adv;continue;
     }
-    float adv=st.CalcSize(new GUIContent(g)).x*(css/px);
     if(g!=" ")
     using(var paint=NativeUiAudit.GroupText(new Rect(x+w,cy-16,60,32),g)){
      if(shadow>0){st.normal.textColor=new Color(0,0,0,shadow*col.a*curA);NativeUiAudit.Label(new Rect(x+w,cy-16+1,60,32),g,st);}
      st.normal.textColor=NativeSilverHellUi.TextColor(new Color(col.r,col.g,col.b,col.a*curA));NativeUiAudit.Label(new Rect(x+w,cy-16,60,32),g,st);
     }
-    w+=adv+ls;
+    w+=GlyphAdvance(g,st,px,css,ls,scale);
    }
    return w;
   }

@@ -133,11 +133,17 @@ namespace Exoduser.UnityPort {
    var runs=new List<KeyValuePair<bool,string>>();string cur="";bool latin=false;
    foreach(char ch in text){bool l=IsLatin(ch)&&ch!=' ';if(ch==' '){cur+=ch;continue;}if(cur.Length>0&&l!=latin&&cur.Trim().Length>0){runs.Add(new KeyValuePair<bool,string>(latin,cur));cur="";}latin=l;cur+=ch;}
    if(cur.Length>0)runs.Add(new KeyValuePair<bool,string>(latin,cur));
-   float total=0;foreach(var run in runs)total+=run.Key?Width(latinFont,size,FontStyle.Normal,run.Value,spacing):Width(serif,size,koStyle,run.Value,spacing);
+   float scale=Mathf.Max(.01f,Mathf.Abs(GUIUtility.GUIToScreenPoint(Vector2.right).x-GUIUtility.GUIToScreenPoint(Vector2.zero).x));
+   float[] advances=new float[runs.Count];float total=0;
+   for(int i=0;i<runs.Count;i++){
+    var run=runs[i];float w=run.Key?Width(latinFont,size,FontStyle.Normal,run.Value,spacing):Width(serif,size,koStyle,run.Value,spacing);
+    // A single-font label and existing positive tracking keep their exact width.
+    advances[i]=i+1<runs.Count&&spacing==0?NativeUiTextRun.PixelAdvance(w,w,scale):w;total+=advances[i];
+   }
    float x=r.x;if(anchor==TextAnchor.MiddleCenter)x=r.x+(r.width-total)/2f;else if(anchor==TextAnchor.MiddleRight)x=r.xMax-total;
-   foreach(var run in runs){
-    float w=run.Key?Width(latinFont,size,FontStyle.Normal,run.Value,spacing):Width(serif,size,koStyle,run.Value,spacing);
-    Text(new Rect(x,r.y,w+4,r.height),run.Value,run.Key?latinFont:serif,size,c,run.Key?FontStyle.Normal:koStyle,spacing,TextAnchor.MiddleLeft,shadow);x+=w;
+   for(int i=0;i<runs.Count;i++){
+    var run=runs[i];float w=run.Key?Width(latinFont,size,FontStyle.Normal,run.Value,spacing):Width(serif,size,koStyle,run.Value,spacing);
+    Text(new Rect(x,r.y,w+4,r.height),run.Value,run.Key?latinFont:serif,size,c,run.Key?FontStyle.Normal:koStyle,spacing,TextAnchor.MiddleLeft,shadow);x+=advances[i];
    }
   }
   // Greedy wrap with the browser's break opportunities for Korean: after spaces and between Hangul syllables / Latin-or-digit and Hangul
