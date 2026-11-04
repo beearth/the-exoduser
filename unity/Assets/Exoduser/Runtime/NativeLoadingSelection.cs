@@ -8,6 +8,9 @@ namespace Exoduser.UnityPort
   internal static readonly IReadOnlyList<int> Images=Array.AsReadOnly(ids);
   internal static bool IsAllowed(int id){return Array.IndexOf(ids,id)>=0;}
   internal static int ForStage(int stage){int n=stage%ids.Length;return ids[n<0?n+ids.Length:n];}
+  // Boss arena name card background (11-04, latest-build test B2): 1-1 (stage 0) dark druid uses 06 (rotten forest with the horned
+  // giant silhouette) instead of 01 (Nemesia portrait). Other stages keep the ForStage rotation.
+  internal static int ForBossCard(int stage){return stage==0?6:ForStage(stage);}
  }
  internal static class NativeLoadingTips
  {
