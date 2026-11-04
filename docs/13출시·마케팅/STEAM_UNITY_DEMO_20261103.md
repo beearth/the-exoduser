@@ -313,3 +313,7 @@ CTO가 붙일 곳을 체험판 앱 5337590으로 정했다. 11-04 10시대에 St
 | 우크라이나어 | `Ukrainian` | `ukrainian.about.txt` | `ukrainian.short.txt` | 290 |
 | 베트남어 | `Vietnamese` | `vietnamese.about.txt` | `vietnamese.short.txt` | 286 |
 
+
+### 10.5 패키지 준비물 (11-04)
+
+스크린샷 목록, 영상 콘티, 설치형 빌드 체크리스트, PC 무창 촬영 요청서는 `STEAM_DEMO_PACKAGE_20261104.md`에 있다.
