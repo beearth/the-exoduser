@@ -1,11 +1,12 @@
 'use strict';
-// H4/H5/H6: source preservation is a code-path gate, not a rendered-pixel claim.
+// H4/H5/H6/H7: source preservation is a code-path gate, not a rendered-pixel claim.
 const assert = require('node:assert/strict');
 const fs = require('node:fs'), path = require('node:path'), cp = require('node:child_process');
 const root = path.resolve(__dirname, '../../..');
 const baseline = 'c1b51cda503d1de1ef3ae2c828309e7c27d539f7';
 const retouchBase = '3a13dc0d46d22a19e1f0640d7689914df99569c4';
 const boundaryBase = 'e708a10704211f7072b6480db3a069f2198a6667';
+const h7Base = '8169df9af5db5d2b7a3f10294604b90b52e9267e';
 const runtime = 'unity/Assets/Exoduser/Runtime/';
 const shaders = 'unity/Assets/Exoduser/Resources/Shaders/';
 const old = p => cp.execFileSync('git', ['show', baseline + ':' + p], {cwd:root, maxBuffer:16*1024*1024, windowsHide:true});
@@ -53,7 +54,9 @@ check(abBody(layout) === abBody(old(runtime+'NativeHudPrototypeLayout.cs').toStr
 for (const p of [protoPath, runtime+'NativeHudPrototypeLayout.cs', 'unity/ProjectSettings/ProjectSettings.asset'])
   check(now(p).equals(h5(p)), p + ': H6 retains shared routing, every C/A/B coordinate and global color settings');
 function method(s,name) {
-  const i=s.indexOf(' '+name+'('), open=s.indexOf('{',i);assert(i>=0&&open>i,'method '+name);
+  // Match a declaration, not an earlier call with the same name inside the draw dispatcher.
+  const declaration=new RegExp('^[\\t ]*(?:(?:public|private|internal|static)\\s+)*[\\w<>]+\\s+'+name+'\\(','m').exec(s);
+  const i=declaration?declaration.index:-1, open=s.indexOf('{',i);assert(i>=0&&open>i,'method '+name);
   let end=open+1,depth=1;for(;depth&&end<s.length;end++){if(s[end]==='{')depth++;if(s[end]==='}')depth--;}
   assert(depth===0,'balanced '+name);return s.slice(i,end);
 }
@@ -69,3 +72,10 @@ for(const name of ['PlateTopAlpha','PlateBottomAlpha','SupportInteriorAlpha','Ra
   check(artNow.match(pattern)?.[1]===artH5.match(pattern)?.[1], 'H6 retains accepted '+name);
 }
 console.log(JSON.stringify({scope:'No-argument/A/B paths and accepted H5 features (not pixel validation)', baseline, retouchBase, boundaryBase, checks, passed:true},null,2));
+const previous=p=>cp.execFileSync('git',['show',h7Base+':'+p],{cwd:root,maxBuffer:16*1024*1024,windowsHide:true});
+for(const p of [runtime+'NativeHudPrototypeCArt.cs',runtime+'NativeHudPrototypeLayout.cs',runtime+'NativeHud.Prototype.cs'])
+  check(now(p).equals(previous(p)),p+': H7 retains accepted C plate tone/alpha/layout and shared renderer');
+const cShader=shaders+'HudPrototypeC.shader';
+check(method(now(cShader).toString('utf8'),'frameApertureCoverage')===method(previous(cShader).toString('utf8'),'frameApertureCoverage'),'H7 keeps Mac-approved H6 inner aperture guard exactly');
+check(method(now(runtime+'NativeHud.PrototypeC.cs').toString('utf8'),'PrototypeCGlobe')===method(previous(runtime+'NativeHud.PrototypeC.cs').toString('utf8'),'PrototypeCGlobe'),'H7 keeps shield registration and globe draw order exactly');
+console.log('PASS '+checks+' total C preservation contracts through H7');

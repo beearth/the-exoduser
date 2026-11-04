@@ -28,8 +28,8 @@ Shader "EXODUSER/HudPrototypeC"
             float _Mode,_Diameter,_HpTranslate,_Hurt,_Mana,_Stamina,_Flip,_FadeRight,_FadeBottom;
             float4 _UvRect;
             float _FrameAperture;
-            const float EmptyCenterAlpha=.08;
-            const float EmptyEdgeAlpha=.42;
+            const float EmptyCenterAlpha=1;
+            const float EmptyEdgeAlpha=1;
             const float SurfaceSoftPixels=2;
             const float SurfaceWavePixels=1;
             float3 rgb(float r,float g,float b){return float3(r,g,b)/255;}
@@ -78,6 +78,17 @@ Shader "EXODUSER/HudPrototypeC"
                 return h<.45?lerp(rgb(22,33,46),rgb(59,95,134),h/.45):
                     lerp(rgb(59,95,134),rgb(127,156,188),saturate((h-.45)/.35));
             }
+            float frameOuterCoverage(float2 uv,float filteredAlpha,float l)
+            {
+                if(_FrameAperture<.5)return 1;
+                float x=uv.x*263-135.5,y=(1-uv.y)*263-139.15;
+                float r=sqrt(x*x+y*y),outside=smoothstep(73.5,75.5,r);
+                // Apply to post-matte alpha: raw artwork alpha can be high in the faint fringe.
+                // .08-only removal leaves disconnected islands; .16..24 clears them continuously.
+                // Preserve dark sculpted AA, accepted inner aperture, and stronger metal coverage.
+                float preserve=max(1-smoothstep(.20,.30,l),smoothstep(.16,.24,filteredAlpha));
+                return lerp(1,preserve,outside);
+            }
             float3 stGradient(float h)
             {
                 // U1 Silver Hell candidate verdigris; deliberately distinct from blue MP, never primary green.
@@ -93,6 +104,21 @@ Shader "EXODUSER/HudPrototypeC"
                 float halfSoft=SurfaceSoftPixels/_Diameter;
                 return 1-smoothstep(fill+wave-curve-halfSoft,fill+wave-curve+halfSoft,uv.y);
             }
+            float3 emptyBowlColor(){return rgb(22,28,34);}
+            float meniscusCoverage(float2 uv,float fill)
+            {
+                if(fill<=0||fill>=1)return 0;
+                // Match the accepted liquid surface; 1 design-pixel FWHM/integral, smooth AA shoulders.
+                float wave=sin((uv.x-.5)*6.283185307)*SurfaceWavePixels/_Diameter;
+                float curve=(uv.x-.5)*(uv.x-.5)*2*SurfaceWavePixels/_Diameter;
+                float distance=abs((uv.y-fill-wave+curve)*_Diameter);
+                return 1-smoothstep(0,1,distance);
+            }
+            float3 meniscusColor(bool hp,bool mp)
+            {
+                // Tinted liquid edges, not a white specular line.
+                return hp?rgb(138,74,84):(mp?rgb(150,170,188):rgb(142,164,148));
+            }
             float4 frag(v2f_img i):SV_Target
             {
                 if(_Mode>1.5){
@@ -107,31 +133,34 @@ Shader "EXODUSER/HudPrototypeC"
                     float chroma=max(art.r,max(art.g,art.b))-min(art.r,min(art.g,art.b));
                     art.a=matteAlpha(l,chroma,art.a);
                     art.a*=frameApertureCoverage(uv,sourceAlpha,l);
+                    art.a*=frameOuterCoverage(uv,art.a,l);
                     float fadeRight=_FadeRight>0?saturate((1-local.x)/_FadeRight):1;
                     float fadeBottom=_FadeBottom>0?saturate(local.y/_FadeBottom):1;
                     return outputColor(float4(silver(l),art.a*fadeRight*fadeBottom));
                 }
                 float2 d=i.uv-.5;float r=length(d),edge=saturate((.5-r)*_Diameter+.5);
-                // A curved, translucent bowl remains in the empty area; no opaque straight-cut dark panel.
+                // Opaque dark glass blocks scenery in the unfilled HP/MP/ST interior; the circular edge still antialiases.
                 float radial=smoothstep(.22,.5,r),emptyAlpha=lerp(EmptyCenterAlpha,EmptyEdgeAlpha,radial);
-                float3 bowl=lerp(rgb(44,46,49),rgb(15,15,16),radial);
+                float3 bowl=emptyBowlColor();
                 bool hp=_Mode<.5,mp=i.uv.x<.5;
                 float fill=hp?saturate(1-_HpTranslate):saturate(mp?_Mana:_Stamina);
                 float wet=surfaceCoverage(i.uv,fill);
                 float3 liquid;
                 if(hp){
-                    // Preserve the existing HP display projection and its wine palette. No lens specular or white meniscus.
+                    // Preserve the existing HP display projection and its wine palette.
                     float depth=length(float2(d.x*.70710678,(1-i.uv.y-_HpTranslate-.4)*1.1785113));
                     liquid=depth<.5?lerp(rgb(107,16,32),rgb(61,10,18),depth*2):
                         lerp(rgb(61,10,18),rgb(30,5,10),saturate((depth-.5)*2));
                 }else{
                     float h=saturate(i.uv.y/max(fill,.0001));liquid=mp?mpGradient(h):stGradient(h);
-                    // Soften the top like the current resource liquid, without an opaque empty quadrant.
+                    // Preserve the accepted resource liquid's soft top, now over opaque glass.
                     wet*=lerp(1,.50,smoothstep(.82,1,h));
                 }
                 liquid*=1-.30*radial;
                 float a=wet+emptyAlpha*(1-wet);
                 float3 color=(liquid*wet+bowl*emptyAlpha*(1-wet))/max(a,.0001);
+                float rim=meniscusCoverage(i.uv,fill);
+                color=lerp(color,meniscusColor(hp,mp),rim);
                 if(hp&&_Hurt>0)color=lerp(color,rgb(194,26,16),saturate(1-(.5-r)*_Diameter/22)*.85);
                 return outputColor(float4(color,a*edge));
             }

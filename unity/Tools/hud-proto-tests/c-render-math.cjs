@@ -24,12 +24,12 @@ const sample=(n,h)=>gradients[n](h,rgb,lerp,saturate);
 const expected=[[[22,33,46],[59,95,134],[127,156,188]],[[18,32,25],[62,94,74],[122,150,128]]];
 for(let n=0;n<2;n++)for(let j=0;j<3;j++)sample(n,[0,.45,.8][j]).forEach((v,k)=>near(v*255,expected[n][j][k],'candidate token endpoint'));
 for(const h of [0,.2,.45,.6,.8,1]){const mp=sample(0,h),st=sample(1,h);check(mp[2]>mp[1]&&st[1]>st[2],'blue MP and verdigris ST retain different dominant channels');check(st[1]-st[2]<.15,'ST is muted verdigris, never primary green');}
-check(!/float shine|color=lerp\(color,rgb\(246,245,242\)/.test(shader),'C liquid has no glass highlight or white waterline');
+check(!/float shine|color=lerp\(color,rgb\(246,245,242\)/.test(shader),'C liquid has no glass highlight or white specular waterline');
 const emptyExpression=shader.match(/float radial=(.*?),emptyAlpha=(.*?);/);assert.ok(emptyExpression,'production curved bowl alpha');
 const empty=new Function('r','smoothstep','lerp',constants+';const radial='+emptyExpression[1]+';return '+emptyExpression[2]+';');
 const scalarLerp=(a,b,t)=>a+(b-a)*t;
-near(empty(0,smoothstep,scalarLerp),.08,'empty bowl center leaves92percent background');near(empty(.5,smoothstep,scalarLerp),.42,'empty bowl perimeter stays translucent');
-check(empty(.4,smoothstep,scalarLerp)>empty(.25,smoothstep,scalarLerp),'empty alpha changes radially, not a flat dark panel');
+near(empty(0,smoothstep,scalarLerp),1,'H7 empty bowl center blocks background');near(empty(.5,smoothstep,scalarLerp),1,'H7 empty bowl perimeter blocks background before circular edge AA');
+near(empty(.4,smoothstep,scalarLerp),empty(.25,smoothstep,scalarLerp),'H7 unfilled glass opacity is uniform inside the circular bowl');
 const silver=new Function('l','rgb','lerp','saturate',body('silver').replace(/\bfloat /g,'let '));
 const steel=x=>silver(x/255,rgb,lerp,saturate);
 const luma=c=>c[0]*.2126+c[1]*.7152+c[2]*.0722;

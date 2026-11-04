@@ -8,6 +8,7 @@ namespace Exoduser.UnityPort
     public sealed partial class NativeHud
     {
         Material prototypeCMaterial;
+        Texture2D prototypeCCooldownDisc;
         List<RenderTexture> prototypeCArtwork;
         RenderTexture prototypeCLeftFrame,prototypeCRightFrame,prototypeCGargoyleL,prototypeCGargoyleR,prototypeCCrest;
         static RenderTexture PrototypeCTarget(string name,int width,int height)
@@ -96,7 +97,7 @@ namespace Exoduser.UnityPort
                 float gw=215*.18f,gh=245*.18f,gY=l.Plate.Y-gh*.70f;
                 NativeUiAudit.DrawTexture(new Rect(l.LeftLiquid.X+l.Liquid/2+90,gY,gw,gh),prototypeCGargoyleL,ScaleMode.StretchToFill,true);
                 NativeUiAudit.DrawTexture(new Rect(l.RightLiquid.X+l.Liquid/2-90-gw,gY,gw,gh),prototypeCGargoyleR,ScaleMode.StretchToFill,true);
-                for(int i=0;i<13;i++)PrototypeSlot(i,activeAttack,simulation);
+                for(int i=0;i<13;i++)PrototypeCSlot(i,activeAttack,simulation);
                 PrototypeStatus(width,simulation);
             }finally{GUI.color=oldColor;}
             return true;
@@ -135,8 +136,54 @@ namespace Exoduser.UnityPort
             PrototypeText(new Rect(x,cy+f*.48f+4,w,l.ResourceMaximumFont),PrototypeMaximum(maximumText),l.ResourceMaximumFont,
                 l.ResourceMaximumFont*.04f,ProtoColor(167,164,157),true,shadow:HudPrototypeShadow.Resource);
         }
+        void PrototypeCSlot(int index,string activeAttack,Simulation simulation)
+        {
+            var l=prototypeLayout;Rect r=ProtoRect(l.Slot(index));
+            string id=index==6?(activeAttack=="kiSlash"?"kiSlash":null):simulation==null?null:SlotSkillId(simulation,index);
+            Texture2D artwork=null;
+            if(id!=null&&!slotIcons.TryGetValue(id,out artwork)){artwork=Resources.Load<Texture2D>("Art/ui/skill_icons/orb/"+id);slotIcons[id]=artwork;}
+            float total=0,cd=id!=null&&simulation!=null?simulation.SkillCooldown(id,out total):0;
+            float rage=index==12&&simulation!=null?RageFill(simulation.Rage,simulation.RageMaximum):0;
+            if(Event.current.type==EventType.Repaint){
+                prototypeMaterial.SetFloat("_Diameter",r.width);prototypeMaterial.SetFloat("_HasIcon",artwork!=null?1:0);
+                prototypeMaterial.SetFloat("_Selected",index==6&&activeAttack=="kiSlash"?1:0);
+                prototypeMaterial.SetFloat("_Cooldown",total>0?Mathf.Clamp01(cd/total):0);prototypeMaterial.SetFloat("_Rage",rage);
+                PrototypeBlit(prototypeSlots[index],3,artwork);
+                if(index==6&&artwork!=null)IconDrawn=true;
+            }
+            NativeUiAudit.DrawTexture(r,prototypeSlots[index],ScaleMode.StretchToFill,true);
+            if(cd>0&&total>0)PrototypeCCooldown(r,cd);
+            if(rage>0){float font=Mathf.Round(r.width*.24f);PrototypeText(new Rect(r.x,r.y+Mathf.Round(r.width*.12f),r.width,font),Math.Truncate(simulation.Rage).ToString("0")+"%",font,0,ProtoColor(230,227,220),shadow:HudPrototypeShadow.Cooldown);}
+            if(index==8&&simulation!=null){
+                float ratio=MobilityRatio(simulation);Rect gauge=new Rect(r.x+r.width*.2f,r.yMax-6,r.width*.6f,2);
+                PrototypeFill(gauge,ProtoColor(44,46,49,.95f));gauge.width*=ratio;PrototypeFill(gauge,ratio<.5f?ProtoColor(194,26,16):ProtoColor(201,199,195));
+            }
+            PrototypeKey(index,r,artwork!=null);
+            if(NativeSilverHellUi.Button(r,"",GUIStyle.none)){statusSelectionUntil=index==6?Time.unscaledTime+1.6f:0;SlotSelected?.Invoke(index);}
+        }
+        static Texture2D BakePrototypeCCooldownDisc(float diameter)
+        {
+            // Match the shared icon mask (radius = slot/2 - 4), including its 1px AA edge.
+            return NativeSilverHellUi.Effect(Mathf.CeilToInt(diameter*2),Mathf.CeilToInt(diameter*2),(u,v)=>{
+                float x=(u-.5f)*diameter,y=(v-.5f)*diameter;
+                float cover=Mathf.Clamp01(diameter*.5f-3.5f-Mathf.Sqrt(x*x+y*y));
+                return new Color(0,0,0,.55f*cover);
+            });
+        }
+        void PrototypeCCooldown(Rect r,float cd)
+        {
+            if(prototypeCCooldownDisc==null)prototypeCCooldownDisc=OwnPrototypeArt(BakePrototypeCCooldownDisc(r.width));
+            NativeUiAudit.DrawTexture(r,prototypeCCooldownDisc,ScaleMode.StretchToFill,true);
+            float font=Mathf.Round(r.width*.36f);string text=Mathf.CeilToInt(cd/60).ToString();
+            Rect box=new Rect(r.x,r.center.y-font*.5f,r.width,font);
+            // Eight 1px-offset glyph fills, then the original Cinzel foreground. No stroke/blur.
+            for(int y=-1;y<=1;y++)for(int x=-1;x<=1;x++)if(x!=0||y!=0)
+                PrototypeText(new Rect(box.x+x,box.y+y,box.width,box.height),text,font,0,ProtoColor(15,15,16));
+            PrototypeText(box,text,font,0,ProtoColor(230,227,220));
+        }
         void DisposePrototypeC()
         {
+            prototypeCCooldownDisc=null;
             if(prototypeCArtwork!=null){foreach(var target in prototypeCArtwork)if(target!=null){target.Release();Release(target);}
                 prototypeCArtwork.Clear();prototypeCArtwork=null;}
             if(prototypeCMaterial!=null)Release(prototypeCMaterial);prototypeCMaterial=null;

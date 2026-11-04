@@ -1,0 +1,139 @@
+H7 C retouch — offline verification
+Base: 8169df9af5db5d2b7a3f10294604b90b52e9267e
+Unity/Metal/framebuffer not executed.
+
+> node unity/Tools/hud-proto-tests/run.cjs
+PASS 637 HUD prototype argument/layout/input contracts
+exit=0
+
+> node unity/Tools/hud-proto-tests/c-liquid-retouch.cjs
+C bowl sRGB 22,28,34 -> D storage 2,3,4 -> conditional display 22,28,34
+PASS 3781 C opaque bowl/1px meniscus contracts (GPU/Metal not run)
+exit=0
+
+> node unity/Tools/hud-proto-tests/c-outer-matte.cjs
+C outer source audit {"name":"HP","roiFaintBefore":385,"roiFaintRetained":0,"roiAlphaBefore":1492.8069152338874,"roiAlphaAfter":1473.489009653975,"protectedAlphaLoss":0,"removedBrightOuter":3272,"components":1,"largest":75804}
+C outer source audit {"name":"MPST","roiFaintBefore":314,"roiFaintRetained":0,"roiAlphaBefore":1014.1015177853086,"roiAlphaAfter":1000.5751024346533,"protectedAlphaLoss":0,"removedBrightOuter":3272,"components":1,"largest":75804}
+PASS 1395620 C outer matte/AA/source contracts (screen dots still require Mac)
+exit=0
+
+> node unity/Tools/hud-proto-tests/c-cooldown.cjs
+PASS 23608 C production cooldown draw/alpha/slot contracts
+PASS 6 C/shared-slot/font preservation contracts
+exit=0
+
+> node unity/Tools/hud-proto-tests/c-render-math.cjs
+C raster alpha area: plate=47513.973px2 rail=812.161px2
+PASS 454 C production support raster contracts
+PASS 5392 C production shader scalar/color contracts (HLSL/Metal/visual not executed)
+exit=0
+
+> node unity/Tools/hud-proto-tests/c-preservation.cjs
+{
+  "scope": "No-argument/A/B paths and accepted H5 features (not pixel validation)",
+  "baseline": "c1b51cda503d1de1ef3ae2c828309e7c27d539f7",
+  "retouchBase": "3a13dc0d46d22a19e1f0640d7689914df99569c4",
+  "boundaryBase": "e708a10704211f7072b6480db3a069f2198a6667",
+  "checks": 49,
+  "passed": true
+}
+PASS 54 total C preservation contracts through H7
+exit=0
+
+> node unity/Tools/hud-proto-tests/c-aperture.cjs
+C aperture source audit {"source":"ui_globe_hp.png","insideBefore":3223,"insideAfter":234,"brightPartialBefore":2987,"brightPartialAfter":0,"protectedPixels":185425,"protectedAlphaLoss":0,"sharedFrameComponents":1,"sharedFrameSize":79458}
+C aperture source audit {"source":"ui_globe_mp.png","insideBefore":3223,"insideAfter":234,"brightPartialBefore":2987,"brightPartialAfter":0,"protectedPixels":185425,"protectedAlphaLoss":0,"sharedFrameComponents":1,"sharedFrameSize":79458}
+PASS 11 C production original-art aperture wiring contracts
+PASS 1599545 C aperture original-PNG/function/wiring contracts (Unity/Metal/framebuffer not executed)
+exit=0
+
+> node unity/Tools/hud-proto-tests/c-transport.cjs
+C token 61,10,18 => CPU/GPU storage 12,1,2 => conditional GUI display 61,13,22
+C token 59,95,134 => CPU/GPU storage 11,29,61 => conditional GUI display 59,95,134
+C token 62,94,74 => CPU/GPU storage 12,29,17 => conditional GUI display 61,95,73
+PASS 51 C production target/blit state contracts
+PASS 10242 C production color transfer contracts (native IMGUI/Metal/framebuffer not executed)
+exit=0
+
+> node unity/Tools/hud-proto-tests/legacy-path.cjs
+{
+  "scope": "Full legacy source equality after removing only three opt-in additions; shader/default layout untouched. Argument behavior covered by Program.cs.",
+  "baseline": "75add6ff4a6209e2590a7a626ffb4c37b5f0268e",
+  "passed": true,
+  "checks": [
+    {
+      "file": "unity/Assets/Exoduser/Runtime/NativeHud.cs",
+      "hooks": 2,
+      "legacyLines": 205,
+      "gitCr": 0,
+      "checkoutCr": 0
+    },
+    {
+      "file": "unity/Assets/Exoduser/Runtime/NativeHudSkills.cs",
+      "hooks": 1,
+      "legacyLines": 89,
+      "gitCr": 0,
+      "checkoutCr": 0
+    }
+  ]
+}
+exit=0
+
+> node unity/Tools/hud-proto-tests/render-math.cjs
+PASS 16 HUD prototype diamond/notch/soft-shadow contracts
+exit=0
+
+> ./unity/Tools/devtools/buildloop/compile-check.ps1 -Project G:/exoduser-wt/codex-h7-hud-c/unity -LibraryProject G:/exoduser-wt/codex-unity-parity-1102/unity -Output I:/EXODUSER-Storage/devtools/h7-hud-c
+{
+  "passed": true,
+  "results": [
+    {
+      "mode": "Player",
+      "assembly": "Exoduser.Core",
+      "sources": 133,
+      "exit": 0,
+      "errors": 0,
+      "template": "G:\\exoduser-wt\\codex-unity-parity-1102\\unity\\Library\\Bee\\artifacts\\1900b0aP.dag\\Exoduser.Core.rsp"
+    },
+    {
+      "mode": "Player",
+      "assembly": "Exoduser.Runtime",
+      "sources": 300,
+      "exit": 0,
+      "errors": 0,
+      "template": "G:\\exoduser-wt\\codex-unity-parity-1102\\unity\\Library\\Bee\\artifacts\\1900b0aP.dag\\Exoduser.Runtime.rsp"
+    },
+    {
+      "mode": "Editor",
+      "assembly": "Exoduser.Core",
+      "sources": 133,
+      "exit": 0,
+      "errors": 0,
+      "template": "G:\\exoduser-wt\\codex-unity-parity-1102\\unity\\Library\\Bee\\artifacts\\1900b0aE.dag\\Exoduser.Core.rsp"
+    },
+    {
+      "mode": "Editor",
+      "assembly": "Exoduser.Runtime",
+      "sources": 300,
+      "exit": 0,
+      "errors": 0,
+      "template": "G:\\exoduser-wt\\codex-unity-parity-1102\\unity\\Library\\Bee\\artifacts\\1900b0aE.dag\\Exoduser.Runtime.rsp"
+    },
+    {
+      "mode": "Editor",
+      "assembly": "Exoduser.Editor",
+      "sources": 64,
+      "exit": 0,
+      "errors": 0,
+      "template": "G:\\exoduser-wt\\codex-unity-parity-1102\\unity\\Library\\Bee\\artifacts\\1900b0aE.dag\\Exoduser.Editor.rsp"
+    }
+  ]
+}
+
+Failures recorded: intended RED 3 (bowl opacity, absent C cooldown routing, retained outer faint pixel).
+Real failures: c-preservation 1 (extractor matched an earlier method call instead of declaration; declaration matcher corrected, passed); offline compile 1 (sparse checkout omitted three Remodel C# files and asmref; restored from same HEAD read-only, passed). No check reached two real failures.
+Tool-only exploratory errors: missing optional png helper read; worker JS construction/read errors before test execution.
+Documentation line-ending check: first failure from 6 CRLF console lines in the NEW H7 log; normalized only the new log to LF. Existing source/doc line endings retained.
+Final document/ownership/EOL check PASS: 10 owned paths only; existing LF CR0 retained; CHANGELOG CRLF 58213->58219, original prefix unchanged; new H7 log LF.
+Compile warnings155, changed source warnings0. Independent specification and code-quality reviews: no blocking issues.
+Staged whitespace check: first failure on a new cooldown test blank EOF line (untracked files were not in the earlier unstaged diff check); removed only the extra LF.
