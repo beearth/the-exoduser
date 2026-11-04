@@ -27,14 +27,14 @@ namespace Exoduser.UnityPort
             a2Root=new GameObject("A2 1-1 전체 썩은 숲");
             UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(a2Root,r3Scene);
             a2Root.transform.SetParent(ground.transform,true);
-            foreach(var root in r3Roots)foreach(var r in root.GetComponentsInChildren<MeshRenderer>(true))
+            foreach(var root in r3Roots)if(root!=null)foreach(var r in root.GetComponentsInChildren<MeshRenderer>(true))
             {
                 if(r.name=="지옥 바닥 PBR 표면")a2FieldSoil=new Material(r.sharedMaterial);
                 r.enabled=false;
             }
             if(hellEnvironment!=null)hellEnvironment.SetActive(false);
             var oldFire=GameObject.Find("실제 철제 지옥불 화로");if(oldFire!=null)oldFire.SetActive(false);
-            foreach(var root in r3Roots)foreach(var light in root.GetComponentsInChildren<Light>(true))
+            foreach(var root in r3Roots)if(root!=null)foreach(var light in root.GetComponentsInChildren<Light>(true))
             {
                 if(light.type==LightType.Directional)
                 {
@@ -43,7 +43,7 @@ namespace Exoduser.UnityPort
                 }
                 else if(light.name.StartsWith("Pool_",StringComparison.Ordinal))light.enabled=false;
             }
-            foreach(var root in r3Roots)foreach(var volume in root.GetComponentsInChildren<Volume>(true))
+            foreach(var root in r3Roots)if(root!=null)foreach(var volume in root.GetComponentsInChildren<Volume>(true))
             {
                 var profile=volume.profile;if(profile==null)continue;ColorAdjustments tone;
                 if(profile.TryGet<ColorAdjustments>(out tone)){tone.postExposure.Override(.55f);tone.contrast.Override(16);}
@@ -287,7 +287,7 @@ namespace Exoduser.UnityPort
             haze.AddComponent<MeshFilter>().sharedMesh=screen;var fog=haze.AddComponent<MeshRenderer>();fog.sharedMaterial=new Material(Shader.Find("EXODUSER/A2HeightFog"));fog.shadowCastingMode=ShadowCastingMode.Off;
             var shader=Shader.Find("EXODUSER/A2Atmosphere");
             var moonDirection=Quaternion.Euler(49,-32,0)*Vector3.forward;
-            foreach(var root in r3Roots)foreach(var light in root.GetComponentsInChildren<Light>(true))if(light.enabled&&light.type==LightType.Directional)moonDirection=light.transform.forward;
+            foreach(var root in r3Roots)if(root!=null)foreach(var light in root.GetComponentsInChildren<Light>(true))if(light.enabled&&light.type==LightType.Directional)moonDirection=light.transform.forward;
             foreach(var p in new[]{new Vector2(39,-70),new Vector2(26,-60),new Vector2(60,-58),new Vector2(21,-40),new Vector2(43,-34),new Vector2(64,-39),new Vector2(30,-18),new Vector2(53,-16),new Vector2(40,-6)})
             {
                 var bottom=new Vector3(p.x,a2Field.Height(p.x,p.y),p.y);var top=bottom-moonDirection*(13/Mathf.Max(.1f,-moonDirection.y));

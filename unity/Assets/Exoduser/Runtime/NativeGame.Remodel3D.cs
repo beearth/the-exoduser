@@ -61,7 +61,7 @@ namespace Exoduser.UnityPort
             r3Cam.depth = view.depth + 10;
             Remodel3DViewport();
             // 원본 피부 결을 지우던 +1.3 EV 노출과 붉은 색조를 이 필드의 프로필 사본에서만 조정한다.
-            foreach (var root in r3Roots) foreach (var volume in root.GetComponentsInChildren<Volume>(true))
+            foreach (var root in r3Roots) if (root != null) foreach (var volume in root.GetComponentsInChildren<Volume>(true))
                 if (volume.profile != null && volume.profile.TryGet<ColorAdjustments>(out var tone))
                 { tone.postExposure.Override(1f); tone.saturation.Override(-18f); tone.colorFilter.Override(new Color(.82f,.9f,1f)); }
             if (System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "--unity-keyshot-baseline") < 0) yield return HellLightingSetup();
@@ -72,7 +72,7 @@ namespace Exoduser.UnityPort
         // by name through the loaded scene: the baked scene has the rig loose at the root; the rebuilt one wraps it in RM1_CameraRig
         Transform R3Find(string name)
         {
-            foreach (var root in r3Roots) { var t = R3FindIn(root.transform, name); if (t != null) return t; }
+            foreach (var root in r3Roots) { if (root == null) continue; var t = R3FindIn(root.transform, name); if (t != null) return t; }
             return null;
         }
         static Transform R3FindIn(Transform t, string name)
