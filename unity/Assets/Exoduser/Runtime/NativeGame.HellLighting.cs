@@ -20,6 +20,7 @@ namespace Exoduser.UnityPort
             hellOldFogStart=RenderSettings.fogStartDistance;hellOldFogEnd=RenderSettings.fogEndDistance;
             foreach(var root in r3Roots)
             {
+                if(root==null)continue;   // 11-04: a2/lighting steps yield between frames; roots Destroy()ed by an earlier step read as null
                 foreach(var v in root.GetComponentsInChildren<Volume>(true))
                 {
                     var profile=v.profile;if(profile==null)continue;hellProfile=profile;

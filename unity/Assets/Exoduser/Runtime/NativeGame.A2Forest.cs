@@ -28,7 +28,7 @@ namespace Exoduser.UnityPort
             var timer=System.Diagnostics.Stopwatch.StartNew();Debug.Log("[A2 초기화] 숲 조립 시작");
             NativeRemodel3D.ForestA2=true;
             NativeRemodel3D.PrepareForestHeightCache();
-            foreach(var root in r3Roots)foreach(var volume in root.GetComponentsInChildren<UnityEngine.Rendering.Volume>(true))
+            foreach(var root in r3Roots)if(root!=null)foreach(var volume in root.GetComponentsInChildren<UnityEngine.Rendering.Volume>(true))
             {
                 var profile=volume.profile;if(profile==null)continue;
                 UnityEngine.Rendering.Universal.ColorAdjustments tone;if(profile.TryGet<UnityEngine.Rendering.Universal.ColorAdjustments>(out tone)){tone.postExposure.Override(.25f);tone.contrast.Override(16);}
@@ -53,9 +53,9 @@ namespace Exoduser.UnityPort
             a2Root = new GameObject("A2 썩은 숲·나무다리 제작 후보");
             a2Root.transform.SetParent(ground.transform.parent, false);
             var oldFire=GameObject.Find("실제 철제 지옥불 화로");if(oldFire!=null)oldFire.SetActive(false);
-            foreach(var root in r3Roots)foreach(var light in root.GetComponentsInChildren<Light>(true))
+            foreach(var root in r3Roots)if(root!=null)foreach(var light in root.GetComponentsInChildren<Light>(true))
                 if(light.name.StartsWith("Pool_Hell",StringComparison.Ordinal))light.intensity=0;
-            foreach(var root in r3Roots)foreach(var r in root.GetComponentsInChildren<MeshRenderer>(true))
+            foreach(var root in r3Roots)if(root!=null)foreach(var r in root.GetComponentsInChildren<MeshRenderer>(true))
                 if(r.name.StartsWith("Decals_blood",StringComparison.Ordinal))r.enabled=false;
             // LEFT/MID 주간, RIGHT 강가, TOP 먼 숲, SOUTH 낮은 전경. 중앙 전투면은 유지한다.
             A2RootedTree(34.8f,-70.5f,1.8f,1.6f,1.65f,25);
@@ -305,7 +305,7 @@ namespace Exoduser.UnityPort
             r3Cam.depthTextureMode|=DepthTextureMode.Depth;
             UnityEngine.Rendering.Universal.CameraExtensions.GetUniversalAdditionalCameraData(r3Cam).requiresDepthTexture=true;
             // A2의 단일 경계로 지형과 보행을 함께 나눈다. 원본 맵 데이터/비A2 실행은 보존한다.
-            foreach(var root in r3Roots)foreach(var r in root.GetComponentsInChildren<MeshRenderer>(true))
+            foreach(var root in r3Roots)if(root!=null)foreach(var r in root.GetComponentsInChildren<MeshRenderer>(true))
                 if(r.name.StartsWith("River_",StringComparison.Ordinal)||r.name.StartsWith("Pool_",StringComparison.Ordinal))r.enabled=false;
             var mesh=new Mesh{name="A2 외곽으로 이어지는 독액"};
             const float waterHeight=A2ForestLayout.WaterLevel;
