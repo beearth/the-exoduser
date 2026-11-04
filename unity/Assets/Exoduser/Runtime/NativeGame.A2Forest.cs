@@ -249,6 +249,7 @@ namespace Exoduser.UnityPort
                 if(id=="Ancient_Rotten_Tree"){var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.95f,.80f,.60f,1));block.SetFloat("_BumpScale",.9f);block.SetFloat("_OcclusionStrength",.9f);r.SetPropertyBlock(block);}
                 if(id=="Fungal_Colony"){var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.65f,.55f,.40f,1));r.SetPropertyBlock(block);}
                 if(stump){var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.85f,.78f,.65f,1));r.SetPropertyBlock(block);}
+                if(id=="Dead_Leaf_Litter"&&A2RRequested&&A2RD3.On){var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.40f,.20f,.30f,1));r.SetPropertyBlock(block);} // D3: last orange patch (03-route-600 @1145,385) -> VEIN tone
             }
             if(registerSurface&&a2Field!=null&&(roots||stump||hollow||id=="Fallen_Log"||id=="Rotten_Wood_Bridge"))A2FieldRegister(go,id=="Rotten_Wood_Bridge");
             if(id=="Withered_Shrub"){if(A2RRequested&&A2RProps3D.TerrainEnabled&&A2RProps3D.InTerrainField(x,z))go.SetActive(false);else A2Bramble(go,x,z);}

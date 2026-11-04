@@ -176,7 +176,7 @@ namespace Exoduser.UnityPort
                 for(int side=-1;side<=1;side+=2)
                 {
                     float x=center.x+side*(3.8f+.8f*Mathf.Sin(region*2.1f)),z=center.y+side*(2.8f+.6f*Mathf.Cos(region));
-                    if(a2Field.Distance(x,z)<.8f||a2Field.Water(x,z))continue;
+                    if((A2RRequested&&A2RD3.On?a2Field.Distance(x,z)>-.6f:a2Field.Distance(x,z)<.8f)||a2Field.Water(x,z))continue; // D3 density: lane-side roots only outside the walk edge
                     A2FieldRoots(x,z,2.05f,region*71+side*37);
                     var log=A2Module("Fallen_Log",x,z,.9f,.45f,.9f,region*79+side*51,-.05f);
                     if(log!=null)log.name="A2 전투구역 쓰러진 목질 "+region+"/"+side;
@@ -187,7 +187,7 @@ namespace Exoduser.UnityPort
                     float x=center.x+Mathf.Cos(angle)*(2.3f+j*.55f),z=center.y+Mathf.Sin(angle)*(1.7f+j*.37f);
                     if(a2Field.Distance(x,z)<.4f)continue;
                     A2Module("Dead_Leaf_Litter",x,z,1.1f,.7f,1.1f,j*137+region*31,.01f);
-                    if(j%3==0)A2FieldRoots(x,z,.9f,region*53+j*71);
+                    if(j%3==0&&!(A2RRequested&&A2RD3.On))A2FieldRoots(x,z,.9f,region*53+j*71); // D3: no ring roots on the combat lane
                 }
             }
         }

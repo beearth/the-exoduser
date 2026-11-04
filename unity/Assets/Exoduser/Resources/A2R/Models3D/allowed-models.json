@@ -17,7 +17,12 @@
         "fg_rot01",
         "fg_rot03",
         "sbone",
-        "sword_pile"
+        "sword_pile",
+        "r3_tree_19",
+        "r3_tree_24",
+        "r3_prop_10",
+        "r3_prop_16",
+        "r3_prop_17"
     ],
     "scales": [
         {

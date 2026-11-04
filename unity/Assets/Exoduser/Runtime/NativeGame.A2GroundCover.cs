@@ -11,7 +11,7 @@ namespace Exoduser.UnityPort
             for(int row=0;row<=42;row++)for(int column=0;column<=42;column++)
             {
                 float x=-6+column*spacing+.28f*Mathf.Sin(row*.81f),z=-86+row*spacing+.25f*Mathf.Sin(column*.77f);
-                float edge=a2Field.Distance(x,z);if(edge>-.45f||edge< -2.2f||a2Field.Water(x,z))continue;
+                float edge=a2Field.Distance(x,z);if(edge>-.45f||edge< -2.2f||a2Field.Water(x,z))continue;if(A2RRequested&&A2RD3.On){uint hh=(uint)(row*73856093^column*19349663);hh^=hh>>13;if((hh%100)<45||((row/2+column/2)%3==0))continue;} // D3 density: thin to clusters at the edge
                 float width=1.25f+.15f*Mathf.Sin(row*1.7f+column*.9f);
                 var shrub=A2Module("Withered_Shrub",x,z,width,.50f,width,row*71+column*137,.015f);
                 if(shrub!=null){shrub.name="A2 원본통행 바깥의 연결 고사덤불";shrubs++;}

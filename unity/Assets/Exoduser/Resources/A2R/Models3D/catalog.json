@@ -569,6 +569,156 @@
             "depth": 0.7004398107528687,
             "lods": 3,
             "triangles": 68191
+        },
+        {
+            "name": "r3_tree_19",
+            "resource": "A2R/Models3D/Prefabs/r3_tree_19",
+            "source": "I:/EXODUSER-Storage/map25d/tripo-b2/lod/r3_tree_19.glb",
+            "prepared": true,
+            "width": 1.5651516914367676,
+            "depth": 1.4915770292282104,
+            "lods": 3,
+            "triangles": 17200
+        },
+        {
+            "name": "r3_tree_24",
+            "resource": "A2R/Models3D/Prefabs/r3_tree_24",
+            "source": "I:/EXODUSER-Storage/map25d/tripo-b2/lod/r3_tree_24.glb",
+            "prepared": true,
+            "width": 0.9357036352157593,
+            "depth": 0.825626015663147,
+            "lods": 3,
+            "triangles": 17200
+        },
+        {
+            "name": "r3_prop_10",
+            "resource": "A2R/Models3D/Prefabs/r3_prop_10",
+            "source": "I:/EXODUSER-Storage/map25d/tripo-b2/lod/r3_prop_10.glb",
+            "prepared": true,
+            "width": 1.2519832849502563,
+            "depth": 1.2184443473815918,
+            "lods": 3,
+            "triangles": 8599
+        },
+        {
+            "name": "r3_prop_16",
+            "resource": "A2R/Models3D/Prefabs/r3_prop_16",
+            "source": "I:/EXODUSER-Storage/map25d/tripo-b2/lod/r3_prop_16.glb",
+            "prepared": true,
+            "width": 1.605469822883606,
+            "depth": 1.5930755138397217,
+            "lods": 3,
+            "triangles": 8600
+        },
+        {
+            "name": "r3_prop_17",
+            "resource": "A2R/Models3D/Prefabs/r3_prop_17",
+            "source": "I:/EXODUSER-Storage/map25d/tripo-b2/lod/r3_prop_17.glb",
+            "prepared": true,
+            "width": 1.6573816537857056,
+            "depth": 1.6249035596847534,
+            "lods": 3,
+            "triangles": 8600
+        },
+        {
+            "name": "vein_grass_a",
+            "resource": "A2R/Models3D/Prefabs/vein_grass_a",
+            "source": "I:/EXODUSER-Storage/map25d/foliage-proc/out/vein_grass_a.glb",
+            "prepared": true,
+            "width": 1.0311211347579956,
+            "depth": 1.0826194286346436,
+            "lods": 3,
+            "triangles": 2006
+        },
+        {
+            "name": "vein_grass_b",
+            "resource": "A2R/Models3D/Prefabs/vein_grass_b",
+            "source": "I:/EXODUSER-Storage/map25d/foliage-proc/out/vein_grass_b.glb",
+            "prepared": true,
+            "width": 1.0222599506378174,
+            "depth": 1.0248682498931885,
+            "lods": 3,
+            "triangles": 2006
+        },
+        {
+            "name": "root_sprout_a",
+            "resource": "A2R/Models3D/Prefabs/root_sprout_a",
+            "source": "I:/EXODUSER-Storage/map25d/foliage-proc/out/root_sprout_a.glb",
+            "prepared": true,
+            "width": 1.5200140476226807,
+            "depth": 1.6187108755111694,
+            "lods": 3,
+            "triangles": 778
+        },
+        {
+            "name": "root_sprout_b",
+            "resource": "A2R/Models3D/Prefabs/root_sprout_b",
+            "source": "I:/EXODUSER-Storage/map25d/foliage-proc/out/root_sprout_b.glb",
+            "prepared": true,
+            "width": 1.4114418029785156,
+            "depth": 1.5030888319015503,
+            "lods": 3,
+            "triangles": 918
+        },
+        {
+            "name": "bonethorn_bush_a",
+            "resource": "A2R/Models3D/Prefabs/bonethorn_bush_a",
+            "source": "I:/EXODUSER-Storage/map25d/foliage-proc/out/bonethorn_bush_a.glb",
+            "prepared": true,
+            "width": 1.5176470279693604,
+            "depth": 1.5042245388031006,
+            "lods": 3,
+            "triangles": 4462
+        },
+        {
+            "name": "bonethorn_bush_b",
+            "resource": "A2R/Models3D/Prefabs/bonethorn_bush_b",
+            "source": "I:/EXODUSER-Storage/map25d/foliage-proc/out/bonethorn_bush_b.glb",
+            "prepared": true,
+            "width": 1.571428656578064,
+            "depth": 1.5855377912521362,
+            "lods": 3,
+            "triangles": 4858
+        },
+        {
+            "name": "pustule_cluster_a",
+            "resource": "A2R/Models3D/Prefabs/pustule_cluster_a",
+            "source": "I:/EXODUSER-Storage/map25d/foliage-proc/out/pustule_cluster_a.glb",
+            "prepared": true,
+            "width": 1.470588207244873,
+            "depth": 1.4326002597808838,
+            "lods": 3,
+            "triangles": 1441
+        },
+        {
+            "name": "pustule_cluster_b",
+            "resource": "A2R/Models3D/Prefabs/pustule_cluster_b",
+            "source": "I:/EXODUSER-Storage/map25d/foliage-proc/out/pustule_cluster_b.glb",
+            "prepared": true,
+            "width": 1.4464287757873535,
+            "depth": 1.4066431522369385,
+            "lods": 3,
+            "triangles": 1611
+        },
+        {
+            "name": "spore_stalk_a",
+            "resource": "A2R/Models3D/Prefabs/spore_stalk_a",
+            "source": "I:/EXODUSER-Storage/map25d/foliage-proc/out/spore_stalk_a.glb",
+            "prepared": true,
+            "width": 0.7995902895927429,
+            "depth": 0.7723820805549622,
+            "lods": 3,
+            "triangles": 1624
+        },
+        {
+            "name": "spore_stalk_b",
+            "resource": "A2R/Models3D/Prefabs/spore_stalk_b",
+            "source": "I:/EXODUSER-Storage/map25d/foliage-proc/out/spore_stalk_b.glb",
+            "prepared": true,
+            "width": 0.7742016911506653,
+            "depth": 0.7388002276420593,
+            "lods": 3,
+            "triangles": 1954
         }
     ]
 }
