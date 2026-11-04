@@ -49,6 +49,7 @@ namespace Exoduser
         static void BakeFullResolution()
         {
             Directory.CreateDirectory(Disk(Root));
+            AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
             var groups=new Dictionary<string,List<SourceTexture>>(StringComparer.Ordinal);
             foreach(string id in SourceIds())
             {
