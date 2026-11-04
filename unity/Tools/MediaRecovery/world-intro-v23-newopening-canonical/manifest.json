@@ -1,0 +1,30 @@
+{
+  "schema": "exoduser.lobby.media-recovery.v1",
+  "source": "origin/main 06ac6882b video/world_intro_v23_newopening_steam.mp4",
+  "destination": "Assets/StreamingAssets/Lobby/world_intro_v23_newopening_steam.mp4",
+  "bytes": 90144119,
+  "sha256": "6abe88a5d4a5f829fb9f6c3e99cf488d79cd365ae58c52c8ddf6a469c05278c9",
+  "approval": "User requested on 2026-11-04 KST: replace the world intro opening before the gate (v22b 0-13.15s) with the new concept shots and apply it in-game (\"이제 게임에 적용해 배포\", \"인게임에 넣어\").",
+  "runtimeApplied": true,
+  "baseCommit": "06ac6882b550cb6373f2953ede3b2acc6f69e211",
+  "parts": [
+    {
+      "path": "part-01.bin",
+      "bytes": 31457280,
+      "sha256": "e602ac4fa46f2b1b2f8ba9f8d776b9af0d115562b5c4adebbe7a4c01488ff3b6",
+      "blob": "1f3ac605825a711155e89b1215566e0900c33acc"
+    },
+    {
+      "path": "part-02.bin",
+      "bytes": 31457280,
+      "sha256": "061d316a2bd241e9042af1fb955ba71a57b8483c946d93175682fba148ec54c7",
+      "blob": "f0d9df3fff73c3376b3798334bbca63dddf4611c"
+    },
+    {
+      "path": "part-03.bin",
+      "bytes": 27229559,
+      "sha256": "7bc3fb33dd219e578a304111877223713b74735916c2a1fc0ed6e32b9f32b69c",
+      "blob": "3ad5fb7fc3fb7a2ec8114eaa70ce3d2042563ba1"
+    }
+  ]
+}
