@@ -195,6 +195,10 @@ namespace Exoduser.UnityPort {
   void Spaced(float cx,float y,float h,string t,Font f,int size,Color c,float ls){
    float w=SpacedWidth(t,f,size,ls),x0=cx-w/2;spaced.normal.textColor=c;
    for(int i=0;i<t.Length;i++){if(char.IsWhiteSpace(t[i]))continue;NativeSilverHellUi.Label(new Rect(x0+Adv(t,i)+ls*i,y,size*2,h),t[i].ToString(),spaced);}
+  // 11-04 judge 6: the front title (NativeRevive death screen, fades out in 0.35s) must be gone before this title appears.
+  // The decision screen satisfies it by timing: black fills over BlackIn and its title starts at TitleAt (>= TitleGateDelay), so no extra gate is multiplied in.
+  public const float TitleGateDelay=.4f,TitleGateRise=.8f;
+  public static float TitleGate(float age){return Mathf.SmoothStep(0,1,Mathf.Clamp01((age-TitleGateDelay)/TitleGateRise));}
   }
 
   static bool Hangul(char c){return c>=0xAC00&&c<=0xD7A3;}

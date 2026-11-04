@@ -166,8 +166,8 @@ namespace Exoduser.UnityPort
    else if(t==2)
    {
     Add(l,K.Heading,"h.audio",new Rect(0,10,1700,29),false);
-    RowFor(l,DefSfx,0,45,960);RowFor(l,DefBgm,0,93,960);
-    Add(l,K.Select,"optBgmTrack",new Rect(0,141,960,48),true);
+    RowFor(l,DefSfx,0,45,818);RowFor(l,DefBgm,0,93,818);
+    Add(l,K.Select,"optBgmTrack",new Rect(0,141,818,48),true);
    }
    else
    {
