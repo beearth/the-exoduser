@@ -123,6 +123,21 @@ namespace Exoduser.UnityPort.Vfx
         public const double DefaultHeroH=131,BodyStretch=1.3;
         public const int CoreTicks=5,CorePeakTick=2;
         public const uint CoreStart=0xfff4d0;
+        // Soft core texture (11-04 soft-core): radial, no rim. Alpha (1-r)^2.2 and 0 from r .95; colour CoreStart at the
+        // centre -> element core colour at r .5 and beyond. Peak shader opacity 1.6 so only the centre passes the bloom threshold 1.1.
+        public const int CoreTexSize=128;
+        public const double CoreRimCut=.95,CoreMidRadius=.5,CorePeakOpacity=1.6;
+        public static double CoreTexAlpha(double r){r=Math.Max(0,r);return r>=CoreRimCut?0:Math.Pow(1-r,2.2);}
+        public static uint CoreTexRgb(int row,double r){return Mix(CoreStart,CoreRgb[Math.Max(0,Math.Min(6,row))],Math.Max(0,Math.Min(1,r/CoreMidRadius)));}
+        // Shader _Opacity: the 0..1 beat curve times the peak.
+        public static double CoreOpacity(double age){return CoreAlpha(age)*CorePeakOpacity;}
+        static uint Mix(uint from,uint to,double t) {
+            uint rgb=0;
+            for(int shift=16;shift>=0;shift-=8){
+                double a=(from>>shift)&255,b=(to>>shift)&255;rgb|=(uint)Math.Round(a+(b-a)*t)<<shift;
+            }
+            return rgb;
+        }
         // physical, fire, ice, dark, lightning, holy, earth/none
         public static readonly uint[] CoreRgb={0xefe6d2,0xffd9a0,0xe8f3f8,0xcdb2e0,0xfff4d0,0xfff2d6,0xdcc8a4};
         public static int ElementRow(int element){return element>=0&&element<=5?element:6;}
@@ -137,11 +152,7 @@ namespace Exoduser.UnityPort.Vfx
             return age<CorePeakTick?.35+.65*age/CorePeakTick:(CoreTicks-age)/(CoreTicks-CorePeakTick);
         }
         public static uint CoreColor(int row,double age) {
-            double t=Math.Max(0,Math.Min(1,age/4));uint to=CoreRgb[Math.Max(0,Math.Min(6,row))],from=CoreStart,rgb=0;
-            for(int shift=16;shift>=0;shift-=8){
-                double a=(from>>shift)&255,b=(to>>shift)&255;rgb|=(uint)Math.Round(a+(b-a)*t)<<shift;
-            }
-            return rgb;
+            return Mix(CoreStart,CoreRgb[Math.Max(0,Math.Min(6,row))],Math.Max(0,Math.Min(1,age/4)));
         }
         sealed class Row {
             public int Min,Max,HMin,HMax,LifeMin,LifeMax;public double LenMin,LenMax,Thick,SpeedMin,SpeedMax,Gravity,Fan;

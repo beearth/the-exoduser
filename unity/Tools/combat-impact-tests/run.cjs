@@ -41,6 +41,9 @@ if(name==='checks'){
   [!/ki_slash_hit_silver_sheet|AddComponent<SpriteRenderer>|ImpactGroundPatch|Color32\(27,20,16/.test(native),'NativeImpactView: no silver flipbook, no soot patch'],
   [/ki_slash_hit_silver_sheet/.test(game)&&/new KiImpactView/.test(game),'ki slash own hit (KiImpactView) untouched'],
   [/AddLines\(e,CombatHitLook\.Sparks/.test(view),'enemy hit sparks use the line renderer'],
+  [!/CoreDisc|OverrideGeometry/.test(view),'CombatImpactView: enemy hit core does not use the polygon disc'],
+  [/KiSlashAdditive/.test(view)&&/CorePeakOpacity/.test(view)&&/BakeCore/.test(view),'CombatImpactView: soft baked core texture, KiSlashAdditive opacity'],
+  [/CoreDisc/.test(read('KiImpactView.cs')),'KiImpactView: ki slash own core disc untouched'],
  ];
  for(const [ok,msg] of rules){log+=(ok?'':'FAIL ')+'source contract: '+msg+'\n';if(!ok)status=1;}
  log+='combat-impact source contract: '+rules.length+' rules\n';

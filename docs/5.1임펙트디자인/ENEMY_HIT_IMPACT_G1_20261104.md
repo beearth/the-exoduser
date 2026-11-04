@@ -56,3 +56,4 @@
 |---|---|
 | 2026-11-04 | G1 작성. 감사 45행 중 플레이어 타격 경로 1~6행(두 시스템 6층 겹침)을 한 덩어리 4박자로 정리하기로 결정 |
 | 2026-11-04 | U-VFX-13 구현(PC 컴파일·계약 검사까지, 실화면 판정은 Mac 대기): `CombatImpactTimeline.cs`(`CombatHitLook` 크기·코어색·스파크 표, 초승달·번개 덧그림 삭제, 코어 층 추가), `CombatImpactView.cs`(점 입자·화면 번쩍임 삭제, 원소별 선 스파크는 패링 선 렌더러 재사용), `NativeImpactView.cs`·`ImpactResponse.cs`(기검참 은빛 플립북·그을음 삭제, 점광원은 heavy만 동시 2개, 정지 2틱·카메라 반동 0), `NativeGame.cs`(영웅 키 전달, 적 흰 번쩍임 0.1초 유지). 검사: combat-impact 4835개 0실패(+원본 계약 7규칙), impact-feedback 460개 통과, Core/Runtime 컴파일 오류 0 |
+| 2026-11-04 | U-VFX-13 코어 재작업(총괄 1x 판정 FAIL: 가장자리 딱딱한 흰 원판): 공용 원판 다각형 대신 런타임 128px 부드러운 방사 텍스처 7장(원소별). 알파 (1-r)^2.2·r 0.95 이상 0, 색 #fff4d0→원소 코어색(r 0.5)→투명. `KiSlashAdditive` `_Opacity` 정점 1.6(중심만 블룸 문턱 1.1 초과), 5틱·+2틱 정점·크기 0.35/0.5/0.6H(텍스처 지름 기준) 유지. 기검참 자체 코어(`KiImpactView.CoreDisc`)는 그대로 |

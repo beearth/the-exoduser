@@ -13,6 +13,27 @@ static class Program
     static readonly uint[][] SparkTable={
         new uint[]{0xf5e5d5,0xf0debd,6,10,12,18},new uint[]{0xffd9a0,0xd8562a,5,8,10,14},new uint[]{0xe8f3f8,0x5f98c0,4,6,8,10},
         new uint[]{0,0,0,0,0,0},new uint[]{0xfff4d0,0xc8a848,3,4,6,6},new uint[]{0xfff2d6,0xc9a45e,4,6,8,8},new uint[]{0xdcc8a4,0x7e6236,4,6,8,8}};
+    // Soft core (11-04): radial texture with no hard rim, per-element colour, shader opacity peak 1.6 over the 5-tick beat.
+    static void SoftCore()
+    {
+        Check(CombatHitLook.CoreTexSize==128&&CombatHitLook.CorePeakOpacity==1.6&&CombatHitLook.CoreTicks==5&&CombatHitLook.CorePeakTick==2,"soft core: 128 px texture, peak opacity 1.6, 5 ticks, peak at +2");
+        Check(Math.Abs(CombatHitLook.CoreOpacity(2)-1.6)<1e-9&&CombatHitLook.CoreOpacity(-1)==0&&CombatHitLook.CoreOpacity(5)==0,"soft core: opacity peaks at 1.6 on tick 2 and is 0 after 5 ticks");
+        double prev=2;
+        for(int i=0;i<=200;i++) {
+            double r=i/200.0,a=CombatHitLook.CoreTexAlpha(r);
+            Check(a<=prev+1e-12,"soft core alpha monotone non-increasing at r "+r);prev=a;
+            if(r>=.95)Check(a==0,"soft core alpha is 0 from r .95 (no hard rim) at r "+r);
+            else Check(Math.Abs(a-Math.Pow(1-r,2.2))<1e-12,"soft core alpha is (1-r)^2.2 at r "+r);
+        }
+        Check(CombatHitLook.CoreTexAlpha(0)==1&&CombatHitLook.CoreTexAlpha(.5)<.25&&CombatHitLook.CoreTexAlpha(1.2)==0,"soft core: opaque centre, faint mid, clear outside");
+        // Largest alpha step between 1/64-radius samples stays small: no disc edge.
+        double step=0;for(int i=0;i<64;i++)step=Math.Max(step,CombatHitLook.CoreTexAlpha(i/64.0)-CombatHitLook.CoreTexAlpha((i+1)/64.0));
+        Check(step<.12,"soft core: no alpha step above .12 between neighbouring samples");
+        for(int row=0;row<7;row++) {
+            Check(CombatHitLook.CoreTexRgb(row,0)==0xfff4d0,"soft core centre colour #fff4d0 row "+row);
+            Check(CombatHitLook.CoreTexRgb(row,.5)==CoreTable[row]&&CombatHitLook.CoreTexRgb(row,.9)==CoreTable[row],"soft core mid and rim colour is the element core colour row "+row);
+        }
+    }
     // docs/5.1임펙트디자인/ENEMY_HIT_IMPACT_G1_20261104.md: one lump, four beats; no crescent, no dots, no screen flash, 2-tick hold, no kick.
     static void G1Contract()
     {
@@ -35,6 +56,7 @@ static class Program
             Check(Math.Abs(custom.First(c=>c.Mode==CombatClipMode.Core).Width-100*coreH[tier])<1e-9,"G1 core scales with the measured hero height "+tag);
         }
         Check(CombatHitLook.CoreRgb.SequenceEqual(CoreTable),"G1 core colour table is the §2.2 palette");
+        SoftCore();
         Check(CombatHitAnchor.Applies(true,5,FeedbackKind.EnemyHit,CombatClipMode.Core)&&!CombatHitAnchor.Applies(false,5,FeedbackKind.EnemyHit,CombatClipMode.Core),"core follows the visible body like the other hit layers");
         foreach(var kind in new[]{FeedbackKind.EnemyHit,FeedbackKind.EnemyCrit,FeedbackKind.BossHit})foreach(int el in new[]{-1,0,1,2,3,4,5,6}) {
             int row=el>=0&&el<=5?el:6;bool heavy=kind!=FeedbackKind.EnemyHit;var t=SparkTable[row];

@@ -35,7 +35,11 @@ namespace Exoduser.UnityPort.Vfx
         readonly SpriteRenderer[] bloodGround=new SpriteRenderer[CombatBloodDecals.Capacity];
         readonly Material bloodFloor;
         readonly Material add,alpha,whiteAlpha;
-        readonly Sprite dot,coreDisc;
+        readonly Sprite dot;
+        // Soft warm core: one baked texture per element row (KiSlashAdditive ignores sprite colour), shader _Opacity carries the curve.
+        readonly Texture2D[] coreTextures=new Texture2D[7];readonly Sprite[] coreSprites=new Sprite[7];
+        readonly Material coreAdd;readonly MaterialPropertyBlock coreBlock=new MaterialPropertyBlock();
+        static readonly int OpacityId=Shader.PropertyToID("_Opacity");
         readonly System.Random random=new System.Random(20261103); // presentation RNG only
         public int Hits,Parries,Deaths,RollStarts,RollEnds,DrawnFrames,MissingSheets;
         public bool ReducedMotion;
@@ -64,7 +68,10 @@ namespace Exoduser.UnityPort.Vfx
             whiteAlpha=new Material(alpha);whiteAlpha.SetFloat("_Flat",1);
             bloodFloor=new Material(alpha);bloodFloor.SetFloat("_DepthTest",4); // LEqual in the legacy floor path
             dot=Sprite.Create(Texture2D.whiteTexture,new Rect(0,0,1,1),new Vector2(.5f,.5f),100);
-            coreDisc=KiImpactView.CoreDisc(100);
+            var coreShader=Resources.Load<Shader>("Shaders/KiSlashAdditive");
+            if(coreShader==null)throw new InvalidOperationException("Missing combat KiSlashAdditive shader");
+            coreAdd=new Material(coreShader);coreAdd.SetFloat("_DepthTest",8);
+            for(int row=0;row<7;row++)BakeCore(row);
             ParryPushIn=parry.ParsePushIn(Environment.GetCommandLineArgs());
             lineTexture=new Texture2D(64,4,TextureFormat.RGBA32,false){filterMode=FilterMode.Bilinear,wrapMode=TextureWrapMode.Clamp};
             var linePixels=new Color32[64*4];
@@ -83,6 +90,18 @@ namespace Exoduser.UnityPort.Vfx
             // immediately before the camera renders (URP and Built-in).
             RenderPipelineManager.beginCameraRendering+=BeforeCamera;
             Camera.onPreCull+=BeforeBuiltinCamera;
+        }
+        void BakeCore(int row) {
+            int n=CombatHitLook.CoreTexSize;
+            var tex=new Texture2D(n,n,TextureFormat.RGBA32,false){filterMode=FilterMode.Bilinear,wrapMode=TextureWrapMode.Clamp};
+            var pixels=new Color32[n*n];
+            for(int y=0;y<n;y++)for(int x=0;x<n;x++) {
+                double dx=x+.5-n*.5,dy=y+.5-n*.5,r=Math.Sqrt(dx*dx+dy*dy)/(n*.5);
+                uint rgb=CombatHitLook.CoreTexRgb(row,r);
+                pixels[y*n+x]=new Color32((byte)(rgb>>16),(byte)(rgb>>8),(byte)rgb,(byte)Math.Round(255*CombatHitLook.CoreTexAlpha(r)));
+            }
+            tex.SetPixels32(pixels);tex.Apply();coreTextures[row]=tex;
+            coreSprites[row]=Sprite.Create(tex,new Rect(0,0,n,n),new Vector2(.5f,.5f),100);
         }
         SpriteRenderer Make(string name,Material material) {
             var go=new GameObject(name);go.transform.SetParent(parent,false);
@@ -134,8 +153,8 @@ namespace Exoduser.UnityPort.Vfx
                 EnforceCapacity(spec.Mode,e);
                 int cap=spec.Mode==CombatClipMode.Death?20:60;
                 if(clips.Count>=cap){ReleaseRenderer(clips[0].renderer);clips.RemoveAt(0);}
-                var renderer=Make("Combat "+e.Kind+" "+(spec.Sheet??spec.Mode.ToString()),spec.Flat?whiteAlpha:spec.Additive?add:alpha);
-                if(sheet==null)renderer.sprite=coreDisc;
+                var renderer=Make("Combat "+e.Kind+" "+(spec.Sheet??spec.Mode.ToString()),spec.Mode==CombatClipMode.Core?coreAdd:spec.Flat?whiteAlpha:spec.Additive?add:alpha);
+                if(sheet==null)renderer.sprite=coreSprites[Math.Max(0,Math.Min(6,spec.Element))];
                 clips.Add(new Clip{renderer=renderer,spec=spec,sheet=sheet,source=e});
             }
         }
@@ -305,7 +324,9 @@ namespace Exoduser.UnityPort.Vfx
                     angle=-Mathf.Atan2(b.y-a.y,b.x-a.x);}
                 Place(c.renderer,x,y,w*(float)c.spec.Stretch,h,angle,camera);
                 if(rigAnchor.HasValue&&(rigHit||rigDeath))c.renderer.transform.position+=rigAnchor.Value.Point-NativeRemodel3D.Point(c.source.X,c.source.Y);
-                c.renderer.color=c.spec.Mode==CombatClipMode.Core?Rgb(CombatHitLook.CoreColor(c.spec.Element,age-c.spec.Delay),(float)c.spec.Alpha(age)):new Color(1,1,1,(float)c.spec.Alpha(age));DrawnFrames++;i++;
+                if(c.spec.Mode==CombatClipMode.Core){c.renderer.GetPropertyBlock(coreBlock);coreBlock.SetFloat(OpacityId,(float)(c.spec.Alpha(age)*CombatHitLook.CorePeakOpacity));c.renderer.SetPropertyBlock(coreBlock);c.renderer.color=Color.white;}
+                else c.renderer.color=new Color(1,1,1,(float)c.spec.Alpha(age));
+                DrawnFrames++;i++;
             }
             for(int i=0;i<dust.Count;) {
                 var d=dust[i];float age=tick-d.born;var spec=d.spec;
@@ -332,6 +353,6 @@ namespace Exoduser.UnityPort.Vfx
         static void Release(UnityEngine.Object o){if(Application.isPlaying)UnityEngine.Object.Destroy(o);else UnityEngine.Object.DestroyImmediate(o);}
         static void ReleaseRenderer(SpriteRenderer r){owned.Remove(r);Release(r.gameObject);}
         public void Reset(){foreach(var c in clips)ReleaseRenderer(c.renderer);clips.Clear();foreach(var p in parryLines)ReleaseRenderer(p.renderer);parryLines.Clear();foreach(var d in dust)ReleaseRenderer(d.renderer);dust.Clear();rollBorn=-1000;clock.Reset();meleeFlash.enabled=false;parryBorn=meleeFlashBorn=-1000;timeline.Reset();bloodDecals.Reset();foreach(var r in bloodGround)if(r!=null){r.enabled=false;NativeGroundSkillSurface.Project(r);}rollDustTick=-1;shakeBorn=-1000;shake=0;}
-        public void Dispose(){RenderPipelineManager.beginCameraRendering-=BeforeCamera;Camera.onPreCull-=BeforeBuiltinCamera;Reset();ReleaseRenderer(meleeFlash);Release(meleeFlashMaterial);Release(line);Release(lineTexture);foreach(var r in bloodGround)if(r!=null)ReleaseRenderer(r);foreach(var sheet in sheets.Values)if(sheet!=null)foreach(var frame in sheet.frames)Release(frame);sheets.Clear();Release(dot);Release(coreDisc);Release(puff);Release(puffTexture);Release(add);Release(alpha);Release(whiteAlpha);Release(bloodFloor);}
+        public void Dispose(){RenderPipelineManager.beginCameraRendering-=BeforeCamera;Camera.onPreCull-=BeforeBuiltinCamera;Reset();ReleaseRenderer(meleeFlash);Release(meleeFlashMaterial);Release(line);Release(lineTexture);foreach(var r in bloodGround)if(r!=null)ReleaseRenderer(r);foreach(var sheet in sheets.Values)if(sheet!=null)foreach(var frame in sheet.frames)Release(frame);sheets.Clear();Release(dot);foreach(var s in coreSprites)Release(s);foreach(var t in coreTextures)Release(t);Release(coreAdd);Release(puff);Release(puffTexture);Release(add);Release(alpha);Release(whiteAlpha);Release(bloodFloor);}
     }
 }

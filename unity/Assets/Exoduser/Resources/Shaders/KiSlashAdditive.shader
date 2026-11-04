@@ -1,10 +1,10 @@
 Shader "EXODUSER/KiSlashAdditive"
 {
-    Properties { [PerRendererData] _MainTex ("Original silver sheet", 2D) = "white" {} [PerRendererData] _Opacity ("Source opacity", Float) = 1 _RigPixelMode ("Rig pixel style", Float) = 0 [PerRendererData] _PixelFrameRect ("Frame UV bounds", Vector) = (0,0,1,1) }
+    Properties { [PerRendererData] _MainTex ("Original silver sheet", 2D) = "white" {} [PerRendererData] _Opacity ("Source opacity", Float) = 1 _RigPixelMode ("Rig pixel style", Float) = 0 [PerRendererData] _PixelFrameRect ("Frame UV bounds", Vector) = (0,0,1,1) _DepthTest ("Depth test", Float) = 4 }
     SubShader
     {
         Tags { "Queue"="Transparent" "RenderType"="Transparent" "CanUseSpriteAtlas"="False" }
-        Cull Off Lighting Off ZWrite Off Blend One One
+        Cull Off Lighting Off ZWrite Off Blend One One ZTest [_DepthTest]
         Pass
         {
             CGPROGRAM
