@@ -41,8 +41,11 @@ namespace Exoduser.UnityPort {
   public string EventId{get;private set;}
 
   public NativeDeathOverlay(){
-   defs=JsonUtility.FromJson<Defs>(Resources.Load<TextAsset>("Data/death_web").text);
-   foreach(var t in defs.atlas)tok[t.n]=t;foreach(var l in defs.petLines)lines[l.id]=l;
+    var asset=Resources.Load<TextAsset>("Data/death_web");
+    if(asset!=null)try{defs=JsonUtility.FromJson<Defs>(asset.text);}catch(ArgumentException e){Debug.LogError("[사망] 대사 자료 해석 실패: "+e.Message);}
+    if(defs==null){Debug.LogError("[사망] 대사 자료 누락");defs=new Defs();}
+    if(defs.atlas!=null)foreach(var t in defs.atlas)if(t!=null&&!string.IsNullOrEmpty(t.n))tok[t.n]=t;
+    if(defs.petLines!=null)foreach(var l in defs.petLines)if(l!=null&&!string.IsNullOrEmpty(l.id))lines[l.id]=l;
   }
   float Now{get{return Time.unscaledTime;}}
   float Age{get{return ForcedAge.HasValue?ForcedAge.Value:Now-start;}}
@@ -55,11 +58,11 @@ namespace Exoduser.UnityPort {
   }
   public void Show(Info value){
    info=value;active=true;start=Now;BuildChoices();
-   var list=new List<string>(defs.petPool);for(int i=list.Count-1;i>0;i--){int j=rng.Next(i+1);var t=list[i];list[i]=list[j];list[j]=t;}
+   var list=new List<string>(defs.petPool??new string[0]);for(int i=list.Count-1;i>0;i--){int j=rng.Next(i+1);var t=list[i];list[i]=list[j];list[j]=t;}
    EventId=PickEvent();var s=new List<string>{EventId};s.AddRange(list);seq=s.ToArray();seqIdx=0;SetLine(0);
   }
   public void Hide(){active=false;}
-  void SetLine(int i){var l=lines[seq[i%seq.Length]];CrowLine=l.crow;CatLine=l.cat;}
+  void SetLine(int i){PetLine l;if(seq==null||seq.Length==0||!lines.TryGetValue(seq[i%seq.Length]??"",out l)){CrowLine=CatLine="";return;}CrowLine=l.crow;CatLine=l.cat;}
 
   // ---- resources ----
   static Color C(int r,int g,int b,float a=1f){return new Color(r/255f,g/255f,b/255f,a);}
@@ -87,10 +90,10 @@ namespace Exoduser.UnityPort {
    return 3*(1-t)*t*t+t*t*t;
   }
   // Numeric probes for the capture receipt (compared with the web opacity series).
-  public float DebugFade(float age){return EaseOut(age/defs.timing.fade);}
+  public float DebugFade(float age){return defs.timing!=null?EaseOut(age/defs.timing.fade):0;}
   public float DebugTitleOpacity(float age){return TitlePulse(age);}
   float TitlePulse(float age){
-   var T=defs.timing;float ph=Mathf.Repeat(age+PulseOffset,T.titlePulse)/T.titlePulse;float seg=ph<.5f?ph*2:(1-ph)*2;float e=Mathf.SmoothStep(0,1,seg);
+   var T=defs.timing;if(T==null)return 0;float ph=Mathf.Repeat(age+PulseOffset,T.titlePulse)/T.titlePulse;float seg=ph<.5f?ph*2:(1-ph)*2;float e=Mathf.SmoothStep(0,1,seg);
    return Mathf.Lerp(T.titleMin,T.titleMax,e);
   }
 
@@ -153,7 +156,7 @@ namespace Exoduser.UnityPort {
   // Long languages (th, el, ru, de ...) shrink by whole point sizes until the run fits maxW at the widest tracking; no ellipsis, no wrap. Floor = 60% of the design size.
   readonly Dictionary<string,int> fitCache=new Dictionary<string,int>();
   int FitSize(string t,Font f,int size,float lsEm,float maxW,int floor=0){
-   string key=f.name+"|"+size+"|"+lsEm+"|"+maxW+"|"+floor+"|"+t;if(fitCache.TryGetValue(key,out var hit))return hit;
+   string key=(f!=null?f.name:"")+"|"+size+"|"+lsEm+"|"+maxW+"|"+floor+"|"+t;if(fitCache.TryGetValue(key,out var hit))return hit;
    int min=Mathf.Min(size,Mathf.Max(9,floor,Mathf.RoundToInt(size*.6f))),s=size;while(s>min&&SpacedWidth(t,f,s,s*lsEm)>maxW)s--;
    fitCache[key]=s;return s;
   }
@@ -241,7 +244,8 @@ namespace Exoduser.UnityPort {
 
   // ---- death replay screen (#deathReplay, CSS 649-656): shape only, there is no recording in Unity ----
   public void DrawReplayShape(float progress01,float remainingSeconds){
-   Init();var old=GUI.matrix;var color=GUI.color;
+    if(defs.replayScreen==null||!tok.ContainsKey("g:☠"))return;
+    Init();if(atlas==null)return;var old=GUI.matrix;var color=GUI.color;
    try {
     GUI.matrix=Matrix4x4.identity;Fill(new Rect(0,0,Screen.width,Screen.height),Color.black);
     float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s)/2,(Screen.height-1080*s)/2,0),Quaternion.identity,Vector3.one*s);
