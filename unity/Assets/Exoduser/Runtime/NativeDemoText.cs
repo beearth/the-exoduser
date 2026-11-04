@@ -19,9 +19,13 @@ namespace Exoduser.UnityPort
    if(loaded)return;
    var asset=Resources.Load<TextAsset>("Data/demo_text");
    if(asset==null)throw new InvalidOperationException("Missing demo_text locale resource");
-   var data=JsonUtility.FromJson<Bundle>(asset.text);codes=data.codes;
-   foreach(var entry in data.entries){if(entry.texts.Length!=codes.Length)throw new InvalidOperationException("Incomplete demo text: "+entry.key);entries.Add(entry.key,entry.texts);}
-   foreach(var line in data.bossLines)bossLines.Add(line.key,line.text);loaded=true;
+    var data=JsonUtility.FromJson<Bundle>(asset.text);
+    if(data==null||data.codes==null||data.entries==null||data.bossLines==null)throw new InvalidOperationException("Incomplete demo text bundle");
+    var keys=new HashSet<string>();
+    foreach(var entry in data.entries)if(entry==null||string.IsNullOrEmpty(entry.key)||entry.texts==null||entry.texts.Length!=data.codes.Length||!keys.Add(entry.key))throw new InvalidOperationException("Invalid demo text entry");
+    keys.Clear();foreach(var line in data.bossLines)if(line==null||string.IsNullOrEmpty(line.key)||!keys.Add(line.key))throw new InvalidOperationException("Invalid boss text entry");
+    codes=data.codes;foreach(var entry in data.entries)entries.Add(entry.key,entry.texts);
+    foreach(var line in data.bossLines)bossLines.Add(line.key,line.text);loaded=true;
   }
   public static string Get(string key,string locale,string fallback=null)
   {

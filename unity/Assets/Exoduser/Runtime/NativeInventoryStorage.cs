@@ -29,11 +29,11 @@ namespace Exoduser.UnityPort {
             IronTile(head,iron320,320);Grad(head,C(25,22,25,.30f),C(17,16,21,.45f));
             Fill(new Rect(head.x,head.y,head.width,1),C(87,90,90));Fill(new Rect(head.x,head.yMax-1,head.width,1),C(87,90,90));
             float x=67;string count=State.Bag.Count.ToString();
-            Txt(new Rect(x,200,300,23),"가방 (",14,C(216,213,207),500);x+=TextWidth("가방 (",14,500);
-            Serif(new Rect(x,200,300,23),count,14,C(240,223,189),true);x+=SerifWidth(count,14,true,0);
-            Txt(new Rect(x,200,300,23),"/",14,C(216,213,207),500);x+=TextWidth("/",14,500);
-            Serif(new Rect(x,200,300,23),InventoryState.BagMax.ToString(),14,C(156,159,159),false);x+=SerifWidth("300",14,false,0);
-            Txt(new Rect(x,200,300,23),")",14,C(216,213,207),500);
+            Txt(new Rect(x,200,TextWidth("가방 (",14,500),23),"가방 (",14,C(216,213,207),500);x+=TextWidth("가방 (",14,500)+CountRunGap;
+            Serif(new Rect(x,200,SerifWidth(count,14,true,0),23),count,14,C(240,223,189),true);x+=SerifWidth(count,14,true,0)+CountRunGap;
+            Txt(new Rect(x,200,TextWidth("/",14,500),23),"/",14,C(216,213,207),500);x+=TextWidth("/",14,500)+CountRunGap;
+            Serif(new Rect(x,200,SerifWidth(InventoryState.BagMax.ToString(),14,false,0),23),InventoryState.BagMax.ToString(),14,C(156,159,159),false);x+=SerifWidth("300",14,false,0)+CountRunGap;
+            Txt(new Rect(x,200,TextWidth(")",14,500),23),")",14,C(216,213,207),500);
             var sort=new Rect(820.4f,197.5f,66,28);
             PlateFace(sort,false);
             Txt(sort,"↕ 정렬",12,C(194,191,185),500,TextAnchor.MiddleCenter,true);
