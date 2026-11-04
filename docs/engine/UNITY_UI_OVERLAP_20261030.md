@@ -504,3 +504,9 @@ PC 컴파일 결과: 추가 공통b04ddd73b를fe236a8bc로 정상 병합한 뒤 
 |2560×1600|2→0|1→0|32.59/429.63/239.56→0/0/0|
 
 회귀67/67 PASS(기존31 포함). 새 계약 RED1회→구현 후 GREEN1회, 같은 테스트2회 실패 없음. 통합 PC 컴파일1회 Core126/Runtime267 exit0·오류0, 경고2/531. Player/정식 빌드/새 캡처0. 분석기 임계/알파/clip/문자열/source 제외 변경0. 입력이 같은 옛1410장 전수 재분석은 반복하지 않았다. 실제 전후 수치는 새 Mac 같은 해상도 캡처를 받은 후 기록한다.
+
+## 11-04 가방 개수 줄 퇴보 30건 (바탕화면 교체 래칫 9e97b55ae)
+
+- 출처: NativeInventoryWebLayout.cs:104(Txt)와 NativeInventoryOssuary.cs:59(Serif)가 "가방 ("·숫자·"/"·"300"·")"를 맞대어 그림. 0 끝 606.63+8.5=615.13, "/" 시작 615.1(SerifWidth). 측정 방식 차이로 0.03px 겹침.
+- 수정: 조각 사이 1px(NativeInventory.CountRunGap), Serif 묶음 칸=실제 advance, 개수 줄 Txt·Serif 칸=실제 폭. 인벤토리(Dock)·봉안함·보관함 3곳.
+- 검증: inventory-count-runs 5/0, 참조 컴파일 오류 0. 후보 빌드 겹침 검사와 1x 전후 비교는 다음 단계.

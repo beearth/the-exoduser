@@ -9,6 +9,7 @@
 2026-11-04 13:20 QA 성능 표본기(CTO 데모 v0 성능 측정): Runtime NativePerfProbe(--unity-perf-probe, -output)가 매 프레임 프레임 시간·FrameTimingManager CPU 메인/렌더·GPU 시간·렌더 카운터(드로콜·SetPass·배치·삼각형·정점·그림자 캐스터·스킨 메시)를 NativeGame.PerfSegment(로비·필드 진입·먼 적·캠프·보스 아레나) × 화면 크기별로 모아 perf-probe.json에 쓴다. --perf-off shadows는 URP 그림자 거리 0(A/B). PortVerification.Build -frameTimingStats 1은 그 빌드에서만 Frame Timing Stats를 켜고 복원한다(ProjectSettings 무변경). Core·게임 규칙 무변경, QA 인자 없을 때 동작 0. Roslyn 사전 검사 Player/Editor 오류 0.
 
 2026-11-04 SND-14 드루이드 v9.1 새 동작 소리 R9(사운드 총괄, CTO 배정): 등장 intro_reveal·1→2 phase12_collapse·2→3 phase23_collapse·침강 death_sink·P3 HuskHeap의 청음 후보 45개 + R8 등장·침강 후보 합본 64줄 pick_r9.html(v9.1 클립 Core 틱 렌더 영상 동기). DEMO_1-1_SOUND_SCENES 보스 줄을 R9로 갱신하고 §2.1을 추가했다. R5·R6 카드 18장 동작 영상 추가를 기록했다. SOUND_LEAD_MASTER에 R9 절을 추가했다. 코드 변경 없음, 청음·Unity 반영 전.
+2026-11-04 바탕화면 교체 퇴보 30건(UI 겹침 래칫, 전부 가방 개수 "가방 (0/300)") 수정: 인벤토리·봉안함·보관함 개수 줄이 두 글꼴 5조각을 맞대어 그리는데 CalcSize와 검사기 xAdvance가 소수점 아래로 달라 맞닿은 조각이 겹침으로 읽힘(45fb2ee48부터 Serif가 묶음 칸으로 기록). 조각 사이 1px(CountRunGap), Serif·Txt 칸을 실제 폭으로(300px·r.width+total·40 제거). 검사 inventory-count-runs 5/0, 참조 컴파일 오류 0. 화면 판정 전(claude/unity-pc-ossuary-count-20261104).
 
 2026-11-04 12:55 UI 겹침 알려진 목록 동결(래칫 시작): unity/Tools/ui-overlap/known-overlaps.json 381항목·707건. 9e97b55ae 전 화면 검사 캡처를 analyzer 37315650d로 재분석(1094→737, 사망 외곽선 오탐 357 제거)하고 출처 줄 git blame으로 바탕화면 db26d55f6 이전 결함만 담았다. 퇴보 30건(NativeInventoryOssuary.cs:59, 45fb2ee48 — 인벤토리·봉안함·보관함 개수 '0 / 300'·'가방 (10)' 숫자와 '/'·괄호 겹침)은 목록에 없어 교체를 막는다(유니티 총괄 수정 중). 목록은 줄이기만 한다.
 
