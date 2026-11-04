@@ -38,7 +38,7 @@ namespace Exoduser.UnityPort
             public string result, device, buildGuid;
             public string frontendFailure;public List<string> frontendBoundaries=new List<string>();
             public int width, height;
-            public float seconds, averageFps, frameP95Ms, frameP99Ms, longestFrameMs;
+            public float seconds, averageFps, minFps, frameP95Ms, frameP99Ms, longestFrameMs;
             public int renderedFrames, gearChanges, deaths, retries, policyChanges;
             public string controlPolicyScope="Optional fullrun-policy.json changes virtual boss inputs only; accepted settings are recorded in policy-history.jsonl. Disabled by default.";
             public string timingScope="Raw frames include capture/resizes and concurrent work. Long-frame records are buffered and flushed after play; the final trace flush is outside the timing sample.";
@@ -72,7 +72,7 @@ namespace Exoduser.UnityPort
             Screen.SetResolution(width, 1080, FullScreenMode.Windowed);
             var receipt = new FullRunReceipt { device = SystemInfo.graphicsDeviceName, buildGuid = Application.buildGUID, width = width, height = 1080 };
             float started = Time.realtimeSinceStartup;
-            receipt.fieldScale=fieldLayout.Scale;receipt.fieldEnemies=fieldLayout.AreaEnemies?"area":"keep";receipt.seed=(int)SourceStarterFixture.Seed;
+            receipt.fieldScale=fieldLayout.Scale;receipt.fieldEnemies=fieldLayout.EnemyMode;receipt.seed=(int)SourceStarterFixture.Seed;
             fullRunStageEvent=e=>receipt.stageMarks.Add(new FullRunStageMark{kind=e.Kind.ToString(),tick=e.Tick,kills=Simulation.Kills,seconds=Time.realtimeSinceStartup-started});
             yield return new WaitForSecondsRealtime(1);
             lobby.SetPlaybackFocus(true); // Hidden desktop has no foreground focus; retain the ordinary entry flow.
@@ -315,7 +315,7 @@ namespace Exoduser.UnityPort
                 }
                 if(receipt.result==null)receipt.result="time-limit";
                 var timings=performance.milliseconds;receipt.renderedFrames=timings.Count;
-                if(timings.Count>0){double total=0;foreach(float ms in timings)total+=ms;timings.Sort();receipt.averageFps=(float)(1000*timings.Count/total);receipt.frameP95Ms=timings[(int)((timings.Count-1)*.95)];receipt.frameP99Ms=timings[(int)((timings.Count-1)*.99)];receipt.longestFrameMs=timings[timings.Count-1];}
+                if(timings.Count>0){double total=0;foreach(float ms in timings)total+=ms;timings.Sort();receipt.averageFps=(float)(1000*timings.Count/total);receipt.frameP95Ms=timings[(int)((timings.Count-1)*.95)];receipt.frameP99Ms=timings[(int)((timings.Count-1)*.99)];receipt.longestFrameMs=timings[timings.Count-1];receipt.minFps=receipt.longestFrameMs>0?1000/receipt.longestFrameMs:0;}
             }
             finally
             {

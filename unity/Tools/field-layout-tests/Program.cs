@@ -19,9 +19,25 @@ class Program
         if(type==null)return 1;
         var source=JsonSerializer.Deserialize<MapData>(File.ReadAllText(args[0]),new JsonSerializerOptions{IncludeFields=true});
         string original=JsonSerializer.Serialize(source,new JsonSerializerOptions{IncludeFields=true});
-        foreach(double k in new[]{1.0,1.3,1.5})foreach(bool area in new[]{false,true})
+        // New modes first fail as a runtime assertion, rather than a compile error.
+        FieldLayout linear=null, middle=null;
+        try { linear=FieldLayout.FromArguments(new[]{"--field-scale","2","--field-enemies","linear"}); }
+        catch(ArgumentException) { }
+        try { middle=FieldLayout.FromArguments(new[]{"--field-scale","2","--field-enemies","1.5"}); }
+        catch(ArgumentException) { }
+        Check(linear!=null,"x2-linear CLI profile");
+        Check(middle!=null,"x2 intermediate CLI profile");
+        if(linear==null||middle==null)return 1;
+        Check(ReferenceEquals(FieldLayout.FromArguments(Array.Empty<string>()),FieldLayout.Original),"default profile unchanged");
+        foreach(string invalid in new[]{"0","-1","NaN","Infinity","3","typo"}) {
+            bool rejected=false;try { FieldLayout.FromArguments(new[]{"--field-enemies",invalid}); }catch(ArgumentException){rejected=true;}
+            Check(rejected,"invalid enemy factor "+invalid);
+        }
+        foreach(double k in new[]{1.0,1.3,1.5,2.0})foreach(string mode in new[]{"keep","area","linear","1.5"})
         {
-            dynamic profile=type.GetMethod("Create").Invoke(null,new object[]{k,area});
+            if(k!=2&&(mode=="linear"||mode=="1.5"))continue;
+            bool area=mode=="area";
+            dynamic profile=FieldLayout.FromArguments(new[]{"--field-scale",k.ToString(System.Globalization.CultureInfo.InvariantCulture),"--field-enemies",mode});
             var data=(MapData)typeof(SourceMap).GetMethod("CreateFieldData").Invoke(null,new object[]{source,profile});
             var map=new SourceMap(data);
             var s=new Simulation(new SimulationConfig{StageIndex=0,EnemyAiEnabled=false,StartX=data.startX,StartY=data.startY,PlayerMaxHp=1000000});
@@ -30,7 +46,7 @@ class Program
             s.FloorTile=(x,y)=>!map.Blocked((x+.5f)*40,(y+.5f)*40);
             s.Stage.InitializeField(data.tiles,data.width);s.Stage.Enabled=true;
             s.EnableFieldSpawns();s.SpawnStartEnemies();s.InitRegions();s.EnableFieldBosses();
-            string tag=k+"/"+(area?"area":"keep");
+            string tag=k+"/"+mode;
             Check(data.width==(int)(200*k)&&data.height==data.width,tag+" dimensions");
             Check(Near(data.startX,4020*k)&&Near(data.startY,7420*k),tag+" start");
             Check(map.CanMove(data.startX,data.startY,15),tag+" start radius 15");
@@ -38,8 +54,9 @@ class Program
             int gx=(int)Math.Floor(4020*k/40),gy=(int)Math.Floor(220*k/40),ey=(int)Math.Floor(300*k/40);
             Check(s.Stage.FieldGateCx==gx&&s.Stage.FieldGateY==gy,tag+" quantized gate");
             Check(s.Stage.Exits.All(t=>t.Y==ey&&Math.Abs(t.X-gx)<=1),tag+" quantized entry");
-            int expected=area?(int)Math.Round(168*k*k):168;
+            int expected=area?(int)Math.Round(168*k*k):mode=="linear"?336:mode=="1.5"?252:168;
             Check(s.Stage.TotalSpawned==expected&&s.Regions.Sum(r=>r.Total)==expected,tag+" planned total");
+            if(k==2&&mode=="linear")Check(s.Regions.Select(r=>r.Total).SequenceEqual(new[]{46,120,106,64}),tag+" proportional regions");
             int[] regions={2,3,2,3,2,1,0,1,1,2,0,1,3,3};
             for(int i=0;i<14;i++) {
                 var h=s.SpawnHoles.Holes[i];var old=SpawnHoleSystem.Stage0Holes[i];

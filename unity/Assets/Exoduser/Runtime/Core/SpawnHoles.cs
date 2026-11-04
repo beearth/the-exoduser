@@ -43,7 +43,7 @@ namespace Exoduser.UnityPort.Core
             layout=profile??FieldLayout.Original;
             Holes.Clear();
             int before=0;
-            foreach(var h in Stage0Holes){int count=EnemyPools.SpawnHoleCount(h[2],0);Holes.Add(new SpawnHole { X = layout.Coordinate(h[0]), Y = layout.Coordinate(h[1]), Size = h[2], Room = (int)h[3],PlannedCount=layout.AreaEnemies?(int?)layout.PlannedCount(count,before):null });before+=count;}
+            foreach(var h in Stage0Holes){int count=EnemyPools.SpawnHoleCount(h[2],0);Holes.Add(new SpawnHole { X = layout.Coordinate(h[0]), Y = layout.Coordinate(h[1]), Size = h[2], Room = (int)h[3],PlannedCount=layout.CustomEnemyCounts?(int?)layout.PlannedCount(count,before):null });before+=count;}
         }
 
         // gameFrame = _gameFrame; px/py = P; sp = frame step
