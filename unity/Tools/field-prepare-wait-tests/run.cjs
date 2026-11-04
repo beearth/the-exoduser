@@ -84,6 +84,9 @@ static class P{
 fs.writeFileSync(work+'/Program.cs',program);
 fs.writeFileSync(work+'/Prepare.csproj',`<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><EnableDefaultCompileItems>false</EnableDefaultCompileItems><NuGetAudit>false</NuGetAudit><ImplicitUsings>disable</ImplicitUsings><Nullable>disable</Nullable></PropertyGroup><ItemGroup><Compile Include="Program.cs"/><Compile Include="${runtime}/NativeTransitionPrepare.cs"/><Compile Include="${runtime}/Core/ScreenTransitionFlow.cs"/></ItemGroup></Project>`);
 fs.writeFileSync(work+'/NuGet.Config','<configuration><packageSources><clear/></packageSources></configuration>');
+// NU1100 root cause (11-04): with no global.json the host picks SDK 10, which needs net8 ref packs from NuGet (sources are cleared).
+// Pin an installed 8.0 SDK, whose bundled targeting pack builds net8.0 offline. EXO_DOTNET_SDK overrides the version.
+fs.writeFileSync(work+'/global.json',JSON.stringify({sdk:{version:process.env.EXO_DOTNET_SDK||'8.0.301',rollForward:'latestFeature'}}));
 const dotnet=process.env.EXO_DOTNET||'C:/Program Files/dotnet/dotnet.exe';
 const env={...process.env,DOTNET_CLI_HOME:work+'/dotnet-home',DOTNET_CLI_TELEMETRY_OPTOUT:'1',DOTNET_ADD_GLOBAL_TOOLS_TO_PATH:'false',DOTNET_NOLOGO:'1',TEMP:work+'/temp',TMP:work+'/temp'};
 let r=cp.spawnSync(dotnet,['build',work+'/Prepare.csproj','--verbosity','quiet','-p:UseSharedCompilation=false'],{env,cwd:work,encoding:'utf8',windowsHide:true,stdio:['ignore','pipe','pipe']});
