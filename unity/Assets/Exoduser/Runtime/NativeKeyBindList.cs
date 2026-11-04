@@ -227,35 +227,47 @@ namespace Exoduser.UnityPort {
   // ---- keyboard & mouse tab ----
   float DrawKbm(){
    var rows=keys.Listed;int n=rows.Count;
-   for(int i=0;i<n;i++){
-    float rx=(i%2)*(QColW+QColGap),ry=QRowsTop+(i/2)*QRowPitch;DrawKbmRow(rows[i],rx,ry);
+   float rowY=QRowsTop;
+   for(int i=0;i<n;i+=2){
+    var left=MeasureKbmRow(rows[i]);var right=i+1<n?MeasureKbmRow(rows[i+1]):default(KbmRowText);
+    float height=Mathf.Max(left.Height,i+1<n?right.Height:0);
+    DrawKbmRow(rows[i],0,rowY,height,left);if(i+1<n)DrawKbmRow(rows[i+1],QColW+QColGap,rowY,height,right);
+    rowY+=height;
    }
-   int rowCount=(n+1)/2;float resetY=QRowsTop+rowCount*QRowPitch+18.5f;LastResetY=resetY;
+   float resetY=rowY+18.5f;LastResetY=resetY;
    string reset=T(ui.texts.reset);float rw=Mathf.Max(200,Width(reset,semi,16,16f,0)+48);
    DrawResetButton(R(0,resetY,rw,40),reset,true);
    return resetY+40;
   }
 
-  void DrawActionName(Rect row,string name){
-   Run(row.x+QPad,row.y+28,name,serif,17,17f,0,QBone);
-  }
-  void DrawKbmRow(string action,float rx,float ry){
-   var row=R(rx,ry,QColW,QRowPitch);bool paint=Event.current.type==EventType.Repaint;
+  struct KbmRowText {internal string Main,Alt;internal List<string> Names;internal float MainWidth,AltWidth,NamePitch,Height;}
+  KbmRowText MeasureKbmRow(string action){
    bool mainL=Listening&&listenAction==action&&!listenAlt,altL=Listening&&listenAction==action&&listenAlt;string alt=keys.Secondary(action);
    string mainText=mainL?T(ui.texts.listenMain):NativeA15SettingsLabels.GetKeyByKo(KeyBindings.KeyName(keys.Primary(action),false),LocaleCode,KeyBindings.KeyName(keys.Primary(action),English));
    string altText=altL?T(ui.texts.listenAlt):(alt!=null?NativeA15SettingsLabels.GetKeyByKo(KeyBindings.KeyName(alt,false),LocaleCode,KeyBindings.KeyName(alt,English)):T(ui.texts.alt));
-   float altW=Mathf.Max(QAltW,Width(altText,KeyFont(altText),14,14f,0)+26+(alt!=null?22:0)),altX=QColW-QPad-altW;
-   float mainW=Mathf.Max(70,Width(mainText,KeyFont(mainText),14,14f,0)+26),mainX=altX-10-mainW;
-   var mainR=R(rx+mainX,ry+11,mainW,QKeyH);var altR=R(rx+altX,ry+11,altW,QKeyH);
+   float altW=Mathf.Max(QAltW,Width(altText,KeyFont(altText),14,14f,0)+26+(alt!=null?22:0)),mainW=Mathf.Max(70,Width(mainText,KeyFont(mainText),14,14f,0)+26);
+   string name=NativeA15SettingsLabels.GetKeyByKo(KeyBindings.Name(action,false),LocaleCode,KeyBindings.Name(action,English));var st=Style(LabelFont(name,serif),17);
+   float available=NativeUiTextFlow.KeyNameWidth(QColW,QPad,mainW,altW);var names=NativeUiTextRun.Wrap(name,available,g=>st.CalcSize(new GUIContent(g)).x);
+   float measured=0;foreach(var line in names)measured=Mathf.Max(measured,st.CalcHeight(new GUIContent(line),available));
+   float pitch=NativeUiTextFlow.KeyPitch(measured);return new KbmRowText{Main=mainText,Alt=altText,Names=names,MainWidth=mainW,AltWidth=altW,NamePitch=pitch,Height=NativeUiTextFlow.KeyRowHeight(names.Count,pitch)};
+  }
+  void DrawActionName(Rect row,KbmRowText text){
+   for(int i=0;i<text.Names.Count;i++)Run(row.x+QPad,row.center.y+(i-(text.Names.Count-1)*.5f)*text.NamePitch,text.Names[i],serif,17,17f,0,QBone);
+  }
+  void DrawKbmRow(string action,float rx,float ry,float height,KbmRowText text){
+   var row=R(rx,ry,QColW,height);bool paint=Event.current.type==EventType.Repaint;
+   bool mainL=Listening&&listenAction==action&&!listenAlt,altL=Listening&&listenAction==action&&listenAlt;string alt=keys.Secondary(action);
+   float altW=text.AltWidth,altX=QColW-QPad-altW,mainW=text.MainWidth,mainX=altX-10-mainW;
+   var mainR=R(rx+mainX,ry+(height-QKeyH)*.5f,mainW,QKeyH);var altR=R(rx+altX,ry+(height-QKeyH)*.5f,altW,QKeyH);
    var delR=new Rect(altR.xMax-22,altR.y,22,QKeyH);
    LastKeyRects.Add(mainR);LastKeyRects.Add(altR);
    if(paint&&inView(row)){
     if(mainL||altL){Grad(row,C(107,110,110,.18f),C(52,55,55,.086f),true);Fill(new Rect(row.x,row.y,3,row.height),C(152,155,155));}
     else if(Hover(row))Fill(row,C(116,119,119,.06f));
     Fill(new Rect(row.x,row.yMax-1,row.width,1),QLineSoft);
-    DrawActionName(row,NativeA15SettingsLabels.GetKeyByKo(KeyBindings.Name(action,false),LocaleCode,KeyBindings.Name(action,English)));
-    DrawKey(mainR,mainText,mainL,1f,false);
-    DrawKey(altR,altText,altL,1f,alt==null&&!altL,alt!=null?22:0);
+    DrawActionName(row,text);
+    DrawKey(mainR,text.Main,mainL,1f,false);
+    DrawKey(altR,text.Alt,altL,1f,alt==null&&!altL,alt!=null?22:0);
     if(alt!=null){var dc=Hover(delR)?C(176,179,179):C(136,139,139);RunCentered(delR.center.x,delR.center.y,"✕",regular,14,14f,0,dc,1f,5);}
    }
    if(alt!=null&&Click(delR))keys.ClearSecondary(action);
