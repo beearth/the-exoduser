@@ -279,6 +279,18 @@ namespace Exoduser.UnityPort
         public void PlayItemPickup(){PlayUiSample(new[]{"pickup_item","pickup_rummage1","pickup_rummage2","pickup_rummage3","pickup_rummage4","pickup_rummage5"}[rng.Next(6)],.5f,Jitter(1,.05f));}
         public void PlayLevelUp(){UiRevision++;Receipt.requested++;Play(Make("ui_levelup",1f,1f,Vector3.zero));}
         public void PlayNow(string key,float volume,float pitch,Vector3 world){Receipt.requested++;direct.Add(Make(key,volume,pitch,world));}
+        // Walking footsteps (web game.html walk: _walkDist grows by the walked distance, the 8-frame walk cycle is 32 px a frame and
+        // frames 0 and 4 play footstep / footstep2 at .55, rate _r(.9,.15) -- one step every 128 px). Rolls and knockback don't count.
+        float walkLastX,walkLastY,walkDist;bool walkHas;
+        public void TrackWalk(float x,float y,bool walking){
+            if(!walkHas){walkLastX=x;walkLastY=y;walkHas=true;return;}
+            float dx=x-walkLastX,dy=y-walkLastY;walkLastX=x;walkLastY=y;
+            float d=Mathf.Sqrt(dx*dx+dy*dy);
+            if(!walking||d<=0f||d>48f)return;   // more than 48 px in one frame is a teleport or stage swap, not a step
+            int before=(int)(walkDist/128f);walkDist+=d;int after=(int)(walkDist/128f);
+            if(after==before)return;
+            Receipt.requested++;direct.Add(Make(after%2==1?"footstep2":"footstep",.55f,Jitter(.9f,.15f),new Vector3(x/100,-y/100,0)));
+        }
         public void Flush()
         {
             if(ListenerAt!=null)listenerObject.transform.position=ListenerAt();
@@ -340,7 +352,7 @@ namespace Exoduser.UnityPort
             AudioListener.GetOutputData(output,0);
             foreach(float value in output)Receipt.listenerPeak=Mathf.Max(Receipt.listenerPeak,Mathf.Abs(value));
         }
-        public void Reset(){pending.Clear();direct.Clear();lastAt.Clear();lastPlayerHitTick=-1000;lastBossHitTick=-1000;lastBossHitVariant=-1;lastComboTick=-1000;comboAtten=1;foreach(var v in voices){v.source.Stop();v.ends=0;}}
+        public void Reset(){pending.Clear();direct.Clear();lastAt.Clear();walkHas=false;walkDist=0;lastPlayerHitTick=-1000;lastBossHitTick=-1000;lastBossHitVariant=-1;lastComboTick=-1000;comboAtten=1;foreach(var v in voices){v.source.Stop();v.ends=0;}}
         public void Dispose(){Reset();foreach(var v in voices)UnityEngine.Object.Destroy(v.source.gameObject);voices.Clear();if(listenerObject!=null)UnityEngine.Object.Destroy(listenerObject);}
     }
 }

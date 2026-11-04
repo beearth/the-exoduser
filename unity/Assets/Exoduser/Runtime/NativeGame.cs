@@ -281,6 +281,8 @@ namespace Exoduser.UnityPort
         {
             sound.CurrentTick=Simulation.TickCount;
             while(Simulation.Feedback.Count>0){var e=Simulation.Feedback.Dequeue();if(!ImpactActive||e.Kind!=FeedbackKind.FeelContact)impacts.Handle(e);sound.Handle(e);}
+            var p=Simulation.Player;   // walking footsteps: the web plays them from the walk cycle, the Core sends no event
+            sound.TrackWalk(p.X,p.Y,!Simulation.RollActive&&p.KnockbackX==0&&p.KnockbackY==0&&p.State!="dead"&&p.State!="fallen");
             sound.Flush();
         }
         void BuildProps()
