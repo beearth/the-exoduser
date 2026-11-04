@@ -138,7 +138,7 @@ CTO 정정 반영: **Yellowsky 엔진·렌더(UE5·Lumen·볼류메트릭)는 �
 | 15 | ★D15-11 데모 4GB 한도 vs codex_asset_size 다운로드 ≤1.0GiB·설치 ≤2.0GiB → 4GB 상한 + 1.0/2.0 1차 목표, baseline Build Report 먼저 · D15-12 Resources 정리는 키샷과 분리한 별도 레인, 삭제·이동은 사용자 승인 |
 
 ### 3.4c 〔출처 재확인 필요〕 — 추천이 미검증·접속불가 수치에 기대는 결정 (CTO 규칙 11-05)
-기준: PC Codex 출처 검증 `docs/0마스터플랜/GAME_STUDY/SOURCE_VERIFY_20261105.md`(codex/unity-study-source-verify-20261105 @ 6c3aac6). URL 618개 중 확인 60(9.7%) · 접속불가 131 · 미검증 427 · 불일치 0.
+기준: PC Codex 출처 검증 `docs/0마스터플랜/GAME_STUDY/SOURCE_VERIFY_20261105.md`(codex/unity-study-source-verify-20261105). 회차 1 @ 6c3aac6: 618 URL 중 확인 60. **회차 2 CX22-2 @ 7522375(현행 기준): 681 URL = 확인 138 · 불일치 3 · 접속불가 133 · 미검증 407.** 불일치 3건(UE5 Mac Xcode 요구사항, Sekiro 6F/30fps 병기, UE 에셋 diff 불가 전제)은 매뉴얼 표 근거에 없음. CX22가 지적한 매뉴얼 정정 4건(15 32:9, 15 베이크 "비용 0", 04 키포즈 3~5장 [추정], 09 10.5px 가독 근거 아님) 반영 완료.
 모든 문서 §3 수치 표에 **"출처 상태" 열**(검증됨 / 미검증 / 접속불가 / 내부 / 우리 기준)을 넣었다. 애매하면 미검증으로 보수 처리.
 
 | 문서 | 검증됨 | 미검증 | 접속불가 | 내부 | 우리 기준 | 합계 |
@@ -146,10 +146,11 @@ CTO 정정 반영: **Yellowsky 엔진·렌더(UE5·Lumen·볼류메트릭)는 �
 | 01~05 | 7 | 107 | 8 | 52 | 44 | 218 |
 | 06~10 | 13 | 50 | 6 | 112 | 56 | 237 |
 | 11~15 | 20 | 50 | 0 | 148 | 128 | 346 |
-| **전체** | **40 (5%)** | 207 | 14 | 312 | 228 | 801 |
+| **전체(회차 1)** | **40 (5%)** | 207 | 14 | 312 | 228 | 801 |
+| **회차 2 반영 후** | **약 54 (7%)** — 01~07 +7, 08~15 +7(복합 셀 포함, 15 Diablo IV 사양 1건은 검증됨→미검증) | 약 193 | 14 | 312 | 228 | 801 |
 
-**재확인 필요 22건:** D01-1 · ★D01-6 · ★D02-1 · D02-2 · D02-3 · D02-13 · D03-3 · D03-4 · ★D03-8 · ★D06-2 · D06-3 · ★D06-6 · ★D07-4 · D09-10 · D10-8 · ★D11-8 · D11-9 · D11-11 · D12-2 · ★D13-7 · D13-9 · D14-9.
-→ 이 22건은 사용자 결정 전에 출처를 다시 열거나 Mac 실측으로 대체한다. 수치 대부분이 "내부·우리 기준"이라는 것은 **외부 근거가 아니라 우리 Mac 비교판 판정이 최종 근거**라는 뜻이다.
+**재확인 필요 20건**(회차 2에서 D02-3·D02-13 해제 — Neutral/ACES 공식 문서 확인)**:** D01-1 · ★D01-6 · ★D02-1 · D02-2 · D03-3 · D03-4 · ★D03-8 · ★D06-2 · D06-3 · ★D06-6 · ★D07-4 · D09-10 · D10-8 · ★D11-8 · D11-9 · D11-11 · D12-2 · ★D13-7 · D13-9 · D14-9.
+→ 이 20건은 사용자 결정 전에 출처를 다시 열거나 Mac 실측으로 대체한다. 수치 대부분이 "내부·우리 기준"이라는 것은 **외부 근거가 아니라 우리 Mac 비교판 판정이 최종 근거**라는 뜻이다.
 
 ### 3.5 2차 반영 연구 입력
 PC Codex: codex_urp_mood · codex_keyshot_composition · codex_yellowsky · codex_tech_budget · our_tech_audit · codex_cinematic_text · codex_motion_direction · codex_frame_data · codex_combat_impact · codex_vfx_direction · codex_3d_pixel · codex_3d_pixel_small_team · codex_menus_loot · codex_sound_music(모두 `docs/0마스터플랜/GAME_STUDY/`, 원격 codex/unity-study-*·codex/unity-audit-our-tech-20261105). 클라우드: TOOLCHAIN_20261105(claude/unity-cloud-toolchain-20261105, 병합 시 이 폴더), REFERENCE_INDEX_20261105(reference-scout), ENGINE_DECISION_20261105(ENG), keyshot_verify_mac(claude/unity-mac-report-20261104).
@@ -163,6 +164,7 @@ PC Codex: codex_urp_mood · codex_keyshot_composition · codex_yellowsky · code
 3. 결정 반영 후 문서별 "확정" 표시 → DIRECTION_RESET 4단계(키샷 한 장면부터, Mac 판정).
 
 ## 변경 이력
+- 2026-11-05 5차: CX22-2(7522375)로 출처 상태 갱신, 정정 4건, 재확인 필요 22→20.
 - 2026-11-05 4차: 전 문서 §3 표에 출처 상태 열(SOURCE_VERIFY 6c3aac6), 색인 §3.4c 재확인 필요 22건.
 - 2026-11-05 3차 반영: Yellowsky 갱신본·codex_asset_size·FIRST_SCENE_PLAN·codex_synthesis·UE5 시험 계획·HUD G1 갱신·codex_hud_critique, CTO 정정(Yellowsky 엔진 미확인). 색인 §3.4b.
 - 2026-11-05 2차 반영: PC Codex 연구 14건·TOOLCHAIN·REFERENCE_INDEX·ENGINE_DECISION·Mac 키샷 검증을 15개 문서에 보강, 색인 §2 도구·§3.1 충돌·§3.4 신규 항목 갱신.
