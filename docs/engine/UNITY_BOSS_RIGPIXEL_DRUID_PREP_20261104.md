@@ -134,3 +134,26 @@
 | 띠 | `G:/exoduser/tmp/design-review/20261104_boss_1-1_oldman_cleanup/v8_2_<slash12·slash·burrow·heart>_strip_1x·3x.png`, `v8_2_walk_side_compare.png`(위 v8.1·아래 v8.2) |
 | 판정 | 제작자 PASS(Mac 판정 대기): 34° 1x에서 잠행이 "웅크려 감기 → 솟아 찌르기"로 읽힌다. 도달 오차는 모두 3cm 안 |
 | 남은 결함 | ① 치마 관통 788~1,094정점(허리띠 쪽 깊이 묻힌 정점, 두 허벅지 사이 가운데 깃털 — 정적 가중으로는 한계) ② 옆 p25·p75 끝단 깃털 가로 막대 모양 그대로 ③ `slam_rec`·`fissure_rec` 오른손 7.9cm, `grab_lunge` 오른발 2.5cm(이번 범위 밖, v8.1과 같음). ①②는 Mac 1x 캡처에서 보이면 Unity `CapeSpring` 계열 2차 움직임이나 깃털 카드 연결로 고친다 |
+
+## 10. v9 / v9.1 — 껍질 9부위·페이즈 전환·등장/침강 (2026-11-04, CTO 순회 배정, Blender 서브에이전트, 유료 0)
+
+보드에서 남은 가장 큰 일은 기획서 A안의 5.2m **껍질**이었다(지금까지 Unity에는 노인 코어만 있었다). M1 껍질 메시를 9부위로 나눠 노인 뼈에 붙이고, 페이즈 형태·전환 클립·등장·침강을 만들었다. 기술 VFX는 임펙트 총괄 몫이라 넣지 않았다.
+
+| 항목 | v9.1 값 |
+|---|---|
+| GLB | `I:/EXODUSER-Storage/boss/oldman-v2-20261104/v9_1/oldman_druid_v9_1.glb` (SHA-256 `d1527e54760ead9f2f778315dadb8a17e362fa7ac441f01f81ef8c432fc35265`), `.blend`, `v9_1_report.json`. 바탕 v9: `.../v9/oldman_druid_v9.glb` (`84256872…`) |
+| P3 소품 | `.../v9_1/HuskHeap_P3.glb` (SHA-256 `89fa7b1a132a85d63d0261176ca051b5770105d6014b2ee1385a6b360b0a4855`), 뼈 없는 정적 메시 37,994 tris, 높이 0.67m, 폭 약 6.7×5.2m, 좌표계 = 껍질 원점 |
+| 껍질 9부위 | Skull 2,096 · Crown 2,641 · ChestPlate_L 6,491 · ChestPlate_R 6,120 · BackHump 21,967(+탯줄 뿌리 1,236) · RootArm_R 5,461 · Arm_L+지팡이 13,822 · Leg_L 7,003 · Leg_R 7,069 = 73,906 tris. 재질 `druid_husk_bark`·`druid_bone`·`druid_feather`·`druid_glow`, 텍스처 점 0 |
+| 리그 | 소켓 `HuskSocket_<부위>` 9 + 뿌리 1. 팔·다리는 강체 대신 스킨(쪼그릴 때 발 뜸·팔 도달 문제). 보조 뼈 `HK_*` 22개(노인 뼈 회전 복사·위치 1.45배·몸통 회전 0.5~0.6배), `HP_*` 6(경첩·숨김), `OM_Lift`(노인 들어올림), `OM_Staff`(노인 지팡이 숨김). **`Hips` 부모 = `OM_Lift`, `StaffSocket_L` 부모 = `OM_Staff`로 바뀜**(월드 위치·31클립 키 그대로). Humanoid 임포트에서 보조 뼈가 살아남는지는 Unity 확인 필요(Generic이면 문제없음) |
+| 페이즈 상태 | 1프레임 클립 `state_P1`·`state_P2`·`state_P3`(마스크 레이어나 SetActive로 사용). P1 = 닫힌 껍질, 노인 숨김. P2 = 가슴 판 135° 열림·30cm 내림, 두개골 -35°·왕관 -30° 뒤로 젖힘, 노인 +1.40m(가슴 틈이 껍질 틈보다 0.3m 위). P3 = 껍질 계층 숨김 + `HuskHeap_P3` 배치, 노인 단독(껍질 원점에서 정면 -y로 2.7m 앞). BodyScale(1/.85/.70)은 GLB에 없음 — Unity 루트에서 적용 |
+| 새 클립(60fps) | `intro_reveal` 165f(바닥에서 솟아 크기 공개, 왕관 펼침, f130 가슴 틈 점등, 끝 P1 idle) · `phase12_collapse` 120f(끝 P2) · `phase23_collapse` 120f(껍질이 낮게 무너지고 노인이 걸어 나옴, f108에 껍질 끄고 더미 배치, 끝 = v8.2 `idle` 첫 자세) · `death_sink` 150f(P3 기준: 노인이 더미 쪽으로 다가가 웅크리고 3.3m 가라앉음, 더미 가라앉기는 Unity가 소품 이동). 기존 31클립 이름·길이 그대로(재임포트 38액션) |
+| 수치 | 발 고정 클립 껍질 발 가로 이동 ≤0.08cm. 걷기 껍질 발 3.18m/s(노인 2.11m/s의 1.5배 — Core 걷기 속도 조정 때 참고), `charge_run` 루트 3.69m. `phase23_collapse` 껍질 발 끌림 40.7cm |
+
+**판정(34° 1x, Blender EEVEE 4단 셀 근사, 제작자)**
+- **P1: 조건부 PASS.** 사슴 두개골·뿔·덩치가 위에서 크게 읽힌다(첫 보스 크기 공개).
+- **P2: RETOUCH(조건부).** v9 → v9.1에서 노인이 보이는 화면 픽셀이 1,726 → 3,223(보스의 4.6% → 7.4%, 가리지 않을 때의 60%)으로 늘었다. 하지만 노인이 껍질과 비슷한 어두운 팔레트라 위에서는 여전히 작고 어둡다. → Unity rig-pixel 팔레트에서 노인 가면 뼈색·가슴 틈 발광 대비로 먼저 확인하고, 부족하면 가슴 판을 더 젖히고 두개골 턱을 깎는다.
+- **P3: 구조 PASS, 크기 FAIL.** 껍질이 뿔 달린 낮은 더미가 되고 노인이 앞에 혼자 서며, 더미가 노인을 가리는 픽셀은 0이다. 그러나 BodyScale .70을 노인 표시에도 적용하면 노인이 영웅의 1.05배(113px vs 108px)로 너무 작다. **결정(총괄)**: P3 노인의 **표시 크기는 영웅 × 2.0**으로 한다. Core 판정 크기(BodyScale·반경)는 바꾸지 않고, Unity 뷰 스케일만 키운다(약 2.62u, 노인 모델 2.82m 기준 표시 배율 약 0.93).
+- 남은 결함: 슬램 때 껍질 팔이 노인보다 길어 두 손 지팡이 접촉이 깨진다. 슬램 발동에서 뿔이 몸통 높이까지 내려온다. P2·P3 노인-껍질 근접 정점 221~1,655(P2)가 있다. 지팡이 밑동 뿌리는 M1 원형 그대로다.
+- Unity 연결(보스 아레나 레인) 할 일: v8.2 → v9.1 교체, 페이즈 상태·BodyScale 루트 적용, P3 껍질 계층 끄기와 `HuskHeap_P3` 배치(f108), P3 노인 위치를 껍질 원점에서 2.7m 앞으로, P3 노인 표시 영웅×2.0, `intro_reveal`·`death_sink`를 보스 등장·최종 사망 연출에 연결.
+
+미리보기: `G:/exoduser/tmp/design-review/20261104_boss_1-1_oldman_cleanup/v9_1_phases_3x.png`(P1|P2|P3, 34°+옆), `v9_1_phase23_strip_3x.png`, `v9_1_death_strip_3x.png`, v9 판 `v9_phases_3x.png`·`v9_intro_strip_3x.png`·`v9_skills_p1_3x.png`.

@@ -131,8 +131,40 @@
 3. 시각 제안 2건(내려찍기 54, 분출 135)은 소리 코드의 지연만 바꾼다.
 4. PC는 컴파일까지만 한다. 소리 수(Receipt)와 한 판 청음은 Mac에서 판정한다.
 
+## 4.1 사용자 선택 결과와 반영 (2026-11-04)
+
+사용자가 `pick_r7.html`을 제출했다(`_submitted/r7__20261103T222911077Z.json`, 2026-11-04 07:29 KST, 메모 0건). 채택 10키는 Unity `Resources/Audio/RM1/druid_<키>.mp3`로 넣고 시작 음량 .5로 연결했다. 브랜치는 `claude/unity-pc-sound-r5`이고, PC 컴파일 오류 0이다. 청음은 Mac에서 한다.
+
+| 키 | 결과 | 채택 가공본(`_out/sfx_forge/_r7/single/`) | Unity 연결 신호(Core 무변경) |
+|---|---|---|---|
+| `druid_slash3_ground` | 채택 | `slash3_ground_b2` | 3타 예고 이벤트 + `SlashLinkTele+(SlashActive−SlashHitAt)`(채찍 3타와 같은 시각) |
+| `druid_slam_lift` | 채택 | `slam_lift_b1` | 보스 상태 `bossSlamWind`에서 `St2 ≤ AimFixTicks`가 된 첫 틱 |
+| `druid_debris` | 채택 | `debris_c3` | 내려찍기 예고 + `Tele+4` / Fx `wallSlam` +2틱 / 균열 `Exploded` +2틱 |
+| `druid_charge_kick` | 채택 | `charge_kick_c3` | `bossChargeWind`에서 `St2 ≤ AimFixTicks`가 된 첫 틱(원거리 잡기가 돌진 예고로 바뀐 경우도 포함) |
+| `druid_wall_crash` | 채택 | `wall_crash_c1` | Core Fx `wallSlam` |
+| `druid_grab_step` | **전부 안 맞음** | — | 연결 없음 |
+| `druid_grab_bind` | 채택 | `grab_bind_c3` | 보스 상태가 `bossGrab`으로 들어간 틱 |
+| `druid_absorb` | **전부 안 맞음** | — | 연결 없음 |
+| `druid_grab_throw` | 채택 | `grab_throw_b3` | 보스 상태가 `bossGrab`에서 나간 틱(던지기·탈출, 사망 제외) |
+| `druid_burrow_move` | **전부 안 맞음** | — | 연결 없음 |
+| `druid_erupt_warn` | 채택 | `erupt_warn_a2` | Core `druid_erupt` 이벤트(분출 예고 시작) 그 틱 |
+| `druid_root_spikes` | 채택 | `root_spikes_a3` | 분출 순간(위 이벤트 + `BurrowEruptWarn`) / 균열 `Exploded` 그 틱 |
+| `druid_staff_tap` | **전부 안 맞음**(4차 연속) | — | 키는 비어 있는 그대로 |
+| `druid_heart_vein` | 채택 | `heart_vein_c2` | 심장 박동 예고 이벤트(rate 1) / 박동 1·2 + `HeartbeatPause`(rate 1.5) |
+| `druid_heart_wave` | **전부 안 맞음** | — | 연결 없음(박동은 기존 `druid_heartbeat`만) |
+
+- 시각 제안 2건을 적용했다. 사용자는 이 시각으로 장면을 들었다. 소리 코드의 지연만 바꿨다.
+  - `druid_slam`: `Tele+SlamActive` → `Tele+2`
+  - `druid_erupt`: Core 이벤트 즉시 → `BurrowEruptWarn`틱 늦춤. 같은 소리가 두 번 나지 않게 즉시 재생은 막았다.
+- 코드 구성
+  - 이벤트 + 지연으로 내는 소리는 `NativeFeedbackAudio`의 `SlamOnLanding`·`DruidExtras`에 있다.
+  - 상태·Fx를 보고 내는 소리는 새 `NativeDruidSoundCues`에 있다. Core 읽기 전용이고, `NativeBossView`의 `prevBossState`와 같은 방식이다.
+  - 둘 다 `PlayDruidCue`를 거쳐 Receipt·큐 규칙을 그대로 탄다.
+- "전부 안 맞음" 5키는 같은 방향으로 다시 만들지 않는다. `staff_tap`은 4번 연속 불채택이라 방향을 바꿀지 총괄이 판단한다. 나머지 4키(걸음·흡수·땅속 이동·파동)는 그 순간을 소리 없이 둔다.
+
 ## 5. 기록
 
 | 날짜 | 내용 |
 |---|---|
 | 2026-11-04 | G1 장면 목록 작성. 7기술 × 단계별 소리·키·상태·VFX 짝을 정리했다. 빈 순간은 15키다. 시각 제안 2건(`druid_slam` 58 → 54, `druid_erupt` 101 → 135)을 냈다. R7 후보 135개와 `pick_r7.html`(동작 영상·시간표 동기)을 만들었고, 청음 전이다 |
+| 2026-11-04 | 사용자 선택 결과(§4.1): 채택 10키·전부 안 맞음 5키. 채택 10키를 Unity에 연결했다(`claude/unity-pc-sound-r5`, 시각 제안 2건 적용, PC 컴파일 오류 0). Mac 청음 전 |

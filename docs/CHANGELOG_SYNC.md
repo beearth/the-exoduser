@@ -12,11 +12,34 @@
 
 2026-11-04 로비 영상 정지 포스터(claude/unity-pc-lobby-poster-20261104): 영상 준비 전 검은 화면 제거 — fdg_intro·warrior_story 첫 프레임 포스터 신규, `NativeLobbyVideo.Presentable`(frameReady 뒤 한 프레임)로 영상 전환, 실패 시 포스터 유지. 소스 계약 35/0, 5어셈블리 컴파일 오류 0. PC 검사·컴파일만, 화면 판정 전.
 
+2026-11-04 12:55 UI 겹침 알려진 목록 동결(래칫 시작): unity/Tools/ui-overlap/known-overlaps.json 381항목·707건. 9e97b55ae 전 화면 검사 캡처를 analyzer 37315650d로 재분석(1094→737, 사망 외곽선 오탐 357 제거)하고 출처 줄 git blame으로 바탕화면 db26d55f6 이전 결함만 담았다. 퇴보 30건(NativeInventoryOssuary.cs:59, 45fb2ee48 — 인벤토리·봉안함·보관함 개수 '0 / 300'·'가방 (10)' 숫자와 '/'·괄호 겹침)은 목록에 없어 교체를 막는다(유니티 총괄 수정 중). 목록은 줄이기만 한다.
+
+2026-11-04 12:50 BuildLoop UI 겹침 래칫(CTO 결정): ui-overlap/known-filter.cjs가 겹침을 출처 파일(줄 번호 제외)+겹친 두 문자열+화면+언어로 known-overlaps.json과 대조, 목록 밖 겹침이 하나라도 있으면 FAIL. BuildLoop Apply-UiKnownList는 모두 목록 안일 때만 UI 게이트를 통과시키고, 목록 건수가 state.uiKnownMin보다 늘면 래칫 위반 FAIL(줄어들기만). 목록은 바탕화면 db26d55f6에 이미 있던 결함(출처 줄 git blame 기준)만 담는다. 9e97b55ae 분류: 기존 1064·퇴보 30(NativeInventoryOssuary.cs:59, 45fb2ee48). 시험 known-filter.test.cjs 5·buildloop-ui-known-test.ps1 6. 문서 unity/Tools/devtools/buildloop/README.md.
+
+2026-11-04 12:40 UI 겹침 analyzer 사망 대사 외곽선 오탐 수정(도구 총괄, BuildLoop 9e97b55ae FAIL 1094건 중 357건): NativeDeathOverlay가 death-black-outline 프로필을 글자 외곽선(101~102줄)과 펫 대사 줄(207줄, 0,1.5/±2,0/0,-1/0,3 × fit) 두 오프셋으로 그리는데 analyzer는 앞 세트만 알아 같은 대사의 외곽선 패스를 서로 다른 글자로 셌다. 프로필 오프셋에 207줄 세트를 추가(동일 문자열·동일 출처·같은 크기·선언 거리만). 실제 보고서 프레임 픽스처 death-pet-outline-9e97.json으로 26건→0, 다른 대사 충돌·선언 밖 거리는 계속 검출. 런타임·검사 화면·합격 기준 무변경. 나머지 HUD·탭바·대장간 등은 UI 수정 대상.
+
+2026-11-04 세계관 인트로 v23 Unity 적용(사용자 "이제 게임에 적용해 배포", "인게임에 넣어"): `NativeLobby.WorldMovie`를 `world_intro_v23_newopening_steam.mp4`(90,144,119B, SHA256 `6abe88a5…c05278c9`)로 바꾸고, 복원·내보내기 도구 입력을 `unity/Tools/MediaRecovery/world-intro-v23-newopening-canonical/`(30MiB×3)로 옮겼다. v22b 0~13.15초만 새 도입부 3컷이고 철문부터·음성·자막·+0.4초 오프셋은 v22b와 같다. 웹은 main `06ac6882b`. Mac 빌드 성공(0 errors), `--unity-canonical-world-smoke`에서 실행 중 바이트·해시 일치, 6/35/93초 자막·자연 종료 후 로비 화면 확인. 같은 검사 FAIL 4개(door prepared·invitation fade·door fade·ends naturally into lobby)는 오늘 v22b 빌드에서도 동일한 기존 실패다. 문서: [인게임 인트로](cinematic/WORLD_INTRO_INGAME_20260907.md) 2026-11-04 절.
+2026-11-04 패링 Core 분열탄 남는 차이 3건 문서화(shQuery 공유 버퍼 별칭=웹 버그로 판단·Unity 미재현, 분열탄 fallen 정지, ClearHazards 소거), oracle README·2_3 사실 표기 정정 — 몬스터_공격시스템.md
+
+2026-11-04 12:40 Core 결함 수정 4차(앵글러 물 에너지탄 Q 분열탄·접촉 넉백): 분열탄 5발을 웹처럼 플레이어 투사체 규칙으로 비행·타격(신설 Simulation.ParryShot.cs TickParryShot, DruidBoss.Projectiles에서 위임): 2프레임마다 900px 유도 0.7rad(맞힌 적 제외, 이어 필드보스), 사거리 900, 마법 벽 반사 3회·반사 쿨 6, 겹친 앵글러 전부 타격 후 소멸(피격 쿨이어도), 일반 적 ~~(dmg×elMul)·넉백·약점 기절 +35·스플래시 69px 50%(+투구)·투구 magicPen·통일 관통 50+pierceFlat. 대형탄은 400px 충돌 필터 제외(Q 해제 띠 500). 접촉: 슬라이드 100 먼저 + HurtOptions.NoKnock(비례 넉백만 생략, 보호막 넉백 유지). 2차의 ReflectHoming/ReflectContact 분열탄 분기 제거. 무지개탄 Q 전용·E 불가·블루콩 유도반사·다른 탄 무변경. parry-reflect-oracle 172,955 checks 0 failures(anglerEnergy 1,512케이스·anglerRuntime 47·parryShot 80시나리오 웹 pProjs 루프 원문 대조), druid-boss 5,421,635/0, fieldboss 302,271/0, weapon-xbow 108,780/0, parry-reflect-sim 26/0, parry-g2 87/0, 공용 실행기 Unity 컴파일 ok(오류 0, compile 20.7초, job 1022979e). 남는 차이(pProj 풀 소진 시 관통 0, _uBowPierce, 웜·화마귀, 처리 순서, 사거리 끝 1프레임, 일반 탄 400px 반경)는 몬스터_공격시스템. 문서: 2_3 사실 표기 정정, 몬스터_공격시스템, UNITY_PARRY_REFLECT, UNITY_ORACLE_COVERAGE_AUDIT, UNITY_M1_REGION_RB, oracle README.
+
+2026-11-04 12:30 Core 결함 수정(앵글러 물 에너지탄 패링): Unity가 크라켄 물 에너지탄을 forbidden으로 분류해 Q 패링이 안 되던 것을 웹(fbEnergy 터미널)과 같게 수정. ProjSpec/BossProjectile.FbEnergy, ClassOf=magic, Q=원본 제거+5발 분열(자원×10, 청콩 반사 없음), E 제외, 접촉=무적 중에도 소멸·비무적에만 피해+슬라이드 100, 벽 접촉 8방향 샘플. 무지개탄 Q 전용·다른 탄 분류 불변. parry-reflect-oracle 61509 checks 0 failures(anglerEnergy 12766·anglerRuntime 35 신설), druid-boss-oracle 5421635 checks 0 mismatches, fieldboss-oracle 302271 checks 0 failures, 참조 컴파일 오류 0. 문서: 2_3 사실 표기, 몬스터_공격시스템.
+
+2026-11-04 11:20 공용 실행기 단독 검사 중 새 Editor 작업 대기(CTO): BuildLoop 단독 Player(_player_exclusive.json)가 도는 동안 새 Editor 서버 시작·batch·상주 서버 제출은 끝날 때까지 기다린다. 돌고 있는 Editor는 끊지 않음, 검사 기준 무변경. 원인=a7db9621b UI 겹침 검사가 다른 레인 Editor 빌드와 겹쳐 14fps로 1800초 제한 초과. 실행기 `2026.11.04-exclusive2`, exclusive-test 12건. 문서 unity/Tools/devtools/README.md.
+
+2026-11-04 11:05 UI 겹침 검사 Player 시간 제한 1800→3600초(도구 총괄, BuildLoop a7db9621b FAIL): 단독 실행으로 영상 준비 실패는 없어졌으나 다른 레인 Editor 빌드·대량 디스크 작업과 겹쳐 Player가 약 14fps로 느려져 2560 화면군에서 1800초 제한에 걸림(08:44 회차는 약 40fps로 861초에 3840 도달). 전 화면 행렬은 공용 PC 부하에서 30분을 넘길 수 있어 check.ps1 제한만 늘림. 판정 기준·화면 목록 무변경.
+
+2026-11-04 SND-12 R7 드루이드 7기술 효과음 Unity 연결(사운드 총괄): 사용자 선택 채택 10키(druid_slash3_ground·slam_lift·debris·charge_kick·wall_crash·grab_bind·grab_throw·erupt_warn·root_spikes·heart_vein)를 Resources/Audio/RM1에 넣고 시작 음량 .5. 연결: NativeFeedbackAudio(SlamOnLanding·DruidExtras — 예고 이벤트+DruidRemodelData 상수 지연) + 새 NativeDruidSoundCues(보스 상태 bossSlamWind·bossChargeWind·bossGrab 전환, Fx wallSlam, 균열 Exploded — Core 읽기 전용). 시각 변경 druid_slam Tele+SlamActive→Tele+2, druid_erupt 즉시→BurrowEruptWarn 늦춤. 전부 안 맞음 5키(grab_step·absorb·burrow_move·staff_tap·heart_wave)는 연결 없음. Core 무변경, PC 컴파일 오류 0, 청음은 Mac. docs: DRUID_V81_SKILL_SFX_G1 §4.1, SOUND_LEAD_MASTER R7.
+
+2026-11-04 SND-11 Unity 걷기 발소리(사운드 총괄): NativeFeedbackAudio.TrackWalk — 걸은 거리 128px마다 footstep/footstep2 번갈아 .55, rate Jitter(.9,.15), 구르기·넉백·사망 제외, 한 프레임 48px 초과 이동 무시. NativeGame.DispatchFeedback에서 호출. Core 무변경, docs/6사운드디자인/6사운드디자인.md 절 추가. PC 컴파일만, 청음은 Mac.
+
 2026-11-04 SND-13 1-1 데모 한 판 소리 장면 목록(사운드 총괄, CTO 10:05): docs/6사운드디자인/DEMO_1-1_SOUND_SCENES_20261104.md 신설. 필드·보스·출구 장면별 키·지금 상태·청음 라운드를 정리했다. 빈칸은 생체나무 맥동·호흡, 보스 처치 순간, 출구 열림·진입, 드루이드 등장(staff_tap 4회 불채택 → 등장 전체 한 소리). R8 청음 후보 74줄 pick_r8.html(카드마다 장면 영상 동기 재생). SOUND_LEAD_MASTER에 R8 절 추가. 코드 변경 없음, 청음·Unity 반영 전.
 
 2026-11-04 UI 판정 ⑥ 경미 5건 반영(codex/unity-demo-text-20261104): 로비 빈 슬롯 어두운 면, 입장 호버 ENTER 글자 뒤 타원 광(사각 테 외곽 광은 총괄 검수에서 되돌림), 그리스어 경험치 ΕΜΠ→Εμπειρία, 펫 말풍선 본문 명조, 사운드 탭 줄 끝 960→818(914), 사망 제목 크로스페이드 앞 제목 선소거. PC 검사 judge6 6/0·컴파일 오류 0만, 화면 판정 전.
 
 2026-11-04 10:15 공용 실행기 BuildLoop Player 단독 실행(CTO A안): -PcException buildloop/-Exclusive Player는 다른 Player가 끝날 때까지 기다린 뒤 혼자 돌고, 그동안 새 Player를 받지 않는다(돌던 Player는 끊지 않음, 다른 레인 동시 2슬롯 유지). 원인=QA Player 동시 4K 영상 디코드로 52a39f8f6 회차 M1 로비 영상 준비 12초 초과 33회·08:44 회차 UI 겹침 영상 준비 실패, 바탕화면 교체 막힘. 실행기 `2026.11.04-exclusive`, 시험 exclusive-test.ps1. 문서 unity/Tools/devtools/README.md.
+
+2026-11-04 1-1 실측(CTO 정정 반영): source 52a39f8f6, 빌드 1회/시작→지옥문 2판 자연 진행. 경과 평균 7.59~7.78분, 단순 거리 비례 ×1.3=9.87~10.11분/×1.5=11.39~11.67분. RM1_Slice 패키징 누락으로 2D 폴백이므로 3D 확대 결정 보류. 보스전 각 1사망, 크래시·실제 예외·USER_SAVE 변경·사용자 화면 창·잔여 0. 코드/Core 변경 0. 관측 범위·구역 시간·결함·정리 기록: docs/engine/UNITY_FULLRUN_MEASURE_20261104.md.
 
 2026-11-04 09:20 UI 겹침 검사 전면 영상 대기 10→30초(도구 총괄, BuildLoop 08:44 FAIL): 빌드·스모크 PASS 뒤 전 화면 UI 겹침 검사 14분째 UiWaitRootMovie가 world_intro_v22b_steam.mp4 준비를 10초 안에 못 봐 실패, 바탕화면 교체 안 됨. 그 시각 다른 레인 Player 2~3개가 GPU 영상 디코더를 함께 씀. QA 경로만 30초로 늘리고 실패 메시지에 prepared·frame·url을 남긴다(Runtime QA, Core·게임 화면 무변경). 11-03 09:20 실패(마우스 안전영역 역변환)는 다른 원인.
 

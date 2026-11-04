@@ -13,7 +13,7 @@
 | `ParryReflect.HomingTurn(p, tx, ty, sp)` | 반사탄 유도: 가장 가까운 적(400px 이내)을 향해 틱당 0.08rad 선회 |
 | `ParryReflect.Blast(p, targets, dotPool, hits)` | 반사탄이 적에 닿으면(접촉 반경 `max(6, r+min(18, 속도/2))`) 폭발 반경(`_aoeR` 또는 100) 안의 모든 적에게 `~~(피해×(0.8+0.2×(1−거리/반경)))`, 넉백 `18×falloff`, 독 수치. 쓰였으면 true |
 | `Simulation.ReflectInput(distance)` / `PayReflectParry(in result)` / `ReflectHoming(p)` / `ReflectContact(p)` | 시뮬레이션 쪽 연결. 탄 루프는 `ReflectInput`→`Resolve`→`PayReflectParry`를 부르고, 반사된 탄은 매 틱 `ReflectHoming`, 이동 뒤 `ReflectContact`를 부른다 |
-| `IBossReflectHost` | 드루이드 탄 루프가 쓰는 선택 인터페이스(`BossHostAdapter`가 구현). 구현하지 않는 host(oracle)는 옛 동작 그대로 |
+| `IBossReflectHost` | 드루이드 탄 루프가 쓰는 선택 인터페이스(`BossHostAdapter`가 구현). 구현하지 않는 host(oracle)는 옛 동작 그대로. 11-04 `TickParryShot(p, index)` 추가: 앵글러 물 에너지탄 Q 분열탄(`ParryMagicShot`)의 한 틱 전체를 `Simulation.ParryShot.cs`에 맡긴다 |
 
 한 줄 사용법(UI/다른 탄 루프): 적 탄이 플레이어 가까이 오면 `var r = ParryReflect.Resolve(탄, sim.ReflectInput(거리));` → `r.Outcome == Reflect`면 `sim.PayReflectParry(r)` 후 탄을 계속 날리고(친화), 이후 매 틱 `sim.ReflectHoming(탄)` → 이동 → `sim.ReflectContact(탄)`(true면 탄 제거).
 
@@ -22,7 +22,7 @@
 | 순서 | 대상 | 조건 요약 | 결과 |
 |---|---|---|---|
 | 1 | Q 누름 구역 ≤ 20px | 비친화·패링 가능 | `Absorb` (탄 소멸) |
-| 2 | 대형 에너지탄 | Q 패링 / 접촉 | `BigEnergyParry` / `BigEnergyHit` (혜성 5개 교체는 범위 밖) |
+| 2 | 대형 에너지탄 | Q 패링 / 접촉 | `BigEnergyParry` / `BigEnergyHit`. 11-04부터 앵글러 물 에너지탄(`fbEnergy`)은 `SplitBigEnergy` 5발 교체·자원 ×10, 분열탄 비행·타격은 `Simulation.ParryShot.cs`(웹 플레이어 투사체 루프, oracle `parryShot`). 사실 표: [몬스터_공격시스템](../8.0몬스터디자인/몬스터_공격시스템.md) "대형 에너지탄 반사 소유권" |
 | 3 | 물리 입/뱀탄·빨콩에 Q | 100px 안, 무적 아님 | `Consumed` (오입력, 반사 없음) |
 | 4 | 빨콩(E) | 물리 분류, `rbDeflR` 안, E 쳐내기 유효 | 속도 7로 표적(없으면 ×−4), 피해 `pParryProjDmg(…, E)×1.5`, 수명 240, **폭발 160 / ×2** |
 | 5 | 물리 입탄(E) | 같음 | 속도 max(5, 속도)로 표적(없으면 ×−2), ×1.5, 수명 180 |
@@ -58,7 +58,7 @@
 | 히트스톱 | 웹은 `G.hitStop=0`(32767 "히트스톱 완전 비활성")이라 반사 전용 히트스톱이 없다. `ParryRewards`의 `HitStopParryReflect`(7)는 상수만 있고 웹 어디서도 쓰이지 않는다. 지급은 기존 `doParry`(패링 히트스톱 6, 옵션 0이면 0)를 따른다 |
 | 패링 수업 분기(`_lessonShot`)·`_parryHomingTarget` 수업 표적 | 수업은 A18 담당. 일반 규칙은 수업 표적 대신 가장 가까운 적을 쓴다 |
 | 오입력·무지개·화이트/다크볼·회전 흡수의 **페널티 효과**(피해·넉백·화상·포이즈) | 탄이 소모된다는 사실(`Consumed`)만 보고. 효과는 기존 `HurtPlayer` 경로 |
-| 대형 에너지탄 혜성 5개 교체 | `BigEnergyParry`로 보고만 |
+| 대형 에너지탄 혜성 5개 교체 | 11-04 앵글러 물 에너지탄은 구현됨(위 2번). 화마귀 `fdEnergy`는 Unity Core에 화마귀가 없어 해당 없음 |
 | 반사 폭탄 가지(`p.bomb`), 유니크 관통·분열(`_uParrySplit`) | 아이템 시스템 이식 때 |
 | 적 독 상태(`poisonT`·`poisonStk`) | Core에 적 독 DOT이 없어 수치만 반환 |
 | `statInt()`·`statStr()` | 1(E 쳐내기와 같은 대용치) |

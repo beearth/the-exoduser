@@ -6,9 +6,9 @@ namespace Exoduser.UnityPort
  // Original frontend media in native Unity. Save/auth backends are deliberately not invoked.
  public sealed partial class NativeLobby:MonoBehaviour
  {
-  public const string WorldMovie="world_intro_v22b_steam.mp4";
-  public const string WorldMovieSha256="3b99d59bca9d84a37bb6b49067148e1ed69fefb478ff206221b59c8c952d0b0f";
-  public const long WorldMovieBytes=102204634;
+  public const string WorldMovie="world_intro_v23_newopening_steam.mp4";
+  public const string WorldMovieSha256="6abe88a5d4a5f829fb9f6c3e99cf488d79cd365ae58c52c8ddf6a469c05278c9";
+  public const long WorldMovieBytes=90144119;
   // Exact canonical audio is delayed 0.400s against the preserved source cue clock.
   public const double WorldCueOffset=.4;
   public LobbyFlow Flow{get;private set;}=new LobbyFlow();
