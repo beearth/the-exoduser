@@ -1,5 +1,5 @@
 # MANUAL 06 — 보스 디렉션: 1-1 다크 드루이드부터 (초안 2026-11-05)
-- 상태: 초안(2차 반영 11-05) | 출처 상태: SOURCE_VERIFY fea5684(CX22-3) 기준 | 연구 반영: d4_04_boss_vfx, d4_04_anim, d4_03_cam, pbz(보스 리듬 규칙10), yellowsky, codex_motion_direction, codex_frame_data, codex_vfx_direction, codex_3d_pixel, codex_3d_pixel_small_team, TOOLCHAIN_20261105, REFERENCE_INDEX_20261105 | 연구 반영 대기: No Rest for the Wicked 프레임 실측(5.1 NRFTW_REFERENCE_STUDY_20261031은 감각 원칙만; REFERENCE_INDEX가 NRftW를 보스 동작 1차 자료로 지정했으나 80.lv 원문은 Mac에서 직접 열람 필요), 드루이드 신규 모델 LOCK 시트 확정, 보스 등장·퇴장 컷 길이 Mac 실측
+- 상태: 초안(2차 반영 11-05) | 출처 상태: SOURCE_VERIFY 0a9b84e(CX22-5 최종) 기준 | 연구 반영: d4_04_boss_vfx, d4_04_anim, d4_03_cam, pbz(보스 리듬 규칙10), yellowsky, codex_motion_direction, codex_frame_data, codex_vfx_direction, codex_3d_pixel, codex_3d_pixel_small_team, TOOLCHAIN_20261105, REFERENCE_INDEX_20261105 | 연구 반영 대기: No Rest for the Wicked 프레임 실측(5.1 NRFTW_REFERENCE_STUDY_20261031은 감각 원칙만; REFERENCE_INDEX가 NRftW를 보스 동작 1차 자료로 지정했으나 80.lv 원문은 Mac에서 직접 열람 필요), 드루이드 신규 모델 LOCK 시트 확정, 보스 등장·퇴장 컷 길이 Mac 실측
 - 범위: 페이즈 구조 표현, 기술별 예고·회피 창·빈틈의 표시 규칙, 등장·퇴장·전환 연출, 보스전 카메라. / 정하지 않는 것: HP·기술 선택·프레임 길이·포이즈(Core `DruidBoss*.cs`, `DruidRemodelData.cs`가 정답). 아래 프레임 수는 Core 인용이며 변경 제안은 "Core 제안"으로 표시한다.
 
 ## 1. 목표 장면·레퍼런스 (무엇을, 왜)
@@ -79,7 +79,7 @@
 | 보스 행동 불능 | Dead Cells breach 중 적 행동 중단·기절 1.4s(84틱, 조건부 효과) | 포이즈 붕괴 그로기 90틱=1.5s, 이후 면역 300틱 (`Core/EnemyPoiseRules.cs`) | 길이가 비슷하다. 변경 제안 없음 | [단일 커뮤니티 측정, codex_frame_data] | 접속불가 |
 | 보스 stun 면역 | Hades 보스는 일반 stun 면역(지속 수치 미확인) | 붕괴 뒤 면역 300틱 | 같은 구조 | [단일] | 접속불가 |
 | 기술 예고 길이 | 대상 게임(Blasphemous Esdras 등) 전부 수치 미확인. 커뮤니티 분석 수치는 이미지 도표라 미채택 | 큰 기술 예고 32~70틱(§3.1) | 비교 불가 → Mac 실측 | [미확인] | 미검증 |
-| 막기 가능 연타 → 큰 빈틈 | Esdras Quick Attack(짧은 예고 + 공격 후 반격 기회)·Charge Attack(장거리 접근 + 회복 중 반격)이라는 구조 설명만 확인 | slam/charge 회복 70틱, 막으면 +30틱 | 구조 일치 | [단일 커뮤니티 분석, 수치 미채택] | 미검증 |
+| 막기 가능 연타 → 큰 빈틈 | Esdras Quick Attack(짧은 예고 + 공격 후 반격 기회)·Charge Attack(장거리 접근 + 회복 중 반격)이라는 구조 설명만 확인 | slam/charge 회복 70틱, 막으면 +30틱 | 구조 일치 | [단일 커뮤니티 분석, 수치 미채택] | 검증됨(구조 설명 한정, R4) |
 | 치명타 정지 | Dead Cells 1F(07번 §3.4) | 포이즈 붕괴 시 Core 슬로 20 (`GroggySlowMo`) | 보스 붕괴 슬로 억제 여부는 D07-2 | [사실] | 검증됨 |
 - 해석: 보스 행동 불능 길이를 "히트스톱"과 섞지 않는다. 정지(접촉 순간)와 행동 불능(경직)은 따로 적는다.
 

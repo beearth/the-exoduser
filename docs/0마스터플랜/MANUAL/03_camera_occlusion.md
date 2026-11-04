@@ -1,6 +1,6 @@
 # MANUAL 03 — 카메라·가림 투명화·실루엣·보스 아레나 줌 (초안 2026-11-05)
 
-- 상태: 출처 상태: SOURCE_VERIFY fea5684(CX22-3) 기준 | 초안(3차 반영 11-05) | 연구 반영: **3차: FIRST_SCENE_PLAN(§2 카메라 고정값·§5 단계), codex_synthesis(§1.3 카메라·가림 원칙, §2 보스 줌 배율·실루엣 깊이 정합 판정), yellowsky 갱신본(자체 시야 거리 조절 사실, 보스 카메라 수치는 [기준]), ENGINE_TRIAL_UE5_PLAN(§3·§4.2 UE5 카메라 칸 정합)**, d4_03_cam(전체), conventions(A·B 절), yellowsky(규칙 6 보스 카메라), poe2(§7 카메라, R10 흔들림), d4_01_env(§6), **2차: TOOLCHAIN(§3a a-2 OccluderFadePass·a-3 SilhouettePass, §1 설치 패키지), codex_urp_mood(§10 34° 먼 적·가림·LOD·DOF·비네트), codex_keyshot_composition(§5 카메라·거리 고정), codex_cinematic_text(§3 D4 실시간 컷신 카메라 설명), our_tech_audit(#16 반복 GetComponent), codex_tech_budget(예산 항목), ENGINE_DECISION(§3 카메라 UE5 칸)** | 연구 반영 대기: D4 가림 방식 공식 자료(공개 없음, 추정으로 처리). 보스별 카메라 피치·FOV·줌·복귀 시간은 D4·Hades·PoE2 모두 공개 수치 없음(codex_cinematic_text §3, 미확인)
+- 상태: 출처 상태: SOURCE_VERIFY 0a9b84e(CX22-5 최종) 기준 | 초안(3차 반영 11-05) | 연구 반영: **3차: FIRST_SCENE_PLAN(§2 카메라 고정값·§5 단계), codex_synthesis(§1.3 카메라·가림 원칙, §2 보스 줌 배율·실루엣 깊이 정합 판정), yellowsky 갱신본(자체 시야 거리 조절 사실, 보스 카메라 수치는 [기준]), ENGINE_TRIAL_UE5_PLAN(§3·§4.2 UE5 카메라 칸 정합)**, d4_03_cam(전체), conventions(A·B 절), yellowsky(규칙 6 보스 카메라), poe2(§7 카메라, R10 흔들림), d4_01_env(§6), **2차: TOOLCHAIN(§3a a-2 OccluderFadePass·a-3 SilhouettePass, §1 설치 패키지), codex_urp_mood(§10 34° 먼 적·가림·LOD·DOF·비네트), codex_keyshot_composition(§5 카메라·거리 고정), codex_cinematic_text(§3 D4 실시간 컷신 카메라 설명), our_tech_audit(#16 반복 GetComponent), codex_tech_budget(예산 항목), ENGINE_DECISION(§3 카메라 UE5 칸)** | 연구 반영 대기: D4 가림 방식 공식 자료(공개 없음, 추정으로 처리). 보스별 카메라 피치·FOV·줌·복귀 시간은 D4·Hades·PoE2 모두 공개 수치 없음(codex_cinematic_text §3, 미확인)
 - 범위: 게임 카메라(피치·거리·FOV·추적), 흔들림, 보스 아레나 줌, 가림 투명화(1단계), 가려진 영웅·엘리트 실루엣(2단계), 발밑 원, 먼 적 보호, 시네마틱 카메라와의 경계.
 - 이 문서가 정하지 않는 것: 시네마틱 연출 내용(13), 안개 수치(02), 판정·수치(규칙 코어), HUD 배치.
 - 현재 구현 근거: 1-1 피치 34°, 거리 16.5u (`unity/Assets/Exoduser/Runtime/NativeRemodel3D.cs` 17~18행), 보스 줌 `NativeGame.BossView.cs` 30행 `BossCameraZoom`(기존 2D 경로: 보스 생존 중 목표 0.8, 감쇠 .94^dt), 아레나 프레임 `NativeArenaCameraLayout.cs`(기본 반높이 최대 ×1.35).
@@ -76,7 +76,7 @@
 | 항목 | 값 | 근거 | 출처 상태 |
 |---|---|---|---|
 | 대상 | 영웅(기본 켬), 엘리트·보스(기본 켬), 일반 적(기본 끔, 옵션) | [추정] d4_03 R3·R5 | 미검증 |
-| 그리는 부분 | 다른 물체 뒤에 있는 픽셀만(부분 가림도 포함) | [사실] D4 실루엣은 완전 가림만이라 이를 개선 [사실, d4_03 §2.3] | 미검증 |
+| 그리는 부분 | 다른 물체 뒤에 있는 픽셀만(부분 가림도 포함) | [사실] D4 실루엣은 완전 가림만이라 이를 개선 [사실, d4_03 §2.3] | 검증됨(D4 완전 가림 실루엣 한정, R5) |
 | 영웅 색·알파 | 실버 헬 강철 토큰(은빛 `--sv-lt`), 알파 0.65 | [추정] d4_03 R3, conventions B2 | 미검증 |
 | 엘리트·보스 색·알파 | 적 전용 토큰, 알파 0.5 | [추정] d4_03 R5 | 미검증 |
 | 금지 색 | 빨강(`--eye`)은 쓰지 않음 | conventions B2 | 내부 |

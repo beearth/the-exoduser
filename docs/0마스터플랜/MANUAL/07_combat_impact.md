@@ -1,5 +1,5 @@
 # MANUAL 07 — 전투 임팩트 디렉션 (초안 2026-11-05)
-- 상태: 초안(2차 반영 11-05) | 출처 상태: SOURCE_VERIFY fea5684(CX22-3) 기준 | 연구 반영: pbz(Phantom Blade Zero), d4_03_cam(§8.7 피격·§8.8 숫자·흔들림), d4_04_anim A7, yellowsky 규칙6, 5.1 IMPACT_REFERENCE_PBZ_DOTA2_20261103 R1~R8, codex_combat_impact, codex_frame_data, codex_motion_direction, codex_vfx_direction, TOOLCHAIN_20261105 | 연구 반영 대기: PBZ 실제 게임 프레임 데이터(2차 조사도 "미확인": 개발자 글·인터뷰에 정지·섬광·카메라 수치 없음 → Mac 실측 영상 필요), 피 데칼 3.5초 Mac 실측, 소리 층 수치(2차 조사도 5개 게임 전부 동시 레이어 수·dB·지연 "미확인" → 06사운드 매뉴얼과 연동하되 역할 구분만 확정)
+- 상태: 초안(2차 반영 11-05) | 출처 상태: SOURCE_VERIFY 0a9b84e(CX22-5 최종) 기준 | 연구 반영: pbz(Phantom Blade Zero), d4_03_cam(§8.7 피격·§8.8 숫자·흔들림), d4_04_anim A7, yellowsky 규칙6, 5.1 IMPACT_REFERENCE_PBZ_DOTA2_20261103 R1~R8, codex_combat_impact, codex_frame_data, codex_motion_direction, codex_vfx_direction, TOOLCHAIN_20261105 | 연구 반영 대기: PBZ 실제 게임 프레임 데이터(2차 조사도 "미확인": 개발자 글·인터뷰에 정지·섬광·카메라 수치 없음 → Mac 실측 영상 필요), 피 데칼 3.5초 Mac 실측, 소리 층 수치(2차 조사도 5개 게임 전부 동시 레이어 수·dB·지연 "미확인" → 06사운드 매뉴얼과 연동하되 역할 구분만 확정)
 - 범위: 히트스톱·포즈 홀드, 카메라 임펄스, 섬광·잔상, 피해 숫자, 처치 연출, 패링 등급 연출. / 정하지 않는 것: 데미지·패링 판정·보상 수치(Core, `Core/ParryRewards.cs` 등). 2_3 설계는 바꾸지 않는다.
 
 ## 1. 목표 장면·레퍼런스 (무엇을, 왜)

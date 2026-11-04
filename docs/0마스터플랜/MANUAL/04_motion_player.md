@@ -1,5 +1,5 @@
 # MANUAL 04 — 플레이어 캐릭터 동작 디렉션 (초안 2026-11-05)
-- 상태: 출처 상태: SOURCE_VERIFY fea5684(CX22-3) 기준 | 초안(2차 반영 11-05) | 연구 반영: d4_04_anim(D4_STUDY/04_character_monster_boss_anim.md), pbz(GAME_STUDY/phantom_blade_zero.md), conventions(ARPG_CONVENTIONS_CHECKLIST_20261105.md), codex_motion_direction, codex_frame_data, codex_3d_pixel, codex_3d_pixel_small_team, TOOLCHAIN_20261105 | 연구 반영 대기: 영웅 직업별 콤보 프레임 실측(Core 확인 필요 행 전부), D4 게임플레이 모캡 비율(공개 자료 없음), 대상 게임들의 예비·발동·접점·회복 공개 수치(codex_motion_direction이 "미확인"으로 확인: 공개 자료로는 채울 수 없음 → 우리 Mac 실측으로 대체)
+- 상태: 출처 상태: SOURCE_VERIFY 0a9b84e(CX22-5 최종) 기준 | 초안(2차 반영 11-05) | 연구 반영: d4_04_anim(D4_STUDY/04_character_monster_boss_anim.md), pbz(GAME_STUDY/phantom_blade_zero.md), conventions(ARPG_CONVENTIONS_CHECKLIST_20261105.md), codex_motion_direction, codex_frame_data, codex_3d_pixel, codex_3d_pixel_small_team, TOOLCHAIN_20261105 | 연구 반영 대기: 영웅 직업별 콤보 프레임 실측(Core 확인 필요 행 전부), D4 게임플레이 모캡 비율(공개 자료 없음), 대상 게임들의 예비·발동·접점·회복 공개 수치(codex_motion_direction이 "미확인"으로 확인: 공개 자료로는 채울 수 없음 → 우리 Mac 실측으로 대체)
 - 범위: 대기·걷기·달리기·대시·공격 콤보·스킬 계열·회피·패링·피격·경직·사망·부활의 키포즈 배치·홀드·과장·블렌드. / 정하지 않는 것: 상태 길이·판정·무적 프레임·캔슬 가능 틱(Core가 정답). 여기서는 그 안에서 키포즈를 어디에 둘지만 정한다.
 
 ## 1. 목표 장면·레퍼런스 (무엇을, 왜)
