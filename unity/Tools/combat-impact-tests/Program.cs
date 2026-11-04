@@ -10,6 +10,7 @@ static partial class Program
     static void Check(bool value,string name){checks++;if(!value){bad++;Console.WriteLine("FAIL "+name);}}
     static int Main()
     {
+        AuditFixTests.Run(Check, System.IO.Directory.GetCurrentDirectory());
         // RED uses reflection so an absent presentation policy is an assertion,
         // not a compiler failure. Expected coordinates are screen pixels, Y up.
         var anchorType=typeof(CombatImpactTimeline).Assembly.GetType("Exoduser.UnityPort.Vfx.CombatHitAnchor");

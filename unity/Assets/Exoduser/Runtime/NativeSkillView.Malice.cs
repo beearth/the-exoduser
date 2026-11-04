@@ -18,9 +18,12 @@ namespace Exoduser.UnityPort
         readonly Dictionary<long, int> maliceSparkCells = new Dictionary<long, int>();
         Simulation maliceSim;
         public int ActiveMaliceBursts { get { return maliceBursts.Count; } }
-        Sprite maliceSquare;
+        const int MaliceArcaneTicks = 36, MaliceSmokeTicks = 48, MaliceCoreTicks = 5;
+        const float MaliceSparkAspect = 4f;
+        static Color MaliceColor(string hex) { Color c; ColorUtility.TryParseHtmlString(hex, out c); return c; }
+        Sprite maliceSpark;
         sealed class MaliceSpark { public SpriteRenderer renderer; public Vector2 velocity; public float size, life; }
-        sealed class MaliceBurst { public Item item; public SpriteRenderer[] layers; public MaliceSpark[] sparks; public int start; public float scale, x, y; }
+        sealed class MaliceBurst { public Item item; public SpriteRenderer[] layers; public SpriteRenderer core; public MaliceSpark[] sparks; public int start; public float scale, x, y; }
         static readonly float[] trailFraction = { 1f, 1f, .66f, .38f, .5f };
         static readonly float[] trailWidth = { 2.8f, 1.7f, 1.5f, 1.3f, .5f };
         static readonly float[] trailEnd = { 2f, 1f, 1f, 1f, .6f };
@@ -84,8 +87,16 @@ namespace Exoduser.UnityPort
 
         void LoadMaliceBursts()
         {
-            var square = new Texture2D(1, 1, TextureFormat.RGBA32, false) { filterMode = FilterMode.Point };
-            square.SetPixel(0, 0, Color.white); square.Apply(false, true); maliceSquare = Sprite.Create(square, new Rect(0, 0, 1, 1), new Vector2(.5f, .5f), 100);
+            const int w = 64, h = 16;
+            var sparkTexture = new Texture2D(w, h, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp };
+            for (int y = 0; y < h; y++) for (int x = 0; x < w; x++)
+            {
+                float u = (x + .5f) / w, v = Mathf.Abs((y + .5f) / h * 2 - 1);
+                Color c = Color.Lerp(MaliceColor("#e4dcf4"), MaliceColor("#6a56a8"), u);
+                c.a = Mathf.Clamp01(((1 - u) - v) * h * .5f) * Mathf.Clamp01(u * 16);
+                sparkTexture.SetPixel(x, y, c);
+            }
+            sparkTexture.Apply(false, true); maliceSpark = Sprite.Create(sparkTexture, new Rect(0, 0, w, h), new Vector2(.5f, .5f), 100);
             string[] paths = { "skill_malice_smoke", "skill_malice_arcane", "skill_malice_impact_pal" };
             int[] columns = { 4, 6, 3 }, rows = { 4, 6, 3 };
             for (int layer = 0; layer < 3; layer++)
@@ -111,12 +122,14 @@ namespace Exoduser.UnityPort
             var item = NewItem("악의구 원본 폭발"); item.go.transform.position = MalicePosition(orb.X, orb.Y);
             var burst = new MaliceBurst { item = item, start = maliceSim.TickCount, x = orb.X, y = orb.Y, scale = Mathf.Clamp(Mathf.Sqrt(orb.ExplR / 80f), .8f, 2.5f), layers = new SpriteRenderer[3], sparks = new MaliceSpark[12] };
             for (int i = 0; i < 3; i++) { burst.layers[i] = NewRenderer(item, "웹 폭발 층 " + i, maliceBurstFrames[i][0], malice, (int)orb.Y + 4 + i); centeredMaliceSprites.Add(burst.layers[i]); }
+            burst.core = NewRenderer(item, "악의구 접점 코어", disc, malice, (int)orb.Y + 7);
+            centeredMaliceSprites.Add(burst.core);
             // 표시 전용 난수. 게임의 RNG 순서·피해 판정을 소비하지 않는다.
             var random = new System.Random(unchecked(orb.Id * 397 ^ maliceSim.TickCount));
             for (int i = 0; i < 12; i++)
             {
                 float angle = Mathf.PI * 2 * i / 12;
-                var spark = new MaliceSpark { renderer = NewRenderer(item, "웹 폭발 잔불 " + i, maliceSquare, malice, (int)orb.Y + 3), velocity = new Vector2(Mathf.Cos(angle) * (4 + (float)random.NextDouble() * 3), Mathf.Sin(angle) * (4 + (float)random.NextDouble() * 3)), size = 3 + (float)random.NextDouble() * 3, life = 12 + (float)random.NextDouble() * 6 };
+                var spark = new MaliceSpark { renderer = NewRenderer(item, "웹 폭발 잔불 " + i, maliceSpark, malice, (int)orb.Y + 3), velocity = new Vector2(Mathf.Cos(angle) * (4 + (float)random.NextDouble() * 3), Mathf.Sin(angle) * (4 + (float)random.NextDouble() * 3)), size = 3 + (float)random.NextDouble() * 3, life = 12 + (float)random.NextDouble() * 6 };
                 burst.sparks[i] = spark; centeredMaliceSprites.Add(spark.renderer);
             }
             maliceBursts.Add(burst);
@@ -130,16 +143,25 @@ namespace Exoduser.UnityPort
                 var burst = maliceBursts[i]; bool any = false; int age = Math.Max(0, tick - burst.start);
                 for (int layer = 0; layer < 3; layer++)
                 {
-                    int elapsed = age + 1 - (layer == 1 ? 1 : 0), speed = layer == 2 ? 2 : 3;
-                    int frame = elapsed / speed; var frames = maliceBurstFrames[layer]; var renderer = burst.layers[layer];
-                    renderer.enabled = elapsed > 0 && frame < frames.Length; if (!renderer.enabled) continue; any = true;
-                    float progress = elapsed / (float)(frames.Length * speed), scale = burst.scale * (layer == 0 ? 1.8f : layer == 1 ? 1.4f : .8f) * (1 + progress * .4f);
+                    int life = layer == 0 ? MaliceSmokeTicks : layer == 1 ? MaliceArcaneTicks : 18;
+                    var frames = maliceBurstFrames[layer]; int frame = age * frames.Length / life; var renderer = burst.layers[layer];
+                    renderer.enabled = age < life; if (!renderer.enabled) continue; any = true;
+                    float progress = age / (float)life, scale = burst.scale * (layer == 0 ? 1.8f : layer == 1 ? 1.4f : .8f) * (1 + progress * .4f);
                     renderer.sprite = frames[frame]; renderer.transform.localScale = Vector3.one * scale;
-                    renderer.color = new Color(1, 1, 1, .7f * (progress < .6f ? 1 : Mathf.Max(0, (1 - progress) / .4f)));
+                    float opacity = age >= 12 ? .18f : .7f; // R7: 0.2초 뒤는 투명 잔여층만 남긴다.
+                    renderer.sortingOrder = age >= 12 ? -12000 + layer : (int)burst.y + 4 + layer;
+                    renderer.color = new Color(1, 1, 1, opacity * (1 - progress));
+                }
+                burst.core.enabled = age < MaliceCoreTicks;
+                if (burst.core.enabled)
+                {
+                    any = true; Fit(burst.core, 24 * burst.scale, burst.core.sprite.rect.width);
+                    Color core = MaliceColor("#f6f2fc"); core.a = age < 2 ? 1f : (MaliceCoreTicks - age) / 3f;
+                    burst.core.color = core.linear;
                 }
                 foreach (var spark in burst.sparks)
                 {
-                    float elapsed = age + 1; spark.renderer.enabled = elapsed < spark.life;
+                    float elapsed = age + 1; spark.renderer.enabled = elapsed < Mathf.Min(12f, spark.life);
                     if (!spark.renderer.enabled) continue; any = true;
                     float distance = (1 - Mathf.Pow(.9f, elapsed)) / .1f;
                     float x = burst.x + spark.velocity.x * distance, y = burst.y + spark.velocity.y * distance;
@@ -148,7 +170,10 @@ namespace Exoduser.UnityPort
                     if (inCell >= 3 || sparksDrawn >= 80) { spark.renderer.enabled = false; continue; }
                     maliceSparkCells[cell] = inCell + 1; sparksDrawn++;
                     spark.renderer.transform.position = MalicePosition(x, y);
-                    Fit(spark.renderer, spark.size, 1); spark.renderer.color = new Color(153 / 255f, 51 / 255f, 204 / 255f, Mathf.Min(1, (spark.life - elapsed) / spark.life * 2.1f)).linear;
+                    float thickness = spark.size, length = spark.size * MaliceSparkAspect;
+                    spark.renderer.transform.localScale = new Vector3(length / 64f, thickness / 16f, 1);
+                    spark.renderer.transform.rotation = Quaternion.Euler(0, 0, -Mathf.Atan2(spark.velocity.y, spark.velocity.x) * Mathf.Rad2Deg);
+                    spark.renderer.color = new Color(1, 1, 1, Mathf.Clamp01((12 - elapsed) / 6f));
                 }
                 if (!any) { ForgetMaliceBurst(burst); UnityEngine.Object.Destroy(burst.item.go); maliceBursts.RemoveAt(i); }
             }
@@ -164,13 +189,14 @@ namespace Exoduser.UnityPort
         static void ForgetMaliceBurst(MaliceBurst burst)
         {
             foreach (var renderer in burst.layers) centeredMaliceSprites.Remove(renderer);
+            centeredMaliceSprites.Remove(burst.core);
             foreach (var spark in burst.sparks) centeredMaliceSprites.Remove(spark.renderer);
         }
 
         void DisposeMaliceVisuals()
         {
             foreach (var frames in maliceBurstFrames) foreach (var sprite in frames) UnityEngine.Object.Destroy(sprite);
-            UnityEngine.Object.Destroy(maliceSquare.texture); UnityEngine.Object.Destroy(maliceSquare);
+            UnityEngine.Object.Destroy(maliceSpark.texture); UnityEngine.Object.Destroy(maliceSpark);
         }
     }
 }
