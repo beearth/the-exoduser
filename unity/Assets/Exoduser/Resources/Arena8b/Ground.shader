@@ -72,7 +72,11 @@ Shader "EXODUSER/Arena8b/Ground"
     float mix2=.2+.6*smoothstep(.25,.75,nMix);
     m1*=1-mix2;m2*=mix2;
     float msum=m1+m2,inv=1/max(msum,1e-4);
-    float presence=smoothstep(0,.25,msum);
+    // Weights are already normalized (inv), so soil may only show where both seams cross (msum ~ 0); a wider ramp exposed the
+    // lighter soil along the dominant layer's seams as repeating crosses (11-04 TmpGroundShot after 15f6bc96b).
+    // Where both seams cross (msum ~ 0) blend the two layers evenly instead of showing soil.
+    if(msum<.02){float k=(.02-msum)/.02*.01;m1+=k;m2+=k;msum=m1+m2;inv=1/msum;}
+    float presence=1;
     half3 paint=(paint1*m1+paint2*m2)*inv;
     float alpha=(a1*m1+a2*m2)*inv;
     float water=(wa1*m1+wa2*m2)*inv;
