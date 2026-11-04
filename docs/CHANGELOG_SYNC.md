@@ -1,3 +1,5 @@
+2026-11-04 스킬 정보 작은 버튼 가시 끝장식이 글자를 덮던 결함(디자인총괄, parity 병합 d50fa39a1 판정): NativeSkills.InfoButton에 명시 chip 인자, 강화 +·강화 −·리셋(64~68px) 3개만 칩 원화(settingsChip). 크기로 자동 판단하지 않음, 넓은 장착 버튼은 가시 판 유지. 검사 skill-chip 3/0, 참조 컴파일 오류 0. 화면 판정 전(claude/unity-pc-lobby-poster-20261104).
+
 2026-11-04 로비 영상 정지 포스터(claude/unity-pc-lobby-poster-20261104): 영상 준비 전 검은 화면 제거 — fdg_intro·warrior_story 첫 프레임 포스터 신규, `NativeLobbyVideo.Presentable`(frameReady 뒤 한 프레임)로 영상 전환, 실패 시 포스터 유지. 소스 계약 35/0, 5어셈블리 컴파일 오류 0. PC 검사·컴파일만, 화면 판정 전.
 
 2026-11-04 SND-13 1-1 데모 한 판 소리 장면 목록(사운드 총괄, CTO 10:05): docs/6사운드디자인/DEMO_1-1_SOUND_SCENES_20261104.md 신설. 필드·보스·출구 장면별 키·지금 상태·청음 라운드를 정리했다. 빈칸은 생체나무 맥동·호흡, 보스 처치 순간, 출구 열림·진입, 드루이드 등장(staff_tap 4회 불채택 → 등장 전체 한 소리). R8 청음 후보 74줄 pick_r8.html(카드마다 장면 영상 동기 재생). SOUND_LEAD_MASTER에 R8 절 추가. 코드 변경 없음, 청음·Unity 반영 전.
