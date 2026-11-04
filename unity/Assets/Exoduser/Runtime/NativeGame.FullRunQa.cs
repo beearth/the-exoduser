@@ -34,6 +34,10 @@ namespace Exoduser.UnityPort
         {
             public string scope = "Actual GPU Player; virtual InputSystem keyboard/mouse -> NativeGame.FixedUpdate. No direct position/HP/resource edits, enemy injection, forced kill or gate unlock. Boss retries use the real death screen callback and its ordinary resource restoration; deaths and retries are counted. Story and first practice use supported skip. Earned growth points use the ordinary transactional stat purchase API; owned usable gear is equipped through NativeInventory.Equip. No forced healing.";
             public string result, device, buildGuid;
+            public bool druidRemodel, druidRemodelKnown, druidRemodelRequested;
+            public string[] renderArgs;
+            public string bossThreatPolicy;
+            public List<FullRunBossDeath> deathDetails = new List<FullRunBossDeath>();
             public string frontendFailure;public List<string> frontendBoundaries=new List<string>();
             public int width, height;
             public float seconds, averageFps, frameP95Ms, frameP99Ms, longestFrameMs;
@@ -67,7 +71,7 @@ namespace Exoduser.UnityPort
             Application.runInBackground = true;
             int width; if (!int.TryParse(Argument("-qa-width"), out width)) width = 1920;
             Screen.SetResolution(width, 1080, FullScreenMode.Windowed);
-            var receipt = new FullRunReceipt { device = SystemInfo.graphicsDeviceName, buildGuid = Application.buildGUID, width = width, height = 1080 };
+            var receipt = new FullRunReceipt { device = SystemInfo.graphicsDeviceName, buildGuid = Application.buildGUID, width = width, height = 1080, renderArgs=FullRunBossTrace.RenderArguments(Environment.GetCommandLineArgs()) };
             float started = Time.realtimeSinceStartup;
             yield return new WaitForSecondsRealtime(1);
             lobby.SetPlaybackFocus(true); // Hidden desktop has no foreground focus; retain the ordinary entry flow.
@@ -99,6 +103,12 @@ namespace Exoduser.UnityPort
             var patterns = new HashSet<string>();
             var performance = gameObject.AddComponent<FullRunFrameProbe>();performance.game=this;performance.output=output;performance.started=started;
             var navigation = new FullRunNavigation();
+            var bossTrace = new FullRunBossTrace();
+            string bossDeathPath=Path.Combine(output,"boss-deaths.jsonl");
+            File.WriteAllText(bossDeathPath,"");
+            bool bossThreatEnabled=Array.IndexOf(Environment.GetCommandLineArgs(),"--qa-boss-telegraph-off")<0;
+            receipt.bossThreatPolicy=bossThreatEnabled?"core-telegraph+legacy-state":"comparison-off";
+            string lastBossDecision="not-sampled",lastBossInput="";
             var controlPolicy=new FullRunControlPolicy();string policyText=null;
             string policyPath=Path.Combine(output,"fullrun-policy.json");int lastChainTick=-10000;
             if(!File.Exists(policyPath))File.WriteAllText(policyPath,JsonUtility.ToJson(controlPolicy,true));
@@ -115,8 +125,18 @@ namespace Exoduser.UnityPort
                 while (Simulation.TickCount - firstTick < maxTicks)
                 {
                     var sim = Simulation; var p = sim.Player; var flow = sim.Stage;
+                    receipt.druidRemodelRequested=sim.DruidRemodel;
+                    if(flow.InArena&&sim.Druid!=null&&flow.FindBoss()!=null){receipt.druidRemodel=sim.Druid.Remodel;receipt.druidRemodelKnown=true;}
                     if (PlayerDown)
                     {
+                        try
+                        {
+                            var deathRow=bossTrace.Death(receipt.deaths+1,receipt.retries,FullRunBossSnapshotAt(sim,objective,lastBossDecision,lastBossInput));
+                            FullRunBossTrace.Append(bossDeathPath,JsonUtility.ToJson(deathRow));
+                            receipt.deathDetails.Add(deathRow);
+                        }
+                        catch(Exception ex)when(ex is IOException||ex is UnauthorizedAccessException)
+                        {receipt.result="qa-boss-trace-write-error";Debug.LogError("FULLRUN_BOSS_TRACE "+ex.GetType().Name);break;}
                         receipt.deaths++;yield return new WaitForSecondsRealtime(2.7f);yield return FullRunShot(output,"death");
                         if(flow.InArena&&receipt.retries<retryLimit)
                         {
@@ -124,7 +144,7 @@ namespace Exoduser.UnityPort
                             death.OnRetry?.Invoke();Running=false;yield return FullRunWaitFrontend("death-retry",receipt);Running=false;
                             if(!string.IsNullOrEmpty(receipt.frontendFailure)||PlayerDown||Simulation.Stage.InArena){receipt.result="death-retry-blocked";break;}
                             receipt.retries++;fullRunCapturePrefix="retry-"+receipt.retries.ToString("00")+"-";
-                            navigation=new FullRunNavigation();patterns.Clear();yield return FullRunShot(output,"retry-field");continue;
+                            navigation=new FullRunNavigation();patterns.Clear();bossTrace.Clear();yield return FullRunShot(output,"retry-field");continue;
                         }
                         receipt.result="player-death";break;
                     }
@@ -275,6 +295,8 @@ namespace Exoduser.UnityPort
                     FullRunControlInputs.Apply(sim,controlPolicy,navigation,FullRunCanMove,keys,ref move,ref aim,ref attack,ref magic,evade,aux,ref lastChainTick);
                     BossArenaReviewInputs(navigation,keys,ref move,ref aim,ref attack,ref magic,evade);
                     if(parryG2){keys.Remove(Key.E);keys.Remove(Key.Q);keys.Remove(Key.Space);int input=g2ParryBot.Input(sim);if((input&1)!=0)keys.Add(Key.E);if((input&2)!=0)keys.Add(Key.Q);if((input&4)!=0)keys.Add(Key.Space);if(input!=0){attack=false;magic=false;}if(input!=0&&(input&4)==0){move=Vector2.zero;keys.Remove(Key.W);keys.Remove(Key.A);keys.Remove(Key.S);keys.Remove(Key.D);}}
+                    lastBossDecision=parryG2?"parry-g2-override":FullRunBossDefense(sim,navigation,controlPolicy,keys,ref move,ref aim,ref attack,ref magic,ref objective,aux,bossThreatEnabled);
+                    lastBossInput=string.Join(",",keys)+(attack?",MouseLeft":"")+(magic?",MouseRight":"");
                     InputState.Change(keyboard,new KeyboardState(keys.ToArray()));
                     var aimPoint = NativeRemodel3D.Active ? NativeRemodel3D.Point(aim.x,aim.y) : Point(aim.x,aim.y);
                     if (NativeRemodel3D.Active) aimPoint.y = NativeRemodel3D.Point(p.X,p.Y).y;
@@ -283,6 +305,7 @@ namespace Exoduser.UnityPort
                     if (attack) ms=ms.WithButton(MouseButton.Left); if (magic) ms=ms.WithButton(MouseButton.Right);
                     InputState.Change(mouse,ms);fullRunAimX=aim.x;fullRunAimY=aim.y;
                     Running=true; FixedUpdate(); Running=false; UpdateViews(); BossArenaReviewTick();
+                    if(flow.InArena)bossTrace.Remember(FullRunBossSnapshotAt(sim,objective,lastBossDecision,lastBossInput));
                     if (Vector2.Distance(destination,new Vector2(p.X,p.Y))>80 && Mathf.Abs(p.X-previousX)+Mathf.Abs(p.Y-previousY)<.01f) stalled++; else stalled=0;
                     previousX=p.X;previousY=p.Y;
                     if (stalled==300) Debug.LogWarning("FULLRUN_STALL " + objective + " " + p.X + "," + p.Y);

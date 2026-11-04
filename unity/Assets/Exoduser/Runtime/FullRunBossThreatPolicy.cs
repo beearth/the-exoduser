@@ -77,19 +77,34 @@ namespace Exoduser.UnityPort
                     return distance > Math.Max(0, t.Inner - radius) && distance < t.Radius + t.Width / 2 + radius
                         && Angle(Math.Atan2(dy, dx) - t.GapDir) > Math.Max(0, t.GapAngle / 2 - .1);
                 case DruidTeleShape.ArenaMinusSafe:
-                    if (t.Safe != null) foreach (var safe in t.Safe) if (safe != null && safe.Length >= 3)
-                        if (Square(x - safe[0]) + Square(y - safe[1]) <= Square(Math.Max(0, safe[2] - radius))) return false;
-                    if (t.Shadows != null) foreach (var shadow in t.Shadows) if (shadow != null && shadow.Length >= 3)
-                    {
-                        double sx = x - t.SrcX, sy = y - t.SrcY, length = sx * sx + sy * sy;
-                        if (length <= 0) continue;
-                        double u = ((shadow[0] - t.SrcX) * sx + (shadow[1] - t.SrcY) * sy) / length;
-                        if (u > 0 && u < 1 && Square(t.SrcX + sx * u - shadow[0]) + Square(t.SrcY + sy * u - shadow[1]) < Square(Math.Max(0, shadow[2] - radius))) return false;
-                    }
-                    return true;
+                    return !HeartbeatSafe(t, x, y, Math.Max(1, radius + 1));
                 default: // GrabEyes has no judgement shape; this is a conservative QA-only escape envelope.
                     return t.Kind == DruidTeleKind.GrabEyes && distance < t.Radius + radius && Angle(Math.Atan2(dy, dx) - t.Dir) < Math.PI / 3;
             }
+        }
+        static bool HeartbeatSafe(DruidTelegraph t, double x, double y, double margin)
+        {
+            // Core DruidBoss.Remodel.cs:95 damages at distance > HeartbeatSafeOf(d):
+            // Safe[0] (boss centre) is CLOSED. Extra InSafeZone circles use < (:87).
+            // The bot keeps that comparison, shrinking the safe radius by its body + 1px.
+            if (t.Safe != null) for (int i = 0; i < t.Safe.Length; i++)
+            {
+                var safe = t.Safe[i]; if (safe == null || safe.Length < 3 || safe[2] < margin) continue;
+                double d = Square(x - safe[0]) + Square(y - safe[1]), r = Square(safe[2] - margin);
+                if (i == 0 ? d <= r : d < r) return true;
+            }
+            // Core DruidBoss.Pillars.cs:81: segment crosses the pillar disc AND
+            // the player is farther than its radius. Shrink/expand those tests for margin.
+            if (t.Shadows != null) foreach (var shadow in t.Shadows)
+            {
+                if (shadow == null || shadow.Length < 3 || shadow[2] <= margin) continue;
+                double sx = x - t.SrcX, sy = y - t.SrcY, length = sx * sx + sy * sy;
+                if (length < 1e-9) continue;
+                double u = ((shadow[0] - t.SrcX) * sx + (shadow[1] - t.SrcY) * sy) / length;
+                if (u > 0 && u < 1 && Square(t.SrcX + sx * u - shadow[0]) + Square(t.SrcY + sy * u - shadow[1]) < Square(shadow[2] - margin)
+                    && Square(x - shadow[0]) + Square(y - shadow[1]) > Square(shadow[2] + margin)) return true;
+            }
+            return false;
         }
         static double Square(double value) { return value * value; }
         static double Angle(double value) { return Math.Abs(Math.Atan2(Math.Sin(value), Math.Cos(value))); }
