@@ -38,7 +38,7 @@ window.buildHud=function(cfg){
     '.rv{position:absolute;text-align:center;line-height:1;white-space:nowrap;z-index:9;text-shadow:0 1px 2px #000,0 0 8px rgba(0,0,0,.9)}',
     '.cur{font:600 var(--cs) var(--f-num);color:var(--tx);letter-spacing:.02em}',
     '.max{font:400 var(--ms) var(--f-num);color:var(--tx-2);letter-spacing:.04em}',
-    '.lab{font:600 10px var(--f-num);color:var(--tx-2);letter-spacing:.24em}',
+    '.lab{font:600 var(--ls,10px) var(--f-num);color:var(--tx-2);letter-spacing:.2em}',
     '.hair{position:absolute;height:1px;background:linear-gradient(90deg,transparent,rgba(201,199,195,.55),transparent);z-index:9}'
   ].join('\n');document.head.appendChild(css);
   var hud=el('div','hud','position:absolute;inset:0',st);
@@ -61,8 +61,12 @@ window.buildHud=function(cfg){
     var b=el('div','plate','left:'+bx+'px;top:'+by+'px;width:'+bw+'px;height:'+(base-by)+'px;clip-path:polygon(0 '+cfg.boss.cham+'px,'+cfg.boss.cham+'px 0,calc(100% - '+cfg.boss.cham+'px) 0,100% '+cfg.boss.cham+'px,100% 100%,0 100%)',hud);if(cfg.art)b.style.background=IRON;el('div','edge','',b);el('div','inner','',b);}
   // M3 가운데 마름모(진홍 점 1개만 허용)
   var topY=cfg.boss?plateY-cfg.boss.rise:plateY;
-  if(cfg.art){var cw=220*cfg.crestScale,chh=90*cfg.crestScale;el('div','','position:absolute;left:'+(960-cw/2)+'px;top:'+(topY-chh*.62)+'px;width:'+cw+'px;height:'+chh+'px;background:url('+UI+'ui_bar_only.png) -'+(1120*cfg.crestScale)+'px -'+(100*cfg.crestScale)+'px/'+(2460*cfg.crestScale)+'px '+(546*cfg.crestScale)+'px no-repeat;filter:'+ART_FILTER+';z-index:6',hud)}
+  if(cfg.art){var cw=220*cfg.crestScale,chh=62*cfg.crestScale;el('div','','position:absolute;left:'+(960-cw/2)+'px;top:'+(topY-chh*.86)+'px;width:'+cw+'px;height:'+chh+'px;background:url('+UI+'ui_bar_only.png) -'+(1120*cfg.crestScale)+'px -'+(100*cfg.crestScale)+'px/'+(2460*cfg.crestScale)+'px '+(546*cfg.crestScale)+'px no-repeat;filter:'+ART_FILTER+';-webkit-mask:linear-gradient(180deg,#000 80%,transparent 100%);mask:linear-gradient(180deg,#000 80%,transparent 100%);z-index:6',hud)}
   else svg(22,22,'<path d="M11 2 L20 11 L11 20 L2 11Z" fill="#0f0f10" stroke="#c9c7c3" stroke-width="1.2"/><circle cx="11" cy="11" r="2.2" fill="#c21a10"/>','position:absolute;left:949px;top:'+(topY-11)+'px;z-index:6',hud);
+  // 바 양끝 작은 강철 가고일(현재 ui_bar_only.png 양끝 가고일을 잘라 은빛 처리): 판이 구체 고리에서 나오는 자리 위
+  if(cfg.gargoyle){var gs=cfg.gargoyle.scale,gw=215*gs,gh=245*gs;[[lcx+cfg.gargoyle.dx,1],[rcx-cfg.gargoyle.dx-gw,-1]].forEach(function(q){
+    // 원화 x150~365·y75~320(왼쪽 가고일)만 잘라 쓰고, 오른쪽은 좌우 반전. 판 쪽 가장자리 25%는 판 철 재질로 이어지게 흐리게 끝냄
+    el('div','','position:absolute;left:'+q[0]+'px;top:'+(plateY-gh*cfg.gargoyle.rise)+'px;width:'+gw+'px;height:'+gh+'px;background:url('+UI+'ui_bar_only.png) -'+(150*gs)+'px -'+(75*gs)+'px/'+(2460*gs)+'px '+(546*gs)+'px no-repeat;filter:'+ART_FILTER+';transform:scaleX('+q[1]+');-webkit-mask:linear-gradient(90deg,#000 72%,transparent 100%);mask:linear-gradient(90deg,#000 72%,transparent 100%);z-index:9',hud)})}
   // 슬롯
   var rowX=960-rowW/2, cy=plateY+cfg.slotCY;
   pos.forEach(function(p){
@@ -147,7 +151,7 @@ window.buildHud=function(cfg){
       el('div','hair','left:'+(cx-22)+'px;width:44px;top:'+(cy2+cfg.hpCur*.48)+'px',hud);
       var m=el('div','rv max','left:'+(cx-L/2)+'px;width:'+L+'px;top:'+(cy2+cfg.hpCur*.48+5)+'px;--ms:'+cfg.hpMax+'px',hud);m.textContent=cfg.hpT[1];}
     else{[['MP',cfg.mpT,-1],['ST',cfg.stT,1]].forEach(function(r){var hx=cx+r[2]*L/4,w=L/2,cy3=orbCY+cfg.numDy;
-      var l=el('div','rv lab','left:'+(hx-w/2)+'px;width:'+w+'px;top:'+(cy3-cfg.rsCur*.62-16)+'px',hud);l.textContent=r[0];
+      var ls=cfg.labSize||10;var l=el('div','rv lab','left:'+(hx-w/2)+'px;width:'+w+'px;top:'+(cy3-cfg.rsCur*.62-ls-6)+'px;--ls:'+ls+'px;color:'+(cfg.labSize?'var(--tx)':'var(--tx-2)'),hud);l.textContent=r[0];
       var c=el('div','rv cur','left:'+(hx-w/2)+'px;width:'+w+'px;top:'+(cy3-cfg.rsCur*.62)+'px;--cs:'+cfg.rsCur+'px',hud);c.textContent=r[1][0];
       el('div','hair','left:'+(hx-14)+'px;width:28px;top:'+(cy3+cfg.rsCur*.48)+'px',hud);
       var m=el('div','rv max','left:'+(hx-w/2)+'px;width:'+w+'px;top:'+(cy3+cfg.rsCur*.48+4)+'px;--ms:'+cfg.rsMax+'px;color:var(--tx-2)',hud);m.textContent=r[1][1];})}

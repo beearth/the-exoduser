@@ -21,7 +21,7 @@ p.note{margin:0 0 14px;color:var(--tx-2);font-size:14px}
 <script>
 var x3=/x3/.test(location.search),g=/guides/.test(location.search)?'?guides':'';
 var C=x3?{x:560,y:960,w:800,h:120,z:3}:{x:240,y:760,w:1440,h:320,z:1};
-var items=[['CURRENT · unity/main 795869009 (재현)','current.html'],['A · 구조 유지 + 실버 헬','mock_A.html'],['B · 비례 재조정','mock_B.html'],['C · B 배치 + 현재 장식 은빛 (Mac 판정 뒤 추천)','mock_C.html']];
+var items=[['CURRENT · unity/main 795869009 (재현)','current.html'],['A · 구조 유지 + 실버 헬','mock_A.html'],['B · 비례 재조정','mock_B.html'],['C r2 · A 배치 + 현재 장식 은빛 (Mac·CTO 판정 반영, 현행)','mock_C.html']];
 var rows=document.getElementById('rows');
 function lay(){var avail=Math.max(320,innerWidth-34);var k=Math.min(C.z,avail/C.w);
   [].forEach.call(document.querySelectorAll('.view'),function(v){v.style.width=C.w*k+'px';v.style.height=C.h*k+'px';var f=v.firstChild;f.style.transform='scale('+k+')';f.style.left=(-C.x*k)+'px';f.style.top=(-C.y*k)+'px'})}

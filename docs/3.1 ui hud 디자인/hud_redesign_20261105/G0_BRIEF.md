@@ -2,7 +2,7 @@
 
 - 배정: 클라우드 CTO. 출발점: 사용자 지시 "HUD 디자인도 다시 해야 할 듯"(unity/main `795869009` 실게임 캡처). 사용자 평가: "다 붕붕 뜨고 안 맞고 듬성듬성, 색도 이상하게 구리다."
 - 데모 v0 연결: ① Steam 키샷(전투 화면 하단 HUD가 모든 키샷에 들어감) ② 1-1 한 판(10~15분 동안 계속 보이는 UI).
-- **2026-11-05 갱신**: Mac 실화면 판정(Unity `c1b51cda5`)은 배치는 A·B, 색·톤은 현재가 낫다는 결과였다. 그래서 **C안(B 배치 + 현재 장식·재질 은빛)**을 추가했다(`mock_C.html`, defects.md 6절). Unity 구현은 Codex H4가 맡는다.
+- **2026-11-05 갱신**: Mac 실화면 판정(Unity `c1b51cda5`)은 배치는 A·B, 색·톤은 현재가 낫다는 결과였다. 그래서 **C안**을 추가했다. CTO 비교판 판정을 반영한 현행 r2는 A 배치에 현재 크레스트·가고일·HP 액체를 은빛으로 옮긴 안이다(`mock_C.html`, defects.md 6.1절). Unity 구현은 Codex H4가 맡는다.
 - 이 레인의 산출물: `defects.md`(비교·결함·관례), `mock_A.html`, `mock_B.html`, `compare.html`(현재·A·B 같은 크기 비교판), `current.html`(현재 재현), `layout_3840.svg`, 공용 `_stage.css`·`_hud_mock.js`. Unity·Core는 고치지 않았다. **사용자가 A나 B를 고른 뒤 Mac이 구현한다.**
 
 ## 1. 목표 장면
