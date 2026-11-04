@@ -46,7 +46,7 @@ if($Command -ne 'install-bin' -and $env:EXO_UNITY_NO_FORWARD -ne '1' -and
     exit $LASTEXITCODE
 }
 
-$ExoUnityVersion = '2026.11.04-loopfirst'
+$ExoUnityVersion = '2026.11.04-loopfirst2'
 $MaxPlayerSlots = 2
 Import-Module (Join-Path $PSScriptRoot 'QueueTurn.psm1') -Force
 try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false) } catch { }
@@ -172,7 +172,22 @@ function Get-Reservations([string]$ReservationKind = '') {
         $r | Add-Member -NotePropertyName file -NotePropertyValue $f.FullName -Force
         $out += $r
     }
+    # loopfirst editor(11-04 CTO): 사용자 실행본 갱신이 데모 v0 확인 기준이라 BuildLoop Editor 예약이 맨 앞에 선다.
+    # 돌고 있는 Editor는 끊지 않고 다음 순번만 가져간다. BuildLoop 회차(buildloop.ps1 run)가 살아 있을 때만 앞으로 옮겨,
+    # 루프가 죽고 남은 예약이 TTL 동안 다른 레인을 막지 않게 한다. 예약을 잡은 Editor는 잠금을 얻는 순간 예약을 지운다.
+    if ($ReservationKind -eq 'editor') {
+        $loop = @($out | Where-Object { [string]$_.owner -eq 'buildloop' })
+        if ($loop.Count -gt 0 -and (Test-BuildLoopRunning)) { $out = @($loop) + @($out | Where-Object { [string]$_.owner -ne 'buildloop' }) }
+    }
     return $out
+}
+function Test-BuildLoopRunning {
+    $now = [DateTime]::UtcNow
+    if ($script:LoopAliveAt -and ($now - $script:LoopAliveAt).TotalSeconds -lt 30) { return [bool]$script:LoopAlive }
+    $alive = $false
+    try { $alive = @(Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" -ErrorAction Stop | Where-Object { [string]$_.CommandLine -match 'buildloop\.ps1"?\s+run\b' }).Count -gt 0 } catch { $alive = $false }
+    $script:LoopAlive = $alive; $script:LoopAliveAt = $now
+    return $alive
 }
 
 function Cmd-Reserve {
@@ -416,7 +431,8 @@ function Get-PlayerDrainReason {
     if ($rs.Count -eq 0) { return '' }
     $front = $rs[0]
     try { $age = ([datetime]::UtcNow - [datetime]::Parse($front.createdAt).ToUniversalTime()).TotalMinutes } catch { return '' }
-    if ($age -lt 20) { return '' }
+    $drainAfter = 20; if ([string]$front.owner -eq 'buildloop') { $drainAfter = 0 }   # loopfirst editor: 루프 빌드 앞에서는 새 Player를 바로 멈춰 배출한다
+    if ($age -lt $drainAfter) { return '' }
     if ($Owner -and [string]$front.owner -eq [string]$Owner) { return '' }
     $dp = Join-Path $Root '_player_drain.json'
     $key = [string]$front.owner + '|' + [string]$front.createdAt

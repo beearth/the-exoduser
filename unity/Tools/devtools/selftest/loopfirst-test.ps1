@@ -65,6 +65,19 @@ try {
  Check (-not (Test-LoopFirst)) 'cto-swap treated as loop'
  Clear-PriorityWaiter $PID
  Check (Test-Path (Get-PriorityPath)) 'Clear removed another process marker'
+ # editor reservations: a live BuildLoop run moves its editor reservation to the front; a dead loop does not
+ New-Item -ItemType Directory -Force -Path $QueueRoot|Out-Null
+ function Add-EditorReservation($owner,$stamp){ $p=Join-Path $QueueRoot ($stamp+'_'+$owner+'_editor_'+[guid]::NewGuid().ToString('N')+'.json'); Write-JsonAtomic $p ([ordered]@{owner=$owner;kind='editor';worktree='x';note='t';createdAt=([DateTime]::UtcNow.AddMinutes(-1).ToString('o'));expiresAt=([DateTime]::UtcNow.AddHours(2).ToString('o'))}); return $p }
+ $e1=Add-EditorReservation 'codex-map-fieldbuild' '20000101T000000001'; $e2=Add-EditorReservation 'buildloop' '20000101T000000002'
+ function Test-BuildLoopRunning { return $true }
+ Check ((@(Get-Reservations 'editor'))[0].owner -eq 'buildloop') 'live loop editor reservation not first'
+ Check ((@(Get-Reservations 'editor')).Count -eq 2) 'reordering lost a reservation'
+ Check ((@(Get-Reservations 'player')).Count -eq 0 -or (@(Get-Reservations 'player'))[0].owner -ne 'buildloop') 'player reservations reordered'
+ $Owner='someone'; Check ((Get-PlayerDrainReason) -like '*buildloop*') 'loop editor reservation does not drain new Players at once'
+ function Test-BuildLoopRunning { return $false }
+ Check ((@(Get-Reservations 'editor'))[0].owner -eq 'codex-map-fieldbuild') 'dead loop reservation jumped the queue'
+ Check (-not (Get-PlayerDrainReason)) 'young non-loop editor reservation drained Players'
+ Remove-Item -LiteralPath $e1,$e2 -Force; Remove-Item -LiteralPath (Join-Path $Root '_player_drain.json') -Force -ErrorAction SilentlyContinue
  'PASS: '+$n+' loop-first decisions; Unity launches=0'
 } finally {
  if($ping -and -not $ping.HasExited){$ping.Kill()}
