@@ -98,7 +98,7 @@ namespace Exoduser.UnityPort
                     presentationVideoStartedAt=Time.unscaledTime;
                 }
                 if(i==0&&playback.Prepared&&playback.Player!=null)playback.Player.playbackSpeed=.75f;
-                if(playback.Error.Length==0&&playback.Prepared&&playback.Frame>=0)src=playback.Texture;
+                if(playback.Presentable)src=playback.Texture;
             }
             if(src!=null)NativeUiViewport.DrawExtendedScene(src,box,silverPosters[i]??silverPortraits[i]??presentationCutouts[i]);
         }

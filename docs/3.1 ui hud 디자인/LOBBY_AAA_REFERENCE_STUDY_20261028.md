@@ -334,3 +334,21 @@ sidepanel-edge-brief.md의 확장 지시를 따른다. BG3 사용자 제공 캐�
 ## 2026-10-31 전체 화면 원화 확장 적용
 
 이 문서의 과거 이미지·영상 제작 및 판정은 당시 이력이다. 현행 웹은 `fullscreen-art.js`의 경로 등록으로 64종의 원본/21:9/32:9 판을 선택한다. 화면비 2 이하의 원본 경로와 MP4 파일은 보존하고, 초광폭에서는 확장판을 배경으로 쓰고 원래 영상·카메라·CSS 움직임을 유지한다. 로비·캐릭터 영상은 manifest 중앙 좌표와 높이에 맞춰 겹치며 양끝14%를 크로스페이드한다. 전체 폭 분위기 효과는 움직임 줄이기·저사양·숨김 화면에서 정지한다. 출력·사용 위치·규격·생성 정보·검수 근거는 `docs/3.1 ui hud 디자인/FULLSCREEN_ART_ULTRAWIDE_20261031.md` 및 `assets/fullscreen-wide/20261031/manifest.json`이 현행 기준이다. 로딩35장은 별도 담당이며 Unity 반영·실행 검수는 이 웹 적용으로 완료되지 않는다.
+
+## 로비 영상 정지 포스터 (11-04, PC 검사·컴파일만, 화면 판정 전)
+
+- 원인: 영상이 준비되기 전 화면에 그릴 그림이 없는 곳이 검게 보였다. 이야기 영상(warrior_story_v23_clean)은 포스터 없이 null, 브랜드 인트로(fdg_intro)는 첫 프레임이 아닌 엠블럼 한 장이 대신 그려졌다. 나머지 영상(로비 varkan 루프, intro 문, 캐릭터 선택 5종, 타이틀 C2)은 이미 첫 프레임 포스터가 있었고 평균 색 차이는 2 이하였다.
+- 넘기는 신호: `NativeLobbyVideo.Presentable` = 오류 없음, 준비됨, 텍스처 있음, `frameReady`가 한 번 올라온 뒤 Unity 프레임이 하나 더 지났음(또는 재생 프레임 3 이상). 그림 고르는 곳만 이 값을 쓰고, QA 대기(`Prepared`·`Frame`)는 그대로다.
+- 포스터는 영상과 같은 사각형·같은 확장 규칙으로 그린다. 영상이 실패하거나 끝내 준비되지 않으면 포스터가 남는다.
+
+| 영상 | 준비 전 그림 | 비고 |
+|---|---|---|
+| fdg_intro.mp4 | `Art/ui/lobby_poster/fdg_intro` (1920x1080, 신규) | 실패 시에도 포스터 유지 |
+| warrior_story_v23_clean.mp4 | `Art/ui/lobby_poster/warrior_story_v23_clean` (1920x1080, 신규) | 같은 1920x1080 사각형 |
+| world_intro_v22b_steam.mp4 | 없음(검정) | 영상 첫 프레임 자체가 순검정(평균 0,0,0)이라 포스터가 곧 검정 |
+| intro.mp4 | `lobby/gate_poster` | 기존, 차이 0.6 |
+| lobby_varkan_crypt_loop | `lobby/lobby_poster` + 와이드 확장판 | 기존, 차이 0.6 |
+| cs_idle_* 5종 | `CharacterSelect/poster_idle_*` | 기존, 차이 2.1 이하 |
+| title_motion C2 | `TitleSignboard/C2/still` | 기존, `Presentable` 전까지 still |
+
+검사: `unity/Tools/lobby-poster-tests/run.cjs`(소스 계약 35개).

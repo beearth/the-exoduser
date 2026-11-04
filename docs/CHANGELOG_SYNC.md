@@ -1,3 +1,5 @@
+2026-11-04 로비 영상 정지 포스터(claude/unity-pc-lobby-poster-20261104): 영상 준비 전 검은 화면 제거 — fdg_intro·warrior_story 첫 프레임 포스터 신규, `NativeLobbyVideo.Presentable`(frameReady 뒤 한 프레임)로 영상 전환, 실패 시 포스터 유지. 소스 계약 35/0, 5어셈블리 컴파일 오류 0. PC 검사·컴파일만, 화면 판정 전.
+
 2026-11-04 UI 판정 ⑥ 경미 5건 반영(codex/unity-demo-text-20261104): 로비 빈 슬롯 어두운 면, 입장 호버 ENTER 글자 뒤 타원 광(사각 테 외곽 광은 총괄 검수에서 되돌림), 그리스어 경험치 ΕΜΠ→Εμπειρία, 펫 말풍선 본문 명조, 사운드 탭 줄 끝 960→818(914), 사망 제목 크로스페이드 앞 제목 선소거. PC 검사 judge6 6/0·컴파일 오류 0만, 화면 판정 전.
 
 2026-11-04 10:15 공용 실행기 BuildLoop Player 단독 실행(CTO A안): -PcException buildloop/-Exclusive Player는 다른 Player가 끝날 때까지 기다린 뒤 혼자 돌고, 그동안 새 Player를 받지 않는다(돌던 Player는 끊지 않음, 다른 레인 동시 2슬롯 유지). 원인=QA Player 동시 4K 영상 디코드로 52a39f8f6 회차 M1 로비 영상 준비 12초 초과 33회·08:44 회차 UI 겹침 영상 준비 실패, 바탕화면 교체 막힘. 실행기 `2026.11.04-exclusive`, 시험 exclusive-test.ps1. 문서 unity/Tools/devtools/README.md.

@@ -58,7 +58,7 @@ namespace Exoduser.UnityPort
     {
      var size=NativeTitleSignboardLayout.Buffer(Screen.width,Screen.height);int w=(int)size.Width,h=(int)size.Height;
      if(frame==null||frame.width!=w||frame.height!=h){ReleaseFrame();frame=new RenderTexture(w,h,0,RenderTextureFormat.ARGB32,RenderTextureReadWrite.sRGB){name="C2 title",filterMode=FilterMode.Bilinear,wrapMode=TextureWrapMode.Clamp,hideFlags=HideFlags.HideAndDontSave};if(!frame.Create())throw new InvalidOperationException("Title render target unavailable");dirty=true;}
-     float now=Time.realtimeSinceStartup;bool videoReady=movie!=null&&movie.Error.Length==0&&movie.Frame>=0&&movie.Texture!=null;
+     float now=Time.realtimeSinceStartup;bool videoReady=movie!=null&&movie.Presentable;
      // Freeze the same still under reduced motion; an interrupted loop keeps its last frame.
      if(videoReady){hasVideo=true;if(movie.Frame!=lastVideoFrame){VideoFrames++;lastVideoFrame=movie.Frame;}}
      bool waiting=hasVideo&&!videoReady&&!ReducedMotion&&movie!=null&&movie.Error.Length==0;
