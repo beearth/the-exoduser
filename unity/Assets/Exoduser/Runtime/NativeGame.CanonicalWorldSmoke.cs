@@ -32,7 +32,7 @@ namespace Exoduser.UnityPort {
     check(lobby.Flow.Page==LobbyPage.WorldIntro&&!lobby.UsesGatePoster,"world preparation never draws closed door poster");
     result.sourceFile=lobby.CurrentVideo.Player.url;result.bytes=new FileInfo(result.sourceFile).Length;
     using(var stream=File.OpenRead(result.sourceFile))using(var sha=SHA256.Create())result.sha256=BitConverter.ToString(sha.ComputeHash(stream)).Replace("-","").ToLowerInvariant();
-    check(result.bytes==102204634&&result.sha256=="3b99d59bca9d84a37bb6b49067148e1ed69fefb478ff206221b59c8c952d0b0f","exact user-designated bytes in running app");
+    check(result.bytes==NativeLobby.WorldMovieBytes&&result.sha256==NativeLobby.WorldMovieSha256,"exact user-designated bytes in running app");
     BeginLobbyWorldObservation();int capture=0;double[] moments={6,35,93};limit=LobbyNow+160;
     while(lobby.Flow.Page==LobbyPage.WorldIntro&&LobbyNow<limit){
      ProbeLobbyAudio();

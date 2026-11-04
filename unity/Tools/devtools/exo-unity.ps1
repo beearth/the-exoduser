@@ -788,7 +788,7 @@ function Get-RequiredMedia([string]$wt) {
             if ($r.requiredMedia) { return @($r.requiredMedia | ForEach-Object { [pscustomobject]@{ path = [string]$_.path; minBytes = [long]$_.minBytes } }) }
         } catch { }
     }
-    $names = 'cs_idle_silvertail_4k', 'cs_idle_warrior_cs3_4k', 'fdg_intro', 'intro', 'lobby_varkan_crypt_loop_v2_unity', 'title_motion_20260929', 'title_motion_hd_20260929', 'warrior_story_v23_clean', 'world_intro_v22b_steam'
+    $names = 'cs_idle_silvertail_4k', 'cs_idle_warrior_cs3_4k', 'fdg_intro', 'intro', 'lobby_varkan_crypt_loop_v2_unity', 'title_motion_20260929', 'title_motion_hd_20260929', 'warrior_story_v23_clean', 'world_intro_v23_newopening_steam'
     return @($names | ForEach-Object { [pscustomobject]@{ path = ('Assets/StreamingAssets/Lobby/' + $_ + '.mp4'); minBytes = 1000000 } })
 }
 

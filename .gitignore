@@ -222,3 +222,7 @@ assets/vfx/boss/gen/
 # User-designated cinematic; byte-exact parts are versioned.
 /unity/Assets/StreamingAssets/Lobby/world_intro_v22b_steam.mp4
 !/unity/Tools/MediaRecovery/world-intro-v22b-steam-canonical/*.bin
+
+# World intro v23 new opening (2026-11-04); byte-exact parts are versioned.
+/unity/Assets/StreamingAssets/Lobby/world_intro_v23_newopening_steam.mp4
+!/unity/Tools/MediaRecovery/world-intro-v23-newopening-canonical/*.bin

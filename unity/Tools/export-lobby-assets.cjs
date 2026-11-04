@@ -31,8 +31,8 @@ function exportCompatibleLobby(){
 async function main(){
  for(const f of ['fdg_intro.mp4','intro.mp4','title_motion_hd_20260929.mp4','title_motion_20260929.mp4'])copy('video/'+f,'StreamingAssets/Lobby/'+f);
  const restore=cp.spawnSync(process.execPath,[path.join(__dirname,'restore-lobby-media.cjs'),'--project',project],{encoding:'utf8'});if(restore.status!==0)throw Error(restore.stderr);
- const canonical=JSON.parse(fs.readFileSync(project+'/Tools/MediaRecovery/world-intro-v22b-steam-canonical/manifest.json','utf8'));
- rows.push({source:canonical.source,destination:canonical.destination.replace(/^Assets\//,''),bytes:canonical.bytes,sourceSha256:canonical.sha256,sha256:canonical.sha256,transform:'byte_exact_user_designated_20261025'});
+ const canonical=JSON.parse(fs.readFileSync(project+'/Tools/MediaRecovery/world-intro-v23-newopening-canonical/manifest.json','utf8'));
+ rows.push({source:canonical.source,destination:canonical.destination.replace(/^Assets\//,''),bytes:canonical.bytes,sourceSha256:canonical.sha256,sha256:canonical.sha256,transform:'byte_exact_user_designated_20261104'});
  exportCompatibleLobby();
  const images={'img/logo_exoduser.png':'brand_logo','assets/lobby/lobby_enter_btn.png':'lobby_enter','assets/lobby/lobby_banner_btn.png':'lobby_banner','img/fdg_intro/fdg_reference.png':'fdg_poster','img/fdg_wolf/fdg_wolf_emblem.png':'fdg_emblem','img/title_clean_plate_20260929.png':'splash_title','assets/lobby/varkan_idle_v3.png':'varkan_idle','assets/lobby/varkan_idle_first_v3.png':'varkan_first'};
  for(const [src,name]of Object.entries(images))copy(src,'Exoduser/Resources/Art/lobby/'+name+'.png');
