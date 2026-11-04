@@ -4,7 +4,7 @@
 - 왜: 사용자 지적(11-04) "게임 개발에도 다 매뉴얼이 있을 텐데, 거대 나무가 캐릭터 가리면 투명 처리 같은 것도 AI가 모르냐." CLAUDE.md 4.1 "공통 관례(가림 투명화 등)는 사용자가 짚기 전에 넣는다"를 지키지 못했다. 다시는 하나씩 짚지 않게 목록으로 고정한다.
 - 쓰는 법: 화면·전투·UI 작업의 **G0 브리프에서 이 표의 해당 분야 행을 먼저 확인**하고, 자기 작업이 닿는 행을 "있음·이번에 넣음·뺌(이유)"로 적는다([작업 매뉴얼 v4](WORK_MANUAL_20261029.md) §2 G0). 작업이 끝나면 이 표의 상태·근거 칸을 고친다.
 - 공통성 기준: Diablo 3·Diablo 4·Path of Exile 2·No Rest for the Wicked·Last Epoch·Grim Dawn 중 **3편 이상이 공통으로 가진 것만** 넣었다. 한 게임만의 기능은 뺐다.
-- **증거 경계:** 레퍼런스 게임의 공통성은 장르 지식(기억)으로 정리했고, 이번 레인에서 레퍼런스 영상·캡처를 직접 열지 않았다. 품질 기준 §2-1에 따라 각 항목을 구현하는 작업자는 착수 때 해당 장면을 직접 열어 확인한다. "현재 상태"는 코드 grep·정독 근거이며 실게임 화면 확인이 아니다(화면 판정은 Mac).
+- **증거 경계:** 레퍼런스 게임의 공통성은 장르 지식(기억)으로 정리했고, 이번 레인에서 레퍼런스 영상·캡처를 직접 열지 않았다. 품질 기준 §2-1에 따라 각 항목을 구현하는 작업자는 착수 때 해당 장면을 직접 열어 확인한다. "현재 상태"는 코드 grep·정독 근거이며 실게임 화면 확인이 아니다(화면 판정은 Mac). 공개 매뉴얼(XAG·GAG·GDC·Unity URP·Game UI Database) 항목별 근거는 §2.
 - 표기: 상태 = 있음 / 부분 / 없음 / 미확인. 필요도 = 필수(데모 v0 1-1 한 판·키샷·첫인상에 직접 보임) / 권장 / 나중. 경로는 `unity/Assets/Exoduser/Runtime/` 기준.
 - 우리 게임 제약(관례보다 위): 1-1 원근 카메라 LOCK(피치 34°, 먼 적이 보여야 함), 점 금지(디더링·점묘 0), 실버 헬 색 토큰, Core 수치·판정 불변.
 
@@ -156,7 +156,58 @@
 | M3 | 부활 직후 짧은 무적·위치 안전 | i-frame | Core 소관(미확인) | 필수 | 판정은 Core 정답, 표시만 확인 |
 | M4 | 사망 원인 표시 | "XX에게 사망" | 없음 — 웹에서도 Unity 쪽 기록 없음(`NativeGame.cs:275` 주석: damage-log 상태 없음) | 나중 | |
 
-## 2. 유지 규칙
+## 2. 공개 매뉴얼 근거 (2026-11-05 CTO 요청 추가)
+
+- **확인 경계:** 이 세션 네트워크에서 `learn.microsoft.com`·`devdocs.xbox.com`·`gameaccessibilityguidelines.com`은 이름 풀이가 안 돼 본문을 열지 못했다. 아래 URL과 조항 제목은 웹 검색 결과에서 페이지가 실제로 있다는 것만 확인했다. 조항 본문 문구 대조는 **미확인**이다. 다음 작업자가 PC·Mac 브라우저로 열어 확인하고 이 표의 "본문 확인" 칸을 채운다. 링크의 언어 경로(en-us·en-gb·da-dk 등)는 검색에 나온 그대로 두었다. 같은 조항은 `/en-us/`로 바꿔도 열린다(URL 규칙 추정, 미확인).
+- 공개 매뉴얼은 대부분 **접근성·렌더 구현** 근거다. 가림 투명화·히트스톱·전리품 이름표·엘리트 표시 같은 장르 관례에는 공식 조항이 없다. 이런 항목은 GDC 세션이나 레퍼런스 실물 캡처(품질 기준 §2-1)로 근거를 대고, 조항이 없다고 적는다.
+
+### 2.1 출처 목록
+
+| ID | 출처 | URL | 본문 확인 |
+|---|---|---|---|
+| X101 | XAG 101 Text display (글자 크기·줄 간격·색·사용자 조정) | https://learn.microsoft.com/da-dk/gaming/accessibility/xbox-accessibility-guidelines/101 | 미확인 |
+| X102 | XAG 102 Contrast | https://learn.microsoft.com/en-us/gaming/accessibility/xbox-accessibility-guidelines/102 | 미확인 |
+| X103 | XAG 103 Additional channels for visual and audio cues (한 감각에만 기대지 않기) | https://learn.microsoft.com/en-gb/gaming/accessibility/xbox-accessibility-guidelines/103 | 미확인 |
+| X104 | XAG 104 Subtitles and captions (자막·화자 표시·효과음) | 목록 https://learn.microsoft.com/en-us/gaming/accessibility/guidelines (개별 URL은 검색에 안 나옴) | 미확인 |
+| X105 | XAG 105 Audio accessibility (음악·대사·효과·채팅 음량 분리) | https://learn.microsoft.com/en-us/gaming/accessibility/xbox-accessibility-guidelines/105 | 미확인 |
+| X107 | XAG 107 Input (재설정·누르기/유지·보조 장치) | https://learn.microsoft.com/de-de/gaming/accessibility/xbox-accessibility-guidelines/107 | 미확인 |
+| X114 | XAG 114 UI context (라벨·문맥 신호) | https://learn.microsoft.com/es-mx/gaming/accessibility/xbox-accessibility-guidelines/114 | 미확인 |
+| X117 | XAG 117 Visual distractions and motion settings (카메라 흔들림·시야·멀미) | https://learn.microsoft.com/da-dk/gaming/accessibility/xbox-accessibility-guidelines/117 | 미확인 |
+| GAG-B | Game Accessibility Guidelines 기본 단계(자막을 읽기 쉽게 표시 등) | https://gameaccessibilityguidelines.com/basic/ | 미확인 |
+| GAG-V | 같은 지침의 시각 항목 "필수 정보를 색만으로 전달하지 않기" | 개별 URL 미확인. 전체 목록에서 찾아 채울 것 | 미확인 |
+| GDC-D4A | GDC 2024 "Diablo IV: The Art of Open World Sanctuary"(아이소메트릭 카메라용 환경 제작·가독성) | https://gdcvault.com/play/1034222/-Diablo-IV-The-Art | 개요만(녹화는 유료 회원일 수 있음) |
+| GDC-D4P | GDC "The Pillars of Hell: Achieving the Artistic Vision of Diablo IV" | https://www.gdcvault.com/play/1034608/The-Pillars-of-Hell-Achieving | 제목만 |
+| U-RO | Unity URP "Render Objects로 가려진 캐릭터 실루엣 그리기"(가려진 부분용·앞 부분용 Render Objects 두 개) | https://docs.unity3d.com/6000.2/Documentation/Manual/urp/renderer-features/how-to-custom-effect-render-objects.html · URP 15: https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal%4015.0/manual/renderer-features/how-to-custom-effect-render-objects.html | 검색 요약으로 내용 확인(docs.unity3d.com은 열기 시도 안 함) |
+| U-LIT | Unity URP Lit — Surface Type Transparent(배경과 섞임, 불투명 뒤 별도 패스)·Blending Mode Alpha/Premultiply·Alpha Clipping(컷아웃) | https://docs.unity3d.com/Manual/urp/lit-shader.html · https://docs.unity3d.com/6/Documentation/Manual/urp/shader-complex-lit.html | 검색 요약으로 내용 확인 |
+| GUIDB | Game UI Database(화면 유형·HUD 요소로 거르는 게임 UI 캡처 DB) | https://www.gameuidatabase.com/ (존재는 소개 기사로 확인: https://creativebloq.com/3d/video-game-design/game-ui-database-20-is-the-ultimate-free-reference-tool-for-game-designers) | 미확인. D4·PoE2 화면이 있는지 검색으로 확인 못 함 |
+
+PoE2·Last Epoch·Torchlight·No Rest for the Wicked의 GDC 세션은 검색으로 찾지 못했다(없음이 아니라 미발견). NRFTW 실물 연구는 품질 기준 §3의 기존 자료를 쓴다.
+
+### 2.2 항목별 근거
+
+| 항목 | 공개 매뉴얼 근거 | 조항이 없을 때의 근거 |
+|---|---|---|
+| A1 고정 피치 탑다운 카메라 | GDC-D4A(아이소메트릭 카메라 전제의 환경 제작) | — |
+| A4·A5·K5 흔들림·밀어넣기 줌·움직임 줄이기 | X117 | — |
+| B1 가림 페이드 | 구현: U-LIT(Transparent + Alpha 또는 Premultiply로 알파 페이드). Alpha Clipping은 경계가 딱딱하게 튀므로 페이드용으로 쓰지 않는다. 디더 컷아웃은 점 금지로 제외 | 관례 근거: GDC-D4A(카메라에 맞춘 디테일 배치) + 레퍼런스 캡처. **공식 조항 없음** |
+| B2 가려진 영웅 실루엣 | 구현: U-RO(Unity 공식 예제가 바로 이 기능) | 관례 근거: 레퍼런스 캡처. 공식 조항 없음 |
+| B3 가리는 소품 배치 | GDC-D4A | — |
+| C1·C2·H1 영웅·적·탄 대비 | X102 | — |
+| C4·C5·G1·H2 강조·라벨·이름표·엘리트 표시 | X114(UI 문맥·라벨) | 표시 형식은 GUIDB 캡처 |
+| D1·D2 히트스톱·피격 번쩍임 | 공식 조항 없음 | 레퍼런스 영상(연속 프레임) |
+| D3 피해 숫자 | 공식 조항 없음 | GUIDB |
+| E1·E2·E4 바닥 예고·예고음 | X103(시각 예고와 소리를 같이 주기) | — |
+| E5·K8 패링 가능 색 구분·색약 모드 | X103, GAG-V | — |
+| F1~F6 HUD 구성 | 공식 조항 없음(글자 판독은 X101) | GUIDB HUD 필터 |
+| I1~I3 미니맵·목표·화살표 | X114 | GUIDB |
+| J1~J3 로딩·건너뛰기 | 공식 조항 없음 | GUIDB |
+| K2·K9 키 재설정·게임패드 | X107 | — |
+| K3·L1·L2 음량 분리·우선순위·덕킹 | X105(음량 분리, 중요한 신호가 들리게) | — |
+| K6 자막 | X104, GAG-B | — |
+| K7 UI 배율·글자 크기 | X101 | — |
+| M1~M4 사망·부활 | 공식 조항 없음 | 레퍼런스 영상 |
+
+## 3. 유지 규칙
 
 - 행을 추가할 때도 3편 이상 공통 조건을 지킨다. 한 게임만의 기능은 해당 분야 SSOT의 "참고"로 둔다.
 - 상태를 "있음"으로 바꾸려면 코드 근거와 함께 Mac 실게임 캡처/영상 경로를 비고에 적는다. 코드만 있으면 "있음(화면 미검증)"으로 쓴다.
