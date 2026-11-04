@@ -1,3 +1,5 @@
+2026-11-04 캐릭터 선택 하단 버튼 글자 맞춤(유니티 총괄, 경미 7건 겹침 래칫 unknown 80건 해소용): 4982f6a9a 후보 겹침 검사에서 de "Demnächst verfügbar"·"Charakterwahl", fr 문구가 180px 취소/생성 판 밖으로 넘침(NativeLobby.TitleMenu.cs:133 DrawSpaced 글자 16종×5해상도). NativeLobby.SilverCharacter.cs DrawVisualActionPlate는 판 폭-20px를 넘으면 자간 0.2em→0.08em, 그래도 넘으면 15px에서 11px까지 1px씩 줄인다. ko·en 짧은 문구는 15px·0.2em 그대로. 참조 컴파일 5어셈블리 오류 0, 화면 판정 전.
+
 2026-11-04 1-1 한 판 예외 위험 점검(Codex run-exception-audit 731b4b558) UI 쪽 반영(유니티 총괄): R07 사망 결정·쓰러짐 화면 글꼴 null 캐시 키, R08 death_web 누락·빈 구조·없는 대사 키, R09 demo_text 구조·중복 키 사전 검증(부분 초기화 방지), R10 hellgate 언어표 영어 대체 행 검증. 참조 컴파일 오류 0, death-d2·ui-minor6·judge6 통과(claude/unity-pc-ui-minor6-20261104).
 
 2026-11-04 17:30 UI 경미 7건 묶음(디자인총괄 판정, PC 검사·컴파일만, 화면 판정 전): 캐릭터 선택 취소/생성을 공용 ActionPlate(생성 진홍)로, 레일 "출시 준비 중" 10→14px, 3840 로비 패널 글자 초와이드 하한(UI 배율은 높이 기준 1.0이라 원인 아님), 사망 결정 화면 피먹 5초 ±5% 맥동·결과 줄 16px·헤어라인 max(460, 제목 폭), 로비 포스터 PNG 무밉맵 규칙 편입(importer v5). death-ui-tests/ui-minor6.test.cjs 7/0, 기존 검사 통과, 5어셈블리 오류 0. 총괄 추가: 통합 후보 겹침 래칫에서 나온 새 퇴보 10건(fr 캐릭터 선택 직업 이름이 Cinzel로 넓어져 패널 2px 넘침) → 이름을 308px 칸에 맞춰 정수 pt 축소(18 하한, 말줄임 없음).

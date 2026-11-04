@@ -233,9 +233,12 @@ namespace Exoduser.UnityPort
             bool hover=enabled&&r.Contains(Event.current.mousePosition);bool focus=enabled&&GUI.GetNameOfFocusedControl()==control;
             bool pressed=!AutomatedInput&&hover&&ExoInput.Mouse(0);
             NativeSilverHellUi.ActionPlate(r,primary,focus||hover?1:0,pressed,28,6);
-            var f=CharacterTitleFont(text);float spacing=15*.2f,width=SpacedWidth(f,15,text,spacing)-spacing;
+            // Long translations (de "Demnächst verfügbar", fr) must stay inside the plate: tighten the tracking first, then step the size down (floor 11px).
+            var f=CharacterTitleFont(text);int size=15;float spacing=size*.2f,limit=r.width-20,width=SpacedWidth(f,size,text,spacing)-spacing;
+            if(width>limit){spacing=size*.08f;width=SpacedWidth(f,size,text,spacing)-spacing;}
+            while(width>limit&&size>11){size--;spacing=size*.08f;width=SpacedWidth(f,size,text,spacing)-spacing;}
             var color=!enabled?new Color(138/255f,141/255f,141/255f):(focus||hover)?new Color(242/255f,237/255f,226/255f):new Color(223/255f,214/255f,194/255f);
-            DrawSpaced(r.center.x-width/2,r.y,r.height,text,f,15,spacing,color,true);
+            DrawSpaced(r.center.x-width/2,r.y,r.height,text,f,size,spacing,color,true);
         }
         // 웹 .cs-ico.locked .cs-ico-ring::after의 같은 X 사슬 원본을 슬롯 전체에 표시한다.
         static string SilverRailName(string text,GUIStyle style,float width)
