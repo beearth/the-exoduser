@@ -105,7 +105,7 @@ Unity GUI.depth 계약: [공식API](https://docs.unity3d.com/ja/current/ScriptRe
 | 종료코드진단 | 6e24448a 실제decoderPrepared=true에서의도적expectedExit2,공식실제exit2/windows0/leftovers0/USER_SAVE0. runner ok=false는의도진단이며정상게임검수통과로세지않음. 실패코드를0으로덮지않음확인 |
 | 보존 | 생성857정확경로모두SHA백업·원HEAD입력복원/해시검증,guard기존WIP보존. Desktop직접교체0. 원격d00cfd6f4 타격표현·도구변경을정상병합한뒤통합정식빌드재검수예정 |
 
-NativeScreenTransition은준비timeout실패를빈error대신 prepare-timeout (12s)로기록한다. 유효한앞선단일범위검사는유지하되네번째패키지전체성공으로승격하지않는다.
+NativeScreenTransition은준비timeout실패를빈error대신 prepare-timeout (12s)로기록한다(11-04 정정: 이 문구는 낡았다. 지금은 prepare-stalled(조립 20s·비조립 12s)와 prepare-hard-cap(120s)이며 첫 사유를 보존한다. UNITY_MAC_LOADING_ART_OVERLAY 11-04 fix2 표 참조). 유효한앞선단일범위검사는유지하되네번째패키지전체성공으로승격하지않는다.
 
 
 ## 다섯 번째 통합 패키지 — 검수기 IO 수정 실제 회귀 통과

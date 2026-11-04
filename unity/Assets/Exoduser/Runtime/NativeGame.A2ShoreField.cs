@@ -21,7 +21,7 @@ namespace Exoduser.UnityPort
                 wet=Mathf.Min(wet,Mathf.Sqrt(dx*dx+dz*dz)-A2ForestLayout.IslandRadius(Mathf.Atan2(dz,dx)));
                 data[y*size+x]=wet;
             }
-            var texture=new Texture2D(size,size,TextureFormat.RFloat,false,true){name="A2 실제 수로 접촉거리장",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};
+            var texture=R3Track(new Texture2D(size,size,TextureFormat.RFloat,false,true){name="A2 실제 수로 접촉거리장",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear});
             texture.SetPixelData(data,0);texture.Apply(false,true);
             a2Water.SetTexture("_ShoreField",texture);a2Water.SetVector("_ShoreBounds",new Vector4(-30,-100,140,170));a2Water.SetFloat("_ShoreReady",1);
             Debug.Log("[A2] 수로 SSOT 접촉거리장512x512/원본맵·보행변경0");
@@ -46,7 +46,7 @@ namespace Exoduser.UnityPort
                     distance[i]=d;
                 }
             }
-            var texture=new Texture2D(n,n,TextureFormat.RFloat,false,true){name="A2 전체 실제 지면 물가 거리장",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};
+            var texture=R3Track(new Texture2D(n,n,TextureFormat.RFloat,false,true){name="A2 전체 실제 지면 물가 거리장",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear});
             texture.SetPixelData(distance,0);texture.Apply(false,true);
             a2Water.SetTexture("_ShoreField",texture);a2Water.SetVector("_ShoreBounds",new Vector4(A2FieldLayout.GroundMinX,A2FieldLayout.GroundMinZ,size,size));a2Water.SetFloat("_ShoreReady",1);
             Debug.Log("[A2 필드] 실제 지면·수면 물가1024x1024/원본 XY 경계 불변");

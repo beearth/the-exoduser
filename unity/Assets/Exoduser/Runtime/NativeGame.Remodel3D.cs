@@ -37,22 +37,94 @@ namespace Exoduser.UnityPort
             if (!NativeRemodel3D.Requested || Simulation == null) return;
             if (r3Late == null) { r3Late = gameObject.AddComponent<R3Late>(); r3Late.Late = Remodel3DLate; }
             bool field = !Simulation.Stage.InArena;
-            if (field && !r3Loaded && !r3Loading && !r3Failed) StartCoroutine(Remodel3DLoad());
+            if (field && !r3Loaded && !r3Loading && !r3Failed && r3Gate.CanStart) r3LoadRoutine = StartCoroutine(Remodel3DLoad());
             bool want = field && r3Loaded;
             if (want != NativeRemodel3D.Active) Remodel3DSetActive(want);
         }
 
+        Coroutine r3LoadRoutine; AsyncOperation r3LoadOp; readonly FieldLoadGate r3Gate = new FieldLoadGate();
+        // A new field-bound transition starts: a 3D field stopped by an earlier abort may be tried again.
+        internal static void FieldEntryRequested() { var g = Instance; if (g != null) g.r3Gate.FieldEntry(); }
+        void OnDisable() { StopLobbyFixtureObservers(); if (r3Loading && !r3Loaded) Remodel3DAbort("owner-disabled", false); else r3Loading = false; }
+        // True while a field-bound transition must keep waiting: the 3D field is requested, the field (not the arena) is on screen, it is neither built nor failed,
+        // and no abort has deferred the retry (r3Gate.Deferred) or ended it (r3Gate.Permanent).
+        internal static bool FieldPreparePending { get { var g = Instance; return g != null && NativeRemodel3D.Requested && g.Simulation != null && !g.Simulation.Stage.InArena && !g.r3Loaded && !g.r3Failed && !g.r3Gate.Deferred && !g.r3Gate.Permanent; } }
+        internal static bool FieldAssemblyRunning { get { var g = Instance; return g != null && g.r3Loading; } }
+        internal static void AbortFieldPrepare(string why) { var g = Instance; if (g != null) g.Remodel3DAbort(why); }
+
+        // Reports from the very first step (before the scene load), runs the whole chain under a guard so an exception cannot leave a half-built 3D field open.
         IEnumerator Remodel3DLoad()
         {
-            r3Loading = true;
+            r3Loading = true; NativeTransitionProgress.OwnerAlive = () => FieldAssemblyRunning;
+            int token = NativeTransitionProgress.Begin("remodel3d-load");
+            string failure = null;
+            var run = AssemblyGuard.Run(Remodel3DLoadSteps(), e => { failure = e.GetType().Name + ": " + e.Message; Debug.LogException(e); });
+            try { while (run.MoveNext()) yield return run.Current; }
+            finally { (run as System.IDisposable)?.Dispose(); NativeTransitionProgress.End(token); }   // dispose the guard (and the iterators under it) when the routine is stopped
+            if (failure != null) Remodel3DAbort("assembly-exception: " + failure, true);
+        }
+
+        // Stops a half-built 3D field and keeps the 2D view (scene-missing / rig-missing failures below only set r3Failed and do not tear anything down; this path also unloads the scene). The first reason is kept for the transition record.
+        // Every abort kind (stall, hard-cap, owner disabled, exception) shares ONE counter in r3Gate: the first abort defers one retry to the next field entry, the second is
+        // permanent (2D for the session). Exception: an idle stall while only a scene unload is pending (no assembly running) does not count.
+        void Remodel3DAbort(string why, bool exception = false)
+        {
+            if (r3Loaded) return;
+            if (!exception && r3Gate.WaitingOnOps(r3Loading)) { r3Gate.Defer(); NativeTransitionProgress.Fail(why); Debug.LogWarning("[RM-INT] waiting for a scene unload, opening in 2D; retry count unchanged, assembly deferred to the next field entry: " + why); return; }
+            NativeTransitionProgress.Fail(why); Debug.LogWarning("[RM-INT] 3D field aborted, staying 2D: " + why);
+            if (r3LoadRoutine != null) { StopCoroutine(r3LoadRoutine); r3LoadRoutine = null; }
+            r3Loading = false; r3Gate.Abort(exception);
+            if (r3Gate.Permanent) { r3Failed = true; hellLayerOriginals = null; }   // no retry will clone from them: let the shared terrain textures go
+            if (r3Cam != null) r3Cam.enabled = false;
+            if (r3Roots != null) foreach (var root in r3Roots) if (root != null) root.SetActive(false);
+            if (a2Root != null) a2Root.SetActive(false);
+            NativeTransitionProgress.Release();
+            if (NativeRemodel3D.Active) Remodel3DSetActive(false);
+            R3Teardown();
+        }
+
+        // Drops the half-built field so the next attempt starts clean (scene unloaded, references cleared). A scene load still in flight cannot be
+        // cancelled: it is held in r3LoadOp and its scene is switched off and unloaded the moment it finishes (no orphan camera / listener / volume).
+        void R3Teardown()
+        {
+            var op = r3LoadOp; r3LoadOp = null;
+            if (op != null && !op.isDone) { r3Gate.OpStarted(); op.completed += _ => { R3UnloadScene(SceneManager.GetSceneByName(R3SceneName)); r3Gate.OpDone(); }; }
+            else R3UnloadScene(r3Scene.IsValid() ? r3Scene : SceneManager.GetSceneByName(R3SceneName));   // the load may have finished this very frame, before r3Scene was assigned
+            R3DestroyMade();
+            r3Scene = default; r3Roots = null; r3Cam = null; r3Marker = null; r3Vcam = null; r3Brain = null;
+            a2Root = null; a2Field = null; a2FieldSoil = null; a2Water = null; a2FieldRootMaterial = null; a2BrambleMeshes = null; a2BrambleMaterial = null; hellFlameFrames = null; hellEnvironment = null; hellFlames.Clear(); hellHeroRim = null; hellActorMaterial = null; r3Base.Clear();
+        }
+        // Runtime-created meshes / materials / textures of this assembly (R3Track at each creation site). Shared originals from Resources.Load are never tracked.
+        static readonly List<UnityEngine.Object> r3Made = new List<UnityEngine.Object>();
+        static T R3Track<T>(T made) where T : UnityEngine.Object { if (made != null) r3Made.Add(made); return made; }
+        static void R3DestroyMade()
+        {
+            foreach (var made in r3Made) if (made != null) Destroy(made);
+            r3Made.Clear(); Resources.UnloadUnusedAssets();
+        }
+        void R3UnloadScene(Scene scene)
+        {
+            if (!scene.IsValid() || !scene.isLoaded) return;
+            foreach (var root in scene.GetRootGameObjects()) if (root != null) root.SetActive(false);
+            var unload = SceneManager.UnloadSceneAsync(scene); if (unload == null) return;
+            r3Gate.OpStarted(); unload.completed += _ => r3Gate.OpDone();
+        }
+
+        IEnumerator Remodel3DLoadSteps()
+        {
             if (!Application.CanStreamedLevelBeLoaded(R3SceneName)) { Debug.LogWarning("[RM-INT] scene " + R3SceneName + " is not in the build: staying 2D"); r3Failed = true; r3Loading = false; yield break; }
-            var op = SceneManager.LoadSceneAsync(R3SceneName, LoadSceneMode.Additive);
-            while (op != null && !op.isDone) yield return null;
+            var op = SceneManager.LoadSceneAsync(R3SceneName, LoadSceneMode.Additive); r3LoadOp = op;
+            float lastLoad = -1;
+            while (op != null && !op.isDone) { if (op.progress != lastLoad) { lastLoad = op.progress; NativeTransitionProgress.Report("remodel3d-scene", Mathf.Clamp01(op.progress) * .03f); } yield return null; }
+            r3LoadOp = null;
             r3Scene = SceneManager.GetSceneByName(R3SceneName);
+            if (!r3Scene.IsValid() || !r3Scene.isLoaded) { r3Failed = true; r3Loading = false; yield break; }
             r3Roots = r3Scene.GetRootGameObjects();
             Transform camT = R3Find("Main Camera"), markerT = R3Find("Player Marker"), vcamT = R3Find("CM LOOK-001"), terrT = R3Find("Terrain");
-            if (camT == null || markerT == null || terrT == null || terrT.GetComponent<Terrain>() == null) { Debug.LogWarning("[RM-INT] RM-1 scene rig / terrain not found: staying 2D"); r3Failed = true; r3Loading = false; yield break; }
+            if (camT == null || markerT == null || terrT == null || terrT.GetComponent<Terrain>() == null) throw new System.InvalidOperationException("RM-1 scene rig / terrain not found");   // -> shared abort path: R3Teardown unloads the additive scene
             r3Cam = camT.GetComponent<Camera>(); r3Marker = markerT; r3Vcam = vcamT != null ? vcamT.GetComponent<CinemachineCamera>() : null;
+            if (r3Cam == null) throw new System.InvalidOperationException("RM-1 camera component missing");
+            if (r3Cam == null) throw new System.InvalidOperationException("RM-1 camera destroyed during load");
             r3Brain=r3Cam.GetComponent<CinemachineBrain>();
             if(NativeHd2D.Enabled&&r3Brain!=null)r3Brain.UpdateMethod=CinemachineBrain.UpdateMethods.ManualUpdate;
             NativeRemodel3D.Ground = terrT.GetComponent<Terrain>();
@@ -61,18 +133,18 @@ namespace Exoduser.UnityPort
             r3Cam.depth = view.depth + 10;
             Remodel3DViewport();
             // 원본 피부 결을 지우던 +1.3 EV 노출과 붉은 색조를 이 필드의 프로필 사본에서만 조정한다.
-            foreach (var root in r3Roots) foreach (var volume in root.GetComponentsInChildren<Volume>(true))
+            foreach (var root in r3Roots) if (root != null) foreach (var volume in root.GetComponentsInChildren<Volume>(true))
                 if (volume.profile != null && volume.profile.TryGet<ColorAdjustments>(out var tone))
                 { tone.postExposure.Override(1f); tone.saturation.Override(-18f); tone.colorFilter.Override(new Color(.82f,.9f,1f)); }
-            if (System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "--unity-keyshot-baseline") < 0) HellLightingSetup();
-            r3Loaded = true; r3Loading = false;
+            if (System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "--unity-keyshot-baseline") < 0) yield return HellLightingSetup();
+            r3Loaded = true; r3Loading = false; r3Made.Clear(); hellLayerOriginals = null;   // kept for the session now
             Remodel3DSetActive(!Simulation.Stage.InArena);
         }
 
         // by name through the loaded scene: the baked scene has the rig loose at the root; the rebuilt one wraps it in RM1_CameraRig
         Transform R3Find(string name)
         {
-            foreach (var root in r3Roots) { var t = R3FindIn(root.transform, name); if (t != null) return t; }
+            foreach (var root in r3Roots) { if (root == null) continue; var t = R3FindIn(root.transform, name); if (t != null) return t; }
             return null;
         }
         static Transform R3FindIn(Transform t, string name)
@@ -98,7 +170,7 @@ namespace Exoduser.UnityPort
         void Remodel3DLate()
         {
             HellArenaLate();
-            if (!NativeRemodel3D.Active || r3Cam == null || Simulation == null) return;
+            if (!NativeRemodel3D.Active || r3Cam == null || r3Marker == null || Simulation == null) return;
             NativeGroundSkillProjection.BeginFrame(r3Cam);
             bool hidden = view.cullingMask == 0;   // the lobby / startup hides the world through the 2D camera mask: mirror it
             view.cullingMask = 0;                  // the 2D camera only clears the frame while the 3D one draws

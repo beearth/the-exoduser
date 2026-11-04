@@ -36,7 +36,7 @@ namespace Exoduser.UnityPort
         }
         Material HellEnvironmentMaterial(Color tint,float smoothness,float scale,string texture)
         {
-            var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
+            var material=R3Track(new Material(Shader.Find("Universal Render Pipeline/Lit")));
             material.SetColor("_BaseColor",tint);material.SetFloat("_Smoothness",smoothness);
             material.SetTexture("_BaseMap",Resources.Load<Texture2D>("Art/map/hell_lighting/"+texture+"_Diffuse"));
             material.SetTexture("_BumpMap",Resources.Load<Texture2D>("Art/map/hell_lighting/"+texture+"_nor_gl"));
@@ -45,7 +45,7 @@ namespace Exoduser.UnityPort
         }
         Material HellScannedWoodMaterial(string stem)
         {
-            var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
+            var material=R3Track(new Material(Shader.Find("Universal Render Pipeline/Lit")));
             material.SetTexture("_BaseMap",Resources.Load<Texture2D>("Art/map/keyshot/"+stem+"_albedo_tinted_1k"));
             material.SetTexture("_BumpMap",Resources.Load<Texture2D>("Art/map/keyshot/"+stem+"_normal_baked_1k"));
             material.SetColor("_BaseColor",new Color(.72f,.78f,.82f));material.SetFloat("_Smoothness",.24f);material.SetFloat("_BumpScale",.5f);material.EnableKeyword("_NORMALMAP");

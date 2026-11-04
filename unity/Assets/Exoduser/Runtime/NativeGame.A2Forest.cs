@@ -17,10 +17,10 @@ namespace Exoduser.UnityPort
         GameObject a2Root;
         Material a2Water;
         readonly System.Collections.Generic.HashSet<string> a2UnreadableMeshes=new System.Collections.Generic.HashSet<string>();
-        void A2ForestSetup(Terrain ground)
+        System.Collections.IEnumerator A2ForestSetup(Terrain ground)
         {
-            if (!A2Requested) return;
-            A2FieldSetup(ground);
+            if (!A2Requested) yield break;
+            yield return A2FieldSetup(ground);
         }
         // 이전 단일 키샷 제작 경로는 비교 근거용으로 보존한다. 일반 필드는 전체 배치를 쓴다.
         void A2LegacyKeyshotSetup(Terrain ground)
@@ -28,7 +28,7 @@ namespace Exoduser.UnityPort
             var timer=System.Diagnostics.Stopwatch.StartNew();Debug.Log("[A2 초기화] 숲 조립 시작");
             NativeRemodel3D.ForestA2=true;
             NativeRemodel3D.PrepareForestHeightCache();
-            foreach(var root in r3Roots)foreach(var volume in root.GetComponentsInChildren<UnityEngine.Rendering.Volume>(true))
+            foreach(var root in r3Roots)if(root!=null)foreach(var volume in root.GetComponentsInChildren<UnityEngine.Rendering.Volume>(true))
             {
                 var profile=volume.profile;if(profile==null)continue;
                 UnityEngine.Rendering.Universal.ColorAdjustments tone;if(profile.TryGet<UnityEngine.Rendering.Universal.ColorAdjustments>(out tone)){tone.postExposure.Override(.25f);tone.contrast.Override(16);}
@@ -53,9 +53,9 @@ namespace Exoduser.UnityPort
             a2Root = new GameObject("A2 썩은 숲·나무다리 제작 후보");
             a2Root.transform.SetParent(ground.transform.parent, false);
             var oldFire=GameObject.Find("실제 철제 지옥불 화로");if(oldFire!=null)oldFire.SetActive(false);
-            foreach(var root in r3Roots)foreach(var light in root.GetComponentsInChildren<Light>(true))
+            foreach(var root in r3Roots)if(root!=null)foreach(var light in root.GetComponentsInChildren<Light>(true))
                 if(light.name.StartsWith("Pool_Hell",StringComparison.Ordinal))light.intensity=0;
-            foreach(var root in r3Roots)foreach(var r in root.GetComponentsInChildren<MeshRenderer>(true))
+            foreach(var root in r3Roots)if(root!=null)foreach(var r in root.GetComponentsInChildren<MeshRenderer>(true))
                 if(r.name.StartsWith("Decals_blood",StringComparison.Ordinal))r.enabled=false;
             // LEFT/MID 주간, RIGHT 강가, TOP 먼 숲, SOUTH 낮은 전경. 중앙 전투면은 유지한다.
             A2RootedTree(34.8f,-70.5f,1.8f,1.6f,1.65f,25);
@@ -170,16 +170,16 @@ namespace Exoduser.UnityPort
             {
                 var ground=p;ground.y=NativeRemodel3D.GroundY(p.x,p.z);var top=ground+new Vector3(-4,13,4.5f);
                 var side=Vector3.Cross((top-ground).normalized,new Vector3(0,Mathf.Sin(NativeRemodel3D.Pitch),-Mathf.Cos(NativeRemodel3D.Pitch))).normalized;
-                var mesh=new Mesh{name="수관 사이 빛기둥"};mesh.vertices=new[]{top-side*.35f,top+side*.35f,ground-side*1.2f,ground+side*1.2f};mesh.uv=new[]{new Vector2(0,0),new Vector2(1,0),new Vector2(0,1),new Vector2(1,1)};mesh.triangles=new[]{0,2,1,1,2,3};mesh.RecalculateBounds();
-                var shaft=new GameObject("A2 국소 달빛기둥");shaft.transform.SetParent(a2Root.transform,false);shaft.AddComponent<MeshFilter>().sharedMesh=mesh;var renderer=shaft.AddComponent<MeshRenderer>();renderer.sharedMaterial=new Material(shader);renderer.sharedMaterial.SetColor("_Color",new Color(1.4f,1.6f,1.8f,.045f));renderer.shadowCastingMode=ShadowCastingMode.Off;
+                var mesh=R3Track(new Mesh{name="수관 사이 빛기둥"});mesh.vertices=new[]{top-side*.35f,top+side*.35f,ground-side*1.2f,ground+side*1.2f};mesh.uv=new[]{new Vector2(0,0),new Vector2(1,0),new Vector2(0,1),new Vector2(1,1)};mesh.triangles=new[]{0,2,1,1,2,3};mesh.RecalculateBounds();
+                var shaft=new GameObject("A2 국소 달빛기둥");shaft.transform.SetParent(a2Root.transform,false);shaft.AddComponent<MeshFilter>().sharedMesh=mesh;var renderer=shaft.AddComponent<MeshRenderer>();renderer.sharedMaterial=R3Track(new Material(shader));renderer.sharedMaterial.SetColor("_Color",new Color(1.4f,1.6f,1.8f,.045f));renderer.shadowCastingMode=ShadowCastingMode.Off;
             }
             var target=new Vector3(39.5f,NativeRemodel3D.GroundY(39.5f,-72.8f),-72.8f);
             var moon=new GameObject("A2 수관 달빛 국소광");moon.transform.SetParent(a2Root.transform,false);moon.transform.position=target+new Vector3(-4,13,4.5f);moon.transform.LookAt(target);
             var spot=moon.AddComponent<Light>();spot.type=LightType.Spot;spot.color=new Color(.55f,.67f,1);spot.intensity=30;spot.range=18;spot.spotAngle=22;spot.innerSpotAngle=14;spot.shadows=LightShadows.Soft;
             // 별도의 먼 지면이 카메라 가장자리의 검은 무공간을 막는다. 보행·충돌에는 참여하지 않는다.
             var floor=new GameObject("A2 먼 숲 지면");floor.transform.SetParent(a2Root.transform,false);
-            var m=new Mesh{name="먼 숲 연속 지면"};m.vertices=new[]{new Vector3(-30,-2,-100),new Vector3(110,-2,-100),new Vector3(-30,-2,70),new Vector3(110,-2,70)};m.triangles=new[]{0,2,1,1,2,3};m.RecalculateNormals();m.RecalculateBounds();floor.AddComponent<MeshFilter>().sharedMesh=m;
-            var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));material.SetColor("_BaseColor",new Color(.055f,.064f,.046f));material.SetFloat("_Smoothness",.08f);floor.AddComponent<MeshRenderer>().sharedMaterial=material;
+            var m=R3Track(new Mesh{name="먼 숲 연속 지면"});m.vertices=new[]{new Vector3(-30,-2,-100),new Vector3(110,-2,-100),new Vector3(-30,-2,70),new Vector3(110,-2,70)};m.triangles=new[]{0,2,1,1,2,3};m.RecalculateNormals();m.RecalculateBounds();floor.AddComponent<MeshFilter>().sharedMesh=m;
+            var material=R3Track(new Material(Shader.Find("Universal Render Pipeline/Lit")));material.SetColor("_BaseColor",new Color(.055f,.064f,.046f));material.SetFloat("_Smoothness",.08f);floor.AddComponent<MeshRenderer>().sharedMaterial=material;
         }
         GameObject A2Module(string id,float x,float z,float sx,float sy,float sz,float yaw,float lift=0,bool registerSurface=true)
         {
@@ -211,8 +211,8 @@ namespace Exoduser.UnityPort
             go.transform.localScale=new Vector3(sx,sy,sz)*units;
             if(roots||stump||hollow||id=="Dead_Leaf_Litter"||foreground&&a2Field!=null)foreach(var mf in go.GetComponentsInChildren<MeshFilter>())
             {
-                if(!mf.sharedMesh.isReadable){if(a2UnreadableMeshes.Add(id))Debug.LogError("[A2] 지면 접합 정점읽기 누락. 원본 메시 유지: "+id);continue;}
-                var mesh=Instantiate(mf.sharedMesh);var points=mesh.vertices;
+                if(mf.sharedMesh==null||!mf.sharedMesh.isReadable){if(a2UnreadableMeshes.Add(id))Debug.LogError("[A2] 지면 접합 정점읽기 누락. 원본 메시 유지: "+id);continue;}
+                var mesh=R3Track(Instantiate(mf.sharedMesh));var points=mesh.vertices;
                 for(int i=0;i<points.Length;i++){var p=mf.transform.TransformPoint(points[i]);float groundY=a2Field==null&&A2ForestLayout.Water(p.x,p.z)&&!A2ForestLayout.Island(p.x,p.z)?A2ForestLayout.WaterLevel-.18f:NativeRemodel3D.GroundY(p.x,p.z);float weight=hollow?1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(1,3,p.y-height)):1;p.y+=(groundY-placementGround)*weight;
                     if(hollow&&a2Field!=null)
                     {
@@ -227,8 +227,8 @@ namespace Exoduser.UnityPort
             {
                 foreach(var mf in go.GetComponentsInChildren<MeshFilter>())
                 {
-                    if(!mf.sharedMesh.isReadable){Debug.LogError("[A2 목교] 지지목 읽기 누락");continue;}
-                    var mesh=Instantiate(mf.sharedMesh);var vertices=mesh.vertices;var xyz=new float[vertices.Length*3];
+                    if(mf.sharedMesh==null||!mf.sharedMesh.isReadable){Debug.LogError("[A2 목교] 지지목 읽기 누락");continue;}
+                    var mesh=R3Track(Instantiate(mf.sharedMesh));var vertices=mesh.vertices;var xyz=new float[vertices.Length*3];
                     for(int i=0;i<vertices.Length;i++){var p=mf.transform.TransformPoint(vertices[i]);xyz[i*3]=p.x;xyz[i*3+1]=p.y;xyz[i*3+2]=p.z;}
                     int changed=a2Field.ExtendBridgeSupports(xyz,mesh.triangles);
                     for(int i=0;i<vertices.Length;i++)vertices[i]=mf.transform.InverseTransformPoint(new Vector3(xyz[i*3],xyz[i*3+1],xyz[i*3+2]));
@@ -268,7 +268,7 @@ namespace Exoduser.UnityPort
         }
         void A2AttachMoss()
         {
-            var root=a2Root;if(root==null)return;var trees=new System.Collections.Generic.List<GameObject>();var moss=new System.Collections.Generic.List<GameObject>();foreach(Transform t in root.transform){if(t.name=="A2_Hollow_Loft_Tree")trees.Add(t.gameObject);if(t.name=="A2_Hanging_Moss")moss.Add(t.gameObject);}int fixedCount=0;foreach(var go in moss){GameObject tree=null;float best=999999;foreach(var candidate in trees){float d=(candidate.transform.position-go.transform.position).sqrMagnitude;if(d<best){best=d;tree=candidate;}}if(tree==null)continue;var direction=go.transform.position-tree.transform.position;direction.y=0;if(direction.sqrMagnitude<.01f)direction=Vector3.back;direction.Normalize();var rs=go.GetComponentsInChildren<MeshRenderer>();if(rs.Length==0)continue;var bounds=rs[0].bounds;foreach(var r in rs)bounds.Encapsulate(r.bounds);var origin=tree.transform.position+direction*12;origin.y=bounds.max.y;var ray=-direction;float nearest=24;Vector3 hit=Vector3.zero;foreach(var mf in tree.GetComponentsInChildren<MeshFilter>()){if(!mf.sharedMesh.isReadable)continue;var vertices=mf.sharedMesh.vertices;var triangles=mf.sharedMesh.triangles;for(int i=0;i<triangles.Length;i+=3){var a=mf.transform.TransformPoint(vertices[triangles[i]]);var b=mf.transform.TransformPoint(vertices[triangles[i+1]]);var c=mf.transform.TransformPoint(vertices[triangles[i+2]]);var e1=b-a;var e2=c-a;var p=Vector3.Cross(ray,e2);float det=Vector3.Dot(e1,p);if(Mathf.Abs(det)<.000001f)continue;float inv=1/det;var tv=origin-a;float u=Vector3.Dot(tv,p)*inv;if(u<0||u>1)continue;var q=Vector3.Cross(tv,e1);float v=Vector3.Dot(ray,q)*inv;if(v<0||u+v>1)continue;float distance=Vector3.Dot(e2,q)*inv;if(distance>0&&distance<nearest){nearest=distance;hit=origin+ray*distance;}}}if(nearest<24){go.transform.position+=hit-direction*.025f-new Vector3(bounds.center.x,bounds.max.y,bounds.center.z);fixedCount++;}foreach(var r in rs){var block=new MaterialPropertyBlock();r.GetPropertyBlock(block);block.SetColor("_BaseColor",new Color(.8f,.76f,.6f,1));r.SetPropertyBlock(block);}}Debug.Log("[A2] 이끼 상단 표면 접합 "+fixedCount+"/"+moss.Count);
+            var root=a2Root;if(root==null)return;var trees=new System.Collections.Generic.List<GameObject>();var moss=new System.Collections.Generic.List<GameObject>();foreach(Transform t in root.transform){if(t.name=="A2_Hollow_Loft_Tree")trees.Add(t.gameObject);if(t.name=="A2_Hanging_Moss")moss.Add(t.gameObject);}int fixedCount=0;foreach(var go in moss){GameObject tree=null;float best=999999;foreach(var candidate in trees){float d=(candidate.transform.position-go.transform.position).sqrMagnitude;if(d<best){best=d;tree=candidate;}}if(tree==null)continue;var direction=go.transform.position-tree.transform.position;direction.y=0;if(direction.sqrMagnitude<.01f)direction=Vector3.back;direction.Normalize();var rs=go.GetComponentsInChildren<MeshRenderer>();if(rs.Length==0)continue;var bounds=rs[0].bounds;foreach(var r in rs)bounds.Encapsulate(r.bounds);var origin=tree.transform.position+direction*12;origin.y=bounds.max.y;var ray=-direction;float nearest=24;Vector3 hit=Vector3.zero;foreach(var mf in tree.GetComponentsInChildren<MeshFilter>()){if(mf.sharedMesh==null||!mf.sharedMesh.isReadable)continue;var vertices=mf.sharedMesh.vertices;var triangles=mf.sharedMesh.triangles;for(int i=0;i<triangles.Length;i+=3){var a=mf.transform.TransformPoint(vertices[triangles[i]]);var b=mf.transform.TransformPoint(vertices[triangles[i+1]]);var c=mf.transform.TransformPoint(vertices[triangles[i+2]]);var e1=b-a;var e2=c-a;var p=Vector3.Cross(ray,e2);float det=Vector3.Dot(e1,p);if(Mathf.Abs(det)<.000001f)continue;float inv=1/det;var tv=origin-a;float u=Vector3.Dot(tv,p)*inv;if(u<0||u>1)continue;var q=Vector3.Cross(tv,e1);float v=Vector3.Dot(ray,q)*inv;if(v<0||u+v>1)continue;float distance=Vector3.Dot(e2,q)*inv;if(distance>0&&distance<nearest){nearest=distance;hit=origin+ray*distance;}}}if(nearest<24){go.transform.position+=hit-direction*.025f-new Vector3(bounds.center.x,bounds.max.y,bounds.center.z);fixedCount++;}foreach(var r in rs){var block=new MaterialPropertyBlock();r.GetPropertyBlock(block);block.SetColor("_BaseColor",new Color(.8f,.76f,.6f,1));r.SetPropertyBlock(block);}}Debug.Log("[A2] 이끼 상단 표면 접합 "+fixedCount+"/"+moss.Count);
         }
         void A2RootWeb(float x,float z,float scale,float yaw)
         {
@@ -295,19 +295,19 @@ namespace Exoduser.UnityPort
                     }
                 }
             }
-            var mesh=new Mesh{name="거목에서 흙으로 이어지는 굽은 뿌리"};mesh.SetVertices(points);mesh.SetUVs(0,uv);mesh.SetTriangles(indices,0);mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();
+            var mesh=R3Track(new Mesh{name="거목에서 흙으로 이어지는 굽은 뿌리"});mesh.SetVertices(points);mesh.SetUVs(0,uv);mesh.SetTriangles(indices,0);mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();
             var go=new GameObject("A2 낮은 뿌리 접합");go.transform.SetParent(a2Root.transform,false);go.AddComponent<MeshFilter>().sharedMesh=mesh;go.AddComponent<MeshRenderer>().sharedMaterial=material;
         }
         void A2River(Terrain ground)
         {
-            a2Water=new Material(Shader.Find("EXODUSER/A2ToxicRiver"));
+            a2Water=R3Track(new Material(Shader.Find("EXODUSER/A2ToxicRiver")));
             A2ShoreField();
             r3Cam.depthTextureMode|=DepthTextureMode.Depth;
             UnityEngine.Rendering.Universal.CameraExtensions.GetUniversalAdditionalCameraData(r3Cam).requiresDepthTexture=true;
             // A2의 단일 경계로 지형과 보행을 함께 나눈다. 원본 맵 데이터/비A2 실행은 보존한다.
-            foreach(var root in r3Roots)foreach(var r in root.GetComponentsInChildren<MeshRenderer>(true))
+            foreach(var root in r3Roots)if(root!=null)foreach(var r in root.GetComponentsInChildren<MeshRenderer>(true))
                 if(r.name.StartsWith("River_",StringComparison.Ordinal)||r.name.StartsWith("Pool_",StringComparison.Ordinal))r.enabled=false;
-            var mesh=new Mesh{name="A2 외곽으로 이어지는 독액"};
+            var mesh=R3Track(new Mesh{name="A2 외곽으로 이어지는 독액"});
             const float waterHeight=A2ForestLayout.WaterLevel;
             A2CutGround(ground,waterHeight);
             A2OuterGround(ground);
@@ -355,7 +355,7 @@ namespace Exoduser.UnityPort
                 if(ring==rings||col==segments)continue;int n=ring*(segments+1)+col,k=(ring*segments+col)*6;
                 t[k]=n;t[k+1]=n+1;t[k+2]=n+segments+1;t[k+3]=n+1;t[k+4]=n+segments+2;t[k+5]=n+segments+1;
             }
-            var mesh=new Mesh{name="A2 거목 아래 침식된 섬"};mesh.vertices=v;mesh.triangles=t;mesh.RecalculateNormals();mesh.RecalculateBounds();
+            var mesh=R3Track(new Mesh{name="A2 거목 아래 침식된 섬"});mesh.vertices=v;mesh.triangles=t;mesh.RecalculateNormals();mesh.RecalculateBounds();
             var go=new GameObject("A2 전경 거목 접지 섬");go.transform.SetParent(a2Root.transform,false);go.AddComponent<MeshFilter>().sharedMesh=mesh;
             foreach(var renderer in ground.GetComponentsInChildren<MeshRenderer>())if(renderer.name=="지옥 바닥 PBR 표면"){go.AddComponent<MeshRenderer>().sharedMaterial=renderer.sharedMaterial;break;}
         }
@@ -395,7 +395,7 @@ namespace Exoduser.UnityPort
                         kept.Add(a);kept.Add(b);kept.Add(c);A2Edge(edges,a,b);A2Edge(edges,b,c);A2Edge(edges,c,a);
                     }
                 }
-                var cut=Instantiate(source);cut.name="A2 수로와 맞물린 지형";cut.SetVertices(clippedVertices);cut.SetUVs(0,clippedUV);cut.triangles=kept.ToArray();cut.RecalculateNormals();cut.RecalculateTangents();cut.RecalculateBounds();filter.sharedMesh=cut;
+                var cut=R3Track(Instantiate(source));cut.name="A2 수로와 맞물린 지형";cut.SetVertices(clippedVertices);cut.SetUVs(0,clippedUV);cut.triangles=kept.ToArray();cut.RecalculateNormals();cut.RecalculateTangents();cut.RecalculateBounds();filter.sharedMesh=cut;
                 var bankV=new System.Collections.Generic.List<Vector3>();var bankUV=new System.Collections.Generic.List<Vector2>();var bankT=new System.Collections.Generic.List<int>();
                 foreach(var edge in edges)if(edge.Value==1)
                 {
@@ -412,7 +412,7 @@ namespace Exoduser.UnityPort
                     for(int j=0;j<4;j++){bankV.Add(bankV[n+j]);bankUV.Add(bankUV[n+j]);}
                     bankT.Add(n+5);bankT.Add(n+6);bankT.Add(n+4);bankT.Add(n+7);bankT.Add(n+6);bankT.Add(n+5);
                 }
-                var mesh=new Mesh{name="A2 연속 강둑 절벽"};mesh.indexFormat=IndexFormat.UInt32;mesh.SetVertices(bankV);mesh.SetUVs(0,bankUV);mesh.SetTriangles(bankT,0);mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();
+                var mesh=R3Track(new Mesh{name="A2 연속 강둑 절벽"});mesh.indexFormat=IndexFormat.UInt32;mesh.SetVertices(bankV);mesh.SetUVs(0,bankUV);mesh.SetTriangles(bankT,0);mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();
                 var bank=new GameObject("A2 연속 강둑");bank.transform.SetParent(a2Root.transform,false);bank.AddComponent<MeshFilter>().sharedMesh=mesh;bank.AddComponent<MeshRenderer>().sharedMaterial=HellEnvironmentMaterial(new Color(.48f,.44f,.32f),.16f,1,"rock_ground");
                 Debug.Log("[A2] 수로 지형 삼각형="+kept.Count/3+" 강둑 면="+bankT.Count/3+" 정밀 경계="+crossings.Count+". 보행과 동일 경계");
             }
@@ -455,7 +455,7 @@ namespace Exoduser.UnityPort
                 if(A2ForestLayout.Water(cx,cz))continue;
                 t.Add(n);t.Add(n+cols);t.Add(n+1);t.Add(n+1);t.Add(n+cols);t.Add(n+cols+1);
             }
-            var mesh=new Mesh{name="A2 창 밖으로 이어지는 숲 지형",indexFormat=IndexFormat.UInt32};mesh.vertices=v;mesh.uv=uv;mesh.SetTriangles(t,0);mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();
+            var mesh=R3Track(new Mesh{name="A2 창 밖으로 이어지는 숲 지형",indexFormat=IndexFormat.UInt32});mesh.vertices=v;mesh.uv=uv;mesh.SetTriangles(t,0);mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();
             var go=new GameObject("A2 연속 외곽 숲 지면");go.transform.SetParent(a2Root.transform,false);go.AddComponent<MeshFilter>().sharedMesh=mesh;
             Debug.Log("[A2 외곽] 원본 높이 경계 표본 "+boundaryHeights.Count+"개 재사용");
             foreach(var renderer in ground.GetComponentsInChildren<MeshRenderer>())if(renderer.name=="지옥 바닥 PBR 표면"){go.AddComponent<MeshRenderer>().sharedMaterial=renderer.sharedMaterial;break;}
