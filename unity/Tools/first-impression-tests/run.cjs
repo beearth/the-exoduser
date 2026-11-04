@@ -28,6 +28,7 @@ check('unity_version_is_application_version',/public static string UnityVersion\
 const ps=fs.readFileSync(project+'/ProjectSettings/ProjectSettings.asset','utf8'),bv=/^  bundleVersion: (.+)$/m.exec(ps);
 const web=JSON.parse(fs.readFileSync(project+'/Assets/Exoduser/Resources/Data/release_web.json','utf8')).version;
 // The Unity demo version number itself is a CTO decision (lead review 11-04); only require that the title no longer shows the web value.
+check('lobby_version_line_from_unity',flavor.includes('VersionLine{get{Load();return "v"+UnityVersion+'),'VersionLine uses UnityVersion');
 check('bundle_version_set_not_web',bv&&bv[1].trim().length>0&&bv[1].trim()!==web,(bv&&bv[1])+' vs web '+web);
 check('release_version_property_unchanged_for_capture',/public static string ReleaseVersion\{get\{Load\(\);return release\.version\?\?"";\}\}/.test(flavor));
 check('lobby_poster_design_untouched_enter_gate',/DrawSpaced\(960-tw\/2,r\.y,r\.height,"ENTER",silverLatin/.test(read('NativeLobby.SilverHell.cs')));
