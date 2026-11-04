@@ -1,6 +1,6 @@
 # MANUAL 15 — 성능 예산 (폴리곤·텍스처·드로우콜·프레임 시간·GC·로딩) (초안 2026-11-05)
 
-- 상태: 초안(3차 반영 11-05) | 연구 반영: **3차: codex_asset_size(Resources 폴더별·참조 대조·텍스처 규칙·Steam 용량 목표·절감 순서), FIRST_SCENE_PLAN(§7 측정 관문), codex_synthesis(§1.14 성능 원칙·§2 Resources/A2R 판정), ENGINE_TRIAL_UE5_PLAN(§9 성능 판정 기준)**, 이전: poe2(§8 성능 예산, §9 L1·L2·F1), d4_01_env(§3~§5 소품·베이크 수치), d4_03_cam(R6 발광 단계), conventions(J2, K4 그래픽 옵션), **2차: codex_tech_budget(공개 자료에 정량 예산 대부분 없음 확인, 최소 사양·FPS 환산 반영), our_tech_audit(Resources 원본 2,881,554,015 byte·상위 위험 30개·현재 상태 대비), TOOLCHAIN(§3a~§3d 패스 예산 합계 14.7ms, BudgetCheck c-5), ENGINE_DECISION(UE5 칸 점검)** | 연구 반영 대기: 없음. 단 삼각형·텍스처·draw call·파티클·voice·GC의 7종 공개 수치는 "확인 불가"가 결론이라 계속 [추정] 시작값이고, 모든 항목은 Mac M5 Pro 첫 실측 후 개정
+- 상태: 초안(3차 반영 11-05) | 출처 상태: SOURCE_VERIFY 6c3aac6 기준 | 연구 반영: **3차: codex_asset_size(Resources 폴더별·참조 대조·텍스처 규칙·Steam 용량 목표·절감 순서), FIRST_SCENE_PLAN(§7 측정 관문), codex_synthesis(§1.14 성능 원칙·§2 Resources/A2R 판정), ENGINE_TRIAL_UE5_PLAN(§9 성능 판정 기준)**, 이전: poe2(§8 성능 예산, §9 L1·L2·F1), d4_01_env(§3~§5 소품·베이크 수치), d4_03_cam(R6 발광 단계), conventions(J2, K4 그래픽 옵션), **2차: codex_tech_budget(공개 자료에 정량 예산 대부분 없음 확인, 최소 사양·FPS 환산 반영), our_tech_audit(Resources 원본 2,881,554,015 byte·상위 위험 30개·현재 상태 대비), TOOLCHAIN(§3a~§3d 패스 예산 합계 14.7ms, BudgetCheck c-5), ENGINE_DECISION(UE5 칸 점검)** | 연구 반영 대기: 없음. 단 삼각형·텍스처·draw call·파티클·voice·GC의 7종 공개 수치는 "확인 불가"가 결론이라 계속 [추정] 시작값이고, 모든 항목은 Mac M5 Pro 첫 실측 후 개정
 - 범위: 1-1 한 판(데모 v0) 기준 60fps를 지키는 예산. 지형·소품·캐릭터(픽셀 렌더)·조명·후처리·VFX·로딩·메모리.
 - 이 문서가 정하지 않는 것: 규칙 코어 틱 레이트와 시뮬 비용(코어 소관), 웹판 성능 문서(`docs/12퍼포먼스·최적화/` 대부분이 웹 H5 이력이라 Unity 예산의 근거로 쓰지 않는다. 메모 참고만).
 - 기준 하드웨어: PC(High) = 컴파일·빌드 담당, **판정은 Mac(M5 Pro)에서 한다**(CLAUDE.md 3.4). 목표는 둘 다 1920×1080 60fps. 21:9 3840×1080도 성립해야 한다(CLAUDE.md 4.2-4). 저사양 하한 기기 정의는 아직 없다 → 결정 D15-1.
@@ -31,144 +31,144 @@
 
 ### 3.1 프레임 시간(목표 1920×1080 60fps)
 
-| 항목 | 값 | 근거 |
-|---|---|---|
-| 총 프레임 시간 | 16.6ms 이하 (p99 기준) | [추정] |
-| GPU 총합 | PC·Mac 모두 14.7ms 이하(항목 합계, 3.2표). 이전 초안 PC 12ms/Mac 14ms는 항목 합과 모순이라 개정 | [추정] 7종 공개 자료에 CPU/GPU 분배표 없음(codex_tech_budget §6.1·§12). TOOLCHAIN §3a 합계 14.7ms 제안과 정합 → D15-7★ |
-| CPU 메인 스레드 | 10ms 이하 | [추정] 공개 자료 없음(codex_tech_budget §6.1), 우리 기준. 현재 CPU 위험은 3.8표 CPU 관문 |
-| 프레임 상한 옵션 | 기본 상한 60, 옵션 120/무제한 | [사실 내부] `NativeGame.cs:104`(코드 기본 targetFrameRate 120), 설정 FrameCap(`NativeGame.cs:737`) |
-| 3840×1080 | 1080p 대비 GPU 시간 +40% 이내 | [추정] 계산: 처리 픽셀 2배(4,147,200 vs 2,073,600, codex_urp_mood §3). GPU 시간 2배는 아님, 실측 필요 |
+| 항목 | 값 | 근거 | 출처 상태 |
+|---|---|---| --- |
+| 총 프레임 시간 | 16.6ms 이하 (p99 기준) | [추정] | 우리 기준 |
+| GPU 총합 | PC·Mac 모두 14.7ms 이하(항목 합계, 3.2표). 이전 초안 PC 12ms/Mac 14ms는 항목 합과 모순이라 개정 | [추정] 7종 공개 자료에 CPU/GPU 분배표 없음(codex_tech_budget §6.1·§12). TOOLCHAIN §3a 합계 14.7ms 제안과 정합 → D15-7★ | 우리 기준 |
+| CPU 메인 스레드 | 10ms 이하 | [추정] 공개 자료 없음(codex_tech_budget §6.1), 우리 기준. 현재 CPU 위험은 3.8표 CPU 관문 | 우리 기준 |
+| 프레임 상한 옵션 | 기본 상한 60, 옵션 120/무제한 | [사실 내부] `NativeGame.cs:104`(코드 기본 targetFrameRate 120), 설정 FrameCap(`NativeGame.cs:737`) | 내부 |
+| 3840×1080 | 1080p 대비 GPU 시간 +40% 이내 | [추정] 계산: 처리 픽셀 2배(4,147,200 vs 2,073,600, codex_urp_mood §3). GPU 시간 2배는 아님, 실측 필요 | 우리 기준 |
 
 ### 3.2 GPU 항목별
 
-| 항목 | PC | Mac | 근거 |
-|---|---|---|---|
-| 안개 패스(높이 안개·산란) | 1.2ms | 1.2ms (저비용판 0.6ms 시험) | [추정] TOOLCHAIN §3a a-4 (PC ≤1.2, Mac 저비용판 ≤0.6). 이전 초안 1.0/1.5ms 개정 |
-| 화면 공간 AO | 0.8ms | 0.8ms | [추정] TOOLCHAIN a-6 ≤0.8ms. 이전 1.0ms 개정 |
-| 후처리 전체(톤맵·LUT·블룸·비네트) | 1.0ms | 1.0ms | [추정] poe2 §8, TOOLCHAIN 합계표 동일 |
-| 그림자(키라이트 + 장소) | 2.0ms | 2.0ms | [추정] TOOLCHAIN §3a. 이전 초안 2.5/3.0ms 개정 |
-| 지형·소품 본 렌더(불투명 월드) | 5.0ms | 5.0ms | [추정] TOOLCHAIN §3a. 이전 초안 PC 4.0/Mac 5.0ms |
-| 캐릭터 픽셀 렌더(PixelActorPass) | 2.0ms | 2.0ms | [추정] TOOLCHAIN a-1 (30적+영웅+보스). 이전 1.0/1.5ms 개정. 현재는 액터마다 개별 카메라 요청이라 이 값 달성 불확실(3.8표 #02) |
-| 데칼·가림 투명화·실루엣 | 1.2ms | 1.2ms | [추정] TOOLCHAIN §3a (a-5 0.5 + a-2 0.5 + a-3 0.2) |
-| VFX(파티클) | 1.0ms | 1.0ms | [추정] TOOLCHAIN §3a. 이전 초안 2.0/2.5ms는 데칼 포함 값이라 분리 |
-| UI | 0.5ms | 0.5ms | [추정] TOOLCHAIN §3a. 이전 0.8/1.0ms 개정 |
-| **합계** | **14.7ms** | **14.7ms** | 계산: 1.2+0.8+1.0+2.0+5.0+2.0+1.2+1.0+0.5 = 14.7. 16.6ms 대비 여유 1.9ms. Mac M5 Pro 측정 전 시작값 |
+| 항목 | PC | Mac | 근거 | 출처 상태 |
+|---|---|---|---| --- |
+| 안개 패스(높이 안개·산란) | 1.2ms | 1.2ms (저비용판 0.6ms 시험) | [추정] TOOLCHAIN §3a a-4 (PC ≤1.2, Mac 저비용판 ≤0.6). 이전 초안 1.0/1.5ms 개정 | 우리 기준 |
+| 화면 공간 AO | 0.8ms | 0.8ms | [추정] TOOLCHAIN a-6 ≤0.8ms. 이전 1.0ms 개정 | 우리 기준 |
+| 후처리 전체(톤맵·LUT·블룸·비네트) | 1.0ms | 1.0ms | [추정] poe2 §8, TOOLCHAIN 합계표 동일 | 우리 기준 |
+| 그림자(키라이트 + 장소) | 2.0ms | 2.0ms | [추정] TOOLCHAIN §3a. 이전 초안 2.5/3.0ms 개정 | 우리 기준 |
+| 지형·소품 본 렌더(불투명 월드) | 5.0ms | 5.0ms | [추정] TOOLCHAIN §3a. 이전 초안 PC 4.0/Mac 5.0ms | 우리 기준 |
+| 캐릭터 픽셀 렌더(PixelActorPass) | 2.0ms | 2.0ms | [추정] TOOLCHAIN a-1 (30적+영웅+보스). 이전 1.0/1.5ms 개정. 현재는 액터마다 개별 카메라 요청이라 이 값 달성 불확실(3.8표 #02) | 우리 기준 |
+| 데칼·가림 투명화·실루엣 | 1.2ms | 1.2ms | [추정] TOOLCHAIN §3a (a-5 0.5 + a-2 0.5 + a-3 0.2) | 우리 기준 |
+| VFX(파티클) | 1.0ms | 1.0ms | [추정] TOOLCHAIN §3a. 이전 초안 2.0/2.5ms는 데칼 포함 값이라 분리 | 우리 기준 |
+| UI | 0.5ms | 0.5ms | [추정] TOOLCHAIN §3a. 이전 0.8/1.0ms 개정 | 우리 기준 |
+| **합계** | **14.7ms** | **14.7ms** | 계산: 1.2+0.8+1.0+2.0+5.0+2.0+1.2+1.0+0.5 = 14.7. 16.6ms 대비 여유 1.9ms. Mac M5 Pro 측정 전 시작값 | 우리 기준 |
 
 **정합 점검(2차 반영):** 이전 초안 항목 합계는 PC 13.3ms, Mac 16.5ms인데 총합 한도는 PC 12ms, Mac 14ms였다. 항목 합이 한도를 넘는 모순이었다. TOOLCHAIN §3a 표로 바꿔 합계를 14.7ms로 맞췄다. 총합 한도(3.1)는 결정 D15-7★에서 확정한다. PoE2의 GI 부분 비용 약 3ms(GTX 1050, Radiance Cascades)는 특정 구현의 부분 값이라 우리 예산 근거로 쓰지 않는다 [단일] codex_tech_budget §6.3.
 
 ### 3.3 조명·그림자
 
-| 항목 | 값 | 근거 |
-|---|---|---|
-| 그림자 있는 광원(키라이트 제외) | 화면당 4 이하(PC), 2 이하(Mac) | [추정] poe2 §8 |
-| 그림자 없는 점광원 | 16 이하(PC), 8 이하(Mac) | [추정] poe2 §8 |
-| 키라이트 그림자 거리 | 45m, 단계 3 | [단일] poe2 L1 |
-| 그림자 해상도 | 2048(PC), 1024(Mac). 장소 광원은 1024 | [추정] poe2 L1 |
-| 간접광 프로브 메모리 | 256MB 이하(현 설정 1024MB는 실측 후 낮춤) | [추정] poe2 §8 |
-| 베이크 시간 | 10분 이하(Mac) | [추정] poe2 L2 |
-| 베이크 해상도 | 8~12 texel/u | [추정] d4_01 T7 |
+| 항목 | 값 | 근거 | 출처 상태 |
+|---|---|---| --- |
+| 그림자 있는 광원(키라이트 제외) | 화면당 4 이하(PC), 2 이하(Mac) | [추정] poe2 §8 | 우리 기준 |
+| 그림자 없는 점광원 | 16 이하(PC), 8 이하(Mac) | [추정] poe2 §8 | 우리 기준 |
+| 키라이트 그림자 거리 | 45m, 단계 3 | [단일] poe2 L1 | 미검증 |
+| 그림자 해상도 | 2048(PC), 1024(Mac). 장소 광원은 1024 | [추정] poe2 L1 | 우리 기준 |
+| 간접광 프로브 메모리 | 256MB 이하(현 설정 1024MB는 실측 후 낮춤) | [추정] poe2 §8 | 우리 기준 |
+| 베이크 시간 | 10분 이하(Mac) | [추정] poe2 L2 | 우리 기준 |
+| 베이크 해상도 | 8~12 texel/u | [추정] d4_01 T7 | 우리 기준 |
 
 ### 3.4 지오메트리·텍스처
 
-| 항목 | 값 | 근거 |
-|---|---|---|
-| 화면 삼각형 합계 | 300k 이하 | [추정] poe2 E1 |
-| 큰 소품 1개(고목·큰 바위) | 6~12k 삼각형 | [추정] d4_01 T1 |
-| 중간 소품 | 1~3k | [추정] 7종 공개 수치 없음(codex_tech_budget §3), 우리 기준 |
-| 작은 소품·카드 | 0.2~0.5k | [추정] 7종 공개 수치 없음(codex_tech_budget §3), 우리 기준 |
-| 지면 타일 | 2048² × 4층, 마스크맵 포함 | [추정] d4_01 G-2 |
-| 데칼 아틀라스 | 2048² 1~2장 | [추정] d4_01 A-2 |
-| 텍스처 메모리 총합 | 1.5GB 이하(VRAM 사용 기준) | [추정] 7종 공개 상주 예산 없음(codex_tech_budget §4). 현재 원본 규모는 3.8표 #22~26 참고 |
-| 영웅 모델(리깅 3D) | 20~40k 삼각형 | [추정] 7종 공개 수치 없음(§3). 현재 R7 원본 93,437 삼각형(our_tech_audit #20)이라 상한 초과 → 3.8표. 캐릭터 매뉴얼과 조율 |
-| 일반 적 | 3~8k 삼각형 | [추정] 7종 공개 수치 없음(§3). 현재 적 30종 원본 12,240~13,047 삼각형(our_tech_audit #19)이라 상한 초과 |
-| 보스 | 40~80k 삼각형 | [추정] 7종 공개 수치 없음(§3). 현재 보스 모델 수치는 미집계 |
-| 거리 단계(LOD) | 큰 소품 2단계, 카드는 단일 | [추정] |
-| 압축 | 색 BC7 상당, 노멀 BC5 상당, 마스크맵 BC7 | [추정] 공개 자료 없음. 현재 Default 압축 0(무압축) 853/1,057개(our_tech_audit §5) → 목표와 차이, 3.8표 #22 |
+| 항목 | 값 | 근거 | 출처 상태 |
+|---|---|---| --- |
+| 화면 삼각형 합계 | 300k 이하 | [추정] poe2 E1 | 우리 기준 |
+| 큰 소품 1개(고목·큰 바위) | 6~12k 삼각형 | [추정] d4_01 T1 | 우리 기준 |
+| 중간 소품 | 1~3k | [추정] 7종 공개 수치 없음(codex_tech_budget §3), 우리 기준 | 우리 기준 |
+| 작은 소품·카드 | 0.2~0.5k | [추정] 7종 공개 수치 없음(codex_tech_budget §3), 우리 기준 | 우리 기준 |
+| 지면 타일 | 2048² × 4층, 마스크맵 포함 | [추정] d4_01 G-2 | 우리 기준 |
+| 데칼 아틀라스 | 2048² 1~2장 | [추정] d4_01 A-2 | 우리 기준 |
+| 텍스처 메모리 총합 | 1.5GB 이하(VRAM 사용 기준) | [추정] 7종 공개 상주 예산 없음(codex_tech_budget §4). 현재 원본 규모는 3.8표 #22~26 참고 | 우리 기준 |
+| 영웅 모델(리깅 3D) | 20~40k 삼각형 | [추정] 7종 공개 수치 없음(§3). 현재 R7 원본 93,437 삼각형(our_tech_audit #20)이라 상한 초과 → 3.8표. 캐릭터 매뉴얼과 조율 | 우리 기준 |
+| 일반 적 | 3~8k 삼각형 | [추정] 7종 공개 수치 없음(§3). 현재 적 30종 원본 12,240~13,047 삼각형(our_tech_audit #19)이라 상한 초과 | 우리 기준 |
+| 보스 | 40~80k 삼각형 | [추정] 7종 공개 수치 없음(§3). 현재 보스 모델 수치는 미집계 | 우리 기준 |
+| 거리 단계(LOD) | 큰 소품 2단계, 카드는 단일 | [추정] | 우리 기준 |
+| 압축 | 색 BC7 상당, 노멀 BC5 상당, 마스크맵 BC7 | [추정] 공개 자료 없음. 현재 Default 압축 0(무압축) 853/1,057개(our_tech_audit §5) → 목표와 차이, 3.8표 #22 | 우리 기준 |
 
 ### 3.5 드로우콜·배칭·VFX
 
-| 항목 | 값 | 근거 |
-|---|---|---|
-| 드로우콜(배치) | 1500 이하/프레임 | [추정] 7종 공개 상한 없음(codex_tech_budget §5). 현재 값 미측정(our_tech_audit §4) |
-| 인스턴싱 대상 | 식생 카드, 반복 소품 | [추정] d4_01 T6 |
-| 동시 적 수(렌더) | 코어 최대치 기준 판정, 표현 비용 측정 | 공개 자료 없음(codex_tech_budget §5). V Rising 60인·160,000 오브젝트는 서버·월드 규모라 화면당 적 수 아님 |
-| 가산 이펙트 화면 면적 | 12% 이하 | [단일] yellowsky 규칙 3 |
-| 패링 충돌 이펙트 동시 | 4 이하(풀링) | [추정] yellowsky 4.1 |
-| 파티클 총수 | 5000 이하 | [추정] 공개 상한 없음(codex_tech_budget §7). V Rising 2,700 particle systems는 시스템 개수라 동시 활성 수와 다름 |
-| 발광(HDR) 단계 | 기본 ≤1.5, 스킬 ≤3, 궁극기·보스 ≤6 | [추정] d4_03 R6 |
+| 항목 | 값 | 근거 | 출처 상태 |
+|---|---|---| --- |
+| 드로우콜(배치) | 1500 이하/프레임 | [추정] 7종 공개 상한 없음(codex_tech_budget §5). 현재 값 미측정(our_tech_audit §4) | 우리 기준 |
+| 인스턴싱 대상 | 식생 카드, 반복 소품 | [추정] d4_01 T6 | 우리 기준 |
+| 동시 적 수(렌더) | 코어 최대치 기준 판정, 표현 비용 측정 | 공개 자료 없음(codex_tech_budget §5). V Rising 60인·160,000 오브젝트는 서버·월드 규모라 화면당 적 수 아님 | 우리 기준 |
+| 가산 이펙트 화면 면적 | 12% 이하 | [단일] yellowsky 규칙 3 | 미검증 |
+| 패링 충돌 이펙트 동시 | 4 이하(풀링) | [추정] yellowsky 4.1 | 우리 기준 |
+| 파티클 총수 | 5000 이하 | [추정] 공개 상한 없음(codex_tech_budget §7). V Rising 2,700 particle systems는 시스템 개수라 동시 활성 수와 다름 | 우리 기준 |
+| 발광(HDR) 단계 | 기본 ≤1.5, 스킬 ≤3, 궁극기·보스 ≤6 | [추정] d4_03 R6 | 우리 기준 |
 
 ### 3.6 GC·메모리·로딩
 
-| 항목 | 값 | 근거 |
-|---|---|---|
-| 전투 중 프레임당 관리 메모리 할당 | 0 목표, 허용 1KB 이하 | [추정] |
-| GC 스파이크 | 1-1 한 판 중 2ms 초과 0회 | [추정] |
-| 전체 메모리(작업 세트) | 8GB 이하 | [추정] 공개 자료 없음. 공개 최소 RAM은 4~16GB(3.9표) |
-| 1-1 로딩 시간 | 준비 상한 12초(코어 흐름 값), 목표 8초 이하(SSD) | [사실 내부] `NativeScreenTransition.cs`, [추정] 목표 |
-| 로딩 감시 | 조립 20초 / 기타 12초 / 절대 120초 | [사실 내부] `NativeScreenTransition.cs` |
-| 텍스처 첫 사용 끊김 | 전투 진입 전 워밍업, 첫 킬 끊김 0 | [사실 내부] `docs/12퍼포먼스·최적화/COMBAT_TEXTURE_WARMUP_20260929.md`(웹 이력, 개념만 참고) |
-| 빌드 용량 | 데모 패키지 4GB 이하 | [추정] 공개 설치 용량 15~145GB(3.9표)와 별개. 현재 Resources 원본만 2.88GB라 4GB는 빠듯함 → D15-8★ |
-| 동시 음성(실제/가상) | 현재 프로젝트 실제 32 / 가상 512. SFX 논리 풀 48(타격 3·예고 2·일반 6/flush). 환경·BGM·영상 소스는 풀 밖 | [사실 내부, 정적 집계] our_tech_audit §3 #29, `P/AudioManager.asset:13-14`, `NativeFeedbackAudio.cs`. 7종 공개 voice 상한 없음(codex_tech_budget §8) |
-| 오디오 임포트 | SFX·앰비언트 138개 PCM 전부 사전 로드, BGM 16개 압축(메모리 상주) | [정적 집계] our_tech_audit §5. 실제 디코드 크기·DSP 비용 미측정 |
+| 항목 | 값 | 근거 | 출처 상태 |
+|---|---|---| --- |
+| 전투 중 프레임당 관리 메모리 할당 | 0 목표, 허용 1KB 이하 | [추정] | 우리 기준 |
+| GC 스파이크 | 1-1 한 판 중 2ms 초과 0회 | [추정] | 우리 기준 |
+| 전체 메모리(작업 세트) | 8GB 이하 | [추정] 공개 자료 없음. 공개 최소 RAM은 4~16GB(3.9표) | 우리 기준 |
+| 1-1 로딩 시간 | 준비 상한 12초(코어 흐름 값), 목표 8초 이하(SSD) | [사실 내부] `NativeScreenTransition.cs`, [추정] 목표 | 내부 |
+| 로딩 감시 | 조립 20초 / 기타 12초 / 절대 120초 | [사실 내부] `NativeScreenTransition.cs` | 내부 |
+| 텍스처 첫 사용 끊김 | 전투 진입 전 워밍업, 첫 킬 끊김 0 | [사실 내부] `docs/12퍼포먼스·최적화/COMBAT_TEXTURE_WARMUP_20260929.md`(웹 이력, 개념만 참고) | 내부 |
+| 빌드 용량 | 데모 패키지 4GB 이하 | [추정] 공개 설치 용량 15~145GB(3.9표)와 별개. 현재 Resources 원본만 2.88GB라 4GB는 빠듯함 → D15-8★ | 우리 기준 |
+| 동시 음성(실제/가상) | 현재 프로젝트 실제 32 / 가상 512. SFX 논리 풀 48(타격 3·예고 2·일반 6/flush). 환경·BGM·영상 소스는 풀 밖 | [사실 내부, 정적 집계] our_tech_audit §3 #29, `P/AudioManager.asset:13-14`, `NativeFeedbackAudio.cs`. 7종 공개 voice 상한 없음(codex_tech_budget §8) | 내부 |
+| 오디오 임포트 | SFX·앰비언트 138개 PCM 전부 사전 로드, BGM 16개 압축(메모리 상주) | [정적 집계] our_tech_audit §5. 실제 디코드 크기·DSP 비용 미측정 | 내부 |
 
 ### 3.7 현재 상태 대비 (2차 반영: our_tech_audit 정적 집계)
 
 **기준:** `docs/0마스터플랜/GAME_STUDY/our_tech_audit.md`, 기준 HEAD `75add6ff`, 정적 분석 전용. 실행 성능은 측정하지 않았다(§7 후속 관문). 아래 값은 Git 원본 byte 또는 파일 파싱 결과이며 설치 용량·VRAM·상주 RAM과 다르다.
 
-| 항목 | 현재 정적 값 | 3.4~3.6 목표 | 차이 | 근거 |
-|---|---|---|---|---|
-| **Resources 원본 총량** | **1,417파일 / 2,881,554,015 byte (≈2,748 MiB ≈ 2.684 GiB)** | 데모 패키지 4GB 이하 | 원본만 목표의 약 72%. 최종 포함 byte는 Build Report로 확인 필요 | our_tech_audit §6, #30 |
-| Resources 하위 | Art 2,639,706,495 B (2,517 MiB) / Audio 138,608,912 B (132 MiB) / Enemies3D 99,711,618 B (95 MiB) / Data 2.3 MiB / VFX 0.95 MiB | — | Art가 91.6% | 같은 §6 |
-| Art 하위 | FullscreenWide 128파일 1,112,785,500 B (대표 7680×2160) / map 348파일 586,511,657 B / fonts 30파일 110,748,202 B / lobby 43,659,500 B / enemy 27,507,104 B | — | 와이드 원화가 단일 최대 | 같은 §6 |
-| StreamingAssets | 12파일 68,692,282 B (Resources와 별도) | — | — | 같은 §6 |
-| 영웅 R7 모델 | 정점 142,733 / 삼각형 93,437 | 영웅 20~40k 삼각형 | 약 2.3~4.7배 | our_tech_audit #20 |
-| 일반 적(30종) | 삼각형 12,240~13,047 (EyeMass 정점 25,168) | 3~8k 삼각형 | 약 1.5~4배 | #19 |
-| 월드 모듈 | r3 거목각 19,888 / Hollow 26,876 / 전경 로그 45,719 삼각형 | 큰 소품 6~12k | 1.7~7.6배 | #21 |
-| FBX 전체 | 88파일 정점 2,108,625 / 삼각형 환산 1,653,385 (메시 asset 38개 삼각형 152,174) | 화면 삼각형 300k 이하 | 파일 총량이라 프레임 값과 직접 비교 금지 | §4 |
-| 텍스처 임포트 | 1,057개. 상위 max 8192=289, Default cap 8192=846, Default 압축 0(무압축)=853, 밉 끔=569, 스트리밍 밉=0 | 색 BC7 상당 압축, 지면 2048² | 압축 정책이 목표와 다름 | §5, #22·#26 |
-| 적 8방향 atlas | idle 8장 2048×1280, walk 8장 8192×1280. 원본 크기 RGBA32 가정 시 약 400 MiB | 텍스처 메모리 1.5GB 이하 | 한 항목이 27% 가정치 | #23 (가정, 실제 포맷 미확인) |
-| 와이드 원화 캐시 | 7680×2160 RGBA32 한 장 ≈ 63.28 MiB, 방문분 static 캐시 해제 경로 없음 | — | 방문 누적 | #24 |
-| 틱 중 적 목록 복사 | `Enemies.ToArray` 매 틱. 적 800·참조 8byte 가정 시 약 0.37 MiB/초 | 전투 중 할당 1KB/프레임 이하 | 목표 초과 가능 | #04 (계산은 [추정]) |
-| URP PC High / Mac Balanced | MSAA 4/2, 주광 그림자 2048/1024, 추가광 8/6, 추가광 그림자 1/0, 그림자 거리 45/32, 캐스케이드 3/2 | 3.3 그림자 광원 PC 4·Mac 2, 키 그림자 거리 45m | Mac 현재 거리 32, 추가광 그림자 0. 기기 배정은 OS가 아니라 품질 인덱스(≥3=PC)라 Mac이 PC 자산을 쓸 수 있음 [추정] | §2, `E/Rm0EngineSetup.cs:84` |
-| 배칭 | SRP Batcher 켬, Dynamic Batching 끔 | 인스턴싱 대상 식생·반복 소품 | SRP Batcher 켬은 병합 증거가 아님 | §2 |
-| 수면 반사 | 960×540 ARGBHalf 추가 패스, D3D12는 꺼짐 | — | Mac·D3D11만 켜짐, 비용 미측정 | #17 |
+| 항목 | 현재 정적 값 | 3.4~3.6 목표 | 차이 | 근거 | 출처 상태 |
+|---|---|---|---|---| --- |
+| **Resources 원본 총량** | **1,417파일 / 2,881,554,015 byte (≈2,748 MiB ≈ 2.684 GiB)** | 데모 패키지 4GB 이하 | 원본만 목표의 약 72%. 최종 포함 byte는 Build Report로 확인 필요 | our_tech_audit §6, #30 | 내부 |
+| Resources 하위 | Art 2,639,706,495 B (2,517 MiB) / Audio 138,608,912 B (132 MiB) / Enemies3D 99,711,618 B (95 MiB) / Data 2.3 MiB / VFX 0.95 MiB | — | Art가 91.6% | 같은 §6 | 내부 |
+| Art 하위 | FullscreenWide 128파일 1,112,785,500 B (대표 7680×2160) / map 348파일 586,511,657 B / fonts 30파일 110,748,202 B / lobby 43,659,500 B / enemy 27,507,104 B | — | 와이드 원화가 단일 최대 | 같은 §6 | 내부 |
+| StreamingAssets | 12파일 68,692,282 B (Resources와 별도) | — | — | 같은 §6 | 내부 |
+| 영웅 R7 모델 | 정점 142,733 / 삼각형 93,437 | 영웅 20~40k 삼각형 | 약 2.3~4.7배 | our_tech_audit #20 | 내부 |
+| 일반 적(30종) | 삼각형 12,240~13,047 (EyeMass 정점 25,168) | 3~8k 삼각형 | 약 1.5~4배 | #19 | 내부 |
+| 월드 모듈 | r3 거목각 19,888 / Hollow 26,876 / 전경 로그 45,719 삼각형 | 큰 소품 6~12k | 1.7~7.6배 | #21 | 내부 |
+| FBX 전체 | 88파일 정점 2,108,625 / 삼각형 환산 1,653,385 (메시 asset 38개 삼각형 152,174) | 화면 삼각형 300k 이하 | 파일 총량이라 프레임 값과 직접 비교 금지 | §4 | 내부 |
+| 텍스처 임포트 | 1,057개. 상위 max 8192=289, Default cap 8192=846, Default 압축 0(무압축)=853, 밉 끔=569, 스트리밍 밉=0 | 색 BC7 상당 압축, 지면 2048² | 압축 정책이 목표와 다름 | §5, #22·#26 | 내부 |
+| 적 8방향 atlas | idle 8장 2048×1280, walk 8장 8192×1280. 원본 크기 RGBA32 가정 시 약 400 MiB | 텍스처 메모리 1.5GB 이하 | 한 항목이 27% 가정치 | #23 (가정, 실제 포맷 미확인) | 내부 |
+| 와이드 원화 캐시 | 7680×2160 RGBA32 한 장 ≈ 63.28 MiB, 방문분 static 캐시 해제 경로 없음 | — | 방문 누적 | #24 | 내부 |
+| 틱 중 적 목록 복사 | `Enemies.ToArray` 매 틱. 적 800·참조 8byte 가정 시 약 0.37 MiB/초 | 전투 중 할당 1KB/프레임 이하 | 목표 초과 가능 | #04 (계산은 [추정]) | 내부 |
+| URP PC High / Mac Balanced | MSAA 4/2, 주광 그림자 2048/1024, 추가광 8/6, 추가광 그림자 1/0, 그림자 거리 45/32, 캐스케이드 3/2 | 3.3 그림자 광원 PC 4·Mac 2, 키 그림자 거리 45m | Mac 현재 거리 32, 추가광 그림자 0. 기기 배정은 OS가 아니라 품질 인덱스(≥3=PC)라 Mac이 PC 자산을 쓸 수 있음 [추정] | §2, `E/Rm0EngineSetup.cs:84` | 내부 |
+| 배칭 | SRP Batcher 켬, Dynamic Batching 끔 | 인스턴싱 대상 식생·반복 소품 | SRP Batcher 켬은 병합 증거가 아님 | §2 | 내부 |
+| 수면 반사 | 960×540 ARGBHalf 추가 패스, D3D12는 꺼짐 | — | Mac·D3D11만 켜짐, 비용 미측정 | #17 | 내부 |
 
 ### 3.8 상위 위험 30개 요약 (정적 위험도 순, 실측 병목 순위 아님)
 
 출처: `docs/0마스터플랜/GAME_STUDY/our_tech_audit.md` §3 (정적 분석, 실행·프로파일링 없음). 영향 란은 §7의 후속 측정 관문(CPU/GPU/MEM/AUD/BUILD)이다. 수정은 제안뿐이며 Core 순서·34° 카메라·발/피격 앵커·원본 UI 글자 품질을 보존해야 한다. 파일 경로는 `R/`=`unity/Assets/Exoduser/Runtime/`, `E/`=`.../Editor/`, `A/`=`unity/Assets/Exoduser/`.
 
-| # | 문제 | 대표 위치 | 영향 | 방향 | 난이도 |
-|---|---|---|---|---|---|
-| 01 | 전역 SpriteRenderer 검색을 Late마다 | `R/NativeGame.Remodel3D.cs:217` | CPU/MEM | 생성·파괴 때 등록, 대상만 투영 | 중 |
-| 02 | 적마다 카메라 렌더 요청·개별 RT | `R/NativeEnemyRigRenderer.cs:85` | CPU/GPU/MEM | 공유 RT 아틀라스·거리별 주기 (TOOLCHAIN a-1 PixelActorPass와 동일 방향) | 대 |
-| 03 | sprite 캐시 히트에도 문자열 생성 | `R/NativeGame.cs:445` | CPU/MEM | 값 타입 키·미리 만든 배열 | 중 |
-| 04 | 매 틱 적 목록 ToArray | `R/Core/Simulation.cs:145` | CPU/MEM | 재사용 스냅샷·지연 큐(순서 보존) | 대 |
-| 05 | AI 질의 새 목록·전체 탐색 | `R/Core/Simulation.EnemyAi.cs:232` | CPU/MEM | 틱별 공간 인덱스·버퍼 | 대 |
-| 06 | 근접 연출 배열·Tuple·캡처 | `R/NativeGame.MeleeParry.cs:19` | CPU/MEM | 직접 처리·값 타입 | 중 |
-| 07 | 숨긴 2D 지면 청크 관리 | `R/NativeGame.cs:400` | CPU/MEM | 범위 변경 때만 갱신 | 중 |
-| 08 | 드롭 HashSet 매 프레임 생성 | `R/NativeGame.WorldDrops.cs:88` | CPU/MEM | scratch Set 재사용 | 소~중 |
-| 09 | 숨은 적도 리그 pose 평가 | `R/NativeEnemyRigRenderer.cs:53` | CPU/MEM | 틱 캐시·가시성 샘플링 | 중~대 |
-| 10 | Actor별 조명 순회·빈 결과 재Find | `R/NativeEnemyRigRenderer.cs:80` | CPU/MEM | 공통 조명 등록소 | 중 |
-| 11 | HUD 글리프별 측정·그리기 | `R/NativeObjectivePanel.cs:48` | CPU/GPU/MEM | 레이아웃 캐시 | 중 |
-| 12 | 플로팅 텍스트 후보 목록 | `R/NativeFloatingTextLayout.cs:52` | CPU/MEM | 버퍼 풀 | 중 |
-| 13 | 검수 OFF에도 provenance 문자열 | `R/NativeUiAudit.cs:33` | CPU/MEM | 호출부 Active 가드 안에서 생성 | 소 |
-| 14 | 적 상한(800→700) 정리 시 임시 컨테이너 | `R/Core/Simulation.EnemyCap.cs:19` | CPU/MEM | scratch 확보, 순서 보존 | 중~대 |
-| 15 | JS 객체 이벤트 boxing | `R/Core/EnemyHurtContext.Tail.cs:10` | CPU/MEM | typed DTO | 대 |
-| 16 | 반복 GetComponent | `R/NativeGame.Remodel3D.cs:199` | CPU | 참조 저장 | 소~중 |
-| 17 | 수면 반사 추가 패스 | `R/A2RiverReflection.cs:25` | CPU/GPU/MEM | 최대 주기 제한·가시성별 갱신 | 중 |
-| 18 | 개별 합성/데칼 머티리얼 | `R/NativeEnemyRigRenderer.cs:50` | GPU/MEM | 공유 RT·데칼 아틀라스 | 중~대 |
-| 19 | 작은 적에도 원본 약 1.2만 삼각형 | `A/Resources/Enemies3D/EyeMass.fbx.meta:34` | CPU/GPU | 저폴리·거리 LOD·캡처 주기 | 대 |
-| 20 | 고밀도 영웅(93k 삼각형)·초기 표면 정리 | `R/NativeRigPixelHero.cs:33` | CPU/GPU/MEM | 법선 Editor 베이크·LOD | 대 |
-| 21 | 반복 숲 모듈·개별 메시 변형 | `R/NativeGame.A2Field.cs:145` | CPU/GPU/MEM | 접지 베이크·저폴리·instancing | 대 |
-| 22 | 광범위 8192·무압축 임포트 정책 | `E/SourceTextureImporter.cs:17` | MEM/BUILD | 종류별 크기·압축 정책 | 중~대 |
-| 23 | 8방향 적 atlas 메모리 | `R/NativeGame.cs:470` | MEM/BUILD | 리그 사용 시 소스 atlas 지연 | 중~대 |
-| 24 | 와이드 원화 캐시 수명 | `R/NativeFullscreenArtwork.cs:10` | MEM/BUILD | 화면별 세트·LRU | 중 |
-| 25 | meta·Default·postprocessor 불일치 | `E/SourceTextureImporter.cs:36` | MEM/BUILD | 정책 정리·임포트 결과 확인 | 중 |
-| 26 | 밉 스트리밍 미사용 | `P/QualitySettings.asset:305` | GPU/MEM | 월드 큰 텍스처만 검토(UI·픽셀은 제외) | 중 |
-| 27 | PCM 사전 로드·BGM 설명 차이 | `E/SourceAudioImporter.cs:10` | AUD/MEM | 종류별 정책 | 중 |
-| 28 | 음향 flush 임시 목록·누적 로그 | `R/NativeFeedbackAudio.cs:40` | CPU/MEM | 재사용·제한 링 | 소~중 |
-| 29 | 논리 48 vs 실제 32 voice | `R/NativeFeedbackAudio.cs:262` | AUD/CPU | 전 소스군 총합 예산 | 중 |
-| 30 | Resources 큰 원본 세트 (2.88GB) | `R/NativeFullscreenArtwork.cs:23` | BUILD/MEM | demo/정식·언어·챕터 포함 계약 | 대 |
+| # | 문제 | 대표 위치 | 영향 | 방향 | 난이도 | 출처 상태 |
+|---|---|---|---|---|---| --- |
+| 01 | 전역 SpriteRenderer 검색을 Late마다 | `R/NativeGame.Remodel3D.cs:217` | CPU/MEM | 생성·파괴 때 등록, 대상만 투영 | 중 | 내부 |
+| 02 | 적마다 카메라 렌더 요청·개별 RT | `R/NativeEnemyRigRenderer.cs:85` | CPU/GPU/MEM | 공유 RT 아틀라스·거리별 주기 (TOOLCHAIN a-1 PixelActorPass와 동일 방향) | 대 | 내부 |
+| 03 | sprite 캐시 히트에도 문자열 생성 | `R/NativeGame.cs:445` | CPU/MEM | 값 타입 키·미리 만든 배열 | 중 | 내부 |
+| 04 | 매 틱 적 목록 ToArray | `R/Core/Simulation.cs:145` | CPU/MEM | 재사용 스냅샷·지연 큐(순서 보존) | 대 | 내부 |
+| 05 | AI 질의 새 목록·전체 탐색 | `R/Core/Simulation.EnemyAi.cs:232` | CPU/MEM | 틱별 공간 인덱스·버퍼 | 대 | 내부 |
+| 06 | 근접 연출 배열·Tuple·캡처 | `R/NativeGame.MeleeParry.cs:19` | CPU/MEM | 직접 처리·값 타입 | 중 | 내부 |
+| 07 | 숨긴 2D 지면 청크 관리 | `R/NativeGame.cs:400` | CPU/MEM | 범위 변경 때만 갱신 | 중 | 내부 |
+| 08 | 드롭 HashSet 매 프레임 생성 | `R/NativeGame.WorldDrops.cs:88` | CPU/MEM | scratch Set 재사용 | 소~중 | 내부 |
+| 09 | 숨은 적도 리그 pose 평가 | `R/NativeEnemyRigRenderer.cs:53` | CPU/MEM | 틱 캐시·가시성 샘플링 | 중~대 | 내부 |
+| 10 | Actor별 조명 순회·빈 결과 재Find | `R/NativeEnemyRigRenderer.cs:80` | CPU/MEM | 공통 조명 등록소 | 중 | 내부 |
+| 11 | HUD 글리프별 측정·그리기 | `R/NativeObjectivePanel.cs:48` | CPU/GPU/MEM | 레이아웃 캐시 | 중 | 내부 |
+| 12 | 플로팅 텍스트 후보 목록 | `R/NativeFloatingTextLayout.cs:52` | CPU/MEM | 버퍼 풀 | 중 | 내부 |
+| 13 | 검수 OFF에도 provenance 문자열 | `R/NativeUiAudit.cs:33` | CPU/MEM | 호출부 Active 가드 안에서 생성 | 소 | 내부 |
+| 14 | 적 상한(800→700) 정리 시 임시 컨테이너 | `R/Core/Simulation.EnemyCap.cs:19` | CPU/MEM | scratch 확보, 순서 보존 | 중~대 | 내부 |
+| 15 | JS 객체 이벤트 boxing | `R/Core/EnemyHurtContext.Tail.cs:10` | CPU/MEM | typed DTO | 대 | 내부 |
+| 16 | 반복 GetComponent | `R/NativeGame.Remodel3D.cs:199` | CPU | 참조 저장 | 소~중 | 내부 |
+| 17 | 수면 반사 추가 패스 | `R/A2RiverReflection.cs:25` | CPU/GPU/MEM | 최대 주기 제한·가시성별 갱신 | 중 | 내부 |
+| 18 | 개별 합성/데칼 머티리얼 | `R/NativeEnemyRigRenderer.cs:50` | GPU/MEM | 공유 RT·데칼 아틀라스 | 중~대 | 내부 |
+| 19 | 작은 적에도 원본 약 1.2만 삼각형 | `A/Resources/Enemies3D/EyeMass.fbx.meta:34` | CPU/GPU | 저폴리·거리 LOD·캡처 주기 | 대 | 내부 |
+| 20 | 고밀도 영웅(93k 삼각형)·초기 표면 정리 | `R/NativeRigPixelHero.cs:33` | CPU/GPU/MEM | 법선 Editor 베이크·LOD | 대 | 내부 |
+| 21 | 반복 숲 모듈·개별 메시 변형 | `R/NativeGame.A2Field.cs:145` | CPU/GPU/MEM | 접지 베이크·저폴리·instancing | 대 | 내부 |
+| 22 | 광범위 8192·무압축 임포트 정책 | `E/SourceTextureImporter.cs:17` | MEM/BUILD | 종류별 크기·압축 정책 | 중~대 | 내부 |
+| 23 | 8방향 적 atlas 메모리 | `R/NativeGame.cs:470` | MEM/BUILD | 리그 사용 시 소스 atlas 지연 | 중~대 | 내부 |
+| 24 | 와이드 원화 캐시 수명 | `R/NativeFullscreenArtwork.cs:10` | MEM/BUILD | 화면별 세트·LRU | 중 | 내부 |
+| 25 | meta·Default·postprocessor 불일치 | `E/SourceTextureImporter.cs:36` | MEM/BUILD | 정책 정리·임포트 결과 확인 | 중 | 내부 |
+| 26 | 밉 스트리밍 미사용 | `P/QualitySettings.asset:305` | GPU/MEM | 월드 큰 텍스처만 검토(UI·픽셀은 제외) | 중 | 내부 |
+| 27 | PCM 사전 로드·BGM 설명 차이 | `E/SourceAudioImporter.cs:10` | AUD/MEM | 종류별 정책 | 중 | 내부 |
+| 28 | 음향 flush 임시 목록·누적 로그 | `R/NativeFeedbackAudio.cs:40` | CPU/MEM | 재사용·제한 링 | 소~중 | 내부 |
+| 29 | 논리 48 vs 실제 32 voice | `R/NativeFeedbackAudio.cs:262` | AUD/CPU | 전 소스군 총합 예산 | 중 | 내부 |
+| 30 | Resources 큰 원본 세트 (2.88GB) | `R/NativeFullscreenArtwork.cs:23` | BUILD/MEM | demo/정식·언어·챕터 포함 계약 | 대 | 내부 |
 
 완화 요인: GUIStyle 초기화·재사용, 드롭 mask/beam material null 가드, 죽은 Volume/Bloom 목록 재사용은 이미 되어 있다 [사실, our_tech_audit §3]. 이 표는 "전부 고친 뒤에야 예산 합격"이 아니라, 3.2 예산을 어기는 원인 후보다. 상위 항목 중 02·09·19·20은 PixelActorPass(TOOLCHAIN a-1)와 영웅·적 모델 상한(캐릭터 매뉴얼)에서 함께 해결한다.
 
@@ -176,18 +176,18 @@
 
 원본 byte·임포트 payload·설치·다운로드·RAM/VRAM은 서로 다른 지표다. 이 절의 숫자는 Git 원본 또는 소스 직렬화 설정이며 빌드 감소 보장이 아니다. 기준 HEAD `75add6ff`, 현재 Player/Steam 실제 용량은 **미측정**.
 
-| 항목 | 값 | 근거 |
-|---|---|---|
-| Resources 원본 | 1,417파일 2,881,554,015 byte = 2,748.06 MiB = 2.684 GiB (십진 2.882GB). 앞의 "2,751MB" 표기와 약칭 "2.75GB"는 같은 범위의 다른 표기이며 환산으로 맞추지 않음 | [사실] codex_asset_size §1, codex_synthesis §2 |
-| 하위 최대 | Art/FullscreenWide 128파일 약 1,061.23 MiB(PNG 픽셀 합 620,980,304, 최대 7680×2160, 모두 max8192/무압축/밉 없음), Art/map/a2 233파일 405,608,808 byte, Enemies3D 32파일 99,711,618 byte (부분집합이라 더하지 않음) | [사실] §2, §7.2 |
-| A2R | 별도 브랜치 보존분 797파일 1,247,335,249 byte. 현재 HEAD에 없음 → **현재 절감량·분모에 넣지 않음** | [사실] §1 |
-| Resources 안 텍스처 .meta | 998개: Default 압축 0(무압축) 831 / HQ 167, 밉 켬 454, Read/Write 켬 23, Default max 8192 = 831 / 2048 = 167. (전체 1,057개 집계와 분모가 다름) | [사실] §5.1 |
-| 후보 | 카탈로그 도달불가 와이드 68개 655.08 MiB, 일반 미참조 73개 63.14 MiB(OFL 9개 보존), 판단 불가 361개. 검토 상한 합 718.22 MiB — 설치 감소 보장 아님, 삭제 확정 0 | [사실] §3~§7.1 |
-| 텍스처 payload 이론값 | 와이드 128개 BC7 8192 기준 592.44 MiB(RGB24 가정 1,776.64 / RGBA32 2,368.85). 유지 60개 BC7 4096 cap = 206.17 MiB. 68개 제외 + 60개 BC7 + 4096 cap이면 기준 대비 이론 차이 1,570.47–2,162.68 MiB | [추정·계산] §7.2. 실제 임포트 포맷·Player 크기 미확인 |
-| Steam 내부 목표 | 다운로드 ≤1.0 GiB, 설치 ≤2.0 GiB/OS (1-1 한 판·타이틀/로비·필수 언어·모든 화면비·오프라인 재실행 포함). 설치 1.0 GiB는 후속 도전 목표 | [추정·제안] §6. Halls of Torment Prelude 요구 공간 1GB 한 사례 [사실], Steam 일률 권장 GB는 없음 |
-| 텍스처 규칙 제안 | 유지 와이드 배경: BC7 HQ 시험 후 4096 cap 검토(32:9 3840px에 2048 일괄은 확대 발생해 불채택). UI 원화·글자·9-slice는 최초 일괄 압축 제외(no-mip 규칙 보존). 3D a2/PBR는 HQ 압축 유지, 기본 2048·작은 소품 1024·보조 512. 픽셀 atlas는 셀 경계 검증 뒤 개별, 좌표로 Sprite를 만드는 atlas는 자동 축소 제외 | [추정] §5.3 (미적용). 기존 제약: `SourceTextureImporter.cs`, `SilverUiImportCheck.cs`, `PortVerification.cs` |
-| 로딩 방식 | 로컬 번들로 재포장만 하면 전체 설치량이 줄지 않음. 배포하지 않는 그룹이 실제 빌드·depot 목록에서 빠져야 줄어듦. 작업량: 포함 명세 2–4인일 / 원화만 Addressables 5–8 / 전체 12–20 / 직접 AssetBundle 15–25 | [추정] §4 |
-| 실행 순서 | ① baseline Build Report ② 도달불가 와이드 68개 확인 ③ 일반 미참조 ④ 유지 원화 압축 시험 ⑤ 필요한 해상도만 제한 ⑥ 데모 제외 그룹 분리 ⑦ 원화 Addressables | [추정] §7 |
+| 항목 | 값 | 근거 | 출처 상태 |
+|---|---|---| --- |
+| Resources 원본 | 1,417파일 2,881,554,015 byte = 2,748.06 MiB = 2.684 GiB (십진 2.882GB). 앞의 "2,751MB" 표기와 약칭 "2.75GB"는 같은 범위의 다른 표기이며 환산으로 맞추지 않음 | [사실] codex_asset_size §1, codex_synthesis §2 | 내부 |
+| 하위 최대 | Art/FullscreenWide 128파일 약 1,061.23 MiB(PNG 픽셀 합 620,980,304, 최대 7680×2160, 모두 max8192/무압축/밉 없음), Art/map/a2 233파일 405,608,808 byte, Enemies3D 32파일 99,711,618 byte (부분집합이라 더하지 않음) | [사실] §2, §7.2 | 내부 |
+| A2R | 별도 브랜치 보존분 797파일 1,247,335,249 byte. 현재 HEAD에 없음 → **현재 절감량·분모에 넣지 않음** | [사실] §1 | 내부 |
+| Resources 안 텍스처 .meta | 998개: Default 압축 0(무압축) 831 / HQ 167, 밉 켬 454, Read/Write 켬 23, Default max 8192 = 831 / 2048 = 167. (전체 1,057개 집계와 분모가 다름) | [사실] §5.1 | 내부 |
+| 후보 | 카탈로그 도달불가 와이드 68개 655.08 MiB, 일반 미참조 73개 63.14 MiB(OFL 9개 보존), 판단 불가 361개. 검토 상한 합 718.22 MiB — 설치 감소 보장 아님, 삭제 확정 0 | [사실] §3~§7.1 | 내부 |
+| 텍스처 payload 이론값 | 와이드 128개 BC7 8192 기준 592.44 MiB(RGB24 가정 1,776.64 / RGBA32 2,368.85). 유지 60개 BC7 4096 cap = 206.17 MiB. 68개 제외 + 60개 BC7 + 4096 cap이면 기준 대비 이론 차이 1,570.47–2,162.68 MiB | [추정·계산] §7.2. 실제 임포트 포맷·Player 크기 미확인 | 내부 |
+| Steam 내부 목표 | 다운로드 ≤1.0 GiB, 설치 ≤2.0 GiB/OS (1-1 한 판·타이틀/로비·필수 언어·모든 화면비·오프라인 재실행 포함). 설치 1.0 GiB는 후속 도전 목표 | [추정·제안] §6. Halls of Torment Prelude 요구 공간 1GB 한 사례 [사실], Steam 일률 권장 GB는 없음 | 우리 기준 |
+| 텍스처 규칙 제안 | 유지 와이드 배경: BC7 HQ 시험 후 4096 cap 검토(32:9 3840px에 2048 일괄은 확대 발생해 불채택). UI 원화·글자·9-slice는 최초 일괄 압축 제외(no-mip 규칙 보존). 3D a2/PBR는 HQ 압축 유지, 기본 2048·작은 소품 1024·보조 512. 픽셀 atlas는 셀 경계 검증 뒤 개별, 좌표로 Sprite를 만드는 atlas는 자동 축소 제외 | [추정] §5.3 (미적용). 기존 제약: `SourceTextureImporter.cs`, `SilverUiImportCheck.cs`, `PortVerification.cs` | 우리 기준 |
+| 로딩 방식 | 로컬 번들로 재포장만 하면 전체 설치량이 줄지 않음. 배포하지 않는 그룹이 실제 빌드·depot 목록에서 빠져야 줄어듦. 작업량: 포함 명세 2–4인일 / 원화만 Addressables 5–8 / 전체 12–20 / 직접 AssetBundle 15–25 | [추정] §4 | 우리 기준 |
+| 실행 순서 | ① baseline Build Report ② 도달불가 와이드 68개 확인 ③ 일반 미참조 ④ 유지 원화 압축 시험 ⑤ 필요한 해상도만 제한 ⑥ 데모 제외 그룹 분리 ⑦ 원화 Addressables | [추정] §7 | 우리 기준 |
 
 **첫 장면 측정 관문 (FIRST_SCENE_PLAN §7):** 고목·소품 가시 인스턴스·삼각형·draw/SetPass·그림자 패스, 물 반사·수면 패스, 리그 적 RT 요청 수·시간, 후처리·안개 비용을 같은 카메라·적 수·해상도에서 Mac이 잰다. CPU/GPU 프레임, GC, 텍스처/RT 실제 상주 메모리, 첫 가시 프레임 지연을 기록하고 GPU 지표를 못 얻으면 0ms가 아니라 "미측정"으로 쓴다. 예산 초과 시 새 광선·반사·후처리부터 한 요소씩 줄이고 먼 적·34° LOCK·점 0을 희생하지 않는다. 군집화했다고 성능이 자동 개선됐다고 쓰지 않는다.
 
@@ -195,14 +195,14 @@
 
 출처: `docs/0마스터플랜/GAME_STUDY/codex_tech_budget.md` §10, 조사일 2026-11-05 상점 열람 [사실]. 최소 사양 기준이며 FPS 조건이 있는 것만 적었다.
 
-| 게임 | GPU 최소 | RAM | 저장 | FPS 조건 |
-|---|---|---|---|---|
-| Diablo IV | GTX 660 / Arc A380 / R9 280 | 8GB | 90GB SSD | 출력 1080p / 렌더 720p / Low / 30 FPS. 권장은 1080p Medium 60 FPS |
-| Path of Exile 2 | GTX 960(3GB) / RX 470 | 8GB | 100GB | 미확인 |
-| Last Epoch | GTX 1060 / RX 580 | 8GB | 22GB | 미확인 |
-| No Rest for the Wicked | GTX 1080 / Radeon 5600 XT | 16GB | 46GB SSD | 미확인 |
-| Phantom Blade Zero | GTX 1660 6GB / RX 5500 XT 8GB | 16GB | 145GB SSD | 1080p / 30 FPS / 업스케일링 활성 |
-| Hades 1 | VRAM 1GB, DX10 | 4GB | 15GB | 콘솔 60 FPS 공식 목표만 확인 |
+| 게임 | GPU 최소 | RAM | 저장 | FPS 조건 | 출처 상태 |
+|---|---|---|---|---| --- |
+| Diablo IV | GTX 660 / Arc A380 / R9 280 | 8GB | 90GB SSD | 출력 1080p / 렌더 720p / Low / 30 FPS. 권장은 1080p Medium 60 FPS | 검증됨 |
+| Path of Exile 2 | GTX 960(3GB) / RX 470 | 8GB | 100GB | 미확인 | 검증됨 |
+| Last Epoch | GTX 1060 / RX 580 | 8GB | 22GB | 미확인 | 검증됨 |
+| No Rest for the Wicked | GTX 1080 / Radeon 5600 XT | 16GB | 46GB SSD | 미확인 | 미검증 |
+| Phantom Blade Zero | GTX 1660 6GB / RX 5500 XT 8GB | 16GB | 145GB SSD | 1080p / 30 FPS / 업스케일링 활성 | 검증됨 |
+| Hades 1 | VRAM 1GB, DX10 | 4GB | 15GB | 콘솔 60 FPS 공식 목표만 확인 | 검증됨 |
 
 프레임 간격 환산: 30 FPS = 33.33ms, 60 FPS = 16.67ms, 120 FPS = 8.33ms (계산) [사실, codex_tech_budget §6.1]. 7종 모두 모델 삼각형·텍스처 해상도·화면당 적 수·draw call 상한·동시 파티클·voice 수·GC pause의 **공개 수치는 확인되지 않았다**(codex_tech_budget §3~§9, §12). 이 문서의 해당 수치는 계속 [추정] 시작값이다. 유일한 정량 단서는 Last Epoch의 특정 장면 40 FPS대 중반 → 약 100 FPS 사례(조건 미공개)와 V Rising의 배칭 CPU 절감 "수 ms" 개발자 추산이다. 이를 일반 배율로 쓰지 않는다.
 
