@@ -25,7 +25,10 @@ namespace Exoduser.UnityPort
             public readonly List<Vector3> V = new List<Vector3>(); public readonly List<Color> C = new List<Color>(); public readonly List<int> T = new List<int>();
             public readonly Mesh Mesh = new Mesh { name = "druid-telegraph" };
             public void Clear() { V.Clear(); C.Clear(); T.Clear(); }
-            int Add(double x, double y, Color c) { V.Add(new Vector3((float)x / 100, -(float)y / 100, 0)); C.Add(c); return V.Count - 1; }
+            // Mesh vertex colours are not colour-space converted by Unity; the palette is sRGB, the project is Linear.
+            // Convert once here so both the projected (3D floor) and the plain sprite-material paths show the spec colours.
+            int Add(double x, double y, Color c) { V.Add(new Vector3((float)x / 100, -(float)y / 100, 0)); C.Add(Linear ? c.linear : c); return V.Count - 1; }
+            static readonly bool Linear = QualitySettings.activeColorSpace == ColorSpace.Linear;
             public void Quad(double x0, double y0, double x1, double y1, double x2, double y2, double x3, double y3, Color c)
             {
                 int a = Add(x0, y0, c), b = Add(x1, y1, c), d = Add(x2, y2, c), e = Add(x3, y3, c);
