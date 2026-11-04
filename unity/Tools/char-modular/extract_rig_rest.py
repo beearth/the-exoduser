@@ -1,21 +1,19 @@
-"""GLB의 rest 관절을 미터·glTF Y-up 좌표로 추출한다. Blender 내장 Python 전용.
+"""DECISION-1: Meshy는 구조만, rest는 Tripo 파트 경계에서만 정한다.
 
-blender -b -t 2 --python-exit-code 2 --python extract_rig_rest.py -- in.glb out.json
-원본 파일과 리그를 수정하지 않으며 pose/애니메이션 대신 Bone.head_local을 쓴다.
-Blender가 임의 생성한 bone tail은 해부학적 손끝/턱으로 사용하지 않는다.
+Blender -b --python <이 파일> -- <Meshy.glb> <out.json> --hero silvertail
+Blender -b --python <이 파일> -- <Tripo.glb> <out.json> --mode tripo --hero ivan --asset-id d381fefe
+Tripo 모드는 비리깅 메시도 검사한다. 자동 관절 추정·Meshy 좌표 전용은 하지 않는다.
 """
+import argparse
 import json
 from pathlib import Path
 import sys
 
 import bpy
-from mathutils import Vector
 
 
-HUMANOID = {
-    'Hips': 'Hips', 'Spine02': 'Spine', 'Spine01': 'Chest',
-    'Spine': 'UpperChest', 'neck': 'Neck', 'Head': 'Head',
-}
+HUMANOID = {'Hips': 'Hips', 'Spine02': 'Spine', 'Spine01': 'Chest',
+            'Spine': 'UpperChest', 'neck': 'Neck', 'Head': 'Head'}
 for side in ('Left', 'Right'):
     for source, target in (('Shoulder', 'Shoulder'), ('Arm', 'UpperArm'),
                            ('ForeArm', 'LowerArm'), ('Hand', 'Hand'),
@@ -23,103 +21,101 @@ for side in ('Left', 'Right'):
                            ('Foot', 'Foot'), ('ToeBase', 'Toes')):
         HUMANOID[side + source] = side + target
 
+ASSETS = {'silvertail': ['214c3a56'], 'ivan': ['d381fefe', '816e7107']}
+EXTRA_POINTS = ['LeftHandTip', 'RightHandTip', 'Scalp', 'Chin', 'ModelFloor', 'ModelTop']
+
+
+def pending_measurements(hero, names=None):
+    """미수령 GLB에 숫자를 넣지 않는 측정표. 승인 목표만 제공한다."""
+    if hero not in ASSETS:
+        raise ValueError('hero는 silvertail 또는 ivan')
+    names = list(names if names is not None else list(HUMANOID) + ['head_end', 'headfront'])
+    targets = {'upper_arm': [0.18, 0.19], 'forearm': [0.145, 0.155],
+               'hand': [0.10, 0.11], 'arm_down_tip': [0.36, 0.40],
+               'arm_span': [0.98, 1.06 if hero == 'ivan' else 1.05],
+               'head_scalp_chin': [0.130, 0.135], 'thigh_shin': [0.90, 1.05]}
+    return {
+        'decision': 'DECISION-1', 'hero': hero, 'source_asset_ids': ASSETS[hero],
+        'status': 'GLB 수령 후', 'model_height_target_m': 1.72 if hero == 'silvertail' else 1.85,
+        'display_scale': 0.87, 'rest_authority': 'Tripo part boundaries only',
+        'rest_points': [{'name': n, 'part': None, 'vertex_indices': [], 'rest_m': None,
+                         'status': 'GLB 수령 후'} for n in names + EXTRA_POINTS],
+        'ratios': {key: {'target': value, 'current': None, 'status': 'GLB 수령 후'}
+                   for key, value in targets.items()},
+        'arm_span_method': 'Actual A-pose chain with elbow bends; no straight-arm estimate',
+        'shoulder_policy': 'Ivan shoulder width is preserved; never narrowed',
+    }
+
 
 def extract_scene(source):
-    """현재 장면의 원본 메시 정점·rest 뼈를 추출. 반환값 좌표는 모두 m."""
-    unit = bpy.context.scene.unit_settings.scale_length
-
-    def point(world):
-        return Vector((world.x, world.z, -world.y)) * unit
-
-    def serial(v):
-        return [round(float(x), 7) for x in v]
-
-    def bounds(points):
-        return {'min_m': [min(p[i] for p in points) for i in range(3)],
-                'max_m': [max(p[i] for p in points) for i in range(3)]}
-
-    result = {
-        'schema_version': 1, 'source_glb': str(Path(source).resolve()),
-        'blender_version': bpy.app.version_string,
-        'coordinate_system': 'right-handed glTF: X right, Y up, Z forward',
-        'conversion': 'Blender world (x,y,z) -> (x,z,-y) * scene.unit_settings.scale_length',
-        'unit_scale_m': unit,
-        'rest_source': 'armature.matrix_world @ Bone.head_local (pose independent)',
-        'tail_warning': 'Imported bone tails may be synthesized; not fingertip/chin landmarks.',
-        'armatures': [], 'meshes': [],
-    }
-    all_points = []
-    # 스킨 원본 정점만 사용한다. evaluated mesh는 애니메이션 pose를 섞는다.
-    for obj in sorted(bpy.context.scene.objects, key=lambda o: o.name):
-        if obj.type != 'MESH' or not obj.data.vertices:
-            continue
-        if not any(m.type == 'ARMATURE' and m.object for m in obj.modifiers):
-            continue  # glTF 임포터의 뼈 표시용 Icosphere 등은 캐릭터가 아니다.
-        vertices = [point(obj.matrix_world @ v.co) for v in obj.data.vertices]
-        all_points.extend(vertices)
-        groups = {}
-        for vertex, world in zip(obj.data.vertices, vertices):
-            if vertex.groups:
-                dominant = max(vertex.groups, key=lambda g: g.weight)
-                if dominant.weight >= 0.5:
-                    name = obj.vertex_groups[dominant.group].name
-                    groups.setdefault(name, []).append(world)
-        result['meshes'].append({
-            'name': obj.name, 'vertices': len(vertices), **bounds(vertices),
-            'dominant_weight_bounds': {name: {'vertices': len(pts), **bounds(pts)}
-                                       for name, pts in groups.items()},
-        })
-    if all_points:
-        result['mesh_bounds'] = bounds(all_points)
-        result['mesh_height_m'] = max(v.y for v in all_points) - min(v.y for v in all_points)
+    """Meshy에서 이름·부모·Humanoid 대응만 반환. 좌표·길이·메시 비율 없음."""
+    armatures = []
     for rig in sorted(bpy.context.scene.objects, key=lambda o: o.name):
-        if rig.type != 'ARMATURE':
+        if rig.type == 'ARMATURE':
+            bones = [{'name': b.name, 'parent': b.parent.name if b.parent else None,
+                      'humanoid': HUMANOID.get(b.name)} for b in rig.data.bones]
+            armatures.append({'rig_key': rig.name, 'data_key': rig.data.name,
+                              'bone_count': len(bones), 'bones': bones})
+    return {'schema_version': 2, 'decision': 'DECISION-1',
+            'source_glb': str(Path(source).resolve()), 'blender_version': bpy.app.version_string,
+            'authority': 'Meshy: names, parents, Humanoid only', 'armatures': armatures}
+
+
+def inspect_parts_scene(source, hero, asset_id):
+    """Tripo 파트 목록·경계 상자를 제공하고 수동 경계 랜드마크 지정까지 rest를 비운다."""
+    result = pending_measurements(hero)
+    if asset_id not in ASSETS[hero]:
+        raise ValueError('DECISION-1에 지정되지 않은 Tripo 에셋')
+    unit = bpy.context.scene.unit_settings.scale_length
+    parts = []
+    for obj in sorted(bpy.context.scene.objects, key=lambda o: o.name):
+        if obj.type != 'MESH' or obj.hide_render or not obj.data.vertices:
             continue
-        bones = []
-        by_name = {}
-        for bone in rig.data.bones:
-            head = point(rig.matrix_world @ bone.head_local)
-            tail = point(rig.matrix_world @ bone.tail_local)
-            record = {
-                'name': bone.name, 'parent': bone.parent.name if bone.parent else None,
-                'humanoid': HUMANOID.get(bone.name), 'head_m': serial(head),
-                'tail_m': serial(tail), 'length_m': (tail - head).length,
-                'deform': bone.use_deform,
-            }
-            bones.append(record)
-            by_name[bone.name] = head
-        lengths = {}
-        for side in ('Left', 'Right'):
-            for key, start, end in (('upper_arm', 'Arm', 'ForeArm'),
-                                    ('forearm', 'ForeArm', 'Hand'),
-                                    ('thigh', 'UpLeg', 'Leg'), ('shin', 'Leg', 'Foot')):
-                if side + start in by_name and side + end in by_name:
-                    lengths[side + '_' + key + '_m'] = (by_name[side + end] - by_name[side + start]).length
-        result['armatures'].append({'rig_key': rig.name, 'data_key': rig.data.name,
-                                     'bone_count': len(bones), 'bones': bones,
-                                     'joint_segment_lengths': lengths})
+        points = [obj.matrix_world @ v.co for v in obj.data.vertices]
+        points = [(p.x * unit, p.z * unit, -p.y * unit) for p in points]
+        parts.append({'name': obj.name, 'vertices': len(points),
+                      'min_m': [min(p[i] for p in points) for i in range(3)],
+                      'max_m': [max(p[i] for p in points) for i in range(3)]})
+    result.update({'source_glb': str(Path(source).resolve()), 'source_asset_id': asset_id,
+                   'coordinate_system': 'glTF Y-up m: Blender world (x,z,-y) * unit scale',
+                   'parts': parts, 'status': '파트 경계 랜드마크 지정 후'})
+    # 파트 bbox 중심은 관절이 아니다. 어깨/팔꿈치/손목 등의 실제 경계 링을 지정해야 한다.
     return result
 
 
 def main():
-    args = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []
-    if len(args) != 2:
-        raise ValueError('사용법: -- <input.glb> <out.json>')
-    source, output = map(Path, args)
-    if not source.is_file():
-        raise FileNotFoundError(source)
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('source', type=Path)
+    parser.add_argument('output', type=Path)
+    parser.add_argument('--mode', choices=['topology', 'tripo'], default='topology')
+    parser.add_argument('--hero', choices=list(ASSETS), required=True)
+    parser.add_argument('--asset-id')
+    args = parser.parse_args(sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else [])
+    if not args.source.is_file():
+        raise FileNotFoundError(args.source)
+    if args.source.resolve() == args.output.resolve():
+        raise ValueError('원본 GLB를 출력으로 덮어쓸 수 없음')
+    if args.output.suffix.lower() != '.json':
+        raise ValueError('출력은 JSON만 허용')
     bpy.ops.object.select_all(action='SELECT')
     bpy.ops.object.delete(use_global=False)
     bpy.context.scene.unit_settings.scale_length = 1.0
-    bpy.ops.import_scene.gltf(filepath=str(source))
-    result = extract_scene(source)
-    if not result['armatures'] or not result.get('meshes'):
-        raise ValueError('GLB에 리그 또는 메시가 없음')
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-    print(json.dumps({'output': str(output), 'rigs': len(result['armatures']),
-                      'bones': [r['bone_count'] for r in result['armatures']],
-                      'height_m': result['mesh_height_m']}, ensure_ascii=False))
+    bpy.ops.import_scene.gltf(filepath=str(args.source))
+    if args.mode == 'topology':
+        result = extract_scene(args.source)
+        if len(result['armatures']) != 1:
+            raise ValueError('단일 Meshy 리그가 필요함')
+        result['tripo_measurements'] = pending_measurements(
+            args.hero, [b['name'] for b in result['armatures'][0]['bones']])
+    else:
+        result = inspect_parts_scene(args.source, args.hero, args.asset_id)
+        if not result['parts']:
+            raise ValueError('Tripo 메시 파트 없음')
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    print(json.dumps({'output': str(args.output), 'mode': args.mode,
+                      'status': 'Meshy 구조만 추출; Tripo rest 측정 대기' if args.mode == 'topology'
+                      else result['status']}, ensure_ascii=False))
 
 
 if __name__ == '__main__':
