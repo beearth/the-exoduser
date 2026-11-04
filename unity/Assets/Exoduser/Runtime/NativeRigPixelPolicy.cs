@@ -29,13 +29,17 @@ namespace Exoduser.UnityPort {
    // A floating-point power-of-two multiplier also avoids int overflow for extreme projected boxes.
    for(;;){double pixels=System.Math.Ceiling((boxPixels/(double)texelScale+4)/32)*32;if(pixels<=EnemyMaxRt)return System.Math.Max(64,(int)pixels);texelScale*=2;}
   }
-  // Druid-only: RT cap 2048; when the box is still too large this frame, double the texel scale (pixel size x2) until it fits. Never 0 for a finite box, never throws.
+  // Druid-only: RT cap 2048; recompute texel scale per frame, without world-unit overflow.
   public const int DruidMaxRt=2048;
   public static int DruidCanvas(float worldUnitsPerPixel,int baseTexelScale,float boxPixels,out int texelScale){
    texelScale=System.Math.Max(1,baseTexelScale);
    if(float.IsNaN(worldUnitsPerPixel)||float.IsInfinity(worldUnitsPerPixel)||worldUnitsPerPixel<=0||float.IsNaN(boxPixels)||float.IsInfinity(boxPixels)||boxPixels<=0)return 0;
-   for(int n=0;n<24;n++){int size=TextureSize(worldUnitsPerPixel,texelScale,(boxPixels+4*texelScale)*worldUnitsPerPixel,DruidMaxRt);if(size>0)return size;texelScale*=2;}
-   return 0;
+   for(;;){
+    double pixels=System.Math.Ceiling((boxPixels/(double)texelScale+4)/32)*32;
+    if(pixels<=DruidMaxRt)return System.Math.Max(64,(int)pixels);
+    if(texelScale>int.MaxValue/2)return 0; // Unrepresentable sampling scale: skip this frame, never permanently fail the view.
+    texelScale*=2;
+   }
   }
  }
 }

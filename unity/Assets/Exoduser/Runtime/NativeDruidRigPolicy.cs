@@ -184,6 +184,28 @@ namespace Exoduser.UnityPort
                 default:return null;
             }
         }
+        // Geometric limits skip this frame; actual rendering failures retain the old 2D safety net.
+        public enum FrameIssue { NearPlane,CanvasSize,RenderException,RenderTextureCreation }
+        public static bool RequiresLegacyFallback(FrameIssue issue)
+        {
+            return issue!=FrameIssue.NearPlane&&issue!=FrameIssue.CanvasSize;
+        }
+        // View-only bounds eligibility. Distance is squared world distance from the Core foot anchor.
+        public static bool BoundsBone(bool weighted,double distanceSquared,double bodyHeight)
+        {
+            return weighted&&!double.IsNaN(distanceSquared)&&!double.IsInfinity(distanceSquared)&&distanceSquared>=0
+                &&!double.IsNaN(bodyHeight)&&!double.IsInfinity(bodyHeight)&&bodyHeight>0&&distanceSquared<=4*bodyHeight*bodyHeight;
+        }
+        // Intersect an actual box edge with the camera near plane in positive-forward camera space.
+        // Front vertices are projected separately. Fully hidden/coplanar edges contribute no point.
+        public static bool ClipNearPlaneEdge(double ax,double ay,double az,double bx,double by,double bz,double near,out double x,out double y,out double z)
+        {
+            x=y=z=0;
+            if(double.IsNaN(ax)||double.IsInfinity(ax)||double.IsNaN(ay)||double.IsInfinity(ay)||double.IsNaN(az)||double.IsInfinity(az)
+                ||double.IsNaN(bx)||double.IsInfinity(bx)||double.IsNaN(by)||double.IsInfinity(by)||double.IsNaN(bz)||double.IsInfinity(bz)
+                ||double.IsNaN(near)||double.IsInfinity(near)||near<=0||az==bz||(az>near)==(bz>near))return false;
+            double t=(near-az)/(bz-az);x=ax+(bx-ax)*t;y=ay+(by-ay)*t;z=near;return true;
+        }
         // Receipt/test helper: displayed body height as a multiple of the real hero idle height (design: P1 2.805, P2 2.374; Core footprint rule gives 1.95/1.65).
         public static float HeroRatio(float bodyHeightWorld,float heroIdleWorld){return heroIdleWorld>0?bodyHeightWorld/heroIdleWorld:0;}
     }
