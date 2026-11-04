@@ -908,5 +908,78 @@
    "pad": 6,
    "cy": 24
   }
- ]
+ ],
+  "localization": {
+    "schema": "exoduser.localization.v1",
+    "sourceRef": "06ac6882b550cb6373f2953ede3b2acc6f69e211",
+    "codes": [
+      "ko",
+      "en",
+      "zh",
+      "zht",
+      "ja",
+      "vi",
+      "th",
+      "id",
+      "ms",
+      "es",
+      "fr",
+      "it",
+      "ptbr",
+      "ro",
+      "de",
+      "nl",
+      "sv",
+      "da",
+      "no",
+      "ru",
+      "uk",
+      "pl",
+      "cs",
+      "hu",
+      "bg",
+      "el",
+      "fi",
+      "tr",
+      "ar"
+    ],
+    "entries": [
+      {
+        "path": "title.format",
+        "key": "제{n}구역 · {name}",
+        "no": 4298,
+        "texts": [
+          "제{n}구역 · {name}",
+          "AREA {n} · {name}",
+          "第{n}区域 · {name}",
+          "第{n}區域 · {name}",
+          "第{n}区域 · {name}",
+          "KHU {n} · {name}",
+          "พื้นที่ {n} · {name}",
+          "AREA {n} · {name}",
+          "KAWASAN {n} · {name}",
+          "ÁREA {n} · {name}",
+          "ZONE {n} · {name}",
+          "AREA {n} · {name}",
+          "ÁREA {n} · {name}",
+          "ZONA {n} · {name}",
+          "GEBIET {n} · {name}",
+          "GEBIED {n} · {name}",
+          "OMRÅDE {n} · {name}",
+          "OMRÅDE {n} · {name}",
+          "OMRÅDE {n} · {name}",
+          "ОБЛАСТЬ {n} · {name}",
+          "ОБЛАСТЬ {n} · {name}",
+          "OBSZAR {n} · {name}",
+          "OBLAST {n} · {name}",
+          "TERÜLET {n} · {name}",
+          "ОБЛАСТ {n} · {name}",
+          "ΠΕΡΙΟΧΗ {n} · {name}",
+          "ALUE {n} · {name}",
+          "BÖLGE {n} · {name}",
+          "المنطقة {n} · {name}"
+        ]
+      }
+    ]
+  }
 }

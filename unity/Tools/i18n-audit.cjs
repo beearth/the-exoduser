@@ -42,7 +42,24 @@ function extract(data,file){
    if(!['source','sourceFiles','localization','codes'].includes(k))visit(x,p?p+'.'+k:k);
   }
  }
- visit(data,'');return rows;
+ visit(data,'');
+ if(data.localization?.schema==='exoduser.localization.v1'){
+  const table=data.localization,byPath=new Map();
+  if(!Array.isArray(table.codes)||table.codes.length!==codes.length||new Set(table.codes).size!==codes.length||codes.some(c=>!table.codes.includes(c)))throw Error(file+' 번역 언어 계약 불일치');
+  if(!Array.isArray(table.entries))throw Error(file+' 번역 행 없음');
+  for(const e of table.entries){
+   if(byPath.has(e.path))throw Error(file+' 중복 번역 경로 '+e.path);
+   if(!Array.isArray(e.texts)||e.texts.length!==table.codes.length)throw Error(file+' 번역 열 수 불일치 '+e.path);
+   byPath.set(e.path,e);
+  }
+  for(const row of rows){const e=byPath.get(row.path);if(!e)continue;
+   const values=Object.fromEntries(table.codes.map((c,i)=>[c,e.texts[i]]));
+   if(e.key!==row.values.ko||values.ko!==row.values.ko||values.en!==row.values.en)throw Error(file+' 원문 불일치 '+row.path);
+   row.values=values;row.no=e.no;byPath.delete(row.path);
+  }
+  if(byPath.size)throw Error(file+' 원본에 없는 번역 경로 '+[...byPath.keys()].join(','));
+ }
+ return rows;
 }
 function validate(rows){
  const issues=[];
@@ -97,6 +114,11 @@ module.exports={codes,tokens,extract,validate,registry,normalize,audit};
 if(require.main===module){
  const args=process.argv.slice(2),positional=args.filter(x=>!x.startsWith('--')),root=positional[0]||path.resolve(__dirname,'../..'),output=positional[1];
  const result=audit(root);if(output)fs.writeFileSync(output,JSON.stringify(result,null,2)+'\n');
- console.log(JSON.stringify({jsonFiles:result.jsonFiles,localizedKeys:result.localizedKeys,counts:result.counts,byFile:result.byFile,unregistered:result.unregistered.length,runtimeCalls:result.runtimeCalls.length,runtimeMissing:result.runtimeMissing,resourceMissing:result.resourceMissing,parseErrors:result.parseErrors},null,2));
- if(args.includes('--strict')&&(result.issues.length||result.runtimeMissing.length||result.resourceMissing.length||result.parseErrors.length||result.unregistered.length||result.bilingualCalls.some(c=>!c.inCatalog||!c.registered)))process.exitCode=1;
+ const fillFiles=new Set(['first_practice.json','keybind_ui_web.json','stat_panel_web.json','areatitle_web.json','visual_select_labels.json']);
+ const fillScope=args.includes('--scope=fill');
+ const relevant=x=>!fillScope||fillFiles.has(x.file);
+ const scopedIssues=result.issues.filter(relevant),scopedRows=result.rows.filter(relevant),unregistered=result.unregistered.filter(relevant),parseErrors=result.parseErrors.filter(x=>!fillScope||fillFiles.has(path.basename(x.file)));
+ const strictFailure=scopedIssues.length||unregistered.length||parseErrors.length||(!fillScope&&(result.runtimeMissing.length||result.resourceMissing.length||result.bilingualCalls.some(c=>!c.inCatalog||!c.registered)));
+ console.log(JSON.stringify({scope:fillScope?'fill':'all',jsonFiles:result.jsonFiles,localizedKeys:scopedRows.length,issues:scopedIssues.length,counts:result.counts,byFile:result.byFile,unregistered:unregistered.length,runtimeCalls:result.runtimeCalls.length,runtimeMissing:result.runtimeMissing,resourceMissing:result.resourceMissing,parseErrors,strictPassed:!strictFailure},null,2));
+ if(args.includes('--strict')&&strictFailure)process.exitCode=1;
 }

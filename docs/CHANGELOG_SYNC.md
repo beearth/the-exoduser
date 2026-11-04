@@ -58018,3 +58018,10 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 - a15_settings_labels_exact 5키에 빠진 27언어를 추가했다. 기존 번역과 Runtime 로직은 유지했다.
 - 전수 감사 도구·오류 감지 테스트 추가, 전체목록 No.4274~4538 등록(CRLF 보존), 번역_가이드에 범위·8,289값 구조 공백·기존 한국어 복사 56값·동적/시각 검수 한계를 기록했다.
 - 전체 누락0은 미달이다. 공용 컴파일·원격 SHA 결과는 I:/EXODUSER-Storage/codex-takeover/i18n-audit/REPORT.md 참조.
+
+
+## 2026-11-04 Unity 번역 채우기 8,289값·오류56값
+
+- 네자료307키×27언어8,289값추가,선택화면2키의한국어복사56값수정. 기존KO/EN·수치·Runtime유지.
+- localization.codes/entries의path·key·no·texts계약을가이드에정리. 전체목록기존No.매핑309행과29언어데이터상태갱신(CRLF보존).
+- 감사도구의표병합·오류주입회귀추가,이번범위strict1회검사. 실제로더·Mac긴언어판정은다른레인후속. 공용컴파일·SHA는레인REPORT.md참조.
