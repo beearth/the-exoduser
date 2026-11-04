@@ -12,7 +12,8 @@ function profile(e,frame){
  const p=e.source?.slice(e.source.indexOf(suffix)+suffix.length),fit=Math.min(frame.width/1920,frame.height/1080);
  if(!e.source?.includes(suffix))return null;
  if(p===' / frontend-black-shadow')return{source:e.source.slice(0,-(suffix+p).length),scale:frame.height/1080,maxAlpha:1.001,offsets:[[0,1],[.5,3],[-.5,3],[.5,2],[-.5,2]]};
- if(p===' / death-black-outline')return{source:e.source.slice(0,-(suffix+p).length),scale:fit,maxAlpha:1.001,offsets:[[0,1],[-3,1],[3,1],[0,-2],[0,4]]};
+ // NativeDeathOverlay draws this profile twice: glyph outline (Text, line 101-102) and pet dialogue lines (line 207).
+ if(p===' / death-black-outline')return{source:e.source.slice(0,-(suffix+p).length),scale:fit,maxAlpha:1.001,offsets:[[0,1],[-3,1],[3,1],[0,-2],[0,4],[0,1.5],[-2,0],[2,0],[0,-1],[0,3]]};
  if(p===' / region-banner-black-shadow')return{source:e.source.slice(0,-(suffix+p).length),scale:fit,maxAlpha:.064,offsets:ring(5,4)};
  if(p==='')return{source:e.source.slice(0,-suffix.length),scale:fit,maxAlpha:.03,offsets:[...ring(3),...ring(5.5)]};
  return null;
