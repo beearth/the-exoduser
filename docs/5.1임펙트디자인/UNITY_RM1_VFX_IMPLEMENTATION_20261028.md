@@ -249,3 +249,17 @@ warriorOnly 첫 일반공격의 세 번째 QA 표적만 X+104→X+48로 놓아 �
 ## 2026-11-03 누락 전투 표시 후속
 
 Parry·Roll·일반/치명/보스 피격·사망을 별도 `CombatImpactView`로 연결한 소스 후보다. 기존 기검참 noImpact와 Core 수식은 유지한다. PNG26개/10.77MiB, 독립검사53/0·C# 사전오류0이며 실제 Unity 임포트·Player·M1·탄막 가독성은 미검증이다. [정확한 수치와 남은 범위](UNITY_COMBAT_IMPACTS_20261103.md).
+
+## 2026-11-04 임펙트 QA 진입·해상도 수정 병합 상태
+
+unity/main `3abbea79e`의 `NativeGame.ImpactReview.cs` 기준이다(수정 d79e116f9, 병합 a8fa144bf). 위 r1/r2 촬영 수치와 미검증 표는 각각 당시 이력이며 다음 현행 장치와 구분한다.
+
+| 항목 | 현행 코드 |
+|---|---|
+| 필수 입력 | `--unity-impact-review`와 명시적 `-output`·`--unity-qa-sandbox`. 출력 또는 격리 경로가 없으면 종료2 |
+| 정식 입장 | RigPixelRequested이면 HeroCapture·PlaytestCapture와 같은 `RigPixelReviewEntry`로 입장한다. 준비 실패는 종료2. 일반 경로는 ShowLobby→SelectPreview→EnterNativeTest다. 이후 연습 종료·입력 펜스 해제·로비 미디어 종료·게임 포커스를 적용한다 |
+| 크기 | `-impact-width/-impact-height` 기본1600×900, Clamp 범위1600..3840×900..2160. 3D 활성화를 최대45초 기다린 뒤 화면 크기가 다르면 재적용하고 최대60프레임 대기한다. M1의 review-width 인자와 다른 계약이다 |
+| 제어 fixture | 전사 범위(`-impact-scope warrior`)는 일반공격·기검참 각300틱, 총600틱/10초·300장. 기본은 7구간, 기검참240틱·나머지 각120틱, 총960틱/16초·480장. 60Hz 진행·2프레임마다 캡처. AI 루프를 유지하되 표적 기절180·불사 표적·합성 탄막을 사용한다 |
+| 로비 재발 감지 | frame30에서 lobby.enabled 또는 IsBlocking이면 영수증 `lobbyVisible=true`. 최종 passed는 로비가 보이지 않고, 실제 크기·요청3D·사진 수·실제 명중/처치/넉백/피해 조건도 맞아야 한다 |
+
+이 감사에서는 촬영·Unity 실행을 하지 않았다. 코드 진입 수정과 기존 재촬영 보고는 자연 플레이·전체 스킬 아트·Mac 판정의 완료와 구분한다.

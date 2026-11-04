@@ -11,6 +11,7 @@ param(
   [switch]$AllowKnown,
   [switch]$HudSmoke,           # m1-check 뒤에 hud-smoke 도 무창으로 돌려 스스로 종료하는지 기록(DBT-6)
   [switch]$KeepStage,          # 브랜치 시험 뒤에도 build_new 를 지우지 않는다(데스크톱 시험용)
+  [ValidateSet('off', 'trial', 'on')][string]$Gate3D = 'trial',   # 11-04 CTO 데모=3D: trial=관문 m1-check 뒤 --remodel3d m1-check 1회를 기록만(판정 무관), on=관문 스모크 자체를 --remodel3d로
   [switch]$SkipSmoke,          # 빌드까지만(스모크 생략, 판정 ABORT 로 기록)
   [ValidateSet('desktop', 'batch')][string]$Mode = 'desktop',   # 스모크 방식: desktop=숨은 데스크톱(기본, HUD/UI 캡처 포함) / batch=batchmode GPU(월드만)
   [switch]$NoSwap,             # build 를 교체하지 않는다(브랜치 시험용). -Ref 가 origin/unity/main 이 아니면 자동으로 켜진다
@@ -545,11 +546,11 @@ function Invoke-UiOverlapCheck([string]$check, [string]$exe, [string]$worktree, 
     return [pscustomobject]@{ exit = $rc; stdout = $log; stderr = $errLog; processId = $pr.Id }
   } finally { $pr.Dispose() }
 }
-function Run-Smoke([string]$buildDir, [string]$smokeDir, [string]$flag = '--unity-m1-check', [string]$receiptName = 'm1-check.json') {
+function Run-Smoke([string]$buildDir, [string]$smokeDir, [string]$flag = '--unity-m1-check', [string]$receiptName = 'm1-check.json', [string[]]$extra = @()) {
   New-Item -ItemType Directory -Force -Path $smokeDir | Out-Null
   $desktop = 'hidden'; if ($Mode -eq 'batch') { $desktop = 'batch' }
   $sw = [Diagnostics.Stopwatch]::StartNew()
-  $x = Invoke-Exo 'player' @($flag,'-output',$smokeDir,'-force-d3d11') (Join-Path $smokeDir 'exo') (Join-Path $buildDir 'EXODUSER-Unity.exe') $desktop
+  $x = Invoke-Exo 'player' (@($flag,'-output',$smokeDir,'-force-d3d11') + @($extra)) (Join-Path $smokeDir 'exo') (Join-Path $buildDir 'EXODUSER-Unity.exe') $desktop
   $r = $x.receipt
   if ($null -ne $r -and $r.log -and (Test-Path -LiteralPath $r.log)) { Copy-Item -LiteralPath $r.log -Destination (Join-Path $smokeDir 'player.log') }
   return [pscustomobject]@{ waitReason = $x.waitReason; mode = $Mode; ran = ($null -ne $r); exit = $x.exit; timedOut = [bool](Prop $r 'timedOut' $false); windowSeen = ([int](Prop $r 'windowHandleCount' 0) -gt 0); slowExit = $false; receiptWritten = (Test-Path -LiteralPath (Join-Path $smokeDir $receiptName)); exitAfterReceiptSec = $null; hiddenVisibleWindows = (Prop $r 'hiddenWindows' 0); desktopClosed = (Prop $r 'desktopClosed' $false); note = [string](Prop $r 'note' ''); seconds = [int]$sw.Elapsed.TotalSeconds; runner = $r }
@@ -972,7 +973,9 @@ function Cmd-Run {
       for ($sa = 1; $sa -le 1; $sa++) {
       $smokeDir = Join-Path $runDir 'smoke'
 
-      $sm = Run-Smoke $stage $smokeDir
+      $gateExtra = @(); if ($Gate3D -eq 'on') { $gateExtra = @('--remodel3d') }
+      $sm = Run-Smoke $stage $smokeDir '--unity-m1-check' 'm1-check.json' $gateExtra
+      $run.gate3D = $Gate3D
       $run.smokeSeconds = $sm.seconds; $run.smokeNote = $sm.note
       Log ("스모크: ran={0} exit={1} timedOut={2} windowSeen={3} slowExit={4} {5}" -f $sm.ran, $sm.exit, $sm.timedOut, $sm.windowSeen, $sm.slowExit, $sm.note)
       $run.smoke = $sm
@@ -995,6 +998,16 @@ function Cmd-Run {
         if (($null -ne $sm.exit -and [int]$sm.exit -ne 0) -or $crashLogs.Count -gt 0) { $run.crash = Get-CrashInfo $runStart; Log ('플레이어 크래시 의심: 로그 ' + (Join-Path $smokeDir 'player.log') + ' / 크래시 폴더 ' + $run.crash.playerDir) }
       }
       break
+      }
+      # 3D 관문 시험(기록만): 같은 build_new로 --remodel3d m1-check 1회. 판정·교체에 쓰지 않는다. PASS가 확인되면 -Gate3D on으로 바꾼다.
+      if ($Gate3D -eq 'trial' -and $null -ne $m1 -and $sm.exit -eq 0) {
+        $t3 = Run-Smoke $stage (Join-Path $runDir 'trial3d') '--unity-m1-check' 'm1-check.json' @('--remodel3d')
+        $t3m = $null; $t3l = $null
+        if ($t3.ran) { $t3m = Judge-M1 (Join-Path (Join-Path $runDir 'trial3d') 'm1-check.json') $rules; $t3l = Judge-Log (Join-Path (Join-Path $runDir 'trial3d') 'player.log') 'player' $rules }
+        $run.trial3d = [ordered]@{ ran = $t3.ran; exit = $t3.exit; timedOut = $t3.timedOut; waitReason = $t3.waitReason; seconds = $t3.seconds; m1Present = [bool]($t3m -and $t3m.present); m1Ok = $(if ($t3m) { $t3m.ok } else { 0 }); m1Fail = $(if ($t3m) { $t3m.fail } else { 0 }); firstBlocked = $(if ($t3m) { $t3m.firstBlocked } else { '' }); logFail = $(if ($t3l) { $t3l.fail } else { 0 }) }
+        $t3pass = $t3.ran -and $t3.exit -eq 0 -and -not $t3.timedOut -and $t3m -and $t3m.present -and $t3m.fail -eq 0 -and $t3l -and $t3l.fail -eq 0
+        $run.trial3d.passed = [bool]$t3pass
+        Log ("3D 관문 시험(기록만): passed={0} ran={1} exit={2} timedOut={3} m1 ok={4} fail={5} 첫막힘={6} 로그fail={7} {8}" -f $t3pass, $t3.ran, $t3.exit, $t3.timedOut, $run.trial3d.m1Ok, $run.trial3d.m1Fail, $run.trial3d.firstBlocked, $run.trial3d.logFail, $t3.waitReason)
       }
 
       # M1 다음의 필수 UI 검사. 기존 잠금은 exo 실행기에 정상 양도하고 반환받는다.

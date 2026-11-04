@@ -115,3 +115,19 @@ root 인수 후 통합 경계(2026-11-03): 기존 private 브랜치에서 공통
 ### 2026-11-03 CTO 위임 분기 수정
 
 checkout exo-unity.ps1은 install-bin 및 EXO_UNITY_NO_FORWARD=1을 로컬 본문에 남긴다. 실제 공용 경로로 실행한 경우에도 재위임하지 않는다. 일반 호출은 Stop 설정 후 공용 bin Test-Path Leaf를 먼저 확인하고 누락 시 stderr와 exit1로 중단한 뒤, 존재할 때만 인수를 그대로 위임하고 exit 코드를 전달한다. tests/forwarding.test.ps1이 실제 스텁 블록을 추출해 격리된 가짜 bin으로 위임 인수/exit7, install-bin 로컬, opt-out 로컬, 자기 경로 로컬, 누락 exit1의5분기를 확인했다. 실제 install-bin·공용 bin 갱신·Unity 실행은 수행하지 않았다. Unity 실행은 계속 I:/EXODUSER-Storage/unity-jobs/bin/exo-unity.ps1만 사용한다.
+
+## 2026-11-04 오후 병합본 계약 보충
+
+대조 기준은 unity/main `3abbea79e`다. 아래는 저장소 소스 계약이며 bin 설치 상태·예약 작업 설정·실행본 갱신을 확인한 결과가 아니다. 앞 절의 11-03 시험·버전은 당시 이력으로 유지한다.
+
+| 항목 | 병합된 값·범위 |
+|---|---|
+| 실행기 버전·우선권 | `2026.11.04-loopfirst`. `-PcException buildloop` Player만 player FIFO와 editor 굶주림 방지 drain을 건너뛴다. `cto-swap`·candidate에는 적용하지 않는다. 양수 `-WaitMin`이 180 미만일 때만 180분으로 올린다. 0·음수는 올리지 않는다 |
+| 우선 대기 표식 | `_player_priority.json`의 pid·processStart로 생존·PID 재사용을 확인한다. 대기 중 일반 새 Player를 막고 입장·대기 종료 시 자기 표식만 반환한다. 돌고 있는 Player를 끊지 않으며 단독·슬롯·10GB 메모리·HALT·세이브 보호 조건은 유지한다 |
+| BuildLoop `-Gate3D` | 허용값 off/trial/on, 기본 trial. off는 기존 관문만, trial은 기존 M1 종료0·판정 객체 생성 뒤 같은 빌드로 `--remodel3d` M1을 1회 더 실행해 `run.trial3d`에만 기록한다. trial 결과는 PASS/FAIL·WAIT·교체에 반영하지 않는다. on은 주 M1에 3D 인자를 붙인다. UI 겹침 검사까지 자동 3D로 바뀌었다는 뜻은 아니다 |
+| M1 촬영 인자 | `-review-width <px>` 320..7680, `-review-height <px>` 240..4320. 누락·비정수·범위 밖은 축별 기본 1600×900. 무창 RenderTexture와 창 모드 SetResolution이 사용한다. batch에서는 같은 `-screen-width/-screen-height`를 함께 준다 |
+| M1 영수증 | `captureWidth/captureHeight/screenWidth/screenHeight`. batch 화면 배치 크기가 촬영 크기와 다르면 `[M1] headless capture` 경고. 해상도 변경은 자연 플레이·UI 품질 통과의 증거가 아니다 |
+| 소스 자체검사 | `selftest/loopfirst-test.ps1` Check 12개, `selftest/buildloop-gate3d-test.ps1` Check 8개. 기존 `buildloop-overlap-summary-test.ps1`·`ui-overlap-invocation-test.ps1`는 Apply-UiKnownList를 대체해 raw summary 계약을 검사한다. 개수는 소스 대조이며 이번 감사의 재실행 결과가 아니다 |
+| 제외한 설치본 | grant·haltexempt는 이 기준의 저장소 실행기 옵션이 아니다. 설치본 전용 운영 이력을 저장소 구현으로 승격하지 않는다 |
+
+구현: `unity/Tools/devtools/exo-unity.ps1`, `buildloop/buildloop.ps1`, `NativeReviewArgs.cs`·`NativeGame.M1Check.cs`. 상세 사용법은 `unity/Tools/devtools/README.md`·`buildloop/README.md`다. 감사에서 Unity 실행·설치·시험 재실행은 하지 않았다.
