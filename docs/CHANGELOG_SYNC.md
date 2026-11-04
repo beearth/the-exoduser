@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+2026-11-04 필드 조립 대기 fix3(Sonnet 구현, CTO 재검증 정리): 호스트 쪽만 수정, Core·화면 무변경. (1) 120초 상한은 프레임당 최대 2초로 잘라 센다(125초 한 프레임·0.2fps는 hard-cap 아님). (2) hard-cap·stall·owner-disabled 중단은 r3Failed 없이 다음 필드 입장 때 재시도하고, 조립 예외는 재시도 1회(FieldLoadGate), 중단 시 R3Teardown으로 씬 언로드·참조 해제. (3) LoadSceneAsync 로드 루프 Report, 중단 시 AsyncOperation(r3LoadOp)을 잡아 로드 완료 때 씬 루트 끄고 언로드, 남은 로드·언로드 동안 재시작 금지. (4) NativeTransitionPrepare·NativeScreenTransition 주석 정정, OnDisable에서 r3Loading 해제, 실패 전환의 진행선은 100%까지 차지 않음. run.cjs 46/0, abort-contract·root-guard·capture-contract PASS, 참조 컴파일 오류 0. docs/engine/UNITY_MAC_LOADING_ART_OVERLAY 11-04 fix3 표. 상태: PC 검사·컴파일만, Unity 실컴파일·Mac 화면 판정 전.
+
+>>>>>>> origin/claude/unity-pc-field-prepare-merge-20261104
 2026-11-04 필드 조립 대기 fix2(Sonnet 구현, CTO 독립 검증 FAIL 8건): 호스트 쪽만 수정, Core 무수정. (1) Remodel3DLoad 첫 줄에서 Begin하고 필드 전환(lobby-game·story-game)은 3D 요청·미완료(FieldPreparePending) 동안 대기. (2) AssemblyGuard로 조립 예외를 잡아 r3Failed=true·r3Loading=false·3D 루트 끄기·2D로 열기, 사유는 로그와 전환 error에 기록. (3) 준비 절대 상한 120초(prepare-hard-cap(120s))와 AbortFieldPrepare. (4) Begin 소유 토큰·End(token)·Release·ReleaseOrphan로 전역 Active 고착 해소. (5) 메뉴 전환은 대기 안 함. (6) 첫 실패 사유 보존. (7) 문구 정정(롤백 없이 연다, prepare-timeout 낡음). (8) root-guard가 NativeGame*.cs 전체와 조립 IEnumerator 호출 형태를 검사. field-prepare-wait-tests run.cjs 29/0, root-guard·capture-contract PASS, 참조 컴파일 5개 어셈블리 오류 0. 상태: PC 검사·컴파일만, Unity 실컴파일·Mac 화면 판정 전.
 
 2026-11-04 로딩 촬영 모드 보정(Sonnet 구현): 인장·문구 샘플을 호출 시각 대신 각 전환 시작 기준(+0.45초·+1.2초, `transition-<boundary>-seal/label.png`)으로 변경, `--unity-transition-loading-size <W>x<H>` 추가(기본 1920x1080), 전환 Busy 중에는 소개 페이지 Skip 안 함. 전환·조립 코드 변경 0.
@@ -11,6 +16,7 @@
 2026-11-04 필드 조립 단계 분할 뒤 NRE 수정(통합 미리보기 6차 스모크 FAIL, CTO): HellLighting이 장면 루트(Shafts·Foreground/Background Cards)를 Destroy하는데, 단계 사이에 프레임이 넘어가면서 A2FieldAtmosphere의 r3Roots 루프가 파괴된 루트를 만나 NRE. A2Field·A2Forest·HellLighting·Remodel3D의 r3Roots 루프 11곳에 null 가드(기존 HellLighting:52·Keyshot과 같은 방식). root-guard 검사 통과, 참조 컴파일 오류 0. field-prepare-wait 하니스 재실행은 NuGet 대상 팩 복원 실패(NU1100, 환경)로 이번에 못 돌림(바뀐 파일은 그 하니스 대상 밖). 같은 로그의 A2RPlayShot NRE는 이 브랜치에 없는 맵 레인 촬영 코드(claude/unity-pc-field-prepare-wait-20261104).
 
 2026-11-04 필드 조립 대기: 로비→필드 전환에서 3D 필드 조립(A2FieldSetup 15.5초 동기)을 단계별 코루틴·진행 보고로 나누고, 전환이 오류 또는 진행 보고 20초 멈춤(비조립 12초)일 때만 로비로 되돌리게 NativeScreenTransition 호스트가 Preparing 동안 Core 흐름 시계를 고정(Core 무수정). 로딩 문구 아래 은빛 진행 선 추가(문구 없음, 번역 없음). 새 NativeTransitionPrepare.cs·Tools/field-prepare-wait-tests(13/0)·docs/engine/UNITY_MAC_LOADING_ART_OVERLAY_20261101.md 절. 상태: PC 검사·컴파일만, 화면 판정 전.
+<<<<<<< HEAD
 
 2026-11-04 1-1 필드 BGM 회전 3곡 반입(유니티 총괄, Sonnet 서브에이전트 구현, 브랜치 claude/unity-pc-options-wave1-20261104): 웹 bgm/1장_썩은숲의 Remastered WAV 3곡(Ashes Under the Banner·Cathedral of Steel·Iron Oath Under Ash)을 mp3 192kbps 44.1kHz 스테레오로 바꿔 Resources/Audio/Bgm/hell1_rot_*.mp3로 반입(길이 420.00/288.88/247.24초, 10.08/6.93/5.94MB, 통합 라우드니스 -16.24 LUFS로 hell1 -15.98 대비 -0.26 LU, true peak -3.5 이하). Core: NativeBgmRotation 신설(hell1 1회 → 3곡 셔플 순환, 직전 곡 반복 없음), NativeBgmSelection 지원 값 6→9(웹 목록 55·56·59번, ClipFor·IsAuto), NativeGameMusic.Sync(key,audioKey,rotate)·NativeGame.UpdateGameMusic 연결(auto일 때만 회전, 곡을 고르면 그 곡 반복, 보스·사망·승리·숲 바닥음·보스 스냅샷 불변). Core 규칙 수치·판정 변경 0. 번역 새 문자열 0(표시 이름은 a15_options_web.json 기존 값). 검증: 참조 컴파일 5개 어셈블리 오류 0, options-wave1 소스 31·Core 5098 PASS, sound-wire-tests 43 PASS. 문서: UNITY_PAUSE_OPTIONS_PARITY "BGM 회전"·BGM 행, UNITY_RM1_SOUND_SLICE 표. UNITY_BGM_IMPORT_CANDIDATES_20261104.md(origin/unity/main에만 있음)의 반입 상태는 병합 뒤 갱신 필요. Unity·Player 미실행, 청음 판정과 Suno 라이선스 확인은 사용자 몫, 공개·업로드 없음.
 
@@ -20,6 +26,12 @@
 
 2026-11-04 demo-flavor 루트 고정판 마무리 5건(유니티 총괄, Sonnet 구현, claude/unity-pc-demo-flavor-fix-20261104): ① 옛 full 루트는 productName이 정식명 "EXODUSER: HELL LORD"(상수 NativeFlavorSavePaths.OfficialProductName, ProjectSettings와 같음을 테스트가 확인) 또는 옛 이름일 때만 사용, 다른 제품명 Player는 persistentDataPath로 격리 ② 명령줄 --unity-build-flavor는 개발 빌드·QA 실행에서만 읽고(QA sandbox 자동 강제) 배포 빌드는 내장 flavor만 사용 ③ STEAM_UNITY_DEMO·UNITY_DEMO_FLAVOR docs 정리(F-1 조건, "바이트 보존 통과" 삭제, 경로 표·정책 절 반영, 체험판 실행 옵션은 flavor 인수 없이 -flavor demo 내장 빌드) ④ NativeGame.SettingsPersistence 주석의 imports 삭제 ⑤ 루트 계산이 NotSupported·PathTooLong·Security 예외도 같은 실패 경로로 처리. Core 수치·판정 변경 없음. 컴파일 5개 어셈블리 오류0, demo-flavor-tests 86 PASS. Unity·Player 실행 없음.
 
+=======
+2026-11-04 STY-25 B7 보스 처치 펫 대사 Unity 패치 제안(스토리 총괄, CTO 요청): 1-1 드루이드 침강 뒤 펫 대사 No.3350·3351이 웹 _petSay(boss_kill)에만 있어 Unity pet_bubble.json cue boss_kill_ch0(tier 4, 4+4초, 런당 1회)와 29언어 entries를 웹 정본에서 옮긴 패치를 작성. B8·B9는 B7 뒤로. 문서 docs/11내러티브·로어디자인/DARK_DRUID_1-1_B7_PET_PATCH_20261104.md. 게임 데이터 변경 0(유니티 총괄 반영 대기).
+
+2026-11-04 SND-17b BGM 라이선스 확인·P1 반입 순서(사운드 총괄): 사용자 확인(CTO 경유) — Suno 생성 당시 유료 플랜 → UNITY_BGM_IMPORT_CANDIDATES의 Suno 76곡 출처 칸을 "유료 플랜 확인(사용자, 11-04)"로 갱신했다. P1 반입 순서 7단계(1 사망·승리 두 번째 4.8MB → 2 대장간 14.8MB → 3 1장 Remastered 나머지 10.4MB → 4 1장 mp3 → 5 공통 회전 → 6 2~7장 → 7 최종 보스), 데모 권장 = P0 + 1~3단계 11곡 약 45MB. 출처 태그 없는 3파일은 계속 보류. 반입·코드 변경 없음.
+
+>>>>>>> origin/claude/unity-pc-field-prepare-merge-20261104
 2026-11-04 STY-25 1-1 다크드루이드 등장·퇴장 대사(스토리 총괄, CTO 배정): G0 A안 연출 순서에 맞춰 이름 카드 부제 "썩은 숲의 숲지기", 목숨 2·3 전환 자막 2줄, 출구 개방 뒤 다음 지역 암시 펫 대사 1쌍을 새로 쓰고 기존 등장·침강·처치 대사 6줄과 묶었다. 신규 KO·EN 5건 No.4288~4292. 문서 `docs/11내러티브·로어디자인/DARK_DRUID_1-1_BOSS_TEXT_20261104.md`. 게임 데이터 변경 0(보스전 총괄 반영 대기).
 
 2026-11-04 SND-17 Unity BGM 반입 후보 목록(사운드 총괄, CTO 배정): docs/6사운드디자인/UNITY_BGM_IMPORT_CANDIDATES_20261104.md 신설. 웹 bgm 79파일(설정 57 + 큐 22)의 경로·길이·용량·형식·Vorbis 반입 추정·BGM.tracks 쓰임·출처(메타데이터: 76파일 made with suno, beearthone, 생성일·곡 id)를 정리했다. 바이트 대조로 Unity 보유 10·제외 사본 6. P0 반입 권장 3곡(1-1 필드 회전, Ashes Under the Banner·Cathedral of Steel·Iron Oath Under Ash Remastered, 15.9분·약 15MB), P1 52, P2 8. Suno 상업 권리 사용자 확인 필요. 반입·코드 변경 없음.

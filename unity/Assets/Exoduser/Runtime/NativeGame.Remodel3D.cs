@@ -37,14 +37,17 @@ namespace Exoduser.UnityPort
             if (!NativeRemodel3D.Requested || Simulation == null) return;
             if (r3Late == null) { r3Late = gameObject.AddComponent<R3Late>(); r3Late.Late = Remodel3DLate; }
             bool field = !Simulation.Stage.InArena;
-            if (field && !r3Loaded && !r3Loading && !r3Failed) r3LoadRoutine = StartCoroutine(Remodel3DLoad());
+            if (field && !r3Loaded && !r3Loading && !r3Failed && r3Gate.CanStart) r3LoadRoutine = StartCoroutine(Remodel3DLoad());
             bool want = field && r3Loaded;
             if (want != NativeRemodel3D.Active) Remodel3DSetActive(want);
         }
 
-        Coroutine r3LoadRoutine;
+        Coroutine r3LoadRoutine; AsyncOperation r3LoadOp; readonly FieldLoadGate r3Gate = new FieldLoadGate();
+        // A new field-bound transition starts: a 3D field stopped by an earlier abort may be tried again.
+        internal static void FieldEntryRequested() { var g = Instance; if (g != null) g.r3Gate.FieldEntry(); }
+        void OnDisable() { StopLobbyFixtureObservers(); if (r3Loading && !r3Loaded) Remodel3DAbort("owner-disabled", false); else r3Loading = false; }
         // True while a field-bound transition must keep waiting: the 3D field is requested, the field (not the arena) is on screen, and it is neither built nor failed.
-        internal static bool FieldPreparePending { get { var g = Instance; return g != null && NativeRemodel3D.Requested && g.Simulation != null && !g.Simulation.Stage.InArena && !g.r3Loaded && !g.r3Failed; } }
+        internal static bool FieldPreparePending { get { var g = Instance; return g != null && NativeRemodel3D.Requested && g.Simulation != null && !g.Simulation.Stage.InArena && !g.r3Loaded && !g.r3Failed && !g.r3Gate.Deferred && !g.r3Gate.Permanent; } }
         internal static bool FieldAssemblyRunning { get { var g = Instance; return g != null && g.r3Loading; } }
         internal static void AbortFieldPrepare(string why) { var g = Instance; if (g != null) g.Remodel3DAbort(why); }
 
@@ -57,28 +60,51 @@ namespace Exoduser.UnityPort
             var run = AssemblyGuard.Run(Remodel3DLoadSteps(), e => { failure = e.GetType().Name + ": " + e.Message; Debug.LogException(e); });
             try { while (run.MoveNext()) yield return run.Current; }
             finally { NativeTransitionProgress.End(token); }
-            if (failure != null) Remodel3DAbort("assembly-exception: " + failure);
+            if (failure != null) Remodel3DAbort("assembly-exception: " + failure, true);
         }
 
         // Stops a half-built 3D field and keeps the 2D view (the same outcome as the scene / rig failures below). The first reason is kept for the transition record.
-        void Remodel3DAbort(string why)
+        // exception=false (stall, hard-cap, owner disabled): retried at the next field entry. exception=true: retried once, then 2D for the session.
+        void Remodel3DAbort(string why, bool exception = false)
         {
             if (r3Loaded) return;
             NativeTransitionProgress.Fail(why); Debug.LogWarning("[RM-INT] 3D field aborted, staying 2D: " + why);
             if (r3LoadRoutine != null) { StopCoroutine(r3LoadRoutine); r3LoadRoutine = null; }
-            r3Failed = true; r3Loading = false;
+            r3Loading = false; r3Gate.Abort(exception);
+            if (r3Gate.Permanent) r3Failed = true;
             if (r3Cam != null) r3Cam.enabled = false;
             if (r3Roots != null) foreach (var root in r3Roots) if (root != null) root.SetActive(false);
             if (a2Root != null) a2Root.SetActive(false);
             NativeTransitionProgress.Release();
             if (NativeRemodel3D.Active) Remodel3DSetActive(false);
+            R3Teardown();
+        }
+
+        // Drops the half-built field so the next attempt starts clean (scene unloaded, references cleared). A scene load still in flight cannot be
+        // cancelled: it is held in r3LoadOp and its scene is switched off and unloaded the moment it finishes (no orphan camera / listener / volume).
+        void R3Teardown()
+        {
+            var op = r3LoadOp; r3LoadOp = null;
+            if (op != null && !op.isDone) { r3Gate.OpStarted(); op.completed += _ => { R3UnloadScene(SceneManager.GetSceneByName(R3SceneName)); r3Gate.OpDone(); }; }
+            else R3UnloadScene(r3Scene);
+            r3Scene = default; r3Roots = null; r3Cam = null; r3Marker = null; r3Vcam = null; r3Brain = null;
+            a2Root = null; a2Field = null; a2FieldSoil = null; hellEnvironment = null; hellFlames.Clear(); hellHeroRim = null; hellActorMaterial = null; r3Base.Clear();
+        }
+        void R3UnloadScene(Scene scene)
+        {
+            if (!scene.IsValid() || !scene.isLoaded) return;
+            foreach (var root in scene.GetRootGameObjects()) if (root != null) root.SetActive(false);
+            var unload = SceneManager.UnloadSceneAsync(scene); if (unload == null) return;
+            r3Gate.OpStarted(); unload.completed += _ => r3Gate.OpDone();
         }
 
         IEnumerator Remodel3DLoadSteps()
         {
             if (!Application.CanStreamedLevelBeLoaded(R3SceneName)) { Debug.LogWarning("[RM-INT] scene " + R3SceneName + " is not in the build: staying 2D"); r3Failed = true; r3Loading = false; yield break; }
-            var op = SceneManager.LoadSceneAsync(R3SceneName, LoadSceneMode.Additive);
-            while (op != null && !op.isDone) yield return null;
+            var op = SceneManager.LoadSceneAsync(R3SceneName, LoadSceneMode.Additive); r3LoadOp = op;
+            float lastLoad = -1;
+            while (op != null && !op.isDone) { if (op.progress != lastLoad) { lastLoad = op.progress; NativeTransitionProgress.Report("remodel3d-scene", Mathf.Clamp01(op.progress) * .03f); } yield return null; }
+            r3LoadOp = null;
             r3Scene = SceneManager.GetSceneByName(R3SceneName);
             if (!r3Scene.IsValid() || !r3Scene.isLoaded) { r3Failed = true; r3Loading = false; yield break; }
             r3Roots = r3Scene.GetRootGameObjects();

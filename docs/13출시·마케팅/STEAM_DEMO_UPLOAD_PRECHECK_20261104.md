@@ -33,7 +33,7 @@ I:\EXODUSER-Storage\unity-jobs\bin\exo-unity.ps1 build -Worktree <소스 작업�
 | 인자 | 하는 일 | 빠지면 |
 |---|---|---|
 | `-remodel-scenes 1` | `RM1_Slice.unity`(1-1 3D 필드)를 빌드에 넣는다 | 씬이 없어서 `--remodel3d`로 실행해도 3D가 켜지지 않는다(2D 폴백) |
-| `-flavor demo` | 빌드 안의 `Data/build_flavor.json`을 `{"selected":"demo"}`로 쓰고, 빌드가 끝나면 커밋된 `full`로 되돌린다(실패해도 되돌림). unity/main에도 이미 있다 | 실행 인자가 없을 때 `full`로 돈다. 저장이 정식판 이름공간에 섞인다 |
+| `-flavor demo` | 빌드 안의 `Data/build_flavor.json`을 `{"selected":"demo"}`로 쓰고, 빌드가 끝나면 커밋된 `full`로 되돌린다(실패해도 되돌림). unity/main에도 이미 있다 | **정식판(full)으로 돈다.** 배포 빌드는 실행 인수 `--unity-build-flavor`를 무시하므로(11-04 3차) 나중에 바꿀 방법이 없다. 정식판 저장 폴더를 쓴다 |
 | `-output`·`-receipt` | 출력 폴더와 영수증 위치 | — |
 
 빌드 뒤 확인:
@@ -41,6 +41,19 @@ I:\EXODUSER-Storage\unity-jobs\bin\exo-unity.ps1 build -Worktree <소스 작업�
 - 영수증 `product`가 `EXODUSER: HELL LORD`인지 본다.
 - Editor 로그에 `UNITY_BUILD_FLAVOR demo`, `UNITY_BUILD Succeeded`가 있는지 본다.
 - 출력 폴더에 `EXODUSER-Unity.exe`가 있고 `EXODUSER-Unity_Data\level1`이 있는지 본다.
+
+#### 필수 관문 G-FLAVOR: 내장 `build_flavor.json` selected=demo
+
+이 관문을 통과하지 못한 빌드는 콘텐츠 폴더에 복사하지 않고 업로드하지 않는다. 체험판 앱에 정식판이 올라가 정식판 저장 폴더를 쓰게 되기 때문이다.
+
+| # | 확인 | 방법(읽기만) | 합격 |
+|---|---|---|---|
+| G-F1 | 빌드 명령 | 빌드 ArgsJson에 `"-flavor","demo"`가 있다 | 있음 |
+| G-F2 | Editor 로그 | `UNITY_BUILD_FLAVOR demo` 줄 | 1줄 |
+| G-F3 | 빌드 안의 실제 값 | `grep -a -o '{"selected": *"[a-z]*"}' <빌드>\EXODUSER-Unity_Data\resources.assets` | `{"selected":"demo"}` 하나만 나오고 `full`은 0개. 콘텐츠 폴더로 복사한 뒤 `G:\exoduser-steam\content\demo-unity\EXODUSER-Unity_Data\resources.assets`에서 한 번 더 확인한다 |
+| G-F4 | 실행 결과(Mac) | 새 계정 상태로 실행 → 캐릭터 생성 | 저장이 `…\EXODUSER_ HELL LORD\EXODUSER-HELL-DEMO\`(Mac은 같은 이름공간)에만 생기고, 정식판 루트에는 새 파일이 0개 |
+
+참고로, 지금 콘텐츠 폴더의 빌드(`9f0d00cf8`, 비공개 BuildID 26404441)는 G-F3이 `{"selected":"full"}`이다. 이 빌드는 3차 변경 전 코드라서 실행 인수로 체험판이 됐다. 새 코드로 빌드하면 반드시 `-flavor demo`가 있어야 한다.
 
 ### 2.2 실행(Steamworks 체험판 실행 옵션)
 
@@ -76,10 +89,11 @@ I:\EXODUSER-Storage\unity-jobs\bin\exo-unity.ps1 build -Worktree <소스 작업�
 - 지금 상점 문안에는 플레이 시간 숫자가 없다. 체험판 소개 No.4263, 짧은 설명 No.4273, 본편 상세 설명 ko·en 초안 모두 그렇다. 그래서 지금 고칠 곳은 없다.
 - 시간을 넣는다면 ×2 맵으로 Mac 실측이 나온 뒤에 넣는다. 번역 목록 등록도 그때 한다.
 
-1. 빌드(2.1)
-2. 콘텐츠 복사(`robocopy /MIR /XJ`)
-3. build-commit·desc 갱신
-4. 사용자가 steamcmd에 로그인하고 업로드(`setlive ""`)
-5. 사용자가 비공개 브랜치에 배정
-6. Mac 설치 실행 판정
-7. 공개 여부는 사용자가 정한다
+1. 빌드(2.1, `-flavor demo` 필수)
+2. **관문 G-FLAVOR의 G-F1~G-F3 통과.** 통과하지 못하면 여기서 멈춘다
+3. 콘텐츠 복사(`robocopy /MIR /XJ`). 복사본으로 G-F3을 다시 확인한다
+4. build-commit·desc 갱신
+5. 사용자가 steamcmd에 로그인하고 업로드(`setlive ""`)
+6. 사용자가 비공개 브랜치에 배정
+7. Mac 설치 실행 판정(G-F4 포함)
+8. 공개 여부는 사용자가 정한다
