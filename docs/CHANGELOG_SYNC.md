@@ -1,3 +1,5 @@
+2026-11-04 14:00 HALT 대기 중 시작 거부를 exit 3으로(CTO): 순번·슬롯을 기다리던 실행이 HALT를 만나면 시작하지 않고 exit 3(HALT 게이트와 같은 코드)으로 끝난다. exit도 finally에서 예약·슬롯을 반환한다. 실행기 `2026.11.04-haltwait2`, halt-wait-test는 별도 프로세스로 Player·Editor 대기 모두 exit 3·정리를 확인.
+
 2026-11-04 13:45 공용 실행기 HALT 우회 수정(CTO): HALT가 명령 시작 때만 검사돼 HALT 전부터 대기하던 vfx-summon Player가 13:23:52에 떴고(PID 57916), build 명령은 HALT 게이트 목록에 없었다. 게이트에 build 추가, Player 슬롯·Editor 잠금·순번·티켓·단독 검사 대기 루프마다 HALT 재검사(Assert-HaltClear, 예약·슬롯 반환). 실행기 `2026.11.04-haltwait`, 시험 halt-wait-test.ps1 4건, race 시험 픽스처에 HaltPath·ExclusivePath 지정. 문서 unity/Tools/devtools/README.md.
 
 2026-11-04 13:20 QA 성능 표본기(CTO 데모 v0 성능 측정): Runtime NativePerfProbe(--unity-perf-probe, -output)가 매 프레임 프레임 시간·FrameTimingManager CPU 메인/렌더·GPU 시간·렌더 카운터(드로콜·SetPass·배치·삼각형·정점·그림자 캐스터·스킨 메시)를 NativeGame.PerfSegment(로비·필드 진입·먼 적·캠프·보스 아레나) × 화면 크기별로 모아 perf-probe.json에 쓴다. --perf-off shadows는 URP 그림자 거리 0(A/B). PortVerification.Build -frameTimingStats 1은 그 빌드에서만 Frame Timing Stats를 켜고 복원한다(ProjectSettings 무변경). Core·게임 규칙 무변경, QA 인자 없을 때 동작 0. Roslyn 사전 검사 Player/Editor 오류 0.

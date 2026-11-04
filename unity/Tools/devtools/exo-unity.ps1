@@ -46,7 +46,7 @@ if($Command -ne 'install-bin' -and $env:EXO_UNITY_NO_FORWARD -ne '1' -and
     exit $LASTEXITCODE
 }
 
-$ExoUnityVersion = '2026.11.04-haltwait'
+$ExoUnityVersion = '2026.11.04-haltwait2'
 $MaxPlayerSlots = 2
 Import-Module (Join-Path $PSScriptRoot 'QueueTurn.psm1') -Force
 try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false) } catch { }
@@ -321,7 +321,7 @@ function Check-ServerCrash([string]$qd) {
 
 # 11-04: HALT가 대기 중에 생기면(좀비 감지 등) 순번·슬롯을 얻은 뒤에도 실행하지 않는다. vfx-summon Player가 HALT 뒤 13:23에 떴던 결함.
 function Assert-HaltClear([string]$where) {
-    if (Test-Path -LiteralPath $HaltPath) { Say ('HALT가 생겨 ' + $where + ' 대기를 멈춘다(실행하지 않음)'); Show-Halt; throw ('HALT: ' + $where + ' 대기 중 중단') }
+    if (Test-Path -LiteralPath $HaltPath) { Say ('HALT가 생겨 ' + $where + ' 대기를 멈춘다(실행하지 않음)'); Show-Halt; Write-Output ('[halt] ' + $where + ' 대기 중 HALT - 시작 거부'); exit 3 }   # exit도 finally(예약·슬롯 반환)를 거친다
 }
 
 function Test-HaltGate {
