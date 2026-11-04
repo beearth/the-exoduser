@@ -1,3 +1,5 @@
+2026-11-04 19:55 단독 Player가 Editor를 세우는 범위(CTO: 예약 9건인데 Editor 잠금 빔): 캐릭터 재촬영 -Exclusive Player(19:46~) 동안 모든 새 Editor 작업이 "BuildLoop 단독 검사" 규칙으로 섰다. 실행기 2026.11.04-exclloop는 BuildLoop 단독 검사(loop=true)만 Editor를 세우고, 다른 -Exclusive는 Player만 막는다. exclusive 15건·기존 검사 PASS.
+
 2026-11-04 19:50 좀비 기록(CTO 19:40, 재부팅 19:33 뒤): 실행기 2026.11.04-zombiealert. 새 좀비는 HALT 대신 _zombie_alert.json에 부팅 경과 시간과 함께 기록하고, 그 Player만 거부한다. HALT는 CTO 보고 뒤에 만든다. 재부팅 전 _halt_exempt.json·_zombie_known.json은 halt-history로 옮겼다. quit-fix 깨끗한 부팅 A/B 18회는 rank 0 grant다. zombie-known 10건·기존 검사 PASS.
 
 2026-11-04 19:45 좀비 HALT(CTO 오염 상태 확정: 같은 부팅에서 좀비 14612·40496): 실행기 2026.11.04-zombiehalt. 좀비 HALT 동안 Editor batch build는 진행(batchmode 정지 0/61), 다른 owner의 Player는 거부 대신 HALT 해제까지 대기, claude-quit-fix A/B는 좀비가 있어도 7회까지(maxRuns), 좀비 4개면 자동 중단. 40496을 알려진 좀비로 등록했고 HALT는 재부팅까지 유지한다. zombie-halt 10건·기존 검사 PASS.

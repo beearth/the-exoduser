@@ -48,7 +48,7 @@ if($Command -ne 'install-bin' -and $env:EXO_UNITY_NO_FORWARD -ne '1' -and
     exit $LASTEXITCODE
 }
 
-$ExoUnityVersion = '2026.11.04-zombiealert'
+$ExoUnityVersion = '2026.11.04-exclloop'
 $MaxPlayerSlots = 2
 Import-Module (Join-Path $PSScriptRoot 'QueueTurn.psm1') -Force
 try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false) } catch { }
@@ -538,13 +538,20 @@ function Get-ExclusiveHolder {
     if ($x -and $x.token -ne $script:PlayerSlotToken -and (Test-PlayerSlotAlive $x)) { return $x }
     return $null
 }
+# 11-04 19:50 CTO "예약 9건인데 Editor 잠금이 비어 있음": 캐릭터 재촬영·종료 A/B 같은 -Exclusive Player가 도는 동안 새 Editor가 전부 섰다.
+# Editor를 세우는 것은 BuildLoop 단독 검사(UI 겹침·M1 측정이 Editor 빌드 부하로 흔들림, a7db9621b 14fps)뿐이다. 다른 -Exclusive는 다른 Player만 막는다.
+function Get-EditorBlockingExclusive {
+    $x = Get-ExclusiveHolder
+    if ($x -and $x.PSObject.Properties['loop'] -and [bool]$x.loop) { return $x }
+    return $null
+}
 
 # 11-04 CTO: 단독 검사 Player가 도는 동안에는 새 Editor 작업(서버 시작·batch·상주 서버 제출)도 순번 대기한다. 이미 도는 Editor는 끊지 않는다.
 function Wait-ExclusivePlayer([string]$what) {
     $deadline = (Get-Date).AddMinutes($WaitMin); $said = $false
     while ($true) {
         Assert-HaltClear ('단독 검사 뒤 ' + $what)
-        $ex = Get-ExclusiveHolder
+        $ex = Get-EditorBlockingExclusive
         if (-not $ex) { return }
         if ((Get-Date) -gt $deadline) { throw ('단독 검사 대기 시간 초과(' + $WaitMin + '분): ' + $ex.reservedAs) }
         if (-not $said) { Say ('대기: BuildLoop 단독 검사 Player 실행 중(' + $ex.reservedAs + ' pid ' + $ex.pid + ') - 새 ' + $what + ' 작업은 끝난 뒤 시작 (' + $PollSec + '초 간격)'); $said = $true }
@@ -691,7 +698,7 @@ function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
                 # 다른 slot/구버전 lock의 동시 획득 뒤 상한을 다시 검사한다.
                 $limit = $MaxPlayerSlots; if (Test-WantExclusive) { $limit = 1 }
                 if ((@(Get-PlayerSlots).Count + (Get-LegacyPlayerCount)) -le $limit -and (Get-CommitFreeGB) -ge 10 -and (-not (Get-GrantWaiter $ownerPid $myRank)) -and ((Test-LoopFirst) -or ($grant -and ($myRank -le 1 -or -not (Get-PriorityWaiter $ownerPid))) -or (-not (Get-PlayerDrainReason) -and -not (Get-PriorityWaiter $ownerPid))) -and -not (Get-ExclusiveHolder)) {
-                    if (Test-WantExclusive) { Write-JsonAtomic $ExclusivePath ([ordered]@{ pid = $ownerPid; startedAt = $content.startedAt; token = $token; reservedAs = [string]$Owner; exe = $exeFull }) }
+                    if (Test-WantExclusive) { Write-JsonAtomic $ExclusivePath ([ordered]@{ pid = $ownerPid; startedAt = $content.startedAt; token = $token; reservedAs = [string]$Owner; exe = $exeFull; loop = [bool](Test-LoopFirst) }) }
                     if ($grant) { Use-PriorityGrant ([string]$Owner) }
                     $admitted=$true; return
                 }
@@ -777,7 +784,7 @@ function Acquire-Slot([string]$Role, [string]$wt, [int]$ownerPid, [string]$queue
     while ($true) {
         Assert-HaltClear 'Editor 잠금'
         $blocked = $null
-        $ex = Get-ExclusiveHolder
+        $ex = Get-EditorBlockingExclusive
         if ($ex) { $blocked = ('BuildLoop 단독 검사 Player 실행 중(' + $ex.reservedAs + ' pid ' + $ex.pid + ')') }
         $res = @(Get-Reservations 'editor')
         if ($res.Count -gt 0) {
