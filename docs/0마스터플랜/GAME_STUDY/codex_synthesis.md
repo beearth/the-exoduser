@@ -257,7 +257,7 @@
 | Festive Fog 기절 발생 주기/안개 지속, 은혜 표 | 0.25 / 5 | s | Hades 1 | https://hades.fandom.com/wiki/Dionysus/Boons_%28Hades%29 | `codex_frame_data.md` |
 | Twin Fists 일반 5타 콤보+회복, 게시자 보고 | 1.5 | s | Hades 1 | https://www.reddit.com/r/HadesTheGame/comments/1j3ilqg/doing_the_math_on_the_fists/ | `codex_motion_direction.md` |
 | Twin Fists Special, 게시자 보고 | 1 | s | Hades 1 | https://www.reddit.com/r/HadesTheGame/comments/1j3ilqg/doing_the_math_on_the_fists/ | `codex_motion_direction.md` |
-| 일반 튕겨내기 창, 공개 커뮤니티 설명 | 12F = 0.2s / 6F | F, 각각 60fps / 30fps 표기 | Sekiro | https://www.nexusmods.com/stellarblade/articles/199 | `codex_frame_data.md` |
+| 일반 튕겨내기 창, 공개 커뮤니티 설명 | 12F = 0.2s | F, 60fps. 원문은 30fps 뷰어 표시를 실제 6F로 읽지 말라고 경고 | Sekiro | https://www.nexusmods.com/stellarblade/articles/199 | `codex_frame_data.md` |
 | 경량·중량(medium) 구르기 무적, 위키 기재 주장 | 14F | F, 30fps | Elden Ring | https://eldenring.wiki.gg/wiki/Invincibility_Frames | `codex_frame_data.md` |
 | heavy 구르기 무적, 같은 위키 기재 | 13F | F, 30fps | Elden Ring | https://eldenring.wiki.gg/wiki/Invincibility_Frames | `codex_frame_data.md` |
 | 경량·중량 구르기 관측 구간, 2022 PC 보고 | 27F | F, 60fps | Elden Ring | https://www.reddit.com/r/Eldenring/comments/t4wpgd/ | `codex_frame_data.md` |
