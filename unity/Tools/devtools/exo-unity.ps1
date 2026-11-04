@@ -19,6 +19,7 @@ param(
     [ValidateSet('editor','player')][string]$Kind = 'editor',
     [string]$Note = '',
     [int]$TtlMin = 120,
+    [ValidateRange(1,50)][int]$GrantCount = 3,
     [switch]$Force,
     [int]$WaitSec = 3600,
     [string]$Exe,
@@ -46,7 +47,7 @@ if($Command -ne 'install-bin' -and $env:EXO_UNITY_NO_FORWARD -ne '1' -and
     exit $LASTEXITCODE
 }
 
-$ExoUnityVersion = '2026.11.04-loopfirst2'
+$ExoUnityVersion = '2026.11.04-grant'
 $MaxPlayerSlots = 2
 Import-Module (Join-Path $PSScriptRoot 'QueueTurn.psm1') -Force
 try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false) } catch { }
@@ -531,14 +532,59 @@ function Clear-PriorityWaiter([int]$selfPid) {
     if ($p -and [int]$p.pid -eq $selfPid) { Remove-Item -LiteralPath (Get-PriorityPath) -Force -ErrorAction SilentlyContinue }
 }
 
+# grant(11-04 CTO 순번 결정): BuildLoop 다음 순번을 정해진 owner의 Player N회에 준다(exo-unity grant -Owner <owner> -GrantCount 3 -TtlMin 360).
+# 그 owner의 Player는 player 예약 큐와 drain을 건너뛰고, 기다리는 동안 _player_grant_wait_<owner>.json으로 다른 새 Player를 막는다.
+# BuildLoop 우선 대기(_player_priority.json)·단독·슬롯·메모리·돌고 있는 Player를 끊지 않는 규칙은 그대로다. 입장할 때마다 1회 차감, 0회나 TTL이면 끝난다.
+function Get-GrantsPath { return (Join-Path $Root '_player_priority_grants.json') }
+function Get-PriorityGrant([string]$who) {
+    if ([string]::IsNullOrWhiteSpace($who)) { return $null }
+    $g = Read-Json (Get-GrantsPath); if (-not $g -or -not $g.grants) { return $null }
+    foreach ($e in @($g.grants)) {
+        $exp = $null; try { $exp = [DateTime]::Parse([string]$e.expiresAt).ToUniversalTime() } catch { }
+        if ([string]$e.owner -eq $who -and [int]$e.remaining -gt 0 -and $exp -and $exp -gt [DateTime]::UtcNow) { return $e }
+    }
+    return $null
+}
+function Use-PriorityGrant([string]$who) {
+    $g = Read-Json (Get-GrantsPath); if (-not $g -or -not $g.grants) { return }
+    $list = @(); foreach ($e in @($g.grants)) { if ([string]$e.owner -eq $who -and [int]$e.remaining -gt 0) { $e.remaining = [int]$e.remaining - 1 }; $list += $e }
+    Write-JsonAtomic (Get-GrantsPath) ([ordered]@{ grants = @($list) })
+}
+function Get-GrantWaitPath([string]$who) { return (Join-Path $Root ('_player_grant_wait_' + ($who -replace '[^A-Za-z0-9_.-]', '_') + '.json')) }
+function Get-GrantWaiter([int]$selfPid) {
+    foreach ($f in @(Get-ChildItem -LiteralPath $Root -Filter '_player_grant_wait_*.json' -ErrorAction SilentlyContinue)) {
+        $p = Read-Json $f.FullName
+        if (-not $p -or -not $p.pid -or [int]$p.pid -eq $selfPid) { continue }
+        $proc = Get-Process -Id ([int]$p.pid) -ErrorAction SilentlyContinue; if (-not $proc) { continue }
+        try { if ($p.processStart -and $proc.StartTime.ToUniversalTime().ToString('o') -ne [string]$p.processStart) { continue } } catch { }
+        if (-not (Get-PriorityGrant ([string]$p.owner))) { continue }
+        return $p
+    }
+    return $null
+}
+function Cmd-Grant {
+    if ([string]::IsNullOrWhiteSpace($Owner)) { throw '-Owner 가 필요합니다.' }
+    New-Item -ItemType Directory -Force -Path $Root | Out-Null
+    $g = Read-Json (Get-GrantsPath); $list = @()
+    if ($g -and $g.grants) { foreach ($e in @($g.grants)) { if ([string]$e.owner -ne $Owner) { $list += $e } } }
+    $list += [pscustomobject]([ordered]@{ owner = $Owner; remaining = $GrantCount; grantedAt = (NowIso); expiresAt = [DateTime]::UtcNow.AddMinutes($TtlMin).ToString('o'); note = $Note })
+    Write-JsonAtomic (Get-GrantsPath) ([ordered]@{ grants = @($list) })
+    Say ('Player 우선 순번 부여: ' + $Owner + ' ' + $GrantCount + '회, ' + $TtlMin + '분 (' + $Note + ')')
+}
+
 function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
     New-Item -ItemType Directory -Force -Path $Root | Out-Null
     Set-ReservationWaiter $ownerPid
-    $wait = $WaitMin; if ((Test-LoopFirst) -and $wait -gt 0 -and $wait -lt 180) { $wait = 180 }
+    $grant = $null; if (-not (Test-LoopFirst)) { $grant = Get-PriorityGrant ([string]$Owner) }
+    $wait = $WaitMin; if (((Test-LoopFirst) -or $grant) -and $wait -gt 0 -and $wait -lt 180) { $wait = 180 }
     $deadline = (Get-Date).AddMinutes($wait); $lastMsg = ''
     if (Test-LoopFirst) {
         $start = ''; try { $start = (Get-Process -Id $ownerPid).StartTime.ToUniversalTime().ToString('o') } catch { }
         Write-JsonAtomic (Get-PriorityPath) ([ordered]@{ pid = $ownerPid; processStart = $start; owner = [string]$Owner; since = (NowIso) })
+    }
+    if ($grant) {
+        $start = ''; try { $start = (Get-Process -Id $ownerPid).StartTime.ToUniversalTime().ToString('o') } catch { }
+        Write-JsonAtomic (Get-GrantWaitPath ([string]$Owner)) ([ordered]@{ pid = $ownerPid; processStart = $start; owner = [string]$Owner; since = (NowIso) })
     }
     try {
     while ($true) {
@@ -548,9 +594,13 @@ function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
         if (-not (Test-LoopFirst)) {
             $pw = Get-PriorityWaiter $ownerPid
             if ($pw) { $blocked = 'BuildLoop Player 우선 대기: ' + $pw.owner + ' pid ' + $pw.pid }
+            if (-not $grant) {
+            $gw = Get-GrantWaiter $ownerPid
+            if (-not $blocked -and $gw) { $blocked = 'Player 우선 순번 대기: ' + $gw.owner + ' pid ' + $gw.pid }
             if (-not $blocked) { $blocked = Get-PlayerDrainReason }
             $rs = @(Get-WaitingPlayerReservations)
             if (-not $blocked -and $rs.Count -gt 0 -and (-not $Owner -or $rs[0].owner -ne $Owner)) { $blocked = 'player 예약 큐 맨 앞은 ' + $rs[0].owner }
+            }
         }
         $ex = Get-ExclusiveHolder
         if (-not $blocked -and $ex) { $blocked = 'Player 단독 실행 중: ' + $ex.reservedAs + ' pid ' + $ex.pid }
@@ -567,8 +617,11 @@ function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
             # 신2개+구1개가 모두 Unity 0개를 관측하는 시작 경합을 막는다. _pc_lock은 쓰지 않는다.
             $legacy=Get-LegacyPlayerCount
             if (-not (Test-LoopFirst)) {
+            if (-not $grant) {
             $turn=@(Get-WaitingPlayerReservations)
             if ($turn.Count -gt 0 -and (-not $Owner -or $turn[0].owner -ne $Owner)) { $blocked='player 예약 큐 맨 앞은 '+$turn[0].owner }
+            if (-not $blocked -and (Get-GrantWaiter $ownerPid)) { $blocked='Player 우선 순번 대기' }
+            }
             if (-not $blocked -and (Get-PriorityWaiter $ownerPid)) { $blocked='BuildLoop Player 우선 대기' }
             }
             if (-not $blocked) {
@@ -583,8 +636,9 @@ function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
                 $script:PlayerSlotPath=$path; $script:PlayerSlotToken=$token
                 # 다른 slot/구버전 lock의 동시 획득 뒤 상한을 다시 검사한다.
                 $limit = $MaxPlayerSlots; if (Test-WantExclusive) { $limit = 1 }
-                if ((@(Get-PlayerSlots).Count + (Get-LegacyPlayerCount)) -le $limit -and (Get-CommitFreeGB) -ge 10 -and ((Test-LoopFirst) -or (-not (Get-PlayerDrainReason) -and -not (Get-PriorityWaiter $ownerPid))) -and -not (Get-ExclusiveHolder)) {
+                if ((@(Get-PlayerSlots).Count + (Get-LegacyPlayerCount)) -le $limit -and (Get-CommitFreeGB) -ge 10 -and ((Test-LoopFirst) -or ($grant -and -not (Get-PriorityWaiter $ownerPid)) -or (-not (Get-PlayerDrainReason) -and -not (Get-PriorityWaiter $ownerPid) -and -not (Get-GrantWaiter $ownerPid))) -and -not (Get-ExclusiveHolder)) {
                     if (Test-WantExclusive) { Write-JsonAtomic $ExclusivePath ([ordered]@{ pid = $ownerPid; startedAt = $content.startedAt; token = $token; reservedAs = [string]$Owner; exe = $exeFull }) }
+                    if ($grant) { Use-PriorityGrant ([string]$Owner) }
                     $admitted=$true; return
                 }
                 Release-PlayerSlot
@@ -598,7 +652,10 @@ function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
         if ($blocked -ne $lastMsg) { Say ('대기: ' + $blocked + ' (' + $PollSec + '초 간격)'); $lastMsg=$blocked }
         Start-Sleep -Seconds $PollSec
     }
-    } finally { if (Test-LoopFirst) { Clear-PriorityWaiter $ownerPid } }
+    } finally {
+        if (Test-LoopFirst) { Clear-PriorityWaiter $ownerPid }
+        if ($grant) { $gp = Get-GrantWaitPath ([string]$Owner); $m = Read-Json $gp; if ($m -and [int]$m.pid -eq $ownerPid) { Remove-Item -LiteralPath $gp -Force -ErrorAction SilentlyContinue } }
+    }
 }
 
 # ------------------------------------------------------------------ 잠금 + 슬롯
@@ -1606,6 +1663,7 @@ switch ($Command.ToLower()) {
     'reap'      { Cmd-Reap }
     'reserve'   { Cmd-Reserve }
     'unreserve' { Cmd-Unreserve }
+    'grant'     { Cmd-Grant }
     'queue'     { Cmd-Queue }
     'player'    { Cmd-Player }
     'browser'   { Cmd-Browser }

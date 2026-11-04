@@ -78,6 +78,31 @@ try {
  Check ((@(Get-Reservations 'editor'))[0].owner -eq 'codex-map-fieldbuild') 'dead loop reservation jumped the queue'
  Check (-not (Get-PlayerDrainReason)) 'young non-loop editor reservation drained Players'
  Remove-Item -LiteralPath $e1,$e2 -Force; Remove-Item -LiteralPath (Join-Path $Root '_player_drain.json') -Force -ErrorAction SilentlyContinue
+ # grant: the CTO-chosen owner goes right after BuildLoop for N Players, then the normal queue again
+ $ping2=Start-Process "$env:SystemRoot\System32\PING.EXE" -ArgumentList '-n','120','127.0.0.1' -WindowStyle Hidden -PassThru
+ $res2=Add-WaitingReservation 'fullrun-measure' $ping2.Id
+ $Owner='char-reshoot';$GrantCount=1;$TtlMin=60;$Note='t';$PcException='candidate'; Cmd-Grant
+ Check ($null -ne (Get-PriorityGrant 'char-reshoot')) 'grant not recorded'
+ Check ((Try-Acquire) -eq 'ok') 'granted owner did not skip the reservation queue'
+ Check ([int](Get-PriorityGrant 'char-reshoot' | Measure-Object).Count -eq 0) 'grant not spent after admission'
+ Check (-not (Test-Path (Get-GrantWaitPath 'char-reshoot'))) 'grant wait marker left after admission'
+ Reset-Me
+ $r=Try-Acquire
+ Check ($r -like '*player 예약 큐 맨 앞*') ('spent grant still skipped the queue: '+$r)
+ Reset-Me; Remove-Item -LiteralPath $res2 -Force
+ # a live grant waiter keeps other new Players out; a BuildLoop waiter still goes before the grant
+ $Owner='char-reshoot';$GrantCount=2; Cmd-Grant
+ Write-JsonAtomic (Get-GrantWaitPath 'char-reshoot') ([ordered]@{pid=$ping2.Id;processStart=$ping2.StartTime.ToUniversalTime().ToString('o');owner='char-reshoot';since=(NowIso)})
+ $Owner='map-lane'
+ $r=Try-Acquire
+ Check ($r -like '*Player 우선 순번 대기*') ('normal Player entered while a grant waits: '+$r)
+ Reset-Me
+ Write-JsonAtomic (Get-PriorityPath) ([ordered]@{pid=$ping2.Id;processStart=$ping2.StartTime.ToUniversalTime().ToString('o');owner='buildloop';since=(NowIso)})
+ $Owner='char-reshoot'
+ $r=Try-Acquire
+ Check ($r -like '*BuildLoop Player 우선 대기*') ('grant went before the BuildLoop waiter: '+$r)
+ Reset-Me; Remove-Item -LiteralPath (Get-PriorityPath),(Get-GrantWaitPath 'char-reshoot') -Force -ErrorAction SilentlyContinue
+ $ping2.Kill();$ping2.WaitForExit()
  'PASS: '+$n+' loop-first decisions; Unity launches=0'
 } finally {
  if($ping -and -not $ping.HasExited){$ping.Kill()}
