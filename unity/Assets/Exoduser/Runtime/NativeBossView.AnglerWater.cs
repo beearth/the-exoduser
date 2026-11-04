@@ -93,7 +93,9 @@ namespace Exoduser.UnityPort
                 if (anglerFx.Count >= AnglerFxCap) anglerFx.RemoveAt(0);
                 if (ev.Launch) { anglerFx.Add(new AnglerFx { Launch = true, Born = ev.Tick, X = (float)ev.X, Y = (float)ev.Y, Ang = ev.Angle, Streaks = AnglerWater.LaunchStreaks(seed, ev.Angle) }); continue; }
                 var plan = AnglerWater.MakePlan(ev.Kind);
-                anglerFx.Add(new AnglerFx { Kind = ev.Kind, Plan = plan, Born = ev.Tick, X = (float)ev.X, Y = (float)ev.Y, Ang = ev.Angle });
+                var fx = new AnglerFx { Kind = ev.Kind, Plan = plan, Born = ev.Tick, X = (float)ev.X, Y = (float)ev.Y, Ang = ev.Angle };
+                if (ev.Kind == AnglerWaterKind.Parry && ev.Split) fx.Streaks = AnglerWater.SplitBurst(seed + 3, ev.Dirs);   // Q parry: jets along the five split directions
+                anglerFx.Add(fx);
                 foreach (var d in AnglerWater.ContactDrops(plan, seed + 7, ev.Angle)) AddAnglerDrop(d, ev.Tick, (float)ev.X, (float)ev.Y, false, (float)((seed >> 3 & 255) / 255.0));
                 anglerDecals.Add(ev.Tick, (float)ev.X, (float)ev.Y, ev.Angle, plan);
             }
@@ -128,6 +130,46 @@ namespace Exoduser.UnityPort
             return true;
         }
 
+        // allied rim: smooth ring #dfe3e6 laid over the body edge (the enemy orb keeps its dark rim)
+        static Sprite anglerRim;
+        static Sprite AnglerRim()
+        {
+            if (anglerRim != null) return anglerRim;
+            const int n = 128; var tex = new Texture2D(n, n, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp }; var px = new Color32[n * n];
+            for (int y = 0; y < n; y++) for (int x = 0; x < n; x++)
+            {
+                float dx = (x + .5f) / n * 2 - 1, dy = (y + .5f) / n * 2 - 1, r = Mathf.Sqrt(dx * dx + dy * dy), t = Mathf.Clamp01(1 - Mathf.Abs(r - .93f) / .07f), al = t * t * (3 - 2 * t);
+                px[y * n + x] = new Color32(AnglerWater.AllyRimR, AnglerWater.AllyRimG, AnglerWater.AllyRimB, (byte)(al * 255));
+            }
+            tex.SetPixels32(px); tex.Apply(false, true);
+            return anglerRim = Sprite.Create(tex, new Rect(0, 0, n, n), new Vector2(.5f, .5f), 100f, 0, SpriteMeshType.FullRect);
+        }
+
+        // the five shots of a Q parry (Friendly + ParryMagicShot, water): the same loop at .55 x the ball, a short ribbon, a silver-white rim. false = not such a shot / art missing
+        bool AnglerSplitDraw(BossProjectile p, int t)
+        {
+            if (!AnglerWater.IsParrySplitShot(p) || !AnglerHasArt()) return false;
+            int born = t; foreach (var s in anglerTracker.Shots) if (s.P == p) { born = s.Born; break; }
+            int age = Math.Max(0, t - born); double ang = Math.Atan2(p.Vy, p.Vx), cell = AnglerWater.SplitBodyCell(), D = AnglerWater.OrbBodyDiameter(cell); int order = (int)p.Y + 6;
+            PutBox(AnglerRibbon(), p.X, p.Y, D * .5 + AnglerWater.SplitTailLength(D), AnglerWater.TailWidth(D), new Color(1, 1, 1, (float)AnglerWater.SplitTailMaxAlpha), order - 1, ang + Math.PI);
+            PutBox(AnglerCell(AnglerWater.OrbSheet, AnglerWater.OrbCols, AnglerWater.OrbRows, AnglerWater.OrbFrame(age)), p.X, p.Y, cell, cell, Color.white, order, ang);
+            PutBox(AnglerRim(), p.X, p.Y, D, D, new Color(1, 1, 1, (float)AnglerWater.AllyRimAlpha), order + 1, 0);
+            return true;
+        }
+
+        // jets of the launch spray / the Q split: stretched, shrinking away, never a dot
+        void AnglerDrawStreaks(AnglerFx f, int age)
+        {
+            if (f.Streaks == null || age >= AnglerWater.LaunchLife) return;
+            float al = (float)AnglerWater.StreakAlpha(age);
+            foreach (var s in f.Streaks)
+            {
+                double tail, head; AnglerWater.StreakSpan(s, age, out tail, out head); double len = head - tail; if (len < 2) continue;
+                double mid = (head + tail) * .5; Color c = Color.Lerp(WaterLight, WaterMid, age / (float)AnglerWater.LaunchLife); c.a = al;
+                PutBox(disc, f.X + Math.Cos(s.Angle) * mid, f.Y + Math.Sin(s.Angle) * mid, len, s.Width, c, (int)f.Y + 5, s.Angle);
+            }
+        }
+
         // charge: the ball grows at the feeler tip for the last 60 of the 180 charge ticks, alpha 0 -> 1, turning
         void AnglerChargeDraw(Simulation sim, int t)
         {
@@ -159,13 +201,7 @@ namespace Exoduser.UnityPort
                 if (f.Launch)
                 {
                     if (age >= AnglerWater.LaunchLife) { anglerFx.RemoveAt(i); continue; }
-                    float al = (float)AnglerWater.StreakAlpha(age);
-                    foreach (var s in f.Streaks)
-                    {
-                        double tail, head; AnglerWater.StreakSpan(s, age, out tail, out head); double len = head - tail; if (len < 2) continue;
-                        double mid = (head + tail) * .5; Color c = Color.Lerp(WaterLight, WaterMid, age / (float)AnglerWater.LaunchLife); c.a = al;
-                        PutBox(disc, f.X + Math.Cos(s.Angle) * mid, f.Y + Math.Sin(s.Angle) * mid, len, s.Width, c, (int)f.Y + 5, s.Angle);
-                    }
+                    AnglerDrawStreaks(f, age);
                     i++; continue;
                 }
                 if (age >= f.Plan.Life) { anglerFx.RemoveAt(i); continue; }
@@ -176,6 +212,7 @@ namespace Exoduser.UnityPort
                 {
                     PutBox(AnglerCell(f.Plan.Sheet, AnglerWater.CrownCols, AnglerWater.CrownRows, frame), f.X, f.Y, f.Plan.CellWidth, f.Plan.CellWidth, Color.white, (int)f.Y + 3, f.Ang);
                 }
+                AnglerDrawStreaks(f, age);   // Q split: jets along the five directions
                 i++;
             }
             for (int i = 0; i < anglerDrops.Count;)

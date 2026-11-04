@@ -87,6 +87,7 @@ namespace Exoduser.UnityPort
             bool physical = p.ParryClass == "physical";
             double sSc = ps * (physical ? 2 : 1), ang = Math.Atan2(p.Vy, p.Vx); int order = (int)p.Y + 6;
             if (p.Web) { FieldMouth(p, 22.05 * (ps * 2) * .55, ang, tick, order); return; }                       // snake-mouth web bullet: 22.05 * webScale * .55, webScale = ps * 2
+            if (AnglerSplitDraw(p, tick)) return;                                                                    // U-VFX-14 r2: the five allied water shots of a Q-parried angler ball
             if (AnglerOrbDraw(p, tick)) return;                                                                      // U-VFX-14: the angler's water orb (web fbEnergy), the old ice orb row only if the sheet is missing
             if (p.ElemBall)
             {

@@ -8,9 +8,9 @@ namespace Exoduser.UnityPort.Vfx
     // simulation writes, so combat-impact-tests can compile it with the Core. Web units: 1 tick = 1 frame at 60 fps, lengths in web pixels, H = hero height.
     //
     // Which bullet is the water orb. game.html draws a shot with the kraken water orb clip when `p.fbEnergy` (54183 -> _fbDrawFly 24214 -> _drawKrakenWaterOrbClip 24196),
-    // and fbEnergy is set in exactly one place, _fbFireEnergy (61022-61028: el EL.I, life/ml 320, sz 48, r 20, elemBall, _typed, _commit, fbEnergy). The Core has no fbEnergy flag
-    // on its bullets, so the same shot is recognised by that spawn literal (Simulation.FieldBoss.cs FieldBossFireEnergy); no other Core spawn has El 2 + ElemBall + Sz 48.
-    public enum AnglerWaterKind { Hit, Parry, Expire }
+    // and fbEnergy is set in exactly one place, _fbFireEnergy (61022-61028: el EL.I, life/ml 320, sz 48, r 20, elemBall, _typed, _commit, fbEnergy). Since core d637ea24c the bullet carries the
+    // same FbEnergy flag (Simulation.FieldBoss.cs FieldBossFireEnergy), so the test is the flag plus the spawn literal.
+    public enum AnglerWaterKind { Hit, Parry, Expire, Bounce, MagicHit }
 
     public static class AnglerWater
     {
@@ -25,7 +25,7 @@ namespace Exoduser.UnityPort.Vfx
         // ---- which bullet ----
         public static bool IsAnglerOrb(BossProjectile p)
         {
-            return p != null && p.Active && p.ElemBall && p.El == 2 && p.Sz == 48 && p.R == 20 && p.Ml == 320 && p.Commit && p.Typed
+            return p != null && p.Active && p.FbEnergy && p.ElemBall && p.El == 2 && p.Sz == 48 && p.R == 20 && p.Ml == 320 && p.Commit && p.Typed
                 && !p.Friendly && !p.DruidPoison && !p.Mine && !p.Web && !p.RedBean && !p.BlackBean;
         }
 
@@ -92,6 +92,43 @@ namespace Exoduser.UnityPort.Vfx
         }
         public static double StreakAlpha(int age) { return age < 0 || age >= LaunchLife ? 0 : .85 * (1 - age / (double)LaunchLife); }
 
+        // ---- Q parry split (round 2): the Core removes the ball and adds five Friendly + ParryMagicShot water shots (DruidBoss.AddParryShots, web _splitParriedBigEnergy
+        // game.html 17363: 5 shots, 72 degrees apart from the reverse of the ball's travel, speed 7.5, range 900). They are drawn as allied water orbs. ----
+        public const int SplitCount = 5;
+        public const double SplitStepRad = Math.PI * 2 / SplitCount, SplitBodyScale = .55;
+        public const double AllyRimAlpha = .8; public const byte AllyRimR = 0xdf, AllyRimG = 0xe3, AllyRimB = 0xe6;   // silver white #dfe3e6
+        public const double SplitTailFactor = 1.0, SplitTailMaxAlpha = .4;
+        public static bool IsParrySplitShot(BossProjectile p) { return p != null && p.Active && p.Friendly && p.ParryMagicShot && p.El == 2; }
+        public static double SplitBodyCell() { return BodyBox(48) * SplitBodyScale; }                    // the original ball's box x .55 (the split shot's own Sz is 1)
+        public static double SplitTailLength(double bodyDiameter) { return bodyDiameter * SplitTailFactor; }
+        // five muzzle directions, 72 degrees apart, starting at the reverse of the travel direction (same arithmetic as the Core)
+        public static double[] SplitAngles(double travelAngle)
+        {
+            var a = new double[SplitCount]; for (int k = 0; k < SplitCount; k++) a[k] = travelAngle + Math.PI + SplitStepRad * k; return a;
+        }
+        // short water jets out of the contact along each split direction: 2..3 per direction, 0.15 s (LaunchLife), stretched, never a dot
+        public static Streak[] SplitBurst(int seed, double[] dirs)
+        {
+            var rng = new Random(seed); var list = new List<Streak>();
+            foreach (var d in dirs)
+            {
+                int n = 2 + rng.Next(2);
+                for (int i = 0; i < n; i++) list.Add(new Streak { Angle = d + (rng.NextDouble() * 2 - 1) * 6 * Math.PI / 180, Length = (.3 + rng.NextDouble() * .2) * H, Width = 3 + rng.NextDouble() * 2 });
+            }
+            return list.ToArray();
+        }
+        // ---- wall bounce of a split shot: the Core mirrors the velocity and counts Bounces; the splash opens along the reflected side ----
+        public const double BounceScale = .35; public const int BounceLife = 9;      // crown sheet x .35, 0.15 s
+        public static bool IsBounce(double prevVx, double prevVy, double vx, double vy, int bouncesBefore, int bouncesAfter)
+        {
+            return bouncesAfter > bouncesBefore && (Math.Abs(vx - prevVx) > 1e-9 || Math.Abs(vy - prevVy) > 1e-9);
+        }
+        // the wall normal = the change of the velocity (a mirror turns v into v - 2(v.n)n, so v' - v is along n); pointing away from the wall
+        public static double BounceNormal(double prevVx, double prevVy, double vx, double vy) { return Math.Atan2(vy - prevVy, vx - prevVx); }
+        // ---- parryMagicHit (Core Simulation.ParryMagicHitFx: BossFx "parryMagicHit", x, y, 72 = the web _addBoom radius): splash = 45 + r*3 = 69 px for r 8 ----
+        public const double MagicSplashR = 69, MagicShotR = 8, MagicCoreH = .35;
+        public const int MagicDropMin = 4, MagicDropMax = 6, MagicDecalHold = 120;
+
         // ---- contact plans ----
         public sealed class Plan
         {
@@ -115,7 +152,18 @@ namespace Exoduser.UnityPort.Vfx
         {
             var p = new Plan { Kind = kind, Life = ContactLife, Rotates = true, CoreTicks = CoreTicksFixed, CoreDiameter = CoreRatio * H, DecalPeak = DecalPeakAlpha, DecalFade = DecalFadeTicks,
                 DropLifeMin = 18, DropLifeMax = 30 };   // 0.3..0.5 s
-            if (kind == AnglerWaterKind.Parry)
+            if (kind == AnglerWaterKind.Bounce)
+            {
+                p.Sheet = CrownSheet; p.Frames = CrownFrames; p.Life = BounceLife; p.ContentWidth = CrownContentH * H * BounceScale; p.CellWidth = p.ContentWidth * CellPx / CrownContentPx;
+                p.CoreDiameter = 0; p.CoreTicks = 0; p.DropMin = p.DropMax = 0; p.DecalHold = 0; p.DecalWidth = 0; p.DecalPeak = 0;
+            }
+            else if (kind == AnglerWaterKind.MagicHit)
+            {
+                p.Sheet = CrownSheet; p.Frames = CrownFrames; p.ContentWidth = MagicSplashR * 2; p.CellWidth = p.ContentWidth * CellPx / CrownContentPx;
+                p.CoreDiameter = MagicCoreH * H; p.DropMin = MagicDropMin; p.DropMax = MagicDropMax;
+                p.DecalHold = MagicDecalHold; p.DecalWidth = 1.6 * H * p.ContentWidth / (CrownContentH * H);
+            }
+            else if (kind == AnglerWaterKind.Parry)
             {
                 p.Sheet = SplitSheet; p.Frames = SplitFrames; p.ContentWidth = SplitContentH * H; p.CellWidth = p.ContentWidth * CellPx / SplitContentWidthPx; p.DropMin = 6; p.DropMax = 10; p.DecalHold = 0; p.DecalWidth = 0; p.DecalPeak = 0;
             }
@@ -178,37 +226,66 @@ namespace Exoduser.UnityPort.Vfx
     }
 
     // Follows the angler orbs of the druid projectile list between frames and says what happened to them. The Core only removes a bullet (Active = false), it raises no
-    // event for it, so the fate is read from where it ended: removed near the player and the player lost HP = hit; removed near the player and no HP was lost = blocked / parried;
-    // removed anywhere else (wall, life) = expired; turned friendly while still in the list = parried back (the Core can reflect it once the big-energy parry is ported).
+    // event for it, so the fate is read from where it ended: removed near the player and the player lost HP = hit; removed near the player and no HP was lost = blocked / parried
+    // (a Q parry also leaves five new Friendly ParryMagicShot shots at the same spot = split, read from them); removed anywhere else (wall, life) = expired.
+    // The five split shots are followed too: a wall bounce is read from Bounces going up with the velocity mirrored, and BossFx "parryMagicHit" (NoteMagicHit) becomes a hit effect.
     public sealed class AnglerWaterTracker
     {
         public sealed class Orb { public BossProjectile P; public int Born; public double Ang; }
-        public struct Event { public AnglerWaterKind Kind; public bool Launch; public double X, Y, Angle; public int Tick; }
+        public sealed class Shot { public BossProjectile P; public int Born; public double Vx, Vy; public int Bounces; public double X, Y; }
+        public struct Event { public AnglerWaterKind Kind; public bool Launch, Split; public double X, Y, Angle, Radius; public double[] Dirs; public int Tick; }
+        struct PendingHit { public double X, Y, R; }
         public readonly List<Orb> Orbs = new List<Orb>();
+        public readonly List<Shot> Shots = new List<Shot>();
         public readonly List<Event> Events = new List<Event>();
+        readonly List<PendingHit> pending = new List<PendingHit>();
         int lastTick = int.MinValue, lastHurt;
-        public const double LifePerTick = .667;
+        public const double LifePerTick = .667, SplitFindReach = 30, HitMatchReach = 40;
         public static int AgeOf(BossProjectile p) { return (int)Math.Round((p.Ml - p.Life) / LifePerTick); }
         public static bool NearPlayer(double x, double y, double px, double py, double pr, double sz)
         {
             double dx = x - px, dy = y - py, reach = pr + (sz != 0 ? sz : 1) * 3 + 4 + 10;   // Core hit radius (collR + 4) plus one step of the 10 px/tick orb
             return dx * dx + dy * dy <= reach * reach;
         }
-        public void Reset() { Orbs.Clear(); Events.Clear(); lastTick = int.MinValue; }
+        public void Reset() { Orbs.Clear(); Shots.Clear(); Events.Clear(); pending.Clear(); lastTick = int.MinValue; }
+        /// <summary>The BossFx "parryMagicHit" arguments (x, y, radius); turned into an event by the next Update.</summary>
+        public void NoteMagicHit(double x, double y, double r)
+        {
+            for (int i = 0; i < pending.Count; i++) { double dx = pending[i].X - x, dy = pending[i].Y - y; if (dx * dx + dy * dy < 36) return; }   // two anglers touched by one shot: one effect
+            if (pending.Count < 16) pending.Add(new PendingHit { X = x, Y = y, R = r });
+        }
 
         public void Update(IList<BossProjectile> list, int tick, double px, double py, double pr, int hurtCount)
         {
             if (tick < lastTick) Reset();
             lastTick = tick;
+            // split shots: bounce reading for the known ones, the new ones are kept for the split reading below
+            var fresh = new List<BossProjectile>();
+            for (int i = 0; i < list.Count; i++)
+            {
+                var p = list[i]; if (!AnglerWater.IsParrySplitShot(p)) continue;
+                Shot known = null; for (int k = 0; k < Shots.Count; k++) if (Shots[k].P == p) { known = Shots[k]; break; }
+                if (known == null) { fresh.Add(p); continue; }
+                if (AnglerWater.IsBounce(known.Vx, known.Vy, p.Vx, p.Vy, known.Bounces, p.Bounces))
+                    Events.Add(new Event { Kind = AnglerWaterKind.Bounce, X = p.X, Y = p.Y, Angle = AnglerWater.BounceNormal(known.Vx, known.Vy, p.Vx, p.Vy), Tick = tick });
+                known.Vx = p.Vx; known.Vy = p.Vy; known.Bounces = p.Bounces; known.X = p.X; known.Y = p.Y;
+            }
             for (int i = Orbs.Count - 1; i >= 0; i--)
             {
                 var o = Orbs[i]; var p = o.P; bool inList = list.Contains(p);
                 if (inList && p.Active && !p.Friendly) { o.Ang = Math.Atan2(p.Vy, p.Vx); continue; }
                 Orbs.RemoveAt(i);
-                if (inList && p.Friendly) { Events.Add(new Event { Kind = AnglerWaterKind.Parry, X = p.X, Y = p.Y, Angle = o.Ang, Tick = tick }); continue; }
+                if (inList && p.Friendly) continue;                                               // the Core no longer reflects this ball (Q splits it, E does not reflect): nothing to read
                 if (p.Active) continue;                                                           // the list was cleared (restart / stage change): no effect
                 bool near = NearPlayer(p.X, p.Y, px, py, pr, p.Sz);
-                Events.Add(new Event { Kind = near ? (hurtCount > lastHurt ? AnglerWaterKind.Hit : AnglerWaterKind.Parry) : AnglerWaterKind.Expire, X = p.X, Y = p.Y, Angle = o.Ang, Tick = tick });
+                var ev = new Event { Kind = near ? (hurtCount > lastHurt ? AnglerWaterKind.Hit : AnglerWaterKind.Parry) : AnglerWaterKind.Expire, X = p.X, Y = p.Y, Angle = o.Ang, Tick = tick };
+                if (ev.Kind == AnglerWaterKind.Parry)
+                {   // Q parry: five fresh shots at the contact (they start 12 px out)
+                    var dirs = new List<double>();
+                    foreach (var f in fresh) { double dx = f.X - p.X, dy = f.Y - p.Y; if (dx * dx + dy * dy <= SplitFindReach * SplitFindReach) dirs.Add(Math.Atan2(f.Vy, f.Vx)); }
+                    if (dirs.Count > 0) { ev.Split = true; ev.Dirs = dirs.ToArray(); }
+                }
+                Events.Add(ev);
             }
             for (int i = 0; i < list.Count; i++)
             {
@@ -218,6 +295,17 @@ namespace Exoduser.UnityPort.Vfx
                 int age = AgeOf(p); Orbs.Add(new Orb { P = p, Born = tick - age, Ang = Math.Atan2(p.Vy, p.Vx) });
                 if (age <= 2) Events.Add(new Event { Launch = true, X = p.X, Y = p.Y, Angle = Math.Atan2(p.Vy, p.Vx), Tick = tick });   // a shot first seen at birth: launch spray
             }
+            // parryMagicHit: the shot that touched is still in Shots (it is dropped just below); only water (El 2) shots, an unmatched hit is drawn as water (the only 1-1 element)
+            foreach (var h in pending)
+            {
+                Shot best = null; double bd = HitMatchReach * HitMatchReach;
+                foreach (var s in Shots) { double dx = s.X - h.X, dy = s.Y - h.Y, d = dx * dx + dy * dy; if (d <= bd) { bd = d; best = s; } }
+                if (best != null && best.P.El != 2) continue;
+                Events.Add(new Event { Kind = AnglerWaterKind.MagicHit, X = h.X, Y = h.Y, Radius = h.R, Angle = best != null ? Math.Atan2(best.Vy, best.Vx) : 0, Tick = tick });
+            }
+            pending.Clear();
+            for (int i = Shots.Count - 1; i >= 0; i--) if (!list.Contains(Shots[i].P) || !AnglerWater.IsParrySplitShot(Shots[i].P)) Shots.RemoveAt(i);
+            foreach (var f in fresh) Shots.Add(new Shot { P = f, Born = tick, Vx = f.Vx, Vy = f.Vy, Bounces = f.Bounces, X = f.X, Y = f.Y });
             lastHurt = hurtCount;
         }
     }

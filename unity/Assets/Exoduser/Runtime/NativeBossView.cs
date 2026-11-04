@@ -136,6 +136,7 @@ namespace Exoduser.UnityPort
             int born = boundTick;
             switch (kind)
             {
+                case "parryMagicHit": anglerTracker.NoteMagicHit(x, y, r); break;                                             // U-VFX-14: a Q-split water shot touched an enemy (Core ParryMagicHitFx, r 72)
                 case "druidDust": Spawn(DustClip, x, y, r * 2, r * 2, born, 7, 8); break;                                       // playVFXAng('druid_dust',x,y,r*2/256,7)
                 case "druidRoots":
                     Spawn(HitClip, x, y, 362 * .72, 543 * .72, born, 7, 8);                                                    // druid_hit .72, 7

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Exoduser.UnityPort.Core;
+using Exoduser.UnityPort.Core.Combat;
 using Exoduser.UnityPort.Vfx;
 
 // U-VFX-14 angler water orb: pure calculation checks (no Unity, no art decode). Art facts (sheet size, frame occupancy, dropped frames 0/1, hashes) are checked by
@@ -21,7 +22,7 @@ static partial class Program
 
     static BossProjectile AnglerShot(Action<BossProjectile> change = null)
     {
-        var p = new BossProjectile { X = 500, Y = 400, Vx = 10, Vy = 0, Dmg = 50, El = 2, Life = 320, Ml = 320, Sz = 48, R = 20, ElemBall = true, Typed = true, Commit = true, Col = "#3388ff" };
+        var p = new BossProjectile { X = 500, Y = 400, Vx = 10, Vy = 0, Dmg = 50, El = 2, Life = 320, Ml = 320, Sz = 48, R = 20, ElemBall = true, Typed = true, Commit = true, FbEnergy = true, Col = "#3388ff" };
         if (change != null) change(p); return p;
     }
 
@@ -51,7 +52,7 @@ static partial class Program
             var m = Regex.Match(core, @"void FieldBossFireEnergy.*?new ProjSpec \{(?<body>[^}]*)\}", RegexOptions.Singleline);
             Check(m.Success, "Core FieldBossFireEnergy spawn literal found");
             string lit = m.Groups["body"].Value;
-            Check(Regex.IsMatch(lit, @"El = 2,") && Regex.IsMatch(lit, @"Life = 320, Ml = 320") && Regex.IsMatch(lit, @"Sz = 48, R = 20, ElemBall = true, Typed = true, Commit = true"), "angler orb predicate constants equal the Core spawn literal");
+            Check(Regex.IsMatch(lit, @"El = 2,") && Regex.IsMatch(lit, @"Life = 320, Ml = 320") && Regex.IsMatch(lit, @"Sz = 48, R = 20, FbEnergy = true, ElemBall = true, Typed = true, Commit = true"), "angler orb predicate constants equal the Core spawn literal");
             string web = File.Exists(Path.Combine(root, "game.html")) ? File.ReadAllText(Path.Combine(root, "game.html")) : null;
             if (web != null)
             {
@@ -63,7 +64,7 @@ static partial class Program
         Check(AnglerWater.IsAnglerOrb(AnglerShot()), "Core angler shot is the water orb");
         Check(!AnglerWater.IsAnglerOrb(AnglerShot(p => p.Friendly = true)) && !AnglerWater.IsAnglerOrb(AnglerShot(p => p.Active = false)) && !AnglerWater.IsAnglerOrb(AnglerShot(p => p.DruidPoison = true)) &&
               !AnglerWater.IsAnglerOrb(AnglerShot(p => p.Mine = true)) && !AnglerWater.IsAnglerOrb(AnglerShot(p => p.Sz = 18)) && !AnglerWater.IsAnglerOrb(AnglerShot(p => p.El = 1)) &&
-              !AnglerWater.IsAnglerOrb(AnglerShot(p => p.ElemBall = false)) && !AnglerWater.IsAnglerOrb(AnglerShot(p => p.Ml = 400)) && !AnglerWater.IsAnglerOrb(null), "other bullets are not the water orb");
+              !AnglerWater.IsAnglerOrb(AnglerShot(p => p.ElemBall = false)) && !AnglerWater.IsAnglerOrb(AnglerShot(p => p.Ml = 400)) && !AnglerWater.IsAnglerOrb(AnglerShot(p => p.FbEnergy = false)) && !AnglerWater.IsAnglerOrb(null), "other bullets are not the water orb");
         Check(Math.Abs(AnglerWater.BodyBox(48) - 254.4) < 1e-9 && AnglerWater.BodyBox(1) == 96, "orb box = the element-orb box max(96, sz*5.3), Core Sz/R untouched");
 
         // ---- flight tail ----
@@ -171,16 +172,115 @@ static partial class Program
             var o3 = AnglerShot(); var l3 = new List<BossProjectile> { o3 }; var tr4 = new AnglerWaterTracker(); tr4.Update(l3, 10, 0, 0, 16, 0); tr4.Events.Clear();
             o3.Active = false; l3.Clear(); o3.X = 900; tr4.Update(l3, 11, 0, 0, 16, 0);
             Check(tr4.Events.Count == 1 && tr4.Events[0].Kind == AnglerWaterKind.Expire, "removed far from the player = vanish");
-            // reflected: stays in the list, turned friendly
+            // the old "reflect" branch is gone: the Core never turns the ball friendly in the list now (Q splits it, E does not reflect); if it ever did, nothing is read
             var o4 = AnglerShot(); var l4 = new List<BossProjectile> { o4 }; var tr5 = new AnglerWaterTracker(); tr5.Update(l4, 10, 0, 0, 16, 0); tr5.Events.Clear();
             o4.Friendly = true; o4.BlueBean = true; tr5.Update(l4, 11, 0, 0, 16, 0);
-            Check(tr5.Events.Count == 1 && tr5.Events[0].Kind == AnglerWaterKind.Parry && tr5.Orbs.Count == 0, "turned friendly in the list = parried back, no longer an orb");
-            tr5.Events.Clear(); tr5.Update(l4, 12, 0, 0, 16, 0); Check(tr5.Events.Count == 0, "the reflected blue bean is left to its old drawing");
+            Check(tr5.Events.Count == 0 && tr5.Orbs.Count == 0, "no reflect reading: a ball turned friendly in the list makes no effect and is no longer an orb");
             // list cleared by a restart
             var o5 = AnglerShot(); var l5 = new List<BossProjectile> { o5 }; var tr6 = new AnglerWaterTracker(); tr6.Update(l5, 10, 0, 0, 16, 0); tr6.Events.Clear();
             l5.Clear(); tr6.Update(l5, 11, 0, 0, 16, 0); Check(tr6.Events.Count == 0 && tr6.Orbs.Count == 0, "a cleared list makes no effect");
             var o6 = AnglerShot(); var l6 = new List<BossProjectile> { o6 }; var tr7 = new AnglerWaterTracker(); tr7.Update(l6, 500, 0, 0, 16, 0); tr7.Events.Clear();
             tr7.Update(l6, 3, 0, 0, 16, 0); Check(tr7.Orbs.Count == 1 && tr7.Orbs[0].Born == 3 && tr7.Events.Count == 1 && tr7.Events[0].Launch, "a tick going backwards resets the tracker and re-reads the list");
+        }
+
+        AnglerSplitChecks(root);
+    }
+
+    // ---- round 2: the Q parry splits the ball into five allied water shots ----
+    static BossProjectile SplitShot(double x, double y, double ang, Action<BossProjectile> change = null)
+    {
+        var p = new BossProjectile { X = x, Y = y, Vx = Math.Cos(ang) * 7.5, Vy = Math.Sin(ang) * 7.5, Dmg = 10, El = 2, R = 8, Sz = 1, Life = 180, Ml = 180, MaxDist = 900, Friendly = true, Magic = true, ParryMagicShot = true, ParryClass = "magic", Col = "#3388ff" };
+        if (change != null) change(p); return p;
+    }
+
+    static void AnglerSplitChecks(string root)
+    {
+        // which projectile: Friendly + ParryMagicShot + water. Core arithmetic = ParryReflect.SplitBigEnergy (web _splitParriedBigEnergy game.html 17363)
+        Check(AnglerWater.IsParrySplitShot(SplitShot(0, 0, 0)) && !AnglerWater.IsParrySplitShot(SplitShot(0, 0, 0, p => p.El = 1)) && !AnglerWater.IsParrySplitShot(SplitShot(0, 0, 0, p => p.Friendly = false)) &&
+              !AnglerWater.IsParrySplitShot(SplitShot(0, 0, 0, p => p.ParryMagicShot = false)) && !AnglerWater.IsParrySplitShot(SplitShot(0, 0, 0, p => p.Active = false)) && !AnglerWater.IsParrySplitShot(null) && !AnglerWater.IsParrySplitShot(AnglerShot()), "split shot predicate: friendly + ParryMagicShot + water only");
+        var ball = new ReflectProjectile { X = 100, Y = 50, Vx = 10, Vy = 0, El = 2 };
+        var coreShots = ParryReflect.SplitBigEnergy(ball, 50);
+        var mine = AnglerWater.SplitAngles(0);
+        bool dirs = coreShots.Length == AnglerWater.SplitCount && mine.Length == 5;
+        for (int k = 0; k < 5 && dirs; k++)
+        {
+            double ca = Math.Atan2(coreShots[k].Vy, coreShots[k].Vx), d = Math.Atan2(Math.Sin(ca - mine[k]), Math.Cos(ca - mine[k]));
+            dirs &= Math.Abs(d) < 1e-9;
+            double next = mine[(k + 1) % 5] - mine[k]; next = Math.Atan2(Math.Sin(next), Math.Cos(next)); dirs &= Math.Abs(next - 72 * Math.PI / 180) < 1e-9;
+        }
+        Check(dirs && Math.Abs(AnglerWater.SplitStepRad - 72 * Math.PI / 180) < 1e-12 && Math.Abs(Math.Cos(mine[0]) + 1) < 1e-9, "split: 5 directions, 72 degrees apart, the first backwards along the travel (equal to the Core's SplitBigEnergy)");
+        Check(AnglerWater.SplitBodyScale == .55 && Math.Abs(AnglerWater.SplitBodyCell() - .55 * AnglerWater.BodyBox(48)) < 1e-9 &&
+              Math.Abs(AnglerWater.OrbBodyDiameter(AnglerWater.SplitBodyCell()) - .55 * AnglerWater.OrbBodyDiameter(AnglerWater.BodyBox(48))) < 1e-9, "split shot body = 0.55 x the ball's body (same orb loop)");
+        Check(AnglerWater.SplitTailLength(100) < 150 && AnglerWater.SplitTailLength(100) > 0 && AnglerWater.SplitTailMaxAlpha <= AnglerWater.TailMaxAlpha, "split shot tail is shorter than the ball's 1.5 D and not stronger");
+        Check(AnglerWater.AllyRimR == 0xdf && AnglerWater.AllyRimG == 0xe3 && AnglerWater.AllyRimB == 0xe6 && AnglerWater.AllyRimAlpha == .8, "allied rim = silver white #dfe3e6, alpha .8");
+
+        // jets at the split: 5 directions x 2..3, shorter than the launch spray, 9 ticks, stretched
+        bool burst = true;
+        for (int seed = 0; seed < 200; seed++)
+        {
+            var st = AnglerWater.SplitBurst(seed, mine); burst &= st.Length >= 10 && st.Length <= 15;
+            for (int k = 0; k < 5; k++)
+            {
+                int near = st.Count(x => Math.Abs(Math.Atan2(Math.Sin(x.Angle - mine[k]), Math.Cos(x.Angle - mine[k]))) <= 6 * Math.PI / 180 + 1e-9);
+                burst &= near >= 2 && near <= 3;
+            }
+            foreach (var x in st) { burst &= x.Length >= .3 * AnglerWater.H - 1e-9 && x.Length <= .5 * AnglerWater.H + 1e-9 && x.Width >= 3 && x.Length / x.Width >= 5; }
+        }
+        Check(burst && AnglerWater.LaunchLife == 9, "split jets: 2..3 per direction, 0.3..0.5 H long, 9 ticks (0.15 s), stretched");
+
+        // the Q split event is read from the five fresh shots at the contact
+        {
+            var orb = AnglerShot(); var list = new List<BossProjectile> { orb }; var tr = new AnglerWaterTracker(); tr.Update(list, 10, 0, 0, 16, 0); tr.Events.Clear();
+            orb.X = 30; orb.Y = 0; orb.Active = false; list.Clear();
+            foreach (var a in AnglerWater.SplitAngles(0)) list.Add(SplitShot(30 + Math.Cos(a) * 12, Math.Sin(a) * 12, a));
+            tr.Update(list, 11, 40, 0, 16, 0);
+            Check(tr.Events.Count == 1 && tr.Events[0].Kind == AnglerWaterKind.Parry && tr.Events[0].Split && tr.Events[0].Dirs.Length == 5 && tr.Shots.Count == 5 && tr.Orbs.Count == 0, "Q parry: the ball is gone, five fresh shots at it = one parry event with the 5 split directions");
+            var plan = AnglerWater.MakePlan(AnglerWaterKind.Parry);
+            Check(plan.Sheet == "water_parry_split" && plan.Frames == 14 && Math.Abs(plan.ContentWidth - 2 * AnglerWater.H) < 1e-9 && plan.CoreTicks == 5, "split moment keeps the 14-frame split sheet (2 H wide) and the 5-tick core");
+            // an E-style parry (no fresh shots) is still a parry event but not a split
+            var o2 = AnglerShot(); var l2 = new List<BossProjectile> { o2 }; var tr2 = new AnglerWaterTracker(); tr2.Update(l2, 10, 0, 0, 16, 0); tr2.Events.Clear();
+            o2.X = 10; o2.Y = 10; o2.Active = false; l2.Clear(); tr2.Update(l2, 11, 0, 0, 16, 0);
+            Check(tr2.Events.Count == 1 && tr2.Events[0].Kind == AnglerWaterKind.Parry && !tr2.Events[0].Split && tr2.Events[0].Dirs == null, "E / block: no fresh shots = a plain parry spark with no split jets, no reflect");
+        }
+
+        // wall bounce: the Core counts Bounces and mirrors the velocity
+        Check(AnglerWater.IsBounce(7, 0, -7, 0, 0, 1) && AnglerWater.IsBounce(5, 5, 5, -5, 1, 2) && !AnglerWater.IsBounce(7, 0, 6.9, 1, 0, 0) && !AnglerWater.IsBounce(7, 0, 7, 0, 0, 1) && !AnglerWater.IsBounce(7, 0, -7, 0, 1, 1), "bounce only when Bounces rose and the velocity changed (homing turns are not bounces)");
+        Check(Math.Abs(AnglerWater.BounceNormal(7, 0, -7, 0) - Math.PI) < 1e-9 && Math.Abs(AnglerWater.BounceNormal(5, 5, 5, -5) + Math.PI / 2) < 1e-9, "bounce normal = the change of the velocity (points away from the wall)");
+        var bp = AnglerWater.MakePlan(AnglerWaterKind.Bounce);
+        Check(bp.Sheet == "water_hit_crown" && bp.Life == 9 && Math.Abs(bp.ContentWidth - .35 * AnglerWater.CrownContentH * AnglerWater.H) < 1e-9 && bp.CoreTicks == 0 && bp.DropMax == 0 && bp.DecalHold == 0, "bounce splash: crown x .35, 9 ticks (0.15 s), no core, no drops, no mark");
+        {
+            var shot = SplitShot(100, 100, 0); var list = new List<BossProjectile> { shot }; var tr = new AnglerWaterTracker(); tr.Update(list, 20, 0, 0, 16, 0); tr.Events.Clear();
+            shot.X = 107.5; tr.Update(list, 21, 0, 0, 16, 0); Check(tr.Events.Count == 0, "a shot flying straight makes no bounce");
+            shot.Vx = -shot.Vx; shot.Bounces = 1; shot.X = 107; tr.Update(list, 22, 0, 0, 16, 0);
+            Check(tr.Events.Count == 1 && tr.Events[0].Kind == AnglerWaterKind.Bounce && Math.Abs(tr.Events[0].Angle - Math.PI) < 1e-9, "a mirrored velocity with Bounces + 1 = one bounce splash along the normal");
+            tr.Events.Clear(); tr.Update(list, 23, 0, 0, 16, 0); Check(tr.Events.Count == 0, "the bounce is read once");
+        }
+
+        // parryMagicHit: BossFx (kind, x, y, r = 72); splash = 45 + r*3 = 69, crown diameter 2 x 69
+        Check(AnglerWater.MagicSplashR == Simulation.ParryShotSplashBase + AnglerWater.MagicShotR * 3 && AnglerWater.MagicSplashR == 69, "splash radius 69 = Core ParryShotSplashBase 45 + shot r 8 x 3");
+        var mp = AnglerWater.MakePlan(AnglerWaterKind.MagicHit);
+        Check(mp.Sheet == "water_hit_crown" && Math.Abs(mp.ContentWidth - 2 * 69) < 1e-9 && Math.Abs(mp.CellWidth * AnglerWater.CrownContentPx / AnglerWater.CellPx - 138) < 1e-9, "parryMagicHit crown diameter = 2 x 69 (content, not the cell)");
+        Check(mp.CoreTicks == 5 && Math.Abs(mp.CoreDiameter - .35 * AnglerWater.H) < 1e-9 && mp.DropMin == 4 && mp.DropMax == 6 && mp.DecalHold == 120 && mp.DecalFade == 60 && mp.DecalPeak <= .35 && mp.Life == 15, "parryMagicHit: core 0.35 H for 5 ticks, 4..6 drops, wet mark 2 s + 1 s fade");
+        bool mdrops = true; for (int seed = 0; seed < 200; seed++) { int n = AnglerWater.ContactDrops(mp, seed, 1).Length; mdrops &= n >= 4 && n <= 6; }
+        Check(mdrops, "parryMagicHit throws 4..6 streaks");
+        {
+            var shot = SplitShot(200, 100, 0.5); var list = new List<BossProjectile> { shot }; var tr = new AnglerWaterTracker(); tr.Update(list, 30, 0, 0, 16, 0); tr.Events.Clear();
+            tr.NoteMagicHit(shot.X + 4, shot.Y + 1, 72); tr.NoteMagicHit(shot.X + 4, shot.Y + 1, 72); shot.Active = false; list.Clear();
+            tr.Update(list, 31, 0, 0, 16, 0);
+            Check(tr.Events.Count == 1 && tr.Events[0].Kind == AnglerWaterKind.MagicHit && Math.Abs(tr.Events[0].X - 204) < 1e-9 && Math.Abs(tr.Events[0].Y - 101) < 1e-9 && Math.Abs(tr.Events[0].Angle - 0.5) < 1e-6 && tr.Shots.Count == 0, "parryMagicHit (x, y, 72) becomes one hit event at that spot facing the shot's travel; the shot is dropped");
+            var fire = SplitShot(300, 100, 0, p => p.El = 1); var l2 = new List<BossProjectile> { fire };
+            var tr2 = new AnglerWaterTracker(); tr2.Update(l2, 30, 0, 0, 16, 0); tr2.Events.Clear();
+            Check(tr2.Shots.Count == 0, "a non-water split shot is not followed");
+        }
+        if (root != null)
+        {   // wiring by text: the Core raises it with radius 72, the view subscribes to it, the draw path picks the split shots before the old comet / orb row
+            string core = File.ReadAllText(Path.Combine(root, "unity", "Assets", "Exoduser", "Runtime", "Core", "Simulation.ParryShot.cs"));
+            Check(Regex.IsMatch(core, @"h\(""parryMagicHit"", p\.X, p\.Y, 72\)"), "Core raises BossFx parryMagicHit with (x, y, 72)");
+            string rt = Path.Combine(root, "unity", "Assets", "Exoduser", "Runtime");
+            Check(Regex.IsMatch(File.ReadAllText(Path.Combine(rt, "NativeBossView.cs")), @"case ""parryMagicHit"":\s*anglerTracker\.NoteMagicHit\(x, y, r\)"), "NativeBossView.OnFx is connected to parryMagicHit");
+            string fb = File.ReadAllText(Path.Combine(rt, "NativeBossView.FieldBullets.cs"));
+            Check(fb.IndexOf("AnglerSplitDraw(p, tick)") > 0 && fb.IndexOf("AnglerSplitDraw(p, tick)") < fb.IndexOf("AnglerOrbDraw(p, tick)"), "split shots are drawn before the enemy orb / comet rows");
+            Check(!File.ReadAllText(Path.Combine(rt, "Vfx", "AnglerWaterTimeline.cs")).Contains("parried back"), "the reflect branch text is removed from the tracker");
         }
     }
 }
