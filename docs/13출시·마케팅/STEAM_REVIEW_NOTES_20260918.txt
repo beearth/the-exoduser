@@ -1,0 +1,13 @@
+BuildID for re-review: 25341487.
+
+The Supported Languages section now lists Korean for interface and subtitles only. Other in-game language choices remain incomplete and are not claimed as supported. No full audio language is claimed.
+
+To check the Korean interface, launch the game and choose Korean from the language selector on the title/character-selection screen. During gameplay, press Esc and choose Settings > Language; the selection applies immediately.
+
+To check the Korean tutorial instructions, create or select a character and enter the first playable stage. Follow the on-screen movement and attack tutorial prompts.
+
+To check the Korean subtitles in the character-creation story video, start creating a new character and watch the story video that plays during character creation. The Korean subtitle text is embedded in the video.
+
+“Captions available” has been removed because the game does not provide descriptive captions for non-speech sounds. This accessibility feature is separate from spoken-dialogue subtitles.
+
+We are not claiming that all selectable language translations are complete or that the controller feedback has been resolved.

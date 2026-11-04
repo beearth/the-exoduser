@@ -31,9 +31,9 @@
 | 원본 파일 | 자산 경로는 manifest 참조 | 189개, 28,164,464 bytes, SHA-256 일치. 빔2·컷아웃14·스킨137·고유 누끼27·SFX9. AI 생성/원본 수정 없음 |
 | 검수 한계 | P2-006a 보고서 참조 | 그림자 blur 근사·유골 습득 미이식. 일반 장비 자연 드랍 렌더 관측, 네이티브 수동 키 입력 검수는 권한 거부로 미확인 |
 
-에셋별 원경로/복사경로/bytes/SHA-256: P2-006a_ASSETS.json (Unity 정본: `git show "origin/unity/main:docs/engine/orders/reports/P2-006a_ASSETS.json"`). 상세 범위·실행·복구점: P2-006a_REPORT.md (Unity 정본: `git show "origin/unity/main:docs/_archive/engine/orders/reports/P2-006a_REPORT.md"`).
+에셋별 원경로/복사경로/bytes/SHA-256: [P2-006a_ASSETS.json](../engine/orders/reports/P2-006a_ASSETS.json). 상세 범위·실행·복구점: [P2-006a_REPORT.md](../engine/orders/reports/P2-006a_REPORT.md).
 
-P2-006b 후속: 121 물리틱만으로 death_blood의 종료를 보장하지 않는다. 원본 54581–54582의 16프레임×frameTime4는 렌더 프레임 기준이다. 실제 transient 카운트가 0인 뒤 자연 일반 드랍·등급0~5 원배율 좌표 크롭을 비교했다. 라벨은 원본에도 없으므로 추가하지 않는다. 밝기·그림자·전체 장면 동등성은 RETOUCH이며 P2-006b 보고서 (Unity 정본: `git show "origin/unity/main:docs/_archive/engine/orders/reports/P2-006b_REPORT.md"`)를 따른다.
+P2-006b 후속: 121 물리틱만으로 death_blood의 종료를 보장하지 않는다. 원본 54581–54582의 16프레임×frameTime4는 렌더 프레임 기준이다. 실제 transient 카운트가 0인 뒤 자연 일반 드랍·등급0~5 원배율 좌표 크롭을 비교했다. 라벨은 원본에도 없으므로 추가하지 않는다. 밝기·그림자·전체 장면 동등성은 RETOUCH이며 [P2-006b 보고서](../engine/orders/reports/P2-006b_REPORT.md)를 따른다.
 
 
 ## 2026-10-20 Godot P2-006a — 월드 장비 표시 부분 이식
@@ -49,12 +49,12 @@ P2-006b 후속: 121 물리틱만으로 death_blood의 종료를 보장하지 않
 | 원본 파일 | 자산 경로는 manifest 참조 | 189개, 28,164,464 bytes, SHA-256 일치. 빔2·컷아웃14·스킨137·고유 누끼27·SFX9. AI 생성/원본 수정 없음 |
 | 검수 한계 | P2-006a 보고서 참조 | 그림자 blur 근사·유골 습득 미이식. 일반 장비 자연 드랍 렌더 관측, 네이티브 수동 키 입력 검수는 권한 거부로 미확인 |
 
-에셋별 원경로/복사경로/bytes/SHA-256: P2-006a_ASSETS.json (Unity 정본: `git show "origin/unity/main:docs/engine/orders/reports/P2-006a_ASSETS.json"`). 상세 범위·실행·복구점: P2-006a_REPORT.md (Unity 정본: `git show "origin/unity/main:docs/_archive/engine/orders/reports/P2-006a_REPORT.md"`).
+에셋별 원경로/복사경로/bytes/SHA-256: [P2-006a_ASSETS.json](../engine/orders/reports/P2-006a_ASSETS.json). 상세 범위·실행·복구점: [P2-006a_REPORT.md](../engine/orders/reports/P2-006a_REPORT.md).
 
 
 > **2026-10-10 명칭 변경: 보석/결정 → 유물 (코드 식별자 crystal*·세이브 키 crystalBag/crystals 유지).**
 
-> **2026-09-10 마법 공격 2배:** `pMagicMul(forAttack=true)=_passDmgSum('magic')×(1+_uHelmMagic)×2`. 아래 공식의 `pMagicMul()`에 이미2배가 포함되므로 스킬 계수·후속 폭발·DOT에 다시 곱하지 않는다. `pMagicMul(false)`는 Q패링 장비스케일 전용으로 기존 값을 유지한다. 계수 표의 숫자는 이 공통 배율을 곱하기 전 값이다. 상세 계약 (Unity 정본: `git show "origin/unity/main:docs/14밸런스+수치테이블/MAGIC_ATTACK_DAMAGE_20260910.md"`).
+> **2026-09-10 마법 공격 2배:** `pMagicMul(forAttack=true)=_passDmgSum('magic')×(1+_uHelmMagic)×2`. 아래 공식의 `pMagicMul()`에 이미2배가 포함되므로 스킬 계수·후속 폭발·DOT에 다시 곱하지 않는다. `pMagicMul(false)`는 Q패링 장비스케일 전용으로 기존 값을 유지한다. 계수 표의 숫자는 이 공통 배율을 곱하기 전 값이다. [상세 계약](../14밸런스+수치테이블/MAGIC_ATTACK_DAMAGE_20260910.md).
 
 ## game.html 직접 패치 / 클코(Claude Code) 투입용
 > 기존 코드 분석 완료 기반 — 호환성 유지하며 전면 업그레이드
@@ -1144,7 +1144,7 @@ R h179/180/181/183/191/192의 숫자 소비 변경이다. 새 Math.max·상한·
 | 등록/검수 | 현재 ENGINE WIP callback map **9/25·미16**. 기존8 뒤 실제 l_eq=Callable(self,read_normal_enemy_legendary_equipment) 하나를 추가했다. 원 첫 fixture parse 실패·행동0은 보존하고 header5줄만 수정한 새 namespace의 최초 신규 행동41/41 PASS도 별도 유지한다. 이번 등록 경계만 새 static9/9, 기존 행동·parser·static 검수 재실행0. 전체 hurtE 연결·실게임·main/R/served 반영은 미완이다. |
 | 범위/한계 | full Main/Services.configure/State 자연 lifecycle·실 INV/save·원 JS boot/restore·게임/export/PC 최신판 완료 증거 없음. 초기 plan metadata에 불필요한 Q/E 선언·필드 및 Main876 Q currentOptions 할당 한 줄/Frame metadata도 포함됐으며 원본 보존·캐시 권위에서 제외. 실제 Q/E 실행·변경 없음. |
 
-정확한 API·17 slot·최초 실패 로그·미소유 범위는 Main 전설 장비 캐시 계약 (Unity 정본: `git show "origin/unity/main:docs/_archive/engine/FDG_NATIVE_MAIN_LEGENDARY_EQUIPMENT_CACHE_20261017.md"`)에 기록한다.
+정확한 API·17 slot·최초 실패 로그·미소유 범위는 [Main 전설 장비 캐시 계약](../engine/FDG_NATIVE_MAIN_LEGENDARY_EQUIPMENT_CACHE_20261017.md)에 기록한다.
 
 
 ## 2026-10-17 ENGINE WIP: typed rand 실제 소유 경계
@@ -1159,7 +1159,7 @@ R h179/180/181/183/191/192의 숫자 소비 변경이다. 새 Math.max·상한·
 | 첫 검수 | 신규정적9/9·신규격리행동30/30/exit0/result존재·양로그diagnostics0. primitiveleaf대역·명시holder/Statepredicate·default0/typedmalformedreturn모사범위, 실RNG/엔진abort/자연fullMainWorld동등아님. old41/95/진단/통과parse재연0. |
 | 보존 | sourceWIP는I만·최종ROOT인수전main/R/served0. 원첫실패/selector·thread과대범위이력과그한계를새성공으로소급수정하지않는다. |
 
-정확signature·schema·freshreceipt구조한계·검수범위는typed rand 소유경계 (Unity 정본: `git show "origin/unity/main:docs/_archive/engine/FDG_NATIVE_NORMAL_ENEMY_RAND_OWNER_20261017.md"`)에기록한다.
+정확signature·schema·freshreceipt구조한계·검수범위는[typed rand 소유경계](../engine/FDG_NATIVE_NORMAL_ENEMY_RAND_OWNER_20261017.md)에기록한다.
 
 
 ## 2026-10-17 ENGINE WIP: rand 10번째 실제 등록
@@ -1216,7 +1216,7 @@ R h179/180/181/183/191/192의 숫자 소비 변경이다. 새 Math.max·상한·
 | 후속 consumer | V12 후보 소스3+첫parse2 ROOT 인수. 첫11case43행동true지만 setup5중signed-zero1false·exit1 전체FAIL은 보존. 별도 보완4case19행동+setup4 true·exit0는 첫actual+0 및 둘째 NRnestedREADY/SOURCE_THROW/UNSUPPORTED→UNKNOWN_STATUS에만 한정. 과거 실패와 합산 PASS 금지. 네 준비식 평가 뒤 public 호출 전 검사이므로 fail-fast 실제 고장주입 증명은 아님. 실제 clock/자연MainState/JS/fullgame 미확인. 제품 V12 copy·World hook 없음; callback12 등록은 이번 별도 경계 |
 | 보존 단위 | 소유 브랜치 codex/native-play-time-owner-20261017. 문서의 자체 commit SHA를 선행 선언하지 않으며 실제 local/remote SHA·tree·parent·비강제 보존 결과는 아래 단위 receipt를 기준으로 확인 |
 
-체크포인트 단위 receipt (과거 외부·검수 자료: `Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-OWNER-VALIDATED-WIP-20261017/receipt.json` (저장소 파일 없음)) · 사용자용 이식 현황 (과거 외부·검수 자료: `docs/7아이템디자인/FDG_GODOT_PORT_STATUS.md` (저장소 파일 없음))
+[체크포인트 단위 receipt](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-OWNER-VALIDATED-WIP-20261017/receipt.json>) · [사용자용 이식 현황](../engine/FDG_GODOT_PORT_STATUS.md)
 
 
 ## 2026-10-17 play_time 열두 번째 provider 등록 — 현재 경계
@@ -1229,7 +1229,7 @@ R h179/180/181/183/191/192의 숫자 소비 변경이다. 새 Math.max·상한·
 | owner / 부분지원 | 기존 finite native int/float 지원 범위·safe int ±9007199254740991·raw-0·raw refs/prefix·NOT_READY 및 postloss 계약 유지. clock counter/writer/setter/default0 추가 없음 |
 | 검수 / 분리 | 기존 owner34case477(설정163·행동314) 인수는 유지하며 재실행하지 않음. 원17 중15통과2실패·별도2true, V12 원FAIL 및 별도4case19행동+setup4 한정성공도 각각 보존. 이번 새 검수는 등록 영향 정적 경계만 |
 | 소스 / 실행 | D9는 직전 공통 소스 인수이고 owner 브랜치 codex/native-play-time-owner-20261017의 이력은 보존한다. 이번 main/I/R 현재 소스 정렬은 통합 정본·receipt의 실제 HEAD·tree를 따른다. 실제 Main/State clock·자연 실행·JS 동등성·PC·최신 실행 게임은 미인수. V12 제품 copy·World hook·dummy13·25 gate 우회 없음 |
-| 보존 증거 | 등록 단위 receipt (과거 외부·검수 자료: `Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-TWELFTH-PROVIDER-REGISTRATION-20261017/receipt.json` (저장소 파일 없음)) |
+| 보존 증거 | [등록 단위 receipt](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-TWELFTH-PROVIDER-REGISTRATION-20261017/receipt.json>) |
 
 
 ## 2026-10-17 play_time main/I/R 소스 통합 체크포인트 — 현행
@@ -1241,4 +1241,4 @@ R h179/180/181/183/191/192의 숫자 소비 변경이다. 새 Math.max·상한·
 | 값·실패·참조 | finite native int/float 부분지원·safe int ±9007199254740991·raw-0·원 type/ref/prefix·postloss read_result·NOT_READY 계약 그대로. dummy13/25 gate 우회·clock writer/default0 추가 없음 |
 | 검수 분리 | 기존 owner34case477(설정163·행동314) 인수, 원17 중15통과2실패와 별도2true는 보존. V12 후보 원11case43행동true/setup signedzero1false·exit1 전체FAIL과 별도4case19행동+setup4 true의 한정 보완은 각각 유지. 원성공 검수·parse 재실행 없음 |
 | 실제 실행·보류 | 이번은 소스 정렬이다. 사용자 열린 앱·compiled export·PC 실행·실제 Main/State clock·자연 전투·JS·최신 게임 인수는 미확인. V12 제품 copy·World hook·build/reload/import/PC 전달 없음 |
-| 정본 / 증거 | FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_MAIN_SYNC_20261017.md (Unity 정본: `git show "origin/unity/main:docs/_archive/engine/FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_MAIN_SYNC_20261017.md"`) · 소스 통합 final receipt (과거 외부·검수 자료: `Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-MAIN-SOURCE-SYNC-20261017/receipt.json` (저장소 파일 없음)) |
+| 정본 / 증거 | [FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_MAIN_SYNC_20261017.md](../engine/FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_MAIN_SYNC_20261017.md) · [소스 통합 final receipt](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-MAIN-SOURCE-SYNC-20261017/receipt.json>) |

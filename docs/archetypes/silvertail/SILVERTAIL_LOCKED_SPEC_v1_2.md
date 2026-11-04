@@ -1,14 +1,14 @@
 # SILVERTAIL / BLADE DANCER — LOCKED VISUAL & EQUIPMENT SPEC v1.2
 
-> **보행 교정:** 걷기4포즈를 접지/교차 반복으로 재제작하고 몸통 앵커로 정렬했다. 원본 기반 패커 다음에 `tools/pack-silvertail-walk.mjs`를 실행한다. 현행 보행 계약 (Unity 정본: `git show "origin/unity/main:docs/archetypes/silvertail/SILVERTAIL_WALK_FIX_20260915.md"`).
+> **보행 교정:** 걷기4포즈를 접지/교차 반복으로 재제작하고 몸통 앵커로 정렬했다. 원본 기반 패커 다음에 `tools/pack-silvertail-walk.mjs`를 실행한다. [현행 보행 계약](./SILVERTAIL_WALK_FIX_20260915.md).
 
-> **새 본체 적용(2026-09-15):** 승인된 시안으로 idle2(동일 포즈 복제)/walk4/atk4 폴백을8방향480×48 시트로 교체했다. 버전 `20260915-walk-v3`. 기존80px 공격 확장을 함께 사용한다. 아래 구 본체/제작 전 표기는 이력이며 현행 패킹·프레임·검증 계약 (Unity 정본: `git show "origin/unity/main:docs/archetypes/silvertail/SILVERTAIL_REMAKE_20260915.md"`)을 우선한다.
+> **새 본체 적용(2026-09-15):** 승인된 시안으로 idle2(동일 포즈 복제)/walk4/atk4 폴백을8방향480×48 시트로 교체했다. 버전 `20260915-walk-v3`. 기존80px 공격 확장을 함께 사용한다. 아래 구 본체/제작 전 표기는 이력이며 [현행 패킹·프레임·검증 계약](../silvertail/SILVERTAIL_REMAKE_20260915.md)을 우선한다.
 
-> **2026-09-15 구현 갱신:** 현행 본체 idle2/walk4/atk4, 48px 시계 시트. 공격은 내장 imagegen 생성9포즈을80px 셀 별도 아틀라스로 연결했다. 공격 런타임·원화와 장비 통합 잔여 (Unity 정본: `git show "origin/unity/main:docs/archetypes/silvertail/SILVERTAIL_ATTACK_REMASTER_20260915.md"`). 아래 video-first/idle2+walk8 및 공격 제작 전 표기는 당시 생산 계획이며 현행 프레임 수보다 우선하지 않는다.
+> **2026-09-15 구현 갱신:** 현행 본체 idle2/walk4/atk4, 48px 시계 시트. 공격은 내장 imagegen 생성9포즈을80px 셀 별도 아틀라스로 연결했다. [공격 런타임·원화와 장비 통합 잔여](./SILVERTAIL_ATTACK_REMASTER_20260915.md). 아래 video-first/idle2+walk8 및 공격 제작 전 표기는 당시 생산 계획이며 현행 프레임 수보다 우선하지 않는다.
 
 EXODUSER: HELL LORD / FDG
 스코프: **Blade Tail ↔ 쌍단검 설계 충돌 종결 + 스프라이트 제작용 LOCKED SPEC.**
-근거: `SILVERTAIL_ARCHETYPE_v1.md` / `_v1_1.md`(기구·스킬), `PIXELLAB_PROMPT.md`, 아래 장비·실루엣 텍스트 계약. 과거 MASTER TURNAROUND·WEAPON BIBLE PNG는 2026-09-27 사용자 지정 이미지 정리로 제거했다. 현행 외형 키아트는 `SILVERTAIL_KEYART_CANON_20260927.md` (Unity 정본: `git show "origin/unity/main:docs/archetypes/silvertail/SILVERTAIL_KEYART_CANON_20260927.md"`)의 2장이다.
+근거: `SILVERTAIL_ARCHETYPE_v1.md` / `_v1_1.md`(기구·스킬), `PIXELLAB_PROMPT.md`, 아래 장비·실루엣 텍스트 계약. 과거 MASTER TURNAROUND·WEAPON BIBLE PNG는 2026-09-27 사용자 지정 이미지 정리로 제거했다. 현행 외형 키아트는 [`SILVERTAIL_KEYART_CANON_20260927.md`](./SILVERTAIL_KEYART_CANON_20260927.md)의 2장이다.
 성격: 아래 [A]~[I]는 **LOCKED**. 재질문 없이 이 값으로 스프라이트/아트 제작 진입 가능. 스킬·수치는 v1_1 유지(무변경).
 
 ---
@@ -132,4 +132,4 @@ ONE small curved dagger in the LEFT hand, RIGHT hand open for balance, skirt tra
 
 FDG / EXODUSER: HELL LORD / (c) 2026 SIM DOJIN
 
-> **2026-09-28 보정:** 사용자가 7월 이미지 12개를 실버테일 자료로 재지정하여 원본 레퍼런스 (Unity 정본: `git show "origin/unity/main:docs/archetypes/silvertail/refs/README.md"`)에 복원했다. 위의 일괄 제거 표현은 당시 이력이며 이 12개에는 적용하지 않는다. 현행 화면 매핑과 확정 장비 계약은 별도 유지한다.
+> **2026-09-28 보정:** 사용자가 7월 이미지 12개를 실버테일 자료로 재지정하여 [원본 레퍼런스](./refs/README.md)에 복원했다. 위의 일괄 제거 표현은 당시 이력이며 이 12개에는 적용하지 않는다. 현행 화면 매핑과 확정 장비 계약은 별도 유지한다.
