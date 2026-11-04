@@ -88,14 +88,7 @@ namespace Exoduser.UnityPort
             yield return A2RNatureSize(1920); yield return A2RPlayShot("fixture-bridge-north-1920-swamp");
             File.WriteAllText(Path.Combine(a2rPlayOutput, "swamp-proof.json"), JsonUtility.ToJson(new SwampProofReceipt
             { initialCommandLineOffVerified = initialOffVerified, shoreSegments = swamp.ShoreSegments, visibleDebrisAt1920 = swamp.VisibleDebris, visibleDebrisAt3840 = visibleAt3840, frames = 300 }, true));
-            swamp.SetApplied(A2RSwampDress.Requested); A2RSwampFinish();
-        }
-
-        void A2RSwampFinish()
-        {
-            // Sandbox-only cleanup watchdog; never installed in ordinary play. Natural exit is judged separately.
-            A2RSwampDressQaExit.Arm(a2rPlay.ordinaryEntryVerified && a2rPlay.arrived && a2rPlay.errors == 0 && a2rPlay.failures.Count == 0 ? 0u : 3u);
-            A2RPlayFinish();
+            swamp.SetApplied(A2RSwampDress.Requested); A2RPlayFinish();
         }
 
         IEnumerator A2RSwampPair(string id, A2RSwampDress swamp)
@@ -117,27 +110,8 @@ namespace Exoduser.UnityPort
             public int shoreSegments, visibleDebrisAt1920, visibleDebrisAt3840, frames;
             public int fps = 30, width = 3840, height = 1080;
             public bool visualPass = false, macVerified = false;
-            public string scope = "Actual Player frames; Core walking uses the existing smoke invulnerability (Iframes=600); bridge-north is a fixed-pose fixture. Windows sandbox arms a 5s own-process exit watchdog. Visual and natural-exit judgement remain separate.";
+            public string scope = "Actual Player frames; Core walking uses the existing smoke invulnerability (Iframes=600); bridge-north is a fixed-pose fixture. Visual and natural-exit judgement remain separate.";
         }
     }
 
-    static class A2RSwampDressQaExit
-    {
-#if UNITY_STANDALONE_WIN && !UNITY_EDITOR
-        [System.Runtime.InteropServices.DllImport("kernel32.dll")] static extern void ExitProcess(uint code);
-#endif
-        internal static void Arm(uint code)
-        {
-#if UNITY_STANDALONE_WIN && !UNITY_EDITOR
-            if (!NativeQaSandbox.Active) throw new InvalidOperationException("QA exit requires save isolation");
-            var thread = new System.Threading.Thread(() =>
-            {
-                System.Threading.Thread.Sleep(5000);
-                Debug.Log("[A2R swamp] sandbox own-process exit watchdog fired; natural exit unverified");
-                ExitProcess(code);
-            });
-            thread.IsBackground = true; thread.Start();
-#endif
-        }
-    }
 }
