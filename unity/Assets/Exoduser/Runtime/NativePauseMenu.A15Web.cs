@@ -386,11 +386,11 @@ namespace Exoduser.UnityPort
    else if(it.id=="optAtmos"){var l=NativeOptionText.List("atmos",LocaleCode);for(int i=0;i<l.Length;i++){values.Add(i.ToString());labels.Add(l[i]);}current=Mathf.Clamp(settings.Options.Get("atmos"),0,Mathf.Max(0,l.Length-1));}
    else if(it.id=="optBgmTrack")
    {
-    // Only songs this build can actually play are listed (NativeBgmSelection.SupportedAt), in web order. A saved value outside that list is shown as auto
+    // Only songs this build can actually play are listed (NativeBgmCatalog.SupportedAt), in web order. A saved value outside that list is shown as auto
     // but the settings value itself is left alone: it is only replaced when the player picks something.
     var v=NativeOptionText.List("bgm.values",LocaleCode);var l=NativeOptionText.List("bgm.labels",LocaleCode);int auto=0;
-    string shown=NativeBgmSelection.Effective(settings.Options.BgmTrack);
-    for(int i=0;i<v.Length&&i<l.Length;i++){if(!NativeBgmSelection.IsSupported(v[i]))continue;if(v[i]==NativeOptionSet.BgmTrackDefault)auto=values.Count;values.Add(v[i]);labels.Add(l[i]);if(v[i]==shown)current=values.Count-1;}
+    string shown=NativeBgmCatalog.Effective(settings.Options.BgmTrack);
+    for(int i=0;i<v.Length&&i<l.Length;i++){if(!NativeBgmCatalog.IsSupported(v[i]))continue;if(v[i]==NativeOptionSet.BgmTrackDefault)auto=values.Count;values.Add(v[i]);labels.Add(l[i]);if(v[i]==shown)current=values.Count-1;}
     if(values.Count>0&&!values.Contains(shown))current=auto;
    }
    return labels;

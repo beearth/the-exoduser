@@ -144,3 +144,5 @@
 - 11-04 데모 v0 ③ 첫인상 소리 커버리지: 1-1 한 판(타이틀 → 클리어/사망)의 순간별 상태 표는 [DEMO_1-1_SOUND_SCENES §0](DEMO_1-1_SOUND_SCENES_20261104.md)에 있다. 빈 칸·임시 칸 10개는 R10 `pick_r10.html`(10카드·91줄, 웹 동작 녹화 동기)에 올렸다. ElevenLabs 카운터 38,799 → 40,176(1,377).
 - 11-04 Unity BGM 반입 후보: 웹 79파일 표는 [UNITY_BGM_IMPORT_CANDIDATES_20261104.md](UNITY_BGM_IMPORT_CANDIDATES_20261104.md)에 있다. 이미 있음 10, P0 반입 권장 3(1-1 필드 회전곡, Remastered 1장 3곡, Vorbis 약 15MB), P1 52, P2 8, 제외 6이다. 76파일이 Suno 생성이며, 상업 권리(생성 당시 유료 플랜)는 사용자 확인이 필요하다.
 - 11-04 BGM 라이선스: 사용자 확인(CTO 경유), Suno 생성 당시 유료 플랜이었다 → Suno 76곡은 상업 이용 조건을 충족한다. P1 반입 순서 7단계를 정했다(데모 권장 = P0 + 1~3단계, 11곡 약 45MB). [UNITY_BGM_IMPORT_CANDIDATES §1.2·1.3](UNITY_BGM_IMPORT_CANDIDATES_20261104.md)
+
+- 11-04 Unity BGM 반입: [UNITY_BGM_IMPORT_CANDIDATES_20261104.md](UNITY_BGM_IMPORT_CANDIDATES_20261104.md) §1.4. P0 3곡 + P1 ①~③ 8곡은 `codex/unity-bgm-import-p1-20261104`에 반입·정적 계약 통과, unity/main 병합 전. 실제 192k MP3 소스 11곡 69.443MB(45MB는 Vorbis128k 추정). 설정18값·필드6곡/대장간3곡 셔플·사망/승리 교대, Core 변경0. Suno 생성 당시 유료 플랜 확인(사용자 11-04). 실제 Unity 컴파일은 HALT 차단, 청음은 사운드 총괄·사용자 관문.
