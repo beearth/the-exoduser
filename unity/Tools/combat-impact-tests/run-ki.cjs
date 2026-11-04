@@ -11,13 +11,20 @@ if(start>=0){const p=path.join(out,'KiImpactPresentation.cs');fs.writeFileSync(p
 const impact=fs.readFileSync(path.join(root,'unity/Assets/Exoduser/Runtime/NativeGame.Impact.cs'),'utf8');
 const native=fs.readFileSync(path.join(root,'unity/Assets/Exoduser/Runtime/NativeGame.cs'),'utf8');
 const slash=fs.readFileSync(path.join(root,'unity/Assets/Exoduser/Runtime/KiSlashView.cs'),'utf8');
+const dome=fs.readFileSync(path.join(root,'unity/Assets/Exoduser/Runtime/NativeSkillView.cs'),'utf8');
 const wiring=[
  ['real crescent uses short alpha policy',/KiImpactPresentation\.TrailAlpha\(age\)/.test(slash)],
  ['real crescent uses thin front edge',/KiImpactPresentation\.TrailThickness/.test(slash)],
  ['real crescent caps body opacity',/KiImpactPresentation\.BodyAlpha\(age\)/.test(slash)],
  ['native camera includes Ki feedback amplitude',/impacts\.CameraOffset\(Simulation\.TickCount\)/.test(native)],
  ['3D marker and flat projection share Ki contact camera',/KiContactCameraOffset\(\)/.test(impact)],
- ['spark spawning uses event charge scale',/SparkCount\(e\.Step,e\.Scale\)/.test(source)]
+ ['spark spawning uses event charge scale',/SparkCount\(e\.Step,e\.Scale\)/.test(source)],
+ ['U-VFX-15 hit no longer draws the silver star sheet or its ink shadow',!/shadows\.Add\(Create\(e,width\*1\.14f,true\)\)/.test(source)&&/if\(e\.Kind!=FeedbackKind\.KiSlashHit\)additive\.Add\(Create\(e,width,false\)\)/.test(source)],
+ ['U-VFX-15 hit core uses the soft texture and the .5 H rule',/ContactRenderer\("Ki contact core",softShape,addMaterial\)/.test(source)&&/SoftCoreDiameter\(b\.height\)/.test(source)&&/SoftCoreOpacity\(age\)/.test(source)&&!/ContactRenderer\("Ki contact core",coreShape/.test(source)],
+ ['U-VFX-15 soft core texture follows the falloff function only',/SoftCoreFalloff\(r\)/.test(source)&&/Texture2D\(n,n,TextureFormat\.RGBA32,false\)/.test(source)&&!/Random|Noise/.test(source.slice(source.indexOf('static Texture2D SoftCoreTexture'),source.indexOf('public void Handle')))],
+ ['U-VFX-15 every crescent layer goes through the cap and overlap fade',(slash.match(/KiImpactPresentation\.CrescentAlpha\(/g)||[]).length===5&&/CrescentOverlaps\(p\.X,p\.Y,enemy\.X,enemy\.Y,enemy\.Radius\)/.test(slash)],
+ ['U-VFX-15 dome body alpha <= .12, rim <= .35, muddy palette, no lime tint',/BodyAlphaMax = \.12f/.test(dome)&&/RimAlphaMax = \.35f/.test(dome)&&/it\.a\.color = DomeLook\.Body\(it\.a\.color\)/.test(dome)&&/DomeLook\.Rim\(/.test(dome)&&!/213 \/ 255f/.test(dome)&&/Color32\(214, 189, 132, 255\)/.test(dome)&&/Color32\(201, 164, 94, 255\)/.test(dome)],
+ ['U-VFX-15 dome body line keeps the arena telegraph multiplier slot (ends * WebLitHolyDome)',/\* fade \* WebLitHolyDome\);\n\s+it\.a\.color = DomeLook\.Body/.test(dome)]
 ];
 const core=path.join(out,'FeedbackStub.cs');fs.writeFileSync(core,'namespace Exoduser.UnityPort.Core {}');files.push(core);
 const env={...process.env,DOTNET_CLI_HOME:out,DOTNET_CLI_TELEMETRY_OPTOUT:'1',DOTNET_SKIP_FIRST_TIME_EXPERIENCE:'1'};
