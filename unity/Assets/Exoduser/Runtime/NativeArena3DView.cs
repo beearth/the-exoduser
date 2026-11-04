@@ -256,9 +256,9 @@ namespace Exoduser.UnityPort
             }
             SyncCpuMs=(float)timer.Elapsed.TotalMilliseconds;
         }
-        public void Late(Vector3 hero)
+        public void Late(Vector3 hero,Vector3? boss=null)
         {
-            occlusion?.Step(hero);
+            occlusion?.Step(hero,boss);
             TorchLate();
         }
         public void SetActive(bool on)

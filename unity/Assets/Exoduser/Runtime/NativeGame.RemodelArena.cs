@@ -66,6 +66,13 @@ namespace Exoduser.UnityPort
             }
             NativeRemodel3D.ArenaActive=on;r3Arena?.SetActive(on);arenaView?.SetVisible(!on);
         }
+        // Read-only boss position for pillar occlusion; null when no visible boss.
+        Vector3? ArenaOcclusionBoss()
+        {
+            var boss=Simulation.Druid!=null?Simulation.Druid.Boss:Simulation.Stage.Boss;
+            if(boss==null||!(boss.Alive||BossSinkVisible(boss)))return null;
+            return NativeRemodel3D.Point(boss.X,boss.Y);
+        }
         void RemodelArenaCameraStep()
         {
             var boss=Simulation.Druid!=null?Simulation.Druid.Boss:Simulation.Stage.Boss;
