@@ -78,12 +78,24 @@ PC R5 `0a60cbcee273e1150ba7df8909acb77dd9f18edc`에서 게임 구역 전환 화�
 | 항목 | 동작 |
 |---|---|
 | 120초 상한 | 프레임당 최대 2초(`HardCapMaxFrame`)로 잘라 센다. 125초 한 프레임(디버거·절전)은 2초, 0.2fps(5초 프레임)는 프레임당 2초라 30프레임이 60초다. 보고가 계속 와도 클램프 프레임 60개(60fps면 실시간 120초)에서 `prepare-hard-cap(120s)`. 정지 판정(20초·12초)은 기존 0.25초 클램프 그대로. |
-| 실패 시 3D 처리(fix2의 "그 세션 내내 2D"를 대체) | 어떤 중단이든 롤백 없이 그대로 연다. 반쯤 만든 3D는 끄고 `R3Teardown`으로 정리한다(씬 언로드, `r3Roots`·`r3Cam`·`a2Root` 등 참조 해제). 중단 사유별 재시도: (1) `prepare-stalled`·`prepare-hard-cap`·소유자 비활성화는 `r3Failed`를 두지 않고 **다음 필드 입장(필드 전환 `Request`)마다** 다시 시도한다. (2) 조립 예외는 **재시도 1회**(`FieldLoadGate.MaxExceptionRetries`), 두 번째 예외부터 `r3Failed=true`로 그 세션은 2D. (3) 씬 없음·리그 없음 같은 결정적 실패는 기존대로 `r3Failed`. 재시도 전 대기 중이면 `FieldPreparePending`은 false라 현재 전환은 2D로 열린다. |
+| 실패 시 3D 처리(fix2의 "그 세션 내내 2D"를 대체) | 어떤 중단이든 롤백 없이 그대로 연다. 반쯤 만든 3D는 끄고 `R3Teardown`으로 정리한다(씬 언로드, `r3Roots`·`r3Cam`·`a2Root` 등 참조 해제). 중단 사유별 재시도: (fix4로 대체: 모든 중단 종류가 카운터 하나를 공유하고 세션당 재시도 1회, 두 번째 중단부터 `r3Failed=true`로 그 세션은 2D. 아래 fix4 표.) (1) 첫 중단(`prepare-stalled`·`prepare-hard-cap`·소유자 비활성화·예외)은 다음 필드 입장에 한 번 다시 시도한다. (3) 씬 없음·리그 없음 같은 결정적 실패는 기존대로 `r3Failed`. 재시도 전 대기 중이면 `FieldPreparePending`은 false라 현재 전환은 2D로 열린다. |
 | 씬 로드 중 중단 | `LoadSceneAsync`의 AsyncOperation을 `r3LoadOp`에 잡아 두고, 로드 루프가 진행값이 바뀔 때마다 `Report("remodel3d-scene")`한다(정지는 그대로 감지). 로드가 끝나기 전에 중단되면 `completed`에서 그 씬 루트를 끄고 언로드한다(RM1_Slice의 Main Camera·AudioListener·전역 Volume 고아 방지). 로드·언로드가 남아 있는 동안은 재시작하지 않는다(`FieldLoadGate.PendingOps`). |
 | OnDisable | `NativeGame.OnDisable`이 조립 중(`r3Loading`)이면 `owner-disabled`로 중단·정리하고(다음 입장에 재시도), 아니면 `r3Loading`만 해제한다. |
 | 진행선 | 실패한 전환(`flow.Failed` 또는 기록된 error)에서는 진행선 목표를 현재 값에 고정해 100%까지 채우지 않는다. 이어지는 FadeIn이 선을 지운다. 성공 때는 조립 끝에 1로 찬다. |
 | 주석 | "로비로 되돌림" 표현을 `NativeTransitionPrepare.cs`에서 실제 동작(롤백 없이 열고 3D는 정리)으로, `NativeScreenTransition.cs`에 120초 hard-cap을 적었다. |
 | 검사 | `run.cjs` 46/0(fix2의 29개에 125초 한 프레임·0.2fps·재시도 정책·중단 뒤 다음 입장 재시도·진행선 고정 추가), `abort-contract.test.cjs`(씬 로드 고아 정리·OnDisable·주석 계약 10건), `root-guard`·`capture-contract` PASS. 실게임의 `UnloadSceneAsync`·재시도 조립은 Mac 확인 필요. |
+
+### 11-04 fix4 — 재시도 상한·누수·같은 프레임 중단 (fix3 정정)
+
+상태: PC 하니스·참조 컴파일만, Unity 실컴파일·Mac 화면 판정 전. Core·화면 디자인 무변경.
+
+| 항목 | 동작 |
+|---|---|
+| 재시도 상한(fix3 "입장마다 재시도"를 대체) | **카운터 하나를 모든 중단 종류가 공유한다**(stall·hard-cap·owner-disabled·예외). 세션당 재시도 1회(`FieldLoadGate.MaxRetries`): 첫 중단은 다음 필드 입장에 한 번 재시도, **두 번째 중단은 `MarkPermanent()`로 Permanent(그 세션 2D)**. 예외 1회 + 비예외 1회도 합쳐 두 번이라 Permanent. 세 번째 입장은 대기·재시도 없이 2D로 열린다(검은 화면 1.2초 안팎). 예외와 비예외의 카운터를 따로 두지 않은 이유: 실패 환경에서 입장마다 20~120초 검은 화면이 쌓이는 비용의 상한을 최대 2회로 묶기 위해서다. |
+| 누수 | 조립 중 런타임에 만든 Mesh·Material·Texture2D(지형 513² 표면 메시 포함)·복제 메시·TerrainData·TerrainLayer를 생성 지점에서 `R3Track`으로 목록(`r3Made`)에 모은다(8개 파일 40곳). 중단하면 `R3Teardown`이 목록을 `Destroy`하고 `Resources.UnloadUnusedAssets()`를 1회 부른다. `Resources.Load`로 받은 공유 원본은 추적하지 않아 지우지 않는다. 조립이 성공하면 목록만 비운다(세션 동안 유지). |
+| 같은 프레임 중단 | 씬 로드가 끝난 그 프레임에 중단되면 `r3Scene`이 아직 default라서, `R3Teardown`이 `r3Scene`이 무효일 때 `SceneManager.GetSceneByName(R3SceneName)`으로 찾아 끄고 언로드한다. 재시도에서 RM1_Slice가 2개 되지 않는다. |
+| 주석 | `FieldPreparePending` 주석에 deferred·permanent 조건 추가, `Remodel3DAbort` 주석의 "scene / rig 실패와 같은 결과"를 사실대로(그쪽은 `r3Failed`만 두고 언로드하지 않음) 정정, 죽은 코드였던 `MarkPermanent`를 중단 정책에 연결. run.cjs (g)의 `dog.Total<5`(전환이 끝나면 0이라 항상 참)는 준비 중 최대값을 재도록 고쳤다. |
+| 검사 | `run.cjs` 52/0(정책: 비예외 2회→Permanent, 예외+비예외 조합 양방향, 세 번째 입장 2D·긴 검은 화면 없음 추가), `abort-contract`(GetSceneByName 경로·생성 객체 Destroy·UnloadUnusedAssets 1회·전 생성 지점 추적 계약), `root-guard`·`capture-contract` PASS. 실게임의 Destroy·UnloadUnusedAssets 효과(메모리)는 미측정, Mac 확인 필요. |
 
 ## 11-04 로비→필드 전환 로딩 촬영 모드
 

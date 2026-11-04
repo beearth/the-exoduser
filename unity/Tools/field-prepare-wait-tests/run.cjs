@@ -139,25 +139,36 @@ static class P{
    while(s.Busy&&s.wall<60)s.Frame(F);
    C(s.doneAt>=1.0&&s.doneAt<=1.8&&!s.flow.Failed&&!TransitionPrepareWatchdog.FieldBound("splash-menu")&&TransitionPrepareWatchdog.FieldBound("lobby-game")&&TransitionPrepareWatchdog.FieldBound("story-game"),"(f) non-field transitions ignore assembly and pending",s.doneAt.ToString("F2"));}
   // 10 (g). One 125 s frame (debugger stop, sleep) counts as at most 2 s: no hard-cap, no abort.
-  {var s=new Sim();bool begun=false,hit=false;int tk=0;bool aborted=false;s.onFail=r=>aborted=true;
-   while(s.Busy&&s.wall<400){double d=F;
+  {var s=new Sim();bool begun=false,hit=false;int tk=0;bool aborted=false;double maxTotal=0;s.onFail=r=>aborted=true;
+   while(s.Busy&&s.wall<400){double d=F;maxTotal=Math.Max(maxTotal,s.dog.Total);
     if(s.swapped&&!begun){tk=NativeTransitionProgress.Begin("test-pause");NativeTransitionProgress.Report("a",.1f);begun=true;}
     if(begun&&!hit&&NativeTransitionProgress.Active){d=125;hit=true;NativeTransitionProgress.Report("b",.2f);NativeTransitionProgress.End(tk);}
     s.Frame(d);}
-   C(hit&&!aborted&&!s.flow.Failed&&s.doneAt>0&&s.dog.Total<5,"(g) a single 125s frame is not a hard-cap",s.dog.Total.ToString("F2")+" "+(s.recorded??""));}
+   C(hit&&!aborted&&!s.flow.Failed&&s.doneAt>0&&maxTotal<5,"(g) a single 125s frame is not a hard-cap (counted as at most 2s)",maxTotal.ToString("F2")+" "+(s.recorded??""));}
   // 10 (h). 0.2 fps (5 s frames) with a report each frame for 30 frames: counted at 2 s each (60 s), no hard-cap.
   {var d=new TransitionPrepareWatchdog();d.Begin(0);bool fail=false;for(int i=0;i<30;i++)fail|=d.Tick(5,i+1,true);
    C(!fail&&Math.Abs(d.Total-60)<1e-9,"(h) 0.2fps throttled frames are clamped to 2s each (30 frames = 60s)",d.Total.ToString("F2"));
    var e=new TransitionPrepareWatchdog();e.Begin(0);bool cap=false;int n=0;for(;n<100&&!cap;n++)cap=e.Tick(5,n+1,true);
    C(cap&&n==60&&e.Reason=="prepare-hard-cap(120s)","(h) sustained reports still hit the cap (60 clamped frames)",n+" "+e.Reason);}
-  // 10 (i). Abort retry policy: stall/hard-cap defers to the next field entry; first exception retried once; second exception ends retries; orphan ops block restart.
+  // 10 (i). Retry policy: ONE shared counter for every abort kind. First abort (stall/hard-cap/owner-disabled/exception) defers one retry to the next field entry; the second is permanent.
   {var g=new FieldLoadGate();C(g.CanStart,"(i) fresh gate may start");
-   g.Abort(false);C(!g.CanStart&&g.Deferred&&!g.Permanent,"(i) hard-cap/stall abort defers, not permanent");
-   g.FieldEntry();C(g.CanStart,"(i) next field entry retries after a hard-cap/stall abort");
-   g.Abort(false);g.FieldEntry();g.Abort(false);g.FieldEntry();C(g.CanStart&&!g.Permanent,"(i) stall/hard-cap aborts can retry at every entry");
+   g.Abort(false);C(!g.CanStart&&g.Deferred&&!g.Permanent,"(i) first non-exception abort defers, not permanent");
+   g.FieldEntry();C(g.CanStart,"(i) next field entry retries once after a non-exception abort");
+   g.Abort(false);C(g.Permanent&&!g.Deferred&&!g.CanStart,"(i) second non-exception abort: permanent 2D");
+   g.FieldEntry();C(!g.CanStart&&g.Aborts==2,"(i) third field entry: no retry, 2D");
    var x=new FieldLoadGate();x.Abort(true);C(!x.CanStart&&!x.Permanent,"(i) first exception defers");x.FieldEntry();C(x.CanStart,"(i) first exception retried once at the next entry");
-   x.Abort(true);x.FieldEntry();C(x.Permanent&&!x.CanStart,"(i) second exception: permanent 2D for the session (no endless retry)");
+   x.Abort(true);x.FieldEntry();C(x.Permanent&&!x.CanStart,"(i) second exception: permanent 2D");
+   var m=new FieldLoadGate();m.Abort(true);m.FieldEntry();C(m.CanStart,"(i) combo: exception then retry allowed");m.Abort(false);m.FieldEntry();C(m.Permanent&&!m.CanStart,"(i) combo: exception + non-exception = permanent");
+   var m2=new FieldLoadGate();m2.Abort(false);m2.FieldEntry();m2.Abort(true);m2.FieldEntry();C(m2.Permanent&&!m2.CanStart,"(i) combo: non-exception + exception = permanent");
+   var p=new FieldLoadGate();p.MarkPermanent();p.FieldEntry();C(p.Permanent&&!p.CanStart,"(i) MarkPermanent holds across field entries");
    var o=new FieldLoadGate();o.OpStarted();o.OpStarted();C(!o.CanStart,"(i) pending scene load/unload blocks a restart");o.OpDone();C(!o.CanStart,"(i) still blocked while one op remains");o.OpDone();o.OpDone();C(o.CanStart&&o.PendingOps==0,"(i) restart allowed after all ops finished");}
+  // 10 (i3). Two hard-cap aborts, then the third entry opens in 2D without waiting (no pending, no retry).
+  {var gate=new FieldLoadGate();bool loaded=false;int started=0;double[] done=new double[3];
+   for(int run=0;run<3;run++){
+    gate.FieldEntry();var sm=new Sim(run==0);sm.pending=()=>!loaded&&!gate.Deferred&&!gate.Permanent;sm.onFail=r=>{gate.Abort(false);NativeTransitionProgress.Release();};bool begun=false;
+    while(sm.Busy&&sm.wall<200){if(sm.swapped&&!begun&&gate.CanStart){begun=true;started++;NativeTransitionProgress.Begin("t"+run);}if(begun&&NativeTransitionProgress.Active)NativeTransitionProgress.Report("r",.1f);sm.Frame(F);}
+    done[run]=sm.doneAt;}
+   C(started==2&&gate.Permanent&&done[0]>100&&done[1]>100&&done[2]>=1.0&&done[2]<=1.8,"(i3) 2 aborted tries, third entry is 2D with no retry and no long black screen",started+" "+done[0].ToString("F0")+" "+done[1].ToString("F0")+" "+done[2].ToString("F2"));}
   // 10 (i2). End to end: first transition aborts by hard-cap, the next field entry completes with the 3D field.
   {var gate=new FieldLoadGate();bool loaded=false;
    var a=new Sim();bool begun=false;a.pending=()=>!loaded&&!gate.Deferred&&!gate.Permanent;a.onFail=r=>{gate.Abort(false);NativeTransitionProgress.Release();};

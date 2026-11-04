@@ -68,17 +68,18 @@ namespace Exoduser.UnityPort {
    return error;
   }
  }
- // Decides when the 3D field assembly may (re)start. A stall or hard-cap abort, or the first exception, defers the retry to the next field entry;
- // a second exception ends retries for the session. Scene loads/unloads still in flight (orphans) block a restart so RM1_Slice is never loaded twice.
+ // Decides when the 3D field assembly may (re)start. One shared counter for every kind of abort (stall, hard-cap, owner disabled, exception):
+ // the first abort defers one retry to the next field entry, the second abort makes it permanent (2D for the session). Scene loads/unloads still in flight (orphans) block a restart so RM1_Slice is never loaded twice.
  internal sealed class FieldLoadGate {
-  internal const int MaxExceptionRetries=1;
-  int exceptionFails,pendingOps;bool deferred,permanent;
+  internal const int MaxRetries=1;
+  int aborts,pendingOps;bool deferred,permanent;
   internal bool Permanent{get{return permanent;}}
   internal bool Deferred{get{return deferred;}}
   internal int PendingOps{get{return pendingOps;}}
   internal bool CanStart{get{return !permanent&&!deferred&&pendingOps==0;}}
-  internal void Abort(bool exception){if(exception&&++exceptionFails>MaxExceptionRetries)permanent=true;else deferred=true;}
-  internal void MarkPermanent(){permanent=true;}
+  internal int Aborts{get{return aborts;}}
+  internal void Abort(bool exception){if(++aborts>MaxRetries)MarkPermanent();else deferred=true;}
+  internal void MarkPermanent(){permanent=true;deferred=false;}
   internal void FieldEntry(){deferred=false;}
   internal void OpStarted(){pendingOps++;}
   internal void OpDone(){if(pendingOps>0)pendingOps--;}

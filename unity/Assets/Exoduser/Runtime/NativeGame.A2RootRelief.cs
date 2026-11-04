@@ -15,7 +15,7 @@ namespace Exoduser.UnityPort
             foreach(var renderer in ground.GetComponentsInChildren<MeshRenderer>())if(renderer.name=="지옥 바닥 PBR 표면")field=renderer.sharedMaterial;
             if(source==null||template==null||field==null||template.shader==null||!template.shader.isSupported)
             {Debug.LogError("[A2] 연속 뿌리 부조 자산/지면 재질 누락. 기존 거목 접합 유지");return;}
-            var material=new Material(template);
+            var material=R3Track(new Material(template));
             foreach(var key in new[]{"_BaseMap","_BumpMap","_RockMap","_AshMap","_RockNormal","_RockRough","_ForestMap","_ForestNormal","_ForestRough","_SoilMap","_SoilNormal","_SoilRough","_RootMap","_RootNormal","_RootRough"})
                 if(field.HasProperty(key)&&material.HasProperty(key))material.SetTexture(key,field.GetTexture(key));
             foreach(var key in new[]{"_ForestBlend","_ForestTextureMix","_SoilTextureMix","_Smoothness","_Metallic","_Cutoff"})
@@ -45,7 +45,7 @@ namespace Exoduser.UnityPort
                 var filters=go.GetComponentsInChildren<MeshFilter>();
                 if(filters.Length!=1||!filters[0].sharedMesh.isReadable||filters[0].sharedMesh.colors.Length!=filters[0].sharedMesh.vertexCount)
                 {Debug.LogError("[A2] 부조 메시 읽기/재질 가중 누락. 기존 거목 접합 유지");go.SetActive(false);Destroy(go);continue;}
-                var filter=filters[0];var mesh=Instantiate(filter.sharedMesh);var vertices=mesh.vertices;
+                var filter=filters[0];var mesh=R3Track(Instantiate(filter.sharedMesh));var vertices=mesh.vertices;
                 var center=filter.transform.TransformPoint(mesh.bounds.center);
                 var horizontalCenter=new Vector3(center.x-placement.x,0,center.z-placement.y);
                 for(int i=0;i<vertices.Length;i++)

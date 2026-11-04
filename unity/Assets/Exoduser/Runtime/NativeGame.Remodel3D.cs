@@ -46,7 +46,8 @@ namespace Exoduser.UnityPort
         // A new field-bound transition starts: a 3D field stopped by an earlier abort may be tried again.
         internal static void FieldEntryRequested() { var g = Instance; if (g != null) g.r3Gate.FieldEntry(); }
         void OnDisable() { StopLobbyFixtureObservers(); if (r3Loading && !r3Loaded) Remodel3DAbort("owner-disabled", false); else r3Loading = false; }
-        // True while a field-bound transition must keep waiting: the 3D field is requested, the field (not the arena) is on screen, and it is neither built nor failed.
+        // True while a field-bound transition must keep waiting: the 3D field is requested, the field (not the arena) is on screen, it is neither built nor failed,
+        // and no abort has deferred the retry (r3Gate.Deferred) or ended it (r3Gate.Permanent).
         internal static bool FieldPreparePending { get { var g = Instance; return g != null && NativeRemodel3D.Requested && g.Simulation != null && !g.Simulation.Stage.InArena && !g.r3Loaded && !g.r3Failed && !g.r3Gate.Deferred && !g.r3Gate.Permanent; } }
         internal static bool FieldAssemblyRunning { get { var g = Instance; return g != null && g.r3Loading; } }
         internal static void AbortFieldPrepare(string why) { var g = Instance; if (g != null) g.Remodel3DAbort(why); }
@@ -63,7 +64,7 @@ namespace Exoduser.UnityPort
             if (failure != null) Remodel3DAbort("assembly-exception: " + failure, true);
         }
 
-        // Stops a half-built 3D field and keeps the 2D view (the same outcome as the scene / rig failures below). The first reason is kept for the transition record.
+        // Stops a half-built 3D field and keeps the 2D view (scene-missing / rig-missing failures below only set r3Failed and do not tear anything down; this path also unloads the scene). The first reason is kept for the transition record.
         // exception=false (stall, hard-cap, owner disabled): retried at the next field entry. exception=true: retried once, then 2D for the session.
         void Remodel3DAbort(string why, bool exception = false)
         {
@@ -86,9 +87,18 @@ namespace Exoduser.UnityPort
         {
             var op = r3LoadOp; r3LoadOp = null;
             if (op != null && !op.isDone) { r3Gate.OpStarted(); op.completed += _ => { R3UnloadScene(SceneManager.GetSceneByName(R3SceneName)); r3Gate.OpDone(); }; }
-            else R3UnloadScene(r3Scene);
+            else R3UnloadScene(r3Scene.IsValid() ? r3Scene : SceneManager.GetSceneByName(R3SceneName));   // the load may have finished this very frame, before r3Scene was assigned
+            R3DestroyMade();
             r3Scene = default; r3Roots = null; r3Cam = null; r3Marker = null; r3Vcam = null; r3Brain = null;
             a2Root = null; a2Field = null; a2FieldSoil = null; hellEnvironment = null; hellFlames.Clear(); hellHeroRim = null; hellActorMaterial = null; r3Base.Clear();
+        }
+        // Runtime-created meshes / materials / textures of this assembly (R3Track at each creation site). Shared originals from Resources.Load are never tracked.
+        static readonly List<UnityEngine.Object> r3Made = new List<UnityEngine.Object>();
+        static T R3Track<T>(T made) where T : UnityEngine.Object { if (made != null) r3Made.Add(made); return made; }
+        static void R3DestroyMade()
+        {
+            foreach (var made in r3Made) if (made != null) Destroy(made);
+            r3Made.Clear(); Resources.UnloadUnusedAssets();
         }
         void R3UnloadScene(Scene scene)
         {
@@ -124,7 +134,7 @@ namespace Exoduser.UnityPort
                 if (volume.profile != null && volume.profile.TryGet<ColorAdjustments>(out var tone))
                 { tone.postExposure.Override(1f); tone.saturation.Override(-18f); tone.colorFilter.Override(new Color(.82f,.9f,1f)); }
             if (System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "--unity-keyshot-baseline") < 0) yield return HellLightingSetup();
-            r3Loaded = true; r3Loading = false;
+            r3Loaded = true; r3Loading = false; r3Made.Clear();   // kept for the session now
             Remodel3DSetActive(!Simulation.Stage.InArena);
         }
 

@@ -44,14 +44,14 @@ namespace Exoduser.UnityPort
             if(g!=null)
             {
                 // Editor Play 검수가 공유 TerrainData 에셋의 레이어를 저장하지 않게 격리한다.
-                if(Application.isEditor)g.terrainData=Instantiate(g.terrainData);
-                var layers=g.terrainData.terrainLayers;for(int i=0;i<layers.Length;i++){layers[i]=Instantiate(layers[i]);layers[i].normalScale=.55f;layers[i].smoothness=i==0?.24f:.22f;layers[i].specular=new Color(.12f,.12f,.12f);}
+                if(Application.isEditor)g.terrainData=R3Track(Instantiate(g.terrainData));
+                var layers=g.terrainData.terrainLayers;for(int i=0;i<layers.Length;i++){layers[i]=R3Track(Instantiate(layers[i]));layers[i].normalScale=.55f;layers[i].smoothness=i==0?.24f:.22f;layers[i].specular=new Color(.12f,.12f,.12f);}
                 g.terrainData.terrainLayers=layers;
                 HellGroundSetup(g);
                 if(!A2Requested)HellEnvironmentSetup(g);
             }
             foreach(var root in r3Roots)if(root!=null)foreach(var renderer in root.GetComponentsInChildren<MeshRenderer>(true))if(renderer.name!="지옥 바닥 PBR 표면"&&(hellEnvironment==null||!renderer.transform.IsChildOf(hellEnvironment.transform))){renderer.shadowCastingMode=ShadowCastingMode.Off;var mat=renderer.sharedMaterial;if(mat!=null&&(mat.name.Contains("RottenWoodMembrane")||mat.name.Contains("CursedBark")||renderer.name.StartsWith("Decals_root",StringComparison.Ordinal)))renderer.enabled=false;}
-            hellActorMaterial=new Material(Shader.Find("EXODUSER/SpriteLit3D"));hellActorMaterial.SetFloat("_Ambient",.3f);hellActorMaterial.SetFloat("_NormalTilt",.4f);
+            hellActorMaterial=R3Track(new Material(Shader.Find("EXODUSER/SpriteLit3D")));hellActorMaterial.SetFloat("_Ambient",.3f);hellActorMaterial.SetFloat("_NormalTilt",.4f);
             var rim=new GameObject("영웅 차가운 림광");rim.transform.SetParent(r3Marker,false);rim.transform.localPosition=new Vector3(-.3f,1.8f,.6f);
             hellHeroRim=rim.AddComponent<Light>();hellHeroRim.type=LightType.Point;hellHeroRim.color=new Color(.68f,.8f,1f);hellHeroRim.range=3.5f;hellHeroRim.intensity=2.2f;
             var heroSpot=new GameObject("영웅 달빛 웅덩이");heroSpot.transform.SetParent(r3Marker,false);heroSpot.transform.localPosition=new Vector3(0,4,0);heroSpot.transform.localRotation=Quaternion.Euler(90,0,0);
@@ -62,7 +62,7 @@ namespace Exoduser.UnityPort
             if(brazier!=null&&hellFlameFrames!=null&&g!=null)
             {
                 var root=new GameObject("실제 철제 지옥불 화로");UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(root,r3Scene);root.transform.SetParent(g.transform.parent,true);
-                var iron=new Material(Shader.Find("Universal Render Pipeline/Lit"));iron.SetColor("_BaseColor",new Color(.15f,.17f,.20f));iron.SetFloat("_Metallic",.8f);iron.SetFloat("_Smoothness",.45f);
+                var iron=R3Track(new Material(Shader.Find("Universal Render Pipeline/Lit")));iron.SetColor("_BaseColor",new Color(.15f,.17f,.20f));iron.SetFloat("_Metallic",.8f);iron.SetFloat("_Smoothness",.45f);
                 foreach(var tile in new[]{new Vector2(95,183),new Vector2(109,174),new Vector2(100,156),new Vector2(112,142),new Vector2(80.5f,152.5f)})
                 {
                     float x=tile.x*.4f,z=-tile.y*.4f;var pos=new Vector3(x,NativeRemodel3D.GroundY(x,z),z);
