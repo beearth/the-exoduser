@@ -20,6 +20,15 @@ namespace Exoduser.UnityPort {
    if(pixels>maxPixels)return 0; // Fall back instead of clipping the greatsword or changing pixel scale.
    return System.Math.Max(64,(int)pixels);
   }
+  // Enemy-only: keep the world canvas/foot anchor; reduce sampling density only for this frame when needed.
+  public const int EnemyMaxRt=2048;
+  public static int EnemyTextureSize(float worldUnitsPerPixel,int baseTexelScale,float boxPixels,out float texelScale){
+   texelScale=baseTexelScale;
+   if(float.IsNaN(worldUnitsPerPixel)||float.IsInfinity(worldUnitsPerPixel)||worldUnitsPerPixel<=0||baseTexelScale<1||float.IsNaN(boxPixels)||float.IsInfinity(boxPixels)||boxPixels<=0)return 0;
+   // World units cancel. Divide in double before padding/rounding so finite float inputs cannot overflow.
+   // A floating-point power-of-two multiplier also avoids int overflow for extreme projected boxes.
+   for(;;){double pixels=System.Math.Ceiling((boxPixels/(double)texelScale+4)/32)*32;if(pixels<=EnemyMaxRt)return System.Math.Max(64,(int)pixels);texelScale*=2;}
+  }
   // Druid-only: RT cap 2048; when the box is still too large this frame, double the texel scale (pixel size x2) until it fits. Never 0 for a finite box, never throws.
   public const int DruidMaxRt=2048;
   public static int DruidCanvas(float worldUnitsPerPixel,int baseTexelScale,float boxPixels,out int texelScale){
