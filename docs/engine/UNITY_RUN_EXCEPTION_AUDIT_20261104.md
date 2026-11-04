@@ -1,6 +1,6 @@
 # Unity 1-1 한 판 흐름 예외 위험 정적 점검 — 2026-11-04
 
-기준 커밋: `bea021bcf1b2d20689e9f014834456879c5a722a` / 보고 커밋: 이 파일을 추가한 커밋(외부 REPORT.md 상단에 실제 SHA 기록).
+기준 커밋: `bea021bcf1b2d20689e9f014834456879c5a722a` / 보고 커밋: 이 문서의 최근 변경 커밋(외부 REPORT.md 상단에 실제 SHA 기록).
 점검: C# **30개**(부분 호출 경로 포함, 기준본 27개 + 후속본 3개), JSON **9개**. 위험 **10개: 확실 2 / 가능 5 / 낮음 3**.
 관문: **정적 점검·제안 패키지 작성**, 코드 적용 0. Unity 실행·컴파일·Mac 한 판·크래시 0 판정은 **미검증**.
 
@@ -18,7 +18,7 @@
 |6 R06 가능|`NativeGame.A2Field.cs:212,224,237~245`, `NativeGame.A2Forest.cs:214,230,271`|MeshFilter.sharedMesh가 null이면 isReadable NRE. 수피 normals.Length가 vertices.Length보다 작으면 normals[i] 범위 초과. 이끼 prefab에 Renderer가 없으면 rs[0] 범위 초과.|null 메시 건너뛰기, 노멀 길이 검증, 빈 Renderer 장식 제외. 정상 메시 변형은 유지. 손상 prefab의 실제 유입 미확인.|
 |7 R07 가능|`NativeDeathOverlay.cs:155`, `NativeRevive.DeathScreen.cs:201`|결정 화면 Cinzel-400 또는 명조 대체 폰트가 없으면 캐시 키 f.name, 쓰러짐 화면은 감사 메타데이터 tf.name에서 NRE. 렌더 함수 자체의 대체 글꼴 처리보다 앞/뒤에서 직접 역참조한다.|메타데이터·키의 이름 조회만 null 안전하게 변경. 글꼴·스타일·게임 표시 문자열을 새로 만들지 않음. 실제 설치본 폰트 누락 미확인.|
 |8 R08 낮음|`NativeDeathOverlay.cs:44~45,58~62`|death_web 누락/빈 구조면 생성자에서 NRE·ArgumentNull. 사망 이벤트나 petPool에 petLines에 없는 키가 있으면 SetLine의 Dictionary 인덱서 KeyNotFound.|선택용 과거 대사/재생 자료만 안전하게 비우고, 없어진 키는 빈 대사. 결정 화면과 행동은 유지. 현재 JSON은 petPool·필수 dd 키 누락 **0**.|
-|9 R09 낮음|`NativeDemoText.cs:22~24`|빈 객체·null 행·null texts면 NRE. 중복/빈 key는 Dictionary.Add 실패. 앞 행이 이미 삽입된 뒤 뒤 행이 실패하면 loaded=false라 다음 호출도 부분 상태에서 재실패할 수 있음.|전체 구조·중복을 먼저 검증한 뒤 사전에 반영. **자료 손상 시 명시적 InvalidOperationException으로 로딩을 중단하는 제안이며 예외 0을 보장하는 수정이 아님**. 현재 81개 entries, 29언어 길이 오류·중복 키 **0**.|
+|9 R09 낮음|`NativeDemoText.cs:22~24`|빈 객체·null 행·null texts면 NRE. 중복/null key는 Dictionary.Add 실패. 앞 행이 이미 삽입된 뒤 뒤 행이 실패하면 loaded=false라 다음 호출도 부분 상태에서 재실패할 수 있음.|전체 구조·중복을 먼저 검증한 뒤 사전에 반영. **자료 손상 시 명시적 InvalidOperationException으로 로딩을 중단하는 제안이며 예외 0을 보장하는 수정이 아님**. 현재 81개 entries, 29언어 길이 오류·중복 키 **0**.|
 |10 R10 낮음|`NativeHellGateLabels.cs:19,24,31`|영어 행 없는 불완전한 표에서 미등록 언어가 선택되면 locales["en"] KeyNotFound. null/중복 행은 로딩 자체 실패.|구조·키·영어 대체 행을 사전 검증하고 부분 초기화를 막음. **손상 자료는 명시적 로딩 실패로 남김**, 배포 전 검사가 별도로 필요. 현재 표 29언어·en 있음.|
 
 ## 범위와 서로 다른 소스 버전
