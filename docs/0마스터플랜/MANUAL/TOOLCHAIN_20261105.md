@@ -2,7 +2,8 @@
 
 - 배정: 클라우드 CTO, 레인 TC(조사·설계 문서만, 코드 무수정). 기준 커밋 unity/main `75add6ff4`.
 - 목표(사용자): 분위기·광원·안개는 Downfall of Yellowsky(黄天逆途), 환경·HUD·전투 가독성은 D4·PoE2, 임팩트는 Phantom Blade Zero.
-- 전제: Unity 6000.6.7f1 URP 17.6.0(제품 엔진 확정), 1-1 원근 피치 34°·거리 16.5u LOCK, 2.5D(3D 지형·소품 + 리깅 3D → 실시간 저해상도 픽셀 캐릭터), Mac M5 Pro(빌드·판정) + Windows PC(컴파일), 소규모 팀 + AI 에이전트, 생성 도구 Meshy·Tripo·Kling(승인 범위), 유료 에셋은 사용자 승인.
+- 범위 갱신(11-05 CTO): 사용자가 Unreal 전환도 검토하라고 했다. 엔진 비교와 전환 권고는 레인 ENG(`claude/unity-cloud-engine-decision-20261105`)가 맡는다. 이 문서는 Unity 기준안을 그대로 쓰되, 요소마다 "UE5에서는 같은 걸 어떻게 하나" 칸을 둔다.
+- 전제: Unity 6000.6.7f1 URP 17.6.0(현 제품 엔진), 1-1 원근 피치 34°·거리 16.5u LOCK, 2.5D(3D 지형·소품 + 리깅 3D → 실시간 저해상도 픽셀 캐릭터), Mac M5 Pro(빌드·판정) + Windows PC(컴파일), 소규모 팀 + AI 에이전트, 생성 도구 Meshy·Tripo·Kling(승인 범위), 유료 에셋은 사용자 승인.
 - 함께 읽은 연구 레인(원격 브랜치, 11-05): D4 01 환경(`claude/unity-cloud-d4-study-20261105`), D4 02 HUD(`…-d4-study-ui-…`), D4 03 카메라·가림(`…-d4-study-combat-…`), D4 04 동작·VFX(`…-d4-study-boss-…`), PoE2(`…-poe2-study-…`), Phantom Blade Zero(`…-phantomblade-study-…`), Yellowsky(`…-yellowsky-study-…`). 이 문서는 그 결정안들과 **충돌하는 곳을 표시하고 하나로 고른다**.
 
 ## 표기
@@ -15,19 +16,21 @@
 
 ## 0. 결론 먼저
 
-| 요소 | 추천 제작 경로 [제안] | 한 줄 이유 |
-|---|---|---|
-| 지형 | **Unity Terrain(넓은 바닥) + Blender 메시 조각(늪가·둑·다리 접합)**, 재질은 **Terrain Lit Shader Graph(높이 블렌드)** | 지금 Terrain이 이미 판정 바닥이다. 손으로 다듬을 경계만 메시로 떼어 낸다 |
-| 재질 | **Substance 3D Designer(승인 시)** / 미승인 시 **Blender 베이크 + Shader Graph 절차 재질** | D4가 쓴 방식. 반복 타일 4종이면 충분 |
-| 소품·데코 | **Blender 키트(손 조형) + Meshy/Tripo 생성 → Remesh → Blender 정리**, 배치는 **우리 군집 브러시(§3c-1)** | 유료 팩은 톤 재작업이 크고 남과 같은 얼굴이 된다 |
-| 광원 | **Forward+ 전환 + 그림자 광원 수 제한 + APV(간접광)** | 오브젝트당 8개 한계(현 Forward)를 없앤다 |
-| 안개·대기 | **우리 `HellFogFeature` 확장(높이 안개 + 광원 산란, Render Graph로 재작성)**, 서드파티는 비교 시험용만 | URP에는 볼류메트릭 안개가 없다. 이미 16단계 레이마치가 있다 |
-| 후처리 | **URP Volume + LUT(DaVinci Resolve) + 분위기 프리셋 툴(§3c-2)** | 하드코딩된 색 수치를 데이터로 뺀다 |
-| 캐릭터·몬스터·보스 | **Blender 조형·Rigify 손키 → Animator → 우리 "픽셀 액터 패스" Renderer Feature(§3a-1)** | 지금 액터마다 카메라 요청을 따로 보낸다. 패스 하나로 묶는다 |
-| VFX | **Shuriken + Shader Graph**(타격·예고·장판), **VFX Graph는 대량 환경 입자(재·불씨)만** | 연구 3건 일치 |
-| HUD/UI | **v0는 현행 IMGUI 유지**, v0 뒤 HUD만 **UGUI**로 이전 검토 | 연구 D4-02와 일치. UI Toolkit은 커스텀 머티리얼에 약하다 |
-| 사운드 | **Unity Audio Mixer + 자체 SfxPlayer** | 미들웨어 비용·빌드 위험이 이득보다 크다 |
-| 판정·자동화 | **키샷 비교판 자동 캡처 + 예산 검사기 + 임포트 규칙**(§3c·§3d) | "나아짐 또는 같음" 규칙(DIRECTION_RESET)을 기계가 먼저 거른다 |
+| 요소 | 추천 제작 경로(Unity) [제안] | 한 줄 이유 | UE5에서는 같은 걸 (기능명) |
+|---|---|---|---|
+| 지형 | **Unity Terrain(넓은 바닥) + Blender 메시 조각(늪가·둑·다리 접합)**, 재질은 **Terrain Lit Shader Graph(높이 블렌드)** | 지금 Terrain이 이미 판정 바닥이다. 손으로 다듬을 경계만 메시로 떼어 낸다 | Landscape + Landscape Layer Blend(Height Blend) 재질, 경계는 Static Mesh |
+| 재질 | **Substance 3D Designer(승인 시)** / 미승인 시 **Blender 베이크 + Shader Graph 절차 재질** | D4가 쓴 방식. 반복 타일 4종이면 충분 | 같은 외부 도구 + Material Editor(Material Instance), Fab/Quixel 재질 |
+| 소품·데코 | **Blender 키트(손 조형) + Meshy/Tripo 생성 → Remesh → Blender 정리**, 배치는 **우리 군집 브러시(§3c-1)** | 유료 팩은 톤 재작업이 크고 남과 같은 얼굴이 된다 | 같은 외부 제작 + PCG 프레임워크(규칙 배치), Foliage Mode |
+| 광원 | **Forward+ 전환 + 그림자 광원 수 제한 + APV(간접광)** | 오브젝트당 8개 한계(현 Forward)를 없앤다 | Deferred 기본 + Lumen(실시간 GI·반사) + Virtual Shadow Maps |
+| 안개·대기 | **우리 `HellFogFeature` 확장(높이 안개 + 광원 산란, Render Graph로 재작성)**, 서드파티는 비교 시험용만 | URP에는 볼류메트릭 안개가 없다. 이미 16단계 레이마치가 있다 | Exponential Height Fog + Volumetric Fog(기본 기능), 광원별 Volumetric Scattering Intensity |
+| 후처리 | **URP Volume + LUT(DaVinci Resolve) + 분위기 프리셋 툴(§3c-2)** | 하드코딩된 색 수치를 데이터로 뺀다 | Post Process Volume + Color Grading LUT, 프리셋은 Data Asset·Level Instance |
+| 캐릭터·몬스터·보스 | **Blender 조형·Rigify 손키 → Animator → 우리 "픽셀 액터 패스" Renderer Feature(§3a-1)** | 지금 액터마다 카메라 요청을 따로 보낸다. 패스 하나로 묶는다 | Animation Blueprint + Control Rig(IK), 픽셀화는 SceneCapture2D→저해상도 Render Target 또는 커스텀 패스(엔진 소스 수정 또는 SceneViewExtension) — 기본 기능 없음 |
+| VFX | **Shuriken + Shader Graph**(타격·예고·장판), **VFX Graph는 대량 환경 입자(재·불씨)만** | 연구 3건 일치 | Niagara(CPU·GPU 시뮬 한 도구), Decal Actor |
+| HUD/UI | **v0는 현행 IMGUI 유지**, v0 뒤 HUD만 **UGUI**로 이전 검토 | 연구 D4-02와 일치. UI Toolkit은 커스텀 머티리얼에 약하다 | UMG(+CommonUI), UI Material |
+| 사운드 | **Unity Audio Mixer + 자체 SfxPlayer** | 미들웨어 비용·빌드 위험이 이득보다 크다 | MetaSounds + Sound Class/Submix, Sound Concurrency |
+| 판정·자동화 | **키샷 비교판 자동 캡처 + 예산 검사기 + 임포트 규칙**(§3c·§3d) | "나아짐 또는 같음" 규칙(DIRECTION_RESET)을 기계가 먼저 거른다 | Movie Render Queue·High Res Screenshot, Editor Utility Widget·Python 에디터 스크립트, Data Validation, Commandlet |
+
+UE5 칸은 11-05 CTO 범위 갱신(엔진 비교 레인 ENG의 재료)으로 넣었다. 기능 이름과 기본 지원 여부만 적었고, 품질·속도·비용 비교와 전환 판단은 ENG 레인이 한다. 출처는 §8 W34~W38이고, 출처를 달지 않은 UE5 기능명은 [일반 지식·문서 미첨부]다.
 
 가장 먼저 만들 것(§5): ① 키샷 비교판 캡처 ② 분위기 프리셋 ③ Forward+·안개 정비 → 이 셋이 있어야 "Yellowsky 같은 분위기"를 숫자와 그림으로 반복 비교할 수 있다.
 
@@ -78,6 +81,8 @@
 - 연구 충돌: D4-01은 Terrain 칠하기(G-4), PoE2 E1은 메시 지형을 추천했다. 우리 장면은 이미 Terrain이 판정 바닥이고(`NativeRemodel3D.cs:14` `Ground` Terrain, `GroundY`로 Core 점을 올린다), A2는 뿌리·늪가를 별도 메시·셰이더로 만든다(`Resources/Shaders/A2RootSurface.shader`, `A2ToxicRiver.shader`).
 - **추천 C [제안].** Core 판정 바닥(`GroundY`)을 바꾸지 않고, 눈에 거슬리는 경계만 메시로 교체한다. 메시 조각은 Blender 8×8m 단위(PoE2 E1 수치 차용), Terrain 높이와 0.02u 이내로 맞추는 검사를 예산 검사기(§3c-5)에 넣는다.
 
+- **UE5에서는:** Landscape(하이트맵·레이어 칠하기) + Landscape Layer Blend 노드의 Height Blend [단일·W38], 경계 조각은 Static Mesh + Modeling Mode [일반 지식]. Core 판정 바닥과 맞추는 일은 엔진과 무관하게 남는다.
+
 ### 2-2. 환경 — 재질
 
 | 후보 | 품질 | 속도 | 비용 | AI 친화 | Mac |
@@ -88,6 +93,8 @@
 
 - 근거: D4 환경 재질은 Substance Designer(지형 세트·반복 타일) 중심 — D4-01 §0 ④(원 출처는 그 문서 목록).
 - **추천 B로 시작, 지형 타일 4종이 1x에서 부족하면 A를 사용자 승인 요청 [제안].** 이유: 키샷 1장에 필요한 타일은 흙·이끼·진흙·돌 4종이고, 높이맵이 있어야 높이 블렌드가 된다 — B로 높이·노멀·알베도를 함께 굽는다. "점 금지"(CLAUDE.md 4.2-7) 때문에 고주파 노이즈는 넣지 않는다.
+
+- **UE5에서는:** 같은 외부 도구(Substance·Blender) + Material Editor·Material Instance, Fab 재질 라이브러리 [일반 지식].
 
 ### 2-3. 환경 — 소품·데코
 
@@ -100,6 +107,8 @@
 - 근거: Meshy Remesh API는 목표 폴리곤 100~300,000, 쿼드/삼각 선택 [단일·공식 문서] — https://docs.meshy.ai/en/webapp/guides/3d-model/remesh . Tripo Smart Mesh(리토폴) 30크레딧 [단일·Tripo 블로그] — https://www.tripo3d.ai/blog/high-poly-to-low-poly-textured . 보스는 Meshy 본체가 같은 큰 형태 결함으로 두 번 FAIL해 부위별 조형으로 바꿨다(D4-04 §e, CLAUDE.md 4.1 "제작법 변경").
 - **추천: 큰 소품(고목·바위·화로 등 키샷 주인공)은 C, 무리를 채우는 중·소 소품은 B [제안].** 배치는 손이 아니라 군집 브러시(§3c-1)로 결정적(시드)으로 한다. A는 쓰지 않는다(톤·고유성).
 
+- **UE5에서는:** 생성·리토폴은 같은 외부 도구, 배치는 PCG 프레임워크(그래프로 규칙 배치, 기본 제공) [단일·W38] 또는 Foliage Mode [일반 지식]. 우리 c-1 군집 브러시가 하는 일을 엔진 기본 기능으로 대신할 수 있다.
+
 ### 2-4. 광원
 
 | 후보 | 품질 | 속도 | 비용 | AI 친화 | Mac |
@@ -111,6 +120,8 @@
 - 근거: Forward+는 오브젝트당 광원 제한이 없고 카메라당 데스크톱 256개; Forward는 주광 1 + 추가 8 [사실] — https://docs.unity3d.com/Manual/urp/rendering-paths-introduction.html , https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@17.0/manual/rendering/forward-plus-rendering-path.html
 - 간접광: APV(Adaptive Probe Volumes)는 URP에서 쓸 수 있고 픽셀 단위 프로브 샘플링, 4×4×4 브릭 [사실] — https://docs.unity3d.com/Manual/urp/probevolumes-concept.html , https://unity.com/blog/engine-platform/new-ways-of-applying-global-illumination-in-unity-6 . APV와 Forward+ 함께 쓰기는 문서에서 직접 확인 못 함 → Mac 시험으로 확인.
 - **추천 B + APV + "그림자 광원 ≤ 4, 무그림자 점광원 ≤ 16/화면"(PoE2 R2 수치) [제안].** 픽셀 액터는 별도 레이어 직교 캡처라 씬 광원을 직접 받지 않고 코드로 옮겨 받는다(`NativeRigPixelHero.cs:13-15` 점광원 4개 배열). Forward+ 전환 뒤에도 이 4개 한도는 그대로이므로, 픽셀 액터용 "가까운 광원 4개 고르기" 규칙을 문서화한다.
+
+- **UE5에서는:** Deferred 기본, 광원 수 제한 대신 비용 관리, 간접광은 Lumen 실시간 GI, 그림자는 Virtual Shadow Maps [일반 지식].
 
 ### 2-5. 안개·대기·후처리 (Yellowsky 분위기의 핵심)
 
@@ -125,6 +136,8 @@
 - **추천 A [제안].** 이유: ① 이미 레이마치 골격이 있다(`HellHeightFog.shader:28-31`). ② 카메라 LOCK 규칙상 "안개가 먼 적을 지우면 FAIL"이라 안개 밀도·높이·거리 곡선을 판정 수치로 직접 통제해야 한다(블랙박스 C는 불리). ③ B는 **같은 장면 A/B 비교 기준선**으로만 들인다(코드 반입 전 라이선스 확인, 사용자 승인). B가 비교판에서 확실히 앞서면 그때 채택을 다시 묻는다.
 - 후처리 색: D4-01 §5.4 순서(톤매핑 → 색 보정 → LUT, DaVinci Resolve로 LUT 제작)를 따르고, 값은 분위기 프리셋(§3c-2)에 넣는다.
 
+- **UE5에서는:** Exponential Height Fog + Volumetric Fog가 기본이고 광원마다 Volumetric Scattering Intensity로 산란을 조절한다 [사실·W34]. 후처리는 Post Process Volume + Color Grading LUT [일반 지식]. 목표 두 게임이 UE5라 이 칸이 "가장 가까운 결과"에 가장 직접적이다 [추정].
+
 ### 2-6. 캐릭터·몬스터·보스
 
 | 단계 | 후보 | 추천 [제안] | 근거 |
@@ -138,6 +151,8 @@
 - 픽셀 렌더 근거: 저해상도 RT에 그려 최근접 확대하는 방식에서 "픽셀 기어감(pixel creep)"은 **직교 투영에서만** 해결된다고 두 제품 문서가 쓴다 [사실·출처 2] — https://sites.google.com/view/propixelizer/user-guide , https://github.com/Radivarig/UPixelator_Documentation . 우리 월드 카메라는 원근(34° LOCK)이므로 B(화면 전체 저해상도)는 카메라 이동 때 액터·배경이 기어 다닌다 [추정, 위 문서 근거]. 현행 A는 액터마다 직교 캡처라 이 문제를 피했다(`NativeRigPixelHero.cs:51` `orthographic=true`). 문제는 비용 구조(위 위험 3)다 → C.
 - 예비 수치(현행에서 이어받음): 텍셀 배율 = 화면 높이/1080(`NativeRigPixelPolicy.cs:51`), RT 한 변 64~1024, 32 단위(`:52-56`).
 
+- **UE5에서는:** 모델·리깅·손키는 같은 Blender 경로, 런타임은 Animation Blueprint + Control Rig(IK) [일반 지식·W36]. 픽셀 렌더는 기본 기능이 없다 — SceneCapture2D로 저해상도 Render Target에 그려 합성하는 우회가 포럼 관례이고, 후처리가 HDR→LDR RT에서 깨지거나 TSR 잔상이 생긴다는 보고가 있다 [단일·W37a·W37b]. 직교 캡처는 SceneCapture2D 직교 투영으로 같은 구조가 가능하다 [일반 지식].
+
 ### 2-7. VFX
 
 | 후보 | 품질 | 속도 | 비용 | AI 친화 | Mac |
@@ -147,6 +162,8 @@
 
 - 근거: VFX Graph는 컴퓨트 셰이더·SSBO 필요, URP가 지원하는 플랫폼 중 일부만 지원 [사실] — https://docs.unity3d.com/Packages/com.unity.visualeffectgraph@17.0/manual/System-Requirements.html . 연구 3건(Yellowsky §4.1, D4-03, D4-04)이 모두 A 추천.
 - **추천 A(전투 VFX 전부), B는 환경 대량 입자(재·불씨·반딧불)만 [제안].** 이미 `Rendering/Sandbox/SandboxEmbers.vfx`, `VFX/RM1/*.vfx`가 있다. 정렬 순서 "적 예고 > 적 탄 > 플레이어 피격 > 플레이어 타격 > 장식"(PBZ 연구 §10)을 렌더 큐 표로 고정한다. 바닥 예고·장판은 URP Decal Projector + Shader Graph(D4-03, Yellowsky §4.3)이고, 발밑 원은 ZTest Always 쿼드(D4-03).
+
+- **UE5에서는:** Niagara 하나로 CPU·GPU 입자를 모두 만든다(UE5의 기본 VFX 도구) [사실·W35]. 바닥 예고는 Decal Actor [일반 지식].
 
 ### 2-8. HUD/UI
 
@@ -159,6 +176,8 @@
 - 근거: Unity 비교표 — uGUI는 커스텀 셰이더·머티리얼·키프레임 애니메이션 쪽, UI Toolkit은 다해상도 메뉴·HUD 쪽 권장, 버전마다 표가 바뀜 [사실] — https://docs.unity.com/en-us/engine/6000.6/manual/uitoolkits/ui-system-compare.md , https://docs.unity3d.com/Manual/UI-system-compare.html
 - **추천: v0는 A(D4-02 S4와 일치), v0 뒤 HUD 구체·칸 틀처럼 셰이더가 필요한 부분부터 B [제안].** 실버 헬 금속 질감·액체 구체는 머티리얼 효과가 핵심이라 장기적으로 C보다 B가 맞다. 화면 기준(1920×1080·3840×1080)은 CLAUDE.md 4.2-4.
 
+- **UE5에서는:** UMG(+CommonUI), 금속·액체 효과는 UI Material [일반 지식].
+
 ### 2-9. 사운드
 
 | 후보 | 품질 | 속도 | 비용 | AI 친화 | Mac |
@@ -169,6 +188,8 @@
 
 - 근거: Wwise Indie 무료(제작 예산 $250K 이하) — https://www.audiokinetic.com/pricing , https://blog.audiokinetic.com/free-wwise-for-indie-developers/ . FMOD 조건은 개인 개발 블로그뿐 [단일·충돌].
 - **추천 A [제안].** 연구 3건(D4-03, PBZ T10, Yellowsky) 일치. PBZ식 "접촉·무게·꼬리 3층 + Clash 그룹"은 Mixer 그룹으로 충분하다. 사건 동시 재생이 32개를 넘거나 층 조합이 표로 관리 안 될 때 B를 사용자에게 묻는다.
+
+- **UE5에서는:** MetaSounds(DSP 그래프·샘플 정확도 제어) [사실·W36] + Sound Class·Submix·Concurrency [일반 지식]. Wwise·FMOD 연동도 가능 [일반 지식].
 
 ---
 
@@ -183,6 +204,8 @@
 
 성능 예산은 **Mac M5 Pro, 1920×1080, 60fps(16.6ms) 목표** 기준 GPU ms [추정·Mac 측정 전]. 측정 도구는 기존 `Runtime/NativePerfProbe.cs`·`NativeGame.PerfProbe.cs`.
 
+UE5 대응(기능명, [일반 지식] 표시 외는 §8 출처): a-1 = SceneCapture2D → 저해상도 Render Target(Unfiltered) 또는 SceneViewExtension 커스텀 패스(기본 픽셀화 기능 없음) [W37a], a-2 = 머티리얼 Dither Temporal AA 페이드가 흔한 관례 — 우리 점 금지와 충돌하므로 Translucent 교체 또는 Custom Depth로 직접 구현 [일반 지식], a-3 = Custom Depth/Stencil + Post Process Material [일반 지식], a-4 = Exponential Height Fog + Volumetric Fog 기본 [W34], a-5 = Decal Actor·DBuffer Decal [일반 지식], a-6 = SSAO·Lumen 간접 AO 기본 [일반 지식].
+
 | # | 피처 | 입력 | 출력 | 주입 지점 | 예산 | 비고 |
 |---|---|---|---|---|---|---|
 | a-1 | **PixelActorPass**(3D→픽셀 캐릭터) | 액터 목록(리그 루트·바운드·텍셀 배율), 광원 4개, 월드 카메라 | 아틀라스 RT 1장(Point, 액터별 직교 뷰포트) → 월드 깊이와 비교해 합성 | BeforeRenderingTransparents(합성), 캡처는 AfterRenderingOpaques 전 [제안] | 적 30 + 영웅 + 보스: ≤ 2.0ms | 현행 액터별 `SubmitRenderRequest`(`NativeRigPixelHero.cs:245-246`)와 적 액터당 RT(`NativeEnemyRigRenderer.cs:5`)를 대체. 앵커 스냅(`NativeHd2D.cs:148-165`)·발선 규칙 유지. 1px 림(PoE2 L3)도 이 합성 패스에서 |
@@ -196,6 +219,8 @@
 
 ### 3b. 커스텀 셰이더
 
+UE5 대응: 지형 = Landscape Material + Landscape Layer Blend(Height Blend) [W38], 늪 물 = Water 플러그인 또는 Single Layer Water 셰이딩 모델 [일반 지식], 접지 데칼 = Deferred Decal 머티리얼 [일반 지식], 픽셀 툰 = Post Process Material 또는 Substrate/Unlit 커스텀 [일반 지식].
+
 | 셰이더 | 방식 | 입력 | 핵심 | 기존 자산 |
 |---|---|---|---|---|
 | 지형 블렌드 | **Terrain Lit Shader Graph**(6.3+) | 레이어 4장(알베도·노멀·높이), 스플랫맵 | 높이 블렌드(돌 틈에 흙이 먼저 참), 경사 방향 블렌드, 저주파 마스크 | `Resources/Shaders/HellGroundPBR.shader`, `A2ArenaSoilLit.shader`(대체·통합 대상) |
@@ -206,6 +231,8 @@
 ### 3c. 에디터 툴
 
 규모는 Sonnet 서브에이전트 구현 + CTO 판정 기준 작업일 [추정].
+
+UE5 대응: c-1 = PCG 프레임워크 그래프(규칙 배치, 기본 제공) [W38], c-2 = Post Process Volume 프리셋 Data Asset + Editor Utility [일반 지식], c-3 = Movie Render Queue·High Res Screenshot + Python 에디터 스크립트 [일반 지식], c-4 = Editor Utility Widget [일반 지식], c-5 = stat 명령·Unreal Insights + Data Validation 플러그인 [일반 지식].
 
 | # | 툴 | 기능 | 입력 → 출력 | 누가 쓰나 | 규모 |
 |---|---|---|---|---|---|
@@ -220,6 +247,8 @@
 
 ### 3d. 파이프라인 자동화
 
+UE5 대응: d-1 = Interchange 임포트 파이프라인·Asset Import 설정 + Data Validation [일반 지식], d-2 = Data Validation·Commandlet(배치) [일반 지식], d-3 = Cook/패키징 로그·Size Map [일반 지식], d-4 = 같은 규칙(엔진 무관).
+
 | # | 장치 | 방식 | 막는 것 | 근거 |
 |---|---|---|---|---|
 | d-1 | **임포트 규칙** | `AssetPostprocessor`(폴더별): 텍스처 = sRGB·최대 크기·압축·픽셀 소스 Point 필터·밉맵, 모델 = 단위·카메라/광원 제거·Read/Write 끔·Humanoid 본 이름 검사·삼각형 상한 초과 경고, 오디오 = 로드 방식 | 손으로 고친 임포트 설정이 섞이는 것 | `OnPreprocessModel`은 모델 임포트 시작에 전체 설정을 덮는다, Unity는 후처리기를 미리 빌드한 DLL로 두길 권한다(다른 스크립트 컴파일 오류로 임포트 결과가 바뀌지 않게) [사실] — https://docs.unity3d.com/ScriptReference/AssetPostprocessor.html . 기존 `Editor/SourceTextureImporter.cs`·`SourceAudioImporter.cs`·`A2GroundCoverImporter.cs`를 한 규칙 표로 합친다 |
@@ -229,19 +258,20 @@
 
 ---
 
-## 4. 엔진 메모 — 목표 분위기에 Unity URP가 부족한 지점 (변경 권고 아님)
+## 4. 엔진 메모 — 목표 분위기에 Unity URP가 부족한 지점 (전환 권고는 레인 ENG)
 
-| 부족한 것 | URP 현황 | HDRP에는 | 우리 대응 |
-|---|---|---|---|
-| 볼류메트릭 안개·광산란 | **기본 없음** [사실, 6000.6 문서] | 볼류메트릭 안개·Local Volumetric Fog [사실] — https://docs.unity3d.com/Manual/render-pipelines-feature-comparison.html | §3a-4 직접 구현, 서드파티는 비교 기준 |
-| 화면 공간 반사(SSR) | 없음 [사실, 같은 비교표] | 있음 | 늪 물은 평면 반사·프로브·하이라이트 억제(고정 카메라) |
-| 실시간 GI(SSGI·Lumen류) | 없음, APV(굽기)만 [사실 — APV 문서; SSGI 부재는 PoE2 연구 §3] | SSGI·레이트레이싱 계열 [추정·문서 미확인] | APV + 손으로 놓는 채움광. 목표 두 게임은 UE5 [Yellowsky 단일 / PBZ 사실] |
-| 접촉 그림자 | 없음 [추정] | Contact Shadows [추정·문서 미확인] | 접지 데칼 + SSAO(§3a-5·6) |
-| 업스케일 | STP(컴퓨트, SM5.0 필요, OpenGL ES 불가) [사실] — https://docs.unity3d.com/Manual/urp/stp/stp-upscaler.html | DLSS·FSR·STP | Metal에서 STP 동작은 **미확인** → Mac 시험. 픽셀 액터는 업스케일과 무관하게 화면 텍셀 기준 유지 |
-| 한 프로젝트 두 파이프라인 | 품질 단계별 URP 에셋 교체는 되지만(우리가 이미 함) URP·HDRP 셰이더는 호환되지 않는다 [추정·일반 지식] | — | HDRP "일부 기능만" 가져오는 길은 없다고 보고 설계한다 |
+| 부족한 것 | URP 현황 | HDRP에는 | UE5에는 | 우리 대응(Unity 유지 시) |
+|---|---|---|---|---|
+| 볼류메트릭 안개·광산란 | **기본 없음** [사실, 6000.6 문서] | 볼류메트릭 안개·Local Volumetric Fog [사실] — https://docs.unity3d.com/Manual/render-pipelines-feature-comparison.html | Exponential Height Fog + Volumetric Fog 기본, 카메라 절두체 전체에서 밀도·조명 계산(다수 광원 지원). Start Distance·Max Opacity·Cutoff Distance는 Volumetric Fog에 적용 안 됨 [사실·W34] | §3a-4 직접 구현, 서드파티는 비교 기준 |
+| 화면 공간 반사(SSR) | 없음 [사실, 같은 비교표] | 있음 | Lumen 반사·SSR [일반 지식] | 늪 물은 평면 반사·프로브·하이라이트 억제(고정 카메라) |
+| 실시간 GI(SSGI·Lumen류) | 없음, APV(굽기)만 [사실 — APV 문서; SSGI 부재는 PoE2 연구 §3] | SSGI·레이트레이싱 계열 [추정·문서 미확인] | Lumen [일반 지식]. 목표 두 게임은 UE5 [Yellowsky 단일 / PBZ 사실] | APV + 손으로 놓는 채움광 |
+| 접촉 그림자 | 없음 [추정] | Contact Shadows [추정·문서 미확인] | 광원별 Contact Shadow Length [일반 지식] | 접지 데칼 + SSAO(§3a-5·6) |
+| 업스케일 | STP(컴퓨트, SM5.0 필요, OpenGL ES 불가) [사실] — https://docs.unity3d.com/Manual/urp/stp/stp-upscaler.html | DLSS·FSR·STP | TSR 기본 [일반 지식]. SceneCapture에서 TSR 잔상 보고 [단일·W37b] | Metal에서 STP 동작은 **미확인** → Mac 시험. 픽셀 액터는 업스케일과 무관하게 화면 텍셀 기준 유지 |
+| 3D→픽셀 캐릭터 | 기본 없음(현행 자체 구현) | 기본 없음 | 기본 없음. SceneCapture2D → 저해상도 RT → UI 머티리얼 우회가 포럼 관례, 후처리가 HDR→LDR RT로 깨진다는 보고 [단일·W37a·W37b] | §3a-1 |
+| 한 프로젝트 두 파이프라인 | 품질 단계별 URP 에셋 교체는 되지만(우리가 이미 함) URP·HDRP 셰이더는 호환되지 않는다 [추정·일반 지식] | — | 해당 없음(단일 렌더러) | HDRP "일부 기능만" 가져오는 길은 없다고 보고 설계한다 |
 
 - 방향성: Unity 2026 렌더 파이프라인 전략에서 URP에 개발이 집중되고, HDRP는 "유지 모드"라는 보도와 "폐기 아님"이라는 Unity 직원 글이 함께 있다 [출처 충돌] — https://80.lv/articles/unity-unveils-2026-render-pipelines-strategy/ , https://discussions.unity.com/t/render-pipelines-strategy-for-2026/1710004/219 . 새 렌더 기능은 URP 쪽에 들어올 가능성이 높다 [추정].
-- 결론(사실만): 목표 분위기의 핵심인 **볼류메트릭 광산란은 URP에 없고 직접 만들거나 서드파티를 써야 한다.** 그 밖의 차이(SSR·실시간 GI)는 탑다운 고정 카메라에서 손 조명·굽기로 메울 수 있는 범위다 [추정]. 엔진 변경 권고는 하지 않는다.
+- 결론(사실만): 목표 분위기의 핵심인 **볼류메트릭 광산란은 URP에 없고 직접 만들거나 서드파티를 써야 한다.** 그 밖의 차이(SSR·실시간 GI)는 탑다운 고정 카메라에서 손 조명·굽기로 메울 수 있는 범위다 [추정]. UE5는 볼류메트릭 안개·Lumen을 기본으로 갖지만, 우리 핵심 표현인 3D→픽셀 캐릭터는 어느 엔진에도 기본 기능이 없어 직접 만들어야 한다(위 표). 엔진 전환 판단과 권고는 레인 ENG가 한다. 이 문서는 재료만 낸다.
 
 ---
 
@@ -271,6 +301,7 @@
 | D4 | HUD v0 뒤 UGUI 이전 | v0는 IMGUI | 장기 방향 |
 | D5 | 예산 검사 자동 실행 연결 | 수동 → 승인 뒤 자동 | 새 자동화 장치(CLAUDE.md 3.5) |
 | D6 | Mac 판정 품질 단계 | High 이상 고정 + Mac 렌더러에 저비용 안개 | 판정 일관성 |
+| D7 | 엔진 유지/전환 | 이 문서는 재료만(UE5 칸) | 레인 ENG가 권고, 사용자 결정 |
 
 ## 7. 한계
 
@@ -278,6 +309,7 @@
 - ms 예산·작업일은 전부 추정이다. S1 첫 측정으로 갈아 끼운다.
 - Yellowsky의 엔진(UE5)은 출처 1건이다. 광원·안개 공개 수치는 없다(Yellowsky 연구 §2.5).
 - 이 레인은 코드를 고치지 않았다. 코드 줄 번호는 unity/main `75add6ff4` 기준.
+- UE5 칸 가운데 [일반 지식]으로 표시한 기능명은 Epic 문서 URL을 붙이지 않았다. ENG 레인이 판단 근거로 쓰기 전에 5.x 공식 문서로 확인해야 한다. 특히 SceneCapture2D 픽셀화의 품질·비용은 포럼 보고뿐이다.
 
 ## 8. 출처
 
@@ -316,3 +348,10 @@
 | W31 | 80.lv Unity 2026 렌더 파이프라인 전략 | https://80.lv/articles/unity-unveils-2026-render-pipelines-strategy/ |
 | W32 | Unity 포럼 Render Pipelines strategy for 2026 | https://discussions.unity.com/t/render-pipelines-strategy-for-2026/1710004/219 |
 | W33 | MCP for Unity 도구 목록 | https://glama.ai/mcp/servers/@CoplayDev/unity-mcp/blob/2a1fe67e2159ee73cae8acf63312417c88fe9cd9/unity-mcp-skill/references/tools-reference.md |
+| W34 | Epic, Exponential Height Fog(Volumetric Fog 포함) | https://dev.epicgames.com/documentation/en-us/unreal-engine/exponential-height-fog-in-unreal-engine |
+| W35 | Epic, Niagara로 VFX 만들기 | https://dev.epicgames.com/documentation/unreal-engine/creating-visual-effects-in-niagara-for-unreal-engine?lang=en-US |
+| W36 | Epic 포럼, Unreal Engine 5.0 Preview(MetaSounds·Control Rig) | https://forums.unrealengine.com/t/unreal-engine-5-0-preview/500950 |
+| W37a | Epic 포럼, 픽셀아트 해상도(SceneCapture2D → 저해상도 RT) | https://forums.unrealengine.com/t/exact-resolution-for-a-pixel-art-game/589310/2 |
+| W37b | Epic 포럼, SceneCapture2D 후처리 문제 / TSR 잔상 | https://forums.unrealengine.com/t/ue5-4-scene-capture-2d-with-post-processing/2082873 , https://forums.unrealengine.com/t/increase-quality-of-scenecapture2d/2358402 |
+| W37c | Epic Python API, SceneCaptureComponent2D | https://docs.unrealengine.com/PythonAPI/class/SceneCaptureComponent2D.html |
+| W38 | PCG 프레임워크 입문(제3자) / Landscape Layer Blend Height Blend(제3자) | https://www.strayspark.studio/blog/ue5-pcg-framework-getting-started , https://www.udemy.com/course/introduction-to-landscapes-in-unreal-engine-5/ |
