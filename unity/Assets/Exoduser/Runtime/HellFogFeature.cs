@@ -6,7 +6,7 @@ namespace Exoduser.UnityPort
         public override void AddRenderPasses(ScriptableRenderer renderer,ref RenderingData data)
         {
             var game=NativeGame.Instance;
-            if(NativeGame.HellAtmosphereEnabled&&game!=null&&data.cameraData.camera==game.Remodel3DCamera)base.AddRenderPasses(renderer,ref data);
+            if(NativeGame.HellAtmosphereEnabled&&NativeGraphicsOptions.Fog&&game!=null&&data.cameraData.camera==game.Remodel3DCamera)base.AddRenderPasses(renderer,ref data);
         }
     }
 }
