@@ -83,6 +83,7 @@ namespace Exoduser.UnityPort
             if (string.IsNullOrEmpty(output)) { Application.Quit(3); yield break; }
             Directory.CreateDirectory(output);
             AudioListener.volume = 0; AudioListener.pause = true;
+            Screen.SetResolution(3840, 1080, FullScreenMode.Windowed);
             smokeActive = true; pauseSmoke = true; Running = false;
             lobby.Flow.ShowLobby(); lobby.Flow.SelectPreview();
             if (!lobby.Flow.EnterTest()) { Application.Quit(3); yield break; }
@@ -97,15 +98,22 @@ namespace Exoduser.UnityPort
             Simulation.SpawnNormalEnemy(3650, 6400);
             for (int i = 0; i < 20; i++) { UpdateViews(); yield return null; }
             Time.timeScale = 0;
-            yield return null;
+            yield return new WaitForEndOfFrame();
             int width = 3840, height = 1080;
+            var screenBefore = ScreenCapture.CaptureScreenshotAsTexture();
+            if (screenBefore.width != width || screenBefore.height != height)
+            {
+                Debug.LogError("[B5] 실제 화면 크기 불일치 " + screenBefore.width + "x" + screenBefore.height);
+                Destroy(screenBefore); Application.Quit(3); yield break;
+            }
+            File.WriteAllBytes(Path.Combine(output, "07-kill-off.png"), screenBefore.EncodeToPNG());
             // --b5fix-off makes the first draw the unmodified product. Two immediate renders
             // share simulation, shader time, camera, geometry, lighting and actor animation.
             var before = B5ReadFrame(width, height);
-            File.WriteAllBytes(Path.Combine(output, "07-kill-off.png"), before.EncodeToPNG());
+            File.WriteAllBytes(Path.Combine(output, "07-kill-off-world.png"), before.EncodeToPNG());
             var changed = B5Apply(a2Root);
             var after = B5ReadFrame(width, height);
-            File.WriteAllBytes(Path.Combine(output, "07-kill-on.png"), after.EncodeToPNG());
+            File.WriteAllBytes(Path.Combine(output, "07-kill-on-world.png"), after.EncodeToPNG());
             var a = before.GetPixels32(); var b = after.GetPixels32();
             int pixels = 0; long sum = 0;
             for (int i = 0; i < a.Length; i++)
@@ -113,12 +121,19 @@ namespace Exoduser.UnityPort
                 int d = Math.Abs(a[i].r-b[i].r)+Math.Abs(a[i].g-b[i].g)+Math.Abs(a[i].b-b[i].b);
                 if (d != 0) pixels++; sum += d;
             }
+            yield return new WaitForEndOfFrame();
+            var screenAfter = ScreenCapture.CaptureScreenshotAsTexture();
+            File.WriteAllBytes(Path.Combine(output, "07-kill-on.png"), screenAfter.EncodeToPNG());
+            var sa = screenBefore.GetPixels32(); var sb = screenAfter.GetPixels32();
+            int screenPixels = 0;
+            for (int i = 0; i < sa.Length; i++) if (!sa[i].Equals(sb[i])) screenPixels++;
             string receipt = "{\"width\":3840,\"height\":1080,\"changedPixels\":" + pixels
                 + ",\"rgbAbsoluteDifference\":" + sum + ",\"disabledShafts\":" + changed[0]
-                + ",\"waterRenderers\":" + changed[1] + ",\"sameFrame\":true,\"hud\":false,"
-                + "\"scope\":\"actual GPU Player camera RenderTexture; fixed bridge and two distant fixture enemies; not natural play\"}";
+                + ",\"waterRenderers\":" + changed[1] + ",\"worldSameFrame\":true,\"screenChangedPixels\":" + screenPixels
+                + ",\"hud\":true,\"scope\":\"actual hidden-desktop GPU Player final screen pair plus same-frame world pair; fixed bridge and two distant fixture enemies; not natural play\"}";
             File.WriteAllText(Path.Combine(output, "pixel-diff.json"), receipt);
             Destroy(before); Destroy(after);
+            Destroy(screenBefore); Destroy(screenAfter);
             lobby.enabled = false; lobby.CloseStartupCaptureMedia(); sound.Reset();
             Application.Quit(changed[0] > 0 && changed[1] > 0 ? 0 : 3);
         }
