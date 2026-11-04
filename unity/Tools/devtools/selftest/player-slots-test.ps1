@@ -13,6 +13,8 @@ function Check($condition,$why){if(-not $condition){throw ('FAIL: '+$why)};$scri
 function Say($m){}
 function Get-CommitFreeGB {return 30}
 function Get-UnityProcs {return @([pscustomobject]@{Id=123;ProcessName='EXODUSER-Unity'})}
+function Find-ZombiePlayers {return @()}
+function Find-UserGames {return @()}
 try {
  Check ([bool](Get-Command Acquire-PlayerSlot -ErrorAction SilentlyContinue)) 'Player still shares Editor slot; independent acquisition missing'
  New-Item -ItemType Directory -Path $Root -Force|Out-Null
@@ -140,6 +142,11 @@ try {
  # Exercise real Cmd-Player reservation cleanup without ever creating a Unity process.
  $ExecDir=Join-Path $Root '_exec';$Exe=Join-Path $Root 'fake.exe';[IO.File]::WriteAllText($Exe,'never executed')
  $JobArgs=@();$ArgsJson='';$Desktop='batch';$DryRun=$false
+ # 11-03: PC Player runs are refused unless one of the CLAUDE.md 3.4 exceptions is named.
+ function Reject($why){throw ('REJECT '+$why)}
+ $PcException='';$blocked=$false;try{Cmd-Player}catch{$blocked=$_.Exception.Message -like 'REJECT PC에서는 player*Mac*'}
+ Check $blocked 'PC player ran without -PcException'
+ $PcException='buildloop'
  function Acquire-PlayerSlot {throw 'fixture admission failure'}
  $Owner='cleanup';$Kind='editor';Cmd-Reserve|Out-Null
  $blocked=$false;try{Cmd-Player}catch{$blocked=$_.Exception.Message -eq 'fixture admission failure'}

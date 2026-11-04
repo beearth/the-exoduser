@@ -86,7 +86,7 @@ namespace Exoduser.UnityPort
         {
             var square = new Texture2D(1, 1, TextureFormat.RGBA32, false) { filterMode = FilterMode.Point };
             square.SetPixel(0, 0, Color.white); square.Apply(false, true); maliceSquare = Sprite.Create(square, new Rect(0, 0, 1, 1), new Vector2(.5f, .5f), 100);
-            string[] paths = { "skill_malice_smoke", "skill_malice_arcane", "skill_malice_impact" };
+            string[] paths = { "skill_malice_smoke", "skill_malice_arcane", "skill_malice_impact_pal" };
             int[] columns = { 4, 6, 3 }, rows = { 4, 6, 3 };
             for (int layer = 0; layer < 3; layer++)
             {

@@ -67,3 +67,7 @@ Impact 담당의 실제 MCP e73821a4 진단은 동일 회복 영역·같은 프�
 | 공통/Desktop | 검증 완료 후 기존 통합 담당이 순수 수신 변경만 정상 인수. unity/main/바탕화면 실제 반영 전에는 READY·완료로 승격하지 않음 |
 
 내부 근거: I:/EXODUSER-Storage/demo-art/impact/MCP-r5-회복-同프레임-결과.json 및 mcp-r3-captures/MCP-r5-bridge-heal-*.png. 원문·기술 patch·검수 결과: I:/EXODUSER-Storage/steam-keyshot/a2/field-screen-20261031/decal-receiver/. API 연결 안내는 원격 main의 docs/API연결_가이드.md 관련 구역을 적용했다. 유료 생성/결제0.
+
+## 2026-11-03 실제 스킬 촬영 분기
+
+`--unity-ground-map-capture --unity-ground-skills`는 위 QA 사각 DBuffer projector를 만들지 않고 실제 DispatchSlot→NativeSkillView 수신깊이 장판을 촬영한다. 기존 단독 --unity-ground-map-capture의3개 시험 사각형 경로는 유지한다. 네 지형/폭/슬램 연속컷/QA 배우숨김/기본값과 Mac 실행 인자는 [P0 최신20:20 절](UNITY_GROUND_AOE_P0_20261103.md)에 명시했다. 두 경로의 GPU기술과 결과를 혼용하지 않는다.

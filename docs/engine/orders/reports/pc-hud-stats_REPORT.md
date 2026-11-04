@@ -228,4 +228,4 @@ sha 하드코딩 교체(코드 상수만):
 
 ### Mac INTEG-14 HS-M7 후속 (2026-10-22)
 
-권고 (가)를 적용하고 19종을 모두 최종 PASS로 회복했다. 원래 추출 도구 재실행·데이터 동일성·source_line metadata +2 및 수정 전/후 실행을 구분했다. PC 테스트 원본 byte 유지. Mac PC HUD199/0, PC followups fieldboss154/1(`arrow_passes_through_on_hitcd(n=0):recycled`)은 PC 측167/0과 구분해 인계한다. E2E1회7PASS/11NOT_READY·처치0. [INTEG-14 상세](../../INTEG14_HUD_SNAPSHOT_HS_M7_20261022.md).
+권고 (가)를 적용하고 19종을 모두 최종 PASS로 회복했다. 원래 추출 도구 재실행·데이터 동일성·source_line metadata +2 및 수정 전/후 실행을 구분했다. PC 테스트 원본 byte 유지. Mac PC HUD199/0, PC followups fieldboss154/1(`arrow_passes_through_on_hitcd(n=0):recycled`)은 PC 측167/0과 구분해 인계한다. E2E1회7PASS/11NOT_READY·처치0. [INTEG-14 상세](../../../_archive/engine/INTEG14_HUD_SNAPSHOT_HS_M7_20261022.md).

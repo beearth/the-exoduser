@@ -166,8 +166,8 @@ namespace Exoduser.UnityPort
    else if(t==2)
    {
     Add(l,K.Heading,"h.audio",new Rect(0,10,1700,29),false);
-    RowFor(l,DefSfx,0,45,960);RowFor(l,DefBgm,0,93,960);
-    Add(l,K.Select,"optBgmTrack",new Rect(0,141,960,48),true);
+    RowFor(l,DefSfx,0,45,818);RowFor(l,DefBgm,0,93,818);
+    Add(l,K.Select,"optBgmTrack",new Rect(0,141,818,48),true);
    }
    else
    {
@@ -223,11 +223,19 @@ namespace Exoduser.UnityPort
    Txt(new Rect(96,1004,500,20),savedLabel,14,savedColor);
    if(SettingsHostApplyPending||SettingsHostApplyFailed||SettingsPersistenceProblem||!SettingsPersistenceEnabled){
     string notice=SettingsPersistenceNotice();
-    float savedH=St(14,FontStyle.Normal,savedColor,TextAnchor.MiddleLeft).CalcSize(new GUIContent(savedLabel)).y;
-    float noticeH=St(11,FontStyle.Normal,Dim,TextAnchor.MiddleLeft).CalcSize(new GUIContent(notice)).y;
-    // Keep the web autosave baseline; round only the extra native/QA notice below it.
-    float noticeY=Mathf.Max(1022,Mathf.Ceil(1004+(20+savedH)/2-(18-noticeH)/2));
-    Txt(new Rect(96,noticeY,1200,18),notice,11,Dim);
+    var savedStyle=St(14,FontStyle.Normal,savedColor,TextAnchor.MiddleLeft);
+    var noticeStyle=St(11,FontStyle.Normal,Dim,TextAnchor.MiddleLeft);
+    var savedBounds=NativeUiAudit.TextLayoutBounds(new Rect(96,1004,500,20),new GUIContent(savedLabel),savedStyle);
+    var noticeContent=new GUIContent(notice);var noticeRect=new Rect(96,1022,1200,18);
+    float scale=Mathf.Max(.001f,Mathf.Abs(GUI.matrix.m11)),pixel=1/scale;
+    // Keep the web autosave baseline. The extra notice clears the SAME native
+    // bounds used by the audit, including native bitmap-font rounding on Metal.
+    for(int step=0;step<4;step++){
+     float top=NativeUiAudit.TextLayoutBounds(noticeRect,noticeContent,noticeStyle).yMin;
+     float missing=savedBounds.yMax+pixel-top;if(missing<=0)break;
+     noticeRect.y+=Mathf.Ceil(missing*scale)/scale;
+    }
+    Txt(noticeRect,notice,11,Dim);
    }
    if(Time.unscaledTime<presetNoteUntil)Txt(new Rect(260,1004,600,20),presetNote,14,new Color32(120,200,150,255));
    var close=new Rect(1644,994,180,40);int closeIdx=navigation.Count-1;
@@ -249,8 +257,8 @@ namespace Exoduser.UnityPort
   void DrawButton(Rect r,string text,bool selected,bool danger)
   {
    bool hover=r.Contains(Event.current.mousePosition);
-   NativeSilverHellUi.ActionPlate(r,false,selected||hover?1:0,hover&&ExoInput.Mouse(0),22,4);
-   Txt(r,text,16,danger?new Color32(176,179,179,255):Bone,TextAnchor.MiddleCenter,FontStyle.Normal);
+   NativeSilverHellUi.ActionPlate(r,false,selected||hover?1:0,hover&&ExoInput.Mouse(0),22,4,settingsChip:true);
+   NativeSilverHellUi.PlateLabel(r,text,St(16,FontStyle.Normal,danger?new Color32(176,179,179,255):Bone,TextAnchor.MiddleCenter));
   }
   bool Clicked(Rect r){return NativeSilverHellUi.Button(r,GUIContent.none,GUIStyle.none);}
   void DrawItem(It it,float sy,bool fullscreen)

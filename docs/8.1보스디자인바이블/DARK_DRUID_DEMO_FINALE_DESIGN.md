@@ -33,14 +33,14 @@
 | 잠행 피해 중심 | 피날레는 `_diveTx/_diveTy` 고정 좌표로 분출 VFX·피해·실패 넉백 방향 계산. 본체 분리 보정으로 e.x/y가 움직여도 전조 위치와 타격 위치 일치. 일반 드루이드는 기존 e.x/y 중심 유지 |
 | 잠행 경고 | 확정 좌표에 반경 e.r+120, 선3px·진행호6px, 반투명 .13 녹색 원. 잠행/분출 타격 전까지만 표시. 진행호는 잔여30f 기준 clamp. `_drawDruidFinaleRing` 48개 선분으로 WebGL에서도 경계 표시 |
 | 잠행 수치 보존 | 침강 최소48f(공용 teleM 후 하한), 잠행45f, 분출40f의 8f 경과 시 1회, 입력 피해 floor(atk×2.2), 실패 중독+4/감속90f. 기존 패링 경로 유지 |
-| HP 페이즈 전환 | 기존 HP상한 보정·ATK×1.3·SPD/포이즈/쿨다운 강화·무적90f 보존. 피날레만 제자리 rest90f로 전환하여 뒤 순간이동·즉시 피해·방사탄 제외 |
+| HP 페이즈 전환 | 기존 HP상한 보정·ATK×1.3(현행 v0.4 코드: 피날레는 `e.atk=_druidFinaleAtk(e)` = base×[1,1.12,1.25,1.4,1.6][phase])·SPD/포이즈/쿨다운 강화·무적90f 보존. 피날레만 제자리 rest90f로 전환하여 뒤 순간이동·즉시 피해·방사탄 제외 |
 | 큰 막 전환 연출 | 60%→`숲의 포식자 / Forest predator`, 20%→`숲의 단말마 / Death throes`, 텍스트90f, 기존 druid_shockring(e.r×3/256,5f/frame), shake8·SFX.groggy. 80/40%는 같은 막 유지. 잘못된 공용 HP+30% 표기는 이 분기에서 사용하지 않음 |
 | 부활 상태 초기화 | 즉시/폴백 부활에서 `_druidAct=-1`, `_druidStep=0`, `_druidRest=0`, `_druidTargetLocked=false`. 원래 부활 HP·확률·포인트·최종 사망/클리어 경로 유지 |
 | 독늪 판정 | 3개·반경150·중심간격360·전조55/73/91f·maxT300 유지. 틱30f, 입력 floor(atk×0.9)의0.4배×상성도 기존 유지. 새 독 디버프를 추가하지 않음 |
-| 독늪 시각 | `_drawDruidFinalePool`: 기존 aoe4×2 시트를 반경150 원에 내접하는 정사각 박스(한 변150×√2≈212.13px)에 표시. WebGL clip은 no-op이므로 의존하지 않음. texture alpha 예고.14/활성.32, 바닥 fill .06/.16, 테두리 alpha .85·3px, 예고 진행호5px, 원/호48선분. 마지막60f fade. 기존 비피날레 R=lp.r×1.4 렌더 유지 |
+| 독늪 시각 | `_drawDruidFinalePool` (코드 재확인): ① `_drawDruidPoolClip`(풀 클립 아틀라스, R=lp.r×1.12, 내부 테두리 alpha×.55) → 미준비 시 ② `_drawDruidGroundRing` 순으로 alpha 예고 .36/활성 .72(×fade). 둘 다 실패하면 ③ 기존 aoe4×2 시트를 반경150 원에 내접하는 정사각 박스(반변 lp.r×√½, 한 변≈212.13px)에 alpha 예고 .10/활성 .24(×fade). 이어 경계 원 alpha .38×fade·선폭1.5px(예고 `#d4f7a8`/활성 `#8bdd45`), 예고 중 진행호 선폭1.5px, 원/호48선분. 별도 바닥 fill 없음. 마지막60f fade. WebGL clip은 no-op이므로 의존하지 않음. 비피날레 si0/si3도 풀 클립→그라운드 링→aoe 시트(R=lp.r×1.4) 순 |
 | 스프라이트 | 기존 walk/attack/transform/beast/dive/aoe 사용. 전용 volley 상태는 attack 시트150ms/frame 사용. 신규 bitmap/캐릭터 없음 |
 | 검증 URL | `http://127.0.0.1:3333/game.html?demo&bosstest=3` (`?bic&bosstest=3`도 동일 전투 프로필). 기존 테스트 패널은 공용 기술 카탈로그를 표시하며 자연 AI의5종 목록과 구분 |
-| 종료 UI | 데모 마지막 stage·hell0에서 출구 클리어 시 clearSub=`썩은 숲을 정복했습니다. / You conquered the Rotten Forest.`, nextBtn=`데모 종료 / End of Demo`. 클릭은 `_showNextDiffPop`을 생략하고 `nextStage()`의 기존 demoEnd로 연결. 일반 stage/정식 모드는 기존 난이도 선택 유지 |
+| 종료 UI | 데모 마지막 stage·hell0에서 출구 클리어 시 clearSub=`썩은 숲은 아직 끝나지 않았다. / The Rotten Forest is not finished yet.`, nextBtn=`데모 종료 / End of Demo`. 클릭은 `_showNextDiffPop`을 생략하고 `nextStage()`의 기존 demoEnd로 연결. 일반 stage/정식 모드는 기존 난이도 선택 유지 |
 
 ### 반복 검수 기록
 
@@ -222,3 +222,22 @@ HP는 **현재 생명 주기의 `hp/mhp`**다. 부활 이후에는 이 구성이
 | 구현 전 결정 | 데모 전용 프로필 식별 조건, 대표 장비/신성력, 총 전투 시간 목표, 독립 ORB 및 보조 기술 채택 여부 |
 | 조사 중 발견 | 전환 HP 보정과 `HP +30%` 표기 차이, ORB의 '패링 불가' 표현과 실제 윈도우 보호 구분 필요 |
 | 이번 변경 | 이 설계 문서만 추가. 게임 코드·에셋·공통 전투 수치 수정 없음 |
+
+## 2026-10-27 STY-D9 — 1-1(si0) 드루이드 처치 표시 = 땅속 침강 도주
+- 피날레(`_isDruidFinale`, `_DEMO_LAST_STAGE===3`일 때만 참)는 건드리지 않았다. 바뀐 것은 **si0 일반 드루이드의 마지막 사망 표시**뿐: 시체·피·사망 문구 대신 `emerge.png` 0→7 침강 후 소멸(수치·패턴·부활 판정·보상·출구 개방 무변경). 상세 표·행 번호: `2_5 부활+에너지쉴드시스템/2_5 부활+에너지쉴드시스템.md` 말미 "STY-D9" 절.
+
+## 2026-10-27 STY-12 다크드루이드 한 줄 대사 (si0 등장·침강, si3 사망)
+| 시점 | KO | EN | 번역 No. |
+|---|---|---|---|
+| si0 보스 입장 연출 | 새 거름이 떨어졌군. | Fresh compost has fallen. | 3343 |
+| si0 침강 시작(STY-D9) | 숲은 아직 배고프다. 둥지에서 보자. | The forest is still hungry. See you at the nest. | 3344 |
+| si3 마지막 사망 | …죽기 싫었을 뿐이다. | …I just didn't want to die. | 3347 |
+`#bossLine` 자막(`game.html` `_bossLine`). 부활 판정이 걸린 사망에서는 띄우지 않고, 아레나 진입당 키별 1회. 피날레(`_isDruidFinale`) 분기에는 연결하지 않았다. 근거 `11내러티브·로어디자인/CH1_STORY_SPINE_20261027.md` §5.
+
+## 2026-10-28 LT-8 — 1-1(si0) 침강 시작 시 드루이드 위험물 정리
+- 1-1 다크드루이드 사망(침강) 항목에 추가: **1-1 침강 시작 시 구슬·드루이드 독 탄·늪 정리.** `_druidSinkStart`(game.html `_isSi0DruidSink` 경로)가 `_druidPoison && !friendly` 적 탄(`_recycleProj` 후 제거), `G._lavaPools`(독 늪), `G._druidOrbs`(독 구슬)를 비운다. 방식은 1-4 `_finishDruidFinale`의 정리(17349행 부근)와 동일.
+- 원인: 구슬 갱신은 `(stage 0·3)&&G.bossAlive` 안이고 그리기는 무조건이라, 사망 뒤 갱신이 멈춘 구슬이 화면에 얼어붙어 남았다(웹 동일 현상). 침강 시작 시점에는 보스가 이미 사망(`alive=false`)이라 신규 생성이 없어 정리 한 번으로 충분.
+- 정리하지 않는 경로: 1-4 최종전(`_isDruidFinale`)의 마지막 버티기·판정 부활(`_reviveTimer>0`) 대기 — 아직 전투 중이다. 1-4 승리 정리(`_finishDruidFinale`)는 기존대로.
+- 수치·패턴·부활 판정·보상·출구 개방 무변경(표시·잔존물만).
+- 검증(headless·음소거 Playwright, `?bosstest=0`, 1600×900): 사살 직전 구슬 6·늪 3·독 탄 10을 주입 → 정리 전(origin/main) 침강 시작·클리어 시점 구슬 6·늪 3(독 탄 10→5), 정리 후 침강 시작·침강 0.7초·클리어 시점 모두 구슬 0·늪 0·독 탄 0, pageerror 0. 캡처 `E:/exoduser-wt/_out/lt8_druid_sink/`(`after_0_before_kill`·`after_1_sink_start`·`after_3_clear`, 정리 전 비교 `before_*_result.json`).
+- Unity 짝: `DruidBoss.Hazards`(`bossAliveFlag` 갱신 게이트)의 1-1 침강 시작 정리는 유니티 총괄이 이 커밋 SHA 기준으로 수정·druid-boss-oracle 재대조.

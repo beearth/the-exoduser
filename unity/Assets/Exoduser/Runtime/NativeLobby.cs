@@ -34,8 +34,8 @@ namespace Exoduser.UnityPort
   float musicBaseGain,bgmRelativeGain=1;
   public void SetBgmPercent(int percent){bgmRelativeGain=Mathf.Clamp(percent,0,100)/60f;if(music!=null)music.volume=musicBaseGain*bgmRelativeGain*NativeDecisionSound.MusicGain;}
   void MusicGain(float gain){musicBaseGain=gain;if(music!=null)music.volume=gain*bgmRelativeGain*NativeDecisionSound.MusicGain;}
-  NativeLobbyVideo movie;AudioSource music;LobbySubtitleData subtitles;Action enter;bool active,ready,musicDucked,showLanguages,focused=true,musicWasPlayingOnBlur,titleSdFallback,musicPausedForVideo;int splash,inputFence=-1;readonly FdgPlaybackWatchdog fdgWatchdog=new FdgPlaybackWatchdog();float since,musicFade,holdDelta;LobbyPage displayed;GUIStyle normal,small,heading,caption,captionShadow,ukCaption,ukCaptionShadow,button;GUIStyle zhCaption,zhCaptionShadow,zhtCaption,zhtCaptionShadow,jaCaption,jaCaptionShadow,thCaption,thCaptionShadow;Texture2D logo,enterArt,brand,lobbyPoster,gatePoster,splashTitle,splashBrand,fdgEmblem,ancestor,ancestorFirst,enterButton,lobbyPanel,lobbyBanner,disabledEnter;GUIStyle lobbyText,lobbyMicro,lobbyPromo,lobbyPromoDetail,lobbyTitle,lobbySub,lobbyMode,lobbyFooter,lobbyPlus;bool lobbyQuitPrompt,languageInputFence;int languageCursor;readonly string[] tracks={"prologue_theme","prologue_theme_abyssal_fracture","prologue_theme_rebirth_gate_1","prologue_theme_rebirth_gate_2"};
-  public void Initialize(Action enterNativeTest){enter=enterNativeTest;if(ready)return;ready=true;NativeDecisionSound.Ensure(gameObject);titleSignboard.Initialize(transform);movie=new NativeLobbyVideo(transform);movie.SetPlaybackAllowed(focused);music=gameObject.AddComponent<AudioSource>();music.playOnAwake=false;music.loop=true;music.spatialBlend=0;var data=Resources.Load<TextAsset>("Data/lobby_frontend");if(data!=null)subtitles=JsonUtility.FromJson<LobbySubtitleData>(data.text);logo=Art("logo_exoduser_solid");enterArt=Art("enter_art");brand=Art("brand_logo");lobbyPoster=Art("lobby_poster");gatePoster=Art("gate_poster");splashTitle=Art("splash_title");splashBrand=Art("splash_brand");fdgEmblem=Art("fdg_emblem");ancestor=Art("varkan_idle");ancestorFirst=Art("varkan_first");enterButton=Art("lobby_enter");lobbyPanel=Art("lobby_panel");lobbyBanner=Art("lobby_banner");disabledEnter=Art("lobby_enter_disabled");InitializeCharacterStore();EnsureStartupMedia();PrepareEntryHoverClip();if(arabicCaptionPreview){SetLanguage("ar");arabicCaptionOverlay=gameObject.AddComponent<NativeArabicCaptionOverlay>();arabicCaptionOverlay.Initialize(this);}}
+  NativeLobbyVideo movie;AudioSource music;LobbySubtitleData subtitles;Action enter;bool active,ready,musicDucked,showLanguages,focused=true,musicWasPlayingOnBlur,titleSdFallback,musicPausedForVideo;int splash,inputFence=-1;readonly FdgPlaybackWatchdog fdgWatchdog=new FdgPlaybackWatchdog();float since,musicFade,holdDelta;LobbyPage displayed;GUIStyle normal,small,heading,caption,captionShadow,ukCaption,ukCaptionShadow,button;GUIStyle zhCaption,zhCaptionShadow,zhtCaption,zhtCaptionShadow,jaCaption,jaCaptionShadow,thCaption,thCaptionShadow;Texture2D logo,enterArt,brand,lobbyPoster,gatePoster,splashTitle,splashBrand,fdgEmblem,ancestor,ancestorFirst,enterButton,lobbyBanner,disabledEnter;GUIStyle lobbyText,lobbyMicro,lobbyPromo,lobbyPromoDetail,lobbyTitle,lobbySub,lobbyMode,lobbyFooter,lobbyPlus;bool lobbyQuitPrompt,languageInputFence;int languageCursor;readonly string[] tracks={"prologue_theme","prologue_theme_abyssal_fracture","prologue_theme_rebirth_gate_1","prologue_theme_rebirth_gate_2"};
+  public void Initialize(Action enterNativeTest){enter=enterNativeTest;if(ready)return;ready=true;NativeDecisionSound.Ensure(gameObject);titleSignboard.Initialize(transform);movie=new NativeLobbyVideo(transform);movie.SetPlaybackAllowed(focused);music=gameObject.AddComponent<AudioSource>();music.playOnAwake=false;music.loop=true;music.spatialBlend=0;var data=Resources.Load<TextAsset>("Data/lobby_frontend");if(data!=null)subtitles=JsonUtility.FromJson<LobbySubtitleData>(data.text);logo=Art("logo_exoduser_solid");enterArt=Art("enter_art");brand=Art("brand_logo");lobbyPoster=Art("lobby_poster");gatePoster=Art("gate_poster");splashTitle=Art("splash_title");splashBrand=Art("splash_brand");fdgEmblem=Art("fdg_emblem");ancestor=Art("varkan_idle");ancestorFirst=Art("varkan_first");enterButton=Art("lobby_enter");lobbyBanner=Art("lobby_banner");disabledEnter=Art("lobby_enter_disabled");InitializeCharacterStore();EnsureStartupMedia();PrepareEntryHoverClip();if(arabicCaptionPreview){SetLanguage("ar");arabicCaptionOverlay=gameObject.AddComponent<NativeArabicCaptionOverlay>();arabicCaptionOverlay.Initialize(this);}}
   Texture2D Art(string path){return Resources.Load<Texture2D>("Art/lobby/"+path);}
   public void Begin(){CancelStartupEntry();CancelCharacterStory();if(!ready)Initialize(null);active=true;WorldEndedNaturally=false;Flow=new LobbyFlow();splash=1;since=0;fdgWatchdog.Reset();StopMusic();movie.Open("fdg_intro.mp4",false,true,false);movie.Volume(1);}
   public void AdvanceSplash(){if(TransitionPage("splash-menu",()=>AdvanceSplash()))return;inputFence=Time.frameCount;if(splash==1){splash=2;since=0;titleSdFallback=false;titleRowsBuiltFor=-1;titleRows.Clear();movie.Close();titleSignboard.Restart();}else if(splash==2){splash=0;OpenForPage();}}
@@ -126,19 +126,61 @@ namespace Exoduser.UnityPort
    return UseNotoCaptionForLanguage(Language)&&ukCaptionShadow!=null?ukCaptionShadow:captionShadow;
   }
   public void Draw(){if(!IsBlocking||!ready)return;Styles();var old=GUI.matrix;var tint=GUI.color;bool enabled=GUI.enabled;int priorDepth=GUI.depth;GUI.matrix=Matrix4x4.identity;if(!StartupWorldVisible)Fill(new Rect(0,0,Screen.width,Screen.height),Color.black);float fit=Mathf.Min(Screen.width/1920f,Screen.height/1080f);GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*fit)/2,(Screen.height-1080*fit)/2,0),Quaternion.identity,new Vector3(fit,fit,1));OriginalArtDrawn=false;CaptionVisible=false;if(!StartupWorldVisible)Fill(new Rect(0,0,1920,1080),Color.black);if(StartupEntryActive)DrawStartupEntry();else if(CharacterStoryActive)DrawCharacterStory();else if(splash==1){if(fdgWatchdog.FallingBack)Image(new Rect(0,0,1920,1080),fdgEmblem);else DrawMovie(new Rect(0,0,1920,1080),fdgEmblem,false);Label(new Rect(0,955,1920,60),K("아무 키나 눌러 계속","Press any key to continue"),small,TextAnchor.MiddleCenter);}else if(splash==2){DrawTitleSplash();}else if(Flow.Page==LobbyPage.Lobby)DrawLobby();else{DrawCinematicMovie();NativeUiViewport.MaskFrontend();if(Flow.Page==LobbyPage.Title||Flow.Page==LobbyPage.Gate)DrawGatePresentation();if(Flow.Page==LobbyPage.WorldIntro)DrawWorldIntro();if(Flow.Page!=LobbyPage.Lobby&&(Flow.Page!=LobbyPage.Title||since>=1)){DrawCinematicSkip();}}if(!StartupWorldVisible&&splash==1)NativeUiViewport.MaskFrontend();GUI.color=tint;GUI.enabled=enabled;GUI.depth=priorDepth;GUI.matrix=old;}
-  Event qaPointer;int qaPointerSerial,qaPointerDelivered,qaPointerFrame=-1;
+  [Serializable] internal sealed class QaPointerReceipt {
+   public int serial,frame,hotBefore,hotAfter;public string type,loopPhase;public Vector2 position,localPosition;public Rect button;public bool consumed,clicked,enabled,inside;
+  }
+  [Serializable] internal sealed class QaGuiSample {
+   public int frame,pendingSerial,hotControl;public string phase;public bool automated,transitionBlocked;
+  }
+  readonly System.Collections.Generic.List<QaPointerReceipt> qaPointerReceipts=new System.Collections.Generic.List<QaPointerReceipt>();
+  readonly System.Collections.Generic.List<QaGuiSample> qaGuiSamples=new System.Collections.Generic.List<QaGuiSample>();
+  internal System.Collections.Generic.List<QaPointerReceipt> QaPointerReceipts=>qaPointerReceipts;
+  internal System.Collections.Generic.List<QaGuiSample> QaGuiSamples=>qaGuiSamples;
+  static NativeLobby qaPointerOwner;
+  Event qaPointer;QaPointerReceipt qaButtonReceipt;int qaPointerSerial,qaPointerDelivered,qaNameWidth,qaNameHeight,qaPointerFrame=-1;
+  Vector2 qaNamePointer;Rect qaNameButton;Matrix4x4 qaNameMatrix;bool qaNamePointerKnown,qaInsideOnGui;
   internal int QaPointerDelivered=>qaPointerDelivered;
+  internal string QaPointerError{get;private set;}="";
+  bool QaPointerAllowed=>NativeQaSandbox.Active&&Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-ui-overlap-check")>=0;
+  // Observe the product button, including the real viewport matrix and window/DPI conversion.
+  void TrackQaNameButton(Rect button){
+   if(!QaPointerAllowed||Event.current.type!=EventType.Repaint)return;
+   var matrix=GUI.matrix;Vector2 screen=GUIUtility.GUIToScreenPoint(button.center);
+   try{GUI.matrix=Matrix4x4.identity;qaNamePointer=GUIUtility.ScreenToGUIPoint(screen);}
+   finally{GUI.matrix=matrix;}
+   qaNameButton=button;qaNameMatrix=matrix;qaNameWidth=Screen.width;qaNameHeight=Screen.height;qaNamePointerKnown=true;
+  }
+  internal bool TryGetQaNamePointer(out Vector2 position){position=qaNamePointer;return QaPointerAllowed&&qaNamePointerKnown&&qaNameWidth==Screen.width&&qaNameHeight==Screen.height;}
   internal int QueueQaPointer(EventType type,Vector2 position){
-   if(!NativeQaSandbox.Active||Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-ui-overlap-check")<0)throw new InvalidOperationException("QA pointer requires explicit isolated overlap run");
+   if(!QaPointerAllowed)throw new InvalidOperationException("QA pointer requires explicit isolated overlap run");
    if(type!=EventType.MouseDown&&type!=EventType.MouseUp)throw new ArgumentException("QA pointer down/up only");
    if(qaPointer!=null)throw new InvalidOperationException("QA pointer still pending");
-   qaPointer=new Event{type=type,button=0,mousePosition=position,clickCount=1};return ++qaPointerSerial;
+   QaPointerError="";qaPointer=new Event{type=type,button=0,mousePosition=position,clickCount=1};qaPointerOwner=this;return ++qaPointerSerial;
+  }
+  internal void CancelQaPointer(){qaPointer=null;if(qaPointerOwner==this)qaPointerOwner=null;}
+  // Inject only at the actual GUI.Button boundary, after GUIClip/matrix changes.
+  // Root Event.QueueEvent is not a MonoBehaviour event pump; replacing a root
+  // event also lets later GUI matrix changes overwrite its mouse position.
+  internal static bool BeginQaButton(Rect button,out Event original){
+   original=null;var owner=qaPointerOwner;
+   if(owner==null||!owner.qaInsideOnGui||owner.qaPointer==null||Event.current.type!=EventType.Layout||owner.qaPointerFrame==Time.frameCount||button!=owner.qaNameButton||GUI.matrix!=owner.qaNameMatrix)return false;
+   original=Event.current;var matrix=GUI.matrix;Vector2 screen;
+   try{GUI.matrix=Matrix4x4.identity;screen=GUIUtility.GUIToScreenPoint(owner.qaPointer.mousePosition);}
+   finally{GUI.matrix=matrix;}
+   Vector2 local=GUIUtility.ScreenToGUIPoint(screen);
+   owner.qaButtonReceipt=new QaPointerReceipt{serial=owner.qaPointerSerial,frame=Time.frameCount,type=owner.qaPointer.type.ToString(),loopPhase=original.type.ToString(),position=owner.qaPointer.mousePosition,localPosition=local,button=button,inside=button.Contains(local),hotBefore=GUIUtility.hotControl,enabled=GUI.enabled};
+   owner.qaPointerFrame=Time.frameCount;Event.current=new Event(owner.qaPointer){mousePosition=local};return true;
+  }
+  internal static void EndQaButton(Event original,bool clicked){
+   var owner=qaPointerOwner;
+   try{var receipt=owner.qaButtonReceipt;receipt.hotAfter=GUIUtility.hotControl;receipt.consumed=Event.current.type==EventType.Used;receipt.clicked=clicked;owner.qaPointerReceipts.Add(receipt);owner.qaPointerDelivered=receipt.serial;owner.qaPointer=null;owner.qaButtonReceipt=null;}
+   finally{Event.current=original;qaPointerOwner=null;}
   }
   void OnGUI(){
-   Event original=Event.current;bool injected=qaPointer!=null&&original.type==EventType.Layout&&qaPointerFrame!=Time.frameCount;
-   if(injected){Event.current=qaPointer;qaPointer=null;qaPointerFrame=Time.frameCount;}
-   try{if((AutomatedInput||NativeScreenTransition.InputBlocked)&&(Event.current.isKey||Event.current.isMouse||Event.current.type==EventType.ScrollWheel))Event.current.Use();Draw();}
-   finally{if(injected){qaPointerDelivered=qaPointerSerial;Event.current=original;}}
+   if(qaPointer!=null){if(qaGuiSamples.Count==64)qaGuiSamples.RemoveAt(0);qaGuiSamples.Add(new QaGuiSample{frame=Time.frameCount,pendingSerial=qaPointerSerial,phase=Event.current.type.ToString(),hotControl=GUIUtility.hotControl,automated=AutomatedInput,transitionBlocked=NativeScreenTransition.InputBlocked});}
+   qaInsideOnGui=true;
+   try{var current=Event.current;if((AutomatedInput||NativeScreenTransition.InputBlocked)&&(current.isKey||current.isMouse||current.type==EventType.ScrollWheel))current.Use();Draw();}
+   finally{qaInsideOnGui=false;}
   }
   string K(string ko,string en){return Language=="ko"?ko:en;}
   static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;NativeUiAudit.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
@@ -221,7 +263,7 @@ namespace Exoduser.UnityPort
   {
    bool hover=r.Contains(Event.current.mousePosition),pressed=!AutomatedInput&&hover&&ExoInput.Mouse(0);
    if(hover&&!pressed)NativeSilverHellUi.ButtonFocus(r);NativeSilverHellUi.ActionPlate(r,primary,hover?1:0,pressed,28,6);
-   var label=new GUIStyle(normal){font=NativeSilverHellUi.Font()??normal.font,fontSize=18,fontStyle=FontStyle.Normal};label.normal.textColor=NativeSilverHellUi.Bright;Label(r,text,label,TextAnchor.MiddleCenter);
+   var label=new GUIStyle(normal){font=NativeSilverHellUi.Font()??normal.font,fontSize=18,fontStyle=FontStyle.Normal};label.normal.textColor=hover?NativeSilverHellUi.PlateTextHot:NativeSilverHellUi.PlateText;Label(r,text,label,TextAnchor.MiddleCenter);
    return NativeUiAudit.Button(r,GUIContent.none,GUIStyle.none);
   }
   string LobbyLanguageLabel(string code)

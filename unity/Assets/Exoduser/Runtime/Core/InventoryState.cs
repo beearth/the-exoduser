@@ -55,6 +55,33 @@ namespace Exoduser.UnityPort.Core {
   }
   static bool Finite(double v)=>!double.IsNaN(v)&&!double.IsInfinity(v);
   public InventoryItem GetEquipped(string slot){int i=Array.IndexOf(Slots,slot);return i<0?null:Equipped[i];}
+  // Web salvageVal (game.html): base by economy rarity (_itemEconomyRarity: integer >=0 -> min(r,4), else 0)
+  // + 50% (truncated, web ~~) of the legacy per-level enhance cost + tier*2. The web _enhRefund of migrated legacy items has no Unity field.
+  // ForgeFormulas.SalvageValue passes the forge_web.json valueTable; the default table is the same web array.
+  public static readonly int[] SalvageBase={1000,2000,10000,20000,50000};
+  static readonly double[] SalvageRarityMul={0.5,0.7,1.0,1.3,1.8};
+  public static int EconomyRarity(int r){return r>=0?Math.Min(r,4):0;}
+  public static int SalvageValue(InventoryItem it,int[] table=null){
+   if(it==null)return 0;int r=EconomyRarity(it.rarity),refund=0;
+   if(it.enh>0){double total=0;for(int i=0;i<it.enh;i++)total+=Math.Ceiling(Math.Max(1,Math.Ceiling((1+i*0.15)*1.5))*SalvageRarityMul[r]);refund=(int)(total*0.5);}
+   return (table??SalvageBase)[r]+refund+it.tier*2;
+  }
+  // Web invJunkBtn candidates: bag items marked junk, favorites excluded (equipped items are never in Bag).
+  public List<InventoryItem> JunkItems(){var list=new List<InventoryItem>();foreach(var it in Bag)if(it!=null&&it.junk&&!it.fav)list.Add(it);return list;}
+  // Web invJunkBtn confirm: removes every junk item, returns the orbs gained; the web clears the selection (INV.selected=null).
+  public int SalvageJunk(out int count){
+   count=0;int total=0;
+   for(int i=Bag.Count-1;i>=0;i--){var it=Bag[i];if(it==null||!it.junk||it.fav)continue;total+=SalvageValue(it);Bag.RemoveAt(i);count++;}
+   if(count>0)Selected=null;
+   return total;
+  }
+  // Web dropItem(idx): favorites refused; removes the item and selects the bag slot at the same index (or the last one).
+  public int SalvageOne(InventoryItem it){
+   int idx=it==null?-1:Bag.IndexOf(it);if(idx<0||it.fav)return 0;
+   int gained=SalvageValue(it);Bag.RemoveAt(idx);
+   Selected=Bag.Count==0?null:Bag[Math.Min(idx,Bag.Count-1)];
+   return gained;
+  }
   public bool Owns(InventoryItem it)=>it!=null&&(Bag.Contains(it)||Array.IndexOf(Equipped,it)>=0);
   public bool Select(InventoryItem it){if(it!=null&&!Owns(it))return false;Selected=it;return true;}
   // All admitted source slots use 2x2; source unknown 1x1 and ossuary category are not admitted.
@@ -93,16 +120,23 @@ namespace Exoduser.UnityPort.Core {
   public double AffixTotal(string name){return Affix(name);} // web _eqAffix(id)
   public double ImplicitTotal(string name){return Implicit(name);} // web _eqImplicit(stat)
   double Implicit(string name){double v=0;foreach(var i in Equipped)if(i!=null&&i._implicitStat==name)v+=i._implicitVal;return v;}
+  // web _playerDefTotals: shield/armor/boots/gloves/pants/cape/helmet def + ~~(enhMul(shield)+enhMul(armor)+enhMul(cape)), enhMul(n)=n*.25
+  public double EquippedDefense(){double d=0;foreach(var i in Equipped)if(i!=null&&(i.slot=="shield"||i.slot=="armor"||i.slot=="boots"||i.slot=="gloves"||i.slot=="pants"||i.slot=="cape"||i.slot=="helmet"))d+=i.def;return d+EnhanceDefense();}
+  double EnhanceDefense(){double e=0;foreach(var s in new[]{"shield","armor","cape"}){var i=GetEquipped(s);if(i!=null)e+=i.enh*.25;}return (int)e;}
   public InventoryStats CalculateStats(int level,int stage=1,int difficultySigned=0){if(level<1||stage<1||difficultySigned<-5||difficultySigned>5)throw new ArgumentOutOfRangeException();
-   double lb=(int)(level*.5),str=lb,dex=lb,intel=lb,lck=lb,hp=0,mp=0,shield=0,st=0,def=2,damage=0;
+   double lb=(int)(level*.5),str=lb,dex=lb,intel=lb,lck=lb,hp=0,mp=0,shield=0,st=0,def=2,edef=0,eqGrit=0,damage=0;
    foreach(var i in Equipped){if(i==null)continue;string reason;if(!Admitted(i,out reason))throw new InvalidOperationException(reason);str+=i.bStr;dex+=i.bDex;intel+=i.bInt;st+=i.bonusSt;
     if(i.slot!="weapon"&&i.slot!="bow"&&i.slot!="helmet"){hp+=i.bonusHp;mp+=i.bonusMp;shield+=i.bonusShield;}
-    if(i.slot=="shield"||i.slot=="armor"||i.slot=="boots"||i.slot=="gloves"||i.slot=="pants")def+=i.def;
+    if(i.slot!="weapon"&&i.slot!="bow")edef+=i.eDef;eqGrit+=i.bGrit;
     if(i.slot=="necklace"||i.slot=="ring1"||i.slot=="ring2"||i.slot=="belt"||i.slot=="bracelet"||i.slot=="headband"||i.slot=="headband2")damage+=i.dmgBonus;
    }
+   // D-U2, web _playerDefTotals (main 4cf4d74eb): pDef = P.baseDef (2 + crystal def + defFlat + ~~(_gritTotal*.5)) + 7 slot def + enh,
+   // eDef = 15 slot eDef + eDefFlat + enh + crystal eDef + ~~(_gritTotal*.5). _gritTotal = SP grit (Growth adds it) + ~~(lv*.5) + equipment bGrit + gritFlatN/R.
+   // Crystals and enhanced items are not admitted (Admitted), so those terms are 0 here; enh stays in the formula.
+   eqGrit+=Affix("gritFlatN")+Affix("gritFlatR");double gritDef=(int)((lb+eqGrit)*.5),enh=EnhanceDefense();def+=EquippedDefense()-enh;
    var w=GetEquipped("weapon");var g=GetEquipped("gloves");var n=GetEquipped("necklace");var r1=GetEquipped("ring1");var r2=GetEquipped("ring2");foreach(var i in Equipped)if(i!=null)lck+=i.bLck;
    return new InventoryStats{PlayerMaxHp=(int)((Math.Max(100,300-20*difficultySigned)+(stage-1)*6+str*5+hp+Implicit("_iMaxHP"))*(1+Affix("maxHPPct")+(Implicit("_iMaxHPPct")+Implicit("_iLifeHPPct"))*.01))+(int)lb,PlayerMaxStamina=(int)(100+st)+lb,PlayerMaxMana=(int)(100+intel*2+mp)+lb,PlayerMaxShield=(int)(100+intel*5+shield+Affix("shieldFlat")),PlayerBaseAttack=15+(stage-1)*2,
-    PlayerSpeed=(2.6+dex*.005)*(1+Implicit("_iMovSpd")*.01),PlayerHpRegen=.05+str*.002,PlayerStaminaRegen=.05+dex*.005,PlayerManaRegen=.05+intel*.005,PlayerPhysicalDefense=def+Affix("defFlat")+(int)(lb*.5),PlayerCriticalChance=lck*.025+(n?.critRate??0)+(r1?.critRate??0)+(r2?.critRate??0),PlayerCriticalMultiplier=1.5+lck*.002,AttackSpeedMultiplier=1+dex*.0005+(g?.atkSpd??0)+Implicit("_iAtkSpd")*.01,DamageMultiplier=.7,AccessoryDamageBonus=damage*.01,AccessoryDamageSum=damage,DropBonus=1+lck*.0015+Affix("dropRate"),StrengthFlat=str,Dex=dex,
+    PlayerSpeed=(2.6+dex*.005)*(1+Implicit("_iMovSpd")*.01),PlayerHpRegen=.05+str*.002,PlayerStaminaRegen=.05+dex*.005,PlayerManaRegen=.05+intel*.005,PlayerPhysicalDefense=def+Affix("defFlat")+gritDef+enh,PlayerEnergyDefense=edef+Affix("eDefFlat")+enh+gritDef,EquipmentGrit=eqGrit,PlayerCriticalChance=lck*.025+(n?.critRate??0)+(r1?.critRate??0)+(r2?.critRate??0),PlayerCriticalMultiplier=1.5+lck*.002,AttackSpeedMultiplier=1+dex*.0005+(g?.atkSpd??0)+Implicit("_iAtkSpd")*.01,DamageMultiplier=.7,AccessoryDamageBonus=damage*.01,AccessoryDamageSum=damage,DropBonus=1+lck*.0015+Affix("dropRate"),StrengthFlat=str,Dex=dex,
     WeaponAttack=w?.atk??0,WeaponSpeed=w?.spd??0,WeaponRange=(w?.wRange??0)+(w?.bonusRange??0)*4,WeaponArc=w?.wArcW??0,AntiRevive=Affix("antiRevive"),ReviveOnce=Affix("reviveOnce"),RevivePow=Affix("revivePow")+Implicit("_iRevPow")*.01,ReviveCd=Affix("reviveCd"),PhysicalDamageReduction=Implicit("_iPhysDR")*.01,ElementResistance=Implicit("_iElemRes")*.01,StatusResistance=Implicit("_iStsRes")*.01};
   }
  }

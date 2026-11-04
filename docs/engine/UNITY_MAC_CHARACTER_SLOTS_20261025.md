@@ -51,7 +51,7 @@ NativeLobby/CharacterRoster/삭제 UI·통합 소유는 기존 Mac 담당. 기�
 
 [기계 영수증](UNITY_MAC_CHARACTER_SLOTS_20261025.json). 최종 실행본은 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-character-slots-final/EXODUSER-Unity.app`. 생성·선택·확인삭제·재실행 목록 복원 단위 완료. 전투 진행 저장과 캐릭터별 P/G/INV 복원은 미이식이며, IME 직접 조합/정밀 자동 마우스/전체화면은 별도 미검수다. 다음 전사 이야기의 원본 JS/93MiB 영상 경로·22cue·생성 성공 뒤 showCharGate 흐름을 확인했고 기존 지원 담당의 독립 자료 추출이 진행 중이다.
 
-2026-10-29 현재 ARM64 Settings QA 빌드로 5/5 생성·여섯 번째 거부·실제 OS 삭제 취소/확인·빈 용량 재사용·선택 재시작 복원을 새 격리 목록에서 확인했다. 이름, revision, 화면 및 입력 제한은 [A04 실기 검수](UNITY_MAC_A04_FIVE_SLOTS_OS_QA_20261029.md)에 기록했다.
+2026-10-29 현재 ARM64 Settings QA 빌드로 5/5 생성·여섯 번째 거부·실제 OS 삭제 취소/확인·빈 용량 재사용·선택 재시작 복원을 새 격리 목록에서 확인했다. 이름, revision, 화면 및 입력 제한은 [A04 실기 검수](../_archive/engine/UNITY_MAC_A04_FIVE_SLOTS_OS_QA_20261029.md)에 기록했다.
 
 
 ## 2026-11-01 PC Unity 캐릭터 개수 제한 해제 후보

@@ -71,7 +71,7 @@ namespace Exoduser.UnityPort.Core
             if (PlayerPoison > 0 && Player.Hp > 0)
             {
                 PlayerPoison -= .02f;
-                if ((int)Math.Floor(PlayerPoison * 10) % 6 < 1) { int pd = Js.Int(Player.MaxHp * .008); HurtPlayer(pd, new HurtOptions { Dot = true }); }
+                if ((int)Math.Floor(PlayerPoison * 10) % 6 < 1) { int pd = Js.Int(Player.MaxHp * .008); HurtPlayer(pd, new HurtOptions { Dot = true, Labeled = true }); }   // web hurtP(pd,{dot:true,src:_T('중독')})
             }
             if (Druid == null) return;
             TickRemodelRules();   // RM-B0b: ended props leave Enemies, obstacles end with the arena
@@ -80,7 +80,8 @@ namespace Exoduser.UnityPort.Core
         }
 
         // ---- IBossHost ------------------------------------------------------------------------------------------------------------------------------------
-        sealed class BossHostAdapter : IBossHost, IBossReflectHost
+        string druidDamageSource="boss";
+        sealed class BossHostAdapter : IBossHost, IBossReflectHost, ICombatDamageTelemetry
         {
             readonly Simulation s;
             public BossHostAdapter(Simulation sim) { s = sim; }
@@ -111,14 +112,17 @@ namespace Exoduser.UnityPort.Core
             // no flow field is ported: the open boss arena is walked in a straight line towards the player (the web field points the same way without obstacles)
             public bool FlowDir(double x, double y, out double dx, out double dy) { double a = Math.Atan2(s.Player.Y - y, s.Player.X - x); dx = Math.Cos(a); dy = Math.Sin(a); return true; }
             public bool Los(double x, double y, double tx, double ty) { return s.HasLineOfSight == null || s.HasLineOfSight((float)x, (float)y, (float)tx, (float)ty); }
-            public void HurtPlayer(int damage, bool magic) { s.HurtPlayer(damage, new HurtOptions { Magic = magic }); }
+            public void HurtPlayer(int damage, bool magic) { s.HurtPlayer(damage, new HurtOptions { Magic = magic, Source=s.druidDamageSource }); }
+            public void DamageSource(string source){s.druidDamageSource=source;}
+            public void WrongParryInput(){s.Stats.parryWrongInput++;}
             public void KnockPlayer(double kx, double ky) { s.Player.KnockbackX += (float)kx; s.Player.KnockbackY += (float)ky; }
             public void StopPlayerKnock() { s.Player.KnockbackX = 0; s.Player.KnockbackY = 0; }
             public void PlayerPoison(double stacks, double webSlow) { s.PlayerPoison += (float)stacks; s.PlayerWebSlow = Math.Max(s.PlayerWebSlow, (float)webSlow); }
             public bool TryParry(EnemyState boss, double dmgMul, double stunFrames, double poiseAmt, double knockAngle)
             {
-                if (!ParryWindowOpen()) return false;
-                bool q = s.Player.State == "sBlock" || s.Player.State == "peaceShield" || s.SbParryT > 0;
+                if (!ParryWindowOpen())return false;
+                if(boss==null){s.ApplyParrySuccess(s.SbParryT>0,1,null,null,null,null,ParryKind.Projectile);return true;}
+                if(!s.MeleeParry(boss,"boss",0))return false;
                 if (boss != null && boss.Alive)
                 {
                     if (stunFrames > 0) boss.Stunned = (float)stunFrames;
@@ -129,8 +133,7 @@ namespace Exoduser.UnityPort.Core
                         s.ParryBank += pd;   // P.parryBank += _pd (the counter damage)
                     }
                 }
-                s.ApplyParrySuccess(q);
-                if (boss != null && boss.Alive && poiseAmt > 0 && s.Druid != null) s.Druid.PoiseHit(boss, poiseAmt);
+                if (boss != null && boss.Alive && poiseAmt > 0 && s.Druid != null) {float before=boss.Poise;s.Druid.PoiseHit(boss, poiseAmt);if(before>0&&boss.Poise<=0)CombatStats.Add(s.Stats.groggy,"meleeParry");}
                 return true;
             }
             public void BossHurt(EnemyState boss, int damage, double angle) { s.HurtEnemy(boss, damage, (float)angle); }

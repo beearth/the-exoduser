@@ -10,7 +10,7 @@
 | 목록 | 원본 cinLang의 29개 순서. 현행은 2열×15행 이름+코드·선택 강조. 23개 원문 이름과6개 메뉴언어 대체 이름을 표시한다. [가독성 검수](UNITY_MAC_LANGUAGE_NAMES_20261025.md) |
 | 지역별 코드 | 원본 JS Normalize와 동일: ko-KR→ko, zh-Hant/TW/HK/MO→zht, pt-BR/pt→ptbr, nb/nn→no. 미지원/null→en |
 | 데이터 | 기존 29×32 자막·시간을 그대로 사용. 메뉴 번역은 기존 ko/en 경로 |
-| 팝업 | 열려 있는 동안 하위 로비 버튼 비활성화. 선택 또는 selector 재클릭으로 닫힘. Esc/바깥 클릭/키보드 이동은 후속 [팝업 조작](UNITY_MAC_LOBBY_POPUP_20261025.md)에서 연결 |
+| 팝업 | 열려 있는 동안 하위 로비 버튼 비활성화. 선택 또는 selector 재클릭으로 닫힘. Esc/바깥 클릭/키보드 이동은 후속 [팝업 조작](../_archive/engine/UNITY_MAC_LOBBY_POPUP_20261025.md)에서 연결 |
 | 소유 | ROOT NativeLobby 통합. 지원 담당의 순수 LobbyLanguage.cs를 SHA 확인 후 수용. Core 변경은 언어 helper만 |
 
 지원 모듈 SHA-256: `261f8e09e0710723d07754bf116c853ad6aca02e5fa04845f1b5167cd23c5545`.

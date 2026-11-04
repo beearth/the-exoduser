@@ -26,7 +26,9 @@ param(
     [int]$KillAfterSec = 0,
     [switch]$KeepReservation,
     [switch]$AllowPlayer,
+    [ValidateSet('', 'buildloop', 'cto-swap', 'candidate')][string]$PcException = '',
     [switch]$DryRun,
+    [switch]$Exclusive,
     [ValidateSet("hidden", "batch")][string]$Desktop = "hidden",
     [string]$NodeModules = 'G:\exoduser\node_modules'
 )
@@ -44,7 +46,7 @@ if($Command -ne 'install-bin' -and $env:EXO_UNITY_NO_FORWARD -ne '1' -and
     exit $LASTEXITCODE
 }
 
-$ExoUnityVersion = '2026.11.03-slots3'
+$ExoUnityVersion = '2026.11.04-exclusive'
 $MaxPlayerSlots = 2
 Import-Module (Join-Path $PSScriptRoot 'QueueTurn.psm1') -Force
 try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false) } catch { }
@@ -60,6 +62,13 @@ $Utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 function Say([string]$m) { [Console]::Error.WriteLine('[exo-unity] ' + $m) }
 function NowIso { [DateTime]::UtcNow.ToString('yyyy-MM-ddTHH:mm:ss.fffZ') }
 function Stamp { [DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfff') }
+
+# 11-04: 종료 중 커널에서 멈춘 Player는 강제 종료 뒤에도 -logFile 쓰기 핸들을 쥔다. ReadAllText(FileShare.Read)는
+# 그 핸들과 충돌해 IOException을 내고 영수증을 잃었다(UI 후보 57be03df·02ef0c30). 쓰는 쪽과 함께 열어 읽는다.
+function Read-SharedText([string]$p) {
+    $fs = New-Object IO.FileStream($p, [IO.FileMode]::Open, [IO.FileAccess]::Read, ([IO.FileShare]::ReadWrite -bor [IO.FileShare]::Delete))
+    try { $sr = New-Object IO.StreamReader($fs, $true); return $sr.ReadToEnd() } finally { $fs.Dispose() }
+}
 
 function Read-Json([string]$p) {
     for ($i = 0; $i -lt 5; $i++) {
@@ -448,7 +457,19 @@ function Get-WaitingPlayerReservations {
     return @(Get-Reservations 'player' | Where-Object { $active -notcontains [string]$_.owner -and (Get-ReservationWaiterState $_) -eq 'waiting' })
 }
 
+# 11-04: QA Player 여러 개가 4K 로비 영상을 동시에 디코드하면 영상 준비가 12초씩 수십 번 시간 초과했다(BuildLoop 52a39f8f6 M1·UI 겹침 FAIL).
+# BuildLoop(-PcException buildloop)나 -Exclusive Player는 다른 Player가 모두 끝난 뒤 혼자 돌고, 도는 동안 새 Player를 받지 않는다.
+$ExclusivePath = Join-Path $Root '_player_exclusive.json'
+function Test-WantExclusive { return ([bool]$Exclusive -or $PcException -eq 'buildloop') }
+function Get-ExclusiveHolder {
+    $x = Read-Json $ExclusivePath
+    if ($x -and $x.token -ne $script:PlayerSlotToken -and (Test-PlayerSlotAlive $x)) { return $x }
+    return $null
+}
+
 function Release-PlayerSlot {
+    $x = Read-Json $ExclusivePath
+    if ($x -and $script:PlayerSlotToken -and $x.token -eq $script:PlayerSlotToken) { Remove-Item -LiteralPath $ExclusivePath -Force -ErrorAction SilentlyContinue }
     if (-not $script:PlayerSlotPath) { return }
     $s = Read-Json $script:PlayerSlotPath
     if ($s -and [int]$s.pid -eq $PID -and $s.token -eq $script:PlayerSlotToken) { Remove-Item -LiteralPath $script:PlayerSlotPath -Force -ErrorAction SilentlyContinue }
@@ -467,6 +488,9 @@ function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
         $blocked = Get-PlayerDrainReason
         $rs = @(Get-WaitingPlayerReservations)
         if (-not $blocked -and $rs.Count -gt 0 -and (-not $Owner -or $rs[0].owner -ne $Owner)) { $blocked = 'player 예약 큐 맨 앞은 ' + $rs[0].owner }
+        $ex = Get-ExclusiveHolder
+        if (-not $blocked -and $ex) { $blocked = 'Player 단독 실행 중: ' + $ex.reservedAs + ' pid ' + $ex.pid }
+        if (-not $blocked -and (Test-WantExclusive) -and ($slots.Count + $legacy) -gt 0) { $blocked = '단독 실행 대기: 다른 Player ' + ($slots.Count + $legacy) + '개 종료 대기' }
         if (-not $blocked -and ($slots.Count + $legacy) -ge $MaxPlayerSlots) { $blocked = 'Player 슬롯 ' + ($slots.Count + $legacy) + '/' + $MaxPlayerSlots }
         $free = Get-CommitFreeGB
         if (-not $blocked -and $free -lt 10) { $blocked = '커밋 여유 ' + $free + 'GB < 필요 10GB' }
@@ -491,7 +515,11 @@ function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
                 try { $bytes=$Utf8NoBom.GetBytes(($content|ConvertTo-Json));$fs.Write($bytes,0,$bytes.Length) } finally { $fs.Dispose() }
                 $script:PlayerSlotPath=$path; $script:PlayerSlotToken=$token
                 # 다른 slot/구버전 lock의 동시 획득 뒤 상한을 다시 검사한다.
-                if ((@(Get-PlayerSlots).Count + (Get-LegacyPlayerCount)) -le $MaxPlayerSlots -and (Get-CommitFreeGB) -ge 10 -and -not (Get-PlayerDrainReason)) { $admitted=$true; return }
+                $limit = $MaxPlayerSlots; if (Test-WantExclusive) { $limit = 1 }
+                if ((@(Get-PlayerSlots).Count + (Get-LegacyPlayerCount)) -le $limit -and (Get-CommitFreeGB) -ge 10 -and -not (Get-PlayerDrainReason) -and -not (Get-ExclusiveHolder)) {
+                    if (Test-WantExclusive) { Write-JsonAtomic $ExclusivePath ([ordered]@{ pid = $ownerPid; startedAt = $content.startedAt; token = $token; reservedAs = [string]$Owner; exe = $exeFull }) }
+                    $admitted=$true; return
+                }
                 Release-PlayerSlot
                 break
             }
@@ -610,7 +638,47 @@ function Acquire-Slot([string]$Role, [string]$wt, [int]$ownerPid, [string]$queue
 }
 
 # ------------------------------------------------------------------ start
+# 11-04: Codex node_repl 등 제한된 부모는 ProgramData·ProgramFiles·APPDATA·ComSpec·PATHEXT 없이 이 CLI를 띄운다.
+# 그 환경을 물려받은 Unity는 UnityPackageManager.exe가 IPC를 열지 못해 30초 뒤 exit 1로 끝난다(r14·r15).
+# 빈 변수만 이 프로세스 범위에서 Windows 알려진 폴더 값으로 채운다. 이미 있는 값·시스템 설정은 바꾸지 않는다.
+function Repair-WindowsEnv {
+    $sf = [Environment+SpecialFolder]
+    $win = [Environment]::GetFolderPath($sf::Windows)
+    $want = [ordered]@{
+        'SystemRoot' = $win; 'windir' = $win; 'SystemDrive' = $win.Substring(0, 2)
+        'ComSpec' = (Join-Path $win 'System32\cmd.exe')
+        'USERPROFILE' = [Environment]::GetFolderPath($sf::UserProfile)
+        'APPDATA' = [Environment]::GetFolderPath($sf::ApplicationData)
+        'LOCALAPPDATA' = [Environment]::GetFolderPath($sf::LocalApplicationData)
+        'ProgramData' = [Environment]::GetFolderPath($sf::CommonApplicationData)
+        'ALLUSERSPROFILE' = [Environment]::GetFolderPath($sf::CommonApplicationData)
+        'ProgramFiles' = [Environment]::GetFolderPath($sf::ProgramFiles)
+        'ProgramW6432' = [Environment]::GetFolderPath($sf::ProgramFiles)
+        'ProgramFiles(x86)' = [Environment]::GetFolderPath($sf::ProgramFilesX86)
+        'CommonProgramFiles' = [Environment]::GetFolderPath($sf::CommonProgramFiles)
+        'CommonProgramW6432' = [Environment]::GetFolderPath($sf::CommonProgramFiles)
+        'CommonProgramFiles(x86)' = [Environment]::GetFolderPath($sf::CommonProgramFilesX86)
+    }
+    $fixed = @()
+    foreach ($k in $want.Keys) {
+        if (-not [Environment]::GetEnvironmentVariable($k, 'Process') -and $want[$k]) { [Environment]::SetEnvironmentVariable($k, $want[$k], 'Process'); $fixed += $k }
+    }
+    $prof = [Environment]::GetEnvironmentVariable('USERPROFILE', 'Process')
+    if (-not $env:HOMEDRIVE) { $env:HOMEDRIVE = $prof.Substring(0, 2); $fixed += 'HOMEDRIVE' }
+    if (-not $env:HOMEPATH) { $env:HOMEPATH = $prof.Substring(2); $fixed += 'HOMEPATH' }
+    foreach ($k in 'TEMP', 'TMP') { if (-not [Environment]::GetEnvironmentVariable($k, 'Process')) { [Environment]::SetEnvironmentVariable($k, (Join-Path $env:LOCALAPPDATA 'Temp'), 'Process'); $fixed += $k } }
+    if (@($env:PATHEXT -split ';') -notcontains '.EXE') {
+        $m = [Environment]::GetEnvironmentVariable('PATHEXT', 'Machine'); if (-not $m) { $m = '.COM;.EXE;.BAT;.CMD' }
+        $env:PATHEXT = $m; $fixed += 'PATHEXT'
+    }
+    $sys = Join-Path $win 'System32'
+    if (@($env:Path -split ';' | ForEach-Object { $_.TrimEnd('\') }) -notcontains $sys) { $env:Path = $sys + ';' + $win + ';' + $env:Path; $fixed += 'Path' }
+    return , $fixed
+}
+
 function Set-DotnetEnv {
+    $fixed = Repair-WindowsEnv
+    if ($fixed.Count) { Say ('Windows 기본 환경 보정(이 프로세스만): ' + ($fixed -join ', ')) }
     $env:DOTNET_ADD_GLOBAL_TOOLS_TO_PATH = 'false'; $env:DOTNET_SKIP_FIRST_TIME_EXPERIENCE = '1'
     $env:DOTNET_NOLOGO = '1'; $env:DOTNET_CLI_HOME = 'E:/exoduser-wt/_dotnet-home'
 }
@@ -1132,8 +1200,11 @@ function Invoke-Guarded([string]$File, [string[]]$ArgList, [string]$Cwd, [int]$l
     }
     $exit = 0
     if ($proc.HasExited) {
-        if ($HiddenDesktop) { $exit = Get-DesktopProcessExitCode $dproc }
-        else { $exit = $proc.ExitCode }
+        # 종료 코드를 못 읽어도 아래 정리·숨은 데스크톱 닫기·영수증은 계속한다(11-04 r17 영수증 유실).
+        try {
+            if ($HiddenDesktop) { $exit = Get-DesktopProcessExitCode $dproc }
+            else { $exit = $proc.ExitCode }
+        } catch { $warnings += ('종료 코드 읽기 실패: ' + $_.Exception.Message); $exit = -1 }
     }
     else {
         & taskkill.exe /PID $proc.Id /T /F 2>&1 | Out-Null
@@ -1150,6 +1221,8 @@ function Invoke-Guarded([string]$File, [string[]]$ArgList, [string]$Cwd, [int]$l
     }
     $killed = @()
     foreach ($id in $left) { try { Stop-Process -Id ([int]$id) -Force -ErrorAction Stop; $killed += $id } catch { } }
+    # 강제 종료 뒤에도 남는 프로세스(커널 대기에 걸린 Player)는 다음 Player 종료까지 막을 수 있으므로 영수증에 따로 남긴다.
+    if ($left.Count) { Start-Sleep -Seconds 3; $stuck = @($tree.Keys | Where-Object { Test-SameProc $_ $tree[$_] }); if ($stuck.Count) { $warnings += ('강제 종료 뒤에도 남은 프로세스(커널 대기 의심): ' + ($stuck -join ',')) } }
     if ($HiddenDesktop) { Close-DesktopProcess $dproc; $desktopClosed = [bool](Close-HiddenDesktop $desk) }
     $sw.Stop()
     return [pscustomobject]@{
@@ -1194,7 +1267,63 @@ function Finish-Guarded([string]$kind, [string]$id, $g, $extra, [bool]$extraOk, 
     elseif ($g.exitCode -ne 0 -and -not $g.expectedKill) { $script:ExitRc = [math]::Abs([int]$g.exitCode) }
 }
 
+# 11-04: 05:06부터 Player가 Quit 뒤 'Input System … Shutdown'에서 커널 드라이버 교착(HID/GPU)에 걸려 강제 종료 뒤에도
+# 스레드 1개·CPU 정지로 남았고, 그 상태에서 4번 더 띄워 좀비가 5개까지 쌓였다. 이런 프로세스가 하나라도 있으면 재부팅 전까지 새 Player를 막는다.
+function Find-ZombiePlayers {
+    $cand = @(Get-Process -Name 'EXODUSER-*' -ErrorAction SilentlyContinue | Where-Object { try { $_.Threads.Count -le 1 } catch { $false } })
+    if (-not $cand.Count) { return @() }
+    $cpu = @{}; foreach ($p in $cand) { try { $cpu[$p.Id] = $p.TotalProcessorTime.Ticks } catch { } }
+    Start-Sleep -Milliseconds 1500
+    $out = @()
+    foreach ($p in $cand) {
+        try {
+            $q = Get-Process -Id $p.Id -ErrorAction Stop
+            if ($q.Threads.Count -le 1 -and $cpu.ContainsKey($p.Id) -and $q.TotalProcessorTime.Ticks -eq $cpu[$p.Id]) {
+                $out += [pscustomobject]@{ pid = $q.Id; name = $q.ProcessName; threads = $q.Threads.Count; cpuSec = [math]::Round($q.TotalProcessorTime.TotalSeconds, 1); workingSetMB = [math]::Round($q.WorkingSet64 / 1MB); started = $(try { $q.StartTime.ToString('o') } catch { '' }) }
+            }
+        } catch { }
+    }
+    return $out
+}
+
+function Stop-ForZombies($zombies, [string]$what) {
+    $list = (@($zombies) | ForEach-Object { $_.name + ':' + $_.pid + '(스레드' + $_.threads + ', CPU ' + $_.cpuSec + 's)' }) -join ', '
+    $cause = '재부팅 필요: 종료 못 한 Player 좀비 ' + @($zombies).Count + '개 - ' + $list
+    $id = [guid]::NewGuid().ToString('N').Substring(0, 8)
+    try { Write-JsonAtomic (Join-Path $ExecDir ('done\' + $id + '.json')) ([ordered]@{ runnerVersion = $ExoUnityVersion; id = $id; kind = $what; ok = $false; rejected = $true; note = $cause; zombies = @($zombies); exe = [string]$Exe; finishedAt = (NowIso) }) } catch { }
+    New-Halt $cause $what @() (Get-Date)
+    Reject ($cause + '. 새 Player를 띄우지 않았다. 재부팅 뒤 ' + $HaltPath + '를 지우면 풀린다')
+}
+
+# 11-04: 사용자가 바탕화면에서 띄운 게임(부모 explorer)은 실제 세이브 폴더에 저장하므로, 그동안 돈 QA Player가 USER_SAVE 변경으로 실패했다.
+# 세이브 감시는 그대로 두고, 사용자 게임이 떠 있으면 Player를 시작하지 않고 미룬다(ok=False, deferred=user-game, exit 3).
+function Find-UserGames {
+    $all = @(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue)
+    $byId = @{}; foreach ($p in $all) { $byId[[int]$p.ProcessId] = $p }
+    $out = @()
+    foreach ($p in @($all | Where-Object { $_.Name -like 'EXODUSER*' })) {
+        $par = $byId[[int]$p.ParentProcessId]
+        if ($par -and $par.Name -ieq 'explorer.exe') { $out += [pscustomobject]@{ pid = [int]$p.ProcessId; exe = [string]$p.ExecutablePath } }
+    }
+    return $out
+}
+
+function Defer-ForUserGames($games) {
+    $list = (@($games) | ForEach-Object { [string]$_.pid + ' ' + $_.exe }) -join ', '
+    $id = [guid]::NewGuid().ToString('N').Substring(0, 8)
+    $r = [ordered]@{ runnerVersion = $ExoUnityVersion; id = $id; kind = 'player'; ok = $false; deferred = 'user-game'; note = '사용자 게임 실행 중, 미룸: ' + $list; userGames = @($games); exe = [string]$Exe; finishedAt = (NowIso) }
+    try { Write-JsonAtomic (Join-Path $ExecDir ('done\' + $id + '.json')) $r } catch { }
+    Say ('사용자 게임 실행 중, 미룸: ' + $list + ' (세이브 감시를 지키려고 Player를 띄우지 않았다)')
+    Write-Output ($r | ConvertTo-Json -Compress -Depth 4)
+    exit 3
+}
+
 function Cmd-Player {
+    # 11-03 사용자 "백그라운드 테스트는 맥에서만": PC Player 실행은 CLAUDE.md 3.4 예외 3가지만 허용한다(편집기 batchmode 컴파일·임포트는 그대로).
+    if (-not $PcException) { Reject 'PC에서는 player 실행을 기본 거부한다. Player 테스트·캡처는 Mac에서 실행한다. 예외(BuildLoop 바탕화면 교체·CTO 1회 교체·CTO 승인 후보 바로가기)만 -PcException buildloop|cto-swap|candidate' }
+    $zombies = @(Find-ZombiePlayers)
+    if ($zombies.Count) { Stop-ForZombies $zombies 'player' }
+    if (-not $DryRun) { $games = @(Find-UserGames); if ($games.Count) { Defer-ForUserGames $games } }
     if ([string]::IsNullOrWhiteSpace($Exe)) { throw '-Exe 가 필요합니다.' }
     if (-not (Test-Path -LiteralPath $Exe)) { throw "플레이어를 찾을 수 없음: $Exe" }
     $exeFull = (Resolve-Path -LiteralPath $Exe).Path
@@ -1245,7 +1374,8 @@ function Cmd-Player {
         if ($crashCause) { New-Halt $crashCause 'player' $logsUsed $t0c }
         $gpu = ''; $nullGfx = $false
         if (Test-Path -LiteralPath $log) {
-            $txt = [IO.File]::ReadAllText($log)
+            $txt = ''
+            try { $txt = Read-SharedText $log } catch { $g.warnings = @($g.warnings) + ('Player 로그 읽기 실패: ' + $_.Exception.Message) }
             $m = [regex]::Match($txt, '(?m)^\s*Renderer:\s*(.+?)\s*(\(ID=|$)')
             if ($m.Success) { $gpu = $m.Groups[1].Value.Trim() }
             if ($txt.Contains('Forcing GfxDevice: Null')) { $nullGfx = $true }
@@ -1254,6 +1384,10 @@ function Cmd-Player {
         $extraOk = $true
         if ($nullGfx) { $extraOk = $false; $fail = 'Forcing GfxDevice: Null - GPU 렌더링 아님' }
         elseif (-not $gpu) { $fail = '그래픽 장치 이름을 로그에서 찾지 못함(GPU 확인 불가)' }
+        if (@($g.warnings | Where-Object { $_ -like '*커널 대기 의심*' }).Count) {
+            $after = @(Find-ZombiePlayers)
+            if ($after.Count) { $g.warnings = @($g.warnings) + '재부팅 필요: 이 Player가 종료되지 않음 - HALT 생성'; New-Halt ('재부팅 필요: 종료 못 한 Player 좀비 ' + (($after | ForEach-Object { $_.name + ':' + $_.pid }) -join ', ')) 'player' @($log) $t0c }
+        }
         Finish-Guarded 'player' $id $g ([ordered]@{ exe = $exeFull; args = @($ia); gpu = $gpu; gfxNull = $nullGfx; log = $log; desktop = $Desktop; hiddenWindows = $g.hiddenWindows; hiddenTitles = @($g.hiddenTitles); desktopClosed = $g.desktopClosed; processId = $g.processId; startedAt = $g.startedAt; finishedAt = $g.finishedAt; hiddenDesktopName = $g.hiddenDesktopName; slot = $script:PlayerSlotPath }) $extraOk $fail
     } finally {
         Release-PlayerAdmission

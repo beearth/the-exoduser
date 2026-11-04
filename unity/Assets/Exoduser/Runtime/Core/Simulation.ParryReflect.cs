@@ -41,7 +41,7 @@ namespace Exoduser.UnityPort.Core
         // doParry(dmg, x, y, false, el, mul, tag) of a reflection + P.parryBank (Q magic parry)
         public void PayReflectParry(in ParryReflect.ResolveResult r)
         {
-            ApplyParrySuccess(false, r.ResourceMul, r.ParryEl);
+            ApplyParrySuccess(false, r.ResourceMul, r.ParryEl, r.ParryTag, (float)r.ParryX, (float)r.ParryY, ParryKind.Projectile);
             ParryBank += r.ParryBankAdd;
             ReflectCount++; LastReflectKind = r.Kind; LastReflectDamage = r.ParryDmg;
         }
@@ -78,7 +78,8 @@ namespace Exoduser.UnityPort.Core
         // hurtE(e, dmg, ang, true, {kbMult:2, magic:true, blueBean:true, parryBlueBean}, el): a boss takes at least 10 % of its max HP from a parried bean
         public void HurtEnemyBlueBean(EnemyState enemy, int damage, float angle, bool parryBlueBean)
         {
-            ApplyEnemyDamage(enemy, damage, angle, true, 2, false, false, 0, 0, false, 0, false, true, parryBlueBean, true);
+            ApplyEnemyDamage(enemy, damage, angle, true, 2, false, false, 0, 0, false, 0, false, true, parryBlueBean, true, parryBlueBean?(double?)0:null);
+            if(parryBlueBean&&enemy.Alive){var w=enemy.Web;float before=enemy.Poise;var r=EnemyPoiseRules.PoiseHit(new EnemyPoiseRules.Enemy{Alive=enemy.Alive,Boss=enemy.IsBoss,Poise=enemy.Poise,MaxPoise=enemy.MaxPoise,PoiseR=enemy.PoiseRegenTicks,Stunned=enemy.Stunned,MaxStunned=enemy.MaxStunned,PImmune=w?._pImmune??0},20,1,0);enemy.Poise=(float)r.Enemy.Poise;enemy.Stunned=(float)r.Enemy.Stunned;enemy.MaxStunned=(float)r.Enemy.MaxStunned;enemy.PoiseRegenTicks=(float)r.Enemy.PoiseR;if(w!=null){w.poise=enemy.Poise;w.stunned=enemy.Stunned;w._maxStunned=enemy.MaxStunned;w.poiseR=enemy.PoiseRegenTicks;w._pImmune=r.Enemy.PImmune;}if(before>0&&r.Broke)CombatStats.Add(Stats.groggy,"reflect");}
         }
     }
 }

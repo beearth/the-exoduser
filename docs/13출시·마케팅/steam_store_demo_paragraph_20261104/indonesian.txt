@@ -1,0 +1,2 @@
+[h2]Tentang Demo[/h2]
+[p]Dalam demo, kamu bisa memainkan 1-1, wilayah pertama neraka, dari awal hingga akhir. Mulailah sebagai Pejuang level 1, rasakan langsung pedang besar, skill awal, menangkis peluru, gerakan rantai, dan loot, lalu hadapi bos pertama wilayah ini, Druid Kegelapan. Batas level demo adalah 100, dan progres demo disimpan terpisah dari versi penuh. Fusi skill, lebih banyak pahlawan, serta lapisan neraka yang lebih dalam beserta bos-bosnya menantimu di versi penuh.[/p]

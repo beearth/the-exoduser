@@ -18,7 +18,7 @@ $uiAst=Parse-Source $UiCheckPath
 $assignment=$uiAst.FindAll({param($node) $node -is [Management.Automation.Language.AssignmentStatementAst] -and $node.Left.Extent.Text -eq '$exo'},$true)|Select-Object -First 1
 if(!$assignment){throw 'Missing actual UI checker runner'}
 $exo=$null;Invoke-Expression $assignment.Extent.Text
-$rows.Add([pscustomobject]@{name='UI overlap runner';passed=($exo -eq $expected);actual=$exo;source=$UiCheckPath})
+$rows.Add([pscustomobject]@{name='UI overlap runner';passed=([IO.Path]::GetFullPath($exo) -eq $expected);actual=$exo;source=$UiCheckPath})
 $failures=@($rows|Where-Object {-not $_.passed}).Count
 $report=[ordered]@{scope='Evaluate actual launcher assignments from parsed source; no Unity, process launch or Desktop swap';checks=$rows.Count;failures=$failures;rows=@($rows.ToArray())}
 $json=$report|ConvertTo-Json -Depth 5

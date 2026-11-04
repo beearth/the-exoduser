@@ -37,19 +37,20 @@ namespace Exoduser.UnityPort
         }
         IEnumerator M1Shot(string name)
         {
-            UpdateViews(); yield return new WaitForSecondsRealtime(.15f); yield return new WaitForEndOfFrame();
+            DispatchFeedback();UpdateViews(); yield return new WaitForSecondsRealtime(.15f); yield return new WaitForEndOfFrame();
             m1Overlays[name] = M1Overlay();
             if (playerView != null) Debug.Log("[M1CAP] " + name + " player.enabled=" + playerView.enabled + " active=" + playerView.gameObject.activeInHierarchy + " sprite=" + (playerView.sprite != null) + " visibleToCamera=" + playerView.isVisible + " sort=" + playerView.sortingOrder + " pos=" + playerView.transform.position + " cam=" + view.transform.position + " alpha=" + playerView.color.a + " state=" + (Simulation != null ? Simulation.Player.State : "?") + " inArena=" + (Simulation != null && Simulation.Stage.InArena) + " focus=" + Application.isFocused + " guiRepaints=" + m1GuiRepaints);
             if (!m1Headless) { ScreenCapture.CaptureScreenshot(Path.Combine(m1Caps, name + ".png")); yield return null; yield break; }
             const int w = 1600, h = 900;
             var rt = RenderTexture.GetTemporary(w, h, 24, RenderTextureFormat.ARGB32);
-            var previousTarget = view.targetTexture; var previousActive = RenderTexture.active; Texture2D tex = null;
+            var captureCamera=HudCamera;
+            var previousTarget = captureCamera.targetTexture; var previousActive = RenderTexture.active; Texture2D tex = null;
             try
             {
-                view.targetTexture = rt; view.Render(); view.targetTexture = previousTarget;
+                captureCamera.targetTexture = rt; captureCamera.Render(); captureCamera.targetTexture = previousTarget;
                 m1GuiTarget = rt;                       // the next Repaint (if any) draws the IMGUI over this frame's world
             }
-            catch (Exception e) { view.targetTexture = previousTarget; Debug.LogWarning("[M1] headless world render failed: " + e.Message); }
+            catch (Exception e) { captureCamera.targetTexture = previousTarget; Debug.LogWarning("[M1] headless world render failed: " + e.Message); }
             yield return null; yield return new WaitForEndOfFrame();
             m1GuiTarget = null;
             try
@@ -58,6 +59,42 @@ namespace Exoduser.UnityPort
                 File.WriteAllBytes(Path.Combine(m1Caps, name + ".png"), tex.EncodeToPNG());
             }
             finally { RenderTexture.active = previousActive; RenderTexture.ReleaseTemporary(rt); if (tex != null) Destroy(tex); }
+        }
+        // No simulation Tick in this probe. Capture the real Q contact once and
+        // show that identical contact at +4 ticks through two isolated views.
+        IEnumerator M1ParryCameraComparison(FeedbackEvent qContact) {
+            var sim=Simulation;var p=sim.Player;
+            var restore=sim.CaptureParryProbeState();var pending=sim.Feedback.ToArray();
+            var previous=combatImpacts;var show=previous.HideForProbe();var rng=UnityEngine.Random.state;
+            float savedZoom=camZoom,savedSize=view.orthographicSize;var savedPosition=view.transform.position;
+            var savedRotation=view.transform.rotation;var savedProjection=view.projectionMatrix;var savedShake=hd2dCameraShake;
+            var savedMarker=r3Marker!=null?r3Marker.position:Vector3.zero;
+            var savedLens=r3Vcam!=null?r3Vcam.Lens:default;
+            var savedR3Position=r3Cam!=null?r3Cam.transform.position:Vector3.zero;
+            var savedR3Rotation=r3Cam!=null?r3Cam.transform.rotation:Quaternion.identity;
+            float savedR3Fov=r3Cam!=null?r3Cam.fieldOfView:0;
+            Exoduser.UnityPort.Vfx.CombatImpactView probe=null;
+            try {
+                if(qContact==null)throw new InvalidOperationException("M1 camera comparison requires a real Q parry");
+                p.State="sBlock";p.StateTicks=0;p.Iframes=0;sim.Feedback.Clear();
+                // Reuse the first real Q event's place and angle; do not award or simulate another parry. The camera A/B is
+                // about the perfect melee parry (push-in never applies to bullet parries), so the probe event is tagged melee.
+                var contact=new FeedbackEvent{Kind=qContact.Kind,Step=1,Source="contact",MeleeParry=true,HitStopTicks=2,
+                    X=qContact.X,Y=qContact.Y,Angle=qContact.Angle,Tick=sim.TickCount-4};
+                foreach(bool pushin in new[]{false,true}) {
+                    camZoom=savedZoom;UnityEngine.Random.state=rng;
+                    probe=new Exoduser.UnityPort.Vfx.CombatImpactView(transform){ParryPushIn=pushin};combatImpacts=probe;
+                    probe.Handle(contact);probe.Flash(contact);
+                    yield return M1Shot(pushin?"06-parry-q-pushin":"06-parry-q-shake");
+                    probe.Dispose();probe=null;
+                }
+            } finally {
+                if(probe!=null)probe.Dispose();combatImpacts=previous;restore();sim.Feedback.Clear();foreach(var evt in pending)sim.Feedback.Enqueue(evt);
+                show();UnityEngine.Random.state=rng;camZoom=savedZoom;hd2dCameraShake=savedShake;
+                view.transform.SetPositionAndRotation(savedPosition,savedRotation);view.orthographicSize=savedSize;view.projectionMatrix=savedProjection;
+                if(r3Marker!=null)r3Marker.position=savedMarker;if(r3Vcam!=null)r3Vcam.Lens=savedLens;
+                if(r3Cam!=null){r3Cam.transform.SetPositionAndRotation(savedR3Position,savedR3Rotation);r3Cam.fieldOfView=savedR3Fov;}
+            }
         }
         // status: "ok", "fail", "missing", "pending-core" (needs the boss Core, not a flow gap)
         void M1Add(string id, string name, string status, string note, string cap)
@@ -147,6 +184,7 @@ namespace Exoduser.UnityPort
             sim.SetRollInput(false, false, false, true, false); StepInput(0, 0, p.X + 300, p.Y, false, false);
             sim.SetRollInput(false, false, false, true, true); for (int i = 0; i < RollRules.Frames + 1; i++) { StepInput(0, 0, p.X + 300, p.Y, false, false); if (i == 8) yield return M1Shot("05-roll"); }
             sim.SetRollInput(false, false, false, false, false);
+            yield return M1Shot("05-roll-end");
             float rd = Mathf.Sqrt((p.X - rx) * (p.X - rx) + (p.Y - ry) * (p.Y - ry));
             M1Add("05", "roll", Mathf.Abs(rd - 175) < 1 || (rd > 20 && rd < 175.5f) ? "ok" : "fail", "rolled " + rd.ToString("0.0") + " px, gauge " + sim.HarpGauge.ToString("0.0") + ", count " + sim.RollCount, "05-roll.png");
 
@@ -154,12 +192,21 @@ namespace Exoduser.UnityPort
             for (int i = 0; i < 60; i++) StepInput(0, 0, p.X + 300, p.Y, false, false);
             p.Iframes = 0; p.State = "idle"; sim.SbCd = 0; int parries = sim.ParryCount; float hpq = p.Hp;
             sim.SetPlayerCombatInput(true, false, false); StepInput(0, 0, p.X + 300, p.Y, false, false); sim.HurtPlayer(500);
+            FeedbackEvent qContact=null;foreach(var evt in sim.Feedback)if(evt.Kind==FeedbackKind.Parry)qContact=evt;
             yield return M1Shot("06-parry");
+            yield return M1Shot("06-parry-q");
             bool q = sim.ParryCount == parries + 1 && p.Hp >= hpq;
             sim.SetPlayerCombatInput(false, false, false); StepInput(0, 0, p.X + 300, p.Y, false, false);
             for (int i = 0; i < 60; i++) StepInput(0, 0, p.X + 300, p.Y, false, false);
             int bashes0 = sim.BashStrikeCount; p.State = "idle"; p.Stamina = p.MaxStamina; sim.SetPlayerCombatInput(false, true, false); StepInput(0, 0, p.X + 300, p.Y, false, false);
             bool eDraw = p.State == "sDraw"; sim.SetPlayerCombatInput(false, false, false); StepInput(0, 0, p.X + 300, p.Y, false, false); bool eBash = p.State == "sBash";
+            // Capture the real shield-strike parry inside its existing window.
+            // Restore the probe even if screenshot capture throws; no Tick may
+            // run inside this scope (M1 keeps Running=false during these shots).
+            var restoreParryCapture = sim.CaptureParryProbeState();
+            try { p.Iframes = 0; sim.HurtPlayer(500); yield return M1Shot("06-parry-shield"); }
+            finally { restoreParryCapture(); }
+            yield return M1ParryCameraComparison(qContact);
             for (int i = 0; i < 60 && p.State != "idle"; i++) StepInput(0, 0, p.X + 300, p.Y, false, false);
             M1Add("06", "parry (Q) and shield strike (E)", q && eDraw && eBash && sim.BashStrikeCount == bashes0 + 1 ? "ok" : "fail", "Q parry " + q + ", E sDraw " + eDraw + " sBash " + eBash + " strike " + (sim.BashStrikeCount - bashes0) + " hits " + sim.BashHitCount + "; E projectile reflection not ported (B07b doc), no sBlock/sBash sprite", "06-parry.png");
 
@@ -350,8 +397,11 @@ namespace Exoduser.UnityPort
                 anglerHits = sim.HurtFieldMobs(angler.X, angler.Y, 10, 1e9, null);
                 for (int i = 0; i < 30; i++) StepInput(0, 0, p.X, p.Y, false, false);
             }
-            bool naturalUnlock = sealedAtSparseKills && regionKillsReached && anglersStillBlock && anglerHits && flow.FieldBossDone && sim.FieldBossAliveCount() == 0 && sim.RegionClearedCount() == 4 && flow.BossUnlocked;
-            M1Add("09c", "LT-10 regional Hell Gate", naturalUnlock ? "ok" : "fail", "sparse kills sealed " + sealedAtSparseKills + ", real kill thresholds reached " + regionKillsReached + ", all four living anglers still blocked " + anglersStillBlock + ", four angler hit paths " + anglerHits + ", all dead " + flow.FieldBossDone + ", regions " + sim.RegionClearedCount() + "/4, naturally unlocked " + flow.BossUnlocked + "; stage kills " + flow.StageKills + "/" + flow.TotalSpawned + " (harness combat, not OS input)", "");
+            // The last region clears on the next 15-frame region check and the gate opens on the first 30-frame room check after it: 1..44 ticks after the
+            // last angler, depending on phases the earlier kills shifted (region-test 09c). A fixed 30 ticks missed it (SWAP2 eaf67fae9). Wait, never force.
+            int gateWait = 0; while (anglerHits && flow.FieldBossDone && !flow.BossUnlocked && gateWait < 45) { StepInput(0, 0, p.X, p.Y, false, false); gateWait++; }
+            bool naturalUnlock =sealedAtSparseKills && regionKillsReached && anglersStillBlock && anglerHits && flow.FieldBossDone && sim.FieldBossAliveCount() == 0 && sim.RegionClearedCount() == 4 && flow.BossUnlocked;
+            M1Add("09c", "LT-10 regional Hell Gate", naturalUnlock ? "ok" : "fail", "sparse kills sealed " + sealedAtSparseKills + ", real kill thresholds reached " + regionKillsReached + ", all four living anglers still blocked " + anglersStillBlock + ", four angler hit paths " + anglerHits + ", all dead " + flow.FieldBossDone + ", regions " + sim.RegionClearedCount() + "/4, naturally unlocked " + flow.BossUnlocked + " (+" + gateWait + " ticks after the 30-tick tail); stage kills " + flow.StageKills + "/" + flow.TotalSpawned + " (harness combat, not OS input)", "");
             if (!naturalUnlock) { yield return M1Finish(output); yield break; }
             sim.Enemies.Clear(); sim.Loot.Clear(); p.Hp = p.MaxHp;
             // ---- 10..13 boss arena / boss / kill + exit / stage clear (C07). ----
@@ -450,6 +500,8 @@ namespace Exoduser.UnityPort
 
             // ---- 14 save and continue ----
             p.Hp = p.MaxHp; sim.Materials = 4321; bool saved = SaveCombatNow(); var before = SnapshotCombat("before");
+            string m1CombatStats=sim.CombatStatsJson();File.WriteAllText(Path.Combine(output,"combat-stats.json"),m1CombatStats);
+            m1StatsSnapshot=m1CombatStats;
             string name = lobby.ActiveCharacterName; bool hasSave = HasCombatSave(name);
             lobby.ShowLobby();yield return M1WaitFrontend("save return lobby");
             bool continueRequested=lobby.BeginCharacterEntry(false);yield return M1WaitFrontend("saved continue reveal");bool continueOk=continueRequested&&!lobby.StartupEntryActive&&!lobby.IsBlocking;
@@ -462,6 +514,7 @@ namespace Exoduser.UnityPort
         }
 
         IEnumerator M1WaitFrontend(string label) {float until=Time.realtimeSinceStartup+25;while((NativeScreenTransition.Busy||lobby.CinematicEntryPending)&&Time.realtimeSinceStartup<until){lobby.SetPlaybackFocus(true);yield return null;}if(NativeScreenTransition.Busy||lobby.CinematicEntryPending)M1Add("00","frontend boundary "+label,"fail","boundary timeout","");else if(NativeScreenTransition.History!=null&&NativeScreenTransition.History.Count>0){var record=NativeScreenTransition.History[NativeScreenTransition.History.Count-1];if(record.failed||record.cancelled)M1Add("00","frontend boundary "+label,"fail",record.boundary+" "+record.error,"");}yield return null;}
+        string m1StatsSnapshot;
         IEnumerator M1Finish(string output)
         {
             m1.guiRepaints = m1GuiRepaints; m1.guiBridged = m1GuiBridged;
@@ -469,6 +522,7 @@ namespace Exoduser.UnityPort
                 var paused = new List<string>(); foreach (var kv in m1Overlays) if (kv.Value.Contains("pause")) paused.Add(kv.Key);
                 M1Add("99", "captures free of the pause menu", paused.Count == 0 ? "ok" : "fail", m1Overlays.Count + " captures, " + (paused.Count == 0 ? "none under the pause menu" : "pause menu over: " + string.Join(", ", paused.ToArray())), "");
             }
+            if(m1StatsSnapshot!=null)File.WriteAllText(Path.Combine(output,"combat-stats.json"),m1StatsSnapshot);else WriteCombatStats(output);
             File.WriteAllText(Path.Combine(output, "m1-check.json"), JsonUtility.ToJson(m1, true), new UTF8Encoding(false));
             // UI 캡처와 동일하게 영상 컴포넌트의 지연 파괴를 먼저 끝낸다.
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);

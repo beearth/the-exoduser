@@ -1,5 +1,21 @@
 # 웹 자동 배포 실패 복구 — 2026-10-02
 
+## 2026-11-01 배포 선택기 후속 후보 — 제작 원본 18파일만 제외
+
+`codex/h5-web-delivery-20261101`의 `tools/web-runtime-manifest.mjs` 후보는 현재 웹 진입 HTML·JS·CSS·선택된 JSON에서 실제 소비가 확인되지 않은 프롤로그 구판 `assets/cutscene/prologue/_old_20260727/` 15PNG(99,072,910바이트), SOUTH 수정 전 제작 베이스 `assets/map/ch1/baked_spike/south_visual_pass/CH1_SOUTH_BASE.png`(31,877,268바이트), 맵 백업 `assets/map/ch1/boss_room_bg_old.png`(2,754,665바이트)와 `assets/map/ch1/ground_dark_soil_backup.png`(2,749,740바이트)만 정적 선택에서 뺀다. [프롤로그 원본](../cinematic/PROLOGUE_PROMPTS_GPT.md)은 `_old_20260727/`를 구판 백업으로, [SOUTH 제작 기록](../_archive/4.1맵디자인+설정/CH1_PAINTED_PHASE2_SOUTH_CANARY.md)은 `CH1_SOUTH_BASE.png`를 build base로 분류한다. 실제 `game.html`은 SOUTH `chunk_*.png`를 참조한다. 원본 파일 byte·게임 코드·음악·영상은 바꾸지 않는다. 향후 이 네 범주의 파일을 정확한 런타임 경로로 직접 참조하면 선택기가 다시 포함한다.
+
+선택 목록 계산은 **3,134파일·4,829,417,882바이트 → 3,116파일·4,692,963,299바이트**, 18파일·136,454,583바이트 절감, 새 선택 파일0이다. 로고, 로딩 35장×3비율=105이미지와 manifest, 프롤로그 현행 p01.jpg·CH1 실행 chunk, 음악77·sfx346·언어27은 보존됐다. 경로별 전후 목록은 `I:/EXODUSER-Storage/design/web-unity-parity-20261101/candidate-selection-manifest.json`; 작은 정상/정확 참조 회귀는 `test/webDeployment.test.js` 7/7 PASS. 이는 **후보 선택 계산**이며 4.8GB 실복사·배포·실게임 검수는 아니다.
+
+남은 차단: 총량이 프로젝트 사전 예산 4,000,000,000바이트를 **692,963,299바이트 초과**하고 `video/world_intro_v22b_steam.mp4` 102,204,634바이트가 개별100,000,000바이트 검사도 넘는다. `ffprobe` 헤더는 H.264 1920×1080+AAC, 113.701초·7,191,115bps로 확인했고 원본 SHA-256은 `3b99d59bca9d84a37bb6b49067148e1ed69fefb478ff206221b59c8c952d0b0f`이다. 현재 영상·음원 재인코딩, 필수 파일 삭제, 임의 상한 변경은 하지 않는다. 별도 단위에서 실제 사용 자원을 더 증명하거나 동일 스트림 보존 remux/배포 경로를 검증해야 하며, 이 후보를 main에 넣어도 즉시 정상 배포할 수 있다는 뜻은 아니다.
+
+## 2026-10-27 킬루가문 영상 교체 배포의 용량 검사 복구
+
+- 교체 영상이 포함된 `main/0a81912b2e4e86e326538afd7f91626ea1729671`의 [Deploy and Build 실행](https://github.com/beearth/the-exoduser/actions/runs/40450295727)은 정적 업로드 합계 4,003,685,155바이트로 프로젝트 사전 예산 4,000,000,000바이트를 초과해 실패했다. 영상 파일의 게임 로컬 적용과 GitHub main 반영은 이 실패와 구분한다.
+- `tools/web-runtime-manifest.mjs`의 동적 CH1 경로 선택에서 웹 실행에 쓰지 않는 제작 원본 3개만 제외한다: `assets/map/ch1/rottenwood_field_rootworld_master_v2.png`, `assets/map/ch1/rottenwood_poison_master_higgsfield_v2_wide.png`, `assets/map/ch1/rottenwood_poison_tree_detail_v3_source.png`. 원본 파일 자체는 삭제하거나 이동하지 않는다. CH1 실행 청크 선택은 유지한다.
+- 로컬 선택 목록은 2,825개/4,036,367,600바이트에서 2,822개/3,977,014,362바이트로 감소했다(59,353,238바이트). `test/webDeployment.test.js`는 세 제작 원본 제외와 실행 청크 유지를 검증하며 관련 6개 검사가 통과했다. 이 수치는 로컬 선택 목록이며 Vercel 최종 반영 여부는 새 Actions 실행과 공개 URL로 따로 확인한다.
+- 용량 수정은 `13c3629e3d590aca38b4d935494de06e5e8e7980`으로 main에 반영했다. 다른 작업의 후속 main 푸시가 앞선 실행을 취소했으나, 수정 커밋을 포함한 `48b804d34475f78a7c2a06173045fd7beec52c65`의 [Deploy and Build 실행](https://github.com/beearth/the-exoduser/actions/runs/40451606853)은 정적 용량 검사와 Vercel 업로드를 포함해 성공했다.
+- 2026-10-27 공개 주소 `https://the-exoduser.vercel.app`: `index.html`이 새 버전 `20261027-killu-bloodtears-v3`를 참조하고 `character-story-player.js`가 해당 영상 쿼리를 사용함을 확인했다. 공개 MP4는 HTTP 200, 94,795,327바이트이며 전체 다운로드 SHA-256 `8b8248424b63d808dc225576fda44e39d459709963f97923ffaa38a51dba28ab`가 승인 후보와 일치한다. 브라우저에서 전체 96.4초 재생을 끝까지 시청하는 검수는 별도다. Steam 배포와 Windows 플레이어 빌드는 이 웹 배포에 포함되지 않는다.
+
 | 항목 | 현행 계약 / 검증 근거 |
 |---|---|
 | 작업 범위 | Vercel `fordeargamers/the-exoduser`의 웹 패키징·GitHub Actions 배포만 수정. 기준 GitHub main `aacc7b02bef9d5cd7db6ea5d6466d7b8e4c11a3c`. 공유 PC의 미완료 변경·Steam/NW 빌드·세이브는 반영하지 않음 |
@@ -8,7 +24,7 @@
 | 기존 과대 산출물 | 해당 커밋의 기존 웹 선택 규칙: 6,264개, 7,093,185,953바이트. 전체 Git 저장소 크기와 배포 산출물 크기를 구분함 |
 | 웹 선택 | `selectWebRuntimeFiles()`가 공통 FILES의 루트 진입 파일과 실제 HTML/JS/CSS의 에셋 리터럴·동적 접두사를 재귀 추적. 언어/루트 아틀라스, 계산되는 sfx/sprites/localization, Three/vendor/3d 상대 의존성 유지. 단순 디렉터리 전체 복사를 대체 |
 | 제외 | 참조 없는 이전 음악·영상, 맵 master PNG와 `*_sources`, `_unity_preview`, `_p11_candidates`, `_grok_qa`, `assets/video-bases`, `assets/video-tests`, zip/blend/psd/kra 제작 원본. 실제 선택 가능한 WAV는 재인코딩 없이 보존 |
-| 활성 타이틀 필수 파일 | `video/title_motion_hd_20260929.mp4`; 참조되지 않는 이전 `video/title_motion_hd.mp4`를 필수 검사로 강제하지 않음 |
+| 당시 활성 타이틀 필수 파일(2026-10-02 이력) | 당시 `video/title_motion_hd_20260929.mp4` 소비 기준. 현행 필수 영상 검사는 아래 2026-11-01 절의 실제 정적 참조를 따른다. |
 | Unicode 업로드 | `prepare-vercel-output.mjs`가 파생 `.vercel/output/static`의 동일 NFC/NFD 중복 바이트를 확인하고 합침. 한글 파일만 SHA256 기반 ASCII `_unicode/` 경로로 이동하고 Build Output API `overrides.path`로 원래 NFC 공개 URL 유지. 소스 파일은 변경하지 않음. 충돌 바이트가 다르면 변환 전에 실패 |
 | 사전 검사 | 핵심 index/game/parry-lesson/resource-practice 존재, 파일+config 최대15,000개, 개별100,000,000바이트, 합계4,000,000,000바이트. 합계는 이 프로젝트의 보수적 전송 예산이며 Vercel 공식 전체 산출물 한도로 설명하지 않음 |
 | 자동 배포 | GitHub Actions 한 경로로 유지. main 코드 push/수동 실행만 웹 배포; docs/test/Markdown만 바뀐 push는 제외. production 동시 실행1개, 새 실행 시 이전 실행 취소, 작업 제한30분. 태그 Electron 작업은 기존 계약 유지 |
@@ -37,3 +53,89 @@
 API 근거: [배포 목록](https://vercel.com/docs/rest-api/deployments/list-deployments), [진행 중 배포 취소](https://vercel.com/docs/rest-api/deployments/cancel-a-deployment).
 
 수동 정리 도구를 추가한 commit은 `[skip ci]`로 이미 검증된 프로덕션을 다시 만들지 않았으며, 별도 workflow_dispatch의 자체 범위 회귀3개와 실제 원격 정리를 실행했다. 이 동작은 이후 main 코드 push의 자동 배포를 비활성화하지 않는다. [GitHub의 push/PR 건너뛰기 범위](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/skip-workflow-runs).
+
+
+## 2026-11-01 JSON 아트 의존성 후보 마감 — main 미반영
+
+기존 담당의 `tools/web-runtime-manifest.mjs`·`test/webDeployment.test.js` 미마감 변경을 보존·검토한 뒤, CTO가 누락된 manifest 제작원본 차단 검증만 보완했다. 새 작업본·작성 프로세스는 만들지 않았으며 원본 게임·음악·영상·그림 byte는 변경하지 않았다. 기준 원격 후보는 `273c662c0233ecb47064bb309fad667cb8285ea9`, 공통 main은 `2285643604486c5bfd9615ef7deb318c84845931`이다.
+
+| 항목 | 후보의 정확한 동작·검증 범위 |
+|---|---|
+| 로딩 의존성 | 선택된 `img/lording/wide/manifest.json`의 원본35장과 확장판105개를 필수로 포함한다. `img/lording/`의 broad prefix만으로 선택된 비선언21파일은 제외하며, 새 정확 코드 참조가 있으면 포함한다. 실제 소비의 rd6는 PNG이며 구 WEBP는 현재 manifest·소비 목록에 없다. |
+| 전체 화면 의존성 | `assets/fullscreen-wide/20261031/manifest.json`에 선언된 source와 outputs를 읽는다. 원본64종·확장판128개를 유지한다. 해당 등록 이미지가 실제 사용되므로 숫자를 맞추기 위해 제외하지 않는다. |
+| 누락·모호성 | 잘못된 JSON, 존재하지 않는 manifest 자원, 배포에서 제외되는 제작 원본을 manifest가 요구하면 실패한다. NFC/NFD 경로 동치는 유지한다. |
+| 선택 목록 전후 | 이전 후보 3,116파일·4,692,963,299B → 이번 후보 3,095파일·4,629,181,769B. 제외21개·63,781,530B, 추가0이다. main 기준 기존1차 절감을 합치면 39개·200,236,113B 감소다. |
+| 검사 | 기존 실제 코드의 제작원본 차단 누락을 RED(exit1,10/11)로 재현 후 최소수정하여 Node 검사11/11·exit0. 전체 선택 목록에 index/game·승인 불투명 로고·로딩 JS/CSS·두 manifest 존재를 대조했다. |
+| 남은 배포 제한 | 총량은 프로젝트 사전 예산4,000,000,000B보다629,181,769B 크다. `world_intro_v22b_steam.mp4`102,204,634B의 개별100MB 초과도 남는다. 상한을 완화하지 않았다. |
+| 실제 전달 경계 | 복사 전 선택·정적 검증 결과다. 실제 web-dist, HTTP 검수, Actions/Vercel 업로드·공개 서비스 갱신은 아직 완료되지 않았다. user Player·기존3333 서버·G: 사용자 작업본·Unity 공통은 변경하지 않았다. |
+
+경로별 JSON과 RED/GREEN 원문은 `I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/web-json-closure-selection.json`, `web-json-closure-root-red.log`, `web-json-closure-root-green.log`에 보존한다.
+
+## 2026-11-01 구 타이틀 필수 경로 차단 수정 — 후보 검수, main 미반영
+
+| 항목 | 변경과 실제 검증 범위 |
+|---|---|
+| 확인된 장애 | Actions #1402(41194496954)·#1403(41198389177)는 `tools/build-web.mjs`가 현재 소비되지 않는 `video/title_motion_20261028.mp4`를 필수로 요구해 Build에서 실패하고 Deploy를 건너뛰었다. |
+| 최소 수정 | 고정 핵심 진입·스크립트·Three 의존성 8경로의 필수 검사는 유지한다. 선택된 HTML/JS/CSS/MJS의 정적 `video/…mp4`·`video/…webm` 참조를 필수로 검사한다. 쿼리·fragment는 제거하고 NFC/NFD를 동일하게 대조한다. 동적 template prefix는 기존 선택기가 담당하며 미해석 경로를 고정 파일로 오판하지 않는다. |
+| 현행 영상 | `index.html`의 `video/fdg_intro.mp4`·`video/world_intro_v22b_steam.mp4`, `character-story-player.js`의 `video/warrior_story_v23_clean.mp4`가 현재 정적 소비 영상이다. 옛 타이틀 파일은 참조가 없으면 필수가 아니며 새 참조가 생기면 다시 필수다. |
+| 회귀 | 작은 임시 Git fixture에서 실제 build 스크립트를 실행했다. 옛 영상이 없는 정상 빌드 성공, 핵심 entry 누락 실패, 현행 세 영상 각각의 누락 실패를 검증했다. 기존 11검사를 유지해 총14/14·exit0. 최초 RED는12/14·exit1이며 실제 stale 오류를 재현했다. |
+| 실제 선택 검증 | 원본 전체 복사 없이 현행 선택3,095파일에 같은 사전 검증을 적용해 exit0. 선택 파일/미디어 byte 변화0. 검사 harness의 최초 모듈 상대경로 오류와 command-local safe.directory 미지정은 harness만 정정했으며 전역 설정 변경0이다. |
+| 전달 경계 | 같은 private 후보에 code/test/docs만 정상 보존한다. main·workflow·공개 배포·G: 사용자 작업본 변경0. 4,629,181,769B 총량의629,181,769B 초과, 월드 인트로102,204,634B의100MB 초과 및 공개402는 별도 해결·검수 대상이며 이 수정으로 배포 완료라 하지 않는다. |
+
+RED/GREEN 및 현재 목록 검증 원문: `I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/web-stale-assert-{red,green,current-selection}.log`. 원본 영상·음악·그림의 byte와 게임 내용은 바꾸지 않았다.
+
+## 2026-11-01 승인 웹 파생 미디어 연결 — 원본 URL·실제 MIME 보존 후보
+
+사용자는 원본을 보존한 웹 전용 파생본 제작과 최신 웹 commit/push/배포를 승인했다. 이번 코드는 파생 미디어를 기존 정적 배포 경로에 연결하며 게임 HTML·JS 내용, 원본 미디어, Unity 및 사용자 실행본은 수정하지 않는다. 실제 대형 artifact·브라우저·공개 배포 판정은 별도 인수한다.
+
+| 항목 | 배포 계약·검증 범위 |
+|---|---|
+| 입력 schema | `assets/web-derived/20261101/manifest.json`의 `version:1`, `assets[]`를 사용한다. 각 행 필수값은 `source_path`, `source_git_blob`(Git SHA-1), `source_sha256`, `source_bytes`, `derivative_path`, `sha256`, `bytes`, `mime`다. 파생 경로는 동일 `assets/web-derived/20261101/` 안에만 둔다. |
+| 허용 변환 | WAV→FLAC(`audio/flac`), PNG→WebP(`image/webp`), MP4→MP4(`video/mp4`)만 허용한다. 원본·파생의 실제 size/SHA-256, 원본 Git blob, 파생 확장자/MIME와 파일 magic을 대조한다. 이 검사는 PCM/RGBA/ICC·영상 시각 동등성이나 브라우저 decode 검수를 대신하지 않는다. |
+| 원래 URL | `build-web.mjs`는 선택된 원본 대신 `_web_derived/<원래 NFC 경로 SHA256>.<실제 파생 확장자>`에 한 번만 staging한다. `prepare-vercel-output.mjs`가 Build Output API `overrides[실파일].path`에 원래 URL, `contentType`에 실제 MIME을 명시한다. PNG/WAV 파일명에 다른 포맷 byte를 저장하지 않는다. |
+| 동적·JSON 의존성 | 기존 selector로 먼저 원본 소비 목록을 확정한 후 정확 source mapping만 치환한다. 기존 로딩35·wide105/전체화면64·wide128·언어·동적 음원 선택 계약은 유지한다. `assets/web-derived/`는 broad-prefix/직접 정적 선택에서 제외해 원본·파생을 이중 export하지 않는다. |
+| Unicode 동일 byte | 원본 NFC/NFD logical 행은 원본 blob/SHA/bytes·파생 canonical 경로/SHA/bytes/MIME가 모두 같을 때만 하나의 물리 alias로 묶는다. 모든 실제 tracked source/derivative spelling의 byte도 대조한다. `source_aliases`에 원문 경로들을 남기고 `logicalDerived`와 물리 `derived` 수를 분리한다. 다른 byte·다른 변환·중복 동일 행은 실패한다. |
+| 안전·용량 | 경로 이탈·backslash/colon/percent/query/fragment/control·symlink file·미추적/누락/미선택 source·변조·기존 URL override 충돌·원본과파생 동시 staging은 실패한다. 최초 출력 생성 전에 파일15,000개(config 포함), 개별100,000,000B, 합계4,000,000,000B를 검사한다. staging size 변화 및 prepare에서 실제 파생 hash도 다시 검사한다. 상한 완화0. |
+| artifact 근거 | build의 `__web-derived-output.json`에는 원본/파생 hash·bytes·실제 staging path·원래 URL·MIME·Unicode aliases를 기록한다. prepare가 config 적용 후 이를 `.vercel/output/web-derived-output.json`으로 옮겨 정적 공개 파일에서 제외한다. 원본 저장소 byte는 그대로다. |
+| 의미 있는 회귀 | 작은 실제 build→prepare fixture, 실제 MIME/원래 URL, 기존 Unicode 보존, 누락·SHA/Git blob·size·magic·위험경로·상한·변조·충돌을 검증한다. Mac과 같은 NFC/NFD 2논리→1물리는 기존 거절 RED 후 동일 byte 조건으로 GREEN, 다른 파생 byte는 거절한다. 기존14 + upload5 + 신규10 =29검사 대상이다. |
+| 미검증 경계 | Mac 보고 73logical/72physical 파생본의 전체 입력 hash·실산출물과 공개 HTTP/MIME/Range·WebP/FLAC/MP4 decode·실제 게임 화면은 이 소형 fixture와 별도로 root/Mac이 인수한다. raw web-dist 서버는 overrides를 적용하지 않으므로 배포 URL 재현 증거로 사용하지 않는다. main push·production workflow·공개 배포는 이 코드 작성 단위에서 수행하지 않는다. |
+
+URL와 MIME 지정은 [Vercel Build Output API 공식 configuration](https://vercel.com/docs/build-output-api/configuration)의 `overrides.path`·`contentType` 계약을 따른다. 별도 proxy/streaming 함수를 추가하지 않으며 실제 Range 지원은 배포/override-aware preview의 HTTP 응답으로 확인해야 한다. 원문 회귀는 `I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/web-derived-link-*.log`, Unicode 실제 조건 RED는 `web-derived-unicode-alias-red.log`에 보존한다.
+
+## 2026-11-01 exFAT EISDIR staging 실패 한정 복구
+
+| 항목 | 정확한 동작·검증 범위 |
+|---|---|
+| 실제 장애 | 후보 `5df3c4b8216f8d4ee92e56e0cecfd12cc2f54c4e`의 전체 artifact 생성 중 I:의 `GLTFLoader.js`(96,550B)가 일반 파일임에도 hardlink에서 `EISDIR`로 중단했다. 권한 거부 또는 실제 디렉터리라고 단정하지 않는다. 기존 partial output은 삭제하거나 재사용하지 않는다. |
+| 복사 조건 | `stageWebRuntimeFile`로 I/O를 분리했다. source를 lstat로 일반 non-symlink 파일인지 확인하고 link 실패 직후 다시 확인한다. `EXDEV`·`ENOTSUP`·`EISDIR`만 목적지가 없을 때 `COPYFILE_EXCL`로 복사한다. 디렉터리·symlink·이미 있는 파일은 덮어쓰지 않는다. |
+| 권한·중복 | `EACCES`·`EPERM`은 복사로 전환하지 않고 원문 오류로 중단한다. `EEXIST`는 양쪽 일반 파일의 양수 inode와 dev가 같아 실제 동일 hardlink일 때만 허용한다. inode0만 같다는 이유로 동일 파일로 판정하지 않는다. 전역 권한·파일시스템 설정 변경0. |
+| 기존 gate | source/derivative hash·blob·size, 선택 목록·MIME·Unicode·업로드 상한 검사는 유지한다. 복사 후 실제 size 및 전체 staging byte 합계 검사도 유지한다. CLI는 직접 실행 때만 빌드하고, 테스트에서 helper import는 artifact를 만들지 않는다. |
+| 작은 회귀 | 기존 동작으로 실제 일반 파일 mock-link `EISDIR`를 RED로 재현했다(신규7개 중2PASS/5FAIL). 수정 후 일반 파일의 크기·SHA 보존, 실제 directory·mock lstat symlink 거절, 권한 오류, 기존 목적지 보존, 실패 중 source 유형 변경, 실제 동일 hardlink를 검증해 신규7/7 및 기존29 포함36/36·exit0이다. |
+| 실제 I: 확인 | 새 고유 소형 fixture에서 기본 Node I/O의 method=`copy`, source/destination 각각4,200B·SHA-256 `e6286da8fb5b7aea3223a0877935f0dbfe622c5010d5ce05b0ab0bc53ff991b3` 일치, source byte 변화0을 확인했다. 이 검사는 전체 약3.95GB artifact 완료·HTTP·브라우저 검수가 아니다. |
+| 반영 경계 | code1·test1·관련 docs2만 기존 후보 위에 정상 commit/push한다. 원본/파생 미디어·game/index·main·공개 배포·이전 partial artifact·G: 사용자 작업본을 변경하지 않는다. 전체 새 고유 output 및 Mac 1x/decode/HTTP 검수는 root/Mac 후속 인수 대상이다. |
+
+근거: `I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/web-eisdir-stage-red.log`, `web-eisdir-stage-green.log`, `web-eisdir-real-fixture.json`.
+
+
+## 2026-11-01 승인 불투명 로고·최신 웹 배포 전 실제 검수 인수
+
+| 항목 | 실제 확인 | 경계 |
+|---|---|---|
+| 승인 불투명 로고 | 원본·web main·unity/main·새 웹 산출 PNG SHA-256 `167e8465a0aec6fa5e8cd90131f203a86a27dccca2aa913a317cffe93c7d413d` 동일 | PC Unity 설치본 교체와 별개 |
+| 소스 | Mac 실제 검수 `5df3c4b8216f8d4ee92e56e0cecfd12cc2f54c4e`, Windows exFAT 복사 수정 `89d70f3d7b82b25f188e98e1501bdcf9ed21d746` | 후속 수정은 빌드 복사 도구·테스트·docs뿐이며 게임·미디어·manifest byte diff 0 |
+| 실제 산출물 | 두 OS 모두 정적 3,088파일 / 3,945,183,602B / 최대 94,795,327B | 생성 중 sidecar를 포함한 값 3,945,236,692B와 구분 |
+| 파생 매핑 | 73논리 행 → 72정규화 자원(WebP54/FLAC17/MP4 1), 원본과 파생 SHA·원본 Gitblob·크기 검증 | 원본 Git byte 보존·NFC/NFD 동일 byte alias만 병합 |
+| HTTP 소비 | 원래 URL 73개 HEAD·정확 MIME·Range206/416·전체 GET SHA 일치 | Vercel Build Output overrides를 반영한 격리 loopback QA; 공개 사이트 검증 아님 |
+| Chrome 소비 | WebP54 decode, FLAC17 decode, MP4 113.701초/1920x1080 및 5·45·90초 seek | 무음 검수·청음 및 자연 전투 검수 아님 |
+| 화면 비율 | 1920x1080·2560x1080·3840x1080 인트로/로딩 캡처 및 담당 1x 확인, 로딩 35종x3비율=105 decode | root는 실제 명령·영수증·imageView5 기록 인수; root 직접 픽셀뷰 0 |
+| 산출물 동일성 | config SHA `a155ecb736faf23f4d0ee94c323d46ccdd9387119ac0e5a26967d04901f264b4`, 파생 영수증 SHA `e4c4479998da14f6370dabc60e3e2e9cae660837433c366195ad5ccd809ca380` Mac/Windows 일치 | hosted Vercel build·실제 배포 URL은 후속 확인 |
+| 공개 상태 | 배포 전 두 도메인 HTTP402 DEPLOYMENT_DISABLED | 원인 계정/플랜 확정 없음·요금/보안 변경 없음 |
+
+검수 산출: Mac `_out/web-runtime-qa-20261101/REPORT.md`와 같은 폴더의 HTTP·브라우저·로딩 검수 영수증 및 캡처. root 근거는 `I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/web-real-artifact-root-audit.json`/`web-derived-real-inputs-root-audit.json`. 최신 승인 지시에 따라 정상 main 반영과 기존 GitHub Actions 배포를 이어가며 공개 URL·실제 로고 바이트 확인 전 배포 완료로 표시하지 않는다.
+
+
+### 공개 배포 실행 #1404 — 2026-11-01 19:34 KST
+
+`082521de3955726df006d22ad284e57b103cebe1` 정상 main push 뒤 기존 GitHub Actions [#1404](https://github.com/beearth/the-exoduser/actions/runs/41297655242)가 실제 실행됐다. 원격 Vercel build·Unicode 경로 준비·파일별/전체 업로드 검사는 모두 성공했고 Linux 산출도 3,088파일 / 3,945,183,602B로 Windows·Mac 검수와 일치했다. 마지막 `Deploy to Vercel` 단계는 2026-11-01T10:34:06Z에 **팀 미결제 잔액으로 계정 재활성화가 필요하다**는 CLI 원문으로 exit1 거절됐다. 공개 서비스 최신화 완료가 아니다.
+
+Vercel 계정 관리자의 결제 문제 해소가 선행한다. 에이전트는 결제·요금제·카드·보안 설정을 변경하지 않았다. 이 외부 조건이 바뀌기 전 같은 배포를 무한 재시도하지 않는다. 원문 로그/영수증: root diagnostics `web-ci-1404-job.log`, `web-ci-1404-job-receipt.json`. PC Unity Desktop 갱신은 별도 기존 owner의 c336 frozen 입력·Win64 build·same-app 검수·바로가기 readback 단위로 진행 중이다.

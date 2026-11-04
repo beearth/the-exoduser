@@ -1,5 +1,8 @@
 # 로비 전대 원화 교체 — 2026-09-28
 
+> 2026-11-01 현행 사용자 결정: **캐릭터 개수 제한 없음**. 웹·Unity 소스 후보에 적용했으며 실제 실행본 갱신은 별도다. 아래 과거 검수의 5슬롯/개발자 전용 무제한 기록은 당시 이력이다. 최신 코드·검증 범위는 [세이브 SSOT](../15 세이브+데이터구조/15 세이브+데이터구조.md)의 마지막 절과 `I:/EXODUSER-Storage/character-capacity/20261101-unlimited/REPORT.md`를 따른다.
+
+
 > 2026-09-29 현행: **미선택 기본 화면은 선대 소환체 · 묘왕 바르칸**, 캐릭터 카드 선택 후에는 해당 CHAR_VISUALS의 원화/아이들 영상과 이름·직업을 표시한다. 데모도 자동 선택 없이 시작하며 카드 클릭 후 입장을 활성화한다. 선택 해제 시 전대 화면으로 복귀한다. 아래 2026-09-28 제작·검수는 당시 이력이며, 현재 선택 표시 규칙은 [기본 전대 / 선택 캐릭터 전환 SSOT](<../3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md>)를 우선한다.
 
 ## 2026-09-29 기본 전대 / 선택 캐릭터 전환 — 현행 SSOT
@@ -68,8 +71,8 @@
 | 표시 이름 | `_lobbyAncestorName`: 한국어 묘왕 바르칸 / 그 외 Varkan, the Tomb King. `_lobbyAncestorCaption`: 선대 소환체 / ANCESTRAL SUMMON. 미선택에만 이 이름 표시; 선택 시 저장 이름/데모 대검전사와 CHAR_VISUALS 직업으로 전환 (2026-09-29 갱신) |
 | 배경 | `assets/lobby/lobby_varkan_crypt_loop_v2.mp4`, muted/autoplay/loop/playsinline, preload metadata. 포스터 `lobby_varkan_crypt_poster_v2.webp`; cover, center 75%, `_curBg=varkan-crypt-v2` |
 | 스프라이트 | `lobby-ancestor-sprite.js`, defer. `assets/lobby/varkan_idle_v3.png`: 셀384×624, 8열×12행, 96프레임, 24fps/4초. frame=floor(max(0,seconds)×24)%96 |
-| 기준점 | baseline603.682092555332, heartX182.43863179074447. canvas384×624. 배경 기준1920×1088; 좌측 폭65%, 화면폭1100px 이하55% |
-| 배치 | scale=max(width/bgWidth,height/bgHeight); footY=min(height×0.89,max(height×0.76,bgHeight×scale×0.84+(height−bgHeight×scale)×0.75)); displayHeight=min(height×0.8,footY−28); displayWidth=displayHeight×384/624. footX=max(displayWidth×0.52+12,min(leftWidth−displayWidth×0.48−12,bgWidth×scale×0.33+(width−bgWidth×scale)×0.5)); left=footX−heartX/384×displayWidth; top=footY−baseline/624×displayHeight |
+| 기준점 | 선 자리 standX207·standY596(두 발 중점 x: 뒷발115~173·앞발249~299, 두 발바닥 높이 중간 y: 뒷발589·앞발603). 예전 baseline603.682·heartX182.439(가슴)는 참고값으로 남김. canvas384×624. 배경 기준1920×1088; 좌측 폭65%, 화면폭1100px 이하55% |
+| 배치 (2026-11-03 디버깅 총괄) | 선 자리를 배경 원본 원형 단 동심원 중심(660,850)/(1920,1088)에 맞춘다. 배경 상자 bg = 와이드 확장판이면 원본 영상 상자(--wide-video-x/y/w/h), 아니면 cover(scale=max(width/bgWidth,height/bgHeight), x0=(width−bgWidth×scale)×0.5, y0=(height−bgHeight×scale)×0.75). footY=min(height×0.92, bg.y+bg.h×850/1088); displayHeight=min(bg.h×864/1088, height×0.8, footY−28); footX=max(displayWidth×0.52+12, min(leftWidth−displayWidth×0.48−12, bg.x+bg.w×660/1920)); left=footX−207/384×displayWidth; top=footY−596/624×displayHeight. 예전 식(bg 가로33%·세로84%, 가슴 기준)은 와이드 확장판에서 단 밖에 섰다. Unity `NativeLobby.DrawAncestor`도 `NativeFullscreenArtwork.LastOriginalRect`로 같은 규칙(예전 Unity는 가로 960 고정이라 16:9에서도 단 오른쪽 약300px) |
 | 그림자 | footX/footY 위치, 너비displayWidth×0.42, 높이displayHeight×0.045, translate(−50%,−50%) |
 | 재생 수명 | 미선택 로비 표시 중이며 document.hidden이 아닐 때만 rAF 및 배경 재생. 선택/숨김/비표시 때 rAF 취소 및 video.pause. ResizeObserver로 배치 갱신 |
 | 최초 언어 갱신 | `_refreshLobbyCardsLanguage()`는 `$` 초기화 전에도 호출되므로 `document.getElementById('charList')` 사용. 카드가 없으면 반환하며 기존 카드 리프/접근성 라벨만 갱신. 초기 TDZ 오류 회귀 검사 및 새 페이지 로그인/로비 진입 확인 |
@@ -139,7 +142,7 @@
 | _lobbyCardLeaf | 지정한 카드 내부 셀렉터의 children.length===0일 때만 textContent 변경. 부모 컨테이너·이미지·하위 DOM 보존. 삭제 버튼은 title 속성만 갱신 |
 | _lobbyCharacterCardLabel | 기존 CHAR_VISUALS 직업/클래스와 _formatLobbyStageProgress(stage,_TL) 재사용. .char-cls/.char-info/삭제 title 번역. 사용자 저장 이름, charIdx, 레벨, 스테이지 유지. 로컬 구분자 · /온라인 구분자 | 유지 |
 | _lobbyDemoCardLabel | 표시 이름은 KO 대검전사 / 그 외 Greatsword Warrior. 초상화는 CHAR_VISUALS[0].bust. 소환체 이름·역할·영체 설명은 왼쪽 독립 표시. 기존 렌더에서 캡처한 진행으로 레벨·Stage 1-1·처치·브라우저 저장 안내 재번역. 초기 Lv.1 START · Stage 1-1 · Lv.100 Cap 유지. 언어 전환 중 세이브 다시 읽기/쓰기 없음 |
-| _lobbyNewCardLabel | 새 캐릭터/슬롯 가득참 및 기존 최대 개수 안내 재번역. 기존 공개5개·개발 Infinity 제한 유지. 가득찬 비활성 카드도 콜백 등록하되 버튼/생성 이벤트를 새로 만들지 않음 |
+| _lobbyNewCardLabel | 2026-11-01 후보: 캐릭터 개수 제한 없이 새 캐릭터 라벨만 재번역. 개수에 따른 비활성/최대 표시는 제거, 기존 노드·초점·번역 키 유지 |
 | 상태 보존 | 같은 카드·선택 버튼·이미지·초점 유지. _selectedSlot/_selectedSlotName/_slotScrollIdx/_onlineScrollIdx/_characterLoadSeq 변경 없음. 번역 카탈로그 신규 키·전투/저장 형식 변경 없음 |
 | 회귀 | test/lobbyCardLanguage.test.js 신규11건: 데모2·온라인/로컬2·생성/가득참3·중첩 노드2·초기 적용1·기존 문자열 호환1. 원본7실패/4통과→수정 후11통과. $ 없는 초기화 검사도 수정 전1실패/10통과. 관련 통합239건 및 inline script4개 구문 통과 |
 | 실제 언어 검증 | 960×540/1920×1080에서29언어×데모1·로컬 생성가능/가득참2·온라인 생성가능/가득참2=290조합. 동일 카드/버튼/이미지·선택·스크롤·초점 보존 및 가로 넘침 없음, pageerror0. 생성/삭제 저장 요청0 |
@@ -195,3 +198,8 @@
 | 저장/선택 | hellsave_demo, 내부 DEMO CHARACTER, charIdx0 유지. _selectedSlot/_selectedSlotName=demo는 카드 선택 후 설정; 최초 null. 이름 변경으로 저장을 재작성하지 않음 |
 | DOM/언어 | _lobbyCardLeaf는 특정 리프의 children.length===0만 갱신. 선택 제어/이미지 노드/초점 유지. 언어 전환 중 세이브 읽기/쓰기 없음 |
 | 검증 | 기존 언어·데모 슬롯·소환체 회귀와 격리 브라우저의 신규/저장 진행, 한국어/영어, 새로고침 및3크기 확인. 상세 증거 captures/ancestor_grok_review/player-card/runtime-report.json |
+
+
+## 2026-10-31 전체 화면 원화 확장 적용
+
+이 문서의 과거 이미지·영상 제작 및 판정은 당시 이력이다. 현행 웹은 `fullscreen-art.js`의 경로 등록으로 64종의 원본/21:9/32:9 판을 선택한다. 화면비 2 이하의 원본 경로와 MP4 파일은 보존하고, 초광폭에서는 확장판을 배경으로 쓰고 원래 영상·카메라·CSS 움직임을 유지한다. 로비·캐릭터 영상은 manifest 중앙 좌표와 높이에 맞춰 겹치며 양끝14%를 크로스페이드한다. 전체 폭 분위기 효과는 움직임 줄이기·저사양·숨김 화면에서 정지한다. 출력·사용 위치·규격·생성 정보·검수 근거는 `docs/3.1 ui hud 디자인/FULLSCREEN_ART_ULTRAWIDE_20261031.md` 및 `assets/fullscreen-wide/20261031/manifest.json`이 현행 기준이다. 로딩35장은 별도 담당이며 Unity 반영·실행 검수는 이 웹 적용으로 완료되지 않는다.

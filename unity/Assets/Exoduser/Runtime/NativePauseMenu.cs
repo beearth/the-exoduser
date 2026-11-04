@@ -89,7 +89,9 @@ namespace Exoduser.UnityPort
    {
     if(keyPage&&page==PausePage.Settings){DrawKeyPage();return PauseMenuCommand.None;}
     if(Event.current.isKey&&!KeyCaptureActive)Event.current.Use();
-    GUI.enabled=oldEnabled&&navigation.Focused&&!navigation.WaitingForRelease;
+    // Silver hell finish: the main/quit pages keep normal contrast while input is fenced (the IMGUI disabled tint greyed the whole plate).
+    inputLive=navigation.Focused&&!navigation.WaitingForRelease;
+    GUI.enabled=page==PausePage.Settings?oldEnabled&&inputLive:oldEnabled;
     GUI.matrix=Matrix4x4.identity;GUI.color=Color.white;
     Fill(new Rect(0,0,Screen.width,Screen.height),new Color(0,0,0,.72f));
     // Web common window tab bar at the settings-window position (1920x1080 design space).
@@ -97,16 +99,19 @@ namespace Exoduser.UnityPort
     {float s1=Mathf.Min(Screen.width/1920f,Screen.height/1080f);GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s1)/2,(Screen.height-1080*s1)/2,0),Quaternion.identity,Vector3.one*s1);NativePanelTabBar.Draw(NativePanelTabBar.Preset.Settings,"settings");GUI.matrix=Matrix4x4.identity;}
     float scale=Mathf.Min(Screen.width/1280f,Screen.height/720f);
     GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1280*scale)/2,(Screen.height-720*scale)/2,0),Quaternion.identity,Vector3.one*scale);
-    var panel=new Rect(300,72,680,576);NativeSilverHellUi.Panel(panel,36,12);
+    var panel=new Rect(300,72,680,576);NativeSilverHellUi.Panel(panel,36,12,iron:true);   // A face shared with lobby/name/delete
     if(page==PausePage.Settings){DrawSettings(fullscreen);return PauseMenuCommand.None;}
     if(page==PausePage.Quit)return DrawQuit();
-    NativeSilverHellUi.Label(new Rect(336,98,608,48),dead?T("쓰러졌습니다","You have fallen"):T("일시정지","Paused"),title);
-    if(MenuButton(new Rect(388,184,504,68),dead?T("다시 시작","Restart"):T("계속하기","Resume"),0,button))return dead?PauseMenuCommand.Restart:PauseMenuCommand.Resume;
-    if(MenuButton(new Rect(412,272,456,58),T("설정","Settings"),1,button))page=PausePage.Settings;
-    if(MenuButton(new Rect(412,348,456,58),T("로비로 돌아가기","Return to lobby"),2,button))return PauseMenuCommand.ReturnLobby;
-    if(MenuButton(new Rect(412,424,456,58),T("게임 종료","Quit game"),3,button))page=PausePage.Quit;
-    NativeSilverHellUi.Label(new Rect(364,524,552,58),T("미리보기의 진행 상황은 저장되지 않습니다.","Progress in this preview is not saved."),muted);
-    NativeSilverHellUi.Label(new Rect(364,600,552,28),dead?T("다시 시작하거나 로비로 돌아갈 수 있습니다.","Restart or return to the lobby."):T("↑↓ 선택 · Enter 확인 · ESC 뒤로 · TAB 인벤토리","↑↓ Select · Enter Confirm · ESC Back · TAB Inventory"),muted);
+    // Web common title band (40px eye medallion + hairlines + Hahmlet title) instead of a loose 32px label.
+    NativePanelTitle.Draw(new Rect(380,100,520,64),dead?T("쓰러졌습니다","You have fallen"):T("일시정지","Paused"));
+    // .sh-btn family: four equal plates (456x56, 18px gaps), the first one is the crimson-lit primary.
+    if(MenuButton(new Rect(412,196,456,56),dead?T("다시 시작","Restart"):T("계속하기","Resume"),0,button))return dead?PauseMenuCommand.Restart:PauseMenuCommand.Resume;
+    if(MenuButton(new Rect(412,270,456,56),T("설정","Settings"),1,button))page=PausePage.Settings;
+    if(MenuButton(new Rect(412,344,456,56),T("로비로 돌아가기","Return to lobby"),2,button))return PauseMenuCommand.ReturnLobby;
+    if(MenuButton(new Rect(412,418,456,56),T("게임 종료","Quit game"),3,button))page=PausePage.Quit;
+    Fill(new Rect(412,500,456,1),new Color(155/255f,158/255f,158/255f,.28f));
+    NativeSilverHellUi.Label(new Rect(340,516,600,26),T("미리보기의 진행 상황은 저장되지 않습니다.","Progress in this preview is not saved."),Hint(14));
+    NativeSilverHellUi.Label(new Rect(340,550,600,26),dead?T("다시 시작하거나 로비로 돌아갈 수 있습니다.","Restart or return to the lobby."):T("↑↓ 선택 · Enter 확인 · ESC 뒤로 · TAB 인벤토리","↑↓ Select · Enter Confirm · ESC Back · TAB Inventory"),Hint(13));
     return PauseMenuCommand.None;
    }
    finally { GUI.matrix=oldMatrix;GUI.color=oldColor;GUI.enabled=oldEnabled; }
@@ -265,10 +270,11 @@ namespace Exoduser.UnityPort
   }
   PauseMenuCommand DrawQuit()
   {
-   NativeSilverHellUi.Label(new Rect(340,160,600,112),T("게임을 종료하시겠습니까?","Quit the game?"),title);
-   NativeSilverHellUi.Label(new Rect(364,302,552,76),T("미리보기의 진행 상황은 저장되지 않습니다.","Progress in this preview is not saved."),body);
-   if(MenuButton(new Rect(360,450,264,58),T("취소","Cancel"),0,button))navigation.BackPage();
-   if(MenuButton(new Rect(656,450,264,58),T("종료","Quit"),1,button))return PauseMenuCommand.Quit;
+   NativePanelTitle.Draw(new Rect(380,100,520,64),T("게임 종료","Quit game"));
+   NativeSilverHellUi.Label(new Rect(340,268,600,34),T("게임을 종료하시겠습니까?","Quit the game?"),Hint(20,new Color(230/255f,227/255f,220/255f)));
+   NativeSilverHellUi.Label(new Rect(340,314,600,26),T("미리보기의 진행 상황은 저장되지 않습니다.","Progress in this preview is not saved."),Hint(14));
+   if(MenuButton(new Rect(412,436,216,56),T("취소","Cancel"),0,button))navigation.BackPage();
+   if(MenuButton(new Rect(652,436,216,56),T("종료","Quit"),1,button))return PauseMenuCommand.Quit;
    return PauseMenuCommand.None;
   }
  }

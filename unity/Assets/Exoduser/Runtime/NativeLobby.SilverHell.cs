@@ -19,8 +19,13 @@ namespace Exoduser.UnityPort
         internal static string TextField(Rect rect,string text,GUIStyle style){return TextField(rect,text,-1,style);}
         internal static string TextField(Rect rect,string text,int max,GUIStyle style){var n=style.normal.textColor;var f=style.focused.textColor;try{style.normal.textColor=TextColor(n);style.focused.textColor=TextColor(f);return max<0?NativeUiAudit.TextField(rect,text,style):NativeUiAudit.TextField(rect,text,max,style);}finally{style.normal.textColor=n;style.focused.textColor=f;}}
         static Font light,regular;
-        static Texture2D frame,plaque,panelBackground,buttonGlow,primaryPlaque,panelIron;
-        internal static void ButtonFocus(Rect box){if(buttonGlow==null)buttonGlow=Resources.Load<Texture2D>("Art/ui/silver_hell/guide_button_glow");if(buttonGlow!=null)NativeUiAudit.DrawTexture(new Rect(box.x-34,box.y-20,box.width+68,box.height+40),buttonGlow); }
+        static Texture2D frame,plaque,primaryPlaque,chipOne,chipTwo,innerButtonGlow,panelBackground,panelIron;
+        static readonly int[] thornHeights={24,32,48,64,96};
+        static readonly Texture2D[] thornPlaques=new Texture2D[20];
+        internal static int IronDrawCount;
+        internal static Rect LastIronRect;
+        // Focus lives inside ActionPlate; no red texture is drawn beyond its edge.
+        internal static void ButtonFocus(Rect box){}
         internal static Font Font(bool body=false)
         {
             if(light==null)light=Resources.Load<Font>("Art/fonts/Hahmlet-300-ko");
@@ -52,7 +57,10 @@ namespace Exoduser.UnityPort
                 filterMode=FilterMode.Bilinear,wrapMode=TextureWrapMode.Clamp
             };
             var pixels=new Color[w*h];
-            for(int y=0;y<h;y++)for(int x=0;x<w;x++)pixels[(h-y-1)*w+x]=sample((x+.5f)/w,(y+.5f)/h);
+            for(int y=0;y<h;y++)for(int x=0;x<w;x++){
+                var color=sample((x+.5f)/w,(y+.5f)/h);
+                pixels[(h-y-1)*w+x]=color;
+            }
             tex.SetPixels(pixels);
             tex.Apply(false,true);
             return tex;
@@ -84,15 +92,22 @@ namespace Exoduser.UnityPort
                 NativeUiAudit.DrawTextureWithTexCoords(new Rect(dx[x],dy[y],dw,dh),tex,new Rect(sx[x]/tex.width,1-sy[y+1]/tex.height,(sx[x+1]-sx[x])/tex.width,(sy[y+1]-sy[y])/tex.height),true);
             }
         }
-        internal static void Panel(Rect box,float edge=75,float outset=24,bool textured=true)
+        // iron=false: web .sh-panel.sh-framed / #gcModal .gc-box face, linear-gradient(rgba(16,15,15,.95),rgba(8,8,9,.97)) with no iron layer.
+        // Measured 2026-11-03 (Mac Linear Player pause capture): both the generated gradient texture and GUI.color reach the screen
+        // without sRGB decoding, so web #0c0b0c drew as RGB ~60 grey. The face therefore passes the linear value of the web colour.
+        // The textured gradient is kept unchanged for the existing iron callers.
+        internal static void Panel(Rect box,float edge=75,float outset=24,bool textured=true,bool iron=true)
         {
             NativeUiAudit.Region(box,"panel");
             if(frame==null)frame=Resources.Load<Texture2D>("Art/ui/silver_hell/panel_frame_20261029");
             if(panelBackground==null)panelBackground=Effect(1,64,(u,v)=>Color.Lerp(new Color(16/255f,15/255f,15/255f,.95f),new Color(8/255f,8/255f,9/255f,.97f),v));
-            if(textured)NativeUiAudit.DrawTexture(box,panelBackground);
+            if(textured&&!iron){var c=GUI.color;var face=new Color(12/255f,11/255f,12/255f);if(QualitySettings.activeColorSpace==ColorSpace.Linear)face=face.linear;GUI.color=new Color(face.r,face.g,face.b,.96f*c.a);NativeUiAudit.DrawTexture(box,Texture2D.whiteTexture);GUI.color=c;}
+            else if(textured)NativeUiAudit.DrawTexture(box,panelBackground);
             else{var c=GUI.color;GUI.color=new Color(0,0,0,c.a);NativeUiAudit.DrawTexture(box,Texture2D.whiteTexture);GUI.color=c;}
-            if(panelIron==null)panelIron=Resources.Load<Texture2D>("Art/ui/inventory/iron_480");
-            if(textured&&panelIron!=null){var c=GUI.color;GUI.color=new Color(c.r,c.g,c.b,c.a*.14f);NativeUiAudit.DrawTexture(box,panelIron,ScaleMode.StretchToFill,true);GUI.color=c;}
+            if(panelIron==null){panelIron=Resources.Load<Texture2D>("Art/ui/inventory/iron_480_blur2");if(panelIron!=null)panelIron.wrapMode=TextureWrapMode.Mirror;}
+            // Keep the approved blurred iron at one source texel per screen pixel. Stretching
+            // 480px over the 1020px pause face erased the grain that remains on name/delete.
+            if(textured&&iron&&panelIron!=null){IronDrawCount++;LastIronRect=box;var c=GUI.color;GUI.color=new Color(c.r,c.g,c.b,c.a*.14f);float scale=Mathf.Abs(GUI.matrix.m00);NativeUiAudit.DrawTextureWithTexCoords(box,panelIron,new Rect(0,0,box.width*scale/panelIron.width,box.height*scale/panelIron.height),true);GUI.color=c;}
             Slice(new Rect(box.x-outset,box.y-outset,box.width+outset*2,box.height+outset*2),frame,150,150,edge,edge,false);
         }
         internal static void Button(Rect box)
@@ -100,17 +115,95 @@ namespace Exoduser.UnityPort
             if(plaque==null)plaque=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_plaque_20261029");
             Slice(new Rect(box.x-14,box.y,box.width+28,box.height),plaque,174,0,40,0,true);
         }
-        // 기존 금속 원화의 안쪽 표면만 착색한다. 테와 양끝 조각은 원본 은빛을 유지한다.
-        internal static void ActionPlate(Rect box,bool primary,float selection,bool pressed,float edge=40,float outset=14)
+        // 23:05 design lead: artwork owns the face, bevel and border. Never replace it with a generated panel.
+        internal static readonly Color PlateText=new Color(230/255f,227/255f,220/255f),PlateTextHot=new Color(246/255f,245/255f,242/255f),PlateTextDanger=new Color(194/255f,26/255f,16/255f);
+        internal static string ReviewState;
+        internal static float ArtSelection(float natural)
         {
-            NativeUiAudit.Region(box,"button");
+            return string.IsNullOrEmpty(ReviewState)?Mathf.Clamp01(natural):ReviewState=="hover"||ReviewState=="selected"?1:0;
+        }
+        internal static bool ArtImage(Rect box,Texture2D art)
+        {
+            if(art==null)return false;
             var previous=GUI.color;
-            float light=pressed?.74f:Mathf.Lerp(.78f,1.18f,selection);
-            GUI.color=new Color(light,light,light,previous.a);
-            if(primaryPlaque==null&&primary)primaryPlaque=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_primary_composed");
+            try{GUI.color=Color.white;NativeUiAudit.DrawTexture(box,art,ScaleMode.StretchToFill,true);NativeUiAudit.ImageText(box,art);}
+            finally{GUI.color=previous;}
+            return true;
+        }
+        internal static void FrameOnly(Rect box,float edge=75)
+        {
+            if(frame==null)frame=Resources.Load<Texture2D>("Art/ui/silver_hell/panel_frame_20261029");
+            var previous=GUI.color;
+            try{GUI.color=Color.white;Slice(box,frame,150,150,edge,edge,false);}
+            finally{GUI.color=previous;}
+        }
+        internal static Rect PlateTextRect(Rect box){return new Rect(box.x+6,box.y+6,Mathf.Max(0,box.width-12),Mathf.Max(0,box.height-12));}
+        internal static void PlateLabel(Rect box,string text,GUIStyle source)
+        {
+            var inside=PlateTextRect(box);if(inside.width<=0||inside.height<=0)return;
+            var style=new GUIStyle(source){font=TextFont(source.font,text),alignment=TextAnchor.MiddleCenter,clipping=TextClipping.Clip,padding=new RectOffset(),wordWrap=false};
+            while(style.fontSize>8){var size=style.CalcSize(new GUIContent(text));if(size.x<=inside.width&&size.y<=inside.height)break;style.fontSize--;}
+            Label(inside,text,style);
+        }
+        // Hover: soft warm-silver light behind the baked ENTER word only. Elliptical falloff that reaches 0 at its edge,
+        // so no box outline (a rectangular rim around the plate read as a grey frame, 11-04 judge 6 review).
+        static Texture2D entryTextGlow;
+        static void DrawEntryTextGlow(Rect box)
+        {
+            if(entryTextGlow==null)entryTextGlow=Effect(96,32,(u,v)=>{float x=(u-.5f)*2,y=(v-.5f)*2;float d=Mathf.Clamp01(1-Mathf.Sqrt(x*x+y*y));return new Color(232/255f,226/255f,212/255f,d*d*.42f);});
+            NativeUiAudit.DrawTexture(new Rect(box.x+box.width*.33f,box.y+box.height*.60f,box.width*.34f,box.height*.26f),entryTextGlow);
+        }
+        internal static bool EntryFocus(Rect box)
+        {
+            if(innerButtonGlow==null)innerButtonGlow=Resources.Load<Texture2D>("Art/ui/silver_hell/guide_button_glow");
+            if(innerButtonGlow==null)return false;
+            var previous=GUI.color;var inside=new Rect(box.x+box.width*.34f,box.y+box.height*.24f,box.width*.32f,box.height*.44f);
+            NativeUiAudit.BeginGroup(inside);try{GUI.color=new Color(1,1,1,.18f);NativeUiAudit.DrawTexture(new Rect(0,0,inside.width,inside.height),innerButtonGlow);}finally{NativeUiAudit.EndGroup();GUI.color=previous;}
+            DrawEntryTextGlow(box);
+            return true;
+        }
+        internal static void ThornPlate(Rect box,bool primary,float edge,float outset)
+        {
+            var art=primary?primaryPlaque:plaque;float sourceEdge=174;
+            int density=Screen.height>1080?2:1;
+            if(art!=null&&art.height>box.height*density*2){
+                int tier=0;while(tier<thornHeights.Length-1&&thornHeights[tier]<box.height)tier++;
+                int index=(primary?10:0)+(density-1)*5+tier;
+                if(thornPlaques[index]==null)thornPlaques[index]=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_thorn_"+(primary?"primary_":"normal_")+thornHeights[tier]+"_"+density+"x");
+                if(thornPlaques[index]!=null){sourceEdge*=thornPlaques[index].width/(float)art.width;art=thornPlaques[index];}
+            }
+            Slice(new Rect(box.x-outset,box.y,box.width+outset*2,box.height),art,sourceEdge,0,edge,0,true);
+        }
+        internal static void ActionPlate(Rect box,bool primary,float selection,bool pressed,float edge=40,float outset=14,bool settingsChip=false)
+        {
+            NativeUiAudit.Region(box,"button");if(box.width<=0||box.height<=0)return;
             if(plaque==null)plaque=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_plaque_20261029");
-            Slice(new Rect(box.x-outset,box.y,box.width+outset*2,box.height),primary&&primaryPlaque!=null?primaryPlaque:plaque,174,0,edge,0,true);
-            GUI.color=previous;
+            if(primaryPlaque==null)primaryPlaque=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_primary_composed");
+            var previous=GUI.color;
+            try{
+                // Fixed brightness 1.0 in every state, including pressed. Artwork supplies the material.
+                GUI.color=Color.white;
+                // Chips are an explicit settings-only choice, never inferred from geometry.
+                bool compact=settingsChip;
+                if(compact){
+                    if(chipOne==null)chipOne=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_chip_1x");
+                    if(chipTwo==null)chipTwo=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_chip_2x");
+                    int density=Screen.height>1080?2:1;float rim=Mathf.Min(8,box.height*.25f);
+                    Slice(box,density==2?chipTwo:chipOne,8*density,8*density,rim,rim,true);
+                }else ThornPlate(box,primary,edge,outset);
+                float focus=ArtSelection(selection);
+                if(focus<=0)return;
+                if(innerButtonGlow==null)innerButtonGlow=Resources.Load<Texture2D>("Art/ui/silver_hell/guide_button_glow");
+                if(innerButtonGlow==null)return;
+                float inset=Mathf.Min(compact?6:edge,box.width*.2f);
+                var inside=new Rect(box.x+inset,box.y+4,box.width-inset*2,box.height-8);
+                if(inside.width<=0||inside.height<=0)return;
+                NativeUiAudit.BeginGroup(inside);
+                try{
+                    GUI.color=new Color(1,1,1,.18f*focus);
+                    NativeUiAudit.DrawTexture(new Rect(-inset,-inside.height*.3f,inside.width+inset*2,inside.height*1.6f),innerButtonGlow);
+                }finally{NativeUiAudit.EndGroup();}
+            }finally{GUI.color=previous;}
         }
     }
     public sealed partial class NativeLobby
@@ -131,8 +224,9 @@ namespace Exoduser.UnityPort
             gateSigil=Resources.Load<Texture2D>("Art/ui/silver_hell/gate_sigil_20261028");
             gateLogo=Art("logo_exoduser_solid");
             gateEnterLine=Resources.Load<Texture2D>("Art/ui/silver_hell/gate_enter_line");
-            lobbySilverEnter=Resources.Load<Texture2D>("Art/ui/silver_hell/lobby_enter_btn_silver_20261029");
-            lobbySilverDisabled=Resources.Load<Texture2D>("Art/ui/silver_hell/lobby_enter_disabled");
+            string density=Screen.height>1080?"2x":"1x";
+            lobbySilverEnter=Resources.Load<Texture2D>("Art/ui/silver_hell/lobby_enter_ready_"+density);
+            lobbySilverDisabled=Resources.Load<Texture2D>("Art/ui/silver_hell/lobby_enter_disabled_"+density);
             silverLatin=Resources.Load<Font>("Art/fonts/Cinzel-400")??Resources.Load<Font>("Art/fonts/Cinzel-VariableFont_wght");
             gateHalo=NativeSilverHellUi.Effect(256,128,(u,v)=>new Color(0,0,0,.62f*Mathf.Clamp01(1-Mathf.Sqrt(Sq((u-.5f)/.5f)+Sq((v-.5f)/.5f))/.72f)));
             gateEnterShade=NativeSilverHellUi.Effect(256,64,(u,v)=>

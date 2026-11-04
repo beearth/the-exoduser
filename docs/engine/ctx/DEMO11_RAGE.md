@@ -23,7 +23,7 @@
 
 - `docs/engine/FDG_SOURCE_TRACE_SKILLS_20261020.md` §1.1, SK-S04/SK-S08
 - `docs/engine/FDG_SOURCE_TRACE_META_20261020.md` §2–3
-- `docs/engine/DEMO11_COMPLETION_GAP_20261021.md` D09, D11, D15
+- `docs/_archive/engine/DEMO11_COMPLETION_GAP_20261021.md` D09, D11, D15
 
 ## 주의
 

@@ -37,7 +37,7 @@ namespace Exoduser.UnityPort
             foreach (var fb in list)
             {
                 if (fb == null || fb.Hp <= 0) continue;
-                double last; if (anglerLastHp.TryGetValue(fb.Index, out last) && last - fb.Hp >= 1) damage.Add(new DamageText { x = (float)fb.X, y = (float)(fb.Y - fb.R * .5), amount = (int)(last - fb.Hp), until = Time.unscaledTime + 1 });   // _fmApply's floater
+                double last; if (!DeathPresentationActive && anglerLastHp.TryGetValue(fb.Index, out last) && last - fb.Hp >= 1) damage.Add(new DamageText { x = (float)fb.X, y = (float)(fb.Y - fb.R * .5), amount = (int)(last - fb.Hp), until = Time.unscaledTime + 1 });   // _fmApply's floater
                 anglerLastHp[fb.Index] = fb.Hp;
                 if (fb.Asleep || fb.Hid || fb.TpT > 0) continue;   // `if(fb.tpT>0) ...vanish frames; return` / `if(fb.hid) return`: the body is not drawn
                 SpriteRenderer r; if (!anglerViews.TryGetValue(fb.Index, out r) || r == null) { r = CreateRenderer("Angler " + fb.Index); anglerViews[fb.Index] = r; }
@@ -63,7 +63,7 @@ namespace Exoduser.UnityPort
                 Fill(new Rect(a.x, a.y, w, h), new Color(.251f, .145f, .169f));
                 Fill(new Rect(a.x, a.y, w * Mathf.Clamp01((float)(fb.Hp / fb.MaxHp)), h), col);
                 var keep = center.normal.textColor; center.normal.textColor = new Color(.867f, 1f, 1f);
-                NativeUiAudit.Label(new Rect(a.x + w / 2 - 100, a.y - 26, 200, 22), lobby.Language != "ko" ? "Abyssal Angler" : "심연의 앵글러", center);
+                NativeDemoText.Label(new Rect(a.x + w / 2 - 170, a.y - 26, 340, 22), NativeDemoText.Get("심연의 앵글러",lobby.Language), center);
                 center.normal.textColor = keep;
             }
         }
@@ -72,7 +72,7 @@ namespace Exoduser.UnityPort
         void AnglerEvent(StageEvent e)
         {
             string ko = e.Kind == StageEventKind.AnglerWoke ? "심연의 앵글러" : "필드보스 처치!", en = e.Kind == StageEventKind.AnglerWoke ? "Abyssal Angler" : "Field Boss Slain!";
-            notice = lobby.Language != "ko" ? en : ko; noticeUntil = Time.unscaledTime + .5f;
+            notice = NativeDemoText.Get(ko,lobby.Language,en); noticeUntil = Time.unscaledTime + .5f;
         }
 
         // a view whose enemy left the list (the 800 -> 700 hard cap removes them without a death) has to go too

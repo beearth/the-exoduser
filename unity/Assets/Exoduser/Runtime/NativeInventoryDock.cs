@@ -72,13 +72,16 @@ namespace Exoduser.UnityPort {
             float scale=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
             Fill(new Rect(0,0,Screen.width,Screen.height),C(0,0,0,.53f));
             GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*scale)/2f,(Screen.height-1080*scale)/2f,0),Quaternion.identity,new Vector3(scale,scale,1));
+            // Web gameConfirm is modal: input events reach only the confirm; Repaint/Layout still draw the window beneath it.
+            if(junkConfirm&&Event.current.type!=EventType.Repaint&&Event.current.type!=EventType.Layout){DrawJunkConfirm();GUI.matrix=old;return;}
             var stats=State.CalculateStats(level);var power=InventoryCombatPower.Calculate(State,stats,level);
             bool oss=Page==PageOssuary,tall=oss||Page==PageCrystals;
             // The ossuary page narrows the window to x518 w1390; the tab bar, header line and sub tabs scale with it.
             float wx=oss?518:12,ww=oss?1390:1896,lx=oss?548:42,lw=oss?1330:1836;
             DrawWindow(new Rect(wx,12,ww,1056),oss);
             DrawNavigation(lx,lw);
-            NativePanelTitle.Draw(new Rect(700,72,520,64),"인벤토리");DrawHeaderLine(power,lx-42,close);
+            // No "인벤토리" title band: it covered the common tab bar (web 872f7326 removed it too). The header line stays.
+            DrawHeaderLine(power,lx-42,close);
             DrawBody(new Rect(lx,182,lw,tall?858:802),lx,lw);
             if(oss)DrawOssuaryPage(level,power);
             else if(Page==PageCrystals)DrawCrystalsPage(level,power);
@@ -89,6 +92,7 @@ namespace Exoduser.UnityPort {
                 DrawRightPanel(level,power);
                 DrawActionRow(level);
             }
+            DrawJunkConfirm();
             GUI.matrix=old;
         }
 
@@ -120,8 +124,10 @@ namespace Exoduser.UnityPort {
             Txt(new Rect(50+dx,105,34,18),"전투력",12,C(105,108,108),400);
             // #cpVal: 21px / 600, text-shadow 0 0 8px rgba(255,200,0,.3).
             var cpRect=new Rect(90+dx,101,60,25);string cpText=power.Total.ToString();
-            TxtGlow(cpRect,cpText,21,C(255,200,0,.3f),600);
-            Txt(cpRect,cpText,21,C(200,197,191),600);
+            using(var paint=NativeUiAudit.GroupText(cpRect,cpText)){
+                TxtGlow(cpRect,cpText,21,C(255,200,0,.3f),600);
+                Txt(cpRect,cpText,21,C(200,197,191),600);
+            }
             // #cpBreak: 12x12 viewBox-24 svg icons (stroke 1.6 -> .8px, drop-shadow 0 0 5px) followed by "value " text.
             float bx=145.8f+dx;int[] vals={power.Atk,power.Def,power.Extra};
             for(int i=0;i<3;i++){
@@ -383,19 +389,88 @@ namespace Exoduser.UnityPort {
                 if(NativeSilverHellUi.Button(r1,GUIContent.none,GUIStyle.none)&&!reqFail){if(bag)Equip(it,level);else Unequip(it.slot);}
                 startX=r1.xMax;
                 if(bag){
-                    // salvage (악의+N) needs the salvage value table: not ported, shape only
-                    string sal="분해 (악의오브+미이식)";var r2=new Rect(r1.xMax+6,1004,TextWidth(sal,12,500)+28,34);
-                    PlateFace(r2,false);Txt(r2,sal,12,C(194,191,185),500,TextAnchor.MiddleCenter,true);startX=r2.xMax;
+                    // Web id-btn: '분해 (악의오브+N)' = dropItem(idx) (no confirm, favorites refused, 1s guard).
+                    string sal="분해 (악의오브+"+InventoryState.SalvageValue(it)+")";var r2=new Rect(r1.xMax+6,1004,TextWidth(sal,12,500)+28,34);
+                    if(PlateButton(r2,sal,12))SalvageOne(it);
+                    startX=r2.xMax;
                 }
                 startX+=8;
             }
+            var junkList=State.JunkItems();
             int n=0;foreach(var b in State.Bag)if(!b.junk&&!b.fav)n++;
-            if(n==0)return;
-            // Web invJunkSelBtn: every non-favorite bag item becomes junk.
-            string junk="전체 쓰레기 지정 ("+n+"개)";float jw=156;float jx=startX+(1882-startX)/2f-jw/2f;
-            if(PlateButton(new Rect(jx,1004,jw,34),junk,12)){
-                foreach(var b in State.Bag)if(!b.fav)b.junk=true;
+            if(n==0&&junkList.Count==0)return;
+            int tot=0;foreach(var j in junkList)tot+=InventoryState.SalvageValue(j);
+            // Web flex row: invJunkSelBtn (non-junk > 0) then invJunkBtn (junk > 0), centred together in the remaining width.
+            string sel=n>0?"전체 쓰레기 지정 ("+n+"개)":null;
+            string jk=junkList.Count>0?"쓰레기 전부 분해 ("+junkList.Count+"개 -> 악의오브 +"+tot+")":null;
+            float sw=sel!=null?TextWidth(sel,12,500)+28:0,kw=jk!=null?TextWidth(jk,12,500)+28:0,gap=sel!=null&&jk!=null?8:0;
+            float x=startX+(1882-startX)/2f-(sw+gap+kw)/2f;
+            if(sel!=null&&PlateButton(new Rect(x,1004,sw,34),sel,12)){foreach(var b in State.Bag)if(!b.fav)b.junk=true;}
+            // invJunkBtn: background rgba(196,36,24,.15), border #cc2d22, text #b8b5af.
+            if(jk!=null){
+                var jr=new Rect(x+sw+gap,1004,kw,34);PlateFace(jr,false);Fill(jr,C(196,36,24,.15f));Border(jr,C(204,45,34));
+                Txt(jr,jk,12,C(184,181,175),500,TextAnchor.MiddleCenter,true);
+                if(NativeSilverHellUi.Button(jr,GUIContent.none,GUIStyle.none))OpenJunkConfirm();
             }
+        }
+
+        // ── Web #gcModal (gameConfirm) for invJunkBtn: panel_frame 52/18, Hahmlet 400 16.8px #e6e3dc centred, cancel left / OK right (#f2f0ec + crimson glow).
+        bool junkConfirm;float lastSalvageAt=-10f;
+        public bool JunkConfirmOpen{get{return junkConfirm;}}
+        public void OpenJunkConfirm(){if(State.JunkItems().Count>0)junkConfirm=true;}
+        public void CancelJunkConfirm(){junkConfirm=false;}
+        GUIStyle gcText;
+        // invJunkBtn onclick after gameConfirm: re-check the pending junk, remove it, G.mats += total, selection cleared.
+        public int ConfirmJunkSalvage(){
+            junkConfirm=false;int count;int gained=State.SalvageJunk(out count);
+            if(count>0){AddMalice(gained);changed();AfterOwnershipChange();}
+            return gained;
+        }
+        // Web dropItem(idx): 1s guard, favorites refused, no confirm.
+        public int SalvageOne(InventoryItem it){
+            if(Time.unscaledTime-lastSalvageAt<1f)return 0;
+            int gained=State.SalvageOne(it);if(gained<=0)return 0;
+            lastSalvageAt=Time.unscaledTime;AddMalice(gained);changed();AfterOwnershipChange();return gained;
+        }
+        static void AddMalice(int amount){var g=NativeGame.Instance;if(g!=null&&g.Simulation!=null)g.Simulation.Materials+=amount;}
+        void GcLine(float y,string text,Texture2D icon,int glyph,Color glyphCol){
+            if(gcText==null){gcText=new GUIStyle(GUIStyle.none){font=NativeSilverHellUi.Font(true),fontSize=17,alignment=TextAnchor.MiddleLeft,wordWrap=false,clipping=TextClipping.Overflow};gcText.normal.textColor=C(230,227,220);}
+            gcText.font=NativeSilverHellUi.TextFont(NativeSilverHellUi.Font(true),text);
+            float tw=gcText.CalcSize(new GUIContent(text)).x,iw=icon!=null?20:glyph>0?15:0,gap=iw>0?6:0,x=960-(iw+gap+tw)/2f;
+            if(icon!=null)NativeUiAudit.DrawTexture(new Rect(x,y+4,20,20),icon,ScaleMode.ScaleToFit,true);
+            else if(glyph==1){   // ICONV trash: lid, body, two ribs (stroke 1.6 at 15px)
+                Line(new Vector2(x+2,y+9),new Vector2(x+13,y+9),1.2f,glyphCol);Line(new Vector2(x+6,y+7),new Vector2(x+9,y+7),1.2f,glyphCol);
+                Line(new Vector2(x+3.5f,y+9),new Vector2(x+4.5f,y+21),1.2f,glyphCol);Line(new Vector2(x+11.5f,y+9),new Vector2(x+10.5f,y+21),1.2f,glyphCol);Line(new Vector2(x+4.5f,y+21),new Vector2(x+10.5f,y+21),1.2f,glyphCol);
+                Line(new Vector2(x+6.5f,y+12),new Vector2(x+6.5f,y+18),1f,glyphCol);Line(new Vector2(x+8.5f,y+12),new Vector2(x+8.5f,y+18),1f,glyphCol);
+            }else if(glyph==2){   // ICONV warn: triangle with a bar and a dot
+                Line(new Vector2(x+7.5f,y+7),new Vector2(x+14,y+20),1.2f,glyphCol);Line(new Vector2(x+14,y+20),new Vector2(x+1,y+20),1.2f,glyphCol);Line(new Vector2(x+1,y+20),new Vector2(x+7.5f,y+7),1.2f,glyphCol);
+                Line(new Vector2(x+7.5f,y+11.5f),new Vector2(x+7.5f,y+15.5f),1.2f,glyphCol);Fill(new Rect(x+6.9f,y+17.1f,1.2f,1.2f),glyphCol);
+            }
+            NativeSilverHellUi.Label(new Rect(x+iw+gap,y,tw+4,28),text,gcText);
+        }
+        bool GcButton(Rect r,string label,bool ok){
+            bool hover=r.Contains(Event.current.mousePosition);
+            if(ok)Glow(r.center.x,r.center.y,r.width*.62f,r.height*.9f,C(194,26,16,.22f));
+            NativeSilverHellUi.ActionPlate(r,false,hover?1:0,hover&&ExoInput.Mouse(0),32,8);
+            if(gcText==null)GcLine(-100,"",null,0,Color.clear);
+            var st=new GUIStyle(gcText){font=NativeSilverHellUi.Font(true),fontSize=15,alignment=TextAnchor.MiddleCenter};st.normal.textColor=ok?C(242,240,236):C(214,211,205);
+            NativeSilverHellUi.Label(r,label,st);
+            return NativeSilverHellUi.Button(r,GUIContent.none,GUIStyle.none);
+        }
+        void DrawJunkConfirm(){
+            if(!junkConfirm)return;
+            var junkList=State.JunkItems();if(junkList.Count==0){junkConfirm=false;return;}
+            int tot=0;foreach(var j in junkList)tot+=InventoryState.SalvageValue(j);
+            Fill(new Rect(0,0,1920,1080),C(0,0,0,.7f));   // design space = the whole window area; .7 in the Linear Player ~ the web .55 backdrop
+            var box=new Rect(690,382,540,316);NativeSilverHellUi.Panel(box,52,18,true,false);   // #gcModal .gc-box: gradient face, no iron
+            float y=box.y+44;
+            GcLine(y,"쓰레기 "+junkList.Count+"개를 일괄 분해합니다.",null,1,C(204,153,68));
+            GcLine(y+29,tot+" 악의오브 획득.",NativeCurrencyOrb.Texture(tot),0,Color.clear);
+            GcLine(y+87,"중요잠금 아이템은 제외됩니다.",null,2,C(255,170,51));
+            GcLine(y+116,"복구 불가!",null,2,C(255,102,68));
+            var cancel=new Rect(960-8-148,box.yMax-80,148,44);var ok=new Rect(960+8,box.yMax-80,148,44);
+            if(GcButton(cancel,"취소",false))junkConfirm=false;
+            if(GcButton(ok,"확인",true))ConfirmJunkSalvage();
         }
     }
 }

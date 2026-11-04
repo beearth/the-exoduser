@@ -117,4 +117,4 @@
 | VISUAL VERDICT | **수정 소품 PASS / 전체 씬 RETOUCH**. 데이터 연결 완료를 전체 모델·환경·전투 연출 완료로 승격하지 않음 |
 | NEXT PASS | 동측 적 가림과 기존 모델/VFX·튜토리얼 초상 정합성. native 일반 actor 애니메이션 clock/실제24장, 재질·조명 package/자원 residency는 별도 미완료 |
 
-GGG 제작 구조에서 적용한 것은 **저작 데이터가 실제 game consumer로 이어지는 경로**다. [기존 Git PoE2 study](../5.1임펙트디자인/POE2_REFERENCE_STUDY.md)와 [공개 근거·현재 소비 분석](FDG_GAME_DEVELOPMENT_PLAN.md#2026-10-12--poe2-제작-구조와-현재-게임-소비-연결)을 따른다. PoE2 비공개 엔진 소스·전체 프레임 그래프·native PBR/GI 구현을 취득/복제했다고 주장하지 않는다.
+GGG 제작 구조에서 적용한 것은 **저작 데이터가 실제 game consumer로 이어지는 경로**다. [기존 Git PoE2 study](../5.1임펙트디자인/POE2_REFERENCE_STUDY.md)와 [공개 근거·현재 소비 분석](../_archive/engine/FDG_GAME_DEVELOPMENT_PLAN.md#2026-10-12--poe2-제작-구조와-현재-게임-소비-연결)을 따른다. PoE2 비공개 엔진 소스·전체 프레임 그래프·native PBR/GI 구현을 취득/복제했다고 주장하지 않는다.

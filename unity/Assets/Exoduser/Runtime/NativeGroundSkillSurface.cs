@@ -71,8 +71,10 @@ namespace Exoduser.UnityPort
         }
         void Sync()
         {
-            if(!NativeRemodel3D.Active||!NativeGroundSkillProjection.Available){RestoreSprite();return;}
+            if(!NativeRemodel3D.Active){RestoreSprite();return;}
             if(!forced){priorForceOff=source.forceRenderingOff;source.forceRenderingOff=true;forced=true;}
+            // A 3D receiver failure must never resurrect the upright source card.
+            if(!NativeGroundSkillProjection.Available){draw.enabled=false;HideRings();return;}
             bool visible=source.enabled&&source.sprite!=null&&source.gameObject.activeInHierarchy&&!priorForceOff;
             draw.enabled=visible;if(!visible){HideRings();return;}
             var sprite=source.sprite;var rect=sprite.rect;var texture=sprite.texture;var scale=source.transform.lossyScale;
@@ -88,7 +90,7 @@ namespace Exoduser.UnityPort
             surface.layer=source.gameObject.layer;draw.sortingLayerID=source.sortingLayerID;draw.sortingOrder=source.sortingOrder;
             int destination=material.HasProperty("_DstBlend")?(int)material.GetFloat("_DstBlend"):kind==2?(int)BlendMode.OneMinusSrcAlpha:(int)BlendMode.One;
             draw.sharedMaterial=NativeGroundSkillProjection.MaterialFor(destination);
-            source.GetPropertyBlock(block);block.SetTexture(MainTex,texture);block.SetFloat(Mode,kind);block.SetFloat(Radius,0);
+            source.GetPropertyBlock(block);block.SetFloat("_GroundVertexShape",0);block.SetTexture(MainTex,texture);block.SetFloat(Mode,kind);block.SetFloat(Radius,0);
             block.SetFloat(Flat,Read(material,block,Flat,0));block.SetFloat(Normal,Read(material,block,Normal,kind==2?1:0));block.SetFloat(Opacity,Read(material,block,Opacity,1));
             var color=source.color;if(kind==2&&material.HasProperty("_Color"))color*=material.GetColor("_Color");
             block.SetVector(Tint,new Vector4(color.r,color.g,color.b,color.a));block.SetVector(Anchor,new Vector4(anchor.x,anchor.y,anchor.z,0));
@@ -112,6 +114,7 @@ namespace Exoduser.UnityPort
                 ring.Draw.gameObject.layer=ring.Source.gameObject.layer;ring.Draw.sortingLayerID=ring.Source.sortingLayerID;ring.Draw.sortingOrder=ring.Source.sortingOrder;
                 var material=ring.Source.sharedMaterial;int destination=material!=null&&material.HasProperty("_DstBlend")?(int)material.GetFloat("_DstBlend"):(int)BlendMode.One;
                 ring.Draw.sharedMaterial=NativeGroundSkillProjection.MaterialFor(destination);ring.Source.GetPropertyBlock(ring.Block);
+                ring.Block.SetFloat("_GroundVertexShape",0);
                 ring.Block.SetFloat(Mode,0);ring.Block.SetFloat(Flat,0);ring.Block.SetFloat(Normal,Read(material,ring.Block,Normal,0));ring.Block.SetFloat(Opacity,1);
                 ring.Block.SetFloat(Radius,ring.Radius);ring.Block.SetFloat(Width,ring.Source.widthMultiplier);var c=ring.Color;
                 ring.Block.SetVector(Tint,new Vector4(c.r,c.g,c.b,c.a));ring.Block.SetVector(Anchor,new Vector4(anchor.x,anchor.y,anchor.z,0));ring.Draw.SetPropertyBlock(ring.Block);
