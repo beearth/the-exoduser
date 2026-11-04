@@ -3,12 +3,34 @@
 ## 증상
 Windows 11 Player가 종료 단계(`Input System module state changed to: Shutdown.`, `CodeReloadManager destroyed` 다음)에서 멈춰 프로세스가 남는다. 2026-11-04 이 PC에서 여러 번 재현.
 
-## 근본 원인 조사 결론 (11-04 13:50, 반박 검증 포함)
+## 근본 원인 조사 결론 (11-04 13:50, 반박 검증 포함) — 19:30 오염 상태 A/B로 일부 정정, 아래 "오염 상태 A/B 결과" 참고
 - 종료 멈춤 29건(10-29~11-04)은 모두 **창 모드**에서 `<RI> Initializing input`·`Using Windows.Gaming.Input`을 쓴 실행이다. `-batchmode`(입력 미초기화) 61건에서는 0건이다.
 - 시작 시점: 10-28 GameInput 4.0.302와 XBOX Synthetic Gamepad Bus 자동 설치, 10-29 WGI DLL 교체 직후부터.
 - 대부분 `taskkill`로 끝난다(사용자 모드 해제 정지, Unity Issue Tracker UUM-91181과 같은 위치). **일부는 kill도 안 된다(커널 층, 원인 미확정).**
 - 따라서 하드 종료(TerminateProcess)는 **사용자 모드 WGI 해제 정지만** 건너뛸 수 있다. 커널 층 정지는 못 막을 수 있다. 이 수정이 모든 멈춤을 없앤다고 말하지 않는다.
 - 13:08에 보인 **시작 지연**(`Mono config path` 다음)은 별개다(디스크·백신 첫 실행 검사 추정). 이 수정 범위가 아니다.
+
+## 오염 상태 A/B 결과 (11-04 19:12~19:30, 같은 부팅) — 위 결론 정정
+11-04 17:17 다른 레인 Player(3d05cf81, map25d a2r-build-swamp)가 이 부팅 첫 정지를 냈고, kill 뒤에도 커널 좀비(PID 14612)로 남아 HALT가 됐다. CTO 결정으로 HALT를 둔 채 claude-quit-fix만 예외로 같은 부팅에서 짧은 A/B를 돌렸다(실행기 2026.11.04-haltexempt → zombieknown → zombiehalt, 좀비는 증거라 아무도 죽이지 않음). 시나리오는 모두 `--unity-quit-during-video fdg 2 --unity-mute`, 시간 초과 90초.
+
+| 시각 | 변형(빌드) | 정지 줄(`Input System … Shutdown.`) 도달 | 종료 | 프로세스가 사라졌나 |
+|---|---|---|---|---|
+| 17:17 | 다른 레인 A2R 3d05cf81 | 예 | 8분 뒤 실행기 정리, exit −1 | 아니오(14612, 스레드 1개) |
+| 19:12 | base a51d49a0 (unity/main 1e70f25d1) | 예 | 90초 시간 초과 → kill | 아니오(40496) |
+| 19:16 | xinput 7250a577 (시작 중 실행기 정리로 종료) | 아니오(마지막 줄 `UnloadTime`) | kill | 아니오(42160) |
+| 19:26 | hdev 383fe37f (하드 종료 f4472bc68) | 아니오, `[HardExit] code=0 reason=app-quit-request` | **43.6초에 exit 0** | 아니오(65984) |
+| 19:27 | xinput 19e8ad44 | 예 | 90초 시간 초과 → kill | 아니오(67576) |
+| 19:29 | hdev f0b80a99 (시작 중 종료) | 아니오, `[HardExit] code=0` | 하드 종료 | 아니오(50348) |
+
+- 좀비는 모두 같은 모양이다: `HasExited=True`, 스레드 1개(ThreadState 5 / WaitReason 0 = Executive), 핸들 1,640~2,363개, 작업 집합 0.5~1.1GB가 재부팅 전까지 남는다.
+- XInput 빌드(19e8ad44)에는 `Windows.Gaming.Input.dll`·`GameInput.dll`이 **로드되지 않았다**(로드된 입력 DLL은 HID.DLL, xinput1_4.dll, xinput1_3.dll뿐). 그래도 정지하고 좀비가 됐다. 시작 중에 끊긴 실행(7250a577)도 좀비가 됐다.
+- **판정:** 오염 상태에서는 종료 방식(Unity 정상 종료·하드 종료 TerminateProcess·외부 kill)과 게임패드 백엔드(WGI·XInput)에 상관없이, 창 모드에서 입력을 초기화한 Player 6/6이 커널 좀비로 남는다. 원인은 Unity 종료 코드나 WGI 해제가 아니라 **이 PC의 입력 장치(HID) 커널 경로에서 끝나지 않는 I/O**다. 위 "근본 원인 조사 결론"의 'WGI/GameInput 해제 정지' 설명은 사용자 모드 정지(10-31형, kill 됨)에는 맞을 수 있지만, kill 불가 층의 원인으로는 **틀렸다**. `-batchmode`가 안전한 이유는 WGI가 아니라 입력(HID) 초기화를 아예 안 하기 때문으로 본다.
+- 원인 드라이버는 좀비 스레드의 커널 스택(관리자 Process Explorer)으로 특정한다(아래 절차). 후보: 은행 보안 키보드 필터(nosku·noskp·np_ck64s·TKCtrl·Mkd2Nadr·JRSUKD25·asc_kbc, 모두 실행 중), Razer(RzDev_00b6·RzCommon), UMDF(WUDFRd — XBOX Synthetic Gamepad Bus 등), xboxgip, amdxe(AMD Controller Emulation).
+
+### 제품 결론 (11-04 19:30)
+- **XInput 전환은 넣지 않는다.** 오염 상태에서 효과가 0이었고, Unity도 WGI를 권장한다(XInput은 창이 포커스를 잃으면 패드를 읽을 수 없는 등 차이가 있다).
+- **하드 종료는 유지를 권한다.** 커널 층 좀비는 못 막는다. 하지만 같은 오염 상태에서 base·xinput은 스스로 끝나지 못해 90초 시간 초과가 났고, hdev는 43초에 exit 0을 돌려줬다. 사용자 쪽에서 "안 꺼지는 게임"이 "바로 종료되는 게임"이 된다(남은 좀비는 보이지 않고 재부팅 때 정리). 10-31형 사용자 모드 정지는 해제 코드 자체를 건너뛰므로 막을 것으로 본다. Steam이 같은 상태에서 게임을 종료로 보는지는 미확인이다.
+- 병합 조건: 종료 경로 검사 18회(하드 종료 켬/끔 × X·Alt+F4·메뉴·QA 0/2/3·로딩 중·사망 중·영상 중 X)에서 켬 쪽 종료 코드 보존·세이브/설정 마지막 쓰기 반영·창 0. 재부팅 뒤 H 빌드를 다시 만들어 돌린다(17:29 HALT로 H·HX 빌드가 거부돼 없음).
 
 ## 정지 묶음 구조 (11-04 15시 재집계, claude-quit-fix)
 `_exec/logs` Player 로그 659개(10-28 이후)를 실행기 영수증과 맞춰 시간순으로 놓았다(스크립트는 세션 scratchpad `timeline.cjs`, 결과만 여기 적는다).
