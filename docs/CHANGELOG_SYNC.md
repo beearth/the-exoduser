@@ -55067,7 +55067,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 확인창 수명 | 기존 delConfirmModal 내부의 Enter/Space 반복 차단, 기본 취소 초점, Escape/B 취소, Tab 순환, busy 보호와 _showLobbyQuit의 실제 전원 버튼 초점 복귀 정책 유지. 종료 API 우선순위·150ms 브라우저 안내·요청 번호 보호 변경 없음 |
 | 실제 키보드 | Node 서버 원본320×280/480×360/960×540×KO/EN/AR×Enter/Space=18흐름. Enter 취소 후 repeat4회에도 창 닫힘·전원 초점·열기 횟수 불변·종료0회. Space는 초기 키 유지 중 창 닫힘/해제 후1회 열기, 새 입력 취소·재열기 확인. Escape 복귀, 열린 창 경계·가로 넘침 없음 |
 | 클릭·확정 | 각3크기에서 실제 마우스 및 프로그램 click의 열기/취소6흐름 유지. 의도적인 Tab→확인→Enter3흐름은 원래 종료 콜백1회씩 실행. NW App.quit만 카운터 대역으로 대체하여 실제 앱 종료 없음. 실물 패드 검증은 아님. pageerror0/쓰기 요청0 |
-| 회귀 | lobbyConfirmStick7→10건. 새 Enter/Space 취소 복귀 반복 및 다른 탐색 키 비간섭3건은 수정 전3실패/7통과→10통과. 기존 스틱 중립·실행 버튼 복귀·온라인/로컬 삭제 취소 보존. 관련8파일162건/inline script4개 구문 통과 |
+| 회귀 | lobbyConfirmStick7→10건. 새 Enter/Space 취소 복귀 반복 및 다른 탐색 키 비간섭3건은 수정 전3실패/7통과→10통과. 기존 스틱 중립·실행 버튼 복귀·온라인/로컬 삭제 취소 보존. 관련8파일160건/inline script4개 구문 통과 |
 | 기록·커밋 | tmp/lobby-quit-held-key의 browser-before.json,browser-after-smoke.json,browser-matrix.json,confirmation.json,summary.json,red-tests.txt,tests.txt,changes.patch. 코드·테스트 및 문서6개를 함께 검토할 수 있게 정리. 현재 .git 쓰기 제한으로 이번 변경 커밋 미완료. 다른 작업의 스테이징 보존 |
 
 
@@ -55342,7 +55342,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 버튼·카드 | 시스템/그래픽 버튼44px·15px, 캐릭터 카드220px/미리보기88px/이름17px/설명14px, 커서 카드96×104px. 폭600px 이하 캐릭터100%·버튼14px. 프리셋 제목을 공통 set-label로 통일 |
 | 실제 렌더 결함 | 전역 canvas fixed/top0/left0가 캐릭터·커서 미리보기를 카드 밖으로 옮겼음. 해당 설정 canvas만 static/inset auto/z-index auto로 복원 |
 | 입력·피드백 | ui-panels.js describeSettingsControls: range/select21개 기존 번역 리프·동적 읽기값 참조, 기존 DOM/ID/리스너 보존. saveMsg polite/atomic status |
-| 검증 | 설정 회귀22/22 PASS. 최종 캐시20260929-settings-finish2 새 로드 본편/easy-test6화면×5탭=62건 잘림0/가로 스크롤0/닫기·미리보기 경계PASS. 실제 슬라이더 ArrowRight79→80 및 KO→EN 이름 유지,390×844 휠 스크롤570/max570 확인 |
+| 검증 | 설정 회귀22/22 PASS. 최종 캐시20260929-settings-finish2 새 로드 본편/easy-test6화면×5탭=60건 잘림0/가로 스크롤0/닫기·미리보기 경계PASS. 실제 슬라이더 ArrowRight79→80 및 KO→EN 이름 유지,390×844 휠 스크롤570/max570 확인 |
 | 문서·상태 | docs 전체 검색 후 중복된680px 설정창 표를 현재 화면맞춤 규격으로 동기화. 상세 계약 SETTINGS_UI_WORKSPACE_20260929.md. tmp/settings-finish-20260929에 백업·검수 결과. 코드/문서 저장 완료, 관리형 .git 읽기 전용으로 커밋 미완료, NW.js/Steam 배포 미수행 |
 
 
