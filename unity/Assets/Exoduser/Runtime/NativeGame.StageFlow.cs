@@ -61,6 +61,7 @@ namespace Exoduser.UnityPort
                         worldTexts.Clear(); WorldTextAdd(p.X, p.Y - 50, "봉인됨!", "Sealed!", new Color(.75f, .45f, .95f), 1.6f); break;
                     case StageEventKind.BossIntro:
                     {   // web: playSample(_bossSfx(stage).howl, 1.0, _r(howlP .7, .1)); the remodel's P1 entry sounds (staff taps, root pillars) come from the Core (Simulation.ScheduleDruidIntroSounds)
+                        druidRig?.BeginIntro(Simulation.TickCount);   // rig-pixel view: intro_reveal over the Core stun window (view only)
                         var bossAt=flow.FindBoss();NativeBossSounds.Howl(sound,bossAt!=null?bossAt.X:p.X,bossAt!=null?bossAt.Y:p.Y);
                         break;
                     }

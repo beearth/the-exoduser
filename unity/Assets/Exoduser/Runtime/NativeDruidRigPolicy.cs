@@ -21,14 +21,22 @@ namespace Exoduser.UnityPort
         {
             public string Name; public double CoreTicks, ElapsedTicks, Frame;
             public bool Loop, Held, StripHorizontalRoot;
+            // v9.1: life index 0..2 (P1..P3), the 1-frame state clip layered over the action (null for the transition clips), and whether the plan is a whole-body transition clip.
+            public int Life; public string Overlay; public bool Transition;
         }
         public static readonly string[] AllClips = {
             "Idle","Walk","slash1_tele","slash1_act","slash2_tele","slash2_act","slash3_tele","slash3_act","slash_rec",
             "slam_tele","slam_act","slam_rec","charge_tele","charge_run","charge_rec",
             "grab_tele","grab_lunge","grab_hold","grab_throw","grab_miss_rec",
             "burrow_dive","burrow_erupt_warn","burrow_erupt","burrow_rec",
-            "fissure_tele","fissure_act","fissure_rec","heart_tele","heart_beat","heart_pause","heart_rec"
+            "fissure_tele","fissure_act","fissure_rec","heart_tele","heart_beat","heart_pause","heart_rec",
+            "state_P1","state_P2","state_P3","phase12_collapse","phase23_collapse","intro_reveal","death_sink"
         };
+        public static readonly string[] StateClips = { "state_P1","state_P2","state_P3" };
+        public const int Phase23HuskOffFrame = 108;   // PREP section 10: husk hierarchy off and HuskHeap_P3 on at this frame of phase23_collapse
+        public const int Phase23WalkFrom = 50;        // old man starts walking out (authored f50-108)
+        public const int IntroTicks = 90;             // Core: StageFlow BossIntro sets the boss stun to 90 ticks (the first tick it can act again)
+        public static string StateClip(int life){return StateClips[Math.Max(0,Math.Min(2,life))];}
         public static int Frames(string name)
         {
             switch(name) {
@@ -41,6 +49,8 @@ namespace Exoduser.UnityPort
                 case "charge_tele":return 54;case "charge_run":case "fissure_tele":return 40;
                 case "grab_tele":case "grab_throw":case "fissure_rec":case "heart_beat":return 60;
                 case "grab_lunge":return 18;case "burrow_dive":return 50;
+                case "state_P1":case "state_P2":case "state_P3":return 1;
+                case "phase12_collapse":case "phase23_collapse":return 120;case "intro_reveal":return 165;case "death_sink":return 150;
                 case "burrow_erupt_warn":case "heart_pause":return 30;
                 case "fissure_act":return 20;case "heart_tele":case "heart_rec":return 90;
                 default:return 0;
@@ -70,7 +80,34 @@ namespace Exoduser.UnityPort
         // All numbers below are read from current Core counters. Source clips never change Core timing.
         public static Plan Select(DruidData d,bool moving,bool grabbed=false,string recoveryMove=null)
         {
+            return Select(d,moving,grabbed,recoveryMove,true,-1);
+        }
+        // remodel=false: the web-phase boss without lives (old man alone, state_P3). collapseElapsed: Core ticks since BeginCollapse (Simulation.DruidLife(e).CollapseTicks counted up), -1 unknown.
+        public static Plan Select(DruidData d,bool moving,bool grabbed,string recoveryMove,bool remodel,int collapseElapsed)
+        {
+            var plan=SelectAction(d,moving,grabbed,recoveryMove,remodel,collapseElapsed);
+            plan.Life=Life(d,remodel);
+            if(!plan.Transition)plan.Overlay=StateClip(plan.Life);
+            return plan;
+        }
+        public static int Life(DruidData d,bool remodel){return !remodel||d==null?2:Math.Max(0,Math.Min(2,d.BossPhase));}
+        // Core stunned the boss for IntroTicks at the BossIntro event; reveal the husk over exactly that window.
+        public static Plan Intro(int elapsed)
+        {
+            var p=Phase("intro_reveal",IntroTicks,elapsed);p.Life=0;p.Transition=true;return p;
+        }
+        // Final kill: the existing sink schedule (NativeGame.SinkBodyTicks body ticks) carries the 150 f death_sink clip.
+        public static Plan Death(int sinkAge,int bodyTicks)
+        {
+            var p=Phase("death_sink",bodyTicks,sinkAge);p.Life=2;p.Transition=true;return p;
+        }
+        static Plan SelectAction(DruidData d,bool moving,bool grabbed,string recoveryMove,bool remodel,int collapseElapsed)
+        {
             if(d==null)return Phase("Idle",1,0,false,true);
+            if(remodel&&d.S=="bossDruidRest"&&collapseElapsed>=0&&d.BossPhase<2)
+            {   // d.St2 stays at CollapseTicks during the kneel (the life code counts its own timer), so the elapsed ticks come from the life state.
+                var c=Phase(d.BossPhase==0?"phase12_collapse":"phase23_collapse",DruidRemodelData.CollapseTicks,collapseElapsed);c.Transition=true;return c;
+            }
             double duration,elapsed;string name;int hit=Math.Max(1,Math.Min(3,d.SlashIdx+1));
             switch(d.S){
                 case "idle":case "eWalk":case "eChase":case "eApproach":
@@ -134,6 +171,7 @@ namespace Exoduser.UnityPort
             {
                 case "druid_bone":case "staff_bone":return "#b9ad90";
                 case "druid_bark":case "staff_bark":return "#4a3826";
+                case "druid_husk_bark":return "#2a2018";   // v9.1 GLB base colour of the husk bark (no texture); darker than the old man's bark
                 case "druid_feather":return "#1c2024";
                 case "druid_hair":return "#2a2624";
                 case "druid_beard":return "#8f8a82";

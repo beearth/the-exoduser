@@ -21,6 +21,22 @@ class DruidRigTests
    if(t==duration)Near(p.Frame,NativeDruidRigPolicy.Frames(name),"phase last frame "+name);
   }
  }
+ // 11-04 default druid set rule: legacy-arg > arg > 3d-arena > demo > default; Core default stays off
+ static void DruidSet(string[] a,bool arena,bool demo,bool want,string why)
+ {
+  string r;bool on=NativeReviewArgs.DecideDruidSet(a,arena,demo,out r);Check(on==want&&r==why,"druid set "+(a==null?"null":string.Join(" ",a))+" arena="+arena+" demo="+demo+" -> "+on+"/"+r+" expected "+want+"/"+why);
+ }
+ static void DruidSetRule()
+ {
+  var none=new string[0];var rm=new[]{"--unity-druid-remodel"};var lg=new[]{"--unity-druid-legacy"};var both=new[]{"--unity-druid-remodel","--unity-druid-legacy"};
+  DruidSet(none,false,false,false,"default");DruidSet(null,false,false,false,"default");
+  DruidSet(none,true,false,true,"3d-arena");DruidSet(none,false,true,true,"demo");DruidSet(none,true,true,true,"3d-arena");
+  DruidSet(rm,false,false,true,"arg");DruidSet(rm,true,true,true,"arg");
+  DruidSet(lg,false,false,false,"legacy-arg");DruidSet(lg,true,false,false,"legacy-arg");DruidSet(lg,false,true,false,"legacy-arg");DruidSet(lg,true,true,false,"legacy-arg");
+  DruidSet(both,true,true,false,"legacy-arg");DruidSet(both,false,false,false,"legacy-arg");
+  Check(!DruidRemodelSettings.Default,"Core default stays off");Check(!new Simulation(SourceStarterFixture.CreateKiSlash(),SourceStarterFixture.Seed).DruidRemodel,"a directly constructed Simulation keeps the web-port druid");
+  Check(NativeReviewArgs.IsReviewArgument("--unity-druid-legacy")&&NativeReviewArgs.IsReviewArgument("--unity-druid-remodel"),"druid args are review arguments");
+ }
  static int Main()
  {
   Check(!NativeDruidRigPolicy.Requested(null),"default off");Check(!NativeDruidRigPolicy.Requested(new string[0]),"empty off");
@@ -62,9 +78,48 @@ class DruidRigTests
   foreach(var pair in new[]{new[]{"druid_bone","#b9ad90"},new[]{"druid_bark","#4a3826"},new[]{"druid_feather","#1c2024"},new[]{"druid_hair","#2a2624"},new[]{"druid_beard","#8f8a82"},new[]{"druid_glow","#a8642a"},new[]{"druid_moss","#36421f"},new[]{"staff_bark","#4a3826"},new[]{"staff_leather","#2e231b"},new[]{"staff_bone","#b9ad90"},new[]{"lantern_orb","#a8642a"},new[]{"front_panel_cloth","#26211d"}})Check(NativeDruidRigPolicy.Palette(pair[0])==pair[1],"LOCK palette "+pair[0]);Check(NativeDruidRigPolicy.Palette("iron")==null,"hero palette isolated");
   using(var json=JsonDocument.Parse(File.ReadAllText("unity/Assets/Exoduser/Resources/Art/Bosses/Druid/oldman-import.json")))
   {
-   var source=json.RootElement;Check(source.GetProperty("sourceVersion").GetString()=="v8.2","current source");Check(source.GetProperty("clips").GetArrayLength()==31,"31 imported clips");
+   var source=json.RootElement;Check(source.GetProperty("sourceVersion").GetString()=="v9.1","current source");Check(source.GetProperty("clips").GetArrayLength()==38,"38 imported clips");
+   Check(source.GetProperty("boneCount").GetInt32()==65&&source.GetProperty("oldManBones").GetInt32()==34&&source.GetProperty("huskBones").GetInt32()==23&&source.GetProperty("huskPoseBones").GetInt32()==6,"65 bones = 34 + 23 HK + 6 HP + OM_Lift/OM_Staff");
+   Check(source.GetProperty("oldManTriangles").GetInt32()==78323&&source.GetProperty("huskTriangles").GetInt32()==73906,"triangle contract");
+   Check(source.GetProperty("socketParent").GetString()=="OM_Staff"&&source.GetProperty("rigidHuskCorrectedErrorMetres").GetDouble()<.0001&&source.GetProperty("socketCorrectedErrorMetres").GetDouble()<.0001,"socket rest restored");
+   double husk=source.GetProperty("huskFootRadiusMetres").GetDouble(),man=source.GetProperty("oldManFootRadiusMetres").GetDouble();Check(husk>0&&man>0,"measured footprints");
+   // Scale rule: footprint circle = Core hit radius (Core: BossRemodelSet.RadiusFor = LifeRadiusPx 91/77/39 since 11-04, px/100 world). No display multiplier.
+   double origR=91;double[] rpx=new double[3];for(int i=0;i<3;i++){rpx[i]=DruidRemodelData.Set.RadiusFor(i,origR);}
+   Near(rpx[0],91,"P1 Core radius px");Near(rpx[1],77,"P2 Core radius px");Near(rpx[2],39,"P3 Core radius px");
+   {double heroWorld=1.12,huskTop=4.8295,horn=2.71;double[] hero={rpx[0]/100/husk*huskTop/heroWorld,rpx[1]/100/husk*huskTop/heroWorld,rpx[2]/100/man*horn/heroWorld};Check(Math.Abs(hero[0]-2.8)<=.05&&Math.Abs(hero[1]-2.38)<=.05&&Math.Abs(hero[2]-2.0)<=.05,"hero height multiples P1/P2/P3 "+hero[0]+" "+hero[1]+" "+hero[2]);Console.WriteLine("hero multiples P1="+hero[0]+" P2="+hero[1]+" P3 horn="+hero[2]);}
+   var args3=NativeArenaReviewPolicy.EdgeLives(new[]{"--unity-boss-arena-p3-edge"});Check(!args3[0]&&!args3[1]&&args3[2],"edge arg p3");
+   var all3=NativeArenaReviewPolicy.EdgeLives(new[]{"--unity-boss-arena-edge"});Check(all3[0]&&all3[1]&&all3[2],"edge arg all");
+   var pick=NativeArenaReviewPolicy.EdgeLives(new[]{"--unity-boss-arena-edge=1,3"});Check(pick[0]&&!pick[1]&&pick[2],"edge arg list 1,3");
+   var bad1=NativeArenaReviewPolicy.EdgeLives(new[]{"--unity-boss-arena-edge=x,9"});Check(bad1[0]&&bad1[1]&&bad1[2],"edge arg invalid list = all");
+   var none=NativeArenaReviewPolicy.EdgeLives(new string[0]);Check(!none[0]&&!none[1]&&!none[2],"edge arg absent = none");
+   Console.WriteLine("scale P1="+rpx[0]/100/husk+" P2="+rpx[1]/100/husk+" P3 oldman="+rpx[2]/100/man+" P3 horn height m="+2.71*rpx[2]/100/man);
    foreach(var clip in source.GetProperty("clips").EnumerateArray())Near(clip.GetProperty("duration").GetDouble()*60,NativeDruidRigPolicy.Frames(clip.GetProperty("name").GetString()),"real asset duration "+clip.GetProperty("name"));
   }
-  Check(NativeDruidRigPolicy.AllClips.Distinct().Count()==31,"unique contract clips");Console.WriteLine("druid-rigpixel checks="+checks+" failed="+bad);return bad==0?0:1;
+  Check(NativeDruidRigPolicy.AllClips.Distinct().Count()==38,"unique contract clips");
+  // v9.1 state layer, collapse, intro, death
+  for(int life=0;life<3;life++)
+  {
+   var d=Data("idle",null,0);d.BossPhase=life;var pl=NativeDruidRigPolicy.Select(d,false);Check(pl.Life==life&&pl.Overlay=="state_P"+(life+1)&&!pl.Transition,"state overlay life "+life);
+   var a=Data("bossSlam","slam",3);a.BossPhase=life;Check(NativeDruidRigPolicy.Select(a,false).Overlay=="state_P"+(life+1),"action keeps state overlay "+life);
+  }
+  Check(NativeDruidRigPolicy.Select(Data("idle",null,0),false,false,null,false,-1).Life==2,"no lives = state_P3");
+  for(int life=0;life<2;life++)
+  {
+   string name=life==0?"phase12_collapse":"phase23_collapse";double previous=-1;
+   for(int t=0;t<=DruidRemodelData.CollapseTicks;t++)
+   {
+    var rest=Data("bossDruidRest",null,DruidRemodelData.CollapseTicks);rest.BossPhase=life;var p=NativeDruidRigPolicy.Select(rest,false,false,null,true,t);
+    Check(p.Name==name&&p.Transition&&p.Overlay==null,"collapse plan "+name);Check(p.Frame>=previous&&p.Frame<=120,"collapse frame bounded");previous=p.Frame;Near(rest.St2,DruidRemodelData.CollapseTicks,"collapse leaves Core St2");
+    if(t==0)Near(p.Frame,0,name+" first frame");if(t==DruidRemodelData.CollapseTicks)Near(p.Frame,120,name+" last frame");
+   }
+  }
+  var third=Data("bossDruidRest",null,120);third.BossPhase=2;Check(NativeDruidRigPolicy.Select(third,false,false,null,true,5).Held,"life 3 rest holds idle");
+  Check(NativeDruidRigPolicy.Select(Data("bossDruidRest",null,120),false,false,null,true,-1).Held,"unknown collapse time holds idle");
+  Near(NativeDruidRigPolicy.Intro(0).Frame,0,"intro first");Near(NativeDruidRigPolicy.Intro(NativeDruidRigPolicy.IntroTicks).Frame,165,"intro last");Check(NativeDruidRigPolicy.Intro(10).Transition&&NativeDruidRigPolicy.Intro(10).Life==0,"intro plan");
+  Near(NativeDruidRigPolicy.Death(0,66).Frame,0,"death first");Near(NativeDruidRigPolicy.Death(66,66).Frame,150,"death last");Near(NativeDruidRigPolicy.Death(99,66).Frame,150,"death held after body ticks");Check(NativeDruidRigPolicy.Death(5,66).Life==2,"death is life 3");
+  Near(NativeDruidRigPolicy.Frames("state_P2"),1,"state frames");Check(NativeDruidRigPolicy.Palette("druid_husk_bark")=="#2a2018","husk bark palette");
+  Check(NativeDruidRigPolicy.Phase23HuskOffFrame==108&&NativeDruidRigPolicy.IntroTicks==90,"authored switch frames");
+  DruidSetRule();
+  Console.WriteLine("druid-rigpixel checks="+checks+" failed="+bad);return bad==0?0:1;
  }
 }

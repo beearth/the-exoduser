@@ -177,7 +177,7 @@ namespace Exoduser.UnityPort.Core
                         t.X = host.ArenaW / 2; t.Y = host.ArenaH / 2; t.Length = host.ArenaW; t.Width = host.ArenaH;
                         t.SrcX = d.X; t.SrcY = d.Y;
                         if (Pillars.Count > 0) { t.Shadows = new double[Pillars.Count][]; for (int pi = 0; pi < Pillars.Count; pi++) t.Shadows[pi] = new[] { Pillars[pi].X, Pillars[pi].Y, Pillars[pi].R }; }
-                        t.Safe = new double[SafeZones.Count + 1][]; t.Safe[0] = new[] { d.X, d.Y, DruidRemodelData.HeartbeatSafeRadius };
+                        t.Safe = new double[SafeZones.Count + 1][]; t.Safe[0] = new[] { d.X, d.Y, HeartbeatSafeOf(d) };
                         for (int i = 0; i < SafeZones.Count; i++) t.Safe[i + 1] = (double[])SafeZones[i].Clone();
                         break;
                     }
@@ -221,9 +221,9 @@ namespace Exoduser.UnityPort.Core
         void AddSlam(List<DruidTelegraph> into, DruidData d, double total, double remaining)
         {
             var t = Tele(into, "slam", DruidTeleKind.ParryGlint, DruidTeleShape.Circle, total, remaining, 0);
-            t.X = d.X; t.Y = d.Y; t.Radius = Set.SlamRadius; t.Dir = d.Facing; StaffTip(t, d);
+            t.X = d.X; t.Y = d.Y; t.Radius = SlamRadiusOf(d); t.Dir = d.Facing; StaffTip(t, d);
             t = Tele(into, "slam", DruidTeleKind.GroundDecal, DruidTeleShape.Circle, total, remaining, 1);
-            t.X = d.X; t.Y = d.Y; t.Radius = Set.SlamRadius; t.Dir = d.Facing;
+            t.X = d.X; t.Y = d.Y; t.Radius = SlamRadiusOf(d); t.Dir = d.Facing;
         }
 
         // tide wave: the band is [rad - w, rad + w] (UpdateTideWaves tests |dist - rad| < w) and the gap passes when |angle - gapAng| <= gapSize

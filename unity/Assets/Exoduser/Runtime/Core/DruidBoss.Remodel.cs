@@ -76,6 +76,12 @@ namespace Exoduser.UnityPort.Core
         // RM-1 sound SND-09: the big-move kiai (slam / charge / tide wave), skipped when the same move just ran
         void AttackVoice(DruidData d, string move) { if (d.PrevMove != move) host.Sound("druid_vo_attack", "#" + (Array.FindIndex(DruidRemodelData.Moves, m => m.Id == move) + 1) + " " + move + " kiai", d.X, d.Y); }
 
+        // 11-04 (CTO option a): the centre-based distances of the remodel were designed for the old body radius (BossRemodelSet.LifeRadiusBasis); with the larger Core radius they move out by the difference,
+        // so the reach beyond the body edge (the dodge distance the player learned) stays the same. Edge-based tests (d.R + pr + X) already follow d.R and are not shifted. 0 for every set without a basis.
+        double RmShift(DruidData d) { return Remodel ? Set.ReachShift(d.BossPhase, d.R) : 0; }
+        double SlamRadiusOf(DruidData d) { return Set.SlamRadius + RmShift(d); }
+        double HeartbeatSafeOf(DruidData d) { return DruidRemodelData.HeartbeatSafeRadius + RmShift(d); }
+
         bool InSafeZone(double x, double y)
         {
             foreach (var z in SafeZones) if (Dst(x, y, z[0], z[1]) < z[2]) return true;
@@ -86,7 +92,7 @@ namespace Exoduser.UnityPort.Core
         void HeartbeatPulse(EnemyState e, DruidData d)
         {
             host.Fx("druidHeartbeat", d.X, d.Y, 0); host.Shake(10); host.Sound("druid_heartbeat", "#12 heartbeat beat " + (d.HbBeat + 1), d.X, d.Y);
-            if (host.PlayerAlive && host.PIframes <= 0 && !InSafeZone(host.PX, host.PY) && !InPillarShadow(host.PX, host.PY, d.X, d.Y) && Dst(host.PX, host.PY, d.X, d.Y) > DruidRemodelData.HeartbeatSafeRadius) PlayerHit(e, d, DruidRemodelData.HeartbeatDamageMul, 6, true);   // safe: the ring of 260 around the boss, plus the root pillar shadows (RB1-3)
+            if (host.PlayerAlive && host.PIframes <= 0 && !InSafeZone(host.PX, host.PY) && !InPillarShadow(host.PX, host.PY, d.X, d.Y) && Dst(host.PX, host.PY, d.X, d.Y) > HeartbeatSafeOf(d)) PlayerHit(e, d, DruidRemodelData.HeartbeatDamageMul, 6, true);   // safe: the ring of 260 around the boss, plus the root pillar shadows (RB1-3)
             d.HbBeat++;
             if (d.HbBeat >= DruidRemodelData.HeartbeatBeats) Recover(d, 0);   // bossRec with the table's 90 f (`recover` clamps St2 to 20)
             else { d.S = "bossHeartPause"; d.St2 = DruidRemodelData.HeartbeatPause; }

@@ -311,12 +311,51 @@ Unity 이식 중 찾은 웹 결함. 이식은 웹 그대로 두고, 웹 수정�
 - 요지: 1-1 적은 etype 29종(+다안 육괴·문지기)이다. 외형은 지금 위치 해시로 40칸 아틀라스에서 골라 행동과 무관하다 → **etype 하나에 3D 모델 하나**로 묶는다. 1차 = 빈도 상위 5종(7·16·1·47·4, 일반 스폰의 40.3%, 모두 이족). 비인간형 9종은 Meshy 인간형 리깅 불가로 표시했다. 비용 기본 1,005cr·상한 2,010cr(잔액 4,103cr), 1차 요청 상한 350cr + $0.70, 시범 가시 사도 1종 먼저.
 - 도구 비교 추가(CTO 전달, 사용자 "트라이포도 있고 메시도 있으니까 다 잘 써 봐"): G0 §4.1. 0차 = 가시 사도(인간형)·다안 육괴(비인간형)를 Meshy(API)와 Tripo(Mac Chrome 웹, 사용자 로그인)로 각각 만들어 34° "스프라이트 | Meshy | Tripo" 비교판과 자동 리깅 성공표를 남기고, 체형별로 이긴 도구를 쓴다. Meshy 상한 130cr + Tripo 웹 2종 + $0.14, 승인 뒤 실행.
 
-### 8.5.4 1-1 한 판 실측의 보스전 사망 — 옛 기술 세트 결함 (2026-11-04, CTO 전달 실측 분석)
+### 8.5.4 드루이드 세트 기본값과 실측 분석 (11-04)
+
+**8.5.4-b 세트 기본값 규칙 (보스 아레나 레인)**
+
+- 이유: 3D 실측 실행이 리모델 플래그(`--unity-druid-remodel`)가 꺼진 채로 돌아 옛 웹 세트(23기술, HP 5페이즈)의 드루이드와 싸웠다. 데모에서 보이는 보스는 리모델 7기술 드루이드여야 한다.
+- 규칙(뷰·런타임 계층, `NativeReviewArgs.DecideDruidSet`, 위가 우선): ① `--unity-druid-legacy` = 옛 웹 세트 강제(꺼짐) ② `--unity-druid-remodel` = 켜짐 ③ 3D 보스 아레나 장면(`--remodel3d`) = 켜짐 ④ 빌드 종류가 데모·체험판(`BuildFlavor.Current.DemoMode`) = 켜짐 ⑤ 그 밖 = 꺼짐(Core 기본값).
+- 적용 위치: 런 마다 `Simulation`이 만들어진 직후 `NativeGame.ReviewArgsApply`가 `Simulation.DruidRemodel`을 정하고 `[DruidSet] remodel=<true|false> reason=<legacy-arg|arg|3d-arena|demo|default>`를 한 줄 로그로 남긴다.
+- 불변: Core(`DruidRemodelSettings.Default = false`)와 모든 Core 수치는 그대로다. `Simulation`을 직접 만드는 테스트·웹 oracle 하니스는 계속 옛 세트를 받는다(옵트인할 때만 리모델).
+- 검증: `unity/Tools/druid-rigpixel-tests`가 규칙 조합(인자·아레나·데모)과 Core 기본값 꺼짐을 검사한다. `--unity-review-args-capture` 하니스는 "인자가 있으면 켜짐"에서 "규칙을 따른다 + Core 기본값은 여전히 꺼짐"으로 기대를 바꿨다(검사 약화 없음, 아레나 안 드루이드가 규칙 결과와 같은 세트인지 그대로 확인).
+
+**8.5.4-a 실측 분석: 1-1 한 판 보스전 사망 — 옛 기술 세트 결함 (2026-11-04, CTO 전달)**
 
 - 2D 2판·3D 1판 모두 지옥문 뒤 보스전에서 봇이 사망했다. 3D 1판(`I:/EXODUSER-Storage/fullrun-measure/3d-round-1-telemetry.jsonl`)의 보스 상태가 `bossBurstWind`·`bossGrabWind`·`bossSweep`이었다. 즉 **리모델 7기술이 아닌 옛 웹 드루이드 기술 세트**로 싸웠다. 3D 장면(RM1_Slice)은 켜졌지만 Core 리모델 플래그(`--unity-druid-remodel`, 기본 false)가 꺼져 있었다.
 - 사망 순서(틱): 25801 잡기 예고 → 26031 회복 중 플레이어 기절(HP 2,616→1,510) → 26226 `bossSweep`에 맞아 사망. 보스 HP 148,786→87,464.
 - **옛 세트 한정 결함, 리모델에서 제외**: 옛 `sweep`은 예고 25틱 뒤 14틱 동안(진행 15~85%) 사거리 `d.R+pr+400`px, 좌우 각 1.7rad(약 195° 부채꼴)을 매 틱 판정한다(`DruidBoss.Moves.cs` 58·481~487행). 기절 중에는 피할 수 없다. 리모델 7기술(`DruidRemodelData.Moves`)에는 `sweep`·`burst`가 없다.
 - 조치(CTO 결정): 데모 v0의 1-1 보스는 리모델 드루이드를 기본으로 한다. 보스 아레나 브랜치에서 `--unity-druid-remodel` 기본값을 켜고(3D 장면 판·체험판 기준), 옛 세트는 끄기 인자로 남긴다. Core 수치·판정은 바꾸지 않고 세트 선택만 바꾼다. 3D 재측정은 그 통합 빌드로 다시 한다. 리모델 세트에서도 잡기 뒤 기절 + 연속 공격이 나오면 `GrabHeldRecovery 60`을 본다.
+
+### 8.5.5 드루이드 화면 크기 = Core 판정 반경 (11-04, CTO 결정 a, 보스 아레나 레인)
+
+- 이유: PREP §10.1의 "발치 원 = Core 반경" 규칙을 옛 반경(44/37/31px)에 적용하면 P1 껍질이 영웅 ×1.36, P2 ×1.14로 작아져 설계 크기(P1 영웅 2.8배, G0 §6)를 잃는다. 결정: **Core 반경을 설계 크기에 맞춰 키우고**, 몸 크기에 걸린 거리를 같은 기준으로 옮긴다. 리모델 신규 설계라 **웹 oracle 대상이 아니다**(옛 웹 세트·다른 적·`EnemyFactory`/`EliteTables` 기본값은 그대로, `druid-boss-oracle` 0불일치 유지).
+- 반경 규칙: 반경(px)→월드(px/100)→모델 배율은 선형이라 목표 반경은 측정값에서 계산한다. P1 = 44×2.8/1.36 ≈ 91, P2 = P1×0.85 ≈ 77(G0 §6.3에 P2 배수가 없어 P1×.85로 정함, 기존 BodyScale 비율과 같음), P3 = 31×2.0/1.575 ≈ 39. 영웅 높이 기준 1.12u(PREP §10.1과 같음)로 검산한 배수는 아래 표.
+- 거리 규칙: **중심 기준** 거리(걷기 멈춤·내려찍기 반경·박동 안전 고리·AI 기술 선택 거리)는 `LifeRadiusPx − LifeRadiusBasis`(설계 때 반경 44/37/31) 만큼 밖으로 옮긴다 = 몸 가장자리 바깥 도달 거리(플레이어가 익힌 회피 거리)를 그대로 둔다. **가장자리 기준**(`d.R + pr + X`) 판정은 이미 반경을 따라가므로 옮기지 않는다. 비례(×2.07) 확대는 쓰지 않았다: 내려찍기가 538px가 되면 몸 가장자리 근처에서 벗어나야 하는 거리가 약 200px에서 약 430px로 두 배가 되어(걷기 2.6px/틱, 예고 52+6틱) 배운 회피가 성립하지 않는다.
+
+| 항목 (한 곳에 모음) | P1 | P2 | P3 | 근거·코드 위치 |
+|---|---|---|---|---|
+| 화면 발치 반지름 = Core 판정 반경 (px) | **91** | **77** | **39** | `DruidRemodelData.cs:19` `LifeRadiusPx`, 적용 `Simulation.DruidRemodel.cs:50`(P1)·`:145`(P2·P3), `BossRemodel.cs:71` `RadiusFor` |
+| 이전 반경 (px) | 44 | 37 | 31 | `Round(OrigR 44 × BodyScale)`; 지금은 설계 기준 `LifeRadiusBasis` `DruidRemodelData.cs:21` |
+| 월드 반지름 (u = px/100) → 모델 배율 | 0.91 → 0.6506 | 0.77 → 0.5505 | 0.39 → 0.8191(노인) | `druid-rigpixel-tests` 콘솔 `scale ...` |
+| 영웅 키 배수 (1.12u 기준, 뿔 끝/껍질 꼭대기) | 2.805 | 2.374 | 1.982 | 목표 2.8 / 2.38 / 2.0 (`RadiusChecks.cs` `HeroMultiple`) |
+| 이동량 `LifeRadiusPx − LifeRadiusBasis` (px) | 47 | 40 | 8 | `BossRemodel.cs:77` `ReachShift`, `DruidBoss.Remodel.cs:81` `RmShift` |
+| 내려찍기 반경 (중심 기준, 독웅덩이 P3 동일) | 307 | 300 | 268 | 260 + 이동량. 몸 바깥 도달 216/223/229 유지. `DruidBoss.Remodel.cs:82`, 판정 `DruidBoss.Moves.cs:469`·`:472`, 예고 `DruidTelegraph.cs:224`·`:226` |
+| 걷기 멈춤 거리 (중심 기준) | 267 | 260 | 228 | 220 + 이동량. 몸 바깥 176/183/189 유지. `DruidBoss.Motion.cs:68` |
+| 박동 안전 고리 (중심 기준, P3만 쓰임) | — | — | 268 | 260 + 8. `DruidBoss.Remodel.cs:83`·`:95`, 예고 `DruidTelegraph.cs:180` |
+| AI 기술 선택 거리 (슬래시 160·내려찍기 260·잡기 150 등) | 측정 거리 −47 | −40 | −8 | `dist`에서 이동량을 뺀 값으로 점수·잡기 시작(<120) 판정. 가드(<20, >500)는 원래 거리. `DruidBoss.cs:438`, 예약 기술 실행 `DruidBoss.Moves.cs:191` |
+| 채찍 타격 (가장자리 기준) | R+15+300 | 동일 | 동일 | 몸 바깥 300 유지(껍질 팔이 몸에서 뻗음). `DruidBoss.Moves.cs:438` |
+| 돌진 접촉 (가장자리 기준) | R+15+120 | 동일 | 동일 | `DruidTelegraph.cs:49`. 진행 880px 그대로 |
+| 잡기 접촉 (가장자리 기준) | R+15+150 | 동일 | 동일 | `DruidBoss.Moves.cs:315`. 덮치기 20틱×9px 그대로 |
+| 잠행 솟기 피해 (가장자리 기준) | R+120 | 동일 | 동일 | `DruidBoss.Moves.cs:414` |
+| 잠행 출현 위치 (기둥 중심에서) | 195 | 181 | 143 | 기둥 반경 80 + R + 24. `DruidBoss.Pillars.cs:93`. 기둥 고리 1122px, 벽 2040px 안에 모든 각도에서 들어감(`RadiusChecks.cs` `BurrowClearance`) |
+| 플레이어 몸 밀어내기 (중심 거리 ≥ R+15) | 106 | 92 | 54 | 아래 "몸 분리" |
+
+- **몸 분리(신규, 리모델 드루이드만 `BodySeparation`)**: 웹에는 플레이어-적 충돌이 없어 봇이 보스 중심에 서 있을 수 있었다(실측 30px). 이제 `Simulation.BossRemodelRules.cs:121` `RemodelSeparatePlayer`가 틱마다 플레이어를 반경 합(R+15)까지 바깥으로 민다(틱당 최대 24px, 돌진 22px보다 큼; 벽·기둥이면 가장 가까운 빈 각도). 구르기·대시·하프 중, 잡기(`bossGrab`) 중, 보스가 땅속(`bossDruidUnder`)·무릎(`bossDruidRest`)·사망 연출 중에는 밀지 않는다. 피격 보호(Iframes)는 면제 아님: 몸 안에서 맞아도 바로 밀려난다. 플레이어 근접 공격 도달은 중심 거리 ≤ 50+R이라 몸 가장자리(R+15)에서 항상 닿는다(`RadiusChecks.cs` `EdgeHit`).
+- **리뷰 캡처**: `--unity-boss-arena-edge[=1,2,3]`(생략=세 목숨 전부, `=1,3`=지정 목숨). 옛 `--unity-boss-arena-p3-edge`는 3번째 목숨만으로 유지. 봇이 목숨마다 가장자리(간격 4px)에 서서 중심을 공격하고 `edge-p<목숨>-hit-1..3` PNG/JSON과 moves.jsonl `edge-hit`(필드 `life`) 줄을 남긴다. 목숨당 3장이 차면 그 목숨의 가장자리 서기는 끝난다. 실행 줄(Mac, 이 레인은 실행하지 않음)은 PREP §10.1 "캡처 단계"에 있다.
+- **영향 없음 확인**: 내려찍기 예고 반지름 등 모든 값은 `Set.LifeRadiusBasis`가 없는 세트(웹 세트·테스트 샘플 세트)에서 이동량 0이다. 웹 oracle `druid-boss-oracle --cases 48` 0불일치.
+- **남은 판정(Mac)**: P1 껍질이 영웅 ×2.8로 커진 화면(카메라 LOCK 안에서 먼 적 시야 가림 여부), 잠행 솟기 때 기둥과 몸이 24px 틈으로 붙어 보이는지, 몸 분리가 대시·구르기 감각을 해치지 않는지, 박동 안전 고리 268이 P3 몸(39)에서 읽히는지.
 
 ### 8.6 세션 구성 (사용자 입력 턴에 유니티 총괄 또는 보스전 총괄이 연다)
 
