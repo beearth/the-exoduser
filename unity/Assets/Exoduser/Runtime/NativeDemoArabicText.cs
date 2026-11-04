@@ -21,7 +21,7 @@ namespace Exoduser.UnityPort
    if(Event.current.type!=EventType.Repaint)return true;
    if(template==null)template=Resources.Load<PanelSettings>("Art/fonts/ArabicCaptionPanel");
    if(font==null)font=Resources.Load<FontAsset>("Art/fonts/ArabicCaptionNaskhDynamic");
-   if(template==null||font==null)throw new System.InvalidOperationException("Arabic advanced caption assets unavailable");
+   if(template==null||font==null)return false;
    float scale=Mathf.Max(.01f,GUI.matrix.MultiplyVector(Vector3.up).magnitude);
    int width=Mathf.Max(1,Mathf.CeilToInt(rect.width*scale)),height=Mathf.Max(1,Mathf.CeilToInt(rect.height*scale));
    var col=style.normal.textColor;string key=(paintId??text)+"|"+width+"|"+height+"|"+style.fontSize+"|"+style.fontStyle+"|"+col.r+"|"+col.g+"|"+col.b;
