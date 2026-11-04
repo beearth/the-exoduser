@@ -55,12 +55,12 @@ namespace Exoduser.UnityPort
         }
         static double Ms(long ticks) { return ticks * 1000.0 / Stopwatch.Frequency; }
         public static void BeginGround() { if(Enabled) ground.Clear(); }
-        public static void GroundLoaded(string id, Texture2D texture, long ticks)
+        public static void GroundLoaded(string id, Texture texture, long ticks)
         {
             if(!Enabled) return;
             ground.Add(new GroundSample { id = id, ms = Ms(ticks), missing = texture == null,
                 width = texture != null ? texture.width : 0, height = texture != null ? texture.height : 0,
-                mips = texture != null ? texture.mipmapCount : 0, readable = texture != null && texture.isReadable,
+                mips = texture != null ? (texture is Texture2D t ? t.mipmapCount : texture is Texture2DArray a ? a.mipmapCount : 0) : 0, readable = texture is Texture2D t2 ? t2.isReadable : texture is Texture2DArray a2 && a2.isReadable,
                 format = texture != null ? texture.graphicsFormat.ToString() : "missing" });
         }
         public static void EndGround()

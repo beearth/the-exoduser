@@ -1,5 +1,17 @@
 # Unity 맵 보드
 
+## 2026-11-04 map-loadprof 2차: 무손실 배열·사전 로드 (실행 검증 대기)
+
+- f44208cee3에서 이어서 구현. 원본 192장의 그래픽 형식·전체 mip·sRGB·필터·이방성·wrap·mip bias를 유지해 Texture2DArray에 담는 Editor 굽기 경로를 추가했다. 재샘플링·재압축·mip 재생성은 하지 않는다. 묶음당 최대16장이고 파일은100MiB 미만으로 제한한다. 원본 PNG와 임포트 설정은 수정하지 않는다.
+- 로비 시작 때 비동기 사전 로드를 시작하고, 지면 Build에서는 준비된 배열을 사용하거나 남은 로드를 기다린다. A2R_GROUND_PREFETCH_DONE의 전체 사전 로드 시간과 기존 지면타일 Art Load의 필드 잔여 대기를 함께 기록한다. 로드 비용이 사라졌다고 간주하지 않는다. `--a2r-ground-original`은 사전 로드를 생략하고 같은 빌드의 기존 2D 경로를 선택한다.
+- GroundPainting 셰이더는 샘플링 분기만 추가했으며 원본 분기의 색·조명·수식은 정적 토큰 비교에서 일치했다. 실제 GPU 비교는 아직 대기 중이다. 굽기는 원본 GPU 바이트를 읽어 저장하며, 다시 읽은 배열의192장 전체 mip 바이트 및 원본/배열 샘플링 렌더128쌍을 검사한다. 빌드 전 원본 의존성 해시가 달라지면 오래된 굽기 결과를 거부한다.
+- `--a2r-load-probe --a2r-ground-pixel-proof`는 기존 스모크의02-field-entry와05-camp-3840에 도달한 실제 게임 카메라에서 같은 프레임의 원본/배열 재질을 비교한다. 물·바람의 서로 다른 시각을 픽셀 결함으로 섞지 않는다. 월드 전체 카메라 영상이 대상이며 별도 overlay UI는 범위 밖이다. 일반 실행에는 이 검사가 없다.
+- 공용 실행기 순번 대기1회(10분), 검사 실패가 아니며10분 휴지 뒤 재요청한다. 현재 실제 Unity 컴파일·굽기·빌드·Player는 모두 미실행이다. Player 계수는 새0/2다. 프리팹·ConformBase 원본 코드는 수정하지 않았으며 실측 후 설계안 수치만 보완한다.
+
+
+
+- 엔진 근거: [Unity 텍스처 배열 생성](https://docs.unity.com/en-us/engine/6000.5/manual/materials-and-shaders/textures/class-texture2darray/create), [비동기 업로드 조건](https://docs.unity3d.com/6000.0/Documentation/Manual/LoadingTextureandMeshData-make-compatible.html). Resources.LoadAsync 요청은 Resources 텍스처의 GPU 업로드까지 비동기로 바꾼다는 뜻이 아니므로 사전 요청 경과와 필드 잔여 대기를 구분한다.
+
 ## 2026-11-04 map-loadprof: 지면 로드 계측·3D 조사 (최적화 미완료)
 
 - 기준 소스: `d9e5a27422f093ab35a1598264f83df7d95a2a59`, 브랜치 `codex/unity-map-loadprof-20261104`. 지면 로드 단축을 적용한 상태가 아니라 원인을 나누어 측정할 진단 코드다. 공용 실행기 HALT 때문에 실제 Unity 컴파일·새 Player·화면 비교는 미실행이다. 1,000ms 합격 조건을 달성했다고 판정하지 않는다.
