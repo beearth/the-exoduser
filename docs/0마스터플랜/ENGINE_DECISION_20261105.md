@@ -6,19 +6,45 @@
 
 ---
 
-## 0. 한 쪽 요약 (아침 보고용)
+## 0. 한 쪽 요약 (아침 보고용, 3회차 출처 검증 뒤 재작성)
 
-**권고: "2주 비교 실험 후 결정". 실험 동안 기본값은 Unity 유지.** 단, 아래 결정 기준표를 미리 고정해 두고, 결과가 기준을 넘으면 망설이지 않고 UE5로 넘어간다.
+**권고: "2주 비교 실험 후 결정". 실험 동안은 Unity 유지(현 상태 그대로, 추가 투자 없음).** 결정 기준표(아래 K1~K7)를 미리 고정하고, 결과가 기준을 넘으면 UE5로 넘어간다.
+
+**왜 다시 썼나.** 출처 검증(CX22-2·CX22-3)에서 이 문서의 UE 불리 쪽 서술이 4건 과장으로 나왔다: ① "UE 자산 diff·리뷰 불가" ② UE 5.6~5.7 Xcode 최소값 ③ "Blueprint는 AI가 못 읽음" 일반화 ④ "UE6 정식 2028 말" 확정 표기. 같은 방향의 오류가 반복됐으므로 **UE에 불리한 논거를 하나씩 "이걸 뒤집는 공식 근거가 있나"로 다시 따졌다**(아래 표). 이 문서가 처음부터 Unity 쪽으로 기울어 있었다는 점을 인정한다.
+
+### 0.1 UE 불리 논거 자기 반박
+
+| # | UE 불리 논거 | 뒤집는(또는 약화하는) 근거 | 남는 것 | 등급 |
+|---|---|---|---|---|
+| R1 | UE 자산은 바이너리라 리뷰 불가 | Epic 공식: 텍스트(T3D) 내보내기·Blueprint 내장 diff [CX22-2] | 리뷰 **가능**. 남는 것은 "정본이 바이너리라 AI가 파일을 직접 고치거나 Git이 자동 병합하지 못한다"(Epic이 Perforce 잠금 운영을 안내 — CX12 인용 Epic 문서) | 리뷰 불가 = **철회**. 직접 편집·병합 불리 = **[검증]**, 실제 생산성 차이 = **[미검증]** |
+| R2 | Blueprint는 AI가 못 읽음 | 인용 글 저자는 초기 실패 뒤 플러그인을 확장해 읽었다 [CX22-3]. Epic 공식 MCP(5.8)·Python 에디터 스크립팅으로 에디터 경유 조회·수정 가능 [CX12 공식 문서] | 일반화 불가. "에디터를 거쳐야 한다"만 남음 | **철회**(개인 사례) |
+| R3 | C# Core 이식에 6~12주 | 공식 근거도 반증도 없음. C#를 UE에서 돌리는 서드파티(UnrealSharp 등)는 [미검증]. 골든 트레이스 방식이면 낙관 쪽 | 이식 자체는 필요(UE 공식 스크립트 언어는 C++·Blueprint, Verse는 UEFN 중심) | 이식 필요 = **[검증]**, 기간 = **[추정]** |
+| R4 | C++ 빌드가 느려 판정 루프가 길다 | Live Coding이 있다(공식 기능, 이번 세션 원문 미열람). 실측 없음 | 실험 K5에서 잰다 | **[미검증]** — 결론에 쓰지 않음 |
+| R5 | Mac에서 Windows 패키징 불가 | 이번 세션에서 공식 원문 미확인 | 사실이어도 PC가 패키징하면 됨(지금도 PC 컴파일·Mac 판정 분업) | **[미검증]**, 영향 작음 |
+| R6 | 픽셀 렌더 캐릭터 합성은 Unity가 쉽다 | UE도 SceneCapture·커스텀 패스·머티리얼 픽셀화 사례 있음(포럼). 난이도 비교 공식 근거 없음 | 실험 K7에서 확인 | **[미검증]** — 결론에 쓰지 않음 |
+| R7 | Lumen 때문에 최소 사양이 높다 | Lumen·VSM은 끌 수 있다(확장성 설정). 수치 근거 없음 | 실험 K6에서 측정 | **[미검증]** |
+| R8 | UE6 이주 리스크(재이주) | UE6 EA 2027 말 [검증: Epic·PC Gamer·GameStar], 정식은 그 12~18개월 뒤 "빨라도 2029 초" **전망**. Epic은 UE5→UE6 이행을 공언(세부 미확인). Unity도 장기적으로 런타임·버전 전환을 겪는다 [추정] | 데모·EA 기간(2026~27)에는 영향 없음. 정식 출시 무렵 판단 1회 | **약화** — 결정 요인 아님 |
+| R9 | 4주 안에 엔진 3번째 교체 | 엔진의 성질이 아니라 우리 운영 리스크다. 화면 작업은 어차피 폐기·재작성 중 | 사용자에게 "UE가 마지막"이라는 확약이 필요하다는 운영 조건으로만 유지 | **[검증: 우리 docs]**, 엔진 비교 논거에서는 제외 |
+| R10 | unity-mcp가 이미 연결돼 있다 | Epic 공식 MCP는 콘솔 명령 2개로 Claude Code 설정 생성 [1건 다수 보도]. 전환 비용은 작다 | 작은 이점 | **[검증]**, 비중 작음 |
+
+**같은 기준으로 UE 유리 논거도 점검:** UE에 Lumen·Volumetric Fog가 내장 = **[검증]**(Epic 공식). "Unity 6 URP에는 볼류메트릭 안개가 내장 안 됨"은 이번 세션에서 공식 원문으로 확인하지 못했다 = **[미검증]**(서드파티 에셋이 많다는 사실만 확인). "UE면 우리 화면이 좋아진다"는 **[미검증]** — 그래서 실험이 필요하다.
+
+### 0.2 결론 — 두 층으로 나눔
+
+| 층 | 결론 | 근거 |
+|---|---|---|
+| **검증된 출처만으로** | **유지도 전환도 정당화되지 않는다 → 같은 장면 비교 실험이 유일하게 근거 있는 다음 단계.** 확인된 차이는 ① UE는 실시간 GI·볼류메트릭 안개를 기본 제공 ② 양쪽 공식 AI 연결(UE 5.8 MCP, Unity CLI)은 둘 다 실험 단계로 대등 ③ UE 자산은 바이너리라 AI 직접 편집·자동 병합이 Unity YAML보다 불리(리뷰는 가능) ④ 전환하면 C# Core 18,320줄 이식이 필요 [코드]. ①은 UE, ③④는 Unity 쪽이고 크기를 잴 수 없어 서로 상쇄 여부를 판단할 수 없다 | Epic·Unity 공식 문서(CX12·CX22 대조), 우리 코드 |
+| **미검증 포함** | Unity 유지 쪽으로 기운다(전환 6~12주, 빌드 시간, 픽셀 합성 난이도, 최소 사양). **단 이 항목들은 전부 [추정]이며, 이 문서가 UE 불리 쪽으로 4번 틀렸다는 점을 감안해 결정 근거로 쓰지 않는다.** | §3·§4·§5 추정 |
+
+**황천·엔진 선택 vs 제작 방식.** 황천(Steam 5024530 《黄天逆途》, 望虚社)은 **11인·약 2년·외부 투자 0**으로 그 분위기를 냈다 [3DM·游民星空 보도; 기간 약 2년은 CX3 `codex_yellowsky.md`]. 엔진은 **UE5(개발사 모집글 1건, 2024-09, Mac 확인)·세부 미확인** — 원문 `引擎：虚幻5` https://indienova.com/groups/post/103287 . 현재도 UE5인지·버전·Lumen/Nanite·렌더 방식은 미확인이고 "UE5라서 그 화면"은 증명되지 않았다. **유지·전환 논거는 황천의 엔진에 기대지 않는다. 분위기 목표는 엔진과 분리해 K1 비교판으로만 평가한다.** 확실한 것은 작은 팀의 분위기가 아트 방향·조명 판단·반복 제작에서 나왔다는 점이고, 이것은 엔진과 무관하게 우리가 갖춰야 한다.
+
+**"요즘 언리얼이 AI 친화적"(§4.1).** 2026년에 **사실이 됐다**: UE 5.7 에디터 AI Assistant, UE 5.8 Epic 공식 MCP(실험적·로컬 전용), Python 에디터 스크립팅, T3D 내보내기·내장 diff. Unity도 Unity AI(6.2)·Unity CLI `unity mcp`(실험 단계)가 있다. "Unity보다 더 친화적"은 근거가 없고, "덜 친화적"도 직접 편집·병합 한 가지 외에는 실측 전이다 → K4·K5에서 사람 개입 시간·도구 실패·의도 밖 변경으로 잰다.
 
 | 선택 | 장점 | 단점 | 판단 |
 |---|---|---|---|
-| **A. Unity 유지** | Core 규칙 C# 18,320줄·oracle 도구 122개가 그대로 산다 [코드]. 씬·프리팹이 텍스트(YAML)라 AI가 읽고 diff·병합 가능. unity-mcp 이미 연결 [코드]. Mac에서 Windows 빌드 가능(Mono) [추정]. 전환 비용 0 | URP에 볼류메트릭 안개·실시간 GI가 내장돼 있지 않다 → 지금처럼 커스텀(HellFogFeature 등)을 계속 짜야 한다 [코드]. 사용자가 본 "쓰레기 광원·안개"가 이 커스텀 경로에서 나왔다 | 화면 문제의 원인이 엔진이 아니라 제작법이면 이게 맞다 |
-| **B. 즉시 UE5 전환** | Lumen(실시간 GI)·Exponential Height Fog+Volumetric Fog·Niagara가 기본 탑재 → "광원·안개·대기"의 바닥 품질이 높다 [확인]. 팬텀블레이드 제로·Titan Quest II가 UE5 [확인](황천은 개발사 자기 신고 1건(Mac 확인)·세부 미확인). UE 5.8에 Epic 공식 MCP 플러그인(실험적)이 들어와 AI 연동이 Unity와 비슷한 수준이 됐다 [확인, §4.1]. 화면 작업이 동결된 지금이 전환 비용 최저 시점 | Core 이식(C#→C++) + oracle 재검증, UI·세이브·번역 재작성: **6~12주** [추정]. 에셋(.uasset)은 바이너리 — 텍스트(T3D) 내보내기·Blueprint 내장 diff로 리뷰는 되지만, AI 에이전트가 파일을 직접 편집하기엔 Unity YAML보다 불리 [CX22-2 `SOURCE_VERIFY_20261105.md` Epic 공식 문서 대조]. C++ 빌드가 느리고 Mac→Windows 패키징 불가로 판정 루프가 길어진다 [추정]. **4주 안에 엔진 3번째 교체**(H5→FDG/Godot→Unity→UE). **UE5.8이 UE5 마지막 메이저, UE6(UE5+UEFN 통합, Verse 중심) 얼리액세스 2027 말** → 지금 UE5로 가면 2028~29년에 또 한 번 이주 판단이 온다 [확인, §4.2] | 근거 없이 바꾸면 "엔진 바꾸면 나아진다"를 또 한 번 시험하는 셈 |
-| **C. 실험 후 결정 (권고)** | 같은 1-1 키샷을 같은 시간·같은 에셋으로 두 엔진에서 만들어 **눈으로 비교**한 뒤 정한다. 지금은 어차피 연구 기간(DIRECTION_RESET)이라 개발 손실이 적다 | 2주(작업 10일)와 Mac·사용자 시간 소모. UE 설치·Epic 로그인 등 사용자 손이 필요 | 되돌리기 어려운 결정을 증거로 내린다 |
-
-**엔진 선택 vs 제작 방식 — 황천이 주는 교훈.** 황천(Steam 5024530 《黄天逆途》, 望虚社)은 **11인·약 2년·외부 투자 0**으로 그 분위기를 냈다 [확인: 3DM·游民星空 보도, 기간 약 2년은 CX3 `codex_yellowsky.md`(CTO 전달)]. **엔진은 UE5(개발사 모집글 1건, 2024-09)·세부 미확인**이다 — 2024-09-29 개발사 모집글 원문에 `引擎：虚幻5`(https://indienova.com/groups/post/103287). **개발사 자기 신고 1건(Mac 확인)** — PC Codex는 접근 실패. 그 외 출처 없음. 지금도 UE5인지·5.x 버전·Lumen/Nanite·렌더 방식은 미확인이다. "UE5라서 그 화면"은 증명되지 않았다. "완전 3D 실시간"·Lumen·Height/Volumetric Fog 사용도 입증 원문이 없다. 개발사 발언·Steam·중국어 보도(3DM·游民星空·17173·B站)에는 엔진 언급이 없다. **이 문서의 유지·전환 논거는 황천의 엔진에 기대지 않는다. 분위기 목표는 엔진과 분리해 K1 비교판(같은 장면·같은 시간)으로만 평가한다.** 어느 엔진이든 확실한 것은 **작은 팀이 분위기를 낸 힘은 아트 방향·조명 판단·반복 제작에서 나왔다**는 점이고, 이것은 엔진을 바꿔도 우리가 따로 갖춰야 한다.
-
-**"요즘 언리얼이 AI 친화적"은 어디까지 사실인가(§4.1 상세).** 부분적으로 사실이다. UE 5.7에 에디터 내장 AI Assistant(문서·C++ 도움), **UE 5.8(2026-06)에 Epic 공식 MCP 플러그인(실험적, 로컬 전용)**, UE6에 Claude·Gemini 통합 발표 [확인/1건]. 하지만 Unity도 같은 기간에 Unity AI(6.2)와 **공식 Unity CLI의 `unity mcp`**를 냈고, 우리는 이미 unity-mcp를 쓰고 있다. **결정적 차이는 MCP가 아니라 자산 형식이다** — Unity는 씬·프리팹·머티리얼이 텍스트(YAML)라 Claude·Codex가 파일을 직접 읽고 고치고 diff로 리뷰할 수 있고, UE는 .uasset 바이너리라 편집은 에디터(MCP·Python)를 거쳐야 한다. 리뷰는 텍스트(T3D) 내보내기·Blueprint 내장 diff로 가능하지만, 커밋된 파일을 `git diff`로 바로 읽는 Unity보다 한 단계(에디터·내보내기)가 더 든다 [CX22-2 `SOURCE_VERIFY_20261105.md` Epic 공식 문서 대조]. **우리 방식(텍스트 수정·커밋 리뷰·Mac 무창 캡처)에는 지금도 Unity가 더 맞다.** UE의 AI 연동은 "에디터를 원격 조작"하는 방식이라, 판정용 Mac에 에디터를 띄워 둔 상태가 전제다.
+| **A. Unity 유지** | Core C# 18,320줄·oracle 122폴더 그대로 [코드]. 텍스트 자산이라 AI 직접 편집·Git 병합 [검증]. 전환 비용 0 | 우리 URP 커스텀 안개·조명(HellFogFeature 등 [코드])이 사용자 판정에서 실패 중. URP 내장 볼류메트릭 여부 [미검증] | 화면 문제가 제작법 문제라면 맞다 |
+| **B. 즉시 UE5 전환** | Lumen·Volumetric Fog·Niagara 기본 제공 [검증]. 팬텀블레이드 제로·Titan Quest II가 UE5 [검증]. 공식 MCP(실험) [검증]. 화면 동결 중이라 전환 시점으로는 최적 | Core 이식 필요 [검증]·기간 [추정]. 자산 직접 편집·병합 불리 [검증]. 엔진 3번째 교체(운영 리스크) | 화면 이득이 실측되지 않은 상태에서 되돌리기 어려운 비용을 먼저 낸다 |
+| **C. 실험 후 결정 (권고)** | 검증된 사실만으로 내릴 수 있는 유일한 결론. 연구 기간이라 개발 손실 적음 | 2주·Mac·사용자 시간(설치·로그인·판정 2회) | 되돌리기 어려운 결정을 증거로 내린다 |
 
 **교차 검증 — PC Codex CX12 독립 조사와 대조** (`codex/unity-study-engine-ai-20261105` @ 960bdac69, `docs/0마스터플랜/GAME_STUDY/codex_engine_ai_friendliness.md`; Codex는 Epic·Unity 공식 문서 원문을 열람했고, 이 문서는 검색 결과 기준)
 
@@ -31,7 +57,7 @@
 | Unity CLI 상태 | **CLI 자체가 실험 단계**로 명시됨 [공식 문서] | 처음에 "CLI 정식"으로 적음 | **불일치 → 이 문서를 정정**(§4.1). 양쪽 공식 AI 연결 경로가 모두 실험 단계다 |
 | UE 5.8 Mac 요구 | macOS 14.5·**Xcode 26.0 이상**(26.4 비호환), Nanite·VSM M2+ Beta, HW RT·MegaLights M2+ Experimental [공식 문서] | 5.6~5.7 기준 Xcode 15.4+로 적음 | **불일치 → 정정**(U3). CX12가 원문 기준이라 우선 |
 
-**왜 C인가.** ① 사용자가 지적한 결함(광원·안개·동작·HUD)은 대부분 *제작법·아트 판단* 문제이고 엔진 한계가 아니다 — Moon Studios는 No Rest for the Wicked(우리 보스 동작 기준작)를 Unity 개조판으로 만들었다 [확인]. ② 반대로 "안개·대기·간접광"의 *기본값* 품질은 UE5가 확실히 높고, 우리가 이 분야에서 커스텀 코드로 계속 지고 있다는 것도 사실이다 [코드: HellFogFeature.cs·HellSsaoFeature.cs]. ③ 둘 다 맞는 말이라 글로는 못 정한다 → 같은 장면 비교판으로 정한다.
+**왜 C인가(요약).** 사용자가 지적한 결함(광원·안개·동작·HUD)이 제작법 문제인지 엔진 기본값 문제인지는 글로 못 가른다. No Rest for the Wicked는 Unity 개조판 [검증], 팬텀블레이드 제로는 UE5 [검증] — 양쪽 모두 최상급 결과가 있다. 같은 장면 비교판으로 정한다.
 
 ### 결정 기준표 (실험 10일차에 이 표로 판정)
 
@@ -100,7 +126,7 @@
 | 항목 | Unity | UE5 | 우리에게 의미 |
 |---|---|---|---|
 | 언어 | C#. 우리 Runtime 424파일·52,237줄, Core 133파일·18,320줄 [코드] | C++ (+ Blueprint). C# 공식 지원 없음(서드파티 UnrealSharp 등 존재 [미확인]) | AI는 C#·C++ 둘 다 잘 쓴다. 차이는 **빌드 시간과 오류 비용**: C++는 링크·헤더·UHT 매크로 오류가 잦고 한 번 빌드가 길다 [추정] |
-| 씬·프리팹·에셋 | **텍스트 YAML**(.unity·.prefab·.mat·.asset) → AI가 읽고 diff·리뷰·병합 가능 | **바이너리 .uasset/.umap.** 리뷰는 텍스트(T3D) 내보내기·에디터 내장 Blueprint diff로 가능 [CX22-2 `SOURCE_VERIFY_20261105.md` Epic 공식 문서 대조]. 그러나 AI가 파일을 직접 열어 고치지 못하고, 자동 병합이 안 된다 [1건: https://dev.to/colton_willey_ef3d8727ae9/how-i-taught-claude-to-see-inside-unreal-engine-23a9] | **가장 큰 차이(편집·병합 쪽).** 리뷰는 내보내기를 거치면 되지만, 병합은 바이너리라 "덮어쓰기"가 된다(Perforce식 잠금 필요). 동시 작업 3레인이 같은 맵을 만지면 충돌을 사람이 풀어야 한다 |
+| 씬·프리팹·에셋 | **텍스트 YAML**(.unity·.prefab·.mat·.asset) → AI가 읽고 diff·리뷰·병합 가능 | **바이너리 .uasset/.umap.** 리뷰는 텍스트(T3D) 내보내기·에디터 내장 Blueprint diff로 가능 [CX22-2 `SOURCE_VERIFY_20261105.md` Epic 공식 문서 대조]. 그러나 정본이 바이너리라 AI가 파일을 직접 고치지 못하고 Git 자동 병합이 안 된다(편집은 에디터·MCP·Python 경유) | **가장 큰 차이(편집·병합 쪽).** 리뷰는 내보내기를 거치면 되지만, 병합은 바이너리라 "덮어쓰기"가 된다(Perforce식 잠금 필요). 동시 작업 3레인이 같은 맵을 만지면 충돌을 사람이 풀어야 한다 |
 | 완화책 | — | ① **Blueprint 금지, C++ + 데이터(DataTable을 CSV/JSON에서 임포트)** ② 레벨은 One File Per Actor(액터당 파일 분리, 여전히 바이너리) ③ 에디터 Python 스크립트로 배치를 "코드로" 생성 ④ AI용 MCP: 서드파티 mcp-unreal(UE 5.7, 49개 도구) [1건: https://mcpservers.org/servers/remiphilippe/mcp-unreal]. Epic 공식 MCP 플러그인은 UE 5.8에 실험적으로 포함 [확인, §4.1] | 완화하면 쓸 만하다. 하지만 "레벨 배치 diff 리뷰"는 끝까지 안 된다 |
 | AI 연결 현황 | **unity-mcp 이미 연결** (`com.coplaydev.unity-mcp`) [코드] | 5.8 공식 플러그인 켜고 새로 연결(실험적) | Unity 우위(이미 돌아감) |
 | 무창·무음 자동 빌드 | `-batchmode` 빌드, 캡처는 그래픽 장치 필요(`-nographics` 금지). 공용 실행기 `exo-unity.ps1` 이미 있음 [CLAUDE.md] | `UnrealEditor-Cmd` + `-RenderOffscreen`(창 없이 렌더) + `-nosound`, 커맨드렛·Python 스크립트, 패키징은 `RunUAT BuildCookRun` [추정: 공식 문서 미열람] | 둘 다 가능. UE는 쿡(cook)이 길고 셰이더 컴파일 캐시(DDC) 관리가 필요. **새로 만들어야 할 파이프라인 1주** [추정] |
@@ -117,14 +143,14 @@
 | 에디터 내장 AI 도우미 | UE 5.7 **AI Assistant**(구 Epic Developer Assistant): 질문 응답·C++ 코드 생성·F1 문맥 도움 [확인: https://gamefromscratch.com/unreal-engine-5-7-released/ · https://80.lv/articles/unreal-engine-5-7-is-now-availabe]. UE6에 Claude·Gemini 통합 발표 [1건: https://wccftech.com/epic-games-unreal-engine-6-claude-gemini-developer-control/] | **Unity AI**(6.2, Muse·Sentis 대체, 외부 모델 사용) [확인: https://www.cgchannel.com/2025/08/unity-rolls-out-unity-ai-in-unity-6-2/] | 동급. 우리는 Claude Code가 주 작업자라 내장 도우미는 거의 안 쓴다 |
 | 에디터 스크립팅 | **Python 에디터 스크립팅** 정식(액터 배치·에셋 임포트·머티리얼 설정을 코드로) [추정: 공식 문서 미열람, 널리 알려진 기능] | C# Editor 스크립트(우리 Editor 64파일 [코드]) | 동급. UE는 Python이 "바이너리 자산을 텍스트 코드로 다루는" 핵심 통로 |
 | 헤드리스 빌드·자동화 | `UnrealEditor-Cmd` 커맨드렛, `RunUAT BuildCookRun`, BuildGraph(XML 빌드 그래프), `-RenderOffscreen`·`-nullrhi`·`-nosound` [추정: 공식 문서 미열람] | `-batchmode -executeMethod`, Unity CLI, 우리 `exo-unity.ps1` [코드] | 둘 다 됨. UE는 쿡·셰이더 컴파일이 길다 |
-| **자산의 텍스트성** | **.uasset/.umap 바이너리.** 자산을 텍스트(T3D)로 내보내 diff할 수 있고 Blueprint 내장 diff가 있다 [CX22-2 `SOURCE_VERIFY_20261105.md` Epic 공식 문서 대조]. 하지만 정본이 바이너리라 AI가 파일을 직접 편집하지 못한다 [1건: https://dev.to/colton_willey_ef3d8727ae9/how-i-taught-claude-to-see-inside-unreal-engine-23a9]. 우회: T3D 텍스트(읽기·리뷰용, 정본 아님), Blueprint 대신 C++, 데이터는 CSV/JSON DataTable, Verse는 현재 UEFN 전용(UE6에서 통합 예정) | **씬·프리팹·머티리얼·ScriptableObject가 YAML 텍스트**(Force Text 직렬화) → Claude·Codex가 파일을 직접 읽고 고치고 `git diff`로 리뷰 | **Unity 우위(재평가: "리뷰 불가"가 아니라 "직접 편집·병합에서 불리").** 우리 규칙(자기 경로만 커밋, diff 확인, 동시 3레인)이 텍스트 자산을 전제로 한다 |
+| **자산의 텍스트성** | **.uasset/.umap 바이너리.** 자산을 텍스트(T3D)로 내보내 diff할 수 있고 Blueprint 내장 diff가 있다 [CX22-2 `SOURCE_VERIFY_20261105.md` Epic 공식 문서 대조]. 하지만 정본이 바이너리라 AI가 파일을 직접 편집하지 못한다(에디터 경유 필요). 참고: Blueprint 읽기 어려움을 쓴 개인 사례 https://dev.to/colton_willey_ef3d8727ae9/how-i-taught-claude-to-see-inside-unreal-engine-23a9 — 저자는 초기 실패 뒤 플러그인을 확장해 읽어 냈다 [개인 사례, 일반화 금지, CX22-3]. 우회: T3D 텍스트(읽기·리뷰용, 정본 아님), Blueprint 대신 C++, 데이터는 CSV/JSON DataTable, Verse는 현재 UEFN 전용(UE6에서 통합 예정) | **씬·프리팹·머티리얼·ScriptableObject가 YAML 텍스트**(Force Text 직렬화) → Claude·Codex가 파일을 직접 읽고 고치고 `git diff`로 리뷰 | **Unity 우위(재평가: "리뷰 불가"가 아니라 "직접 편집·병합에서 불리").** 우리 규칙(자기 경로만 커밋, diff 확인, 동시 3레인)이 텍스트 자산을 전제로 한다 |
 | 공개 사례 | Claude Code로 UE5 엔드리스 러너 제작 기사(작은 데모). 같은 기사·Reddit에서 "연결이 한 달 넘게 불안정했다" [1건: https://www.generationamiga.com/2026/06/14/claude-code-builds-playable-endless-runner-in-unreal-engine-5/ · https://www.techeblog.com/claude-code-endless-runner-game-unreal-engine-5/]. 출시 상용작 사후 분석은 못 찾음 | Claude Code + Unity 가이드 다수(https://ai-game.dev/blog/make-games-with-claude-code-unity). 출시작 사후 분석은 못 찾음. **우리 자신이 사례**(Runtime 52,237줄 대부분 AI 작성) [코드] | 출시 수준 AI 주도 사례는 양쪽 모두 미확인 |
 
-**판정:** "언리얼이 AI 친화적"은 **2026년에 사실이 됐지만 "Unity보다 더"는 사실이 아니다.** MCP·내장 도우미·헤드리스 자동화는 대등하고, 자산이 텍스트냐는 근본 차이에서 Unity가 앞선다. UE에서 AI는 "에디터를 원격 조작"하는 방식이 되어 ① 판정 Mac에 에디터가 항상 떠 있어야 하고(무창 원칙과 충돌 가능, 실험 K4에서 확인) ② 변경 리뷰에 에디터 내보내기(T3D)·내장 diff 단계가 끼고, 직접 편집·병합은 Unity YAML보다 불리하다. **우리 방식에는 Unity가 낫다. UE를 고른다면 이유는 AI가 아니라 화면(Lumen·안개)이어야 한다.**
+**판정:** "언리얼이 AI 친화적"은 **2026년에 사실이 됐지만 "Unity보다 더"는 사실이 아니다.** MCP·내장 도우미·헤드리스 자동화는 대등하고, 자산이 텍스트냐는 근본 차이에서 Unity가 앞선다. UE에서 AI는 "에디터를 원격 조작"하는 방식이 되어 ① 판정 Mac에 에디터가 항상 떠 있어야 하고(무창 원칙과 충돌 가능 — [미검증], 실험 K4에서 확인) ② 변경 리뷰에 에디터 내보내기(T3D)·내장 diff 단계가 끼고, 직접 편집·병합은 Unity YAML보다 불리하다. **검증된 차이는 직접 편집·자동 병합 한 가지(Unity 유리)이고, 실제 생산성 차이는 [미검증]이다 → K4·K5로 잰다. AI 친화성은 어느 쪽으로도 결정 요인이 아니며, UE를 고른다면 이유는 화면(Lumen·안개)이어야 한다.**
 
 ### 4.2 UE 로드맵 리스크
-- UE 5.8(2026-06)이 UE5 마지막 메이저(5.9 여지는 둠), **UE6 = UE5 + UEFN 통합, Verse 확대, 얼리액세스 2027년 말, 정식 2028 말~2029** [확인: https://www.unrealengine.com/news/state-of-unreal-2026-top-news-from-the-show · https://pcgamer.com/software/it-is-going-to-change-a-lot-about-how-games-are-made-epic-merges-unreal-engine-5-with-unreal-engine-for-fortnite-to-give-game-devs-around-the-world-unreal-engine-6/ · https://www.gamestar.de/artikel/unreal-engine-6-early-access-2027-roadmap,3454807.html].
-- 의미: 지금 UE5로 가면 데모·EA는 UE5.8에서 내고, 정식 출시 무렵 UE6 이주 여부를 다시 정해야 한다. C++·Actor 기반은 UE6에서도 지원된다는 말이 있으나 [미확인] 확인 필요. Unity 6은 같은 기간 LTS 줄기를 유지한다 [추정].
+- UE 5.8(2026-06)이 UE5 마지막 메이저(5.9 여지는 둠), **UE6 = UE5 + UEFN 통합, Verse 확대, 얼리액세스 2027년 말** [확인], 정식은 EA 12~18개월 뒤 "빨라도 2029 초" **[전망]** [근거: https://www.unrealengine.com/news/state-of-unreal-2026-top-news-from-the-show · https://pcgamer.com/software/it-is-going-to-change-a-lot-about-how-games-are-made-epic-merges-unreal-engine-5-with-unreal-engine-for-fortnite-to-give-game-devs-around-the-world-unreal-engine-6/ · https://www.gamestar.de/artikel/unreal-engine-6-early-access-2027-roadmap,3454807.html].
+- 의미: 지금 UE5로 가면 데모·EA는 UE5.8에서 내고, 정식 출시 무렵 UE6 이주 여부를 다시 정해야 한다(데모·EA 기간에는 영향 없음 — 결정 요인 아님, §0.1 R8). C++·Actor 기반은 UE6에서도 지원된다는 말이 있으나 [미확인] 확인 필요. Unity 6은 같은 기간 LTS 줄기를 유지한다 [추정].
 
 ---
 
