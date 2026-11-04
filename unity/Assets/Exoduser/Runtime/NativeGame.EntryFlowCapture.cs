@@ -9,7 +9,7 @@ namespace Exoduser.UnityPort
  public sealed partial class NativeGame
  {
   [Serializable] sealed class EntryFrame {public int second;public float elapsed;public string stage,videoError;public long videoFrame;public double videoTime;}
-  [Serializable] sealed class EntryReceipt {public bool storedSeen,scriptedKeys,passed;public string scope;public List<EntryFrame> frames=new List<EntryFrame>();}
+  [Serializable] sealed class EntryReceipt {public bool storedSeen,scriptedKeys,passed;public int keyPresses;public string scope;public List<EntryFrame> frames=new List<EntryFrame>();}
   EntryReceipt entryReceipt;
   void InitializeEntryFlowCapture(string[] args)
   {
@@ -36,8 +36,10 @@ namespace Exoduser.UnityPort
     var tex=ScreenCapture.CaptureScreenshotAsTexture();File.WriteAllBytes(Path.Combine(output,"frame_"+second.ToString("000")+".png"),tex.EncodeToPNG());Destroy(tex);
     if(entryReceipt.scriptedKeys)
     {
-     if(!menuKey&&second>=10&&lobby.StageName=="SplashTitle"){LobbyKeys.Press(KeyCode.Return);menuKey=true;}
-     else if(menuKey&&!sealKey&&second>=25&&lobby.StageName=="Title"){LobbyKeys.Press(KeyCode.Return);sealKey=true;}
+     // A scripted press lives two frames; the lobby drops it on the AdvanceSplash fence frame and while a page transition blocks input, so a single
+     // press could be lost (3840 run 11-04 stayed on SplashTitle). Press again every second until the page changes.
+     if(second>=10&&lobby.StageName=="SplashTitle"){LobbyKeys.Press(KeyCode.Return);menuKey=true;entryReceipt.keyPresses++;}
+     else if(menuKey&&second>=25&&lobby.StageName=="Title"){LobbyKeys.Press(KeyCode.Return);sealKey=true;entryReceipt.keyPresses++;}
      else if(sealKey&&!skip&&second>=65&&lobby.StageName=="WorldIntro"){LobbyKeys.Hold(KeyCode.Escape,true);skip=true;}
      if(second>=72)LobbyKeys.ReleaseAll();
     }
