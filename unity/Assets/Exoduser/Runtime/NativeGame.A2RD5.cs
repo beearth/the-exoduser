@@ -37,12 +37,12 @@ namespace Exoduser.UnityPort
             try
             {
                 // Isolated observation fixture: real Core death/drop path, deterministic HP extraction.
-                Simulation.Random01=()=>0;var p=Simulation.Player;var enemy=Simulation.SpawnEnemy(p.X+70,p.Y,0,null,false);
-                if(enemy!=null){int before=Simulation.Materials;Simulation.HurtEnemy(enemy,Mathf.Max(1,Mathf.CeilToInt(enemy.Hp)+1));DispatchFeedback();if(Simulation.Materials>before){var at=HudCamera.WorldToViewportPoint(Point(p.X,p.Y));NativeCurrencyOrb.Emit(new Vector2(at.x,at.y));}}
+                Simulation.Random01=()=>0;var p=Simulation.Player;var enemy=Simulation.SpawnEnemy(p.X+45,p.Y,0,null,false);
+                if(enemy!=null){int before=Simulation.Materials;for(int tick=0;tick<900&&enemy.Alive;tick++)StepInput(0,0,enemy.X,enemy.Y,true,false);if(Simulation.Materials>before){var at=HudCamera.WorldToViewportPoint(Point(p.X,p.Y));NativeCurrencyOrb.Emit(new Vector2(at.x,at.y));}}
             }
             finally{Simulation.Random01=previousRandom;}
             for(int n=0;n<8;n++){UpdateViews();yield return null;}
-            File.WriteAllText(Path.Combine(a2rPlayOutput,"d5-extraction-fixture.txt"),"Controlled Core kill with RNG=0 for HP extraction. Original random delegate restored. No synthetic text/currency injection; not natural play.\nseen="+d5RewardProofSeen);
+            File.WriteAllText(Path.Combine(a2rPlayOutput,"d5-extraction-fixture.txt"),"Controlled full-HP enemy and real LMB StepInput, up to 900 Core ticks, RNG=0 for extraction. Original random delegate restored. No direct HurtEnemy or synthetic text/currency injection; not natural play.\nseen="+d5RewardProofSeen);
         }
         public void D5ArmRewardProof()
         {
