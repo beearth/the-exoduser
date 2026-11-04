@@ -1,7 +1,7 @@
 ## 2026-11-04 A2R D5 캠프 MossFix 범위 보정
 
 - 캠프 원화 올리브 후보 13,128픽셀 중 13,113픽셀의 기존 마스크가 .25 미만(평균 .00476, sRGB→linear·기존 Tint/Saturation/HellRot 적용 후 계산). 기존의 채도 감소 후 판별·올리브색 목표를, 원색에서 G/R·황록 성분을 판별한 뒤 회녹(.80,.84,.82)·밝기 .85로 바꾸었다. _MossFix 지정 카드에만 적용하며 --a2r-d5-off는 기존 경로다.
-- CardFade/CardOpaque 공용 CardCommon 변경. A2RWebAssets.cs는 수정하지 않았다. 실제 상자 1x/3x 색 판정은 D5 전용 Player 촬영 대기다.
+- CardFade/CardOpaque 공용 CardCommon 변경. A2RWebAssets.cs는 수정하지 않았다. 실제 상자 1x/3x 색 판정은 D5 전용 Player 촬영 대기다. 캠프 진단에서는 바람을 고정한 뒤 각 표시 그룹을 분리하고, 바람 촬영 전에 다시 켠다.
 
 ## 2026-11-04 A2R D5 바람 가중치·캠프 진단 (1차)
 
