@@ -176,3 +176,12 @@
 - 경로별 0.3/1.5/3초 캡처·언어별 3시점·v17/v22b 같은 시점 비교·한계·원격 SHA: `I:/EXODUSER-Storage/codex-takeover/intro-nodoor/REPORT.md`. 요청된 G: REPORT는 같은 보고서 안내 사본이다.
 
 - 최종 병합 source `3c6e076977fa702e46712fdde335b3b7a7752627`: full 3840×1080·indexdemo 일본어 1600×900 재진입/다음 컷 PASS. 29언어×3시점87/87 PASS. v22b 1배속 자연끝113.701초·ended1회·재생중 seek0·미리보기 seen 미기록·로그인 전환 PASS(0.6초 이후 실측113.135초). 종료 후0초 정리 seek2회는 재생중 점프와 구분. 실제 스피커 청취는 하지 않음. 영수증 `v22b-review/natural-playback.json`, `merged-routes.json`.
+
+
+## FIX-1 웹 oracle 기록 — 2026-11-04
+
+출처는 main `06ac6882b550cb6373f2953ede3b2acc6f69e211`의 11-04 웹 v23 기록이다. Unity v23 본문과 검증 범위는 유지한다.
+
+- 웹 확인: Mac Chrome 1352×664에서 `?cinematic=1` ENTER → v23 재생, 2.5·6.6·14.6초 화면과 한국어 자막을 확인했다.
+- 인코딩 픽셀 형식은 yuv420p이고, 철문 진입에도 디졸브가 들어간다.
+- 당시 남은 확인은 Steam 업로드·DEMO/EA 동기화(PC 도구)였다. 이 과거 웹 기록은 현재 배포·Unity 실게임 검증을 새로 통과했다는 뜻이 아니다.

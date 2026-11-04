@@ -8,7 +8,7 @@
 |---|---|---|
 | docs/0마스터플랜/session_handoff/web3d.md | ee950324ae9bbc650cd664fffffe74e91c83f94b | 신규 경로 바이트 보존 |
 | docs/11내러티브·로어디자인/ch1_1_plan_v2_text_i18n.json | 91d035c447f6bf4c767fe1edae96b373688d4eb7 | 신규 경로 바이트 보존 |
-| docs/14밸런스+수치테이블/자원소비량표.md | 6e4a84b5cf3516b95e327a6f0d6d8b109aab4ab2 | 3-way: 공통 조상 대비 main 정정 채택 + Unity 현행 명칭 유지; 웹 oracle 출처 표시 |
+| docs/14밸런스+수치테이블/자원소비량표.md | 6e4a84b5cf3516b95e327a6f0d6d8b109aab4ab2 | 3-way: 공통 조상 대비 main 정정 채택 + 정본 명칭 악의오브 반영; 웹 oracle 출처 표시 |
 | docs/14밸런스+수치테이블/패시브효과표.md | e3e54d22c97e86e119a8399a1aac6bdd640f7572 | 3-way: Unity 본문 유지 + main 고유 정정 행을 웹 oracle 보충으로 보존 |
 | docs/4.1맵디자인+설정/art_bible_v1/moodboard_v1.jpg | 4e2f866f0b8bf38d1fdd03a35fb2c95861cd38dc | 신규 경로 바이트 보존 |
 | docs/4.1맵디자인+설정/art_bible_v1/palette_value_v1.png | 0d52f1e1f269f758346d9628ecf6510ad37c44a8 | 신규 경로 바이트 보존 |
@@ -77,3 +77,61 @@
 | docs/engine/unity_b07/b07_web_values.json | 0b230036201b54aaf2f7eb9150c81f04fe4231f4 | 신규 경로 바이트 보존 |
 | docs/engine/unity_b11/b11_web_values.json | 5751a311608b58995fef5b949b13951ef6fb04cd | 신규 경로 바이트 보존 |
 | docs/engine/unity_patches/LINEAR1_experiments_AB_and_buildscript.patch | 2954a246d1e11971dcc2a3e277aa932d30935400 | 신규 경로 바이트 보존 |
+
+
+## FIX-1 — 명칭·누락 기록·색인 정정
+
+이전 커밋의 “Unity 현행 명칭=악의” 판단은 오류였다. 정본은 **악의오브**다. Unity Data의 악의오브중독·악의오브30+ST50과 Core의 악의오브 부족! 표기에 맞춘다. 게임 코드·수치·판정은 바꾸지 않는다.
+
+- 최신 unity/main을 정상 병합하고 CHANGELOG_SYNC 양쪽 기록·CRLF를 보존했다.
+- 자원소비량표의 9줄과 패시브효과표의 2줄을 정본 명칭으로 바로잡았다.
+- 명칭·보관 링크 차이 44개는 공통 조상·main·기존 Unity 이력을 대조해 일치 행만 바꿨다. Unity 후속 내용은 유지하며, 다른 내용이 섞여 적용하지 않은 파일은 아래 목록에 표시했다.
+- 웹 v23 검증 세부와 PARITY_DIFF_LIST의 10-31 원화 확장 절을 출처 범위대로 보충했다.
+- web3d 인계의 현재 위치는 `docs/_archive/0마스터플랜/session_handoff/web3d.md`이며 원본 blob은 보존했다.
+
+| main 출처 | Unity 반영 경로 | 결과 | 명칭 행 | 링크 |
+|---|---|---|---:|---:|
+| docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md | docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md | 이미 반영 또는 차이 없음 | 0 | 0 |
+| docs/11내러티브·로어디자인/11내러티브·로어디자인.md | docs/11내러티브·로어디자인/11내러티브·로어디자인.md | 이미 반영 또는 차이 없음 | 0 | 0 |
+| docs/12퍼포먼스·최적화/12퍼포먼스·최적화.md | docs/12퍼포먼스·최적화/12퍼포먼스·최적화.md | 이미 반영 또는 차이 없음 | 0 | 0 |
+| docs/14밸런스+수치테이블/14밸런스+수치테이블.md | docs/14밸런스+수치테이블/14밸런스+수치테이블.md | 이미 반영 또는 차이 없음 | 0 | 0 |
+| docs/14밸런스+수치테이블/자원소비량표.md | docs/14밸런스+수치테이블/자원소비량표.md | 명칭·보관 링크만 반영 | 9 | 0 |
+| docs/15 세이브+데이터구조/15 세이브+데이터구조.md | docs/15 세이브+데이터구조/15 세이브+데이터구조.md | 다른 내용 변화가 섞여 일치 행 없음: 건너뜀 | 0 | 0 |
+| docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md | docs/2_7 인벤토리+장비시스템/2_7 인벤토리+장비시스템.md | 다른 내용 변화가 섞여 일치 행 없음: 건너뜀 | 0 | 0 |
+| docs/2_8 퀵슬롯+물약시스템/2_8 퀵슬롯+물약시스템.md | docs/2_8 퀵슬롯+물약시스템/2_8 퀵슬롯+물약시스템.md | 이미 반영 또는 차이 없음 | 0 | 0 |
+| docs/3.1 ui hud 디자인/SKILL_FORGE_20261010.md | docs/3.1 ui hud 디자인/SKILL_FORGE_20261010.md | 다른 내용 변화가 섞여 일치 행 없음: 건너뜀 | 0 | 0 |
+| docs/3.1 ui hud 디자인/UI_FOUNDATION_20260924.md | docs/3.1 ui hud 디자인/UI_FOUNDATION_20260924.md | 이미 반영 또는 차이 없음 | 0 | 0 |
+| docs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md | docs/3.1 ui hud 디자인/exoduser-ui-phase2 (1).md | 다른 내용 변화가 섞여 일치 행 없음: 건너뜀 | 0 | 0 |
+| docs/3.1 ui hud 디자인/능력치_패시브_개편_20260909.md | docs/3.1 ui hud 디자인/능력치_패시브_개편_20260909.md | 이미 반영 또는 차이 없음 | 0 | 0 |
+| docs/3.2메타·진행시스템/3.2메타·진행시스템.md | docs/3.2메타·진행시스템/3.2메타·진행시스템.md | 다른 내용 변화가 섞여 일치 행 없음: 건너뜀 | 0 | 0 |
+| docs/4.0케릭터스프라이트 디자인/4.0케릭터스프라이트 디자인.md | docs/4.0케릭터스프라이트 디자인/4.0케릭터스프라이트 디자인.md | 이미 반영 또는 차이 없음 | 0 | 0 |
+| docs/4.0케릭터스프라이트 디자인/캐릭터_몬스터_보스_최적화디자인_v1.md | docs/4.0케릭터스프라이트 디자인/캐릭터_몬스터_보스_최적화디자인_v1.md | 이미 반영 또는 차이 없음 | 0 | 0 |
+| docs/4.1맵디자인+설정/_MAP_SSOT_INDEX.md | docs/4.1맵디자인+설정/_MAP_SSOT_INDEX.md | 이미 반영 또는 차이 없음 | 0 | 0 |
+| docs/5.1임펙트디자인/VFX_구현가이드.md | docs/5.1임펙트디자인/VFX_구현가이드.md | 다른 내용 변화가 섞여 일치 행 없음: 건너뜀 | 0 | 0 |
+| docs/6사운드디자인/6사운드디자인.md | docs/6사운드디자인/6사운드디자인.md | 다른 내용 변화가 섞여 일치 행 없음: 건너뜀 | 0 | 0 |
+| docs/8.0몬스터디자인/몬스터_총관리.md | docs/8.0몬스터디자인/몬스터_총관리.md | 다른 내용 변화가 섞여 일치 행 없음: 건너뜀 | 0 | 0 |
+| docs/engine/FDG_FEATURE_INVENTORY_20261020.md | docs/_archive/engine/FDG_FEATURE_INVENTORY_20261020.md | 명칭·보관 링크만 반영 | 2 | 0 |
+| docs/engine/FDG_GODOT_PORT_STATUS.md | docs/_archive/engine/FDG_GODOT_PORT_STATUS.md | 명칭·보관 링크만 반영 | 2 | 0 |
+| docs/engine/FDG_P1_002E_MELEE_HURTE_TRACE_20261019.md | docs/engine/FDG_P1_002E_MELEE_HURTE_TRACE_20261019.md | 명칭·보관 링크만 반영 | 1 | 0 |
+| docs/engine/FDG_SOURCE_TRACE_LOBBY_20261020.md | docs/engine/FDG_SOURCE_TRACE_LOBBY_20261020.md | 이미 반영 또는 차이 없음 | 0 | 0 |
+| docs/engine/FDG_SOURCE_TRACE_SAVE_20261020.md | docs/engine/FDG_SOURCE_TRACE_SAVE_20261020.md | 이미 반영 또는 차이 없음 | 0 | 0 |
+| docs/engine/PC_M29_PARRY_CONTRACT_20261021.md | docs/_archive/engine/PC_M29_PARRY_CONTRACT_20261021.md | 명칭·보관 링크만 반영 | 1 | 0 |
+| docs/engine/UNITY_HERO_MOTION_20261030.md | docs/engine/UNITY_HERO_MOTION_20261030.md | 이미 반영 또는 차이 없음 | 0 | 0 |
+| docs/engine/UNITY_HERO_RUNTIME_20261030.md | docs/engine/UNITY_HERO_RUNTIME_20261030.md | 이미 반영 또는 차이 없음 | 0 | 0 |
+| docs/engine/UNITY_HERO_VFX_CENTER_ANCHOR_20261031.md | docs/engine/UNITY_HERO_VFX_CENTER_ANCHOR_20261031.md | 이미 반영 또는 차이 없음 | 0 | 0 |
+| docs/engine/UNITY_O1_KILLTAIL_20261028.md | docs/engine/UNITY_O1_KILLTAIL_20261028.md | 이미 반영 또는 차이 없음 | 0 | 0 |
+| docs/engine/ctx/DEMO11_POTION.md | docs/engine/ctx/DEMO11_POTION.md | 명칭·보관 링크만 반영 | 1 | 0 |
+| docs/engine/orders/PC_TO_MAC_INBOX_20261021.md | docs/engine/orders/PC_TO_MAC_INBOX_20261021.md | 다른 내용 변화가 섞여 일치 행 없음: 건너뜀 | 0 | 0 |
+| docs/engine/orders/UNITY_CLAUDE_CODEX_AGREEMENT_20261026.md | docs/engine/orders/UNITY_CLAUDE_CODEX_AGREEMENT_20261026.md | 이미 반영 또는 차이 없음 | 0 | 0 |
+| docs/engine/orders/reports/DOC-SYNC_REPORT.md | docs/_archive/engine/orders/reports/DOC-SYNC_REPORT.md | 명칭·보관 링크만 반영 | 3 | 0 |
+| docs/engine/orders/reports/demo11-16_REPORT.md | docs/_archive/engine/orders/reports/demo11-16_REPORT.md | 명칭·보관 링크만 반영 | 3 | 0 |
+| docs/engine/orders/reports/demo11-17_REPORT.md | docs/_archive/engine/orders/reports/demo11-17_REPORT.md | 명칭·보관 링크만 반영 | 3 | 0 |
+| docs/engine/orders/reports/demo11-25_REPORT.md | docs/_archive/engine/orders/reports/demo11-25_REPORT.md | 명칭·보관 링크만 반영 | 2 | 0 |
+| docs/engine/orders/reports/demo11-27_REPORT.md | docs/_archive/engine/orders/reports/demo11-27_REPORT.md | 명칭·보관 링크만 반영 | 1 | 0 |
+| docs/engine/orders/reports/meta-02_REPORT.md | docs/_archive/engine/orders/reports/meta-02_REPORT.md | 명칭·보관 링크만 반영 | 1 | 0 |
+| docs/engine/orders/reports/meta-03_REPORT.md | docs/_archive/engine/orders/reports/meta-03_REPORT.md | 명칭·보관 링크만 반영 | 1 | 0 |
+| docs/engine/orders/reports/nw-03_REPORT.md | docs/_archive/engine/orders/reports/nw-03_REPORT.md | 명칭·보관 링크만 반영 | 3 | 0 |
+| docs/engine/orders/reports/qs-01_REPORT.md | docs/_archive/engine/orders/reports/qs-01_REPORT.md | 명칭·보관 링크만 반영 | 2 | 0 |
+| docs/engine/orders/reports/sk-s03_REPORT.md | docs/_archive/engine/orders/reports/sk-s03_REPORT.md | 명칭·보관 링크만 반영 | 1 | 0 |
+| docs/engine/orders/reports/sk-s05_REPORT.md | docs/_archive/engine/orders/reports/sk-s05_REPORT.md | 명칭·보관 링크만 반영 | 4 | 0 |
+| docs/engine/orders/reports/sv-shared-read_REPORT.md | docs/_archive/engine/orders/reports/sv-shared-read_REPORT.md | 명칭·보관 링크만 반영 | 3 | 0 |
