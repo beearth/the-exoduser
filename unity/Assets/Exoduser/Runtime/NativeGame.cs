@@ -610,7 +610,7 @@ namespace Exoduser.UnityPort
             StageFlowDrawWorld();
             // 사망 대기 화면: 물리 화면 전체 필터·비네트 + 명조 제목·원형 게이지. 사망 확정 뒤 사망 패널은 이 위에 그린다.
             revive.LocaleCode=lobby.Language;revive.DrawDeathScreen(p);
-            if(death.Active&&PlayerDown&&!heroReviewActive){death.Draw();}
+            if(death.Active&&PlayerDown&&!heroReviewActive){death.LocaleCode=lobby.Language;death.Draw();}
             else if((menu||PlayerDown)&&!hudSmoke&&!inventorySmoke&&!heroReviewActive){
                 pauseMenu.English=lobby.Language!="ko";
                 pauseMenu.LocaleCode=lobby.Language;

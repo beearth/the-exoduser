@@ -131,8 +131,31 @@ namespace Exoduser.UnityPort {
   public int ChoiceCount{get{return choices.Length;}}
   public Choice FocusedChoice{get{return choices.Length>0?choices[Mathf.Clamp(focus,0,choices.Length-1)]:Choice.None;}}
   void BuildChoices(){choices=info.inArena?new[]{Choice.Rise,Choice.Restart,Choice.GiveUp}:new[]{Choice.Rise,Choice.GiveUp};focus=0;}
-  string Label(Choice c){return c==Choice.Rise?"다시 일어선다":c==Choice.Restart?"처음부터 다시":"포기한다";}
-  string Outcome(Choice c){return c==Choice.Rise?(info.inArena?"보스방 앞에서 다시 일어선다. 체력을 모두 되찾는다.":"이번 여정을 처음부터 다시 시작한다."):c==Choice.Restart?"이번 여정을 처음부터 다시 시작한다.":"로비로 돌아간다.";}
+  // 11-04 D2: every decision-screen string comes from Data/death_decision_text.json (29 languages, No.4264~4272). ar draws as en (IMGUI has no RTL shaping).
+  [Serializable] sealed class DecisionRow {public string code,title,caption,ask,rise,restart,giveUp,outArena,outRestart,outLobby;}
+  [Serializable] sealed class DecisionBundle {public DecisionRow[] entries;}
+  public string LocaleCode="ko";
+  static DecisionBundle decisionBundle;
+  static DecisionBundle Decisions(){
+   if(decisionBundle==null){var asset=Resources.Load<TextAsset>("Data/death_decision_text");decisionBundle=asset!=null?JsonUtility.FromJson<DecisionBundle>(asset.text):null;if(decisionBundle==null||decisionBundle.entries==null)decisionBundle=new DecisionBundle{entries=new DecisionRow[0]};}
+   return decisionBundle;
+  }
+  public static int DecisionRowCount{get{return Decisions().entries.Length;}}
+  static DecisionRow DecisionFor(string locale){
+   string code=Exoduser.UnityPort.Core.LobbyLanguage.Normalize(locale);if(code=="ar")code="en";DecisionRow en=null;
+   foreach(var e in Decisions().entries){if(e.code==code)return e;if(e.code=="en")en=e;}
+   return en??new DecisionRow{code="ko",title="안식은 없다",caption="THERE IS NO REST",ask="포기할 것인가?",rise="다시 일어선다",restart="처음부터 다시",giveUp="포기한다",outArena="보스방 앞에서 다시 일어선다. 체력을 모두 되찾는다.",outRestart="이번 여정을 처음부터 다시 시작한다.",outLobby="로비로 돌아간다."};
+  }
+  DecisionRow Tx{get{return DecisionFor(LocaleCode);}}
+  string Label(Choice c){var t=Tx;return c==Choice.Rise?t.rise:c==Choice.Restart?t.restart:t.giveUp;}
+  string Outcome(Choice c){var t=Tx;return c==Choice.Rise?(info.inArena?t.outArena:t.outRestart):c==Choice.Restart?t.outRestart:t.outLobby;}
+  // Long languages (th, el, ru, de ...) shrink by whole point sizes until the run fits maxW at the widest tracking; no ellipsis, no wrap. Floor = 60% of the design size.
+  readonly Dictionary<string,int> fitCache=new Dictionary<string,int>();
+  int FitSize(string t,Font f,int size,float lsEm,float maxW){
+   string key=f.name+"|"+size+"|"+lsEm+"|"+maxW+"|"+t;if(fitCache.TryGetValue(key,out var hit))return hit;
+   int min=Mathf.Max(9,Mathf.RoundToInt(size*.6f)),s=size;while(s>min&&SpacedWidth(t,f,s,s*lsEm)>maxW)s--;
+   fitCache[key]=s;return s;
+  }
   // Keyboard: ↑↓ / W S / Tab move, Enter / Space confirm. Nothing is accepted before every option is on screen.
   public Choice PollKeys(){
    if(!ActionsReady)return Choice.None;int n=choices.Length;
@@ -159,25 +182,26 @@ namespace Exoduser.UnityPort {
     GUI.color=Color.white;
     // title: tracking settles from .36em to .28em while it fades in
     float tp=EaseOut((age-TitleAt)/TitleDur);
-    if(tp>0)Spaced(960,ty-48,96,"안식은 없다",hahmletLight,68,C(223,214,194,tp),68*Mathf.Lerp(.36f,.28f,tp));
+    var tx=Tx;
+    if(tp>0){int ts=FitSize(tx.title,hahmletLight,68,.36f,1500);Spaced(960,ty-48,96,tx.title,hahmletLight,ts,C(223,214,194,tp),ts*Mathf.Lerp(.36f,.28f,tp));}
     // crimson hairline grows from the centre
     float lp=EaseOut((age-LineAt)/LineDur);
     if(lp>0){float lw=460*lp;Fill(new Rect(960-lw/2,ty+62,lw,1),Lin(C(194,26,16,.85f*lp)));Fill(new Rect(960-lw*.18f,ty+61,lw*.36f,3),Lin(C(194,26,16,.35f*lp)));}
     float cp=EaseOut((age-CapAt)/CapDur);
-    if(cp>0)Spaced(960,ty+76,30,"THERE IS NO REST",cinzel,15,C(176,44,40,.9f*cp),15*.42f);
+    if(cp>0){int cs=FitSize(tx.caption,cinzel,15,.42f,700);Spaced(960,ty+76,30,tx.caption,cinzel,cs,C(176,44,40,.9f*cp),cs*.42f);}
     // the decision
     float ap=EaseOut((age-AskAt)/AskDur);
-    if(ap>0)Spaced(960,520,40,"포기할 것인가?",hahmlet,24,C(230,227,220,ap),24*.12f);
+    if(ap>0){int qs=FitSize(tx.ask,hahmlet,24,.12f,1200);Spaced(960,520,40,tx.ask,hahmlet,qs,C(230,227,220,ap),qs*.12f);}
     for(int i=0;i<choices.Length;i++){float op=EaseOut((age-OptAt-OptStep*i)/OptDur);if(op>0)DrawChoice(i,op);}
    } finally {GUI.matrix=old;GUI.color=color;GUI.enabled=enabled;}
   }
   void DrawChoice(int i,float a){
-   const int size=21;const float rowH=58,top=600;float y=top+i*rowH;var c=choices[i];string label=Label(c);float ls=size*.16f;
+   const float rowH=58,top=600;float y=top+i*rowH;var c=choices[i];string label=Label(c);int size=FitSize(label,hahmlet,21,.16f,820);float ls=size*.16f;
    float w=SpacedWidth(label,hahmlet,size,ls);var r=new Rect(960-w/2-40,y,w+80,rowH-14);
    bool hover=GUI.enabled&&ActionsReady&&r.Contains(Event.current.mousePosition);if(hover)focus=i;bool on=focus==i&&ActionsReady;
    if(on){var dc=Lin(C(194,26,16,a));Diamond(new Vector2(960-w/2-22,y+(rowH-14)/2),dc);Diamond(new Vector2(960+w/2+22,y+(rowH-14)/2),dc);}
    Spaced(960,y,rowH-14,label,hahmlet,size,on?C(242,240,236,a):C(167,164,157,.82f*a),ls);
-   if(on){float oy=top+choices.Length*rowH+14;Spaced(960,oy,26,Outcome(c),hahmlet,14,C(167,164,157,.9f*a),14*.06f);}
+   if(on){float oy=top+choices.Length*rowH+14;string oc=Outcome(c);int os=FitSize(oc,hahmlet,14,.06f,1400);Spaced(960,oy,26,oc,hahmlet,os,C(167,164,157,.9f*a),os*.06f);}
    if(ActionsReady&&NativeUiAudit.Button(r,GUIContent.none,GUIStyle.none))Act(c);
   }
   // 9x9 design-px diamond from a baked alpha texture (no matrix rotation, so it stays put under any GUI scale).
@@ -195,11 +219,11 @@ namespace Exoduser.UnityPort {
   void Spaced(float cx,float y,float h,string t,Font f,int size,Color c,float ls){
    float w=SpacedWidth(t,f,size,ls),x0=cx-w/2;spaced.normal.textColor=c;
    for(int i=0;i<t.Length;i++){if(char.IsWhiteSpace(t[i]))continue;NativeSilverHellUi.Label(new Rect(x0+Adv(t,i)+ls*i,y,size*2,h),t[i].ToString(),spaced);}
+  }
   // 11-04 judge 6: the front title (NativeRevive death screen, fades out in 0.35s) must be gone before this title appears.
   // The decision screen satisfies it by timing: black fills over BlackIn and its title starts at TitleAt (>= TitleGateDelay), so no extra gate is multiplied in.
   public const float TitleGateDelay=.4f,TitleGateRise=.8f;
   public static float TitleGate(float age){return Mathf.SmoothStep(0,1,Mathf.Clamp01((age-TitleGateDelay)/TitleGateRise));}
-  }
 
   static bool Hangul(char c){return c>=0xAC00&&c<=0xD7A3;}
 

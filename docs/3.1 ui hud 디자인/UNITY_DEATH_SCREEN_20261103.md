@@ -142,3 +142,48 @@ swap3와 같은 --remodel3d -force-d3d11 인자로 고정50장을 다시 촬영�
 ## 11-04 새 실행 — 05:50 판정 반영
 
 기하 크기 자동 칩 분기를 폐기하고 설정 조작 요소만 명시적으로 칩을 선택한다. 기본 가시 원화/20개 Lanczos3 1x·2x 파생본과 공통 철 면의 화면 픽셀 기준 샘플링을 반영했다. 소스·재질 검사/5어셈블리 참조 컴파일 오류0. 새 Unity 임포트·후보 빌드·50장 촬영은 이전 공용 로그 잠금 2FAIL과 G: 여유 기준 때문에 미실행이며 이전 540fdcde2 캡처를 새 증거로 재사용하지 않는다. 상세는 UNITY_UI_CANDIDATE_20261104.md의 새 실행 정정 절.
+
+## 11-04 RETOUCH D2·경미 (death-pbz, PC 검사·컴파일만, 화면 판정 전)
+
+판정표: `20261104_branch3/JUDGEMENT.md` ③ D2, `20261104_ui_candidate/JUDGEMENT.md` ⑥. Core·결정 화면 디자인(검정 → 한 문장 → 결정, 진홍 헤어라인, 마름모 초점)·쓰러짐 대기 화면은 바꾸지 않았다.
+
+### D2 결정 화면 문구 29개 언어
+
+- 데이터: `unity/Assets/Exoduser/Resources/Data/death_decision_text.json`. 코드(`NativeDeathOverlay`)는 `LocaleCode`(NativeGame이 `lobby.Language`를 넘김)로 한 줄을 골라 키로 읽는다. ar는 IMGUI RTL 미지원이라 en으로 그린다(`death_screen_labels`와 같은 규칙).
+- 키 9개 × 29개 언어(ko·en + 27개, Core `LobbyLanguage` 순서):
+
+| 키 | 화면 위치 | 번역 목록 No. |
+|---|---|---|
+| title | 제목(Hahmlet 300, 68px) | 4264 |
+| caption | 진홍 선 아래 장식 영문 행(Cinzel 15px) | 4265 |
+| ask | 질문(Hahmlet 24px) | 4266 |
+| rise | 선택지 "다시 일어선다" | 4267 |
+| restart | 선택지 "처음부터 다시" | 4268 |
+| giveUp | 선택지 "포기한다" | 4269 |
+| outArena | 보스방 사망 때 rise 결과 줄 | 4270 |
+| outRestart | 필드 사망 때 rise·restart 결과 줄 | 4271 |
+| outLobby | giveUp 결과 줄 | 4272 |
+
+- **영문 장식 행 판단:** `caption`은 29개 언어 모두 영문 "THERE IS NO REST" 그대로다. 이유: ① 번역 목록 4265가 KO 키=EN 값으로 같은 문구다(번역할 한국어 원문이 따로 없다). ② Cinzel은 라틴 전용이라 번역하면 키릴·그리스·태국·아랍 글자가 다른 글꼴로 떨어져 장식 행의 질감이 깨진다. ③ 로고(EXODUSER: HELL LORD)처럼 영문 장식은 고정한다. 단점: en에서는 제목과 같은 문장이 한 번 더 나온다(영문 제목 "There is no rest" + 장식 "THERE IS NO REST"). 총괄이 보고 싫으면 en만 장식 행을 바꾼다.
+- 용어: 로비는 `death_screen_labels`와 같은 말(es vestíbulo, fr salon, hu előcsarnok, bg фоайе, fi aula, th ล็อบบี้, vi sảnh 등).
+- 폭: `FitSize`가 제목(최대 1500px, 자간 .36em 기준)·장식(700)·질문(1200)·선택지(820)·결과 줄(1400)을 정수 pt씩 줄여 맞춘다. 바닥은 설계 크기의 60%, 말줄임·줄바꿈 없음. 모자라는 글자(ru·el·th·vi 악센트)는 `NativeSilverHellUi.TextFont`가 명조 계열 폴백으로 잇는다.
+
+### 경미 ① 로비 빈 슬롯 면 밝기
+
+`SilverSlotFace` (5,5,7,.94) → (8,8,12,.94). 알파 .94는 그대로다. 식 `Y_out=(1-a)·Y_bg+a·Y_face`에서 알파만 낮추면 Y가 배경 쪽으로만 간다. 0명 로비 빈 칸 뒤 배경은 Y 4.3~5.8(3840 baseline 5.77·5.72, 1920 5.09·4.32)이라 알파로는 목표 8.5에 닿지 못한다(알파 0이어도 5.8). 그래서 면 색을 올렸다. 예상 Y: 배경 4.3 → 8.21, 5.8 → 8.30, 8.7 → 8.50, 15.3(패널 바탕) → 8.87. 알파를 낮추는 쪽(.67)은 15.3 위에서만 8.5이고 0명 로비에서는 5.4이며 등불·깃발이 33% 비친다. 모델 검증: 현재 .94·(5,5,7)의 예측 5.26이 3840·1920 후보 실측 5.24~5.26과 같다.
+
+### 경미 ② 사망 화면 산세리프
+
+`NativeDeathOverlay.Draw()`·`DrawChoice()`는 `sans`·`sansBold`를 쓰지 않는다(Hahmlet 300·400, Cinzel만). 판정표가 지목한 펫 대사(HECTOR·DIROI)는 결정 화면 교체(02f83a1a3)로 그리기에서 빠졌고 `CrowLine`·`CatLine` 데이터만 남아 있다. `sans`·`sansBold`가 남은 곳은 `Init()` 로드와 `DrawReplayShape()`(`--unity-overlay-capture death`의 옛 리플레이 모양 영수증용, 게임 화면에서는 호출되지 않음)뿐이라 "옛 데이터용 코드"로 그대로 뒀다.
+
+### 코드 정정
+
+merge 52fce6875가 `Spaced()`의 닫는 괄호를 `TitleGate` 상수 뒤로 밀어 둔 상태(참조 컴파일 CS1513·CS1022)여서, `Spaced()`를 먼저 닫고 상수·`TitleGate`를 클래스 수준으로 되돌렸다. 값은 그대로(.4·.8).
+
+### 검사
+
+`unity/Tools/death-ui-tests/death-d2.test.cjs` 7/0(29개 언어·9키·빈 칸 없음·한글 섞임 없음·장식 행·코드 키 읽기·번역 목록 행·산세리프·슬롯 면), `judge6.test.cjs` 6/0(1번은 알파 .94 고정 대신 예측 Y 7~10 모델), `run.cjs`·`retouch-layout`·`candidate`·`importer`·`review-0540` 전부 통과. 참조 컴파일 5어셈블리 오류 0. 작업본 Library에 Player 템플릿이 없어 Player Bee 데이터가 있는 `claude-integration-preview`의 Library를 읽기만 했다.
+
+### 총괄 촬영 확인
+
+사망 결정 화면 1920·3840에서 ko·en·ja·ru·th·el(`--unity-death-screen-smoke`의 `death_lang_*`), 추가로 de·vi·fi·hu(긴 단어). 제목 폭·자간 수렴, 결과 줄(보스방 3선택지, 필드 2선택지) 폭, 폴백 글꼴 이음새. 로비 0명 3840·1920 빈 슬롯 면 Y 7~10과 등불·깃발 비침 0.

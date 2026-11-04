@@ -6,7 +6,11 @@ test('1 empty lobby slot has the same dark face as filled slots',()=>{
  assert(/SilverSlotFace=new Color\(/.test(s));
  assert(/DrawEmptySilverSlot\(Rect card\)\{Fill\(card,SilverSlotFace\)/.test(s),'empty slot fills the face');
  assert(!/bool selected=index==Characters\.SelectedIndex;Fill\(card,SilverSlotFace\)/.test(s),'filled slots stay as they were (empty-slot change only)');
- const m=s.match(/SilverSlotFace=new Color\(5\/255f,5\/255f,7\/255f,\.94f\)/);assert(m,'face alpha .94 is nearly opaque');
+ // 11-04 RETOUCH: face lifted to Y 8.5 (alpha .94 kept against bleed); the model Y=(1-a)*bg+a*faceY must land in 7..10 over every measured bg (4.3 / 5.8 / 8.7 / 15.3).
+ const m=s.match(/SilverSlotFace=new Color\((\d+)\/255f,(\d+)\/255f,(\d+)\/255f,([\d.]+)f\)/);assert(m,'face colour declared');
+ const [r,g,b]=[m[1],m[2],m[3]].map(Number),a=+m[4],faceY=.299*r+.587*g+.114*b;
+ assert(a>=.9&&a<1,'alpha '+a+' stays nearly opaque (no lamp/flag bleed at 3840)');
+ for(const bg of [4.3,5.8,8.7,15.3]){const y=(1-a)*bg+a*faceY;assert(y>=7&&y<=10,'predicted empty-slot Y '+y.toFixed(2)+' over bg '+bg+' is outside 7..10');}
 });
 test('2 entry hover brightens ENTER with a soft elliptical glow (no box rim) through one shared EntryFocus path',()=>{
  const h=rt('NativeLobby.SilverHell.cs'),l=rt('NativeLobby.SilverLobby.cs');
