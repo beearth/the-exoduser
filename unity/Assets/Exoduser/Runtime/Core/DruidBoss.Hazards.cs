@@ -22,6 +22,9 @@ namespace Exoduser.UnityPort.Core
         public bool WrongInputCounted, FbEnergy, ParryMagicShot;
         public bool Friendly, BlueBean, ParryBlueBean, Magic, FromRainbow, WaterBean, TitanEye, BwBean, GbBean;
         public double AoeR, AoeDmg;
+        // ParryMagicShot only (the five water shots of a Q-parried angler ball = a web player pProj with _parryMagicShot): flight / hit state of Simulation.ParryShot.cs
+        public double MaxDist, BounceCool, PierceRate; public int Bounces, Pierced; public bool ShotReady;
+        internal HashSet<EnemyState> HitSet; internal HashSet<FieldBossState> HitFieldSet;
     }
 
     // Serial / Idx: RM-B1 telegraph list (DruidTelegraph.cs) only, the id of the move start that made the hazard; the oracle never reads them
@@ -172,6 +175,8 @@ namespace Exoduser.UnityPort.Core
             for (int i = 0; i < Projectiles.Count; i++)
             {
                 var p = Projectiles[i]; bool dead = false;
+                // a parried angler ball's five water shots are web player projectiles (pProj _parryMagicShot): flight, wall bounce, homing and hits belong to the host (Simulation.ParryShot.cs)
+                if (p.ParryMagicShot && p.Friendly && reflectHost != null) { if (reflectHost.TickParryShot(p, i)) { p.Active = false; continue; } Projectiles[w++] = p; continue; }
                 p.Life -= 0.667;
                 if (p.Mine)
                 {
@@ -193,7 +198,7 @@ namespace Exoduser.UnityPort.Core
                 if (dead) { p.Active = false; continue; }
                 double ox = p.X, oy = p.Y;
                 if (p.FbEnergy && p.Friendly) { p.Active = false; continue; }
-                if (p.Friendly && reflectHost != null) ReflectHoming(p, i);
+                if (p.Friendly && reflectHost != null) ReflectHoming(p);
                 else if ((p.Homing || p.BlackBean) && !p.DruidStraight && p.Life > 30)
                 {
                     double hAng = Atan2(py - p.Y, px - p.X), cAng = Atan2(p.Vy, p.Vx), diff = hAng - cAng;
@@ -203,7 +208,6 @@ namespace Exoduser.UnityPort.Core
                 }
                 double nx = p.X + p.Vx, ny = p.Y + p.Vy;
                 p.X = nx; p.Y = ny; p.Dist += Math.Sqrt(p.Vx * p.Vx + p.Vy * p.Vy);
-                if (p.ParryMagicShot && p.Dist > 900) { p.Active = false; continue; }
                 if (p.FbEnergy ? EnergyWallContact(p, ox, oy, nx, ny) : host.IsWall(nx, ny)) { p.Active = false; continue; }
                 if (Remodel && !p.FbEnergy && PillarBlocks(nx, ny, Math.Max(p.R, 2))) { p.Active = false; continue; }   // field angler energy does not inherit the druid's rules
                 if (p.Friendly)

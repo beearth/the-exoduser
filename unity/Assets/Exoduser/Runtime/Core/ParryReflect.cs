@@ -11,8 +11,8 @@ namespace Exoduser.UnityPort.Core.Combat
     // (they only report that the bullet was consumed), the bullet kinds that are not parried (bomb, ice zone ... fall through = Outcome.None / Other).
     public sealed class ReflectProjectile
     {
-        public double X, Y, Vx, Vy, Dmg, Life, Ml, El, Sz, R, AoeR, AoeDmg, MaxDist;
-        public bool ParryMagicShot; public int FlightIndex;
+        public double X, Y, Vx, Vy, Dmg, Life, Ml, El, Sz, R, AoeR, AoeDmg, MaxDist;   // Sz / R 0 = web `p.sz` / `p.r` undefined (the web reads them with ||); MaxDist: SplitBigEnergy shots only
+        public bool ParryMagicShot;                                                     // SplitBigEnergy shots (web _parryMagicShot)
         public string Col = "", ParryClass = "";
         public bool FbEnergy, FdEnergy, Mine, Trap, BlackBean, Friendly, NoParry, Bomb, Web, PoisonZone, IceZone, Blizzard, DimRift, ElemBall, CoralSpike;
         public bool GbBean, BlueBean, FireMagic, WaterBean, TitanEye, BwBean, RedBean, SwordWave, PhantomSword;

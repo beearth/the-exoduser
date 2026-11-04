@@ -42,6 +42,9 @@ static partial class P
             }
             if(o.GetProperty("hurts").GetArrayLength()>0) Check(r.Outcome==ReflectOutcome.BigEnergyHit,ctx+" E/idle contact");
             if(N0(i,"d")<=20 && S(i,"s")=="sBlock")Check(r.Outcome==ReflectOutcome.Absorb,ctx+" Q inner absorb");
+            // the terminal's side effects: _fbEnergyBoom only on contact (DruidBoss.TryReflect host.Fx "waterEnergy"), _recycleProj on Q split / contact / absorb (p.Active=false)
+            Num("booms",r.Outcome==ReflectOutcome.BigEnergyHit?1:0,o,"booms",ctx);
+            Num("recycled",r.Outcome==ReflectOutcome.BigEnergyParry||r.Outcome==ReflectOutcome.BigEnergyHit||r.Outcome==ReflectOutcome.Absorb?1:0,o,"recycled",ctx);
         }
         section="anglerRuntime";perSection[section]=new int[2];
         var marker=typeof(ProjSpec).GetField("FbEnergy");Check(marker!=null,"spawn spec retains fbEnergy");
@@ -68,12 +71,59 @@ static partial class P
         {
             var sim=new Simulation(new SimulationConfig {PlayerMaxHp=2000000},20261104u);
             sim.AttachDruidBoss();sim.IsProjectileWall=(x,y)=>false;
+            int booms=0;sim.BossFx+=(k,x,y,r)=>{if(k=="waterEnergy")booms++;};
             sim.Player.X=100;sim.Player.Y=100;sim.Player.State=state;sim.Player.StateTicks=20;sim.Player.Iframes=iframe;
             var spec=new ProjSpec {X=168,Y=100,Vx=-10,Dmg=280,El=2,Life=320,Ml=320,Sz=48,R=20,ElemBall=true,Commit=true};marker?.SetValue(spec,true);
             var b=sim.Druid.SpawnProjectile(null,null,spec,false);sim.Druid.TickWorld(false);
             Check(!b.Active&&!b.Friendly&&sim.ReflectCount==0,"contact consumes without E reflection");
-            if(iframe==0&&state!="charge")Check(sim.HurtCount+sim.DodgeCount==1&&sim.Player.KnockbackX==-100&&sim.Player.KnockbackY==0,"contact damage/dodge and 100px slide");
+            Check(booms==1,"contact always plays _fbEnergyBoom once (state "+state+", iframes "+iframe+"): "+booms);
+            if(iframe==0&&state!="charge")Check(sim.HurtCount+sim.DodgeCount==1&&sim.Player.KnockbackX==-100&&sim.Player.KnockbackY==0,"contact damage/dodge and 100px slide, no damage-proportional push (opts.knockback {0,0})");
             else Check(sim.HurtCount==0&&sim.Player.KnockbackX==0&&sim.Player.KnockbackY==0,"invulnerable/charge contact consumes without damage or slide");
+        }
+        // Q held past its window (sBlock, _sbParryT 0): hurtP's shield branch still adds its failed-guard push (5 at a random angle) on top of the 100 slide set before it
+        {
+            var sim=new Simulation(new SimulationConfig {PlayerMaxHp=2000000},20261104u);
+            sim.AttachDruidBoss();sim.IsProjectileWall=(x,y)=>false;
+            sim.Player.X=100;sim.Player.Y=100;sim.Player.State="sBlock";sim.Player.StateTicks=999;sim.Player.Iframes=0;sim.SbParryT=0;
+            var spec=new ProjSpec {X=168,Y=100,Vx=-10,Dmg=280,El=2,Life=320,Ml=320,Sz=48,R=20,ElemBall=true,Commit=true};marker?.SetValue(spec,true);
+            var b=sim.Druid.SpawnProjectile(null,null,spec,false);sim.Druid.TickWorld(false);
+            double kx=sim.Player.KnockbackX+100,ky=sim.Player.KnockbackY,push=Math.Sqrt(kx*kx+ky*ky);
+            Check(!b.Active&&sim.ReflectCount==0&&sim.HurtCount==1&&Math.Abs(push-5)<1e-3,"block contact keeps slide 100 + shield push 5: push "+push+" hurt "+sim.HurtCount);
+        }
+        // the Q release band (up to 500 px) reaches a big ball beyond 400 px: the web never cuts a big ball with the 400 px collision filter (`&&!_bigBall`)
+        foreach(double rel in new[]{0.0,500.0})
+        {
+            var sim=new Simulation(new SimulationConfig {PlayerMaxHp=2000000},20261104u);
+            sim.AttachDruidBoss();sim.IsProjectileWall=(x,y)=>false;
+            sim.Player.X=100;sim.Player.Y=100;sim.Player.State="idle";sim.Player.StateTicks=20;sim.Player.Iframes=0;sim.SbParryT=12;sim.SbReleaseR=rel;
+            var spec=new ProjSpec {X=568,Y=100,Vx=-10,Dmg=280,El=2,Life=320,Ml=320,Sz=48,R=20,ElemBall=true,Commit=true};marker?.SetValue(spec,true);   // spawn x1.8 speed: 468 -> 450 px from the player
+            var b=sim.Druid.SpawnProjectile(null,null,spec,false);sim.Druid.TickWorld(false);
+            int shots=sim.Druid.Projectiles.Count(p=>p.Friendly&&p.ParryMagicShot);
+            if(rel>0)Check(!b.Active&&sim.ReflectCount==1&&shots==5,"release band 500: Q split at 450 px (shots "+shots+", reflects "+sim.ReflectCount+")");
+            else Check(b.Active&&!b.Friendly&&sim.ReflectCount==0&&shots==0,"no release band: the ball at 450 px flies on");
+        }
+        // wall contact: centre + 8 rim samples, one boom, no hurt
+        {
+            var sim=new Simulation(new SimulationConfig {PlayerMaxHp=2000000},20261104u);
+            sim.AttachDruidBoss();sim.IsProjectileWall=(x,y)=>x<40;
+            int booms=0;sim.BossFx+=(k,x,y,r)=>{if(k=="waterEnergy")booms++;};
+            sim.Player.X=1000;sim.Player.Y=100;sim.Player.State="idle";sim.Player.Iframes=0;
+            var spec=new ProjSpec {X=140,Y=100,Vx=-10,Dmg=280,El=2,Life=320,Ml=320,Sz=48,R=20,ElemBall=true,Commit=true};marker?.SetValue(spec,true);
+            var b=sim.Druid.SpawnProjectile(null,null,spec,false);sim.Druid.TickWorld(false);
+            Check(!b.Active&&booms==1&&sim.HurtCount==0,"rim sample wall contact: boom once, no hurt (booms "+booms+")");
+        }
+        // the Q split in a real fight: the shots fly through Simulation.TickParryShot and hurt a real enemy through ApplyEnemyDamage (no hook)
+        {
+            var sim=new Simulation(new SimulationConfig {PlayerMaxHp=2000000},20261104u);
+            sim.AttachDruidBoss();sim.IsProjectileWall=(x,y)=>false;
+            sim.Player.X=100;sim.Player.Y=100;sim.Player.State="sBlock";sim.Player.StateTicks=999;sim.Player.Iframes=0;sim.SbParryT=18;
+            var foe=sim.SpawnNormalEnemy(100,420);
+            var spec=new ProjSpec {X=268,Y=100,Vx=-10,Dmg=280,El=2,Life=320,Ml=320,Sz=48,R=20,ElemBall=true,Commit=true};marker?.SetValue(spec,true);
+            sim.Druid.SpawnProjectile(null,null,spec,false);
+            int hp0=foe!=null?foe.Hp+(int)foe.Shield:0;
+            for(int t=0;t<160&&sim.Druid.Projectiles.Count>0;t++){sim.TickCount++;sim.Druid.TickWorld(false);}
+            Check(foe!=null&&sim.ReflectCount==1&&sim.ParryShotHits>0&&(!foe.Alive||foe.Hp+(int)foe.Shield<hp0),"real shots hit a real enemy (hits "+sim.ParryShotHits+", hp "+hp0+" -> "+(foe!=null?foe.Hp+(int)foe.Shield:-1)+")");
+            Check(sim.Druid.Projectiles.All(p=>p.Friendly&&p.ParryMagicShot)&&sim.Druid.Projectiles.Count<=5,"only parry shots remain");
         }
         // Ordinary elemBall and rainbow retain their existing classification/input contract.
         {

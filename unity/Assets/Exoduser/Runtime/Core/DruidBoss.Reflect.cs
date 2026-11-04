@@ -12,6 +12,7 @@ namespace Exoduser.UnityPort.Core
         void PayReflectParry(in ParryReflect.ResolveResult result);           // doParry(dmg, x, y, false, el, mul, tag) + P.parryBank
         bool ReflectHoming(ReflectProjectile p);                              // blue-bean steering toward the nearest enemy within 400 px (changes velocity)
         bool ReflectContact(ReflectProjectile p);                             // a friendly bullet meets an enemy: blast, true = used up
+        bool TickParryShot(BossProjectile p, int index);                      // one tick of a Q-split angler water shot (web player projectile loop): true = the shot is gone
     }
 
     public interface IBossEnergyHost
@@ -23,10 +24,10 @@ namespace Exoduser.UnityPort.Core
     {
         readonly IBossReflectHost reflectHost;
 
-        static ReflectProjectile ToReflect(BossProjectile p, int index = 0)
+        static ReflectProjectile ToReflect(BossProjectile p)
         {
             return new ReflectProjectile { X = p.X, Y = p.Y, Vx = p.Vx, Vy = p.Vy, Dmg = p.Dmg, Life = p.Life, Ml = p.Ml, El = p.El, Sz = p.Sz, R = p.R, Col = p.Col, ParryClass = p.ParryClass,
-                FbEnergy = p.FbEnergy, ParryMagicShot = p.ParryMagicShot, FlightIndex = index,
+                FbEnergy = p.FbEnergy, ParryMagicShot = p.ParryMagicShot,
                 Mine = p.Mine, BlackBean = p.BlackBean, Friendly = p.Friendly, Web = p.Web, ElemBall = p.ElemBall, FireMagic = p.FireMagic, RedBean = p.RedBean, WaterBean = p.WaterBean, TitanEye = p.TitanEye, BwBean = p.BwBean, GbBean = p.GbBean,
                 BlueBean = p.BlueBean, ParryBlueBean = p.ParryBlueBean, Magic = p.Magic, Homing = p.Homing, FromRainbow = p.FromRainbow, DruidStraight = p.DruidStraight, AoeR = p.AoeR, AoeDmg = p.AoeDmg };
         }
@@ -40,21 +41,19 @@ namespace Exoduser.UnityPort.Core
         // an enemy bullet reached the player's parry reach: if the web would turn it around (E strike / Q parry), do it. Returns true when the bullet was reflected (it stays in the list).
         bool TryReflect(BossProjectile p, double px, double py, double pr, double ox, double oy, double nx, double ny)
         {
-            if (Remodel && !p.FbEnergy) return false;     // the field angler keeps its Q terminal even when the druid remodel flag is on
+            // RM-B1 (boss-battle lead 2026-10-28): the only remodel bullet move, #5 spore fan, is not parryable (spec §3), so no remodel bullet is turned around;
+            // the field angler's energy ball keeps its Q terminal even when the druid remodel flag is on
+            if (Remodel && !p.FbEnergy) return false;
             if (p.Friendly || p.Mine) return false;
             double pd = Math.Min(Dst(px, py, p.X, p.Y), SegDist(ox, oy, nx, ny, px, py));
             if (p.FbEnergy) pd = SegDist(ox - previousPlayerX, oy - previousPlayerY, nx - px, ny - py, 0, 0);
-            if (pd > 400) return false;                  // the web skips the whole collision part beyond 400 px (the Q band is checked below)
+            if (pd > 400 && !p.FbEnergy) return false;   // the web skips the collision part of an ordinary bullet beyond 400 px; a big energy ball is never skipped (!_bigBall), Resolve checks its own reach (Q charge release up to 500)
             var rp = ToReflect(p);
             var inp = reflectHost.ReflectInput(pd);
             var res = ParryReflect.Resolve(rp, inp);
             if (p.FbEnergy) {
                 if (res.Outcome == ReflectOutcome.BigEnergyParry) {
-                    foreach (var shot in ParryReflect.SplitBigEnergy(rp, res.ParryDmg)) {
-                        var b = new BossProjectile { X = shot.X, Y = shot.Y, Vx = shot.Vx, Vy = shot.Vy, Dmg = shot.Dmg, El = (int)shot.El,
-                            R = shot.R, Sz = 1, Life = 180, Ml = 180, Friendly = true, Magic = true, ParryMagicShot = true, ParryClass = "magic", Col = p.Col };
-                        Projectiles.Add(b); Spawned++; OnSpawn?.Invoke(b);
-                    }
+                    AddParryShots(rp, res.ParryDmg, p.Col);
                     reflectHost.PayReflectParry(res); p.Active = false; return true;
                 }
                 if (res.Outcome == ReflectOutcome.BigEnergyHit) {
@@ -75,10 +74,21 @@ namespace Exoduser.UnityPort.Core
             return true;
         }
 
-        void ReflectHoming(BossProjectile p, int index)
+        // _splitParriedBigEnergy: the five shots join the list as friendly ParryMagicShot projectiles. In the web they are player projectiles (pProjs), so UpdateProjectiles hands
+        // their whole tick (homing, flight, wall bounce, field-boss / enemy hit, splash, pierce) to the host's TickParryShot (Simulation.ParryShot.cs). Life / Ml are not used by it.
+        public void AddParryShots(ReflectProjectile ball, double totalDamage, string col)
         {
-            if (!p.ParryMagicShot && (!p.BlueBean || !p.Homing)) return;
-            var rp = ToReflect(p, index);
+            foreach (var shot in ParryReflect.SplitBigEnergy(ball, totalDamage)) {
+                var b = new BossProjectile { X = shot.X, Y = shot.Y, Vx = shot.Vx, Vy = shot.Vy, Dmg = shot.Dmg, El = (int)shot.El, R = shot.R, Sz = 1, Life = 180, Ml = 180, MaxDist = shot.MaxDist,
+                    Friendly = true, Magic = true, ParryMagicShot = true, ParryClass = "magic", Col = col };
+                Projectiles.Add(b); Spawned++; OnSpawn?.Invoke(b);
+            }
+        }
+
+        void ReflectHoming(BossProjectile p)
+        {
+            if (!p.BlueBean || !p.Homing) return;
+            var rp = ToReflect(p);
             if (reflectHost.ReflectHoming(rp)) { p.Vx = rp.Vx; p.Vy = rp.Vy; }
         }
 

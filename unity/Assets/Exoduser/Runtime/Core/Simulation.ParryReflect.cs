@@ -50,20 +50,6 @@ namespace Exoduser.UnityPort.Core
         // blue-bean steering: nearest living enemy within 400 px of the bullet
         public bool ReflectHoming(ReflectProjectile p)
         {
-            if (p.ParryMagicShot) {
-                if ((TickCount + p.FlightIndex) % 2 != 0) return false;
-                var enemy = NearestEnemy(p.X, p.Y, 900);
-                double tx = enemy != null ? enemy.X : 0, ty = enemy != null ? enemy.Y : 0;
-                double best = enemy != null ? Dist(p.X, p.Y, tx, ty) : 900;
-                bool found = enemy != null;
-                if (FieldBosses != null) foreach (var fb in FieldBosses) {
-                    if (!FieldBossCanHit(fb) || fb.Asleep) continue;
-                    double x, y; FieldBossXY(fb, out x, out y); double d = Dist(p.X, p.Y, x, y);
-                    if (d < best) { best = d; tx = x; ty = y; found = true; }
-                }
-                if (!found) return false;
-                ParryReflect.HomingTurn(p, tx, ty, 1, .7); return true;
-            }
             var t = NearestEnemy(p.X, p.Y, ParryReflect.HomingRange);
             if (t == null) return false;
             ParryReflect.HomingTurn(p, t.X, t.Y, 1);
@@ -74,20 +60,6 @@ namespace Exoduser.UnityPort.Core
         // a friendly bullet that touches an enemy blasts: every enemy inside is hurt as a blue bean (magic, poise hit, knock-back x2) and shoved away; true = the bullet is used up
         public bool ReflectContact(ReflectProjectile p)
         {
-            if (p.ParryMagicShot) {
-                if (FieldBosses != null) foreach (var fb in FieldBosses) {
-                    if (!FieldBossCanHit(fb)) continue;
-                    double x, y; FieldBossXY(fb, out x, out y);
-                    if (Dist(p.X, p.Y, x, y) < p.R + 8 + fb.R) { FieldBossApply(fb, p.Dmg); return true; }
-                }
-                foreach (var enemy in ShQuery(p.X, p.Y, p.R + 20, true)) {
-                    if (!enemy.Alive || Dist(p.X, p.Y, enemy.X, enemy.Y) >= enemy.Radius + p.R) continue;
-                    int damage = Js.Int(p.Dmg * EnemyHurt.ElMul(p.El, enemy.Web != null ? enemy.Web.el : 0));
-                    ApplyEnemyDamage(enemy, damage, (float)Math.Atan2(enemy.Y - p.Y, enemy.X - p.X), false, 1, atkEl: (int)p.El, magicHit: true);
-                    return true;
-                }
-                return false;
-            }
             int n = Enemies.Count; var targets = new ParryReflect.BlastTarget[n];
             for (int k = 0; k < n; k++) { var e = Enemies[k]; targets[k] = new ParryReflect.BlastTarget { X = e.X, Y = e.Y, R = e.Radius, Alive = e != null && e.Alive }; }
             if (!ParryReflect.Blast(p, targets, 0, reflectHits)) return false;
