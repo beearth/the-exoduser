@@ -46,7 +46,7 @@ if($Command -ne 'install-bin' -and $env:EXO_UNITY_NO_FORWARD -ne '1' -and
     exit $LASTEXITCODE
 }
 
-$ExoUnityVersion = '2026.11.04-stalldiag'
+$ExoUnityVersion = '2026.11.04-loopfirst'
 $MaxPlayerSlots = 2
 Import-Module (Join-Path $PSScriptRoot 'QueueTurn.psm1') -Force
 try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false) } catch { }
@@ -497,16 +497,45 @@ function Release-PlayerAdmission {
     if ($script:PlayerAdmissionHandle) { $script:PlayerAdmissionHandle.Dispose(); $script:PlayerAdmissionHandle=$null }
 }
 
+# loopfirst(11-04 CTO 1순위 바탕화면): 8ad7fa322 회차의 UI 검사 Player가 FIFO player 예약 7건 뒤에서 40분을 넘겨 교체가 FAIL했다.
+# BuildLoop Player(-PcException buildloop)는 player 예약 큐·굶주림 방지 drain을 건너뛰고 최소 180분 기다린다. 단독·슬롯·메모리 조건은 그대로다.
+# 기다리는 동안 _player_priority.json을 두어 다른 새 Player 입장을 막는다(단독 실행이 빈틈마다 들어오는 Player에 굶지 않게). 주인 pid가 죽으면 무시한다.
+function Get-PriorityPath { return (Join-Path $Root '_player_priority.json') }
+function Test-LoopFirst { return ($PcException -eq 'buildloop') }
+function Get-PriorityWaiter([int]$selfPid) {
+    $p = Read-Json (Get-PriorityPath)
+    if (-not $p -or -not $p.pid -or [int]$p.pid -eq $selfPid) { return $null }
+    $proc = Get-Process -Id ([int]$p.pid) -ErrorAction SilentlyContinue
+    if (-not $proc) { return $null }
+    try { if ($p.processStart -and $proc.StartTime.ToUniversalTime().ToString('o') -ne [string]$p.processStart) { return $null } } catch { }
+    return $p
+}
+function Clear-PriorityWaiter([int]$selfPid) {
+    $p = Read-Json (Get-PriorityPath)
+    if ($p -and [int]$p.pid -eq $selfPid) { Remove-Item -LiteralPath (Get-PriorityPath) -Force -ErrorAction SilentlyContinue }
+}
+
 function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
     New-Item -ItemType Directory -Force -Path $Root | Out-Null
     Set-ReservationWaiter $ownerPid
-    $deadline = (Get-Date).AddMinutes($WaitMin); $lastMsg = ''
+    $wait = $WaitMin; if ((Test-LoopFirst) -and $wait -gt 0 -and $wait -lt 180) { $wait = 180 }
+    $deadline = (Get-Date).AddMinutes($wait); $lastMsg = ''
+    if (Test-LoopFirst) {
+        $start = ''; try { $start = (Get-Process -Id $ownerPid).StartTime.ToUniversalTime().ToString('o') } catch { }
+        Write-JsonAtomic (Get-PriorityPath) ([ordered]@{ pid = $ownerPid; processStart = $start; owner = [string]$Owner; since = (NowIso) })
+    }
+    try {
     while ($true) {
         Assert-HaltClear 'Player 슬롯'
         $slots = @(Get-PlayerSlots -Reap); $legacy = Get-LegacyPlayerCount
-        $blocked = Get-PlayerDrainReason
-        $rs = @(Get-WaitingPlayerReservations)
-        if (-not $blocked -and $rs.Count -gt 0 -and (-not $Owner -or $rs[0].owner -ne $Owner)) { $blocked = 'player 예약 큐 맨 앞은 ' + $rs[0].owner }
+        $blocked = ''
+        if (-not (Test-LoopFirst)) {
+            $pw = Get-PriorityWaiter $ownerPid
+            if ($pw) { $blocked = 'BuildLoop Player 우선 대기: ' + $pw.owner + ' pid ' + $pw.pid }
+            if (-not $blocked) { $blocked = Get-PlayerDrainReason }
+            $rs = @(Get-WaitingPlayerReservations)
+            if (-not $blocked -and $rs.Count -gt 0 -and (-not $Owner -or $rs[0].owner -ne $Owner)) { $blocked = 'player 예약 큐 맨 앞은 ' + $rs[0].owner }
+        }
         $ex = Get-ExclusiveHolder
         if (-not $blocked -and $ex) { $blocked = 'Player 단독 실행 중: ' + $ex.reservedAs + ' pid ' + $ex.pid }
         if (-not $blocked -and (Test-WantExclusive) -and ($slots.Count + $legacy) -gt 0) { $blocked = '단독 실행 대기: 다른 Player ' + ($slots.Count + $legacy) + '개 종료 대기' }
@@ -521,8 +550,11 @@ function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
             # 프로세스 생성까지 새 실행기의 진입을 직렬화한다. 첫 Player가 생성되기 전
             # 신2개+구1개가 모두 Unity 0개를 관측하는 시작 경합을 막는다. _pc_lock은 쓰지 않는다.
             $legacy=Get-LegacyPlayerCount
+            if (-not (Test-LoopFirst)) {
             $turn=@(Get-WaitingPlayerReservations)
             if ($turn.Count -gt 0 -and (-not $Owner -or $turn[0].owner -ne $Owner)) { $blocked='player 예약 큐 맨 앞은 '+$turn[0].owner }
+            if (-not $blocked -and (Get-PriorityWaiter $ownerPid)) { $blocked='BuildLoop Player 우선 대기' }
+            }
             if (-not $blocked) {
             # 구버전 Player가 있으면 후보 파일도 1개로 줄여 동시 경쟁자의 상호 포기 반복을 막는다.
             for ($i=1; $i -le ($MaxPlayerSlots - $legacy); $i++) {
@@ -535,7 +567,7 @@ function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
                 $script:PlayerSlotPath=$path; $script:PlayerSlotToken=$token
                 # 다른 slot/구버전 lock의 동시 획득 뒤 상한을 다시 검사한다.
                 $limit = $MaxPlayerSlots; if (Test-WantExclusive) { $limit = 1 }
-                if ((@(Get-PlayerSlots).Count + (Get-LegacyPlayerCount)) -le $limit -and (Get-CommitFreeGB) -ge 10 -and -not (Get-PlayerDrainReason) -and -not (Get-ExclusiveHolder)) {
+                if ((@(Get-PlayerSlots).Count + (Get-LegacyPlayerCount)) -le $limit -and (Get-CommitFreeGB) -ge 10 -and ((Test-LoopFirst) -or (-not (Get-PlayerDrainReason) -and -not (Get-PriorityWaiter $ownerPid))) -and -not (Get-ExclusiveHolder)) {
                     if (Test-WantExclusive) { Write-JsonAtomic $ExclusivePath ([ordered]@{ pid = $ownerPid; startedAt = $content.startedAt; token = $token; reservedAs = [string]$Owner; exe = $exeFull }) }
                     $admitted=$true; return
                 }
@@ -546,10 +578,11 @@ function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
             }
             } finally { if (-not $admitted) { Release-PlayerAdmission } } }
         }
-        if ((Get-Date) -gt $deadline) { throw ('Player 슬롯 대기 시간 초과(' + $WaitMin + '분): ' + $blocked) }
+        if ((Get-Date) -gt $deadline) { throw ('Player 슬롯 대기 시간 초과(' + $wait + '분): ' + $blocked) }
         if ($blocked -ne $lastMsg) { Say ('대기: ' + $blocked + ' (' + $PollSec + '초 간격)'); $lastMsg=$blocked }
         Start-Sleep -Seconds $PollSec
     }
+    } finally { if (Test-LoopFirst) { Clear-PriorityWaiter $ownerPid } }
 }
 
 # ------------------------------------------------------------------ 잠금 + 슬롯
