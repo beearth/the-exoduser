@@ -7,6 +7,7 @@ Shader "EXODUSER/Arena8b/Ground"
   _NormalA("A2R normal A",2D)="bump"{} _NormalB("A2R normal B",2D)="bump"{}
   _MaskA("A2R water mask A",2D)="black"{} _MaskB("A2R water mask B",2D)="black"{}
   _Soil("A2 forest soil underpaint",2D)="white"{} _Roots("A2 exposed roots",2D)="white"{}
+  _Tint("B1 ground tint (linear)",Color)=(.66,.56,.50,1) _Sat("B1 saturation keep",Range(0,1))=.62 _Flat("B2 low-frequency flatten",Range(0,1))=.45 _Dark("B3 sun scale on ground",Range(0,1))=1
  }
  SubShader
  {
@@ -30,6 +31,9 @@ Shader "EXODUSER/Arena8b/Ground"
    TEXTURE2D(_NormalA);SAMPLER(sampler_NormalA);TEXTURE2D(_NormalB);SAMPLER(sampler_NormalB);
    TEXTURE2D(_MaskA);SAMPLER(sampler_MaskA);TEXTURE2D(_MaskB);SAMPLER(sampler_MaskB);
    TEXTURE2D(_Soil);SAMPLER(sampler_Soil);TEXTURE2D(_Roots);SAMPLER(sampler_Roots);
+   CBUFFER_START(UnityPerMaterial)
+   half4 _Tint;half _Sat,_Flat,_Dark;
+   CBUFFER_END
    struct A {float4 p:POSITION;float3 n:NORMAL;};
    struct V {float4 p:SV_POSITION;float3 w:TEXCOORD0;half3 n:TEXCOORD1;half fog:TEXCOORD2;};
    V vert(A a){V o;o.w=TransformObjectToWorld(a.p.xyz);o.p=TransformWorldToHClip(o.w);o.n=TransformObjectToWorldNormal(a.n);o.fog=ComputeFogFactor(o.p.z);return o;}
@@ -79,15 +83,20 @@ Shader "EXODUSER/Arena8b/Ground"
     half3 roots=SAMPLE_TEXTURE2D(_Roots,sampler_Roots,world*.12+float2(.27,.63)).rgb;
     float rootWeight=.12*smoothstep(.15,.85,.5+.5*sin(world.x*.23+sin(world.y*.17)));
     half3 albedo=lerp(lerp(soil,roots,rootWeight),paint,coverage);
+    // B2: pull the high-frequency painted contrast toward the tile mean so no repeat pattern survives (no grain or dither is added).
+    half3 meanC=lerp(SAMPLE_TEXTURE2D_LOD(_Soil,sampler_Soil,float2(.5,.5),9).rgb,SAMPLE_TEXTURE2D_LOD(_PaintA,sampler_PaintA,float2(.5,.5),9).rgb,.8);
+    albedo=lerp(albedo,meanC,_Flat);
+    // B1: 1-1 field ground is dark brown-red, saturation <= .30.
+    half lum=dot(albedo,half3(.299,.587,.114));albedo=lerp(half3(lum,lum,lum),albedo,_Sat);
     half3 n=normalize(i.n+half3(detail.x,0,-detail.y)*(.35*coverage));
     Light main=GetMainLight(TransformWorldToShadowCoord(i.w));
-    half3 light=half3(.08,.075,.065)+main.color*saturate(dot(n,main.direction))*main.shadowAttenuation;
+    half3 light=half3(.08,.075,.065)+main.color*_Dark*saturate(dot(n,main.direction))*main.shadowAttenuation;
     InputData inputData=(InputData)0;inputData.positionWS=i.w;inputData.normalizedScreenSpaceUV=GetNormalizedScreenSpaceUV(i.p);
     uint count=GetAdditionalLightsCount();
     LIGHT_LOOP_BEGIN(count)
      Light lamp=GetAdditionalLight(lightIndex,i.w);light+=lamp.color*lamp.distanceAttenuation*lamp.shadowAttenuation*saturate(dot(n,lamp.direction));
     LIGHT_LOOP_END
-    half3 color=albedo*half3(1.10,1.03,.91)*min(light,half3(2.4,2.4,2.4));
+    half3 color=albedo*_Tint.rgb*min(light,half3(2.4,2.4,2.4));
     return half4(MixFog(color,i.fog),1);
    }
    ENDHLSL

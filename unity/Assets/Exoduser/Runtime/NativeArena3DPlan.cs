@@ -49,7 +49,8 @@ namespace Exoduser.UnityPort
         {
             if(arena==null)throw new ArgumentNullException(nameof(arena));
             float x=(arena.RoomCx+.5f)*Tile,z=-(arena.RoomCy+.5f)*Tile;
-            return new[]{new Vertex(x-6,GroundHeight,z-2.5f),new Vertex(x+6,GroundHeight,z+2.5f)};
+            // B3: four torches (the original diagonal pair plus its mirror) so the room edge falls into pools of warm light.
+            return new[]{new Vertex(x-6,GroundHeight,z-2.5f),new Vertex(x+6,GroundHeight,z+2.5f),new Vertex(x-6,GroundHeight,z+2.5f),new Vertex(x+6,GroundHeight,z-2.5f)};
         }
         public static List<Grove> Forest(BossArenaLayout a)
         {
