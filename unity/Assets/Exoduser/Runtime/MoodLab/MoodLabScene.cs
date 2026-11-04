@@ -18,6 +18,12 @@ namespace Exoduser.UnityPort.MoodLab
         ColorAdjustments tone;
         VolumeProfile profile;
         Material litSource;
+        MoodLabAtmosphere atmosphere;
+        Volume gradingVolume;
+        VolumeProfile gradingProfile;
+        WhiteBalance whiteBalance;
+        ColorLookup lookup;
+        Texture2D userLut;
         int selected;
 
         public static void Create(char mood)
@@ -103,7 +109,7 @@ namespace Exoduser.UnityPort.MoodLab
             Place(treeB, "Far east forest closure", new Vector3(9,-.08f,25), new Vector3(.55f,.72f,.60f), 190);
             Place(Require<GameObject>("Art/map/a2/r3/Models/RF3_Fallen_Log"), "Bank fallen log", new Vector3(-6.2f,-.06f,-6.2f), new Vector3(.8f,.85f,.8f)*.8f, -18);
 
-            // Fogged, shadow-receiving opaque Lit silhouettes. No unlit/emissive readability cheat.
+            // Fogged, shadow-receiving opaque Lit silhouettes; only b adds the CX1 upper-body rim overlay.
             // 1.61u = current hero display height from map board; these are QA proxies, not live enemies.
             var dark = Surface(new Color(.22f,.23f,.24f), .05f);
             var pale = Surface(new Color(.62f,.60f,.55f), .05f);
@@ -197,15 +203,61 @@ namespace Exoduser.UnityPort.MoodLab
             RenderSettings.fogEndDistance = preset.FogEnd; view.backgroundColor = preset.FogColor;
             tone.postExposure.Override(preset.Exposure); tone.contrast.Override(preset.Contrast);
             tone.saturation.Override(preset.Saturation); tone.colorFilter.Override(preset.Filter);
+            // a retains the efaa481c7 render path: no optical overlays or extra grading volume.
+            if (index == 1 || index == 2)
+            {
+                if (atmosphere == null) atmosphere = new MoodLabAtmosphere(transform, origin);
+                atmosphere.Apply(preset);
+            }
+            else if (atmosphere != null) atmosphere.SetActive(false);
+            if (index == 3) PrepareGrading(preset);
+            if (gradingVolume != null) gradingVolume.enabled = index == 3;
             Debug.Log("[MoodLab] preset=" + preset.Id + " fog eye-depth=" + preset.FogStart + ".." + preset.FogEnd + "u; camera=34/16.5/46.9453; visual verdict PENDING");
             foreach (var probe in probes)
             {
                 var screen = view.WorldToViewportPoint(probe.position);
                 float depth = Vector3.Dot(probe.position-view.transform.position, view.transform.forward);
                 float transmission = Mathf.Clamp01((preset.FogEnd-depth)/(preset.FogEnd-preset.FogStart));
+                transmission *= MoodLabAtmosphere.ExtraTransmission(view.transform.position, probe.position, origin, preset);
                 bool inside = screen.z > 0 && screen.x > 0 && screen.x < 1 && screen.y > 0 && screen.y < 1;
                 Debug.Log("[MoodLab] " + probe.name + " eyeDepth=" + depth.ToString("F3") + "u fogTransmission=" + transmission.ToString("P1") + " inFrustum=" + inside + "; occlusion/darkness UNVERIFIED");
             }
+        }
+
+        void PrepareGrading(MoodLabPreset preset)
+        {
+            if (gradingVolume == null)
+            {
+                gradingProfile = Own(ScriptableObject.CreateInstance<VolumeProfile>());
+                whiteBalance = gradingProfile.Add<WhiteBalance>(true);
+                lookup = gradingProfile.Add<ColorLookup>(true);
+                gradingVolume = Child("MoodLab d-only white balance and LUT").AddComponent<Volume>();
+                gradingVolume.isGlobal = true; gradingVolume.priority = 1001; gradingVolume.sharedProfile = gradingProfile;
+            }
+            // CX1 §9.3: runtime numeric LUT only, no asset/image generation or import, no baked-in ACES.
+            if (userLut == null)
+            {
+                var pipeline = GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset;
+                if (pipeline == null) throw new InvalidOperationException("MoodLab LUT requires active URP asset");
+                int size = pipeline.colorGradingLutSize; // CX1 §9.1 default 32; read actual, never mutate shared asset
+                if (size < 2 || size > 64) throw new InvalidOperationException("Unexpected URP LUT size: " + size);
+                userLut = Own(new Texture2D(size*size, size, TextureFormat.RGBA32, false, true));
+                userLut.name = "MoodLab d transient encoded RGB LUT";
+                userLut.wrapMode = TextureWrapMode.Clamp; userLut.filterMode = FilterMode.Bilinear;
+                var pixels = new Color[size*size*size];
+                for (int b = 0; b < size; b++) for (int g = 0; g < size; g++) for (int r = 0; r < size; r++)
+                {
+                    var rgb = new Vector3(r, g, b)/(size-1f);
+                    var mapped = Vector3.Scale(rgb, preset.LutScale) +
+                        Vector3.Scale(new Vector3(rgb.y,rgb.z,rgb.x), preset.LutCross) + preset.LutLift;
+                    pixels[g*size*size+b*size+r] = new Color(mapped.x,mapped.y,mapped.z,1);
+                }
+                userLut.SetPixels(pixels); userLut.Apply(false, true);
+                lookup.texture.Override(userLut);
+                if (!lookup.ValidateLUT()) throw new InvalidOperationException("MoodLab d LUT rejected by installed URP");
+            }
+            whiteBalance.temperature.Override(preset.Temperature); whiteBalance.tint.Override(preset.Tint);
+            lookup.contribution.Override(preset.LutContribution);
         }
 
         void OnGUI()
@@ -218,8 +270,10 @@ namespace Exoduser.UnityPort.MoodLab
 
         void OnDestroy()
         {
+            if (atmosphere != null) atmosphere.Dispose();
             // Destroy profile subcomponents too; never destroy Resources-owned textures/materials/models.
             if (profile != null) foreach (var component in profile.components) if (component != null) Destroy(component);
+            if (gradingProfile != null) foreach (var component in gradingProfile.components) if (component != null) Destroy(component);
             foreach (var value in owned) if (value != null) Destroy(value);
         }
     }

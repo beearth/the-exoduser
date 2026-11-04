@@ -1,4 +1,64 @@
-사용자 실행본 반영 없음. 작업본 `E:/exoduser-wt/codex-moodlab`, 브랜치 `codex/unity-moodlab-20261105`, 기준/현재 HEAD `75add6ff4a6209e2590a7a626ffb4c37b5f0268e`.
+## 2026-11-05 CTO CX1 프리셋 보정 — 현재 보고
+
+사용자 실행본 반영 없음. 현재 HEAD `efaa481c7da5100b1d998e08a3dcef3b919cc4dd`, 작업본/브랜치 `E:/exoduser-wt/codex-moodlab` / `codex/unity-moodlab-20261105`. 변경은 미커밋 상태로 총괄 검토 대기.
+관문: **verify.mjs 갱신 후 1회 실행 PASS / C#·셰이더 컴파일·화면·Mac 판정 미확인**.
+다음 일: Mac에서 같은 소스 컴파일 → a/b/c/d 캡처 → 실제 가림·명암·경계·LUT·합성 순서 판정.
+
+근거는 [CX1_codex_urp_mood.md](CX1_codex_urp_mood.md)다. CX1 §2/§3/§8/§9는 이 장면에 적합한 안개 거리·밀도·림·WB·LUT 기여도를 **미확인**으로 남긴다. 아래 새 수치는 **“저작 시험값, CX1 §n 원칙 기준”**이며 공식 추천 범위가 있는 것처럼 쓰지 않았다. 각 데이터 행/필드와 셰이더 근사 상수 옆에도 해당 절을 주석으로 달았다. CX1에서 확인되는 LUT 기본 Size 32는 장면 권장값과 구별한다.
+
+### 보정 값 표
+
+공통으로 기존 A2 참조 광원 intensity 3.2 / RGB (.85,.90,1), 그림자 .55, Flat ambient (.26,.28,.30)×1, 안개 RGB (.105,.145,.17), filter (1,1,1), ACES를 쓴다. a는 커밋된 참조판의 수치와 렌더 경로를 유지한다. b/c도 광원·색 보정은 참조판과 맞추고 기법 차이를 분리했다. 카메라 **34° / 16.5u / 46.9453°**, 기존 목교·늪·고목·표식 배치 불변.
+
+| 프리셋 | Linear 시작→완전 도달 | exposure / contrast / saturation | 추가 기법·값 | CX1 근거 |
+|---|---|---|---|---|
+| a A2 cool reference | 19→62u | .55 / 16 / -8 | 기존 기준판 그대로. 추가 안개·림·WB/LUT Volume 꺼짐 | §2/§10 검사 원칙만 적용, 재보정 없음 |
+| b Height fog and rim | 22→68u | .55 / 16 / -8 | 높이 소멸계수 σ0=.020u⁻¹, y0=.20u, k=1.2u⁻¹, 통로 배율 .25. 림 power 4 / 강도 .12 / RGB (.55,.70,1) | 높이 §3, 림 §8, 가독성 §10 — 저작 시험값 |
+| c Smooth medium and aerial perspective | 24→72u | .55 / 16 / -8 | 매질 σ0=.0025u⁻¹, 바닥 밀도 배율 .20, 산란색 위상 혼합 .65. 높이층·림 꺼짐 | §4.1/§10 — 저작 시험값 |
+| d White balance and LUT | 19→62u | .40 / 10 / -12 | WB temperature -8 / tint +5, 사용자 LUT contribution .35. 추가 매질·림 꺼짐 | §9.1/§9.3 — 저작 시험값 |
+
+b/c 공통 추가 optical depth 상한 .060, 경로당 고정 중점 표본 24개도 **저작 시험값, CX1 §3/§4.1/§10 원칙 기준**이다. 중앙 통로에서 측면으로 밀도를 잇는 2.2→6.2u, 림 상부 마스크 높이 .75→1.15u, c의 매끄러운 국소 매질 위치·폭·기울기는 미술용 근사 상수다. 실제 광원 그림자에 의한 volumetric shadow 값이 아니다.
+
+d의 LUT는 메모리에만 생성하는 N²×N RGB 스트립이다. N은 활성 URP Asset의 `colorGradingLutSize`를 읽으며 공유 Asset은 수정하지 않는다. 기본 N=32이면 1024×32. RGBA32 / linear 데이터 / mip 없음 / Bilinear / Clamp. 입력 encoded RGB를 `RGB×(.96,.98,.94) + GBR×(.02,0,.03) + (.01,.005,.01)`로 매핑한다. 이 행렬·lift 역시 **저작 시험값, CX1 §9.3 원칙 기준**이다. LUT에 ACES를 다시 굽지 않으며 기존 톤 매퍼를 유지한다. 검은색→(.01,.005,.01), 흰색→(.99,.985,.98), 채널 변화가 단조이고 클리핑하지 않는 범위를 정적 검사했다. 원본의 소실된 정보를 복원한다는 의미는 아니다. 텍스처/이미지 파일 생성·수신·임포트 없음.
+
+### 12u 먼 표식의 합성 투과율
+
+기존과 동일한 **표식 중심 y=.805u** 검사 기준을 유지한다. 중심 eye-depth 약 25.998u. `T전체 = T거리 × exp(-min(.060, ∑σ·ds))`이며 a/d의 추가 σ는 0이다. 림·산란 밝기를 투과율에 더해서 통과시키지 않는다.
+
+| 프리셋 | 중심 T전체 | 발끝 y=0 참고값 | 판정 범위 |
+|---|---|---|---|
+| a | 83.725% | 82.678% | 기존 중심 83% 기준 유지. 참조판 값 변경 없음 |
+| b | 90.724% | 88.943% | 중심·발끝 모두 83% 이상 |
+| c | 94.435% | 93.477% | 중심·발끝 모두 83% 이상 |
+| d | 83.725% | 82.678% | A2 거리 안개를 유지해 a와 같은 기하학적 투과율 |
+
+**범위 주의:** a/d의 발끝은 83% 미만이다. 따라서 위 PASS를 “표식 전신의 모든 픽셀이 83% 이상”으로 해석하면 안 된다. a를 그대로 두라는 CTO 지시에 따라 기존 중심 기준을 바꾸지 않았다. b/c는 전체 추가 매질이 상한까지 차도 중심 투과율 83% 이상인 보수적 예산도 검사했다. 실제 Lit fog/렌더 합성과의 일치는 Mac에서 확인해야 한다. 색 보정 후 명암·표식 식별성은 이 광학 수치로 판정하지 않는다.
+
+### 근사 구현·한계·위험 API
+
+- CX1 §4.1의 URP 내장 volumetric 부재를 전제로, 서드파티나 Renderer Feature를 넣지 않았다. **기존 불투명 메시와 같은 행렬/기하를 쓰는 광학 overlay**를 Transparent 단계에서 `ZTest Equal`, `ZWrite Off`, premultiplied blend로 합성한다. 바탕 Lit 재질의 조명·그림자와 기존 거리 안개는 유지한다. a/d에서는 overlay를 끈다.
+- b: 카메라→표면의 24개 표본에서 `σ(y)=σ0·exp(-k·max(y-y0,0))`를 적분하고 통로 밀도를 낮춘다. Fresnel 림은 표식 머리/어깨 높이에만 적용한다. 상자 표식의 평평한 면 때문에 화면 1px 윤곽선이나 자연스러운 곡면 림을 보장하지 않는다.
+- c: 같은 경로에 연속적인 기울어진 밀도 덩어리와 미술용 방향성 산란색을 적분한다. **그림자·광원 샘플링·물리 phase function·다중 산란이 없는 volumetric 유사 효과**다. 빈 하늘/투명체/캐릭터 RT 합성 전체를 처리하는 실제 볼륨 렌더러가 아니며, 최초 불투명 표면이 있어야 보인다.
+- 점·디더·그레인·랜덤/시간 지터·노이즈 텍스처 없음. 고정 표본과 광학 상한 때문에 층/밴딩이 보일 수 있다. 이를 디더로 감추지 않는다. 화면에서 점이 0이라는 판정은 Mac 미확인이다.
+- **위험 API/컴파일 관문:** `WhiteBalance.temperature/tint`, `ColorLookup.texture/contribution/ValidateLUT()`, `UniversalRenderPipelineAsset.colorGradingLutSize`, `Texture2D` linear 생성자·SetPixels·Apply, Resources Shader 로드, URP Core.hlsl의 world/clip/normal 변환 함수, overlay 깊이 일치/블렌딩. 존재하는 API를 사용했으나 **6000.6.7f1/URP 17.6 C#·Metal 셰이더 컴파일은 미실행**이다. [WhiteBalance 17.6 API](https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@17.6/api/UnityEngine.Rendering.Universal.WhiteBalance.html), [ColorLookup 17.6 API](https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@17.6/api/UnityEngine.Rendering.Universal.ColorLookup.html).
+- `ValidateLUT()`가 설치 패키지에서 LUT를 거부하면 오류를 낸다. LUT 샘플 좌표/encoded RGB 해석, active grading 모드·tone mapper와의 순서, Gamma/Linear 및 실제 디스플레이 결과는 Mac 관문이다. 공개 master의 세부 구현을 설치 패키지와 같다고 단정하지 않았다(CX1 §9.2).
+- overlay는 원래 메시마다 추가 드로를 만들고 fragment당 24표본을 평가한다. SRP batching/Metal 비용, ZTest Equal의 실제 정합, 투명체 순서, 원경 밴딩·가림은 **미확인**이다. RenderGraph/Compatibility Mode API는 사용하지 않았다. APV/라이트맵 베이크도 수행하지 않았다.
+
+### 변경 파일·검사·실행 인자
+
+수정한 기존 MoodLab 파일: `Runtime/MoodLab/MoodLabPresets.cs`, `Runtime/MoodLab/MoodLabScene.cs`, `Editor/MoodLab/verify.mjs` — 모두 `unity/Assets/Exoduser/` 아래. 본선 파일·기존 셰이더·Core·Always Included·Renderer Asset 수정 0.
+
+새 파일: `Runtime/MoodLab/MoodLabAtmosphere.cs`와 `.cs.meta`, `Resources/MoodLab.meta`, `Resources/MoodLab/MoodLabAtmosphere.shader`와 `.shader.meta`. 새 shader는 Resources 로드로 포함하며 본선 Always Included를 수정하지 않는다. 기존 GUID 유지, 새 GUID 충돌 검사 통과. sed 사용 없음. 최종 공백 검사에서 CRLF 재기록과 Git 기준 LF의 차이를 확인해 PowerShell .NET으로 코드 파일을 기준 LF에 맞췄다. 검사 후 변경은 줄바꿈뿐이며 verify.mjs는 재실행하지 않았다. 최종 `git diff --check` PASS.
+
+갱신한 `verify.mjs`를 **정확히 1회 실행, exit 0 / PASS**. 결과는 최신 `STATIC_CHECK.txt`. a 수치, efaa481c7 대비 카메라·배치, CX1 효과 분리, 합성 투과율/상한, LUT 경계, 7개 기존 Resources 경로, meta/GUID, 허용 파일 경계를 확인했다. 이는 Node 소스·수학 검사이며 C#/HLSL 실행 증명이 아니다. Git ignore 경로 권한 경고는 있었으나 검사 exit 0. Unity·Player·exo-unity·Python·유료 도구·git commit/push/stage 실행 0.
+
+**Mac 실행 인자 변경 없음:** 기존 `--moodlab --mood=a|b|c|d --unity-qa-sandbox /tmp/exoduser-moodlab-qa --unity-mute`에 기존 해상도·로그 인자를 그대로 사용한다. 새 소스/Resources shader가 포함된 Mac 빌드가 필요하다. a→b→c→d→a 전환에서 추가 효과가 a에 남지 않는지도 확인한다. **컴파일·화면 미확인(Mac 담당), 본선 채택 대기.**
+
+---
+
+## 이전 보고 — 최초 코드 시안 이력
+
+사용자 실행본 반영 없음. 작업본 `E:/exoduser-wt/codex-moodlab`, 브랜치 `codex/unity-moodlab-20261105`, 당시 기준/HEAD `75add6ff4a6209e2590a7a626ffb4c37b5f0268e`.
 현재 관문: MoodLab 코드 시안 및 Node 정적 검사 PASS. **Unity 컴파일·Player·실제 화면·시각 판정 미확인(Mac 담당)**.
 다음 일: 총괄이 새 파일 검토 → Mac에서 같은 소스 컴파일·4개 프리셋 캡처 → 먼 표식·접지·노이즈 판정. 사용자 지시대로 commit·push 없음.
 

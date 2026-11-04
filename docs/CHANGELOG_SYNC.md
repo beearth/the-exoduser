@@ -1,3 +1,5 @@
+2026-11-05 MoodLab 프리셋 보정(코덱스 CX5, CTO 결정): a 본선 A2 기준판 유지, b 높이 안개·림, c 노이즈 없는 매질 근사, d 화이트밸런스·LUT. CX1에 추천 수치가 없어 값은 저작 시험값이며 CX1 절 번호를 주석으로 표기. 전용 셰이더 Resources/MoodLab 추가, 본선 수정 0. 컴파일·화면 미확인(Mac 담당).
+
 2026-11-05 MoodLab 시안(코덱스 CX5, 본선 미병합): --moodlab --mood=a|b|c|d 전용 런타임 시험 장면과 광원·안개·색 보정 프리셋 4개. 기존 파일·Core 수정 0, 인자 없으면 진입하지 않음. 프리셋은 CX1 대조 전 임시값. 컴파일·화면 미확인(Mac 담당). 인계: engine/MOODLAB_HANDOFF_20261105.md.
 
 2026-11-04 L13 데모 통합 병합 브랜치(클라우드, CTO 결정): unity/main 9196a515d 위에 demo-flavor-fix ac4e187ae → field-prepare-merge 79d4d14f1 → options-wave2 2cd42d3ab → first-impression-tone 479634337 → ui-minor6 19216c411 → white-disc(D2) 17967874a → crash-p1-fix 50f530c02를 --no-ff로 병합(끝 ec8561386). 충돌은 L1 해결안대로(CHANGELOG 양쪽, 번역대상 4274~4287 브랜치 쪽, SilverCharacter 주석 unity/main 쪽). combo4 대비 unity/Assets·ProjectSettings 차이는 D2·P1 4파일뿐. node review-0540 1건 FAIL(options-wave2 리셋 확인창 settingsChip, combo4에도 있음). 컴파일·빌드·화면 미확인 — Mac 판정 대기. 기록: docs/0마스터플랜/worklog/cloud-lanes/L13-demo-integration_20261104.md
