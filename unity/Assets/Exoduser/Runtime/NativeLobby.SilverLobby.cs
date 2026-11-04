@@ -127,7 +127,8 @@ namespace Exoduser.UnityPort
         }
         int lobbyEntryDensity;
         void RefreshLobbyEntryArt(){int density=Screen.height>1080?2:1;if(lobbyEntryDensity==density)return;lobbyEntryDensity=density;lobbySilverEnter=Resources.Load<Texture2D>("Art/ui/silver_hell/lobby_enter_ready_"+density+"x");lobbySilverDisabled=Resources.Load<Texture2D>("Art/ui/silver_hell/lobby_enter_disabled_"+density+"x");}
-        void DrawEmptySilverSlot(Rect card){Border(card,new Color(.61f,.62f,.62f,.13f),1);Border(new Rect(card.x+14,card.y+14,56,56),new Color(.61f,.62f,.62f,.12f),1);}
+        static readonly Color SilverSlotFace=new Color(5/255f,5/255f,7/255f,.94f);
+        void DrawEmptySilverSlot(Rect card){Fill(card,SilverSlotFace);Border(card,new Color(.61f,.62f,.62f,.13f),1);Border(new Rect(card.x+14,card.y+14,56,56),new Color(.61f,.62f,.62f,.12f),1);}
         internal bool DeathUiEntryPointerCapture,DeathUiEntryPointerInside,EntryPointerInside,EntryHoverVisible;
         internal string EntryReviewState;
         internal Vector2 EntryPointer,EntryPointerScreen;internal Rect EntryRect;

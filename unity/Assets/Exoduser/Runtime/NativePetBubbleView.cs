@@ -26,7 +26,7 @@ namespace Exoduser.UnityPort
    bool isCrow=queue.Speaker=="crow";var texture=isCrow?crow:cat;if(texture==null)return;
    var text=NativePetBubbleHints.Resolve(NativePetBubbleCatalog.Text(queue.Key,locale),action=>BindingLabel(action,locale));
    LastText=text;
-   if(body==null)body=new GUIStyle(GUIStyle.none){font=NativeSilverHellUi.Font(),fontSize=22,wordWrap=true,alignment=TextAnchor.MiddleLeft,clipping=TextClipping.Clip};
+   if(body==null)body=new GUIStyle(GUIStyle.none){font=Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular")??NativeSilverHellUi.Font(),fontSize=22,wordWrap=true,alignment=TextAnchor.MiddleLeft,clipping=TextClipping.Clip};
    body.normal.textColor=new Color(217/255f,214/255f,208/255f,1);
    const float scale=1.5f;
    float w=480*scale,h=320*scale;

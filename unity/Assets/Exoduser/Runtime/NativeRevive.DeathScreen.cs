@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort
     //  ⑥ 부활 순간 0.5s에 걸쳐 필터를 걷는다.  사망 확정(dead) 뒤에는 필터를 유지한 채 글자만 빼고 사망 패널(NativeDeathOverlay)이 그 위로 들어온다.
     public sealed partial class NativeReviveHud
     {
-        const float ImpactHold=.4f,FilterRamp=1.2f,ReviveFade=.5f,DeadTextFade=.8f,TitleDelay=.5f,TitleFade=1f,InfoDelay=1f,InfoFade=.8f;
+        const float ImpactHold=.4f,FilterRamp=1.2f,ReviveFade=.5f,DeadTextFade=.35f,TitleDelay=.5f,TitleFade=1f,InfoDelay=1f,InfoFade=.8f;
         const float TargetSaturation=.15f,TargetBrightness=.55f;
         const float RingDiameter=92f;
         public string LocaleCode="ko";

@@ -143,8 +143,11 @@ namespace Exoduser.UnityPort {
    float p=Mathf.Clamp01(age/defs.timing.lightAnim);float e=EaseOut(p);float size=Mathf.Lerp(400,40,e);float op=1-e;
    GUI.color=new Color(180/255f,140/255f,100/255f,.08f*op*fade);NativeUiAudit.DrawTexture(new Rect(960-size/2,540-size/2,size,size),radial);GUI.color=Color.white;
   }
+  // 11-04 judge 6: the front title (NativeRevive death screen, fades out in 0.35s) must be gone before this title appears.
+  public const float TitleGateDelay=.4f,TitleGateRise=.8f;
+  public static float TitleGate(float age){return Mathf.SmoothStep(0,1,Mathf.Clamp01((age-TitleGateDelay)/TitleGateRise));}
   void DrawTexts(float age,float fade){
-   float pulse=TitlePulse(age);
+   float pulse=TitlePulse(age)*TitleGate(age);
    // .dt 45.44px Cinzel Decorative/Nanum 700, ls .14em, colour rgba(218,210,193,.94) x pulse opacity
    CenteredText(960,386,61,defs.title,nanum,45,C(218,210,193,.94f*fade*pulse),6.3616f,.95f*pulse*fade,3,true);
    // .ds sub

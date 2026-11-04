@@ -145,12 +145,34 @@ namespace Exoduser.UnityPort
             while(style.fontSize>8){var size=style.CalcSize(new GUIContent(text));if(size.x<=inside.width&&size.y<=inside.height)break;style.fontSize--;}
             Label(inside,text,style);
         }
+        // Hover rim: soft silver light just outside (and 6px inside) the plate edge. Silver Hell tone, no hue.
+        const float EntryRimReach=16,EntryRimInner=6;
+        static Texture2D entryRim;static Vector2 entryRimSize;
+        static void DrawEntryRim(Rect box)
+        {
+            int cw=Mathf.CeilToInt((box.width+EntryRimReach*2)/2),ch=Mathf.CeilToInt((box.height+EntryRimReach*2)/2);
+            if(entryRim==null||entryRimSize!=new Vector2(box.width,box.height)){
+                if(entryRim!=null)UnityEngine.Object.Destroy(entryRim);
+                float bw=box.width,bh=box.height,total=EntryRimReach*2;
+                entryRim=Effect(cw,ch,(u,v)=>{
+                    float x=u*(bw+total)-EntryRimReach,y=v*(bh+total)-EntryRimReach;
+                    float dx=Mathf.Max(Mathf.Max(-x,x-bw),0),dy=Mathf.Max(Mathf.Max(-y,y-bh),0);float outside=Mathf.Sqrt(dx*dx+dy*dy);
+                    float a;
+                    if(outside>0)a=Mathf.Pow(Mathf.Clamp01(1-outside/EntryRimReach),2);
+                    else{float inner=Mathf.Min(Mathf.Min(x,bw-x),Mathf.Min(y,bh-y));a=Mathf.Clamp01(1-inner/EntryRimInner);}
+                    return new Color(196/255f,202/255f,210/255f,a*.34f);
+                });
+                entryRimSize=new Vector2(box.width,box.height);
+            }
+            NativeUiAudit.DrawTexture(new Rect(box.x-EntryRimReach,box.y-EntryRimReach,box.width+EntryRimReach*2,box.height+EntryRimReach*2),entryRim);
+        }
         internal static bool EntryFocus(Rect box)
         {
             if(innerButtonGlow==null)innerButtonGlow=Resources.Load<Texture2D>("Art/ui/silver_hell/guide_button_glow");
             if(innerButtonGlow==null)return false;
             var previous=GUI.color;var inside=new Rect(box.x+box.width*.34f,box.y+box.height*.24f,box.width*.32f,box.height*.44f);
-            NativeUiAudit.BeginGroup(inside);try{GUI.color=new Color(1,1,1,.18f);NativeUiAudit.DrawTexture(new Rect(0,0,inside.width,inside.height),innerButtonGlow);}finally{NativeUiAudit.EndGroup();GUI.color=previous;}
+            NativeUiAudit.BeginGroup(inside);try{GUI.color=new Color(1,1,1,.34f);var glowRect=new Rect(0,0,inside.width,inside.height);NativeUiAudit.DrawTexture(glowRect,innerButtonGlow);NativeUiAudit.DrawTexture(glowRect,innerButtonGlow);}finally{NativeUiAudit.EndGroup();GUI.color=previous;}
+            DrawEntryRim(box);
             return true;
         }
         internal static void ThornPlate(Rect box,bool primary,float edge,float outset)

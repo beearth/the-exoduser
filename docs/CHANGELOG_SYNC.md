@@ -1,3 +1,5 @@
+2026-11-04 UI 판정 ⑥ 경미 5건 반영(codex/unity-demo-text-20261104): 로비 빈 슬롯 어두운 면, 입장 호버 ENTER 광+테 외곽 광, 그리스어 경험치 ΕΜΠ→Εμπειρία, 펫 말풍선 본문 명조, 사운드 탭 줄 끝 960→818(914), 사망 제목 크로스페이드 앞 제목 선소거. PC 검사 judge6 6/0·컴파일 오류 0만, 화면 판정 전.
+
 2026-11-04 바닥 예고 투영 색 수정(임펙트 총괄, CTO 요청 단독 브랜치): NativeGroundWarningProjection이 sRGB 정점색을 선형 변환 없이 셰이더에 넘겨 Linear 프로젝트에서 드루이드 바닥 예고(어두운 독액 얼룩 #1c3307 계열)가 밝은 민트 초록 원판·부채꼴로 보였다(PC 무창 후보 d7f5c3a1e 1920 촬영). Linear일 때 Color.linear로 변환. 쓰는 곳 NativeDruidTelegraphView(unity/main) 1곳. 같은 파일 내용으로 PC Roslyn Core·Runtime 컴파일 확인(기존 무관 Remodel 1건 외 0).
 
 2026-11-04 08:30 전투 통계 세이브 격리 누수 수정(도구 총괄, BuildLoop 08:05 FAIL 원인): ObserveCombatStatsEnd가 -output 없을 때 Application.persistentDataPath/combat-stats에 바로 써서 --a2r-play-sandbox·--unity-qa-sandbox 실행(사용자 맵 후보 PID 11048)이 사용자 실제 세이브 폴더 combat-stats.json을 바꿨고, 같은 시각 루프 빌드가 USER_SAVE changed=1로 FAIL. NativeQaSandbox.Resolve(Application.persistentDataPath)를 거치도록 한 줄 수정(Runtime, Core 무변경). 저장 내용·시점은 그대로.
