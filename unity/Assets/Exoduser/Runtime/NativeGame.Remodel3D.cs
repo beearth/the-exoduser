@@ -65,10 +65,12 @@ namespace Exoduser.UnityPort
         }
 
         // Stops a half-built 3D field and keeps the 2D view (scene-missing / rig-missing failures below only set r3Failed and do not tear anything down; this path also unloads the scene). The first reason is kept for the transition record.
-        // exception=false (stall, hard-cap, owner disabled): retried at the next field entry. exception=true: retried once, then 2D for the session.
+        // Every abort kind (stall, hard-cap, owner disabled, exception) shares ONE counter in r3Gate: the first abort defers one retry to the next field entry, the second is
+        // permanent (2D for the session). Exception: an idle stall while only a scene unload is pending (no assembly running) does not count.
         void Remodel3DAbort(string why, bool exception = false)
         {
             if (r3Loaded) return;
+            if (!exception && r3Gate.WaitingOnOps(r3Loading)) { NativeTransitionProgress.Fail(why); Debug.LogWarning("[RM-INT] waiting for a scene unload, opening in 2D without using a retry: " + why); return; }
             NativeTransitionProgress.Fail(why); Debug.LogWarning("[RM-INT] 3D field aborted, staying 2D: " + why);
             if (r3LoadRoutine != null) { StopCoroutine(r3LoadRoutine); r3LoadRoutine = null; }
             r3Loading = false; r3Gate.Abort(exception);
@@ -90,7 +92,7 @@ namespace Exoduser.UnityPort
             else R3UnloadScene(r3Scene.IsValid() ? r3Scene : SceneManager.GetSceneByName(R3SceneName));   // the load may have finished this very frame, before r3Scene was assigned
             R3DestroyMade();
             r3Scene = default; r3Roots = null; r3Cam = null; r3Marker = null; r3Vcam = null; r3Brain = null;
-            a2Root = null; a2Field = null; a2FieldSoil = null; hellEnvironment = null; hellFlames.Clear(); hellHeroRim = null; hellActorMaterial = null; r3Base.Clear();
+            a2Root = null; a2Field = null; a2FieldSoil = null; a2Water = null; a2FieldRootMaterial = null; a2BrambleMeshes = null; a2BrambleMaterial = null; hellFlameFrames = null; hellEnvironment = null; hellFlames.Clear(); hellHeroRim = null; hellActorMaterial = null; r3Base.Clear();
         }
         // Runtime-created meshes / materials / textures of this assembly (R3Track at each creation site). Shared originals from Resources.Load are never tracked.
         static readonly List<UnityEngine.Object> r3Made = new List<UnityEngine.Object>();

@@ -92,10 +92,23 @@ PC R5 `0a60cbcee273e1150ba7df8909acb77dd9f18edc`에서 게임 구역 전환 화�
 | 항목 | 동작 |
 |---|---|
 | 재시도 상한(fix3 "입장마다 재시도"를 대체) | **카운터 하나를 모든 중단 종류가 공유한다**(stall·hard-cap·owner-disabled·예외). 세션당 재시도 1회(`FieldLoadGate.MaxRetries`): 첫 중단은 다음 필드 입장에 한 번 재시도, **두 번째 중단은 `MarkPermanent()`로 Permanent(그 세션 2D)**. 예외 1회 + 비예외 1회도 합쳐 두 번이라 Permanent. 세 번째 입장은 대기·재시도 없이 2D로 열린다(검은 화면 1.2초 안팎). 예외와 비예외의 카운터를 따로 두지 않은 이유: 실패 환경에서 입장마다 20~120초 검은 화면이 쌓이는 비용의 상한을 최대 2회로 묶기 위해서다. |
-| 누수 | 조립 중 런타임에 만든 Mesh·Material·Texture2D(지형 513² 표면 메시 포함)·복제 메시·TerrainData·TerrainLayer를 생성 지점에서 `R3Track`으로 목록(`r3Made`)에 모은다(8개 파일 40곳). 중단하면 `R3Teardown`이 목록을 `Destroy`하고 `Resources.UnloadUnusedAssets()`를 1회 부른다. `Resources.Load`로 받은 공유 원본은 추적하지 않아 지우지 않는다. 조립이 성공하면 목록만 비운다(세션 동안 유지). |
+| 누수 | 조립 중 런타임에 만든 Mesh·Material·Texture2D(지형 513² 표면 메시 포함)·복제 메시·TerrainData·TerrainLayer를 생성 지점에서 `R3Track`으로 목록(`r3Made`)에 모은다(8개 파일 40곳). 중단하면 `R3Teardown`이 목록을 `Destroy`하고 `Resources.UnloadUnusedAssets()`를 1회 부른다(fix5: 목록에 든 객체를 담는 캐시 필드 `a2BrambleMeshes`·`a2BrambleMaterial`·`a2Water`·`a2FieldRootMaterial`·`a2FieldSoil`·`hellActorMaterial`·`hellFlameFrames`도 같이 null로 비운다). `Resources.Load`로 받은 공유 원본은 추적하지 않아 지우지 않는다. 조립이 성공하면 목록만 비운다(세션 동안 유지). |
 | 같은 프레임 중단 | 씬 로드가 끝난 그 프레임에 중단되면 `r3Scene`이 아직 default라서, `R3Teardown`이 `r3Scene`이 무효일 때 `SceneManager.GetSceneByName(R3SceneName)`으로 찾아 끄고 언로드한다. 재시도에서 RM1_Slice가 2개 되지 않는다. |
 | 주석 | `FieldPreparePending` 주석에 deferred·permanent 조건 추가, `Remodel3DAbort` 주석의 "scene / rig 실패와 같은 결과"를 사실대로(그쪽은 `r3Failed`만 두고 언로드하지 않음) 정정, 죽은 코드였던 `MarkPermanent`를 중단 정책에 연결. run.cjs (g)의 `dog.Total<5`(전환이 끝나면 0이라 항상 참)는 준비 중 최대값을 재도록 고쳤다. |
 | 검사 | `run.cjs` 52/0(정책: 비예외 2회→Permanent, 예외+비예외 조합 양방향, 세 번째 입장 2D·긴 검은 화면 없음 추가), `abort-contract`(GetSceneByName 경로·생성 객체 Destroy·UnloadUnusedAssets 1회·전 생성 지점 추적 계약), `root-guard`·`capture-contract` PASS. 실게임의 Destroy·UnloadUnusedAssets 효과(메모리)는 미측정, Mac 확인 필요. |
+
+### 11-04 fix5 — fix4 회귀(파괴된 캐시 재사용) 수정
+
+상태: PC 하니스·참조 컴파일만, Unity 실컴파일·Mac 화면 판정 전. Core·화면 디자인 무변경.
+
+| 항목 | 동작 |
+|---|---|
+| 덤불 캐시 | 덤불 단계 뒤에 중단되면 `R3DestroyMade`가 `a2BrambleMeshes`·`a2BrambleMaterial`을 파괴하는데 필드가 남아 재시도가 성공해도 덤불이 사라졌다. `R3Teardown`이 두 필드(와 `a2Water`·`a2FieldRootMaterial`·`hellFlameFrames`)를 비우고, `A2Bramble`은 `CacheValidity.NeedsRebuild`(Unity null 검사, 배열은 원소 하나라도 파괴됐으면 재생성)로 판단한다. |
+| 플레이어 TerrainLayer | 공유 TerrainData가 중단된 시도의 (파괴된) 레이어를 들고 있어 재시도의 `Instantiate`가 예외였다. 첫 시도에서 건드리지 않은 원본 배열(`hellLayerOriginals`)을 잡아 두고 `CacheValidity.PickSource`로 원본(없으면 현재, 둘 다 파괴면 건너뜀)에서 복제한다. |
+| 추적 추가 | 불꽃 스프라이트 8개(`hellFlameFrames`)를 `R3Track`에 넣었다. 지면 투영 receiver 마스크·VolumeProfile 사본은 이번 조립 경로에서 생성 지점을 찾지 못해(아레나 조명의 `Instantiate(hellProfile)`는 조립이 아님) 추적하지 않았고, 미해결로 남긴다. |
+| 언로드 대기 | 재시작을 막는 씬 언로드만 기다리는 중(조립 중 아님)의 idle stall은 `FieldLoadGate.WaitingOnOps`로 판정해 카운터(재시도 1회)를 쓰지 않는다. 전환은 2D로 열리고 언로드가 끝나면 `Remodel3DSync`가 다시 시작한다. |
+| fix4 표 문구 | 카운터 공유 문구는 fix4 표 그대로이며, 위 예외(언로드 대기 stall은 세지 않음)를 이 표에 추가했다. |
+| 검사 | `run.cjs` 62/0(덤불 캐시 재생성·파괴된 TerrainLayer 가드·언로드 대기 추가), `abort-contract`(캐시 필드 비움·R3Track 대입 필드 전수 스캔·Unity null 검사·레이어 원본 사용), `root-guard`·`capture-contract` PASS. 실게임 재시도 결과는 Mac 확인 필요. |
 
 ## 11-04 로비→필드 전환 로딩 촬영 모드
 

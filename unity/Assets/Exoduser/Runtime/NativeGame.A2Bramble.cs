@@ -10,7 +10,8 @@ namespace Exoduser.UnityPort
 
         void A2Bramble(GameObject root,float x,float z)
         {
-            if(a2BrambleMeshes==null)
+            // Unity null checks: a failed assembly destroys these (R3Track) and R3Teardown also clears them; a destroyed one must be rebuilt, not reused.
+            if(CacheValidity.NeedsRebuild<UnityEngine.Object>(a2BrambleMaterial,a2BrambleMeshes,o=>o==null))
             {
                 var bark=Resources.Load<Material>("Art/map/a2/hollow/Materials/A2_Loft_Bark");
                 if(bark==null){Debug.LogError("[A2] 고사 덤불 목질 누락. 기존 사진 덤불 유지");return;}

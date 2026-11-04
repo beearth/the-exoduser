@@ -11,7 +11,7 @@ namespace Exoduser.UnityPort
         int hellDiagnosticFilter;
         Material hellActorMaterial; Light hellHeroRim;
         readonly List<SpriteRenderer> hellFlames=new List<SpriteRenderer>();
-        Sprite[] hellFlameFrames;
+        Sprite[] hellFlameFrames;TerrainLayer[] hellLayerOriginals;
         AmbientMode hellOldAmbient; Color hellOldSky,hellOldEquator,hellOldGround,hellOldFog; bool hellOldFogOn; float hellOldFogDensity,hellOldFogStart,hellOldFogEnd; FogMode hellOldFogMode;
         System.Collections.IEnumerator HellLightingSetup()
         {
@@ -45,7 +45,10 @@ namespace Exoduser.UnityPort
             {
                 // Editor Play 검수가 공유 TerrainData 에셋의 레이어를 저장하지 않게 격리한다.
                 if(Application.isEditor)g.terrainData=R3Track(Instantiate(g.terrainData));
-                var layers=g.terrainData.terrainLayers;for(int i=0;i<layers.Length;i++){layers[i]=R3Track(Instantiate(layers[i]));layers[i].normalScale=.55f;layers[i].smoothness=i==0?.24f:.22f;layers[i].specular=new Color(.12f,.12f,.12f);}
+                var layers=g.terrainData.terrainLayers;
+                // The shared TerrainData keeps the layers a failed attempt assigned (destroyed on abort). Keep the untouched originals from the first attempt and clone from those.
+                if(hellLayerOriginals==null||hellLayerOriginals.Length!=layers.Length||System.Array.Exists(hellLayerOriginals,l=>l==null)){if(!System.Array.Exists(layers,l=>l==null))hellLayerOriginals=(TerrainLayer[])layers.Clone();}
+                for(int i=0;i<layers.Length;i++){var layerSource=CacheValidity.PickSource(hellLayerOriginals,layers,i,l=>l==null);if(layerSource==null){Debug.LogError("[RM-INT] terrain layer source missing: "+i);continue;}layers[i]=R3Track(Instantiate(layerSource));layers[i].normalScale=.55f;layers[i].smoothness=i==0?.24f:.22f;layers[i].specular=new Color(.12f,.12f,.12f);}
                 g.terrainData.terrainLayers=layers;
                 HellGroundSetup(g);
                 if(!A2Requested)HellEnvironmentSetup(g);
@@ -57,7 +60,7 @@ namespace Exoduser.UnityPort
             var heroSpot=new GameObject("영웅 달빛 웅덩이");heroSpot.transform.SetParent(r3Marker,false);heroSpot.transform.localPosition=new Vector3(0,4,0);heroSpot.transform.localRotation=Quaternion.Euler(90,0,0);
             var spot=heroSpot.AddComponent<Light>();spot.type=LightType.Spot;spot.color=new Color(.72f,.84f,1);spot.intensity=14;spot.range=7;spot.spotAngle=58;spot.innerSpotAngle=40;spot.shadows=LightShadows.Soft;spot.shadowStrength=.65f;spot.shadowNormalBias=.1f;
             var sheet=Resources.Load<Texture2D>("Art/map/hell_lighting/torch_flame");
-            if(sheet!=null){hellFlameFrames=new Sprite[8];for(int i=0;i<8;i++)hellFlameFrames[i]=Sprite.Create(sheet,new Rect(i%4*(sheet.width/4),(1-i/4)*(sheet.height/2),sheet.width/4,sheet.height/2),new Vector2(.5f,.12f),100);}
+            if(sheet!=null){hellFlameFrames=new Sprite[8];for(int i=0;i<8;i++)hellFlameFrames[i]=R3Track(Sprite.Create(sheet,new Rect(i%4*(sheet.width/4),(1-i/4)*(sheet.height/2),sheet.width/4,sheet.height/2),new Vector2(.5f,.12f),100));}
             var brazier=Resources.Load<GameObject>("Art/map/keyshot/brazier");
             if(brazier!=null&&hellFlameFrames!=null&&g!=null)
             {

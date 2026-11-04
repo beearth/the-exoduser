@@ -8,6 +8,7 @@ const evidence=p.resolve(process.argv[3]||'I:/EXODUSER-Storage/codex-takeover/fi
 const work=evidence+'/work';fs.mkdirSync(work+'/temp',{recursive:true});
 const runtime=root+'/Assets/Exoduser/Runtime';
 const program=`using System;using System.Collections.Generic;using Exoduser.UnityPort;using Exoduser.UnityPort.Core;
+sealed class Obj{public string Name;public bool Destroyed;public Obj(string n){Name=n;}}
 static class P{
  static int checks,failures;static List<string> log=new List<string>();
  static void C(bool ok,string name,string detail=""){checks++;if(!ok)failures++;log.Add((ok?"PASS ":"FAIL ")+name+(detail.Length>0?" | "+detail:""));}
@@ -182,6 +183,27 @@ static class P{
   // 10 (j). Failure freezes the loading line instead of running it to 100%; success still fills.
   {C(TransitionProgressBar.Target(true,false,.4f,true,.4f)==.4f&&TransitionProgressBar.Target(true,true,.7f,true,.3f)==.3f,"(j) failed transition: line does not run to 100%");
    C(TransitionProgressBar.Target(true,false,.4f,false,.4f)==1f&&TransitionProgressBar.Target(true,true,.7f,false,.3f)==.7f&&TransitionProgressBar.Target(false,false,0,false,0)==0f,"(j) normal: fills to 1 after assembly, follows fraction while it runs, 0 without assembly");}
+  // 11 (k). Bramble cache: an abort after the bramble stage destroys the tracked objects; the retry must rebuild them (C# non-null but Unity-dead is not reusable).
+  {var mat=new Obj("mat");var meshes=new[]{new Obj("m0"),new Obj("m1"),new Obj("m2")};
+   Func<Obj,bool> dead=o=>o.Destroyed;
+   C(!CacheValidity.NeedsRebuild(mat,meshes,dead),"(k) healthy cache is reused");
+   mat.Destroyed=true;meshes[0].Destroyed=true;meshes[1].Destroyed=true;meshes[2].Destroyed=true; // R3DestroyMade
+   C(CacheValidity.NeedsRebuild(mat,meshes,dead),"(k) destroyed (Unity-null) cache objects are not reused although the C# references remain");
+   C(CacheValidity.NeedsRebuild<Obj>(null,null,dead)&&CacheValidity.NeedsRebuild(new Obj("x"),new Obj[]{null},dead),"(k) cleared (null) cache is rebuilt");
+   // Whole story: attempt 1 builds + aborts after the bramble stage, teardown clears; attempt 2 rebuilds (bramble present), a never-cleared cache would show none.
+   Obj cMat=null;Obj[] cMesh=null;int rebuilds=0;Action build=()=>{if(CacheValidity.NeedsRebuild(cMat,cMesh,dead)){rebuilds++;cMat=new Obj("b");cMesh=new[]{new Obj("a"),new Obj("b"),new Obj("c")};}};
+   build();var oldMat=cMat;var oldMesh=cMesh;oldMat.Destroyed=true;foreach(var o in oldMesh)o.Destroyed=true;cMat=null;cMesh=null;build();
+   C(rebuilds==2&&!cMat.Destroyed&&!cMesh[0].Destroyed,"(k) retry after an abort past the bramble stage rebuilds the bramble cache");
+   var stale=new Obj("stale");Obj sMat=stale;Obj[] sMesh=new[]{new Obj("s")};stale.Destroyed=true;sMesh[0].Destroyed=true;int r2=0;if(CacheValidity.NeedsRebuild(sMat,sMesh,dead))r2++;
+   C(r2==1,"(k) even a cache that was not nulled is rebuilt by the Unity-null check");}
+  // 11 (l). Destroyed TerrainLayer guard: clone from the untouched original; if both are dead, no source (no exception).
+  {var orig=new[]{new Obj("L0"),new Obj("L1")};var cur=new[]{new Obj("c0"),new Obj("c1")};Func<Obj,bool> dead=o=>o.Destroyed;
+   cur[0].Destroyed=true;cur[1].Destroyed=true;
+   var p0=CacheValidity.PickSource(orig,cur,0,dead);C(p0==orig[0],"(l) destroyed current layer -> the original is used");
+   orig[1].Destroyed=true;var p1=CacheValidity.PickSource(orig,cur,1,dead);C(p1==null,"(l) both dead -> null source (caller skips instead of throwing)");
+   var ok=new[]{new Obj("k0")};C(CacheValidity.PickSource((Obj[])null,ok,0,dead)==ok[0],"(l) no originals captured yet -> current layer");}
+  // 11 (m). Idle stall while only a scene unload is pending does not use up the retry.
+  {var g=new FieldLoadGate();g.OpStarted();C(g.WaitingOnOps(false)&&!g.WaitingOnOps(true),"(m) waiting on unload only counts when no assembly is running");g.OpDone();C(!g.WaitingOnOps(false),"(m) no pending ops -> a stall counts");}
   foreach(var l in log)Console.WriteLine(l);
   Console.WriteLine("checks="+checks+" failures="+failures);Environment.Exit(failures==0?0:1);}
 }

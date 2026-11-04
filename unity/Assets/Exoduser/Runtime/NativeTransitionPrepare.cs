@@ -81,8 +81,19 @@ namespace Exoduser.UnityPort {
   internal void Abort(bool exception){if(++aborts>MaxRetries)MarkPermanent();else deferred=true;}
   internal void MarkPermanent(){permanent=true;deferred=false;}
   internal void FieldEntry(){deferred=false;}
+  // Waiting only for a scene unload (no assembly running): an idle stall there is not an assembly failure and must not use up the retry.
+  internal bool WaitingOnOps(bool loading){return !loading&&pendingOps>0;}
   internal void OpStarted(){pendingOps++;}
   internal void OpDone(){if(pendingOps>0)pendingOps--;}
+ }
+ // Cached assembly objects may have been destroyed by an abort; callers pass a Unity-null predicate (a plain C# null check would miss them).
+ internal static class CacheValidity {
+  internal static bool NeedsRebuild<T>(T single,T[] many,Func<T,bool> dead)where T:class{
+   if(single==null||dead(single)||many==null)return true;foreach(var m in many)if(m==null||dead(m))return true;return false;}
+  // Prefer the untouched original; fall back to the current entry; default when both are dead.
+  internal static T PickSource<T>(T[] originals,T[] current,int i,Func<T,bool> dead)where T:class{
+   if(originals!=null&&current!=null&&originals.Length==current.Length&&originals[i]!=null&&!dead(originals[i]))return originals[i];
+   return current!=null&&i<current.Length&&current[i]!=null&&!dead(current[i])?current[i]:null;}
  }
  // Loading line target: on failure it freezes where it was (no run to 100%), the flow's fade-in then takes it away.
  internal static class TransitionProgressBar {
