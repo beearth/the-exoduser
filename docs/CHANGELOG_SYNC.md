@@ -1,3 +1,5 @@
+2026-11-04 SND-17b BGM 라이선스 확인·P1 반입 순서(사운드 총괄): 사용자 확인(CTO 경유) — Suno 생성 당시 유료 플랜 → UNITY_BGM_IMPORT_CANDIDATES의 Suno 76곡 출처 칸을 "유료 플랜 확인(사용자, 11-04)"로 갱신했다. P1 반입 순서 7단계(1 사망·승리 두 번째 4.8MB → 2 대장간 14.8MB → 3 1장 Remastered 나머지 10.4MB → 4 1장 mp3 → 5 공통 회전 → 6 2~7장 → 7 최종 보스), 데모 권장 = P0 + 1~3단계 11곡 약 45MB. 출처 태그 없는 3파일은 계속 보류. 반입·코드 변경 없음.
+
 2026-11-04 STY-25 1-1 다크드루이드 등장·퇴장 대사(스토리 총괄, CTO 배정): G0 A안 연출 순서에 맞춰 이름 카드 부제 "썩은 숲의 숲지기", 목숨 2·3 전환 자막 2줄, 출구 개방 뒤 다음 지역 암시 펫 대사 1쌍을 새로 쓰고 기존 등장·침강·처치 대사 6줄과 묶었다. 신규 KO·EN 5건 No.4288~4292. 문서 `docs/11내러티브·로어디자인/DARK_DRUID_1-1_BOSS_TEXT_20261104.md`. 게임 데이터 변경 0(보스전 총괄 반영 대기).
 
 2026-11-04 SND-17 Unity BGM 반입 후보 목록(사운드 총괄, CTO 배정): docs/6사운드디자인/UNITY_BGM_IMPORT_CANDIDATES_20261104.md 신설. 웹 bgm 79파일(설정 57 + 큐 22)의 경로·길이·용량·형식·Vorbis 반입 추정·BGM.tracks 쓰임·출처(메타데이터: 76파일 made with suno, beearthone, 생성일·곡 id)를 정리했다. 바이트 대조로 Unity 보유 10·제외 사본 6. P0 반입 권장 3곡(1-1 필드 회전, Ashes Under the Banner·Cathedral of Steel·Iron Oath Under Ash Remastered, 15.9분·약 15MB), P1 52, P2 8. Suno 상업 권리 사용자 확인 필요. 반입·코드 변경 없음.
