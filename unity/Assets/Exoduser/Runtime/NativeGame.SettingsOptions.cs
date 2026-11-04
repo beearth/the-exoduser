@@ -17,7 +17,9 @@ namespace Exoduser.UnityPort
   bool settingsDirtyPresetNote,settingsBgmPreview;
   void ApplySettingsOptions()
   {
-   if(Simulation==null||settings==null)return;
+   if(settings==null)return;
+   NativeCursorOption.Apply(settings.Options);NativeGraphicsOptions.Apply(settings.Options);   // P31/P32 pointer, P18 graphics (default values change nothing)
+   if(Simulation==null)return;
    Simulation.MinPickRarity=settings.Options.Get("minPickRar");Simulation.MinPickLevelTier=settings.Options.Get("minPickLvTier");
   }
   // game.html shake(): G.shake = n * OPT.shake / 100.

@@ -21,18 +21,18 @@ const optionRows=1+require('node:fs').readFileSync(path.join(runtime,'Core/Nativ
 ok(optionRows===11,'game tab has 11 option rows (reduce motion + 10)');
 ok(9+optionRows+2===+navRows[1],'game tab nav count = 9 system + '+optionRows+' option rows + reset + quit');
 // P02
-ok(/ApplyFrameCap\(settings\.FrameCap\);ApplySettingsLanguage\(\);\}/.test(persist),'P02 the saved language is applied with the other host values at startup (lobby and game read lobby.Language)');
+ok(/ApplyFrameCap\(settings\.FrameCap\);ApplySettingsLanguage\(\);(ApplySettingsOptions\(\);)?\}/.test(persist),'P02 the saved language is applied with the other host values at startup (lobby and game read lobby.Language)');
 ok(/LobbyLanguage\.Startup\(settings\.Options\.Lang,lobby\.Language\)/.test(persist),'P02 saved value > start decision, empty/unknown keeps the host default');
 ok(/void UpdateSettingsPersistence\(\)\n  \{\n   TrackSettingsLanguage\(\);/.test(persist)&&/settings\.Options\.Lang=now;QueueSettingsSave\(\)/.test(persist),'P02 a language change from any screen is saved');
 ok(/if\(key=="preset"\)ApplySettingsLanguage\(\)/.test(options),'P02/P34 a loaded slot applies its language');
 // P30
-ok(/NativeBgmSelection\.Resolve\(key,track\)/.test(game)&&/music\.Sync\(key,audio,autoBgm\)/.test(game)&&/autoBgm=NativeBgmSelection\.IsAuto\(track\)/.test(game),'P30 the selected track (and whether it is auto) reaches the music host');
+ok(/NativeBgmCatalog\.Resolve\(key,track\)/.test(game)&&/music\.Sync\(key,audio,autoBgm\)/.test(game)&&/autoBgm=NativeBgmCatalog\.IsAuto\(track\)/.test(game),'P30 the selected track (and whether it is auto) reaches the music host');
 // BGM rotation host wiring
-ok(/bool rot = rotate && audioKey == NativeBgmRotation\.FirstClip && \(key == "hell1" \|\| key\.Length == 0\);/.test(music)&&/if \(!rot && audioKey\.Length > 0\) rotation\.Reset\(\);/.test(music),'BGM rotation only on the auto field song; boss/death/victory/chosen songs reset it');
-ok(/music\.loop = !rotating;/.test(music)&&/else if \(rotating && music\.clip != null && playedFor > 1f && !AudioListener\.pause\) \{ wanted = rotation\.Advance\(\);/.test(music),'BGM rotation: a rotating song plays once and the ended song advances through the normal switch (fade) path');
+ok(/bool rot = rotate && audioKey == NativeFieldBgmRotation\.FirstClip && \(key == "hell1" \|\| key\.Length == 0\);/.test(music)&&/if \(!rot && audioKey\.Length > 0\) rotation\.Reset\(\);/.test(music),'BGM rotation only on the auto field song; boss/death/victory/chosen songs reset it');
+ok(/music\.loop = !\(rotating \|\| forgeRotating\);/.test(music)&&/else if \(rotating && music\.clip != null && playedFor > 1f && !AudioListener\.pause\) \{ wanted = rotation\.Advance\(\);/.test(music),'BGM rotation: a rotating song plays once and the ended song advances through the normal switch (fade) path');
 ok(/bedWanted = key == "hell1"/.test(music)&&/bus\.Snapshot\(key == "boss"\)/.test(music),'BGM rotation: beds and boss snapshot untouched');
 ok(/public void Sync\(string key, string audioKey\)/.test(music)&&/bus\.Snapshot\(key == "boss"\)/.test(music)&&/bedWanted = key == "hell1"/.test(music),'P30 beds and boss snapshot still follow the stage key');
-ok(/if\(!NativeBgmSelection\.IsSupported\(v\[i\]\)\)continue;/.test(menu)&&/string shown=NativeBgmSelection\.Effective\(settings\.Options\.BgmTrack\)/.test(menu),'P30 the menu lists only supported songs and shows an unsupported saved value as auto');
+ok(/if\(!NativeBgmCatalog\.IsSupported\(v\[i\]\)\)continue;/.test(menu)&&/string shown=NativeBgmCatalog\.Effective\(settings\.Options\.BgmTrack\)/.test(menu),'P30 the menu lists only supported songs and shows an unsupported saved value as auto');
 ok(/settingsBgmPreview=true/.test(options)&&/else if\(key\.Length==0&&settingsBgmPreview/.test(game),'P30 a newly chosen song is heard while the pause window is open');
 // P34
 ok(/NativeSettingsPreset\.Encode\(settings,NativeKeyBindInput\.Bindings\)/.test(menu)&&/NativeSettingsPreset\.Apply\(settings\.Presets\[slot\]/.test(menu),'P34 slots go through NativeSettingsPreset (keys + language)');
@@ -47,7 +47,9 @@ ok(/if\(tab==3&&idx>=3&&KeyStopSpan\(idx-3,out kTop,out kBottom\)\)/.test(menu),
 // P33
 ok(/pauseMenu\.CharacterIndex=CharacterRoster\.PlayableVisualIndex/.test(persist)&&/if\(!character&&Clicked\(r\)\)/.test(menu),'P33 selection mark follows the real character; the card click stays blocked');
 // forbidden files untouched
-const names=cp.execFileSync('git',['-C',project,'diff','--name-only','origin/unity/main','--','Assets/Exoduser/Runtime/NativeHud.cs','Assets/Exoduser/Runtime/NativePanelTabBar.cs','Assets/Exoduser/Runtime/NativeForgePanel.cs','Assets/Exoduser/Runtime/NativeGame.CombatSave.cs','Assets/Exoduser/Runtime/NativeFlavorSavePaths.cs','Assets/Exoduser/Runtime/NativeFlavorStorage.cs'],{encoding:'utf8',stdio:['ignore','pipe','pipe']}).trim();
+// Basis: the demo-flavor lane commit merged into this branch (78cef36f9^2) - it already carries the flavor save-path files, so only changes made by the options lanes show up.
+const basis=cp.execFileSync('git',['-C',project,'rev-parse','78cef36f9^2'],{encoding:'utf8'}).trim();
+const names=cp.execFileSync('git',['-C',project,'diff','--name-only',basis,'--','Assets/Exoduser/Runtime/NativeHud.cs','Assets/Exoduser/Runtime/NativePanelTabBar.cs','Assets/Exoduser/Runtime/NativeForgePanel.cs','Assets/Exoduser/Runtime/NativeGame.CombatSave.cs','Assets/Exoduser/Runtime/NativeFlavorSavePaths.cs','Assets/Exoduser/Runtime/NativeFlavorStorage.cs'],{encoding:'utf8',stdio:['ignore','pipe','pipe']}).trim();
 ok(names==='','forbidden files unchanged: '+names);
 console.log(JSON.stringify({sourceChecks:checks}));
 // dotnet Core contract

@@ -133,6 +133,7 @@ namespace Exoduser.UnityPort.Vfx
         public void Handle(FeedbackEvent e)
         {
             if (e == null) return;
+            if (!NativeGraphicsOptions.Slash && (e.Kind == FeedbackKind.KiSlashHit || e.Kind == FeedbackKind.KiChargeFlash)) return;   // P20 Slash Effect off
             if (e.Kind == FeedbackKind.KiSlashHit)
             {
                 float size = (e.Step == 3 ? 0.36f : e.Step == 2 ? 0.28f : 0.24f) * e.Scale;
@@ -183,8 +184,7 @@ namespace Exoduser.UnityPort.Vfx
                 int tier = p.Step == 3 ? Mathf.Clamp(Mathf.RoundToInt((p.ChargeScale - 1f) / 0.4f), 0, 3) : 0;
                 float width = Mathf.Min(0.09f, 0.07f * p.ChargeScale);
                 if (h.Fx.HasFloat("TrailSize")) h.Fx.SetFloat("TrailSize", width);
-                Send(h.Fx, h.Attr, TrailEvent, p.X, p.Y, p.Angle, width, tier, p.Step);
-                TrailEvents++;
+                if (NativeGraphicsOptions.Trail) { Send(h.Fx, h.Attr, TrailEvent, p.X, p.Y, p.Angle, width, tier, p.Step); TrailEvents++; }   // P19 Afterimage Trail off
             }
             stale.Clear();
             foreach (var pair in active)

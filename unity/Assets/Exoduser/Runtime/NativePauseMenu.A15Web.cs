@@ -24,7 +24,7 @@ namespace Exoduser.UnityPort
   readonly Dictionary<int,List<It>> a15Items=new Dictionary<int,List<It>>();
   readonly Dictionary<string,GUIStyle> a15Styles=new Dictionary<string,GUIStyle>();
   string a15ItemsLocale="";Texture2D windowBase,checkTex;Font myeongjo,cinzel;
-  float[] a15Scroll=new float[4];int openSelect=-1;float popupScroll;bool resetConfirm;
+  float[] a15Scroll=new float[4];int openSelect=-1;float popupScroll;bool resetConfirm,resetFocusYes;GUIStyle resetMessageStyle;
   PauseMenuCommand a15Command;
   public Action<string> OptionChanged;
   public Action<string> LanguagePicked;
@@ -33,7 +33,7 @@ namespace Exoduser.UnityPort
   public int A15OpenSelectIndex{get{return openSelect;}}
   public void A15SetScrollForQa(float v){a15Scroll[tab]=v;}
   public void A15OpenSelectForQa(string id){var items=Items();for(int i=0;i<items.Count;i++)if(items[i].id==id){openSelect=i;popupScroll=0;}}
-  public void OpenSettingsDirect(){navigation.Reset();Array.Clear(a15Scroll,0,a15Scroll.Length);openSelect=-1;resetConfirm=false;navigation.DirectSettings=true;ShowSettings();}
+  public void OpenSettingsDirect(){navigation.Reset();Array.Clear(a15Scroll,0,a15Scroll.Length);openSelect=-1;resetConfirm=false;resetFocusYes=false;navigation.DirectSettings=true;ShowSettings();}
   // rows per tab: game 22 (9 system rows + reduce motion + 10 game options + reset + quit), display 28, audio 3, controls 3 + key stops (A15SyncKeyStops adds the key list's stops)
   public static int[] A15NavRows(){return new[]{22,28,3,3};}
   // ---- text / fonts ----
@@ -83,8 +83,13 @@ namespace Exoduser.UnityPort
    if(d.Id=="optReduceMotion")return settings.Options.ReduceMotion?1:0;
    return settings.Options.Get(d.Key);
   }
+  // P18: rows whose web effect does not exist in this build stay in their web place but are greyed and take no input.
+  static bool Unavailable(It it){return it.def!=null&&!NativeGraphicsPolicy.IsAvailable(it.def.Key);}
+  public static bool OptionUnavailable(string key){return !NativeGraphicsPolicy.IsAvailable(key);}
+  void UnavailableNote(Rect r,float rightPad){Txt(new Rect(r.x,r.y+14,r.width-rightPad,20),W("m.unavailable",T("이 빌드 미지원","Not in this build")),13,Dim,TextAnchor.MiddleRight);}
   void SetVal(OptionDef d,int v)
   {
+   if(!NativeGraphicsPolicy.IsAvailable(d.Key))return;
    v=d.Clamp(v);
    if(d.Id=="optFps"){int cap=NativeSettingsState.GetFrameCap(v);if(frameCapChanged!=null&&cap!=settings.FrameCap){settings.TrySetFrameCap(cap);frameCapChanged(cap);}return;}
    if(d.Id=="optSfx"){if(sfxChanged!=null&&v!=settings.SfxPercent){settings.SetSfxPercent(v);sfxChanged(settings.SfxPercent);}return;}
@@ -206,7 +211,7 @@ namespace Exoduser.UnityPort
     PointAt(r,i);bool focus=navigation.Focused&&navigation.Cursor==i;
     Txt(new Rect(x+2,153+8,w,22),s,18,sel?Title:focus?Bone:Sub,TextAnchor.MiddleLeft,FontStyle.Bold);
     if(sel)Fill(new Rect(x,193,w,2),new Color32(176,40,28,255));else if(focus)Fill(new Rect(x,193,w,1),Line);
-    if(NativeSilverHellUi.Button(r,GUIContent.none,GUIStyle.none)){if(tab!=i){tab=i;openSelect=-1;a15Scroll[i]=0;}navigation.Fence();}
+    if(NativeSilverHellUi.Button(r,GUIContent.none,GUIStyle.none)&&!resetConfirm){if(tab!=i){tab=i;openSelect=-1;a15Scroll[i]=0;}navigation.Fence();}
     x+=w+40;
    }
    HLine(96,195,1728,LineTab);
@@ -220,7 +225,7 @@ namespace Exoduser.UnityPort
    a15Scroll[tab]=Mathf.Clamp(a15Scroll[tab],0,max);
    if(navigation.Focused&&navigation.Cursor>=4)EnsureVisible(items,max);
    float sy=a15Scroll[tab];
-   bool popup=openSelect>=0;bool wasEnabled=GUI.enabled;if(popup)GUI.enabled=false;
+   bool popup=openSelect>=0;bool wasEnabled=GUI.enabled;if(popup||resetConfirm)GUI.enabled=false;
    NativeUiAudit.BeginGroup(pages);
    foreach(var it in items)DrawItem(it,sy,fullscreen);
    NativeUiAudit.EndGroup();
@@ -250,8 +255,9 @@ namespace Exoduser.UnityPort
    if(Time.unscaledTime<presetNoteUntil)Txt(new Rect(260,1004,600,20),presetNote,14,presetNoteColor);
    var close=new Rect(1644,994,180,40);int closeIdx=navigation.Count-1;
    DrawButton(close,W("b.setClose",T("닫기 [ESC]","Close [ESC]")),false,false);PointAt(close,closeIdx);FocusBorder(close,closeIdx);
-   if(!popup&&NativeSilverHellUi.Button(close,GUIContent.none,GUIStyle.none)&&!(keyList!=null&&keyList.Listening)){navigation.Fence();if(!navigation.BackPage())a15Command=PauseMenuCommand.Resume;}
+   if(!popup&&!resetConfirm&&NativeSilverHellUi.Button(close,GUIContent.none,GUIStyle.none)&&!(keyList!=null&&keyList.Listening)){navigation.Fence();if(!navigation.BackPage())a15Command=PauseMenuCommand.Resume;}
    if(popup)DrawPopup(items,sy);
+   if(resetConfirm){var confirmed=DrawResetConfirm();if(confirmed!=PauseMenuCommand.None)a15Command=confirmed;}
    return a15Command;
   }
   float ContentHeight(List<It> items)
@@ -338,13 +344,14 @@ namespace Exoduser.UnityPort
   {
    PointAt(r,cursor);
    HLine(r.x,r.y+47,r.width,LineSoft);
-   Txt(new Rect(r.x,r.y+12,nameW,24),RowName(it),17,Bone);
+   Txt(new Rect(r.x,r.y+12,nameW,24),RowName(it),17,Unavailable(it)?Dim:Bone);
    if(navigation.Focused&&cursor>=0&&navigation.Cursor==cursor)Border(new Rect(r.x-4,r.y-1,r.width+8,50),new Color32(230,227,220,255));
   }
   void DrawRange(It it,Rect r,int cursor)
   {
    float nameW=Mathf.Max(230,TW(RowName(it),17,FontStyle.Normal)+12),controlX=Mathf.Min(r.width*.5f,nameW+20);
    var d=it.def;DrawRowFrame(it,r,cursor,nameW);
+   if(Unavailable(it)){UnavailableNote(r,0);return;}
    int v=GetVal(d);float valW=Mathf.Clamp(TW(Fmt(d,v),15,FontStyle.Bold)+8,112,r.width*.34f),ctlW=r.width-controlX-valW-20;
    var ctl=new Rect(r.x+controlX,r.y+13.5f,ctlW,20);NativeUiAudit.Region(ctl,"control");
    Txt(new Rect(r.xMax-valW,r.y+13,valW,21),Fmt(d,v),15,ValueColor(d,v),TextAnchor.MiddleRight,FontStyle.Bold,false);
@@ -366,6 +373,7 @@ namespace Exoduser.UnityPort
    var d=it.def;DrawRowFrame(it,r,cursor,r.width-18-20);
    var box=new Rect(r.xMax-18,r.y+14.5f,18,18);bool on=GetVal(d)!=0;
     NativeUiAudit.Region(box,"control");
+   if(Unavailable(it)){Fill(box,new Color32(10,13,13,140));Border(box,LineSoft);UnavailableNote(r,18+12);return;}
    Fill(box,new Color32(10,13,13,255));Border(box,on?new Color32(217,214,208,200):BoxLine);
    if(on)Diamond(box.center.x,box.center.y,6,Brass);
    var hit=new Rect(r.x,r.y,r.width,47);
@@ -378,11 +386,11 @@ namespace Exoduser.UnityPort
    else if(it.id=="optAtmos"){var l=NativeOptionText.List("atmos",LocaleCode);for(int i=0;i<l.Length;i++){values.Add(i.ToString());labels.Add(l[i]);}current=Mathf.Clamp(settings.Options.Get("atmos"),0,Mathf.Max(0,l.Length-1));}
    else if(it.id=="optBgmTrack")
    {
-    // Only songs this build can actually play are listed (NativeBgmSelection.SupportedAt), in web order. A saved value outside that list is shown as auto
+    // Only songs this build can actually play are listed (NativeBgmCatalog.SupportedAt), in web order. A saved value outside that list is shown as auto
     // but the settings value itself is left alone: it is only replaced when the player picks something.
     var v=NativeOptionText.List("bgm.values",LocaleCode);var l=NativeOptionText.List("bgm.labels",LocaleCode);int auto=0;
-    string shown=NativeBgmSelection.Effective(settings.Options.BgmTrack);
-    for(int i=0;i<v.Length&&i<l.Length;i++){if(!NativeBgmSelection.IsSupported(v[i]))continue;if(v[i]==NativeOptionSet.BgmTrackDefault)auto=values.Count;values.Add(v[i]);labels.Add(l[i]);if(v[i]==shown)current=values.Count-1;}
+    string shown=NativeBgmCatalog.Effective(settings.Options.BgmTrack);
+    for(int i=0;i<v.Length&&i<l.Length;i++){if(!NativeBgmCatalog.IsSupported(v[i]))continue;if(v[i]==NativeOptionSet.BgmTrackDefault)auto=values.Count;values.Add(v[i]);labels.Add(l[i]);if(v[i]==shown)current=values.Count-1;}
     if(values.Count>0&&!values.Contains(shown))current=auto;
    }
    return labels;
@@ -399,6 +407,7 @@ namespace Exoduser.UnityPort
    int current;List<string> values;var labels=SelectLabels(it,out current,out values);
    float selW=it.id=="optAtmos"?160:280;
    DrawRowFrame(it,r,cursor,r.width-selW-20);
+   if(Unavailable(it)){UnavailableNote(r,0);return;}
    var box=new Rect(r.xMax-selW,r.y+4.5f,selW,38);
     NativeUiAudit.Region(box,"button");
    Fill(box,new Color32(10,13,13,255));Border(box,Line);
@@ -438,10 +447,51 @@ namespace Exoduser.UnityPort
    if(it.id.StartsWith("gfx",StringComparison.Ordinal))selected=settings.Options.DetectPreset()==it.index;
    if(it.id=="fullscreen")selected=fullscreen;
    string text=it.text;
-   if(it.id=="reset"&&resetConfirm){text=W("b.resetYes",T("확인","Confirm"));}
    DrawButton(r,text,selected,it.danger);
    if(navigation.Focused&&cursor>=0&&navigation.Cursor==cursor)Border(new Rect(r.x-3,r.y-3,r.width+6,r.height+6),new Color32(230,227,220,255));
    if(Clicked(r)){navigation.Fence();navigation.PointAt(cursor);Activate(it,fullscreen);}
+  }
+  // P38: web #resetConfirm layout (warning text + confirm/cancel); the warning text is Unity's own (Restart keeps the character: level and gear stay). Same face as the lobby's character-delete dialog (NativeLobby.CharacterDelete.cs): iron panel, two ActionPlates
+  // (confirm left, cancel right), cancel focused first. Keys: Left = confirm, Right = cancel, Tab toggles, Enter/Space accepts the focused one, Esc cancels. The mouse works too.
+  static readonly Rect ResetPanel=new Rect(727,425,466,230),ResetYesRect=new Rect(784,562,170,46),ResetNoRect=new Rect(966,562,170,46);
+  public bool ResetConfirmOpen{get{return resetConfirm;}}
+  public bool ResetConfirmFocusYes{get{return resetFocusYes;}}
+  void ResetConfirmClose(){resetConfirm=false;resetFocusYes=false;navigation.Fence();}
+  PauseMenuCommand ResetConfirmAccept(bool yes){ResetConfirmClose();return yes?PauseMenuCommand.Restart:PauseMenuCommand.None;}
+  PauseMenuCommand PollResetConfirmKeys()
+  {
+   bool padLeft=false,padRight=false;foreach(var pad in UnityEngine.InputSystem.Gamepad.all){padLeft|=pad.dpad.left.wasPressedThisFrame;padRight|=pad.dpad.right.wasPressedThisFrame;}
+   if(ExoInput.KeyDown(KeyCode.Escape)||ExoInput.KeyDown(KeyCode.JoystickButton1))return ResetConfirmAccept(false);   // pad B = cancel
+   if(ExoInput.KeyDown(KeyCode.LeftArrow)||padLeft){resetFocusYes=true;return PauseMenuCommand.None;}
+   if(ExoInput.KeyDown(KeyCode.RightArrow)||padRight){resetFocusYes=false;return PauseMenuCommand.None;}
+   if(ExoInput.KeyDown(KeyCode.Tab)||ExoInput.KeyDown(KeyCode.UpArrow)||ExoInput.KeyDown(KeyCode.DownArrow)){resetFocusYes=!resetFocusYes;return PauseMenuCommand.None;}
+   if(ExoInput.KeyDown(KeyCode.Return)||ExoInput.KeyDown(KeyCode.KeypadEnter)||ExoInput.KeyDown(KeyCode.Space)||ExoInput.KeyDown(KeyCode.JoystickButton0))return ResetConfirmAccept(resetFocusYes);   // pad A = accept the focused plate
+   return PauseMenuCommand.None;
+  }
+  PauseMenuCommand DrawResetConfirm()
+  {
+   bool oldEnabled=GUI.enabled;GUI.enabled=true;var result=PauseMenuCommand.None;
+   try
+   {
+    Fill(new Rect(0,0,1920,1080),new Color(0,0,0,.85f));
+    NativeSilverHellUi.Panel(ResetPanel,28,8,iron:true);
+    NativeUiAudit.Region(ResetPanel,"panel");
+    if(resetMessageStyle==null)resetMessageStyle=new GUIStyle(GUI.skin.label){alignment=TextAnchor.MiddleCenter,wordWrap=true,padding=new RectOffset(),margin=new RectOffset()};
+    var basis=St(19,FontStyle.Normal,NativeSilverHellUi.PlateText,TextAnchor.MiddleCenter);
+    string message=W("m.resetConfirm",T("현재 지역을 처음부터 다시 시작합니다. 캐릭터 레벨과 장비는 그대로 남습니다.","Restart this area from the beginning. Your character's level and gear are kept.")),yes=W("b.resetYes",T("확인","Confirm")),no=W("b.resetNo",T("취소","Cancel"));
+    resetMessageStyle.font=basis.font;resetMessageStyle.fontSize=19;resetMessageStyle.normal.textColor=NativeSilverHellUi.PlateText;
+    NativeSilverHellUi.Label(new Rect(759,445,402,104),message,resetMessageStyle);
+    Vector2 mouse=Event.current.mousePosition;bool overYes=ResetYesRect.Contains(mouse),overNo=ResetNoRect.Contains(mouse);
+    NativeSilverHellUi.ActionPlate(ResetYesRect,false,resetFocusYes||overYes?1:0,overYes&&ExoInput.Mouse(0),22,2);
+    NativeSilverHellUi.ActionPlate(ResetNoRect,false,!resetFocusYes||overNo?1:0,overNo&&ExoInput.Mouse(0),22,2);
+    NativeSilverHellUi.PlateLabel(ResetYesRect,yes,St(17,FontStyle.Normal,NativeSilverHellUi.PlateTextDanger,TextAnchor.MiddleCenter));
+    NativeSilverHellUi.PlateLabel(ResetNoRect,no,St(17,FontStyle.Normal,NativeSilverHellUi.PlateText,TextAnchor.MiddleCenter));
+    if(NativeSilverHellUi.Button(ResetYesRect,GUIContent.none,GUIStyle.none))result=ResetConfirmAccept(true);
+    else if(NativeSilverHellUi.Button(ResetNoRect,GUIContent.none,GUIStyle.none))result=ResetConfirmAccept(false);
+    if(Event.current.type==EventType.MouseDown&&!ResetPanel.Contains(mouse))Event.current.Use();   // a click outside the dialog neither cancels nor reaches the window behind it
+   }
+   finally{GUI.enabled=oldEnabled;}
+   return result;
   }
   void Activate(It it,bool fullscreen)
   {
@@ -451,7 +501,7 @@ namespace Exoduser.UnityPort
     case "lobby":a15Command=PauseMenuCommand.ReturnLobby;break;
     case "saveP1":SavePreset(0);break;case "saveP2":SavePreset(1);break;
     case "loadP1":LoadPreset(0);break;case "loadP2":LoadPreset(1);break;
-    case "reset":if(resetConfirm){resetConfirm=false;a15Command=PauseMenuCommand.Restart;}else resetConfirm=true;break;
+    case "reset":resetConfirm=true;resetFocusYes=false;break;
     case "quit":navigation.Open(PausePage.Quit);break;
     case "rediag":break;
     default:if(it.id.StartsWith("gfx",StringComparison.Ordinal)){settings.Options.ApplyPreset(it.index);if(OptionChanged!=null)OptionChanged("parts");}break;
@@ -549,7 +599,7 @@ namespace Exoduser.UnityPort
    var items=Items();int idx=navigation.Cursor-4;It it=null;foreach(var o in items)if(o.nav&&o.navIdx==idx)it=o;
    if(it==null){if(tab==3&&idx>=3&&openSelect<0)A15KeyStop(idx-3,action);return;}
    int dir=action==PauseAction.RowLeft?-1:action==PauseAction.RowRight?1:0;
-   if(openSelect>=0)return;
+   if(openSelect>=0||Unavailable(it))return;
    switch(it.k)
    {
     case K.Range:{var d=it.def;int step=d.Step>1?d.Step:1;if(dir!=0)SetVal(d,GetVal(d)+dir*step);break;}   // web _gpUIStep (13810): +(cur.step)||1 - a range without a step attribute (optSfx, optBgm, optShake, optIrisGlow ...) moves by 1

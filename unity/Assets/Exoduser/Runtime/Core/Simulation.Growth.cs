@@ -9,8 +9,9 @@ namespace Exoduser.UnityPort.Core {
    bool allocated=Growth.SpentSp()!=0||Growth.SpentAp()!=0;
    if(allocated){
     double hp=0;foreach(var it in inventory.Equipped)if(it!=null&&it.slot!="weapon"&&it.slot!="bow"&&it.slot!="helmet")hp+=it.bonusHp;
-    double raw=Math.Max(100,300-20*(Config.DifficultyIndex-5))+Config.StageIndex*6+(s.StrengthFlat+str)*5+Growth.Value("vit")*3+hp+inventory.ImplicitTotal("_iMaxHP");
-    s.PlayerMaxHp=(int)(raw*(1+inventory.AffixTotal("maxHPPct")+(inventory.ImplicitTotal("_iMaxHPPct")+inventory.ImplicitTotal("_iLifeHPPct"))*.01+melee*.03))+(int)(Player.Level*.5)+grit+human*100+fortify*300;
+    // web applyStats: s.vit is ~~vitFlat only (SP vit is never read, D-U3); + maxHPFlat, lifeMaxHP and the whole _gritTotal (level + equipment + SP)
+    double raw=Math.Max(100,300-20*(Config.DifficultyIndex-5))+Config.StageIndex*6+(s.EffectiveStr+str)*5+s.VitFlat*3+hp+inventory.AffixTotal("maxHPFlat")+inventory.ImplicitTotal("_iMaxHP");
+    s.PlayerMaxHp=(int)(raw*(1+inventory.AffixTotal("maxHPPct")+inventory.AffixTotal("lifeMaxHP")+(inventory.ImplicitTotal("_iMaxHPPct")+inventory.ImplicitTotal("_iLifeHPPct"))*.01+melee*.03))+(int)((int)(Player.Level*.5)+s.EquipmentGrit)+grit+human*100+fortify*300;
     s.PlayerMaxMana+=intel*2+grit+human*100+Growth.Value("pVital")*50;
     s.PlayerMaxStamina+=dex*2+grit+human*100+Growth.Value("pStamina")*50;
     s.PlayerMaxShield+=intel*5;

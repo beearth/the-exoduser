@@ -96,7 +96,7 @@ namespace Exoduser.UnityPort
             SilverLabel(plus,"+",silverName,TextAnchor.MiddleCenter);
             string createLabel=K("새 캐릭터","New character");
             SilverLabel(new Rect(1510,609,220,64),createLabel,createStyle,TextAnchor.MiddleLeft);
-            SilverLabel(new Rect(1738,609,76,64),Characters.Count.ToString(),silverBody,TextAnchor.MiddleRight);
+            // No count on the create row: the web card is + and the label only. The bare number was the old "n / 5" slot counter left after a9ddfbffc removed the cap.
             Fill(new Rect(1428,672,400,1),new Color(.61f,.62f,.62f,.13f));
             GUI.enabled=controls&&characterWritesAllowed;
             GUI.SetNextControlName("character-create-card");
