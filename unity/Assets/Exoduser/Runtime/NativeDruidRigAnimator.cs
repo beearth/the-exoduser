@@ -23,7 +23,7 @@ namespace Exoduser.UnityPort
         sealed class OverlayPose {public Vector3[] position,scale; public Quaternion[] rotation;}
         PlayableGraph graph; AnimationPlayableOutput output; AnimationClipPlayable playable; AnimationClip current;
         int previousTick=int.MinValue,entered; string previousRole,previousState,recoveryMove;
-        bool grabbed,hasFootSample; Vector3 clipRootStart,lastLeft,lastRight;
+        bool grabbed,hasFootSample,feintRecovery; Vector3 clipRootStart,lastLeft,lastRight;
         public string Role {get;private set;} public string Clip {get;private set;} public bool MissingClip {get;private set;}
         public NativeDruidRigPolicy.Plan Phase {get;private set;}
         public float SampleSeconds {get;private set;} public float FootDeltaCm {get;private set;}
@@ -102,7 +102,14 @@ namespace Exoduser.UnityPort
             if(state!=previousState&&(state=="bossGrabWind"||state=="idle"))g=false;
             if(state=="bossGrab")g=true;
             string skill=NativeDruidRigPolicy.StateMove(state);if(skill!=null)recovery=skill;
-            return NativeDruidRigPolicy.Select(data,moving,g,recovery,remodel,collapseElapsed);
+            return AlignPlan(NativeDruidRigPolicy.Select(data,moving,g,recovery,remodel,collapseElapsed),data);
+        }
+        NativeDruidRigPolicy.Plan AlignPlan(NativeDruidRigPolicy.Plan plan,DruidData data)
+        {
+            if(!remodel||data==null)return plan;
+            bool feint=data.S=="bossRec"&&(previousState=="bossChargeWind"||previousState=="bossRec"&&feintRecovery);
+            double prior=previousState==data.S&&Phase.Name==plan.Name?Phase.Frame:-1;
+            return NativeDruidMoveTiming.Recovery(plan,data,feint,prior);
         }
         public void Sample(DruidData data,int tick,bool moving,bool frozen)
         {
@@ -114,7 +121,7 @@ namespace Exoduser.UnityPort
             if(state!=previousState&&(state=="bossGrabWind"||state=="idle"))grabbed=false;
             if(state=="bossGrab")grabbed=true;
             string skill=NativeDruidRigPolicy.StateMove(state);if(skill!=null)recoveryMove=skill;
-            var plan=forcedPlan.HasValue?forcedPlan.Value:NativeDruidRigPolicy.Select(data,moving,grabbed,recoveryMove,remodel,collapseElapsed);
+            var plan=forcedPlan.HasValue?forcedPlan.Value:AlignPlan(NativeDruidRigPolicy.Select(data,moving,grabbed,recoveryMove,remodel,collapseElapsed),data);
             string role=plan.Name+(plan.Held?" (held)":"");
             if(role!=previousRole){entered=tick;previousRole=role;hasFootSample=false;}
             Phase=plan;Role=role;MissingClip=plan.Held||!clips.ContainsKey(plan.Name);
@@ -146,6 +153,7 @@ namespace Exoduser.UnityPort
                 ApplyOverlay(plan.Transition?null:plan.Overlay);
             }
             FootDeltaCm=hasFootSample?Mathf.Max(Vector3.Distance(LeftFoot,lastLeft),Vector3.Distance(RightFoot,lastRight))*100:0;
+            feintRecovery=state=="bossRec"&&(previousState=="bossChargeWind"||previousState=="bossRec"&&feintRecovery);
             lastLeft=LeftFoot;lastRight=RightFoot;hasFootSample=true;previousTick=tick;previousState=state;
         }
         public void Dispose(){if(graph.IsValid())graph.Destroy();}

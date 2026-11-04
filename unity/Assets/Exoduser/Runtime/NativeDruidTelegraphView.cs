@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort
         static readonly Color Stain = new Color(.11f, .20f, .05f, 1f);
         static readonly Color GlintCore = new Color32(242, 230, 200, 255), GlintHalo = new Color32(164, 147, 115, 255), Bone = new Color32(223, 214, 194, 255);
         static readonly Color EyeCore = new Color32(232, 160, 128, 255), EyeHalo = new Color32(200, 64, 42, 255), Mist = new Color(.10f, .22f, .06f, 1f);
-        const int UnderOrder = -8985, OverOrder = 30000, GlintTicks = 9;
+        const int UnderOrder = -8985, OverOrder = 30000;
         const double BorderW = 5, CellSize = 40;
 
         sealed class Mb
@@ -55,7 +55,6 @@ namespace Exoduser.UnityPort
         readonly Transform root; readonly Mb under = new Mb(), over = new Mb();
         readonly MeshRenderer underR, overR;
         readonly NativeGroundWarningProjection groundWarnings;
-        readonly Dictionary<long, int> glintAt = new Dictionary<long, int>();   // (serial, index) -> sim tick the glint fired
         readonly List<DruidTelegraph> list = new List<DruidTelegraph>();
         public int DrawnEntries, MaxEntries; public readonly HashSet<string> SeenKinds = new HashSet<string>();   // QA: what was drawn
 
@@ -86,30 +85,26 @@ namespace Exoduser.UnityPort
             under.Clear(); over.Clear();
             sim.DruidTelegraphs(list);
             DrawnEntries = list.Count; if (list.Count > MaxEntries) MaxEntries = list.Count;
-            int tick = sim.TickCount;
             foreach (var t in list)
             {
                 SeenKinds.Add(t.MoveId + "/" + t.Kind + "/" + t.Shape);
                 switch (t.Kind)
                 {
-                    case DruidTeleKind.ParryGlint: Glint(t, tick); break;
+                    case DruidTeleKind.ParryGlint: Glint(t); break;
                     case DruidTeleKind.GroundDecal: Decal(sim, t, cam); break;
                     case DruidTeleKind.GrabEyes: Grab(t); break;
                 }
             }
             under.Flush(); over.Flush();
             groundWarnings.Update(under.V,under.C,under.T);
-            if (glintAt.Count > 64) { var old = new List<long>(); foreach (var kv in glintAt) if (tick - kv.Value > 600) old.Add(kv.Key); foreach (var k in old) glintAt.Remove(k); }
         }
 
         // ---- 1 parry-able melee: one flash at the staff tip, 9 ticks, peak at once, 1 -> .225 at 20% -> 0 ----
-        void Glint(DruidTelegraph t, int tick)
+        void Glint(DruidTelegraph t)
         {
-            if (t.Elapsed < 2) return;
-            long key = ((long)t.Serial << 8) | (uint)(t.Index & 0xff); int born;
-            if (!glintAt.TryGetValue(key, out born)) { born = tick; glintAt[key] = born; }
-            int age = tick - born; if (age >= GlintTicks) return;
-            double f = age / (double)GlintTicks, k = f < .2 ? 1 - f / .2 * .775 : .225 * (1 - (f - .2) / .8);
+            // Core Elapsed owns the 2..11 tick flash, even if rendering missed its onset.
+            double k = NativeDruidMoveTiming.ParryGlint(t.Elapsed);
+            if (k <= 0) return;
             double dx = t.TipX - t.X, dy = t.TipY - t.Y, l = Math.Sqrt(dx * dx + dy * dy); if (l < 1e-6) { dx = 1; dy = 0; l = 1; } dx /= l; dy /= l;
             double half = 34;   // ~0.25 x the body height, drawn as a stretched streak along the staff
             over.Arc(t.TipX, t.TipY, 0, 30, 0, Math.PI * 2, A(GlintHalo, .45 * k));
