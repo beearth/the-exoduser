@@ -59,3 +59,8 @@ test('상하 검은 띠도 채움 결함으로 검출한다',()=>{
   off.fill(0,0,32*8*3);off.fill(0,32*24*3);
   assert.equal(api.imageMetrics(frame,off,off).blackBorder,true);
 });
+test('첫 실제 HUD 끔 실패와 같은 단색 월드는 점수화하지 않는다',()=>{
+  const frame={width:32,height:32,enemies:[]},blank=Buffer.alloc(32*32*3);
+  for(let i=0;i<blank.length;i+=3){blank[i]=5;blank[i+1]=7;blank[i+2]=6;}
+  assert.throws(()=>api.imageMetrics(frame,blank,blank),/단색 월드/);
+});
