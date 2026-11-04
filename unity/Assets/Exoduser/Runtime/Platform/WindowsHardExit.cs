@@ -88,6 +88,8 @@ namespace Exoduser.UnityPort
             if (installed) return;
             installed = true;
             if (Disabled) { Debug.Log("[HardExit] disabled by " + DisableFlag); return; }
+            // Window mode only: 61 -batchmode runs showed 0 shutdown hangs, so batchmode keeps the engine shutdown (and its exit code path).
+            if (Application.isBatchMode) return;
             Application.quitting += OnQuitting;
         }
 

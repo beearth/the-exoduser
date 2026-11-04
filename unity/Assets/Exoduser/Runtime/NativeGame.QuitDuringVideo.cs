@@ -15,6 +15,7 @@ namespace Exoduser.UnityPort
     {
         [Serializable] sealed class QuitDuringVideoReceipt { public string stage, stageName, error; public bool reached, playing, prepared, cleanupSkipped; public double videoTime, wallPlayed; public long frame; }
 
+        // DBT-5 repro on Windows needs --unity-no-hard-exit too; otherwise WindowsHardExit ends the process and the engine quit path under test never runs.
         IEnumerator QuitDuringVideo(string stage, double seconds)
         {
             AudioListener.volume = 0;   // silent; AudioListener.pause is NOT used: the movie clock must keep running

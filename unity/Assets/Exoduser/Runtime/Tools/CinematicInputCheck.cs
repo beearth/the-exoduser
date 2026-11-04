@@ -29,7 +29,7 @@ namespace Exoduser.UnityPort.Tools
   void Save(){receipt.passed=!failed&&receipt.checks.Count>0&&receipt.checks.TrueForAll(x=>x.passed);writer.Latest(Path.Combine(output,"cinematic-input.json"),JsonUtility.ToJson(receipt,true));}
   void CheckThat(bool ok,string name,string detail=""){if(!ok)failed=true;receipt.checks.Add(new Check{name=name,passed=ok,detail=detail});Debug.Log("CINEMATIC_INPUT "+(ok?"PASS ":"FAIL ")+name+" "+detail);Save();}
   // PC-QUIT-1: wait (bounded 10s) for the Task.Run capture writer before the hard exit so frames/receipt are not cut mid-write.
-  void HardExitFlush(){writer.WaitIdle(10000);}
+  void HardExitFlush(){if(!writer.WaitIdle(10000))Debug.LogWarning("[HardExit] QA capture writer drain timeout");}
   IEnumerator Start(){WindowsHardExit.RegisterFinalFlush(HardExitFlush);output=Arg("-output");if(!NativeQaSandbox.Active||string.IsNullOrEmpty(output)||!Path.IsPathRooted(output)){Debug.LogError("CINEMATIC_INPUT_REJECT sandbox/output required");NativeLobbyVideo.RequestQuit(3);yield break;}Directory.CreateDirectory(output);Directory.CreateDirectory(Path.Combine(output,"frames"));yield return Guard(Run());}
   IEnumerator Guard(IEnumerator run){while(true){bool more=false;object current=null;Exception error=null;try{more=run.MoveNext();if(more)current=run.Current;}catch(Exception e){error=e;}if(error!=null){CheckThat(false,"검수 예외",error.ToString());yield return FlushWriter();Cleanup();NativeLobbyVideo.RequestQuit(2);yield break;}if(!more)yield break;if(current is IEnumerator nested)yield return Guard(nested);else yield return current;}}
   IEnumerator Run(){

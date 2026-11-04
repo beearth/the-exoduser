@@ -50,3 +50,32 @@ Runtime 전체에서 `OnDestroy`/`OnDisable`/`Application.quitting`/`wantsToQuit
 - `OnApplicationQuit`/`quitting` 순서 미검증(위 방어책 있음).
 - Screenmanager PlayerPrefs는 `PlayerPrefs.Save()` 최선 노력이다. 해상도·창 위치가 복원되는지 A/B 때 확인한다.
 - `-logFile` 인자가 없으면 `[HardExit]` 마지막 줄이 유실될 수 있다.
+
+## 적용 범위 (11-04 보완)
+- `-batchmode`(`Application.isBatchMode`)에서는 `WindowsHardExit.Install`이 hook을 등록하지 않는다. 근거: `-batchmode` 실행 61건에서 종료 정지 0건. 하드 종료는 창 모드에만 적용한다. 종료 코드 보존용 `Quit(code)` 래퍼는 그대로 쓴다.
+- DBT-5 재현(`--unity-quit-during-video`, `--unity-skip-video-quit-cleanup`)은 Windows에서 `--unity-no-hard-exit`를 함께 줘야 엔진 종료 경로를 탄다(안 주면 하드 종료가 먼저 프로세스를 끝낸다). `NativeGame.QuitDuringVideo.cs` 주석에도 적었다.
+- `CinematicInputCheck`의 `writer.WaitIdle(10000)`이 false이면 `[HardExit] QA capture writer drain timeout` 경고를 남긴다.
+
+## PC A/B 시나리오 (경로별 기록표)
+실행은 사용자 11-04 결정 3(PC 무창 후보 촬영 허용)과 공용 실행기(`exo-unity.ps1`, 무창·무음·세이브 격리) 규칙 안에서만 한다. 창 모드가 필요한 경로는 공용 실행기의 무창 옵션으로 하고, 직접 실행·보조 모니터 창은 쓰지 않는다. 각 경로를 대조(`--unity-no-hard-exit`)와 기본으로 나눠 기록한다.
+
+| 경로 | 방법 | 기록 항목 |
+|---|---|---|
+| X 버튼 | 창 닫기 | 아래 공통 |
+| Alt+F4 | 키 입력 | 아래 공통 |
+| 메뉴 종료 | 일시정지/로비 메뉴의 종료 | 아래 공통 |
+| QA 종료 | 종료 코드 0/2/3 각각 | 종료 코드가 `Process.ExitCode`와 같은지 포함 |
+| 로딩 중 종료 | 로딩 화면에서 종료 | 아래 공통 |
+| 사망(fallen) 중 종료 | 사망 연출 중 종료 | combat-save 갱신 여부 포함 |
+| 로비 영상 중 X 버튼 | 로비 영상 재생 중 창 닫기 | 아래 공통 |
+
+공통 기록 항목(경로마다 전후):
+- `combat-save-v1/<이름>.json`과 `settings.v1.json`의 mtime과 revision.
+- `HKCUSoftware<회사><제품>` Screenmanager 레지스트리 값(해상도·창 위치·전체화면) 전후.
+- 마지막 `CaptureScreenshot` PNG 존재 여부.
+- `[HardExit]` 로그 줄(code·reason, `(direct)` 줄 포함).
+- 프로세스 정지 여부(종료 요청 뒤 일정 시간 안에 프로세스가 사라지는지).
+
+## 소스 검사 한계
+`quit-wrapper-source-test.cjs`는 아직 자동 실행(BuildLoop·pre-commit)에 연결되지 않았다. 줄 나눔(`Application
+.Quit(`), 메서드 그룹(`Action a = Application.Quit`), using 별칭(`using A = UnityEngine.Application`)은 못 잡는다.
