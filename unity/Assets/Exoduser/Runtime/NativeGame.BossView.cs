@@ -80,7 +80,7 @@ namespace Exoduser.UnityPort
             bool held=ImpactActive&&contactVfx.EnemyFrozen(e.Id,ImpactNow);
             float flash=ImpactActive?contactVfx.Flash(e.Id,ImpactNow):0;
             if (!druidBody.Draw(e, dd, newTick,held,flash)) return false;
-            druidRig?.Sync(e,dd,Simulation.TickCount,false,0,held);
+            druidRig?.Sync(e,dd,Simulation.TickCount,false,0,held,Simulation.DruidLife(e));
             druidBody.Stamp = Time.frameCount; ev.body.enabled = false; ev.walk.enabled = false;
             return true;
         }
@@ -109,7 +109,7 @@ namespace Exoduser.UnityPort
             if (t >= SinkHoleTick && sound != null && sinkSounded.Add(e.Id)) sound.PlaySinkHole(e.X, e.Y, Simulation.TickCount);
             ev.body.enabled = false; ev.walk.enabled = false;
             if (t >= SinkBodyTicks + SinkHoldTicks + SinkFadeTicks){druidRig?.Deactivate();return;}
-            DruidData data;if(Simulation.Druid!=null&&Simulation.Druid.Data.TryGetValue(e,out data))druidRig?.Sync(e,data,Simulation.TickCount,true,t,false);
+            DruidData data;if(Simulation.Druid!=null&&Simulation.Druid.Data.TryGetValue(e,out data))druidRig?.Sync(e,data,Simulation.TickCount,true,t,false,Simulation.DruidLife(e));
             druidBody.DrawSink(e, t, SinkBodyTicks, SinkHoldTicks, SinkFadeTicks); druidBody.Stamp = Time.frameCount;
         }
     }

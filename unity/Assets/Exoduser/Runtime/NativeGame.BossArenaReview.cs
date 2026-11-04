@@ -19,6 +19,12 @@ namespace Exoduser.UnityPort
                 return Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-boss-arena-review")>=0;
             }
         }
+        // P3 edge-hit step (PREP 10.1): with --unity-boss-arena-p3-edge the bot, once the boss is on life 3, stands with its body circle touching the boss body circle edge,
+        // attacks the boss centre, and every Core hit on the boss from within the edge band queues the shot p3-edge-hit-1..3 plus a "p3-edge-hit" event in moves.jsonl.
+        static bool BossArenaEdgeRequested{get{return Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-boss-arena-p3-edge")>=0;}}
+        const float ArenaEdgeGapPx=4,ArenaEdgeBandPx=40;
+        int arenaEdgeShots,arenaEdgeLastTick=-1000,arenaEdgeHp=-1;
+        [Serializable] sealed class ArenaEdgeEvent {public string kind="p3-edge-hit";public int tick,hpBefore,hpAfter;public float bossRadiusPx,playerRadiusPx,centreDistancePx,gapPx,bossX,bossY,playerX,playerY;}
         bool arenaReviewMetricsOnly;
         string arenaReviewOutput;
         readonly StringBuilder arenaReviewTrace=new StringBuilder();
@@ -137,6 +143,21 @@ namespace Exoduser.UnityPort
                 kind=t.Live?"live-boundary":"telegraph-boundary",moveId=t.MoveId,state=d.S,tick=Simulation.TickCount,frame=Time.frameCount,serial=t.Serial,index=t.Index,phase=d.BossPhase,boundary=new ArenaReviewBoundary(t)
             }
             ));
+            if(BossArenaEdgeRequested&&d.BossPhase==2&&arenaEdgeShots<3)
+            {
+                var pl=Simulation.Player;var life=Simulation.DruidLife(boss);
+                if(arenaEdgeHp>=0&&boss.Hp<arenaEdgeHp&&(life==null||!life.Collapsing)&&Simulation.TickCount-arenaEdgeLastTick>=60)
+                {
+                    float dist=Mathf.Sqrt((pl.X-boss.X)*(pl.X-boss.X)+(pl.Y-boss.Y)*(pl.Y-boss.Y));
+                    if(dist<=boss.Radius+pl.Radius+ArenaEdgeBandPx)
+                    {
+                        arenaEdgeShots++;arenaEdgeLastTick=Simulation.TickCount;
+                        arenaReviewEvents.AppendLine(JsonUtility.ToJson(new ArenaEdgeEvent{tick=Simulation.TickCount,hpBefore=arenaEdgeHp,hpAfter=boss.Hp,bossRadiusPx=boss.Radius,playerRadiusPx=pl.Radius,centreDistancePx=dist,gapPx=dist-boss.Radius-pl.Radius,bossX=boss.X,bossY=boss.Y,playerX=pl.X,playerY=pl.Y}));
+                        QueueArenaReviewShot("p3-edge-hit-"+arenaEdgeShots);
+                    }
+                }
+                arenaEdgeHp=boss.Hp;
+            }
             arenaReviewPreviousState=d.S;
             arenaReviewBeat=d.HbBeat;
             arenaReviewErupt=d.EruptHit;
@@ -299,6 +320,23 @@ namespace Exoduser.UnityPort
             {
                 arenaReviewPhase=d.BossPhase;
                 arenaReviewPhaseTick=s.TickCount;
+            }
+            if(BossArenaEdgeRequested&&d.BossPhase==2)
+            {
+                var life=s.DruidLife(boss);
+                if(life==null||!life.Collapsing)
+                {   // stand on the boss body edge and keep attacking its centre
+                    var pe=s.Player;
+                    var off=new Vector2(pe.X-boss.X,pe.Y-boss.Y);if(off.sqrMagnitude<1)off=Vector2.down;
+                    var stand=new Vector2(boss.X,boss.Y)+off.normalized*(boss.Radius+pe.Radius+ArenaEdgeGapPx);
+                    attack=true;magic=false;aim=new Vector2(boss.X,boss.Y);
+                    keys.Remove(Key.F);keys.Remove(Key.LeftCtrl);
+                    move=navigation.Direction(pe.X,pe.Y,stand.x,stand.y,pe.Radius,FullRunCanMove,s.TickCount);
+                    keys.Remove(Key.W);keys.Remove(Key.A);keys.Remove(Key.S);keys.Remove(Key.D);
+                    if(move.x>.25f)keys.Add(Key.D);else if(move.x<-.25f)keys.Add(Key.A);
+                    if(move.y>.25f)keys.Add(Key.S);else if(move.y<-.25f)keys.Add(Key.W);
+                    return;
+                }
             }
             bool missing=false;
             int count=d.BossPhase==0?4:d.BossPhase==1?6:7;
