@@ -5,6 +5,28 @@ Shader "EXODUSER/A2HangingMoss"
  {
   Tags { "RenderPipeline"="UniversalPipeline" "RenderType"="TransparentCutout" "Queue"="AlphaTest" }
   Cull Off
+  HLSLINCLUDE
+   #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+   #include "../A2R/Wind.hlsl"
+   TEXTURE2D(_BaseMap);SAMPLER(sampler_BaseMap);
+   CBUFFER_START(UnityPerMaterial)
+   float4 _BaseMap_ST;half4 _BaseColor;half _Cutoff;
+   CBUFFER_END
+   float _A2R3DWindOn;
+   struct A {float4 positionOS:POSITION;float3 normalOS:NORMAL;float2 uv:TEXCOORD0;float4 color:COLOR;};
+   struct V {float4 positionCS:SV_POSITION;float3 world:TEXCOORD0;float3 normal:TEXCOORD1;float2 uv:TEXCOORD2;half fog:TEXCOORD3;};
+   V vert(A v)
+   {
+    V o;o.world=TransformObjectToWorld(v.positionOS.xyz);
+    if(_A2R3DWindOn>.5&&_A2RWindOff<.5)
+    {
+     float phase=A2RWindPhase(v.color.g,TransformObjectToWorld(float3(0,0,0)));
+     float sway=A2RWindWave(_Time.y,phase,A2RWindGust(_Time.y,o.world))*.065*saturate(v.color.r);
+     o.world.xz+=float2(1,.28)*sway;
+    }
+    o.positionCS=TransformWorldToHClip(o.world);o.normal=TransformObjectToWorldNormal(v.normalOS);o.uv=TRANSFORM_TEX(v.uv,_BaseMap);o.fog=ComputeFogFactor(o.positionCS.z);return o;
+   }
+  ENDHLSL
   Pass
   {
    Name "Forward" Tags { "LightMode"="UniversalForward" }
@@ -16,15 +38,7 @@ Shader "EXODUSER/A2HangingMoss"
    #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
     #pragma multi_compile_fragment _ _SHADOWS_SOFT _SHADOWS_SOFT_LOW _SHADOWS_SOFT_MEDIUM _SHADOWS_SOFT_HIGH
    #pragma multi_compile_fog
-   #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
-   TEXTURE2D(_BaseMap);SAMPLER(sampler_BaseMap);
-   CBUFFER_START(UnityPerMaterial)
-   float4 _BaseMap_ST;half4 _BaseColor;half _Cutoff;
-   CBUFFER_END
-   struct A {float4 positionOS:POSITION;float3 normalOS:NORMAL;float2 uv:TEXCOORD0;};
-   struct V {float4 positionCS:SV_POSITION;float3 world:TEXCOORD0;float3 normal:TEXCOORD1;float2 uv:TEXCOORD2;half fog:TEXCOORD3;};
-   V vert(A v){V o;o.world=TransformObjectToWorld(v.positionOS.xyz);o.positionCS=TransformWorldToHClip(o.world);o.normal=TransformObjectToWorldNormal(v.normalOS);o.uv=TRANSFORM_TEX(v.uv,_BaseMap);o.fog=ComputeFogFactor(o.positionCS.z);return o;}
    half4 frag(V i,FRONT_FACE_TYPE face:FRONT_FACE_SEMANTIC):SV_Target
    {
     half4 photo=SAMPLE_TEXTURE2D(_BaseMap,sampler_BaseMap,i.uv);clip(photo.a-_Cutoff);
@@ -36,6 +50,15 @@ Shader "EXODUSER/A2HangingMoss"
    }
    ENDHLSL
   }
-  UsePass "Universal Render Pipeline/Lit/DepthOnly"
+  Pass
+  {
+   Name "DepthOnly" Tags { "LightMode"="DepthOnly" }
+   ZWrite On ColorMask 0
+   HLSLPROGRAM
+   #pragma vertex vert
+   #pragma fragment depth
+   half4 depth(V i):SV_Target{clip(SAMPLE_TEXTURE2D(_BaseMap,sampler_BaseMap,i.uv).a-_Cutoff);return 0;}
+   ENDHLSL
+  }
  }
 }
