@@ -123,7 +123,7 @@ Steam 상점 갤러리는 16:9를 보여 준다. 업로드본은 **1920×1080**�
 - 브랜치 `codex/unity-map-keyshot-20261104`, D4 기준 `d9e5a2742`. 이 문서 본문은 D4에 없어 `origin/unity/main`에서 가져왔고 이 절만 추가했다.
 - 촬영 인자: `--a2r-keyshot --a2r-lobby-start -output <절대 폴더> --keyshot-source <빌드 커밋 SHA>`. 공용 실행기·격리 저장·무창·무음으로만 실행한다. `--a2r-play-smoke`와 함께 쓰지 않는다.
 - 시점 표: `unity/Assets/Exoduser/Resources/A2R/keyshot-views.json`. S3→S1→S2 순서의 24개 초안이며 실측 전이다. S1은 기존 실제 촬영 기록의 북쪽 길 끝 `y=4420` 구간이다. 원래 시드·자연 스폰·StepInput 보행을 사용하며 공격 입력·좌표 직접 배치·생존 수치 보조는 없다.
-- 각 시점에서 1920×1080·3840×2160·3840×1080, HUD 켬/끔을 저장한다. 34° 피치·거리·FOV·안개·조명을 촬영용으로 고치지 않는다. HUD 끔은 NativeGame의 표시 컴포넌트를 일시 정지한다.
+- 각 시점에서 1920×1080·3840×2160·3840×1080, HUD 켬/끔을 저장한다. 34° 피치·거리·FOV·안개·조명을 촬영용으로 고치지 않는다. HUD 끔은 기존 OnGUI 전용 QA 표시 플래그만 사용하며 NativeGame 갱신을 유지한다.
 - 빌드 고정 폴더: `I:/EXODUSER-Storage/map25d/a2r-build-keyshot`. 결과 고정 루트: `I:/EXODUSER-Storage/steam-prep/keyshot/`(넓은 촬영 `wide`, 재현 `repeat`). 공용 실행기 Player 최대 2회이며 바로가기는 바꾸지 않는다.
 - A2RBuilder는 일반 빌드의 필수 영상 복원을 호출하지 않는다. 빌드 뒤 `C:/nvm4w/nodejs/node.exe tools/keyshot/prepare-build.mjs --project <자기 unity 작업본> --build I:/EXODUSER-Storage/map25d/a2r-build-keyshot`로 Git 정본 조각의 세계 도입·전사 스토리 영상 2개를 빌드 StreamingAssets에 복원한다. 재인코딩이나 프로젝트 에셋 수정은 없다.
 - 1회 촬영 후 Node 도구: `C:/nvm4w/nodejs/node.exe tools/keyshot/review.mjs score <wide 폴더> <시점 JSON 경로>`. 점수표·JPG 접촉 시트·장면별 상위 4개를 만들고 시점 JSON에 선택·실제 좌표·틱을 기록한다.
@@ -133,3 +133,4 @@ Steam 상점 갤러리는 16:9를 보여 준다. 업로드본은 **1920×1080**�
 - **3차(19:16 착수 조회):** 사용자 19:15 HALT 해제 후 재개 지시를 받았으나, 19:15:19 생성·19:15:20 갱신된 HALT가 다시 존재했다. 실행기 기록은 종료 못 한 Player 2개(PID14612·40496)다. 사용자 지시대로 재발 시 즉시 멈췄으며 두 PID·HALT·실행기는 변경하지 않았다. 새 계수의 실제 Editor·빌드·Player·검사 실패 모두 0회, 후보/점수/접촉 시트/재현 미실행이다.
 - **3차 Editor batch 재개:** 사용자 후속 지시와 실행기 `2026.11.04-zombiehalt`에 따라 좀비 HALT 중에도 `build`의 실제 Editor 컴파일·빌드는 진행한다. Player·run·browser는 실행하지 않는다. 고정 a2r-build-keyshot 빌드를 요청했고 순번 대기 중이다. 영웅 물리 가림 결과를 점수에 반영하고 CSV에 해상도/검은 옆판 열을 추가했으며 단위 8건 통과. Player 단계인 촬영·실측 점수·접촉 시트·상위 선별·재현은 재부팅 뒤 남는다.
 - **19:33 재부팅 뒤 전체 재개:** 소스8eafda6545의 실제 Unity Job e9ba1997 빌드 성공(종료0·컴파일 오류0·빌드 오류0·세이브 변경0). R18/R17/R16/R15 에셋 정책 검사 통과. 네이티브 빌드9,155,368,601바이트 뒤 정본 영상2개를 복원했다. 패키징 단위2건 통과, 81경로 자동 메타데이터 변경은 복구, 종료 확인 뒤 자기 Library18.45GiB 정리로 전체13.68GiB. 실제 촬영·선별·재현은 다음 Player 단계다.
+- **첫 Player 실제 검사:** Job6742f40f, 72.676초 뒤 종료3. S3-01 1920 HUD 켬만 정상이며 HUD 끔은 검은 화면, 3840×2160 전환 실패로 중단했다. 사용자 창0·잔여0·세이브 변경0·종료 정지 없음. HUD 표시 분리와 자기 숨김 창의 네이티브 크기 조정으로 수정했으며 실제 재검증 전이다. BRIEF의 최대2회 때문에 실패 실행을 포함한 총한도는 사용자에게 확인 중이다.

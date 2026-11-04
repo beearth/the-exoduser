@@ -30,7 +30,7 @@ namespace Exoduser.UnityPort
             keyshotRoot=a2rPlayOutput;keyshot=new A2RKeyshotReceipt{sandbox=NativeQaSandbox.Root,sourceCommit=Argument("--keyshot-source")};
             var routine=A2RKeyshotSequence();
             while(true){bool more=false;object next=null;try{more=routine.MoveNext();if(more)next=routine.Current;}catch(Exception e){keyshot.failures.Add(e.ToString());}if(!more)break;yield return next;}
-            enabled=true;Time.timeScale=1;Time.captureDeltaTime=0;
+            groundReceiverQaActive=false;Time.timeScale=1;Time.captureDeltaTime=0;
             keyshot.failures.AddRange(a2rPlay.failures);if(a2rPlay.errors>0)keyshot.failures.Add("실행 오류 "+a2rPlay.errors);
             keyshot.passed=keyshot.failures.Count==0&&keyshot.frames.Count>0;
             File.WriteAllText(Path.Combine(keyshotRoot,"keyshot.json"),JsonUtility.ToJson(keyshot,true));
@@ -72,16 +72,19 @@ namespace Exoduser.UnityPort
                 foreach(var size in new[]{new Vector2Int(1920,1080),new Vector2Int(3840,2160),new Vector2Int(3840,1080)})
                 {
                     Screen.SetResolution(size.x,size.y,FullScreenMode.Windowed);
+                    for(int i=0;i<3;i++)yield return null;
+                    string window="native window";
+                    if(Screen.width!=size.x||Screen.height!=size.y)window=A2RKeyshotWindow.ResizeHiddenClient(size.x,size.y);
                     float deadline=Time.realtimeSinceStartup+12;
                     while((Screen.width!=size.x||Screen.height!=size.y)&&Time.realtimeSinceStartup<deadline)yield return null;
-                    if(Screen.width!=size.x||Screen.height!=size.y)throw new InvalidOperationException("Native resolution failed "+size);
+                    if(Screen.width!=size.x||Screen.height!=size.y)throw new InvalidOperationException("Native resolution failed requested="+size+" actual="+Screen.width+"x"+Screen.height+" "+window);
                     for(int i=0;i<6;i++){UpdateViews();yield return null;}
                     foreach(bool showHud in new[]{true,false})
                     {
-                        enabled=showHud;UpdateViews();yield return null;yield return new WaitForEndOfFrame();
+                        groundReceiverQaActive=!showHud;UpdateViews();yield return null;yield return new WaitForEndOfFrame();
                         if(save)KeyshotSave(target,plan.seed,showHud);
                     }
-                    enabled=true;
+                    groundReceiverQaActive=false;
                 }
                 Time.timeScale=1;
             }
