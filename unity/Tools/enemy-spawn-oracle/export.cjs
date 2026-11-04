@@ -1,8 +1,8 @@
 // CX-02 enemy spawn oracle exporter: runs the ORIGINAL mkEn (and the helpers it calls) from game.html in a Node VM and writes oracle.json.
 //   node export.cjs [--source G:/exoduser/game.html] [--expect-source-sha <sha256>] [--out oracle.json]
-// Blocks are located by text anchors (first line must start with the expected declaration and match exactly one line) and executed UNCHANGED.
+// Blocks are located by text anchors (first line must start with the expected declaration and match exactly one line) with only the recorded A-plan mkEn expressions changed (use --expectation-mode web for unchanged source).
 // The only things the VM gets from outside are the runtime globals the function reads (P.lv, OPT.diff, G.stage/_stageDiffOff, _DEMO_*, canMv, Math.random).
-const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path'),crypto=require('node:crypto'),cp=require('node:child_process');
+const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path'),crypto=require('node:crypto');
 const arg=(k,d)=>{const i=process.argv.indexOf(k);return i<0?d:process.argv[i+1];};
 const sourcePath=arg('--source','G:/exoduser/game.html'),outPath=arg('--out',path.join(__dirname,'oracle.json'));
 const text=fs.readFileSync(sourcePath,'utf8'),sha=s=>crypto.createHash('sha256').update(s).digest('hex'),fileSha=sha(text);
@@ -14,7 +14,8 @@ function record(name,start,end){const body=lines.slice(start,end+1).join('\n');a
 function stmt(name,prefix){const s=find(prefix);for(let e=s;e<Math.min(lines.length,s+400);e++){const body=lines.slice(s,e+1).join('\n');if(compiles(body))return record(name,s,e);}throw Error('no complete statement from '+prefix);}
 function untilBrace(name,prefix){const s=find(prefix);for(let e=s+1;e<lines.length;e++)if(lines[e]==='}'||lines[e]==='}\r')return record(name,s,e);throw Error('no closing brace for '+prefix);}
 function single(name,prefix){const s=find(prefix);return record(name,s,s);}
-const blocks=[];const add=b=>blocks.push(b);
+const expectation=require(arg('--a-plan-module',path.join(__dirname,'../enemy-spawn-oracle/a-plan.cjs'))).create(arg('--expectation-mode','a-plan'));
+const blocks=[];const add=b=>blocks.push(b.startsWith('function mkEn(')?expectation.inject(b,lines):b);
 // ---- tables (same blocks CX-01 compares; here only as the inputs mkEn reads) ----
 add(stmt('EL','const EL={'));add(stmt('CHAPTER_STAGES','const CHAPTER_STAGES=['));add(stmt('TOTAL_STAGES','const TOTAL_STAGES='));
 add(stmt('HELL_NAMES','const HELL_NAMES=['));add(stmt('HELL_THEMES','const HELL_THEMES=['));add(stmt('HELL_BOSSES','const HELL_BOSSES=['));
@@ -40,6 +41,7 @@ vm.runInContext('var window=this;var _useGPU=false,_useGL=false,_ESPRITES=[];var
  'Math.random=function(){if(__i>=__seq.length)throw new Error("random sequence exhausted");return __seq[__i++];};'+
  'function canMv(x,y,r){__calls.push([x,y,r]);const k=__rule;if(!k||k.kind==="open")return true;if(k.kind==="blockAll")return false;'+
  'if(k.kind==="blockDisc"){const dx=x-k.cx,dy=y-k.cy,rr=k.rad+r;return dx*dx+dy*dy>=rr*rr;}throw new Error("unknown rule");}',ctx);
+if(expectation.prelude)vm.runInContext(expectation.prelude,ctx);
 for(const b of blocks)vm.runInContext(b,ctx);
 const plain=o=>JSON.parse(JSON.stringify(o,(k,v)=>ArrayBuffer.isView(v)?Array.from(v):v));
 const get=n=>plain(vm.runInContext(n,ctx));
@@ -155,9 +157,9 @@ for(const c of cases)run(c);
 const m02Cases=cases.filter(c=>c.expected.result&&c.expected.result.mods&&c.expected.result.mods.includes('M02')).length;
 if(m02Cases===0)throw Error('no M02 case produced by the sweep; add seeds');
 const tierCount={0:0,1:0,2:0,3:0};for(const c of cases)if(c.expected.result)tierCount[c.expected.result.elite]++;
-let head='',dirty='';try{head=cp.execSync('"C:/Program Files/Git/cmd/git.exe" -C '+path.dirname(sourcePath)+' rev-parse HEAD').toString().trim();dirty=cp.execSync('"C:/Program Files/Git/cmd/git.exe" -C '+path.dirname(sourcePath)+' status --porcelain -- game.html').toString().trim();}catch(e){}
-const out={schema:'exoduser.unity.enemy-spawn-oracle.v1',source:{path:sourcePath,sha256:fileSha,lines:lines.length,head,gameHtmlWorkingTreeState:dirty||'clean',anchors,
-  note:'blocks located by text anchors and executed unchanged in one Node VM; external pieces = P/OPT/G/_DEMO_* values, canMv rule, Math.random sequence'},
+const head=arg('--head',''),dirty='Git blob input (--head); working copy not queried';
+const out={expectation:expectation.metadata,schema:'exoduser.unity.enemy-spawn-oracle.v1',source:{path:sourcePath,sha256:fileSha,lines:lines.length,head,gameHtmlWorkingTreeState:dirty||'clean',anchors,
+  note:'mkEn injections recorded in expectation; all other source blocks unchanged in one Node VM; external pieces = P/OPT/G/_DEMO_* values, canMv rule, Math.random sequence'},
   tables,entries,summary:{cases:cases.length,nullResults:cases.filter(c=>c.expected.isNull).length,eliteTierCounts:tierCount,m02Cases,maxConsumed:Math.max(...cases.map(c=>c.expected.consumed))},cases};
 fs.writeFileSync(outPath,JSON.stringify(out));
 console.log(JSON.stringify({sha:fileSha,head,dirty:dirty||'clean',summary:out.summary,entries:entries.length,anchors:anchors.map(a=>a.name+':'+a.start+'-'+a.end)}));
