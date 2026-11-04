@@ -10,5 +10,5 @@ const dotnet='G:/unity/Editor/6000.6.7f1/Editor/Data/DotNetSdk/dotnet.exe',env={
 let r=cp.spawnSync(dotnet,['build',cache+'/Checks.csproj','--verbosity','quiet','--configfile',cache+'/NuGet.Config','-p:UseSharedCompilation=false'],{env,encoding:'utf8',windowsHide:true});
 fs.writeFileSync(out+'/loader-build.log',(r.stdout||'')+(r.stderr||''));
 if(r.status!==0){console.error('로더 검사 컴파일 실패: '+out+'/loader-build.log');process.exit(r.status??1);}
-r=cp.spawnSync(dotnet,[cache+'/bin/Debug/net8.0/Checks.dll',unity+'/Assets/Exoduser/Resources'],{env,encoding:'utf8',windowsHide:true});
+r=cp.spawnSync(dotnet,[cache+'/bin/Debug/net8.0/Checks.dll',unity+'/Assets/Exoduser/Resources',...process.argv.slice(3)],{env,encoding:'utf8',windowsHide:true,stdio:['ignore','pipe','pipe']});
 fs.writeFileSync(out+'/loader-tests.log',(r.stdout||'')+(r.stderr||''));console.log(r.stdout||r.stderr);process.exit(r.status??1);

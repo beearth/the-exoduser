@@ -18,8 +18,27 @@ namespace UnityEngine {
 class Program {
  static int count;
  static void Equal(string expected,string actual,string name){count++;if(expected!=actual)throw new Exception(name+": expected ["+expected+"], got ["+actual+"]");}
+ static void AliasRegression(){
+  // Actual failure path: Walk emits the same KO alias for two independent IDs;
+  // Load's reverse alias copy must never transfer blank.en into onlyKo.
+  UnityEngine.Resources.Fixtures["Data/regression-same-ko"]="{\"entries\":[{\"id\":\"blank\",\"ko\":\"한국어\",\"en\":\"English\",\"de\":\"  \"},{\"id\":\"onlyKo\",\"ko\":\"한국어\"}]}";
+  Equal("한국어",NativeLocaleCatalog.Get("regression-same-ko","onlyKo","fr"),"missing en -> ko");
+  Equal("English",NativeLocaleCatalog.Get("regression-same-ko","blank","de"),"first ID keeps own EN fallback");
+  UnityEngine.Resources.Fixtures["Data/regression-path"]="{\"entries\":[{\"id\":\"a\",\"ko\":\"같은 원문\",\"en\":\"First\"},{\"id\":\"b\",\"ko\":\"같은 원문\",\"en\":\"Second\"}],\"localization\":{\"codes\":[\"ko\",\"en\",\"fr\"],\"entries\":[{\"path\":\"entries[1]\",\"key\":\"같은 원문\",\"texts\":[\"같은 원문\",\"Second\",\"Deuxième\"]}]}}";
+  Equal("First",NativeLocaleCatalog.Get("regression-path","a","fr"),"path overlay cannot translate sibling ID");
+  Equal("Deuxième",NativeLocaleCatalog.Get("regression-path","b","fr"),"nested codes overlay matches exact path");
+  UnityEngine.Resources.Fixtures["Data/regression-id-priority"]="{\"entries\":[{\"id\":\"한국어\",\"ko\":\"직접 키\",\"en\":\"Exact ID\"},{\"id\":\"other\",\"ko\":\"한국어\",\"fr\":\"Alias\"}]}";
+  Equal("Exact ID",NativeLocaleCatalog.Get("regression-id-priority","한국어","fr"),"explicit ID wins even when selected locale missing");
+  UnityEngine.Resources.Fixtures["Data/regression-suffix"]="{\"nodes\":[{\"key\":\"n\",\"nameKo\":\"같은 말\",\"nameEn\":\"Name\",\"noteKo\":\"같은 말\",\"noteEn\":\"Note\"}],\"localization\":{\"codes\":[\"ko\",\"en\",\"fr\"],\"entries\":[{\"path\":\"nodes[0].note\",\"key\":\"같은 말\",\"texts\":[\"같은 말\",\"Note\",\"Remarque\"]}]}}";
+  Equal("Name",NativeLocaleCatalog.Get("regression-suffix","n.name","fr"),"field aliases stay within field key");
+  Equal("Remarque",NativeLocaleCatalog.Get("regression-suffix","n.note","fr"),"field path selects note overlay");
+  Equal("Einstellungen",NativeLocaleCatalog.Get("a15_settings_labels_exact","설정","de"),"nativeKo metadata aliases the locale row, not a competing field");
+ }
  static void Main(string[] args){
+  Console.OutputEncoding=System.Text.Encoding.UTF8;
   UnityEngine.Resources.Root=args[0];
+  AliasRegression();
+  if(Array.IndexOf(args,"--alias-regression")>=0){Console.WriteLine("별칭 회귀 "+count+"건 통과");return;}
   UnityEngine.Resources.Fixtures["Data/test-audit-nested"]="{\"localization\":{\"codes\":[\"ko\",\"en\",\"fr\"],\"entries\":[{\"path\":\"nodes[0].name\",\"key\":\"지능 (INT)\",\"texts\":[\"지능 (INT)\",\"INT\",\"INT\"]}]}}";
   Equal("INT",NativeLocaleCatalog.Get("test-audit-nested","지능 (INT)","fr"),"audit nested codes are inherited by entries");
   var locales=JsonValue.NewObject().Set("key",JsonValue.Of("move"));

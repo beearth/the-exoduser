@@ -28,7 +28,8 @@ const allowed={
  'NativePauseMenu.A15Web.cs':/return myeongjo/,
  'NativeRegionHud.cs':/if\(LocaleCode!="ko"\)/,
  'NativeStageClearOverlay.cs':/Font BodyFont/,
- 'NativeLocaleCatalog.cs':/member.Key=="ko"/,
+ // KO rows define source aliases during indexing; this never chooses displayed KO/EN text.
+ 'NativeLocaleCatalog.cs':/member.Key=="ko"|^\s*if\(code=="ko"\)\{$/,
 };
 const recordFallback=/\b(?:e|entry|row)\.code\s*==\s*"en"/;
 const excluded=/^(?:NativeGame\.(?:DeathUiCapture|LanguageMenuSmoke|LoadingTipCapture|PauseSmoke|UiOverlapCapture)\.cs)$/;
