@@ -21,6 +21,22 @@ class DruidRigTests
    if(t==duration)Near(p.Frame,NativeDruidRigPolicy.Frames(name),"phase last frame "+name);
   }
  }
+ // 11-04 default druid set rule: legacy-arg > arg > 3d-arena > demo > default; Core default stays off
+ static void DruidSet(string[] a,bool arena,bool demo,bool want,string why)
+ {
+  string r;bool on=NativeReviewArgs.DecideDruidSet(a,arena,demo,out r);Check(on==want&&r==why,"druid set "+(a==null?"null":string.Join(" ",a))+" arena="+arena+" demo="+demo+" -> "+on+"/"+r+" expected "+want+"/"+why);
+ }
+ static void DruidSetRule()
+ {
+  var none=new string[0];var rm=new[]{"--unity-druid-remodel"};var lg=new[]{"--unity-druid-legacy"};var both=new[]{"--unity-druid-remodel","--unity-druid-legacy"};
+  DruidSet(none,false,false,false,"default");DruidSet(null,false,false,false,"default");
+  DruidSet(none,true,false,true,"3d-arena");DruidSet(none,false,true,true,"demo");DruidSet(none,true,true,true,"3d-arena");
+  DruidSet(rm,false,false,true,"arg");DruidSet(rm,true,true,true,"arg");
+  DruidSet(lg,false,false,false,"legacy-arg");DruidSet(lg,true,false,false,"legacy-arg");DruidSet(lg,false,true,false,"legacy-arg");DruidSet(lg,true,true,false,"legacy-arg");
+  DruidSet(both,true,true,false,"legacy-arg");DruidSet(both,false,false,false,"legacy-arg");
+  Check(!DruidRemodelSettings.Default,"Core default stays off");Check(!new Simulation(SourceStarterFixture.CreateKiSlash(),SourceStarterFixture.Seed).DruidRemodel,"a directly constructed Simulation keeps the web-port druid");
+  Check(NativeReviewArgs.IsReviewArgument("--unity-druid-legacy")&&NativeReviewArgs.IsReviewArgument("--unity-druid-remodel"),"druid args are review arguments");
+ }
  static int Main()
  {
   Check(!NativeDruidRigPolicy.Requested(null),"default off");Check(!NativeDruidRigPolicy.Requested(new string[0]),"empty off");
@@ -96,6 +112,8 @@ class DruidRigTests
   Near(NativeDruidRigPolicy.Intro(0).Frame,0,"intro first");Near(NativeDruidRigPolicy.Intro(NativeDruidRigPolicy.IntroTicks).Frame,165,"intro last");Check(NativeDruidRigPolicy.Intro(10).Transition&&NativeDruidRigPolicy.Intro(10).Life==0,"intro plan");
   Near(NativeDruidRigPolicy.Death(0,66).Frame,0,"death first");Near(NativeDruidRigPolicy.Death(66,66).Frame,150,"death last");Near(NativeDruidRigPolicy.Death(99,66).Frame,150,"death held after body ticks");Check(NativeDruidRigPolicy.Death(5,66).Life==2,"death is life 3");
   Near(NativeDruidRigPolicy.Frames("state_P2"),1,"state frames");Check(NativeDruidRigPolicy.Palette("druid_husk_bark")=="#2a2018","husk bark palette");
-  Check(NativeDruidRigPolicy.Phase23HuskOffFrame==108&&NativeDruidRigPolicy.IntroTicks==90,"authored switch frames");Console.WriteLine("druid-rigpixel checks="+checks+" failed="+bad);return bad==0?0:1;
+  Check(NativeDruidRigPolicy.Phase23HuskOffFrame==108&&NativeDruidRigPolicy.IntroTicks==90,"authored switch frames");
+  DruidSetRule();
+  Console.WriteLine("druid-rigpixel checks="+checks+" failed="+bad);return bad==0?0:1;
  }
 }

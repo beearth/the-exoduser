@@ -1,3 +1,7 @@
+## 2026-11-04 드루이드 세트 기본값 — 3D 보스 아레나·데모는 리모델 7기술 (보스 아레나 레인)
+
+3D 실측 실행이 리모델 플래그가 꺼진 채 옛 웹 드루이드와 싸운 문제(보스 보드 §8.5.4)를 뷰·런타임 계층에서 고쳤다. NativeGame.ReviewArgsApply가 런마다 `NativeReviewArgs.DecideDruidSet`으로 `Simulation.DruidRemodel`을 정한다: `--unity-druid-legacy`(꺼짐 강제) > `--unity-druid-remodel`(켜짐) > 3D 아레나(`--remodel3d`, 켜짐) > 데모 빌드(BuildFlavor DemoMode, 켜짐) > 기본(꺼짐). 결정은 `[DruidSet] remodel=… reason=legacy-arg|arg|3d-arena|demo|default` 한 줄로 런마다 로그에 남긴다. Core 변경 0(`DruidRemodelSettings.Default=false` 그대로), 직접 `Simulation`을 만드는 테스트·oracle은 옛 세트 유지. `--unity-review-args-capture`의 "default setting still off" 검사는 "규칙을 따른다 + Core 기본값 꺼짐"으로 바꾸고 아레나 드루이드 세트 대조는 규칙 결과 기준으로 유지했다. druid-rigpixel-tests에 규칙 조합 검사 16개 추가(정책 5,451검사/0실패), 전체 PC Roslyn 5어셈블리 오류 0. PC Unity/Player/빌드 0, 실제 화면·Mac 판정 미검증. docs/engine/UNITY_BOSS_BATTLE_BOARD_20261026.md §8.5.4.
+
 ## 2026-11-04 드루이드 v8.2 → v9.1 연결 (껍질+노인 페이즈·전환·등장/침강, 보스 아레나 레인)
 
 origin/unity/main(91e35a6c1, PREP 10 v9/v9.1 명세)을 병합했다(NativeGame.OnDestroy 충돌은 RemodelArenaDispose와 druidCues 해제 모두 보존, CHANGELOG/PREP 충돌은 양쪽 기록 보존). 입력 GLB `oldman_druid_v9_1.glb`(SHA-256 d1527e54…c35265)·`HuskHeap_P3.glb`(89fa7b1a…0a4855) 확인 뒤 import-oldman.py(65뼈·38액션·뼈 부모 객체와 강체 껍질 메시 휴지 월드 복원·발치 반지름 측정)와 import-huskheap.py로 OldmanV91.fbx(36,123,292B, meta GUID 유지)·HuskHeapP3.fbx(새 meta)를 만들고 OldmanV82.fbx를 삭제했다. 뼈 65 = 노인 34 + HK 23(HK_Root 포함) + HP 6 + OM_Lift/OM_Staff, 노인 78,323·껍질 73,906삼각형, Hips는 OM_Lift, StaffSocket_L은 OM_Staff 아래.
