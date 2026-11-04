@@ -133,7 +133,7 @@ namespace Exoduser.UnityPort.Core
         {
             if (!CanFieldEnemyShoot(fb)) return;
             double a = Math.Atan2(Player.Y - fb.Y, Player.X - fb.X), mx, my; FieldBossFeeler(fb, out mx, out my);
-            EmitFieldBossShot(new ProjSpec { X = mx, Y = my, Vx = Math.Cos(a) * 10, Vy = Math.Sin(a) * 10, Dmg = Js.Int(fb.Atk * 2.8), El = 2, Life = 320, Ml = 320, Col = ElementColors[2], Sz = 48, R = 20, ElemBall = true, Typed = true, Commit = true });
+            EmitFieldBossShot(new ProjSpec { X = mx, Y = my, Vx = Math.Cos(a) * 10, Vy = Math.Sin(a) * 10, Dmg = Js.Int(fb.Atk * 2.8), El = 2, Life = 320, Ml = 320, Col = ElementColors[2], Sz = 48, R = 20, FbEnergy = true, ElemBall = true, Typed = true, Commit = true });
             FieldBossEnergyShots++;
             HurtShake(16);
         }
@@ -263,8 +263,9 @@ namespace Exoduser.UnityPort.Core
             return true;
         }
 
-        /// <summary>_hurtFieldMobs(x, y, hitR, dmg, hitSet): flat damage (no defence, element, crit) to every angler the circle touches. Returns whether one was hit.</summary>
-        public bool HurtFieldMobs(double x, double y, double hitR, double dmg, HashSet<FieldBossState> hitSet)
+        /// <summary>_hurtFieldMobs(x, y, hitR, dmg, hitSet, parryShot): flat damage (no defence, element, crit) to every angler the circle touches. Returns whether one was hit;
+        /// with a parry shot (the Q split of an angler energy ball) every touched angler counts even when its hit cooldown swallowed the damage, and each plays _parryMagicHitFx.</summary>
+        public bool HurtFieldMobs(double x, double y, double hitR, double dmg, HashSet<FieldBossState> hitSet, BossProjectile parryShot = null)
         {
             var list = FieldBosses; if (list == null) return false;
             bool any = false;
@@ -275,7 +276,9 @@ namespace Exoduser.UnityPort.Core
                 if (Dist(x, y, fx, fy) < hitR + fb.R && !(hitSet != null && hitSet.Contains(fb)))
                 {
                     if (hitSet != null) hitSet.Add(fb);
-                    if (FieldBossApply(fb, dmg)) any = true;
+                    bool applied = FieldBossApply(fb, dmg);
+                    if (applied || parryShot != null) any = true;
+                    if (parryShot != null) ParryMagicHitFx(parryShot);
                 }
             }
             return any;

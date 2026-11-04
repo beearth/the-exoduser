@@ -160,6 +160,109 @@ const NOOP_COMMON = ['playSample', '_r', 'addTxt', 'addParts', 'poolPart', 'shak
     sections.reflectBlast = cases;
   }
 }
+// Angler water energy: run the real terminal branch and five-shot replacement (no gameplay stubs).
+{
+  const P = {x:100,y:100,r:10,s:'sBlock',st2:20,_sbParryT:18,_sbReleaseR:0,_kiParryT:0,_sBashChgMul:1,skills:{},iframes:0,kb:{x:0,y:0}};
+  const rec={shots:[],paid:[],hurts:[],recycled:0,booms:0};
+  const base={P,PASSIVES:{pParry:0},ELC:{2:'#3388ff'},G:{},Math,
+    meleeRef:()=>10,statStr:()=>1,pAtkMul:()=>1,magicRef:()=>10,statInt:()=>1,pMagicMul:()=>1,
+    _eqAffix:()=>0,_lEq:()=>0,_uEq:()=>0,sh:()=>({}),wp:()=>({}),_wingStrikeLevel:()=>0,
+    _getPProj:()=>({_hitSet:new Set()}),pProjs:rec.shots,
+    doParry:(dmg,x,y,forceQ,el,mul,tag)=>rec.paid.push({dmg,x,y,forceQ,el,mul,tag}),
+    _hurtProjectilePlayer:(p,dmg)=>rec.hurts.push(dmg),_recycleProj:()=>rec.recycled++,
+    _fbEnergyBoom:()=>rec.booms++,elMul:()=>1,ar:()=>({el:0}),window:{_parryLesson:{active:false}}};
+  const helpers=['function _lParryWinTicks','function isPWin','function _eSkillRangeMul','function _projectileParryClass',
+    'function _sBlockProjectileZone','function pParryDmg','function pParryProjDmg','function _isBigEnergy',
+    'function _bigEnergyContactRadius','function _bigEnergyPlayerKnockback','function _startBigEnergyPlayerSlide',
+    'function _splitParriedBigEnergy','function _resolveBigEnergyParry'].map(n=>fn(n)).join('\n');
+  const src=line('var _PARRY_WIN=')+line('const EL={')+helpers+
+    '\nfunction run(p,d){let _pHit=false;const _bigBall=_isBigEnergy(p);'+span('const _pCollR=P.r+','let _pDist=')+
+    '\nlet _pDist=d;for(let once=0;once<1;once++){'+span('const _qZone=','// ══ 빨간콩탄:')+'}return _projectileParryClass(p);}';
+  const m=load(src,base,['run'],NOOP_COMMON);
+  const rows=[];
+  // d 350-501 / rel 500: a big ball is never cut by the 400 px collision filter (`&&!_bigBall`), the Q release band reaches 500
+  for(const s of ['sBlock','peaceShield','idle','sBash','whirlwind','charge'])
+  for(const d of [19,20,21,99,100,105,106,150,195,196,197,299,300,350,399,400,401,450,499,500,501])
+  for(const sb of [0,18]) for(const rel of [0,300,500]) for(const iframes of [0,10]) {
+    Object.assign(P,{s,st2:20,_sbParryT:sb,_sbReleaseR:rel,iframes,parryBank:0,_ioActive:false,kb:{x:0,y:0}});
+    rec.shots.length=rec.paid.length=rec.hurts.length=0;rec.recycled=rec.booms=0;
+    const p={x:130,y:90,vx:-18,vy:0,dmg:560,el:2,fbEnergy:true,elemBall:true,sz:96,r:26,life:320,ml:320};
+    const cls=m.run(p,d);
+    rows.push(J({in:{s,d,sb,rel,iframes,p},out:{cls,shots:rec.shots,paid:rec.paid,hurts:rec.hurts,recycled:rec.recycled,booms:rec.booms,bank:P.parryBank,kb:P.kb}}));
+  }
+  sections.anglerEnergy=rows;
+}
+// 18. parryShot: the five shots of _splitParriedBigEnergy are web PLAYER projectiles. The whole pProjs loop of update() (35624-36078) runs as written, frame by frame, with the
+// real pool (_mkPProj/_resetPProj/_getPProj + the 120 objects pushed at load), elMul, _fmXY/_fmCanHit/_fmApply, _parryMagicFieldTarget, _hurtFieldMobs and _parryMagicHitFx.
+// Stubs only for the world: shQuery (128 px cells, row by row, array order inside a cell, as weapon-xbow-oracle), isW (wall rectangles), hurtE (records the hit, draws one
+// Math.random like the C# hook, lowers a harness hp), hm() (scenario helmet), _eqAffix('pierceFlat'), presentation no-ops. Math.random = the shared LCG of the scenario seed.
+{
+  const ppSrc = [line('const _PPROJ_POOL='), line('const _pprojFree='), fn('function _mkPProj(){'), fn('function _resetPProj(p){'), fn('function _recyclePProj(p){'), fn('function _getPProj(){'),
+    line('for(var _i2=0;_i2<_PPROJ_POOL;_i2++)'), line('const EL={'), fn('function elMul(a,d){'), fn('function dst(a,b,c,d){'), fn('function _fmXY(m,isFb){'), fn('function _fmCanHit(m,isFb){'),
+    fn('function _fmApply(m,dmg,isFb){'), fn('function _parryMagicFieldTarget(p,best,bestD){'), fn('function _parryMagicHitFx(p){'), fn('function _hurtFieldMobs(x,y,hitR,dmg,hitSet,parryShot){'),
+    fn('function _splitParriedBigEnergy(p,totalDmg){')].join('');
+  const loopSrc = span('{let w=0;for(let i=0;i<pProjs.length;i++){', '// World items (auto-pickup');
+  const wrapped = ppSrc + 'function __projFrame(){\n' + loopSrc + '}\n';
+  const lcg = seed => { let s = seed >>> 0; return () => { s = (Math.imul(s, 1664525) + 1013904223) >>> 0; return s / 4294967296; }; };
+  const f32 = Math.fround, noopFn = () => undefined;
+  function makeShotScenario(k) {
+    const r = lcg(7000 + k * 7919), pick = a => a[Math.floor(r() * a.length)];
+    const ang = r() * Math.PI * 2, bspd = pick([18, 18, 10, 0.0001]);
+    const ball = { x: 0, y: 0, vx: Math.cos(ang) * bspd, vy: Math.sin(ang) * bspd, el: pick([2, 2, 2, 1, 4, 3]) };
+    const walls = []; const box = k % 4 === 1 || k % 7 === 3;
+    if (box) { const h = f32(120 + r() * 260), v = f32(120 + r() * 260); walls.push([-h - 40, -v - 40, 2 * h + 80, 40], [-h - 40, v, 2 * h + 80, 40], [-h - 40, -v, 40, 2 * v], [h, -v, 40, 2 * v]); }   // a closed room: 3 bounces, the 4th wall ends the shot
+    for (let i = 0; i < pick([0, 0, 1, 2, 3]); i++) walls.push([f32(-700 + r() * 1200), f32(-700 + r() * 1200), f32(30 + r() * 120), f32(30 + r() * 300)]);
+    const enemies = []; const n = pick([0, 1, 3, 5, 7, 9]), cluster = r() < .5, cx = -300 + r() * 600, cy = -300 + r() * 600;
+    for (let i = 0; i < n; i++) enemies.push({ x: f32(cluster ? cx + r() * 140 : -650 + r() * 1300), y: f32(cluster ? cy + r() * 140 : -650 + r() * 1300), r: f32(14 + r() * 26), hp: pick([5, 60, 400, 3000, 1e9]), el: pick([null, 0, 1, 2, 3, 4]) });
+    const fbs = []; for (let i = 0; i < pick([0, 0, 0, 1, 2]); i++) { const fx = f32(-600 + r() * 1200), fy = f32(-600 + r() * 1200); fbs.push({ x: fx, y: fy, r: 120, hp: pick([30, 500, 1e9]), hid: pick([0, 0, 1]), tpT: pick([0, 0, 30]), tpX: f32(fx + 80), tpY: f32(fy - 60), asleep: pick([0, 0, 0, 1]), hitCd: pick([0, 0, 5]) }); }
+    const helmet = pick([null, null, null, { splashR: 10, splashMul: 0.31, magicPen: 0 }, { splashR: 10, splashMul: 0.5, magicPen: 1 }, { splashR: 6, splashMul: 0.2, magicPen: 2 }]);
+    return { seed: 90000 + k, ball, total: pick([5, 50, 137, 600, 3000]), pierceFlat: pick([0, 0, 0, 100, 400]), pPierce: pick([0, 0, 3]), helmet, walls, enemies, fbs, frames: 140 };
+  }
+  function runShotScenario(sc) {
+    const rng = lcg(sc.seed), events = []; let fx = 0, frame = 0;
+    const M = Object.create(Math); M.random = rng;
+    const enemies = sc.enemies.map((e, i) => ({ x: e.x, y: e.y, r: e.r, hp: e.hp, alive: true, _idx: i, el: e.el === null ? undefined : e.el, kb: { x: 0, y: 0 }, stunned: 0 }));
+    const G = { _gcT: 0, _fieldBosses: sc.fbs.length ? sc.fbs.map(m => ({ ...m })) : null, _fireDevils: null, _worms: null, hitStop: 0, cam: { x: 0, y: 0 } };
+    const isWall = (x, y) => sc.walls.some(w => x >= w[0] && x < w[0] + w[2] && y >= w[1] && y < w[1] + w[3]);
+    const ctx = vm.createContext({
+      Math: M, G, P: { x: 0, y: 0 }, PASSIVES: { pPierce: sc.pPierce }, OPT: { parts: 0, deathFx: false, hitStop: 100 }, _HS: { proj: 3 }, pProjs: [], sp: 1, _dtSp: 1, _gxTurret: null, _charIdx: 0, _shBufI: 0,
+      _eqAffix: id => (id === 'pierceFlat' ? sc.pierceFlat : 0), _uEq: () => 0, _isFused: () => false, _isMaliceOrb: () => false, hm: () => (sc.helmet ? { ...sc.helmet } : {}),
+      shQuery: (x, y, rr) => {
+        const c0x = ~~((x - rr) / 128), c1x = ~~((x + rr) / 128), c0y = ~~((y - rr) / 128), c1y = ~~((y + rr) / 128), out = [];
+        for (let cy = c0y; cy <= c1y; cy++) for (let cx = c0x; cx <= c1x; cx++) for (const e of enemies) if (e.alive && ~~(e.x / 128) === cx && ~~(e.y / 128) === cy) out.push(e);
+        return out;
+      },
+      // kind 0 = the shot's own hit (opts = the shot), 1 = magic splash ({magic:true}). NB the splash ring particle loop that follows every own hit draws 24 Math.random
+      // (12 x poolPart(..., 3+random*3, 10+random*6), evaluated even with OPT.parts 0): presentation only; the C# harness skips the same 24 draws in its own-hit hook
+      isW: isWall, hurtE: (e, dmg, ang, noSound, opts) => { events.push([frame, e._idx, dmg, opts && opts._parryMagicShot ? 0 : 1]); M.random(); e.hp -= dmg; if (e.hp <= 0) e.alive = false; },
+      _addBoom: () => { fx++; }, _projHitFx: () => { fx++; }, _fbMarkDead: m => { const a = G._fieldBosses; for (let i = 0; a && i < a.length; i++) if (a[i] === m) a[i] = null; },
+      _fmDeathFx: noopFn, showPH: noopFn, _L: a => a, _T: s => s, _projEmit: noopFn, poolPart: noopFn, addParts: noopFn, addTxt: noopFn, _addImpact: noopFn, _bladeEchoRecord: noopFn, _bladeEchoFinish: noopFn,
+      playSample: noopFn, playSampleAt: noopFn, playVFXAng: noopFn, _r: () => 1, shake: noopFn, ELC: [], ELP: [], _SFX_PRI: {}, _uqS: {}, SFX: new Proxy({}, { get: () => noopFn }) });
+    vm.runInContext(wrapped, ctx);
+    ctx.__ball = sc.ball; ctx.__total = sc.total; vm.runInContext('_splitParriedBigEnergy(__ball,__total)', ctx);
+    const out = [];
+    for (frame = 0; frame < sc.frames; frame++) {
+      G._gcT = frame;
+      vm.runInContext('__projFrame()', ctx);
+      if (G._fieldBosses) for (const m of G._fieldBosses) if (m && m.hitCd > 0) m.hitCd--;   // harness: the angler tick (_fbTickOne) is not run, only its hit cooldown
+      out.push(J({ shots: ctx.pProjs.map(p => [p.x, p.y, p.vx, p.vy, p.dmg, p.dist, p.bounces || 0, p._pierced || 0, p._bounceCool || 0, p._hitSet.size, p.el, p._pierceRate === undefined ? -1 : p._pierceRate]),
+        en: enemies.map(e => [e.kb.x, e.kb.y, e.stunned, e.alive ? 1 : 0]), fb: (G._fieldBosses || []).map(m => (m ? [m.hp, m.hitCd || 0] : null)), fx, free: vm.runInContext('_pprojFree.length', ctx) }));
+      if (!ctx.pProjs.length) break;
+    }
+    return { in: sc, out: { events, frames: out } };
+  }
+  sections.parryShot = [];
+  for (let k = 0; k < 80; k++) sections.parryShot.push(runShotScenario(makeShotScenario(k)));   // 80 x up to 140 frames (~5 MB of oracle.json)
+  const st = { hits: 0, bounced: 0, pierced: 0, fbHit: 0, recycled: 0 };
+  for (const c of sections.parryShot) {
+    st.hits += c.out.events.length;
+    const fr = c.out.frames; let maxB = 0, maxP = 0; for (const f of fr) for (const s of f.shots) { maxB = Math.max(maxB, s[6]); maxP = Math.max(maxP, s[7]); }
+    if (maxB > 0) st.bounced++; if (maxP > 0) st.pierced++;
+    if (fr.some(f => f.fb.some((m, i) => m && c.in.fbs[i] && m[0] < c.in.fbs[i].hp)) || fr.some(f => f.fb.some(m => m === null))) st.fbHit++;
+    st.recycled += fr[fr.length - 1].free - (120 - 5);
+  }
+  sections.parryShotStats = [st];
+}
 // ---- output -----------------------------------------------------------------------------------------------------------------
 const result = { schema: 'exoduser.unity.parry-reflect-oracle.v1', source: { file: 'game.html', sha256: sha(text), lines: lines.length }, wrapper: { noops: [...noopUsed].sort() }, blocks, sections,
   counts: Object.fromEntries(Object.entries(sections).map(([k, v]) => [k, Array.isArray(v) ? v.length : 1])) };

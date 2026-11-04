@@ -512,6 +512,26 @@ function Invoke-Exo([string]$command, [string[]]$jobArgs, [string]$logBase, [str
   if ([string](Prop $receipt 'deferred' '') -eq 'user-game') { $waitReason = [string](Prop $receipt 'note' '사용자 게임 실행 중, 미룸'); $receipt = $null }
   return [pscustomobject]@{ exit = $rc; receipt = $receipt; stdout = ($logBase+'.out.log'); stderr = ($logBase+'.err.log'); waitReason = $waitReason }
 }
+# 11-04 CTO 래칫: 바탕화면 빌드에 이미 있던 겹침만 known-overlaps.json에 두고, 목록 밖 겹침이 하나라도 있으면 FAIL.
+# 목록 건수는 state.uiKnownMin보다 늘 수 없다(줄어들기만). 검사 화면·analyzer 판정은 그대로다.
+function Apply-UiKnownList($run, $stateObj, [string]$runDir) {
+  $u = $run.uiOverlap
+  if ($u.passed -or -not $u.valid -or [int]$u.issueCount -le 0 -or @($u.missing).Count -gt 0 -or [int]$u.frameCount -le 0) { return }
+  $known = Join-Path $Cfg.Worktree 'unity\Tools\ui-overlap\known-overlaps.json'
+  if (-not (Test-Path -LiteralPath $known)) { $u.note = [string]$u.note + '; 알려진 목록 없음'; return }
+  $out = Join-Path $runDir 'ui-check\known-filter.json'
+  $raw = & 'C:\nvm4w\nodejs\node.exe' (Join-Path $Cfg.Worktree 'unity\Tools\ui-overlap\known-filter.cjs') ([string]$u.detailReport) $known $out 2>&1
+  $line = @($raw | ForEach-Object { [string]$_ } | Where-Object { $_.Trim().StartsWith('{') } | Select-Object -Last 1)
+  if (-not $line) { $u.note = [string]$u.note + '; 알려진 목록 대조 실패'; return }
+  $r = $line[0] | ConvertFrom-Json
+  $entries = [int]$r.knownListEntries; $min = Prop $stateObj 'uiKnownMin' $null
+  $u.knownIssues = [int]$r.knownIssues; $u.unknownIssues = [int]$r.unknownIssues; $u.knownListEntries = $entries; $u.knownFilter = $out
+  if ($null -ne $min -and $entries -gt [int]$min) { $u.note = [string]$u.note + ('; 알려진 목록이 ' + $min + '건에서 ' + $entries + '건으로 늘어남(래칫 위반)'); return }
+  if ($r.passed -eq $true -and [int]$r.issues -eq [int]$u.issueCount) {
+    $u.passed = $true; $u.note = ('UI 겹침 ' + $u.issueCount + '건 모두 알려진 기존 결함(목록 ' + $entries + '건, 새 겹침 0)')
+    if ($null -eq $min -or $entries -lt [int]$min) { $stateObj | Add-Member -NotePropertyName uiKnownMin -NotePropertyValue $entries -Force }
+  } else { $u.note = [string]$u.note + ('; 목록 밖 새 겹침 ' + $r.unknownIssues + '건(알려진 ' + $r.knownIssues + '건) - ' + $out) }
+}
 function Invoke-UiOverlapCheck([string]$check, [string]$exe, [string]$worktree, [string]$output, [string]$log) {
   # PS5.1 turns native stderr into NativeCommandError under & ... *> with EAP=Stop.
   # Redirect the child's raw streams directly, retaining the parent's error policy.
@@ -988,6 +1008,7 @@ function Cmd-Run {
           $run.uiOverlap = Read-UiOverlapSummary (Join-Path $runDir 'ui-check\overlap\overlap-summary.json') $uiCall.exit (Join-Path $runDir 'ui-check\overlap\overlap-report.json')
           $run.uiOverlap.log = $uiLog
           $run.uiOverlap.stderrLog = $uiCall.stderr; $run.uiOverlap.processId = $uiCall.processId
+          Apply-UiKnownList $run $st $runDir
         } finally { }
       }
     } else { $run.smokeNote = '빌드 실패로 스모크 없음' }
