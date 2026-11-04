@@ -17,7 +17,7 @@ const expected = ['ko','en','zh','zht','ja','vi','th','id','ms','es','fr','it','
 check(rows.length === 29 && expected.every(code => rows.some(r=>r.code===code && ['demoSub','demoNext','demoWishlist'].every(k=>typeof r[k]==='string' && r[k].trim()))), 'U-D1/U-D5 29 complete locale rows');
 check(overlay.includes('RequestWishlist') && overlay.includes('demoWishlist'), 'U-D5 separate store action on demo end');
 const endText = read(base+'Runtime/NativeDemoEndText.cs');
-check(endText.includes('asset==null') && endText.includes('catch(Exception)') && endText.includes('builtInEnglish') && endText.includes('korean') && !/Resources.Load<TextAsset>([^)]*).text/.test(endText), 'R08 end text loader checks the asset, survives broken JSON, falls back en -> ko -> built-in English');
+check(endText.includes('asset==null') && endText.includes('catch(Exception)') && endText.includes('builtInEnglish') && endText.includes('korean') && !/Resources\.Load<TextAsset>\([^)]*\)\.text/.test(endText), 'R08 end text loader checks the asset, survives broken JSON, falls back en -> ko -> built-in English');
 const en = rows.find(r=>r.code==='en');
 check(en && endText.includes('"'+en.demoSub+'"') && endText.includes('"'+en.demoNext+'"') && endText.includes('"'+en.demoWishlist+'"'), 'R08 built-in English text equals the en row of stageclear_labels.json');
 console.log(JSON.stringify({passed, failed}));
