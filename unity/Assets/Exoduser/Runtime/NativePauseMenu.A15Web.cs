@@ -451,7 +451,7 @@ namespace Exoduser.UnityPort
    if(navigation.Focused&&cursor>=0&&navigation.Cursor==cursor)Border(new Rect(r.x-3,r.y-3,r.width+6,r.height+6),new Color32(230,227,220,255));
    if(Clicked(r)){navigation.Fence();navigation.PointAt(cursor);Activate(it,fullscreen);}
   }
-  // P38: web #resetConfirm (warning text + confirm/cancel). Same face as the lobby's character-delete dialog (NativeLobby.CharacterDelete.cs): iron panel, two ActionPlates
+  // P38: web #resetConfirm layout (warning text + confirm/cancel); the warning text is Unity's own (Restart keeps the character: level and gear stay). Same face as the lobby's character-delete dialog (NativeLobby.CharacterDelete.cs): iron panel, two ActionPlates
   // (confirm left, cancel right), cancel focused first. Keys: Left = confirm, Right = cancel, Tab toggles, Enter/Space accepts the focused one, Esc cancels. The mouse works too.
   static readonly Rect ResetPanel=new Rect(727,425,466,230),ResetYesRect=new Rect(784,562,170,46),ResetNoRect=new Rect(966,562,170,46);
   public bool ResetConfirmOpen{get{return resetConfirm;}}
@@ -478,7 +478,7 @@ namespace Exoduser.UnityPort
     NativeUiAudit.Region(ResetPanel,"panel");
     if(resetMessageStyle==null)resetMessageStyle=new GUIStyle(GUI.skin.label){alignment=TextAnchor.MiddleCenter,wordWrap=true,padding=new RectOffset(),margin=new RectOffset()};
     var basis=St(19,FontStyle.Normal,NativeSilverHellUi.PlateText,TextAnchor.MiddleCenter);
-    string message=W("m.resetConfirm",T("정말 모든 진행을 초기화하시겠습니까?","Really reset all progress?")),yes=W("b.resetYes",T("확인","Confirm")),no=W("b.resetNo",T("취소","Cancel"));
+    string message=W("m.resetConfirm",T("현재 지역을 처음부터 다시 시작합니다. 캐릭터 레벨과 장비는 그대로 남습니다.","Restart this area from the beginning. Your character's level and gear are kept.")),yes=W("b.resetYes",T("확인","Confirm")),no=W("b.resetNo",T("취소","Cancel"));
     resetMessageStyle.font=basis.font;resetMessageStyle.fontSize=19;resetMessageStyle.normal.textColor=NativeSilverHellUi.PlateText;
     NativeSilverHellUi.Label(new Rect(759,445,402,104),message,resetMessageStyle);
     Vector2 mouse=Event.current.mousePosition;bool overYes=ResetYesRect.Contains(mouse),overNo=ResetNoRect.Contains(mouse);

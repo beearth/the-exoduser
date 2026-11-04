@@ -52,6 +52,11 @@ static class Program
     bool found=false;foreach(var e in doc.RootElement.GetProperty("entries").EnumerateArray())if(e.GetProperty("key").GetString()==key){found=true;var t=e.GetProperty("texts");Check(t.GetArrayLength()==29,"29 texts "+key);for(int i=0;i<29;i++)Check(!string.IsNullOrWhiteSpace(t[i].GetString()),"text "+key+"["+i+"]");}
     Check(found,"entry "+key);
    }
+   // the reset warning describes what Restart really does (area restart, character level/gear kept), not the web "reset all progress"
+   foreach(var e in doc.RootElement.GetProperty("entries").EnumerateArray())if(e.GetProperty("key").GetString()=="m.resetConfirm"){var tt=e.GetProperty("texts");string ko=tt[0].GetString(),en=tt[1].GetString();
+    Check(ko.Contains("현재 지역을 처음부터 다시 시작")&&ko.Contains("레벨과 장비는 그대로")&&!ko.Contains("모든 진행"),"P39 ko warning matches the real Restart behaviour");
+    Check(en.Contains("Restart this area")&&en.Contains("level and gear are kept")&&!en.Contains("reset all progress"),"P39 en warning matches the real Restart behaviour");
+    for(int i=2;i<29;i++)Check(tt[i].GetString()!=ko&&tt[i].GetString()!=en&&tt[i].GetString().Length>10,"P39 translated warning "+i);}
   }
   Console.WriteLine("{\"coreChecks\":"+count+"}");
  }

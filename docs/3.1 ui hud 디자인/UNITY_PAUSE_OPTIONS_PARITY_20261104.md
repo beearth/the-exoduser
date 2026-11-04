@@ -447,8 +447,8 @@ Unity는 첫 번째 모습(엑소듀서 전사)만 열려 있고(`CharacterRoste
 
 | 순서 | 차이 ID | 처리 | 구현 위치 | 비고 |
 |---|---|---|---|---|
-| 1 | P38 | 적용 | `NativePauseMenu.A15Web.cs` `DrawResetConfirm`·`PollResetConfirmKeys`, `NativePauseMenu.Keyboard.cs` | 리셋 버튼은 대화창만 연다(옛 "버튼 다시 누르면 확정" 폐기). 경고문 + 확인(왼쪽)·취소(오른쪽) 두 판. 캐릭터 삭제 확인(`NativeLobby.CharacterDelete.cs`)과 같은 철판 패널·ActionPlate·좌표. 취소가 먼저 선택. 키: ←(확인)·→(취소)·Tab/↑↓(전환)·Enter/Space(선택한 판)·Esc(취소). 패드: 십자 좌우·A·B. 뒤쪽 창의 탭·행·닫기는 막는다 |
-| 2 | P39 | **구현하지 않음(멈춤)** | — | 아래 "P39" |
+| 1 | P38 | 적용 | `NativePauseMenu.A15Web.cs` `DrawResetConfirm`·`PollResetConfirmKeys`, `NativePauseMenu.Keyboard.cs` | 리셋 버튼은 대화창만 연다(옛 "버튼 다시 누르면 확정" 폐기). 경고문 + 확인(왼쪽)·취소(오른쪽) 두 판. 캐릭터 삭제 확인(`NativeLobby.CharacterDelete.cs`)과 같은 철판 패널·ActionPlate·좌표. 경고문은 웹 문구가 아니라 Unity 동작에 맞춘 새 문장("현재 지역을 처음부터 다시 시작합니다. 캐릭터 레벨과 장비는 그대로 남습니다.", 번역 No.4298). 취소가 먼저 선택. 키: ←(확인)·→(취소)·Tab/↑↓(전환)·Enter/Space(선택한 판)·Esc(취소). 패드: 십자 좌우·A·B. 뒤쪽 창의 탭·행·닫기는 막는다 |
+| 2 | P39 | **구현하지 않음(멈춤)** | — | 웹은 캐릭터 진행 삭제 + 로비, Unity는 지역 재시작(진행 유지). 삭제 여부는 CTO 결정 대기. 아래 "P39" |
 | 3 | P31·P32 | 적용 | `Core/NativeCursorSteps.cs`, `NativeCursorOption.cs`, `Resources/Art/ui/cursors/` | 아래 "커서" |
 | 4 | P12·P14~P29 | 일부 연결·나머지 비활성 표시 | `Core/NativeGraphicsPolicy.cs`, `NativeGraphicsOptions.cs` | 아래 "P18 처리 표" |
 
@@ -456,20 +456,20 @@ Unity는 첫 번째 모습(엑소듀서 전사)만 열려 있고(`CharacterRoste
 
 웹 `resetYes`(game.html:49971-49986)는 확인 뒤 다음을 한다: 로컬 호스트면 `hellsave_<슬롯>` 삭제와 `DELETE /api/save/<슬롯>`, 캐릭터가 있으면 `characters.data = {}`로 **그 캐릭터의 모든 진행(레벨·경험치·장비·가방·스킬·스탯 등 dbSave가 쓰는 객체 전체)을 비운다**(캐릭터 행 이름은 남는다), 그 뒤 `index.html?lobby=1`로 이동한다. 즉 웹의 "처음부터"는 **로비 이동 + 캐릭터 진행 삭제**다.
 
-Unity는 전투 저장(`combat-save-v1/<이름>`)이 곧 웹 `characters.data`와 같은 객체(레벨·장비·스킬)다. 그래서 웹과 같게 만들면 `CombatSaveStore.Delete`로 그 캐릭터의 레벨·장비를 지우게 되고, 브리프의 정지 조건(레벨·장비 삭제 = 사용자 데이터 파괴)에 해당한다. **구현하지 않았다.** 지금 Unity의 `Restart`(=`ResetRun` 뒤 `CombatBeginRun`이 저장을 다시 읽음)는 그대로이고, P38 확인 버튼은 이 기존 `Restart`를 부른다.
+Unity는 전투 저장(`combat-save-v1/<이름>`)이 곧 웹 `characters.data`와 같은 객체(레벨·장비·스킬)다. 그래서 웹과 같게 만들면(= 웹은 캐릭터 진행 삭제 + 로비, Unity는 지역 재시작·진행 유지; 삭제 여부는 CTO 결정 대기) `CombatSaveStore.Delete`로 그 캐릭터의 레벨·장비를 지우게 되고, 브리프의 정지 조건(레벨·장비 삭제 = 사용자 데이터 파괴)에 해당한다. **구현하지 않았다.** 지금 Unity의 `Restart`(=`ResetRun` 뒤 `CombatBeginRun`이 저장을 다시 읽음)는 그대로이고, P38 확인 버튼은 이 기존 `Restart`를 부른다.
 
 | 항목 | 웹 | Unity(현재) | 총괄이 정할 것 |
 |---|---|---|---|
 | 확인 뒤 이동 | 로비 | 같은 캐릭터로 새 판(저장 다시 읽음) | 로비로 보낼지 |
 | 지우는 범위 | 캐릭터 진행 전체(`data={}`) | 없음 | 전투 저장 삭제를 허용할지(레벨·장비 소실), 아니면 라벨을 "이 판 다시 시작"으로 바꿀지 |
-| 경고 문구 | "정말 모든 진행을 초기화하시겠습니까?" | 같은 문구(P38) — 동작은 이 문구와 다르다 | 위 결정 전까지는 문구가 동작보다 세다 |
+| 경고 문구 | "정말 모든 진행을 초기화하시겠습니까?" | 실제 동작에 맞춘 새 문구(P38, 11-04 유니티 총괄): 지역만 다시 시작하고 레벨·장비는 유지 | 삭제를 허용하면 문구를 웹 쪽으로 되돌린다 |
 
 ### 커서 (P31·P32)
 
 | 항목 | 값 |
 |---|---|
 | 원화 출처 | `G:/exoduser-wt/latest-web`(읽기만, HEAD b94c8fbff) `img/cursors/cursor_dark_2x.png`(다크 레드)·`cursor_purple_normal_2x.png`(다크 퍼플), 각 128×128 RGBA. 웹이 실제로 쓰는 것과 같은 파일(game.html:49657-49660) |
-| 만든 단계 | 20·24·28·32·40·48·56·64·80·96·112·128 px × 2종 = 24장. 128px 원본을 System.Drawing HighQualityBicubic(PArgb, 가장자리 접힘)으로 줄임. 원본의 잔점(알파 ≥1인 5~6픽셀 조각, 보라 5·1픽셀 / 다크 3·2픽셀)은 200px 미만 조각을 투명으로 지워 제거(추가한 노이즈·그레인·디더 0). 모든 단계가 알파 ≥1 연결 성분 1개 |
+| 만든 단계 | 20·24·28·32·40·48·56·64·80·96·112·128 px × 2종 = 24장. 128px 원본을 System.Drawing HighQualityBicubic(PArgb, 가장자리 접힘)으로 줄임. 웹 원본(두 파일 모두)은 보석 중심 흰 하이라이트가 알파 0으로 비어 있어 어두운 배경에서 검은 구멍으로 보였다. 128px 원본에서 테두리와 이어지지 않은 투명 영역(알파 <128)과 그 둘레의 반투명 테두리(알파 <240)를 찾아 채웠다: 보석 구멍(다크 43px·퍼플 135px)은 고리 바깥의 가장 밝은 색에서 흰색 쪽(88%)으로 이어지는 연한 분홍·연보라, 알파 255. 보석과 무관한 퍼플의 작은 구멍 2곳(4px·1px)은 둘레 색 평균으로 채웠다(밝은 점이 생기지 않게). 그 뒤 원본의 잔점(알파 ≥1인 5~6픽셀 조각)은 200px 미만 조각을 투명으로 지워 제거했다(추가한 노이즈·그레인·디더 0). 검수: 어두운 배경(0x2a2c2c) 3x 시트 `I:/EXODUSER-Storage/codex-takeover/options-wave2/cursor-3x/cursor_sheet_3x_fixed.png`·`web_vs_unity_128_3x_fixed.png`를 직접 열어 구멍·점 0 확인 모든 단계가 알파 ≥1 연결 성분 1개 |
 | 반입 형식 | `Resources/Art/ui/cursors/cursor_<dark 또는 purple>_<단계>.bytes`(PNG 바이트, TextAsset). 런타임에 `Texture2D`(RGBA32, 밉 없음)로 읽어 `Cursor.SetCursor`. Unity 문서가 코드로 만드는 커서 텍스처에 요구하는 형식(RGBA32·밉 없음)과 같고 임포터 설정에 기대지 않는다. .meta는 경로 해시로 만든 고정 GUID |
 | 크기 규칙 | 웹 `out = clamp(round(64*크기%/100), 16, 256)` 픽셀(기본 50% = 32px)에 가장 가까운 단계. 슬라이더 30~200% → 20~128px. 핫스팟은 웹과 같은 `(round(out*13/56), 0)` |
 | 하드웨어 한계 | Unity 6 `Cursor.SetCursor` 문서에는 최대 크기 상한이 적혀 있지 않다(RGBA32·밉 없음·읽기 가능, 핫스팟은 텍스처 안). `CursorMode.Auto`라 플랫폼이 하드웨어/소프트웨어를 고른다. 관례상 하드웨어 커서는 32px 안쪽이 안전하고 64px 이상은 OS가 소프트웨어로 돌릴 수 있다 — **PC·Mac에서 큰 단계의 실제 표시는 미확인(Mac 판정)** |
