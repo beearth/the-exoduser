@@ -62,9 +62,9 @@ namespace Exoduser.UnityPort
             for(int n=0;n<2;n++)
             {
                 int index=characterScroll+n;
-                string name=Characters.NameAt(index);
-                if(name.Length==0)continue;
                 var card=new Rect(1428,421+n*94,390,84);
+                string name=Characters.NameAt(index);
+                if(name.Length==0){DrawEmptySilverSlot(card);continue;}
                 bool selected=index==Characters.SelectedIndex;
                 if(selected){
                     Fill(card,new Color(194/255f,26/255f,16/255f,.1f));
@@ -75,11 +75,12 @@ namespace Exoduser.UnityPort
                 if(lobbySlotPortrait==null)lobbySlotPortrait=Resources.Load<Texture2D>("Art/CharacterSelect/portrait_warrior")??Resources.Load<Texture2D>("Art/lobby/warrior_portrait");
                 Image(new Rect(portrait.x+1,portrait.y+1,54,54),lobbySlotPortrait,ScaleMode.ScaleAndCrop);
                 Border(portrait,new Color(.61f,.62f,.62f,.25f),1);
-                DrawSpaced(1510,card.y+9,30,name,silverName.font,20,20*.08f,NativeSilverHellUi.Text,true);
-                SilverLabel(new Rect(1690,card.y+17,86,20),K("전사","WARRIOR"),silverMicro,TextAnchor.MiddleRight);
+                int nameSize=20;while(nameSize>14&&SpacedWidth(silverName.font,nameSize,name,nameSize*.08f)>152)nameSize--;
+                var nameBox=new Rect(1510,card.y+9,152,30);NativeUiAudit.BeginGroup(nameBox);try{DrawSpaced(0,0,30,name,silverName.font,nameSize,nameSize*.08f,NativeSilverHellUi.Text,true);}finally{NativeUiAudit.EndGroup();}
+                SilverLabel(new Rect(1676,card.y+17,88,20),K("전사","WARRIOR"),silverMicro,TextAnchor.MiddleRight);
                 SilverLabel(new Rect(1510,card.y+49,266,24),SilverSlotCaption(name),silverBody,TextAnchor.MiddleLeft);
                 GUI.SetNextControlName("character-slot-"+index);if(NativeUiAudit.Button(new Rect(card.x,card.y,345,84),"",GUIStyle.none))SelectCharacter(index);
-                if((selected||card.Contains(Event.current.mousePosition))&&NativeUiAudit.Button(new Rect(1782,card.y+21,30,34),"×",silverBody))RequestCharacterDelete(index);
+                if((selected||card.Contains(Event.current.mousePosition))&&NativeUiAudit.Button(new Rect(1788,card.y+21,24,34),"×",silverBody))RequestCharacterDelete(index);
             }
             var create=new Rect(1428,609,400,64);
             var createStyle=new GUIStyle(silverName)
@@ -91,7 +92,7 @@ namespace Exoduser.UnityPort
             SilverLabel(plus,"+",silverName,TextAnchor.MiddleCenter);
             string createLabel=K("새 캐릭터","New character");
             SilverLabel(new Rect(1510,609,220,64),createLabel,createStyle,TextAnchor.MiddleLeft);
-            SilverLabel(new Rect(1750,609,78,64),Characters.Count.ToString(),silverBody,TextAnchor.MiddleRight);
+            SilverLabel(new Rect(1738,609,76,64),Characters.Count.ToString(),silverBody,TextAnchor.MiddleRight);
             Fill(new Rect(1428,672,400,1),new Color(.61f,.62f,.62f,.13f));
             GUI.enabled=controls&&characterWritesAllowed;
             GUI.SetNextControlName("character-create-card");
@@ -104,9 +105,15 @@ namespace Exoduser.UnityPort
             GUI.enabled=controls;
             var play=new Rect(1428,702,416,156);
             bool canEnter=controls&&Characters.SelectedIndex>=0&&NativeSilverHellUi.ReviewState!="disabled";
+            RefreshLobbyEntryArt();
             NativeSilverHellUi.ArtImage(play,canEnter?lobbySilverEnter:lobbySilverDisabled);
             // ENTER is baked into the source painting. No duplicate translated label.
             GUI.enabled=canEnter;
+            if(Event.current.type==EventType.Repaint){
+                EntryRect=play;EntryPointer=Event.current.mousePosition;EntryPointerScreen=GUI.matrix.MultiplyPoint3x4(EntryPointer);EntryPointerInside=play.Contains(EntryPointer);
+                bool hovered=EntryReviewState=="hover"||EntryReviewState==null&&EntryPointerInside;
+                EntryHoverVisible=canEnter&&hovered&&NativeSilverHellUi.EntryFocus(play);
+            }
             GUI.SetNextControlName("lobby-enter");DrawEntryHover(play,canEnter);if(EntrySoundButton(play))EnterSelectedCharacter();
             GUI.enabled=controls;
             SilverLabel(new Rect(1424,866,100,42),K("▶ 시네마틱","▶ Cinematic"),silverMicro,TextAnchor.MiddleLeft);
@@ -118,5 +125,12 @@ namespace Exoduser.UnityPort
             GUI.SetNextControlName("lobby-quit");if(NativeUiAudit.Button(new Rect(1812,870,36,36),"",GUIStyle.none))lobbyQuitPrompt=true;
             GUI.matrix=edgeMatrix;
         }
+        int lobbyEntryDensity;
+        void RefreshLobbyEntryArt(){int density=Screen.height>1080?2:1;if(lobbyEntryDensity==density)return;lobbyEntryDensity=density;lobbySilverEnter=Resources.Load<Texture2D>("Art/ui/silver_hell/lobby_enter_ready_"+density+"x");lobbySilverDisabled=Resources.Load<Texture2D>("Art/ui/silver_hell/lobby_enter_disabled_"+density+"x");}
+        static readonly Color SilverSlotFace=new Color(5/255f,5/255f,7/255f,.94f);
+        void DrawEmptySilverSlot(Rect card){Fill(card,SilverSlotFace);Border(card,new Color(.61f,.62f,.62f,.13f),1);Border(new Rect(card.x+14,card.y+14,56,56),new Color(.61f,.62f,.62f,.12f),1);}
+        internal bool DeathUiEntryPointerCapture,DeathUiEntryPointerInside,EntryPointerInside,EntryHoverVisible;
+        internal string EntryReviewState;
+        internal Vector2 EntryPointer,EntryPointerScreen;internal Rect EntryRect;
     }
 }

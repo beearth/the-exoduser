@@ -166,8 +166,8 @@ namespace Exoduser.UnityPort
    else if(t==2)
    {
     Add(l,K.Heading,"h.audio",new Rect(0,10,1700,29),false);
-    RowFor(l,DefSfx,0,45,960);RowFor(l,DefBgm,0,93,960);
-    Add(l,K.Select,"optBgmTrack",new Rect(0,141,960,48),true);
+    RowFor(l,DefSfx,0,45,818);RowFor(l,DefBgm,0,93,818);
+    Add(l,K.Select,"optBgmTrack",new Rect(0,141,818,48),true);
    }
    else
    {
@@ -257,8 +257,8 @@ namespace Exoduser.UnityPort
   void DrawButton(Rect r,string text,bool selected,bool danger)
   {
    bool hover=r.Contains(Event.current.mousePosition);
-   NativeSilverHellUi.ActionPlate(r,false,selected||hover?1:0,hover&&ExoInput.Mouse(0),22,4);
-   Txt(r,text,16,danger?new Color32(176,179,179,255):Bone,TextAnchor.MiddleCenter,FontStyle.Normal);
+   NativeSilverHellUi.ActionPlate(r,false,selected||hover?1:0,hover&&ExoInput.Mouse(0),22,4,settingsChip:true);
+   NativeSilverHellUi.PlateLabel(r,text,St(16,FontStyle.Normal,danger?new Color32(176,179,179,255):Bone,TextAnchor.MiddleCenter));
   }
   bool Clicked(Rect r){return NativeSilverHellUi.Button(r,GUIContent.none,GUIStyle.none);}
   void DrawItem(It it,float sy,bool fullscreen)

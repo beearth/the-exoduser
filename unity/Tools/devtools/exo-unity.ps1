@@ -28,6 +28,7 @@ param(
     [switch]$AllowPlayer,
     [ValidateSet('', 'buildloop', 'cto-swap', 'candidate')][string]$PcException = '',
     [switch]$DryRun,
+    [switch]$Exclusive,
     [ValidateSet("hidden", "batch")][string]$Desktop = "hidden",
     [string]$NodeModules = 'G:\exoduser\node_modules'
 )
@@ -45,7 +46,7 @@ if($Command -ne 'install-bin' -and $env:EXO_UNITY_NO_FORWARD -ne '1' -and
     exit $LASTEXITCODE
 }
 
-$ExoUnityVersion = '2026.11.04-zombieguard'
+$ExoUnityVersion = '2026.11.04-exclusive2'
 $MaxPlayerSlots = 2
 Import-Module (Join-Path $PSScriptRoot 'QueueTurn.psm1') -Force
 try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false) } catch { }
@@ -456,7 +457,31 @@ function Get-WaitingPlayerReservations {
     return @(Get-Reservations 'player' | Where-Object { $active -notcontains [string]$_.owner -and (Get-ReservationWaiterState $_) -eq 'waiting' })
 }
 
+# 11-04: QA Player 여러 개가 4K 로비 영상을 동시에 디코드하면 영상 준비가 12초씩 수십 번 시간 초과했다(BuildLoop 52a39f8f6 M1·UI 겹침 FAIL).
+# BuildLoop(-PcException buildloop)나 -Exclusive Player는 다른 Player가 모두 끝난 뒤 혼자 돌고, 도는 동안 새 Player를 받지 않는다.
+$ExclusivePath = Join-Path $Root '_player_exclusive.json'
+function Test-WantExclusive { return ([bool]$Exclusive -or $PcException -eq 'buildloop') }
+function Get-ExclusiveHolder {
+    $x = Read-Json $ExclusivePath
+    if ($x -and $x.token -ne $script:PlayerSlotToken -and (Test-PlayerSlotAlive $x)) { return $x }
+    return $null
+}
+
+# 11-04 CTO: 단독 검사 Player가 도는 동안에는 새 Editor 작업(서버 시작·batch·상주 서버 제출)도 순번 대기한다. 이미 도는 Editor는 끊지 않는다.
+function Wait-ExclusivePlayer([string]$what) {
+    $deadline = (Get-Date).AddMinutes($WaitMin); $said = $false
+    while ($true) {
+        $ex = Get-ExclusiveHolder
+        if (-not $ex) { return }
+        if ((Get-Date) -gt $deadline) { throw ('단독 검사 대기 시간 초과(' + $WaitMin + '분): ' + $ex.reservedAs) }
+        if (-not $said) { Say ('대기: BuildLoop 단독 검사 Player 실행 중(' + $ex.reservedAs + ' pid ' + $ex.pid + ') - 새 ' + $what + ' 작업은 끝난 뒤 시작 (' + $PollSec + '초 간격)'); $said = $true }
+        Start-Sleep -Seconds $PollSec
+    }
+}
+
 function Release-PlayerSlot {
+    $x = Read-Json $ExclusivePath
+    if ($x -and $script:PlayerSlotToken -and $x.token -eq $script:PlayerSlotToken) { Remove-Item -LiteralPath $ExclusivePath -Force -ErrorAction SilentlyContinue }
     if (-not $script:PlayerSlotPath) { return }
     $s = Read-Json $script:PlayerSlotPath
     if ($s -and [int]$s.pid -eq $PID -and $s.token -eq $script:PlayerSlotToken) { Remove-Item -LiteralPath $script:PlayerSlotPath -Force -ErrorAction SilentlyContinue }
@@ -475,6 +500,9 @@ function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
         $blocked = Get-PlayerDrainReason
         $rs = @(Get-WaitingPlayerReservations)
         if (-not $blocked -and $rs.Count -gt 0 -and (-not $Owner -or $rs[0].owner -ne $Owner)) { $blocked = 'player 예약 큐 맨 앞은 ' + $rs[0].owner }
+        $ex = Get-ExclusiveHolder
+        if (-not $blocked -and $ex) { $blocked = 'Player 단독 실행 중: ' + $ex.reservedAs + ' pid ' + $ex.pid }
+        if (-not $blocked -and (Test-WantExclusive) -and ($slots.Count + $legacy) -gt 0) { $blocked = '단독 실행 대기: 다른 Player ' + ($slots.Count + $legacy) + '개 종료 대기' }
         if (-not $blocked -and ($slots.Count + $legacy) -ge $MaxPlayerSlots) { $blocked = 'Player 슬롯 ' + ($slots.Count + $legacy) + '/' + $MaxPlayerSlots }
         $free = Get-CommitFreeGB
         if (-not $blocked -and $free -lt 10) { $blocked = '커밋 여유 ' + $free + 'GB < 필요 10GB' }
@@ -499,7 +527,11 @@ function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
                 try { $bytes=$Utf8NoBom.GetBytes(($content|ConvertTo-Json));$fs.Write($bytes,0,$bytes.Length) } finally { $fs.Dispose() }
                 $script:PlayerSlotPath=$path; $script:PlayerSlotToken=$token
                 # 다른 slot/구버전 lock의 동시 획득 뒤 상한을 다시 검사한다.
-                if ((@(Get-PlayerSlots).Count + (Get-LegacyPlayerCount)) -le $MaxPlayerSlots -and (Get-CommitFreeGB) -ge 10 -and -not (Get-PlayerDrainReason)) { $admitted=$true; return }
+                $limit = $MaxPlayerSlots; if (Test-WantExclusive) { $limit = 1 }
+                if ((@(Get-PlayerSlots).Count + (Get-LegacyPlayerCount)) -le $limit -and (Get-CommitFreeGB) -ge 10 -and -not (Get-PlayerDrainReason) -and -not (Get-ExclusiveHolder)) {
+                    if (Test-WantExclusive) { Write-JsonAtomic $ExclusivePath ([ordered]@{ pid = $ownerPid; startedAt = $content.startedAt; token = $token; reservedAs = [string]$Owner; exe = $exeFull }) }
+                    $admitted=$true; return
+                }
                 Release-PlayerSlot
                 break
             }
@@ -577,10 +609,12 @@ function Acquire-Slot([string]$Role, [string]$wt, [int]$ownerPid, [string]$queue
     $lastMsg = ''
     while ($true) {
         $blocked = $null
+        $ex = Get-ExclusiveHolder
+        if ($ex) { $blocked = ('BuildLoop 단독 검사 Player 실행 중(' + $ex.reservedAs + ' pid ' + $ex.pid + ')') }
         $res = @(Get-Reservations 'editor')
         if ($res.Count -gt 0) {
             $front = $res[0]
-            if ([string]::IsNullOrWhiteSpace($Owner) -or $front.owner -ne $Owner) {
+            if (-not $blocked -and ([string]::IsNullOrWhiteSpace($Owner) -or $front.owner -ne $Owner)) {
                 $blocked = ('예약 큐 맨 앞은 {0}({1}) - 내 차례 아님' -f $front.owner, $front.note)
             }
         }
@@ -802,6 +836,7 @@ function Cmd-Run {
     if ($DryRun) { Write-Output ('[dryrun] run method=' + $Method + ' args=' + (Format-ArgList (Resolve-JobArgs))); exit 0 }
     if ($Method -eq 'PortVerification.Build') { Ensure-LobbyMedia $wt }
     $qd = Get-QueueDir $wt
+    Wait-ExclusivePlayer 'Editor'
     $argList = Resolve-JobArgs
     $id = [Guid]::NewGuid().ToString('N').Substring(0, 8)
     $sw = [Diagnostics.Stopwatch]::StartNew()
@@ -1275,11 +1310,35 @@ function Stop-ForZombies($zombies, [string]$what) {
     Reject ($cause + '. 새 Player를 띄우지 않았다. 재부팅 뒤 ' + $HaltPath + '를 지우면 풀린다')
 }
 
+# 11-04: 사용자가 바탕화면에서 띄운 게임(부모 explorer)은 실제 세이브 폴더에 저장하므로, 그동안 돈 QA Player가 USER_SAVE 변경으로 실패했다.
+# 세이브 감시는 그대로 두고, 사용자 게임이 떠 있으면 Player를 시작하지 않고 미룬다(ok=False, deferred=user-game, exit 3).
+function Find-UserGames {
+    $all = @(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue)
+    $byId = @{}; foreach ($p in $all) { $byId[[int]$p.ProcessId] = $p }
+    $out = @()
+    foreach ($p in @($all | Where-Object { $_.Name -like 'EXODUSER*' })) {
+        $par = $byId[[int]$p.ParentProcessId]
+        if ($par -and $par.Name -ieq 'explorer.exe') { $out += [pscustomobject]@{ pid = [int]$p.ProcessId; exe = [string]$p.ExecutablePath } }
+    }
+    return $out
+}
+
+function Defer-ForUserGames($games) {
+    $list = (@($games) | ForEach-Object { [string]$_.pid + ' ' + $_.exe }) -join ', '
+    $id = [guid]::NewGuid().ToString('N').Substring(0, 8)
+    $r = [ordered]@{ runnerVersion = $ExoUnityVersion; id = $id; kind = 'player'; ok = $false; deferred = 'user-game'; note = '사용자 게임 실행 중, 미룸: ' + $list; userGames = @($games); exe = [string]$Exe; finishedAt = (NowIso) }
+    try { Write-JsonAtomic (Join-Path $ExecDir ('done\' + $id + '.json')) $r } catch { }
+    Say ('사용자 게임 실행 중, 미룸: ' + $list + ' (세이브 감시를 지키려고 Player를 띄우지 않았다)')
+    Write-Output ($r | ConvertTo-Json -Compress -Depth 4)
+    exit 3
+}
+
 function Cmd-Player {
     # 11-03 사용자 "백그라운드 테스트는 맥에서만": PC Player 실행은 CLAUDE.md 3.4 예외 3가지만 허용한다(편집기 batchmode 컴파일·임포트는 그대로).
     if (-not $PcException) { Reject 'PC에서는 player 실행을 기본 거부한다. Player 테스트·캡처는 Mac에서 실행한다. 예외(BuildLoop 바탕화면 교체·CTO 1회 교체·CTO 승인 후보 바로가기)만 -PcException buildloop|cto-swap|candidate' }
     $zombies = @(Find-ZombiePlayers)
     if ($zombies.Count) { Stop-ForZombies $zombies 'player' }
+    if (-not $DryRun) { $games = @(Find-UserGames); if ($games.Count) { Defer-ForUserGames $games } }
     if ([string]::IsNullOrWhiteSpace($Exe)) { throw '-Exe 가 필요합니다.' }
     if (-not (Test-Path -LiteralPath $Exe)) { throw "플레이어를 찾을 수 없음: $Exe" }
     $exeFull = (Resolve-Path -LiteralPath $Exe).Path
