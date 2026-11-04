@@ -6,6 +6,8 @@ namespace Exoduser.UnityPort.Core
  // Disposable frontend identities only. No disk, account, save or progression access.
  public sealed class CharacterRoster
  {
+  // Only the first visual (Exoduser warrior) is unlocked in this build; the settings character cards show this one as the current character.
+  public const int PlayableVisualIndex=0;
   readonly List<string> names=new List<string>();
   readonly HashSet<string> knownNames=new HashSet<string>(StringComparer.Ordinal);
   public int Count {get{return names.Count;}}
@@ -37,7 +39,7 @@ namespace Exoduser.UnityPort.Core
   public static string TrimName(string raw){if(raw==null)return "";int first=0,last=raw.Length;while(first<last&&JsWhitespace(raw[first]))first++;while(last>first&&JsWhitespace(raw[last-1]))last--;return raw.Substring(first,last-first);}
   public CharacterCreateError Validate(string raw,int visualIndex=0)
   {
-   if(visualIndex!=0)return CharacterCreateError.Locked;
+   if(visualIndex!=PlayableVisualIndex)return CharacterCreateError.Locked;
    string name=TrimName(raw);
    if(name.Length<2||name.Length>8)return CharacterCreateError.NameLength;
    if(name.IndexOfAny(new[]{'<','>','"','\'','&','/','\\'})>=0)return CharacterCreateError.Forbidden;

@@ -11,8 +11,10 @@ namespace Exoduser.UnityPort
   {
    QueueSettingsSave();ApplySettingsOptions();
    if(key=="preset")settingsDirtyPresetNote=true;
+   if((key=="bgmTrack"||key=="preset")&&menu)settingsBgmPreview=true;
+   if(key=="preset")ApplySettingsLanguage();   // a loaded slot carries opt.lang like the web
   }
-  bool settingsDirtyPresetNote;
+  bool settingsDirtyPresetNote,settingsBgmPreview;
   void ApplySettingsOptions()
   {
    if(Simulation==null||settings==null)return;

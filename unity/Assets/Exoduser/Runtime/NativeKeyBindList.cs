@@ -59,6 +59,11 @@ namespace Exoduser.UnityPort {
 
   // ---- state changes ----
   public void BeginListening(string action,bool alternate){held.Clear();listenAction=action;listenAlt=alternate;listenAt=Time.unscaledTime;}
+  // Started with Enter/Space from the menu: that key's own KeyDown/auto-repeat events must not become the binding, so it counts as already held until its KeyUp.
+  public void BeginListening(string action,bool alternate,KeyCode activator){BeginListening(action,alternate);if(activator!=KeyCode.None)held.Add(activator);}
+  // Keyboard focus stop (NativeKeyFocus: 2k main, 2k+1 secondary of listed action k, 2*rows = reset button); -1 = none. Set by the menu before Draw.
+  public int FocusStop=-1;
+  static readonly Color FocusRing=new Color32(230,227,220,255);
   public bool CaptureApply(string code){return Listening&&Apply(code);}   // capture / test entry: as if this web key code had been pressed while waiting
   public void CancelListening(){listenAction=null;listenAlt=false;}
   public void ForceListeningAge(float seconds){listenAt=Time.unscaledTime-seconds;}
@@ -237,6 +242,7 @@ namespace Exoduser.UnityPort {
    float resetY=rowY+18.5f;LastResetY=resetY;
    string reset=T(ui.texts.reset);float rw=Mathf.Max(200,Width(reset,semi,16,16f,0)+48);
    DrawResetButton(R(0,resetY,rw,40),reset,true);
+   if(FocusStop==n*2&&Event.current.type==EventType.Repaint){var rr=R(0,resetY,rw,40);Border(new Rect(rr.x-3,rr.y-3,rr.width+6,rr.height+6),FocusRing);}
    return resetY+40;
   }
 
@@ -260,7 +266,7 @@ namespace Exoduser.UnityPort {
    float altW=text.AltWidth,altX=QColW-QPad-altW,mainW=text.MainWidth,mainX=altX-10-mainW;
    var mainR=R(rx+mainX,ry+(height-QKeyH)*.5f,mainW,QKeyH);var altR=R(rx+altX,ry+(height-QKeyH)*.5f,altW,QKeyH);
    var delR=new Rect(altR.xMax-22,altR.y,22,QKeyH);
-   LastKeyRects.Add(mainR);LastKeyRects.Add(altR);
+   LastKeyRects.Add(mainR);LastKeyRects.Add(altR);int stopBase=LastKeyRects.Count-2;
    if(paint&&inView(row)){
     if(mainL||altL){Grad(row,C(107,110,110,.18f),C(52,55,55,.086f),true);Fill(new Rect(row.x,row.y,3,row.height),C(152,155,155));}
     else if(Hover(row))Fill(row,C(116,119,119,.06f));
@@ -269,6 +275,7 @@ namespace Exoduser.UnityPort {
     DrawKey(mainR,text.Main,mainL,1f,false);
     DrawKey(altR,text.Alt,altL,1f,alt==null&&!altL,alt!=null?22:0);
     if(alt!=null){var dc=Hover(delR)?C(176,179,179):C(136,139,139);RunCentered(delR.center.x,delR.center.y,"✕",regular,14,14f,0,dc,1f,5);}
+    if(FocusStop==stopBase||FocusStop==stopBase+1){var f=FocusStop==stopBase?mainR:altR;Border(new Rect(f.x-3,f.y-3,f.width+6,f.height+6),FocusRing);}
    }
    if(alt!=null&&Click(delR))keys.ClearSecondary(action);
    else if(Click(mainR))BeginListening(action,false);

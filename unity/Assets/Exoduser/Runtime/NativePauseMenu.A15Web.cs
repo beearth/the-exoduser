@@ -15,6 +15,9 @@ namespace Exoduser.UnityPort
   static readonly OptionDef DefFps=new OptionDef("optFps","fpsCap",1,OptionKind.Range,0,5,1,5,"fps");
   static readonly OptionDef DefSfx=new OptionDef("optSfx","sfxVol",2,OptionKind.Range,0,100,1,60,"pct");
   static readonly OptionDef DefBgm=new OptionDef("optBgm","bgmVol",2,OptionKind.Range,0,100,1,60,"pct");
+  // Web optReduceMotion (game.html 2836): the first row of the game-options grid. Value lives in NativeOptionSet.ReduceMotion (outside OptionSet.All).
+  static readonly OptionDef DefReduce=new OptionDef("optReduceMotion","reduceMotion",0,OptionKind.Check,0,1,1,0,"");
+  static readonly Color PresetOk=new Color32(120,200,150,255),PresetWarn=new Color32(214,160,90,255),PresetBad=new Color32(200,96,84,255);
   static readonly Color Bone=new Color32(217,214,208,255),Title=new Color32(222,219,213,255),Sub=new Color32(165,168,168,255),Dim=new Color32(129,132,132,255),Brass=new Color32(127,130,130,255);
   static readonly Color Line=new Color32(146,149,149,128),LineSoft=new Color32(146,149,149,46),LineTab=new Color32(146,149,149,77),BoxLine=new Color32(146,149,149,153),Danger=new Color32(176,40,28,255);
   const float PagesX=96,PagesY=196,PagesW=1728,PagesH=787;
@@ -30,8 +33,9 @@ namespace Exoduser.UnityPort
   public int A15OpenSelectIndex{get{return openSelect;}}
   public void A15SetScrollForQa(float v){a15Scroll[tab]=v;}
   public void A15OpenSelectForQa(string id){var items=Items();for(int i=0;i<items.Count;i++)if(items[i].id==id){openSelect=i;popupScroll=0;}}
-  public void OpenSettingsDirect(){navigation.Reset();openSelect=-1;resetConfirm=false;navigation.DirectSettings=true;ShowSettings();}
-  public static int[] A15NavRows(){return new[]{21,28,3,3};}
+  public void OpenSettingsDirect(){navigation.Reset();Array.Clear(a15Scroll,0,a15Scroll.Length);openSelect=-1;resetConfirm=false;navigation.DirectSettings=true;ShowSettings();}
+  // rows per tab: game 22 (9 system rows + reduce motion + 10 game options + reset + quit), display 28, audio 3, controls 3 + key stops (A15SyncKeyStops adds the key list's stops)
+  public static int[] A15NavRows(){return new[]{22,28,3,3};}
   // ---- text / fonts ----
   Font FontFor(string locale)
   {
@@ -76,6 +80,7 @@ namespace Exoduser.UnityPort
   {
    if(d.Id=="optFps"){for(int i=0;i<NativeSettingsState.FrameCapCount;i++)if(NativeSettingsState.GetFrameCap(i)==settings.FrameCap)return i;return 5;}
    if(d.Id=="optSfx")return settings.SfxPercent;if(d.Id=="optBgm")return settings.BgmPercent;
+   if(d.Id=="optReduceMotion")return settings.Options.ReduceMotion?1:0;
    return settings.Options.Get(d.Key);
   }
   void SetVal(OptionDef d,int v)
@@ -84,6 +89,7 @@ namespace Exoduser.UnityPort
    if(d.Id=="optFps"){int cap=NativeSettingsState.GetFrameCap(v);if(frameCapChanged!=null&&cap!=settings.FrameCap){settings.TrySetFrameCap(cap);frameCapChanged(cap);}return;}
    if(d.Id=="optSfx"){if(sfxChanged!=null&&v!=settings.SfxPercent){settings.SetSfxPercent(v);sfxChanged(settings.SfxPercent);}return;}
    if(d.Id=="optBgm"){if(bgmChanged!=null&&v!=settings.BgmPercent){settings.SetBgmPercent(v);bgmChanged(settings.BgmPercent);}return;}
+   if(d.Id=="optReduceMotion"){bool on=v!=0;if(settings.Options.ReduceMotion!=on){settings.Options.ReduceMotion=on;if(OptionChanged!=null)OptionChanged(d.Key);}return;}
    if(settings.Options.Get(d.Key)==v)return;
    settings.Options.Set(d.Key,v);if(OptionChanged!=null)OptionChanged(d.Key);
   }
@@ -144,10 +150,13 @@ namespace Exoduser.UnityPort
     float presetShift=presetY-244.8f;
     Add(l,K.Card,"char0",new Rect(882,53,220,242),true);Add(l,K.Card,"char1",new Rect(1118,53,220,242),true);
     Add(l,K.Heading,"h.gameopt",new Rect(0,317+presetShift,1700,31),false);
-    int i=0;foreach(var d in NativeOptionSet.All)if(d.Tab==0){RowFor(l,d,(i%2)*882,356+presetShift+56*(i/2),818);i++;}
-    Add(l,K.Rule,"red",new Rect(0,650+presetShift,818,1),false);Add(l,K.Rule,"red",new Rect(882,650+presetShift,818,1),false);
+    // Web order of the game-options grid: Reduce motion first (the rest of its old section moved to the Display tab), then diff ... bossDbg.
+    var gameRows=new List<OptionDef>{DefReduce};foreach(var d in NativeOptionSet.All)if(d.Tab==0)gameRows.Add(d);
+    for(int i=0;i<gameRows.Count;i++)RowFor(l,gameRows[i],(i%2)*882,356+presetShift+56*(i/2),818);
+    float rowsShift=presetShift+56*((gameRows.Count+1)/2-5);   // the grid used to be 5 rows high; every extra row pushes the rules and the reset/quit buttons down
+    Add(l,K.Rule,"red",new Rect(0,650+rowsShift,818,1),false);Add(l,K.Rule,"red",new Rect(882,650+rowsShift,818,1),false);
     string reset=W("b.resetBtn","Reset game"),quit=W("b.quitBtn","Quit game");
-    Add(l,K.Button,"reset",new Rect(0,671+presetShift,BtnW(reset),40),true,reset,null,true);Add(l,K.Button,"quit",new Rect(882,671+presetShift,BtnW(quit),40),true,quit,null,true);
+    Add(l,K.Button,"reset",new Rect(0,671+rowsShift,BtnW(reset),40),true,reset,null,true);Add(l,K.Button,"quit",new Rect(882,671+rowsShift,BtnW(quit),40),true,quit,null,true);
    }
    else if(t==1)
    {
@@ -197,13 +206,14 @@ namespace Exoduser.UnityPort
     PointAt(r,i);bool focus=navigation.Focused&&navigation.Cursor==i;
     Txt(new Rect(x+2,153+8,w,22),s,18,sel?Title:focus?Bone:Sub,TextAnchor.MiddleLeft,FontStyle.Bold);
     if(sel)Fill(new Rect(x,193,w,2),new Color32(176,40,28,255));else if(focus)Fill(new Rect(x,193,w,1),Line);
-    if(NativeSilverHellUi.Button(r,GUIContent.none,GUIStyle.none)){if(tab!=i){tab=i;openSelect=-1;}navigation.Fence();}
+    if(NativeSilverHellUi.Button(r,GUIContent.none,GUIStyle.none)){if(tab!=i){tab=i;openSelect=-1;a15Scroll[i]=0;}navigation.Fence();}
     x+=w+40;
    }
    HLine(96,195,1728,LineTab);
    GUI.enabled=navOn;
    var items=Items();
    var pages=new Rect(PagesX,PagesY,PagesW,PagesH);
+   A15SyncKeyStops();
    float contentH=ContentHeight(items),max=Mathf.Max(0,contentH-PagesH);
    Event e=Event.current;
    if(e.type==EventType.ScrollWheel&&pages.Contains(e.mousePosition)&&openSelect<0){a15Scroll[tab]=Mathf.Clamp(a15Scroll[tab]+e.delta.y*40f,0,max);e.Use();}
@@ -237,7 +247,7 @@ namespace Exoduser.UnityPort
     }
     Txt(noticeRect,notice,11,Dim);
    }
-   if(Time.unscaledTime<presetNoteUntil)Txt(new Rect(260,1004,600,20),presetNote,14,new Color32(120,200,150,255));
+   if(Time.unscaledTime<presetNoteUntil)Txt(new Rect(260,1004,600,20),presetNote,14,presetNoteColor);
    var close=new Rect(1644,994,180,40);int closeIdx=navigation.Count-1;
    DrawButton(close,W("b.setClose",T("닫기 [ESC]","Close [ESC]")),false,false);PointAt(close,closeIdx);FocusBorder(close,closeIdx);
    if(!popup&&NativeSilverHellUi.Button(close,GUIContent.none,GUIStyle.none)&&!(keyList!=null&&keyList.Listening)){navigation.Fence();if(!navigation.BackPage())a15Command=PauseMenuCommand.Resume;}
@@ -253,6 +263,37 @@ namespace Exoduser.UnityPort
   {
    int idx=navigation.Cursor-4;
    foreach(var it in items)if(it.nav&&it.navIdx==idx){float top=it.r.y,bottom=it.r.yMax;if(top-a15Scroll[tab]<0)a15Scroll[tab]=Mathf.Clamp(top-8,0,max);else if(bottom-a15Scroll[tab]>PagesH)a15Scroll[tab]=Mathf.Clamp(bottom-PagesH+8,0,max);}
+   float kTop,kBottom;
+   if(tab==3&&idx>=3&&KeyStopSpan(idx-3,out kTop,out kBottom)){if(kTop-a15Scroll[tab]<0)a15Scroll[tab]=Mathf.Clamp(kTop-8,0,max);else if(kBottom-a15Scroll[tab]>PagesH)a15Scroll[tab]=Mathf.Clamp(kBottom-PagesH+8,0,max);}
+  }
+  // ---- P42: keyboard access to the key list (Controls tab) ----
+  KeyCode lastAcceptKey=KeyCode.None;float keyScrollSeen;
+  // Content-space span of a key stop from the last drawn frame (slot rects are in the pages group, i.e. content y minus the scroll that frame used).
+  bool KeyStopSpan(int stop,out float top,out float bottom)
+  {
+   top=bottom=0;if(keyList==null||keyList.CurrentTab!=NativeKeyBindList.Tab.Kbm)return false;
+   int rows=keyList.Bindings.Listed.Count;if(!NativeKeyFocus.IsSlot(stop,rows)&&!NativeKeyFocus.IsReset(stop,rows))return false;
+   if(NativeKeyFocus.IsReset(stop,rows)){top=253+keyList.LastResetY;bottom=top+40;return true;}
+   if(stop>=keyList.LastKeyRects.Count)return false;
+   var r=keyList.LastKeyRects[stop];top=r.y+keyScrollSeen;bottom=r.yMax+keyScrollSeen;return true;
+  }
+  // The Controls tab has the cursor card, the size slider and then one stop per key slot plus the reset button (NativeKeyFocus); tab count follows the live list.
+  void A15SyncKeyStops()
+  {
+   var counts=navigation.SettingsRows;if(counts==null||counts.Length<4)return;
+   int stops=keyList!=null&&keyList.CurrentTab==NativeKeyBindList.Tab.Kbm?NativeKeyFocus.StopCount(keyList.Bindings.Listed.Count):0;
+   if(counts[3]==3+stops)return;
+   counts[3]=3+stops;
+   if(tab==3&&navigation.Cursor>=navigation.Count)navigation.PointAt(navigation.Count-1);
+  }
+  void A15KeyStop(int stop,PauseAction action)
+  {
+   if(keyList==null||keyList.CurrentTab!=NativeKeyBindList.Tab.Kbm||keyList.Listening)return;
+   int rows=keyList.Bindings.Listed.Count;if(stop<0||stop>=NativeKeyFocus.StopCount(rows))return;
+   if(action==PauseAction.RowLeft||action==PauseAction.RowRight){navigation.PointAt(7+NativeKeyFocus.Horizontal(stop,rows,action==PauseAction.RowLeft?-1:1));return;}
+   if(action!=PauseAction.RowAccept)return;
+   if(NativeKeyFocus.IsReset(stop,rows)){keyList.ResetBindings();return;}
+   keyList.BeginListening(keyList.Bindings.Listed[NativeKeyFocus.Row(stop)],NativeKeyFocus.IsSecondary(stop),lastAcceptKey);
   }
   void DrawButton(Rect r,string text,bool selected,bool danger)
   {
@@ -335,7 +376,15 @@ namespace Exoduser.UnityPort
    var labels=new List<string>();values=new List<string>();current=0;
    if(it.id=="optLang"){for(int i=0;i<LobbyLanguage.Count;i++){string c=LobbyLanguage.GetCode(i);values.Add(c);labels.Add(LobbyLanguage.GetDisplayName(c));if(c==LobbyLanguage.Normalize(LocaleCode))current=i;}}
    else if(it.id=="optAtmos"){var l=NativeOptionText.List("atmos",LocaleCode);for(int i=0;i<l.Length;i++){values.Add(i.ToString());labels.Add(l[i]);}current=Mathf.Clamp(settings.Options.Get("atmos"),0,Mathf.Max(0,l.Length-1));}
-   else if(it.id=="optBgmTrack"){var v=NativeOptionText.List("bgm.values",LocaleCode);var l=NativeOptionText.List("bgm.labels",LocaleCode);for(int i=0;i<v.Length&&i<l.Length;i++){values.Add(v[i]);labels.Add(l[i]);if(v[i]==settings.Options.BgmTrack)current=i;}}
+   else if(it.id=="optBgmTrack")
+   {
+    // Only songs this build can actually play are listed (NativeBgmSelection.SupportedAt), in web order. A saved value outside that list is shown as auto
+    // but the settings value itself is left alone: it is only replaced when the player picks something.
+    var v=NativeOptionText.List("bgm.values",LocaleCode);var l=NativeOptionText.List("bgm.labels",LocaleCode);int auto=0;
+    string shown=NativeBgmSelection.Effective(settings.Options.BgmTrack);
+    for(int i=0;i<v.Length&&i<l.Length;i++){if(!NativeBgmSelection.IsSupported(v[i]))continue;if(v[i]==NativeOptionSet.BgmTrackDefault)auto=values.Count;values.Add(v[i]);labels.Add(l[i]);if(v[i]==shown)current=values.Count-1;}
+    if(values.Count>0&&!values.Contains(shown))current=auto;
+   }
    return labels;
   }
   void ApplySelect(It it,int index,List<string> values)
@@ -409,25 +458,24 @@ namespace Exoduser.UnityPort
    }
   }
   // Web _savePreset/_loadPreset: opt + the audio/FPS values in one JSON per slot.
-  string PresetJson(){return "{\"opt\":"+settings.Options.Encode()+",\"sfxVol\":"+settings.SfxPercent+",\"bgmVol\":"+settings.BgmPercent+",\"fpsCap\":"+settings.FrameCap+"}";}
-  void SavePreset(int slot){settings.Presets[slot]=PresetJson();if(OptionChanged!=null)OptionChanged("preset");presetNote=T("세팅"+(slot+1)+" 저장 완료!","Preset "+(slot+1)+" saved!");presetNoteUntil=Time.unscaledTime+2;}
-  string presetNote="";float presetNoteUntil;
+  // P34: binds + binds2 (+ lang inside opt) like the web slot; the audio/FPS values keep their own fields (NativeSettingsPreset).
+  public Func<string,bool> BindingSupported;   // the host's check for key codes this build can read
+  string PresetJson(){return NativeSettingsPreset.Encode(settings,NativeKeyBindInput.Bindings);}
+  void SavePreset(int slot){settings.Presets[slot]=PresetJson();if(OptionChanged!=null)OptionChanged("presetSave");ShowPresetNote("m.presetSaved","세팅{0} 저장 완료!","Preset {0} saved!",slot,PresetOk);}
+  string presetNote="";float presetNoteUntil;Color presetNoteColor=new Color32(120,200,150,255);
+  void ShowPresetNote(string key,string ko,string en,int slot,Color color){presetNote=W(key,T(ko,en)).Replace("{0}",(slot+1).ToString());presetNoteColor=color;presetNoteUntil=Time.unscaledTime+2;}
   void LoadPreset(int slot)
   {
-   string json=settings.Presets[slot];if(string.IsNullOrEmpty(json))return;
-   int at=json.IndexOf("\"opt\":",StringComparison.Ordinal);if(at<0)return;
-   int start=json.IndexOf('{',at),end=json.IndexOf("},\"sfxVol\"",start,StringComparison.Ordinal);if(start<0||end<0)return;
-   settings.Options.Decode(json.Substring(start,end-start+1));
+   // Web _loadPreset: empty slot = "no saved data" (amber), unreadable slot = "load failed" (red), otherwise values + keys + language and "loaded".
    int sfx,bgm,cap;
-   if(TryInt(json,"sfxVol",out sfx)&&sfxChanged!=null){settings.SetSfxPercent(sfx);sfxChanged(settings.SfxPercent);}
-   if(TryInt(json,"bgmVol",out bgm)&&bgmChanged!=null){settings.SetBgmPercent(bgm);bgmChanged(settings.BgmPercent);}
-   if(TryInt(json,"fpsCap",out cap)&&frameCapChanged!=null&&NativeSettingsState.IsFrameCapSupported(cap)){settings.TrySetFrameCap(cap);frameCapChanged(cap);}
-   if(OptionChanged!=null)OptionChanged("preset");presetNote=T("세팅"+(slot+1)+" 불러옴","Preset "+(slot+1)+" loaded");presetNoteUntil=Time.unscaledTime+2;
-  }
-  static bool TryInt(string json,string key,out int value)
-  {
-   value=0;int at=json.IndexOf("\""+key+"\":",StringComparison.Ordinal);if(at<0)return false;at+=key.Length+3;int e=at;while(e<json.Length&&(char.IsDigit(json[e])||json[e]=='-'))e++;
-   return int.TryParse(json.Substring(at,e-at),out value);
+   var result=NativeSettingsPreset.Apply(settings.Presets[slot],settings,NativeKeyBindInput.Bindings,BindingSupported??(code=>true),out sfx,out bgm,out cap);
+   if(result==PresetResult.Empty){ShowPresetNote("m.presetEmpty","세팅{0} 저장된 설정 없음","Preset {0} no saved data",slot,PresetWarn);return;}
+   if(result==PresetResult.Invalid){ShowPresetNote("m.presetFail","불러오기 실패","Load Failed",slot,PresetBad);return;}
+   if(sfx>=0&&sfxChanged!=null)sfxChanged(settings.SfxPercent);
+   if(bgm>=0&&bgmChanged!=null)bgmChanged(settings.BgmPercent);
+   if(cap>=0&&frameCapChanged!=null)frameCapChanged(settings.FrameCap);
+   if(OptionChanged!=null)OptionChanged("preset");
+   ShowPresetNote("m.presetLoaded","세팅{0} 불러오기 완료!","Preset {0} loaded!",slot,PresetOk);
   }
   void DrawCard(It it,Rect r,int cursor)
   {
@@ -455,6 +503,8 @@ namespace Exoduser.UnityPort
     Txt(new Rect(r.x+8,r.y+66,r.width-16,28),idx<names.Length?names[idx]:"",13,sel?Title:Bone,TextAnchor.MiddleCenter,FontStyle.Bold);
    }
    if(navigation.Focused&&cursor>=0&&navigation.Cursor==cursor)Border(new Rect(r.x-3,r.y-3,r.width+6,r.height+6),new Color32(230,227,220,255));
+   // P33: the character cards only show the current character (CharacterIndex, fed by the host from CharacterRoster.PlayableVisualIndex). Clicking one would swap the hero
+   // under a running fight and its combat save, and the other visuals are still locked in this build, so a click does nothing (no keyboard accept either).
    if(!character&&Clicked(r)){settings.Options.Set("cursor",idx);if(OptionChanged!=null)OptionChanged("cursor");navigation.Fence();navigation.PointAt(cursor);}
   }
   public int CharacterIndex { get; set; }
@@ -480,7 +530,9 @@ namespace Exoduser.UnityPort
    else if(SettingsPersistenceEnabled){keyList.SaveNote="키 설정 변경은 이 PC에 자동 저장됩니다";keyList.SaveNoteEn="Key binding changes are saved on this PC";}
    else{keyList.SaveNote="검수 실행의 키 설정은 저장하지 않습니다";keyList.SaveNoteEn="Key bindings are not saved during this QA run";}
    TraceHitForQa("menu",new Rect(PagesX,PagesY,PagesW,PagesH),0);
+   keyScrollSeen=sy;keyList.FocusStop=navigation.Focused&&tab==3&&openSelect<0&&navigation.Cursor>=7?navigation.Cursor-7:-1;
    keyList.Draw(new Vector2(it.r.x,it.r.y-sy),new Rect(0,0,PagesW,PagesH));
+   keyList.FocusStop=-1;
    TraceHitForQa("group-after",new Rect(PagesX,PagesY,PagesW,PagesH),0);
   }
   void A15PopupKeys()
@@ -495,7 +547,8 @@ namespace Exoduser.UnityPort
   void A15RowKey(PauseAction action,bool fullscreen)
   {
    var items=Items();int idx=navigation.Cursor-4;It it=null;foreach(var o in items)if(o.nav&&o.navIdx==idx)it=o;
-   if(it==null)return;int dir=action==PauseAction.RowLeft?-1:action==PauseAction.RowRight?1:0;
+   if(it==null){if(tab==3&&idx>=3&&openSelect<0)A15KeyStop(idx-3,action);return;}
+   int dir=action==PauseAction.RowLeft?-1:action==PauseAction.RowRight?1:0;
    if(openSelect>=0)return;
    switch(it.k)
    {

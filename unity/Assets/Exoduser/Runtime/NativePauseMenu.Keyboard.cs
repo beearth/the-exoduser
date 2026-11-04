@@ -12,6 +12,7 @@ namespace Exoduser.UnityPort
   static readonly KeyCode[] menuKeys={KeyCode.Escape,KeyCode.Return,KeyCode.KeypadEnter,KeyCode.Space,KeyCode.Tab,KeyCode.UpArrow,KeyCode.DownArrow,KeyCode.LeftArrow,KeyCode.RightArrow,KeyCode.Home,KeyCode.End};
   public PauseMenuCommand PollKeys(bool dead,bool fullscreen)
   {
+   A15SyncKeyStops();
    bool held=ExoInput.Mouse(0);foreach(var key in menuKeys)held|=ExoInput.Key(key);navigation.ObserveReleased(held);
    if(!navigation.Focused||navigation.WaitingForRelease)return PauseMenuCommand.None;
    if(openSelect>=0){A15PopupKeys();return PauseMenuCommand.None;}
@@ -35,14 +36,14 @@ namespace Exoduser.UnityPort
    else if(ExoInput.KeyDown(KeyCode.RightArrow))input=PauseKey.Right;
    else if(ExoInput.KeyDown(KeyCode.Home))input=PauseKey.Home;
    else if(ExoInput.KeyDown(KeyCode.End))input=PauseKey.End;
-   else if(ExoInput.KeyDown(KeyCode.Return)||ExoInput.KeyDown(KeyCode.KeypadEnter)||ExoInput.KeyDown(KeyCode.Space))input=PauseKey.Accept;
+   else if(ExoInput.KeyDown(KeyCode.Return)||ExoInput.KeyDown(KeyCode.KeypadEnter)||ExoInput.KeyDown(KeyCode.Space)){lastAcceptKey=ExoInput.KeyDown(KeyCode.Return)?KeyCode.Return:ExoInput.KeyDown(KeyCode.KeypadEnter)?KeyCode.KeypadEnter:KeyCode.Space;input=PauseKey.Accept;}
    return input.HasValue?HandleKey(input.Value,dead,fullscreen):PauseMenuCommand.None;
   }
   public PauseMenuCommand HandleKey(PauseKey input,bool dead,bool fullscreen)
   {
    int previousTab=tab;
    var action=navigation.Handle(input,dead);
-   if(tab!=previousTab){settingsScroll=0;keyScroll=0;}
+   if(tab!=previousTab){settingsScroll=0;keyScroll=0;a15Scroll[tab]=0;}   // web: a tab switch scrolls the page back to the top
    switch(action){
     case PauseAction.Resume:return PauseMenuCommand.Resume;
     case PauseAction.Restart:return PauseMenuCommand.Restart;

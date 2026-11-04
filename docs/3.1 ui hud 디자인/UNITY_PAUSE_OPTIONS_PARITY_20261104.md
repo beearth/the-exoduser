@@ -110,7 +110,7 @@
 |---|---|---|---|---|---|---|
 | 1 `optSfx` | 효과음 볼륨 / SFX Volume | 0..100 / 1 / 60% | 같음(키보드1%·마우스 정수) | 예 / 예 | sound/music/lobby SFX gain | 소스 연결; `game.html:49434-49435,49854-49855`; `NativePauseMenu.A15Web.cs:16-17,84-86,502`; `NativeGame.cs:721-722` |
 | 2 `optBgm` | 음악 볼륨 / Music Volume | 0..100 / 1 / 60% | 같음(키보드1%·마우스 정수) | 예 / 예 | music/lobby 음악 gain | 소스 연결; `game.html:49434-49435,49854-49855`; `NativePauseMenu.A15Web.cs:16-17,84-86,502`; `NativeGame.cs:721-722` |
-| 3 `optBgmTrack` | BGM 선택 / BGM Select | auto 기본; 73값·원문 순서 | 73값 동일, optgroup3개 표시 생략 | 예 / 예 | 선택값을 음악 호스트에 전달하지 않음 | P30; `game.html:2842-2922,49436`; `NativePauseMenu.A15Web.cs:338,346` |
+| 3 `optBgmTrack` | BGM 선택 / BGM Select | auto 기본; 73값·원문 순서 | 73값 동일, optgroup3개 표시 생략. 목록에는 Unity가 가진 9값(auto·lobby·hell1·1장 Remastered 3곡·boss·death·victory)만 웹 순서로 보인다 | 예 / 예 | 11-04 연결(auto = 1-1 필드 회전, 곡 선택 = 그 곡 반복; 아래 "BGM 회전") | P30; `game.html:2842-2922,49436`; `NativePauseMenu.A15Web.cs:338,346` |
 
 
 ### 조작
@@ -338,3 +338,105 @@ diff --git a/unity/Assets/Exoduser/Runtime/NativePauseMenu.A15Web.cs b/unity/Ass
 
 
 END
+
+## 반영 상태 (1차 연결, 2026-11-04 · 브랜치 `claude/unity-pc-options-wave1-20261104`, 유니티 총괄 결정)
+
+위 대조 후 데모 v0 첫인상 기준으로 "눌러도 아무 일이 없는 설정" 8건을 연결했다. 검증은 PC 컴파일(5개 어셈블리 오류 0)과 Core·소스 계약 테스트까지다. **화면·소리·자연 입력·저장/재시작 판정은 Mac에서 한다(미검수).** 차이 ID 56건 가운데 아래 8건 외에는 이번에 건드리지 않았다.
+
+| 순서 | 차이 ID | 처리 | 구현 위치 | 비고 |
+|---|---|---|---|---|
+| 1 | P13 | 적용 | `NativeGame.SettingsPersistence.cs` `InitializeNativeSettings` | 새 설정 FPS 기본 = `NativeSettingsState` 선언 기본 0(무제한), 웹 OPT.fpsCap 0과 같다. 저장 파일이 있으면 저장 캡이 그대로 우선. 패치 01은 이 한 줄이다 |
+| 2 | P37 | 적용(패치 02 + 탭 전환) | `NativePauseMenu.A15Web.cs` `OpenSettingsDirect`·탭 클릭, `NativePauseMenu.Keyboard.cs` | 재진입마다 4탭 스크롤 0. 웹처럼 탭을 바꿀 때도 맨 위(패치 02에는 없던 부분) |
+| 3 | P02 | 적용 | `NativeOptionSet.Lang`(opt extra의 `lang`), `NativeGame.SettingsPersistence.cs` | 아래 "언어 우선순위" 참고 |
+| 4 | P30 | 적용(재생되는 곡만 목록에 표시) | `Core/NativeBgmSelection.cs`, `NativeGame.cs` `UpdateGameMusic`, `NativeGameMusic.Sync(key,audio)` | 목록에는 실제 재생되는 6값만 보인다(아래). 나머지 67값은 목록에서 숨기고, 저장된 값이 그 안에 있으면 자동으로 표시한다 |
+| 5 | P01 | 적용 | 게임 탭 옵션 격자 첫 행 | 웹 순서(움직임 줄이기 → 난이도 …). 기존 `NativeOptionSet.ReduceMotion`에 연결·저장, 화면 전환이 이미 이 값을 읽는다 |
+| 6 | P42 | 적용 | `Core/NativeKeyFocus.cs`, `NativeKeyBindList.FocusStop`, `A15KeyStop` | 아래 "키보드 초점 순서". 패드 재지정(P43)은 범위 밖 |
+| 7 | P33 | 표시만 적용 | `CharacterRoster.PlayableVisualIndex` → `pauseMenu.CharacterIndex` | 클릭은 막은 채 둔다(아래) |
+| 8 | P34 | 적용 | `Core/NativeSettingsPreset.cs` | 슬롯에 주·보조 키와 언어를 넣는다. 빈 슬롯·읽기 실패 피드백은 웹과 같다 |
+
+### 언어 우선순위 (P02)
+
+`저장된 lang > 시작 언어 결정(호스트 기본)`. 시작 때 `LobbyLanguage.Startup(saved,fallback)`이 저장값을 쓰고, 저장값이 없거나(옛 파일·새 설치) 지원하지 않으면 지금까지처럼 로비 기본(ko)이다. 근거: 웹은 `OPT.lang`을 저장해 다음 실행에 쓰고, 사용자가 고른 값이 환경 기본보다 앞서야 하기 때문이다. `startup-locale.test.cjs`가 보는 `bossBar.LocaleCode = lobby != null ? lobby.Language : "ko"`는 그대로이며, 저장값은 로비 생성 직후 `lobby.Language`로 들어가므로 이 식은 저장값을 그대로 따른다. 첫 `ResetRun`(로비 생성 전)만 ko다. 변경은 설정 창·로비 언어 팝업 어디서든 `lobby.Language` 변화로 감지해 한 번만 저장한다. 저장 형식: 설정 파일 `opt` 안의 `"lang":"ko"`(웹 OPT.lang과 같은 위치, 프리셋이 그대로 싣는다). 값이 없으면 키를 쓰지 않으므로 옛 빌드가 읽는 텍스트는 바뀌지 않고, 옛 파일은 lang 없이 읽힌다.
+
+### BGM 선택 (P30)
+
+웹 `game.html:49436`: `auto` = 스테이지 곡, 키 값 = 그 곡을 강제 재생하고 `BGM.play`가 다른 키를 막는다(단 death·victory·forge는 자기 곡), `t:파일`·`allRandom` = 파일·셔플. Unity는 같은 규칙을 `NativeBgmSelection.Resolve(스테이지 키, 선택)`로 옮겼다. 숲 바닥음·보스 스냅샷은 계속 스테이지 키를 따른다. 일시정지 창이 열려 있어도 새로 고른 곡은 바로 들린다(웹과 같음).
+
+| 구분 | 값 | 동작 |
+|---|---|---|
+| 재생됨(9) | `auto`, `lobby`(Audio/Lobby/lobby), `hell1`, `boss`(드루이드 보스곡), `death`, `victory`, 1장 Remastered 3곡(`t:bgm/1장_썩은숲/{Ashes Under the Banner,Cathedral of Steel,Iron Oath Under Ash} (Remastered).wav` = 웹 목록 55·56·59번, hell1과 boss 사이) | 실제 곡 |
+| 목록에서 숨김(64) | `allRandom`, `hell2`~`hell4`, `finalboss`, `forge`와 `t:` 곡 전부 | 곡 자원이 Unity에 없어 "눌러도 안 되는 설정"이 되므로 보여 주지 않는다. 저장 파일에 이 값이 있으면 화면에는 자동으로 보이고 소리도 자동(스테이지 곡)이지만, 저장 값은 덮어쓰지 않고 사용자가 곡을 고를 때만 바뀐다 |
+
+값 목록은 테스트가 `bgm-fallback-values.txt`로 뽑는다(이번 실행 위치: `I:/EXODUSER-Storage/codex-takeover/options-wave1/dotnet-out/`). 목록은 `NativeBgmSelection` 지원 목록에서 만들어지며(웹 순서 유지), 곡을 Unity에 넣고 지원 목록에 값을 추가하기만 하면 메뉴에 다시 나타난다.
+
+### BGM 회전 (11-04, 1-1 필드 3곡 반입)
+
+웹 `game.html` `BGM._onEnded`(4113~4170행 `BGM.tracks` 근처): 장 BGM(1장 = hell1 한 곡)을 한 번 틀고, 끝나면 `OPT.bgmTrack==='auto'`일 때 전체 곡(gameplay 큐 포함)을 무작위로 고르되 직전 곡(`_lastSrc`)은 건너뛴다. 곡을 직접 고르면(`t:` 값, `playTrack`) `loop=true`로 그 한 곡만 반복한다. Unity는 데모 한 판(10~15분)에 맞춰 회전을 3곡으로 줄였다.
+
+| 규칙 | 값 | 웹 대조 |
+|---|---|---|
+| 첫 곡 | 필드(`hell1`) 진입 시 `hell1` 1회 재생(반복 없음) | 같음(장 BGM 1회) |
+| 회전 | hell1이 끝나면 3곡을 섞어 차례로 재생, 3곡을 다 돌면 다시 섞는다 | 웹은 전체 큐 무작위. Unity는 3곡 묶음 셔플(한 바퀴에 같은 곡 두 번 없음) |
+| 직전 곡 반복 | 금지. 새 바퀴 첫 곡도 방금 끝난 곡이 될 수 없다 | 같음(`_lastSrc` 회피) |
+| 회전 조건 | 설정 BGM이 `auto`(또는 저장된 지원 밖 값을 auto로 표시 중)일 때만 | 같음 |
+| 곡을 고른 경우 | 그 곡 한 파일만 반복 재생(boss는 hell1처럼 같은 곡으로 바뀌는 기존 규칙, death·victory는 자기 곡) | 같음(`playTrack` loop) |
+| 곡 사이 전환 | 기존 BGM 경로 그대로: 곡이 끝나면 다음 곡을 0.3초 페이드인(`FadeInSeconds`), 설정 볼륨·`MusicBase` 적용 | 웹은 끝나자마자 다음 곡 |
+| 보스 아레나·사망·승리 | 변경 없음. 이 키가 오면 회전이 끝나고, 다음 필드 진입은 hell1부터 다시 | 같음 |
+| 일시정지 창 | 창이 열린 동안 음악이 멈추는 기존 동작은 그대로. 닫으면 멈췄던 회전 곡이 처음부터 다시 나온다(hell1로 되돌아가지 않음) | 해당 없음(웹은 창이 곡을 멈추지 않음) — 차이로 기록 |
+
+구현: `Runtime/Core/NativeBgmRotation.cs`(순수 C#, 셔플 함수 주입), `NativeBgmSelection`(지원 값 9, `ClipFor`·`IsAuto`), `NativeGameMusic.Sync(key,audioKey,rotate)`(회전 곡은 `loop=false`, 끝나면 `Advance`), `NativeGame.UpdateGameMusic`. 숲 바닥음·보스 스냅샷은 계속 스테이지 키(`hell1`/`boss`)를 따른다.
+
+파일(`unity/Assets/Exoduser/Resources/Audio/Bgm/`, 원본은 웹 `bgm/1장_썩은숲/` WAV 48kHz 16bit, 읽기만 했다):
+
+| 파일 | 길이 | 용량 | 통합 라우드니스 | true peak |
+|---|---:|---:|---:|---:|
+| `hell1.mp3`(기준, 기존) | 261.88초 | 6.05MB | -15.98 LUFS | +0.04 dBTP |
+| `hell1_rot_ashes_banner.mp3` | 420.00초 | 10.08MB | -16.24 LUFS | -3.72 dBTP |
+| `hell1_rot_cathedral_steel.mp3` | 288.88초 | 6.93MB | -16.24 LUFS | -3.50 dBTP |
+| `hell1_rot_iron_oath.mp3` | 247.24초 | 5.94MB | -16.24 LUFS | -3.93 dBTP |
+
+세 곡 모두 hell1 기준 -0.26 LU(±1 LU 안), 클리핑 없음. 길이는 원본 WAV와 같다(420.00 / 288.88 / 247.24초). 한 바퀴 총 길이는 hell1 4분 22초 뒤 약 16분이다.
+
+변환(`ffmpeg`, 측정은 `-af loudnorm=I=-16:TP=-1.5:LRA=11:print_format=json -f null -` 분석만, 재생 없음). 원본 측정 통합 라우드니스 -14.94 / -15.38 / -15.19 LUFS → 단순 감쇠 -1.04 / -0.60 / -0.79 dB(hell1 -15.98에 맞춤, 동적 처리 없음):
+
+```
+ffmpeg -y -i "<원본>.wav" -af "volume=<감쇠>dB" -ar 44100 -ac 2 -c:a libmp3lame -b:a 192k <이름>.mp3
+```
+
+`.meta`는 `hell1.mp3.meta`와 importer 설정이 같다(압축 상태로 메모리 적재 = `loadType: 1`, `compressionFormat: 3`, `quality: 0.7`, `preloadAudioData: 0`, `loadInBackground: 1`). GUID는 `c3a17f5e9b2d4608a1e47d90b5c2f836`(ashes_banner), `5e8b0d24f1a74c39b6d2830e7a9c14fd`(cathedral_steel), `a94d62c0e7b84f15983a5d1c60b7e2f3`(iron_oath), `NativeBgmRotation.cs.meta`는 `6b2f90d4a7c14e8d95a3f10c8e7d5b42`이며 저장소(HEAD·origin/unity/main)에서 같은 GUID가 없음을 확인했다.
+
+미확인: 청음 판정(곡 어울림·곡 사이 전환 느낌)은 사용자 귀로 한다. Unity·Player 실행은 하지 않았다. 라이선스(Suno 유료 플랜 여부)는 사용자 확인 항목이라 공개·업로드는 하지 않았다.
+
+### 키보드 초점 순서 (P42)
+
+조작 탭 커서 순서: 탭 머리 → 마우스 커서 카드 2장 → 커서 크기 → **키 슬롯 42개(동작마다 주 키, 보조 키 순서 = 웹 DOM 순서)** → 키 설정 초기화 → 닫기. ↑↓·Tab = 한 칸씩, ←→ = 같은 동작의 주 키/보조 키로 이동, Enter/Space = 변경 시작(웹 클릭과 같은 캡처, ESC 취소), 초기화 칸에서 Enter = 초기화. Enter로 시작한 캡처는 그 Enter가 곧바로 키로 들어가지 않는다. 초점 칸에는 흰 테두리가 그려지고 화면 밖이면 스크롤이 따라간다. 행 수가 줄면(웹 초기화 결함으로 19행) 칸 수도 줄어든다. 게임패드 하위탭은 칸이 없다.
+
+### 캐릭터 카드 (P33)
+
+Unity는 첫 번째 모습(엑소듀서 전사)만 열려 있고(`CharacterRoster`가 0 외의 모습을 `Locked`로 거절) 로스터는 이름만 저장한다. 선택 표시는 `CharacterRoster.PlayableVisualIndex`(현재 0)를 따라가므로 실제 캐릭터와 어긋나지 않는다. 카드 클릭은 연결하지 않았다: 웹의 `_loadCharAtlas`처럼 바꾸면 진행 중인 전투와 그 캐릭터의 전투 저장 아래에서 영웅이 바뀌고, 나머지 모습은 잠겨 있다. 다른 모습이 열리면 판 시작 전에만 바꾸는 방식으로 다시 설계한다.
+
+### 프리셋 (P34)
+
+슬롯 JSON: `{"opt":{…,"lang":"ko"},"binds":{동작:키…},"binds2":{동작:키|null…},"sfxVol":n,"bgmVol":n,"fpsCap":n}`. 웹의 `binds`·`binds2`·`opt(lang 포함)`에 Unity 전용 음량·FPS를 더한 것이다. 옛 슬롯(`binds` 없음)은 그대로 읽히고 키·언어를 건드리지 않는다. 불러오기는 웹처럼 현재 키 위에 슬롯을 덮은 뒤 한 번에 복원한다(키 맞바꿈이 중간에 막히지 않음). 설정 파일 크기: 슬롯 2개를 가득 채워도 한도 8192바이트에 1KiB 이상 여유가 있다(테스트가 확인).
+
+| 상황 | 웹 | Unity |
+|---|---|---|
+| 저장 | `세팅N 저장 완료!`(초록) | 같음(조용한 초록) |
+| 불러오기 성공 | `세팅N 불러오기 완료!` | 같음(예전 "불러옴" 대체) |
+| 빈 슬롯 | `세팅N 저장된 설정 없음`(주황) | 같음(절제한 주황) |
+| 읽기 실패 | `불러오기 실패`(빨강) | 같음(절제한 빨강, 웹 `lang_*.js` 값 재사용) |
+
+### 검증 (PC, 각 1회)
+
+| 항목 | 결과 |
+|---|---|
+| 참조 컴파일 `assembly-compile-check.cjs` | 5개 어셈블리 모두 오류 0 (첫 실행은 내 주석이 한 줄 코드를 삼킨 오류 4건 → 원인 수정 뒤 1회 통과) |
+| `options-wave1`(새, `run.cjs`) | 소스 연결 31 + Core 계약 5098 PASS (11-04 BGM 회전 추가분 포함) (FPS 기본·옛 파일, 언어 저장 왕복·옛 파일·우선순위, 움직임 줄이기 저장, 프리셋 키·언어·옛 슬롯·빈 슬롯·깨진 슬롯·키 맞바꿈·파일 크기, BGM 규칙·목록 노출 9값·숨김 64값·저장 값 보존, BGM 회전(첫 곡 hell1·직전 곡 반복 없음·3곡 순환·곡 선택 시 고정·파일/GUID/importer), 키 초점 43칸을 실제 `PauseNavigation`으로 순회, 라벨 29언어) |
+| `settings-persistence` | all 91 / write 3 / read 2 PASS |
+| `pause-navigation` | 52/52 PASS |
+| `keybind-parity` | 1346검사 0실패 |
+| `startup-locale.test.cjs` | 30검사 PASS |
+| `pause-navigation/host-resume.cjs` | 빌드 실패 — 기존 결함: 이 도구가 쓰는 대역 `Host`에 `UiPanelState`·`UiPanelChanged`·`NativeScreenTransition`이 없다(origin/unity/main의 `ApplyPauseCommand`가 이미 부른다). 내 변경과 무관, 고치지 않음 |
+| `pause-settings` | 빌드 실패 — 기존 결함: csproj가 `NativeOptionSet`·`NativeKeyBindList`·A15 부분 클래스를 싣지 않는다(옛 레인 산출물). 내 변경과 무관, 고치지 않음 |
+
+미검증: Unity 실행·실제 소리·화면 모습(게임 탭 11행·키 초점 테두리)·1920/3840 캡처·자연 입력·재시작 저장 복원. Mac 판정 전에는 완료라고 쓰지 않는다.
