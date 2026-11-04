@@ -1,3 +1,5 @@
+2026-11-04 STY-25 1-1 다크드루이드 등장·퇴장 대사(스토리 총괄, CTO 배정): G0 A안 연출 순서에 맞춰 이름 카드 부제 "썩은 숲의 숲지기", 목숨 2·3 전환 자막 2줄, 출구 개방 뒤 다음 지역 암시 펫 대사 1쌍을 새로 쓰고 기존 등장·침강·처치 대사 6줄과 묶었다. 신규 KO·EN 5건 No.4288~4292. 문서 `docs/11내러티브·로어디자인/DARK_DRUID_1-1_BOSS_TEXT_20261104.md`. 게임 데이터 변경 0(보스전 총괄 반영 대기).
+
 2026-11-04 SND-17 Unity BGM 반입 후보 목록(사운드 총괄, CTO 배정): docs/6사운드디자인/UNITY_BGM_IMPORT_CANDIDATES_20261104.md 신설. 웹 bgm 79파일(설정 57 + 큐 22)의 경로·길이·용량·형식·Vorbis 반입 추정·BGM.tracks 쓰임·출처(메타데이터: 76파일 made with suno, beearthone, 생성일·곡 id)를 정리했다. 바이트 대조로 Unity 보유 10·제외 사본 6. P0 반입 권장 3곡(1-1 필드 회전, Ashes Under the Banner·Cathedral of Steel·Iron Oath Under Ash Remastered, 15.9분·약 15MB), P1 52, P2 8. Suno 상업 권리 사용자 확인 필요. 반입·코드 변경 없음.
 
 2026-11-04 FIX-1 이전 표 집계 단위 정정: 명칭 통계는 변경된 행 수가 아니라 악의오브 치환 횟수이므로 MAIN_DOCS_MIGRATION의 열 제목을 바로잡음. 표 값·게임 수치·판정 무변경.
