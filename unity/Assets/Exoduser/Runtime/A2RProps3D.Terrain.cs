@@ -11,7 +11,9 @@ namespace Exoduser.UnityPort
         const float FieldX0=18,FieldX1=52,FieldZ0=-74,FieldZ1=-40;
         public static bool InTerrainField(float x,float z){return x>=FieldX0&&x<=FieldX1&&z>=FieldZ0&&z<=FieldZ1;}
         GameObject terrainRoot;readonly List<Material> terrainMats=new List<Material>();public int TerrainDetails,TerrainGrass,TerrainShrubs;
-        static readonly string[] FernNames={"fern_0","fern_1","fern_2"},BrushNames={"brush_0","brush_1","brush_2","brush_3"};
+        // D2: fern/brush removed. Hell-rot scatter (catalog 8 kinds) registers here once the CTO GLBs are imported; empty = no detail.
+        static readonly string[] FernNames=new string[0],BrushNames=new string[0];
+        public static readonly string[] HellRotGrass={"vein_grass_a","vein_grass_b","root_sprout_a","root_sprout_b"},HellRotShrubs={"bonethorn_bush_a","bonethorn_bush_b"};
         static float H01(string s,int salt){return (Hash(s+salt)%10007)/10007f;}
         void BuildTerrainDress(Transform world,List<Vector2> trees,Func<float,float,bool> walkable)
         {
@@ -35,7 +37,7 @@ namespace Exoduser.UnityPort
                 for(int n=0;n<count;n++)
                 {
                     float a=H01(key,10+n)*6.2832f,r=.4f+.5f*H01(key,20+n);float px=x+Mathf.Cos(a)*r,pz=z+Mathf.Sin(a)*r;if(!walkable(px,pz))continue;
-                    bool grass=H01(key,30+n)<.6f;string name=grass?FernNames[(int)(H01(key,40+n)*3)%3]:BrushNames[(int)(H01(key,40+n)*4)%4];
+                    bool grass=H01(key,30+n)<.6f;var pool=grass?HellRotGrass:HellRotShrubs;if(pool.Length==0)continue;string name=pool[(int)(H01(key,40+n)*pool.Length)%pool.Length];
                     Record spec;if(!records.TryGetValue(name,out spec))continue;GameObject prefab;if(!prefabs.TryGetValue(name,out prefab)){prefab=Resources.Load<GameObject>(spec.resource);if(prefab==null)continue;prefabs[name]=prefab;}
                     var go=Instantiate(prefab,detail.transform);go.name="detail "+name;float gy=NativeRemodel3D.GroundY(px,pz);
                     go.transform.SetPositionAndRotation(new Vector3(px,gy-.03f,pz),Quaternion.Euler(0,(spec.prepared?180:0)+H01(key,50+n)*360f,0));
@@ -46,7 +48,7 @@ namespace Exoduser.UnityPort
             }
             // Wind: Wind Zone for any Unity-side consumers, plus the A2R vertex wind on detail and trees.
             var wz=new GameObject("A2R WindZone").AddComponent<WindZone>();wz.transform.SetParent(terrainRoot.transform,false);wz.transform.rotation=Quaternion.Euler(0,35,0);wz.mode=WindZoneMode.Directional;wz.windMain=.35f;wz.windTurbulence=.25f;wz.windPulseMagnitude=.6f;wz.windPulseFrequency=.12f;
-            foreach(var rend in visuals.GetComponentsInChildren<MeshRenderer>(true))foreach(var m in rend.sharedMaterials)if(m!=null&&m.HasProperty("_A2R3DWind")){var v=m.GetVector("_A2R3DWind");if(v.x>.04f&&v.x<.05f&&v.z>.5f)m.SetVector("_A2R3DWind",new Vector4(.07f,v.y,v.z,v.w));}
+            foreach(var rend in visuals.GetComponentsInChildren<MeshRenderer>(true))foreach(var m in rend.sharedMaterials)if(m!=null&&m.HasProperty("_A2R3DWind")){var v=m.GetVector("_A2R3DWind");if(v.x>.04f&&v.x<.05f&&v.z>.5f)m.SetVector("_A2R3DWind",new Vector4(.08f,v.y,v.z,v.w));}
             Debug.Log("A2R_TERRAIN_READY details="+TerrainDetails+" grass="+TerrainGrass+" shrubs="+TerrainShrubs);
         }
     }
