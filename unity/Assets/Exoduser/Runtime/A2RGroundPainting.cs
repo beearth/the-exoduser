@@ -7,7 +7,7 @@ namespace Exoduser.UnityPort
     // Projection follows the existing terrain; no height/collision writer is introduced.
     public static class A2RGroundPainting
     {
-        static Texture2D Art(string id){long t0=A2RStage.Tick();var t=Resources.Load<Texture2D>("A2R/C10/Art/"+id);A2RStage.Acc("지면타일 Art Load",t0);if(t==null)throw new InvalidOperationException("Missing C10 painting: "+id);return t;}
+        static Texture2D Art(string id){long t0=A2RStage.Tick();var t=Resources.Load<Texture2D>("A2R/C10/Art/"+id);long elapsed=A2RStage.Tick()-t0;A2RStage.Acc("지면타일 Art Load",t0);A2RLoadProbe.GroundLoaded(id,t,elapsed);if(t==null)throw new InvalidOperationException("Missing C10 painting: "+id);return t;}
         static Material Paint(string id,bool water)
         {
             var shader=Resources.Load<Shader>("A2R/GroundPainting");if(shader==null)throw new InvalidOperationException("A2R GroundPainting shader missing");var m=new Material(shader){name="C10 projected "+id,renderQueue=water?3010:2475};m.SetTexture("_MainTex",Art(id));m.SetTexture("_NormalTex",Art(id+"_normal"));m.SetTexture("_MaskTex",Art(id+"_mask"));m.SetTexture("_WaterTex",Art("r3_water"));m.SetFloat("_Water",water?1:0);return m;
@@ -19,6 +19,7 @@ namespace Exoduser.UnityPort
         public static int Build(Transform root,A2RWebAssets.Tile[] tiles,A2RWebAssets.River[] river,Func<float,float,float,bool> canMove,Material actualWater)
         {
             if(tiles==null||tiles.Length!=64)throw new InvalidOperationException("C10 ground requires all 64 original tiles");
+            A2RLoadProbe.BeginGround();
             foreach(var tile in tiles)
             {
                 long tm=A2RStage.Tick();var vertices=new List<Vector3>();var uv=new List<Vector2>();var triangles=new List<int>();const int n=40;
@@ -39,7 +40,7 @@ namespace Exoduser.UnityPort
                 // share the existing real water material/planar reflection, with C10 water paint.
                 Place(root,"C10 original moat strip and banks",vertices,uv,triangles,actualWater,colors);
             }
-            A2RStage.Dump("지면타일");return tiles.Length;
+            A2RLoadProbe.EndGround();A2RStage.Dump("지면타일");return tiles.Length;
         }
     }
 }
