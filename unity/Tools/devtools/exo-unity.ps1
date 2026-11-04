@@ -46,7 +46,7 @@ if($Command -ne 'install-bin' -and $env:EXO_UNITY_NO_FORWARD -ne '1' -and
     exit $LASTEXITCODE
 }
 
-$ExoUnityVersion = '2026.11.04-exclusive2'
+$ExoUnityVersion = '2026.11.04-haltwait'
 $MaxPlayerSlots = 2
 Import-Module (Join-Path $PSScriptRoot 'QueueTurn.psm1') -Force
 try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false) } catch { }
@@ -319,8 +319,13 @@ function Check-ServerCrash([string]$qd) {
     if ($recent -ge 2) { New-Halt $c 'server' @($l.log) (Get-Date).AddHours(-1) }
 }
 
+# 11-04: HALT가 대기 중에 생기면(좀비 감지 등) 순번·슬롯을 얻은 뒤에도 실행하지 않는다. vfx-summon Player가 HALT 뒤 13:23에 떴던 결함.
+function Assert-HaltClear([string]$where) {
+    if (Test-Path -LiteralPath $HaltPath) { Say ('HALT가 생겨 ' + $where + ' 대기를 멈춘다(실행하지 않음)'); Show-Halt; throw ('HALT: ' + $where + ' 대기 중 중단') }
+}
+
 function Test-HaltGate {
-    if (($Command.ToLower() -in 'start', 'run', 'player', 'browser') -and (Test-Path -LiteralPath $HaltPath)) {
+    if (($Command.ToLower() -in 'start', 'run', 'build', 'player', 'browser') -and (Test-Path -LiteralPath $HaltPath)) {
         Say 'HALT 파일이 있어 실행하지 않음'
         Show-Halt
         exit 3
@@ -471,6 +476,7 @@ function Get-ExclusiveHolder {
 function Wait-ExclusivePlayer([string]$what) {
     $deadline = (Get-Date).AddMinutes($WaitMin); $said = $false
     while ($true) {
+        Assert-HaltClear ('단독 검사 뒤 ' + $what)
         $ex = Get-ExclusiveHolder
         if (-not $ex) { return }
         if ((Get-Date) -gt $deadline) { throw ('단독 검사 대기 시간 초과(' + $WaitMin + '분): ' + $ex.reservedAs) }
@@ -496,6 +502,7 @@ function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
     Set-ReservationWaiter $ownerPid
     $deadline = (Get-Date).AddMinutes($WaitMin); $lastMsg = ''
     while ($true) {
+        Assert-HaltClear 'Player 슬롯'
         $slots = @(Get-PlayerSlots -Reap); $legacy = Get-LegacyPlayerCount
         $blocked = Get-PlayerDrainReason
         $rs = @(Get-WaitingPlayerReservations)
@@ -608,6 +615,7 @@ function Acquire-Slot([string]$Role, [string]$wt, [int]$ownerPid, [string]$queue
     $deadline = (Get-Date).AddMinutes($WaitMin)
     $lastMsg = ''
     while ($true) {
+        Assert-HaltClear 'Editor 잠금'
         $blocked = $null
         $ex = Get-ExclusiveHolder
         if ($ex) { $blocked = ('BuildLoop 단독 검사 Player 실행 중(' + $ex.reservedAs + ' pid ' + $ex.pid + ')') }
@@ -894,6 +902,7 @@ function Cmd-Run {
     # 예약 순번 전에는 batch 티켓을 만들지 않는다. 구버전 FIFO 실행기의 앞을 막지 않기 위한 읽기 전용 대기다.
     $turnDeadline = (Get-Date).AddMinutes($WaitMin); $lastFront = ''
     while ($true) {
+        Assert-HaltClear 'Editor 순번'
         $reservationTurn = @(Get-Reservations 'editor')
         $frontBeforeTicket = ''; if ($reservationTurn.Count -gt 0) { $frontBeforeTicket = [string]$reservationTurn[0].owner }
         if (Test-ExoTicketTurn -FirstTicket '' -Ticket '' -Owner $Owner -FrontReservationOwner $frontBeforeTicket) { break }
@@ -908,6 +917,7 @@ function Cmd-Run {
     try {
         $lastMsg = ''; $ticketDeadline = (Get-Date).AddMinutes($WaitMin)
         while ($true) {   # 티켓 순서: 살아 있는 가장 앞 티켓이 내 것일 때만 진행
+            Assert-HaltClear 'Editor 티켓'
             $first = $null
             foreach ($t in (Get-ChildItem -LiteralPath $Tickets -Filter '*.json' | Sort-Object Name)) {
                 $tj = Read-Json $t.FullName

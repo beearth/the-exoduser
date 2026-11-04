@@ -180,13 +180,13 @@ $task = 'I:\EXODUSER-Storage\unity-latest\loop\bin\install-task.ps1'
 | buildloop | 빌드 전 reserve -Kind editor, 스모크 전 -Kind player -Owner buildloop. WaitMin 기본60분. 예약/Editor잠금/Player슬롯/티켓 시간초과는 WAIT, 실패0·lastAttemptSha 보존·회색 배지 |
 | 사전 검사 | buildloop/compile-check.ps1: asmdef·이름/GUID asmref 경계별 수집, 어셈블리 참조 순서, Player/Editor 정의별 별도 출력. Library/Bee RSP는 참조용 읽기만. 결과는 참고용, 최종은 Unity 컴파일 |
 
-Unity 없는 시험: selftest/idle-yield-test.ps1, windows-env-test.ps1, exit-code-test.ps1, shared-log-test.ps1, zombie-guard-test.ps1, user-game-test.ps1, exclusive-test.ps1, buildloop-wait-test.ps1, assembly-sources-test.cjs. 사전 검사 출력은 -Output I:/EXODUSER-Storage/...로 지정하며 기본값도 I:다.
+Unity 없는 시험: selftest/idle-yield-test.ps1, windows-env-test.ps1, exit-code-test.ps1, shared-log-test.ps1, zombie-guard-test.ps1, user-game-test.ps1, exclusive-test.ps1, halt-wait-test.ps1, buildloop-wait-test.ps1, assembly-sources-test.cjs. 사전 검사 출력은 -Output I:/EXODUSER-Storage/...로 지정하며 기본값도 I:다.
 
 ## slots1 — Editor 1개 / Player 2개 (2026-11-03)
 
 | 항목 | 계약 |
 |---|---|
-| 버전 | `$ExoUnityVersion='2026.11.04-exclusive2'`, status 첫 줄·JSON runnerVersion·슬롯 JSON |
+| 버전 | `$ExoUnityVersion='2026.11.04-haltwait'`, status 첫 줄·JSON runnerVersion·슬롯 JSON |
 | Player 상한 | `$MaxPlayerSlots=2`. CreateNew 원자 획득, 슬롯 보유자 + 살아 있는 구버전 owner=devtools-player의 _pc_lock을 1개로 계산. 사용자 직접 연 Player는 제외 |
 | 시작 경합 | _player_admission.guard의 파일 핸들로 새 실행기의 슬롯 획득→실제 자식 생성까지만 직렬화. 생성 뒤 즉시 반환해 두 Player는 병렬 실행. _pc_lock은 잡지 않음 |
 | stale | pid 사망 또는 프로세스 생성 시각 > startedAt이면 동일 token·pid·startedAt 재확인 후 회수. 해제는 자기 pid+token만 |
@@ -200,6 +200,7 @@ Unity 없는 시험: selftest/idle-yield-test.ps1, windows-env-test.ps1, exit-co
 | 좀비 Player 가드 (11-04) | `player`는 시작 전에 스레드 1개 이하이고 1.5초 동안 CPU 시간이 그대로인 EXODUSER-* 프로세스를 찾는다. 하나라도 있으면 '재부팅 필요' 영수증(_exec/done, rejected)과 HALT를 만들고 exit 2로 거부한다. 실행 뒤 '커널 대기 의심' 프로세스가 남아도 HALT를 만든다. 원인=Quit 뒤 'Input System … Shutdown'에서 커널 드라이버(HID/GPU) 교착, 05:06 뒤 4번 더 띄워 좀비 5개(11-04 07:32 재부팅으로 해소). 해제=재부팅 뒤 HALT 파일 삭제 |
 | 사용자 게임 실행 중 미룸 (11-04) | `player`는 시작 전에 부모가 explorer.exe인 EXODUSER* 프로세스(사용자가 바탕화면·바로가기로 띄운 게임)를 찾는다. 있으면 Player를 띄우지 않고 '사용자 게임 실행 중, 미룸' 영수증(ok=False, deferred=user-game)을 _exec/done과 stdout JSON 한 줄로 남기고 exit 3. BuildLoop는 이를 WAIT로 받아 다음 회차에 다시 한다. 세이브 감시는 그대로다. 원인=사용자 게임(PID 35348)이 실제 세이브에 저장해 UI 후보 촬영이 USER_SAVE changed=3으로 실패 |
 | BuildLoop Player 단독 실행 (11-04) | `-PcException buildloop` 또는 `-Exclusive` Player는 다른 Player가 모두 끝날 때까지 기다리고(돌고 있는 Player는 끊지 않음), 슬롯을 얻으면 `_player_exclusive.json`을 써서 도는 동안 새 Player를 받지 않는다. 끝나면 표시를 지우고 다른 레인은 다시 동시 2개. 단독 검사 중에는 새 Editor 작업(Acquire-Slot의 서버 시작·batch, Cmd-Run의 상주 서버 제출)도 순번 대기한다(돌고 있는 Editor는 끊지 않음, 11-04 CTO: a7db9621b UI 겹침이 다른 레인 Editor 빌드와 겹쳐 14fps). FIFO 예약 순서는 그대로라 루프가 맨 앞이면 뒤 Player는 기다린다. 원인=QA Player 여러 개가 4K 로비 영상을 동시에 디코드해 BuildLoop M1 '로비 복귀 영상 준비 12초 초과' 33회·UI 겹침 영상 준비 실패로 바탕화면 교체가 막힘 |
+| HALT 대기 중 재검사 (11-04) | HALT 게이트는 start·run·build·player·browser 모두에 적용되고, Player 슬롯·Editor 잠금·Editor 순번·티켓·단독 검사 대기 루프마다 HALT를 다시 본다(Assert-HaltClear). 대기 중 HALT가 생기면 실행하지 않고 'HALT: … 대기 중 중단'으로 끝나며 예약·슬롯은 finally에서 반환. 원인=HALT(13:09) 전부터 대기하던 vfx-summon Player가 13:23 슬롯을 얻고 그대로 떴고, build 명령은 게이트 목록에 없었음 |
 | 굶주림 방지 | editor 선두 등록 후 20분 이상이고 _pc_lock이 비어 있으면 새 Player 통과를 막아 0개까지 배출. status/대기 사유에 owner 표시 |
 | idle 양보 | editor 예약·티켓만 계산(kind 없음=editor). player 대기자는 서버 양보를 유발하지 않음 |
 | 독립 출력 | Player별 GUID 로그·sandbox, 숨은 데스크톱은 PID+GUID. 사용자 창 0·--unity-mute·USER_SAVE 비교·크래시 HALT·자기 자손 정리 유지 |
