@@ -2,9 +2,9 @@
 >
 > DEMO11-34 actor의 BC09 요청을 기존 ordinary motion kernel과 실제 carrier registry에 연결했다. 독립 씬 thorn-on fan12발의 실제 생성·1회 birth tick·벽/수명/camera 회수·pool 재사용을 검증했다(신규53/0). 실제 피해·패링·HP/poise·부활·전역Q/E admission은 PC36/49 인계이며, 자연 arena/source clock/prefix와 특수 장판·구체 owner는 미연결 상태다. mock birth ack을 성공으로 세지 않는다.
 >
-> 256탄/물리240틱 벽시계1회: 서비스 평균0.723392ms·최대1.049ms(<8.333333ms). 이 실행은 빈 색 draw오류256건 때문에 전체 clean PASS가 아니며, 별도 색fallback 수정 후 실제draw6/0 확인·벤치재실행0이다. 전체게임/실창120fps·최종clean벤치는 미확인. [DEMO11-35 인터페이스·공용 줄·실패 원문 보고서](../engine/orders/reports/demo11-35_REPORT.md).
+> 256탄/물리240틱 벽시계1회: 서비스 평균0.723392ms·최대1.049ms(<8.333333ms). 이 실행은 빈 색 draw오류256건 때문에 전체 clean PASS가 아니며, 별도 색fallback 수정 후 실제draw6/0 확인·벤치재실행0이다. 전체게임/실창120fps·최종clean벤치는 미확인. DEMO11-35 인터페이스·공용 줄·실패 원문 보고서 (Unity 정본: `git show "origin/unity/main:docs/_archive/engine/orders/reports/demo11-35_REPORT.md"`).
 
-> **2026-10-14 실제 Main 커튼 서비스:** 기존 HUD에 ART 원view를 hidden bind하고 실제900ms callback을 소비했다. 첫15 중14valid/1FAIL→실패only1clean(906ms callback1), 제품수리0·성공재연0. sourcecontroller/G.on/600frames/GPU/fullMain 미연결, shadow80px/z45 gap 유지. 함께Root G-only publicplanner9/292와 Startup 원producer14/791를 동결기술scope로 정상 보존하며 실제Gwriter/18fields 일괄ACK0. [Main 커튼 정본](../engine/FDG_GODOT_NATIVE_MAIN_INTRO_CURTAIN_FIRST_20261014.md).
+> **2026-10-14 실제 Main 커튼 서비스:** 기존 HUD에 ART 원view를 hidden bind하고 실제900ms callback을 소비했다. 첫15 중14valid/1FAIL→실패only1clean(906ms callback1), 제품수리0·성공재연0. sourcecontroller/G.on/600frames/GPU/fullMain 미연결, shadow80px/z45 gap 유지. 함께Root G-only publicplanner9/292와 Startup 원producer14/791를 동결기술scope로 정상 보존하며 실제Gwriter/18fields 일괄ACK0. Main 커튼 정본 (Unity 정본: `git show "origin/unity/main:docs/_archive/engine/FDG_GODOT_NATIVE_MAIN_INTRO_CURTAIN_FIRST_20261014.md"`).
 
 # 보스 배틀 세팅 바이블
 
@@ -30,15 +30,15 @@
 | 실제 저장 / 오류 | 두 run runtimeexception0. 공개 자기 설정 save write1, reopen own read1/write0·config {distance340,pattern:fan,phase0,scale:.5} 복원. 전투 actor snapshot 저장0·HP3000 fixture0·actor console writes0. 전체 network/404 무오류 주장0 |
 | 최종 관측 / 정본 | VISUAL RETOUCH / 정확 잔여1 THORN_VOLLEY_COMBAT_ACCEPTANCE: 실전 가독성·Q hold 성공·자연 AI fan 관측 미인수. 실제 E 부분 성공/신규 기술 PASS를 전체 전투·엔진 완료 PASS로 확대0. 정확 GIF 파생 duration/경로·전체 실제 verdict/§23는 새 정본 참조 |
 
-정본: [다크드루이드 가시 일제발사 first](../engine/FDG_DARK_DRUID_THORN_VOLLEY_FIRST.md). 정확 새 파생 자료·시간과 §23는 이 새 정본의 최종 기록을 따른다.
+정본: 다크드루이드 가시 일제발사 first (Unity 정본: `git show "origin/unity/main:docs/engine/FDG_DARK_DRUID_THORN_VOLLEY_FIRST.md"`). 정확 새 파생 자료·시간과 §23는 이 새 정본의 최종 기록을 따른다.
 <!-- DARK_DRUID_THORN_FIRST_EXCEPTION_END -->
 
-> **2026-10-11 NORMAL 드루이드 r4 현행:** `_isNormalDruidBoss(e)`가 si0/3 ib=true이며 !finale인 fan/elemBall만 적용. fan기반수12 → phase0..4 요청10/12/13/14/16, 공용1/3잔존3..4/4/4..5/4..5/5..6. lane외곽physical/중앙magic·phase>=2일부black magic, 입력속도4.4 유지·최종physical5/magic·black8⅓..10px/native f; 입력피해physical·magic floor(atk×1.3),black floor(atk×1.5). 적대해당instance 직선, NORMALelemBall magic/Q가능·Q후기존guidedblue. 마지막18f charge방향고정, 속도35/duration50/기본recover40 기존값유지. QA범위와실제검수·최종피해식은 [r4 계약](../engine/FDG_DARK_DRUID_NATIVE_ENCOUNTER_20261011.md). 타보스/피날레 기존값·전역Q/E권위 보존.
+> **2026-10-11 NORMAL 드루이드 r4 현행:** `_isNormalDruidBoss(e)`가 si0/3 ib=true이며 !finale인 fan/elemBall만 적용. fan기반수12 → phase0..4 요청10/12/13/14/16, 공용1/3잔존3..4/4/4..5/4..5/5..6. lane외곽physical/중앙magic·phase>=2일부black magic, 입력속도4.4 유지·최종physical5/magic·black8⅓..10px/native f; 입력피해physical·magic floor(atk×1.3),black floor(atk×1.5). 적대해당instance 직선, NORMALelemBall magic/Q가능·Q후기존guidedblue. 마지막18f charge방향고정, 속도35/duration50/기본recover40 기존값유지. QA범위와실제검수·최종피해식은 r4 계약 (Unity 정본: `git show "origin/unity/main:docs/engine/FDG_DARK_DRUID_NATIVE_ENCOUNTER_20261011.md"`). 타보스/피날레 기존값·전역Q/E권위 보존.
 
-> **2026-09-09 피날레 v0.4:** 데모/bic 마지막 si3 보스의 HP는 `floor(22278×(1+.055n+.0015n²)×dm)`, n=max(0,monLv−1); 초기 쉴드=HP, 부활력20, 최대1회 35% HP 저항(확률clamp(1−신성력,0,1)), phase ATK는 base×1/1.12/1.25/1.4/1.6이다. 3막 음악·HUD·120f 카드 및 보스 바로 재도전/60f 인트로의 [현행 계약·검증](DARK_DRUID_FINALE_PACING_v04.md)을 따른다. 일반 모드와 공용 패링 계약은 기존대로다. 아래 이전 버전의 HP/부활 유지 표현은 당시 이력이다.
+> **2026-09-09 피날레 v0.4:** 데모/bic 마지막 si3 보스의 HP는 `floor(22278×(1+.055n+.0015n²)×dm)`, n=max(0,monLv−1); 초기 쉴드=HP, 부활력20, 최대1회 35% HP 저항(확률clamp(1−신성력,0,1)), phase ATK는 base×1/1.12/1.25/1.4/1.6이다. 3막 음악·HUD·120f 카드 및 보스 바로 재도전/60f 인트로의 현행 계약·검증 (Unity 정본: `git show "origin/unity/main:docs/8.1보스디자인바이블/DARK_DRUID_FINALE_PACING_v04.md"`)을 따른다. 일반 모드와 공용 패링 계약은 기존대로다. 아래 이전 버전의 HP/부활 유지 표현은 당시 이력이다.
 
 
-> **2026-09-08 데모 피날레 예외:** `?demo`/`?bic`의 마지막 보스(si3)는 [다크드루이드 피날레 v0.2](DARK_DRUID_DEMO_FINALE_DESIGN.md) §0을 따른다. 전용 3막·5종 패턴, 동작별 Q독탄(48f 전조/막별1·2·3웨이브/간격30f/수명90f), 돌진·잠행 뒤96f 회복, 잠행 표적 고정, 제자리 HP페이즈 전환, 반투명 독늪을 적용했다. 이 조건의 독립 ORB·상시 리듬탄·idle 자동탄은 생성하지 않는다. 일반 si0/si3와 다른 보스의 수치·부활·Q/E 규칙은 기존 계약 유지. 아래 이전 드루이드 설명은 해당 예외를 제외한 기존 계약/이력이다.
+> **2026-09-08 데모 피날레 예외:** `?demo`/`?bic`의 마지막 보스(si3)는 다크드루이드 피날레 v0.2 (Unity 정본: `git show "origin/unity/main:docs/8.1보스디자인바이블/DARK_DRUID_DEMO_FINALE_DESIGN.md"`) §0을 따른다. 전용 3막·5종 패턴, 동작별 Q독탄(48f 전조/막별1·2·3웨이브/간격30f/수명90f), 돌진·잠행 뒤96f 회복, 잠행 표적 고정, 제자리 HP페이즈 전환, 반투명 독늪을 적용했다. 이 조건의 독립 ORB·상시 리듬탄·idle 자동탄은 생성하지 않는다. 일반 si0/si3와 다른 보스의 수치·부활·Q/E 규칙은 기존 계약 유지. 아래 이전 드루이드 설명은 해당 예외를 제외한 기존 계약/이력이다.
 
 > **2026-09-06 최종 확정 — 해골무덤 플레이어 전용:** 드루이드만이 아니라 **전체 보스(si0~34)의 cageTrap 사용을 금지**한다. 아래 보스 사용 계약은 이전 기록이다. 모든 무브셋에서 제외, 관련 콤보 2개 제거, AI 점수 -1, 강제 실행도 생성·피해·소리 없이 recover/25f 종료. idx41 정의는 배열 인덱스 호환용 예약으로 보존한다. 플레이어 boneWall/boneStorm과 공용 boss_cageTrap 이미지·음향은 유지한다. 기존 보스용 잔여 배열/렌더는 호환용이며 신규 생성 경로는 없다. 회귀 검사: 35개 stage 강제 호출 모두 생성 0, 플레이어 공용 시트·음향 포함 관련 테스트 7개 PASS.
 
@@ -46,7 +46,7 @@
 
 > 최종 업데이트: 2026-09-05
 > 담당 코드: `game.html` — `genBossArena()`, `_enterBossArena()`, `_b3animate()`, `_poiseReset()`, 보스 테스트베드
-> 전투 정체성/전조/페이즈 연극 옵트인 기획: [`../4.0케릭터스프라이트 디자인/캐릭터_몬스터_보스_최적화디자인_v1.md`](../4.0케릭터스프라이트%20디자인/캐릭터_몬스터_보스_최적화디자인_v1.md) Track C. 본 파일의 보스 HP(실제 ×24, §3 참조)·포이즈·아레나 수치는 유지. `2_3` 불변.
+> 전투 정체성/전조/페이즈 연극 옵트인 기획: `../4.0케릭터스프라이트 디자인/캐릭터_몬스터_보스_최적화디자인_v1.md` (Unity 정본: `git show "origin/unity/main:docs/4.0케릭터스프라이트 디자인/캐릭터_몬스터_보스_최적화디자인_v1.md"`) Track C. 본 파일의 보스 HP(실제 ×24, §3 참조)·포이즈·아레나 수치는 유지. `2_3` 불변.
 
 ---
 
@@ -105,7 +105,7 @@
 
 ## 3. HP / ATK 배율 (2026-10-01 감사 정정)
 
-> **정정:** 아래 상수 `BOSS_HP_MULT=8`·`BOSS_ATK_MULT=3`·`FINALBOSS_HP_MULT=15`·`FINALBOSS_ATK_MULT=5`·`MON_BASE_HP=60`·`MON_BASE_ATK=8`은 `game.html`에 **정의만 되어 있고 어디서도 참조되지 않는 dead 상수**다(각 식별자 소스 전체 1회 = 정의만). 실제 보스 HP/ATK는 이 상수가 아니라 `mkEn`의 레벨 커브에서 나온다. 수치 SSOT는 [몬스터_공격시스템 §HP공식/§ATK공식](../8.0몬스터디자인/몬스터_공격시스템.md)이며 본 섹션은 그 값을 따른다. (검증: `test/bossHpAtkLayerAudit.test.js`. 이번 정정은 문서만 — 코드·전투수치 불변.)
+> **정정:** 아래 상수 `BOSS_HP_MULT=8`·`BOSS_ATK_MULT=3`·`FINALBOSS_HP_MULT=15`·`FINALBOSS_ATK_MULT=5`·`MON_BASE_HP=60`·`MON_BASE_ATK=8`은 `game.html`에 **정의만 되어 있고 어디서도 참조되지 않는 dead 상수**다(각 식별자 소스 전체 1회 = 정의만). 실제 보스 HP/ATK는 이 상수가 아니라 `mkEn`의 레벨 커브에서 나온다. 수치 SSOT는 몬스터_공격시스템 §HP공식/§ATK공식 (Unity 정본: `git show "origin/unity/main:docs/8.0몬스터디자인/몬스터_공격시스템.md"`)이며 본 섹션은 그 값을 따른다. (검증: `test/bossHpAtkLayerAudit.test.js`. 이번 정정은 문서만 — 코드·전투수치 불변.)
 
 **실제 적용 공식 (`game.html` `mkEn`):**
 | 항목 | 공식 / 값 | 소스 |
@@ -629,7 +629,7 @@ X.translate(Math.round(C.width/2 - G.cam.x + sx), Math.round(C.height/2 - G.cam.
 | fogGL / _fogGLInit | 기존 _fogThree가 있으면 새 렌더러·resize listener를 생성하지 않음. 소실 이벤트에서 preventDefault 및 _fogGLR=false, Three.js 내부 복원 뒤 유효한 컨텍스트이면 true |
 | _fogGLRender | 사전 isContextLost 검사로 소실 중 render/시간 증가를 생략. render 도중 예외는 실제 컨텍스트 소실일 때만 정지 처리하고 그 외 예외는 전파 |
 | 별도 경계 | 메인 C/GL의 기존 소실 복구 계약과 UI 크기는 그대로 유지. 당시 남아 있던 r128/r160 중복은 아래 로컬 단일 런타임 계약으로 대체(2026-09-29). 컨텍스트 통합은 별도 |
-| 검증·수치·제약 | [안개 소실 보호 상세 계약](../12퍼포먼스·최적화/12퍼포먼스·최적화.md#2026-09-29-안개-webgl-컨텍스트-소실-보호복원). 관련26PASS, 실제 게임 소실 시 메인 draw 지속, 동일 안개 코드의 실제 GPU 복원 및 error0 확인. 전체 게임 장시간 복원 QA와 커밋은 미완료 |
+| 검증·수치·제약 | 안개 소실 보호 상세 계약 (Unity 정본: `git show "origin/unity/main:docs/12퍼포먼스·최적화/12퍼포먼스·최적화.md"`). 관련26PASS, 실제 게임 소실 시 메인 draw 지속, 동일 안개 코드의 실제 GPU 복원 및 error0 확인. 전체 게임 장시간 복원 QA와 커밋은 미완료 |
 
 ## 2026-09-29 보스 모델 교체 자원 수명 수정
 
@@ -660,4 +660,4 @@ X.translate(Math.round(C.width/2 - G.cam.x + sx), Math.round(C.height/2 - G.cam.
 | 실제 검증 | 관련35PASS/0FAIL, 두 HTML inline6개씩 구문 통과. 두 게임 native 입력으로 G.on=true, 공유 보스 pivot/안개 renderer 및 상자/VFX API 정상, 앱 warn/error0. 안개 및 가시성용 QA VFX GPU 대조 각각131072 bytes/차이0 |
 | QA 경계 | VFX 대조는 기존 mirrored Y+FrontSide culling을 제거하는 QA 전용 DoubleSide fixture. production side/카메라 변경 없음; 전체 공격 가시성·장시간 전투 QA는 별도 |
 | 배포·소스 제어 | NW.js FILES 및 web 필수 목록에 새 boot/로컬 JS 포함. MIT LICENSE·provenance도 함께 추적/배포 필요. .gitignore의 전역 build/ 예외는 assets/vendor/three-r160/build/three.module.js와 상위 디렉터리로 한정. .git 쓰기 제한으로 커밋 미완료, 실제 패키징/업로드 미실행 |
-| 세부 SSOT | [파일·숫자·SHA256·수명·검증 범위](../12퍼포먼스·최적화/THREE_LOCAL_SINGLE_RUNTIME_20260929.md) |
+| 세부 SSOT | 파일·숫자·SHA256·수명·검증 범위 (Unity 정본: `git show "origin/unity/main:docs/12퍼포먼스·최적화/THREE_LOCAL_SINGLE_RUNTIME_20260929.md"`) |

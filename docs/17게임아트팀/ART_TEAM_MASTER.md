@@ -1,6 +1,6 @@
 # 게임 아트팀 마스터 (Art Team Master)
 
-> 총괄 연결: [프로젝트 관리](../0마스터플랜/PROJECT_MANAGEMENT_MASTER.md)의 ART 행과 아트→맵·아이템·UI 전달 기준을 함께 따른다. 팀의 디자인 LOCK과 상세 품질 기준은 이 문서에서 유지한다.
+> 총괄 연결: 프로젝트 관리 (Unity 정본: `git show "origin/unity/main:docs/0마스터플랜/PROJECT_MANAGEMENT_MASTER.md"`)의 ART 행과 아트→맵·아이템·UI 전달 기준을 함께 따른다. 팀의 디자인 LOCK과 상세 품질 기준은 이 문서에서 유지한다.
 
 > **아트 팀장 = Claude.** 게임에 들어가는 모든 AI 이미지(컷신·로딩·캐릭터·맵 오브젝트·키아트)의 품질·일관성·교체 이력을 이 문서가 관리한다. 이미지 작업을 시작하는 세션은 **이 문서부터 읽고**, 끝나면 **현황표와 로그를 갱신**한다.
 >
@@ -39,7 +39,7 @@
 
 **색 규칙**: 보라 = 네메시아·디로이·실버테일 / 붉은 눈 = 킬루 / 전사는 안광 없음.
 
-**세계 표현 LOCK**: 지옥의 하늘·날씨(붉은 태양·얼음달·피의 오로라·핏빛 비·칼날 우박·독액의 강·용암 바다) = [HELL_SKY_DESIGN_LOCK_20261027.md](HELL_SKY_DESIGN_LOCK_20261027.md). 태양은 진홍 원반(주황 금지), 얼음달은 창백한 청백(네온 청록·보라 금지), 피의 오로라는 태양보다 어두운 검붉은 장막(초록·청록·보라 금지, 3장 컷신·로딩·원경 전용), 핏빛 비는 인트로 피 톤과 같은 탁한 적갈, 주황은 용암에만.
+**세계 표현 LOCK**: 지옥의 하늘·날씨(붉은 태양·얼음달·피의 오로라·핏빛 비·칼날 우박·독액의 강·용암 바다) = HELL_SKY_DESIGN_LOCK_20261027.md (Unity 정본: `git show "origin/unity/main:docs/17게임아트팀/HELL_SKY_DESIGN_LOCK_20261027.md"`). 태양은 진홍 원반(주황 금지), 얼음달은 창백한 청백(네온 청록·보라 금지), 피의 오로라는 태양보다 어두운 검붉은 장막(초록·청록·보라 금지, 3장 컷신·로딩·원경 전용), 핏빛 비는 인트로 피 톤과 같은 탁한 적갈, 주황은 용암에만.
 
 ---
 
@@ -132,10 +132,10 @@
 | 유니크 아이템 외관 27종 `assets/unique-items/ui-01~27.png`(원본) → `img/ui/unique-items/`(256px) | 🟡 2026-10-08 원화 채택·생성 완료(1x·4배 확대 점 검수 통과). 게임 연결(부위별 무작위 외관·이름·보라 등급색)은 진행 중 |
 | 캐릭터 선택 `portrait_warrior.png`(bust — 로비 캐릭터 썸네일·선택창 초상) | ✅ 2026-09-30 평범한 눈으로 교체 (`?v=20260930-eyefix`, 원본 `output/charselect_remaster_20260930/original/`) |
 | 맵 오브젝트 | 🧪 시험 1개 `output/mapobj_seedream_test_20260930/` (미배치) |
-| CH1 썩은 생체나무 변형 05~12 | ✅ 채택·배치 (2026-10-08, Seedream 5.0 Pro 1:1 1920² 8장) `assets/map/ch1/collision/rotforest_tree_05~12.png` — 원본·컷 `output/rotforest_variants_20261008/`, 배정·생성 id·검수 [PASS98](../4.1맵디자인+설정/CH1_ROTTEN_FOREST_RUNTIME_TREES_PASS98_20261008.md) |
+| CH1 썩은 생체나무 변형 05~12 | ✅ 채택·배치 (2026-10-08, Seedream 5.0 Pro 1:1 1920² 8장) `assets/map/ch1/collision/rotforest_tree_05~12.png` — 원본·컷 `output/rotforest_variants_20261008/`, 배정·생성 id·검수 PASS98 (Unity 정본: `git show "origin/unity/main:docs/4.1맵디자인+설정/CH1_ROTTEN_FOREST_RUNTIME_TREES_PASS98_20261008.md"`) |
 | 캐릭터 선택 실버테일(`portrait_silvertail.png`·`silvertail_cut.png`)·배경(`bg_scene1/2.png`)·로비 포스터·엠블럼 | ✅ 점검(2026-10-01): 잔점 없음 |
 | 출시 예정 3종 `portrait_/poster_idle_` spearmage·hellgunner·transmuter (JPG 96~213KB) | ⚠ 압축으로 흐릿함 — 디자인 확정 후 고화질 재제작 필요 |
-| 아이반(검은 연기) T8 키아트 V35 `E:/exoduser-wt/_out/ivan-keyart-t8/` (Git 밖) | ✅ 2026-10-26 디자인총괄 확정 = r4(V29 잔점 제거판 1152×1536). 투명 컷 `ivan_t8_final_cut.png` 1010×1386·가슴 위 초상 `ivan_t8_portrait.png` 1024², halo 검수 통과. 로비·게임 미연결 — [기록](IVAN_T8_KEYART_V35_20261026.md) |
+| 아이반(검은 연기) T8 키아트 V35 `E:/exoduser-wt/_out/ivan-keyart-t8/` (Git 밖) | ✅ 2026-10-26 디자인총괄 확정 = r4(V29 잔점 제거판 1152×1536). 투명 컷 `ivan_t8_final_cut.png` 1010×1386·가슴 위 초상 `ivan_t8_portrait.png` 1024², halo 검수 통과. 로비·게임 미연결 — 기록 (Unity 정본: `git show "origin/unity/main:docs/17게임아트팀/IVAN_T8_KEYART_V35_20261026.md"`) |
 | 첫 화면·로비 공용 로고 `img/logo_exoduser_solid.png`(2026-10-31 불투명 흑철 보정본, 원본 `img/logo_exoduser.png` 보존)(2026-10-28~ 눈알 로고 A 1506×719 RGBA; 이전 C안 1551×740 → `img/logo_exoduser_c_crown_20261027.png`) + ENTER `img/ui/enter_gothic_brass.png`(1536×1024 RGBA) | ✅ 2026-10-27 사용자 선택 안 C(지옥왕의 관: 흑철 대문자+낮은 뿔 왕관, 진홍 빛은 틈에서만)로 교체·통일. 원본(해골 로고 835×348)은 `img/logo_exoduser_v1_skull.png`로 보존, 기존 첫 화면 RGB 로고 `output/imagegen/exoduser-hell-lord-logo-api-v1.png`·ENTER `enter-gothic-api-v1.png`는 미참조 보존. 후보 A/B/C·목업 `E:/exoduser-wt/_out/title-logo-redesign/`(Git 밖), 적용 캡처 `…/apply/`. 런타임 캔버스 키잉(`cin-logo-art.js`)은 참조 제거. 상세: `docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md` 말미 · `docs/cinematic/ENTER_ENGRAVED_20260907.md` §2026-10-27 개정 |
 | 시작 메뉴 최종 Kling `video/title_motion_C2_final_20261102.mp4` + `title-signboard.js` | 2026-11-02 최종 지시: final-main/loop.mp4 원본 byte 그대로 2036×1016 cover. 정지원화·하늘/인물/달 마스크·변위셰이더·그레인·샤프닝 모두 제거. 예외는 새 영상 좌표의 해골 폭포 흐름2개만. 16/21/32:9 각10초·달/부츠·여백·1x/3x·입력/모션감소/오류 검수는 title-final-as-is-20261102/REPORT.md. 수치 SSOT는 스플래시_인트로_시퀀스.md 현행 계약 |
 
@@ -195,8 +195,8 @@
 | 2026-10-08 | 보석 소켓 세팅 그림 `img/ui/gem_socket_v1.png`(Seedream 1:1, 스타일=ossuary_socket_hf_v2) 생성·키잉·적용, 보석 탭 소켓 리디자인 — `docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md` 2026-10-08 절 | MagicLight 100 |
 | 2026-10-08 | 막힌 보석 홈 그림 `img/ui/gem_socket_sealed_v1.png` 256×256 RGBA — gem_socket_v1 raw를 Seedream 5.0 Pro 1:1 edit(흑철 봉인 뚜껑, 빈 홈을 막은 형태)로 파생, 회색 배경 원형 마스크 키잉, 원본 `output/gem_socket_20261008/seedream_sealed_raw_1920.png`. 보석 탭 5홈 고정 배치의 미개방 자리 표시 — UI_COMPOSITION 2026-10-08 소켓석 절 | MagicLight 100 |
 | 2026-10-08 | 유니크 아이템 외관: UI-01~22 최종 채택(Higgsfield 원본, UI-05만 하이힐 실루엣 때문에 Seedream 후보), 빈 부위 5종 UI-23 바지·24 도끼·25 메이스·26 곤봉·27 창 Seedream 5.0 Pro 1:1 생성(카탈로그 공통 프롬프트), 27종 게임용 256px `img/ui/unique-items/` — `docs/7아이템디자인/보라색_고유아이템_카탈로그_20260930.md` 2026-10-08 절 | MagicLight 500 (5장, 표시 54,390 기준) |
-| 2026-10-08 | CH1 생체나무 변형 8종 생성(MagicLight Seedream 5.0 Pro, 1:1, 100pt×8 성공, 서비스 일시 불가 실패 4건 환불 후 재시도) — 레퍼런스=기존 tree_01~04 회색 합성, 원본별 2종씩. 회색 키잉·잔편 제거·하단 정렬 1024²·기존 4종 평균색 게인 보정, 1x 확대로 점·회색 테두리 없음 확인(tree_11 회색 잔편 3구역 수동 제거). 12종 눈·입·혹 좌표 등록, 런타임 흔들림·전체 깜빡임 적용 — [PASS98](../4.1맵디자인+설정/CH1_ROTTEN_FOREST_RUNTIME_TREES_PASS98_20261008.md) |
-| 2026-10-26 | 아이반 T8 키아트: V29 → GPT Image 2.5 sunburst edits 4회(r1 총구 잘림·r2 천 붉게 이탈 반려, r3 잔점 조건부, **r4 확정**), 로컬 누끼 투명 컷 + 가슴 위 초상 1024², 검정·진홍 합성 halo 검수 — [IVAN_T8_KEYART_V35_20261026.md](IVAN_T8_KEYART_V35_20261026.md) | GPT Image API 약 $0.0999 (MagicLight·Higgsfield 0) |
+| 2026-10-08 | CH1 생체나무 변형 8종 생성(MagicLight Seedream 5.0 Pro, 1:1, 100pt×8 성공, 서비스 일시 불가 실패 4건 환불 후 재시도) — 레퍼런스=기존 tree_01~04 회색 합성, 원본별 2종씩. 회색 키잉·잔편 제거·하단 정렬 1024²·기존 4종 평균색 게인 보정, 1x 확대로 점·회색 테두리 없음 확인(tree_11 회색 잔편 3구역 수동 제거). 12종 눈·입·혹 좌표 등록, 런타임 흔들림·전체 깜빡임 적용 — PASS98 (Unity 정본: `git show "origin/unity/main:docs/4.1맵디자인+설정/CH1_ROTTEN_FOREST_RUNTIME_TREES_PASS98_20261008.md"`) |
+| 2026-10-26 | 아이반 T8 키아트: V29 → GPT Image 2.5 sunburst edits 4회(r1 총구 잘림·r2 천 붉게 이탈 반려, r3 잔점 조건부, **r4 확정**), 로컬 누끼 투명 컷 + 가슴 위 초상 1024², 검정·진홍 합성 halo 검수 — IVAN_T8_KEYART_V35_20261026.md (Unity 정본: `git show "origin/unity/main:docs/17게임아트팀/IVAN_T8_KEYART_V35_20261026.md"`) | GPT Image API 약 $0.0999 (MagicLight·Higgsfield 0) |
 
 ### 지시 수신 기록
 
@@ -274,11 +274,11 @@ MagicLight 마지막 조회 59,540 (2026-10-01, emg1 2차 후). 이번 마감 �
 
 ## 2026-10-31 악의오브 최종 정정
 
-화폐를 악의오브 / Orb of Malice로 개명하고 내장 imagegen의 둥근 유리 오브 4단계를 HUD·대장간·스킬 창·툴팁·획득 합체 연출에 연결했다. 색·구간·파일·픽셀 규격과 실패 폴백은 [화폐 SSOT](../3.2메타·진행시스템/CURRENCY_RENAME_20261031.md)를 따른다. 32/48px 원화와 실제 HUD 1x 판정 보드는 G:/exoduser/tmp/design-review/20261031_malice_orb/review-board.png. 웹의 UI 검수와 Unity 컴파일·Player/M1은 별도이며 최종 증거·원격 SHA는 I:/EXODUSER-Storage/demo-art/currency-rename/REPORT.md에 남긴다.
+화폐를 악의오브 / Orb of Malice로 개명하고 내장 imagegen의 둥근 유리 오브 4단계를 HUD·대장간·스킬 창·툴팁·획득 합체 연출에 연결했다. 색·구간·파일·픽셀 규격과 실패 폴백은 화폐 SSOT (Unity 정본: `git show "origin/unity/main:docs/3.2메타·진행시스템/CURRENCY_RENAME_20261031.md"`)를 따른다. 32/48px 원화와 실제 HUD 1x 판정 보드는 G:/exoduser/tmp/design-review/20261031_malice_orb/review-board.png. 웹의 UI 검수와 Unity 컴파일·Player/M1은 별도이며 최종 증거·원격 SHA는 I:/EXODUSER-Storage/demo-art/currency-rename/REPORT.md에 남긴다.
 
 ### 2026-10-31 로딩 초광폭 표시 후속
 
-활성 로딩 원화19장·대기 후보16장을 전수 조사했다. 네메시아·핵터·디로이 원본 보존 배경 확장6개와 나머지 원본 contain/블러 폴백, 별도 하단 상태 영역은 [로딩 초광폭 정본](../1전체그래픽세팅/LOADING_ULTRAWIDE_20261031.md)을 따른다. 인물 디자인 리마스터·Unity 적용·배포 완료와 구분한다.
+활성 로딩 원화19장·대기 후보16장을 전수 조사했다. 네메시아·핵터·디로이 원본 보존 배경 확장6개와 나머지 원본 contain/블러 폴백, 별도 하단 상태 영역은 로딩 초광폭 정본 (Unity 정본: `git show "origin/unity/main:docs/1전체그래픽세팅/LOADING_ULTRAWIDE_20261031.md"`)을 따른다. 인물 디자인 리마스터·Unity 적용·배포 완료와 구분한다.
 
 
 ## 2026-10-31 전체 화면 원화 확장 적용

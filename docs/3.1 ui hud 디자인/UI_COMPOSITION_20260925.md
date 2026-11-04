@@ -1,13 +1,13 @@
 # UI 구성 개편 — 2026-09-25
 
-> 2026-11-01 현행 사용자 결정: **캐릭터 개수 제한 없음**. 웹·Unity 소스 후보에 적용했으며 실제 실행본 갱신은 별도다. 아래 과거 검수의 5슬롯/개발자 전용 무제한 기록은 당시 이력이다. 최신 코드·검증 범위는 [세이브 SSOT](../15 세이브+데이터구조/15 세이브+데이터구조.md)의 마지막 절과 `I:/EXODUSER-Storage/character-capacity/20261101-unlimited/REPORT.md`를 따른다.
+> 2026-11-01 현행 사용자 결정: **캐릭터 개수 제한 없음**. 웹·Unity 소스 후보에 적용했으며 실제 실행본 갱신은 별도다. 아래 과거 검수의 5슬롯/개발자 전용 무제한 기록은 당시 이력이다. 최신 코드·검증 범위는 세이브 SSOT (Unity 정본: `git show "origin/unity/main:docs/15 세이브+데이터구조/15 세이브+데이터구조.md"`)의 마지막 절과 `I:/EXODUSER-Storage/character-capacity/20261101-unlimited/REPORT.md`를 따른다.
 
 
-> 2026-11-02 시작 메뉴 현행: C2 tall Kling 영상·폭포 보강·중앙 cover로 교체. 타이틀의 과거 영상/확장판·암부 수치는 [스플래시 현행 C2 계약](스플래시_인트로_시퀀스.md#2026-11-02-현행--c2-큰-화면-kling-반복-영상)이 우선한다. 기존 로고·문자 메뉴·입력·안쪽 여백은 보존하며 첫 ENTER 게이트는 이번 교체 범위 밖이다.
+> 2026-11-02 시작 메뉴 현행: C2 tall Kling 영상·폭포 보강·중앙 cover로 교체. 타이틀의 과거 영상/확장판·암부 수치는 [스플래시 현행 C2 계약](스플래시_인트로_시퀀스.md)이 우선한다. 기존 로고·문자 메뉴·입력·안쪽 여백은 보존하며 첫 ENTER 게이트는 이번 교체 범위 밖이다.
 
 ## 2026-10-10 K 스킬 창 = Skill Forge — 현행
 
-`#skillPanel` 본문은 `#skillForge`(skill-forge.css/js, 3D skill-forge-3d.js·three r186)로 전면 교체. **2026-10-31 현행: 16키 슬롯(기존13+구르기/X/T), 설명270px·내용 높이, 빈 로드맵 접기, 초광폭 사이드는 실제 끝·중앙 최대1800px.** 떠다니는 구슬+합성 전류·기존 원화/표면 유지. 구 카드형 본문과 `#skSlotBar`는 숨김(폴백 `?skillForge=0`). 상세·검수·기존 치수의 대체 범위: [SKILL_FORGE_20261010.md §12](SKILL_FORGE_20261010.md#12-공간-재배분고정-기술-표시-2026-10-31-사용자-지시). 아래 스킬 작업공간·quiet-tier 수치는 날짜별 제작 이력이다.
+`#skillPanel` 본문은 `#skillForge`(skill-forge.css/js, 3D skill-forge-3d.js·three r186)로 전면 교체. **2026-10-31 현행: 16키 슬롯(기존13+구르기/X/T), 설명270px·내용 높이, 빈 로드맵 접기, 초광폭 사이드는 실제 끝·중앙 최대1800px.** 떠다니는 구슬+합성 전류·기존 원화/표면 유지. 구 카드형 본문과 `#skSlotBar`는 숨김(폴백 `?skillForge=0`). 상세·검수·기존 치수의 대체 범위: SKILL_FORGE_20261010.md §12 (Unity 정본: `git show "origin/unity/main:docs/3.1 ui hud 디자인/SKILL_FORGE_20261010.md"`). 아래 스킬 작업공간·quiet-tier 수치는 날짜별 제작 이력이다.
 
 
 ## 2026-10-02 공통 제목 명패 S/M/L — 현행 SSOT
@@ -81,14 +81,14 @@
 | 원문·오류 | raw whole-object bag/equipped 비교2 FAIL을 보존. 첫 복원의 무기5개에 `_spdMig=3/_nameMig=1` 총10필드 추가만 발생; 기존 ID·이름·공속·수치·아이템 변경0. 상태 주입0/직접 DOM 이벤트0, pageerror·consoleerror·HTTP 오류·비미디어 요청 실패0. 의도한 화면 전환의 MP4 `ERR_ABORTED`18건 별도 기록 |
 | 증거·남은 범위 | [요약](G:/exoduser/tmp/publisher-update-20261003/20261003-095500/qa/settings-restart-summary.json), 같은 폴더 raw report·item-diff·ptbr PNG. 모든 QA 브라우저 종료 후 root가 경로를 확인하여 자체 서버PID42672도 종료. 새095500 Windows native 전투·자연 전체 진행/다음 stage·음향/FPS·Steam 검수·Drive 전달은 이 PASS에 포함하지 않음. 앞의091200 native 기동 증거와 구분 |
 
-설정 창 본문·탭·키바인딩 수치는 [설정 UI 작업공간](SETTINGS_UI_WORKSPACE_20260929.md)과 [설정/HUD 디테일](SETTINGS_HUD_DETAIL_20260930.md)을 따른다. 신규 이미지 생성, 저장·번역 문자열·게임 수치·인벤토리 조작 변경은 이번 명패 계약에 포함하지 않는다.
+설정 창 본문·탭·키바인딩 수치는 설정 UI 작업공간 (Unity 정본: `git show "origin/unity/main:docs/3.1 ui hud 디자인/SETTINGS_UI_WORKSPACE_20260929.md"`)과 설정/HUD 디테일 (Unity 정본: `git show "origin/unity/main:docs/3.1 ui hud 디자인/SETTINGS_HUD_DETAIL_20260930.md"`)을 따른다. 신규 이미지 생성, 저장·번역 문자열·게임 수치·인벤토리 조작 변경은 이번 명패 계약에 포함하지 않는다.
 
-> 2026-09-29 현행: **미선택 기본 화면은 선대 소환체 · 묘왕 바르칸**, 캐릭터 카드 선택 후에는 해당 CHAR_VISUALS의 원화/아이들 영상과 이름·직업을 표시한다. 데모도 자동 선택 없이 시작하며 카드 클릭 후 입장을 활성화한다. 선택 해제 시 전대 화면으로 복귀한다. 아래 2026-09-28 제작·검수는 당시 이력이며, 현재 선택 표시 규칙은 [기본 전대 / 선택 캐릭터 전환 SSOT](<../3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md>)를 우선한다.
+> 2026-09-29 현행: **미선택 기본 화면은 선대 소환체 · 묘왕 바르칸**, 캐릭터 카드 선택 후에는 해당 CHAR_VISUALS의 원화/아이들 영상과 이름·직업을 표시한다. 데모도 자동 선택 없이 시작하며 카드 클릭 후 입장을 활성화한다. 선택 해제 시 전대 화면으로 복귀한다. 아래 2026-09-28 제작·검수는 당시 이력이며, 현재 선택 표시 규칙은 기본 전대 / 선택 캐릭터 전환 SSOT (Unity 정본: `git show "origin/unity/main:docs/3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md"`)를 우선한다.
 
 
 ## 2026-09-28 장착 가능한 보석 선택창 — 현행
 
-빈 홈을 클릭한 보석 팝업은 호환되는 보유 보석만 고유 원화·성급·이름·옵션 카드로 표시한다. 헤더의 부위명·`호환 n / 보유 n`, 각 분류·성급의 후보 수로 왜 일부만 보이는지 알려준다. 필터는 어두운 금속 버튼과 금색 선택 상태를 사용한다. 빈 결과는 홈 문양·원인 설명·가능할 때 전체 후보로 복귀하는 버튼을 표시한다. 기존 결정 주머니 명칭과 가루 수치는 이 팝업에서 제거했다. `ui-refinement.css?v=20260928-storage-icon-gem-picker2`와 [보석함 상세 계약](GEM_ATELIER_20260927.md)을 따른다.
+빈 홈을 클릭한 보석 팝업은 호환되는 보유 보석만 고유 원화·성급·이름·옵션 카드로 표시한다. 헤더의 부위명·`호환 n / 보유 n`, 각 분류·성급의 후보 수로 왜 일부만 보이는지 알려준다. 필터는 어두운 금속 버튼과 금색 선택 상태를 사용한다. 빈 결과는 홈 문양·원인 설명·가능할 때 전체 후보로 복귀하는 버튼을 표시한다. 기존 결정 주머니 명칭과 가루 수치는 이 팝업에서 제거했다. `ui-refinement.css?v=20260928-storage-icon-gem-picker2`와 보석함 상세 계약 (Unity 정본: `git show "origin/unity/main:docs/3.1 ui hud 디자인/GEM_ATELIER_20260927.md"`)을 따른다.
 
 ## 2026-09-27 전투 스킬 전체화면 작업공간 — 현행
 
@@ -103,13 +103,13 @@
 
 ## 2026-09-27 보석함 장비 스킨 최신 기준
 
-보석함 장비칸은 정사각형 원화에 맞춘 1:1 카드다. `_itemSkin(item,96)` 이미지는 카드 안쪽1px를 `object-fit:contain`으로 채우며 강제 확대와 크롭을 쓰지 않는다. 17부위는 큰 화면에서 5열×6행, 폭 700px 이하 4열, 480px 이하 3열로 배치한다. 검은 빈 홈과 장착 홈은 그림 위 하단에 겹쳐 둔다. 홈 버튼은 아이콘보다 높은 계층이며 아이콘은 `pointer-events:none`이다. 현행 CSS 캐시는 `inventory-gems-finish.css?v=20260927-square-art2`. 다음 절의 이전 크기·캐시 값과 충돌하면 [보석함 상세 계약](GEM_ATELIER_20260927.md)과 이 절을 따른다.
+보석함 장비칸은 정사각형 원화에 맞춘 1:1 카드다. `_itemSkin(item,96)` 이미지는 카드 안쪽1px를 `object-fit:contain`으로 채우며 강제 확대와 크롭을 쓰지 않는다. 17부위는 큰 화면에서 5열×6행, 폭 700px 이하 4열, 480px 이하 3열로 배치한다. 검은 빈 홈과 장착 홈은 그림 위 하단에 겹쳐 둔다. 홈 버튼은 아이콘보다 높은 계층이며 아이콘은 `pointer-events:none`이다. 현행 CSS 캐시는 `inventory-gems-finish.css?v=20260927-square-art2`. 다음 절의 이전 크기·캐시 값과 충돌하면 보석함 상세 계약 (Unity 정본: `git show "origin/unity/main:docs/3.1 ui hud 디자인/GEM_ATELIER_20260927.md"`)과 이 절을 따른다.
 
 ## 2026-09-27 보석함 중앙 장비 배치판 — 이전 단계 기록
 
-> 보석 시각 자산은 `assets/gems/cursed_relics_1.svg`·`cursed_relics_2.svg`이고 당시 CSS 캐시는 `inventory-gems-finish.css?v=20260927-gem-only1`이었다. 18개 저주 유물을 보석함·감정판·장착 홈·대장간에 공유한다. 빈 홈은 검은 홀, 장착 홈은 보석 아트로 구별한다. 호환 부위 중 빈 홈이 있는 카드만 `ready`와 보석색 홈 링으로 강조하고, 호환되지만 꽉 찬 카드는 `full`로 구별한다. 현재 호환 빈 홈 합계는 장비판 안내에 표시한다. 채워진 홈 hover/focus는 해당 장착 보석을 감정판에 미리 보여주며 떠나면 선택 보석으로 돌아간다. 보유 보석은 좌클릭 홀드로 선택·호환 빈 홈 강조, 6px 이상 이동하면 보석 그림만 칸에서 뽑혀 커서를 따라가고 빈 홈에 놓아 장착한다. 비활성 패널 자식은 포인터 입력을 받지 않는다. [감정판·장비판 세부 계약](GEM_ATELIER_20260927.md)을 우선한다.
+> 보석 시각 자산은 `assets/gems/cursed_relics_1.svg`·`cursed_relics_2.svg`이고 당시 CSS 캐시는 `inventory-gems-finish.css?v=20260927-gem-only1`이었다. 18개 저주 유물을 보석함·감정판·장착 홈·대장간에 공유한다. 빈 홈은 검은 홀, 장착 홈은 보석 아트로 구별한다. 호환 부위 중 빈 홈이 있는 카드만 `ready`와 보석색 홈 링으로 강조하고, 호환되지만 꽉 찬 카드는 `full`로 구별한다. 현재 호환 빈 홈 합계는 장비판 안내에 표시한다. 채워진 홈 hover/focus는 해당 장착 보석을 감정판에 미리 보여주며 떠나면 선택 보석으로 돌아간다. 보유 보석은 좌클릭 홀드로 선택·호환 빈 홈 강조, 6px 이상 이동하면 보석 그림만 칸에서 뽑혀 커서를 따라가고 빈 홈에 놓아 장착한다. 비활성 패널 자식은 포인터 입력을 받지 않는다. 감정판·장비판 세부 계약 (Unity 정본: `git show "origin/unity/main:docs/3.1 ui hud 디자인/GEM_ATELIER_20260927.md"`)을 우선한다.
 
-이 단계 구현은 [GEM_ATELIER_20260927.md](GEM_ATELIER_20260927.md)를 따른다. 당시 창은 최대1280px·높이 min(860px,96vh), 좌우 .78:1.22였다. 왼쪽 보석/필터/상세, 오른쪽 캐릭터 실루엣과 5열×6행의17부위. 호환 부위 강조·장착 현황 집계·이미지 실패 폴백을 제공한다. 당시 CSS 키는 `inventory-gems-finish.css?v=20260927-atelier2`. 아래 보강 규격은 이전 단계 기록이며 충돌 시 링크 문서가 우선한다. 실제 코드 기반 브라우저 회귀12항목 및 데스크톱/390px 검수 완료.
+이 단계 구현은 GEM_ATELIER_20260927.md (Unity 정본: `git show "origin/unity/main:docs/3.1 ui hud 디자인/GEM_ATELIER_20260927.md"`)를 따른다. 당시 창은 최대1280px·높이 min(860px,96vh), 좌우 .78:1.22였다. 왼쪽 보석/필터/상세, 오른쪽 캐릭터 실루엣과 5열×6행의17부위. 호환 부위 강조·장착 현황 집계·이미지 실패 폴백을 제공한다. 당시 CSS 키는 `inventory-gems-finish.css?v=20260927-atelier2`. 아래 보강 규격은 이전 단계 기록이며 충돌 시 링크 문서가 우선한다. 실제 코드 기반 브라우저 회귀12항목 및 데스크톱/390px 검수 완료.
 
 ## 2026-09-27 보석함 디자인 보강 — 이전 단계 기록
 
@@ -967,7 +967,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 
 ## 2026-09-27 보석 전용 인벤토리
 
-> **현행 변경:** 2026-09-27 고유 보석 전면 교체로 아래 최초 단일 옵션·일반 보석 외형은 이력이다. 현재 18종은 모두 이름과 2~3옵션, 18개 개별 실루엣·각인·색을 가진다. 후속 감정판은 `inventory-gems-finish.css?v=20260927-unique2`를 로드하고, 각 옵션을 최소23px 행으로 분리하며 18종별 설정 문구를 표시한다. [보석함 현행 규격](GEM_ATELIER_20260927.md)과 [18종 데이터표](../2_9%20결정슬롯시스템/2_9%20결정슬롯시스템.md)를 우선한다.
+> **현행 변경:** 2026-09-27 고유 보석 전면 교체로 아래 최초 단일 옵션·일반 보석 외형은 이력이다. 현재 18종은 모두 이름과 2~3옵션, 18개 개별 실루엣·각인·색을 가진다. 후속 감정판은 `inventory-gems-finish.css?v=20260927-unique2`를 로드하고, 각 옵션을 최소23px 행으로 분리하며 18종별 설정 문구를 표시한다. 보석함 현행 규격 (Unity 정본: `git show "origin/unity/main:docs/3.1 ui hud 디자인/GEM_ATELIER_20260927.md"`)과 18종 데이터표 (Unity 정본: `git show "origin/unity/main:docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md"`)를 우선한다.
 
 사용자 요청은 유골함처럼 보석 전용 인벤토리 탭을 만드는 것이다. 기존 장비·결정 등급/수치/저장 구조는 변경하지 않는다.
 
@@ -2373,7 +2373,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 기록·커밋 | tmp/lobby-confirm-transition/browser-report.json, test-output.txt, changes.patch. 코드·테스트·관련 문서6개를 이 작업 범위로 보존. 기존 승인 실행의 WindowsApps 런처 오류317 및 .git/objects 쓰기 제한이 남아 커밋 미완료. 다른 작업의 game.html/스킬 문서 스테이징은 변경하지 않음 |
 
 
-2026-09-28 공통 아이템 스킨 폴백: `.iskin:has(>.iskin-img)>svg{visibility:hidden}`로 투명 PNG 뒤 금색 대체 SVG의 비침을 막는다. 이미지가 최종 실패하여 제거되면 SVG가 다시 표시된다. 보석함·장비창·가방·보관함 공통이며, [보석함 표시 계약](GEM_ATELIER_20260927.md)의 검증·실패 조건을 따른다.
+2026-09-28 공통 아이템 스킨 폴백: `.iskin:has(>.iskin-img)>svg{visibility:hidden}`로 투명 PNG 뒤 금색 대체 SVG의 비침을 막는다. 이미지가 최종 실패하여 제거되면 SVG가 다시 표시된다. 보석함·장비창·가방·보관함 공통이며, 보석함 표시 계약 (Unity 정본: `git show "origin/unity/main:docs/3.1 ui hud 디자인/GEM_ATELIER_20260927.md"`)의 검증·실패 조건을 따른다.
 
 
 ## 2026-09-28 외형·이름 팝업 정리와 이전 영상 폴백 차단
@@ -2408,7 +2408,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 실제 저장 | 이미 전송된 저장 요청을 취소하거나 성공 데이터를 되돌리지 않음. 다음 정상 목록 조회에서 서버 결과 확인. 화면 이탈 뒤 추가 localStorage 폴백 쓰기·자동 재시도 없음 |
 | 회귀 | test/lobbyCreationResponse.test.js 신규22건. 최초21건은 원본에서20실패/1통과, 안내·재생기 정리 추가 검사는 수정 전22건 중10실패/12통과. 관련 통합209건·inline script4개 구문 통과 |
 | 실제 브라우저 | Node 서버 실제 페이지960×540, 시작 타이틀 실제 클릭 후 직접/버튼×성공/오류/네트워크 실패6조건: 로그인 유지·생성창 숨김·안내 빈값·현재 초점 유지·스토리/입장0회·추가 폴백 저장0회·버튼 해제. 실제 재생 중 스토리도 전환 즉시 종료, 이전 입장0회 |
-| 전체 계약·증거 | [세이브 설계](../15%20세이브+데이터구조/15%20세이브+데이터구조.md)의 동명 절. 같은 화면의 기존 생성 성공/실패 유지. 관련 문서7개 동기화, 커밋은 기존 .git 쓰기 제한으로 미완료 |
+| 전체 계약·증거 | 세이브 설계 (Unity 정본: `git show "origin/unity/main:docs/15 세이브+데이터구조/15 세이브+데이터구조.md"`)의 동명 절. 같은 화면의 기존 생성 성공/실패 유지. 관련 문서7개 동기화, 커밋은 기존 .git 쓰기 제한으로 미완료 |
 
 
 ## 2026-09-28 외형 선택창 키보드 조작·초점 격리
@@ -2424,7 +2424,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 버튼 마감 | .cs-ico padding0/border0/background transparent/font inherit로 네이티브 버튼 기본 재질 제거. :focus-visible outline2px solid #ead6a5/offset6px/radius4px. 기존 아이콘·레이아웃·미디어 에셋 유지 |
 | 회귀 | test/lobbyVisualKeyboard.test.js 신규17건: 열기/선택 상태, 양방향 Tab, 잠금, 외부 초점 복구, 방향키, Escape 정리, IME6조건, 숨김/클릭 경로. 원본16실패/1통과→수정 후17통과. 관련 로비·생성·패드·울트라와이드 통합228건 및 inline script4개 구문 통과 |
 | 실제 화면 | Node 서버의 실제 페이지에서 시작 타이틀 클릭 후960×540/1920×1080 확인. 실제 Tab/Shift+Tab/Enter/Space/방향키/Home/End/Escape 입력. 초점 전부 창 내부, 출시 잠금 유지, 취소 후 실행 버튼 복귀, 미디어 pause/src 해제. 컨트롤·초점 테두리 화면 내 및 가로 넘침 없음 |
-| 전체 계약·증거 | [캐릭터 선택 기획](../3.1%20ui%20hud%20디자인/캐릭터선택_리모델링_기획서.md)의 동명 절. 관련 문서6개 동기화, 저장 요청0/pageerror0. 커밋은 현재 .git 쓰기 제한으로 실행 불가 |
+| 전체 계약·증거 | 캐릭터 선택 기획 (Unity 정본: `git show "origin/unity/main:docs/3.1 ui hud 디자인/캐릭터선택_리모델링_기획서.md"`)의 동명 절. 관련 문서6개 동기화, 저장 요청0/pageerror0. 커밋은 현재 .git 쓰기 제한으로 실행 불가 |
 
 
 ## 2026-09-28 로비 카드 언어 즉시 갱신·DOM 상태 보존
@@ -2441,7 +2441,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 상태 보존 | 같은 카드·선택 버튼·이미지·초점 유지. _selectedSlot/_selectedSlotName/_slotScrollIdx/_onlineScrollIdx/_characterLoadSeq 변경 없음. 번역 카탈로그 신규 키·전투/저장 형식 변경 없음 |
 | 회귀 | test/lobbyCardLanguage.test.js 신규11건: 데모2·온라인/로컬2·생성/가득참3·중첩 노드2·초기 적용1·기존 문자열 호환1. 원본7실패/4통과→수정 후11통과. $ 없는 초기화 검사도 수정 전1실패/10통과. 관련 통합239건 및 inline script4개 구문 통과 |
 | 실제 언어 검증 | 960×540/1920×1080에서29언어×데모1·로컬 생성가능/가득참2·온라인 생성가능/가득참2=290조합. 동일 카드/버튼/이미지·선택·스크롤·초점 보존 및 가로 넘침 없음, pageerror0. 생성/삭제 저장 요청0 |
-| 상세 계약·증거 | [언어 런타임](../16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md)의 동명 절. 문서8개 동기화. Lv.46/처치1795 저장 원문 보존, 실제 언어 메뉴와 새 페이지 초기화 확인 |
+| 상세 계약·증거 | 언어 런타임 (Unity 정본: `git show "origin/unity/main:docs/16번역·로컬라이제이션/LOCALIZATION_RUNTIME_20260909.md"`)의 동명 절. 문서8개 동기화. Lv.46/처치1795 저장 원문 보존, 실제 언어 메뉴와 새 페이지 초기화 확인 |
 
 
 ## 2026-09-28 데모 카드 줄바꿈·입장 버튼 스크롤 분리
@@ -2451,7 +2451,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 데모 전용 | data-card-key=demo인 선택 버튼을 직접 가진 카드만 높이auto/최소84px 및 이름·정보 줄바꿈. 정보 줄높이1.45. 일반 로컬/온라인 카드는84px/진행nowrap 유지 |
 | 입장 | .lobby-footer는 .lobby-right 직계 자식으로 .lobby-content 뒤/#lobbyStatus 앞. 목록/배너 세로 스크롤과 독립. CSS 캐시20260928-lobby-card-wrap |
 | 검증 | 실제 데모29언어×진행2×화면7=406조합 및 일반 슬롯 대역6조합. 텍스트/입장 경계·초점 순서·저장 원문 보존, 가로 넘침/페이지 오류/쓰기 요청0. 기존105회귀+inline4구문 통과 |
-| 상세 | [데모 카드·입장 배치 현행 계약](LOBBY_ANCESTOR_ART_20260928.md). 기존 공통 말줄임/84px 설명의 데모 예외 및 짧은 창의 배너 세로 스크롤을 이 절로 갱신. 신규 자산/저장 형식/게임패드 동작 변경 없음 |
+| 상세 | 데모 카드·입장 배치 현행 계약 (Unity 정본: `git show "origin/unity/main:docs/3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md"`). 기존 공통 말줄임/84px 설명의 데모 예외 및 짧은 창의 배너 세로 스크롤을 이 절로 갱신. 신규 자산/저장 형식/게임패드 동작 변경 없음 |
 
 
 ## 2026-09-28 짧은 창 Steam 배너·RTL 여백 마감
@@ -2461,7 +2461,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 짧은 창 | 높이≤600px는 배너 문장/.lobby-card-gap 숨김, 배너 내부padding0/gap0. 찜 버튼 최소높이44px/최대폭100%, 이미지 최대190px. 데모 카드 세로padding10px·최소높이84px. 높이≥601px는 기존 문장·간격 표시 |
 | RTL·언어 | .lobby-content의 여백은 padding-inline-end8px. #lobbyWishlistBtn aria-label/title은 기존 번역키 STEAM 위시리스트 추가(id2841)로 즉시 갱신, 이미지 alt 빈값. 부모 DOM 교체·새 번역키·저장 형식 변경 없음 |
 | 검증·캐시 | 실제29언어×진행2×화면9=522조합, 일반 슬롯 대역16조합, 기존105회귀/inline4구문 통과. 가로 이미지 잘림/페이지 오류/쓰기 요청0. CSS 캐시20260928-lobby-banner-compact2 |
-| 상세 | [배너·논리 여백 현행 계약](lobby_full_patch.md). 기존 padding-right8px와 데모 카드 간격 설명은 이 절을 우선. 아주 작은480×360에서는 세로 스크롤 후 찜 버튼 접근. 동시 전대 아트·표제 변경 보존 |
+| 상세 | 배너·논리 여백 현행 계약 (Unity 정본: `git show "origin/unity/main:docs/3.1 ui hud 디자인/lobby_full_patch.md"`). 기존 padding-right8px와 데모 카드 간격 설명은 이 절을 우선. 아주 작은480×360에서는 세로 스크롤 후 찜 버튼 접근. 동시 전대 아트·표제 변경 보존 |
 
 
 ## 2026-09-28 언어 메뉴 키 반복·IME 보호와 찜 버튼 초점선
@@ -2471,7 +2471,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 언어 메뉴 | 4개 select의 반복 열기와 팝업의 Enter/공백/Escape 반복 확정·취소 차단. isComposing/keyCode229 및 숨김·선택 노드 없는 메뉴는 처리하지 않음. 방향키 반복/Home/End/Tab·마우스·패드 경로 유지 |
 | 찜 버튼 | #lobbyWishlistBtn도 기존 로비 focus-visible outline-offset−2px 적용. 공통2px/#ead6a5 테두리·버튼 크기·600px 배너 경계·언어·저장 계약 유지 |
 | 검증 | 신규24건 원본19실패→통과, 관련167건/inline4구문 통과. 실제 키보드3크기·초점5크기 및 원본 패드 콜백 대역 확인. IME는 합성 이벤트/실물 패드·OS IME 검증 별도 |
-| 상세 | [언어 키 입력·초점 현행 계약](../3.3%20키바인딩+설정/게임패드_호버_상호작용.md). 기존 언어 팝업 계약에 키 유지와 IME 보호 추가. 새 번역키/부모 DOM 교체/사용자 저장 요청 없음 |
+| 상세 | 언어 키 입력·초점 현행 계약 (Unity 정본: `git show "origin/unity/main:docs/3.3 키바인딩+설정/게임패드_호버_상호작용.md"`). 기존 언어 팝업 계약에 키 유지와 IME 보호 추가. 새 번역키/부모 DOM 교체/사용자 저장 요청 없음 |
 
 
 ## 2026-09-28 외형 선택 하단 버튼 폭·줄바꿈 보완
@@ -2696,7 +2696,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 
 ## 2026-09-29 — 전투 HUD 창 크기 적응
 
-`applyUIScale()`은 `min(innerWidth/1920, innerHeight/1080)`을 고정 상하한 없이 적용한다. HUD의 기본 inset·미니맵 위치·상단 상태/자원/시계·하단 스킬바 오프셋도 같은 배율로 계산하며, 시계 기준 폭은170px이다. 메인 패널의 rem/vw 최대 폭·메뉴 UI 아트 계약을 이 배율로 대체하지 않는다. 세부 수치와 검증은 [HUD 창 크기 적응](UI_SCALING_20260929.md)에 기록한다.
+`applyUIScale()`은 `min(innerWidth/1920, innerHeight/1080)`을 고정 상하한 없이 적용한다. HUD의 기본 inset·미니맵 위치·상단 상태/자원/시계·하단 스킬바 오프셋도 같은 배율로 계산하며, 시계 기준 폭은170px이다. 메인 패널의 rem/vw 최대 폭·메뉴 UI 아트 계약을 이 배율로 대체하지 않는다. 세부 수치와 검증은 HUD 창 크기 적응 (Unity 정본: `git show "origin/unity/main:docs/3.1 ui hud 디자인/UI_SCALING_20260929.md"`)에 기록한다.
 
 
 ## 2026-09-29 인벤토리 정렬·닫기 키보드 조작 마감
@@ -2749,7 +2749,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 
 ## 2026-09-29 설정 화면 확장과 키 설정 조작 마감
 
-사용자 지시로 설정만 남아 있던 680px/1000px 제한을 제거했다. 현행 설정 제목 높이·글자·행·키캡·반응형 규격은 [설정 UI 현행 계약](SETTINGS_UI_WORKSPACE_20260929.md)이 앞선 날짜의 설정 규격을 대체한다. 다른 패널 규격은 해당 패널 최신 절을 따른다.
+사용자 지시로 설정만 남아 있던 680px/1000px 제한을 제거했다. 현행 설정 제목 높이·글자·행·키캡·반응형 규격은 설정 UI 현행 계약 (Unity 정본: `git show "origin/unity/main:docs/3.1 ui hud 디자인/SETTINGS_UI_WORKSPACE_20260929.md"`)이 앞선 날짜의 설정 규격을 대체한다. 다른 패널 규격은 해당 패널 최신 절을 따른다.
 
 | 범위 | 현재 구현 |
 |---|---|
@@ -3124,7 +3124,7 @@ CSS 선·도형으로 그린 판·버튼을 생성 원화로 교체했다. 모�
 
 ## 2026-10-31 악의오브 최종 정정
 
-화폐를 악의오브 / Orb of Malice로 개명하고 내장 imagegen의 둥근 유리 오브 4단계를 HUD·대장간·스킬 창·툴팁·획득 합체 연출에 연결했다. 색·구간·파일·픽셀 규격과 실패 폴백은 [화폐 SSOT](../3.2메타·진행시스템/CURRENCY_RENAME_20261031.md)를 따른다. 32/48px 원화와 실제 HUD 1x 판정 보드는 G:/exoduser/tmp/design-review/20261031_malice_orb/review-board.png. 웹의 UI 검수와 Unity 컴파일·Player/M1은 별도이며 최종 증거·원격 SHA는 I:/EXODUSER-Storage/demo-art/currency-rename/REPORT.md에 남긴다.
+화폐를 악의오브 / Orb of Malice로 개명하고 내장 imagegen의 둥근 유리 오브 4단계를 HUD·대장간·스킬 창·툴팁·획득 합체 연출에 연결했다. 색·구간·파일·픽셀 규격과 실패 폴백은 화폐 SSOT (Unity 정본: `git show "origin/unity/main:docs/3.2메타·진행시스템/CURRENCY_RENAME_20261031.md"`)를 따른다. 32/48px 원화와 실제 HUD 1x 판정 보드는 G:/exoduser/tmp/design-review/20261031_malice_orb/review-board.png. 웹의 UI 검수와 Unity 컴파일·Player/M1은 별도이며 최종 증거·원격 SHA는 I:/EXODUSER-Storage/demo-art/currency-rename/REPORT.md에 남긴다.
 
 ### 2026-10-31 CTO 최종 보정 — 제목 중앙 눈의 1x 가시성
 
@@ -3150,4 +3150,4 @@ statwindow-brief 마지막 보정만 수행한다. 시작 원격/HEAD는 9f5db2a
 
 ## 2026-11-02 살아 있는 대기 화면
 
-로비·영웅5종·허용 로딩32장·클리어/사망/데모 종료는 living-scenes.js/.css의 부드러운 큰 연무로 전환한다. 이 범위에서는 앞 절의 기존 MP4/점 입자 모션 복원 계약을 대체하며, 시작 메뉴와 첫 화면은 보존한다. 저사양·움직임 줄이기·분위기 끄기·숨김·프록시에서 정지. 전사 불씨 국소 보정/사망 무잔점 판, 정확한 수치와 검수 경계는 [현행 계약](LIVING_SCENES_20261102.md), 최종 반영/영상/FPS는 외부 living-1102/REPORT.md를 따른다.
+로비·영웅5종·허용 로딩32장·클리어/사망/데모 종료는 living-scenes.js/.css의 부드러운 큰 연무로 전환한다. 이 범위에서는 앞 절의 기존 MP4/점 입자 모션 복원 계약을 대체하며, 시작 메뉴와 첫 화면은 보존한다. 저사양·움직임 줄이기·분위기 끄기·숨김·프록시에서 정지. 전사 불씨 국소 보정/사망 무잔점 판, 정확한 수치와 검수 경계는 현행 계약 (Unity 정본: `git show "origin/unity/main:docs/3.1 ui hud 디자인/LIVING_SCENES_20261102.md"`), 최종 반영/영상/FPS는 외부 living-1102/REPORT.md를 따른다.

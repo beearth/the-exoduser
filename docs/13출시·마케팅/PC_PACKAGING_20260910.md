@@ -24,9 +24,9 @@
 
 현재 프로젝트의 PC 패키징은 아래 실제 설정을 기준으로 한다.
 
-> **2026-09-14 Steam Deck 시험본:** 별도 `tools/steamdeck-package.mjs`가 기존 Windows 실행 엔진과 현재 게임 데이터를 `out/EXODUSER-steamdeck-test-20260914-r2`에 독립 복사한다. 1280×800·중간 효과·60FPS 상한 및 작은 키캡 보정을 적용하며, 실제 Deck/Proton은 기기 부재로 미검증이다. 기존 일반 빌드 진입점·설정은 유지한다. [패키지·설정·검증 계약](STEAM_DECK_PREPARATION_20260914.md).
+> **2026-09-14 Steam Deck 시험본:** 별도 `tools/steamdeck-package.mjs`가 기존 Windows 실행 엔진과 현재 게임 데이터를 `out/EXODUSER-steamdeck-test-20260914-r2`에 독립 복사한다. 1280×800·중간 효과·60FPS 상한 및 작은 키캡 보정을 적용하며, 실제 Deck/Proton은 기기 부재로 미검증이다. 기존 일반 빌드 진입점·설정은 유지한다. 패키지·설정·검증 계약 (Unity 정본: `git show "origin/unity/main:docs/13출시·마케팅/STEAM_DECK_PREPARATION_20260914.md"`).
 
-2026-10-04 개발 명령 보완: `npm start`는 API 포함 `server.cjs:3333`, `npm run check`는 설치 없는 소스 준비 검사, `npm run build:web -- <새 하위 폴더>`는 기존 웹 스테이징 도구를 실행한다. npm 문서 검사와 Git 훅은 `tools/docs-sync-check.mjs`를 사용한다. NW.js 런타임·대상·패키지 규칙은 아래 기준을 유지한다. 상세 계약과 이번 검증 결과는 [개발 프로젝트 보고서](../12퍼포먼스·최적화/PROJECT_TOOLING_20261004.md)를 따른다.
+2026-10-04 개발 명령 보완: `npm start`는 API 포함 `server.cjs:3333`, `npm run check`는 설치 없는 소스 준비 검사, `npm run build:web -- <새 하위 폴더>`는 기존 웹 스테이징 도구를 실행한다. npm 문서 검사와 Git 훅은 `tools/docs-sync-check.mjs`를 사용한다. NW.js 런타임·대상·패키지 규칙은 아래 기준을 유지한다. 상세 계약과 이번 검증 결과는 개발 프로젝트 보고서 (Unity 정본: `git show "origin/unity/main:docs/12퍼포먼스·최적화/PROJECT_TOOLING_20261004.md"`)를 따른다.
 
 | 항목 | 현재 값 | 근거 파일 |
 |---|---|---|
@@ -57,7 +57,7 @@
 | 누락 파일 처리 | 별도 통합 빌드에서 `credits.html`과 `output/imagegen/forge-tabs-v3/`만 선택적; 나머지 명시된 `FILES`·`DIRS` 및 `node-main.js` 누락 시 실패 | 기존 기본 빌드의 경고 후 진행 동작은 유지 |
 | 기본 실행 | 인수 없는 기존 `dist/`·`out/EXODUSER-win64/` | 기존 삭제/잠금 시 `package.nw` 교체 동작 유지. PM-002에는 사용 금지 |
 
-로컬 통합 빌드는 `main` 커밋과 별도로 빌드 시점의 미커밋 파일을 포함한다. 산출물 표기에는 빌드 전후 변경 상태와 실제 파일 해시를 함께 기록한다. 검수 실행에서는 출력 폴더를 작업 디렉터리로 고정하고 별도 프로필·서버 저장 공간을 사용하여 기존 사용자 데이터를 보존한다. 결과 기록은 [통합·빌드팀 대장](INTEGRATION_BUILD_TEAM_MASTER.md)을 따른다.
+로컬 통합 빌드는 `main` 커밋과 별도로 빌드 시점의 미커밋 파일을 포함한다. 산출물 표기에는 빌드 전후 변경 상태와 실제 파일 해시를 함께 기록한다. 검수 실행에서는 출력 폴더를 작업 디렉터리로 고정하고 별도 프로필·서버 저장 공간을 사용하여 기존 사용자 데이터를 보존한다. 결과 기록은 통합·빌드팀 대장 (Unity 정본: `git show "origin/unity/main:docs/13출시·마케팅/INTEGRATION_BUILD_TEAM_MASTER.md"`)을 따른다.
 | 웹·Steam 공개 데모 범위 | Lv.1 시작, Lv.100 상한, 1-1(`stage=0`) 클리어 후 종료 | 웹 기본 로비·`game.html` 직접 진입·`package.json` 모두 데모 고정 |
 
 구형 패키징 경로·전용 설정·프록시 안내는 작업 지침, 기획 문서 및 과거 문서 사본에서 제거했다. 게임 코드와 빌드 결과물은 이번 문서 정리에서 변경하지 않았다.
@@ -83,7 +83,7 @@ Word 기획서 9개(원본 3개와 사본 6개), 문서 생성 스크립트 3개
 
 ## 2026-09-29 퍼블리셔 검토용 독립 사본
 
-스마일게이트·카카오에 전달할 검토 사본은 [제출 자료 및 검수 기록](PUBLISHER_REVIEW_20260929.md)을 따른다. 기존 공개 패키지의 3333 계약을 변경하지 않고 복사본에서 포트·프로필·저장 경로를 분리했다.
+스마일게이트·카카오에 전달할 검토 사본은 제출 자료 및 검수 기록 (Unity 정본: `git show "origin/unity/main:docs/13출시·마케팅/PUBLISHER_REVIEW_20260929.md"`)을 따른다. 기존 공개 패키지의 3333 계약을 변경하지 않고 복사본에서 포트·프로필·저장 경로를 분리했다.
 
 | 항목 | 검토 사본 |
 |---|---|
@@ -104,6 +104,6 @@ Word 기획서 9개(원본 3개와 사본 6개), 문서 생성 스크립트 3개
 
 ## 2026-09-29 바탕화면 최신 테스트 사본
 
-사용자 직접 시험용 최신 소스 사본은 [바탕화면 빌드·검증 기록](DESKTOP_LATEST_BUILD_20260929.md)을 따른다. 이 사본의 내장 서버는 3341이며 사용자 후속 지시에 따라 전체화면(`fullscreen:true`)으로 시작한다. 창 모드 기본 크기는 1600×900이고 전용 프로필 `userdata-desktop-20260929`와 서버 저장 폴더 `%APPDATA%/EXODUSER-DESKTOP-20260929/saves`를 사용한다. 일반 3333·퍼블리셔 3337 계약과 구분되는 테스트 사본이다.
+사용자 직접 시험용 최신 소스 사본은 바탕화면 빌드·검증 기록 (Unity 정본: `git show "origin/unity/main:docs/_archive/13출시·마케팅/DESKTOP_LATEST_BUILD_20260929.md"`)을 따른다. 이 사본의 내장 서버는 3341이며 사용자 후속 지시에 따라 전체화면(`fullscreen:true`)으로 시작한다. 창 모드 기본 크기는 1600×900이고 전용 프로필 `userdata-desktop-20260929`와 서버 저장 폴더 `%APPDATA%/EXODUSER-DESKTOP-20260929/saves`를 사용한다. 일반 3333·퍼블리셔 3337 계약과 구분되는 테스트 사본이다.
 
-2026-09-29 오전 10시 후속 퍼블리셔 전달본도 EXODUSER.exe 시작 설정을 `window.fullscreen:true`로 고정한다. 기존 퍼블리셔 패키징 헬퍼의 창 모드 덮어쓰기를 새 사본에서는 true로 바꿔 생성하며, 실제 외부 전달 완료 여부는 [최신 빌드 전달 기록](PUBLISHER_LATEST_BUILD_DELIVERY_20260929.md)을 따른다.
+2026-09-29 오전 10시 후속 퍼블리셔 전달본도 EXODUSER.exe 시작 설정을 `window.fullscreen:true`로 고정한다. 기존 퍼블리셔 패키징 헬퍼의 창 모드 덮어쓰기를 새 사본에서는 true로 바꿔 생성하며, 실제 외부 전달 완료 여부는 최신 빌드 전달 기록 (Unity 정본: `git show "origin/unity/main:docs/_archive/13출시·마케팅/PUBLISHER_LATEST_BUILD_DELIVERY_20260929.md"`)을 따른다.

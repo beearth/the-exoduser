@@ -574,4 +574,4 @@ Registered IDs map to explicit paths; no parry_fx/parry_new loader (resolved)
 - 삭제: C:\nvm4w\nodejs\node.exe tools/vfx-cleanup/audit.cjs --delete (후보/HEAD/INDEX/WORK 재대조, git rm만 사용)
 - 삭제 후 검증: C:\nvm4w\nodejs\node.exe tools/vfx-cleanup/audit.cjs --verify
 - 정상 인덱스 쓰기 권한이 있는 총괄 환경에서 검수 후 실행할 정확한 목록: [delete-paths.txt](../../tools/vfx-cleanup/delete-paths.txt). 명령: git rm --pathspec-from-file=tools/vfx-cleanup/delete-paths.txt (이 세션에서는 권한 거부 후 재시도하지 않음).
-- 상세: [audit.json](../../tools/vfx-cleanup/audit.json) / [result.md](../../tools/vfx-cleanup/result.md)
+- 상세: [audit.json](../../tools/vfx-cleanup/audit.json) / result.md (과거 외부·검수 자료: `tools/vfx-cleanup/result.md` (저장소 파일 없음))

@@ -1,5 +1,5 @@
-# 작업물 퀄리티 기준 — 위치 안내
+# WORK_QUALITY_STANDARD_20261029 — 정본 위치 안내
 
-이 문서의 정본은 origin/unity/main의 같은 경로에 옮겼다(2026-11-03 규칙 정리, docs 정본=unity/main). main에는 이 안내만 둔다.
+docs 정본은 origin/unity/main이다. main에는 웹 유지보수 문서와 위치 안내만 둔다.
 
 읽기: `git show "origin/unity/main:docs/0마스터플랜/WORK_QUALITY_STANDARD_20261029.md"`

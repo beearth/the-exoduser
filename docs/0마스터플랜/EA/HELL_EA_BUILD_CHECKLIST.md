@@ -4,12 +4,12 @@
 
 > **현행 공개 데모 계약 (2026-09-21):** 현행 공개 데모는 `?demo`와 `?bic` 모두 Lv.100·1-1(`_DEMO_LV_CAP=100`, `_DEMO_LAST_STAGE=0`)이다. 이 문서에 남은 Lv.500·stage 3·다크드루이드 피날레 기록은 당시 별도 EA/BIC 파생 빌드의 이력이며 현재 `G:\exoduser` 공개 데모에는 적용하지 않는다.
 
-> **2026-10-08 itch.io 운영 상태:** 아래 May 스냅샷은 당시 이력이다. 현재 브라우저에서 기존 **beearth** 계정·**exoduser** 프로젝트(ID **4382859**, 최초 Draft → 현재 Public)와 2026-05-16의 이전 Windows 데모 ZIP을 확인했다. Steam 데모 공개 후 최신 소개·링크·AI 공개·로고를 저장하고 Public 공개 및 로그아웃 접근을 확인했다. 이전 ZIP은 숨겼으며 현재 Steam 외부 데모 안내 방식이다. 자세한 결과는 [해외 마케팅 실행 기록](../../13출시·마케팅/DEMO_MARKETING_LAUNCH_20261008.md)을 따른다. 과거 Windows butler 인증이 현재 Mac에도 있다고 가정하지 않는다.
+> **2026-10-08 itch.io 운영 상태:** 아래 May 스냅샷은 당시 이력이다. 현재 브라우저에서 기존 **beearth** 계정·**exoduser** 프로젝트(ID **4382859**, 최초 Draft → 현재 Public)와 2026-05-16의 이전 Windows 데모 ZIP을 확인했다. Steam 데모 공개 후 최신 소개·링크·AI 공개·로고를 저장하고 Public 공개 및 로그아웃 접근을 확인했다. 이전 ZIP은 숨겼으며 현재 Steam 외부 데모 안내 방식이다. 자세한 결과는 해외 마케팅 실행 기록 (Unity 정본: `git show "origin/unity/main:docs/13출시·마케팅/DEMO_MARKETING_LAUNCH_20261008.md"`)을 따른다. 과거 Windows butler 인증이 현재 Mac에도 있다고 가정하지 않는다.
 
-> **2026-09-09 피날레 v0.4:** 데모/bic 마지막 si3 보스의 HP는 `floor(22278×(1+.055n+.0015n²)×dm)`, n=max(0,monLv−1); 초기 쉴드=HP, 부활력20, 최대1회 35% HP 저항(확률clamp(1−신성력,0,1)), phase ATK는 base×1/1.12/1.25/1.4/1.6이다. 3막 음악·HUD·120f 카드 및 보스 바로 재도전/60f 인트로의 [현행 계약·검증](../../8.1보스디자인바이블/DARK_DRUID_FINALE_PACING_v04.md)을 따른다. 일반 모드와 공용 패링 계약은 기존대로다. 아래 이전 버전의 HP/부활 유지 표현은 당시 이력이다.
+> **2026-09-09 피날레 v0.4:** 데모/bic 마지막 si3 보스의 HP는 `floor(22278×(1+.055n+.0015n²)×dm)`, n=max(0,monLv−1); 초기 쉴드=HP, 부활력20, 최대1회 35% HP 저항(확률clamp(1−신성력,0,1)), phase ATK는 base×1/1.12/1.25/1.4/1.6이다. 3막 음악·HUD·120f 카드 및 보스 바로 재도전/60f 인트로의 현행 계약·검증 (Unity 정본: `git show "origin/unity/main:docs/8.1보스디자인바이블/DARK_DRUID_FINALE_PACING_v04.md"`)을 따른다. 일반 모드와 공용 패링 계약은 기존대로다. 아래 이전 버전의 HP/부활 유지 표현은 당시 이력이다.
 
 
-> **2026-09-08 데모 피날레 예외:** `?demo`/`?bic`의 마지막 보스(si3)는 [다크드루이드 피날레 v0.2](../../8.1보스디자인바이블/DARK_DRUID_DEMO_FINALE_DESIGN.md) §0을 따른다. 전용 3막·5종 패턴, 동작별 Q독탄(48f 전조/막별1·2·3웨이브/간격30f/수명90f), 돌진·잠행 뒤96f 회복, 잠행 표적 고정, 제자리 HP페이즈 전환, 반투명 독늪을 적용했다. 이 조건의 독립 ORB·상시 리듬탄·idle 자동탄은 생성하지 않는다. 일반 si0/si3와 다른 보스의 수치·부활·Q/E 규칙은 기존 계약 유지. 아래 이전 드루이드 설명은 해당 예외를 제외한 기존 계약/이력이다.
+> **2026-09-08 데모 피날레 예외:** `?demo`/`?bic`의 마지막 보스(si3)는 다크드루이드 피날레 v0.2 (Unity 정본: `git show "origin/unity/main:docs/8.1보스디자인바이블/DARK_DRUID_DEMO_FINALE_DESIGN.md"`) §0을 따른다. 전용 3막·5종 패턴, 동작별 Q독탄(48f 전조/막별1·2·3웨이브/간격30f/수명90f), 돌진·잠행 뒤96f 회복, 잠행 표적 고정, 제자리 HP페이즈 전환, 반투명 독늪을 적용했다. 이 조건의 독립 ORB·상시 리듬탄·idle 자동탄은 생성하지 않는다. 일반 si0/si3와 다른 보스의 수치·부활·Q/E 규칙은 기존 계약 유지. 아래 이전 드루이드 설명은 해당 예외를 제외한 기존 계약/이력이다.
 
 작성일: 2026.05.16 | 최종수정: 2026.05.17
 대상 폴더: G:\hell-ea\ (생성 완료 — PHASE 1 완료)
@@ -546,4 +546,4 @@ butler push "G:\hell-ea\out\HELL-EXODUSER-EA" beearth/exoduser:windows-ea --user
 | 실제 검증 | 관련35PASS/0FAIL, 두 HTML inline6개씩 구문 통과. 두 게임 native 입력으로 G.on=true, 공유 보스 pivot/안개 renderer 및 상자/VFX API 정상, 앱 warn/error0. 안개 및 가시성용 QA VFX GPU 대조 각각131072 bytes/차이0 |
 | QA 경계 | VFX 대조는 기존 mirrored Y+FrontSide culling을 제거하는 QA 전용 DoubleSide fixture. production side/카메라 변경 없음; 전체 공격 가시성·장시간 전투 QA는 별도 |
 | 배포·소스 제어 | NW.js FILES 및 web 필수 목록에 새 boot/로컬 JS 포함. MIT LICENSE·provenance도 함께 추적/배포 필요. .gitignore의 전역 build/ 예외는 assets/vendor/three-r160/build/three.module.js와 상위 디렉터리로 한정. .git 쓰기 제한으로 커밋 미완료, 실제 패키징/업로드 미실행 |
-| 세부 SSOT | [파일·숫자·SHA256·수명·검증 범위](../../12퍼포먼스·최적화/THREE_LOCAL_SINGLE_RUNTIME_20260929.md) |
+| 세부 SSOT | 파일·숫자·SHA256·수명·검증 범위 (Unity 정본: `git show "origin/unity/main:docs/12퍼포먼스·최적화/THREE_LOCAL_SINGLE_RUNTIME_20260929.md"`) |

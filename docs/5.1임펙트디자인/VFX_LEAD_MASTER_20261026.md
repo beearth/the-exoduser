@@ -2,7 +2,7 @@
 
 > 사용자 지시(2026-10-26): 「임펙트 총괄 vfx」 — 「게임에 들어가는 임펙트들을 어느정도 일관성있게 디자인하고 전체 총괄하면돼」.
 > 이 문서가 게임 안 모든 이펙트(타격·스킬·투사체·장판·보스 전조·사망·화면 피드백)의 **디자인 기준·현황·백로그·결정 기록 SSOT**다.
-> 상세 구현 기록은 기존 문서([VFX_구현가이드](VFX_구현가이드.md), 개별 `*_ENGINE_*.md`, [ANIMATION_VFX_TEAM_MASTER](ANIMATION_VFX_TEAM_MASTER.md) 운영 대장)에 두고, 여기에는 **기준·현재 상태·다음 할 일**만 둔다.
+> 상세 구현 기록은 기존 문서(VFX_구현가이드 (Unity 정본: `git show "origin/unity/main:docs/5.1임펙트디자인/VFX_구현가이드.md"`), 개별 `*_ENGINE_*.md`, ANIMATION_VFX_TEAM_MASTER (Unity 정본: `git show "origin/unity/main:docs/5.1임펙트디자인/ANIMATION_VFX_TEAM_MASTER.md"`) 운영 대장)에 두고, 여기에는 **기준·현재 상태·다음 할 일**만 둔다.
 
 ## 1. 역할과 판정 기준
 
@@ -57,7 +57,7 @@
 
 ### 2.3 크기·층·길이 3단계
 
-PoE2 학습([POE2_REFERENCE_STUDY](POE2_REFERENCE_STUDY.md) §3.1·§6.5)의 층 구조를 우리 기준으로 고정한다.
+PoE2 학습(POE2_REFERENCE_STUDY (Unity 정본: `git show "origin/unity/main:docs/5.1임펙트디자인/POE2_REFERENCE_STUDY.md"`) §3.1·§6.5)의 층 구조를 우리 기준으로 고정한다.
 
 | 단계 | 대상 | 층 수 | 총 길이 | 구성 |
 |---|---|---|---|---|
@@ -91,14 +91,14 @@ PoE2 학습([POE2_REFERENCE_STUDY](POE2_REFERENCE_STUDY.md) §3.1·§6.5)의 층
 
 ### 2.6 제작 규칙
 
-- 이미지 생성 기본 = MagicLight(Seedream 5.0 Pro), 절차는 [MAP_OBJECT_SEEDREAM_PIPELINE](../4.1맵디자인+설정/MAP_OBJECT_SEEDREAM_PIPELINE_20260930.md)의 회색·검정 배경 + 키잉. **녹색 크로마 배경은 피한다**(가장자리 녹색 번짐).
+- 이미지 생성 기본 = MagicLight(Seedream 5.0 Pro), 절차는 MAP_OBJECT_SEEDREAM_PIPELINE (Unity 정본: `git show "origin/unity/main:docs/4.1맵디자인+설정/MAP_OBJECT_SEEDREAM_PIPELINE_20260930.md"`)의 회색·검정 배경 + 키잉. **녹색 크로마 배경은 피한다**(가장자리 녹색 번짐).
 - 프롬프트 공통 골격: `dark fantasy hell VFX, painterly semi-realistic, muted embers, soot and smoke falloff, bright core only, no neon, no cartoon star, no outline, no dots, no glitter, on flat black background`.
 - 시트 형식: 정사각 셀, 4×4 또는 6×6, 128~256px/셀, 첫 프레임 빈칸 금지. 메타는 `data/vfx/*.json`(기존 `atlas-clip-runtime` 형식)으로.
 - 채택 전 1x 확대로 점·가장자리 녹색·잘린 프레임 확인.
 
 ### 2.7 타격 임팩트 기준 — 레퍼런스 비교 (2026-10-27, 총괄 판정)
 
-**비교 방법**: 우리 게임 7종(평타·원소 임팩트 화염/번개·업화선·뇌전추격자·보스 근접·지옥강타)을 1920×1080 headless로 명중 후 0~0.6초 8시점 캡처, 같은 간격으로 No Rest for the Wicked(공식 Steam 클립 4곳)·Path of Exile 2(GGG 공식 트레일러 4곳) 근접 타격을 캡처해 400×400 1x 크롭으로 나란히 판정. 타사 화면은 저장소 밖에서만 보고 반입하지 않았다(원칙: [POE2_REFERENCE_STUDY](POE2_REFERENCE_STUDY.md) §1). 우리 쪽 타임라인만 [HIT_TIMELINE_OURS_20261027.jpg](HIT_TIMELINE_OURS_20261027.jpg)로 남긴다.
+**비교 방법**: 우리 게임 7종(평타·원소 임팩트 화염/번개·업화선·뇌전추격자·보스 근접·지옥강타)을 1920×1080 headless로 명중 후 0~0.6초 8시점 캡처, 같은 간격으로 No Rest for the Wicked(공식 Steam 클립 4곳)·Path of Exile 2(GGG 공식 트레일러 4곳) 근접 타격을 캡처해 400×400 1x 크롭으로 나란히 판정. 타사 화면은 저장소 밖에서만 보고 반입하지 않았다(원칙: POE2_REFERENCE_STUDY (Unity 정본: `git show "origin/unity/main:docs/5.1임펙트디자인/POE2_REFERENCE_STUDY.md"`) §1). 우리 쪽 타임라인만 HIT_TIMELINE_OURS_20261027.jpg (Unity 정본: `git show "origin/unity/main:docs/5.1임펙트디자인/HIT_TIMELINE_OURS_20261027.jpg"`)로 남긴다.
 
 #### 2.7.1 측정 비교
 
@@ -126,7 +126,7 @@ PoE2 학습([POE2_REFERENCE_STUDY](POE2_REFERENCE_STUDY.md) §3.1·§6.5)의 층
 
 #### 2.7.2b 2026-11-03 레퍼런스 실측 보정 (팬텀 블레이드 제로·도타2)
 
-[IMPACT_REFERENCE_PBZ_DOTA2_20261103](IMPACT_REFERENCE_PBZ_DOTA2_20261103.md) §2 결정 R1~R8이 위 원칙을 보정한다: 코어 5틱 기본(R1), **원칙 5 예외 — 완벽 패링·처형·보스 목숨 전환·보스 사망만 따뜻한 백색 플래시 Δ휘도 ≤ +40·6틱 이하, 적 예고·탄은 그 위**(R2), 히트스톱·슬로 없음(R3), 진동형 흔들림 축소·큰 사건은 푸시인(R4), 금속 접촉 스파크 신설(R5), 피 팔레트 한 단계 어둡게·바닥 데칼 3.5초(R6), 아군 효과의 대상 가림 0.2초 이하(R7), 예고는 우리 팔레트 유지(R8).
+IMPACT_REFERENCE_PBZ_DOTA2_20261103 (Unity 정본: `git show "origin/unity/main:docs/5.1임펙트디자인/IMPACT_REFERENCE_PBZ_DOTA2_20261103.md"`) §2 결정 R1~R8이 위 원칙을 보정한다: 코어 5틱 기본(R1), **원칙 5 예외 — 완벽 패링·처형·보스 목숨 전환·보스 사망만 따뜻한 백색 플래시 Δ휘도 ≤ +40·6틱 이하, 적 예고·탄은 그 위**(R2), 히트스톱·슬로 없음(R3), 진동형 흔들림 축소·큰 사건은 푸시인(R4), 금속 접촉 스파크 신설(R5), 피 팔레트 한 단계 어둡게·바닥 데칼 3.5초(R6), 아군 효과의 대상 가림 0.2초 이하(R7), 예고는 우리 팔레트 유지(R8).
 
 #### 2.7.3 크기 기준 (지름 ÷ 캐릭터 키, 우리 카메라는 PoE2 게임플레이와 비슷: 캐릭터 키 화면 5.6% vs 7.9%)
 
@@ -151,7 +151,7 @@ PoE2 학습([POE2_REFERENCE_STUDY](POE2_REFERENCE_STUDY.md) §3.1·§6.5)의 층
 
 ### 3.1 에셋
 
-전체 대조 시트: [VFX_CONTACT_SHEET_20261026.jpg](VFX_CONTACT_SHEET_20261026.jpg) (`assets/vfx` 루트 + `img/vfx`, 패링 원소 변형 제외 126장).
+전체 대조 시트: VFX_CONTACT_SHEET_20261026.jpg (Unity 정본: `git show "origin/unity/main:docs/5.1임펙트디자인/VFX_CONTACT_SHEET_20261026.jpg"`) (`assets/vfx` 루트 + `img/vfx`, 패링 원소 변형 제외 126장).
 
 | 화풍 묶음 | 대표 파일 | 수 | 게임 사용 | 톤 판정 |
 |---|---|---:|---|---|
@@ -181,7 +181,7 @@ PoE2 학습([POE2_REFERENCE_STUDY](POE2_REFERENCE_STUDY.md) §3.1·§6.5)의 층
 | F02 VFX·임팩트 | 1 | 기검참·명중광만. 웹 에셋 사본은 `codex/unity-port-20261024`에 있음 |
 | B09 피격·넉백·히트 피드백 | 1 | Codex FEEDBACK_01 |
 | 보스 BX-11 | 1 | 보스 VFX는 디자인 총괄 PASS 조건 |
-| **RM-1 리모델링 VFX** | 명세 | 2026-10-27 사용자 지시 「유니티 리모델링 작업들어간다 오늘부터」. **v2(같은 날): URP 위 VFX Graph·Shader Graph로 새로 만든다(CLAUDE.md `cf506002d`). 범위 = 기검참·독 폭발(드루이드 착탄 + 플레이어 악의구)·드루이드 텔레그래프 3종(RM-B1 §4 표시 3종)·독액 기포(유니티 총괄 지정), 제작은 RM-0(URP) 병합 뒤. v2.1 유니티 총괄 채택, 구현 = Sonnet `local_e856ee78`.** 명세 [UNITY_RM1_VFX_SPEC_20261027](UNITY_RM1_VFX_SPEC_20261027.md) |
+| **RM-1 리모델링 VFX** | 명세 | 2026-10-27 사용자 지시 「유니티 리모델링 작업들어간다 오늘부터」. **v2(같은 날): URP 위 VFX Graph·Shader Graph로 새로 만든다(CLAUDE.md `cf506002d`). 범위 = 기검참·독 폭발(드루이드 착탄 + 플레이어 악의구)·드루이드 텔레그래프 3종(RM-B1 §4 표시 3종)·독액 기포(유니티 총괄 지정), 제작은 RM-0(URP) 병합 뒤. v2.1 유니티 총괄 채택, 구현 = Sonnet `local_e856ee78`.** 명세 UNITY_RM1_VFX_SPEC_20261027 (Unity 정본: `git show "origin/unity/main:docs/5.1임펙트디자인/UNITY_RM1_VFX_SPEC_20261027.md"`) |
 
 ### 3.4 교체 기록 — 원소 피격 임팩트 13종 (2026-10-26, VFX-02 1차)
 
@@ -191,7 +191,7 @@ PoE2 학습([POE2_REFERENCE_STUDY](POE2_REFERENCE_STUDY.md) §3.1·§6.5)의 층
 | 사용처 | `_impactSpriteFor(im)` → 히트 임팩트 렌더(`'lighter'`, 일반 알파 0.45·보스 0.62, 프레임당 4개), `_PS_IMG`(근접공격 히트) |
 | 규격 | 원본과 동일(el0~4 765×85, el5·basic 1152×128, 보스 2048×128). 게임은 프레임 크기에 비례해 그리므로 규격을 바꾸면 크기가 바뀐다 |
 | 제작 | 절차 생성 `tools/vfx/gen_hit_impacts.py` — AI 생성은 프레임 연속성이 안 나와 이 크기 스파크엔 부적합. 층: 코어 섬광(0.1 정점) → 한쪽으로 쏠린 파편 줄기 → 큰 조각으로 끊긴 충격 링 → 원소 잔광. 잔점 없음(노이즈는 5×5·9×9 큰 덩어리) |
-| 판정 | `tools/vfx/capture_hit_impacts.mjs`로 같은 게임 화면(CH1, 1920×1080, headless)에서 기존/신규를 네트워크 단 교체로 캡처. 전후: [HIT_IMPACT_BEFORE_AFTER_20261026.png](HIT_IMPACT_BEFORE_AFTER_20261026.png) |
+| 판정 | `tools/vfx/capture_hit_impacts.mjs`로 같은 게임 화면(CH1, 1920×1080, headless)에서 기존/신규를 네트워크 단 교체로 캡처. 전후: HIT_IMPACT_BEFORE_AFTER_20261026.png (Unity 정본: `git show "origin/unity/main:docs/5.1임펙트디자인/HIT_IMPACT_BEFORE_AFTER_20261026.png"`) |
 | 결과 | 보스: 네온 별 → 탁한 지옥불·누런 전광, 톤 일치·무게감 향상. 일반: 마젠타·시안 원판 제거, 번개 시안→전광 노랑·신성 시안→금빛으로 의미 일치. 게임 내 밝기는 기존과 비슷하게 은은함 |
 | 반복 | 1차 잔점·원형 → 2차 줄기 위주 → 3~5차 게임 내 회색화 대응(코어 혼합·채도·알파 인코딩) → 6차 빙결색·el5 규격 |
 | 남은 것 | 일반 피격을 더 또렷하게 하려면 시트가 아니라 렌더 알파(0.45)를 올려야 한다는 안은 2026-10-27 사용자 미채택(타격 화면 전체 밝기와 엮임) — 시트 쪽 코어·정점으로만 해결. 데모/EA 폴더 동기화는 배포 때 |
@@ -203,7 +203,7 @@ PoE2 학습([POE2_REFERENCE_STUDY](POE2_REFERENCE_STUDY.md) §3.1·§6.5)의 층
 | 대상 | `assets/vfx/Fire_ImpactFire_Sheet.png`(512², 4×4), `Fire_MediumImpact.png`(512², 4×4), `Fire_FBF_4x4.png`(512², 4×4), `Fire_BasicImpact.png`(256², 3×3, 셀 85px). 규격(크기·격자·파일명) 원본과 동일 |
 | 사용처 | `_addBoom` fire·fire_medium(11곳, 최다)·redbean·physical(첫 행 4프레임 흰 틴트)·explosion·bossFireImpact 폴백, 업화선 폭발(`_fireballExplode`, 4층), 기동불꽃 일괄폭발(`_detonateAssaultFlames`, 4층·`slowFade`), `_spawnSmoke` red/fire, `_V3_SHEETS`(fireFBF·fireImp·fireBas·fireMed), 보스 화염 폴백(`_drawBossFireImpactClip` 원본16 폴백) |
 | 제작 | **승인 에셋 재격자 — AI 생성 아님, 비용 0.** 원본 `assets/vfx/fieldboss/boss_fire_impact_24_20261010.png`(3840×2560, 6×4, 640px 24프레임, 2026-10-10 승인 필드보스 화염 임팩트) 읽기 전용. 4×4 3장 프레임 `[0*,3,5,6,7,8,9,10,11,13,15,17,19,21,22,23]`(작은 성장 프레임 1·2·4 제거), Basic `[0*,3,5,7,9,12,15,19,22]`. `0*`=원본 0프레임(백열 코어 별)을 셀 중심 2.4배 확대(코어 지름 셀의 약 35%, 셀 경계 6px 안쪽에서 0·12px 안쪽에서 1로 페이드). 변형: ImpactFire 원본, MediumImpact 좌우 반전+90°, FBF 180°(같은 위치에 겹쳐 나올 때 똑같아 보이지 않게). 알파는 원본 직선 알파 그대로(프리멀티플라이 후 LANCZOS 축소). 재현: `tools/vfx/regrid_fire_pack.py`. MagicLight 구독 만료(VIP 2026/10/24)로 Seedream 후보(B)는 못 만듦 |
-| 판정 | 현재 \| A \| C \| C2를 같은 게임 화면 3장면(`_addBoom 'fire_medium'` · 업화선 폭발 · 기동불꽃 일괄폭발)에서 0/0.033/0.066/0.1/0.2/0.35/0.6초로 캡처(rAF 수동 스텝, 1스텝=1렌더=1시뮬틱). **A(절차 fBm) 반려** — 정사각형 덩어리·과녁 동심원·분홍 얼룩(`#af5536`), 찢긴 불혀·방향성 없음. **C 통과 방향이나 공통 폭발 코어가 점 크기(셀의 약 15%), 몸체는 0.35초에야 커짐 → §2.7 원칙 1 위반 → C2로 수정**. 전후: [FIRE_PACK_BEFORE_AFTER_20261027.jpg](FIRE_PACK_BEFORE_AFTER_20261027.jpg)(현재|C|C2, 7시점) |
+| 판정 | 현재 \| A \| C \| C2를 같은 게임 화면 3장면(`_addBoom 'fire_medium'` · 업화선 폭발 · 기동불꽃 일괄폭발)에서 0/0.033/0.066/0.1/0.2/0.35/0.6초로 캡처(rAF 수동 스텝, 1스텝=1렌더=1시뮬틱). **A(절차 fBm) 반려** — 정사각형 덩어리·과녁 동심원·분홍 얼룩(`#af5536`), 찢긴 불혀·방향성 없음. **C 통과 방향이나 공통 폭발 코어가 점 크기(셀의 약 15%), 몸체는 0.35초에야 커짐 → §2.7 원칙 1 위반 → C2로 수정**. 전후: FIRE_PACK_BEFORE_AFTER_20261027.jpg (Unity 정본: `git show "origin/unity/main:docs/5.1임펙트디자인/FIRE_PACK_BEFORE_AFTER_20261027.jpg"`)(현재|C|C2, 7시점) |
 | 결과 | 만화 별·링·단색 원판 제거 → 백열 코어→찢긴 불혀 팽창→불꽃+회색 연기→소멸. 0.066초 불 확산폭(현재→C→C2, 캐릭터 60px 대비): 공통 폭발 138→48→**115px**(2.30→0.80→1.92배), 업화선 105→119→**130px**(1.75→1.98→2.17배), 기동불꽃 100→109→**157px**(1.67→1.82→2.62배). 0초 면적(px, 따뜻색 마스크): 공통 107→48→354, 업화선 189→1,376→7,700, 기동불꽃 280→2,880→14,948. 정점 시점은 3장면 모두 불변(공통 0.35초·업화선 0.2초·기동불꽃 0.6초). `physical` 패링(첫 행 흰 틴트)은 흰 스플래시로 깨짐 없이 읽힘(반영 확인 캡처). 측정은 파란 펫 제외 따뜻색 마스크 대략치 |
 | 반복 | A(절차 3회: 크기·코어 원판 → 알파 인코딩 → 침식) 반려 → C 재격자 → C2 0프레임 확대·프레임 교체. **알파 인코딩 교훈:** `_tvfx2`는 `'lighter'`, `_addBoom`은 source-over라 gen_hit_impacts식 알파 4배 인코딩을 쓰면 어두운 적갈색 픽셀이 불투명해져 어두운 링·탁한 덩어리가 생김 — 이 팩은 직선 알파 |
 | 남은 것 | ~~VFX-D14·VFX-12~~ **2026-10-27 해소**(공통 폭발 크기 곡선 `_boomGrow`·기동불꽃 화면 주황 덮개 삭제, 아래 §3.5 후속 참고). 암흑 팩 4종은 §3.6에서 교체 완료. 데모/EA 폴더 동기화는 배포 때(CLAUDE.md 배포 규칙) |
@@ -214,7 +214,7 @@ PoE2 학습([POE2_REFERENCE_STUDY](POE2_REFERENCE_STUDY.md) §3.1·§6.5)의 층
 |---|---|
 | 변경(game.html) | **A.** 새 함수 `_boomGrow(ep)=.6+.4*Math.sqrt(Math.min(1,ep*8))`(`_rainbowImpact` 위, 8815행 부근). `_addBoom` 렌더(57114~57175행)의 크기식 6곳 `Math.pow(Math.min(1,X*3),.5)`(X=`_ep`·`_rEp`·`_ep2`·`_sEp`)를 `_boomGrow(X)`로 교체: plague `_drawSz`, rainbow_light `_rSz`, rainbow `_sz1`·`_sz2`·`_sz3`, 통합 시트 `_sSz`. 계수 `r*k`·알파식·프레임 인덱스식 불변. **B.** `_detonateAssaultFlames()`의 `G._flashT=8+_afS2*4;G._flashCol='#ff4400';` 삭제(`shake(30+_afS2*15)`·`G.chromaT=10+_afS2*5` 유지, 국소 코어는 같은 함수의 화염 팩 `_tvfx2` 0프레임). 판정·피해·범위·수명(`b.mt`)·흔들림·사운드 불변 |
 | 효과 | 최대 크기 도달 0.37초 → 수명 12.5%(약 0.14초), 0프레임을 60% 크기로 시작해 백열 코어가 보임. 다른 `_flashT` 호출(보스 등장·사망·지옥강타 등)은 범위 밖(지옥강타 베이지는 VFX-10) |
-| 판정 | 현재(origin/main 사본) \| 수정을 `route`로 game.html만 바꿔 같은 5장면(`_addBoom` fire_medium·explosion·dark·rainbow, 기동불꽃 일괄폭발 실제 경로)에서 0/0.033/0.066/0.1/0.2/0.35/0.6초 캡처. 총괄 1x PASS. 전후: [VFX12_BEFORE_AFTER_20261027.jpg](VFX12_BEFORE_AFTER_20261027.jpg)(explosion·기동불꽃, 현재\|수정, 0/0.066/0.2초) |
+| 판정 | 현재(origin/main 사본) \| 수정을 `route`로 game.html만 바꿔 같은 5장면(`_addBoom` fire_medium·explosion·dark·rainbow, 기동불꽃 일괄폭발 실제 경로)에서 0/0.033/0.066/0.1/0.2/0.35/0.6초 캡처. 총괄 1x PASS. 전후: VFX12_BEFORE_AFTER_20261027.jpg (Unity 정본: `git show "origin/unity/main:docs/5.1임펙트디자인/VFX12_BEFORE_AFTER_20261027.jpg"`)(explosion·기동불꽃, 현재\|수정, 0/0.066/0.2초) |
 | 결과 | 0.066초 몸체 지름÷정점(면적 환산, 현재→수정): fire_medium 33→59%, explosion 29→56%, dark 34→65%, rainbow 45→81%(bbox 기준 50→60·23→85·73→75·77→91%). 0초 면적 환산 지름 14~30px → 43~88px. **정점 시점은 fire_medium·explosion·dark가 0.35초 그대로**(시트 프레임이 수명에 비례해 진행, 프레임 인덱스식은 이번 범위 밖) — 정점 ≤0.1초는 프레임 진행식 조정이 필요해 미충족. 기동불꽃: 효과 중심 반경 380px 밖 평균색 변화 ΔR/ΔG/ΔB +43/+7/−7 → ±0.1(전체 평균 휘도 +15 → +1.5) |
 | 남은 것 | Dark 콤보 0.6초 잔여층 → **VFX-13**. 정점 시점 앞당김(프레임 진행식)은 미결정. 데모/EA 폴더 동기화는 배포 때 |
 
@@ -225,7 +225,7 @@ PoE2 학습([POE2_REFERENCE_STUDY](POE2_REFERENCE_STUDY.md) §3.1·§6.5)의 층
 | 대상 | `assets/vfx/Dark_DarkSmoke_FBF_4x4.png`(512², 4×4), `Dark_Smoke_Sheet_6x6.png`(1024², 6×6), `Dark_MediumImpact.png`(512², 4×4), `Dark_BasicImpact.png`(256², 3×3, 셀 85px). 규격(크기·격자·파일명) 원본과 동일, game.html 무수정 |
 | 사용처 | 암흑 콤보(`_TVFX2_COMBOS` Dark 4층·Poison 1층 `'lighter'`), 악의구 폭발 보라 콤보(24704행 부근), `_spawnSmoke` dark/rainbow, `_addBoom` black·dark·dark02·rainbow·rainbow_light(57079~57145행, 대부분 source-over·rainbow_light만 lighter), `_V3_SHEETS`(darkFBF·darkSm6·darkMed), 보스 불탄 Q 폴백(`_dark02Impact`) |
 | 제작 | **승인 에셋 재채색·재격자 — AI 생성 아님, 비용 0.** 연기 6×6=`Dark_Smoke_BW_6x6.png`(사망 연기) 36프레임을 밀도→**알파**로 표현(몸체 최대 알파 0.58, 밀도→알파 감마 1.6, 바깥 `#5e3478`→안쪽 `#4a3066` 한 가지 중간 보라, 림 하이라이트 없음, 알파에만 시그마 1.8px 블러, 원본의 8×8 블록 저알파 얼룩·셀 바닥 평평한 절단선 제거). 연기 4×4=`Ice_MistSmoke_FBF_4x4.png`(균일 청색 반투명 안개, 알파 ≤0.48)를 같은 램프로 재채색(알파 0.58×밀도^1.3), 0프레임 코어 없음(같은 장면의 임팩트 시트가 코어를 맡음). 임팩트 2장=1묶음 적용본 `Fire_MediumImpact`·`Fire_BasicImpact`(C2)의 휘도를 암흑 램프 `#170c20`→`#5e3478`→`#cdb2e0`→`#f4ecff`로 재채색(최고 휘도 `#f4ecff`는 0~1프레임만, 2프레임 ×0.8, 이후 ×0.66). 직선 알파(알파 4배 인코딩 없음). 재현: `tools/vfx/regrid_dark_pack.py`(적용 에셋과 픽셀 차이 0) |
-| 판정 | 현재 \| 후보를 같은 게임 화면 5장면(`_addBoom 'dark'` · 악의구 보라 콤보 · Dark 콤보 · `_addBoom 'rainbow'` · Poison 콤보 참고)에서 0/0.033/0.066/0.1/0.2/0.35/0.6초로 캡처(rAF 수동 스텝). **임팩트 2장 D1 단계에서 PASS 확정**(라벤더 코어→찢긴 보라 소용돌이, 마젠타 별 제거). 연기: **D1 반려**(불투명 검보라가 바위·쐐기로 읽힘, 위쪽 밝은 림이 돌 윤곽, 코어가 몸체와 떨어져 허공에 뜸) · **D2 폐기**(0·120·240° 회전 겹침이 3갈래 삼각 윤곽) · **E**(밀도를 어두움이 아니라 알파로, 최대 0.47) 바위 인상 해소 → 4×4는 E2(Ice 안개)로 결정, 그러나 0.35~0.6초 잔여층이 비어 §2.7 원칙 4(남는 것이 무게) 미충족 → **F**(알파 0.58·안쪽 `#4a3066`, 가산 경로 가시성) 채택. 전후: [DARK_PACK_BEFORE_AFTER_20261027.jpg](DARK_PACK_BEFORE_AFTER_20261027.jpg)(현재\|F, 5장면 0.1초) |
+| 판정 | 현재 \| 후보를 같은 게임 화면 5장면(`_addBoom 'dark'` · 악의구 보라 콤보 · Dark 콤보 · `_addBoom 'rainbow'` · Poison 콤보 참고)에서 0/0.033/0.066/0.1/0.2/0.35/0.6초로 캡처(rAF 수동 스텝). **임팩트 2장 D1 단계에서 PASS 확정**(라벤더 코어→찢긴 보라 소용돌이, 마젠타 별 제거). 연기: **D1 반려**(불투명 검보라가 바위·쐐기로 읽힘, 위쪽 밝은 림이 돌 윤곽, 코어가 몸체와 떨어져 허공에 뜸) · **D2 폐기**(0·120·240° 회전 겹침이 3갈래 삼각 윤곽) · **E**(밀도를 어두움이 아니라 알파로, 최대 0.47) 바위 인상 해소 → 4×4는 E2(Ice 안개)로 결정, 그러나 0.35~0.6초 잔여층이 비어 §2.7 원칙 4(남는 것이 무게) 미충족 → **F**(알파 0.58·안쪽 `#4a3066`, 가산 경로 가시성) 채택. 전후: DARK_PACK_BEFORE_AFTER_20261027.jpg (Unity 정본: `git show "origin/unity/main:docs/5.1임펙트디자인/DARK_PACK_BEFORE_AFTER_20261027.jpg"`)(현재\|F, 5장면 0.1초) |
 | 결과 | 청록·자홍 네온 연기와 마젠타 별 제거 → 라벤더 코어에서 보라 소용돌이 팽창, 반투명 보라 안개가 남음. 색상각 검사(채도 0.35 이상, 알파 0.05 초과) 4장 모두 보라 265~295° 100%, 마젠타·청록 0. 0.066초 지름÷캐릭터 키 60px(현재→F): 악의구 4.12→1.65, Dark 콤보 4.67→1.65(현재 값은 청록 안개 포함이라 새 값이 작게 보이나 시각 몸체는 임팩트 소용돌이가 정함). 정점 시점: 악의구 0.35→0.1초, Dark 콤보 0.35→0.2초, `'dark'`·`'rainbow'`는 0.35초 불변. 0초 코어 휘도(상위 1%): 악의구 88→126, Dark 콤보 95→153, `'dark'` 110→161. `'dark'`·`'rainbow'`의 0.033~0.2초·0.6초 측정은 어두운 저대비 연기가 마스크 임계 아래라 끊겨 신뢰하지 않음(눈 판정). 측정은 변화영역 bbox 대략치 |
 | 반복 | D1(단일 줄기, 불투명 검보라) 반려 → D2(회전 겹침) 폐기 → E(알파 표현) → F(알파 0.58). 첫 캡처 후 원료의 평평한 바닥 절단·높은 불투명 상한(→바닥 페더, 상한 0.78)을 한 번 수정한 뒤 D1 재판정 |
 | 남은 것 | **Dark 콤보 0.6초 잔여층이 비는 것은 시트가 아니라 콤보 레이어 수명**(`spd:3`·16프레임이 0.6초 전에 끝남) — game.html 수명·층 조정 필요(→ 백로그 VFX-13). `'lighter'` 합성 경로의 실제 가산 가시성은 눈 판정만 했음. 악의구 마젠타 점(VFX-D15)·독 임팩트 형광 초록 별(VFX-D16)은 3묶음에서 해소(§3.7). 데모/EA 폴더 동기화는 배포 때(CLAUDE.md 배포 규칙) |
@@ -237,7 +237,7 @@ PoE2 학습([POE2_REFERENCE_STUDY](POE2_REFERENCE_STUDY.md) §3.1·§6.5)의 층
 | 대상 | `assets/vfx/Arcane_Arcane_FBF_6x6.png`(512², 6×6, 셀 85px), `Arcane_MediumImpact.png`(512², 4×4), `Arcane_BasicImpact.png`(256², 3×3), `Poison_MediumImpact.png`(512², 4×4), `Poison_BasicImpact.png`(256², 3×3). 규격(크기·격자·파일명) 원본과 동일, game.html 무수정 |
 | 사용처 | Arcane 콤보(`_TVFX2_COMBOS` Arcane 3층 `'lighter'`: FBF·Medium·Basic), **악의구 폭발 보라 콤보**(24763행 부근 `_mbLayers` 2층 = FBF, `lighter`), Poison 콤보(Poison_Medium 0층·Poison_Basic 2층), `_addBoom` `rainbow_light` 0층(`Poison_MediumImpact`, lighter, 4층 중 첫째), **1-1 드루이드 독 접촉 폴백**(`_drawDruidPoisonImpact`, 61603행 부근 — 클립 `druid_poison_hit_24_20261009` 미준비 시 `Poison_MediumImpact` 프레임 0~7만, 셀 1px 안쪽 잘라 씀, 아래 확인), `_V3_SHEETS`(arcaneFBF·arcaneMed·arcaneBas·poisonMed·poisonBas) |
 | 제작 | **승인 에셋 재채색 — AI 생성 아님, 비용 0.** 임팩트 4장 = 1묶음 적용본 `Fire_MediumImpact`·`Fire_BasicImpact`(C2)의 휘도→램프 재채색(최고 휘도는 0~1프레임만, 2프레임 ×0.8, 이후 ×0.66). **독**: 램프 `#1c2810`→`#5f8a2e`→`#c8e8a8`→`#eef8e0`(§2.2 「적 독」 행), **프레임마다 좌우 반전**(같은 형태 반복 회피). **아케인(마력)**: 램프 `#161226`→`#6a56a8`→`#e4dcf4`→`#f6f2fc`(§2.2 마력 행), **프레임마다 90° 회전**(암흑 팩과 실루엣 구분). FBF = 현재 시트(순 마젠타, RGB 균일·알파=밀도)의 형태 유지, 밀도(알파)→`#6a56a8`→`#e4dcf4`, 5×5px 미만 잔 얼룩은 알파 열기(open)로 제거(36프레임 합 4,498px), 최대 알파 0.85. 직선 알파(알파 4배 인코딩 없음). 재현: `tools/vfx/regrid_arcpoi_pack.py`(적용 에셋과 픽셀 차이 0; 교체 전 마젠타 FBF 원본은 git blob `5621aee0`에서 읽음) |
-| 판정 | 현재 \| A \| B를 같은 게임 화면 5장면(Poison 콤보 · Arcane 콤보 · 악의구 보라 콤보 · `_addBoom 'rainbow_light'` · 1-1 드루이드 독 접촉 폴백 `_druidPoisonHitClip.ready=false` 강제)에서 0/0.033/0.066/0.1/0.2/0.35/0.6초로 캡처(rAF 수동 스텝, route 교체). **임팩트 4장 통과**(형광 라임 별→탁한 녹색 소용돌이, 마젠타 별→푸른 보라 소용돌이). **FBF A 채택**(아케인은 기운이라 줄기 형태가 맞고 악의구 마젠타 점 소멸) · **B 탈락**(Dark_Smoke_BW_6x6을 마력 연기로 재채색한 안: 평평한 언덕 윤곽이 남음). 4~6px 방울은 승인된 화염 팩 원료에서 이어진 흩뿌린 방울(디더링·잔점 아님)로 허용. 전후: [ARCANE_POISON_BEFORE_AFTER_20261027.jpg](ARCANE_POISON_BEFORE_AFTER_20261027.jpg)(현재\|A, 5장면 0.1초) |
+| 판정 | 현재 \| A \| B를 같은 게임 화면 5장면(Poison 콤보 · Arcane 콤보 · 악의구 보라 콤보 · `_addBoom 'rainbow_light'` · 1-1 드루이드 독 접촉 폴백 `_druidPoisonHitClip.ready=false` 강제)에서 0/0.033/0.066/0.1/0.2/0.35/0.6초로 캡처(rAF 수동 스텝, route 교체). **임팩트 4장 통과**(형광 라임 별→탁한 녹색 소용돌이, 마젠타 별→푸른 보라 소용돌이). **FBF A 채택**(아케인은 기운이라 줄기 형태가 맞고 악의구 마젠타 점 소멸) · **B 탈락**(Dark_Smoke_BW_6x6을 마력 연기로 재채색한 안: 평평한 언덕 윤곽이 남음). 4~6px 방울은 승인된 화염 팩 원료에서 이어진 흩뿌린 방울(디더링·잔점 아님)로 허용. 전후: ARCANE_POISON_BEFORE_AFTER_20261027.jpg (Unity 정본: `git show "origin/unity/main:docs/5.1임펙트디자인/ARCANE_POISON_BEFORE_AFTER_20261027.jpg"`)(현재\|A, 5장면 0.1초) |
 | 결과 | 색상각 검사(채도 0.35 이상, 알파 0.05 초과): 독 2장 85~95° 100%·라임(65~80°) 0, 아케인 3장 248~272° 100%·마젠타·청록 0. 셀 가장자리 2px 알파 최대 0.016, 드루이드 폴백이 쓰는 0~7프레임의 1px 안쪽 0.016 이하 → 잘림 없음. 정점 지름÷캐릭터 키 60px(현재→A): 독 콤보 3.22→4.03, 아케인 콤보 3.40→3.52, 악의구 3.00→2.97, `rainbow_light` 4.85→4.85, 드루이드 폴백 2.85→3.00(현재 독·아케인 콤보 정점 0.6초는 겹친 다른 레이어 때문, 후보는 0.2초 정점·0.6초 잔여 면적 270~960px²). 측정은 변화영역(임계 30, 반경 150px) 대략치 |
 | 반복 | 후보 반복 없음(1회 제작·1회 캡처). 후보 A/B는 FBF만 달랐음 |
 | 남은 것 | `rainbow_light` 0.35초 이후 큰 청록 파편은 Light/Ice 시트 몫(네온 팩 잔여). 그 외 네온 팩 교체는 VFX-02 후속(4묶음에서 `Ice_*` 4장·`Water_*` 2장 완료 §3.9, 남은 것 `Lightning_*`·`Nature_*`·`Earth_*`·`Light_*`). 데모/EA 폴더 동기화는 배포 때(CLAUDE.md 배포 규칙) |
@@ -250,7 +250,7 @@ PoE2 학습([POE2_REFERENCE_STUDY](POE2_REFERENCE_STUDY.md) §3.1·§6.5)의 층
 | 변경(game.html) | **A.** `_flashP` 블록(56903행 부근): `_fR=Math.min(w.maxR*.4,42)*(.55+.45*_flashP)`, 알파 `.9*_flashP*_flashP*fade`, 색 `'#fff4d0'`(giant·inferno 공통), 주석 1줄. **B1.** `_slamFrame=Math.min(3,~~(Math.pow(_wP,.6)*4))`(56878행 부근). `_slamGrow`·`_slamAlpha`·`_gs1R`·`maxR`·`maxT:45`·판정·흔들림·사운드 불변 |
 | 시트 프레임 | `giant_slam_impact_sheet.png`·`inferno_slam_impact_sheet.png` 2×2 4프레임 중 몸체(밝은 픽셀)는 프레임 2가 최대(giant 27.6k·inferno 14.1k px, 프레임 1은 24.8k·8.5k) |
 | 프레임 시작(초) | 현재 1:.19 / 2:.375 / 3:.56 → **B1 1:.074 / 2:.236 / 3:.46**(B2 pow .5: .047/.19/.42 — 0.033초에 몸체가 너무 일찍 차고 프레임 3이 알파 1로 나와 탈락). B1 프레임 3 시작이 알파 감쇠 시작(`_wP=.62`)과 맞음 |
-| 판정 | 현재(origin/main) \| A \| A+B1 \| A+B2 \| 원판 끔을 `route`로 game.html만 바꿔 3장면(지옥강타1 `activateGiantSlam`, inferno·giant 파 직접 push) 0/0.033/0.066/0.1/0.2/0.35/0.6초 캡처, 난수 고정. 총괄 1x **A+B1 PASS**. 전후: [VFX10_BEFORE_AFTER_20261027.jpg](VFX10_BEFORE_AFTER_20261027.jpg)(지옥강타1, 현재\|수정, 0/0.066/0.2초 + 화면 전체 축소 1행) |
+| 판정 | 현재(origin/main) \| A \| A+B1 \| A+B2 \| 원판 끔을 `route`로 game.html만 바꿔 3장면(지옥강타1 `activateGiantSlam`, inferno·giant 파 직접 push) 0/0.033/0.066/0.1/0.2/0.35/0.6초 캡처, 난수 고정. 총괄 1x **A+B1 PASS**. 전후: VFX10_BEFORE_AFTER_20261027.jpg (Unity 정본: `git show "origin/unity/main:docs/5.1임펙트디자인/VFX10_BEFORE_AFTER_20261027.jpg"`)(지옥강타1, 현재\|수정, 0/0.066/0.2초 + 화면 전체 축소 1행) |
 | 결과 | 국소 밖 ΔRGB(A−원판 끔) −0.2~−0.5(노이즈 수준). 코어 상위 1%(반경 60px) 약 160 — **기대 ≥240 미달**(VFX-D17, 월드층 한계로 수용, 용암 시트의 밝은 중심이 코어 역할) |
 | 남은 것 | 후처리층 코어 공통 경로(VFX-D17) 검토. 데모/EA 폴더 동기화는 배포 때 |
 
@@ -261,7 +261,7 @@ PoE2 학습([POE2_REFERENCE_STUDY](POE2_REFERENCE_STUDY.md) §3.1·§6.5)의 층
 | 대상 | `assets/vfx/Ice_BasicImpact.png`(256², 3×3), `Ice_MediumImpact.png`(512², 4×4), `Ice_ImpactIce_Sheet.png`(512², 4×4), `Ice_MistSmoke_FBF_4x4.png`(512², 4×4), `Water_ImpactWater_Sheet.png`(512², 4×4), `Water_Water_FBF_4x4.png`(512², 4×4). 규격 원본과 동일, game.html 무수정 |
 | 사용처 | `Ice_ImpactIce_Sheet`: Ice 콤보(18851행 부근)·`_addBoom` `ice`(57157행)·`rainbow_light` 3층(57194행)·3D `iceImp`(65484행). `Ice_MistSmoke_FBF`: Ice 콤보·`_spawnSmoke` `ice`(18906행)·`_addBoom` `ice`·3D `iceFBF`. `Ice_BasicImpact`: Ice 콤보 2층·**Water 콤보 2층**(18879행)·3D `iceBas`. `Ice_MediumImpact`: **3D `_V3_SHEETS` `iceMed`(65485행) 전용 — 2D 장면에 로드되지 않음**. `Water_ImpactWater_Sheet`: Water 콤보 0층·`_addBoom` `waterImpact`/`bossWaterImpact`(57158행, 물 파란콩 적중·패링)·보스 물 임팩트 클립(`_drawBossWaterImpactClip` 8928행)·3D `waterImp`. `Water_Water_FBF`: Water 콤보 1층·3D `waterFBF` |
 | 제작 | **승인 에셋 재채색 — AI 생성 아님, 비용 0.** 임팩트 3장(빙결) = 1묶음 적용본 `Fire_MediumImpact`·`Fire_BasicImpact`(C2) 휘도→빙결 램프(§2.2 `#1a2a36`/`#5f98c0`/`#e8f3f8`, 최고 휘도는 0~1프레임만) + 반전·회전(Basic 좌우 반전·Medium 상하 반전·ImpactIce 180°). `Ice_MistSmoke` = 자기 형태(균일 청색 반투명 안개, 알파 최대 .48) 유지, 밀도=알파(최대 .58, 감마 1.3) `#4f8ab8`→`#9ccbe6`(B안, 코어 없음). **물**: 새 램프(§2.2 물 행) `#0f1c26`→`#3a6a88`→`#8db4c8`→`#dcebf0`·감마 1.6·코어색은 0~1프레임만. `Water_ImpactWater_Sheet` = Fire C2 Medium + 90° 회전. `Water_Water_FBF` = 원료를 **`Fire_FBF_4x4`(C2, 찢긴 불혀)로 교체**, 같은 램프(상한 .70) + 프레임마다 좌우 반전, 최대 알파 .85(W2안). 직선 알파. 재현: `tools/vfx/regrid_icewater_pack.py`(적용 에셋과 바이트 동일). **재현성 조치**: 교체 전 원본 `Ice_MistSmoke_FBF_4x4`·`Water_Water_FBF_4x4`를 `tools/vfx/src/*_orig.png`로 보존하고 `regrid_dark_pack.py`가 `Ice_MistSmoke`를 읽는 경로를 보존본으로 변경(암흑 팩 4장 재생성 적용본과 maxdiff 0 확인) |
-| 판정 | 현재 \| 후보를 같은 게임 화면 6장면(Ice 콤보·Water 콤보·`_addBoom 'ice'`·`_spawnSmoke 'ice'`·`_addBoom 'rainbow_light'`·`_addBoom 'waterImpact'`)에서 0/0.033/0.066/0.1/0.2/0.35/0.6초 캡처(rAF 수동 스텝, route 교체). 총괄 1x: 빙결 A(임팩트 3장)·B(안개) PASS, **물 1차(A: 빙결과 같은 창백한 서리색, 원본 각진 블록 잔존) RETOUCH → W1(원 형태 + 알파 블러)·W2(Fire_FBF 원료) 중 W2 PASS**(W1은 탁한 덩어리 탈락). 전후: [ICE_WATER_BEFORE_AFTER_20261027.jpg](ICE_WATER_BEFORE_AFTER_20261027.jpg)(현재\|채택, Ice·Water 콤보·`waterImpact` 0.1초 1x + 0.35초) |
+| 판정 | 현재 \| 후보를 같은 게임 화면 6장면(Ice 콤보·Water 콤보·`_addBoom 'ice'`·`_spawnSmoke 'ice'`·`_addBoom 'rainbow_light'`·`_addBoom 'waterImpact'`)에서 0/0.033/0.066/0.1/0.2/0.35/0.6초 캡처(rAF 수동 스텝, route 교체). 총괄 1x: 빙결 A(임팩트 3장)·B(안개) PASS, **물 1차(A: 빙결과 같은 창백한 서리색, 원본 각진 블록 잔존) RETOUCH → W1(원 형태 + 알파 블러)·W2(Fire_FBF 원료) 중 W2 PASS**(W1은 탁한 덩어리 탈락). 전후: ICE_WATER_BEFORE_AFTER_20261027.jpg (Unity 정본: `git show "origin/unity/main:docs/5.1임펙트디자인/ICE_WATER_BEFORE_AFTER_20261027.jpg"`)(현재\|채택, Ice·Water 콤보·`waterImpact` 0.1초 1x + 0.35초) |
 | 결과 | 색상각(채도 0.35↑·알파 0.05↑): **6장 모두 198~212° 100%, 네온 시안(175~195°)·원색 파랑(220°+) 0**(교체 전 198~212° 비율 2~24%, 파랑 픽셀 1.2만~4.9만). 셀 가장자리 2px 최대 알파 임팩트 0.004·0.016, `Water_Water_FBF` 0.004(원본은 1.0으로 셀 가장자리가 잘려 각진 블록으로 보였음). 정점 지름÷60px(현재→후보): Ice 콤보 4.02→4.07(정점 .35→.2초), Water 콤보 4.43→4.03(정점 .6→.2초, 0.6초 잔여 면적 8311→196px²), `_addBoom ice` 3.97→4.63, `waterImpact` 3.33→3.63, `_spawnSmoke ice` 3.13→3.12(안개 A 기준 측정, B는 같은 형태·더 푸른 색), rainbow_light 4.93→4.50. 네온 별·원판·원색 파랑 소용돌이 → 서리 흰색 소용돌이(빙결)·깊은 청회색 물결 혀(물) |
 | 반복 | 빙결 A(안개 회색에 가까움)→B(안개 더 푸르게, 확정). 물 A(빙결과 구별 안 됨)→W1(원 형태 + 알파 블러 2.5px, 탁한 덩어리 탈락)→**W2**. 물 램프는 이 묶음에서 신설 |
 | 남은 것 | `Water_ImpactWater`의 0~0.033초 코어와 Water 콤보 2층(`Ice_BasicImpact` 공유)이 서리 흰색이라 물 코어가 따로 없음 — 공유 해제는 game.html 범위라 미착수. `Ice_MediumImpact`는 3D 전용이라 2D 캡처 판정 불가(raw 판정). 다음 = 5묶음(번개·빛·바람)·6묶음(대지·자연). 데모/EA 동기화는 배포 때 |
@@ -297,7 +297,7 @@ PoE2 학습([POE2_REFERENCE_STUDY](POE2_REFERENCE_STUDY.md) §3.1·§6.5)의 층
 | 디자인 총괄 | 화풍·팔레트 확정은 같이 본다. 이펙트 단독 판정은 이 세션, 화면 전체 톤 충돌은 디자인 총괄과 합의 |
 | 보스전 총괄 | 보스 전조·장판의 **모양·색·길이**는 이 문서 기준, 전조 프레임 수·판정은 보스전 쪽 |
 | 사운드 총괄 | 임팩트 사운드는 같은 프레임 이벤트에 맞춘다(이펙트 선행 60~90ms 규칙 공유) |
-| ANIMVFX 팀 대장 | [ANIMATION_VFX_TEAM_MASTER](ANIMATION_VFX_TEAM_MASTER.md)는 개별 작업 운영 기록으로 유지. 방향·기준은 이 문서가 우선 |
+| ANIMVFX 팀 대장 | ANIMATION_VFX_TEAM_MASTER (Unity 정본: `git show "origin/unity/main:docs/5.1임펙트디자인/ANIMATION_VFX_TEAM_MASTER.md"`)는 개별 작업 운영 기록으로 유지. 방향·기준은 이 문서가 우선 |
 | Unity 전체총괄·맥북 총괄 | F02·B09 명세는 이 문서 §2 기준으로 작성해 전달 |
 | QA·성능 | 밀집 전투 비용·프레임 상한은 QA 기준을 따른다 |
 
@@ -305,7 +305,7 @@ PoE2 학습([POE2_REFERENCE_STUDY](POE2_REFERENCE_STUDY.md) §3.1·§6.5)의 층
 
 | 순위 | ID | 할 일 | 담당 | 완료 조건 |
 |---:|---|---|---|---|
-| 0 | **VFX-RM1** | **Unity 1-1 리모델링 슬라이스 VFX**(2026-10-27부터 최우선, v2: URP·VFX Graph·Shader Graph). V0 기반 → 기검참 → 드루이드 텔레그래프 3종(패링 섬광·바닥 예고·잡기) → 독 폭발 A 드루이드·B 플레이어 악의구 → 독액 기포. v2.1 채택(10-27 유니티 총괄). 패링·피격·구르기·침강은 다음 묶음 후보. 웹 쪽 VFX-02 5·6묶음·VFX-11·13은 2026-10-28 병렬 재개(CTO 지시), D17은 보류 | 총괄 명세·1x / vfx-simple 구현 / 디자인총괄 최종 | [명세](UNITY_RM1_VFX_SPEC_20261027.md) §5 단계별 PASS |
+| 0 | **VFX-RM1** | **Unity 1-1 리모델링 슬라이스 VFX**(2026-10-27부터 최우선, v2: URP·VFX Graph·Shader Graph). V0 기반 → 기검참 → 드루이드 텔레그래프 3종(패링 섬광·바닥 예고·잡기) → 독 폭발 A 드루이드·B 플레이어 악의구 → 독액 기포. v2.1 채택(10-27 유니티 총괄). 패링·피격·구르기·침강은 다음 묶음 후보. 웹 쪽 VFX-02 5·6묶음·VFX-11·13은 2026-10-28 병렬 재개(CTO 지시), D17은 보류 | 총괄 명세·1x / vfx-simple 구현 / 디자인총괄 최종 | 명세 (Unity 정본: `git show "origin/unity/main:docs/5.1임펙트디자인/UNITY_RM1_VFX_SPEC_20261027.md"`) §5 단계별 PASS |
 | 1 | VFX-01 | **기준 화풍 확정** — C묶음에서 기준 에셋 3~5개 + 네온 팩 대체 시안 1장을 실제 게임 화면에 나란히 캡처해 사용자에게 제시 | 총괄 / 사용자 판정 | 사용자가 기준 확정 → §2 「초안」 해제 |
 | 2 | VFX-02 | **2026-10-27 레퍼런스 비교(§2.7)로 우선순위 재정의 — 화풍(네온 팩 교체)보다 밝기 구조(코어·정점 시점·렌더 알파)가 더 큰 차이.** **원소 피격 임팩트 통일** — 1차 `impact_el*`·`impact_basic` 13종 교체 완료(§3.4). **2차 1묶음(화염 4종 `Fire_*`) 완료 §3.5 · 2묶음(암흑 팩 4종 `Dark_*`) 완료 §3.6 · 3묶음(아케인 3종 `Arcane_*`+독 2종 `Poison_*`, VFX-D15·D16 해소) 완료 §3.7 · 4묶음(빙결 `Ice_*` 4종 + 물 `Water_*` 2종) 완료 §3.9 · 다음 = 5묶음(번개·빛·바람), 6묶음(대지·자연).** 일반 피격 렌더 알파 0.45 상향안은 2026-10-27 사용자 미채택. 2차 = 네온 팩 `*_BasicImpact`·`*_MediumImpact`·`*_Impact*_Sheet`·`*_FBF`(업화선·기동불꽃 폭발, `_spawnSmoke`, 악의폭풍 틴트, 사망 연기·피) — 큰 폭발 플립북은 Seedream 생성, 작은 스파크는 절차 생성 | 총괄 | 사용처별 게임 캡처 전후 PASS |
 | 3 | VFX-03 | 원소색 사용처 분리(UI 글자 vs 이펙트) → 이펙트용 팔레트 상수 신설, 화면 플래시 네온색 교체 | 총괄 | 사용처 표 + 변경 후 캡처 |
@@ -340,7 +340,7 @@ PoE2 학습([POE2_REFERENCE_STUDY](POE2_REFERENCE_STUDY.md) §3.1·§6.5)의 층
 
 ## 7. 결정·작업 기록
 
-**최신 인수 상태(2026-10-28 22:51 KST):** RM-1 기검참·독 A/B 통합 정적 후보는 `codex/pc-vfx-rm1-int-20261028` `919fd0597714e2544a8ceb3905aedfa57442ff56`에 원격 보존했다. 그래프 생성/YAML 구조/Roslyn 구문만 확인했으며 Unity 임포트·빌드·실제 화면·적 탄막 중첩 1x 판정은 아직 없다. RM-INT의 `unity/main` 병합과 Unity 순번 확보 뒤 [구현 기록](UNITY_RM1_VFX_IMPLEMENTATION_20261028.md)의 남은 게이트를 진행한다. 아래 기존 기록은 작성 당시 상태다.
+**최신 인수 상태(2026-10-28 22:51 KST):** RM-1 기검참·독 A/B 통합 정적 후보는 `codex/pc-vfx-rm1-int-20261028` `919fd0597714e2544a8ceb3905aedfa57442ff56`에 원격 보존했다. 그래프 생성/YAML 구조/Roslyn 구문만 확인했으며 Unity 임포트·빌드·실제 화면·적 탄막 중첩 1x 판정은 아직 없다. RM-INT의 `unity/main` 병합과 Unity 순번 확보 뒤 구현 기록 (Unity 정본: `git show "origin/unity/main:docs/5.1임펙트디자인/UNITY_RM1_VFX_IMPLEMENTATION_20261028.md"`)의 남은 게이트를 진행한다. 아래 기존 기록은 작성 당시 상태다.
 
 | 날짜 | 내용 |
 |---|---|
@@ -359,7 +359,7 @@ PoE2 학습([POE2_REFERENCE_STUDY](POE2_REFERENCE_STUDY.md) §3.1·§6.5)의 층
 | 2026-10-27 | **VFX-RM1 명세 v2** — 유니티 총괄 공지(사용자 확정 CLAUDE.md `cf506002d` §Unity 리모델링): VFX = URP 위 VFX Graph·Shader Graph, 웹 시트는 임시. v1(Built-in 전제)을 대체하고, Sonnet v1 구현은 착수 직후 중지(산출물 미사용). 범위 = 유니티 총괄 지정 4종(기검참·독 폭발·드루이드 텔레그래프 3종·독액 기포). 원칙 U3 = HDR 코어 + URP 블룸으로 코어 밝기(웹 D17 구조 해결), U9 = GPU 상한(VFX 전체 ≤1.5ms·효과당 ≤0.3ms·기포 화면당 24). 적 예고 팔레트(테두리 `#c8402a`) 제안. 제작은 RM-0(URP) 병합 뒤, 배정 유니티 총괄, 판정 시각=디자인총괄·손맛=보스전 총괄+임펙트 총괄 |
 | 2026-10-27 | **VFX-RM1 명세 v2.1** — 유니티 총괄 채택·구현 `local_e856ee78` 승인. 독 폭발에 플레이어 악의구 중독 폭발(마력 팔레트, 같은 그래프 변형 B — RM-1 맵 검증 컷 「독 스킬 터진 프레임」) 추가. 텔레그래프를 RM-B1 드루이드 명세 §4 표시 3종(패링 가능 근접 = 뼈금 무기 끝 섬광 / 피해야 하는 범위 = 테두리 `#c8402a` + 어두운 독액 얼룩 채움 / 잡기 = 눈빛 60f) + 12기술 연결표로 정정. 블룸은 RM-0 Volume 공유. 기포 스폰 지점은 맵 RM-1 산출물에 포함 요청됨 |
 | 2026-10-28 | **VFX-RM1 V0 기반 1x PASS** — 코어 상위1% 254·정점 +2틱·환경 번짐 ≈0. 공유 렌더: Volume은 RM0-LIGHT `513ecb159` 소유로 정정, VFX 공유 커밋은 렌더러 Decal·postProcessData·카메라 후처리만(새 브랜치, unity/main 병합 1순위). 색공간 Gamma 발견·유니티 총괄 보고. 다음: 남은 V0(데칼·소프트알파·기포 SG·서브그래프 3·VfxBridge) → 기검참. 상세 명세 §7 |
-| 2026-10-28 | **병렬 재개**(CTO 10-28 「사용량 제한 해제 — 스킬군별 Unity와 웹 불량 임팩트 교체를 파일 나눠 동시에」, CLAUDE.md §총괄 자율 결정). VFX-RM1 V0 나머지 조건부 PASS·공유 렌더 병합 요청(상세 [명세](UNITY_RM1_VFX_SPEC_20261027.md) §7). 동시 진행 4줄: ① Unity 기검참(vfx-simple) ② Unity 독 폭발 A/B(별도 브랜치) ③ 웹 VFX-02 5묶음(번개·빛·바람 6)·6묶음(대지·자연 7) — 신설 팔레트 제안 바람(무채 회백, 채도 ≤0.15)·자연(100~112°, 적 독 88~90°·금지대 76~87° 회피), 명세 `G:/exoduser-wt/_vfx2_b56/SPEC.md` ④ 웹 VFX-13(Dark 콤보 잔여층)→VFX-11(근접 궤적·접점 코어·피 튐). 웹 쪽 보류(10-27 기록)를 해제. 모두 후보 단계에서 총괄 1x 판정 후 반영 |
+| 2026-10-28 | **병렬 재개**(CTO 10-28 「사용량 제한 해제 — 스킬군별 Unity와 웹 불량 임팩트 교체를 파일 나눠 동시에」, CLAUDE.md §총괄 자율 결정). VFX-RM1 V0 나머지 조건부 PASS·공유 렌더 병합 요청(상세 명세 (Unity 정본: `git show "origin/unity/main:docs/5.1임펙트디자인/UNITY_RM1_VFX_SPEC_20261027.md"`) §7). 동시 진행 4줄: ① Unity 기검참(vfx-simple) ② Unity 독 폭발 A/B(별도 브랜치) ③ 웹 VFX-02 5묶음(번개·빛·바람 6)·6묶음(대지·자연 7) — 신설 팔레트 제안 바람(무채 회백, 채도 ≤0.15)·자연(100~112°, 적 독 88~90°·금지대 76~87° 회피), 명세 `G:/exoduser-wt/_vfx2_b56/SPEC.md` ④ 웹 VFX-13(Dark 콤보 잔여층)→VFX-11(근접 궤적·접점 코어·피 튐). 웹 쪽 보류(10-27 기록)를 해제. 모두 후보 단계에서 총괄 1x 판정 후 반영 |
 | 2026-10-28 | 최신버전 테스트 총괄 LT-7(unity-latest 4ceb18b51 GPU 캡처: 07c 형광 연두 원판, 09b 회복의 영역·얼음 보주의 연두 마법진) 판정. 07c = Unity 이식 결함(필드 적 탄이 드루이드 기본 독 구슬로 그려짐, VFX-D18) → CTO 경유 필드 AI 담당 수정 요청. 09b = 웹과 같은 값의 사용자 지정 라임(VFX-D19) → 유지, 금빛 재채색은 사용자 확인 사항으로만 기록. 웹 같은 스킬은 코드 값 대조(나란히 캡처는 미실시). 코드·에셋 변경 없음 |
 | 2026-10-28 | VFX-D19 사용자 지시 「외곽라운드는 지우고 최대한 절제」(CTO 전달) → 절제판 B′(금빛 재)·C′(세이지) 합성 시안(외곽 링 없음·알파 .20·글로우 없음·수증기 4개 .10, 적 탄막 7발 겹침)을 만들어 승인 항목으로 CTO 제출, 추천 B′. 아군 장판·스킬 VFX 공통 기준 「탄막 가시성 우선」 채택. 코드·에셋 변경 없음(승인 대기) |
 | 2026-10-28 | VFX-D19 사용자 「웹버전때 쓰던그대로 쓰면됄텐데 지금 너무 강해졌다니까」(CTO 전달) → B′·C′ 색 변경 취소, 웹 기준 Unity 1:1. 웹|Unity 실측으로 Unity가 약 15배 강함 확인(원인 = 알파 밝기 vs 밝기², 웹 조명 패스 감쇠 부재). Unity 수정 브랜치·빌드 루프 확인 후 웹|Unity 나란히 승인 항목 제출 예정. 웹 코드 변경 없음 |
@@ -370,8 +370,8 @@ PoE2 학습([POE2_REFERENCE_STUDY](POE2_REFERENCE_STUDY.md) §3.1·§6.5)의 층
 
 ## 2026-11-02 설치형 지면 배치 수정 진행
 
-사용자 요청은 장판·지뢰·덫·설치형 전체의 공중 배치 해소다. 11/03 PC 후보09192/Runtimesha b66fcf8c648d2f7ba126fe0fd14fe992c5a623c62798685e6a7b641a8e2c89d8 일반빌드오류0, 자동2D·별도명시3D M1 각각23/23·세이브0. 원본1x에서 붉은원이흙과목교상판에붙음을확인했다. 필수UI1395장교차후보147/누락0 FAIL과큰상세JSON소비자OOM으로배포회차ABORT, 사용자실행본131887/바탕화면unity-latest는아직미교체다. 기존스킬창·devtools담당의수정과새최종패키지검수·실제전달을계속한다. 실제3D근거/147원본/보고서/현재미검증범위는 [전용기록](../engine/UNITY_GROUND_EFFECT_PLACEMENT_20261102.md)을따른다. SourceWindows후보상태·자연플레이·최종설치완료를혼동하지않고 원full100/61·독립색참조/미관측한계를보존한다. 현재기능후보RETOUCH이며 H5/Core전투수식은본변경범위밖이다.
-| 2026-11-03 | **G1 설계 — 전사·드루이드 타격 타이밍 표** [VFX_G1_TIMING_DESIGN_20261103](VFX_G1_TIMING_DESIGN_20261103.md) (CTO 10:45 지시, 매뉴얼 v4 G1). 전사 1·2·3타 기검참·Shift 구르기·피격, 드루이드 1 가지 채찍 3연·2 거름 내려찍기·5 독포자 부채의 예고→접점→본체→잔여 틱 표를 노레위 091256(공간)·§2.7.1 클립 실측(시간)과 나란히, 빛 깜빡임·포즈 홀드(시뮬 정지 0)·흔들림·데칼 수치, 탄막 가림 0 규칙(겹침 알파 ≤.35·추가 G ≤+25·판정 캡처). Unity 실행 없음, 구현은 리깅 동작 반입 후(G2) |
+사용자 요청은 장판·지뢰·덫·설치형 전체의 공중 배치 해소다. 11/03 PC 후보09192/Runtimesha b66fcf8c648d2f7ba126fe0fd14fe992c5a623c62798685e6a7b641a8e2c89d8 일반빌드오류0, 자동2D·별도명시3D M1 각각23/23·세이브0. 원본1x에서 붉은원이흙과목교상판에붙음을확인했다. 필수UI1395장교차후보147/누락0 FAIL과큰상세JSON소비자OOM으로배포회차ABORT, 사용자실행본131887/바탕화면unity-latest는아직미교체다. 기존스킬창·devtools담당의수정과새최종패키지검수·실제전달을계속한다. 실제3D근거/147원본/보고서/현재미검증범위는 전용기록 (Unity 정본: `git show "origin/unity/main:docs/engine/UNITY_GROUND_EFFECT_PLACEMENT_20261102.md"`)을따른다. SourceWindows후보상태·자연플레이·최종설치완료를혼동하지않고 원full100/61·독립색참조/미관측한계를보존한다. 현재기능후보RETOUCH이며 H5/Core전투수식은본변경범위밖이다.
+| 2026-11-03 | **G1 설계 — 전사·드루이드 타격 타이밍 표** VFX_G1_TIMING_DESIGN_20261103 (Unity 정본: `git show "origin/unity/main:docs/5.1임펙트디자인/VFX_G1_TIMING_DESIGN_20261103.md"`) (CTO 10:45 지시, 매뉴얼 v4 G1). 전사 1·2·3타 기검참·Shift 구르기·피격, 드루이드 1 가지 채찍 3연·2 거름 내려찍기·5 독포자 부채의 예고→접점→본체→잔여 틱 표를 노레위 091256(공간)·§2.7.1 클립 실측(시간)과 나란히, 빛 깜빡임·포즈 홀드(시뮬 정지 0)·흔들림·데칼 수치, 탄막 가림 0 규칙(겹침 알파 ≤.35·추가 G ≤+25·판정 캡처). Unity 실행 없음, 구현은 리깅 동작 반입 후(G2) |
 | 2026-11-03 | 사용자 「유니티 임펙트 우클릭패링도 q 패링도 다 안나오는데」「안나오는 임펙트들」「대형탄막들 꼬라지」「패기한것들좀 지워라」「거의 다 리마스터링」「피터지는 임펙트도 한참 멀었고 순차적 구현으로 다 예약돼 있기는 한 거냐」 → 원인 확정(Unity는 패링·피격·사망·구르기를 소리만 내고 그림 0, 대형 탄은 08-23 구형 시트 그대로) 후 §6.1 Unity VFX 순차 큐 신설. U-VFX-01~03 Codex 진행, 다음 착수 = U-VFX-04 피 튐·피 데칼 |
 | 2026-11-03 | U-VFX-01(안 나오던 임팩트 7종) unity/main 6b489edb9, U-VFX-02(대형 탄막 1차 재채색) 0b5441130 병합(유니티 총괄, 기준판 9f0d00cf8·두 브랜치 m1 23/23). 남은 RETOUCH 5건 CTO 컨펌 목록. 다음: 팬텀 블레이드 제로·도타2 실측 반영 → U-VFX-04 피 튐·피 데칼 |
 | 2026-11-03 | 팬텀 블레이드 제로(Launch Trailer 60fps, headless·무음 스트림)·도타2(설치 폴더 공식 webm) 타격 실측 29장면 → IMPACT_REFERENCE_PBZ_DOTA2_20261103 신설, 결정 R1~R8(코어 5틱·패링/피니셔 한정 플래시·히트스톱/슬로 없음·흔들림→푸시인·스파크 신설·피 팔레트 어둡게+데칼 3.5s·가림 0.2s·예고 팔레트 유지). §2.2 피 행 갱신, §2.7.2b 추가. 패링 계약 수치는 유니티 총괄 패링 G0로 전달 |
