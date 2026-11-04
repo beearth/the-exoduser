@@ -170,6 +170,7 @@ namespace Exoduser.UnityPort
             else if(Array.IndexOf(args,"--unity-c04-dump")>=0){Running=false;StartCoroutine(C04Dump());}
             else if(Array.IndexOf(args,"--unity-boss-text-smoke")>=0){Running=false;pauseSmoke=true;StartCoroutine(BossTextLocalityCapture());}
             else if(Array.IndexOf(args,"--unity-field-screen")>=0){Running=false;pauseSmoke=true;StartCoroutine(A2FieldCapture());}
+            else if(Array.IndexOf(args,"--unity-a2-sight-check")>=0){Running=false;pauseSmoke=true;StartCoroutine(A2SightCheck());}
             else if(Array.IndexOf(args,"--unity-ground-receiver-capture")>=0){Running=false;groundReceiverQaActive=true;StartCoroutine(GroundReceiverCapture());}
             else if(Array.IndexOf(args,"--unity-ground-map-capture")>=0){Running=false;groundReceiverQaActive=true;StartCoroutine(GroundMapCapture());}
             else if(Array.IndexOf(args,"--unity-steam-keyshot")>=0){Running=false;pauseSmoke=true;StartCoroutine(SteamKeyshotCapture());}
