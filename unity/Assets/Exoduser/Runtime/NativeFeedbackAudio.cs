@@ -46,7 +46,8 @@ namespace Exoduser.UnityPort
         // adopted start volumes (RM1_AUDIO_KEYS.json); the final values are set by ear
         static readonly Dictionary<string,float> StartVolume=new Dictionary<string,float>{
             {"tell_melee",.45f},{"tell_ranged",.45f},{"tell_boss",.45f},{"tell_grab",.45f},{"tell_parry",.45f},{"druid_erupt",.5f},{"druid_sink",.55f},{"druid_tide",.5f},{"druid_roots_rise",.5f},{"druid_heartbeat",.5f},{"druid_burrow",.45f},{"druid_staff_tap",.5f},{"druid_root_pierce",.5f},
-            {"druid_vo_pain",.6f},{"druid_vo_attack",.7f},{"druid_vo_phase",1f},{"druid_vo_fall",.7f},{"druid_vo_last",.75f},{"druid_drag",.6f},{"druid_fissure",.6f},{"druid_pod",.5f},{"druid_summon",.6f},{"druid_hit",.3f},{"druid_hit_heavy",.6f},{"druid_whip",.55f},{"druid_spore",.55f},{"druid_slam",.7f}};
+            {"druid_vo_pain",.6f},{"druid_vo_attack",.7f},{"druid_vo_phase",1f},{"druid_vo_fall",.7f},{"druid_vo_last",.75f},{"druid_drag",.6f},{"druid_fissure",.6f},{"druid_pod",.5f},{"druid_summon",.6f},{"druid_hit",.3f},{"druid_hit_heavy",.6f},{"druid_whip",.55f},{"druid_spore",.55f},{"druid_slam",.7f},
+            {"druid_slash3_ground",.5f},{"druid_slam_lift",.5f},{"druid_debris",.5f},{"druid_charge_kick",.5f},{"druid_wall_crash",.5f},{"druid_grab_bind",.5f},{"druid_grab_throw",.5f},{"druid_erupt_warn",.5f},{"druid_root_spikes",.5f},{"druid_heart_vein",.5f}};   // R7 skill sounds
         readonly Dictionary<string,int> lastTellTick=new Dictionary<string,int>();
         int lastPlayerHitTick=-1000;
         public NativeFeedbackAudio(Transform parent,Camera camera)
@@ -165,12 +166,39 @@ namespace Exoduser.UnityPort
             var r=Make("druid_spore",.55f,Jitter(1,.05f),World(e),e);r.logical="druid_spore";r.group="Skill";r.priority=PriSkill;r.delay=after/60f;r.tick=e.Tick+after;r.source="#5 fan fires (telegraph +"+after+" f)";r.note="file ok (adopted "+AdoptedSource("druid_spore")+")";
             Receipt.requested++;direct.Add(r);
         }
-        // SND-09 round 4 druid_slam: the dung slam (move #2 "slam") landing. The Core's "#2 slam telegraph" event is the cue; the swing starts when the telegraph ends (move data Tele 48) and lands SlamActive (6) ticks later (shock wave + damage check).
+        // SND-09 round 4 druid_slam: the dung slam (move #2 "slam"). The Core's "#2 slam telegraph" event is the cue; R7: the staff touches the ground 2 ticks after the telegraph ends (the heard contact), debris 4 ticks after.
         void SlamOnLanding(FeedbackEvent e)
         {
             if(e.Source!="#2 slam telegraph"||!HasClip("druid_slam"))return;
-            int after=Array.Find(DruidRemodelData.Moves,m=>m.Id=="slam").Tele+DruidRemodelData.SlamActive;
-            var r=Make("druid_slam",.7f,Jitter(1,.04f),World(e),e);r.logical="druid_slam";r.group="Skill";r.priority=PriSkill;r.delay=after/60f;r.tick=e.Tick+after;r.source="#2 slam lands (telegraph +"+after+" f)";r.note="file ok (adopted "+AdoptedSource("druid_slam")+")";
+            int tele=Array.Find(DruidRemodelData.Moves,m=>m.Id=="slam").Tele,after=tele+2;
+            var r=Make("druid_slam",.7f,Jitter(1,.04f),World(e),e);r.logical="druid_slam";r.group="Skill";r.priority=PriSkill;r.delay=after/60f;r.tick=e.Tick+after;r.source="#2 slam staff contact (telegraph +"+after+" f)";r.note="file ok (adopted "+AdoptedSource("druid_slam")+")";
+            Receipt.requested++;direct.Add(r);
+            DruidAt("druid_debris",.5f,1,.05f,e.X,e.Y,e.Tick,tele+4,"#2 slam debris (telegraph +"+(tele+4)+" f)");
+        }
+        static int MoveNo(string id){return Array.FindIndex(DruidRemodelData.Moves,m=>m.Id==id)+1;}
+        // R7 skill sounds that ride on a Core event plus a fixed delay: slash hit 3 ground, erupt (warn now, blast and root spikes BurrowEruptWarn later), heartbeat veins. Returns true when the event is the erupt (the plain druid_erupt is replaced).
+        bool DruidExtras(FeedbackEvent e)
+        {
+            string s=e.Source;if(s==null)return false;
+            if(s.EndsWith("slashCombo hit 3 telegraph",StringComparison.Ordinal))DruidAt("druid_slash3_ground",.5f,1,.04f,e.X,e.Y,e.Tick,DruidRemodelData.SlashLinkTele+(DruidRemodelData.SlashActive-DruidRemodelData.SlashHitAt),"#1 slashCombo hit 3 ground (telegraph +"+(DruidRemodelData.SlashLinkTele+(DruidRemodelData.SlashActive-DruidRemodelData.SlashHitAt))+" f)");
+            else if(s=="#"+MoveNo("heartbeat")+" heartbeat telegraph")DruidAt("druid_heart_vein",.5f,1,0,e.X,e.Y,e.Tick,0,"#12 heartbeat telegraph");
+            else if(s.StartsWith("#"+MoveNo("heartbeat")+" heartbeat beat ",StringComparison.Ordinal)&&(s.EndsWith("beat 1",StringComparison.Ordinal)||s.EndsWith("beat 2",StringComparison.Ordinal)))DruidAt("druid_heart_vein",.5f,1.5f,0,e.X,e.Y,e.Tick,DruidRemodelData.HeartbeatPause,"#12 heartbeat pause vein (beat +"+DruidRemodelData.HeartbeatPause+" f)");
+            else if(e.SampleKey=="druid_erupt"&&s=="#7 burrowStrike erupt"){
+                int after=DruidRemodelData.BurrowEruptWarn;
+                DruidAt("druid_erupt_warn",.5f,1,0,e.X,e.Y,e.Tick,0,s+" (warning starts)");
+                DruidAt("druid_erupt",.5f,1,0,e.X,e.Y,e.Tick,after,s+" blast (warning +"+after+" f)");   // same volume and rate as before, only later
+                DruidAt("druid_root_spikes",.5f,1,.04f,e.X,e.Y,e.Tick,after,s+" root spikes (warning +"+after+" f)");
+                return true;
+            }
+            return false;
+        }
+        // R7: one druid skill sound at a Core tick plus a delay; the cue watcher (NativeDruidSoundCues) and the event hooks both come here (Receipt, Lines, queue rules as every other skill sound)
+        public void PlayDruidCue(string key,float volume,float pitch,float spread,float x,float y,int tick,int delayTicks,string source){DruidAt(key,volume,pitch,spread,x,y,tick,delayTicks,source);}
+        void DruidAt(string key,float volume,float pitch,float spread,float x,float y,int tick,int delayTicks,string source)
+        {
+            if(!HasClip(key))return;
+            var r=Make(key,volume,spread>0?Jitter(pitch,spread):pitch,new Vector3(x/100,-y/100,0));
+            r.logical=key;r.group="Skill";r.priority=PriSkill;r.delay=delayTicks/60f;r.tick=tick+delayTicks;r.source=source;r.note="file ok (adopted "+AdoptedSource(key)+")";
             Receipt.requested++;direct.Add(r);
         }
         // _hitSfxForEtype: Core names the category (EnemySoundTables.Hit) and the base pitch; the variant is drawn here, never in the Core
@@ -228,6 +256,7 @@ namespace Exoduser.UnityPort
             float volume;if(e.Volume>0)volume=e.Volume;else if(!StartVolume.TryGetValue(e.SampleKey,out volume))volume=.5f;
             string adopted=AdoptedSource(e.SampleKey);string note=files.Length==0?"no file yet (3rd-round pending, left empty)":(files[0]!=e.SampleKey?"temporary file "+string.Join("+",files):"file ok"+(adopted!=null?" (adopted "+adopted+")":""));
             WhipOnSwing(e);SporeOnFan(e);SlamOnLanding(e);
+            if(DruidExtras(e))return;   // the Core erupt event is replaced by the warn / blast / spikes set (no double sound)
             var pos=World(e);bool tell=e.SampleKey.StartsWith("tell_",StringComparison.Ordinal);bool druid=e.SampleKey.StartsWith("druid_",StringComparison.Ordinal);
             if(tell){
                 int last;if(lastTellTick.TryGetValue(e.SampleKey,out last)&&e.Tick-last<8){Receipt.dropped++;Lines.Add(Line(e.Tick,e.SampleKey,e.Source,"Tell",volume,"DROPPED same key within 120 ms"));return;}
@@ -249,7 +278,9 @@ namespace Exoduser.UnityPort
             {"druid_vo_pain","_preview_druid/druid_vo_pain_v2a_proc"},{"druid_vo_attack","_preview_druid/druid_vo_attack_v2a_proc"},{"druid_vo_phase","_preview_druid/druid_vo_phase_v2c_proc"},
             {"druid_vo_fall","_preview_druid/druid_vo_fall_v2a_proc"},{"druid_vo_last","_preview_druid/druid_vo_last_v2a_proc"},{"druid_drag","_preview_druid/druid_drag_v2a_proc"},
             {"druid_fissure","_preview_druid/druid_fissure_v2b_proc"},{"druid_pod","_preview_druid/druid_pod_v2d_proc"},{"druid_summon","_preview_druid/druid_summon_v2c_proc"},
-            {"druid_hit","_preview_druid2/druid_hit_v3d_proc"},{"druid_hit_heavy","_preview_druid2/druid_hit_heavy_v3d_proc"},{"druid_whip","_preview_druid2/druid_whip_v3a_proc"},{"druid_spore","_preview_r3/druid_spore_r3a_proc"},{"druid_slam","_preview_r4/druid_slam_r4e2_proc"},{"druid_burrow","_preview_s3/druid_burrow_s3d_proc"}};
+            {"druid_hit","_preview_druid2/druid_hit_v3d_proc"},{"druid_hit_heavy","_preview_druid2/druid_hit_heavy_v3d_proc"},{"druid_whip","_preview_druid2/druid_whip_v3a_proc"},{"druid_spore","_preview_r3/druid_spore_r3a_proc"},{"druid_slam","_preview_r4/druid_slam_r4e2_proc"},{"druid_burrow","_preview_s3/druid_burrow_s3d_proc"},
+            {"druid_slash3_ground","_r7/single/slash3_ground_b2"},{"druid_slam_lift","_r7/single/slam_lift_b1"},{"druid_debris","_r7/single/debris_c3"},{"druid_charge_kick","_r7/single/charge_kick_c3"},{"druid_wall_crash","_r7/single/wall_crash_c1"},
+            {"druid_grab_bind","_r7/single/grab_bind_c3"},{"druid_grab_throw","_r7/single/grab_throw_b3"},{"druid_erupt_warn","_r7/single/erupt_warn_a2"},{"druid_root_spikes","_r7/single/root_spikes_a3"},{"druid_heart_vein","_r7/single/heart_vein_c2"}};
         static string AdoptedSource(string key){string s;return Adopted.TryGetValue(key,out s)?s:null;}
         static string Line(int tick,string key,string source,string group,float volume,string file){return "frame="+tick+" key="+key+" from=\""+source+"\" group="+group+" vol="+volume.ToString("0.00",System.Globalization.CultureInfo.InvariantCulture)+" file="+file;}
         int lastBossHitTick = -1000;

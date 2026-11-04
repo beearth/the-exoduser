@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort
         public int LoadedChunks {get {return chunks.Count;}}
         public int RenderedEnemyCount {get {return enemies.Count;}}
         Camera view; SpriteRenderer playerView; NativeHeroView heroView; Font font; KiSlashView kiView;NativeBoltView boltView;
-        KiImpactView impacts; NativeSkillView skillView; NativeFeedbackAudio sound; NativeGameMusic music; NativeAmbientSources ambient; bool smokeActive;
+        KiImpactView impacts; NativeSkillView skillView; NativeFeedbackAudio sound; NativeDruidSoundCues druidCues; NativeGameMusic music; NativeAmbientSources ambient; bool smokeActive;
         CombatImpactView combatImpacts;
         NativeHud hud;bool hudSmoke;NativeInventory inventory;bool inventorySmoke,inventoryWasRunning;
         NativePauseMenu pauseMenu;NativeSettingsState settings;NativeSkills skills;NativeStatPanel stats;bool skillsWasRunning,statsWasRunning,skillInputFence;
@@ -136,7 +136,7 @@ namespace Exoduser.UnityPort
             skillView=new NativeSkillView(transform);   // B03 skill effects
             ImpactInitialize();
             combatImpacts=new CombatImpactView(transform){EnemyBody=CombatEnemyBody};
-            sound=new NativeFeedbackAudio(transform,view);
+            sound=new NativeFeedbackAudio(transform,view);druidCues=new NativeDruidSoundCues(sound);
             gameObject.AddComponent<NativeUiSounds>().Initialize(sound,()=>lobby!=null&&lobby.IsBlocking?lobby.UiAudioAllowed:gameFocused,()=>lobby!=null&&lobby.IsBlocking);
             music=new NativeGameMusic(transform,sound.Bus);ambient=new NativeAmbientSources(transform,sound.Bus);   // RM-1 sound: BGM bus, forest bed, 3D environment sources
             sound.ListenerAt=ambient.ListenerAt=()=>Simulation!=null?Point(Simulation.Player.X,Simulation.Player.Y):Vector3.zero;   // the AudioListener sits on the player
@@ -223,7 +223,7 @@ namespace Exoduser.UnityPort
             startupResetCount++;
             foreach(var e in enemies.Values){Destroy(e.body.gameObject);Destroy(e.walk.gameObject);}enemies.Clear();damage.Clear();damageFloaters.Clear();ResetFieldBossViews();
             kiContactCamera=false;kiContactObserved=-1;
-            kiView?.Reset();boltView?.Reset();impacts?.Reset();skillView?.Reset();skillRemaster?.Reset();sound?.Reset();
+            kiView?.Reset();boltView?.Reset();impacts?.Reset();skillView?.Reset();skillRemaster?.Reset();sound?.Reset();druidCues?.Reset();
             var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;if(settings!=null)config.DifficultyIndex=settings.Options.Get("diff");if(BuildFlavor.Current.DemoMode)config.LevelCap=BuildFlavor.Current.LevelCap;CombatBeginRun(config);
             Simulation=new Simulation(config,SourceStarterFixture.Seed);ConfigureParryFeedback();revive.Reset();Simulation.ReviveTextRaised+=t=>{if(!DeathPresentationActive)revive.Add(t);};Simulation.Config.DemoMode=BuildFlavor.Current.DemoMode;Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.ProjectileBlocked;Simulation.LevelledUp+=OnLevelledUp;ReviewArgsApply();ApplySettingsOptions();
             inventory.Reset();CombatRestoreState();skills.SetOpen(false);stats.SetOpen(false);forge.SetOpen(false);levelUp.Hide();levelUpSeen=Simulation.Player.Level;death.Hide();deathShown=false;stageClear.Hide();bossBar.Hide();areaTitle.Hide();areaTitleShown=false;skillInputFence=false;Simulation.ApplyEquipment(inventory.State);CombatRestoreResources();
@@ -365,6 +365,7 @@ namespace Exoduser.UnityPort
             while(Simulation.Feedback.Count>0){var e=Simulation.Feedback.Dequeue();enemyRig?.Observe(e,Simulation.TickCount);ParryFeedbackEvent(e);if(!ImpactActive||e.Kind!=FeedbackKind.FeelContact)impacts.Handle(e);combatImpacts?.Handle(e);combatImpacts?.Flash(e);if(!e.VisualOnly)sound.Handle(e);}
             var p=Simulation.Player;   // walking footsteps: the web plays them from the walk cycle, the Core sends no event
             sound.TrackWalk(p.X,p.Y,!Simulation.RollActive&&p.KnockbackX==0&&p.KnockbackY==0&&p.State!="dead"&&p.State!="fallen");
+            druidCues?.Observe(Simulation);   // R7 druid skill sounds that follow boss state / Fx
             sound.Flush();
         }
         void BuildProps()
@@ -718,7 +719,7 @@ namespace Exoduser.UnityPort
             switch(command){
                 case PauseMenuCommand.Resume: if(gameFocused&&!PlayerDown){string uiBefore=UiPanelState();menu=false;skillInputFence=true;Running=true;UiPanelChanged(uiBefore);} break;
                 case PauseMenuCommand.Restart:if(!NativeScreenTransition.Executing){NativeScreenTransition.Request("restart",()=>ApplyPauseCommand(PauseMenuCommand.Restart));break;}if(gameFocused){ResetRun();skillInputFence=true;menu=false;Running=true;}break;
-                case PauseMenuCommand.ReturnLobby:if(!NativeScreenTransition.Executing){NativeScreenTransition.Request("game-lobby",()=>ApplyPauseCommand(PauseMenuCommand.ReturnLobby));break;}SaveCombatNow();Running=false;menu=true;sound.Reset();pauseMenu.Reset();lobby.ShowLobby();break;
+                case PauseMenuCommand.ReturnLobby:if(!NativeScreenTransition.Executing){NativeScreenTransition.Request("game-lobby",()=>ApplyPauseCommand(PauseMenuCommand.ReturnLobby));break;}SaveCombatNow();Running=false;menu=true;sound.Reset();druidCues?.Reset();pauseMenu.Reset();lobby.ShowLobby();break;
                 case PauseMenuCommand.Quit:if(gameFocused){SaveCombatNow();Application.Quit();}break;
             }
         }
@@ -816,7 +817,7 @@ namespace Exoduser.UnityPort
         public static string Argument(string key){var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,key);return i>=0&&i+1<a.Length?a[i+1]:"";}
         [Serializable] sealed class SmokeReceipt{public bool moved,webViewUsed,charged,released;public float initialX,finalX,maximumCharge;public int originalMapChunks,loadedChunks,enemyActors,maximumProjectiles,kills,totalDamage;public FeedbackAudioReceipt feedbackAudio;public ImpactReceipt feedbackVisual;}
         [Serializable] sealed class HudSmokeReceipt{public string scope,activeSkill,iconResource;public bool iconDrawn;public HudPixelProbe[] cases;}
-        void OnDestroy(){BossDialogueDetach();bossDialogue.Dispose();combatImpacts?.Dispose();nextDifficulty.Dispose();NativePanelTabBar.Requested-=OnPanelRequested;skillRemaster?.Dispose();contactVfx?.Dispose();kiView?.Dispose();boltView?.Dispose();impacts?.Dispose();skillView?.Dispose();sound?.Dispose();hud?.Dispose();foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();music?.Dispose();ambient?.Dispose();if(Instance==this)Instance=null;}
+        void OnDestroy(){BossDialogueDetach();bossDialogue.Dispose();combatImpacts?.Dispose();nextDifficulty.Dispose();NativePanelTabBar.Requested-=OnPanelRequested;skillRemaster?.Dispose();contactVfx?.Dispose();kiView?.Dispose();boltView?.Dispose();impacts?.Dispose();skillView?.Dispose();sound?.Dispose();druidCues?.Dispose();hud?.Dispose();foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();music?.Dispose();ambient?.Dispose();if(Instance==this)Instance=null;}
         [Serializable] sealed class TextReviewLabel {public string text;public int count,priority;public long value;public float originX,originY,x,y,width,height,distance;}
         [Serializable] sealed class TextReviewShot {public string name,kind,note;public int tick,visible,deferred,stateEvents,damageEvents;public float realSeconds;public List<TextReviewLabel> labels=new List<TextReviewLabel>();}
         readonly List<TextReviewShot> textReviewShots=new List<TextReviewShot>();float textReviewStart;

@@ -1,3 +1,5 @@
+2026-11-04 SND-12 R7 드루이드 7기술 효과음 Unity 연결(사운드 총괄): 사용자 선택 채택 10키(druid_slash3_ground·slam_lift·debris·charge_kick·wall_crash·grab_bind·grab_throw·erupt_warn·root_spikes·heart_vein)를 Resources/Audio/RM1에 넣고 시작 음량 .5. 연결: NativeFeedbackAudio(SlamOnLanding·DruidExtras — 예고 이벤트+DruidRemodelData 상수 지연) + 새 NativeDruidSoundCues(보스 상태 bossSlamWind·bossChargeWind·bossGrab 전환, Fx wallSlam, 균열 Exploded — Core 읽기 전용). 시각 변경 druid_slam Tele+SlamActive→Tele+2, druid_erupt 즉시→BurrowEruptWarn 늦춤. 전부 안 맞음 5키(grab_step·absorb·burrow_move·staff_tap·heart_wave)는 연결 없음. Core 무변경, PC 컴파일 오류 0, 청음은 Mac. docs: DRUID_V81_SKILL_SFX_G1 §4.1, SOUND_LEAD_MASTER R7.
+
 2026-11-04 SND-11 Unity 걷기 발소리(사운드 총괄): NativeFeedbackAudio.TrackWalk — 걸은 거리 128px마다 footstep/footstep2 번갈아 .55, rate Jitter(.9,.15), 구르기·넉백·사망 제외, 한 프레임 48px 초과 이동 무시. NativeGame.DispatchFeedback에서 호출. Core 무변경, docs/6사운드디자인/6사운드디자인.md 절 추가. PC 컴파일만, 청음은 Mac.
 
 2026-11-04 UI 판정 ⑥ 경미 5건 반영(codex/unity-demo-text-20261104): 로비 빈 슬롯 어두운 면, 입장 호버 ENTER 글자 뒤 타원 광(사각 테 외곽 광은 총괄 검수에서 되돌림), 그리스어 경험치 ΕΜΠ→Εμπειρία, 펫 말풍선 본문 명조, 사운드 탭 줄 끝 960→818(914), 사망 제목 크로스페이드 앞 제목 선소거. PC 검사 judge6 6/0·컴파일 오류 0만, 화면 판정 전.
