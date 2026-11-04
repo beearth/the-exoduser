@@ -1,9 +1,10 @@
 'use strict';
-// H4: source preservation is a code-path gate, not a rendered-pixel claim.
+// H4/H5: source preservation is a code-path gate, not a rendered-pixel claim.
 const assert = require('node:assert/strict');
 const fs = require('node:fs'), path = require('node:path'), cp = require('node:child_process');
 const root = path.resolve(__dirname, '../../..');
 const baseline = 'c1b51cda503d1de1ef3ae2c828309e7c27d539f7';
+const retouchBase = '3a13dc0d46d22a19e1f0640d7689914df99569c4';
 const runtime = 'unity/Assets/Exoduser/Runtime/';
 const shaders = 'unity/Assets/Exoduser/Resources/Shaders/';
 const old = p => cp.execFileSync('git', ['show', baseline + ':' + p], {cwd:root, maxBuffer:16*1024*1024, windowsHide:true});
@@ -26,6 +27,10 @@ for (const p of [
 ]) check(now(p).equals(old(p)), p + ': legacy/A/B resources and sources retained byte-for-byte');
 const protoPath = runtime+'NativeHud.Prototype.cs';
 const proto = now(protoPath).toString('utf8');
+for (const p of [protoPath, 'unity/ProjectSettings/ProjectSettings.asset']) {
+  const before = cp.execFileSync('git', ['show', retouchBase + ':' + p], {cwd:root, maxBuffer:16*1024*1024, windowsHide:true});
+  check(now(p).equals(before), p + ': H5 retains the entire shared dispatcher and global color settings');
+}
 const hooks = [...proto.matchAll(/\/\* H4 C begin \*\/([\s\S]*?)\/\* H4 C end \*\//g)];
 check(hooks.length > 0, 'C integration has explicit isolated additions');
 check(proto.replace(/\/\* H4 C begin \*\/[\s\S]*?\/\* H4 C end \*\//g, '') === old(protoPath).toString('utf8'),
@@ -43,4 +48,4 @@ const abEnd = 'public HudProtoRect Slot(int index)';
 function abBody(s) { const i=s.indexOf(abStart), j=s.indexOf(abEnd, i); assert(i>=0&&j>i); return s.slice(i,j); }
 check(abBody(layout) === abBody(old(runtime+'NativeHudPrototypeLayout.cs').toString('utf8')),
   'entire original A/B layout constructor arithmetic is unchanged');
-console.log(JSON.stringify({scope:'No-argument and A/B source-path preservation (not pixel validation)', baseline, checks, passed:true},null,2));
+console.log(JSON.stringify({scope:'No-argument and A/B source-path preservation (not pixel validation)', baseline, retouchBase, checks, passed:true},null,2));

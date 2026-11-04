@@ -30,7 +30,25 @@ const empty=new Function('r','smoothstep','lerp',constants+';const radial='+empt
 const scalarLerp=(a,b,t)=>a+(b-a)*t;
 near(empty(0,smoothstep,scalarLerp),.08,'empty bowl center leaves92percent background');near(empty(.5,smoothstep,scalarLerp),.42,'empty bowl perimeter stays translucent');
 check(empty(.4,smoothstep,scalarLerp)>empty(.25,smoothstep,scalarLerp),'empty alpha changes radially, not a flat dark panel');
-check(shader.includes('innerAlpha')&&shader.includes('art.a=smoothstep(.04,.20,min(art.a,innerAlpha))'),'C-only art trims source alpha fringe');
+const silver=new Function('l','rgb','lerp','saturate',body('silver').replace(/\bfloat /g,'let '));
+const steel=x=>silver(x/255,rgb,lerp,saturate);
+const luma=c=>c[0]*.2126+c[1]*.7152+c[2]*.0722;
+const knots=[0,10,36,69,163,255],tones=[[15,15,16],[44,46,49],[79,83,82],[138,139,136],[201,199,195],[246,245,242]];
+for(let n=0;n<knots.length;n++)steel(knots[n]).forEach((v,k)=>near(v*255,tones[n][k],'C iron-to-highlight ramp endpoint'));
+const quantiles=[10,20.28,36.28].map(x=>luma(steel(x))*255);
+for(let i=0;i<3;i++)check(Math.abs(quantiles[i]-[45.7914,60.1387,82.5636][i])<.03,'source quartiles occupy distinct steel tones');
+for(let y=1;y<=255;y++)check(luma(steel(y))>luma(steel(y-1)),'source sculpted shading is never flattened to a floor');
+const matte=new Function('l','chroma','sourceAlpha','smoothstep',body('matteAlpha').replace(/\bfloat /g,'let '));
+const alpha=(l,chroma,a)=>matte(l,chroma,a,smoothstep);
+for(let l=0;l<=1.001;l+=.05)for(let chroma=0;chroma<=1.001;chroma+=.1)for(let a=0;a<=1.001;a+=.05){
+ const out=alpha(l,chroma,a);check(out>=-1e-9&&out<=a+1e-9,'source alpha is never amplified or negative');}
+for(const a of [.98,.99,1])near(alpha(.9,0,a),a,'opaque metal highlights remain intact');
+near(alpha(48/255,0,207/255),207/255,'dark partial-alpha sculpted metal is preserved');
+check(alpha(179/255,0,70/255)<.02,'known HP white jagged matte sample is suppressed');
+near(alpha(193/255,0,41/255),0,'known HP white partial-alpha fringe is removed');
+near(alpha(.8,.2,.5),.5,'colored partial-alpha source is not treated as neutral matte');
+check(!shader.includes('innerAlpha')&&!shader.includes('_MainTex_TexelSize'),'no global neighbor alpha erosion');
+check(shader.includes('art.a=matteAlpha(l,chroma,art.a)'),'production ornament branch applies tested matte policy');
 check(shader.includes('1-_HpTranslate'),'C reads existing HP display projection');
 
 const out=path.join(root,'unity/Library/HudProtoTests');fs.mkdirSync(out,{recursive:true});
@@ -40,7 +58,9 @@ using System;
 namespace UnityEngine {
  public enum ColorSpace { Gamma,Linear }
  public static class QualitySettings {public static ColorSpace activeColorSpace=ColorSpace.Gamma;}
- public struct Color {public float r,g,b,a;public Color(float r,float g,float b,float a=1){this.r=r;this.g=g;this.b=b;this.a=a;}public Color linear {get{return this;}}}
+ public struct Color {public float r,g,b,a;public Color(float r,float g,float b,float a=1){this.r=r;this.g=g;this.b=b;this.a=a;}
+  static float Decode(float c){return c<=.04045f?c/12.92f:(float)Math.Pow((c+.055f)/1.055f,2.4);}
+  public Color linear {get{return new Color(Decode(r),Decode(g),Decode(b),a);}}}
  public static class Mathf {
   public static int CeilToInt(float x){return (int)Math.Ceiling(x);}public static float Min(float a,float b){return Math.Min(a,b);}
   public static float Max(float a,float b){return Math.Max(a,b);}public static float Abs(float x){return Math.Abs(x);}
@@ -58,14 +78,24 @@ namespace Exoduser.UnityPort {
   static void Main(){var plate=NativeHudPrototypeCArt.Plate(709,74,12);var support=NativeHudPrototypeCArt.Plate(109,74,8,true);
    Check(plate.width==1418&&plate.height==148,"A plate bounds rasterized at2x");
    Check(plate.At(.2f,.2f).a==0,"chamfer outside stays clear");
-   for(int y=5;y<70;y+=5)for(int x=15;x<695;x+=20){float a=plate.At(x,y).a;Check(a>=.10f&&a<=.22f,"plate interior preserves78percent or more floor");}
+   for(int y=5;y<70;y+=5)for(int x=15;x<695;x+=20){float a=plate.At(x,y).a;Check(Math.Abs(a-(.88f+.06f*y/74))<.00001f,"C face restores near-A weight at the same 74px height");}
    float layered=support.At(54,36).a+plate.At(384,36).a*(1-support.At(54,36).a);
-   Check(layered<.32f,"aligned mouse support plus plate preserves most floor");
+   Check(layered>.91f&&layered<.95f,"mouse support is visible but remains below A plate alpha");
+   double area=0;for(int y=0;y<148;y++)for(int x=0;x<1418;x++)area+=plate.At((x+.5f)/2,(y+.5f)/2).a/4;
+   Check(area>47000&&area<48000,"C face alpha area is near A, not the old faint outline");
+   UnityEngine.QualitySettings.activeColorSpace=UnityEngine.ColorSpace.Linear;
+   var linearPlate=NativeHudPrototypeCArt.Plate(709,74,12);var gammaPixel=plate.At(350,35);var linearPixel=linearPlate.At(350,35);
+   var expectedLinear=gammaPixel.linear;Check(Math.Abs(linearPixel.r-expectedLinear.r)<.000001f&&Math.Abs(linearPixel.g-expectedLinear.g)<.000001f&&Math.Abs(linearPixel.b-expectedLinear.b)<.000001f,"C CPU raster writes decoded RGB in Linear mode");
+   Check(Math.Abs(linearPixel.a-gammaPixel.a)<.000001f,"C CPU raster color-space conversion never changes alpha");
+   UnityEngine.QualitySettings.activeColorSpace=UnityEngine.ColorSpace.Gamma;
    var rail=NativeHudPrototypeCArt.Rail(1107.8914f,99.22286f,1008.6686f);int transparent=0;
    for(int x=0;x<1107;x++){if(rail.At(x,8).a==0)transparent++;}
    Check(transparent>1070,"lower rail is clear except narrow contact feet");
    Check(rail.At(554,8).a==0,"no black bar under center");Check(rail.At(554,.5f).a>0,"thin grounding line remains");
    Check(rail.At(0,.5f).a==0,"rail ends fade rather than hard cut");
+   double railArea=0;for(int y=0;y<28;y++)for(int x=0;x<rail.width;x++)railArea+=rail.At((x+.5f)/2,(y+.5f)/2).a/4;
+   Check(railArea<900,"thin C rail alpha area stays far below A 14350px opaque rail");
+   Console.WriteLine("C raster alpha area: plate="+area.ToString("F3",System.Globalization.CultureInfo.InvariantCulture)+"px2 rail="+railArea.ToString("F3",System.Globalization.CultureInfo.InvariantCulture)+"px2");
    Console.WriteLine("PASS "+checks+" C production support raster contracts");
   }
  }

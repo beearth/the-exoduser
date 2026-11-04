@@ -51,7 +51,6 @@ namespace Exoduser.UnityPort
                 LeftLiquid=new HudProtoRect(leftC-78,OrbCenterY-78,156,156);
                 RightLiquid=new HudProtoRect(rightC-78,OrbCenterY-78,156,156);
                 Rail=new HudProtoRect(leftC-radiusC+18,baseC,rightC-leftC+Outer-36,14);
-                Emblem=new HudProtoRect(width/2-55,Plate.Y-31*.86f,110,31);
                 float rowC=Plate.X+22;
                 for(int i=0;i<13;i++){
                     if(i>0)rowC+=(i==4||i==6||i==8)?16:5;
@@ -59,6 +58,7 @@ namespace Exoduser.UnityPort
                 }
                 // No B lift. Support both actual mouse slots and their chips, with eight px side margins.
                 Pedestal=new HudProtoRect(slots[6].X-8,Plate.Y,slots[7].Right-slots[6].X+16,Plate.Height);
+                Emblem=new HudProtoRect(Pedestal.X+(Pedestal.Width-110)/2,Plate.Y-31*.86f,110,31);
                 return;
             }
             Mode=mode;bool b=mode==HudPrototypeMode.B;Outer=b?212:190;Liquid=b?176:156;Band=b?18:17;EyeWidth=b?34:30;Chamfer=b?14:12;

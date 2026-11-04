@@ -1,0 +1,64 @@
+H5 HUD C RETOUCH — 2026-11-05
+base: 3a13dc0d46d22a19e1f0640d7689914df99569c4
+branch: codex/unity-hud-proto-20261105
+worktree: G:/exoduser-wt/codex-h5-hud-c
+Scope: source/static/offline C# contracts only; no Unity/Metal/visual execution.
+
+Worker commands, each exit=0 (stdout, terminal controls removed):
+node unity/Tools/hud-proto-tests/run.cjs
+PASS 637 HUD prototype argument/layout/input contracts
+
+node unity/Tools/hud-proto-tests/c-render-math.cjs
+C raster alpha area: plate=47513.973px2 rail=812.161px2
+PASS 453 C production support raster contracts
+PASS 5392 C production shader scalar/color contracts (HLSL/Metal/visual not executed)
+
+node unity/Tools/hud-proto-tests/c-transport.cjs
+C token 61,10,18 => CPU/GPU storage 12,1,2 => conditional GUI display 61,13,22
+C token 59,95,134 => CPU/GPU storage 11,29,61 => conditional GUI display 59,95,134
+C token 62,94,74 => CPU/GPU storage 12,29,17 => conditional GUI display 61,95,73
+PASS 51 C production target/blit state contracts
+PASS 10242 C production color transfer contracts (native IMGUI/Metal/framebuffer not executed)
+
+Parent commands, each exit=0 (stdout, terminal controls removed):
+node unity/Tools/hud-proto-tests/c-preservation.cjs
+{
+  "scope": "No-argument and A/B source-path preservation (not pixel validation)",
+  "baseline": "c1b51cda503d1de1ef3ae2c828309e7c27d539f7",
+  "retouchBase": "3a13dc0d46d22a19e1f0640d7689914df99569c4",
+  "checks": 25,
+  "passed": true
+}
+
+node unity/Tools/hud-proto-tests/legacy-path.cjs
+{
+  "scope": "Full legacy source equality after removing only three opt-in additions; shader/default layout untouched. Argument behavior covered by Program.cs.",
+  "baseline": "75add6ff4a6209e2590a7a626ffb4c37b5f0268e",
+  "passed": true,
+  "checks": [
+    {"file":"unity/Assets/Exoduser/Runtime/NativeHud.cs","hooks":2,"legacyLines":205,"gitCr":0,"checkoutCr":0},
+    {"file":"unity/Assets/Exoduser/Runtime/NativeHudSkills.cs","hooks":1,"legacyLines":89,"gitCr":0,"checkoutCr":0}
+  ]
+}
+
+node unity/Tools/hud-proto-tests/render-math.cjs
+PASS 16 HUD prototype diamond/notch/soft-shadow contracts
+
+./unity/Tools/devtools/buildloop/compile-check.ps1 -Project G:/exoduser-wt/codex-h5-hud-c/unity -LibraryProject G:/exoduser-wt/codex-unity-parity-1102/unity -Output I:/EXODUSER-Storage/devtools/h5-hud-c
+Player Exoduser.Core sources=133 exit=0 errors=0
+Player Exoduser.Runtime sources=300 exit=0 errors=0
+Editor Exoduser.Core sources=133 exit=0 errors=0
+Editor Exoduser.Runtime sources=300 exit=0 errors=0
+Editor Exoduser.Editor sources=64 exit=0 errors=0
+result.json passed=true, warnings155, changed C# warnings0.
+
+TDD: intended RED4 (crest, ramp, transfer, target failure cleanup), then GREEN.
+Actual test failures:0. Initial sparse-path setup error restored original patterns and added exact4 compiler references; edits preserved.
+Independent source spec review: PASS. Independent source quality review: no blocking findings.
+Mac old measured XY: unknown; fixed repeatable coordinates and conditional output math in H4_unity_prototype_C.md.
+Do not interpret any of these tests as HLSL/Metal/1x visual approval.
+
+Final EOL audit PASS: existing C# / shader / test / report CR0 retained; new files LF.
+CHANGELOG_SYNC.md original bytes preserved as prefix, CRLF58195 ->58201, bareLF0.
+Staged whitespace check PASS (core.whitespace=cr-at-eol); owned paths11, forbidden production paths0.
+Document source/math review corrected alpha notation and line citations; no blockers.

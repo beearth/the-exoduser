@@ -10,19 +10,26 @@ namespace Exoduser.UnityPort
         Material prototypeCMaterial;
         List<RenderTexture> prototypeCArtwork;
         RenderTexture prototypeCLeftFrame,prototypeCRightFrame,prototypeCGargoyleL,prototypeCGargoyleR,prototypeCCrest;
+        static RenderTexture PrototypeCTarget(string name,int width,int height)
+        {
+            // C shader output and the sRGB write deliberately match the C CPU artwork's stored RGB bytes.
+            var target=new RenderTexture(width,height,0,RenderTextureFormat.ARGB32,RenderTextureReadWrite.sRGB){name=name,
+                filterMode=FilterMode.Bilinear,wrapMode=TextureWrapMode.Clamp};
+            try{
+                if(!target.Create())throw new InvalidOperationException("Cannot create C HUD target "+name);
+                return target;
+            }catch{target.Release();Release(target);throw;}
+        }
         RenderTexture PrototypeCArtTarget(string name,int width,int height)
         {
-            var target=new RenderTexture(width,height,0,RenderTextureFormat.ARGB32){name=name,
-                filterMode=FilterMode.Bilinear,wrapMode=TextureWrapMode.Clamp};
-            prototypeCArtwork.Add(target);
-            if(!target.Create())throw new InvalidOperationException("Cannot create C HUD artwork target "+name);
-            return target;
+            var target=PrototypeCTarget(name,width,height);prototypeCArtwork.Add(target);return target;
         }
         void PrototypeCBlit(RenderTexture target,int mode,Texture source=null)
         {
-            var old=RenderTexture.active;prototypeCMaterial.SetFloat("_Mode",mode);
-            try{Graphics.Blit(source??Texture2D.whiteTexture,target,prototypeCMaterial,0);}
-            finally{RenderTexture.active=old;}
+            var old=RenderTexture.active;bool oldWrite=GL.sRGBWrite;prototypeCMaterial.SetFloat("_Mode",mode);
+            try{GL.sRGBWrite=QualitySettings.activeColorSpace==ColorSpace.Linear;
+                Graphics.Blit(source??Texture2D.whiteTexture,target,prototypeCMaterial,0);}
+            finally{GL.sRGBWrite=oldWrite;RenderTexture.active=old;}
         }
         RenderTexture PrototypeCSilver(Texture source,string name,Rect crop,bool mirror=false,float fadeRight=0,float fadeBottom=0)
         {
@@ -58,7 +65,7 @@ namespace Exoduser.UnityPort
                 prototypeCGargoyleL=PrototypeCSilver(bar,"H4 source left gargoyle",gargoyleCrop,false,.28f);
                 prototypeCGargoyleR=PrototypeCSilver(bar,"H4 source right gargoyle",gargoyleCrop,true,.28f);
                 prototypeCCrest=PrototypeCSilver(bar,"H4 source center crest",new Rect(1120,100,220,62),false,0,.20f);
-                prototypeHp=PrototypeTarget("H4 HP liquid",512);prototypeResources=PrototypeTarget("H4 MP ST liquid",512);
+                prototypeHp=PrototypeCTarget("H4 HP liquid",512,512);prototypeResources=PrototypeCTarget("H4 MP ST liquid",512,512);
                 for(int i=0;i<13;i++)prototypeSlots[i]=PrototypeTarget("H4 slot "+i,128);
                 prototypeLayout=l;
             }catch{DisposePrototype();throw;}

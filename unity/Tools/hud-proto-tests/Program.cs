@@ -55,6 +55,7 @@ class Program {
   Near(c.LeftLiquid.X-c.LeftFrame.X,48*156f/175,"C source liquid x registration");
   Near(c.LeftLiquid.Y-c.LeftFrame.Y,44*156f/175,"C source liquid y registration");
   Box(c.Pedestal,935.5f,992,109,74,"C support derives from both mouse slots");
+  Box(c.Emblem,935,965.34f,110,31,"C crest follows mouse-pair center, without moving slots");
   Near(c.Pedestal.X+c.Pedestal.Width/2,(c.Slot(6).X+c.Slot(7).Right)/2,"C support center follows mouse pair");
   for(int i=0;i<13;i++){
    var r=c.Slot(i);var prior=a.Slot(i);Box(r,prior.X,prior.Y,prior.Width,prior.Height,"C A slot "+i);
@@ -69,6 +70,10 @@ class Program {
   foreach(float width in new[]{1920f,2560,3840}){var w=NativeHudPrototypeLayout.Create((HudPrototypeMode)3,width,1080);
    Near(w.Plate.X-c.Plate.X,(width-1920)/2,"C ultrawide centered");Near(w.LeftLiquid.Width,156,"C ultrawide no stretch");
    Near(w.Pedestal.X-c.Pedestal.X,(width-1920)/2,"C mouse support follows row");
+   Near(w.Emblem.X+w.Emblem.Width/2,w.Pedestal.X+w.Pedestal.Width/2,"C crest centered over support");
+   Near(w.Emblem.X+w.Emblem.Width/2,(w.Slot(6).X+w.Slot(7).Right)/2,"C crest centered over mouse slots");
+   for(int i=0;i<13;i++){var prior=NativeHudPrototypeLayout.Create(HudPrototypeMode.A,width,1080).Slot(i);
+    Box(w.Slot(i),prior.X,prior.Y,prior.Width,prior.Height,"C preserves every A slot at each viewport");}
   }
   Console.WriteLine("PASS "+checks+" HUD prototype argument/layout/input contracts");
  }

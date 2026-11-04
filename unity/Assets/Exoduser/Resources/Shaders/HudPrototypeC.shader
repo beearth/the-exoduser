@@ -23,7 +23,7 @@ Shader "EXODUSER/HudPrototypeC"
             #pragma vertex vert_img
             #pragma fragment frag
             #include "UnityCG.cginc"
-            sampler2D _MainTex;float4 _MainTex_TexelSize;
+            sampler2D _MainTex;
             float _Mode,_Diameter,_HpTranslate,_Hurt,_Mana,_Stamina,_Flip,_FadeRight,_FadeBottom;
             float4 _UvRect;
             const float EmptyCenterAlpha=.08;
@@ -35,18 +35,29 @@ Shader "EXODUSER/HudPrototypeC"
             float4 outputColor(float4 c)
             {
                 #ifndef UNITY_COLORSPACE_GAMMA
-                c.rgb=float3(linearChannel(c.r),linearChannel(c.g),linearChannel(c.b));
+                // C CPU artwork stores decoded token values in sRGB Texture2D bytes for IMGUI.
+                // The explicit sRGB RT write encodes once: E(D(D(token))) = D(token), matching that storage.
+                c.rgb=float3(linearChannel(linearChannel(c.r)),linearChannel(linearChannel(c.g)),linearChannel(linearChannel(c.b)));
                 #endif
                 return c;
             }
             float3 silver(float l)
             {
-                // Existing sculpted luminance, recolored into the five Silver Hell steel tokens.
-                l=saturate((l-.5)*1.4+.5)*1.15;
-                return l<.25?lerp(rgb(44,46,49),rgb(79,83,82),l/.25):
-                    l<.5?lerp(rgb(79,83,82),rgb(138,139,136),(l-.25)/.25):
-                    l<.8?lerp(rgb(138,139,136),rgb(201,199,195),(l-.5)/.3):
-                    lerp(rgb(201,199,195),rgb(246,245,242),saturate((l-.8)/.2));
+                // Raw sRGB source luminance preserves dark sculpted detail; no clipped contrast floor.
+                // Knots follow the existing frame's source range, using only Silver Hell iron/steel tokens.
+                float y=saturate(l)*255;
+                return y<10?lerp(rgb(15,15,16),rgb(44,46,49),y/10):
+                    y<36?lerp(rgb(44,46,49),rgb(79,83,82),(y-10)/26):
+                    y<69?lerp(rgb(79,83,82),rgb(138,139,136),(y-36)/33):
+                    y<163?lerp(rgb(138,139,136),rgb(201,199,195),(y-69)/94):
+                    lerp(rgb(201,199,195),rgb(246,245,242),(y-163)/92);
+            }
+            float matteAlpha(float l,float chroma,float sourceAlpha)
+            {
+                // Suppress bright neutral partial-alpha matte, without promoting opacity or eroding neighbors.
+                // Opaque highlights and dark sculpted translucent edges remain unchanged.
+                float matte=smoothstep(.45,.75,l)*(1-smoothstep(.65,.98,sourceAlpha))*(1-smoothstep(.025,.08,chroma));
+                return sourceAlpha*(1-matte);
             }
             float3 mpGradient(float h)
             {
@@ -74,15 +85,12 @@ Shader "EXODUSER/HudPrototypeC"
                     float2 local=i.uv;if(_Flip>.5)local.x=1-local.x;
                     float2 uv=_UvRect.xy+local*_UvRect.zw;
                     float4 art=tex2D(_MainTex,uv);
-                    // Trim one source texel of alpha fringe in this C-only runtime copy, preserving the original importer/PNG.
-                    float2 texel=_MainTex_TexelSize.xy;
-                    float innerAlpha=min(min(tex2D(_MainTex,uv+float2(texel.x,0)).a,tex2D(_MainTex,uv-float2(texel.x,0)).a),
-                        min(tex2D(_MainTex,uv+float2(0,texel.y)).a,tex2D(_MainTex,uv-float2(0,texel.y)).a));
-                    art.a=smoothstep(.04,.20,min(art.a,innerAlpha));
                     #ifndef UNITY_COLORSPACE_GAMMA
                     art.rgb=LinearToGammaSpace(art.rgb);
                     #endif
                     float l=dot(art.rgb,float3(.2126,.7152,.0722));
+                    float chroma=max(art.r,max(art.g,art.b))-min(art.r,min(art.g,art.b));
+                    art.a=matteAlpha(l,chroma,art.a);
                     float fadeRight=_FadeRight>0?saturate((1-local.x)/_FadeRight):1;
                     float fadeBottom=_FadeBottom>0?saturate(local.y/_FadeBottom):1;
                     return outputColor(float4(silver(l),art.a*fadeRight*fadeBottom));

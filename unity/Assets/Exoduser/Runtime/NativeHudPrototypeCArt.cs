@@ -2,10 +2,10 @@ using UnityEngine;
 
 namespace Exoduser.UnityPort
 {
-    // C-only transparent metal supports. No noise, dither, replacement ornaments or imported-asset edits.
+    // C-only metal face with a thin grounding rail. No noise, dither or imported-asset edits.
     internal static class NativeHudPrototypeCArt
     {
-        internal const float PlateTopAlpha=.10f,PlateBottomAlpha=.22f,SupportInteriorAlpha=.12f;
+        internal const float PlateTopAlpha=.88f,PlateBottomAlpha=.94f,SupportInteriorAlpha=.12f;
         internal const float RailStrokeHeight=1.5f,EdgeAlpha=.52f;
         static Color Silver(float alpha){return NativeHudPrototypeArt.C(201,199,195,alpha);}
         static float Cover(float distance){return Mathf.Clamp01(.5f-distance);}
