@@ -1,0 +1,574 @@
+{
+    "models": [
+        {
+            "name": "cocoon",
+            "resource": "A2R/Models3D/Prefabs/cocoon",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/cocoon.glb",
+            "prepared": true,
+            "width": 1.177154541015625,
+            "depth": 0.6380139589309692,
+            "lods": 3,
+            "triangles": 40995
+        },
+        {
+            "name": "hang_cage",
+            "resource": "A2R/Models3D/Prefabs/hang_cage",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/hang_cage.glb",
+            "prepared": true,
+            "width": 1.2524749040603638,
+            "depth": 1.0254573822021484,
+            "lods": 3,
+            "triangles": 40672
+        },
+        {
+            "name": "penta_full",
+            "resource": "A2R/Models3D/Prefabs/penta_full",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/penta_full.glb",
+            "prepared": true,
+            "width": 2.1841037273406982,
+            "depth": 2.313072919845581,
+            "lods": 3,
+            "triangles": 40828
+        },
+        {
+            "name": "skull_totem",
+            "resource": "A2R/Models3D/Prefabs/skull_totem",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/skull_totem.glb",
+            "prepared": true,
+            "width": 0.4529472291469574,
+            "depth": 0.43997272849082947,
+            "lods": 3,
+            "triangles": 40992
+        },
+        {
+            "name": "sword_pile",
+            "resource": "A2R/Models3D/Prefabs/sword_pile",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/sword_pile.glb",
+            "prepared": true,
+            "width": 1.3763924837112427,
+            "depth": 1.2571927309036255,
+            "lods": 3,
+            "triangles": 40981
+        },
+        {
+            "name": "bnd0",
+            "resource": "A2R/Models3D/Prefabs/bnd0",
+            "source": "I:/EXODUSER-Storage/map25d/bake3d/out/bnd0.glb",
+            "prepared": true,
+            "width": 1.1005247831344604,
+            "depth": 0.781650185585022,
+            "lods": 3,
+            "triangles": 67931
+        },
+        {
+            "name": "bnd18",
+            "resource": "A2R/Models3D/Prefabs/bnd18",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/bnd18.glb",
+            "prepared": true,
+            "width": 1.0955599546432495,
+            "depth": 1.0019763708114624,
+            "lods": 3,
+            "triangles": 68254
+        },
+        {
+            "name": "bnd3",
+            "resource": "A2R/Models3D/Prefabs/bnd3",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/bnd3.glb",
+            "prepared": true,
+            "width": 1.257763385772705,
+            "depth": 1.072015404701233,
+            "lods": 3,
+            "triangles": 68181
+        },
+        {
+            "name": "bnd5",
+            "resource": "A2R/Models3D/Prefabs/bnd5",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/bnd5.glb",
+            "prepared": true,
+            "width": 1.093302845954895,
+            "depth": 0.935396134853363,
+            "lods": 3,
+            "triangles": 68132
+        },
+        {
+            "name": "c1tree",
+            "resource": "A2R/Models3D/Prefabs/c1tree",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/c1tree.glb",
+            "prepared": true,
+            "width": 1.086734652519226,
+            "depth": 0.9541518092155457,
+            "lods": 3,
+            "triangles": 68059
+        },
+        {
+            "name": "ctree13",
+            "resource": "A2R/Models3D/Prefabs/ctree13",
+            "source": "I:/EXODUSER-Storage/map25d/bake3d/out/ctree13.glb",
+            "prepared": true,
+            "width": 1.3248878717422485,
+            "depth": 1.1949617862701416,
+            "lods": 3,
+            "triangles": 68294
+        },
+        {
+            "name": "ctree14",
+            "resource": "A2R/Models3D/Prefabs/ctree14",
+            "source": "I:/EXODUSER-Storage/map25d/bake3d/out/ctree14.glb",
+            "prepared": true,
+            "width": 1.6083953380584717,
+            "depth": 1.6929734945297241,
+            "lods": 3,
+            "triangles": 68390
+        },
+        {
+            "name": "ctree15",
+            "resource": "A2R/Models3D/Prefabs/ctree15",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/ctree15.glb",
+            "prepared": true,
+            "width": 1.1767170429229736,
+            "depth": 0.7150945663452148,
+            "lods": 3,
+            "triangles": 68223
+        },
+        {
+            "name": "ctree17",
+            "resource": "A2R/Models3D/Prefabs/ctree17",
+            "source": "I:/EXODUSER-Storage/map25d/bake3d/out/ctree17.glb",
+            "prepared": true,
+            "width": 1.3461345434188843,
+            "depth": 1.2145665884017944,
+            "lods": 3,
+            "triangles": 68161
+        },
+        {
+            "name": "ctree18",
+            "resource": "A2R/Models3D/Prefabs/ctree18",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/ctree18.glb",
+            "prepared": true,
+            "width": 1.1717511415481567,
+            "depth": 0.608911395072937,
+            "lods": 3,
+            "triangles": 68128
+        },
+        {
+            "name": "ctree19",
+            "resource": "A2R/Models3D/Prefabs/ctree19",
+            "source": "I:/EXODUSER-Storage/map25d/bake3d/out/ctree19.glb",
+            "prepared": true,
+            "width": 1.0589302778244019,
+            "depth": 1.0661903619766235,
+            "lods": 3,
+            "triangles": 68167
+        },
+        {
+            "name": "ctree20",
+            "resource": "A2R/Models3D/Prefabs/ctree20",
+            "source": "I:/EXODUSER-Storage/map25d/bake3d/out/ctree20.glb",
+            "prepared": true,
+            "width": 1.724158525466919,
+            "depth": 1.5778316259384155,
+            "lods": 3,
+            "triangles": 68278
+        },
+        {
+            "name": "fg_rot01",
+            "resource": "A2R/Models3D/Prefabs/fg_rot01",
+            "source": "I:/EXODUSER-Storage/map25d/bake3d/out/fg_rot01.glb",
+            "prepared": true,
+            "width": 1.3605066537857056,
+            "depth": 1.1020170450210571,
+            "lods": 3,
+            "triangles": 68173
+        },
+        {
+            "name": "fg_rot03",
+            "resource": "A2R/Models3D/Prefabs/fg_rot03",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/fg_rot03.glb",
+            "prepared": true,
+            "width": 1.0581613779067993,
+            "depth": 0.6417907476425171,
+            "lods": 3,
+            "triangles": 68208
+        },
+        {
+            "name": "fyellow",
+            "resource": "A2R/Models3D/Prefabs/fyellow",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/fyellow.glb",
+            "prepared": true,
+            "width": 1.0000778436660767,
+            "depth": 0.09691383689641953,
+            "lods": 3,
+            "triangles": 18419
+        },
+        {
+            "name": "sbone",
+            "resource": "A2R/Models3D/Prefabs/sbone",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/sbone.glb",
+            "prepared": true,
+            "width": 1.3953913450241089,
+            "depth": 1.3487389087677002,
+            "lods": 3,
+            "triangles": 20415
+        },
+        {
+            "name": "spod",
+            "resource": "A2R/Models3D/Prefabs/spod",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/spod.glb",
+            "prepared": true,
+            "width": 1.761783480644226,
+            "depth": 1.5779598951339722,
+            "lods": 3,
+            "triangles": 20539
+        },
+        {
+            "name": "sroot_a",
+            "resource": "A2R/Models3D/Prefabs/sroot_a",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/sroot_a.glb",
+            "prepared": true,
+            "width": 1.1349629163742065,
+            "depth": 0.8769842982292175,
+            "lods": 3,
+            "triangles": 20540
+        },
+        {
+            "name": "sroot_b",
+            "resource": "A2R/Models3D/Prefabs/sroot_b",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/sroot_b.glb",
+            "prepared": true,
+            "width": 1.0797703266143799,
+            "depth": 0.4465741813182831,
+            "lods": 3,
+            "triangles": 20833
+        },
+        {
+            "name": "altar",
+            "resource": "A2R/Models3D/Prefabs/altar",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/altar.glb",
+            "prepared": true,
+            "width": 2.2818331718444824,
+            "depth": 2.2643721103668213,
+            "lods": 3,
+            "triangles": 40894
+        },
+        {
+            "name": "bone_arch",
+            "resource": "A2R/Models3D/Prefabs/bone_arch",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/bone_arch.glb",
+            "prepared": true,
+            "width": 1.402933120727539,
+            "depth": 1.2712208032608032,
+            "lods": 3,
+            "triangles": 40979
+        },
+        {
+            "name": "camp",
+            "resource": "A2R/Models3D/Prefabs/camp",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/camp.glb",
+            "prepared": true,
+            "width": 2.473266124725342,
+            "depth": 2.208982467651367,
+            "lods": 3,
+            "triangles": 36799
+        },
+        {
+            "name": "r3_fern_0",
+            "resource": "A2R/Models3D/Prefabs/r3_fern_0",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/r3_fern_0.glb",
+            "prepared": true,
+            "width": 1.8248119354248047,
+            "depth": 1.867484450340271,
+            "lods": 3,
+            "triangles": 1496
+        },
+        {
+            "name": "r3_fern_1",
+            "resource": "A2R/Models3D/Prefabs/r3_fern_1",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/r3_fern_1.glb",
+            "prepared": true,
+            "width": 2.273925542831421,
+            "depth": 2.351553440093994,
+            "lods": 3,
+            "triangles": 928
+        },
+        {
+            "name": "r3_fern_2",
+            "resource": "A2R/Models3D/Prefabs/r3_fern_2",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/r3_fern_2.glb",
+            "prepared": true,
+            "width": 1.6945935487747192,
+            "depth": 2.0369884967803955,
+            "lods": 3,
+            "triangles": 1496
+        },
+        {
+            "name": "r4_brush_0",
+            "resource": "A2R/Models3D/Prefabs/r4_brush_0",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/r4_brush_0_v3.glb",
+            "prepared": true,
+            "width": 2.719780206680298,
+            "depth": 2.2846155166625977,
+            "lods": 3,
+            "triangles": 900
+        },
+        {
+            "name": "r4_brush_1",
+            "resource": "A2R/Models3D/Prefabs/r4_brush_1",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/r4_brush_1_v3.glb",
+            "prepared": true,
+            "width": 2.6519336700439453,
+            "depth": 2.439779043197632,
+            "lods": 3,
+            "triangles": 868
+        },
+        {
+            "name": "r4_brush_2",
+            "resource": "A2R/Models3D/Prefabs/r4_brush_2",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/r4_brush_2_v3.glb",
+            "prepared": true,
+            "width": 2.8021976947784424,
+            "depth": 2.241758346557617,
+            "lods": 3,
+            "triangles": 868
+        },
+        {
+            "name": "r4_brush_3",
+            "resource": "A2R/Models3D/Prefabs/r4_brush_3",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/r4_brush_3_v3.glb",
+            "prepared": true,
+            "width": 2.4806630611419678,
+            "depth": 2.182983636856079,
+            "lods": 3,
+            "triangles": 900
+        },
+        {
+            "name": "bnd0_far",
+            "resource": "A2R/Models3D/Prefabs/bnd0_far",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/far/bnd0_far.glb",
+            "prepared": true,
+            "width": 1.0976719856262207,
+            "depth": 0.7559152841567993,
+            "lods": 1,
+            "triangles": 3106
+        },
+        {
+            "name": "bnd3_far",
+            "resource": "A2R/Models3D/Prefabs/bnd3_far",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/far/bnd3_far.glb",
+            "prepared": true,
+            "width": 1.256693959236145,
+            "depth": 1.0685063600540161,
+            "lods": 1,
+            "triangles": 3121
+        },
+        {
+            "name": "bnd5_far",
+            "resource": "A2R/Models3D/Prefabs/bnd5_far",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/far/bnd5_far.glb",
+            "prepared": true,
+            "width": 1.0953902006149292,
+            "depth": 0.9365878105163574,
+            "lods": 1,
+            "triangles": 3120
+        },
+        {
+            "name": "bnd18_far",
+            "resource": "A2R/Models3D/Prefabs/bnd18_far",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/far/bnd18_far.glb",
+            "prepared": true,
+            "width": 1.0921330451965332,
+            "depth": 0.9977372884750366,
+            "lods": 1,
+            "triangles": 3124
+        },
+        {
+            "name": "c1tree_far",
+            "resource": "A2R/Models3D/Prefabs/c1tree_far",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/far/c1tree_far.glb",
+            "prepared": true,
+            "width": 0.9657653570175171,
+            "depth": 0.8721290826797485,
+            "lods": 1,
+            "triangles": 3103
+        },
+        {
+            "name": "fg_rot01_far",
+            "resource": "A2R/Models3D/Prefabs/fg_rot01_far",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/far/fg_rot01_far.glb",
+            "prepared": true,
+            "width": 1.3591010570526123,
+            "depth": 1.088423252105713,
+            "lods": 1,
+            "triangles": 3121
+        },
+        {
+            "name": "fg_rot03_far",
+            "resource": "A2R/Models3D/Prefabs/fg_rot03_far",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/far/fg_rot03_far.glb",
+            "prepared": true,
+            "width": 1.0194109678268433,
+            "depth": 0.5594190955162048,
+            "lods": 1,
+            "triangles": 3113
+        },
+        {
+            "name": "ctree13_far",
+            "resource": "A2R/Models3D/Prefabs/ctree13_far",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/far/ctree13_far.glb",
+            "prepared": true,
+            "width": 1.3321831226348877,
+            "depth": 1.204233169555664,
+            "lods": 1,
+            "triangles": 3128
+        },
+        {
+            "name": "ctree14_far",
+            "resource": "A2R/Models3D/Prefabs/ctree14_far",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/far/ctree14_far.glb",
+            "prepared": true,
+            "width": 1.5981028079986572,
+            "depth": 1.6789066791534424,
+            "lods": 1,
+            "triangles": 3131
+        },
+        {
+            "name": "ctree15_far",
+            "resource": "A2R/Models3D/Prefabs/ctree15_far",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/far/ctree15_far.glb",
+            "prepared": true,
+            "width": 1.190481424331665,
+            "depth": 0.7176410555839539,
+            "lods": 1,
+            "triangles": 3122
+        },
+        {
+            "name": "ctree16_far",
+            "resource": "A2R/Models3D/Prefabs/ctree16_far",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/far/ctree16_far.glb",
+            "prepared": true,
+            "width": 1.0403029918670654,
+            "depth": 0.6718118786811829,
+            "lods": 1,
+            "triangles": 3121
+        },
+        {
+            "name": "ctree17_far",
+            "resource": "A2R/Models3D/Prefabs/ctree17_far",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/far/ctree17_far.glb",
+            "prepared": true,
+            "width": 1.3557260036468506,
+            "depth": 1.219374418258667,
+            "lods": 1,
+            "triangles": 3121
+        },
+        {
+            "name": "ctree18_far",
+            "resource": "A2R/Models3D/Prefabs/ctree18_far",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/far/ctree18_far.glb",
+            "prepared": true,
+            "width": 1.1693013906478882,
+            "depth": 0.6091618537902832,
+            "lods": 1,
+            "triangles": 3118
+        },
+        {
+            "name": "ctree19_far",
+            "resource": "A2R/Models3D/Prefabs/ctree19_far",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/far/ctree19_far.glb",
+            "prepared": true,
+            "width": 1.0511350631713867,
+            "depth": 1.072213888168335,
+            "lods": 1,
+            "triangles": 3119
+        },
+        {
+            "name": "ctree20_far",
+            "resource": "A2R/Models3D/Prefabs/ctree20_far",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/far/ctree20_far.glb",
+            "prepared": true,
+            "width": 1.7301369905471802,
+            "depth": 1.576915979385376,
+            "lods": 1,
+            "triangles": 3125
+        },
+        {
+            "name": "fern_0",
+            "resource": "A2R/Models3D/Prefabs/fern_0",
+            "source": "I:/EXODUSER-Storage/map25d/prop3d-foliage/out/fern_0.glb",
+            "prepared": true,
+            "width": 3.3861820697784424,
+            "depth": 2.7576310634613037,
+            "lods": 3,
+            "triangles": 1860
+        },
+        {
+            "name": "fern_1",
+            "resource": "A2R/Models3D/Prefabs/fern_1",
+            "source": "I:/EXODUSER-Storage/map25d/prop3d-foliage/out/fern_1.glb",
+            "prepared": true,
+            "width": 1.8786041736602783,
+            "depth": 1.9470696449279785,
+            "lods": 3,
+            "triangles": 2142
+        },
+        {
+            "name": "fern_2",
+            "resource": "A2R/Models3D/Prefabs/fern_2",
+            "source": "I:/EXODUSER-Storage/map25d/prop3d-foliage/out/fern_2.glb",
+            "prepared": true,
+            "width": 1.9676436185836792,
+            "depth": 2.2562832832336426,
+            "lods": 3,
+            "triangles": 2124
+        },
+        {
+            "name": "brush_0",
+            "resource": "A2R/Models3D/Prefabs/brush_0",
+            "source": "I:/EXODUSER-Storage/map25d/prop3d-foliage/out/brush_0.glb",
+            "prepared": true,
+            "width": 4.094828128814697,
+            "depth": 2.407258987426758,
+            "lods": 3,
+            "triangles": 3976
+        },
+        {
+            "name": "brush_1",
+            "resource": "A2R/Models3D/Prefabs/brush_1",
+            "source": "I:/EXODUSER-Storage/map25d/prop3d-foliage/out/brush_1.glb",
+            "prepared": true,
+            "width": 4.583938121795654,
+            "depth": 2.945326566696167,
+            "lods": 3,
+            "triangles": 3848
+        },
+        {
+            "name": "brush_2",
+            "resource": "A2R/Models3D/Prefabs/brush_2",
+            "source": "I:/EXODUSER-Storage/map25d/prop3d-foliage/out/brush_2.glb",
+            "prepared": true,
+            "width": 4.332178115844727,
+            "depth": 2.745388984680176,
+            "lods": 3,
+            "triangles": 3976
+        },
+        {
+            "name": "brush_3",
+            "resource": "A2R/Models3D/Prefabs/brush_3",
+            "source": "I:/EXODUSER-Storage/map25d/prop3d-foliage/out/brush_3.glb",
+            "prepared": true,
+            "width": 3.801363706588745,
+            "depth": 2.496065855026245,
+            "lods": 3,
+            "triangles": 3696
+        },
+        {
+            "name": "ctree16",
+            "resource": "A2R/Models3D/Prefabs/ctree16",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/ctree16.glb",
+            "prepared": true,
+            "width": 1.065375566482544,
+            "depth": 0.7004398107528687,
+            "lods": 3,
+            "triangles": 68191
+        }
+    ]
+}

@@ -1,0 +1,398 @@
+{
+    "scope": "r15 exact stored anchor/camera/FOV, 1920x1080, 34deg. Painting alpha >= .12 edge pixels projected through original pivot and yaw. Display LOD0 (source LOD1) indexed mesh vertices projected; extrema are silhouette span, not inflated renderer bounds. Uniform scale binary search constrained .6..1. No Core or game camera changes.",
+    "models": [
+        "cocoon",
+        "hang_cage",
+        "skull_totem",
+        "sroot_a",
+        "sroot_b",
+        "bone_arch",
+        "c1tree",
+        "ctree15",
+        "ctree18",
+        "ctree13",
+        "ctree14",
+        "ctree16",
+        "ctree17",
+        "fg_rot01",
+        "fg_rot03",
+        "sbone",
+        "sword_pile"
+    ],
+    "scales": [
+        {
+            "name": "cocoon",
+            "scale": 0.9915021657943726,
+            "paintingWidth": 93.4161376953125,
+            "unscaledWidth": 94.27499389648438,
+            "scaledWidth": 93.41616821289063,
+            "residualPercent": 0.000032668420317349955,
+            "clamped": false,
+            "anchor": {
+                "x": 24.7320556640625,
+                "y": 0.013311179354786873,
+                "z": -44.02503967285156
+            },
+            "cameraPosition": {
+                "x": 21.831893920898438,
+                "y": 12.92042350769043,
+                "z": -60.41059875488281
+            },
+            "cameraPitch": 34.0,
+            "cameraFov": 46.9453010559082,
+            "cameraDistance": 19.764041900634766
+        },
+        {
+            "name": "hang_cage",
+            "scale": 0.8478025197982788,
+            "paintingWidth": 73.14712524414063,
+            "unscaledWidth": 86.22625732421875,
+            "scaledWidth": 73.14715576171875,
+            "residualPercent": 0.00004172081753495149,
+            "clamped": false,
+            "anchor": {
+                "x": 24.354307174682617,
+                "y": 0.013311179354786873,
+                "z": -44.02503967285156
+            },
+            "cameraPosition": {
+                "x": 21.83193588256836,
+                "y": 9.88490104675293,
+                "z": -56.71388244628906
+            },
+            "cameraPitch": 34.0,
+            "cameraFov": 46.9453010559082,
+            "cameraDistance": 15.302976608276367
+        },
+        {
+            "name": "skull_totem",
+            "scale": 0.8679184913635254,
+            "paintingWidth": 23.673492431640625,
+            "unscaledWidth": 27.29400634765625,
+            "scaledWidth": 23.67352294921875,
+            "residualPercent": 0.00012891033838968724,
+            "clamped": false,
+            "anchor": {
+                "x": 23.518503189086914,
+                "y": 0.013311179354786873,
+                "z": -44.02503967285156
+            },
+            "cameraPosition": {
+                "x": 22.031810760498047,
+                "y": 9.376996994018555,
+                "z": -56.256141662597656
+            },
+            "cameraPitch": 34.0,
+            "cameraFov": 46.9453010559082,
+            "cameraDistance": 14.752437591552734
+        },
+        {
+            "name": "sword_pile",
+            "scale": 0.7476029396057129,
+            "paintingWidth": 51.92529296875,
+            "unscaledWidth": 69.3702392578125,
+            "scaledWidth": 51.925384521484375,
+            "residualPercent": 0.00017631625814829022,
+            "clamped": false,
+            "anchor": {
+                "x": 23.664169311523438,
+                "y": 0.013311179354786873,
+                "z": -44.02503967285156
+            },
+            "cameraPosition": {
+                "x": 21.83193588256836,
+                "y": 9.249336242675781,
+                "z": -56.318172454833984
+            },
+            "cameraPitch": 34.0,
+            "cameraFov": 46.9453010559082,
+            "cameraDistance": 14.832420349121094
+        },
+        {
+            "name": "sroot_a",
+            "scale": 0.9528805017471313,
+            "paintingWidth": 41.575469970703125,
+            "unscaledWidth": 43.699615478515625,
+            "scaledWidth": 41.575469970703125,
+            "residualPercent": 0.0,
+            "clamped": false,
+            "anchor": {
+                "x": 23.57979393005371,
+                "y": 0.013311179354786873,
+                "z": -44.02503967285156
+            },
+            "cameraPosition": {
+                "x": 21.83193588256836,
+                "y": 9.094369888305664,
+                "z": -56.42395782470703
+            },
+            "cameraPitch": 34.0,
+            "cameraFov": 46.9453010559082,
+            "cameraDistance": 14.957538604736328
+        },
+        {
+            "name": "sroot_b",
+            "scale": 1.0,
+            "paintingWidth": 41.574188232421875,
+            "unscaledWidth": 41.05029296875,
+            "scaledWidth": 41.05029296875,
+            "residualPercent": -1.2601455450057983,
+            "clamped": true,
+            "anchor": {
+                "x": 23.579790115356445,
+                "y": 0.013311179354786873,
+                "z": -44.02503967285156
+            },
+            "cameraPosition": {
+                "x": 21.831932067871094,
+                "y": 9.077037811279297,
+                "z": -56.43621826171875
+            },
+            "cameraPitch": 34.0,
+            "cameraFov": 46.9453010559082,
+            "cameraDistance": 14.920577049255371
+        },
+        {
+            "name": "sbone",
+            "scale": 0.646728515625,
+            "paintingWidth": 36.20135498046875,
+            "unscaledWidth": 56.258575439453125,
+            "scaledWidth": 36.201385498046875,
+            "residualPercent": 0.00008429954323219135,
+            "clamped": false,
+            "anchor": {
+                "x": 23.561935424804688,
+                "y": 0.013311179354786873,
+                "z": -44.02503967285156
+            },
+            "cameraPosition": {
+                "x": 21.83193588256836,
+                "y": 9.11844253540039,
+                "z": -56.4073486328125
+            },
+            "cameraPitch": 34.0,
+            "cameraFov": 46.9453010559082,
+            "cameraDistance": 14.935934066772461
+        },
+        {
+            "name": "bone_arch",
+            "scale": 0.7854553461074829,
+            "paintingWidth": 72.39498901367188,
+            "unscaledWidth": 92.24996948242188,
+            "scaledWidth": 72.39505004882813,
+            "residualPercent": 0.00008430853631580248,
+            "clamped": false,
+            "anchor": {
+                "x": 24.369794845581055,
+                "y": 0.013311179354786873,
+                "z": -44.02503967285156
+            },
+            "cameraPosition": {
+                "x": 21.83193588256836,
+                "y": 10.584752082824707,
+                "z": -57.698978424072266
+            },
+            "cameraPitch": 34.0,
+            "cameraFov": 46.9453010559082,
+            "cameraDistance": 16.491113662719727
+        },
+        {
+            "name": "c1tree",
+            "scale": 0.800189733505249,
+            "paintingWidth": 77.14480590820313,
+            "unscaledWidth": 97.17160034179688,
+            "scaledWidth": 77.14483642578125,
+            "residualPercent": 0.0000395588249375578,
+            "clamped": false,
+            "anchor": {
+                "x": 28.750553131103516,
+                "y": 0.013311179354786873,
+                "z": -44.02503967285156
+            },
+            "cameraPosition": {
+                "x": 21.83193588256836,
+                "y": 31.981595993041992,
+                "z": -83.70021057128906
+            },
+            "cameraPitch": 34.0,
+            "cameraFov": 46.9453010559082,
+            "cameraDistance": 47.851722717285156
+        },
+        {
+            "name": "ctree15",
+            "scale": 0.8988186120986938,
+            "paintingWidth": 85.27224731445313,
+            "unscaledWidth": 95.46871948242188,
+            "scaledWidth": 85.272216796875,
+            "residualPercent": -0.000035788405511993915,
+            "clamped": false,
+            "anchor": {
+                "x": 24.7390079498291,
+                "y": 0.013311179354786873,
+                "z": -44.02503967285156
+            },
+            "cameraPosition": {
+                "x": 21.83193588256836,
+                "y": 12.455744743347168,
+                "z": -59.6862678527832
+            },
+            "cameraPitch": 34.0,
+            "cameraFov": 46.9453010559082,
+            "cameraDistance": 18.8970947265625
+        },
+        {
+            "name": "ctree18",
+            "scale": 0.8390407562255859,
+            "paintingWidth": 73.533935546875,
+            "unscaledWidth": 88.10787963867188,
+            "scaledWidth": 73.53390502929688,
+            "residualPercent": -0.00004150135282543488,
+            "clamped": false,
+            "anchor": {
+                "x": 25.2512149810791,
+                "y": 0.013311179354786873,
+                "z": -44.02503967285156
+            },
+            "cameraPosition": {
+                "x": 21.83193588256836,
+                "y": 16.154338836669922,
+                "z": -64.62674713134766
+            },
+            "cameraPitch": 34.0,
+            "cameraFov": 46.9453010559082,
+            "cameraDistance": 24.852676391601563
+        },
+        {
+            "name": "ctree13",
+            "scale": 0.7619181871414185,
+            "paintingWidth": 70.05072021484375,
+            "unscaledWidth": 91.9478759765625,
+            "scaledWidth": 70.05072021484375,
+            "residualPercent": 0.0,
+            "clamped": false,
+            "anchor": {
+                "x": 24.93093490600586,
+                "y": 0.013311179354786873,
+                "z": -44.02503967285156
+            },
+            "cameraPosition": {
+                "x": 21.83193588256836,
+                "y": 12.807503700256348,
+                "z": -60.49278259277344
+            },
+            "cameraPitch": 34.0,
+            "cameraFov": 46.9453010559082,
+            "cameraDistance": 19.864561080932617
+        },
+        {
+            "name": "ctree14",
+            "scale": 0.6525712013244629,
+            "paintingWidth": 59.4554443359375,
+            "unscaledWidth": 92.66064453125,
+            "scaledWidth": 59.45550537109375,
+            "residualPercent": 0.00010265696619171649,
+            "clamped": false,
+            "anchor": {
+                "x": 26.29680633544922,
+                "y": 0.013311179354786873,
+                "z": -44.02503967285156
+            },
+            "cameraPosition": {
+                "x": 21.83193588256836,
+                "y": 19.14105987548828,
+                "z": -69.16082763671875
+            },
+            "cameraPitch": 34.0,
+            "cameraFov": 46.9453010559082,
+            "cameraDistance": 30.316368103027344
+        },
+        {
+            "name": "ctree16",
+            "scale": 0.9683279991149902,
+            "paintingWidth": 83.77462768554688,
+            "unscaledWidth": 86.63229370117188,
+            "scaledWidth": 83.77462768554688,
+            "residualPercent": 0.0,
+            "clamped": false,
+            "anchor": {
+                "x": 24.99836540222168,
+                "y": 0.013311179354786873,
+                "z": -44.02503967285156
+            },
+            "cameraPosition": {
+                "x": 21.83193588256836,
+                "y": 15.515378952026367,
+                "z": -63.635650634765625
+            },
+            "cameraPitch": 34.0,
+            "cameraFov": 46.9453010559082,
+            "cameraDistance": 23.6528377532959
+        },
+        {
+            "name": "ctree17",
+            "scale": 0.6988277435302734,
+            "paintingWidth": 68.18896484375,
+            "unscaledWidth": 99.0167236328125,
+            "scaledWidth": 68.18899536132813,
+            "residualPercent": 0.00004475442256079987,
+            "clamped": false,
+            "anchor": {
+                "x": 25.019203186035156,
+                "y": 0.013311179354786873,
+                "z": -44.02503967285156
+            },
+            "cameraPosition": {
+                "x": 21.83193588256836,
+                "y": 13.634611129760742,
+                "z": -61.534461975097656
+            },
+            "cameraPitch": 34.0,
+            "cameraFov": 46.9453010559082,
+            "cameraDistance": 21.122669219970703
+        },
+        {
+            "name": "fg_rot01",
+            "scale": 0.7405306100845337,
+            "paintingWidth": 70.3511962890625,
+            "unscaledWidth": 94.82339477539063,
+            "scaledWidth": 70.3511962890625,
+            "residualPercent": 0.0,
+            "clamped": false,
+            "anchor": {
+                "x": 28.772659301757813,
+                "y": 0.013311179354786873,
+                "z": -44.02503967285156
+            },
+            "cameraPosition": {
+                "x": 21.831937789916992,
+                "y": 29.646358489990234,
+                "z": -82.07627868652344
+            },
+            "cameraPitch": 34.0,
+            "cameraFov": 46.9453010559082,
+            "cameraDistance": 45.89980697631836
+        },
+        {
+            "name": "fg_rot03",
+            "scale": 0.9450217485427856,
+            "paintingWidth": 89.8504638671875,
+            "unscaledWidth": 95.29043579101563,
+            "scaledWidth": 89.8504638671875,
+            "residualPercent": 0.0,
+            "clamped": false,
+            "anchor": {
+                "x": 27.079753875732422,
+                "y": 0.013311179354786873,
+                "z": -44.02503967285156
+            },
+            "cameraPosition": {
+                "x": 21.831932067871094,
+                "y": 25.150617599487305,
+                "z": -75.43282318115234
+            },
+            "cameraPitch": 34.0,
+            "cameraFov": 46.9453010559082,
+            "cameraDistance": 37.88097381591797
+        }
+    ]
+}

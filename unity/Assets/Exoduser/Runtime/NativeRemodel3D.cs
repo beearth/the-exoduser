@@ -8,7 +8,7 @@ namespace Exoduser.UnityPort
     // (1 tile = 40 px = 0.4 u). Off, every Point() is byte-for-byte the old 2D mapping (x / 100, -y / 100, 0), so the 2D path and its oracles are unchanged.
     public static class NativeRemodel3D
     {
-        public static readonly bool Requested = Array.IndexOf(Environment.GetCommandLineArgs(), "--remodel3d") >= 0 ||
+        public static readonly bool Requested = A2RHumanSave.CandidateDefault || Array.IndexOf(Environment.GetCommandLineArgs(), "--remodel3d") >= 0 ||
             (Application.isEditor && Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-qa-sandbox")>=0 && Environment.GetEnvironmentVariable("EXO_A2_EDITOR_PREVIEW")=="1");
         public static bool ArenaActive; // RB1-8a: flat arena plane; never sample the field Terrain at arena coordinates.
         public static bool Active;            // the loaded 3D field or RB1-8a arena is shown (false before readiness or on 2D fallback)

@@ -52,6 +52,7 @@ namespace Exoduser.UnityPort
             {
                 GUI.matrix=Matrix4x4.identity;
                 float x=screen.x,y=Screen.height-screen.y-12,width=42;
+                A2RHeroReadability.AvoidHeroStatus(ref x,ref y,width);
                 Fill(new Rect(x-width/2-1,y-1,width+2,8),new Color(.015f,.018f,.018f,.88f));
                 Fill(new Rect(x-width/2,y,width,3),new Color(.18f,.07f,.065f));
                 Fill(new Rect(x-width/2,y,width*Mathf.Clamp01((float)e.Hp/Mathf.Max(1,e.MaxHp)),3),new Color(.66f,.16f,.10f));
