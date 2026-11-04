@@ -2,6 +2,7 @@
 
 - 근거: [DIRECTION_RESET_20261105](../DIRECTION_RESET_20261105.md) 3단계 "우리 매뉴얼을 만들고 그때 개발한다". 사용자 원문: "모션 등 모든 디렉션 매뉴얼을 하나하나 어떻게 할 것인지 다 정해."
 - 목표 기준: 분위기·광원·안개 = Downfall of Yellowsky(황천역도), 환경·HUD·가독성 = 디아블로4·PoE2, 임팩트·전투 = Phantom Blade Zero.
+- **8차(09:3x KST): 생성 메시 폐기** — 사용자 결정 "Tripo 메시 같은 걸로 퉁치는 방식은 안 된다"(DIRECTION_RESET_20261105 "11-05 09:30 결정" 절). AI 3D 생성 메시를 자산 기본형으로 쓰는 항목 전부 폐기(01 D01-3·05 D05-3·06 D06-4), 자산은 스캔 기반 또는 손 조형 두 갈래, 생성 도구는 콘셉트 탐색 이미지까지만.
 - **7차(08:2x KST): CX29 적대 검토 37건 중 반영 36건, 일부 반영 1건(R29).** 차단 R01·R02 해소(06 Core 예고 구간 안의 표현·연장은 Core 제안 D06-7 / 13·07 처치 슬로 실행 사양에서 제외·D13-10). 검토 원문: `docs/0마스터플랜/MANUAL/REVIEW_CODEX_20261105.md`(codex/unity-manual-review-20261105 @ e7efeac). 수정 위치는 본문의 〔CX29 Rnn〕 표지.
 - **상태: 전부 초안. 사용자 승인 전에는 개발을 시작하지 않는다.** 아래 §3의 결정 항목이 승인되면 해당 문서를 "확정"으로 바꾼다.
 - 공통 틀(모든 파일): 1 목표 장면·레퍼런스 / 2 디렉션 원칙 / 3 수치 기준 / 4 도구(Unity 추천 | UE5 대응) / 5 절차(5.1 공통 → 5.2 Unity 반입 → 5.3 UE5 반입) / 6 합격 기준 / 7 금지 / 8 사용자 결정 / 9 출처.
@@ -33,12 +34,12 @@
 
 | # | 초안 1순위 추천(Unity, 사용자 미승인) | UE5 대응(Mac 검증 아님) | 커스텀 툴(명세는 각 문서 §4) |
 |---|---|---|---|
-| 01 | Blender(Meshy·Tripo 기본형 → Blender 다듬기) + 엔진 지형 높이 블렌드 + 데칼 | Landscape + Material Layer, Decal | `PropClusterBrush`(TOOLCHAIN c-1, 옛 ForestKit Scatter 통합; 웹 좌표 소품은 고정). 큰 소품은 Blender 손 조형, 중·소만 생성 |
+| 01 | 스캔 기반(라이선스 허용 공식 스캔 자산 리토폴로지·재질 재구성) 또는 Blender 손 조형 + 엔진 지형 높이 블렌드 + 데칼 (AI 생성 메시 폐기, 8차) | Landscape + Material Layer, Decal | `PropClusterBrush`(TOOLCHAIN c-1, 옛 ForestKit Scatter 통합; 웹 좌표 소품은 고정). 큰 소품은 Blender 손 조형, 중·소만 생성 |
 | 02 | Mixed 베이크(Shadowmask) + APV + 높이 안개 `HeightFogScatterPass`(TOOLCHAIN a-4, 1.2ms) + 전역 Volume 1개, LUT는 DaVinci Resolve | Lumen/베이크 혼합 + Exponential Height Fog + PostProcessVolume | — (색 보정 소유자 1명) |
 | 03 | Cinemachine 3(피치 잠금·거리만 보간) + Impulse(위치만) + 알파 페이드 셰이더 + Render Objects 실루엣 | Spring Arm 고정 피치 + Camera Shake + 머티리얼 디더 대신 알파 페이드 + Custom Depth 실루엣 | `OccluderFadePass`(a-2, ≤0.5ms) + `SilhouettePass`(a-3, ≤0.2ms) |
 | 04 | Blender 손키 + Animator(기존 영웅 IK 유지) | Animation Blueprint + Control Rig | 타이밍 표 검증기, 픽셀 렌더는 `PixelActorPass` 아틀라스(a-1) |
-| 05 | Blender 손키 + 가족별 공용 클립 라이브러리 | 같은 방식 + Retarget | 가족 클립 세트 검증기 |
-| 06 | Blender 부위별 조형·수동 리그·손키 | 같은 원본 FBX + Control Rig | 타이밍 표 → 클립 길이 검증기 |
+| 05 | 모델 = 스캔 기반 또는 Blender 손 조형, 동작 = Blender 손키 + 가족별 공용 클립 라이브러리 | 같은 방식 + Retarget | 가족 클립 세트 검증기 |
+| 06 | Blender 손 조형(스컬프트·수동 리토폴로지·수동 베이크)·수동 리그·손키, 안 되면 사용자 손 조형·외주 판단 | 같은 원본 FBX + Control Rig | 타이밍 표 → 클립 길이 검증기 |
 | 07 | 엔진 파티클 + 플립북 시트, 포즈 홀드는 대상 1개만 | Niagara + Anim Notify | 임팩트 이벤트 프리뷰어 → KeyshotBoard(c-3) 이벤트 모드로 통합 |
 | 08 | 전투 VFX 전부 Shuriken + Shader Graph(VFX Graph는 환경 대량 입자만) + 지면 예고는 월드 Decal | Niagara + Decal | VFX 점·가림 검사기 |
 | 09 | HTML/CSS 목업 → Blender 정사영 원화 → node 트림 → IMGUI 조립(v0 유지) | UMG | `hud_slice_trim` |
@@ -76,12 +77,11 @@
 ### 3.2 유료 지출 (💰, API연결_가이드 범위·SPEND_LOG)
 | ID | 내용 |
 |---|---|
-| 💰D01-3 | 이미지 생성·3D 초안(Meshy·Tripo) |
 | 💰D01-2 | 지면 타일 Blender 무료 시작, 2회 FAIL 시 Substance 구매 요청 |
-| 💰D06-4 | 보스 부위 참고용 Meshy/Tripo 최소 크레딧 |
 | 💰D09-6 | HUD 장식 시안 이미지 생성 |
 | 💰D11-6 | 드롭 소리 생성(ElevenLabs) |
 | 💰D12-6 · D12-7 | 비어 있는 효과음 10개 생성 · 신곡 제작 |
+| ~~💰D01-3 · D05-3 · D06-4~~ | **폐기(사용자 결정 11-05 09:30)** — Meshy/Tripo 생성 메시·크레딧 결정 소멸 |
 | D04-2 | Mixamo 사용(무료, Adobe 로그인은 사용자 직접) |
 
 ### 3.3 요소별 나머지
@@ -106,11 +106,11 @@
 ### 3.4 2차 반영(11-05 04~05 KST)으로 새로 생긴 항목
 | 요소 | 결정 항목 (★ = 충돌) |
 |---|---|
-| 01 | D01-3 개정(큰 소품 손 조형, 중·소만 생성) · D01-4 개정(c-1 통합) · D01-8 키샷 3안을 Steam 스크린샷 후보로 겸용 |
+| 01 | ~~D01-3 개정~~(9차 폐기: 생성 메시 금지) · D01-4 개정(c-1 통합) · D01-8 키샷 3안을 Steam 스크린샷 후보로 겸용 |
 | 02 | D02-5 개정(문서 연구로 Yellowsky 광원·안개·색 사실 0건 확인 → 사람이 공개 실기 영상 보고 판정 메모) · ★D02-7 높이 안개 자체 확장(a-4) vs 서드파티 · ★D02-8 안개 예산 1.2ms(Mac 저비용 0.6ms) · ★D02-9 (→ §3.4d 현행 문구) · D02-10 림은 최종 1x에서 판정 |
 | 03 | ★D03-6 가림 = a-2 Renderer Feature vs `_Fade` 머티리얼 · ★D03-7 Cinemachine 컴포넌트 불일치(코드 Follow / 문서 PositionComposer) Mac 확인 후 통일 |
 | 04 | D04-1 개정(4안: +포즈 시각 양자화) · ★D04-4 구르기 무적 14틱·E 패링 16틱 유지(Sekiro 12F 참고, Core 변경 제안 없음) |
-| 05 | D05-3 일반 몬스터 기본형 Meshy/Tripo 💰(D06-4와 묶음) |
+| 05 | ~~D05-3~~ 폐기(8차, 생성 메시 금지) |
 | 06 | ★D06-5 드루이드 3기술(slam·slashCombo·전환) 먼저 완성 → 12종 확장(범위 축소 아님) |
 | 07 | D07-1 갱신(C안: Dead Cells 치명타 1F 추가, 추천 A안 유지) · ★D07-4 pbz.md "히트스톱 거의 없음 [사실]"을 [단일·간접]으로 낮춤 · D07-5 프리뷰어를 KeyshotBoard에 통합 |
 | 08 | D08-1 보강(전투 점광원 ≤2 ≠ 안개 ≤8) · ★D08-4 캐릭터 부착·접점 코어는 저해상도 경로, 지면 예고·장판은 월드 Decal · ★D08-5 전투 잔여(독안개 등) Shuriken 통일 |
@@ -205,6 +205,7 @@ PC Codex: codex_urp_mood · codex_keyshot_composition · codex_yellowsky · code
 4. 결정 반영 후 문서별 "확정" 표시 → DIRECTION_RESET 4단계(키샷 한 장면부터, Mac 판정).
 
 ## 변경 이력
+- 2026-11-05 9차(09:3x KST): 사용자 결정으로 AI 생성 메시 폐기 — 01·05·06 도구·결정, §2 도구 표, §3.2 유료 표 갱신, 01 §7 금지 추가.
 - 2026-11-05 8차(08:2x KST): CX29 적대 검토(e7efeac) 37건 중 36건 반영·R29 일부, 차단 2건 해소, 신규 결정 12건(§3.4e), 도구 표 "확정" 표기 제거(R30), 색인 낡은 상태 정리(R36).
 - 2026-11-05 7차(06:2x KST): 출처 검증 최종 CX22-5(0a9b84e, 확인 462/681) 반영, 재확인 18건, PoE2 GI·Duriel 정정 기록.
 - 2026-11-05 6차: 출처 회차 3(fea5684), Yellowsky 엔진 = 2024 개발사 자기 신고 UE5(Mac 원문 확인)·현재·렌더 미확인, codex_yellowsky_cn·HUD critique(Mac 판정)·소규모 팀 파이프라인, D09-14·15.

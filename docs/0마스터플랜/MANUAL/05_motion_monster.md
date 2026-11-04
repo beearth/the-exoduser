@@ -56,12 +56,12 @@ Core 값(예비·쿨다운)은 `Core/EnemyAi.cs`, `Core/EliteTables.cs`에서 �
 ## 4. 제작 도구 — 초안 1순위 추천(미승인, 〔CX29 R30〕): Blender 손키 + 가족별 공용 클립 라이브러리
 | 역할 | Unity 추천 | UE5 대응 |
 |---|---|---|
-| 모델 | Blender 직접 조형 또는 Meshy 이미지→3D 후 Blender 수정(승인분만) | 동일 |
+| 모델 | Blender 손 조형 또는 스캔 기반(라이선스 허용 공식 스캔 자산 리토폴로지·재질 재구성). AI 3D 생성 메시 금지 (사용자 결정 11-05 09:30, DIRECTION_RESET "11-05 09:30 결정") | 동일 |
 | 리그/클립 | Blender 수동 리그, 가족당 공용 스켈레톤 + 리타깃 | 공용 스켈레톤, IK Retargeter |
 | 상태 연결 | Animator(Generic) + Animation Rigging 발 IK | Animation Blueprint + Control Rig |
 | 군집 위상 | Animator 시작 Offset 무작위 | Montage Start Position 무작위 |
-- 대안: 자동 리그(Meshy·Mixamo) — 치마·뿔 가중치가 깨져 제외 [단일, d4_04_anim 5.2].
-- TOOLCHAIN §2-6과 대조(2차): 일반 몬스터 기본형 = Meshy/Tripo 이미지→3D + Blender 수정(A+수정), 리깅 = Blender 수동, 런타임 = 신규 몬스터 Animator + Animation Rigging, 픽셀 렌더 = PixelActorPass 아틀라스(D04-5). 이 문서의 추천과 같다. 유료 생성은 `docs/API연결_가이드.md` 범위와 SPEND_LOG 기록이 선행이다(D05-3).
+- 대안: 자동 리그(Mixamo; Meshy 자동 리그는 생성 메시 폐기와 함께 제외) — 치마·뿔 가중치가 깨져 제외 [단일, d4_04_anim 5.2].
+- TOOLCHAIN §2-6과 대조(2차): 일반 몬스터 기본형 = ~~Meshy/Tripo 이미지→3D + Blender 수정~~ → 폐기 (사용자 결정 11-05 09:30, DIRECTION_RESET "11-05 09:30 결정"), 스캔 기반 또는 손 조형, 리깅 = Blender 수동, 런타임 = 신규 몬스터 Animator + Animation Rigging, 픽셀 렌더 = PixelActorPass 아틀라스(D04-5). 생성 메시 항목은 폐기, 나머지는 이 문서의 추천과 같다.
 - 커스텀 툴 1개 — "가족 클립 세트 검증기": 입력 = 가족 폴더의 FBX, 처리 = 필수 클립(이동·공격·피격·경직·사망A·사망B) 누락과 길이 검사, 출력 = 체크표. 사용자 = 구현 레인.
 
 ## 5. 절차
@@ -90,7 +90,7 @@ Core 값(예비·쿨다운)은 `Core/EnemyAi.cs`, `Core/EliteTables.cs`에서 �
 ## 8. 사용자 결정 필요 항목
 - D05-1: 사망 2종 중 "날아감"을 강타·처형 때만 쓰는 규칙을 확정하는가? 추천: 예(D4 데스 킷 방식).
 - D05-2: 가족 수준 우선순위: 1-1 etype(0~29·47) 중 무엇부터? 추천: 1-1 출현 빈도 상위 3가족.
-- D05-3: 일반 몬스터 기본형을 Meshy/Tripo 이미지→3D + Blender 수정으로 만드는 유료 크레딧을 승인하는가(TOOLCHAIN 제안, 가족 3개분 최소)? 추천: 예, 승인 범위 안에서 SPEND_LOG 기록. 대안: 전부 Blender 직접 조형(느림). 06번 D06-4와 같은 승인으로 묶을 수 있다.
+- ~~D05-3~~: **폐기 (사용자 결정 11-05 09:30, DIRECTION_RESET "11-05 09:30 결정").** 일반 몬스터도 스캔 기반 또는 손 조형.
 - D04-5(04번에서 이어짐): 픽셀 액터 렌더를 PixelActorPass 아틀라스로 이전하는가. 몬스터 다수 동시 비용이 걸려 있어 이 문서에서도 필수 확인 항목이다.
 
 ## 9. 출처

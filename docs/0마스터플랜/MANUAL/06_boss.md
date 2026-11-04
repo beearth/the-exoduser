@@ -111,7 +111,7 @@
 | 상태 연결 | Animator(Generic) 상태 = Core 상태, Animation Rigging 발 IK | Animation Blueprint + Control Rig |
 | 예고 표시 | 메시 + 셰이더(지면 표식) | Decal/Niagara Ribbon + Material |
 | 카메라 | 보스 줌 거리만 보간 | Spring Arm 길이만 보간 |
-- 대안: Meshy/Tripo 이미지→3D 후 부위 교체(승인분만). 자동 리그 제외.
+- 대안: 없음 — AI 3D 생성 메시는 참고용 포함 폐기 (사용자 결정 11-05 09:30, DIRECTION_RESET "11-05 09:30 결정"). 스크립트 조형(bpy)으로 최종 품질이 안 나오면 사용자 손 조형 또는 외주 판단을 올린다. 자동 리그 제외.
 - TOOLCHAIN §2-6·§2-7과 대조(2차): 보스 모델 = Blender 부위별 조형(B), 리깅 = Blender 수동(Rigify), 동작 = Blender 손키(Cascadeur 보류), 런타임 = 신규 보스 Animator + Animation Rigging, 픽셀 렌더 = PixelActorPass 아틀라스(D04-5), 예고 = Decal Projector + Shader Graph(발밑 원은 ZTest Always 쿼드), 전투 VFX = Shuriken + Shader Graph. 이 문서의 추천과 같고 Decal 방식만 명시를 보강했다. UE5: 같은 Blender 경로 + Animation Blueprint/Control Rig, 예고는 Decal Actor.
 - 커스텀 툴 — "보스 타이밍 표 → 클립 길이 검증기": 입력 §3.1 표 + Core JSON, 출력 클립 길이·예고 틱 불일치 목록. 사용자 구현 레인.
 
@@ -144,7 +144,7 @@
 - D06-1: 데모 보스를 리모델 3목숨(`DruidRemodelData`)과 웹 5단계 중 어느 쪽으로 하는가? 추천: 리모델 3목숨(무게감·읽힘 설계).
 - D06-2: 보스전 줌 값이 문서마다 다르다(보드 0.80, 승인안 0.90, 카메라 연구 거리 ×1.20=19.8u/0.6초 보간, 황천 연구 +8~15%). 어느 것으로? 추천: 거리 +8~15%(카메라 연구와 황천 연구가 일치), 피치 34.0° 고정, Mac 비교판 후 확정. 〔출처 재확인 필요〕
 - D06-3: 행동불능 직후 큰 기술 판정 금지 30틱(Core 제안, d4_04_boss_vfx ⑤)을 Core에 넣는가? 추천: 예(봇 사망 사례 근거). 〔출처 재확인 필요〕
-- D06-4: Meshy/Tripo 유료 크레딧 사용 승인(API연결_가이드 범위, SPEND_LOG)? 추천: 부위 참고용 최소분. (05번 D05-3과 한 승인으로 묶기 가능)
+- ~~D06-4~~: **폐기 (사용자 결정 11-05 09:30, DIRECTION_RESET "11-05 09:30 결정").** Meshy/Tripo 크레딧 결정 소멸.
 - ★ D06-5: 드루이드 제작을 3기술(slam·slashCombo·전환) 먼저 완성 → 나머지 10종 확장 순서로 하는가? CLAUDE.md는 "버그 수정으로 범위를 줄이지 않는다"이고 소규모 팀 사례는 대표 구간 선검증을 권한다(보류 프로젝트는 장면 성공이 게임 완성을 보증하지 않았다). 추천: 예(착수 순서만, 데모 범위는 12종 그대로). 대안: 12종 병렬.
 
 - ★ D06-6 (3차, codex_synthesis §1.5·yellowsky 갱신본 규칙 7): 갱신본은 반경 ≥4m 장판 예고 ≥0.9초(테두리 선행 → 0.6초 채움 → 폭발 직전 깜빡임 1회)를 우리 [기준]으로 제안한다. 반면 Core 예고는 기술별 고정 틱(큰 기술 32~70틱 = 0.53~1.17초, §3.1)이고 codex_synthesis는 "행동 전에 위험이 읽히게 하되 고정 예고 시간은 만들지 않는다"고 본다. 예고 길이는 Core를 바꾸지 않으므로 이 값은 **표현 보조(테두리가 Core 예고 틱 안에서 먼저 완성되고 안쪽이 채워짐)로만** 적용할까? 추천: 예. 0.9초 미달 기술(예: groundFissure 40틱)은 Core 예고 길이 그대로 두고 표현 단계 시간만 비율 조정. Core 예고 연장은 "Core 제안"으로 분리 보고. 대안: 값 미채택. 〔출처 재확인 필요〕
