@@ -265,3 +265,46 @@ B. 공개 전환 (U-D1·U-D3 수정 빌드로, 사용자 확인 뒤)
 
 "핵터" 표기는 오타가 아니다. 스토리 정본(STORY_LEAD_MASTER, 10-28 "헥터→핵터" 정정)이 이 표기다.
 
+### 10.4 체험판 앱 5337590 상점 페이지 (11-04 10시, CTO 지시로 대상 확정)
+
+CTO가 붙일 곳을 체험판 앱 5337590으로 정했다. 11-04 10시대에 Steamworks 체험판 상점 편집(Store Item **1346593**)을 읽기만 해서 확인했다. Description 탭에는 **About This Demo**와 **Short Description**(200~300자) 두 칸이 있고, 상점 30개 언어가 모두 비어 있다(0자). 그래서 두 칸을 함께 채운다.
+
+- About This Demo = No.4263 본문을 `[p]…[/p]`로 감싼 것. 칸 제목이 이미 "About This Demo"라서 `[h2]` 제목(No.4262)은 넣지 않는다.
+- Short Description = No.4273(4263 본문을 줄인 것). 길이는 118~297자다. 일본어·중국어는 200자보다 짧은데, 본편도 같은 언어가 111~139자다.
+- 파일: `docs/13출시·마케팅/steam_store_demo_app_5337590_20261104/`에 언어별 `.about.txt`·`.short.txt` 31쌍, `localization_upload_1346593.json`(Localization 탭 업로드 형식, 두 칸만), `demo_app_store_all.json`이 있다. 업로드 사본은 `I:\EXODUSER-Storage\steam_store\demo_5337590_localization_upload_20261104.json`에 있다.
+- 업로드 JSON 형식은 09-09 본편 내보내기(`{itemid, languages:{<코드>:{"app[content][about]", "app[content][short_description]"}}}`)와 같다. 이 업로드 방식은 아직 실제로 성공한 적이 없다(09-09에는 확장 권한 때문에 손 입력으로 대신했다). 업로드가 거부되면 손 붙여 넣기(B)로 한다.
+- 10.1~10.2의 본편 4749590 단락(`steam_store_demo_paragraph_20261104/`)은 선택 사항으로 남긴다. 본편 상점에도 체험판 안내를 넣을지는 공개 때 정한다.
+
+| 언어 | 언어 목록 이름 | About This Demo | Short Description | 짧은 설명 글자 수 |
+|---|---|---|---|---:|
+| 영어 | `English` | `english.about.txt` | `english.short.txt` | 291 |
+| 프랑스어 | `French` | `french.about.txt` | `french.short.txt` | 293 |
+| 이탈리아어 | `Italian` | `italian.about.txt` | `italian.short.txt` | 295 |
+| 독일어 | `German` | `german.about.txt` | `german.short.txt` | 291 |
+| 스페인어 - 스페인 | `Spanish - Spain` | `spanish.about.txt` | `spanish.short.txt` | 295 |
+| 불가리아어 | `Bulgarian` | `bulgarian.about.txt` | `bulgarian.short.txt` | 292 |
+| 체코어 | `Czech` | `czech.about.txt` | `czech.short.txt` | 293 |
+| 덴마크어 | `Danish` | `danish.about.txt` | `danish.short.txt` | 291 |
+| 네덜란드어 | `Dutch` | `dutch.about.txt` | `dutch.short.txt` | 294 |
+| 핀란드어 | `Finnish` | `finnish.about.txt` | `finnish.short.txt` | 280 |
+| 그리스어 | `Greek` | `greek.about.txt` | `greek.short.txt` | 296 |
+| 헝가리어 | `Hungarian` | `hungarian.about.txt` | `hungarian.short.txt` | 294 |
+| 인도네시아어 | `Indonesian` | `indonesian.about.txt` | `indonesian.short.txt` | 297 |
+| 일본어 | `Japanese` | `japanese.about.txt` | `japanese.short.txt` | 159 |
+| 한국어 | `Korean` | `koreana.about.txt` | `koreana.short.txt` | 219 |
+| 말레이어 | `Malay` | `malay.about.txt` | `malay.short.txt` | 294 |
+| 노르웨이어 | `Norwegian` | `norwegian.about.txt` | `norwegian.short.txt` | 290 |
+| 폴란드어 | `Polish` | `polish.about.txt` | `polish.short.txt` | 290 |
+| 포르투갈어 - 브라질 | `Portuguese - Brazil` | `brazilian.about.txt` | `brazilian.short.txt` | 289 |
+| 포르투갈어 - 포르투갈 | `Portuguese - Portugal` | `portuguese.about.txt` | `portuguese.short.txt` | 294 |
+| 루마니아어 | `Romanian` | `romanian.about.txt` | `romanian.short.txt` | 290 |
+| 러시아어 | `Russian` | `russian.about.txt` | `russian.short.txt` | 287 |
+| 중국어 간체 | `Simplified Chinese` | `schinese.about.txt` | `schinese.short.txt` | 118 |
+| 스페인어 - 중남미 | `Spanish - Latin America` | `latam.about.txt` | `latam.short.txt` | 295 |
+| 스웨덴어 | `Swedish` | `swedish.about.txt` | `swedish.short.txt` | 293 |
+| 태국어 | `Thai` | `thai.about.txt` | `thai.short.txt` | 269 |
+| 중국어 번체 | `Traditional Chinese` | `tchinese.about.txt` | `tchinese.short.txt` | 118 |
+| 튀르키예어 | `Turkish` | `turkish.about.txt` | `turkish.short.txt` | 282 |
+| 우크라이나어 | `Ukrainian` | `ukrainian.about.txt` | `ukrainian.short.txt` | 290 |
+| 베트남어 | `Vietnamese` | `vietnamese.about.txt` | `vietnamese.short.txt` | 286 |
+
