@@ -29,20 +29,10 @@ namespace Exoduser.UnityPort
     loaded=true;
    } catch(Exception error) { byKey.Clear();loaded=false;Debug.LogWarning("A15_OPTION_TEXT_FALLBACK "+error.Message); }
   }
-  static int IndexOf(string locale)
-  {
-   string code=LobbyLanguage.Normalize(locale);if(code=="ar")code="en";   // RTL shaping is not available in IMGUI
-   for(int i=0;i<codes.Length;i++)if(codes[i]==code)return i;
-   for(int i=0;i<codes.Length;i++)if(codes[i]=="en")return i;
-   return 0;
-  }
-  // Single label: the web text in this language; if the key is missing, the caller's fallback.
+  // Per-key locale -> EN -> KO, then the caller's source fallback. Never show an internal key.
   public static string Get(string key,string locale,string fallback="")
   {
-   Ensure();string[] texts;
-   if(!loaded||!byKey.TryGetValue(key,out texts))return fallback;
-   string value=texts[IndexOf(locale)];
-   return string.IsNullOrEmpty(value)?fallback:value;
+   return NativeLocaleCatalog.Get("a15_options_web",key,locale,fallback,fallback);
   }
   public static string[] List(string key,string locale)
   {

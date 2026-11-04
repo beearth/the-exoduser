@@ -157,17 +157,17 @@ namespace Exoduser.UnityPort
                 if (flow.LoadPhase >= 2 && fade > .5f)
                 {
                     float nt = flow.LoadPhase == 2 ? Mathf.Min(1f, (float)flow.LoadT / 35f) : 1f;
-                    string name=bossBar.BossNameForStage(Simulation.Config.StageIndex)??"???";NativeLoadingArtwork.Draw(NativeLoadingSelection.ForStage(Simulation.Config.StageIndex),name,StageSubtitle(Simulation.Config.StageIndex),Mathf.Clamp01((float)flow.LoadT/35),nt,false,NativeLoadingTips.Pick(NativeLoadingArtwork.ForcedTip>=0?NativeLoadingArtwork.ForcedTip:Simulation.Config.StageIndex,English,LoadingTipKey("inventory"),LoadingTipKey("interact")));
+                    string name=bossBar.BossNameForStage(Simulation.Config.StageIndex)??"???";NativeLoadingArtwork.Draw(NativeLoadingSelection.ForStage(Simulation.Config.StageIndex),name,StageSubtitle(Simulation.Config.StageIndex),Mathf.Clamp01((float)flow.LoadT/35),nt,false,NativeLoadingTips.Pick(NativeLoadingArtwork.ForcedTip>=0?NativeLoadingArtwork.ForcedTip:Simulation.Config.StageIndex,lobby.Language,LoadingTipKey("inventory"),LoadingTipKey("interact")));
                 }
             }
         }
-        string LoadingTipKey(string action){var keys=NativeKeyBindInput.Bindings;string key=keys.Primary(action)??keys.Secondary(action);return key==null?null:KeyBindings.KeyName(key,English);}
+        string LoadingTipKey(string action){var keys=NativeKeyBindInput.Bindings;string key=keys.Primary(action)??keys.Secondary(action);return key==null?null:NativeA15SettingsLabels.GetKeyByKo(KeyBindings.KeyName(key,false),lobby.Language,KeyBindings.KeyName(key,true));}
         static void DiamondMark(float x, float y, Color c)
         {   // web fillRect 8x8 rotated 45 degrees: approximated by a 3-row stack (GUI cannot rotate cheaply), 1px hairline scale
             Fill(new Rect(x - 1, y - 4, 2, 8), c); Fill(new Rect(x - 3, y - 2, 6, 4), c); Fill(new Rect(x - 4, y - 1, 8, 2), c);
         }
         // STG[si].kr = HELL_THEMES[hell][0].kr + ' ' + (floor+1) + '구역'. Unity has one chapter (stage 0) so far.
-        string StageSubtitle(int si) { return si == 0 ? (English ? "Rotten Forest Zone 1" : "썩은 숲 1구역") : ""; }
+        string StageSubtitle(int si) { return si == 0 ? NativeLocaleCatalog.Text("썩은 숲 1구역","Rotten Forest Zone 1",lobby.Language) : ""; }
 
         // "다음 구역으로 ▶": the next area (1-2) is not ported, so the run is saved and the player returns to the lobby.
         void StageClearNext()

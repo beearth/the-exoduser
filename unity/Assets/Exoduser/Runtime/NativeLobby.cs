@@ -45,7 +45,7 @@ namespace Exoduser.UnityPort
   public void ReplayIntro(){gateEnterDelay.Reset();if(TransitionPage("lobby-replay",()=>ReplayIntro()))return;CancelStartupEntry();CancelCharacterStory();WorldEndedNaturally=false;active=true;splash=0;Flow.Replay();OpenForPage();}
   public void SelectPreview(){ActiveCharacterName="";Flow.SelectPreview();}
   public bool EnterNativeTest(){if(!Flow.EnterTest())return false;CloseCharacterPresentationVideo();movie.Close();if(!keepStartupStageMusic)StopMusic();enter?.Invoke();return true;}
-  public void SetLanguage(string code){code=LobbyLanguage.Normalize(code);if(subtitles!=null&&subtitles.captions!=null)foreach(var language in subtitles.captions)if(language.code==code){Language=code;return;}if(code=="ko"||code=="en")Language=code;}
+  public void SetLanguage(string code){code=LobbyLanguage.Normalize(code);if(subtitles!=null&&subtitles.captions!=null)foreach(var language in subtitles.captions)if(language.code==code){Language=code;return;}Language=code;}
   public void SetMix(float voice,float bgm){Flow.SetMix(voice,bgm);musicDucked=true;MusicGain((float)Flow.MusicGain);movie.Volume((float)Flow.VoiceGain);}
   public static bool IntroCompletionWasEarned(LobbyPage before,LobbyPage after,bool explicitHold,bool videoError,bool manualLastCue=false){return after==LobbyPage.Lobby&&(explicitHold?(before==LobbyPage.Title||before==LobbyPage.Gate||before==LobbyPage.WorldIntro):before==LobbyPage.WorldIntro&&(manualLastCue||!videoError));}
   public void NextCut(){if(Flow.Page!=LobbyPage.WorldIntro||!movie.Prepared)return;double next=Flow.NextCut(Math.Max(0,movie.Time-WorldCueOffset));if(next<0)FinishIntro(true);else movie.Seek(next+WorldCueOffset);}
@@ -182,7 +182,7 @@ namespace Exoduser.UnityPort
    try{var current=Event.current;if((AutomatedInput||NativeScreenTransition.InputBlocked)&&(current.isKey||current.isMouse||current.type==EventType.ScrollWheel))current.Use();Draw();}
    finally{qaInsideOnGui=false;}
   }
-  string K(string ko,string en){return Language=="ko"?ko:en;}
+  string K(string ko,string en){return NativeLocaleCatalog.Text(ko,en,Language);}
   static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;NativeUiAudit.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
   static void Label(Rect r,string text,GUIStyle style,TextAnchor alignment){var old=style.alignment;var color=style.normal.textColor;try{style.alignment=alignment;style.normal.textColor=NativeSilverHellUi.TextColor(color);NativeUiAudit.Label(r,text,style);}finally{style.alignment=old;style.normal.textColor=color;}}
   void Image(Rect r,Texture t,ScaleMode mode=ScaleMode.ScaleToFit){if(t==null)return;NativeUiAudit.DrawTexture(r,t,mode,true);NativeUiAudit.ImageText(r,t);OriginalArtDrawn=true;}

@@ -14,36 +14,9 @@ namespace Exoduser.UnityPort
   int characterStep,characterVisual,characterScroll;
   bool characterFocus,characterInputFence,characterRestoreCreateFocus,characterVisualFocusPending;
   string characterName="",characterError="";
-  [System.Serializable] sealed class CharacterDialogLabels { public CharacterDialogLabelEntry[] entries; }
-  [System.Serializable] sealed class CharacterDialogLabelEntry { public string code,title,description,nameLabel,cancel,create,nameLength,forbidden,duplicate,full,comingSoon,deleteSuffix,confirm,delete,deleteFailure; }
-  CharacterDialogLabels characterDialogLabels;bool characterDialogLabelsLoaded;
-  void LoadCharacterDialogLabels()
-  {
-   if(characterDialogLabelsLoaded)return;characterDialogLabelsLoaded=true;
-   var source=Resources.Load<TextAsset>("Data/character_dialog_labels");
-   if(source!=null)try{characterDialogLabels=JsonUtility.FromJson<CharacterDialogLabels>(source.text);}catch(System.Exception e){Debug.LogWarning("Character dialog labels: "+e.Message);}
-  }
   string CharacterDialogLabel(string field,string fallback)
   {
-   if(Language=="ko")return fallback;
-   LoadCharacterDialogLabels();
-   CharacterDialogLabelEntry english=null;var entries=characterDialogLabels==null?null:characterDialogLabels.entries;
-   if(entries!=null)foreach(var entry in entries){
-    if(entry==null)continue;if(entry.code=="en")english=entry;
-    if(entry.code==Language){string value=CharacterDialogValue(entry,field);if(!string.IsNullOrEmpty(value))return value;}
-   }
-   string en=CharacterDialogValue(english,field);return string.IsNullOrEmpty(en)?fallback:en;
-  }
-  static string CharacterDialogValue(CharacterDialogLabelEntry entry,string field)
-  {
-   if(entry==null)return null;
-   switch(field){
-    case "title":return entry.title;case "description":return entry.description;case "nameLabel":return entry.nameLabel;
-    case "cancel":return entry.cancel;case "create":return entry.create;case "nameLength":return entry.nameLength;
-    case "forbidden":return entry.forbidden;case "duplicate":return entry.duplicate;case "full":return entry.full;
-    case "comingSoon":return entry.comingSoon;case "deleteSuffix":return entry.deleteSuffix;case "confirm":return entry.confirm;
-    case "delete":return entry.delete;case "deleteFailure":return entry.deleteFailure;default:return null;
-   }
+   return NativeLocaleCatalog.Get("character_dialog_labels","entries."+field,Language,fallback,fallback);
   }
   Texture2D warriorArt,warriorPortrait;
   GUIStyle characterText,characterSmall,characterTitle,characterField,characterButton,characterDeleteButton,characterStorageText;

@@ -21,7 +21,7 @@ namespace Exoduser.UnityPort
             // The web's '⚡PARRY!' floater is not shown: parry success reads from the line sparks, flash and sound, as in the
             // reference games (VFX R2/R4). It was raw English in pure yellow and stacked on quick double parries.
             if(t.Ko=="PARRY!")return;
-            string text=Clean(English?t.En:t.Ko);if(text.Length==0)return;
+            string text=Clean(NativeLocaleCatalog.Text(t.Ko,t.En,LocaleCode));if(text.Length==0)return;
             long value;bool numeric=long.TryParse(text,System.Globalization.NumberStyles.AllowLeadingSign,System.Globalization.CultureInfo.InvariantCulture,out value);
             string color=t.Color??"#ffffff";
             floaters.Add((float)t.X,(float)t.Y,text,color,"state:"+color+(numeric?(value<0?":loss":":gain"):text),numeric?NativeFloatingTextLayout.DamagePriority:NativeFloatingTextLayout.PriorityFor(text),Time.unscaledTime,t.Life>0?t.Life/60f:35f/60f,numeric,value);

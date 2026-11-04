@@ -4,25 +4,9 @@ namespace Exoduser.UnityPort
  public sealed partial class NativeLobby
  {
   NativeCharacterPresentationPlayback characterPresentationPlayback;
-  [System.Serializable] sealed class VisualLabelCatalog { public VisualLabelLanguage[] entries; public string[] characterLoreKeys; }
-  [System.Serializable] sealed class VisualLabelLanguage { public string code; public VisualLabelItem[] labels; }
-  [System.Serializable] sealed class VisualLabelItem { public string key,text; }
-  VisualLabelCatalog visualLabelCatalog;bool visualLabelCatalogLoaded;string visualLabelLanguage="";
-  readonly System.Collections.Generic.Dictionary<string,string> visualLabelMap=new System.Collections.Generic.Dictionary<string,string>();
   string VisualSelectionLabel(string key,string fallback)
   {
-   if(Language=="ko")return key;
-   if(!visualLabelCatalogLoaded){
-    visualLabelCatalogLoaded=true;var source=Resources.Load<TextAsset>("Data/visual_select_labels");
-    if(source!=null)try{visualLabelCatalog=JsonUtility.FromJson<VisualLabelCatalog>(source.text);}catch(System.Exception e){Debug.LogWarning("Visual selection labels: "+e.Message);}
-   }
-   if(visualLabelLanguage!=Language){
-    visualLabelLanguage=Language;visualLabelMap.Clear();VisualLabelLanguage selected=null,english=null;
-    var entries=visualLabelCatalog==null?null:visualLabelCatalog.entries;
-    if(entries!=null)foreach(var entry in entries){if(entry==null)continue;if(entry.code=="en")english=entry;if(entry.code==Language)selected=entry;}
-    var row=selected??english;if(row!=null&&row.labels!=null)foreach(var item in row.labels)if(item!=null&&!string.IsNullOrEmpty(item.key)&&!string.IsNullOrEmpty(item.text))visualLabelMap[item.key]=item.text;
-   }
-   return visualLabelMap.TryGetValue(key,out var value)?value:fallback;
+   return NativeLocaleCatalog.Get("visual_select_labels",key,Language,key,fallback);
   }
   Texture2D[] presentationCutouts,presentationBusts;
   Texture2D presentationRingAtlas,presentationRingChains,presentationTraitGlyphs,presentationSigil;

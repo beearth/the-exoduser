@@ -6,7 +6,7 @@ using Exoduser.UnityPort.Core;
 namespace Exoduser.UnityPort
 {
  // Only the 43 exact IDs approved by the PC A15 label oracle are present in this resource.
- // Semantic and native-only copy continues through each caller's original ko/en fallback.
+ // Every label uses the shared locale -> EN -> KO catalog fallback; font resources stay unchanged.
  public static class NativeA15SettingsLabels
  {
   [Serializable] sealed class LocaleText { public string code,text; }
@@ -72,18 +72,14 @@ namespace Exoduser.UnityPort
 
   public static string Get(string id,string locale,string ko,string en)
   {
-   string fallback=locale=="ko"?ko:en;
-   if(locale=="ko"||locale=="en"||locale=="ar")return fallback;
-   EnsureLoaded();
-   Dictionary<string,string> values;string translated;
-   return loaded&&byId.TryGetValue(id,out values)&&values.TryGetValue(LobbyLanguage.Normalize(locale),out translated)?translated:fallback;
+   return NativeLocaleCatalog.Get("a15_settings_labels_exact",id,locale,ko,en);
   }
 
   // Narrow adapter ready for the PC-owned NativeKeyBindList seam; no product call site yet.
   public static string GetKeyByKo(string originalKo,string locale,string fallback)
   {
    EnsureLoaded();string id;
-   return loaded&&originalKo!=null&&keyIdByKo.TryGetValue(originalKo,out id)?Get(id,locale,originalKo,fallback):fallback;
+   return loaded&&originalKo!=null&&keyIdByKo.TryGetValue(originalKo,out id)?Get(id,locale,originalKo,fallback):NativeLocaleCatalog.Get("keybind_ui_web",originalKo,locale,originalKo,fallback);
   }
 
   // The same bundled regional font resources already used by lobby captions cover

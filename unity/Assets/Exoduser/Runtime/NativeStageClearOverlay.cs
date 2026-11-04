@@ -143,7 +143,7 @@ namespace Exoduser.UnityPort {
   [Serializable] sealed class LocaleBundle {public LocaleRow[] entries;}
   readonly Dictionary<string,LocaleRow> localeRows=new Dictionary<string,LocaleRow>();Font japanese,latin;
   public bool AuditText;public int MissingGlyphs{get;private set;}public readonly List<string> VisibleTexts=new List<string>();
-  string EffectiveLocale{get{string c=Exoduser.UnityPort.Core.LobbyLanguage.Normalize(LocaleCode);return c=="ar"?"en":c;}}
+  string EffectiveLocale{get{return Exoduser.UnityPort.Core.LobbyLanguage.Normalize(LocaleCode);}}
   LocaleRow CurrentLabels(){
    if(localeRows.Count==0){var asset=Resources.Load<TextAsset>("Data/stageclear_labels");if(asset!=null){var b=JsonUtility.FromJson<LocaleBundle>(asset.text);foreach(var e in b.entries)localeRows[e.code]=e;}}
    LocaleRow row;if(localeRows.TryGetValue(EffectiveLocale,out row))return row;if(localeRows.TryGetValue("en",out row))return row;
@@ -176,7 +176,7 @@ namespace Exoduser.UnityPort {
     GUI.color=new Color(1,1,1,a);Grad(new Rect(0,0,560,l.LogicalHeight),C(20,14,11,.96f),C(8,6,5,.98f));GUI.color=Color.white;
     Border(new Rect(0,0,560,l.LogicalHeight),C(128,109,78,.65f*a));
     Grad(new Rect(50,14,230,1),C(164,147,115,0),C(164,147,115,.65f*a),true);Grad(new Rect(280,14,230,1),C(164,147,115,.65f*a),C(164,147,115,0),true);
-    string title=input.kind==Kind.HellEscape?(EffectiveLocale=="ko"&&input.hellIndex>=0&&input.hellIndex<defs.hell.names.Length?defs.hell.names[input.hellIndex]+defs.hell.titleSuffix:labels.hellTitle):labels.title;
+    string title=input.kind==Kind.HellEscape?(input.hellIndex>=0&&input.hellIndex<defs.hell.names.Length?NativeLocaleCatalog.Get("stageclear_web",defs.hell.names[input.hellIndex]+defs.hell.titleSuffix,EffectiveLocale,defs.hell.names[input.hellIndex]+defs.hell.titleSuffix,labels.hellTitle):labels.hellTitle):labels.title;
     string caption=input.kind==Kind.HellEscape?defs.hell.titleEn:defs.zone.titleEn;
      if(!string.Equals(caption,title,StringComparison.OrdinalIgnoreCase))Paint(new Rect(28,26,504,22),caption,cinzelDec,12,C(177,157,120,a));
     Paint(new Rect(28,55,504,56),title,body,34,C(236,222,197,a),TextAnchor.MiddleCenter,true);

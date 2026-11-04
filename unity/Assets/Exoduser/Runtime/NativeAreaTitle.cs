@@ -16,7 +16,7 @@ namespace Exoduser.UnityPort {
   const string NotPorted="미이식";
   readonly Defs defs;readonly Dictionary<string,Tok> tok=new Dictionary<string,Tok>();
   Texture2D atlas,lineTex;Font nanum;bool ready;readonly Dictionary<int,GUIStyle> styles=new Dictionary<int,GUIStyle>();
-  int stage;bool english,active;float start;public float? ForcedAge;
+  int stage;string localeCode="ko";bool active;float start;public float? ForcedAge;
   public bool Active{get{return active;}}
   public float Duration{get{return defs.title.durationSec;}}
 
@@ -25,7 +25,8 @@ namespace Exoduser.UnityPort {
    foreach(var t in defs.atlas)tok[t.n]=t;
   }
   // The web calls this when the stage changes (first HUD slow-path tick of a stage). Unity has no stage-change event: the NativeGame patch calls it once at run entry.
-  public void Show(int stageIndex,bool englishText=false){stage=stageIndex;english=englishText;active=true;start=Time.unscaledTime;}
+  public void Show(int stageIndex,bool englishText=false){Show(stageIndex,englishText?"en":"ko");}
+  public void Show(int stageIndex,string locale){stage=stageIndex;localeCode=locale;active=true;start=Time.unscaledTime;}
   public void Hide(){active=false;}
   float Age{get{return ForcedAge.HasValue?ForcedAge.Value:Time.unscaledTime-start;}}
 
@@ -45,7 +46,7 @@ namespace Exoduser.UnityPort {
   public string KrText(){
    Name nm=null;foreach(var n in defs.names)if(n.i==stage){nm=n;break;}
    if(nm==null)return NotPorted;
-   return (english?defs.title.formatEn:defs.title.formatKo).Replace("{n}",(stage+1).ToString()).Replace("{name}",english?nm.en:nm.kr);
+   return NativeLocaleCatalog.Get("areatitle_web",defs.title.formatKo,localeCode,defs.title.formatKo,defs.title.formatEn).Replace("{n}",(stage+1).ToString()).Replace("{name}",NativeLocaleCatalog.Get("areatitle_web",nm.kr,localeCode,nm.kr,nm.en));
   }
   public string EnText(){
    Name nm=null;foreach(var n in defs.names)if(n.i==stage){nm=n;break;}

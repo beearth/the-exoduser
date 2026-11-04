@@ -25,9 +25,7 @@ namespace Exoduser.UnityPort
   }
   public static string Get(string key,string locale,string fallback=null)
   {
-   Load();string code=LobbyLanguage.Normalize(locale);if(!entries.TryGetValue(key,out var texts))return code=="ko"?key:(fallback??key);
-   int index=Array.IndexOf(codes,code);if(index<0)index=Array.IndexOf(codes,"en");
-   return index>=0&&!string.IsNullOrEmpty(texts[index])?texts[index]:(fallback??key);
+   return NativeLocaleCatalog.Get("demo_text",key,locale,key,fallback);
   }
   public static string BossLine(string key,string locale)
   {

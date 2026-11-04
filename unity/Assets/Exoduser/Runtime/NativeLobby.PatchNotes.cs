@@ -145,13 +145,15 @@ namespace Exoduser.UnityPort
     var note=notes[i];if(note==null)continue;
     string version="v"+(note.version??"")+" · "+(note.date??"").Replace("-","");
     if(draw)Label(new Rect(2,y,width-4,28),version,patchNotesVersion,TextAnchor.MiddleLeft);y+=32;
-    var language=Language=="ko"&&note.ko!=null&&note.ko.sections!=null&&note.ko.sections.Length>0?note.ko:note.en??note.ko;
+    var language=note.en??note.ko;
     if(language==null||language.sections==null)continue;
-    foreach(var section in language.sections){
+    for(int sectionIndex=0;sectionIndex<language.sections.Length;sectionIndex++){
+     var section=language.sections[sectionIndex];string sectionKey="notes["+i+"].sections["+sectionIndex+"]";
      if(section==null)continue;
-     if(draw){Label(new Rect(2,y,width-4,24),section.title??"",patchNotesSection,TextAnchor.MiddleLeft);Fill(new Rect(2,y+24,width-4,1),new Color(.643f,.576f,.451f,.2f));}y+=31;
+     if(draw){Label(new Rect(2,y,width-4,24),NativeLocaleCatalog.Get("patch_notes",sectionKey+".title",Language,null,section.title),patchNotesSection,TextAnchor.MiddleLeft);Fill(new Rect(2,y+24,width-4,1),new Color(.643f,.576f,.451f,.2f));}y+=31;
      if(section.items==null)continue;
-     foreach(string item in section.items){
+     for(int itemIndex=0;itemIndex<section.items.Length;itemIndex++){
+      string item=NativeLocaleCatalog.Get("patch_notes",sectionKey+".items["+itemIndex+"]",Language,null,section.items[itemIndex]);
       float height=Mathf.Max(27,patchNotesItem.CalcHeight(new GUIContent(item??""),width-28)+5);
       if(draw){Fill(new Rect(6,y+10,5,5),new Color(.729f,.627f,.463f));Label(new Rect(20,y,width-26,height),item??"",patchNotesItem,TextAnchor.UpperLeft);}y+=height;
      }

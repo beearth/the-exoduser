@@ -54,8 +54,8 @@ namespace Exoduser.UnityPort {
   }
 
   // ---- text ----
-  string T(string ko){string v;string fallback=English&&en.TryGetValue(ko,out v)?v:ko;return NativeA15SettingsLabels.GetKeyByKo(ko,LocaleCode,fallback).Replace("⌨","").Replace("🎮","").Trim();}
-  string L(string ko,string eng){return NativeA15SettingsLabels.GetKeyByKo(ko,LocaleCode,English?eng:ko).Replace("⌨","").Replace("🎮","").Trim();}
+  string T(string ko){string v;string fallback=NativeLocaleCatalog.Get("keybind_ui_web",ko,LocaleCode,ko,en.TryGetValue(ko,out v)?v:null);return NativeA15SettingsLabels.GetKeyByKo(ko,LocaleCode,fallback).Replace("⌨","").Replace("🎮","").Trim();}
+  string L(string ko,string eng){return NativeA15SettingsLabels.GetKeyByKo(ko,LocaleCode,NativeLocaleCatalog.Get("keybind_ui_web",ko,LocaleCode,ko,eng)).Replace("⌨","").Replace("🎮","").Trim();}
 
   // ---- state changes ----
   public void BeginListening(string action,bool alternate){held.Clear();listenAction=action;listenAlt=alternate;listenAt=Time.unscaledTime;}

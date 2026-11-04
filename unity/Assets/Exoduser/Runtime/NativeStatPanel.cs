@@ -26,6 +26,8 @@ namespace Exoduser.UnityPort {
 
  public sealed class NativeStatPanel {
   public bool Open {get;private set;}
+  public string LocaleCode="ko";
+  string L(string ko,string en=null){return NativeLocaleCatalog.Get("stat_panel_web",ko,LocaleCode,ko,en); }
   public bool TextInputActive {get{return Open&&searchFocused;}}
   const string SearchName="statSearch";
   Simulation sim;GrowthPlan plan;Action changed;int plannedSp,plannedAp,planChanges;
@@ -113,11 +115,12 @@ namespace Exoduser.UnityPort {
    return s;
   }
   float Width(Font f,float size,FontStyle fs,string text,float spacing){
-   var st=Style(f,Mathf.RoundToInt(size),fs);if(spacing==0)return st.CalcSize(new GUIContent(text)).x;
+   text=NativeLocaleCatalog.Text(text,null,LocaleCode);var st=Style(f,Mathf.RoundToInt(size),fs);if(spacing==0)return st.CalcSize(new GUIContent(text)).x;
    float w=0;foreach(char ch in text)w+=st.CalcSize(new GUIContent(ch.ToString())).x+spacing;return w;
   }
   void Text(Rect r,string text,Font f,float size,Color c,FontStyle fs=FontStyle.Normal,float spacing=0,TextAnchor anchor=TextAnchor.MiddleLeft,bool shadow=false){
    if(string.IsNullOrEmpty(text))return;
+   text=NativeLocaleCatalog.Text(text,null,LocaleCode);
    var st=Style(f,Mathf.RoundToInt(size),fs);float total=Width(f,size,fs,text,spacing),x=r.x;
    if(anchor==TextAnchor.MiddleCenter||anchor==TextAnchor.UpperCenter)x=r.x+(r.width-total)/2f;else if(anchor==TextAnchor.MiddleRight)x=r.xMax-total;
    for(int pass=shadow?0:1;pass<2;pass++){
@@ -135,7 +138,7 @@ namespace Exoduser.UnityPort {
   }
   // Greedy wrap with the browser's Korean break opportunities; returns the lines (fixed line height drawn by the caller).
   List<string> Wrap(string text,Font f,int size,float width){
-   var lines=new List<string>();var st=Style(f,size,FontStyle.Normal);int start=0;
+   text=NativeLocaleCatalog.Text(text,null,LocaleCode);var lines=new List<string>();var st=Style(f,size,FontStyle.Normal);int start=0;
    while(start<text.Length){
     int end=start,lastBreak=-1;
     for(int i=start+1;i<=text.Length;i++){
@@ -157,13 +160,13 @@ namespace Exoduser.UnityPort {
 
   // ---- definitions helpers ----
   StatDefsPath PathOfKey(string key){StatDefsNode n;return nodeByKey.TryGetValue(key,out n)&&pathById.ContainsKey(n.path)?pathById[n.path]:null;}
-  string Name(StatDefsNode n){return n.nameKo;}
+  string Name(StatDefsNode n){return L(n.nameKo,n.nameEn);}
   List<string> Route(string key){var route=new List<string>();string p;for(var k=key;!string.IsNullOrEmpty(k)&&point.ContainsKey(k);k=parentOf.TryGetValue(k,out p)?p:null)route.Insert(0,k);return route;}
   int RankCost(int rank){return rank>=0&&rank<defs.costs.Length?defs.costs[rank]:5;}
   bool Matches(StatDefsNode n){
    string q=search.Trim().ToLowerInvariant();if(q.Length==0)return true;
-   var sb=new System.Text.StringBuilder();sb.Append(n.nameKo).Append(' ').Append(n.nameEn).Append(' ').Append(n.descKo).Append(' ').Append(n.descEn).Append(' ').Append(n.key);
-   foreach(var e in n.effects)sb.Append(' ').Append(e.ko).Append(' ').Append(e.en);
+   var sb=new System.Text.StringBuilder();sb.Append(Name(n)).Append(' ').Append(n.nameKo).Append(' ').Append(n.nameEn).Append(' ').Append(n.descKo).Append(' ').Append(n.descEn).Append(' ').Append(n.key);
+   foreach(var e in n.effects)sb.Append(' ').Append(L(e.ko,e.en)).Append(' ').Append(e.ko).Append(' ').Append(e.en);
    return sb.ToString().ToLowerInvariant().Contains(q);
   }
   // Same card rules as the web render(): path filter, search, and the learned/pending tabs. Unity has no invested levels, so those two tabs are empty.
@@ -247,11 +250,11 @@ namespace Exoduser.UnityPort {
     else if(Hot(r))Fill(r,new Color(1,1,1,.04f));
     if(p==null)Spark(new Vector2(67,y+41.08f),15,C(191,188,182));
     else{Glow(new Vector2(55,y+29),15,new Color(school.r,school.g,school.b,.16f));Glyph(p.glyph,new Rect(55,y+29,24,24),new Color(school.r,school.g,school.b,.75f));}
-    Text(new Rect(89,y+29.89f,126,22.4f),p==null?"전체":p.ko,sans,16,active?C(255,240,217):C(216,213,207));
+    Text(new Rect(89,y+29.89f,126,22.4f),p==null?L("전체","All"):L(p.ko,p.en),sans,16,active?C(255,240,217):C(216,213,207));
     int cnt=p==null?defs.totalNodes:p.total,learned=0;foreach(var node in defs.nodes)if(p==null||node.path==p.id)learned+=node.kind=="passive"?PlannedValue(node.key):PlannedValue(node.key)>0?1:0;Text(new Rect(162,y+31.08f,99,20),learned+" / "+cnt,serif,14,C(188,185,179),FontStyle.Normal,0,TextAnchor.MiddleRight);
     if(Click(r))SelectPath(id);
    }
-   string hint=pathId=="all"?"6개의 길 · 서로 조합 가능한 26개 패시브":pathById[pathId].hintKo;
+   string hint=pathId=="all"?"6개의 길 · 서로 조합 가능한 26개 패시브":L(pathById[pathId].hintKo,pathById[pathId].hintEn);
    Paragraph(new Rect(47,896.2f,220,44.8f),hint,sans,14,C(188,185,179),22.4f);
    string[] fk={"all","learned","planned"},fl={"전체","습득","변경 중"};float[] fx={47,127.7f,208.4f},fw={39.5f,39.5f,58.6f};
    Color accent=pathId=="all"?C(156,159,159):HexColor(pathById[pathId].color);
@@ -403,7 +406,7 @@ namespace Exoduser.UnityPort {
    for(int i=0;i<rows;i++){
     float ry=y+81+i*37.4f;var e=n.effects[i];
     Fill(new Rect(x+18,ry,346,1),C(117,120,120,.17f));
-    Text(new Rect(x+18,ry+6,200,26.4f),e.ko,sans,16,C(219,216,210));
+    Text(new Rect(x+18,ry+6,200,26.4f),L(e.ko,e.en),sans,16,C(219,216,210));
     string val=rank>0?FmtEffect(e,n.key,rank-1)+" → "+FmtEffect(e,n.key,rank):FmtEffect(e,n.key,PlannedValue(n.key))+" → "+FmtEffect(e,n.key,Math.Min(GrowthState.Cap(n.key),(long)PlannedValue(n.key)+1));
     Text(new Rect(x+18,ry+8,346,22),val,serif,18,C(228,199,144),FontStyle.Normal,0,TextAnchor.MiddleRight);
    }
@@ -422,7 +425,7 @@ namespace Exoduser.UnityPort {
     Glow(hc,38,new Color(school.r,school.g,school.b,.10f));Disc(hc,32,C(95,98,98,.4f));Disc(hc,31,C(24,27,23));Disc(hc,27,C(145,148,148));Disc(hc,26,C(19,25,28));
     Glow(hc,24,C(80,83,83,.2f));
     Glyph(n.glyph,new Rect(hc.x-15,hc.y-15,30,30),school);
-    Text(new Rect(x0+70,y+15,200,24),isStat?"기본 능력치":path!=null?path.ko:"",sans,16,C(199,196,190),FontStyle.Normal,.96f);
+    Text(new Rect(x0+70,y+15,200,24),isStat?"기본 능력치":path!=null?L(path.ko,path.en):"",sans,16,C(199,196,190),FontStyle.Normal,.96f);
     y+=72;
     Text(new Rect(x0,y,w,48.6f),Name(n),serif,36,C(228,225,219),FontStyle.Bold,1.08f);y+=66.6f;
     // rank row (invested level is state)
@@ -443,14 +446,14 @@ namespace Exoduser.UnityPort {
     bool pending=PlannedValue(n.key)!=LiveValue(n.key);int value=PlannedValue(n.key),from=pending?LiveValue(n.key):value,target=selectedRank>0?(selectedRank>value?selectedRank:selectedRank-1):pending?value:Math.Min(n.uncapped?int.MaxValue:n.max,value+1);
     string third=pending||(!isStat&&selectedRank>0)?"계획":isStat?"+1":"다음";
     float ty=y,rows=46.7f;var eff=n.effects;float[] heights=new float[eff.Length],afterWidths=new float[eff.Length],beforeWidths=new float[eff.Length];
-    for(int i=0;i<eff.Length;i++){string before=FmtEffect(eff[i],n.key,from),after=FmtEffect(eff[i],n.key,target);beforeWidths[i]=Mathf.Max(38,Width(sans,18,FontStyle.Normal,before,0));afterWidths[i]=Mathf.Max(42,Width(sans,24,i==0?FontStyle.Normal:FontStyle.Bold,after,0));float labelW=w-beforeWidths[i]-afterWidths[i]-24;var lines=Wrap(eff[i].ko,sans,18,labelW);heights[i]=(i==0?30:24)+Mathf.Max(lines.Count*27.9f,i==0?28.8f:37.2f)+1;rows+=heights[i];}
+    for(int i=0;i<eff.Length;i++){string before=FmtEffect(eff[i],n.key,from),after=FmtEffect(eff[i],n.key,target);beforeWidths[i]=Mathf.Max(38,Width(sans,18,FontStyle.Normal,before,0));afterWidths[i]=Mathf.Max(42,Width(sans,24,i==0?FontStyle.Normal:FontStyle.Bold,after,0));float labelW=w-beforeWidths[i]-afterWidths[i]-24;var lines=Wrap(L(eff[i].ko,eff[i].en),sans,18,labelW);heights[i]=(i==0?30:24)+Mathf.Max(lines.Count*27.9f,i==0?28.8f:37.2f)+1;rows+=heights[i];}
     Fill(new Rect(x0,ty,w,1),C(82,85,85));Fill(new Rect(x0,ty+rows+1,w,1),C(82,85,85));
     Text(new Rect(x0,ty+13,w-104,21.7f),isStat?"투자분의 기본 기여":"패시브 기여",sans,14,C(191,188,182),FontStyle.Normal,.56f);
     Text(new Rect(x0+w-92,ty+13,38,21.7f),"현재",sans,14,C(188,185,179),FontStyle.Normal,.56f);
     Text(new Rect(x0+w-42,ty+13,42,21.7f),third,sans,14,C(188,185,179),FontStyle.Normal,.56f);
     float ry=ty+47.7f;Fill(new Rect(x0,ry-1,w,1),C(49,52,52));
     for(int i=0;i<eff.Length;i++){
-     float aw=afterWidths[i],bw=beforeWidths[i],labelW=w-bw-aw-24,contentH=heights[i]-(i==0?30:24)-1;var lines=Wrap(eff[i].ko,sans,18,labelW);float pad=i==0?15:12,cy=ry+pad;
+     float aw=afterWidths[i],bw=beforeWidths[i],labelW=w-bw-aw-24,contentH=heights[i]-(i==0?30:24)-1;var lines=Wrap(L(eff[i].ko,eff[i].en),sans,18,labelW);float pad=i==0?15:12,cy=ry+pad;
      for(int k=0;k<lines.Count;k++)Text(new Rect(x0,cy+(contentH-lines.Count*27.9f)/2+k*27.9f,labelW,27.9f),lines[k],sans,18,C(191,188,182));
      Text(new Rect(x0+w-aw-12-bw,cy+(contentH-27.9f)/2,bw,27.9f),FmtEffect(eff[i],n.key,from),sans,18,C(159,162,162),FontStyle.Normal,0,TextAnchor.MiddleRight);
      bool capped=FmtEffect(eff[i],n.key,from)==FmtEffect(eff[i],n.key,target);Color nextColor=i==0?C(220,217,211):capped?C(185,182,176):C(239,131,123);
@@ -458,7 +461,7 @@ namespace Exoduser.UnityPort {
      ry+=heights[i];Fill(new Rect(x0,ry-1,w,1),C(49,52,52));
     }
     y=ty+rows+10;
-    y+=Paragraph(new Rect(x0,y,w,100),n.noteKo,sans,18,C(204,201,195),30.6f);
+    y+=Paragraph(new Rect(x0,y,w,100),L(n.noteKo,n.noteEn),sans,18,C(204,201,195),30.6f);
     string support=SupportNote(n.key);if(support.Length>0){y+=12;y+=Paragraph(new Rect(x0,y,w,120),support,sans,14,C(220,174,133),23f);}
     y+=DrawLedgers(x0,y,w);
     detailContent=y+detailScroll+10;

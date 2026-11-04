@@ -1,0 +1,904 @@
+{
+  "codes": [
+    "ko",
+    "en"
+  ],
+  "entries": [
+    {
+      "key": "미리보기",
+      "texts": [
+        "미리보기",
+        "Preview"
+      ]
+    },
+    {
+      "key": "보스의 패턴을 읽으면 패링 타이밍이 보인다",
+      "texts": [
+        "보스의 패턴을 읽으면 패링 타이밍이 보인다",
+        "Read boss patterns and the parry timing shows"
+      ]
+    },
+    {
+      "key": "인벤토리(TAB)에서 장비를 비교하고 장착",
+      "texts": [
+        "인벤토리(TAB)에서 장비를 비교하고 장착",
+        "TAB for inventory — compare and equip gear"
+      ]
+    },
+    {
+      "key": "R키로 아이템 수거",
+      "texts": [
+        "R키로 아이템 수거",
+        "Press R to collect items"
+      ]
+    },
+    {
+      "key": "물약은 설정한 HP% 이하에서 자동 사용",
+      "texts": [
+        "물약은 설정한 HP% 이하에서 자동 사용",
+        "Potions auto-use when HP falls below set %"
+      ]
+    },
+    {
+      "key": " 캐릭터를 정말 삭제하시겠습니까?",
+      "texts": [
+        " 캐릭터를 정말 삭제하시겠습니까?",
+        " — Really delete this character?"
+      ]
+    },
+    {
+      "key": "확인",
+      "texts": [
+        "확인",
+        "Confirm"
+      ]
+    },
+    {
+      "key": "취소",
+      "texts": [
+        "취소",
+        "Cancel"
+      ]
+    },
+    {
+      "key": "생성",
+      "texts": [
+        "생성",
+        "CREATE"
+      ]
+    },
+    {
+      "key": "새 캐릭터 생성",
+      "texts": [
+        "새 캐릭터 생성",
+        "Create Character"
+      ]
+    },
+    {
+      "key": "지옥에 보낼 캐릭터의 이름을 지어주세요",
+      "texts": [
+        "지옥에 보낼 캐릭터의 이름을 지어주세요",
+        "Choose a name for the character you will send to hell."
+      ]
+    },
+    {
+      "key": "캐릭터 이름 (2~8자)",
+      "texts": [
+        "캐릭터 이름 (2~8자)",
+        "Character name (2–8 characters)"
+      ]
+    },
+    {
+      "key": "이름은 2~8자여야 합니다.",
+      "texts": [
+        "이름은 2~8자여야 합니다.",
+        "Name must be 2-8 characters."
+      ]
+    },
+    {
+      "key": "특수문자는 사용할 수 없습니다.",
+      "texts": [
+        "특수문자는 사용할 수 없습니다.",
+        "Special characters cannot be used."
+      ]
+    },
+    {
+      "key": "이미 같은 이름의 캐릭터가 있습니다.",
+      "texts": [
+        "이미 같은 이름의 캐릭터가 있습니다.",
+        "A character with this name already exists."
+      ]
+    },
+    {
+      "key": "슬롯이 가득 찼습니다.",
+      "texts": [
+        "슬롯이 가득 찼습니다.",
+        "All five slots are occupied."
+      ]
+    },
+    {
+      "key": "캐릭터 ",
+      "texts": [
+        "캐릭터 ",
+        "Characters "
+      ]
+    },
+    {
+      "key": "캐릭터 삭제",
+      "texts": [
+        "캐릭터 삭제",
+        "Delete character"
+      ]
+    },
+    {
+      "key": "다른 실행에서 목록이 바뀌었습니다. 앱을 다시 열어 주세요.",
+      "texts": [
+        "다른 실행에서 목록이 바뀌었습니다. 앱을 다시 열어 주세요.",
+        "The list changed in another instance. Reopen the app."
+      ]
+    },
+    {
+      "key": "이 버전에서 읽을 수 없는 캐릭터 목록입니다. 파일은 보존했습니다.",
+      "texts": [
+        "이 버전에서 읽을 수 없는 캐릭터 목록입니다. 파일은 보존했습니다.",
+        "This character list is not supported by this version. The file was preserved."
+      ]
+    },
+    {
+      "key": "캐릭터 목록을 저장하거나 불러오지 못했습니다. 기존 목록은 보존했습니다.",
+      "texts": [
+        "캐릭터 목록을 저장하거나 불러오지 못했습니다. 기존 목록은 보존했습니다.",
+        "Could not save or load the character list. The previous list was preserved."
+      ]
+    },
+    {
+      "key": "백업에서 캐릭터 목록을 복원했습니다.\n전투 진행은 저장되지 않습니다.",
+      "texts": [
+        "백업에서 캐릭터 목록을 복원했습니다.\n전투 진행은 저장되지 않습니다.",
+        "The character list was recovered from backup.\nBattle progress is not saved."
+      ]
+    },
+    {
+      "key": "미리보기의 진행 상황은 저장되지 않습니다.",
+      "texts": [
+        "미리보기의 진행 상황은 저장되지 않습니다.",
+        "Preview progress is not saved."
+      ]
+    },
+    {
+      "key": "이번 실행에서만 유지되는 캐릭터입니다.\n입장할 때 새 전투가 시작되며 진행은 저장되지 않습니다.",
+      "texts": [
+        "이번 실행에서만 유지되는 캐릭터입니다.\n입장할 때 새 전투가 시작되며 진행은 저장되지 않습니다.",
+        "Characters last for this app session.\nEach entry starts a new battle; progress is not saved."
+      ]
+    },
+    {
+      "key": "전사 · 이번 실행에서만 유지",
+      "texts": [
+        "전사 · 이번 실행에서만 유지",
+        "Warrior · This session only"
+      ]
+    },
+    {
+      "key": "캐릭터는 저장됐지만 이야기 자료를 읽지 못했습니다.",
+      "texts": [
+        "캐릭터는 저장됐지만 이야기 자료를 읽지 못했습니다.",
+        "The character was saved, but story data could not be loaded."
+      ]
+    },
+    {
+      "key": "이야기 영상을 재생하지 못했습니다. 캐릭터 목록은 보존됩니다.",
+      "texts": [
+        "이야기 영상을 재생하지 못했습니다. 캐릭터 목록은 보존됩니다.",
+        "The story could not play. Your character list is preserved."
+      ]
+    },
+    {
+      "key": "아무 키나 눌러 계속",
+      "texts": [
+        "아무 키나 눌러 계속",
+        "Press any key to continue"
+      ]
+    },
+    {
+      "key": "재생 / 재시도",
+      "texts": [
+        "재생 / 재시도",
+        "Play / retry"
+      ]
+    },
+    {
+      "key": "재생",
+      "texts": [
+        "재생",
+        "Play"
+      ]
+    },
+    {
+      "key": "영상 재생 실패 — 재시도하거나 ESC를 길게 눌러 나가세요.",
+      "texts": [
+        "영상 재생 실패 — 재시도하거나 ESC를 길게 눌러 나가세요.",
+        "Video playback failed — retry or hold ESC to continue."
+      ]
+    },
+    {
+      "key": "게임을 종료하시겠습니까?",
+      "texts": [
+        "게임을 종료하시겠습니까?",
+        "Quit the game?"
+      ]
+    },
+    {
+      "key": "종료",
+      "texts": [
+        "종료",
+        "Quit"
+      ]
+    },
+    {
+      "key": "중국어 간체",
+      "texts": [
+        "중국어 간체",
+        "Chinese (Simplified)"
+      ]
+    },
+    {
+      "key": "태국어",
+      "texts": [
+        "태국어",
+        "Thai"
+      ]
+    },
+    {
+      "key": "우크라이나어",
+      "texts": [
+        "우크라이나어",
+        "Ukrainian"
+      ]
+    },
+    {
+      "key": "체코어",
+      "texts": [
+        "체코어",
+        "Czech"
+      ]
+    },
+    {
+      "key": "그리스어",
+      "texts": [
+        "그리스어",
+        "Greek"
+      ]
+    },
+    {
+      "key": "아랍어",
+      "texts": [
+        "아랍어",
+        "Arabic"
+      ]
+    },
+    {
+      "key": "선대 소환체",
+      "texts": [
+        "선대 소환체",
+        "ANCESTRAL SUMMON"
+      ]
+    },
+    {
+      "key": "묘왕 바르칸",
+      "texts": [
+        "묘왕 바르칸",
+        "Varkan, the Tomb King"
+      ]
+    },
+    {
+      "key": "플레이어가 소환하는 선대의 영체",
+      "texts": [
+        "플레이어가 소환하는 선대의 영체",
+        "A spirit summoned by the player."
+      ]
+    },
+    {
+      "key": "패치 노트",
+      "texts": [
+        "패치 노트",
+        "PATCH NOTES"
+      ]
+    },
+    {
+      "key": "닫기",
+      "texts": [
+        "닫기",
+        "Close"
+      ]
+    },
+    {
+      "key": "패치 노트가 없습니다",
+      "texts": [
+        "패치 노트가 없습니다",
+        "No patch notes yet."
+      ]
+    },
+    {
+      "key": "새 캐릭터",
+      "texts": [
+        "새 캐릭터",
+        "New character"
+      ]
+    },
+    {
+      "key": "▶ 시네마틱",
+      "texts": [
+        "▶ 시네마틱",
+        "▶ Cinematic"
+      ]
+    },
+    {
+      "key": "STEAM 위시리스트 추가",
+      "texts": [
+        "STEAM 위시리스트 추가",
+        "ADD TO STEAM WISHLIST"
+      ]
+    },
+    {
+      "key": "입장 이야기 자료를 읽지 못했습니다.",
+      "texts": [
+        "입장 이야기 자료를 읽지 못했습니다.",
+        "Entry story data could not be loaded."
+      ]
+    },
+    {
+      "key": "불러오는 중",
+      "texts": [
+        "불러오는 중",
+        "LOADING"
+      ]
+    },
+    {
+      "key": "네메시아",
+      "texts": [
+        "네메시아",
+        "Nemesia"
+      ]
+    },
+    {
+      "key": "핵터",
+      "texts": [
+        "핵터",
+        "Hector"
+      ]
+    },
+    {
+      "key": "디로이",
+      "texts": [
+        "디로이",
+        "Diroy"
+      ]
+    },
+    {
+      "key": "A 다음 / B 길게 / Start 건너뛰기",
+      "texts": [
+        "A 다음 / B 길게 / Start 건너뛰기",
+        "A Next / Hold B / Start Skip"
+      ]
+    },
+    {
+      "key": "SPACE 길게 눌러 건너뛰기",
+      "texts": [
+        "SPACE 길게 눌러 건너뛰기",
+        "Hold SPACE to skip"
+      ]
+    },
+    {
+      "key": "물약은 자동 사용",
+      "texts": [
+        "물약은 자동 사용",
+        "Potions activate automatically"
+      ]
+    },
+    {
+      "key": "A · 다음 / Start · 건너뛰기",
+      "texts": [
+        "A · 다음 / Start · 건너뛰기",
+        "A · Next / Start · Skip"
+      ]
+    },
+    {
+      "key": "클릭 / Enter / Space · 다음    Space 길게 / ESC · 건너뛰기",
+      "texts": [
+        "클릭 / Enter / Space · 다음    Space 길게 / ESC · 건너뛰기",
+        "Click / Enter / Space · Next    Hold Space / ESC · Skip"
+      ]
+    },
+    {
+      "key": "건너뛰기",
+      "texts": [
+        "건너뛰기",
+        "Skip"
+      ]
+    },
+    {
+      "key": "시작",
+      "texts": [
+        "시작",
+        "Start"
+      ]
+    },
+    {
+      "key": "다음",
+      "texts": [
+        "다음",
+        "Next"
+      ]
+    },
+    {
+      "key": "눈을 떠",
+      "texts": [
+        "눈을 떠",
+        "Open your eyes"
+      ]
+    },
+    {
+      "key": "정신 차려",
+      "texts": [
+        "정신 차려",
+        "Get a grip"
+      ]
+    },
+    {
+      "key": "이제 진짜 지옥이야",
+      "texts": [
+        "이제 진짜 지옥이야",
+        "This is real hell"
+      ]
+    },
+    {
+      "key": "야! 몬스터다!!!",
+      "texts": [
+        "야! 몬스터다!!!",
+        "Hey! Monsters!!!"
+      ]
+    },
+    {
+      "key": "이동과 공격",
+      "texts": [
+        "이동과 공격",
+        "Move & attack"
+      ]
+    },
+    {
+      "key": "패링과 이동",
+      "texts": [
+        "패링과 이동",
+        "Parry & movement"
+      ]
+    },
+    {
+      "key": "스킬",
+      "texts": [
+        "스킬",
+        "Skills"
+      ]
+    },
+    {
+      "key": "살아남아",
+      "texts": [
+        "살아남아",
+        "Stay alive"
+      ]
+    },
+    {
+      "key": "이동",
+      "texts": [
+        "이동",
+        "Move"
+      ]
+    },
+    {
+      "key": "마법 패링 · 보호막",
+      "texts": [
+        "마법 패링 · 보호막",
+        "Magic parry / shield"
+      ]
+    },
+    {
+      "key": "칼등 처내기",
+      "texts": [
+        "칼등 처내기",
+        "Weapon parry"
+      ]
+    },
+    {
+      "key": "전격이동",
+      "texts": [
+        "전격이동",
+        "Flash Step"
+      ]
+    },
+    {
+      "key": "지옥강타 · 분노 폭발",
+      "texts": [
+        "지옥강타 · 분노 폭발",
+        "Hell Slam / rage burst"
+      ]
+    },
+    {
+      "key": "가시덫",
+      "texts": [
+        "가시덫",
+        "Spike Trap"
+      ]
+    },
+    {
+      "key": "회복의 영역",
+      "texts": [
+        "회복의 영역",
+        "Healing Domain"
+      ]
+    },
+    {
+      "key": "CT 스킬 (뇌전걸음 / 얼음보주)",
+      "texts": [
+        "CT 스킬 (뇌전걸음 / 얼음보주)",
+        "CT skill (Ghost Walk / Ice Orb)"
+      ]
+    },
+    {
+      "key": "석궁 자동발사",
+      "texts": [
+        "석궁 자동발사",
+        "Automatic crossbow"
+      ]
+    },
+    {
+      "key": "게임 시작",
+      "texts": [
+        "게임 시작",
+        "START GAME"
+      ]
+    },
+    {
+      "key": "인트로 다시 보기",
+      "texts": [
+        "인트로 다시 보기",
+        "REPLAY INTRO"
+      ]
+    },
+    {
+      "key": "게임 종료",
+      "texts": [
+        "게임 종료",
+        "QUIT GAME"
+      ]
+    },
+    {
+      "key": "다음 난관 난이도",
+      "texts": [
+        "다음 난관 난이도",
+        "Next Stage Difficulty"
+      ]
+    },
+    {
+      "key": "몬스터 레벨 오프셋",
+      "texts": [
+        "몬스터 레벨 오프셋",
+        "MONSTER LEVEL OFFSET"
+      ]
+    },
+    {
+      "key": " 레벨",
+      "texts": [
+        " 레벨",
+        " LV"
+      ]
+    },
+    {
+      "key": "뒤로",
+      "texts": [
+        "뒤로",
+        "Back"
+      ]
+    },
+    {
+      "key": "다음 난관으로",
+      "texts": [
+        "다음 난관으로",
+        "Proceed"
+      ]
+    },
+    {
+      "key": "안식",
+      "texts": [
+        "안식",
+        "Respite"
+      ]
+    },
+    {
+      "key": "순례",
+      "texts": [
+        "순례",
+        "Pilgrimage"
+      ]
+    },
+    {
+      "key": "여정",
+      "texts": [
+        "여정",
+        "Journey"
+      ]
+    },
+    {
+      "key": "시련",
+      "texts": [
+        "시련",
+        "Ordeal"
+      ]
+    },
+    {
+      "key": "재앙",
+      "texts": [
+        "재앙",
+        "Calamity"
+      ]
+    },
+    {
+      "key": "닫기 [ESC]",
+      "texts": [
+        "닫기 [ESC]",
+        "Close [ESC]"
+      ]
+    },
+    {
+      "key": "그래픽 API:",
+      "texts": [
+        "그래픽 API:",
+        "Graphics API:"
+      ]
+    },
+    {
+      "key": "성능 등급:",
+      "texts": [
+        "성능 등급:",
+        "Performance tier:"
+      ]
+    },
+    {
+      "key": "벤치 FPS:",
+      "texts": [
+        "벤치 FPS:",
+        "Bench FPS:"
+      ]
+    },
+    {
+      "key": "쓰러졌습니다",
+      "texts": [
+        "쓰러졌습니다",
+        "You have fallen"
+      ]
+    },
+    {
+      "key": "다시 시작",
+      "texts": [
+        "다시 시작",
+        "Restart"
+      ]
+    },
+    {
+      "key": "계속하기",
+      "texts": [
+        "계속하기",
+        "Resume"
+      ]
+    },
+    {
+      "key": "로비로 돌아가기",
+      "texts": [
+        "로비로 돌아가기",
+        "Return to lobby"
+      ]
+    },
+    {
+      "key": "다시 시작하거나 로비로 돌아갈 수 있습니다.",
+      "texts": [
+        "다시 시작하거나 로비로 돌아갈 수 있습니다.",
+        "Restart or return to the lobby."
+      ]
+    },
+    {
+      "key": "↑↓ 선택 · Enter 확인 · ESC 뒤로 · TAB 인벤토리",
+      "texts": [
+        "↑↓ 선택 · Enter 확인 · ESC 뒤로 · TAB 인벤토리",
+        "↑↓ Select · Enter Confirm · ESC Back · TAB Inventory"
+      ]
+    },
+    {
+      "key": "소리",
+      "texts": [
+        "소리",
+        "Audio"
+      ]
+    },
+    {
+      "key": "조작 안내",
+      "texts": [
+        "조작 안내",
+        "Controls"
+      ]
+    },
+    {
+      "key": "↑↓ 선택 · ←→ 값 조절 · Enter 확인\n",
+      "texts": [
+        "↑↓ 선택 · ←→ 값 조절 · Enter 확인\n",
+        "↑↓ Select · ←→ Adjust · Enter Confirm\n"
+      ]
+    },
+    {
+      "key": "기본값 복원",
+      "texts": [
+        "기본값 복원",
+        "Restore defaults"
+      ]
+    },
+    {
+      "key": "프레임 제한",
+      "texts": [
+        "프레임 제한",
+        "Frame rate limit"
+      ]
+    },
+    {
+      "key": "무제한",
+      "texts": [
+        "무제한",
+        "Unlimited"
+      ]
+    },
+    {
+      "key": "전체 화면",
+      "texts": [
+        "전체 화면",
+        "Fullscreen"
+      ]
+    },
+    {
+      "key": "켜짐",
+      "texts": [
+        "켜짐",
+        "On"
+      ]
+    },
+    {
+      "key": "꺼짐",
+      "texts": [
+        "꺼짐",
+        "Off"
+      ]
+    },
+    {
+      "key": "효과음",
+      "texts": [
+        "효과음",
+        "Sound effects"
+      ]
+    },
+    {
+      "key": "배경 음악",
+      "texts": [
+        "배경 음악",
+        "Background music"
+      ]
+    },
+    {
+      "key": "화면 설정을 적용하는 중입니다.",
+      "texts": [
+        "화면 설정을 적용하는 중입니다.",
+        "Applying display settings."
+      ]
+    },
+    {
+      "key": "화면 변경을 적용하지 못했습니다. 현재 화면을 유지합니다.",
+      "texts": [
+        "화면 변경을 적용하지 못했습니다. 현재 화면을 유지합니다.",
+        "Display change failed. The current display is retained."
+      ]
+    },
+    {
+      "key": "설정 저장에 문제가 있습니다. 이번 실행의 값은 유지됩니다.",
+      "texts": [
+        "설정 저장에 문제가 있습니다. 이번 실행의 값은 유지됩니다.",
+        "Settings could not be saved. Current session values are retained."
+      ]
+    },
+    {
+      "key": "전체 화면: 켜짐",
+      "texts": [
+        "전체 화면: 켜짐",
+        "Fullscreen: On"
+      ]
+    },
+    {
+      "key": "전체 화면: 꺼짐",
+      "texts": [
+        "전체 화면: 꺼짐",
+        "Fullscreen: Off"
+      ]
+    },
+    {
+      "key": "세 번째 공격 유지",
+      "texts": [
+        "세 번째 공격 유지",
+        "Hold third attack"
+      ]
+    },
+    {
+      "key": "기본 공격 / 기검참",
+      "texts": [
+        "기본 공격 / 기검참",
+        "Attack / Ki Slash"
+      ]
+    },
+    {
+      "key": "차지 후 놓아서 발사",
+      "texts": [
+        "차지 후 놓아서 발사",
+        "Charge and release"
+      ]
+    },
+    {
+      "key": "소지품 열기 / 닫기",
+      "texts": [
+        "소지품 열기 / 닫기",
+        "Open / close inventory"
+      ]
+    },
+    {
+      "key": "스킬 창 열기 / 닫기",
+      "texts": [
+        "스킬 창 열기 / 닫기",
+        "Open / close skills"
+      ]
+    },
+    {
+      "key": "닫기 / 일시정지",
+      "texts": [
+        "닫기 / 일시정지",
+        "Back / Pause"
+      ]
+    },
+    {
+      "key": "키 설정 변경",
+      "texts": [
+        "키 설정 변경",
+        "Change key bindings"
+      ]
+    },
+    {
+      "key": "조작 키 설정 (클릭하여 변경)",
+      "texts": [
+        "조작 키 설정 (클릭하여 변경)",
+        "Key bindings (click to change)"
+      ]
+    },
+    {
+      "key": "1-1 전투로 계속",
+      "texts": [
+        "1-1 전투로 계속",
+        "Continue to combat in 1-1"
+      ]
+    },
+    {
+      "key": "지옥문 봉인 (80% 처치)",
+      "texts": [
+        "지옥문 봉인 (80% 처치)",
+        "Gate Sealed (80% kills)"
+      ]
+    },
+    {
+      "key": "전체",
+      "texts": [
+        "전체",
+        "All"
+      ]
+    }
+  ]
+}

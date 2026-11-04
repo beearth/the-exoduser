@@ -14,7 +14,7 @@ namespace Exoduser.UnityPort {
   public void Pick(int index){policy.Pick(index);}
   public bool Confirm(){if(!policy.Confirm())return false;var action=proceed;proceed=null;back=null;NativeDecisionSound.Play("difficulty");action?.Invoke(policy.ConfirmedOffset);return true;}
   public void Cancel(){if(!Active)return;policy.Cancel();var action=back;proceed=null;back=null;action?.Invoke();}
-  string L(string a,string b)=>language=="ko"?a:b;
+  string L(string a,string b)=>NativeLocaleCatalog.Text(a,b,language);
   void Init(){if(initialized)return;initialized=true;
    // Pre-filtered lossless sRGB PNGs preserve dark detail through the standard GUI texture path.
    // Two GPU ARGB32 cache candidates failed actual Player review (double decode, then dark-linear quantization).

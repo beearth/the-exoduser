@@ -17,10 +17,12 @@ namespace Exoduser.UnityPort
   static readonly string[] en={"Read boss patterns and the parry timing shows","TAB for inventory — compare and equip gear","Press R to collect items","Potions auto-use when HP falls below set %"};
   internal static int FontPixels(float height){return (int)Math.Round(Math.Max(11,Math.Min(16,height*.0125f)),MidpointRounding.AwayFromZero);}
   internal static string Pick(int stage,bool english,string inventoryKey,string pickupKey)
+  {return Pick(stage,english?"en":"ko",inventoryKey,pickupKey);}
+  internal static string Pick(int stage,string locale,string inventoryKey,string pickupKey)
   {
-   int i=(stage%Count+Count)%Count;if(i==1&&string.IsNullOrEmpty(inventoryKey)||i==2&&string.IsNullOrEmpty(pickupKey))i=0;string text=(english?en:ko)[i];
+   int i=(stage%Count+Count)%Count;if(i==1&&string.IsNullOrEmpty(inventoryKey)||i==2&&string.IsNullOrEmpty(pickupKey))i=0;string text=NativeLocaleCatalog.Text(ko[i],en[i],locale);
    if(i==1)text=text.Replace("TAB",inventoryKey??"—");
-   if(i==2)text=english?text.Replace(" R "," "+(pickupKey??"—")+" "):text.Replace("R키",(pickupKey??"—")+"키");
+   if(i==2)text=text.Replace("R",pickupKey??"—");
    return "◆ "+text;
   }
  }

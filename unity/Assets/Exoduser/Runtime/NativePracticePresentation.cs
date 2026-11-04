@@ -4,19 +4,15 @@ using UnityEngine;
 using Exoduser.UnityPort.Core;
 namespace Exoduser.UnityPort
 {
-    [Serializable] sealed class FirstPracticeCopy {public string id,ko,en;}
-    [Serializable] sealed class FirstPracticeData {public FirstPracticeCopy[] entries;}
     public sealed partial class NativeGame
     {
         // Web #parryLesson (parry-lesson.css + ui-foundation.css), 1920x1080 computed rects: 400-wide panel at right 56, frame = transparent still of the live panel.
         const float LessonW=400,LessonH=1048,LessonRight=56,LessonTop=16;
-        FirstPracticeData practiceCopy;Texture2D lessonBase;Font lessonFont,lessonKeyFont;readonly Dictionary<string,GUIStyle> lessonStyles=new Dictionary<string,GUIStyle>();
+        Texture2D lessonBase;Font lessonFont,lessonKeyFont;readonly Dictionary<string,GUIStyle> lessonStyles=new Dictionary<string,GUIStyle>();
         static Color Hex(int rgb,float a=1f){return new Color(((rgb>>16)&255)/255f,((rgb>>8)&255)/255f,(rgb&255)/255f,a);}
         string PracticeCopy(string id)
         {
-            if(practiceCopy==null)practiceCopy=JsonUtility.FromJson<FirstPracticeData>(Resources.Load<TextAsset>("Data/first_practice").text);
-            foreach(var entry in practiceCopy.entries)if(entry.id==id)return lobby.Language=="ko"?entry.ko:entry.en;
-            throw new InvalidOperationException("Missing source practice copy "+id);
+            return NativeLocaleCatalog.Get("first_practice",id,lobby.Language);
         }
         Vector2 practiceScroll;float practiceContentHeight=1400;
         Rect PracticePanel(float width){var dock=NativeHudDockLayout.Create(1920,1080);float hudTop=Mathf.Min(NativeUiViewport.ToEdge(dock.LeftFrame).y,NativeUiViewport.ToEdge(dock.RightFrame).y);float gap=Mathf.Max(16,16/NativeUiViewport.Edges.Scale);float top=NativeObjectivePanel.Top+NativeObjectivePanel.Height+gap+8;return new Rect(NativeUiViewport.Edges.Width-LessonRight-LessonW,top,LessonW,Mathf.Max(220,hudTop-gap-8-top));}
@@ -113,7 +109,7 @@ namespace Exoduser.UnityPort
                 y+=38.4f+6;
                 if(current)
                 {
-                    string hint=done?(lobby.Language=="ko"?"이식된 실습(이동·좌클릭·우클릭·가시덫·사슬·구르기·분노 폭발)을 마쳤습니다. 패링 실습은 패링 반사 규칙 이식 뒤에 이어집니다.":"The ported exercises (movement, left click, right click, Spike Trap, chain, roll, Rage burst) are complete. The parry exercises follow once the parry reflection rule is ported."):PracticeStepHint(step);var hintStyle=LessonStyle(14,TextAnchor.UpperLeft,Hex(0xe8d9c6),true,true);float hintH=hintStyle.CalcHeight(new GUIContent(hint),w-16);
+                    string hint=done?PracticeCopy("doneHint"):PracticeStepHint(step);var hintStyle=LessonStyle(14,TextAnchor.UpperLeft,Hex(0xe8d9c6),true,true);float hintH=hintStyle.CalcHeight(new GUIContent(hint),w-16);
                     NativeUiAudit.Label(new Rect(x+8,y,w-16,hintH),hint,hintStyle);y+=hintH+10;
                     if(step==PracticeStep.Left&&!intro&&phase==FirstPracticePhase.Practice)y=DrawLessonHold(x+8,y,w-16,accent);
                     else if((step==PracticeStep.Chain||step==PracticeStep.HoldMagic||step==PracticeStep.HoldPhysical||step==PracticeStep.RageParry)&&!intro&&phase==FirstPracticePhase.Practice)y=DrawChainHold(x+8,y,w-16,accent);
@@ -130,7 +126,7 @@ namespace Exoduser.UnityPort
                 NativeUiAudit.Label(b,PracticeCopy("start"),LessonStyle(15,TextAnchor.MiddleCenter,Hex(0xfff0df),true));
                 if(NativeUiAudit.Button(b,GUIContent.none,GUIStyle.none)){firstPractice.Start();skillInputFence=true;}}
             if(done){var b=new Rect(x,skipY-8-46,w,46);Fill(b,Hex(0x4a1816));Fill(new Rect(b.x,b.y,b.width,b.height*.5f),Hex(0x5e201c,.8f));FrameRect(b,Hex(0xb6614b));
-                NativeUiAudit.Label(b,lobby.Language=="ko"?"1-1 전투로 계속":"Continue to combat in 1-1",LessonStyle(15,TextAnchor.MiddleCenter,Hex(0xfff0df),true));
+                NativeUiAudit.Label(b,NativeLocaleCatalog.Text("1-1 전투로 계속","Continue to combat in 1-1",lobby.Language),LessonStyle(15,TextAnchor.MiddleCenter,Hex(0xfff0df),true));
                 if(NativeUiAudit.Button(b,GUIContent.none,GUIStyle.none)){EndFirstPractice(false);return;}}
             string skip=PracticeCopy("skip");var skipStyle=LessonStyle(12,TextAnchor.MiddleCenter,Hex(0xdccbb6));float skipW=Mathf.Max(98,skipStyle.CalcSize(new GUIContent(skip)).x+24);
             var s=new Rect(rect.center.x-skipW/2,skipY,skipW,36);Fill(s,Hex(0x1d1413));FrameRect(s,Hex(0x665044));NativeUiAudit.Label(s,skip,skipStyle);

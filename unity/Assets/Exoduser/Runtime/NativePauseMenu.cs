@@ -50,7 +50,7 @@ namespace Exoduser.UnityPort
   {
    return navigation.BackPage();
   }
-  string T(string ko,string en) { return English?en:ko; }
+  string T(string ko,string en) { return NativeLocaleCatalog.Text(ko,en,LocaleCode); }
   string Exact(string id,string ko,string en){return NativeA15SettingsLabels.Get(id,LocaleCode,ko,en);}
   void SelectExactLabelFont()
   {
