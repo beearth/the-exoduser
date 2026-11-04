@@ -53,3 +53,13 @@ PC R5 `0a60cbcee273e1150ba7df8909acb77dd9f18edc`에서 게임 구역 전환 화�
 | 조립 분할 | `A2FieldSetup`을 단계 사이에 `yield return null`로 프레임을 넘기는 코루틴으로 바꿨다(`A2FieldSetupSteps`). 단계 순서·호출·인자·수치는 그대로이며 `A2FieldOuterMass→A2Foreground→A2FieldLandmarks→A2FieldConnections→A2FieldGround→A2FieldGroundCover→A2BridgeMoss→A2FieldAtmosphere` 호출 순서도 같다. 조립 중에는 `r3Cam`을 끄고 끝나면 이전 상태로 되돌려, 반쯤 만든 필드가 비치지 않는다. `HellLightingSetup`·`A2ForestSetup`·`Remodel3DLoad`는 이 코루틴을 `yield return`으로 이어 받는다. |
 | 진행 표시 | 문구 없음(번역 항목 없음). 로딩 문구 아래 가는 은빛 선: 바탕 `--sv-dk #4f5352`(.55), 채움 `--sv-lt #c9c7c3`(.85)과 끝 `--sv-hi #f6f5f2`. 폭 max(160, 화면높이×.2), 두께 1px(1080 기준), 우측·하단 여백은 기존 문구와 같다. 채움은 조립 단계 보고(추정 가중치)를 완만하게 따라가며, 조립이 없는 전환에서는 그리지 않는다. 기존 인장·불씨·후광·문구는 그대로이고, 불씨·후광 호흡은 호스트 시계로 계속 움직인다(곡선은 Core와 같은 식). |
 | 검사 | `unity/Tools/field-prepare-wait-tests/run.cjs`(Unity 없이 Roslyn/dotnet, 20초 조립 지연·15초 한 프레임 끊김·20초 한 프레임·보고 멈춤 20초 뒤 실패·비조립 12초·오류 즉시·보고 단조 증가). 지연 주입은 검사 코드 안에서만 한다. |
+
+## 11-04 로비→필드 전환 로딩 촬영 모드
+
+상태: PC 컴파일·소스 검사만, 촬영 미실행(Mac 공용 실행기로 촬영).
+
+- 사용법: `--unity-transition-loading-capture <절대 출력 폴더>` (QA 격리 저장소 필수, 창 모드 1920x1080, 소리 0). 끝나면 `Application.Quit`, 실패 시 receipt `error`와 0이 아닌 종료 코드(예외 2, 샘플 누락·로비 복귀 4).
+- 시작: 격리 저장소에 전사 `검수전사`를 만들고(자동 입력 상태), 자동 입력을 풀어 로비 "시작" 버튼과 같은 `lobby.EnterSelectedCharacter()`를 호출한다. 전환·조립 코드는 건드리지 않는다. 시작·소개 페이지(Nemesis·Guide)는 Esc와 같은 상태기계 `Skip()`으로만 넘기고 횟수를 receipt `introSkips`에 적는다.
+- 샘플(렌더 끝 프레임 `WaitForEndOfFrame`, 시작 = `EnterSelectedCharacter` 호출 시각): (a) 0.5초 인장 (b) 1.5초 문구·진행선 (c) `NativeTransitionProgress.Active`이고 Fraction이 0.5 이상인 첫 프레임 (d) 조립이 끝난 첫 프레임(전환이 Busy일 때, 페이드인 전) (e) 전환이 끝나고 필드가 보인 뒤 1초. PNG 이름 `transition-<id>.png`.
+- receipt `transition-loading.json`: 샘플별 경과·Fraction·Active·Busy·Phase·경계 이름·로비 단계·조립 단계명·해상도·PNG 경로, `returnedToLobby`, `assemblySeconds`, `totalSeconds`, `boundaries`, `missing`. 조립이 전환 밖에서 일어나 (c)(d)가 없으면 `missing`에 남기고 종료 코드 4.
+- 검사: `unity/Tools/field-prepare-wait-tests/capture-contract.test.cjs`(인자 분기·격리 저장소·공용 시작 경로 호출).
