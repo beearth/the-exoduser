@@ -20,6 +20,7 @@ namespace Exoduser.UnityPort {
 
  public sealed class NativeSkills {
   public bool Open {get;private set;}
+  public string LocaleCode="ko";
   public Action Changed;
   string pendingResetId;
   public string PendingResetId {get{return pendingResetId;}}
@@ -112,11 +113,12 @@ namespace Exoduser.UnityPort {
    return s;
   }
   float Width(Font f,int size,FontStyle fs,string text,float spacing){
-   var st=Style(f,size,fs);if(spacing==0)return st.CalcSize(new GUIContent(text)).x;
+   text=NativeLocaleCatalog.Text(text,null,LocaleCode);var st=Style(f,size,fs);if(spacing==0)return st.CalcSize(new GUIContent(text)).x;
    float w=0;foreach(char ch in text)w+=st.CalcSize(new GUIContent(ch.ToString())).x+spacing;return w;
   }
   void Text(Rect r,string text,Font f,int size,Color c,FontStyle fs=FontStyle.Normal,float spacing=0,TextAnchor anchor=TextAnchor.MiddleLeft,bool shadow=false,bool bounded=false){
    if(string.IsNullOrEmpty(text))return;
+   text=NativeLocaleCatalog.Text(text,null,LocaleCode);
    var st=Style(f,size,fs);
    if(bounded){st=new GUIStyle(st){clipping=TextClipping.Clip};if(Width(f,size,fs,text,spacing)>r.width){var ends=System.Globalization.StringInfo.ParseCombiningCharacters(text);int n=ends.Length;while(n>0&&Width(f,size,fs,text.Substring(0,ends[n-1])+"…",spacing)>r.width)n--;text=(n==0?"":text.Substring(0,ends[n-1]))+"…";}}
    float total=Width(f,size,fs,text,spacing),x=r.x;
@@ -130,6 +132,7 @@ namespace Exoduser.UnityPort {
   // Latin runs use the web display face (Cinzel Decorative), Hangul falls back to the serif body face, like the browser's font stack.
   static bool IsLatin(char c){return c<128||c=='·';}
   void Mixed(Rect r,string text,int size,Color c,float spacing,TextAnchor anchor,FontStyle koStyle=FontStyle.Normal,bool shadow=false){
+   text=NativeLocaleCatalog.Text(text,null,LocaleCode);
    var runs=new List<KeyValuePair<bool,string>>();string cur="";bool latin=false;
    foreach(char ch in text){bool l=IsLatin(ch)&&ch!=' ';if(ch==' '){cur+=ch;continue;}if(cur.Length>0&&l!=latin&&cur.Trim().Length>0){runs.Add(new KeyValuePair<bool,string>(latin,cur));cur="";}latin=l;cur+=ch;}
    if(cur.Length>0)runs.Add(new KeyValuePair<bool,string>(latin,cur));
@@ -150,6 +153,7 @@ namespace Exoduser.UnityPort {
    return Hangul(l)||Hangul(r);
   }
   void Paragraph(Rect r,string text,Font f,int size,Color c,float lineHeight){
+   text=NativeLocaleCatalog.Text(text,null,LocaleCode);
    var st=Style(f,size,FontStyle.Normal);float y=r.y;int start=0;
    while(start<text.Length){
     int end=start,lastBreak=-1;
@@ -231,6 +235,7 @@ namespace Exoduser.UnityPort {
    if(id==null){var empty=new Rect(51,skillBodyTop,270,68);InfoFace(empty);Text(new Rect(74,skillBodyTop+22,224,24),"스킬을 고르면 정보가 표시됩니다",serif,14,C(113,116,116));return;}
    string name=SelectedSlot==15?"일반사격":d!=null?d.name:roleNames[SelectedSlot];int lv=SkillLevelOf(id);bool learned=d!=null&&lv>0,supported=Ported(id);
    string desc=SelectedSlot==13?"방향키와 함께 사용 · 기절 탈출":SelectedSlot==15?"T자동: 기본 화살":d!=null?d.desc:"";if(id=="fireball")desc=desc.Replace("[기본: E]","[기본: "+SlotKey(7)+"]");
+   name=NativeLocaleCatalog.Text(name,null,LocaleCode);
    var nameStyle=Style(serif,28,FontStyle.Bold);var nameLines=NativeUiTextRun.Wrap(name,154,g=>nameStyle.CalcSize(new GUIContent(g)).x);
    float measuredName=0;foreach(var line in nameLines)measuredName=Mathf.Max(measuredName,nameStyle.CalcHeight(new GUIContent(line),154));
    float namePitch=NativeUiTextFlow.TitlePitch(measuredName),headerExtra=NativeUiTextFlow.TitleExtra(nameLines.Count,namePitch);

@@ -558,9 +558,9 @@ namespace Exoduser.UnityPort
             if(nextDifficulty.Active){nextDifficulty.Draw();return;}
             if(stageClear.Active){stageClear.LocaleCode=lobby.Language;stageClear.DiagnosticDetails=lobby.DiagnosticUiEnabled;stageClear.Draw();return;}
             if(stats.Open){stats.LocaleCode=lobby.Language;stats.Draw(Simulation,()=>{hud.Refresh(Simulation.Player,Simulation.TickCount,true);RequestCombatSave();},()=>SetStats(false));return;}
-            if(forge.Open){forge.Draw(Simulation,inventory.State,()=>SetForge(false));return;}
-            if(skills.Open){skills.Draw(Simulation,()=>SetSkills(false),EquipSelectedSkill);return;}
-            if(inventory.Open){inventory.Draw(Simulation.Player.Level,Simulation.Player,()=>SetInventory(false));return;}
+            if(forge.Open){forge.LocaleCode=lobby.Language;forge.Draw(Simulation,inventory.State,()=>SetForge(false));return;}
+            if(skills.Open){skills.LocaleCode=lobby.Language;skills.Draw(Simulation,()=>SetSkills(false),EquipSelectedSkill);return;}
+            if(inventory.Open){inventory.LocaleCode=lobby.Language;inventory.Draw(Simulation.Player.Level,Simulation.Player,()=>SetInventory(false));return;}
             if(menu&&!hudSmoke&&!inventorySmoke)
             {
                 InitGUI();

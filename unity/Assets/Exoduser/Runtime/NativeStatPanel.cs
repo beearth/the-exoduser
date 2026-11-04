@@ -221,7 +221,7 @@ namespace Exoduser.UnityPort {
   }
   void DrawHeader(){
    string ap=plannedAp.ToString();float numberWidth=Width(sans,24,FontStyle.Normal,ap,0),walletWidth=26+71.25f+12+numberWidth+2;walletWidth=Mathf.Max(125.34f,walletWidth);
-   NativePanelTitle.Draw(new Rect(47+(1826-walletWidth-16)/2-260,80,520,64),"성장의 각인");
+   NativePanelTitle.Draw(new Rect(47+(1826-walletWidth-16)/2-260,80,520,64),NativeLocaleCatalog.Text("성장의 각인",null,LocaleCode));
    var wallet=new Rect(1873-walletWidth,80,walletWidth,64);Grad(wallet,C(27,30,30,.81f),C(17,16,19,.93f));Border(wallet,C(85,88,88));Fill(new Rect(wallet.x+1,wallet.y+1,wallet.width-2,1),C(157,160,160,.13f));
    Text(new Rect(wallet.x+13,101.5f,71.25f,21),"계획 후 AP",sans,14,C(188,185,179));
    Text(new Rect(1860-numberWidth,97.6f,numberWidth,28.8f),ap,sans,24,C(202,199,193),FontStyle.Normal,0,TextAnchor.MiddleRight);

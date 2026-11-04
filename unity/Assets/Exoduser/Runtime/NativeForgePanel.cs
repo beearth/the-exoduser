@@ -13,6 +13,7 @@ namespace Exoduser.UnityPort {
  // Potion selection/craft reads Simulation.PotionState (B11); enhance / salvage / reroll / relic / general craft execution is shape only.
  public sealed partial class NativeForgePanel {
   public bool Open {get;private set;}
+  public string LocaleCode="ko";
   public string Tab {get;private set;}="upgrade";
   public string SelectedChip {get;private set;}
   public float Scroll(string tab){return gridScroll.TryGetValue(tab,out var v)?v:0;}
@@ -87,13 +88,14 @@ namespace Exoduser.UnityPort {
   }
   static int Px(float size){return Mathf.Max(1,Mathf.RoundToInt(size));}
   float Meas(string text,F f,float size,bool bold=false,float sp=0,bool italic=false){
-   if(string.IsNullOrEmpty(text))return 0;var st=Style(f,Px(size),bold,italic);
+   if(string.IsNullOrEmpty(text))return 0;text=NativeLocaleCatalog.Text(text,null,LocaleCode);var st=Style(f,Px(size),bold,italic);
    if(sp==0)return st.CalcSize(new GUIContent(text)).x;
    float w=0;foreach(char ch in text)w+=st.CalcSize(new GUIContent(ch.ToString())).x+sp;return w;
   }
   // Draws text in rect r (vertically centred). Returns the text width. anchor: Left / Center / Right.
   float Txt(Rect r,string text,F f,float size,Color c,bool bold=false,TextAnchor anchor=TextAnchor.MiddleLeft,float sp=0,float alpha=1f,Color? shadow=null,float shY=1f,bool italic=false){
    if(string.IsNullOrEmpty(text))return 0;
+   text=NativeLocaleCatalog.Text(text,null,LocaleCode);
    var st=Style(f,Px(size),bold,italic);float total=Meas(text,f,size,bold,sp,italic);r=Off(r);float x=r.x;
    if(anchor==TextAnchor.MiddleCenter||anchor==TextAnchor.UpperCenter)x=r.x+(r.width-total)/2f;else if(anchor==TextAnchor.MiddleRight)x=r.xMax-total;
    for(int pass=shadow.HasValue?0:1;pass<2;pass++){

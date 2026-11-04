@@ -59,7 +59,8 @@ for(const r of rows){
  }
 }
 const native=JSON.parse(fs.readFileSync(path.join(data,'native_ui_fallbacks.json'),'utf8'));
-if(native.entries.length!==128||new Set(native.entries.map(r=>r.key)).size!==128)issues.push({kind:'native-key-contract'});
+const fourthPass=['성장의 각인','계획 후 AP','전투의 길','패시브 분석','투자 레벨'];
+if(native.entries.length!==128+fourthPass.length||new Set(native.entries.map(r=>r.key)).size!==133||fourthPass.some(key=>!native.entries.some(r=>r.key===key)))issues.push({kind:'native-key-contract'});
 const coverage=Object.fromEntries([...new Set(rows.map(r=>r.file))].map(f=>[f,rows.filter(r=>r.file===f).length]));
 const counts=Object.fromEntries([...new Set(issues.map(r=>r.kind))].map(k=>[k,issues.filter(r=>r.kind===k).length]));
 const result={passed:!issues.length&&!parseErrors.length,jsonFiles:files.length,catalogFiles:Object.keys(coverage).length,rows:rows.length,values:rows.length*29,counts,coverage,internalContracts,parseErrors,issues};

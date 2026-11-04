@@ -75,6 +75,13 @@ class Program {
   Equal("설정",NativeLocaleCatalog.Text("설정","Settings","ko"),"lobby K language change");
   Equal("Предпросмотр",NativeLocaleCatalog.Text("미리보기","Preview","ru"),"filled source catalog selects Russian");
   Equal("Game",NativeLocaleCatalog.Get("a15_options_web","t.game","ko",null,"Game"),"missing internal option key never leaks");
+   foreach(var ko in new[]{"성장의 각인","계획 후 AP","전투의 길","패시브 분석","투자 레벨"}){
+    for(int i=0;i<LobbyLanguage.Count;i++){
+     string code=LobbyLanguage.GetCode(i),direct=NativeLocaleCatalog.Get("native_ui_fallbacks",ko,code);
+     if(string.IsNullOrWhiteSpace(direct)||(code!="ko"&&direct==ko))throw new Exception("fourth pass missing locale: "+ko+" / "+code);
+     Equal(direct,NativeLocaleCatalog.Text(ko,null,code),"stat renderer source catalog "+ko+" / "+code);
+    }
+   }
   Console.OutputEncoding=System.Text.Encoding.UTF8;
   Console.WriteLine("로더 동작 검사 "+count+"건 통과");
  }

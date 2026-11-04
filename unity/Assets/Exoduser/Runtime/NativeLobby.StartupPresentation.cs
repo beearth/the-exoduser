@@ -210,6 +210,7 @@ namespace Exoduser.UnityPort
    Fill(new Rect(skip.x,skip.y,skip.width*(float)startup.HoldProgress,skip.height),new Color(.72f,.74f,.74f,.20f*startupGuideOpacity));
    var e=Event.current;if(new Rect(left,top,panelW,visibleH).Contains(e.mousePosition)&&!startupInputFence&&e.type==EventType.MouseDown&&e.button==0){if(skip.Contains(e.mousePosition))startup.Skip();else startup.Advance();e.Use();}
   }
-  void DrawGuideButton(Rect r,string text,bool focus,bool primary=false){bool hover=r.Contains(Event.current.mousePosition);var old=GUI.color;if(focus||hover)NativeSilverHellUi.ButtonFocus(r);NativeSilverHellUi.ActionPlate(r,primary,focus||hover?1:0,!AutomatedInput&&hover&&ExoInput.Mouse(0));GUI.color=old;var f=NativeSilverHellUi.Font()??guideText.font;float spacing=16*.24f,width=SpacedWidth(f,16,text,spacing)-spacing;DrawSpaced(r.center.x-width/2,r.y,r.height,text,f,16,spacing,(focus||hover)?new Color(242/255f,237/255f,226/255f):new Color(223/255f,214/255f,194/255f),true);}
+  void DrawGuideButton(Rect r,string text,bool focus,bool primary=false){bool hover=r.Contains(Event.current.mousePosition);var old=GUI.color;if(focus||hover)NativeSilverHellUi.ButtonFocus(r);NativeSilverHellUi.ActionPlate(r,primary,focus||hover?1:0,!AutomatedInput&&hover&&ExoInput.Mouse(0));GUI.color=old;var f=NativeSilverHellUi.Font()??guideText.font;// Keep translated glyphs inside the plate's thorn tips; preserve the original font and wording.
+   float spacing=Mathf.Min(16*.24f,Mathf.Max(0,(r.width-32-SpacedWidth(f,16,text,0))/Mathf.Max(1,text.Length-1))),width=SpacedWidth(f,16,text,spacing)-spacing;DrawSpaced(r.center.x-width/2,r.y,r.height,text,f,16,spacing,(focus||hover)?new Color(242/255f,237/255f,226/255f):new Color(223/255f,214/255f,194/255f),true);}
  }
 }

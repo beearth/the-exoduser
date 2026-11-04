@@ -6,6 +6,7 @@ namespace Exoduser.UnityPort {
     // Drawing primitives for the web inventory layout (1920x1080 design space, IMGUI).
     // Gradients/glows are tiny generated textures; panel frames are the web frame.webp nine-sliced.
     public sealed partial class NativeInventory {
+        public string LocaleCode="ko";
         Texture2D plate,rail,windowFrame,iron320,iron480;
         readonly Dictionary<string,Texture2D> procedural=new Dictionary<string,Texture2D>();
         readonly Dictionary<long,GUIStyle> textStyles=new Dictionary<long,GUIStyle>();

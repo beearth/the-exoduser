@@ -51,8 +51,9 @@ namespace Exoduser.UnityPort {
         // 11-04: "가방 (0/300)" is drawn in 5 runs of two fonts. CalcSize and the audit's xAdvance differ by a few hundredths of a pixel, so touching runs
         // read as overlapping (30 regressions in the desktop-swap check). One pixel between runs keeps them apart; not visible at 1x.
         internal const float CountRunGap=1f;
-        float SerifWidth(string s,int size,bool bold,float spacing){var st=SerifStyle(size,bold);return NativeUiTextRun.Layout(s,spacing,g=>st.CalcSize(new GUIContent(g)).x);}
+        float SerifWidth(string s,int size,bool bold,float spacing){s=NativeLocaleCatalog.Text(s,null,LocaleCode);var st=SerifStyle(size,bold);return NativeUiTextRun.Layout(s,spacing,g=>st.CalcSize(new GUIContent(g)).x);}
         void Serif(Rect r,string s,int size,Color c,bool bold=false,float spacing=0,TextAnchor anchor=TextAnchor.MiddleLeft,bool shadow=false){
+            s=NativeLocaleCatalog.Text(s,null,LocaleCode);
             var st=SerifStyle(size,bold);float total=SerifWidth(s,size,bold,spacing),x=r.x;
             if(anchor==TextAnchor.MiddleCenter||anchor==TextAnchor.UpperCenter)x=r.x+(r.width-total)/2f;else if(anchor==TextAnchor.MiddleRight)x=r.xMax-total;
             for(int pass=shadow?0:1;pass<2;pass++){

@@ -118,7 +118,9 @@ namespace Exoduser.UnityPort
             GUI.enabled=controls;
             SilverLabel(new Rect(1424,866,100,42),K("▶ 시네마틱","▶ Cinematic"),silverMicro,TextAnchor.MiddleLeft);
             GUI.SetNextControlName("lobby-replay");if(NativeUiAudit.Button(new Rect(1424,866,100,42),"",GUIStyle.none))ReplayIntro();
-            SilverLabel(new Rect(1516,866,210,42),K("STEAM 위시리스트 추가","ADD TO STEAM WISHLIST"),silverMicro,TextAnchor.MiddleLeft);
+            // Long translations wrap inside the existing clickable column, before OFFICIAL.
+            var wishlistStyle=new GUIStyle(silverMicro){wordWrap=true,clipping=TextClipping.Clip};
+            SilverLabel(new Rect(1516,866,210,42),K("STEAM 위시리스트 추가","ADD TO STEAM WISHLIST"),wishlistStyle,TextAnchor.MiddleLeft);
             GUI.SetNextControlName("lobby-steam");if(DecisionSoundButton(new Rect(1516,866,210,42))){PlayStartupEnter();Application.OpenURL(SteamWishlistUrl);}
             DrawPatchNotesLauncher();
             DrawPower(new Rect(1812,870,36,36));
