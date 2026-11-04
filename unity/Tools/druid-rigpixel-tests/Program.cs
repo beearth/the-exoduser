@@ -95,6 +95,81 @@ class DruidRigTests
   int druidTexel;Check(NativeRigPixelPolicy.DruidMaxRt==2048&&NativeRigPixelPolicy.DruidCanvas(.01f,1,4000,out druidTexel)==2016&&druidTexel==2,"druid canvas unchanged");
   Console.WriteLine("enemy-rt checks="+(checks-before)+" cap="+NativeRigPixelPolicy.EnemyMaxRt);
  }
+ // Bounds/canvas regression: no Unity types or Player required.
+ delegate bool NearEdge(double ax,double ay,double az,double bx,double by,double bz,double near,out double x,out double y,out double z);
+ static void DruidBounds()
+ {
+  int before=checks;
+  var boneMethod=typeof(NativeDruidRigPolicy).GetMethod("BoundsBone");
+  Check(boneMethod!=null,"weighted/range bounds policy exists");
+  if(boneMethod!=null)
+  {
+   var bone=(Func<bool,double,double,bool>)Delegate.CreateDelegate(typeof(Func<bool,double,double,bool>),boneMethod);
+   Check(bone(true,0,3.83276391),"weighted bone at foot kept");
+   Check(bone(true,4*3.83276391*3.83276391,3.83276391),"bone at exactly twice body height kept");
+   Check(!bone(true,4*3.83276391*3.83276391+.001,3.83276391),"bone beyond twice body height rejected");
+   Check(!bone(false,0,3.83276391),"zero-weight helper at foot excluded");
+   Check(!bone(false,10000,3.83276391),"zero-weight remote helper excluded");
+   foreach(double v in new[]{-1d,double.NaN,double.PositiveInfinity,double.NegativeInfinity})Check(!bone(true,v,3.83276391),"invalid bone distance "+v);
+   foreach(double v in new[]{0d,-1d,double.NaN,double.PositiveInfinity,double.NegativeInfinity})Check(!bone(true,0,v),"invalid body height "+v);
+   foreach(double h in new[]{.01,1,3.83276391,10000})
+   {
+    Check(bone(true,h*h,h)&&!bone(true,4.01*h*h,h),"world-scale-independent bone cutoff "+h);
+    Check(!bone(false,h*h,h),"zero weight independent of scale "+h);
+   }
+  }
+  var nearMethod=typeof(NativeDruidRigPolicy).GetMethod("ClipNearPlaneEdge");
+  Check(nearMethod!=null,"near plane edge policy exists");
+  if(nearMethod!=null)
+  {
+   var edge=(NearEdge)Delegate.CreateDelegate(typeof(NearEdge),nearMethod);double x,y,z;
+   Check(edge(-2,0,-1,2,4,3,1,out x,out y,out z),"straddling edge clipped");Near(x,0,"near intersection x");Near(y,2,"near intersection y");Near(z,1,"near intersection depth");
+   Check(edge(2,4,3,-2,0,-1,1,out x,out y,out z),"reversed edge clipped");Near(x,0,"reverse x");Near(y,2,"reverse y");Near(z,1,"reverse depth");
+   Check(!edge(0,0,2,1,1,3,1,out x,out y,out z),"fully front edge needs no intersection");
+   Check(!edge(0,0,-2,1,1,.5,1,out x,out y,out z),"fully behind edge contributes nothing");
+   Check(!edge(0,0,1,1,1,1,1,out x,out y,out z),"coplanar edge has no divide by zero");
+   Check(edge(0,0,1,2,4,3,1,out x,out y,out z),"near-plane endpoint retained");Near(z,1,"endpoint depth");
+   foreach(double v in new[]{double.NaN,double.PositiveInfinity,double.NegativeInfinity})
+    Check(!edge(0,0,v,1,1,3,1,out x,out y,out z),"invalid depth rejected "+v);
+   Check(!edge(0,0,-1,1,1,3,0,out x,out y,out z),"invalid near plane rejected");
+   Check(!edge(double.NaN,0,-1,1,1,3,1,out x,out y,out z),"invalid coordinate rejected");
+   // A box crossing z=1: four front corners plus the four true edge intersections.
+   double loX=double.PositiveInfinity,hiX=double.NegativeInfinity,loY=loX,hiY=hiX;
+   for(int i=0;i<4;i++)
+   {
+    double a=(i&1)==0?-1:1,b=(i&2)==0?-1:1;
+    Check(edge(a,b,-1,a,b,3,1,out x,out y,out z),"box crossing edge "+i);
+    loX=Math.Min(loX,x/z);hiX=Math.Max(hiX,x/z);loY=Math.Min(loY,y/z);hiY=Math.Max(hiY,y/z);
+   }
+   Near(loX,-1,"clipped box left");Near(hiX,1,"clipped box right");Near(loY,-1,"clipped box bottom");Near(hiY,1,"clipped box top");
+  }
+  int tx;foreach(float wpp in new[]{float.Epsilon,.01f,float.MaxValue})foreach(float box in new[]{6144.3408203125f,30000f,1000000000f})
+  {
+   int size=NativeRigPixelPolicy.DruidCanvas(wpp,1,box,out tx);
+   Check(size>=64&&size<=2048&&size%32==0&&tx>=1&&(size-4)*(double)tx>=box,"druid large finite box includes padding wpp="+wpp+" box="+box+" RT="+size+" texel="+tx);
+  }
+  int s=NativeRigPixelPolicy.DruidCanvas(.01f,1,6144.3408203125f,out tx);Check(s==1568&&tx==4,"6144.34px regression RT=1568 texel=4");
+  Check(NativeRigPixelPolicy.DruidCanvas(.01f,1,500,out tx)==512&&tx==1,"next small druid frame restores texel 1");
+  Console.WriteLine("druid-bounds checks="+(checks-before));
+ }
+ static void DruidFrameFallback()
+ {
+  int before=checks;
+  var issueType=typeof(NativeDruidRigPolicy).GetNestedType("FrameIssue");
+  var fallback=typeof(NativeDruidRigPolicy).GetMethod("RequiresLegacyFallback");
+  Check(issueType!=null,"frame issue classification exists");Check(fallback!=null,"view fallback decision policy exists");
+  if(issueType!=null&&fallback!=null)
+  {
+   foreach(var name in new[]{"NearPlane","CanvasSize","RenderException","RenderTextureCreation"})
+   {
+    bool actual=(bool)fallback.Invoke(null,new[]{Enum.Parse(issueType,name)});
+    bool expected=name=="RenderException"||name=="RenderTextureCreation";
+    Check(actual==expected,"frame fallback "+name+" actual="+actual+" expected="+expected);
+   }
+   Check((bool)fallback.Invoke(null,new[]{Enum.ToObject(issueType,999)}),"unknown frame failure keeps the safe legacy fallback");
+  }
+  Console.WriteLine("druid-frame-fallback checks="+(checks-before));
+ }
  static int Main()
  {
   Check(!NativeDruidRigPolicy.Requested(null),"default off");Check(!NativeDruidRigPolicy.Requested(new string[0]),"empty off");
@@ -199,6 +274,8 @@ class DruidRigTests
   DruidSetRule();
   RetouchB();
   EnemyCanvas();
+  DruidBounds();
+  DruidFrameFallback();
   Console.WriteLine("druid-rigpixel checks="+checks+" failed="+bad);return bad==0?0:1;
  }
 }
