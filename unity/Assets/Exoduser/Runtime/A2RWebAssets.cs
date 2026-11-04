@@ -23,6 +23,69 @@ namespace Exoduser.UnityPort
         public int GroundProjectedCount {get{return floorCards.Count;}}
         readonly List<CardPose> cards=new List<CardPose>();readonly List<SpriteRenderer> originals=new List<SpriteRenderer>();readonly List<bool> originalEnabled=new List<bool>();
         Camera viewer;GameObject visuals;Material ground,water;Shader waterOriginal;bool waterSpecularOff;readonly Dictionary<string,Texture> originalTextures=new Dictionary<string,Texture>();A2ROcclusion occlusion;
+        const string BakedRoot="A2R/Baked/WebCards/";
+        // One Player build contains both paths for cold-start before/after measurement.
+        readonly bool legacy=Array.IndexOf(Environment.GetCommandLineArgs(),"--a2r-webcards-legacy")>=0;
+        readonly Dictionary<string,Mesh> sharedMeshes=new Dictionary<string,Mesh>();
+        readonly Dictionary<string,Material> sharedMaterials=new Dictionary<string,Material>();
+        readonly List<UnityEngine.Object> ownedResources=new List<UnityEngine.Object>();
+        Material aoMaterial;Mesh aoMesh;bool ownsWaterDomain;
+        [Serializable] sealed class BakedStamp {public string mapHash;}
+        [Serializable] sealed class WaterInput {public int width,height,tileSize;public int[] tiles;public MapHill hill;}
+        static string WaterKey(MapData map){return Hash128.Compute(JsonUtility.ToJson(new WaterInput{width=map.width,height=map.height,tileSize=map.tileSize,tiles=map.tiles,hill=map.hill})).ToString();}
+        static string ArtKey(string art){return Hash128.Compute(art).ToString();}
+        static string MeshKey(Card c,Card pivot,bool flip)
+        {
+            var ci=System.Globalization.CultureInfo.InvariantCulture;
+            return Hash128.Compute(c.width.ToString("R",ci)+"/"+c.height.ToString("R",ci)+"/"+pivot.footU.ToString("R",ci)+"/"+pivot.footV.ToString("R",ci)+"/"+(flip?"1":"0")).ToString();
+        }
+        Mesh CardMesh(Card c,Card pivot,bool flip)
+        {
+            if(legacy){var made=WindMesh(c,pivot,flip);ownedResources.Add(made);return made;}
+            string key=MeshKey(c,pivot,flip);Mesh mesh;if(sharedMeshes.TryGetValue(key,out mesh))return mesh;
+            mesh=Resources.Load<Mesh>(BakedRoot+"mesh-"+key);
+            if(mesh==null){mesh=WindMesh(c,pivot,flip);ownedResources.Add(mesh);}
+            sharedMeshes.Add(key,mesh);return mesh;
+        }
+        Material CardMaterial(string art,bool floor,bool faded)
+        {
+            string mode=faded?"fade":floor?"floor":"opaque",key=ArtKey(art)+"-"+mode;Material material;
+            if(!legacy&&sharedMaterials.TryGetValue(key,out material))return material;
+            material=legacy?null:Resources.Load<Material>(BakedRoot+"material-"+key);
+            if(material==null)
+            {
+                material=new Material(Resources.Load<Shader>(faded?"A2R/CardFade":"A2R/CardOpaque"));
+                if(!legacy||!faded){material.SetTexture("_MainTex",Resources.Load<Texture2D>(art));material.SetTexture("_NormalTex",Resources.Load<Texture2D>(art+"_normal"));}
+                if(floor)material.renderQueue=2480;if(faded)material.renderQueue=3000;ownedResources.Add(material);
+            }
+            if(!legacy)sharedMaterials.Add(key,material);return material;
+        }
+        struct CardProperties
+        {
+            readonly Material material;readonly MaterialPropertyBlock block;
+            public CardProperties(Material material,bool legacy){this.material=material;block=legacy?null:new MaterialPropertyBlock();}
+            public void SetFloat(string key,float value){if(block==null)material.SetFloat(key,value);else block.SetFloat(key,value);}
+            public void SetColor(string key,Color value){if(block==null)material.SetColor(key,value);else block.SetColor(key,value);}
+            public void SetVector(string key,Vector4 value){if(block==null)material.SetVector(key,value);else block.SetVector(key,value);}
+            public void Apply(Renderer renderer){if(block!=null)renderer.SetPropertyBlock(block);}
+        }
+        GameObject FootAO()
+        {
+            if(legacy)return GameObject.CreatePrimitive(PrimitiveType.Quad);
+            if(aoMesh==null)
+            {
+                aoMesh=Resources.Load<Mesh>(BakedRoot+"ao-quad");
+                if(aoMesh==null){var quad=GameObject.CreatePrimitive(PrimitiveType.Quad);quad.SetActive(false);aoMesh=quad.GetComponent<MeshFilter>().sharedMesh;Destroy(quad);}
+            }
+            var go=new GameObject();go.AddComponent<MeshFilter>().sharedMesh=aoMesh;go.AddComponent<MeshRenderer>();return go;
+        }
+        Material FootMaterial()
+        {
+            if(!legacy&&aoMaterial!=null)return aoMaterial;
+            var material=legacy?null:Resources.Load<Material>(BakedRoot+"ao");
+            if(material==null){material=new Material(Resources.Load<Shader>("Shaders/HD2DContact"));material.SetFloat("_Opacity",.8f);ownedResources.Add(material);}
+            if(!legacy)aoMaterial=material;return material;
+        }
         // Opt-in inclusive timings: do not reset A2RStage inside Initialize, otherwise the
         // caller's "A2R 웹 카드 189" line only measures the last fragment of this method.
         sealed class BuildProfile
@@ -59,13 +122,13 @@ namespace Exoduser.UnityPort
                 var root=new GameObject(c.id+" "+c.kind+" web XY");root.transform.SetParent(visuals.transform,false);root.transform.position=new Vector3(item.worldX,item.footY,item.worldZ);uint key=2166136261;foreach(char ch in c.id)key=(key^ch)*16777619;bool fern=c.kind=="vegetation";float scale=fern?.8f+(key%1001)/1000f*.4f:1;bool flip=fern&&(key&1)!=0;float yaw=fern?((key>>3)%1001)/1000f*34-17:0;root.transform.localScale=Vector3.one*scale;if(!floor)cards.Add(new CardPose{transform=root.transform,yaw=yaw});string art=fern&&!string.IsNullOrEmpty(c.variationAsset)?c.variationAsset:c.asset;item.variant=art;item.variationScale=scale;item.variationYaw=yaw;item.mirrored=flip;
                 // A different fern painting has a different transparent bottom margin. Reuse its measured source pivot.
                 var pivot=fern?(Array.Find(input.cards,source=>source.asset==art)??c):c;
-                t=profile.Start();var mesh=WindMesh(c,pivot,flip);profile.Add("카드 메시 생성",t);var body=root.AddComponent<MeshFilter>();body.sharedMesh=mesh;var renderer=root.AddComponent<MeshRenderer>();
-                t=profile.Start();var a=new Material(opaque);profile.Add("카드 재질 생성·복사",t);t=profile.Start();a.SetTexture("_MainTex",Resources.Load<Texture2D>(art));profile.Add("카드 원화 로드",t);t=profile.Start();a.SetTexture("_NormalTex",Resources.Load<Texture2D>(art+"_normal"));profile.Add("기존 노멀맵 로드",t);a.SetFloat("_Emission",c.emission);a.SetVector("_A2RWind",new Vector4(1/Mathf.Max(.1f,(1-pivot.footV)*c.height),(key%6283)*.001f,fern?c.height*scale*.15f:tree?Mathf.Clamp(c.sway,.05f,.09f):0,0));float value=fern?.92f+((key>>12)%1001)/1000f*.16f:1;float hue=fern?((key>>20)%1001)/1000f*.16f-.08f:0;item.variationValue=value;a.SetColor("_Tint",originalRoot?new Color(.82f,.76f,.58f,1):new Color(Mathf.Clamp(value*(1+hue*.5f),.92f,1.08f),value,Mathf.Clamp(value*(1-hue*.5f),.92f,1.08f),1));a.SetFloat("_Saturation",originalRoot?.45f:1);renderer.sharedMaterial=a;renderer.shadowCastingMode=ShadowCastingMode.On;renderer.receiveShadows=true;
+                t=profile.Start();var mesh=CardMesh(c,pivot,flip);profile.Add("카드 메시 생성",t);var body=root.AddComponent<MeshFilter>();body.sharedMesh=mesh;var renderer=root.AddComponent<MeshRenderer>();
+                t=profile.Start();var a=CardMaterial(art,floor,false);profile.Add("카드 재질·원화·기존 노멀 로드",t);var properties=new CardProperties(a,legacy);properties.SetFloat("_Emission",c.emission);properties.SetVector("_A2RWind",new Vector4(1/Mathf.Max(.1f,(1-pivot.footV)*c.height),(key%6283)*.001f,fern?c.height*scale*.15f:tree?Mathf.Clamp(c.sway,.05f,.09f):0,0));float value=fern?.92f+((key>>12)%1001)/1000f*.16f:1;float hue=fern?((key>>20)%1001)/1000f*.16f-.08f:0;item.variationValue=value;properties.SetColor("_Tint",originalRoot?new Color(.82f,.76f,.58f,1):new Color(Mathf.Clamp(value*(1+hue*.5f),.92f,1.08f),value,Mathf.Clamp(value*(1-hue*.5f),.92f,1.08f),1));properties.SetFloat("_Saturation",originalRoot?.45f:1);renderer.sharedMaterial=a;renderer.shadowCastingMode=ShadowCastingMode.On;renderer.receiveShadows=true;
                 if(c.height<1)renderer.shadowCastingMode=ShadowCastingMode.Off;
-                if(c.kind=="m_c1camp"&&A2RD3.On){a.SetFloat("_Saturation",.62f);a.SetColor("_Tint",new Color(.86f,.88f,.84f,1));if(A2RD4.On)a.SetFloat("_MossFix",1);} // D3: camp pink flesh / lime crates -> muted; green crates go moss-grey in CardCommon
-                if(floor){var standingPosition=root.transform.position;item.webX=c.sourceX;item.webY=c.sourceY;item.worldX=c.sourceX/100;item.worldZ=-c.sourceY/100;item.groundY=FloorSurface(item.worldX,item.worldZ);item.footY=item.groundY+.028f;item.gapCm=2.8f;item.groundProjected=true;var position=new Vector3(item.worldX,item.footY,item.worldZ);t=profile.Start();var projected=FloorMesh(c,position);profile.Add("바닥 카드 투영 메시",t);floorCards.Add(new FloorPose{transform=root.transform,filter=body,standing=mesh,projected=projected,standingPosition=standingPosition,projectedPosition=position});body.sharedMesh=projected;root.transform.position=position;a.SetVector("_A2RWind",Vector4.zero);a.renderQueue=2480;renderer.shadowCastingMode=ShadowCastingMode.Off;item.added=true;Result.added++;count.added++;continue;}
-                t=profile.Start();var b=new Material(transparent);b.CopyPropertiesFromMaterial(a);b.renderQueue=3000;profile.Add("카드 재질 생성·복사",t);var copy=new GameObject("A2R card faded portion");copy.transform.SetParent(root.transform,false);copy.AddComponent<MeshFilter>().sharedMesh=mesh;var companion=copy.AddComponent<MeshRenderer>();companion.sharedMaterial=b;companion.shadowCastingMode=ShadowCastingMode.Off;occlusion.Register(renderer,companion,c.height>=1.1f,c.height>=1.1f);if(c.kind=="m_c1camp"){occlusion.ProtectLandmark(renderer);CampFoot=root.transform.position;}
-                t=profile.Start();var ao=GameObject.CreatePrimitive(PrimitiveType.Quad);Destroy(ao.GetComponent<Collider>());ao.name="A2R web foot AO";ao.transform.SetParent(visuals.transform,true);ao.transform.SetPositionAndRotation(new Vector3(item.worldX,item.groundY+.012f,item.worldZ),Quaternion.Euler(90,0,0));float width=Mathf.Clamp(c.width*(c.kind=="m_c1camp"&&A2RD3.On?.62f:.42f),.25f,c.kind=="m_c1camp"&&A2RD3.On?3.4f:2.3f);ao.transform.localScale=new Vector3(width,width*.40f,1);var ar=ao.GetComponent<MeshRenderer>();ar.sharedMaterial=new Material(Resources.Load<Shader>("Shaders/HD2DContact"));ar.sharedMaterial.SetFloat("_Opacity",.8f);ar.shadowCastingMode=ShadowCastingMode.Off;profile.Add("접지 AO 생성·재질",t);
+                if(c.kind=="m_c1camp"&&A2RD3.On){properties.SetFloat("_Saturation",.62f);properties.SetColor("_Tint",new Color(.86f,.88f,.84f,1));if(A2RD4.On)properties.SetFloat("_MossFix",1);} // D3: camp pink flesh / lime crates -> muted; green crates go moss-grey in CardCommon
+                if(floor){var standingPosition=root.transform.position;item.webX=c.sourceX;item.webY=c.sourceY;item.worldX=c.sourceX/100;item.worldZ=-c.sourceY/100;item.groundY=FloorSurface(item.worldX,item.worldZ);item.footY=item.groundY+.028f;item.gapCm=2.8f;item.groundProjected=true;var position=new Vector3(item.worldX,item.footY,item.worldZ);t=profile.Start();var projected=FloorMesh(c,position);profile.Add("바닥 카드 투영 메시",t);floorCards.Add(new FloorPose{transform=root.transform,filter=body,standing=mesh,projected=projected,standingPosition=standingPosition,projectedPosition=position});body.sharedMesh=projected;root.transform.position=position;properties.SetVector("_A2RWind",Vector4.zero);if(legacy)a.renderQueue=2480;properties.Apply(renderer);renderer.shadowCastingMode=ShadowCastingMode.Off;item.added=true;Result.added++;count.added++;continue;}
+                t=profile.Start();var b=CardMaterial(art,false,true);if(legacy){b.CopyPropertiesFromMaterial(a);b.renderQueue=3000;}profile.Add("카드 재질 생성·복사",t);properties.Apply(renderer);var copy=new GameObject("A2R card faded portion");copy.transform.SetParent(root.transform,false);copy.AddComponent<MeshFilter>().sharedMesh=mesh;var companion=copy.AddComponent<MeshRenderer>();companion.sharedMaterial=b;properties.Apply(companion);companion.shadowCastingMode=ShadowCastingMode.Off;occlusion.Register(renderer,companion,c.height>=1.1f,c.height>=1.1f);if(c.kind=="m_c1camp"){occlusion.ProtectLandmark(renderer);CampFoot=root.transform.position;}
+                t=profile.Start();var ao=FootAO();if(legacy)Destroy(ao.GetComponent<Collider>());ao.name="A2R web foot AO";ao.transform.SetParent(visuals.transform,true);ao.transform.SetPositionAndRotation(new Vector3(item.worldX,item.groundY+.012f,item.worldZ),Quaternion.Euler(90,0,0));float width=Mathf.Clamp(c.width*(c.kind=="m_c1camp"&&A2RD3.On?.62f:.42f),.25f,c.kind=="m_c1camp"&&A2RD3.On?3.4f:2.3f);ao.transform.localScale=new Vector3(width,width*.40f,1);var ar=ao.GetComponent<MeshRenderer>();ar.sharedMaterial=FootMaterial();ar.shadowCastingMode=ShadowCastingMode.Off;profile.Add("접지 AO 생성·재질",t);
                 item.added=true;Result.added++;count.added++;
             }
             profile.Add("카드 루프 전체(중첩 구간)",loop);t=profile.Start();foreach(var key in new[]{"_ForestMap","_SoilMap","_RootMap"})originalTextures[key]=ground.GetTexture(key);if(!string.IsNullOrEmpty(A2RHumanSave.Root))System.IO.File.WriteAllText(System.IO.Path.Combine(A2RHumanSave.Root,"web-assets-receipt.json"),JsonUtility.ToJson(Result,true));Debug.Log("[A2R] Full C10 cards="+Result.sourceCards+" added="+Result.added+" duplicates="+Result.duplicates+" ground="+Result.groundTiles+" floating="+Result.floating);SetLook(false);profile.Add("영수증·초기 표시",t);profile.Dump();
@@ -76,8 +139,15 @@ namespace Exoduser.UnityPort
         static Mesh FloorMesh(Card c,Vector3 origin){const int n=32;var v=new List<Vector3>();var uv=new List<Vector2>();var indices=new List<int>();for(int y=0;y<=n;y++)for(int x=0;x<=n;x++){float u=x/(float)n,w=y/(float)n;float wx=origin.x+(u-.5f)*c.width,wz=origin.z+(w-.5f)*c.height;v.Add(new Vector3(wx,FloorSurface(wx,wz)+.028f,wz)-origin);uv.Add(new Vector2(u,w));}for(int y=0;y<n;y++)for(int x=0;x<n;x++){int a=y*(n+1)+x;indices.AddRange(new[]{a,a+n+1,a+1,a+1,a+n+1,a+n+2});}var mesh=new Mesh{name=c.id+" original web rectangle terrain projection"};mesh.SetVertices(v);mesh.SetUVs(0,uv);mesh.SetTriangles(indices,0);mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();return mesh;}
         // QA-only geometry comparison; normal play always starts projected.
         public void SetFloorProjection(bool on){foreach(var p in floorCards){p.filter.sharedMesh=on?p.projected:p.standing;p.transform.SetPositionAndRotation(on?p.projectedPosition:p.standingPosition,on?Quaternion.identity:Quaternion.Euler(0,viewer.transform.eulerAngles.y,0));}}
-        void BuildWaterDomain(){const int n=512;waterDomain=new Texture2D(n,n,TextureFormat.R8,false,true){name="A2R actual terrain below existing water plane",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};var pixels=new byte[n*n];for(int y=0;y<n;y++)for(int x=0;x<n;x++){float wx=(x+.5f)*80/n,wz=-(y+.5f)*80/n;pixels[y*n+x]=NativeRemodel3D.Field.TerrainHeight(wx,wz)<-.46f?(byte)255:(byte)0;}waterDomain.SetPixelData(pixels,0);waterDomain.Apply(false,true);Shader.SetGlobalTexture("_A2RWaterDomain",waterDomain);Shader.SetGlobalFloat("_A2RWaterDomainReady",1);}
-        void OnDestroy(){if(waterDomain!=null)Destroy(waterDomain);Shader.SetGlobalFloat("_A2RWaterDomainReady",0);}
+        void BuildWaterDomain(){
+            if(!legacy)
+            {
+                var stamp=Resources.Load<TextAsset>(BakedRoot+"stamp");var game=NativeGame.Instance;
+                if(stamp!=null&&game!=null&&game.Map!=null&&JsonUtility.FromJson<BakedStamp>(stamp.text).mapHash==WaterKey(game.Map.Data))waterDomain=Resources.Load<Texture2D>(BakedRoot+"water-domain");
+                if(waterDomain!=null){Shader.SetGlobalTexture("_A2RWaterDomain",waterDomain);Shader.SetGlobalFloat("_A2RWaterDomainReady",1);return;}
+            }
+            ownsWaterDomain=true;const int n=512;waterDomain=new Texture2D(n,n,TextureFormat.R8,false,true){name="A2R actual terrain below existing water plane",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};var pixels=new byte[n*n];for(int y=0;y<n;y++)for(int x=0;x<n;x++){float wx=(x+.5f)*80/n,wz=-(y+.5f)*80/n;pixels[y*n+x]=NativeRemodel3D.Field.TerrainHeight(wx,wz)<-.46f?(byte)255:(byte)0;}waterDomain.SetPixelData(pixels,0);waterDomain.Apply(false,true);Shader.SetGlobalTexture("_A2RWaterDomain",waterDomain);Shader.SetGlobalFloat("_A2RWaterDomainReady",1);}
+        void OnDestroy(){if(ownsWaterDomain&&waterDomain!=null)Destroy(waterDomain);foreach(var resource in ownedResources)if(resource!=null){if(Application.isPlaying)Destroy(resource);else DestroyImmediate(resource);}Shader.SetGlobalFloat("_A2RWaterDomainReady",0);}
         static Mesh WindMesh(Card c,Card pivot,bool flip)
         {
             var vertices=new List<Vector3>();var uv=new List<Vector2>();var triangles=new List<int>();var rows=new List<float>{0};if(pivot.footV>.0001f)rows.Add(pivot.footV);for(int y=1;y<=8;y++)rows.Add(pivot.footV+(1-pivot.footV)*y/8f);
@@ -89,9 +159,9 @@ namespace Exoduser.UnityPort
         {
             if(!NativeQaSandbox.Active)throw new InvalidOperationException("R15 card review requires save isolation");
             var go=new GameObject("A2R r15 original painting "+c.id);go.transform.SetParent(parent,false);
-            go.transform.rotation=Quaternion.Euler(0,yaw,0);go.AddComponent<MeshFilter>().sharedMesh=WindMesh(c,c,false);
-            var material=new Material(Resources.Load<Shader>("A2R/CardOpaque"));material.SetTexture("_MainTex",Resources.Load<Texture2D>(c.asset));material.SetTexture("_NormalTex",Resources.Load<Texture2D>(c.asset+"_normal"));material.SetFloat("_Emission",c.emission);material.SetColor("_Tint",Color.white);material.SetFloat("_Saturation",1);material.SetVector("_A2RWind",Vector4.zero);
-            var renderer=go.AddComponent<MeshRenderer>();renderer.sharedMaterial=material;renderer.shadowCastingMode=c.height<1?ShadowCastingMode.Off:ShadowCastingMode.On;renderer.receiveShadows=true;return go;
+            go.transform.rotation=Quaternion.Euler(0,yaw,0);go.AddComponent<MeshFilter>().sharedMesh=CardMesh(c,c,false);
+            var material=CardMaterial(c.asset,false,false);var properties=new CardProperties(material,legacy);properties.SetFloat("_Emission",c.emission);properties.SetColor("_Tint",Color.white);properties.SetFloat("_Saturation",1);properties.SetVector("_A2RWind",Vector4.zero);
+            var renderer=go.AddComponent<MeshRenderer>();renderer.sharedMaterial=material;properties.Apply(renderer);renderer.shadowCastingMode=c.height<1?ShadowCastingMode.Off:ShadowCastingMode.On;renderer.receiveShadows=true;return go;
         }
         public void SetLook(bool on)
         {

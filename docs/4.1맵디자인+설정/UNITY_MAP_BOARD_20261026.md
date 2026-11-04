@@ -49,3 +49,16 @@
 - 실행 차단: 공용 실행기 A2RWebCardsBake.Profile 제출은 5분 FIFO 대기 후 EXO_QUEUE_WAIT owner=vfx-druid로 종료했다. 당시 앞 티켓은 vfx-druid, 에디터 예약 선두는 codex-map-a2r-d4였다. Unity 프로세스 시작·계측 실행은 없었다. 실행되지 않은 임시 에디터 프로브는 제거했다.
 - 별도 C# 정적 컴파일도 기존 Library 응답 파일의 UnityAdditionalFile.txt 상대 경로 해석 때문에 CS2001로 두 번 실패했다. 두 번 실패 규칙에 따라 재시도하지 않았다. 컴파일 통과로 보고하지 않는다.
 - 검증: 계측 외 기존 실행문 정적 동일성 및 git diff --check 통과. 빌드·사전 굽기·재질/메시 공유 구현·1,500ms 달성·3840 입구/캠프 전후 캡처·픽셀 차이·Mac 판정은 전부 미완료다. 사용자 실행본·바로가기·Core·GroundPainting·A2RProps3D·바람 셰이더 변경 없음. 총괄이 실행 순번을 해소한 뒤 실제 측정에서 계속해야 한다.
+
+## 2026-11-04 웹 카드 최적화 2차 — CTO 범위 정정 반영
+
+
+- 최신 범위: 지면 64장 생성(A2RGroundPainting.cs 및 지면 생성 코드)은 맵 D4 소유다. 이 레인은 A2RWebAssets 카드 루프·수면 마스크·AO·카드 메시·재질만 수정한다. 앞의 1차 표 6,112ms는 D4 지면 참고값이며 이 레인의 달성값으로 쓰지 않는다.
+- 빌드 전처리 A2RWebCardsBake가 Resources/A2R/Baked/WebCards/ 고정 경로에 원화별 opaque/floor/fade 재질, 같은 폭·높이·피벗·미러 조건의 공유 메시, AO Quad/재질, R8 수면 마스크를 굽는다. 기존 GUID를 유지하며 같은 경로에 갱신한다. 지면64장 생성기 호출·수정·복제는 없다.
+- 텍스처는 이미 임포트된 원화/노멀의 동일 참조를 구운 재질에 연결한다. 픽셀·mip·필터·색공간·알파를 바꾸거나 재압축하지 않고 중복 이미지도 만들지 않는다. 원화189장 입력의 고유 원화는55종이며 원화/노멀 파일 누락0을 정적으로 확인했다.
+- 런타임은 구운 메시·재질을 로드해 인스턴스 안에서 공유한다. emission·바람 벡터·Tint·Saturation·MossFix는 MaterialPropertyBlock에 둔다. 가림 처리의 GetPropertyBlock→속성 추가→body/fade 적용과 함께 쓰며, 공유 재질을 카드별로 수정하지 않는다. AO는 같은 Quad/Opacity .8 재질을 공유하고 임시 Collider 생성을 줄인다.
+- 수면 마스크는 512×512 R8, 원래 TerrainHeight<-.46 비교를 그대로 굽는다. 실제 실행 맵의 width/height/tileSize/tiles/hill 키가 구운 값과 다르면 기존 계산으로 폴백한다. 구운 자산은 파괴하지 않고 자체 생성한 폴백 자원만 정리한다.
+- 높이가 현재 지형·등록 표면에 의존하는 바닥 카드 FloorMesh 투영은 기존 코드를 유지한다. WindMesh 원본 수식·경계, 바람 벡터의 폭/키/위상/진폭, AO 폭, SetLook/SetFloorProjection/LateUpdate 및 지면64장 호출은 정적 대조에서 동일했다.
+- --a2r-webcards-profile은 공통 계측 인자다. --a2r-webcards-legacy를 추가하면 같은 빌드 안에서 기존 생성·개별 재질 경로를 실행한다. 세부 로그는 A2RStage의 외부 시간 기준을 재설정하지 않는다. 지면/카드 루프 합계와 하위 측정은 중첩되므로 합산하지 않는다.
+- 검증은 구운 에셋 누락 검사 선행 실패를 확인한 뒤 구현했다. 에디터에서는 모든 카드/변형 메시의 정점·UV·법선·탄젠트·삼각형·경계, 원본 텍스처 참조, 수면262144픽셀, 다른 emission을 가진 카드의 공유, 가림 후 MPB 보존을 검사한다. 고정 빌드 a2r-build-webcards의 동일 실행 파일로 이전/구운 경로를 각각 무창·무음·단독 3840×1080 실행하여 입구/캠프 쌍과 원본 픽셀 차이를 남긴다.
+- 현재 에디터·굽기·빌드·실측·화면 검증 대기. 2차 공용 실행의 첫 대기는 선행 map-scale-c1 단독 Player 때문에 초과했으며 검사 실패가 아니다. CTO 지시대로10분 후 최대6회 재대기한다. 최종 시간·SHA·실행 영수증·미검증 한계는 I:/EXODUSER-Storage/codex-takeover/map-webcards/REPORT.md 맨 위2차에 기록한다. Mac 판정·사용자 실행본·바로가기 변경은 별도다.
