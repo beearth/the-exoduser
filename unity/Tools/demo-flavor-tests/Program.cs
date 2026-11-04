@@ -14,7 +14,7 @@ static class Program {
   Check(NativeFlavorSavePaths.FullRoot(winNew,"ForDearGamers",NativeFlavorSavePaths.RootKind.Windows)==winOld,"Windows full root = LocalLow/company/old product folder");
   Check(NativeFlavorSavePaths.FullRoot(winOld,"ForDearGamers",NativeFlavorSavePaths.RootKind.Windows)==winOld,"Windows full root is the same from the old product path (old and new builds share one folder)");
   Check(NativeFlavorSavePaths.BundleIdentifier("ForDearGamers",oldName)==macBundle,"bundle id rule reproduces the real old Mac Player folder name");
-  string macPlayer=Path.Combine(support,"com.ForDearGamers.EXODUSER---HELL-LORD"),macEditor=Path.Combine(support,"ForDearGamers","EXODUSER-HELL-LORD");
+  string macPlayer=Path.Combine(support,"com.ForDearGamers.EXODUSER--HELL-LORD"),macEditor=Path.Combine(support,"ForDearGamers","EXODUSER-HELL-LORD");
   Check(NativeFlavorSavePaths.FullRoot(macPlayer,"ForDearGamers",NativeFlavorSavePaths.RootKind.MacPlayer)==Path.Combine(support,macBundle),"Mac Player full root = Application Support/bundle id folder");
   Check(NativeFlavorSavePaths.FullRoot(macEditor,"ForDearGamers",NativeFlavorSavePaths.RootKind.MacPlayer)==Path.Combine(support,macBundle),"Mac Player full root is the same when persistentDataPath is company/product shaped");
   Check(NativeFlavorSavePaths.FullRoot(macEditor,"ForDearGamers",NativeFlavorSavePaths.RootKind.Other)==macEditor&&NativeFlavorSavePaths.FullRoot(winNew,"ForDearGamers",NativeFlavorSavePaths.RootKind.Other)==winNew,"other platforms (Editor) keep persistentDataPath");
