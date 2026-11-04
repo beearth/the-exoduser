@@ -15,6 +15,7 @@ namespace Exoduser.UnityPort
    A15SyncKeyStops();
    bool held=ExoInput.Mouse(0);foreach(var key in menuKeys)held|=ExoInput.Key(key);navigation.ObserveReleased(held);
    if(!navigation.Focused||navigation.WaitingForRelease)return PauseMenuCommand.None;
+   if(resetConfirm)return PollResetConfirmKeys();   // P38: the reset dialog owns the keyboard (Esc = cancel)
    if(openSelect>=0){A15PopupKeys();return PauseMenuCommand.None;}
    // OnGUI may finish capture before Update polls this same OS key. Keep it out of menu navigation.
    if(keyList!=null&&Time.frameCount<=keyList.CaptureConsumedFrame+1)return PauseMenuCommand.None;

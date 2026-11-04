@@ -39,7 +39,7 @@ namespace Exoduser.UnityPort
   {
    NativeSettingsJsonCodec.ApplyBindings(snapshot,NativeKeyBindInput.Bindings,SupportedNativeBinding);
   }
-  void ApplySettingsHostValues(){NativeScreenTransition.ReduceMotion=()=>settings.Options.ReduceMotion||NativeOsReducedMotion.Enabled;sound.SetVolumePercent(settings.SfxPercent);music.SetPercents(settings.SfxPercent,settings.BgmPercent);lobby.SetStartupSfxPercent(settings.SfxPercent);lobby.SetBgmPercent(settings.BgmPercent);ApplyFrameCap(settings.FrameCap);ApplySettingsLanguage();}
+  void ApplySettingsHostValues(){NativeScreenTransition.ReduceMotion=()=>settings.Options.ReduceMotion||NativeOsReducedMotion.Enabled;sound.SetVolumePercent(settings.SfxPercent);music.SetPercents(settings.SfxPercent,settings.BgmPercent);lobby.SetStartupSfxPercent(settings.SfxPercent);lobby.SetBgmPercent(settings.BgmPercent);ApplyFrameCap(settings.FrameCap);ApplySettingsLanguage();ApplySettingsOptions();}
   // P02: the saved menu language (web OPT.lang) beats the host default. No saved value (old file, fresh install) or an unsupported one keeps the host default.
   string settingsLangSeen="";
   void ApplySettingsLanguage()
@@ -69,7 +69,7 @@ namespace Exoduser.UnityPort
   }
   void UpdateSettingsPersistence()
   {
-   TrackSettingsLanguage();
+   TrackSettingsLanguage();NativeGraphicsOptions.Tick(settings==null?null:settings.Options);
    if(NativeKeyBindInput.Bindings.Version!=settingsBindingsVersion){settingsBindingsVersion=NativeKeyBindInput.Bindings.Version;QueueSettingsSave();}
    if(settingsSavePending&&!settingsScreenPending&&Time.unscaledTime>=settingsSaveAt)FlushNativeSettings();UpdateSettingsPersistenceNotice();
   }
