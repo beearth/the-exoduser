@@ -58182,3 +58182,9 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 - 후보 `codex/unity-hud-proto-20261105`, 기준 `75add6ff4`. `--hud-proto=a|b`로 U1 `8af73fc3a`의 하단 HUD 레일·고리·소켓·키 칩·자원 표시를 선택한다. 기본 HUD 코드 경로와 Core 수치·판정은 보존한다.
 - H2 기준과 px 대조·시안 내부 차이·검증 범위·Mac 동일 구도 캡처 인자: `docs/3.1 ui hud 디자인/hud_redesign_20261105/H1_unity_prototype.md`. 숫자 Cinzel 400/600·한글 Hahmlet 300과 기존 아이콘을 사용하며 새 유료 원화는 없다.
 - SHFT/CTRL/SPC를 번역 목록 No.4300~4302에 29언어 공통 물리 키 약어로 등록했다. 본선 동결 유지, 화면 미검수(Mac), 병합·Unity 실행·사용자 실행본 교체 0.
+
+## 2026-11-05 H4 — HUD C opt-in 후보
+
+- 기존 `codex/unity-hud-proto-20261105`의 H1 끝 `c1b51cda5` 위에 `--hud-proto=c` 추가. A의 44px 슬롯·간격을 유지하고 원본 해골·뿔을 은빛 강철로 표시한다. 와인색 HP 액체, 강철 파랑 MP·녹청 ST 후보색, 실제 LMB/RMB 경계의 투명 받침·얇은 접지 레일을 사용한다.
+- 무인자·A/B 보존23건, 레이아웃471건, C 받침449건·셰이더 수식257건·기존 수식16건 통과. 오프라인5어셈블리 컴파일 오류0. Core·HP/피해·원본 PNG/importer·다른 레인 변경0.
+- 요구별 값·파일:줄·팔레트 승인 한계·검증 로그·Mac 현재/A/B/C 창 모드 인계: `docs/3.1 ui hud 디자인/hud_redesign_20261105/H4_unity_prototype_C.md`, `H4_validation.log`. `-batchmode` 없이 무음 촬영하도록 정정했다. 화면 미검수(Mac), 본선 동결·미병합 유지.

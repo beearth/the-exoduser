@@ -1,0 +1,48 @@
+H4 HUD C — 2026-11-05
+Branch: codex/unity-hud-proto-20261105
+Base: c1b51cda503d1de1ef3ae2c828309e7c27d539f7
+Worktree: G:/exoduser-wt/codex-h4-hud-c
+Unity Editor/Player execution: 0
+
+TDD: initial new Program.cs CS0819 (var multi-declaration) corrected once.
+Then expected pre-implementation RED: C explicitly opts in.
+c-preservation pre-implementation RED: C must exist.
+Intentional RED excluded from two-real-failures rule.
+Real same-check failures: run.cjs compile 1; other runners/compilers 0.
+Plain git diff --check flagged preserved CRLF on six CHANGELOG lines once.
+Use git -c core.whitespace=cr-at-eol diff --check for the required original CRLF convention.
+
+node unity/Tools/hud-proto-tests/run.cjs
+PASS 471 HUD prototype argument/layout/input contracts (344 prior + 127 C).
+
+node unity/Tools/hud-proto-tests/c-render-math.cjs
+PASS 449 production C support raster contracts (minimal Unity math stubs, gamma inputs).
+PASS 257 production shader scalar/color contracts (extracted source math, not HLSL/GPU).
+
+node unity/Tools/hud-proto-tests/render-math.cjs
+PASS 16 HUD prototype diamond/notch/soft-shadow contracts.
+
+node unity/Tools/hud-proto-tests/c-preservation.cjs
+PASS 23. Current/A/B renderer after removing two C-only hooks equals base bytes.
+Default HUD sources, A/B art/shaders, original PNGs/importers equal base bytes.
+A/B layout constructor arithmetic retained. C cleanup is C-only.
+
+node unity/Tools/hud-proto-tests/legacy-path.cjs
+PASS against 75add6ff4a6209e2590a7a626ffb4c37b5f0268e.
+NativeHud.cs 205 lines CR0; NativeHudSkills.cs 89 lines CR0.
+Only original three H1 opt-in insertions differ from pre-H1 default source.
+
+Independent SPEC review: PASS (source scope); code quality review: approved, no blockers.
+Recommended C-only cleanup gate applied and affected preservation/compile checks repeated.
+
+Offline Roslyn: compile-check.ps1 -Project G:/exoduser-wt/codex-h4-hud-c/unity -LibraryProject G:/exoduser-wt/codex-unity-parity-1102/unity -Output I:/EXODUSER-Storage/devtools/h4-hud-c
+Player Exoduser.Core    sources=133 exit=0 errors=0 warnings=2
+Player Exoduser.Runtime sources=300 exit=0 errors=0 warnings=49
+Editor Exoduser.Core    sources=133 exit=0 errors=0 warnings=2
+Editor Exoduser.Runtime sources=300 exit=0 errors=0 warnings=49
+Editor Exoduser.Editor  sources=64  exit=0 errors=0 warnings=53
+Total assemblies=5 errors=0 existing warnings=155 H4 changed-source warnings=0.
+Existing Bee response files and compiler references read only; no Unity process launched.
+
+Not verified: C HLSL import/Metal, actual 1x color/legibility and alpha, visual/no-argument pixel equality, dynamic states, input/playthrough.
+Status: 화면 미검수(Mac). Mac report read as text only; comparison images not in Git.

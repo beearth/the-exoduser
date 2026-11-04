@@ -1,0 +1,117 @@
+Shader "EXODUSER/HudPrototypeC"
+{
+    Properties
+    {
+        _MainTex ("Existing ornament artwork", 2D) = "white" {}
+        _Mode ("HP / MP-ST / silver original art", Float) = 0
+        _Diameter ("Liquid design diameter", Float) = 156
+        _HpTranslate ("Existing HP display translation", Float) = .1
+        _Hurt ("Existing hurt flash", Float) = 0
+        _Mana ("MP ratio", Float) = 1
+        _Stamina ("ST ratio", Float) = 1
+        _UvRect ("Original artwork crop UV", Vector) = (0,0,1,1)
+        _Flip ("Mirror crop horizontally", Float) = 0
+        _FadeRight ("Fade cropped right edge", Float) = 0
+        _FadeBottom ("Fade cropped bottom edge", Float) = 0
+    }
+    SubShader
+    {
+        Cull Off ZWrite Off ZTest Always
+        Pass
+        {
+            CGPROGRAM
+            #pragma vertex vert_img
+            #pragma fragment frag
+            #include "UnityCG.cginc"
+            sampler2D _MainTex;float4 _MainTex_TexelSize;
+            float _Mode,_Diameter,_HpTranslate,_Hurt,_Mana,_Stamina,_Flip,_FadeRight,_FadeBottom;
+            float4 _UvRect;
+            const float EmptyCenterAlpha=.08;
+            const float EmptyEdgeAlpha=.42;
+            const float SurfaceSoftPixels=2;
+            const float SurfaceWavePixels=1;
+            float3 rgb(float r,float g,float b){return float3(r,g,b)/255;}
+            float linearChannel(float c){return c<=.04045?c/12.92:pow((c+.055)/1.055,2.4);}
+            float4 outputColor(float4 c)
+            {
+                #ifndef UNITY_COLORSPACE_GAMMA
+                c.rgb=float3(linearChannel(c.r),linearChannel(c.g),linearChannel(c.b));
+                #endif
+                return c;
+            }
+            float3 silver(float l)
+            {
+                // Existing sculpted luminance, recolored into the five Silver Hell steel tokens.
+                l=saturate((l-.5)*1.4+.5)*1.15;
+                return l<.25?lerp(rgb(44,46,49),rgb(79,83,82),l/.25):
+                    l<.5?lerp(rgb(79,83,82),rgb(138,139,136),(l-.25)/.25):
+                    l<.8?lerp(rgb(138,139,136),rgb(201,199,195),(l-.5)/.3):
+                    lerp(rgb(201,199,195),rgb(246,245,242),saturate((l-.8)/.2));
+            }
+            float3 mpGradient(float h)
+            {
+                return h<.45?lerp(rgb(22,33,46),rgb(59,95,134),h/.45):
+                    lerp(rgb(59,95,134),rgb(127,156,188),saturate((h-.45)/.35));
+            }
+            float3 stGradient(float h)
+            {
+                // U1 Silver Hell candidate verdigris; deliberately distinct from blue MP, never primary green.
+                return h<.45?lerp(rgb(18,32,25),rgb(62,94,74),h/.45):
+                    lerp(rgb(62,94,74),rgb(122,150,128),saturate((h-.45)/.35));
+            }
+            float surfaceCoverage(float2 uv,float fill)
+            {
+                if(fill<=0)return 0;
+                if(fill>=1)return 1;
+                float wave=sin((uv.x-.5)*6.283185307)*SurfaceWavePixels/_Diameter;
+                float curve=(uv.x-.5)*(uv.x-.5)*2*SurfaceWavePixels/_Diameter;
+                float halfSoft=SurfaceSoftPixels/_Diameter;
+                return 1-smoothstep(fill+wave-curve-halfSoft,fill+wave-curve+halfSoft,uv.y);
+            }
+            float4 frag(v2f_img i):SV_Target
+            {
+                if(_Mode>1.5){
+                    float2 local=i.uv;if(_Flip>.5)local.x=1-local.x;
+                    float2 uv=_UvRect.xy+local*_UvRect.zw;
+                    float4 art=tex2D(_MainTex,uv);
+                    // Trim one source texel of alpha fringe in this C-only runtime copy, preserving the original importer/PNG.
+                    float2 texel=_MainTex_TexelSize.xy;
+                    float innerAlpha=min(min(tex2D(_MainTex,uv+float2(texel.x,0)).a,tex2D(_MainTex,uv-float2(texel.x,0)).a),
+                        min(tex2D(_MainTex,uv+float2(0,texel.y)).a,tex2D(_MainTex,uv-float2(0,texel.y)).a));
+                    art.a=smoothstep(.04,.20,min(art.a,innerAlpha));
+                    #ifndef UNITY_COLORSPACE_GAMMA
+                    art.rgb=LinearToGammaSpace(art.rgb);
+                    #endif
+                    float l=dot(art.rgb,float3(.2126,.7152,.0722));
+                    float fadeRight=_FadeRight>0?saturate((1-local.x)/_FadeRight):1;
+                    float fadeBottom=_FadeBottom>0?saturate(local.y/_FadeBottom):1;
+                    return outputColor(float4(silver(l),art.a*fadeRight*fadeBottom));
+                }
+                float2 d=i.uv-.5;float r=length(d),edge=saturate((.5-r)*_Diameter+.5);
+                // A curved, translucent bowl remains in the empty area; no opaque straight-cut dark panel.
+                float radial=smoothstep(.22,.5,r),emptyAlpha=lerp(EmptyCenterAlpha,EmptyEdgeAlpha,radial);
+                float3 bowl=lerp(rgb(44,46,49),rgb(15,15,16),radial);
+                bool hp=_Mode<.5,mp=i.uv.x<.5;
+                float fill=hp?saturate(1-_HpTranslate):saturate(mp?_Mana:_Stamina);
+                float wet=surfaceCoverage(i.uv,fill);
+                float3 liquid;
+                if(hp){
+                    // Preserve the existing HP display projection and its wine palette. No lens specular or white meniscus.
+                    float depth=length(float2(d.x*.70710678,(1-i.uv.y-_HpTranslate-.4)*1.1785113));
+                    liquid=depth<.5?lerp(rgb(107,16,32),rgb(61,10,18),depth*2):
+                        lerp(rgb(61,10,18),rgb(30,5,10),saturate((depth-.5)*2));
+                }else{
+                    float h=saturate(i.uv.y/max(fill,.0001));liquid=mp?mpGradient(h):stGradient(h);
+                    // Soften the top like the current resource liquid, without an opaque empty quadrant.
+                    wet*=lerp(1,.50,smoothstep(.82,1,h));
+                }
+                liquid*=1-.30*radial;
+                float a=wet+emptyAlpha*(1-wet);
+                float3 color=(liquid*wet+bowl*emptyAlpha*(1-wet))/max(a,.0001);
+                if(hp&&_Hurt>0)color=lerp(color,rgb(194,26,16),saturate(1-(.5-r)*_Diameter/22)*.85);
+                return outputColor(float4(color,a*edge));
+            }
+            ENDCG
+        }
+    }
+}

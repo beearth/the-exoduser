@@ -4,7 +4,7 @@ namespace Exoduser.UnityPort
 {
     // U1 8af73fc3a: mock_A/B.html:16-21 and _hud_mock.js:43-70.
     // Pure design pixels; NativeUiViewport applies the existing uniform 1920x1080 transform.
-    public enum HudPrototypeMode { None, A, B }
+    public enum HudPrototypeMode { None, A, B, C }
     public struct HudProtoRect
     {
         public readonly float X,Y,Width,Height;
@@ -23,7 +23,8 @@ namespace Exoduser.UnityPort
             foreach(var arg in args){if(arg==null||!arg.StartsWith(prefix,StringComparison.OrdinalIgnoreCase))continue;
                 count++;string value=arg.Substring(prefix.Length);
                 mode=string.Equals(value,"a",StringComparison.OrdinalIgnoreCase)?HudPrototypeMode.A:
-                    string.Equals(value,"b",StringComparison.OrdinalIgnoreCase)?HudPrototypeMode.B:HudPrototypeMode.None;}
+                    string.Equals(value,"b",StringComparison.OrdinalIgnoreCase)?HudPrototypeMode.B:
+                    string.Equals(value,"c",StringComparison.OrdinalIgnoreCase)?HudPrototypeMode.C:HudPrototypeMode.None;}
             return count==1?mode:HudPrototypeMode.None;
         }
         // Initialized once, without loading art, fonts, materials or textures on the legacy path.
@@ -36,7 +37,30 @@ namespace Exoduser.UnityPort
         public static NativeHudPrototypeLayout Create(HudPrototypeMode mode,float width,float height){return new NativeHudPrototypeLayout(mode,width,height);}
         NativeHudPrototypeLayout(HudPrototypeMode mode,float width,float height)
         {
-            if(mode!=HudPrototypeMode.A&&mode!=HudPrototypeMode.B)throw new ArgumentException("A or B prototype required",nameof(mode));
+            if(mode!=HudPrototypeMode.A&&mode!=HudPrototypeMode.B&&mode!=HudPrototypeMode.C)throw new ArgumentException("A, B or C prototype required",nameof(mode));
+            if(mode==HudPrototypeMode.C){
+                // H4: A slot rhythm plus the existing source frame's 263:175 registration.
+                Mode=mode;Liquid=156;Outer=Liquid*263/175;Band=17;EyeWidth=30;Chamfer=12;
+                HpCurrentFont=26;HpMaximumFont=13;ResourceCurrentFont=18;ResourceMaximumFont=11;
+                RowWidth=665;SlotInk=572;float baseC=height-14,scale=Liquid/175,radiusC=Outer/2;
+                Plate=new HudProtoRect(width/2-354.5f,baseC-74,709,74);
+                OrbCenterY=baseC+6-radiusC;
+                float leftC=Plate.X-radiusC+17,rightC=Plate.Right+radiusC-17;
+                LeftFrame=new HudProtoRect(leftC-135.5f*scale,OrbCenterY-radiusC,Outer,Outer);
+                RightFrame=new HudProtoRect(rightC-135.5f*scale,OrbCenterY-radiusC,Outer,Outer);
+                LeftLiquid=new HudProtoRect(leftC-78,OrbCenterY-78,156,156);
+                RightLiquid=new HudProtoRect(rightC-78,OrbCenterY-78,156,156);
+                Rail=new HudProtoRect(leftC-radiusC+18,baseC,rightC-leftC+Outer-36,14);
+                Emblem=new HudProtoRect(width/2-55,Plate.Y-31*.86f,110,31);
+                float rowC=Plate.X+22;
+                for(int i=0;i<13;i++){
+                    if(i>0)rowC+=(i==4||i==6||i==8)?16:5;
+                    slots[i]=new HudProtoRect(rowC,Plate.Y+8,44,44);rowC+=44;
+                }
+                // No B lift. Support both actual mouse slots and their chips, with eight px side margins.
+                Pedestal=new HudProtoRect(slots[6].X-8,Plate.Y,slots[7].Right-slots[6].X+16,Plate.Height);
+                return;
+            }
             Mode=mode;bool b=mode==HudPrototypeMode.B;Outer=b?212:190;Liquid=b?176:156;Band=b?18:17;EyeWidth=b?34:30;Chamfer=b?14:12;
             HpCurrentFont=b?30:26;HpMaximumFont=b?14:13;ResourceCurrentFont=b?20:18;ResourceMaximumFont=b?12:11;
             float radius=Outer/2,baseY=height-14,overlap=b?16:14,pad=b?20:22,plateH=b?84:74;

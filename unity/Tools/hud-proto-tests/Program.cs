@@ -10,7 +10,7 @@ class Program {
   Check(NativeHudPrototypeLayout.Parse(new[]{"game"})==HudPrototypeMode.None,"no arg stays legacy");
   Check(NativeHudPrototypeLayout.Parse(new[]{"game","--hud-proto=a"})==HudPrototypeMode.A,"A opt-in");
   Check(NativeHudPrototypeLayout.Parse(new[]{"--hud-proto=B"})==HudPrototypeMode.B,"B case insensitive");
-  Check(NativeHudPrototypeLayout.Parse(new[]{"--hud-proto=c"})==HudPrototypeMode.None,"unknown stays legacy");
+  Check(NativeHudPrototypeLayout.Parse(new[]{"--hud-proto=d"})==HudPrototypeMode.None,"unknown stays legacy");
   Check(NativeHudPrototypeLayout.Parse(new[]{"--hud-proto="})==HudPrototypeMode.None,"empty stays legacy");
   Check(NativeHudPrototypeLayout.Parse(new[]{"--hud-proto","a"})==HudPrototypeMode.None,"only explicit equals form");
   Check(NativeHudPrototypeLayout.Parse(new[]{"--hud-proto=a","--hud-proto=b"})==HudPrototypeMode.None,"ambiguous stays legacy");
@@ -38,6 +38,37 @@ class Program {
    }
    Check(l.HitTest(960,900)==-1,"world above row never blocks");Check(l.HitTest(0,1000)==-1,"world beside row never blocks");
    foreach(float width in new[]{1920f,2560,3840}){var w=NativeHudPrototypeLayout.Create(mode,width,1080);Near(w.Plate.Width,l.Plate.Width,"ultrawide no stretch");Near(w.Plate.X-l.Plate.X,(width-1920)/2,"ultrawide centers");for(int i=0;i<13;i++)Near(w.Slot(i).X-l.Slot(i).X,(width-1920)/2,"slot center shift");}
+  }
+  Check(NativeHudPrototypeLayout.Parse(new[]{"--hud-proto=c"})==(HudPrototypeMode)3,"C explicitly opts in");
+  Check(NativeHudPrototypeLayout.Parse(new[]{"--hud-proto=C"})==(HudPrototypeMode)3,"C case insensitive");
+  Check(NativeHudPrototypeLayout.Parse(new[]{"--hud-proto=c","--hud-proto=a"})==HudPrototypeMode.None,"C plus A is ambiguous");
+  Check(NativeHudPrototypeLayout.Parse(new[]{"--hud-proto=c","--hud-proto=c"})==HudPrototypeMode.None,"duplicate C stays legacy");
+  var c=NativeHudPrototypeLayout.Create((HudPrototypeMode)3,1920,1080);
+  var a=NativeHudPrototypeLayout.Create(HudPrototypeMode.A,1920,1080);
+  Box(c.Plate,605.5f,992,709,74,"C retains A plate bounds");
+  Near(c.Liquid,156,"C retains A liquid diameter");Near(c.Outer,234.445714f,"C original frame aspect model 263/175");
+  Box(c.LeftFrame,384.488571f,837.554286f,234.445714f,234.445714f,"C left source frame");
+  Box(c.RightFrame,1293.934286f,837.554286f,234.445714f,234.445714f,"C right source frame");
+  Box(c.LeftLiquid,427.277143f,876.777143f,156,156,"C left liquid source offset");
+  Box(c.RightLiquid,1336.722857f,876.777143f,156,156,"C right liquid source offset");
+  Near(c.LeftFrame.Bottom,1072,"C frame grounds six pixels into rail");
+  Near(c.LeftLiquid.X-c.LeftFrame.X,48*156f/175,"C source liquid x registration");
+  Near(c.LeftLiquid.Y-c.LeftFrame.Y,44*156f/175,"C source liquid y registration");
+  Box(c.Pedestal,935.5f,992,109,74,"C support derives from both mouse slots");
+  Near(c.Pedestal.X+c.Pedestal.Width/2,(c.Slot(6).X+c.Slot(7).Right)/2,"C support center follows mouse pair");
+  for(int i=0;i<13;i++){
+   var r=c.Slot(i);var prior=a.Slot(i);Box(r,prior.X,prior.Y,prior.Width,prior.Height,"C A slot "+i);
+   Check(c.HitTest(r.X+r.Width/2,r.Y+r.Height/2)==i,"C visible slot and input share bounds");
+   Near(c.ChipTop(i),1036,"C shared chip baseline");
+  }
+  for(int i=6;i<=7;i++){
+   var r=c.Slot(i);Check(r.X>=c.Pedestal.X+8&&r.Right<=c.Pedestal.Right-8,"C mouse slot supported with margin");
+   Check(c.ChipTop(i)+15<=c.Pedestal.Bottom,"C mouse chip inside support");
+   Check(r.X+r.Width/2-9.5f>=c.Pedestal.X&&r.X+r.Width/2+9.5f<=c.Pedestal.Right,"C mouse label fully supported");
+  }
+  foreach(float width in new[]{1920f,2560,3840}){var w=NativeHudPrototypeLayout.Create((HudPrototypeMode)3,width,1080);
+   Near(w.Plate.X-c.Plate.X,(width-1920)/2,"C ultrawide centered");Near(w.LeftLiquid.Width,156,"C ultrawide no stretch");
+   Near(w.Pedestal.X-c.Pedestal.X,(width-1920)/2,"C mouse support follows row");
   }
   Console.WriteLine("PASS "+checks+" HUD prototype argument/layout/input contracts");
  }

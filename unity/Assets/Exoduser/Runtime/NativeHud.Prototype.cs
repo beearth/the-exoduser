@@ -97,7 +97,7 @@ namespace Exoduser.UnityPort
         }
         bool TryDrawPrototype(float width,float height,string activeAttack,Simulation simulation)
         {
-            if(NativeHudPrototypeLayout.CurrentMode==HudPrototypeMode.None)return false;
+            if(NativeHudPrototypeLayout.CurrentMode==HudPrototypeMode.None)return false;/* H4 C begin */if(NativeHudPrototypeLayout.CurrentMode==HudPrototypeMode.C)return TryDrawPrototypeC(width,height,activeAttack,simulation);/* H4 C end */
             if(values==null)return true;
             EnsurePrototype(width,height);ActiveSkill=activeAttack;var l=prototypeLayout;
             var oldColor=GUI.color;
@@ -201,7 +201,7 @@ namespace Exoduser.UnityPort
         }
         void DisposePrototype()
         {
-            if(prototypeArtwork==null)return;
+            /* H4 C begin */if(NativeHudPrototypeLayout.CurrentMode==HudPrototypeMode.C)DisposePrototypeC();/* H4 C end */if(prototypeArtwork==null)return;
             if(prototypeShadows!=null){prototypeShadows.Dispose();prototypeShadows=null;}
             foreach(var texture in prototypeArtwork)if(texture!=null)Release(texture);prototypeArtwork.Clear();
             DisposePrototypeTarget(ref prototypeHp);DisposePrototypeTarget(ref prototypeResources);DisposePrototypeTarget(ref prototypeShield);DisposePrototypeTarget(ref prototypeMobility);
