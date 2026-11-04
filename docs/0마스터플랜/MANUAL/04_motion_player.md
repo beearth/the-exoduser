@@ -86,7 +86,7 @@
 | 임포트 검사 | 원본 핵심 포즈 시각 vs 임포트 뒤 같은 시각·앞뒤 시각, Resample Curves·압축(Rotation Error 각도, Position/Scale Error 비율) On/Off 비교. 출시 기본값은 단정하지 않음 | [사실 Unity 문서] / [추정] §4.4 | 미검증 |
 | 픽셀 깜빡임 | Dead Cells 제작자는 저해상도 셀 셰이딩에서도 픽셀 깜빡임을 해결하지 못했다고 명시 | [사실] codex_motion_direction | 미검증 |
 
-## 4. 제작 도구 — 확정 추천: Blender 손키(키포즈) + 엔진 상태머신 연결
+## 4. 제작 도구 — 초안 1순위 추천(미승인, 〔CX29 R30〕): Blender 손키(키포즈) + 엔진 상태머신 연결
 | 역할 | Unity 추천 | UE5 대응 |
 |---|---|---|
 | 모델/리그 | Blender 수동 리그(Humanoid 24본 이름 규칙) | Blender 수동 리그(UE 마네킹 호환 본 이름 또는 커스텀 스켈레톤) |

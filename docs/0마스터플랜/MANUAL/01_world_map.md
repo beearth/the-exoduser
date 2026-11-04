@@ -115,7 +115,7 @@
 
 ## 4. 제작 도구
 
-| 역할 | Unity 추천 (확정) | UE5 대응 | 대안 |
+| 역할 | Unity 초안 1순위 추천(미승인) | UE5 대응 | 대안 |
 |---|---|---|---|
 | 큰 형태 모델링(고목·바위·그루터기 = 키샷 주인공) | **Blender 손 조형 키트** (TOOLCHAIN §2-3 추천 C: 보스와 같이 Meshy 본체가 큰 형태 결함으로 FAIL한 전례, D4-04 §e). 중·소 소품(무리 채우기)만 Meshy·Tripo 생성 → Remesh(Meshy Remesh 목표 폴리곤 100~300,000 지정 가능 [단일, 공식 문서]) → Blender 정리. 2차 반영으로 이전 초안 "큰 소품도 Meshy·Tripo 기본형"을 개정 | 같음. FBX 이후 UE5 임포트 | Blender 직접 조각 전부 |
 | 지면 타일 4종 | Blender 절차 재질 + 굽기(무료). 반복 티가 두 번 FAIL이면 Substance 3D Designer 구매 요청 | 같음 | Substance 3D Designer(유료, 가격 확인 필요) |

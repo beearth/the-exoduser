@@ -160,7 +160,7 @@
 
 ## 4. 제작 도구
 
-| 단계 | 역할 | Unity 추천(확정) | UE5 대응 |
+| 단계 | 역할 | Unity 초안 1순위 추천(미승인) | UE5 대응 |
 |---|---|---|---|
 | 믹스·덕킹 | 버스·스냅샷·사이드체인 | **Unity Audio Mixer(그룹 + Duck Volume) + 자체 `SfxPlayer`(풀·변주·우선순위)** — 이미 구현된 `NativeAudioMixer`/`NativeFeedbackAudio` 유지 | Sound Class/Submix + Sound Mix Modifier, 우선순위는 Concurrency Group |
 | 효과음 생성 | 후보 생성 | **ElevenLabs(SFX Forge, SDK 직접 호출)**: 후보 3~4개, 전후 잔액 보고, 사용자 청음 후 채택 | 동일 에셋(wav/ogg) |

@@ -106,7 +106,7 @@
 
 ## 4. 제작 도구
 
-| 역할 | Unity 추천 (확정) | UE5 대응 | 대안 |
+| 역할 | Unity 초안 1순위 추천(미승인) | UE5 대응 | 대안 |
 |---|---|---|---|
 | 게임 카메라 리그 | Cinemachine 3: PositionComposer 거리만 보간, 피치·FOV는 잠금 필드 | Camera Boom(SpringArm) + 피치 고정 | 자체 스크립트(LOCK 위반 위험, 비추천) |
 | 흔들림 | Cinemachine Impulse Source(위치만) | Camera Shake Source | 자체 오프셋 |

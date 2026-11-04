@@ -135,7 +135,7 @@
 
 ## 4. 제작 도구
 
-| 역할 | Unity 추천 (확정) | UE5 대응 | 대안 |
+| 역할 | Unity 초안 1순위 추천(미승인) | UE5 대응 | 대안 |
 |---|---|---|---|
 | 연출 시퀀스 | Timeline + Cinemachine (보스 등장·퇴장 프로필 에셋) | Sequencer | 코루틴 스크립트(비추천: LOCK 보호 약함) |
 | 카메라 거리 블렌드 | Cinemachine 3 PositionComposer 거리 | Camera Boom 길이 | — |

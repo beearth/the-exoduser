@@ -106,7 +106,7 @@ Core 수치: `Core/DruidRemodelData.cs`. 미작성 10종(slashCombo·charge·fan
 | 핵심 신호 | 밝기·면적 최대는 중요한 순간에만. 반복 기본 공격·지속 잔여가 적 탄 윤곽보다 먼저 보이면 밝기·면적·지속을 함께 줄인다 | [추정] §4 | 우리 기준 |
 | 엔진 기능 확인 필요 | Unity 6000.0 문서 간 불일치(URP 카메라 버퍼, Lit Mesh), VFX Graph 17.0 = Compute Shader·SSBO 필요, OpenGL ES·URP Gamma 미지원, URP에서 Simple Lit·왜곡·Half-resolution 미지원 표기. 설치된 패키지에서 재확인 | [사실] Unity 문서 / [미확인] 설치본 | 검증됨 |
 
-## 4. 제작 도구 — 확정 추천: 파티클 시스템(CPU) + 플립북 시트 + 메시/셰이더 지면 표식
+## 4. 제작 도구 — 초안 1순위 추천(미승인, 〔CX29 R30〕): 파티클 시스템(CPU) + 플립북 시트 + 메시/셰이더 지면 표식
 | 역할 | Unity 추천 | UE5 대응 |
 |---|---|---|
 | 예고 지면 표식·장판 | URP Decal Projector + Shader Graph(진행 채움 파라미터), 발밑 원은 ZTest Always 쿼드 (TOOLCHAIN §2-7) | Decal Actor + Material 진행 파라미터 |

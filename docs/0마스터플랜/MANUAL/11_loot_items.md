@@ -106,7 +106,7 @@
 
 ## 4. 제작 도구
 
-| 단계 | 역할 | Unity 추천(확정) | UE5 대응 |
+| 단계 | 역할 | Unity 초안 1순위 추천(미승인) | UE5 대응 |
 |---|---|---|---|
 | 빛기둥 | 가산 합성 세로 빔, 2프레임 교대 | **기존 `world_item_drop_beams_v3` 아틀라스 + 알파 가산 스프라이트**(재사용, 등급 타일 추가만) | Niagara Sprite 또는 Billboard Material(같은 아틀라스) |
 | 튀어나옴·착지 | 포물선 + 바운스 | **코드 곡선 3줄 + Animation Curve**(파티클 아님) | Timeline / Curve Float |

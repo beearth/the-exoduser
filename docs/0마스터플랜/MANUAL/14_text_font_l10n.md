@@ -164,7 +164,7 @@
 
 ## 4. 제작 도구
 
-| 단계 | 역할 | Unity 추천(확정) | UE5 대응 |
+| 단계 | 역할 | Unity 초안 1순위 추천(미승인) | UE5 대응 |
 |---|---|---|---|
 | 글꼴 렌더 | 동적 글꼴 + 폴백 | **현행 `Font` + `GUIStyle` 유지(v0), 언어별 폴백 체인 asset 표**. 1x 그림자 부족 시 HUD 글자만 TMP 재판정. v0 뒤 HUD부터 UGUI 이전 검토(TOOLCHAIN §2-8 추천과 일치, UI Toolkit은 커스텀 머티리얼에 약해 제외) | UMG Slate Font + Composite Font(Fallback Font Family) |
 | 글리프 검수 | 문자열 ↔ 글꼴 cmap 대조 | **fontTools(`getBestCmap`) 일괄 검사 스크립트의 node 이식 또는 기존 검사 결과 재사용**(python 금지: 검사는 node 파일로 작성) | 동일 검사 결과를 Composite Font 구성에 반영 |

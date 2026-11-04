@@ -224,7 +224,7 @@
 
 ## 4. 제작 도구
 
-| 역할 | Unity 추천 (확정) | UE5 대응 | 대안 |
+| 역할 | Unity 초안 1순위 추천(미승인) | UE5 대응 | 대안 |
 |---|---|---|---|
 | 프레임 시간 측정 | Unity Profiler + Frame Timing Manager, 빌드에서 수집 | Unreal Insights, stat unit | 외부 GPU 캡처(Mac Xcode GPU Capture) |
 | GPU 패스 분석 | Xcode Metal Debugger(Mac), RenderDoc(PC) | Unreal GPU Visualizer | — |
