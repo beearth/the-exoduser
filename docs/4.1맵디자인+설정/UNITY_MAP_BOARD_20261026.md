@@ -66,3 +66,23 @@
 - 카드 셰이더의 _Tint는 HDR/Gamma 속성이 없는 일반 Color다. 기존 Material.SetColor 저장값을 MPB.SetVector로 전달해 추가 sRGB 변환을 피한다. 에디터 검증은 원본 Material.SetColor→GetVector와 MPB의 세 가지 실제 틴트 값을 비교한다. 근거: [Material.SetColor](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Material.SetColor.html), [MaterialPropertyBlock.SetColor](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MaterialPropertyBlock.SetColor.html). 숫자·팔레트 변경은 없다.
 
 - 공용 실행기 17cf3f4f에서 C# 컴파일 및 굽기 실행(종료0, 약327초). 카드189장 입력의 공유 메시142개·원화55종 재질165개·AO·수면262144픽셀 산출물 개수 검사를 통과했다. 정밀 동등성 검증·후보 빌드·Player 전후 실측은 대기 중이다. 종료 로그 Curl error 42: Callback aborted 1건은 별도 기록하며 컴파일 오류로 바꾸어 세지 않는다. Unity 임포터의 범위 밖 메타데이터/설정 자동 변경450개는 원본으로 복원하고 인계에서 제외했다.
+
+
+### 2차 실행 결과 — 2026-11-04 공용 HALT로 후속 검증 차단
+
+- 실제 산출물은 d4547d43cf에 push·원격 일치 확인했다. 공용17cf3f4f에서 C# 컴파일·굽기 실행 성공, 입력189장·공유 메시142개·재질165개(55원화×3)·AO·R8 수면512² 생성. 소스/데이터 인계 범위는 4634bbbc73..d4547d43cf다.
+- 추가 정적 패키지 검사: 재질165개의 원본 이미지/노멀 GUID, opaque/floor/fade 셰이더·렌더 큐 일치. 수면512×512·262144바이트가0/255 이진값인 것 확인. 원래 TerrainHeight 결과/메시 모든 채널의 에디터 대조는 아직 미실행이다. 정적 검사는 시각 PASS가 아니다.
+- 첫 정밀 Verify 호출은 앞선 예약으로10분 초과, 검증 포함 빌드1차도 앞선 VFX 예약으로15분 초과했다. 모두 실제 에디터/빌드 미실행이며 검사 실패로 세지 않았다. 빌드 재대기2차는 17:29:47 KST에 생성된 공용 HALT로 시작 전에 거부됐다.
+- HALT 사유: 종료 못 한 EXODUSER-A2R Player PID14612, 스레드1, 재부팅 필요. 이 레인의 Player는0회다. HALT나 타 레인 프로세스를 조작하지 않았고 자기 editor/player 예약만 해제했다. 순번 루프도 종료됐다.
+
+| 이번 빌드에서 재야 할 구간 | 이전 ms | 구운 경로 ms | 상태 |
+|---|---|---|---|
+| 카드 원화·기존 노멀 로드 | 미측정 | 미측정 | 원본 텍스처 참조를 구운 재질에 보존 |
+| 카드 메시 | 미측정 | 미측정 | 구운 공유 메시142개 |
+| 재질 생성·복사/MPB | 미측정 | 미측정 | 재질165개·인스턴스 속성 분리 |
+| 수면512² | 미측정 | 미측정 | R8 에셋 생성, 실제 맵 키가 다르면 기존 계산 |
+| 접지 AO | 미측정 | 미측정 | Quad/재질 공유 |
+| 카드 루프/외부 웹 단계 전체 | 미측정 | 미측정 | 지면64장 시간은 D4 범위로 분리 필요 |
+
+- 3840 입구/캠프 전후 쌍, 픽셀 차이, 1.5초 달성, 자연 플레이·Mac 판정, 사용자 실행본 갱신은 미검증이다. 후보 빌드0회·Player0회·유료0. 공용 HALT가 총괄에 의해 해결된 뒤 동일 빌드의 --a2r-webcards-profile 및 --a2r-webcards-legacy 경로에서 계속해야 한다.
+- 자동 임포터의 범위 밖 변경450개는 복원했고 소유 산출물만 커밋했다. 작업량은 Assets 약4.687GiB·Library 약11.438GiB로20GB 미만이며 새 빌드/캡처가 없어 중복 산출물은 없다. 상세 인계는 I:/EXODUSER-Storage/codex-takeover/map-webcards/REPORT.md 맨 위2차다.
