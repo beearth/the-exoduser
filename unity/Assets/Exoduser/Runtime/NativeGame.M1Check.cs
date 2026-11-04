@@ -14,7 +14,7 @@ namespace Exoduser.UnityPort
     public sealed partial class NativeGame
     {
         [Serializable] sealed class M1Stage { public string id, name, status, note, capture, overlay; }
-        [Serializable] sealed class M1Receipt { public string scope; public List<M1Stage> stages = new List<M1Stage>(); public string firstBlocked; public string device, deviceType, captureMode; public bool headless; public int guiRepaints, guiBridged; }
+        [Serializable] sealed class M1Receipt { public string scope; public List<M1Stage> stages = new List<M1Stage>(); public string firstBlocked; public string device, deviceType, captureMode; public bool headless; public int guiRepaints, guiBridged, captureWidth, captureHeight, screenWidth, screenHeight; }
         M1Receipt m1; string m1Caps; int m1Index;
 
         // BX art: a stray OS key (ESC / TAB) during the unattended run must not leave the pause menu / a window over the comparison scenes
@@ -26,7 +26,7 @@ namespace Exoduser.UnityPort
         readonly Dictionary<string, string> m1Overlays = new Dictionary<string, string>();
         static bool m1ModeFlag { get { return Array.IndexOf(Environment.GetCommandLineArgs(), "--unity-m1-check") >= 0; } }
         string M1Overlay() { var o = new List<string>(); bool inLobby = lobby != null && lobby.IsBlocking; if (inLobby) o.Add("lobby"); else if (menu) o.Add("pause"); if (inventory.Open) o.Add("inventory"); if (skills.Open) o.Add("skills"); if (stats.Open) o.Add("stats"); if (forge.Open) o.Add("forge"); return string.Join(",", o.ToArray()); }
-        bool m1Headless; RenderTexture m1GuiTarget; int m1GuiRepaints, m1GuiBridged;
+        bool m1Headless; int m1W = 1600, m1H = 900; RenderTexture m1GuiTarget; int m1GuiRepaints, m1GuiBridged;
         sealed class M1GuiProbe : MonoBehaviour { public NativeGame game; void OnGUI() { if (game != null && Event.current.type == EventType.Repaint) game.M1GuiRepaint(); } }
         internal void M1GuiRepaint()
         {
@@ -41,7 +41,7 @@ namespace Exoduser.UnityPort
             m1Overlays[name] = M1Overlay();
             if (playerView != null) Debug.Log("[M1CAP] " + name + " player.enabled=" + playerView.enabled + " active=" + playerView.gameObject.activeInHierarchy + " sprite=" + (playerView.sprite != null) + " visibleToCamera=" + playerView.isVisible + " sort=" + playerView.sortingOrder + " pos=" + playerView.transform.position + " cam=" + view.transform.position + " alpha=" + playerView.color.a + " state=" + (Simulation != null ? Simulation.Player.State : "?") + " inArena=" + (Simulation != null && Simulation.Stage.InArena) + " focus=" + Application.isFocused + " guiRepaints=" + m1GuiRepaints);
             if (!m1Headless) { ScreenCapture.CaptureScreenshot(Path.Combine(m1Caps, name + ".png")); yield return null; yield break; }
-            const int w = 1600, h = 900;
+            int w = m1W, h = m1H;
             var rt = RenderTexture.GetTemporary(w, h, 24, RenderTextureFormat.ARGB32);
             var captureCamera=HudCamera;
             var previousTarget = captureCamera.targetTexture; var previousActive = RenderTexture.active; Texture2D tex = null;
@@ -115,10 +115,12 @@ namespace Exoduser.UnityPort
             string output = Argument("-output"); if (string.IsNullOrEmpty(output)) yield break;
             m1Caps = Path.Combine(output, "caps"); Directory.CreateDirectory(m1Caps);
             m1 = new M1Receipt { scope = "real NativeGame; lobby/story/practice through the lobby API, gameplay through Simulation.Tick (not OS input)" };
-            m1.headless = m1Headless; m1.device = SystemInfo.graphicsDeviceName; m1.deviceType = SystemInfo.graphicsDeviceType.ToString(); m1.captureMode = m1Headless ? "headless-rendertexture-1600x900" : "screen-capture";
+            m1.headless = m1Headless; m1.device = SystemInfo.graphicsDeviceName; m1.deviceType = SystemInfo.graphicsDeviceType.ToString(); NativeReviewArgs.ReviewSize(1600, 900, out m1W, out m1H); m1.captureWidth = m1W; m1.captureHeight = m1H; m1.captureMode = m1Headless ? ("headless-rendertexture-" + m1W + "x" + m1H) : "screen-capture";
             { var probe = gameObject.AddComponent<M1GuiProbe>(); probe.game = this; }   // counts IMGUI Repaint events in every mode (guiRepaints in m1-check.json)
-            if (!m1Headless) Screen.SetResolution(1600, 900, FullScreenMode.Windowed);
+            if (!m1Headless) Screen.SetResolution(m1W, m1H, FullScreenMode.Windowed);
             yield return new WaitForSecondsRealtime(.5f);
+            m1.screenWidth = Screen.width; m1.screenHeight = Screen.height;
+            if (m1Headless && (Screen.width != m1W || Screen.height != m1H)) Debug.LogWarning("[M1] headless capture " + m1W + "x" + m1H + " but IMGUI lays out for " + Screen.width + "x" + Screen.height + ": pass -screen-width/-screen-height equal to -review-width/-review-height");
             float deadline;
 
             // ---- 01 lobby -> warrior -> 1-1 ----
