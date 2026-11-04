@@ -192,6 +192,7 @@
 - 오디오 클립: Sound 효과음은 Decompress On Load(짧은 것)/Compressed In Memory(긴 것), Load Type, 모노 강제(효과음), 음악 Streaming. `.meta` 포함 커밋.
 - 믹서: `Exoduser.mixer` 그룹 구조 유지(`Exoduser/RM1 Sound/Build Mixer` 메뉴). 신규 그룹은 3.1 표에 추가.
 - 코드: 이벤트는 Core가 틱·위치만 큐잉하고 재생 변주·게인·믹서는 어댑터(`NativeFeedbackAudio`)가 결정. Core 난수열을 바꾸지 않는다.
+- 보이스: `Max Real Voices`/`Max Virtual Voices`(Audio Manager)는 Mac 대상 기기에서 계측 후 정한다. 자체 풀 크기와 별개. `AudioSource.priority`는 0이 최상위이므로 자체 우선순위(TELL=12)와의 변환표를 `SfxPlayer` 설정 표에 둔다.
 - 설정: `SfxVol`/`MusicVol` 노출 파라미터 유지, 음성 슬라이더가 필요하면 Voice 그룹에 파라미터 추가(D12-4).
 - 번역: 소리 관련 설정 라벨은 MANUAL 14 절차로 등록.
 
@@ -245,12 +246,16 @@
 |---|---|---|---|
 | D12-1 | 동시 보이스 상한: 현행 48 유지 / 연구 제안 32 + 위험 8 면제 | 48 유지 + 위험 소리 면제 추가 | 32로 축소 |
 | D12-2 | 덕킹 attack 10ms(현행) vs 30ms(연구), 볼륨/피치 변주를 ±2dB/±6%로 통일하는가 | 변주 통일, attack은 청음으로 정함 | 현행 유지 |
-| D12-3 | 효과음 라우드니스 목표(LUFS 또는 피크)를 어디에 두는가 | 효과음 −16 LUFS 근처에서 청음 후 확정, 보스 곡 −12.4 | 청음만으로 |
+| D12-3 | 효과음 라우드니스 목표(LUFS 또는 피크)를 어디에 두는가. 2차 연구: 경쟁작 5종의 수치는 전부 미확인이라 **우리 시작값이지 업계 값이 아님**, 방송 −23 LUFS(EBU R128)는 게임 목표 아님 | 효과음 −16 LUFS 근처를 시작값으로 청음 후 확정, 보스 곡 −12.4, True Peak ≤ −1dBFS(5.1-4), 구간별 측정 | 청음만으로 |
 | D12-4 | 음성(Voice) 슬라이더를 설정에 분리 추가하는가 | 추가 | 효과음에 통합 유지 |
 | D12-5 | 필드 음악 연주/휴지 순환(120~180/20~40초) 채택 여부 | 채택 | 상시 연주 |
 | D12-6 | R10 비어 있는 10개 소리(구르기·포션·드롭 등) 후보 생성 승인(ElevenLabs, 크레딧 범위) | 승인(후보 3~4개씩, SPEND_LOG) | 웹 소리 임시 |
 | D12-7 | 신곡(필드/보스) 제작: 기존 곡 재사용 vs Suno 신규 | 기존 곡 재사용(데모 v0), 신곡은 v0 뒤 | 신규 제작 |
 | D12-8 | 청음 카드에 동작 영상 필수를 모든 새 소리에 적용하는가 | 필수 | 일부 생략 |
+| ★D12-9 | 버스 구조: 현행 SFX 8분류(Tell/PlayerHit/Skill/Voice/EnemyHit/Death/Step/UI)를 유지하는가, 2차 연구 제안(Warnings / Combat{Player·Enemy·Impacts} / Foley / Ambience{Bed·Local·Weather} / Music / ReverbReturns / UI / Dialogue)으로 재편하는가. 제안은 5개 게임 어디에서도 확인된 구조가 아닌 자체 제안 | 현행 유지(Tell이 이미 Warnings 역할). Ambience 하위 3분할과 리버브 리턴만 환경음이 늘 때 후속 추가 | 연구 제안으로 재편(믹서 에셋·`NativeAudioMixer` 수정 범위 큼) |
+| D12-10 | 스냅샷을 Explore/Boss에서 Explore/Combat/Boss/Dialogue/Pause로 늘리는가(경고·대사 때 음악·환경·장식음이 비켜나도록) | Pause·Boss 먼저, Combat·Dialogue는 청음 뒤 | 현행 2종 유지 |
+| D12-11 | 미들웨어 재판정 조건: 사건 동시 재생 32개 초과 또는 층 조합이 표로 관리 안 될 때 Wwise(Indie 무료)·FMOD를 같은 장면 기준으로 비교하는가 | 조건 충족 시 사용자에게 묻는다(TOOLCHAIN §2-9와 동일) | 지금 비교 실험 |
+| D12-12 | 보스 음악 전환 방식: v0는 단일 파일 크로스페이드(2.5초) 유지 / `PlayScheduled` 마디 예약 + 스템 수직 레이어(Hades식)로 신곡 때 전환 | v0 크로스페이드, 신곡(D12-7) 때 마디 예약+스템 검토 | v0부터 스템 |
 
 ## 9. 출처
 
@@ -259,3 +264,4 @@
 - `docs/0마스터플랜/D4_STUDY/03_camera_occlusion_combat.md` §8.9, R10 (사운드 레이어·변주·중요도 시스템, 외부: Screen Rant 인터뷰, NME 개발일지)
 - `docs/0마스터플랜/ARPG_CONVENTIONS_CHECKLIST_20261105.md` L·E4·K3 행, §2 (XAG 103·105)
 - `CLAUDE.md` 3.3·4.1, `DIRECTION_RESET_20261105.md`
+- **[2차]** `docs/0마스터플랜/GAME_STUDY/codex_sound_music.md` §2~§7 (D4 Blizzard 2021-10 Quarterly Update, PoE2 Audio Team Q&A Part 1·2, Hades Gameplay 인터뷰 2020-12-24, Wicked "The Breach Refined" 패치 노트, PBZ Game*Spark 2026-10-09, Unity 6000.0 Audio 문서, ITU-R BS.1770, EBU R128), `docs/0마스터플랜/MANUAL/TOOLCHAIN_20261105.md` §2-9

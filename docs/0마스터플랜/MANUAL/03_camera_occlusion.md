@@ -160,7 +160,8 @@ SpringArm(피치 고정, 길이만 변경), Camera Shake(위치만), 가림은 �
 | 비교판 | 우리 화면과 D4·PoE2 같은 가림 상황을 나란히 | 영웅이 먼저 읽힘 |
 | 해상도 | 1920×1080, 3840×1080 모두 영웅이 화면 안전 영역 안 | 확인 |
 | 흔들림 | 옵션 끔 상태 | 완전 정지 |
-| 예산 | 캐스트 연산 + 추가 패스 | 15번 문서 한도 안 |
+| 먼 적 LOD·효과 | 이동 중 갑자기 사라짐 0, DOF·모션블러·비네트 켬/끔 같은 프레임 비교 | 먼 적 ΔL 유지(02번) |
+| 예산 | 캐스트 연산 + 추가 패스(가림 ≤ 0.5ms, 실루엣 ≤ 0.2ms) | 15번 3.2표 한도 안 |
 
 ## 7. 금지
 
@@ -181,6 +182,8 @@ SpringArm(피치 고정, 길이만 변경), Camera Shake(위치만), 가림은 �
 | D03-3 | 가림 1단계 목표 알파 0.30과 시간을 시작값으로 확정해도 되나(Mac 실게임 후 조정) | 시작값으로 확정 | 판정 뒤 확정 |
 | D03-4 | 보스 대기술 카메라 늘이기(+8~15%)를 데모 v0 드루이드에 넣을까 | 넣는다(거리만, 먼 적 유지 조건) | 아레나 진입 줌만 |
 | D03-5 | 고목 수관을 가림 대상에 넣어 구도가 흐려지는지 첫 시험 후 컷아웃 대안으로 갈아타도 되나 | 가능 | 알파만 고수 |
+| D03-6★ | 가림 1단계 구현을 오브젝트별 `_Fade` 머티리얼(이전 초안)로 할까, TOOLCHAIN a-2 `OccluderFadePass` Renderer Feature(대상 레이어 일괄, 깊이 선패스+알파, 예산 ≤0.5ms, 디더 금지)로 할까 | a-2 Renderer Feature 채택, `OccluderFade` 컴포넌트는 대상 표시·값 관리만(TOOLCHAIN과 일치) | 머티리얼 방식 유지 |
+| D03-7★ | 현재 코드는 `CinemachineFollow`, 문서는 `CinemachinePositionComposer`, 설치는 Cinemachine 6.6.0이다. 거리만 보간하고 피치·FOV는 잠금이라는 요건을 만족하는 컴포넌트를 Mac에서 확인해 문서를 맞출까 | 확인 후 요건을 만족하는 쪽으로 통일, 요건 미달이면 거리 전용 래퍼 | 문서 표기만 유지 |
 
 ## 9. 출처
 
@@ -189,3 +192,4 @@ SpringArm(피치 고정, 길이만 변경), Camera Shake(위치만), 가림은 �
 - `docs/0마스터플랜/GAME_STUDY/downfall_of_yellowsky.md` §0 규칙 6, §4.2
 - `docs/0마스터플랜/ARPG_CONVENTIONS_CHECKLIST_20261105.md` A1~A6, B1~B4, §2.2
 - 내부: `unity/Assets/Exoduser/Runtime/NativeRemodel3D.cs`, `NativeGame.BossView.cs`, `NativeArenaCameraLayout.cs`, CLAUDE.md 1절(카메라 LOCK)
+- **2차 반영 입력:** `docs/0마스터플랜/MANUAL/TOOLCHAIN_20261105.md` §1·§3a a-2·a-3, `docs/0마스터플랜/GAME_STUDY/codex_urp_mood.md` §10, `codex_keyshot_composition.md` §5, `codex_cinematic_text.md` §3.1~3.3, `our_tech_audit.md` #16, `ENGINE_DECISION_20261105.md` §3(CameraActor/SpringArm 대응 동일)
