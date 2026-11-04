@@ -19,12 +19,13 @@ namespace Exoduser.UnityPort
                 return Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-boss-arena-review")>=0;
             }
         }
-        // P3 edge-hit step (PREP 10.1): with --unity-boss-arena-p3-edge the bot, once the boss is on life 3, stands with its body circle touching the boss body circle edge,
-        // attacks the boss centre, and every Core hit on the boss from within the edge band queues the shot p3-edge-hit-1..3 plus a "p3-edge-hit" event in moves.jsonl.
-        static bool BossArenaEdgeRequested{get{return Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-boss-arena-p3-edge")>=0;}}
+        // Edge-hit step (PREP 10.1, extended to every life 11-04): with --unity-boss-arena-edge[=1,2,3] (lives, 1-based, default all three; --unity-boss-arena-p3-edge = life 3 only) the bot, once the boss is on a requested life,
+        // stands with its body circle touching the boss body circle edge, attacks the boss centre, and every Core hit on the boss from within the edge band queues the shot edge-p<life>-hit-1..3 plus an "edge-hit" event in moves.jsonl.
+        static readonly bool[] ArenaEdgeLives=NativeArenaReviewPolicy.EdgeLives(Environment.GetCommandLineArgs());
+        static bool ArenaEdgeLife(int life){return life>=0&&life<ArenaEdgeLives.Length&&ArenaEdgeLives[life];}
         const float ArenaEdgeGapPx=4,ArenaEdgeBandPx=40;
-        int arenaEdgeShots,arenaEdgeLastTick=-1000,arenaEdgeHp=-1;
-        [Serializable] sealed class ArenaEdgeEvent {public string kind="p3-edge-hit";public int tick,hpBefore,hpAfter;public float bossRadiusPx,playerRadiusPx,centreDistancePx,gapPx,bossX,bossY,playerX,playerY;}
+        readonly int[] arenaEdgeShots=new int[3];int arenaEdgeLastTick=-1000,arenaEdgeHp=-1,arenaEdgeLife=-1;
+        [Serializable] sealed class ArenaEdgeEvent {public string kind="edge-hit";public int life,tick,hpBefore,hpAfter;public float bossRadiusPx,playerRadiusPx,centreDistancePx,gapPx,bossX,bossY,playerX,playerY;}
         bool arenaReviewMetricsOnly;
         string arenaReviewOutput;
         readonly StringBuilder arenaReviewTrace=new StringBuilder();
@@ -143,17 +144,18 @@ namespace Exoduser.UnityPort
                 kind=t.Live?"live-boundary":"telegraph-boundary",moveId=t.MoveId,state=d.S,tick=Simulation.TickCount,frame=Time.frameCount,serial=t.Serial,index=t.Index,phase=d.BossPhase,boundary=new ArenaReviewBoundary(t)
             }
             ));
-            if(BossArenaEdgeRequested&&d.BossPhase==2&&arenaEdgeShots<3)
+            if(ArenaEdgeLife(d.BossPhase)&&arenaEdgeShots[d.BossPhase]<3)
             {
                 var pl=Simulation.Player;var life=Simulation.DruidLife(boss);
+                if(arenaEdgeLife!=d.BossPhase){arenaEdgeLife=d.BossPhase;arenaEdgeHp=-1;}
                 if(arenaEdgeHp>=0&&boss.Hp<arenaEdgeHp&&(life==null||!life.Collapsing)&&Simulation.TickCount-arenaEdgeLastTick>=60)
                 {
                     float dist=Mathf.Sqrt((pl.X-boss.X)*(pl.X-boss.X)+(pl.Y-boss.Y)*(pl.Y-boss.Y));
                     if(dist<=boss.Radius+pl.Radius+ArenaEdgeBandPx)
                     {
-                        arenaEdgeShots++;arenaEdgeLastTick=Simulation.TickCount;
-                        arenaReviewEvents.AppendLine(JsonUtility.ToJson(new ArenaEdgeEvent{tick=Simulation.TickCount,hpBefore=arenaEdgeHp,hpAfter=boss.Hp,bossRadiusPx=boss.Radius,playerRadiusPx=pl.Radius,centreDistancePx=dist,gapPx=dist-boss.Radius-pl.Radius,bossX=boss.X,bossY=boss.Y,playerX=pl.X,playerY=pl.Y}));
-                        QueueArenaReviewShot("p3-edge-hit-"+arenaEdgeShots);
+                        arenaEdgeShots[d.BossPhase]++;arenaEdgeLastTick=Simulation.TickCount;
+                        arenaReviewEvents.AppendLine(JsonUtility.ToJson(new ArenaEdgeEvent{life=d.BossPhase+1,tick=Simulation.TickCount,hpBefore=arenaEdgeHp,hpAfter=boss.Hp,bossRadiusPx=boss.Radius,playerRadiusPx=pl.Radius,centreDistancePx=dist,gapPx=dist-boss.Radius-pl.Radius,bossX=boss.X,bossY=boss.Y,playerX=pl.X,playerY=pl.Y}));
+                        QueueArenaReviewShot("edge-p"+(d.BossPhase+1)+"-hit-"+arenaEdgeShots[d.BossPhase]);
                     }
                 }
                 arenaEdgeHp=boss.Hp;
@@ -321,7 +323,7 @@ namespace Exoduser.UnityPort
                 arenaReviewPhase=d.BossPhase;
                 arenaReviewPhaseTick=s.TickCount;
             }
-            if(BossArenaEdgeRequested&&d.BossPhase==2)
+            if(ArenaEdgeLife(d.BossPhase)&&arenaEdgeShots[d.BossPhase]<3)
             {
                 var life=s.DruidLife(boss);
                 if(life==null||!life.Collapsing)

@@ -83,9 +83,15 @@ class DruidRigTests
    Check(source.GetProperty("oldManTriangles").GetInt32()==78323&&source.GetProperty("huskTriangles").GetInt32()==73906,"triangle contract");
    Check(source.GetProperty("socketParent").GetString()=="OM_Staff"&&source.GetProperty("rigidHuskCorrectedErrorMetres").GetDouble()<.0001&&source.GetProperty("socketCorrectedErrorMetres").GetDouble()<.0001,"socket rest restored");
    double husk=source.GetProperty("huskFootRadiusMetres").GetDouble(),man=source.GetProperty("oldManFootRadiusMetres").GetDouble();Check(husk>0&&man>0,"measured footprints");
-   // Scale rule: footprint circle = Core hit radius (Core: Round(OrigR*BodyScale), px/100 world). No display multiplier.
-   double origR=44;double[] rpx=new double[3];for(int i=0;i<3;i++){rpx[i]=Math.Max(10,Math.Round(origR*DruidRemodelData.BodyScale[i]));}
-   Near(rpx[0],44,"P1 Core radius px");Near(rpx[1],37,"P2 Core radius px");Near(rpx[2],31,"P3 Core radius px");
+   // Scale rule: footprint circle = Core hit radius (Core: BossRemodelSet.RadiusFor = LifeRadiusPx 91/77/39 since 11-04, px/100 world). No display multiplier.
+   double origR=91;double[] rpx=new double[3];for(int i=0;i<3;i++){rpx[i]=DruidRemodelData.Set.RadiusFor(i,origR);}
+   Near(rpx[0],91,"P1 Core radius px");Near(rpx[1],77,"P2 Core radius px");Near(rpx[2],39,"P3 Core radius px");
+   {double heroWorld=1.12,huskTop=4.8295,horn=2.71;double[] hero={rpx[0]/100/husk*huskTop/heroWorld,rpx[1]/100/husk*huskTop/heroWorld,rpx[2]/100/man*horn/heroWorld};Check(Math.Abs(hero[0]-2.8)<=.05&&Math.Abs(hero[1]-2.38)<=.05&&Math.Abs(hero[2]-2.0)<=.05,"hero height multiples P1/P2/P3 "+hero[0]+" "+hero[1]+" "+hero[2]);Console.WriteLine("hero multiples P1="+hero[0]+" P2="+hero[1]+" P3 horn="+hero[2]);}
+   var args3=NativeArenaReviewPolicy.EdgeLives(new[]{"--unity-boss-arena-p3-edge"});Check(!args3[0]&&!args3[1]&&args3[2],"edge arg p3");
+   var all3=NativeArenaReviewPolicy.EdgeLives(new[]{"--unity-boss-arena-edge"});Check(all3[0]&&all3[1]&&all3[2],"edge arg all");
+   var pick=NativeArenaReviewPolicy.EdgeLives(new[]{"--unity-boss-arena-edge=1,3"});Check(pick[0]&&!pick[1]&&pick[2],"edge arg list 1,3");
+   var bad1=NativeArenaReviewPolicy.EdgeLives(new[]{"--unity-boss-arena-edge=x,9"});Check(bad1[0]&&bad1[1]&&bad1[2],"edge arg invalid list = all");
+   var none=NativeArenaReviewPolicy.EdgeLives(new string[0]);Check(!none[0]&&!none[1]&&!none[2],"edge arg absent = none");
    Console.WriteLine("scale P1="+rpx[0]/100/husk+" P2="+rpx[1]/100/husk+" P3 oldman="+rpx[2]/100/man+" P3 horn height m="+2.71*rpx[2]/100/man);
    foreach(var clip in source.GetProperty("clips").EnumerateArray())Near(clip.GetProperty("duration").GetDouble()*60,NativeDruidRigPolicy.Frames(clip.GetProperty("name").GetString()),"real asset duration "+clip.GetProperty("name"));
   }

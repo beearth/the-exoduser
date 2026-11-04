@@ -308,7 +308,19 @@ Mac 전체 인수·7기술별1x 캡처/10초 영상 수집 요청은 [03:00 인�
 
 영수증(`druid-rigpixel.json`, `arena-review` 프레임의 `bossRig`)에 추가: `life`·`overlay`·`drawnParts`·`heapPlaced`·`coreRadiusPx`·`coreRadiusWorld`·`rootScale`·`oldManFactor`·`anchorWeight`·`footprintRadiusWorld`·`bodyHeightWorld`·`bodyHeightHeroRatio`·`ankleSpanWorld`(렌더된 발목 간격)·`heroIdleWorld`. 판정은 `footprintRadiusWorld == coreRadiusWorld`(0.0005 안)를 확인한 뒤 화면에서 발치 원과 비교한다.
 
-#### 캡처 단계 — P3에서 공격이 몸 가장자리에 맞는 장면 (실행 안 함)
+#### 11-04 CTO 결정 (a) — Core 반경을 설계 크기로 키움 (위 표의 44/37/31과 플래그 문단을 대체)
+
+규칙은 그대로다(발치 원 반지름 = Core 반경). 바뀐 것은 Core 반경 자체다: `DruidRemodelData.LifeRadiusPx = {91, 77, 39}`(`DruidRemodelData.cs:19`)가 `Round(OrigR×BodyScale)` 대신 적용된다(`BossRemodelSet.RadiusFor`, `Simulation.DruidRemodel.cs:50`·`:145`). 뷰 `NativeDruidRigPixelView.RadiusPx`도 같은 함수를 부른다(하드코딩 없음). 목표: P1 영웅 2.8배(G0 §6), P2 = P1×.85(G0에 P2 배수 없음), P3 ≈ 2.0배. 반경→월드→배율이 선형이라 측정 발치로 계산했다.
+
+| 목숨 | Core 반경 px (이전) | 월드 u | 모델 배율 | 영웅 높이 배수 (이전) | 목표 |
+|---|---|---|---|---|---|
+| P1 껍질 | **91** (44) | 0.91 | 0.6506 | **×2.805** (1.36) | 2.8 |
+| P2 껍질 | **77** (37) | 0.77 | 0.5505 | **×2.374** (1.14) | 2.38 |
+| P3 노인(뿔 끝) | **39** (31) | 0.39 | 0.8191 | **×1.982** (1.575) | 2.0 |
+
+검증: `druid-rigpixel-tests`가 반경 91/77/39와 배수 ±0.05를 검사하고 콘솔에 `hero multiples P1=2.8054 P2=2.3738 P3 horn=1.9818`을 낸다. 전환 배수(`phase23_collapse` 노인 배수)는 뷰가 `노인배율 ÷ 껍질배율`로 계산하므로 P2→P3 전환 `0.8191/0.5505 = 1.488`(이전 2.461)로 줄고, P3 정지는 `0.8191/(0.39/1.3987) = 2.938`로 그대로다(껍질·노인이 같은 비율로 커짐). 노인이 껍질에서 나오며 커 보이는 정도가 줄어든다(Mac 판정). 몸 크기에 걸린 거리와 몸 분리는 보스 보드 §8.5.5 표.
+
+#### 캡처 단계 — 공격이 몸 가장자리에 맞는 장면, P1·P2·P3 (실행 안 함; 11-04에 P3 전용에서 확장)
 
 `--unity-boss-arena-p3-edge`(새 인자, `--unity-boss-arena-review`와 함께). 3번째 목숨(`BossPhase==2`, 무릎 아님)에서 봇이 **몸 원이 보스 몸 원 가장자리에 닿는 자리**(중심 거리 = 보스 반경 + 플레이어 반경 + 4px)에 서서 보스 중심을 계속 공격한다. 보스 HP가 줄고 중심 거리가 `반경합 + 40px` 안이면 `p3-edge-hit-1..3`(최대 3장, 60틱 간격) PNG+JSON을 `arena-review/`에 저장하고 `moves.jsonl`에 `kind:"p3-edge-hit"` 줄을 쓴다(`hpBefore/After`, `bossRadiusPx`, `playerRadiusPx`, `centreDistancePx`, `gapPx`, 두 좌표). JSON의 `bossRig`에 위 발치 영수증이 같이 들어간다. 실행 예(Mac):
 
@@ -317,5 +329,13 @@ Mac 전체 인수·7기술별1x 캡처/10초 영상 수집 요청은 [03:00 인�
 ```
 
 판정 기준: 타격 순간 화면에서 몸통·발치 가장자리가 공격 판정 가장자리와 같은 자리인지 1x/3x 크롭으로 본다(발치 원 = 보스 반경). 이 단계는 입력 봇만 바꾸며 Core 수치·판정은 바꾸지 않는다.
+
+**11-04 확장 — 세 목숨 모두.** 새 인자 `--unity-boss-arena-edge[=1,2,3]`(`--unity-boss-arena-review`와 함께)가 같은 단계를 P1·P2·P3에 적용한다. 값 없이 쓰면 세 목숨 전부, `=1,3`처럼 쓰면 지정한 목숨(1 기반)만이다. 옛 `--unity-boss-arena-p3-edge`는 3번째 목숨만으로 계속 동작한다. 목숨마다 봇이 몸 원 가장자리(간격 4px)에 서서 중심을 공격하고, 가장자리 띠(합 반경+40px) 안에서 보스 HP가 줄면 `edge-p<목숨>-hit-1..3`(목숨당 최대 3장, 60틱 간격) PNG+JSON을 `arena-review/`에 저장하며 `moves.jsonl`에 `kind:"edge-hit"` 줄(`life`, `hpBefore/After`, `bossRadiusPx`, `playerRadiusPx`, `centreDistancePx`, `gapPx`, 두 좌표)을 쓴다. 목숨당 3장이 차면 그 목숨의 가장자리 서기는 끝나고 기술 커버리지 입력으로 돌아간다. 이제 몸 분리(보스 보드 §8.5.5)로 플레이어는 합 반경 안쪽으로 들어가지 못하므로 봇이 중심에 붙지 않는다. 실행 예(Mac, 세 목숨 전부; P3 전용 줄에서 `--unity-boss-arena-p3-edge`만 바꾼다):
+
+```
+"<Mac Player 실행경로>" --remodel3d --unity-druid-remodel --unity-boss-direct 0 --boss-render=rigpixel --unity-fullrun-qa --unity-boss-arena-review --unity-boss-arena-edge --unity-mute -nosound --unity-qa-sandbox "<QA 루트>/profile-1920" -screen-fullscreen 0 -screen-width 1920 -screen-height 1080 -qa-width 1920 -qa-max-ticks 36000 -qa-retries 3 -output "<출력>"
+```
+
+판정: 목숨마다 1x/3x 크롭에서 발치 원 = 공격이 닿는 가장자리인지, P1 껍질이 영웅 ×2.8로 읽히는지(`bossRig.coreRadiusPx` 91/77/39, `bodyHeightHeroRatio`). 검증은 PC에서 `druid-remodel-test`(`RadiusChecks.cs`: 반경·가장자리 타격·몸 분리·잠행 여유·거리 표)와 `druid-rigpixel-tests`(인자 해석·배수)로 끝냈고 Player 실행은 하지 않았다.
 
 **검사 결과(PC, Unity·Player·빌드 실행 0).** 정책 테스트(임시 csproj) 5,435검사/실패 0(상태 레이어·붕괴·인트로·사망·팔레트·반경 44/37/31 포함). Blender FBX 수치 검사 통과. 전체 PC Roslyn(`compile-check.ps1` 기본 인자) 5어셈블리 오류 0. **한계(미검증)**: Unity 임포트(Generic Avatar·클립 38·소켓 구조·힙 단일 렌더러), 값 덮어쓰기 레이어가 실제 Animator 평가 뒤에도 유지되는지, 전환 중 스케일·미끄러짐·힙 고정의 화면, 껍질 팔레트·노인 가시성(P2 RETOUCH 조건), 잠행 중 힙 단독 그리기, 4단 셀 1x 판정은 모두 Mac 판정 대기다. `Humanoid` 임포트에서 `HK_*` 보조 뼈가 살아남는지는 Generic을 유지해 해당 없음.

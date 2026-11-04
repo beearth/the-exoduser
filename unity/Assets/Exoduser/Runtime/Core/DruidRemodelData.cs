@@ -12,7 +12,13 @@ namespace Exoduser.UnityPort.Core
         public const int Lives = 3;
         // spec §2: effective HP of each life as a fraction of the base HP of mkEn (P1 100 % / P2 60 % / P3 40 %), body size and the energy shield of P2 / P3
         public static readonly double[] LifeHpFraction = { 1.0, 0.6, 0.4 };
+        // BodyScale: the old shrink rule (Round(44 x BodyScale) = 44 / 37 / 31 px). Since 11-04 (CTO option a) it only defines LifeRadiusBasis below: the Core radius is LifeRadiusPx.
         public static readonly double[] BodyScale = { 1.0, 0.85, 0.70 };
+        // 11-04 screen size = Core collision (boss board 8.5.5): P1 husk 2.8 x hero height, P2 = P1 x .85 (G0 gives no number), P3 old man ~2.0 x. Radius px -> world px/100 -> model scale (linear, PREP 10.1), so
+        // the hero multiple is the measured one x LifeRadiusPx / LifeRadiusBasis (P1 1.36 x 91/44, P2 1.14 x 77/37, P3 1.575 x 39/31).
+        public static readonly double[] LifeRadiusPx = { 91, 77, 39 };
+        // the radius the centre-based distances below (WalkStandOff, SlamRadius, HeartbeatSafeRadius, move ranges) were designed for = Round(44 x BodyScale). Shift per life = LifeRadiusPx - basis = 47 / 40 / 8.
+        public static readonly double[] LifeRadiusBasis = { 44, 37, 31 };
         public static readonly double[] ShieldFraction = { 0, 0.15, 0.15 };
         public const int CollapseTicks = 120;              // 2.0 s of invulnerability while the root sits in his back
         public const int RootHitsNeeded = 3;
@@ -112,7 +118,7 @@ namespace Exoduser.UnityPort.Core
                 Id = SetId, Lives = Lives, LifeHpFraction = LifeHpFraction, BodyScale = BodyScale, ShieldFraction = ShieldFraction, CollapseTicks = CollapseTicks,
                 Moves = Moves, Combos = Combos, Phases = Phases, Parryable = Parryable, Instant = Instant, Forced = new HashSet<string> { "heartbeat" },
                 SlamRadius = SlamRadius, PoisonTrailTicks = PoisonTrailTicks, ChaseZoneRadius = ChaseZoneRadius, ChaseZoneWarn = ChaseZoneWarn, ChaseZoneCount = ChaseZoneCount, SummonMax = SummonMax,
-                WalkSpeed = WalkSpeed, WalkStandOff = WalkStandOff, WalkAccelTicks = WalkAccelTicks, WalkStopTicks = WalkStopTicks, WalkTurn = WalkTurn, TeleTurn = TeleTurn, AimFixTicks = AimFixTicks, GapTicks = GapTicks, ComboLinkTicks = ComboLinkTicks, PillarCount = PillarCount, PopupKeep = (string[])PopupKeep.Clone(),
+                WalkSpeed = WalkSpeed, WalkStandOff = WalkStandOff, WalkAccelTicks = WalkAccelTicks, WalkStopTicks = WalkStopTicks, WalkTurn = WalkTurn, TeleTurn = TeleTurn, AimFixTicks = AimFixTicks, GapTicks = GapTicks, ComboLinkTicks = ComboLinkTicks, PillarCount = PillarCount, PopupKeep = (string[])PopupKeep.Clone(), LifeRadius = (double[])LifeRadiusPx.Clone(), LifeRadiusBasis = (double[])LifeRadiusBasis.Clone(), BodySeparation = true,
                 Heartbeat = true, GrabAbsorb = true, RootBonus = true, RootHitsNeeded = RootHitsNeeded, RootBonusFraction = RootBonusFraction, Sink = true };
             return s;
         }

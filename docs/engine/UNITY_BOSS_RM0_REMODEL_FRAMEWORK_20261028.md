@@ -56,6 +56,7 @@ RM-B1 드루이드 전용이던 리모델 구조를 **"스테이지별 기술 �
    }
    public static partial class BossRemodelSets { static partial void Stage1(Dictionary<int, BossRemodelSet> m) { m[1] = MushroomGiantRemodelData.Set; } }
    ```
+   - 선택 항목(11-04, 보스 보드 §8.5.5): `LifeRadius`(목숨별 Core 반경 px, 없으면 `Round(OrigR×BodyScale)`), `LifeRadiusBasis`(중심 기준 거리를 설계한 반경 — `LifeRadius`와의 차이만큼 걷기 멈춤·내려찍기 반경·AI 선택 거리가 이동), `BodySeparation`(플레이어를 몸 밖으로 밀어냄). 셋 다 기본 꺼짐이고 드루이드 세트만 켠다. 읽기: `RadiusFor(life, origR)`, `ReachShift(life, radius)`.
 2. **`Core/DruidBoss.MushroomGiant.cs`** (+ `.meta`) — `public sealed partial class DruidBoss` 안의 static 메서드로 AI 훅을 둔다(같은 클래스라 `StartPattern`·`PlayerHit`·`Parry`·`Tele`·`RmStartForced`·`host`를 쓸 수 있다). 보스별 상태값은 `public sealed partial class DruidData`에 필드를 더한다(이름 앞에 보스 접두어, 예 `MgSprouts`).
    - `StartMove` — 새 기술 id(또는 **덮어쓸 공용 id**)면 `d.S`(자기 상태 이름, 접두어 `rmMg...`)·`d.St2`를 정하고 `true`. `false`면 공용 실행기가 돈다.
    - `TickState` — 자기 상태면 처리하고 `true`(끝낼 때 `"recover"`·`"bossRec"`·`"idle"`로). 아니면 `false`.

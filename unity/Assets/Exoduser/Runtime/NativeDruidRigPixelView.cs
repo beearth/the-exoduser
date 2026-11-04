@@ -119,8 +119,8 @@ namespace Exoduser.UnityPort
 
         static float Smooth(float x){x=Mathf.Clamp01(x);return x*x*(3-2*x);}
         double RadiusPx(int index)
-        {   // the Core's own formula (Simulation.DruidRemodel RemodelNextLife): Max(10, Round(OrigR * BodyScale[life]))
-            if(life!=null&&life.Set!=null&&life.Set.BodyScale!=null&&index<life.Set.BodyScale.Length)return Math.Max(10,Math.Round(life.OrigR*life.Set.BodyScale[index]));
+        {   // the Core's own rule (Simulation.DruidRemodel RemodelNextLife): BossRemodelSet.RadiusFor = LifeRadius, else Max(10, Round(OrigR * BodyScale[life]))
+            if(life!=null&&life.Set!=null&&life.Set.BodyScale!=null&&index<life.Set.BodyScale.Length)return life.Set.RadiusFor(index,life.OrigR);
             return Math.Max(.01,data.R);
         }
         void LateUpdate()
