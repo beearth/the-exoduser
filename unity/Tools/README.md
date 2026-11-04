@@ -39,7 +39,7 @@ Node와 .NET SDK8을 사용한다. 산출물은 I:의 고유 경로로 지정한
 
 `oracle-sweep/run.cjs`는 Tools의 C# 하니스·추출기를 한 번에 돌려 PASS/FAIL/BUILD-BREAK/NEEDS-INPUT/SKIP로 분류한다(`--only` 부분 실행, 사용법 `oracle-sweep/README.md`). 11-04 판정은 `docs/engine/DEBUG_LEAD_BOARD_20261103.md` D-014.
 
-`resource-oracle/`은 웹 원문 `applyStats`·`recalcSt`·근성 합산을 Acorn으로 추출해 최대 HP·MP·ST·쉴드 530건을 Unity `ApplyEquipment`와 비교한다(D-U3, `--dependency-root`에 acorn이 있는 저장소, 사용법 `resource-oracle/README.md`). 2026-11-04 수정 후 불일치 0.
+`resource-oracle/`은 웹 원문 `applyStats`·`recalcSt`·근성 합산을 Acorn으로 추출해 최대 HP·MP·ST·쉴드와 이속·HP 리젠·비전투 이속(11-04 D-U5) 534건을 Unity `ApplyEquipment`와 비교한다(D-U3, `--dependency-root`에 acorn이 있는 저장소, 사용법 `resource-oracle/README.md`). 2026-11-04 수정 후 불일치 0.
 
 `defense-oracle/`은 웹 원문 `_playerDefTotals()`와 `hurtP` 방어 구간(dtype~최소 피해)을 장비·레벨·근성·pArmor 240건과 피격 11,520건에 돌려 Unity `ApplyEquipment`·`HurtPlayer`와 비교한다(2026-11-04 D-U2, 불일치 0). 강화·결정 장비는 Unity가 장착을 허용하지 않아 0으로 둔다.
 

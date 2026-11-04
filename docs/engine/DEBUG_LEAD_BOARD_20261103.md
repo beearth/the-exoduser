@@ -56,6 +56,7 @@
 | D-015 | 최신판 테스트(바탕화면 db26d55f6) 입장 흐름: 3840×1080에서 붉은 달 타이틀 메뉴(SplashTitle)가 18~90초 멈춤, 1920은 로고(Title)·로비까지 감 | **하니스 결함, 게임 정상**. 두 해상도 모두 FDG → 붉은 달 메뉴(SplashTitle) → 로고(Title) 순서가 같다(1920 frame_017도 붉은 달). `--entry-flow-keys`는 SplashTitle에서 Return을 한 번만 누르는데, 스크립트 입력은 2프레임만 살고 로비는 AdvanceSplash 펜스 프레임·화면 전환 중 입력을 버린다. 3840 실행은 느려서 그 한 번이 전환 중에 버려졌고, 메뉴는 정상적으로 입력을 기다렸다 | **수정**: `NativeGame.EntryFlowCapture`가 SplashTitle·Title에 머무는 동안 매초 다시 누르고 횟수를 `keyPresses`로 남김. 실행 확인은 Mac·다음 실행본 |
 | D-016 | 로비 '새 캐릭터' 줄 오른쪽 끝의 뜻 없는 '0' | 원래 'n / 5' 슬롯 수였는데 a9ddfbffc(11-01)가 상한을 없애며 숫자만 남김. 웹 정본 카드는 + 와 이름뿐 | **수정**: `NativeLobby.SilverLobby` 숫자 줄 삭제. 디자인 화면이라 병합 전 디자인총괄 1x 확인 필요 |
 | D-T3 | 적 AI·생성·분열 oracle이 패링 A안 의도 차이로 항상 FAIL이라 이 영역 회귀를 못 잡음(D-014) | 하니스가 웹 원문 그대로의 기대값만 가짐 | **수정**(Codex 레인 debug-ai-oracle-a-layer 8572a7b52, unity/main d56289619, Tools만): 웹 원문 VM의 mkEn projCd·projT 결정 3곳에 A안 정책(대상 5종 9999, 원거리 240, 나머지 480·projT 2배)을 주입해 원문 흐름으로 기대값 생성. A안 모드 적 AI 1,424,276/0(비대상 495시나리오, 대상 5종 197시나리오는 분류 행으로 따로 집계, 근접 동작은 parry-g2-tests 87/0)·분열 6,067,801/0·생성 264,064/0. 원래 웹 모드(`--expectation-mode web`)는 이전과 같은 수 보존. 나머지 풀 480→240 변조 시 세 oracle 모두 FAIL(민감도 확인) |
+| D-U5 | Unity가 이동속도·생명 재생 어픽스를 적용하지 않음(movSpeed·movSpeedCombat 부츠/망토, movSpeedOOC 부츠/망토, lifeRegen 팔찌, 모두 1-1 드랍 슬롯) | Core에 해당 id 사용처 0 | **수정**: `InventoryState.SpeedBonus()` = movSpeed + movSpeedCombat + _iMovSpd×.01(웹은 전투 여부를 보지 않고 둘 다 더함)로 P.speed 배율, HP 리젠 + lifeRegen/60, `Config.PlayerOocSpeed` = movSpeedOOC를 sBlock(방패 막기) 걷기 ×.35×(1+OOC)에 적용(웹 `G._combat`은 설정되는 곳이 없어 항상 적용). `Tools/resource-oracle`이 P.speed·P.hpR·P._oocSpeed도 비교: 534건 불일치 0. 회귀 15개 PASS. 시점 고정 이속 4항은 D-U6 |
 
 회귀 테스트: `test/bossEliteFlagsAndDefenseTotals.test.js` 3건 통과. 영향 테스트 22파일 138건 재실행 — 실패 16건은 전부 기준선부터 실패하던 것, 새 실패 0.
 
@@ -68,7 +69,7 @@
 | D-007 | `DOCS_SYNC_AUDIT_20261028.md` 코드 의심 버그 4번: strFlat/dexFlat/intFlat 어픽스가 ATK 기준값에 안 들어감 | 감사 문서 |
 | D-008 | 같은 문서 5·8번: critDmgA/critDmgB, blastShot/bladeShot 사장 경로 확인 | 감사 문서 |
 | D-009 | 1-1 완주 검사의 보스 처치 단계 완성. 3회차 추적: 다크드루이드(최대HP 33,332)에 최대HP 20% 타격 40회 — `bossChargeWind`·`bossDruidDive` 중 피해 0(부활·휴식 `reviveIframes` 추정), 20% 아래 타격에서 `recover`로 33,332 전체 회복(부활 단계 추정). 보스 SSOT(`8.1보스디자인바이블`, `2_5 부활`)와 대조해 설계인지 확정한 뒤, 하니스는 처치까지 타격 횟수·간격을 늘린다 | 2026-11-03 실행 |
-| D-U5 | Unity가 이동속도·생명 재생 어픽스를 적용하지 않음: 웹 `P.speed`의 movSpeed·movSpeedCombat·_altSpd·pPredSpd·injuredSpeed, 비전투 movSpeedOOC, `P.hpR`의 lifeRegen/60. Core에 해당 id 사용처 0 | D-U3 대조 중 확인 |
+| D-U6 | 웹이 `applyStats`를 부를 때만 고정하는 이속 항: `_altSpd`(제단), `pPredSpd`(약자포식, HP≤30%), `onKillSpeed`·단검 처치 이속(`_okSpdBuff`), `injuredSpeed`(HP≤50%). 웹은 호출 시점의 HP·버프로 값을 굳혀 실제 효과가 장비 변경·레벨업 시점에 따라 달라짐(사실상 결함). Unity 미이식. 웹 latch 그대로 옮길지, 의도대로 매 틱 계산할지 결정 필요 | D-U5 |
 | D-U4 | Unity 스킬창에 웹 10-31(9a5be1fac) 고정 기술 3칸(Space 구르기·X 처형 고유기, T 활)이 없음. Core `SkillUiState.SlotCount=13`, `skill_ui.json` 13칸. 표현층이라 UI 담당 판단(웹은 비교 기준) | D-014 |
 
 ## 6. 실행 기록
