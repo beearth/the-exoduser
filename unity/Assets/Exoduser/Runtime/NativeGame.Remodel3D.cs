@@ -185,6 +185,7 @@ namespace Exoduser.UnityPort
             Remodel3DBillboards();
             HellLightingLate();
             A2EnemyGrounding();
+            A2TreeOcclusionLate();
             ApplyMeleePresentation(r3Cam);
         }
 
