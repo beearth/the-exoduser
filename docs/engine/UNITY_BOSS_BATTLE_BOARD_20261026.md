@@ -331,31 +331,31 @@ Unity 이식 중 찾은 웹 결함. 이식은 웹 그대로 두고, 웹 수정�
 ### 8.5.5 드루이드 화면 크기 = Core 판정 반경 (11-04, CTO 결정 a, 보스 아레나 레인)
 
 - 이유: PREP §10.1의 "발치 원 = Core 반경" 규칙을 옛 반경(44/37/31px)에 적용하면 P1 껍질이 영웅 ×1.36, P2 ×1.14로 작아져 설계 크기(P1 영웅 2.8배, G0 §6)를 잃는다. 결정: **Core 반경을 설계 크기에 맞춰 키우고**, 몸 크기에 걸린 거리를 같은 기준으로 옮긴다. 리모델 신규 설계라 **웹 oracle 대상이 아니다**(옛 웹 세트·다른 적·`EnemyFactory`/`EliteTables` 기본값은 그대로, `druid-boss-oracle` 0불일치 유지).
-- 반경 규칙: 반경(px)→월드(px/100)→모델 배율은 선형이라 목표 반경은 측정값에서 계산한다. P1 = 44×2.8/1.36 ≈ 91, P2 = P1×0.85 ≈ 77(G0 §6.3에 P2 배수가 없어 P1×.85로 정함, 기존 BodyScale 비율과 같음), P3 = 31×2.0/1.575 ≈ 39. 영웅 높이 기준 1.12u(PREP §10.1과 같음)로 검산한 배수는 아래 표.
+- 반경 규칙: 반경(px)→월드(px/100)→모델 배율은 선형이라 목표 반경은 측정값에서 계산한다. **11-04 재계산(CTO 승인): 기준 영웅 키 1.609u(실측)**. 처음 계산(91/77/39)은 영웅 1.12u/1.31u 기준이라 화면에서 P1 1.95배·P2 1.65배로 나왔다. 반경 = 목표 배수 × 영웅 1.6094975 ÷ 모델 높이 × 발치 반경: P1 껍질(꼭대기 4.8295m, 발치 1.3987m) 2.8배 → 130, P2 = 2.38배 → 111(G0 §6.3에 P2 배수 없음, P1×.85), P3 노인(뿔 2.71m, 발치 0.4762m) 2.0배 → **57**(브리프의 48은 같은 식에서 1.70배라 2.0배 목표와 안 맞아 57로 계산, 보고에 표시). 측정: 통합 미리보기 5차 PC 무창 캡처 `G:/exoduser/tmp/design-review/20261104_boss_arena_preview5/1920/arena-review/edge-p1-hit-1.json`의 `bossRig.heroIdleWorld = 1.6094975`(리그 픽셀 영웅 대기 자세 월드 키, `NativeDruidRigPixelView` 영수증) + 같은 프레임 `heroGpuSilhouetteHeightPx 106`.
 - 거리 규칙: **중심 기준** 거리(걷기 멈춤·내려찍기 반경·박동 안전 고리·AI 기술 선택 거리)는 `LifeRadiusPx − LifeRadiusBasis`(설계 때 반경 44/37/31) 만큼 밖으로 옮긴다 = 몸 가장자리 바깥 도달 거리(플레이어가 익힌 회피 거리)를 그대로 둔다. **가장자리 기준**(`d.R + pr + X`) 판정은 이미 반경을 따라가므로 옮기지 않는다. 비례(×2.07) 확대는 쓰지 않았다: 내려찍기가 538px가 되면 몸 가장자리 근처에서 벗어나야 하는 거리가 약 200px에서 약 430px로 두 배가 되어(걷기 2.6px/틱, 예고 52+6틱) 배운 회피가 성립하지 않는다.
 
 | 항목 (한 곳에 모음) | P1 | P2 | P3 | 근거·코드 위치 |
 |---|---|---|---|---|
-| 화면 발치 반지름 = Core 판정 반경 (px) | **91** | **77** | **39** | `DruidRemodelData.cs:19` `LifeRadiusPx`, 적용 `Simulation.DruidRemodel.cs:50`(P1)·`:145`(P2·P3), `BossRemodel.cs:71` `RadiusFor` |
-| 이전 반경 (px) | 44 | 37 | 31 | `Round(OrigR 44 × BodyScale)`; 지금은 설계 기준 `LifeRadiusBasis` `DruidRemodelData.cs:21` |
-| 월드 반지름 (u = px/100) → 모델 배율 | 0.91 → 0.6506 | 0.77 → 0.5505 | 0.39 → 0.8191(노인) | `druid-rigpixel-tests` 콘솔 `scale ...` |
-| 영웅 키 배수 (1.12u 기준, 뿔 끝/껍질 꼭대기) | 2.805 | 2.374 | 1.982 | 목표 2.8 / 2.38 / 2.0 (`RadiusChecks.cs` `HeroMultiple`) |
-| 이동량 `LifeRadiusPx − LifeRadiusBasis` (px) | 47 | 40 | 8 | `BossRemodel.cs:77` `ReachShift`, `DruidBoss.Remodel.cs:81` `RmShift` |
-| 내려찍기 반경 (중심 기준, 독웅덩이 P3 동일) | 307 | 300 | 268 | 260 + 이동량. 몸 바깥 도달 216/223/229 유지. `DruidBoss.Remodel.cs:82`, 판정 `DruidBoss.Moves.cs:469`·`:472`, 예고 `DruidTelegraph.cs:224`·`:226` |
-| 걷기 멈춤 거리 (중심 기준) | 267 | 260 | 228 | 220 + 이동량. 몸 바깥 176/183/189 유지. `DruidBoss.Motion.cs:68` |
-| 박동 안전 고리 (중심 기준, P3만 쓰임) | — | — | 268 | 260 + 8. `DruidBoss.Remodel.cs:83`·`:95`, 예고 `DruidTelegraph.cs:180` |
-| AI 기술 선택 거리 (슬래시 160·내려찍기 260·잡기 150 등) | 측정 거리 −47 | −40 | −8 | `dist`에서 이동량을 뺀 값으로 점수·잡기 시작(<120) 판정. 가드(<20, >500)는 원래 거리. `DruidBoss.cs:438`, 예약 기술 실행 `DruidBoss.Moves.cs:191` |
+| 화면 발치 반지름 = Core 판정 반경 (px) | **130** | **111** | **57** | `DruidRemodelData.cs:19` `LifeRadiusPx`, 적용 `Simulation.DruidRemodel.cs:50`(P1)·`:145`(P2·P3), `BossRemodel.cs:71` `RadiusFor` |
+| 이전 반경 (px) | 44 → 91(11-04 1차) | 37 → 77 | 31 → 39 | `Round(OrigR 44 × BodyScale)`; 지금은 설계 기준 `LifeRadiusBasis` `DruidRemodelData.cs:21` |
+| 월드 반지름 (u = px/100) → 모델 배율 | 1.30 → 0.9294 | 1.11 → 0.7936 | 0.57 → 1.1971(노인) | `druid-rigpixel-tests` 콘솔 `scale ...` |
+| 영웅 키 배수 (기준 영웅 키 1.609u 실측, 뿔 끝/껍질 꼭대기) | 2.789 | 2.381 | 2.016 | 목표 2.8 / 2.38 / 2.0 (`RadiusChecks.cs` `HeroMultiple`) |
+| 이동량 `LifeRadiusPx − LifeRadiusBasis` (px) | 86 | 74 | 26 | `BossRemodel.cs:77` `ReachShift`, `DruidBoss.Remodel.cs:81` `RmShift` |
+| 내려찍기 반경 (중심 기준, 독웅덩이 P3 동일) | 346 | 334 | 286 | 260 + 이동량. 몸 바깥 도달 216/223/229 유지. `DruidBoss.Remodel.cs:82`, 판정 `DruidBoss.Moves.cs:469`·`:472`, 예고 `DruidTelegraph.cs:224`·`:226` |
+| 걷기 멈춤 거리 (중심 기준) | 306 | 294 | 246 | 220 + 이동량. 몸 바깥 176/183/189 유지. `DruidBoss.Motion.cs:68` |
+| 박동 안전 고리 (중심 기준, P3만 쓰임) | — | — | 286 | 260 + 26. `DruidBoss.Remodel.cs:83`·`:95`, 예고 `DruidTelegraph.cs:180` |
+| AI 기술 선택 거리 (슬래시 160·내려찍기 260·잡기 150 등) | 측정 거리 −86 | −74 | −26 | `dist`에서 이동량을 뺀 값으로 점수·잡기 시작(<120) 판정. 가드(<20, >500)는 원래 거리. `DruidBoss.cs:438`, 예약 기술 실행 `DruidBoss.Moves.cs:191` |
 | 채찍 타격 (가장자리 기준) | R+15+300 | 동일 | 동일 | 몸 바깥 300 유지(껍질 팔이 몸에서 뻗음). `DruidBoss.Moves.cs:438` |
 | 돌진 접촉 (가장자리 기준) | R+15+120 | 동일 | 동일 | `DruidTelegraph.cs:49`. 진행 880px 그대로 |
 | 잡기 접촉 (가장자리 기준) | R+15+150 | 동일 | 동일 | `DruidBoss.Moves.cs:315`. 덮치기 20틱×9px 그대로 |
 | 잠행 솟기 피해 (가장자리 기준) | R+120 | 동일 | 동일 | `DruidBoss.Moves.cs:414` |
-| 잠행 출현 위치 (기둥 중심에서) | 195 | 181 | 143 | 기둥 반경 80 + R + 24. `DruidBoss.Pillars.cs:93`. 기둥 고리 1122px, 벽 2040px 안에 모든 각도에서 들어감(`RadiusChecks.cs` `BurrowClearance`) |
-| 플레이어 몸 밀어내기 (중심 거리 ≥ R+15) | 106 | 92 | 54 | 아래 "몸 분리" |
+| 잠행 출현 위치 (기둥 중심에서) | 234 | 215 | 161 | 기둥 반경 80 + R + 24. `DruidBoss.Pillars.cs:93`. 기둥 고리 1122px, 벽 2040px 안에 모든 각도에서 들어감(`RadiusChecks.cs` `BurrowClearance`) |
+| 플레이어 몸 밀어내기 (중심 거리 ≥ R+15) | 145 | 126 | 72 | 아래 "몸 분리" |
 
 - **몸 분리(신규, 리모델 드루이드만 `BodySeparation`)**: 웹에는 플레이어-적 충돌이 없어 봇이 보스 중심에 서 있을 수 있었다(실측 30px). 이제 `Simulation.BossRemodelRules.cs:121` `RemodelSeparatePlayer`가 틱마다 플레이어를 반경 합(R+15)까지 바깥으로 민다(틱당 최대 24px, 돌진 22px보다 큼; 벽·기둥이면 가장 가까운 빈 각도). 구르기·대시·하프 중, 잡기(`bossGrab`) 중, 보스가 땅속(`bossDruidUnder`)·무릎(`bossDruidRest`)·사망 연출 중에는 밀지 않는다. 피격 보호(Iframes)는 면제 아님: 몸 안에서 맞아도 바로 밀려난다. 플레이어 근접 공격 도달은 중심 거리 ≤ 50+R이라 몸 가장자리(R+15)에서 항상 닿는다(`RadiusChecks.cs` `EdgeHit`).
 - **리뷰 캡처**: `--unity-boss-arena-edge[=1,2,3]`(생략=세 목숨 전부, `=1,3`=지정 목숨). 옛 `--unity-boss-arena-p3-edge`는 3번째 목숨만으로 유지. 봇이 목숨마다 가장자리(간격 4px)에 서서 중심을 공격하고 `edge-p<목숨>-hit-1..3` PNG/JSON과 moves.jsonl `edge-hit`(필드 `life`) 줄을 남긴다. 목숨당 3장이 차면 그 목숨의 가장자리 서기는 끝난다. 실행 줄(Mac, 이 레인은 실행하지 않음)은 PREP §10.1 "캡처 단계"에 있다.
 - **영향 없음 확인**: 내려찍기 예고 반지름 등 모든 값은 `Set.LifeRadiusBasis`가 없는 세트(웹 세트·테스트 샘플 세트)에서 이동량 0이다. 웹 oracle `druid-boss-oracle --cases 48` 0불일치.
-- **남은 판정(Mac)**: P1 껍질이 영웅 ×2.8로 커진 화면(카메라 LOCK 안에서 먼 적 시야 가림 여부), 잠행 솟기 때 기둥과 몸이 24px 틈으로 붙어 보이는지, 몸 분리가 대시·구르기 감각을 해치지 않는지, 박동 안전 고리 268이 P3 몸(39)에서 읽히는지.
+- **남은 판정(Mac)**: P1 껍질이 영웅 ×2.8(1.609u 기준)로 커진 화면(카메라 LOCK 안에서 먼 적 시야 가림 여부), 잠행 솟기 때 기둥과 몸이 24px 틈으로 붙어 보이는지, 몸 분리가 대시·구르기 감각을 해치지 않는지, 박동 안전 고리 286이 P3 몸(57)에서 읽히는지.
 
 ### 8.6 세션 구성 (사용자 입력 턴에 유니티 총괄 또는 보스전 총괄이 연다)
 

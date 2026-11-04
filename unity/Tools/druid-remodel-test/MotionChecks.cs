@@ -78,7 +78,7 @@ static partial class P
                 if (probeSerial != s.Druid.TeleSerial) { probeSerial = s.Druid.TeleSerial; probeBeat = 0; }
                 if (!probeDone && probeBeat < 3 && probeBeat == d.HbBeat)
                 {
-                    double r = (probeBeat == 1 ? 261 : 259) + P3Shift;   // 260 + the P3 shift (39 - 31 = 8) around the centre
+                    double r = (probeBeat == 1 ? 261 : 259) + P3Shift;   // 260 + the P3 shift (39 - 31 = 8 -> now 26) around the centre
                     for (int k = 0; k < 16; k++)
                     {
                         double a = Math.PI * 2 * k / 16, x = d.X + Math.Cos(a) * r, y = d.Y + Math.Sin(a) * r;

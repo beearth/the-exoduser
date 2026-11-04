@@ -18,10 +18,11 @@ static partial class P
 
     sealed class LenRun { public string Mode; public uint Seed; public int BaseHp, Ticks, Hits; public Dictionary<string, int> Moves = new Dictionary<string, int>(); public int[] LifeTicks = new int[3]; public bool Dead; }
 
-    // mode 0 = close (player centre = boss radius + 66, the existing fight harness), 1 = mid (radius + 160)
+    // mode 0 = close (player centre = boss radius + 66, the existing fight harness), 1 = mid (radius + 160), 2 = fixed centre distance 210 like the fullrun bot (11-04 radius recalculation: the edge gap shrinks with the radius)
+    // damage model: the bot lands its hits wherever it stands (the measured damage is mostly skills / reflect, 2.35 M of 3.48 M); what the radius changes here is the boss behaviour (distance-based move choice, stand-off, burrow / pillars) through the real Core
     static LenRun LengthFight(int mode, uint seed, double dpsTick, bool rootHit)
     {
-        var r = new LenRun { Mode = mode == 0 ? "close" : "mid", Seed = seed };
+        var r = new LenRun { Mode = mode == 0 ? "close" : mode == 1 ? "mid" : "bot210", Seed = seed };
         var s = new Simulation(new SimulationConfig { StageIndex = 0, DifficultyIndex = 5, EnemyAiEnabled = true, PlayerMaxHp = 2000000, PlayerBaseAttack = 40 }, seed);
         s.DruidRemodel = true; s.Player.Level = FightLevel; s.Player.Hp = s.Player.MaxHp;
         s.AttachDruidBoss();
@@ -39,7 +40,7 @@ static partial class P
             var st = s.DruidLife(boss);
             if (st == null || !st.Collapsing)
             {
-                double ang = Math.Atan2(boss.Y - 2160, boss.X - 2560) + 0.9; double keep = boss.Radius + (mode == 0 ? 66 : 160);
+                double ang = Math.Atan2(boss.Y - 2160, boss.X - 2560) + 0.9; double keep = mode == 0 ? boss.Radius + 66 : mode == 1 ? boss.Radius + 160 : Math.Max(210, boss.Radius + p.Radius + 20);   // mode 2 = the fullrun bot (policy bossRange 210 from the centre): a bigger body means a smaller edge gap
                 p.X = (float)(boss.X + Math.Cos(ang) * keep); p.Y = (float)(boss.Y + Math.Sin(ang) * keep);
                 if (!s.CanMove((float)p.X, (float)p.Y, p.Radius)) { p.X = boss.X + (float)keep; p.Y = boss.Y; }
             }
@@ -76,7 +77,7 @@ static partial class P
             {
                 if (dps != BotDpsPerTick && rootHit) continue;
                 var runs = new List<LenRun>();
-                for (int mode = 0; mode < 2; mode++) for (uint k = 0; k < SeedsPerMode; k++) runs.Add(LengthFight(mode, 20261104u + k * 7919u, dps, rootHit));
+                for (int mode = 0; mode < 3; mode++) for (uint k = 0; k < SeedsPerMode; k++) runs.Add(LengthFight(mode, 20261104u + k * 7919u, dps, rootHit));
                 var ticks = runs.Select(x => x.Ticks).ToList();
                 var minMoves = SevenMoves.ToDictionary(m => m, m => runs.Min(x => { int n; return x.Moves.TryGetValue(m, out n) ? n : 0; }));
                 var seedsMissing = SevenMoves.ToDictionary(m => m, m => runs.Count(x => !x.Moves.ContainsKey(m)));

@@ -1,5 +1,5 @@
 // 11-04 (CTO option a, boss board 8.5.5): "rendered feet = Core collision" at the designed screen size. Pure Core simulation, no Unity.
-//  data      - LifeRadiusPx 91 / 77 / 39 reaches the real fight (e.Radius per life), hero multiples from the measured footprints (PREP 10.1) are 2.8 / 2.37 / 1.98
+//  data      - LifeRadiusPx 130 / 111 / 57 reaches the real fight (e.Radius per life), hero multiples from the measured footprints (PREP 10.1) on the measured hero height 1.609 u are 2.8 / 2.38 / 2.0
 //  shift     - the centre-based distances move out by (radius - design radius); the reach beyond the body edge (slam, stand-off, heartbeat ring) is the old one
 //  edge      - edge-based tests (slash, charge, grab contact, erupt) follow the radius and stay edge-based (reach beyond the edge unchanged)
 //  hit       - the player's own attack from the body edge (radius + player radius + 4 px) lands in P1, P2 and P3
@@ -13,9 +13,9 @@ using Exoduser.UnityPort.Core;
 
 static partial class P
 {
-    // measured by import-oldman.py (PREP 10.1): footprint radius and height of the models in metres, hero idle height 1.12 world units
+    // measured by import-oldman.py (PREP 10.1): footprint radius and height of the models in metres, hero idle height 1.6094975 world units (rig pixel hero, preview 5 edge-p1-hit-1.json bossRig.heroIdleWorld; 11-04 recalculation, the 1.12 / 1.31 basis gave 1.95 / 1.65 on screen)
     static double P3Shift { get { return DruidRemodelData.LifeRadiusPx[2] - DruidRemodelData.LifeRadiusBasis[2]; } }
-    const double HuskFootM = 1.3987, ManFootM = 0.4762, HuskTopM = 4.8295, ManHornM = 2.71, HeroWorld = 1.12;
+    const double HuskFootM = 1.3987, ManFootM = 0.4762, HuskTopM = 4.8295, ManHornM = 2.71, HeroWorld = 1.6094975;
     static double HeroMultiple(int life)
     {
         double world = DruidRemodelData.LifeRadiusPx[life] / 100.0;
@@ -31,11 +31,12 @@ static partial class P
     {
         var set = DruidRemodelData.Set; double[] px = DruidRemodelData.LifeRadiusPx, basis = DruidRemodelData.LifeRadiusBasis;
         // ---- data -------------------------------------------------------------------------------------------------------------------------------------------------
-        Check(px.Length == 3 && px[0] == 91 && px[1] == 77 && px[2] == 39, "radius: LifeRadiusPx 91 / 77 / 39");
+        Check(px.Length == 3 && px[0] == 130 && px[1] == 111 && px[2] == 57, "radius: LifeRadiusPx 130 / 111 / 57");
         Check(set.LifeRadius != null && set.LifeRadius.SequenceEqual(px) && set.LifeRadiusBasis.SequenceEqual(basis) && set.BodySeparation && set.Validate() == null, "radius: the druid set carries LifeRadius, basis, body separation and validates");
         for (int i = 0; i < 3; i++) Check(basis[i] == Math.Max(10, Math.Round(44 * DruidRemodelData.BodyScale[i])), "radius: basis " + i + " = Round(44 x BodyScale) " + basis[i]);
-        Check(Math.Abs(HeroMultiple(0) - 2.8) <= .05 && Math.Abs(HeroMultiple(1) - 0.85 * 2.8) <= .05 && Math.Abs(HeroMultiple(2) - 2.0) <= .05, "radius: hero multiples " + HeroMultiple(0).ToString("0.000") + " / " + HeroMultiple(1).ToString("0.000") + " / " + HeroMultiple(2).ToString("0.000") + " vs 2.8 / 2.38 / 2.0");
-        double[] shift = { 47, 40, 8 };
+        Check(Math.Abs(HeroMultiple(0) - 2.8) <= .05 && Math.Abs(HeroMultiple(1) - 2.38) <= .05 && Math.Abs(HeroMultiple(2) - 2.0) <= .05, "radius: hero multiples " + HeroMultiple(0).ToString("0.000") + " / " + HeroMultiple(1).ToString("0.000") + " / " + HeroMultiple(2).ToString("0.000") + " vs 2.8 / 2.38 / 2.0");
+        Console.WriteLine("hero multiples on 1.609 u: P1 " + HeroMultiple(0).ToString("0.0000") + " P2 " + HeroMultiple(1).ToString("0.0000") + " P3 " + HeroMultiple(2).ToString("0.0000") + " | model scale husk " + (px[0] / 100 / HuskFootM).ToString("0.0000") + " / " + (px[1] / 100 / HuskFootM).ToString("0.0000") + " old man " + (px[2] / 100 / ManFootM).ToString("0.0000"));
+        double[] shift = { 86, 74, 26 };
         for (int i = 0; i < 3; i++)
         {
             Check(set.ReachShift(i, px[i]) == shift[i] && set.RadiusFor(i, 44) == px[i], "radius: life " + (i + 1) + " shift " + shift[i] + " / RadiusFor " + px[i]);
@@ -168,7 +169,7 @@ static partial class P
     static void ReachByLife()
     {
         var s = ReachFight(); var e = s.Stage.Boss; var d = s.Druid.Data[e]; var list = new List<DruidTelegraph>();
-        double[] shift = { 47, 40, 8 };
+        double[] shift = { 86, 74, 26 };
         for (int life = 0; life < 3; life++)
         {
             string tag = "reach: life " + (life + 1) + " ";

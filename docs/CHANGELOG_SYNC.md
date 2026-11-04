@@ -1,3 +1,9 @@
+## 2026-11-04 드루이드 Core 반경 재계산 130/111/57 + 전투 길이 시뮬 (CTO 승인, 리모델 신규 설계, 웹 oracle 대상 아님)
+
+- 코드: `DruidRemodelData.LifeRadiusPx` {91,77,39} → {130,111,57}(기준 영웅 키 실측 1.609u, 영웅 대비 2.79 / 2.38 / 2.02배). `LifeRadiusBasis` 44/37/31 그대로, 이동량 86/74/26: 내려찍기 346/334/286, 걷기 멈춤 306/294/246, 박동 안전 고리 P3 286, 잠행 출현 234/215/161, 몸 분리 R+15 = 145/126/72. P3는 브리프의 48이 2.0배 목표와 안 맞아(1.70배) 57로 계산.
+- 테스트: `druid-remodel-test` `RadiusChecks.cs` 기대값·영웅 기준 1.6094975u, `druid-rigpixel-tests` 배수 검사 갱신, 새 `FightLengthChecks.cs`(봇 DPS 35/틱, 기준 HP 148,786 → 중앙값 161.6초, 7기술 전 판 발동, HP·순환 변경 없음).
+- docs: 보스 보드 §8.5.5 표, `UNITY_BOSS_RM1_DARK_DRUID_20261027.md` §2·§3·§13.7, PREP §10.1·§10.2.
+
 ## 2026-11-04 보스 아레나 연속 프레임 캡처 --unity-boss-arena-seq (QA 인자, Core 변경 0)
 
 `--unity-boss-arena-review`와 함께 `--unity-boss-arena-seq`를 주면 `arena-review/seq-collapse`(P2→P3 무릎 -10~+30프레임, 최대 360)·`seq-erupt-1..3`(솟기 판정 -20~+40틱)·`seq-contact`(P1 몸 띠 접촉 600프레임, 봇 입력만 공격2초→구르기→공격1초→대시 반복)에 가로 960 PNG(쌍선형 1회)와 `frames.jsonl`(ArenaReviewFrame 행 + 껍질·노인 배율·화면 높이, 기둥 거리·gapPx, 접촉 이동·분리 근사)을 남긴다. 인자가 없으면 기존 캡처 경로와 같고 캡처 프레임은 clean timing에서 제외된다. `NativeArenaReviewPolicy`에 `SeqRequested`·`ContactAt` 추가, `NativeGame.BossArenaReview.cs`에 관측·캡처, rigpixel 테스트 5건 추가(5462/0), druid-remodel 99510/0. 몸 분리 밀림 거리는 Core가 private이라 근사. 문서: PREP §10.1 끝. Player 실행·판정은 총괄.
