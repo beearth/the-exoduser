@@ -30,3 +30,23 @@ test('장면별 선별은 동점에도 안정적이며 세 장면 누락을 거�
   assert.deepEqual(selected.slice(0,4).map(r=>r.id),['S1-0','S1-1','S1-2','S1-3']);
   assert.throws(()=>api.selectViews(rows.filter(r=>r.scene!=='S3'),4));
 });
+test('같은 위치라도 영웅 방향이 다르면 재현 실패다',()=>{
+  const a={id:'S1-01',width:1920,height:1080,hud:true,tick:1,seed:1,player:{x:1,y:1},camera:{pitch:34},facing:-1};
+  assert.equal(api.sameComposition(a,{...a,facing:1}),false);
+});
+test('세 해상도와 HUD 쌍의 누락 및 중복을 거부한다',()=>{
+  assert.equal(typeof api.validateCaptureSet,'function');
+  const frames=['S1','S2','S3'].flatMap(scene=>Array.from({length:4},(_,i)=>[...[[1920,1080],[3840,2160],[3840,1080]]].flatMap(([width,height])=>[true,false].map(hud=>({id:scene+'-'+i,scene,width,height,hud,file:`${scene}-${i}-${width}-${height}-${hud}`}))))).flat();
+  assert.doesNotThrow(()=>api.validateCaptureSet(frames));
+  assert.throws(()=>api.validateCaptureSet(frames.slice(1)));
+  assert.throws(()=>api.validateCaptureSet([...frames,frames[0]]));
+});
+test('슈퍼와이드 검은 옆판과 실제 HUD 겹침을 원본 픽셀에서 검출한다',()=>{
+  assert.equal(typeof api.imageMetrics,'function');
+  const frame={width:32,height:8,enemies:[{x:12,y:2,w:4,h:4,visible:true}]};
+  const off=Buffer.alloc(32*8*3,70),on=Buffer.from(off);
+  for(let y=0;y<8;y++)for(let x=0;x<8;x++)for(const xx of [x,31-x])off.fill(0,(y*32+xx)*3,(y*32+xx)*3+3);
+  for(let y=2;y<6;y++)for(let x=12;x<16;x++)on.fill(200,(y*32+x)*3,(y*32+x)*3+3);
+  const m=api.imageMetrics(frame,on,off);
+  assert.equal(m.blackBorder,true);assert.equal(m.hudOverlap,1);assert.ok(m.luminance>0);
+});

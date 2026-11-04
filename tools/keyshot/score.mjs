@@ -16,7 +16,35 @@ export function pixelDifference(a,b) {
   return {changed,total:a.length,ratio:changed/a.length,mean:sum/a.length,max};
 }
 export function sameComposition(a,b) {
-  return ['id','width','height','hud','tick','seed','player','camera','state'].every(k=>JSON.stringify(a[k])===JSON.stringify(b[k]));
+  return ['id','width','height','hud','tick','seed','player','facing','camera','state'].every(k=>JSON.stringify(a[k])===JSON.stringify(b[k]));
+}
+export function validateCaptureSet(frames) {
+  const groups=new Map(),files=new Set();
+  for(const f of frames){
+    if(files.has(f.file))throw new Error('촬영 파일 중복: '+f.file);files.add(f.file);
+    const key=f.id;if(!groups.has(key))groups.set(key,{scene:f.scene,pairs:new Set()});
+    const group=groups.get(key),pair=`${f.width}x${f.height}/${f.hud}`;
+    if(group.scene!==f.scene||group.pairs.has(pair))throw new Error('시점/해상도 중복: '+key);
+    group.pairs.add(pair);
+  }
+  for(const [id,g] of groups){
+    if(g.pairs.size!==6)throw new Error('해상도 또는 HUD 쌍 누락: '+id);
+    for(const size of ['1920x1080','3840x2160','3840x1080'])for(const hud of [true,false])if(!g.pairs.has(size+'/'+hud))throw new Error('필수 해상도 누락: '+id);
+  }
+  for(const scene of ['S1','S2','S3'])if([...groups.values()].filter(g=>g.scene===scene).length<3)throw new Error(scene+' 후보 3개 미만');
+  return groups.size;
+}
+export function imageMetrics(frame,on,off) {
+  const {width,height}=frame;if(on.length!==width*height*3||off.length!==on.length)throw new Error('이미지와 기록 해상도 불일치');
+  const mask=new Uint8Array(width*height);
+  for(const e of frame.enemies)if(e.visible){const left=Math.max(0,Math.ceil(e.x)),right=Math.min(width,Math.ceil(e.x+e.w));for(let y=Math.max(0,Math.ceil(e.y));y<Math.min(height,Math.ceil(e.y+e.h));y++)mask.fill(1,y*width+left,y*width+right);}
+  let total=0,border=0,dark=0,covered=0,enemyPixels=0;
+  for(let y=0;y<height;y++)for(let x=0;x<width;x++){
+    const p=y*width+x,i=p*3,l=.2126*off[i]+.7152*off[i+1]+.0722*off[i+2];total+=l;
+    if(x<8||x>=width-8){border++;if(l<2)dark++;}
+    if(mask[p]){enemyPixels++;if(Math.max(Math.abs(on[i]-off[i]),Math.abs(on[i+1]-off[i+1]),Math.abs(on[i+2]-off[i+2]))>18)covered++;}
+  }
+  return {luminance:total/(width*height),blackBorder:dark/border>.98,hudOverlap:enemyPixels?covered/enemyPixels:0};
 }
 export function selectViews(rows,count=4) {
   if(count<3||count>5)throw new Error('장면당 후보는 3~5개');
