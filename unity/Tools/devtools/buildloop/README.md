@@ -8,6 +8,7 @@ origin/unity/main 변경을 확인해 exo-unity Win 빌드 → 숨은 데스크�
 | buildloop.ps1 run -Force -Ref <branch> -Mode desktop | 브랜치 자체 시험, 자동 NoSwap. desktop 기본, batch는 명시적 대안 |
 | -Worktree <소유 NTFS checkout> | 소스 실행 시 기본은 이 스크립트의 checkout. 설치본은 source.json의 통합 checkout |
 | -WaitMin <분> | 기본 60, 예약·PC 슬롯 대기 예산을 exo에도 전달. fix2 브랜치 게이트는 90 |
+| -Gate3D off|trial|on | 11-04 CTO 데모=3D. 기본 trial: 관문 m1-check(2D 인자 그대로) 뒤 같은 build_new로 `--remodel3d` m1-check를 1회 더 돌려 run.json trial3d(ran·exit·timedOut·m1 ok/fail·firstBlocked·logFail·passed)와 로그 "3D 관문 시험(기록만)"에만 남긴다. 판정·교체·WAIT에 쓰지 않는다. on: 관문 스모크 자체를 `--remodel3d`로. PASS 확인 뒤 기본을 on으로 바꾸고 겹침 검사도 3D 인자로 맞춘다. 검사 selftest/buildloop-gate3d-test.ps1 |
 | -OutputRoot <I: 경로> | 브랜치 시험은 별도 출력. 본편 교체는 unity-latest에서만 |
 | buildloop.ps1 swap | 이전 PASS 후보 pending 재시도. NoSwap에서는 상태도 읽지 않음 |
 | buildloop.ps1 install | 병합된 깨끗한 unity/main 또는 detached checkout만 loop/bin으로 복사하고 source.json 기록 |
