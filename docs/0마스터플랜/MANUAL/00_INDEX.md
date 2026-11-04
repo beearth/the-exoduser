@@ -123,7 +123,7 @@
 
 ### 3.4b 3차 반영(11-05 05 KST)으로 새로 생긴 항목
 입력: Yellowsky 갱신본, codex_asset_size, FIRST_SCENE_PLAN(Codex), codex_synthesis, ENGINE_TRIAL_UE5_PLAN, HUD G1 갱신(defects·G0·실버 헬 M4 충돌 기록), codex_hud_critique.
-CTO 정정 반영: **Yellowsky 엔진·렌더(UE5·Lumen·볼류메트릭)는 미확인**. 확정 사실은 望虚社·11명·약 2년·외부 투자 0뿐. 분위기 목표는 엔진과 분리해 수치·장면 기준으로만 쓴다(02 §1·§7). 갱신본의 광원·안개 수치도 작성자 [기준]이지 실측이 아니다.
+CTO 정정 반영 → **6차(05:45 KST) 갱신: Yellowsky 엔진 = 2024-09-29 개발사(伽马聚集工作室 = 현 望虚社, 백과 표기 기준) indienova 모집글의 "引擎：虚幻5" — 개발사 자기 신고 1건, Mac 원문 직접 확인(GAME_STUDY/yellowsky_engine_verify_mac.md). 현재 유지 여부·버전·Lumen·렌더 방식은 미확인**, "UE5니까 Lumen" 추론 금지. 조명·안개 제작법을 밝힌 개발 원문은 중국어 1차 자료 심층(codex_yellowsky_cn, CX25)에서도 0건. 확정 사실은 望虚社·11명·약 2년·외부 투자 0뿐. 분위기 목표는 엔진과 분리해 수치·장면 기준으로만 쓴다(02 §1·§7). 갱신본의 광원·안개 수치도 작성자 [기준]이지 실측이 아니다.
 
 | 요소 | 결정 항목 (★ = 충돌) |
 |---|---|
