@@ -69,10 +69,10 @@ namespace Exoduser.UnityPort
                 Debug.Log("[A2R swamp] on=" + on + " waterMode=" + surface.Surface.GetFloat("_SwampDressMode") + " fires=" + Shader.GetGlobalInt("_A2RWaterFireCount") + " planar=" + surface.Surface.GetFloat("_PlanarStrength"));
         }
 
-        Material DressMaterial(string name)
+        Material DressMaterial(string name, bool remains = false)
         {
             var material = new Material(Resources.Load<Shader>("A2R/ToxicRiver")) { name = name };
-            material.SetFloat("_SwampDressMode", 1); material.SetFloat("_SwampZWrite", 0); material.SetFloat("_SwampCull", 0);
+            material.SetFloat("_SwampDressMode", remains ? 2 : 1); material.SetFloat("_SwampZWrite", 0); material.SetFloat("_SwampCull", 0);
             material.EnableKeyword("_SPECULARHIGHLIGHTS_OFF");
             material.renderQueue = 3010; materials.Add(material); return material;
         }
@@ -112,6 +112,13 @@ namespace Exoduser.UnityPort
                     int i = start + row * 2; indices.AddRange(new[] { i, i + 2, i + 1, i + 1, i + 2, i + 3 });
                 }
             }
+            // Marching-cell segment direction is arbitrary; all bank triangles face upward.
+            for (int k = 0; k < indices.Count; k += 3)
+            {
+                var a = vertices[indices[k]]; var b = vertices[indices[k + 1]]; var c = vertices[indices[k + 2]];
+                if (Vector3.Cross(b - a, c - a).y < 0)
+                { int swap = indices[k + 1]; indices[k + 1] = indices[k + 2]; indices[k + 2] = swap; }
+            }
             var shore = new Mesh { name = "2.0u feathered wet shoreline", indexFormat = IndexFormat.UInt32 };
             shore.SetVertices(vertices); shore.SetColors(colours); shore.SetTriangles(indices, 0); shore.RecalculateBounds(); shore.RecalculateNormals();
             return shore;
@@ -126,7 +133,7 @@ namespace Exoduser.UnityPort
             ShoreSegments = segments.Count;
             var shore = CreateShoreMesh(field, surface.Height, segments);
             MeshObject(shore.name, shore, DressMaterial("A2R wet black-brown mud"));
-            var remains = DressMaterial("A2R waterlogged flesh and bone");
+            var remains = DressMaterial("A2R waterlogged flesh and bone", true);
             for (int z = 0; z < 36; z++) for (int x = 0; x < 36; x++)
             {
                 float wx = 1.5f + x * 2.2f + Mathf.Sin(z * 1.7f + x * .5f) * .4f;
@@ -135,7 +142,7 @@ namespace Exoduser.UnityPort
                     (a, b) => field.TerrainHeight(a, b) < -.50f,
                     (a, b) => field.Distance(a, b) < -.5f && !NativeGame.Instance.Map.CanMove(a * 100, -b * 100, 100))) continue;
                 int id = floaters.Count; bool bone = id % 3 == 0;
-                var mesh = RemainsMesh(bone, id);
+                var mesh = CreateRemainsMesh(bone, id);
                 var renderer = MeshObject(bone ? "Waterlogged bone fragment" : "Floating torn flesh membrane", mesh, remains);
                 var pos = new Vector3(wx, surface.Height + .018f, wz);
                 renderer.transform.position = pos;
@@ -144,7 +151,7 @@ namespace Exoduser.UnityPort
             }
         }
 
-        static Mesh RemainsMesh(bool bone, int id)
+        internal static Mesh CreateRemainsMesh(bool bone, int id)
         {
             if (bone) return RibMesh();
             // Broad connected silhouettes, not tiny particles. One mesh with a raised centre/fold.
@@ -158,7 +165,7 @@ namespace Exoduser.UnityPort
                 float a = i * Mathf.PI / 6, lobe = 1 + .16f * Mathf.Sin(a * 3 + id);
                 v.Add(new Vector3(Mathf.Cos(a) * length * .5f, 0, Mathf.Sin(a) * width * .5f * lobe));
                 c.Add(bone ? new Color(.09f, .078f, .055f) : new Color(.045f, .022f, .019f));
-                tri.AddRange(new[] { 0, i + 1, (i + 1) % 12 + 1 });
+                tri.AddRange(new[] { 0, (i + 1) % 12 + 1, i + 1 });
             }
             mesh.SetVertices(v); mesh.SetColors(c); mesh.SetTriangles(tri, 0); mesh.RecalculateNormals(); mesh.RecalculateBounds(); return mesh;
         }
@@ -176,7 +183,7 @@ namespace Exoduser.UnityPort
                     colours.Add(Color.Lerp(new Color(.09f, .075f, .055f), new Color(.16f, .13f, .095f), Mathf.Clamp01(Mathf.Sin(a))));
                     if (ring == 6) continue;
                     int i = ring * 8 + side, n = ring * 8 + (side + 1) % 8;
-                    triangles.AddRange(new[] { i, n, i + 8, n, n + 8, i + 8 });
+                    triangles.AddRange(new[] { i, i + 8, n, n, i + 8, n + 8 });
                 }
             }
             var mesh = new Mesh { name = "Waterlogged curved rib with submerged underside" };
@@ -196,7 +203,7 @@ namespace Exoduser.UnityPort
                 if (viewport.z <= 0 || viewport.x < .04f || viewport.x > .96f || viewport.y < .20f || viewport.y > .92f) continue;
                 Vector3 a = camera.WorldToScreenPoint(f.position), b = camera.WorldToScreenPoint(f.position + camera.transform.right * .65f);
                 if (a.z <= 0 || Vector2.Distance(a, b) < 8) continue;
-                f.distance = (camera.transform.position - f.position).sqrMagnitude; visible.Add(f);
+                f.distance = (viewport.x - .5f) * (viewport.x - .5f) + (viewport.y - .52f) * (viewport.y - .52f); visible.Add(f);
             }
             visible.Sort((a, b) => a.distance.CompareTo(b.distance)); VisibleDebris = Mathf.Min(6, visible.Count);
             for (int i = 0; i < VisibleDebris; i++)

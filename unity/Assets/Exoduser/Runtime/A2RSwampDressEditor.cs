@@ -13,7 +13,7 @@ namespace Exoduser.UnityPort
             public string scope = "Actual Unity Editor mesh/asset checks; not a Player screen or visual approval";
             public string unityVersion;
             public bool passed, playerRun = false, visualVerified = false;
-            public float heroHeight = 1.61f, minWidth, maxWidth, minAlpha10Width;
+            public float heroHeight = 1.61f, minWidth, maxWidth, minAlpha10Width, minShoreNormalY = 1, fleshTopNormalY, boneTopNormalY;
             public int segments, vertices, triangles, unchangedMovementQueries;
         }
 
@@ -50,6 +50,10 @@ namespace Exoduser.UnityPort
                     if (before[i] != map.CanMove((i % 200 + .5f) * 40, (i / 200 + .5f) * 40, 20)) throw new InvalidOperationException("Movement query changed");
                     result.unchangedMovementQueries++;
                 }
+                foreach (var normal in mesh.normals) result.minShoreNormalY = Mathf.Min(result.minShoreNormalY, normal.y);
+                if (result.minShoreNormalY < 0) throw new InvalidOperationException("Bank top normals face downward");
+                result.fleshTopNormalY = RemainsTopNormalY(false); result.boneTopNormalY = RemainsTopNormalY(true);
+                if (result.fleshTopNormalY < .5f || result.boneTopNormalY < .5f) throw new InvalidOperationException("Remains top normals face inward/downward");
                 using (var writer = new StreamWriter(Path.Combine(output, "shoreline.obj"), false, new System.Text.UTF8Encoding(false)))
                 {
                     writer.WriteLine("# Unity-generated shoreline in metres; static geometry, not a game screenshot");
@@ -76,6 +80,12 @@ namespace Exoduser.UnityPort
                 File.WriteAllText(Path.Combine(output, "shore-check.json"), JsonUtility.ToJson(result, true));
                 Debug.Log("A2R_SWAMP_SHORE_PASS minWidth=" + result.minWidth + " minAlpha10Width=" + result.minAlpha10Width + " H=" + result.heroHeight + " movement=" + result.unchangedMovementQueries);
             }
+            finally { UnityEngine.Object.DestroyImmediate(mesh); }
+        }
+        static float RemainsTopNormalY(bool bone)
+        {
+            var mesh = A2RSwampDress.CreateRemainsMesh(bone, 0);
+            try { var v = mesh.vertices; int top = 0; for (int i = 1; i < v.Length; i++) if (v[i].y > v[top].y) top = i; return mesh.normals[top].y; }
             finally { UnityEngine.Object.DestroyImmediate(mesh); }
         }
         static Vector2 XZ(Vector3 p) { return new Vector2(p.x, p.z); }

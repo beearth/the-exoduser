@@ -69,11 +69,14 @@ Shader "EXODUSER/A2R/ToxicRiver"
     SurfaceData s=(SurfaceData)0;s.albedo=colour;s.normalTS=half3(0,0,1);s.metallic=0;s.specular=.025;
     s.smoothness=lerp(.66,.30,scum);s.occlusion=1;s.alpha=lerp(.88,1,wet);s.emission=0;
     half4 c=UniversalFragmentPBR(data,s);c.rgb*=.22;
+    float crest=pow(saturate(.5+.5*sin(a+sin(b)*.32)),10);
+    float crossCrest=pow(saturate(.5+.5*sin(b+sin(a*.7)*.25)),12);
+    c.rgb+=(crest*.010+crossCrest*.006)*lerp(half3(.58,.69,.43),half3(.64,.46,.31),flow)*wet*(1-scum);
     float4 reflected=mul(_PlanarVP,float4(i.world,1));float2 ru=reflected.xy/max(.0001,reflected.w)*.5+.5+n.xz*.075;
     float valid=step(.0001,reflected.w)*step(0,ru.x)*step(ru.x,1)*step(0,ru.y)*step(ru.y,1);
     half3 reflection=SAMPLE_TEXTURE2D(_PlanarReflection,sampler_PlanarReflection,ru).rgb;
     // Real scene reflection only; preserve the existing disabled sky-cubemap path and material keyword.
-    float fresnel=.025+.13*pow(1-saturate(dot(n,data.viewDirectionWS)),4);
+    float fresnel=.08+.22*pow(1-saturate(dot(n,data.viewDirectionWS)),3);
     c.rgb=lerp(c.rgb,min(reflection,half3(.6,.55,.46))*half3(.22,.20,.15),saturate(_PlanarStrength)*valid*fresnel*(1-scum));
     for(int k=0;k<min(8,_A2RWaterFireCount);k++)
     {
@@ -90,7 +93,7 @@ Shader "EXODUSER/A2R/ToxicRiver"
     InputData d=(InputData)0;d.positionWS=i.world;d.normalWS=NormalizeNormalPerPixel(i.normalWS);d.viewDirectionWS=GetWorldSpaceNormalizeViewDir(i.world);
     d.shadowCoord=TransformWorldToShadowCoord(i.world);d.bakedGI=SampleSH(d.normalWS);d.shadowMask=1;d.normalizedScreenSpaceUV=i.screen.xy/i.screen.w;
     SurfaceData s=(SurfaceData)0;s.albedo=i.colour.rgb;s.normalTS=half3(0,0,1);s.metallic=0;s.specular=.018;s.smoothness=.28;s.occlusion=1;s.alpha=i.colour.a;
-    half4 c=UniversalFragmentPBR(d,s);c.rgb*=.18;c.rgb=MixFog(c.rgb,i.fog);return c;
+    half4 c=UniversalFragmentPBR(d,s);c.rgb*=(_SwampDressMode>1.5?1.0:.60);c.a=i.colour.a;c.rgb=MixFog(c.rgb,i.fog);return c;
    }
 
    half4 frag(V i):SV_Target

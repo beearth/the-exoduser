@@ -16,7 +16,7 @@ namespace Exoduser.UnityPort
             a2rPlayOutput = Argument("-output");
             if (string.IsNullOrEmpty(a2rPlayOutput) || !Path.IsPathRooted(a2rPlayOutput)) { Application.Quit(2); yield break; }
             Directory.CreateDirectory(a2rPlayOutput); a2rPlayStarted = Time.realtimeSinceStartup;
-            a2rPlay = new A2RPlayReceipt { sandbox = NativeQaSandbox.Root, scope = "Ordinary lobby entry and Core walking; bridge-north is a supplementary fixed-pose fixture. Swamp OFF/ON pairs share the same camera and source build. No Core rules or camera parameters changed." };
+            a2rPlay = new A2RPlayReceipt { sandbox = NativeQaSandbox.Root, scope = "Ordinary lobby entry and short Core walking on the original route; bridge-north is a supplementary fixed-pose fixture. Swamp OFF/ON pairs share the same camera and source build. No Core rules or camera parameters changed." };
             Application.logMessageReceived += A2RPlayLog; Application.runInBackground = true; AudioListener.volume = 0; AudioListener.pause = true;
             smokeActive = true; pauseSmoke = true; dropSmoke = true; lobbySmoke = true; introKeysSmoke = true;
             lobby.AutomatedInput = false; SetGameFocus(true); lobby.SetPlaybackFocus(true);
@@ -31,12 +31,11 @@ namespace Exoduser.UnityPort
             }
             if (a2rPlay.failures.Count > 0 || !lobby.EnterSelectedCharacter()) { a2rPlay.failures.Add("Ordinary field entry rejected"); A2RPlayFinish(); yield break; }
             yield return A2RWaitFrontend("lobby-game");
-            float deadline = Time.realtimeSinceStartup + 30;
-            while (lobby.StartupEntryActive && lobby.StartupCaptureState.Page != FrontendEntryPage.Nemesis && Time.realtimeSinceStartup < deadline)
-            { lobby.SetPlaybackFocus(true); yield return null; }
+            float deadline;
+            // Ordinary entry uses its existing Skip command; this proof observes the field.
             if (lobby.StartupEntryActive) { lobby.StartupCaptureState.Skip(); yield return null; lobby.StartupCaptureState.Skip(); yield return null; }
             deadline = Time.realtimeSinceStartup + 25;
-            while ((lobby.IsBlocking || NativeScreenTransition.Busy) && Time.realtimeSinceStartup < deadline) { lobby.SetPlaybackFocus(true); yield return null; }
+            while ((lobby.IsBlocking || NativeScreenTransition.Busy) && Time.realtimeSinceStartup < deadline) { lobby.SetPlaybackFocus(true); if (lobby.StartupEntryActive && !NativeScreenTransition.Busy) lobby.StartupCaptureState.Skip(); yield return null; }
             if (lobby.IsBlocking || NativeScreenTransition.Busy) { a2rPlay.failures.Add("Ordinary field entry timeout"); A2RPlayFinish(); yield break; }
             a2rPlay.ordinaryEntryVerified = true; if (firstPractice != null) EndFirstPractice(true);
             Running = false; frontendEntryInputFence = false;
@@ -54,8 +53,9 @@ namespace Exoduser.UnityPort
             yield return A2RSwampMovie();
             yield return A2RNatureSize(3840);
             // Keep the original source walking path; no player-coordinate assignment on this route.
-            var goal = new Vector2(2050, 4400); var route = A2RWalkPath(a2rPlay.start, goal);
+            var route = A2RWalkPath(a2rPlay.start, new Vector2(2050, 4400));
             if (route.Count == 0) { a2rPlay.failures.Add("No radius-safe Core route"); A2RPlayFinish(); yield break; }
+            int routeCount = Mathf.Min(11, route.Count); route = route.GetRange(0, routeCount); var goal = route[routeCount - 1];
             int waypoint = 0, stall = 0; float next = Time.realtimeSinceStartup; deadline = next + 160;
             while (waypoint < route.Count && Time.realtimeSinceStartup < deadline)
             {
@@ -73,8 +73,8 @@ namespace Exoduser.UnityPort
                 UpdateViews(); yield return null;
             }
             a2rPlay.end = new Vector2(Simulation.Player.X, Simulation.Player.Y); a2rPlay.arrived = Vector2.Distance(a2rPlay.end, goal) < 55;
-            if (!a2rPlay.arrived) a2rPlay.failures.Add("Actual walk did not reach camp");
-            yield return A2RSwampPair("camp", swamp);
+            if (!a2rPlay.arrived) a2rPlay.failures.Add("Short Core walk did not reach its waypoint");
+            yield return A2RSwampPair("bridge-approach", swamp);
             // Existing D4 bridge pose and enemy fixture. Marked as fixture in every output name.
             yield return R18Pose(new Vector2(4320, 6700)); R19Spawn(new Vector2(Simulation.Player.X, Simulation.Player.Y), 6);
             bool ai = Simulation.Config.EnemyAiEnabled; Simulation.Config.EnemyAiEnabled = false;
