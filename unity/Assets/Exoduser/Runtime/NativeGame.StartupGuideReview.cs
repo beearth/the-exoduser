@@ -29,7 +29,7 @@ namespace Exoduser.UnityPort
     note("open="+lobby.OpenCharacterCreation());
     bool ok=false;for(float end=Time.realtimeSinceStartup+10;!ok&&Time.realtimeSinceStartup<end;){yield return new WaitForSecondsRealtime(.4f);ok=lobby.ChooseCharacterVisual(0);}note("choose="+ok);
     ok=false;for(float end=Time.realtimeSinceStartup+10;!ok&&Time.realtimeSinceStartup<end;){yield return new WaitForSecondsRealtime(.4f);ok=lobby.ConfirmCharacterVisual();}note("confirm="+ok);
-    ok=false;for(float end=Time.realtimeSinceStartup+10;!ok&&Time.realtimeSinceStartup<end;){yield return new WaitForSecondsRealtime(.4f);ok=lobby.CreateCharacter("은빛검수");}note("create="+ok);
+    ok=false;for(float end=Time.realtimeSinceStartup+10;!ok&&Time.realtimeSinceStartup<end;){yield return new WaitForSecondsRealtime(.4f);ok=lobby.CreateCharacter("은빛검수");}note("create="+ok+" store="+lobby.CharacterStoreState+" dir="+lobby.CharacterStoreDirectory+" count="+lobby.Characters.Count);
     yield return new WaitForSecondsRealtime(2.5f);
     lobby.ShowLobby();yield return new WaitForSecondsRealtime(1.5f);
    }
