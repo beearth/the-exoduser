@@ -1,5 +1,5 @@
 const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process');
-const root=path.resolve(__dirname,'../../..'),out='I:/EXODUSER-Storage/codex-takeover/parry-g2/enemy3d-check';fs.mkdirSync(out,{recursive:true});
+const root=path.resolve(__dirname,'../../..'),out=process.env.EXO_ENEMY3D_CHECK_OUT||'I:/EXODUSER-Storage/codex-takeover/parry-g2/enemy3d-check';fs.mkdirSync(out,{recursive:true});
 const policy=path.join(root,'unity/Assets/Exoduser/Runtime/NativeEnemyRigPolicy.cs');
 if(!fs.existsSync(policy)){const m='FAIL: enemy rig presentation policy is absent\n';fs.writeFileSync(path.join(out,'policy.log'),m);process.stdout.write(m);process.exit(1);}
 const pack='C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/8.0.6/ref/net8.0';

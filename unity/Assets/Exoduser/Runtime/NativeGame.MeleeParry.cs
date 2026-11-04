@@ -29,6 +29,6 @@ namespace Exoduser.UnityPort {
   }
   void ParryFeedbackEvent(FeedbackEvent e){if(e.Kind==FeedbackKind.Parry&&e.MeleeParry&&e.HitStopTicks>0)parryHoldUntil=Mathf.Max(parryHoldUntil,Time.unscaledTime+e.HitStopTicks/60f);}
   void WriteCombatStats(string output){if(Simulation==null||string.IsNullOrEmpty(output))return;Directory.CreateDirectory(output);File.WriteAllText(Path.Combine(output,"combat-stats.json"),Simulation.CombatStatsJson());}
-  void ObserveCombatStatsEnd(){if(Simulation==null)return;if(Simulation.Stats.deaths>statsDeathSeen||Simulation.Stage.StageCleared&&!statsClearSeen){statsDeathSeen=Simulation.Stats.deaths;statsClearSeen=Simulation.Stage.StageCleared;var path=Argument("-output");if(string.IsNullOrEmpty(path))path=Path.Combine(Application.persistentDataPath,"combat-stats");WriteCombatStats(path);}}
+  void ObserveCombatStatsEnd(){if(Simulation==null)return;if(Simulation.Stats.deaths>statsDeathSeen||Simulation.Stage.StageCleared&&!statsClearSeen){statsDeathSeen=Simulation.Stats.deaths;statsClearSeen=Simulation.Stage.StageCleared;var path=Argument("-output");if(string.IsNullOrEmpty(path))path=Path.Combine(NativeQaSandbox.Resolve(Application.persistentDataPath),"combat-stats");WriteCombatStats(path);}}
  }
 }

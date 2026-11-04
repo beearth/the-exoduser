@@ -26,3 +26,9 @@
 | `codex/pc-devtools-tools-20261028` `94b8e6590` | Unity 도구·README를 별도 브랜치에 커밋·원격 push(`465bb875e` 최초 인수, 뒤이어 정리 도구 보정 3건) | `unity/main` 미병합, 실제 Codex 작업 안정성 미확인 |
 
 원본 미커밋 작업은 `E:\exoduser-wt\pc-unity-devtools-codex`에 보존했다. 인수 브랜치의 출처가 원본 워크트리임을 커밋 본문에 기록했다.
+
+## 11-04 Codex 자식 환경과 UPM 시작 실패
+
+- 증상: 공용 실행기 `start`가 "Could not connect to IPC stream Upm-… after 30.0 seconds", "Failed to start the Unity Package Manager local server process"를 남기고 exit 1로 끝났다. 맵 A2R r14 03:56(1회), r15 04:20·04:21(2회)에 났다. "Access token is unavailable"는 정상 회차에도 찍히므로 원인이 아니다.
+- 원인: 기본 터미널이 CreateProcessW 거부로 막혀 Codex가 node_repl로 PowerShell을 띄웠다. 그 자식 환경에 APPDATA·ProgramFiles·ProgramFiles(x86)·ProgramData·ComSpec이 비었고 PATHEXT는 `.CPL`뿐이었다. r14는 이 다섯 변수를 넣고 재시도해 03:57에 성공했다. r15 2차는 PATHEXT·ComSpec·APPDATA만 넣어 같은 단계에서 실패했다.
+- 조치: 실행기 `2026.11.04-winenv`가 Editor·run 기동 직전에 빈 Windows 기본 변수를 프로세스 범위에서 채운다(`Repair-WindowsEnv`, 계약은 [devtools README](../../unity/Tools/devtools/README.md)). 부르는 쪽 스크립트에 환경 보정을 따로 넣지 않아도 된다. 시스템·사용자 환경 설정은 바꾸지 않는다.

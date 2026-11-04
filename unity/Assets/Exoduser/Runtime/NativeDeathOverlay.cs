@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Exoduser.UnityPort {
+ // 2026-11-04: the drawn window is now the "안식은 없다" decision screen below (see "window"). The data side (event pick, pet lines, title pulse,
+ // replay shape) still follows the web #death definitions so existing receipts keep working.
  // Web death screen (#death, game.html 3101 / CSS 646-663, shown by _fallenResolve 43851-43896) in the 1920x1080 design space:
  // full-screen still (cin_remember_wide), pulsing title, sub line, run info line, three buttons, two pet portraits with one speech line each,
  // damage log column. Definitions come from Data/death_web.json; every state value (kills, EXP loss, chapter, death count, combo, damage log)
@@ -15,7 +17,8 @@ namespace Exoduser.UnityPort {
    public int expLoss;        // EXP actually lost on death; -1 = Unity does not deduct EXP yet (shown as 미이식)
    public int maxCombo;       // -1 = Unity has no max-combo state
    public int deaths;         // deaths since the app started (web _ddDeaths)
-   public bool retryBoss;     // web: boss arena finale shows "보스 재도전"
+   public bool retryBoss;
+   public bool inArena;       // died in a boss room: "다시 일어선다" returns to the field in front of the gate (RetryInsideArena)     // web: boss arena finale shows "보스 재도전"
    public DmgEntry[] damageLog; // null = Unity has no damage log
   }
   [Serializable] sealed class Tok {public string n;public float x,y,w,h,adv,pad,cy;}
@@ -26,7 +29,7 @@ namespace Exoduser.UnityPort {
   [Serializable] sealed class Defs {public string title,sub,retry,retryBoss,replay,lobby,dmgLogDead;public InfoFmt infoFormat;public Timing timing;public ReplayDef replayScreen;public PetLine[] petLines;public string[] petPool;public Tok[] atlas;}
   const string NotPorted="미이식";
   readonly Defs defs;readonly Dictionary<string,Tok> tok=new Dictionary<string,Tok>();readonly Dictionary<string,PetLine> lines=new Dictionary<string,PetLine>();
-  Texture2D bg,crow,cat,atlas,radial;Font nanum,sans,sansBold;bool ready;
+  Texture2D atlas,radial;Font nanum,sans,sansBold;bool ready;
   readonly Dictionary<long,GUIStyle> styles=new Dictionary<long,GUIStyle>();
   Info info;bool active;float start;string[] seq;int seqIdx;readonly System.Random rng=new System.Random(20261026);
   // Test hooks: deterministic clock and title pulse phase (web: animation runs from page load, so its phase is arbitrary).
@@ -51,7 +54,7 @@ namespace Exoduser.UnityPort {
    return "dd_ch"+Mathf.Clamp(info.chapter<0?0:info.chapter,0,6);
   }
   public void Show(Info value){
-   info=value;active=true;start=Now;
+   info=value;active=true;start=Now;BuildChoices();
    var list=new List<string>(defs.petPool);for(int i=list.Count-1;i>0;i--){int j=rng.Next(i+1);var t=list[i];list[i]=list[j];list[j]=t;}
    EventId=PickEvent();var s=new List<string>{EventId};s.AddRange(list);seq=s.ToArray();seqIdx=0;SetLine(0);
   }
@@ -62,7 +65,9 @@ namespace Exoduser.UnityPort {
   static Color C(int r,int g,int b,float a=1f){return new Color(r/255f,g/255f,b/255f,a);}
   void Init(){
    if(ready)return;ready=true;
-   bg=Resources.Load<Texture2D>("Art/ui/death/cin_remember_wide");crow=Resources.Load<Texture2D>("Art/ui/death/crow_portrait");cat=Resources.Load<Texture2D>("Art/ui/death/cat_portrait");atlas=Resources.Load<Texture2D>("Art/ui/death/death_atlas");
+   atlas=Resources.Load<Texture2D>("Art/ui/death/death_atlas");   // replay screen glyphs
+   splat=Resources.Load<Texture2D>("Art/ui/death/death_splatter");diamond=MakeDiamond();
+   cinzel=Resources.Load<Font>("Art/fonts/Cinzel-400");hahmletLight=NativeSilverHellUi.Font();hahmlet=NativeSilverHellUi.Font(true);
    nanum=Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular");sans=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular");sansBold=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Bold")??sans;
    const int n=128;radial=new Texture2D(n,n,TextureFormat.RGBA32,false){wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};var px=new Color[n*n];
    for(int y=0;y<n;y++)for(int x=0;x<n;x++){float dx=(x+.5f)/n*2-1,dy=(y+.5f)/n*2-1;px[y*n+x]=new Color(1,1,1,Mathf.Clamp01(1-Mathf.Sqrt(dx*dx+dy*dy)));}
@@ -107,141 +112,126 @@ namespace Exoduser.UnityPort {
    }
    return w;
   }
-  void CenteredText(float cx,float y,float h,string text,Font f,int size,Color c,float ls,float shadowAlpha=0,float shadowSpread=0,bool bold=false){
-   float w=Width(f,size,text,ls,bold);Text(cx-w/2f,y,h,text,f,size,c,ls,shadowAlpha,1,shadowSpread,bold);
-  }
   void Sprite(Tok t,float x,float cy,Color c){
    var old=GUI.color;GUI.color=c;NativeUiAudit.DrawTextureWithTexCoords(new Rect(x-t.pad,cy-t.cy,t.w,t.h),atlas,new Rect(t.x/atlas.width,1f-(t.y+t.h)/atlas.height,t.w/atlas.width,t.h/atlas.height));GUI.color=old;
   }
 
-  // ---- window ----
+  // ---- window: "안식은 없다" death screen (2026-11-04) ----
+  // UX taken from Phantom Blade Zero (black void, one statement, then a short decision) in Hell Gothic language, not its art:
+  // 0~.45s black over the fallen filter; .3s blood-ink bloom; .5s "안식은 없다" (Hahmlet 300, bone) + crimson hairline + "THERE IS NO REST";
+  // 2.0s the title rises and the question "포기할 것인가?" appears, options fade in one by one. Only the focused option shows its outcome line.
+  // Options: boss room = 다시 일어선다 (field in front of the gate, full HP) / 처음부터 다시 / 포기한다; field = 다시 일어선다 (run restart) / 포기한다.
+  public enum Choice{None,Rise,Restart,GiveUp}
+  const float BlackIn=.45f,BloomAt=.3f,BloomDur=.6f,TitleAt=.5f,TitleDur=1f,LineAt=.9f,LineDur=.7f,CapAt=1.3f,CapDur=.6f,AskAt=2.0f,AskDur=.6f,OptAt=2.35f,OptStep=.12f,OptDur=.45f;
+  int focus;Texture2D splat,diamond;Font cinzel,hahmletLight,hahmlet;
+  public Action OnRestart;
+  Choice[] choices=new Choice[0];
+  public bool ActionsReady{get{return active&&Age>=OptAt+OptStep*(choices.Length-1)+.2f;}}
+  public int Focus{get{return focus;}}
+  public int ChoiceCount{get{return choices.Length;}}
+  public Choice FocusedChoice{get{return choices.Length>0?choices[Mathf.Clamp(focus,0,choices.Length-1)]:Choice.None;}}
+  void BuildChoices(){choices=info.inArena?new[]{Choice.Rise,Choice.Restart,Choice.GiveUp}:new[]{Choice.Rise,Choice.GiveUp};focus=0;}
+  // 11-04 D2: every decision-screen string comes from Data/death_decision_text.json (29 languages, No.4264~4272). ar draws as en (IMGUI has no RTL shaping).
+  [Serializable] sealed class DecisionRow {public string code,title,caption,ask,rise,restart,giveUp,outArena,outRestart,outLobby;}
+  [Serializable] sealed class DecisionBundle {public DecisionRow[] entries;}
+  public string LocaleCode="ko";
+  static DecisionBundle decisionBundle;
+  static DecisionBundle Decisions(){
+   if(decisionBundle==null){var asset=Resources.Load<TextAsset>("Data/death_decision_text");decisionBundle=asset!=null?JsonUtility.FromJson<DecisionBundle>(asset.text):null;if(decisionBundle==null||decisionBundle.entries==null)decisionBundle=new DecisionBundle{entries=new DecisionRow[0]};}
+   return decisionBundle;
+  }
+  public static int DecisionRowCount{get{return Decisions().entries.Length;}}
+  static DecisionRow DecisionFor(string locale){
+   string code=Exoduser.UnityPort.Core.LobbyLanguage.Normalize(locale);if(code=="ar")code="en";DecisionRow en=null;
+   foreach(var e in Decisions().entries){if(e.code==code)return e;if(e.code=="en")en=e;}
+   return en??new DecisionRow{code="ko",title="안식은 없다",caption="THERE IS NO REST",ask="포기할 것인가?",rise="다시 일어선다",restart="처음부터 다시",giveUp="포기한다",outArena="보스방 앞에서 다시 일어선다. 체력을 모두 되찾는다.",outRestart="이번 여정을 처음부터 다시 시작한다.",outLobby="로비로 돌아간다."};
+  }
+  DecisionRow Tx{get{return DecisionFor(LocaleCode);}}
+  string Label(Choice c){var t=Tx;return c==Choice.Rise?t.rise:c==Choice.Restart?t.restart:t.giveUp;}
+  string Outcome(Choice c){var t=Tx;return c==Choice.Rise?(info.inArena?t.outArena:t.outRestart):c==Choice.Restart?t.outRestart:t.outLobby;}
+  // Long languages (th, el, ru, de ...) shrink by whole point sizes until the run fits maxW at the widest tracking; no ellipsis, no wrap. Floor = 60% of the design size.
+  readonly Dictionary<string,int> fitCache=new Dictionary<string,int>();
+  int FitSize(string t,Font f,int size,float lsEm,float maxW){
+   string key=f.name+"|"+size+"|"+lsEm+"|"+maxW+"|"+t;if(fitCache.TryGetValue(key,out var hit))return hit;
+   int min=Mathf.Max(9,Mathf.RoundToInt(size*.6f)),s=size;while(s>min&&SpacedWidth(t,f,s,s*lsEm)>maxW)s--;
+   fitCache[key]=s;return s;
+  }
+  // Keyboard: ↑↓ / W S / Tab move, Enter / Space confirm. Nothing is accepted before every option is on screen.
+  public Choice PollKeys(){
+   if(!ActionsReady)return Choice.None;int n=choices.Length;
+   if(ExoInput.KeyDown(KeyCode.UpArrow)||ExoInput.KeyDown(KeyCode.W))focus=(focus+n-1)%n;
+   else if(ExoInput.KeyDown(KeyCode.DownArrow)||ExoInput.KeyDown(KeyCode.S)||ExoInput.KeyDown(KeyCode.Tab))focus=(focus+1)%n;
+   else if(ExoInput.KeyDown(KeyCode.Return)||ExoInput.KeyDown(KeyCode.KeypadEnter)||ExoInput.KeyDown(KeyCode.Space))return FocusedChoice;
+   return Choice.None;
+  }
+  void Act(Choice c){if(c==Choice.Rise)OnRetry?.Invoke();else if(c==Choice.Restart)OnRestart?.Invoke();else if(c==Choice.GiveUp)OnLobby?.Invoke();}
+  // Linear Player: GUI.color reaches the screen without sRGB decoding (measured 2026-11-03), so solid tints pass their linear value.
+  static Color Lin(Color c){if(QualitySettings.activeColorSpace!=ColorSpace.Linear)return c;var l=new Color(c.r,c.g,c.b).linear;return new Color(l.r,l.g,l.b,c.a);}
   public void Draw(){
    if(!active)return;Init();
    var old=GUI.matrix;var color=GUI.color;bool enabled=GUI.enabled;
    try {
-    float age=Age;float fade=EaseOut(age/defs.timing.fade);NativeUiViewport.FillScreen(new Color(0,0,0,fade));
-    GUI.matrix=NativeUiViewport.Matrix;
-    // background: "url(cin_remember_wide) center/cover" over the viewport; the dark radial gradient behind it is fully covered
-    float sc=Mathf.Max(NativeUiSafeArea.DesignWidth/bg.width,NativeUiSafeArea.DesignHeight/bg.height);float iw=bg.width*sc,ih=bg.height*sc;
-    GUI.color=new Color(1,1,1,fade);NativeFullscreenArtwork.Draw(bg,NativeUiViewport.ScreenInDesign);
+    float age=Age;
+    NativeUiViewport.FillScreen(new Color(0,0,0,EaseOut(age/BlackIn)));
     float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
     GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s)/2,(Screen.height-1080*s)/2,0),Quaternion.identity,Vector3.one*s);
-    DrawLight(age,fade);
-    DrawTexts(age,fade);
-    DrawButtons(fade);
-    DrawPets(age,fade);
-    DrawDamageLog(fade);
-    Rotate(age);
+    float rise=EaseOut((age-AskAt)/AskDur);float ty=Mathf.Lerp(430,300,rise);   // title block centre line
+    // blood-ink bloom behind the title (baked dark crimson, pre-linearised PNG)
+    float bp=EaseOut((age-BloomAt)/BloomDur);
+    if(bp>0&&splat!=null){float w=Mathf.Lerp(560,640,bp),h=w;GUI.color=new Color(1,1,1,.62f*bp*(1-.35f*rise));NativeUiAudit.DrawTexture(new Rect(960-w/2,ty-h*.47f,w,h),splat,ScaleMode.StretchToFill,true);}
+    GUI.color=Color.white;
+    // title: tracking settles from .36em to .28em while it fades in
+    float tp=EaseOut((age-TitleAt)/TitleDur);
+    var tx=Tx;
+    if(tp>0){int ts=FitSize(tx.title,hahmletLight,68,.36f,1500);Spaced(960,ty-48,96,tx.title,hahmletLight,ts,C(223,214,194,tp),ts*Mathf.Lerp(.36f,.28f,tp));}
+    // crimson hairline grows from the centre
+    float lp=EaseOut((age-LineAt)/LineDur);
+    if(lp>0){float lw=460*lp;Fill(new Rect(960-lw/2,ty+62,lw,1),Lin(C(194,26,16,.85f*lp)));Fill(new Rect(960-lw*.18f,ty+61,lw*.36f,3),Lin(C(194,26,16,.35f*lp)));}
+    float cp=EaseOut((age-CapAt)/CapDur);
+    if(cp>0){int cs=FitSize(tx.caption,cinzel,15,.42f,700);Spaced(960,ty+76,30,tx.caption,cinzel,cs,C(176,44,40,.9f*cp),cs*.42f);}
+    // the decision
+    float ap=EaseOut((age-AskAt)/AskDur);
+    if(ap>0){int qs=FitSize(tx.ask,hahmlet,24,.12f,1200);Spaced(960,520,40,tx.ask,hahmlet,qs,C(230,227,220,ap),qs*.12f);}
+    for(int i=0;i<choices.Length;i++){float op=EaseOut((age-OptAt-OptStep*i)/OptDur);if(op>0)DrawChoice(i,op);}
    } finally {GUI.matrix=old;GUI.color=color;GUI.enabled=enabled;}
   }
-  void Rotate(float age){
-   if(ForcedAge.HasValue)return;
-   int idx=(int)(age/defs.timing.petRotate);if(idx!=seqIdx){seqIdx=idx;if(seqIdx>=seq.Length){seqIdx=0;}SetLine(seqIdx);}
+  void DrawChoice(int i,float a){
+   const float rowH=58,top=600;float y=top+i*rowH;var c=choices[i];string label=Label(c);int size=FitSize(label,hahmlet,21,.16f,820);float ls=size*.16f;
+   float w=SpacedWidth(label,hahmlet,size,ls);var r=new Rect(960-w/2-40,y,w+80,rowH-14);
+   bool hover=GUI.enabled&&ActionsReady&&r.Contains(Event.current.mousePosition);if(hover)focus=i;bool on=focus==i&&ActionsReady;
+   if(on){var dc=Lin(C(194,26,16,a));Diamond(new Vector2(960-w/2-22,y+(rowH-14)/2),dc);Diamond(new Vector2(960+w/2+22,y+(rowH-14)/2),dc);}
+   Spaced(960,y,rowH-14,label,hahmlet,size,on?C(242,240,236,a):C(167,164,157,.82f*a),ls);
+   if(on){float oy=top+choices.Length*rowH+14;string oc=Outcome(c);int os=FitSize(oc,hahmlet,14,.06f,1400);Spaced(960,oy,26,oc,hahmlet,os,C(167,164,157,.9f*a),os*.06f);}
+   if(ActionsReady&&NativeUiAudit.Button(r,GUIContent.none,GUIStyle.none))Act(c);
   }
-  void DrawLight(float age,float fade){
-   // #death::before: 400px -> 40px radial glow, opacity 1 -> 0 over 4s (CSS ease), centred
-   float p=Mathf.Clamp01(age/defs.timing.lightAnim);float e=EaseOut(p);float size=Mathf.Lerp(400,40,e);float op=1-e;
-   GUI.color=new Color(180/255f,140/255f,100/255f,.08f*op*fade);NativeUiAudit.DrawTexture(new Rect(960-size/2,540-size/2,size,size),radial);GUI.color=Color.white;
+  // 9x9 design-px diamond from a baked alpha texture (no matrix rotation, so it stays put under any GUI scale).
+  void Diamond(Vector2 c,Color col){var old=GUI.color;GUI.color=col;NativeUiAudit.DrawTexture(new Rect(c.x-4.5f,c.y-4.5f,9,9),diamond,ScaleMode.StretchToFill,true);GUI.color=old;}
+  static Texture2D MakeDiamond(){
+   const int n=32;var t=new Texture2D(n,n,TextureFormat.RGBA32,false){wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};var px=new Color[n*n];
+   for(int y=0;y<n;y++)for(int x=0;x<n;x++){float d=Mathf.Abs(x+.5f-n/2f)+Mathf.Abs(y+.5f-n/2f);px[y*n+x]=new Color(1,1,1,Mathf.Clamp01((n/2f-d)/1.2f));}
+   t.SetPixels(px);t.Apply(false,true);return t;
   }
-  void DrawTexts(float age,float fade){
-   float pulse=TitlePulse(age);
-   // .dt 45.44px Cinzel Decorative/Nanum 700, ls .14em, colour rgba(218,210,193,.94) x pulse opacity
-   CenteredText(960,386,61,defs.title,nanum,45,C(218,210,193,.94f*fade*pulse),6.3616f,.95f*pulse*fade,3,true);
-   // .ds sub
-   CenteredText(960,457,25,defs.sub,nanum,20,C(198,184,158,.82f*fade),2.3424f,.95f*fade);
-   DrawInfo(fade);
+  GUIStyle spaced;
+  float Adv(string t,int n){if(n==0)return 0;var bar=spaced.CalcSize(new GUIContent("|")).x;return spaced.CalcSize(new GUIContent(t.Substring(0,n)+"|")).x-bar;}
+  // 11-04 lead review: per-char drawing dropped Thai vowel/tone marks (combining marks drawn apart from their base). Scripts that need joined shaping
+  // (Thai·Lao·Khmer·Myanmar·Indic·Arabic) are drawn as one run without tracking; others are spaced per text element (base + its combining marks), never per char.
+  static bool Joined(string t){foreach(var ch in t){int u=ch;if((u>=0x0900&&u<=0x0DFF)||(u>=0x0E00&&u<=0x0EFF)||(u>=0x1000&&u<=0x109F)||(u>=0x1780&&u<=0x17FF)||(u>=0x0600&&u<=0x06FF))return true;}return false;}
+  static int[] Elements(string t){var list=new List<int>();var e=System.Globalization.StringInfo.ParseCombiningCharacters(t);list.AddRange(e);return list.ToArray();}
+  float SpacedWidth(string t,Font f,int size,float ls){Prep(f,size,t);if(Joined(t))return Adv(t,t.Length);int n=Elements(t).Length;return Adv(t,t.Length)+ls*Math.Max(0,n-1);}
+  void Prep(Font f,int size,string t){if(spaced==null)spaced=new GUIStyle(GUIStyle.none){alignment=TextAnchor.MiddleLeft,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset()};spaced.font=NativeSilverHellUi.TextFont(f,t);spaced.fontSize=size;}
+  // Centred, letter-spaced run: glyph x = prefix advance + i*ls. Text colour goes through NativeSilverHellUi.Label (Linear text correction).
+  void Spaced(float cx,float y,float h,string t,Font f,int size,Color c,float ls){
+   float w=SpacedWidth(t,f,size,ls),x0=cx-w/2;spaced.normal.textColor=c;
+   if(Joined(t)){NativeSilverHellUi.Label(new Rect(x0,y,w+2,h),t,spaced);return;}
+   var starts=Elements(t);
+   for(int k=0;k<starts.Length;k++){int s=starts[k],len=(k+1<starts.Length?starts[k+1]:t.Length)-s;string g=t.Substring(s,len);if(string.IsNullOrWhiteSpace(g))continue;float gx=Adv(t,s),gw=Adv(t,s+len)-gx;NativeSilverHellUi.Label(new Rect(x0+gx+ls*k,y,gw+2,h),g,spaced);}
   }
-  // #dInfo: "💀 N 처치 | 1장 — 썩은 숲 | EXP -N | 🔥 최대콤보 N" — Latin/digits/spaces are Cinzel crops, Hangul is Nanum, emoji are crops
-  void DrawInfo(float fade){
-   var I=defs.infoFormat;string hell=info.chapter>=0&&info.chapter<I.hell.Length?I.hell[info.chapter]:NotPorted;
-   string combo=info.maxCombo>=0?info.maxCombo.ToString():NotPorted;
-   string exp=info.expLoss>=0?I.exp+info.expLoss:I.exp.TrimEnd('-',' ')+" "+NotPorted;
-   string text="💀 "+info.kills+" "+I.kills+I.sep+hell+I.sep+exp+I.sep+"🔥 "+I.combo+" "+combo;
-   var parts=new List<KeyValuePair<Tok,string>>();
-   for(int i=0;i<text.Length;i++){
-    string ch;if(char.IsHighSurrogate(text[i])&&i+1<text.Length){ch=text.Substring(i,2);i++;}else ch=text[i].ToString();
-    Tok t;
-    if(tok.TryGetValue("e:"+ch,out t)||tok.TryGetValue("c:"+ch,out t))parts.Add(new KeyValuePair<Tok,string>(t,null));else parts.Add(new KeyValuePair<Tok,string>(null,ch));
-   }
-   const float ls=2.3296f;var col=C(174,151,111,.82f*fade);float total=0;
-   foreach(var p in parts)total+=(p.Key!=null?p.Key.adv:Style(nanum,18).CalcSize(new GUIContent(p.Value)).x)+ls;
-   float x=960-total/2f;
-   foreach(var p in parts){
-    if(p.Key!=null){Sprite(p.Key,x,500+13,p.Key.n.StartsWith("e:")?new Color(1,1,1,.82f*fade):col);x+=p.Key.adv+ls;}
-    else{Text(x,500,26,p.Value,nanum,18,col,0,.95f*fade);x+=Style(nanum,18).CalcSize(new GUIContent(p.Value)).x+ls;}
-   }
-  }
-  void DrawButtons(float fade){
-   bool boss=info.retryBoss;string retry=boss?defs.retryBoss:defs.retry;
-   Button(new Rect(0,554,0,44),retry,17,2.352f,C(218,210,193,.9f),C(8,6,5,.42f),C(141,124,96,.58f),true,fade,OnRetry);
-   Button(new Rect(0,606,0,40),defs.replay,13,1.8368f,C(174,151,111,.78f),C(8,6,5,.42f),C(101,88,68,.48f),false,fade,null);   // replay: no recording in Unity (web disables it when empty)
-   Button(new Rect(0,654,0,40),defs.lobby,13,1.8368f,C(174,151,111,.78f),C(8,6,5,.42f),C(101,88,68,.48f),true,fade,OnLobby);
-  }
-  void Button(Rect r,string label,int size,float ls,Color text,Color bg,Color border,bool hoverable,float fade,Action click){
-   float tw=Width(nanum,size,label,ls,true);r.width=tw+74;r.x=960-r.width/2f;
-   bool hover=hoverable&&GUI.enabled&&r.Contains(Event.current.mousePosition);
-   if(hover){bg=C(79,53,34,.34f);border=C(183,166,129,.8f);text=C(232,223,202,.96f);}
-   Fill(r,new Color(bg.r,bg.g,bg.b,bg.a*fade));Border(r,new Color(border.r,border.g,border.b,border.a*fade));
-   Text(r.x+37,r.y,r.height,label,nanum,size,new Color(text.r,text.g,text.b,text.a*fade),ls,.95f*fade,1,0,true);
-   if(NativeUiAudit.Button(r,GUIContent.none,GUIStyle.none)&&click!=null)click();
-  }
-  // Pet dialogue: portraits 720x480 at (231,580) and (969,580), one line each, fade .25s, rotates every 10s (opacity 0 -> swap after .2s -> 1)
-  void DrawPets(float age,float fade){
-   var T=defs.timing;float a;
-   if(ForcedAge.HasValue)a=Mathf.Clamp01((age-T.petDelay)/T.petFade);
-   else{float p=Mathf.Repeat(age,T.petRotate);bool first=age<T.petRotate;a=first?Mathf.Clamp01((age-T.petDelay)/T.petFade):(p<T.petDelay?1-p/T.petFade:Mathf.Clamp01((p-T.petDelay)/T.petFade));}
-   a*=fade;if(a<=.002f)return;
-   GUI.color=new Color(1,1,1,a);
-   NativeUiAudit.DrawTexture(new Rect(231,580,720,480),crow,ScaleMode.StretchToFill,true);NativeUiAudit.DrawTexture(new Rect(969,580,720,480),cat,ScaleMode.StretchToFill,true);
-   GUI.color=Color.white;
-   PetText(new Rect(369,935.5f,459,76.5f),CrowLine,a);PetText(new Rect(1152,955,285,63),CatLine,a);
-  }
-  // 22px Noto Sans KR Bold white; minimum line step 27.6, actual CalcSize height + 4 if larger; vertically centred with Hangul wrapping
-  void PetText(Rect box,string text,float a){
-   const int size=22;var st=Style(sansBold,size);var lines=Wrap(text,box.width,st);float lh=22.08f*1.25f;foreach(var line in lines)lh=Mathf.Max(lh,st.CalcSize(new GUIContent(line)).y+4);
-   float y=box.y+(box.height-lines.Count*lh)/2f;
-   foreach(var line in lines){
-    st.normal.textColor=new Color(0,0,0,.95f*a);foreach(var d in new[]{new Vector2(0,1.5f),new Vector2(-2,0),new Vector2(2,0),new Vector2(0,-1),new Vector2(0,3)})PaintDeathGlyph(new Rect(box.x+d.x,y+d.y,box.width+8,lh),line,st,true);
-    st.normal.textColor=new Color(1,1,1,a);PaintDeathGlyph(new Rect(box.x,y,box.width+8,lh),line,st,false);y+=lh;
-   }
-  }
+  // 11-04 judge 6: the front title (NativeRevive death screen, fades out in 0.35s) must be gone before this title appears.
+  // The decision screen satisfies it by timing: black fills over BlackIn and its title starts at TitleAt (>= TitleGateDelay), so no extra gate is multiplied in.
+  public const float TitleGateDelay=.4f,TitleGateRise=.8f;
+  public static float TitleGate(float age){return Mathf.SmoothStep(0,1,Mathf.Clamp01((age-TitleGateDelay)/TitleGateRise));}
+
   static bool Hangul(char c){return c>=0xAC00&&c<=0xD7A3;}
-  static bool CanBreak(string t,int i){
-   if(i<=0||i>=t.Length)return false;char l=t[i-1],r=t[i];
-   if(l==' ')return true;if(r==' ')return false;
-   if(")].,!?:;%·".IndexOf(r)>=0||"([{".IndexOf(l)>=0)return false;
-   return Hangul(l)||Hangul(r);
-  }
-  List<string> Wrap(string text,float width,GUIStyle st){
-   var res=new List<string>();int start=0;
-   while(start<text.Length){
-    int end=start,lastBreak=-1;
-    for(int i=start+1;i<=text.Length;i++){
-     // test the width first, then record i as a break opportunity (the earlier order never broke between Hangul syllables)
-     if(st.CalcSize(new GUIContent(text.Substring(start,i-start).TrimEnd())).x>width&&lastBreak>start){end=lastBreak;break;}
-     if(CanBreak(text,i)||i==text.Length)lastBreak=i;
-     end=i;
-    }
-    if(end<=start)end=text.Length;
-    res.Add(text.Substring(start,end-start).Trim());start=end;while(start<text.Length&&text[start]==' ')start++;
-   }
-   return res;
-  }
-  // #dDmgLog: right 24px, vertically centred, right aligned, 15.2px, line-height 2; last entry red 1.3rem 900, "맞아서 사망" footer. Unity has no damage log: "미이식".
-  void DrawDamageLog(float fade){
-   var st=Style(sans,15);
-   if(info.damageLog==null){
-    float w=st.CalcSize(new GUIContent(NotPorted)).x;st.normal.textColor=new Color(170/255f,136/255f,102/255f,fade);NativeUiAudit.Label(new Rect(1896-w,540-15,w+8,30),NotPorted,st);return;
-   }
-   int n=info.damageLog.Length;float lh=30.4f;float total=(n+(n>0?1.2f:0))*lh;float y=540-total/2f;
-   for(int i=0;i<n;i++){
-    bool last=i==n-1;string a="-"+info.damageLog[i].amount;string src=" "+info.damageLog[i].source;
-    var big=Style(sansBold,last?21:15);var small=Style(sans,13);float wa=big.CalcSize(new GUIContent(a)).x,ws=small.CalcSize(new GUIContent(src)).x;
-    float x=1896-wa-ws;big.normal.textColor=last?new Color(1,34/255f,34/255f,fade):new Color(204/255f,102/255f,68/255f,fade);NativeUiAudit.Label(new Rect(x,y,wa+8,lh),a,big);
-    small.normal.textColor=new Color(136/255f,119/255f,102/255f,fade);NativeUiAudit.Label(new Rect(x+wa,y,ws+8,lh),src,small);y+=lh;
-   }
-   if(n>0){var f=Style(sans,13);string t=defs.dmgLogDead;float w=f.CalcSize(new GUIContent(t)).x;Fill(new Rect(1896-w,y+4,w,1),new Color(68/255f,34/255f,17/255f,fade));f.normal.textColor=new Color(136/255f,102/255f,68/255f,fade);NativeUiAudit.Label(new Rect(1896-w,y+6,w+8,lh),t,f);}
-  }
 
   // ---- death replay screen (#deathReplay, CSS 649-656): shape only, there is no recording in Unity ----
   public void DrawReplayShape(float progress01,float remainingSeconds){

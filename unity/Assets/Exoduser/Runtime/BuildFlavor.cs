@@ -84,7 +84,10 @@ namespace Exoduser.UnityPort {
   public string DemoEndButton(bool english){return DemoEndButton(english?"en":"ko");}
   // web: 'v'+version+' · '+date without dashes (index.html _LOBBY_VER)
   public static string ReleaseVersion{get{Load();return release.version??"";}}   // release-version.json (web EXODUSER_RELEASE.version)
-  public static string VersionLine{get{Load();return "v"+release.version+" · "+(release.date??"").Replace("-","");}}
+  // Unity build version (PlayerSettings.bundleVersion = Application.version): the title screen shows this instead of the web release version (11-04 first-impression 5).
+  public static string UnityVersion{get{return Application.version??"";}}
+  // 11-04 CTO: Unity demo v0 is versioned by PlayerSettings bundleVersion (0.1.0), apart from the web Steam line (0.7.x); the date part is still the release_web date.
+  public static string VersionLine{get{Load();return "v"+UnityVersion+" · "+(release.date??"").Replace("-","");}}
   public static LobbyLabelStyle LobbyStyle{get{Load();return new LobbyLabelStyle{overlayX=defs.lobby.overlay.x,overlayY=defs.lobby.overlay.y,fontSize=defs.lobby.overlay.fontSize,ls=defs.lobby.overlay.letterSpacing,lineHeight=defs.lobby.overlay.lineHeight,color=ToColor(defs.lobby.overlay.color),limitsColor=ToColor(defs.lobby.overlay.limitsColor),modeOffline=defs.lobby.overlay.modeOffline,modeOnline=defs.lobby.overlay.modeOnline,cornerSize=defs.lobby.corner.fontSize,cornerLs=defs.lobby.corner.letterSpacing,cornerRight=defs.lobby.corner.rightEdge,cornerColor=ToColor(defs.lobby.corner.color)};}}
   static Color ToColor(float[] c){return new Color(c[0]/255f,c[1]/255f,c[2]/255f,c[3]);}
   public struct LobbyLabelStyle {public float overlayX,overlayY,fontSize,ls,lineHeight,cornerSize,cornerLs,cornerRight;public Color color,limitsColor,cornerColor;public string modeOffline,modeOnline;}
