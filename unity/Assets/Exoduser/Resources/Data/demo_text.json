@@ -2859,40 +2859,6 @@
         "Кълбо злоба",
         "Sfera kedengkian"
       ]
-    },
-    {
-      "key": "이전 저장을 가져오지 못해 새로 시작합니다. 기존 파일은 그대로 보존됩니다.",
-      "texts": [
-        "이전 저장을 가져오지 못해 새로 시작합니다. 기존 파일은 그대로 보존됩니다.",
-        "Your earlier save could not be imported, so you are starting fresh. The original files are untouched.",
-        "无法导入之前的存档，将重新开始。原文件保持不变。",
-        "以前のセーブを読み込めなかったため、最初から始めます。元のファイルはそのまま残っています。",
-        "No se pudo importar tu partida anterior, así que empiezas de cero. Los archivos originales no se han tocado.",
-        "無法匯入先前的存檔，將重新開始。原始檔案保持不變。",
-        "Не удалось импортировать прежнее сохранение, поэтому вы начинаете заново. Исходные файлы не тронуты.",
-        "Dein früherer Spielstand konnte nicht importiert werden, du beginnst neu. Die Originaldateien bleiben unberührt.",
-        "Não foi possível importar seu save anterior, então você começa do zero. Os arquivos originais permanecem intactos.",
-        "Votre ancienne sauvegarde n'a pas pu être importée, vous repartez de zéro. Les fichiers d'origine sont intacts.",
-        "Nie udało się zaimportować poprzedniego zapisu, więc zaczynasz od nowa. Oryginalne pliki pozostały nietknięte.",
-        "Non è stato possibile importare il salvataggio precedente, quindi ricominci da zero. I file originali sono intatti.",
-        "Не вдалося імпортувати попереднє збереження, тому ви починаєте заново. Початкові файли не змінено.",
-        "Önceki kaydın içe aktarılamadı, bu yüzden baştan başlıyorsun. Özgün dosyalar olduğu gibi duruyor.",
-        "Không thể nhập bản lưu trước đó nên bạn bắt đầu lại từ đầu. Các tệp gốc vẫn được giữ nguyên.",
-        "นำเข้าเซฟก่อนหน้าไม่ได้ จึงเริ่มใหม่ ไฟล์เดิมยังอยู่ครบ",
-        "Simpanan sebelumnya tidak dapat diimpor, jadi kamu mulai dari awal. File aslinya tetap utuh.",
-        "تعذّر استيراد حفظك السابق، لذا ستبدأ من جديد. الملفات الأصلية لم تُمَس.",
-        "Din tidigare sparfil kunde inte importeras, så du börjar om. Originalfilerna är orörda.",
-        "Din tidligere gemte fil kunne ikke importeres, så du starter forfra. De oprindelige filer er urørte.",
-        "Den tidligere lagringen din kunne ikke importeres, så du starter på nytt. De opprinnelige filene er urørt.",
-        "Aiempaa tallennustasi ei voitu tuoda, joten aloitat alusta. Alkuperäiset tiedostot ovat koskemattomia.",
-        "Předchozí uložení se nepodařilo importovat, takže začínáš znovu. Původní soubory zůstaly nedotčené.",
-        "A korábbi mentést nem sikerült importálni, ezért újrakezded. Az eredeti fájlok érintetlenek maradtak.",
-        "Salvarea anterioară nu a putut fi importată, așa că începi de la zero. Fișierele originale au rămas neatinse.",
-        "Je eerdere save kon niet worden geïmporteerd, dus je begint opnieuw. De originele bestanden zijn onaangeroerd.",
-        "Η προηγούμενη αποθήκευσή σου δεν μπόρεσε να εισαχθεί, οπότε ξεκινάς από την αρχή. Τα αρχικά αρχεία είναι άθικτα.",
-        "Предишният ти запис не можа да бъде импортиран, затова започваш отначало. Оригиналните файлове са недокоснати.",
-        "Simpanan terdahulu anda tidak dapat diimport, jadi anda bermula semula. Fail asal kekal tidak disentuh."
-      ]
     }
   ],
   "objectiveSourceCommit": "06ac6882b550cb6373f2953ede3b2acc6f69e211"

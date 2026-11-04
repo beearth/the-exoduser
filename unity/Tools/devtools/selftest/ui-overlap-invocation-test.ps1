@@ -10,6 +10,9 @@ foreach($name in 'Read-UiOverlapSummary','Invoke-UiOverlapCheck'){
  $f=$ast.FindAll({param($n)$n -is [Management.Automation.Language.FunctionDefinitionAst]},$true)|Where-Object Name -eq $name|Select-Object -First 1
  if($f){. ([scriptblock]::Create($f.Extent.Text))}
 }
+# 11-04 ratchet: the known-list step (Apply-UiKnownList) runs node on the loop worktree; these decisions test the raw summary only.
+function Apply-UiKnownList($run,$stateObj,$runDir){}
+$st=$null
 $uiTry=$ast.FindAll({param($n)$n -is [Management.Automation.Language.TryStatementAst] -and $n.Extent.Text.Contains("`$uiLog = Join-Path `$runDir 'ui-overlap.log'")},$true)|Sort-Object {$_.Extent.Text.Length}|Select-Object -First 1
 if(-not $uiTry){throw 'FAIL: UI invocation block not found'}
 $fixture=Join-Path $Output ('invocation-'+[guid]::NewGuid().ToString('N'))
