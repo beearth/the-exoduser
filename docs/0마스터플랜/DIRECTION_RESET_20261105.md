@@ -14,7 +14,7 @@
    - 디아블로4: `docs/0마스터플랜/D4_STUDY/` 01 환경·조명·색, 02 HUD·UI, 03 카메라·가림·전투 가독성, 04 캐릭터·몬스터·보스 동작·VFX
    - Path of Exile 2: `docs/0마스터플랜/GAME_STUDY/poe2.md` (맵·광원·안개·전투·동작)
    - Phantom Blade Zero: `docs/0마스터플랜/GAME_STUDY/phantom_blade_zero.md` (임팩트·전투)
-   - Downfall of Yellowsky《黄天逆途》(황천역도 — "황천"은 黄天 독음, 望虚社, UE5·완전 3D·픽셀 아님): `docs/0마스터플랜/GAME_STUDY/downfall_of_yellowsky.md` (전투 임팩트·破刃·보스 연출)
+   - Downfall of Yellowsky《黄天逆途》(황천역도 — "황천"은 黄天 독음, 望虚社, UE5·완전 3D·픽셀 아님): `docs/0마스터플랜/GAME_STUDY/downfall_of_yellowsky.md` — **최상위 분위기 기준**(11-05 사용자 확정: 분위기·광원·안개를 이 게임처럼)
    - ARPG 공통 관례 체크리스트: `docs/0마스터플랜/ARPG_CONVENTIONS_CHECKLIST_20261105.md`
 3. **우리 매뉴얼(EXODUSER 제작 매뉴얼).** 연구를 합쳐 분야별(환경·조명·안개·HUD/UI·카메라·가림·캐릭터/몬스터/보스 동작·VFX·임팩트·사운드) 매뉴얼을 만든다. 분야마다:
    - **도구 1개 확정**(기성 도구를 하나 정하거나, 없으면 우리 커스텀 툴을 만든다 — 커스텀 툴은 무엇을 자동화하는지·입출력·누가 쓰는지까지 명세)
