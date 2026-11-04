@@ -53,7 +53,7 @@ ring_new = size * 1.03 * 1110 / 1536
 check(size / 560 <= .6, 'size ratio %.3f <= .6' % (size / 560))
 check(ring_new <= 240, 'ring diameter with pulse %.1f px <= 240' % ring_new)
 check(alpha <= .6, 'overlay alpha %.2f' % alpha)
-check('Art/Startup/bonfire_barrier_silver' in text and 'Art/Startup/bonfire_barrier"' not in text, 'code loads the silver sheet only')
+check('BarrierLegacyQa?"Art/Startup/bonfire_barrier":"Art/Startup/bonfire_barrier_silver"' in text, 'code loads the silver sheet unless the QA legacy flag is set')
 check(subprocess.run([sys.executable, '-B', str(Path(__file__).with_name('recolor_bonfire_barrier.py')), '--check-only'], stdin=subprocess.DEVNULL).returncode == 0, 'recolor --check-only identical')
 print('failures', len(fails))
 sys.exit(1 if fails else 0)

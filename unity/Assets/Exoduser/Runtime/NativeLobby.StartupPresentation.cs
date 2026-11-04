@@ -175,7 +175,8 @@ namespace Exoduser.UnityPort
   }
   // Silver Hell restyle (11-04): silver/crimson sheet (tools/vfx/recolor_bonfire_barrier.py), 560 -> 320 design px (ring ~232 px = 41% smaller than ~412), overlay alpha .9 -> .5
   public const float BarrierSize=320,BarrierAlpha=.5f;
-  void DrawStartupBarrier(){if(startupBarrier==null)startupBarrier=Resources.Load<Texture2D>("Art/Startup/bonfire_barrier_silver");if(startupBarrier==null)return;float size=BarrierSize*(1+Mathf.Sin(Time.unscaledTime*1000/300)*.03f);var color=GUI.color;GUI.color=new Color(color.r,color.g,color.b,color.a*BarrierAlpha);NativeUiAudit.DrawTexture(new Rect((NativeUiSafeArea.DesignWidth-size)/2,(NativeUiSafeArea.DesignHeight-size)/2,size,size),startupBarrier,ScaleMode.StretchToFill);GUI.color=color;}
+  public static bool BarrierLegacyQa;   // review only (--unity-barrier-legacy): draws the old gold sheet at 560 px / alpha .9 for before/after captures
+  void DrawStartupBarrier(){if(startupBarrier==null)startupBarrier=Resources.Load<Texture2D>(BarrierLegacyQa?"Art/Startup/bonfire_barrier":"Art/Startup/bonfire_barrier_silver");if(startupBarrier==null)return;float size=(BarrierLegacyQa?560:BarrierSize)*(1+Mathf.Sin(Time.unscaledTime*1000/300)*.03f);var color=GUI.color;GUI.color=new Color(color.r,color.g,color.b,color.a*(BarrierLegacyQa?.9f:BarrierAlpha));NativeUiAudit.DrawTexture(new Rect((NativeUiSafeArea.DesignWidth-size)/2,(NativeUiSafeArea.DesignHeight-size)/2,size,size),startupBarrier,ScaleMode.StretchToFill);GUI.color=color;}
   void DrawStartupGuidePhysical()
   {
    float sw=NativeUiSafeArea.DesignWidth,sh=NativeUiSafeArea.DesignHeight;bool insideSafe=new Rect(0,0,sw,sh).Contains(Event.current.mousePosition);
