@@ -1,5 +1,5 @@
 # MANUAL 05 — 몬스터 동작 디렉션 (초안 2026-11-05)
-- 상태: 초안 | 연구 반영: d4_04_anim(가족 설계·데스 킷), conventions, pbz(적 반응 4단계) | 연구 반영 대기: 1-1 etype별 실제 AI 프레임(Core `EnemyAi.cs` 확인 필요), D4 몬스터 가족별 이동 리듬 실측(공개 자료 없음)
+- 상태: 초안(2차 반영 11-05) | 연구 반영: d4_04_anim(가족 설계·데스 킷), conventions, pbz(적 반응 4단계), codex_motion_direction(몬스터 예고), codex_frame_data(경직 참고), codex_3d_pixel(원거리 소실), codex_3d_pixel_small_team(범위), TOOLCHAIN_20261105 | 연구 반영 대기: 몬스터별 예고·경직 공개 수치(codex_motion_direction이 전 게임 "미확인"으로 확인, 공개 자료로는 채울 수 없음 → Mac 실측), 1-1 etype별 실제 AI 프레임(Core `EnemyAi.cs` 확인 필요), D4 몬스터 가족별 이동 리듬 실측(공개 자료 없음)
 - 범위: 근접·원거리·돌진·소환·엘리트의 이동 리듬, 예비동작 하한, 피격 경직·넉백, 사망의 표현. / 정하지 않는 것: HP·공격력·경직 시간·포이즈·AI 선택(Core). 어택 티켓(동시공격 제한)은 만들지 않는다(핵앤슬래시, CLAUDE.md 7절).
 
 ## 1. 목표 장면·레퍼런스 (무엇을, 왜)
@@ -17,6 +17,9 @@
 7. 먼 적을 지우지 않는다: 안개·어둠·비네트에 묻혀 먼 적이 안 보이면 FAIL(카메라 LOCK). 이유: 먼 적이 보이는 생동감이 핵심.
 8. 소멸은 사망 포즈가 끝난 뒤. 점묘·디더 소멸 금지. 이유: 점 금지.
 9. 피격 섬광은 1~3틱, 흰 원판 금지. 이유: 탄막·예고 가림 방지.
+10. 몬스터 예비 시간은 플레이어 공격 비율과 통일하지 않는다. 위협 방향·범위·접근 속도까지 읽히는지로 정한다. 이유: 플레이어에게는 반응성이, 적에게는 플레이어가 반응할 예비동작이 필요하다 [사실 GDC 구분 / 추정 적용, codex_motion_direction]. 특정 게임의 몬스터별 예고 길이는 이 원칙에서 역산하지 않는다.
+11. 숨긴 공격에는 대응 가능한 선행 동작을 붙인다. 이유: PBZ 개발자는 실제 무술이 의도를 숨기는 문제를 시각 신호로 푼다고 말했다(창병 숨긴 찌르기에 후방 회피 동작 연결) [사실 단일, codex_vfx_direction PB-INT].
+12. 가장 먼 깊이(약 10타일)의 걸음·예비 정점이 픽셀 깜빡임에 지워지지 않는지 따로 본다. 이유: 원근에서는 기준 깊이만 안정되고 먼 팔·무기가 소실될 수 있고, Dead Cells도 픽셀 깜빡임을 해결하지 못했다고 명시했다 [사실 / 추정, codex_3d_pixel §6, codex_motion_direction].
 
 ## 3. 수치 기준
 | 항목 | 값 | 근거 |
@@ -31,6 +34,14 @@
 | 사망 시작 | 2틱 안에 무너짐, 소멸 ≤0.5초 | [추정] A9 |
 | 넉백 | Core 값을 따르고 표현은 발이 끌리지 않게 미끄럼 대신 한 걸음 후퇴 포즈 | Core 확인 필요 (`Core/EnemyHurt.Body.cs`) |
 | 군집 위상 | 개체별 시작 위상 0~1 무작위 | [추정] |
+
+### 3.0 연구 참고 (2차, 참고 열 — Core 값 변경 근거 아님)
+| 항목 | 연구값 | 우리 Core | 비고 / 근거 |
+|---|---|---|---|
+| 적 행동 중단 | Dead Cells breach 발생 시 적 행동 중단·기절 1.4s(84틱) | 일반 그로기 180틱(3.0s), 미니 스턴 60틱(1.0s) (`Core/EnemyPoiseRules.cs`) | 조건이 다르다(breach는 특수 조건). 참고만 [단일 커뮤니티 측정, codex_frame_data] |
+| 보스 stun 면역 | Hades는 일반 공격에 짧은 stagger, 보스는 stun 면역이라고 설명(지속 수치 미확인) | 보스 그로기 90틱 후 면역 300틱(06번) | 구조(면역 구간)가 같은 방향 [단일] |
+| 타격 후 정지 vs 행동 불능 | 둘은 다른 값이다. 정지 시간을 경직 길이로 쓰지 않는다 | 경직은 Core 길이 | [사실, 07번 §3.4] |
+| 몬스터별 예고·경직 | 대상 게임 전부 미확인 | Core 확인 필요 (`Core/EnemyAi.cs`) | 공개 자료로 채우지 못함 |
 
 ### 3.1 유형별 표
 | 유형 | 이동 리듬 | 예비 길이 하한(표현이 보장) | 피격·경직 | 사망 |
@@ -50,6 +61,7 @@ Core 값(예비·쿨다운)은 `Core/EnemyAi.cs`, `Core/EliteTables.cs`에서 �
 | 상태 연결 | Animator(Generic) + Animation Rigging 발 IK | Animation Blueprint + Control Rig |
 | 군집 위상 | Animator 시작 Offset 무작위 | Montage Start Position 무작위 |
 - 대안: 자동 리그(Meshy·Mixamo) — 치마·뿔 가중치가 깨져 제외 [단일, d4_04_anim 5.2].
+- TOOLCHAIN §2-6과 대조(2차): 일반 몬스터 기본형 = Meshy/Tripo 이미지→3D + Blender 수정(A+수정), 리깅 = Blender 수동, 런타임 = 신규 몬스터 Animator + Animation Rigging, 픽셀 렌더 = PixelActorPass 아틀라스(D04-5). 이 문서의 추천과 같다. 유료 생성은 `docs/API연결_가이드.md` 범위와 SPEND_LOG 기록이 선행이다(D05-3).
 - 커스텀 툴 1개 — "가족 클립 세트 검증기": 입력 = 가족 폴더의 FBX, 처리 = 필수 클립(이동·공격·피격·경직·사망A·사망B) 누락과 길이 검사, 출력 = 체크표. 사용자 = 구현 레인.
 
 ## 5. 절차
@@ -58,7 +70,8 @@ Core 값(예비·쿨다운)은 `Core/EnemyAi.cs`, `Core/EliteTables.cs`에서 �
 2. 작업: 걷기 4포즈 → 공격 키포즈 3~5 → 피격 2방향 → 사망 2종. 각각 1x 단색 실루엣 판정.
 3. 출력: FBX, 클립명 `<가족>_<동작>`(예: `skel_walk`, `skel_death_b`), 제자리, 60fps 표본, 클립 길이 = Core 길이/60.
 ### 5.2 Unity 반입
-- Generic, Bake Into Pose, 상태 = Core 1:1, 군집 Offset은 스폰 시 무작위, 렌더는 픽셀 RT 레이어(30).
+- Generic, Bake Into Pose, 상태 = Core 1:1, 군집 Offset은 스폰 시 무작위, 렌더는 픽셀 RT 레이어(30). 현행은 적 액터당 RT(`NativeEnemyRigRenderer`)라 30마리 동시일 때 비용 구조 위험이 있다. D04-5 승인 뒤 PixelActorPass 아틀라스 1장(적 30+영웅+보스 ≤2.0ms [추정])으로 이전한다 — TOOLCHAIN a-1.
+- 범위(소규모 팀 사례 반영): 가족 한 개를 6클립(이동·공격·피격·경직·사망A·B)까지 끝내고 1x 판정 PASS한 뒤 다음 가족으로 간다. 클립 라이브러리는 가족 공용 스켈레톤으로 재사용한다(Dead Cells는 장비 교체와 재수정이 쉽도록 3D 파이프라인을 택했다 [사실, codex_3d_pixel_small_team §3]).
 ### 5.3 UE5 반입 (대응만)
 - Root Motion 끔, 공격은 Montage + Notify, 군집 Start Position 무작위, 풀링된 액터 재사용 시 상태 리셋.
 
@@ -66,6 +79,7 @@ Core 값(예비·쿨다운)은 `Core/EnemyAi.cs`, `Core/EliteTables.cs`에서 �
 - 1x 비교판: 한 가족의 걷기·공격 예비·피격·사망을 같은 크기로 D4 공개 영상 옆에 놓는다(감각 대조).
 - 1920×1080과 3840×1080에서 가장 먼 적(약 10타일)의 종류가 걸음으로 구분된다. 3x 크롭 점 0.
 - 10초 무음 영상: 같은 종류 6마리가 군집일 때 동기화되어 보이지 않는다.
+- 원거리 깊이 판정(2차): 가장 먼 깊이에서 예비 정점이 구분되고 팔·무기가 픽셀 깜빡임으로 사라지지 않는다. 큰 VFX로 덮어 해결했다고 판정하지 않는다(codex_3d_pixel §4.5).
 - 예산: 가족당 클립 ≥ 6, 화면 동시 애니메이션 몬스터는 Core 상한(`Core/EnemyCap`)을 따르며 60fps 유지.
 
 ## 7. 금지
@@ -76,9 +90,12 @@ Core 값(예비·쿨다운)은 `Core/EnemyAi.cs`, `Core/EliteTables.cs`에서 �
 ## 8. 사용자 결정 필요 항목
 - D05-1: 사망 2종 중 "날아감"을 강타·처형 때만 쓰는 규칙을 확정하는가? 추천: 예(D4 데스 킷 방식).
 - D05-2: 가족 수준 우선순위: 1-1 etype(0~29·47) 중 무엇부터? 추천: 1-1 출현 빈도 상위 3가족.
+- D05-3: 일반 몬스터 기본형을 Meshy/Tripo 이미지→3D + Blender 수정으로 만드는 유료 크레딧을 승인하는가(TOOLCHAIN 제안, 가족 3개분 최소)? 추천: 예, 승인 범위 안에서 SPEND_LOG 기록. 대안: 전부 Blender 직접 조형(느림). 06번 D06-4와 같은 승인으로 묶을 수 있다.
+- D04-5(04번에서 이어짐): 픽셀 액터 렌더를 PixelActorPass 아틀라스로 이전하는가. 몬스터 다수 동시 비용이 걸려 있어 이 문서에서도 필수 확인 항목이다.
 
 ## 9. 출처
 - docs/0마스터플랜/D4_STUDY/04_character_monster_boss_anim.md §3.2
 - docs/0마스터플랜/GAME_STUDY/phantom_blade_zero.md 규칙6, §3.3
 - Core: unity/Assets/Exoduser/Runtime/Core/EnemyPoiseRules.cs, EnemyHurt.Body.cs, EnemyAi.cs, EliteTables.cs
 - docs/8.0몬스터디자인 (읽기만)
+- 2차 반영: docs/0마스터플랜/GAME_STUDY/codex_motion_direction.md (몬스터 예고 절), codex_frame_data.md (Dead Cells breach, Hades stun), codex_vfx_direction.md (PBZ 선행 동작), codex_3d_pixel.md (§4.5·6), codex_3d_pixel_small_team.md (§3·9), docs/0마스터플랜/MANUAL/TOOLCHAIN_20261105.md (§2-6, §3a-1)

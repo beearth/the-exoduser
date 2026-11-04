@@ -1,5 +1,5 @@
 # MANUAL 06 — 보스 디렉션: 1-1 다크 드루이드부터 (초안 2026-11-05)
-- 상태: 초안 | 연구 반영: d4_04_boss_vfx, d4_04_anim, d4_03_cam, pbz(보스 리듬 규칙10), yellowsky | 연구 반영 대기: No Rest for the Wicked 프레임 실측(5.1 NRFTW_REFERENCE_STUDY_20261031은 감각 원칙만), 드루이드 신규 모델 LOCK 시트 확정, 보스 등장·퇴장 컷 길이 Mac 실측
+- 상태: 초안(2차 반영 11-05) | 연구 반영: d4_04_boss_vfx, d4_04_anim, d4_03_cam, pbz(보스 리듬 규칙10), yellowsky, codex_motion_direction, codex_frame_data, codex_vfx_direction, codex_3d_pixel, codex_3d_pixel_small_team, TOOLCHAIN_20261105, REFERENCE_INDEX_20261105 | 연구 반영 대기: No Rest for the Wicked 프레임 실측(5.1 NRFTW_REFERENCE_STUDY_20261031은 감각 원칙만; REFERENCE_INDEX가 NRftW를 보스 동작 1차 자료로 지정했으나 80.lv 원문은 Mac에서 직접 열람 필요), 드루이드 신규 모델 LOCK 시트 확정, 보스 등장·퇴장 컷 길이 Mac 실측
 - 범위: 페이즈 구조 표현, 기술별 예고·회피 창·빈틈의 표시 규칙, 등장·퇴장·전환 연출, 보스전 카메라. / 정하지 않는 것: HP·기술 선택·프레임 길이·포이즈(Core `DruidBoss*.cs`, `DruidRemodelData.cs`가 정답). 아래 프레임 수는 Core 인용이며 변경 제안은 "Core 제안"으로 표시한다.
 
 ## 1. 목표 장면·레퍼런스 (무엇을, 왜)
@@ -18,6 +18,10 @@
 8. 카메라 피치 34° 고정, 보스전은 거리만. 이유: 카메라 LOCK.
 9. 보스 이동은 플레이어 걷기의 40~50%, 발 IK로 미끄럼 0. 이유: 무게감(M5).
 10. 보스 피격은 additive 흔들림만, 경직은 포이즈 붕괴 90틱뿐. 이유: 보스는 밀리지 않는다.
+11. 기술 설계 → 참고 포즈 → 키 순서로 만든다. 설계자가 공격을 정하고 애니메이터가 참고 동작·포즈를 제안한다. 이유: Blasphemous 검술 보스 제작이 이 협업 방식이다 [사실 개발자 AMA, codex_motion_direction].
+12. 예고 시각(포즈·바닥 표식)과 Core 판정 시각을 같은 이벤트로 묶고, 빈 공격과 명중 공격을 나눠 본다. 이유: Hades는 Nova의 폭발 판정과 VFX를 맞추는 수정을 공식 기록했다 [사실 단일].
+13. 숨긴 공격(예비가 짧거나 가려진 기술)은 만들지 않는다. 필요하면 대응 가능한 선행 동작을 붙인다. 이유: PBZ 개발자 설명 [사실 단일, codex_vfx_direction PB-INT] + 원샷 공정성(원칙 4).
+14. 보스 예고 중 아군 장식 효과는 감축 대상이다. 감축은 연무·잔상·보조 입자에 적용하고 피해 범위·투사체·판정은 줄이지 않는다. 이유: 예고와 탄 경계 보호 [추정, codex_vfx_direction §8].
 
 ## 3. 수치 기준 (Core 인용 — 리모델 드루이드, `Core/DruidRemodelData.cs`)
 60틱 = 1초. 예고(Tele) = 회피 창, 회복(Rec) = 빈틈. 페이즈 TeleM=1(예고는 줄지 않음).
@@ -69,6 +73,16 @@
 | 카메라 | 피치 34° 고정, 거리만 변경, 줌 0.6초 전환(승인 줌 0.80~0.90, 확정 D06-2) | [추정] d4_04_boss_vfx ⑩, 보드 BX-11 |
 | 크기 | 목숨1 영웅 약 2.79배 / 2 약 2.38배 / 3 약 2.02배 (후보 소스 계산, 화면 합격 수치 아님) | 보드 11-04 감사표 |
 
+### 3.3b 연구 참고 프레임 데이터 (2차, 참고 열 — Core 값이 아니다)
+| 항목 | 연구 공개값 | 우리 Core 값(출처) | 판정 | 근거 |
+|---|---|---|---|---|
+| 보스 행동 불능 | Dead Cells breach 중 적 행동 중단·기절 1.4s(84틱, 조건부 효과) | 포이즈 붕괴 그로기 90틱=1.5s, 이후 면역 300틱 (`Core/EnemyPoiseRules.cs`) | 길이가 비슷하다. 변경 제안 없음 | [단일 커뮤니티 측정, codex_frame_data] |
+| 보스 stun 면역 | Hades 보스는 일반 stun 면역(지속 수치 미확인) | 붕괴 뒤 면역 300틱 | 같은 구조 | [단일] |
+| 기술 예고 길이 | 대상 게임(Blasphemous Esdras 등) 전부 수치 미확인. 커뮤니티 분석 수치는 이미지 도표라 미채택 | 큰 기술 예고 32~70틱(§3.1) | 비교 불가 → Mac 실측 | [미확인] |
+| 막기 가능 연타 → 큰 빈틈 | Esdras Quick Attack(짧은 예고 + 공격 후 반격 기회)·Charge Attack(장거리 접근 + 회복 중 반격)이라는 구조 설명만 확인 | slam/charge 회복 70틱, 막으면 +30틱 | 구조 일치 | [단일 커뮤니티 분석, 수치 미채택] |
+| 치명타 정지 | Dead Cells 1F(07번 §3.4) | 포이즈 붕괴 시 Core 슬로 20 (`GroggySlowMo`) | 보스 붕괴 슬로 억제 여부는 D07-2 | [사실] |
+- 해석: 보스 행동 불능 길이를 "히트스톱"과 섞지 않는다. 정지(접촉 순간)와 행동 불능(경직)은 따로 적는다.
+
 ### 3.4 등장·전환·퇴장 연출 타임라인
 | 구간 | 시간 | 내용 |
 |---|---|---|
@@ -88,10 +102,12 @@
 | 예고 표시 | 메시 + 셰이더(지면 표식) | Decal/Niagara Ribbon + Material |
 | 카메라 | 보스 줌 거리만 보간 | Spring Arm 길이만 보간 |
 - 대안: Meshy/Tripo 이미지→3D 후 부위 교체(승인분만). 자동 리그 제외.
+- TOOLCHAIN §2-6·§2-7과 대조(2차): 보스 모델 = Blender 부위별 조형(B), 리깅 = Blender 수동(Rigify), 동작 = Blender 손키(Cascadeur 보류), 런타임 = 신규 보스 Animator + Animation Rigging, 픽셀 렌더 = PixelActorPass 아틀라스(D04-5), 예고 = Decal Projector + Shader Graph(발밑 원은 ZTest Always 쿼드), 전투 VFX = Shuriken + Shader Graph. 이 문서의 추천과 같고 Decal 방식만 명시를 보강했다. UE5: 같은 Blender 경로 + Animation Blueprint/Control Rig, 예고는 Decal Actor.
 - 커스텀 툴 — "보스 타이밍 표 → 클립 길이 검증기": 입력 §3.1 표 + Core JSON, 출력 클립 길이·예고 틱 불일치 목록. 사용자 구현 레인.
 
 ## 5. 절차
 ### 5.1 공통
+0. 첫 범위(소규모 팀 사례 반영): 12종을 한 번에 키 작업하지 않는다. 먼저 slam·slashCombo·전환(붕괴) 3개를 끝까지(모델·리그·키·예고·VFX·소리 tell·실게임 판정) 만들어 합격시킨 뒤 나머지 9종을 같은 양식으로 늘린다. 범위는 줄여도 품질선은 낮추지 않는다. 기술 한 개당 첫 제작 시간과 재수정 시간을 따로 기록한다 [codex_3d_pixel_small_team §9, TOOLCHAIN §5 S4]. 단 CLAUDE.md는 "버그 수정으로 범위를 줄이지 않는다"이므로 이 3개는 착수 순서일 뿐 데모 범위 축소가 아니다(D06-5).
 1. 입력: LOCK 시트, §3.1 표, 기술별 동작 출처(NRFTW 감각 원칙).
 2. 작업: 회색 박스 1x 판정 → 조형 → 리그 → 기술 키포즈 3~5장 → 홀드·과장 → 예고 표식 → 소리 tell.
 3. 출력: FBX 클립 `druid_<기술>_wind`, `_act`, `_rec`(예비/발동/회복 분리), 제자리, 60fps, 예고 파티클·표식은 기술당 1세트.
@@ -105,6 +121,9 @@
 - 1920×1080·3840×1080에서 아레나 먼 가장자리 적/소환체가 보인다(카메라 LOCK). 안개·비네트가 지우면 FAIL.
 - 10초 무음 영상 3편: 슬램, 3연 휘두름, 전환. 예비→발동→빈틈이 영상만으로 읽힌다.
 - Core 하니스로 표 틱 일치. 예산: 예고 동시 ≤2개, 점광원 ≤2.
+- 깊이 판정(2차): 보스 예비 정점 실루엣을 보스 줌 거리와 아레나 가장 먼 가장자리에서 모두 확인한다(근·중·원). 정상 속도에서 예비→발동→회복이 읽힌다.
+- 빈 공격/명중 공격 비교: 같은 기술을 허공과 명중으로 각각 10초 무음 영상에 담아 접점 포즈·VFX·Core 판정 시각이 일치한다.
+- 임포트 뒤 극점 비교(04번 원칙 12): 블렌드·압축으로 예비 정점·접점이 약해지지 않는다.
 
 ## 7. 금지
 - Core 틱·HP·기술 수 변경. 예고 단축(TeleM<1). 카메라 피치 변경.
@@ -115,7 +134,8 @@
 - D06-1: 데모 보스를 리모델 3목숨(`DruidRemodelData`)과 웹 5단계 중 어느 쪽으로 하는가? 추천: 리모델 3목숨(무게감·읽힘 설계).
 - D06-2: 보스전 줌 값이 문서마다 다르다(보드 0.80, 승인안 0.90, 카메라 연구 거리 ×1.20=19.8u/0.6초 보간, 황천 연구 +8~15%). 어느 것으로? 추천: 거리 +8~15%(카메라 연구와 황천 연구가 일치), 피치 34.0° 고정, Mac 비교판 후 확정.
 - D06-3: 행동불능 직후 큰 기술 판정 금지 30틱(Core 제안, d4_04_boss_vfx ⑤)을 Core에 넣는가? 추천: 예(봇 사망 사례 근거).
-- D06-4: Meshy/Tripo 유료 크레딧 사용 승인(API연결_가이드 범위, SPEND_LOG)? 추천: 부위 참고용 최소분.
+- D06-4: Meshy/Tripo 유료 크레딧 사용 승인(API연결_가이드 범위, SPEND_LOG)? 추천: 부위 참고용 최소분. (05번 D05-3과 한 승인으로 묶기 가능)
+- ★ D06-5: 드루이드 제작을 3기술(slam·slashCombo·전환) 먼저 완성 → 9종 확장 순서로 하는가? CLAUDE.md는 "버그 수정으로 범위를 줄이지 않는다"이고 소규모 팀 사례는 대표 구간 선검증을 권한다(보류 프로젝트는 장면 성공이 게임 완성을 보증하지 않았다). 추천: 예(착수 순서만, 데모 범위는 12종 그대로). 대안: 12종 병렬.
 
 ## 9. 출처
 - docs/0마스터플랜/D4_STUDY/04_boss_vfx_anim.md (규칙 ①~⑩)
@@ -123,4 +143,5 @@
 - docs/0마스터플랜/D4_STUDY/03_camera_occlusion_combat.md
 - docs/0마스터플랜/GAME_STUDY/phantom_blade_zero.md 규칙10
 - Core: unity/Assets/Exoduser/Runtime/Core/DruidRemodelData.cs, DruidBossData.cs, DruidBoss.Motion.cs, DruidBoss.Hit.cs, EnemyPoiseRules.cs
+- 2차 반영: docs/0마스터플랜/GAME_STUDY/codex_motion_direction.md (Blasphemous·Hades 사례), codex_frame_data.md (§보스 stun), codex_vfx_direction.md (§8 절제, PB-INT), codex_3d_pixel.md (§4·6), codex_3d_pixel_small_team.md (§9), docs/0마스터플랜/MANUAL/TOOLCHAIN_20261105.md (§2-6·2-7), docs/0마스터플랜/GAME_STUDY/REFERENCE_INDEX_20261105.md (NRftW 순위 4)
 - docs/engine/UNITY_BOSS_BATTLE_BOARD_20261026.md, docs/5.1임펙트디자인/NRFTW_REFERENCE_STUDY_20261031.md, docs/8.1보스디자인바이블 (읽기만)
