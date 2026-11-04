@@ -56,7 +56,7 @@ namespace Exoduser.UnityPort
                     var go=Instantiate(prefab,detail.transform);go.name="detail "+name;float gy=NativeRemodel3D.GroundY(px,pz);
                     go.transform.SetPositionAndRotation(new Vector3(px,gy-.02f,pz),Quaternion.Euler(0,(spec.prepared?180:0)+H01(key,50+n)*360f,0));
                     float ph=D3Heights[fi]*(.9f+.2f*H01(key,60+n));ph=Mathf.Min(ph,fi==2?.58f:.40f);ph=Mathf.Min(ph,1.4f/Mathf.Max(.05f,spec.width));
-                    go.transform.localScale=Vector3.one*ph;
+                    go.transform.localScale=Vector3.one*ph;D5PrepareWind(go);
                     foreach(var rend in go.GetComponentsInChildren<MeshRenderer>(true))rend.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;
                     ApplyFoliageBudget(go);if(fi==2)TerrainShrubs++;else TerrainGrass++;if(fi==3)D3Spores++;if(fi==4)D3Pustules++;TerrainDetails++;
                     foreach(var rend in go.GetComponentsInChildren<MeshRenderer>(true))foreach(var m in rend.sharedMaterials)if(m!=null&&m.HasProperty("_A2R3DWind")&&!terrainMats.Contains(m))terrainMats.Add(m);

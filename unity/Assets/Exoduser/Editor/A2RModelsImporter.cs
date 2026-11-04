@@ -108,6 +108,12 @@ namespace Exoduser
         [Serializable] sealed class WindFixture {public string file;public WindExpectation[] primitives;}
         [Serializable] sealed class WindExpectation {public int mesh,primitive,count;public float[] first,last;}
         static void WindRequire(bool value,string message){if(!value)throw new InvalidOperationException("A2R wind: "+message);}
+        public static int VerifyD5Wind()
+        {
+            float[,] cases={{0,0,0,1,0},{0,1,0,1,1},{.2f,.5f,0,1,.5f},{.9f,.5f,0,1,.9f},{0,4,2,4,1},{.3f,2,2,2,.3f}};
+            for(int i=0;i<cases.GetLength(0);i++)WindRequire(Math.Abs(UnityPort.A2RProps3D.D5WindWeight(cases[i,0],cases[i,1],cases[i,2],cases[i,3])-cases[i,4])<.00001f,"D5 root-to-tip gradient case "+i);
+            Debug.Log("A2R_D5_WIND_WEIGHT_PASS cases=6");return 0;
+        }
         public static int VerifyWind()
         {
             var args=DevTools.ExoArgs.Get();int at=Array.IndexOf(args,"-windFixtures");
