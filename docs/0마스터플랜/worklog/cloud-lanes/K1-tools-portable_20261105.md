@@ -1,7 +1,7 @@
 # K1 도구 이식성 — 재개 완료
 
 - 시작 `da2850cafa3d87d1e0b87ca188a0192e1cfa6e9b`, 기존 `codex/unity-tools-portable-20261104`에서 이어서 작업했다. Core/웹 대조 기준은 `7958690091b70829598ad4185162955d069250bb`로 동일하다.
-- **허용 범위의 소스 이식·Windows 대표 실행 기준 충족.** Core·HP·피해·게임 표현·global.json 변경0, Unity 실행0. Mac/Linux와 전체 러너 실실행은 미확인이다.
+- **허용 범위의 소스 이식·Windows 대표 실행 결과는 기준값과 일치했으나, Python 탐색 순서·SDK 자동 대체·--pure 종료 코드의 3건이 미해결이므로 "Windows 기존 동작 무변경" 기준 충족 판정은 보류한다.** Core·HP·피해·게임 표현·global.json 변경0, Unity 실행0. Mac/Linux와 전체 러너 실실행은 미확인이다.
 - G0: 기존 무창 러너의 인자/출력/SDK 정책을 기준으로 탐색만 공통화한다. 첫 실물/합격 기준은 대표 러너 C#914/0·자원530/0, 중단 기준은 의도된 RED를 제외한 실제 실패2회다(CTO 재개 판단).
 
 ## 변경과 근거
@@ -17,6 +17,14 @@
 | 경로 회귀 | `_shared/toolpaths.test.cjs:3`: Windows 정규화+소문자 비교, 실제 파일·버전, 임시 SDK 정책의 실제 빌드/실행·원본 바이트 보존 |
 
 하드코딩이 있던 **42개 .cjs**를 연결했다(21개 runner.cjs와 21개 run/보조 러너). 파일별 목록은 첨부 로그에 있다. 소유권 금지인 `unity/Tools/oracle-sweep/run.cjs`는 수정하지 않았다. 이 파일의 하드코딩은 남으며 Mac 담당 후속 연결이 필요하다. 그 외 대상 .cjs의 기존 설치 경로는 공용 fallback에만 남는다.
+
+## RETOUCH 후보(동결 해제 뒤)
+
+동결 중이므로 아래 3건은 지금 수정하지 않는다. 이번 K1-docs는 보고서만 변경하며 코드 수정0·러너 실행0이다.
+
+1. **Python 탐색 순서:** Windows에서는 기존 `C:/Python314`가 있으면 먼저 쓰고, 없을 때만 PATH를 쓰는 방향으로 되돌릴 후보이다. 현재 PATH python3/python이 기존 경로보다 먼저라 "Windows 기존 동작 무변경"에 어긋난다. 원인은 CTO가 지시한 탐색 순서이며, 그 순서대로 연결한 결과다. 근거: `unity/Tools/_shared/toolpaths.cjs:3`·`:17`·`:18`; 변경 전 고정 Python 실행은 `da2850caf`의 `unity/Tools/combat-impact-tests/run.cjs:32`.
+2. **SDK 같은 주버전 자동 대체:** 고정 버전이 없을 때 같은 주버전의 다른 설치 항목을 조용히 고르는 것은 동작 변경이다. 동결 해제 뒤 기본 꺼짐으로 하고 `EXO_DOTNET_ROLLFORWARD=1`일 때만 허용할 후보이다. 현재 csc/참조팩 대체는 해당 플래그와 무관하며, 플래그는 임시 global.json 정책에만 적용된다. 근거: `unity/Tools/_shared/toolpaths.cjs:34`·`:39`·`:46`.
+3. **combat-impact --pure 종료 코드:** 기존 exit1에서 현재 exit0으로 바뀐 의도를 확인해야 한다. 이전 exit1이 "아트 PNG 누락"이라는 실제 결함 신호였다면 --pure로 숨기면 안 된다. 아트 검사 생략이 승인된 검사 범위 분리인지부터 확인할 후보이며 지금 코드를 바꾸지 않는다. 근거: `unity/Tools/combat-impact-tests/run.cjs:32`(생략 조건)·`:34`(아트 상태 반영)·`:46`(최종 종료 코드); 이전 경로는 `da2850caf`의 같은 파일 `:31`·`:33`·`:45`.
 
 ## 실제 검증
 
