@@ -38,6 +38,11 @@
 2026-11-04 사망 결정 화면 RETOUCH D2·경미(claude/unity-pc-death-pbz-20261104): 문구 9키를 29개 언어로(Resources/Data/death_decision_text.json, 번역 목록 4264~4272 전파, 장식 영문 행은 전 언어 영문 유지, ar는 en으로 그림), 긴 언어는 정수 pt 축소(말줄임 없음). 로비 빈 슬롯 면 (5,5,7,.94)→(8,8,12,.94)로 예상 Y 8.5(알파만으로는 배경 Y 4.3~5.8보다 올릴 수 없음). 사망 결정 화면은 산세리프 0(sans는 옛 리플레이 모양에만 남김). merge 52fce6875가 어긋나게 둔 Spaced 괄호·TitleGate 위치 정정(참조 컴파일 오류 0). PC 검사·컴파일만, 화면 판정 전.
 
 2026-11-04 Mac Unity 사망 확정 화면 교체 "안식은 없다": 웹 #death 이식판(원화·펫·이모지·미이식 표시) 대신 검정 → 제목·진홍 헤어라인·THERE IS NO REST → "포기할 것인가?" 결정(보스방 3 선택지, 필드 2 선택지). 끊겨 있던 로비 버튼과 숨은 일시정지 키 경로를 바로잡음. 번짐 PNG 선형화로 Linear 색 보정. ARM64 빌드 오류0, 사망 스모크 1920·1600 PASS. 번역 목록 4264–4272. [기록](3.1%20ui%20hud%20디자인/UNITY_DEATH_SCREEN_20261103.md#2026-11-04-사망-확정-패널-교체--안식은-없다-결정-화면-mac-pc-ui-총괄).
+2026-11-04 첫인상 결함 3·5(유니티 총괄 브리프 first-impression-235, claude/unity-pc-lobby-poster-20261104 위): 메인 메뉴 항목 18→30px 명조(한글·CJK Hahmlet 본문 경로, 라틴 Cinzel 600, 긴 라벨은 22px까지 줄임)·초점 표시를 '—' 대신 진홍 마름모+밝기(비초점은 어둡게), 버전 표기를 웹 release_web(v0.7.11) 대신 Unity Application.version(PlayerSettings bundleVersion 0.1.0, 11-04 CTO 결정·웹 0.7.x와 분리, 체험판은 DEMO · v0.1.0)으로, 로비 VersionLine도 통일, 브랜드 인트로 '아무 키나 눌러 계속'·캐릭터 선택 '출시 준비 중'을 Noto Sans KR에서 명조·Cinzel로, 캐릭터 선택 본문·이름·제목·직업·기본 스토리를 같은 명조·Cinzel 경로로 통일; 메인 메뉴 32:9는 확장 원화가 없어 연결 못 함(조사만, 생성 0). 소스 계약 `unity/Tools/first-impression-tests/run.cjs`·참조 컴파일 5어셈블리 오류 0. 상태: PC 검사·컴파일만, 화면 판정 전. 상세: docs/3.1 ui hud 디자인/스플래시_인트로_시퀀스.md '2026-11-04 첫인상 3·5'.
+
+2026-11-04 스킬 정보 작은 버튼 가시 끝장식이 글자를 덮던 결함(디자인총괄, parity 병합 d50fa39a1 판정): NativeSkills.InfoButton에 명시 chip 인자, 강화 +·강화 −·리셋(64~68px) 3개만 칩 원화(settingsChip). 크기로 자동 판단하지 않음, 넓은 장착 버튼은 가시 판 유지. 검사 skill-chip 3/0, 참조 컴파일 오류 0. 화면 판정 전(claude/unity-pc-lobby-poster-20261104).
+
+2026-11-04 로비 영상 정지 포스터(claude/unity-pc-lobby-poster-20261104): 영상 준비 전 검은 화면 제거 — fdg_intro·warrior_story 첫 프레임 포스터 신규, `NativeLobbyVideo.Presentable`(frameReady 뒤 한 프레임)로 영상 전환, 실패 시 포스터 유지. 소스 계약 35/0, 5어셈블리 컴파일 오류 0. PC 검사·컴파일만, 화면 판정 전.
 
 2026-11-04 SND-13 1-1 데모 한 판 소리 장면 목록(사운드 총괄, CTO 10:05): docs/6사운드디자인/DEMO_1-1_SOUND_SCENES_20261104.md 신설. 필드·보스·출구 장면별 키·지금 상태·청음 라운드를 정리했다. 빈칸은 생체나무 맥동·호흡, 보스 처치 순간, 출구 열림·진입, 드루이드 등장(staff_tap 4회 불채택 → 등장 전체 한 소리). R8 청음 후보 74줄 pick_r8.html(카드마다 장면 영상 동기 재생). SOUND_LEAD_MASTER에 R8 절 추가. 코드 변경 없음, 청음·Unity 반영 전.
 
