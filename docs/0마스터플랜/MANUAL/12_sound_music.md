@@ -1,6 +1,6 @@
 # MANUAL 12 — 사운드·음악 (초안 2026-11-05)
 
-- 상태: 초안 | 연구 반영: d4_03_cam.md(§8.9 사운드 레이어, R10, 덕킹), conventions.md(L행 사운드 믹스, E4), pbz.md(타격음 층은 임팩트 매뉴얼과 연동), **[2차 11-05]** `codex_sound_music.md`(D4·PoE2·Hades·No Rest for the Wicked·Phantom Blade Zero 공개 인터뷰·패치 노트 + Unity 6000 적용안 §7), `TOOLCHAIN_20261105.md` §2-9(사운드 도구) | 연구 반영 대기: D4·PoE2 믹스 청취 실측(2차 연구도 5개 게임 모두 버스 트리·덕킹 dB·LUFS·True Peak **미확인**), 장면별 BGM 곡 지정(청음 후), 음량 LUFS 목표 청취 판정(프로젝트 목표 미정), GDC 2024 D4 "Living Audio" 발표 내부 수치(접근 실패), PoE2 현행 상한·쿨다운 값
+- 상태: 초안 | 연구 반영: d4_03_cam.md(§8.9 사운드 레이어, R10, 덕킹), conventions.md(L행 사운드 믹스, E4), pbz.md(타격음 층은 임팩트 매뉴얼과 연동), **[2차 11-05]** `codex_sound_music.md`(D4·PoE2·Hades·No Rest for the Wicked·Phantom Blade Zero 공개 인터뷰·패치 노트 + Unity 6000 적용안 §7), `TOOLCHAIN_20261105.md` §2-9(사운드 도구), **[3차 11-05]** `codex_synthesis.md`(§1·§2·§3.4·§4, 기존 2차 연구와 겹치는 부분은 변경 없음) §1.11 사운드 5원칙·§3.6 프로젝트 정적 수치 | 연구 반영 대기: D4·PoE2 믹스 청취 실측(2차 연구도 5개 게임 모두 버스 트리·덕킹 dB·LUFS·True Peak **미확인**), 장면별 BGM 곡 지정(청음 후), 음량 LUFS 목표 청취 판정(프로젝트 목표 미정), GDC 2024 D4 "Living Audio" 발표 내부 수치(접근 실패), PoE2 현행 상한·쿨다운 값
 - 범위: 믹스 버스 구조, 우선순위, 동시 발음 상한, 덕킹, 장면별 음악(전환·휴지), 타격음 층, 환경음, UI 소리 연결, 음량 기준.
 - 이 문서가 정하지 않는 것: 개별 효과음 파일 선택(청음 라운드로 사용자가 정함), 대사·보이스 연기, 게임 규칙(Core), 설정 화면 배치(MANUAL 10). 현행 정답 위치: `docs/6사운드디자인/6사운드디자인.md`, `SND04_UNITY_AUDIO_DIRECTOR_CONTRACT_20261028.md`, `SOUND_LEAD_MASTER_20261026.md`.
 
@@ -69,6 +69,7 @@
 | 현행 구현의 HIT 이하 상한 | 동시 3개 초과 시 새 음 드롭 | [단일] `NativeFeedbackAudio.cs:362` |
 | 같은 키 중복 방지 | 기본 30ms | [사실] 같음 SND04 |
 | 낮은 우선순위 교체 | 새 우선순위가 더 높으면 가장 낮고 오래된 음성을 밀어냄. SKILL 이상은 동순위 교체 허용 | [사실] 같음 |
+| 프로젝트 정적 설정(3차) | SFX **논리 활성 48 / Real Voices 32 / Virtual Voices 512**(`NativeFeedbackAudio.cs`, `ProjectSettings/AudioManager.asset`). 일반 클립 PCM·preload 138, BGM compressed-in-memory 16(`SourceAudioImporter.cs`). 정적 값이며 실제 가청 voice 수·달성 FPS가 아님 | [단일] `codex_synthesis.md` §3.6(`our_tech_audit.md`) |
 | Core 제안(충돌) | 동시 보이스 상한 32, Danger(보스 예고·엘리트 기합) 8개까지 상한 면제 | [단일] d4_03_cam.md §8.9. 현행(48)과 다르므로 D12-1 |
 | 인스턴스 제한(2차) | 같은 소리의 동시 인스턴스를 엄격한 규칙으로 제한해 혼잡을 줄인다. 카테고리별 상한·우선순위 점수·stealing 알고리즘은 미확인 | [사실] D4 Kris Giampa 2021 해설(`codex_sound_music.md` §3.1) |
 | FMOD 사례(참고) | PoE1 당시 우선순위·stealing·이벤트 쿨다운, 설정별 채널 32·64·128. **PoE2 현행 값은 미확인이라 전용하지 않음** | [사실] PoE Audio Q&A Part 2 (같음 §3.2) |
@@ -244,7 +245,7 @@
 
 | ID | 질문 | 추천안 | 대안 |
 |---|---|---|---|
-| D12-1 | 동시 보이스 상한: 현행 48 유지 / 연구 제안 32 + 위험 8 면제 | 48 유지 + 위험 소리 면제 추가 | 32로 축소 |
+| D12-1 ★보강 | 동시 보이스 상한: 현행 48 유지 / 연구 제안 32 + 위험 8 면제. **3차 정정: 현행 48은 "논리 활성 풀"이고 엔진 Real Voices는 이미 32다. 연구의 32가 어느 층(논리 풀 vs Real)인지부터 맞춰야 비교가 성립한다** | 48 유지(논리 풀) + 위험 소리 면제 추가, Real 32·Virtual 512는 Mac 계측 뒤 확정 | 논리 풀을 32로 축소 |
 | D12-2 | 덕킹 attack 10ms(현행) vs 30ms(연구), 볼륨/피치 변주를 ±2dB/±6%로 통일하는가 | 변주 통일, attack은 청음으로 정함 | 현행 유지 |
 | D12-3 | 효과음 라우드니스 목표(LUFS 또는 피크)를 어디에 두는가. 2차 연구: 경쟁작 5종의 수치는 전부 미확인이라 **우리 시작값이지 업계 값이 아님**, 방송 −23 LUFS(EBU R128)는 게임 목표 아님 | 효과음 −16 LUFS 근처를 시작값으로 청음 후 확정, 보스 곡 −12.4, True Peak ≤ −1dBFS(5.1-4), 구간별 측정 | 청음만으로 |
 | D12-4 | 음성(Voice) 슬라이더를 설정에 분리 추가하는가 | 추가 | 효과음에 통합 유지 |
