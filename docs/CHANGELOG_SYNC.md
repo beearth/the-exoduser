@@ -1,3 +1,9 @@
+## 2026-11-04 A2R D5 빌드 확인·공용 HALT로 촬영 중단
+
+- 빌드 소스 f5f2c3b712, 공용 실행기 caca7ddc: BuildResult Succeeded, 빌드 오류 0, C# 오류 0, 종료 0, USER_SAVE 변경 0. 실행기 errorLogs=2는 별도 기록이며 전체 로그 오류 0으로 쓰지 않는다.
+- 17:29 KST 공용 HALT: 다른 EXODUSER-A2R Player PID 14612 종료 불가, 실행기 기록은 재부팅 필요·해제는 유니티 총괄 소관이다. HALT 삭제·우회·사용자 프로세스 종료 0. D5 Player 촬영 0회이므로 바람 px·검은 반원·빨간 별·보라 점·상자 1x/3x·먼 적·단계 ms는 미검증이다. 소스 수정 2항목을 시각 PASS로 판정하지 않는다.
+- Unity 최초 임포트가 자동 변경한 메타/패키지 81경로는 채택하지 않고 원래 Git 내용으로 복원했다. 자기 Library/Temp와 검증 빌드는 정리하고 빌드 요약·로그만 보존한다. 재개는 총괄의 재부팅/HALT 해제 뒤 커밋에서 다시 빌드한다. 결과: I:/EXODUSER-Storage/codex-takeover/map-d5/REPORT.md.
+
 ## 2026-11-04 A2R D5 캠프 MossFix 범위 보정
 
 - 캠프 원화 올리브 후보 13,128픽셀 중 13,113픽셀의 기존 마스크가 .25 미만(평균 .00476, sRGB→linear·기존 Tint/Saturation/HellRot 적용 후 계산). 기존의 채도 감소 후 판별·올리브색 목표를, 원색에서 G/R·황록 성분을 판별한 뒤 회녹(.80,.84,.82)·밝기 .85로 바꾸었다. _MossFix 지정 카드에만 적용하며 --a2r-d5-off는 기존 경로다.
