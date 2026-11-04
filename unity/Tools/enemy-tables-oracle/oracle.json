@@ -1,191 +1,191 @@
 {
  "schema": "exoduser.unity.enemy-tables-oracle.v1",
  "source": {
-  "path": "G:/exoduser/game.html",
-  "sha256": "4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4",
-  "lines": 65693,
-  "head": "571954a97fefae70228554170ead32ed0bf08db9",
+  "path": "/tmp/claude-0/-home-user-the-exoduser/086632f1-54bc-5063-b6dd-1b78e9fae669/scratchpad/game.html",
+  "sha256": "d2976ef53ef14f8658658b32cc1520286e71bcf0c582c0d0b1887604eb4c8162",
+  "lines": 66212,
+  "head": "",
   "gameHtmlWorkingTreeState": "clean",
   "anchors": [
    {
     "name": "EL",
-    "start": 14333,
-    "end": 14333,
+    "start": 14673,
+    "end": 14673,
     "sha256": "a0bb447f773a52c3c7a8dade348dccb9ff74c0823ab8ee5976618ddb0cee4340",
     "first": "const EL={P:0,F:1,I:2,D:3,L:4,H:5,E:6};"
    },
    {
     "name": "CHAPTER_STAGES",
-    "start": 16633,
-    "end": 16641,
+    "start": 16984,
+    "end": 16992,
     "sha256": "ea5e53e15994eee08426e2a5039d1464011ea45a5e33959515c3eab242424166",
     "first": "const CHAPTER_STAGES=["
    },
    {
     "name": "TOTAL_STAGES",
-    "start": 16642,
-    "end": 16642,
+    "start": 16993,
+    "end": 16993,
     "sha256": "4a5210fd0d9fa29f2345aeb58e2d21cae10fe833048ab033c4ff2d314abe3f19",
     "first": "const TOTAL_STAGES=35;"
    },
    {
     "name": "HELL_NAMES",
-    "start": 16677,
-    "end": 16678,
+    "start": 17028,
+    "end": 17029,
     "sha256": "b82ce03184826fff5ed25f5eaa3763e86598376a7ae44a005cbcd21dad706c39",
     "first": "const HELL_NAMES=['1장 — 썩은 숲','2장 — 벌레굴','3장 — 지옥의 겨울',"
    },
    {
     "name": "HELL_THEMES",
-    "start": 16679,
-    "end": 16687,
+    "start": 17030,
+    "end": 17038,
     "sha256": "4d5a5c45edc6633256161e3e112dcf0c0a1cbbb635af9207677aafe4c0329b62",
     "first": "const HELL_THEMES=["
    },
    {
     "name": "HELL_BOSSES",
-    "start": 16688,
-    "end": 16696,
-    "sha256": "99e601054045339fbd3ad080d29e6ac4f017f5ea0e6d75e78191d482978a7553",
+    "start": 17039,
+    "end": 17047,
+    "sha256": "109e21817018d6e2949ed0c9a0f99b36d026ccb1813613425ec1bfe6b9336eab",
     "first": "const HELL_BOSSES=["
    },
    {
     "name": "SI_TO_HELL+SI_TO_FLOOR loop",
-    "start": 16658,
-    "end": 16666,
+    "start": 17009,
+    "end": 17017,
     "sha256": "4cf5892722c386224524a6b6696dbb7bc3537a3e71de776f40984a75ab9fc443",
     "first": "const SI_TO_HELL=new Uint8Array(TOTAL_STAGES);"
    },
    {
     "name": "STG loop",
-    "start": 16697,
-    "end": 16712,
+    "start": 17048,
+    "end": 17063,
     "sha256": "d071bececca4d62fe4dda5d719b5fece585e7803439439b50651cc6089764428",
     "first": "const STG=[];"
    },
    {
     "name": "ETYPE_HP",
-    "start": 30823,
-    "end": 30836,
+    "start": 31244,
+    "end": 31257,
     "sha256": "1a81d0212b1f78abb5c5e07786334c3d0766b4a44f144fe7a9853cc8ee046ad9",
     "first": "const ETYPE_HP=  [32,24,22,10,60,16, 45,18,20,14, 28,35,70,8,30,42,38,65,55,80,"
    },
    {
     "name": "ETYPE_ATK",
-    "start": 30837,
-    "end": 30846,
+    "start": 31258,
+    "end": 31267,
     "sha256": "69eb6c8fbf97b675ba58b0494977b0fc570068647cd83e4a5029bee5e9f066d6",
     "first": "const ETYPE_ATK= [12, 8,14, 5,20,22, 15,10,18, 6, 14,18,22,4,12,20,16,25, 8,28,"
    },
    {
     "name": "_ETYPE_SPD_RAW",
-    "start": 30847,
-    "end": 30856,
+    "start": 31268,
+    "end": 31277,
     "sha256": "695c86c3256d3e09ba244b754c49579db090af34aa4fd3f2a7f7cd387a570ac4",
     "first": "const _ETYPE_SPD_RAW=[.3,.18,.6,.75,.14,.5, .35,.15,.4,.2, .65,.35,.15,.8,.4,.45,.5,.18,.1"
    },
    {
     "name": "ETYPE_R",
-    "start": 30859,
-    "end": 30868,
+    "start": 31280,
+    "end": 31289,
     "sha256": "403910b9072d1fb8b541c40fce42a46b491528f8c3cd1cc1c7960ed6eda9b579",
     "first": "const ETYPE_R=   [10,10,12,10,16,10, 13,10,10,10, 10,11,18,10,10,12,10,20,16,22,"
    },
    {
     "name": "ETYPE_RANGE",
-    "start": 30870,
-    "end": 30886,
+    "start": 31291,
+    "end": 31307,
     "sha256": "a089be896e93566190d9d8520db5d2ca9af7dfb8a43801f84daa27f4f63dabac",
     "first": "const ETYPE_RANGE=["
    },
    {
     "name": "ETYPE_POISE",
-    "start": 30887,
-    "end": 30896,
+    "start": 31308,
+    "end": 31317,
     "sha256": "deb8dec73e89888b02c1bcbd86f3ed78f26d32797d85022843f3ba666683dbe7",
     "first": "const ETYPE_POISE=[12,8,10,4,35,5, 28, 6, 8, 5, 8,14,38,3,10,18,12,30,25,40,"
    },
    {
     "name": "ETYPE_SHIELD",
-    "start": 30900,
-    "end": 30907,
+    "start": 31321,
+    "end": 31328,
     "sha256": "67a1d68a0908fbe376339f5649795b0ac1fcf5ca87f5bc703c9b423f552c3ed5",
     "first": "const ETYPE_SHIELD=[0,0,0,0,0,0, 80,0,0,0, 0,0,0,0,0,0,0,0,0,0,"
    },
    {
     "name": "ETYPE_COL",
-    "start": 30909,
-    "end": 30919,
+    "start": 31330,
+    "end": 31340,
     "sha256": "94980f7ca4f0a3ed0c7bff7382dd3cd9cad1f30f1c537479c6e52402756ad483",
     "first": "const ETYPE_COL=['#dd4455','#55cc44','#ff8833','#66ee66','#8888aa','#ff6622','#4477dd','#a"
    },
    {
     "name": "ETYPE_COLS",
-    "start": 19914,
-    "end": 19922,
+    "start": 20324,
+    "end": 20332,
     "sha256": "9347f8427c03927cec538b91794002b5cd0eef656e43913c27d1f9382b4b344b",
     "first": "const ETYPE_COLS=['#ee5544','#88cc44','#ff8822','#66dd66','#8888aa','#ff5500','#4488dd','#"
    },
    {
     "name": "ETYPE_ERES",
-    "start": 14336,
-    "end": 14336,
+    "start": 14676,
+    "end": 14676,
     "sha256": "bf4f962b28142a59dad6b8827374b648783ab4e7395995f56f585416fa5141d4",
     "first": "const ETYPE_ERES=(()=>{const t=[];for(let i=0;i<120;i++)t[i]=[0,0,0,0,0,0,0];return t})();"
    },
    {
     "name": "RARE_ETYPE",
-    "start": 30955,
-    "end": 30966,
+    "start": 31376,
+    "end": 31387,
     "sha256": "35548f93794bd7abd8f0158c0210cb97965ec1aa1c833aa46acb4f62b6e5c5a9",
     "first": "const RARE_ETYPE={"
    },
    {
     "name": "ELITE_TIERS",
-    "start": 31033,
-    "end": 31037,
+    "start": 31454,
+    "end": 31458,
     "sha256": "52b64291e27e0d3b8167120214af84855f79d6d443308549ee260c586985eee4",
     "first": "const ELITE_TIERS=["
    },
    {
     "name": "ELITE_PROB",
-    "start": 31041,
-    "end": 31043,
+    "start": 31462,
+    "end": 31464,
     "sha256": "c0e1e9b87a8f97091bf1648d52a8cabeb28fe9d1a88781ed0aa016115dca5087",
     "first": "const ELITE_PROB=["
    },
    {
     "name": "MOD_DEFS",
-    "start": 31045,
-    "end": 31061,
+    "start": 31466,
+    "end": 31482,
     "sha256": "4441c9edbeec6ae87cd8c8035d863972845afe45eba64db7af7fc2b69745118a",
     "first": "const MOD_DEFS=["
    },
    {
     "name": "DIFF_MUL",
-    "start": 9276,
-    "end": 9276,
+    "start": 9447,
+    "end": 9447,
     "sha256": "8b1f9d0c5793445c0e1b31e7de2b12dc51b8b9d95e9ed5ddc7b30c015a132d75",
     "first": "const DIFF_MUL=[0.45,0.55,0.65,0.76,0.88,1.0,1.12,1.25,1.40,1.58,1.78]; // 난이도 단계별 몬스터 HP/"
    },
    {
     "name": "DIFF_LV_OFF",
-    "start": 9272,
-    "end": 9272,
+    "start": 9443,
+    "end": 9443,
     "sha256": "320ec3ff6c64b30cd9ceedf7baead3759c58f7d1fc9614bbf26ba359d0ba8735",
     "first": "const DIFF_LV_OFF=[-500,-400,-300,-200,-100,0,100,200,300,400,500];"
    },
    {
     "name": "ETYPE_SPD",
-    "start": 30858,
-    "end": 30858,
+    "start": 31279,
+    "end": 31279,
     "sha256": "28b47d28d45cf85528e27db97e2918fd3c5b0332ab5b5c8a9a26c2c7a2ba6df5",
     "first": "const ETYPE_SPD=_ETYPE_SPD_RAW.map(v=>v===0?0:Math.max(0.2,v*1.3));"
    },
    {
     "name": "isRareEtype",
-    "start": 30967,
-    "end": 30967,
+    "start": 31388,
+    "end": 31388,
     "sha256": "7ea787e4e2dd59d7b4b16e2320d0d7c4dbdd992d24a10a3e2014b12ea666cb65",
     "first": "function isRareEtype(et){return et>=90&&et<=99}"
    }
@@ -198,7 +198,7 @@
   "const TOTAL_STAGES=35;",
   "const HELL_NAMES=['1장 — 썩은 숲','2장 — 벌레굴','3장 — 지옥의 겨울',\n  '4장 — 고통의 화염지대','5장 — 지옥의 군단','6장 — 사도의 마굴','7장 — 지옥성'];",
   "const HELL_THEMES=[\n  [{n:'ROTTEN FOREST',kr:'썩은 숲',w:'#2a4020',f:'#0e1a0c',ac:'#66ee55',be:EL.P}],\n  [{n:'WORM NEST',kr:'벌레굴',w:'#2e3018',f:'#0e1008',ac:'#aacc44',be:EL.P}],\n  [{n:'HELL WINTER',kr:'지옥의 겨울',w:'#20262b',f:'#080b0e',ac:'#7a201b',be:EL.I}],\n  [{n:'FLAME OF AGONY',kr:'화염지대',w:'#3e1c22',f:'#180a0c',ac:'#ff8844',be:EL.F}],\n  [{n:'HELL LEGION',kr:'지옥 군단',w:'#3c3624',f:'#18140c',ac:'#ffcc44',be:EL.D}],\n  [{n:'APOSTLE LAIR',kr:'사도의 마굴',w:'#2a1e3e',f:'#0c0a18',ac:'#bb77ff',be:EL.D}],\n  [{n:'HELL CASTLE',kr:'지옥성',w:'#1c1038',f:'#060410',ac:'#cc88ff',be:EL.D}],\n];",
-  "const HELL_BOSSES=[\n  ['다크드루이드','독버섯 거인','지옥기형','다크드루이드'],\n  ['벌레 수호자','점액 괴수','기생충 모체','거대 알주머니','살벽의 군주','여왕 구더기'],\n  ['얼음 망령','서리의 기사','얼어붙은 감시자','얼음 속 봉인 괴물'],\n  ['화염 악마','불기둥 수호자','용암의 심장','화염 전사','화염 쌍두','불벌레 군주','화염 감옥지기'],\n  ['전쟁의 잔해','뼈산의 왕','악마 사령관','철벽 기사단장','군단 지휘관'],\n  ['살점의 수호자','인간뼈 감시자','뒤틀린 자','촉수의 어미','불완전 사도','대사도'],\n  ['검은 성의 수호자','Killu','지옥 군주'],\n];",
+  "const HELL_BOSSES=[\n  ['다크드루이드','독버섯 거인','지옥기형','다크드루이드'],\n  ['벌레 수호자','점액 괴수','기생충 모체','거대 알주머니','살벽의 군주','여왕 구더기'],\n  ['얼음 망령','서리의 기사','얼어붙은 감시자','얼음 속 봉인 괴물'],\n  ['화염 악마','불기둥 수호자','용암의 심장','화염 전사','화염 쌍두','불벌레 군주','화염 감옥지기'],\n  ['전쟁의 잔해','뼈산의 왕','악마 사령관','철벽 기사단장','군단 지휘관'],\n  ['살점의 수호자','인간뼈 감시자','뒤틀린 자','촉수의 어미','불완전 사도','대사도'],\n  ['검은 성의 수호자','킬루','지옥 군주'],\n];",
   "const SI_TO_HELL=new Uint8Array(TOTAL_STAGES);\nconst SI_TO_FLOOR=new Uint8Array(TOTAL_STAGES);\nfor(const ch of CHAPTER_STAGES){\n  for(let f=0;f<ch.stages;f++){\n    const si=ch.startSi+f;\n    SI_TO_HELL[si]=ch.hell;\n    SI_TO_FLOOR[si]=f;\n  }\n}",
   "const STG=[];\nfor(const ch of CHAPTER_STAGES){\n  const th=HELL_THEMES[ch.hell][0];\n  for(let f=0;f<ch.stages;f++){\n    const monLv=(ch.hell+1)*100;\n    const isLast=f===ch.stages-1;\n    STG.push({\n      n:th.n, kr:th.kr+' '+(f+1)+'구역',\n      w:th.w, f:th.f, ac:th.ac,\n      bn:HELL_BOSSES[ch.hell][Math.min(f,HELL_BOSSES[ch.hell].length-1)],\n      be:th.be,\n      monLv, hell:ch.hell, hellFloor:f,\n      isHellBoss:isLast, chapter:ch.hell\n    });\n  }\n}",
   "const ETYPE_HP=  [32,24,22,10,60,16, 45,18,20,14, 28,35,70,8,30,42,38,65,55,80,\n  38,19,26,16,64,19,22,10,160,128,\n  // 2장(30~39) placeholder\n  22,32,96,6,16,48,38,58,112,160,\n  // 3장(40~49) placeholder\n  13,64,96,32,48,19,128,48,32,192,\n  // 4장(50~59) placeholder\n  32,96,80,26,22,38,48,128,128,224,\n  // 5장 지옥의 군단(60~69)\n  48,58,19,80,10,26,96,32,160,256,\n  // 6장 사도의 마굴(70~79): 화염보행자/화산탄악마/용암슬라임/화염박쥐/흑요석기사/불뱀/재의망자/용암거인/화염사제/화룡사도\n  38,32,64,10,96,26,13,160,32,320,\n  // 7장 지옥성(80~89): 고통인형/고문장치/피의성직자/살가죽수집가/비명기둥/절망기사/거꾸로천사/도플갱어/심판자/고통의왕\n  26,128,38,32,160,64,48,80,192,480];",
@@ -3226,7 +3226,7 @@
     "w": "#1c1038",
     "f": "#060410",
     "ac": "#cc88ff",
-    "bn": "Killu",
+    "bn": "킬루",
     "be": 3,
     "monLv": 700,
     "hell": 6,
