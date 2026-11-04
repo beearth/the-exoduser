@@ -19,6 +19,8 @@ param(
     [ValidateSet('editor','player')][string]$Kind = 'editor',
     [string]$Note = '',
     [int]$TtlMin = 120,
+    [ValidateRange(1,50)][int]$GrantCount = 3,
+    [ValidateRange(0,99)][int]$GrantRank = 50,
     [switch]$Force,
     [int]$WaitSec = 3600,
     [string]$Exe,
@@ -46,7 +48,7 @@ if($Command -ne 'install-bin' -and $env:EXO_UNITY_NO_FORWARD -ne '1' -and
     exit $LASTEXITCODE
 }
 
-$ExoUnityVersion = '2026.11.04-loopfirst'
+$ExoUnityVersion = '2026.11.04-exclloop'
 $MaxPlayerSlots = 2
 Import-Module (Join-Path $PSScriptRoot 'QueueTurn.psm1') -Force
 try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false) } catch { }
@@ -172,7 +174,33 @@ function Get-Reservations([string]$ReservationKind = '') {
         $r | Add-Member -NotePropertyName file -NotePropertyValue $f.FullName -Force
         $out += $r
     }
+    # loopfirst editor(11-04 CTO): 사용자 실행본 갱신이 데모 v0 확인 기준이라 BuildLoop Editor 예약이 맨 앞에 선다.
+    # 돌고 있는 Editor는 끊지 않고 다음 순번만 가져간다. BuildLoop 회차(buildloop.ps1 run)가 살아 있을 때만 앞으로 옮겨,
+    # 루프가 죽고 남은 예약이 TTL 동안 다른 레인을 막지 않게 한다. 예약을 잡은 Editor는 잠금을 얻는 순간 예약을 지운다.
+    if ($ReservationKind -eq 'editor') {
+        $loop = @($out | Where-Object { [string]$_.owner -eq 'buildloop' })
+        if ($loop.Count -gt 0 -and (Test-BuildLoopRunning)) { $out = @($loop) + @($out | Where-Object { [string]$_.owner -ne 'buildloop' }) }
+        # editor grant(11-04 CTO 순번): BuildLoop 바로 뒤에 grant -Kind editor owner의 예약을 둔다. 잠금을 얻을 때 1회 차감.
+        $head = @($out | Where-Object { [string]$_.owner -eq 'buildloop' -and (Test-BuildLoopRunning) })
+        $granted = @($out | Where-Object { [string]$_.owner -ne 'buildloop' -and (Get-PriorityGrant ([string]$_.owner) 'editor') })
+        if ($granted.Count -gt 0) {
+            # rank 순(BuildLoop=1, grant -GrantRank). 같은 rank는 기존 순서 유지.
+            $ranked = @(); $i = 0
+            foreach ($r in @($head)) { $ranked += [pscustomobject]@{ r = $r; rank = 1; i = $i++ } }
+            foreach ($r in @($granted)) { $ranked += [pscustomobject]@{ r = $r; rank = (Get-GrantRank (Get-PriorityGrant ([string]$r.owner) 'editor')); i = $i++ } }
+            $front = @($ranked | Sort-Object rank, i | ForEach-Object { $_.r })
+            $out = @($front) + @($out | Where-Object { -not (@($front) -contains $_) })
+        }
+    }
     return $out
+}
+function Test-BuildLoopRunning {
+    $now = [DateTime]::UtcNow
+    if ($script:LoopAliveAt -and ($now - $script:LoopAliveAt).TotalSeconds -lt 30) { return [bool]$script:LoopAlive }
+    $alive = $false
+    try { $alive = @(Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" -ErrorAction Stop | Where-Object { [string]$_.CommandLine -match 'buildloop\.ps1"?\s+run\b' }).Count -gt 0 } catch { $alive = $false }
+    $script:LoopAlive = $alive; $script:LoopAliveAt = $now
+    return $alive
 }
 
 function Cmd-Reserve {
@@ -320,11 +348,49 @@ function Check-ServerCrash([string]$qd) {
 }
 
 # 11-04: HALT가 대기 중에 생기면(좀비 감지 등) 순번·슬롯을 얻은 뒤에도 실행하지 않는다. vfx-summon Player가 HALT 뒤 13:23에 떴던 결함.
+# halt-exempt(11-04 CTO): HALT 동안 _halt_exempt.json의 owner(만료 전)만 build/player를 계속한다. 종료 정지 A/B는 같은 부팅의 오염 상태에서만
+# 원인을 가를 수 있어서다. 예외 owner는 Player 시작 때 좀비 검사로 HALT를 다시 만들거나 거부하지 않는다(좀비는 진단 증거라 건드리지 않음, 경고만).
+# HALT 파일 자체와 다른 owner의 차단은 그대로다. 파일은 개발툴이 CTO 결정으로 만들고 지운다.
+function Test-HaltExempt {
+    if ([string]::IsNullOrWhiteSpace($Owner)) { return $false }
+    $e = Read-Json (Join-Path $Root '_halt_exempt.json'); if (-not $e -or -not $e.owners) { return $false }
+    $exp = $null; try { $exp = [DateTime]::Parse([string]$e.expiresAt).ToUniversalTime() } catch { }
+    if (-not $exp -or $exp -lt [DateTime]::UtcNow) { return $false }
+    if ($e.PSObject.Properties['maxRuns'] -and $null -ne $e.maxRuns -and [int]$(if ($e.PSObject.Properties['used']) { $e.used } else { 0 }) -ge [int]$e.maxRuns) { return $false }
+    return (@($e.owners) -contains [string]$Owner)
+}
+function Add-HaltExemptRun {
+    $p = Join-Path $Root '_halt_exempt.json'; $e = Read-Json $p; if (-not $e) { return }
+    $used = 0; if ($e.PSObject.Properties['used']) { $used = [int]$e.used }
+    $e | Add-Member -NotePropertyName used -NotePropertyValue ($used + 1) -Force
+    Write-JsonAtomic $p $e
+    Say ('HALT 예외 실행 ' + ($used + 1) + '/' + $(if ($e.PSObject.Properties['maxRuns']) { $e.maxRuns } else { '-' }))
+}
+# zombie-halt(11-04 CTO 오염 상태): 좀비 때문에 생긴 HALT(what=player)는 창 모드 Player만 위험하다(batchmode 정지 0/61).
+# 그 HALT 동안 build(Editor batch)는 그대로 진행하고, 예외가 아닌 owner의 player는 거부하지 않고 HALT가 풀릴 때까지(최대 -WaitMin) 기다린다.
+function Test-ZombieHalt {
+    if (-not (Test-Path -LiteralPath $HaltPath)) { return $false }
+    $h = Read-Json $HaltPath; if (-not $h) { return $false }
+    return ([string]$h.what -eq 'player' -and [string]$h.cause -like '*좀비*')
+}
+function Wait-HaltCleared([string]$where) {
+    if (-not $script:HaltWaitDeadline) { $script:HaltWaitDeadline = (Get-Date).AddMinutes([math]::Max(0, $WaitMin)); Say ('HALT(좀비) 동안 ' + $where + ' 대기: 재부팅·해제까지 최대 ' + $WaitMin + '분, 거부하지 않음') }
+    while ((Test-Path -LiteralPath $HaltPath) -and -not (Test-HaltExempt)) {
+        if ((Get-Date) -gt $script:HaltWaitDeadline) { Show-Halt; Write-Output ('[halt] ' + $where + ' HALT 대기 시간 초과(' + $WaitMin + '분) - 시작하지 않음'); exit 3 }
+        Start-Sleep -Seconds ([math]::Max(5, $PollSec))
+    }
+}
 function Assert-HaltClear([string]$where) {
+    if ((Test-Path -LiteralPath $HaltPath) -and (Test-HaltExempt)) { return }
+    if ((Test-ZombieHalt) -and $Command -eq 'build') { return }
+    if ((Test-ZombieHalt) -and $Command -eq 'player') { Wait-HaltCleared $where; return }
     if (Test-Path -LiteralPath $HaltPath) { Say ('HALT가 생겨 ' + $where + ' 대기를 멈춘다(실행하지 않음)'); Show-Halt; Write-Output ('[halt] ' + $where + ' 대기 중 HALT - 시작 거부'); exit 3 }   # exit도 finally(예약·슬롯 반환)를 거친다
 }
 
 function Test-HaltGate {
+    if (($Command.ToLower() -in 'build', 'player') -and (Test-Path -LiteralPath $HaltPath) -and (Test-HaltExempt)) { Say ('HALT 예외 owner ' + $Owner + ': HALT 중에도 실행(CTO 결정, _halt_exempt.json)'); return }
+    if ($Command.ToLower() -eq 'build' -and (Test-ZombieHalt)) { Say 'HALT(좀비, 창 모드 Player 위험) 중: Editor batch build는 진행(CTO 결정)'; return }
+    if ($Command.ToLower() -eq 'player' -and (Test-ZombieHalt)) { Wait-HaltCleared 'Player 시작'; return }
     if (($Command.ToLower() -in 'start', 'run', 'build', 'player', 'browser') -and (Test-Path -LiteralPath $HaltPath)) {
         Say 'HALT 파일이 있어 실행하지 않음'
         Show-Halt
@@ -416,7 +482,8 @@ function Get-PlayerDrainReason {
     if ($rs.Count -eq 0) { return '' }
     $front = $rs[0]
     try { $age = ([datetime]::UtcNow - [datetime]::Parse($front.createdAt).ToUniversalTime()).TotalMinutes } catch { return '' }
-    if ($age -lt 20) { return '' }
+    $drainAfter = 20; if ([string]$front.owner -eq 'buildloop') { $drainAfter = 0 }   # loopfirst editor: 루프 빌드 앞에서는 새 Player를 바로 멈춰 배출한다
+    if ($age -lt $drainAfter) { return '' }
     if ($Owner -and [string]$front.owner -eq [string]$Owner) { return '' }
     $dp = Join-Path $Root '_player_drain.json'
     $key = [string]$front.owner + '|' + [string]$front.createdAt
@@ -471,13 +538,20 @@ function Get-ExclusiveHolder {
     if ($x -and $x.token -ne $script:PlayerSlotToken -and (Test-PlayerSlotAlive $x)) { return $x }
     return $null
 }
+# 11-04 19:50 CTO "예약 9건인데 Editor 잠금이 비어 있음": 캐릭터 재촬영·종료 A/B 같은 -Exclusive Player가 도는 동안 새 Editor가 전부 섰다.
+# Editor를 세우는 것은 BuildLoop 단독 검사(UI 겹침·M1 측정이 Editor 빌드 부하로 흔들림, a7db9621b 14fps)뿐이다. 다른 -Exclusive는 다른 Player만 막는다.
+function Get-EditorBlockingExclusive {
+    $x = Get-ExclusiveHolder
+    if ($x -and $x.PSObject.Properties['loop'] -and [bool]$x.loop) { return $x }
+    return $null
+}
 
 # 11-04 CTO: 단독 검사 Player가 도는 동안에는 새 Editor 작업(서버 시작·batch·상주 서버 제출)도 순번 대기한다. 이미 도는 Editor는 끊지 않는다.
 function Wait-ExclusivePlayer([string]$what) {
     $deadline = (Get-Date).AddMinutes($WaitMin); $said = $false
     while ($true) {
         Assert-HaltClear ('단독 검사 뒤 ' + $what)
-        $ex = Get-ExclusiveHolder
+        $ex = Get-EditorBlockingExclusive
         if (-not $ex) { return }
         if ((Get-Date) -gt $deadline) { throw ('단독 검사 대기 시간 초과(' + $WaitMin + '분): ' + $ex.reservedAs) }
         if (-not $said) { Say ('대기: BuildLoop 단독 검사 Player 실행 중(' + $ex.reservedAs + ' pid ' + $ex.pid + ') - 새 ' + $what + ' 작업은 끝난 뒤 시작 (' + $PollSec + '초 간격)'); $said = $true }
@@ -515,24 +589,79 @@ function Clear-PriorityWaiter([int]$selfPid) {
     if ($p -and [int]$p.pid -eq $selfPid) { Remove-Item -LiteralPath (Get-PriorityPath) -Force -ErrorAction SilentlyContinue }
 }
 
+# grant(11-04 CTO 순번 결정): BuildLoop 다음 순번을 정해진 owner의 Player N회에 준다(exo-unity grant -Owner <owner> -GrantCount 3 -TtlMin 360).
+# 그 owner의 Player는 player 예약 큐와 drain을 건너뛰고, 기다리는 동안 _player_grant_wait_<owner>.json으로 다른 새 Player를 막는다.
+# BuildLoop 우선 대기(_player_priority.json)·단독·슬롯·메모리·돌고 있는 Player를 끊지 않는 규칙은 그대로다. 입장할 때마다 1회 차감, 0회나 TTL이면 끝난다.
+function Get-GrantsPath { return (Join-Path $Root '_player_priority_grants.json') }
+function Get-GrantKind($e) { if ($e.PSObject.Properties['kind'] -and $e.kind) { return [string]$e.kind }; return 'player' }
+function Get-PriorityGrant([string]$who, [string]$grantKind = 'player') {
+    if ([string]::IsNullOrWhiteSpace($who)) { return $null }
+    $g = Read-Json (Get-GrantsPath); if (-not $g -or -not $g.grants) { return $null }
+    foreach ($e in @($g.grants)) {
+        $exp = $null; try { $exp = [DateTime]::Parse([string]$e.expiresAt).ToUniversalTime() } catch { }
+        if ([string]$e.owner -eq $who -and (Get-GrantKind $e) -eq $grantKind -and [int]$e.remaining -gt 0 -and $exp -and $exp -gt [DateTime]::UtcNow) { return $e }
+    }
+    return $null
+}
+function Use-PriorityGrant([string]$who, [string]$grantKind = 'player') {
+    $g = Read-Json (Get-GrantsPath); if (-not $g -or -not $g.grants) { return }
+    $list = @(); foreach ($e in @($g.grants)) { if ([string]$e.owner -eq $who -and (Get-GrantKind $e) -eq $grantKind -and [int]$e.remaining -gt 0) { $e.remaining = [int]$e.remaining - 1 }; $list += $e }
+    Write-JsonAtomic (Get-GrantsPath) ([ordered]@{ grants = @($list) })
+}
+function Get-GrantWaitPath([string]$who) { return (Join-Path $Root ('_player_grant_wait_' + ($who -replace '[^A-Za-z0-9_.-]', '_') + '.json')) }
+# rank(11-04 CTO 순번): 작을수록 앞. BuildLoop=1. grant는 -GrantRank(기본 50). rank 0 grant(종료 정지 A/B)는 BuildLoop보다 앞선다.
+function Get-GrantRank($e) { if ($e -and $e.PSObject.Properties['rank'] -and $null -ne $e.rank) { return [int]$e.rank }; return 50 }
+function Get-GrantWaiter([int]$selfPid, [int]$belowRank = 999) {
+    foreach ($f in @(Get-ChildItem -LiteralPath $Root -Filter '_player_grant_wait_*.json' -ErrorAction SilentlyContinue)) {
+        $p = Read-Json $f.FullName
+        if (-not $p -or -not $p.pid -or [int]$p.pid -eq $selfPid) { continue }
+        $proc = Get-Process -Id ([int]$p.pid) -ErrorAction SilentlyContinue; if (-not $proc) { continue }
+        try { if ($p.processStart -and $proc.StartTime.ToUniversalTime().ToString('o') -ne [string]$p.processStart) { continue } } catch { }
+        $gr = Get-PriorityGrant ([string]$p.owner); if (-not $gr) { continue }
+        if ((Get-GrantRank $gr) -ge $belowRank) { continue }
+        return $p
+    }
+    return $null
+}
+function Cmd-Grant {
+    if ([string]::IsNullOrWhiteSpace($Owner)) { throw '-Owner 가 필요합니다.' }
+    New-Item -ItemType Directory -Force -Path $Root | Out-Null
+    $g = Read-Json (Get-GrantsPath); $list = @()
+    $gk = 'player'; if ($script:GrantKindArg) { $gk = $Kind }
+    if ($g -and $g.grants) { foreach ($e in @($g.grants)) { if (-not ([string]$e.owner -eq $Owner -and (Get-GrantKind $e) -eq $gk)) { $list += $e } } }
+    $list += [pscustomobject]([ordered]@{ owner = $Owner; kind = $gk; rank = $GrantRank; remaining = $GrantCount; grantedAt = (NowIso); expiresAt = [DateTime]::UtcNow.AddMinutes($TtlMin).ToString('o'); note = $Note })
+    Write-JsonAtomic (Get-GrantsPath) ([ordered]@{ grants = @($list) })
+    Say ($gk + ' 우선 순번 부여: ' + $Owner + ' rank ' + $GrantRank + ' ' + $GrantCount + '회, ' + $TtlMin + '분 (' + $Note + ')')
+}
+
 function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
     New-Item -ItemType Directory -Force -Path $Root | Out-Null
     Set-ReservationWaiter $ownerPid
-    $wait = $WaitMin; if ((Test-LoopFirst) -and $wait -gt 0 -and $wait -lt 180) { $wait = 180 }
+    $grant = $null; if (-not (Test-LoopFirst)) { $grant = Get-PriorityGrant ([string]$Owner) }
+    $myRank = 999; if (Test-LoopFirst) { $myRank = 1 } elseif ($grant) { $myRank = Get-GrantRank $grant }
+    $wait = $WaitMin; if (((Test-LoopFirst) -or $grant) -and $wait -gt 0 -and $wait -lt 180) { $wait = 180 }
     $deadline = (Get-Date).AddMinutes($wait); $lastMsg = ''
     if (Test-LoopFirst) {
         $start = ''; try { $start = (Get-Process -Id $ownerPid).StartTime.ToUniversalTime().ToString('o') } catch { }
         Write-JsonAtomic (Get-PriorityPath) ([ordered]@{ pid = $ownerPid; processStart = $start; owner = [string]$Owner; since = (NowIso) })
+    }
+    if ($grant) {
+        $start = ''; try { $start = (Get-Process -Id $ownerPid).StartTime.ToUniversalTime().ToString('o') } catch { }
+        Write-JsonAtomic (Get-GrantWaitPath ([string]$Owner)) ([ordered]@{ pid = $ownerPid; processStart = $start; owner = [string]$Owner; since = (NowIso) })
     }
     try {
     while ($true) {
         Assert-HaltClear 'Player 슬롯'
         $slots = @(Get-PlayerSlots -Reap); $legacy = Get-LegacyPlayerCount
         $blocked = ''
-        if (-not (Test-LoopFirst)) {
+        $hw = Get-GrantWaiter $ownerPid $myRank
+        if ($hw) { $blocked = 'Player 우선 순번 대기: ' + $hw.owner + ' pid ' + $hw.pid }
+        if (-not $blocked -and -not (Test-LoopFirst) -and $myRank -gt 1) {
             $pw = Get-PriorityWaiter $ownerPid
             if ($pw) { $blocked = 'BuildLoop Player 우선 대기: ' + $pw.owner + ' pid ' + $pw.pid }
-            if (-not $blocked) { $blocked = Get-PlayerDrainReason }
+        }
+        if (-not $blocked -and -not (Test-LoopFirst) -and -not $grant) {
+            $blocked = Get-PlayerDrainReason
             $rs = @(Get-WaitingPlayerReservations)
             if (-not $blocked -and $rs.Count -gt 0 -and (-not $Owner -or $rs[0].owner -ne $Owner)) { $blocked = 'player 예약 큐 맨 앞은 ' + $rs[0].owner }
         }
@@ -550,11 +679,12 @@ function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
             # 프로세스 생성까지 새 실행기의 진입을 직렬화한다. 첫 Player가 생성되기 전
             # 신2개+구1개가 모두 Unity 0개를 관측하는 시작 경합을 막는다. _pc_lock은 쓰지 않는다.
             $legacy=Get-LegacyPlayerCount
-            if (-not (Test-LoopFirst)) {
+            if (-not (Test-LoopFirst) -and -not $grant) {
             $turn=@(Get-WaitingPlayerReservations)
             if ($turn.Count -gt 0 -and (-not $Owner -or $turn[0].owner -ne $Owner)) { $blocked='player 예약 큐 맨 앞은 '+$turn[0].owner }
-            if (-not $blocked -and (Get-PriorityWaiter $ownerPid)) { $blocked='BuildLoop Player 우선 대기' }
             }
+            if (-not $blocked -and (Get-GrantWaiter $ownerPid $myRank)) { $blocked='Player 우선 순번 대기' }
+            if (-not $blocked -and -not (Test-LoopFirst) -and $myRank -gt 1 -and (Get-PriorityWaiter $ownerPid)) { $blocked='BuildLoop Player 우선 대기' }
             if (-not $blocked) {
             # 구버전 Player가 있으면 후보 파일도 1개로 줄여 동시 경쟁자의 상호 포기 반복을 막는다.
             for ($i=1; $i -le ($MaxPlayerSlots - $legacy); $i++) {
@@ -567,8 +697,9 @@ function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
                 $script:PlayerSlotPath=$path; $script:PlayerSlotToken=$token
                 # 다른 slot/구버전 lock의 동시 획득 뒤 상한을 다시 검사한다.
                 $limit = $MaxPlayerSlots; if (Test-WantExclusive) { $limit = 1 }
-                if ((@(Get-PlayerSlots).Count + (Get-LegacyPlayerCount)) -le $limit -and (Get-CommitFreeGB) -ge 10 -and ((Test-LoopFirst) -or (-not (Get-PlayerDrainReason) -and -not (Get-PriorityWaiter $ownerPid))) -and -not (Get-ExclusiveHolder)) {
-                    if (Test-WantExclusive) { Write-JsonAtomic $ExclusivePath ([ordered]@{ pid = $ownerPid; startedAt = $content.startedAt; token = $token; reservedAs = [string]$Owner; exe = $exeFull }) }
+                if ((@(Get-PlayerSlots).Count + (Get-LegacyPlayerCount)) -le $limit -and (Get-CommitFreeGB) -ge 10 -and (-not (Get-GrantWaiter $ownerPid $myRank)) -and ((Test-LoopFirst) -or ($grant -and ($myRank -le 1 -or -not (Get-PriorityWaiter $ownerPid))) -or (-not (Get-PlayerDrainReason) -and -not (Get-PriorityWaiter $ownerPid))) -and -not (Get-ExclusiveHolder)) {
+                    if (Test-WantExclusive) { Write-JsonAtomic $ExclusivePath ([ordered]@{ pid = $ownerPid; startedAt = $content.startedAt; token = $token; reservedAs = [string]$Owner; exe = $exeFull; loop = [bool](Test-LoopFirst) }) }
+                    if ($grant) { Use-PriorityGrant ([string]$Owner) }
                     $admitted=$true; return
                 }
                 Release-PlayerSlot
@@ -582,7 +713,10 @@ function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
         if ($blocked -ne $lastMsg) { Say ('대기: ' + $blocked + ' (' + $PollSec + '초 간격)'); $lastMsg=$blocked }
         Start-Sleep -Seconds $PollSec
     }
-    } finally { if (Test-LoopFirst) { Clear-PriorityWaiter $ownerPid } }
+    } finally {
+        if (Test-LoopFirst) { Clear-PriorityWaiter $ownerPid }
+        if ($grant) { $gp = Get-GrantWaitPath ([string]$Owner); $m = Read-Json $gp; if ($m -and [int]$m.pid -eq $ownerPid) { Remove-Item -LiteralPath $gp -Force -ErrorAction SilentlyContinue } }
+    }
 }
 
 # ------------------------------------------------------------------ 잠금 + 슬롯
@@ -650,7 +784,7 @@ function Acquire-Slot([string]$Role, [string]$wt, [int]$ownerPid, [string]$queue
     while ($true) {
         Assert-HaltClear 'Editor 잠금'
         $blocked = $null
-        $ex = Get-ExclusiveHolder
+        $ex = Get-EditorBlockingExclusive
         if ($ex) { $blocked = ('BuildLoop 단독 검사 Player 실행 중(' + $ex.reservedAs + ' pid ' + $ex.pid + ')') }
         $res = @(Get-Reservations 'editor')
         if ($res.Count -gt 0) {
@@ -665,6 +799,7 @@ function Acquire-Slot([string]$Role, [string]$wt, [int]$ownerPid, [string]$queue
                 $procs = @(Get-UnityProcs | Where-Object { $_.ProcessName -eq 'Unity' })
                 $free = Get-CommitFreeGB
                 if ($procs.Count -eq 0 -and $free -ge $needGB) {
+                    if ($Owner -and (Get-PriorityGrant ([string]$Owner) 'editor')) { Use-PriorityGrant ([string]$Owner) 'editor' }
                     if ($Owner -and -not $KeepReservation) { foreach ($r in @(Get-Reservations 'editor' | Where-Object { $_.owner -eq $Owner })) { Remove-Item -LiteralPath $r.file -Force -ErrorAction SilentlyContinue } }
                     return
                 }
@@ -1404,13 +1539,59 @@ function Wait-DiskIdle([string]$exePath, [int]$maxSec = 600) {
     }
 }
 
+# zombie-known(11-04 CTO): 사용자가 HALT를 지웠고 재부팅은 작업이 끝난 뒤에 한다. 알려진 kill 불가 좀비(_zombie_known.json의 pid+시작 시각)는
+# HALT를 다시 만들지 않고 경고만 남긴다. 부모 실행기(exo-unity)가 살아 있는 Player는 그 실행기가 시간 초과 kill·진단 영수증을 처리 중이라 좀비로 세지 않는다.
+# 그 밖의 새 좀비는 지금처럼 HALT(재부팅 필요)다. 좀비 프로세스는 어느 경우에도 죽이지 않는다.
+function Get-ZombieKnownPath { return (Join-Path $Root '_zombie_known.json') }
+function Test-ZombieKnown($z) {
+    $k = Read-Json (Get-ZombieKnownPath); if (-not $k -or -not $k.zombies) { return $false }
+    $start = ''; try { $start = (Get-Process -Id ([int]$z.pid) -ErrorAction Stop).StartTime.ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ss') } catch { }
+    foreach ($e in @($k.zombies)) { if ([int]$e.pid -eq [int]$z.pid -and (-not $e.processStart -or [string]$e.processStart -eq $start)) { return $true } }
+    return $false
+}
+function Test-ZombieManaged($z) {
+    try {
+        $c = Get-CimInstance Win32_Process -Filter ('ProcessId=' + [int]$z.pid) -ErrorAction Stop
+        $pp = Get-CimInstance Win32_Process -Filter ('ProcessId=' + [int]$c.ParentProcessId) -ErrorAction Stop
+        return ([string]$pp.CommandLine -match 'exo-unity\.ps1')
+    } catch { return $false }
+}
+function Split-Zombies($zombies) {
+    $new = @(); $known = @(); $managed = @()
+    foreach ($z in @($zombies)) { if (Test-ZombieKnown $z) { $known += $z } elseif (Test-ZombieManaged $z) { $managed += $z } else { $new += $z } }
+    return [pscustomobject]@{ new = @($new); known = @($known); managed = @($managed) }
+}
+# zombie-alert(11-04 19:40 CTO): 좀비가 생기면 부팅 후 몇 시간 뒤 첫 발생인지 기록한다(오염 시점 측정). HALT는 CTO에 먼저 보고한 뒤 만든다.
+# 그래서 새 좀비는 HALT 대신 _zombie_alert.json(누적)에 시각·부팅 경과·좀비 목록을 남기고, 그 Player 시작만 거부한다(exit 3).
+# 좀비가 남아 있는 동안 다음 Player도 같은 이유로 거부되므로 창 모드 Player는 멈추고, Editor batch는 계속된다.
+function Get-BootAgeHours { try { return [math]::Round(((Get-Date) - (Get-CimInstance Win32_OperatingSystem -ErrorAction Stop).LastBootUpTime).TotalHours, 2) } catch { return $null } }
+function Write-ZombieAlert($zombies, [string]$what, [string]$source) {
+    $p = Join-Path $Root '_zombie_alert.json'; $a = Read-Json $p
+    $boot = $null; try { $boot = (Get-CimInstance Win32_OperatingSystem -ErrorAction Stop).LastBootUpTime.ToUniversalTime().ToString('o') } catch { }
+    $events = @(); if ($a -and $a.events) { $events = @($a.events) }
+    $known = @($events | ForEach-Object { [int]$_.pid })
+    $new = @(@($zombies) | Where-Object { $known -notcontains [int]$_.pid })
+    if ($new.Count -eq 0) { return $false }
+    foreach ($z in $new) {
+        $zs = $null; try { $zs = (Get-Process -Id ([int]$z.pid) -ErrorAction Stop).StartTime.ToUniversalTime().ToString('o') } catch { }
+        $events += [pscustomobject]([ordered]@{ pid = [int]$z.pid; name = [string]$z.name; processStart = $zs; detectedAt = (NowIso); bootAt = $boot; bootAgeHours = (Get-BootAgeHours); threads = $z.threads; cpuSec = $z.cpuSec; what = $what; source = $source; owner = [string]$Owner; exe = [string]$Exe })
+    }
+    Write-JsonAtomic $p ([ordered]@{ note = '좀비 감지 기록(HALT 아님). HALT는 CTO 보고 뒤 결정. 첫 발생 부팅 경과 = 첫 항목 bootAgeHours'; firstBootAgeHours = $events[0].bootAgeHours; events = @($events) })
+    Say ('좀비 감지 기록: ' + (($new | ForEach-Object { $_.name + ':' + $_.pid }) -join ', ') + ' 부팅 후 ' + (Get-BootAgeHours) + '시간 (_zombie_alert.json, HALT 만들지 않음 - CTO 보고 대상)')
+    return $true
+}
 function Stop-ForZombies($zombies, [string]$what) {
+    $sp = Split-Zombies $zombies
+    foreach ($z in @($sp.known)) { Say ('경고: 알려진 kill 불가 좀비 ' + $z.name + ':' + $z.pid + ' - HALT 만들지 않음(_zombie_known.json, 재부팅 때 정리)') }
+    foreach ($z in @($sp.managed)) { Say ('경고: 실행기가 처리 중인 정지 Player ' + $z.name + ':' + $z.pid + ' - 그 실행기의 시간 초과 kill·진단을 기다림') }
+    if (@($sp.new).Count -eq 0) { return }
+    $zombies = @($sp.new)
     $list = (@($zombies) | ForEach-Object { $_.name + ':' + $_.pid + '(스레드' + $_.threads + ', CPU ' + $_.cpuSec + 's)' }) -join ', '
     $cause = '재부팅 필요: 종료 못 한 Player 좀비 ' + @($zombies).Count + '개 - ' + $list
     $id = [guid]::NewGuid().ToString('N').Substring(0, 8)
     try { Write-JsonAtomic (Join-Path $ExecDir ('done\' + $id + '.json')) ([ordered]@{ runnerVersion = $ExoUnityVersion; id = $id; kind = $what; ok = $false; rejected = $true; note = $cause; zombies = @($zombies); exe = [string]$Exe; finishedAt = (NowIso) }) } catch { }
-    New-Halt $cause $what @() (Get-Date)
-    Reject ($cause + '. 새 Player를 띄우지 않았다. 재부팅 뒤 ' + $HaltPath + '를 지우면 풀린다')
+    $null = Write-ZombieAlert $zombies $what 'start-check'
+    Reject ($cause + ' (부팅 후 ' + (Get-BootAgeHours) + '시간). 새 Player를 띄우지 않았다. HALT는 만들지 않았다(_zombie_alert.json, CTO 보고 대상)')
 }
 
 # 11-04: 사용자가 바탕화면에서 띄운 게임(부모 explorer)은 실제 세이브 폴더에 저장하므로, 그동안 돈 QA Player가 USER_SAVE 변경으로 실패했다.
@@ -1440,7 +1621,9 @@ function Cmd-Player {
     # 11-03 사용자 "백그라운드 테스트는 맥에서만": PC Player 실행은 CLAUDE.md 3.4 예외 3가지만 허용한다(편집기 batchmode 컴파일·임포트는 그대로).
     if (-not $PcException) { Reject 'PC에서는 player 실행을 기본 거부한다. Player 테스트·캡처는 Mac에서 실행한다. 예외(BuildLoop 바탕화면 교체·CTO 1회 교체·CTO 승인 후보 바로가기)만 -PcException buildloop|cto-swap|candidate' }
     $zombies = @(Find-ZombiePlayers)
-    if ($zombies.Count) { Stop-ForZombies $zombies 'player' }
+    if ($zombies.Count -ge 4 -and (Test-HaltExempt)) { Reject ('HALT 예외 A/B 자동 중단: 좀비 ' + $zombies.Count + '개(4개 이상, CTO 조건) - ' + (($zombies | ForEach-Object { $_.name + ':' + $_.pid }) -join ',')) }
+    if ($zombies.Count -and (Test-HaltExempt)) { Say ('HALT 예외 owner: 좀비 ' + (($zombies | ForEach-Object { $_.name + ':' + $_.pid }) -join ',') + '는 진단 증거로 두고 진행(죽이지 않음)') }
+    elseif ($zombies.Count) { Stop-ForZombies $zombies 'player' }
     if (-not $DryRun) { $games = @(Find-UserGames); if ($games.Count) { Defer-ForUserGames $games } }
     if ([string]::IsNullOrWhiteSpace($Exe)) { throw '-Exe 가 필요합니다.' }
     if (-not (Test-Path -LiteralPath $Exe)) { throw "플레이어를 찾을 수 없음: $Exe" }
@@ -1476,6 +1659,7 @@ function Cmd-Player {
     try {
         if ($Owner) { Cmd-Reserve | Out-Null }
         Acquire-PlayerSlot $exeFull $PID
+        if ((Test-Path -LiteralPath $HaltPath) -and (Test-HaltExempt)) { Add-HaltExemptRun }
         $diskWait = Wait-DiskIdle $exeFull
         $script:SaveBefore = Get-UserSaveSnapshot
         $g = $null; $crashCause = $null; $logsUsed = @($log); $t0c = Get-Date
@@ -1504,8 +1688,8 @@ function Cmd-Player {
         if ($nullGfx) { $extraOk = $false; $fail = 'Forcing GfxDevice: Null - GPU 렌더링 아님' }
         elseif (-not $gpu) { $fail = '그래픽 장치 이름을 로그에서 찾지 못함(GPU 확인 불가)' }
         if (@($g.warnings | Where-Object { $_ -like '*커널 대기 의심*' }).Count) {
-            $after = @(Find-ZombiePlayers)
-            if ($after.Count) { $g.warnings = @($g.warnings) + '재부팅 필요: 이 Player가 종료되지 않음 - HALT 생성'; New-Halt ('재부팅 필요: 종료 못 한 Player 좀비 ' + (($after | ForEach-Object { $_.name + ':' + $_.pid }) -join ', ')) 'player' @($log) $t0c }
+            $after = @(Find-ZombiePlayers); $after = @($after | Where-Object { -not (Test-ZombieKnown $_) })   # 알려진 좀비는 이 Player의 HALT 사유에서 뺀다
+            if ($after.Count) { $g.warnings = @($g.warnings) + ('재부팅 필요: 이 Player가 종료되지 않음(부팅 후 ' + (Get-BootAgeHours) + '시간) - HALT 대신 _zombie_alert.json 기록, CTO 보고 대상'); $null = Write-ZombieAlert $after 'player' 'post-run' }
         }
         Finish-Guarded 'player' $id $g ([ordered]@{ exe = $exeFull; args = @($ia); gpu = $gpu; gfxNull = $nullGfx; log = $log; desktop = $Desktop; hiddenWindows = $g.hiddenWindows; hiddenTitles = @($g.hiddenTitles); desktopClosed = $g.desktopClosed; processId = $g.processId; startedAt = $g.startedAt; finishedAt = $g.finishedAt; hiddenDesktopName = $g.hiddenDesktopName; slot = $script:PlayerSlotPath; diskAtStart = $diskWait }) $extraOk $fail
     } finally {
@@ -1590,6 +1774,7 @@ switch ($Command.ToLower()) {
     'reap'      { Cmd-Reap }
     'reserve'   { Cmd-Reserve }
     'unreserve' { Cmd-Unreserve }
+    'grant'     { $script:GrantKindArg = $PSBoundParameters.ContainsKey('Kind'); Cmd-Grant }
     'queue'     { Cmd-Queue }
     'player'    { Cmd-Player }
     'browser'   { Cmd-Browser }

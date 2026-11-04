@@ -48,6 +48,15 @@ try {
  Check (-not (Test-Path $ExclusivePath)) 'normal Player wrote an exclusive marker'
  Reset-Me
  Check ((Try-Acquire) -eq 'ok') 'second concurrent normal slot no longer available'
+ # 11-04 19:50: only the BuildLoop exclusive check holds new Editor work; another lane's -Exclusive Player blocks Players only
+ Write-JsonAtomic $ExclusivePath ([ordered]@{pid=$PID;startedAt=(NowIso);token='lane';reservedAs='char-greatsword-reshoot';exe='x.exe';loop=$false})
+ Write-JsonAtomic (Join-Path $Root '_player_slot_1.json') ([ordered]@{owner='devtools-player';pid=$PID;exe='x.exe';startedAt=(NowIso);token='lane';reservedAs='char-greatsword-reshoot'})
+ $script:PlayerSlotToken='other'
+ Check ($null -ne (Get-ExclusiveHolder)) 'lane exclusive marker not seen'
+ Check ($null -eq (Get-EditorBlockingExclusive)) 'lane -Exclusive Player held Editor work'
+ Write-JsonAtomic $ExclusivePath ([ordered]@{pid=$PID;startedAt=(NowIso);token='lane';reservedAs='buildloop';exe='x.exe';loop=$true})
+ Check ($null -ne (Get-EditorBlockingExclusive)) 'BuildLoop exclusive check no longer holds Editor work'
+ Remove-Item -LiteralPath $ExclusivePath,(Join-Path $Root '_player_slot_1.json') -Force -ErrorAction SilentlyContinue
  'PASS: '+$n+' exclusive Player decisions; Unity launches=0'
 } finally {
  Release-PlayerAdmission

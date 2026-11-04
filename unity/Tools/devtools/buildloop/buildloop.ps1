@@ -515,12 +515,36 @@ function Invoke-Exo([string]$command, [string[]]$jobArgs, [string]$logBase, [str
 }
 # 11-04 CTO 래칫: 바탕화면 빌드에 이미 있던 겹침만 known-overlaps.json에 두고, 목록 밖 겹침이 하나라도 있으면 FAIL.
 # 목록 건수는 state.uiKnownMin보다 늘 수 없다(줄어들기만). 검사 화면·analyzer 판정은 그대로다.
+# 11-04 20:36 CTO: e3d8d6a 회차가 UI 겹침 분석 끝에서 30분 넘게 멈췄다. 1.5GB 보고서를 I:(exFAT USB HDD)에 쓴 뒤 분석기가 CPU 0·디스크 유휴로
+# 차단 호출에서 섰고 kill 뒤에도 1분가량 사라지지 않았다. UI 검사 출력(회차당 약 7.7GB)은 NTFS G:에 쓰고, 요약·대조 기록만 회차 폴더에 남긴다.
+# G:에는 현재 회차 것만 둔다(이전 회차 폴더는 시작할 때 지운다. 확인 끝난 캡처는 남기지 않는다, CLAUDE.md 3.1).
+$UiCheckRoot = 'G:\exoduser-wt\_buildloop-uicheck'
+function Get-UiCheckDir([string]$runDir) {
+  New-Item -ItemType Directory -Force -Path $UiCheckRoot | Out-Null
+  $rootFull = [IO.Path]::GetFullPath($UiCheckRoot).TrimEnd('\') + '\'
+  $leaf = Split-Path $runDir -Leaf
+  foreach ($d in @(Get-ChildItem -LiteralPath $UiCheckRoot -Directory -ErrorAction SilentlyContinue)) {
+    if ($d.Name -eq $leaf -or -not ($d.Name -match '^\d{8}-\d{9}_[0-9a-f]{7}$')) { continue }
+    if ($d.Attributes -band [IO.FileAttributes]::ReparsePoint) { continue }
+    if (-not ([IO.Path]::GetFullPath($d.FullName)).StartsWith($rootFull, [StringComparison]::OrdinalIgnoreCase)) { continue }
+    try { Remove-Item -LiteralPath $d.FullName -Recurse -Force -ErrorAction Stop; Log ('이전 UI 검사 출력 정리: ' + $d.FullName) } catch { Log ('이전 UI 검사 출력 정리 실패: ' + $d.FullName + ' ' + $_.Exception.Message) }
+  }
+  $dir = Join-Path $UiCheckRoot $leaf
+  [IO.File]::WriteAllText((Join-Path $runDir 'ui-check-location.txt'), $dir, (New-Object Text.UTF8Encoding($false)))
+  return $dir
+}
+function Save-UiCheckRecord([string]$uiDir, [string]$runDir) {
+  foreach ($n in 'overlap-summary.json', 'coverage.json', '겹침_검사.md') {
+    $p = Join-Path (Join-Path $uiDir 'overlap') $n
+    if (Test-Path -LiteralPath $p) { Copy-Item -LiteralPath $p -Destination (Join-Path $runDir ('ui-' + $n)) -Force -ErrorAction SilentlyContinue }
+  }
+}
 function Apply-UiKnownList($run, $stateObj, [string]$runDir) {
   $u = $run.uiOverlap
   if ($u.passed -or -not $u.valid -or [int]$u.issueCount -le 0 -or @($u.missing).Count -gt 0 -or [int]$u.frameCount -le 0) { return }
   $known = Join-Path $Cfg.Worktree 'unity\Tools\ui-overlap\known-overlaps.json'
   if (-not (Test-Path -LiteralPath $known)) { $u.note = [string]$u.note + '; 알려진 목록 없음'; return }
-  $out = Join-Path $runDir 'ui-check\known-filter.json'
+  $out = Join-Path $runDir 'ui-known-filter.json'
   $raw = & 'C:\nvm4w\nodejs\node.exe' (Join-Path $Cfg.Worktree 'unity\Tools\ui-overlap\known-filter.cjs') ([string]$u.detailReport) $known $out 2>&1
   $line = @($raw | ForEach-Object { [string]$_ } | Where-Object { $_.Trim().StartsWith('{') } | Select-Object -Last 1)
   if (-not $line) { $u.note = [string]$u.note + '; 알려진 목록 대조 실패'; return }
@@ -1017,11 +1041,13 @@ function Cmd-Run {
         try {
           $uiLog = Join-Path $runDir 'ui-overlap.log'
           $run.uiOverlap = @{ passed = $false; exit = $null; log = $uiLog; stderrLog = ($uiLog -replace '\.log$', '.err.log'); note = 'UI 호출 종료 확인 전' }
-          $uiCall = Invoke-UiOverlapCheck $uiCheck (Join-Path $stage 'EXODUSER-Unity.exe') $Cfg.Worktree (Join-Path $runDir 'ui-check') $uiLog
-          $run.uiOverlap = Read-UiOverlapSummary (Join-Path $runDir 'ui-check\overlap\overlap-summary.json') $uiCall.exit (Join-Path $runDir 'ui-check\overlap\overlap-report.json')
-          $run.uiOverlap.log = $uiLog
+          $uiDir = Get-UiCheckDir $runDir
+          $uiCall = Invoke-UiOverlapCheck $uiCheck (Join-Path $stage 'EXODUSER-Unity.exe') $Cfg.Worktree $uiDir $uiLog
+          $run.uiOverlap = Read-UiOverlapSummary (Join-Path $uiDir 'overlap\overlap-summary.json') $uiCall.exit (Join-Path $uiDir 'overlap\overlap-report.json')
+          $run.uiOverlap.log = $uiLog; $run.uiOverlap.dir = $uiDir
           $run.uiOverlap.stderrLog = $uiCall.stderr; $run.uiOverlap.processId = $uiCall.processId
           Apply-UiKnownList $run $st $runDir
+          Save-UiCheckRecord $uiDir $runDir
         } finally { }
       }
     } else { $run.smokeNote = '빌드 실패로 스모크 없음' }
