@@ -1,3 +1,6 @@
+## 2026-11-04 L10 드루이드 rig-pixel 회색 평면 실루엣 (Core 변경 0)
+- `DruidRigPixelToon.shader`: 셰이딩 법선을 보이는 면 쪽으로 뒤집은 뒤 조명·B4 시선 림 계산. 양면 망토·깃털 카드에서 법선이 반대인 면이 facing=0 → 림 전 단계로 회청색 단색이 되던 문제(보스 문서 7e96e04d6 ①). 림 수치·Cull·합성·카메라 무변경. 컴파일 미확인·화면 미검수(Mac). 상세 `docs/0마스터플랜/worklog/cloud-lanes/L10-druid-silhouette_20261104.md`.
+
 ## 2026-11-04 STY-25 B7 보스 처치 펫 대사 반영 (표시층만, Core 변경 0)
 - `pet_bubble.json` cue `boss_kill_ch0`(No.3350 핵터·3351 디로이, 29개 언어, `exit_north_ch0` 앞)와 entries 2개, `NativeGame.PetBubble.cs`(출구 개방 1.7초 뒤 런당 1회 Offer, B8·B9는 B7이 나온 뒤에만). 정본 `DARK_DRUID_1-1_B7_PET_PATCH_20261104.md`. 기존 쿨다운·Active 중 Offer 금지·사망 Clear·메뉴/로딩 숨김 규칙은 그대로.
 ## 2026-11-04 STY-25 1-1 다크드루이드 등장·전환 문구 반영 (표시층만, Core 변경 0)
