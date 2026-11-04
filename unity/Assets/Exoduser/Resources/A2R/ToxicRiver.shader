@@ -46,6 +46,7 @@ Shader "EXODUSER/A2R/ToxicRiver"
     float a=dot(p,float2(.81,.27))-t*.19;
     float b=dot(p,float2(-.32,.64))+t*.13+sin(a*.43)*.48;
     float2 slope=float2(.81,.27)*cos(a+sin(b)*.32)*.075+float2(-.32,.64)*cos(b)*.055;
+    float ripple=A2RWave(p);slope+=float2(A2RWave(p+float2(.025,0))-ripple,A2RWave(p+float2(0,.025))-ripple)/.025;
     float3 n=normalize(float3(-slope.x,1,-slope.y));
     float2 uv=i.screen.xy/i.screen.w;
     float scene=LinearEyeDepth(SampleSceneDepth(uv),_ZBufferParams);
