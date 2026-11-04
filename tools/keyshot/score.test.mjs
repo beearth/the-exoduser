@@ -15,6 +15,10 @@ test('화면 밖과 가려진 적은 점수에서 제외한다', () => {
     enemies:[{x:100,y:20,w:20,h:20,visible:false},{x:-100,y:10,w:10,h:20,visible:true}]},{luminance:60,hudOverlap:0});
   assert.equal(s.upperEnemies,0); assert.equal(s.heroOccluded,true);
 });
+test('영웅 물리 가림 결과도 가림 점수에 반영한다',()=>{
+  const frame={width:1920,height:1080,hero:{x:900,y:500,w:70,h:120,visible:false},heroOverlap:0,enemies:[]};
+  assert.equal(api.scoreFrame(frame,{luminance:60,hudOverlap:0}).heroOccluded,true);
+});
 test('픽셀 차와 메타데이터 차이는 각각 검출한다', () => {
   assert.ok(api);
   assert.deepEqual(api.pixelDifference(Buffer.from([0,20,40]),Buffer.from([0,22,40])),{changed:1,total:3,ratio:1/3,mean:2/3,max:2});

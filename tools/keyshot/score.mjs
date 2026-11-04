@@ -3,7 +3,7 @@ export function scoreFrame(frame, image) {
   const upperEnemies=visible.filter(e=>e.y+e.h/2<frame.height/3).length;
   const heights=visible.map(e=>e.h/frame.height);
   const layers=new Set(heights.map(h=>h<.035?'far':h<.075?'middle':'near')).size;
-  const heroOccluded=frame.heroOverlap>0||!frame.hero||frame.hero.w<=0||frame.hero.h<=0;
+  const heroOccluded=frame.heroOverlap>0||!frame.hero||frame.hero.visible===false||frame.hero.w<=0||frame.hero.h<=0;
   const luminance=image.luminance, hudOverlap=image.hudOverlap||0, blackBorder=!!image.blackBorder;
   const score=Number((Math.min(upperEnemies,12)*5+layers*18+Math.min(visible.length,24)-
     (heroOccluded?30:0)-hudOverlap*50-(blackBorder?100:0)-(luminance<20?(20-luminance)*2:0)).toFixed(2));

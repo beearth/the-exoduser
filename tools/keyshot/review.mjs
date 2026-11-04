@@ -23,7 +23,7 @@ if(mode==='score') {
   }
   const base=rows.filter(r=>r.width===1920&&r.height===1080),top=selectViews(base,4);
   fs.writeFileSync(path.join(root,'scores.json'),JSON.stringify({scope:'자동 선별. 시각 PASS 아님',rows,top},null,2));
-  fs.writeFileSync(path.join(root,'scores.csv'),'scene,id,score,upperEnemies,layers,heroOccluded,hudOverlap,luminance\n'+rows.map(r=>[r.scene,r.id,r.score,r.upperEnemies,r.layers,r.heroOccluded,r.hudOverlap,r.luminance].join(',')).join('\n'));
+  fs.writeFileSync(path.join(root,'scores.csv'),'scene,id,width,height,score,upperEnemies,layers,visibleEnemies,heroOccluded,hudOverlap,luminance,blackBorder\n'+rows.map(r=>[r.scene,r.id,r.width,r.height,r.score,r.upperEnemies,r.layers,r.visibleEnemies,r.heroOccluded,r.hudOverlap,r.luminance,r.blackBorder].join(',')).join('\n'));
   const tiles=[];for(const r of base){
     const label=Buffer.from(`<svg width="480" height="32"><rect width="480" height="32" fill="#151515"/><text x="10" y="22" fill="white" font-size="17">${r.id} | ${r.score} | top ${r.upperEnemies} | layers ${r.layers}</text></svg>`);
     tiles.push(await sharp(path.join(root,r.file)).resize(480,270).extend({bottom:32,background:'#151515'}).composite([{input:label,top:270,left:0}]).toBuffer());
