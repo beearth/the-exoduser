@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HUD 시안 A</title>
+<link rel="stylesheet" href="_stage.css">
+</head><body>
+<!-- 시안 A: 기존 구조 유지(구체 2 + 13슬롯 1줄, 구체 중심 x ±443 ≈ 현재 ±441) + 실버 헬 톤·라벨 정리 + 접지 레일.
+     수치 근거·결함 대응은 defects.md, 제작법은 G0_BRIEF.md. 1920×1080 설계 px. ?guides 로 측정선 표시. -->
+<div id="stage">
+  <div class="tag">MOCK A · 구조 유지</div>
+  <div class="bullet" style="left:700px;top:860px"></div><div class="bullet v" style="left:1250px;top:880px"></div><div class="bullet" style="left:980px;top:900px"></div>
+</div>
+<script src="_hud_mock.js"></script>
+<script>
+fitStage();
+buildHud({
+  rail:{h:14}, orbOuter:190, liquid:156, band:17, orbSink:4, overlap:14, eyeW:30, poise:true,
+  plateH:74, cham:12, padX:22, slotCY:30, s:44, sBig:44, gIn:5, gOut:16, chipUp:8,
+  hp:.72, mp:.85, st:.6, mob:.6,
+  hpT:['397','552'], mpT:['102','120'], stT:['60','100'],
+  hpCur:26, hpMax:13, rsCur:18, rsMax:11, numDy:-4,
+  groups:[
+    [{key:'1',icon:'orb/spikeTrap'},{key:'2'},{key:'3'},{key:'4'}],
+    [{key:'F',icon:'orb/holyDome',cd:.55,cdn:'7'},{key:'Z'}],
+    [{mouse:'L',icon:'orb/kiSlash',sel:true},{mouse:'R',icon:'orb/maliceSwipe'}],
+    [{key:'SHFT',icon:'orb/charge',gauge:.6},{key:'E',icon:'orb/fireball'},{key:'Q',icon:'orb/parry'},{key:'CTRL',icon:'orb/iceOrb'},{key:'SPC',icon:'orb/giantSlam'}]
+  ]
+});
+</script>
+</body></html>
