@@ -1,3 +1,11 @@
+## 2026-11-05 B1-docs 잡기 타이밍 문서 정정 (코드 변경0)
+- PREP §9.1: 탈출 실효 recover20으로 정정(초기40 → 다음 틱20 clamp), Core DruidBoss.Remodel.cs:109·DruidBoss.Moves.cs:538 근거 추가.
+- G0 §13.2: 성공 rec60 < tele64는 M3 공통 기준의 승인된 예외로 명시. DruidRemodelData.cs:79·:57 및 DruidBoss.Motion.cs:108과 일치, 값 유지.
+
+## 2026-11-05 B1 드루이드 무브셋·타이밍 정합 (표현만)
+- 활성7기술·비활성5슬롯의 문서/Core/표현 대조와 FBX38클립 정적 길이 확인. 섬광 Core 시간 고정, 페인트 회복25틱·잡기 탈출 실효20틱 retiming, 회복 중 패링 보너스 자세 역행 방지. Core·HP/피해·금지 소유 파일 변경0.
+- 집중5,160/0, 오프라인 Roslyn5어셈블리 오류0. Unity 실행0, 화면 미검수(Mac). Core 차이·M1/M2/M3/M6 남은 판정 및 파일:줄: `docs/0마스터플랜/worklog/cloud-lanes/B1-moveset_20261105.md`.
+
 ## 2026-11-04 L10 드루이드 rig-pixel 회색 평면 실루엣 (Core 변경 0)
 - `DruidRigPixelToon.shader`: 셰이딩 법선을 보이는 면 쪽으로 뒤집은 뒤 조명·B4 시선 림 계산. 양면 망토·깃털 카드에서 법선이 반대인 면이 facing=0 → 림 전 단계로 회청색 단색이 되던 문제(보스 문서 7e96e04d6 ①). 림 수치·Cull·합성·카메라 무변경. 컴파일 미확인·화면 미검수(Mac). 상세 `docs/0마스터플랜/worklog/cloud-lanes/L10-druid-silhouette_20261104.md`.
 

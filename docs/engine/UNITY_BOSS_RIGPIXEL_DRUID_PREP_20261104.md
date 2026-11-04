@@ -199,7 +199,7 @@ Mac은 먼저 Exoduser.CharacterLab.DruidRigPixelVerification.Verify를 Editor�
 | slashCombo | slash1_tele32→Core36, slash2/3_tele24→26, 각 act8→10, rec80→84. act 원본6f 타격 포즈를 현재 Core의 St2=SlashHitAt8(발동 후2틱)에 맞추는 구간별 샘플:0→6f를2틱,6→8f를나머지8틱.3연타는 SlashIdx로 각각 선택 |
 | slam | tele48→52, act6→6, rec70→76. 실제 피해는 Core active 끝/rec 진입이며 원본 지팡이 접촉 자세는 실제 캡처에서 대조 |
 | charge | tele54→58, run40→최대40(일찍 접촉/벽 충돌하면 Core 상태를 즉시 따름), rec70→74. 벽 충돌 bossShock20은 charge_rec으로 연결. 잡기 선택이 원거리 돌진으로 바뀐 경우 실제 charge 상태를 기억해 회복도 charge_rec을 쓰되 원래 grab 회복 시간84를 유지 |
-| grab | tele60→64, lunge18→20, hold120→120. 잡힘 뒤 bossRec60은 grab_throw60, 빗나감84는 miss_rec80, 탈출 recover40은 miss_rec80을 압축. Core 흡수/던지기/탈출 판정 변경0 |
+| grab | tele60→64, lunge18→20, hold120→120. 잡힘 뒤 bossRec60은 grab_throw60, 빗나감84는 miss_rec80, 탈출 실효 recover20은 miss_rec80을 압축. Core 근거: `unity/Assets/Exoduser/Runtime/Core/DruidBoss.Remodel.cs:109`에서 초기40을 설정한 뒤 `DruidBoss.Moves.cs:538`의 공용 recover가 다음 틱20으로 clamp한다(B1-docs, 2026-11-05 CTO 확정). Core 흡수/던지기/탈출 판정 변경0 |
 | burrowStrike | dive50→56, 지하45틱은 기존 흙더미. erupt 상태40을 warn34/source30 + post6/source6으로 나누며 EruptHit 경계를 사용. rec70→76, 수직 클립 유지 |
 | groundFissure | tele40→42. Core는 균열 생성 즉시 bossRec60으로 넘어가므로 회복 처음20틱에 fissure_act20, 남은40틱에 fissure_rec60을 배치. Core 밖에20틱을 추가하지 않음 |
 | heartbeat | 첫 bossHeartWind90은 heart_tele90, 후속2·3회 wind60은 heart_beat60, 사이 pause30·최종 rec90. 최초 예고 뒤 별도60틱을 추가하지 않음. 실제 펄스는 Core HbBeat 전환 영수증과 대조 |
