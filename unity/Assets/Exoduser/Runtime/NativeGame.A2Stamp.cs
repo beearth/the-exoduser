@@ -80,8 +80,7 @@ namespace Exoduser.UnityPort
                 if(d<-.2f){chance=.82f;k=d<-1.1f&&r<.38f?Pick(tall):r<.85f?Pick(low):Pick(dots);scale=Rand(1.2f,1.9f);}
                 else
                 {
-                    chance=.05f+.62f*Mathf.SmoothStep(.46f,.72f,clump*.75f+fine*.25f);
-                    if(d<1.2f)chance=Mathf.Max(chance,.5f);
+                    chance=d<1.1f?.5f:.012f+.1f*Mathf.SmoothStep(.6f,.78f,clump*.75f+fine*.25f);
                     k=r<.74f?Pick(low):Pick(dots);scale=Rand(.95f,1.45f);
                 }
                 if(rng.NextDouble()>chance)continue;

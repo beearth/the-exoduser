@@ -17,6 +17,7 @@ Shader "EXODUSER/HellGroundPBR"
             #pragma multi_compile_fragment _ _SHADOWS_SOFT _SHADOWS_SOFT_LOW _SHADOWS_SOFT_MEDIUM _SHADOWS_SOFT_HIGH
    #pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
    #pragma multi_compile_fragment _ _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3
+   #pragma multi_compile _ _LIGHT_COOKIES
    #pragma multi_compile_fog
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
@@ -77,7 +78,8 @@ Shader "EXODUSER/HellGroundPBR"
      mossMix=SAMPLE_TEXTURE2D(_FieldCover,sampler_FieldCover,float2(i.world.x/80,-i.world.z/80)).r*(.48+.35*macro);
      a=lerp(dirt,roots,.3+.35*fringe);a=lerp(a,leaves,macro*.2);mossMix=0;
      half lum=saturate(dot(a,half3(.3,.59,.11))*2.1);half bruise=smoothstep(.35,.7,sin(i.world.x*.19+sin(i.world.z*.31)*2.1)*.5+.5);
-     a=lerp(half3(.026,.011,.011),lerp(half3(.24,.095,.075),half3(.19,.085,.095),bruise),lum);
+     a=lerp(half3(.035,.022,.018),lerp(half3(.20,.155,.125),half3(.16,.135,.125),bruise),lum);
+     half slope=smoothstep(.1,.42,1-saturate(n.y));half3 cliff=SAMPLE_TEXTURE2D(_RockMap,sampler_RockMap,i.world.xz/1.7+i.world.y*.4).rgb*half3(.5,.46,.42);a=lerp(a,cliff,slope);
      nt=normalize(lerp(UnpackNormalScale(SAMPLE_TEXTURE2D(_SoilNormal,sampler_ForestMap,soilFine),.65),UnpackNormalScale(SAMPLE_TEXTURE2D(_RootNormal,sampler_ForestMap,i.world.xz/3.8),.65),.3+.35*fringe));
      nt=normalize(lerp(nt,UnpackNormalScale(SAMPLE_TEXTURE2D(_FieldMossNormal,sampler_ForestNormal,i.world.xz/2.6),.55),mossMix));
      input.normalWS=normalize(mul(nt,float3x3(t,b,n)));

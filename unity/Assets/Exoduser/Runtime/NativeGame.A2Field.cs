@@ -37,7 +37,7 @@ namespace Exoduser.UnityPort
             foreach(var root in r3Roots)foreach(var volume in root.GetComponentsInChildren<Volume>(true))
             {
                 var profile=volume.profile;if(profile==null)continue;ColorAdjustments tone;
-                if(profile.TryGet<ColorAdjustments>(out tone)){tone.postExposure.Override(.35f);tone.contrast.Override(20);}
+                if(profile.TryGet<ColorAdjustments>(out tone)){tone.postExposure.Override(.3f);tone.contrast.Override(22);tone.saturation.Override(2);tone.colorFilter.Override(Color.white);}
             }
             if(a2FieldSoil==null){Debug.LogError("[A2 필드] 지면 재질 누락");return;}
             a2FieldSoil.SetFloat("_ForestBlend",1);a2FieldSoil.SetFloat("_ForestTextureMix",.65f);a2FieldSoil.SetFloat("_SoilTextureMix",1);a2FieldSoil.SetFloat("_FullField",1);

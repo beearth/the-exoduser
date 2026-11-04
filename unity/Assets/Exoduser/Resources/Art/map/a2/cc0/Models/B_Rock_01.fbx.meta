@@ -1,0 +1,54 @@
+fileFormatVersion: 2
+guid: 5e6d7557e98d2a3eea2ae999d0cbdf61
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_rock_moss_set_01
+    second: {fileID: 2100000, guid: f28d85b5d595298f50e2fef9882c677a, type: 2}
+  materials:
+    materialImportMode: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    importAnimation: 0
+  meshes:
+    lODScreenPercentages: [0.22, 0.09, 0.025]
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 0
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
+    fileIdsGeneration: 2
+    preserveHierarchy: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    useFileScale: 1
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 0
+    normalSmoothingSource: 0
+  referencedClips: []
+  isReadable: 0
+  importAnimation: 0
+  animationType: 0
+  humanoidOversampling: 1
+  avatarSetup: 0
+  importConstraints: 0
+  userData: CC0Kit1103
+  assetBundleName:
+  assetBundleVariant:

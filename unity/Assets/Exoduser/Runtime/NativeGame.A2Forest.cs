@@ -149,8 +149,8 @@ namespace Exoduser.UnityPort
         }
         static void A2Ambient()
         {
-            RenderSettings.ambientMode=AmbientMode.Trilight;RenderSettings.ambientSkyColor=new Color(.21f,.19f,.21f);
-            RenderSettings.ambientEquatorColor=new Color(.16f,.145f,.15f);RenderSettings.ambientGroundColor=new Color(.065f,.05f,.05f);
+            RenderSettings.ambientMode=AmbientMode.Trilight;RenderSettings.ambientSkyColor=new Color(.13f,.24f,.34f);
+            RenderSettings.ambientEquatorColor=new Color(.08f,.15f,.20f);RenderSettings.ambientGroundColor=new Color(.04f,.06f,.08f);
         }
         void A2Torch(float x,float z)
         {
@@ -300,7 +300,7 @@ namespace Exoduser.UnityPort
         }
         void A2River(Terrain ground)
         {
-            a2Water=new Material(Shader.Find("EXODUSER/A2ToxicRiver"));a2Water.SetColor("_BaseColor",new Color(.66f,.60f,.07f));
+            a2Water=new Material(Shader.Find("EXODUSER/A2ToxicRiver"));a2Water.SetColor("_BaseColor",new Color(.42f,.46f,.10f));
             A2ShoreField();
             r3Cam.depthTextureMode|=DepthTextureMode.Depth;
             UnityEngine.Rendering.Universal.CameraExtensions.GetUniversalAdditionalCameraData(r3Cam).requiresDepthTexture=true;

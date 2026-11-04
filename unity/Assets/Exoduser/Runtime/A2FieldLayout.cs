@@ -157,7 +157,10 @@ namespace Exoduser.UnityPort
             float outside=Smooth(Clamp(-d/2.8f,0,1));
             float east=Smooth(Clamp((x-43)/6,0,1))*(1-Smooth(Clamp((z+58)/12,0,1)));
             float northEast=Smooth(Clamp((x-62)/6,0,1))*Smooth(Clamp((z+34)/10,0,1));
-            surface+=outside*(.25f-1.9f*Math.Max(east,northEast));
+            float waterSide=Math.Max(east,northEast);
+            float ledge=Smooth(Clamp((-d-.15f)/1.15f,0,1));
+            float front=Clamp((Distance(x,z+1.8f)-d)/1.8f,0,1);
+            surface+=ledge*1.25f*(1-.8f*front)*(1-waterSide)-outside*1.9f*waterSide;
             // 키샷 지류는 발목 깊이의 실제 얕은 개울이다. 원본 XY 보행 경계는 바꾸지 않는다.
             float channel=1-Smooth(Clamp((A2ForestLayout.BranchDistance(x,z)+.15f)/1.4f,0,1));
             return Lerp(surface,-.55f,channel);
