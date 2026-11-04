@@ -1,3 +1,5 @@
+2026-11-04 사망 결정 화면 태국어 결합 기호 누락 수정(총괄 후보 캡처 검수): Spaced()가 한 글자씩 그려 모음·성조 기호가 빠짐 → 결합 문자 스크립트(태국·라오·크메르·미얀마·인도계·아랍)는 자간 없이 한 번에, 나머지는 문자 묶음(StringInfo) 단위로. 글자 칸 폭을 size*2에서 실제 폭+2px로(UI 겹침 검사 오탐 감소). death-d2 8/0, 참조 컴파일 오류 0. 화면 판정 전(claude/unity-pc-death-pbz-20261104).
+
 2026-11-04 사망 결정 화면 D1 촬영 장면 추가(NativeGame.DeathScreenCapture, 캡처 전용): 결정 화면 언어 10개(ko·en·ja·ru·th·el·de·vi·fi·hu) death_decision_<code>, --unity-death-field-decision 필드 사망 2선택지 death_field_decision, --unity-death-sequence 0~10초 15fps 연속 프레임(무음 영상용). 게임 동작 변경 0, 참조 컴파일 오류 0(claude/unity-pc-death-pbz-20261104).
 
 2026-11-04 사망 결정 화면 RETOUCH D2·경미(claude/unity-pc-death-pbz-20261104): 문구 9키를 29개 언어로(Resources/Data/death_decision_text.json, 번역 목록 4264~4272 전파, 장식 영문 행은 전 언어 영문 유지, ar는 en으로 그림), 긴 언어는 정수 pt 축소(말줄임 없음). 로비 빈 슬롯 면 (5,5,7,.94)→(8,8,12,.94)로 예상 Y 8.5(알파만으로는 배경 Y 4.3~5.8보다 올릴 수 없음). 사망 결정 화면은 산세리프 0(sans는 옛 리플레이 모양에만 남김). merge 52fce6875가 어긋나게 둔 Spaced 괄호·TitleGate 위치 정정(참조 컴파일 오류 0). PC 검사·컴파일만, 화면 판정 전.

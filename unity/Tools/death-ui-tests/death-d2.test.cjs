@@ -66,3 +66,7 @@ test('M1 empty slot face is lifted (Y 8.5) with alpha kept; judge6 test 1 carrie
  assert(/DrawEmptySilverSlot\(Rect card\)\{Fill\(card,SilverSlotFace\)/.test(s));
 });
 console.log(JSON.stringify({groups:7,failed,passed:failed===0,scope:'data/source contracts; screen judgement pending'}));process.exitCode=failed?1:0;
+// 11-04 lead review: Thai vowel/tone marks vanished because Spaced() drew one char at a time. Joined scripts draw as one run; others per text element.
+{const o=require('node:fs').readFileSync(require('node:path').resolve(__dirname,'../../Assets/Exoduser/Runtime/NativeDeathOverlay.cs'),'utf8');
+ const ok=/static bool Joined\(string t\)/.test(o)&&/0x0E00/.test(o)&&o.includes('if(Joined(t)){NativeSilverHellUi.Label(new Rect(x0,y,w+2,h),t,spaced);return;}')&&o.includes('gw=Adv(t,s+len)-gx')&&/ParseCombiningCharacters/.test(o)&&!/t\[i\]\.ToString\(\)/.test(o);
+ console.log((ok?'PASS':'FAIL')+' D2b joined scripts (th) are not split per char');if(!ok)process.exitCode=1;}

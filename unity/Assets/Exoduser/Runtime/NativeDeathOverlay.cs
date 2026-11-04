@@ -213,12 +213,18 @@ namespace Exoduser.UnityPort {
   }
   GUIStyle spaced;
   float Adv(string t,int n){if(n==0)return 0;var bar=spaced.CalcSize(new GUIContent("|")).x;return spaced.CalcSize(new GUIContent(t.Substring(0,n)+"|")).x-bar;}
-  float SpacedWidth(string t,Font f,int size,float ls){Prep(f,size,t);return Adv(t,t.Length)+ls*(t.Length-1);}
+  // 11-04 lead review: per-char drawing dropped Thai vowel/tone marks (combining marks drawn apart from their base). Scripts that need joined shaping
+  // (Thai·Lao·Khmer·Myanmar·Indic·Arabic) are drawn as one run without tracking; others are spaced per text element (base + its combining marks), never per char.
+  static bool Joined(string t){foreach(var ch in t){int u=ch;if((u>=0x0900&&u<=0x0DFF)||(u>=0x0E00&&u<=0x0EFF)||(u>=0x1000&&u<=0x109F)||(u>=0x1780&&u<=0x17FF)||(u>=0x0600&&u<=0x06FF))return true;}return false;}
+  static int[] Elements(string t){var list=new List<int>();var e=System.Globalization.StringInfo.ParseCombiningCharacters(t);list.AddRange(e);return list.ToArray();}
+  float SpacedWidth(string t,Font f,int size,float ls){Prep(f,size,t);if(Joined(t))return Adv(t,t.Length);int n=Elements(t).Length;return Adv(t,t.Length)+ls*Math.Max(0,n-1);}
   void Prep(Font f,int size,string t){if(spaced==null)spaced=new GUIStyle(GUIStyle.none){alignment=TextAnchor.MiddleLeft,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset()};spaced.font=NativeSilverHellUi.TextFont(f,t);spaced.fontSize=size;}
   // Centred, letter-spaced run: glyph x = prefix advance + i*ls. Text colour goes through NativeSilverHellUi.Label (Linear text correction).
   void Spaced(float cx,float y,float h,string t,Font f,int size,Color c,float ls){
    float w=SpacedWidth(t,f,size,ls),x0=cx-w/2;spaced.normal.textColor=c;
-   for(int i=0;i<t.Length;i++){if(char.IsWhiteSpace(t[i]))continue;NativeSilverHellUi.Label(new Rect(x0+Adv(t,i)+ls*i,y,size*2,h),t[i].ToString(),spaced);}
+   if(Joined(t)){NativeSilverHellUi.Label(new Rect(x0,y,w+2,h),t,spaced);return;}
+   var starts=Elements(t);
+   for(int k=0;k<starts.Length;k++){int s=starts[k],len=(k+1<starts.Length?starts[k+1]:t.Length)-s;string g=t.Substring(s,len);if(string.IsNullOrWhiteSpace(g))continue;float gx=Adv(t,s),gw=Adv(t,s+len)-gx;NativeSilverHellUi.Label(new Rect(x0+gx+ls*k,y,gw+2,h),g,spaced);}
   }
   // 11-04 judge 6: the front title (NativeRevive death screen, fades out in 0.35s) must be gone before this title appears.
   // The decision screen satisfies it by timing: black fills over BlackIn and its title starts at TitleAt (>= TitleGateDelay), so no extra gate is multiplied in.
