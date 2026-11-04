@@ -11,7 +11,7 @@ namespace Exoduser.UnityPort {
  public sealed partial class NativeGame {
   IEnumerator A2RD5Diagnostic(){
    bool ai=Simulation.Config.EnemyAiEnabled;Simulation.Config.EnemyAiEnabled=false;yield return A2RNatureSize(3840);yield return R18Pose(new Vector2(2450,4800));
-   yield return A2RPlayShot("diag-camp-base");
+   yield return A2RPlayShot("diag-camp-base");Shader.SetGlobalFloat("_A2RD5",0);yield return A2RPlayShot("diag-camp-d4-color");Shader.SetGlobalFloat("_A2RD5",A2RD5.On?1:0);
    var info=new StringBuilder();var targets=new[]{new Vector2(1845,455),new Vector2(2155,455),new Vector2(2300,455),new Vector2(2690,455),new Vector2(2865,455)};
    var renderers=UnityEngine.Object.FindObjectsByType<Renderer>(FindObjectsInactive.Exclude,FindObjectsSortMode.None);
    foreach(var target in targets){info.AppendLine("pixel="+target);var candidates=new System.Collections.Generic.List<string>();foreach(var r in renderers){if(!r.enabled)continue;var p=r3Cam.WorldToScreenPoint(r.bounds.center);if(p.z<=0)continue;float d=Vector2.Distance(new Vector2(p.x,Screen.height-p.y),target);if(d>180)continue;string t=r.name;for(var parent=r.transform.parent;parent!=null;parent=parent.parent)t=parent.name+"/"+t;foreach(var m in r.sharedMaterials)if(m!=null)t+=" shader="+m.shader.name+" tex="+(m.mainTexture!=null?m.mainTexture.name:"");candidates.Add(d.ToString("F1")+" "+t);}candidates.Sort(StringComparer.Ordinal);foreach(var t in candidates)info.AppendLine(t);}
