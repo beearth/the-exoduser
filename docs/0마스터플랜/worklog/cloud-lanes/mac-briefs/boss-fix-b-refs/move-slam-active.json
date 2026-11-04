@@ -1,0 +1,309 @@
+{
+    "frame": 2822,
+    "tick": 1115,
+    "width": 1920,
+    "height": 1080,
+    "loadPhase": 0,
+    "faded": 0,
+    "nearestDraws": 1,
+    "meshBuilds": 1,
+    "arena": true,
+    "arena3d": true,
+    "sink": false,
+    "capture": true,
+    "previousFrameCapture": true,
+    "window": "",
+    "state": "bossRec",
+    "moveId": "slam",
+    "heroSprite": "attack-bat-v1:(x:0.00, y:240.00, width:80.00, height:80.00)",
+    "heroMeasureScope": "3D renderer bounds projection; capture JSON additionally has isolated GPU colored silhouette",
+    "position": {
+        "x": 25.85642433166504,
+        "y": 9.226682662963867,
+        "z": -40.541072845458984
+    },
+    "rotation": {
+        "x": 34.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "marker": {
+        "x": 25.85642433166504,
+        "y": 0.0,
+        "z": -26.86195182800293
+    },
+    "heroScale": {
+        "x": 4.0,
+        "y": 4.0,
+        "z": 4.0
+    },
+    "quaternion": {
+        "x": 0.2923716902732849,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.9563047885894775
+    },
+    "heroGpuSilhouetteHeightFraction": 0.1648148149251938,
+    "heroGpuSilhouetteHeightPx": 178.0,
+    "heroModelRestWorldHeight": 1.6094975471496582,
+    "fieldOfView": 46.9453010559082,
+    "distanceToMarker": 16.5,
+    "desiredDistance": 16.5,
+    "heroProjectedBoundsHeightPx": 210.99319458007813,
+    "heroProjectedHeightFraction": 0.1953640729188919,
+    "bossOpaqueHeightPx": -1.0,
+    "bossHeroRatio": -1.0,
+    "deltaMs": 303.35089111328125,
+    "prepareCpuMs": 586.9466552734375,
+    "heroSourceAlphaRect": {
+        "serializedVersion": "2",
+        "x": 914.5792236328125,
+        "y": 445.8597106933594,
+        "width": 110.226806640625,
+        "height": 210.99319458007813
+    },
+    "bossSourceAlphaRect": {
+        "serializedVersion": "2",
+        "x": 721.6207275390625,
+        "y": 431.1354064941406,
+        "width": 483.8798828125,
+        "height": 999.625
+    },
+    "bossRig": {
+        "mode": "rigpixel",
+        "modelResource": "Art/Bosses/Druid/OldmanV91",
+        "sourceVersion": "v9.1",
+        "sourceSha": "d1527e54760ead9f2f778315dadb8a17e362fa7ac441f01f81ef8c432fc35265",
+        "coreState": "bossRec",
+        "moveId": "slam",
+        "pose": "slam_rec",
+        "clip": "slam_rec",
+        "gate": "Mac import/visual/performance pending",
+        "overlay": "state_P1",
+        "drawnParts": "husk ",
+        "life": 0,
+        "heapPlaced": false,
+        "coreRadiusPx": 130.0,
+        "coreRadiusWorld": 1.2997817993164063,
+        "rootScale": 0.8244228959083557,
+        "oldManFactor": 1.0,
+        "anchorWeight": 0.0,
+        "footprintRadiusWorld": 1.2997815608978271,
+        "bodyHeightWorld": 4.4879655838012695,
+        "bodyHeightHeroRatio": 2.788426399230957,
+        "ankleSpanWorld": 0.6045111417770386,
+        "heroIdleWorld": 1.6094975471496582,
+        "ready": true,
+        "failed": false,
+        "missingClip": false,
+        "humanoid": false,
+        "avatarValid": true,
+        "tick": 1115,
+        "frame": 2822,
+        "renders": 1648,
+        "rtSize": 640,
+        "texelScale": 1,
+        "missingStates": 0,
+        "chestEmissionFaces": 43,
+        "renderMs": 0.3765999972820282,
+        "hornWorldHeight": 4.4879655838012695,
+        "projectedBoundsHeightPx": 633.8518676757813,
+        "rawAlphaHeightPx": 283,
+        "rawAlphaScope": "isolated raw RT before composite cleanup/outline and world occlusion; includes roots and staff",
+        "bounds": {
+            "m_Center": {
+                "x": 25.663257598876953,
+                "y": -0.38073158264160156,
+                "z": -27.45193862915039
+            },
+            "m_Extent": {
+                "x": 1.8579521179199219,
+                "y": 3.2492637634277344,
+                "z": 2.553089141845703
+            }
+        },
+        "leftFoot": {
+            "x": 25.789396286010742,
+            "y": 0.922932505607605,
+            "z": -26.318708419799805
+        },
+        "rightFoot": {
+            "x": 25.789016723632813,
+            "y": 0.9229332804679871,
+            "z": -26.318878173828125
+        },
+        "sampleSeconds": 0.0,
+        "sourceFrame": 0.0,
+        "coreStageTicks": 76.0,
+        "elapsedStageTicks": 0.0,
+        "footDeltaCm": 0.0,
+        "horizontalRootStripped": false,
+        "held": false,
+        "footDeltaScope": "per rendered Core sample world ankle displacement, includes Core movement/turning and authored vertical lifts; not a slip PASS"
+    },
+    "lighting": {
+        "scope": "Existing field lights and live post profiles, no arena replacement profile",
+        "moonEntity": "7809:256",
+        "moon": "Key Light",
+        "moonRotation": {
+            "x": 48.000003814697266,
+            "y": 328.0,
+            "z": 0.0
+        },
+        "moonColor": {
+            "r": 0.8500000238418579,
+            "g": 0.8999999761581421,
+            "b": 1.0,
+            "a": 1.0
+        },
+        "moonIntensity": 2.0799999237060547,
+        "moonShadows": "Soft",
+        "cameraPost": true,
+        "fog": true,
+        "fogMode": "Linear",
+        "fogStart": 19.0,
+        "fogEnd": 62.0,
+        "ambientSky": {
+            "r": 0.20799998939037323,
+            "g": 0.2240000069141388,
+            "b": 0.24000000953674316,
+            "a": 0.800000011920929
+        },
+        "ambientEquator": {
+            "r": 0.1600000113248825,
+            "g": 0.15199999511241913,
+            "b": 0.12800000607967377,
+            "a": 0.800000011920929
+        },
+        "ambientGround": {
+            "r": 0.06000000238418579,
+            "g": 0.05199999734759331,
+            "b": 0.04000000283122063,
+            "a": 0.800000011920929
+        },
+        "profiles": [
+            {
+                "volume": "Global Volume",
+                "tonemapping": "ACES",
+                "profileEntity": "8183:768",
+                "weight": 1.0,
+                "exposure": 0.550000011920929,
+                "contrast": 16.0,
+                "saturation": -8.0,
+                "bloom": 0.1599999964237213,
+                "colorFilter": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                }
+            }
+        ]
+    },
+    "surface": {
+        "active": true,
+        "channelCells": 278,
+        "waterShader": "EXODUSER/A2ToxicRiver",
+        "shader": "EXODUSER/Arena8b/Ground",
+        "source": "A2R 3967a7562fee303d0a362e20b617d86a538f183b, r3_ground_2_4/3_4 + original normals/masks; existing A2 soil/roots",
+        "patchMetres": 10.0,
+        "normalStrength": 0.3499999940395355,
+        "torches": [
+            {
+                "position": {
+                    "x": 19.80000114440918,
+                    "y": 1.5499999523162842,
+                    "z": -24.30000114440918
+                },
+                "color": {
+                    "r": 1.0,
+                    "g": 0.550000011920929,
+                    "b": 0.23999999463558197,
+                    "a": 1.0
+                },
+                "intensity": 5.347255229949951,
+                "range": 4.0,
+                "shadows": "None"
+            },
+            {
+                "position": {
+                    "x": 31.80000114440918,
+                    "y": 1.5499999523162842,
+                    "z": -19.30000114440918
+                },
+                "color": {
+                    "r": 1.0,
+                    "g": 0.550000011920929,
+                    "b": 0.23999999463558197,
+                    "a": 1.0
+                },
+                "intensity": 5.338771820068359,
+                "range": 4.0,
+                "shadows": "None"
+            },
+            {
+                "position": {
+                    "x": 19.80000114440918,
+                    "y": 1.5499999523162842,
+                    "z": -19.30000114440918
+                },
+                "color": {
+                    "r": 1.0,
+                    "g": 0.550000011920929,
+                    "b": 0.23999999463558197,
+                    "a": 1.0
+                },
+                "intensity": 5.448322296142578,
+                "range": 4.0,
+                "shadows": "None"
+            },
+            {
+                "position": {
+                    "x": 31.80000114440918,
+                    "y": 1.5499999523162842,
+                    "z": -24.30000114440918
+                },
+                "color": {
+                    "r": 1.0,
+                    "g": 0.550000011920929,
+                    "b": 0.23999999463558197,
+                    "a": 1.0
+                },
+                "intensity": 5.580158710479736,
+                "range": 4.0,
+                "shadows": "None"
+            }
+        ]
+    },
+    "vfx": {
+        "tick": 1115,
+        "slashIdx": 0,
+        "slamN": 1,
+        "slashN": 0,
+        "slamsStarted": 1,
+        "slashesStarted": 0,
+        "bodySpritesDrawn": 15,
+        "maxBodySpritesDrawn": 15,
+        "chargesStarted": 1,
+        "fissuresStarted": 0,
+        "burrowsStarted": 0,
+        "grabsStarted": 0,
+        "heartbeatsStarted": 0,
+        "remainingSpritesDrawn": 0,
+        "groundBodiesDrawn": 0,
+        "state": "bossRec",
+        "st2": 76.0,
+        "bossX": 2580.0499264613027,
+        "bossY": 2629.276108068222,
+        "facing": 1.57609589364645,
+        "orbGlowDrawn": false,
+        "orbSocket": true,
+        "decalsProjected": true,
+        "trailSource": "none",
+        "ribbonSamplesRig": 0,
+        "ribbonSamplesFormula": 0,
+        "flatDecalsDrawn": 0,
+        "seqSlam": 63,
+        "seqSlash": -1
+    }
+}
