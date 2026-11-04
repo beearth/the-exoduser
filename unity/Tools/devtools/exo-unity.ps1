@@ -46,7 +46,7 @@ if($Command -ne 'install-bin' -and $env:EXO_UNITY_NO_FORWARD -ne '1' -and
     exit $LASTEXITCODE
 }
 
-$ExoUnityVersion = '2026.11.04-zombie2'
+$ExoUnityVersion = '2026.11.04-stalldiag'
 $MaxPlayerSlots = 2
 Import-Module (Join-Path $PSScriptRoot 'QueueTurn.psm1') -Force
 try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false) } catch { }
@@ -1176,6 +1176,19 @@ function Get-WindowHits($pids, $label) {
 }
 
 # 프로세스 1개를 띄우고 끝까지 지켜본다: 창(MainWindowHandle) 감시, 트리 정리 확인
+function Get-StallSnapshot([int]$procId) {
+    $s = [ordered]@{ at = (NowIso); threads = 0; states = @{}; waitReasons = @{}; services = @() }
+    try { foreach ($th in @(Get-CimInstance Win32_Thread -Filter ("ProcessHandle='" + $procId + "'") -ErrorAction Stop)) { $s.threads++; $k = [string]$th.ThreadState; $s.states[$k] = 1 + [int]$s.states[$k]; $w = [string]$th.ThreadWaitReason; $s.waitReasons[$w] = 1 + [int]$s.waitReasons[$w] } } catch { $s.threadError = $_.Exception.Message }
+    foreach ($name in 'GameInputRedistService', 'GameInputSvc', 'GameInputRawInputProxy') {
+        try {
+            $svc = Get-CimInstance Win32_Service -Filter ("Name='" + $name + "'") -ErrorAction Stop
+            if ($svc) { $row = [ordered]@{ name = $name; state = [string]$svc.State; pid = [int]$svc.ProcessId; started = ''; threads = 0 }; if ($svc.ProcessId) { try { $sp = Get-Process -Id $svc.ProcessId -ErrorAction Stop; $row.started = $sp.StartTime.ToString('o'); $row.threads = $sp.Threads.Count } catch { } }; $s.services += [pscustomobject]$row }
+        } catch { }
+    }
+    foreach ($p in @(Get-Process -Name 'GameInputRawInputProxy' -ErrorAction SilentlyContinue)) { $s.services += [pscustomobject][ordered]@{ name = 'process:GameInputRawInputProxy'; state = 'Running'; pid = $p.Id; started = $(try { $p.StartTime.ToString('o') } catch { '' }); threads = $p.Threads.Count } }
+    return $s
+}
+
 function Invoke-Guarded([string]$File, [string[]]$ArgList, [string]$Cwd, [int]$limitSec, [int]$killAfter, [string[]]$ownTokens, [bool]$HiddenDesktop = $false) {
     $pre = @{}
     foreach ($p in @(Get-Process -Name $WatchNames -ErrorAction SilentlyContinue)) { $pre[$p.Id] = 1 }
@@ -1223,7 +1236,7 @@ function Invoke-Guarded([string]$File, [string[]]$ArgList, [string]$Cwd, [int]$l
         if ($sw.Elapsed.TotalSeconds -ge $limitSec) { $timedOut = $true; break }
         Start-Sleep -Milliseconds 700
     }
-    $exit = 0
+    $exit = 0; $stall = $null
     if ($proc.HasExited) {
         # 종료 코드를 못 읽어도 아래 정리·숨은 데스크톱 닫기·영수증은 계속한다(11-04 r17 영수증 유실).
         try {
@@ -1232,8 +1245,13 @@ function Invoke-Guarded([string]$File, [string[]]$ArgList, [string]$Cwd, [int]$l
         } catch { $warnings += ('종료 코드 읽기 실패: ' + $_.Exception.Message); $exit = -1 }
     }
     else {
+        # 11-04 CTO: 정지가 생기면 kill 전 스레드 대기 사유·GameInput 서비스 상태와 kill 결과를 남겨 kill 불가 층을 따로 센다.
+        $stall = [ordered]@{ before = (Get-StallSnapshot $proc.Id); lastLogLine = '' }
+        foreach ($tok in $ownTokens) { if ($tok -and (Test-Path -LiteralPath $tok)) { $stall.lastLogLine = [string](Get-LastLogLine $tok) } }
         & taskkill.exe /PID $proc.Id /T /F 2>&1 | Out-Null
         $proc.WaitForExit(15000) | Out-Null
+        $stall.killedWithin15s = [bool]$proc.HasExited
+        if (-not $proc.HasExited) { $stall.after = (Get-StallSnapshot $proc.Id) }
         $exit = -1
     }
     # 종료 확인: 트리에 있던 프로세스가 실제로 사라졌는지
@@ -1251,7 +1269,7 @@ function Invoke-Guarded([string]$File, [string[]]$ArgList, [string]$Cwd, [int]$l
     if ($HiddenDesktop) { Close-DesktopProcess $dproc; $desktopClosed = [bool](Close-HiddenDesktop $desk) }
     $sw.Stop()
     return [pscustomobject]@{
-        exitCode = $exit; timedOut = $timedOut; expectedKill = $expectedKill; durMs = $sw.ElapsedMilliseconds
+        exitCode = $exit; timedOut = $timedOut; expectedKill = $expectedKill; durMs = $sw.ElapsedMilliseconds; stall = $stall
         processId = $proc.Id; startedAt = $t0.ToUniversalTime().ToString('o'); finishedAt = (NowIso); hiddenDesktopName = $(if ($desk) { $desk.Name } else { '' })
         windowHits = @($violations | Select-Object -Unique); warnings = @($warnings | Select-Object -Unique)
         leftovers = @($left); leftoversKilled = @($killed); treeCount = $tree.Count; hiddenWindows = $hiddenMax; hiddenTitles = @($hiddenTitles); desktopClosed = $desktopClosed
@@ -1271,7 +1289,7 @@ function Finish-Guarded([string]$kind, [string]$id, $g, $extra, [bool]$extraOk, 
     $res = [ordered]@{
         runnerVersion = $ExoUnityVersion; id = $id; kind = $kind; ok = $ok; exitCode = $g.exitCode; durMs = $g.durMs; expectedKill = $g.expectedKill; timedOut = $g.timedOut
         windowHandleCount = $g.windowHits.Count; windowHits = @($g.windowHits); warnings = @($g.warnings); treeProcesses = $g.treeCount
-        leftovers = @($g.leftovers); note = ($notes -join ' | '); userSaveChanged = $sc.Count; userSaveFiles = @($sc)
+        leftovers = @($g.leftovers); stall = $g.stall; note = ($notes -join ' | '); userSaveChanged = $sc.Count; userSaveFiles = @($sc)
     }
     foreach ($k in $extra.Keys) { $res[$k] = $extra[$k] }
     New-Item -ItemType Directory -Force -Path (Join-Path $ExecDir 'done') | Out-Null

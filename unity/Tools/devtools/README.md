@@ -187,7 +187,7 @@ Unity 없는 시험: selftest/idle-yield-test.ps1, windows-env-test.ps1, exit-co
 | 항목 | 계약 |
 |---|---|
 | 디스크 유휴 대기 (11-04) | Player 시작 직전에 실행 파일 드라이브의 유휴율(Win32_PerfFormattedData_PerfDisk_LogicalDisk, 한국어 카운터 이름 무관)이 50% 이상으로 10초 이어질 때까지 기다린다. 상한 10분, 넘으면 경고 후 시작. 영수증 diskAtStart에 drive·idleAtStart·queueAtStart·waitedSec·timedOut. 원인=I:(USB HDD exFAT)가 다른 작업으로 포화(유휴 0%·대기열 2~3)되면 Player 시작이 몇 분씩 걸림 |
-| 버전 | `$ExoUnityVersion='2026.11.04-zombie2'`, status 첫 줄·JSON runnerVersion·슬롯 JSON |
+| 버전 | `$ExoUnityVersion='2026.11.04-stalldiag'`, status 첫 줄·JSON runnerVersion·슬롯 JSON |
 | Player 상한 | `$MaxPlayerSlots=2`. CreateNew 원자 획득, 슬롯 보유자 + 살아 있는 구버전 owner=devtools-player의 _pc_lock을 1개로 계산. 사용자 직접 연 Player는 제외 |
 | 시작 경합 | _player_admission.guard의 파일 핸들로 새 실행기의 슬롯 획득→실제 자식 생성까지만 직렬화. 생성 뒤 즉시 반환해 두 Player는 병렬 실행. _pc_lock은 잡지 않음 |
 | stale | pid 사망 또는 프로세스 생성 시각 > startedAt이면 동일 token·pid·startedAt 재확인 후 회수. 해제는 자기 pid+token만 |
@@ -202,6 +202,7 @@ Unity 없는 시험: selftest/idle-yield-test.ps1, windows-env-test.ps1, exit-co
 | 사용자 게임 실행 중 미룸 (11-04) | `player`는 시작 전에 부모가 explorer.exe인 EXODUSER* 프로세스(사용자가 바탕화면·바로가기로 띄운 게임)를 찾는다. 있으면 Player를 띄우지 않고 '사용자 게임 실행 중, 미룸' 영수증(ok=False, deferred=user-game)을 _exec/done과 stdout JSON 한 줄로 남기고 exit 3. BuildLoop는 이를 WAIT로 받아 다음 회차에 다시 한다. 세이브 감시는 그대로다. 원인=사용자 게임(PID 35348)이 실제 세이브에 저장해 UI 후보 촬영이 USER_SAVE changed=3으로 실패 |
 | BuildLoop Player 단독 실행 (11-04) | `-PcException buildloop` 또는 `-Exclusive` Player는 다른 Player가 모두 끝날 때까지 기다리고(돌고 있는 Player는 끊지 않음), 슬롯을 얻으면 `_player_exclusive.json`을 써서 도는 동안 새 Player를 받지 않는다. 끝나면 표시를 지우고 다른 레인은 다시 동시 2개. 단독 검사 중에는 새 Editor 작업(Acquire-Slot의 서버 시작·batch, Cmd-Run의 상주 서버 제출)도 순번 대기한다(돌고 있는 Editor는 끊지 않음, 11-04 CTO: a7db9621b UI 겹침이 다른 레인 Editor 빌드와 겹쳐 14fps). FIFO 예약 순서는 그대로라 루프가 맨 앞이면 뒤 Player는 기다린다. 원인=QA Player 여러 개가 4K 로비 영상을 동시에 디코드해 BuildLoop M1 '로비 복귀 영상 준비 12초 초과' 33회·UI 겹침 영상 준비 실패로 바탕화면 교체가 막힘 |
 | HALT 대기 중 재검사 (11-04) | HALT 게이트는 start·run·build·player·browser 모두에 적용되고, Player 슬롯·Editor 잠금·Editor 순번·티켓·단독 검사 대기 루프마다 HALT를 다시 본다(Assert-HaltClear). 대기 중 HALT가 생기면 실행하지 않고 '[halt] … 대기 중 HALT - 시작 거부'와 exit 3(게이트와 같은 코드)으로 끝나며 예약·슬롯은 finally에서 반환. 원인=HALT(13:09) 전부터 대기하던 vfx-summon Player가 13:23 슬롯을 얻고 그대로 떴고, build 명령은 게이트 목록에 없었음 |
+| 정지 진단 기록 (11-04 CTO) | 시간 초과로 Player를 죽일 때 kill 전 스레드 상태·대기 사유 집계(Win32_Thread), GameInputRedistService·GameInputSvc 서비스와 GameInputRawInputProxy 프로세스 상태(PID·시작 시각·스레드 수), 로그 마지막 줄, 15초 안 종료 여부(killedWithin15s)와 남으면 kill 뒤 상태를 영수증 stall에 남긴다. 창 모드 Player가 Windows.Gaming.Input 초기화 뒤 종료 단계에서 멈추는 문제(10-29~11-04 29건, -batchmode 0건)의 kill 불가 층을 따로 세기 위함 |
 | 굶주림 방지 | editor 선두 등록 후 20분 이상이고 _pc_lock이 비어 있으면 새 Player 통과를 막아 0개까지 배출. status/대기 사유에 owner 표시 |
 | idle 양보 | editor 예약·티켓만 계산(kind 없음=editor). player 대기자는 서버 양보를 유발하지 않음 |
 | 독립 출력 | Player별 GUID 로그·sandbox, 숨은 데스크톱은 PID+GUID. 사용자 창 0·--unity-mute·USER_SAVE 비교·크래시 HALT·자기 자손 정리 유지 |
