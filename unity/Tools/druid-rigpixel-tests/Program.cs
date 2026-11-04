@@ -199,6 +199,7 @@ class DruidRigTests
   DruidSetRule();
   RetouchB();
   EnemyCanvas();
+  ArenaReviewPolicyTests.Run(Check);
   Console.WriteLine("druid-rigpixel checks="+checks+" failed="+bad);return bad==0?0:1;
  }
 }

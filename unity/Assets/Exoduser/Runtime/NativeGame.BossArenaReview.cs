@@ -65,10 +65,13 @@ namespace Exoduser.UnityPort
         RenderTexture arenaReviewHeroRT;
         Texture2D arenaReviewHeroRead;
         string arenaReviewPreviousState="",arenaReviewWindow="";
-        int arenaReviewBeat,arenaReviewFissure,arenaReviewTick=-1,arenaReviewPhase=-1,arenaReviewPhaseTick;
+        int arenaReviewBeat,arenaReviewFissure,arenaReviewTick=-1;
         bool arenaReviewErupt,arenaReviewArena,arenaReviewMode,arenaReviewSink,arenaReviewLastCapture;
         float arenaReviewUntil;
         EnemyState arenaReviewBoss;
+        EnemyState arenaCoverageBoss;
+        NativeArenaReviewPolicy.LifeCoverageTracker arenaReviewCoverage;
+        NativeArenaReviewPolicy.InputStep arenaReviewInputStep;
         ArenaReviewFrame arenaReviewFrame;
         [Serializable] sealed class ArenaReviewFrame
         {
@@ -98,9 +101,10 @@ namespace Exoduser.UnityPort
         [Serializable] class ArenaReviewResult
         {
             public string result,buildGuid,sandbox,scope,timingScope;
-            public bool metricsOnly;
+            public bool metricsOnly,coverageTimeout;
             public int width,height;
             public string[] captured,missing,missingScreenshots;
+            public NativeArenaReviewPolicy.CoverageLife[] coverage;
         }
         // Only written with --unity-boss-arena-seq: review.json keeps its old shape without it.
         [Serializable] sealed class ArenaReviewSeqResult:ArenaReviewResult
@@ -189,7 +193,10 @@ namespace Exoduser.UnityPort
                 kind=t.Live?"live-boundary":"telegraph-boundary",moveId=t.MoveId,state=d.S,tick=Simulation.TickCount,frame=Time.frameCount,serial=t.Serial,index=t.Index,phase=d.BossPhase,boundary=new ArenaReviewBoundary(t)
             }
             ));
-            if(ArenaEdgeLife(d.BossPhase)&&arenaEdgeShots[d.BossPhase]<3)
+            var coverage=BossArenaReviewCoverage(boss);
+            coverage.Observe(d.BossPhase,Simulation.TickCount,id);
+            bool coverageWaiting=coverage.Waiting(d.BossPhase,Simulation.TickCount);
+            if(arenaReviewInputStep==NativeArenaReviewPolicy.InputStep.Edge&&ArenaEdgeLife(d.BossPhase)&&arenaEdgeShots[d.BossPhase]<3)
             {
                 var pl=Simulation.Player;var life=Simulation.DruidLife(boss);
                 if(arenaEdgeLife!=d.BossPhase){arenaEdgeLife=d.BossPhase;arenaEdgeHp=-1;}
@@ -205,14 +212,15 @@ namespace Exoduser.UnityPort
                 }
                 arenaEdgeHp=boss.Hp;
             }
-            if(ArenaSeqOn)ArenaSeqTick(boss,d,id);
+            else arenaEdgeHp=-1; // seq / residual damage during coverage is not an edge-stage hit
+            if(ArenaSeqOn)ArenaSeqTick(boss,d,id,coverageWaiting);
             arenaReviewPreviousState=d.S;
             arenaReviewBeat=d.HbBeat;
             arenaReviewErupt=d.EruptHit;
             arenaReviewFissure=fissure;
         }
         // ---- --unity-boss-arena-seq: read-only observation of Core state + input-only bot (contact). No Core writes. ----
-        void ArenaSeqTick(EnemyState boss,DruidData d,string activation)
+        void ArenaSeqTick(EnemyState boss,DruidData d,string activation,bool coverageWaiting)
         {
             var s=Simulation;var pl=s.Player;
             float cx=pl.X-boss.X,cy=pl.Y-boss.Y,centre=Mathf.Sqrt(cx*cx+cy*cy);
@@ -226,7 +234,7 @@ namespace Exoduser.UnityPort
             {
                 arenaSeqEruptCount++;arenaSeqEruptTick=s.TickCount;arenaSeqEruptFlush=true;arenaSeqEruptName="erupt-"+arenaSeqEruptCount;
             }
-            if(d.BossPhase==0&&arenaSeqContactStart==-1&&centre<=boss.Radius+pl.Radius+40)
+            if(!coverageWaiting&&d.BossPhase==0&&arenaSeqContactStart==-1&&centre<=boss.Radius+pl.Radius+40)
             {
                 arenaSeqContactStart=Time.frameCount;arenaSeqContactTick=s.TickCount;
             }
@@ -524,6 +532,16 @@ namespace Exoduser.UnityPort
                 RenderTexture.active=old;
             }
         }
+        NativeArenaReviewPolicy.LifeCoverageTracker BossArenaReviewCoverage(EnemyState boss)
+        {
+            if(arenaReviewCoverage==null||arenaCoverageBoss!=boss)
+            {
+                arenaCoverageBoss=boss;
+                arenaReviewCoverage=new NativeArenaReviewPolicy.LifeCoverageTracker(Simulation.Druid.Set);
+                arenaSeqContactStart=-1; // a retry gets a fresh coverage and contact window
+            }
+            return arenaReviewCoverage;
+        }
         void BossArenaReviewInputs(FullRunNavigation navigation,List<Key> keys,ref Vector2 move,ref Vector2 aim,ref bool attack,ref bool magic,bool evade)
         {
             if(arenaReviewOutput==null||Simulation.Druid==null||!Simulation.Stage.BossAlive)return;
@@ -531,15 +549,47 @@ namespace Exoduser.UnityPort
             var boss=s.Druid.Boss;
             DruidData d;
             if(boss==null||!s.Druid.Data.TryGetValue(boss,out d))return;
-            if(d.BossPhase!=arenaReviewPhase)
-            {
-                arenaReviewPhase=d.BossPhase;
-                arenaReviewPhaseTick=s.TickCount;
-            }
             arenaSeqInputToward=false;
-            if(ArenaSeqOn&&d.BossPhase==0&&arenaSeqContactStart>=0&&Time.frameCount-arenaSeqContactStart<NativeArenaReviewPolicy.SeqContactFrames)
+            bool waiting=BossArenaReviewCoverage(boss).Waiting(d.BossPhase,s.TickCount);
+            bool contact=ArenaSeqOn&&d.BossPhase==0&&(arenaSeqContactStart<0||Time.frameCount-arenaSeqContactStart<NativeArenaReviewPolicy.SeqContactFrames);
+            bool edge=ArenaEdgeLife(d.BossPhase)&&arenaEdgeShots[d.BossPhase]<3;
+            arenaReviewInputStep=NativeArenaReviewPolicy.InputStepFor(true,waiting,contact,edge);
+            // Coverage always owns input before either attacking capture stage.
+            if(arenaReviewInputStep==NativeArenaReviewPolicy.InputStep.Coverage)
+            {
+                attack=magic=false;
+                keys.Clear(); // release aux skills, digit slots, parries and charged attacks as well
+                aim=new Vector2(boss.X,boss.Y);
+                var p=s.Player;
+                var away=new Vector2(p.X-boss.X,p.Y-boss.Y);if(away.sqrMagnitude<1)away=Vector2.down;
+                float shift=(float)s.Druid.Set.ReachShift(d.BossPhase,boss.Radius);
+                float range=d.S=="bossHeartWind"?220+shift:s.TickCount%480<240?boss.Radius+p.Radius+ArenaEdgeGapPx:420+shift;
+                bool danger=false;foreach(var tell in arenaReviewTele)if(!tell.Live&&tell.Remaining>0&&tell.Remaining<=10)danger=true;
+                if(!evade||move.sqrMagnitude<.01f)
+                {
+                    if(danger&&d.S!="bossHeartWind")range=500+shift;
+                    var target=new Vector2(boss.X,boss.Y)+away.normalized*range;
+                    move=navigation.Direction(p.X,p.Y,target.x,target.y,p.Radius,FullRunCanMove,s.TickCount);
+                }
+                if(move.x>.25f)keys.Add(Key.D);else if(move.x<-.25f)keys.Add(Key.A);
+                if(move.y>.25f)keys.Add(Key.S);else if(move.y<-.25f)keys.Add(Key.W);
+                // Space also binds rage burst: press it only with a real movement direction / legal roll.
+                if((evade||danger)&&d.S!="bossHeartWind"&&keys.Count>0&&!s.IceOrbActive&&FullRunRollPress(s))keys.Add(Key.Space);
+                return;
+            }
+            if(arenaReviewInputStep==NativeArenaReviewPolicy.InputStep.Contact)
             {   // contact bot (input only): attack 2 s -> roll at the boss centre -> attack 1 s -> dash at the boss centre -> repeat
                 var pc=s.Player;
+                if(arenaSeqContactStart<0)
+                {   // approach without attacking; the contact capture clock starts on body-band arrival
+                    attack=magic=false;keys.Clear();aim=new Vector2(boss.X,boss.Y);
+                    var off=new Vector2(pc.X-boss.X,pc.Y-boss.Y);if(off.sqrMagnitude<1)off=Vector2.down;
+                    var stand=new Vector2(boss.X,boss.Y)+off.normalized*(boss.Radius+pc.Radius+ArenaEdgeGapPx);
+                    move=navigation.Direction(pc.X,pc.Y,stand.x,stand.y,pc.Radius,FullRunCanMove,s.TickCount);
+                    if(move.x>.25f)keys.Add(Key.D);else if(move.x<-.25f)keys.Add(Key.A);
+                    if(move.y>.25f)keys.Add(Key.S);else if(move.y<-.25f)keys.Add(Key.W);
+                    return;
+                }
                 bool press;
                 arenaSeqStep=NativeArenaReviewPolicy.ContactAt(s.TickCount-arenaSeqContactTick,out press);
                 var toward=new Vector2(boss.X-pc.X,boss.Y-pc.Y);if(toward.sqrMagnitude<1)toward=Vector2.up;
@@ -555,7 +605,7 @@ namespace Exoduser.UnityPort
                 else keys.Add(Key.LeftShift);
                 return;
             }
-            if(ArenaEdgeLife(d.BossPhase)&&arenaEdgeShots[d.BossPhase]<3)
+            if(arenaReviewInputStep==NativeArenaReviewPolicy.InputStep.Edge)
             {
                 var life=s.DruidLife(boss);
                 if(life==null||!life.Collapsing)
@@ -572,30 +622,7 @@ namespace Exoduser.UnityPort
                     return;
                 }
             }
-            bool missing=false;
-            int count=d.BossPhase==0?4:d.BossPhase==1?6:7;
-            for(int i=0;i<count;i++)if(!arenaReviewSeen.Contains(NativeArenaReviewPolicy.Moves[i]))missing=true;
-            if(!missing||s.TickCount-arenaReviewPhaseTick>3600)return;
-            attack=magic=false;
-            keys.Remove(Key.F);
-            keys.Remove(Key.LeftCtrl);
-            if(evade)return;
-            var p=s.Player;
-            var away=new Vector2(p.X-boss.X,p.Y-boss.Y);
-            if(away.sqrMagnitude<1)away=Vector2.down;
-            float range=d.S=="bossHeartWind"?220:s.TickCount%480<240?110:420;
-            bool danger=false;foreach(var tell in arenaReviewTele)if(!tell.Live&&tell.Remaining>0&&tell.Remaining<=10)danger=true;
-            if(danger&&d.S!="bossHeartWind"&&FullRunRollPress(s)){keys.Add(Key.Space);range=500;}
-            var target=new Vector2(boss.X,boss.Y)+away.normalized*range;
-            move=navigation.Direction(p.X,p.Y,target.x,target.y,p.Radius,FullRunCanMove,s.TickCount);
-            keys.Remove(Key.W);
-            keys.Remove(Key.A);
-            keys.Remove(Key.S);
-            keys.Remove(Key.D);
-            if(move.x>.25f)keys.Add(Key.D);
-            else if(move.x<-.25f)keys.Add(Key.A);
-            if(move.y>.25f)keys.Add(Key.S);
-            else if(move.y<-.25f)keys.Add(Key.W);
+            // Existing stage leaves the caller's ordinary combat inputs unchanged.
         }
         void BossArenaReviewEnd()
         {
@@ -616,10 +643,13 @@ namespace Exoduser.UnityPort
             {
                 result=missing.Count>0?"FAIL_MISSING_ACTIVATIONS":missingImages.Count>0?"FAIL_MISSING_CAPTURE_FILES":"ACTIVATION_COVERAGE_7_OF_7_VISUAL_QA_PENDING",buildGuid=Application.buildGUID,sandbox=NativeQaSandbox.Root,metricsOnly=arenaReviewMetricsOnly,width=Screen.width,height=Screen.height,captured=new List<string>(arenaReviewSeen).ToArray(),missing=missing.ToArray(),missingScreenshots=missingImages.ToArray(),scope="Virtual keyboard/mouse only. 3D bounds and isolated same-pose GPU hero silhouette (alpha>64 RGB sum>12 row>=3 pixels, includes weapon/cape, excludes map occlusion); sprite fallback alpha bounds include weapon and occluded pixels; compare actual PNG body. Pose sampled after final Cinemachine/billboard, PNG same rendered frame. Field hero scale unchanged. No forced move/HP/position edits.",timingScope="Capture PNG encoding/write contaminates current and following frame. Use a separate --unity-boss-arena-metrics-only run, same resolution, one Player, for FPS/long-frame verdict."
             };
+            result.coverage=arenaReviewCoverage==null?new NativeArenaReviewPolicy.CoverageLife[0]:arenaReviewCoverage.Results();
+            foreach(var life in result.coverage)if(life.coverageTimeout)result.coverageTimeout=true;
             object finalResult=result;
             if(ArenaSeqOn)
             {   // B6/B8 retouch cuts: extra fields only on the seq path
                 var seqResult=new ArenaReviewSeqResult{result=result.result,buildGuid=result.buildGuid,sandbox=result.sandbox,scope=result.scope,timingScope=result.timingScope,metricsOnly=result.metricsOnly,width=result.width,height=result.height,captured=result.captured,missing=result.missing,missingScreenshots=result.missingScreenshots};
+                seqResult.coverage=result.coverage;seqResult.coverageTimeout=result.coverageTimeout;
                 seqResult.farEnemyCut=arenaSeqFarCut?"captured":arenaSeqEnemySeen?"no-top-third-frame":"none-in-arena";
                 seqResult.bulletCut=arenaSeqBulletCut?"captured":"none";
                 seqResult.entryFrames=arenaSeqEntryFrames;seqResult.exitFrames=arenaSeqExitFrames;
