@@ -45,4 +45,13 @@ Total assemblies=5 errors=0 existing warnings=155 H4 changed-source warnings=0.
 Existing Bee response files and compiler references read only; no Unity process launched.
 
 Not verified: C HLSL import/Metal, actual 1x color/legibility and alpha, visual/no-argument pixel equality, dynamic states, input/playthrough.
-Status: 화면 미검수(Mac). Mac report read as text only; comparison images not in Git.
+Status at implementation 041e8e47b5: 화면 미검수(Mac). At that time only Mac text report was read.
+
+2026-11-05 image-evidence follow-up (documentation only):
+Viewed all six published current/A/B images from 1bccb4c2e; local copies equal Git blobs.
+hud-board-{1,2,3}.png: 1920x359, current/A/B columns; each scene is reduced.
+hud-3x-{1,2,3}.png: 1280x753, current/A/B rows; not native 1px evidence.
+Reviewed metal/sculpture, liquid appearance, resource color distinction, alignment and occlusion.
+These images are H1 c1b51cda5, NOT H4 C. C visual/Metal/1x/dynamic status remains unverified.
+No code, image, runner, compiler or Unity changes/execution in this follow-up.
+H4 report records C response and outstanding full-HP cap, silver brightness, labels/socket review.

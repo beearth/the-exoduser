@@ -2,7 +2,7 @@
 
 기준: `codex/unity-hud-proto-20261105`의 `c1b51cda503d1de1ef3ae2c828309e7c27d539f7`. 같은 브랜치에 `--hud-proto=c`만 추가한다. 본선 동결 유지, 병합·Unity 실행·유료 생성 0. **화면 미검수(Mac)**이며 이 문서는 C의 코드·수치 검증과 Mac 재검수 인계다.
 
-Mac `51080f9f6`의 [보고서](https://github.com/beearth/the-exoduser/blob/51080f9f6/docs/0마스터플랜/worklog/cloud-lanes/reports/mac_20261104.md) 3–26행이 판정 근거다. A/B의 접지·정렬 개선, 현재 HUD의 색·해골·뿔이 더 맞는다는 의견, 회색 ST·유리구슬 HP·직선 검은 빈 영역·검은 판·B 받침 문제를 반영한다. **Mac 비교판 이미지는 Git에 없으며 직접 본 것은 글 보고다.** 이번에 확인한 기존 PNG 원화는 Mac 실화면이 아니다.
+Mac `51080f9f6`의 [보고서](https://github.com/beearth/the-exoduser/blob/51080f9f6/docs/0마스터플랜/worklog/cloud-lanes/reports/mac_20261104.md) 3–26행이 판정 근거다. A/B의 접지·정렬 개선, 현재 HUD의 색·해골·뿔이 더 맞는다는 의견, 회색 ST·유리구슬 HP·직선 검은 빈 영역·검은 판·B 받침 문제를 반영한다. 구현 당시에는 Mac 글 보고와 기존 PNG 원화를 확인했다. **이번 후속에서는 Git `1bccb4c2e`의 축소 비교판 6장을 직접 확인했으며**, 관찰·C 대응·한계는 아래 ‘추가 근거’ 절에 반영했다. C 자체의 Mac 화면은 아직 보지 못했다.
 
 H3 `c6995bd893`의 [독립 비평](https://github.com/beearth/the-exoduser/blob/c6995bd893/docs/3.1%20ui%20hud%20디자인/hud_redesign_20261105/codex_hud_critique.md) 129–149행을 참고했다. C는 H3의 작은 구체 제안을 그대로 채택하지 않는다. A의 슬롯 배치를 유지하고 원화 프레임을 회복하는 U1 `5ee0218832` C r2를 참고하되, 어두운 빈 영역과 바닥 가림은 H4 지시에 따라 별도 처리한다. U1 C r2와 달리 주공격 받침은 두 슬롯 경계에 맞춘 낮은 투명 받침이다.
 
@@ -10,7 +10,7 @@ H3 `c6995bd893`의 [독립 비평](https://github.com/beearth/the-exoduser/blob/
 
 모든 px는 `1920×1080` 설계 좌표다. 기존 `NativeUiViewport.cs:13–16` / `NativeUiSafeArea.cs:7–11`의 균등 변환 `s=min(W/1920,H/1080)`, 원점 `((W−1920s)/2,(H−1080s)/2)`를 그대로 쓴다. 1920×1080은 s=1, `3840×1080`은 s=1·중심 x만 +960 이동한다. GPU 픽셀·보이는 원화의 알파 경계와 C# Rect를 구분한다.
 
-약칭: `L` = `unity/Assets/Exoduser/Runtime/NativeHudPrototypeLayout.cs`, `C` = 같은 Runtime의 `NativeHud.PrototypeC.cs`, `CA` = `NativeHudPrototypeCArt.cs`, `CS` = `unity/Assets/Exoduser/Resources/Shaders/HudPrototypeC.shader`. 아래 줄 번호는 이 커밋의 파일 기준이다.
+약칭: `L` = `unity/Assets/Exoduser/Runtime/NativeHudPrototypeLayout.cs`, `C` = 같은 Runtime의 `NativeHud.PrototypeC.cs`, `CA` = `NativeHudPrototypeCArt.cs`, `CS` = `unity/Assets/Exoduser/Resources/Shaders/HudPrototypeC.shader`. 아래 코드 줄 번호는 구현 커밋 `041e8e47b5` 기준이며 이번 문서 후속에서 코드는 바뀌지 않았다.
 
 | 요구 | C 구현값 | 파일:줄 |
 |---|---|---|
@@ -40,7 +40,36 @@ C 원화 배율은 `156/175=0.8914286`, 프레임 Rect는 `263×배율=234.4457`
 | MP | `#16212e / #3b5f86 / #7f9cbc` | 푸른 강철 계열, 파랑 우세. U1 실버 헬 문서 229행·`defects.md:174` |
 | ST | `#122019 / #3e5e4a / #7a9680` | 채도를 낮춘 녹청, 초록 채널 우세. MP의 회청/회색 중복을 피하며 원색 초록은 사용하지 않음. U1 실버 헬 문서 228행·`defects.md:174` |
 
-기본색 MP `(59,95,134)`와 ST `(62,94,74)`는 특히 파랑 성분이 60만큼 다르다. 이것은 코드 입력의 구분 근거이며 **1x 즉시 구분·색각 다양성·최종 선형 공간 RGB의 실화면 합격 증거는 아니다.** 빈 상태는 액체색만으로 구별할 수 없으므로 MP/ST 이름과 좌우 고정 위치도 유지한다.
+기본색 MP `(59,95,134)`와 ST `(62,94,74)`는 특히 파랑 성분이 60만큼 다르다. 이것은 코드 입력의 구분 근거이며 **1x 즉시 구분·색각 다양성·최종 선형 공간 RGB의 실화면 합격 증거는 아니다.** 추가 공개된 그림 역시 현재/A/B만 있어 C 팔레트의 성과를 입증하지 않는다. 빈 상태는 액체색만으로 구별할 수 없으므로 MP/ST 이름과 좌우 고정 위치도 유지한다.
+
+## 추가 근거 — Mac 축소 비교판 직접 검토
+
+같은 이미지에 대한 H3 독립 비평도 [d5d36cfff6](https://github.com/beearth/the-exoduser/blob/d5d36cfff61cde7be826c14fda84712a787b124f/docs/3.1%20ui%20hud%20디자인/hud_redesign_20261105/codex_hud_critique.md)에서 갱신했다. H3 원제안의 수치·채택 보류는 C 구현에 맞춰 바꾸지 않았다.
+
+이번 후속에서는 `1bccb4c2e`의 여섯 PNG를 모두 직접 열어 보았다. 사용자가 알려 준 로컬 사본은 각 Git blob과 바이트가 같음을 확인했다. 별도 이미지 생성·수정·복사나 Unity 실행은 하지 않았다. **그림의 대상은 H1 `c1b51cda5` 현재/A/B이며 C `041e8e47b5`는 포함되지 않는다.**
+
+실제 PNG 헤더상 전체 비교판 `hud-board-*`는 **1920×359**, 각 장면 패널은 약640×359로 줄어 있다. `hud-3x-*`는 **1280×753** 세 행 합성본이다. 전체판은 왼→오른쪽 현재/A/B, HUD판은 위→아래 현재/A/B다. 파일명의 `3x`는 제공된 파일의 네이티브 3배 확대나 실제 1x 가독성을 보장하지 않는다. 색·질감·실루엣·상대 비례는 검토하되 1px 선 두께·정확한 RGB·실제 글자 판독 성능은 판정하지 않는다.
+
+| 직접 본 파일·장면 | 화면에서 확인한 형태·색 | 판단 범위 |
+|---|---|---|
+| [hud-board-1.png](https://github.com/beearth/the-exoduser/blob/1bccb4c2e/docs/0마스터플랜/worklog/cloud-lanes/reports/img/hud-board-1.png), [hud-3x-1.png](https://github.com/beearth/the-exoduser/blob/1bccb4c2e/docs/0마스터플랜/worklog/cloud-lanes/reports/img/hud-3x-1.png) — 시작 | 현재의 뿔 해골·거친 회색 고리와 바 양끝 장식이 보인다. A/B는 원형 소켓과 레일이 일렬로 묶이고, 매끈한 밝은 링·붉은 구가 풀·흙 위에서 도드라진다. | 정렬의 정돈과 장식·질감의 큰 차이 확인. 정확한 접지 px는 코드 표를 사용 |
+| [hud-board-2.png](https://github.com/beearth/the-exoduser/blob/1bccb4c2e/docs/0마스터플랜/worklog/cloud-lanes/reports/img/hud-board-2.png), [hud-3x-2.png](https://github.com/beearth/the-exoduser/blob/1bccb4c2e/docs/0마스터플랜/worklog/cloud-lanes/reports/img/hud-3x-2.png) — 전투공터 | 현재 HP는 탁한 장미색의 평평한 면, MP/ST는 하늘색·녹색으로 나뉜다. A/B HP는 밝은 중심부와 어두운 둘레, MP/ST는 회청·중성 회색이다. MP 빈 상단은 현재에도 수평 경계가 있으며, A/B에서는 어두운 사분면 판 인상이 강하다. | C가 기존 액체를 단순 복구하는 것으로는 부족하다는 근거. C의 투명 곡면 대응이 성공했는지는 미확인 |
+| [hud-board-3.png](https://github.com/beearth/the-exoduser/blob/1bccb4c2e/docs/0마스터플랜/worklog/cloud-lanes/reports/img/hud-board-3.png), [hud-3x-3.png](https://github.com/beearth/the-exoduser/blob/1bccb4c2e/docs/0마스터플랜/worklog/cloud-lanes/reports/img/hud-3x-3.png) — 보스입구 | 다른 배경에서도 A/B의 검은 판·발·레일, 붉은 구와 회색 구의 대비가 반복된다. B의 주공격 두 칸과 받침 중심이 어긋나고 오른쪽 칸이 받침 끝을 넘는 형태가 보인다. | 같은 결함의 배경 간 지속 확인. 정지 보스입구 화면만으로 전투 탄막·주의 분산 성능을 입증하지 않음 |
+
+독립 판단: A/B는 **조각된 뿔·해골과 거친 금속 질감이 사라져** 현재보다 매끈한 공업 부품에 가까운 인상이다. 작은 방사형 가시·상단 눈·중앙 마름모는 남아 있으므로 ‘장식이 전부 없어졌다’고 쓰지는 않는다. 현재 HP의 장미색 평면은 힘이 약하고 A/B의 붉은 구는 유리구슬·버튼 같은 인상이다. 이는 이미지에서 받은 재질 판단이며 소재 물성을 측정한 결과가 아니다. 특히 전투공터 전체판에서 A/B의 붉은 구가 현재보다 먼저 눈에 들어온다는 판단에는 동의하지만, 시선 추적이나 플레이 중 적·탄막 가독성 측정은 없다.
+
+| 직접 확인한 문제 | C `041e8e47b5`에 이미 들어간 대응 | 이번 근거로 닫을 수 없는 항목 |
+|---|---|---|
+| 원화의 해골·뿔·거친 금속이 사라짐 | 원본 프레임/바 crop 복구 + 실버 ramp(C:55–60, CS:42–49,73–88) | 현재 금속도 이미 회색이다. C의 contrast1.4·gain1.15 재매핑이 더 밝은 덩어리나 넓은 하이라이트를 만들지 않는지 확인 |
+| HP가 붉은 광택 구·버튼 같음 | 와인색, 흰 수면선·유리 광택을 넣지 않은 C 액체(CS:98–112) | 금속 안의 액체로 보이는지, 원래의 평평하고 약한 HP와 다른지는 C 캡처 필요 |
+| HP/MP 빈 부분의 수평 절단 | 곡선·부드러운 수면, 방사형 빈 영역 α.08→.42(CS:29–32,62–70,90–112) | 빈 영역 자체를 없앤 구현은 아니다. full/partial/empty 각각 확인 |
+| MP와 ST의 구분 약화 | 파랑/녹청 별도 팔레트, 이름12px 밝은 글자(CS:51–60, C:124) | 채도를 낮춘 C 색이 1x에서도 즉시 구분되는지, 낮은 잔량·그늘 배경에서도 유지되는지 |
+| 검은 막대와 B 받침 어긋남 | 투명 판·얇은 레일, 슬롯6/7 경계 기반 받침(CA:8–9,19–45, L:60–61) | 바닥 노출·접지 느낌, 두 마우스 칸·키 칩의 실제 화면 정렬 |
+| 작은 키 칩·최대값, 회색 빈 소켓 | A의 슬롯/키 경로를 유지. MP/ST 이름만 확대 | 키10.5px·칩15px, 최대값 HP13/자원11은 그대로다. 회색 빈 원형 소켓의 버튼 인상도 남을 수 있으며 전체 가독성·재질 문제가 해결됐다고 주장하지 않음(`NativeHud.Prototype.cs:151–184`, L:44) |
+
+추가로 세 HUD판에는 HP `526/526`이 표시되는데 A/B 위쪽에 어두운 띠가 있다. 이것을 실제 HP 부족으로 해석하지 않는다. 기존 `Core/HudValues.cs:58`의 표시식은 full HP에서 `HpTranslatePercent=10`, `NativeHud.cs:59`가 .1로 넘기며 C:69/CS:95도 이를 유지하여 목표 표시 fill은 .9다. C는 빈 부분의 불투명한 판 인상을 바꾸는 표현 후보이지 ‘full HP 빈 영역 0’ 변경이 아니다. 이번 이미지 관찰로 Core·HP 수치나 이 계약을 수정하지 않았다.
+
+이번 반영은 **문서만**이다. 새로 확정된 C 코드 누락은 찾지 못했으므로 수치·코드를 추가 조정하지 않았다. 아래 검사는 구현 커밋 `041e8e47b5`에서 통과한 이력이며 이번 문서 갱신에서 러너·컴파일·Unity를 재실행하지 않았다. 기존 코드 대응을 C 시각 합격으로 승격하지 않고 다음 캡처의 비교 기준을 구체화했다.
 
 ## 보존과 검사
 
@@ -100,5 +129,7 @@ Mac 공용 절차에서 **창 모드·무음**, **`-batchmode` 없이** 촬영�
 ```
 
 `NativeGame.HudBlendCapture.cs:29–45`는 idle·충전2/3단과 720p/1080p를 촬영한다. 이 하니스의 JSON 기하는 기존 dock 기준이므로 C 배치 PASS로 쓰지 않는다. 기존 `--unity-hud-smoke`의 원색 ST 기대값도 C 색 판정으로 쓰지 않는다.
+
+새 비교판을 반영한 우선 캡처: 같은 전투공터 배경에서 현재/C의 금속 명암·붉은 구의 주목도, full HP 526/526의 상단 형태, MP330/480·ST240/240 및 낮은 잔량의 색 구분, 회색 빈 소켓·작은 키/최대값, 판 아래 월드 노출을 나란히 본다. 전체 1920×1080 원본과 원배율 HUD crop을 함께 남기고, 이번 축소본을 1px 판정 자료로 사용하지 않는다.
 
 남은 판정: 새 C shader import/Metal 오류·폴백, 실제 1x 색 구분·가독성, Hahmlet 상태 설명, 구체의 동심원 띠가 표시 과정 산물인지 여부, 원화 은색 변환·프레임/액체/포이즈 눈 정합, 판 투명도와 탄막 대비, 위 동적 상태와 입력, 현재/A/B 소스 보존에 대응하는 같은 상태의 화면 비교. C는 **화면 미검수(Mac)**이며 채택 판정은 이 문서로 대신하지 않는다.
