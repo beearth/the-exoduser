@@ -1,3 +1,7 @@
+## 2026-11-04 A2R D4 흔들림 실측 모드·근경 소품 6종·바닥 E6·캠프 이끼·HellGroundPBR macro 해시
+
+- 상세: `docs/4.1맵디자인+설정/UNITY_A2R_D4_20261104.md`. 표시 텍스트 추가 없음.
+
 ## 2026-11-04 A2R D3 피부막 Terrain 바닥·Tripo 랜드마크 5종·산포물 5종
 
 - 피부막 Terrain(다리 북쪽 필드 x18..52,z-74..-40): terrain-skin 재료(macro 크롭 2048²+skin/bruise/vein 8m 타일, 레이어 4개 1패스), 지면 +6mm, 해자는 Terrain 구멍, 기존 바닥 그림(GroundPainting) 이 구역 스킵. 중앙 레인 macro 채도 -50%. 코드 A2RTerrainSkin.cs, 비교 `--a2r-d3-off`.

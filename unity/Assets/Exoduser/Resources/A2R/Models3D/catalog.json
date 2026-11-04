@@ -719,6 +719,66 @@
             "depth": 0.7388002276420593,
             "lods": 3,
             "triangles": 1954
+        },
+        {
+            "name": "corpse_a",
+            "resource": "A2R/Models3D/Prefabs/corpse_a",
+            "source": "I:/EXODUSER-Storage/map25d/tripo-props/lod/corpse_a.glb",
+            "prepared": true,
+            "width": 2.0807409286499023,
+            "depth": 1.3640422821044922,
+            "lods": 3,
+            "triangles": 7099
+        },
+        {
+            "name": "corpse_b",
+            "resource": "A2R/Models3D/Prefabs/corpse_b",
+            "source": "I:/EXODUSER-Storage/map25d/tripo-props/lod/corpse_b.glb",
+            "prepared": true,
+            "width": 2.14499831199646,
+            "depth": 2.1405560970306396,
+            "lods": 3,
+            "triangles": 7099
+        },
+        {
+            "name": "bone_pile_a",
+            "resource": "A2R/Models3D/Prefabs/bone_pile_a",
+            "source": "I:/EXODUSER-Storage/map25d/tripo-props/lod/bone_pile_a.glb",
+            "prepared": true,
+            "width": 1.8913804292678833,
+            "depth": 1.8727582693099976,
+            "lods": 3,
+            "triangles": 7100
+        },
+        {
+            "name": "bone_pile_b",
+            "resource": "A2R/Models3D/Prefabs/bone_pile_b",
+            "source": "I:/EXODUSER-Storage/map25d/tripo-props/lod/bone_pile_b.glb",
+            "prepared": true,
+            "width": 1.076225757598877,
+            "depth": 0.844344437122345,
+            "lods": 3,
+            "triangles": 7100
+        },
+        {
+            "name": "flesh_root_a",
+            "resource": "A2R/Models3D/Prefabs/flesh_root_a",
+            "source": "I:/EXODUSER-Storage/map25d/tripo-props/lod/flesh_root_a.glb",
+            "prepared": true,
+            "width": 1.7549725770950317,
+            "depth": 1.686746597290039,
+            "lods": 3,
+            "triangles": 7100
+        },
+        {
+            "name": "flesh_root_b",
+            "resource": "A2R/Models3D/Prefabs/flesh_root_b",
+            "source": "I:/EXODUSER-Storage/map25d/tripo-props/lod/flesh_root_b.glb",
+            "prepared": true,
+            "width": 1.1765339374542236,
+            "depth": 1.1140778064727783,
+            "lods": 3,
+            "triangles": 7100
         }
     ]
 }

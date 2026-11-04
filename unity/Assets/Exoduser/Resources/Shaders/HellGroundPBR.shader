@@ -70,7 +70,7 @@ Shader "EXODUSER/HellGroundPBR"
     if(_FullField>.5)
     {
      float edge=(SAMPLE_TEXTURE2D(_FieldSdf,sampler_FieldSdf,float2(i.world.x/80,-i.world.z/80)).r-.5)*40;
-     float2 mq=i.world.xz*.11;float2 mf=frac(mq),mi=floor(mq);mf=mf*mf*(3-2*mf);float4 mh=frac(sin(float4(dot(mi,float2(127.1,311.7)),dot(mi+float2(1,0),float2(127.1,311.7)),dot(mi+float2(0,1),float2(127.1,311.7)),dot(mi+float2(1,1),float2(127.1,311.7))))*43758.5453);float macro=lerp(lerp(mh.x,mh.y,mf.x),lerp(mh.z,mh.w,mf.x),mf.y);
+     float2 mq=i.world.xz*.11;float2 mf=frac(mq),mi=floor(mq);mf=mf*mf*(3-2*mf);mi=mi-37*floor(mi/37);float2 hk=float2(12.9898,78.233);float4 mh=frac(sin(float4(dot(mi,hk),dot(mi+float2(1,0),hk),dot(mi+float2(0,1),hk),dot(mi+float2(1,1),hk)))*43758.5453);float macro=lerp(lerp(mh.x,mh.y,mf.x),lerp(mh.z,mh.w,mf.x),mf.y);
      float fringe=1-smoothstep(.1,5,edge);
      float2 soilFine=i.world.xz/2.3;
      half3 dirt=HellSkin(SAMPLE_TEXTURE2D(_SoilMap,sampler_ForestMap,soilFine).rgb,half3(.55,.48,.36));
@@ -78,7 +78,7 @@ Shader "EXODUSER/HellGroundPBR"
      half3 leaves=HellSkin(SAMPLE_TEXTURE2D(_ForestMap,sampler_ForestMap,i.world.xz/1.8).rgb,half3(.47,.38,.24));
      half3 moss=HellVein(SAMPLE_TEXTURE2D(_FieldMoss,sampler_ForestMap,i.world.xz/2.6).rgb,half3(.50,.56,.34));
      mossMix=SAMPLE_TEXTURE2D(_FieldCover,sampler_FieldCover,float2(i.world.x/80,-i.world.z/80)).r*(.48+.35*macro)*fringe*fringe;
-     a=lerp(dirt,roots,.45*fringe);a=lerp(a,leaves,macro*.30*fringe);a=lerp(a,moss,mossMix);
+     a=lerp(dirt,roots,.45*fringe);a=lerp(a,leaves,macro*.15*fringe);a=lerp(a,moss,mossMix);
      nt=normalize(lerp(UnpackNormalScale(SAMPLE_TEXTURE2D(_SoilNormal,sampler_ForestMap,soilFine),.65),UnpackNormalScale(SAMPLE_TEXTURE2D(_RootNormal,sampler_ForestMap,i.world.xz/3.8),.65),.45*fringe));
      nt=normalize(lerp(nt,UnpackNormalScale(SAMPLE_TEXTURE2D(_FieldMossNormal,sampler_ForestNormal,i.world.xz/2.6),.55),mossMix));
      input.normalWS=normalize(mul(nt,float3x3(t,b,n)));

@@ -98,7 +98,7 @@ namespace Exoduser.UnityPort
             Color tint=Color.white;bool any=true;
             if(name.StartsWith("r3_tree_",StringComparison.Ordinal))tint=new Color(.86f,.66f,.62f,1);
             else if(name.StartsWith("r3_prop_",StringComparison.Ordinal))tint=new Color(1.35f,.92f,.86f,1);
-            else if(name.StartsWith("sroot",StringComparison.Ordinal)){tint=new Color(.50f,.44f,.44f,1);model.transform.localScale=new Vector3(model.transform.localScale.x*1.2f,model.transform.localScale.y*.72f,model.transform.localScale.z*1.2f);}
+            else if(name=="flesh_root_a")tint=new Color(2.6f,1.05f,.95f,1);else if(name=="flesh_root_b")tint=new Color(1.7f,.98f,.92f,1);else if(name.StartsWith("sroot",StringComparison.Ordinal)){tint=new Color(.50f,.44f,.44f,1);model.transform.localScale=new Vector3(model.transform.localScale.x*1.2f,model.transform.localScale.y*.72f,model.transform.localScale.z*1.2f);}
             else any=false;
             if(!any)return;var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",tint);foreach(var r in model.GetComponentsInChildren<MeshRenderer>(true))r.SetPropertyBlock(block);
         }
@@ -115,11 +115,11 @@ namespace Exoduser.UnityPort
             var input=JsonUtility.FromJson<Input>(Resources.Load<TextAsset>("A2R/web-assets").text);Result.sourceCards=input.cards.Length;int at=0;var treeSpots=new List<Vector2>();foreach(var t in input.cards)if(t.kind.StartsWith("m_ctree",StringComparison.Ordinal)||t.kind=="m_c1tree"||t.kind=="foreground_tree"||t.kind=="boundary_tree")treeSpots.Add(new Vector2(t.x/100,-t.y/100));
             foreach(var c in input.cards){if(Floor(c.kind))continue;var source=web.Result.items.Find(x=>x.id==c.id);if(source==null||!source.added)continue;var card=originalRoot.Find(c.id+" "+c.kind+" web XY");if(card==null)throw new InvalidOperationException("A2R card lookup "+c.id);
                 if(c.kind=="vegetation"){string plant=FoliageModelName(c);if(plant==null||!allowed.Contains(plant)){RetainedCards++;continue;}cards.Add(card.gameObject);var plantObject=Place(c,plant,c.x/100,-c.y/100,FoliageHeight(c),c.id);RegisterPlant(plantObject,plant,FoliageHeight(c),c.x/100,-c.y/100,treeSpots,walkable);continue;}
-                if(c.kind=="corpse"||c.kind=="m_fbones"){RetainedCards++;continue;}
+                if((c.kind=="corpse"||c.kind=="m_fbones")&&!(A2RD4.On&&records.ContainsKey("corpse_a"))){RetainedCards++;continue;}
                 if(c.kind=="forest_wall"){bool all=Array.TrueForAll(ForestNames,n=>allowed.Contains(n+"_far"));if(all){cards.Add(card.gameObject);forestCards.Add(card.gameObject);Forest(c);}else RetainedCards++;continue;}
-                string name=Name(c,at++);if(A2RD3.On){string d3=D3Landmark(c);if(d3!=null&&records.ContainsKey(d3)){name=d3;allowed.Add(d3);}}if(name==null||!allowed.Contains(name)){RetainedCards++;continue;}
+                string name=Name(c,at++);if(A2RD3.On){string d3=D3Landmark(c);if(d3!=null&&records.ContainsKey(d3)){name=d3;allowed.Add(d3);}}bool d4prop=false;if(A2RD4.On){string d4=D4Prop(c);if(d4!=null&&records.ContainsKey(d4)){name=d4;allowed.Add(d4);d4prop=true;}}if(name==null||!allowed.Contains(name)){RetainedCards++;continue;}
                 if(!records.ContainsKey(name)){Result.missing++;Result.missingKinds.Add(c.id+":"+c.kind);continue;}
-                cards.Add(card.gameObject);float px3=c.x/100,pz3=-c.y/100,h3=name.StartsWith("r3_",StringComparison.Ordinal)?LandmarkHeight(c,name):c.height;if(A2RD3.On)D3Adjust(c.id,name,ref px3,ref pz3,ref h3);var model=Place(c,name,px3,pz3,h3,c.id);if(model!=null&&A2RD3.On)D3Look(model,name);if(c.kind=="m_c1altar"&&model!=null&&!name.StartsWith("r3_",StringComparison.Ordinal))Rune(model,c);
+                cards.Add(card.gameObject);float px3=c.x/100,pz3=-c.y/100,h3=name.StartsWith("r3_",StringComparison.Ordinal)?LandmarkHeight(c,name):c.height;if(A2RD3.On)D3Adjust(c.id,name,ref px3,ref pz3,ref h3);if(d4prop){h3=name.StartsWith("flesh_root",StringComparison.Ordinal)?LandmarkHeight(c,name):1f;if(!D4OffBand(ref px3,ref pz3,walkable)){Debug.Log("A2R_D4_PROP_SKIPPED "+c.id+" "+name);cards.RemoveAt(cards.Count-1);RetainedCards++;continue;}}var model=Place(c,name,px3,pz3,h3,c.id);if(model!=null&&A2RD3.On)D3Look(model,name);if(c.kind=="m_c1altar"&&model!=null&&!name.StartsWith("r3_",StringComparison.Ordinal))Rune(model,c);
             }
             if(Result.missing>0)throw new InvalidOperationException("A2R 3D unmapped kinds: "+string.Join(",",Result.missingKinds));d3Camp=web.CampFoot;BuildTerrainDress(world,treeSpots,walkable);SetLook(Enabled);SetClean(A2RClean.On);Debug.Log("A2R_3D_READY models="+Result.modelInstances+" flat="+Result.flatDecals+" standing="+Result.standingCards+" floating="+Result.floating);
         }
