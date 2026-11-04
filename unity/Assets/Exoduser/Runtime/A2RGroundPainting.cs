@@ -7,7 +7,7 @@ namespace Exoduser.UnityPort
     // Projection follows the existing terrain; no height/collision writer is introduced.
     public static class A2RGroundPainting
     {
-        static Texture2D Art(string id){var t=Resources.Load<Texture2D>("A2R/C10/Art/"+id);if(t==null)throw new InvalidOperationException("Missing C10 painting: "+id);return t;}
+        static Texture2D Art(string id){long t0=A2RStage.Tick();var t=Resources.Load<Texture2D>("A2R/C10/Art/"+id);A2RStage.Acc("지면타일 Art Load",t0);if(t==null)throw new InvalidOperationException("Missing C10 painting: "+id);return t;}
         static Material Paint(string id,bool water)
         {
             var shader=Resources.Load<Shader>("A2R/GroundPainting");if(shader==null)throw new InvalidOperationException("A2R GroundPainting shader missing");var m=new Material(shader){name="C10 projected "+id,renderQueue=water?3010:2475};m.SetTexture("_MainTex",Art(id));m.SetTexture("_NormalTex",Art(id+"_normal"));m.SetTexture("_MaskTex",Art(id+"_mask"));m.SetTexture("_WaterTex",Art("r3_water"));m.SetFloat("_Water",water?1:0);return m;
@@ -21,10 +21,10 @@ namespace Exoduser.UnityPort
             if(tiles==null||tiles.Length!=64)throw new InvalidOperationException("C10 ground requires all 64 original tiles");
             foreach(var tile in tiles)
             {
-                var vertices=new List<Vector3>();var uv=new List<Vector2>();var triangles=new List<int>();const int n=40;
+                long tm=A2RStage.Tick();var vertices=new List<Vector3>();var uv=new List<Vector2>();var triangles=new List<int>();const int n=40;
                 for(int y=0;y<=n;y++)for(int x=0;x<=n;x++){float wx=(tile.x+x/(float)n)*10,wz=-(tile.y+y/(float)n)*10;vertices.Add(new Vector3(wx,NativeRemodel3D.GroundY(wx,wz)+.012f,wz));uv.Add(new Vector2(x/(float)n,1-y/(float)n));}
                 for(int y=0;y<n;y++)for(int x=0;x<n;x++){int a=y*(n+1)+x;triangles.AddRange(new[]{a,a+1,a+n+1,a+1,a+n+2,a+n+1});}
-                Place(root,"C10 terrain projection "+tile.asset,vertices,uv,triangles,Paint(tile.asset,false));
+                A2RStage.Acc("지면타일 정점계산",tm);tm=A2RStage.Tick();Place(root,"C10 terrain projection "+tile.asset,vertices,uv,triangles,Paint(tile.asset,false));A2RStage.Acc("지면타일 Place+Paint(Art포함)",tm);
             }
             if(river!=null&&river.Length>1)
             {
@@ -39,7 +39,7 @@ namespace Exoduser.UnityPort
                 // share the existing real water material/planar reflection, with C10 water paint.
                 Place(root,"C10 original moat strip and banks",vertices,uv,triangles,actualWater,colors);
             }
-            return tiles.Length;
+            A2RStage.Dump("지면타일");return tiles.Length;
         }
     }
 }

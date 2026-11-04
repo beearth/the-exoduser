@@ -40,7 +40,7 @@ namespace Exoduser.UnityPort
             {
                 string key="td"+(idx++);float x=gx+H01(key,1)*3f,z=gz+H01(key,2)*3f;
                 if(walkable==null||!walkable(x,z))continue;if(NativeRemodel3D.GroundY(x,z)<-.2f)continue;
-                if(!KeepPlantRule(x,z,trees,walkable))continue;if(H01(key,3)>.5f)continue;
+                if(!KeepPlantRule(x,z,trees,walkable))continue;if(H01(key,3)>.85f)continue;
                 // Cluster family: weighted pick, never the same family as the previous cluster.
                 float roll=H01(key,5);int fam=0;float acc=0;for(int f=0;f<D3Weights.Length;f++){acc+=D3Weights[f];if(roll<=acc||f==D3Weights.Length-1){fam=f;break;}}
                 if(fam==lastFamily)fam=(fam+1+(int)(H01(key,6)*4))%D3Families.Length;lastFamily=fam;
