@@ -22,7 +22,8 @@ static partial class Program
 
     static BossProjectile AnglerShot(Action<BossProjectile> change = null)
     {
-        var p = new BossProjectile { X = 500, Y = 400, Vx = 10, Vy = 0, Dmg = 50, El = 2, Life = 320, Ml = 320, Sz = 48, R = 20, ElemBall = true, Typed = true, Commit = true, FbEnergy = true, Col = "#3388ff" };
+        // through the real Core spawn path: the list holds Sz 96 / R 26 / 18 px per tick, not the FieldBossFireEnergy literal
+        var p = new DruidBoss(null).SpawnProjectile(null, null, new ProjSpec { X = 500, Y = 400, Vx = 10, Vy = 0, Dmg = 50, El = 2, Life = 320, Ml = 320, Sz = 48, R = 20, ElemBall = true, Typed = true, Commit = true, FbEnergy = true, Col = "#3388ff" }, false);
         if (change != null) change(p); return p;
     }
 
@@ -65,10 +66,12 @@ static partial class Program
         Check(!AnglerWater.IsAnglerOrb(AnglerShot(p => p.Friendly = true)) && !AnglerWater.IsAnglerOrb(AnglerShot(p => p.Active = false)) && !AnglerWater.IsAnglerOrb(AnglerShot(p => p.DruidPoison = true)) &&
               !AnglerWater.IsAnglerOrb(AnglerShot(p => p.Mine = true)) && !AnglerWater.IsAnglerOrb(AnglerShot(p => p.Sz = 18)) && !AnglerWater.IsAnglerOrb(AnglerShot(p => p.El = 1)) &&
               !AnglerWater.IsAnglerOrb(AnglerShot(p => p.ElemBall = false)) && !AnglerWater.IsAnglerOrb(AnglerShot(p => p.Ml = 400)) && !AnglerWater.IsAnglerOrb(AnglerShot(p => p.FbEnergy = false)) && !AnglerWater.IsAnglerOrb(null), "other bullets are not the water orb");
-        Check(Math.Abs(AnglerWater.BodyBox(48) - 254.4) < 1e-9 && AnglerWater.BodyBox(1) == 96, "orb box = the element-orb box max(96, sz*5.3), Core Sz/R untouched");
+        { var spawned = AnglerShot(); Check(spawned.Sz == AnglerWater.SpawnedSz && spawned.R == AnglerWater.SpawnedR && AnglerWater.IsAnglerOrb(spawned), "the Core-spawned shot (96 / 26) is the angler orb"); }
+        Check(AnglerWaterTracker.NearPlayer(200, 0, 0, 0, 16, AnglerWater.SpawnedSz) && !AnglerWaterTracker.NearPlayer(240, 0, 0, 0, 16, AnglerWater.SpawnedSz), "near = the Core big-ball parry radius PR + Sz + 90 plus one 18 px step");
+        Check(Math.Abs(AnglerWater.OrbBodyDiameter(AnglerWater.OrbCell()) - AnglerWater.OrbDesignDiameter) < 1e-9, "orb body diameter = the G1 48 web px, not derived from the doubled Core Sz");
 
         // ---- flight tail ----
-        double body = AnglerWater.OrbBodyDiameter(AnglerWater.BodyBox(48));
+        double body = AnglerWater.OrbBodyDiameter(AnglerWater.OrbCell());
         bool tailOk = true; for (int a = 0; a < 400; a++) { double l = AnglerWater.TailLength(body, a); tailOk &= l >= body * 1.5 - 1e-9 && l <= body * 2.0 + 1e-9; }
         Check(tailOk, "ribbon tail 1.5..2 body diameters long at every age");
         Check(AnglerWater.TailMaxAlpha <= .5 && AnglerWater.TailWidth(body) < body, "tail alpha <= .5 and narrower than the body");
@@ -91,7 +94,7 @@ static partial class Program
         Check(AnglerWater.ChargeProgress(180, false, 0) == 0 && AnglerWater.ChargeProgress(61, false, 0) == 0 && AnglerWater.ChargeProgress(60, false, 0) == 0 && AnglerWater.ChargeProgress(0, false, 0) == 0 &&
               AnglerWater.ChargeProgress(30, false, 0) == .5 && AnglerWater.ChargeProgress(1, false, 0) > .98 && AnglerWater.ChargeProgress(30, true, 0) == 0 && AnglerWater.ChargeProgress(30, false, 10) == 0, "charge grows 0 -> 1 over the last 60 ticks, nothing while hidden / teleporting");
         bool grow = true; for (int e = 59; e >= 1; e--) grow &= AnglerWater.ChargeProgress(e, false, 0) > AnglerWater.ChargeProgress(e + 1, false, 0);
-        Check(grow && Math.Abs(AnglerWater.ChargeSize(1, AnglerWater.BodyBox(48)) - AnglerWater.BodyBox(48)) < 1e-9 && AnglerWater.ChargeSize(0, 254) == 0, "charge size 0 -> body size, monotonic");
+        Check(grow && Math.Abs(AnglerWater.ChargeSize(1, AnglerWater.OrbCell()) - AnglerWater.OrbCell()) < 1e-9 && AnglerWater.ChargeSize(0, 254) == 0, "charge size 0 -> body size, monotonic");
 
         // ---- launch spray ----
         bool launch = true;
@@ -209,8 +212,8 @@ static partial class Program
             double next = mine[(k + 1) % 5] - mine[k]; next = Math.Atan2(Math.Sin(next), Math.Cos(next)); dirs &= Math.Abs(next - 72 * Math.PI / 180) < 1e-9;
         }
         Check(dirs && Math.Abs(AnglerWater.SplitStepRad - 72 * Math.PI / 180) < 1e-12 && Math.Abs(Math.Cos(mine[0]) + 1) < 1e-9, "split: 5 directions, 72 degrees apart, the first backwards along the travel (equal to the Core's SplitBigEnergy)");
-        Check(AnglerWater.SplitBodyScale == .55 && Math.Abs(AnglerWater.SplitBodyCell() - .55 * AnglerWater.BodyBox(48)) < 1e-9 &&
-              Math.Abs(AnglerWater.OrbBodyDiameter(AnglerWater.SplitBodyCell()) - .55 * AnglerWater.OrbBodyDiameter(AnglerWater.BodyBox(48))) < 1e-9, "split shot body = 0.55 x the ball's body (same orb loop)");
+        Check(AnglerWater.SplitBodyScale == .55 && Math.Abs(AnglerWater.SplitBodyCell() - .55 * AnglerWater.OrbCell()) < 1e-9 &&
+              Math.Abs(AnglerWater.OrbBodyDiameter(AnglerWater.SplitBodyCell()) - .55 * AnglerWater.OrbBodyDiameter(AnglerWater.OrbCell())) < 1e-9, "split shot body = 0.55 x the ball's body (same orb loop)");
         Check(AnglerWater.SplitTailLength(100) < 150 && AnglerWater.SplitTailLength(100) > 0 && AnglerWater.SplitTailMaxAlpha <= AnglerWater.TailMaxAlpha, "split shot tail is shorter than the ball's 1.5 D and not stronger");
         Check(AnglerWater.AllyRimR == 0xdf && AnglerWater.AllyRimG == 0xe3 && AnglerWater.AllyRimB == 0xe6 && AnglerWater.AllyRimAlpha == .8, "allied rim = silver white #dfe3e6, alpha .8");
 

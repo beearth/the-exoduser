@@ -104,7 +104,7 @@ namespace Exoduser.UnityPort
             {
                 int age = t - o.Born, last; anglerTailTick.TryGetValue(o.P, out last);
                 if (!AnglerWater.TailDropTick(age) || anglerTailTick.ContainsKey(o.P) && last == t) continue;
-                anglerTailTick[o.P] = t; double D = AnglerWater.OrbBodyDiameter(AnglerWater.BodyBox(o.P.Sz));
+                anglerTailTick[o.P] = t; double D = AnglerWater.OrbBodyDiameter(AnglerWater.OrbCell());
                 foreach (var d in AnglerWater.TailDrops(unchecked(t * 131 + (int)o.P.X), o.Ang, D)) AddAnglerDrop(d, t, (float)o.P.X, (float)o.P.Y, true, 0);
             }
             if (anglerTailTick.Count > 64) { var gone = new List<BossProjectile>(); foreach (var k in anglerTailTick.Keys) if (!k.Active) gone.Add(k); foreach (var k in gone) anglerTailTick.Remove(k); }
@@ -122,7 +122,7 @@ namespace Exoduser.UnityPort
         {
             if (!AnglerWater.IsAnglerOrb(p) || !AnglerHasArt()) return false;
             int born = t - AnglerWaterTracker.AgeOf(p); foreach (var o in anglerTracker.Orbs) if (o.P == p) { born = o.Born; break; }
-            int age = Math.Max(0, t - born); double ang = Math.Atan2(p.Vy, p.Vx), cell = AnglerWater.BodyBox(p.Sz), D = AnglerWater.OrbBodyDiameter(cell);
+            int age = Math.Max(0, t - born); double ang = Math.Atan2(p.Vy, p.Vx), cell = AnglerWater.OrbCell(), D = AnglerWater.OrbBodyDiameter(cell);
             int order = (int)p.Y + 6;
             PutBox(AnglerRibbon(), p.X, p.Y, D * .5 + AnglerWater.TailLength(D, age), AnglerWater.TailWidth(D), new Color(1, 1, 1, (float)AnglerWater.TailMaxAlpha), order - 1, ang + Math.PI);
             PutBox(AnglerCell(AnglerWater.OrbSheet, AnglerWater.OrbCols, AnglerWater.OrbRows, AnglerWater.OrbFrame(age)), p.X, p.Y, cell, cell, Color.white, order, ang);
@@ -179,7 +179,7 @@ namespace Exoduser.UnityPort
                 var fb = list[i]; if (fb == null || !fb.Alive) continue;   // FieldBossFireEnergy hard-codes El 2 for all four anglers
                 double prog = AnglerWater.ChargeProgress(fb.EnChg, fb.Hid, fb.TpT); if (prog <= 0) continue;
                 double fx, fy; Simulation.FieldBossFeeler(fb, out fx, out fy);
-                double size = AnglerWater.ChargeSize(prog, AnglerWater.BodyBox(48)), face = Math.Atan2(sim.Player.Y - fy, sim.Player.X - fx) + t * .12;
+                double size = AnglerWater.ChargeSize(prog, AnglerWater.OrbCell()), face = Math.Atan2(sim.Player.Y - fy, sim.Player.X - fx) + t * .12;
                 PutBox(AnglerCell(AnglerWater.OrbSheet, AnglerWater.OrbCols, AnglerWater.OrbRows, AnglerWater.OrbFrame(t)), fx, fy, size, size, new Color(1, 1, 1, (float)prog), (int)fy + 6, face);
                 AnglerChargesDrawn++;
             }

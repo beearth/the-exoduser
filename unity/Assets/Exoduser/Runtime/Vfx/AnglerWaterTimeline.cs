@@ -25,12 +25,16 @@ namespace Exoduser.UnityPort.Vfx
         // ---- which bullet ----
         public static bool IsAnglerOrb(BossProjectile p)
         {
-            return p != null && p.Active && p.FbEnergy && p.ElemBall && p.El == 2 && p.Sz == 48 && p.R == 20 && p.Ml == 320 && p.Commit && p.Typed
+            return p != null && p.Active && p.FbEnergy && p.ElemBall && p.El == 2 && p.Sz == SpawnedSz && p.R == SpawnedR && p.Ml == 320 && p.Commit && p.Typed
                 && !p.Friendly && !p.DruidPoison && !p.Mine && !p.Web && !p.RedBean && !p.BlackBean;
         }
 
         // ---- flight ----
-        public static double BodyBox(double sz) { return Math.Max(96, sz * 5.3); }              // the element-orb box of NativeBossView.DrawFieldBullet (cell = this many web px)
+        // DruidBoss.SpawnProjectile turns the FieldBossFireEnergy literal (Sz 48, R 20) into Sz x 2 = 96, R x 1.3 = 26, so the list holds these values.
+        public const double SpawnedSz = 96, SpawnedR = 26;
+        // G1 size: body diameter 48 web px (about 36 screen px at the LOCK camera), fixed; never derived from the doubled Core Sz.
+        public const double OrbDesignDiameter = 48;
+        public static double OrbCell() { return OrbDesignDiameter * CellPx / OrbBodyPx; }       // sheet cell box whose 136 px body comes out at the design diameter
         public static double OrbBodyDiameter(double cellWidth) { return cellWidth * OrbBodyPx / CellPx; }
         public static int OrbFrame(int age) { return (((age < 0 ? 0 : age) / OrbTicksPerFrame) % OrbFrames); }
         public const double TailMinFactor = 1.5, TailMaxFactor = 2.0, TailMaxAlpha = .5, TailWidthFactor = .55;
@@ -99,7 +103,7 @@ namespace Exoduser.UnityPort.Vfx
         public const double AllyRimAlpha = .8; public const byte AllyRimR = 0xdf, AllyRimG = 0xe3, AllyRimB = 0xe6;   // silver white #dfe3e6
         public const double SplitTailFactor = 1.0, SplitTailMaxAlpha = .4;
         public static bool IsParrySplitShot(BossProjectile p) { return p != null && p.Active && p.Friendly && p.ParryMagicShot && p.El == 2; }
-        public static double SplitBodyCell() { return BodyBox(48) * SplitBodyScale; }                    // the original ball's box x .55 (the split shot's own Sz is 1)
+        public static double SplitBodyCell() { return OrbCell() * SplitBodyScale; }                    // the original ball's box x .55 (the split shot's own Sz is 1)
         public static double SplitTailLength(double bodyDiameter) { return bodyDiameter * SplitTailFactor; }
         // five muzzle directions, 72 degrees apart, starting at the reverse of the travel direction (same arithmetic as the Core)
         public static double[] SplitAngles(double travelAngle)
@@ -244,7 +248,7 @@ namespace Exoduser.UnityPort.Vfx
         public static int AgeOf(BossProjectile p) { return (int)Math.Round((p.Ml - p.Life) / LifePerTick); }
         public static bool NearPlayer(double x, double y, double px, double py, double pr, double sz)
         {
-            double dx = x - px, dy = y - py, reach = pr + (sz != 0 ? sz : 1) * 3 + 4 + 10;   // Core hit radius (collR + 4) plus one step of the 10 px/tick orb
+            double dx = x - px, dy = y - py, reach = pr + (sz != 0 ? sz : 48) + 90 + 18;   // Core big-ball Q parry radius (ParryReflect pParryR = PR + Sz + 90; contact PR + Sz is inside it) plus one step of the spawned 18 px/tick orb
             return dx * dx + dy * dy <= reach * reach;
         }
         public void Reset() { Orbs.Clear(); Shots.Clear(); Events.Clear(); pending.Clear(); lastTick = int.MinValue; }
