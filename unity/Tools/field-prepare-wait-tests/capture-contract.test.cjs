@@ -8,4 +8,7 @@ check(/lobby\.EnterSelectedCharacter\(\)/.test(cap),'transition starts through t
 check(!/NativeScreenTransition\.Request\(/.test(cap)&&!/EnterNativeTest\(/.test(cap)&&!/EnterFromLobby\(/.test(cap)&&!/ResetRun\(/.test(cap),'does not request, enter or reset the field itself');
 check(/lobby\.AutomatedInput=false/.test(cap)&&/lobbySmoke=false/.test(cap),'automation input is released before the lobby start');
 check(/WaitForEndOfFrame/.test(cap)&&/Application\.Quit\(/.test(cap),'captures at end of frame and quits');
+check(/--unity-transition-loading-size/.test(cap)&&cap.includes('FullScreenMode.Windowed'),'size argument, windowed mode kept');
+check(cap.includes('if(!busy&&(stage=="Nemesis"'),'intro pages are not skipped while a transition is busy');
+check(/.started/.test(cap)&&/-seal/.test(cap)&&/-label/.test(cap),'seal/label shots are taken per transition start');
 process.exitCode=fail?1:0;

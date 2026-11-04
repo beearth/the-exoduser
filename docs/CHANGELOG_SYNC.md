@@ -1,3 +1,5 @@
+2026-11-04 로딩 촬영 모드 보정(Sonnet 구현): 인장·문구 샘플을 호출 시각 대신 각 전환 시작 기준(+0.45초·+1.2초, `transition-<boundary>-seal/label.png`)으로 변경, `--unity-transition-loading-size <W>x<H>` 추가(기본 1920x1080), 전환 Busy 중에는 소개 페이지 Skip 안 함. 전환·조립 코드 변경 0.
+
 2026-11-04 로딩 화면 촬영 모드(Sonnet 구현): QA 인자 `--unity-transition-loading-capture <절대 출력 폴더>` 추가(NativeGame.TransitionLoadingCapture.cs·NativeGame.cs 분기). 격리 저장소 안에 전사를 만들고 로비 "시작"과 같은 `lobby.EnterSelectedCharacter()`로 필드 전환을 시작해 5시점(0.5초·1.5초·진행률 0.5·조립 종료 직후·필드 1초 뒤) PNG와 transition-loading.json을 남긴다. 전환·조립·Core 변경 0, 소스 계약 검사 `capture-contract.test.cjs` 추가. 촬영·판정은 Mac, PC는 컴파일까지.
 
 2026-11-04 필드 전환 대기 병합본(유니티 총괄): claude/unity-pc-field-prepare-wait-20261104 328331f91(7ed8253d4 GUID meta·08f969779 r3Roots null 가드·R03~R06 포함)에 unity/main 병합, CHANGELOG 양쪽 보존. 하니스 NU1100 원인 = 작업 폴더에 global.json이 없어 SDK 10.0.400이 net8 ref pack을 NuGet(소스 비움)에서 찾음 → run.cjs가 global.json으로 설치된 SDK 8.0.301 고정(EXO_DOTNET_SDK로 변경 가능). field-prepare-wait 13/0, root-guard PASS, 참조 컴파일 5어셈블리 오류 0. 화면 변화: 로딩 문구 아래 1px 은빛 진행선과 인장·문구 표시 시점(0.3초·1초)만, 화면 판정 전.

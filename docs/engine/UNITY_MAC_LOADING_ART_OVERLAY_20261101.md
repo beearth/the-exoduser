@@ -60,6 +60,7 @@ PC R5 `0a60cbcee273e1150ba7df8909acb77dd9f18edc`에서 게임 구역 전환 화�
 
 - 사용법: `--unity-transition-loading-capture <절대 출력 폴더>` (QA 격리 저장소 필수, 창 모드 1920x1080, 소리 0). 끝나면 `Application.Quit`, 실패 시 receipt `error`와 0이 아닌 종료 코드(예외 2, 샘플 누락·로비 복귀 4).
 - 시작: 격리 저장소에 전사 `검수전사`를 만들고(자동 입력 상태), 자동 입력을 풀어 로비 "시작" 버튼과 같은 `lobby.EnterSelectedCharacter()`를 호출한다. 전환·조립 코드는 건드리지 않는다. 시작·소개 페이지(Nemesis·Guide)는 Esc와 같은 상태기계 `Skip()`으로만 넘기고 횟수를 receipt `introSkips`에 적는다.
-- 샘플(렌더 끝 프레임 `WaitForEndOfFrame`, 시작 = `EnterSelectedCharacter` 호출 시각): (a) 0.5초 인장 (b) 1.5초 문구·진행선 (c) `NativeTransitionProgress.Active`이고 Fraction이 0.5 이상인 첫 프레임 (d) 조립이 끝난 첫 프레임(전환이 Busy일 때, 페이드인 전) (e) 전환이 끝나고 필드가 보인 뒤 1초. PNG 이름 `transition-<id>.png`.
+- 샘플(렌더 끝 프레임 `WaitForEndOfFrame`): 전환이 시작될 때마다(`NativeScreenTransition.History`의 `started`) 그 전환 기준 +0.45초 인장 `transition-<boundary>-seal.png`, +1.2초 문구·진행선 `transition-<boundary>-label.png`(전환이 아직 Busy일 때만). 그 밖에 (c) `Active`이고 Fraction 0.5 이상인 첫 프레임 (d) 조립이 끝난 첫 프레임(전환 Busy, 페이드인 전) (e) 필드가 보인 뒤 1초. 각 샘플의 `boundary`가 찍힌 전환이다. 소개 페이지 Skip은 전환이 Busy가 아닐 때만 한다.
+- 해상도: `--unity-transition-loading-size <W>x<H>`(기본 1920x1080, 창 모드·무음 유지).
 - receipt `transition-loading.json`: 샘플별 경과·Fraction·Active·Busy·Phase·경계 이름·로비 단계·조립 단계명·해상도·PNG 경로, `returnedToLobby`, `assemblySeconds`, `totalSeconds`, `boundaries`, `missing`. 조립이 전환 밖에서 일어나 (c)(d)가 없으면 `missing`에 남기고 종료 코드 4.
 - 검사: `unity/Tools/field-prepare-wait-tests/capture-contract.test.cjs`(인자 분기·격리 저장소·공용 시작 경로 호출).
