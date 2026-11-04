@@ -32,6 +32,7 @@ namespace Exoduser.UnityPort
             Result.sourceCards=input.cards.Length;Result.groundTiles=A2RGroundPainting.Build(visuals.transform,input.groundTiles,input.riverPoints,NativeGame.Instance.Map.CanMove,water);Result.moatRibbons=input.riverPoints!=null&&input.riverPoints.Length>1?1:0;
             foreach(var c in input.cards)
             {
+                if(A2RClean.HellRot&&(c.kind=="vegetation"||c.kind=="m_fyellow"||c.asset.IndexOf("r3_bank",StringComparison.Ordinal)>=0||c.asset.IndexOf("r3_thicket",StringComparison.Ordinal)>=0))continue; // D2: general-forest vegetation cards off
                 bool originalRoot=c.kind=="m_c1groot",floor=IsFloor(c.kind);
                 var count=Result.kinds.Find(k=>k.kind==c.kind);if(count==null){count=new KindCount{kind=c.kind};Result.kinds.Add(count);}count.source++;
                 var item=new Item{id=c.id,kind=c.kind,webX=c.x,webY=c.y,worldX=c.x/100,worldZ=-c.y/100};Result.items.Add(item);bool tree=c.kind.IndexOf("tree",StringComparison.OrdinalIgnoreCase)>=0||c.asset.IndexOf("r3_tree",StringComparison.OrdinalIgnoreCase)>=0;string semantic=tree?"Tree":c.kind.IndexOf("torch",StringComparison.OrdinalIgnoreCase)>=0?"Torch":c.kind.IndexOf("bridge",StringComparison.OrdinalIgnoreCase)>=0?"목교":"";
@@ -75,7 +76,7 @@ namespace Exoduser.UnityPort
         }
         public void SetLook(bool on)
         {
-            Applied=on;visuals.SetActive(on);foreach(var p in originalTextures)ground.SetTexture(p.Key,on?Resources.Load<Texture2D>("A2R/C10/Art/"+(p.Key=="_ForestMap"?"r3_litter":p.Key=="_SoilMap"?"r3_soil":"r4_tex_mud")):p.Value);water.shader=on?Resources.Load<Shader>("A2R/ToxicRiver"):waterOriginal;water.SetFloat("_A2RWebMix",on?1:0);if(on||waterSpecularOff)water.EnableKeyword("_SPECULARHIGHLIGHTS_OFF");else water.DisableKeyword("_SPECULARHIGHLIGHTS_OFF");if(on)water.SetTexture("_A2RWebTex",Resources.Load<Texture2D>("A2R/C10/Art/r3_water"));for(int i=0;i<originals.Count;i++)if(originals[i]!=null)originals[i].enabled=on?false:originalEnabled[i];
+            Applied=on;visuals.SetActive(on);foreach(var p in originalTextures)ground.SetTexture(p.Key,on?Resources.Load<Texture2D>("A2R/C10/Art/"+(p.Key=="_ForestMap"?"r3_litter":p.Key=="_SoilMap"?"r3_soil":A2RClean.HellRot?"r3_soil":"r4_tex_mud")):p.Value);water.shader=on?Resources.Load<Shader>("A2R/ToxicRiver"):waterOriginal;water.SetFloat("_A2RWebMix",on?1:0);if(on||waterSpecularOff)water.EnableKeyword("_SPECULARHIGHLIGHTS_OFF");else water.DisableKeyword("_SPECULARHIGHLIGHTS_OFF");if(on)water.SetTexture("_A2RWebTex",Resources.Load<Texture2D>("A2R/C10/Art/r3_water"));for(int i=0;i<originals.Count;i++)if(originals[i]!=null)originals[i].enabled=on?false:originalEnabled[i];
         }
         void LateUpdate(){if(!Applied)return;foreach(var sr in originals)if(sr!=null)sr.enabled=false;float yaw=viewer.transform.eulerAngles.y;foreach(var pose in cards)if(pose.transform!=null)pose.transform.rotation=Quaternion.Euler(0,yaw+pose.yaw,0);}
     }

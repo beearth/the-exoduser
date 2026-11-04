@@ -64,7 +64,7 @@ namespace Exoduser.UnityPort
         }
         Quaternion sunBase=Quaternion.identity;
         // r19: softer, higher sun (shadow strength .9 -> .55, pitch 32 -> 50). false restores r18 values.
-        public void ApplyClean(bool on){ColorAdjustments ca;if(tone!=null&&tone.profile!=null&&tone.profile.TryGet(out ca))ca.contrast.Override(on&&A2RProps3D.TerrainEnabled?8:16);if(moon==null||!moon.enabled)return;moon.shadowStrength=on?.55f:.9f;moon.transform.rotation=on?Quaternion.Euler(A2RProps3D.TerrainEnabled?55:50,sunBase.eulerAngles.y,0):sunBase;}
+        public void ApplyClean(bool on){ColorAdjustments ca;if(tone!=null&&tone.profile!=null&&tone.profile.TryGet(out ca))ca.contrast.Override(on&&A2RProps3D.TerrainEnabled?8:16);if(moon==null||!moon.enabled)return;moon.shadowStrength=on?(A2RClean.HellRot?.38f:.55f):.9f;moon.transform.rotation=on?Quaternion.Euler(A2RClean.HellRot?68:A2RProps3D.TerrainEnabled?55:50,sunBase.eulerAngles.y,0):sunBase;}
         public void SetLook(bool on)
         {
             Applied=on;LegacyFogStateUpdate();foreach(var s in originalLights)s.Restore();for(int i=0;i<sourceVolumes.Count;i++)sourceVolumes[i].enabled=on?false:volumeEnabled[i];foreach(var f in fog)if(f.renderer!=null)f.renderer.sharedMaterial=on?f.replacement:f.original;
