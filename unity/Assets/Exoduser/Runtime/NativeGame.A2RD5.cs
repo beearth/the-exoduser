@@ -38,7 +38,7 @@ namespace Exoduser.UnityPort
             {
                 // Isolated observation fixture: real Core death/drop path, deterministic HP extraction.
                 Simulation.Random01=()=>0;var p=Simulation.Player;var enemy=Simulation.SpawnEnemy(p.X+70,p.Y,0,null,false);
-                if(enemy!=null){int before=Simulation.Materials;Simulation.HurtEnemy(enemy,Mathf.Max(1,Mathf.CeilToInt(enemy.Hp)+1));if(Simulation.Materials>before){var at=HudCamera.WorldToViewportPoint(Point(p.X,p.Y));NativeCurrencyOrb.Emit(new Vector2(at.x,at.y));}}
+                if(enemy!=null){int before=Simulation.Materials;Simulation.HurtEnemy(enemy,Mathf.Max(1,Mathf.CeilToInt(enemy.Hp)+1));DispatchFeedback();if(Simulation.Materials>before){var at=HudCamera.WorldToViewportPoint(Point(p.X,p.Y));NativeCurrencyOrb.Emit(new Vector2(at.x,at.y));}}
             }
             finally{Simulation.Random01=previousRandom;}
             for(int n=0;n<8;n++){UpdateViews();yield return null;}
@@ -52,7 +52,8 @@ namespace Exoduser.UnityPort
         }
         IEnumerator D5RewardProof(string text)
         {
-            yield return null;yield return A2RPlayShot("d5-malice-extract");
+            // Observe the first rendered extraction frame, before short-lived kill effects expire.
+            yield return new WaitForEndOfFrame();var image=new Texture2D(Screen.width,Screen.height,TextureFormat.RGB24,false);image.ReadPixels(new Rect(0,0,Screen.width,Screen.height),0,0);image.Apply();File.WriteAllBytes(Path.Combine(a2rPlayOutput,"d5-malice-extract.png"),image.EncodeToPNG());Destroy(image);
             File.WriteAllText(Path.Combine(a2rPlayOutput,"d5-malice-extract.txt"),"Actual Core ReviveTextRaised: "+text+"\nmaterials="+Simulation.Materials+" kills="+Simulation.Kills+" tick="+Simulation.TickCount+"\nNo synthetic text or currency injection.");
         }
     }
