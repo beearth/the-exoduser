@@ -41,8 +41,17 @@ public static class A2FieldBakeBuild
     }
     public static void BakeAndCheck()
     {
-        string output=PortVerification.Argument("-output");if(string.IsNullOrEmpty(output))throw new ArgumentException("-output required");Directory.CreateDirectory(output);
-        var previous=NativeRemodel3D.Field;bool forest=NativeRemodel3D.ForestA2;
+        BakeAndCheckAt(PortVerification.Argument("-output"));
+    }
+    public static void CompareThenBake()
+    {
+        A2FieldBakeProbe.Measure();
+        BakeAndCheckAt(Path.Combine(PortVerification.Argument("-output"),"cache"));
+    }
+    static void BakeAndCheckAt(string output)
+    {
+        if(string.IsNullOrEmpty(output))throw new ArgumentException("-output required");Directory.CreateDirectory(output);
+        var previous=NativeRemodel3D.Field;bool forest=NativeRemodel3D.ForestA2;var previousOverride=NativeGame.A2FieldCacheQaOverride;
         List<RenderProof> original;
         try
         {
@@ -52,6 +61,7 @@ public static class A2FieldBakeBuild
                 A2FieldBakeProbe.WriteGeometry(Path.Combine(output,"baseline-geometry.bin"),c.Root,c.Field);original=CaptureRenderers(c.Root);
             }
             Bake();
+            NativeGame.A2FieldCacheQaOverride=true;
             using(var c=Create())
             {
                 var timings=new System.Text.StringBuilder("단계\t밀리초\n");
@@ -74,9 +84,12 @@ public static class A2FieldBakeBuild
                 if(maxWorld>1e-5f)throw new InvalidDataException("Baked renderer transform changed: "+maxWorld);
                 File.WriteAllText(Path.Combine(output,"render-state.txt"),"재질·PropertyBlock·렌더 상태 동일 / "+current.Count+"개 / 월드 행렬 최대 차 "+maxWorld);
             }
-            A2FieldBakeProbe.Compare(output);Debug.Log("[A2 전체필드] 구운 필드 전후 검사 통과 / Player·화면 판정 아님");
+            A2FieldBakeProbe.Compare(output);
+            var verified=JsonUtility.FromJson<NativeGame.A2FieldCacheIndex>(File.ReadAllText(Folder+"/index.json"));verified.verified=true;
+            File.WriteAllText(Folder+"/index.json",JsonUtility.ToJson(verified,true));AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+            Debug.Log("[A2 전체필드] 구운 필드 전후 검사 통과 / Player·화면 판정 아님");
         }
-        finally {NativeRemodel3D.Field=previous;NativeRemodel3D.ForestA2=forest;}
+        finally {NativeRemodel3D.Field=previous;NativeRemodel3D.ForestA2=forest;NativeGame.A2FieldCacheQaOverride=previousOverride;}
     }
     sealed class RenderProof{public string Name,Value;public Matrix4x4 World;}
     static List<RenderProof> CaptureRenderers(GameObject root)
@@ -255,6 +268,7 @@ public static class A2FieldBakeBuild
     public static string[] InputPaths()
     {
         var paths=new List<string>{"Assets/Exoduser/Resources/Data/ch1_map.json"};
+        paths.Add("Assets/Exoduser/Editor/A2FieldBakeBuild.cs");
         foreach(var name in new[]{"NativeGame.A2Field.cs","NativeGame.A2Forest.cs","NativeGame.A2Foreground.cs","NativeGame.A2GroundCover.cs","NativeGame.A2ShoreField.cs","NativeGame.A2Bramble.cs","A2FieldLayout.cs","A2ForestLayout.cs","NativeGroundSkillProjection.cs","SourceMap.cs","NativeRemodel3D.cs"})paths.Add("Assets/Exoduser/Runtime/"+name);
         foreach(var id in AssetDatabase.FindAssets("t:GameObject",new[]{"Assets/Exoduser/Resources/Art/map/a2"})){var path=AssetDatabase.GUIDToAssetPath(id);if(path.EndsWith(".fbx",StringComparison.OrdinalIgnoreCase)||path.EndsWith(".prefab",StringComparison.OrdinalIgnoreCase))paths.Add(path);}
         foreach(var id in AssetDatabase.FindAssets("t:Material",new[]{"Assets/Exoduser/Resources/Art/map/a2"}))paths.Add(AssetDatabase.GUIDToAssetPath(id));

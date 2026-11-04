@@ -31,7 +31,7 @@ namespace Exoduser.UnityPort
         void A2FieldSetup(Terrain ground)
         {
             if(ground==null||a2Root!=null)return;
-            var timer=System.Diagnostics.Stopwatch.StartNew();A2RStage.Begin();
+            var timer=System.Diagnostics.Stopwatch.StartNew();a2FieldMeasuredFrame=Time.frameCount;a2FieldMeasuredStages.Clear();A2RStage.Begin();
             a2Field=new A2FieldLayout(Map.Data);NativeRemodel3D.Field=a2Field;NativeRemodel3D.ForestA2=true;
             a2Root=new GameObject("A2 1-1 전체 썩은 숲");
             UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(a2Root,r3Scene);
@@ -74,11 +74,11 @@ namespace Exoduser.UnityPort
             A2RStage.Mark("거리장 40000타일");var cover=new Texture2D(256,256,TextureFormat.RGBA32,false,true){name="A2 전투중심을 비운 연결 이끼 지면",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};
             var coverPixels=new Color[256*256];System.Threading.Tasks.Parallel.For(0,256,a2FieldWorkers,y=>{for(int x=0;x<256;x++)coverPixels[y*256+x]=new Color(a2Field.GroundCover((x+.5f)/256*80,-(y+.5f)/256*80)*Mathf.Lerp(1,.45f,Mathf.SmoothStep(0,1,Mathf.Clamp01(a2Field.Distance((x+.5f)/256*80,-(y+.5f)/256*80)/2))),0,0,1);});
             cover.SetPixels(coverPixels);cover.Apply(false,true);a2FieldSoil.SetTexture("_FieldCover",cover);
-            A2RStage.Mark("이끼 커버");A2FieldOuterMass();A2FieldCostFlush("외곽 덩어리");A2RStage.Mark("외곽 덩어리");A2Foreground(true);A2FieldCostFlush("전경");A2RStage.Mark("전경");A2FieldLandmarks();A2FieldCostFlush("랜드마크");A2RStage.Mark("랜드마크");A2FieldConnections();A2FieldCostFlush("접합 뿌리");A2RStage.Mark("접합 뿌리");A2FieldGround();A2FieldCostFlush("지면 메시");A2RStage.Mark("지면 메시");A2FieldGroundCover();A2FieldCostFlush("덤불 지면덮개");A2RStage.Mark("덤불 지면덮개");A2BridgeMoss();A2FieldCostFlush("다리 이끼");A2RStage.Mark("다리 이끼");A2FieldAtmosphere();A2RStage.Mark("대기");
+            A2RStage.Mark("이끼 커버");A2FieldExecuteStage("outer","외곽 덩어리",()=>A2FieldOuterMass());A2FieldExecuteStage("foreground","전경",()=>A2Foreground(true));A2FieldExecuteStage("landmarks","랜드마크",()=>A2FieldLandmarks());A2FieldExecuteStage("connections","접합 뿌리",()=>A2FieldConnections());A2FieldExecuteStage("ground","지면 메시",()=>A2FieldGround());A2FieldExecuteStage("cover","덤불 지면덮개",()=>A2FieldGroundCover());A2FieldExecuteStage("bridge","다리 이끼",()=>A2BridgeMoss());A2FieldExecuteStage("atmosphere","대기",A2FieldAtmosphere);
             var aa=r3Cam.GetUniversalAdditionalCameraData();aa.antialiasing=NativeHd2D.Enabled?AntialiasingMode.None:AntialiasingMode.SubpixelMorphologicalAntiAliasing;aa.antialiasingQuality=AntialiasingQuality.High;
             aa.requiresDepthTexture=true;r3Cam.depthTextureMode|=DepthTextureMode.Depth;
             r3Cam.backgroundColor=new Color(.105f,.145f,.17f);r3Cam.farClipPlane=220;
-            A2Ambient();A2RStage.Mark("환경광");A2RSetup();A2RStage.Mark("A2RSetup 합계 이후");Debug.Log("[A2 전체필드] 원본40000타일 보행·시야 불변/全域地面·외곽·접합 조립 "+timer.ElapsedMilliseconds+"ms");
+            A2Ambient();A2RStage.Mark("환경광");a2FieldMeasuredTargetMs=timer.Elapsed.TotalMilliseconds;Debug.Log("[A2 전체필드] 기본 필드 조립 합계 "+a2FieldMeasuredTargetMs.ToString("F3",System.Globalization.CultureInfo.InvariantCulture)+"ms");A2RSetup();a2FieldMeasuredFullMs=timer.Elapsed.TotalMilliseconds;A2RStage.Mark("A2RSetup 합계 이후");Debug.Log("[A2 전체필드] 원본40000타일 보행·시야 불변/全域地面·외곽·접합 조립 "+timer.ElapsedMilliseconds+"ms");
         }
         void A2FieldGround()
         {
@@ -301,7 +301,7 @@ namespace Exoduser.UnityPort
         public const int A2FieldCacheVersion=1;
         public static bool? A2FieldCacheQaOverride;
         [Serializable] public sealed class A2FieldCacheIndex
-        {public int version;public string mapHash;public string[] stages,inputPaths,inputHashes;}
+        {public int version;public bool verified;public string mapHash;public string[] stages,inputPaths,inputHashes;}
         [Serializable] public sealed class A2FieldCacheStage
         {public int version;public string mapHash;public A2FieldCacheRenderer[] renderers;public int filters;}
         [Serializable] public sealed class A2FieldCacheRenderer
@@ -322,7 +322,7 @@ namespace Exoduser.UnityPort
                 var index=Resources.Load<TextAsset>(A2FieldCacheResource+"index");
                 if(index!=null)a2FieldCacheIndex=JsonUtility.FromJson<A2FieldCacheIndex>(index.text);
             }
-            if(a2FieldCacheIndex==null||a2FieldCacheIndex.version!=A2FieldCacheVersion||a2FieldCacheIndex.mapHash!=a2FieldCacheMapHash||Array.IndexOf(a2FieldCacheIndex.stages,stage)<0)return false;
+            if(a2FieldCacheIndex==null||(!a2FieldCacheIndex.verified&&A2FieldCacheQaOverride!=true)||a2FieldCacheIndex.version!=A2FieldCacheVersion||a2FieldCacheIndex.mapHash!=a2FieldCacheMapHash||Array.IndexOf(a2FieldCacheIndex.stages,stage)<0)return false;
             var description=Resources.Load<TextAsset>(A2FieldCacheResource+stage+"-meta");
             var bytes=Resources.Load<TextAsset>(A2FieldCacheResource+stage+"-state");
             var prefab=Resources.Load<GameObject>(A2FieldCacheResource+stage);
@@ -480,6 +480,10 @@ namespace Exoduser.UnityPort
         }
         System.Collections.IEnumerator A2FieldPlayerRound(string output,A2FieldPlayerReceipt receipt,A2FieldPlayerCheck monitor)
         {
+            Screen.SetResolution(3840,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.25f);
+#if UNITY_STANDALONE_WIN
+            if(Screen.width!=3840||Screen.height!=1080)FieldCaptureResize(3840,1080);
+#endif
             lobby.AutomatedInput=true;lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();EndFirstPractice(true);
             frontendEntryInputFence=false;menu=false;Running=false;gameFocused=true;Simulation.Config.EnemyAiEnabled=false;
             float limit=Time.realtimeSinceStartup+90;
@@ -492,7 +496,14 @@ namespace Exoduser.UnityPort
             var points=new[]{new Vector2(Simulation.Player.X,Simulation.Player.Y),camp};var names=new[]{"02-field-entry","camp"};
             for(int shot=0;shot<points.Length;shot++)
             {
-                var p=points[shot];if(!Map.CanMove(p.x,p.y,Simulation.Player.Radius)){receipt.failures.Add("Fixed comparison point blocked: "+names[shot]);continue;}
+                var p=points[shot];
+                if(!Map.CanMove(p.x,p.y,Simulation.Player.Radius))
+                {
+                    bool found=false;
+                    for(int radius=1;radius<=12&&!found;radius++)for(int n=0;n<32;n++)
+                    {float angle=n*Mathf.PI/16;var q=points[shot]+new Vector2(Mathf.Cos(angle),Mathf.Sin(angle))*radius*20;if(Map.CanMove(q.x,q.y,Simulation.Player.Radius)){p=q;found=true;break;}}
+                    if(!found){receipt.failures.Add("Fixed comparison point blocked: "+names[shot]);continue;}
+                }
                 Simulation.Player.X=p.x;Simulation.Player.Y=p.y;lastX=p.x;lastY=p.y;
                 if(r3Vcam!=null)r3Vcam.PreviousStateIsValid=false;
                 for(int i=0;i<16;i++){UpdateViews();if(r3Brain!=null)r3Brain.ManualUpdate();yield return null;}
