@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using Exoduser.UnityPort.Core;
 
 namespace Exoduser.UnityPort
@@ -12,7 +13,12 @@ namespace Exoduser.UnityPort
         Simulation bound;EnemyState prevBoss;string prevState;bool liftDone,kickDone;
         readonly Dictionary<Fissure,bool> prevExploded=new Dictionary<Fissure,bool>();
         public NativeDruidSoundCues(NativeFeedbackAudio audio){this.audio=audio;}
-        public void Reset(){prevBoss=null;prevState=null;liftDone=kickDone=false;prevExploded.Clear();}
+        readonly NativeSoundWire.BossCueTracker wire=new NativeSoundWire.BossCueTracker();   // R8/R9: collapse12 / collapse23 / heap loop from the boss state change
+        public NativeAmbientSources Ambient;   // owner of the heap loop (3D source)
+        static Vector3 Point(double x,double y){return new Vector3((float)x/100,-(float)y/100,0);}   // NativeGame.Point
+        // stage events that end the heap loop (ArenaLoadStart, FieldRestored); the final kill / sink start are seen by Observe
+        public void StopHeap(int tick,string source){if(wire.StopHeap()&&Ambient!=null)Ambient.StopHeap(tick,source);}
+        public void Reset(){if(wire.StopHeap()&&Ambient!=null)Ambient.StopHeap(bound!=null?bound.TickCount:0,"Reset");wire.Reset();prevBoss=null;prevState=null;liftDone=kickDone=false;prevExploded.Clear();}
         public void Dispose(){if(bound!=null)bound.BossFx-=OnFx;bound=null;}
         void OnFx(string kind,double x,double y,double r)
         {
@@ -29,6 +35,11 @@ namespace Exoduser.UnityPort
             int t=sim.TickCount,fix=DruidRemodelData.AimFixTicks;
             var boss=druid.Boss;string s=null;DruidData d=null;
             if(boss!=null&&boss.Alive&&druid.Data.TryGetValue(boss,out d))s=d.S;
+            var lifeState=boss!=null?sim.DruidLife(boss):null;
+            var step=wire.Observe(s,lifeState!=null?lifeState.Life:-1,boss==null||!boss.Alive);   // before prevState moves: previous vs now, like NativeBossView.prevBossState
+            if(step.Cue!=null&&d!=null)audio.PlayWire(step.Cue,(float)d.X,(float)d.Y,t,step.CueSource);
+            if(step.Heap==NativeSoundWire.HeapAction.Start&&d!=null&&Ambient!=null)Ambient.StartHeap(Point(d.X,d.Y),t,step.HeapSource);
+            else if(step.Heap==NativeSoundWire.HeapAction.Stop&&Ambient!=null)Ambient.StopHeap(t,step.HeapSource);
             if(boss!=prevBoss){prevBoss=boss;prevState=null;liftDone=kickDone=false;}
             if(s!=prevState){liftDone=kickDone=false;}
             if(s=="bossSlamWind"&&!liftDone&&d.St2<=fix){liftDone=true;audio.PlayDruidCue("druid_slam_lift",.5f,1,0,(float)d.X,(float)d.Y,t,0,"boss state bossSlamWind, last "+fix+" f");}

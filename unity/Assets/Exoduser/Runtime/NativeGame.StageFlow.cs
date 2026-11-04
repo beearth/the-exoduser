@@ -56,20 +56,21 @@ namespace Exoduser.UnityPort
                     case StageEventKind.BossCoreMissing:
                         WorldTextAdd(e.X, e.Y - 40, "보스전 이식 대기 — 아레나는 아직 열리지 않습니다", "Boss battle not ported yet — the arena stays closed", new Color(.78f, .7f, .55f), 2.2f); break;
                     case StageEventKind.ArenaLoadStart:
-                        sound.Reset(); break;
+                        sound.Reset(); druidCues?.StopHeap(Simulation.TickCount, "StageEvent ArenaLoadStart"); break;
                     case StageEventKind.ArenaEntered:
                         worldTexts.Clear(); WorldTextAdd(p.X, p.Y - 50, "봉인됨!", "Sealed!", new Color(.75f, .45f, .95f), 1.6f); break;
                     case StageEventKind.BossIntro:
                     {   // web: playSample(_bossSfx(stage).howl, 1.0, _r(howlP .7, .1)); the remodel's P1 entry sounds (staff taps, root pillars) come from the Core (Simulation.ScheduleDruidIntroSounds)
-                        var bossAt=flow.FindBoss();NativeBossSounds.Howl(sound,bossAt!=null?bossAt.X:p.X,bossAt!=null?bossAt.Y:p.Y);
+                        var bossAt=flow.FindBoss();NativeBossSounds.Howl(sound,bossAt!=null?bossAt.X:p.X,bossAt!=null?bossAt.Y:p.Y);sound.PlayWire(NativeSoundWire.DruidIntro,bossAt!=null?bossAt.X:p.X,bossAt!=null?bossAt.Y:p.Y,Simulation.TickCount,"StageEvent BossIntro");   // R8 druid_intro
                         break;
                     }
                     case StageEventKind.BossDefeated:
                         WorldTextAdd(p.X, p.Y - 40, "출구가 열렸다!", "The exit is open!", new Color(.5f, .85f, .55f), 2.6f); break;
                     case StageEventKind.ExitOpened:
-                        Toast(NativeDemoText.Get("보스 처치 · 출구가 열렸다",lobby.Language)); break;
+                        Toast(NativeDemoText.Get("보스 처치 · 출구가 열렸다",lobby.Language)); sound.PlayWire(NativeSoundWire.ExitOpen, e.X, e.Y, Simulation.TickCount, "StageEvent ExitOpened"); break;
                     case StageEventKind.StageCleared:
                         // 완료 보상은 아래 실제 이벤트 틱의 SP 변화로 한 번 표시한다.
+                        sound.PlayWire(NativeSoundWire.ExitEnter, p.X, p.Y, Simulation.TickCount, "StageEvent StageCleared");
                         stageClear.Show(NativeStageClearOverlay.WithAutoPotion(new NativeStageClearOverlay.Input {
                             kind = NativeStageClearOverlay.Kind.Zone, hellIndex = 0, stageIndex = Simulation.Config.StageIndex,
                             clearSeconds = flow.BossClearSeconds, totalSpawned = flow.TotalSpawned, stageKills = flow.StageKills, deaths = deathCount, bossKilled = true,
@@ -77,7 +78,7 @@ namespace Exoduser.UnityPort
                         }, Simulation.PotionState));
                         RequestCombatSave(); break;
                     case StageEventKind.FieldRestored:
-                        worldTexts.Clear(); break;
+                        worldTexts.Clear(); druidCues?.StopHeap(Simulation.TickCount, "StageEvent FieldRestored"); break;
                 }
             }
             worldTexts.RemoveAll(t => Time.unscaledTime > t.until);

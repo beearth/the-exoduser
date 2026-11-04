@@ -69,6 +69,30 @@
   - 5차 아레나 PC 캡처는 정지 화면뿐이라 이번에는 렌더 영상을 쓴다. 움직이는 캡처가 나오면 영상만 바꾼다.
 - 고르기: `http://127.0.0.1:3399/pick_r9.html`(PICKSETS `r9`). 스크립트는 `I:/EXODUSER-Storage/sound-r9-20261104/`(저장소 밖)에 있다.
 
+## 2.2 Unity 배선 — 고르면 파일만 넣는다 (2026-11-04, CTO 배정)
+
+R8·R9의 키와 시각은 Unity에 이미 연결돼 있다. 사용자가 고른 가공본을 **`unity/Assets/Exoduser/Resources/Audio/RM1/<키>.mp3`** 이름으로 넣으면 코드 수정 없이 바로 난다.
+- 우선순위: 키 이름 파일 → 대체 파일(`NativeSoundWire.Fallbacks`) → 기록만(Receipt "no file yet").
+- 시각은 Core 틱 기준이고, Core 코드·수치는 바꾸지 않았다.
+- 검사: `unity/Tools/sound-wire-tests` 43개 통과, PC 전체 컴파일 5어셈블리 오류 0. Unity 실행 소리·Receipt는 Mac 확인 전이다.
+
+| 키(파일 이름) | 고르는 카드 | 트리거 | 위치 | 시작 음량 | 파일 없을 때 |
+|---|---|---|---|---|---|
+| `amb_forest_bed` | R8 숲 바탕음 | 숲 바탕음 루프(지금 자리 그대로) | 2D | 지금 값 | `Ambient/amb_hell_forest_bed` |
+| `bio_tree_pulse` | R8 생체나무 맥동 | `NativeAmbientSources.AddBioTree(위치)`로 등록한 나무마다 3.5~4.5초 간격 | 3D 나무 | .5 | 기록만 |
+| `bio_tree_breath` | R8 생체나무 호흡 | 같은 등록 나무, 가까이에서 루프 | 3D 나무 | .4 | 기록만 |
+| `druid_intro` | R9 등장 | `StageEventKind.BossIntro` | 보스 | .8 | 기록만 |
+| `druid_collapse12` | R9 1→2 껍질 갈라짐 | 보스 상태가 `bossDruidRest`로 들어감, 목숨 1 끝 | 보스 | .7 | 기록만 |
+| `druid_collapse23` | R9 2→3 껍질 무너짐 | 같은 진입, 목숨 2 끝 | 보스 | .7 | 기록만 |
+| `druid_heap` | R9 P3 껍질 더미 | collapse23에 그 자리에서 3D 루프 시작, 최종 처치·침강·아레나 로드·필드 복귀·리셋에서 멈춤 | 3D 고정 | .35 | 기록만 |
+| `druid_boss_kill` | R8 보스 처치 | `FeedbackKind.BossDeath`(`druid_vo_last`와 겹침) | 보스 | .8 | 기록만 |
+| `druid_death_sink` | R9 침강(R8 가라앉기 후보 포함) | 침강 그림 시작(`PlaySinkHole`) | 보스 | .55 | 지금 `druid_sink` |
+| `exit_open` | R8 출구 열림 | `StageEventKind.ExitOpened` | 출구 | .6 | 기록만 |
+| `exit_enter` | R8 출구 진입 | `StageEventKind.StageCleared` | 플레이어 | .6 | 기록만 |
+
+- 아직 호출하는 곳이 없는 것: `AddBioTree`. Unity 1-1에 생체나무 오브젝트가 생기면 맵 쪽이 나무마다 이 함수를 한 번 부른다.
+- 반영 절차: 사용자가 고른 행의 가공본(`_out/sfx_forge/_r8|_r9/single/<…>.mp3`)을 위 파일 이름으로 복사한다. meta는 기존 RM1 mp3의 meta 형식을 따르고 GUID는 새로 만든다. 그다음 이 표의 "파일 없을 때" 칸을 "채택 <후보>"로 바꾼다.
+
 ## 3. 다음
 
 1. (11-04 완료) R5·R6 카드 18장에 동작 영상을 붙였다. 웹 게임의 같은 동작을 headless·무음으로 녹화했다(13클립, 실제 소리 함수 호출 시각 ±0.2초). 환경음 3장은 장소 영상이다. Q 방패 막기만 E 패링 장면으로 대신했다.

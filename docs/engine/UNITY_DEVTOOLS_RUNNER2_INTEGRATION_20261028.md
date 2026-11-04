@@ -1,5 +1,23 @@
 # Unity 실행기 runner2 통합 기록 — 2026-10-28
 
+## 2026-11-04 현행 실행기 계약
+
+Git 기준 unity/main `8ad7fa322`, 소스 `unity/Tools/devtools/exo-unity.ps1` 버전 **2026.11.04-stalldiag**. 아래 10-28~29 영수증은 당시 실행 기록이다. 설치된 공용 bin이 같은 버전인지는 이번 감사에서 확인하지 않았다.
+
+| 항목 | 현행 조건·기록 |
+|---|---|
+| 좀비 감지 | 시작≥120초, 1.5초 동안 CPU 시간 불변, -logFile 마지막 줄이 종료 단계 표시인 EXODUSER-*만. 로그 없음·느린 시작만으로는 좀비 아님 |
+| 좀비 거부 | rejected 영수증과 HALT 생성, exit2. 실행 뒤 커널 대기 의심 잔류도 HALT. 해제는 재부팅 확인 후 담당자가 판단 |
+| HALT | start/run/build/player/browser 시작 전 검사. Player 슬롯·Editor 잠금·순번·티켓·단독 검사 대기마다 다시 검사하며 대기 중 발생하면 exit3, finally에서 자기 예약·슬롯 반환 |
+| 디스크 | Player 실행 파일 드라이브 유휴율≥50%가 10초 지속될 때 시작. 최대600초 뒤 경고 후 진행. diskAtStart에 유휴·대기열·대기 시간·timedOut 기록 |
+| 슬롯·메모리 | Editor1, Player2. 최소 커밋 여유 Editor6GB/BuildLoop8GB/Player10GB. BuildLoop 단독 검사 동안 새 Player·Editor는 대기 |
+| 사용자 게임 | explorer.exe가 부모인 사용자 EXODUSER*가 있으면 deferred=user-game, exit3. 사용자 프로세스는 종료하지 않음 |
+| 정지 진단 | 시간 초과 kill 전 스레드 대기·GameInput 서비스/프로세스·로그 끝, kill 후15초 내 종료 여부와 잔류 상태를 stall에 기록 |
+| 빌드 진단 옵션 | `PortVerification.Build -gamepadBackend xinput`은 해당 빌드만 XInput으로 A/B. 프로젝트 설정의 영구 변경이나 원인 확정이 아님 |
+
+자세한 조건은 [devtools README](../../unity/Tools/devtools/README.md). PC는 컴파일까지, Player는 CLAUDE.md의 승인 예외만 허용한다. 이번 작업은 실행기 수정·설치·재부팅·Player 실행·기존 예약 변경을 하지 않았다.
+
+
 ## 변경 계약
 
 | 항목 | 통합 값 | 적용 위치 |

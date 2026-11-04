@@ -140,6 +140,8 @@ namespace Exoduser.UnityPort
             gameObject.AddComponent<NativeUiSounds>().Initialize(sound,()=>lobby!=null&&lobby.IsBlocking?lobby.UiAudioAllowed:gameFocused,()=>lobby!=null&&lobby.IsBlocking);
             music=new NativeGameMusic(transform,sound.Bus);ambient=new NativeAmbientSources(transform,sound.Bus);   // RM-1 sound: BGM bus, forest bed, 3D environment sources
             sound.ListenerAt=ambient.ListenerAt=()=>Simulation!=null?Point(Simulation.Player.X,Simulation.Player.Y):Vector3.zero;   // the AudioListener sits on the player
+            ambient.Log=sound.AddLine;ambient.TickNow=()=>Simulation!=null?Simulation.TickCount:0;druidCues.Ambient=ambient;   // R8/R9: Receipt lines of the loops, heap owner
+            music.Report=(key,source,volume,note)=>sound.AddLine(Simulation!=null?Simulation.TickCount:0,key,source,"Ambience",volume,note);
             sound.OnScreen=world=>{var v=view.WorldToViewportPoint(world);return v.x>-.05f&&v.x<1.05f&&v.y>-.05f&&v.y<1.05f;};
             ResetRun();
             worldMask=view.cullingMask;lobby=gameObject.AddComponent<NativeLobby>();
