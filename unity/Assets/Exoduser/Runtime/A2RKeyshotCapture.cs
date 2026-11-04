@@ -90,7 +90,7 @@ namespace Exoduser.UnityPort
         {
             var p=Simulation.Player;if(p.Hp<=0||p.State=="fallen"||p.State=="dead")throw new InvalidOperationException("Natural route player died; no invulnerability fixture used");
             float angle=facing*Mathf.Deg2Rad;
-            StepInput(move.x,move.y,p.X+Mathf.Cos(angle)*300,p.Y+Mathf.Sin(angle)*300,true,false);
+            StepInput(move.x,move.y,p.X+Mathf.Cos(angle)*300,p.Y+Mathf.Sin(angle)*300,false,false);
         }
         A2RKeyshotBox KeyshotProject(Bounds bounds,int enemyId=0)
         {
