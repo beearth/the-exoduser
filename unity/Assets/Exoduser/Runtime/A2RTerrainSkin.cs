@@ -23,12 +23,12 @@ namespace Exoduser.UnityPort
         // Source mask: R roughness, G AO. Unity mask map: R metallic, G AO, B height, A smoothness.
         static Texture2D RepackMask(Texture2D src)
         {
-            if(src==null)return null;var p=src.GetPixels32();for(int i=0;i<p.Length;i++){var c=p[i];p[i]=new Color32(0,c.g,128,(byte)(255-c.r));}
+            if(src==null)return null;var p=src.GetPixels32();for(int i=0;i<p.Length;i++){var c=p[i];p[i]=new Color32(0,c.g,128,(byte)Mathf.Min(14,255-c.r));}
             var t=new Texture2D(src.width,src.height,TextureFormat.RGBA32,true,true){name=src.name+" unity mask",wrapMode=TextureWrapMode.Repeat,filterMode=FilterMode.Trilinear,anisoLevel=8};t.SetPixels32(p);t.Apply(true,false);UnityEngine.Object.Destroy(src);return t;
         }
         static TerrainLayer Layer(string name,Texture2D albedo,Texture2D normal,Texture2D mask,Vector2 tile,float normalScale)
         {
-            var l=new TerrainLayer{name=name,diffuseTexture=albedo,normalMapTexture=normal,maskMapTexture=mask,tileSize=tile,tileOffset=Vector2.zero,normalScale=normalScale,smoothness=.25f,metallic=0};return l;
+            var l=new TerrainLayer{name=name,diffuseTexture=albedo,normalMapTexture=normal,maskMapTexture=mask,tileSize=tile,tileOffset=Vector2.zero,normalScale=normalScale,smoothness=.05f,metallic=0};return l;
         }
         // Distance (m) to the nearest blocked cell on a coarse grid; lane centre = far from every blocker.
         static float[] Dist(float x0,float z0,float w,float h,Func<float,float,bool> open,out int n)
@@ -55,8 +55,8 @@ namespace Exoduser.UnityPort
             for(int y=0;y<H;y++){float v=(y+.5f)/H;float wz=z0+v*h;for(int x=0;x<W;x++){float u=(x+.5f)/W;float wx=x0+u*w;
                 float l=Mathf.SmoothStep(0,1,Mathf.InverseLerp(.8f,6f,Sample(laneD,ln,u,v)));float m=1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(.15f,1.8f,Sample(waterD,wn,u,v)));
                 float dx=wx-camp.x,dz=wz-camp.z;float pool=Mathf.Clamp01(1-(dx*dx+dz*dz)/(10f*10f));
-                var c=px[y*W+x];float lum=c.r*.2126f+c.g*.7152f+c.b*.0722f;float k=Mathf.Clamp(.35f+.45f*l+.25f*pool,0,.9f);float dim=(1-.15f*l)*(1-.45f*pool);
-                float r=Mathf.Lerp(c.r,lum*1.02f,k)*dim,g=Mathf.Lerp(c.g,lum*.98f,k)*dim,b=Mathf.Lerp(c.b,lum*.98f,k)*dim;
+                var c=px[y*W+x];float lum=c.r*.2126f+c.g*.7152f+c.b*.0722f;float k=Mathf.Clamp(.55f+.32f*l+.2f*pool,0,.92f);float dim=(1-.18f*l)*(1-.45f*pool)*.94f;
+                float r=Mathf.Lerp(c.r,lum*1.04f,k)*dim,g=Mathf.Lerp(c.g,lum*.95f,k)*dim*Mathf.Lerp(.95f,1,l),b=Mathf.Lerp(c.b,lum*.88f,k)*dim*Mathf.Lerp(.82f,1,l);
                 float mk=m*.8f;r=Mathf.Lerp(r,34+lum*.25f,mk);g=Mathf.Lerp(g,19+lum*.15f,mk);b=Mathf.Lerp(b,16+lum*.12f,mk);
                 px[y*W+x]=new Color32((byte)Mathf.Clamp(r,0,255),(byte)Mathf.Clamp(g,0,255),(byte)Mathf.Clamp(b,0,255),255);}}
             macro.SetPixels32(px);macro.wrapMode=TextureWrapMode.Clamp;macro.Apply(true,false);
