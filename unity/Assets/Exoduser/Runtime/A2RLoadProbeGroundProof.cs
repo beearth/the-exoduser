@@ -29,7 +29,10 @@ namespace Exoduser.UnityPort
             public List<Frame> frames=new List<Frame>();
         }
         readonly List<Pair> pairs=new List<Pair>();readonly Receipt receipt=new Receipt();
-        string output;
+        [Serializable] sealed class SmokeResult {public bool passed;}
+        string output,smoke;bool quitRequested,done;
+        void Awake(){Application.wantsToQuit+=HoldUntilCapture;}
+        bool HoldUntilCapture(){if(done||string.IsNullOrEmpty(smoke)||!File.Exists(Path.Combine(smoke,"05-camp-3840.png")))return true;quitRequested=true;return false;}
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Boot()
         {
@@ -40,7 +43,7 @@ namespace Exoduser.UnityPort
         {
             var args=Environment.GetCommandLineArgs();int at=Array.IndexOf(args,"-output");
             if(at<0)throw new InvalidOperationException("Ground proof requires smoke -output path");
-            string smoke=args[at+1];output=Path.Combine(NativeQaSandbox.Root,"ground-pixel-proof");Directory.CreateDirectory(output);
+            smoke=args[at+1];output=Path.Combine(NativeQaSandbox.Root,"ground-pixel-proof");Directory.CreateDirectory(output);
             foreach(string scene in new[]{"02-field-entry","05-camp-3840"})
             {
                 float deadline=Time.realtimeSinceStartup+600;
@@ -50,10 +53,14 @@ namespace Exoduser.UnityPort
                 var field=typeof(NativeGame).GetField("r3Cam",BindingFlags.Instance|BindingFlags.NonPublic);
                 var camera=field!=null?field.GetValue(game) as Camera:null;
                 if(camera==null)throw new InvalidOperationException("Ground proof game-camera contract changed");
-                if(pairs.Count==0)PreparePairs();
-                Capture(camera,scene);yield return null;
+                Exception failure=null;
+                try{if(pairs.Count==0)PreparePairs();Capture(camera,scene);}catch(Exception error){failure=error;}
+                if(failure!=null){done=true;Application.wantsToQuit-=HoldUntilCapture;Debug.LogError("A2R_GROUND_PIXEL_PROOF_FAILED "+failure);Application.Quit(3);yield break;}
+                yield return null;
             }
             Debug.Log("A2R_GROUND_PIXEL_PROOF_DONE frames="+receipt.frames.Count+" changedPixels="+TotalChanges());
+            done=true;Application.wantsToQuit-=HoldUntilCapture;
+            if(quitRequested){var result=JsonUtility.FromJson<SmokeResult>(File.ReadAllText(Path.Combine(smoke,"play-smoke.json")));Application.Quit(result.passed&&TotalChanges()==0?0:3);}
             Destroy(gameObject);
         }
         int TotalChanges(){int total=0;foreach(var frame in receipt.frames)total+=frame.changedPixels;return total;}
@@ -127,6 +134,7 @@ namespace Exoduser.UnityPort
         }
         void OnDestroy()
         {
+            Application.wantsToQuit-=HoldUntilCapture;
             foreach(var pair in pairs)
             {
                 if(pair.renderer!=null)pair.renderer.sharedMaterial=pair.live;
