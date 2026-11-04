@@ -58176,3 +58176,4 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 - 번역 가이드 용어표·전체목록 No.4274~4287/4108~4109 상태·STY-24 후속·[검사 및 넘침 위험](16번역·로컬라이제이션/STY24_I18N_AUDIT_20261104.md)을 동기화했다. 목록 CRLF 보존.
 - 문자열 검사 범위이며 Mac 실게임·넘침·RTL/글리프·원어민 감수는 미확인. No.3106/character_ui.json은 범위 밖으로 보존했다.
 2026-11-04 L11 크래시 P1 수정(표현 코드만, Core·수치 무변경, 컴파일 미확인): R11 CombatImpactView 피격 클립 sprite==null NRE(생성 직후 enabled=false + DrawEnemyHits sprite 가드), R12 NativeGame.PauseFocus 사망 결정 화면 포커스 상실 시 메뉴 전환 차단, R13 NativeEnemyRigRenderer 65·68행 SyncActor try/catch 가드. UNITY_RUN_EXCEPTION_AUDIT R11~R13, 상세 worklog/cloud-lanes/L11-crash-p1_20261104.md
+2026-11-05 가리는 물체 통째 반투명·사망 글자 정리(claude/unity-tree-fade-20261105, 표현만, Core 무변경): 가림 투명화가 후보 브랜치에만 있어 unity/main에 없었다. A2SightFade를 새로 넣어 영웅과 카메라 사이의 3D 물체를 alpha .3로 처리한다(나무에 붙은 작은 장식 포함, 바닥·물·다리·납작한 메시 제외, 디더링 0). 사망 대기의 "죽음·부활력" 글자와 게이지를 끄고 글자 화면은 "안식은 없다" 하나만 둔다. 부활 판정·대기 시간은 그대로다. 검사 --unity-a2-sight-check 4장, M1 23/23.

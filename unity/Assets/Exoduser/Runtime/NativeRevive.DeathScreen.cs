@@ -20,6 +20,8 @@ namespace Exoduser.UnityPort
         const float ImpactHold=.4f,FilterRamp=1.2f,ReviveFade=.5f,DeadTextFade=.35f,TitleDelay=.5f,TitleFade=1f,InfoDelay=1f,InfoFade=.8f;
         const float TargetSaturation=.15f,TargetBrightness=.55f;
         const float RingDiameter=92f;
+        // 2026-11-05 사용자 결정: 사망 화면은 "안식은 없다" 하나만 보인다. 쓰러짐 대기의 판정(Core)과 감광은 그대로 두고 글자·게이지만 끈다.
+        const bool ShowFallenTexts=false;
         public string LocaleCode="ko";
         // 캡처 고정 시각: ForcedAge = 쓰러진 뒤 경과 초, ForcedReviveAge = 부활 페이드 경과 초.
         public float? ForcedAge,ForcedReviveAge;
@@ -138,7 +140,7 @@ namespace Exoduser.UnityPort
                 if(t<=.002f)return;
                 // No IMGUI colour band after the full-frame camera desaturation.
                 GUI.color=Color.white;GUI.matrix=NativeUiViewport.Matrix;
-                DrawDeathTexts(now,t,info);
+                if(ShowFallenTexts)DrawDeathTexts(now,t,info);
             }
             finally{GUI.matrix=oldMatrix;GUI.color=oldColor;}
         }
