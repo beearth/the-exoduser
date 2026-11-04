@@ -90,6 +90,11 @@ static class Program
     foreach(var e in entries.EnumerateArray())if(e.GetProperty("key").GetString()=="bgm.values")values=e.GetProperty("texts")[en].GetString().Split('\u0001');
     Check(values!=null&&values.Length==73,"P30 menu list has 73 values");
     for(int i=0;i<NativeBgmSelection.SupportedCount;i++)Check(values.Contains(NativeBgmSelection.SupportedAt(i)),"P30 supported value is in the menu list: "+NativeBgmSelection.SupportedAt(i));
+    // The menu lists only supported values, in web order; a saved unsupported value is shown as auto (NativeBgmSelection.Effective) and never rewritten.
+    var listed=values.Where(NativeBgmSelection.IsSupported).ToArray();Check(listed.Length==NativeBgmSelection.SupportedCount,"P30 menu shows exactly the supported values");
+    Check(listed.SequenceEqual(new[]{"auto","lobby","hell1","boss","death","victory"}),"P30 listed values keep the web order");
+    Check(NativeBgmSelection.Effective("hell2")=="auto"&&NativeBgmSelection.Effective("hell1")=="hell1","P30 a saved value outside the list is displayed as auto");
+    {var o=new NativeOptionSet();o.BgmTrack="hell3";o.Decode("{\"shake\":40}");Check(o.BgmTrack=="hell3","P30 reading settings keeps an unsupported saved track untouched");Check(o.Encode().Contains("\"bgmTrack\":\"hell3\""),"P30 the saved file value is not overwritten by displaying it as auto");}
     var fallback=values.Where(v=>!NativeBgmSelection.IsSupported(v)).ToArray();Check(fallback.Length==73-NativeBgmSelection.SupportedCount,"P30 every other value is a fallback");
     File.WriteAllText(Path.Combine(root,"bgm-fallback-values.txt"),string.Join("\n",fallback)+"\n");
     foreach(string a15 in new[]{"n.optReduceMotion","m.presetSaved","m.presetLoaded","m.presetEmpty","m.presetFail"}){bool found=false;foreach(var e in entries.EnumerateArray())if(e.GetProperty("key").GetString()==a15){found=true;Check(e.GetProperty("texts").GetArrayLength()==29&&e.GetProperty("texts").EnumerateArray().All(t=>t.GetString().Length>0),"labels: 29 non-empty texts for "+a15);if(a15!="n.optReduceMotion"&&a15!="m.presetFail")Check(e.GetProperty("texts").EnumerateArray().All(t=>t.GetString().Contains("{0}")),"labels: slot placeholder in "+a15);}Check(found,"labels: entry exists "+a15);}

@@ -28,6 +28,7 @@ ok(/if\(key=="preset"\)ApplySettingsLanguage\(\)/.test(options),'P02/P34 a loade
 // P30
 ok(/NativeBgmSelection\.Resolve\(key,track\)/.test(game)&&/music\.Sync\(key,audio\)/.test(game),'P30 the selected track reaches the music host');
 ok(/public void Sync\(string key, string audioKey\)/.test(music)&&/bus\.Snapshot\(key == "boss"\)/.test(music)&&/bedWanted = key == "hell1"/.test(music),'P30 beds and boss snapshot still follow the stage key');
+ok(/if\(!NativeBgmSelection\.IsSupported\(v\[i\]\)\)continue;/.test(menu)&&/string shown=NativeBgmSelection\.Effective\(settings\.Options\.BgmTrack\)/.test(menu),'P30 the menu lists only supported songs and shows an unsupported saved value as auto');
 ok(/settingsBgmPreview=true/.test(options)&&/else if\(key\.Length==0&&settingsBgmPreview/.test(game),'P30 a newly chosen song is heard while the pause window is open');
 // P34
 ok(/NativeSettingsPreset\.Encode\(settings,NativeKeyBindInput\.Bindings\)/.test(menu)&&/NativeSettingsPreset\.Apply\(settings\.Presets\[slot\]/.test(menu),'P34 slots go through NativeSettingsPreset (keys + language)');

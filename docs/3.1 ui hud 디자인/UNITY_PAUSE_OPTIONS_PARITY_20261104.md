@@ -348,7 +348,7 @@ END
 | 1 | P13 | 적용 | `NativeGame.SettingsPersistence.cs` `InitializeNativeSettings` | 새 설정 FPS 기본 = `NativeSettingsState` 선언 기본 0(무제한), 웹 OPT.fpsCap 0과 같다. 저장 파일이 있으면 저장 캡이 그대로 우선. 패치 01은 이 한 줄이다 |
 | 2 | P37 | 적용(패치 02 + 탭 전환) | `NativePauseMenu.A15Web.cs` `OpenSettingsDirect`·탭 클릭, `NativePauseMenu.Keyboard.cs` | 재진입마다 4탭 스크롤 0. 웹처럼 탭을 바꿀 때도 맨 위(패치 02에는 없던 부분) |
 | 3 | P02 | 적용 | `NativeOptionSet.Lang`(opt extra의 `lang`), `NativeGame.SettingsPersistence.cs` | 아래 "언어 우선순위" 참고 |
-| 4 | P30 | 부분 적용 | `Core/NativeBgmSelection.cs`, `NativeGame.cs` `UpdateGameMusic`, `NativeGameMusic.Sync(key,audio)` | 곡이 있는 6값만 실제 재생(아래), 나머지 67값은 자동으로 떨어진다 |
+| 4 | P30 | 적용(재생되는 곡만 목록에 표시) | `Core/NativeBgmSelection.cs`, `NativeGame.cs` `UpdateGameMusic`, `NativeGameMusic.Sync(key,audio)` | 목록에는 실제 재생되는 6값만 보인다(아래). 나머지 67값은 목록에서 숨기고, 저장된 값이 그 안에 있으면 자동으로 표시한다 |
 | 5 | P01 | 적용 | 게임 탭 옵션 격자 첫 행 | 웹 순서(움직임 줄이기 → 난이도 …). 기존 `NativeOptionSet.ReduceMotion`에 연결·저장, 화면 전환이 이미 이 값을 읽는다 |
 | 6 | P42 | 적용 | `Core/NativeKeyFocus.cs`, `NativeKeyBindList.FocusStop`, `A15KeyStop` | 아래 "키보드 초점 순서". 패드 재지정(P43)은 범위 밖 |
 | 7 | P33 | 표시만 적용 | `CharacterRoster.PlayableVisualIndex` → `pauseMenu.CharacterIndex` | 클릭은 막은 채 둔다(아래) |
@@ -365,9 +365,9 @@ END
 | 구분 | 값 | 동작 |
 |---|---|---|
 | 재생됨(6) | `auto`, `lobby`(Audio/Lobby/lobby), `hell1`, `boss`(드루이드 보스곡), `death`, `victory` | 실제 곡 |
-| 자동으로 떨어짐(67) | `allRandom`, `hell2`~`hell4`, `finalboss`, `forge`와 `t:` 곡 전부 | 선택은 저장되고 표시되지만 소리는 자동(스테이지 곡). 곡 자원이 Unity에 없다 |
+| 목록에서 숨김(67) | `allRandom`, `hell2`~`hell4`, `finalboss`, `forge`와 `t:` 곡 전부 | 곡 자원이 Unity에 없어 "눌러도 안 되는 설정"이 되므로 보여 주지 않는다. 저장 파일에 이 값이 있으면 화면에는 자동으로 보이고 소리도 자동(스테이지 곡)이지만, 저장 값은 덮어쓰지 않고 사용자가 곡을 고를 때만 바뀐다 |
 
-값 목록은 테스트가 `bgm-fallback-values.txt`로 뽑는다(이번 실행 위치: `I:/EXODUSER-Storage/codex-takeover/options-wave1/dotnet-out/`). 곡을 Unity에 넣으면 `NativeBgmSelection`의 지원 목록에 값만 추가한다.
+값 목록은 테스트가 `bgm-fallback-values.txt`로 뽑는다(이번 실행 위치: `I:/EXODUSER-Storage/codex-takeover/options-wave1/dotnet-out/`). 목록은 `NativeBgmSelection` 지원 목록에서 만들어지며(웹 순서 유지), 곡을 Unity에 넣고 지원 목록에 값을 추가하기만 하면 메뉴에 다시 나타난다.
 
 ### 키보드 초점 순서 (P42)
 
@@ -393,7 +393,7 @@ Unity는 첫 번째 모습(엑소듀서 전사)만 열려 있고(`CharacterRoste
 | 항목 | 결과 |
 |---|---|
 | 참조 컴파일 `assembly-compile-check.cjs` | 5개 어셈블리 모두 오류 0 (첫 실행은 내 주석이 한 줄 코드를 삼킨 오류 4건 → 원인 수정 뒤 1회 통과) |
-| `options-wave1`(새, `run.cjs`) | 소스 연결 27 + Core 계약 96 PASS (FPS 기본·옛 파일, 언어 저장 왕복·옛 파일·우선순위, 움직임 줄이기 저장, 프리셋 키·언어·옛 슬롯·빈 슬롯·깨진 슬롯·키 맞바꿈·파일 크기, BGM 규칙·목록 67값, 키 초점 43칸을 실제 `PauseNavigation`으로 순회, 라벨 29언어) |
+| `options-wave1`(새, `run.cjs`) | 소스 연결 28 + Core 계약 101 PASS (FPS 기본·옛 파일, 언어 저장 왕복·옛 파일·우선순위, 움직임 줄이기 저장, 프리셋 키·언어·옛 슬롯·빈 슬롯·깨진 슬롯·키 맞바꿈·파일 크기, BGM 규칙·목록 노출 6값·숨김 67값·저장 값 보존, 키 초점 43칸을 실제 `PauseNavigation`으로 순회, 라벨 29언어) |
 | `settings-persistence` | all 91 / write 3 / read 2 PASS |
 | `pause-navigation` | 52/52 PASS |
 | `keybind-parity` | 1346검사 0실패 |
