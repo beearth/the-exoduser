@@ -39,10 +39,12 @@ namespace Exoduser.UnityPort
             foreach(var filter in root.GetComponentsInChildren<MeshFilter>())
             {
                 var mesh=filter.sharedMesh;if(!mesh.isReadable)continue;var vertices=mesh.vertices;var normals=mesh.normals;
+                if(normals.Length!=vertices.Length)continue;
+                filter.transform.TransformPoints(vertices);filter.transform.TransformDirections(normals);
                 for(int i=0;i<vertices.Length;i++)
                 {
-                    if(normals.Length!=vertices.Length||filter.transform.TransformDirection(normals[i]).y<.25f)continue;
-                    var point=filter.transform.TransformPoint(vertices[i]);float dx=point.x-desired.x,dz=point.z-desired.z,score=dx*dx+dz*dz-.05f*point.y;
+                    if(normals[i].y<.25f)continue;
+                    var point=vertices[i];float dx=point.x-desired.x,dz=point.z-desired.z,score=dx*dx+dz*dz-.05f*point.y;
                     if(score>=best)continue;best=score;hit=point;
                 }
             }

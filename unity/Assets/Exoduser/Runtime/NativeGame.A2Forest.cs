@@ -183,6 +183,8 @@ namespace Exoduser.UnityPort
         }
         GameObject A2Module(string id,float x,float z,float sx,float sy,float sz,float yaw,float lift=0,bool registerSurface=true)
         {
+            using(A2FieldSample("모듈 전체"))
+            {
             string source=id;float units=1;
             if(id=="Ancient_Rotten_Tree"){source=Mathf.Sin(x*7.13f+z*3.17f)>0?"Ancient_Tree_B":"Ancient_Tree_A";units=.45f;}
             else if(id=="Rotten_Wood_Bridge")units=.75f;
@@ -193,7 +195,9 @@ namespace Exoduser.UnityPort
             bool stump=id=="Scanned_Stump";
             bool hollow=id=="Hollow_Loft_Tree";
             bool foreground=id=="Scanned_Foreground_Log";
+            long loadStart=System.Diagnostics.Stopwatch.GetTimestamp();
             var prefab=Resources.Load<GameObject>(foreground?"Art/map/a2/foreground/Models/A2_Scanned_Foreground_Log":hollow?"Art/map/a2/hollow/Models/A2_Hollow_Loft_Tree":stump?"Art/map/a2/stump/Models/A2_Scanned_Stump":roots?"Art/map/a2/roots/Models/A2_"+id:id=="Foam_Bank"?"Art/map/a2/Models/RF_Foam_Bank":"Art/map/a2/r3/Models/RF3_"+source);
+            A2FieldCostRecord("모듈 리소스",System.Diagnostics.Stopwatch.GetTimestamp()-loadStart);
             if(prefab==null){Debug.LogError("[A2] 모듈 누락 "+id);return null;}
             float placementGround=NativeRemodel3D.GroundY(x,z);
             float height=placementGround+lift+(id=="Dead_Leaf_Litter"?.01f:-.08f);
@@ -206,21 +210,26 @@ namespace Exoduser.UnityPort
                 if(id=="Root_Stump")height=A2ForestLayout.WaterLevel+.1f+lift;
                 if(id.StartsWith("Moss_Rock_",StringComparison.Ordinal))height=-1.5f+lift*.3f;
             }
+            long cloneStart=System.Diagnostics.Stopwatch.GetTimestamp();
             var go=Instantiate(prefab,a2Root.transform);go.name="A2_"+id;
             go.transform.SetPositionAndRotation(new Vector3(x,height,z),Quaternion.Euler(0,yaw,0));
             go.transform.localScale=new Vector3(sx,sy,sz)*units;
+            A2FieldCostRecord("모듈 복제",System.Diagnostics.Stopwatch.GetTimestamp()-cloneStart);
+            long deformStart=System.Diagnostics.Stopwatch.GetTimestamp();
             if(roots||stump||hollow||id=="Dead_Leaf_Litter"||foreground&&a2Field!=null)foreach(var mf in go.GetComponentsInChildren<MeshFilter>())
             {
                 if(!mf.sharedMesh.isReadable){if(a2UnreadableMeshes.Add(id))Debug.LogError("[A2] 지면 접합 정점읽기 누락. 원본 메시 유지: "+id);continue;}
                 var mesh=Instantiate(mf.sharedMesh);var points=mesh.vertices;
-                for(int i=0;i<points.Length;i++){var p=mf.transform.TransformPoint(points[i]);float groundY=a2Field==null&&A2ForestLayout.Water(p.x,p.z)&&!A2ForestLayout.Island(p.x,p.z)?A2ForestLayout.WaterLevel-.18f:NativeRemodel3D.GroundY(p.x,p.z);float weight=hollow?1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(1,3,p.y-height)):1;p.y+=(groundY-placementGround)*weight;
+                mf.transform.TransformPoints(points);
+                for(int i=0;i<points.Length;i++){var p=points[i];float groundY=a2Field==null&&A2ForestLayout.Water(p.x,p.z)&&!A2ForestLayout.Island(p.x,p.z)?A2ForestLayout.WaterLevel-.18f:NativeRemodel3D.GroundY(p.x,p.z);float weight=hollow?1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(1,3,p.y-height)):1;p.y+=(groundY-placementGround)*weight;
                     if(hollow&&a2Field!=null)
                     {
                         float bed=a2Field.TerrainHeight(p.x,p.z),above=p.y-bed,fx,fz;
                         if(above>.18f&&above<4&&a2Field.FitTreePoint(p.x,p.z,x,z,out fx,out fz))
                         {p.y+=a2Field.TerrainHeight(fx,fz)-bed;p.x=fx;p.z=fz;}
                     }
-                    points[i]=mf.transform.InverseTransformPoint(p);}
+                    points[i]=p;}
+                mf.transform.InverseTransformPoints(points);
                 mesh.vertices=points;mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();mf.sharedMesh=mesh;
             }
             if(id=="Rotten_Wood_Bridge"&&a2Field!=null)
@@ -229,13 +238,16 @@ namespace Exoduser.UnityPort
                 {
                     if(!mf.sharedMesh.isReadable){Debug.LogError("[A2 목교] 지지목 읽기 누락");continue;}
                     var mesh=Instantiate(mf.sharedMesh);var vertices=mesh.vertices;var xyz=new float[vertices.Length*3];
-                    for(int i=0;i<vertices.Length;i++){var p=mf.transform.TransformPoint(vertices[i]);xyz[i*3]=p.x;xyz[i*3+1]=p.y;xyz[i*3+2]=p.z;}
+                    mf.transform.TransformPoints(vertices);
+                    for(int i=0;i<vertices.Length;i++){var p=vertices[i];xyz[i*3]=p.x;xyz[i*3+1]=p.y;xyz[i*3+2]=p.z;}
                     int changed=a2Field.ExtendBridgeSupports(xyz,mesh.triangles);
-                    for(int i=0;i<vertices.Length;i++)vertices[i]=mf.transform.InverseTransformPoint(new Vector3(xyz[i*3],xyz[i*3+1],xyz[i*3+2]));
+                    for(int i=0;i<vertices.Length;i++)vertices[i]=new Vector3(xyz[i*3],xyz[i*3+1],xyz[i*3+2]);
+                    mf.transform.InverseTransformPoints(vertices);
                     mesh.vertices=vertices;mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();mf.sharedMesh=mesh;
                     Debug.Log("[A2 목교] 실제 강바닥 지지목 연장 "+changed+"개/상판·난간·원본충돌 불변");
                 }
             }
+            A2FieldCostRecord("모듈 변형·법선",System.Diagnostics.Stopwatch.GetTimestamp()-deformStart);
             foreach(var r in go.GetComponentsInChildren<MeshRenderer>())
             {
                 r.shadowCastingMode=id=="Forest_Vista_Card"||id=="Hanging_Moss"?ShadowCastingMode.Off:ShadowCastingMode.On;r.receiveShadows=true;
@@ -254,6 +266,7 @@ namespace Exoduser.UnityPort
             if(registerSurface&&a2Field!=null&&(roots||stump||hollow||id=="Fallen_Log"||id=="Rotten_Wood_Bridge"))A2FieldRegister(go,id=="Rotten_Wood_Bridge");
             if(id=="Withered_Shrub"){if(A2RRequested&&A2RProps3D.TerrainEnabled&&A2RProps3D.InTerrainField(x,z))go.SetActive(false);else A2Bramble(go,x,z);}
             return go;
+            }
         }
         void A2RootedTree(float x,float z,float sx,float sy,float sz,float yaw)
         {

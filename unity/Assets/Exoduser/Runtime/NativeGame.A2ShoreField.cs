@@ -29,7 +29,8 @@ namespace Exoduser.UnityPort
         void A2FullFieldShore()
         {
             const int n=1024;const float size=A2FieldLayout.GroundMaxX-A2FieldLayout.GroundMinX,step=size/n;var distance=new float[n*n];
-            for(int y=0;y<n;y++)for(int x=0;x<n;x++)distance[y*n+x]=a2Field.Water(A2FieldLayout.GroundMinX+(x+.5f)*step,A2FieldLayout.GroundMinZ+(y+.5f)*step)?10000:0;
+            // Only classification is parallel; the dependent distance sweeps stay in their original order.
+            using(A2FieldSample("물가 분류1024²"))System.Threading.Tasks.Parallel.For(0,n,a2FieldWorkers,y=>{for(int x=0;x<n;x++)distance[y*n+x]=a2Field.Water(A2FieldLayout.GroundMinX+(x+.5f)*step,A2FieldLayout.GroundMinZ+(y+.5f)*step)?10000:0;});
             for(int pass=0;pass<2;pass++)
             {
                 int begin=pass==0?0:n-1,end=pass==0?n:-1,dir=pass==0?1:-1;

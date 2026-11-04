@@ -1,3 +1,12 @@
+## 2026-11-04 A2Field 조립 비용 분해·정점 일괄 변환 (map-fieldbuild)
+
+- 기준 `2c6700fb9654c0df680b6793f0ea8f86a0dade08`, 브랜치 `codex/unity-map-fieldbuild-20261104`. G0 목표는 기존 1-1 구도·Core·34° 카메라·끄기 인자를 유지하면서 A2Field 조립 합계를 단독 Player에서 1.5초 이하로 낮추는 것이다. BRIEF의 기존 외곽 약 3.1초·랜드마크 1.9초·지면 1.1초는 전달받은 값이며 이번 레인의 재측정값과 구분한다.
+- G1: 배치도·원본 XY·메시 분할·재질·조명 변경 없이, 기존 각 단계 안의 모듈 리소스/복제/변형·법선/높이 표면 래스터/스킬 접지/수피 부착의 누적 ms와 호출 수를 기록한다. 기존 `[A2 전체필드]`·`A2RStage.Mark` 단계는 유지한다. 세부값은 중첩을 포함하므로 더해서 단계 합계로 쓰지 않는다.
+- 정점 변환은 Unity 6의 `TransformPoints/InverseTransformPoints/TransformDirections`로 일괄 처리한다. 수피의 세 부착점은 같은 월드 정점·방향을 재사용한다. 거리장 200²·이끼 256²·지면 741²·물가 분류 1024²는 최대 4작업이며, Unity 오브젝트/메시/텍스처 접근과 물가 거리 전파는 원래 메인 스레드·순서를 유지한다. 전환 코루틴·대기 시간·Core 수치/판정 경로는 고치지 않았다.
+- 참조 컴파일: Runtime 301개·Editor 68개, 오류 0. 순수 .NET 검사는 지면 높이 549,081개 비트 동일·물가 분류 1,048,576개 동일·원본 맵 불변. 지면 높이만 67.293→35.313ms, 물가 분류만 155.628→30.101ms였으며 Unity/Player 시간으로 해석하지 않는다.
+- 에셋 검사 도구 `A2FieldBakeProbe.Measure`: 비활성 NativeGame 호스트에서 Awake·시뮬레이션·Player 없이 단계별 조립을 비교한다. 최적화 전 참조 DLL은 `-fieldbuild-baseline-assembly`로 지정하고, 실제 메시 채널과 25,921개 표시 높이를 대조한다. 이 검사에서는 횃불 애니메이션을 초기화하지 않으며, 이후 측정은 리소스 캐시가 데워진 조건이다. Player·픽셀 차·재질·먼 적·끄기 인자를 검증한 것으로 쓰지 않는다.
+- 현재 단계: `PERFORMANCE_UNVERIFIED / VISUAL_UNVERIFIED`. 공용 실행기 단독 Player 종료와 앞선 Editor 순번을 기다린다. 단독 Player 단계 ms, 같은 빌드의 02-field-entry/캠프 3840 1x 전후, 픽셀 차, 먼 적, 끄기 인자, Mac 판정이 남았다. 구운 에셋 채택·바로가기·실행본·병합은 아직 없다. 상세 진행 보고: `I:/EXODUSER-Storage/codex-takeover/map-fieldbuild/REPORT.md`.
+
 
 
 ## 2026-11-04 D2 바람·맥동 레인 (map-wind)
