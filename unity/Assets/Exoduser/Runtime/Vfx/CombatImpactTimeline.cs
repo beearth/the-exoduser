@@ -54,7 +54,7 @@ namespace Exoduser.UnityPort.Vfx
             if(Mode==CombatClipMode.Blood)return Math.Min(.8,Math.Max(0,(Life-(age-Delay))/Math.Max(1,Life-6)))*Opacity;
             if(Mode==CombatClipMode.Boom)return (1-p*.5)*Opacity;
             if(Mode==CombatClipMode.Core)return CombatHitLook.CoreAlpha(age-Delay)*Opacity;
-            if(Mode==CombatClipMode.Impact)return (1-p)*(Scale==2.5?.62:.45);
+            if(Mode==CombatClipMode.Impact)return Width>0?(1-p)*CombatHitLook.BodyAlpha:(1-p)*(Scale==2.5?.62:.45);
             if(Mode==CombatClipMode.Electric)return (f<5?1:1-(f-5)/4.0*.9)*.45;
             if(Mode==CombatClipMode.SlashBurst)return .45;
             if(Mode==CombatClipMode.Death)return Math.Min(1,1.5*(1-p*.3));
@@ -99,7 +99,7 @@ namespace Exoduser.UnityPort.Vfx
                 // overlay, no lightning burst sheet; sparks are drawn by CombatImpactView from CombatHitLook.Sparks.
                 int tier=CombatHitLook.Tier(e);
                 result.Add(new CombatClip{Sheet=hasElement?"impact_el"+el+(e.IsBoss?"_boss_sheet_v2":"_sheet_v2"):"impact_basic_sheet",Fallback="impact_basic_sheet",Cols=e.IsBoss&&hasElement?16:9,Rows=1,Frames=e.IsBoss&&hasElement?16:9,
-                    Life=CombatHitLook.BodyLife(tier),Scale=e.IsBoss?2.5:1,Mode=CombatClipMode.Impact,Additive=true,
+                    Life=CombatHitLook.BodyLife(tier),Delay=CombatHitLook.BodyDelay,Scale=e.IsBoss?2.5:1,Mode=CombatClipMode.Impact,Additive=true,
                     Width=heroH*CombatHitLook.BodySize(tier)/CombatHitLook.BodyStretch,Stretch=CombatHitLook.BodyStretch,Angle=e.Angle});
                 result.Add(new CombatClip{Frames=1,Cols=1,Rows=1,Life=CombatHitLook.CoreTicks,Mode=CombatClipMode.Core,Additive=true,
                     Width=heroH*CombatHitLook.CoreSize(tier),Element=CombatHitLook.ElementRow(el)});
@@ -121,14 +121,16 @@ namespace Exoduser.UnityPort.Vfx
     public static class CombatHitLook
     {
         public const double DefaultHeroH=131,BodyStretch=1.3;
-        public const int CoreTicks=5,CorePeakTick=2;
+        public const int CoreTicks=5,CorePeakTick=2,BodyDelay=1,SparkGainTicks=4;
+        // Body opacity (was .45/.62 and under the core at 1x) and spark HDR gain over the first SparkGainTicks ticks.
+        public const double BodyAlpha=.85,SparkGain=1.4;
         public const uint CoreStart=0xfff4d0;
-        // Soft core texture (11-04 soft-core): radial, no rim. Alpha (1-r)^2.2 and 0 from r .95; colour CoreStart at the
-        // centre -> element core colour at r .5 and beyond. Peak shader opacity 1.6 so only the centre passes the bloom threshold 1.1.
+        // Soft core texture (11-04 soft-core, hot centre r3): radial, no rim. Alpha (1-r)^3.5 and 0 from r .95; colour CoreStart up to r .25,
+        // then -> element core colour at r .5 and beyond. Peak shader opacity 2.6: the centre clips near white and blooms (>1.1), the edge stays soft.
         public const int CoreTexSize=128;
-        public const double CoreRimCut=.95,CoreMidRadius=.5,CorePeakOpacity=1.6;
-        public static double CoreTexAlpha(double r){r=Math.Max(0,r);return r>=CoreRimCut?0:Math.Pow(1-r,2.2);}
-        public static uint CoreTexRgb(int row,double r){return Mix(CoreStart,CoreRgb[Math.Max(0,Math.Min(6,row))],Math.Max(0,Math.Min(1,r/CoreMidRadius)));}
+        public const double CoreRimCut=.95,CoreHotRadius=.25,CoreMidRadius=.5,CorePeakOpacity=2.6;
+        public static double CoreTexAlpha(double r){r=Math.Max(0,r);return r>=CoreRimCut?0:Math.Pow(1-r,3.5);}
+        public static uint CoreTexRgb(int row,double r){return Mix(CoreStart,CoreRgb[Math.Max(0,Math.Min(6,row))],Math.Max(0,Math.Min(1,(r-CoreHotRadius)/(CoreMidRadius-CoreHotRadius))));}
         // Shader _Opacity: the 0..1 beat curve times the peak.
         public static double CoreOpacity(double age){return CoreAlpha(age)*CorePeakOpacity;}
         static uint Mix(uint from,uint to,double t) {
@@ -160,19 +162,19 @@ namespace Exoduser.UnityPort.Vfx
         }
         static readonly Row[] Rows={
             // physical: metal spark lines, fan behind the strike, falling
-            new Row{Min=6,Max=10,HMin=12,HMax=18,LifeMin=14,LifeMax=21,LenMin=.10,LenMax=.25,Thick=1.5,SpeedMin=.03,SpeedMax=.065,Gravity=.00065,Fan=Math.PI/3,From=0xf5e5d5,To=0xf0debd},
+            new Row{Min=6,Max=10,HMin=12,HMax=18,LifeMin=14,LifeMax=21,LenMin=.15,LenMax=.375,Thick=2,SpeedMin=.03,SpeedMax=.065,Gravity=.00065,Fan=Math.PI/3,From=0xf5e5d5,To=0xf0debd},
             // fire: short embers that rise and burn out
-            new Row{Min=5,Max=8,HMin=10,HMax=14,LifeMin=15,LifeMax=21,LenMin=.10,LenMax=.16,Thick=1.5,SpeedMin=.012,SpeedMax=.03,Gravity=-.0009,Fan=Math.PI/2,From=0xffd9a0,To=0xd8562a,Aged=true},
+            new Row{Min=5,Max=8,HMin=10,HMax=14,LifeMin=15,LifeMax=21,LenMin=.15,LenMax=.24,Thick=2,SpeedMin=.012,SpeedMax=.03,Gravity=-.0009,Fan=Math.PI/2,From=0xffd9a0,To=0xd8562a,Aged=true},
             // ice: short straight shards, 2 px
-            new Row{Min=4,Max=6,HMin=8,HMax=10,LifeMin=14,LifeMax=20,LenMin=.10,LenMax=.16,Thick=2,SpeedMin=.03,SpeedMax=.055,Gravity=.0007,Fan=Math.PI/3,From=0xe8f3f8,To=0x5f98c0,Aged=true},
+            new Row{Min=4,Max=6,HMin=8,HMax=10,LifeMin=14,LifeMax=20,LenMin=.15,LenMax=.24,Thick=2,SpeedMin=.03,SpeedMax=.055,Gravity=.0007,Fan=Math.PI/3,From=0xe8f3f8,To=0x5f98c0,Aged=true},
             // dark: no lines, the body smoke is the whole read
             new Row{},
             // lightning: 2-3 segment kinked branches, visible 3-4 ticks (count = branches)
-            new Row{Min=3,Max=4,HMin=6,HMax=6,LifeMin=3,LifeMax=4,LenMin=.07,LenMax=.083,Thick=1.5,SpeedMin=0,SpeedMax=0,Gravity=0,Fan=Math.PI,From=0xfff4d0,To=0xc8a848,Aged=true,Chain=true},
+            new Row{Min=3,Max=4,HMin=6,HMax=6,LifeMin=3,LifeMax=4,LenMin=.105,LenMax=.1245,Thick=2,SpeedMin=0,SpeedMax=0,Gravity=0,Fan=Math.PI,From=0xfff4d0,To=0xc8a848,Aged=true,Chain=true},
             // holy: thin slow ash lines drifting up
-            new Row{Min=4,Max=6,HMin=8,HMax=8,LifeMin=18,LifeMax=21,LenMin=.10,LenMax=.14,Thick=1.5,SpeedMin=.006,SpeedMax=.015,Gravity=-.0003,Fan=Math.PI,From=0xfff2d6,To=0xc9a45e,Aged=true},
+            new Row{Min=4,Max=6,HMin=8,HMax=8,LifeMin=18,LifeMax=21,LenMin=.15,LenMax=.21,Thick=2,SpeedMin=.006,SpeedMax=.015,Gravity=-.0003,Fan=Math.PI,From=0xfff2d6,To=0xc9a45e,Aged=true},
             // earth / none: soil chips, alpha blended, falling
-            new Row{Min=4,Max=6,HMin=8,HMax=8,LifeMin=14,LifeMax=20,LenMin=.10,LenMax=.16,Thick=1.5,SpeedMin=.025,SpeedMax=.05,Gravity=.0009,Fan=Math.PI*.4,From=0xdcc8a4,To=0x7e6236,Aged=true,Normal=true}
+            new Row{Min=4,Max=6,HMin=8,HMax=8,LifeMin=14,LifeMax=20,LenMin=.15,LenMax=.24,Thick=2,SpeedMin=.025,SpeedMax=.05,Gravity=.0009,Fan=Math.PI*.4,From=0xdcc8a4,To=0x7e6236,Aged=true,Normal=true}
         };
         public static CombatParryPresentation.Spark[] Sparks(FeedbackEvent e,int seed) {
             if(!e.VisualOnly||(e.Kind!=FeedbackKind.EnemyHit&&e.Kind!=FeedbackKind.EnemyCrit&&e.Kind!=FeedbackKind.BossHit))return Array.Empty<CombatParryPresentation.Spark>();
@@ -185,7 +187,8 @@ namespace Exoduser.UnityPort.Vfx
                 for(int k=0;k<segments;k++) {
                     var s=new CombatParryPresentation.Spark{Delay=row.Chain?0:i%2,Life=rng.Next(row.LifeMin,row.LifeMax+1),Angle=angle,
                         Length=row.LenMin+rng.NextDouble()*(row.LenMax-row.LenMin),Thickness=row.Thick,Speed=row.SpeedMin+rng.NextDouble()*(row.SpeedMax-row.SpeedMin),
-                        Color=rng.NextDouble(),Gravity=row.Gravity,From=row.From,To=row.To,Aged=row.Aged,Normal=row.Normal,Prior=chain.Count>0?chain.ToArray():null};
+                        Color=rng.NextDouble(),Gravity=row.Gravity,From=row.From,To=row.To,Aged=row.Aged,Normal=row.Normal,Prior=chain.Count>0?chain.ToArray():null,
+                        Gain=row.Normal?1:SparkGain,GainTicks=row.Normal?0:SparkGainTicks};
                     chain.Add(s);list.Add(s);angle+=(rng.NextDouble()-.5)*1.2;
                 }
             }
@@ -201,6 +204,8 @@ namespace Exoduser.UnityPort.Vfx
             // G1 enemy hits: element colour ramp (rgb), screen gravity in key lengths per tick^2 (negative rises), optional chain of
             // earlier segments (lightning branches), alpha-blended instead of additive (earth).
             public uint From=0xf5e5d5,To=0xf0debd;public double Gravity=.00065;public bool Aged,Normal;public Spark[] Prior;
+            // HDR gain of an additive hit spark for its first GainTicks ticks (11-04 r3); 1 / 0 = untouched.
+            public double Gain=1;public int GainTicks;
         }
         public bool IsMelee(FeedbackEvent e) {
             if(e.Kind!=FeedbackKind.Parry||!string.IsNullOrEmpty(e.SampleKey))return false;

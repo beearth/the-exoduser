@@ -38,8 +38,8 @@ namespace Exoduser.UnityPort.Vfx
         readonly Sprite dot;
         // Soft warm core: one baked texture per element row (KiSlashAdditive ignores sprite colour), shader _Opacity carries the curve.
         readonly Texture2D[] coreTextures=new Texture2D[7];readonly Sprite[] coreSprites=new Sprite[7];
-        readonly Material coreAdd;readonly MaterialPropertyBlock coreBlock=new MaterialPropertyBlock();
-        static readonly int OpacityId=Shader.PropertyToID("_Opacity");
+        readonly Material coreAdd;readonly MaterialPropertyBlock coreBlock=new MaterialPropertyBlock(),gainBlock=new MaterialPropertyBlock();
+        static readonly int OpacityId=Shader.PropertyToID("_Opacity"),GainId=Shader.PropertyToID("_Gain");
         readonly System.Random random=new System.Random(20261103); // presentation RNG only
         public int Hits,Parries,Deaths,RollStarts,RollEnds,DrawnFrames,MissingSheets;
         public bool ReducedMotion;
@@ -226,7 +226,9 @@ namespace Exoduser.UnityPort.Vfx
                 var up=camera.ScreenToWorldPoint(new Vector3(centre.x,centre.y+thickness,plane));
                 p.renderer.transform.SetPositionAndRotation(at,camera.transform.rotation*Quaternion.Euler(0,0,Mathf.Atan2(direction.y,direction.x)*Mathf.Rad2Deg));
                 p.renderer.transform.localScale=new Vector3(Vector3.Distance(at,right)/line.bounds.size.x,Vector3.Distance(at,up)/line.bounds.size.y,1);
-                var color=Color.Lerp(Rgb(spec.From),Rgb(spec.To),spec.Aged?Mathf.Clamp01(age/spec.Life):(float)spec.Color);color.a=opacity;p.renderer.color=color;i++;
+                var color=Color.Lerp(Rgb(spec.From),Rgb(spec.To),spec.Aged?Mathf.Clamp01(age/spec.Life):(float)spec.Color);color.a=opacity;p.renderer.color=color;
+                if(spec.Gain!=1){p.renderer.GetPropertyBlock(gainBlock);gainBlock.SetFloat(GainId,age<spec.GainTicks?(float)spec.Gain:1);p.renderer.SetPropertyBlock(gainBlock);}
+                i++;
             }
             float flash=ReducedMotion?0:(float)parry.FlashAlpha(clock.Now(tick)-meleeFlashBorn,QualitySettings.activeColorSpace==ColorSpace.Linear);
             meleeFlash.enabled=flash>0;

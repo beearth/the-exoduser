@@ -16,21 +16,21 @@ static class Program
     // Soft core (11-04): radial texture with no hard rim, per-element colour, shader opacity peak 1.6 over the 5-tick beat.
     static void SoftCore()
     {
-        Check(CombatHitLook.CoreTexSize==128&&CombatHitLook.CorePeakOpacity==1.6&&CombatHitLook.CoreTicks==5&&CombatHitLook.CorePeakTick==2,"soft core: 128 px texture, peak opacity 1.6, 5 ticks, peak at +2");
-        Check(Math.Abs(CombatHitLook.CoreOpacity(2)-1.6)<1e-9&&CombatHitLook.CoreOpacity(-1)==0&&CombatHitLook.CoreOpacity(5)==0,"soft core: opacity peaks at 1.6 on tick 2 and is 0 after 5 ticks");
+        Check(CombatHitLook.CoreTexSize==128&&CombatHitLook.CorePeakOpacity==2.6&&CombatHitLook.CoreTicks==5&&CombatHitLook.CorePeakTick==2,"soft core: 128 px texture, peak opacity 2.6, 5 ticks, peak at +2");
+        Check(Math.Abs(CombatHitLook.CoreOpacity(2)-2.6)<1e-9&&CombatHitLook.CoreOpacity(-1)==0&&CombatHitLook.CoreOpacity(5)==0,"soft core: opacity peaks at 2.6 on tick 2 and is 0 after 5 ticks");
         double prev=2;
         for(int i=0;i<=200;i++) {
             double r=i/200.0,a=CombatHitLook.CoreTexAlpha(r);
             Check(a<=prev+1e-12,"soft core alpha monotone non-increasing at r "+r);prev=a;
             if(r>=.95)Check(a==0,"soft core alpha is 0 from r .95 (no hard rim) at r "+r);
-            else Check(Math.Abs(a-Math.Pow(1-r,2.2))<1e-12,"soft core alpha is (1-r)^2.2 at r "+r);
+            else Check(Math.Abs(a-Math.Pow(1-r,3.5))<1e-12,"soft core alpha is (1-r)^3.5 at r "+r);
         }
-        Check(CombatHitLook.CoreTexAlpha(0)==1&&CombatHitLook.CoreTexAlpha(.5)<.25&&CombatHitLook.CoreTexAlpha(1.2)==0,"soft core: opaque centre, faint mid, clear outside");
+        Check(CombatHitLook.CoreTexAlpha(0)==1&&CombatHitLook.CoreTexAlpha(.5)<.1&&CombatHitLook.CoreTexAlpha(1.2)==0,"soft core: opaque centre, faint mid, clear outside");
         // Largest alpha step between 1/64-radius samples stays small: no disc edge.
         double step=0;for(int i=0;i<64;i++)step=Math.Max(step,CombatHitLook.CoreTexAlpha(i/64.0)-CombatHitLook.CoreTexAlpha((i+1)/64.0));
         Check(step<.12,"soft core: no alpha step above .12 between neighbouring samples");
         for(int row=0;row<7;row++) {
-            Check(CombatHitLook.CoreTexRgb(row,0)==0xfff4d0,"soft core centre colour #fff4d0 row "+row);
+            Check(CombatHitLook.CoreTexRgb(row,0)==0xfff4d0&&CombatHitLook.CoreTexRgb(row,.25)==0xfff4d0,"soft core colour #fff4d0 in the inner .25 radius row "+row);
             Check(CombatHitLook.CoreTexRgb(row,.5)==CoreTable[row]&&CombatHitLook.CoreTexRgb(row,.9)==CoreTable[row],"soft core mid and rim colour is the element core colour row "+row);
         }
     }
@@ -68,7 +68,7 @@ static class Program
                 if(row==3){Check(sparks.Length==0,"G1 dark has no line sparks, body smoke only "+tag);continue;}
                 bool shape=true;
                 foreach(var s in sparks) {
-                    shape&=s.From==t[0]&&s.To==t[1]&&s.Thickness>=1.5&&s.Thickness<=2&&s.Length*90>=s.Thickness*3&&s.Length<=.25&&s.Length>0;
+                    shape&=s.From==t[0]&&s.To==t[1]&&s.Thickness==2&&s.Length*90>=s.Thickness*3&&s.Length<=.375&&s.Length>=.105&&s.Length>0&&(row==6?s.Gain==1:s.Gain==1.4&&s.GainTicks==4);
                     shape&=s.Life>=(row==4?3:12)&&s.Life<=(row==4?4:21)&&s.Delay<=1;
                 }
                 Check(shape,"G1 sparks are thin lines (length >= 3x thickness), table colours, .2-.35 s "+tag);
@@ -157,9 +157,9 @@ static class Program
             Check(hit.Sheet=="impact_el"+el+(isBoss?"_boss_sheet_v2":"_sheet_v2")&&hit.Fallback=="impact_basic_sheet","v2 sheet and basic fallback "+el+" boss="+isBoss);
             Check(hit.Life==(isBoss?15:12)&&hit.Frames==(isBoss?16:9)&&hit.Cols==hit.Frames&&hit.Rows==1&&hit.Scale==(isBoss?2.5:1)&&hit.Additive&&hit.Mode==CombatClipMode.Impact,"v2 retains layout, scale and additive blend; G1 life 12/15 ticks "+el+" boss="+isBoss);
             double half=hit.Life/2.0;
-            Check(hit.Frame(0)==0&&hit.Frame(hit.Life)==-1&&Math.Abs(hit.Alpha(0)-(isBoss?.62:.45))<1e-9&&Math.Abs(hit.Alpha(half)-(isBoss?.31:.225))<1e-9,"v2 retains frame and alpha curve over the G1 life "+el+" boss="+isBoss);
+            Check(hit.Delay==1&&hit.Frame(0)==-1&&hit.Frame(1)==0&&hit.Frame(1+hit.Life)==-1&&hit.Alpha(0)==0&&Math.Abs(hit.Alpha(1)-.85)<1e-9&&Math.Abs(hit.Alpha(1+half)-.425)<1e-9,"v2 body starts at +1 tick at .85 and fades linearly over the G1 life "+el+" boss="+isBoss);
             double cell=85,size=131*(isBoss?2.6:1.6);
-            Check(Math.Abs(hit.DrawWidth(0,cell)*hit.Stretch-size*.8)<1e-9&&Math.Abs(hit.DrawWidth(hit.Life,cell)*hit.Stretch-size)<1e-9,"G1 body width grows .8 to 1.0 of the hero-height size (long axis) "+el+" boss="+isBoss);
+            Check(Math.Abs(hit.DrawWidth(0,cell)*hit.Stretch-size*.8)<1e-9&&Math.Abs(hit.DrawWidth(hit.Life+1,cell)*hit.Stretch-size)<1e-9,"G1 body width grows .8 to 1.0 of the hero-height size (long axis) "+el+" boss="+isBoss);
         }
         Check(boss[1].Mode==CombatClipMode.Core&&boss.All(c=>c.Mode!=CombatClipMode.Electric&&c.Mode!=CombatClipMode.SlashBurst),"G1 lightning impact: warm core instead of the electric burst sheet");
         G1Contract();
