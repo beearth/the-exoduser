@@ -38,3 +38,5 @@ Blender 실행은 지정된 5.2.3 `-b -t 2 --python-exit-code 2 --python <파일
 Unity 연결과 비교판은 전체 파트·보조뼈·변형 렌더가 준비된 뒤에 한다. 단독 시트·모델·수치 검사로 완료나 디자인 PASS를 보고하지 않는다.
 
 머리 비율(11-04): `head_fix.py`는 두피~턱이 0.135H보다 크면 B 머리·머리카락·Head 하위 뼈를 Head 관절 기준 균일 축소하고 스카프 고리 틈(3~10mm)을 잰다(`measure_proportion.head_metrics`). `render_proportion_front.py --pose arm_hang`은 위팔을 수직으로 내린 비교판용 포즈, `audit_rest_growth.py --attempt head1|head2`는 14포즈 재검사(`Snapshot.inside(confirm=True)`는 3레이가 갈릴 때만 40레이 재확인).
+
+텍스처 베이크(11-04): `bake/`(stage1_uv 바늘 삭제+UV·4K 아틀라스 배치, stage2_bake Cycles 파트별 베이크, stage3_grade 흑철 LOCK 보정·천 잔점 중앙값, lock_measure, align_check), `export_unity.py --atlas`, `render_tex_compare.py`·`compose_tex_compare.py`(Blender 검사판). 결과는 REPORT·docs/engine/UNITY_CHAR_MODULAR_REST_GROWTH_20261104.md 하단.

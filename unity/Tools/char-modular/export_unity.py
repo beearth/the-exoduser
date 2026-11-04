@@ -1,10 +1,9 @@
-"""A+B_G0 export: 24 body groups -> one draw mesh, single-bone metal, flat colour atlas; sword separate.
-11-04 Sonnet revision (replaces the B-only exporter).
+"""A+B_G0 export: 24 body groups -> one draw mesh, single-bone metal, baked 4K atlas; sword separate.
+11-04 Sonnet revision; 11-04 texture-bake revision (flat colour tiles replaced by the baked atlas, --atlas).
 
 The native .blend stays the authoring SSOT. This script never saves it. It
  - joins W01..W24 (everything except the W25 greatsword) into one skinned draw mesh,
- - gives the textured B head/hair their own atlas tiles and every untextured A part a flat
-   family colour tile (Iron/Leather/Cloth); no texture is generated or painted,
+ - uses the part UVs stored in the blend (family regions of one 4096 atlas) with the baked atlas image as base colour,
  - adds the runtime sockets Socket_Weapon_R / Grip_L as bone children (blade = -local Y = Unity up),
  - exports the sword as a world-aligned rest mesh (Unity places it at world identity under the socket).
 Blender runs headless only. The couter Copy Rotation constraints are not exported; Unity builds
@@ -23,6 +22,7 @@ p = argparse.ArgumentParser()
 p.add_argument("--blend", type=Path, required=True)
 p.add_argument("--out", type=Path, required=True)
 p.add_argument("--weapon", type=Path, required=False)  # legacy argument; the sword now comes from the authoring file
+p.add_argument("--atlas", type=Path, required=True)    # final baked 4096 base colour atlas
 a = p.parse_args(sys.argv[sys.argv.index("--") + 1:])
 bpy.ops.wm.open_mainfile(filepath=str(a.blend.resolve()))
 scene = bpy.context.scene
@@ -64,81 +64,17 @@ def family(obj):
     return "Iron"
 
 
-def base_image(material):
-    if not material or not material.use_nodes:
-        return None
-    principal = next((n for n in material.node_tree.nodes if n.type == "BSDF_PRINCIPLED"), None)
-    if not principal:
-        return None
-
-    def walk(socket, visited):
-        for link in socket.links:
-            node = link.from_node
-            if node in visited:
-                continue
-            visited.add(node)
-            if node.type == "TEX_IMAGE" and node.image:
-                return node.image
-            for inp in node.inputs:
-                found = walk(inp, visited)
-                if found:
-                    return found
-        return None
-    return walk(principal.inputs["Base Color"], set())
-
-
-# ----------------------------------------------------------------------------- atlas
-FLAT_COLORS = {"Iron": (.20, .21, .23, 1), "Leather": (.19, .14, .10, 1), "Cloth": (.34, .09, .08, 1)}
-images = []
-mapping = {}
-for obj in parts:
-    for material in obj.data.materials:
-        if material in mapping:
-            continue
-        image = base_image(material)
-        if image is None:
-            mapping[material] = -1
-            continue
-        if image not in images:
-            images.append(image)
-        mapping[material] = images.index(image)
-flat_tile = {name: len(images) + i for i, name in enumerate(FLAT_COLORS)}
-side, tile, padding, inner = 2048, 512, 8, 496
-if len(images) + len(flat_tile) > 16:
-    raise RuntimeError("atlas capacity exceeded")
-pixels = array("f", [.12, .12, .12, 1]) * (side * side)
-for index, image in enumerate(images):
-    image.scale(inner, inner)
-    source = array("f", [0]) * (inner * inner * 4)
-    image.pixels.foreach_get(source)
-    x, y = (index % 4) * tile + padding, (index // 4) * tile + padding
-    for row in range(inner):
-        start = ((y + row) * side + x) * 4
-        pixels[start:start + inner * 4] = source[row * inner * 4:(row + 1) * inner * 4]
-        for offset in range(1, padding + 1):
-            pixels[start - offset * 4:start - offset * 4 + 4] = source[row * inner * 4:row * inner * 4 + 4]
-            right = start + (inner - 1 + offset) * 4
-            pixels[right:right + 4] = source[((row + 1) * inner - 1) * 4:(row + 1) * inner * 4]
-    for offset in range(1, padding + 1):
-        length = tile * 4
-        begin = (y * side + x - padding) * 4
-        pixels[begin - offset * side * 4:begin - offset * side * 4 + length] = pixels[begin:begin + length]
-        end = ((y + inner - 1) * side + x - padding) * 4
-        pixels[end + offset * side * 4:end + offset * side * 4 + length] = pixels[end:end + length]
-for name, index in flat_tile.items():
-    color = array("f", FLAT_COLORS[name])
-    x0, y0 = (index % 4) * tile, (index // 4) * tile
-    for row in range(tile):
-        start = ((y0 + row) * side + x0) * 4
-        pixels[start:start + tile * 4] = color * tile
-atlas = bpy.data.images.new("Warrior_Modular_BaseColor", width=side, height=side, alpha=False)
-atlas.pixels.foreach_set(pixels)
-atlas.update()
+# ----------------------------------------------------------------------------- baked atlas (11-04 texture bake; replaces the flat colour tiles)
+atlas_src = a.atlas.resolve()
+if not atlas_src.exists():
+    raise RuntimeError("baked atlas missing: %s" % atlas_src)
 a.out.mkdir(parents=True, exist_ok=True)
-atlas.filepath_raw = str((a.out / "Warrior_Modular_BaseColor.png").resolve())
-atlas.file_format = "PNG"
-atlas.save()
-
+import shutil
+shutil.copyfile(str(atlas_src), str((a.out / "Warrior_Modular_BaseColor.png").resolve()))
+atlas = bpy.data.images.load(str((a.out / "Warrior_Modular_BaseColor.png").resolve()), check_existing=False)
+side = atlas.size[0]
+if atlas.size[0] != atlas.size[1] or side < 4096:
+    raise RuntimeError("expected a 4096 atlas, got %s" % (tuple(atlas.size),))
 families = ("Iron", "Leather", "Cloth", "Skin", "Hair")
 materials = {}
 for name in families:
@@ -153,27 +89,11 @@ for name in families:
     materials[name] = material
 
 for obj in parts:
-    old = list(obj.data.materials)
-    uv = obj.data.uv_layers.active
     kind_family = family(obj)
-    if uv is None:
-        uv = obj.data.uv_layers.new(name="UVMap")
-        center = flat_tile[kind_family]
-        flat_uv = (((center % 4) * tile + tile / 2) / side, ((center // 4) * tile + tile / 2) / side)
-        for loop in obj.data.loops:
-            uv.data[loop.index].uv = flat_uv
-    else:
-        uv.name = "UVMap"
-        for face in obj.data.polygons:
-            index = mapping[old[face.material_index]]
-            if index < 0:
-                raise RuntimeError("base color missing: " + obj.name)
-            for loop in face.loop_indices:
-                source_uv = uv.data[loop].uv.copy()
-                uv.data[loop].uv = (((index % 4) * tile + padding + source_uv.x * inner) / side,
-                                    ((index // 4) * tile + padding + source_uv.y * inner) / side)
-    while len(obj.data.uv_layers) > 1:
-        obj.data.uv_layers.remove(next(l for l in obj.data.uv_layers if l.name != "UVMap"))
+    uv = obj.data.uv_layers.active
+    if uv is None or len(obj.data.uv_layers) != 1:
+        raise RuntimeError("part must carry exactly the baked UVMap: " + obj.name)
+    uv.name = "UVMap"
     obj.data.materials.clear()
     for name in families:
         obj.data.materials.append(materials[name])
@@ -265,12 +185,12 @@ receipt = {"scope": "A+B_G0 authoring parts -> combined draw mesh (24 groups) + 
            "bones": len(rig.data.bones), "capeBones": len(cape_bones), "hairBones": len(hair_bones),
            "materials": list(families),
            "materialTriangles": [sum(len(face.vertices) - 2 for face in body.data.polygons if face.material_index == index) for index in range(len(families))],
-           "baseColorAtlas": [side, side], "atlasTexturedSources": [i.name for i in images], "flatTiles": flat_tile,
-           "flatColorsNote": "untextured A parts use solid family tiles; no texture generated",
+           "baseColorAtlas": [side, side], "atlasSource": atlas_src.name,
+           "atlasNote": "11-04 Tripo texture bake (selected-to-active Diffuse Color), iron graded to LOCK, cloth despeckled; UVs live in the authoring blend",
            "couterBones": ["elbow_l_couter", "elbow_r_couter"], "sockets": ["Socket_Weapon_R", "Grip_L"],
            "bladeDirectionWorld": [float(x) for x in blade], "gripWorld": [float(x) for x in grip_world],
            "metalVerticesSingle100": len(iron_vertices), "runtimeApplied": False}
 if not 25000 <= receipt["totalTriangles"] <= 40000:
     raise RuntimeError("whole hero triangle budget failed: %s" % receipt["totalTriangles"])
 (a.out / "assembly-contract.json").write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-print("UNITY_EXPORT", receipt["totalTriangles"], "triangles; 3 flat tiles + textured head/hair, 2K atlas; no Player")
+print("UNITY_EXPORT", receipt["totalTriangles"], "triangles; baked 4K atlas; no Player")

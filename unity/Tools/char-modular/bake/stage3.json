@@ -1,0 +1,41 @@
+{
+ "lockTarget": {
+  "meanV": 0.16980382380299783,
+  "meanS": 0.29927681404609363,
+  "pixels": 124347
+ },
+ "iron": {
+  "before": {
+   "meanV": 0.25295376777648926,
+   "meanS": 0.19187866151332855,
+   "pixels": 2471777
+  },
+  "factorV": 0.6712840267041882,
+  "factorS": 1.5597191041761818,
+  "after": {
+   "meanV": 0.16988693177700043,
+   "meanS": 0.30046141147613525,
+   "pixels": 2476353
+  },
+  "clippedHighV": 0.0,
+  "rule": "multiply HSV V and S only; hue unchanged; red stains excluded from the mean (same rule as LOCK)"
+ },
+ "cloth": {
+  "speckleMetric": "bright px where L - median7(L) > 20/255, inside cloth UV mask",
+  "before": 9910,
+  "candidates": {
+   "1": 4106,
+   "2": 1186
+  },
+  "radiusApplied": 2,
+  "filterSize": 5,
+  "after": 1186,
+  "clothMaskPixels": 1092564,
+  "appliedOnce": true,
+  "region": {
+   "x": 2372,
+   "y": 0,
+   "side": 1693
+  }
+ }
+}

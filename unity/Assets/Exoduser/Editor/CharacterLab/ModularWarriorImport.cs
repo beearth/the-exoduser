@@ -17,7 +17,7 @@ namespace Exoduser.CharacterLab {
   [Serializable] sealed class Receipt {
    public bool passed,compileOnly=true,playerRun=false,humanoid,existingAnimator,rigidIron=true,defaultAdopted=false;
    public bool couterConstraintsPresent,tassetConstraintsPresent,constraintEvaluated;
-   public int totalTriangles,bodyTriangles,swordTriangles,bones,capeBones,hairBones,materials,metalVertices,couterConstraintSources,tassetConstraints;
+   public int atlasWidth,atlasHeight,totalTriangles,bodyTriangles,swordTriangles,bones,capeBones,hairBones,materials,metalVertices,couterConstraintSources,tassetConstraints;
    public float bladeVsRight,bladeVsUp,bladeVsForward,bladeAngleDeg,gripToSwordMm,constraintHalfAngleDeg,constraintRestDeviationDeg,socketDeterminant;
    public string prefab,sourceCommit,flag="--hero-render=rigpixel --hero-rig=modular",visualStatus="RETOUCH_GAME_QA_PENDING",variant,note;
   }
@@ -29,7 +29,7 @@ namespace Exoduser.CharacterLab {
    Require(contract!=null&&contract.totalTriangles>=25000&&contract.totalTriangles<=40000,"Whole hero triangle contract missing");
    var atlasPath=Dir+"/Warrior_Modular_BaseColor.png";
    var texture=(TextureImporter)AssetImporter.GetAtPath(atlasPath);
-   texture.textureType=TextureImporterType.Default;texture.sRGBTexture=true;texture.maxTextureSize=2048;
+   texture.textureType=TextureImporterType.Default;texture.sRGBTexture=true;texture.maxTextureSize=4096;
    texture.filterMode=FilterMode.Bilinear;texture.wrapMode=TextureWrapMode.Clamp;texture.mipmapEnabled=false;
    texture.textureCompression=TextureImporterCompression.CompressedHQ;texture.alphaSource=TextureImporterAlphaSource.None;texture.SaveAndReimport();
    var old=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Exoduser/Resources/Characters/Warrior.prefab");
@@ -54,7 +54,7 @@ namespace Exoduser.CharacterLab {
    importer.humanDescription=hd;importer.SaveAndReimport();
    asset=AssetDatabase.LoadAssetAtPath<GameObject>(modelPath);
    var instance=(GameObject)PrefabUtility.InstantiatePrefab(asset);
-   var receipt=new Receipt{variant="A+B_G0_20261104"};
+   var receipt=new Receipt{variant="A+B_G0_20261104"};{var atlasTex=AssetDatabase.LoadAssetAtPath<Texture2D>(atlasPath);receipt.atlasWidth=atlasTex.width;receipt.atlasHeight=atlasTex.height;}
    try {
     instance.name="Warrior_Modular";instance.transform.SetPositionAndRotation(Vector3.zero,Quaternion.identity);instance.transform.localScale=Vector3.one;
     var animator=instance.GetComponent<Animator>();
@@ -117,7 +117,8 @@ namespace Exoduser.CharacterLab {
     receipt.capeBones=cape;receipt.hairBones=hair;receipt.materials=Families.Length;receipt.prefab=Prefab;
     string output="I:/EXODUSER-Storage/char-modular/compile-current";var args=Environment.GetCommandLineArgs();for(int i=0;i<args.Length-1;i++)if(args[i]=="-output")output=args[i+1];
     for(int i=0;i<args.Length-1;i++)if(args[i]=="-sourceCommit")receipt.sourceCommit=args[i+1];
-    Directory.CreateDirectory(output);File.WriteAllText(Path.Combine(output,"ab-import.json"),JsonUtility.ToJson(receipt,true));
+    string receiptName="ab-import.json";for(int i=0;i<args.Length-1;i++)if(args[i]=="-receiptName")receiptName=args[i+1];
+    Directory.CreateDirectory(output);File.WriteAllText(Path.Combine(output,receiptName),JsonUtility.ToJson(receipt,true));
     Require(socketOk,"Socket check failed: blade vs -up "+receipt.bladeAngleDeg+" deg (right "+receipt.bladeVsRight+", up "+receipt.bladeVsUp+", forward "+receipt.bladeVsForward+"), grip to sword "+receipt.gripToSwordMm+" mm");
     Debug.Log("MODULAR_AB_IMPORT_PASS triangles="+receipt.totalTriangles+" bones="+receipt.bones+" rigidIron=true couter="+receipt.couterConstraintsPresent+" evaluated="+receipt.constraintEvaluated+"; visual QA pending");
    } finally {UnityEngine.Object.DestroyImmediate(instance);}

@@ -133,3 +133,15 @@ Unity FBX·prefab 교체/컴파일, 최신34도1x 정면·뒤 LOCK 비교판, �
 - 비교판: `G:/exoduser/tmp/design-review/20261104_char_modular/warrior_proportion_front.png` 다시 그림. 5칸은 LeftArm/RightArm을 돌려 위팔이 수직인 포즈(손·태싯 겹침 때문에 바깥 5°, 0°는 406쌍 겹침)이며 2칸과 다른 그림. 모든 칸에 머리 기준선 2개(두피·턱)와 등신. LOCK 칸 머리는 눈금 추정(약 0.137H, 7.3등신). `arm_down`(어깨-손목 수직) 포즈는 판정에서 빼고 값만 기록(옛 모델도 실패하는 기존 조건, Mac 실클립에서 확인할 항목).
 - Unity: export_unity → 컴파일·임포트 1회 exit 0, errorLogs 0, Humanoid·기존 Animator 동일 참조·금속 10,098 단일 100%·37,626tri·61뼈·couter RotationConstraint(소스 4) `compile-current/ab-head-import.json`. 텍스처 입력 GLB `warrior_ab_apose_prop.glb` 890,772B, 34,628tri, sha256 f05cf45a…7eff17(머리카락 상단 1.839m).
 - 남은 일: Mac 실제 Animator·실게임 판정(머리 크기 인상, 스카프 틈 시각), 텍스처 베이크.
+
+## 11-04 텍스처 베이크 (Sonnet)
+- 입력: `Warrior_AB_Prop_Tripo_Tex4K.glb`(sha256 7ab032b1…, 36aec7a0b). 이름이 같은 108파트를 비교해 스케일 1.8234·이동만 구하면 되고 Y 회전은 0.03°(이미 -90° 복원됨). 정렬 오차 최대 0.45mm(평균 0.35mm), 1mm 넘는 파트 0. `bake/align_check.py`.
+- 바늘: 오른쪽이 아니라 화면 오른쪽(+X, 캐릭터 왼손 바깥) 손의 `W12_A_046` 정점 1개 뾰족 피라미드(길이 165mm, 삼각형 4개). 4개를 지우고 밑면 사각 구멍을 2삼각형으로 막았다(순감 -2, 몸 34,626→34,624tri). 다른 파트 변경 0.
+- UV·아틀라스: 108파트 Smart UV(66도→89도 시도, 89도 채택)+평균 스케일+포장, 4096×4096 1장, 재질 계열별 구역(위 줄 흑철 2372px | 천 1693px, 아래 줄 피부 1045 | 머리카락 876 | 가죽 574). 밀도 흑철·가죽 770, 천 654, 피부 1385, 머리카락 1000 px/m. 섬 간격 4px, 구역 안쪽 여백 4px. **판 하나=섬 하나는 못 지켰다**(면이 각진 저폴리라 섬 7,091개, 파트당 중앙 35개). 섬 이음새 색은 같은 원천 표면에서 구워 끊기지 않으나 헤드는 조각이 매우 많다.
+- 베이크: Cycles selected-to-active 파트별(같은 이름 Tripo 파트만 원천, 이웃 관통 0), Diffuse Color만, extrusion 1.5mm·max ray 6mm·margin 3px EXTEND, 108파트 395초. 대검 제외.
+- 흑철 보정: LOCK front·side 판금 영역(박스는 `bake/lock_measure.json`, 회색 배경·진적색 제외) 평균 명도 V 0.1698 채도 S 0.2993. 베이크 흑철 보정 전 V 0.2530 S 0.1919 → V ×0.6713·S ×1.5597(색상 불변) → 후 V 0.1699 S 0.3005. 가죽·천·피부·머리카락 무보정.
+- 천 잔점: 밝은 잔점 지표(L-중앙값7 > 20/255) 9,910 → 반경2(5×5) 1회 중앙값 → 1,186(반경1은 4,106). 천 섬에만 적용, 노이즈·그레인 추가 0.
+- Unity: `export_unity.py --atlas`(평면 색 타일 폐기, 베이크 아틀라스+블렌드의 UV), 재질 5슬롯 유지, 임포터 maxTextureSize 4096. 공용 `exo-unity.ps1 run` 1회 exit 0·errorLogs 0(큐 대기 15분). 영수증 `compile-current/ab-tex-import.json`: passed, Humanoid·기존 Animator 동일, 아틀라스 4096×4096, 몸 34,624+대검 3,000=37,624tri, 61뼈, couter RotationConstraint 소스 4, 금속 정점 21,854(UV 이음새에서 FBX 정점이 갈라져 옛 10,098보다 큼, 파트 단일 100% 유지). constraintEvaluated=false 그대로.
+- 비교판(Blender 검사판, 게임 화면 아님): `G:/exoduser/tmp/design-review/20261104_char_modular/warrior_tex_compare_34_1x.png`·`_3x.png`. LOCK 열은 대기 정면~구르기는 `warrior_body_34`, 대기 뒤만 `warrior_body_back`. 조명은 평균 명도를 LOCK(0.159)에 맞춰 보정(렌더 0.193). 투명 배경 합성·그림자만 유지.
+- 잔점·이음새 자기 판정: 3x·6x 크롭에서 점·늘어진 무늬·판 이음새 색 끊김은 눈에 띄지 않았다(영웅이 1x에서 약 89px라 얼굴·가죽끈은 구분이 약함). 머리 피부 구역은 섬이 수백 개로 잘게 쪼개져 있어 클로즈업 검수가 필요하다. Unity 실게임 확인 전.
+- 못 한 것: 판마다 섬 하나, Mac 실게임 판정(재질 금속감·셰이더), constraint 실제 평가, 아틀라스 위쪽 약 40% 빈 공간(레이아웃 효율 낮음).

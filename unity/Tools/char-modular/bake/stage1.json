@@ -1,0 +1,79 @@
+{
+ "angle": 89.0,
+ "gapPx": 4,
+ "padPx": 4,
+ "needle": {
+  "part": "W12_A_046",
+  "tipWorld": [
+   0.6535,
+   -0.0096,
+   0.9023
+  ],
+  "lengthMm": 165.5,
+  "trianglesRemoved": 4,
+  "baseVerts": [
+   73,
+   72,
+   0,
+   1
+  ],
+  "capTriangles": 2,
+  "trianglesNet": -2
+ },
+ "partsPerFamily": {
+  "Iron": 69,
+  "Cloth": 27,
+  "Leather": 10,
+  "Skin": 1,
+  "Hair": 1
+ },
+ "worldAreaM2": {
+  "Iron": 4.0009,
+  "Cloth": 2.4259,
+  "Leather": 0.2265,
+  "Skin": 0.2113,
+  "Hair": 0.2399
+ },
+ "uvPerMetreUnit": {
+  "Iron": 0.3256,
+  "Cloth": 0.3883,
+  "Leather": 1.36,
+  "Skin": 1.336,
+  "Hair": 1.1522
+ },
+ "baseDensityPxPerM": 770,
+ "regions": {
+  "Iron": {
+   "x": 0,
+   "y": 0,
+   "side": 2372,
+   "densityPxPerM": 769.8
+  },
+  "Cloth": {
+   "x": 2372,
+   "y": 0,
+   "side": 1693,
+   "densityPxPerM": 654.2
+  },
+  "Leather": {
+   "x": 1921,
+   "y": 2372,
+   "side": 574,
+   "densityPxPerM": 769.7
+  },
+  "Skin": {
+   "x": 0,
+   "y": 2372,
+   "side": 1045,
+   "densityPxPerM": 1385.4
+  },
+  "Hair": {
+   "x": 1045,
+   "y": 2372,
+   "side": 876,
+   "densityPxPerM": 1000.1
+  }
+ },
+ "triangles": 34626,
+ "uvPixelAreaFraction": 0.24968749450785827
+}

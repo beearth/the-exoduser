@@ -112,9 +112,9 @@
     "W22_A_030_heel",
     "W13_A_104"
   ],
-  "triangles": 34628,
+  "triangles": 34626,
   "swordTriangles": 3000,
-  "totalTriangles": 37628,
+  "totalTriangles": 37626,
   "bones": 61,
   "capeBones": 12,
   "hairBones": 6,
@@ -126,26 +126,18 @@
     "Hair"
   ],
   "materialTriangles": [
-    18731,
+    18729,
     2149,
     9582,
     3120,
     1046
   ],
   "baseColorAtlas": [
-    2048,
-    2048
+    4096,
+    4096
   ],
-  "atlasTexturedSources": [
-    "Image_0.002",
-    "Image_0.003"
-  ],
-  "flatTiles": {
-    "Iron": 2,
-    "Leather": 3,
-    "Cloth": 4
-  },
-  "flatColorsNote": "untextured A parts use solid family tiles; no texture generated",
+  "atlasSource": "atlas_final.png",
+  "atlasNote": "11-04 Tripo texture bake (selected-to-active Diffuse Color), iron graded to LOCK, cloth despeckled; UVs live in the authoring blend",
   "couterBones": [
     "elbow_l_couter",
     "elbow_r_couter"
@@ -164,6 +156,6 @@
     -0.06609148532152176,
     0.9930164217948914
   ],
-  "metalVerticesSingle100": 9533,
+  "metalVerticesSingle100": 9532,
   "runtimeApplied": false
 }
