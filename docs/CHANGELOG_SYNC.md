@@ -12,6 +12,8 @@
 
 2026-11-04 로비 영상 정지 포스터(claude/unity-pc-lobby-poster-20261104): 영상 준비 전 검은 화면 제거 — fdg_intro·warrior_story 첫 프레임 포스터 신규, `NativeLobbyVideo.Presentable`(frameReady 뒤 한 프레임)로 영상 전환, 실패 시 포스터 유지. 소스 계약 35/0, 5어셈블리 컴파일 오류 0. PC 검사·컴파일만, 화면 판정 전.
 
+2026-11-04 바탕화면 교체 퇴보 30건(UI 겹침 래칫, 전부 가방 개수 "가방 (0/300)") 수정: 인벤토리·봉안함·보관함 개수 줄이 두 글꼴 5조각을 맞대어 그리는데 CalcSize와 검사기 xAdvance가 소수점 아래로 달라 맞닿은 조각이 겹침으로 읽힘(45fb2ee48부터 Serif가 묶음 칸으로 기록). 조각 사이 1px(CountRunGap), Serif·Txt 칸을 실제 폭으로(300px·r.width+total·40 제거). 검사 inventory-count-runs 5/0, 참조 컴파일 오류 0. 화면 판정 전(claude/unity-pc-ossuary-count-20261104).
+
 2026-11-04 12:55 UI 겹침 알려진 목록 동결(래칫 시작): unity/Tools/ui-overlap/known-overlaps.json 381항목·707건. 9e97b55ae 전 화면 검사 캡처를 analyzer 37315650d로 재분석(1094→737, 사망 외곽선 오탐 357 제거)하고 출처 줄 git blame으로 바탕화면 db26d55f6 이전 결함만 담았다. 퇴보 30건(NativeInventoryOssuary.cs:59, 45fb2ee48 — 인벤토리·봉안함·보관함 개수 '0 / 300'·'가방 (10)' 숫자와 '/'·괄호 겹침)은 목록에 없어 교체를 막는다(유니티 총괄 수정 중). 목록은 줄이기만 한다.
 
 2026-11-04 12:50 BuildLoop UI 겹침 래칫(CTO 결정): ui-overlap/known-filter.cjs가 겹침을 출처 파일(줄 번호 제외)+겹친 두 문자열+화면+언어로 known-overlaps.json과 대조, 목록 밖 겹침이 하나라도 있으면 FAIL. BuildLoop Apply-UiKnownList는 모두 목록 안일 때만 UI 게이트를 통과시키고, 목록 건수가 state.uiKnownMin보다 늘면 래칫 위반 FAIL(줄어들기만). 목록은 바탕화면 db26d55f6에 이미 있던 결함(출처 줄 git blame 기준)만 담는다. 9e97b55ae 분류: 기존 1064·퇴보 30(NativeInventoryOssuary.cs:59, 45fb2ee48). 시험 known-filter.test.cjs 5·buildloop-ui-known-test.ps1 6. 문서 unity/Tools/devtools/buildloop/README.md.
