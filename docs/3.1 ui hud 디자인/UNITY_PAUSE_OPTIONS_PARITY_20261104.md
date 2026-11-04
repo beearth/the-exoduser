@@ -110,7 +110,7 @@
 |---|---|---|---|---|---|---|
 | 1 `optSfx` | 효과음 볼륨 / SFX Volume | 0..100 / 1 / 60% | 같음(키보드1%·마우스 정수) | 예 / 예 | sound/music/lobby SFX gain | 소스 연결; `game.html:49434-49435,49854-49855`; `NativePauseMenu.A15Web.cs:16-17,84-86,502`; `NativeGame.cs:721-722` |
 | 2 `optBgm` | 음악 볼륨 / Music Volume | 0..100 / 1 / 60% | 같음(키보드1%·마우스 정수) | 예 / 예 | music/lobby 음악 gain | 소스 연결; `game.html:49434-49435,49854-49855`; `NativePauseMenu.A15Web.cs:16-17,84-86,502`; `NativeGame.cs:721-722` |
-| 3 `optBgmTrack` | BGM 선택 / BGM Select | auto 기본; 73값·원문 순서 | 73값 동일, optgroup3개 표시 생략 | 예 / 예 | 선택값을 음악 호스트에 전달하지 않음 | P30; `game.html:2842-2922,49436`; `NativePauseMenu.A15Web.cs:338,346` |
+| 3 `optBgmTrack` | BGM 선택 / BGM Select | auto 기본; 73값·원문 순서 | 73값 동일, optgroup3개 표시 생략. 목록에는 Unity가 가진 9값(auto·lobby·hell1·1장 Remastered 3곡·boss·death·victory)만 웹 순서로 보인다 | 예 / 예 | 11-04 연결(auto = 1-1 필드 회전, 곡 선택 = 그 곡 반복; 아래 "BGM 회전") | P30; `game.html:2842-2922,49436`; `NativePauseMenu.A15Web.cs:338,346` |
 
 
 ### 조작
@@ -364,10 +364,48 @@ END
 
 | 구분 | 값 | 동작 |
 |---|---|---|
-| 재생됨(6) | `auto`, `lobby`(Audio/Lobby/lobby), `hell1`, `boss`(드루이드 보스곡), `death`, `victory` | 실제 곡 |
-| 목록에서 숨김(67) | `allRandom`, `hell2`~`hell4`, `finalboss`, `forge`와 `t:` 곡 전부 | 곡 자원이 Unity에 없어 "눌러도 안 되는 설정"이 되므로 보여 주지 않는다. 저장 파일에 이 값이 있으면 화면에는 자동으로 보이고 소리도 자동(스테이지 곡)이지만, 저장 값은 덮어쓰지 않고 사용자가 곡을 고를 때만 바뀐다 |
+| 재생됨(9) | `auto`, `lobby`(Audio/Lobby/lobby), `hell1`, `boss`(드루이드 보스곡), `death`, `victory`, 1장 Remastered 3곡(`t:bgm/1장_썩은숲/{Ashes Under the Banner,Cathedral of Steel,Iron Oath Under Ash} (Remastered).wav` = 웹 목록 55·56·59번, hell1과 boss 사이) | 실제 곡 |
+| 목록에서 숨김(64) | `allRandom`, `hell2`~`hell4`, `finalboss`, `forge`와 `t:` 곡 전부 | 곡 자원이 Unity에 없어 "눌러도 안 되는 설정"이 되므로 보여 주지 않는다. 저장 파일에 이 값이 있으면 화면에는 자동으로 보이고 소리도 자동(스테이지 곡)이지만, 저장 값은 덮어쓰지 않고 사용자가 곡을 고를 때만 바뀐다 |
 
 값 목록은 테스트가 `bgm-fallback-values.txt`로 뽑는다(이번 실행 위치: `I:/EXODUSER-Storage/codex-takeover/options-wave1/dotnet-out/`). 목록은 `NativeBgmSelection` 지원 목록에서 만들어지며(웹 순서 유지), 곡을 Unity에 넣고 지원 목록에 값을 추가하기만 하면 메뉴에 다시 나타난다.
+
+### BGM 회전 (11-04, 1-1 필드 3곡 반입)
+
+웹 `game.html` `BGM._onEnded`(4113~4170행 `BGM.tracks` 근처): 장 BGM(1장 = hell1 한 곡)을 한 번 틀고, 끝나면 `OPT.bgmTrack==='auto'`일 때 전체 곡(gameplay 큐 포함)을 무작위로 고르되 직전 곡(`_lastSrc`)은 건너뛴다. 곡을 직접 고르면(`t:` 값, `playTrack`) `loop=true`로 그 한 곡만 반복한다. Unity는 데모 한 판(10~15분)에 맞춰 회전을 3곡으로 줄였다.
+
+| 규칙 | 값 | 웹 대조 |
+|---|---|---|
+| 첫 곡 | 필드(`hell1`) 진입 시 `hell1` 1회 재생(반복 없음) | 같음(장 BGM 1회) |
+| 회전 | hell1이 끝나면 3곡을 섞어 차례로 재생, 3곡을 다 돌면 다시 섞는다 | 웹은 전체 큐 무작위. Unity는 3곡 묶음 셔플(한 바퀴에 같은 곡 두 번 없음) |
+| 직전 곡 반복 | 금지. 새 바퀴 첫 곡도 방금 끝난 곡이 될 수 없다 | 같음(`_lastSrc` 회피) |
+| 회전 조건 | 설정 BGM이 `auto`(또는 저장된 지원 밖 값을 auto로 표시 중)일 때만 | 같음 |
+| 곡을 고른 경우 | 그 곡 한 파일만 반복 재생(boss는 hell1처럼 같은 곡으로 바뀌는 기존 규칙, death·victory는 자기 곡) | 같음(`playTrack` loop) |
+| 곡 사이 전환 | 기존 BGM 경로 그대로: 곡이 끝나면 다음 곡을 0.3초 페이드인(`FadeInSeconds`), 설정 볼륨·`MusicBase` 적용 | 웹은 끝나자마자 다음 곡 |
+| 보스 아레나·사망·승리 | 변경 없음. 이 키가 오면 회전이 끝나고, 다음 필드 진입은 hell1부터 다시 | 같음 |
+| 일시정지 창 | 창이 열린 동안 음악이 멈추는 기존 동작은 그대로. 닫으면 멈췄던 회전 곡이 처음부터 다시 나온다(hell1로 되돌아가지 않음) | 해당 없음(웹은 창이 곡을 멈추지 않음) — 차이로 기록 |
+
+구현: `Runtime/Core/NativeBgmRotation.cs`(순수 C#, 셔플 함수 주입), `NativeBgmSelection`(지원 값 9, `ClipFor`·`IsAuto`), `NativeGameMusic.Sync(key,audioKey,rotate)`(회전 곡은 `loop=false`, 끝나면 `Advance`), `NativeGame.UpdateGameMusic`. 숲 바닥음·보스 스냅샷은 계속 스테이지 키(`hell1`/`boss`)를 따른다.
+
+파일(`unity/Assets/Exoduser/Resources/Audio/Bgm/`, 원본은 웹 `bgm/1장_썩은숲/` WAV 48kHz 16bit, 읽기만 했다):
+
+| 파일 | 길이 | 용량 | 통합 라우드니스 | true peak |
+|---|---:|---:|---:|---:|
+| `hell1.mp3`(기준, 기존) | 261.88초 | 6.05MB | -15.98 LUFS | +0.04 dBTP |
+| `hell1_rot_ashes_banner.mp3` | 420.00초 | 10.08MB | -16.24 LUFS | -3.72 dBTP |
+| `hell1_rot_cathedral_steel.mp3` | 288.88초 | 6.93MB | -16.24 LUFS | -3.50 dBTP |
+| `hell1_rot_iron_oath.mp3` | 247.24초 | 5.94MB | -16.24 LUFS | -3.93 dBTP |
+
+세 곡 모두 hell1 기준 -0.26 LU(±1 LU 안), 클리핑 없음. 길이는 원본 WAV와 같다(420.00 / 288.88 / 247.24초). 한 바퀴 총 길이는 hell1 4분 22초 뒤 약 16분이다.
+
+변환(`ffmpeg`, 측정은 `-af loudnorm=I=-16:TP=-1.5:LRA=11:print_format=json -f null -` 분석만, 재생 없음). 원본 측정 통합 라우드니스 -14.94 / -15.38 / -15.19 LUFS → 단순 감쇠 -1.04 / -0.60 / -0.79 dB(hell1 -15.98에 맞춤, 동적 처리 없음):
+
+```
+ffmpeg -y -i "<원본>.wav" -af "volume=<감쇠>dB" -ar 44100 -ac 2 -c:a libmp3lame -b:a 192k <이름>.mp3
+```
+
+`.meta`는 `hell1.mp3.meta`와 importer 설정이 같다(압축 상태로 메모리 적재 = `loadType: 1`, `compressionFormat: 3`, `quality: 0.7`, `preloadAudioData: 0`, `loadInBackground: 1`). GUID는 `c3a17f5e9b2d4608a1e47d90b5c2f836`(ashes_banner), `5e8b0d24f1a74c39b6d2830e7a9c14fd`(cathedral_steel), `a94d62c0e7b84f15983a5d1c60b7e2f3`(iron_oath), `NativeBgmRotation.cs.meta`는 `6b2f90d4a7c14e8d95a3f10c8e7d5b42`이며 저장소(HEAD·origin/unity/main)에서 같은 GUID가 없음을 확인했다.
+
+미확인: 청음 판정(곡 어울림·곡 사이 전환 느낌)은 사용자 귀로 한다. Unity·Player 실행은 하지 않았다. 라이선스(Suno 유료 플랜 여부)는 사용자 확인 항목이라 공개·업로드는 하지 않았다.
 
 ### 키보드 초점 순서 (P42)
 
@@ -393,7 +431,7 @@ Unity는 첫 번째 모습(엑소듀서 전사)만 열려 있고(`CharacterRoste
 | 항목 | 결과 |
 |---|---|
 | 참조 컴파일 `assembly-compile-check.cjs` | 5개 어셈블리 모두 오류 0 (첫 실행은 내 주석이 한 줄 코드를 삼킨 오류 4건 → 원인 수정 뒤 1회 통과) |
-| `options-wave1`(새, `run.cjs`) | 소스 연결 28 + Core 계약 101 PASS (FPS 기본·옛 파일, 언어 저장 왕복·옛 파일·우선순위, 움직임 줄이기 저장, 프리셋 키·언어·옛 슬롯·빈 슬롯·깨진 슬롯·키 맞바꿈·파일 크기, BGM 규칙·목록 노출 6값·숨김 67값·저장 값 보존, 키 초점 43칸을 실제 `PauseNavigation`으로 순회, 라벨 29언어) |
+| `options-wave1`(새, `run.cjs`) | 소스 연결 31 + Core 계약 5098 PASS (11-04 BGM 회전 추가분 포함) (FPS 기본·옛 파일, 언어 저장 왕복·옛 파일·우선순위, 움직임 줄이기 저장, 프리셋 키·언어·옛 슬롯·빈 슬롯·깨진 슬롯·키 맞바꿈·파일 크기, BGM 규칙·목록 노출 9값·숨김 64값·저장 값 보존, BGM 회전(첫 곡 hell1·직전 곡 반복 없음·3곡 순환·곡 선택 시 고정·파일/GUID/importer), 키 초점 43칸을 실제 `PauseNavigation`으로 순회, 라벨 29언어) |
 | `settings-persistence` | all 91 / write 3 / read 2 PASS |
 | `pause-navigation` | 52/52 PASS |
 | `keybind-parity` | 1346검사 0실패 |

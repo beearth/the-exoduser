@@ -92,13 +92,40 @@ static class Program
     for(int i=0;i<NativeBgmSelection.SupportedCount;i++)Check(values.Contains(NativeBgmSelection.SupportedAt(i)),"P30 supported value is in the menu list: "+NativeBgmSelection.SupportedAt(i));
     // The menu lists only supported values, in web order; a saved unsupported value is shown as auto (NativeBgmSelection.Effective) and never rewritten.
     var listed=values.Where(NativeBgmSelection.IsSupported).ToArray();Check(listed.Length==NativeBgmSelection.SupportedCount,"P30 menu shows exactly the supported values");
-    Check(listed.SequenceEqual(new[]{"auto","lobby","hell1","boss","death","victory"}),"P30 listed values keep the web order");
+    Check(listed.SequenceEqual(new[]{"auto","lobby","hell1","t:bgm/1장_썩은숲/Ashes Under the Banner (Remastered).wav","t:bgm/1장_썩은숲/Cathedral of Steel (Remastered).wav","t:bgm/1장_썩은숲/Iron Oath Under Ash (Remastered).wav","boss","death","victory"}),"P30 listed values keep the web order (the three 1-1 rotation songs sit at web list positions 55,56,59 between hell1 and boss)");
     Check(NativeBgmSelection.Effective("hell2")=="auto"&&NativeBgmSelection.Effective("hell1")=="hell1","P30 a saved value outside the list is displayed as auto");
     {var o=new NativeOptionSet();o.BgmTrack="hell3";o.Decode("{\"shake\":40}");Check(o.BgmTrack=="hell3","P30 reading settings keeps an unsupported saved track untouched");Check(o.Encode().Contains("\"bgmTrack\":\"hell3\""),"P30 the saved file value is not overwritten by displaying it as auto");}
     var fallback=values.Where(v=>!NativeBgmSelection.IsSupported(v)).ToArray();Check(fallback.Length==73-NativeBgmSelection.SupportedCount,"P30 every other value is a fallback");
     File.WriteAllText(Path.Combine(root,"bgm-fallback-values.txt"),string.Join("\n",fallback)+"\n");
     foreach(string a15 in new[]{"n.optReduceMotion","m.presetSaved","m.presetLoaded","m.presetEmpty","m.presetFail"}){bool found=false;foreach(var e in entries.EnumerateArray())if(e.GetProperty("key").GetString()==a15){found=true;Check(e.GetProperty("texts").GetArrayLength()==29&&e.GetProperty("texts").EnumerateArray().All(t=>t.GetString().Length>0),"labels: 29 non-empty texts for "+a15);if(a15!="n.optReduceMotion"&&a15!="m.presetFail")Check(e.GetProperty("texts").EnumerateArray().All(t=>t.GetString().Contains("{0}")),"labels: slot placeholder in "+a15);}Check(found,"labels: entry exists "+a15);}
    }}
+  // ---- BGM rotation (1-1 field, BGM select auto): hell1 once, then the three rotation songs shuffled, no immediate repeat, reshuffle after three
+  {Check(NativeBgmRotation.FirstClip=="hell1"&&NativeBgmRotation.TrackCount==3,"BGM rotation: first song hell1, three rotation songs");
+   var clips=new HashSet<string>();for(int i=0;i<3;i++)clips.Add(NativeBgmRotation.TrackAt(i));
+   Check(clips.SetEquals(new[]{"hell1_rot_ashes_banner","hell1_rot_cathedral_steel","hell1_rot_iron_oath"}),"BGM rotation: clip names");
+   foreach(int seed in new[]{1,2,3,7,42,1234,99999})
+   {var rnd=new Random(seed);var rot=new NativeBgmRotation(n=>rnd.Next(n));string prev=rot.Current;Check(prev=="hell1","BGM rotation: seed "+seed+" first song hell1");
+    var played=new List<string>();for(int i=0;i<300;i++){string next=rot.Advance();Check(next!=prev,"BGM rotation: no immediate repeat (seed "+seed+", step "+i+")");Check(next!="hell1","BGM rotation: hell1 is not in the rotation after the first play");played.Add(next);prev=next;}
+    for(int r=0;r<played.Count/3;r++){var round=played.Skip(r*3).Take(3).ToArray();Check(round.Distinct().Count()==3,"BGM rotation: every round plays all three songs once (seed "+seed+", round "+r+")");}
+    rot.Reset();Check(rot.Current=="hell1","BGM rotation: Reset returns to hell1 (next field entry)");}
+   // worst case for the round boundary: the shuffler wants to put the song that just ended first again
+   var worst=new NativeBgmRotation(n=>0);string last=worst.Current;for(int i=0;i<30;i++){string nx=worst.Advance();Check(nx!=last,"BGM rotation: no repeat with an all-zero shuffler, step "+i);last=nx;}
+   var worst2=new NativeBgmRotation(n=>n-1);last=worst2.Current;for(int i=0;i<30;i++){string nx=worst2.Advance();Check(nx!=last,"BGM rotation: no repeat with an all-last shuffler, step "+i);last=nx;}
+   // a chosen song stays fixed: Resolve returns the clip of the picked t: value and never the rotation
+   Check(NativeBgmSelection.IsAuto("auto")&&NativeBgmSelection.IsAuto(null)&&NativeBgmSelection.IsAuto("hell2")&&!NativeBgmSelection.IsAuto("hell1")&&!NativeBgmSelection.IsAuto(NativeBgmSelection.AshesValue),"BGM select: only auto (or an unsupported saved value shown as auto) rotates");
+   Check(NativeBgmSelection.Resolve("hell1",NativeBgmSelection.AshesValue)=="hell1_rot_ashes_banner"&&NativeBgmSelection.Resolve("hell1",NativeBgmSelection.CathedralValue)=="hell1_rot_cathedral_steel"&&NativeBgmSelection.Resolve("hell1",NativeBgmSelection.IronOathValue)=="hell1_rot_iron_oath","BGM select: a chosen t: song plays that file (looped by the host)");
+   Check(NativeBgmSelection.Resolve("boss",NativeBgmSelection.IronOathValue)=="hell1_rot_iron_oath"&&NativeBgmSelection.Resolve("death",NativeBgmSelection.IronOathValue)=="death"&&NativeBgmSelection.Resolve("victory",NativeBgmSelection.AshesValue)=="victory","BGM select: boss follows the chosen song like hell1 (existing rule), death and victory keep their own");
+   Check(NativeBgmSelection.Resolve("hell1","auto")=="hell1"&&NativeBgmSelection.Resolve("boss","auto")=="boss","BGM select: auto still hands hell1 / boss to the rotation host and leaves the arena alone");
+   Check(NativeBgmSelection.ClipFor("hell1")=="hell1"&&NativeBgmSelection.ClipFor("lobby")=="lobby","BGM select: plain keys are their own clip name");
+   // the three clips exist beside hell1 (file contract)
+   string bgmDir=Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Path.GetFullPath(optionsJson)),"..","Audio","Bgm"));
+   var guids=new HashSet<string>();var sets=new List<string>();
+   foreach(string c in new[]{"hell1","hell1_rot_ashes_banner","hell1_rot_cathedral_steel","hell1_rot_iron_oath"})
+   {Check(File.Exists(Path.Combine(bgmDir,c+".mp3"))&&new FileInfo(Path.Combine(bgmDir,c+".mp3")).Length>1000000,"BGM files: "+c+".mp3 exists");
+    Check(File.Exists(Path.Combine(bgmDir,c+".mp3.meta")),"BGM files: "+c+".mp3.meta exists");
+    string meta=File.ReadAllText(Path.Combine(bgmDir,c+".mp3.meta"));var gm=System.Text.RegularExpressions.Regex.Match(meta,"^guid: ([0-9a-f]{32})\\r?$",System.Text.RegularExpressions.RegexOptions.Multiline);
+    Check(gm.Success&&guids.Add(gm.Groups[1].Value),"BGM files: unique 32-hex guid for "+c);sets.Add(System.Text.RegularExpressions.Regex.Replace(meta,"^guid: .*$","",System.Text.RegularExpressions.RegexOptions.Multiline));}
+   Check(sets.Distinct().Count()==1,"BGM files: the importer settings of the three rotation songs equal hell1.mp3.meta");}
   // ---- P42: keyboard focus stops of the key list, walked through the real PauseNavigation
   {Check(NativeKeyFocus.StopCount(21)==43&&NativeKeyFocus.StopCount(19)==39&&NativeKeyFocus.StopCount(0)==0,"P42 stop counts (21 rows, 19 after the web reset quirk)");
    Check(NativeKeyFocus.Row(0)==0&&!NativeKeyFocus.IsSecondary(0)&&NativeKeyFocus.Row(1)==0&&NativeKeyFocus.IsSecondary(1)&&NativeKeyFocus.Row(2)==1&&NativeKeyFocus.Row(41)==20&&NativeKeyFocus.IsSecondary(41),"P42 order = action by action, main then secondary (web DOM order)");

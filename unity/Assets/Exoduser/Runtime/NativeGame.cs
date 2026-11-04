@@ -369,11 +369,12 @@ namespace Exoduser.UnityPort
             // Settings > Sound > BGM select (web optBgmTrack): the chosen song replaces the stage song; beds and the boss snapshot still follow the stage key.
             string track=settings!=null?settings.Options.BgmTrack:NativeOptionSet.BgmTrackDefault;
             string audio=NativeBgmSelection.Resolve(key,track);
+            bool autoBgm=NativeBgmSelection.IsAuto(track);
             if(!menu)settingsBgmPreview=false;
             // The web plays a newly chosen song right away; while the pause window is open the stage key is not wanted, so the preview plays it anyway.
             else if(key.Length==0&&settingsBgmPreview&&Simulation!=null&&!(lobby!=null&&lobby.IsBlocking))audio=NativeBgmSelection.Resolve(StageMusicKey(),track);
             if(audio.Length>0&&music.Wanted.Length==0)lobby?.StopStageMusic();   // the lobby's startup stage music hands over to the game BGM
-            music.Sync(key,audio);music.Tick(Time.unscaledDeltaTime);ambient.Tick(Time.unscaledDeltaTime);
+            music.Sync(key,audio,autoBgm);music.Tick(Time.unscaledDeltaTime);ambient.Tick(Time.unscaledDeltaTime);
         }
         // sounds the host owes the Core's fight timeline: P1 entry (staff taps, root pillars rise), spaced in ticks after the boss intro
         void DispatchFeedback()

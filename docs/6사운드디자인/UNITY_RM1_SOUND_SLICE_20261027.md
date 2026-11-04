@@ -18,6 +18,7 @@
 | 영역 | 웹(기준) | Unity 지금 |
 |---|---|---|
 | 1-1 탐험 BGM | `hell1` = `bgm/1장_썩은숲/Ashes of the Fallen Gate.mp3` | 없음(로비·시작 오디오만) |
+| 1-1 탐험 BGM 회전(11-04 추가) | 웹은 hell1 1회 뒤 gameplay 큐 무작위 | hell1 1회 → `hell1_rot_ashes_banner`·`hell1_rot_cathedral_steel`·`hell1_rot_iron_oath` 3곡 셔플 순환(직전 곡 반복 없음, BGM 선택 auto일 때만). 상세 `UNITY_PAUSE_OPTIONS_PARITY_20261104.md` "BGM 회전" |
 | 보스전 BGM | 드루이드 아레나 진입 → `boss` = `bgm/공통/boss.mp3`. 처치 후 `victory`, 사망 `death` | 없음 |
 | 숲 환경음 | `amb_hell_forest_bed`: `hell1`일 때 루프, gain .15×sfxVol, 다른 키에서는 800ms 페이드 정지(SND-02) | 없음 |
 | 적 피격 | `hurtE`: `_hitSfxForEtype(e.etype)`의 key·pitch를 vol .3으로 재생, 쿨다운 8f(`_hitSfxCd`) | 없음 |
