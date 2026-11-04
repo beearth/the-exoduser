@@ -13,10 +13,10 @@
 | 선택 | 장점 | 단점 | 판단 |
 |---|---|---|---|
 | **A. Unity 유지** | Core 규칙 C# 18,320줄·oracle 도구 122개가 그대로 산다 [코드]. 씬·프리팹이 텍스트(YAML)라 AI가 읽고 diff·병합 가능. unity-mcp 이미 연결 [코드]. Mac에서 Windows 빌드 가능(Mono) [추정]. 전환 비용 0 | URP에 볼류메트릭 안개·실시간 GI가 내장돼 있지 않다 → 지금처럼 커스텀(HellFogFeature 등)을 계속 짜야 한다 [코드]. 사용자가 본 "쓰레기 광원·안개"가 이 커스텀 경로에서 나왔다 | 화면 문제의 원인이 엔진이 아니라 제작법이면 이게 맞다 |
-| **B. 즉시 UE5 전환** | Lumen(실시간 GI)·Exponential Height Fog+Volumetric Fog·Niagara가 기본 탑재 → "광원·안개·대기"의 바닥 품질이 높다 [확인]. 팬텀블레이드 제로·Titan Quest II가 UE5 [확인](황천은 [미확인]). UE 5.8에 Epic 공식 MCP 플러그인(실험적)이 들어와 AI 연동이 Unity와 비슷한 수준이 됐다 [확인, §4.1]. 화면 작업이 동결된 지금이 전환 비용 최저 시점 | Core 이식(C#→C++) + oracle 재검증, UI·세이브·번역 재작성: **6~12주** [추정]. 에셋이 바이너리(.uasset)라 AI가 diff·리뷰 못 함. C++ 빌드가 느리고 Mac→Windows 패키징 불가로 판정 루프가 길어진다 [추정]. **4주 안에 엔진 3번째 교체**(H5→FDG/Godot→Unity→UE). **UE5.8이 UE5 마지막 메이저, UE6(UE5+UEFN 통합, Verse 중심) 얼리액세스 2027 말** → 지금 UE5로 가면 2028~29년에 또 한 번 이주 판단이 온다 [확인, §4.2] | 근거 없이 바꾸면 "엔진 바꾸면 나아진다"를 또 한 번 시험하는 셈 |
+| **B. 즉시 UE5 전환** | Lumen(실시간 GI)·Exponential Height Fog+Volumetric Fog·Niagara가 기본 탑재 → "광원·안개·대기"의 바닥 품질이 높다 [확인]. 팬텀블레이드 제로·Titan Quest II가 UE5 [확인](황천은 UE5 자기 신고 1건·세부 미확인). UE 5.8에 Epic 공식 MCP 플러그인(실험적)이 들어와 AI 연동이 Unity와 비슷한 수준이 됐다 [확인, §4.1]. 화면 작업이 동결된 지금이 전환 비용 최저 시점 | Core 이식(C#→C++) + oracle 재검증, UI·세이브·번역 재작성: **6~12주** [추정]. 에셋이 바이너리(.uasset)라 AI가 diff·리뷰 못 함. C++ 빌드가 느리고 Mac→Windows 패키징 불가로 판정 루프가 길어진다 [추정]. **4주 안에 엔진 3번째 교체**(H5→FDG/Godot→Unity→UE). **UE5.8이 UE5 마지막 메이저, UE6(UE5+UEFN 통합, Verse 중심) 얼리액세스 2027 말** → 지금 UE5로 가면 2028~29년에 또 한 번 이주 판단이 온다 [확인, §4.2] | 근거 없이 바꾸면 "엔진 바꾸면 나아진다"를 또 한 번 시험하는 셈 |
 | **C. 실험 후 결정 (권고)** | 같은 1-1 키샷을 같은 시간·같은 에셋으로 두 엔진에서 만들어 **눈으로 비교**한 뒤 정한다. 지금은 어차피 연구 기간(DIRECTION_RESET)이라 개발 손실이 적다 | 2주(작업 10일)와 Mac·사용자 시간 소모. UE 설치·Epic 로그인 등 사용자 손이 필요 | 되돌리기 어려운 결정을 증거로 내린다 |
 
-**엔진 선택 vs 제작 방식 — 황천이 주는 교훈.** 황천(Steam 5024530 《黄天逆途》, 望虚社)은 **11인·약 2년·외부 투자 0**으로 그 분위기를 냈다 [확인: 3DM·游民星空 보도, 기간 약 2년은 CX3 `codex_yellowsky.md`(CTO 전달)]. **엔진은 미확인(단일 출처)**이다 — UE5라는 근거는 indienova 모집글 103287 하나뿐이고(PC Codex CX25 `codex_yellowsky_cn.md`, 원문 재확인 실패), 이 세션이 찾은 해외 트레일러 모음 기사 1건도 출처가 불분명하다. "완전 3D 실시간"·Lumen·Height/Volumetric Fog 사용도 입증 원문이 없다. 개발사 발언·Steam·중국어 보도(3DM·游民星空·17173·B站)에는 엔진 언급이 없다. Mac에서 원문을 확인 중이다. **이 문서의 유지·전환 논거는 황천의 엔진에 기대지 않는다. 분위기 목표는 엔진과 분리해 K1 비교판(같은 장면·같은 시간)으로만 평가한다.** 어느 엔진이든 확실한 것은 **작은 팀이 분위기를 낸 힘은 아트 방향·조명 판단·반복 제작에서 나왔다**는 점이고, 이것은 엔진을 바꿔도 우리가 따로 갖춰야 한다.
+**엔진 선택 vs 제작 방식 — 황천이 주는 교훈.** 황천(Steam 5024530 《黄天逆途》, 望虚社)은 **11인·약 2년·외부 투자 0**으로 그 분위기를 냈다 [확인: 3DM·游民星空 보도, 기간 약 2년은 CX3 `codex_yellowsky.md`(CTO 전달)]. **엔진은 UE5(개발사 모집글 1건, 2024-09)·세부 미확인**이다 — 2024-09-29 개발사 모집글 원문에 `引擎：虚幻5`(Mac 직접 열람, https://indienova.com/groups/post/103287). UE5 자기 신고 1건이며, 지금도 UE5인지·5.x 버전·Lumen/Nanite·렌더 방식은 미확인이다. "UE5라서 그 화면"은 증명되지 않았다. "완전 3D 실시간"·Lumen·Height/Volumetric Fog 사용도 입증 원문이 없다. 개발사 발언·Steam·중국어 보도(3DM·游民星空·17173·B站)에는 엔진 언급이 없다. **이 문서의 유지·전환 논거는 황천의 엔진에 기대지 않는다. 분위기 목표는 엔진과 분리해 K1 비교판(같은 장면·같은 시간)으로만 평가한다.** 어느 엔진이든 확실한 것은 **작은 팀이 분위기를 낸 힘은 아트 방향·조명 판단·반복 제작에서 나왔다**는 점이고, 이것은 엔진을 바꿔도 우리가 따로 갖춰야 한다.
 
 **"요즘 언리얼이 AI 친화적"은 어디까지 사실인가(§4.1 상세).** 부분적으로 사실이다. UE 5.7에 에디터 내장 AI Assistant(문서·C++ 도움), **UE 5.8(2026-06)에 Epic 공식 MCP 플러그인(실험적, 로컬 전용)**, UE6에 Claude·Gemini 통합 발표 [확인/1건]. 하지만 Unity도 같은 기간에 Unity AI(6.2)와 **공식 Unity CLI의 `unity mcp`**를 냈고, 우리는 이미 unity-mcp를 쓰고 있다. **결정적 차이는 MCP가 아니라 자산 형식이다** — Unity는 씬·프리팹·머티리얼이 텍스트(YAML)라 Claude·Codex가 파일을 직접 읽고 고치고 diff로 리뷰할 수 있고, UE는 .uasset 바이너리라 반드시 에디터(MCP·Python)를 거쳐야 하며 변경 리뷰가 캡처로만 된다. **우리 방식(텍스트 수정·커밋 리뷰·Mac 무창 캡처)에는 지금도 Unity가 더 맞다.** UE의 AI 연동은 "에디터를 원격 조작"하는 방식이라, 판정용 Mac에 에디터를 띄워 둔 상태가 전제다.
 
@@ -53,7 +53,7 @@
 
 | 게임 | 엔진 | 근거 | 등급 |
 |---|---|---|---|
-| **Downfall of Yellow Sky / 黄天逆途** (Steam 5024530, 望虚社 HypoFront Studio, 11인·약 2년·외부 투자 0, 미출시·2026-08 Steam 페이지 공개, 정식까지 1년 이상) | **미확인** | "Unreal Engine 5"라고 적은 곳은 해외 트레일러 모음 1건뿐: https://mastersingaming.com/2026/08/16/all-new-biggest-game-trailer-reveals-and-exclusive-previews-from-august-2026/ (사실로 쓰지 않음). 중국어 보도에는 엔진 언급 없음: https://www.3dmgame.com/news/202607/3949217.html · https://www.gamersky.com/news/202607/2177567.shtml · https://news.17173.com/content/07262026/220026468.shtml · B站 실기 영상 https://www.bilibili.com/video/BV19C356bEhm/ · Steam https://store.steampowered.com/app/5024530/_/ | **[미확인(단일 출처)]** — UE5 근거는 indienova 모집글 103287 하나(CX25, 원문 재확인 실패). Lumen·볼류메트릭 안개 사용 입증 없음. Mac 원문 확인 결과 오면 반영 |
+| **Downfall of Yellow Sky / 黄天逆途** (Steam 5024530, 望虚社 HypoFront Studio, 11인·약 2년·외부 투자 0, 미출시·2026-08 Steam 페이지 공개, 정식까지 1년 이상) | **UE5(개발사 모집글 1건, 2024-09)·세부 미확인** | "Unreal Engine 5"라고 적은 곳은 해외 트레일러 모음 1건뿐: https://mastersingaming.com/2026/08/16/all-new-biggest-game-trailer-reveals-and-exclusive-previews-from-august-2026/ (사실로 쓰지 않음). 중국어 보도에는 엔진 언급 없음: https://www.3dmgame.com/news/202607/3949217.html · https://www.gamersky.com/news/202607/2177567.shtml · https://news.17173.com/content/07262026/220026468.shtml · B站 실기 영상 https://www.bilibili.com/video/BV19C356bEhm/ · Steam https://store.steampowered.com/app/5024530/_/ | **[1건]** — 개발사 모집글 원문 `引擎：虚幻5`(2024-09-29) https://indienova.com/groups/post/103287 (Mac 직접 열람). 현재 유지·버전·Lumen/Nanite·렌더 방식 미확인 |
 | Phantom Blade Zero (S-GAME) — 임팩트 기준작 | Unreal Engine 5 | Steam 페이지 "Built in Unreal Engine 5": https://store.steampowered.com/app/4115450 · PCGH 벤치: https://www.pcgameshardware.de/Phantom-Blade-Zero-Spiel-74287/Specials/CPU-GPU-Benchmark-Performance-Fps-1557577/ · https://en.wikipedia.org/wiki/Phantom_Blade_Zero | [확인] |
 | Titan Quest II (Grimlore) — 탑다운 ARPG | Unreal Engine 5 | https://en.wikipedia.org/wiki/Titan_Quest_II · https://www.neowin.net/amp/thq-nordic-unveils-titan-quest-ii-a-sequel-being-built-on-unreal-engine-5/ | [확인] |
 | **No Rest for the Wicked** (Moon Studios) — 보스 동작 기준작 | **Unity 개조판**("Moonity") + 자체 렌더·조명 | 80.lv 인터뷰: https://80.lv/articles/interview-inside-the-tech-and-artistic-inspirations-of-no-rest-for-the-wicked-from-moon-studios · ResetEra 요약 | [확인] |
@@ -63,7 +63,7 @@
 | Diablo IV | Blizzard 자체 엔진(공식 명칭 미공개) | https://primagames.com/?p=137593 | [1건] |
 | Path of Exile 2 | GGG 자체 엔진 | Steam 토론 1건뿐 | [미확인] |
 
-**읽는 법:** 우리가 닮고 싶은 분위기(동양 수묵·안개·대기광)의 중국 게임 중 팬텀블레이드 제로는 UE5가 확실하고, 황천은 엔진 미확인이다. 하지만 같은 탑다운 ARPG의 품질 상위작은 자체 엔진(D4·PoE2)과 Unity 개조(NRftW)도 있다. **엔진이 분위기를 정하지 않는다. 엔진은 "기본으로 주는 것"과 "직접 만들어야 하는 것"의 경계를 정한다.**
+**읽는 법:** 우리가 닮고 싶은 분위기(동양 수묵·안개·대기광)의 중국 게임 중 팬텀블레이드 제로는 UE5가 확실하고, 황천은 UE5 자기 신고 1건(2024-09)뿐이며 세부는 미확인이다. 하지만 같은 탑다운 ARPG의 품질 상위작은 자체 엔진(D4·PoE2)과 Unity 개조(NRftW)도 있다. **엔진이 분위기를 정하지 않는다. 엔진은 "기본으로 주는 것"과 "직접 만들어야 하는 것"의 경계를 정한다.**
 
 ---
 
@@ -235,7 +235,7 @@ AI 에이전트 작업 방식(전환 시): 브리프 파일 + 금지사항(Core 
 ---
 
 ## 9. 남은 확인 (실험 D1에 사람이 원문으로 확인)
-1. 황천(黄天逆途) 엔진 1차 출처(개발사 B站 개발 일지·Steam 시스템 요구사항·크레딧). 확인 전까지 "미확인".
+1. 황천(黄天逆途): UE5는 개발사 모집글(2024-09) 1건으로 확인. 현재도 UE5인지·5.x 버전·Lumen/Nanite·렌더 방식은 미확인(Steam 시스템 요구사항·B站 개발 일지·크레딧으로 확인).
 6. UE 5.8 Unreal MCP 플러그인 공식 릴리스 노트 원문(실험적 범위, 헤드리스·무창 모드에서 동작 여부).
 7. UE6에서 C++ Actor 기반 프로젝트의 이주 경로(Epic 공식 문구).
 2. UE 최신판의 macOS·Xcode 요구사항, Lumen/Nanite Mac 지원 수준 원문.
