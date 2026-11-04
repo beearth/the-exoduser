@@ -68,6 +68,7 @@ namespace Exoduser.UnityPort
                     case StageEventKind.BossDefeated:
                         WorldTextAdd(p.X, p.Y - 40, "출구가 열렸다!", "The exit is open!", new Color(.5f, .85f, .55f), 2.6f); break;
                     case StageEventKind.ExitOpened:
+                        if (Simulation.Config.StageIndex == 0 && petBubbleExitWait < 0) petBubbleExitWait = 0;   // STY-25 B8/B9 clock
                         Toast(NativeDemoText.Get("보스 처치 · 출구가 열렸다",lobby.Language)); break;
                     case StageEventKind.StageCleared:
                         // 완료 보상은 아래 실제 이벤트 틱의 SP 변화로 한 번 표시한다.
@@ -168,7 +169,7 @@ namespace Exoduser.UnityPort
             Fill(new Rect(x - 1, y - 4, 2, 8), c); Fill(new Rect(x - 3, y - 2, 6, 4), c); Fill(new Rect(x - 4, y - 1, 8, 2), c);
         }
         // STG[si].kr = HELL_THEMES[hell][0].kr + ' ' + (floor+1) + '구역'. Unity has one chapter (stage 0) so far.
-        string StageSubtitle(int si) { return si == 0 ? (English ? "Rotten Forest Zone 1" : "썩은 숲 1구역") : ""; }
+        string StageSubtitle(int si) { return si == 0 ? NativeDemoText.Get("썩은 숲의 숲지기", lobby.Language) : ""; }   // STY-25 B2 No.4288 (1-1 boss card)
 
         // "다음 구역으로 ▶": the next area (1-2) is not ported, so the run is saved and the player returns to the lobby.
         void StageClearNext()

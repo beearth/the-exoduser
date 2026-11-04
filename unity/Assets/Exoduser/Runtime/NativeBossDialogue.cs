@@ -5,17 +5,17 @@ namespace Exoduser.UnityPort
  // Web #bossLine: bottom19%, max860px, silver hairlines, serif body, 3.2s.
  public sealed class NativeBossDialogue
  {
-  string key;float since;Texture2D band,line;GUIStyle body,name;
-  public bool Active{get{return key!=null&&Time.unscaledTime-since<3.2f;}}
+  string key;float since,dur=3.2f;Texture2D band,line;GUIStyle body,name;
+  public bool Active{get{return key!=null&&Time.unscaledTime-since<dur;}}
   public void Reset(){key=null;}
-  public void Show(string lineKey){key=lineKey;since=Time.unscaledTime;}
+  public void Show(string lineKey,float seconds=3.2f){key=lineKey;since=Time.unscaledTime;dur=seconds;}
   public void Dispose(){if(band!=null)Object.Destroy(band);if(line!=null)Object.Destroy(line);}
   public void Draw(string locale,string bossName)
   {
    if(!Active)return;string text=NativeDemoText.BossLine(key,locale);if(string.IsNullOrEmpty(text))return;
    if(body==null){body=new GUIStyle(GUIStyle.none){font=NativeSilverHellUi.Font(true),fontSize=21,alignment=TextAnchor.MiddleCenter,wordWrap=true,clipping=TextClipping.Clip};name=new GUIStyle(body){font=Resources.Load<Font>("Art/fonts/Cinzel-VariableFont_wght")??body.font,fontSize=11,wordWrap=false};}
    if(band==null){band=NativeSilverHellUi.Effect(256,1,(x,y)=>{float f=Mathf.Clamp01(Mathf.Min(x,1-x)/.16f);return new Color(7/255f,6/255f,6/255f,.74f*f);});line=NativeSilverHellUi.Effect(256,1,(x,y)=>new Color(146/255f,149/255f,149/255f,.5f*Mathf.Sin(Mathf.PI*x)));}
-   float age=(Time.unscaledTime-since)/3.2f,alpha=age<.14f?Mathf.SmoothStep(0,1,age/.14f):age<=.78f?1:1-Mathf.SmoothStep(0,1,(age-.78f)/.22f);
+   float age=(Time.unscaledTime-since)/dur,alpha=age<.14f?Mathf.SmoothStep(0,1,age/.14f):age<=.78f?1:1-Mathf.SmoothStep(0,1,(age-.78f)/.22f);
    float shift=age<.14f?8*(1-alpha):age>.78f?-4*(1-alpha):0;
    float width=Mathf.Min(NativeUiViewport.ScreenInDesign.width*.8f,860),inner=width-112;
    var fitted=NativeDemoText.Style(body,text);float height=Mathf.Max(32,fitted.CalcHeight(new GUIContent(text),inner));

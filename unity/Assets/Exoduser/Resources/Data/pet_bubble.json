@@ -140,6 +140,18 @@
       "pairWho": "",
       "pairKey": "",
       "pairSeconds": 0
+    },
+    {
+      "id": "exit_north_ch0",
+      "tier": 0,
+      "weight": 0,
+      "who": "crow",
+      "key": "…북쪽은 밭이다. 무얼 키우는지는 묻지 마.",
+      "seconds": 4,
+      "cooldown": 99999,
+      "pairWho": "cat",
+      "pairKey": "냄새부터 최악이야. 빨리 지나가자.",
+      "pairSeconds": 4
     }
   ],
   "entries": [
@@ -587,6 +599,74 @@
         "Πέρα από εκείνο το δέντρο. Ο Φύλακας του Δάσους περιμένει.",
         "Отвъд онова дърво е. Пазачът на гората чака.",
         "Di sebalik pokok itu. Penjaga hutan sedang menunggu."
+      ]
+    },
+    {
+      "key": "…북쪽은 밭이다. 무얼 키우는지는 묻지 마.",
+      "texts": [
+        "…북쪽은 밭이다. 무얼 키우는지는 묻지 마.",
+        "…North of here lies a field. Don't ask what it grows.",
+        "…北边是一片田地。别问它种的是什么。",
+        "…北は畑だ。何を育てているかは訊くな。",
+        "…Al norte hay un campo. No preguntes qué cultiva.",
+        "…北邊是一片田地。別問它種的是什麼。",
+        "…К северу поле. Не спрашивай, что на нём растёт.",
+        "…Im Norden liegt ein Feld. Frag nicht, was dort wächst.",
+        "…Ao norte há um campo. Não pergunte o que ele cultiva.",
+        "…Au nord s’étend un champ. Ne demande pas ce qu’on y cultive.",
+        "…Na północy leży pole. Nie pytaj, co na nim rośnie.",
+        "…A nord c’è un campo. Non chiedere cosa coltiva.",
+        "…На північ — поле. Не питай, що на ньому росте.",
+        "…Kuzeyde bir tarla var. Ne yetiştirdiğini sorma.",
+        "…Phía bắc là một cánh đồng. Đừng hỏi nó trồng gì.",
+        "…ทางเหนือเป็นทุ่งนา อย่าถามว่าปลูกอะไร",
+        "…Di utara ada ladang. Jangan tanya apa yang ditanam.",
+        "…إلى الشمال حقل. لا تسأل ماذا يُزرع فيه.",
+        "…Norr om här ligger ett fält. Fråga inte vad det odlar.",
+        "…Mod nord ligger en mark. Spørg ikke, hvad den dyrker.",
+        "…Mot nord ligger en åker. Ikke spør hva den dyrker.",
+        "…Pohjoisessa on pelto. Älä kysy, mitä siinä kasvatetaan.",
+        "…Na sever leží pole. Neptej se, co se na něm pěstuje.",
+        "…Északra egy szántóföld van. Ne kérdezd, mit termel.",
+        "…La nord se află un câmp. Nu întreba ce crește pe el.",
+        "…Ten noorden ligt een akker. Vraag niet wat erop groeit.",
+        "…Βόρεια υπάρχει ένα χωράφι. Μη ρωτάς τι καλλιεργεί.",
+        "…На север има поле. Не питай какво отглежда.",
+        "…Di utara ada sebuah ladang. Jangan tanya apa yang ditanam."
+      ]
+    },
+    {
+      "key": "냄새부터 최악이야. 빨리 지나가자.",
+      "texts": [
+        "냄새부터 최악이야. 빨리 지나가자.",
+        "It already smells awful. Let's get through quickly.",
+        "光是味道就糟透了。快点过去吧。",
+        "もう臭いが最悪。さっさと通り抜けよう。",
+        "Ya huele fatal. Pasemos rápido.",
+        "光是味道就糟透了。快點過去吧。",
+        "Уже воняет жутко. Давай пройдём побыстрее.",
+        "Es riecht jetzt schon furchtbar. Lass uns schnell durchgehen.",
+        "Já cheira horrível. Vamos passar logo.",
+        "Ça sent déjà atroce. Traversons vite.",
+        "Już śmierdzi okropnie. Przejdźmy szybko.",
+        "Già puzza in modo orribile. Passiamo in fretta.",
+        "Уже тхне жахливо. Пройдімо швидше.",
+        "Şimdiden berbat kokuyor. Çabuk geçelim.",
+        "Mùi đã kinh khủng rồi. Qua nhanh thôi.",
+        "กลิ่นก็แย่สุดแล้ว รีบผ่านไปกันเถอะ",
+        "Baunya saja sudah mengerikan. Ayo lewati cepat.",
+        "رائحته سيئة أصلًا. لنعبر بسرعة.",
+        "Det luktar redan hemskt. Vi går snabbt förbi.",
+        "Det lugter allerede forfærdeligt. Lad os komme hurtigt igennem.",
+        "Det lukter allerede forferdelig. La oss komme raskt gjennom.",
+        "Haisee jo kamalalta. Mennään nopeasti läpi.",
+        "Už teď strašně smrdí. Projděme rychle.",
+        "Már most borzasztó a szaga. Menjünk át gyorsan.",
+        "Miroase deja îngrozitor. Hai să trecem repede.",
+        "Het stinkt nu al afschuwelijk. Laten we er snel doorheen gaan.",
+        "Μυρίζει ήδη απαίσια. Ας περάσουμε γρήγορα.",
+        "Вече мирише ужасно. Да минем бързо.",
+        "Baunya sudah teruk. Mari lalu dengan cepat."
       ]
     }
   ]

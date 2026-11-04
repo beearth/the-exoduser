@@ -103,6 +103,14 @@
     {
       "key": "die13",
       "text": "…아직… 다 먹지 못했다."
+    },
+    {
+      "key": "life1",
+      "text": "…껍질쯤이야. 숲이 또 입혀 준다."
+    },
+    {
+      "key": "life2",
+      "text": "…이 숨은 내 것이다. 아무도 못 거둔다."
     }
   ],
   "entries": [
@@ -1266,7 +1274,7 @@
       "key": "새 거름이 떨어졌군.",
       "texts": [
         "새 거름이 떨어졌군.",
-        "Fresh compost has fallen.",
+        "Fresh compost, dropped right in.",
         "新的肥料落下来了。",
         "新しい肥やしが落ちてきたな。",
         "Ha caído abono nuevo.",
@@ -2858,6 +2866,108 @@
         "Σφαίρα μοχθηρίας",
         "Кълбо злоба",
         "Sfera kedengkian"
+      ]
+    },
+    {
+      "key": "썩은 숲의 숲지기",
+      "texts": [
+        "썩은 숲의 숲지기",
+        "Warden of the Rotten Forest",
+        "腐朽森林的守林人",
+        "腐った森の森守",
+        "Guardián del Bosque Podrido",
+        "腐朽森林的守林人",
+        "Страж Гнилого леса",
+        "Wächter des faulenden Waldes",
+        "Guardião da Floresta Podre",
+        "Gardien de la forêt pourrie",
+        "Strażnik Zgniłego Lasu",
+        "Custode della Foresta Marcia",
+        "Вартовий Гнилого лісу",
+        "Çürümüş Ormanın Bekçisi",
+        "Người Canh Giữ Rừng Thối",
+        "ผู้พิทักษ์ป่าเน่า",
+        "Penjaga Hutan Busuk",
+        "حارس الغابة المتعفنة",
+        "Väktare av den ruttna skogen",
+        "Vogter af den rådne skov",
+        "Vokter av den råtne skogen",
+        "Mätänneen metsän vartija",
+        "Strážce prohnilého lesa",
+        "A rothadó erdő őrzője",
+        "Păzitorul Pădurii Putrede",
+        "Bewaker van het rotte bos",
+        "Φύλακας του Σάπιου Δάσους",
+        "Пазителят на Гнилата гора",
+        "Penjaga Hutan Busuk"
+      ]
+    },
+    {
+      "key": "…껍질쯤이야. 숲이 또 입혀 준다.",
+      "texts": [
+        "…껍질쯤이야. 숲이 또 입혀 준다.",
+        "…Only a husk. The forest will clothe me again.",
+        "…不过是层壳。森林会再给我披上。",
+        "…殻の一枚くらい。森がまた着せてくれる。",
+        "…Solo una cáscara. El bosque volverá a vestirme.",
+        "…不過是層殼。森林會再替我披上。",
+        "…Всего лишь скорлупа. Лес оденет меня снова.",
+        "…Nur eine Hülle. Der Wald kleidet mich wieder ein.",
+        "…É só uma casca. A floresta me vestirá de novo.",
+        "…Une simple carapace. La forêt m’en revêtira de nouveau.",
+        "…To tylko skorupa. Las odzieje mnie na nowo.",
+        "…Solo un guscio. La foresta mi rivestirà ancora.",
+        "…Лише лушпиння. Ліс знову мене зодягне.",
+        "…Sadece bir kabuk. Orman beni yine giydirir.",
+        "…Chỉ là cái vỏ thôi. Khu rừng sẽ lại khoác cho ta.",
+        "…แค่เปลือกเท่านั้น ป่าจะสวมให้ข้าอีก",
+        "…Hanya cangkang. Hutan akan mengenakannya lagi padaku.",
+        "…مجرد قشرة. الغابة ستكسوني من جديد.",
+        "…Bara ett skal. Skogen klär på mig ett nytt.",
+        "…Bare et skal. Skoven klæder mig på igen.",
+        "…Bare et skall. Skogen kler på meg et nytt.",
+        "…Pelkkä kuori. Metsä pukee minut uudelleen.",
+        "…Jen slupka. Les mě znovu oděje.",
+        "…Csak egy héj. Az erdő újra felöltöztet.",
+        "…Doar o carapace. Pădurea mă va îmbrăca din nou.",
+        "…Slechts een schil. Het bos kleedt me opnieuw.",
+        "…Μόνο ένα κέλυφος. Το δάσος θα με ντύσει ξανά.",
+        "…Само черупка. Гората пак ще ме облече.",
+        "…Hanya sebuah cengkerang. Hutan akan menyarungkan aku semula."
+      ]
+    },
+    {
+      "key": "…이 숨은 내 것이다. 아무도 못 거둔다.",
+      "texts": [
+        "…이 숨은 내 것이다. 아무도 못 거둔다.",
+        "…This breath is mine. No one reaps it.",
+        "…这口气是我的。谁也收割不走。",
+        "…この息は私のものだ。誰にも刈らせない。",
+        "…Este aliento es mío. Nadie lo cosecha.",
+        "…這口氣是我的。誰也收割不走。",
+        "…Это дыхание моё. Никто его не пожнёт.",
+        "…Dieser Atem gehört mir. Niemand erntet ihn.",
+        "…Este fôlego é meu. Ninguém o colhe.",
+        "…Ce souffle est à moi. Personne ne le moissonne.",
+        "…Ten oddech jest mój. Nikt go nie zbierze.",
+        "…Questo respiro è mio. Nessuno lo miete.",
+        "…Цей подих мій. Ніхто його не пожне.",
+        "…Bu nefes benim. Kimse onu biçemez.",
+        "…Hơi thở này là của ta. Không ai gặt được nó.",
+        "…ลมหายใจนี้เป็นของข้า ไม่มีใครเก็บเกี่ยวมันได้",
+        "…Napas ini milikku. Tak seorang pun bisa menuainya.",
+        "…هذا النفس لي. لا أحد يحصده.",
+        "…Den här andedräkten är min. Ingen skördar den.",
+        "…Dette åndedrag er mit. Ingen høster det.",
+        "…Dette åndedraget er mitt. Ingen høster det.",
+        "…Tämä henkäys on minun. Kukaan ei sitä niitä.",
+        "…Tento dech je můj. Nikdo ho nesklidí.",
+        "…Ez a lélegzet az enyém. Senki sem aratja le.",
+        "…Această suflare e a mea. Nimeni nu o culege.",
+        "…Deze adem is van mij. Niemand oogst hem.",
+        "…Αυτή η πνοή είναι δική μου. Κανείς δεν τη θερίζει.",
+        "…Този дъх е мой. Никой не го жъне.",
+        "…Nafas ini milikku. Tiada siapa boleh menuainya."
       ]
     }
   ],

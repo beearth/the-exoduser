@@ -10,7 +10,8 @@ namespace Exoduser.UnityPort
   int petBubbleTick=-1,petBubbleStage=-1;
   // Run-level (new Simulation only): chapter-0 boss intro / forest ambience are one-shot per run, like web _petBossIntroSeen.
   float petBubbleFieldSeconds;
-  bool petBubbleArena,petBubbleBossSeen,petBubbleEnvSeen;
+  bool petBubbleArena,petBubbleBossSeen,petBubbleEnvSeen,petBubbleExitSeen;
+  float petBubbleExitWait=-1;   // seconds since the exit opened (STY-25 B8/B9), -1 = not opened this run
   bool petBubbleFixtureActive,petBubbleFixtureOwnsQueue;
   bool PetBubbleHidden=>Simulation==null||lobby==null||lobby.IsBlocking||menu||!gameFocused||
    inventory.Open||skills.Open||stats.Open||forge.Open||nextDifficulty.Active||stageClear.Active||
@@ -22,7 +23,7 @@ namespace Exoduser.UnityPort
   }
   void ResetPetBubbleRun()
   {
-   petBubbleRun=null;petBubbleFieldSeconds=0;petBubbleBossSeen=petBubbleEnvSeen=false;
+   petBubbleRun=null;petBubbleFieldSeconds=0;petBubbleBossSeen=petBubbleEnvSeen=petBubbleExitSeen=false;petBubbleExitWait=-1;
   }
   void UpdatePetBubble()
   {
@@ -51,12 +52,15 @@ namespace Exoduser.UnityPort
     if(!petBubbleBossSeen&&flow.BossAlive&&NativePetBubblePolicy.BossReady(flow.InArena,flow.Boss!=null,actorAlive))
      petBubble.Offer(NativePetBubbleCatalog.Cue("boss_intro_ch0"));
    }
+   if(petBubbleExitWait>=0)petBubbleExitWait+=seconds;
+   // STY-25 B8/B9: once per run, 4 s after the exit opened (after the boss-kill line B7 has run), only when no other bubble is up
+   if(!petBubbleExitSeen&&petBubbleStage==0&&petBubbleExitWait>=4&&!petBubble.Active)petBubble.Offer(NativePetBubbleCatalog.Cue("exit_north_ch0"));
    double ratio=Simulation.Player.MaxHp>0?Simulation.Player.Hp/Simulation.Player.MaxHp:1;
    if(ratio<.1)petBubble.Offer(NativePetBubbleCatalog.Cue("hp_critical"));
    else if(ratio<.3)petBubble.Offer(NativePetBubbleCatalog.Cue("crisis_hp30"));
    else if(ratio<.5)petBubble.Offer(NativePetBubbleCatalog.Cue("warn_hp50"));
    var shown=petBubble.Dispatch();
-   if(shown!=null){if(shown.id=="env_ch0")petBubbleEnvSeen=true;if(shown.id=="boss_intro_ch0")petBubbleBossSeen=true;}
+   if(shown!=null){if(shown.id=="env_ch0")petBubbleEnvSeen=true;if(shown.id=="boss_intro_ch0")petBubbleBossSeen=true;if(shown.id=="exit_north_ch0")petBubbleExitSeen=true;}
   }
   void DrawPetBubble()
   {
