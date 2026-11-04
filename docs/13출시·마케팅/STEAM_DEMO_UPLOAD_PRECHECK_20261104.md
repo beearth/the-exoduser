@@ -3,7 +3,7 @@
 대상: 체험판 앱 **5337590**, Depot 5337591, Windows x64. CTO가 배정했다(데모 v0 ④).
 
 - 모든 대조는 파일을 읽기만 해서 했다. steamcmd 실행·로그인·업로드, Steamworks 설정 변경은 하지 않았다.
-- 소스 기준: origin/unity/main `850dd6f6f`, flavor 브랜치 `origin/codex/unity-demo-flavor-20261103` `3f90d1b78`(**unity/main에 아직 병합되지 않음**).
+- 소스 기준: origin/unity/main `850dd6f6f`(작성 시점). flavor 수정은 `origin/claude/unity-pc-demo-flavor-fix-20261104` `8b7034add`가 **병합 대기 중**이다. 옛 `codex/unity-demo-flavor-20261103` `3f90d1b78`은 그 브랜치로 대체됐다.
 - 같이 보는 문서: [패키지 준비물](STEAM_DEMO_PACKAGE_20261104.md), [체험판 업로드 기록](STEAM_UNITY_DEMO_20261103.md).
 
 ## 1. 스크립트·Depot·빌드 출력 대조
@@ -15,7 +15,7 @@
 | A3 | Depot 스크립트 | `depot_build_5337591_unity.vdf`: DepotID 5337591, ContentRoot `demo-unity/`, 전체 재귀, 제외 `*.pdb`·`*_BackUpThisFolder_ButDontShipItWithYourGame/*`·`*.log`·`*.bak*` | 맞음. 다만 Unity가 만드는 `*_BurstDebugInformation_DoNotShip/*` 제외가 없다. 지금 콘텐츠 폴더에는 그 폴더가 없지만(복사할 때 뺌) 안전하게 제외 줄을 추가하기를 권한다 |
 | A4 | exe 이름 | 빌드 코드 `PortVerification.Build`가 출력 이름을 `EXODUSER-Unity.exe`로 고정한다(unity/main·flavor 브랜치 둘 다). 콘텐츠 폴더에 `EXODUSER-Unity.exe`·`EXODUSER-Unity_Data`가 있다 | 맞음. **제품명 변경과 무관하다.** exe·Data 폴더 이름은 빌드 경로가 정하고, productName은 정하지 않는다 |
 | A5 | 제품명 | unity/main `PortVerification.MakeScene`이 빌드할 때마다 productName을 "EXODUSER · Unity 이식 검증판"으로 덮어쓴다. flavor 브랜치는 "EXODUSER: HELL LORD"로 덮어쓴다. ProjectSettings 값은 빌드 때 무시된다 | **막힘.** flavor가 병합되기 전 빌드는 창 제목과 저장 폴더가 "검증판"이다 |
-| A6 | 제품명 변경의 영향 | ① 창 제목 ② 저장·로그 루트 `%USERPROFILE%\AppData\LocalLow\ForDearGamers\<productName>\`. Windows는 ':'를 '_'로 바꿔 `EXODUSER_ HELL LORD`가 된다(11-03 PC 에디터 컴파일 때 이 폴더가 이미 생겼다) ③ `Player.log` 위치도 같은 폴더로 옮겨 간다 | 새 설치에는 문제없다. 옛 "검증판" 저장은 flavor 코드가 같은 이름공간 폴더에서만 복사해 온다(덮어쓰기·삭제 없음, 11-03 검토). 공용 실행기 `exo-unity.ps1`는 `LocalLow\ForDearGamers` 전체를 실행 전후로 비교한다. 새 이름으로 처음 실행하면 새 폴더가 "추가"로 잡혀 사용자 저장 변경으로 판정될 수 있다. `-logFile`과 `--unity-qa-sandbox`로 실행하는지 확인한다 |
+| A6 | 제품명 변경의 영향 | ① 창 제목 ② 저장·로그 루트 `%USERPROFILE%\AppData\LocalLow\ForDearGamers\<productName>\`. Windows는 ':'를 '_'로 바꿔 `EXODUSER_ HELL LORD`가 된다(11-03 PC 에디터 컴파일 때 이 폴더가 이미 생겼다) ③ `Player.log` 위치도 같은 폴더로 옮겨 간다 | 새 설치에는 문제없다. 저장 복사는 없다(11-04 제작법 변경). 정식판(full)은 옛 폴더 `…\ForDearGamers\EXODUSER · Unity 이식 검증판\`을 그대로 쓴다. 체험판(demo)은 새 루트의 `EXODUSER-HELL-DEMO`에서 처음부터 시작한다. 공용 실행기 `exo-unity.ps1`는 `LocalLow\ForDearGamers` 전체를 실행 전후로 비교한다. 새 이름으로 처음 실행하면 새 폴더가 "추가"로 잡혀 사용자 저장 변경으로 판정될 수 있다. `-logFile`과 `--unity-qa-sandbox`로 실행하는지 확인한다 |
 | A7 | 빌드 기록 | `G:\exoduser-steam\content\demo-unity.build-commit.json` = `9f0d00cf8`(11-03), VDF desc도 `unity/main 9f0d00cf8` | 새 빌드를 넣을 때 둘 다 같은 SHA로 바꾼다 |
 | A8 | 지금 콘텐츠 | `content\demo-unity\EXODUSER-Unity_Data`에 `level0`·`level1`이 있다. 3D 리모델 씬(RM1_Slice)이 들어 있다는 뜻이다 | 지금 것은 맞음. 새 빌드도 `-remodel-scenes 1`로 만들어야 한다(2절) |
 
@@ -72,7 +72,7 @@ I:\EXODUSER-Storage\unity-jobs\bin\exo-unity.ps1 build -Worktree <소스 작업�
 
 | # | 막힘 | 근거 | 풀리는 조건 | 담당 |
 |---|---|---|---|---|
-| X1 | **제품명·저장 분리·끝 화면** | flavor `3f90d1b78` 미병합. unity/main 빌드는 productName "검증판", F-1(스테이징 폴더 잔존) 수정 포함 여부 미확인 | flavor 병합 → Mac 판정 PASS → 빌드 영수증 product 확인 | Codex flavor 레인 → CTO 병합 |
+| X1 | **제품명·저장 분리·끝 화면** | flavor 수정 `8b7034add`(demo-flavor-fix) 병합 대기. unity/main 빌드는 productName "검증판". F-1(스테이징 폴더 잔존)은 가져오기 방식이 폐기돼 해당 없음(11-04) | flavor 병합 → Mac 판정 PASS → 빌드 영수증 product 확인 | Codex flavor 레인 → CTO 병합 |
 | X2 | **최장 프레임 5.2초** | 한 판 실측 `52a39f8f6`: `longestFrameMs=5176`, p99 43.7ms(캡처 부하 포함) | 원인 확정(로딩·GC·캡처 중 무엇인지) → 수정 → 다시 재서 1초 미만 | 디버깅 총괄 |
 | X3 | **한 판 완주 근거 없음** | 같은 실측이 보스전에서 사망(`worldCleared=false`). 새 설치 → 1-1 → 보스 처치 → 체험판 끝 화면 → 로비 복귀를 한 번에 한 기록이 없음 | Mac에서 체험판 빌드로 자연 완주 1회, 크래시 0, `Player.log` 예외 0 | 최신버전 테스트 총괄(Mac) |
 | X4 | ~~BGM 상업 이용 권리(Suno)~~ **해소(사용자 확인 11-04)** | `docs/6사운드디자인/UNITY_BGM_IMPORT_CANDIDATES_20261104.md` 1.2: 웹 BGM 79파일 중 76파일이 Suno로 만든 곡이다(계정 beearthone, 생성 2026-02-25~07-27). 사용자가 곡을 만들 당시 유료 플랜이었다고 확인했다(CTO 경유, 11-04) | 해소됨. 태그가 없는 3파일(`공통/exoduser.mp3`·`공통/intro_voice.mp3`·`1장_썩은숲/h0_explore.mp3`)은 출처를 확인하기 전까지 체험판 빌드에 넣지 않는다 | — |
