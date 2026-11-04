@@ -4,12 +4,13 @@ using Exoduser.UnityPort.Core;
 using Exoduser.UnityPort.Core.Combat;
 using Exoduser.UnityPort.Vfx;
 
-static class Program
+static partial class Program
 {
     static int checks,bad;
     static void Check(bool value,string name){checks++;if(!value){bad++;Console.WriteLine("FAIL "+name);}}
     static int Main()
     {
+        AuditFixTests.Run(Check, System.IO.Directory.GetCurrentDirectory());
         // RED uses reflection so an absent presentation policy is an assertion,
         // not a compiler failure. Expected coordinates are screen pixels, Y up.
         var anchorType=typeof(CombatImpactTimeline).Assembly.GetType("Exoduser.UnityPort.Vfx.CombatHitAnchor");
@@ -192,6 +193,7 @@ static class Program
                 Check(baseline*(double)fx.CameraScale(age,true)==baseline,"camera returns bit-exact baseline "+baseline+" tick "+age);
             Check((double)fx.CameraScale(18,true)>.975&&(double)fx.CameraScale(18,true)<1,"pushin returns over20ticks");
         }
+        AnglerWaterChecks();
         Console.WriteLine("combat-impact: "+checks+" checks, "+bad+" failures");return bad==0?0:1;
     }
 }

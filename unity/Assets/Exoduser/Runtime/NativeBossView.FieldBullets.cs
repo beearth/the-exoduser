@@ -11,8 +11,11 @@ namespace Exoduser.UnityPort
     // 62 % of the width) for magic bullets, the element orb sheet for element balls. 2026-11-03: baked Hell Gothic palette rows replace rainbow + ELC runtime tint;
     // U-VFX-07b: element balls use proj_elem_orb_v3 (generated art, keyed by tools/vfx/make_elem_orb_v3.py; head centred on the shot point, same box).
     // The druid poison orb stays in NativeBossView.Update. Geometry, animation, and Core projectile classification are unchanged.
-    // Not ported (no art in Unity yet, drawn as the nearest sheet instead): the kraken water orb of physical / ice element balls (elem orb sheet row), the procedural classic rainbow
-    // of black / blue beans (physical-palette comet), the dark sphere of the Q bean (dark-palette comet).
+    // Ported 2026-11-04 (U-VFX-14, NativeBossView.AnglerWater.cs): the kraken water orb of the four 1-1 anglers (the web's fbEnergy shot, game.html 54183) is drawn with the new
+    // water_orb_loop sheet, ribbon tail, charge, launch spray, hit / parry / vanish effects before DrawFieldBullet is reached.
+    // Not ported (no art in Unity yet, drawn as the nearest sheet instead): the web's _drawKrakenShot for any other physical / ice element ball (the Core has no such spawn; the
+    // elem orb sheet row stays), the procedural classic rainbow of black / blue beans (physical-palette comet), the dark sphere of the Q bean (dark-palette comet).
+    // Kraken / angler water art is owned by the water lane. U-VFX-16: special beans use the dark orb row; friendly shots keep their element and gain a silver rim.
     public sealed partial class NativeBossView
     {
         const string MouthRes = "Art/vfx/field/proj_phys_mouth", OrbRes = "Art/vfx/field/proj_elem_orb_v3", CometRes = "Art/vfx/field/proj_bolt_comet_el";
@@ -78,12 +81,31 @@ namespace Exoduser.UnityPort
             Put(disc, p.X, p.Y, Math.Max(3, radius), new Color(c.r, c.g, c.b, .9f), order); FieldBulletFallbacks++;
         }
 
+        static readonly Color FriendlyFieldRim = new Color(223 / 255f, 227 / 255f, 230 / 255f, .8f); // #dfe3e6
+
         // game.html enemy-projectile pass 2 for a bullet that is not a druid poison shot and not a seeker mine
         void DrawFieldBullet(BossProjectile p, int tick)
         {
             double sz = p.Sz == 0 ? 1 : p.Sz, ps = Math.Max(1.2, Math.Min(4.0, sz * 1.5)) * .7;   // bullet size cap 4.0, x.7
             bool physical = p.ParryClass == "physical";
             double sSc = ps * (physical ? 2 : 1), ang = Math.Atan2(p.Vy, p.Vx); int order = (int)p.Y + 6;
+            if (AnglerSplitDraw(p, tick)) return;                                                                    // U-VFX-14 r2: the five allied water shots of a Q-parried angler ball
+            if (AnglerOrbDraw(p, tick)) return;                                                                      // U-VFX-14: the angler's water orb (web fbEnergy), the old ice orb row only if the sheet is missing
+            if (p.Friendly)
+            {
+                double friendlyLength = 20 * ps * 2.2 * (p.El == 1 ? .65 : 1);
+                int row = p.El >= 0 && p.El < ElemOrbRow.Length ? ElemOrbRow[p.El] : -1;
+                double radius;
+                if (p.ElemBall && row >= 0) { double h = Math.Max(96, sz * 5.3); FieldOrb(p, h, row, ang, tick, order); radius = h * .38; }
+                else { FieldComet(p, friendlyLength, p.El, ang, tick, order); radius = friendlyLength * .2; }
+                Put(ring, p.X, p.Y, radius, FriendlyFieldRim, order + 1); // 기존 코드 링: 작은 탄에도 약 1px 폭을 남긴다.
+                return;
+            }
+            if (p.BlackBean || p.BlueBean || p.BwBean || p.GbBean)
+            {
+                FieldOrb(p, 20 * ps * 2.2, ElemOrbRow[3], ang, tick, order);
+                return; // 표현만 암흑으로 통일. 무지개탄 Q 전용 패링 규칙은 Core 그대로다.
+            }
             if (p.Web) { FieldMouth(p, 22.05 * (ps * 2) * .55, ang, tick, order); return; }                       // snake-mouth web bullet: 22.05 * webScale * .55, webScale = ps * 2
             if (p.ElemBall)
             {
@@ -92,9 +114,8 @@ namespace Exoduser.UnityPort
                 return;
             }
             if (physical) { FieldMouth(p, 22.05 * sSc * .55, ang, tick, order); return; }
-            bool rainbow = p.BlackBean || p.BlueBean || p.BwBean || p.Friendly;
-            double len = 20 * ps * 2.2 * (p.El == 1 && !rainbow ? .65 : 1);                                       // _normalMagicCometLength * _enemyMagicCometVisualScale (fire .65)
-            FieldComet(p, len, rainbow ? 0 : (p.GbBean ? 3 : p.El), ang, tick, order);
+            double len = 20 * ps * 2.2 * (p.El == 1 ? .65 : 1);                                       // _normalMagicCometLength * _enemyMagicCometVisualScale (fire .65)
+            FieldComet(p, len, p.El, ang, tick, order);
         }
     }
 }
