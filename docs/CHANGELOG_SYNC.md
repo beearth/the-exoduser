@@ -11,6 +11,7 @@
 2026-11-04 필드 조립 단계 분할 뒤 NRE 수정(통합 미리보기 6차 스모크 FAIL, CTO): HellLighting이 장면 루트(Shafts·Foreground/Background Cards)를 Destroy하는데, 단계 사이에 프레임이 넘어가면서 A2FieldAtmosphere의 r3Roots 루프가 파괴된 루트를 만나 NRE. A2Field·A2Forest·HellLighting·Remodel3D의 r3Roots 루프 11곳에 null 가드(기존 HellLighting:52·Keyshot과 같은 방식). root-guard 검사 통과, 참조 컴파일 오류 0. field-prepare-wait 하니스 재실행은 NuGet 대상 팩 복원 실패(NU1100, 환경)로 이번에 못 돌림(바뀐 파일은 그 하니스 대상 밖). 같은 로그의 A2RPlayShot NRE는 이 브랜치에 없는 맵 레인 촬영 코드(claude/unity-pc-field-prepare-wait-20261104).
 
 2026-11-04 필드 조립 대기: 로비→필드 전환에서 3D 필드 조립(A2FieldSetup 15.5초 동기)을 단계별 코루틴·진행 보고로 나누고, 전환이 오류 또는 진행 보고 20초 멈춤(비조립 12초)일 때만 로비로 되돌리게 NativeScreenTransition 호스트가 Preparing 동안 Core 흐름 시계를 고정(Core 무수정). 로딩 문구 아래 은빛 진행 선 추가(문구 없음, 번역 없음). 새 NativeTransitionPrepare.cs·Tools/field-prepare-wait-tests(13/0)·docs/engine/UNITY_MAC_LOADING_ART_OVERLAY_20261101.md 절. 상태: PC 검사·컴파일만, 화면 판정 전.
+2026-11-04 STY-25 1-1 다크드루이드 등장·퇴장 대사(스토리 총괄, CTO 배정): G0 A안 연출 순서에 맞춰 이름 카드 부제 "썩은 숲의 숲지기", 목숨 2·3 전환 자막 2줄, 출구 개방 뒤 다음 지역 암시 펫 대사 1쌍을 새로 쓰고 기존 등장·침강·처치 대사 6줄과 묶었다. 신규 KO·EN 5건 No.4288~4292. 문서 `docs/11내러티브·로어디자인/DARK_DRUID_1-1_BOSS_TEXT_20261104.md`. 게임 데이터 변경 0(보스전 총괄 반영 대기).
 
 2026-11-04 SND-17 Unity BGM 반입 후보 목록(사운드 총괄, CTO 배정): docs/6사운드디자인/UNITY_BGM_IMPORT_CANDIDATES_20261104.md 신설. 웹 bgm 79파일(설정 57 + 큐 22)의 경로·길이·용량·형식·Vorbis 반입 추정·BGM.tracks 쓰임·출처(메타데이터: 76파일 made with suno, beearthone, 생성일·곡 id)를 정리했다. 바이트 대조로 Unity 보유 10·제외 사본 6. P0 반입 권장 3곡(1-1 필드 회전, Ashes Under the Banner·Cathedral of Steel·Iron Oath Under Ash Remastered, 15.9분·약 15MB), P1 52, P2 8. Suno 상업 권리 사용자 확인 필요. 반입·코드 변경 없음.
 
@@ -58063,3 +58064,7 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 - legacy 임포터는 meshes.globalScale=0.8409828·useFileScale=1·fileScale=0.01이므로 원시100→유효0.840983. humanDescription.globalScale=0.008409828을 중복 적용하지 않는다. 전장·bounds는 기존 월드 정점 측정을 유지한다.
 - 경계 테스트 21건 통과: legacy cm 보상 PASS, 미터 메시100배 FAIL, useFileScale=false·globalScale·유효 경계0.5/2 포함. 파지 추정 2.5cm WARN 유지, 마커·프리팹·런타임 수정 0.
 - 실제 검증: 공용 Editor 배치9cd93631 1회 정상 종료. legacy 원시(100,100.000008,99.999992)→유효(0.840983,0.840983,0.840983), 배율 PASS·파지 추정2.5cm WARN·종합 WARN. 컴파일 오류0·실행 오류 로그0·세이브 변경0, Player0. 결과표와 영수증을 같은 docs에 기록했다.
+2026-11-04 실버테일·아이반 모듈 G0 설계(Codex char-g0-st-ivan): 파트 S01~S40·I01~I34, rigid/천·머리 체인·허브 경첩·단검·배낭·총 소켓과 합격선을 새 문서 UNITY_HERO_MODULAR_G0_ST_IVAN_20261104.md에 기록했다. Blender 전용 extract_rig_rest.py로 Meshy GLB 각 24관절의 부모·Y-up rest(m)·Humanoid 대응과 실제 스킨 높이 1.72/1.85m를 추출했다. 실버테일 팔 5항목·아이반 팔 4항목은 조립 전 수정 필요(손끝·팔폭은 신전 기하 추정). 머리 두피/턱 실측·다리 목표·아이반 어깨폭·실버테일 접힘 기구 결정은 보류. 원본 메시/LOCK/보드/런타임 변경 0, Unity·유료 생성 0, 조립·Mac 판정 전. JSON·검증 로그·보고는 I:/EXODUSER-Storage/codex-takeover/char-g0-st-ivan/.
+
+
+2026-11-04 DECISION-1 실버테일·아이반 모듈 G0 정정: Meshy rest·비율·신전 추정·아이반 어깨 축소 제안을 현행 설계에서 제외하고 이름·부모·Humanoid만 추출하도록 변경. 새 rest는 Tripo 214c3a56·d381fefe·816e7107 파트 경계, 머리는 분리 머리 두피~턱. 허벅지:정강이 0.90~1.05, 아이반 어깨폭 유지·실제 A포즈 팔폭 0.98~1.06H, 실버테일 앞뒤 축 허브/엉덩이 경첩·2구간 날·180도/1830mm·끝 약 0.25H 반영. 판 1.15배 유지·재배치/아래 소매·천 틈 처리. 허용 인계 위치에 GLB 없어 새 관절·비율은 GLB 수령 후로 표기, 생성/다운로드/Unity 실행 없음.
