@@ -135,7 +135,7 @@ namespace Exoduser.UnityPort.Vfx
                 EnforceCapacity(spec.Mode,e);
                 int cap=spec.Mode==CombatClipMode.Death?20:60;
                 if(clips.Count>=cap){ReleaseRenderer(clips[0].renderer);clips.RemoveAt(0);}
-                var renderer=Make("Combat "+e.Kind+" "+spec.Sheet,spec.Flat?whiteAlpha:spec.Additive?add:alpha);
+                var renderer=Make("Combat "+e.Kind+" "+spec.Sheet,spec.Flat?whiteAlpha:spec.Additive?add:alpha);renderer.enabled=false;   // L11: sprite is assigned in the update pass; keep invisible/skipped until then (DrawEnemyHits NRE)
                 clips.Add(new Clip{renderer=renderer,spec=spec,sheet=sheet,source=e});
             }
         }
@@ -241,7 +241,7 @@ namespace Exoduser.UnityPort.Vfx
         void DrawEnemyHits(Camera camera) {
             if(camera==null||camera!=renderCamera||!NativeRemodel3D.Active||camera.orthographic||EnemyBody==null)return;
             foreach(var c in clips) {
-                if(!c.renderer.enabled||!CombatHitAnchor.Applies(true,c.source.TargetId,c.source.Kind,c.spec.Mode))continue;
+                if(!c.renderer.enabled||c.renderer.sprite==null||!CombatHitAnchor.Applies(true,c.source.TargetId,c.source.Kind,c.spec.Mode))continue;
                 if(EnemyRigAnchor!=null&&EnemyRigAnchor(c.source,camera).HasValue)continue;
                 var body=EnemyBody(c.source.TargetId);if(!body.HasValue)continue;
                 var foot=camera.WorldToScreenPoint(body.Value.foot);var top=camera.WorldToScreenPoint(body.Value.top);

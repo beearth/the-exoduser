@@ -58085,3 +58085,4 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 
 
 2026-11-04 DECISION-1 실버테일·아이반 모듈 G0 정정: Meshy rest·비율·신전 추정·아이반 어깨 축소 제안을 현행 설계에서 제외하고 이름·부모·Humanoid만 추출하도록 변경. 새 rest는 Tripo 214c3a56·d381fefe·816e7107 파트 경계, 머리는 분리 머리 두피~턱. 허벅지:정강이 0.90~1.05, 아이반 어깨폭 유지·실제 A포즈 팔폭 0.98~1.06H, 실버테일 앞뒤 축 허브/엉덩이 경첩·2구간 날·180도/1830mm·끝 약 0.25H 반영. 판 1.15배 유지·재배치/아래 소매·천 틈 처리. 허용 인계 위치에 GLB 없어 새 관절·비율은 GLB 수령 후로 표기, 생성/다운로드/Unity 실행 없음.
+2026-11-04 L11 크래시 P1 수정(표현 코드만, Core·수치 무변경, 컴파일 미확인): R11 CombatImpactView 피격 클립 sprite==null NRE(생성 직후 enabled=false + DrawEnemyHits sprite 가드), R12 NativeGame.PauseFocus 사망 결정 화면 포커스 상실 시 메뉴 전환 차단, R13 NativeEnemyRigRenderer 65·68행 SyncActor try/catch 가드. UNITY_RUN_EXCEPTION_AUDIT R11~R13, 상세 worklog/cloud-lanes/L11-crash-p1_20261104.md
