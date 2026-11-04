@@ -32,21 +32,21 @@
 
 | # | 확정 추천(Unity) | UE5 대응 | 커스텀 툴(명세는 각 문서 §4) |
 |---|---|---|---|
-| 01 | Blender(Meshy·Tripo 기본형 → Blender 다듬기) + 엔진 지형 높이 블렌드 + 데칼 | Landscape + Material Layer, Decal | `ForestKit Scatter`(곁가지 소품·카드·접지 데칼 배치, 웹 좌표 소품은 고정) |
-| 02 | Mixed 베이크(Shadowmask) + APV + 기존 `HellFogFeature` + 전역 Volume 1개, LUT는 DaVinci Resolve | Lumen/베이크 혼합 + Exponential Height Fog + PostProcessVolume | — (색 보정 소유자 1명) |
-| 03 | Cinemachine 3(피치 잠금·거리만 보간) + Impulse(위치만) + 알파 페이드 셰이더 + Render Objects 실루엣 | Spring Arm 고정 피치 + Camera Shake + 머티리얼 디더 대신 알파 페이드 + Custom Depth 실루엣 | `OccluderFade` |
-| 04 | Blender 손키 + Animator(기존 영웅 IK 유지) | Animation Blueprint + Control Rig | 타이밍 표 검증기 |
+| 01 | Blender(Meshy·Tripo 기본형 → Blender 다듬기) + 엔진 지형 높이 블렌드 + 데칼 | Landscape + Material Layer, Decal | `PropClusterBrush`(TOOLCHAIN c-1, 옛 ForestKit Scatter 통합; 웹 좌표 소품은 고정). 큰 소품은 Blender 손 조형, 중·소만 생성 |
+| 02 | Mixed 베이크(Shadowmask) + APV + 높이 안개 `HeightFogScatterPass`(TOOLCHAIN a-4, 1.2ms) + 전역 Volume 1개, LUT는 DaVinci Resolve | Lumen/베이크 혼합 + Exponential Height Fog + PostProcessVolume | — (색 보정 소유자 1명) |
+| 03 | Cinemachine 3(피치 잠금·거리만 보간) + Impulse(위치만) + 알파 페이드 셰이더 + Render Objects 실루엣 | Spring Arm 고정 피치 + Camera Shake + 머티리얼 디더 대신 알파 페이드 + Custom Depth 실루엣 | `OccluderFadePass`(a-2, ≤0.5ms) + `SilhouettePass`(a-3, ≤0.2ms) |
+| 04 | Blender 손키 + Animator(기존 영웅 IK 유지) | Animation Blueprint + Control Rig | 타이밍 표 검증기, 픽셀 렌더는 `PixelActorPass` 아틀라스(a-1) |
 | 05 | Blender 손키 + 가족별 공용 클립 라이브러리 | 같은 방식 + Retarget | 가족 클립 세트 검증기 |
 | 06 | Blender 부위별 조형·수동 리그·손키 | 같은 원본 FBX + Control Rig | 타이밍 표 → 클립 길이 검증기 |
-| 07 | 엔진 파티클 + 플립북 시트, 포즈 홀드는 대상 1개만 | Niagara + Anim Notify | 임팩트 이벤트 프리뷰어 |
-| 08 | 파티클(CPU) + 플립북 + 메시/셰이더 지면 표식 | Niagara + Decal | VFX 점·가림 검사기 |
+| 07 | 엔진 파티클 + 플립북 시트, 포즈 홀드는 대상 1개만 | Niagara + Anim Notify | 임팩트 이벤트 프리뷰어 → KeyshotBoard(c-3) 이벤트 모드로 통합 |
+| 08 | 전투 VFX 전부 Shuriken + Shader Graph(VFX Graph는 환경 대량 입자만) + 지면 예고는 월드 Decal | Niagara + Decal | VFX 점·가림 검사기 |
 | 09 | HTML/CSS 목업 → Blender 정사영 원화 → node 트림 → IMGUI 조립(v0 유지) | UMG | `hud_slice_trim` |
 | 10 | HTML/CSS 목업 + Blender 틀 원화 + 기존 Kling 배경 영상 | UMG + Media Player | 기존 `silver_hell_remap.cjs`(신규 없음) |
 | 11 | 기존 `world_item_drop_beams_v3` 아틀라스 재사용 | Niagara 빔 | `loot_style_table`(등급 1표로 색·기둥·소리) |
 | 12 | Audio Mixer + 자체 SfxPlayer 유지, 효과음 ElevenLabs(FMOD·Wwise 기각) | MetaSounds + Submix | `sfx_audit` |
 | 13 | Timeline + Cinemachine, 캡처 Unity Recorder, 편집 DaVinci Resolve(컷만) | Sequencer + Movie Render Queue | `CineProfile` 데이터 에셋 |
 | 14 | Font + GUIStyle 유지 + Noto Serif 폴백 체인, `Resources/Data/*.json` 29개 언어 | Font Face + String Table | `l10n_glyph_audit`(node) |
-| 15 | Profiler + Frame Timing Manager + Memory Profiler, Mac Xcode GPU Capture(오프스크린만) | Unreal Insights + stat | `BudgetCheck`(반입 검사·키샷 집계) |
+| 15 | Profiler + Frame Timing Manager + Memory Profiler, Mac Xcode GPU Capture(오프스크린만) | Unreal Insights + stat | `BudgetCheck`(= TOOLCHAIN c-5) + 임포트 규칙 d-1~d-3 |
 
 ## 3. 사용자 결정 필요 항목 — 전체 목록
 
@@ -65,6 +65,12 @@
 | ★D11-1 | 유니크 이름 색(자수정)과 기둥 색(빨강) 불일치 통일 | 통일 |
 | ★D09-7 | RMB·E 슬롯 내용 뒤바뀜 의심(`NativeHudSkills.cs` SlotSkillId 7·9) 별도 레인 배정 | 배정(버그 확인) |
 | ★D15-5 | 프레임 상한 기본값 60(코드 기본 120) | 측정 후 |
+| ★D14-3 | 1080p 본문 최소 **몸체 높이 18px**(XAG 101 PC 권고 [사실 3건], GAG TV 28px는 참고만) vs 현재 UI 11~14px·i18n-5th 하한 11px·초안 16px 하한 (D09-4·D10-9 연동) | 필수 정보 18px, 16px 축소 하한 폐지, 장식 글자만 예외 목록 |
+| ★D01-9 | 첫 키샷 구도: Mac 23장 검증(표본 6장 눈대중) — "어두운 주변 + 밝은 중앙 교전 + 작은 플레이어" 맞음, 전경·중경·원경 3층 공식 대체로 틀림(삭제), 먼 후속 적·고목 전경은 카메라 LOCK 규칙으로만 유지 | 안 2 첫 키샷, 안 3 두 번째, 안 1은 먼 적 판정 캡처 |
+| ★D01-7 | 키샷 안은 먼 적 1마리(발 y 24~35%) vs 합격 기준 3마리 이상(위 25%) | "먼 적 3마리" 변형, y 20~35% 띠로 통일 |
+| ★D01-6 | 현재 숲 모듈 삼각형이 큰 소품 상한 6~12k의 1.7~7.6배(거목각 19,888·Hollow 26,876·전경 로그 45,719) | 상한 유지 + 재제작·LOD |
+| ★D15-7 | GPU 합계 14.7ms(TOOLCHAIN §3a)로 확정, 이전 12/14ms 폐기. PixelActorPass 2.0ms는 현 적별 카메라 구조(위험 #02)로 불확실 | 확정 |
+| ★D04-5 | 액터 캡처를 `PixelActorPass` 아틀라스로 이전(05·06 공통) | 키샷 브랜치에서 "같음 또는 나아짐"일 때만 병합 |
 
 ### 3.2 유료 지출 (💰, API연결_가이드 범위·SPEND_LOG)
 | ID | 내용 |
@@ -96,10 +102,36 @@
 | 14 글자 | D14-1 본문 Hahmlet 300 + 나눔명조 폴백 · D14-2 Noto 번들 +20MB 허용 · D14-3 최소 본문 18px · D14-5 폰트 라이선스·크레딧 · D14-6 검수 언어 상위 6 vs 29 · D14-7 번역 일괄 모델·감수 시점 · D14-8 아랍어 RTL v0 |
 | 15 성능 | D15-1 하한 기기 정의 · D15-2 [추정] 수치를 시작값으로 확정 · D15-4 `BudgetCheck` 제작 · D15-6 GPU 디버거는 무창·무음 오프스크린만 |
 
+### 3.4 2차 반영(11-05 04~05 KST)으로 새로 생긴 항목
+| 요소 | 결정 항목 (★ = 충돌) |
+|---|---|
+| 01 | D01-3 개정(큰 소품 손 조형, 중·소만 생성) · D01-4 개정(c-1 통합) · D01-8 키샷 3안을 Steam 스크린샷 후보로 겸용 |
+| 02 | D02-5 개정(문서 연구로 Yellowsky 광원·안개·색 사실 0건 확인 → 사람이 공개 실기 영상 보고 판정 메모) · ★D02-7 높이 안개 자체 확장(a-4) vs 서드파티 · ★D02-8 안개 예산 1.2ms(Mac 저비용 0.6ms) · ★D02-9 Yellowsky 엔진 미확인 — "UE5" 근거로 쓰지 않음 · D02-10 림은 최종 1x에서 판정 |
+| 03 | ★D03-6 가림 = a-2 Renderer Feature vs `_Fade` 머티리얼 · ★D03-7 Cinemachine 컴포넌트 불일치(코드 Follow / 문서 PositionComposer) Mac 확인 후 통일 |
+| 04 | D04-1 개정(4안: +포즈 시각 양자화) · ★D04-4 구르기 무적 14틱·E 패링 16틱 유지(Sekiro 12F 참고, Core 변경 제안 없음) |
+| 05 | D05-3 일반 몬스터 기본형 Meshy/Tripo 💰(D06-4와 묶음) |
+| 06 | ★D06-5 드루이드 3기술(slam·slashCombo·전환) 먼저 완성 → 12종 확장(범위 축소 아님) |
+| 07 | D07-1 갱신(C안: Dead Cells 치명타 1F 추가, 추천 A안 유지) · ★D07-4 pbz.md "히트스톱 거의 없음 [사실]"을 [단일·간접]으로 낮춤 · D07-5 프리뷰어를 KeyshotBoard에 통합 |
+| 08 | D08-1 보강(전투 점광원 ≤2 ≠ 안개 ≤8) · ★D08-4 캐릭터 부착·접점 코어는 저해상도 경로, 지면 예고·장판은 월드 Decal · ★D08-5 전투 잔여(독안개 등) Shuriken 통일 |
+| 09 | D09-9 HUD v0 IMGUI → v0 뒤 UGUI · D09-10 이름표 끔 시 HUD 상태 아이콘 |
+| 10 | D10-7 접근성 = 화면 탭 안 구역 · D10-8 창 닫기·삭제 확인 기본 취소 전 창 공통 · ★D10-9 → D14-3 |
+| 11 | ★D11-8 하위 3등급 색(세 ARPG 흰/파랑/노랑 vs 우리 회/초록/파랑) 현행 유지 + 채도 조정 · D11-9 비교 호버 150ms + 고정 키 · D11-10 v0 필터 = 등급 이하 숨김 + 표시 키 · D11-11 드롭 순간 기둥 1.0초 / 지속 기둥 40% 분리 |
+| 12 | ★D12-9 버스 현행 SFX 8분류 유지 vs 연구안 재편 · D12-10 스냅샷 Pause·Boss 먼저 · D12-11 동시 32개 초과 시 미들웨어 재판정 · D12-12 보스 음악 v0 크로스페이드 |
+| 13 | ★D13-7 건너뛰기 홀드 + 확인창 옵션 · ★D13-8 길이 [추정] 시작값 확정(D4·Hades·PoE2 모두 미확인) · D13-9 자막 v0 포함 |
+| 14 | D14-4 글자 3단(D4) · D14-8 아랍어 RTL v0 뒤, Mac 한 화면 실렌더 먼저 · D14-9 자막 기본 켬·3단·40자(ko/en) · D14-10 XAG 104 산세리프 모드는 CLAUDE.md 4.2-2와 충돌 → v0 없음 |
+| 15 | D15-1 개정(하한 GTX 1060 6GB/16GB/SSD/1080p 30fps) · D15-2 개정(공개 수치 없음 확정 → 시작값 + Mac 실측 개정) · D15-4 개정(BudgetCheck 제작과 자동 연결 승인 분리) · ★D15-8 데모 4GB 한도 잠정 유지 · D15-9 URP 자산을 OS 기준 배정으로 · D15-10 위험 30개 중 #02·#19·#20·#22·#25 키샷 전 처리 |
+
+### 3.5 2차 반영 연구 입력
+PC Codex: codex_urp_mood · codex_keyshot_composition · codex_yellowsky · codex_tech_budget · our_tech_audit · codex_cinematic_text · codex_motion_direction · codex_frame_data · codex_combat_impact · codex_vfx_direction · codex_3d_pixel · codex_3d_pixel_small_team · codex_menus_loot · codex_sound_music(모두 `docs/0마스터플랜/GAME_STUDY/`, 원격 codex/unity-study-*·codex/unity-audit-our-tech-20261105). 클라우드: TOOLCHAIN_20261105(claude/unity-cloud-toolchain-20261105, 병합 시 이 폴더), REFERENCE_INDEX_20261105(reference-scout), ENGINE_DECISION_20261105(ENG), keyshot_verify_mac(claude/unity-mac-report-20261104).
+- Resources 원본: 1,417파일 / 2,881,554,015 byte = **2,748 MiB**(our_tech_audit §6, 15번 §3.7). CTO 메모의 "2,751MB"는 오기로 보인다.
+- 2차 연구 결론: 공격 단계별 프레임, 몬스터 예고·경직, PBZ 정지·카메라 수치, 사운드 dB·LUFS, VFX 입자·오버드로·GPU ms, 폴리곤·드로우콜은 **공개 자료로 채울 수 없음**이 확인됨 → [추정] 시작값 + Mac 실측 영상으로 개정.
+- 아직 없는 것: codex_asset_size(예정).
+
 ## 4. 다음 단계
 1. 사용자: §3.1 충돌 10건 → §3.2 지출 → §3.3 순으로 결정.
 2. 남은 연구(reference-scout, toolchain, codex 교차 연구·tech audit, 엔진 결정 ENG)가 올라오면 해당 문서의 "연구 반영 대기" 행을 채운다.
 3. 결정 반영 후 문서별 "확정" 표시 → DIRECTION_RESET 4단계(키샷 한 장면부터, Mac 판정).
 
 ## 변경 이력
+- 2026-11-05 2차 반영: PC Codex 연구 14건·TOOLCHAIN·REFERENCE_INDEX·ENGINE_DECISION·Mac 키샷 검증을 15개 문서에 보강, 색인 §2 도구·§3.1 충돌·§3.4 신규 항목 갱신.
 - 2026-11-05 초안 15개 + 색인 작성(레인 MAN). 연구 입력 SHA: arpg-conventions cb5e4c8, d4-study 1e91470, d4-study-boss e8fce5b, d4-study-combat 7f278fa, d4-study-ui 6d44f4e, hud-redesign-g1 8af73fc, phantomblade a23d58a, poe2 f05b5fb, yellowsky b740d57.
