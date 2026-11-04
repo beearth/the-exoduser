@@ -324,6 +324,26 @@ Unity 이식 중 찾은 웹 결함. 이식은 웹 그대로 두고, 웹 수정�
 | 8 | 페이즈 형태 | P1·P2·P3 정지 1x | P1 두개골·뿔·덩치, P2 열린 가슴 속 노인(가면·발광), P3 껍질 더미 앞 노인이 각각 읽힌다 |
 | 9 | 3x 점·잔점 | 위 캡처 전부 | 3x 크롭 점 0 |
 
+#### 8.5.6.1 PC 무창 판정 결과 1차 — RETOUCH, 병합 보류 (2026-11-04 12:47, 보스전 총괄)
+
+실행: 통합 미리보기 5차 `I:/EXODUSER-Storage/integration-preview/build`(51ad581ed, exe SHA256 9806abde…), 공용 실행기 `player -PcException candidate`, 숨은 데스크톱·무음·세이브 격리(run f6cf1d8e, 창 0, 세이브 변경 0). 인자 `-force-d3d11 --remodel3d --unity-boss-direct 0 --boss-render=rigpixel --hero-render=rigpixel --enemy-render=rigpixel --unity-fullrun-qa --unity-boss-arena-review --unity-boss-arena-edge=1,2,3 --unity-mute -nosound` 1920×1080. 결과 `G:/exoduser/tmp/design-review/20261104_boss_arena_preview5/1920/arena-review/`, 3x 크롭 `.../crops/`. 3840×1080은 아래 결함 수정 뒤에 찍는다.
+
+| # | 항목 | 결과 | 근거 |
+|---|---|---|---|
+| — | 세트 선택 로그 | PASS | `[DruidSet] remodel=true reason=3d-arena` 2회(시작·아레나) |
+| 7 | 몸 가장자리 타격 | PASS(수치) | `edge-p1/p2/p3-hit-1..3` 9장 모두 생성. 반경 91/77/39, 간격 P1 0.0~3.6px, P2 14.3~15.3px, P3 14.0~16.2px, 매번 HP 295 감소 |
+| 8 | 페이즈 형태 | **FAIL** | P1·P2 껍질이 화면에서 영웅의 약 1.3~1.5배로 작고 거의 검은 실루엣이라 두개골·뿔·덩치가 안 읽힌다(설계 ×2.8/×2.38). P3는 리그 픽셀이 아니라 **옛 2D 드루이드 스프라이트**로 그려졌다 |
+| 4 | 노인 전환 1.49배 | **FAIL(차단)** | `phase23_collapse` 중 껍질+노인 둘 다 그릴 때 화면 박스 1,069px → `NativeRigPixelPolicy.TextureSize` 상한 1,024px 초과 → `[DruidRig] existing boss fallback, once: Druid exceeds safe RT canvas`. 대체가 "한 번"으로 영구 전환돼 P3 전체가 옛 스프라이트 |
+| 1 | 7기술 발동 | **FAIL(커버리지)** | 5/7만 발동(charge·slam·slashCombo·groundFissure·heartbeat). `grab`·`burrowStrike` 미발동 → `FAIL_MISSING_ACTIVATIONS`(실행기 exit 2). 보스전 전체가 약 44초(틱 1425→4050 부근), 봇 사망 0 |
+| 5 | 잠행 솟기 기둥 틈 24px | 미판정 | 잠행이 한 번도 안 나옴 |
+| 6 | 몸 분리 끌림 10초 영상 | 미판정 | 현 캡처에 연속 프레임 모드 없음 → `--unity-boss-arena-seq`(collapse·erupt·contact) 아레나 브랜치에 추가 중 |
+| 3 | P1 껍질이 먼 적 가림 | 디자인총괄 2차 | 현 빌드는 껍질이 작아 판정 의미 없음, 수정 뒤 |
+| 9 | 3x 점 | 보류 | 형태 수정 뒤 |
+
+추가 관찰(타 분야, CTO 전달): 보스 아레나 바닥 전체에 큰 격자 모양 어두운 사각형 그림자가 깔린다(모든 캡처 공통). 맵 총괄 확인 대상.
+
+다음(아레나 브랜치, 보스전 총괄 레인): ① RT 상한 초과 때 영구 대체 대신 RT 해상도 상한을 올리거나 그 프레임만 텍셀 배율을 키워 계속 리그 픽셀로 그린다 ② P1·P2 껍질 화면 높이 = 영웅 ×2.8/×2.38을 `rawAlphaHeightPx`로 실측하고 실루엣이 어두운 바닥에서 읽히게 림·밝기 조정 ③ 7기술 커버리지 — 보스전 길이(약 44초)가 데모 첫 보스로 짧은지 CTO 결정 필요(리모델 HP는 Core 수치).
+
 ### 8.6 세션 구성 (사용자 입력 턴에 유니티 총괄 또는 보스전 총괄이 연다)
 
 | 세션 | 모델 | 일 | 선행 |

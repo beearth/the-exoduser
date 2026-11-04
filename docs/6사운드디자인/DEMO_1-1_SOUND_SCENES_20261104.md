@@ -34,12 +34,13 @@
 |---|---|---|---|---|
 | 아레나 바탕음 | `amb_druid_arena` | 채택(SND-09) | — | — |
 | 보스 BGM | `bgm_druid_boss` | 채택(SND-09 B) | — | — |
-| 드루이드 등장 | `druid_staff_tap`(빈 키) + `druid_roots_rise` + `druid_vo_phase` | 지팡이 소리는 4번 연속 안 맞아 비어 있음 | **R8** `druid_entrance` | 지팡이 한 번 대신 등장 전체를 한 소리로(새 방향) |
+| 드루이드 등장 | `druid_staff_tap`(빈 키) + `druid_roots_rise` + `druid_vo_phase` | 지팡이 소리는 4번 연속 안 맞아 비어 있음 | **R9** `intro`(R8 `druid_entrance` 후보 포함) | v9.1 `intro_reveal`(바닥에서 솟아 크기 공개, 90틱)에 맞춤 |
 | 7기술 | [G1 장면 목록](DRUID_V81_SKILL_SFX_G1_20261104.md) | 채택 7키 + R7 채택 10키 | R7 제출 완료 | Unity 연결 진행 중 |
 | 피격·목소리 | `druid_hit`·`druid_hit_heavy`·`druid_vo_*` | 채택(SND-09) | — | — |
-| 목숨 1·2 끝 무릎 꿇음 | `druid_vo_fall`·`druid_root_pierce`(빈 키) | 목소리 채택, 뿌리 꿰뚫기는 비어 있음 | — | 다음 라운드 |
+| 목숨 1·2 끝 형태 전환 | `druid_vo_fall`·`druid_root_pierce`(빈 키) | 목소리 채택, 껍질 소리 없음 | **R9** `collapse12`·`collapse23` | v9.1 `phase12_collapse`(가슴판 열림)·`phase23_collapse`(껍질 무너짐, 120틱) |
+| P3 껍질 더미 | (새 키) | 없음 | **R9** `heap` | 3번째 목숨 내내 남는 더미, 3D 루프 |
 | 보스 처치 순간 | (새 키) | 없음(마지막 숨·가라앉기뿐) | **R8** `boss_kill` | 마지막 타격 직후 |
-| 드루이드 퇴장(땅으로 가라앉기) | `druid_sink` | 채택(SND-08, 동작 없이 고름) | **R8** `druid_sink` | 동작 영상과 다시 비교 |
+| 드루이드 퇴장(땅으로 가라앉기) | `druid_sink` | 채택(SND-08, 동작 없이 고름) | **R9** `death_sink`(R8 후보·지금 소리 포함) | v9.1 `death_sink`(Core 침강 66틱)에 맞춤 |
 | 승리 | `victory`(BGM) | 웹 이식 | — | — |
 
 ### 1.3 출구
@@ -60,8 +61,16 @@
 - 고르기 페이지: `http://127.0.0.1:3399/pick_r8.html`(PICKSETS `r8`). 생성·가공 스크립트는 `I:/EXODUSER-Storage/sound-r8-20261104/`(저장소 밖)에 있다.
 - 비용: ElevenLabs 구독 카운터는 [SOUND_LEAD_MASTER](SOUND_LEAD_MASTER_20261026.md) R8 절에 적는다.
 
+## 2.1 R9 드루이드 v9.1 새 동작 (2026-11-04, CTO 배정)
+
+- 대상(5카드): 등장 `intro_reveal`, 1→2 `phase12_collapse`, 2→3 `phase23_collapse`, 침강 `death_sink`, P3 `HuskHeap`. 새 키 5개 × 해석 3개 × 변형 3 = 45개다. 등장·침강 카드에는 R8 후보(대체 동작으로 만든 것)도 넣어 실제 동작으로 다시 비교한다. 카드 합계는 64줄이다.
+- 영상: v9.1 GLB 클립을 보스 PREP §10.1 연결대로 Core 틱 길이에 맞추고(등장 165f→90틱, 침강 150f→66틱), 34° 카메라에서 Blender로 무창 렌더했다.
+  - 기술·idle 클립은 껍질 9뼈에 P1 값만 갖고 있다. 그래서 Unity와 같은 방식으로 클립을 평가한 뒤 목숨 상태(`state_P2/P3`) 값으로 덮어썼다.
+  - 5차 아레나 PC 캡처는 정지 화면뿐이라 이번에는 렌더 영상을 쓴다. 움직이는 캡처가 나오면 영상만 바꾼다.
+- 고르기: `http://127.0.0.1:3399/pick_r9.html`(PICKSETS `r9`). 스크립트는 `I:/EXODUSER-Storage/sound-r9-20261104/`(저장소 밖)에 있다.
+
 ## 3. 다음
 
-1. R5·R6 카드에 동작 영상을 붙인다. 웹 게임의 같은 동작을 headless·무음으로 녹화한다.
+1. (11-04 완료) R5·R6 카드 18장에 동작 영상을 붙였다. 웹 게임의 같은 동작을 headless·무음으로 녹화했다(13클립, 실제 소리 함수 호출 시각 ±0.2초). 환경음 3장은 장소 영상이다. Q 방패 막기만 E 패링 장면으로 대신했다.
 2. 사용자 선택(R5·R6·R8)을 받으면 Unity에 반영한다. 새 키는 소리 코드에 연결한다. 생체나무·출구는 맵·VFX 연출 담당에 시각 신호를 요청한다.
 3. 남은 빈칸은 `druid_root_pierce`(무릎 꿇음 뒤 뿌리 꿰뚫기)와 `druid_staff_tap`(R8 등장음으로 대체되면 폐기)이다.
