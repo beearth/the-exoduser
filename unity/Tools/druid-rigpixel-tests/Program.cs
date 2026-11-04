@@ -91,6 +91,14 @@ class DruidRigTests
    var all3=NativeArenaReviewPolicy.EdgeLives(new[]{"--unity-boss-arena-edge"});Check(all3[0]&&all3[1]&&all3[2],"edge arg all");
    var pick=NativeArenaReviewPolicy.EdgeLives(new[]{"--unity-boss-arena-edge=1,3"});Check(pick[0]&&!pick[1]&&pick[2],"edge arg list 1,3");
    var bad1=NativeArenaReviewPolicy.EdgeLives(new[]{"--unity-boss-arena-edge=x,9"});Check(bad1[0]&&bad1[1]&&bad1[2],"edge arg invalid list = all");
+   {   // --unity-boss-arena-seq: needs the review arg; contact bot = attack 120 -> roll 12 -> attack 60 -> dash 15
+    bool pr;
+    Check(NativeArenaReviewPolicy.SeqRequested(new[]{"--unity-boss-arena-review","--unity-boss-arena-seq"})&&!NativeArenaReviewPolicy.SeqRequested(new[]{"--unity-boss-arena-seq"})&&!NativeArenaReviewPolicy.SeqRequested(new[]{"--unity-boss-arena-review"})&&!NativeArenaReviewPolicy.SeqRequested(null),"seq arg needs review arg");
+    Check(NativeArenaReviewPolicy.ContactAt(0,out pr)==NativeArenaReviewPolicy.ContactStep.Attack&&!pr&&NativeArenaReviewPolicy.ContactAt(119,out pr)==NativeArenaReviewPolicy.ContactStep.Attack,"seq contact attack 2s");
+    Check(NativeArenaReviewPolicy.ContactAt(120,out pr)==NativeArenaReviewPolicy.ContactStep.Roll&&pr&&NativeArenaReviewPolicy.ContactAt(123,out pr)==NativeArenaReviewPolicy.ContactStep.Roll&&!pr,"seq contact roll press");
+    Check(NativeArenaReviewPolicy.ContactAt(132,out pr)==NativeArenaReviewPolicy.ContactStep.Attack&&NativeArenaReviewPolicy.ContactAt(191,out pr)==NativeArenaReviewPolicy.ContactStep.Attack,"seq contact attack 1s");
+    Check(NativeArenaReviewPolicy.ContactAt(192,out pr)==NativeArenaReviewPolicy.ContactStep.Dash&&pr&&NativeArenaReviewPolicy.ContactAt(206,out pr)==NativeArenaReviewPolicy.ContactStep.Dash&&NativeArenaReviewPolicy.ContactAt(207,out pr)==NativeArenaReviewPolicy.ContactStep.Attack,"seq contact dash then repeat");
+   }
    var none=NativeArenaReviewPolicy.EdgeLives(new string[0]);Check(!none[0]&&!none[1]&&!none[2],"edge arg absent = none");
    Console.WriteLine("scale P1="+rpx[0]/100/husk+" P2="+rpx[1]/100/husk+" P3 oldman="+rpx[2]/100/man+" P3 horn height m="+2.71*rpx[2]/100/man);
    foreach(var clip in source.GetProperty("clips").EnumerateArray())Near(clip.GetProperty("duration").GetDouble()*60,NativeDruidRigPolicy.Frames(clip.GetProperty("name").GetString()),"real asset duration "+clip.GetProperty("name"));

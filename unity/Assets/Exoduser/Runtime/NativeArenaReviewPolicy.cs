@@ -30,6 +30,29 @@ namespace Exoduser.UnityPort
             }
             return lives;
         }
+        // Continuous-frame QA capture (boss board 8.5.6 risks 2-4): --unity-boss-arena-seq together with --unity-boss-arena-review. Absent = the old path untouched.
+        public static bool SeqRequested(string[] args)
+        {
+            if(args==null)return false;
+            bool review=false,seq=false;
+            foreach(var a in args){if(a=="--unity-boss-arena-review")review=true;else if(a=="--unity-boss-arena-seq")seq=true;}
+            return review&&seq;
+        }
+        public const int SeqCollapsePre=10,SeqCollapsePost=30,SeqCollapseMax=360,SeqEruptPreTicks=20,SeqEruptPostTicks=40,SeqEruptMax=3,SeqContactFrames=600;
+        public const int ContactAttack1=120,ContactRoll=12,ContactAttack2=60,ContactDash=15,ContactCycle=ContactAttack1+ContactRoll+ContactAttack2+ContactDash;
+        public enum ContactStep{Attack,Roll,Dash}
+        // contact bot (input only): attack 2 s -> roll toward the boss centre -> attack 1 s -> dash toward the boss centre -> repeat. press = the first ticks of a roll/dash segment (the key edge).
+        public static ContactStep ContactAt(int ticksSinceStart,out bool press)
+        {
+            int t=ticksSinceStart%ContactCycle;press=false;
+            if(t<ContactAttack1)return ContactStep.Attack;
+            t-=ContactAttack1;
+            if(t<ContactRoll){press=t<2;return ContactStep.Roll;}
+            t-=ContactRoll;
+            if(t<ContactAttack2)return ContactStep.Attack;
+            t-=ContactAttack2;
+            press=t<2;return ContactStep.Dash;
+        }
         public static string Activation(string state,double remaining,string previousState,int beat,int previousBeat,bool eruptHit,bool previousErupt,int liveFissureSerial,int previousFissureSerial)
         {
             if(state=="bossSlash"&&remaining==DruidRemodelData.SlashHitAt)return "slashCombo";

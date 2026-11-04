@@ -26,6 +26,27 @@ namespace Exoduser.UnityPort
         const float ArenaEdgeGapPx=4,ArenaEdgeBandPx=40;
         readonly int[] arenaEdgeShots=new int[3];int arenaEdgeLastTick=-1000,arenaEdgeHp=-1,arenaEdgeLife=-1;
         [Serializable] sealed class ArenaEdgeEvent {public string kind="edge-hit";public int life,tick,hpBefore,hpAfter;public float bossRadiusPx,playerRadiusPx,centreDistancePx,gapPx,bossX,bossY,playerX,playerY;}
+        // Continuous-frame QA capture (--unity-boss-arena-seq, needs --unity-boss-arena-review): arena-review/seq-<name>/f<frame>.png (half resolution, 960 wide, one bilinear blit) + frames.jsonl.
+        // collapse = P2->P3 kneel -10..+30 frames (max 360); erupt-1..3 = burrowStrike erupt hit tick -20..+40 ticks; contact = P1 body-band contact, 600 frames, bot input only. Absent = the old path, byte for byte.
+        static readonly bool ArenaSeqOn=NativeArenaReviewPolicy.SeqRequested(Environment.GetCommandLineArgs());
+        const int ArenaSeqWidth=960,ArenaSeqRing=24;
+        [Serializable] sealed class ArenaSeqExtra
+        {
+            public string seq,separationScope="approx: outward centre-distance gain on a tick whose input pointed at the boss (Core RemodelSeparatePlayer is private); 0 while rolling/dashing",contactStep="";
+            public int seqIndex;
+            public bool rolling,dashing;
+            public float shellScale,oldManScale,bossScreenHeightPx,pillarCentreDistancePx,pillarRadiusPx,bossRadiusPx,gapPx,playerX,playerY,moveDx,moveDy,separationApproxPx,centreDistancePx;
+        }
+        sealed class ArenaSeqSlot {public Color32[] pixels;public int width,height,frame,tick;public string baseJson;public ArenaSeqExtra extra;}
+        readonly List<ArenaSeqSlot> arenaSeqRing=new List<ArenaSeqSlot>();
+        readonly Stack<Color32[]> arenaSeqPool=new Stack<Color32[]>();
+        readonly Dictionary<string,int> arenaSeqCount=new Dictionary<string,int>();
+        RenderTexture arenaSeqRT;Texture2D arenaSeqRead,arenaSeqEncode;
+        int arenaSeqCollapse,arenaSeqCollapseTail=-1,arenaSeqEruptCount,arenaSeqEruptTick=int.MinValue,arenaSeqContactStart=-1,arenaSeqContactTick;
+        bool arenaSeqEruptFlush,arenaSeqPrevSet,arenaSeqInputToward;string arenaSeqEruptName="";
+        float arenaSeqPrevX,arenaSeqPrevY,arenaSeqPrevCentre,arenaSeqMoveDx,arenaSeqMoveDy,arenaSeqPush,arenaSeqCentre;
+        NativeArenaReviewPolicy.ContactStep arenaSeqStep;
+        ArenaSeqExtra arenaSeqExtra;
         bool arenaReviewMetricsOnly;
         string arenaReviewOutput;
         readonly StringBuilder arenaReviewTrace=new StringBuilder();
@@ -84,6 +105,12 @@ namespace Exoduser.UnityPort
             Directory.CreateDirectory(arenaReviewOutput);
             if((File.GetAttributes(arenaReviewOutput)&FileAttributes.ReparsePoint)!=0)throw new IOException("Arena review output cannot be a link");
             foreach(var file in Directory.GetFiles(arenaReviewOutput)){var name=Path.GetFileName(file);bool owned=name.StartsWith("move-",StringComparison.Ordinal)||name.StartsWith("transition-",StringComparison.Ordinal)||name=="camera-frames.jsonl"||name=="moves.jsonl"||name=="review.json"||name=="druid-rigpixel.json"||name=="druid-rigpixel-rt.png"||name.StartsWith("material-field-reference.",StringComparison.Ordinal)||name.StartsWith("material-arena-reference.",StringComparison.Ordinal)||name=="material-comparison.html";if(owned&&(name.EndsWith(".png",StringComparison.Ordinal)||name.EndsWith(".json",StringComparison.Ordinal)||name.EndsWith(".jsonl",StringComparison.Ordinal)||name=="material-comparison.html")){if((File.GetAttributes(file)&FileAttributes.ReparsePoint)!=0)throw new IOException("Arena review file cannot be a link");File.Delete(file);}}
+            if(ArenaSeqOn)foreach(var dir in Directory.GetDirectories(arenaReviewOutput))
+            {
+                if(!Path.GetFileName(dir).StartsWith("seq-",StringComparison.Ordinal))continue;
+                if((File.GetAttributes(dir)&FileAttributes.ReparsePoint)!=0)throw new IOException("Arena review seq folder cannot be a link");
+                Directory.Delete(dir,true);
+            }
             arenaReviewMetricsOnly=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-boss-arena-metrics-only")>=0;
             StartCoroutine(BossArenaReviewFrames());
             Debug.Log("ARENA_REVIEW fixed resolution; input-only coverage; capture frames excluded from clean timing; sandbox="+NativeQaSandbox.Root);
@@ -160,10 +187,135 @@ namespace Exoduser.UnityPort
                 }
                 arenaEdgeHp=boss.Hp;
             }
+            if(ArenaSeqOn)ArenaSeqTick(boss,d,id);
             arenaReviewPreviousState=d.S;
             arenaReviewBeat=d.HbBeat;
             arenaReviewErupt=d.EruptHit;
             arenaReviewFissure=fissure;
+        }
+        // ---- --unity-boss-arena-seq: read-only observation of Core state + input-only bot (contact). No Core writes. ----
+        void ArenaSeqTick(EnemyState boss,DruidData d,string activation)
+        {
+            var s=Simulation;var pl=s.Player;
+            float cx=pl.X-boss.X,cy=pl.Y-boss.Y,centre=Mathf.Sqrt(cx*cx+cy*cy);
+            if(arenaSeqPrevSet)
+            {
+                arenaSeqMoveDx=pl.X-arenaSeqPrevX;arenaSeqMoveDy=pl.Y-arenaSeqPrevY;
+                arenaSeqPush=arenaSeqInputToward&&!s.RollActive&&!s.DashActive&&centre>arenaSeqPrevCentre?centre-arenaSeqPrevCentre:0;
+            }
+            arenaSeqPrevX=pl.X;arenaSeqPrevY=pl.Y;arenaSeqPrevCentre=centre;arenaSeqCentre=centre;arenaSeqPrevSet=true;
+            if(activation=="burrowStrike"&&arenaSeqEruptCount<NativeArenaReviewPolicy.SeqEruptMax)
+            {
+                arenaSeqEruptCount++;arenaSeqEruptTick=s.TickCount;arenaSeqEruptFlush=true;arenaSeqEruptName="erupt-"+arenaSeqEruptCount;
+            }
+            if(d.BossPhase==0&&arenaSeqContactStart==-1&&centre<=boss.Radius+pl.Radius+40)
+            {
+                arenaSeqContactStart=Time.frameCount;arenaSeqContactTick=s.TickCount;
+            }
+        }
+        // Decides, for this rendered frame, which seq folders get it and whether it must also be kept in the pre-roll ring.
+        bool arenaSeqFlushCollapse;
+        void ArenaSeqPlan(ArenaReviewFrame row,out List<string> names,out bool buffer)
+        {
+            names=new List<string>();buffer=false;
+            var s=Simulation;
+            if(s==null||s.Druid==null)return;
+            var boss=s.Druid.Boss;DruidData d;
+            if(boss==null||!s.Druid.Data.TryGetValue(boss,out d))return;
+            var pl=s.Player;var life=s.DruidLife(boss);
+            var ex=new ArenaSeqExtra();
+            var rig=row.bossRig;
+            if(rig!=null){ex.shellScale=rig.rootScale;ex.oldManScale=rig.oldManFactor;ex.bossScreenHeightPx=rig.projectedBoundsHeightPx;}
+            ex.bossRadiusPx=boss.Radius;
+            double nearest=double.MaxValue,nearR=0;
+            foreach(var pillar in s.DruidPillars){double ddx=pillar.X-boss.X,ddy=pillar.Y-boss.Y,dd=Math.Sqrt(ddx*ddx+ddy*ddy);if(dd<nearest){nearest=dd;nearR=pillar.R;}}
+            if(nearest<double.MaxValue){ex.pillarCentreDistancePx=(float)nearest;ex.pillarRadiusPx=(float)nearR;ex.gapPx=(float)(nearest-nearR-boss.Radius);}
+            ex.playerX=pl.X;ex.playerY=pl.Y;ex.moveDx=arenaSeqMoveDx;ex.moveDy=arenaSeqMoveDy;ex.separationApproxPx=arenaSeqPush;ex.centreDistancePx=arenaSeqCentre;
+            ex.rolling=s.RollActive;ex.dashing=s.DashActive;ex.contactStep=arenaSeqContactStart>=0?arenaSeqStep.ToString():"";
+            arenaSeqExtra=ex;
+            // collapse: P2->P3 kneel
+            bool col=life!=null&&life.Collapsing&&d.BossPhase==1;
+            int collapseCount;arenaSeqCount.TryGetValue("collapse",out collapseCount);
+            if(arenaSeqCollapse==0)
+            {
+                if(col){arenaSeqCollapse=1;arenaSeqFlushCollapse=true;names.Add("collapse");}
+                else if(d.BossPhase==1&&boss.Hp*100<=boss.MaxHp*40)buffer=true;   // pre-roll only while the life is low; keeps the per-frame screenshot cost off the rest of the fight
+            }
+            else if(arenaSeqCollapse==1)
+            {
+                if(collapseCount>=NativeArenaReviewPolicy.SeqCollapseMax)arenaSeqCollapse=2;
+                else
+                {
+                    names.Add("collapse");
+                    if(!col)
+                    {
+                        if(arenaSeqCollapseTail<0)arenaSeqCollapseTail=NativeArenaReviewPolicy.SeqCollapsePost;
+                        if(--arenaSeqCollapseTail<=0)arenaSeqCollapse=2;
+                    }
+                }
+            }
+            // erupt: hit tick -20 .. +40
+            if(arenaSeqEruptTick!=int.MinValue)
+            {
+                if(s.TickCount<=arenaSeqEruptTick+NativeArenaReviewPolicy.SeqEruptPostTicks)names.Add(arenaSeqEruptName);
+                else arenaSeqEruptTick=int.MinValue;
+            }
+            if(arenaSeqEruptCount<NativeArenaReviewPolicy.SeqEruptMax&&(d.S=="bossDruidDive"||d.S=="bossDruidUnder"||d.S=="bossDruidErupt"))buffer=true;
+            // contact: P1 body band, 600 frames
+            if(arenaSeqContactStart>=0)
+            {
+                if(Time.frameCount-arenaSeqContactStart<NativeArenaReviewPolicy.SeqContactFrames)names.Add("contact");
+                else arenaSeqContactStart=-2;
+            }
+        }
+        void ArenaSeqWriteFrame(string name,Color32[] pixels,int width,int height,int frame,string baseJson,ArenaSeqExtra extra)
+        {
+            var dir=Path.Combine(arenaReviewOutput,"seq-"+name);
+            Directory.CreateDirectory(dir);
+            int n;arenaSeqCount.TryGetValue(name,out n);arenaSeqCount[name]=n+1;
+            if(arenaSeqEncode==null||arenaSeqEncode.width!=width||arenaSeqEncode.height!=height){if(arenaSeqEncode!=null)Destroy(arenaSeqEncode);arenaSeqEncode=new Texture2D(width,height,TextureFormat.RGBA32,false);}
+            arenaSeqEncode.SetPixels32(pixels);arenaSeqEncode.Apply(false);
+            File.WriteAllBytes(Path.Combine(dir,"f"+frame.ToString("000000")+".png"),arenaSeqEncode.EncodeToPNG());
+            extra.seq=name;extra.seqIndex=n;
+            string add=JsonUtility.ToJson(extra);
+            File.AppendAllText(Path.Combine(dir,"frames.jsonl"),baseJson.Substring(0,baseJson.Length-1)+","+add.Substring(1)+"\n");
+        }
+        void ArenaSeqEmit(Texture2D image,ArenaReviewFrame row,List<string> names,bool buffer)
+        {
+            int w=Mathf.Min(ArenaSeqWidth,image.width),h=Mathf.Max(1,Mathf.RoundToInt(image.height*(w/(float)image.width)));
+            if(arenaSeqRT==null||arenaSeqRT.width!=w||arenaSeqRT.height!=h)
+            {
+                if(arenaSeqRT!=null){arenaSeqRT.Release();Destroy(arenaSeqRT);}
+                arenaSeqRT=new RenderTexture(w,h,0,RenderTextureFormat.ARGB32);arenaSeqRT.Create();
+                if(arenaSeqRead!=null)Destroy(arenaSeqRead);
+                arenaSeqRead=new Texture2D(w,h,TextureFormat.RGBA32,false);
+            }
+            image.filterMode=FilterMode.Bilinear;
+            Graphics.Blit(image,arenaSeqRT);   // the one bilinear downscale; nothing else is added to the pixels
+            var old=RenderTexture.active;
+            Color32[] pixels;
+            try{RenderTexture.active=arenaSeqRT;arenaSeqRead.ReadPixels(new Rect(0,0,w,h),0,0);arenaSeqRead.Apply(false);pixels=arenaSeqPool.Count>0?arenaSeqPool.Pop():new Color32[w*h];if(pixels.Length!=w*h)pixels=new Color32[w*h];var raw=arenaSeqRead.GetPixels32();Array.Copy(raw,pixels,pixels.Length);}
+            finally{RenderTexture.active=old;}
+            string baseJson=JsonUtility.ToJson(row);
+            var ex=arenaSeqExtra;
+            if(arenaSeqFlushCollapse)
+            {
+                arenaSeqFlushCollapse=false;
+                foreach(var o in arenaSeqRing)if(o.frame>=row.frame-NativeArenaReviewPolicy.SeqCollapsePre)ArenaSeqWriteFrame("collapse",o.pixels,o.width,o.height,o.frame,o.baseJson,o.extra);
+            }
+            if(arenaSeqEruptFlush)
+            {
+                arenaSeqEruptFlush=false;
+                foreach(var o in arenaSeqRing)if(o.tick>=arenaSeqEruptTick-NativeArenaReviewPolicy.SeqEruptPreTicks)ArenaSeqWriteFrame(arenaSeqEruptName,o.pixels,o.width,o.height,o.frame,o.baseJson,o.extra);
+            }
+            if(ex!=null)foreach(var name in names)ArenaSeqWriteFrame(name,pixels,w,h,row.frame,baseJson,ex);
+            if(buffer&&ex!=null)
+            {
+                arenaSeqRing.Add(new ArenaSeqSlot{pixels=pixels,width=w,height=h,frame=row.frame,tick=row.tick,baseJson=baseJson,extra=ex});
+                while(arenaSeqRing.Count>ArenaSeqRing){arenaSeqPool.Push(arenaSeqRing[0].pixels);arenaSeqRing.RemoveAt(0);}
+            }
+            else arenaSeqPool.Push(pixels);
+            arenaSeqExtra=null;
         }
         void QueueArenaReviewShot(string name)
         {
@@ -206,27 +358,38 @@ namespace Exoduser.UnityPort
                 if(row==null||row.frame!=Time.frameCount)continue;
                 row.bossRig=druidRig==null?null:druidRig.CaptureFrame();
                 if(row.bossRig!=null&&row.bossRig.ready){row.bossOpaqueHeightPx=-1;row.bossHeroRatio=-1;} // Legacy sprite metrics are not the new rig body.
-                bool capture=arenaReviewShots.Count>0&&!arenaReviewMetricsOnly;
+                bool shots=arenaReviewShots.Count>0&&!arenaReviewMetricsOnly;
+                List<string> seqNames=null;bool seqBuffer=false;
+                if(ArenaSeqOn&&!arenaReviewMetricsOnly)ArenaSeqPlan(row,out seqNames,out seqBuffer);
+                bool seq=seqNames!=null&&seqNames.Count>0||seqBuffer;
+                bool capture=shots||seq;
                 row.capture=capture;
-                if(capture)
+                if(shots)
                 {
                     if(row.bossRig!=null&&row.bossRig.ready)row.bossRig.rawAlphaHeightPx=druidRig.CaptureRawRt(Path.Combine(arenaReviewOutput,"druid-rigpixel-rt.png"));
                     row.lighting=BossArenaCaptureLighting();row.surface=r3Arena==null?null:r3Arena.CaptureSurface();
                     row.heroGpuSilhouetteHeightPx=BossArenaReviewHeroPixels();
                     row.heroGpuSilhouetteHeightFraction=row.heroGpuSilhouetteHeightPx>0?row.heroGpuSilhouetteHeightPx/row.height:0;
+                }
+                if(capture)
+                {
                     fullRunCaptureActivity="arena-review";
                     fullRunLastCaptureActivity="arena-review";
                     fullRunLastCaptureFrame=Time.frameCount;
                     var image=ScreenCapture.CaptureScreenshotAsTexture();
                     try
                     {
-                        var bytes=image.EncodeToPNG();
-                        foreach(var name in arenaReviewShots)
+                        if(shots)
                         {
-                            File.WriteAllBytes(Path.Combine(arenaReviewOutput,name+".png"),bytes);
-                            File.WriteAllText(Path.Combine(arenaReviewOutput,name+".json"),JsonUtility.ToJson(row,true));
-                            if(name.EndsWith("-active",StringComparison.Ordinal)&&arenaReviewHeroRead!=null)File.WriteAllBytes(Path.Combine(arenaReviewOutput,name+"-hero-isolated.png"),arenaReviewHeroRead.EncodeToPNG());
+                            var bytes=image.EncodeToPNG();
+                            foreach(var name in arenaReviewShots)
+                            {
+                                File.WriteAllBytes(Path.Combine(arenaReviewOutput,name+".png"),bytes);
+                                File.WriteAllText(Path.Combine(arenaReviewOutput,name+".json"),JsonUtility.ToJson(row,true));
+                                if(name.EndsWith("-active",StringComparison.Ordinal)&&arenaReviewHeroRead!=null)File.WriteAllBytes(Path.Combine(arenaReviewOutput,name+"-hero-isolated.png"),arenaReviewHeroRead.EncodeToPNG());
+                            }
                         }
+                        if(seq)ArenaSeqEmit(image,row,seqNames,seqBuffer);
                     }
                     finally
                     {
@@ -323,6 +486,25 @@ namespace Exoduser.UnityPort
                 arenaReviewPhase=d.BossPhase;
                 arenaReviewPhaseTick=s.TickCount;
             }
+            arenaSeqInputToward=false;
+            if(ArenaSeqOn&&d.BossPhase==0&&arenaSeqContactStart>=0&&Time.frameCount-arenaSeqContactStart<NativeArenaReviewPolicy.SeqContactFrames)
+            {   // contact bot (input only): attack 2 s -> roll at the boss centre -> attack 1 s -> dash at the boss centre -> repeat
+                var pc=s.Player;
+                bool press;
+                arenaSeqStep=NativeArenaReviewPolicy.ContactAt(s.TickCount-arenaSeqContactTick,out press);
+                var toward=new Vector2(boss.X-pc.X,boss.Y-pc.Y);if(toward.sqrMagnitude<1)toward=Vector2.up;
+                aim=new Vector2(boss.X,boss.Y);magic=false;
+                keys.Remove(Key.F);keys.Remove(Key.LeftCtrl);keys.Remove(Key.Space);keys.Remove(Key.LeftShift);
+                keys.Remove(Key.W);keys.Remove(Key.A);keys.Remove(Key.S);keys.Remove(Key.D);
+                if(arenaSeqStep==NativeArenaReviewPolicy.ContactStep.Attack){attack=true;move=Vector2.zero;return;}
+                attack=false;
+                var dir=toward.normalized;move=dir;arenaSeqInputToward=true;
+                if(dir.x>.25f)keys.Add(Key.D);else if(dir.x<-.25f)keys.Add(Key.A);
+                if(dir.y>.25f)keys.Add(Key.S);else if(dir.y<-.25f)keys.Add(Key.W);
+                if(arenaSeqStep==NativeArenaReviewPolicy.ContactStep.Roll){if(press)keys.Add(Key.Space);}
+                else keys.Add(Key.LeftShift);
+                return;
+            }
             if(ArenaEdgeLife(d.BossPhase)&&arenaEdgeShots[d.BossPhase]<3)
             {
                 var life=s.DruidLife(boss);
@@ -393,6 +575,8 @@ namespace Exoduser.UnityPort
                 Destroy(arenaReviewHeroRead);
             }
             if(arenaReviewHeroCamera!=null)Destroy(arenaReviewHeroCamera.gameObject);
+            if(arenaSeqRT!=null){arenaSeqRT.Release();Destroy(arenaSeqRT);Destroy(arenaSeqRead);}
+            if(arenaSeqEncode!=null)Destroy(arenaSeqEncode);
             arenaReviewOutput=null;
         }
     }

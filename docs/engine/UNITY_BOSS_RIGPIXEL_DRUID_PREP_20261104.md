@@ -339,3 +339,13 @@ Mac 전체 인수·7기술별1x 캡처/10초 영상 수집 요청은 [03:00 인�
 판정: 목숨마다 1x/3x 크롭에서 발치 원 = 공격이 닿는 가장자리인지, P1 껍질이 영웅 ×2.8로 읽히는지(`bossRig.coreRadiusPx` 91/77/39, `bodyHeightHeroRatio`). 검증은 PC에서 `druid-remodel-test`(`RadiusChecks.cs`: 반경·가장자리 타격·몸 분리·잠행 여유·거리 표)와 `druid-rigpixel-tests`(인자 해석·배수)로 끝냈고 Player 실행은 하지 않았다.
 
 **검사 결과(PC, Unity·Player·빌드 실행 0).** 정책 테스트(임시 csproj) 5,435검사/실패 0(상태 레이어·붕괴·인트로·사망·팔레트·반경 44/37/31 포함). Blender FBX 수치 검사 통과. 전체 PC Roslyn(`compile-check.ps1` 기본 인자) 5어셈블리 오류 0. **한계(미검증)**: Unity 임포트(Generic Avatar·클립 38·소켓 구조·힙 단일 렌더러), 값 덮어쓰기 레이어가 실제 Animator 평가 뒤에도 유지되는지, 전환 중 스케일·미끄러짐·힙 고정의 화면, 껍질 팔레트·노인 가시성(P2 RETOUCH 조건), 잠행 중 힙 단독 그리기, 4단 셀 1x 판정은 모두 Mac 판정 대기다. `Humanoid` 임포트에서 `HK_*` 보조 뼈가 살아남는지는 Generic을 유지해 해당 없음.
+
+**연속 프레임 캡처 `--unity-boss-arena-seq` (11-04, QA 인자, Core·봇 밖 동작 변경 0).** `--unity-boss-arena-review`와 함께 줄 때만 켜지며 인자가 없으면 기존 경로와 같다. 출력은 `arena-review/seq-<이름>/f<6자리 프레임>.png`(가로 960, 쌍선형 1회 축소만, 잡티·디더 추가 없음)와 같은 폴더 `frames.jsonl`(프레임마다 기존 ArenaReviewFrame 행 + `seq`·`seqIndex`와 아래 추가 필드). 캡처 프레임은 기존처럼 `fullRunCaptureActivity`로 clean timing에서 제외한다. 보스 보드 §8.5.6 위험 2·3·4용이다.
+
+| 이름 | 구간 | 추가 필드 |
+|---|---|---|
+| `collapse` | P2→P3 무릎(`life.Collapsing`, `BossPhase==1`) 시작 10프레임 전 ~ 끝 30프레임 뒤, 최대 360프레임. 사전 10프레임은 P2에서 목숨 HP가 40% 이하일 때부터 링 버퍼(24칸)에 둔 것을 시작 시점에 내보낸다 | `shellScale`(rootScale)·`oldManScale`(oldManFactor)·`bossScreenHeightPx`(projectedBoundsHeightPx) |
+| `erupt-1..3` | 솟기 판정 틱(`burrowStrike` actual-activation) 20틱 전 ~ 40틱 뒤 매 프레임, 최대 3회. 사전 구간은 잠행 상태(`bossDruidDive/Under/Erupt`)의 링 버퍼 | `pillarCentreDistancePx`(`Simulation.DruidPillars` 중 보스에서 가장 가까운 기둥 중심 거리)·`pillarRadiusPx`(그 기둥의 `R`, Core 값)·`bossRadiusPx`·`gapPx = 거리 − 기둥 R − 보스 반경` |
+| `contact` | P1에서 봇이 보스 몸 띠(중심 거리 ≤ 보스 반경 + 플레이어 반경 + 40)에 처음 들어온 프레임부터 600프레임. 이 구간 봇 입력만 "공격 2초(120틱) → 보스 중심 방향 구르기(12틱 구간, 스페이스 2틱 + 방향) → 공격 1초(60틱) → 보스 중심 방향 대시(15틱, 왼쪽 Shift 유지) → 반복"으로 바뀐다(`NativeArenaReviewPolicy.ContactAt`) | `playerX/Y`·`moveDx/Dy`(직전 틱 대비 이동)·`separationApproxPx`·`centreDistancePx`·`rolling`·`dashing`·`contactStep` |
+
+몸 분리(`RemodelSeparatePlayer`)가 민 거리는 Core가 private이라 읽을 수 없어 근사한다: 입력이 보스 쪽을 향한 틱에서 구르기·대시 중이 아닐 때 중심 거리가 늘어난 양(`separationScope` 필드에 같은 설명). 모든 seq 행에 위 필드가 같이 들어간다(해당 없는 값은 현재 프레임의 실측 또는 0). 인자 해석·접촉 봇 순서는 `druid-rigpixel-tests`에 5건(`SeqRequested`·`ContactAt`).
