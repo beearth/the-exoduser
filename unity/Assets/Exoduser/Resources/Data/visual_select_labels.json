@@ -64,16 +64,16 @@
           "text": "실버테일"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "회전하는 단 하나의 검, 그녀의 춤은 파멸"
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "단검과 그가 남긴 장검, 그녀의 춤은 파멸"
         },
         {
           "key": "검무의 화신",
           "text": "검무의 화신"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "회전대검으로 사방의 적을 동시에 베어냅니다."
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다."
         },
         {
           "key": "쌍단검 기동",
@@ -88,28 +88,28 @@
           "text": "무희의 춤"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다."
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다."
         },
         {
-          "key": "헬거너",
-          "text": "헬거너"
+          "key": "아이반",
+          "text": "아이반"
         },
         {
-          "key": "혈탄 장전",
-          "text": "혈탄 장전"
+          "key": "무거운 한 발",
+          "text": "무거운 한 발"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "체력을 소모해 충전한 관통탄을 발사합니다."
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다."
         },
         {
-          "key": "역추진 도약",
-          "text": "역추진 도약"
+          "key": "검은 연기",
+          "text": "검은 연기"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "사격 반동을 이용해 뒤로 도약합니다."
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다."
         },
         {
           "key": "변성술사",
@@ -180,20 +180,20 @@
           "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
         },
         {
-          "key": "창포수",
-          "text": "창포수"
+          "key": "폭파공",
+          "text": "폭파공"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "그가 지나간 자리엔 검은 연기만 남는다"
         },
         {
-          "key": "관통 창격",
-          "text": "관통 창격"
+          "key": "붉은 부착탄",
+          "text": "붉은 부착탄"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다."
         },
         {
           "key": "사신",
@@ -329,16 +329,16 @@
           "text": "Silvertail"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "One spinning blade. Her dance brings ruin."
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "A dagger and the longsword he left behind. Her dance brings ruin."
         },
         {
           "key": "검무의 화신",
           "text": "Avatar of the Blade Dance"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "Cut down enemies on every side with a spinning greatsword."
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "Spin the longsword on your back to cut down enemies on every side."
         },
         {
           "key": "쌍단검 기동",
@@ -353,28 +353,28 @@
           "text": "Dancer's Grace"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "Flow between graceful evasions and explosive bursts of damage."
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "Flow between graceful evasions and explosive strikes."
         },
         {
-          "key": "헬거너",
-          "text": "Hellgunner"
+          "key": "아이반",
+          "text": "Ivan"
         },
         {
-          "key": "혈탄 장전",
-          "text": "Blood Round Loading"
+          "key": "무거운 한 발",
+          "text": "One Heavy Round"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "Spend HP to fire charged piercing rounds."
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "From mid-range, bring your target down with one heavy-chamber round."
         },
         {
-          "key": "역추진 도약",
-          "text": "Recoil Leap"
+          "key": "검은 연기",
+          "text": "Black Smoke"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "Use the recoil of your shots to leap backward."
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "Leave a smokescreen as you slip aside and take your next firing position."
         },
         {
           "key": "변성술사",
@@ -445,20 +445,20 @@
           "text": "Keep moving, build momentum, then unleash it in a single strike."
         },
         {
-          "key": "창포수",
-          "text": "Lance Gunner"
+          "key": "폭파공",
+          "text": "Demolitionist"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "A blood-moon lance gunner who turns his own blood into bullets"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "Where he passes, only black smoke remains."
         },
         {
-          "key": "관통 창격",
-          "text": "Piercing Lance Strike"
+          "key": "붉은 부착탄",
+          "text": "Red Sticky Charge"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "Skewer every enemy in a straight line with your lance-cannon."
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "A round stuck to an enemy bursts a moment later and scatters the crowd."
         },
         {
           "key": "사신",
@@ -594,16 +594,16 @@
           "text": "银尾"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "一把旋转之剑，她的舞蹈带来毁灭。"
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "匕首与他留下的长剑，她的舞蹈即是毁灭。"
         },
         {
           "key": "검무의 화신",
           "text": "剑舞化身"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "以旋转巨剑同时斩倒四周的敌人。"
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "旋转背上的长剑，同时斩杀四面八方的敌人。"
         },
         {
           "key": "쌍단검 기동",
@@ -618,28 +618,28 @@
           "text": "舞者之姿"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "在华丽闪避与爆发伤害之间灵活转换。"
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "在华丽的闪避与爆发的攻击之间自如切换的杂技。"
         },
         {
-          "key": "헬거너",
-          "text": "地狱枪手"
+          "key": "아이반",
+          "text": "伊万"
         },
         {
-          "key": "혈탄 장전",
-          "text": "血弹装填"
+          "key": "무거운 한 발",
+          "text": "沉重一发"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "消耗体力发射充能的贯穿弹。"
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "在中距离以大口径弹膛的一发重弹击倒目标。"
         },
         {
-          "key": "역추진 도약",
-          "text": "反冲跳跃"
+          "key": "검은 연기",
+          "text": "黑烟"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "借射击后坐力向后跳跃。"
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "留下烟幕侧身闪开，抢占下一个射击位置。"
         },
         {
           "key": "변성술사",
@@ -710,20 +710,20 @@
           "text": "持续移动积蓄气势，在一击中尽数爆发。"
         },
         {
-          "key": "창포수",
-          "text": "枪炮手"
+          "key": "폭파공",
+          "text": "爆破手"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "以自身之血为弹的血月枪炮手"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "他走过的地方，只剩黑烟。"
         },
         {
-          "key": "관통 창격",
-          "text": "贯穿枪击"
+          "key": "붉은 부착탄",
+          "text": "红色黏附弹"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "用枪炮贯穿直线上的所有敌人。"
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "黏在敌人身上的炸弹片刻后引爆，炸散蜂拥而来的敌群。"
         },
         {
           "key": "사신",
@@ -859,16 +859,16 @@
           "text": "銀尾"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "一把旋轉之劍，她的舞蹈帶來毀滅。"
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "匕首與他留下的長劍，她的舞蹈即是毀滅。"
         },
         {
           "key": "검무의 화신",
           "text": "劍舞化身"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "以旋轉巨劍同時斬倒四周的敵人。"
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "旋轉背上的長劍，同時斬殺四面八方的敵人。"
         },
         {
           "key": "쌍단검 기동",
@@ -883,28 +883,28 @@
           "text": "舞者之姿"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "在華麗閃避與爆發傷害之間靈活轉換。"
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "在華麗的閃避與爆發的攻擊之間自如切換的雜技。"
         },
         {
-          "key": "헬거너",
-          "text": "地獄槍手"
+          "key": "아이반",
+          "text": "伊萬"
         },
         {
-          "key": "혈탄 장전",
-          "text": "血彈裝填"
+          "key": "무거운 한 발",
+          "text": "沉重一發"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "消耗體力發射充能的貫穿彈。"
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "在中距離以大口徑彈膛的一發重彈擊倒目標。"
         },
         {
-          "key": "역추진 도약",
-          "text": "反衝跳躍"
+          "key": "검은 연기",
+          "text": "黑煙"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "借射擊後座力向後跳躍。"
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "留下煙幕側身閃開，搶占下一個射擊位置。"
         },
         {
           "key": "변성술사",
@@ -975,20 +975,20 @@
           "text": "持續移動積蓄氣勢，在一擊中盡數爆發。"
         },
         {
-          "key": "창포수",
-          "text": "槍炮手"
+          "key": "폭파공",
+          "text": "爆破手"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "以自身之血為彈的血月槍炮手"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "他走過的地方，只剩黑煙。"
         },
         {
-          "key": "관통 창격",
-          "text": "貫穿槍擊"
+          "key": "붉은 부착탄",
+          "text": "紅色黏附彈"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "用槍炮貫穿直線上的所有敵人。"
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "黏在敵人身上的炸彈片刻後引爆，炸散蜂擁而來的敵群。"
         },
         {
           "key": "사신",
@@ -1124,16 +1124,16 @@
           "text": "シルバーテイル"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "回転するただ一振りの剣。その舞は破滅をもたらす。"
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "短剣と、彼が遺した長剣。彼女の舞は破滅。"
         },
         {
           "key": "검무의 화신",
           "text": "剣舞の化身"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "回転する大剣で周囲の敵を同時に斬り倒します。"
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "背負った長剣を回転させ、四方の敵を同時に斬り払います。"
         },
         {
           "key": "쌍단검 기동",
@@ -1148,28 +1148,28 @@
           "text": "舞姫の舞"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "華麗な回避と爆発的なダメージを自在に織り交ぜます。"
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "華麗な回避と爆発的な攻撃を行き来する曲芸です。"
         },
         {
-          "key": "헬거너",
-          "text": "ヘルガンナー"
+          "key": "아이반",
+          "text": "イヴァン"
         },
         {
-          "key": "혈탄 장전",
-          "text": "血弾装填"
+          "key": "무거운 한 발",
+          "text": "重き一発"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "体力を消費して充填した貫通弾を発射します。"
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "中距離から、大きな薬室の一発で標的を打ち倒します。"
         },
         {
-          "key": "역추진 도약",
-          "text": "逆噴射跳躍"
+          "key": "검은 연기",
+          "text": "黒煙"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "射撃の反動を利用して後方へ跳躍します。"
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "煙幕を残して横へ抜け、次の射撃位置を取ります。"
         },
         {
           "key": "변성술사",
@@ -1240,20 +1240,20 @@
           "text": "絶えず動き続けて溜めた勢いを、一撃で解き放ちます。"
         },
         {
-          "key": "창포수",
-          "text": "槍砲手"
+          "key": "폭파공",
+          "text": "爆破工"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "自らの血を弾丸とする血月の槍砲手"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "彼が通った跡には、黒い煙だけが残る。"
         },
         {
-          "key": "관통 창격",
-          "text": "貫通槍撃"
+          "key": "붉은 부착탄",
+          "text": "赤き付着弾"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "槍砲で直線上の敵をすべて貫きます。"
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "敵に貼り付いた弾が少し遅れて炸裂し、群がる敵を散らします。"
         },
         {
           "key": "사신",
@@ -1389,16 +1389,16 @@
           "text": "Silvertail"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "Một lưỡi kiếm xoay. Điệu múa của nàng mang hủy diệt."
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "Dao găm và thanh trường kiếm anh để lại, vũ điệu của cô là hủy diệt."
         },
         {
           "key": "검무의 화신",
           "text": "Hiện thân kiếm vũ"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "Chém gục địch mọi phía bằng đại kiếm xoay."
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "Xoay thanh trường kiếm sau lưng để chém hạ kẻ địch mọi phía cùng lúc."
         },
         {
           "key": "쌍단검 기동",
@@ -1413,28 +1413,28 @@
           "text": "Duyên dáng vũ công"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "Luân chuyển giữa né tránh uyển chuyển và sát thương bùng nổ."
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "Nhào lộn xen kẽ giữa né tránh lộng lẫy và đòn tấn công bùng nổ."
         },
         {
-          "key": "헬거너",
-          "text": "Xạ thủ địa ngục"
+          "key": "아이반",
+          "text": "Ivan"
         },
         {
-          "key": "혈탄 장전",
-          "text": "Nạp huyết đạn"
+          "key": "무거운 한 발",
+          "text": "Một phát nặng"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "Tiêu hao máu để bắn đạn xuyên đã tích năng."
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "Từ tầm trung, hạ gục mục tiêu bằng một phát đạn buồng lớn."
         },
         {
-          "key": "역추진 도약",
-          "text": "Bật nhảy phản lực"
+          "key": "검은 연기",
+          "text": "Khói đen"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "Lợi dụng độ giật khi bắn để nhảy lùi về sau."
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "Để lại màn khói rồi lách sang bên, chiếm vị trí bắn tiếp theo."
         },
         {
           "key": "변성술사",
@@ -1505,20 +1505,20 @@
           "text": "Di chuyển không ngừng, tích tụ đà và giải phóng nó trong một đòn duy nhất."
         },
         {
-          "key": "창포수",
-          "text": "Xạ thủ thương pháo"
+          "key": "폭파공",
+          "text": "Chuyên gia phá hủy"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "Xạ thủ thương pháo của huyết nguyệt, lấy máu mình làm đạn"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "Hắn đi qua đâu, nơi đó chỉ còn khói đen."
         },
         {
-          "key": "관통 창격",
-          "text": "Thương kích xuyên phá"
+          "key": "붉은 부착탄",
+          "text": "Đạn dính đỏ"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "Dùng thương pháo xuyên thủng mọi kẻ địch trên đường thẳng."
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "Quả đạn dính vào kẻ địch sẽ nổ sau chốc lát, làm bầy địch tản loạn."
         },
         {
           "key": "사신",
@@ -1654,16 +1654,16 @@
           "text": "ซิลเวอร์เทล"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "ดาบหมุนเพียงเล่มเดียว ระบำของเธอนำความพินาศ"
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "มีดสั้นกับดาบยาวที่เขาทิ้งไว้ การร่ายรำของเธอคือหายนะ"
         },
         {
           "key": "검무의 화신",
           "text": "อวตารระบำดาบ"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "ฟันศัตรูทุกด้านพร้อมกันด้วยดาบใหญ่หมุน"
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "หมุนดาบยาวบนหลังเพื่อฟันศัตรูรอบด้านพร้อมกัน"
         },
         {
           "key": "쌍단검 기동",
@@ -1678,28 +1678,28 @@
           "text": "ลีลานักระบำ"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "สลับการหลบอันสง่างามกับระเบิดความเสียหาย"
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "กายกรรมที่สลับระหว่างการหลบอันงดงามกับการโจมตีอันรุนแรง"
         },
         {
-          "key": "헬거너",
-          "text": "มือปืนนรก"
+          "key": "아이반",
+          "text": "อีวาน"
         },
         {
-          "key": "혈탄 장전",
-          "text": "บรรจุกระสุนเลือด"
+          "key": "무거운 한 발",
+          "text": "กระสุนหนักนัดเดียว"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "ใช้พลังชีวิตเพื่อยิงกระสุนเจาะทะลุที่ชาร์จไว้"
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "จากระยะกลาง ล้มเป้าหมายด้วยกระสุนนัดเดียวจากรังเพลิงขนาดใหญ่"
         },
         {
-          "key": "역추진 도약",
-          "text": "กระโดดแรงถีบ"
+          "key": "검은 연기",
+          "text": "ควันดำ"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "ใช้แรงสะท้อนจากการยิงเพื่อกระโดดถอยหลัง"
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "ทิ้งม่านควันไว้แล้วเฉียงหลบไปยึดตำแหน่งยิงถัดไป"
         },
         {
           "key": "변성술사",
@@ -1770,20 +1770,20 @@
           "text": "เคลื่อนไหวไม่หยุด สะสมแรงส่ง แล้วปลดปล่อยในการโจมตีครั้งเดียว"
         },
         {
-          "key": "창포수",
-          "text": "พลปืนทวน"
+          "key": "폭파공",
+          "text": "นักระเบิด"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "พลปืนทวนแห่งจันทราเลือดผู้ใช้เลือดตนเป็นกระสุน"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "ที่ที่เขาผ่านไป เหลือเพียงควันดำ"
         },
         {
-          "key": "관통 창격",
-          "text": "แทงทวนทะลวง"
+          "key": "붉은 부착탄",
+          "text": "ระเบิดติดสีแดง"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "ใช้ปืนทวนเสียบทะลุศัตรูทุกตัวในแนวเส้นตรง"
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "ลูกระเบิดที่ติดกับศัตรูจะระเบิดในอีกไม่นาน ทำให้ฝูงศัตรูที่รุมเข้ามากระจายตัว"
         },
         {
           "key": "사신",
@@ -1919,16 +1919,16 @@
           "text": "Silvertail"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "Satu bilah berputar. Tariannya membawa kehancuran."
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "Belati dan pedang panjang yang ia tinggalkan, tariannya adalah kehancuran."
         },
         {
           "key": "검무의 화신",
           "text": "Avatar Tarian Pedang"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "Tebas musuh di segala arah dengan pedang besar berputar."
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "Putar pedang panjang di punggung untuk menebas musuh di segala sisi sekaligus."
         },
         {
           "key": "쌍단검 기동",
@@ -1943,28 +1943,28 @@
           "text": "Keanggunan Penari"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "Beralih antara elakan anggun dan ledakan kerusakan."
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "Akrobat yang berganti antara pengelakan memukau dan serangan dahsyat."
         },
         {
-          "key": "헬거너",
-          "text": "Penembak Neraka"
+          "key": "아이반",
+          "text": "Ivan"
         },
         {
-          "key": "혈탄 장전",
-          "text": "Isi Peluru Darah"
+          "key": "무거운 한 발",
+          "text": "Satu Peluru Berat"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "Korbankan nyawa untuk menembakkan peluru tembus bermuatan."
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "Dari jarak menengah, jatuhkan sasaran dengan satu peluru berkamar besar."
         },
         {
-          "key": "역추진 도약",
-          "text": "Lompatan Dorong Balik"
+          "key": "검은 연기",
+          "text": "Asap Hitam"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "Manfaatkan hentakan tembakan untuk melompat ke belakang."
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "Tinggalkan tabir asap saat menyelinap ke samping dan ambil posisi tembak berikutnya."
         },
         {
           "key": "변성술사",
@@ -2035,20 +2035,20 @@
           "text": "Terus bergerak, kumpulkan momentum, lalu lepaskan dalam satu serangan."
         },
         {
-          "key": "창포수",
-          "text": "Penembak Tombak"
+          "key": "폭파공",
+          "text": "Ahli Peledak"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "Penembak tombak bulan darah yang menjadikan darahnya sendiri sebagai peluru"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "Di mana ia lewat, hanya asap hitam yang tersisa."
         },
         {
-          "key": "관통 창격",
-          "text": "Tusukan Tombak Menembus"
+          "key": "붉은 부착탄",
+          "text": "Muatan Lengket Merah"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "Tembus semua musuh dalam satu garis lurus dengan meriam tombak."
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "Peluru yang menempel pada musuh meledak sesaat kemudian dan menyebarkan kerumunan."
         },
         {
           "key": "사신",
@@ -2184,16 +2184,16 @@
           "text": "Silvertail"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "Satu bilah berputar. Tariannya membawa kemusnahan."
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "Belati dan pedang panjang yang ditinggalkannya, tariannya ialah kebinasaan."
         },
         {
           "key": "검무의 화신",
           "text": "Jelmaan Tarian Pedang"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "Tebas musuh di semua arah dengan pedang besar berputar."
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "Putar pedang panjang di belakang untuk menetak musuh di segenap penjuru serentak."
         },
         {
           "key": "쌍단검 기동",
@@ -2208,28 +2208,28 @@
           "text": "Keanggunan Penari"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "Beralih antara elakan anggun dan ledakan kerosakan."
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "Akrobatik yang bertukar antara elakan menawan dan serangan dahsyat."
         },
         {
-          "key": "헬거너",
-          "text": "Penembak Neraka"
+          "key": "아이반",
+          "text": "Ivan"
         },
         {
-          "key": "혈탄 장전",
-          "text": "Isian Peluru Darah"
+          "key": "무거운 한 발",
+          "text": "Satu Peluru Berat"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "Korbankan nyawa untuk menembak peluru tembus bercas."
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "Dari jarak sederhana, tumbangkan sasaran dengan satu peluru ruang besar."
         },
         {
-          "key": "역추진 도약",
-          "text": "Lompatan Sentakan"
+          "key": "검은 연기",
+          "text": "Asap Hitam"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "Gunakan sentakan tembakan untuk melompat ke belakang."
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "Tinggalkan tirai asap ketika mengelak ke sisi dan ambil kedudukan tembakan seterusnya."
         },
         {
           "key": "변성술사",
@@ -2300,20 +2300,20 @@
           "text": "Terus bergerak, kumpul momentum, lalu lepaskannya dalam satu serangan."
         },
         {
-          "key": "창포수",
-          "text": "Penembak Tombak"
+          "key": "폭파공",
+          "text": "Pakar Letupan"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "Penembak tombak bulan darah yang menjadikan darahnya sendiri sebagai peluru"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "Di mana dia lalu, hanya asap hitam yang tinggal."
         },
         {
-          "key": "관통 창격",
-          "text": "Tikaman Tombak Menembusi"
+          "key": "붉은 부착탄",
+          "text": "Cas Melekat Merah"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "Tembusi semua musuh dalam satu garisan lurus dengan meriam tombak."
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "Peluru yang melekat pada musuh meletup seketika kemudian dan menyerakkan kumpulan musuh."
         },
         {
           "key": "사신",
@@ -2449,16 +2449,16 @@
           "text": "Silvertail"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "Una sola hoja giratoria. Su danza trae la ruina."
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "Una daga y la espada larga que él dejó, su danza es la ruina."
         },
         {
           "key": "검무의 화신",
           "text": "Avatar de la danza de espadas"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "Abate a enemigos de todos los lados con un espadón giratorio."
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "Haz girar la espada larga de tu espalda para abatir a los enemigos de todos lados a la vez."
         },
         {
           "key": "쌍단검 기동",
@@ -2473,28 +2473,28 @@
           "text": "Gracia de la bailarina"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "Alterna evasiones elegantes y ráfagas de daño explosivo."
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "Una acrobacia que alterna evasiones vistosas con ataques explosivos."
         },
         {
-          "key": "헬거너",
-          "text": "Artillero infernal"
+          "key": "아이반",
+          "text": "Ivan"
         },
         {
-          "key": "혈탄 장전",
-          "text": "Carga de balas de sangre"
+          "key": "무거운 한 발",
+          "text": "Un disparo pesado"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "Consume tu salud para disparar balas perforantes cargadas."
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "A media distancia, derriba a tu objetivo con un disparo de cámara grande."
         },
         {
-          "key": "역추진 도약",
-          "text": "Salto de retroceso"
+          "key": "검은 연기",
+          "text": "Humo negro"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "Usa el retroceso del disparo para saltar hacia atrás."
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "Deja una cortina de humo al escabullirte a un lado y toma tu siguiente posición de tiro."
         },
         {
           "key": "변성술사",
@@ -2565,20 +2565,20 @@
           "text": "Muévete sin parar, acumula impulso y desátalo en un solo golpe."
         },
         {
-          "key": "창포수",
-          "text": "Artillero de lanza"
+          "key": "폭파공",
+          "text": "Demoledor"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "Artillero de lanza de la luna de sangre que convierte su propia sangre en balas"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "Por donde pasa, solo queda humo negro."
         },
         {
-          "key": "관통 창격",
-          "text": "Estocada perforante"
+          "key": "붉은 부착탄",
+          "text": "Carga adhesiva roja"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "Atraviesa a todos los enemigos en línea recta con tu lanza-cañón."
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "Una carga pegada a un enemigo estalla poco después y dispersa a la multitud."
         },
         {
           "key": "사신",
@@ -2714,16 +2714,16 @@
           "text": "Silvertail"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "Une seule lame tournoyante. Sa danse apporte la ruine."
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "Une dague et la longue épée qu'il a laissée, sa danse est la ruine."
         },
         {
           "key": "검무의 화신",
           "text": "Avatar de la danse des lames"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "Abattez les ennemis de tous côtés avec une épée à deux mains tournoyante."
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "Faites tournoyer la longue épée dans votre dos pour tailler les ennemis de tous côtés."
         },
         {
           "key": "쌍단검 기동",
@@ -2738,28 +2738,28 @@
           "text": "Grâce de la danseuse"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "Alternez esquives gracieuses et explosions de dégâts."
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "Une acrobatie qui alterne esquives élégantes et attaques explosives."
         },
         {
-          "key": "헬거너",
-          "text": "Canonnier infernal"
+          "key": "아이반",
+          "text": "Ivan"
         },
         {
-          "key": "혈탄 장전",
-          "text": "Chargement de balles de sang"
+          "key": "무거운 한 발",
+          "text": "Un seul tir lourd"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "Consommez votre santé pour tirer des balles perforantes chargées."
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "À mi-distance, abattez votre cible d'un seul tir de grosse chambre."
         },
         {
-          "key": "역추진 도약",
-          "text": "Bond de recul"
+          "key": "검은 연기",
+          "text": "Fumée noire"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "Utilisez le recul du tir pour bondir en arrière."
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "Laissez un écran de fumée en vous esquivant sur le côté et prenez votre prochaine position de tir."
         },
         {
           "key": "변성술사",
@@ -2830,20 +2830,20 @@
           "text": "Bougez sans cesse, accumulez de l'élan et libérez-le en un seul coup."
         },
         {
-          "key": "창포수",
-          "text": "Canonnier à lance"
+          "key": "폭파공",
+          "text": "Démolisseur"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "Canonnier à lance de la lune de sang qui fait de son propre sang des balles"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "Là où il passe, il ne reste que de la fumée noire."
         },
         {
-          "key": "관통 창격",
-          "text": "Estoc perforant"
+          "key": "붉은 부착탄",
+          "text": "Charge collante rouge"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "Transpercez tous les ennemis en ligne droite avec votre lance-canon."
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "Une charge collée à un ennemi explose peu après et disperse la foule."
         },
         {
           "key": "사신",
@@ -2979,16 +2979,16 @@
           "text": "Silvertail"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "Una sola lama rotante. La sua danza porta rovina."
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "Un pugnale e la spada lunga che lui ha lasciato, la sua danza è rovina."
         },
         {
           "key": "검무의 화신",
           "text": "Avatar della danza delle lame"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "Abbatti i nemici su ogni lato con uno spadone rotante."
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "Fai ruotare la spada lunga sulla schiena per falciare i nemici su ogni lato."
         },
         {
           "key": "쌍단검 기동",
@@ -3003,28 +3003,28 @@
           "text": "Grazia della danzatrice"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "Alterna schivate eleganti e raffiche di danni esplosivi."
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "Un'acrobazia che alterna schivate eleganti e attacchi esplosivi."
         },
         {
-          "key": "헬거너",
-          "text": "Artigliere infernale"
+          "key": "아이반",
+          "text": "Ivan"
         },
         {
-          "key": "혈탄 장전",
-          "text": "Carica di proiettili di sangue"
+          "key": "무거운 한 발",
+          "text": "Un colpo pesante"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "Consuma la salute per sparare proiettili perforanti caricati."
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "A media distanza, abbatti il bersaglio con un solo colpo a camera grande."
         },
         {
-          "key": "역추진 도약",
-          "text": "Balzo di rinculo"
+          "key": "검은 연기",
+          "text": "Fumo nero"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "Sfrutta il rinculo dello sparo per balzare all’indietro."
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "Lascia una cortina di fumo mentre scivoli di lato e prendi la tua prossima posizione di tiro."
         },
         {
           "key": "변성술사",
@@ -3095,20 +3095,20 @@
           "text": "Muoviti senza sosta, accumula slancio e scatenalo in un solo colpo."
         },
         {
-          "key": "창포수",
-          "text": "Artigliere di lancia"
+          "key": "폭파공",
+          "text": "Demolitore"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "Artigliere di lancia della luna di sangue che trasforma il proprio sangue in proiettili"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "Dove passa, resta solo fumo nero."
         },
         {
-          "key": "관통 창격",
-          "text": "Affondo perforante"
+          "key": "붉은 부착탄",
+          "text": "Carica adesiva rossa"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "Trafiggi tutti i nemici in linea retta con la lancia-cannone."
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "Una carica attaccata a un nemico esplode poco dopo e disperde la folla."
         },
         {
           "key": "사신",
@@ -3244,16 +3244,16 @@
           "text": "Silvertail"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "Uma única lâmina giratória. Sua dança traz ruína."
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "Uma adaga e a espada longa que ele deixou, sua dança é a ruína."
         },
         {
           "key": "검무의 화신",
           "text": "Avatar da dança das lâminas"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "Derrube inimigos de todos os lados com uma espada grande giratória."
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "Gire a espada longa nas costas para cortar inimigos de todos os lados ao mesmo tempo."
         },
         {
           "key": "쌍단검 기동",
@@ -3268,28 +3268,28 @@
           "text": "Graça da dançarina"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "Alterne esquivas graciosas e rajadas de dano explosivo."
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "Uma acrobacia que alterna esquivas deslumbrantes e ataques explosivos."
         },
         {
-          "key": "헬거너",
-          "text": "Artilheiro infernal"
+          "key": "아이반",
+          "text": "Ivan"
         },
         {
-          "key": "혈탄 장전",
-          "text": "Carga de balas de sangue"
+          "key": "무거운 한 발",
+          "text": "Um Tiro Pesado"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "Consuma sua vida para disparar balas perfurantes carregadas."
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "À média distância, derrube o alvo com um único tiro de câmara grande."
         },
         {
-          "key": "역추진 도약",
-          "text": "Salto de recuo"
+          "key": "검은 연기",
+          "text": "Fumaça Negra"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "Use o recuo do disparo para saltar para trás."
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "Deixe uma cortina de fumaça ao escapar para o lado e assuma sua próxima posição de tiro."
         },
         {
           "key": "변성술사",
@@ -3360,20 +3360,20 @@
           "text": "Mova-se sem parar, acumule impulso e libere-o em um único golpe."
         },
         {
-          "key": "창포수",
-          "text": "Artilheiro de lança"
+          "key": "폭파공",
+          "text": "Demolidor"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "Artilheiro de lança da lua de sangue que transforma o próprio sangue em balas"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "Por onde ele passa, só resta fumaça negra."
         },
         {
-          "key": "관통 창격",
-          "text": "Estocada perfurante"
+          "key": "붉은 부착탄",
+          "text": "Carga Adesiva Vermelha"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "Perfure todos os inimigos em linha reta com sua lança-canhão."
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "Uma carga grudada num inimigo explode instantes depois e dispersa a multidão."
         },
         {
           "key": "사신",
@@ -3509,16 +3509,16 @@
           "text": "Silvertail"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "O singură lamă rotitoare. Dansul ei aduce ruina."
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "Un pumnal și sabia lungă lăsată de el, dansul ei aduce ruina."
         },
         {
           "key": "검무의 화신",
           "text": "Avatarul dansului lamelor"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "Doboară inamicii din toate părțile cu o sabie mare rotitoare."
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "Rotește sabia lungă de pe spate ca să tai inamicii din toate părțile."
         },
         {
           "key": "쌍단검 기동",
@@ -3533,28 +3533,28 @@
           "text": "Grația dansatoarei"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "Alternează eschive grațioase și explozii de daune."
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "O acrobație care alternează între evitări grațioase și atacuri explozive."
         },
         {
-          "key": "헬거너",
-          "text": "Trăgător infernal"
+          "key": "아이반",
+          "text": "Ivan"
         },
         {
-          "key": "혈탄 장전",
-          "text": "Încărcarea gloanțelor de sânge"
+          "key": "무거운 한 발",
+          "text": "O lovitură grea"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "Consumă viață pentru a trage gloanțe perforante încărcate."
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "De la mijlocul distanței, doboară ținta cu un singur glonț din camera mare."
         },
         {
-          "key": "역추진 도약",
-          "text": "Salt de recul"
+          "key": "검은 연기",
+          "text": "Fum negru"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "Folosește reculul focului pentru a sări înapoi."
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "Lasă o perdea de fum în timp ce te strecori într-o parte și ocupi următoarea poziție de tragere."
         },
         {
           "key": "변성술사",
@@ -3625,20 +3625,20 @@
           "text": "Mișcă-te fără oprire, acumulează avânt și dezlănțuie-l într-o singură lovitură."
         },
         {
-          "key": "창포수",
-          "text": "Tunar cu lance"
+          "key": "폭파공",
+          "text": "Demolator"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "Tunar cu lance al lunii însângerate, care își preface propriul sânge în gloanțe"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "Pe unde trece el, rămâne doar fum negru."
         },
         {
-          "key": "관통 창격",
-          "text": "Străpungere cu lancea"
+          "key": "붉은 부착탄",
+          "text": "Încărcătură lipicioasă roșie"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "Străpunge toți inamicii aflați în linie dreaptă cu lancea-tun."
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "O încărcătură lipită de un inamic explodează puțin mai târziu și împrăștie mulțimea."
         },
         {
           "key": "사신",
@@ -3774,16 +3774,16 @@
           "text": "Silvertail"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "Eine einzige kreisende Klinge. Ihr Tanz bringt Verderben."
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "Ein Dolch und das Langschwert, das er zurückließ – ihr Tanz bringt den Untergang."
         },
         {
           "key": "검무의 화신",
           "text": "Avatar des Klingentanzes"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "Fälle mit einem kreisenden Großschwert Gegner auf allen Seiten."
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "Lass das Langschwert auf deinem Rücken kreisen und fälle Feinde auf allen Seiten zugleich."
         },
         {
           "key": "쌍단검 기동",
@@ -3798,28 +3798,28 @@
           "text": "Anmut der Tänzerin"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "Wechsle zwischen anmutigem Ausweichen und explosiven Schadensstößen."
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "Eine Akrobatik zwischen eleganten Ausweichmanövern und explosiven Angriffen."
         },
         {
-          "key": "헬거너",
-          "text": "Höllenschütze"
+          "key": "아이반",
+          "text": "Ivan"
         },
         {
-          "key": "혈탄 장전",
-          "text": "Blutkugel-Ladung"
+          "key": "무거운 한 발",
+          "text": "Ein schwerer Schuss"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "Verbrauche Lebenspunkte, um aufgeladene Durchschlagskugeln abzufeuern."
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "Aus mittlerer Distanz bringst du dein Ziel mit einem Schuss aus der großen Kammer zu Fall."
         },
         {
-          "key": "역추진 도약",
-          "text": "Rückstoßsprung"
+          "key": "검은 연기",
+          "text": "Schwarzer Rauch"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "Nutze den Rückstoß des Schusses, um nach hinten zu springen."
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "Hinterlasse eine Rauchwand, während du zur Seite ausweichst und deine nächste Schussposition einnimmst."
         },
         {
           "key": "변성술사",
@@ -3890,20 +3890,20 @@
           "text": "Bleib ständig in Bewegung, baue Schwung auf und entfessle ihn in einem einzigen Schlag."
         },
         {
-          "key": "창포수",
-          "text": "Lanzenkanonier"
+          "key": "폭파공",
+          "text": "Sprengmeister"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "Lanzenkanonier des Blutmonds, der sein eigenes Blut zu Kugeln macht"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "Wo er vorbeigeht, bleibt nur schwarzer Rauch."
         },
         {
-          "key": "관통 창격",
-          "text": "Durchbohrender Lanzenstoß"
+          "key": "붉은 부착탄",
+          "text": "Rote Haftladung"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "Durchbohre mit der Lanzenkanone alle Gegner in gerader Linie."
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "Eine am Feind haftende Ladung detoniert kurz darauf und sprengt die Menge auseinander."
         },
         {
           "key": "사신",
@@ -4039,16 +4039,16 @@
           "text": "Silvertail"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "Eén draaiend lemmet. Haar dans brengt verderf."
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "Een dolk en het langzwaard dat hij naliet, haar dans brengt verderf."
         },
         {
           "key": "검무의 화신",
           "text": "Avatar van de zwaarddans"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "Vel vijanden aan alle kanten met een draaiend grootzwaard."
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "Laat het langzwaard op je rug rondwentelen en maai vijanden aan alle kanten tegelijk neer."
         },
         {
           "key": "쌍단검 기동",
@@ -4063,28 +4063,28 @@
           "text": "Gratie van de danseres"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "Wissel sierlijke ontwijkingen af met explosieve schade-uitbarstingen."
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "Acrobatiek die wisselt tussen sierlijke ontwijkingen en explosieve aanvallen."
         },
         {
-          "key": "헬거너",
-          "text": "Helleschutter"
+          "key": "아이반",
+          "text": "Ivan"
         },
         {
-          "key": "혈탄 장전",
-          "text": "Bloedkogels laden"
+          "key": "무거운 한 발",
+          "text": "Eén zware kogel"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "Verbruik levenskracht om geladen doorborende kogels af te vuren."
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "Breng je doelwit op middenafstand ten val met één kogel uit de grote kamer."
         },
         {
-          "key": "역추진 도약",
-          "text": "Terugslagsprong"
+          "key": "검은 연기",
+          "text": "Zwarte rook"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "Gebruik de terugslag van het schot om achterwaarts te springen."
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "Laat een rookgordijn achter terwijl je opzij glipt en je volgende schietpositie inneemt."
         },
         {
           "key": "변성술사",
@@ -4155,20 +4155,20 @@
           "text": "Blijf in beweging, bouw momentum op en ontketen het in één enkele slag."
         },
         {
-          "key": "창포수",
-          "text": "Lansschutter"
+          "key": "폭파공",
+          "text": "Sloper"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "Lansschutter van de bloedmaan die zijn eigen bloed tot kogels maakt"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "Waar hij langskomt, blijft alleen zwarte rook over."
         },
         {
-          "key": "관통 창격",
-          "text": "Doorborende lansstoot"
+          "key": "붉은 부착탄",
+          "text": "Rode kleeflading"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "Doorboor alle vijanden in een rechte lijn met het lanskanon."
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "Een lading die aan een vijand kleeft, ontploft even later en verspreidt de menigte."
         },
         {
           "key": "사신",
@@ -4304,16 +4304,16 @@
           "text": "Silvertail"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "En enda roterande klinga. Hennes dans bringar förödelse."
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "En dolk och långsvärdet han lämnade efter sig, hennes dans bringar undergång."
         },
         {
           "key": "검무의 화신",
           "text": "Klingdansens avatar"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "Hugg ner fiender på alla sidor med ett roterande storsvärd."
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "Snurra långsvärdet på ryggen och fäll fiender på alla sidor på en gång."
         },
         {
           "key": "쌍단검 기동",
@@ -4328,28 +4328,28 @@
           "text": "Dansarens grace"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "Växla mellan eleganta undanmanövrer och explosiva skadeutbrott."
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "Akrobatik som växlar mellan graciösa undanmanövrar och explosiva anfall."
         },
         {
-          "key": "헬거너",
-          "text": "Helvetesskytt"
+          "key": "아이반",
+          "text": "Ivan"
         },
         {
-          "key": "혈탄 장전",
-          "text": "Blodkuleladdning"
+          "key": "무거운 한 발",
+          "text": "Ett tungt skott"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "Förbruka hälsa för att avfyra laddade genomborrande kulor."
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "Fäll ditt mål på medellång håll med ett enda skott ur den stora kammaren."
         },
         {
-          "key": "역추진 도약",
-          "text": "Rekylsprång"
+          "key": "검은 연기",
+          "text": "Svart rök"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "Använd skottets rekyl för att hoppa bakåt."
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "Lämna en rökridå medan du glider åt sidan och intar nästa skottposition."
         },
         {
           "key": "변성술사",
@@ -4420,20 +4420,20 @@
           "text": "Håll dig i rörelse, bygg upp fart och släpp lös den i ett enda slag."
         },
         {
-          "key": "창포수",
-          "text": "Lansskytt"
+          "key": "폭파공",
+          "text": "Sprängare"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "Blodmånens lansskytt som gör sitt eget blod till kulor"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "Där han går förbi finns bara svart rök kvar."
         },
         {
-          "key": "관통 창격",
-          "text": "Genomborrande lansstöt"
+          "key": "붉은 부착탄",
+          "text": "Röd klibbladdning"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "Genomborra alla fiender i en rak linje med lanskanonen."
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "En laddning som sitter fast på en fiende detonerar en stund senare och skingrar skaran."
         },
         {
           "key": "사신",
@@ -4569,16 +4569,16 @@
           "text": "Silvertail"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "En enkelt roterende klinge. Hendes dans bringer undergang."
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "En dolk og det langsværd, han efterlod, hendes dans bringer undergang."
         },
         {
           "key": "검무의 화신",
           "text": "Klingedansens avatar"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "Fæld fjender på alle sider med et roterende storsværd."
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "Drej langsværdet på din ryg rundt og fæld fjender på alle sider på én gang."
         },
         {
           "key": "쌍단검 기동",
@@ -4593,28 +4593,28 @@
           "text": "Danserens ynde"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "Skift mellem yndefulde undvigelser og eksplosive skadesudbrud."
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "Akrobatik, der skifter mellem yndefulde undvigelser og eksplosive angreb."
         },
         {
-          "key": "헬거너",
-          "text": "Helvedesskytte"
+          "key": "아이반",
+          "text": "Ivan"
         },
         {
-          "key": "혈탄 장전",
-          "text": "Blodkugleladning"
+          "key": "무거운 한 발",
+          "text": "Ét tungt skud"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "Forbrug helbred for at affyre ladede gennemborende kugler."
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "Fæld dit mål på mellemhold med ét skud fra det store kammer."
         },
         {
-          "key": "역추진 도약",
-          "text": "Rekylspring"
+          "key": "검은 연기",
+          "text": "Sort røg"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "Brug skuddets rekyl til at springe bagud."
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "Efterlad et røgtæppe, mens du glider til siden og indtager din næste skudposition."
         },
         {
           "key": "변성술사",
@@ -4685,20 +4685,20 @@
           "text": "Bliv i bevægelse, opbyg momentum, og slip det løs i ét enkelt slag."
         },
         {
-          "key": "창포수",
-          "text": "Lanseskytte"
+          "key": "폭파공",
+          "text": "Sprængningsekspert"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "Blodmånens lanseskytte, der gør sit eget blod til kugler"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "Hvor han går forbi, er der kun sort røg tilbage."
         },
         {
-          "key": "관통 창격",
-          "text": "Gennemborende lansestød"
+          "key": "붉은 부착탄",
+          "text": "Rød klæbeladning"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "Gennembor alle fjender på en lige linje med lansekanonen."
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "En ladning, der sidder fast på en fjende, sprænger lidt senere og spreder mængden."
         },
         {
           "key": "사신",
@@ -4834,16 +4834,16 @@
           "text": "Silvertail"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "Ett roterende blad. Dansen hennes bringer undergang."
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "En dolk og langsverdet han la igjen, dansen hennes bringer undergang."
         },
         {
           "key": "검무의 화신",
           "text": "Bladdansens avatar"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "Fell fiender på alle sider med et roterende storsverd."
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "Snurr langsverdet på ryggen og fell fiender på alle sider samtidig."
         },
         {
           "key": "쌍단검 기동",
@@ -4858,28 +4858,28 @@
           "text": "Danserens ynde"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "Veksle mellom grasiøse unnamanøvre og eksplosive skadeutbrudd."
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "Akrobatikk som veksler mellom grasiøse unnvikelser og eksplosive angrep."
         },
         {
-          "key": "헬거너",
-          "text": "Helvetesskytter"
+          "key": "아이반",
+          "text": "Ivan"
         },
         {
-          "key": "혈탄 장전",
-          "text": "Blodkuleladning"
+          "key": "무거운 한 발",
+          "text": "Ett tungt skudd"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "Bruk helse for å avfyre ladede gjennomborende kuler."
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "Fell målet på mellomhold med ett skudd fra det store kammeret."
         },
         {
-          "key": "역추진 도약",
-          "text": "Rekylhopp"
+          "key": "검은 연기",
+          "text": "Svart røyk"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "Bruk rekylen fra skuddet til å hoppe bakover."
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "Legg igjen et røykteppe mens du glir til siden og tar neste skuddposisjon."
         },
         {
           "key": "변성술사",
@@ -4950,20 +4950,20 @@
           "text": "Hold deg i bevegelse, bygg opp fart og slipp den løs i ett enkelt slag."
         },
         {
-          "key": "창포수",
-          "text": "Lanseskytter"
+          "key": "폭파공",
+          "text": "Sprengningsekspert"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "Blodmånens lanseskytter som gjør sitt eget blod til kuler"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "Der han går forbi, blir det bare svart røyk igjen."
         },
         {
-          "key": "관통 창격",
-          "text": "Gjennomborende lansestøt"
+          "key": "붉은 부착탄",
+          "text": "Rød klebeladning"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "Gjennombor alle fiender på en rett linje med lansekanonen."
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "En ladning som sitter fast på en fiende, detonerer litt senere og sprer mengden."
         },
         {
           "key": "사신",
@@ -5099,16 +5099,16 @@
           "text": "Сильвертейл"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "Один вращающийся клинок. Её танец несёт погибель."
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "Кинжал и длинный меч, оставленный им, — её танец есть гибель."
         },
         {
           "key": "검무의 화신",
           "text": "Воплощение танца клинков"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "Сражайте врагов со всех сторон вращающимся двуручным мечом."
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "Вращайте длинный меч за спиной и разите врагов со всех сторон одновременно."
         },
         {
           "key": "쌍단검 기동",
@@ -5123,28 +5123,28 @@
           "text": "Грация танцовщицы"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "Чередуйте изящные уклонения и взрывные всплески урона."
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "Акробатика, чередующая эффектные уклонения и взрывные атаки."
         },
         {
-          "key": "헬거너",
-          "text": "Адский стрелок"
+          "key": "아이반",
+          "text": "Иван"
         },
         {
-          "key": "혈탄 장전",
-          "text": "Кровавый заряд"
+          "key": "무거운 한 발",
+          "text": "Один тяжёлый выстрел"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "Расходуйте здоровье, чтобы выпустить заряженные пробивающие пули."
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "На средней дистанции повалите цель одним выстрелом из большого патронника."
         },
         {
-          "key": "역추진 도약",
-          "text": "Прыжок отдачей"
+          "key": "검은 연기",
+          "text": "Чёрный дым"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "Используйте отдачу выстрела, чтобы отпрыгнуть назад."
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "Оставьте дымовую завесу, уходя вбок, и займите следующую позицию для стрельбы."
         },
         {
           "key": "변성술사",
@@ -5215,20 +5215,20 @@
           "text": "Двигайтесь без остановки, копите напор и обрушьте его одним ударом."
         },
         {
-          "key": "창포수",
-          "text": "Копейный канонир"
+          "key": "폭파공",
+          "text": "Подрывник"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "Копейный канонир кровавой луны, обращающий собственную кровь в пули"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "Где он прошёл, остаётся лишь чёрный дым."
         },
         {
-          "key": "관통 창격",
-          "text": "Пронзающий удар копья"
+          "key": "붉은 부착탄",
+          "text": "Красный липкий заряд"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "Пронзите копейной пушкой всех врагов на прямой линии."
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "Заряд, прилипший к врагу, через мгновение взрывается и разбрасывает толпу."
         },
         {
           "key": "사신",
@@ -5364,16 +5364,16 @@
           "text": "Сільвертейл"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "Один обертовий клинок. Її танець несе загибель."
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "Кинджал і довгий меч, залишений ним, — її танець є загибеллю."
         },
         {
           "key": "검무의 화신",
           "text": "Утілення танцю клинків"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "Здолайте ворогів з усіх боків обертовим дворучним мечем."
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "Обертайте довгий меч за спиною й уражайте ворогів з усіх боків одночасно."
         },
         {
           "key": "쌍단검 기동",
@@ -5388,28 +5388,28 @@
           "text": "Грація танцівниці"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "Чергуйте витончені ухилення й вибухові сплески шкоди."
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "Акробатика, що поєднує ефектні ухили й вибухові атаки."
         },
         {
-          "key": "헬거너",
-          "text": "Пекельний стрілець"
+          "key": "아이반",
+          "text": "Іван"
         },
         {
-          "key": "혈탄 장전",
-          "text": "Заряджання кривавих куль"
+          "key": "무거운 한 발",
+          "text": "Один важкий постріл"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "Витрачайте здоров’я, щоб випустити заряджені пробивні кулі."
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "На середній дистанції повалите ціль одним пострілом із великого патронника."
         },
         {
-          "key": "역추진 도약",
-          "text": "Стрибок від віддачі"
+          "key": "검은 연기",
+          "text": "Чорний дим"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "Використайте віддачу пострілу, щоб відстрибнути назад."
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "Залиште димову завісу, ухиляючись убік, і займіть наступну позицію для стрільби."
         },
         {
           "key": "변성술사",
@@ -5480,20 +5480,20 @@
           "text": "Рухайтеся без зупинки, накопичуйте натиск і обрушуйте його одним ударом."
         },
         {
-          "key": "창포수",
-          "text": "Списовий канонір"
+          "key": "폭파공",
+          "text": "Підривник"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "Списовий канонір кривавого місяця, що обертає власну кров на кулі"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "Де він пройшов, лишається тільки чорний дим."
         },
         {
-          "key": "관통 창격",
-          "text": "Пронизливий удар списом"
+          "key": "붉은 부착탄",
+          "text": "Червоний липкий заряд"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "Прошийте списом-гарматою всіх ворогів на прямій лінії."
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "Заряд, що прилип до ворога, за мить вибухає й розкидає натовп."
         },
         {
           "key": "사신",
@@ -5629,16 +5629,16 @@
           "text": "Silvertail"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "Jedno wirujące ostrze. Jej taniec niesie zagładę."
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "Sztylet i długi miecz, który po sobie zostawił, jej taniec to zagłada."
         },
         {
           "key": "검무의 화신",
           "text": "Awatar tańca ostrzy"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "Powalaj wrogów ze wszystkich stron wirującym wielkim mieczem."
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "Obracaj długi miecz na plecach, by ciąć wrogów ze wszystkich stron naraz."
         },
         {
           "key": "쌍단검 기동",
@@ -5653,28 +5653,28 @@
           "text": "Gracja tancerki"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "Przechodź między wdzięcznymi unikami a wybuchami obrażeń."
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "Akrobacja łącząca efektowne uniki z wybuchowymi atakami."
         },
         {
-          "key": "헬거너",
-          "text": "Piekielny strzelec"
+          "key": "아이반",
+          "text": "Ivan"
         },
         {
-          "key": "혈탄 장전",
-          "text": "Ładowanie krwawych pocisków"
+          "key": "무거운 한 발",
+          "text": "Jeden ciężki strzał"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "Poświęć zdrowie, by wystrzelić naładowane przebijające pociski."
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "Ze średniego dystansu powal cel jednym strzałem z dużej komory."
         },
         {
-          "key": "역추진 도약",
-          "text": "Skok odrzutu"
+          "key": "검은 연기",
+          "text": "Czarny dym"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "Wykorzystaj odrzut strzału, by odskoczyć do tyłu."
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "Zostaw zasłonę dymną, uskakując na bok, i zajmij następną pozycję strzelecką."
         },
         {
           "key": "변성술사",
@@ -5745,20 +5745,20 @@
           "text": "Nie przestawaj się ruszać, zbieraj impet i uwolnij go jednym ciosem."
         },
         {
-          "key": "창포수",
-          "text": "Kanonier z lancą"
+          "key": "폭파공",
+          "text": "Saper"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "Kanonier z lancą spod krwawego księżyca, który własną krew zmienia w pociski"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "Gdzie przejdzie, zostaje tylko czarny dym."
         },
         {
-          "key": "관통 창격",
-          "text": "Przeszywające pchnięcie lancy"
+          "key": "붉은 부착탄",
+          "text": "Czerwony ładunek przylepny"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "Przebij lancą-działem wszystkich wrogów w linii prostej."
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "Ładunek przyklejony do wroga wybucha chwilę później i rozprasza tłum."
         },
         {
           "key": "사신",
@@ -5894,16 +5894,16 @@
           "text": "Silvertail"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "Jediná rotující čepel. Její tanec přináší zkázu."
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "Dýka a dlouhý meč, který po něm zůstal, její tanec je zkáza."
         },
         {
           "key": "검무의 화신",
           "text": "Avatar tance čepelí"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "Srážej nepřátele na všech stranách rotujícím velkým mečem."
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "Roztoč dlouhý meč na zádech a skoliš nepřátele ze všech stran najednou."
         },
         {
           "key": "쌍단검 기동",
@@ -5918,28 +5918,28 @@
           "text": "Půvab tanečnice"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "Střídej ladné úhyby a výbušné dávky poškození."
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "Akrobacie střídající efektní úhyby a výbušné útoky."
         },
         {
-          "key": "헬거너",
-          "text": "Pekelný střelec"
+          "key": "아이반",
+          "text": "Ivan"
         },
         {
-          "key": "혈탄 장전",
-          "text": "Nabíjení krvavých kulek"
+          "key": "무거운 한 발",
+          "text": "Jedna těžká rána"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "Obětuj zdraví a vypal nabité průrazné kulky."
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "Ze střední vzdálenosti sraž cíl jednou ranou z velké komory."
         },
         {
-          "key": "역추진 도약",
-          "text": "Skok zpětným rázem"
+          "key": "검은 연기",
+          "text": "Černý kouř"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "Využij zpětný ráz výstřelu k odskoku vzad."
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "Zanech kouřovou clonu, uhni stranou a zaujmi další palebnou pozici."
         },
         {
           "key": "변성술사",
@@ -6010,20 +6010,20 @@
           "text": "Neustále se pohybuj, nabírej švih a uvolni ho jediným úderem."
         },
         {
-          "key": "창포수",
-          "text": "Kanonýr s kopím"
+          "key": "폭파공",
+          "text": "Ničitel"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "Kanonýr s kopím krvavého měsíce, jenž mění vlastní krev v kulky"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "Kudy projde, zůstane jen černý kouř."
         },
         {
-          "key": "관통 창격",
-          "text": "Průrazný výpad kopím"
+          "key": "붉은 부착탄",
+          "text": "Rudá lepivá nálož"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "Prostřel kopím-dělem všechny nepřátele v jedné přímce."
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "Nálož přilepená na nepříteli o chvíli později vybuchne a rozmetá dav."
         },
         {
           "key": "사신",
@@ -6159,16 +6159,16 @@
           "text": "Silvertail"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "Egyetlen forgó penge. Tánca pusztulást hoz."
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "Egy tőr és a hosszúkard, amelyet ő hagyott hátra, a tánca a pusztulás."
         },
         {
           "key": "검무의 화신",
           "text": "A pengetánc megtestesülése"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "Forgó pallossal vágja le az ellenfeleket minden irányból."
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "Pörgesd a hátadon lévő hosszúkardot, hogy minden oldalon egyszerre vágd le az ellenséget."
         },
         {
           "key": "쌍단검 기동",
@@ -6183,28 +6183,28 @@
           "text": "A táncos kecsessége"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "Kecses kitérések és robbanásszerű sebzés között vált."
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "Látványos kitérések és robbanó támadások között váltakozó akrobatika."
         },
         {
-          "key": "헬거너",
-          "text": "Pokoli lövész"
+          "key": "아이반",
+          "text": "Ivan"
         },
         {
-          "key": "혈탄 장전",
-          "text": "Vérlövedék töltése"
+          "key": "무거운 한 발",
+          "text": "Egy nehéz lövés"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "Életerőt áldozva feltöltött átütő lövedékeket lő ki."
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "Közepes távolságból egyetlen lövéssel döntsd le a célpontot a nagy kamrából."
         },
         {
-          "key": "역추진 도약",
-          "text": "Visszarúgásos ugrás"
+          "key": "검은 연기",
+          "text": "Fekete füst"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "A lövés visszarúgását kihasználva hátraugrik."
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "Hagyj füstfüggönyt, miközben oldalra siklasz, és foglald el a következő lőállást."
         },
         {
           "key": "변성술사",
@@ -6275,20 +6275,20 @@
           "text": "Mozogj megállás nélkül, gyűjts lendületet, és szabadítsd fel egyetlen csapásban."
         },
         {
-          "key": "창포수",
-          "text": "Lándzsás lövész"
+          "key": "폭파공",
+          "text": "Robbantó"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "A vérhold lándzsás lövésze, aki saját vérét használja lövedékként"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "Ahol elhalad, csak fekete füst marad."
         },
         {
-          "key": "관통 창격",
-          "text": "Átütő lándzsacsapás"
+          "key": "붉은 부착탄",
+          "text": "Vörös tapadótöltet"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "A lándzsaágyúval egy egyenes vonalban minden ellenfelet átdöf."
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "Az ellenségre tapadt töltet pillanatokkal később felrobban, és szétszórja a tömeget."
         },
         {
           "key": "사신",
@@ -6424,16 +6424,16 @@
           "text": "Силвъртейл"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "Едно въртящо се острие. Танцът ѝ носи гибел."
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "Кама и дългият меч, който той остави, нейният танц е гибел."
         },
         {
           "key": "검무의 화신",
           "text": "Въплъщение на танца с остриета"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "Поваляй врагове от всички страни с въртящ се голям меч."
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "Завърти дългия меч на гърба си и повали враговете от всички страни едновременно."
         },
         {
           "key": "쌍단검 기동",
@@ -6448,28 +6448,28 @@
           "text": "Грацията на танцьорката"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "Редувай изящни избягвания и взривни изблици на щети."
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "Акробатика, редуваща ефектни измествания и взривни атаки."
         },
         {
-          "key": "헬거너",
-          "text": "Адски стрелец"
+          "key": "아이반",
+          "text": "Иван"
         },
         {
-          "key": "혈탄 장전",
-          "text": "Зареждане на кървави куршуми"
+          "key": "무거운 한 발",
+          "text": "Един тежък изстрел"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "Изразходвай здраве, за да изстреляш заредени пронизващи куршуми."
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "От средна дистанция повали целта с един изстрел от голямата камера."
         },
         {
-          "key": "역추진 도약",
-          "text": "Скок с откат"
+          "key": "검은 연기",
+          "text": "Черен дим"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "Използвай отката на изстрела, за да отскочиш назад."
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "Остави димна завеса, докато се измъкваш встрани, и заеми следващата си стрелкова позиция."
         },
         {
           "key": "변성술사",
@@ -6540,20 +6540,20 @@
           "text": "Движи се безспир, натрупай инерция и я освободи в един удар."
         },
         {
-          "key": "창포수",
-          "text": "Копиен канонир"
+          "key": "폭파공",
+          "text": "Взривотехник"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "Копиен канонир на кървавата луна, превръщащ собствената си кръв в куршуми"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "Където мине, остава само черен дим."
         },
         {
-          "key": "관통 창격",
-          "text": "Пронизващ удар с копие"
+          "key": "붉은 부착탄",
+          "text": "Червен лепкав заряд"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "Пронижи с копието-оръдие всички врагове по права линия."
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "Заряд, залепнал за враг, избухва след миг и разпръсква тълпата."
         },
         {
           "key": "사신",
@@ -6689,16 +6689,16 @@
           "text": "Σίλβερτεϊλ"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "Μία περιστρεφόμενη λεπίδα. Ο χορός της φέρνει όλεθρο."
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "Ένα στιλέτο και το μακρύ ξίφος που άφησε εκείνος, ο χορός της φέρνει όλεθρο."
         },
         {
           "key": "검무의 화신",
           "text": "Ενσάρκωση του χορού λεπίδων"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "Κόψε εχθρούς από όλες τις πλευρές με περιστρεφόμενο μεγάλο σπαθί."
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "Περίστρεψε το μακρύ ξίφος στην πλάτη σου και θέρισε τους εχθρούς απ’ όλες τις πλευρές."
         },
         {
           "key": "쌍단검 기동",
@@ -6713,28 +6713,28 @@
           "text": "Χάρη της χορεύτριας"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "Εναλλάξου ανάμεσα σε κομψές αποφυγές και εκρηκτική ζημιά."
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "Ακροβατική που εναλλάσσει εντυπωσιακές αποφυγές και εκρηκτικές επιθέσεις."
         },
         {
-          "key": "헬거너",
-          "text": "Πυροβολητής της Κόλασης"
+          "key": "아이반",
+          "text": "Ιβάν"
         },
         {
-          "key": "혈탄 장전",
-          "text": "Γέμισμα αιμάτινων σφαιρών"
+          "key": "무거운 한 발",
+          "text": "Μία βαριά βολή"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "Ξόδεψε ζωή για να εκτοξεύσεις φορτισμένες διατρητικές σφαίρες."
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "Από μέση απόσταση, γκρέμισε τον στόχο με μία βολή από τον μεγάλο θάλαμο."
         },
         {
-          "key": "역추진 도약",
-          "text": "Άλμα ανάκρουσης"
+          "key": "검은 연기",
+          "text": "Μαύρος καπνός"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "Χρησιμοποίησε την ανάκρουση της βολής για να αναπηδήσεις προς τα πίσω."
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "Άφησε παραπέτασμα καπνού καθώς γλιστράς στο πλάι και πάρε την επόμενη θέση βολής."
         },
         {
           "key": "변성술사",
@@ -6805,20 +6805,20 @@
           "text": "Κινήσου ασταμάτητα, συσσώρευσε ορμή και απελευθέρωσέ την σε ένα μόνο χτύπημα."
         },
         {
-          "key": "창포수",
-          "text": "Λογχοπυροβολητής"
+          "key": "폭파공",
+          "text": "Ανατινάκτης"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "Λογχοπυροβολητής της ματωμένης σελήνης που κάνει το ίδιο του το αίμα σφαίρες"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "Εκεί που περνά, μένει μόνο μαύρος καπνός."
         },
         {
-          "key": "관통 창격",
-          "text": "Διατρητικό χτύπημα λόγχης"
+          "key": "붉은 부착탄",
+          "text": "Κόκκινο κολλητικό φορτίο"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "Διαπέρασε με τη λόγχη-κανόνι όλους τους εχθρούς σε ευθεία γραμμή."
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "Ένα φορτίο κολλημένο σε εχθρό εκρήγνυται λίγο μετά και σκορπίζει το πλήθος."
         },
         {
           "key": "사신",
@@ -6954,16 +6954,16 @@
           "text": "Silvertail"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "Yksi pyörivä terä. Hänen tanssinsa tuo tuhon."
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "Tikari ja pitkämiekka, jonka hän jätti, hänen tanssinsa tuo tuhon."
         },
         {
           "key": "검무의 화신",
           "text": "Terätanssin ilmentymä"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "Kaada vihollisia joka suunnasta pyörivällä suurmiekalla."
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "Pyöritä selässäsi olevaa pitkämiekkaa ja kaada viholliset joka suunnasta yhtä aikaa."
         },
         {
           "key": "쌍단검 기동",
@@ -6978,28 +6978,28 @@
           "text": "Tanssijan sulous"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "Vaihtele sulavia väistöjä ja räjähtäviä vahinkoryöppyjä."
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "Akrobatiaa, joka vuorottelee näyttäviä väistöjä ja räjähtäviä iskuja."
         },
         {
-          "key": "헬거너",
-          "text": "Helvetinampuja"
+          "key": "아이반",
+          "text": "Ivan"
         },
         {
-          "key": "혈탄 장전",
-          "text": "Veriluotien lataus"
+          "key": "무거운 한 발",
+          "text": "Yksi raskas laukaus"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "Kuluta elinvoimaa ampuaksesi ladattuja lävistäviä luoteja."
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "Kaada kohde keskietäisyydeltä yhdellä ison patruunapesän laukauksella."
         },
         {
-          "key": "역추진 도약",
-          "text": "Rekyyliloikka"
+          "key": "검은 연기",
+          "text": "Musta savu"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "Hyödynnä laukauksen rekyyliä loikataksesi taaksepäin."
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "Jätä savuverho livahtaessasi sivuun ja ota seuraava ampumapaikkasi."
         },
         {
           "key": "변성술사",
@@ -7070,20 +7070,20 @@
           "text": "Pysy liikkeessä, kerää vauhtia ja pura se yhteen iskuun."
         },
         {
-          "key": "창포수",
-          "text": "Peitsiampuja"
+          "key": "폭파공",
+          "text": "Räjäytysmies"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "Verikuun peitsiampuja, joka muuttaa oman verensä luodeiksi"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "Missä hän kulkee, jäljelle jää vain musta savu."
         },
         {
-          "key": "관통 창격",
-          "text": "Lävistävä peitsi-isku"
+          "key": "붉은 부착탄",
+          "text": "Punainen tarttuvapanos"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "Lävistä peitsitykillä kaikki viholliset suorassa linjassa."
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "Viholliseen tarttunut panos räjähtää hetken kuluttua ja hajottaa joukon."
         },
         {
           "key": "사신",
@@ -7219,16 +7219,16 @@
           "text": "Silvertail"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "Dönen tek bir kılıç. Dansı yıkım getirir."
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "Hançer ve onun bıraktığı uzun kılıç, dansı yıkımdır."
         },
         {
           "key": "검무의 화신",
           "text": "Kılıç Dansının Avatarı"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "Dönen büyük kılıçla her yöndeki düşmanları aynı anda kes."
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "Sırtındaki uzun kılıcı döndürüp her yandaki düşmanı aynı anda biç."
         },
         {
           "key": "쌍단검 기동",
@@ -7243,28 +7243,28 @@
           "text": "Dansçının Zarafeti"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "Zarif kaçışlarla patlayıcı hasar arasında akıcı geçiş yap."
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "Gösterişli kaçışlarla patlayıcı saldırılar arasında gidip gelen bir akrobasi."
         },
         {
-          "key": "헬거너",
-          "text": "Cehennem Nişancısı"
+          "key": "아이반",
+          "text": "Ivan"
         },
         {
-          "key": "혈탄 장전",
-          "text": "Kan Mermisi Doldurma"
+          "key": "무거운 한 발",
+          "text": "Ağır Tek Atış"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "Can harcayarak şarj edilmiş delici mermiler ateşle."
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "Orta menzilden, büyük kovanlı tek bir atışla hedefi yere ser."
         },
         {
-          "key": "역추진 도약",
-          "text": "Geri Tepme Sıçrayışı"
+          "key": "검은 연기",
+          "text": "Kara Duman"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "Atışın geri tepmesini kullanarak geriye sıçra."
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "Yana sıyrılırken duman perdesi bırak ve bir sonraki atış konumunu al."
         },
         {
           "key": "변성술사",
@@ -7335,20 +7335,20 @@
           "text": "Durmadan hareket et, ivme kazan ve onu tek bir darbede serbest bırak."
         },
         {
-          "key": "창포수",
-          "text": "Mızrak Topçusu"
+          "key": "폭파공",
+          "text": "Yıkımcı"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "Kendi kanını mermiye çeviren kan ayının mızrak topçusu"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "Geçtiği yerde yalnızca kara duman kalır."
         },
         {
-          "key": "관통 창격",
-          "text": "Delici Mızrak Vuruşu"
+          "key": "붉은 부착탄",
+          "text": "Kırmızı Yapışkan Yük"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "Mızrak topuyla düz hattaki tüm düşmanları del."
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "Düşmana yapışan yük kısa süre sonra patlar ve kalabalığı dağıtır."
         },
         {
           "key": "사신",
@@ -7484,16 +7484,16 @@
           "text": "سيلفرتيل"
         },
         {
-          "key": "회전하는 단 하나의 검, 그녀의 춤은 파멸",
-          "text": "نصل واحد يدور. رقصتها تجلب الهلاك."
+          "key": "단검과 그가 남긴 장검, 그녀의 춤은 파멸",
+          "text": "خنجر وسيف طويل تركه خلفه، رقصتها خراب."
         },
         {
           "key": "검무의 화신",
           "text": "تجسد رقصة النصال"
         },
         {
-          "key": "회전대검으로 사방의 적을 동시에 베어냅니다.",
-          "text": "اقطع الأعداء من كل الجهات بسيف عظيم دوّار."
+          "key": "등에 단 장검을 회전시켜 사방의 적을 동시에 베어냅니다.",
+          "text": "أدر السيف الطويل على ظهرك لتحصد الأعداء من كل الجهات في آن واحد."
         },
         {
           "key": "쌍단검 기동",
@@ -7508,28 +7508,28 @@
           "text": "رشاقة الراقصة"
         },
         {
-          "key": "화려한 회피와 폭발적인 딜을 오가는 곡예입니다.",
-          "text": "تنقل بين تفادٍ رشيق ودفعات ضرر انفجارية."
+          "key": "화려한 회피와 폭발적인 공격을 오가는 곡예입니다.",
+          "text": "بهلوانية تتنقل بين مراوغات بديعة وهجمات انفجارية."
         },
         {
-          "key": "헬거너",
-          "text": "مدفعي الجحيم"
+          "key": "아이반",
+          "text": "إيفان"
         },
         {
-          "key": "혈탄 장전",
-          "text": "تعبئة رصاص الدم"
+          "key": "무거운 한 발",
+          "text": "طلقة ثقيلة واحدة"
         },
         {
-          "key": "체력을 소모해 충전한 관통탄을 발사합니다.",
-          "text": "استهلك صحتك لإطلاق رصاصات خارقة مشحونة."
+          "key": "중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다.",
+          "text": "من مدى متوسط، أسقط هدفك بطلقة واحدة من حجرة كبيرة."
         },
         {
-          "key": "역추진 도약",
-          "text": "قفزة الارتداد"
+          "key": "검은 연기",
+          "text": "دخان أسود"
         },
         {
-          "key": "사격 반동을 이용해 뒤로 도약합니다.",
-          "text": "استغل ارتداد الطلقة للقفز إلى الخلف."
+          "key": "연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다.",
+          "text": "اترك ستارة دخان وأنت تنزلق جانباً، ثم خذ موضع الرمي التالي."
         },
         {
           "key": "변성술사",
@@ -7600,20 +7600,20 @@
           "text": "تحرّك بلا توقف، واجمع الزخم، ثم أطلقه في ضربة واحدة."
         },
         {
-          "key": "창포수",
-          "text": "مدفعي الرمح"
+          "key": "폭파공",
+          "text": "خبير التفجير"
         },
         {
-          "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "مدفعي رمح القمر الدموي الذي يجعل من دمه رصاصًا"
+          "key": "그가 지나간 자리엔 검은 연기만 남는다",
+          "text": "حيثما مرّ لم يبقَ سوى دخان أسود."
         },
         {
-          "key": "관통 창격",
-          "text": "طعنة الرمح الخارقة"
+          "key": "붉은 부착탄",
+          "text": "شحنة لاصقة حمراء"
         },
         {
-          "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "اخترق بمدفع الرمح كل الأعداء على خط مستقيم."
+          "key": "적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다.",
+          "text": "الشحنة اللاصقة بالعدو تنفجر بعد لحظة وتبعثر الحشد."
         },
         {
           "key": "사신",

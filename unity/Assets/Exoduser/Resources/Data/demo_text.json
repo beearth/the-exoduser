@@ -1266,7 +1266,7 @@
       "key": "새 거름이 떨어졌군.",
       "texts": [
         "새 거름이 떨어졌군.",
-        "Fresh compost has fallen.",
+        "Fresh compost, dropped right in.",
         "新的肥料落下来了。",
         "新しい肥やしが落ちてきたな。",
         "Ha caído abono nuevo.",
@@ -1640,7 +1640,7 @@
       "key": "…아직 기도가 끝나지 않았다.",
       "texts": [
         "…아직 기도가 끝나지 않았다.",
-        "…The prayer… is not yet finished.",
+        "…The prayer is not yet finished.",
         "…祈祷…还没有结束。",
         "…祈りは…まだ終わっていない。",
         "…La oración… aún no ha terminado.",
@@ -2286,7 +2286,7 @@
       "key": "정화",
       "texts": [
         "정화",
-        "Purged",
+        "Purified",
         "净化",
         "浄化",
         "Purificada",
@@ -2592,7 +2592,7 @@
       "key": "출구가 열렸다!",
       "texts": [
         "출구가 열렸다!",
-        "Exit opened!",
+        "The exit is open!",
         "出口打开了！",
         "出口が開いた！",
         "¡Salida abierta!",
@@ -2660,7 +2660,7 @@
       "key": "지옥문 봉인 (지역 ",
       "texts": [
         "지옥문 봉인 (지역 ",
-        "Gate Sealed (Regions ",
+        "Hell Gate sealed (Regions ",
         "地狱之门封印 (区域 ",
         "地獄の門封印 (地域 ",
         "Puerta sellada (zonas ",

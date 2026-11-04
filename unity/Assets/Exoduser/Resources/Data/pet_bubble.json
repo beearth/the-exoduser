@@ -351,7 +351,7 @@
       "key": "사슬 던져! 끌려가면 무적이야!",
       "texts": [
         "사슬 던져! 끌려가면 무적이야!",
-        "Throw the chain! Invincible while pulled!",
+        "Throw the chain! You’re untouchable while it pulls you.",
         "扔锁链！牵引中无敌！",
         "鎖を投げろ！引かれたら無敵だ！",
         "¡Lanza el Cadena! ¡Invencible mientras te arrastra!",
@@ -385,7 +385,7 @@
       "key": "…죽기 직전이다. 패링해. 피를 채워.",
       "texts": [
         "…죽기 직전이다. 패링해. 피를 채워.",
-        "...Almost dead. Parry. Recover HP.",
+        "…Almost dead. Parry. Take your blood back.",
         "...快死了。弹反。回血。",
         "...死ぬ寸前だ。パリィしろ。HPを回復しろ。",
         "...Casi muerto. Para. Recupera HP.",

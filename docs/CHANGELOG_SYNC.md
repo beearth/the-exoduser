@@ -58017,3 +58017,7 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 ## 2026-11-04 05:40 실행 결과 — 공용 후처리 2FAIL STOP
 - 실제빌드540fdcde20/공용f2a287d2 PASS 뒤3D/d3d11의1920 원본25장·제품9건PASS. GUI116행 최소간격16px, 이름/삭제 실제나눔명조·면18px inset·공통철draw 확인.
 - hover57be03df/사망02ef0c30의 공용 ReadAllText 로그잠금 예외2회로 STOP. 최종가드7/9,3840 0/25. 동일조건 재시도0·추가빌드0, 공용bin/권한/환경/타슬롯변경0. 실제25/50과 미완료 관문을 관련docs/REPORT에 동기화했다.
+
+## 2026-11-04 STY-24 첫인상 문구 톤 반영(유니티 총괄, Sonnet 구현)
+- C1 총기 슬롯을 아이반/폭파공으로 교체(CharacterPresentation·SilverCharacter 표·레일·영어 배열), C2·C3·C6 실버테일 문구, C5 이름 입력 설명, C7 창법사 주어를 visual_select_labels·character_dialog_labels·character_basic_stories 29개 언어에 반영(No.4274~4287). C4·D1·T1~T9는 EN만, D2는 death_web dd_queen을 웹 현행과 같게 맞췄다.
+- 번역대상_전체목록 No.4274~4287 상태 갱신, EN만 바뀐 No.(0516·0808·2894·3085·3105·3343·3594·3864·4257·4264) EN 칸 수정. Core 변경 0.

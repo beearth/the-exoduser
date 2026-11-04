@@ -87,3 +87,22 @@ C1-특성 (`presentationTraits[2,*]`, 아이콘 키는 그대로 두고 디자�
 2. 한국어가 바뀐 No.4274~4287은 나머지 27개 언어를 번역해 같은 파일에 넣는다. 웹 정본 키가 없는 새 문장이다.
 3. EN만 바뀐 행은 번역 목록의 해당 No. EN 칸도 같이 고친다.
 4. 화면 확인은 Mac 1920×1080 1x 캡처로 한다: 캐릭터 선택 5슬롯(특히 아이반 카드·실버테일 카드), 사망 결정 화면 en, 지옥문 패널 en.
+
+## 7. 반영 기록 (11-04 유니티 총괄)
+
+브랜치 `claude/unity-pc-first-impression-tone-20261104`(origin/unity/main 349a9d7db 기준). 병합 전까지는 이 브랜치에만 있다.
+
+| 항목 | 반영 위치 | 결과 |
+|---|---|---|
+| C1 아이반 카드(No.4274~4282) | `NativeLobby.CharacterPresentation.cs` 이름·직업·설명·특성 표, 레일 라벨, 영어 인라인 배열·`TraitEnglish`·`TraitEnglishBody`, `NativeLobby.SilverCharacter.cs` 레일 라벨·영어 배열 | 반영. 슬롯 ID·comingSoon·아이콘 키·원화 그대로 |
+| C2·C3·C6(No.4283~4285) | 같은 C# 표·영어 배열, `visual_select_labels.json` 12행 | 반영. 29개 언어 |
+| C5(No.4286) | `character_dialog_labels.json` description | 반영. 29개 언어 |
+| C7(No.4287) | `character_basic_stories.json` ko stories[4]. 주어가 빠진 ja·zh·zht·fr·pl·cs도 같은 뜻으로 주어 보완 | 반영. 나머지 언어는 이미 주어 있음 |
+| C4 | `character_basic_stories.json` en stories[1] | EN만 반영 |
+| D1·T1~T9 | `death_decision_text.json`·`demo_text.json`·`death_screen_labels.json`·`hellgate_objectives.json`·`pet_bubble.json` | EN만 반영 |
+| D2 | `death_web.json` dd_queen crow "여신님" | 웹 현행(game.html dd_queen)과 같게 |
+
+- `visual_select_labels.json`: 옛 키 12행(헬거너·창포수 등)을 새 키 12행으로 제자리 교체했다. 언어별 행 수는 65 그대로이고, 옛 키는 Runtime·Tools에서 쓰는 곳이 없음을 grep으로 확인했다.
+- 영어 폴백 직업은 `DEMOLITIONIST`, 이름·레일은 `Ivan`이다.
+- 남긴 것: `character_ui.json`(웹 `CHAR_VISUALS` 추출본, 런타임에서 읽지 않음)은 웹 정본 그대로라 바꾸지 않았다. 웹 시절 기록 문서(기획서·RESUME·ENGLISH_CHARACTER_BADGE 등)의 옛 문구도 그대로 둔다. §5 보고 항목은 이번에도 손대지 않았다.
+- 화면 확인(§6의 4번)은 Mac 1920×1080 1x 캡처가 남아 있다.
