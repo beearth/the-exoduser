@@ -149,8 +149,17 @@ CTO 정정 반영 → **6차(05:45 KST) 갱신: Yellowsky 엔진 = 2024-09-29 �
 | **전체(회차 1)** | **40 (5%)** | 207 | 14 | 312 | 228 | 801 |
 | **회차 2 반영 후** | **약 54 (7%)** — 01~07 +7, 08~15 +7(복합 셀 포함, 15 Diablo IV 사양 1건은 검증됨→미검증) | 약 193 | 14 | 312 | 228 | 801 |
 
+**회차 3 CX22-3 @ fea5684(최신):** 681 URL = 확인 267 · 불일치 5 · 접속불가 140 · 미검증 269. 매뉴얼 셀 변경 12개(01~15 중 03·07·08·11·02·09), 재확인 표시 증감 0. 전 문서 상태 줄 = fea5684 기준.
+
 **재확인 필요 20건**(회차 2에서 D02-3·D02-13 해제 — Neutral/ACES 공식 문서 확인)**:** D01-1 · ★D01-6 · ★D02-1 · D02-2 · D03-3 · D03-4 · ★D03-8 · ★D06-2 · D06-3 · ★D06-6 · ★D07-4 · D09-10 · D10-8 · ★D11-8 · D11-9 · D11-11 · D12-2 · ★D13-7 · D13-9 · D14-9.
 → 이 20건은 사용자 결정 전에 출처를 다시 열거나 Mac 실측으로 대체한다. 수치 대부분이 "내부·우리 기준"이라는 것은 **외부 근거가 아니라 우리 Mac 비교판 판정이 최종 근거**라는 뜻이다.
+
+### 3.4d 6차(05:45 KST) 신규 항목
+| ID | 질문 | 추천 |
+|---|---|---|
+| ★D09-14 | 구현된 H4 C(041e8e47b)는 두 슬롯 경계 받침을 쓰는데 C r2 문서는 "B 받침 버림". 받침 있는 구현을 C r2로 보고 Mac 판정? | 구현 그대로 판정, 어긋나면 받침 제거판 1회 재판정 |
+| ★D09-15 | D09-4 "18px"는 nominal 18(대문자 12.6px). 몸체 18이면 CTRL 칩 78.6px로 폭 상한 60 초과 | 몸체 18은 접근성 1.25배 옵션 도착값, 기본값은 Mac 1x 판독 판정 (D14-3·D14-11과 함께) |
+| ★D02-9 | 문구 갱신: Yellowsky UE5 = 2024 개발사 자기 신고(Mac 원문 확인), 현재·렌더 미확인 → 기법 근거로 쓰지 않음(의미 불변) | 유지 |
 
 ### 3.5 2차 반영 연구 입력
 PC Codex: codex_urp_mood · codex_keyshot_composition · codex_yellowsky · codex_tech_budget · our_tech_audit · codex_cinematic_text · codex_motion_direction · codex_frame_data · codex_combat_impact · codex_vfx_direction · codex_3d_pixel · codex_3d_pixel_small_team · codex_menus_loot · codex_sound_music(모두 `docs/0마스터플랜/GAME_STUDY/`, 원격 codex/unity-study-*·codex/unity-audit-our-tech-20261105). 클라우드: TOOLCHAIN_20261105(claude/unity-cloud-toolchain-20261105, 병합 시 이 폴더), REFERENCE_INDEX_20261105(reference-scout), ENGINE_DECISION_20261105(ENG), keyshot_verify_mac(claude/unity-mac-report-20261104).
@@ -158,12 +167,21 @@ PC Codex: codex_urp_mood · codex_keyshot_composition · codex_yellowsky · code
 - 2차 연구 결론: 공격 단계별 프레임, 몬스터 예고·경직, PBZ 정지·카메라 수치, 사운드 dB·LUFS, VFX 입자·오버드로·GPU ms, 폴리곤·드로우콜은 **공개 자료로 채울 수 없음**이 확인됨 → [추정] 시작값 + Mac 실측 영상으로 개정.
 - codex_asset_size는 3차에서 반영(15 §3.10).
 
+## 3.6 제작 운영 원칙 (codex_small_team_pipeline CX26 요약, 연구 제안 — 사례 팀 관행 아님)
+1. 모든 작업에 "고치는 사람"과 "통과 판정하는 사람"을 적는다. 에이전트 = 코드·도구·문서·반복 변환·로그 요약, 사람 = 재미·타격감·화면 품질·세이브 안전.
+2. 에이전트 과제 1건 = 소유 파일·입출력 형식·금지 범위·확인 장면·인수 조건. 같은 씬·프리팹 동시 편집 금지, 병렬 수는 사람 검수 처리량 이하.
+3. 데모 v0 종류·양을 잠근다: 캐릭터 1, 일반전 1구간, 보스 1, 보상 선택 1, 사망→재도전, 저장→재개. 진행도 = Mac 판정 통과 구간 수(파일·생성 수 아님).
+4. 생성·구매·직접 제작 에셋 동일 인수 기록(출처·사용권·편집 원본·담당·수정 시간·게임 판정). 리깅·타이밍·가독성 확인 전 채택 아님.
+5. 같은 병목이 반복되면 생성량을 늘리지 말고 담당·방법·범위를 바꾼다(CLAUDE.md 4.1 "두 번 FAIL이면 방법 변경"과 같음).
+6. Yellowsky의 도구·외주·리듬은 미확인 — "11명 무투자"에서 제작비·AI 절감을 도출하지 않는다.
+
 ## 4. 다음 단계
 1. 사용자: §3.1 충돌 10건 → §3.2 지출 → §3.3 순으로 결정.
 2. 남은 연구(reference-scout, toolchain, codex 교차 연구·tech audit, 엔진 결정 ENG)가 올라오면 해당 문서의 "연구 반영 대기" 행을 채운다.
 3. 결정 반영 후 문서별 "확정" 표시 → DIRECTION_RESET 4단계(키샷 한 장면부터, Mac 판정).
 
 ## 변경 이력
+- 2026-11-05 6차: 출처 회차 3(fea5684), Yellowsky 엔진 = 2024 개발사 자기 신고 UE5(Mac 원문 확인)·현재·렌더 미확인, codex_yellowsky_cn·HUD critique(Mac 판정)·소규모 팀 파이프라인, D09-14·15.
 - 2026-11-05 5차: CX22-2(7522375)로 출처 상태 갱신, 정정 4건, 재확인 필요 22→20.
 - 2026-11-05 4차: 전 문서 §3 표에 출처 상태 열(SOURCE_VERIFY 6c3aac6), 색인 §3.4c 재확인 필요 22건.
 - 2026-11-05 3차 반영: Yellowsky 갱신본·codex_asset_size·FIRST_SCENE_PLAN·codex_synthesis·UE5 시험 계획·HUD G1 갱신·codex_hud_critique, CTO 정정(Yellowsky 엔진 미확인). 색인 §3.4b.
