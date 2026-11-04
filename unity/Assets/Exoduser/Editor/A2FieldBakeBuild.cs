@@ -57,7 +57,16 @@ public static class A2FieldBakeBuild
         {
             using(var c=Create())
             {
-                for(int i=0;i<Methods.Length;i++)typeof(NativeGame).GetMethod(Methods[i],Private).Invoke(c.Game,i==1?new object[]{true}:null);
+                var timings=new System.Text.StringBuilder("단계\t밀리초\n");
+                var total=System.Diagnostics.Stopwatch.StartNew();
+                for(int i=0;i<Methods.Length;i++)
+                {
+                    var timer=System.Diagnostics.Stopwatch.StartNew();
+                    typeof(NativeGame).GetMethod(Methods[i],Private).Invoke(c.Game,i==1?new object[]{true}:null);
+                    timings.Append(Stages[i]).Append('\t').Append(timer.Elapsed.TotalMilliseconds.ToString("F3",System.Globalization.CultureInfo.InvariantCulture)).Append('\n');
+                }
+                timings.Append("total\t").Append(total.Elapsed.TotalMilliseconds.ToString("F3",System.Globalization.CultureInfo.InvariantCulture)).Append('\n');
+                File.WriteAllText(Path.Combine(output,"procedural-stages.tsv"),timings.ToString());
                 A2FieldBakeProbe.WriteGeometry(Path.Combine(output,"baseline-geometry.bin"),c.Root,c.Field);original=CaptureRenderers(c.Root);
             }
             Bake();
@@ -65,6 +74,7 @@ public static class A2FieldBakeBuild
             using(var c=Create())
             {
                 var timings=new System.Text.StringBuilder("단계\t밀리초\n");
+                var total=System.Diagnostics.Stopwatch.StartNew();
                 foreach(var stage in Stages)
                 {
                     var timer=System.Diagnostics.Stopwatch.StartNew();
@@ -72,13 +82,19 @@ public static class A2FieldBakeBuild
                     if(!loaded)throw new InvalidDataException("Baked stage rejected: "+stage);
                     timings.Append(stage).Append('\t').Append(timer.Elapsed.TotalMilliseconds.ToString("F3",System.Globalization.CultureInfo.InvariantCulture)).Append('\n');
                 }
+                timings.Append("total\t").Append(total.Elapsed.TotalMilliseconds.ToString("F3",System.Globalization.CultureInfo.InvariantCulture)).Append('\n');
                 File.WriteAllText(Path.Combine(output,"cached-stages.tsv"),timings.ToString());
                 A2FieldBakeProbe.WriteGeometry(Path.Combine(output,"optimized-geometry.bin"),c.Root,c.Field);
                 var current=CaptureRenderers(c.Root);if(original.Count!=current.Count)throw new InvalidDataException("Baked renderer count changed");
                 float maxWorld=0;
                 for(int i=0;i<original.Count;i++)
                 {
-                    if(original[i].Value!=current[i].Value)throw new InvalidDataException("Baked material/block/render state changed: "+i+" "+original[i].Name);
+                    if(original[i].Value!=current[i].Value)
+                    {
+                        File.WriteAllText(Path.Combine(output,"render-mismatch-original.txt"),original[i].Value);
+                        File.WriteAllText(Path.Combine(output,"render-mismatch-cached.txt"),current[i].Value);
+                        throw new InvalidDataException("Baked material/block/render state changed: "+i+" "+original[i].Name);
+                    }
                     for(int j=0;j<16;j++)maxWorld=Mathf.Max(maxWorld,Mathf.Abs(original[i].World[j]-current[i].World[j]));
                 }
                 if(maxWorld>1e-5f)throw new InvalidDataException("Baked renderer transform changed: "+maxWorld);
