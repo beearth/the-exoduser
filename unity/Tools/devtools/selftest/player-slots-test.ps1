@@ -13,6 +13,8 @@ function Check($condition,$why){if(-not $condition){throw ('FAIL: '+$why)};$scri
 function Say($m){}
 function Get-CommitFreeGB {return 30}
 function Get-UnityProcs {return @([pscustomobject]@{Id=123;ProcessName='EXODUSER-Unity'})}
+function Find-ZombiePlayers {return @()}
+function Find-UserGames {return @()}
 try {
  Check ([bool](Get-Command Acquire-PlayerSlot -ErrorAction SilentlyContinue)) 'Player still shares Editor slot; independent acquisition missing'
  New-Item -ItemType Directory -Path $Root -Force|Out-Null

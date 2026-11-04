@@ -53,7 +53,7 @@ namespace Exoduser.UnityPort {
   void DrawEntryHover(Rect r,bool enabled=true){
    if(Event.current.type==EventType.MouseMove)gateInputFocus=false;
    if(Event.current.type!=EventType.Repaint)return;
-   entryHoverFrame=Time.frameCount;entryHoverWanted=enabled&&GUI.enabled&&focused&&(r.Contains(Event.current.mousePosition)||GUI.GetNameOfFocusedControl()=="lobby-enter"||gateInputFocus&&Flow.Page==Core.LobbyPage.Title);
+   entryHoverFrame=Time.frameCount;entryHoverWanted=enabled&&GUI.enabled&&focused&&(EntryReviewState=="hover"||EntryReviewState==null&&(r.Contains(Event.current.mousePosition)||GUI.GetNameOfFocusedControl()=="lobby-enter"||gateInputFocus&&Flow.Page==Core.LobbyPage.Title));
   }
   void UpdateEntryUiAudio(float dt){
    if(!AutomatedInput&&UiAudioAllowed&&splash==0&&Flow.Page==Core.LobbyPage.Title){if(LobbyKeys.Down(KeyCode.Tab)||ExoInput.VerticalRaw()!=0)gateInputFocus=true;if(Time.frameCount!=inputFence&&ExoInput.KeyDown(KeyCode.JoystickButton0))StartGate();}

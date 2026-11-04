@@ -134,3 +134,177 @@ B. 공개 전환 (U-D1·U-D3 수정 빌드로, 사용자 확인 뒤)
 4. 지금 있는 26404441(수정 전 9f0d00cf8)로 A의 1~5를 진행해 Steam 설치·실행 경로를 먼저 확인한다. flavor 수정 빌드는 F-1 수정과 Mac 판정을 통과한 뒤 같은 `unity-test` 브랜치에 다시 올린다. 그 업로드는 비공개이며 스팀 총괄이 한다.
 
 공개 전환(6절 B)과 상점 교체(5.2절)는 U-D3를 고친 빌드가 `unity-test`에서 확인된 뒤, 사용자 확인을 받고 같은 날 진행한다.
+
+## 9. S4·S5 — 상점 설명과 Unity 체험판 기능 대조, 체험판 소개 초안 (11-04 01시, 스팀 총괄)
+
+기준: 코드 unity/main **93a09dccb**(읽기만), 상태 표기는 `docs/engine/UNITY_PORT_MASTER_20261026.md`(0 미착수 / 1 일부 / 2 웹 동일 소스 / 3 실플레이 인수)를 같이 적는다. 상점 원문은 11-04 공개 appdetails(ko·en)에서 읽었다. 게임 쪽은 고치지 않았다. 판정은 코드 기준이며, Mac 실게임 확인은 아직 하지 않았다.
+
+### 9.1 대조표
+
+| # | 상점 문구(요지) | Unity 93a09dccb에 있는 것 | 근거 | 판정 | 체험판 문구 처리 |
+|---|---|---|---|---|---|
+| K1 | 대검과 다양한 스킬로 몰려드는 악마를 쓸어버린다 · 대규모 실시간 핵앤슬래시 | 기검참 LMB 3타·차지, 1-1 일반 몹 무리, 공격 티켓 없음 | B02 오라클 93/93, C01(1-1 몹), `Simulation.Death.cs` 티켓 해제는 빈 함수 | 있음 | 그대로 |
+| K2 | 색·패턴이 다른 탄막을 읽고 올바른 입력으로 받아친다(Bullet Language) | Q 패링·E 방패 강타, 탄 분류(물리/마법) 판정, 패링 반사(블루콩 유도) | `ParryRules.cs`, `ParryReflect.cs`, 드루이드 탄 연결 `DruidBoss.Reflect.cs`. B07=1(`Simulation.PlayerCombat.cs` 머리 주석의 "반사 미구현"은 옛 문구) | 있음(Mac 확인 필요) | 그대로 |
+| K3 | 사슬을 **벽에 박으면** 끌려가 적진을 관통한다(Chain Drive, 홀드 차지) | Shift 홀드 3단 충전 → 사슬 비행 → 끌어당김 이동, 경로 위 적 타격·무적·게이지 | `ChainDash.cs`, `Simulation.PlayerCombat.cs` `TickChainDash`. **벽 고정(wall auto fire)·3단 자동 발사·불길·칼날 날개는 미이식**. 사슬은 최대 거리까지 날아간 뒤 끌어당기고, 벽에 막히면 멈춘다 | 일부 | 체험판 문구에서는 "벽에 박아" 대신 "사슬 기동"으로 쓴다 |
+| K4 | 전투로 스킬을 해금·강화한다 | 스킬 창 습득·강화± 버튼, 이식된 시작 스킬 5종(가시덫·대지강타·성역·얼음구슬·화염구)+기검참 | `Simulation.Skills.cs` `PortedSkillIds`, `NativeSkills.cs` 습득/강화 버튼. B03(나머지 스킬) 0 | 일부 | "기본 스킬"로 범위를 한정한다 |
+| K5 | 특정 스킬끼리 결합해 새 기술이 된다(스킬 합성, en "21+ fusion") | 없음. 체험판 합성 허용 22종은 정의 목록만 있음 | B04 합체 16종·성급 **0**. `BuildFlavor.FuseAllowed`는 정의뿐(`NotPorted`) | **없음** | 체험판 소개에서는 "정식판" 기능으로 분리한다 |
+| K6 | 무기·장비에 능력과 옵션이 붙고, 더 강한 장비로 교체한다 | 처치 드랍(웹 rollDrop 장비 절반), 드랍 빔, 줍기, 가방→장착(Enter·끌기), 어픽스 굴림 | `Simulation.cs` D01 `WorldDrop`, `ItemFactory.cs`(mkItem·rollAffixes 오라클), `NativeInventory.cs` `Equip`. D01=1, D02 어픽스 55종=1, D03 전설·유니크=0, D04 강화·소켓·분해=0 | 일부 | "장비 파밍"은 쓰되 전설·유니크·강화는 쓰지 않는다 |
+| K7 | 환경·적이 다른 지옥을 지나며 점점 강한 보스와 싸운다(en "7장·35+ 스테이지·35+ 보스") | 1-1 한 지역 + 보스 다크드루이드 | C04=1(1-1), C03=0(드루이드만 진행), `StageFlow.cs`는 1-1 흐름 | 체험판 범위 밖 | 체험판 소개에 "1-1·첫 보스"로 명시한다 |
+| K8 | 다크 판타지 싱글플레이 캠페인 | 싱글플레이, 세계관 인트로·29개 언어 자막 | A01·A02=1 | 있음 | 그대로 |
+| E1 | (en) 복수·등 뒤의 칼·아이들·네메시아 서사 | 세계관 인트로, 시작 대사에 네메시아 화자 | A02, `NativeLobby.StartupPresentation.cs` | 있음 | 그대로 |
+| E2 | (en) 검은 고양이 디로이·까마귀 헥터가 **함께 다닌다** | 필드 펫 없음. 시작 대사·사망 화면 초상과 대사로만 나옴 | B12 펫=0, `NativeDeathOverlay.cs` 펫 초상 | **없음**(대사만) | 체험판 소개에서 동행 펫을 언급하지 않는다 |
+| E3 | (en) 유령의 석궁이 함께한다 | 자동 석궁(120프레임 타이머, T 토글) | `Simulation.Crossbow.cs`, B05=0이지만 자동 석궁 Core 있음 | 있음(Mac 확인 필요) | 그대로 |
+| E4 | (en) 아키타입 6종 | 전사만 선택 가능 | A04 "전사만, 신규 3영웅 미이식" | **없음** | 체험판은 "전사"로 명시한다 |
+| E5 | (en) 희귀도 5단계 | 아이템 희귀도 굴림은 있음, 전설·유니크 상자는 미이식 | `ItemFactory.cs`, D03=0 | 일부 | 쓰지 않는다 |
+
+상점 문구 자체의 결함:
+- 한국어와 영어 상세 설명의 내용이 다르다. 영어에만 서사·펫·숫자(7장·35·6·5·21+)가 있다. S4 문안을 다시 쓸 때 두 언어의 항목을 맞춘다.
+- 짧은 설명(ko·en)에도 "벽에 박아"(K3)와 "합성"(K5)이 들어 있다. 본편 상점이라 정식판 기능으로는 맞지만, 체험판을 받는 사람이 1-1에서 이 기능을 만나지 못한다. 그래서 체험판 소개 단락(9.2)에 범위를 적는다.
+
+### 9.2 체험판 소개 단락 초안 (S5, 사용자 게시 전 승인 필요)
+
+상세 설명 끝에 덧붙이는 것으로 한다. 문구는 9.1에서 "있음"·"일부"로 확인된 기능만 쓴다. 플레이 시간은 넣지 않았다. flavor 라벨의 `1~2h`는 웹 데모 기준이고, Unity 1-1은 실측 전이다(데모 v0 목표는 10~15분). 실측 뒤에 넣는다.
+
+**KO**
+
+> **체험판 안내**
+> 체험판에서는 지옥의 첫 지역 1-1을 처음부터 끝까지 플레이할 수 있습니다. 레벨 1 전사로 시작해 대검과 기본 스킬, 탄막 패링, 사슬 기동, 장비 파밍을 직접 겪어 보고, 지역 끝에서 첫 보스 다크드루이드와 맞서세요. 체험판의 레벨 상한은 100이며, 체험판 진행은 정식판과 따로 저장됩니다. 스킬 합성, 다른 영웅들, 더 깊은 지옥과 그 보스들은 정식판에서 만날 수 있습니다.
+
+**EN**
+
+> **About the Demo**
+> The demo lets you play through 1-1, the first region of hell, from start to finish. Begin as a level 1 Warrior, get hands-on with the greatsword, starting skills, bullet parrying, Chain Drive and loot, then face the region's first boss, the Dark Druid. The demo level cap is 100, and demo progress is saved separately from the full game. Skill fusion, more heroes, and the deeper layers of hell and their bosses await in the full game.
+
+전제와 확인할 것:
+- "체험판 진행은 정식판과 따로 저장"은 flavor 수정(U-D4, `20f276b5c`, F-1 수정 대기)이 체험판 빌드에 들어간 뒤에만 맞는 문장이다. 그 전에 게시하면 이 문장을 뺀다.
+- 보스 영문명 `Dark Druid`는 웹 `game.html` 번역표(`'다크드루이드':'Dark Druid'`)를 따랐다.
+- "Chain Drive"는 영어 상점의 기존 기능명을 그대로 썼다. 한국어는 상점 본문 용어 "사슬 기동"을 썼다.
+
+### 9.3 번역대상 No. 등록 준비
+
+상점 문구는 게임 안 표시 문자열이 아니다. 하지만 29개 언어 상점 현지화(`STEAM_STORE_LOCALIZATION_20260909.md` 절차)에 들어가므로, 번역 목록에 "Steam 상점 문구(게임 밖)" 절로 등록한다. 등록은 9.2 문안이 사용자 승인을 받은 뒤 한다. 그때 목록의 마지막 No.를 다시 확인한다. 11-04 01시 기준 마지막 번호는 **No.4258**이고, 다음 빈 번호는 4259다.
+
+등록할 행(번호는 등록 시점에 확정):
+
+| No.(예정) | KO | EN | 사용 위치 | 언어 |
+|---|---|---|---|---|
+| 4259 | 체험판 안내 | About the Demo | Steam 상점 상세 설명(본편 4749590) 체험판 단락 제목 | 상점 29개 언어 |
+| 4260 | (9.2 KO 본문) | (9.2 EN 본문) | 같은 단락 본문 | 상점 29개 언어 |
+
+목록 파일은 CRLF이므로 줄바꿈을 보존해 추가한다. 27개 언어 번역은 등록 직후 일괄 처리한다(번역 자동 처리 규칙). 게시는 사용자가 Steamworks 상점 페이지 편집에서 한다.
+
+## 10. 체험판 소개 단락 승인·번역·상점 붙여 넣기 준비 (11-04 07시대, 스팀 총괄)
+
+사용자가 9.2 문안을 승인했다(CTO 경유, 원문 "4는 승인"). 번역 목록 No.4262–4263에 등록하고 Steam 상점 30개 언어와 ar로 번역했다. 게시와 저장 클릭은 사용자가 한다. 이 절은 Steamworks 상점 편집 화면(Store Item 1189321, Description 탭)을 11-04에 읽기만 해서 확인한 칸 이름을 쓴다. Steamworks 화면 언어는 영어다.
+
+승인문에서 바꾼 것은 한 단어다. "스킬 합성"을 "스킬 합체"로 고쳤다. 게임(웹 game.html의 합체 351회, 합성 73회)과 상점 본문 초안("스킬 포지의 합체")이 모두 "합체"를 쓴다.
+
+### 10.1 게시 시점
+
+- 체험판 앱 5337590이 공개된 뒤, 같은 날 붙인다. 공개 전에 붙이면 본편 상점에 "체험판"이 나오지만 받을 버튼이 없다.
+- "체험판 진행은 정식판과 따로 저장" 문장은 저장 분리 수정(U-D4)이 든 체험판 빌드가 공개될 때만 맞다. 지금 계획된 공개 빌드(F-1·U-D1/3/4/5 수정 SHA)에 들어 있으므로, 문장은 그대로 둔다.
+- 본편 상점에는 **게시되지 않은 변경**이 이미 있다(한국어·영어 상세 설명 새 초안). Publish 탭에서 게시하면 그 초안도 함께 공개된다(10.3 C1).
+
+### 10.2 붙여 넣는 위치 (사용자 클릭 순서)
+
+언어별 복사 버튼이 있는 페이지(비공개 Artifact, 사용자 계정): https://claude.ai/artifact/Q4suqepkN79TPJHrrRuK2J
+
+1. Steamworks → 앱 4749590 → **Edit Store Page** → **Description** 탭
+2. "About This Game" 칸 위쪽의 **Use visual editor** 체크를 끈다(BBCode 원문 보기)
+3. 같은 줄의 언어 목록에서 아래 표의 언어를 고른다
+4. 본문 맨 끝 `[/list]` 다음 줄에 그 언어 파일 내용을 그대로 붙여 넣는다(줄 하나를 띄운다)
+5. 페이지 아래 **Save**를 누른다. 다음 언어로 넘어가 3~5를 되풀이한다
+6. 30개 언어를 마치면 **Publish** 탭에서 게시한다. 이 단계는 체험판 공개 직후로 미룬다
+
+짧은 설명(Short Description)은 이번 단락과 관계없다. 바꾸지 않는다(10.3 C3).
+
+| 언어 | Steamworks 언어 목록 이름 | 붙여 넣을 파일 | 제목 |
+|---|---|---|---|
+| 한국어 | `Korean` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/koreana.txt` | 체험판 안내 |
+| 영어 | `English` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/english.txt` | About the Demo |
+| 프랑스어 | `French` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/french.txt` | À propos de la démo |
+| 이탈리아어 | `Italian` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/italian.txt` | Informazioni sulla demo |
+| 독일어 | `German` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/german.txt` | Über die Demo |
+| 스페인어 - 스페인 | `Spanish - Spain` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/spanish.txt` | Acerca de la demo |
+| 스페인어 - 중남미 | `Spanish - Latin America` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/latam.txt` | Acerca de la demo |
+| 불가리아어 | `Bulgarian` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/bulgarian.txt` | За демото |
+| 체코어 | `Czech` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/czech.txt` | O demu |
+| 덴마크어 | `Danish` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/danish.txt` | Om demoen |
+| 네덜란드어 | `Dutch` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/dutch.txt` | Over de demo |
+| 핀란드어 | `Finnish` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/finnish.txt` | Tietoa demosta |
+| 그리스어 | `Greek` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/greek.txt` | Σχετικά με το demo |
+| 헝가리어 | `Hungarian` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/hungarian.txt` | A demóról |
+| 인도네시아어 | `Indonesian` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/indonesian.txt` | Tentang Demo |
+| 일본어 | `Japanese` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/japanese.txt` | 体験版について |
+| 말레이어 | `Malay` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/malay.txt` | Tentang Demo |
+| 노르웨이어 | `Norwegian` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/norwegian.txt` | Om demoen |
+| 폴란드어 | `Polish` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/polish.txt` | O wersji demo |
+| 포르투갈어 - 브라질 | `Portuguese - Brazil` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/brazilian.txt` | Sobre a demo |
+| 포르투갈어 - 포르투갈 | `Portuguese - Portugal` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/portuguese.txt` | Sobre a demo |
+| 루마니아어 | `Romanian` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/romanian.txt` | Despre demo |
+| 러시아어 | `Russian` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/russian.txt` | О демоверсии |
+| 중국어 간체 | `Simplified Chinese` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/schinese.txt` | 关于试玩版 |
+| 스웨덴어 | `Swedish` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/swedish.txt` | Om demot |
+| 태국어 | `Thai` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/thai.txt` | เกี่ยวกับเดโม |
+| 중국어 번체 | `Traditional Chinese` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/tchinese.txt` | 關於試玩版 |
+| 튀르키예어 | `Turkish` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/turkish.txt` | Demo Hakkında |
+| 우크라이나어 | `Ukrainian` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/ukrainian.txt` | Про демоверсію |
+| 베트남어 | `Vietnamese` | `docs/13출시·마케팅/steam_store_demo_paragraph_20261104/vietnamese.txt` | Giới thiệu bản demo |
+
+아랍어(`ar.txt`)는 상점 설명 화면에 아랍어 칸이 없어 붙이지 않는다. 번역 목록의 29개 언어를 맞추려고 만들어 두기만 했다.
+
+### 10.3 상점 문구 정리 대조 (같은 화면에서 11-04 확인)
+
+| # | 칸·언어 | 지금 상태 | 문제 | 처리 |
+|---|---|---|---|---|
+| C1 | About This Game — 한국어·영어 | 새 초안(제목 6개, 핵터·디로이·스킬 포지·보석 소켓 포함)이 **저장만 됐고 게시 전**이다. 두 언어의 항목은 서로 맞는다 | S4에서 찾은 ko·en 불일치(영어에만 7장·35 스테이지·펫·6 아키타입)는 **공개본**의 문제다. 초안을 게시하면 풀린다 | 체험판 단락과 함께 게시한다. 사용자 클릭 |
+| C2 | About This Game — 나머지 28개 언어 | 09-09에 옛 한국어(제목 5개)를 번역한 판이다 | 새 ko·en 초안과 내용이 다르다. 게시하면 한국어·영어만 새 내용이 되고 28개 언어는 옛 내용으로 남는다 | 새 초안을 28개 언어로 다시 번역해야 한다. 체험판 단락은 이 일과 따로 붙일 수 있다. 다시 번역하는 일은 CTO가 배정한다 |
+| C3 | Short Description — 한국어 | "사슬을 벽에 박아 … 서로 **합성**해" | ① 용어: 본문 초안은 "합체"를 쓴다. ② "벽에 박아"는 웹 본편(지금 default 빌드)에는 맞다. Unity에는 벽 고정이 없다(9.1 K3) | ①은 "합성"을 "합체"로 바꾸는 한 단어 수정이다. 사용자가 원하면 함께 고친다. ②는 기본 브랜치를 Unity로 바꿀 때 다시 본다. 체험판에서 쓰는 말은 10.2 단락의 "사슬 기동"이다 |
+| C4 | Short Description — 영어 | "chain across the battlefield, fuse skills … seven layers of hell" | "fuse"는 본편 기능이라 맞다. "seven layers"는 숫자 약속이다. 본문 초안에서는 숫자를 뺐다 | 숫자를 계속 쓸지는 스토리 총괄이 정본을 보고 판정한다. 체험판 단락은 숫자를 쓰지 않는다 |
+| C5 | 체험판 범위 | 본문은 정식판 기능(합체·전설·유니크·보석 소켓·펫 동행)을 소개한다 | 1-1 체험판에는 이 기능이 없다(9.1) | 10.2 단락이 "합체·다른 영웅·더 깊은 지옥은 정식판"이라고 따로 밝힌다. 본문은 바꾸지 않는다 |
+
+"핵터" 표기는 오타가 아니다. 스토리 정본(STORY_LEAD_MASTER, 10-28 "헥터→핵터" 정정)이 이 표기다.
+
+### 10.4 체험판 앱 5337590 상점 페이지 (11-04 10시, CTO 지시로 대상 확정)
+
+CTO가 붙일 곳을 체험판 앱 5337590으로 정했다. 11-04 10시대에 Steamworks 체험판 상점 편집(Store Item **1346593**)을 읽기만 해서 확인했다. Description 탭에는 **About This Demo**와 **Short Description**(200~300자) 두 칸이 있고, 상점 30개 언어가 모두 비어 있다(0자). 그래서 두 칸을 함께 채운다.
+
+- About This Demo = No.4263 본문을 `[p]…[/p]`로 감싼 것. 칸 제목이 이미 "About This Demo"라서 `[h2]` 제목(No.4262)은 넣지 않는다.
+- Short Description = No.4273(4263 본문을 줄인 것). 길이는 118~297자다. 일본어·중국어는 200자보다 짧은데, 본편도 같은 언어가 111~139자다.
+- 파일: `docs/13출시·마케팅/steam_store_demo_app_5337590_20261104/`에 언어별 `.about.txt`·`.short.txt` 31쌍, `localization_upload_1346593.json`(Localization 탭 업로드 형식, 두 칸만), `demo_app_store_all.json`이 있다. 업로드 사본은 `I:\EXODUSER-Storage\steam_store\demo_5337590_localization_upload_20261104.json`에 있다.
+- 업로드 JSON 형식은 09-09 본편 내보내기(`{itemid, languages:{<코드>:{"app[content][about]", "app[content][short_description]"}}}`)와 같다. 이 업로드 방식은 아직 실제로 성공한 적이 없다(09-09에는 확장 권한 때문에 손 입력으로 대신했다). 업로드가 거부되면 손 붙여 넣기(B)로 한다.
+- 10.1~10.2의 본편 4749590 단락(`steam_store_demo_paragraph_20261104/`)은 선택 사항으로 남긴다. 본편 상점에도 체험판 안내를 넣을지는 공개 때 정한다.
+
+| 언어 | 언어 목록 이름 | About This Demo | Short Description | 짧은 설명 글자 수 |
+|---|---|---|---|---:|
+| 영어 | `English` | `english.about.txt` | `english.short.txt` | 291 |
+| 프랑스어 | `French` | `french.about.txt` | `french.short.txt` | 293 |
+| 이탈리아어 | `Italian` | `italian.about.txt` | `italian.short.txt` | 295 |
+| 독일어 | `German` | `german.about.txt` | `german.short.txt` | 291 |
+| 스페인어 - 스페인 | `Spanish - Spain` | `spanish.about.txt` | `spanish.short.txt` | 295 |
+| 불가리아어 | `Bulgarian` | `bulgarian.about.txt` | `bulgarian.short.txt` | 292 |
+| 체코어 | `Czech` | `czech.about.txt` | `czech.short.txt` | 293 |
+| 덴마크어 | `Danish` | `danish.about.txt` | `danish.short.txt` | 291 |
+| 네덜란드어 | `Dutch` | `dutch.about.txt` | `dutch.short.txt` | 294 |
+| 핀란드어 | `Finnish` | `finnish.about.txt` | `finnish.short.txt` | 280 |
+| 그리스어 | `Greek` | `greek.about.txt` | `greek.short.txt` | 296 |
+| 헝가리어 | `Hungarian` | `hungarian.about.txt` | `hungarian.short.txt` | 294 |
+| 인도네시아어 | `Indonesian` | `indonesian.about.txt` | `indonesian.short.txt` | 297 |
+| 일본어 | `Japanese` | `japanese.about.txt` | `japanese.short.txt` | 159 |
+| 한국어 | `Korean` | `koreana.about.txt` | `koreana.short.txt` | 219 |
+| 말레이어 | `Malay` | `malay.about.txt` | `malay.short.txt` | 294 |
+| 노르웨이어 | `Norwegian` | `norwegian.about.txt` | `norwegian.short.txt` | 290 |
+| 폴란드어 | `Polish` | `polish.about.txt` | `polish.short.txt` | 290 |
+| 포르투갈어 - 브라질 | `Portuguese - Brazil` | `brazilian.about.txt` | `brazilian.short.txt` | 289 |
+| 포르투갈어 - 포르투갈 | `Portuguese - Portugal` | `portuguese.about.txt` | `portuguese.short.txt` | 294 |
+| 루마니아어 | `Romanian` | `romanian.about.txt` | `romanian.short.txt` | 290 |
+| 러시아어 | `Russian` | `russian.about.txt` | `russian.short.txt` | 287 |
+| 중국어 간체 | `Simplified Chinese` | `schinese.about.txt` | `schinese.short.txt` | 118 |
+| 스페인어 - 중남미 | `Spanish - Latin America` | `latam.about.txt` | `latam.short.txt` | 295 |
+| 스웨덴어 | `Swedish` | `swedish.about.txt` | `swedish.short.txt` | 293 |
+| 태국어 | `Thai` | `thai.about.txt` | `thai.short.txt` | 269 |
+| 중국어 번체 | `Traditional Chinese` | `tchinese.about.txt` | `tchinese.short.txt` | 118 |
+| 튀르키예어 | `Turkish` | `turkish.about.txt` | `turkish.short.txt` | 282 |
+| 우크라이나어 | `Ukrainian` | `ukrainian.about.txt` | `ukrainian.short.txt` | 290 |
+| 베트남어 | `Vietnamese` | `vietnamese.about.txt` | `vietnamese.short.txt` | 286 |
+

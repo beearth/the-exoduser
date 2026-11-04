@@ -38,10 +38,10 @@ namespace Exoduser.UnityPort
             malice = new Material(Resources.Load<Shader>("Shaders/SkillAdditive")); malice.SetFloat("_NormalBlend", 1);
             malice.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
             malice.SetInt("_DepthTest", (int)UnityEngine.Rendering.CompareFunction.Always);
-            spike = Whole("Art/vfx/skill_spike_thorn"); dome = Whole("Art/vfx/skill_holy_dome");
+            spike = Whole("Art/vfx/skill_spike_thorn_pal"); dome = Whole("Art/vfx/skill_holy_dome");
             var slam = Resources.Load<Texture2D>("Art/vfx/skill_inferno_slam_sheet"); int hw = slam.width / 2, hh = slam.height / 2;
             for (int i = 0; i < 4; i++) slamFrames[i] = Sprite.Create(slam, new Rect(i % 2 * hw, slam.height - (i / 2 + 1) * hh, hw, hh), new Vector2(.5f, .5f), 100, 0, SpriteMeshType.FullRect);
-            var orbTex = Resources.Load<Texture2D>("Art/vfx/skill_ice_orb_sheet"); int fw = orbTex.width / 3, fh = orbTex.height / 3;
+            var orbTex = Resources.Load<Texture2D>("Art/vfx/skill_ice_orb_sheet_pal"); int fw = orbTex.width / 3, fh = orbTex.height / 3;
             for (int i = 0; i < 9; i++) orbFrames[i] = Sprite.Create(orbTex, new Rect(i % 3 * fw, orbTex.height - (i / 3 + 1) * fh, fw, fh), new Vector2(.5f, .5f), 100, 0, SpriteMeshType.FullRect);
             // web _MO_IMG (assets/vfx/vfx_magic_orb.png): 7 x 3 cells of 171 px, 20 frames, drawn 'lighter' at r * 5
             var mo = Resources.Load<Texture2D>("Art/vfx/skill_malice_orb_sheet");

@@ -326,7 +326,7 @@
 | 경직 stagger | **있음**: `StateTicks=6`, 기검참 차징 중이면 면역 | `Core/Simulation.cs:373-374` |
 | pStun/stagger 종료 | **있음**: `StateTicks<=0` → `idle`, `Poise<=0`이면 4로 복원. **웹의 `iframes=60/30`, `P.poise=4` 탈출기 해제 없음** | `Core/Simulation.cs:103-105` |
 | 무적 프레임 | **일부**: `Iframes` 감소 틱만 있고 `HurtPlayer`는 `Iframes>0`이면 return. 웹의 착지 48f·패링 25f·한방캡 60f·기동 무적 미이식 | `Core/Simulation.cs:101, 366` |
-| 피격 공식 | **일부**: `dr=min(.75, def/(def+2500))`, 한방캡 `MaxHp×0.33`, 최소 `MaxHp×0.005`, 쉴드 먼저 — 웹의 배리어·조건부 DR·회피·어픽스·lastStand 없음 | `Core/Simulation.cs:366-375` |
+| 피격 공식 | **일부**: `dr=min(.75, def/(def+2500)+physDR)`, 한방캡 `MaxHp×0.33`, barrier, 조건부 DR(캡 .50, 11-04 D-U2), 최소 `MaxHp×0.005`, 쉴드 먼저 — 웹의 burnDR·lastStand·`charge` 70% 감소 없음 | `Core/Simulation.cs:366-375` |
 | 적 포이즈 | **있음**: `Poise=MaxPoise=hp`(웹 L31166과 일치), `poiseHit&&damage>0`이면 `Poise-=damage`(웹은 `~~(dmg×psM)`·보스 ×0.2/0.5 저항 미이식), 0이면 `Stunned=max(,180)`. 보스 90f/면역 300f/그로기 1.5배 데미지 없음 | `Core/Simulation.cs:71, 232-236` |
 | 적 포이즈 회복 | **있음**: 200틱마다 `+(int)(MaxPoise×.15)`(웹 일치, 보스 구분 없음 — "admitted ordinary profile"이라 주석) | `Core/Simulation.cs:324-328` |
 | 그로기 종료 | **일부**: `MaxStunned` 리셋만(보스 `_poiseReset`·idle 강제·면역 미이식) | `Core/Simulation.cs:153-154` |

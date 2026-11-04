@@ -13,7 +13,7 @@
 | 자원 보호 | 장비 계산→성장기여→maxima 대입→현재값 min 순서. 투자/반복 장비갱신으로 HP/MP/ST/쉴드 치유0·중복가산0 |
 | 저장 | 기존 combat-save-v1 root stats/passives/grit와 player.passiveQueue를 동일 web키로 보존. 미지 top/중첩키·비소유 섹션 유지. load의 음수/비정수/범위밖 투자값 및 present stats/passives/player 비Object, passiveQueue 비Array/비문자열원소, gritCostModeV2 비Bool은 쓰기금지 경로로 반환. 필드 누락은 허용하되 명시 null은 읽지 못한 기존값 보존을 위해 실패폐쇄한다. 기검참 강화레벨1~20도 CaptureSkills→Config.KiSlashLevel 저장/복원 연결 |
 | 구형 근성 비용 이관 | grit>0·마커없음/false면 옛누적SP=grit×3+(grit−1)×grit/2, 환불=옛누적−현재grit=grit×(grit+3)/2. 실제복원SP에 1회 더한 뒤 marker=true 저장. grit10/SP0→SP65. 환불 int범위 또는 잔고합산 overflow는 BlockCombatSave. 미환불 상태의 WriteInto도 거절해 marker만 먼저 전환 불가 |
-| 미지원 표시·투자 차단 | pPierce는 효과0이므로 신규투자/예약 버튼·API 비활성, 기존값 환불 허용. pDot(DOT피해/지속)·pPred(이속)·pRegen(물약쿨)·pGuard(보호중HP리젠)·pHunter(보스/정예별칭)는 선택 상세에 효과 일부 미지원과 현재적용범위를 표시 |
+| 미지원 표시·투자 차단 | pPierce는 효과0이므로 신규투자/예약 버튼·API 비활성, 기존값 환불 허용. pDot(DOT피해/지속)·pPred(이속)·pRegen(물약쿨)·pGuard(보호중HP리젠)는 선택 상세에 효과 일부 미지원과 현재적용범위를 표시 |
 | 배경 | 웹과 같은 CloudFront 기사원화1120×896, 동일 CSS .17 검정·ellipse66%74%/55→100%마스크, viewport고정. 확대/이동하는 트리와 별도, Art/ui/stat/knight_background.png. 원본URL/SHA는 third/stat/background-source.json |
 
 ## 검증과 한계
@@ -42,3 +42,5 @@ I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/third/stat/: red.json(성�
 ## 최종 Player 영수증 — 3차
 
 빌드53412e1f(af70a6a2c5)·같은패키지UI6699ddaa 76PNG/1920·2560·3840/기능14 PASS·M1653caf5c23/23. 모두공식ok·창0·잔여0·USER_SAVE0, Runtime06a013b876120aafbd6d8adb3adf0f0171a2bc81187b6207222a23fabe14e2a7. 직접1x·확대및담당재검수완료. 전체미이식/잔여차이는 UNITY_WEB_PARITY_THIRD_20261102.md에명시한RETOUCH이며, 자연플레이/OS입력/전체언어검증과구분한다. 근거 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/third/review/.
+
+2026-11-04 D-U1: pHunter는 Core `Simulation.HunterMul`이 웹 `_hunterMul`(D-002 뒤)처럼 보스·정예·레어(etype≥90)에 +10%/랭크를 주므로 미지원 안내를 지웠다. 근거·대조는 `DEBUG_LEAD_BOARD_20261103.md` D-U1, `Tools/hunter-oracle`.

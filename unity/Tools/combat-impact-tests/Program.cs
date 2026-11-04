@@ -10,6 +10,42 @@ static class Program
     static void Check(bool value,string name){checks++;if(!value){bad++;Console.WriteLine("FAIL "+name);}}
     static int Main()
     {
+        // RED uses reflection so an absent presentation policy is an assertion,
+        // not a compiler failure. Expected coordinates are screen pixels, Y up.
+        var anchorType=typeof(CombatImpactTimeline).Assembly.GetType("Exoduser.UnityPort.Vfx.CombatHitAnchor");
+        Check(anchorType!=null,"visible-body hit anchor policy exists");
+        if(anchorType!=null) {
+            var resolve=anchorType.GetMethod("Resolve");
+            Func<double,double,double,FeedbackKind,double,bool,dynamic> anchor=(foot,bottom,top,kind,ratio,large)=>
+                resolve.Invoke(null,new object[]{foot,bottom,top,kind,ratio,large});
+            foreach(var kind in new[]{FeedbackKind.EnemyHit,FeedbackKind.EnemyCrit,FeedbackKind.BossHit,FeedbackKind.EnemyDeath,FeedbackKind.BossDeath}) {
+                dynamic a=anchor(100,110,210,kind,double.NaN,false);
+                Check((bool)a.UseBody&&Math.Abs((double)a.OffsetY-65)<1e-9,"default chest .55 excludes transparent padding "+kind);
+                Check(Math.Abs((double)a.DrawWidth-(kind==FeedbackKind.EnemyHit?60:100))<1e-9,"normal .6 / critical boss death 1.0 body width "+kind);
+            }
+            foreach(double ratio in new[]{-1.0,0,.55,.618,1,2,double.PositiveInfinity}) {
+                dynamic a=anchor(20,30,230,FeedbackKind.EnemyHit,ratio,true);
+                double y=20+(double)a.OffsetY;
+                Check(y>=30&&y<=230,"contact remains inside visible body "+ratio);
+                Check((double)a.DrawWidth<=200*1.2,"large enemy width capped at 1.2 body heights "+ratio);
+            }
+            dynamic chest=anchor(0,0,200,FeedbackKind.EnemyCrit,.618,false);
+            Check(Math.Abs((double)chest.OffsetY-123.6)<1e-9,"rig catalog chest ratio is honored");
+            foreach(double height in new[]{32.0,96.0,192.0}) {
+                dynamic a=anchor(300,300,300+height,FeedbackKind.BossHit,double.NaN,true);
+                Check(Math.Abs((double)a.DrawWidth-height)<1e-9&&Math.Abs((double)a.OffsetY-height*.55)<1e-9,"perspective body pixels scale independently of Core radius "+height);
+            }
+            foreach(var pair in new[]{(0.0,0.0),(200.0,100.0),(double.NaN,100.0),(0.0,double.PositiveInfinity)})
+                Check(!(bool)anchor(0,pair.Item1,pair.Item2,FeedbackKind.EnemyHit,double.NaN,false).UseBody,"missing/invalid body requests exact legacy path");
+            var applies=anchorType.GetMethod("Applies");
+            foreach(var mode in new[]{CombatClipMode.Impact,CombatClipMode.SlashBurst,CombatClipMode.Electric,CombatClipMode.Blood}) {
+                Check((bool)applies.Invoke(null,new object[]{true,9,FeedbackKind.EnemyHit,mode}),"body hit layer "+mode);
+                Check(!(bool)applies.Invoke(null,new object[]{false,9,FeedbackKind.EnemyHit,mode}),"flat mode preserves legacy "+mode);
+                Check(!(bool)applies.Invoke(null,new object[]{true,0,FeedbackKind.EnemyHit,mode}),"target zero preserves legacy "+mode);
+                Check(!(bool)applies.Invoke(null,new object[]{true,9,FeedbackKind.EnemyDeath,mode}),"death stays at ground "+mode);
+            }
+            Check(!(bool)applies.Invoke(null,new object[]{true,9,FeedbackKind.Parry,CombatClipMode.Impact}),"melee parry is excluded");
+        }
         var s=new Simulation(new SimulationConfig{EnemyAiEnabled=false,PlayerBaseAttack=10,PlayerCriticalChance=0},123);
         var e=s.SpawnNormalEnemy(s.Player.X+40,s.Player.Y);
         if(e==null)throw new Exception("fixture spawn failed");
@@ -31,9 +67,17 @@ static class Program
         Check(CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.Parry,Step=1,Source="physicalProjectile"}).Count==0,"physical bullet Q parry: no purple star either");
         Check(CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.EnemyHit}).Count==0,"audio hit cannot duplicate a visual hit");
         var normal=CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.EnemyHit,VisualOnly=true,Element=2});
-        Check(normal[0].Sheet=="impact_el2_sheet"&&normal[0].Frames==9&&normal[0].Life==16,"normal impact chooses real elemental 9-cell strip for16ticks");
+        Check(normal[0].Sheet=="impact_el2_sheet_v2"&&normal[0].Frames==9&&normal[0].Life==16,"normal impact chooses remastered elemental 9-cell strip for16ticks");
         var boss=CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.BossHit,IsBoss=true,VisualOnly=true,Element=4});
-        Check(boss[0].Sheet=="impact_el4_boss_sheet"&&boss[0].Frames==16&&boss[0].Scale==2.5,"boss impact retains 16cells and2.5scale");
+        Check(boss[0].Sheet=="impact_el4_boss_sheet_v2"&&boss[0].Frames==16&&boss[0].Scale==2.5,"boss impact retains 16cells and2.5scale");
+        for(int el=0;el<6;el++)foreach(bool isBoss in new[]{false,true}) {
+            var hit=CombatImpactTimeline.Plan(new FeedbackEvent{Kind=isBoss?FeedbackKind.BossHit:FeedbackKind.EnemyHit,VisualOnly=true,IsBoss=isBoss,Element=el})[0];
+            Check(hit.Sheet=="impact_el"+el+(isBoss?"_boss_sheet_v2":"_sheet_v2")&&hit.Fallback=="impact_basic_sheet","v2 sheet and basic fallback "+el+" boss="+isBoss);
+            Check(hit.Life==16&&hit.Frames==(isBoss?16:9)&&hit.Cols==hit.Frames&&hit.Rows==1&&hit.Scale==(isBoss?2.5:1)&&hit.Additive&&hit.Mode==CombatClipMode.Impact,"v2 retains lifecycle, layout, scale and additive blend "+el+" boss="+isBoss);
+            Check(hit.Frame(0)==0&&hit.Frame(16)==-1&&Math.Abs(hit.Alpha(0)-(isBoss?.62:.45))<1e-9&&Math.Abs(hit.Alpha(8)-(isBoss?.31:.225))<1e-9,"v2 retains frame and alpha curve "+el+" boss="+isBoss);
+            double cell=85,scale=isBoss?2.5:1,start=isBoss?.92:.8;
+            Check(Math.Abs(hit.DrawWidth(0,cell)-cell*scale*start)<1e-9&&Math.Abs(hit.DrawWidth(8,cell)-cell*scale*(start+.3))<1e-9,"v2 retains width curve "+el+" boss="+isBoss);
+        }
         Check(boss[1].Mode==CombatClipMode.Electric&&boss[1].Scale==.18,"lightning impact adds exact electric burst");
         var budget=new CombatImpactTimeline();Check(budget.AdmitHit(1,false)&&budget.AdmitHit(1,false)&&!budget.AdmitHit(1,false)&&budget.AdmitHit(1,true)&&budget.AdmitHit(2,false),"same tick limits two ordinary hits; bosses bypass; next tick renews");
         budget.Reset();Check(budget.AdmitHit(1,false),"restart resets budget even when ticks rewind");
@@ -67,6 +111,11 @@ static class Program
             Check((int)pool.Slots.Length==8&&pool.Slots[0].Frame==15&&Math.Abs((double)pool.Slots[0].Angle-.5)<1e-9,"eight fixed slots retain last-four frame and rotation");
             stamp.Tick=500;Check((int)pool.Add(stamp,12,0)==0,"expired slots reused without growth");
             pool.Reset();Check((double)pool.Alpha(0,500)==0,"restart hides pooled decals");
+            stamp.Tick=100;pool.Add(stamp,12,0,20);
+            Check((int)pool.Slots[0].Born==120&&(double)pool.Alpha(0,119)==0&&(double)pool.Alpha(0,120)==1,"optional collapse delay starts ground blood on the selected tick");
+            Check((int)pool.Add(stamp,12,0,20)==1,"queued death blood reserves its pool slot before collapse");
+            pool.Reset();pool.Add(stamp,12,0);
+            Check((int)pool.Slots[0].Born==100&&(double)pool.Alpha(0,100)==1,"unset death delay preserves contact tick exactly");
             foreach(var kind in new[]{FeedbackKind.EnemyCrit,FeedbackKind.BossHit,FeedbackKind.EnemyDeath,FeedbackKind.BossDeath})
                 Check((bool)poolType.GetMethod("ShouldStamp").Invoke(null,new object[]{new FeedbackEvent{Kind=kind,VisualOnly=true}}),"decal event "+kind);
             foreach(var evt in new[]{new FeedbackEvent{Kind=FeedbackKind.EnemyHit,VisualOnly=true},new FeedbackEvent{Kind=FeedbackKind.EnemyCrit},new FeedbackEvent{Kind=FeedbackKind.BossDeath,Source="druid_sink"}})
@@ -94,7 +143,8 @@ static class Program
         }
         Check(!CombatRollDust.Trail(0)&&CombatRollDust.Trail(4)&&!CombatRollDust.Trail(5)&&CombatRollDust.TrailPuff(9).Peak<.3,"trail puff every four roll ticks, fainter");
         var rainbow=CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.Parry,Step=1,SampleKey="rainbow"});
-        Check(rainbow.Count==4&&rainbow.All(c=>c.Additive)&&Math.Abs(rainbow[3].Opacity-.55)<1e-9,"rainbow Q uses four original layered sheets and attenuation");
+        Check(rainbow.Count==4&&rainbow.All(c=>c.Additive)&&Math.Abs(rainbow[3].Opacity-.55)<1e-9,"rainbow Q preserves four layers and attenuation");
+        Check(rainbow.Select(c=>c.Sheet).SequenceEqual(new[]{"Poison_MediumImpact_pal","Dark_DarkSmoke_FBF_4x4","Light_ImpactLight_Sheet","Ice_ImpactIce_Sheet_pal"}),"rainbow Q uses palette copies; dark original is audited, cartoon light awaits artwork");
         var kiSim=new Simulation(SourceStarterFixture.CreateKiSlash(),456);kiSim.Config.EnemyAiEnabled=false;
         var kiTarget=kiSim.SpawnNormalEnemy(kiSim.Player.X+35,kiSim.Player.Y);if(kiTarget==null)throw new Exception("ki fixture spawn failed");
         kiSim.Player.Facing=0;kiSim.SpawnKiSlash(1,0);kiSim.Feedback.Clear();kiSim.Tick(0,0,kiSim.Player.X+100,kiSim.Player.Y,false,false);

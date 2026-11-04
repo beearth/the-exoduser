@@ -17,7 +17,9 @@ namespace Exoduser.UnityPort.Core {
     s.PlayerSpeed+=dex*.005*(1+inventory.ImplicitTotal("_iMovSpd")*.01);
     s.PlayerHpRegen+=str*.002;s.PlayerStaminaRegen+=dex*.005;s.PlayerManaRegen+=intel*.005;
     s.PlayerStaminaRegen*=1+Growth.Value("pStamina")*.01;s.PlayerManaRegen*=1+Growth.Value("pVital")*.01;
-    s.PlayerPhysicalDefense+=(int)(((int)(Player.Level*.5)+grit)*.5)-(int)((int)(Player.Level*.5)*.5)+Growth.Value("pArmor")*20;
+    // ~~(_gritTotal()*.5) feeds both pDef and eDef; CalculateStats already holds the level + equipment part (D-U2)
+    double g0=(int)(Player.Level*.5)+s.EquipmentGrit,gritDef=(int)((g0+grit)*.5)-(int)(g0*.5);
+    s.PlayerPhysicalDefense+=gritDef+Growth.Value("pArmor")*20;s.PlayerEnergyDefense+=gritDef;
     s.PlayerCriticalChance+=lck*.025+Growth.Value("pCrit")*1.5;s.PlayerCriticalMultiplier+=lck*.002+Growth.Value("pCrit")*.08;
     s.AttackSpeedMultiplier+=dex*.0005;s.DamageMultiplier=(1+Growth.Value("pAtk")*.10+human*.05+melee*.15)*.7;
     s.DropBonus+=lck*.0015+Growth.Value("pDrop")*.08;s.StrengthFlat+=str;s.Dex+=dex;

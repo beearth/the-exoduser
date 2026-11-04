@@ -35,6 +35,13 @@ namespace Exoduser.UnityPort.Core
             return enemy;
         }
 
+        /// <summary>_hunterMul(e) (web after D-002 4cf4d74eb): a boss (ib), an elite (truthy e.elite) or a rare (etype >= 90) takes +10 % per pHunter rank.
+        /// Before D-002 the web read the never-set e.isBoss / e.isElite, so only the rare etypes counted, and this port had copied that.</summary>
+        public static double HunterMul(EnemySpawn w, double rank)
+        {
+            return w != null && (w.ib || (w.elite != 0 && !double.IsNaN(w.elite)) || w.etype >= 90) ? 1 + rank * 0.10 : 1;
+        }
+
         private static int ToIntClamped(double v) { return v >= int.MaxValue ? int.MaxValue : v <= int.MinValue ? int.MinValue : (int)v; }
 
         /// <summary>Copies the shared fields EnemyState -> EnemySpawn (creates a minimal web object for enemies the Core never spawned: revived ghouls).</summary>
@@ -83,7 +90,7 @@ namespace Exoduser.UnityPort.Core
                 MeleeRef = MeleeReference, PDotPool = () => 1 + Growth.Value("pDot") * .05,
                 PassAbund = Growth.Value("pAbund"), PassBow = Growth.Value("pBow"), PassCombo = Growth.Value("pCombo"),
                 PredBonus = w => w != null && w.hp <= w.mhp * .3 ? Growth.Value("pPred") * .20 : 0,
-                HunterMul = w => w != null && w.etype >= 90 ? 1 + Growth.Value("pHunter") * .10 : 1,
+                HunterMul = w => HunterMul(w, Growth.Value("pHunter")),
                 NecklaceDmg = Config.AccessoryDamageSum,
                 PetOnAtk = () => { }, ShQuery = (x, y, r) => NearbyWebs(x, y, r), Ens = new List<EnemySpawn>(),
                 HurtEnemy = (w, dmg, ang, noSound, opts, atkEl) => { if (w != null && webOwner.TryGetValue(w, out var other)) ApplyEnemyDamage(other, (int)dmg, (float)(ang ?? 0), false, 1, opts != null && opts.dot == true, opts != null && opts.shieldHit == true); },

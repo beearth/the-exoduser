@@ -2,7 +2,7 @@
 
 | 담당 | 목표 | 소유 파일 | 상태 |
 |---|---|---|---|
-| codex/unity-parity-1102 | 21:50 BuildLoop 다중 패스 오탐 최우선 | NativeUiAudit·다중 패스 발행 함수, Tools/ui-overlap의 분석기/회귀/표본, 관련 UI 문서·CHANGELOG_SYNC 자기 절 | 공통8c5f967d74 추가 정상 병합·docs 양쪽 기록 보존·현재 충돌0, 실제 메뉴/CP 자기충돌0·회귀66/66. Core121/Runtime259 오류0, PC Player0. 기존1410장 재분석8363은 과거 계측 잔여로 보존. Mac 새 게이트 대기 |
+| codex/unity-parity-1102 | 11-04 01:20 폭 초과 이름/자원/조작 흐름 배치 | NativeSkills/NativeKeyBindList/NativeUiTextRun/NativeUiTextFlow, ui-text-run-tests, 관련 docs 자기 절 | 공통5c9dd3673 선병합·양쪽 이력 보존·충돌0. CPU67/67·PC Core126/Runtime267 오류0. 화면별 모델표 기록. 로비/실버 헬 원화 수정0·실제 Mac/디자인 판정 대기 |
 
 ## 2026-10-29 Mac 첫 연습 실입력 후속
 
@@ -711,3 +711,53 @@ PC후보af70a6a2c5는정본버전매빌드읽기·직업X사슬/로어·실능�
 | PC Codex / codex/unity-ui-plate-20261103 | SilverLobby ENTER/슬롯/레일, SilverHell 공통9-slice, SilverCharacter/CharacterPresentation 원화, NativeUiChrome 기본 스킨 한정 제거, 원화11종 meta, DeathUiCapture/회귀/비교 도구 및 관련 docs | 최신385e76ce1 정상 병합. 원화 복구·밉맵OFF·밝기1.0 계약 회귀 PASS. 코드 판/세로명암 미사용. PC Player/빌드/캡처0. 실제1920/3840·1x/3x·4화면 비교는 Mac 대기/미검증 |
 
 10-28 로비 캡처와 원화8종은 직접 열어 확인했다. 원화 점검판은 I:/EXODUSER-Storage/codex-takeover/death-screen/review-current/original-assets.png이며 제품 캡처가 아니다. 실제 비교기는 unity/Tools/lobby-art-review/compare.cjs(실제PNG4개 필수). 최종SHA·Mac 인자/비교판 경로는 death-screen/REPORT.md. 기존 guard.baseline.json WIP 보존.
+
+## 2026-11-04 Codex UI — 01:00 밉맵 우선 후00:40 문구
+
+- 밉맵 별도 브랜치 codex/unity-ui-mipmap-20261104 @2d2705dac891d80edc84ea901800410ecb2951ea:15종 importer OFF/Bilinear·4meta·38회귀·PC 참조컴파일PASS. Mac 재임포트 meta불변/실제mip1 대기.
+- codex/unity-demo-text-20261104: 문구 착수2e5a64b927 분리→긴급 병합20d46aef20→29언어 보스/HUD/입장/보스 자막 구현. 펫 말풍선은 조사만·다음 회차. Core 수치/판정·원화5항목 수정0. PC 참조컴파일1회5어셈블리 오류0,8소스/데이터계약PASS. Mac 실제 화면/자연 이벤트/원어민 감수 대기. [인자·정본 상태](../../3.1%20ui%20hud%20디자인/UNITY_DEMO_TEXT_20261104.md).
+
+## 2026-11-04 01:45 Codex UI RETOUCH 인계
+
+- codex/unity-demo-text-20261104, 최신489af88e5 병합a39ba3e8c2. 작은 가시 없는 칩6px/입장 사전축소/빈 슬롯/이름창 가시테/직업×·개수 간격을 고쳤다.17런타임 원화·21import대상, 원본PNG·큰원화·Core 보존.
+- 배치/자산PASS·importer50항PASS·PC DLL참조1회5어셈블리 오류0, Player0. 동일 SHA Mac1920/3840·1x/3x와 실제 입장 hover 영수증 대기. [계약·목록](../../3.1%20ui%20hud%20디자인/UNITY_SMALL_PLATE_RETOUCH_20261104.md). 펫 말풍선은 후속. 병합한 스토리총괄R1/R2 기록도 유지한다.
+
+## 2026-11-04 01:50 Codex 문구 RETOUCH
+
+R1 9언어36cue 악의 화폐용어/R2 킬루29언어·키·stage33·추출 도구·KO atlas fallback 반영. 목록No.3477/3876/3877/3881/3885·CRLF 정합.9소스/데이터PASS,02:00 meta뒤PC 최종컴파일1회 예정. Player0,Mac 실제 UI/원어민 판정대기. [감사§6](../../11내러티브·로어디자인/DEMO_V0_1_1_TEXT_AUDIT_20261104.md).
+
+## 2026-11-04 01:50·02:00 Codex 중단 인계
+
+R1/R2 별도 커밋 e9898f79538b5ab78d68b33422374c7b00eca4a9:9항PASS. button_iron filter2→1/기존규칙 유지·Mac22종 import 검사 추가. PC 검증 중단: importer.test.cjs의 추가 확장 코드에서 SyntaxError가 2회 연속 발생해 사용자 중단 규칙을 적용했다. 확장분은 직전52항PASS 상태로 되돌렸고 재실행하지 않았다. 이번 최종 소스의 PC 컴파일/Unity import/Player는 실행하지 않았다. 이전 컴파일 결과를 이번 근거로 사용하지 않는다. 재개 후 컴파일과 Mac22종 재임포트·실제 화면 검수가 필요하다.
+
+## 2026-11-04 01:40 실제시각 Codex 재개 인계
+
+최신c4b388903 병합f60d55c1e3·CHANGELOG양쪽 보존. 01:40 실제시각 재개: 추가 확장 코드를 만드는 String.replace의 replacement 문자열에서 달러+작은따옴표($')가 suffix 삽입으로 해석돼 RegExp 리터럴과 중복 조각을 깨뜨렸다. 4cba2a857에는 직전52항 복원본만 들어 있었으며 구문이 깨진 확장분은 미커밋이었다. 이번에는 생성 치환 없이 직접 패치로 YAML scalar/DefaultTexturePlatform 비교를 작성했다. 기존52항 중button_iron의1검사를10개 속성검사로 보강해61항이며 유용한 기존검사를 삭제하지 않았다. 수정 뒤 importer 테스트1회61PASS/0FAIL. 병합최종소스 DLL참조 Roslyn 컴파일1회:Player Core126/Runtime273,Editor Core126/Runtime273/Editor60,5어셈블리 exit0/오류0. Unity 에디터/import/Player/빌드/캡처0. 이 참조컴파일은 실제 Unity 임포트/플랫폼 빌드 판정이 아니다. Mac22종2회재임포트 meta불변/mip1 및 같은SHA 화면/폰트/RTL/선명도 판정은 대기다. 자기경로 커밋·비강제push 후REPORT최상단SHA로 인계.
+
+## 2026-11-04 death-ui 승인 백로그 펫 말풍선 1차 인계
+
+최신6ef1899cb3 정상병합8b17b49122·감사docs양쪽보존. NativeGame최소3호출+전용partial/큐/원화/14키29언어카탈로그,실제HP/첫보스·보수적환경조건. GB1자동위치/초기필드환경/전투패드안내보류. 관련suite1회38+53PASS,공용exo-unity compile1회32dd8c55 UPM IPC30초실패(exit1/C#미착수),재실행0. Player/build/Steam/바탕화면/USER_SAVE변경0. 자기exact커밋·비강제push후PC Claude CTO local_7072229c가공통병합,Mac자연이벤트/글리프/1x/3x대기.
+
+## 2026-11-04 death-ui 펫91b95 컴파일 관문 후속
+
+91b95 소스의 최초 DLL참조 컴파일에서 NativePetBubbleCatalog.cs(28,34) CS0103(LobbyLanguage 이름 미확인) 1건을 검출했다. LobbyLanguage는Core 네임스페이스이므로 자기펫파일에using Exoduser.UnityPort.Core; 1줄만추가했다. 관련확인1회:Player Core126/Runtime279,Editor Core126/Runtime279/Editor61의5어셈블리exit0·오류0. 전체참조컴파일은오류검출1입력+원인수정후1입력이며무수정반복0. 기존38+53suite재실행0. 전회공용Unity32dd8c55는C#시작전Upm-14180 IPC30초실패/exit1이다. 동일Unity6000.6.7f1의근접성공영수증c4505bef(시각기준205초전),d4c9bb48(477초전)은UPM연결0.2초/46패키지등록을확인했다. exe96002992B존재·실행인자(projectPath/method/nographics/mute/sandbox)정상전달은확인했지만작업본/그래픽인자/과거자식환경이다르다. 해당시점UPM전용로그부재로프로세스실패원인/Defender차단/PATHEXT문제는미확정이다. 현재전역Editor.log는5월다른버전이므로근접근거로쓰지않았다. Unity재실행/공용실행기·잠금·환경·권한·보안설정변경0. DLL참조PASS만인계하며실제Unity/UPM복구·Mac게임관문은미완료. 자기exactcode+docs비강제push뒤CTO local_7072229c가공통병합한다.
+
+## 2026-11-04 04:05 death-ui 승인 후보
+
+최신a53c34e939 병합0f2a57c910·CHANGELOG양쪽보존. 사망지역배너숨김/우상단4키29언어(81키)/A면통일·명조/철blur2/미사용로드제거/ReviewState입장호버를반영했다. 4그룹RED1→GREEN·기존칩/인장/슬롯회귀PASS,참조컴파일1회5어셈블리오류0. CTO예외③은I:/EXODUSER-Storage/ui-candidate/build 1회와G:/exoduser/tmp/design-review/20261104_ui_candidate/1920·3840각25컷만승인,바로가기/바탕화면교체0. 실제빌드·캡처결과/소스SHA/미검증은외부death-screen/REPORT.md가영수증정본이다. [설계계약](../../3.1%20ui%20hud%20디자인/UNITY_UI_CANDIDATE_20261104.md).
+
+## 2026-11-04 04:05 death-ui 후보 후속 — 촬영 HOLD
+codex/unity-demo-text-20261104: a53c34e939 병합/1~4 수정/후보 a02cb84850 공용 f803480e 빌드1회 PASS. 첫 Player c21ffb38이 StageFlow 초기 lobby null로150초타임아웃, 창0/USER_SAVE0/잔류0/캡처0장. 기존 자기 문구 locale1줄 안전성 수정·30조건 회귀/참조5어셈블리 오류0, 새실행본 미검증. 빌드1회 상한 준수, 추가빌드/촬영0. CTO 다음 승인 빌드와1920·3840/1x·3x·Mac 자연검수 대기. 소유 StageFlow locale1줄/test/meta3/doc만 추가, Core/타guard WIP/바탕화면·바로가기 변경0.
+
+## 2026-11-04 05:00 death-ui 후보50장 인수 대기
+codex/unity-demo-text-20261104: CTO지정 e3b3bc977 추가후보빌드1회/공용1922c0fa PASS,18 Player제품검증PASS,1920/3840 각25장=50장확보. 시작nullHOLD해소. 전부사용자창0/USER_SAVE0/잔류0,바로가기·바탕화면·Steam교체0. 고정G:/exoduser/tmp/design-review/20261104_ui_candidate 원본/1x·3x비교/audit-current.json. 이번runtime/에셋변경0,docs만자기exact커밋/push. CTO/디자인총괄및Mac자연입력·펫이벤트관문대기(3840모달차광경계는기존관측으로별도판정).
+
+## 2026-11-04 05:40 death-ui 독립 대조 후속
+1촬영 --remodel3d/-force-d3d11,2HUD29언어16px 실측 간격,3이름면18px inset·프레임 경계 유지/명조,4공통Panel 철14% draw 계측.5디자인총괄 결정대로 compact칩/A면 유지. 공통60b7 병합46fed7·docs양쪽 보존, 소스/관련계약PASS·공용222c77f8 컴파일PASS. 다음 고정후보빌드1회/50장, 실제 결과 REPORT. Core/저장/공용bin/타guard WIP/바탕화면·바로가기 변경0.
+
+## 2026-11-04 05:40 death-ui STOP 인계
+540fdcde20 수정/컴파일222c77f8/후보f2a287d2 PASS.1920 25/50장·제품9/9 PASS·HUD116행min16px·명조/면18px 확인. 공용 ReadAllText(player.log) 파일잠금이 hover57be03df/사망02ef0c30에서2회 발생하여 STOP. 공용 최종영수증7/9,3840미실행. 재시도/추가빌드0, 공용bin·타슬롯 변경0. 공용 실행기 담당의 후처리 원인수정과 남은 가드/3840/디자인총괄·Mac관문 필요. 정확한 예외/수량은 REPORT와 audit-current.json.
+
+## 2026-11-04 death-ui 새 실행
+
+JUDGEMENT 05:50에 맞춰 설정 명시 칩/기본 가시 복원·20개 사전 축소본·철 면 샘플링 수정. 관련 검사와 전체 참조 컴파일 5어셈블리 오류0. 새 Unity/빌드/Player 0: 이전 ReadAllText(player.log) 2FAIL의 공용 수정 증거 없음, G: 약58GiB<100GB. 소유 공용 밖 수정0, 재생성 가능한 자기 PlayerDataCache 6,453,436,611B 정리. 새 후보/50장·디자인·Mac 판정 대기.

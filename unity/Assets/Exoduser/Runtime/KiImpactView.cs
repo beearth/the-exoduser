@@ -69,8 +69,10 @@ namespace Exoduser.UnityPort
             sparkShape=Sprite.Create(Texture2D.whiteTexture,new Rect(0,0,1,1),new Vector2(.5f,.5f),1);
             coreShape=Sprite.Create(Texture2D.whiteTexture,new Rect(0,0,1,1),new Vector2(.5f,.5f),1);
             // A compact filled contact disk, no texture generation or imported art.
-            var vertices=new Vector2[17];var triangles=new ushort[48];
-            for(int i=0;i<16;i++){float a=i*Mathf.PI/8;vertices[i+1]=new Vector2(Mathf.Cos(a),Mathf.Sin(a))*.5f;triangles[i*3]=0;triangles[i*3+1]=(ushort)(i+1);triangles[i*3+2]=(ushort)((i+1)%16+1);}
+            // OverrideGeometry takes sprite-rect pixels (0..1 here), not pivot-relative units:
+            // centre the disk on the .5 pivot and inset the rim so no vertex sits on the 1.0 edge.
+            var vertices=new Vector2[17];var triangles=new ushort[48];vertices[0]=new Vector2(.5f,.5f);
+            for(int i=0;i<16;i++){float a=i*Mathf.PI/8;var rim=vertices[0]+new Vector2(Mathf.Cos(a),Mathf.Sin(a))*.499f;vertices[i+1]=new Vector2(Mathf.Clamp(rim.x,.0005f,.9995f),Mathf.Clamp(rim.y,.0005f,.9995f));triangles[i*3]=0;triangles[i*3+1]=(ushort)(i+1);triangles[i*3+2]=(ushort)((i+1)%16+1);}
             coreShape.OverrideGeometry(vertices,triangles);
             addMaterial=new Material(Resources.Load<Shader>("Shaders/KiSlashAdditive"));
             inkMaterial=new Material(Resources.Load<Shader>("Shaders/KiSlashInk"));

@@ -180,19 +180,26 @@ $task = 'I:\EXODUSER-Storage\unity-latest\loop\bin\install-task.ps1'
 | buildloop | 빌드 전 reserve -Kind editor, 스모크 전 -Kind player -Owner buildloop. WaitMin 기본60분. 예약/Editor잠금/Player슬롯/티켓 시간초과는 WAIT, 실패0·lastAttemptSha 보존·회색 배지 |
 | 사전 검사 | buildloop/compile-check.ps1: asmdef·이름/GUID asmref 경계별 수집, 어셈블리 참조 순서, Player/Editor 정의별 별도 출력. Library/Bee RSP는 참조용 읽기만. 결과는 참고용, 최종은 Unity 컴파일 |
 
-Unity 없는 시험: selftest/idle-yield-test.ps1, buildloop-wait-test.ps1, assembly-sources-test.cjs. 사전 검사 출력은 -Output I:/EXODUSER-Storage/...로 지정하며 기본값도 I:다.
+Unity 없는 시험: selftest/idle-yield-test.ps1, windows-env-test.ps1, exit-code-test.ps1, shared-log-test.ps1, zombie-guard-test.ps1, user-game-test.ps1, exclusive-test.ps1, buildloop-wait-test.ps1, assembly-sources-test.cjs. 사전 검사 출력은 -Output I:/EXODUSER-Storage/...로 지정하며 기본값도 I:다.
 
 ## slots1 — Editor 1개 / Player 2개 (2026-11-03)
 
 | 항목 | 계약 |
 |---|---|
-| 버전 | `$ExoUnityVersion='2026.11.03-slots3'`, status 첫 줄·JSON runnerVersion·슬롯 JSON |
+| 버전 | `$ExoUnityVersion='2026.11.04-exclusive2'`, status 첫 줄·JSON runnerVersion·슬롯 JSON |
 | Player 상한 | `$MaxPlayerSlots=2`. CreateNew 원자 획득, 슬롯 보유자 + 살아 있는 구버전 owner=devtools-player의 _pc_lock을 1개로 계산. 사용자 직접 연 Player는 제외 |
 | 시작 경합 | _player_admission.guard의 파일 핸들로 새 실행기의 슬롯 획득→실제 자식 생성까지만 직렬화. 생성 뒤 즉시 반환해 두 Player는 병렬 실행. _pc_lock은 잡지 않음 |
 | stale | pid 사망 또는 프로세스 생성 시각 > startedAt이면 동일 token·pid·startedAt 재확인 후 회수. 해제는 자기 pid+token만 |
 | FIFO | reserve/unreserve -Kind editor 또는 player(기본 editor). Player -Owner는 자동 예약·완료 후 반환, -KeepReservation은 유지. 실행 중 Player 예약은 대기 FIFO 제외 |
 | 대기 pid (slots3) | player 명령이 슬롯을 기다리기 시작하면 자기 player 예약에 waitPid·waitSince를 쓴다. player FIFO는 그 pid가 살아 있는(생성 시각 ≤ waitSince) 예약만 센다. waitPid 없는 '예약만'·죽은/재사용 pid 예약은 건너뛴다(파일은 지우지 않음). 갱신(reserve)은 waitPid를 보존. status는 대기 중(pid 살아 있음)/예약만/대기 pid 종료/실행 중(슬롯) 표시, JSON waiterState |
-| PC Player 거부 (11-03) | `player`는 `-PcException`(buildloop·cto-swap·candidate)이 없으면 거부("Mac에서 실행" 안내, exit 2). CLAUDE.md 3.4 예외만 허용. BuildLoop 스모크·UI 겹침 check.ps1은 buildloop로 넘긴다. editor batchmode 컴파일·임포트는 그대로 || 무음 (11-03) | `--unity-mute`는 게임 쪽 `NativeMuteGuard`가 모든 모드에서 적용한다. 시작 즉시와 매 프레임 끝에 AudioListener.volume=0, Direct 영상 소리는 트랙별 mute. 예전에는 M1 스모크와 캡처별 EarlyMute만 따라서 UI 겹침 검사에서 로비 음악·영상 소리가 났다. Unity Player에는 -nosound 인자가 없어 쓰지 않는다 |
+| PC Player 거부 (11-03) | `player`는 `-PcException`(buildloop·cto-swap·candidate)이 없으면 거부("Mac에서 실행" 안내, exit 2). CLAUDE.md 3.4 예외만 허용. BuildLoop 스모크·UI 겹침 check.ps1은 buildloop로 넘긴다. editor batchmode 컴파일·임포트는 그대로 |
+| 무음 (11-03) | `--unity-mute`는 게임 쪽 `NativeMuteGuard`가 모든 모드에서 적용한다. 시작 즉시와 매 프레임 끝에 AudioListener.volume=0, Direct 영상 소리는 트랙별 mute. 예전에는 M1 스모크와 캡처별 EarlyMute만 따라서 UI 겹침 검사에서 로비 음악·영상 소리가 났다. Unity Player에는 -nosound 인자가 없어 쓰지 않는다 |
+| Windows 기본 환경 (11-04) | Editor·run 기동 직전 `Repair-WindowsEnv`가 비어 있는 SystemRoot·windir·ComSpec·USERPROFILE·APPDATA·LOCALAPPDATA·ProgramData·ALLUSERSPROFILE·ProgramFiles(·x86·W6432)·CommonProgramFiles·HOMEDRIVE·HOMEPATH·TEMP·TMP를 Windows 알려진 폴더 값으로, `.EXE` 없는 PATHEXT는 Machine 값으로 채우고 Path에 System32가 없으면 앞에 붙인다. 이 프로세스 범위만, 있는 값은 그대로. 채운 이름은 stderr 한 줄. 원인=Codex node_repl이 이 변수들 없이 실행기를 띄워 UnityPackageManager.exe가 IPC를 못 열고 30초 뒤 exit 1(r14 03:56·r15 04:20) |
+| 종료 코드 (11-04) | 숨은 데스크톱 Player 종료 코드는 uint32 비트 그대로 부호 있는 Int32로 읽는다(0xFFFFFFFF → -1). 예전 `[int]` 변환은 밖에서 강제 종료된 Player(4294967295)에서 예외를 내 정리·숨은 데스크톱 닫기·영수증을 건너뛰었다(A2R r17 2회). 종료 코드를 못 읽으면 -1과 warnings 한 줄로 기록하고 나머지 단계는 계속한다 |
+| Player 로그 공유 읽기 (11-04) | Player 종료 뒤 GPU 이름 확인은 `Read-SharedText`(FileShare.ReadWrite·Delete)로 읽는다. 종료 중 커널 대기에 걸린 Player는 강제 종료 뒤에도 스레드 1개로 남아 -logFile 쓰기 핸들을 쥐고, 예전 ReadAllText는 IOException으로 영수증 전에 끝났다(UI 후보 57be03df·02ef0c30, 2회). 읽기 실패는 warnings, 강제 종료 뒤 3초에도 남은 프로세스는 '커널 대기 의심' warnings로 영수증에 남긴다 |
+| 좀비 Player 가드 (11-04) | `player`는 시작 전에 스레드 1개 이하이고 1.5초 동안 CPU 시간이 그대로인 EXODUSER-* 프로세스를 찾는다. 하나라도 있으면 '재부팅 필요' 영수증(_exec/done, rejected)과 HALT를 만들고 exit 2로 거부한다. 실행 뒤 '커널 대기 의심' 프로세스가 남아도 HALT를 만든다. 원인=Quit 뒤 'Input System … Shutdown'에서 커널 드라이버(HID/GPU) 교착, 05:06 뒤 4번 더 띄워 좀비 5개(11-04 07:32 재부팅으로 해소). 해제=재부팅 뒤 HALT 파일 삭제 |
+| 사용자 게임 실행 중 미룸 (11-04) | `player`는 시작 전에 부모가 explorer.exe인 EXODUSER* 프로세스(사용자가 바탕화면·바로가기로 띄운 게임)를 찾는다. 있으면 Player를 띄우지 않고 '사용자 게임 실행 중, 미룸' 영수증(ok=False, deferred=user-game)을 _exec/done과 stdout JSON 한 줄로 남기고 exit 3. BuildLoop는 이를 WAIT로 받아 다음 회차에 다시 한다. 세이브 감시는 그대로다. 원인=사용자 게임(PID 35348)이 실제 세이브에 저장해 UI 후보 촬영이 USER_SAVE changed=3으로 실패 |
+| BuildLoop Player 단독 실행 (11-04) | `-PcException buildloop` 또는 `-Exclusive` Player는 다른 Player가 모두 끝날 때까지 기다리고(돌고 있는 Player는 끊지 않음), 슬롯을 얻으면 `_player_exclusive.json`을 써서 도는 동안 새 Player를 받지 않는다. 끝나면 표시를 지우고 다른 레인은 다시 동시 2개. 단독 검사 중에는 새 Editor 작업(Acquire-Slot의 서버 시작·batch, Cmd-Run의 상주 서버 제출)도 순번 대기한다(돌고 있는 Editor는 끊지 않음, 11-04 CTO: a7db9621b UI 겹침이 다른 레인 Editor 빌드와 겹쳐 14fps). FIFO 예약 순서는 그대로라 루프가 맨 앞이면 뒤 Player는 기다린다. 원인=QA Player 여러 개가 4K 로비 영상을 동시에 디코드해 BuildLoop M1 '로비 복귀 영상 준비 12초 초과' 33회·UI 겹침 영상 준비 실패로 바탕화면 교체가 막힘 |
 | 굶주림 방지 | editor 선두 등록 후 20분 이상이고 _pc_lock이 비어 있으면 새 Player 통과를 막아 0개까지 배출. status/대기 사유에 owner 표시 |
 | idle 양보 | editor 예약·티켓만 계산(kind 없음=editor). player 대기자는 서버 양보를 유발하지 않음 |
 | 독립 출력 | Player별 GUID 로그·sandbox, 숨은 데스크톱은 PID+GUID. 사용자 창 0·--unity-mute·USER_SAVE 비교·크래시 HALT·자기 자손 정리 유지 |
