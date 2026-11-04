@@ -23,6 +23,76 @@
 
 2026-11-04 12:30 Core 결함 수정(앵글러 물 에너지탄 패링): Unity가 크라켄 물 에너지탄을 forbidden으로 분류해 Q 패링이 안 되던 것을 웹(fbEnergy 터미널)과 같게 수정. ProjSpec/BossProjectile.FbEnergy, ClassOf=magic, Q=원본 제거+5발 분열(자원×10, 청콩 반사 없음), E 제외, 접촉=무적 중에도 소멸·비무적에만 피해+슬라이드 100, 벽 접촉 8방향 샘플. 무지개탄 Q 전용·다른 탄 분류 불변. parry-reflect-oracle 61509 checks 0 failures(anglerEnergy 12766·anglerRuntime 35 신설), druid-boss-oracle 5421635 checks 0 mismatches, fieldboss-oracle 302271 checks 0 failures, 참조 컴파일 오류 0. 문서: 2_3 사실 표기, 몬스터_공격시스템.
 
+## 2026-11-04 드루이드 Core 반경 재계산 130/111/57 + 전투 길이 시뮬 (CTO 승인, 리모델 신규 설계, 웹 oracle 대상 아님)
+
+- 코드: `DruidRemodelData.LifeRadiusPx` {91,77,39} → {130,111,57}(기준 영웅 키 실측 1.609u, 영웅 대비 2.79 / 2.38 / 2.02배). `LifeRadiusBasis` 44/37/31 그대로, 이동량 86/74/26: 내려찍기 346/334/286, 걷기 멈춤 306/294/246, 박동 안전 고리 P3 286, 잠행 출현 234/215/161, 몸 분리 R+15 = 145/126/72. P3는 브리프의 48이 2.0배 목표와 안 맞아(1.70배) 57로 계산.
+- 테스트: `druid-remodel-test` `RadiusChecks.cs` 기대값·영웅 기준 1.6094975u, `druid-rigpixel-tests` 배수 검사 갱신, 새 `FightLengthChecks.cs`(봇 DPS 35/틱, 기준 HP 148,786 → 중앙값 161.6초, 7기술 전 판 발동, HP·순환 변경 없음).
+- docs: 보스 보드 §8.5.5 표, `UNITY_BOSS_RM1_DARK_DRUID_20261027.md` §2·§3·§13.7, PREP §10.1·§10.2.
+
+## 2026-11-04 보스 아레나 연속 프레임 캡처 --unity-boss-arena-seq (QA 인자, Core 변경 0)
+
+`--unity-boss-arena-review`와 함께 `--unity-boss-arena-seq`를 주면 `arena-review/seq-collapse`(P2→P3 무릎 -10~+30프레임, 최대 360)·`seq-erupt-1..3`(솟기 판정 -20~+40틱)·`seq-contact`(P1 몸 띠 접촉 600프레임, 봇 입력만 공격2초→구르기→공격1초→대시 반복)에 가로 960 PNG(쌍선형 1회)와 `frames.jsonl`(ArenaReviewFrame 행 + 껍질·노인 배율·화면 높이, 기둥 거리·gapPx, 접촉 이동·분리 근사)을 남긴다. 인자가 없으면 기존 캡처 경로와 같고 캡처 프레임은 clean timing에서 제외된다. `NativeArenaReviewPolicy`에 `SeqRequested`·`ContactAt` 추가, `NativeGame.BossArenaReview.cs`에 관측·캡처, rigpixel 테스트 5건 추가(5462/0), druid-remodel 99510/0. 몸 분리 밀림 거리는 Core가 private이라 근사. 문서: PREP §10.1 끝. Player 실행·판정은 총괄.
+
+## 2026-11-04 드루이드 Core 반경 = 화면 크기 (CTO 결정 a, 보스 아레나 레인)
+
+origin/unity/main(c6877e630 외) 병합(보스 보드 §8.5.4는 두 기록을 한 절로 합침). 리모델 드루이드의 Core 판정 반경을 설계 화면 크기에 맞췄다(리모델 신규 설계, 웹 oracle 대상 아님): `DruidRemodelData.LifeRadiusPx = 91/77/39`(이전 44/37/31) — P1 영웅 ×2.805(목표 2.8), P2 ×2.374(P1×.85), P3 ×1.982(2.0). 새 선택 항목 `BossRemodelSet.LifeRadius/LifeRadiusBasis/BodySeparation`(기본 꺼짐, 드루이드 세트만 켬)과 `RadiusFor`·`ReachShift`. 중심 기준 거리는 반경 이동량(47/40/8)만큼 밖으로: 내려찍기·P3 독웅덩이 307/300/268, 걷기 멈춤 267/260/228, 박동 안전 고리 P3 268, AI 선택 거리(점수·잡기 시작). 가장자리 기준(채찍 300·돌진 120·잡기 150·솟기 +120)은 반경을 따라가므로 그대로. 신규 몸 분리 `Simulation.BossRemodelRules.RemodelSeparatePlayer`: 플레이어를 R+15까지 밀어냄(틱당 24px, 구르기·대시·잡기·땅속·무릎 제외). 뷰 `NativeDruidRigPixelView.RadiusPx`는 같은 `RadiusFor`를 부른다. 리뷰 캡처 `--unity-boss-arena-edge[=1,2,3]`(세 목숨 가장자리 타격, 옛 `--unity-boss-arena-p3-edge`는 P3 전용으로 유지, 산출 `edge-p<목숨>-hit-N`·`edge-hit` 줄). 문서: 보스 보드 §8.5.5(목숨별 반경↔거리 표·파일:줄), RM1 §13.6, PREP §10.1, RM0 프레임워크. 검증: `druid-remodel-test` 99,510검사/실패 0(신규 `RadiusChecks.cs` 108검사 포함: 반경·가장자리 타격·몸 분리·잠행 여유·목숨별 거리)·프레임 124/0, `druid-rigpixel-tests` 5,457검사/0, 웹 oracle `druid-boss-oracle --cases 48` 5,421,635검사/불일치 0, `compile-check.ps1` 5어셈블리 오류 0. Unity·Player 실행 0, Mac 판정 대기(P1 영웅 ×2.8 화면에서 먼 적 시야, 잠행 솟기 틈, 몸 분리 감각).
+
+## 2026-11-04 드루이드 세트 기본값 — 3D 보스 아레나·데모는 리모델 7기술 (보스 아레나 레인)
+
+3D 실측 실행이 리모델 플래그가 꺼진 채 옛 웹 드루이드와 싸운 문제(보스 보드 §8.5.4)를 뷰·런타임 계층에서 고쳤다. NativeGame.ReviewArgsApply가 런마다 `NativeReviewArgs.DecideDruidSet`으로 `Simulation.DruidRemodel`을 정한다: `--unity-druid-legacy`(꺼짐 강제) > `--unity-druid-remodel`(켜짐) > 3D 아레나(`--remodel3d`, 켜짐) > 데모 빌드(BuildFlavor DemoMode, 켜짐) > 기본(꺼짐). 결정은 `[DruidSet] remodel=… reason=legacy-arg|arg|3d-arena|demo|default` 한 줄로 런마다 로그에 남긴다. Core 변경 0(`DruidRemodelSettings.Default=false` 그대로), 직접 `Simulation`을 만드는 테스트·oracle은 옛 세트 유지. `--unity-review-args-capture`의 "default setting still off" 검사는 "규칙을 따른다 + Core 기본값 꺼짐"으로 바꾸고 아레나 드루이드 세트 대조는 규칙 결과 기준으로 유지했다. druid-rigpixel-tests에 규칙 조합 검사 16개 추가(정책 5,451검사/0실패), 전체 PC Roslyn 5어셈블리 오류 0. PC Unity/Player/빌드 0, 실제 화면·Mac 판정 미검증. docs/engine/UNITY_BOSS_BATTLE_BOARD_20261026.md §8.5.4.
+
+## 2026-11-04 드루이드 v8.2 → v9.1 연결 (껍질+노인 페이즈·전환·등장/침강, 보스 아레나 레인)
+
+origin/unity/main(91e35a6c1, PREP 10 v9/v9.1 명세)을 병합했다(NativeGame.OnDestroy 충돌은 RemodelArenaDispose와 druidCues 해제 모두 보존, CHANGELOG/PREP 충돌은 양쪽 기록 보존). 입력 GLB `oldman_druid_v9_1.glb`(SHA-256 d1527e54…c35265)·`HuskHeap_P3.glb`(89fa7b1a…0a4855) 확인 뒤 import-oldman.py(65뼈·38액션·뼈 부모 객체와 강체 껍질 메시 휴지 월드 복원·발치 반지름 측정)와 import-huskheap.py로 OldmanV91.fbx(36,123,292B, meta GUID 유지)·HuskHeapP3.fbx(새 meta)를 만들고 OldmanV82.fbx를 삭제했다. 뼈 65 = 노인 34 + HK 23(HK_Root 포함) + HP 6 + OM_Lift/OM_Staff, 노인 78,323·껍질 73,906삼각형, Hips는 OM_Lift, StaffSocket_L은 OM_Staff 아래.
+
+뷰 연결(Core 변경 0): NativeDruidRigAnimator가 state_P1/2/3의 OM_Lift·OM_Staff·HK_Root·HP_* 값을 생성 때 저장해 기술 클립 위에 덮어쓰고, 노인 배수(OM_Lift 스케일·위치)를 받는다. NativeDruidRigPolicy가 목숨(d.BossPhase)·collapse(bossDruidRest, Simulation.DruidLife 경과 틱)·intro_reveal(StageEventKind.BossIntro 90틱)·death_sink(최종 침강 SinkBodyTicks 66틱) 계획을 추가했다. NativeDruidRigPixelView는 껍질/노인/힙 부품별 그리기, f108 껍질 끄기와 HuskHeapP3 월드 고정, P3 노인 발 중심을 Core 보스 위치에 맞춘 루트 보정, 잠행 중 힙 단독 그리기, 목숨별 크기를 넣었다. NativeGame.BossView·StageFlow가 Sync(…, Simulation.DruidLife(e))와 BeginIntro를 전달한다.
+
+크기 규칙(표시 배율 직접 지정 없음): 루트 배율 = Core 판정 반경(월드) ÷ 모델 발치 반지름. Core 반경 = Round(OrigR 44px × BodyScale 1/.85/.70) = 44/37/31px = 0.44/0.37/0.31 (Core/Simulation.DruidRemodel.cs:144, DruidRemodelData.cs:15, EnemyFactory.cs:145, NativeRemodel3D.Point px/100). 발치 반지름 껍질 1.3987m·노인 0.4762m → 배율 P1 0.31458, P2 0.26453, P3 노인 0.65105. 영웅(1.12) 대비 높이 P1 ×1.36, P2 ×1.14, P3 뿔 ×1.575(1.6~2.4 약간 미달, 표시하고 Core는 안 바꿈). P1/P2가 v8.2 표시(×2.8)보다 크게 줄어드는 것은 규칙의 결과라 총괄 결정 필요. 상세·근거·캡처 단계 PREP 10.1.
+
+새 인자 --unity-boss-arena-p3-edge(아레나 리뷰 전용): 3번째 목숨에서 봇이 보스 몸 원 가장자리에 서서 공격하고 p3-edge-hit-1..3 PNG/JSON과 moves.jsonl 줄을 남긴다. 검사: 정책 5,435검사/0실패, verify-fbx.py 통과(38클립, 정지 발 0.0046cm), PC Roslyn 5어셈블리 오류 0. Unity 임포트·실제 화면·Mac 판정 미검증.
+
+## 2026-11-04 드루이드 입력 v8.1 → v8.2 교체·오브 소켓 읽기 API (보스전 총괄 배정, Claude 이어받기)
+
+최신 origin/unity/main 병합(CHANGELOG/PREP 충돌은 양쪽 기록 보존). 입력 GLB를 v8.2(SHA-256 313bb238…98c, 24,299,904B)로 교체: import-oldman.py를 v8.2 이름으로 바꿔 v8.1과 같은 절차(무창 Blender, 소켓 월드 행렬 복원, Icosphere 제외)로 OldmanV82.fbx(15,581,516B) 생성, meta를 이름만 바꿔 GUID 유지, OldmanV81.fbx 삭제, NativeDruidRigPixelView·DruidRigPixelVerification·oldman-import.json·druid-rigpixel-tests의 참조 갱신. 클립 31개·이름·틱 계약·34본·78,323삼각형·Fist_L·StaffSocket_L 불변. 추가: NativeDruidRigPixelView.HasOrbSocket / OrbSocketWorldPosition / 정적 TryGetOrbSocketWorldPosition(out Vector3) — StaffSocket_L 아래 lantern_orb 변환의 실시간 월드 위치(VFX 슬래시3 예고용, 읽기 전용, 임의 오프셋 없음). Core 변경 0. 검사: 정책 4,672/0, FBX 수치 계약 통과(31클립, 정지 발 수평 최대 0.0046cm, 소켓 오차 1.08e-6m), 전체 PC Roslyn 1회 5어셈블리 오류 0(Core126/Runtime281/Editor62 포함). PC Unity/Player/빌드 0. 실제 Unity 임포트·화면·60fps 판정은 Mac 대기. docs/engine/UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md §9.3.
+
+## 2026-11-04 03:00 실제시각 드루이드 v8.1 7기술 연결
+
+최신origin/unity/main309892b1da 병합(51e0b30e77), CHANGELOG/PREP 양쪽 충돌 기록 보존. OldmanV81.fbx로교체·34본/보조10본/Fist_L/왼손소켓과29기술 단계+Idle/Walk=31클립 보존. Core 상태·남은틱으로 Generic Playable 샘플, 현재Core와원본길이 차이 보정·채찍 타격6f=Core2틱·균열 act를 기존회복안에 배치·잡힘/탈출/심장/잠행 분기. 수평 루트 중복 제거, 심장가슴맥동·영수증 확장. Core/기본값/카메라/8b 변경0. 정책4,672/0·FBX 수평발 최대.00461cm·전체Roslyn1회5어셈블리 오류0. 첫발 검사는 의도된20cm발들기를3D미끄러짐으로오인한원인을GLB에서확정하고 수평기준으로고쳐통과. PC Unity/Player0, 실제Avatar/RT/7기술1x·10초·세계발/FPS Mac대기. [계약·한계](engine/UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md#9-0300-실제시각-cto--v81-7기술-연결-소스-후보).
+
+## 2026-11-04 01:20 드루이드 v7 rig-pixel 어댑터 소스 후보
+
+최신origin/unity/main5c9dd3673 병합(0c22494993)·CHANGELOG 양쪽 기록 보존. 작업 중 도착한v7을 Generic FBX로 교체하고34본·보조10본·Fist_L·왼손소켓·가슴43면·Idle/Walk 보존. --boss-render=rigpixel만 공통 Point RT/4단 셀/팔레트·Core tick Animator 사용, 미제공7기술/Run/피격·사망은 Idle@0 대기·누락 영수증. 기본 보스/8b/카메라34°16.5/Core 수치 불변. 정책46/0·Roslyn5어셈블리 오류0·FBX 수치 통과. PC Unity/Player/렌더0, 실제 Unity Avatar·셰이더·RT·화면·FPS는 Mac 대기. [상태/클립 표](engine/UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md#7-11-04-0120-cto--v7-unity-어댑터-소스-후보).
+
+## 2026-11-04 00:50 RB1-8b 조명·재질 소스 후보
+
+최신6d99d0c46 병합 후 기존 필드 HellLighting/A2Field 달빛·후처리를 공유하고 A2R 원화2종/노멀/마스크·흙/뿌리 혼합, 세워진 횃불2개/점광, Core 외곽 독액·지면 투영을 연결했다. --unity-boss-arena-material-review는 같은 Player 필드/아레나34° PNG/JSON·조명 ID·나란히1x 페이지를 남긴다. arena73/0·Roslyn5어셈블리 오류0, PC실행0·자기Core변경0·Mac 시각/성능 미검증. Meshy 저LOD/아레나 실제반사/P3수위상승/8d는 후속. [정본 §14.6](engine/UNITY_BOSS_RM1_DARK_DRUID_20261027.md#146-rb1-8b-조명재질-소스-후보-11-04-0050-cto).
+
+## 2026-11-03 21:35 Mac FAIL 수정·21:45 카메라 정정
+
+2b1bbf2a0 병합 후 34°/16.5 고정·영웅 필드 크기 유지·보스 실제 영웅 모델 높이×2.8, 4정점 지면/A2 숲 덩어리/낮은 남쪽/뿌리 기둥·nearest 표면 알파0.2·분할 사전 준비를 적용. 새 --unity-boss-arena-review는 7기술 실제 발동·예고 경계·same-frame PNG/pose·0.6초 연속 프레임·3D 영웅 GPU 실루엣을 기록한다. metrics-only로 캡처 비용을 분리. CPU44/0·Roslyn5어셈블리 오류0, PC실행0·Core변경0·Mac 화면/60fps 미검증. [정본 §14.5](engine/UNITY_BOSS_RM1_DARK_DRUID_20261027.md#145-2135-mac-fail-수정-및-2145-거리-정정--mac-재검수-후보), [새 인자 전체](engine/UNITY_BOSS_ARENA_RB1_7_8_20261103.md).
+
+## 2026-11-03 21:00 RB1-7 선택 거리·타격 도달 정정
+
+채찍 도달480 해석을 폐기하고 AI RangeMax160 / 실제 타격·예고300으로 맞췄다. 최신 §13.4와 함께 SlashActive/HitAt=10/8(시작 후2틱), 내려찍기 RangeMax260, 돌진 추가 접촉120(몸체 전체 배율 아님)을 적용했다. 최종 하니스99210/0·frame124/0, 실제 Player는 Mac 검수 대기다. 이전480·SFX40/30 표기는 당시 후보 기록으로 대체한다. [정본 §13.5](engine/UNITY_BOSS_RM1_DARK_DRUID_20261027.md#135-2100-정정-적용--선택-거리와-타격-도달-분리).
+
+## 2026-11-03 RB1-8a 회색3D 보스방·카메라 연결
+
+--remodel3d/ForestA2의아레나3D유지·실패2D폴백·평지GroundY·기존필드표시복원,타일회색벽3~6m/overscan51.2m·Core기둥3.2m,34°/FOV46.9453/전방1.45고정·거리16.5↔18.3/0.6초를연결. CPU13/0·Player/Editor Roslyn5어셈블리오류0. PC Player실행0·실화면/60fps판정Mac대기,8b~d미구현. [정본§14.4](engine/UNITY_BOSS_RM1_DARK_DRUID_20261027.md#144-rb1-8a-소스-구현mac-판정-대기-11-03-2025-결정).
+
+## 2026-11-03 20:25 RB1-7 Core 최소 연결·잠행 원인 확정
+
+최신unity/main d6c5bb89b 정상병합. 채찍추가거리480·돌진판정폭×1.5를 드루이드 리모델세트만 연결하고 예고와 공유. 잠행출현은 정확하며 이후 넉백을 고정반경으로 검사하던 하니스 전제 수정(Core잠행0). 전투100385/0·frame124/0·OFF웹oracle5421635/0. [정본§13.4](engine/UNITY_BOSS_RM1_DARK_DRUID_20261027.md#134-rb1-7-구현원인-확정-11-03-2025-cto-결정-반영). PC컴파일·Mac판정 경계 유지, 8a는 독립 착수.
+
+## 2026-11-03 RB1-7 보스 기술 데이터 부분 적용 — FAIL 체크포인트
+
+활성7기술·예고/회복/쿨다운·잡기/잠행·슬램r260·정지거리220·4콤보를 반영했다. 전투100375검사 중 잠행18실패, 프레임124/0. Player/Editor Roslyn5어셈블리 오류0. 채찍×1.6·돌진폭×1.5는 Core고정값 때문에 미적용, RB1-8 미착수. 동일 하니스2회 실패 중단 규칙 적용, 통합 금지. [정확한 수치와 증거](engine/UNITY_BOSS_ARENA_RB1_7_8_20261103.md).
+
+2026-11-04 적 3D 01:00 연결 바탕: 최신ec89d5166 병합·하니스 Core/Skills 재귀 열거65/0 회복. etype4 공유 키를 시작 육괴 표현 태그로 분리해 일반 갑각 사도 아틀라스 유지. 영웅 공유 rig-pixel·Generic Animator/Core 틱·투영 bounds VFX 접점·사망 시작 연결, 고정meta 추가. 확장 정책103/0·전체 PC Roslyn5어셈블리 오류0 각1회, Player0. 미제공 동작은 bind pose로 기록하며 Mac 화면·임포트·동작·성능 미판정.
+
+2026-11-04 적 3D 연결 바탕 WIP 중단: 최신6d99d0c46에서 codex/unity-enemy3d-20261104 생성. 읽기 전용 상태 정책·etype1/4 모델표·0차 FBX 변환·검사 초안 보존. 같은 정책 검사 명령2회 실패(예상 RED, 이후 Core/Skills 소스 열거 누락 CS0234/CS0246)로 사용자 지시대로 중단. Unity 렌더/Animator/VFX 연결·meta·전체 PC 컴파일·Mac 판정 미완, 본편 병합 금지. 인계 UNITY_ENEMY3D_WIRING_20261104.md.
+
+
+2026-11-04 D-U1 사냥꾼 패시브 대상(디버깅 총괄, CTO 02:00): Unity Core `Simulation.EnemyBridge` HunterMul이 etype>=90(레어)만 보던 것을 웹 `_hunterMul`(D-002 뒤, main 06ac6882b 28306행)과 같이 보스(ib)·정예(elite 참)·레어에 +10%/랭크로 맞춤 → 새 `Simulation.HunterMul(w, rank)`. 수정 전 규칙은 D-002 이전 웹(안 쓰이는 isBoss/isElite)의 실제 동작을 이식한 것. 대조 `unity/Tools/hunter-oracle`: 웹 원문 280사례 불일치 0(수정 전 96/280), 실제 피격 경로 pHunter 3에서 보스·정예·레어 ×1.3·일반 ×1. 스탯창 pHunter "보스·정예 분기 미연결" 안내 삭제(표시 문자열 추가 없음). 디버깅 보드 정본을 unity/main으로 옮기고 D-012(09c)·D-013(canMv)·D-U1 기록, 방어 합산 차이는 D-U2 백로그. PC 컴파일만, Player 0.
 2026-11-04 11:20 공용 실행기 단독 검사 중 새 Editor 작업 대기(CTO): BuildLoop 단독 Player(_player_exclusive.json)가 도는 동안 새 Editor 서버 시작·batch·상주 서버 제출은 끝날 때까지 기다린다. 돌고 있는 Editor는 끊지 않음, 검사 기준 무변경. 원인=a7db9621b UI 겹침 검사가 다른 레인 Editor 빌드와 겹쳐 14fps로 1800초 제한 초과. 실행기 `2026.11.04-exclusive2`, exclusive-test 12건. 문서 unity/Tools/devtools/README.md.
 
 2026-11-04 11:05 UI 겹침 검사 Player 시간 제한 1800→3600초(도구 총괄, BuildLoop a7db9621b FAIL): 단독 실행으로 영상 준비 실패는 없어졌으나 다른 레인 Editor 빌드·대량 디스크 작업과 겹쳐 Player가 약 14fps로 느려져 2560 화면군에서 1800초 제한에 걸림(08:44 회차는 약 40fps로 861초에 3840 도달). 전 화면 행렬은 공용 PC 부하에서 30분을 넘길 수 있어 check.ps1 제한만 늘림. 판정 기준·화면 목록 무변경.

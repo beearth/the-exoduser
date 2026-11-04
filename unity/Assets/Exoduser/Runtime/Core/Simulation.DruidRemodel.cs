@@ -47,6 +47,7 @@ namespace Exoduser.UnityPort.Core
         {
             druidLives.Clear(); DruidRemodelLog.Clear();
             var st = new DruidLifeState { Life = 0, BaseMaxHp = e.MaxHp, OrigR = e.OrigR > 0 ? e.OrigR : e.Radius, Set = set };
+            if (set.LifeRadius != null) { st.OrigR = set.RadiusFor(0, st.OrigR); e.Radius = (float)st.OrigR; }   // 11-04: life 1 starts with its own Core radius (the mkEn 44 would be the old body)
             e.OrigR = st.OrigR; e.Shield = 0; e.MaxShield = 0; e.RevPts = 0; e.BossPhase = 0;
             druidLives[e] = st;
             Druid.Remodel = true; Druid.MoveLog = new List<MoveLogEntry>(); Druid.Clock = () => TickCount;
@@ -141,7 +142,7 @@ namespace Exoduser.UnityPort.Core
                 st.Vulnerable = false; st.WasVulnerable = false;
             }
             int sh = (int)Math.Round(mx * st.Set.ShieldFraction[st.Life]); e.MaxShield = sh; e.Shield = sh;
-            e.Radius = (float)Math.Max(10, Math.Round(st.OrigR * st.Set.BodyScale[st.Life]));
+            e.Radius = (float)st.Set.RadiusFor(st.Life, st.OrigR);   // LifeRadius when the set has one, else Round(OrigR x BodyScale)
             e.ReviveIframes = 0; e.Poise = e.MaxPoise;
             Druid.BeginLife(e, st.Life); if (Config.StageIndex == 0) QueueLogicalSound("druid_vo_phase", "P" + (st.Life + 1) + " start", e.X, e.Y);   // RM-1 sound SND-09
             RemodelEvent("life", e, st, note);

@@ -83,7 +83,7 @@ static partial class P
                     Check(line != null && Math.Abs(line.Length - Math.Min(f.MaxLen, f.Spd * 140)) <= 25 &&   /* one 20 px wall step + the drift of the boss during the wind */ Math.Abs(line.Width - f.W) < 1e-9 && Math.Abs(line.Dir - f.Ang) < 1e-9 && f.Straight, name + ": fissure length/width/direction differ from the telegraph (line " + (line == null ? "none" : line.Length.ToString("0.0") + "/" + line.Width + "/" + line.Dir.ToString("0.0000")) + " fissure " + Math.Min(f.MaxLen, f.Spd * 140).ToString("0.0") + "/" + f.W + "/" + f.Ang.ToString("0.0000") + ")");
                     Check(warned.Count == 1, name + ": fissure telegraph must be one line (" + warned.Count + " entries)");
                 }
-                if (ev == "slam") Check(warned.Count == 2 && warned.All(w => w.Shape == DruidTeleShape.Circle && Math.Abs(w.Radius - DruidRemodelData.SlamRadius) < 1e-9), name + ": slam telegraph is not 2 circles of the slam radius");
+                if (ev == "slam") { double slamExpect = DruidRemodelData.SlamRadius + (d != null ? d.R - DruidRemodelData.LifeRadiusBasis[Math.Min(Math.Max(d.BossPhase, 0), 2)] : 0); Check(warned.Count == 2 && warned.All(w => w.Shape == DruidTeleShape.Circle && Math.Abs(w.Radius - slamExpect) < 1e-9), name + ": slam telegraph is not 2 circles of the slam radius 260 + shift (" + slamExpect + ")"); }
             }
             foreach (var f in s.Druid.Fissures)
             {   // spec #4 (ruling 2026-10-28): fixed direction, no end blast, one hit per cast, only on the segment swept that tick
@@ -111,7 +111,7 @@ static partial class P
     // end of run: coverage + the flag-off list is empty
     static void VerifyTelegraphs()
     {
-        for (int m = 1; m <= 12; m++) Check(seenMoves.Contains(m), "telegraph list never carried move " + m + " (" + DruidRemodelData.Moves[m - 1].Id + ")");
+        for (int m = 1; m <= 12; m++) if (DruidRemodelData.Moves[m - 1].Phase.Length > 0) Check(seenMoves.Contains(m), "telegraph list never carried move " + m + " (" + DruidRemodelData.Moves[m - 1].Id + ")");
         Check(teleEvents >= 20, "telegraph spawn checks " + teleEvents);
         var off = new Simulation(new SimulationConfig { StageIndex = 0, DifficultyIndex = 5, EnemyAiEnabled = true, PlayerMaxHp = 2000000, PlayerBaseAttack = 40 }, 1u);
         off.AttachDruidBoss(); var l = new List<DruidTelegraph> { new DruidTelegraph() }; off.DruidTelegraphs(l);

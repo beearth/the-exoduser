@@ -65,6 +65,21 @@ namespace Exoduser.UnityPort.Core
         public int Lives = 1;
         // per life (index = life = AI phase): HP as a fraction of the mkEn base HP, body size, energy shield as a fraction of the life HP
         public double[] LifeHpFraction = { 1.0 }, BodyScale = { 1.0 }, ShieldFraction = { 0 };
+        public double[] LifeRadius;                        // null = Round(OrigR x BodyScale). Else the Core hit radius (px) of each life: "rendered feet = Core collision" at the designed screen size
+        public double[] LifeRadiusBasis;                   // the radius (px) the centre-based distances (stand-off, slam, heartbeat ring, move ranges) were designed for; the difference to LifeRadius shifts them (null = no shift)
+        public bool BodySeparation;                        // the player is pushed out of the boss body (Core radius + player radius); skipped while rolling / hit-protected / held / underground
+        public double RadiusFor(int life, double origR)
+        {
+            int l = Math.Min(Math.Max(life, 0), Lives - 1);
+            if (LifeRadius != null && l < LifeRadius.Length) return LifeRadius[l];
+            return Math.Max(10, Math.Round(origR * BodyScale[l]));
+        }
+        public double ReachShift(int life, double currentRadius)
+        {
+            if (LifeRadiusBasis == null) return 0;
+            int l = Math.Min(Math.Max(life, 0), Math.Min(Lives, LifeRadiusBasis.Length) - 1);
+            return currentRadius - LifeRadiusBasis[l];
+        }
         public int CollapseTicks = 120;                    // kneel between two lives (invulnerable, AI stopped)
         public BossMove[] Moves = new BossMove[0];         // order = telegraph move number (DruidTelegraph.Move = row + 1)
         public BossCombo[] Combos = new BossCombo[0];
@@ -135,6 +150,8 @@ namespace Exoduser.UnityPort.Core
         {
             if (string.IsNullOrEmpty(Id)) return "no Id";
             if (Lives < 1) return Id + ": Lives < 1";
+            if (LifeRadius != null && LifeRadius.Length < Lives) return Id + ": LifeRadius shorter than Lives";
+            if (LifeRadiusBasis != null && LifeRadiusBasis.Length < Lives) return Id + ": LifeRadiusBasis shorter than Lives";
             if (LifeHpFraction.Length < Lives || BodyScale.Length < Lives || ShieldFraction.Length < Lives || Phases.Length < Lives) return Id + ": per-life arrays shorter than Lives";
             if (Moves.Length == 0) return Id + ": no moves";
             var idx = new HashSet<int>(); var ids = new HashSet<string>();

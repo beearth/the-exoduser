@@ -1,8 +1,8 @@
 # 1-1 드루이드 노인 코어 rig-pixel 준비 — 2026-11-04
 
-상태: Blender 정리본·재질 분할·Blender 근사 미리보기까지 끝났다. Unity 반영과 실제 RT 판정은 0이다. 레인 배정과 Mac 판정 차례는 CTO가 정한다. 기획 근거는 [G0 §26](../8.1보스디자인바이블/BOSS_1-1_FIRST_BOSS_REPLAN_G0_20261103.md), 고정 사양은 [LOCK §17.6·§17.8](../11내러티브·로어디자인/DARK_DRUID_DESIGN_LOCK.md), 영웅 rig-pixel 계약은 [UNITY_RIG_PIXEL_20261103](UNITY_RIG_PIXEL_20261103.md)이다.
+상태: [11-04 v8.2 교체 §9.3 — 현재 입력은 OldmanV82.fbx, 아래 v8.1 수치는 이력] 11-04 03:00 실제시각 CTO 배정으로 v8.1의29기술 단계+Idle/Walk=31클립을 소스에 연결했다(§9). 정책4,672/0·FBX 수치 계약 통과·전체Roslyn1회5어셈블리 오류0. 실제 Unity 임포트/Avatar/Metal/게임 화면/성능은 Mac 대기. §7의 v7 연결은 이전 후보 이력이다.
 
-## 1. 입력 자산
+## 1. v6 입력 자산 이력 (최신 v7은 §7)
 
 | 항목 | 값 |
 |---|---|
@@ -42,7 +42,7 @@
 | `lantern_orb` | `#a8642a`, Emission `#d49a5c` | — | 구슬. 셀 명암 제외·발광 화면 픽셀 합 ≤0.5%(LOCK §5) |
 | `front_panel_cloth` | `#26211d` | — | 앞자락 |
 
-## 4. Unity에서 할 일 (배정 전, 계획)
+## 4. Unity 연결 원 계획 (v7 소스 연결 상태는 §7)
 
 1. GLB를 `Art/Bosses/Druid/` 계열로 들여와 Humanoid 아바타 확인, `StaffSocket_L` 자식 유지, 스케일은 영웅 표시 높이 영수증으로 계산(상수 하드코딩 금지).
 2. 보스용 rig-pixel 어댑터: 영웅과 같은 RT·셀·외곽선, 위 팔레트 표, 루트 = Core 보스 위치(Core·판정 변경 0). 실패 시 기존 보스 표시로 폴백.
@@ -59,6 +59,45 @@
 ## 6. Blender 근사 미리보기 (참고, PASS 근거 아님)
 
 `pixel_preview.py`(Cycles CPU 1샘플, 무창)로 위 2·3절을 흉내 냈다. 결과 `G:/exoduser/tmp/design-review/20261104_boss_1-1_oldman_cleanup/07_rigpixel_preview_1x.png`·`08_rigpixel_preview_3x.png`: 보스 알파 높이 318행(1080의 29%, A포즈·뿌리 팔 포함), 가면·뿔·구슬·치마·장화 읽힘, 3x 낱점 0. 걷기 클립은 Blender 5.2 액션 슬롯 연결이 안 돼 A포즈로만 봤다.
+
+## 7. 11-04 01:20 CTO — v7 Unity 어댑터 소스 후보
+
+최신 origin/unity/main 5c9dd3673861b4b5086884dac664068b4d87f370을 먼저 병합(0c22494993)했다. CHANGELOG_SYNC 양쪽 원문을 보존했다. 작업 중 새 v7 도착을 확인해 브리프대로 v6 대신 교체했다. 목표 장면은 기존8b 아레나34°/16.5의 노인 코어다. 직접 연 v6 정면 분할 참조와 v7 GLB/제작자 수치 보고를 기준으로, 실제 팔레트·크기·발 접지는 Mac 같은 패키지1x에서 처음 판정한다. PC Unity/Player/새 렌더0. §1~6은 v6 준비 이력이며, 현재 입력/동작은 이 절이 우선한다.
+
+| 항목 | 현재 구현·판정 경계 |
+|---|---|
+| 입력 | I:/EXODUSER-Storage/boss/oldman-v2-20261104/v7/oldman_clean_v7.glb, 22,995,252 bytes, SHA-256 7c5923929caf526cd84436792fcf4c66a5747b074b451dfd9569e41ba23450cc |
+| 프로젝트 리소스 | Resources/Art/Bosses/Druid/OldmanV7.fbx + oldman-import.json. 원본은 읽기 전용, 포맷 변환만. 최종 FBX1개, v6 후보는 남기지 않음 |
+| Avatar 선택 | Generic(animationType2). 원래34본·보조 체인·LeftHand/StaffSocket_L·Fist_L을 보존하기 위한 선택. Humanoid 매핑/리타깃을 추정해 강제하지 않는다. 실제 avatar.isValid/!isHuman은 Mac Editor/Player 영수증으로 확정 |
+| 자산 수치 | 4메시·34본·78,323삼각형·Fist_L. Cloak_Back4·Panel_Front2·Beard2·Chain_L2 보존, Chain_L은 원본 무가중. glTF importer의 Icosphere 뼈 표시 helper 제외. 제작자78,403은 이80삼각형 포함 수치 |
+| 가슴 발광 | v7 druid_glow 43면 마스크 그대로. 어댑터에서 druid_glow/lantern_orb를 #d49a5c 비조명 호박색으로 표시. 화면 발광 합 ≤0.5%는 Mac 실제 판정 |
+| 동작 | v7 idle2초·walk 약1.0667초를 60fps 시간축으로 변환. Generic Animator + 수동 PlayableGraph, Core tick/60 샘플, 루트 모션 끔. 옛24본 Run은 새34본에 섞지 않음 |
+| 기본/옵션 | 기본 표시 유지. --boss-render=rigpixel(또는 분리 인수)만 새 표시. 활성 아레나에서 RT 성공 후 기존 몸체만 숨김. 초기화/RT 실패 시 경고1회·기존 보스 폴백. 잠행 중 기존 흙더미 유지 |
+| 공통 픽셀 계약 | NativeRigPixelPolicy·RigPixelComposite 재사용, ARGB32 Linear Point/AA1/no mip, 동적32배수64..1024, 4단 셀·4이웃1텍셀 외곽선·SnapAnchor. 전용 layer27. 영웅/적 pixel grid를 덮지 않음 |
+| 팔레트·조명 | §3 팔레트100%, 텍스처RGB0%. 실제 장면 달빛/환경/가까운4점광을 적 어댑터와 같은 방식으로 읽음. 별도 보스 라이트/영웅 전용 림 추가0 |
+| 크기·카메라 | NativeArenaActorMetrics.HeroIdleWorld(표시 모델 보정, 없으면 기존 alpha 기준)×2.8을 뿔 기준 목표로 사용. 모델2.82/뿔2.71로 FBX 단위 환산. phase 반경 비율 유지. 카메라34°/16.5/FOV46.9453/전방1.45 변경0. 실제 화면2.6~3.0·뿔 여백8%는 Mac 판정 |
+| 침강·히트스톱 | 기존66틱 침강 시간/지면 클립·일시 pose 고정. Death/Sink 모션 없음. Core 위치·방향·상태/MoveId를 읽기만 하며 Core 타이머/판정 변경0 |
+| 계측 | camera-frames.jsonl·same-frame JSON의 bossRig에 상태/MoveId/pose/clip/누락/Avatar/소스/RT크기/시간/bounds. 최신 raw RT PNG1장·알파행 높이는 합성 외곽선·가림 전이며 뿌리팔/지팡이 포함. rig 성공 시 옛 스프라이트 bossHeroRatio=-1. 최종 크기 판정은 실제 PNG |
+
+### Core 상태 → 제공 클립 표
+
+| 상태·기술 | 선택 | 제공 여부 |
+|---|---|---|
+| idle, 정지 | Idle 반복 | v7 제공 |
+| idle에서 실제 Core 이동 / eWalk·eChase·eApproach | Walk 반복 | v7 제공 |
+| eRun | Idle@0 고정·missingClip=true | v7 Run 미제공 |
+| slashCombo 채찍 | Idle@0 고정 | 미제공 |
+| slam 내려찍기 | Idle@0 고정 | 미제공 |
+| charge 돌진 | Idle@0 고정, Run 대용 안 함 | 미제공 |
+| grab 잡기 | Idle@0 고정 | 미제공 |
+| burrowStrike 잠행·출현 | 지하 기존 흙더미, 출현 Idle@0 | 미제공 |
+| groundFissure 균열 | Idle@0 고정 | 미제공 |
+| heartbeat 심장박동 | Idle@0 고정 | 미제공 |
+| Hit·Stagger·Death·Sink·기타 | Idle@0 고정(침강 위치만 기존 시간) | 미제공 |
+
+검증: 정책46/0. Player Core126/Runtime281, Editor Core126/Runtime281/Editor60, 총5어셈블리 Roslyn 오류0. FBX 재임포트 수치는34본·4메시·78,323삼각형·Fist_L/소켓·Idle Head와 Walk LeftFoot 움직임을 확인했다. 초기 v6 수치 검사1회는 lantern_orb 액션을 골격 액션으로 잘못 검사해 실패했고, Armature 액션으로 범위를 고친 뒤 통과했다. v7 최종 검사는 통과했다. 같은 테스트2회 실패 없음. 이 수치는 Unity 임포트·게임 화면 PASS가 아니다.
+
+Mac은 먼저 Exoduser.CharacterLab.DruidRigPixelVerification.Verify를 Editor에서 실행해 Generic Avatar/보조본/Fist_L/팔레트/Idle·Walk 곡선/셰이더 임포트를 확인한다. PC 실행 금지. 같은 후보 Player의 기존 아레나 인수에 --hero-render=rigpixel --boss-render=rigpixel을 더하고1920/3840×1080을 따로 실행한다. 전체 인수와 별도 metrics-only는 [아레나 실행 문서](UNITY_BOSS_ARENA_RB1_7_8_20261103.md#11-04-0120-드루이드-rig-pixel-mac-인계)를 따른다. 실제 Unity Avatar·Metal 셰이더·RT 낱점/톤/크기·발/지팡이 접지·7기술 가독성·먼 적·10초 영상·60fps는 미검증이다.
 
 ## 7. v7 GLB — 보조본·발광 마스크·idle/walk (2026-11-04 1시, 보스전 총괄 Blender 서브에이전트, 유료 0)
 
@@ -135,6 +174,69 @@
 | 판정 | 제작자 PASS(Mac 판정 대기): 34° 1x에서 잠행이 "웅크려 감기 → 솟아 찌르기"로 읽힌다. 도달 오차는 모두 3cm 안 |
 | 남은 결함 | ① 치마 관통 788~1,094정점(허리띠 쪽 깊이 묻힌 정점, 두 허벅지 사이 가운데 깃털 — 정적 가중으로는 한계) ② 옆 p25·p75 끝단 깃털 가로 막대 모양 그대로 ③ `slam_rec`·`fissure_rec` 오른손 7.9cm, `grab_lunge` 오른발 2.5cm(이번 범위 밖, v8.1과 같음). ①②는 Mac 1x 캡처에서 보이면 Unity `CapeSpring` 계열 2차 움직임이나 깃털 카드 연결로 고친다 |
 
+
+## 9. 03:00 실제시각 CTO — v8.1 7기술 연결 소스 후보
+
+최신 origin/unity/main 309892b1da390a6ac7218d2935ca0e808157c7a8을 먼저 병합했다(51e0b30e77). CHANGELOG_SYNC와 이 문서의 충돌은 양쪽 기록을 모두 보존했다. 목표 장면은 기존34°/16.5 아레나에서7기술의 예고→발동→회복이 읽히는 실제 rig-pixel 화면이다. 제작자 v8.1 계약(7d3e11f48·2f7f90624), 원본 GLB와 제작자 수치 보고를 기준으로 기존 v7 어댑터를 바꿨다. PC에서는 포맷 변환·숫자 검사·컴파일까지만 했으며, 첫 실제 시각 판정은 같은 SHA의 Mac1920/3840 1x·3x·10초 영상이다. 미끄러짐/접지·단계 구분·예고와 타격·먼 적·60fps 결함은 FAIL이고 같은 검사2회 실패면 중단한다.
+
+| 항목 | 구현·범위 |
+|---|---|
+| 입력/리소스 | §8.1 GLB의 SHA a143a7deb7e144bf5dce55e7df730e0604b0e25ca22a88f7615808f6aad85477·24,299,016 bytes 확인. Resources/Art/Bosses/Druid/OldmanV81.fbx(15,407,836 bytes) 하나로 교체, v7 FBX 삭제·meta GUID 유지. 원본은 수정하지 않음 |
+| 보존 | Generic34본·4메시·78,323삼각형·보조10본·Fist_L·가슴43면·왼손소켓·31클립. glTF importer 뼈 표시 Icosphere 제외. 변환 때 GLB joint-head 기준 소켓 월드 행렬을 복원해 Blender bone-tail 단위/좌표 오프셋을 제거. 재임포트 rest 오차0.000001081m |
+| 시간 | 60fps 원본 길이 그대로 FBX 변환. Core S/MoveId/St2/RmTeleTotal/SlashIdx/HbBeat/EruptHit와 회복 보너스를 읽고 수동 Generic Playable을 샘플. 기본 재생은 sourceFrames×elapsedCore/coreDuration. Core 수치·판정·위치 수정0 |
+| 플래그·표시 | 기존 --boss-render=rigpixel만. 기본 보스/8b/카메라34°·16.5·FOV46.9453·영웅 실제 모델 높이×2.8·Point RT/4단 셀 유지.31클립 중 하나라도 임포트가 빠지면 기존 보스 폴백 |
+| 루트 | Animator root motion 끔. charge_run/grab_lunge의 첫 포즈 대비 수평 Hips 이동을 표시에서 빼 Core 전진과 이중 이동하지 않음. burrow_dive/erupt의 수직 이동은 유지하고 지면 아래 clip. 지하 상태는 기존 흙더미 유지. Core 이동량/회전이 원본 클립과 같다는 뜻은 아니며 실제 세계 발 접지는 Mac 관문 |
+| 발광 | heart_beat의 정규화 클립 시간으로 가슴 발광을0.6~1배 맥동. 색은 기존 #d49a5c 상한, 구슬은 유지. 실제 화면 발광≤0.5%·잔점0은 Mac 판정 |
+| 영수증 | bossRig의 clip/pose/sourceFrame/sampleSeconds/coreStageTicks/elapsedStageTicks/horizontalRootStripped/held, 좌우 foot world 위치·footDeltaCm 추가. footDelta는 수직 발 들기·Core 이동/회전을 포함하고 단계 첫 샘플은0으로 초기화하므로 미끄러짐 PASS 지표가 아님. 연속 좌표와 실제PNG로 판정 |
+| 미제공 | Run·Hit·Stagger·Death·Sink·collapse 전용 클립은 여전히 Idle@0 대기. 일반 idle에서 실제 이동하면 Walk. 기본 표현과 전투 판정은 유지 |
+
+### 9.1 원본 길이 ↔ 현재 Core 시간 연결
+
+§8의 제작 길이는 원본 그대로이며, 최신 Core는 RB1-7 정정으로 아래와 다르다. 아래 차이를 없애려고 Core를 되돌리지 않는다.
+
+| 기술 | 클립/현재 Core 연결 |
+|---|---|
+| slashCombo | slash1_tele32→Core36, slash2/3_tele24→26, 각 act8→10, rec80→84. act 원본6f 타격 포즈를 현재 Core의 St2=SlashHitAt8(발동 후2틱)에 맞추는 구간별 샘플:0→6f를2틱,6→8f를나머지8틱.3연타는 SlashIdx로 각각 선택 |
+| slam | tele48→52, act6→6, rec70→76. 실제 피해는 Core active 끝/rec 진입이며 원본 지팡이 접촉 자세는 실제 캡처에서 대조 |
+| charge | tele54→58, run40→최대40(일찍 접촉/벽 충돌하면 Core 상태를 즉시 따름), rec70→74. 벽 충돌 bossShock20은 charge_rec으로 연결. 잡기 선택이 원거리 돌진으로 바뀐 경우 실제 charge 상태를 기억해 회복도 charge_rec을 쓰되 원래 grab 회복 시간84를 유지 |
+| grab | tele60→64, lunge18→20, hold120→120. 잡힘 뒤 bossRec60은 grab_throw60, 빗나감84는 miss_rec80, 탈출 recover40은 miss_rec80을 압축. Core 흡수/던지기/탈출 판정 변경0 |
+| burrowStrike | dive50→56, 지하45틱은 기존 흙더미. erupt 상태40을 warn34/source30 + post6/source6으로 나누며 EruptHit 경계를 사용. rec70→76, 수직 클립 유지 |
+| groundFissure | tele40→42. Core는 균열 생성 즉시 bossRec60으로 넘어가므로 회복 처음20틱에 fissure_act20, 남은40틱에 fissure_rec60을 배치. Core 밖에20틱을 추가하지 않음 |
+| heartbeat | 첫 bossHeartWind90은 heart_tele90, 후속2·3회 wind60은 heart_beat60, 사이 pause30·최종 rec90. 최초 예고 뒤 별도60틱을 추가하지 않음. 실제 펄스는 Core HbBeat 전환 영수증과 대조 |
+| 패링 보너스 | 실제 RmBonusApplied의+30틱을 회복 길이에 포함. 보너스가 붙어도 이미 경과한 Core 틱은 역행하지 않음. 표시 클립을 늘려 같은 회복 창 안에서 종료 |
+
+### 9.2 계약 검사 결과와 한계
+
+- 정책 RED: 단계 Select API 부재1회 → 구현 후4,672검사/0실패. 실제 Core 상수를 읽어 각 단계 시작/끝·단조 진행·채찍 판정6f·3연타·잠행 경계·잡힘/실패/탈출·즉시 균열·심장3회·패링+30·flag/팔레트·실제 변환 자산31개 길이를 검사했다.
+- 변환 FBX 재임포트:31클립 이름/길이,34본·4메시·78,323삼각형·Fist_L·왼손소켓 통과. 정지 단계의 **수평** 발 미끄러짐 최대0.00460955cm(표시 반올림0.0cm, float 허용0.02cm), charge_run 접지 구간 한 틱 최대0.00019078cm. Walk/루트4클립의 의도된 스텝·잠행 수직 이동은 정지 발 검사에서 분리한다.
+- 첫 발 검사1회는 발 들기를 포함한3D 변위를 미끄러짐으로 잘못 세어 charge_tele/rec 약20cm FAIL이었다. 원본 GLB 진단에서 수평은 유지되고 오른발만20cm 들리는 원인을 확정한 후 수평 거리로 고쳐 재검사 통과. 소스 동작은 고치지 않았다. 같은 검사2회 실패 없음.
+- 전체 PC Roslyn은 요청대로1회: Player Core126/Runtime281, Editor Core126/Runtime281/Editor61, 총5어셈블리 오류0. PC Unity/Player/빌드/렌더/캡처0. Blender는 무창2스레드 포맷 변환·숫자 검사만 했다. python stdin·유료·USER_SAVE 접근0.
+- 위 수평 발 수치는 고정 루트의 변환 자산 계약이다. Core의 전진/감속/조준 회전·루트 보정·스킨/아바타·게임 지면을 포함한 실제 발 접지를 증명하지 않는다. Mac Editor Verify는 실제 Unity31클립 길이/곡선/Generic·보조본·Fist_L·수평 발 계약을 검사하도록 확장했고 PC에서는 실행하지 않았다.
+
+### 9.3 v8.2 교체와 오브 소켓 API (11-04, 보스전 총괄 배정)
+
+| 항목 | 내용 |
+|---|---|
+| 입력 | §8.2 GLB `I:/EXODUSER-Storage/boss/oldman-v2-20261104/v8_2/oldman_druid_v8_2.glb` SHA-256 313bb238185919b69dd9233fade9f12185e803cb6e72d9a807ae0d781bd3798c 확인(24,299,904B). 원본 미수정 |
+| 변환 | `unity/Tools/druid-rigpixel/import-oldman.py`를 v8.1과 같은 절차로 사용(이름만 v8.2/OldmanV82.fbx): 무창 Blender 5.2.3 `-b --factory-startup --threads 2`, 소켓 월드 행렬 복원, Icosphere 제외. 결과 OldmanV82.fbx 15,581,516B, 소켓 보정 후 오차 3.9e-6m |
+| 파일 | OldmanV81.fbx 삭제, `.meta`는 이름만 바꿔 GUID 유지(V7→V81과 같음). 갱신한 참조: NativeDruidRigPixelView(Resource), DruidRigPixelVerification(PathName), oldman-import.json(sourceVersion/SHA/bytes), druid-rigpixel-tests(sourceVersion==v8.2) |
+| 불변 | 31클립·이름·틱 계약(§9.1), 34본, 4메시, 78,323삼각형, Fist_L, StaffSocket_L(LeftHand). Core 변경 0 |
+| 검사 | 정책 4,672검사/0실패. verify-fbx.py: 31클립·34본·78,323삼각형 통과, 정지 발 수평 최대 0.00461cm(허용 0.02cm), 소켓 rest 오차 1.08e-6m. 전체 PC Roslyn 1회: Player Core126/Runtime281, Editor Core126/Runtime281/Editor62, 총5어셈블리 오류 0 |
+| 한계 | v8.2의 §8.2 남은 결함(치마 관통 788~1,094정점 등)은 Mac 1x 캡처 판정 대기. PC Unity/Player/빌드/캡처 0 |
+
+**오브 소켓 읽기 API** (VFX 총괄 슬래시3 예고용, `NativeDruidRigPixelView`, Core 무관): 모델에서 `StaffSocket_L` 아래 `lantern_orb` 변환을 찾아 보관(없으면 기존 보스 폴백). 오브 메시 원점=메시 중심(Blender 확인), 위치는 클립이 샘플한 실시간 변환 그대로이며 손으로 잡은 오프셋은 없다.
+
+| 이름 | 의미 |
+|---|---|
+| `bool HasOrbSocket` | 뷰가 정상(실패 아님)이고 `Ready`(이번 활성 구간에 렌더됨)이며 오브를 찾았을 때 true |
+| `Vector3 OrbSocketWorldPosition` | `lantern_orb.position`(월드). 값은 LateUpdate(실행순서1002)의 `motion.Sample` 뒤 최신이며, 그보다 앞선 Update에서 읽으면 직전 프레임 값 |
+| `static NativeDruidRigPixelView Current` | 초기화 성공 뒤 현재 뷰, 파기 시 null |
+| `static bool TryGetOrbSocketWorldPosition(out Vector3)` | VFX가 새 의존 없이 호출. `Current`가 있고 `HasOrbSocket`이면 true와 위치, 아니면 false와 zero |
+
+rigpixel 플래그(`--boss-render=rigpixel`)가 꺼져 있으면 뷰가 없어 항상 false다.
+
+
+Mac 전체 인수·7기술별1x 캡처/10초 영상 수집 요청은 [03:00 인계](UNITY_BOSS_ARENA_RB1_7_8_20261103.md#11-04-0300-실제시각-v81-7기술-mac-인계)에 있다. 실제 Unity/Metal RT·원근/크기·타격/예고 경계·실루엣·발/지팡이접지·치마 관통·1x/3x·영상·60fps 판정은 미검증이다. 제작자 조건부 PASS나 숫자/컴파일을 디자인 PASS로 올리지 않는다.
 ## 10. v9 / v9.1 — 껍질 9부위·페이즈 전환·등장/침강 (2026-11-04, CTO 순회 배정, Blender 서브에이전트, 유료 0)
 
 보드에서 남은 가장 큰 일은 기획서 A안의 5.2m **껍질**이었다(지금까지 Unity에는 노인 코어만 있었다). M1 껍질 메시를 9부위로 나눠 노인 뼈에 붙이고, 페이즈 형태·전환 클립·등장·침강을 만들었다. 기술 VFX는 임펙트 총괄 몫이라 넣지 않았다.
@@ -157,3 +259,158 @@
 - Unity 연결(보스 아레나 레인) 할 일: v8.2 → v9.1 교체, 페이즈 상태·BodyScale 루트 적용, P3 껍질 계층 끄기와 `HuskHeap_P3` 배치(f108), P3 노인 위치를 껍질 원점에서 2.7m 앞으로, P3 노인 표시 영웅×2.0, `intro_reveal`·`death_sink`를 보스 등장·최종 사망 연출에 연결.
 
 미리보기: `G:/exoduser/tmp/design-review/20261104_boss_1-1_oldman_cleanup/v9_1_phases_3x.png`(P1|P2|P3, 34°+옆), `v9_1_phase23_strip_3x.png`, `v9_1_death_strip_3x.png`, v9 판 `v9_phases_3x.png`·`v9_intro_strip_3x.png`·`v9_skills_p1_3x.png`.
+
+### 10.1 Unity 연결 — v8.2 → v9.1 교체, 상태 레이어, P3 크기 규칙 (11-04, 보스 아레나 레인, Core 변경 0)
+
+**교체·변환.** 입력 두 GLB의 SHA-256 확인: `oldman_druid_v9_1.glb` `d1527e54…c35265`(28,875,148B), `HuskHeap_P3.glb` `89fa7b1a…0a4855`(16,753,388B). 원본 미수정. `unity/Tools/druid-rigpixel/import-oldman.py`를 v9.1용으로 고쳐(무창 Blender 5.2.3 `-b --factory-startup --threads 2`) `Resources/Art/Bosses/Druid/OldmanV91.fbx`(36,123,292B)를 만들고, `OldmanV82.fbx.meta`를 `OldmanV91.fbx.meta`로 이름만 바꿔 GUID `d49820bb…871d`를 유지, `OldmanV82.fbx`는 `git rm`했다. 새 `import-huskheap.py`가 같은 축·단위 설정으로 `HuskHeapP3.fbx`(1,322,844B, 정적 메시 1개, 새 meta GUID `22c76cc8…fe6`, 애니메이션 없음)를 만든다. 바뀐 참조: `NativeDruidRigPixelView`(Resource), `DruidRigPixelVerification`(PathName·계약), `oldman-import.json`, `verify-fbx.py`, `druid-rigpixel-tests`.
+
+| 계약(파일에서 읽은 값, 추정 아님) | 값 |
+|---|---|
+| 뼈 | **65** = 노인 34(`Hips`는 이제 `OM_Lift`의 자식) + `HK_*` **23**(`HK_Root` 포함, §10의 22는 `HK_Root` 제외 표기) + `HP_*` 6 + `OM_Lift`·`OM_Staff`. `StaffSocket_L` 부모 = `OM_Staff` → `LeftHand` |
+| 소켓 | `HuskSocket_*` 빈 노드 10개(뼈 부모). Husk 강체 메시 6개는 소켓 자식, Husk 스킨 메시 4개(`Arm_L`·`Leg_L`·`Leg_R`·`RootArm_R`)는 Armature 자식 |
+| 메시 | 14개 렌더러 = 노인 4(`char1`·`FrontPanel`·`Staff_L`·`lantern_orb`, 78,323삼각형 불변) + 껍질 10(73,906삼각형). 재질 12종, `druid_husk_bark` 추가 |
+| 클립 | **38**(기존 31 이름·길이 불변 + `state_P1/2/3` 1프레임, `phase12_collapse`/`phase23_collapse` 120f, `intro_reveal` 165f, `death_sink` 150f). 전부 60fps, 65뼈 전 채널에 키 |
+| 소켓 복원 | 뼈 부모 객체와 강체 껍질 메시의 휴지 월드 행렬을 GLB에서 복원(임포터 오프셋 124.7(Blender 씬 단위) → 보정 후 소켓 최대 1.8e-5m, 강체 메시 2.9e-7m). §10의 "껍질 메시는 월드 좌표 정점, 노드 월드 = 항등" 구조라 강체 메시도 직접 복원했다 |
+| FBX 검사 | `verify-fbx.py` 통과: 클립 38, 정지 발 수평 최대 0.0046cm(허용 0.02cm), 소켓 휴지 오차 9.5e-5m |
+| 팔레트 | `druid_husk_bark` = GLB 기본색 `#2a2018`(텍스처 없음, 노인 껍질 `#4a3826`보다 어두움). Mac 1x 판정 대기 |
+
+**상태 레이어(뷰 전용).** 31개 기술 클립은 `OM_Lift`·`OM_Staff`·`HK_Root`·`HP_*`(9뼈)에 P1 상수만 갖고 있다. `NativeDruidRigAnimator`는 생성 때 `state_P1/2/3`을 한 번씩 평가해 이 9뼈의 로컬 값을 저장하고, 기술 클립을 평가한 뒤 현재 목숨의 상태 값으로 덮어쓴다(마스크 API 대신 값 덮어쓰기 — Unity를 못 돌려도 결과가 결정적이다). 목숨 = `d.BossPhase`(0/1/2), 목숨 상태가 없는 웹 페이즈 보스는 `state_P3`(노인 단독). 그리기 부품: P1은 껍질만, P2는 껍질+노인(가슴 틈 안), P3는 노인+힙(껍질 계층 미그림).
+
+| 장면 | 선택 조건(모두 Core를 읽기만 함) | 프레임 |
+|---|---|---|
+| 기술 | 기존 `NativeDruidRigPolicy.Select` 그대로 | 기존 |
+| `phase12_collapse`/`phase23_collapse` | `d.S=="bossDruidRest"`, `d.BossPhase`=0/1. **`d.St2`는 무릎 구간 내내 120 그대로**(목숨 코드가 자기 타이머를 센다)라 경과는 `Simulation.DruidLife(e).Set.CollapseTicks − CollapseTicks` | `120 × 경과 / CollapseTicks` (Core 120틱 = 클립 120f) |
+| `intro_reveal` | `StageEventKind.BossIntro`(StageFlow가 보스를 90틱 스턴시키는 순간)를 `NativeGame.StageFlow.cs`가 `druidRig.BeginIntro(TickCount)`로 전달. 90틱 안에 기술 상태가 시작되면 즉시 취소 | `165 × 경과 / 90` |
+| `death_sink` | 최종 처치 뒤 기존 침강 일정(`NativeGame.BossSinkDraw`의 `sinkAge`, 몸체 `SinkBodyTicks`=66틱) | `150 × min(1, sinkAge/66)`, 이후 마지막 프레임 유지. 기존 `descent` 하강은 제거(클립이 3.3m 침강을 담음), 힙은 같은 진행으로 `높이×스케일+0.2` 내려감 |
+| 그 밖 | `bossDruidRest`인데 3번째 목숨이거나 경과를 모를 때 | `Idle` 유지 |
+
+**껍질 끄기와 힙(f108).** `phase23_collapse`의 f108 이후(또는 P3 정지 상태에서 힙이 아직 없을 때) 껍질 계층 렌더를 빼고 `HuskHeapP3`를 켠다. 힙의 월드 위치·회전·스케일은 **그 순간 모델 루트의 월드 TRS를 한 번 저장**해 고정한다(껍질 원점 = 힙 원점, 이후 보스가 돌아도 힙은 안 움직임). 힙은 모델 계층 밖의 별도 오브젝트이며 같은 Point RT에 그려진다. P3 잠행(`bossDruidUnder`) 동안 노인은 안 그려지지만 힙만 계속 그린다. 다음 장면이 껍질을 다시 켜는 목숨(P1/P2)이나 `intro_reveal`이면 힙을 지운다.
+
+**발 위치(P3 노인 2.7m 앞).** 클립은 `OM_Lift`를 껍질 원점에서 정면 2.7m(측정: 발 중심 y=-2.668m)에 둔다. 뷰가 시작 때 `state_P3`+`Idle@0` 자세에서 **발 중심의 루트 기준 수평 위치(anchorLocal)**를 한 번 재고, P3(및 `death_sink`)에서는 매 프레임 `ground − TransformPoint(anchorLocal × 노인 배율)`의 수평 차이만큼 루트를 옮겨 **노인 발 중심 = Core 보스 위치(d.X/d.Y)**가 되게 한다. `phase23_collapse`에서는 노인이 걸어 나오는 f50–108 동안 같은 보정을 0→1로 부드럽게 올려(스무스스텝) 끝 프레임(f108~120)에서 정확히 Core 위치가 되고, 껍질은 그 사이 Core 쪽에서 뒤로 미끄러져 힙 자리(Core − 2.7m×배율)에 선다. 무릎 구간은 Core가 보스를 못 움직이므로 힙이 이 보정만큼 이동해 보인다(Mac 판정 항목). 기술 클립의 `OM_Lift`는 상수라 기술 중 보정은 정지 상태 그대로다.
+
+#### P3 크기 규칙 — Core 판정 반경에서 계산 (표시 배율 직접 지정 없음)
+
+규칙: **발치 원 반지름(렌더) = Core 판정 반경(월드)**. 뷰는 `루트 스케일 = Core반경(월드) ÷ 모델 발치 반지름`을 목숨마다 계산한다. 하드코딩 상수는 없고, 발치 반지름은 `oldman-import.json`(import-oldman.py가 Blender에서 휴지 자세 정점으로 측정)에서 읽는다.
+
+| 단계 | 값 | 근거(파일:줄) |
+|---|---|---|
+| 기준 반경 `OrigR` | 보스 `ib`: `22×2×ScaleMul`, 일반 등급 `ScaleMul=1` → **44px** | `Core/EnemyFactory.cs:145`, `Core/EliteTables.cs:25`, 스폰 `Core/Simulation.DruidBoss.cs:38`(`Radius=(float)web.r`), 저장 `Core/Simulation.DruidRemodel.cs:49` |
+| BodyScale 적용 | **Core는 반경을 BodyScale로 줄인다**: `e.Radius = Max(10, Round(OrigR×BodyScale[life]))` → 44/37/31px | `Core/Simulation.DruidRemodel.cs:144`, `Core/DruidRemodelData.cs:15`(1/.85/.70). 목숨 전환 때 `d.R=e.Radius`: `Core/DruidBoss.Remodel.cs:131`, `Core/DruidBoss.cs:107,128` |
+| px → 월드 | 영웅·적과 같은 `NativeRemodel3D.Point`(`px/100`, 1px=0.01u). 뷰는 `Distance(Point(X+1,Y), Point(X,Y))`로 읽음 | `NativeRemodel3D.cs:22,29` |
+| Core 반경(월드) | **0.44 / 0.37 / 0.31** | 위 계산 |
+| 모델 발치 반지름 | 껍질(`state_P1`, `Husk_Leg_L/R` 정점 중 발·발끝 가중, 두 `HK_*Foot` 머리 중점 기준 최대 수평 거리): **1.3987m** (발목 간격 0.733m). 노인(`state_P3`, `char1` 발·발끝 가중, 두 `*Foot` 중점): **0.4762m** (발목 간격 0.505m) | `import-oldman.py` 측정 → `oldman-import.json`의 `footprint` |
+| **배율** (월드 u ÷ 모델 m) | P1 껍질 0.44/1.3987 = **0.31458**, P2 껍질 0.37/1.3987 = **0.26453**, **P3 노인 0.31/0.4762 = 0.65105** | 계산(검증: `druid-rigpixel-tests`가 콘솔에 출력) |
+| 영웅 대비 높이(`HeroIdleWorld`=1.12 기준) | P1 껍질 꼭대기 4.8295m → **1.519m = 영웅 ×1.36**, P2 **1.278m = ×1.14**, **P3 노인 뿔 2.71m → 1.764m = ×1.575**(전체 메시 2.8285m → 1.841m = ×1.64) | 같은 배율 × 측정 높이 |
+
+**플래그.** P3 노인은 영웅 ×1.575(뿔 기준)로 1.6~2.4 범위를 **약간 밑돈다**(메시 전체 높이 기준 1.64×이면 범위 안). Core는 바꾸지 않았고 Core에서 계산한 값을 그대로 구현했다. 더 큰 문제는 **P1/P2**다: 같은 규칙을 껍질에 적용하면 이전 v8.2 표시(영웅×2.8)에서 껍질이 영웅 ×1.36·×1.14로 크게 줄어든다(Core 반경 0.44m는 5m급 껍질의 발치 1.40m에 비해 작음). CTO가 정한 규칙대로 구현했고, 크기를 키우려면 Core 반경(BodyScale·OrigR) 또는 규칙을 총괄이 정해야 한다. 영웅의 실제 모델 높이(`HeroModelWorld`)가 1.12가 아니면 위 비율은 그만큼 달라진다.
+
+전환 스케일: 루트 스케일은 껍질 기준(P1/P2 값)이고 노인은 그 위에 `OM_Lift`의 스케일·위치를 배수(`노인배율 ÷ 껍질배율`)로 더 키운다(P2는 1배 = 껍질 안 원래 비율, 위치도 같이 곱해 몸 길이 단위로 2.7m 유지). `phase12_collapse`는 루트 배율을 P1→P2로, `phase23_collapse`는 노인 배수를 f40–108 동안 1→0.65105/0.26453=2.461로 올린다(P3 정지 때는 0.65105/(0.31/1.3987)=2.938). 껍질·힙은 전환 중 크기가 변하지 않는다. 노인이 껍질 안에서 나오며 2.5배로 커져 보이는 것은 이 규칙의 결과이며 Mac 판정 항목이다. 접촉 그림자는 `2.73×R, 1.59×R`(이전 `1.2×.7`÷44px 비율 유지, R=Core 반경 월드).
+
+영수증(`druid-rigpixel.json`, `arena-review` 프레임의 `bossRig`)에 추가: `life`·`overlay`·`drawnParts`·`heapPlaced`·`coreRadiusPx`·`coreRadiusWorld`·`rootScale`·`oldManFactor`·`anchorWeight`·`footprintRadiusWorld`·`bodyHeightWorld`·`bodyHeightHeroRatio`·`ankleSpanWorld`(렌더된 발목 간격)·`heroIdleWorld`. 판정은 `footprintRadiusWorld == coreRadiusWorld`(0.0005 안)를 확인한 뒤 화면에서 발치 원과 비교한다.
+
+#### 11-04 CTO 결정 (a) — Core 반경을 설계 크기로 키움 (위 표의 44/37/31과 플래그 문단을 대체)
+
+규칙은 그대로다(발치 원 반지름 = Core 반경). 바뀐 것은 Core 반경 자체다: `DruidRemodelData.LifeRadiusPx`(`DruidRemodelData.cs:19`, 11-04 재계산 뒤 아래 표의 130 / 111 / 57; 처음엔 91 / 77 / 39)가 `Round(OrigR×BodyScale)` 대신 적용된다(`BossRemodelSet.RadiusFor`, `Simulation.DruidRemodel.cs:50`·`:145`). 뷰 `NativeDruidRigPixelView.RadiusPx`도 같은 함수를 부른다(하드코딩 없음). 목표: P1 영웅 2.8배(G0 §6), P2 = P1×.85(G0에 P2 배수 없음), P3 ≈ 2.0배. 반경→월드→배율이 선형이라 측정 발치로 계산했다.
+
+| 목숨 | Core 반경 px (이전) | 월드 u | 모델 배율 | 영웅 높이 배수, 기준 영웅 키 1.609u (이전) | 목표 |
+|---|---|---|---|---|---|
+| P1 껍질 | **130** (91 ← 44) | 1.30 | 0.9294 | **×2.789** (1.12u 기준 계산은 2.805, 화면 1.95) | 2.8 |
+| P2 껍질 | **111** (77 ← 37) | 1.11 | 0.7936 | **×2.381** (화면 1.65) | 2.38 |
+| P3 노인(뿔 끝) | **57** (39 ← 31) | 0.57 | 1.1971 | **×2.016** | 2.0 |
+
+검증: `druid-rigpixel-tests`가 반경 130/111/57과 배수 ±0.05(영웅 1.6094975u 기준)를 검사하고 콘솔에 `hero multiples P1=2.7889 P2=2.3813 P3 horn=2.0156`, `scale P1=0.9294 P2=0.7936 P3 oldman=1.1971`을 낸다. 전환 배수(`phase23_collapse` 노인 배수)는 뷰가 `노인배율 ÷ 껍질배율`로 계산하므로 P2→P3 전환 `0.8191/0.5505 = 1.488`(이전 2.461)로 줄고, P3 정지는 `0.8191/(0.39/1.3987) = 2.938`로 그대로다(껍질·노인이 같은 비율로 커짐). 노인이 껍질에서 나오며 커 보이는 정도가 줄어든다(Mac 판정). 몸 크기에 걸린 거리와 몸 분리는 보스 보드 §8.5.5 표.
+
+#### 캡처 단계 — 공격이 몸 가장자리에 맞는 장면, P1·P2·P3 (실행 안 함; 11-04에 P3 전용에서 확장)
+
+`--unity-boss-arena-p3-edge`(새 인자, `--unity-boss-arena-review`와 함께). 3번째 목숨(`BossPhase==2`, 무릎 아님)에서 봇이 **몸 원이 보스 몸 원 가장자리에 닿는 자리**(중심 거리 = 보스 반경 + 플레이어 반경 + 4px)에 서서 보스 중심을 계속 공격한다. 보스 HP가 줄고 중심 거리가 `반경합 + 40px` 안이면 `p3-edge-hit-1..3`(최대 3장, 60틱 간격) PNG+JSON을 `arena-review/`에 저장하고 `moves.jsonl`에 `kind:"p3-edge-hit"` 줄을 쓴다(`hpBefore/After`, `bossRadiusPx`, `playerRadiusPx`, `centreDistancePx`, `gapPx`, 두 좌표). JSON의 `bossRig`에 위 발치 영수증이 같이 들어간다. 실행 예(Mac):
+
+```
+"<Mac Player 실행경로>" --remodel3d --unity-druid-remodel --unity-boss-direct 0 --boss-render=rigpixel --unity-fullrun-qa --unity-boss-arena-review --unity-boss-arena-p3-edge --unity-mute -nosound --unity-qa-sandbox "<QA 루트>/profile-1920" -screen-fullscreen 0 -screen-width 1920 -screen-height 1080 -qa-width 1920 -qa-max-ticks 36000 -qa-retries 3 -output "<출력>"
+```
+
+판정 기준: 타격 순간 화면에서 몸통·발치 가장자리가 공격 판정 가장자리와 같은 자리인지 1x/3x 크롭으로 본다(발치 원 = 보스 반경). 이 단계는 입력 봇만 바꾸며 Core 수치·판정은 바꾸지 않는다.
+
+**11-04 확장 — 세 목숨 모두.** 새 인자 `--unity-boss-arena-edge[=1,2,3]`(`--unity-boss-arena-review`와 함께)가 같은 단계를 P1·P2·P3에 적용한다. 값 없이 쓰면 세 목숨 전부, `=1,3`처럼 쓰면 지정한 목숨(1 기반)만이다. 옛 `--unity-boss-arena-p3-edge`는 3번째 목숨만으로 계속 동작한다. 목숨마다 봇이 몸 원 가장자리(간격 4px)에 서서 중심을 공격하고, 가장자리 띠(합 반경+40px) 안에서 보스 HP가 줄면 `edge-p<목숨>-hit-1..3`(목숨당 최대 3장, 60틱 간격) PNG+JSON을 `arena-review/`에 저장하며 `moves.jsonl`에 `kind:"edge-hit"` 줄(`life`, `hpBefore/After`, `bossRadiusPx`, `playerRadiusPx`, `centreDistancePx`, `gapPx`, 두 좌표)을 쓴다. 목숨당 3장이 차면 그 목숨의 가장자리 서기는 끝나고 기술 커버리지 입력으로 돌아간다. 이제 몸 분리(보스 보드 §8.5.5)로 플레이어는 합 반경 안쪽으로 들어가지 못하므로 봇이 중심에 붙지 않는다. 실행 예(Mac, 세 목숨 전부; P3 전용 줄에서 `--unity-boss-arena-p3-edge`만 바꾼다):
+
+```
+"<Mac Player 실행경로>" --remodel3d --unity-druid-remodel --unity-boss-direct 0 --boss-render=rigpixel --unity-fullrun-qa --unity-boss-arena-review --unity-boss-arena-edge --unity-mute -nosound --unity-qa-sandbox "<QA 루트>/profile-1920" -screen-fullscreen 0 -screen-width 1920 -screen-height 1080 -qa-width 1920 -qa-max-ticks 36000 -qa-retries 3 -output "<출력>"
+```
+
+판정: 목숨마다 1x/3x 크롭에서 발치 원 = 공격이 닿는 가장자리인지, P1 껍질이 영웅 ×2.8로 읽히는지(`bossRig.coreRadiusPx` 91/77/39, `bodyHeightHeroRatio`). 검증은 PC에서 `druid-remodel-test`(`RadiusChecks.cs`: 반경·가장자리 타격·몸 분리·잠행 여유·거리 표)와 `druid-rigpixel-tests`(인자 해석·배수)로 끝냈고 Player 실행은 하지 않았다.
+
+**검사 결과(PC, Unity·Player·빌드 실행 0).** 정책 테스트(임시 csproj) 5,435검사/실패 0(상태 레이어·붕괴·인트로·사망·팔레트·반경 44/37/31 포함). Blender FBX 수치 검사 통과. 전체 PC Roslyn(`compile-check.ps1` 기본 인자) 5어셈블리 오류 0. **한계(미검증)**: Unity 임포트(Generic Avatar·클립 38·소켓 구조·힙 단일 렌더러), 값 덮어쓰기 레이어가 실제 Animator 평가 뒤에도 유지되는지, 전환 중 스케일·미끄러짐·힙 고정의 화면, 껍질 팔레트·노인 가시성(P2 RETOUCH 조건), 잠행 중 힙 단독 그리기, 4단 셀 1x 판정은 모두 Mac 판정 대기다. `Humanoid` 임포트에서 `HK_*` 보조 뼈가 살아남는지는 Generic을 유지해 해당 없음.
+
+**연속 프레임 캡처 `--unity-boss-arena-seq` (11-04, QA 인자, Core·봇 밖 동작 변경 0).** `--unity-boss-arena-review`와 함께 줄 때만 켜지며 인자가 없으면 기존 경로와 같다. 출력은 `arena-review/seq-<이름>/f<6자리 프레임>.png`(가로 960, 쌍선형 1회 축소만, 잡티·디더 추가 없음)와 같은 폴더 `frames.jsonl`(프레임마다 기존 ArenaReviewFrame 행 + `seq`·`seqIndex`와 아래 추가 필드). 캡처 프레임은 기존처럼 `fullRunCaptureActivity`로 clean timing에서 제외한다. 보스 보드 §8.5.6 위험 2·3·4용이다.
+
+| 이름 | 구간 | 추가 필드 |
+|---|---|---|
+| `collapse` | P2→P3 무릎(`life.Collapsing`, `BossPhase==1`) 시작 10프레임 전 ~ 끝 30프레임 뒤, 최대 360프레임. 사전 10프레임은 P2에서 목숨 HP가 40% 이하일 때부터 링 버퍼(24칸)에 둔 것을 시작 시점에 내보낸다 | `shellScale`(rootScale)·`oldManScale`(oldManFactor)·`bossScreenHeightPx`(projectedBoundsHeightPx) |
+| `erupt-1..3` | 솟기 판정 틱(`burrowStrike` actual-activation) 20틱 전 ~ 40틱 뒤 매 프레임, 최대 3회. 사전 구간은 잠행 상태(`bossDruidDive/Under/Erupt`)의 링 버퍼 | `pillarCentreDistancePx`(`Simulation.DruidPillars` 중 보스에서 가장 가까운 기둥 중심 거리)·`pillarRadiusPx`(그 기둥의 `R`, Core 값)·`bossRadiusPx`·`gapPx = 거리 − 기둥 R − 보스 반경` |
+| `contact` | P1에서 봇이 보스 몸 띠(중심 거리 ≤ 보스 반경 + 플레이어 반경 + 40)에 처음 들어온 프레임부터 600프레임. 이 구간 봇 입력만 "공격 2초(120틱) → 보스 중심 방향 구르기(12틱 구간, 스페이스 2틱 + 방향) → 공격 1초(60틱) → 보스 중심 방향 대시(15틱, 왼쪽 Shift 유지) → 반복"으로 바뀐다(`NativeArenaReviewPolicy.ContactAt`) | `playerX/Y`·`moveDx/Dy`(직전 틱 대비 이동)·`separationApproxPx`·`centreDistancePx`·`rolling`·`dashing`·`contactStep` |
+
+몸 분리(`RemodelSeparatePlayer`)가 민 거리는 Core가 private이라 읽을 수 없어 근사한다: 입력이 보스 쪽을 향한 틱에서 구르기·대시 중이 아닐 때 중심 거리가 늘어난 양(`separationScope` 필드에 같은 설명). 모든 seq 행에 위 필드가 같이 들어간다(해당 없는 값은 현재 프레임의 실측 또는 0). 인자 해석·접촉 봇 순서는 `druid-rigpixel-tests`에 5건(`SeqRequested`·`ContactAt`).
+
+### 10.2 아레나 리그 픽셀 결함 수정 — RT 초과 영구 폴백, 크기 원인, 가독성 (11-04, Core 변경 0)
+
+**결함 A 원인.** 통합 미리보기 5차 `phase23_collapse`에서 화면 박스 `projectedBoundsHeightPx` 1,069 → `TextureSize` 상한 1,024 초과 → 0 → `Druid exceeds safe RT canvas` 예외 → `Fail()` → 옛 2D 영구 대체. 박스가 큰 이유: 스킨드 메시의 `Renderer.bounds`는 임포트 때 모든 클립(38개, `death_sink` 3.3m 침강·붕괴 포함)에서 구한 localBounds를 쓰므로 현재 포즈의 몸보다 훨씬 크다. 뷰가 이 bounds 8모서리를 화면에 투영해 캔버스를 정했다.
+
+| 수정 | 내용 |
+|---|---|
+| bounds(1순위) | `TightBounds`: 스킨드 부품 bounds를 "현재 뼈 위치 상자 + 여유 0.9m×단위×루트배율×2"와 교집합. 강체 껍질 메시는 자기 bounds 그대로. 교집합이 비면 뼈 상자. 항상 이전보다 작거나 같다. 실제 PNG에서 잘림 여부는 Mac 판정 |
+| RT 상한 | 드루이드 전용 `NativeRigPixelPolicy.DruidMaxRt=2048`. 영웅·적은 기존 `TextureSize(…)`(상한 1,024) 그대로 |
+| 초과 처리 | `DruidCanvas`: 상자가 2048 안에 들 때까지 텍셀 배율을 ×2씩 올림(그 프레임만, 다음 프레임은 기본 배율로 재계산). 유한한 상자는 항상 크기>0, 예외·`Fail` 없음. 영구 `Fail`은 모델 로드·애니메이터 오류에만 남음 |
+
+**결함 B 원인(수정 없음, CTO 확정).** `rootScale = Core반경(월드) ÷ 발치반경(모델)` 규칙(§10.1 "P3 크기 규칙")이 만든 값이다: P1 반경 0.91 → rootScale 0.5772, P2 0.77 → 0.4884. 하드코딩·클램프·1.31 기준값은 없다. 발치 원 = 판정 원이 지켜지는 대신 모델의 높이/발치 비율(껍질 높이 ÷ 발치 반경 ≈ 3.45)이 고정이라 영웅 실측 높이(`heroIdleWorld` 1.6095) 대비는 P1 3.1422/1.6095 = **1.952**, P2 2.6588/1.6095 = **1.652**다(설계 2.805/2.374는 모델 배율 0.6506/0.5505·영웅 1.31u 기준 표). 총괄 확정에 따라 "발밑 = 판정" 원칙을 유지하고 배율·Core 반경(91/77/39)은 바꾸지 않았다. 설계 배수까지 키우려면 발치 반경(모델) 또는 Core 반경을 바꿔야 하며 이는 별도 결정이다. 영수증 `bodyHeightHeroRatio`는 `NativeDruidRigPolicy.HeroRatio`로 계산한다.
+
+**11-04 반경 재계산(CTO 승인).** 결함 B의 "설계 배수까지 키우려면 Core 반경을 바꿔야 한다"를 적용했다: 기준 영웅 키를 실측 1.609u(`edge-p1-hit-1.json` `bossRig.heroIdleWorld` 1.6094975, 같은 프레임 `heroGpuSilhouetteHeightPx` 106)로 바꾸고 `LifeRadiusPx` 91/77/39 → **130/111/57**(영웅 대비 2.79 / 2.38 / 2.02배, 위 §10.1 표). 뷰 코드는 바꾸지 않았다(`RadiusPx`가 같은 함수를 부르므로 rootScale = 1.30/1.3987 = 0.9294, 0.7936, 노인 0.57/0.4762 = 1.1971로 자동 계산). 브리프의 P3 48은 같은 식에서 1.70배라 57로 계산했다.
+
+**가독성(C).** 셀 4단계·디더·노이즈·그레인 없음.
+
+| 항목 | 이전 | 이후 |
+|---|---|---|
+| 달빛 림(`_RimColor` 곱, 뷰) | 0.08 | 0.26 (`RimStrength`) |
+| 환경광 하한(`DruidRigPixelToon`) | (0.24, 0.25, 0.28) | (0.38, 0.39, 0.43) |
+| 최종 색 하한(평면 상수) | 없음 | (0.05, 0.048, 0.055) |
+
+공유 합성 셰이더(`RigPixelComposite`)는 영웅·적과 같아 바꾸지 않았다. 껍질 팔레트 `#2a2018`이 어두워 효과는 Mac 1x 판정 대상.
+
+**검사.** `druid-rigpixel-tests`에 `DruidCanvas` 1,069px·4,000px·30,000px(텍셀3)·작은 상자(텍셀 유지)·잘못된 입력·기존 상한 유지, 영웅 실측 배수(1.952/1.652) 케이스를 추가했다.
+
+## 10.3 아레나 바닥·조명(디자인 RETOUCH B1·B2·B3·B7·B9)
+
+디자인총괄 5차 판정(B1 바닥 톤 Y 118, B2 격자, B3 조명, B7 기둥, B9 발밑 데칼)에 대한 표현 수정이다. Core 수치·판정(기둥 위치·반경 포함)과 카메라(피치·거리·FOV)는 바꾸지 않았다. 컴파일과 화면 판정은 미확인(공용 실행기 HALT 파일 존재, Player 실행 금지)이며 Mac 1x 판정 대상이다.
+
+| 항목 | 파일 | 전 | 후 |
+|---|---|---|---|
+| B1 바닥 알베도 | `Resources/Arena8b/Ground.shader` | 고정 곱 (1.10,1.03,0.91), 채도 유지 | `_Tint` (0.66,0.56,0.50), `_Sat` 0.62(휘도 쪽으로 38% 탈채도). 목표 Y 70~80, 채도 .30 이하 |
+| B2 반복 무늬 | 같은 셰이더 | 타일 대비 그대로 | `_Flat` 0.45: 타일 평균색(밉 9)으로 대비를 45% 당김. 점·디더·그레인 추가 없음 |
+| B3 직사광 | `NativeArena3DView.Materials.cs` `ApplyArenaLighting` | 필드 값 그대로 | 아레나 진입 시 방향광 세기 ×0.65, 피치 48°(필드 값 저장·퇴장 시 복원) |
+| B3 환경광 | 같은 곳 | A2 환경광(sky .26/.28/.30, equator .20/.19/.16, ground .075/.065/.05) | 세 색 ×0.80, 퇴장 시 복원 |
+| B3 횃불 | `NativeArena3DPlan.Torches`, `CreateTorches` | 2개, 색 (1,.60,.28), 세기 5, 반경 4.7, 소프트 그림자 | 4개(기존 대각 쌍 + 맞은편 쌍), 색 (1,.55,.24), 세기 5.5, 반경 4.0, 그림자 없음 |
+| B7 기둥 | `NativeArena3DView.cs`, `.Materials.cs` | 그루터기 1개(원뿔로 읽힘), 접지 처리 없음 | 같은 1-1 RF3 그루터기 에셋으로 낮은 뿌리 4개를 밑동에 퍼뜨림, 밑동 AO 스프라이트(지름 = Core 반경 ×2 ×1.9, 불투명도 .78). 뿌리는 기존 가림 투명화(`NativeArenaOcclusion`) 대상 |
+| B9 발밑 데칼 | `NativeSkillView.cs` | 가시덫 .43±.04, 회복영역 .52±.12(링 .64+) | 보스 텔레그래프(`RemodelTelegraphs`)가 하나라도 살아 있으면 두 존의 불투명도 ×0.5(0.15초에 걸쳐 전환), 가시덫 최대 약 .24 |
+
+미해결·메모: 기둥이 영웅이 아니라 보스 앞을 가리는 경우의 가림 투명화는 `NativeArenaOcclusion`이 영웅 위치 하나만 받아 이번에 확장하지 않았다(`NativeGame.Remodel3D.cs` 호출부 변경 필요, 이 브리프 범위 밖). 바닥 휘도·표준편차 실측은 Mac 캡처 필요.
+
+### 10.4 보스 실루엣·막·진입(디자인 RETOUCH B4·B5·B6·B8) (11-04, Core 변경 0)
+
+대상 파일: `DruidRigPixelToon.shader`, `NativeDruidRigPolicy.cs`, `NativeDruidRigPixelView.cs`, `NativeArenaReviewPolicy.cs`, `NativeGame.BossArenaReview.cs`, `druid-rigpixel-tests/Program.cs`. 컴파일(Unity)은 HALT 파일 때문에 미확인, 화면은 미재촬영(Mac 필요).
+
+| # | 원인(확인 범위) | 바꾼 값 |
+|---|---|---|
+| B4 | 5차 캡처의 `druid-rigpixel.json`은 `failed:true`(RT 초과 폴백, 5942f98c5가 고침)라 대기 컷은 폴백 스프라이트였고, `move-charge-active`는 리그 픽셀이었다. 합성 셰이더 림(`RimStrength` .26)은 **달 방향 한쪽 외곽에만** 켜지고(`RigPixelComposite.shader`, 영웅·적 공유라 미수정) 셀 조명은 달·점광에만 의존해, 돌진처럼 몸이 달과 반대로 기울면 머리·뿔·두개골이 가장 어두운 셀에 몰린다. 몸이 숙여 뿔이 몸에 겹치는지는 클립 확인이 필요해 미확인 | 드루이드 셰이더에 카메라 쪽 차가운 채움광 `(.20,.215,.25)*(.35+.65*Band(n·v))`(같은 4단 셀), 시선 기준 외곽 림 `(.30,.37,.46)`을 2단(fresnel 1-n·v ≥ .55 → .55, ≥ .78 → +.45)으로 모든 자세에 추가. 달 림(.26)은 그대로. 셀 4단 유지 |
+| B5 | 발광 `druid_glow`·`lantern_orb`는 리그 픽셀에서 이미 비조명 단색이다. 5차 캡처의 연두는 폴백 스프라이트 몸통의 그림이다(이번 범위 밖 에셋). 호박색 #d49a5c는 S .566이라 합격선(.40)을 넘었다 | 발광 #d49a5c RGB(212,154,92) S .566 → **#b2b57c RGB(178,181,124) HSV(63°, S .315, V .71)**(시든 올리브), 팔레트 기본색 #a8642a → #7b7d52 RGB(123,125,82) S .344. 심장 박동 `ChestPulse`(.6~1.0)는 그대로 |
+| B6 | 가라앉기 시작 캡처의 흰 반투명 구체·섬광은 가라앉기 코드(`NativeGame.BossView.cs`, `NativeDruidBody.DrawSink`: 몸통 스프라이트·구멍 디스크·가산 glow .84)에도 보스 리그 뷰에도 없다. 구체를 그리는 코드를 찾지 못했고(Runtime에 구체 메시 없음, 영웅 악의오브 추출·베기 연출로 추정) 이번에 고치지 않았다. 피해 숫자는 캡처에서 이미 막 위에 있었다 | 변경 없음. 막 불투명도 .35 이하는 미달성·미확인(발생 원인 파일 확정 후 처리) |
+| B8 | `transition-entry-visible`는 `ArenaActive`가 켜지는 프레임, 곧 Core `LoadPhase` 2의 첫 틱(`LoadT=0`, 로딩 그림 알파 `LoadT/35`=0)이라 순흑이다. 실제 연출은 LoadPhase 1(50틱 페이드)→2(130틱 검정 위 로딩 그림, 그림 알파 35틱 상승)→3→4(Core 타이밍, 미수정). 순흑은 전환 직전 몇 틱과 LoadPhase 2 첫 몇 틱뿐이다(촬영 시점 문제, 실측은 아래 seq-entry) | 연출 변경 없음. 순흑 판정용 `seq-entry` 프레임마다 960폭 평균 Y(`meanY`)를 기록하고 `review.json`에 가장 긴 순흑(Y<.5) 프레임 수·초를 적는다(합격 `entryBlackWithinHalfSecond` ≤ 0.5초) |
+
+#### 새 QA 캡처 (`--unity-boss-arena-review --unity-boss-arena-seq`일 때만, 인자 없으면 기존 경로·review.json 동일)
+
+| 이름 | 내용 |
+|---|---|
+| `seq-entry` | LoadPhase 0→1(필드 페이드 시작, 아레나 밖)부터 300프레임, 가로 960, `frames.jsonl`에 `meanY` |
+| `seq-exit` | `InArena`가 꺼지는 프레임부터 300프레임(스테이지 클리어 뒤 24프레임 링 사전 기록 포함) |
+| `bullet-cut.png/.json` | 보스 경고·살아 있는 장판(아레나 전체 펄스 제외)이 영웅 쪽을 향하거나 닿는 첫 틱, 1920 원본. 판정은 `NativeArenaReviewPolicy.TeleTowardHero`(Core 텔레그래프 읽기 전용; Core에는 보스 탄 목록이 없다) |
+| `far-enemy-cut.png/.json` | 보스 아님·생존 적이 화면 위 1/3에 있는 첫 프레임. 아레나에 적이 없으면 `review.json`의 `farEnemyCut`="none-in-arena"(적은 있었으나 위 1/3에 없으면 "no-top-third-frame") |
+
+검증: `druid-rigpixel-tests` 5,488 검사 실패 0(발광 S ≤ .40, 진입·퇴장 창 정확히 300프레임, 순흑 연속, 컷 판정 포함), `druid-remodel-test` 99,429 검사 실패 0. 셰이더·뷰·리뷰 캡처 코드의 Unity 컴파일은 HALT로 미확인.
+- 기둥 가림 투명화(B7): 영웅·보스 각각 카메라→대상(영웅 +0.9, 보스 +1.4) 선분이 기둥 경계(여백 0.3)와 교차하면 판정하고 둘 중 하나라도 가리면 투명화한다. 목표 알파·전환 시간(0.2초, 유지 0.12초)·카메라는 그대로이고, 셰이더 마스크는 영웅·보스 타원(`_ArenaBattleBoss`)의 max다. 컴파일 미확인(HALT).

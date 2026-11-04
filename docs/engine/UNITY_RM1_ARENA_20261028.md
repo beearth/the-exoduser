@@ -1,3 +1,7 @@
+> 2026-11-03 RB1-8a: 회색3D아레나·접지분기·34°/거리18.3/0.6초전환 소스구현. CPU13/0·Roslyn오류0, Mac화면/가림/60fps미검증. 정본은 docs/engine/UNITY_BOSS_RM1_DARK_DRUID_20261027.md §14.4. 아래옛아레나설계·판정은과거기록.
+
+> 2026-11-03 21:00 정정: 채찍 AI 선택160, 타격·예고300 유지. 타격 시점10/8로 시작 후2틱, SFX38·28·28틱/내려찍기58틱. 돌진은 추가 접촉120. CPU99210/0·frame124/0, 실제 Player·청취 미검증. 정본은 UNITY_BOSS_RM1_DARK_DRUID_20261027.md §13.4·§13.5.
+
 # Unity RM-1 보스 아레나 A1 (1-1 다크드루이드, si0) — P0 계획 (2026-10-28)
 
 담당 RM-1 세션(Sonnet), 판정 맵 총괄. 명세 `E:/exoduser-wt/_out/rm-arena/SPEC_ARENA_CH1.md`. 브랜치 `claude/unity-pc-rm1-20261027`. 이 단위는 **P0 = 코드 읽기·계산·계획**이다. Unity 실행 0, Core·Rendering·Remodel/Common·ProjectSettings·Packages 변경 0줄.

@@ -21,6 +21,7 @@ namespace Exoduser.UnityPort
             bossView = new NativeBossView(transform); teleView = new NativeDruidTelegraphView(transform); sinkStart.Clear(); sinkSounded.Clear();
             druidBody = new NativeDruidBody(transform, DiscSprite());
             Simulation.AttachDruidBoss();
+            BossRigAttach();
         }
 
         // web camera: zoom target 0.80 while a boss is alive (1.0 otherwise), eased zoom += (target - zoom) * (1 - .94^dt); orthographicSize 5.4 is zoom 1
@@ -59,6 +60,7 @@ namespace Exoduser.UnityPort
         {
             if (bossView != null) bossView.Update(Simulation);
             if (druidBody != null && druidBody.Stamp != Time.frameCount) druidBody.Hide();   // nobody drew the druid this frame (gone / not on this stage)
+            if(druidBody==null||druidBody.Stamp!=Time.frameCount)druidRig?.Deactivate();
             foreach (var e in Simulation.Enemies) if (e.Alive && e.IsBoss && sinkStart.Count > 0) { sinkStart.Remove(e.Id); sinkSounded.Remove(e.Id); }
         }
 
@@ -78,6 +80,7 @@ namespace Exoduser.UnityPort
             bool held=ImpactActive&&contactVfx.EnemyFrozen(e.Id,ImpactNow);
             float flash=ImpactActive?contactVfx.Flash(e.Id,ImpactNow):0;
             if (!druidBody.Draw(e, dd, newTick,held,flash)) return false;
+            druidRig?.Sync(e,dd,Simulation.TickCount,false,0,held,Simulation.DruidLife(e));
             druidBody.Stamp = Time.frameCount; ev.body.enabled = false; ev.walk.enabled = false;
             return true;
         }
@@ -105,7 +108,8 @@ namespace Exoduser.UnityPort
             int t = Simulation.TickCount - t0;
             if (t >= SinkHoleTick && sound != null && sinkSounded.Add(e.Id)) sound.PlaySinkHole(e.X, e.Y, Simulation.TickCount);
             ev.body.enabled = false; ev.walk.enabled = false;
-            if (t >= SinkBodyTicks + SinkHoldTicks + SinkFadeTicks) return;
+            if (t >= SinkBodyTicks + SinkHoldTicks + SinkFadeTicks){druidRig?.Deactivate();return;}
+            DruidData data;if(Simulation.Druid!=null&&Simulation.Druid.Data.TryGetValue(e,out data))druidRig?.Sync(e,data,Simulation.TickCount,true,t,false,Simulation.DruidLife(e));
             druidBody.DrawSink(e, t, SinkBodyTicks, SinkHoldTicks, SinkFadeTicks); druidBody.Stamp = Time.frameCount;
         }
     }
