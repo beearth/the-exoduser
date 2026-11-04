@@ -87,19 +87,14 @@ namespace Exoduser.UnityPort
             return renderer;
         }
 
-        void Build()
+        internal static Mesh CreateShoreMesh(A2FieldLayout field, float waterHeight, List<A2RSwampDressGeometry.Segment> segments)
         {
-            dressing = new GameObject("A2R wet mud and sparse floating remains");
-            dressing.transform.SetParent(surface.transform, true);
-            // Existing water-domain threshold, sampled at 0.4u. This never writes the field or water mask.
-            var segments = A2RSwampDressGeometry.Contours(field.TerrainHeight, .4f, -79.6f, 79.6f, -.4f, .4f, -.46f);
-            ShoreSegments = segments.Count;
             var vertices = new List<Vector3>(); var colours = new List<Color>(); var indices = new List<int>();
             foreach (var s in segments)
             {
                 int start = vertices.Count;
-                // Continuous 0.8u band: 0.32u into water, 0.48u up the wet bank; feather both ends.
-                var offsets = new[] { -.32f, -.16f, .05f, .29f, .48f };
+                // Continuous 2.0u band (1.24H): 0.8u into water and 1.2u up the bank; feather both ends.
+                var offsets = new[] { -.80f, -.40f, 0f, .60f, 1.20f };
                 var alphas = new[] { 0f, .72f, .90f, .50f, 0f };
                 for (int row = 0; row < offsets.Length; row++) for (int end = 0; end < 2; end++)
                 {
@@ -109,16 +104,27 @@ namespace Exoduser.UnityPort
                     if (normal.sqrMagnitude < .1f) normal = new Vector2(s.nx, s.nz);
                     float x = ex + normal.x * offsets[row];
                     float z = ez + normal.y * offsets[row];
-                    float y = Mathf.Max(surface.Height + .008f, field.TerrainHeight(x, z) + .026f);
+                    float y = Mathf.Max(waterHeight + .008f, field.TerrainHeight(x, z) + .026f);
                     vertices.Add(new Vector3(x, y, z));
-                    var colour = Color.Lerp(new Color(.032f, .023f, .019f), new Color(.052f, .038f, .029f), row / 4f);
+                    var colour = Color.Lerp(new Color(.032f, .023f, .019f), new Color(.095f, .072f, .052f), row / 4f);
                     colour.a = alphas[row]; colours.Add(colour);
                     if (row == 4 || end != 0) continue;
                     int i = start + row * 2; indices.AddRange(new[] { i, i + 2, i + 1, i + 1, i + 2, i + 3 });
                 }
             }
-            var shore = new Mesh { name = "0.8u feathered wet shoreline", indexFormat = IndexFormat.UInt32 };
+            var shore = new Mesh { name = "2.0u feathered wet shoreline", indexFormat = IndexFormat.UInt32 };
             shore.SetVertices(vertices); shore.SetColors(colours); shore.SetTriangles(indices, 0); shore.RecalculateBounds(); shore.RecalculateNormals();
+            return shore;
+        }
+
+        void Build()
+        {
+            dressing = new GameObject("A2R wet mud and sparse floating remains");
+            dressing.transform.SetParent(surface.transform, true);
+            // Existing water-domain threshold, sampled at 0.4u. This never writes the field or water mask.
+            var segments = A2RSwampDressGeometry.Contours(field.TerrainHeight, .4f, -79.6f, 79.6f, -.4f, .4f, -.46f);
+            ShoreSegments = segments.Count;
+            var shore = CreateShoreMesh(field, surface.Height, segments);
             MeshObject(shore.name, shore, DressMaterial("A2R wet black-brown mud"));
             var remains = DressMaterial("A2R waterlogged flesh and bone");
             for (int z = 0; z < 36; z++) for (int x = 0; x < 36; x++)
@@ -211,6 +217,7 @@ namespace Exoduser.UnityPort
 #if UNITY_EDITOR
         public static int VerifyAndBuild()
         {
+            A2RSwampDressEditor.VerifyAndBake();
             foreach (var path in new[] { "A2R/ToxicRiver", "Shaders/A2ToxicRiver" })
             {
                 var shader = Resources.Load<Shader>(path);

@@ -47,6 +47,8 @@ namespace Exoduser.UnityPort
             for (int i = 0; i < 20; i++) { UpdateViews(); yield return null; }
             a2rPlay.start = new Vector2(Simulation.Player.X, Simulation.Player.Y);
             yield return A2RSwampPair("02-field-entry", swamp);
+            yield return A2RNatureSize(1920); yield return A2RPlayShot("S3-entry-1920-swamp");
+            yield return A2RNatureSize(3840);
             // Keep the original source walking path; no player-coordinate assignment on this route.
             var goal = new Vector2(2050, 4400); var route = A2RWalkPath(a2rPlay.start, goal);
             if (route.Count == 0) { a2rPlay.failures.Add("No radius-safe Core route"); A2RPlayFinish(); yield break; }
