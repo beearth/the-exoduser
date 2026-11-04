@@ -15,7 +15,7 @@ namespace Exoduser.UnityPort
         [Serializable] sealed class ImpactReviewReceipt
         {
             public string scope="실제 GPU Player 16초: 고정 입력·AI 루프 활성/검수 기절180 갱신으로 자발 행동 중지·실제 넉백·첫 표적1회 실제 처치/나머지 불사 표적·현행 5스킬과 독/가시/어둠 탄 겹침 fixture. 자연 전투·미이식 스킬 증거 아님";
-            public string device,coreTraceSha256; public bool world3D,baseline,passed;
+            public string device,coreTraceSha256; public bool world3D,baseline,passed,lobbyVisible;
             public int flipbookFrames,peakSprites,maxReactingTargets,normalReactingTargets;public bool warriorOnly,responseBaseline;public int frames,contacts,dropped,damage,casts,spawned,peakParticles,skillGraphEvents,peakSkillHandles,poisonFrames,thornFrames,darkFrames;
             public int captureWidth,captureHeight;
             public float normalKnockback,kiKnockback,slamKnockback;
@@ -34,7 +34,7 @@ namespace Exoduser.UnityPort
             int width,height;if(!int.TryParse(Argument("-impact-width"),out width))width=1600;if(!int.TryParse(Argument("-impact-height"),out height))height=900;
             width=Mathf.Clamp(width,1600,3840);height=Mathf.Clamp(height,900,2160);
             Screen.SetResolution(width,height,FullScreenMode.Windowed);lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();
-            EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;
+            EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;lobby.CloseStartupCaptureMedia();lobby.enabled=false;SetGameFocus(true);
             yield return new WaitForSecondsRealtime(.6f);
             float deadline=Time.realtimeSinceStartup+45;
             while(NativeRemodel3D.Requested&&!NativeRemodel3D.Active&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
@@ -84,6 +84,7 @@ namespace Exoduser.UnityPort
                         if(feedback.Kind==FeedbackKind.Sample&&feedback.SampleKey=="sword_swing3"){rc.kiThirdCastSeen=true;rc.kiThirdTier=Math.Max(rc.kiThirdTier,feedback.Tier);}
                         if(feedback.Kind==FeedbackKind.KiSlashHit)rc.kiThirdHitSeen=true;
                     }
+                    if(frame==30&&(lobby.enabled||lobby.IsBlocking))rc.lobbyVisible=true;   // 1차 촬영 실패(480프레임 전부 로비) 재발 감지
                     DispatchFeedback();UpdateViews();Running=false;
                     int reacting=0;foreach(var e in sim.Enemies)if(contactVfx.EnemyFrozen(e.Id,ImpactNow))reacting++;rc.maxReactingTargets=Math.Max(rc.maxReactingTargets,reacting);if(sectionIndex==0)rc.normalReactingTargets=Math.Max(rc.normalReactingTargets,reacting);
                     if(sectionIndex==0&&!sim.Enemies[0].Alive&&contactVfx.EnemyFrozen(sim.Enemies[0].Id,ImpactNow)&&contactVfx.Spawned>0)rc.killContactSeen=true;
@@ -108,7 +109,7 @@ namespace Exoduser.UnityPort
             bool feedbackOk=rc.baseline||rc.killContactSeen&&rc.contacts>0&&rc.spawned>0&&rc.flipbookFrames>0&&rc.peakSprites>0;
             bool warriorOk=rc.normalKnockback>1&&rc.kiKnockback>1&&rc.killedTargets>=1&&rc.kiThirdCastSeen&&rc.kiThirdHitSeen&&rc.kiThirdTier==3;
             bool skillsOk=rc.warriorOnly||rc.slamKnockback>1&&rc.coreMaliceBlasts>0&&castKinds.Contains("spikeTrap")&&castKinds.Contains("giantSlam")&&castKinds.Contains("holyDome")&&castKinds.Contains("iceOrb")&&castKinds.Contains("fireball");
-            rc.passed=warriorOk&&skillsOk&&feedbackOk&&(!rc.warriorOnly||rc.baseline||rc.normalReactingTargets==(rc.responseBaseline?2:3))&&rc.captureWidth==width&&rc.captureHeight==height&&rc.world3D==NativeRemodel3D.Requested&&shot==(rc.warriorOnly?300:480)&&damage>0;
+            rc.passed=warriorOk&&skillsOk&&feedbackOk&&(!rc.warriorOnly||rc.baseline||rc.normalReactingTargets==(rc.responseBaseline?2:3))&&rc.captureWidth==width&&rc.captureHeight==height&&rc.world3D==NativeRemodel3D.Requested&&shot==(rc.warriorOnly?300:480)&&damage>0&&!rc.lobbyVisible;
 
             File.WriteAllText(Path.Combine(output,"impact-review.json"),JsonUtility.ToJson(rc,true));
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();
