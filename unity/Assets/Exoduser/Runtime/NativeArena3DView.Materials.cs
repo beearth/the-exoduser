@@ -177,11 +177,11 @@ namespace Exoduser.UnityPort
         void DisposeTorches()
         {
             ApplyArenaLighting(false);
-            if(aoSprite!=null)UnityEngine.Object.Destroy(aoSprite);
-            if(aoTexture!=null)UnityEngine.Object.Destroy(aoTexture);
+            if(aoSprite!=null)ReleaseArenaObject(aoSprite);
+            if(aoTexture!=null)ReleaseArenaObject(aoTexture);
             foreach(var flame in torchFlames)arenaFlames.Remove(flame);
-            if(channelMesh!=null)UnityEngine.Object.Destroy(channelMesh);
-            foreach(var frame in torchFrames)UnityEngine.Object.Destroy(frame);
+            if(channelMesh!=null)ReleaseArenaObject(channelMesh);
+            foreach(var frame in torchFrames)ReleaseArenaObject(frame);
         }
     }
 }

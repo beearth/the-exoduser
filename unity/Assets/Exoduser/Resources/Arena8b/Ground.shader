@@ -8,6 +8,10 @@ Shader "EXODUSER/Arena8b/Ground"
   _MaskA("A2R water mask A",2D)="black"{} _MaskB("A2R water mask B",2D)="black"{}
   _Soil("A2 forest soil underpaint",2D)="white"{} _Roots("A2 exposed roots",2D)="white"{}
   _Tint("B1 ground tint (linear)",Color)=(.66,.56,.50,1) _Sat("B1 saturation keep",Range(0,1))=.62 _Flat("B2 low-frequency flatten",Range(0,1))=.45 _Dark("B3 sun scale on ground",Range(0,1))=1
+  // Defaults reproduce the existing response. Candidates are Editor look-shot overrides only.
+  _GroundAmbient("Ground-only fill (linear, no color conversion)",Vector)=(.08,.075,.065,1)
+  _GroundShadowFloor("Ground-only shadow attenuation floor",Range(0,1))=0
+  [HideInInspector] _LookDiagnostic("Editor: 1 shadow/Lambert, 2 receiver mask",Float)=0
  }
  SubShader
  {
@@ -32,7 +36,7 @@ Shader "EXODUSER/Arena8b/Ground"
    TEXTURE2D(_MaskA);SAMPLER(sampler_MaskA);TEXTURE2D(_MaskB);SAMPLER(sampler_MaskB);
    TEXTURE2D(_Soil);SAMPLER(sampler_Soil);TEXTURE2D(_Roots);SAMPLER(sampler_Roots);
    CBUFFER_START(UnityPerMaterial)
-   half4 _Tint;half _Sat,_Flat,_Dark;
+   half4 _Tint,_GroundAmbient;half _Sat,_Flat,_Dark,_GroundShadowFloor,_LookDiagnostic;
    CBUFFER_END
    struct A {float4 p:POSITION;float3 n:NORMAL;};
    struct V {float4 p:SV_POSITION;float3 w:TEXCOORD0;half3 n:TEXCOORD1;half fog:TEXCOORD2;};
@@ -94,7 +98,12 @@ Shader "EXODUSER/Arena8b/Ground"
     half lum=dot(albedo,half3(.299,.587,.114));albedo=lerp(half3(lum,lum,lum),albedo,_Sat);
     half3 n=normalize(i.n+half3(detail.x,0,-detail.y)*(.35*coverage));
     Light main=GetMainLight(TransformWorldToShadowCoord(i.w));
-    half3 light=half3(.08,.075,.065)+main.color*_Dark*saturate(dot(n,main.direction))*main.shadowAttenuation;
+    half lambert=saturate(dot(n,main.direction));
+    // Diagnostic channels are linear, before tone/fog; the Editor disables post for this pass.
+    if(_LookDiagnostic>1.5)return half4(1,1,1,1);
+    if(_LookDiagnostic>.5)return half4(main.shadowAttenuation,lambert,1,1);
+    half shadow=max(main.shadowAttenuation,_GroundShadowFloor);
+    half3 light=_GroundAmbient.rgb+main.color*_Dark*lambert*shadow;
     InputData inputData=(InputData)0;inputData.positionWS=i.w;inputData.normalizedScreenSpaceUV=GetNormalizedScreenSpaceUV(i.p);
     uint count=GetAdditionalLightsCount();
     LIGHT_LOOP_BEGIN(count)

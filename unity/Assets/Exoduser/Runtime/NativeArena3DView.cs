@@ -8,6 +8,13 @@ namespace Exoduser.UnityPort
 {
     public sealed partial class NativeArena3DView:IDisposable
     {
+        // A batch Editor look-shot uses the same prewarm path without entering Play mode.
+        static void ReleaseArenaObject(UnityEngine.Object value)
+        {
+            if(value==null)return;
+            if(Application.isPlaying)UnityEngine.Object.Destroy(value);
+            else UnityEngine.Object.DestroyImmediate(value);
+        }
         readonly GameObject root;
         readonly Camera camera;
         readonly List<GameObject> pillars=new List<GameObject>();
@@ -135,7 +142,7 @@ namespace Exoduser.UnityPort
             foreach(var c in go.GetComponentsInChildren<Collider>(true))
             {
                 c.enabled=false;
-                UnityEngine.Object.Destroy(c);
+                ReleaseArenaObject(c);
             }
             return go;
         }
@@ -220,7 +227,7 @@ namespace Exoduser.UnityPort
                 foreach(var keys in new[]{new string[0],new[]{"_MAIN_LIGHT_SHADOWS"},new[]{"_MAIN_LIGHT_SHADOWS_CASCADE"}})
                     variants.Add(new ShaderVariantCollection.ShaderVariant(shader,PassType.ScriptableRenderPipeline,keys));
             variants.WarmUp();
-            UnityEngine.Object.Destroy(variants);
+            ReleaseArenaObject(variants);
             ShaderWarmupMs=(float)timer.Elapsed.TotalMilliseconds;
             PrepareMs+=ShaderWarmupMs;
             PreparePhase="ready";
@@ -273,9 +280,9 @@ namespace Exoduser.UnityPort
             DisposeTorches();
             occlusion?.Dispose();
             root.SetActive(false);
-            UnityEngine.Object.Destroy(root);
-            UnityEngine.Object.Destroy(mesh);
-            foreach(var m in materials)UnityEngine.Object.Destroy(m);
+            ReleaseArenaObject(root);
+            ReleaseArenaObject(mesh);
+            foreach(var m in materials)ReleaseArenaObject(m);
         }
     }
 }
