@@ -1,3 +1,7 @@
+## 11-04 x2-2 실제 Unity 빌드 성공·Player 순번 대기
+
+2026-11-04 x2-2 실제 Unity 검증: 실행 코드14b6a1be55(문서만 추가된 HEAD863f894c29), 공용 Editor batch 작업4ea97b42 Succeeded·종료0·컴파일 오류0·빌드 오류0·세이브 변경0, 엔진6000.6.7f1 Win64 x64. 실제 빌드1회, 출력map-scale-c1/build/EXODUSER-Unity.exe. 자기 Library 정리로26.47GB→20GB 미만, 자동 포스터 meta 2개는 검증한 mipmap/filter 줄만 작업 전 값/EOL로 복원. 기본1/keep·3D 유지. k=1 기준판·×2 keep168/linear336 Player는 공용 단독 순번 대기 중이며 실측·추천은 아직 미완료. 대기 초과2회는 검사 실패0, 10분 휴지2회 준수. REPORT.md 맨 위 x2-2에 상태·증거 기록.
+
 ## 11-04 19:15 ×2 실측 재개 — 새 HALT 중단
 
 2026-11-04 19:16 map-scale-c1 x2-2 재개 중단: 사용자 19:15 HALT 해제 지시 뒤, 19:15:19 새 공용 HALT 생성 확인. 종료 불능 Player는 기존 EXODUSER-A2R PID14612와 추가 EXODUSER-Unity PID40496. 이번 재개는 소스14b6a1be55·clean 확인 및 상태 조회만 수행했고 실제 Unity 컴파일/빌드/Player 시작0, 검사 실패 계수0. 사용자 지시대로 새 HALT에서 멈췄으며 프로세스·HALT 변경0. x2-keep/x2-linear/k=1 성능 기준판 미측정, 추천 보류. 기본k=1·3D 유지. 결과: map-scale-c1/REPORT.md 맨 위 x2-2.
