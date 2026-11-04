@@ -10,6 +10,7 @@ namespace Exoduser.UnityPort.MoodLab
     // Runtime-only assembly: no .unity, prefab, mesh, material or texture asset is created/saved.
     public sealed class MoodLabScene : MonoBehaviour
     {
+        public const int LabLayer = 30, LayerMask = 1 << LabLayer;
         readonly List<UnityEngine.Object> owned = new List<UnityEngine.Object>();
         readonly List<Transform> probes = new List<Transform>();
         readonly Vector3 origin = new Vector3(43.2f, 0, -67.8f);
@@ -24,6 +25,9 @@ namespace Exoduser.UnityPort.MoodLab
         WhiteBalance whiteBalance;
         ColorLookup lookup;
         Texture2D userLut;
+        MoodLabWaterPass waterPass;
+        Font labFont;
+        GUIStyle intentStyle;
         int selected;
 
         public static void Create(char mood)
@@ -50,7 +54,8 @@ namespace Exoduser.UnityPort.MoodLab
             if (litSource.shader == null || !litSource.shader.isSupported)
                 throw new InvalidOperationException("Existing URP Lit material shader unavailable");
             var cam = Child("MoodLab camera 34deg 16.5u");
-            view = cam.AddComponent<Camera>(); view.tag = "MainCamera";
+            view = cam.AddComponent<Camera>(); view.tag = "Untagged";
+            view.cullingMask = LayerMask; view.depth = 100;
             view.orthographic = false; view.fieldOfView = MoodLabPresets.FieldOfView;
             view.nearClipPlane = .1f; view.farClipPlane = 120f;
             view.clearFlags = CameraClearFlags.SolidColor; view.allowHDR = true;
@@ -61,7 +66,9 @@ namespace Exoduser.UnityPort.MoodLab
             // https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@17.6/api/UnityEngine.Rendering.Universal.UniversalAdditionalCameraData.html
             extra.renderPostProcessing = true; extra.dithering = false;
             extra.antialiasing = AntialiasingMode.None;
-            extra.volumeLayerMask = 1; // Only isolated layer-0 global volume; base scene roots stay inactive.
+            extra.volumeLayerMask = LayerMask;
+            extra.requiresDepthTexture = true;
+            labFont = Require<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular");
 
             key = Child("MoodLab directional moon").AddComponent<Light>();
             key.type = LightType.Directional; key.shadows = LightShadows.Soft;
@@ -88,9 +95,13 @@ namespace Exoduser.UnityPort.MoodLab
             soil.SetTexture("_BumpMap", Require<Texture2D>("Art/map/a2/ground/A2_ForestSoil_Normal"));
             soil.SetFloat("_BumpScale", .55f); soil.EnableKeyword("_NORMALMAP");
             soil.mainTextureScale = new Vector2(8, 12);
-            var swamp = Surface(new Color(.16f,.19f,.075f), .65f);
-            // Deliberately plain static wet surface. A2ToxicRiver needs the main renderer's custom ground-water pass;
-            // invoking that feature/receiver would couple the lab to gameplay. No custom shader/asset is added.
+            var swamp = Own(new Material(Require<Shader>("Shaders/A2ToxicRiver")));
+            swamp.SetFloat("_Emission", 0); swamp.SetFloat("_PlanarStrength", 0); swamp.SetFloat("_ShoreReady", 0);
+            swamp.SetColor("_FoamColor", new Color(.21f,.22f,.09f)); // trial: low-contrast foam, no bright added particles
+            swamp.SetTexture("_PlanarReflection", Texture2D.blackTexture); swamp.SetTexture("_ShoreField", Texture2D.blackTexture);
+            // Existing shader divides projected xy by w even when reflection strength is zero: keep VP finite.
+            swamp.SetMatrix("_PlanarVP", view.projectionMatrix*view.worldToCameraMatrix);
+            waterPass = new MoodLabWaterPass(view);
             Quad("Swamp existing Lit surface", -24, 24, -14, 34, -.42f, swamp);
             Quad("North bank and probe lane", -3.2f, 3.2f, 0, 32, -.04f, soil);
             Quad("South bridge approach", -3.2f, 3.2f, -14, -7.8f, -.04f, soil);
@@ -120,12 +131,13 @@ namespace Exoduser.UnityPort.MoodLab
 
         GameObject Child(string name)
         {
-            var go = new GameObject(name); go.transform.SetParent(transform, false); return go;
+            var go = new GameObject(name); go.layer = LabLayer; go.transform.SetParent(transform, false); return go;
         }
 
         void Place(GameObject source, string name, Vector3 local, Vector3 scale, float yaw)
         {
             var go = Instantiate(source, transform); go.name = name;
+            foreach (var child in go.GetComponentsInChildren<Transform>(true)) child.gameObject.layer = LabLayer;
             go.transform.SetPositionAndRotation(origin + local, Quaternion.Euler(0, yaw, 0));
             go.transform.localScale = scale;
             foreach (var renderer in go.GetComponentsInChildren<Renderer>(true))
@@ -186,9 +198,13 @@ namespace Exoduser.UnityPort.MoodLab
         void Probe(string name, Vector3 local, Material dark, Material pale)
         {
             var feet = origin + local;
-            Box(name + " legs", feet + Vector3.up*.36f, new Vector3(.38f,.72f,.30f), dark);
-            Box(name + " torso", feet + Vector3.up*1.01f, new Vector3(.64f,.58f,.32f), dark);
-            Box(name + " head", feet + Vector3.up*1.455f, new Vector3(.31f,.31f,.31f), pale);
+            // CX5 explicitly permits a capsule + rim shader; no new prefab/model asset.
+            var capsule = GameObject.CreatePrimitive(PrimitiveType.Capsule); capsule.name = name + " capsule";
+            capsule.layer = LabLayer; capsule.transform.SetParent(transform, false);
+            capsule.transform.position = feet + Vector3.up*(MoodLabPresets.ProbeHeight*.5f);
+            capsule.transform.localScale = new Vector3(.64f,MoodLabPresets.ProbeHeight*.5f,.64f);
+            capsule.GetComponent<MeshRenderer>().sharedMaterial = dark;
+            var collider = capsule.GetComponent<Collider>(); collider.enabled = false; Destroy(collider);
             var probe = Child(name + " center"); probe.transform.position = feet + Vector3.up*(MoodLabPresets.ProbeHeight*.5f);
             probes.Add(probe.transform);
         }
@@ -250,6 +266,11 @@ namespace Exoduser.UnityPort.MoodLab
                     var rgb = new Vector3(r, g, b)/(size-1f);
                     var mapped = Vector3.Scale(rgb, preset.LutScale) +
                         Vector3.Scale(new Vector3(rgb.y,rgb.z,rgb.x), preset.LutCross) + preset.LutLift;
+                    // CX5 trial contrast S-curve and saturation; no second tone mapper.
+                    for (int channel = 0; channel < 3; channel++)
+                    { float v = mapped[channel]; mapped[channel] = v+preset.LutCurveContrast*v*(1-v)*(2*v-1); }
+                    float luminance = Vector3.Dot(mapped, new Vector3(.2126f,.7152f,.0722f));
+                    mapped = Vector3.Lerp(Vector3.one*luminance, mapped, preset.LutCurveSaturation);
                     pixels[g*size*size+b*size+r] = new Color(mapped.x,mapped.y,mapped.z,1);
                 }
                 userLut.SetPixels(pixels); userLut.Apply(false, true);
@@ -263,7 +284,8 @@ namespace Exoduser.UnityPort.MoodLab
         void OnGUI()
         {
             var preset = MoodLabPresets.All[selected];
-            GUI.Box(new Rect(12,12,460,82), "MoodLab " + preset.Id + " | " + preset.Name + " | fog " + preset.FogStart + "-" + preset.FogEnd + "u");
+            if (intentStyle == null) intentStyle = new GUIStyle(GUI.skin.label) { font = labFont, fontSize = 18, normal = { textColor = Color.white } };
+            GUI.Label(new Rect(12,12,Mathf.Max(600,Screen.width-24),28), "MoodLab " + preset.Id + " | " + preset.Intent, intentStyle);
             for (int i = 0; i < MoodLabPresets.All.Length; i++)
                 if (GUI.Button(new Rect(24+i*110,47,100,30), "Mood " + MoodLabPresets.All[i].Id)) Apply(i);
         }
@@ -271,6 +293,7 @@ namespace Exoduser.UnityPort.MoodLab
         void OnDestroy()
         {
             if (atmosphere != null) atmosphere.Dispose();
+            if (waterPass != null) waterPass.Dispose();
             // Destroy profile subcomponents too; never destroy Resources-owned textures/materials/models.
             if (profile != null) foreach (var component in profile.components) if (component != null) Destroy(component);
             if (gradingProfile != null) foreach (var component in gradingProfile.components) if (component != null) Destroy(component);

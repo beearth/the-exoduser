@@ -73,7 +73,9 @@ Shader "EXODUSER/MoodLab/Atmosphere"
                 // Artistic single-scattering surrogate, no light/shadow sampling, no multiple scattering.
                 // 저작 시험값, CX1 §4.1 원칙 기준: fixed light direction/phase shape, no claimed physical phase law.
                 float phase = .5+.5*pow(saturate(dot(direction,normalize(float3(-.4,.8,.3)))),4);
-                float3 fog = _FogTint.rgb*lerp(1,phase,_Scatter)*(1-transmission);
+                // CX5 trial: Scatter is an intensity control for c, not extrapolation of a lerp weight.
+                float scatteringGain = _VolumeDensity > 0 ? _Scatter*(.5+.5*phase) : 1;
+                float3 fog = _FogTint.rgb*scatteringGain*(1-transmission);
                 // CX1 §8: camera Fresnel masked to upper proxy body; flat box faces are not a pixel-width outline.
                 float rim = pow(1-saturate(dot(normalize(input.normal),-direction)),max(_RimPower,.001));
                 rim *= _ProbeMask*smoothstep(.75,1.15,input.world.y-_Origin.y)*_RimStrength;

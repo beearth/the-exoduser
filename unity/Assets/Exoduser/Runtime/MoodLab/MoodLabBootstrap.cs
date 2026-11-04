@@ -50,20 +50,22 @@ namespace Exoduser.UnityPort.MoodLab
 
         // Unity documents this phase as loaded objects, BEFORE their Awake:
         // https://docs.unity3d.com/6000.0/Documentation/ScriptReference/RuntimeInitializeLoadType.BeforeSceneLoad.html
-        // Disable scene roots BEFORE validating too: rejected lab runs must not fall into gameplay/save startup.
-        // Same-phase runtime-hook order is unspecified; only this opt-in hook owns the lab.
+        // CX5: scene.isLoaded is NOT an eligibility gate for objects in the first scene before Awake.
+        // FirstPlayable serializes NativeGame directly; find its object regardless of scene enumeration state.
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void BeforeSceneLoad()
         {
             ready = false;
             var args = Environment.GetCommandLineArgs();
             if (!MoodLabOptions.Requested(args)) return;
-            for (int i = 0; i < SceneManager.sceneCount; i++)
+            var games = UnityEngine.Object.FindObjectsByType<NativeGame>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            foreach (var game in games)
             {
-                var scene = SceneManager.GetSceneAt(i);
-                if (!scene.isLoaded) continue;
-                foreach (var root in scene.GetRootGameObjects()) root.SetActive(false);
+                Debug.Log("[MoodLab isolation] before-Awake target=" + game.name + " sceneLoaded=" + game.gameObject.scene.isLoaded);
+                game.transform.root.gameObject.SetActive(false);
+                game.enabled = false;
             }
+            Debug.Log("[MoodLab isolation] blocked NativeGame objects=" + games.Length);
             AudioListener.pause = true;
             AudioListener.volume = 0;
             string error;
@@ -81,7 +83,18 @@ namespace Exoduser.UnityPort.MoodLab
         {
             if (!ready) return;
             ready = false;
-            try { MoodLabScene.Create(selected); }
+            try
+            {
+                // Reject rather than hiding an already initialized frontend two seconds later.
+                // Instance is assigned at the FIRST line of NativeGame.Awake, before sound/stores/lobby.
+                int lobby = UnityEngine.Object.FindObjectsByType<NativeLobby>(FindObjectsInactive.Include, FindObjectsSortMode.None).Length;
+                int audio = UnityEngine.Object.FindObjectsByType<AudioSource>(FindObjectsInactive.Include, FindObjectsSortMode.None).Length;
+                int video = UnityEngine.Object.FindObjectsByType<UnityEngine.Video.VideoPlayer>(FindObjectsInactive.Include, FindObjectsSortMode.None).Length;
+                if (NativeGame.Instance != null || lobby != 0 || audio != 0 || video != 0)
+                    throw new InvalidOperationException("Isolation failed before lab creation: NativeGame.Awake=" + (NativeGame.Instance != null) + " lobby=" + lobby + " audio=" + audio + " video=" + video);
+                Debug.Log("[MoodLab isolation] Awake/NativeLobby/AudioSource/VideoPlayer=0; no NativeGame startup IO path entered");
+                MoodLabScene.Create(selected);
+            }
             catch (Exception e)
             {
                 Debug.LogError("[MoodLab] SETUP FAILED: " + e);

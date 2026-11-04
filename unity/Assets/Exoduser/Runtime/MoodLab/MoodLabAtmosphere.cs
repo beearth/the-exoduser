@@ -25,6 +25,7 @@ namespace Exoduser.UnityPort.MoodLab
                 var source = filter.GetComponent<MeshRenderer>();
                 if (source == null) continue;
                 var go = new GameObject("MoodLab optical overlay");
+                go.layer = filter.gameObject.layer;
                 go.transform.SetParent(filter.transform, false); // identical mesh/matrix; never move authored objects
                 go.AddComponent<MeshFilter>().sharedMesh = filter.sharedMesh;
                 var overlay = go.AddComponent<MeshRenderer>();

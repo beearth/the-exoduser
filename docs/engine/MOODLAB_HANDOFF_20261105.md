@@ -1,4 +1,120 @@
-## 2026-11-05 CTO CX1 프리셋 보정 — 현재 보고
+## 2026-11-05 CX5 2차 — 격리 수정·분위기 확대·실제 PNG 비교
+
+기준/현재 HEAD `2f5d8fd1546f4b6eb071854316638fac0e0a946a`, 작업본 `E:/exoduser-wt/codex-moodlab`, 브랜치 `codex/unity-moodlab-20261105`. 사용자 실행본 반영·commit/push 없음.
+현재 판정: **정적 검사 PASS, PNG 검사기 테스트 10/10 PASS. 새 코드의 Unity 컴파일·실행·화면은 미확인. 실제 프리셋 쌍별 차이는 PNG 부재로 미측정.**
+다음 일: Mac에서 지연 차단 임시 패치 없이 재컴파일 → 격리 로그 확인 → a/b/c/d 같은 해상도 PNG → 아래 6쌍 평균 차 검사와 표식·점 판정.
+
+### 1. 이전 격리 보고 정정과 원인 추적
+
+**앞 보고의 “본선 Awake를 막는다”는 검증되지 않은 잘못된 주장이다.** 사용자 전달 Mac 결과에서 기존 NativeGame·로비 영상·타이틀이 남았으므로 기존 격리 구현은 FAIL이다. 이전 Mac의 컴파일 0·예외 0·표식 가독·점 0은 **2f5d8fd15 기준의 이전 결과**이며 이번 수정의 실행 증거로 재사용하지 않는다.
+
+추적한 실제 생성 경로:
+
+1. `Editor/PortVerification.cs:200–205`는 `Assets/Scenes/FirstPlayable.unity`를 생성/재사용하고 빌드 씬으로 설정한다. 씬에는 활성 `EXODUSER Native CSharp` 루트와 NativeGame이 **직렬화되어 있다**. NativeGame script GUID `f30729c3a3631a08560b468b4da71c88`는 `.cs.meta`와 일치한다. 이번에 씬 파일을 쓰지 않았다.
+2. `Runtime` 전체의 RuntimeInitializeOnLoadMethod **37개 위치**를 조사했다. 목록/본문 앞부분은 최신 `RUNTIME_INIT_AUDIT.txt`에 보관했다. MoodLab 외에는 명시적 review/check/mute 플래그를 검사하는 진입점이며, **Runtime 훅이 NativeGame을 AddComponent로 새로 만드는 경로는 발견되지 않았다**. 별도 Editor 검증 fixture의 AddComponent 경로는 Player 진입점과 구별했다.
+3. `NativeGame.cs:102/104`의 Awake 첫 문장은 `Instance=this`다. 이후 `:139` 오디오, `:141` 음악/환경음, `:147–148` NativeLobby 생성/Initialize, `:149` 설정 저장 초기화가 이어진다. `NativeLobby.Initialize`에서 영상/AudioSource/캐릭터 저장소를 준비한다. 설정 저장소는 `NativeGame.SettingsPersistence.cs`, 캐릭터 저장소는 `NativeLobby.CharacterStore.cs`에서 실제 Store/로드로 연결된다.
+4. **확정한 소스 결함은 차단 대상 선정에 있다.** 기존 MoodLabBootstrap은 Awake 전 시점에 `sceneCount → scene.isLoaded → GetRootGameObjects`를 거쳐서만 대상을 껐다. 첫 씬의 객체가 메모리에 있어도 그 씬의 완료 상태/열거 조건을 만족하지 않으면 차단이 통째로 빠진다. 직렬화된 NativeGame 생성 경로를 직접 차단하지 않았고, 차단된 객체 수도 검증하지 않았다. Mac에서 당시 `sceneCount/isLoaded`의 정확한 값은 로그가 없어 역확인할 수 없다. 그 내부 값까지 관측한 것처럼 쓰지 않는다.
+
+수정은 **MoodLab 파일 안에서만** 했다. 본선 기존 파일 예외 수정 0개이며 최소 한 줄 패치도 필요하지 않았다.
+
+- `Runtime/MoodLab/MoodLabBootstrap.cs:61–66`: Awake 전 `FindObjectsByType<NativeGame>(FindObjectsInactive.Include, None)`로 직접 찾고 그 루트를 비활성화한다. `scene.isLoaded`는 진단 로그로만 읽고 필터로 쓰지 않는다. 2초 후 끄기·코루틴 대기·영상 시작 후 숨기기 없음.
+- `:89–96`: AfterSceneLoad에서 **NativeGame.Instance / NativeLobby / AudioSource / VideoPlayer가 모두 0인지 검사**한다. Instance는 Awake 첫 줄의 표식이므로 이미 Awake가 진입한 실행을 가려서 성공 처리하지 않는다. 하나라도 남으면 오류/종료 코드 2로 실패시키고 MoodLab을 만들지 않는다.
+- 초기화가 차단되면 위 NativeGame 경로의 오디오·영상·세이브 초기화도 진입하지 않는다. MoodLab은 NativeQaSandbox resolver/사용자 세이브 경로/Store를 호출하지 않는다. **이것은 소스 제어 흐름 확인이며 이번 Player에서 초기화 0을 관측했다는 주장은 아니다.** Mac에서 아래 로그와 sandbox IO를 함께 확인해야 한다.
+- 전용 카메라는 `Untagged`, culling/Volume mask는 레이어 30만 사용한다. 생성 모델·면·캡슐·overlay·Volume을 같은 레이어에 둔다. MainCamera를 공유하지 않는다. 피치/거리/FOV/주시점·목교/늪/고목 배치·표식의 기존 x/z는 유지한다.
+
+Mac에서 기대하는 격리 로그:
+
+```text
+[MoodLab isolation] before-Awake target=EXODUSER Native CSharp sceneLoaded=<실측값>
+[MoodLab isolation] blocked NativeGame objects=<FirstPlayable에서는 1 예상>
+[MoodLab isolation] Awake/NativeLobby/AudioSource/VideoPlayer=0; no NativeGame startup IO path entered
+```
+
+이 0 로그 없이 스크린샷만 정상인 경우 격리 PASS로 처리하지 않는다. 현재 빌드 경로는 FirstPlayable 단일 진입 기준이다. 다른 생성 경로/추가 씬의 미래 생성까지 검증했다고 주장하지 않는다. BeforeSceneLoad의 객체 탐색 방식은 [Unity 공식 예제](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/RuntimeInitializeLoadType.BeforeSceneLoad.html)에 근거한다.
+
+### 2. 분위기 확대 — 모두 저작 시험값
+
+이전 a 대비 차이 b=1.8/c=2.1/d=6.5와 b 림 미식별은 사용자 전달 Mac FAIL 근거다. 수치 확대만으로 차이 15 이상이 됐다고 판단하지 않는다. a 프리셋 수치는 유지하고 b/c/d를 아래처럼 벌렸다. CX1은 기법 원칙의 출처이며 **이 값들을 추천한 문서는 아니다**.
+
+| 프리셋 | 의도 / 주광 RGB / ambient RGB | 거리 안개 시작→끝 / 안개 RGB | exposure / contrast / saturation |
+|---|---|---|---|
+| a | A2 기준 / (.85,.90,1) / (.26,.28,.30) | 19→62u / (.105,.145,.17) | .55 / 16 / -8 |
+| b | 청록 저지대·강한 상부 림 / (.55,.82,1) / (.22,.30,.34) | 22→68u / (.16,.34,.42) | .55 / 18 / -12 |
+| c | 황갈색 유황 산란 / (1,.73,.42) / (.30,.23,.15) | 24→43.2u / (.42,.24,.10) | .45 / 20 / +8 |
+| d | 청보라 암부·낮은 채도 곡선 / A2 광원·ambient 유지 | A2 19→62u / A2 RGB 유지 | .30 / 26 / -24 |
+
+방향광 intensity는 a/b/d 3.2, c 3.0. shadow는 a/b/d .55, c .50. ambient multiplier 1, colorFilter (1,1,1), ACES 공통. 장면 전체 조명을 꺼서 차이를 만드는 방식은 쓰지 않았다.
+
+| 프리셋 | 강화한 효과와 숫자 | 근거 범위 |
+|---|---|---|
+| b | 높이 σ0 .020→.100 **5배**, 기준 높이 .20→.60u, falloff 1.2→.9, 통로 밀도 배율 .25, optical-depth cap .060→.240 | 저작 시험값, CX1 §3/§10 원칙 기준 |
+| b 림 | 강도 .12→.90 **7.5배**, power 4→2, RGB (.65,.85,1). 상부 마스크 .75→1.15u | 저작 시험값, CX1 §8 원칙 기준 |
+| c | σ0 .0025→.00625 **2.5배**, 산란 제어 .65→1.625 **2.5배**, 거리 감쇠 구간 48→19.2u로 기울기 **2.5배**, optical-depth cap .150 | 저작 시험값, CX1 §4.1/§10 원칙 기준 |
+| d | WB temperature -30 / tint +24, 사용자 LUT 기여도 .85, RGB scale (.80,.92,.98), cross (.06,0,0), lift (.035,.015,.005) | 저작 시험값, CX1 §9.3 원칙 기준 |
+| d 곡선 | LUT의 `v + .65·v·(1−v)·(2v−1)` 대비 S곡선, 이후 luminance 기준 saturation .70 | 저작 시험값, CX1 §9.3 원칙 기준; 별도 ACES 중복 없음 |
+
+c 셰이더의 Scatter는 단순 lerp 외삽 가중치에서 **산란색의 강도 제어**로 바꿨다. 고정 표본 24개·연속 매질·노이즈 없는 근사 원칙은 유지한다. 배율은 제어 수치의 배율이며 화면 평균 차나 물리 산란량이 정확히 2.5배라는 보증이 아니다.
+
+표식은 **같은 0/7/12u 위치**에 지름 .64u·높이 1.61u의 Unity 내장 캡슐을 하나씩 세운다. 사용자 허용의 “캡슐+림 셰이더” 경로를 택해 곡면 노멀에서 림을 보게 했다. 새 캐릭터/메시/프리팹 에셋 생성 없음. 기존 `Resources/Characters/Warrior.prefab`의 존재도 git ls-tree로 확인했지만 이번에는 해당 프리팹의 Animator/컴포넌트 경로를 섞지 않았다. 캡슐 Collider는 즉시 비활성화 후 제거한다.
+
+좌상단에는 프리셋 설명/의도 **한 줄**을 GUI.Label로 표시한다. 기존 프로젝트 폰트 `Art/fonts/NativeLobbyNotoSansKR-Regular`를 사용하며 시험 도구 전용 문구다. 게임 로컬라이제이션/본선 표시 문자열을 바꾸지 않았다.
+
+### 3. 실제 물 재질과 숨은 의존
+
+`git ls-tree`로 기존 `unity/Assets/Exoduser/Resources/Shaders/A2ToxicRiver.shader`의 존재를 확인했다. 본선 A2와 같은 방식으로 **기존 A2ToxicRiver 셰이더를 사용하는 런타임 Material**을 만들어 기존 늪 평면에 적용한다. 기존 .mat 파일이 Resources에 있는 것처럼 주장하지 않는다. 새 .mat/텍스처/셰이더 파일 생성 없음.
+
+숨은 의존은 pass의 `LightMode=ExoduserGroundWater`다. 일반 UniversalForward pass가 아니므로 재질만 바꾸면 그려지지 않는다. 본선 NativeGroundSkillProjection은 NativeRemodel3D.Active/receiver 상태에 묶여 있어 호출하지 않았다. 새 `Runtime/MoodLab/MoodLabWaterPass.cs`가 **MoodLab 카메라·레이어 30만** 처리하는 RenderGraph pass로 동일한 기존 shader tag를 그린다. Renderer Asset·feature 목록·Always Included·본선 셰이더는 수정하지 않는다.
+
+물은 카메라 Depth Texture가 필요하다. 평면 반사·shore distance-field는 이번 장면에서 비활성화(`_PlanarStrength=0`, `_ShoreReady=0`)하고 기본 검정 텍스처를 쓴다. 셰이더가 강도 0에서도 VP의 w로 나누므로 `_PlanarVP`는 유효한 카메라 행렬로 설정한다. emission 0, foam RGB (.21,.22,.09)로 밝은 점을 추가하지 않도록 낮췄다. 기존 셰이더의 사인 흐름/스페큘러는 남는다. **새 물 표면의 점 0은 아직 Mac 미확인**이며 이전 정적 늪의 점 0 판정으로 대신하지 않는다.
+
+### 4. 12u 투과율 — 기준 미달을 숨기지 않음
+
+거리 안개와 추가 매질의 투과율을 곱한 값이다. 표식 중심 y=.805u, 발끝 y=0. 림/산란 밝기를 투과율에 더하지 않는다.
+
+| 프리셋 | 중심 T전체 | 발끝 T전체 | 83% 기준 판단 |
+|---|---|---|---|
+| a | 83.725% | 82.678% | 중심 충족, 기존 발끝 미달 유지 |
+| b | 84.814% | **79.554%** | 중심 충족, 높이층을 보이도록 올려 발끝 감쇠 증가. **총괄 판단 필요** |
+| c | 86.351% | 84.015% | 계산상 둘 다 충족 |
+| d | 83.725% | 82.678% | 거리 안개가 a와 같아 동일. 색 보정 후 가독성은 별도 |
+
+b 발끝 미달은 높이 밀도 5배·층 높이 확대에 따른 결과다. 이를 숨기기 위해 표식만 안개에서 제외하거나 림 밝기를 보존율로 세지 않았다. 실제 먼 표식의 몸통·발이 지워지면 FAIL이며 숫자만으로 인수하지 않는다. a/d 발끝 미달도 계속 총괄 판단 대상으로 남긴다.
+
+### 5. PNG 쌍별 평균 차 검사 — 실제 픽셀만 측정
+
+`Editor/MoodLab/verify.mjs`에 `--png a.png b.png c.png d.png` 모드를 추가했다. **a-b/a-c/a-d/b-c/b-d/c-d 6쌍 전부** 전체 프레임 RGB 채널 절댓값 차의 평균을 계산한다. 값 범위는 0–255, 각 쌍의 기준은 **15 이상**이다. 미달 쌍 이름과 수치를 모두 출력한다. 이것은 지각 Delta E가 아니며, ROI 선택·크기 조절·크롭으로 통과시키지 않는다.
+
+- PNG 4장이 모두 있어야 측정한다. 경로가 없거나 모자라면 `미측정`, 명시적 이미지 모드 exit 2. 일반 소스 검사에서 PNG가 없으면 소스 검사만 수행하고 **화면 평균 차 미측정**을 출력한다.
+- 새 외부 디코더/패키지 의존 **0**. `png-check.mjs`는 Node 기본 fs/zlib와 자체 PNG CRC/필터 0–4 복원만 사용한다. 지원은 **비인터레이스 8-bit RGB/RGBA PNG**이며 그 밖의 비트 깊이·팔레트·APNG 등은 명시적으로 오류로 거부한다. 4장 크기가 다르면 오류다. RGBA는 검정에 합성하고 투명 픽셀 존재를 알린다. ICC/gamma 변환은 하지 않고 저장된 RGB 값을 비교한다.
+- 메모리 내 PNG fixture로 필터 0–4, RGBA, CRC 손상/지원 밖 형식, 기준값 15 포함, a 대비만 보면 놓치는 b-c 미달, 크기 불일치 등 **10개 테스트 PASS**. 실제 게임 캡처를 합성/생성해서 검증한 것이 아니다. PNG 에셋 파일 생성 없음.
+- 이 작업본에 Mac PNG가 없어 **실제 6쌍 평균 차는 미측정**이다. 정적 검사의 값 차이나 LUT 차이를 화면 차 15로 대체하지 않았다. 쌍별 차 PASS도 장면 격리·점·가독성 PASS를 뜻하지 않는다.
+
+### 6. Mac 재캡처 인자·새 코드 위험·변경 경계
+
+임시 “2초 뒤 끄기” 패치를 제거하고, 이번 소스와 Resources가 포함된 Player를 사용한다. 기존 sandbox 전제는 유지한다. `--moodlab` 단독으로 sandbox가 없으면 **거부/종료 2**이며 본선으로 넘어가지 않는다.
+
+```text
+--moodlab --mood=a --unity-qa-sandbox /tmp/exoduser-moodlab-qa --unity-mute -screen-width 1920 -screen-height 1080 -screen-fullscreen 0 -logFile /tmp/exoduser-moodlab-a.log
+--moodlab --mood=b --unity-qa-sandbox /tmp/exoduser-moodlab-qa --unity-mute -screen-width 1920 -screen-height 1080 -screen-fullscreen 0 -logFile /tmp/exoduser-moodlab-b.log
+--moodlab --mood=c --unity-qa-sandbox /tmp/exoduser-moodlab-qa --unity-mute -screen-width 1920 -screen-height 1080 -screen-fullscreen 0 -logFile /tmp/exoduser-moodlab-c.log
+--moodlab --mood=d --unity-qa-sandbox /tmp/exoduser-moodlab-qa --unity-mute -screen-width 1920 -screen-height 1080 -screen-fullscreen 0 -logFile /tmp/exoduser-moodlab-d.log
+
+node unity/Assets/Exoduser/Editor/MoodLab/verify.mjs --png /absolute/a.png /absolute/b.png /absolute/c.png /absolute/d.png
+```
+
+두 해상도를 섞지 말고, 3840×1080도 별도의 a/b/c/d 4장으로 같은 검사를 실행한다. 새 카메라는 MainCamera 태그가 없으므로 캡처 도구가 Camera.main에 의존하면 `MoodLab camera 34deg 16.5u`를 명시적으로 찾거나 전체 화면 캡처를 사용한다. a→b→c→d→a 전환 잔류 효과도 확인한다.
+
+위험 API/미확인: BeforeSceneLoad에서 inactive 객체 직접 탐색/비활성화의 실제 6000.6 동작, 새 RenderPipelineManager.beginCameraRendering→EnqueuePass 주입 시점, RecordRenderGraph/RendererList/depth attachment 및 Metal depth-texture 합성, 물 스페큘러·림·LUT 곡선 최종 결과. RenderGraph 본문은 기존 NativeGroundSkillProjection의 물 pass에서 쓰는 API를 좁혀 사용했으며, 공개 URP 소스도 참고했지만 설치 패키지와 같다고 단정하지 않았다. **이번 C#·HLSL 컴파일/Player 실행은 하지 않았다.**
+
+수정: MoodLabBootstrap.cs / MoodLabScene.cs / MoodLabPresets.cs / MoodLabAtmosphere.cs / Resources/MoodLab/MoodLabAtmosphere.shader / Editor/MoodLab/verify.mjs.
+추가: Runtime/MoodLab/MoodLabWaterPass.cs, Editor/MoodLab/png-check.mjs, Editor/MoodLab/png-check.test.mjs 및 각 `.meta`.
+본선 파일·Core·기존 A2 shader·씬 파일·Renderer Asset 변경 0. 기존 tracked .meta GUID 유지. git diff --check PASS, 기존 LF 유지·sed 사용 0. Unity·Player·exo-unity·Python·유료 도구·commit/push/stage 실행 0.
+
+증거: 최신 `STATIC_CHECK.txt`, `RUNTIME_INIT_AUDIT.txt`. **수정 코드 인계이며 Mac의 격리 재판정/4컷 차이 15/가독성·점 관문은 아직 미통과 상태다.**
+
+---
+
+## 2026-11-05 CTO CX1 프리셋 보정 — 이전 보고
 
 사용자 실행본 반영 없음. 현재 HEAD `efaa481c7da5100b1d998e08a3dcef3b919cc4dd`, 작업본/브랜치 `E:/exoduser-wt/codex-moodlab` / `codex/unity-moodlab-20261105`. 변경은 미커밋 상태로 총괄 검토 대기.
 관문: **verify.mjs 갱신 후 1회 실행 PASS / C#·셰이더 컴파일·화면·Mac 판정 미확인**.

@@ -14,6 +14,8 @@ namespace Exoduser.UnityPort.MoodLab
         public float RimPower, RimStrength, Temperature, Tint, LutContribution;
         public Color RimColor = Color.black;
         public Vector3 LutScale = Vector3.one, LutCross = Vector3.zero, LutLift = Vector3.zero;
+        public float LutCurveContrast, LutCurveSaturation = 1;
+        public string Intent = "";
 
         public MoodLabPreset(char id, string name, float key, Color keyColor, float shadow,
             float ambient, Color ambientColor, float fogStart, float fogEnd, Color fogColor,
@@ -53,27 +55,32 @@ namespace Exoduser.UnityPort.MoodLab
             // a: exact efaa481c7 reference values; CX1 §2/§10 evaluation only, no retuning.
             new MoodLabPreset('a', "A2 cool reference", 3.2f, new Color(.85f,.90f,1f), .55f, 1f, new Color(.26f,.28f,.30f), 19f, 62f, new Color(.105f,.145f,.17f), .55f, 16f, -8f, new Color(1f,1f,1f))
             {
+                Intent = "A2 기준판: 차가운 주광과 기존 거리 안개 비교",
             },
-            // b: lighting/grading remain A2. Fog 22..68/color are 저작 시험값, CX1 §2/§10 원칙 기준.
-            new MoodLabPreset('b', "Height fog and rim", 3.2f, new Color(.85f,.90f,1f), .55f, 1f, new Color(.26f,.28f,.30f), 22f, 68f, new Color(.105f,.145f,.17f), .55f, 16f, -8f, new Color(1f,1f,1f))
+            // CX5 trial, not a recommended numeric range. CX1 §3/§8/§10 principles only.
+            new MoodLabPreset('b', "Height fog and rim", 3.2f, new Color(.55f,.82f,1f), .55f, 1f, new Color(.22f,.30f,.34f), 22f, 68f, new Color(.16f,.34f,.42f), .55f, 18f, -12f, new Color(1f,1f,1f))
             {
-                HeightDensity = .020f, HeightBase = .20f, HeightFalloff = 1.2f, HeightLaneFloor = .25f, // 저작 시험값, CX1 §3 원칙 기준
-                OpticalDepthCap = .060f, // 저작 시험값, CX1 §3/§10 원칙 기준 + CTO center T>=.83 constraint
-                RimPower = 4f, RimStrength = .12f, RimColor = new Color(.55f,.70f,1f) // 저작 시험값, CX1 §8 원칙 기준; p=4 example is NOT a recommendation
+                Intent = "청록 저지대 안개와 밝은 상부 림: 냉습한 늪",
+                HeightDensity = .100f, HeightBase = .60f, HeightFalloff = .9f, HeightLaneFloor = .25f, // 저작 시험값, CX1 §3 원칙 기준; density 5x previous
+                OpticalDepthCap = .240f, // 저작 시험값, CX1 §3/§10 원칙 기준; report any T<83%, no false pass
+                RimPower = 2f, RimStrength = .90f, RimColor = new Color(.65f,.85f,1f) // 저작 시험값, CX1 §8 원칙 기준; strength 7.5x previous
             },
-            // c: lighting/grading remain A2. Fog 24..72/color are 저작 시험값, CX1 §2/§10 원칙 기준.
-            new MoodLabPreset('c', "Smooth medium and aerial perspective", 3.2f, new Color(.85f,.90f,1f), .55f, 1f, new Color(.26f,.28f,.30f), 24f, 72f, new Color(.105f,.145f,.17f), .55f, 16f, -8f, new Color(1f,1f,1f))
+            // CX5 trial: extinction slope 2.5x via range 48/2.5=19.2u; NOT a CX1 numeric recommendation.
+            new MoodLabPreset('c', "Smooth medium and aerial perspective", 3.0f, new Color(1f,.73f,.42f), .50f, 1f, new Color(.30f,.23f,.15f), 24f, 43.2f, new Color(.42f,.24f,.10f), .45f, 20f, 8f, new Color(1f,1f,1f))
             {
-                VolumeDensity = .0025f, VolumeFloor = .20f, Scatter = .65f, // 저작 시험값, CX1 §4.1/§10 원칙 기준; smooth unshadowed scattering approximation
-                OpticalDepthCap = .060f // 저작 시험값, CX1 §3/§10 원칙 기준; no jitter or noise
+                Intent = "황갈색 산란과 빠른 거리 감쇠: 무거운 유황 대기",
+                VolumeDensity = .00625f, VolumeFloor = .20f, Scatter = 1.625f, // 저작 시험값, CX1 §4.1/§10 원칙 기준; density/scatter controls 2.5x
+                OpticalDepthCap = .150f // 저작 시험값, CX1 §3/§10 원칙 기준; actual integrated T reported
             },
-            // d: A2 lighting/fog retained. .40/10/-12 grading is 저작 시험값, CX1 §9.1/§9.3 원칙 기준.
-            new MoodLabPreset('d', "White balance and LUT", 3.2f, new Color(.85f,.90f,1f), .55f, 1f, new Color(.26f,.28f,.30f), 19f, 62f, new Color(.105f,.145f,.17f), .40f, 10f, -12f, new Color(1f,1f,1f))
+            // CX5 trial color curves, white balance and LUT. CX1 §9.1/§9.3 principles only.
+            new MoodLabPreset('d', "White balance and LUT", 3.2f, new Color(.85f,.90f,1f), .55f, 1f, new Color(.26f,.28f,.30f), 19f, 62f, new Color(.105f,.145f,.17f), .30f, 26f, -24f, new Color(1f,1f,1f))
             {
-                Temperature = -8f, Tint = 5f, LutContribution = .35f, // 저작 시험값, CX1 §9.3 원칙 기준; no recommended WB/contribution in CX1
-                LutScale = new Vector3(.96f,.98f,.94f), // 저작 시험값, CX1 §9.3 원칙 기준; encoded RGB transform, NOT another tone mapper
-                LutCross = new Vector3(.02f,0f,.03f), // 저작 시험값, CX1 §9.3 원칙 기준
-                LutLift = new Vector3(.01f,.005f,.01f) // 저작 시험값, CX1 §9.3 원칙 기준; monotonic, unclipped endpoints
+                Intent = "보랏빛 암부와 낮은 채도 S곡선: 차가운 잿빛 지옥",
+                Temperature = -30f, Tint = 24f, LutContribution = .85f, // 저작 시험값, CX1 §9.3 원칙 기준
+                LutScale = new Vector3(.80f,.92f,.98f), // 저작 시험값, CX1 §9.3 원칙 기준
+                LutCross = new Vector3(.06f,0f,0f), // 저작 시험값, CX1 §9.3 원칙 기준
+                LutLift = new Vector3(.035f,.015f,.005f), // 저작 시험값, CX1 §9.3 원칙 기준
+                LutCurveContrast = .65f, LutCurveSaturation = .70f // 저작 시험값, CX1 §9.3 원칙 기준; monotonic S-curve, no baked ACES
             }
         };
     }
