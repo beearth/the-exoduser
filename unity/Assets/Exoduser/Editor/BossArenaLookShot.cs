@@ -264,7 +264,7 @@ namespace Exoduser.Editor
                 DisposeEditorArena(arena);if(root!=null)Object.DestroyImmediate(root);if(candidate!=null)Object.DestroyImmediate(candidate);
                 if(profile!=null){foreach(var c in profile.components)Object.DestroyImmediate(c);Object.DestroyImmediate(profile);}
                 if(beauty!=null){beauty.Release();Object.DestroyImmediate(beauty);}if(data!=null){data.Release();Object.DestroyImmediate(data);}
-                AudioListener.volume=volume;AudioListener.pause=paused;EditorSceneManager.MarkSceneClean(scene);
+                AudioListener.volume=volume;AudioListener.pause=paused;
             }
         }
     }
