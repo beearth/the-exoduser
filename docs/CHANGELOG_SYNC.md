@@ -1,3 +1,5 @@
+2026-11-04 첫인상 결함 3·5(유니티 총괄 브리프 first-impression-235, claude/unity-pc-lobby-poster-20261104 위): 메인 메뉴 항목 18→30px 명조(한글·CJK Hahmlet 본문 경로, 라틴 Cinzel 600, 긴 라벨은 22px까지 줄임)·초점 표시를 '—' 대신 진홍 마름모+밝기(비초점은 어둡게), 버전 표기를 웹 release_web(v0.7.11) 대신 Unity Application.version(PlayerSettings bundleVersion, 지금 1.0 그대로·번호는 CTO 결정 대기)으로, 브랜드 인트로 '아무 키나 눌러 계속'·캐릭터 선택 '출시 준비 중'을 Noto Sans KR에서 명조·Cinzel로, 캐릭터 선택 본문·이름·제목·직업·기본 스토리를 같은 명조·Cinzel 경로로 통일; 메인 메뉴 32:9는 확장 원화가 없어 연결 못 함(조사만, 생성 0). 소스 계약 `unity/Tools/first-impression-tests/run.cjs`·참조 컴파일 5어셈블리 오류 0. 상태: PC 검사·컴파일만, 화면 판정 전. 상세: docs/3.1 ui hud 디자인/스플래시_인트로_시퀀스.md '2026-11-04 첫인상 3·5'.
+
 2026-11-04 스킬 정보 작은 버튼 가시 끝장식이 글자를 덮던 결함(디자인총괄, parity 병합 d50fa39a1 판정): NativeSkills.InfoButton에 명시 chip 인자, 강화 +·강화 −·리셋(64~68px) 3개만 칩 원화(settingsChip). 크기로 자동 판단하지 않음, 넓은 장착 버튼은 가시 판 유지. 검사 skill-chip 3/0, 참조 컴파일 오류 0. 화면 판정 전(claude/unity-pc-lobby-poster-20261104).
 
 2026-11-04 로비 영상 정지 포스터(claude/unity-pc-lobby-poster-20261104): 영상 준비 전 검은 화면 제거 — fdg_intro·warrior_story 첫 프레임 포스터 신규, `NativeLobbyVideo.Presentable`(frameReady 뒤 한 프레임)로 영상 전환, 실패 시 포스터 유지. 소스 계약 35/0, 5어셈블리 컴파일 오류 0. PC 검사·컴파일만, 화면 판정 전.
