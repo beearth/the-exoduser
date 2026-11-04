@@ -1,5 +1,6 @@
 // CX-04a enemy hurt-head oracle exporter: runs the ORIGINAL head of hurtE (function start .. the line before "// ═══ 데미지 → HP 직행 ═══") from game.html
 // in a Node VM and writes oracle.json.
+// 기본값: A안 VM 기대값 층. --expectation-mode web은 주입 없는 원래 웹 기대값.
 //   node export.cjs --source <committed game.html> --head <commit sha> [--expect-source-sha <sha256>] [--out oracle.json]
 // Wrapper (the only text added around original lines):
 //   "function __H1(e,dmg,ang,noSound,opts,atkEl=0){"  (original line 1 with the name changed)
@@ -21,7 +22,8 @@ function record(name,start,end){const body=lines.slice(start,end+1).join('\n');a
 function stmt(name,prefix){const s=find(prefix);for(let e=s;e<Math.min(lines.length,s+400);e++){const body=lines.slice(s,e+1).join('\n');if(compiles(body))return record(name,s,e);}throw Error('no complete statement from '+prefix);}
 function untilBrace(name,prefix){const s=find(prefix);for(let e=s+1;e<lines.length;e++)if(lines[e]==='}'||lines[e]==='}\r')return record(name,s,e);throw Error('no closing brace for '+prefix);}
 function single(name,prefix){const s=find(prefix);return record(name,s,s);}
-const blocks=[];const add=b=>blocks.push(b);
+const expectation=require(arg('--a-plan-module',path.join(__dirname,'../enemy-spawn-oracle/a-plan.cjs'))).create(arg('--expectation-mode','a-plan'));
+const blocks=[];const add=b=>blocks.push(b.startsWith('function mkEn(')?expectation.inject(b,lines):b);
 // ---- mkEn + tables (to create realistic enemy objects; same blocks as CX-02/03a) ----
 add(stmt('EL','const EL={'));add(stmt('CHAPTER_STAGES','const CHAPTER_STAGES=['));add(stmt('TOTAL_STAGES','const TOTAL_STAGES='));
 add(stmt('HELL_NAMES','const HELL_NAMES=['));add(stmt('HELL_THEMES','const HELL_THEMES=['));add(stmt('HELL_BOSSES','const HELL_BOSSES=['));
@@ -168,6 +170,7 @@ function addPotion(t,n){__rec('addPotion',t,n);return __w4.addPotionOk;}
 function rollDrop(e){__rec('rollDrop',e);}function addExp(){__rec.apply(null,['addExp'].concat(Array.prototype.slice.call(arguments)));}function checkRooms(){__rec('checkRooms');}function dbSaveNow(){__rec('dbSaveNow');}
 SFX.explode=function(){__rec('sfxExplode');};SFX.magicHit=function(){__rec('sfxMagicHit');};SFX.pickup=function(){__rec('sfxPickup');};
 `,ctx);
+if(expectation.prelude)vm.runInContext(expectation.prelude,ctx);
 for(const b of blocks)vm.runInContext(b,ctx);
 vm.runInContext('var __mkEnOrig=mkEn;mkEn=function(x,y,si,et,ib,el,room){__rec("mkEn",x,y,si,et,ib,el,room);return __mkEnOrig.apply(this,arguments);};',ctx);
 vm.runInContext(H1,ctx);vm.runInContext(H2,ctx);vm.runInContext(H3,ctx);vm.runInContext(H4,ctx);
@@ -877,7 +880,7 @@ const sum={nonFiniteTags:tagTotals,cases:cases.length,h1:K('H1').length,h2:K('H2
   shielded:cases.filter(c=>c.expected.ret&&c.expected.ret._shBlocked).length,logEntries:cases.reduce((s,c)=>s+c.expected.log.length,0),randomDraws:cases.reduce((s,c)=>s+c.expected.consumed,0),enemies:cases.reduce((s,c)=>s+1+c.others.length,0),
   h2Killed:cases.filter(c=>c.expected.ret2&&c.expected.ret2&&c.kind!=='H1').length};
 const callNames={};for(const c of cases)for(const l of c.expected.log)callNames[l[0]]=(callNames[l[0]]||0)+1;sum.injectedCalls=callNames;
-const out={schema:'exoduser.unity.enemy-hurt-oracle.v1',source:{path:sourcePath,sha256:fileSha,lines:lines.length,head:headSha,anchors,wrapper:{header:'function __H1(e,dmg,ang,noSound,opts,atkEl=0){',footer:'return {'+returned.join(',')+'};}finally{_shBufI--}}',locals:returned,h2:{header:'function __H2(e,ang,noSound,opts,__h){let {'+HEAD14.join(',')+'}=__h;',footer:'return {'+returned2.join(',')+'};}',locals:locals2,returned:returned2},
+const out={expectation:expectation.metadata,schema:'exoduser.unity.enemy-hurt-oracle.v1',source:{path:sourcePath,sha256:fileSha,lines:lines.length,head:headSha,anchors,wrapper:{header:'function __H1(e,dmg,ang,noSound,opts,atkEl=0){',footer:'return {'+returned.join(',')+'};}finally{_shBufI--}}',locals:returned,h2:{header:'function __H2(e,ang,noSound,opts,__h){let {'+HEAD14.join(',')+'}=__h;',footer:'return {'+returned2.join(',')+'};}',locals:locals2,returned:returned2},
     h3:{header:'function __H3a(e,ang,noSound,opts,__h){let {'+returned2.join(',')+'}=__h;',footer:'return {__cont:true,'+locals3.join(',')+'};}return {__cont:false};}',locals:locals3},h3b:{header:'function __H3b(e,ang,noSound,opts,__h,__d){let {'+returned2.join(',')+'}=__h;let {'+locals3.join(',')+'}=__d;',footer:'}'}},
   note:'blocks located by text anchors and executed unchanged in one Node VM; external pieces = recording stubs with case-defined values, P/G/PASSIVES/INV values, Math.random sequence'},
   tables,bases,summary:sum,cases};

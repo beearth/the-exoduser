@@ -123,7 +123,7 @@
 | P1 | 복수의 대장간 | `공통/복수의 대장간.mp3` | 4:54 | 6MB mp3 172k | 4.6MB | forge | Suno (beearthone)  · 유료 플랜 확인(사용자, 11-04) · id 86d35f6a | 대장간 화면 BGM(forge 큐) / **반입:** `Bgm/forge_vengeance.mp3`(정적 계약 통과, Unity·청음 미확인) |
 | P1 | 지옥 추락 사망 징글 | `공통/지옥 추락 사망 징글.mp3` | 1:44 | 2.3MB mp3 187k | 1.6MB | death | Suno (beearthone)  · 유료 플랜 확인(사용자, 11-04) · id 72fbda1c | 사망·승리 큐 두 번째 곡(같은 Suno 제목의 다른 take, Unity 1곡으로 충분) / **반입:** `Bgm/death_alt.mp3`(정적 계약 통과, Unity·청음 미확인) |
 | P1 | 탈출 성공 | `공통/탈출 성공.mp3` | 3:23 | 4.7MB mp3 194k | 3.2MB | victory | Suno (beearthone)  · 유료 플랜 확인(사용자, 11-04) · id 24eb606a | 사망·승리 큐 두 번째 곡(같은 Suno 제목의 다른 take, Unity 1곡으로 충분) / **반입:** `Bgm/victory_alt.mp3`(정적 계약 통과, Unity·청음 미확인) |
-| P1 | Anvil Ashes | `공통/Anvil Ashes.mp3` | 5:60 | 7.8MB mp3 182k | 5.6MB | forge | Suno (beearthone)  · 유료 플랜 확인(사용자, 11-04) · id b998e693 | 대장간 화면 BGM(forge 큐) / **반입:** `Bgm/forge_anvil_ashes.mp3`(정적 계약 통과, Unity·청음 미확인) |
+| P1 | Anvil Ashes | `공통/Anvil Ashes.mp3` | 6:00 | 7.8MB mp3 182k | 5.6MB | forge | Suno (beearthone)  · 유료 플랜 확인(사용자, 11-04) · id b998e693 | 대장간 화면 BGM(forge 큐) / **반입:** `Bgm/forge_anvil_ashes.mp3`(정적 계약 통과, Unity·청음 미확인) |
 | P1 | Coronam Ferro (Remastered) | `공통/Coronam Ferro (Remastered).wav` | 3:22 | 36.9MB wav 1536k | 3.2MB | gameplay | Suno  · 유료 플랜 확인(사용자, 11-04) · id eedb7fc5 | Remastered 원본(WAV, 반입 시 Vorbis 변환). mp3판이 있으면 그쪽과 비교 / 같은 바이트: 공통/Coronam Ferro2(Remastered).wav |
 | P1 | Coronam Ferro | `공통/Coronam Ferro V2.mp3` | 3:22 | 4.5MB mp3 189k | 3.2MB | gameplay | Suno (beearthone)  · 유료 플랜 확인(사용자, 11-04) · id b74033b9 | gameplay — 2~7장 또는 공통 회전 |
 | P1 | Coronam Ferro | `공통/Coronam Ferro.mp3` | 3:48 | 5MB mp3 185k | 3.6MB | gameplay | Suno (beearthone)  · 유료 플랜 확인(사용자, 11-04) · id c0749f24 | gameplay — 2~7장 또는 공통 회전 |
@@ -165,3 +165,4 @@
 | 2026-11-04 | 사용자 확인(CTO 경유): Suno 생성 당시 유료 플랜 → Suno 76곡 상업 이용 조건 확인, 출처 칸 갱신. P1 반입 순서 7단계 결정(데모 권장 = P0 + 1~3단계, 11곡 약 45MB). P2 3곡은 계속 보류 |
 
 | 2026-11-04 | P1 ①~③ 8곡 반입·표현 계층 연결. Core 무수정, 18값 설정 목록, 필드 6곡·대장간 3곡 셔플 및 사망/승리 교대. 2-pass/검사 원자료 §1.4. 실제 Unity 컴파일은 HALT 차단, 청음 전 |
+2026-11-04 감사: Anvil Ashes의 기존 조사 원자료 `table.json`은359.7초다. 초 단위 반올림 표기6:00으로 정정했다. 표 재집계는 P0 3·P1 52·P2 8·보유10·제외6=79파일이며 반입 추정 용량과 사용자 라이선스 확인 기록은 유지한다. 음원 반입·변환·재생·외부 권리 재검증은 하지 않았다.
