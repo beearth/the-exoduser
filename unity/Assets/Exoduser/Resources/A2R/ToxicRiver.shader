@@ -43,9 +43,9 @@ Shader "EXODUSER/A2R/ToxicRiver"
    half4 SwampSurface(V i)
    {
     float2 p=i.world.xz;float t=_Time.y;
-    float a=dot(p,float2(.81,.27))-t*.19;
-    float b=dot(p,float2(-.32,.64))+t*.13+sin(a*.43)*.48;
-    float2 slope=float2(.81,.27)*cos(a+sin(b)*.32)*.075+float2(-.32,.64)*cos(b)*.055;
+    float a=dot(p,float2(2.3,.71))-t*.19;
+    float b=dot(p,float2(-.83,1.91))+t*.13+sin(a*.43)*.48;
+    float2 slope=float2(2.3,.71)*cos(a+sin(b)*.32)*.045+float2(-.83,1.91)*cos(b)*.028;
     float ripple=A2RWave(p);slope+=float2(A2RWave(p+float2(.025,0))-ripple,A2RWave(p+float2(0,.025))-ripple)/.025;
     float3 n=normalize(float3(-slope.x,1,-slope.y));
     float2 uv=i.screen.xy/i.screen.w;
