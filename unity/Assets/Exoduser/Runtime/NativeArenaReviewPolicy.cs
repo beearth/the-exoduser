@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Exoduser.UnityPort.Core;
 namespace Exoduser.UnityPort
 {
@@ -9,6 +10,79 @@ namespace Exoduser.UnityPort
         {
             "slashCombo","slam","charge","grab","burrowStrike","groundFissure","heartbeat"
         };
+        // Review input priority. Without review, none of the diagnostic stages owns input.
+        public enum InputStep { Existing,Coverage,Contact,Edge }
+        public static InputStep InputStepFor(bool review,bool coverageWaiting,bool contact,bool edge)
+        {
+            return !review?InputStep.Existing:coverageWaiting?InputStep.Coverage:contact?InputStep.Contact:edge?InputStep.Edge:InputStep.Existing;
+        }
+        public const int CoverageTimeoutTicks=90*60; // simulation time, 60 Hz; capture pauses do not consume ticks
+        [Serializable] public sealed class CoverageLife
+        {
+            public int life,startTick,elapsedTicks;
+            public bool complete,coverageTimeout;
+            public string[] expected,activated,missing;
+        }
+        // One tracker per boss encounter. Cache the live set's phase lists once; never write Core data.
+        public sealed class LifeCoverageTracker
+        {
+            sealed class Life
+            {
+                public string[] expected;
+                public readonly HashSet<string> seen=new HashSet<string>();
+                public int start=-1,last,stop=-1;
+                public bool timedOut;
+            }
+            readonly Life[] lives;
+            public LifeCoverageTracker(BossRemodelSet set)
+            {
+                if(set==null)throw new ArgumentNullException(nameof(set));
+                lives=new Life[set.Lives];
+                for(int i=0;i<lives.Length;i++)lives[i]=new Life{expected=set.MovesOfPhase(i)};
+            }
+            Life Touch(int phase,int tick)
+            {
+                if(phase<0||phase>=lives.Length)return null;
+                var life=lives[phase];
+                if(life.start<0)life.start=tick;
+                life.last=tick;
+                return life;
+            }
+            public void Observe(int phase,int tick,string activation)
+            {
+                var life=Touch(phase,tick);
+                if(life==null||activation==null||Array.IndexOf(life.expected,activation)<0)return;
+                life.seen.Add(activation);
+                if(life.seen.Count==life.expected.Length&&life.stop<0)life.stop=tick;
+            }
+            public bool Waiting(int phase,int tick)
+            {
+                var life=Touch(phase,tick);
+                if(life==null)return false;
+                if(life.seen.Count==life.expected.Length)
+                {
+                    if(life.stop<0)life.stop=tick;
+                    return false;
+                }
+                if(life.timedOut)return false;
+                if(tick-life.start<CoverageTimeoutTicks)return true;
+                life.timedOut=true;life.stop=life.start+CoverageTimeoutTicks;
+                return false;
+            }
+            // Allocate only when writing the final receipt, not in the tick/input path.
+            public CoverageLife[] Results()
+            {
+                var rows=new List<CoverageLife>();
+                for(int i=0;i<lives.Length;i++)
+                {
+                    var life=lives[i];if(life.start<0)continue;
+                    var activated=new List<string>();var missing=new List<string>();
+                    foreach(var id in life.expected)if(life.seen.Contains(id))activated.Add(id);else missing.Add(id);
+                    rows.Add(new CoverageLife{life=i+1,startTick=life.start,elapsedTicks=Math.Min(CoverageTimeoutTicks,Math.Max(0,(life.stop<0?life.last:life.stop)-life.start)),complete=missing.Count==0,coverageTimeout=life.timedOut,expected=(string[])life.expected.Clone(),activated=activated.ToArray(),missing=missing.ToArray()});
+                }
+                return rows.ToArray();
+            }
+        }
         // edge-hit capture (boss board 8.5.5): which lives the bot stands on the body edge for. --unity-boss-arena-p3-edge = life 3 (old arg), --unity-boss-arena-edge = all three,
         // --unity-boss-arena-edge=1,3 = the listed lives (1-based; unknown tokens ignored, nothing valid = all three). Result index = life 0..2.
         public static bool[] EdgeLives(string[] args)
