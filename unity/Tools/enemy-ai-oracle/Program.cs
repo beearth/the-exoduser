@@ -14,11 +14,12 @@ using Exoduser.UnityPort.Core;
 class EnemyAiProgram
 {
     static int failures, total; static readonly List<object> rows = new List<object>(); static string currentCase = "";
+    static readonly SortedDictionary<string, int> failByCase = new SortedDictionary<string, int>();   // every failure, by scenario name (rows keep only the first 400)
     static void Check(bool pass, string name)
     {
         total++;
         if (pass) { if (total % 50000 == 1) rows.Add(new { name = currentCase + " | " + name, passed = true }); }
-        else { failures++; if (failures <= 400) rows.Add(new { name = currentCase + " | " + name, passed = false }); }
+        else { failures++; failByCase.TryGetValue(currentCase, out var fc); failByCase[currentCase] = fc + 1; if (failures <= 400) rows.Add(new { name = currentCase + " | " + name, passed = false }); }
     }
     static bool Same(double a, double b) { if (a == 0 && b == 0) return true; return BitConverter.DoubleToInt64Bits(a) == BitConverter.DoubleToInt64Bits(b); }
 
@@ -225,6 +226,7 @@ class EnemyAiProgram
         var summary = new { cases, ticksRun, checks = total, failures, rows };
         File.WriteAllText(args[0], JsonSerializer.Serialize(summary));
         Console.WriteLine("ENEMY_AI_RESULT cases " + cases + " ticks " + ticksRun + " checks " + total + " failures " + failures);
+        foreach (var kv in failByCase) Console.WriteLine("FAIL_CASE " + kv.Value + " " + kv.Key);
         foreach (var r in rows) { var s = JsonSerializer.Serialize(r); if (s.Contains("\"passed\":false")) Console.WriteLine(s.Length > 400 ? s.Substring(0, 400) : s); }
         return failures == 0 ? 0 : 1;
     }

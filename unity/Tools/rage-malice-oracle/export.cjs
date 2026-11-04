@@ -38,6 +38,7 @@ function mkScope(c){
   _lEq:k=>(k==='_lSwordCombo'||k==='_lRingKill')?(c.frac||0):0,
   _eqAffix:k=>k==='rageMaxFlat'?(c.flat||0):k==='rageDmg'?(c.rdmg||0):k==='goldBonus'?(c.gold||0):0,
   _T:a=>a,_L:a=>a,addTxt:(x,y,t)=>texts.push(t),_addLavaErupt:()=>lava.push(1),meleeRef:()=>1,statStr:()=>1,_skMul:()=>1,
+  _currencyOrbPickup:noop, // 통화 HUD 연출 API만 격리
   SFX:new Proxy({},{get:()=>noop}),poolPart:noop,step:3,a:c.a===undefined?5:c.a,_rageAdd:c.add||0,_comboBonus:c.combo||1,
   it:{type:'mat',matVal:c.matVal,picked:false},ok:false,e:{ib:!!c.ib,elite:c.elite||0,x:0,y:0},_texts:texts,_lava:lava};
 }
