@@ -100,6 +100,17 @@ class DruidRigTests
     Check(NativeArenaReviewPolicy.ContactAt(192,out pr)==NativeArenaReviewPolicy.ContactStep.Dash&&pr&&NativeArenaReviewPolicy.ContactAt(206,out pr)==NativeArenaReviewPolicy.ContactStep.Dash&&NativeArenaReviewPolicy.ContactAt(207,out pr)==NativeArenaReviewPolicy.ContactStep.Attack,"seq contact dash then repeat");
    }
    var none=NativeArenaReviewPolicy.EdgeLives(new string[0]);Check(!none[0]&&!none[1]&&!none[2],"edge arg absent = none");
+   {   // arena fix 11-04: canvas never 0 for the druid (cap 2048, texel steps), enemies keep the 1024 cap
+    int tx;float wpp=.01f;
+    int s1069=NativeRigPixelPolicy.DruidCanvas(wpp,1,1069,out tx);Check(s1069>0&&s1069<=NativeRigPixelPolicy.DruidMaxRt&&tx>=1,"druid canvas 1069px box nonzero size="+s1069+" texel="+tx);
+    int s4000=NativeRigPixelPolicy.DruidCanvas(wpp,1,4000,out tx);Check(s4000>0&&s4000<=NativeRigPixelPolicy.DruidMaxRt&&tx>=2,"druid canvas 4000px box nonzero size="+s4000+" texel="+tx);
+    int s30000=NativeRigPixelPolicy.DruidCanvas(wpp,3,30000,out tx);Check(s30000>0&&s30000<=NativeRigPixelPolicy.DruidMaxRt&&tx>=3,"druid canvas 30000px box at texel 3 size="+s30000+" texel="+tx);
+    Check(NativeRigPixelPolicy.DruidCanvas(wpp,1,500,out tx)>0&&tx==1,"druid canvas small box keeps texel 1");
+    Check(NativeRigPixelPolicy.DruidCanvas(float.NaN,1,500,out tx)==0&&NativeRigPixelPolicy.DruidCanvas(wpp,1,0,out tx)==0,"druid canvas invalid inputs = 0");
+    Check(NativeRigPixelPolicy.TextureSize(wpp,1,(1069+4)*wpp)==0&&NativeRigPixelPolicy.TextureSize(wpp,1,(1069+4)*wpp,2048)>0,"enemy/hero cap stays 1024, druid cap 2048");
+    // measured arena preview 5 (heroIdleWorld 1.6094975): P1 3.1421766, P2 2.6587646 -> footprint = Core radius rule, heights 1.95x / 1.65x hero
+    Check(Math.Abs(NativeDruidRigPolicy.HeroRatio(3.1421766f,1.6094975f)-1.952)<.001&&Math.Abs(NativeDruidRigPolicy.HeroRatio(2.6587646f,1.6094975f)-1.652)<.001&&NativeDruidRigPolicy.HeroRatio(1,0)==0,"hero height ratio from measured values");
+   }
    Console.WriteLine("scale P1="+rpx[0]/100/husk+" P2="+rpx[1]/100/husk+" P3 oldman="+rpx[2]/100/man+" P3 horn height m="+2.71*rpx[2]/100/man);
    foreach(var clip in source.GetProperty("clips").EnumerateArray())Near(clip.GetProperty("duration").GetDouble()*60,NativeDruidRigPolicy.Frames(clip.GetProperty("name").GetString()),"real asset duration "+clip.GetProperty("name"));
   }

@@ -4,6 +4,7 @@ namespace Exoduser.UnityPort
     // The hero/enemy Point-RT contract, isolated boss layer. No Core or camera pose writer.
     [DefaultExecutionOrder(1002)] public sealed class NativeDruidRigPixelView:MonoBehaviour
     {
+        public const float RimStrength=.26f; // was .08: husk silhouette vanished on dark floors (arena preview 5)
         const int Layer=27;const string Resource="Art/Bosses/Druid/OldmanV91",HeapResource="Art/Bosses/Druid/HuskHeapP3";
         [Serializable] sealed class ImportData {public string sourceVersion,sourceSha256;public float hornHeight,meshHeight,huskFootRadiusMetres,oldManFootRadiusMetres,huskTopMetres;public int boneCount,chestEmissionFaces;}
         GameObject root,model,heap;Transform orb;Renderer[] skins,huskSkins,manSkins,heapSkins;
@@ -117,6 +118,29 @@ namespace Exoduser.UnityPort
    Shader.SetGlobalVector("_RigPixelMoonDirection",moon!=null?-moon.transform.forward:Vector3.up);Shader.SetGlobalColor("_RigPixelMoonColor",moon!=null?moon.color.linear*moon.intensity:Color.black);Shader.SetGlobalColor("_RigPixelAmbient",RenderSettings.ambientEquatorColor.linear);Shader.SetGlobalVectorArray("_RigPixelPointPositions",lightPositions);Shader.SetGlobalVectorArray("_RigPixelPointColors",lightColors);
   }
 
+        // Skinned renderer.bounds spans the localBounds baked over all 38 clips (death_sink -3.3 m, collapses), which made the screen box 1,069 px. Clamp skinned parts to the live bone cloud + padding; rigid parts keep their own bounds.
+        readonly Dictionary<Renderer,Transform[]> boneCache=new Dictionary<Renderer,Transform[]>();
+        Bounds TightBounds(List<Renderer> list)
+        {
+            bool haveBones=false,haveRigid=false,haveSkin=false;Bounds boneBox=new Bounds(),skinBox=new Bounds(),rigidBox=new Bounds();
+            foreach(var r in list)
+            {
+                var smr=r as SkinnedMeshRenderer;
+                if(smr==null){if(haveRigid)rigidBox.Encapsulate(r.bounds);else{rigidBox=r.bounds;haveRigid=true;}continue;}
+                if(haveSkin)skinBox.Encapsulate(r.bounds);else{skinBox=r.bounds;haveSkin=true;}
+                Transform[] bones;if(!boneCache.TryGetValue(r,out bones)){bones=smr.bones;boneCache[r]=bones;}
+                foreach(var b in bones){if(b==null)continue;if(haveBones)boneBox.Encapsulate(b.position);else{boneBox=new Bounds(b.position,Vector3.zero);haveBones=true;}}
+            }
+            if(haveBones&&haveSkin)
+            {
+                float pad=.9f*unitsPerMetre*Mathf.Max(.0001f,root.transform.lossyScale.x); // longest bone-to-surface reach (horns, staff head, skirt)
+                boneBox.Expand(pad*2f);
+                var lo=Vector3.Max(skinBox.min,boneBox.min);var hi=Vector3.Min(skinBox.max,boneBox.max);
+                if(hi.x>lo.x&&hi.y>lo.y&&hi.z>lo.z)skinBox.SetMinMax(lo,hi);else skinBox=boneBox;
+            }
+            Bounds result;if(haveSkin){result=skinBox;if(haveRigid)result.Encapsulate(rigidBox);}else result=rigidBox;
+            return result;
+        }
         static float Smooth(float x){x=Mathf.Clamp01(x);return x*x*(3-2*x);}
         double RadiusPx(int index)
         {   // the Core's own rule (Simulation.DruidRemodel RemodelNextLife): BossRemodelSet.RadiusFor = LifeRadius, else Max(10, Round(OrigR * BodyScale[life]))
@@ -186,7 +210,7 @@ namespace Exoduser.UnityPort
                 if(drawList.Count==0){Hide();return;}
                 drawnParts=(showHusk?"husk ":"")+(showMan?"oldman ":"")+(showHeap?"heap":"");
                 foreach(var mat in materials){mat.SetFloat("_DruidGroundY",ground.y);mat.SetFloat("_DruidGlowStrength",mat.name.EndsWith("druid_glow",StringComparison.Ordinal)?(motion==null?1:motion.ChestPulse):1);}
-                bounds=drawList[0].bounds;foreach(var renderer in drawList)bounds.Encapsulate(renderer.bounds);
+                bounds=TightBounds(drawList);
                 if(!heapOnly)
                 {
                     ankleSpanWorld=showHusk?Vector3.Distance(motion.HuskLeftFoot,motion.HuskRightFoot):Vector3.Distance(motion.LeftFoot,motion.RightFoot);
@@ -195,12 +219,12 @@ namespace Exoduser.UnityPort
                 }
                 var foot=camera.WorldToScreenPoint(ground);if(foot.z<=0){Hide();return;}
                 var box=ScreenBounds(camera,bounds);projectedHeight=box.height;float wpp=(camera.ScreenToWorldPoint(foot+Vector3.up)-ground).magnitude;TexelScale=NativeRigPixelPolicy.TexelScale(camera.pixelHeight);
-                int size=NativeRigPixelPolicy.TextureSize(wpp,TexelScale,(Mathf.Max(box.width,box.height)+4*TexelScale)*wpp);if(size==0)throw new InvalidOperationException("Druid exceeds safe RT canvas");
+                int texel;int size=NativeRigPixelPolicy.DruidCanvas(wpp,TexelScale,Mathf.Max(box.width,box.height),out texel);if(size==0)throw new InvalidOperationException("Druid canvas inputs invalid");TexelScale=texel; // this frame only: 2048 cap, texel x2 steps instead of a permanent fallback
                 if(texture==null||texture.width!=size){if(texture!=null){texture.Release();Destroy(texture);}texture=new RenderTexture(size,size,24,RenderTextureFormat.ARGB32,RenderTextureReadWrite.Linear){name="Druid Point RT",filterMode=FilterMode.Point,wrapMode=TextureWrapMode.Clamp,antiAliasing=1,useMipMap=false,autoGenerateMips=false};texture.Create();composite.SetTexture("_MainTex",texture);}
                 float extent=size*wpp*TexelScale,cx=Mathf.Round((box.center.x-foot.x)/TexelScale)*wpp*TexelScale,cy=Mathf.Round((box.center.y-foot.y)/TexelScale)*wpp*TexelScale;
                 capture.orthographicSize=extent*.5f;capture.aspect=1;capture.transform.SetPositionAndRotation(ground+camera.transform.right*cx+camera.transform.up*cy-camera.transform.forward*8,camera.transform.rotation);request.destination=texture;
                 var snap=NativeHd2D.SnapAnchor(camera,ground);image.transform.SetPositionAndRotation(snap+camera.transform.right*cx+camera.transform.up*cy,camera.transform.rotation);image.transform.localScale=new Vector3(extent,extent,1);image.sortingOrder=(int)sortY;
-                Lighting(ground);var direction=moon!=null?-moon.transform.forward:Vector3.up;composite.SetVector("_RimDirection",new Vector4(Vector3.Dot(direction,camera.transform.right),Vector3.Dot(direction,camera.transform.up),0,0));composite.SetColor("_RimColor",(moon!=null?moon.color:Color.white)*.08f);
+                Lighting(ground);var direction=moon!=null?-moon.transform.forward:Vector3.up;composite.SetVector("_RimDirection",new Vector4(Vector3.Dot(direction,camera.transform.right),Vector3.Dot(direction,camera.transform.up),0,0));composite.SetColor("_RimColor",(moon!=null?moon.color:Color.white)*RimStrength);
                 double before=Time.realtimeSinceStartupAsDouble;foreach(var renderer in drawList)renderer.forceRenderingOff=false;
                 try{if(!RenderPipeline.SupportsRenderRequest(capture,request))throw new InvalidOperationException("URP SingleCameraRequest unavailable");RenderPipeline.SubmitRenderRequest(capture,request);}finally{foreach(var renderer in drawList)renderer.forceRenderingOff=true;}
                 RenderMilliseconds=(float)((Time.realtimeSinceStartupAsDouble-before)*1000);RenderCount++;renderedFrame=Time.frameCount;Ready=true;image.enabled=true;hideDefault?.Invoke();
@@ -213,7 +237,7 @@ namespace Exoduser.UnityPort
             public string mode="rigpixel",modelResource=Resource,sourceVersion,sourceSha,coreState,moveId,pose,clip,gate="Mac import/visual/performance pending";
             public string overlay,drawnParts;public int life;public bool heapPlaced;public float coreRadiusPx,coreRadiusWorld,rootScale,oldManFactor,anchorWeight,footprintRadiusWorld,bodyHeightWorld,bodyHeightHeroRatio,ankleSpanWorld,heroIdleWorld;public bool ready,failed,missingClip,humanoid,avatarValid;public int tick,frame,renders,rtSize,texelScale,missingStates,chestEmissionFaces;public float renderMs,hornWorldHeight,projectedBoundsHeightPx;public int rawAlphaHeightPx;public string rawAlphaScope="isolated raw RT before composite cleanup/outline and world occlusion; includes roots and staff";public Bounds bounds;public Vector3 leftFoot,rightFoot;public float sampleSeconds,sourceFrame,coreStageTicks,elapsedStageTicks,footDeltaCm;public bool horizontalRootStripped,held;public string footDeltaScope="per rendered Core sample world ankle displacement, includes Core movement/turning and authored vertical lifts; not a slip PASS";
         }
-        public Frame CaptureFrame(){return new Frame{overlay=motion==null?"":motion.Overlay,drawnParts=drawnParts,life=lifeIndex,heapPlaced=heapPlaced,coreRadiusPx=coreRadiusPx,coreRadiusWorld=coreRadiusWorld,rootScale=rootScale,oldManFactor=oldManFactor,anchorWeight=anchorWeight,footprintRadiusWorld=footprintWorld,bodyHeightWorld=bodyHeightWorld,bodyHeightHeroRatio=NativeArenaActorMetrics.HeroIdleWorld>0?bodyHeightWorld/NativeArenaActorMetrics.HeroIdleWorld:0,ankleSpanWorld=ankleSpanWorld,heroIdleWorld=NativeArenaActorMetrics.HeroIdleWorld,sourceVersion=imported==null?"":imported.sourceVersion,sourceSha=imported==null?"":imported.sourceSha256,chestEmissionFaces=imported==null?0:imported.chestEmissionFaces,coreState=data==null?"":data.S,moveId=data==null?"":data.RmMoveId,pose=motion==null?"":motion.Role,clip=motion==null?"":motion.Clip,ready=Ready,failed=failed,missingClip=motion==null||motion.MissingClip,humanoid=motion!=null&&motion.Humanoid,avatarValid=motion!=null&&motion.AvatarValid,tick=tick,frame=renderedFrame,renders=RenderCount,rtSize=TextureWidth,texelScale=TexelScale,missingStates=motion==null?0:motion.MissingStates,renderMs=RenderMilliseconds,projectedBoundsHeightPx=projectedHeight,hornWorldHeight=bodyHeightWorld,bounds=bounds,leftFoot=motion==null?Vector3.zero:motion.LeftFoot,rightFoot=motion==null?Vector3.zero:motion.RightFoot,sampleSeconds=motion==null?0:motion.SampleSeconds,sourceFrame=motion==null?0:motion.SampleSeconds*60,coreStageTicks=motion==null?0:(float)motion.Phase.CoreTicks,elapsedStageTicks=motion==null?0:(float)motion.Phase.ElapsedTicks,footDeltaCm=motion==null?0:motion.FootDeltaCm,horizontalRootStripped=motion!=null&&motion.Phase.StripHorizontalRoot,held=motion!=null&&motion.Phase.Held};}
+        public Frame CaptureFrame(){return new Frame{overlay=motion==null?"":motion.Overlay,drawnParts=drawnParts,life=lifeIndex,heapPlaced=heapPlaced,coreRadiusPx=coreRadiusPx,coreRadiusWorld=coreRadiusWorld,rootScale=rootScale,oldManFactor=oldManFactor,anchorWeight=anchorWeight,footprintRadiusWorld=footprintWorld,bodyHeightWorld=bodyHeightWorld,bodyHeightHeroRatio=NativeDruidRigPolicy.HeroRatio(bodyHeightWorld,NativeArenaActorMetrics.HeroIdleWorld),ankleSpanWorld=ankleSpanWorld,heroIdleWorld=NativeArenaActorMetrics.HeroIdleWorld,sourceVersion=imported==null?"":imported.sourceVersion,sourceSha=imported==null?"":imported.sourceSha256,chestEmissionFaces=imported==null?0:imported.chestEmissionFaces,coreState=data==null?"":data.S,moveId=data==null?"":data.RmMoveId,pose=motion==null?"":motion.Role,clip=motion==null?"":motion.Clip,ready=Ready,failed=failed,missingClip=motion==null||motion.MissingClip,humanoid=motion!=null&&motion.Humanoid,avatarValid=motion!=null&&motion.AvatarValid,tick=tick,frame=renderedFrame,renders=RenderCount,rtSize=TextureWidth,texelScale=TexelScale,missingStates=motion==null?0:motion.MissingStates,renderMs=RenderMilliseconds,projectedBoundsHeightPx=projectedHeight,hornWorldHeight=bodyHeightWorld,bounds=bounds,leftFoot=motion==null?Vector3.zero:motion.LeftFoot,rightFoot=motion==null?Vector3.zero:motion.RightFoot,sampleSeconds=motion==null?0:motion.SampleSeconds,sourceFrame=motion==null?0:motion.SampleSeconds*60,coreStageTicks=motion==null?0:(float)motion.Phase.CoreTicks,elapsedStageTicks=motion==null?0:(float)motion.Phase.ElapsedTicks,footDeltaCm=motion==null?0:motion.FootDeltaCm,horizontalRootStripped=motion!=null&&motion.Phase.StripHorizontalRoot,held=motion!=null&&motion.Phase.Held};}
         public int CaptureRawRt(string path)
         {
             if(!Ready||texture==null)return -1;

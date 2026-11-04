@@ -29,7 +29,7 @@ Shader "Exoduser/DruidRigPixelToon" {
     half4 albedo=SAMPLE_TEXTURE2D_BIAS(_BaseMap,sampler_BaseMap,i.uv,4)*_BaseColor;clip(albedo.a-.2h);albedo.rgb=_PaletteColor.rgb;
     half3 n=normalize(i.normal),view=GetWorldSpaceNormalizeViewDir(i.world);
     half3 metal=MetalHighlight(_RigPixelMoonDirection.xyz,_RigPixelMoonColor.rgb,1,n,view);
-    half3 diffuse=max(_RigPixelAmbient.rgb,half3(.24h,.25h,.28h))+Irradiance(_RigPixelMoonDirection.xyz,_RigPixelMoonColor.rgb,1,n);
+    half3 diffuse=max(_RigPixelAmbient.rgb,half3(.38h,.39h,.43h))+Irradiance(_RigPixelMoonDirection.xyz,_RigPixelMoonColor.rgb,1,n);
     [unroll]for(int lightIndex=0;lightIndex<4;lightIndex++){
      float3 delta=_RigPixelPointPositions[lightIndex].xyz-i.world;float distance2=max(.01,dot(delta,delta));float range=max(.01,_RigPixelPointPositions[lightIndex].w);
      half fade=saturate(1-distance2/(range*range));half attenuation=fade*fade/(1+distance2);
@@ -38,7 +38,7 @@ Shader "Exoduser/DruidRigPixelToon" {
      metal+=MetalHighlight(direction,_RigPixelPointColors[lightIndex].rgb,attenuation,n,view);
     }
     // Low-frequency material planes; the silhouette rim is applied after rendering, never on interior mesh facets.
-    half3 color=albedo.rgb*min(diffuse,half3(1.35h,1.35h,1.35h))+metal*_MetallicPlane;
+    half3 color=albedo.rgb*min(diffuse,half3(1.35h,1.35h,1.35h))+metal*_MetallicPlane;color=max(color,half3(.05h,.048h,.055h)); // flat minimum, not a pattern
     if(_DruidGlow>.5)color=_DruidEmission.rgb*saturate(_DruidGlowStrength);
     return half4(color,_SurfaceTag);
    }

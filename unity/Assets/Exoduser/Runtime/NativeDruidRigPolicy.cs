@@ -182,5 +182,7 @@ namespace Exoduser.UnityPort
                 default:return null;
             }
         }
+        // Receipt/test helper: displayed body height as a multiple of the real hero idle height (design: P1 2.805, P2 2.374; Core footprint rule gives 1.95/1.65).
+        public static float HeroRatio(float bodyHeightWorld,float heroIdleWorld){return heroIdleWorld>0?bodyHeightWorld/heroIdleWorld:0;}
     }
 }
