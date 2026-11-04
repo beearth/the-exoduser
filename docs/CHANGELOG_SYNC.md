@@ -1,3 +1,5 @@
+2026-11-04 docs↔Unity Core 수치 감사(기준8ad7fa322, Codex 문서 전용): 사냥꾼·앵글러 분열탄 공식을 보완하고 D-U2 pArmor 물리방어 전용·DR 식을 정정했다. Unity 표시버전0.1.0과 웹 메타데이터를 구분하고 사망 결정29언어×9키·입력개시2.79/2.67초·태국어 조판·펫 초상 제거 사실을 동기화했다. 실행기 좀비120초/CPU1.5초/종료로그·HALT exit3·디스크50%/10초/600초, 겹침381항목/707표본·3600초 래칫을 docs에 기록했다. 영웅1.61u 기준을 맵·보스 문서에 전파했으며 아레나13064048f의 반경130/111/57·CPU161.6초/72판은 미병합 후보 보드로만 구분했다. 코드·Core·실행기·예약·실행본 변경0, 빌드/Player/oracle 재실행0. 감사·보고: I:/EXODUSER-Storage/codex-takeover/docs-sync-audit/AUDIT.md 및 REPORT.md.
+
 2026-11-04 캐릭터 선택 직업 이름 칸 맞춤(UI 겹침 래칫 새 퇴보 10건, 유니티 총괄): 첫인상 변경으로 라틴 이름이 Cinzel이 되면서 fr "Guerrier…"가 오른쪽 패널을 2px 넘침(캐릭터선택0·2 × 해상도 5종). 이름이 308px 칸보다 넓을 때만 정수 pt로 줄임(하한 18, 자간 비례, 말줄임 없음), 맞는 이름은 28pt 그대로. classname-fit 4/0, 참조 컴파일 오류 0(claude/unity-pc-classname-fit-20261104).
 
 2026-11-04 14:50 PC Player 종료 정지 진단 준비(CTO 근본 원인 배정): 실행기 2026.11.04-stalldiag가 시간 초과 kill 때 스레드 대기 사유·GameInput 서비스 상태·로그 마지막 줄·kill 성공 여부를 영수증 stall에 남긴다(시험 stall-diag-test 7건). PortVerification.Build -gamepadBackend xinput은 그 빌드에서만 windowsGamepadBackendHint=XInput(WGI 회피 A/B, ProjectSettings 무변경). Roslyn Player/Editor 오류 0. 근거=창 모드 WGI 초기화 실행 정지 29/593, -batchmode 0/61(10-29~11-04).

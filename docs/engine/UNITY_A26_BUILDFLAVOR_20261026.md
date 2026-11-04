@@ -1,6 +1,6 @@
 ## 2026-10-27 Mac 표시 릴리스 메타 동기화
 
-현재 Mac `Resources/Data/release_web.json`은 원격 main `607110d52a56a1e5622a78e2ce7d09582946920a`의 `release-version.json` **동일 bytes**다(원본 blob `528ad945f68c8740a8f8fe77fa33518d18db296e`, SHA256 `21639192625b3db96c95db067d943d173cff6e297226ff9724e3022f0cb549da`). 현행 표시 `v0.7.5 · 20261020`; 아래 초기 PC 추출의 0.7.7 WIP 스냅샷 기록은 이 후속으로 교체됐다. [인수 근거와 범위](UNITY_MAC_RELEASE_METADATA_20261027.md).
+2026-10-27 당시 Mac `Resources/Data/release_web.json`은 원격 main `607110d52a56a1e5622a78e2ce7d09582946920a`의 `release-version.json` **동일 bytes**다(원본 blob `528ad945f68c8740a8f8fe77fa33518d18db296e`, SHA256 `21639192625b3db96c95db067d943d173cff6e297226ff9724e3022f0cb549da`). 당시 표시 `v0.7.5 · 20261020`; 아래 초기 PC 추출의 0.7.7 WIP 스냅샷 기록은 이 후속으로 교체됐다. **Unity 현행 표시 버전은 아래 11-04 정정의 0.1.0이며, 이 10-27 기록은 웹 메타데이터 인수 이력이다.** [인수 근거와 범위](UNITY_MAC_RELEASE_METADATA_20261027.md).
 
 # Unity 빌드 종류 정의 BuildFlavor (분모 A26, 웹 데모/BIC/EA 분기) — PC-A26 (2026-10-26)
 
@@ -37,7 +37,7 @@
 |---|---|---|
 | 정의(웹) | 4종 플레이버 행(라벨·제한·로그인 제목·데모 종료 문구·레벨 캡·패키지 식별자·메모), 데모 목록 2개, 로비 라벨 치수 | `Resources/Data/buildflavor_web.json`(줄 번호 기록) |
 | 선택 값 | 실행 인자 `--unity-build-flavor <full\|demo\|bic\|ea>` > 임베드 `Resources/Data/build_flavor.json`의 `selected`(저장소에는 `full`로 커밋) > 기본 `full` | `BuildFlavor.Current` |
-| 릴리스 버전 | `Resources/Data/release_web.json` = `release-version.json` 스냅샷(`0.7.5`, `2026-10-20`). 매일 릴리스 갱신은 빌드 스크립트 몫이며 Unity는 읽기만 한다 | 스냅샷 |
+| 릴리스 버전 | `Resources/Data/release_web.json` = 웹 릴리스 스냅샷(감사 기준8ad7fa322: `0.7.11`, `2026-11-02`, channel `ea-full`). Unity 표시 버전은 `Application.version`이며 웹 메타데이터와 별도다 | 스냅샷 |
 | 모드 줄 | "OFFLINE" 고정(Unity 로비에 온라인 계정 모드 없음) | Unity 상태 |
 | 미이식 | 레벨 캡 100(가짜 제한 금지: 화면·동작에 쓰지 않음), 데모 어픽스 금지 7종, 데모 합성 허용 22종, 로그인·데모 입장 버튼, 데모 시작 경로, EA 패키지 식별자 | `BuildFlavor.NotPorted` |
 
@@ -56,7 +56,7 @@
 ```
 BuildFlavor.Current  // Kind Id; Name; Label; Limits; LoginHeading(english); DemoMode; LevelCap(0=없음, 정의만); AffixBanned; FuseAllowed;
                      // Packaged; AppId; DepotId; Port; SaveNamespace; Entry; DemoEndAtStage(int); DemoEndSub(english); DemoEndButton(english)
-BuildFlavor.VersionLine  // "v0.7.5 · 20261020"
+BuildFlavor.VersionLine  // "v0.1.0 · 20261102" (감사 기준8ad7fa322의 Application.version·release_web.date)
 BuildFlavor.ResolveName(out source) / SelectedSource / Override(kind) / ResetOverride()   // 마지막 둘은 검증용
 BuildFlavor.NotPorted   // 정의만 있고 시스템이 없는 항목
 NativeLobbyBuildLabels.Draw(float quitButtonCenterY, bool offline=true)   // 1920x1080 설계 좌표
@@ -102,3 +102,14 @@ NativeLobbyBuildLabels.Draw(float quitButtonCenterY, bool offline=true)   // 192
 2026-10-29 최신 표시 상태 정정: 웹 `main:adb287e698738606d12d4a810796efb9493ce7c4`의 인라인 alpha는 위 `.5`로 남아 있지만 승인된 `lobby-silver-hell.css`가 좌상단 `#lobbyVerOverlay`를 `display:none!important`로 숨긴다. 따라서 위 표의 4줄은 현재 웹 출시 로비에서 표시되지 않는다. Mac은 별도 `.9` 후보를 표시하므로 현재 시각 계약이 다르다. [실제 화면·패치 노트 경로 판정](UNITY_LOBBY_20261024.md#2026-10-29-패치-노트-진입-계약-후속-확인).
 
 2026-10-29 Mac 후속 대비 후보: 위 `.5` 동기화는 당시 상태다. Mac 실제 1280/1600 1x 판독을 위해 `buildflavor_web.json`의 일반·제한 alpha만 `.9`로 높였다. 현재 웹 `main:7e0113fe4`는 `.5`이므로 색상 완전 동등은 **미완료**다. 정확한 웹 동기화 대상과 실창 판정은 [로비 문서](UNITY_LOBBY_20261024.md#2026-10-29-좌상단-메타-대비-후보--mac-범위)를 따른다.
+
+## 2026-11-04 표시 버전 정정 — Unity 데모 v0
+
+| 항목 | 현행 값·공급원 |
+|---|---|
+| Unity 제품 버전 | `unity/ProjectSettings/ProjectSettings.asset`의 `bundleVersion: 0.1.0`(3eab55186, 병합1fe5c4366) |
+| 타이틀·로비 | `BuildFlavor.UnityVersion=Application.version`, `VersionLine="v"+UnityVersion+" · "+release_web.date.Replace("-", "")` |
+| 체험판 제목 | `NativeLobby.TitleMenu.cs`: DEMO · v0.1.0(실제로는 Application.version 조회) |
+| 웹 스냅샷 | `ReleaseVersion`은 `release_web.json`의 웹 버전0.7.11(날짜2026-11-02, channel ea-full). Unity 표시 버전으로 사용하지 않으며 날짜만 VersionLine에 사용 |
+
+위 10-26~29의 v0.7.x 표시는 당시 기록이다. Unity 버전·웹 메타데이터·설치된 실행본 SHA는 서로 다르며, 이 문서 수정으로 실행본 갱신을 주장하지 않는다.
