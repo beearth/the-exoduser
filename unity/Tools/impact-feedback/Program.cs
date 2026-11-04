@@ -11,7 +11,7 @@ static class Program
         try {
             var t = new ImpactResponse();
             Check(t.Hit(1, 0, 0, false, false), "실제 명중은 첫 피드백을 생성해야 한다");
-            Check(t.FreezeSeconds >= .05 && t.FreezeSeconds <= .1, "표현 정지는 50~100ms이어야 한다");
+            Check(t.FreezeSeconds > 0 && t.FreezeSeconds <= 2.0 / 60 + 1e-9, "표현 정지는 G1에 따라 2틱(33ms) 이하여야 한다");
             Check(t.Frozen(1, .025), "명중한 적의 표현만 정지해야 한다");
             Check(!t.Frozen(2, .025), "다른 적의 움직임은 계속되어야 한다");
             Check(!t.Frozen(1, .101), "정지가 끝나면 적이 복귀해야 한다");
@@ -21,10 +21,10 @@ static class Program
             var legacy=new ImpactResponse(true);legacy.Hit(1,0,0,false,false);legacy.Hit(2,0,0,false,false);Check(!legacy.Hit(3,0,0,false,false)&&!legacy.Frozen(3,.025),"같은패키지 비교용 이전 표현은 세 번째 반응 누락을 재현한다");
             Check(!t.Hit(1, .03, 0, false, false), "같은 적 연속 통지는 광량을 중복 적층하지 않는다");
             Check(t.Hit(3, .12, Math.PI / 2, true, false), "다음 틱은 독립 예산으로 재개한다");
-            Check(t.FreezeSeconds >= .075 && t.FreezeSeconds <= .1, "대검 끝타는 더 무겁되 100ms를 넘지 않는다");
+            Check(t.FreezeSeconds > 0 && t.FreezeSeconds <= 2.0 / 60 + 1e-9, "대검 끝타도 정지는 2틱(33ms)을 넘지 않는다");
             t.Camera(.13, out double x, out double y);
-            Check(Math.Abs(y) > Math.Abs(x), "카메라 반동은 명중 방향을 따른다");
-            for(int k=0;k<400;k++) { t.Camera(.12+k*.001, out x,out y); Check(x*x+y*y <= .06*.06+1e-9, "카메라 반동은 최대 6px이다"); }
+            Check(x == 0 && y == 0, "G1: 피격 카메라 반동 진폭은 0이다");
+            for(int k=0;k<400;k++) { t.Camera(.12+k*.001, out x,out y); Check(x*x+y*y <= .06*.06+1e-9, "카메라 반동은 0이며 6px를 넘지 않는다"); }
             t.Camera(.5, out x,out y); Check(x==0 && y==0, "잔여 카메라 이동은 0으로 복귀한다");
             Check(t.Flash(3,.13)>0 && t.Flash(3,.3)==0, "피격 섬광은 짧게 소멸한다");
             t.Reset(); Check(!t.Frozen(3,.13), "재시작에 표현 상태를 넘기지 않는다");

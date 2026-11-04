@@ -8,6 +8,66 @@ static class Program
 {
     static int checks,bad;
     static void Check(bool value,string name){checks++;if(!value){bad++;Console.WriteLine("FAIL "+name);}}
+    static readonly uint[] CoreTable={0xefe6d2,0xffd9a0,0xe8f3f8,0xcdb2e0,0xfff4d0,0xfff2d6,0xdcc8a4};
+    // From, To, count normal min/max, count heavy min/max (lightning counts branches).
+    static readonly uint[][] SparkTable={
+        new uint[]{0xf5e5d5,0xf0debd,6,10,12,18},new uint[]{0xffd9a0,0xd8562a,5,8,10,14},new uint[]{0xe8f3f8,0x5f98c0,4,6,8,10},
+        new uint[]{0,0,0,0,0,0},new uint[]{0xfff4d0,0xc8a848,3,4,6,6},new uint[]{0xfff2d6,0xc9a45e,4,6,8,8},new uint[]{0xdcc8a4,0x7e6236,4,6,8,8}};
+    // docs/5.1임펙트디자인/ENEMY_HIT_IMPACT_G1_20261104.md: one lump, four beats; no crescent, no dots, no screen flash, 2-tick hold, no kick.
+    static void G1Contract()
+    {
+        double H=131;
+        foreach(var kind in new[]{FeedbackKind.EnemyHit,FeedbackKind.EnemyCrit,FeedbackKind.BossHit})foreach(int el in new[]{-1,0,1,2,3,4,5,6}) {
+            int tier=kind==FeedbackKind.EnemyHit?0:kind==FeedbackKind.EnemyCrit?1:2;int row=el>=0&&el<=5?el:6;string tag=kind+" el"+el;
+            var ev=new FeedbackEvent{Kind=kind,VisualOnly=true,IsBoss=kind==FeedbackKind.BossHit,Element=el,Angle=.7f,Size=20};
+            var plan=CombatImpactTimeline.Plan(ev);
+            Check(plan.Count==3&&plan.Count(c=>c.Mode==CombatClipMode.Impact)==1&&plan.Count(c=>c.Mode==CombatClipMode.Core)==1&&plan.Count(c=>c.Mode==CombatClipMode.Blood)==1,"G1 layers: body + core + blood only "+tag);
+            Check(plan.All(c=>c.Mode!=CombatClipMode.SlashBurst&&c.Mode!=CombatClipMode.Electric&&c.Sheet!="boss/vfx_holy_burst"),"G1 no grey crescent / lightning overlay layer "+tag);
+            var body=plan.First(c=>c.Mode==CombatClipMode.Impact);var core=plan.First(c=>c.Mode==CombatClipMode.Core);
+            double[] bodyH={1.6,2.2,2.6},coreH={.35,.5,.6};
+            Check(Math.Abs(body.Width*body.Stretch-H*bodyH[tier])<1e-9&&body.Stretch==1.3&&Math.Abs(body.Angle-.7)<1e-6,"G1 body size 1.6/2.2/2.6 H, Stretch 1.3, attack-direction rotation "+tag);
+            Check(body.Life/60.0>=.12&&body.Life/60.0<=.25,"G1 body lasts .12-.25 s "+tag);
+            Check(core.Life==5&&Math.Abs(core.Width-H*coreH[tier])<1e-9&&core.Additive&&core.Element==row,"G1 core: 5 ticks, .35/.5/.6 H, additive, element row "+tag);
+            Check(CombatHitLook.CoreAlpha(2)==1&&CombatHitLook.CoreAlpha(-1)==0&&CombatHitLook.CoreAlpha(5)==0&&CombatHitLook.CoreAlpha(0)>0&&CombatHitLook.CoreAlpha(0)<1&&CombatHitLook.CoreAlpha(4)>0&&CombatHitLook.CoreAlpha(4)<1,"G1 core peaks at tick 2 and ends at tick 5 "+tag);
+            Check(CombatHitLook.CoreColor(row,0)==0xfff4d0&&CombatHitLook.CoreColor(row,4)==CoreTable[row]&&CombatHitLook.CoreColor(row,50)==CoreTable[row],"G1 core colour #fff4d0 to element core colour "+tag);
+            foreach(double tickAge in new[]{0.0,1,2,3,4})Check(Math.Abs(core.Alpha(tickAge)-CombatHitLook.CoreAlpha(tickAge))<1e-9,"G1 core clip alpha follows the policy "+tag+" age "+tickAge);
+            var custom=CombatImpactTimeline.Plan(ev,100);
+            Check(Math.Abs(custom.First(c=>c.Mode==CombatClipMode.Core).Width-100*coreH[tier])<1e-9,"G1 core scales with the measured hero height "+tag);
+        }
+        Check(CombatHitLook.CoreRgb.SequenceEqual(CoreTable),"G1 core colour table is the §2.2 palette");
+        Check(CombatHitAnchor.Applies(true,5,FeedbackKind.EnemyHit,CombatClipMode.Core)&&!CombatHitAnchor.Applies(false,5,FeedbackKind.EnemyHit,CombatClipMode.Core),"core follows the visible body like the other hit layers");
+        foreach(var kind in new[]{FeedbackKind.EnemyHit,FeedbackKind.EnemyCrit,FeedbackKind.BossHit})foreach(int el in new[]{-1,0,1,2,3,4,5,6}) {
+            int row=el>=0&&el<=5?el:6;bool heavy=kind!=FeedbackKind.EnemyHit;var t=SparkTable[row];
+            for(int seed=0;seed<30;seed++) {
+                var ev=new FeedbackEvent{Kind=kind,VisualOnly=true,IsBoss=kind==FeedbackKind.BossHit,Element=el,Angle=.4f};
+                var sparks=CombatHitLook.Sparks(ev,seed);string tag=kind+" el"+el+" seed"+seed;
+                int n=sparks.Count(s=>s.Prior==null);
+                Check(n>=(heavy?t[4]:t[2])&&n<=(heavy?t[5]:t[3]),"G1 spark count in table range "+tag+" got "+n);
+                if(row==3){Check(sparks.Length==0,"G1 dark has no line sparks, body smoke only "+tag);continue;}
+                bool shape=true;
+                foreach(var s in sparks) {
+                    shape&=s.From==t[0]&&s.To==t[1]&&s.Thickness>=1.5&&s.Thickness<=2&&s.Length*90>=s.Thickness*3&&s.Length<=.25&&s.Length>0;
+                    shape&=s.Life>=(row==4?3:12)&&s.Life<=(row==4?4:21)&&s.Delay<=1;
+                }
+                Check(shape,"G1 sparks are thin lines (length >= 3x thickness), table colours, .2-.35 s "+tag);
+                if(row==0)Check(sparks.All(s=>Math.Cos(s.Angle-(ev.Angle+Math.PI))>Math.Cos(Math.PI/3)-1e-9),"G1 physical sparks fan +-60 degrees behind the strike "+tag);
+                if(row==1||row==5)Check(sparks.All(s=>s.Gravity<0),"G1 embers and ash rise "+tag);
+                if(row==0||row==2||row==6)Check(sparks.All(s=>s.Gravity>0),"G1 metal, ice and soil fall "+tag);
+                if(row==6)Check(sparks.All(s=>s.Normal),"G1 soil chips are alpha blended "+tag);else Check(sparks.All(s=>!s.Normal),"G1 other sparks are additive "+tag);
+                if(row==4)Check(sparks.Any(s=>s.Prior!=null&&s.Prior.Length>=1)&&sparks.All(s=>s.Prior==null||s.Prior.Length<=2),"G1 lightning branches are 2-3 kinked segments "+tag);
+            }
+        }
+        Check(CombatHitLook.Sparks(new FeedbackEvent{Kind=FeedbackKind.EnemyHit,Element=1},1).Length==0&&CombatHitLook.Sparks(new FeedbackEvent{Kind=FeedbackKind.Parry,VisualOnly=true},1).Length==0,"G1 sparks only for visual enemy hits");
+        // 2-tick hold (<= .033 s), no camera kick, white flash kept at .1 s.
+        var response=new ImpactResponse();
+        foreach(bool heavy in new[]{false,true})foreach(bool crit in new[]{false,true}) {
+            response.Reset();Check(response.Hit(1,0,.5,heavy,crit),"hit admitted");
+            Check(response.FreezeSeconds<=2.0/60+1e-9&&response.FreezeSeconds>0,"G1 hold is at most 2 ticks heavy="+heavy+" crit="+crit);
+            Check(response.Frozen(1,.03)&&!response.Frozen(1,.034),"G1 hold ends after 2 ticks");
+            for(int k=0;k<200;k++){response.Camera(k*.001,out double x,out double y);Check(x==0&&y==0,"G1 camera recoil amplitude 0");}
+            Check(response.Flash(1,.05)>0&&response.Flash(1,.1)==0,"G1 struck-body white flash stays .1 s");
+        }
+    }
     static int Main()
     {
         // RED uses reflection so an absent presentation policy is an assertion,
@@ -67,18 +127,20 @@ static class Program
         Check(CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.Parry,Step=1,Source="physicalProjectile"}).Count==0,"physical bullet Q parry: no purple star either");
         Check(CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.EnemyHit}).Count==0,"audio hit cannot duplicate a visual hit");
         var normal=CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.EnemyHit,VisualOnly=true,Element=2});
-        Check(normal[0].Sheet=="impact_el2_sheet_v2"&&normal[0].Frames==9&&normal[0].Life==16,"normal impact chooses remastered elemental 9-cell strip for16ticks");
+        Check(normal[0].Sheet=="impact_el2_sheet_v2"&&normal[0].Frames==9&&normal[0].Life==12,"normal impact chooses remastered elemental 9-cell strip for 12 ticks (G1 .2s)");
         var boss=CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.BossHit,IsBoss=true,VisualOnly=true,Element=4});
         Check(boss[0].Sheet=="impact_el4_boss_sheet_v2"&&boss[0].Frames==16&&boss[0].Scale==2.5,"boss impact retains 16cells and2.5scale");
         for(int el=0;el<6;el++)foreach(bool isBoss in new[]{false,true}) {
             var hit=CombatImpactTimeline.Plan(new FeedbackEvent{Kind=isBoss?FeedbackKind.BossHit:FeedbackKind.EnemyHit,VisualOnly=true,IsBoss=isBoss,Element=el})[0];
             Check(hit.Sheet=="impact_el"+el+(isBoss?"_boss_sheet_v2":"_sheet_v2")&&hit.Fallback=="impact_basic_sheet","v2 sheet and basic fallback "+el+" boss="+isBoss);
-            Check(hit.Life==16&&hit.Frames==(isBoss?16:9)&&hit.Cols==hit.Frames&&hit.Rows==1&&hit.Scale==(isBoss?2.5:1)&&hit.Additive&&hit.Mode==CombatClipMode.Impact,"v2 retains lifecycle, layout, scale and additive blend "+el+" boss="+isBoss);
-            Check(hit.Frame(0)==0&&hit.Frame(16)==-1&&Math.Abs(hit.Alpha(0)-(isBoss?.62:.45))<1e-9&&Math.Abs(hit.Alpha(8)-(isBoss?.31:.225))<1e-9,"v2 retains frame and alpha curve "+el+" boss="+isBoss);
-            double cell=85,scale=isBoss?2.5:1,start=isBoss?.92:.8;
-            Check(Math.Abs(hit.DrawWidth(0,cell)-cell*scale*start)<1e-9&&Math.Abs(hit.DrawWidth(8,cell)-cell*scale*(start+.3))<1e-9,"v2 retains width curve "+el+" boss="+isBoss);
+            Check(hit.Life==(isBoss?15:12)&&hit.Frames==(isBoss?16:9)&&hit.Cols==hit.Frames&&hit.Rows==1&&hit.Scale==(isBoss?2.5:1)&&hit.Additive&&hit.Mode==CombatClipMode.Impact,"v2 retains layout, scale and additive blend; G1 life 12/15 ticks "+el+" boss="+isBoss);
+            double half=hit.Life/2.0;
+            Check(hit.Frame(0)==0&&hit.Frame(hit.Life)==-1&&Math.Abs(hit.Alpha(0)-(isBoss?.62:.45))<1e-9&&Math.Abs(hit.Alpha(half)-(isBoss?.31:.225))<1e-9,"v2 retains frame and alpha curve over the G1 life "+el+" boss="+isBoss);
+            double cell=85,size=131*(isBoss?2.6:1.6);
+            Check(Math.Abs(hit.DrawWidth(0,cell)*hit.Stretch-size*.8)<1e-9&&Math.Abs(hit.DrawWidth(hit.Life,cell)*hit.Stretch-size)<1e-9,"G1 body width grows .8 to 1.0 of the hero-height size (long axis) "+el+" boss="+isBoss);
         }
-        Check(boss[1].Mode==CombatClipMode.Electric&&boss[1].Scale==.18,"lightning impact adds exact electric burst");
+        Check(boss[1].Mode==CombatClipMode.Core&&boss.All(c=>c.Mode!=CombatClipMode.Electric&&c.Mode!=CombatClipMode.SlashBurst),"G1 lightning impact: warm core instead of the electric burst sheet");
+        G1Contract();
         var budget=new CombatImpactTimeline();Check(budget.AdmitHit(1,false)&&budget.AdmitHit(1,false)&&!budget.AdmitHit(1,false)&&budget.AdmitHit(1,true)&&budget.AdmitHit(2,false),"same tick limits two ordinary hits; bosses bypass; next tick renews");
         budget.Reset();Check(budget.AdmitHit(1,false),"restart resets budget even when ticks rewind");
         Check(CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.BossDeath,Source="druid_sink",IsBoss=true}).Count==0,"druid escape must not bleed");

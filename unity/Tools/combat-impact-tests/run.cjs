@@ -19,6 +19,7 @@ if(m1){
  fs.writeFileSync(generated,'using System;using Exoduser.UnityPort.Core;static partial class M1ParryTests{static void ShieldCut(Simulation sim,Action capture){var p=sim.Player;'+cut.replace(/yield return M1Shot\("06-parry-shield"\);/g,'capture();').replace('yield return M1ParryCameraComparison(qContact);','')+'}static void GateRoute(Simulation sim){active=sim;var p=sim.Player;'+gate.replace('levelUp.Hide();','')+'}}');files.push(generated);
 }
 const policy=path.join(root,'unity/Assets/Exoduser/Runtime/Vfx/CombatImpactTimeline.cs');if(fs.existsSync(policy))files.push(policy);
+const response=path.join(root,'unity/Assets/Exoduser/Runtime/Vfx/ImpactResponse.cs');if(name==='checks'&&fs.existsSync(response))files.push(response);
 // Ratio formulas are owned by Enemy3D. Compile its policy unchanged, including
 // all recursive Core sources above; do not invoke or modify enemy3d-tests.
 files.push(path.join(root,'unity/Assets/Exoduser/Runtime/NativeEnemyRigPolicy.cs'));
@@ -28,6 +29,22 @@ function run(a){return cp.spawnSync('C:/Program Files/dotnet/dotnet.exe',a,{enco
 let r=run([path.join(sdk,latest(sdk),'Roslyn/bincore/csc.dll'),...args]);let log=(r.stdout||'')+(r.stderr||'')+(r.error?.message||'');
 if(r.status===0){fs.writeFileSync(path.join(out,name+'.runtimeconfig.json'),JSON.stringify({runtimeOptions:{tfm,framework:{name:'Microsoft.NETCore.App',version:tfm.slice(3)+'.0'},rollForward:'LatestMajor'}}));r=run([path.join(out,name+'.dll'),...(feedback?[path.join(out,'feedback.json'),path.join(__dirname,'../feedback-oracle/oracle.json')]:m1||region?[path.join(root,'unity/Assets/Exoduser/Resources/Data/ch1_map.json')]:[])]);log+=(r.stdout||'')+(r.stderr||'')+(r.error?.message||'');}
 let status=r.status??1;
+if(name==='checks'){
+ // G1 source contract for the Unity-only views (no Unity process here): what must be gone and what must stay.
+ const rt=path.join(root,'unity/Assets/Exoduser/Runtime'),read=f=>fs.readFileSync(path.join(rt,f),'utf8');
+ const view=read('Vfx/CombatImpactView.cs'),native=read('Vfx/NativeImpactView.cs'),game=read('NativeGame.cs');
+ const rules=[
+  [!/HitParts|AddParticle|class Particle/.test(view),'CombatImpactView: no 1x1 dot particles'],
+  [!/#ff6622|#44aaff|#bb55ee|#ffee44|#ffdd55|#88eeff|#aa44ff|#ffff88/i.test(view),'CombatImpactView: no ELC primary colours'],
+  [!/DrawFlash|FillScreen/.test(view)&&!/combatImpacts\?\.DrawFlash/.test(game),'enemy hit: no full-screen flash'],
+  [/meleeFlashBorn=clock\.Now/.test(view)&&/HasFlash/.test(view),'perfect melee parry flash path kept'],
+  [!/ki_slash_hit_silver_sheet|AddComponent<SpriteRenderer>|ImpactGroundPatch|Color32\(27,20,16/.test(native),'NativeImpactView: no silver flipbook, no soot patch'],
+  [/ki_slash_hit_silver_sheet/.test(game)&&/new KiImpactView/.test(game),'ki slash own hit (KiImpactView) untouched'],
+  [/AddLines\(e,CombatHitLook\.Sparks/.test(view),'enemy hit sparks use the line renderer'],
+ ];
+ for(const [ok,msg] of rules){log+=(ok?'':'FAIL ')+'source contract: '+msg+'\n';if(!ok)status=1;}
+ log+='combat-impact source contract: '+rules.length+' rules\n';
+}
 if(status===0&&name==='checks'){
  const art=cp.spawnSync('C:/Python314/python.exe',[path.join(root,'tools/vfx/recolor_blood_dark.py'),'--check-only'],{cwd:root,encoding:'utf8',windowsHide:true,env:{...env,PYTHONDONTWRITEBYTECODE:'1'},timeout:60000});
  log+=(art.stdout||'')+(art.stderr||'')+(art.error?.message||'');status=art.status??1;

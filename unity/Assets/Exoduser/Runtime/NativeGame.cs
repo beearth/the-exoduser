@@ -135,7 +135,7 @@ namespace Exoduser.UnityPort
             impacts=new KiImpactView(transform,f=>SpriteFor("Art/vfx/ki_slash_hit_silver_sheet",f%2*627,f/2*627,627,627,new Vector2(.5f,.5f)),kiHeight,()=>HudCamera);
             skillView=new NativeSkillView(transform);   // B03 skill effects
             ImpactInitialize();
-            combatImpacts=new CombatImpactView(transform){EnemyBody=CombatEnemyBody};
+            combatImpacts=new CombatImpactView(transform){EnemyBody=CombatEnemyBody,HeroHeight=kiHeight};
             sound=new NativeFeedbackAudio(transform,view);
             gameObject.AddComponent<NativeUiSounds>().Initialize(sound,()=>lobby!=null&&lobby.IsBlocking?lobby.UiAudioAllowed:gameFocused,()=>lobby!=null&&lobby.IsBlocking);
             music=new NativeGameMusic(transform,sound.Bus);ambient=new NativeAmbientSources(transform,sound.Bus);   // RM-1 sound: BGM bus, forest bed, 3D environment sources
@@ -449,6 +449,8 @@ namespace Exoduser.UnityPort
                 if(e.IsBoss)tint=Color.Lerp(tint,new Color(1,.55f,.45f),.5f);   // C07: a boss actor without art of its own reads as a boss
                 if(Simulation.Config.EnemyAiEnabled&&e.Web!=null&&e.Web._spawnT>0)tint.a=Mathf.Max(0,1-(float)e.Web._spawnT/20);   // drawEn: 20 frame fade-in of a fresh spawn
                 ev.body.color=ev.walk.color=e.HurtTicks>0?new Color(1,.62f,.62f,tint.a):tint;
+                // G1: the hold is only 2 ticks, but the struck body keeps its warm white flash for the full 0.1 s.
+                if(ImpactActive){float hitFlash=contactVfx.Flash(e.Id,ImpactNow);if(hitFlash>0){var lit=Color.Lerp(ev.body.color,new Color(1,.82f,.54f,tint.a),hitFlash*.8f);ev.body.color=ev.walk.color=lit;}}
                 NativeHd2D.Actor(ev.body,false,e.Radius*.035f);NativeHd2D.Overlay(ev.walk,ev.body);
                 UpdateEnemyShieldArc(e,ev);
             }
@@ -561,7 +563,6 @@ namespace Exoduser.UnityPort
             // 웹 rgba(200,0,0,.25)의 색 알파와 globalAlpha를 함께 적용한다. Core 감쇠는 그대로 둔다.
             if(!KiImpactView.FeelEnabled&&Simulation.ScreenFlashAlpha>0)NativeUiViewport.FillScreen(new Color(200f/255,0,0,Simulation.ScreenFlashAlpha*.25f));
             if(impacts!=null&&impacts.HurtActive(Simulation.TickCount))DrawFeelHurtEdge();
-            combatImpacts?.DrawFlash(Simulation.TickCount);
             // 로딩 원화/정보는 HUD 뒤에 가리지 않도록 아래 전환 분기에서 마지막으로 그린다.
             var baseMatrix=GUI.matrix;
             GUI.matrix=NativeUiViewport.Matrix;

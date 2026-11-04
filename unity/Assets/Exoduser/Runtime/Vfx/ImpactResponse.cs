@@ -13,6 +13,8 @@ namespace Exoduser.UnityPort.Vfx
         int accepted;
         readonly bool limitReactions;
         public ImpactResponse(bool limitReactions=false) { this.limitReactions=limitReactions; }
+        // G1 11-04 (PBZ R3/R4): a hit holds the struck body and the hero for at most 2 ticks and never kicks the camera.
+        public const double MaxFreezeSeconds = 2.0 / 60.0;
         public double FreezeSeconds { get; private set; }
         public static bool IsContact(bool known,double before,double after,double hurtTicks) { return hurtTicks>0&&(!known||after<before); }
         public bool Hit(int id,double now,double angle,bool heavy,bool critical)
@@ -21,12 +23,12 @@ namespace Exoduser.UnityPort.Vfx
             if (pulses.TryGetValue(id,out var before) && now-before.Born < .08) return false;
             bool admitted=accepted<2;
             if(!admitted&&limitReactions)return false;
-            FreezeSeconds=heavy?.09:critical?.075:.055;
+            FreezeSeconds=MaxFreezeSeconds;
             pulses[id]=new Pulse { Born=now, Hold=FreezeSeconds };
             // Every struck body reacts. Only flipbooks/lights/camera impulses use the two-contact budget.
             if(!admitted)return false;
             accepted++;
-            impulseTime=now; direction=angle; amplitude=heavy?.045:critical?.035:.022;
+            impulseTime=now; direction=angle; amplitude=0;
             // Damage-over-time can touch many enemies; retired entries never grow without bound.
             if(pulses.Count>128) { expired.Clear(); foreach(var p in pulses) if(now-p.Value.Born>.3) expired.Add(p.Key); foreach(var key in expired)pulses.Remove(key); }
             return true;

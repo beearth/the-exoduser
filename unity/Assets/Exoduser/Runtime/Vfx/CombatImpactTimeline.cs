@@ -19,16 +19,16 @@ namespace Exoduser.UnityPort.Vfx
         }
         public static bool Applies(bool perspective,int targetId,FeedbackKind kind,CombatClipMode mode) {
             return perspective&&targetId!=0&&(kind==FeedbackKind.EnemyHit||kind==FeedbackKind.EnemyCrit||kind==FeedbackKind.BossHit)&&
-                (mode==CombatClipMode.Impact||mode==CombatClipMode.SlashBurst||mode==CombatClipMode.Electric||mode==CombatClipMode.Blood);
+                (mode==CombatClipMode.Impact||mode==CombatClipMode.Core||mode==CombatClipMode.SlashBurst||mode==CombatClipMode.Electric||mode==CombatClipMode.Blood);
         }
     }
     // Web game.html: _addBoom/_boomGrow, _addImpact/_impactSpriteFor,
     // doParry TVFX2, deathFX and activateRoll/_finishRoll. No Unity or gameplay state.
-    public enum CombatClipMode { Boom, Impact, Flipbook, Death, Electric, SlashBurst, Blood }
+    public enum CombatClipMode { Boom, Impact, Flipbook, Death, Electric, SlashBurst, Blood, Core }
     public sealed class CombatClip
     {
         public string Sheet, Fallback;
-        public int Cols, Rows, Frames, Life, Delay;
+        public int Cols, Rows, Frames, Life, Delay, Element;
         public double FrameTicks, Scale = 1, Width, Angle, Opacity = 1, Stretch = 1;
         public bool Additive, Flat;
         public CombatClipMode Mode;
@@ -40,7 +40,9 @@ namespace Exoduser.UnityPort.Vfx
         public double DrawWidth(double age,double cellWidth) {
             double p=Math.Max(0,Math.Min(1,(age-Delay)/Life));
             if(Mode==CombatClipMode.Boom)return Width*(.6+.4*Math.Sqrt(Math.Min(1,p*8)));
-            if(Mode==CombatClipMode.Impact)return cellWidth*Scale*((Scale==2.5?.92:.8)+p*.6);
+            // G1: Width>0 is the hero-height based Core px size (long axis = Width*Stretch at the end of life).
+            if(Mode==CombatClipMode.Impact)return Width>0?Width*(.8+.2*p):cellWidth*Scale*((Scale==2.5?.92:.8)+p*.6);
+            if(Mode==CombatClipMode.Core)return Width;
             if(Mode==CombatClipMode.Flipbook)return cellWidth*Scale*(1+p*.4);
             return Width>0?Width:cellWidth*Scale;
         }
@@ -51,6 +53,7 @@ namespace Exoduser.UnityPort.Vfx
             // 12 ticks (.2s), even though its last frames live until tick18.
             if(Mode==CombatClipMode.Blood)return Math.Min(.8,Math.Max(0,(Life-(age-Delay))/Math.Max(1,Life-6)))*Opacity;
             if(Mode==CombatClipMode.Boom)return (1-p*.5)*Opacity;
+            if(Mode==CombatClipMode.Core)return CombatHitLook.CoreAlpha(age-Delay)*Opacity;
             if(Mode==CombatClipMode.Impact)return (1-p)*(Scale==2.5?.62:.45);
             if(Mode==CombatClipMode.Electric)return (f<5?1:1-(f-5)/4.0*.9)*.45;
             if(Mode==CombatClipMode.SlashBurst)return .45;
@@ -75,7 +78,7 @@ namespace Exoduser.UnityPort.Vfx
         static CombatClip Flip(string sheet,int cols,int rows,double scale,int delay,int ticks) {
             return new CombatClip{Sheet=sheet,Cols=cols,Rows=rows,Frames=cols*rows,Scale=scale,Delay=delay,Life=cols*rows*ticks,FrameTicks=ticks,Additive=true,Mode=CombatClipMode.Flipbook};
         }
-        public static List<CombatClip> Plan(FeedbackEvent e) {
+        public static List<CombatClip> Plan(FeedbackEvent e,double heroH=CombatHitLook.DefaultHeroH) {
             var result=new List<CombatClip>();
             if(e.Kind==FeedbackKind.Parry){
                 if(e.MeleeParry||new CombatParryPresentation().IsMelee(e))return result;
@@ -92,9 +95,14 @@ namespace Exoduser.UnityPort.Vfx
                 // three yellow lightning sheets read as an element hit, not a parry (user 11-03 "패링구현이 엉망").
             }else if(e.VisualOnly&&(e.Kind==FeedbackKind.EnemyHit||e.Kind==FeedbackKind.EnemyCrit||e.Kind==FeedbackKind.BossHit)) {
                 int el=e.Element;bool hasElement=el>=0&&el<=5;
-                result.Add(new CombatClip{Sheet=hasElement?"impact_el"+el+(e.IsBoss?"_boss_sheet_v2":"_sheet_v2"):"impact_basic_sheet",Fallback="impact_basic_sheet",Cols=e.IsBoss&&hasElement?16:9,Rows=1,Frames=e.IsBoss&&hasElement?16:9,Life=16,Scale=e.IsBoss?2.5:1,Mode=CombatClipMode.Impact,Additive=true});
-                if(el==4){var c=Flip("boss/vfx_holy_burst",3,3,e.IsBoss?.18:.1,0,3);c.Mode=CombatClipMode.Electric;result.Add(c);}
-                else{var c=Flip("impact_basic_sheet",9,1,e.IsBoss?.7:.4,0,3);c.FrameTicks=2.4;c.Life=22;c.Mode=CombatClipMode.SlashBurst;result.Add(c);}
+                // G1 ENEMY_HIT_IMPACT 11-04: one body sheet (attack direction, Stretch 1.3) + one warm core. No silver crescent
+                // overlay, no lightning burst sheet; sparks are drawn by CombatImpactView from CombatHitLook.Sparks.
+                int tier=CombatHitLook.Tier(e);
+                result.Add(new CombatClip{Sheet=hasElement?"impact_el"+el+(e.IsBoss?"_boss_sheet_v2":"_sheet_v2"):"impact_basic_sheet",Fallback="impact_basic_sheet",Cols=e.IsBoss&&hasElement?16:9,Rows=1,Frames=e.IsBoss&&hasElement?16:9,
+                    Life=CombatHitLook.BodyLife(tier),Scale=e.IsBoss?2.5:1,Mode=CombatClipMode.Impact,Additive=true,
+                    Width=heroH*CombatHitLook.BodySize(tier)/CombatHitLook.BodyStretch,Stretch=CombatHitLook.BodyStretch,Angle=e.Angle});
+                result.Add(new CombatClip{Frames=1,Cols=1,Rows=1,Life=CombatHitLook.CoreTicks,Mode=CombatClipMode.Core,Additive=true,
+                    Width=heroH*CombatHitLook.CoreSize(tier),Element=CombatHitLook.ElementRow(el)});
                 bool heavy=e.Kind==FeedbackKind.EnemyCrit||e.Kind==FeedbackKind.BossHit||e.IsBoss;
                 result.Add(new CombatClip{Sheet="Blood_FBF_4x4_dark",Cols=4,Rows=4,Frames=16,Life=heavy?18:9,
                     Width=Math.Max(1,e.Size)*2*(heavy?1:.6),Stretch=1.6,Angle=e.Angle,Additive=false,Mode=CombatClipMode.Blood,
@@ -108,10 +116,81 @@ namespace Exoduser.UnityPort.Vfx
         }
     }
 
+    // G1 (docs/5.1임펙트디자인/ENEMY_HIT_IMPACT_G1_20261104.md): one hit = warm core -> one body sheet -> thin line sparks -> blood.
+    // Sizes are in hero heights H (Core px), colours are the VFX master §2.2 palette only. Pure presentation, no Core state.
+    public static class CombatHitLook
+    {
+        public const double DefaultHeroH=131,BodyStretch=1.3;
+        public const int CoreTicks=5,CorePeakTick=2;
+        public const uint CoreStart=0xfff4d0;
+        // physical, fire, ice, dark, lightning, holy, earth/none
+        public static readonly uint[] CoreRgb={0xefe6d2,0xffd9a0,0xe8f3f8,0xcdb2e0,0xfff4d0,0xfff2d6,0xdcc8a4};
+        public static int ElementRow(int element){return element>=0&&element<=5?element:6;}
+        public static int Tier(FeedbackEvent e){return e.IsBoss||e.Kind==FeedbackKind.BossHit?2:e.Kind==FeedbackKind.EnemyCrit?1:0;}
+        public static bool Heavy(FeedbackEvent e){return Tier(e)>0;}
+        public static double BodySize(int tier){return tier==2?2.6:tier==1?2.2:1.6;}
+        public static double CoreSize(int tier){return tier==2?.6:tier==1?.5:.35;}
+        // .2s normal, .25s critical/boss (G1: .12-.25s).
+        public static int BodyLife(int tier){return tier==0?12:15;}
+        public static double CoreAlpha(double age) {
+            if(age<0||age>=CoreTicks)return 0;
+            return age<CorePeakTick?.35+.65*age/CorePeakTick:(CoreTicks-age)/(CoreTicks-CorePeakTick);
+        }
+        public static uint CoreColor(int row,double age) {
+            double t=Math.Max(0,Math.Min(1,age/4));uint to=CoreRgb[Math.Max(0,Math.Min(6,row))],from=CoreStart,rgb=0;
+            for(int shift=16;shift>=0;shift-=8){
+                double a=(from>>shift)&255,b=(to>>shift)&255;rgb|=(uint)Math.Round(a+(b-a)*t)<<shift;
+            }
+            return rgb;
+        }
+        sealed class Row {
+            public int Min,Max,HMin,HMax,LifeMin,LifeMax;public double LenMin,LenMax,Thick,SpeedMin,SpeedMax,Gravity,Fan;
+            public uint From,To;public bool Aged,Normal,Chain;
+        }
+        static readonly Row[] Rows={
+            // physical: metal spark lines, fan behind the strike, falling
+            new Row{Min=6,Max=10,HMin=12,HMax=18,LifeMin=14,LifeMax=21,LenMin=.10,LenMax=.25,Thick=1.5,SpeedMin=.03,SpeedMax=.065,Gravity=.00065,Fan=Math.PI/3,From=0xf5e5d5,To=0xf0debd},
+            // fire: short embers that rise and burn out
+            new Row{Min=5,Max=8,HMin=10,HMax=14,LifeMin=15,LifeMax=21,LenMin=.10,LenMax=.16,Thick=1.5,SpeedMin=.012,SpeedMax=.03,Gravity=-.0009,Fan=Math.PI/2,From=0xffd9a0,To=0xd8562a,Aged=true},
+            // ice: short straight shards, 2 px
+            new Row{Min=4,Max=6,HMin=8,HMax=10,LifeMin=14,LifeMax=20,LenMin=.10,LenMax=.16,Thick=2,SpeedMin=.03,SpeedMax=.055,Gravity=.0007,Fan=Math.PI/3,From=0xe8f3f8,To=0x5f98c0,Aged=true},
+            // dark: no lines, the body smoke is the whole read
+            new Row{},
+            // lightning: 2-3 segment kinked branches, visible 3-4 ticks (count = branches)
+            new Row{Min=3,Max=4,HMin=6,HMax=6,LifeMin=3,LifeMax=4,LenMin=.07,LenMax=.083,Thick=1.5,SpeedMin=0,SpeedMax=0,Gravity=0,Fan=Math.PI,From=0xfff4d0,To=0xc8a848,Aged=true,Chain=true},
+            // holy: thin slow ash lines drifting up
+            new Row{Min=4,Max=6,HMin=8,HMax=8,LifeMin=18,LifeMax=21,LenMin=.10,LenMax=.14,Thick=1.5,SpeedMin=.006,SpeedMax=.015,Gravity=-.0003,Fan=Math.PI,From=0xfff2d6,To=0xc9a45e,Aged=true},
+            // earth / none: soil chips, alpha blended, falling
+            new Row{Min=4,Max=6,HMin=8,HMax=8,LifeMin=14,LifeMax=20,LenMin=.10,LenMax=.16,Thick=1.5,SpeedMin=.025,SpeedMax=.05,Gravity=.0009,Fan=Math.PI*.4,From=0xdcc8a4,To=0x7e6236,Aged=true,Normal=true}
+        };
+        public static CombatParryPresentation.Spark[] Sparks(FeedbackEvent e,int seed) {
+            if(!e.VisualOnly||(e.Kind!=FeedbackKind.EnemyHit&&e.Kind!=FeedbackKind.EnemyCrit&&e.Kind!=FeedbackKind.BossHit))return Array.Empty<CombatParryPresentation.Spark>();
+            var row=Rows[ElementRow(e.Element)];var rng=new Random(seed);bool heavy=Heavy(e);
+            int n=heavy?rng.Next(row.HMin,row.HMax+1):rng.Next(row.Min,row.Max+1);
+            var list=new List<CombatParryPresentation.Spark>();
+            for(int i=0;i<n;i++) {
+                double angle=e.Angle+Math.PI+(rng.NextDouble()*2-1)*row.Fan;
+                int segments=row.Chain?rng.Next(2,4):1;var chain=new List<CombatParryPresentation.Spark>();
+                for(int k=0;k<segments;k++) {
+                    var s=new CombatParryPresentation.Spark{Delay=row.Chain?0:i%2,Life=rng.Next(row.LifeMin,row.LifeMax+1),Angle=angle,
+                        Length=row.LenMin+rng.NextDouble()*(row.LenMax-row.LenMin),Thickness=row.Thick,Speed=row.SpeedMin+rng.NextDouble()*(row.SpeedMax-row.SpeedMin),
+                        Color=rng.NextDouble(),Gravity=row.Gravity,From=row.From,To=row.To,Aged=row.Aged,Normal=row.Normal,Prior=chain.Count>0?chain.ToArray():null};
+                    chain.Add(s);list.Add(s);angle+=(rng.NextDouble()-.5)*1.2;
+                }
+            }
+            return list.ToArray();
+        }
+    }
+
     // Pure presentation policy. Never reads/writes simulation rules or its RNG.
     public sealed class CombatParryPresentation
     {
-        public sealed class Spark {public int Delay,Life;public double Angle,Length,Thickness,Speed,Color;public bool ReverseFan;}
+        public sealed class Spark {
+            public int Delay,Life;public double Angle,Length,Thickness,Speed,Color;public bool ReverseFan;
+            // G1 enemy hits: element colour ramp (rgb), screen gravity in key lengths per tick^2 (negative rises), optional chain of
+            // earlier segments (lightning branches), alpha-blended instead of additive (earth).
+            public uint From=0xf5e5d5,To=0xf0debd;public double Gravity=.00065;public bool Aged,Normal;public Spark[] Prior;
+        }
         public bool IsMelee(FeedbackEvent e) {
             if(e.Kind!=FeedbackKind.Parry||!string.IsNullOrEmpty(e.SampleKey))return false;
             return string.IsNullOrEmpty(e.Source)||e.Source=="contact"||e.Source=="swing"||e.Source=="slam"||e.Source=="charge"||e.Source=="combo"||e.Source.StartsWith("melee",StringComparison.Ordinal);
