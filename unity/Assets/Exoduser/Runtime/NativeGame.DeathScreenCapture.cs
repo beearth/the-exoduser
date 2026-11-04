@@ -54,18 +54,6 @@ namespace Exoduser.UnityPort
             check(p.State=="fallen"&&p.FallenCanRevive,"first fall can revive: "+p.State);
             yield return DeathShot(output,"death_01_impact",files,.25f,300);
             yield return DeathShot(output,"death_02_wait",files,2f,180);
-            if(Has("--unity-death-field-decision")){
-                // D1 (11-04 judge): field death offers 2 choices. Same real Core death path as the boss flow, without entering the arena.
-                revive.ForcedAge=5f;DeathAdvanceTo(0);check(p.State=="dead","field Core death failed: "+p.State);
-                yield return new WaitForSecondsRealtime(.6f);
-                death.ForcedAge=3.5f;yield return null;yield return DeathCapture(output,"death_field_decision",files);
-                check(death.ActionsReady&&death.ChoiceCount==2,"field death offers 2 choices ("+death.ChoiceCount+")");
-                if(Has("--unity-death-sequence"))yield return DeathSequence(output,"death_field_seq",files);
-                death.ForcedAge=null;revive.ForcedAge=null;
-                rec.files=files.ToArray();rec.failures=string.Join(" | ",fails.ToArray());rec.passed=fails.Count==0;
-                File.WriteAllText(Path.Combine(output,"death-screen-capture.json"),JsonUtility.ToJson(rec,true));
-                sound?.Reset();Application.Quit(rec.passed?0:2);yield break;
-            }
             rec.regionHiddenAtWait=RegionHudHiddenByDeath;check(rec.regionHiddenAtWait,"region HUD not suppressed during fallen presentation");
             rec.filterAtWait=revive.FilterAmount;rec.volumeAtWait=revive.VolumeWeight;
             // A new combat notice during death must also be rejected, not merely covered by the title.
@@ -98,6 +86,21 @@ namespace Exoduser.UnityPort
             revive.ForcedReviveAge=null;revive.ForcedAge=null;yield return new WaitForSecondsRealtime(.7f);
             rec.filterAfterRevive=revive.FilterAmount;check(revive.ScreenPhase=="None"&&rec.filterAfterRevive<=0,"filter cleared "+revive.ScreenPhase+" "+rec.filterAfterRevive);
             yield return DeathCapture(output,"death_06_revived",files);
+            if(Has("--unity-death-field-decision")){
+                // D1 (11-04 judge): field death offers 2 choices. The first revive's Core cooldown makes this second field fall non-revivable (same rule as the boss flow), no arena.
+                for(int i=0;i<400&&p.State!="fallen"&&p.State!="dead";i++){p.Iframes=0;sim.HurtPlayer(99999);}
+                check(p.State=="fallen"&&!p.FallenCanRevive,"second field fall must not revive");
+                yield return DeathShot(output,"death_field_wait",files,2f,180);
+                revive.ForcedAge=5f;DeathAdvanceTo(0);check(p.State=="dead","field Core death failed: "+p.State);
+                yield return new WaitForSecondsRealtime(.6f);
+                death.ForcedAge=3.5f;yield return null;yield return DeathCapture(output,"death_field_decision",files);
+                check(death.ActionsReady&&death.ChoiceCount==2,"field death offers 2 choices ("+death.ChoiceCount+")");
+                if(Has("--unity-death-sequence"))yield return DeathSequence(output,"death_field_seq",files);
+                death.ForcedAge=null;revive.ForcedAge=null;
+                rec.files=files.ToArray();rec.failures=string.Join(" | ",fails.ToArray());rec.passed=fails.Count==0;
+                File.WriteAllText(Path.Combine(output,"death-screen-capture.json"),JsonUtility.ToJson(rec,true));
+                sound?.Reset();Application.Quit(rec.passed?0:2);yield break;
+            }
 
             check(BossDirectEnter(),"requires --unity-boss-direct 0");
             for(int i=0;i<1000&&(!sim.Stage.InArena||sim.Stage.LoadPhase!=0);i++){
