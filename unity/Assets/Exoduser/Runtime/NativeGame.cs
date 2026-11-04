@@ -358,6 +358,7 @@ namespace Exoduser.UnityPort
         string StageMusicKey()
         {
             if(PlayerDown)return "death";
+            if(forge.Open)return "forge";
             var flow=Simulation.Stage;
             if(flow.InArena)return flow.BossAlive?"boss":"victory";
             return "hell"+((int)EnemyTables.SiToHell[Math.Min(Simulation.Config.StageIndex,EnemyTables.SiToHell.Length-1)]+1);
@@ -368,11 +369,11 @@ namespace Exoduser.UnityPort
             string key=DesiredMusic();
             // Settings > Sound > BGM select (web optBgmTrack): the chosen song replaces the stage song; beds and the boss snapshot still follow the stage key.
             string track=settings!=null?settings.Options.BgmTrack:NativeOptionSet.BgmTrackDefault;
-            string audio=NativeBgmSelection.Resolve(key,track);
-            bool autoBgm=NativeBgmSelection.IsAuto(track);
+            string audio=NativeBgmCatalog.Resolve(key,track);
+            bool autoBgm=NativeBgmCatalog.IsAuto(track);
             if(!menu)settingsBgmPreview=false;
             // The web plays a newly chosen song right away; while the pause window is open the stage key is not wanted, so the preview plays it anyway.
-            else if(key.Length==0&&settingsBgmPreview&&Simulation!=null&&!(lobby!=null&&lobby.IsBlocking))audio=NativeBgmSelection.Resolve(StageMusicKey(),track);
+            else if(key.Length==0&&settingsBgmPreview&&Simulation!=null&&!(lobby!=null&&lobby.IsBlocking))audio=NativeBgmCatalog.Resolve(StageMusicKey(),track);
             if(audio.Length>0&&music.Wanted.Length==0)lobby?.StopStageMusic();   // the lobby's startup stage music hands over to the game BGM
             music.Sync(key,audio,autoBgm);music.Tick(Time.unscaledDeltaTime);ambient.Tick(Time.unscaledDeltaTime);
         }

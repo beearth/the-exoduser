@@ -26,13 +26,13 @@ ok(/LobbyLanguage\.Startup\(settings\.Options\.Lang,lobby\.Language\)/.test(pers
 ok(/void UpdateSettingsPersistence\(\)\n  \{\n   TrackSettingsLanguage\(\);/.test(persist)&&/settings\.Options\.Lang=now;QueueSettingsSave\(\)/.test(persist),'P02 a language change from any screen is saved');
 ok(/if\(key=="preset"\)ApplySettingsLanguage\(\)/.test(options),'P02/P34 a loaded slot applies its language');
 // P30
-ok(/NativeBgmSelection\.Resolve\(key,track\)/.test(game)&&/music\.Sync\(key,audio,autoBgm\)/.test(game)&&/autoBgm=NativeBgmSelection\.IsAuto\(track\)/.test(game),'P30 the selected track (and whether it is auto) reaches the music host');
+ok(/NativeBgmCatalog\.Resolve\(key,track\)/.test(game)&&/music\.Sync\(key,audio,autoBgm\)/.test(game)&&/autoBgm=NativeBgmCatalog\.IsAuto\(track\)/.test(game),'P30 the selected track (and whether it is auto) reaches the music host');
 // BGM rotation host wiring
-ok(/bool rot = rotate && audioKey == NativeBgmRotation\.FirstClip && \(key == "hell1" \|\| key\.Length == 0\);/.test(music)&&/if \(!rot && audioKey\.Length > 0\) rotation\.Reset\(\);/.test(music),'BGM rotation only on the auto field song; boss/death/victory/chosen songs reset it');
-ok(/music\.loop = !rotating;/.test(music)&&/else if \(rotating && music\.clip != null && playedFor > 1f && !AudioListener\.pause\) \{ wanted = rotation\.Advance\(\);/.test(music),'BGM rotation: a rotating song plays once and the ended song advances through the normal switch (fade) path');
+ok(/bool rot = rotate && audioKey == NativeFieldBgmRotation\.FirstClip && \(key == "hell1" \|\| key\.Length == 0\);/.test(music)&&/if \(!rot && audioKey\.Length > 0\) rotation\.Reset\(\);/.test(music),'BGM rotation only on the auto field song; boss/death/victory/chosen songs reset it');
+ok(/music\.loop = !\(rotating \|\| forgeRotating\);/.test(music)&&/else if \(rotating && music\.clip != null && playedFor > 1f && !AudioListener\.pause\) \{ wanted = rotation\.Advance\(\);/.test(music),'BGM rotation: a rotating song plays once and the ended song advances through the normal switch (fade) path');
 ok(/bedWanted = key == "hell1"/.test(music)&&/bus\.Snapshot\(key == "boss"\)/.test(music),'BGM rotation: beds and boss snapshot untouched');
 ok(/public void Sync\(string key, string audioKey\)/.test(music)&&/bus\.Snapshot\(key == "boss"\)/.test(music)&&/bedWanted = key == "hell1"/.test(music),'P30 beds and boss snapshot still follow the stage key');
-ok(/if\(!NativeBgmSelection\.IsSupported\(v\[i\]\)\)continue;/.test(menu)&&/string shown=NativeBgmSelection\.Effective\(settings\.Options\.BgmTrack\)/.test(menu),'P30 the menu lists only supported songs and shows an unsupported saved value as auto');
+ok(/if\(!NativeBgmCatalog\.IsSupported\(v\[i\]\)\)continue;/.test(menu)&&/string shown=NativeBgmCatalog\.Effective\(settings\.Options\.BgmTrack\)/.test(menu),'P30 the menu lists only supported songs and shows an unsupported saved value as auto');
 ok(/settingsBgmPreview=true/.test(options)&&/else if\(key\.Length==0&&settingsBgmPreview/.test(game),'P30 a newly chosen song is heard while the pause window is open');
 // P34
 ok(/NativeSettingsPreset\.Encode\(settings,NativeKeyBindInput\.Bindings\)/.test(menu)&&/NativeSettingsPreset\.Apply\(settings\.Presets\[slot\]/.test(menu),'P34 slots go through NativeSettingsPreset (keys + language)');
