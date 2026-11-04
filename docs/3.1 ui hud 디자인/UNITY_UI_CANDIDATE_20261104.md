@@ -78,3 +78,16 @@
 - 두 PID61680/10920은 최종 HasExited=true로 관측됐다. 우리 슬롯/예약은 해제됐고 다른 레인의 슬롯은 건드리지 않았다. 프로세스 객체 열거와 로그락/종료지연의 근본 원인은 미확정이다. 공용bin/잠금/권한/보안/전역환경 수정0.
 - 고정 audit-current/capture-current.json은 passed=false/25 of50, runner-failures-current.json에 오류 원문2건, hud-layout-current.json에116행을 기록했다. comparison-1920-{1x,3x}.png와 entry-state-1920-1x.png는 기존 원본을 기계 크롭한 검수판이다.3840 비교판은 없다. 기존 JUDGEMENT(e3b3)는 판정 근거로 보존했으며 새 실행의 합격표로 재사용하지 않는다.
 - 남은 관문: 공용 실행기 담당이 로그공유/종료 후처리 원인을 고친 뒤 실패2조건의 가드 재검증과3840 미실행 촬영, 디자인총괄/Mac 판정. 이 레인은 같은 결함2FAIL 규칙으로 추가실행을 중단했다.
+
+## 11-04 판정 ⑥ 경미 5건 반영 (PC 검사·컴파일만, 화면 판정 전)
+
+| # | 항목 | 고친 곳 | 전 → 후 |
+|---|---|---|---|
+| 1 | 로비 빈 슬롯 면 | NativeLobby.SilverLobby.cs `SilverSlotFace` | 빈 슬롯 면 투명 → rgba(5,5,7,.94) 어두운 면. 채운 슬롯 그리기는 바꾸지 않음(디자인 퇴보 방지, 총괄 검수). 빈 칸과 채운 칸 면 밝기는 후보 캡처에서 대조 |
+| 2 | 입장 호버 | NativeLobby.SilverHell.cs `EntryFocus`·`DrawEntryTextGlow` | 79fd4514d의 사각 테 외곽 광(회색 사각 틀로 보임)과 메달 광 두 겹(.34, 딱딱한 사각 가장자리)은 총괄 후보 캡처 검수에서 되돌림. 메달 광은 원래 한 번 .18, 대신 ENTER 글자 뒤에 가장자리가 0으로 사라지는 따뜻한 은빛 타원 광(232,226,212, 최대 .42, 판의 x .33~.67·y .60~.86). 테 외곽 광은 판 실루엣을 따르는 원화가 없어 넣지 않음(실루엣 광은 아트 작업 필요). 실제 호버와 `-ui-entry-state hover`가 같은 EntryFocus 경로 |
+| 3 | 그리스어 경험치 | Resources/Data/demo_text.json 키 경험치 | ΕΜΠ → Εμπειρία. 패널이 라벨 폭에 맞춰 넓어지고 안 들어가면 한 단계 줄임(NativeObjectivePanel.FitWord), 말줄임 없음. 웹 lang_el.js는 oracle이라 그대로 |
+| 4 | 펫 말풍선 본문 | NativePetBubbleView.cs | 본문 폰트 NativeSilverHellUi.Font() → NanumMyeongjo-Regular(이름창과 같은 경로). 22px 시작·하한 규칙 그대로 |
+| 5a | 사운드 탭 줄 끝 | NativePauseMenu.A15Web.cs | 효과음·음악·BGM 선택 행 폭 960 → 818(원점 96 + 818 = 914, 게임 탭과 같음) |
+| 5b | 사망 제목 크로스페이드 | NativeRevive.DeathScreen.cs `DeadTextFade`, NativeDeathOverlay.cs `TitleGate` | 앞 제목 페이드아웃 .8s → .35s, 패널 제목은 0.4s 지연 후 .8s 동안 올라옴 → 두 제목이 같은 시각에 보이지 않음 |
+
+검사: `unity/Tools/death-ui-tests/judge6.test.cjs`(6/0), 기존 review-0540·retouch-layout·candidate·run.cjs 통과, 5어셈블리 컴파일 오류 0. 화면 촬영·판정은 미실시.

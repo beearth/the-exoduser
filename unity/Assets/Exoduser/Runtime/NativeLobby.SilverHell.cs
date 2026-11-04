@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 namespace Exoduser.UnityPort
 {
@@ -8,10 +9,10 @@ namespace Exoduser.UnityPort
         internal static readonly Color Text=new Color(214/255f,211/255f,205/255f),Dim=new Color(138/255f,141/255f,141/255f),Bright=new Color(242/255f,240/255f,236/255f);
         // Linear Player의 IMGUI 글자 채널은 sRGB→Linear 변환을 한 번 더 적용한다. 텍스처·GUI.color에는 적용하지 않는다.
         internal static Color TextColor(Color srgb){return QualitySettings.activeColorSpace==ColorSpace.Linear?srgb.gamma:srgb;}
-        internal static void Label(Rect rect,string text,GUIStyle style){var c=style.normal.textColor;try{style.normal.textColor=TextColor(c);NativeUiAudit.Label(rect,text,style);}finally{style.normal.textColor=c;}}
-        internal static void Label(Rect rect,GUIContent text,GUIStyle style){var c=style.normal.textColor;try{style.normal.textColor=TextColor(c);NativeUiAudit.Label(rect,text,style);}finally{style.normal.textColor=c;}}
-        internal static void Label(Rect rect,string text){Label(rect,text,GUI.skin.label);}
-        internal static void Label(Rect rect,GUIContent text){Label(rect,text,GUI.skin.label);}
+        internal static void Label(Rect rect,string text,GUIStyle style,[CallerFilePath]string file="",[CallerLineNumber]int line=0){var c=style.normal.textColor;try{style.normal.textColor=TextColor(c);NativeUiAudit.Label(rect,text,style,file,line);}finally{style.normal.textColor=c;}}
+        internal static void Label(Rect rect,GUIContent text,GUIStyle style,[CallerFilePath]string file="",[CallerLineNumber]int line=0){var c=style.normal.textColor;try{style.normal.textColor=TextColor(c);NativeUiAudit.Label(rect,text,style,file,line);}finally{style.normal.textColor=c;}}
+        internal static void Label(Rect rect,string text,[CallerFilePath]string file="",[CallerLineNumber]int line=0){Label(rect,text,GUI.skin.label,file,line);}
+        internal static void Label(Rect rect,GUIContent text,[CallerFilePath]string file="",[CallerLineNumber]int line=0){Label(rect,text,GUI.skin.label,file,line);}
         internal static bool Button(Rect rect,string text,GUIStyle style){return Button(rect,new GUIContent(text),style);}
         internal static bool Button(Rect rect,GUIContent text,GUIStyle style){if(text==GUIContent.none||string.IsNullOrEmpty(text.text))return NativeUiAudit.Button(rect,text,style);var n=style.normal.textColor;var h=style.hover.textColor;var a=style.active.textColor;var f=style.focused.textColor;try{style.normal.textColor=TextColor(n);style.hover.textColor=TextColor(h);style.active.textColor=TextColor(a);style.focused.textColor=TextColor(f);return NativeUiAudit.Button(rect,text,style);}finally{style.normal.textColor=n;style.hover.textColor=h;style.active.textColor=a;style.focused.textColor=f;}}
         internal static bool Button(Rect rect,string text){return Button(rect,text,GUI.skin.button);}
@@ -145,12 +146,21 @@ namespace Exoduser.UnityPort
             while(style.fontSize>8){var size=style.CalcSize(new GUIContent(text));if(size.x<=inside.width&&size.y<=inside.height)break;style.fontSize--;}
             Label(inside,text,style);
         }
+        // Hover: soft warm-silver light behind the baked ENTER word only. Elliptical falloff that reaches 0 at its edge,
+        // so no box outline (a rectangular rim around the plate read as a grey frame, 11-04 judge 6 review).
+        static Texture2D entryTextGlow;
+        static void DrawEntryTextGlow(Rect box)
+        {
+            if(entryTextGlow==null)entryTextGlow=Effect(96,32,(u,v)=>{float x=(u-.5f)*2,y=(v-.5f)*2;float d=Mathf.Clamp01(1-Mathf.Sqrt(x*x+y*y));return new Color(232/255f,226/255f,212/255f,d*d*.42f);});
+            NativeUiAudit.DrawTexture(new Rect(box.x+box.width*.33f,box.y+box.height*.60f,box.width*.34f,box.height*.26f),entryTextGlow);
+        }
         internal static bool EntryFocus(Rect box)
         {
             if(innerButtonGlow==null)innerButtonGlow=Resources.Load<Texture2D>("Art/ui/silver_hell/guide_button_glow");
             if(innerButtonGlow==null)return false;
             var previous=GUI.color;var inside=new Rect(box.x+box.width*.34f,box.y+box.height*.24f,box.width*.32f,box.height*.44f);
             NativeUiAudit.BeginGroup(inside);try{GUI.color=new Color(1,1,1,.18f);NativeUiAudit.DrawTexture(new Rect(0,0,inside.width,inside.height),innerButtonGlow);}finally{NativeUiAudit.EndGroup();GUI.color=previous;}
+            DrawEntryTextGlow(box);
             return true;
         }
         internal static void ThornPlate(Rect box,bool primary,float edge,float outset)

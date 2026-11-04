@@ -40,7 +40,21 @@
 
 
 2026-11-04 D-U1 사냥꾼 패시브 대상(디버깅 총괄, CTO 02:00): Unity Core `Simulation.EnemyBridge` HunterMul이 etype>=90(레어)만 보던 것을 웹 `_hunterMul`(D-002 뒤, main 06ac6882b 28306행)과 같이 보스(ib)·정예(elite 참)·레어에 +10%/랭크로 맞춤 → 새 `Simulation.HunterMul(w, rank)`. 수정 전 규칙은 D-002 이전 웹(안 쓰이는 isBoss/isElite)의 실제 동작을 이식한 것. 대조 `unity/Tools/hunter-oracle`: 웹 원문 280사례 불일치 0(수정 전 96/280), 실제 피격 경로 pHunter 3에서 보스·정예·레어 ×1.3·일반 ×1. 스탯창 pHunter "보스·정예 분기 미연결" 안내 삭제(표시 문자열 추가 없음). 디버깅 보드 정본을 unity/main으로 옮기고 D-012(09c)·D-013(canMv)·D-U1 기록, 방어 합산 차이는 D-U2 백로그. PC 컴파일만, Player 0.
+2026-11-04 11:20 공용 실행기 단독 검사 중 새 Editor 작업 대기(CTO): BuildLoop 단독 Player(_player_exclusive.json)가 도는 동안 새 Editor 서버 시작·batch·상주 서버 제출은 끝날 때까지 기다린다. 돌고 있는 Editor는 끊지 않음, 검사 기준 무변경. 원인=a7db9621b UI 겹침 검사가 다른 레인 Editor 빌드와 겹쳐 14fps로 1800초 제한 초과. 실행기 `2026.11.04-exclusive2`, exclusive-test 12건. 문서 unity/Tools/devtools/README.md.
+
+2026-11-04 11:05 UI 겹침 검사 Player 시간 제한 1800→3600초(도구 총괄, BuildLoop a7db9621b FAIL): 단독 실행으로 영상 준비 실패는 없어졌으나 다른 레인 Editor 빌드·대량 디스크 작업과 겹쳐 Player가 약 14fps로 느려져 2560 화면군에서 1800초 제한에 걸림(08:44 회차는 약 40fps로 861초에 3840 도달). 전 화면 행렬은 공용 PC 부하에서 30분을 넘길 수 있어 check.ps1 제한만 늘림. 판정 기준·화면 목록 무변경.
+
+2026-11-04 SND-12 R7 드루이드 7기술 효과음 Unity 연결(사운드 총괄): 사용자 선택 채택 10키(druid_slash3_ground·slam_lift·debris·charge_kick·wall_crash·grab_bind·grab_throw·erupt_warn·root_spikes·heart_vein)를 Resources/Audio/RM1에 넣고 시작 음량 .5. 연결: NativeFeedbackAudio(SlamOnLanding·DruidExtras — 예고 이벤트+DruidRemodelData 상수 지연) + 새 NativeDruidSoundCues(보스 상태 bossSlamWind·bossChargeWind·bossGrab 전환, Fx wallSlam, 균열 Exploded — Core 읽기 전용). 시각 변경 druid_slam Tele+SlamActive→Tele+2, druid_erupt 즉시→BurrowEruptWarn 늦춤. 전부 안 맞음 5키(grab_step·absorb·burrow_move·staff_tap·heart_wave)는 연결 없음. Core 무변경, PC 컴파일 오류 0, 청음은 Mac. docs: DRUID_V81_SKILL_SFX_G1 §4.1, SOUND_LEAD_MASTER R7.
+
+2026-11-04 SND-11 Unity 걷기 발소리(사운드 총괄): NativeFeedbackAudio.TrackWalk — 걸은 거리 128px마다 footstep/footstep2 번갈아 .55, rate Jitter(.9,.15), 구르기·넉백·사망 제외, 한 프레임 48px 초과 이동 무시. NativeGame.DispatchFeedback에서 호출. Core 무변경, docs/6사운드디자인/6사운드디자인.md 절 추가. PC 컴파일만, 청음은 Mac.
+
+2026-11-04 SND-13 1-1 데모 한 판 소리 장면 목록(사운드 총괄, CTO 10:05): docs/6사운드디자인/DEMO_1-1_SOUND_SCENES_20261104.md 신설. 필드·보스·출구 장면별 키·지금 상태·청음 라운드를 정리했다. 빈칸은 생체나무 맥동·호흡, 보스 처치 순간, 출구 열림·진입, 드루이드 등장(staff_tap 4회 불채택 → 등장 전체 한 소리). R8 청음 후보 74줄 pick_r8.html(카드마다 장면 영상 동기 재생). SOUND_LEAD_MASTER에 R8 절 추가. 코드 변경 없음, 청음·Unity 반영 전.
+
+2026-11-04 UI 판정 ⑥ 경미 5건 반영(codex/unity-demo-text-20261104): 로비 빈 슬롯 어두운 면, 입장 호버 ENTER 글자 뒤 타원 광(사각 테 외곽 광은 총괄 검수에서 되돌림), 그리스어 경험치 ΕΜΠ→Εμπειρία, 펫 말풍선 본문 명조, 사운드 탭 줄 끝 960→818(914), 사망 제목 크로스페이드 앞 제목 선소거. PC 검사 judge6 6/0·컴파일 오류 0만, 화면 판정 전.
+
 2026-11-04 10:15 공용 실행기 BuildLoop Player 단독 실행(CTO A안): -PcException buildloop/-Exclusive Player는 다른 Player가 끝날 때까지 기다린 뒤 혼자 돌고, 그동안 새 Player를 받지 않는다(돌던 Player는 끊지 않음, 다른 레인 동시 2슬롯 유지). 원인=QA Player 동시 4K 영상 디코드로 52a39f8f6 회차 M1 로비 영상 준비 12초 초과 33회·08:44 회차 UI 겹침 영상 준비 실패, 바탕화면 교체 막힘. 실행기 `2026.11.04-exclusive`, 시험 exclusive-test.ps1. 문서 unity/Tools/devtools/README.md.
+
+2026-11-04 1-1 실측(CTO 정정 반영): source 52a39f8f6, 빌드 1회/시작→지옥문 2판 자연 진행. 경과 평균 7.59~7.78분, 단순 거리 비례 ×1.3=9.87~10.11분/×1.5=11.39~11.67분. RM1_Slice 패키징 누락으로 2D 폴백이므로 3D 확대 결정 보류. 보스전 각 1사망, 크래시·실제 예외·USER_SAVE 변경·사용자 화면 창·잔여 0. 코드/Core 변경 0. 관측 범위·구역 시간·결함·정리 기록: docs/engine/UNITY_FULLRUN_MEASURE_20261104.md.
 
 2026-11-04 09:20 UI 겹침 검사 전면 영상 대기 10→30초(도구 총괄, BuildLoop 08:44 FAIL): 빌드·스모크 PASS 뒤 전 화면 UI 겹침 검사 14분째 UiWaitRootMovie가 world_intro_v22b_steam.mp4 준비를 10초 안에 못 봐 실패, 바탕화면 교체 안 됨. 그 시각 다른 레인 Player 2~3개가 GPU 영상 디코더를 함께 씀. QA 경로만 30초로 늘리고 실패 메시지에 prepared·frame·url을 남긴다(Runtime QA, Core·게임 화면 무변경). 11-03 09:20 실패(마우스 안전영역 역변환)는 다른 원인.
 
@@ -99,6 +113,16 @@
 
 
 2026-11-04 canMv 맵 충돌 oracle 정정(디버깅 총괄, CTO 02:05): Core 시험 36/1의 실패 1건 = `map-oracle.cjs` 2,523표본 중 2개(4018.5,104.7 r10 / 4042.9,207.9 r15, 둘 다 1-1 보스 게이트 뒤). 웹 맵 생성은 `MAP_OBJS`에 `boss_gate_col`(sz250 → 원 반경 100, 중심 (100.5,4)타일)을 넣는데 정적 맵 export에는 없어 oracle이 게이트 덩어리를 통과 가능으로 봤다. Unity는 3ed856bf6에서 같은 덩어리를 벽 13타일 + 게이트 타일(3) 차단으로 이식. oracle에 원문 sz와 게이트 타일로 같은 원을 추가 → 36/0. Unity Core·맵 무변경. 남은 차이: 게이트 주변 정밀 격자(2px, x3760~4280·y0~400, r10/15/22 15.7만 표본)에서 타일 근사와 원이 5,156표본 다름(x3898~4140·y52~280, Unity만 통과 4,767·Unity만 막힘 389). 열린 들판의 덩어리 테두리 모양 차이라 새 통로·막힌 길 없음, 출구 타일(7행 y280~)·아레나 진입 무영향. 정확 일치(원 충돌체로 교체)는 맵 데이터 변경이라 맵 총괄 판단 후보. 기록 unity/Tools/README.md 모델 검사.
+
+2026-11-04 적 3D 01:00 연결 바탕: 최신ec89d5166 병합·하니스 Core/Skills 재귀 열거65/0 회복. etype4 공유 키를 시작 육괴 표현 태그로 분리해 일반 갑각 사도 아틀라스 유지. 영웅 공유 rig-pixel·Generic Animator/Core 틱·투영 bounds VFX 접점·사망 시작 연결, 고정meta 추가. 확장 정책103/0·전체 PC Roslyn5어셈블리 오류0 각1회, Player0. 미제공 동작은 bind pose로 기록하며 Mac 화면·임포트·동작·성능 미판정.
+
+2026-11-04 적 3D 연결 바탕 WIP 중단: 최신6d99d0c46에서 codex/unity-enemy3d-20261104 생성. 읽기 전용 상태 정책·etype1/4 모델표·0차 FBX 변환·검사 초안 보존. 같은 정책 검사 명령2회 실패(예상 RED, 이후 Core/Skills 소스 열거 누락 CS0234/CS0246)로 사용자 지시대로 중단. Unity 렌더/Animator/VFX 연결·meta·전체 PC 컴파일·Mac 판정 미완, 본편 병합 금지. 인계 UNITY_ENEMY3D_WIRING_20261104.md.
+
+
+2026-11-04 01:20 UI 잔여 후속 후보: 최신공통5c9dd3673 선병합·CHANGELOG 양쪽 기록 보존·충돌0. 긴 스킬 이름154px/자원200px/조작 설명의 키 앞10px 경계에서만 줄바꿈하고 후속 행/스크롤/삭제 hit를 같은 높이로 맞춘다. 짧은 기본 배치·폰트·원화/로비·Core 보존. CPU67/67·PC 컴파일 오류0, 5해상도 CPU모델표와 실제 Mac 미검증을 구분. 문서 engine/UNITY_UI_OVERLAP_20261030.md 01:20절.
+
+2026-11-04 00:50 UI 잔여 조판 수정 후보: HUD 무자간 문자열은1회 조판·같은 전체 폭으로 측정하고, 봉안함/비교판의 전체문자열 그리기와 SerifWidth 글자합 불일치를 고쳤다. 자간의 결합문자/서로게이트 분리 방지. SilverHell Label에서 실제 caller 파일/행을 감사까지 보존한다. 조판31검사PASS·PC 컴파일 오류0(Core126/Runtime262, 경고2/529). 기존 판/원화/문구/색/폰트·행/앵커·분석기기준 불변, PC Player0, 기존JSON 재분석1회는1410장/8363(과거입력동일), 새 Mac 판정대기. 문서 engine/UNITY_UI_OVERLAP_20261030.md 00:50절.
+
 
 2026-11-04 적 3D 01:00 연결 바탕: 최신ec89d5166 병합·하니스 Core/Skills 재귀 열거65/0 회복. etype4 공유 키를 시작 육괴 표현 태그로 분리해 일반 갑각 사도 아틀라스 유지. 영웅 공유 rig-pixel·Generic Animator/Core 틱·투영 bounds VFX 접점·사망 시작 연결, 고정meta 추가. 확장 정책103/0·전체 PC Roslyn5어셈블리 오류0 각1회, Player0. 미제공 동작은 bind pose로 기록하며 Mac 화면·임포트·동작·성능 미판정.
 
