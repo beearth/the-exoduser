@@ -65,6 +65,8 @@ namespace Exoduser.UnityPort
         {
             Applied = on; Shader.SetGlobalFloat("_A2RSwampOn", on ? 1 : 0);
             if (dressing != null) dressing.SetActive(on);
+            if (NativeQaSandbox.Active && surface != null)
+                Debug.Log("[A2R swamp] on=" + on + " waterMode=" + surface.Surface.GetFloat("_SwampDressMode") + " fires=" + Shader.GetGlobalInt("_A2RWaterFireCount") + " planar=" + surface.Surface.GetFloat("_PlanarStrength"));
         }
 
         Material DressMaterial(string name)
@@ -119,10 +121,10 @@ namespace Exoduser.UnityPort
             shore.SetVertices(vertices); shore.SetColors(colours); shore.SetTriangles(indices, 0); shore.RecalculateBounds(); shore.RecalculateNormals();
             MeshObject(shore.name, shore, DressMaterial("A2R wet black-brown mud"));
             var remains = DressMaterial("A2R waterlogged flesh and bone");
-            for (int z = 0; z < 20; z++) for (int x = 0; x < 20; x++)
+            for (int z = 0; z < 36; z++) for (int x = 0; x < 36; x++)
             {
-                float wx = 2 + x * 4 + Mathf.Sin(z * 1.7f + x * .5f) * 1.1f;
-                float wz = -2 - z * 4 + Mathf.Sin(x * 1.9f - z * .8f);
+                float wx = 1.5f + x * 2.2f + Mathf.Sin(z * 1.7f + x * .5f) * .4f;
+                float wz = -1.5f - z * 2.2f + Mathf.Sin(x * 1.9f - z * .8f) * .4f;
                 if (!A2RSwampDressGeometry.SafeDebris(wx, wz,
                     (a, b) => field.TerrainHeight(a, b) < -.50f,
                     (a, b) => field.Distance(a, b) < -.5f && !NativeGame.Instance.Map.CanMove(a * 100, -b * 100, 100))) continue;
@@ -138,10 +140,11 @@ namespace Exoduser.UnityPort
 
         static Mesh RemainsMesh(bool bone, int id)
         {
+            if (bone) return RibMesh();
             // Broad connected silhouettes, not tiny particles. One mesh with a raised centre/fold.
             var mesh = new Mesh { name = bone ? "Submerged broken rib" : "Waterlogged folded tissue" };
             float length = bone ? .64f : .72f, width = bone ? .12f : .34f;
-            var v = new List<Vector3> { new Vector3(0, .026f, 0) };
+            var v = new List<Vector3> { new Vector3(.04f, .09f, 0) };
             var c = new List<Color> { bone ? new Color(.16f, .13f, .095f) : new Color(.095f, .026f, .025f) };
             var tri = new List<int>();
             for (int i = 0; i < 12; i++)
@@ -152,6 +155,26 @@ namespace Exoduser.UnityPort
                 tri.AddRange(new[] { 0, i + 1, (i + 1) % 12 + 1 });
             }
             mesh.SetVertices(v); mesh.SetColors(c); mesh.SetTriangles(tri, 0); mesh.RecalculateNormals(); mesh.RecalculateBounds(); return mesh;
+        }
+
+        static Mesh RibMesh()
+        {
+            var vertices = new List<Vector3>(); var colours = new List<Color>(); var triangles = new List<int>();
+            for (int ring = 0; ring <= 6; ring++)
+            {
+                float t = ring / 6f, radius = Mathf.Lerp(.07f, .05f, t);
+                for (int side = 0; side < 8; side++)
+                {
+                    float a = side * Mathf.PI / 4;
+                    vertices.Add(new Vector3((t - .5f) * .72f, .045f * Mathf.Sin(t * Mathf.PI) + radius * Mathf.Sin(a), .05f * Mathf.Sin(t * Mathf.PI) + radius * Mathf.Cos(a)));
+                    colours.Add(Color.Lerp(new Color(.09f, .075f, .055f), new Color(.16f, .13f, .095f), Mathf.Clamp01(Mathf.Sin(a))));
+                    if (ring == 6) continue;
+                    int i = ring * 8 + side, n = ring * 8 + (side + 1) % 8;
+                    triangles.AddRange(new[] { i, n, i + 8, n, n + 8, i + 8 });
+                }
+            }
+            var mesh = new Mesh { name = "Waterlogged curved rib with submerged underside" };
+            mesh.SetVertices(vertices); mesh.SetColors(colours); mesh.SetTriangles(triangles, 0); mesh.RecalculateNormals(); mesh.RecalculateBounds(); return mesh;
         }
 
         void LateUpdate()

@@ -35,9 +35,9 @@ Shader "EXODUSER/A2R/ToxicRiver"
    TEXTURE2D(_PlanarReflection);SAMPLER(sampler_PlanarReflection);
     TEXTURE2D(_ShoreField);SAMPLER(sampler_ShoreField);
    float _A2RSwampOn;
-   struct A {float4 positionOS:POSITION;float2 uv:TEXCOORD0;half4 colour:COLOR;};
-   struct V {float4 positionCS:SV_POSITION;float3 world:TEXCOORD0;float4 screen:TEXCOORD1;half fog:TEXCOORD2;half4 colour:TEXCOORD3;};
-   V vert(A a){V o=(V)0;VertexPositionInputs p=GetVertexPositionInputs(a.positionOS.xyz);o.positionCS=p.positionCS;o.world=p.positionWS;o.colour=a.colour;o.screen=ComputeScreenPos(p.positionCS);o.fog=ComputeFogFactor(p.positionCS.z);return o;}
+   struct A {float4 positionOS:POSITION;float2 uv:TEXCOORD0;half4 colour:COLOR;float3 normalOS:NORMAL;};
+   struct V {float4 positionCS:SV_POSITION;float3 world:TEXCOORD0;float4 screen:TEXCOORD1;half fog:TEXCOORD2;half4 colour:TEXCOORD3;half3 normalWS:TEXCOORD4;};
+   V vert(A a){V o=(V)0;VertexPositionInputs p=GetVertexPositionInputs(a.positionOS.xyz);o.positionCS=p.positionCS;o.world=p.positionWS;o.colour=a.colour;o.normalWS=TransformObjectToWorldNormal(a.normalOS);o.screen=ComputeScreenPos(p.positionCS);o.fog=ComputeFogFactor(p.positionCS.z);return o;}
 
    // Two analytic normal layers: metre-scale crests, no random noise/dither or sparkle.
    half4 SwampSurface(V i)
@@ -59,16 +59,16 @@ Shader "EXODUSER/A2R/ToxicRiver"
     float oil=raft*folds*.34*wet;
     float scum=(1-smoothstep(.12,.9,max(0,shore)))*_ShoreReady;
     scum*=smoothstep(.36,.78,sin(b*.81+sin(a*.46))*.5+.5)*.38;
-    half3 deep=lerp(half3(.026,.033,.025),half3(.046,.030,.024),flow);
+    half3 deep=lerp(half3(.016,.033,.021),half3(.061,.025,.020),flow);
     half3 colour=lerp(half3(.067,.046,.033),deep,wet);
-    colour*=.86+.28*(.5+.5*sin(a+sin(b)*.32));
+    colour*=.40+1.00*(.5+.5*sin(a+sin(b)*.32));
     colour=lerp(colour,half3(.055,.064,.051),oil);
     colour=lerp(colour,half3(.093,.079,.055),scum);
     InputData data=(InputData)0;data.positionWS=i.world;data.normalWS=n;data.viewDirectionWS=GetWorldSpaceNormalizeViewDir(i.world);
     data.shadowCoord=TransformWorldToShadowCoord(i.world);data.bakedGI=SampleSH(n);data.shadowMask=1;data.normalizedScreenSpaceUV=uv;
     SurfaceData s=(SurfaceData)0;s.albedo=colour;s.normalTS=half3(0,0,1);s.metallic=0;s.specular=.025;
     s.smoothness=lerp(.66,.30,scum);s.occlusion=1;s.alpha=lerp(.88,1,wet);s.emission=0;
-    half4 c=UniversalFragmentPBR(data,s);
+    half4 c=UniversalFragmentPBR(data,s);c.rgb*=.22;
     float4 reflected=mul(_PlanarVP,float4(i.world,1));float2 ru=reflected.xy/max(.0001,reflected.w)*.5+.5+n.xz*.075;
     float valid=step(.0001,reflected.w)*step(0,ru.x)*step(ru.x,1)*step(0,ru.y)*step(ru.y,1);
     half3 reflection=SAMPLE_TEXTURE2D(_PlanarReflection,sampler_PlanarReflection,ru).rgb;
@@ -81,16 +81,16 @@ Shader "EXODUSER/A2R/ToxicRiver"
      float2 v=p-_A2RWaterFires[k].xz;float along=dot(v,axis),side=dot(v,float2(-axis.y,axis.x));
      float width=.24+abs(along)*.065;float streak=exp(-side*side/(width*width))*exp(-abs(along)*.42)*(1-smoothstep(4,8,abs(along)));
      float breakup=.55+.45*sin(a+b*.6)*sin(a+b*.6);
-     c.rgb+=min(_A2RWaterFireColors[k].rgb,half3(5,2,.6))*streak*breakup*.018*wet*(1-scum);
+     c.rgb+=min(_A2RWaterFireColors[k].rgb,half3(5,2,.6))*streak*breakup*.04*wet*(1-scum);
     }
     c.rgb=MixFog(c.rgb,i.fog);return c;
    }
    half4 SwampDressing(V i)
    {
-    InputData d=(InputData)0;d.positionWS=i.world;d.normalWS=half3(0,1,0);d.viewDirectionWS=GetWorldSpaceNormalizeViewDir(i.world);
+    InputData d=(InputData)0;d.positionWS=i.world;d.normalWS=NormalizeNormalPerPixel(i.normalWS);d.viewDirectionWS=GetWorldSpaceNormalizeViewDir(i.world);
     d.shadowCoord=TransformWorldToShadowCoord(i.world);d.bakedGI=SampleSH(d.normalWS);d.shadowMask=1;d.normalizedScreenSpaceUV=i.screen.xy/i.screen.w;
     SurfaceData s=(SurfaceData)0;s.albedo=i.colour.rgb;s.normalTS=half3(0,0,1);s.metallic=0;s.specular=.018;s.smoothness=.28;s.occlusion=1;s.alpha=i.colour.a;
-    half4 c=UniversalFragmentPBR(d,s);c.rgb=MixFog(c.rgb,i.fog);return c;
+    half4 c=UniversalFragmentPBR(d,s);c.rgb*=.18;c.rgb=MixFog(c.rgb,i.fog);return c;
    }
 
    half4 frag(V i):SV_Target
