@@ -11,7 +11,8 @@ namespace Exoduser.UnityPort.Core.Combat
     // (they only report that the bullet was consumed), the bullet kinds that are not parried (bomb, ice zone ... fall through = Outcome.None / Other).
     public sealed class ReflectProjectile
     {
-        public double X, Y, Vx, Vy, Dmg, Life, Ml, El, Sz, R, AoeR, AoeDmg;   // Sz / R 0 = web `p.sz` / `p.r` undefined (the web reads them with ||)
+        public double X, Y, Vx, Vy, Dmg, Life, Ml, El, Sz, R, AoeR, AoeDmg, MaxDist;
+        public bool ParryMagicShot; public int FlightIndex;
         public string Col = "", ParryClass = "";
         public bool FbEnergy, FdEnergy, Mine, Trap, BlackBean, Friendly, NoParry, Bomb, Web, PoisonZone, IceZone, Blizzard, DimRift, ElemBall, CoralSpike;
         public bool GbBean, BlueBean, FireMagic, WaterBean, TitanEye, BwBean, RedBean, SwordWave, PhantomSword;
@@ -35,7 +36,7 @@ namespace Exoduser.UnityPort.Core.Combat
         None,              // no branch took the bullet (the loop goes on)
         Other,             // the ordinary-bullet branch took it but it is not a Q magic parry (whirlwind absorb, bomb, damage ...): the rest of the web loop decides
         Absorb,            // Q press zone <= 20 px: the bullet is swallowed (recycled)
-        BigEnergyParry,    // large energy ball parried by Q: replaced by five comet bullets (_resolveBigEnergyParry), not part of this port
+        BigEnergyParry,    // Q replaces the original with SplitBigEnergy's five ordinary elemental magic shots
         BigEnergyHit,      // large energy ball touched the player
         Consumed,          // wrong-input penalty / black-bean hit / white-dark ball hit / whirlwind absorb: the bullet is used up, no reflection
         Reflect,           // the bullet was turned around: see Kind and the doParry arguments
@@ -121,7 +122,12 @@ namespace Exoduser.UnityPort.Core.Combat
             if (zone == ParryRules.Zone.Absorb && !p.Friendly && !p.NoParry && !io) { r.Outcome = ReflectOutcome.Absorb; r.Fell = false; return r; }
             if (bigBall && !p.Friendly && !pHit && !io)
             {
-                if (qParryActive && d < pParryR) { pHit = true; r.Outcome = ReflectOutcome.BigEnergyParry; }
+                if (qParryActive && d < pParryR) {
+                    pHit = true; r.Outcome = ReflectOutcome.BigEnergyParry;
+                    r.DoParry = true; r.ParryDmg = Js.Int(CounterDamage(i, p.Dmg, sbPW) * 1.5);
+                    r.ParryX = p.X; r.ParryY = p.Y; r.ResourceMul = 10; r.ParryBankAdd = r.ParryDmg * 10;
+                    r.ParryTag = p.FbEnergy && p.El == 2 ? "waterEnergy" : p.FdEnergy && p.El == 1 ? "fireEnergy" : null;
+                }
                 else if (d < pCollR) { pHit = true; r.Outcome = ReflectOutcome.BigEnergyHit; }
                 if (pHit) { r.PHit = true; r.Fell = false; return r; }
             }
@@ -210,6 +216,20 @@ namespace Exoduser.UnityPort.Core.Combat
             return r;
         }
 
+        // _splitParriedBigEnergy: no blue-bean conversion, blast or boss-HP floor.
+        public static ReflectProjectile[] SplitBigEnergy(ReflectProjectile p, double totalDamage)
+        {
+            var shots = new ReflectProjectile[5];
+            double start = Math.Atan2(p.Vy, p.Vx) + Math.PI;
+            for (int k = 0; k < shots.Length; k++) {
+                double a = start + Math.PI * 2 * k / shots.Length;
+                shots[k] = new ReflectProjectile { X = p.X + Math.Cos(a) * 12, Y = p.Y + Math.Sin(a) * 12,
+                    Vx = Math.Cos(a) * 7.5, Vy = Math.Sin(a) * 7.5, Dmg = Math.Max(1, Js.Int(totalDamage / 5)), El = p.El,
+                    R = 8, MaxDist = 900, Friendly = true, Magic = true, ParryMagicShot = true };
+            }
+            return shots;
+        }
+
         // doParry's `el` argument: red / rainbow are strings, any element id is "normal" for the rewards
         static string ElOf(ReflectProjectile p) { return null; }
 
@@ -222,11 +242,11 @@ namespace Exoduser.UnityPort.Core.Combat
 
         // ---- the flight of a reflected blue bean (34977-34988): steer toward the nearest enemy within 400 px, 0.08 rad per tick (x sp) ----
         public const double HomingRange = 400, HomingTurnRate = 0.08;
-        public static void HomingTurn(ReflectProjectile p, double targetX, double targetY, double sp)
+        public static void HomingTurn(ReflectProjectile p, double targetX, double targetY, double sp, double turnRate = HomingTurnRate)
         {
             double ang = Math.Atan2(targetY - p.Y, targetX - p.X), cur = Math.Atan2(p.Vy, p.Vx), diff = ang - cur;
             while (diff > Math.PI) diff -= Math.PI * 2; while (diff < -Math.PI) diff += Math.PI * 2;
-            double turn = Math.Min(Math.Abs(diff), HomingTurnRate * sp) * Math.Sign(diff), spd = Spd(p), n = cur + turn;
+            double turn = Math.Min(Math.Abs(diff), turnRate * sp) * Math.Sign(diff), spd = Spd(p), n = cur + turn;
             p.Vx = Math.Cos(n) * spd; p.Vy = Math.Sin(n) * spd;
         }
 

@@ -1,3 +1,5 @@
+2026-11-04 12:30 Core 결함 수정(앵글러 물 에너지탄 패링): Unity가 크라켄 물 에너지탄을 forbidden으로 분류해 Q 패링이 안 되던 것을 웹(fbEnergy 터미널)과 같게 수정. ProjSpec/BossProjectile.FbEnergy, ClassOf=magic, Q=원본 제거+5발 분열(자원×10, 청콩 반사 없음), E 제외, 접촉=무적 중에도 소멸·비무적에만 피해+슬라이드 100, 벽 접촉 8방향 샘플. 무지개탄 Q 전용·다른 탄 분류 불변. parry-reflect-oracle 61509 checks 0 failures(anglerEnergy 12766·anglerRuntime 35 신설), druid-boss-oracle 5421635 checks 0 mismatches, fieldboss-oracle 302271 checks 0 failures, 참조 컴파일 오류 0. 문서: 2_3 사실 표기, 몬스터_공격시스템.
+
 2026-11-04 11:20 공용 실행기 단독 검사 중 새 Editor 작업 대기(CTO): BuildLoop 단독 Player(_player_exclusive.json)가 도는 동안 새 Editor 서버 시작·batch·상주 서버 제출은 끝날 때까지 기다린다. 돌고 있는 Editor는 끊지 않음, 검사 기준 무변경. 원인=a7db9621b UI 겹침 검사가 다른 레인 Editor 빌드와 겹쳐 14fps로 1800초 제한 초과. 실행기 `2026.11.04-exclusive2`, exclusive-test 12건. 문서 unity/Tools/devtools/README.md.
 
 2026-11-04 11:05 UI 겹침 검사 Player 시간 제한 1800→3600초(도구 총괄, BuildLoop a7db9621b FAIL): 단독 실행으로 영상 준비 실패는 없어졌으나 다른 레인 Editor 빌드·대량 디스크 작업과 겹쳐 Player가 약 14fps로 느려져 2560 화면군에서 1800초 제한에 걸림(08:44 회차는 약 40fps로 861초에 3840 도달). 전 화면 행렬은 공용 PC 부하에서 30분을 넘길 수 있어 check.ps1 제한만 늘림. 판정 기준·화면 목록 무변경.

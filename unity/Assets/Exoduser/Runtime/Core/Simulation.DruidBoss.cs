@@ -81,7 +81,7 @@ namespace Exoduser.UnityPort.Core
 
         // ---- IBossHost ------------------------------------------------------------------------------------------------------------------------------------
         string druidDamageSource="boss";
-        sealed class BossHostAdapter : IBossHost, IBossReflectHost, ICombatDamageTelemetry
+        sealed class BossHostAdapter : IBossHost, IBossReflectHost, IBossEnergyHost, ICombatDamageTelemetry
         {
             readonly Simulation s;
             public BossHostAdapter(Simulation sim) { s = sim; }
@@ -113,6 +113,13 @@ namespace Exoduser.UnityPort.Core
             public bool FlowDir(double x, double y, out double dx, out double dy) { double a = Math.Atan2(s.Player.Y - y, s.Player.X - x); dx = Math.Cos(a); dy = Math.Sin(a); return true; }
             public bool Los(double x, double y, double tx, double ty) { return s.HasLineOfSight == null || s.HasLineOfSight((float)x, (float)y, (float)tx, (float)ty); }
             public void HurtPlayer(int damage, bool magic) { s.HurtPlayer(damage, new HurtOptions { Magic = magic, Source=s.druidDamageSource }); }
+            public void EnergyContact(BossProjectile p, int damage) {
+                double dx = p.Vx, dy = p.Vy, length = Math.Sqrt(dx * dx + dy * dy);
+                if (length <= .001) { dx = s.Player.X - p.X; dy = s.Player.Y - p.Y; length = Math.Sqrt(dx * dx + dy * dy); }
+                if (length <= .001) { dx = 0; dy = 1; length = 1; }
+                s.HurtPlayer(damage, new HurtOptions { Magic = true, Source = "proj" });
+                s.Player.KnockbackX = (float)(dx / length * 100); s.Player.KnockbackY = (float)(dy / length * 100);
+            }
             public void DamageSource(string source){s.druidDamageSource=source;}
             public void WrongParryInput(){s.Stats.parryWrongInput++;}
             public void KnockPlayer(double kx, double ky) { s.Player.KnockbackX += (float)kx; s.Player.KnockbackY += (float)ky; }

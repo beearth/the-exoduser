@@ -133,7 +133,7 @@ namespace Exoduser.UnityPort.Core
         {
             if (!CanFieldEnemyShoot(fb)) return;
             double a = Math.Atan2(Player.Y - fb.Y, Player.X - fb.X), mx, my; FieldBossFeeler(fb, out mx, out my);
-            EmitFieldBossShot(new ProjSpec { X = mx, Y = my, Vx = Math.Cos(a) * 10, Vy = Math.Sin(a) * 10, Dmg = Js.Int(fb.Atk * 2.8), El = 2, Life = 320, Ml = 320, Col = ElementColors[2], Sz = 48, R = 20, ElemBall = true, Typed = true, Commit = true });
+            EmitFieldBossShot(new ProjSpec { X = mx, Y = my, Vx = Math.Cos(a) * 10, Vy = Math.Sin(a) * 10, Dmg = Js.Int(fb.Atk * 2.8), El = 2, Life = 320, Ml = 320, Col = ElementColors[2], Sz = 48, R = 20, FbEnergy = true, ElemBall = true, Typed = true, Commit = true });
             FieldBossEnergyShots++;
             HurtShake(16);
         }

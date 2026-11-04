@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text.Json;
 using Exoduser.UnityPort.Core.Combat;
 
-static class P
+static partial class P
 {
     static int checks, bad;
     static readonly Dictionary<string, int[]> perSection = new Dictionary<string, int[]>();
@@ -121,6 +121,7 @@ static class P
             }
         }
         section = "reflectBlast"; Check(blastContacts >= 200, "blast contact cases " + blastContacts);
+        CheckAnglerEnergy(root);
 
         var receipt = new { schema = "exoduser.unity.parry-reflect-oracle-result.v1", checks, failures = bad, oracleSha = root.GetProperty("source").GetProperty("sha256").GetString(), sections = perSection.ToDictionary(k => k.Key, k => new { checks = k.Value[0], failures = k.Value[1] }), firstFailures };
         File.WriteAllText(args[0], JsonSerializer.Serialize(receipt, new JsonSerializerOptions { WriteIndented = true }));
