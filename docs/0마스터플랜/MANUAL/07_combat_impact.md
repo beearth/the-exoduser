@@ -1,5 +1,5 @@
 # MANUAL 07 — 전투 임팩트 디렉션 (초안 2026-11-05)
-- 상태: 초안(2차 반영 11-05) | 출처 상태: SOURCE_VERIFY 6c3aac6 기준 | 연구 반영: pbz(Phantom Blade Zero), d4_03_cam(§8.7 피격·§8.8 숫자·흔들림), d4_04_anim A7, yellowsky 규칙6, 5.1 IMPACT_REFERENCE_PBZ_DOTA2_20261103 R1~R8, codex_combat_impact, codex_frame_data, codex_motion_direction, codex_vfx_direction, TOOLCHAIN_20261105 | 연구 반영 대기: PBZ 실제 게임 프레임 데이터(2차 조사도 "미확인": 개발자 글·인터뷰에 정지·섬광·카메라 수치 없음 → Mac 실측 영상 필요), 피 데칼 3.5초 Mac 실측, 소리 층 수치(2차 조사도 5개 게임 전부 동시 레이어 수·dB·지연 "미확인" → 06사운드 매뉴얼과 연동하되 역할 구분만 확정)
+- 상태: 초안(2차 반영 11-05) | 출처 상태: SOURCE_VERIFY 7522375(CX22-2) 기준 | 연구 반영: pbz(Phantom Blade Zero), d4_03_cam(§8.7 피격·§8.8 숫자·흔들림), d4_04_anim A7, yellowsky 규칙6, 5.1 IMPACT_REFERENCE_PBZ_DOTA2_20261103 R1~R8, codex_combat_impact, codex_frame_data, codex_motion_direction, codex_vfx_direction, TOOLCHAIN_20261105 | 연구 반영 대기: PBZ 실제 게임 프레임 데이터(2차 조사도 "미확인": 개발자 글·인터뷰에 정지·섬광·카메라 수치 없음 → Mac 실측 영상 필요), 피 데칼 3.5초 Mac 실측, 소리 층 수치(2차 조사도 5개 게임 전부 동시 레이어 수·dB·지연 "미확인" → 06사운드 매뉴얼과 연동하되 역할 구분만 확정)
 - 범위: 히트스톱·포즈 홀드, 카메라 임펄스, 섬광·잔상, 피해 숫자, 처치 연출, 패링 등급 연출. / 정하지 않는 것: 데미지·패링 판정·보상 수치(Core, `Core/ParryRewards.cs` 등). 2_3 설계는 바꾸지 않는다.
 
 ## 1. 목표 장면·레퍼런스 (무엇을, 왜)
@@ -89,7 +89,7 @@
 | 격투게임 피격 경직 | 같은 동작 hitstun 10/14/19F, blockstun 9/13/18F | — | 플레이어 스태거 6틱, 기절 240틱 (`Core/PlayerPoise.cs`) | 비교 대상 아님(체계가 다름). 유불리를 경직 길이로 읽지 않는다 | [사실] | 접속불가 |
 | 공격 총시간 | Dead Cells Broadsword 0.6/0.75/0.9s | — | 04번 §3.2 | 총시간은 히트스톱이 아니다 | [단일] | 접속불가 |
 | 0.2초 연장 | Dead Cells 무기 제작 인터뷰의 "0.2초" | — | — | **기각**: 애니메이션 리타이밍 문맥, 200ms 히트스톱 아님 | [사실, 채택 안 함] | 검증됨 |
-| MHW 히트스톱 | Hunting Horn Echo Attack 원본은 히트스톱 없음(모드 제작자 주장), 대검 True Charged Slash는 HOOT가 감소(양 미공개) | — | — | ms 만들지 않음 | [단일] | 미검증 |
+| MHW 히트스톱 | Hunting Horn Echo Attack 원본은 히트스톱 없음(모드 제작자 주장), 대검 True Charged Slash는 HOOT가 감소(양 미공개) | — | — | ms 만들지 않음 | [단일] | 검증됨 |
 | PBZ·D4·PoE2·Hades | 히트스톱 ms, 카메라 진폭, 넉백 거리, 섬광 프레임 | — | — | 전부 미확인 | [미확인] | 미검증 |
 - 측정 기록 규약(후속 Mac 실측용, codex_combat_impact §5.2): 표본 URL·게시자·빌드, 실제 fps(PTS 확인), 타임코드 / 정지는 공격자·피격자·배경을 따로 / 카메라 임펄스는 고정 배경 기준점 잔차로 px와 화면 폭 % / 넉백은 지면 기준점·카메라 보정 후 화면 px(월드 단위로 바꾸지 않음) / 섬광은 대상 표면·접점·전체 화면 구분 / 프레임 경계 ±1F씩이면 길이 ±2F(60fps에서 ±33ms) 오차 기록. 줌·회전·편집이 섞여 분리 안 되면 "미확인"으로 둔다.
 

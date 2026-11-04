@@ -1,5 +1,5 @@
 # MANUAL 05 — 몬스터 동작 디렉션 (초안 2026-11-05)
-- 상태: 출처 상태: SOURCE_VERIFY 6c3aac6 기준 | 초안(2차 반영 11-05) | 연구 반영: d4_04_anim(가족 설계·데스 킷), conventions, pbz(적 반응 4단계), codex_motion_direction(몬스터 예고), codex_frame_data(경직 참고), codex_3d_pixel(원거리 소실), codex_3d_pixel_small_team(범위), TOOLCHAIN_20261105 | 연구 반영 대기: 몬스터별 예고·경직 공개 수치(codex_motion_direction이 전 게임 "미확인"으로 확인, 공개 자료로는 채울 수 없음 → Mac 실측), 1-1 etype별 실제 AI 프레임(Core `EnemyAi.cs` 확인 필요), D4 몬스터 가족별 이동 리듬 실측(공개 자료 없음)
+- 상태: 출처 상태: SOURCE_VERIFY 7522375(CX22-2) 기준 | 초안(2차 반영 11-05) | 연구 반영: d4_04_anim(가족 설계·데스 킷), conventions, pbz(적 반응 4단계), codex_motion_direction(몬스터 예고), codex_frame_data(경직 참고), codex_3d_pixel(원거리 소실), codex_3d_pixel_small_team(범위), TOOLCHAIN_20261105 | 연구 반영 대기: 몬스터별 예고·경직 공개 수치(codex_motion_direction이 전 게임 "미확인"으로 확인, 공개 자료로는 채울 수 없음 → Mac 실측), 1-1 etype별 실제 AI 프레임(Core `EnemyAi.cs` 확인 필요), D4 몬스터 가족별 이동 리듬 실측(공개 자료 없음)
 - 범위: 근접·원거리·돌진·소환·엘리트의 이동 리듬, 예비동작 하한, 피격 경직·넉백, 사망의 표현. / 정하지 않는 것: HP·공격력·경직 시간·포이즈·AI 선택(Core). 어택 티켓(동시공격 제한)은 만들지 않는다(핵앤슬래시, CLAUDE.md 7절).
 
 ## 1. 목표 장면·레퍼런스 (무엇을, 왜)

@@ -1,6 +1,6 @@
 # MANUAL 12 — 사운드·음악 (초안 2026-11-05)
 
-- 상태: 초안 | 출처 상태: SOURCE_VERIFY 6c3aac6 기준 | 연구 반영: d4_03_cam.md(§8.9 사운드 레이어, R10, 덕킹), conventions.md(L행 사운드 믹스, E4), pbz.md(타격음 층은 임팩트 매뉴얼과 연동), **[2차 11-05]** `codex_sound_music.md`(D4·PoE2·Hades·No Rest for the Wicked·Phantom Blade Zero 공개 인터뷰·패치 노트 + Unity 6000 적용안 §7), `TOOLCHAIN_20261105.md` §2-9(사운드 도구), **[3차 11-05]** `codex_synthesis.md`(§1·§2·§3.4·§4, 기존 2차 연구와 겹치는 부분은 변경 없음) §1.11 사운드 5원칙·§3.6 프로젝트 정적 수치 | 연구 반영 대기: D4·PoE2 믹스 청취 실측(2차 연구도 5개 게임 모두 버스 트리·덕킹 dB·LUFS·True Peak **미확인**), 장면별 BGM 곡 지정(청음 후), 음량 LUFS 목표 청취 판정(프로젝트 목표 미정), GDC 2024 D4 "Living Audio" 발표 내부 수치(접근 실패), PoE2 현행 상한·쿨다운 값
+- 상태: 초안 | 출처 상태: SOURCE_VERIFY 7522375(CX22-2) 기준 | 연구 반영: d4_03_cam.md(§8.9 사운드 레이어, R10, 덕킹), conventions.md(L행 사운드 믹스, E4), pbz.md(타격음 층은 임팩트 매뉴얼과 연동), **[2차 11-05]** `codex_sound_music.md`(D4·PoE2·Hades·No Rest for the Wicked·Phantom Blade Zero 공개 인터뷰·패치 노트 + Unity 6000 적용안 §7), `TOOLCHAIN_20261105.md` §2-9(사운드 도구), **[3차 11-05]** `codex_synthesis.md`(§1·§2·§3.4·§4, 기존 2차 연구와 겹치는 부분은 변경 없음) §1.11 사운드 5원칙·§3.6 프로젝트 정적 수치 | 연구 반영 대기: D4·PoE2 믹스 청취 실측(2차 연구도 5개 게임 모두 버스 트리·덕킹 dB·LUFS·True Peak **미확인**), 장면별 BGM 곡 지정(청음 후), 음량 LUFS 목표 청취 판정(프로젝트 목표 미정), GDC 2024 D4 "Living Audio" 발표 내부 수치(접근 실패), PoE2 현행 상한·쿨다운 값
 - 범위: 믹스 버스 구조, 우선순위, 동시 발음 상한, 덕킹, 장면별 음악(전환·휴지), 타격음 층, 환경음, UI 소리 연결, 음량 기준.
 - 이 문서가 정하지 않는 것: 개별 효과음 파일 선택(청음 라운드로 사용자가 정함), 대사·보이스 연기, 게임 규칙(Core), 설정 화면 배치(MANUAL 10). 현행 정답 위치: `docs/6사운드디자인/6사운드디자인.md`, `SND04_UNITY_AUDIO_DIRECTOR_CONTRACT_20261028.md`, `SOUND_LEAD_MASTER_20261026.md`.
 
@@ -72,8 +72,8 @@
 | 프로젝트 정적 설정(3차) | SFX **논리 활성 48 / Real Voices 32 / Virtual Voices 512**(`NativeFeedbackAudio.cs`, `ProjectSettings/AudioManager.asset`). 일반 클립 PCM·preload 138, BGM compressed-in-memory 16(`SourceAudioImporter.cs`). 정적 값이며 실제 가청 voice 수·달성 FPS가 아님 | [단일] `codex_synthesis.md` §3.6(`our_tech_audit.md`) | 내부 |
 | Core 제안(충돌) | 동시 보이스 상한 32, Danger(보스 예고·엘리트 기합) 8개까지 상한 면제 | [단일] d4_03_cam.md §8.9. 현행(48)과 다르므로 D12-1 | 미검증 |
 | 인스턴스 제한(2차) | 같은 소리의 동시 인스턴스를 엄격한 규칙으로 제한해 혼잡을 줄인다. 카테고리별 상한·우선순위 점수·stealing 알고리즘은 미확인 | [사실] D4 Kris Giampa 2021 해설(`codex_sound_music.md` §3.1) | 검증됨 |
-| FMOD 사례(참고) | PoE1 당시 우선순위·stealing·이벤트 쿨다운, 설정별 채널 32·64·128. **PoE2 현행 값은 미확인이라 전용하지 않음** | [사실] PoE Audio Q&A Part 2 (같음 §3.2) | 미검증 |
-| Unity API 사실 | `AudioSource.priority` 0 = 가장 높음, 256 = 가장 낮음. 같은 우선순위에서는 작은 소리가 가상화됨. **전용 경고 슬롯을 예약해 주지 않는다** | [사실] Unity 6000.0 문서(같음 §7.2). 우리 자체 우선순위(TELL=12 최고)는 이 값과 방향이 반대라 변환표 확인 필요(구현 코드 변환 여부는 미확인) | 미검증 |
+| FMOD 사례(참고) | PoE1 당시 우선순위·stealing·이벤트 쿨다운, 설정별 채널 32·64·128. **PoE2 현행 값은 미확인이라 전용하지 않음** | [사실] PoE Audio Q&A Part 2 (같음 §3.2) | 검증됨 · 미검증 |
+| Unity API 사실 | `AudioSource.priority` 0 = 가장 높음, 256 = 가장 낮음. 같은 우선순위에서는 작은 소리가 가상화됨. **전용 경고 슬롯을 예약해 주지 않는다** | [사실] Unity 6000.0 문서(같음 §7.2). 우리 자체 우선순위(TELL=12 최고)는 이 값과 방향이 반대라 변환표 확인 필요(구현 코드 변환 여부는 미확인) | 검증됨 |
 | 실제/가상 보이스 | `Max Real Voices`·`Max Virtual Voices`는 대상 기기에서 계측 후 정한다. AudioSource 풀 크기 = 동시에 들리는 소리 수가 아니다 | [사실 API] Unity Audio 설정 문서 / 우리 값은 미정 | 미검증 |
 | 제한 묶음 규칙 | 경고음은 낮은 중요도 소리와 같은 제한 묶음에 넣지 않는다. 장식용 잔여음부터 생략한다 | [추정] `codex_sound_music.md` §7.2 (D4 인스턴스 제한·PoE 쿨다운 사례 기반) | 우리 기준 |
 

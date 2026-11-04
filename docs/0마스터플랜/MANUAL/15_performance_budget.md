@@ -1,6 +1,6 @@
 # MANUAL 15 — 성능 예산 (폴리곤·텍스처·드로우콜·프레임 시간·GC·로딩) (초안 2026-11-05)
 
-- 상태: 초안(3차 반영 11-05) | 출처 상태: SOURCE_VERIFY 6c3aac6 기준 | 연구 반영: **3차: codex_asset_size(Resources 폴더별·참조 대조·텍스처 규칙·Steam 용량 목표·절감 순서), FIRST_SCENE_PLAN(§7 측정 관문), codex_synthesis(§1.14 성능 원칙·§2 Resources/A2R 판정), ENGINE_TRIAL_UE5_PLAN(§9 성능 판정 기준)**, 이전: poe2(§8 성능 예산, §9 L1·L2·F1), d4_01_env(§3~§5 소품·베이크 수치), d4_03_cam(R6 발광 단계), conventions(J2, K4 그래픽 옵션), **2차: codex_tech_budget(공개 자료에 정량 예산 대부분 없음 확인, 최소 사양·FPS 환산 반영), our_tech_audit(Resources 원본 2,881,554,015 byte·상위 위험 30개·현재 상태 대비), TOOLCHAIN(§3a~§3d 패스 예산 합계 14.7ms, BudgetCheck c-5), ENGINE_DECISION(UE5 칸 점검)** | 연구 반영 대기: 없음. 단 삼각형·텍스처·draw call·파티클·voice·GC의 7종 공개 수치는 "확인 불가"가 결론이라 계속 [추정] 시작값이고, 모든 항목은 Mac M5 Pro 첫 실측 후 개정
+- 상태: 초안(3차 반영 11-05) | 출처 상태: SOURCE_VERIFY 7522375(CX22-2) 기준 | 연구 반영: **3차: codex_asset_size(Resources 폴더별·참조 대조·텍스처 규칙·Steam 용량 목표·절감 순서), FIRST_SCENE_PLAN(§7 측정 관문), codex_synthesis(§1.14 성능 원칙·§2 Resources/A2R 판정), ENGINE_TRIAL_UE5_PLAN(§9 성능 판정 기준)**, 이전: poe2(§8 성능 예산, §9 L1·L2·F1), d4_01_env(§3~§5 소품·베이크 수치), d4_03_cam(R6 발광 단계), conventions(J2, K4 그래픽 옵션), **2차: codex_tech_budget(공개 자료에 정량 예산 대부분 없음 확인, 최소 사양·FPS 환산 반영), our_tech_audit(Resources 원본 2,881,554,015 byte·상위 위험 30개·현재 상태 대비), TOOLCHAIN(§3a~§3d 패스 예산 합계 14.7ms, BudgetCheck c-5), ENGINE_DECISION(UE5 칸 점검)** | 연구 반영 대기: 없음. 단 삼각형·텍스처·draw call·파티클·voice·GC의 7종 공개 수치는 "확인 불가"가 결론이라 계속 [추정] 시작값이고, 모든 항목은 Mac M5 Pro 첫 실측 후 개정
 - 범위: 1-1 한 판(데모 v0) 기준 60fps를 지키는 예산. 지형·소품·캐릭터(픽셀 렌더)·조명·후처리·VFX·로딩·메모리.
 - 이 문서가 정하지 않는 것: 규칙 코어 틱 레이트와 시뮬 비용(코어 소관), 웹판 성능 문서(`docs/12퍼포먼스·최적화/` 대부분이 웹 H5 이력이라 Unity 예산의 근거로 쓰지 않는다. 메모 참고만).
 - 기준 하드웨어: PC(High) = 컴파일·빌드 담당, **판정은 Mac(M5 Pro)에서 한다**(CLAUDE.md 3.4). 목표는 둘 다 1920×1080 60fps. 32:9 3840×1080도 성립해야 한다(21:9는 2560×1080)(CLAUDE.md 4.2-4). 저사양 하한 기기 정의는 아직 없다 → 결정 D15-1.
@@ -197,10 +197,10 @@
 
 | 게임 | GPU 최소 | RAM | 저장 | FPS 조건 | 출처 상태 |
 |---|---|---|---|---| --- |
-| Diablo IV | GTX 660 / Arc A380 / R9 280 | 8GB | 90GB SSD | 출력 1080p / 렌더 720p / Low / 30 FPS. 권장은 1080p Medium 60 FPS | 검증됨 |
+| Diablo IV | GTX 660 / Arc A380 / R9 280 | 8GB | 90GB SSD | 출력 1080p / 렌더 720p / Low / 30 FPS. 권장은 1080p Medium 60 FPS | 미검증 |
 | Path of Exile 2 | GTX 960(3GB) / RX 470 | 8GB | 100GB | 미확인 | 검증됨 |
 | Last Epoch | GTX 1060 / RX 580 | 8GB | 22GB | 미확인 | 검증됨 |
-| No Rest for the Wicked | GTX 1080 / Radeon 5600 XT | 16GB | 46GB SSD | 미확인 | 미검증 |
+| No Rest for the Wicked | GTX 1080 / Radeon 5600 XT | 16GB | 46GB SSD | 미확인 | 검증됨 |
 | Phantom Blade Zero | GTX 1660 6GB / RX 5500 XT 8GB | 16GB | 145GB SSD | 1080p / 30 FPS / 업스케일링 활성 | 검증됨 |
 | Hades 1 | VRAM 1GB, DX10 | 4GB | 15GB | 콘솔 60 FPS 공식 목표만 확인 | 검증됨 |
 

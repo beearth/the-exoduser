@@ -1,5 +1,5 @@
 # MANUAL 04 — 플레이어 캐릭터 동작 디렉션 (초안 2026-11-05)
-- 상태: 출처 상태: SOURCE_VERIFY 6c3aac6 기준 | 초안(2차 반영 11-05) | 연구 반영: d4_04_anim(D4_STUDY/04_character_monster_boss_anim.md), pbz(GAME_STUDY/phantom_blade_zero.md), conventions(ARPG_CONVENTIONS_CHECKLIST_20261105.md), codex_motion_direction, codex_frame_data, codex_3d_pixel, codex_3d_pixel_small_team, TOOLCHAIN_20261105 | 연구 반영 대기: 영웅 직업별 콤보 프레임 실측(Core 확인 필요 행 전부), D4 게임플레이 모캡 비율(공개 자료 없음), 대상 게임들의 예비·발동·접점·회복 공개 수치(codex_motion_direction이 "미확인"으로 확인: 공개 자료로는 채울 수 없음 → 우리 Mac 실측으로 대체)
+- 상태: 출처 상태: SOURCE_VERIFY 7522375(CX22-2) 기준 | 초안(2차 반영 11-05) | 연구 반영: d4_04_anim(D4_STUDY/04_character_monster_boss_anim.md), pbz(GAME_STUDY/phantom_blade_zero.md), conventions(ARPG_CONVENTIONS_CHECKLIST_20261105.md), codex_motion_direction, codex_frame_data, codex_3d_pixel, codex_3d_pixel_small_team, TOOLCHAIN_20261105 | 연구 반영 대기: 영웅 직업별 콤보 프레임 실측(Core 확인 필요 행 전부), D4 게임플레이 모캡 비율(공개 자료 없음), 대상 게임들의 예비·발동·접점·회복 공개 수치(codex_motion_direction이 "미확인"으로 확인: 공개 자료로는 채울 수 없음 → 우리 Mac 실측으로 대체)
 - 범위: 대기·걷기·달리기·대시·공격 콤보·스킬 계열·회피·패링·피격·경직·사망·부활의 키포즈 배치·홀드·과장·블렌드. / 정하지 않는 것: 상태 길이·판정·무적 프레임·캔슬 가능 틱(Core가 정답). 여기서는 그 안에서 키포즈를 어디에 둘지만 정한다.
 
 ## 1. 목표 장면·레퍼런스 (무엇을, 왜)
@@ -29,7 +29,7 @@
 
 | 항목 | 값 | 근거 | 출처 상태 |
 |---|---|---|---|
-| 키포즈 단계 판정 | 공격 1개 = 키포즈 3~5장으로 1x 판정 PASS 후 사이 프레임 | "키포즈 먼저, 사이 프레임 나중" 원칙은 [사실] 데드셀 2건. **장수 3~5장은 [추정]**(CX22: Dead Cells 출처에서 확인 안 됨) / d4_04_anim A1 | 검증됨(원칙만) · 우리 기준(3~5장) |
+| 키포즈 단계 판정 | 공격 1개 = 키포즈 3~5장으로 1x 판정 PASS 후 사이 프레임 | "키포즈 먼저, 사이 프레임 나중" 원칙은 [사실] 데드셀 2건. **장수 3~5장은 [추정]**(CX22: Dead Cells 출처에서 확인 안 됨) / d4_04_anim A1 | 미검증(원칙은 읽었으나 해당 URL 미검증) · 우리 기준(3~5장) |
 | 예비 정점 실루엣 이동 | 대기 대비 외곽 4텍셀 이상 | [추정] d4_04_anim A2 | 미검증 |
 | 예비 정점 홀드 | 4~6틱 (Core 예비 ≤12틱인 기술은 2틱) | [추정] A3 | 미검증 |
 | 접점 홀드 | 경타 2~3틱, 강타·마무리 4~6틱 (표현만, 시뮬 정지 아님) | [추정] A7. 단 07번 D07-1 결정에 종속 | 미검증 |
@@ -69,8 +69,8 @@
 | 회피 총 길이 | Dead Cells 구르기 지속 0.4s(쿨다운 0.37s), 무적 시작·종료 미확인 | 24틱 | 18틱=0.3s (`Core/RollRules.cs` Frames=18) | 연구가 길다(무적 구간은 미확인이라 비교 불가) | [단일] | 접속불가 |
 | 패링 창 | Sekiro 일반 튕겨내기 유효 12F@60fps → 200ms (옛 글 30F 0.5s는 충돌 보류) | 12틱 | Q 해제 창 12틱=200ms(`Core/ParryRules.cs` SBlockReleaseTicks), E 창 16틱=267ms | Q와 일치, E는 +4틱 | [단일 커뮤니티 측정] ★ D04-4 | 검증됨 |
 | 콤보 1타 | Dead Cells Broadsword 1타 0.6s / 2타 0.75s / 3타 0.9s, 콤보 2.25s | 36/45/54틱 | Core 확인 필요 (영웅·무기별) | 참고만 | [단일 커뮤니티 측정] | 접속불가 |
-| 콤보 전체 | Hades Twin Fists 5타+회복 1.5s, Special 1s (게시자 보고, 버전·공속 조건 미공개) | 90/60틱 | Core 확인 필요 | 참고만. 평균을 개별 타 길이로 쓰지 않음 | [단일 커뮤니티 측정] | 미검증 |
-| 방어 vs 무적 | Hades Athena 은혜 무적 1.5s는 기본 대시 값이 아니다 | — | — | 섞지 않는다 | [사실] | 미검증 |
+| 콤보 전체 | Hades Twin Fists 5타+회복 1.5s, Special 1s (게시자 보고, 버전·공속 조건 미공개) | 90/60틱 | Core 확인 필요 | 참고만. 평균을 개별 타 길이로 쓰지 않음 | [단일 커뮤니티 측정] | 검증됨 |
+| 방어 vs 무적 | Hades Athena 은혜 무적 1.5s는 기본 대시 값이 아니다 | — | — | 섞지 않는다 | [사실] | 검증됨 |
 - 해석 규칙: 방어 성공 창과 피해 무효(무적)는 다른 값이다. Sekiro 창을 회피 무적으로, Hades 은혜 무적을 대시로 옮기지 않는다 [codex_frame_data 해석].
 - 예비·발동·접점·회복 공개 수치: Dead Cells·Hades·Blasphemous·Katana ZERO·Hyper Light Drifter 모두 "미확인"이다(codex_motion_direction). 위 §3 표현 비율(예비 25~30% 등)은 계속 [추정]이다. 공개 자료로 근거를 만들지 못하므로 우리 Mac 실측 영상이 근거가 된다.
 - Dead Cells 공격 제작 글의 30fps 언급은 이전 프로젝트(ScarKrow) 이야기라 인용하지 않는다. HLD는 30/60fps 전환 이력이 있어 서로 다른 버전의 관찰값을 합치지 않는다 [사실].

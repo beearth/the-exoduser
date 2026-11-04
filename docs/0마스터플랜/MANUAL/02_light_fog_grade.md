@@ -1,6 +1,6 @@
 # MANUAL 02 — 광원·안개·색 보정 (초안 2026-11-05)
 
-- 상태: 출처 상태: SOURCE_VERIFY 6c3aac6 기준 | 초안(3차 반영 11-05) | 연구 반영: **3차: yellowsky 갱신본(공개 평가 사실만 채택, 수치는 전부 우리 [기준]이라 Yellowsky 측정값으로 쓰지 않음), codex_synthesis(§1.2·§2 안개·톤매핑·APV·Forward+ 판정), FIRST_SCENE_PLAN(§5 단계 4 광원·안개), ENGINE_TRIAL_UE5_PLAN(§3 UE5 칸 정합)**, d4_01_env(§4~§5), poe2(§3~§4, §9 L1~P1), yellowsky(전투·임팩트 쪽 규칙만), d4_03_cam(R5 먼 적 보호), conventions(B4, C1), **2차: codex_yellowsky(식별·팀·기간만 확정, 광원·안개·색 사실 0건), codex_urp_mood(URP 안개·APV·라이트맵·쿠키·림·LUT 순서), codex_tech_budget(예산 항목), TOOLCHAIN(§2-4·§2-5·§3a a-4·§3c c-2·c-3), REFERENCE_INDEX §1·§2b, ENGINE_DECISION §2(UE5 칸 점검)** | 연구 반영 대기: **Yellowsky 광원·안개·색 실제 관찰 메모(문서 연구로는 근거 0건 확정, 공개 실기 영상을 사람이 장면별로 보는 방법만 남음 — D02-5), PoE2 발표 영상(S02)의 안개·톤매핑 방식, 이 프로젝트의 실측 수치(안개 Start/End·Density·APV 간격·Post Exposure EV·LUT Contribution 등 codex_urp_mood가 모두 "미확인"으로 남김)**
+- 상태: 출처 상태: SOURCE_VERIFY 7522375(CX22-2) 기준 | 초안(3차 반영 11-05) | 연구 반영: **3차: yellowsky 갱신본(공개 평가 사실만 채택, 수치는 전부 우리 [기준]이라 Yellowsky 측정값으로 쓰지 않음), codex_synthesis(§1.2·§2 안개·톤매핑·APV·Forward+ 판정), FIRST_SCENE_PLAN(§5 단계 4 광원·안개), ENGINE_TRIAL_UE5_PLAN(§3 UE5 칸 정합)**, d4_01_env(§4~§5), poe2(§3~§4, §9 L1~P1), yellowsky(전투·임팩트 쪽 규칙만), d4_03_cam(R5 먼 적 보호), conventions(B4, C1), **2차: codex_yellowsky(식별·팀·기간만 확정, 광원·안개·색 사실 0건), codex_urp_mood(URP 안개·APV·라이트맵·쿠키·림·LUT 순서), codex_tech_budget(예산 항목), TOOLCHAIN(§2-4·§2-5·§3a a-4·§3c c-2·c-3), REFERENCE_INDEX §1·§2b, ENGINE_DECISION §2(UE5 칸 점검)** | 연구 반영 대기: **Yellowsky 광원·안개·색 실제 관찰 메모(문서 연구로는 근거 0건 확정, 공개 실기 영상을 사람이 장면별로 보는 방법만 남음 — D02-5), PoE2 발표 영상(S02)의 안개·톤매핑 방식, 이 프로젝트의 실측 수치(안개 Start/End·Density·APV 간격·Post Exposure EV·LUT Contribution 등 codex_urp_mood가 모두 "미확인"으로 남김)**
 - 범위: 장면 유형별 광원 방향·색온도·밝기, 안개층, 후처리 순서, 색 보정 LUT, 먼 적 가독성 규칙.
 - 이 문서가 정하지 않는 것: 지형·소품(01), 카메라·가림 실루엣(03), VFX 발광 위계의 세부(VFX 매뉴얼), 규칙 코어 수치.
 - **분위기 최상위 기준은 Downfall of Yellowsky다(사용자 확정).** 그러나 이번 연구에서 이 게임의 광원·안개·색 수치를 확인한 공개 자료가 없다. 그래서 이 문서의 수치는 D4·PoE2 연구와 우리 가독성 한계에서 나온 **[추정] 시작값**이고, 분위기 판정(6절)은 사용자가 가진 Yellowsky 레퍼런스 영상 캡처와 나란히 놓고 한다. 연구가 보강되면 이 문서를 개정한다.
@@ -94,22 +94,22 @@
 
 | 항목 | 확인된 내용 | 우리 적용 | 근거 | 출처 상태 |
 |---|---|---|---|---|
-| 내장 안개 | Linear / Exponential / Exponential Squared 지원. Deferred에서의 지원은 문서 간 주석이 달라 Renderer 경로별로 미확인 | 거리 안개는 끈다(원칙 4). 내장 안개를 먼 전투 영역을 덮는 용도로 쓰지 않는다 | [사실] codex_urp_mood §2 | 미검증 |
+| 내장 안개 | Linear / Exponential / Exponential Squared 지원. Deferred에서의 지원은 문서 간 주석이 달라 Renderer 경로별로 미확인 | 거리 안개는 끈다(원칙 4). 내장 안개를 먼 전투 영역을 덮는 용도로 쓰지 않는다 | [사실] codex_urp_mood §2 | 검증됨 |
 | Linear 투과율 모델 | `T = saturate((End − d)/(End − Start))`. 설계자가 정한 Start=20, d=40, T=0.8이면 End=120 (계산 예, 권장값 아님) | 먼 적 위치 d와 보존할 투과율 T를 먼저 정하고 End를 역산 | [추정·계산] §2 | 미검증 |
 | 균일 매질 계산 | 목표 투과율 T ≥ 0.7, 경로 30m이면 소멸계수 σt ≤ −ln(0.7)/30 ≈ 0.0119 m⁻¹ (계산 예, 권장값 아님). 플러그인 Density 단위와 같은지 확인 전에는 대입 금지 | 안개 밀도 상한을 "경로 투과율"로 판정 | [추정·계산] §3 | 미검증 |
 | 높이 안개 판정 | 중앙 시선 피치 34°일 뿐, 원근 화면 위쪽 픽셀은 얕은 각도로 낮은 안개층을 오래 통과한다. 적 머리가 층 위여도 카메라→적 광선이 층을 지날 수 있다 | **표면 높이가 아니라 시선 경로 투과율로 먼 적 가독성을 판정**(3.2 "먼 적 판정"을 이 방식으로 측정) | [사실·추정] §3, §10 | 미검증 |
 | 높이 안개 합성 지점 | Full Screen Pass: `Before Rendering Transparents`(투명 이전) / `Before Rendering Post Processing`(투명 이후·후처리 이전). 깊이로 월드 좌표 복원이 공식 예제. `Requirements: Color`는 현재 색 버퍼와 다름 | 안개는 색 보정 이전에 합성. 투명 이후면 물·입자에 별도 안개 처리 필요 여부 확인 | [사실] §3 | 미검증 |
 | 볼류메트릭 | 6000.6 URP는 볼류메트릭 안개(HDRP Local Volumetrics)를 **내장하지 않는다**. APV·후처리 Volume·볼류메트릭 안개는 서로 다른 기능 | 빛줄기는 3.2대로 숲 지붕 틈 1~2줄기만. 전역 볼류메트릭은 a-4 확장이 담당 | [사실] §4.1 | 검증됨 |
-| 서드파티 후보 3종 | Kronnect Volumetric Fog & Mist 2(국소 매질, 다운스케일 1.25~2.0 안내, Unity 6·Forward/Forward+/Deferred 지원 주장) / SaladGamer Volumetric Light Beam(스포트 원뿔 전용, HD 5/10/20 steps 예시, SD 광선당 2·HD 1 드로콜 안내) / sinnwrig URP-Fog-Volumes(레이마칭, 반·¼ 해상도, 볼륨당 광원 32, 테스트는 Unity 2022.3 등) | 모두 6000.6.7f1 + 대상 플랫폼(Metal) 검증은 미확인. 구매·반입 없이 비교용으로만 | [사실·제작사 안내] §4.2~4.4 | 미검증 |
+| 서드파티 후보 3종 | Kronnect Volumetric Fog & Mist 2(국소 매질, 다운스케일 1.25~2.0 안내, Unity 6·Forward/Forward+/Deferred 지원 주장) / SaladGamer Volumetric Light Beam(스포트 원뿔 전용, HD 5/10/20 steps 예시, SD 광선당 2·HD 1 드로콜 안내) / sinnwrig URP-Fog-Volumes(레이마칭, 반·¼ 해상도, 볼륨당 광원 32, 테스트는 Unity 2022.3 등) | 모두 6000.6.7f1 + 대상 플랫폼(Metal) 검증은 미확인. 구매·반입 없이 비교용으로만 | [사실·제작사 안내] §4.2~4.4 | 검증됨(제작사 안내 수치 한정) |
 | 성능 모델 | 레이마칭 비용 ∝ 처리 픽셀 × 유효 스텝 × 광원·그림자 샘플. 반해상도 렌더는 본체 픽셀 ¼이나 안개 GPU 비용 75% 절감을 보장하지 않음. 1920×1080 = 2,073,600px, 3840×1080 = 4,147,200px(처리 2배) | 21:9 측정을 1080p와 따로 한다(15번 3.1) | [추정·계산] §4, §3 | 미검증 |
 | Render Graph | Unity 6.4부터 URP 커스텀 패스용 Compatibility Mode 제거 | 구형 패스 방식 해결책 금지. a-4는 Render Graph로 작성 | [사실] §1 | 검증됨 |
-| APV | `Light Probe System = Adaptive Probe Volumes`, Mixed/Baked 광원 + Contribute GI + Receive GI(Light Probes). Min/Max Probe Spacing 단위 m, L1/L2(L2 정밀·자원 큼), Memory Budget Low/Medium/High. 균일 격자 가정에서 간격 절반 = 프로브 약 8배(적응 배치라 실제 8배 보장 안 됨). Virtual Offset/Dilation은 베이크 처리라 끈다고 런타임이 빨라지지 않음 | 이동 적 간접광은 APV, 정적 표면은 라이트맵. **픽셀 액터가 별도 RT로 합성되면 그 카메라·셰이더가 APV를 받는지는 미확인** (TOOLCHAIN §2-4도 광원을 코드로 옮겨 받는다고 기록) | [사실·추정] §5, TOOLCHAIN §2-4 | 미검증 |
-| 라이트맵 | 해상도 2배 = 텍셀 4배. Progressive 128 samples는 일부 야외에서 충분하다는 문서 설명, Max Bounces 기본 2(0–100). Shadowmask는 텍셀당 최대 4광원 | 큰 명암(고목·지면)을 먼저 라이트맵으로 고정. "베이크이므로 런타임 비용 0"이라 쓰지 않는다(텍스처 메모리·샘플 대역폭 있음) | [사실] §6 | 미검증 |
+| APV | `Light Probe System = Adaptive Probe Volumes`, Mixed/Baked 광원 + Contribute GI + Receive GI(Light Probes). Min/Max Probe Spacing 단위 m, L1/L2(L2 정밀·자원 큼), Memory Budget Low/Medium/High. 균일 격자 가정에서 간격 절반 = 프로브 약 8배(적응 배치라 실제 8배 보장 안 됨). Virtual Offset/Dilation은 베이크 처리라 끈다고 런타임이 빨라지지 않음 | 이동 적 간접광은 APV, 정적 표면은 라이트맵. **픽셀 액터가 별도 RT로 합성되면 그 카메라·셰이더가 APV를 받는지는 미확인** (TOOLCHAIN §2-4도 광원을 코드로 옮겨 받는다고 기록) | [사실·추정] §5, TOOLCHAIN §2-4 | 검증됨(APV 설정·배치 설명 한정) |
+| 라이트맵 | 해상도 2배 = 텍셀 4배. Progressive 128 samples는 일부 야외에서 충분하다는 문서 설명, Max Bounces 기본 2(0–100). Shadowmask는 텍셀당 최대 4광원 | 큰 명암(고목·지면)을 먼저 라이트맵으로 고정. "베이크이므로 런타임 비용 0"이라 쓰지 않는다(텍스처 메모리·샘플 대역폭 있음) | [사실] §6 | 검증됨(Max Bounces·Shadowmask 한정) |
 | 라이트 쿠키 | Directional/Spot 2D, Point Cubemap, Area 미지원. Atlas 한 변 2배 = 저장 텍셀 4배. Rendering Layers로 광원이 특정 Renderer만 비추게 가능 | 방향광 큰 수목 무늬 또는 Spot 창살. 적이 다니는 길 전체를 검게 자르는 패턴 금지 | [사실] §7 | 미검증 |
 | 림(Fresnel) | Shader Graph Fresnel: 노멀·시선 내적. N·V=0.5에서 `(1−N·V)^p`는 p=1/2/4일 때 0.5/0.25/0.0625. "화면 1px"을 보장하지 않음 | 머리·어깨·무기 윤곽만 남기는 마스크(발·접지부 제외). **픽셀 액터가 저해상도 RT에서 합성되면 월드 림이 RT 안에서 먼저 사라질 수 있다 → 최종 출력 1배 크기로 판단.** 모든 적에 점광원을 다는 방식은 비용 큼 | [사실·추정] §8 | 검증됨 |
 | 색 보정 순서 | Grading Mode HDR이면 색 보정이 톤매핑 이전, LDR이면 이후. LUT Size 기본 32. Post Exposure(EV)는 톤매핑 전, 이전 HDR 효과(블룸 입력)에는 영향 없음. 공개 소스 관찰: HDR = Post Exposure → 내부 LogC LUT → 선택적 사용자 LUT, LDR = Post Exposure → 톤매핑 → 선택적 사용자 LUT → 내부 색 보정 LUT. 사용자 LUT 검사식: 높이 N, 너비 N², 비-sRGB (소스 관찰, 6000.6.7f1 패키지와의 일치 미확인) | 5.2 "톤매핑 → 색 조정 → … → Color Lookup" 순서는 **작업 순서 제안**이고 셰이더 계산 순서를 바꾸는 절차가 아니다. LUT를 만들 때 톤매퍼 이중 적용 금지. 검은색으로 뭉친 정보는 LUT로 복구되지 않으므로 명도 분리는 조명 단계로 돌아가 고친다 | [사실·공개 소스] §9 | 검증됨 |
 | 32 → 64 LUT | 내부 색 격자 샘플 N³이라 8배. GPU 시간 8배는 아님 | 32 유지 | [추정·계산] §9 | 미검증 |
-| 톤매핑 | Neutral = 색상·채도 변화를 최소화한 범위 재매핑, ACES = 더 강한 대비와 색상·채도 변화(문서 설명) | D02-3의 판정 근거. 은색 유지·흰 원판 재발 방지에는 Neutral이 문서 설명과 맞는다 [추정] | [사실] §9.1 | 미검증 |
+| 톤매핑 | Neutral = 색상·채도 변화를 최소화한 범위 재매핑, ACES = 더 강한 대비와 색상·채도 변화(문서 설명) | D02-3의 판정 근거. 은색 유지·흰 원판 재발 방지에는 Neutral이 문서 설명과 맞는다 [추정] | [사실] §9.1 | 검증됨 |
 | Unity 6.5+ | 색 보정·톤매핑 등 지원 효과의 on-tile 실행 경로 안내. 효과마다 독립 전체화면 패스가 추가된다고 단정할 수 없음 | 안개 패스와의 병합 가능성은 Mac 실측 | [사실] §9 | 미검증 |
 | 먼 적을 지우는 요소 | LOD 전환은 화면 높이 비율 기준, DOF·모션블러·블룸이 작은 적을 흐림, 비네트가 화면 위쪽 적을 지움, 붉은 예고가 붉은 안개·LUT에 묻힘 | 효과별 켬/끔 같은 프레임 비교. **붉은 예고는 색만으로 구분하지 않고 밝기·형태·움직임으로도 구분되는지 최종 합성 상태에서 확인** | [추정] §10 | 미검증 |
 | 적 최소 화면 높이 | 피치 34°만으로 픽셀 크기나 최소 가시 거리를 정할 수 없고, "최소 16px면 된다" 같은 보편 임계값은 없다. 수직 물체 화면 높이 성분 `h·cos34° ≈ 0.829h`, 지면 길이 성분 `l·sin34° ≈ 0.559l`은 국소 근사 | 머리·몸통·발·무기를 월드→화면 투영해 최종 화면에서 기록 | [사실·추정·계산] §10 | 미검증 |
@@ -237,7 +237,7 @@ Directional Light + Lumen 또는 베이크, Exponential Height Fog(+ Volumetric 
 |---|---|---|---|
 | D02-1 | 안개 색을 무엇으로 할까(현재 청록 / 아트 바이블 C7 탁한 적갈 / 실버 헬 은회~청회). 결정 전 수치 변경 없음 | 은회~청회 높이 안개 + 불빛만 따뜻한 색(실버 헬 톤, 먼 적 대비 유리). 이후 아트 바이블 C7을 같은 날 정정〔출처 재확인 필요〕 | 적갈 유지(아트 바이블), 청록 유지(현재 코드) |
 | D02-2 | 적 안개 영향 상한을 25% 계수 상한으로 할까, 영향 50%로 할까 | 25% 상한(더 엄격)〔출처 재확인 필요〕 | 50% |
-| D02-3 | 톤매핑을 ACES 유지 vs Neutral | Neutral(L9 흰 원판 재발 방지, 은색 유지). 비교 캡처 1회 후 확정〔출처 재확인 필요〕 | ACES |
+| D02-3 | 톤매핑을 ACES 유지 vs Neutral | Neutral(L9 흰 원판 재발 방지, 은색 유지). 비교 캡처 1회 후 확정 | ACES |
 | D02-4 | 렌더 경로를 Forward+로 전환해도 되나(Mac 실측 필요) | 전환 | Forward 유지(광원 8개 한도 안에서) |
 | D02-5 | Yellowsky 분위기 레퍼런스를 사용자가 직접 지정해 달라: 어느 장면 캡처 3~5장을 기준 보드로 할까. **2차 확인: 문서 연구로는 광원·안개·색 사실이 0건이다**(codex_yellowsky). 남은 방법은 사람이 공개 실기 영상을 보는 것뿐 | 사용자가 영상 시각을 골라 줌(또는 CTO가 Mac Chrome에서 BV19C356bEhm·BV1Nkga6cE1g를 장면별로 보고 광원 개수·안개 층·색 범위 판정 메모만 작성), 우리는 블러 비교판만 만든다. 영상·캡처 반입 금지 | 연구 보강 후 진행 |
 | D02-6 | 영웅 주변 빛 반경(8m)을 키샷 판정 때 조정해도 되나 | 조정 가능 | 고정 |
@@ -248,7 +248,7 @@ Directional Light + Lumen 또는 베이크, Exponential Height Fog(+ Volumetric 
 
 | D02-11★ | 3.6 표처럼 갱신본 [기준] 값(주광 6800~7500K·고도 35~50°, 높이 안개 0~1.2m, 위 1/4 안개 ≤35%, 순흑 ≤3%, 그림자 최저 휘도 18~28)과 이 문서 [추정] 값이 다르다. 둘 다 Yellowsky 실측이 아니다. 어느 쪽을 시작값으로 할까 | 이 문서 값을 시작값으로 유지하고 갱신본 값은 "대안 시작값"으로만 둔다. Mac 첫 비교판에서 먼 적 ΔL(≥70%)·L* 20을 지키는 쪽으로 확정. 안개 상한(D02-2)은 15/25/50% 중 측정 후 | 갱신본 값으로 교체 |
 | D02-12★ | 원칙 4는 거리 안개 끔인데 FIRST_SCENE_PLAN 단계 4는 "약한 거리 안개 → 높이 안개" 순으로 시험한다. codex_synthesis는 거리 안개 보편 금지의 근거는 부족하다고 본다 | 키샷 시험에 한해 거리 안개를 **비교 변수로 1회 켜 보되**(기준→거리 안개→기준), 먼 적 ΔL이 70% 미만이면 즉시 끄고 제품 기본은 끔 유지. 투과율은 시선 경로로 판정(3.5) | 원칙 4 유지(시험도 안 함) |
-| D02-13 | D02-3 톤매핑: codex_synthesis는 ACES·Neutral 모두 후보, 승자 없음이라고 한다. 계속 Neutral 추천으로 갈까 | 추천 유지하되 "같은 장면 ACES/Neutral 비교 캡처 1회 후 확정"을 필수로 못 박음(흰 원판 재발 여부 포함)〔출처 재확인 필요〕 | 비교 없이 Neutral 확정 |
+| D02-13 | D02-3 톤매핑: codex_synthesis는 ACES·Neutral 모두 후보, 승자 없음이라고 한다. 계속 Neutral 추천으로 갈까 | 추천 유지하되 "같은 장면 ACES/Neutral 비교 캡처 1회 후 확정"을 필수로 못 박음(흰 원판 재발 여부 포함) | 비교 없이 Neutral 확정 |
 
 ## 9. 출처
 

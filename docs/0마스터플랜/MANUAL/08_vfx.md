@@ -1,5 +1,5 @@
 # MANUAL 08 — VFX 디렉션 (초안 2026-11-05)
-- 상태: 초안(2차 반영 11-05) | 출처 상태: SOURCE_VERIFY 6c3aac6 기준 | 연구 반영: d4_04_boss_vfx, pbz, yellowsky(광원), d4_01_env(조명 연동), conventions, codex_vfx_direction, codex_3d_pixel(합성 순서), codex_motion_direction(VFX-판정 정합), TOOLCHAIN_20261105 | 연구 반영 대기: PoE2 VFX 팔레트 수치(2차 조사도 4개 게임 전부 입자 수·오버드로·GPU ms·HDR 수치 "미확인", 공개 자료 없음), 점광원 예산 Mac 실측, 황천 전투 이펙트 팔레트, 목표 기기 VFX 프레임 시간 할당(Mac 측정 전)
+- 상태: 초안(2차 반영 11-05) | 출처 상태: SOURCE_VERIFY 7522375(CX22-2) 기준 | 연구 반영: d4_04_boss_vfx, pbz, yellowsky(광원), d4_01_env(조명 연동), conventions, codex_vfx_direction, codex_3d_pixel(합성 순서), codex_motion_direction(VFX-판정 정합), TOOLCHAIN_20261105 | 연구 반영 대기: PoE2 VFX 팔레트 수치(2차 조사도 4개 게임 전부 입자 수·오버드로·GPU ms·HDR 수치 "미확인", 공개 자료 없음), 점광원 예산 Mac 실측, 황천 전투 이펙트 팔레트, 목표 기기 VFX 프레임 시간 할당(Mac 측정 전)
 - 범위: 예고→접점→본체→잔여 4단계 타이밍, 색·밝기·채도, 파티클·오버드로 예산, 패링 전용색, 점 금지. / 정하지 않는 것: 판정 범위·피해·프레임 길이(Core). VFX 외곽은 Core 판정 원과 맞아야 한다.
 
 ## 1. 목표 장면·레퍼런스 (무엇을, 왜)
