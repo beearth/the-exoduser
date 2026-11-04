@@ -86,7 +86,7 @@ window.buildHud=function(cfg){
     var ringSeg='';
     if(mp&&cfg.mob!=null){var a=cfg.mob*2*Math.PI, rm=(inner+R-cfg.band)/2+cfg.band/4;
       var ex=R+rm*Math.sin(a), ey=R-rm*Math.cos(a);
-      ringSeg='<path d="M'+R+' '+(R-rm)+' A'+rm+' '+rm+' 0 '+(cfg.mob>.5?1:0)+' 1 '+ex.toFixed(2)+' '+ey.toFixed(2)+'" fill="none" stroke="#e6e3dd" stroke-width="3" stroke-linecap="butt" opacity=".9"/>';
+      ringSeg='<path d="M'+R+' '+(R-rm)+' A'+rm+' '+rm+' 0 '+(cfg.mob>.5?1:0)+' 1 '+ex.toFixed(2)+' '+ey.toFixed(2)+'" fill="none" stroke="#cfccc6" stroke-width="3" stroke-linecap="butt" opacity=".9"/>';
       for(var t=1;t<5;t++){var aa=t*.2*2*Math.PI;ringSeg+='<line x1="'+(R+(rm-3)*Math.sin(aa)).toFixed(2)+'" y1="'+(R-(rm-3)*Math.cos(aa)).toFixed(2)+'" x2="'+(R+(rm+3)*Math.sin(aa)).toFixed(2)+'" y2="'+(R-(rm+3)*Math.cos(aa)).toFixed(2)+'" stroke="#0f0f10" stroke-width="2"/>'}}
     var feet='';[-38,38].forEach(function(deg){var a=(180+deg)*Math.PI/180,fx=R+(R-4)*Math.sin(a),fy=R-(R-4)*Math.cos(a);
       feet+='<path d="M'+(fx-9).toFixed(1)+' '+(d+cfg.orbSink-cfg.orbSink)+' L'+(fx-4).toFixed(1)+' '+(fy-2).toFixed(1)+' L'+(fx+4).toFixed(1)+' '+(fy-2).toFixed(1)+' L'+(fx+9).toFixed(1)+' '+d+'Z" fill="#141416" stroke="url(#CH)" stroke-width="1.2"/>'});
