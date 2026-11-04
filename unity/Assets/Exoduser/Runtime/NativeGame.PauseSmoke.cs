@@ -14,9 +14,9 @@ namespace Exoduser.UnityPort {
   void BeginA15DirectReview(string[] args){
    string root,phase=Argument("-a15-phase");
    if(!NativeSettingsStorageScope.TryResolveCinematicReview(args,Application.productName,Application.identifier,out root)||nativeSettingsStore==null||nativeSettingsDirectory!=Path.Combine(root,"native-settings-v1")||lobby.CharacterStoreDirectory!=Path.Combine(root,"character-roster-v1")||(phase!="write"&&phase!="read")){
-    Debug.LogError("A15_QA_REJECTED: marked Settings QA root, persistence review and write/read phase required");Application.Quit(2);return;
+    Debug.LogError("A15_QA_REJECTED: marked Settings QA root, persistence review and write/read phase required");WindowsHardExit.Quit(2);return;
    }
-   a15DirectReview=true;a15HitTrace=Array.IndexOf(args,"-a15-hittrace")>=0;pauseMenu.HitTraceForQa=a15HitTrace;lobby.ShowLobby();lobby.SelectPreview();if(!lobby.EnterNativeTest()){Debug.LogError("A15_QA_REJECTED: preview entry failed");Application.Quit(2);return;}
+   a15DirectReview=true;a15HitTrace=Array.IndexOf(args,"-a15-hittrace")>=0;pauseMenu.HitTraceForQa=a15HitTrace;lobby.ShowLobby();lobby.SelectPreview();if(!lobby.EnterNativeTest()){Debug.LogError("A15_QA_REJECTED: preview entry failed");WindowsHardExit.Quit(2);return;}
    frontendEntryInputFence=false;SetGameFocus(true);pauseMenu.Reset();pauseMenu.ShowSettings();pauseMenu.Navigation.SelectTab(3);menu=true;Running=false;
    if(phase=="write")pauseMenu.BeginEmbeddedKeyCaptureForQa("up",false);
    Debug.Log("A15_LABEL_RESOURCE loaded="+NativeA15SettingsLabels.Loaded+" ids="+NativeA15SettingsLabels.EntryCount);
@@ -69,7 +69,7 @@ namespace Exoduser.UnityPort {
    check(Simulation.TickCount==tick,"all settings and quit captures remain paused");
    pauseMenu.Reset();SetGameFocus(true);pauseSmoke=false;
    File.WriteAllText(Path.Combine(output,"pause-smoke.json"),JsonUtility.ToJson(new PauseSmokeReceipt{passed=failures==0,failures=failures,checks=checks.ToArray()},true));
-   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-pause-smoke")>=0)Application.Quit(failures==0?0:2);
+   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-pause-smoke")>=0)WindowsHardExit.Quit(failures==0?0:2);
   }
   // A16: Controls tab + the key-binding page of the pause menu (real NativeGame draw path). usage: --unity-pause-smoke -output <dir> -pause-phase keys --quit-after-pause-smoke
   IEnumerator PauseKeysCapture(string output){
@@ -92,7 +92,7 @@ namespace Exoduser.UnityPort {
    check(Simulation.TickCount==tick&&!Running,"the game stays paused during all key-page captures");
    pauseMenu.Reset();SetGameFocus(true);pauseSmoke=false;
    File.WriteAllText(Path.Combine(output,"keys-smoke.json"),JsonUtility.ToJson(new PauseSmokeReceipt{scope="A16 pause menu key page; actual Player draw path, test hooks (not OS mouse input)",passed=failures==0,failures=failures,checks=checks.ToArray()},true));
-   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-pause-smoke")>=0)Application.Quit(failures==0?0:2);
+   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-pause-smoke")>=0)WindowsHardExit.Quit(failures==0?0:2);
   }
   IEnumerator PauseVisual(string output){
    SetGameFocus(true);menu=true;Running=false;pauseMenu.ShowSettings();
@@ -103,7 +103,7 @@ namespace Exoduser.UnityPort {
    Screen.SetResolution(1920,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.3f);lobby.SetLanguage("en");pauseMenu.Navigation.SelectTab(0);yield return UiCapture(output,"settings-en-1920");pauseMenu.Navigation.SelectTab(2);yield return UiCapture(output,"controls-en-1920");lobby.SetLanguage("ko");
    pauseMenu.Reset();SetGameFocus(true);pauseSmoke=false;
    File.WriteAllText(Path.Combine(output,"pause-visual.json"),"{\"scope\":\"visual-only; prior behavioral checks not repeated\",\"phase\":\""+Argument("-pause-phase")+"\"}");
-   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-pause-smoke")>=0)Application.Quit();
+   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-pause-smoke")>=0)WindowsHardExit.Quit();
   }
   [Serializable]sealed class PauseSmokeReceipt{public string scope="actual Player handlers/focus model; OS input separately recorded";public bool passed;public int failures;public string[] checks;}
  }

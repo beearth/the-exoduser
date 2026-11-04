@@ -34,7 +34,7 @@ namespace Exoduser.UnityPort
    }
    File.WriteAllText(Path.Combine(output,"ui-finish-"+phase.Replace(',','+')+".json"),"{\"phase\":\""+phase+"\",\"passed\":"+(uiArtFailures==0?"true":"false")+",\"failures\":"+uiArtFailures+",\"log\":["+string.Join(",",log.ConvertAll(x=>"\""+x.Replace("\"","'")+"\""))+"]}");
    lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);
-   Debug.Log("QA_MEDIA_DRAIN_COMPLETE UI_FINISH");Application.Quit(uiArtFailures==0?0:2);
+   Debug.Log("QA_MEDIA_DRAIN_COMPLETE UI_FINISH");WindowsHardExit.Quit(uiArtFailures==0?0:2);
   }
   IEnumerator UiFinishSettings(string output,string tag,System.Collections.Generic.List<string> log)
   {

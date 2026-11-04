@@ -13,7 +13,7 @@ namespace Exoduser.UnityPort
   IEnumerator SettingsPersistenceFixture()
   {
    var checks=new List<string>();int failures=0;Action<bool,string> check=(ok,label)=>{checks.Add((ok?"PASS ":"FAIL ")+label);if(!ok)failures++;};string output=Argument("-output"),phase=Argument("-settings-phase");
-   if(!SettingsQaIdentity||nativeSettingsStore==null||string.IsNullOrWhiteSpace(output)||!Path.IsPathRooted(output)){Debug.LogError("Settings fixture refuses normal product identity or missing isolated output");Application.Quit(2);yield break;}
+   if(!SettingsQaIdentity||nativeSettingsStore==null||string.IsNullOrWhiteSpace(output)||!Path.IsPathRooted(output)){Debug.LogError("Settings fixture refuses normal product identity or missing isolated output");WindowsHardExit.Quit(2);yield break;}
    Directory.CreateDirectory(output);lobby.ShowLobby();menu=true;Running=false;pauseMenu.ShowSettings();
    check(nativeSettingsDirectory==Path.Combine(Path.GetFullPath(output),"native-settings-v1"),"explicit output settings directory");check(lobby.CharacterStoreDirectory=="","settings fixture opens no normal character roster");check(SettingsQaIdentity,"distinct Settings QA product and explicit bundle identifier");
    float deadline=Time.realtimeSinceStartup+6;while(settingsScreenPending&&Time.realtimeSinceStartup<deadline)yield return null;
@@ -47,7 +47,7 @@ namespace Exoduser.UnityPort
    check(previewEntered&&!lobby.IsBlocking&&pauseMenu.SettingsOpen,"preview renders actual settings UI without blocking lobby");
    pauseMenu.Navigation.ObserveReleased(false);pauseMenu.Navigation.SelectTab(0);yield return UiCapture(output,"settings-"+phase+"-display");pauseMenu.Navigation.SelectTab(1);yield return UiCapture(output,"settings-"+phase+"-audio");
    File.WriteAllText(Path.Combine(output,"settings-"+phase+".json"),JsonUtility.ToJson(new SettingsPersistenceReceipt{scope="Narrow explicit Settings QA Player run; write and read are separate processes. Scripted production callbacks and host/audio/pixel captures, not OS keyboard/mouse input or full pause/HUD suite.",phase=phase,product=Application.productName,identifier=Application.identifier,persistentDataPath=Application.persistentDataPath,directory=nativeSettingsDirectory,status=nativeSettingsStatus.ToString(),passed=failures==0,failures=failures,sfx=settings.SfxPercent,bgm=settings.BgmPercent,frameCap=settings.FrameCap,hostFrameCap=Application.targetFrameRate,vsync=QualitySettings.vSyncCount,fullscreen=Screen.fullScreen,expectedFullscreen=phase=="write"||phase=="read"?true:Screen.fullScreen,settingsPending=settingsScreenPending,sampleVolume=measuredSampleVolume,expectedSampleVolume=settings.SampleOutputGain(.5f),bgmRelativeGain=settings.BgmRelativeGain,bgmVolume=measuredBgmVolume,checks=checks.ToArray()},true));
-   lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);Application.Quit(failures==0?0:2);
+   lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);WindowsHardExit.Quit(failures==0?0:2);
   }
  }
 }

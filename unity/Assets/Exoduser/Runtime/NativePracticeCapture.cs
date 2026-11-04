@@ -15,7 +15,7 @@ namespace Exoduser.UnityPort
   IEnumerator FirstPracticeFixture(bool scripted)
   {
    string output=Argument("-output");
-   if(string.IsNullOrWhiteSpace(output)||lobby.CharacterStoreDirectory!=Path.Combine(Path.GetFullPath(output),"character-roster-v1")){Debug.LogError("FIRST PRACTICE requires explicit isolated -output");Application.Quit(2);yield break;}
+   if(string.IsNullOrWhiteSpace(output)||lobby.CharacterStoreDirectory!=Path.Combine(Path.GetFullPath(output),"character-roster-v1")){Debug.LogError("FIRST PRACTICE requires explicit isolated -output");WindowsHardExit.Quit(2);yield break;}
    Directory.CreateDirectory(output);int fixtureW,fixtureH;if(!int.TryParse(Argument("-fixture-width"),out fixtureW))fixtureW=1280;if(!int.TryParse(Argument("-fixture-height"),out fixtureH))fixtureH=720;Screen.SetResolution(fixtureW,fixtureH,FullScreenMode.Windowed);yield return null;
    lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();BeginFirstPractice();
    practiceScripted=scripted;
@@ -151,7 +151,7 @@ namespace Exoduser.UnityPort
    check(ReferenceEquals(original,Simulation)&&samePlayer&&sameConfig&&sameActors&&sameRng&&sameTick&&mats==Simulation.Materials,"entire original run restored including RNG and resources");
    yield return PracticeShot(output,"practice-continue-restored-720p");
    File.WriteAllText(Path.Combine(output,"first-practice-capture.json"),JsonUtility.ToJson(new FirstPracticeReceipt{scope="Explicit QA namespace and direct preparation; scripted HandleFirstPracticeTick collision and attack inputs, not OS keyboard/mouse or normal startup traversal. All twelve exercises (move, left, right, trap, parry magic/physical, hold Q/E, chain, roll, rage parry, rage burst), no badge.",rosterDirectory=lobby.CharacterStoreDirectory,scripted=true,passed=failures==0,failures=failures,kills=kills,originalReferenceRestored=ReferenceEquals(original,Simulation),playerRestored=samePlayer,configRestored=sameConfig,resourcesRestored=mats==Simulation.Materials&&hp==Simulation.Player.Hp,rngRestored=sameRng,clockRestored=sameTick,actorsRestored=sameActors,originalMaterials=mats,restoredMaterials=Simulation.Materials,originalRng=rng,restoredRng=Simulation.FirstPracticeRandomState,originalHp=hp,restoredHp=Simulation.Player.Hp,checks=checks.ToArray()},true));
-   Application.Quit(failures==0?0:2);
+   WindowsHardExit.Quit(failures==0?0:2);
   }
  }
 }

@@ -70,7 +70,7 @@ namespace Exoduser.UnityPort {
      testNote="intro / steady / hp80_poise33 / hp40_poise17_status / groggy / immune frames use explicit test values copied from the web capture dumps (E:/exoduser-wt/_out/pc-a23/web/a23_*.json); they are not game state",
      realEnemyNote=realNote,frames=frames.ToArray(),checks=checks.ToArray(),files=files.ToArray()};
     File.WriteAllText(Path.Combine(dir,"bossbar-capture.json"),JsonUtility.ToJson(rec,true));
-    Application.Quit(failures==0?0:2);
+    WindowsHardExit.Quit(failures==0?0:2);
    }
    IEnumerator Shot(string file,float age,string note){
     yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(dir,file+".png"));files.Add(file+".png");

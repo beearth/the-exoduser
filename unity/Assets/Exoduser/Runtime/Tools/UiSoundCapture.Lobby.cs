@@ -62,7 +62,7 @@ namespace Exoduser.UnityPort.Tools {
     var shot=ScreenCapture.CaptureScreenshotAsTexture();File.WriteAllBytes(Path.Combine(output,"frame"+frame.ToString("D4")+".png"),shot.EncodeToPNG());Destroy(shot);
     int samples=AudioRenderer.GetSampleCountForCaptureFrame();using(var buffer=new NativeArray<float>(samples*receipt.channels,Allocator.Temp)){CheckThat("로비 출력버퍼 "+frame,AudioRenderer.Render(buffer));for(int i=0;i<buffer.Length;i++)pcm.Add(buffer[i]);}
    }
-   receipt.frames=frame;receipt.sampleCount=pcm.Count;receipt.decisionEvents=NativeDecisionSound.Events;double square=0;foreach(float value in pcm){receipt.peak=Mathf.Max(receipt.peak,Mathf.Abs(value));square+=value*value;}receipt.rms=(float)Math.Sqrt(square/Math.Max(1,pcm.Count));CheckThat("로비 실제 출력버퍼 유음",receipt.peak>.001f&&receipt.rms>.00001f);receipt.passed=true;Finish();Debug.Log("LOBBY_UI_SOUND_CAPTURE_COMPLETE "+receipt.checks.Count);Application.Quit(0);
+   receipt.frames=frame;receipt.sampleCount=pcm.Count;receipt.decisionEvents=NativeDecisionSound.Events;double square=0;foreach(float value in pcm){receipt.peak=Mathf.Max(receipt.peak,Mathf.Abs(value));square+=value*value;}receipt.rms=(float)Math.Sqrt(square/Math.Max(1,pcm.Count));CheckThat("로비 실제 출력버퍼 유음",receipt.peak>.001f&&receipt.rms>.00001f);receipt.passed=true;Finish();Debug.Log("LOBBY_UI_SOUND_CAPTURE_COMPLETE "+receipt.checks.Count);WindowsHardExit.Quit(0);
   }
  }
 }

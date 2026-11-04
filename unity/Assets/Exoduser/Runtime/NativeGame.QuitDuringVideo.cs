@@ -7,7 +7,7 @@ using Exoduser.UnityPort.Core;
 
 namespace Exoduser.UnityPort
 {
-    // DBT-5 repro: `--unity-quit-during-video <fdg|world> <seconds>`. Plays the lobby movie of that stage for <seconds> of real time and then calls Application.Quit() while the
+    // DBT-5 repro: `--unity-quit-during-video <fdg|world> <seconds>`. Plays the lobby movie of that stage for <seconds> of real time and then calls WindowsHardExit.Quit() while the
     // Media Foundation decoder is still running (the case that ended in 0xC000041D on the way out). Silent (AudioListener.volume = 0), no window needed (-batchmode without
     // -nographics keeps the real GPU). `-output <dir>` receives quit-during-video.json. The cleanup under test is NativeLobbyVideo.OnWantsToQuit; the diagnostic switch
     // `--unity-skip-video-quit-cleanup` turns it off so the same build shows the "before" behaviour.
@@ -46,7 +46,7 @@ namespace Exoduser.UnityPort
             receipt.stageName = lobby.StageName; receipt.prepared = movie.Prepared; receipt.playing = player != null && player.isPlaying; receipt.videoTime = movie.Time; receipt.frame = movie.Frame; receipt.wallPlayed = LobbyNow - started; receipt.error = movie.Error;
             Debug.Log("QUIT_DURING_VIDEO " + JsonUtility.ToJson(receipt));
             if (!string.IsNullOrEmpty(output)) File.WriteAllText(Path.Combine(output, "quit-during-video.json"), JsonUtility.ToJson(receipt, true));
-            Application.Quit();
+            WindowsHardExit.Quit();
         }
 
         // DBT-8 check: `--unity-missing-movie-check` (with `--unity-lobby-hide-movie <file>`) walks FDG -> title -> gate -> world intro with that movie missing and records how often
@@ -70,7 +70,7 @@ namespace Exoduser.UnityPort
             receipt.openCalls = NativeLobbyVideo.OpenCalls; receipt.prepareCalls = NativeLobbyVideo.PrepareCalls; receipt.errorEvents = NativeLobbyVideo.ErrorEvents; receipt.finalPage = lobby.Flow.Page.ToString(); receipt.error = lobby.CurrentVideo.Error;
             Debug.Log("MISSING_MOVIE_CHECK " + JsonUtility.ToJson(receipt));
             if (!string.IsNullOrEmpty(output)) File.WriteAllText(Path.Combine(output, "missing-movie-check.json"), JsonUtility.ToJson(receipt, true));
-            Application.Quit();
+            WindowsHardExit.Quit();
         }
 
         void StartMissingMovieCheck() { lobbySmoke = true; lobby.AutomatedInput = true; StartCoroutine(MissingMovieCheck()); }

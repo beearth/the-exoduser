@@ -112,7 +112,7 @@ namespace Exoduser.UnityPort
             rec.checks = n; rec.failures = string.Join(" | ", fails.ToArray()); rec.passed = fails.Count == 0;
             rec.notes = "dust trail on the roll not drawn; sBlock / sBash have no dedicated sprite yet (state only)";
             File.WriteAllText(Path.Combine(output, "b07-smoke.json"), JsonUtility.ToJson(rec, true));
-            Application.Quit(rec.passed ? 0 : 2);
+            WindowsHardExit.Quit(rec.passed ? 0 : 2);
         }
     }
 }

@@ -40,7 +40,7 @@ namespace Exoduser.UnityPort {
    // Leave an unmodified seeded inventory for OS interaction, without user-save writes.
    ResetRun();menu=false;Running=true;SetInventory(true);SetGameFocus(true);inventoryKeysSmoke=false;pauseSmoke=false;
    File.WriteAllText(Path.Combine(output,"inventory-keys.json"),JsonUtility.ToJson(new InventoryKeysReceipt{passed=failures==0,failures=failures,checks=checks.ToArray()},true));
-   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-inventory-keys-smoke")>=0)Application.Quit(failures==0?0:2);
+   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-inventory-keys-smoke")>=0)WindowsHardExit.Quit(failures==0?0:2);
   }
   IEnumerator InventoryKeysVisual(string output){
    SetGameFocus(true);SetInventory(true);InventoryTestKey(InventoryKey.Accept);

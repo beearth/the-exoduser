@@ -23,7 +23,7 @@ namespace Exoduser.UnityPort {
    // Restore a normal starter, leaving the new screen ready for optional native key inspection.
    ResetRun();SetGameFocus(true);pauseSmoke=false;menu=false;Running=true;SetSkills(true,6);Screen.SetResolution(1920,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.3f);yield return SkillCapture(output,"skill-lmb-1080p");
    File.WriteAllText(Path.Combine(output,"skill-smoke.json"),JsonUtility.ToJson(new SkillSmokeReceipt{passed=failures==0,failures=failures,checks=checks.ToArray()},true));
-   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-skill-smoke")>=0)Application.Quit(failures==0?0:2);
+   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-skill-smoke")>=0)WindowsHardExit.Quit(failures==0?0:2);
   }
   IEnumerator SkillCapture(string path,string name){yield return new WaitForSecondsRealtime(.15f);yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(path,name+".png"));yield return null;}
   [Serializable] sealed class SkillSmokeReceipt{public string scope="Actual Unity Player skill UI and existing Tick executor; no OS input claim";public bool passed;public int failures;public string[] checks;}

@@ -257,7 +257,7 @@ namespace Exoduser.UnityPort
    var heading=new GUIStyle(normal){font=NativeSilverHellUi.Font()??normal.font,fontSize=24,fontStyle=FontStyle.Normal,wordWrap=true};heading.normal.textColor=NativeSilverHellUi.Bright;
    Label(new Rect(740,457,440,60),K("게임을 종료하시겠습니까?","Quit the game?"),heading,TextAnchor.MiddleCenter);
    if(LobbyActionButton(new Rect(755,552,180,48),K("취소","Cancel"),false))lobbyQuitPrompt=false;
-   if(LobbyActionButton(new Rect(985,548,200,56),K("종료","Quit"),true))Application.Quit();
+   if(LobbyActionButton(new Rect(985,548,200,56),K("종료","Quit"),true))WindowsHardExit.Quit();
   }
   bool LobbyActionButton(Rect r,string text,bool primary)
   {

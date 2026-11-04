@@ -38,7 +38,7 @@ namespace Exoduser.UnityPort
      Debug.LogError("CHARACTER_CAPACITY_QA_FAILED "+ex);
      string output=Argument("-output");
      if(!string.IsNullOrEmpty(output)&&Path.IsPathRooted(output)&&Directory.Exists(output))File.WriteAllText(Path.Combine(output,Argument("-roster-phase")+"-failure.txt"),ex.ToString());
-     Application.Quit(2);yield break;
+     WindowsHardExit.Quit(2);yield break;
     }
     if(!more)yield break;yield return current;
    }
@@ -116,7 +116,7 @@ namespace Exoduser.UnityPort
    receipt.passed=receipt.failures==0;
    File.WriteAllText(Path.Combine(output,phase+".json"),JsonUtility.ToJson(receipt,true));
    lobbySmoke=false;lobby.AutomatedInput=false;
-   Application.Quit(receipt.passed?0:2);
+   WindowsHardExit.Quit(receipt.passed?0:2);
   }
  }
 }

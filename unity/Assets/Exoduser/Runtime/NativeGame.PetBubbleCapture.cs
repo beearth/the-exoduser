@@ -21,13 +21,13 @@ namespace Exoduser.UnityPort
    if(locale.Length==0)locale="ko";if(switched.Length==0)switched="ar";
    if(!Path.IsPathRooted(output)||!Path.IsPathRooted(Argument("--unity-qa-sandbox"))||!NativeReviewArgs.BossDirect||
     nativeSettingsStore!=null||combatStore!=null||!string.IsNullOrEmpty(lobby.CharacterStoreDirectory))
-   {Debug.LogError("Pet bubble fixture requires absolute output/sandbox, boss-direct and disabled stores");Application.Quit(2);yield break;}
+   {Debug.LogError("Pet bubble fixture requires absolute output/sandbox, boss-direct and disabled stores");WindowsHardExit.Quit(2);yield break;}
    Directory.CreateDirectory(output);AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;
    petBubbleFixtureActive=petBubbleFixtureOwnsQueue=true;smokeActive=true;pauseSmoke=true;lobbySmoke=true;lobby.AutomatedInput=true;
    Running=false;menu=false;gameFocused=true;
-   lobby.SetLanguage(locale);if(lobby.Language!=locale){Application.Quit(2);yield break;}
+   lobby.SetLanguage(locale);if(lobby.Language!=locale){WindowsHardExit.Quit(2);yield break;}
    lobby.Characters.TryRestore(new[]{"문구검수"},0);lobby.ShowLobby();lobby.SelectPreview();
-   if(!lobby.EnterNativeTest()){Application.Quit(2);yield break;}
+   if(!lobby.EnterNativeTest()){WindowsHardExit.Quit(2);yield break;}
    EndFirstPractice(true);menu=false;Running=false;frontendEntryInputFence=false;UpdateViews();
    int count=lobby.Characters.Count;var files=new List<string>();
    var receipt=new PetBubbleReceipt{locale=locale,switchedLocale=switched,width=Screen.width,height=Screen.height,storesDisabled=true};
@@ -50,7 +50,7 @@ namespace Exoduser.UnityPort
    receipt.passed=receipt.artLoaded&&receipt.pairShown&&receipt.languageRefreshed&&receipt.urgentInterrupted&&receipt.menuHidden&&receipt.rosterUnchanged&&!string.IsNullOrEmpty(firstText);
    receipt.files=files.ToArray();File.WriteAllText(Path.Combine(output,"pet-bubble-"+locale+".json"),JsonUtility.ToJson(receipt,true));
    petBubble.Clear();lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();
-   yield return new WaitForSecondsRealtime(1);Application.Quit(receipt.passed?0:2);
+   yield return new WaitForSecondsRealtime(1);WindowsHardExit.Quit(receipt.passed?0:2);
   }
  }
 }

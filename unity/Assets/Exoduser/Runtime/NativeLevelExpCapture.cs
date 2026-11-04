@@ -51,7 +51,7 @@ namespace Exoduser.UnityPort {
     yield return Shot("d05_hud_levelup");
     var rec=new Receipt{passed=failures==0,failures=failures,width=Screen.width,height=Screen.height,levelUpEvents=events,eventLevels=eventLevels,eventStatPoints=eventSp,eventPassivePoints=eventAp,before=before,afterKills=after,afterLevelUp=Snap(sim),checks=checks.ToArray(),files=files.ToArray()};
     File.WriteAllText(Path.Combine(dir,"exp-capture.json"),JsonUtility.ToJson(rec,true));
-    Application.Quit(failures==0?0:2);
+    WindowsHardExit.Quit(failures==0?0:2);
    }
    IEnumerator Shot(string name){yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(dir,name+".png"));files.Add(name+".png");yield return null;yield return null;}
   }

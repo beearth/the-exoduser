@@ -71,7 +71,7 @@ namespace Exoduser.UnityPort {
      testNote="unity_flavor_*_clear uses explicit test values copied from the web formal capture (5 kills of 168, 4s, stage index 0) to compare the sub/button text; the lobby frame draws the labels on the lobby panel colour (the lobby video/art is not part of this check)",
      flavors=rows.ToArray(),notPorted=BuildFlavor.NotPorted,checks=checks.ToArray(),files=files.ToArray()};
     File.WriteAllText(Path.Combine(dir,"flavor-capture.json"),JsonUtility.ToJson(rec,true));
-    Application.Quit(failures==0?0:2);
+    WindowsHardExit.Quit(failures==0?0:2);
    }
    IEnumerator Shot(string name){yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(dir,name+".png"));files.Add(name+".png");yield return null;}
   }

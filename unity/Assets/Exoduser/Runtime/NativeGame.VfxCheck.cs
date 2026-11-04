@@ -34,7 +34,7 @@ namespace Exoduser.UnityPort
             if (string.IsNullOrEmpty(output) || bridge == null || ki == null || renderCamera == null)
             {
                 Debug.LogError("--unity-vfx-check requires -output, VfxBridge, KiSlashVfxView, and RM-INT 3D camera");
-                Application.Quit(2); yield break;
+                WindowsHardExit.Quit(2); yield break;
             }
             Directory.CreateDirectory(output);
             AudioListener.pause = true;
@@ -119,7 +119,7 @@ namespace Exoduser.UnityPort
             rc.passed = rc.cases.TrueForAll(c => c.observed > 0 && c.captured);
             File.WriteAllText(Path.Combine(output, "vfx-check.json"), JsonUtility.ToJson(rc, true));
             yield return new WaitForSecondsRealtime(.5f); // allow screenshot writes to finish
-            Application.Quit(rc.passed ? 0 : 2);
+            WindowsHardExit.Quit(rc.passed ? 0 : 2);
         }
 
         void VfxCheckTick(VfxBridge bridge, KiSlashVfxView ki, bool magic)

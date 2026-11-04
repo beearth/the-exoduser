@@ -20,7 +20,7 @@ namespace Exoduser.UnityPort
   IEnumerator HudBlendCapture()
   {
    string output=Argument("-output");var checks=new List<string>();int failures=0;Action<bool,string> check=(ok,label)=>{checks.Add((ok?"PASS ":"FAIL ")+label);if(!ok)failures++;};
-   if(string.IsNullOrWhiteSpace(output)||output.StartsWith("-",StringComparison.Ordinal)){Debug.LogError("HUD blend capture requires explicit -output QA path");Application.Quit(2);yield break;}
+   if(string.IsNullOrWhiteSpace(output)||output.StartsWith("-",StringComparison.Ordinal)){Debug.LogError("HUD blend capture requires explicit -output QA path");WindowsHardExit.Quit(2);yield break;}
    bool tracePointer=Array.IndexOf(Environment.GetCommandLineArgs(),"--keep-open-after-hud-blend")>=0;hud.TracePointerEvents=tracePointer;
    Directory.CreateDirectory(output);lobby.ShowLobby();lobby.SelectPreview();
    check(string.IsNullOrEmpty(lobby.CharacterStoreDirectory),"generic smoke fixture never initializes or writes the user roster");
@@ -58,7 +58,7 @@ namespace Exoduser.UnityPort
    foreach(string capture in captures)check(File.Exists(Path.Combine(output,capture)),"capture exists: "+capture);
    File.WriteAllText(Path.Combine(output,"hud-blend-capture.json"),JsonUtility.ToJson(new HudBlendReceipt{passed=failures==0,failures=failures,rosterNamespace="none; generic smoke fixture does not initialize user roster storage",captures=captures,checks=checks.ToArray(),keyNames=NativeHudDockLayout.KeyNames,artScale=NativeHudDockLayout.ArtScale,minSlotGap=minSlotGap,minLabelGap=minLabelGap,minLabelGapAt720=minLabelGap*(720f/1080f),slotBar=dock.SlotBar,leftOrb=dock.LeftFrame,rightOrb=dock.RightFrame,visibleBar=dock.VisibleBar,activeSlot=dock.ActiveSlot,statusLabel=new Rect(1920*.5f-180,dock.VisibleBar.y-25,360,20),skillHitRects=slots,keyLabelRects=labels},true));
    if(Array.IndexOf(Environment.GetCommandLineArgs(),"--keep-open-after-hud-blend")>=0)yield break;
-   yield return new WaitForSecondsRealtime(1);Application.Quit(failures==0?0:2);
+   yield return new WaitForSecondsRealtime(1);WindowsHardExit.Quit(failures==0?0:2);
   }
  }
 }

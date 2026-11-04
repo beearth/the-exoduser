@@ -72,6 +72,9 @@ namespace Exoduser.UnityPort
    // Persist the observed host, never a stale requested bool. Menu also reads Screen.fullScreen.
    if(save)QueueSettingsSave();UpdateSettingsPersistenceNotice();
   }
-  void OnApplicationQuit(){if(settingsSavePending)FlushNativeSettings();FlushCombatSave();}
+  // PC-QUIT-1: the hard exit (Platform/WindowsHardExit.cs) runs after this; QuitFlush is its fallback if the engine ever raises quitting first.
+  void OnApplicationQuit(){QuitFlush();WindowsHardExit.MarkApplicationQuitSeen();}
+  void QuitFlush(){if(settingsSavePending)FlushNativeSettings();FlushCombatSave();}
+  void QuitFlushIfAlive(){if(this!=null)QuitFlush();}
  }
 }

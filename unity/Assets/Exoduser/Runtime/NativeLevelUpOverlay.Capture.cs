@@ -51,7 +51,7 @@ namespace Exoduser.UnityPort {
      levelSource="Simulation.Player.Level after Simulation.AddExperience (real Unity state)",anchorNote="test value: web 06a player screen position (972, 694.6); the NativeGame patch passes the real player screen position",
      anchor=new[]{anchor.x,anchor.y},ages=ages,checks=checks.ToArray(),files=files.ToArray()};
     File.WriteAllText(Path.Combine(dir,"levelup-capture.json"),JsonUtility.ToJson(rec,true));
-    Application.Quit(failures==0?0:2);
+    WindowsHardExit.Quit(failures==0?0:2);
    }
    IEnumerator Shot(string name){yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(dir,name+".png"));files.Add(name+".png");yield return null;}
   }

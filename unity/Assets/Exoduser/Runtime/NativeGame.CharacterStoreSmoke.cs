@@ -50,7 +50,7 @@ namespace Exoduser.UnityPort
    }else check(false,"known fixture phase required");
    File.WriteAllText(Path.Combine(output,"store-"+phase+".json"),JsonUtility.ToJson(new CharacterSmokeReceipt{scope="Isolated character roster persistence across fresh Player processes; no battle saves or native OS input claim",passed=failures==0,failures=failures,checks=checks.ToArray()},true));
    lobbySmoke=false;lobby.AutomatedInput=false;
-   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-character-smoke")>=0)Application.Quit(failures==0?0:2);
+   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-character-smoke")>=0)WindowsHardExit.Quit(failures==0?0:2);
   }
  }
 }

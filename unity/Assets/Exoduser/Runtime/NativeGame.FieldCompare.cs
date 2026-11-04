@@ -25,7 +25,7 @@ namespace Exoduser.UnityPort
         IEnumerator FieldCompare()
         {
             AudioListener.volume = 0; AudioListener.pause = true; smokeActive = true;
-            string output = Argument("-output"); if (string.IsNullOrEmpty(output)) { Application.Quit(1); yield break; }
+            string output = Argument("-output"); if (string.IsNullOrEmpty(output)) { WindowsHardExit.Quit(1); yield break; }
             Directory.CreateDirectory(output);
             var rc = new FcReceipt();
             Screen.SetResolution(1920, 1080, FullScreenMode.Windowed); yield return new WaitForSecondsRealtime(.5f);
@@ -95,7 +95,7 @@ namespace Exoduser.UnityPort
             sim.FieldZones.Add(new Simulation.FieldZone { Kind = "iceZone", X = p.X + 900, Y = p.Y, Life = 480, R = 2, Dmg = 0, El = 3 }); StepInput(0, 0, p.X + 300, p.Y, false, false);
             add("zone out of reach stays", sim.FieldZones.Count == 1, "zones " + sim.FieldZones.Count);
             File.WriteAllText(Path.Combine(output, "field-compare.json"), JsonUtility.ToJson(rc, true), new UTF8Encoding(false));
-            yield return null; Application.Quit(0);
+            yield return null; WindowsHardExit.Quit(0);
         }
     }
 }

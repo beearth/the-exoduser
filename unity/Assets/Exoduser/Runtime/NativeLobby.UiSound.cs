@@ -42,7 +42,7 @@ namespace Exoduser.UnityPort {
    else if(key==KeyCode.LeftArrow)lobbyQuitYes=false;
    else if(key==KeyCode.RightArrow)lobbyQuitYes=true;
    if(before!=lobbyQuitYes)UiNavigate(lobbyQuitYes?"lobby-quit-confirm":"lobby-quit-cancel");
-   if(key==KeyCode.Return||key==KeyCode.KeypadEnter||key==KeyCode.Space){UiConfirm();if(lobbyQuitYes)Application.Quit();else lobbyQuitPrompt=false;}
+   if(key==KeyCode.Return||key==KeyCode.KeypadEnter||key==KeyCode.Space){UiConfirm();if(lobbyQuitYes)WindowsHardExit.Quit();else lobbyQuitPrompt=false;}
   }
   AudioMixerGroup EntryUiGroup(){
    var mixer=Resources.Load<AudioMixer>("Audio/FrontendUI");if(mixer==null)throw new InvalidOperationException("Missing frontend UI mixer");

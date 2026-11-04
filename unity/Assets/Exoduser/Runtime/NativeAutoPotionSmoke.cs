@@ -68,7 +68,7 @@ namespace Exoduser.UnityPort {
     sim.Random01=null;
     var rec=new Receipt{passed=failures==0,failures=failures,scope="Real Simulation + AutoPotion Core, no NativeGame patch needed; the Simulation B11 patch is required for the checks to pass",patchNote="without B11_simulation_autopotion.patch the Tick/KillEnemy hooks are absent and these checks fail",checks=checks.ToArray()};
     File.WriteAllText(Path.Combine(dir,"autopotion-smoke.json"),JsonUtility.ToJson(rec,true));
-    Application.Quit(failures==0?0:2);
+    WindowsHardExit.Quit(failures==0?0:2);
    }
   }
  }

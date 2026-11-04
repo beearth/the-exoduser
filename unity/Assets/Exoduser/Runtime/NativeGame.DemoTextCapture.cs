@@ -19,13 +19,13 @@ namespace Exoduser.UnityPort
   {
    string output=Argument("-output"),locale=Argument("-text-lang");if(locale.Length==0)locale="en";
    if(string.IsNullOrEmpty(output)||!Path.IsPathRooted(output)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))||!NativeReviewArgs.BossDirect||nativeSettingsStore!=null||combatStore!=null||!string.IsNullOrEmpty(lobby.CharacterStoreDirectory))
-   {Debug.LogError("Demo text capture requires absolute output, isolated QA sandbox, boss-direct0 and disabled stores");Application.Quit(2);yield break;}
+   {Debug.LogError("Demo text capture requires absolute output, isolated QA sandbox, boss-direct0 and disabled stores");WindowsHardExit.Quit(2);yield break;}
    Directory.CreateDirectory(output);AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;
    smokeActive=true;pauseSmoke=true;lobbySmoke=true;lobby.AutomatedInput=true;Running=false;menu=false;gameFocused=true;
-   lobby.SetLanguage(locale);if(lobby.Language!=locale){Debug.LogError("Unsupported demo text locale "+locale);Application.Quit(2);yield break;}
+   lobby.SetLanguage(locale);if(lobby.Language!=locale){Debug.LogError("Unsupported demo text locale "+locale);WindowsHardExit.Quit(2);yield break;}
    lobby.Characters.TryRestore(new[]{"문구검수"},0);lobby.ShowLobby();int roster=lobby.Characters.Count;var files=new List<string>();
    yield return new WaitForSecondsRealtime(.6f);yield return DeathCapture(output,"demo-lobby-"+locale,files);
-   lobby.SelectPreview();if(!lobby.EnterNativeTest()){Application.Quit(2);yield break;}EndFirstPractice(true);menu=false;Running=false;frontendEntryInputFence=false;
+   lobby.SelectPreview();if(!lobby.EnterNativeTest()){WindowsHardExit.Quit(2);yield break;}EndFirstPractice(true);menu=false;Running=false;frontendEntryInputFence=false;
    var sim=Simulation;var p=sim.Player;sim.Config.EnemyAiEnabled=false;p.Iframes=1e9f;p.Hp=p.MaxHp;areaTitle.Hide();
    regionHud.LocaleCode=locale;regionHud.ShowBanner(sim,1,false);regionHud.ForcedBannerAge=1;UpdateViews();
    yield return new WaitForSecondsRealtime(.3f);yield return DeathCapture(output,"demo-hud-"+locale,files);
@@ -42,7 +42,7 @@ namespace Exoduser.UnityPort
    receipt.rosterUnchanged=roster==lobby.Characters.Count;receipt.files=files.ToArray();
    receipt.passed=receipt.coreIntroEvent&&receipt.visibleIntro&&receipt.rosterUnchanged&&receipt.bossName==NativeDemoText.Get("다크드루이드",locale)&&files.Count==4;
    File.WriteAllText(Path.Combine(output,"demo-text-"+locale+".json"),JsonUtility.ToJson(receipt,true));
-   lobby.CloseStartupCaptureMedia();sound?.Reset();Application.Quit(receipt.passed?0:2);
+   lobby.CloseStartupCaptureMedia();sound?.Reset();WindowsHardExit.Quit(receipt.passed?0:2);
   }
  }
 }

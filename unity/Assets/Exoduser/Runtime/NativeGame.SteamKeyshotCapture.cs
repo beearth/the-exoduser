@@ -15,12 +15,12 @@ namespace Exoduser.UnityPort
         IEnumerator SteamKeyshotCapture()
         {
             string output=Argument("-output");
-            if(string.IsNullOrEmpty(output)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))){Application.Quit(2);yield break;}
+            if(string.IsNullOrEmpty(output)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))){WindowsHardExit.Quit(2);yield break;}
             Directory.CreateDirectory(output);AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;smokeActive=true;pauseSmoke=true;
             keyshotErrors=0;Application.logMessageReceived+=KeyshotLog;
             Screen.SetResolution(1920,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.4f);
-            if(A2Requested){lobby.Flow.ShowLobby();lobby.Flow.SelectPreview();if(!lobby.Flow.EnterTest()){Application.Quit(2);yield break;}}
-            else{lobby.ShowLobby();lobby.SelectPreview();if(!lobby.EnterNativeTest()){Application.Quit(2);yield break;}}
+            if(A2Requested){lobby.Flow.ShowLobby();lobby.Flow.SelectPreview();if(!lobby.Flow.EnterTest()){WindowsHardExit.Quit(2);yield break;}}
+            else{lobby.ShowLobby();lobby.SelectPreview();if(!lobby.EnterNativeTest()){WindowsHardExit.Quit(2);yield break;}}
             EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;gameFocused=true;
             var sim=Simulation;var p=sim.Player;var receipt=new KeyshotReceipt();
             p.X=A2Requested?4200:3920;p.Y=A2Requested?7460:7300;var loc=Argument("--unity-keyshot-location");if(!string.IsNullOrEmpty(loc)){var xy=loc.Split(':');if(xy.Length==2&&float.TryParse(xy[0],out var lx)&&float.TryParse(xy[1],out var ly)){p.X=lx;p.Y=ly;}}sim.Config.EnemyAiEnabled=false;
@@ -41,7 +41,7 @@ namespace Exoduser.UnityPort
                 foreach(var root in r3Roots)if(root!=null)foreach(var l in root.GetComponentsInChildren<Light>(true))l.shadows=UnityEngine.LightShadows.None;yield return KeyshotSave(output,"진단2-그림자끔",receipt);
                 var td=NativeRemodel3D.Ground.terrainData;var alpha=td.GetAlphamaps(0,0,td.alphamapWidth,td.alphamapHeight);for(int y=0;y<td.alphamapHeight;y++)for(int x=0;x<td.alphamapWidth;x++)for(int i=0;i<td.alphamapLayers;i++)alpha[y,x,i]=i==0?1:0;td.SetAlphamaps(0,0,alpha);yield return KeyshotSave(output,"진단3-PBR혼합끔",receipt);
                 UnityEngine.Rendering.Universal.CameraExtensions.GetUniversalAdditionalCameraData(r3Cam).renderPostProcessing=false;yield return KeyshotSave(output,"진단4-후처리끔",receipt);
-                Application.Quit(0);yield break;
+                WindowsHardExit.Quit(0);yield break;
             }
             sim.Config.EnemyAiEnabled=true;if(string.IsNullOrEmpty(loc)&&!A2Requested){p.X=4020;p.Y=6880;}
             File.WriteAllText(Path.Combine(output,"실제-촬영설정.json"),JsonUtility.ToJson(sim.Config,true));
@@ -88,7 +88,7 @@ namespace Exoduser.UnityPort
             receipt.passed=receipt.unityErrors==0&&receipt.frames.Count==3&&receipt.frames.TrueForAll(f=>f.heroHeight01>=.08f&&f.heroHeight01<=.11f&&(!A2Requested||(f.actualScreen&&f.screenWidth==1920&&f.screenHeight==1080&&f.luminance>.01f)))&&receipt.frames[1].projectiles>=3&&receipt.frames[2].projectiles>=6&&(!A2Requested||(receipt.frames[2].bossVisible&&receipt.frames[2].heroBossSeparated));
             File.WriteAllText(Path.Combine(output,"검수.json"),JsonUtility.ToJson(receipt,true));
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);
-            Application.Quit(receipt.passed?0:3);
+            WindowsHardExit.Quit(receipt.passed?0:3);
         }
         int KeyshotActiveShots(bool boss)
         {int count=0;foreach(var shot in Simulation.Druid.Projectiles)if(shot.Active&&!shot.Friendly&&(!boss||shot.DruidPoison))count++;return count;}

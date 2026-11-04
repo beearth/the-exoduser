@@ -43,7 +43,7 @@ namespace Exoduser.UnityPort
    lobby.OpenCharacterCreation();yield return SkillCapture(output,"character-warrior-1080p");
    File.WriteAllText(Path.Combine(output,"character-smoke.json"),JsonUtility.ToJson(new CharacterSmokeReceipt{passed=failures==0,failures=failures,checks=checks.ToArray()},true));
    lobbySmoke=false;lobby.AutomatedInput=false;
-   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-character-smoke")>=0)Application.Quit(failures==0?0:2);
+   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-character-smoke")>=0)WindowsHardExit.Quit(failures==0?0:2);
   }
   IEnumerator CharacterPresentationOnlySmoke()
   {
@@ -66,7 +66,7 @@ namespace Exoduser.UnityPort
    yield return new WaitForSecondsRealtime(1f);
    File.WriteAllText(Path.Combine(output,"character-presentation-smoke.json"),JsonUtility.ToJson(receipt,true));
    lobbySmoke=false;lobby.AutomatedInput=false;
-   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-character-smoke")>=0)Application.Quit(receipt.passed?0:2);
+   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-character-smoke")>=0)WindowsHardExit.Quit(receipt.passed?0:2);
   }
   IEnumerator WaitForCharacterPresentationFrame(CharacterPresentationSmokeReceipt receipt,string name,string expectedFile)
   {
@@ -92,7 +92,7 @@ namespace Exoduser.UnityPort
    lobby.SetLanguage("en");lobby.OpenCharacterCreation();lobby.ConfirmCharacterVisual();yield return SkillCapture(output,"name-english-1080p");
    lobby.CloseCharacterCreation();lobby.SetLanguage("ko");lobbySmoke=false;lobby.AutomatedInput=false;
    File.WriteAllText(Path.Combine(output,"visual-capture.json"),"{\"scope\":\"Final display-only changes; class art, positioning, maximum name length and English form\",\"captures\":9}");
-   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-character-smoke")>=0)Application.Quit();
+   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-character-smoke")>=0)WindowsHardExit.Quit();
   }
  }
 }

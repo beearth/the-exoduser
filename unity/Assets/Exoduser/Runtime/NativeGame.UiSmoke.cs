@@ -42,7 +42,7 @@ namespace Exoduser.UnityPort {
    check(lobby.IsBlocking&&!Running&&music.volume==0,"return lobby and BGM mute survives track change");SetBgmPercent(30);check(Mathf.Abs(music.volume-.325f)<.0001,"BGM retains phase gain");SetBgmPercent(60);check(Mathf.Abs(music.volume-.65f)<.0001,"default lobby mix restored");
    Screen.SetResolution(width,height,FullScreenMode.Windowed);QualitySettings.vSyncCount=vsync;
    File.WriteAllText(Path.Combine(output,"ui-smoke.json"),JsonUtility.ToJson(new UiSmokeReceipt{passed=failures==0,failures=failures,checks=checks.ToArray()},true));
-   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-ui-smoke")>=0)Application.Quit(failures==0?0:2);
+   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-ui-smoke")>=0)WindowsHardExit.Quit(failures==0?0:2);
   }
   IEnumerator UiEquippedGuideSmoke(string output){
    var checks=new List<string>();int failures=0;
@@ -50,7 +50,7 @@ namespace Exoduser.UnityPort {
    ApplyPauseCommand(PauseMenuCommand.Resume);check(Running&&!menu,"existing UI-smoke entry path resumes gameplay");
    var item=inventory.State.GetEquipped("weapon");check(item!=null,"starter weapon is currently equipped");
    check(nativeSettingsStore==null&&nativeSettingsDirectory=="","UI-smoke QA keeps native settings IO disabled");check(lobby.CharacterStoreDirectory=="","UI-smoke QA keeps normal roster storage unopened");
-   if(item==null){File.WriteAllText(Path.Combine(output,"equipped-guide-smoke.json"),JsonUtility.ToJson(new EquippedGuideSmokeReceipt{passed=false,failures=failures,checks=checks.ToArray()},true));Application.Quit(2);yield break;}
+   if(item==null){File.WriteAllText(Path.Combine(output,"equipped-guide-smoke.json"),JsonUtility.ToJson(new EquippedGuideSmokeReceipt{passed=false,failures=failures,checks=checks.ToArray()},true));WindowsHardExit.Quit(2);yield break;}
    inventory.State.Select(item);check(!inventory.State.Bag.Contains(item),"selected guide item remains equipped and outside the bag");SetInventory(true);check(inventory.Open&&!Running,"inventory opens through the existing pause path");
    string[] names={"equipped-guide-1080p.png","equipped-guide-720p.png"};
    Screen.SetResolution(1920,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.4f);yield return UiGuideCapture(output,names[0]);
@@ -58,7 +58,7 @@ namespace Exoduser.UnityPort {
    bool a=File.Exists(Path.Combine(output,names[0])),b=File.Exists(Path.Combine(output,names[1]));check(a,"1080p equipped-guide capture written");check(b,"720p equipped-guide capture written");
    bool passed=failures==0&&a&&b&&inventory.Open&&ReferenceEquals(item,inventory.State.GetEquipped("weapon"));
    File.WriteAllText(Path.Combine(output,"equipped-guide-smoke.json"),JsonUtility.ToJson(new EquippedGuideSmokeReceipt{passed=passed,failures=failures,checks=checks.ToArray(),captures=names,selectedItem=item.name},true));
-   yield return new WaitForSecondsRealtime(1);Application.Quit(passed?0:2);
+   yield return new WaitForSecondsRealtime(1);WindowsHardExit.Quit(passed?0:2);
   }
   IEnumerator UiGuideCapture(string output,string name){yield return new WaitForEndOfFrame();string path=Path.Combine(output,name);ScreenCapture.CaptureScreenshot(path);float elapsed=0;long previous=-1;int stableFrames=0;while(elapsed<3f&&stableFrames<2){long size=File.Exists(path)?new FileInfo(path).Length:0;stableFrames=size>0&&size==previous?stableFrames+1:0;previous=size;elapsed+=Time.unscaledDeltaTime;yield return null;}}
   IEnumerator UiCapture(string output,string name){yield return new WaitForSecondsRealtime(.15f);yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(output,name+".png"));yield return null;}

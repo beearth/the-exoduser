@@ -131,7 +131,7 @@ namespace Exoduser.UnityPort
             rec.checks = n; rec.failures = string.Join(" | ", fails.ToArray()); rec.passed = fails.Count == 0;
             rec.notes = "bolt sounds (crossbow_shot / bow_hit) are not in the admitted audio slice yet; OPT.xbowAuto persistence and the elMul element chart (B06) are not wired; web fireBow has no caller, Space only rolls";
             File.WriteAllText(Path.Combine(output, "b05-smoke.json"), JsonUtility.ToJson(rec, true));
-            Application.Quit(rec.passed ? 0 : 2);
+            WindowsHardExit.Quit(rec.passed ? 0 : 2);
         }
     }
 }

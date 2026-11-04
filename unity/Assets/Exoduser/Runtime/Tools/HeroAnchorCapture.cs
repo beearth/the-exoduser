@@ -34,7 +34,7 @@ namespace Exoduser.UnityPort.Tools
             var args=Environment.GetCommandLineArgs();
             if(Array.IndexOf(args,"--unity-hero-anchor-check")<0)return;
             if(Array.IndexOf(args,"--unity-hero-review")<0||string.IsNullOrEmpty(Arg("--unity-qa-sandbox"))||string.IsNullOrEmpty(Arg("-output")))
-            { Debug.LogError("중심 앵커 검수는 기존 HeroCapture·명시적 세이브격리·출력이 필요");Application.Quit(2);return; }
+            { Debug.LogError("중심 앵커 검수는 기존 HeroCapture·명시적 세이브격리·출력이 필요");WindowsHardExit.Quit(2);return; }
             var go=new GameObject("중심앵커 고정표본 검수 Tools");DontDestroyOnLoad(go);go.AddComponent<HeroAnchorCapture>();
         }
         static readonly BindingFlags Private=BindingFlags.Instance|BindingFlags.NonPublic;
@@ -46,7 +46,7 @@ namespace Exoduser.UnityPort.Tools
         {
             output=Path.Combine(Arg("-output"),"anchor");Directory.CreateDirectory(output);
             string mode=Arg("-anchor-mode")??"current";
-            if(mode!="current"&&mode!="baseline"&&mode!="control"){Debug.LogError("알 수 없는 앵커 검수모드");enabled=false;Application.Quit(2);return;}
+            if(mode!="current"&&mode!="baseline"&&mode!="control"){Debug.LogError("알 수 없는 앵커 검수모드");enabled=false;WindowsHardExit.Quit(2);return;}
             report=new Receipt{mode=mode,device=SystemInfo.graphicsDeviceName};
             centered=(HashSet<SpriteRenderer>)typeof(NativeSkillView).GetField("centeredSlamSprites",BindingFlags.Static|BindingFlags.NonPublic).GetValue(null);
             RenderPipelineManager.endCameraRendering+=OnCameraRendered;

@@ -76,7 +76,7 @@ namespace Exoduser.UnityPort {
     sim.Player.Level=level0;sim.Materials=mats0;potion.PotLv=potLv0;
     var rec=new CaptureReceipt{passed=failures==0,failures=failures,width=Screen.width,height=Screen.height,checks=checks.ToArray(),files=files.ToArray()};
     File.WriteAllText(Path.Combine(dir,"forge-capture.json"),JsonUtility.ToJson(rec,true));
-    Application.Quit(failures==0?0:2);
+    WindowsHardExit.Quit(failures==0?0:2);
    }
    // Exercises the NativeGame patch wiring through the same event a tab-bar click / the G hotkey raises (NativePanelTabBar.Request ->
    // OnPanelRequested). Only meaningful when the A14 patch is applied (otherwise the forge field is missing and the check fails loudly).

@@ -103,7 +103,7 @@ namespace Exoduser.UnityPort
             {
                 object current=null;bool more=false;Exception error=null;
                 try{more=pending.Peek().MoveNext();if(more)current=pending.Peek().Current;}catch(Exception caught){error=caught;}
-                if(error!=null){RestoreLoadingTipKeyChange();Debug.LogError("UI_OVERLAP_FAILED "+error);SaveOverlapCaptureProgress();lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);Application.Quit(2);yield break;}
+                if(error!=null){RestoreLoadingTipKeyChange();Debug.LogError("UI_OVERLAP_FAILED "+error);SaveOverlapCaptureProgress();lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);WindowsHardExit.Quit(2);yield break;}
                 if(!more){pending.Pop();continue;}
                 if(current is IEnumerator child){pending.Push(child);continue;}
                 yield return current;
@@ -283,7 +283,7 @@ namespace Exoduser.UnityPort
         IEnumerator UiOverlapCaptureBody()
         {
             overlapOutput=Argument("-output");
-            if(!NativeQaSandbox.Active||string.IsNullOrEmpty(overlapOutput)||!Path.IsPathRooted(overlapOutput)){Debug.LogError("겹침 검사는 격리 저장·절대 출력 경로 필요");Application.Quit(3);yield break;}
+            if(!NativeQaSandbox.Active||string.IsNullOrEmpty(overlapOutput)||!Path.IsPathRooted(overlapOutput)){Debug.LogError("겹침 검사는 격리 저장·절대 출력 경로 필요");WindowsHardExit.Quit(3);yield break;}
             Directory.CreateDirectory(overlapOutput);overlapCoverage=new UiOverlapCoverage();overlapUiFreeze=true;SelectOverlapLanguages();if(Parity1102Capture){overlapCoverage.languages=new[]{"ko"};overlapCoverage.resolutions=new[]{"1920x1080","3840x1080"};}
             using(var hash=System.Security.Cryptography.SHA256.Create())using(var binary=File.OpenRead(typeof(NativeGame).Assembly.Location))overlapCoverage.runtimeSha256=BitConverter.ToString(hash.ComputeHash(binary)).Replace("-","").ToLowerInvariant();
             overlapCoverage.unityVersion=Application.unityVersion;overlapCoverage.device=SystemInfo.graphicsDeviceName;overlapCoverage.deviceType=SystemInfo.graphicsDeviceType.ToString();
@@ -300,12 +300,12 @@ namespace Exoduser.UnityPort
                 yield return ParityThirdCapture();NativeUiAudit.Active=false;
                 File.WriteAllText(Path.Combine(overlapOutput,"coverage.json"),JsonUtility.ToJson(overlapCoverage,true));
                 lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);
-                Debug.Log("QA_MEDIA_DRAIN_COMPLETE PARITY_THIRD");Application.Quit(0);yield break;
+                Debug.Log("QA_MEDIA_DRAIN_COMPLETE PARITY_THIRD");WindowsHardExit.Quit(0);yield break;
             }
             if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-title-a-check")>=0||Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-title-c2-check")>=0)
             {
                 yield return UiTitleGrid();NativeUiAudit.Active=false;File.WriteAllText(Path.Combine(overlapOutput,"coverage.json"),JsonUtility.ToJson(overlapCoverage,true));
-                lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);Debug.Log("QA_MEDIA_DRAIN_COMPLETE TITLE_A");Application.Quit(0);yield break;
+                lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);Debug.Log("QA_MEDIA_DRAIN_COMPLETE TITLE_A");WindowsHardExit.Quit(0);yield break;
             }
             foreach(var size in Parity1102Capture?new[]{new Vector2Int(1920,1080),new Vector2Int(3840,1080)}:new[]{new Vector2Int(2560,1600),new Vector2Int(1920,1080),new Vector2Int(2560,1080),new Vector2Int(3840,1080),new Vector2Int(1600,900)})
             foreach(string language in overlapCoverage.languages)
@@ -361,7 +361,7 @@ namespace Exoduser.UnityPort
             }
             NativeUiAudit.Active=false;File.WriteAllText(Path.Combine(overlapOutput,"coverage.json"),JsonUtility.ToJson(overlapCoverage,true));
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);
-            Debug.Log("QA_MEDIA_DRAIN_COMPLETE UI_OVERLAP");Application.Quit(0);
+            Debug.Log("QA_MEDIA_DRAIN_COMPLETE UI_OVERLAP");WindowsHardExit.Quit(0);
         }
     }
 }

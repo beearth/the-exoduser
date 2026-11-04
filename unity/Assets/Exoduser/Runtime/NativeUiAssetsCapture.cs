@@ -72,7 +72,7 @@ namespace Exoduser.UnityPort
             int at=Array.IndexOf(args,"-output");
             if(at<0||at+1>=args.Length||!Path.IsPathRooted(args[at+1])||!NativeQaSandbox.Active)
             {
-                Application.Quit(3);
+                WindowsHardExit.Quit(3);
                 yield break;
             }
             output=args[at+1];
@@ -81,7 +81,7 @@ namespace Exoduser.UnityPort
             lobby=UnityEngine.Object.FindAnyObjectByType<NativeLobby>();
             if(lobby==null)
             {
-                Application.Quit(2);
+                WindowsHardExit.Quit(2);
                 yield break;
             }
             lobby.AutomatedInput=true;
@@ -170,7 +170,7 @@ namespace Exoduser.UnityPort
             },true));
             // 기존 설정 저장 QA와 같은 1초 배출: 지연 Destroy를 엔진 종료 전에 완료한다.
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();yield return new WaitForSecondsRealtime(1);
-            Debug.Log("QA_MEDIA_DRAIN_COMPLETE UI");Application.Quit(failures==0?0:2);
+            Debug.Log("QA_MEDIA_DRAIN_COMPLETE UI");WindowsHardExit.Quit(failures==0?0:2);
         }
         IEnumerator Shot(string name)
         {

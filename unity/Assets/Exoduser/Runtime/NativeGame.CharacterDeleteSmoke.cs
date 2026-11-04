@@ -28,7 +28,7 @@ namespace Exoduser.UnityPort
    check(!lobby.ConfirmCharacterDelete()&&lobby.Characters.Count==1&&lobby.Characters.SelectedName=="새캐릭터","stale confirmation cannot remove shifted identity");
    Screen.SetResolution(1920,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.3f);lobby.RequestCharacterDelete(0);yield return SkillCapture(output,"delete-confirm-1080p");lobby.CloseCharacterCreation();
    File.WriteAllText(Path.Combine(output,"delete-smoke.json"),JsonUtility.ToJson(new CharacterSmokeReceipt{passed=failures==0,failures=failures,checks=checks.ToArray()},true));
-   lobbySmoke=false;lobby.AutomatedInput=false;if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-character-smoke")>=0)Application.Quit(failures==0?0:2);
+   lobbySmoke=false;lobby.AutomatedInput=false;if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-character-smoke")>=0)WindowsHardExit.Quit(failures==0?0:2);
   }
  }
 }

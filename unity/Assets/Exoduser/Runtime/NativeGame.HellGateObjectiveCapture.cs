@@ -32,7 +32,7 @@ namespace Exoduser.UnityPort
                 if(failure!=null){
                     NativeGuiCapture.End();report.error=failure.ToString();Debug.LogError("HELLGATE_OBJECTIVE_CAPTURE_FAILED "+failure);
                     string output=Argument("-output");if(!string.IsNullOrEmpty(output)&&Directory.Exists(output))File.WriteAllText(Path.Combine(output,"hellgate-objectives.json"),JsonUtility.ToJson(report,true));
-                    Application.Quit(2);yield break;
+                    WindowsHardExit.Quit(2);yield break;
                 }
                 if(!more){stack.Pop();continue;}if(current is IEnumerator child){stack.Push(child);continue;}yield return current;
             }
@@ -74,7 +74,7 @@ namespace Exoduser.UnityPort
                     if(!objective.GoalTextFits||sim.TickCount!=frozen)throw new InvalidOperationException("목표 글자 잘림 또는 fixture 중 틱 진행");
                 }
             }
-            Debug.Log("HELLGATE_OBJECTIVE_CAPTURE_READY_FOR_VISUAL_REVIEW "+report.shots.Count);Application.Quit(0);
+            Debug.Log("HELLGATE_OBJECTIVE_CAPTURE_READY_FOR_VISUAL_REVIEW "+report.shots.Count);WindowsHardExit.Quit(0);
         }
         IEnumerator HellGateCaptureFrame(string output,string name)
         {

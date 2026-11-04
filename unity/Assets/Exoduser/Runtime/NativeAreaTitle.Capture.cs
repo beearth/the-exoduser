@@ -70,7 +70,7 @@ namespace Exoduser.UnityPort {
      testNote="unity_panel_web_a/web_b use explicit test values from the web capture (a: Lv1 0/15 kills 0/32 materials 1000; b: Lv15 1,234/2,000 kills 7/32 materials 12,345) to compare layout; unity_panel_pulse_t150 freezes the count pulse at 150ms (ForcedPulseAge)",
      krText="제1구역 · 썩은 숲 1구역",enText="THE ROTTEN FOREST",probes=probes.ToArray(),checks=checks.ToArray(),files=files.ToArray()};
     File.WriteAllText(Path.Combine(dir,"area-capture.json"),JsonUtility.ToJson(rec,true));
-    Application.Quit(failures==0?0:2);
+    WindowsHardExit.Quit(failures==0?0:2);
    }
    IEnumerator Shot(string name){yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(dir,name+".png"));files.Add(name+".png");yield return null;}
   }

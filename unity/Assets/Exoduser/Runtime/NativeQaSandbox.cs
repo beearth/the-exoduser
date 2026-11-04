@@ -44,7 +44,7 @@ namespace Exoduser.UnityPort
             }
             catch (Exception e) { reason = e.GetType().Name + ": " + e.Message; }
             Debug.LogError("QA SANDBOX FAILED, refusing to touch the real persistentDataPath: " + reason);
-            Application.Quit(FailureExitCode);
+            WindowsHardExit.Quit(FailureExitCode);
             throw new InvalidOperationException("QA sandbox unavailable: " + reason);
         }
     }

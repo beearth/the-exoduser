@@ -546,7 +546,7 @@ namespace Exoduser.UnityPort {
     panel.SelectPath("all");panel.filter="learned";yield return Shot("unity-stat-tab-learned");
     panel.filter="all";panel.SetZoom(1.25f);yield return Shot("unity-stat-zoom125");
     File.WriteAllText(Path.Combine(Output,"stat-capture.json"),"{\"scope\":\"Unity stat panel stills; no OS input claim\",\"shots\":[\""+string.Join("\",\"",log.ToArray())+"\"]}");
-    done=true;Application.Quit(0);
+    done=true;WindowsHardExit.Quit(0);
    }
    IEnumerator Shot(string name){yield return new WaitForSecondsRealtime(.25f);yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(Output,name+".png"));log.Add(name);yield return new WaitForSecondsRealtime(.4f);}
    void OnGUI(){GUI.depth=-10000;if(!done)panel.Draw(()=>{});}

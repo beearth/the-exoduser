@@ -64,7 +64,7 @@ namespace Exoduser.UnityPort {
      testNote="unity_clear_t* / demo / hell frames use explicit test values copied from the web captures (formal: 5 kills of 168, 4s; demo: 16 kills, 7s) to compare layout; recorded here, not game state",
      ages=ages,checks=checks.ToArray(),files=files.ToArray()};
     File.WriteAllText(Path.Combine(dir,"stageclear-capture.json"),JsonUtility.ToJson(rec,true));
-    Application.Quit(failures==0?0:2);
+    WindowsHardExit.Quit(failures==0?0:2);
    }
    IEnumerator Shot(string name){yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(dir,name+".png"));files.Add(name+".png");yield return null;}
   }
@@ -99,7 +99,7 @@ namespace Exoduser.UnityPort
         }
         internal IEnumerator StageClearPresentationReview(){
             clearReviewOutput=Argument("-output");clearReview=new ClearReviewReceipt();
-            if(string.IsNullOrEmpty(clearReviewOutput)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))||NativeReviewArgs.Any){Debug.LogError("클리어 QA 출력/격리저장 필수, 기존 강제review 인자와 동시사용 불가");Application.Quit(2);yield break;}
+            if(string.IsNullOrEmpty(clearReviewOutput)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))||NativeReviewArgs.Any){Debug.LogError("클리어 QA 출력/격리저장 필수, 기존 강제review 인자와 동시사용 불가");WindowsHardExit.Quit(2);yield break;}
             Directory.CreateDirectory(clearReviewOutput);pauseSmoke=true;smokeActive=true;Application.runInBackground=true;AudioListener.volume=0;AudioListener.pause=true;
             lobby.ShowLobby();yield return null;
             string fresh="SC"+(DateTime.Now.Ticks%100000).ToString("00000");bool created=lobby.OpenCharacterCreation()&&lobby.ChooseCharacterVisual(0)&&lobby.ConfirmCharacterVisual()&&lobby.CreateCharacter(fresh);
@@ -133,6 +133,6 @@ namespace Exoduser.UnityPort
             ClearCheck(next&&!stageClear.Active&&lobby.IsBlocking,"생산버튼경로가결과닫기/로비이동실행");ClearCheck(clearReview.revisionAfter>clearReview.revisionBefore&&HasCombatSave(reviewCharacter),"생산버튼콜백이실제격리세이브기록");ClearCheck(!stageClear.RequestNext(),"중복버튼요청거부");
             yield return ClearReviewFinish();
         }
-        IEnumerator ClearReviewFinish(){clearReview.passed=clearReview.failures==0;File.WriteAllText(Path.Combine(clearReviewOutput,"stageclear-presentation-review.json"),JsonUtility.ToJson(clearReview,true));yield return new WaitForSecondsRealtime(.4f);Application.Quit(clearReview.passed?0:2);}
+        IEnumerator ClearReviewFinish(){clearReview.passed=clearReview.failures==0;File.WriteAllText(Path.Combine(clearReviewOutput,"stageclear-presentation-review.json"),JsonUtility.ToJson(clearReview,true));yield return new WaitForSecondsRealtime(.4f);WindowsHardExit.Quit(clearReview.passed?0:2);}
     }
 }

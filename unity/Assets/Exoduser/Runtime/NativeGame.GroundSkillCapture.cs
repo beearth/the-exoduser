@@ -201,7 +201,7 @@ namespace Exoduser.UnityPort
                 groundReceiverQaActive=previousUi;practiceScripted=previousScripted;Time.captureDeltaTime=previousDelta;Simulation.Skills.Slots[0]=previousSlot;
                 File.WriteAllText(Path.Combine(output,"ground-skills-receipt.json"),JsonUtility.ToJson(receipt,true));
             }
-            Debug.Log("GROUND_SKILLS_CAPTURE_DONE "+receipt.shots.Count+" shots; visual approval still required");Application.Quit(receipt.passed?0:2);
+            Debug.Log("GROUND_SKILLS_CAPTURE_DONE "+receipt.shots.Count+" shots; visual approval still required");WindowsHardExit.Quit(receipt.passed?0:2);
         }
     }
 }

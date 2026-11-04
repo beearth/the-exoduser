@@ -15,11 +15,11 @@ namespace Exoduser.UnityPort {
   }
   IEnumerator HeroCapture(){
    string output=Argument("-output");
-   if(string.IsNullOrEmpty(output)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))){Debug.LogError("전사 검수는 명시적 출력·격리 세이브가 필요");Application.Quit(2);yield break;}
+   if(string.IsNullOrEmpty(output)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))){Debug.LogError("전사 검수는 명시적 출력·격리 세이브가 필요");WindowsHardExit.Quit(2);yield break;}
    Directory.CreateDirectory(output);Directory.CreateDirectory(Path.Combine(output,"frames"));
    heroReviewActive=true;AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;Application.targetFrameRate=60;if(!RigPixelRequested)Time.captureDeltaTime=1f/60;smokeActive=true;dropSmoke=true;pauseSmoke=true;Running=false;
    int reviewWidth=1600,reviewHeight=900;if(RigPixelRequested){reviewHeight=1080;if(!int.TryParse(Argument("-review-width"),out reviewWidth))reviewWidth=1920;}
-   Screen.SetResolution(reviewWidth,reviewHeight,FullScreenMode.Windowed);if(RigPixelRequested){yield return RigPixelReviewEntry();if(!rigPixelEntryReady){Application.Quit(2);yield break;}}else{lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();}
+   Screen.SetResolution(reviewWidth,reviewHeight,FullScreenMode.Windowed);if(RigPixelRequested){yield return RigPixelReviewEntry();if(!rigPixelEntryReady){WindowsHardExit.Quit(2);yield break;}}else{lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();}
    EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;
    yield return new WaitForSecondsRealtime(.6f);
    float deadline=Time.realtimeSinceStartup+45;while(NativeRemodel3D.Requested&&!NativeRemodel3D.Active&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
@@ -28,7 +28,7 @@ namespace Exoduser.UnityPort {
    Action<bool,string> check=(pass,label)=>{report.checks.Add((pass?"통과 ":"실패 ")+label);ok&=pass;};
    check(heroView!=null&&heroView.Ready,"실제 Resources 전사·대검·망토 생성");
    check(!NativeRemodel3D.Requested||NativeRemodel3D.Active,"요청된 3D 필드 로드");
-   if(heroView==null||!heroView.Ready){Application.Quit(2);yield break;}
+   if(heroView==null||!heroView.Ready){WindowsHardExit.Quit(2);yield break;}
    var heroAnimator=heroView.Model.GetComponent<Animator>();
    var heroTransforms=heroView.Model.GetComponentsInChildren<Transform>(true);
    var gripMarker=Array.Find(heroTransforms,t=>t.name=="Grip_L");var gripSocket=Array.Find(heroTransforms,t=>t.name=="Socket_Weapon_R");
@@ -120,7 +120,7 @@ namespace Exoduser.UnityPort {
    foreach(string kind in new[]{"Idle","Run","Roll","Swing","Recover","Charge","SlamWindup","SlamStrike","SlamRecover","Hurt","Dead"})check(motions.Contains(kind),"실제 상태 샘플 "+kind);
    report.passed=ok;File.WriteAllText(Path.Combine(output,"hero-review.json"),JsonUtility.ToJson(report,true));
    lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();
-   yield return new WaitForSecondsRealtime(.8f);Application.Quit(ok?0:2);
+   yield return new WaitForSecondsRealtime(.8f);WindowsHardExit.Quit(ok?0:2);
   }
  }
 }

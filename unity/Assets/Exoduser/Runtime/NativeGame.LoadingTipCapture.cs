@@ -42,7 +42,7 @@ namespace Exoduser.UnityPort
                     string output=Argument("-output");
                     if(!string.IsNullOrEmpty(output)&&Path.IsPathRooted(output)&&Directory.Exists(output))
                         File.WriteAllText(Path.Combine(output,"loading-tip-failure.txt"),ex.ToString());
-                    Application.Quit(2); yield break;
+                    WindowsHardExit.Quit(2); yield break;
                 }
                 if (!more) yield break;
                 yield return current;
@@ -170,7 +170,7 @@ namespace Exoduser.UnityPort
                 lobby.SetLanguage(originalLanguage);lobby.CloseStartupCaptureMedia();sound.Reset();
             }
             yield return new WaitForSecondsRealtime(1f);
-            Debug.Log("QA_MEDIA_DRAIN_COMPLETE LOADING_TIPS");Application.Quit(0);
+            Debug.Log("QA_MEDIA_DRAIN_COMPLETE LOADING_TIPS");WindowsHardExit.Quit(0);
         }
     }
 }

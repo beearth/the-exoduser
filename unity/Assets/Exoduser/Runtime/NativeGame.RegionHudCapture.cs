@@ -16,7 +16,7 @@ namespace Exoduser.UnityPort
         IEnumerator RegionHudCapture()
         {
             AudioListener.volume = 0; AudioListener.pause = true; smokeActive = true;
-            string output = Argument("-output"); if (string.IsNullOrEmpty(output)) { Application.Quit(1); yield break; }
+            string output = Argument("-output"); if (string.IsNullOrEmpty(output)) { WindowsHardExit.Quit(1); yield break; }
             Directory.CreateDirectory(output);
             Screen.SetResolution(1920, 1080, FullScreenMode.Windowed); yield return new WaitForSecondsRealtime(.5f);
             lobby.ShowLobby(); yield return new WaitForSecondsRealtime(.6f);
@@ -47,7 +47,7 @@ namespace Exoduser.UnityPort
             yield return RegionHudShot(rc, "D-gate-label", rc.exitCx, rc.exitCy + 50, () => { sim.Regions[0].Cleared = true; sim.Regions[1].Cleared = true; regionHud.Sync(sim); sim.Stage.HasFieldGate = false; /* web side: G.bossGate = [] (the tree art covers the label) */ });
             bool ok = rc.shots.Count == 4; rc.passed = ok;   // the lobby shot E-lobby.png is a separate file
             File.WriteAllText(Path.Combine(output, "region-hud.json"), JsonUtility.ToJson(rc, true));
-            Application.Quit(ok ? 0 : 2);
+            WindowsHardExit.Quit(ok ? 0 : 2);
         }
         IEnumerator RegionHudShot(RhReceipt rc, string name, float px, float py, Action setup = null)
         {

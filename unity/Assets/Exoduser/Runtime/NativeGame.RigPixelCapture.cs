@@ -13,11 +13,11 @@ namespace Exoduser.UnityPort {
    public float fps,p95Milliseconds,maxAnchorError,travel,hp,entryScreenX,entryScreenY;public List<float> frameMilliseconds=new List<float>();
   }
   IEnumerator RigPixelNaturalCapture(){
-   string output=Argument("-output");if(string.IsNullOrEmpty(output)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))){Application.Quit(2);yield break;}
+   string output=Argument("-output");if(string.IsNullOrEmpty(output)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))){WindowsHardExit.Quit(2);yield break;}
    Directory.CreateDirectory(output);AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;
    int width;if(!int.TryParse(Argument("-review-width"),out width))width=1920;
    Screen.SetResolution(width,1080,FullScreenMode.Windowed);QualitySettings.vSyncCount=0;Application.targetFrameRate=-1;
-   smokeActive=true;pauseSmoke=true;Running=false;yield return RigPixelReviewEntry();if(!rigPixelEntryReady){Application.Quit(2);yield break;}
+   smokeActive=true;pauseSmoke=true;Running=false;yield return RigPixelReviewEntry();if(!rigPixelEntryReady){WindowsHardExit.Quit(2);yield break;}
    yield return new WaitForSecondsRealtime(.5f);Running=false;
    float deadline=Time.realtimeSinceStartup+60;while(NativeRemodel3D.Requested&&!NativeRemodel3D.Active&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
    for(int warm=0;warm<120;warm++){UpdateViews();yield return null;}
@@ -51,7 +51,7 @@ namespace Exoduser.UnityPort {
    if(rigPixelHero!=null){report.textureWidth=rigPixelHero.TextureWidth;report.texelScale=rigPixelHero.TexelScale;report.renderCount=rigPixelHero.RenderCount;}
    report.passed=(!RigPixelRequested||rigPixelHero!=null&&rigPixelHero.Ready&&report.maxAnchorError<=.71f)&&report.world3D&&report.travel>100&&report.ticks>=500&&report.fps>=60;
    File.WriteAllText(Path.Combine(output,"rigpixel-natural.json"),JsonUtility.ToJson(report,true));
-   lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(.8f);Application.Quit(report.passed?0:2);
+   lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(.8f);WindowsHardExit.Quit(report.passed?0:2);
   }
  }
 }

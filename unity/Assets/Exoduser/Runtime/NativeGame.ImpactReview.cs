@@ -27,7 +27,7 @@ namespace Exoduser.UnityPort
         IEnumerator ImpactReview()
         {
             string output=Argument("-output");
-            if(string.IsNullOrEmpty(output)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))){Debug.LogError("임팩트 검수는 명시적 출력·격리 세이브가 필요");Application.Quit(2);yield break;}
+            if(string.IsNullOrEmpty(output)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))){Debug.LogError("임팩트 검수는 명시적 출력·격리 세이브가 필요");WindowsHardExit.Quit(2);yield break;}
             Directory.CreateDirectory(output);Directory.CreateDirectory(Path.Combine(output,"frames"));
             AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;Application.targetFrameRate=60;Time.captureDeltaTime=1f/60;
             smokeActive=true;dropSmoke=true;pauseSmoke=true;Running=false;
@@ -112,7 +112,7 @@ namespace Exoduser.UnityPort
 
             File.WriteAllText(Path.Combine(output,"impact-review.json"),JsonUtility.ToJson(rc,true));
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();
-            yield return new WaitForSecondsRealtime(.8f);Application.Quit(rc.passed?0:2);
+            yield return new WaitForSecondsRealtime(.8f);WindowsHardExit.Quit(rc.passed?0:2);
         }
     }
 }

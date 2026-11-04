@@ -79,7 +79,7 @@ namespace Exoduser.UnityPort
             ScreenCapture.CaptureScreenshot(Path.Combine(output, "unity-d01-after-pickup.png")); yield return null;
             rec.failures = string.Join(" | ", fails.ToArray()); rec.passed = fails.Count == 0 && rec.collected > 0;
             File.WriteAllText(Path.Combine(output, "drop-smoke.json"), JsonUtility.ToJson(rec, true));
-            Application.Quit(rec.passed ? 0 : 2);
+            WindowsHardExit.Quit(rec.passed ? 0 : 2);
         }
     }
 }

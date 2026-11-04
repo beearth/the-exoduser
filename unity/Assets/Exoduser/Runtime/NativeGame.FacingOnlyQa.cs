@@ -31,7 +31,7 @@ namespace Exoduser.UnityPort
             string output=Argument("-output"),requestedSandbox=Argument(NativeQaSandbox.Argument);
             if(Application.isBatchMode||string.IsNullOrEmpty(output)||!Path.IsPathRooted(output)||
                 string.IsNullOrEmpty(requestedSandbox)||!Path.IsPathRooted(requestedSandbox)||!NativeQaSandbox.Active)
-            {Debug.LogError("FACING_ONLY_QA requires a GUI Player, absolute output and explicit sandbox");Application.Quit(2);yield break;}
+            {Debug.LogError("FACING_ONLY_QA requires a GUI Player, absolute output and explicit sandbox");WindowsHardExit.Quit(2);yield break;}
             Directory.CreateDirectory(output);AudioListener.volume=0;AudioListener.pause=true;
             Application.runInBackground=true;smokeActive=true;pauseSmoke=true;
             bool walkCycle=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-walk-cycle-qa")>=0;
@@ -40,7 +40,7 @@ namespace Exoduser.UnityPort
             var result=new FacingOnlyReceipt{sandbox=NativeQaSandbox.Root,device=SystemInfo.graphicsDeviceName,deviceType=SystemInfo.graphicsDeviceType.ToString()};
             Screen.SetResolution(1920,1080,FullScreenMode.Windowed);
             lobby.Flow.ShowLobby();lobby.Flow.SelectPreview();
-            if(!lobby.Flow.EnterTest()){result.failures.Add("lobby test entry failed");Application.Quit(2);yield break;}
+            if(!lobby.Flow.EnterTest()){result.failures.Add("lobby test entry failed");WindowsHardExit.Quit(2);yield break;}
             if(firstPractice!=null)EndFirstPractice(true);frontendEntryInputFence=false;menu=false;SetGameFocus(true);Running=false;
             float deadline=Time.realtimeSinceStartup+45;
             while(!Remodel3DReady&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
@@ -175,7 +175,7 @@ namespace Exoduser.UnityPort
             result.passed=result.failures.Count==0&&result.frames.Count==(walkCycle?12:7)+(fourFrameWalk?80:0)+(stagSouthwest?7:0);
             File.WriteAllText(Path.Combine(output,"facing-only-qa.json"),JsonUtility.ToJson(result,true));
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(.5f);
-            Debug.Log("QA_MEDIA_DRAIN_COMPLETE FACING_ONLY");Application.Quit(result.passed?0:3);
+            Debug.Log("QA_MEDIA_DRAIN_COMPLETE FACING_ONLY");WindowsHardExit.Quit(result.passed?0:3);
         }
     }
 }

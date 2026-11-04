@@ -47,7 +47,7 @@ namespace Exoduser.UnityPort
                     string output=Argument("-output");
                     if(!string.IsNullOrEmpty(output)&&Path.IsPathRooted(output)&&Directory.Exists(output))
                         File.WriteAllText(Path.Combine(output,"ground-receiver-receipt.json"),JsonUtility.ToJson(new GroundReceiverReceipt{error=ex.ToString()},true));
-                    Application.Quit(2);yield break;
+                    WindowsHardExit.Quit(2);yield break;
                 }
                 if(!more)yield break;
                 yield return current;
@@ -203,7 +203,7 @@ namespace Exoduser.UnityPort
             if(!string.IsNullOrEmpty(output) && Path.IsPathRooted(output) && Directory.Exists(output))
                 File.WriteAllText(Path.Combine(output,"ground-receiver-receipt.json"),JsonUtility.ToJson(receipt,true));
             yield return new WaitForSecondsRealtime(1f);
-            Debug.Log("QA_MEDIA_DRAIN_COMPLETE GROUND_RECEIVER");Application.Quit(receipt.passed?0:2);
+            Debug.Log("QA_MEDIA_DRAIN_COMPLETE GROUND_RECEIVER");WindowsHardExit.Quit(receipt.passed?0:2);
         }
 
         [Serializable] sealed class GroundMapSite
@@ -238,7 +238,7 @@ namespace Exoduser.UnityPort
                     string path=Argument("-output");
                     if(!string.IsNullOrEmpty(path)&&Path.IsPathRooted(path)&&Directory.Exists(path))
                         File.WriteAllText(Path.Combine(path,"ground-map-receipt.json"),JsonUtility.ToJson(new GroundMapReceipt{error=ex.ToString()},true));
-                    Application.Quit(2);yield break;
+                    WindowsHardExit.Quit(2);yield break;
                 }
                 if(!more)yield break;
                 yield return current;
@@ -406,7 +406,7 @@ namespace Exoduser.UnityPort
             File.WriteAllText(Path.Combine(output,"ground-map-receipt.json"),JsonUtility.ToJson(receipt,true));
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();
             yield return new WaitForSecondsRealtime(1);
-            Debug.Log("QA_MEDIA_DRAIN_COMPLETE GROUND_MAP");Application.Quit(receipt.passed?0:2);
+            Debug.Log("QA_MEDIA_DRAIN_COMPLETE GROUND_MAP");WindowsHardExit.Quit(receipt.passed?0:2);
         }
     }
 }

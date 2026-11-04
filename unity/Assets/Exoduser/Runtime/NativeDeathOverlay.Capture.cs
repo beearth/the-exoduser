@@ -55,7 +55,7 @@ namespace Exoduser.UnityPort {
      stateSource="kills=Simulation.Kills, EXP loss = not ported (-1: Unity deducts no EXP on death), Player.Hp=0 set on the real Simulation; chapter/deaths are explicit test values (Unity has no chapter or death-count state); max combo = not ported (-1)",
      petEvent=overlay.EventId,crow=overlay.CrowLine,cat=overlay.CatLine,note="PulseOffset 3.42s aligns the title pulse phase with the web capture series; damage log null -> drawn as 미이식",probes=probes.ToArray(),checks=checks.ToArray(),files=files.ToArray()};
     File.WriteAllText(Path.Combine(dir,"death-capture.json"),JsonUtility.ToJson(rec,true));
-    Application.Quit(failures==0?0:2);
+    WindowsHardExit.Quit(failures==0?0:2);
    }
    IEnumerator Shot(string name){yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(dir,name+".png"));files.Add(name+".png");yield return null;}
   }

@@ -23,7 +23,7 @@ namespace Exoduser.UnityPort
   IEnumerator WorldWideCapture()
   {
    var stack=new Stack<IEnumerator>();stack.Push(WorldWideBody());
-   while(stack.Count>0){object value=null;bool more=false;Exception error=null;try{more=stack.Peek().MoveNext();if(more)value=stack.Peek().Current;}catch(Exception e){error=e;}if(error!=null){Debug.LogError("WORLD_ULTRA_FAILED "+error);SaveOverlapCaptureProgress();try{if(wideWorld!=null&&Directory.Exists(overlapOutput))File.WriteAllText(Path.Combine(overlapOutput,"world-receipt.json"),JsonUtility.ToJson(wideWorld,true));}catch(Exception saveError){Debug.LogWarning("WORLD_EVIDENCE_SAVE "+saveError);}lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);Application.Quit(2);yield break;}if(!more){stack.Pop();continue;}if(value is IEnumerator next){stack.Push(next);continue;}yield return value;}
+   while(stack.Count>0){object value=null;bool more=false;Exception error=null;try{more=stack.Peek().MoveNext();if(more)value=stack.Peek().Current;}catch(Exception e){error=e;}if(error!=null){Debug.LogError("WORLD_ULTRA_FAILED "+error);SaveOverlapCaptureProgress();try{if(wideWorld!=null&&Directory.Exists(overlapOutput))File.WriteAllText(Path.Combine(overlapOutput,"world-receipt.json"),JsonUtility.ToJson(wideWorld,true));}catch(Exception saveError){Debug.LogWarning("WORLD_EVIDENCE_SAVE "+saveError);}lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);WindowsHardExit.Quit(2);yield break;}if(!more){stack.Pop();continue;}if(value is IEnumerator next){stack.Push(next);continue;}yield return value;}
   }
   Vector2 WideLegal(float x,float y)
   {
@@ -119,7 +119,7 @@ namespace Exoduser.UnityPort
 #endif
     if(Screen.width!=width||Screen.height!=1080)throw new InvalidOperationException("FPS 실제 해상도 불일치");yield return WideFpsSample();}
    File.WriteAllText(Path.Combine(overlapOutput,"coverage.json"),JsonUtility.ToJson(overlapCoverage,true));File.WriteAllText(Path.Combine(overlapOutput,"world-receipt.json"),JsonUtility.ToJson(wideWorld,true));
-   lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);bool pixels=wideWorld.pixelCases.Count==8;foreach(var p in wideWorld.pixelCases)pixels&=p.difference==0&&p.selfDifference==0&&p.nonBlackPixels>1000&&p.maxChannel>16;Application.Quit(pixels?0:2);
+   lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);bool pixels=wideWorld.pixelCases.Count==8;foreach(var p in wideWorld.pixelCases)pixels&=p.difference==0&&p.selfDifference==0&&p.nonBlackPixels>1000&&p.maxChannel>16;WindowsHardExit.Quit(pixels?0:2);
   }
  }
 }

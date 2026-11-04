@@ -22,8 +22,8 @@ namespace Exoduser.UnityPort
         IEnumerator Hd2dCapture()
         {
             string output=Argument("-output");
-            if(string.IsNullOrEmpty(output)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))){Application.Quit(2);yield break;}
-            Directory.CreateDirectory(output);if(Directory.GetFileSystemEntries(output).Length!=0){Debug.LogError("HD2D capture requires a new empty output folder: "+output);Application.Quit(2);yield break;}var rc=new Hd2dReceipt();
+            if(string.IsNullOrEmpty(output)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))){WindowsHardExit.Quit(2);yield break;}
+            Directory.CreateDirectory(output);if(Directory.GetFileSystemEntries(output).Length!=0){Debug.LogError("HD2D capture requires a new empty output folder: "+output);WindowsHardExit.Quit(2);yield break;}var rc=new Hd2dReceipt();
             Application.targetFrameRate=60;QualitySettings.vSyncCount=0;AudioListener.volume=0;AudioListener.pause=true;smokeActive=true;dropSmoke=true;pauseSmoke=true;Application.runInBackground=true;
             lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;SetGameFocus(true);
             float until=Time.realtimeSinceStartup+45;
@@ -79,7 +79,7 @@ namespace Exoduser.UnityPort
             yield return Hd2dWaitScreenshots(rc);
             if(rc.screenshots.Count!=336)rc.failures.Add("capture count expected336 got"+rc.screenshots.Count);
             rc.passed=rc.failures.Count==0;File.WriteAllText(Path.Combine(output,"hd2d-player.json"),JsonUtility.ToJson(rc,true));
-            lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(.8f);Application.Quit(rc.passed?0:2);
+            lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(.8f);WindowsHardExit.Quit(rc.passed?0:2);
         }
         IEnumerator Hd2dDruidMotion(string output,int width,EnemyState boss,Hd2dReceipt rc)
         {

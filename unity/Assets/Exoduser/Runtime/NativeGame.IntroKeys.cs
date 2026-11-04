@@ -81,7 +81,7 @@ namespace Exoduser.UnityPort
             LobbyKeys.ReleaseAll();
             Debug.Log("INTRO_KEYS " + JsonUtility.ToJson(rc));
             if (!string.IsNullOrEmpty(output)) File.WriteAllText(Path.Combine(output, "intro-keys.json"), JsonUtility.ToJson(rc, true));
-            Application.Quit();
+            WindowsHardExit.Quit();
         }
 
         bool introKeysSmoke;   // NativeGame.Update forces AutomatedInput = lobbySmoke every frame; this keeps the lobby reading keys

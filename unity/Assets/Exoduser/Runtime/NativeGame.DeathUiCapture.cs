@@ -37,7 +37,7 @@ namespace Exoduser.UnityPort
             if(string.IsNullOrEmpty(state))state="normal";
             string entryState=Argument("-ui-entry-state");
             if(entryState.Length==0)entryState=state=="hover"?"hover":"normal";
-            if(string.IsNullOrEmpty(output)||!Path.IsPathRooted(output)){Debug.LogError("UI capture requires absolute -output");Application.Quit(2);yield break;}
+            if(string.IsNullOrEmpty(output)||!Path.IsPathRooted(output)){Debug.LogError("UI capture requires absolute -output");WindowsHardExit.Quit(2);yield break;}
             Directory.CreateDirectory(output);var failures=new List<string>();var files=new List<string>();
             if(state!="normal"&&state!="hover"&&state!="selected"&&state!="disabled")failures.Add("unsupported -ui-state");
             if(entryState!="normal"&&entryState!="hover")failures.Add("unsupported -ui-entry-state");
@@ -46,7 +46,7 @@ namespace Exoduser.UnityPort
             if(rawCount.Length>0&&(!int.TryParse(rawCount,out count)||(count!=0&&count!=2)))failures.Add("-ui-characters must be 0 or 2");
             var rec=new DeathUiReceipt{screen=screen,state=state,width=Screen.width,height=Screen.height,saveBinding=DeathUiSaveBinding()};
             rec.persistenceDisabled=nativeSettingsStore==null&&string.IsNullOrEmpty(lobby.CharacterStoreDirectory)&&combatStore==null;
-            if(!rec.persistenceDisabled){Debug.LogError("UI fixture refused persistent stores");Application.Quit(2);yield break;}
+            if(!rec.persistenceDisabled){Debug.LogError("UI fixture refused persistent stores");WindowsHardExit.Quit(2);yield break;}
             var assets=new List<UiArtReceipt>();
             foreach(var name in new[]{"lobby_enter_btn_silver_20261029","lobby_enter_disabled","btn_primary_composed","btn_plaque_20261029","guide_button_glow",
                 "visual_create","visual_cancel","visual_disabled","name_create","name_cancel","panel_frame_20261029",
@@ -94,7 +94,7 @@ namespace Exoduser.UnityPort
             if(!rec.rosterUnchanged)failures.Add("roster changed");
             rec.strippedSkinStates=NativeUiChrome.StrippedStates;rec.files=files.ToArray();rec.failures=string.Join(" | ",failures.ToArray());rec.passed=failures.Count==0;
             File.WriteAllText(Path.Combine(output,"death-ui-"+tag+".json"),JsonUtility.ToJson(rec,true));
-            NativeSilverHellUi.ReviewState=null;lobby.EntryReviewState=null;lobby.DeathUiEntryPointerCapture=false;lobby.CloseStartupCaptureMedia();sound?.Reset();Application.Quit(rec.passed?0:2);
+            NativeSilverHellUi.ReviewState=null;lobby.EntryReviewState=null;lobby.DeathUiEntryPointerCapture=false;lobby.CloseStartupCaptureMedia();sound?.Reset();WindowsHardExit.Quit(rec.passed?0:2);
         }
     }
     public sealed partial class NativeLobby

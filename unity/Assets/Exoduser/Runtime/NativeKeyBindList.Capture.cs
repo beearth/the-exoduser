@@ -87,7 +87,7 @@ namespace Exoduser.UnityPort {
      stateSource="Private KeyBindings instance; no game state is read. Baseline = web defaults, then the explicit operations listed in the file names (weapon main waiting, weapon alternate = KeyF, charge := KeyE rejected, gamepad tab, reset).",
      testNote="All frames use test operations that mirror the web capture sequence (E:/exoduser-wt/_out/pc-a16/web/a16_*.png). Saving is not ported (Codex settings schema has no key fields); gamepad values are 미이식.",checks=checks.ToArray(),files=files.ToArray()};
     File.WriteAllText(Path.Combine(dir,"keybind-capture.json"),JsonUtility.ToJson(rec,true));
-    Application.Quit(failures==0?0:2);
+    WindowsHardExit.Quit(failures==0?0:2);
    }
    IEnumerator Frame(string name,bool shot){
     yield return new WaitForSecondsRealtime(.2f);

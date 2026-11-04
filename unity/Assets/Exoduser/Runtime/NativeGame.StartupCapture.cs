@@ -13,7 +13,7 @@ namespace Exoduser.UnityPort
   IEnumerator StartupCapture()
   {
    string output=Argument("-output");var checks=new List<string>();int failures=0;Action<bool,string> check=(ok,label)=>{checks.Add((ok?"PASS ":"FAIL ")+label);if(!ok)failures++;};
-   if(string.IsNullOrWhiteSpace(output)||output.StartsWith("-",StringComparison.Ordinal)||string.IsNullOrEmpty(lobby.CharacterStoreDirectory)){Debug.LogError("STARTUP CAPTURE requires explicit writable -output QA namespace");Application.Quit(2);yield break;}
+   if(string.IsNullOrWhiteSpace(output)||output.StartsWith("-",StringComparison.Ordinal)||string.IsNullOrEmpty(lobby.CharacterStoreDirectory)){Debug.LogError("STARTUP CAPTURE requires explicit writable -output QA namespace");WindowsHardExit.Quit(2);yield break;}
    Directory.CreateDirectory(output);check(lobby.CharacterStoreDirectory==Path.Combine(Path.GetFullPath(output),"character-roster-v1"),"explicit isolated roster namespace");check(!lobby.AutomatedInput,"scripted callback capture leaves AutomatedInput false; no OS input claim");
    Screen.SetResolution(1280,720,FullScreenMode.Windowed);yield return null;lobby.ShowLobby();
    if(lobby.Characters.Count==0){lobby.OpenCharacterCreation();lobby.ConfirmCharacterVisual();check(lobby.CreateCharacter("입장검수"),"create only inside explicit capture roster");lobby.ShowLobby();}
@@ -36,7 +36,7 @@ namespace Exoduser.UnityPort
    Screen.SetResolution(1280,720,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.3f);yield return SkillCapture(output,"startup-gameplay-hud-720p");Screen.SetResolution(1920,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.3f);yield return SkillCapture(output,"startup-gameplay-hud-1080p");
    lobby.CloseStartupCaptureMedia();sound?.Reset();check(!Running,"capture holds gameplay stopped before shutdown");
    File.WriteAllText(Path.Combine(output,"startup-capture.json"),JsonUtility.ToJson(new StartupCaptureReceipt{scope="Narrow scripted runtime callbacks and Player PNGs for actual entry/guide/current HUD; not keyboard or mouse OS-input QA. No full tutorial/practice completion claim.",rosterDirectory=lobby.CharacterStoreDirectory,passed=failures==0,automatedInput=lobby.AutomatedInput,failures=failures,resetDelta=startupResetCount-resets,fenceSetFrame=frontendFenceSetFrame,fenceReleasedFrame=frontendFenceReleasedFrame,checks=checks.ToArray()},true));
-   yield return new WaitForSecondsRealtime(1);Application.Quit(failures==0?0:2);
+   yield return new WaitForSecondsRealtime(1);WindowsHardExit.Quit(failures==0?0:2);
   }
  }
 }

@@ -31,7 +31,7 @@ namespace Exoduser.UnityPort
    string output=Argument("-output"),phase=Argument("-save-phase");var checks=new List<string>();int failures=0;
    Action<bool,string> check=(ok,label)=>{checks.Add((ok?"PASS ":"FAIL ")+label);if(!ok)failures++;};
    AudioListener.volume=0f;                                          // QA runs are silent
-   if(string.IsNullOrWhiteSpace(output)||output.StartsWith("-",StringComparison.Ordinal)||(phase!="write"&&phase!="read")||string.IsNullOrEmpty(lobby.CharacterStoreDirectory)){Debug.LogError("COMBAT SAVE CAPTURE requires -output <dir> -save-phase write|read");Application.Quit(2);yield break;}
+   if(string.IsNullOrWhiteSpace(output)||output.StartsWith("-",StringComparison.Ordinal)||(phase!="write"&&phase!="read")||string.IsNullOrEmpty(lobby.CharacterStoreDirectory)){Debug.LogError("COMBAT SAVE CAPTURE requires -output <dir> -save-phase write|read");WindowsHardExit.Quit(2);yield break;}
    Directory.CreateDirectory(output);
    check(lobby.CharacterStoreDirectory==Path.Combine(Path.GetFullPath(output),"character-roster-v1"),"explicit isolated roster namespace");
    Screen.SetResolution(1280,720,FullScreenMode.Windowed);yield return null;lobby.ShowLobby();
@@ -95,7 +95,7 @@ namespace Exoduser.UnityPort
    lobby.CloseStartupCaptureMedia();sound?.Reset();
    before.rosterDirectory=lobby.CharacterStoreDirectory;before.passed=failures==0;before.failures=failures;before.checks=checks.ToArray();
    File.WriteAllText(Path.Combine(output,"combat-save-"+phase+".json"),JsonUtility.ToJson(before,true),new UTF8Encoding(false));
-   Application.Quit(failures==0?0:2);
+   WindowsHardExit.Quit(failures==0?0:2);
   }
  }
 }

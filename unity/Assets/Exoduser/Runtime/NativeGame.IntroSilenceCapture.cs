@@ -58,7 +58,7 @@ namespace Exoduser.UnityPort
   IEnumerator IntroSilenceCapture()
   {
    string output=Argument("-output"),phase=Argument("-intro-silence-phase");
-   if(!SettingsQaIdentity||string.IsNullOrWhiteSpace(output)||!Path.IsPathRooted(output)||(phase!="baseline"&&phase!="final")){Debug.LogError("Intro silence fixture requires distinct Settings QA identity, absolute output and baseline/final phase");Application.Quit(2);yield break;}
+   if(!SettingsQaIdentity||string.IsNullOrWhiteSpace(output)||!Path.IsPathRooted(output)||(phase!="baseline"&&phase!="final")){Debug.LogError("Intro silence fixture requires distinct Settings QA identity, absolute output and baseline/final phase");WindowsHardExit.Quit(2);yield break;}
    Directory.CreateDirectory(output);var snapshots=new List<IntroSilenceSnapshot>();var checks=new List<string>();var differences=new List<string>();int failures=0;
    Action<bool,string> check=(ok,label)=>{checks.Add((ok?"PASS ":"FAIL ")+label);if(!ok)failures++;};
    lobbySmoke=true;lobbyControlsSmoke=true;lobby.AutomatedInput=true;Running=false;menu=true;lobby.SetPlaybackFocus(true);SetBgmPercent(45);
@@ -97,7 +97,7 @@ namespace Exoduser.UnityPort
    if(phase=="final")check(contractPassed,"all accepted stage mute contracts match");
    lobby.CloseStartupCaptureMedia();check(lobby.CurrentVideo.Player==null&&lobby.CurrentVideo.Voice==null&&!lobby.CurrentVideo.UsesIntroAudioFallback,"cleanup releases video and external voice");
    File.WriteAllText(Path.Combine(output,"intro-silence-"+phase+".json"),JsonUtility.ToJson(new IntroSilenceReceipt{scope="QA-only short scripted stage/audio observations, not OS focus/input, natural gate completion, media completion or audibility certification. Baseline harness success does not mean mute contract passed. Accepted source stage contract is FDG/SplashTitle/Title muted, Gate/World voice enabled.",phase=phase,product=Application.productName,identifier=Application.identifier,persistentDataPath=Application.persistentDataPath,output=output,fallbackClipSamples=fallbackClip==null?0:fallbackClip.samples,fallbackClipFrequency=fallbackClip==null?0:fallbackClip.frequency,fallbackClipChannels=fallbackClip==null?0:fallbackClip.channels,fallbackHeadFrames=headFrames,fallbackHeadFile=headFile,fallbackHeadEncoding="float32 little-endian, interleaved channels; imported clip sample frame0",bgmPercent=settings.BgmPercent,bgmRelativeGain=settings.BgmRelativeGain,harnessPassed=failures==0,contractPassed=contractPassed,finalContractPending=pending,failures=failures,checks=checks.ToArray(),observedDifferences=differences.ToArray(),snapshots=snapshots.ToArray()},true));
-   sound.Reset();yield return new WaitForSecondsRealtime(1);Application.Quit(failures==0?0:2);
+   sound.Reset();yield return new WaitForSecondsRealtime(1);WindowsHardExit.Quit(failures==0?0:2);
   }
  }
 }

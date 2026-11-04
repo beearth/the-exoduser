@@ -28,7 +28,7 @@ namespace Exoduser.UnityPort
         {
             AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;Running=false;smokeActive=true;
             string output=Argument("-output");
-            if(string.IsNullOrEmpty(output)||!Path.IsPathRooted(output)){Debug.LogError("death capture requires absolute -output");Application.Quit(2);yield break;}
+            if(string.IsNullOrEmpty(output)||!Path.IsPathRooted(output)){Debug.LogError("death capture requires absolute -output");WindowsHardExit.Quit(2);yield break;}
             Directory.CreateDirectory(output);
             var sim=Simulation;sim.Config.EnemyAiEnabled=false;sim.Enemies.Clear();sim.Config.RevivePow=1.0;sim.Random01=()=>0;
             var fails=new List<string>();var files=new List<string>();Action<bool,string> check=(ok,what)=>{if(!ok)fails.Add(what);};
@@ -99,7 +99,7 @@ namespace Exoduser.UnityPort
                 death.ForcedAge=null;revive.ForcedAge=null;
                 rec.files=files.ToArray();rec.failures=string.Join(" | ",fails.ToArray());rec.passed=fails.Count==0;
                 File.WriteAllText(Path.Combine(output,"death-screen-capture.json"),JsonUtility.ToJson(rec,true));
-                sound?.Reset();Application.Quit(rec.passed?0:2);yield break;
+                sound?.Reset();WindowsHardExit.Quit(rec.passed?0:2);yield break;
             }
 
             check(BossDirectEnter(),"requires --unity-boss-direct 0");
@@ -139,7 +139,7 @@ namespace Exoduser.UnityPort
             revive.ForcedAge=null;
             rec.files=files.ToArray();rec.failures=string.Join(" | ",fails.ToArray());rec.passed=fails.Count==0;
             File.WriteAllText(Path.Combine(output,"death-screen-capture.json"),JsonUtility.ToJson(rec,true));
-            sound?.Reset();Application.Quit(rec.passed?0:2);
+            sound?.Reset();WindowsHardExit.Quit(rec.passed?0:2);
         }
         void DeathAdvanceTo(int ticks)
         {

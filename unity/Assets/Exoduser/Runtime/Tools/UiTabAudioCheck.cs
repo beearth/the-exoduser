@@ -29,8 +29,8 @@ namespace Exoduser.UnityPort.Tools
   static string Hash(string p){using(var h=SHA256.Create())using(var f=File.OpenRead(p))return BitConverter.ToString(h.ComputeHash(f)).Replace("-","").ToLowerInvariant();}
   void CheckThat(string id,bool ok,string detail=""){receipt.checks.Add(new Check{id=id,passed=ok,detail=detail});if(!ok)throw new InvalidOperationException(id+" "+detail);}
   void Save(){receipt.supportedPassed=receipt.checks.Count>0&&receipt.checks.TrueForAll(c=>c.passed);receipt.passed=receipt.supportedPassed&&receipt.unsupported.Count==0;receipt.status=!receipt.supportedPassed?"failed":receipt.unsupported.Count>0?"partial-unsupported":"pass";receipt.lines=new List<string>(sound?.Lines??new List<string>());File.WriteAllText(Path.Combine(output,"Player_오디오_회귀.json"),JsonUtility.ToJson(receipt,true));}
-  IEnumerator Start(){output=Arg("-output");if(!NativeQaSandbox.Active||string.IsNullOrEmpty(output)||!Path.IsPathRooted(output)){Debug.LogError("UI audio check requires explicit sandbox/output");Application.Quit(3);yield break;}Directory.CreateDirectory(output);yield return Guard(Run());}
-  IEnumerator Guard(IEnumerator run){while(true){bool more=false;object current=null;Exception error=null;try{more=run.MoveNext();if(more)current=run.Current;}catch(Exception e){error=e;}if(error!=null){failed=true;receipt.checks.Add(new Check{id="검수예외",passed=false,detail=error.ToString()});Save();Cleanup();Debug.LogError("UI_TAB_AUDIO_FAILED "+error);Application.Quit(2);yield break;}if(!more)yield break;if(current is IEnumerator nested){yield return Guard(nested);if(failed)yield break;}else yield return current;}}
+  IEnumerator Start(){output=Arg("-output");if(!NativeQaSandbox.Active||string.IsNullOrEmpty(output)||!Path.IsPathRooted(output)){Debug.LogError("UI audio check requires explicit sandbox/output");WindowsHardExit.Quit(3);yield break;}Directory.CreateDirectory(output);yield return Guard(Run());}
+  IEnumerator Guard(IEnumerator run){while(true){bool more=false;object current=null;Exception error=null;try{more=run.MoveNext();if(more)current=run.Current;}catch(Exception e){error=e;}if(error!=null){failed=true;receipt.checks.Add(new Check{id="검수예외",passed=false,detail=error.ToString()});Save();Cleanup();Debug.LogError("UI_TAB_AUDIO_FAILED "+error);WindowsHardExit.Quit(2);yield break;}if(!more)yield break;if(current is IEnumerator nested){yield return Guard(nested);if(failed)yield break;}else yield return current;}}
   int TabCount=>sound.UiEvents.FindAll(e=>e.key=="ui_tab").Count;
   IEnumerator Request(string id,int expected,string label){yield return new WaitForSecondsRealtime(.04f);int n=TabCount;NativePanelTabBar.Request(id);CheckThat(label,TabCount-n==expected,"delta="+(TabCount-n));}
   void CloseAll(){Call(game,"SetForge",false);Call(game,"SetStats",false);Call(game,"SetSkills",false,6);Call(game,"SetInventory",false);Set(game,"menu",false);}
@@ -66,7 +66,7 @@ namespace Exoduser.UnityPort.Tools
 #if !UNITY_STANDALONE_OSX
    CheckThat("LayoutRepaint실제수신",receipt.layoutEvents>0&&receipt.repaintEvents>0);
 #endif
-   CheckThat("종료전무음",AudioListener.volume==0&&AudioListener.pause);Save();Cleanup();lobby.CloseStartupCaptureMedia();AudioListener.volume=0;AudioListener.pause=true;Debug.Log("UI_TAB_AUDIO_COMPLETE "+receipt.status+" "+receipt.checks.Count);Application.Quit(receipt.passed?0:receipt.supportedPassed?4:2);
+   CheckThat("종료전무음",AudioListener.volume==0&&AudioListener.pause);Save();Cleanup();lobby.CloseStartupCaptureMedia();AudioListener.volume=0;AudioListener.pause=true;Debug.Log("UI_TAB_AUDIO_COMPLETE "+receipt.status+" "+receipt.checks.Count);WindowsHardExit.Quit(receipt.passed?0:receipt.supportedPassed?4:2);
   }
 
   // 자기 숨은 Player 창만 대상으로 메시지를 보낸다. 전역 포인터/SendInput은 사용하지 않는다.

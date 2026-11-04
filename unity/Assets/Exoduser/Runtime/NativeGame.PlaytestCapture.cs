@@ -12,9 +12,9 @@ namespace Exoduser.UnityPort {
   [Serializable] sealed class PlaytestFrame { public string key,motion; public int frame,tick; public float x,y,facing,aimError,maxSpriteError,stateTicks,stamina,mana; public string state; public List<Vector2> ki=new List<Vector2>(),magic=new List<Vector2>(),magicVelocity=new List<Vector2>(),blades=new List<Vector2>(); public float harpX,harpY; public bool harp,dash; public int zones,waves,blasts,burstViews; }
   [Serializable] sealed class PlaytestResult { public string scope="실제 Player, 가상 Input System 장치 → 기존 FixedUpdate → Core → LateUpdate. OS 손조작 아님"; public bool passed,remodel3d,maliceTrailDefaultColorSpace;public float fieldOfView,heroScale,pitchDegrees,distance,lookAhead,baselineHp,baselineMana,baselineStamina,baselineSpeed,baselineCastSpeed; public int failures; public List<string> checks=new List<string>(); public List<PlaytestFrame> frames=new List<PlaytestFrame>(); }
   IEnumerator PlaytestCapture() {
-   string output=Argument("-output"); if(string.IsNullOrEmpty(output)){Application.Quit(2);yield break;} Directory.CreateDirectory(output);
+   string output=Argument("-output"); if(string.IsNullOrEmpty(output)){WindowsHardExit.Quit(2);yield break;} Directory.CreateDirectory(output);
    AudioListener.volume=0;AudioListener.pause=true;smokeActive=true;dropSmoke=true;Running=false;
-   if(RigPixelRequested){int w;if(!int.TryParse(Argument("-review-width"),out w))w=1920;Screen.SetResolution(w,1080,FullScreenMode.Windowed);yield return RigPixelReviewEntry();if(!rigPixelEntryReady){Application.Quit(2);yield break;}}else{Screen.SetResolution(1600,900,FullScreenMode.Windowed);lobby.Flow.ShowLobby();lobby.Flow.SelectPreview();lobby.Flow.EnterTest();}
+   if(RigPixelRequested){int w;if(!int.TryParse(Argument("-review-width"),out w))w=1920;Screen.SetResolution(w,1080,FullScreenMode.Windowed);yield return RigPixelReviewEntry();if(!rigPixelEntryReady){WindowsHardExit.Quit(2);yield break;}}else{Screen.SetResolution(1600,900,FullScreenMode.Windowed);lobby.Flow.ShowLobby();lobby.Flow.SelectPreview();lobby.Flow.EnterTest();}
    if(firstPractice!=null)EndFirstPractice(true);frontendEntryInputFence=false;menu=false;SetGameFocus(true);Running=false;
    yield return new WaitForSecondsRealtime(.5f);
    float deadline=Time.realtimeSinceStartup+40;while(NativeRemodel3D.Requested&&!NativeRemodel3D.Active&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
@@ -74,7 +74,7 @@ namespace Exoduser.UnityPort {
      if(control=="2"||control=="3"||control=="4"||control=="Z")check(s.SkillCastCount==cast0,"미배정 슬롯 "+control+" 무시");
     }
    } finally {InputSystem.RemoveDevice(keyboard);InputSystem.RemoveDevice(mouse);if(oldKeyboard!=null)oldKeyboard.MakeCurrent();if(oldMouse!=null)oldMouse.MakeCurrent();if(manualBrain!=null)manualBrain.UpdateMethod=oldCameraUpdate;if(r3Late!=null)r3Late.enabled=true;}
-   result.maliceTrailDefaultColorSpace=NativeSkillView.MaliceTrailDefaultColorSpace;result.passed=result.failures==0;File.WriteAllText(Path.Combine(output,"playtest.json"),JsonUtility.ToJson(result,true));lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);Application.Quit(result.passed?0:2);
+   result.maliceTrailDefaultColorSpace=NativeSkillView.MaliceTrailDefaultColorSpace;result.passed=result.failures==0;File.WriteAllText(Path.Combine(output,"playtest.json"),JsonUtility.ToJson(result,true));lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);WindowsHardExit.Quit(result.passed?0:2);
   }
  }
 }

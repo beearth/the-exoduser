@@ -21,7 +21,7 @@ namespace Exoduser.UnityPort
         IEnumerator RemodelIntCheck()
         {
             AudioListener.volume = 0; AudioListener.pause = true; smokeActive = true;
-            string output = Argument("-output"); if (string.IsNullOrEmpty(output)) { Application.Quit(1); yield break; }
+            string output = Argument("-output"); if (string.IsNullOrEmpty(output)) { WindowsHardExit.Quit(1); yield break; }
             string caps = Path.Combine(output, "caps"); Directory.CreateDirectory(caps);
             Screen.SetResolution(1600, 900, FullScreenMode.Windowed); yield return new WaitForSecondsRealtime(.5f);   // no window in batchmode; the size only fixes the logic camera aspect
             lobby.ShowLobby(); yield return new WaitForSecondsRealtime(.6f);
@@ -78,7 +78,7 @@ namespace Exoduser.UnityPort
             }
             rc.shots = shots.ToArray();
             File.WriteAllText(Path.Combine(output, "ticklog.json"), JsonUtility.ToJson(rc, true));
-            Application.Quit(0);
+            WindowsHardExit.Quit(0);
         }
 
         // Windowless capture (batchmode with the GPU): the world cameras render into a 1600x900 RenderTexture, in the order the player sees them (the 2D camera first: it clears the frame; the 3D camera on top).

@@ -101,7 +101,7 @@ namespace Exoduser.UnityPort
 
         void Awake()
         {
-            Instance=this;basicWeaponMode=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-basic-weapon")>=0;Application.targetFrameRate=120;Time.fixedDeltaTime=1f/60f;
+            Instance=this;WindowsHardExit.RegisterFlush(QuitFlushIfAlive);basicWeaponMode=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-basic-weapon")>=0;Application.targetFrameRate=120;Time.fixedDeltaTime=1f/60f;
             view=Camera.main;
             if(view==null){view=new GameObject("World Camera").AddComponent<Camera>();view.tag="MainCamera";}
             view.orthographic=true;view.orthographicSize=5.4f;view.backgroundColor=new Color(.015f,.02f,.018f);view.clearFlags=CameraClearFlags.SolidColor;
@@ -725,7 +725,7 @@ namespace Exoduser.UnityPort
                 case PauseMenuCommand.Resume: if(gameFocused&&!PlayerDown){string uiBefore=UiPanelState();menu=false;skillInputFence=true;Running=true;UiPanelChanged(uiBefore);} break;
                 case PauseMenuCommand.Restart:if(!NativeScreenTransition.Executing){NativeScreenTransition.Request("restart",()=>ApplyPauseCommand(PauseMenuCommand.Restart));break;}if(gameFocused){ResetRun();skillInputFence=true;menu=false;Running=true;}break;
                 case PauseMenuCommand.ReturnLobby:if(!NativeScreenTransition.Executing){NativeScreenTransition.Request("game-lobby",()=>ApplyPauseCommand(PauseMenuCommand.ReturnLobby));break;}SaveCombatNow();Running=false;menu=true;sound.Reset();druidCues?.Reset();pauseMenu.Reset();lobby.ShowLobby();break;
-                case PauseMenuCommand.Quit:if(gameFocused){SaveCombatNow();Application.Quit();}break;
+                case PauseMenuCommand.Quit:if(gameFocused){SaveCombatNow();WindowsHardExit.Quit();}break;
             }
         }
         Vector2 ToGUI(float x,float y){var v=HudCamera.WorldToScreenPoint(Point(x,y));return NativeUiViewport.Pointer(v);}
@@ -785,7 +785,7 @@ namespace Exoduser.UnityPort
             File.WriteAllText(Path.Combine(output,"hud-smoke.json"),JsonUtility.ToJson(new HudSmokeReceipt{scope="actual_native_player_controlled_HUD_fixture",activeSkill=hud.ActiveSkill,iconResource="Art/ui/skill_icons/kiSlash",iconDrawn=hud.IconDrawn,cases=cases.ToArray()},true));
             Simulation.DashHold=false;hudSmoke=false;ResetRun();menu=true;Running=false;
             // DBT-6: this smoke never quit (the receipt was written, then the pause menu stayed up until the caller killed the player). Unattended -batchmode runs end themselves; a windowed manual run is unchanged.
-            if(Application.isBatchMode||Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-mute")>=0)Application.Quit(0);   // the build loop's hidden-desktop run is windowed but unattended (--unity-mute)
+            if(Application.isBatchMode||Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-mute")>=0)WindowsHardExit.Quit(0);   // the build loop's hidden-desktop run is windowed but unattended (--unity-mute)
         }
         void SetInventory(bool open){
             string uiBefore=UiPanelState();
@@ -836,13 +836,13 @@ namespace Exoduser.UnityPort
         // 이번 문자 재작업의 선택 실행 QA. 일반 실행/M1에는 들어가지 않는다.
         IEnumerator BossTextLocalityCapture(){
             string output=Argument("-output");
-            if(string.IsNullOrEmpty(output)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))||!NativeReviewArgs.BossDirect){Debug.LogError("문자 QA는 명시적 출력·격리저장·boss-direct 인자가 필요");Application.Quit(2);yield break;}
+            if(string.IsNullOrEmpty(output)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))||!NativeReviewArgs.BossDirect){Debug.LogError("문자 QA는 명시적 출력·격리저장·boss-direct 인자가 필요");WindowsHardExit.Quit(2);yield break;}
             Directory.CreateDirectory(output);AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;smokeActive=true;pauseSmoke=true;
-            lobby.ShowLobby();lobby.SelectPreview();if(!lobby.EnterNativeTest()){Application.Quit(2);yield break;}menu=false;Running=false;frontendEntryInputFence=false;EndFirstPractice(true);BossDirectEnter();
+            lobby.ShowLobby();lobby.SelectPreview();if(!lobby.EnterNativeTest()){WindowsHardExit.Quit(2);yield break;}menu=false;Running=false;frontendEntryInputFence=false;EndFirstPractice(true);BossDirectEnter();
             Screen.SetResolution(1600,900,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.4f);
             var sim=Simulation;var p=sim.Player;int entry=0;
             while((!sim.Stage.InArena||sim.Stage.LoadPhase!=0)&&entry++<900){StepInput(0,0,p.X+100,p.Y,false,false);yield return null;}
-            var boss=sim.Stage.FindBoss();if(boss==null){Debug.LogError("문자 QA 아레나 진입 실패");Application.Quit(2);yield break;}
+            var boss=sim.Stage.FindBoss();if(boss==null){Debug.LogError("문자 QA 아레나 진입 실패");WindowsHardExit.Quit(2);yield break;}
             p.X=boss.X+260;p.Y=boss.Y;sim.Config.EnemyAiEnabled=true;damage.Clear();damageFloaters.Clear();revive.Reset();textReviewStart=Time.unscaledTime;
             bool low=false,medium=false;var cadence=new WaitForFixedUpdate();
             for(int tick=0;tick<1500;tick++){
@@ -864,7 +864,7 @@ namespace Exoduser.UnityPort
             for(int i=0;i<12;i++){StepInput(1,0,boss.X,boss.Y,false,false);yield return cadence;}
             yield return TextReviewShotSave(output,"synthetic-moving","합성 사건·실제 이동 입력","12틱 오른쪽 이동으로 카메라/사건 앵커가 이동. 전역 재배치 떨림·몸 가림 확인");
             File.WriteAllText(Path.Combine(output,"text-review.json"),JsonUtility.ToJson(new TextReviewSummary{naturalLow=low,naturalMedium=medium,shots=textReviewShots},true));
-            yield return new WaitForSecondsRealtime(.4f);Application.Quit(low&&medium?0:3);
+            yield return new WaitForSecondsRealtime(.4f);WindowsHardExit.Quit(low&&medium?0:3);
         }
         [Serializable] sealed class TextReviewSummary {public string scope="보스 문자 근거리 표시 QA, 손 조작/자연 입장 종단검수 아님";public bool naturalLow,naturalMedium;public List<TextReviewShot> shots;}
 

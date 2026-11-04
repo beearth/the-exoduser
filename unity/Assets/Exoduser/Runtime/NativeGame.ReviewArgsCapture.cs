@@ -104,7 +104,7 @@ namespace Exoduser.UnityPort
         {
             rc.passed = rc.checks.TrueForAll(c => c.ok);
             File.WriteAllText(Path.Combine(output, "review-args.json"), JsonUtility.ToJson(rc, true), new UTF8Encoding(false));
-            yield return null; Application.Quit(rc.passed ? 0 : 1);
+            yield return null; WindowsHardExit.Quit(rc.passed ? 0 : 1);
         }
     }
 }

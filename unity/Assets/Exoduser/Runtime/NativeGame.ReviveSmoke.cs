@@ -108,7 +108,7 @@ namespace Exoduser.UnityPort
             rec.textsSeen = seen.Count; check(seen.Contains("악마화 부활!") && seen.Contains("💀본모습 부활!") && seen.Contains("💀구울화!"), "revive texts raised: " + string.Join("|", seen.ToArray()));
             rec.failures = string.Join(" | ", fails.ToArray()); rec.passed = fails.Count == 0;
             File.WriteAllText(Path.Combine(output, "revive-smoke.json"), JsonUtility.ToJson(rec, true));
-            Application.Quit(rec.passed ? 0 : 2);
+            WindowsHardExit.Quit(rec.passed ? 0 : 2);
         }
     }
 }

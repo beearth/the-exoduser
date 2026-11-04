@@ -15,7 +15,7 @@ namespace Exoduser.UnityPort
         IEnumerator CameraClampCapture()
         {
             AudioListener.volume = 0; AudioListener.pause = true; smokeActive = true;
-            string output = Argument("-output"); if (string.IsNullOrEmpty(output)) { Application.Quit(1); yield break; }
+            string output = Argument("-output"); if (string.IsNullOrEmpty(output)) { WindowsHardExit.Quit(1); yield break; }
             Directory.CreateDirectory(output);
             Screen.SetResolution(1920, 1080, FullScreenMode.Windowed); yield return new WaitForSecondsRealtime(.5f);
             lobby.ShowLobby(); yield return new WaitForSecondsRealtime(.6f);
@@ -44,7 +44,7 @@ namespace Exoduser.UnityPort
             }
             bool ok = true; foreach (var shot in rc.shots) if (!shot.insideMap) ok = false; rc.passed = ok;
             File.WriteAllText(Path.Combine(output, "cam-capture.json"), JsonUtility.ToJson(rc, true));
-            Application.Quit(ok ? 0 : 2);
+            WindowsHardExit.Quit(ok ? 0 : 2);
         }
     }
 }

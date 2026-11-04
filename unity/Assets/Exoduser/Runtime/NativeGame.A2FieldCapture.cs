@@ -56,16 +56,16 @@ namespace Exoduser.UnityPort
         IEnumerator A2FieldCapture()
         {
             string output=Argument("-output");
-            if(string.IsNullOrEmpty(output)||!NativeQaSandbox.Active){Application.Quit(2);yield break;}
+            if(string.IsNullOrEmpty(output)||!NativeQaSandbox.Active){WindowsHardExit.Quit(2);yield break;}
             Directory.CreateDirectory(output);AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;
             smokeActive=true;pauseSmoke=true;keyshotErrors=0;Application.logMessageReceived+=KeyshotLog;
-            lobby.Flow.ShowLobby();lobby.Flow.SelectPreview();if(!lobby.Flow.EnterTest()){Application.Quit(2);yield break;}
+            lobby.Flow.ShowLobby();lobby.Flow.SelectPreview();if(!lobby.Flow.EnterTest()){WindowsHardExit.Quit(2);yield break;}
             EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;gameFocused=true;
             Simulation.Config.EnemyAiEnabled=false;var receipt=new KeyshotReceipt();
             receipt.scope="일반 --remodel3d 전체 필드/HUD 최종 프레임. 격리 저장·직접 위치 이동·정지 구도, 자연 완주와 구분. 추가 A2 실행 옵션 없음";
             float deadline=Time.realtimeSinceStartup+45;
             while(!Remodel3DReady&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
-            if(!Remodel3DReady){Application.Quit(3);yield break;}
+            if(!Remodel3DReady){WindowsHardExit.Quit(3);yield break;}
             A2FieldCaptureGeometry(output);
             var locations=new[]{new Vector2(4020,7420),new Vector2(3500,6250),new Vector2(4000,5000),new Vector2(2200,4400),new Vector2(6500,4400),new Vector2(4600,3500),new Vector2(4000,1850),new Vector2(4020,500),new Vector2(4790.811f,7142.689f),new Vector2(3320,7500),new Vector2(3320,7000)};
             var names=new[]{"01-시작","02-초반","03-전투공터","04-서측","05-동측","06-랜드마크","07-후반","08-보스입구","09-거목몸통재현","10-왼전경하단경계","11-왼전경상단경계"};
@@ -80,7 +80,7 @@ namespace Exoduser.UnityPort
                 if(Screen.width!=width||Screen.height!=1080)
                 {
                     File.WriteAllText(Path.Combine(output,"해상도-실패.json"),"{\"expectedWidth\":"+width+",\"expectedHeight\":1080,\"actualWidth\":"+Screen.width+",\"actualHeight\":"+Screen.height+"}");
-                    Debug.LogError("[A2 필드촬영] 요청/실제 해상도 불일치");Application.Quit(3);yield break;
+                    Debug.LogError("[A2 필드촬영] 요청/실제 해상도 불일치");WindowsHardExit.Quit(3);yield break;
                 }
                 string folder=Path.Combine(output,width+"x1080");Directory.CreateDirectory(folder);
                 for(int i=0;i<locations.Length;i++)
@@ -108,7 +108,7 @@ namespace Exoduser.UnityPort
             receipt.passed=keyshotErrors==0&&receipt.frames.Count==22&&receipt.frames.TrueForAll(f=>f.remodel&&f.actualScreen&&f.screenHeight==1080&&(f.screenWidth==1920||f.screenWidth==3840)&&f.luminance>.01f);
             File.WriteAllText(Path.Combine(output,"전체필드-검수.json"),JsonUtility.ToJson(receipt,true));
             Application.logMessageReceived-=KeyshotLog;lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();
-            yield return new WaitForSecondsRealtime(.5f);Application.Quit(receipt.passed?0:3);
+            yield return new WaitForSecondsRealtime(.5f);WindowsHardExit.Quit(receipt.passed?0:3);
         }
 #if UNITY_STANDALONE_WIN
         delegate bool FieldWindowCallback(System.IntPtr window,System.IntPtr state);

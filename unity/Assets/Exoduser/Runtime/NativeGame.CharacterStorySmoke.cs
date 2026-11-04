@@ -51,7 +51,7 @@ namespace Exoduser.UnityPort
     check(!lobby.CharacterStoryActive&&lobby.IsBlocking&&!Running&&lobby.Characters.Count==2,"lobby return cancels stale story entry without losing identities");
    }
    File.WriteAllText(Path.Combine(output,"story-"+mode+".json"),JsonUtility.ToJson(new CharacterSmokeReceipt{scope="Original native warrior video, session-only roster, callbacks and rendering; no OS input claim",passed=failures==0,failures=failures,checks=checks.ToArray()},true));
-   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-story-smoke")>=0)Application.Quit(failures==0?0:2);
+   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--quit-after-story-smoke")>=0)WindowsHardExit.Quit(failures==0?0:2);
   }
  }
 }

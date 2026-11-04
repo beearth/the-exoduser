@@ -24,7 +24,7 @@ namespace Exoduser.UnityPort
    if(!SettingsQaIdentity||!NativeSettingsStorageScope.TryResolveCinematicReview(Environment.GetCommandLineArgs(),Application.productName,Application.identifier,out root)||
       string.IsNullOrWhiteSpace(output)||Path.GetFullPath(output)!=root||!lobby.EnableFrontendPadQa()||
       lobby.CharacterStoreDirectory!=Path.Combine(root,"character-roster-v1")||nativeSettingsDirectory!=Path.Combine(root,"native-settings-v1"))
-   {Debug.LogError("Frontend pad QA rejected: product, PID, marker or isolated root mismatch");Application.Quit(2);yield break;}
+   {Debug.LogError("Frontend pad QA rejected: product, PID, marker or isolated root mismatch");WindowsHardExit.Quit(2);yield break;}
 
    var checks=new List<string>();int failures=0;
    Action<bool,string> check=(ok,label)=>{checks.Add((ok?"PASS ":"FAIL ")+label);if(!ok)failures++;};
@@ -109,7 +109,7 @@ namespace Exoduser.UnityPort
     passed=failures==0,failures=failures,storyNext=storyNext,combinedNext=combinedNext,combinedHold=combinedHold,combinedBeforeTime=beforeCombined,combinedRequestedNextCue=requestedCue,combinedAfterTime=afterCombined,combinedBeforeNextConsumptions=beforeNextCount,combinedAfterNextConsumptions=afterNextCount,shortRelease=shortRelease,longHold=longHold,
     guideGate=guideGate,guideConfirm=guideConfirm,guideStart=guideStart,checks=checks.ToArray()},true));
    Debug.Log("FRONTEND_PAD_INTEGRATION "+(failures==0?"PASS":"FAIL")+" checks="+checks.Count+" failures="+failures);
-   Application.Quit(failures==0?0:2);
+   WindowsHardExit.Quit(failures==0?0:2);
   }
  }
 }

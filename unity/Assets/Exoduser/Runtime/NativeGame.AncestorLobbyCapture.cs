@@ -28,7 +28,7 @@ namespace Exoduser.UnityPort
     lobbySmoke=false;lobby.AutomatedInput=false;Running=false;
    }
    lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);
-   Debug.Log("QA_MEDIA_DRAIN_COMPLETE ANCESTOR_LOBBY");Application.Quit(rows.Count==4?0:2);
+   Debug.Log("QA_MEDIA_DRAIN_COMPLETE ANCESTOR_LOBBY");WindowsHardExit.Quit(rows.Count==4?0:2);
   }
  }
 }

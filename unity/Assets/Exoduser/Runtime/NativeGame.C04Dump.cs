@@ -15,7 +15,7 @@ namespace Exoduser.UnityPort
         IEnumerator C04Dump()
         {
             yield return null; yield return null;
-            string output = Argument("-output"); if (string.IsNullOrEmpty(output)) { Application.Quit(2); yield break; }
+            string output = Argument("-output"); if (string.IsNullOrEmpty(output)) { WindowsHardExit.Quit(2); yield break; }
             Directory.CreateDirectory(output);
             var sim = Simulation; var m = Map; int N = m.Data.width, M = m.Data.height, T = m.Data.tileSize;
             var sb = new StringBuilder();
@@ -36,7 +36,7 @@ namespace Exoduser.UnityPort
             }
             sb.Append("]}");
             File.WriteAllText(Path.Combine(output, "unity_1_1_dump.json"), sb.ToString(), new UTF8Encoding(false));
-            yield return null; Application.Quit(0);
+            yield return null; WindowsHardExit.Quit(0);
         }
     }
 }
