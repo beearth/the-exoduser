@@ -51,6 +51,7 @@ namespace Exoduser.UnityPort
             if(lobby.IsBlocking||a2rPlay.failures.Count>0){a2rPlay.failures.Add("Product startup did not reach field");A2RPlayFinish();yield break;}a2rPlay.ordinaryEntryVerified=!a2rPlay.legacyFrontendBypass;if(firstPractice!=null)EndFirstPractice(true);
             deadline=Time.realtimeSinceStartup+45;while((!Remodel3DReady||a2rWeb==null||!a2rWeb.Applied)&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
             if(a2rWeb==null||!a2rWeb.Applied){a2rPlay.failures.Add("Default A2R presentation not active");A2RPlayFinish();yield break;}
+            if(A2RKeyshotBootstrap.Requested){yield return A2RKeyshotRun();yield break;}
             a2rPlay.start=new Vector2(Simulation.Player.X,Simulation.Player.Y);yield return A2RPlayShot("02-field-entry");Running=false;frontendEntryInputFence=false;var goal=new Vector2(2050,4400);var route=A2RWalkPath(a2rPlay.start,goal);
             if(route.Count==0){a2rPlay.failures.Add("No radius-safe Core route to camp");A2RPlayFinish();yield break;}
             int waypoint=0,stall=0,nextShot=600;float next=Time.realtimeSinceStartup;deadline=next+150;

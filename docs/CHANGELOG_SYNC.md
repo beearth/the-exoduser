@@ -173891,3 +173891,10 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 ## 2026-11-04 05:40 실행 결과 — 공용 후처리 2FAIL STOP
 - 실제빌드540fdcde20/공용f2a287d2 PASS 뒤3D/d3d11의1920 원본25장·제품9건PASS. GUI116행 최소간격16px, 이름/삭제 실제나눔명조·면18px inset·공통철draw 확인.
 - hover57be03df/사망02ef0c30의 공용 ReadAllText 로그잠금 예외2회로 STOP. 최종가드7/9,3840 0/25. 동일조건 재시도0·추가빌드0, 공용bin/권한/환경/타슬롯변경0. 실제25/50과 미완료 관문을 관련docs/REPORT에 동기화했다.
+
+## 2026-11-04 A2R 키샷 촬영 레인 — 미완료 / 검사 2회 실패 중단
+
+- 기준 D4 `d9e5a2742`, 소유 `codex/unity-map-keyshot-20261104`. 새 A2RKeyshot 촬영 모드·시점 표 초안·Node 점수/접촉 시트/픽셀 비교 도구를 추가했다. NativeGame.A2RPlay 진입 분기 1줄이며 기존 play-smoke 인자는 유지한다. Core·카메라·다른 맵 레인 파일 무변경.
+- `STEAM_DEMO_PACKAGE_20261104.md`는 D4에 없어 origin/unity/main 정본을 받아 촬영 방법 절만 추가했다. 현재 시점 24개는 실측 전 초안이다.
+- Node 점수/선별/픽셀 비교 단위 4건 통과. 참조 컴파일 1회차: 기존 KeyshotFrame/KeyshotReceipt와 새 타입 이름 충돌 → 새 타입에 A2R 접두사. 2회차: 기존 A2RProps3D.Terrain.cs의 WindZone/WindZoneMode, 검사 RSP의 UnityEngine.WindModule 참조 누락 → 같은 검사 2회 실패 규칙으로 중단.
+- 빌드·Player 0회. 실측 상위 후보·접촉 시트·재현성·시각 PASS·사용자 실행본 갱신 없음. 자동 가시성은 투영/물리 근사이며 확정 판정이 아니다. 검사 환경 보완 및 재개 지시는 총괄 소관.
