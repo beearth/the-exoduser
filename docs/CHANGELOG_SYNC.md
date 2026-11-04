@@ -1,3 +1,7 @@
+2026-11-04 D4-2 보강(CTO 공통 추가 "도구·방식 결정안"): 02_hud_ui.md §11 — 단계별(목업·원화·슬라이스·조립·상태·해상도·판정) D4 공개 근거/우리 후보·추천/절차/합격 기준. 추천: HTML/CSS 목업, Blender 정사영 원화(이미지 생성은 시안만), IMGUI 유지(v0, UGUI·UI Toolkit 비교), 머티리얼 파라미터 쿨다운, 추가 지출 0원. 현행 HUD 수치(10-27 A06: 13칸 33.3×40.5·구체 틀 236.7·라벨 16.2) 반영해 규칙 R2·R4와 §2 표를 13칸 기준으로 정정. 코드 무변경.
+
+2026-11-04 D4-2 연구(클라우드 레인, 문서만): 디아블로4 전투 HUD·UI 공개 자료 분석 docs/0마스터플랜/D4_STUDY/02_hud_ui.md — 맨 위 HUD 규칙 10개(1920×1080 기준 수치 제안), 확인한 사실(출처 2곳 이상)/추정 구분, 출처 URL·날짜. 웹 본문은 세션 네트워크 정책으로 못 열어 검색 요약 기준(원문 대조는 Mac 후속). D4 HUD 픽셀 실측 공개 자료 없음 → 비례 숫자는 우리 제안. 충돌 보고: 실버 헬 "빨강은 눈에만" vs 체력 구체 진홍 액체. 코드 무변경.
+
 2026-11-04 L13 데모 통합 병합 브랜치(클라우드, CTO 결정): unity/main 9196a515d 위에 demo-flavor-fix ac4e187ae → field-prepare-merge 79d4d14f1 → options-wave2 2cd42d3ab → first-impression-tone 479634337 → ui-minor6 19216c411 → white-disc(D2) 17967874a → crash-p1-fix 50f530c02를 --no-ff로 병합(끝 ec8561386). 충돌은 L1 해결안대로(CHANGELOG 양쪽, 번역대상 4274~4287 브랜치 쪽, SilverCharacter 주석 unity/main 쪽). combo4 대비 unity/Assets·ProjectSettings 차이는 D2·P1 4파일뿐. node review-0540 1건 FAIL(options-wave2 리셋 확인창 settingsChip, combo4에도 있음). 컴파일·빌드·화면 미확인 — Mac 판정 대기. 기록: docs/0마스터플랜/worklog/cloud-lanes/L13-demo-integration_20261104.md
 
 2026-11-04 L9 D2 피격·처치 지점 베이지 다각형 원판(클라우드 레인): 원인 1순위 KiImpactView 접점 코어(16각 평면·#fff4d0→#ffd9a0·알파 .35/1/.75/.5/.25·ZTest Always 가산)가 3D 전용 ACES·Bloom(임계 1.1)에서 흰 섬광+베이지 원판으로 읽힘. 3D 경로에서만 코어 비표시(접점은 NativeImpactView 은빛 플립북이 담당), 2D·Core 불변. 컴파일 미확인(PC)·화면 미검수(Mac). docs/0마스터플랜/worklog/cloud-lanes/L9-white-disc_20261104.md
