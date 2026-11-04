@@ -1,6 +1,6 @@
 ## 2026-11-04 적 리그 픽셀 RT 상한 초과 영구 2D 폴백 제거 (enemy-rt-fallback, Core 변경 0)
 
-`NativeEnemyRigRenderer`의 스킨드 캔버스를 현재 뼈 위치 상자+여유와 교집합으로 조이고(뼈 배열은 생성 때 캐시, 강체 무기·소품 bounds 유지), 적 전용 `NativeRigPixelPolicy.EnemyTextureSize`·`EnemyMaxRt=2048`을 연결했다. 초과하면 해당 프레임의 텍셀 배율만 ×2씩 늘려 크기 때문에 `failedIds`에 들어가는 경로를 없앴다. 모델 배율·발밑·카메라·Core·기존 `TextureSize`·`DruidCanvas`·셰이더는 그대로다. 정책 테스트 1회 5,531검사/실패0(적 RT 43검사, 1,069/4,000/30,000px·작은 박스·잘못된 입력·유한 float 극값). 에디터 컴파일은 공용 실행기 순번 대기 중이며 Player·빌드 실행0, 화면은 총괄 통합/Mac 판정 대기. 원인 적 id3=Warden(type29), id7=RitualApostle(type9); 당시 박스px는 기존 로그에 없어 미확인. 문서: PREP §10.5.
+`NativeEnemyRigRenderer`의 스킨드 캔버스를 현재 뼈 위치 상자+여유와 교집합으로 조이고(뼈 배열은 생성 때 캐시, 강체 무기·소품 bounds 유지), 적 전용 `NativeRigPixelPolicy.EnemyTextureSize`·`EnemyMaxRt=2048`을 연결했다. 초과하면 해당 프레임의 텍셀 배율만 ×2씩 늘려 크기 때문에 `failedIds`에 들어가는 경로를 없앴다. 모델 배율·발밑·카메라·Core·기존 `TextureSize`·`DruidCanvas`·셰이더는 그대로다. 정책 테스트 1회 5,531검사/실패0(적 RT 43검사, 1,069/4,000/30,000px·작은 박스·잘못된 입력·유한 float 극값). 컴파일 미확인(공용 실행기 20분 순번 대기 초과: EXO_QUEUE_WAIT owner=claude-quit-fix, 종료 1, Unity 시작 0회)이며 Player·빌드 실행0, 화면은 총괄 통합/Mac 판정 대기. 원인 적 id3=Warden(type29), id7=RitualApostle(type9); 당시 박스px는 기존 로그에 없어 미확인. 문서: PREP §10.5.
 
 ## 2026-11-04 드루이드 Core 반경 재계산 130/111/57 + 전투 길이 시뮬 (CTO 승인, 리모델 신규 설계, 웹 oracle 대상 아님)
 
