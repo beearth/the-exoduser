@@ -23,6 +23,8 @@ const checks=[
  ['flame sprites tracked',/hellFlameFrames\[i\]=R3Track\(Sprite\.Create\(/.test(R('NativeGame.HellLighting.cs'))],
  ['unload-only stall does not use a retry',/WaitingOnOps\(r3Loading\)/.test(s)],
  ['abort comment states the shared counter policy',/shares ONE counter/.test(s)&&!/retried at the next field entry\. exception=true/.test(s)],
+ ['unload-only wait defers instead of counting',/WaitingOnOps\(r3Loading\)\) \{ r3Gate\.Defer\(\)/.test(s)&&!/WaitingOnOps\(r3Loading\)\) \{[^}]*r3Gate\.Abort/.test(s)],
+ ['hellLayerOriginals released after a permanent abort and after success',/if \(r3Gate\.Permanent\) \{ r3Failed = true; hellLayerOriginals = null; \}/.test(s)&&/r3Loaded = true; r3Loading = false; r3Made\.Clear\(\); hellLayerOriginals = null;/.test(s)],
  ['no stale "recovers to the lobby" wording',!/recovers to the lobby/.test(p)&&!/recovers to the lobby/.test(t)],
 ];
 const A=['NativeGame.A2Bramble.cs','NativeGame.A2Field.cs','NativeGame.A2Forest.cs','NativeGame.A2RootRelief.cs','NativeGame.A2ShoreField.cs','NativeGame.HellEnvironment.cs','NativeGame.HellGround.cs','NativeGame.HellLighting.cs'];

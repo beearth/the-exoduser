@@ -104,11 +104,13 @@ PC R5 `0a60cbcee273e1150ba7df8909acb77dd9f18edc`에서 게임 구역 전환 화�
 | 항목 | 동작 |
 |---|---|
 | 덤불 캐시 | 덤불 단계 뒤에 중단되면 `R3DestroyMade`가 `a2BrambleMeshes`·`a2BrambleMaterial`을 파괴하는데 필드가 남아 재시도가 성공해도 덤불이 사라졌다. `R3Teardown`이 두 필드(와 `a2Water`·`a2FieldRootMaterial`·`hellFlameFrames`)를 비우고, `A2Bramble`은 `CacheValidity.NeedsRebuild`(Unity null 검사, 배열은 원소 하나라도 파괴됐으면 재생성)로 판단한다. |
-| 플레이어 TerrainLayer | 공유 TerrainData가 중단된 시도의 (파괴된) 레이어를 들고 있어 재시도의 `Instantiate`가 예외였다. 첫 시도에서 건드리지 않은 원본 배열(`hellLayerOriginals`)을 잡아 두고 `CacheValidity.PickSource`로 원본(없으면 현재, 둘 다 파괴면 건너뜀)에서 복제한다. |
-| 추적 추가 | 불꽃 스프라이트 8개(`hellFlameFrames`)를 `R3Track`에 넣었다. 지면 투영 receiver 마스크·VolumeProfile 사본은 이번 조립 경로에서 생성 지점을 찾지 못해(아레나 조명의 `Instantiate(hellProfile)`는 조립이 아님) 추적하지 않았고, 미해결로 남긴다. |
-| 언로드 대기 | 재시작을 막는 씬 언로드만 기다리는 중(조립 중 아님)의 idle stall은 `FieldLoadGate.WaitingOnOps`로 판정해 카운터(재시도 1회)를 쓰지 않는다. 전환은 2D로 열리고 언로드가 끝나면 `Remodel3DSync`가 다시 시작한다. |
+| 플레이어 TerrainLayer | 공유 TerrainData가 중단된 시도의 (파괴된) 레이어를 들고 있어 재시도의 `Instantiate`가 예외였다(그 예외가 실제 빌드에서 어떻게 나는지는 **미확인 위험**, 코드 추적만). 첫 시도에서 건드리지 않은 원본 배열(`hellLayerOriginals`)을 잡아 두고 `CacheValidity.PickSource`로 원본(없으면 현재, 둘 다 파괴면 건너뜀)에서 복제한다. 건너뛴 레이어가 쌓여 지형의 레이어가 0개가 되면 이어지는 지형 설정이 NRE로 예외 중단 처리된다(예외 재시도 정책, 결과는 2D). |
+| 추적 추가 | 불꽃 스프라이트 8개(`hellFlameFrames`)를 `R3Track`에 넣었다. 지면 투영 receiver 마스크·VolumeProfile 사본은 **미해결(위치 확인됨)**: 생성 지점 `A2Field.cs:251`·`A2Field.cs:113`·`A2Field.cs:48`, `HellGround.cs:18`, `Remodel3D.cs:136`, `HellLighting.cs:26`. 아직 `R3Track`에 넣지 않았다(아레나 조명의 `Instantiate(hellProfile)`는 조립이 아님). |
+| 언로드 대기 | 재시작을 막는 씬 언로드만 기다리는 중(조립 중 아님)의 idle stall은 `FieldLoadGate.WaitingOnOps`로 판정해 카운터(재시도 1회)를 쓰지 않는다. 전환은 2D로 열리고, 카운터는 올리지 않고 `FieldLoadGate.Defer()`로 deferred만 세운다. 언로드가 끝나도 전환 밖에서 조립을 시작하지 않고(플레이 중 끊김·2D→3D 팝인 방지) 다음 필드 전환(`FieldEntry`)에서 정상 경로(대기·진행선·감시)로 조립한다. 조립이 성공하거나 Permanent 중단이 되면 `hellLayerOriginals`를 비워 지형 원본 텍스처 참조를 놓는다. |
 | fix4 표 문구 | 카운터 공유 문구는 fix4 표 그대로이며, 위 예외(언로드 대기 stall은 세지 않음)를 이 표에 추가했다. |
 | 검사 | `run.cjs` 62/0(덤불 캐시 재생성·파괴된 TerrainLayer 가드·언로드 대기 추가), `abort-contract`(캐시 필드 비움·R3Track 대입 필드 전수 스캔·Unity null 검사·레이어 원본 사용), `root-guard`·`capture-contract` PASS. 실게임 재시도 결과는 Mac 확인 필요. |
+
+백로그(하): `abort-contract.test.cjs`는 정규식 소스 계약이라 같은 줄의 두 번째 대입·인덱서 대입·지역 변수 경유 저장·주석으로 속이기를 못 잡는다(변이 빈틈, 의도적으로 보류).
 
 ## 11-04 로비→필드 전환 로딩 촬영 모드
 

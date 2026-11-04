@@ -81,6 +81,8 @@ namespace Exoduser.UnityPort {
   internal void Abort(bool exception){if(++aborts>MaxRetries)MarkPermanent();else deferred=true;}
   internal void MarkPermanent(){permanent=true;deferred=false;}
   internal void FieldEntry(){deferred=false;}
+  // Unload-only wait: no retry is used, but nothing may start the assembly outside a transition either; the next field entry clears this.
+  internal void Defer(){if(!permanent)deferred=true;}
   // Waiting only for a scene unload (no assembly running): an idle stall there is not an assembly failure and must not use up the retry.
   internal bool WaitingOnOps(bool loading){return !loading&&pendingOps>0;}
   internal void OpStarted(){pendingOps++;}

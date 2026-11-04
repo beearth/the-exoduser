@@ -70,11 +70,11 @@ namespace Exoduser.UnityPort
         void Remodel3DAbort(string why, bool exception = false)
         {
             if (r3Loaded) return;
-            if (!exception && r3Gate.WaitingOnOps(r3Loading)) { NativeTransitionProgress.Fail(why); Debug.LogWarning("[RM-INT] waiting for a scene unload, opening in 2D without using a retry: " + why); return; }
+            if (!exception && r3Gate.WaitingOnOps(r3Loading)) { r3Gate.Defer(); NativeTransitionProgress.Fail(why); Debug.LogWarning("[RM-INT] waiting for a scene unload, opening in 2D; retry count unchanged, assembly deferred to the next field entry: " + why); return; }
             NativeTransitionProgress.Fail(why); Debug.LogWarning("[RM-INT] 3D field aborted, staying 2D: " + why);
             if (r3LoadRoutine != null) { StopCoroutine(r3LoadRoutine); r3LoadRoutine = null; }
             r3Loading = false; r3Gate.Abort(exception);
-            if (r3Gate.Permanent) r3Failed = true;
+            if (r3Gate.Permanent) { r3Failed = true; hellLayerOriginals = null; }   // no retry will clone from them: let the shared terrain textures go
             if (r3Cam != null) r3Cam.enabled = false;
             if (r3Roots != null) foreach (var root in r3Roots) if (root != null) root.SetActive(false);
             if (a2Root != null) a2Root.SetActive(false);
@@ -136,7 +136,7 @@ namespace Exoduser.UnityPort
                 if (volume.profile != null && volume.profile.TryGet<ColorAdjustments>(out var tone))
                 { tone.postExposure.Override(1f); tone.saturation.Override(-18f); tone.colorFilter.Override(new Color(.82f,.9f,1f)); }
             if (System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "--unity-keyshot-baseline") < 0) yield return HellLightingSetup();
-            r3Loaded = true; r3Loading = false; r3Made.Clear();   // kept for the session now
+            r3Loaded = true; r3Loading = false; r3Made.Clear(); hellLayerOriginals = null;   // kept for the session now
             Remodel3DSetActive(!Simulation.Stage.InArena);
         }
 

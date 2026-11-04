@@ -204,6 +204,19 @@ static class P{
    var ok=new[]{new Obj("k0")};C(CacheValidity.PickSource((Obj[])null,ok,0,dead)==ok[0],"(l) no originals captured yet -> current layer");}
   // 11 (m). Idle stall while only a scene unload is pending does not use up the retry.
   {var g=new FieldLoadGate();g.OpStarted();C(g.WaitingOnOps(false)&&!g.WaitingOnOps(true),"(m) waiting on unload only counts when no assembly is running");g.OpDone();C(!g.WaitingOnOps(false),"(m) no pending ops -> a stall counts");}
+  // 12 (n). Unload-only wait: the stall opens the screen in 2D, the retry count stays, the assembly is deferred (not started outside a transition); the next field entry assembles.
+  {var g=new FieldLoadGate();bool loaded=false;g.OpStarted();int abortsBefore=g.Aborts;
+   var a=new Sim();a.pending=()=>!loaded&&!g.Deferred&&!g.Permanent;bool begun=false;
+   a.onFail=r=>{if(g.WaitingOnOps(false))g.Defer();else g.Abort(false);};
+   while(a.Busy&&a.wall<100){if(a.swapped&&!begun&&g.CanStart){begun=true;NativeTransitionProgress.Begin("must-not-start");}a.Frame(F);}
+   C(a.flow.Failed&&a.recorded.StartsWith("prepare-stalled")&&a.doneAt>0,"(n) unload-only wait ends by stall and opens",a.recorded??"");
+   C(g.Aborts==abortsBefore&&g.Deferred&&!g.Permanent,"(n) retry count unchanged, deferred set",g.Aborts+"");
+   g.OpDone();C(!g.CanStart&&!begun,"(n) unload finished: assembly still not started outside a transition");
+   g.FieldEntry();C(g.CanStart,"(n) next field entry may assemble");
+   bool started=false;int tk=0;double began=-1;var b=new Sim(false);b.pending=()=>!loaded&&!g.Deferred&&!g.Permanent;
+   while(b.Busy&&b.wall<100){if(b.swapped&&g.CanStart&&!started){started=true;began=b.wall;tk=NativeTransitionProgress.Begin("n2");}if(started&&!loaded&&b.wall-began>=4){NativeTransitionProgress.End(tk);loaded=true;}b.Frame(F);}
+   C(started&&loaded&&!b.flow.Failed&&b.doneAt>=began+4&&g.Aborts==abortsBefore,"(n) next transition assembles through the normal path with a watchdog and waits for it",b.doneAt.ToString("F1"));
+   var p=new FieldLoadGate();p.MarkPermanent();p.Defer();C(!p.Deferred,"(n) Defer never overrides permanent");}
   foreach(var l in log)Console.WriteLine(l);
   Console.WriteLine("checks="+checks+" failures="+failures);Environment.Exit(failures==0?0:1);}
 }
