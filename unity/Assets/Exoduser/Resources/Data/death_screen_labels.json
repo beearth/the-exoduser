@@ -2,7 +2,7 @@
   "source": "Unity 전용 사망 대기 화면(NativeReviveHud.DrawDeathScreen) 2026-11-03. 부활력(power) 번역은 웹 lang_*.js '부활력 ' 기존 값, 나머지는 신규. ar은 IMGUI RTL 미지원이라 화면에서는 en으로 그린다(NativeOptionText 규칙과 같음).",
   "entries": [
     {"code": "ko", "title": "죽음", "waiting": "부활을 기다린다", "cannotSub": "이번에는 일어설 수 없다", "power": "부활력", "cannot": "부활 불가", "next": "잠시 후 재도전 또는 로비"},
-    {"code": "en", "title": "Death", "waiting": "Awaiting revival", "cannotSub": "You cannot rise this time", "power": "Revive Power", "cannot": "Cannot Revive", "next": "Retry or return to the lobby shortly"},
+    {"code": "en", "title": "Death", "waiting": "Awaiting revival", "cannotSub": "You cannot rise this time", "power": "Revive Power", "cannot": "Cannot Revive", "next": "In a moment: retry or return to the lobby"},
     {"code": "zh", "title": "死亡", "waiting": "等待复活", "cannotSub": "这一次无法再站起", "power": "复活力", "cannot": "无法复活", "next": "稍后可重新挑战或返回大厅"},
     {"code": "zht", "title": "死亡", "waiting": "等待復活", "cannotSub": "這一次無法再站起", "power": "復活力", "cannot": "無法復活", "next": "稍後可重新挑戰或返回大廳"},
     {"code": "ja", "title": "死", "waiting": "復活を待つ", "cannotSub": "今度は立ち上がれない", "power": "復活力", "cannot": "復活不可", "next": "まもなく再挑戦またはロビーへ"},

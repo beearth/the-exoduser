@@ -118,8 +118,8 @@ namespace Exoduser.UnityPort
             int i=Mathf.Clamp(characterVisual,0,4);
             bool locked=i!=0,shortScreen=h<=940;
             float x=w-420,bodyY=62,top=bodyY+(shortScreen?190:300),size=shortScreen?54:64;
-            string[] railLabels={"전사","실버테일","헬거너","변성술사","창법사"};
-            string[] railEnglish={"Warrior","Silvertail","Hellgunner","Transmuter","Spearmage"};
+            string[] railLabels={"전사","실버테일","아이반","변성술사","창법사"};
+            string[] railEnglish={"Warrior","Silvertail","Ivan","Transmuter","Spearmage"};
             var railName=new GUIStyle(silverBody){fontSize=13,fontStyle=FontStyle.Normal,wordWrap=true,alignment=TextAnchor.UpperCenter};
             var railSoon=new GUIStyle(silverVisualCaption){fontSize=10,wordWrap=true,alignment=TextAnchor.UpperCenter};
             railSoon.normal.textColor=new Color(111/255f,114/255f,114/255f);
@@ -151,12 +151,12 @@ namespace Exoduser.UnityPort
             SilverCornerPanel(info);
             CharacterLabel(new Rect(x+36,bodyY+34,308,16),VisualSelectionLabel(presentationJobs[i],new[]
             {
-                "WARRIOR","BLADE DANCER","HELLGUNNER","TRANSMUTER","SPEARMAGE"
+                "WARRIOR","BLADE DANCER","DEMOLITIONIST","TRANSMUTER","SPEARMAGE"
             }
             [i]),silverVisualCaption,TextAnchor.MiddleLeft,true);
             string nameText=VisualSelectionLabel(presentationNames[i],new[]
             {
-                "Exoduser Warrior","Silvertail","Hellgunner","Transmuter","Spearmage"
+                "Exoduser Warrior","Silvertail","Ivan","Transmuter","Spearmage"
             }
             [i]);
             // 11-04 overlap ratchet: Latin names now use Cinzel (wider than Hahmlet), so fr "Guerrier Exoduser" ran 2px past the panel edge.

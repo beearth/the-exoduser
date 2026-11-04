@@ -58046,3 +58046,15 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 ## 2026-11-04 05:40 실행 결과 — 공용 후처리 2FAIL STOP
 - 실제빌드540fdcde20/공용f2a287d2 PASS 뒤3D/d3d11의1920 원본25장·제품9건PASS. GUI116행 최소간격16px, 이름/삭제 실제나눔명조·면18px inset·공통철draw 확인.
 - hover57be03df/사망02ef0c30의 공용 ReadAllText 로그잠금 예외2회로 STOP. 최종가드7/9,3840 0/25. 동일조건 재시도0·추가빌드0, 공용bin/권한/환경/타슬롯변경0. 실제25/50과 미완료 관문을 관련docs/REPORT에 동기화했다.
+
+## 2026-11-04 STY-24 첫인상 문구 톤 반영(유니티 총괄, Sonnet 구현)
+- C1 총기 슬롯을 아이반/폭파공으로 교체(CharacterPresentation·SilverCharacter 표·레일·영어 배열), C2·C3·C6 실버테일 문구, C5 이름 입력 설명, C7 창법사 주어를 visual_select_labels·character_dialog_labels·character_basic_stories 29개 언어에 반영(No.4274~4287). C4·D1·T1~T9는 EN만, D2는 death_web dd_queen을 웹 현행과 같게 맞췄다.
+- 번역대상_전체목록 No.4274~4287 상태 갱신, EN만 바뀐 No.(0516·0808·2894·3085·3105·3343·3594·3864·4257·4264) EN 칸 수정. Core 변경 0.
+
+
+## 2026-11-04 STY-24 첫인상 29언어 문자열 검수
+
+- 기준 d80d1157e, codex/unity-i18n-first-impression-20261104. Resources/Data 변경 대상 9파일·78키×29언어 + 한국어 전용 D2, 용어 연관 stories[3]을 검수했다.
+- 실제 수정은 visual_select_labels·character_basic_stories·demo_text·hellgate_objectives·pet_bubble 5 JSON의 비KO 211값이다. 한국어 복사 56값, 직업명 정합, 사슬 오역·문법과 피 회복 말투, 지옥문 표식·명칭, 중간 말줄임, 장검 소유·위치를 보정했다. KO·Core·Runtime C# 변경 0.
+- 번역 가이드 용어표·전체목록 No.4274~4287/4108~4109 상태·STY-24 후속·[검사 및 넘침 위험](16번역·로컬라이제이션/STY24_I18N_AUDIT_20261104.md)을 동기화했다. 목록 CRLF 보존.
+- 문자열 검사 범위이며 Mac 실게임·넘침·RTL/글리프·원어민 감수는 미확인. No.3106/character_ui.json은 범위 밖으로 보존했다.
