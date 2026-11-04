@@ -32,7 +32,7 @@ namespace Exoduser.UnityPort
             // D3: the skin Terrain draws the real floor 6 mm above the ground (below decals at +12 mm, above the soil mesh). The tile painting skips this rectangle.
             SkinLayers=0;var bridge=Vector4.zero;{var bt=world.Find("A2 시작 목교");if(bt!=null){Bounds bb=new Bounds();bool first=true;foreach(var br in bt.GetComponentsInChildren<Renderer>()){if(first){bb=br.bounds;first=false;}else bb.Encapsulate(br.bounds);}if(!first){bb.Expand(.3f);bridge=new Vector4(bb.min.x,bb.min.z,bb.max.x,bb.max.z);}}}
             Shader.SetGlobalVector("_A2RTerrainHole",bridge);
-            if(A2RD3.On){host.transform.position=new Vector3(FieldX0,min+.006f,FieldZ0);SkinLayers=A2RTerrainSkin.Apply(terrain,data,FieldX0,FieldZ0,FieldX1-FieldX0,FieldZ1-FieldZ0,(x,z)=>NativeRemodel3D.GroundY(x,z),walkable,bridge,d3Camp);}
+            if(A2RD3.SkinOn){host.transform.position=new Vector3(FieldX0,min+.006f,FieldZ0);SkinLayers=A2RTerrainSkin.Apply(terrain,data,FieldX0,FieldZ0,FieldX1-FieldX0,FieldZ1-FieldZ0,(x,z)=>NativeRemodel3D.GroundY(x,z),walkable,bridge,d3Camp);}
             Shader.SetGlobalVector("_A2RTerrainRect",new Vector4(FieldX0,FieldZ0,FieldX1,FieldZ1));Shader.SetGlobalFloat("_A2RTerrainSkin",SkinLayers>0?1f:0f);
             // Detail: clusters near trees (3 m) and field edges (2 m). The open centre stays empty.
             int idx=0;var detail=new GameObject("detail");detail.transform.SetParent(terrainRoot.transform,false);int lastFamily=-1;

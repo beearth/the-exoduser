@@ -7,6 +7,8 @@ namespace Exoduser.UnityPort
     public static class A2RD3
     {
         public static readonly bool On=Array.IndexOf(Environment.GetCommandLineArgs(),"--a2r-d3-off")<0;
+        // --a2r-terrain-skin-off: keep every other D3 part but draw the old ground projection instead of the skin Terrain surface.
+        public static readonly bool SkinOn=On&&Array.IndexOf(Environment.GetCommandLineArgs(),"--a2r-terrain-skin-on")>=0&&Array.IndexOf(Environment.GetCommandLineArgs(),"--a2r-terrain-skin-off")<0; // default OFF since D3 round 3: flat salmon plate near the camp (Terrain Lit takes the unclamped camp fire)
     }
 
     // D3: the field Terrain draws the real floor: cropped web chunk colour (macro) + tiled skin/bruise/vein wrinkle layers.
@@ -55,7 +57,7 @@ namespace Exoduser.UnityPort
             for(int y=0;y<H;y++){float v=(y+.5f)/H;float wz=z0+v*h;for(int x=0;x<W;x++){float u=(x+.5f)/W;float wx=x0+u*w;
                 float l=Mathf.SmoothStep(0,1,Mathf.InverseLerp(.8f,6f,Sample(laneD,ln,u,v)));float m=1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(.15f,1.8f,Sample(waterD,wn,u,v)));
                 float dx=wx-camp.x,dz=wz-camp.z;float pool=Mathf.Clamp01(1-(dx*dx+dz*dz)/(10f*10f));
-                var c=px[y*W+x];float lum=c.r*.2126f+c.g*.7152f+c.b*.0722f;float k=Mathf.Clamp(.55f+.32f*l+.2f*pool,0,.92f);float dim=(1-.18f*l)*(1-.45f*pool)*.94f;
+                var c=px[y*W+x];float lum=c.r*.2126f+c.g*.7152f+c.b*.0722f;float k=Mathf.Clamp(.55f+.32f*l+.2f*pool,0,.92f);float dim=(1-.18f*l)*(1-.75f*pool)*.94f;
                 float r=Mathf.Lerp(c.r,lum*1.04f,k)*dim,g=Mathf.Lerp(c.g,lum*.95f,k)*dim*Mathf.Lerp(.95f,1,l),b=Mathf.Lerp(c.b,lum*.88f,k)*dim*Mathf.Lerp(.82f,1,l);
                 float mk=m*.8f;r=Mathf.Lerp(r,34+lum*.25f,mk);g=Mathf.Lerp(g,19+lum*.15f,mk);b=Mathf.Lerp(b,16+lum*.12f,mk);
                 px[y*W+x]=new Color32((byte)Mathf.Clamp(r,0,255),(byte)Mathf.Clamp(g,0,255),(byte)Mathf.Clamp(b,0,255),255);}}
