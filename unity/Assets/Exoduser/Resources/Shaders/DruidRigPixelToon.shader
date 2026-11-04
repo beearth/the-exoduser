@@ -28,6 +28,8 @@ Shader "Exoduser/DruidRigPixelToon" {
     if(_DruidGroundClip>.5)clip(i.world.y-_DruidGroundY);
     half4 albedo=SAMPLE_TEXTURE2D_BIAS(_BaseMap,sampler_BaseMap,i.uv,4)*_BaseColor;clip(albedo.a-.2h);albedo.rgb=_PaletteColor.rgb;
     half3 n=normalize(i.normal),view=GetWorldSpaceNormalizeViewDir(i.world);
+    // L10 (11-04): the source mantle/feather cards are double-sided; a card whose shading normal points away from the face we see read facing=0, so the B4 rim (fres=1) and lowest fill cell painted the whole card silver-grey ("grey flat silhouette"). Orient the normal to the visible face first; true silhouette edges still keep a small facing and the rim.
+    n=dot(n,view)<0?-n:n;
     half3 metal=MetalHighlight(_RigPixelMoonDirection.xyz,_RigPixelMoonColor.rgb,1,n,view);
     half facing=saturate(dot(n,view));
     // B4: lens-side cool fill in the same 4-step cell ladder. A pose that turns away from the moon (charge, slam lean) keeps the skull face and horns out of the darkest cell.
