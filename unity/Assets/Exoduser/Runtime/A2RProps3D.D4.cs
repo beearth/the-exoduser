@@ -23,6 +23,10 @@ namespace Exoduser.UnityPort
         }
         // D4: one value-only wind step (<= 1.5x the map-wind lane values) after the measured run showed < 2 px typical tip motion.
         public static readonly float WindGain=A2RD4.On?1.5f:1f;
+        // R8 sound wiring: bio trees (fg_rot01/03, ctree13..20, bnd0/3/5/18, c1tree, Tripo r3_tree_19/24). Far (_far) variants and cards never register.
+        public Action<Vector3> OnBioTree;public int BioTreesRegistered;
+        static bool IsBioTree(string name){if(name==null||name.EndsWith("_far",StringComparison.Ordinal))return false;if(name=="fg_rot01"||name=="fg_rot03"||name=="c1tree"||name=="r3_tree_19"||name=="r3_tree_24")return true;if(name=="bnd0"||name=="bnd3"||name=="bnd5"||name=="bnd18")return true;if(name.StartsWith("ctree",StringComparison.Ordinal)){int n;return int.TryParse(name.Substring(5),out n)&&n>=13&&n<=20;}return false;}
+        void RegisterBioTree(string name,Vector3 at){if(OnBioTree==null||!IsBioTree(name))return;OnBioTree(at);BioTreesRegistered++;}
         public string WindDiagnostics()
         {
             int meshes=0,withR=0,withG=0;float maxAmp=0,sumAmp=0;int ampN=0;var seen=new HashSet<Mesh>();
