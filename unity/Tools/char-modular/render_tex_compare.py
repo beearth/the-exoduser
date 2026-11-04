@@ -31,6 +31,8 @@ for name in ("Iron", "Leather", "Cloth", "Skin", "Hair"):
     m.node_tree.links.new(n.outputs["Color"], b.inputs["Base Color"])
     b.inputs["Metallic"].default_value = 0.0
     b.inputs["Roughness"].default_value = .7
+    if name == "Hair":   # matte hair in the check render (11-04 texfix): the default dielectric specular hazed the hair to a flat grey and hid the strand highlights
+        b.inputs["Specular IOR Level"].default_value = 0.0
     mats[name] = m
 body = []
 for o in scene.objects:
