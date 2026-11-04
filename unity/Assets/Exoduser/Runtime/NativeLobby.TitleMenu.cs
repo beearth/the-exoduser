@@ -10,10 +10,10 @@ namespace Exoduser.UnityPort
     // the selected row at once, the mouse hovers and clicks rows; every other key and a click elsewhere do nothing. Everything below is in the 1920 x 1080 stage of NativeLobby.Draw.
     public sealed partial class NativeLobby
     {
-        sealed class TitleRow { public string Label; public Action Act; public float Sel; }
+        sealed class TitleRow { public string Label; public Action Act; public float Sel; public int Size; public string SizedFor; public Font SizedFont; }
         readonly List<TitleRow> titleRows = new List<TitleRow>();
         int titleSel, titleRowsBuiltFor = -1; float titleStart = -1;
-        Texture2D titleVeil,titleSideVeil; Texture titleLogo; bool titleArtLoaded;
+        Texture2D titleVeil,titleSideVeil,titleDiamond; Texture titleLogo; bool titleArtLoaded;
         readonly NativeTitleSignboard titleSignboard=new NativeTitleSignboard();
         public double TitleMotionTime=>titleSignboard.Seconds;
         public int TitleRenderedFrames=>titleSignboard.RenderedFrames;
@@ -39,6 +39,15 @@ namespace Exoduser.UnityPort
             titleRows.Add(new TitleRow { Label = K("게임 종료", "QUIT GAME"), Act = QuitFromTitle });                                                    // only when the player can quit (NW.js / Electron in the web)
 #endif
             titleSel = 0; for (int i = 0; i < titleRows.Count; i++) titleRows[i].Sel = i == 0 ? 1 : 0;
+        }
+
+        // Brand intro "press any key": serif (Hahmlet body path / Cinzel), 20px, silver-hell text colour; was the Noto Sans KR `small` style at 17px.
+        GUIStyle introPrompt;
+        void DrawIntroPrompt(string text)
+        {
+            if (introPrompt == null) { Styles(); introPrompt = new GUIStyle(small) { fontSize = 20, fontStyle = FontStyle.Normal, wordWrap = false, clipping = TextClipping.Overflow }; introPrompt.normal.textColor = NativeSilverHellUi.Text; }
+            introPrompt.font = CharacterTitleFont(text);
+            Label(new Rect(0, 955, 1920, 60), text, introPrompt, TextAnchor.MiddleCenter);
         }
 
         void QuitFromTitle()
@@ -78,6 +87,18 @@ namespace Exoduser.UnityPort
             titleLogo = Resources.Load<Texture2D>("Art/lobby/logo_exoduser_solid");
             titleMenuFont = NativeSilverHellUi.Font() ?? Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular"); titleBuildFont = Resources.Load<Font>("Art/fonts/Cinzel-VariableFont_wght");
             titleVeil = BakeTitleVeil();titleSideVeil=BakeTitleVeil(true);
+        }
+
+        // Focus mark: filled crimson diamond with a 1px bright edge, the same family as the decision-screen corner diamonds (NativeNextDifficultyPanel.Diamond). Baked 64px, drawn 14..22px.
+        static Texture2D BakeTitleDiamond()
+        {
+            return NativeSilverHellUi.Effect(64, 64, (u, v) =>
+            {
+                float d = Mathf.Abs(u - .5f) + Mathf.Abs(v - .5f), px = (.5f - d) * 64f / 1.41421356f;   // texture pixels inside the diamond edge
+                float cover = Mathf.Clamp01(px + .5f); if (cover <= 0) return new Color(0, 0, 0, 0);
+                var fill = new Color(194 / 255f, 26 / 255f, 16 / 255f); var edge = new Color(242 / 255f, 240 / 255f, 236 / 255f);
+                var c = Color.Lerp(edge, fill, Mathf.Clamp01((px - 2.6f) / 1.2f)); c.a = cover; return c;
+            });
         }
 
         // #splashTitleUI background: four layers, the first listed is on top. Baked at 192 x 108 and stretched (smooth gradients).
@@ -144,12 +165,13 @@ namespace Exoduser.UnityPort
             var shade=new Rect(0,0,560,1080);NativeUiAudit.DrawTexture(shade,titleSideVeil,ScaleMode.StretchToFill,true);NativeUiAudit.Region(shade,"component","frontend-shade","타이틀 C2 왼쪽 음영560");
             var fit=NativeTitleSignboardLayout.Menu(Screen.width,Screen.height);GUI.matrix=Matrix4x4.TRS(new Vector3((float)fit.X,(float)fit.Y,0),Quaternion.identity,new Vector3((float)fit.Width,(float)fit.Height,1));
             if (titleLogo != null) { float lw = 520, lh = lw * titleLogo.height / titleLogo.width; GUI.color = new Color(0, 0, 0, .5f * fade); NativeUiAudit.DrawTexture(new Rect(96, 106, lw, lh), titleLogo, ScaleMode.StretchToFill, true); GUI.color = new Color(1, 1, 1, fade); NativeUiAudit.DrawTexture(new Rect(96, 96, lw, lh), titleLogo, ScaleMode.StretchToFill, true); }
-            const float left = 116, top = 436, width = 380;
+            // 11-04 first-impression 5: rows are 64px high, 30px serif (Hahmlet body path for Hangul / CJK, Cinzel 600 for Latin), focus = crimson diamond + brightness.
+            const float left = 116, top = 436, width = 440, rowH = 64;
+            if (titleDiamond == null) titleDiamond = BakeTitleDiamond();
             var e = Event.current;
             for (int i = 0; i < titleRows.Count; i++)
             {
-                float rowH=48;
-                var rect = new Rect(left,top+i*48,width,rowH);
+                var rect = new Rect(left,top+i*rowH,width,rowH);
                 if(!AutomatedInput)NativeUiSounds.Current?.BeforeButton(rect,"title:"+i);
                 if (e.type == EventType.MouseMove || e.type == EventType.Repaint) { if (rect.Contains(e.mousePosition) && e.type == EventType.MouseMove && !AutomatedInput && i != titleSel) SelectTitleRow(i); }
                 if (e.type == EventType.MouseDown && e.button == 0 && rect.Contains(e.mousePosition) && !AutomatedInput) { ActivateTitleRow(i); e.Use();GUI.matrix=menuMatrix; return; }
@@ -157,15 +179,16 @@ namespace Exoduser.UnityPort
                 GUI.color=new Color(1,1,1,fade);
                 if(i==0)Fill(new Rect(rect.x,rect.y,rect.width,1),new Color(230/255f,227/255f,220/255f,.1f*fade));
                 Fill(new Rect(rect.x,rect.yMax,rect.width,1),new Color(230/255f,227/255f,220/255f,.1f*fade));
-                Fill(new Rect(rect.x+13,rect.center.y-.5f,16,1),new Color(230/255f,227/255f,220/255f,.6f*s*fade));
-                Color txt = Color.Lerp(new Color(201f / 255, 199f / 255, 195f / 255), new Color(242f / 255, 240f / 255, 236f / 255), s); txt.a = fade;
-                int size=18;float spacing=size*.14f;
-                float labelWidth=SpacedWidth(titleMenuFont,size,row.Label,spacing)-spacing;
-                GUI.color = Color.white; DrawSpaced(rect.x+36+size*.16f, rect.y, rowH, row.Label, titleMenuFont, size, spacing, txt, true);
+                if (s > .001f) { float ds = Mathf.Lerp(14f, 22f, s); GUI.color = new Color(1, 1, 1, s * fade); NativeUiAudit.DrawTexture(new Rect(rect.x + 24 - ds / 2, rect.center.y - ds / 2, ds, ds), titleDiamond, ScaleMode.StretchToFill, true); }
+                Color txt = Color.Lerp(new Color(150f / 255, 148f / 255, 145f / 255), new Color(246f / 255, 244f / 255, 240f / 255), s); txt.a = fade;
+                bool latin = LatinOnly(row.Label);
+                if (row.SizedFor != row.Label) { row.SizedFor = row.Label; row.SizedFont = CharacterTitleFont(row.Label); int size = 30; float avail = width - 52 - 14; for (; size > 22; size--) { float sp0 = size * (latin ? .10f : .12f); if (SpacedWidth(row.SizedFont, size, row.Label, sp0) - sp0 <= avail) break; } row.Size = size; }
+                float spacing = row.Size * (latin ? .10f : .12f);
+                GUI.color = Color.white; DrawSpaced(rect.x + 52, rect.y, rowH, row.Label, row.SizedFont, row.Size, spacing, txt, true);
             }
             GUI.matrix=NativeUiViewport.EdgeMatrix;
             // #splashTitleBuild: right 36, bottom 26, Cinzel 600 11 px / 1.7, letter-spacing .28em, rgba(230,227,221,.6), two lines right aligned
-            string l1 = BuildFlavor.Current.Label + (string.IsNullOrEmpty(BuildFlavor.ReleaseVersion) ? "" : " · v" + BuildFlavor.ReleaseVersion), l2 = "FOR DEAR GAMERS"; float sp = 11 * .28f, lh2 = 11 * 1.7f;
+            string l1 = BuildFlavor.Current.Label + (string.IsNullOrEmpty(BuildFlavor.UnityVersion) ? "" : " · v" + BuildFlavor.UnityVersion), l2 = "FOR DEAR GAMERS"; float sp = 11 * .28f, lh2 = 11 * 1.7f;
             GUI.color = Color.white; var bc = new Color(230f / 255, 227f / 255, 221f / 255, .6f * fade);
             DrawSpaced(NativeUiViewport.Edges.Width - 36 - SpacedWidth(titleBuildFont, 11, l1, sp) + sp, 1080 - 26 - lh2 * 2, lh2, l1, titleBuildFont, 11, sp, bc, true);
             DrawSpaced(NativeUiViewport.Edges.Width - 36 - SpacedWidth(titleBuildFont, 11, l2, sp) + sp, 1080 - 26 - lh2, lh2, l2, titleBuildFont, 11, sp, bc, true);

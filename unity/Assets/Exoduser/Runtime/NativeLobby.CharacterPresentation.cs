@@ -96,7 +96,7 @@ namespace Exoduser.UnityPort
     if(presentationVideoVisual!=i){playback.Open(video,true,true,false);presentationVideoVisual=i;presentationVideoStartedAt=Time.unscaledTime;}
     if(i==0&&playback.Player!=null&&playback.Prepared)playback.Player.playbackSpeed=.75f;
     bool videoFailed=playback.Error.Length>0||(!playback.Prepared||playback.Frame<0)&&Time.unscaledTime-presentationVideoStartedAt>=5;
-    Texture movie=playback.Error.Length==0&&playback.Prepared&&playback.Frame>=0?playback.Texture:videoFailed?null:(i==0?presentationWarriorPoster:presentationSilvertailPoster);
+    Texture movie=playback.Presentable?playback.Texture:videoFailed?null:(i==0?presentationWarriorPoster:presentationSilvertailPoster);
     if(movie!=null){Color old=GUI.color;GUI.color=new Color(1,1,1,locked ? .58f : .82f);NativeUiAudit.DrawTexture(new Rect(0,0,w,h),movie,ScaleMode.ScaleAndCrop,true);GUI.color=old;}
     if(videoFailed&&presentationCutouts[i]!=null){Color old=GUI.color;GUI.color=locked?new Color(.45f,.45f,.45f,1):Color.white;NativeUiAudit.DrawTexture(new Rect(stageX,bodyY,stageWidth,bodyHeight),presentationCutouts[i],ScaleMode.ScaleToFit,true);GUI.color=old;}
    }else if(characterPresentationPlayback!=null&&characterPresentationPlayback.Video!=null&&presentationVideoVisual>=0){characterPresentationPlayback.Video.Close();presentationVideoVisual=-1;}

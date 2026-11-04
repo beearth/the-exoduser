@@ -219,7 +219,7 @@ public static class PortVerification {
  }
  static void RestoreFlavor(string previous){if(previous==null)return;File.WriteAllText(FlavorFile,previous);AssetDatabase.Refresh();}
  public static void Build(){
-  bool? restoreTiming=null;bool settingsQa=Argument("-settingsQa")=="true",uiQa=Argument("-a03a04UiQa")=="true";string restoreProduct=null,restoreIdentifier=null,restoreFlavor=null;bool restoreOverride=false;int exitCode=2;
+  bool? restoreTiming=null;WindowsGamepadBackendHint? restoreGamepad=null;bool settingsQa=Argument("-settingsQa")=="true",uiQa=Argument("-a03a04UiQa")=="true";string restoreProduct=null,restoreIdentifier=null,restoreFlavor=null;bool restoreOverride=false;int exitCode=2;
   try {
    if(settingsQa&&uiQa)throw new ArgumentException("Choose one QA build identity");
    var target=EditorUserBuildSettings.activeBuildTarget;
@@ -243,6 +243,8 @@ public static class PortVerification {
    restoreFlavor=WriteFlavor();
    // 11-04 QA perf builds only (-frameTimingStats 1): GPU/CPU frame timings for NativePerfProbe. Restored after the build.
    if(Argument("-frameTimingStats")=="1"){restoreTiming=PlayerSettings.enableFrameTimingStats;PlayerSettings.enableFrameTimingStats=true;Debug.Log("UNITY_BUILD_FRAME_TIMING_STATS on");}
+   // 11-04 PC Player shutdown-stall A/B only (-gamepadBackend xinput): avoid Windows.Gaming.Input for this build. Restored after the build.
+   if(Argument("-gamepadBackend")=="xinput"){restoreGamepad=PlayerSettings.windowsGamepadBackendHint;PlayerSettings.windowsGamepadBackendHint=WindowsGamepadBackendHint.WindowsGamepadBackendHintXInput;Debug.Log("UNITY_BUILD_GAMEPAD_BACKEND xinput");}
    VerifyLobby();var scene=MakeScene();var directory=Argument("-output");Directory.CreateDirectory(directory);
    if(settingsQa){PlayerSettings.productName="EXODUSER Settings QA";PlayerSettings.SetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone,"com.fordeargamers.exoduser.settingsqa");SetSettingsIdentifierOverride(true);if(PlayerSettings.GetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone)==restoreIdentifier)throw new Exception("Settings QA must have a distinct application identifier");}
    if(uiQa){PlayerSettings.productName="EXODUSER A03 A04 QA";PlayerSettings.SetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone,"com.fordeargamers.exoduser.a03a04qa20261027");SetSettingsIdentifierOverride(true);if(PlayerSettings.GetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone)==restoreIdentifier)throw new Exception("A03/A04 UI QA must have a distinct application identifier");}
@@ -254,7 +256,7 @@ public static class PortVerification {
    File.WriteAllText(Argument("-receipt"),JsonUtility.ToJson(new BuildReceipt{passed=ok,result=report.summary.result.ToString(),errors=report.summary.totalErrors,bytes=report.summary.totalSize,engine=Application.unityVersion,target=target.ToString(),architecture=architecture,output=output,settingsQa=settingsQa,uiQa=uiQa,product=PlayerSettings.productName,identifier=PlayerSettings.GetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone)},true));
    Debug.Log("UNITY_BUILD "+report.summary.result);exitCode=ok?0:2;
   }catch(Exception e){Debug.LogException(e);}
-  finally{if(restoreTiming.HasValue)PlayerSettings.enableFrameTimingStats=restoreTiming.Value;RestoreFlavor(restoreFlavor);if(restoreProduct!=null){PlayerSettings.productName=restoreProduct;PlayerSettings.SetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone,restoreIdentifier);SetSettingsIdentifierOverride(restoreOverride);}}
+  finally{if(restoreTiming.HasValue)PlayerSettings.enableFrameTimingStats=restoreTiming.Value;if(restoreGamepad.HasValue)PlayerSettings.windowsGamepadBackendHint=restoreGamepad.Value;RestoreFlavor(restoreFlavor);if(restoreProduct!=null){PlayerSettings.productName=restoreProduct;PlayerSettings.SetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone,restoreIdentifier);SetSettingsIdentifierOverride(restoreOverride);}}
   EditorApplication.Exit(exitCode);
  }
  public static void Capture(){MakeScene();EditorApplication.playModeStateChanged+=CaptureState;EditorApplication.isPlaying=true;}

@@ -55,10 +55,13 @@ namespace Exoduser.UnityPort
     if(valid)BeginCharacterEntry(true);else ShowLobby();
    }
   }
+  Texture2D warriorStoryPoster;
   void DrawCharacterStory()
   {
    if(warriorStory.Entering){DrawEntryLoadingLogo();if(warriorError.Length>0)Label(new Rect(360,580,1200,70),K("이야기 영상을 재생하지 못했습니다. 캐릭터 목록은 보존됩니다.","The story could not play. Your character list is preserved."),normal,TextAnchor.MiddleCenter);return;}
-   DrawMovie(new Rect(0,0,1920,1080),null,false);
+   // Poster = the story movie's own first frame, drawn in the movie's rect until Presentable.
+   if(warriorStoryPoster==null)warriorStoryPoster=Resources.Load<Texture2D>("Art/ui/lobby_poster/warrior_story_v23_clean");
+   DrawMovie(new Rect(0,0,1920,1080),warriorStoryPoster,false);
    if(warriorCaption==null){warriorCaption=new GUIStyle(normal){font=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold"),fontSize=36,alignment=TextAnchor.MiddleCenter,wordWrap=true};warriorCaption.normal.textColor=Color.white;}
    if(SubtitleText.Length>0){var box=new Rect(180,864,1560,120);Fill(box,new Color(0,0,0,.64f));Label(box,SubtitleText,warriorCaption,TextAnchor.MiddleCenter);CaptionVisible=true;}
    var before=GUI.matrix;GUI.matrix=NativeUiViewport.EdgeMatrix;
