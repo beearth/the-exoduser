@@ -109,7 +109,7 @@ namespace Exoduser.UnityPort {
 
         // Common web window tab bar (NativePanelTabBar): equipment page = full width preset, ossuary page = x548 w1330 preset.
         void DrawNavigation(float lx,float lw){
-            NativePanelTabBar.Draw(Page==PageOssuary?NativePanelTabBar.Preset.InventoryOssuary:NativePanelTabBar.Preset.Inventory,"invPanel");
+            NativePanelTabBar.Draw(Page==PageOssuary?NativePanelTabBar.Preset.InventoryOssuary:NativePanelTabBar.Preset.Inventory,"invPanel",LocaleCode);
         }
 
         // #invResBar: _L('악의: ')+G.mats (no digit grouping). Unity state = Simulation.Materials, the same value the status panel shows.

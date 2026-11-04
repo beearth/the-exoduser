@@ -207,7 +207,7 @@ namespace Exoduser.UnityPort {
     HandleTreeInput();
     // The tree is drawn straight over the still and the still is then re-drawn around the viewport (IMGUI groups break rotated quads).
     DrawTree();CoverAround(new Rect(Viewport.x+1,Viewport.y+1,Viewport.width-2,Viewport.height-2));DrawPreview();
-    DrawOutline();NativePanelTabBar.Draw(NativePanelTabBar.Preset.Stat,"statPanel");
+    DrawOutline();NativePanelTabBar.Draw(NativePanelTabBar.Preset.Stat,"statPanel",LocaleCode);
     DrawHeader();DrawLeft();DrawToolbar();DrawInspector();DrawFooter(close);
    } finally {GUI.matrix=old;GUI.color=color;GUI.enabled=enabled;}
   }

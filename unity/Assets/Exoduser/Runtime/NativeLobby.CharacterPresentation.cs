@@ -115,32 +115,41 @@ namespace Exoduser.UnityPort
   }
   Texture2D silverNameInput,silverNameCreate,silverNameCancel;
   internal const float NameFaceInset=18f;
-  Font characterDialogSerif;
   internal Rect NameDialogFace,NameDialogFrame;
   internal string NameDialogFontName;
-  Font CharacterDialogFont(string text){if(characterDialogSerif==null)characterDialogSerif=Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular")??NativeSilverHellUi.Font();return NativeSilverHellUi.TextFont(characterDialogSerif,text);}
+  Font CharacterDialogFont(string text){return CharacterBodyFont(text);}
+  void DrawCharacterNameButton(Rect box,Texture2D art,string text,bool primary)
+  {
+   // Reuse the text-free 48px thorn artwork; keep the end ornaments at their own scale.
+   NativeSilverHellUi.Slice(box,art,44,0,31,0,true);
+   var inside=new Rect(box.x+31,box.y+6,box.width-62,box.height-12);
+   var style=new GUIStyle(GUIStyle.none){font=CharacterTitleFont(text),fontSize=14,alignment=TextAnchor.MiddleCenter,wordWrap=false,clipping=TextClipping.Clip,padding=new RectOffset(),margin=new RectOffset()};
+   while(style.fontSize>8){var measured=style.CalcSize(new GUIContent(text));if(measured.x<=inside.width&&measured.y<=inside.height)break;style.fontSize--;}
+   style.normal.textColor=primary?NativeSilverHellUi.Bright:NativeSilverHellUi.Text;
+   NativeDemoText.Label(inside,text,style);
+  }
   void DrawCharacterNamePresentation()
   {
    if(silverNameInput==null)silverNameInput=Resources.Load<Texture2D>("Art/ui/silver_hell/name_input");
-   if(silverNameCreate==null){silverNameCreate=Resources.Load<Texture2D>("Art/ui/silver_hell/name_create");silverNameCancel=Resources.Load<Texture2D>("Art/ui/silver_hell/name_cancel");}
+   if(silverNameCreate==null){silverNameCreate=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_thorn_primary_48_1x");silverNameCancel=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_thorn_normal_48_1x");}
    float w=NativeUiSafeArea.DesignWidth,h=NativeUiSafeArea.DesignHeight;Fill(new Rect(0,0,w,h),new Color(0,0,0,.90f));Rect panel=new Rect((w-440)/2,(h-335)/2,440,335);
    var face=new Rect(panel.x+NameFaceInset,panel.y+NameFaceInset,panel.width-NameFaceInset*2,panel.height-NameFaceInset*2);NativeSilverHellUi.Panel(face,45,NameFaceInset,iron:true);NameDialogFace=face;NameDialogFrame=panel;
    float x=panel.x+41,y=panel.y;
    string heading=CharacterDialogLabel("title",K("새 캐릭터 생성","Create Character"));
-   var title=new GUIStyle(presentationNameTitle){font=CharacterDialogFont(heading),fontStyle=FontStyle.Normal,fontSize=24,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset()};NameDialogFontName=title.font==null?"missing":title.font.name;
+   var title=new GUIStyle(presentationNameTitle){font=CharacterTitleFont(heading),fontStyle=FontStyle.Normal,fontSize=24,wordWrap=false,clipping=TextClipping.Clip,padding=new RectOffset()};NameDialogFontName=title.font==null?"missing":title.font.name;
    while(title.fontSize>16&&title.CalcSize(new GUIContent(heading)).x>358)title.fontSize--;
-   title.normal.textColor=new Color(222/255f,219/255f,213/255f);Label(new Rect(x,y+35,358,42),heading,title,TextAnchor.MiddleCenter);
+   title.normal.textColor=NativeSilverHellUi.Bright;NativeDemoText.Label(new Rect(x,y+35,358,42),heading,title);
    string description=CharacterDialogLabel("description",K("지옥에 보낼 캐릭터의 이름을 지어주세요","Choose a name for the character you will send to hell."));
    string nameLabel=CharacterDialogLabel("nameLabel",K("캐릭터 이름 (2~8자)","Character name (2–8 characters)"));
-   presentationNameDescription.font=CharacterDialogFont(description);presentationNameDescription.normal.textColor=new Color(186/255f,183/255f,177/255f);NativeDemoText.Label(new Rect(x,y+89,358,19),description,presentationNameDescription);
-   presentationNameLabel.font=CharacterDialogFont(nameLabel);presentationNameLabel.normal.textColor=new Color(198/255f,195/255f,189/255f);NativeDemoText.Label(new Rect(x,y+136,358,21),nameLabel,presentationNameLabel);
-   var input=new Rect(x,y+165,358,54);Image(input,silverNameInput,ScaleMode.StretchToFill);if(GUI.GetNameOfFocusedControl()=="character-name"){Border(input,new Color(191/255f,188/255f,182/255f),1);Border(new Rect(input.x-2,input.y-2,input.width+4,input.height+4),new Color(191/255f,188/255f,182/255f,.2f),1);}var field=new GUIStyle(GUIStyle.none){font=CharacterDialogFont(characterName),fontSize=16,alignment=TextAnchor.MiddleLeft,padding=new RectOffset(18,18,14,14)};field.normal.textColor=field.focused.textColor=NativeSilverHellUi.TextColor(new Color(232/255f,229/255f,223/255f));
+   presentationNameDescription.font=CharacterDialogFont(description);presentationNameDescription.normal.textColor=NativeSilverHellUi.Dim;NativeDemoText.Label(new Rect(x,y+89,358,19),description,presentationNameDescription);
+   presentationNameLabel.font=CharacterDialogFont(nameLabel);presentationNameLabel.normal.textColor=NativeSilverHellUi.Text;NativeDemoText.Label(new Rect(x,y+136,358,21),nameLabel,presentationNameLabel);
+   var input=new Rect(x,y+165,358,54);Image(input,silverNameInput,ScaleMode.StretchToFill);if(GUI.GetNameOfFocusedControl()=="character-name"){Border(input,new Color(191/255f,188/255f,182/255f),1);Border(new Rect(input.x-2,input.y-2,input.width+4,input.height+4),new Color(191/255f,188/255f,182/255f,.2f),1);}var field=new GUIStyle(GUIStyle.none){font=CharacterDialogFont(characterName),fontSize=16,alignment=TextAnchor.MiddleLeft,padding=new RectOffset(18,18,14,14)};field.normal.textColor=field.focused.textColor=NativeSilverHellUi.TextColor(NativeSilverHellUi.Bright);
    GUI.SetNextControlName("character-name");characterName=NativeUiAudit.TextField(input,characterName,8,field);
    if(characterFocus&&Event.current.type==EventType.Repaint){GUI.FocusControl("character-name");characterFocus=false;}
-   if(!string.IsNullOrEmpty(characterError)){presentationNameError.font=CharacterDialogFont(characterError);NativeDemoText.Label(new Rect(x,y+219,358,18),characterError,presentationNameError);}
+   if(!string.IsNullOrEmpty(characterError)){presentationNameError.font=CharacterDialogFont(characterError);presentationNameError.normal.textColor=NativeSilverHellUi.PlateTextDanger;NativeDemoText.Label(new Rect(x,y+219,358,18),characterError,presentationNameError);}
    var cancel=new Rect(x,y+239,173,47);var create=new Rect(x+185,y+239,173,47);
-   NativeSilverHellUi.ArtImage(cancel,silverNameCancel);NativeSilverHellUi.ArtImage(create,silverNameCreate);
-   // Both original name-button labels are baked into their paintings.
+   DrawCharacterNameButton(cancel,silverNameCancel,CharacterDialogLabel("cancel",K("취소","CANCEL")),false);
+   DrawCharacterNameButton(create,silverNameCreate,CharacterDialogLabel("create",K("생성","CREATE")),true);
    GUI.SetNextControlName("character-cancel");if(NativeUiAudit.Button(cancel,"",GUIStyle.none))CloseCharacterCreation();
    GUI.SetNextControlName("character-create");if(DecisionSoundButton(create))CreateCharacter(characterName);
   }

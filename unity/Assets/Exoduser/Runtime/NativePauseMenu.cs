@@ -96,7 +96,7 @@ namespace Exoduser.UnityPort
     Fill(new Rect(0,0,Screen.width,Screen.height),new Color(0,0,0,.72f));
     // Web common window tab bar at the settings-window position (1920x1080 design space).
     if(page==PausePage.Settings)return DrawSettingsA15(fullscreen);
-    {float s1=Mathf.Min(Screen.width/1920f,Screen.height/1080f);GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s1)/2,(Screen.height-1080*s1)/2,0),Quaternion.identity,Vector3.one*s1);NativePanelTabBar.Draw(NativePanelTabBar.Preset.Settings,"settings");GUI.matrix=Matrix4x4.identity;}
+    {float s1=Mathf.Min(Screen.width/1920f,Screen.height/1080f);GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s1)/2,(Screen.height-1080*s1)/2,0),Quaternion.identity,Vector3.one*s1);NativePanelTabBar.Draw(NativePanelTabBar.Preset.Settings,"settings",LocaleCode);GUI.matrix=Matrix4x4.identity;}
     float scale=Mathf.Min(Screen.width/1280f,Screen.height/720f);
     GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1280*scale)/2,(Screen.height-720*scale)/2,0),Quaternion.identity,Vector3.one*scale);
     var panel=new Rect(300,72,680,576);NativeSilverHellUi.Panel(panel,36,12,iron:true);   // A face shared with lobby/name/delete

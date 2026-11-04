@@ -184,7 +184,7 @@ namespace Exoduser.UnityPort
    a15Command=PauseMenuCommand.None;
    if(windowBase==null)windowBase=Resources.Load<Texture2D>("Art/ui/settings/window_base");
    Texture2D tex=windowBase;if(tex!=null)NativeUiAudit.DrawTexture(new Rect(0,0,1920,1080),tex,ScaleMode.StretchToFill,true);
-   NativePanelTabBar.Draw(NativePanelTabBar.Preset.Settings,"settings");
+   NativePanelTabBar.Draw(NativePanelTabBar.Preset.Settings,"settings",LocaleCode);
    // Title block: SETTINGS (Cinzel) over the serif title, hairline 120% of the title width.
    NativePanelTitle.Surface(new Rect(40,82,1840,120));NativePanelTitle.Draw(new Rect(700,72,520,64),W("title",T("설정","Settings")));
    // Tabs.

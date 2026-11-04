@@ -47,19 +47,21 @@ namespace Exoduser.UnityPort {
             s=new GUIStyle(GUI.skin.label){font=font,fontSize=size,alignment=TextAnchor.MiddleLeft,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};
             styles[size]=s;return s;
         }
-        // Letter-spaced, shadowed (0 1px 2px #000) and centred in the tab.
+        // Whole translated run, shadowed (0 1px 2px #000) and centred in the tab.
         static void Label(Rect r,string text,int size,float spacing,Color c){
-            var st=Style(size);float total=0;var adv=new float[text.Length];
-            for(int i=0;i<text.Length;i++){adv[i]=st.CalcSize(new GUIContent(text[i].ToString())).x+spacing;total+=adv[i];}
+            // Measure and paint the complete translated run so combining/RTL scripts stay intact.
+            var st=new GUIStyle(Style(size)){font=NativeSilverHellUi.TextFont(font,text),alignment=TextAnchor.MiddleCenter,clipping=TextClipping.Clip};
+            var inside=new Rect(r.x+12,r.y,r.width-24,r.height);
+            while(st.fontSize>8&&st.CalcSize(new GUIContent(text)).x>inside.width)st.fontSize--;
             for(int pass=0;pass<2;pass++){
-                float x=r.x+(r.width-total)/2f,y=r.y+(pass==0?1f:0f);st.normal.textColor=pass==0?new Color(0,0,0,.7f):c;
-                for(int i=0;i<text.Length;i++){NativeSilverHellUi.Label(new Rect(x,y,40,r.height),text[i].ToString(),st);x+=adv[i];}
+                st.normal.textColor=pass==0?new Color(0,0,0,.7f):c;
+                NativeDemoText.Label(new Rect(inside.x,inside.y+(pass==0?1f:0f),inside.width,inside.height),text,st);
             }
         }
 
         // Draws the bar for one window. Returns the id that was clicked (an inactive tab), otherwise null.
-        public static string Draw(Preset preset,string activeId){
-            if(plate==null){plate=Resources.Load<Texture2D>("Art/ui/inventory/plate");font=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold")??Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular");}
+        public static string Draw(Preset preset,string activeId,string locale){
+            if(plate==null){plate=Resources.Load<Texture2D>("Art/ui/inventory/plate");font=Resources.Load<Font>("Art/fonts/Cinzel-600")??NativeSilverHellUi.Font(true);}
             var s=Get(preset);string clicked=null;
             for(int i=0;i<Ids.Length;i++){
                 var r=new Rect(s.x+i*(s.tabW+s.gap),s.y,s.tabW,s.tabH);bool active=Ids[i]==activeId;
@@ -71,7 +73,8 @@ namespace Exoduser.UnityPort {
                 else NativeUiAudit.DrawTexture(r,Gradient(C(21,20,23,.51f),C(11,10,12,.675f)));
                 // :hover{filter:brightness(1.16)}
                 if(GUI.enabled&&r.Contains(Event.current.mousePosition))Fill(r,new Color(1,1,1,.05f));
-                Label(r,Labels[i],(int)s.size,s.spacing,active?C(244,230,203):C(194,191,185));
+                string text=NativeLocaleCatalog.Get("native_ui_fallbacks",Labels[i],locale,Labels[i]);
+                Label(r,text,(int)s.size,s.spacing,active?NativeSilverHellUi.Bright:NativeSilverHellUi.Text);
                 if(NativeUiSounds.SilentButton(()=>NativeSilverHellUi.Button(r,GUIContent.none,GUIStyle.none))&&!active)clicked=Ids[i];
             }
             Fill(new Rect(s.x,s.y+s.h-1,s.w,1),s.line);

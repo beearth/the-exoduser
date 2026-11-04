@@ -82,6 +82,26 @@ class Program {
      Equal(direct,NativeLocaleCatalog.Text(ko,null,code),"stat renderer source catalog "+ko+" / "+code);
     }
    }
+  foreach(var key in new[]{"설정 [ESC]","인벤토리 [TAB]","대장간 [G]","스킬 [K]","능력치 [J]"}){
+   int split=key.IndexOf(" [",StringComparison.Ordinal);string caption=key.Substring(0,split),suffix=key.Substring(split);
+   var original=SaveJson.Parse(File.ReadAllText(Path.Combine(args[0],"Data/"+(caption=="스킬"?"native_ui_fallbacks":"keybind_ui_web")+".json")));
+   if(caption!="스킬")original=original.Get("localization");
+   JsonValue row=null;foreach(var entry in original.Get("entries").Items)if(entry.Str("key")==caption)row=entry;
+   if(row==null)throw new Exception("missing original tab caption: "+caption);
+   for(int i=0;i<LobbyLanguage.Count;i++){
+    string code=LobbyLanguage.GetCode(i),source=null;
+    for(int j=0;j<original.Get("codes").Items.Count;j++)if(original.Get("codes").Items[j].Text==code)source=row.Get("texts").Items[j].Text;
+    if(string.IsNullOrWhiteSpace(source))throw new Exception("missing original tab locale: "+caption+" / "+code);
+    Equal(source+suffix,NativeLocaleCatalog.Get("native_ui_fallbacks",key,code),"localized full tab / "+code);
+   }
+  }
+  foreach(var key in new[]{"cancel","create"})for(int i=0;i<LobbyLanguage.Count;i++){
+   string code=LobbyLanguage.GetCode(i),value=NativeLocaleCatalog.Get("character_dialog_labels","entries."+key,code);
+   var catalog=SaveJson.Parse(File.ReadAllText(Path.Combine(args[0],"Data/character_dialog_labels.json")));
+   string expected=null;foreach(var entry in catalog.Get("entries").Items)if(entry.Str("code")==code)expected=entry.Str(key);
+   if(string.IsNullOrWhiteSpace(expected))throw new Exception("name button missing / "+key+" / "+code);
+   Equal(expected,value,"name button existing locale / "+code);
+  }
   Console.OutputEncoding=System.Text.Encoding.UTF8;
   Console.WriteLine("로더 동작 검사 "+count+"건 통과");
  }

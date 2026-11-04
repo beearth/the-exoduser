@@ -121,7 +121,7 @@ namespace Exoduser.UnityPort {
     float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
     GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s)/2,(Screen.height-1080*s)/2,0),Quaternion.identity,Vector3.one*s);
     NativeUiAudit.DrawTexture(WinRect,windowBase,ScaleMode.StretchToFill,false);
-    NativePanelTitle.Surface(new Rect(500,32,920,1006));NativePanelTabBar.Draw(NativePanelTabBar.Preset.Forge,"forge");
+    NativePanelTitle.Surface(new Rect(500,32,920,1006));NativePanelTabBar.Draw(NativePanelTabBar.Preset.Forge,"forge",LocaleCode);
     NativePanelTitle.Draw(new Rect(700,101,520,64),"복수의 대장간");DrawHeader(sim);
     var gridBox=new Rect(732,286.4f,688,673.6f);IronTile(gridBox,400);Grad(gridBox,C(17,16,18,.875f),C(9,9,10,.93f));if(innerRail!=null)NativeSilverHellUi.Slice(gridBox,innerRail,innerRail.width*.04f,innerRail.height*.04f,6,6,false);else Border(gridBox,C(73,76,76),6);
     DrawLeftTabs();
