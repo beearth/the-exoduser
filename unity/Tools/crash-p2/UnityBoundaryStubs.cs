@@ -29,6 +29,11 @@ namespace UnityEngine
   public static float Ceil(float value)=>(float)Math.Ceiling(value);
  }
  public sealed class TextAsset {public string text;}
+ public static class Debug
+ {
+  public static int Warnings;public static string LastWarning;
+  public static void LogWarning(object message){Warnings++;LastWarning=message.ToString();}
+ }
  public static class Resources
  {
   public static Func<Type,string,object> Loader;

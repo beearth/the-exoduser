@@ -10,7 +10,7 @@ static class Program
 {
  static int passed,failed;
  static readonly BindingFlags Hidden=BindingFlags.Static|BindingFlags.NonPublic;
- static string original;
+ static string original;static int catalogLoads;
  static void Check(bool value,string reason){if(!value)throw new Exception(reason);}
  static void Test(string name,Action body)
  {
@@ -22,27 +22,46 @@ static class Program
   foreach(var field in type.GetFields(Hidden))
   {
    if(field.GetValue(null) is IDictionary dictionary)dictionary.Clear();
-   else if(!field.IsInitOnly)field.SetValue(null,null);
+   else if(!field.IsInitOnly)field.SetValue(null,field.FieldType.IsValueType?Activator.CreateInstance(field.FieldType):null);
   }
  }
  static void CatalogResource(string text)
  {
-  Resources.Loader=(type,name)=>name=="Data/pet_bubble"&&text!=null?new TextAsset{text=text}:null;
+  Resources.Loader=(type,name)=>{catalogLoads++;return name=="Data/pet_bubble"&&text!=null?new TextAsset{text=text}:null;};
  }
- static void Unpublished()
+ static void EmptySnapshot()
  {
-  Check(typeof(NativePetBubbleCatalog).GetField("codes",Hidden).GetValue(null)==null,"codes published on failure");
+  var codes=(string[])typeof(NativePetBubbleCatalog).GetField("codes",Hidden).GetValue(null);
+  Check(codes!=null&&codes.Length==0,"empty codes not published on failure");
   foreach(string name in new[]{"entries","cues"})
    Check(((IDictionary)typeof(NativePetBubbleCatalog).GetField(name,Hidden).GetValue(null)).Count==0,name+" partially published");
  }
- static void InvalidThenRecover(string name,Action<JsonObject> corrupt)
+ static void FailedThenReset(string name,Action supply)
  {
   Test(name,()=>{
+   Reset(typeof(NativePetBubbleCatalog));catalogLoads=0;Debug.Warnings=0;Debug.LastWarning=null;supply();
+   // Do not catch exceptions here: either Cue throwing fails the case.
+   Check(NativePetBubbleCatalog.Cue("env_ch0")==null,"first failed-load Cue was not null");
+   Check(NativePetBubbleCatalog.Cue("env_ch0")==null,"second failed-load Cue was not null");
+   Check(catalogLoads==1,"failed load retried");
+   Check(Debug.Warnings==1&&!string.IsNullOrEmpty(Debug.LastWarning),"failure must warn exactly once");
+   EmptySnapshot();
+   Check(NativePetBubbleCatalog.Cue(null)==null,"null cue id was not safe");
+   string key=(string)JsonNode.Parse(original)["entries"][0]["key"];
+   Check(NativePetBubbleCatalog.Text(key,"en")==""&&NativePetBubbleCatalog.Text(key,"unknown")==""&&
+    NativePetBubbleCatalog.Text(null,null)=="","empty snapshot Text was not safe");
+   CatalogResource(original);
+   Check(NativePetBubbleCatalog.Cue("env_ch0")==null&&NativePetBubbleCatalog.Text(key,"en")=="","latch allowed recovery before Reset");
+   Check(catalogLoads==1&&Debug.Warnings==1,"latched queries loaded or warned again");
    Reset(typeof(NativePetBubbleCatalog));
+   Check(NativePetBubbleCatalog.Cue("env_ch0")!=null,"Reset did not clear failure latch");
+   Check(catalogLoads==2&&Debug.Warnings==1,"Reset must permit exactly one successful reload without warning");
+  });
+ }
+ static void InvalidThenReset(string name,Action<JsonObject> corrupt)
+ {
+  FailedThenReset(name,()=>{
    var broken=JsonNode.Parse(original).AsObject();corrupt(broken);CatalogResource(broken.ToJsonString());
-   bool rejected=false;try{NativePetBubbleCatalog.Cue("env_ch0");}catch(Exception){rejected=true;}
-   Check(rejected,"corrupt catalogue accepted");Unpublished();
-   CatalogResource(original);Check(NativePetBubbleCatalog.Cue("env_ch0")!=null,"recovery failed");
   });
  }
  static int Main(string[] args)
@@ -93,24 +112,58 @@ static class Program
    Resources.Loader=(type,name)=>Activator.CreateInstance(type);
    Check(NativeDemoArabicText.Draw(new Rect(),"مرحبا",new GUIStyle(),null),"recovery failed");
   });
-  InvalidThenRecover("catalogue: duplicate entry publishes nothing",json=>{
+  InvalidThenReset("catalogue: duplicate entry latches empty snapshot",json=>{
    var rows=json["entries"].AsArray();rows.Add(rows[0].DeepClone());
   });
-  InvalidThenRecover("catalogue: late short texts publishes nothing",json=>{
+  InvalidThenReset("catalogue: late short texts latch empty snapshot",json=>{
    var rows=json["entries"].AsArray();rows[rows.Count-1]["texts"].AsArray().RemoveAt(28);
   });
-  InvalidThenRecover("catalogue: duplicate cue publishes nothing",json=>{
+  InvalidThenReset("catalogue: duplicate cue latches empty snapshot",json=>{
    var rows=json["cues"].AsArray();rows.Add(rows[0].DeepClone());
   });
-  InvalidThenRecover("catalogue: invalid locale count publishes nothing",json=>json["codes"].AsArray().RemoveAt(28));
-  Test("catalogue: missing resource publishes nothing and recovers",()=>{
-   Reset(typeof(NativePetBubbleCatalog));CatalogResource(null);bool rejected=false;
-   try{NativePetBubbleCatalog.Cue("env_ch0");}catch(InvalidOperationException){rejected=true;}
-   Check(rejected,"missing resource accepted");Unpublished();CatalogResource(original);
-   Check(NativePetBubbleCatalog.Cue("env_ch0")!=null,"recovery failed");
+  InvalidThenReset("catalogue: invalid locale count latches empty snapshot",json=>json["codes"].AsArray().RemoveAt(28));
+  FailedThenReset("catalogue: missing resource latches empty snapshot",()=>CatalogResource(null));
+  FailedThenReset("catalogue: malformed JSON latches empty snapshot",()=>CatalogResource("{"));
+  FailedThenReset("catalogue: null bundle latches empty snapshot",()=>CatalogResource("null"));
+  FailedThenReset("catalogue: resource exception latches empty snapshot",()=>{
+   Resources.Loader=(type,name)=>{catalogLoads++;throw new IOException("resource failure");};
+  });
+  InvalidThenReset("catalogue: null codes latch empty snapshot",json=>json["codes"]=null);
+  InvalidThenReset("catalogue: null entries latch empty snapshot",json=>json["entries"]=null);
+  InvalidThenReset("catalogue: null cues latch empty snapshot",json=>json["cues"]=null);
+  InvalidThenReset("catalogue: late null entry latches empty snapshot",json=>{
+   var rows=json["entries"].AsArray();rows[rows.Count-1]=null;
+  });
+  InvalidThenReset("catalogue: late null texts latch empty snapshot",json=>{
+   var rows=json["entries"].AsArray();rows[rows.Count-1]["texts"]=null;
+  });
+  InvalidThenReset("catalogue: long texts latch empty snapshot",json=>json["entries"][0]["texts"].AsArray().Add("extra"));
+  InvalidThenReset("catalogue: late null cue latches empty snapshot",json=>{
+   var rows=json["cues"].AsArray();rows[rows.Count-1]=null;
+  });
+  InvalidThenReset("catalogue: null entry key latches empty snapshot",json=>json["entries"][0]["key"]=null);
+  InvalidThenReset("catalogue: null cue id latches empty snapshot",json=>json["cues"][0]["id"]=null);
+  Test("callers: failed catalogue null offers keep queue and capture queries safe",()=>{
+   Reset(typeof(NativePetBubbleCatalog));CatalogResource("{");Debug.Warnings=0;catalogLoads=0;
+   var queue=new NativePetBubbleQueue();queue.Reset();queue.BeginFrame(0,false,false,false);
+   foreach(string id in new[]{"env_ch0","boss_intro_ch0","hp_critical","crisis_hp30","warn_hp50"})
+    queue.Offer(NativePetBubbleCatalog.Cue(id));
+   Check(queue.Dispatch()==null&&!queue.Active&&!queue.Visible,"null offers activated queue");
+   queue.BeginFrame(4,false,false,false);
+   Check(!queue.PairPhase&&queue.Speaker==null&&queue.Key==null&&queue.Id==null,"empty capture queue fields unsafe");
+   var text=NativePetBubbleHints.Resolve(NativePetBubbleCatalog.Text(queue.Key,"ar"),action=>throw new Exception("empty hint must not resolve bindings"));
+   NativeSilverHellUi.Labels=0;NativeDemoText.Label(new Rect(),text,new GUIStyle());
+   Check(text==""&&NativeSilverHellUi.Labels==0,"empty view text was rendered");
+   Check(catalogLoads==1&&Debug.Warnings==1,"caller path reloaded or warned again");
+  });
+  Test("catalogue: absent locale and English index safely return empty",()=>{
+   Reset(typeof(NativePetBubbleCatalog));var json=JsonNode.Parse(original);var codes=json["codes"].AsArray();
+   for(int i=0;i<codes.Count;i++)if((string)codes[i]=="en")codes[i]="zz";
+   CatalogResource(json.ToJsonString());
+   Check(NativePetBubbleCatalog.Text((string)json["entries"][0]["key"],"unknown")=="","negative fallback index unsafe");
   });
   Test("catalogue: every shipped locale, text and cue preserved",()=>{
-   Reset(typeof(NativePetBubbleCatalog));CatalogResource(original);var json=JsonNode.Parse(original);
+   Reset(typeof(NativePetBubbleCatalog));CatalogResource(original);Debug.Warnings=0;var json=JsonNode.Parse(original);
    foreach(var entry in json["entries"].AsArray())for(int i=0;i<29;i++)
     Check(NativePetBubbleCatalog.Text((string)entry["key"],(string)json["codes"][i])==(string)entry["texts"][i],"text mismatch");
    foreach(var cue in json["cues"].AsArray())
@@ -119,6 +172,7 @@ static class Program
     foreach(var field in typeof(NativePetBubbleCue).GetFields())
      Check(System.Text.Json.JsonSerializer.Serialize(field.GetValue(loaded))==cue[field.Name].ToJsonString(),"cue mismatch: "+field.Name);
    }
+   Check(Debug.Warnings==0,"valid catalogue warned");
   });
   Test("catalogue: unknown keys and locale fallback unchanged",()=>{
    Check(NativePetBubbleCatalog.Cue("missing")==null,"unknown cue changed");

@@ -31,6 +31,7 @@ try {
   const sources = [
     path.join(runtime, 'NativePetBubbleCatalog.cs'),
     path.join(runtime, 'NativePetBubbleQueue.cs'),
+    path.join(runtime, 'NativePetBubblePolicy.cs'),
     path.join(runtime, 'NativeDemoText.cs'),
     path.join(runtime, 'Core/LobbyLanguage.cs'),
     path.join(__dirname, 'Program.cs'), path.join(__dirname, 'UnityBoundaryStubs.cs'),

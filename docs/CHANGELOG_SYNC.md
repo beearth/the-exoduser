@@ -1,3 +1,5 @@
+2026-11-05 CX27 펫 말풍선 카탈로그 실패 래치(독립 검수 RETOUCH): 자료 손상 시 경고 1회 뒤 빈 사전으로 고정, Cue null·Text 빈 문자열, 매 프레임 재시도·예외 없음. 정상 자료 변경 0, Core 0. Unity 컴파일 미확인(Mac 담당).
+
 2026-11-05 크래시 위험 P2 3건(L6 감사, 코덱스 레인 crash-p2): NativePauseMenu.A15Web 저장 안내 측정 예외 시 noticeRect.y=1022 복원, NativeDemoArabicText 자산 누락 시 예외 대신 false로 Label 대체, NativePetBubbleCatalog 지역 사전 검증 뒤 일괄 교체. 수치·Core 변경 0. unity/Tools/crash-p2 경계 테스트 21/21. Unity 컴파일·화면 미확인(Mac 담당).
 
 2026-11-04 docs-sync 3차(클라우드 레인 L2, 기준 dc838b5ab..2f9fb68a): 이후 병합분 코드 변경(70502a2b4 D-U3 Core 최대 HP·MP·ST·쉴드·로비 생성행 숫자 삭제, 24919517f 대검 모듈 수정, b55fc008d STY-25 3.2초, b90e2e39·실행기 Tools)을 docs 전체와 대조했다. 불일치는 UNITY_MAC_CHARACTER_SLOTS 생성행 "현재Count 표시/수량 78×64"(코드는 숫자 삭제, D-016)와 2_7 근성 항의 Unity 최대 HP 경로 누락 2건뿐이라 정정했다. 14밸런스·자원리젠 D-U3 식, STY-25 life1·life2 3.2초, 대검 G0 기록, DEBUG 보드 D-015·D-016은 병합 때 이미 코드값과 일치. 코드 무변경, 2_3은 손대지 않음. 상세 docs/0마스터플랜/worklog/cloud-lanes/docsync3_20261104.md.
