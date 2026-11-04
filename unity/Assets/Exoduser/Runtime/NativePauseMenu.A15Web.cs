@@ -86,7 +86,14 @@ namespace Exoduser.UnityPort
   // P18: rows whose web effect does not exist in this build stay in their web place but are greyed and take no input.
   static bool Unavailable(It it){return it.def!=null&&!NativeGraphicsPolicy.IsAvailable(it.def.Key);}
   public static bool OptionUnavailable(string key){return !NativeGraphicsPolicy.IsAvailable(key);}
-  void UnavailableNote(Rect r,float rightPad){Txt(new Rect(r.x,r.y+14,r.width-rightPad,20),W("m.unavailable",T("이 빌드 미지원","Not in this build")),13,Dim,TextAnchor.MiddleRight);}
+  string UnavailableText(){return W("m.unavailable",T("이 빌드 미지원","Not in this build"));}
+  // 이름과 안내가 한 줄에 안 들어가는 언어(de·fr 등)는 이름을 위로 올리고 안내를 아래 줄에 쓴다.
+  bool UnavailableStacks(It it,Rect r){return TW(RowName(it),17,FontStyle.Normal)+TW(UnavailableText(),13,FontStyle.Normal)+16>r.width-30;}
+  void UnavailableNote(It it,Rect r,float rightPad)
+  {
+   if(UnavailableStacks(it,r))Txt(new Rect(r.x,r.y+26,r.width-rightPad,18),UnavailableText(),13,Dim,TextAnchor.MiddleLeft);
+   else Txt(new Rect(r.x,r.y+14,r.width-rightPad,20),UnavailableText(),13,Dim,TextAnchor.MiddleRight);
+  }
   void SetVal(OptionDef d,int v)
   {
    if(!NativeGraphicsPolicy.IsAvailable(d.Key))return;
@@ -344,14 +351,14 @@ namespace Exoduser.UnityPort
   {
    PointAt(r,cursor);
    HLine(r.x,r.y+47,r.width,LineSoft);
-   Txt(new Rect(r.x,r.y+12,nameW,24),RowName(it),17,Unavailable(it)?Dim:Bone);
+   if(Unavailable(it)&&UnavailableStacks(it,r))Txt(new Rect(r.x,r.y+1,nameW,22),RowName(it),17,Dim);else Txt(new Rect(r.x,r.y+12,nameW,24),RowName(it),17,Unavailable(it)?Dim:Bone);
    if(navigation.Focused&&cursor>=0&&navigation.Cursor==cursor)Border(new Rect(r.x-4,r.y-1,r.width+8,50),new Color32(230,227,220,255));
   }
   void DrawRange(It it,Rect r,int cursor)
   {
    float nameW=Mathf.Max(230,TW(RowName(it),17,FontStyle.Normal)+12),controlX=Mathf.Min(r.width*.5f,nameW+20);
    var d=it.def;DrawRowFrame(it,r,cursor,nameW);
-   if(Unavailable(it)){UnavailableNote(r,0);return;}
+   if(Unavailable(it)){UnavailableNote(it,r,0);return;}
    int v=GetVal(d);float valW=Mathf.Clamp(TW(Fmt(d,v),15,FontStyle.Bold)+8,112,r.width*.34f),ctlW=r.width-controlX-valW-20;
    var ctl=new Rect(r.x+controlX,r.y+13.5f,ctlW,20);NativeUiAudit.Region(ctl,"control");
    Txt(new Rect(r.xMax-valW,r.y+13,valW,21),Fmt(d,v),15,ValueColor(d,v),TextAnchor.MiddleRight,FontStyle.Bold,false);
@@ -373,7 +380,7 @@ namespace Exoduser.UnityPort
    var d=it.def;DrawRowFrame(it,r,cursor,r.width-18-20);
    var box=new Rect(r.xMax-18,r.y+14.5f,18,18);bool on=GetVal(d)!=0;
     NativeUiAudit.Region(box,"control");
-   if(Unavailable(it)){Fill(box,new Color32(10,13,13,140));Border(box,LineSoft);UnavailableNote(r,18+12);return;}
+   if(Unavailable(it)){Fill(box,new Color32(10,13,13,140));Border(box,LineSoft);UnavailableNote(it,r,18+12);return;}
    Fill(box,new Color32(10,13,13,255));Border(box,on?new Color32(217,214,208,200):BoxLine);
    if(on)Diamond(box.center.x,box.center.y,6,Brass);
    var hit=new Rect(r.x,r.y,r.width,47);
@@ -407,7 +414,7 @@ namespace Exoduser.UnityPort
    int current;List<string> values;var labels=SelectLabels(it,out current,out values);
    float selW=it.id=="optAtmos"?160:280;
    DrawRowFrame(it,r,cursor,r.width-selW-20);
-   if(Unavailable(it)){UnavailableNote(r,0);return;}
+   if(Unavailable(it)){UnavailableNote(it,r,0);return;}
    var box=new Rect(r.xMax-selW,r.y+4.5f,selW,38);
     NativeUiAudit.Region(box,"button");
    Fill(box,new Color32(10,13,13,255));Border(box,Line);
