@@ -47,7 +47,7 @@ namespace Exoduser.UnityPort
             for(int i=0;i<20;i++){UpdateViews();yield return null;}
             if(r3Cam==null||r3Cam.orthographic)throw new InvalidOperationException("A2R perspective camera missing");
             keyshotPitch=r3Cam.transform.eulerAngles.x;keyshotFov=r3Cam.fieldOfView;
-            keyshotDistance=Vector3.Distance(r3Cam.transform.position,new Vector3(Simulation.Player.X/100f,0,-Simulation.Player.Y/100f));
+            keyshotDistance=Vector3.Distance(r3Cam.transform.position,r3Marker.position);
             if(Mathf.Abs(Mathf.DeltaAngle(keyshotPitch,34))>.1f)throw new InvalidOperationException("Camera pitch LOCK mismatch");
             bool selected=Array.IndexOf(Environment.GetCommandLineArgs(),"--keyshot-selected")>=0;
             foreach(var target in plan.views)
@@ -102,12 +102,17 @@ namespace Exoduser.UnityPort
         }
         void KeyshotSave(A2RKeyshotView target,uint seed,bool showHud)
         {
-            float pitch=r3Cam.transform.eulerAngles.x;
-            if(Mathf.Abs(Mathf.DeltaAngle(pitch,keyshotPitch))>.001f||Mathf.Abs(r3Cam.fieldOfView-keyshotFov)>.001f)throw new InvalidOperationException("Camera LOCK changed");
+            float pitch=r3Cam.transform.eulerAngles.x,distance=Vector3.Distance(r3Cam.transform.position,r3Marker.position);
+            if(Mathf.Abs(Mathf.DeltaAngle(pitch,keyshotPitch))>.001f||Mathf.Abs(r3Cam.fieldOfView-keyshotFov)>.001f||Mathf.Abs(distance-keyshotDistance)>.01f)throw new InvalidOperationException("Camera LOCK changed");
             var p=Simulation.Player;string file=target.id+"-"+Screen.width+"x"+Screen.height+"-hud-"+(showHud?"on":"off")+".png";
             var f=new A2RKeyshotFrame{id=target.id,scene=target.scene,file=file,width=Screen.width,height=Screen.height,hud=showHud,tick=Simulation.TickCount,seconds=Simulation.TickCount/60f,seed=seed,player=new Vector2(p.X,p.Y),facing=p.Facing,state=KeyshotState(),
-                camera=new A2RKeyshotCamera{position=r3Cam.transform.position,pitch=pitch,fov=r3Cam.fieldOfView,distance=keyshotDistance},hero=KeyshotProject(a2rLighting.Readability.HeroBounds),heroOverlap=a2rLighting.Readability.OverlapCount};
-            foreach(var e in Simulation.Enemies)if(e.Alive&&!Simulation.IsRemodelProp(e)&&enemies.TryGetValue(e.Id,out var ev)&&ev.body!=null&&ev.body.enabled&&ev.body.gameObject.activeInHierarchy)f.enemies.Add(KeyshotProject(ev.body.bounds,e.Id));
+                camera=new A2RKeyshotCamera{position=r3Cam.transform.position,pitch=pitch,fov=r3Cam.fieldOfView,distance=distance},hero=KeyshotProject(a2rLighting.Readability.HeroBounds),heroOverlap=a2rLighting.Readability.OverlapCount};
+            foreach(var e in Simulation.Enemies)if(e.Alive&&!Simulation.IsRemodelProp(e)&&enemies.TryGetValue(e.Id,out var ev)&&ev.body!=null&&ev.body.enabled&&ev.body.gameObject.activeInHierarchy)
+            {
+                var box=KeyshotProject(ev.body.bounds,e.Id);var body=CombatEnemyBody(e.Id);
+                if(body.HasValue){var foot=r3Cam.WorldToScreenPoint(body.Value.foot);var top=r3Cam.WorldToScreenPoint(body.Value.top);box.y=Screen.height-top.y;box.h=top.y-foot.y;}
+                f.enemies.Add(box);
+            }
             var image=new Texture2D(Screen.width,Screen.height,TextureFormat.RGB24,false);
             try{image.ReadPixels(new Rect(0,0,Screen.width,Screen.height),0,0);image.Apply();File.WriteAllBytes(Path.Combine(keyshotRoot,file),image.EncodeToPNG());}finally{Destroy(image);}
             keyshot.frames.Add(f);File.WriteAllText(Path.Combine(keyshotRoot,"keyshot.json"),JsonUtility.ToJson(keyshot,true));

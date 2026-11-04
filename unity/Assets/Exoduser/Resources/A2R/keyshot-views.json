@@ -1,6 +1,6 @@
 {
   "seed": 539365412,
-  "status": "넓은 후보 24개, 실측 선별 전",
+  "status": "기존 실제 보행 기록 S1 y4420 기준, 넓은 24개 후보 실측 대기",
   "views": [
     {
       "id": "S3-01",
@@ -77,8 +77,8 @@
     {
       "id": "S1-01",
       "scene": "S1",
-      "x": 3620,
-      "y": 6500,
+      "x": 3920,
+      "y": 4420,
       "facing": -90,
       "waitTicks": 12,
       "selected": true
@@ -86,8 +86,8 @@
     {
       "id": "S1-02",
       "scene": "S1",
-      "x": 3510,
-      "y": 6340,
+      "x": 3720,
+      "y": 4420,
       "facing": -90,
       "waitTicks": 12,
       "selected": true
@@ -95,8 +95,8 @@
     {
       "id": "S1-03",
       "scene": "S1",
-      "x": 3400,
-      "y": 6180,
+      "x": 3520,
+      "y": 4420,
       "facing": -90,
       "waitTicks": 12,
       "selected": true
@@ -104,8 +104,8 @@
     {
       "id": "S1-04",
       "scene": "S1",
-      "x": 3340,
-      "y": 6020,
+      "x": 3320,
+      "y": 4420,
       "facing": -90,
       "waitTicks": 12,
       "selected": true
@@ -113,8 +113,8 @@
     {
       "id": "S1-05",
       "scene": "S1",
-      "x": 3180,
-      "y": 5860,
+      "x": 3120,
+      "y": 4420,
       "facing": -90,
       "waitTicks": 12,
       "selected": true
@@ -122,8 +122,8 @@
     {
       "id": "S1-06",
       "scene": "S1",
-      "x": 3070,
-      "y": 5700,
+      "x": 2920,
+      "y": 4420,
       "facing": -90,
       "waitTicks": 12,
       "selected": true
@@ -131,8 +131,8 @@
     {
       "id": "S1-07",
       "scene": "S1",
-      "x": 2960,
-      "y": 5540,
+      "x": 2720,
+      "y": 4420,
       "facing": -90,
       "waitTicks": 12,
       "selected": true
@@ -140,8 +140,8 @@
     {
       "id": "S1-08",
       "scene": "S1",
-      "x": 2850,
-      "y": 5380,
+      "x": 2520,
+      "y": 4420,
       "facing": -90,
       "waitTicks": 12,
       "selected": true

@@ -122,7 +122,7 @@ Steam 상점 갤러리는 16:9를 보여 준다. 업로드본은 **1920×1080**�
 
 - 브랜치 `codex/unity-map-keyshot-20261104`, D4 기준 `d9e5a2742`. 이 문서 본문은 D4에 없어 `origin/unity/main`에서 가져왔고 이 절만 추가했다.
 - 촬영 인자: `--a2r-keyshot --a2r-lobby-start -output <절대 폴더> --keyshot-source <빌드 커밋 SHA>`. 공용 실행기·격리 저장·무창·무음으로만 실행한다. `--a2r-play-smoke`와 함께 쓰지 않는다.
-- 시점 표: `unity/Assets/Exoduser/Resources/A2R/keyshot-views.json`. S3→S1→S2 순서의 24개 초안이며 실측 전이다. 원래 시드·자연 스폰·StepInput 보행/공격을 사용하며 좌표 직접 배치·생존 수치 보조는 없다.
+- 시점 표: `unity/Assets/Exoduser/Resources/A2R/keyshot-views.json`. S3→S1→S2 순서의 24개 초안이며 실측 전이다. S1은 기존 실제 촬영 기록의 북쪽 길 끝 `y=4420` 구간이다. 원래 시드·자연 스폰·StepInput 보행/공격을 사용하며 좌표 직접 배치·생존 수치 보조는 없다.
 - 각 시점에서 1920×1080·3840×2160·3840×1080, HUD 켬/끔을 저장한다. 34° 피치·거리·FOV·안개·조명을 촬영용으로 고치지 않는다. HUD 끔은 NativeGame의 표시 컴포넌트를 일시 정지한다.
 - 빌드 고정 폴더: `I:/EXODUSER-Storage/map25d/a2r-build-keyshot`. 결과 고정 루트: `I:/EXODUSER-Storage/steam-prep/keyshot/`(넓은 촬영 `wide`, 재현 `repeat`). 공용 실행기 Player 최대 2회이며 바로가기는 바꾸지 않는다.
 - 1회 촬영 후 Node 도구: `C:/nvm4w/nodejs/node.exe tools/keyshot/review.mjs score <wide 폴더> <시점 JSON 경로>`. 점수표·JPG 접촉 시트·장면별 상위 4개를 만들고 시점 JSON에 선택·실제 좌표·틱을 기록한다.
