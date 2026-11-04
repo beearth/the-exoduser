@@ -33,8 +33,9 @@ const J = o => JSON.parse(JSON.stringify(o, (k, v) => (v === undefined ? null : 
 
 // ---- the VM: only declared names resolve; everything the function touches outside this list throws ReferenceError ----
 const src = [
+  line('const _FEEL_ENABLED='), line('const _FEEL='), line('const _feelMotionQuery='), line('const _feelContacts='), fn('function _feelReduced('), fn('function _feelHurt('), fn('function _feelShakeScale('),
   line('const DR_CAP='), line('let _hitFlash={'), fn('function doHitFlash'), fn('function shake('), fn('function _r('),
-  fn('function _isFocusState'), fn('function _isKiCharging'), fn('function _lvB'), fn('function pGuardAbsorb'), fn('function pShieldBlock'),
+  fn('function _isFocusState'), fn('function _isKiCharging'), fn('function _lvB'), fn('function pGuardAbsorb'), fn('function pShieldBlock'), fn('function _playerDefTotals('),
   line('let scrFlash=null,scrFlashA=0;'), fn('function hurtP('),
 ].join('\n');
 
@@ -56,6 +57,7 @@ function makeEnv(c, rnd) {
   const aff = { dodgeChance: c.dodge || 0, ccRes: c.ccRes || 0, stunRes: c.stunRes || 0, eDefFlat: c.edef || 0, shieldBlockDR: c.shieldBlockDR || 0 };
   const zero = () => 0, noop = () => undefined, empty = () => ({});
   const env = {
+    URLSearchParams, location:{search:''}, matchMedia:()=>({matches:false}), _gameTime:0,
     Math: M, P, G, OPT: { shake: 100, hitStop: 100, parts: 100 }, _HS: { pStun: 6 }, PASSIVES: { pGuard: c.pGuard || 0 }, STATS: { dex: c.dex || 0 }, INV: { equipped: {} },
     window: {}, __cos: () => 0.5, SFX: new Proxy({}, { get: () => noop }),
     _eqAffix: k => aff[k] || 0, _eqStat: k => (k === 'Dex' ? 0 : 0), _lEq: zero, _uEq: zero, _uqS: {}, _gritTotal: zero, enhMul: zero, pDefAdd: zero,
