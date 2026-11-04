@@ -1,5 +1,7 @@
 2026-11-04 14:50 PC Player 종료 정지 진단 준비(CTO 근본 원인 배정): 실행기 2026.11.04-stalldiag가 시간 초과 kill 때 스레드 대기 사유·GameInput 서비스 상태·로그 마지막 줄·kill 성공 여부를 영수증 stall에 남긴다(시험 stall-diag-test 7건). PortVerification.Build -gamepadBackend xinput은 그 빌드에서만 windowsGamepadBackendHint=XInput(WGI 회피 A/B, ProjectSettings 무변경). Roslyn Player/Editor 오류 0. 근거=창 모드 WGI 초기화 실행 정지 29/593, -batchmode 0/61(10-29~11-04).
 
+2026-11-04 UI 기존 겹침 감소 후보(CTO 15:00): NativeHud HP 현재값/최대값을 실측 행 높이+그림자 여백4px로 분리, NativePanelTabBar/NativeForgePanel은 NativeUiTextRun.Separated 공통 측정·그리기와 물리1px 이상 간격/실제 폭 그리기 칸으로 통일. 탭 본문 Hahmlet300. Core·원문·글자 크기·창 배치 무변경. known-overlaps.json 허용 목록381항목/707건→69항목/86건(HUD300·탭177·대장간144 제거, 새 Player 측정 아님). 소스/래칫8/0·텍스트 런90/0·설치된 공용 참조 컴파일5어셈블리 오류0. UI 문서 및 engine HUD/탭/대장간/겹침 문서 동기화. Player·1x/3x·디자인 PASS·CTO 병합·실행본 갱신은 미검증.
+
 2026-11-04 14:20 좀비 감지 오탐 정정·디스크 유휴 대기(CTO): 13:09 HALT는 오탐이었다. 시작 76초 된 Player(PID 44556, 스레드 1·CPU 0.1s·로그 'Mono path'까지)가 USB HDD I: 포화(다른 세션 재귀 grep, 유휴 0%·대기열 2~3, 새 7GB 빌드 백신 검사)로 느리게 뜨던 중이었다. 좀비 조건을 시작 120초 이상 + CPU 정지 + 로그 마지막 줄이 종료 단계 표시일 때만으로 바꿨다. Player 시작 전에 실행 파일 드라이브 유휴율 50% 이상 10초를 기다리고(상한 10분), 영수증 diskAtStart에 남긴다. 실행기 `2026.11.04-zombie2`, zombie-guard-test 8건(05:06형 검출·13:09형 미검출·디스크 대기/상한). 문서 unity/Tools/devtools/README.md.
 
 2026-11-04 14:00 HALT 대기 중 시작 거부를 exit 3으로(CTO): 순번·슬롯을 기다리던 실행이 HALT를 만나면 시작하지 않고 exit 3(HALT 게이트와 같은 코드)으로 끝난다. exit도 finally에서 예약·슬롯을 반환한다. 실행기 `2026.11.04-haltwait2`, halt-wait-test는 별도 프로세스로 Player·Editor 대기 모두 exit 3·정리를 확인.

@@ -1,6 +1,8 @@
 using System;
 namespace Exoduser.UnityPort {
  internal static class NativeUiTextFlow {
+  // Account for the complete measured line and the 2px black shadow below it.
+  internal static float NextLine(float top,float measuredHeight)=>top+measuredHeight+4;
   internal static float TitlePitch(float measured)=>Math.Max(33.6f,(float)Math.Ceiling(measured)+2);
   internal static float TitleExtra(int lines,float pitch)=>Math.Max(0,lines-1)*pitch;
   internal static float FooterExtra(int lines)=>Math.Max(0,lines-1)*24f;

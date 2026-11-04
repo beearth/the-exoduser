@@ -49,17 +49,20 @@ namespace Exoduser.UnityPort {
         }
         // Letter-spaced, shadowed (0 1px 2px #000) and centred in the tab.
         static void Label(Rect r,string text,int size,float spacing,Color c){
-            var st=Style(size);float total=0;var adv=new float[text.Length];
-            for(int i=0;i<text.Length;i++){adv[i]=st.CalcSize(new GUIContent(text[i].ToString())).x+spacing;total+=adv[i];}
+            var st=Style(size);float scale=Mathf.Max(.01f,Mathf.Abs(GUI.matrix.m00));
+            float total=NativeUiTextRun.Separated(text,spacing,scale,g=>st.CalcSize(new GUIContent(g)).x);
             for(int pass=0;pass<2;pass++){
                 float x=r.x+(r.width-total)/2f,y=r.y+(pass==0?1f:0f);st.normal.textColor=pass==0?new Color(0,0,0,.7f):c;
-                for(int i=0;i<text.Length;i++){NativeSilverHellUi.Label(new Rect(x,y,40,r.height),text[i].ToString(),st);x+=adv[i];}
+                NativeUiTextRun.Separated(text,spacing,scale,g=>st.CalcSize(new GUIContent(g)).x,(offset,g)=>{
+                    var box=new Rect(x+offset,r.y,st.CalcSize(new GUIContent(g)).x,r.height);
+                    using(var paint=NativeUiAudit.GroupText(box,g))NativeSilverHellUi.Label(new Rect(box.x,y,box.width,box.height),g,st);
+                });
             }
         }
 
         // Draws the bar for one window. Returns the id that was clicked (an inactive tab), otherwise null.
         public static string Draw(Preset preset,string activeId){
-            if(plate==null){plate=Resources.Load<Texture2D>("Art/ui/inventory/plate");font=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold")??Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular");}
+            if(plate==null){plate=Resources.Load<Texture2D>("Art/ui/inventory/plate");font=NativeSilverHellUi.Font()??Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular");}
             var s=Get(preset);string clicked=null;
             for(int i=0;i<Ids.Length;i++){
                 var r=new Rect(s.x+i*(s.tabW+s.gap),s.y,s.tabW,s.tabH);bool active=Ids[i]==activeId;

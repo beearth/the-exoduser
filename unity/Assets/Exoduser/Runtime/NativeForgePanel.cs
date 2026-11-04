@@ -88,8 +88,8 @@ namespace Exoduser.UnityPort {
   static int Px(float size){return Mathf.Max(1,Mathf.RoundToInt(size));}
   float Meas(string text,F f,float size,bool bold=false,float sp=0,bool italic=false){
    if(string.IsNullOrEmpty(text))return 0;var st=Style(f,Px(size),bold,italic);
-   if(sp==0)return st.CalcSize(new GUIContent(text)).x;
-   float w=0;foreach(char ch in text)w+=st.CalcSize(new GUIContent(ch.ToString())).x+sp;return w;
+   float scale=Mathf.Max(.01f,Mathf.Abs(GUI.matrix.m00));
+   return NativeUiTextRun.Separated(text,sp,scale,g=>st.CalcSize(new GUIContent(g)).x);
   }
   // Draws text in rect r (vertically centred). Returns the text width. anchor: Left / Center / Right.
   float Txt(Rect r,string text,F f,float size,Color c,bool bold=false,TextAnchor anchor=TextAnchor.MiddleLeft,float sp=0,float alpha=1f,Color? shadow=null,float shY=1f,bool italic=false){
@@ -99,8 +99,11 @@ namespace Exoduser.UnityPort {
    for(int pass=shadow.HasValue?0:1;pass<2;pass++){
     var col=pass==0?new Color(shadow.Value.r,shadow.Value.g,shadow.Value.b,shadow.Value.a*alpha):new Color(c.r,c.g,c.b,c.a*alpha);
     st.normal.textColor=col;float px=x,oy=pass==0?shY:0;
-    if(sp==0){NativeSilverHellUi.Label(new Rect(px,r.y+oy,total+16,r.height),text,st);continue;}
-    foreach(char ch in text){var g=ch.ToString();NativeSilverHellUi.Label(new Rect(px,r.y+oy,60,r.height),g,st);px+=st.CalcSize(new GUIContent(g)).x+sp;}
+    float scale=Mathf.Max(.01f,Mathf.Abs(GUI.matrix.m00));
+    NativeUiTextRun.Separated(text,sp,scale,g=>st.CalcSize(new GUIContent(g)).x,(offset,g)=>{
+     var box=new Rect(px+offset,r.y,st.CalcSize(new GUIContent(g)).x,r.height);
+     using(var paint=NativeUiAudit.GroupText(box,g))NativeSilverHellUi.Label(new Rect(box.x,box.y+oy,box.width,box.height),g,st);
+    });
    }
    return total;
   }

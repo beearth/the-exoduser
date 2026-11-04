@@ -72,7 +72,7 @@ namespace Exoduser.UnityPort
         void Styles()
         {
             if(hpNumber!=null)return;
-            hpNumber=new GUIStyle(GUI.skin.label){font=numberFont,fontSize=24,alignment=TextAnchor.MiddleCenter};hpNumber.normal.textColor=Color.white;
+            hpNumber=new GUIStyle(GUI.skin.label){font=numberFont,fontSize=24,alignment=TextAnchor.MiddleCenter,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};hpNumber.normal.textColor=Color.white;
             maximum=new GUIStyle(hpNumber){fontSize=18};resourceNumber=new GUIStyle(hpNumber){fontSize=17};resourceLabel=new GUIStyle(hpNumber){fontSize=14};
             keyLabel=new GUIStyle(GUI.skin.label){font=textFont,fontStyle=FontStyle.Normal,fontSize=15,alignment=TextAnchor.MiddleCenter,wordWrap=false,clipping=TextClipping.Clip,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};keyLabel.normal.textColor=new Color(192/255f,189/255f,183/255f);
             tooltip=new GUIStyle(GUI.skin.box){font=textFont,fontSize=20,alignment=TextAnchor.MiddleCenter};tooltip.normal.textColor=new Color(219/255f,216/255f,210/255f);
@@ -145,7 +145,12 @@ namespace Exoduser.UnityPort
                 float ex=wrap.x+(i==0?76.5f:93.5f)*s;
                 NativeUiAudit.DrawTexture(new Rect(ex-4*s,wrap.y-13*s,15*s,15*s),eye,ScaleMode.StretchToFill,true);
             }
-            if(!right){if(values.HpValid){Text(new Rect(wrap.x,wrap.y+62*s,wrap.width,30*s),values.HpCurrentText,hpNumber,Color.white);Text(new Rect(wrap.x,wrap.y+90*s,wrap.width,20*s),values.HpMaximumText,maximum,new Color(1,1,1,.6f));}}
+            if(!right){if(values.HpValid){
+                float top=wrap.y+62*s,currentHeight=Mathf.Max(30*s,hpNumber.CalcSize(new GUIContent(values.HpCurrentText)).y);
+                float maxTop=NativeUiTextFlow.NextLine(top,currentHeight),maxHeight=Mathf.Max(20*s,maximum.CalcSize(new GUIContent(values.HpMaximumText)).y);
+                Text(new Rect(wrap.x,top,wrap.width,currentHeight),values.HpCurrentText,hpNumber,Color.white);
+                Text(new Rect(wrap.x,maxTop,wrap.width,maxHeight),values.HpMaximumText,maximum,new Color(1,1,1,.6f));
+            }}
             else {
                 if(values.ManaValid)ResourceText(wrap,0,"MP",values.ManaCurrentText,values.ManaMaximumText,new Color(.533f,.733f,1));
                 if(values.StaminaValid)ResourceText(wrap,1,"ST",values.StaminaCurrentText,values.StaminaMaximumText,new Color(.533f,.867f,.533f));

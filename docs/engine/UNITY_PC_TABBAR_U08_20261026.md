@@ -1,5 +1,7 @@
 # Unity 공통 상단 탭바 (PC-U08, 2026-10-26)
 
+> 2026-11-04 기존 겹침 감소 후보: 공통 탭 본문은 Hahmlet 300(없으면 나눔명조)으로 통일한다. 12/14px·탭 프리셋·문구·버튼 위치를 유지하고, `NativeUiTextRun.Separated`로 측정/그리기를 일치시킨다. 글자 요소 사이 최소 물리 1px, 빈 문자 간격 0, 각 그리기 칸은 실제 폭이다. 아래 Noto SemiBold/자간 .02em 설명은 U08 당시 이력이며 현재 후보의 자간은 픽셀 간격을 확보하도록 올림된다. 참조 컴파일 오류0·소스/래칫 검사8/8·텍스트 런90/90, 새 Player/디자인 판정 전. [상세](../3.1%20ui%20hud%20디자인/UNITY_UI_OVERLAP_BURN_20261104.md).
+
 기준 웹: `game.html` `_PANEL_TABS`·`_injectPanelNav` 44024~44048(탭 클릭 = `openPanel(id)`, 활성 탭 클릭 무시), 기본 `.panel-nav-tab` CSS, 창별 덮어쓰기 CSS(`ui-refinement.css`). 계산 스타일 덤프 `_out/pc-u08/web_tabbar_dump.json`.
 브랜치 `claude/unity-pc-inventory-u04-20261026`, 베이스 `c2fdfc158`. 커밋은 맥북 총괄이 한다.
 

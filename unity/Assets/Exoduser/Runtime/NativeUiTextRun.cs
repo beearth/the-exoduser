@@ -27,6 +27,20 @@ namespace Exoduser.UnityPort {
    }
    return lines;
   }
+  // Independent IMGUI draws round their origins separately. Reserve at least
+  // one physical pixel, and use the same advances for measurement and paint.
+  // Zero spacing still paints a complete shaped run (kerning/combining intact).
+  internal static float Separated(string text,float spacing,float pixelsPerUnit,Func<string,float> measure,Action<float,string> paint=null){
+   if(string.IsNullOrEmpty(text))return 0;
+   if(!(pixelsPerUnit>0))throw new ArgumentOutOfRangeException(nameof(pixelsPerUnit));
+   if(spacing==0)return Layout(text,0,measure,paint)+1/pixelsPerUnit;
+   float x=0;var elements=StringInfo.GetTextElementEnumerator(text);
+   while(elements.MoveNext()){
+    string glyph=elements.GetTextElement();float width=measure(glyph);paint?.Invoke(x,glyph);
+    x+=(float)Math.Ceiling(width*pixelsPerUnit+Math.Max(1,spacing*pixelsPerUnit))/pixelsPerUnit;
+   }
+   return x;
+  }
   internal static float Layout(string text,float spacing,Func<string,float> measure,Action<float,string> paint=null){
    if(string.IsNullOrEmpty(text))return 0;
    if(spacing==0){float width=measure(text);paint?.Invoke(0,text);return width;}

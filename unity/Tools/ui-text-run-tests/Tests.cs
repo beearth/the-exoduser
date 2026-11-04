@@ -12,6 +12,20 @@ class Program {
  int reads=0,draws=0;w=NativeUiTextRun.Layout("",2,s=>{reads++;return 10;},(x,s)=>draws++);Check(w==0&&reads==0&&draws==0,"empty run has no phantom glyph or spacing");
  foreach(string text in new[]{"AV","경험치","e\u0301X","🚀X"})foreach(float spacing in new[]{0f,.4f,2f}){var trace=Paint(text,spacing,out w);string all="";foreach(var entry in trace)all+=entry.text;Check(all==text,"no design text element lost "+text+"/"+spacing);Check(Near(w,NativeUiTextRun.Layout(text,spacing,Width)),"measure and paint use identical layout "+text+"/"+spacing);}
 
+ // Recorded IMGUI advances can round opposite ways at fractional GUI origins.
+ float Separate(string text,float spacing,float scale,Func<string,float> measure,Action<float,string> paint=null)=>NativeUiTextRun.Separated(text,spacing,scale,measure,paint);
+ foreach(float scale in new[]{.8333333f,1f,1.3333333f,1.4814815f}){
+  var glyphs=new List<(float x,string text)>();float advance=Separate("G]",.24f,scale,g=>g=="G"?10.9087f:6.3962f,(x,g)=>glyphs.Add((x,g)));
+  Check(glyphs.Count==2&&glyphs[1].x*scale-10.9087f*scale>=.99f,"one physical pixel between independent glyph draws "+scale);
+  Check(advance>=glyphs[1].x+6.3962f,"returned advance includes the final glyph "+scale);
+  var accents=new List<string>();Separate("e\u0301🚀",.24f,scale,g=>10,(x,g)=>accents.Add(g));Check(accents.Count==2&&accents[0]=="e\u0301"&&accents[1]=="🚀","separated layout preserves text elements "+scale);
+  int paints=0;float joined=Separate("빙결→화염 2배 | ",0,scale,g=>86.54f,(x,g)=>{paints++;Check(g=="빙결→화염 2배 | ","zero spacing preserves the shaped run");});
+  Check(paints==1&&joined-86.54f>=.99f/scale,"independent shaped runs reserve a physical pixel "+scale);
+ }
+ Check(Separate("",.24f,1,g=>99)==0,"empty separated run has no phantom gap");
+ float hpTop=968.3f,hpHeight=27;Check(Near(NativeUiTextFlow.NextLine(hpTop,hpHeight)-(hpTop+hpHeight),4),"HUD maximum starts after current line and its shadow");
+ Check(993.5f<hpTop+hpHeight&&NativeUiTextFlow.NextLine(hpTop,hpHeight)>hpTop+hpHeight,"recorded 1.8px HUD collision gains a positive gap");
+
  float LabelWidth(string text){float total=0;var it=StringInfo.GetTextElementEnumerator(text);while(it.MoveNext()){var g=it.GetTextElement();total+=g==" "?8:g.Length>1||g[0]>=0xAC00?28:14;}return total;}
  string title="폭발 허수아비";var titleLines=NativeUiTextRun.Wrap(title,154,LabelWidth);Check(titleLines.Count>1&&string.Concat(titleLines)==title,"long skill title wraps without losing text");foreach(var line in titleLines)Check(LabelWidth(line)<=154,"title stays inside154");
  Check(NativeUiTextFlow.TitleExtra(1,43)==0,"one-line title preserves all existing anchors");Check(Near(NativeUiTextFlow.TitleExtra(2,43),43),"wrapped title moves level and description together");
