@@ -1,3 +1,5 @@
+2026-11-04 main 문서 정리 선행 이전: main 06ac6882b550cb6373f2953ede3b2acc6f69e211 고유 자료 71개(신규 67·기존 경로 보충 4)를 보존. 자원표·패시브표의 웹 oracle 정정은 Core 동일성 미대조로 표시. 수신 JSON·UI 인계 기록은 Unity 후속 내용을 유지해 합침. 게임 코드·Core·실행본 변경 없음. 상세 MAIN_DOCS_MIGRATION_20261104.md.
+
 2026-11-04 캐릭터 선택 직업 이름 칸 맞춤(UI 겹침 래칫 새 퇴보 10건, 유니티 총괄): 첫인상 변경으로 라틴 이름이 Cinzel이 되면서 fr "Guerrier…"가 오른쪽 패널을 2px 넘침(캐릭터선택0·2 × 해상도 5종). 이름이 308px 칸보다 넓을 때만 정수 pt로 줄임(하한 18, 자간 비례, 말줄임 없음), 맞는 이름은 28pt 그대로. classname-fit 4/0, 참조 컴파일 오류 0(claude/unity-pc-classname-fit-20261104).
 
 2026-11-04 14:50 PC Player 종료 정지 진단 준비(CTO 근본 원인 배정): 실행기 2026.11.04-stalldiag가 시간 초과 kill 때 스레드 대기 사유·GameInput 서비스 상태·로그 마지막 줄·kill 성공 여부를 영수증 stall에 남긴다(시험 stall-diag-test 7건). PortVerification.Build -gamepadBackend xinput은 그 빌드에서만 windowsGamepadBackendHint=XInput(WGI 회피 A/B, ProjectSettings 무변경). Roslyn Player/Editor 오류 0. 근거=창 모드 WGI 초기화 실행 정지 29/593, -batchmode 0/61(10-29~11-04).
