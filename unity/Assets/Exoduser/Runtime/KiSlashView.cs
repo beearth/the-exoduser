@@ -14,6 +14,7 @@ namespace Exoduser.UnityPort
         readonly Dictionary<int,SpriteRenderer[]> projectiles=new Dictionary<int,SpriteRenderer[]>();
         readonly SpriteRenderer[] charge=new SpriteRenderer[2];
         readonly SpriteRenderer[] tiers=new SpriteRenderer[3];
+        readonly Dictionary<int,int> overlapSince=new Dictionary<int,int>();
         readonly Sprite line;
         readonly MaterialPropertyBlock properties=new MaterialPropertyBlock();
         static readonly int Opacity=Shader.PropertyToID("_Opacity"),FrameRect=Shader.PropertyToID("_PixelFrameRect");
@@ -42,7 +43,7 @@ namespace Exoduser.UnityPort
         public void Reset()
         {
             foreach(var layers in projectiles.Values)foreach(var r in layers)UnityEngine.Object.Destroy(r.gameObject);
-            projectiles.Clear();foreach(var r in charge)r.enabled=false;foreach(var r in tiers)r.enabled=false;
+            projectiles.Clear();overlapSince.Clear();foreach(var r in charge)r.enabled=false;foreach(var r in tiers)r.enabled=false;
         }
         public void Update(Simulation simulation)
         {
@@ -64,18 +65,22 @@ namespace Exoduser.UnityPort
                 float alpha=(float)KiImpactPresentation.TrailAlpha(age);
                 float body=(float)KiImpactPresentation.BodyAlpha(age);
                 float size=(p.Step==3?252:192)*p.ChargeScale;
-                Set(layers[0],cell,p.X,p.Y,p.Angle,size*1.14f,size*1.14f,body*.4f);
+                // U-VFX-15: presentation only. While the crescent crosses a body (boss or any enemy) it is capped, halved, then faded from the outside in.
+                float overlap=-1;bool inside=false;
+                foreach(var enemy in simulation.Enemies)if(enemy.Alive&&KiImpactPresentation.CrescentOverlaps(p.X,p.Y,enemy.X,enemy.Y,enemy.Radius)){inside=true;break;}
+                if(inside){if(!overlapSince.ContainsKey(p.Id))overlapSince[p.Id]=simulation.TickCount;overlap=simulation.TickCount-overlapSince[p.Id];}else overlapSince.Remove(p.Id);
+                Set(layers[0],cell,p.X,p.Y,p.Angle,size*1.14f,size*1.14f,(float)KiImpactPresentation.CrescentAlpha(body*.4f,0,overlap));
                 int far=(p.TrailHead-4+5)%5,near=(p.TrailHead-2+5)%5;
-                Set(layers[1],cell,p.TrailX[far],p.TrailY[far],p.Angle,size*.9f,size*.9f,body*.08f);
-                Set(layers[2],cell,p.TrailX[near],p.TrailY[near],p.Angle,size*.9f,size*.9f,body*.18f);
-                Set(layers[3],cell,p.X,p.Y,p.Angle,size*1.08f,size*1.08f,body*.25f);
+                Set(layers[1],cell,p.TrailX[far],p.TrailY[far],p.Angle,size*.9f,size*.9f,(float)KiImpactPresentation.CrescentAlpha(body*.08f,1,overlap));
+                Set(layers[2],cell,p.TrailX[near],p.TrailY[near],p.Angle,size*.9f,size*.9f,(float)KiImpactPresentation.CrescentAlpha(body*.18f,2,overlap));
+                Set(layers[3],cell,p.X,p.Y,p.Angle,size*1.08f,size*1.08f,(float)KiImpactPresentation.CrescentAlpha(body*.25f,3,overlap));
                 // Compress across travel, keeping the arc's height and its leading tip.
                 float thin=(float)KiImpactPresentation.TrailThickness;
                 float front=size*(1-thin)*.35f;
-                Set(layers[4],cell,p.X+Mathf.Cos(p.Angle)*front,p.Y+Mathf.Sin(p.Angle)*front,p.Angle,size*thin,size,alpha);
+                Set(layers[4],cell,p.X+Mathf.Cos(p.Angle)*front,p.Y+Mathf.Sin(p.Angle)*front,p.Angle,size*thin,size,(float)KiImpactPresentation.CrescentAlpha(alpha,4,overlap));
             }
             var remove=new List<int>();foreach(var id in projectiles.Keys)if(!active.Contains(id))remove.Add(id);
-            foreach(int id in remove){foreach(var r in projectiles[id])UnityEngine.Object.Destroy(r.gameObject);projectiles.Remove(id);}
+            foreach(int id in remove){foreach(var r in projectiles[id])UnityEngine.Object.Destroy(r.gameObject);projectiles.Remove(id);overlapSince.Remove(id);}
             var player=simulation.Player;
             foreach(var r in charge)r.enabled=player.KiChargeActive;foreach(var r in tiers)r.enabled=player.KiChargeActive;
             if(!player.KiChargeActive)return;

@@ -31,6 +31,25 @@ namespace Exoduser.UnityPort
             return amplitude<.3?0:amplitude*optionScale;
         }
         public static int SheetFrame(int age,int ticks,int count)=>age<0||age>=Math.Max(1,ticks)*count?-1:age/Math.Max(1,ticks);
+        // U-VFX-15: the hit's star flash is a soft warm core (same rule as the enemy-hit lane): alpha (1-r)^3.5, zero from r>=.95,
+        // centre #fff4d0, _Opacity peak 2.6 at +2 ticks, five ticks, diameter .5 H. The silver hit sheet's star is no longer drawn for a hit.
+        public const int SoftCoreTicks=5,SoftCorePeakTick=2,SoftCoreTexture=128;
+        public const double SoftCoreExponent=3.5,SoftCoreCutoff=.95,SoftCorePeak=2.6,SoftCoreSizeRatio=.5;
+        public static readonly byte[] SoftCoreColor={255,244,208};
+        public static double SoftCoreFalloff(double r)=>r<0?1:r>=SoftCoreCutoff?0:Math.Pow(1-r,SoftCoreExponent);
+        public static double SoftCoreOpacity(double age)=>age<0||age>=SoftCoreTicks?0:age<SoftCorePeakTick?SoftCorePeak*(.35+.65*age/SoftCorePeakTick):SoftCorePeak*(SoftCoreTicks-age)/(SoftCoreTicks-SoftCorePeakTick);
+        public static double SoftCoreDiameter(double height)=>height*SoftCoreSizeRatio;
+        // U-VFX-15: a flying crescent never hides the body it crosses. Opacity is capped at .7, halved while the crescent overlaps a target's body,
+        // and after 12 ticks (0.2 s) of overlap the outer layers fade out over 6 ticks (layer 4 = the thin front edge keeps half). overlapTicks<0 = no overlap.
+        public const double CrescentAlphaCap=.7,CrescentOverlapScale=.5,CrescentOverlapGraceTicks=12,CrescentFadeTicks=6;
+        public static bool CrescentOverlaps(double px,double py,double tx,double ty,double radius)=>(px-tx)*(px-tx)+(py-ty)*(py-ty)<=radius*radius;
+        public static double CrescentAlpha(double alpha,int layer,double overlapTicks)
+        {
+            double a=Math.Min(alpha,CrescentAlphaCap);if(overlapTicks<0)return a;
+            a*=CrescentOverlapScale;if(overlapTicks<=CrescentOverlapGraceTicks)return a;
+            double f=Math.Min(1,(overlapTicks-CrescentOverlapGraceTicks)/CrescentFadeTicks);
+            return a*(layer==4?1-.5*f:1-f);
+        }
     }
     public sealed class KiImpactView : IDisposable
     {
@@ -43,7 +62,7 @@ namespace Exoduser.UnityPort
         public bool HurtActive(int tick)=>FeelEnabled&&tick<hurtUntil;
         readonly Transform parent;readonly Func<int,Sprite> frame;
         readonly Func<float> heroHeight;readonly Func<Camera> camera;
-        readonly Material contactMaterial;readonly Sprite coreShape,sparkShape;
+        readonly Material contactMaterial;readonly Sprite coreShape,sparkShape,softShape;readonly Texture2D softTexture;
         sealed class Burst {public FeedbackEvent source;public SpriteRenderer core;public SpriteRenderer[] sparks;public float height;}
         readonly List<Burst> bursts=new List<Burst>();
         int lastHitTick=-1,shakeTick=-1,shakeTier;float shakeAngle;
@@ -71,11 +90,20 @@ namespace Exoduser.UnityPort
             // A compact filled contact disk, no texture generation or imported art.
             // OverrideGeometry takes sprite-rect pixels (0..1 here), not pivot-relative units:
             // centre the disk on the .5 pivot and inset the rim so no vertex sits on the 1.0 edge.
+            softTexture=SoftCoreTexture();softShape=Sprite.Create(softTexture,new Rect(0,0,softTexture.width,softTexture.height),new Vector2(.5f,.5f),softTexture.width);
             var vertices=new Vector2[17];var triangles=new ushort[48];vertices[0]=new Vector2(.5f,.5f);
             for(int i=0;i<16;i++){float a=i*Mathf.PI/8;var rim=vertices[0]+new Vector2(Mathf.Cos(a),Mathf.Sin(a))*.499f;vertices[i+1]=new Vector2(Mathf.Clamp(rim.x,.0005f,.9995f),Mathf.Clamp(rim.y,.0005f,.9995f));triangles[i*3]=0;triangles[i*3+1]=(ushort)(i+1);triangles[i*3+2]=(ushort)((i+1)%16+1);}
             coreShape.OverrideGeometry(vertices,triangles);
             addMaterial=new Material(Resources.Load<Shader>("Shaders/KiSlashAdditive"));
             inkMaterial=new Material(Resources.Load<Shader>("Shaders/KiSlashInk"));
+        }
+        // Smooth radial gradient, no noise: rgb is the fixed warm centre colour, alpha follows (1-r)^3.5 and is 0 from r>=.95.
+        static Texture2D SoftCoreTexture()
+        {
+            int n=KiImpactPresentation.SoftCoreTexture;var t=new Texture2D(n,n,TextureFormat.RGBA32,false){name="Ki soft warm core",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};
+            var c=KiImpactPresentation.SoftCoreColor;var pixels=new Color32[n*n];
+            for(int y=0;y<n;y++)for(int x=0;x<n;x++){double dx=(x+.5-n*.5)/(n*.5),dy=(y+.5-n*.5)/(n*.5);double r=Math.Sqrt(dx*dx+dy*dy);pixels[y*n+x]=new Color32(c[0],c[1],c[2],(byte)Math.Round(255*KiImpactPresentation.SoftCoreFalloff(r)));}
+            t.SetPixels32(pixels);t.Apply(false,false);return t;
         }
         public void Handle(FeedbackEvent e)
         {
@@ -86,17 +114,16 @@ namespace Exoduser.UnityPort
             // Source playVFXAng: all effects admitted here are skills, so the
             // 20-entry pool evicts its oldest. Ink is a separate eight-entry pool.
             if(additive.Count>=20)Remove(additive,0);
-            additive.Add(Create(e,width,false));
+            // A hit draws the soft warm core below (SpawnContact); only the charge flash still plays the silver sheet.
+            if(e.Kind!=FeedbackKind.KiSlashHit)additive.Add(Create(e,width,false));
             if(e.Kind==FeedbackKind.KiSlashHit){
                 Receipt.hitCount++;SpawnContact(e);lastHitTick=e.Tick;
                 if(e.Step==3){
                     double current=KiImpactPresentation.ShakeAmplitude(3,shakeTier,e.Tick-shakeTick,1,false);
                     if(shakeTick<0||KiImpactPresentation.Shake(e.Step,e.Tier)>=current){shakeTick=e.Tick;shakeTier=e.Tier;shakeAngle=e.Angle;}
                 }
-                if(shadows.Count>=8)Remove(shadows,0);
-                shadows.Add(Create(e,width*1.14f,true));
             }else Receipt.chargeCount++;
-            Receipt.peakInk=Math.Max(Receipt.peakInk,shadows.Count);Receipt.peakAdditive=Math.Max(Receipt.peakAdditive,additive.Count);
+            Receipt.peakInk=Math.Max(Receipt.peakInk,shadows.Count);Receipt.peakAdditive=Math.Max(Receipt.peakAdditive,additive.Count+bursts.Count);
         }
         void Contact(FeedbackEvent e){
             int found=contacts.FindIndex(x=>x.source.TargetId==e.TargetId);
@@ -135,17 +162,17 @@ namespace Exoduser.UnityPort
                 Receipt.drawnFrames++;i++;
             }
         }
-        SpriteRenderer ContactRenderer(string name,Sprite sprite)
+        SpriteRenderer ContactRenderer(string name,Sprite sprite,Material material=null)
         {
             var r=new GameObject(name).AddComponent<SpriteRenderer>();r.transform.SetParent(parent,false);
-            r.sharedMaterial=contactMaterial;r.sprite=sprite;r.sortingOrder=27020;
+            r.sharedMaterial=material??contactMaterial;r.sprite=sprite;r.sortingOrder=27020;
             centeredContacts.Add(r);return r;
         }
         void SpawnContact(FeedbackEvent e)
         {
             if(bursts.Count>=20)RemoveBurst(0);
             float height=Mathf.Max(1,heroHeight!=null?heroHeight():160);
-            var b=new Burst{source=e,height=height,core=ContactRenderer("Ki contact core",coreShape),sparks=new SpriteRenderer[KiImpactPresentation.SparkCount(e.Step,e.Scale)]};
+            var b=new Burst{source=e,height=height,core=ContactRenderer("Ki contact core",softShape,addMaterial),sparks=new SpriteRenderer[KiImpactPresentation.SparkCount(e.Step,e.Scale)]};
             for(int i=0;i<b.sparks.Length;i++)b.sparks[i]=ContactRenderer("Ki contact spark",sparkShape);
             bursts.Add(b);
         }
@@ -160,10 +187,11 @@ namespace Exoduser.UnityPort
                 var b=bursts[n];var e=b.source;int age=tick-e.Tick;
                 if(age>=18){RemoveBurst(n);continue;}
                 var origin=NativeRemodel3D.Point(e.X,e.Y);
-                float alpha=(float)KiImpactPresentation.CoreAlpha(age);
-                b.core.enabled=alpha>0;b.core.color=ContactColor(age,alpha);
+                float alpha=(float)KiImpactPresentation.CoreAlpha(age),coreOpacity=(float)KiImpactPresentation.SoftCoreOpacity(age);
+                b.core.enabled=coreOpacity>0;b.core.color=Color.white;
+                b.core.GetPropertyBlock(properties);properties.SetFloat(Opacity,coreOpacity);b.core.SetPropertyBlock(properties);
                 b.core.transform.position=origin;b.core.transform.rotation=Quaternion.identity;
-                b.core.transform.localScale=Vector3.one*(float)(KiImpactPresentation.CoreDiameter(e.Step,e.Scale,b.height)/100);
+                b.core.transform.localScale=Vector3.one*(float)(KiImpactPresentation.SoftCoreDiameter(b.height)/100);
                 var cam=camera?.Invoke();
                 for(int i=0;i<b.sparks.Length;i++){
                     var r=b.sparks[i];float life=KiImpactPresentation.SparkLife(i);
@@ -196,6 +224,6 @@ namespace Exoduser.UnityPort
         static void Release(UnityEngine.Object value){if(Application.isPlaying)UnityEngine.Object.Destroy(value);else UnityEngine.Object.DestroyImmediate(value);}
         static void Remove(List<Flash> list,int index){centeredContacts.Remove(list[index].renderer);Release(list[index].renderer.gameObject);list.RemoveAt(index);}
         public void Reset(){hurtUntil=-1;lastHitTick=shakeTick=-1;shakeTier=0;shakeAngle=0;while(bursts.Count>0)RemoveBurst(bursts.Count-1);while(contacts.Count>0)Remove(contacts,contacts.Count-1);while(contactShadows.Count>0)Remove(contactShadows,contactShadows.Count-1);while(additive.Count>0)Remove(additive,additive.Count-1);while(shadows.Count>0)Remove(shadows,shadows.Count-1);}
-        public void Dispose(){Reset();Release(addMaterial);Release(inkMaterial);Release(contactMaterial);Release(coreShape);Release(sparkShape);}
+        public void Dispose(){Reset();Release(addMaterial);Release(inkMaterial);Release(contactMaterial);Release(coreShape);Release(sparkShape);Release(softShape);Release(softTexture);}
     }
 }
