@@ -21,6 +21,8 @@ namespace Exoduser.UnityPort
             for(float r=.5f;r<=3f;r+=.5f)for(int k=0;k<16;k++){float a=k*Mathf.PI/8;float px=x+Mathf.Cos(a)*r,pz=z+Mathf.Sin(a)*r;if(!walkable(px,pz)&&NativeRemodel3D.GroundY(px,pz)>-.3f){x=px;z=pz;return true;}}
             return false;
         }
+        // D4: one value-only wind step (<= 1.5x the map-wind lane values) after the measured run showed < 2 px typical tip motion.
+        public static readonly float WindGain=A2RD4.On?1.5f:1f;
         public string WindDiagnostics()
         {
             int meshes=0,withR=0,withG=0;float maxAmp=0,sumAmp=0;int ampN=0;var seen=new HashSet<Mesh>();

@@ -64,7 +64,7 @@ namespace Exoduser.UnityPort
             }
             // Wind: Wind Zone for any Unity-side consumers, plus the A2R vertex wind on detail and trees.
             var wz=new GameObject("A2R WindZone").AddComponent<WindZone>();wz.transform.SetParent(terrainRoot.transform,false);wz.transform.rotation=Quaternion.Euler(0,35,0);wz.mode=WindZoneMode.Directional;wz.windMain=.35f;wz.windTurbulence=.25f;wz.windPulseMagnitude=.6f;wz.windPulseFrequency=.12f;
-            foreach(var rend in visuals.GetComponentsInChildren<MeshRenderer>(true))foreach(var m in rend.sharedMaterials)if(m!=null&&m.HasProperty("_A2R3DWind")){var v=m.GetVector("_A2R3DWind");if(v.x>.04f&&v.x<.05f&&v.z>.5f)m.SetVector("_A2R3DWind",new Vector4(.08f,v.y,v.z,v.w));}
+            foreach(var rend in visuals.GetComponentsInChildren<MeshRenderer>(true))foreach(var m in rend.sharedMaterials)if(m!=null&&m.HasProperty("_A2R3DWind")){var v=m.GetVector("_A2R3DWind");if(v.x>.04f&&v.x<.05f&&v.z>.5f)m.SetVector("_A2R3DWind",new Vector4(.08f*WindGain,v.y,v.z,v.w));}
             Debug.Log("A2R_TERRAIN_READY details="+TerrainDetails+" grass="+TerrainGrass+" shrubs="+TerrainShrubs+" pustules="+D3Pustules+" spores="+D3Spores+" skinLayers="+SkinLayers);
         }
     }
