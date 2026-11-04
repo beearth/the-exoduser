@@ -67,6 +67,16 @@
 2026-11-04 적 3D 연결 바탕 WIP 중단: 최신6d99d0c46에서 codex/unity-enemy3d-20261104 생성. 읽기 전용 상태 정책·etype1/4 모델표·0차 FBX 변환·검사 초안 보존. 같은 정책 검사 명령2회 실패(예상 RED, 이후 Core/Skills 소스 열거 누락 CS0234/CS0246)로 사용자 지시대로 중단. Unity 렌더/Animator/VFX 연결·meta·전체 PC 컴파일·Mac 판정 미완, 본편 병합 금지. 인계 UNITY_ENEMY3D_WIRING_20261104.md.
 
 
+2026-11-04 01:20 UI 잔여 후속 후보: 최신공통5c9dd3673 선병합·CHANGELOG 양쪽 기록 보존·충돌0. 긴 스킬 이름154px/자원200px/조작 설명의 키 앞10px 경계에서만 줄바꿈하고 후속 행/스크롤/삭제 hit를 같은 높이로 맞춘다. 짧은 기본 배치·폰트·원화/로비·Core 보존. CPU67/67·PC 컴파일 오류0, 5해상도 CPU모델표와 실제 Mac 미검증을 구분. 문서 engine/UNITY_UI_OVERLAP_20261030.md 01:20절.
+
+2026-11-04 00:50 UI 잔여 조판 수정 후보: HUD 무자간 문자열은1회 조판·같은 전체 폭으로 측정하고, 봉안함/비교판의 전체문자열 그리기와 SerifWidth 글자합 불일치를 고쳤다. 자간의 결합문자/서로게이트 분리 방지. SilverHell Label에서 실제 caller 파일/행을 감사까지 보존한다. 조판31검사PASS·PC 컴파일 오류0(Core126/Runtime262, 경고2/529). 기존 판/원화/문구/색/폰트·행/앵커·분석기기준 불변, PC Player0, 기존JSON 재분석1회는1410장/8363(과거입력동일), 새 Mac 판정대기. 문서 engine/UNITY_UI_OVERLAP_20261030.md 00:50절.
+
+
+2026-11-04 적 3D 01:00 연결 바탕: 최신ec89d5166 병합·하니스 Core/Skills 재귀 열거65/0 회복. etype4 공유 키를 시작 육괴 표현 태그로 분리해 일반 갑각 사도 아틀라스 유지. 영웅 공유 rig-pixel·Generic Animator/Core 틱·투영 bounds VFX 접점·사망 시작 연결, 고정meta 추가. 확장 정책103/0·전체 PC Roslyn5어셈블리 오류0 각1회, Player0. 미제공 동작은 bind pose로 기록하며 Mac 화면·임포트·동작·성능 미판정.
+
+2026-11-04 적 3D 연결 바탕 WIP 중단: 최신6d99d0c46에서 codex/unity-enemy3d-20261104 생성. 읽기 전용 상태 정책·etype1/4 모델표·0차 FBX 변환·검사 초안 보존. 같은 정책 검사 명령2회 실패(예상 RED, 이후 Core/Skills 소스 열거 누락 CS0234/CS0246)로 사용자 지시대로 중단. Unity 렌더/Animator/VFX 연결·meta·전체 PC 컴파일·Mac 판정 미완, 본편 병합 금지. 인계 UNITY_ENEMY3D_WIRING_20261104.md.
+
+
 2026-11-04 03:30 1-1 드루이드 노인 코어 Blender 정리 v2~v6(CTO 야간 지시, 유료 0·PC Unity 실행 0): 매달린 랜턴 삭제, 지팡이 2.30m + 열린 뿌리 케이지 별도 소품(StaffSocket_L), 손 한 덩어리(왼 지팡이 감아 쥠·오른 갈고리), 새발 장화, 가면 정본 인장 굽기, 앞자락 추가, rig-pixel 팔레트 재질 7개 분할과 Blender 근사 미리보기. 문서 docs/8.1보스디자인바이블/BOSS_1-1_FIRST_BOSS_REPLAN_G0_20261103.md §26, LOCK §17.8, docs/engine/UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md. 코드 무변경.
 
 2026-11-04 00:35 3D 적 피격 위치 계획을 보스전 총괄 1차 일정(적 3D G0 §8, 773bf0238)에 맞춤: 1차 4종 G1~G3.5에서 Blender 숫자 3개(메시 높이·가슴 비율·34° 투영 높이) 요청, Unity 모델 표 연결 커밋에 피격 기준점(투영 bounds) 연결, 같은 Mac 판정 차례에 피격 컷 추가, 2차 다안 육괴는 눈 높이 접점. 문서만, 코드 무변경. 기록 docs/5.1임펙트디자인/UNITY_COMBAT_IMPACTS_20261103.md
