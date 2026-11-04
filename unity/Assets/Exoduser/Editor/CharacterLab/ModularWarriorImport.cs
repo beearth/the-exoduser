@@ -18,7 +18,7 @@ namespace Exoduser.CharacterLab {
    public bool passed,compileOnly=true,playerRun=false,humanoid,existingAnimator,rigidIron=true,defaultAdopted=false;
    public bool couterConstraintsPresent,tassetConstraintsPresent,constraintEvaluated;
    public int atlasWidth,atlasHeight,totalTriangles,bodyTriangles,swordTriangles,bones,capeBones,hairBones,materials,metalVertices,couterConstraintSources,tassetConstraints;
-   public float swordTipHeightRest,swordMeshWorldErrorMm,bladeVsRight,bladeVsUp,bladeVsForward,bladeAngleDeg,gripToSwordMm,constraintHalfAngleDeg,constraintRestDeviationDeg,socketDeterminant;
+   public float swordTipHeightRest,swordMeshWorldErrorMm,gripToRightHandMm,bladeVsRight,bladeVsUp,bladeVsForward,bladeAngleDeg,gripToSwordMm,constraintHalfAngleDeg,constraintRestDeviationDeg,socketDeterminant;
    public string prefab,sourceCommit,flag="--hero-render=rigpixel --hero-rig=modular",visualStatus="RETOUCH_GAME_QA_PENDING",variant,note;
   }
   static Transform Find(GameObject root,string name)=>root.GetComponentsInChildren<Transform>(true).FirstOrDefault(t=>t.name==name);
@@ -87,6 +87,7 @@ namespace Exoduser.CharacterLab {
     var gripDeterminant=Vector3.Dot(Vector3.Cross(grip.right,grip.up),grip.forward);Require(gripDeterminant>.99f,"Grip_L frame is not a proper rotation: "+gripDeterminant);
     var weapon=UnityEngine.Object.Instantiate(oldWeapon.gameObject);weapon.name=oldWeapon.name;
     int swordTriangles=PlaceSword(weapon,socket,receipt);
+    {var rightHand=animator.GetBoneTransform(HumanBodyBones.RightHand);if(rightHand!=null)receipt.gripToRightHandMm=(socket.position-rightHand.position).magnitude*1000f;}
     instance.AddComponent<NativeModularSecondaryMotion>();
     int cape=instance.GetComponentsInChildren<Transform>(true).Count(t=>t.name.StartsWith("Cape_",StringComparison.Ordinal));
     int hair=instance.GetComponentsInChildren<Transform>(true).Count(t=>t.name.StartsWith("RigHair_",StringComparison.Ordinal));
