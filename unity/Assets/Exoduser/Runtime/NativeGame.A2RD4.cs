@@ -10,7 +10,7 @@ namespace Exoduser.UnityPort {
  }
  public sealed partial class NativeGame {
   IEnumerator A2RD5Diagnostic(){
-   bool ai=Simulation.Config.EnemyAiEnabled;Simulation.Config.EnemyAiEnabled=false;yield return A2RNatureSize(3840);yield return R18Pose(a2rPlay.start);Shader.SetGlobalFloat("_A2RWindOff",1);Shader.SetGlobalFloat("_A2RD5",0);a2rModels.D5ShowGrowth(true);yield return A2RPlayShot("diag-entry-d4-static");Shader.SetGlobalFloat("_A2RD5",A2RD5.On?1:0);a2rModels.D5ShowGrowth(false);yield return A2RPlayShot("d5-entry-3840");yield return R18Pose(new Vector2(2450,4800));yield return D5EnsureRewardProof();
+   bool ai=Simulation.Config.EnemyAiEnabled;Simulation.Config.EnemyAiEnabled=false;yield return A2RNatureSize(3840);yield return R18Pose(a2rPlay.start);Shader.SetGlobalFloat("_A2RWindOff",1);Shader.SetGlobalFloat("_A2RD5",0);a2rModels.D5ShowGrowth(true);yield return A2RPlayShot("diag-entry-d4-static");Shader.SetGlobalFloat("_A2RD5",A2RD5.On?1:0);a2rModels.D5ShowGrowth(false);yield return A2RPlayShot("d5-entry-3840");yield return R18Pose(new Vector2(2450,4800));
    Shader.SetGlobalFloat("_A2RWindOff",1);Shader.SetGlobalFloat("_A2RD5",0);a2rModels.D5ShowGrowth(true);yield return A2RPlayShot("diag-growth-before");var oldAo=a2rModels.D5Hide("ao");yield return A2RPlayShot("diag-camp-d4-no-ao");foreach(var go in oldAo)go.SetActive(true);Shader.SetGlobalFloat("_A2RD5",A2RD5.On?1:0);a2rModels.D5ShowGrowth(false);yield return A2RPlayShot("diag-growth-after");yield return A2RPlayShot("diag-camp-base");Shader.SetGlobalFloat("_A2RD5",0);yield return A2RPlayShot("diag-camp-d4-color");Shader.SetGlobalFloat("_A2RD5",A2RD5.On?1:0);
    var info=new StringBuilder();var targets=new[]{new Vector2(1845,455),new Vector2(2155,455),new Vector2(2300,455),new Vector2(2690,455),new Vector2(2865,455)};
    var renderers=UnityEngine.Object.FindObjectsByType<Renderer>(FindObjectsInactive.Exclude,FindObjectsSortMode.None);
@@ -22,7 +22,7 @@ namespace Exoduser.UnityPort {
    yield return R18Pose(new Vector2(4320,6700));for(int n=0;n<20;n++){UpdateViews();yield return null;}
    yield return A2RPlayShot("diag-bridge-wind-off");Shader.SetGlobalFloat("_A2RWindOff",0);a2rModels.WindDiagnostics();a2rModels.D5VisibleWind(r3Cam,Path.Combine(a2rPlayOutput,"visible-wind.txt"));D5WriteCalibration();const int frames=60;Time.captureFramerate=30;var image=new Texture2D(Screen.width,Screen.height,TextureFormat.RGB24,false);string dir=Path.Combine(a2rPlayOutput,"debug10");Directory.CreateDirectory(dir);
    for(int f=0;f<frames;f++){UpdateViews();yield return new WaitForEndOfFrame();image.ReadPixels(new Rect(0,0,Screen.width,Screen.height),0,0);image.Apply();File.WriteAllBytes(Path.Combine(dir,"f"+f.ToString("000")+".jpg"),image.EncodeToJPG(92));}
-   Time.captureFramerate=0;Destroy(image);Simulation.Config.EnemyAiEnabled=ai;
+   Time.captureFramerate=0;Destroy(image);yield return R18Pose(new Vector2(2450,4800));yield return D5EnsureRewardProof();Simulation.Config.EnemyAiEnabled=ai;
   }
 
   // D4 wind measurement: fixed 30 fps game time (Time.captureFramerate), 3840x1080 1x JPG frames, wind ON then OFF at the same pose, no enemies.
