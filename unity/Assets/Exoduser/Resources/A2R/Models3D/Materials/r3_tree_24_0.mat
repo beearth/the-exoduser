@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: r3_tree_24_0
+  m_Name: r3_tree_24 tripo_material_b81947f3-ae32-4eae-9b08-081d3a781ea7
   m_Shader: {fileID: 4800000, guid: 80ca93c5ed079fa4c9504830f3a7de41, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
