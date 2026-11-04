@@ -54,3 +54,8 @@ test('슈퍼와이드 검은 옆판과 실제 HUD 겹침을 원본 픽셀에서 
   const m=api.imageMetrics(frame,on,off);
   assert.equal(m.blackBorder,true);assert.equal(m.hudOverlap,1);assert.ok(m.luminance>0);
 });
+test('상하 검은 띠도 채움 결함으로 검출한다',()=>{
+  const frame={width:32,height:32,enemies:[]},off=Buffer.alloc(32*32*3,70);
+  off.fill(0,0,32*8*3);off.fill(0,32*24*3);
+  assert.equal(api.imageMetrics(frame,off,off).blackBorder,true);
+});

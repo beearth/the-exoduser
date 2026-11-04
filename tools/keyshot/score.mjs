@@ -38,13 +38,14 @@ export function imageMetrics(frame,on,off) {
   const {width,height}=frame;if(on.length!==width*height*3||off.length!==on.length)throw new Error('이미지와 기록 해상도 불일치');
   const mask=new Uint8Array(width*height);
   for(const e of frame.enemies)if(e.visible){const left=Math.max(0,Math.ceil(e.x)),right=Math.min(width,Math.ceil(e.x+e.w));for(let y=Math.max(0,Math.ceil(e.y));y<Math.min(height,Math.ceil(e.y+e.h));y++)mask.fill(1,y*width+left,y*width+right);}
-  let total=0,border=0,dark=0,covered=0,enemyPixels=0;
+  let total=0,border=0,dark=0,horizontal=0,horizontalDark=0,covered=0,enemyPixels=0;
   for(let y=0;y<height;y++)for(let x=0;x<width;x++){
     const p=y*width+x,i=p*3,l=.2126*off[i]+.7152*off[i+1]+.0722*off[i+2];total+=l;
     if(x<8||x>=width-8){border++;if(l<2)dark++;}
+    if(y<8||y>=height-8){horizontal++;if(l<2)horizontalDark++;}
     if(mask[p]){enemyPixels++;if(Math.max(Math.abs(on[i]-off[i]),Math.abs(on[i+1]-off[i+1]),Math.abs(on[i+2]-off[i+2]))>18)covered++;}
   }
-  return {luminance:total/(width*height),blackBorder:dark/border>.98,hudOverlap:enemyPixels?covered/enemyPixels:0};
+  return {luminance:total/(width*height),blackBorder:dark/border>.98||horizontalDark/horizontal>.98,hudOverlap:enemyPixels?covered/enemyPixels:0};
 }
 export function selectViews(rows,count=4) {
   if(count<3||count>5)throw new Error('장면당 후보는 3~5개');
