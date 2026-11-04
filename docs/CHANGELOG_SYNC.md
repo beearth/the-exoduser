@@ -1,3 +1,11 @@
+## 2026-11-04 STY-25 B7 보스 처치 펫 대사 반영 (표시층만, Core 변경 0)
+- `pet_bubble.json` cue `boss_kill_ch0`(No.3350 핵터·3351 디로이, 29개 언어, `exit_north_ch0` 앞)와 entries 2개, `NativeGame.PetBubble.cs`(출구 개방 1.7초 뒤 런당 1회 Offer, B8·B9는 B7이 나온 뒤에만). 정본 `DARK_DRUID_1-1_B7_PET_PATCH_20261104.md`. 기존 쿨다운·Active 중 Offer 금지·사망 Clear·메뉴/로딩 숨김 규칙은 그대로.
+## 2026-11-04 STY-25 1-1 다크드루이드 등장·전환 문구 반영 (표시층만, Core 변경 0)
+- 코드: 이름 카드 부제 `NativeGame.StageFlow.cs` `StageSubtitle` → `NativeDemoText.Get("썩은 숲의 숲지기")`(No.4288). 목숨 전환 자막 `NativeGame.BossDialogue.cs` `OnDruidLife`(Core `DruidRemodelRaised` 읽기 전용 구독, `collapse` 이벤트 Life 0/1 → `life1`/`life2`, 2.0초 표시 < CollapseTicks 120; 리모델 세트에서만 발생), `NativeBossDialogue.Show(key, seconds)` 표시 길이 인자. 펫 짝 대사 `NativeGame.PetBubble.cs` cue `exit_north_ch0`(출구 개방 뒤 4초, 런당 1회, tier 0, 다른 말풍선이 없을 때).
+- 데이터: `Resources/Data/demo_text.json`(entries 3, bossLines `life1`·`life2`, No.3343 EN "Fresh compost, dropped right in."), `pet_bubble.json`(cue 1, entries 2). 29개 언어 전부 채움.
+- 번역 문구표: No.4288 부제 / 4289 `life1` / 4290 `life2` / 4291 핵터 / 4292 디로이 (정본 `DARK_DRUID_1-1_BOSS_TEXT_20261104.md`). 이 브랜치에는 번역대상_전체목록에 No.4288~4292 행이 없고 unity/main에 이미 있다 — 상태("반영 대기")는 병합 뒤 unity/main에서 갱신한다.
+- 참고: B7 펫 보스 처치 대사(No.3350·3351)는 이 Unity 브랜치 데이터에 없어(웹 `_petSay('boss_kill')` 전용) 확인만 하고 넣지 않았다. B8·B9는 B7 유무와 상관없이 출구 개방 4초 뒤에 나온다.
+
 ## 2026-11-04 적 리그 픽셀 RT 상한 초과 영구 2D 폴백 제거 (enemy-rt-fallback, Core 변경 0)
 `NativeEnemyRigRenderer`의 스킨드 캔버스를 현재 뼈 위치 상자+여유와 교집합으로 조이고(뼈 배열은 생성 때 캐시, 강체 무기·소품 bounds 유지), 적 전용 `NativeRigPixelPolicy.EnemyTextureSize`·`EnemyMaxRt=2048`을 연결했다. 초과하면 해당 프레임의 텍셀 배율만 ×2씩 늘려 크기 때문에 `failedIds`에 들어가는 경로를 없앴다. 모델 배율·발밑·카메라·Core·기존 `TextureSize`·`DruidCanvas`·셰이더는 그대로다. 정책 테스트 1회 5,531검사/실패0(적 RT 43검사, 1,069/4,000/30,000px·작은 박스·잘못된 입력·유한 float 극값). 컴파일 미확인(공용 실행기 20분 순번 대기 초과: EXO_QUEUE_WAIT owner=claude-quit-fix, 종료 1, Unity 시작 0회)이며 Player·빌드 실행0, 화면은 총괄 통합/Mac 판정 대기. 원인 적 id3=Warden(type29), id7=RitualApostle(type9); 당시 박스px는 기존 로그에 없어 미확인. 문서: PREP §10.5.
 
