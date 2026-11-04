@@ -34,6 +34,7 @@ namespace Exoduser.UnityPort
         {
             public string scope = "Actual GPU Player; virtual InputSystem keyboard/mouse -> NativeGame.FixedUpdate. No direct position/HP/resource edits, enemy injection, forced kill or gate unlock. Boss retries use the real death screen callback and its ordinary resource restoration; deaths and retries are counted. Story and first practice use supported skip. Earned growth points use the ordinary transactional stat purchase API; owned usable gear is equipped through NativeInventory.Equip. No forced healing.";
             public string result, device, buildGuid;
+            public bool lobbyVisible;public float fieldAssemblySeconds;
             public string frontendFailure;public List<string> frontendBoundaries=new List<string>();
             public int width, height;
             public float seconds, averageFps, frameP95Ms, frameP99Ms, longestFrameMs;
@@ -72,6 +73,8 @@ namespace Exoduser.UnityPort
             yield return new WaitForSecondsRealtime(1);
             lobby.SetPlaybackFocus(true); // Hidden desktop has no foreground focus; retain the ordinary entry flow.
             Screen.SetResolution(width,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.4f);
+            // QA review only (product 12 s prepare timeout unchanged): let the initial 3D field assembly (~16 s) finish before the first lobby transition starts its timer, as RigPixelReviewEntry does.
+            if(BossArenaReviewRequested){float assemblyStart=Time.realtimeSinceStartup,assemblyDeadline=assemblyStart+75;while(NativeRemodel3D.Requested&&!NativeRemodel3D.Active&&Time.realtimeSinceStartup<assemblyDeadline){UpdateViews();yield return null;}receipt.fieldAssemblySeconds=Time.realtimeSinceStartup-assemblyStart;yield return new WaitForSecondsRealtime(.5f);}
             lobby.ShowLobby();yield return FullRunWaitFrontend("initial-lobby",receipt);if(!string.IsNullOrEmpty(receipt.frontendFailure)){receipt.result="frontend-boundary-blocked";yield return FullRunEnd(output,receipt,started);yield break;}
             string fresh = "F" + (DateTime.Now.Ticks % 1000000).ToString("000000");
             bool opened=lobby.OpenCharacterCreation();yield return FullRunWaitFrontend("character-selection",receipt);if(!string.IsNullOrEmpty(receipt.frontendFailure)){receipt.result="frontend-boundary-blocked";yield return FullRunEnd(output,receipt,started);yield break;}
@@ -92,6 +95,7 @@ namespace Exoduser.UnityPort
             frontendEntryInputFence = false; menu = false; SetGameFocus(true); Running = false;
             Screen.SetResolution(width,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.4f);
             yield return BossArenaMaterialFieldReference();
+            if(BossArenaReviewRequested){for(int settle=0;settle<90;settle++)yield return null;receipt.lobbyVisible=lobby.IsBlocking||NativeScreenTransition.Busy;if(receipt.lobbyVisible){receipt.result="lobby-visible-after-review-start";yield return FullRunEnd(output,receipt,started);yield break;}}
             receipt.width=Screen.width;receipt.height=Screen.height;
             var oldKeyboard = Keyboard.current; var oldMouse = Mouse.current;
             var keyboard = InputSystem.AddDevice<Keyboard>(); var mouse = InputSystem.AddDevice<Mouse>();
