@@ -14,7 +14,8 @@ namespace Exoduser.UnityPort
   bool SettingsFixtureRequested {get{return Array.IndexOf(Environment.GetCommandLineArgs(),NativeSettingsStorageScope.FixtureArgument)>=0;}}
   void InitializeNativeSettings()
   {
-   settings=new NativeSettingsState(120);cinSeen=false;var args=Environment.GetCommandLineArgs();string directory;
+   // web OPT.fpsCap default 0 = unlimited (P13); a saved file still restores its own cap
+   settings=new NativeSettingsState();cinSeen=false;var args=Environment.GetCommandLineArgs();string directory;
    if(SettingsFixtureRequested&&!SettingsQaIdentity){nativeSettingsStatus=NativeSettingsStoreStatus.IoError;return;}
    if(NativeSettingsStorageScope.TryResolve(args,NativeQaSandbox.Resolve(Application.persistentDataPath),Application.productName,Application.identifier,out directory,out nativeSettingsStatus)){
     nativeSettingsDirectory=directory;nativeSettingsStore=new NativeSettingsStore(directory,NativeSettingsJsonCodec.Encode,NativeSettingsJsonCodec.Decode,settings,Screen.fullScreen);
@@ -24,7 +25,7 @@ namespace Exoduser.UnityPort
    settingsBindingsVersion=NativeKeyBindInput.Bindings.Version;
    ApplySettingsHostValues();
   }
-  static bool SupportedNativeBinding(string code)
+  internal static bool SupportedNativeBinding(string code)
   {
    if(code==null)return true;
    UnityEngine.KeyCode key;
@@ -34,7 +35,24 @@ namespace Exoduser.UnityPort
   {
    NativeSettingsJsonCodec.ApplyBindings(snapshot,NativeKeyBindInput.Bindings,SupportedNativeBinding);
   }
-  void ApplySettingsHostValues(){NativeScreenTransition.ReduceMotion=()=>settings.Options.ReduceMotion||NativeOsReducedMotion.Enabled;sound.SetVolumePercent(settings.SfxPercent);music.SetPercents(settings.SfxPercent,settings.BgmPercent);lobby.SetStartupSfxPercent(settings.SfxPercent);lobby.SetBgmPercent(settings.BgmPercent);ApplyFrameCap(settings.FrameCap);}
+  void ApplySettingsHostValues(){NativeScreenTransition.ReduceMotion=()=>settings.Options.ReduceMotion||NativeOsReducedMotion.Enabled;sound.SetVolumePercent(settings.SfxPercent);music.SetPercents(settings.SfxPercent,settings.BgmPercent);lobby.SetStartupSfxPercent(settings.SfxPercent);lobby.SetBgmPercent(settings.BgmPercent);ApplyFrameCap(settings.FrameCap);ApplySettingsLanguage();}
+  // P02: the saved menu language (web OPT.lang) beats the host default. No saved value (old file, fresh install) or an unsupported one keeps the host default.
+  string settingsLangSeen="";
+  void ApplySettingsLanguage()
+  {
+   if(lobby==null||settings==null)return;
+   string pick=LobbyLanguage.Startup(settings.Options.Lang,lobby.Language);
+   if(pick!=lobby.Language)lobby.SetLanguage(pick);
+   settingsLangSeen=lobby.Language;
+  }
+  // Any language change (pause menu, lobby popup) is written back into the settings once per change.
+  void TrackSettingsLanguage()
+  {
+   if(lobby==null||settings==null)return;
+   string now=lobby.Language;if(now==settingsLangSeen)return;
+   settingsLangSeen=now;
+   if(settings.Options.Lang!=now){settings.Options.Lang=now;QueueSettingsSave();}
+  }
   void MarkCinematicSeen(){if(cinSeen)return;cinSeen=true;QueueSettingsSave();}
   void QueueSettingsSave(){if(nativeSettingsStore==null)return;settingsSavePending=true;settingsSaveAt=Time.unscaledTime+.25f;}
   void FlushNativeSettings()
@@ -47,12 +65,13 @@ namespace Exoduser.UnityPort
   }
   void UpdateSettingsPersistence()
   {
+   TrackSettingsLanguage();
    if(NativeKeyBindInput.Bindings.Version!=settingsBindingsVersion){settingsBindingsVersion=NativeKeyBindInput.Bindings.Version;QueueSettingsSave();}
    if(settingsSavePending&&!settingsScreenPending&&Time.unscaledTime>=settingsSaveAt)FlushNativeSettings();UpdateSettingsPersistenceNotice();
   }
   void UpdateSettingsPersistenceNotice()
   {
-   if(pauseMenu==null)return;pauseMenu.SettingsPersistenceEnabled=nativeSettingsStore!=null;
+   if(pauseMenu==null)return;pauseMenu.CharacterIndex=CharacterRoster.PlayableVisualIndex;pauseMenu.SettingsPersistenceEnabled=nativeSettingsStore!=null;
    pauseMenu.SettingsPersistenceRecovered=nativeSettingsStatus==NativeSettingsStoreStatus.RecoveredFromBackup;
    pauseMenu.SettingsPersistenceProblem=nativeSettingsStatus!=NativeSettingsStoreStatus.Missing&&nativeSettingsStatus!=NativeSettingsStoreStatus.Loaded&&nativeSettingsStatus!=NativeSettingsStoreStatus.Saved&&nativeSettingsStatus!=NativeSettingsStoreStatus.RecoveredFromBackup&&!(nativeSettingsStatus==NativeSettingsStoreStatus.NotLoaded&&nativeSettingsStore==null);pauseMenu.SettingsHostApplyPending=settingsScreenPending;pauseMenu.SettingsHostApplyFailed=settingsHostError;
   }

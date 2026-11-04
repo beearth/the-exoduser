@@ -40,6 +40,9 @@ namespace Exoduser.UnityPort.Core
    s.extra=new Dictionary<string,string>();foreach(var entry in fields)if(!Known.Contains(entry.Key))s.extra.Add(entry.Key,entry.Value);
    return s;
   }
+  // Raw top-level values of a JSON object (nested values stay JSON text). Throws FormatException on malformed text.
+  public static Dictionary<string,string> ParseObject(string json){return new Reader(json).Object();}
+  public static string ParseString(string rawToken){return new Reader(rawToken).StringValue();}
   public static string[] Defaults(bool secondary){var a=new string[KeyBindings.Actions.Length];if(!secondary)for(int i=0;i<a.Length;i++)a[i]=KeyBindings.DefaultPrimaryOf(KeyBindings.Actions[i]);return a;}
   public static void ApplyBindings(NativeSettingsSnapshot snapshot,KeyBindings bindings,Func<string,bool> supported)
   {

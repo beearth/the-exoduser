@@ -70,12 +70,16 @@ namespace Exoduser.UnityPort.Core
   public string BgmTrack { get; set; }=BgmTrackDefault;
   // Existing web opt.reduceMotion; no additional native-only settings control.
   public bool ReduceMotion {get;set;}
+  // Web OPT.lang: the menu language the player picked ("" = never picked, the host keeps its own default). Stored inside the "opt" extra, so presets carry it as on the web.
+  string lang="";
+  public string Lang {get{return lang;}set{lang=IsValidLang(value)?value:"";}}
+  public static bool IsValidLang(string code){if(code==null||code.Length<2||code.Length>4)return false;foreach(char c in code)if(c<'a'||c>'z')return false;return true;}
   public NativeOptionSet() { RestoreDefaults(); }
   public static OptionDef Find(string key){foreach(var d in All)if(d.Key==key||d.Id==key)return d;return null;}
   public int Get(string key){int v;if(values.TryGetValue(key,out v))return v;var d=Find(key);return d==null?0:d.Default;}
   public bool Check(string key){return Get(key)!=0;}
   public void Set(string key,int value){var d=Find(key);if(d==null)return;values[d.Key]=d.Clamp(value);}
-  public void RestoreDefaults(){values.Clear();foreach(var d in All)values[d.Key]=d.Default;BgmTrack=BgmTrackDefault;ReduceMotion=false;}
+  public void RestoreDefaults(){values.Clear();foreach(var d in All)values[d.Key]=d.Default;BgmTrack=BgmTrackDefault;ReduceMotion=false;lang="";}
   public void RestoreDefaults(int tab){foreach(var d in All)if(d.Tab==tab)values[d.Key]=d.Default;if(tab==2)BgmTrack=BgmTrackDefault;}
   // Web _detectPreset: highest preset whose eleven values all match, else -1.
   public int DetectPreset()
@@ -95,7 +99,9 @@ namespace Exoduser.UnityPort.Core
     else if(d.Key=="autoPotThr")b.Append((v/100.0).ToString("0.##",CultureInfo.InvariantCulture));
     else b.Append(v.ToString(CultureInfo.InvariantCulture));
    }
-   b.Append(",\"bgmTrack\":\"");foreach(char c in BgmTrack){if(c=='"'||c=='\\')b.Append('\\');if(c>=32)b.Append(c);}b.Append("\",\"reduceMotion\":").Append(ReduceMotion?"true":"false").Append("}");
+   b.Append(",\"bgmTrack\":\"");foreach(char c in BgmTrack){if(c=='"'||c=='\\')b.Append('\\');if(c>=32)b.Append(c);}b.Append("\",\"reduceMotion\":").Append(ReduceMotion?"true":"false");
+   if(lang.Length>0)b.Append(",\"lang\":\"").Append(lang).Append('"');
+   b.Append("}");
    return b.ToString();
   }
   // Tolerant: unknown keys, wrong types and out-of-range values keep the current value.
@@ -111,7 +117,9 @@ namespace Exoduser.UnityPort.Core
     while(p<json.Length&&(json[p]==':'||char.IsWhiteSpace(json[p])))p++;
     string raw;
     if(p<json.Length&&json[p]=='"'){int q=p+1;var sb=new StringBuilder();while(q<json.Length&&json[q]!='"'){if(json[q]=='\\'&&q+1<json.Length)q++;sb.Append(json[q]);q++;}raw=sb.ToString();p=Math.Min(json.Length,q+1);
-     if(key=="bgmTrack"&&raw.Length>0&&raw.Length<=160)BgmTrack=raw;continue;}
+     if(key=="bgmTrack"&&raw.Length>0&&raw.Length<=160)BgmTrack=raw;
+     else if(key=="lang"&&IsValidLang(raw))Lang=raw;
+     continue;}
     int s=p;while(p<json.Length&&json[p]!=','&&json[p]!='}')p++;raw=json.Substring(s,p-s).Trim();
     if(key=="reduceMotion"){if(raw=="true"||raw=="1")ReduceMotion=true;else if(raw=="false"||raw=="0")ReduceMotion=false;continue;}
     var d=Find(key);if(d==null||d.Key!=key)continue;

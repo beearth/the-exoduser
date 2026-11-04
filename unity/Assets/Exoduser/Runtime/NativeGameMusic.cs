@@ -10,7 +10,7 @@ namespace Exoduser.UnityPort
     {
         public const float MusicBase = .6f, BedGain = .15f, FadeOutSeconds = .5f, FadeInSeconds = .3f, BedFadeSeconds = .8f;
         readonly NativeAudioMixer bus; readonly GameObject root; readonly AudioSource music, bed, arenaBed;
-        string playing = "", wanted = ""; float musicLevel, bedLevel, arenaLevel; bool bedWanted, arenaWanted;
+        string playing = "", wanted = "", wantedGame = ""; float musicLevel, bedLevel, arenaLevel; bool bedWanted, arenaWanted;
         public string Playing { get { return playing; } }
         public string Wanted { get { return wanted; } }
         public bool BedWanted { get { return bedWanted; } }
@@ -40,10 +40,13 @@ namespace Exoduser.UnityPort
         }
         public void SetPercents(int sfxPercent, int bgmPercent) { bus.SetSfxPercent(sfxPercent); bus.SetMusicPercent(bgmPercent); }
         // BGM.play(key): "" stops the music. A key without a track (hell2..7 are not part of this slice) leaves silence, never another chapter's song.
-        public void Sync(string key)
+        public void Sync(string key) { Sync(key, key); }
+        // key = the stage key (forest bed, boss snapshot); audioKey = the song to play (the BGM select may replace it, NativeBgmSelection.Resolve).
+        public void Sync(string key, string audioKey)
         {
-            if (key == wanted) return;
-            wanted = key; Switches++; Log.Add(key);
+            if (audioKey == wanted && key == wantedGame) return;
+            if (audioKey != wanted) { Switches++; Log.Add(audioKey); }
+            wanted = audioKey; wantedGame = key;
             bus.Snapshot(key == "boss");
             bedWanted = key == "hell1"; arenaWanted = key == "boss" && arenaBed.clip != null;
         }
@@ -56,6 +59,7 @@ namespace Exoduser.UnityPort
                 {
                     music.Stop(); playing = wanted; var clip = playing.Length > 0 ? Resources.Load<AudioClip>("Audio/Bgm/" + (playing == "boss" ? "bgm_druid_boss" : playing)) : null;   // 1-1 slice: the boss is the druid (SND-09)
                     if (clip == null && playing.Length > 0) clip = Resources.Load<AudioClip>("Audio/Bgm/" + playing);
+                    if (clip == null && playing == "lobby") clip = Resources.Load<AudioClip>("Audio/Lobby/lobby");   // BGM select "lobby"
                     music.clip = clip; musicLevel = 0;
                     if (clip != null) music.Play();
                 }
@@ -84,7 +88,7 @@ namespace Exoduser.UnityPort
                 if (bedLevel <= 0) { bed.Stop(); bedStartLogged = false; }
             }
         }
-        public void Silence() { wanted = ""; playing = ""; bedWanted = false; arenaWanted = false; music.Stop(); bed.Stop(); arenaBed.Stop(); bedStartLogged = false; musicLevel = bedLevel = arenaLevel = 0; bus.Snapshot(false, 0); }
+        public void Silence() { wanted = ""; wantedGame = ""; playing = ""; bedWanted = false; arenaWanted = false; music.Stop(); bed.Stop(); arenaBed.Stop(); bedStartLogged = false; musicLevel = bedLevel = arenaLevel = 0; bus.Snapshot(false, 0); }
         public void Dispose() { if (root != null) UnityEngine.Object.Destroy(root); }
     }
 }
