@@ -2,6 +2,51 @@
 
 2026-11-04 09:20 UI 겹침 검사 전면 영상 대기 10→30초(도구 총괄, BuildLoop 08:44 FAIL): 빌드·스모크 PASS 뒤 전 화면 UI 겹침 검사 14분째 UiWaitRootMovie가 world_intro_v22b_steam.mp4 준비를 10초 안에 못 봐 실패, 바탕화면 교체 안 됨. 그 시각 다른 레인 Player 2~3개가 GPU 영상 디코더를 함께 씀. QA 경로만 30초로 늘리고 실패 메시지에 prepared·frame·url을 남긴다(Runtime QA, Core·게임 화면 무변경). 11-03 09:20 실패(마우스 안전영역 역변환)는 다른 원인.
 2026-11-04 UI 판정 ⑥ 경미 5건 반영(codex/unity-demo-text-20261104): 로비 빈 슬롯 어두운 면, 입장 호버 ENTER 광+테 외곽 광, 그리스어 경험치 ΕΜΠ→Εμπειρία, 펫 말풍선 본문 명조, 사운드 탭 줄 끝 960→818(914), 사망 제목 크로스페이드 앞 제목 선소거. PC 검사 judge6 6/0·컴파일 오류 0만, 화면 판정 전.
+## 2026-11-04 드루이드 입력 v8.1 → v8.2 교체·오브 소켓 읽기 API (보스전 총괄 배정, Claude 이어받기)
+
+최신 origin/unity/main 병합(CHANGELOG/PREP 충돌은 양쪽 기록 보존). 입력 GLB를 v8.2(SHA-256 313bb238…98c, 24,299,904B)로 교체: import-oldman.py를 v8.2 이름으로 바꿔 v8.1과 같은 절차(무창 Blender, 소켓 월드 행렬 복원, Icosphere 제외)로 OldmanV82.fbx(15,581,516B) 생성, meta를 이름만 바꿔 GUID 유지, OldmanV81.fbx 삭제, NativeDruidRigPixelView·DruidRigPixelVerification·oldman-import.json·druid-rigpixel-tests의 참조 갱신. 클립 31개·이름·틱 계약·34본·78,323삼각형·Fist_L·StaffSocket_L 불변. 추가: NativeDruidRigPixelView.HasOrbSocket / OrbSocketWorldPosition / 정적 TryGetOrbSocketWorldPosition(out Vector3) — StaffSocket_L 아래 lantern_orb 변환의 실시간 월드 위치(VFX 슬래시3 예고용, 읽기 전용, 임의 오프셋 없음). Core 변경 0. 검사: 정책 4,672/0, FBX 수치 계약 통과(31클립, 정지 발 수평 최대 0.0046cm, 소켓 오차 1.08e-6m), 전체 PC Roslyn 1회 5어셈블리 오류 0(Core126/Runtime281/Editor62 포함). PC Unity/Player/빌드 0. 실제 Unity 임포트·화면·60fps 판정은 Mac 대기. docs/engine/UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md §9.3.
+
+## 2026-11-04 03:00 실제시각 드루이드 v8.1 7기술 연결
+
+최신origin/unity/main309892b1da 병합(51e0b30e77), CHANGELOG/PREP 양쪽 충돌 기록 보존. OldmanV81.fbx로교체·34본/보조10본/Fist_L/왼손소켓과29기술 단계+Idle/Walk=31클립 보존. Core 상태·남은틱으로 Generic Playable 샘플, 현재Core와원본길이 차이 보정·채찍 타격6f=Core2틱·균열 act를 기존회복안에 배치·잡힘/탈출/심장/잠행 분기. 수평 루트 중복 제거, 심장가슴맥동·영수증 확장. Core/기본값/카메라/8b 변경0. 정책4,672/0·FBX 수평발 최대.00461cm·전체Roslyn1회5어셈블리 오류0. 첫발 검사는 의도된20cm발들기를3D미끄러짐으로오인한원인을GLB에서확정하고 수평기준으로고쳐통과. PC Unity/Player0, 실제Avatar/RT/7기술1x·10초·세계발/FPS Mac대기. [계약·한계](engine/UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md#9-0300-실제시각-cto--v81-7기술-연결-소스-후보).
+
+## 2026-11-04 01:20 드루이드 v7 rig-pixel 어댑터 소스 후보
+
+최신origin/unity/main5c9dd3673 병합(0c22494993)·CHANGELOG 양쪽 기록 보존. 작업 중 도착한v7을 Generic FBX로 교체하고34본·보조10본·Fist_L·왼손소켓·가슴43면·Idle/Walk 보존. --boss-render=rigpixel만 공통 Point RT/4단 셀/팔레트·Core tick Animator 사용, 미제공7기술/Run/피격·사망은 Idle@0 대기·누락 영수증. 기본 보스/8b/카메라34°16.5/Core 수치 불변. 정책46/0·Roslyn5어셈블리 오류0·FBX 수치 통과. PC Unity/Player/렌더0, 실제 Unity Avatar·셰이더·RT·화면·FPS는 Mac 대기. [상태/클립 표](engine/UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md#7-11-04-0120-cto--v7-unity-어댑터-소스-후보).
+
+## 2026-11-04 00:50 RB1-8b 조명·재질 소스 후보
+
+최신6d99d0c46 병합 후 기존 필드 HellLighting/A2Field 달빛·후처리를 공유하고 A2R 원화2종/노멀/마스크·흙/뿌리 혼합, 세워진 횃불2개/점광, Core 외곽 독액·지면 투영을 연결했다. --unity-boss-arena-material-review는 같은 Player 필드/아레나34° PNG/JSON·조명 ID·나란히1x 페이지를 남긴다. arena73/0·Roslyn5어셈블리 오류0, PC실행0·자기Core변경0·Mac 시각/성능 미검증. Meshy 저LOD/아레나 실제반사/P3수위상승/8d는 후속. [정본 §14.6](engine/UNITY_BOSS_RM1_DARK_DRUID_20261027.md#146-rb1-8b-조명재질-소스-후보-11-04-0050-cto).
+
+## 2026-11-03 21:35 Mac FAIL 수정·21:45 카메라 정정
+
+2b1bbf2a0 병합 후 34°/16.5 고정·영웅 필드 크기 유지·보스 실제 영웅 모델 높이×2.8, 4정점 지면/A2 숲 덩어리/낮은 남쪽/뿌리 기둥·nearest 표면 알파0.2·분할 사전 준비를 적용. 새 --unity-boss-arena-review는 7기술 실제 발동·예고 경계·same-frame PNG/pose·0.6초 연속 프레임·3D 영웅 GPU 실루엣을 기록한다. metrics-only로 캡처 비용을 분리. CPU44/0·Roslyn5어셈블리 오류0, PC실행0·Core변경0·Mac 화면/60fps 미검증. [정본 §14.5](engine/UNITY_BOSS_RM1_DARK_DRUID_20261027.md#145-2135-mac-fail-수정-및-2145-거리-정정--mac-재검수-후보), [새 인자 전체](engine/UNITY_BOSS_ARENA_RB1_7_8_20261103.md).
+
+## 2026-11-03 21:00 RB1-7 선택 거리·타격 도달 정정
+
+채찍 도달480 해석을 폐기하고 AI RangeMax160 / 실제 타격·예고300으로 맞췄다. 최신 §13.4와 함께 SlashActive/HitAt=10/8(시작 후2틱), 내려찍기 RangeMax260, 돌진 추가 접촉120(몸체 전체 배율 아님)을 적용했다. 최종 하니스99210/0·frame124/0, 실제 Player는 Mac 검수 대기다. 이전480·SFX40/30 표기는 당시 후보 기록으로 대체한다. [정본 §13.5](engine/UNITY_BOSS_RM1_DARK_DRUID_20261027.md#135-2100-정정-적용--선택-거리와-타격-도달-분리).
+
+## 2026-11-03 RB1-8a 회색3D 보스방·카메라 연결
+
+--remodel3d/ForestA2의아레나3D유지·실패2D폴백·평지GroundY·기존필드표시복원,타일회색벽3~6m/overscan51.2m·Core기둥3.2m,34°/FOV46.9453/전방1.45고정·거리16.5↔18.3/0.6초를연결. CPU13/0·Player/Editor Roslyn5어셈블리오류0. PC Player실행0·실화면/60fps판정Mac대기,8b~d미구현. [정본§14.4](engine/UNITY_BOSS_RM1_DARK_DRUID_20261027.md#144-rb1-8a-소스-구현mac-판정-대기-11-03-2025-결정).
+
+## 2026-11-03 20:25 RB1-7 Core 최소 연결·잠행 원인 확정
+
+최신unity/main d6c5bb89b 정상병합. 채찍추가거리480·돌진판정폭×1.5를 드루이드 리모델세트만 연결하고 예고와 공유. 잠행출현은 정확하며 이후 넉백을 고정반경으로 검사하던 하니스 전제 수정(Core잠행0). 전투100385/0·frame124/0·OFF웹oracle5421635/0. [정본§13.4](engine/UNITY_BOSS_RM1_DARK_DRUID_20261027.md#134-rb1-7-구현원인-확정-11-03-2025-cto-결정-반영). PC컴파일·Mac판정 경계 유지, 8a는 독립 착수.
+
+## 2026-11-03 RB1-7 보스 기술 데이터 부분 적용 — FAIL 체크포인트
+
+활성7기술·예고/회복/쿨다운·잡기/잠행·슬램r260·정지거리220·4콤보를 반영했다. 전투100375검사 중 잠행18실패, 프레임124/0. Player/Editor Roslyn5어셈블리 오류0. 채찍×1.6·돌진폭×1.5는 Core고정값 때문에 미적용, RB1-8 미착수. 동일 하니스2회 실패 중단 규칙 적용, 통합 금지. [정확한 수치와 증거](engine/UNITY_BOSS_ARENA_RB1_7_8_20261103.md).
+
+2026-11-04 적 3D 01:00 연결 바탕: 최신ec89d5166 병합·하니스 Core/Skills 재귀 열거65/0 회복. etype4 공유 키를 시작 육괴 표현 태그로 분리해 일반 갑각 사도 아틀라스 유지. 영웅 공유 rig-pixel·Generic Animator/Core 틱·투영 bounds VFX 접점·사망 시작 연결, 고정meta 추가. 확장 정책103/0·전체 PC Roslyn5어셈블리 오류0 각1회, Player0. 미제공 동작은 bind pose로 기록하며 Mac 화면·임포트·동작·성능 미판정.
+
+2026-11-04 적 3D 연결 바탕 WIP 중단: 최신6d99d0c46에서 codex/unity-enemy3d-20261104 생성. 읽기 전용 상태 정책·etype1/4 모델표·0차 FBX 변환·검사 초안 보존. 같은 정책 검사 명령2회 실패(예상 RED, 이후 Core/Skills 소스 열거 누락 CS0234/CS0246)로 사용자 지시대로 중단. Unity 렌더/Animator/VFX 연결·meta·전체 PC 컴파일·Mac 판정 미완, 본편 병합 금지. 인계 UNITY_ENEMY3D_WIRING_20261104.md.
+
+
+2026-11-04 D-U1 사냥꾼 패시브 대상(디버깅 총괄, CTO 02:00): Unity Core `Simulation.EnemyBridge` HunterMul이 etype>=90(레어)만 보던 것을 웹 `_hunterMul`(D-002 뒤, main 06ac6882b 28306행)과 같이 보스(ib)·정예(elite 참)·레어에 +10%/랭크로 맞춤 → 새 `Simulation.HunterMul(w, rank)`. 수정 전 규칙은 D-002 이전 웹(안 쓰이는 isBoss/isElite)의 실제 동작을 이식한 것. 대조 `unity/Tools/hunter-oracle`: 웹 원문 280사례 불일치 0(수정 전 96/280), 실제 피격 경로 pHunter 3에서 보스·정예·레어 ×1.3·일반 ×1. 스탯창 pHunter "보스·정예 분기 미연결" 안내 삭제(표시 문자열 추가 없음). 디버깅 보드 정본을 unity/main으로 옮기고 D-012(09c)·D-013(canMv)·D-U1 기록, 방어 합산 차이는 D-U2 백로그. PC 컴파일만, Player 0.
+2026-11-04 10:15 공용 실행기 BuildLoop Player 단독 실행(CTO A안): -PcException buildloop/-Exclusive Player는 다른 Player가 끝날 때까지 기다린 뒤 혼자 돌고, 그동안 새 Player를 받지 않는다(돌던 Player는 끊지 않음, 다른 레인 동시 2슬롯 유지). 원인=QA Player 동시 4K 영상 디코드로 52a39f8f6 회차 M1 로비 영상 준비 12초 초과 33회·08:44 회차 UI 겹침 영상 준비 실패, 바탕화면 교체 막힘. 실행기 `2026.11.04-exclusive`, 시험 exclusive-test.ps1. 문서 unity/Tools/devtools/README.md.
+
+2026-11-04 09:20 UI 겹침 검사 전면 영상 대기 10→30초(도구 총괄, BuildLoop 08:44 FAIL): 빌드·스모크 PASS 뒤 전 화면 UI 겹침 검사 14분째 UiWaitRootMovie가 world_intro_v22b_steam.mp4 준비를 10초 안에 못 봐 실패, 바탕화면 교체 안 됨. 그 시각 다른 레인 Player 2~3개가 GPU 영상 디코더를 함께 씀. QA 경로만 30초로 늘리고 실패 메시지에 prepared·frame·url을 남긴다(Runtime QA, Core·게임 화면 무변경). 11-03 09:20 실패(마우스 안전영역 역변환)는 다른 원인.
 
 2026-11-04 바닥 예고 투영 색 수정(임펙트 총괄, CTO 요청 단독 브랜치): NativeGroundWarningProjection이 sRGB 정점색을 선형 변환 없이 셰이더에 넘겨 Linear 프로젝트에서 드루이드 바닥 예고(어두운 독액 얼룩 #1c3307 계열)가 밝은 민트 초록 원판·부채꼴로 보였다(PC 무창 후보 d7f5c3a1e 1920 촬영). Linear일 때 Color.linear로 변환. 쓰는 곳 NativeDruidTelegraphView(unity/main) 1곳. 같은 파일 내용으로 PC Roslyn Core·Runtime 컴파일 확인(기존 무관 Remodel 1건 외 0).
 
