@@ -1,3 +1,5 @@
+2026-11-04 문서·코드 동기화 2차 감사(기준3abbea79e, 시작bea021bcf): 병합본만 대조해10묶음을 정정했다. 실행기 loopfirst·Gate3D·M1 옵션과 임펙트 QA 진입 계약, D-U3 기존530사례/372불일치 결과를 docs에 보충. 번역목록의 사망 화면 병합 상태·펫13키·No.4254를 정정하고, STY-25 및 BGM 선택·flavor 후속 제안을 현재 구현과 구분했다. B7 후속 대기 제안 두 문서를 일치시키고 BGM5:60→6:00, Humanoid24→22대응+2보조점을 바로잡았다. 코드·Core·데이터·bin·예약·실행본 변경0, Unity/빌드/Player/oracle 재실행0. 감사·보고: I:/EXODUSER-Storage/codex-takeover/docs-sync-audit-2/AUDIT.md 및 REPORT.md.
+
 2026-11-04 STY-25 B7 보스 처치 펫 대사 Unity 패치 제안(스토리 총괄, CTO 요청): 1-1 드루이드 침강 뒤 펫 대사 No.3350·3351이 웹 _petSay(boss_kill)에만 있어 Unity pet_bubble.json cue boss_kill_ch0(tier 4, 4+4초, 런당 1회)와 29언어 entries를 웹 정본에서 옮긴 패치를 작성. B8·B9는 B7 뒤로. 문서 docs/11내러티브·로어디자인/DARK_DRUID_1-1_B7_PET_PATCH_20261104.md. 게임 데이터 변경 0(유니티 총괄 반영 대기).
 
 2026-11-04 SND-17b BGM 라이선스 확인·P1 반입 순서(사운드 총괄): 사용자 확인(CTO 경유) — Suno 생성 당시 유료 플랜 → UNITY_BGM_IMPORT_CANDIDATES의 Suno 76곡 출처 칸을 "유료 플랜 확인(사용자, 11-04)"로 갱신했다. P1 반입 순서 7단계(1 사망·승리 두 번째 4.8MB → 2 대장간 14.8MB → 3 1장 Remastered 나머지 10.4MB → 4 1장 mp3 → 5 공통 회전 → 6 2~7장 → 7 최종 보스), 데모 권장 = P0 + 1~3단계 11곡 약 45MB. 출처 태그 없는 3파일은 계속 보류. 반입·코드 변경 없음.

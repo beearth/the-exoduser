@@ -21,7 +21,7 @@
 
 ## 2. 체험판 flavor 빌드 인자
 
-빌드와 실행에 각각 넣는 인자가 다르다. 두 곳 모두 맞아야 체험판이 3D·체험판 저장으로 돈다.
+빌드와 실행에 각각 넣는 인자가 다르다. **이 절의 배포 CLI 무시·새 제품명·저장 루트는6행의 미병합 flavor 수정 적용 후 요구사항**이다. 현재 병합본3abbea79e는 `BuildFlavor.ResolveName`에서 실행 CLI→내장값→full 순서로 해석하며, 제품명은 검증판이다. 두 구현을 섞어 업로드 PASS로 판단하지 않는다.
 
 ### 2.1 빌드(공용 실행기, Editor batch)
 
@@ -97,3 +97,14 @@ I:\EXODUSER-Storage\unity-jobs\bin\exo-unity.ps1 build -Worktree <소스 작업�
 6. 사용자가 비공개 브랜치에 배정
 7. Mac 설치 실행 판정(G-F4 포함)
 8. 공개 여부는 사용자가 정한다
+
+## 4. 문서·코드 감사의 기준 구분 (2026-11-04)
+
+| 항목 | 병합본3abbea79e에서 확인 | 후속 배포 관문 |
+|---|---|---|
+| 빌드 `-flavor demo` | PortVerification에 이미 있음. 유효값full/demo/bic/ea, finally에서 원본 복원 | G-F1~G-F3은 계속 필수 |
+| 실행 CLI `--unity-build-flavor` | BuildFlavor.cs:42~47에서 내장값보다 우선 | 배포에서 CLI 무시는 미병합 flavor 수정의 동작. 병합 뒤 새 패키지로 확인 |
+| 제품명 | PortVerification.cs:206은 EXODUSER · Unity 이식 검증판 | EXODUSER: HELL LORD 및 저장 연속성은 X1 해소 후 확인 |
+| 외부 상태 | 이번 감사는 저장소 소스·문서만 읽음 | 위 콘텐츠/VDF/BuildID 기록은 작성 당시 이력. 최신 Steam 설정·현재 콘텐츠·설치본을 새로 확인한 결과가 아님 |
+
+G-FLAVOR 요구사항을 낮추지 않는다. flavor 후속 브랜치를 병합하지 않고 이 점검표만으로 배포를 승인하지 않는다. 이번 감사에서 빌드·콘텐츠 복사·steamcmd·게시를 실행하지 않았다.
