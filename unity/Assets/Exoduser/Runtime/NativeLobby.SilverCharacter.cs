@@ -132,6 +132,7 @@ namespace Exoduser.UnityPort
                 nameHeight=Mathf.Max(nameHeight,railName.CalcHeight(new GUIContent(railEnglish[n]),labelWidth));
             }
             string soon=VisualSelectionLabel("출시 준비 중","Coming soon");railSoon.font=CharacterTitleFont(soon);
+            soon=SilverRailSoon(soon,railSoon,labelWidth-8);// 디자인 판정 11-04: 칸 간격 79px에 한 줄 75px이면 네 칸이 붙어 보인다 → 한 줄이 68px를 넘으면 균형 두 줄
             soonHeight=railSoon.CalcHeight(new GUIContent(soon),labelWidth);
             float railY=h-84-actionGap-size-labelGap-nameHeight-footerGap-soonHeight;
             NativeUiAudit.Region(new Rect(0,0,w,h),"panel");
@@ -241,6 +242,19 @@ namespace Exoduser.UnityPort
             DrawSpaced(r.center.x-width/2,r.y,r.height,text,f,size,spacing,color,true);
         }
         // 웹 .cs-ico.locked .cs-ico-ring::after의 같은 X 사슬 원본을 슬롯 전체에 표시한다.
+        // "출시 준비 중" 같은 레일 아래 문구: 한 줄이 maxWidth를 넘으면 공백 중 두 줄 폭의 최대값이 가장 작은 곳에서 나눈다(공백이 없으면 그대로, 줄바꿈은 GUIStyle에 맡김).
+        static string SilverRailSoon(string text,GUIStyle style,float maxWidth)
+        {
+            if(string.IsNullOrEmpty(text)||style.CalcSize(new GUIContent(text)).x<=maxWidth)return text;
+            int split=-1;float best=float.MaxValue;
+            for(int n=text.IndexOf(' ');n>0;n=text.IndexOf(' ',n+1))
+            {
+                float a=style.CalcSize(new GUIContent(text.Substring(0,n))).x,b=style.CalcSize(new GUIContent(text.Substring(n+1))).x,worst=Mathf.Max(a,b);
+                if(worst<best){best=worst;split=n;}
+            }
+            return split<0?text:text.Substring(0,split)+"\n"+text.Substring(split+1);
+        }
+
         static string SilverRailName(string text,GUIStyle style,float width)
         {
             if(text.IndexOf(' ')>=0||style.CalcSize(new GUIContent(text)).x<=width)return text;

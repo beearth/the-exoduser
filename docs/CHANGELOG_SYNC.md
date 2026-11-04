@@ -1,3 +1,5 @@
+2026-11-04 캐릭터 선택 레일 "출시 준비 중" 두 줄(디자인 판정 queue8 RETOUCH, 유니티 총괄): 14px 한 줄 75px가 칸 간격 79px라 네 칸 글자가 이어 보임. NativeLobby.SilverCharacter.cs SilverRailSoon — 한 줄이 칸 폭-8(68px)을 넘으면 공백 중 두 줄 최대 폭이 가장 작은 곳에서 나눈다(ko "출시 / 준비 중", en "Coming / soon"), 14px·색 유지. 참조 컴파일 오류 0, 화면 판정 전.
+
 2026-11-04 캐릭터 선택 하단 버튼 글자 맞춤(유니티 총괄, 경미 7건 겹침 래칫 unknown 80건 해소용): 4982f6a9a 후보 겹침 검사에서 de "Demnächst verfügbar"·"Charakterwahl", fr 문구가 180px 취소/생성 판 밖으로 넘침(NativeLobby.TitleMenu.cs:133 DrawSpaced 글자 16종×5해상도). NativeLobby.SilverCharacter.cs DrawVisualActionPlate는 판 폭-20px를 넘으면 자간 0.2em→0.08em, 그래도 넘으면 15px에서 11px까지 1px씩 줄인다. ko·en 짧은 문구는 15px·0.2em 그대로. 참조 컴파일 5어셈블리 오류 0, 화면 판정 전.
 
 2026-11-04 1-1 한 판 예외 위험 점검(Codex run-exception-audit 731b4b558) UI 쪽 반영(유니티 총괄): R07 사망 결정·쓰러짐 화면 글꼴 null 캐시 키, R08 death_web 누락·빈 구조·없는 대사 키, R09 demo_text 구조·중복 키 사전 검증(부분 초기화 방지), R10 hellgate 언어표 영어 대체 행 검증. 참조 컴파일 오류 0, death-d2·ui-minor6·judge6 통과(claude/unity-pc-ui-minor6-20261104).
