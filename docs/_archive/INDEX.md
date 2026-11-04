@@ -2,7 +2,7 @@
 
 2026-11-03 docs 정리에서 보관한 문서 목록이다. 삭제가 아니라 원래 상대 경로 그대로 `docs/_archive/<경로>`로 옮겼다. 정본은 `origin/unity/main`이다.
 
-- 보관 575개, 폴더 29곳. 후계 문서가 있으면 함께 적었다(경로는 이 색인 기준 상대 경로).
+- 보관 576개, 폴더 29곳. 후계 문서가 있으면 함께 적었다(경로는 이 색인 기준 상대 경로).
 - 보관 계획 605개 중 30개는 docs 밖 코드(godot·tools·unity)나 핵심 문서(CLAUDE.md·AGENTS.md·DOCS_INDEX·WORK_MANUAL)가 직접 참조해 이번에 옮기지 않고 제자리에 두었다.
 - unity/main에 없고 main에만 있던 27개는 origin/main 판을 그대로 보관 위치에 넣었다.
 - 보관 기준: 더 새 문서로 대체된 옛판, 끝난 일회성 지시·보고·인계, 동결된 Godot/FDG 이식 과정 문서.
@@ -14,7 +14,7 @@
 
 | 폴더 | 보관 수 |
 |---|---:|
-| 0마스터플랜/session_handoff | 17 |
+| 0마스터플랜/session_handoff | 18 |
 | 10ai에셋프롬프트모음 | 3 |
 | 11내러티브·로어디자인 | 1 |
 | 12퍼포먼스·최적화 | 7 |
@@ -44,7 +44,7 @@
 | engine/parity_refs/integ12 | 1 |
 | engine/parity_refs/map_ui | 1 |
 
-## 0마스터플랜/session_handoff (17)
+## 0마스터플랜/session_handoff (18)
 
 | 문서 | 후계 | 이유 |
 |---|---|---|
@@ -58,6 +58,7 @@
 | [sound-simple.md](0마스터플랜/session_handoff/sound-simple.md) | [sound-lead.md](../0마스터플랜/session_handoff/sound-lead.md) | 10-28 Sonnet 사운드 단순 세션 이관 인계 |
 | [story-simple.md](0마스터플랜/session_handoff/story-simple.md) | [story-lead.md](../0마스터플랜/session_handoff/story-lead.md) | 10-28 Sonnet 스토리 단순 세션 인계. 폐지된 세션 |
 | [transitions.md](0마스터플랜/session_handoff/transitions.md) | [SCREEN_TRANSITIONS_20261102.md](<../3.1 ui hud 디자인/SCREEN_TRANSITIONS_20261102.md>) | 웹 화면 전환 Codex 레인 인계(11-02). 웹 새 개발 중단. 계약은 전환 SSOT에 있음 |
+| [web3d.md](0마스터플랜/session_handoff/web3d.md) | — | 웹 3D Codex 레인 인계. 11-03 웹 새 개발 중단으로 보관(FIX-1). |
 | [unity-m1-sonnet.md](0마스터플랜/session_handoff/unity-m1-sonnet.md) | [unity-lead-59ad.md](../0마스터플랜/session_handoff/unity-lead-59ad.md) | 10-28 Sonnet M1 HUD 세션의 Codex 이관 브리프 |
 | [unity-mac-lead.md](0마스터플랜/session_handoff/unity-mac-lead.md) | [unity-lead-59ad.md](../0마스터플랜/session_handoff/unity-lead-59ad.md) | 10-26 이식 맥북 총괄 인계. 이식 단계 종료로 대체 |
 | [unity-overall-lead.md](0마스터플랜/session_handoff/unity-overall-lead.md) | [unity-lead-59ad.md](../0마스터플랜/session_handoff/unity-lead-59ad.md) | 10-26 이식 100% 전체총괄 인계. 이식 단계 종료로 대체 |
@@ -494,7 +495,7 @@
 | [PARITY_HS_01_20261022.md](engine/PARITY_HS_01_20261022.md) | — | 웹↔Godot 동일성 작업 단위(10-22, DEMO11/INTEG 브랜치). Godot 동결로 끝난 기록 |
 | [PARITY_HUD_01_20261022.md](engine/PARITY_HUD_01_20261022.md) | — | 웹↔Godot 동일성 작업 단위(10-22, DEMO11/INTEG 브랜치). Godot 동결로 끝난 기록 |
 | [PARITY_HUD_02_20261022.md](engine/PARITY_HUD_02_20261022.md) | — | 웹↔Godot 동일성 작업 단위(10-22, DEMO11/INTEG 브랜치). Godot 동결로 끝난 기록 |
-| [PARITY_INTEG12_PC_VERIFY_20261022.md](engine/PARITY_INTEG12_PC_VERIFY_20261022.md) | — | INTEG-12 웹↔Godot PC 동일성 검수(10-22). main에만 있으나 현행 아님 → MIGRATE 대신 unity/main _archive로 이동(parity_refs/integ12 이미지 동반) |
+| [PARITY_INTEG12_PC_VERIFY_20261022.md](engine/PARITY_INTEG12_PC_VERIFY_20261022.md) | — | INTEG-12 웹↔Godot PC 동일성 검수(10-22). main에만 있으나 현행 아님 → MIGRATE 대신 unity/main _archive로 이동. 비교 이미지는 보관 문서와 분리되어 살아 있는 `docs/engine/parity_refs/integ12/`에 유지 |
 | [PARITY_INTRO_01_20261022.md](engine/PARITY_INTRO_01_20261022.md) | [PARITY_INTRO_01b_20261022.md](engine/PARITY_INTRO_01b_20261022.md) | 웹↔Godot 인트로 표시 복원(10-22), 후속 INTRO_01b. Godot 동결 |
 | [PARITY_INTRO_01b_20261022.md](engine/PARITY_INTRO_01b_20261022.md) | — | 웹↔Godot 동일성 작업 단위(10-22, DEMO11/INTEG 브랜치). Godot 동결로 끝난 기록 |
 | [PARITY_MAP_01_20261022.md](engine/PARITY_MAP_01_20261022.md) | [PARITY_MAP_03_20261022.md](engine/PARITY_MAP_03_20261022.md) | 웹↔Godot 1-1 맵 동일성 후보(10-22). 문서 스스로 PARITY_MAP_03을 후속으로 지정, Godot 동결. |
