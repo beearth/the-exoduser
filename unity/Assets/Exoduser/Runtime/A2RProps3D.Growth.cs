@@ -11,7 +11,7 @@ namespace Exoduser.UnityPort
         readonly List<D5Growth> d5Growth=new List<D5Growth>();
         GameObject d5Shrubs;
         public static bool D5LowGrowth(string kind){return kind=="m_ctree14"||kind=="m_ctree20"||kind=="m_c1cocoon"||kind=="m_c1spod";}
-        void D5RegisterGrowth(GameObject go,string kind,bool card){if(A2RD5.On&&go!=null&&D5LowGrowth(kind))d5Growth.Add(new D5Growth{go=go,card=card});}
+        void D5RegisterGrowth(GameObject go,string kind,bool card){if(!A2RD5.On||go==null||!D5LowGrowth(kind))return;d5Growth.Add(new D5Growth{go=go,card=card});if(!card&&lastAo!=null)d5Growth.Add(new D5Growth{go=lastAo,card=false});}
         public void D5ShowGrowth(bool show)
         {
             foreach(var item in d5Growth)if(item.go!=null)item.go.SetActive(show&&(!item.card||!cards.Contains(item.go)));
