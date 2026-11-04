@@ -115882,3 +115882,5 @@ r14 제출/맵 총괄 판정 전: 실제 빌드3e96685265e4f1b814c38012ca332e4a4
 - 같은 빌드 비교용 --a2r-webcards-legacy와 공통 --a2r-webcards-profile. 정적 수식/범위 대조 통과, 공용 에디터·빌드·3840 화면 비교는 대기 중이며 성능/시각 PASS로 보고하지 않는다.
 
 - 공유 카드 _Tint는 MPB.SetVector로 기존 재질 저장값을 보존한다. 일반 Color의 Material.SetColor와 MPB.SetColor의 색 공간 처리 차이를 피하고 원본/MPB 저장값 대조를 추가했다. 검증 전 상태다.
+
+- 새 A2RWebCardsBake.cs의 Unity .meta 고정 GUID도 추적한다. 에디터 실행 전 소스 패키지 누락 보완이며 동작 코드 변경은 없다.
