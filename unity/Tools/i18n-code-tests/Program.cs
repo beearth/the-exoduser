@@ -20,6 +20,8 @@ class Program {
  static void Equal(string expected,string actual,string name){count++;if(expected!=actual)throw new Exception(name+": expected ["+expected+"], got ["+actual+"]");}
  static void Main(string[] args){
   UnityEngine.Resources.Root=args[0];
+  UnityEngine.Resources.Fixtures["Data/test-audit-nested"]="{\"localization\":{\"codes\":[\"ko\",\"en\",\"fr\"],\"entries\":[{\"path\":\"nodes[0].name\",\"key\":\"지능 (INT)\",\"texts\":[\"지능 (INT)\",\"INT\",\"INT\"]}]}}";
+  Equal("INT",NativeLocaleCatalog.Get("test-audit-nested","지능 (INT)","fr"),"audit nested codes are inherited by entries");
   var locales=JsonValue.NewObject().Set("key",JsonValue.Of("move"));
   for(int i=0;i<LobbyLanguage.Count;i++){string code=LobbyLanguage.GetCode(i);locales.Set(code,JsonValue.Of(code+" move"));}
   UnityEngine.Resources.Fixtures["Data/test-inline"]=SaveJson.Write(JsonValue.NewObject().Set("entries",JsonValue.NewArray().Add(locales)));
@@ -40,16 +42,16 @@ class Program {
   UnityEngine.Resources.Fixtures["Data/test-array"]="{\"codes\":[\"ko\",\"en\",\"fr\"],\"entries\":[{\"key\":\"원문\",\"texts\":[\"원문\",\"Source\",\"Traduction\"]}]}";
   Equal("Traduction",NativeLocaleCatalog.Get("test-array","원문","fr"),"codes/texts schema");
   Equal("Source",NativeLocaleCatalog.Get("test-array","원문","ru"),"absent language in codes");
-  Equal("Try moving first",NativeLocaleCatalog.Get("first_practice","moveTitle","de"),"real practice English fallback");
-  Equal("Try moving first",NativeLocaleCatalog.Get("first_practice","moveTitle","id"),"record ID is never Indonesian text");
-  Equal("INT",NativeLocaleCatalog.Get("stat_panel_web","지능 (INT)","fr"),"real stat name fallback");
+  Equal("Bewege dich zuerst",NativeLocaleCatalog.Get("first_practice","moveTitle","de"),"real practice ID joins translated Korean alias");
+  Equal("Coba bergerak dahulu",NativeLocaleCatalog.Get("first_practice","moveTitle","id"),"record ID resolves Indonesian translation");
+  Equal("INT",NativeLocaleCatalog.Get("stat_panel_web","지능 (INT)","fr"),"real stat name is compact");
   Equal("Einstellungen",NativeLocaleCatalog.Get("a15_settings_labels_exact","settings.title","de"),"real exact locales");
   UnityEngine.Resources.Fixtures["Data/test-nested"]="{\"notes\":[{\"ko\":{\"sections\":[{\"title\":\"변경\",\"items\":[\"원문\"]}]},\"en\":{\"sections\":[{\"title\":\"Changes\",\"items\":[\"Source\"]}]},\"de\":{\"sections\":[{\"title\":\"Änderungen\",\"items\":[\"\"]}]}}]}";
   Equal("Änderungen",NativeLocaleCatalog.Get("test-nested","notes[0].sections[0].title","de"),"nested patch section");
   Equal("Source",NativeLocaleCatalog.Get("test-nested","notes[0].sections[0].items[0]","de"),"empty nested item -> en");
   Equal("Einstellungen",NativeLocaleCatalog.Text("설정","Settings","de"),"lobby K actual catalog route");
   Equal("설정",NativeLocaleCatalog.Text("설정","Settings","ko"),"lobby K language change");
-  Equal("Preview",NativeLocaleCatalog.Text("미리보기","Preview","ru"),"new KO/EN source catalog fallback");
+  Equal("Предпросмотр",NativeLocaleCatalog.Text("미리보기","Preview","ru"),"filled source catalog selects Russian");
   Equal("Game",NativeLocaleCatalog.Get("a15_options_web","t.game","ko",null,"Game"),"missing internal option key never leaks");
   Console.OutputEncoding=System.Text.Encoding.UTF8;
   Console.WriteLine("로더 동작 검사 "+count+"건 통과");

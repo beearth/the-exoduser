@@ -33,8 +33,9 @@ namespace Exoduser.UnityPort
    if(asset!=null){var root=SaveJson.Parse(asset.text);Walk(table,root,"",null,root.Get("codes"));}
    // Locale-row catalog keys often are field IDs. The Korean value is also a lookup alias.
    var aliases=new List<KeyValuePair<string,Dictionary<string,string>>>();
+   var originalKeys=new HashSet<string>(table.Rows.Keys,StringComparer.Ordinal);
    foreach(var row in table.Rows)if(row.Value.TryGetValue(LobbyLanguage.GetCode(0),out var original)&&Present(original))aliases.Add(new KeyValuePair<string,Dictionary<string,string>>(original,row.Value));
-   foreach(var alias in aliases){if(!table.Rows.TryGetValue(alias.Key,out var row))table.Rows[alias.Key]=row=new Dictionary<string,string>();foreach(var value in alias.Value)if(!row.ContainsKey(value.Key))row[value.Key]=value.Value;}
+   foreach(var alias in aliases){if(!table.Rows.TryGetValue(alias.Key,out var row))table.Rows[alias.Key]=row=new Dictionary<string,string>();foreach(var value in alias.Value)if(!row.ContainsKey(value.Key))row[value.Key]=value.Value;if(originalKeys.Contains(alias.Key))foreach(var value in row)if(!alias.Value.ContainsKey(value.Key))alias.Value[value.Key]=value.Value;}
    tables[resource]=table;return table;
   }
   static string String(JsonValue node){return node!=null&&node.Kind==JsonKind.String?node.Text:null;}
@@ -44,6 +45,7 @@ namespace Exoduser.UnityPort
    if(node.Kind==JsonKind.String&&locale!=null){table.Put(path,locale,node.Text);return;}
    if(node.Kind==JsonKind.Array){for(int i=0;i<node.Items.Count;i++){var child=node.Items[i];bool languageRow=child.Str("code")!=null;Walk(table,child,languageRow?path:path+"["+i+"]",locale,codes);}return;}
    if(node.Kind!=JsonKind.Object)return;
+   if(node.Get("codes")?.Items!=null)codes=node.Get("codes");
    string rowCode=LobbyLanguage.Resolve(node.Str("code"));locale=rowCode??locale;
    string id=node.Str("key")??node.Str("id"),identity=id??path;
    var texts=node.Get("texts");
