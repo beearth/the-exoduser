@@ -10,7 +10,7 @@ namespace Exoduser.UnityPort {
   public static bool StatusShouldDisplay(bool hovering,bool charging,bool selectionActive){return hovering||charging||selectionActive;}
   public static Rect SkillSlotRect(NativeHudDockLayout dock,int index){return dock.SlotRect(index);}
   // Normal bottom-origin screen input -> the same scaled HUD space used for drawing.
-  public static bool PointerOverSlots(Vector3 screenPoint){var point=NativeUiViewport.Pointer(screenPoint);var dock=NativeHudDockLayout.Create(NativeUiSafeArea.DesignWidth,NativeUiSafeArea.DesignHeight);for(int i=0;i<13;i++)if(SkillSlotRect(dock,i).Contains(point))return true;return false;}
+  public static bool PointerOverSlots(Vector3 screenPoint){/* H1 opt-in */if(NativeHudPrototypeLayout.CurrentMode!=HudPrototypeMode.None)return PrototypePointerOverSlots(screenPoint);/* H1 end */var point=NativeUiViewport.Pointer(screenPoint);var dock=NativeHudDockLayout.Create(NativeUiSafeArea.DesignWidth,NativeUiSafeArea.DesignHeight);for(int i=0;i<13;i++)if(SkillSlotRect(dock,i).Contains(point))return true;return false;}
   GUIStyle rageText;
   // Web updateHUD (28534-28547): the Space (rage burst) slot gets a red fill rising from the bottom (height = rage / _rageMax) with the raw "N%" at the top,
   // a border that warms at 50 / 100 and an inner glow at 100. Nothing is drawn while rage is 0.

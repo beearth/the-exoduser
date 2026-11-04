@@ -1,0 +1,20 @@
+H1 HUD prototype validation 2026-11-05
+Baseline: 75add6ff4a6209e2590a7a626ffb4c37b5f0268e
+U1: 8af73fc3a39bb96beeb0d4f308de334a5c68e7d0
+H2: b95b8ead075ec6b77c946af1b271d30c1b061099
+
+PASS 344 HUD prototype argument/layout/input contracts
+PASS 16 HUD prototype diamond/notch/soft-shadow contracts
+PASS full legacy source bytes after stripping three marked opt-in additions
+NativeHud.cs: 205 lines / CR0; NativeHudSkills.cs: 89 lines / CR0
+
+Player Exoduser.Core sources=133 exit=0 errors=0
+Player Exoduser.Runtime sources=298 exit=0 errors=0
+Editor Exoduser.Core sources=133 exit=0 errors=0
+Editor Exoduser.Runtime sources=298 exit=0 errors=0
+Editor Exoduser.Editor sources=64 exit=0 errors=0
+
+Prior true compile failure: CS0619 GetInstanceID obsolete. Fixed with Font reference identity; final retry passed.
+Independent spec review: passed. Independent source quality review: passed after atomic initialization fix.
+Scope: offline C# and source/math contracts only. Unity execution0.
+Unverified: Unity shader import/Metal, actual glyph-shadow baseline, final RGB/alpha, Mac visual/input/frame behavior.

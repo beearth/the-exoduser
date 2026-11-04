@@ -81,7 +81,7 @@ namespace Exoduser.UnityPort
         void DrawFeelHurt(Rect liquid){if(!FeelHurtActive)return;if(feelHurtMark==null)feelHurtMark=NativeSilverHellUi.Effect(256,256,(u,v)=>{float r=Vector2.Distance(new Vector2(u,v),new Vector2(.5f,.5f));if(r>.5f)return Color.clear;float inward=(.5f-r)*175;return inward<3?new Color(223/255f,180/255f,156/255f,1):new Color(184/255f,48/255f,34/255f,Mathf.Clamp01(1-(inward-3)/22));});NativeUiAudit.DrawTexture(liquid,feelHurtMark,ScaleMode.StretchToFill,true);}
         public void Draw(float width,float height,string activeAttack,Simulation simulation=null)
         {
-            if(values==null)return;Styles();ActiveSkill=activeAttack;float mid=width/2;
+            /* H1 opt-in */if(TryDrawPrototype(width,height,activeAttack,simulation))return;/* H1 end */if(values==null)return;Styles();ActiveSkill=activeAttack;float mid=width/2;
             const float scale=NativeHudDockLayout.ArtScale;
             var dock=NativeHudDockLayout.Create(width,height);
             NativeUiAudit.Region(dock.LeftFrame,"component","hud-hp-frame","HP 원화 외곽");NativeUiAudit.Region(dock.RightFrame,"component","hud-mp-frame","MP/ST 원화 외곽");NativeUiAudit.Region(dock.SlotBar,"component","hud-skills","중앙 스킬바");
@@ -199,6 +199,6 @@ namespace Exoduser.UnityPort
             }finally{Release(h);Release(m);}
         }
         static void Release(UnityEngine.Object value){if(Application.isPlaying)UnityEngine.Object.Destroy(value);else UnityEngine.Object.DestroyImmediate(value);}
-        public void Dispose(){if(feelHurtMark!=null)Release(feelHurtMark);foreach(var rt in new[]{hp,mana,shield,eye,mobility}){rt.Release();Release(rt);}Release(labelCleanBar);Release(material);}
+        public void Dispose(){/* H1 opt-in */if(NativeHudPrototypeLayout.CurrentMode!=HudPrototypeMode.None)DisposePrototype();/* H1 end */if(feelHurtMark!=null)Release(feelHurtMark);foreach(var rt in new[]{hp,mana,shield,eye,mobility}){rt.Release();Release(rt);}Release(labelCleanBar);Release(material);}
     }
 }

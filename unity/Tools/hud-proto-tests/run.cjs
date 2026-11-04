@@ -1,0 +1,12 @@
+'use strict';
+const fs=require('fs'),path=require('path'),cp=require('child_process'),assert=require('assert');
+const root=path.resolve(__dirname,'../../..'),source=path.join(root,'unity/Assets/Exoduser/Runtime/NativeHudPrototypeLayout.cs');
+assert.ok(fs.existsSync(source),'H1 production layout absent: expected RED before implementation');
+const dotnet=process.env.EXO_DOTNET||'C:/Program Files/dotnet/dotnet.exe',base=path.dirname(dotnet);
+const sdk=path.join(base,'sdk/8.0.301/Roslyn/bincore/csc.dll'),refs=path.join(base,'packs/Microsoft.NETCore.App.Ref/8.0.6/ref/net8.0');
+const out=path.join(root,'unity/Library/HudProtoTests');fs.mkdirSync(out,{recursive:true});
+const dll=path.join(out,'HudProtoTests.dll');
+const args=[sdk,'/nologo','/target:exe','/out:'+dll,...fs.readdirSync(refs).filter(f=>f.endsWith('.dll')).map(f=>'/reference:'+path.join(refs,f)),source,path.join(__dirname,'Program.cs')];
+let r=cp.spawnSync(dotnet,args,{encoding:'utf8',windowsHide:true});process.stdout.write(r.stdout||'');process.stderr.write(r.stderr||'');if(r.status!==0)process.exit(r.status||1);
+fs.writeFileSync(path.join(out,'HudProtoTests.runtimeconfig.json'),JSON.stringify({runtimeOptions:{tfm:'net8.0',framework:{name:'Microsoft.NETCore.App',version:'8.0.6'}}}));
+r=cp.spawnSync(dotnet,[dll],{encoding:'utf8',windowsHide:true});process.stdout.write(r.stdout||'');process.stderr.write(r.stderr||'');process.exit(r.status||0);
