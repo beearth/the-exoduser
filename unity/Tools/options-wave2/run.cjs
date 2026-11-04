@@ -45,7 +45,10 @@ ok(/kv\.Key!=null&&kv\.Key\.weight==0f/.test(gfx)&&/kv\.Key!=null\)kv\.Key\.acti
 const basis=cp.execFileSync('git',['-C',project,'rev-parse','78cef36f9^2'],{encoding:'utf8'}).trim();
 const names=cp.execFileSync('git',['-C',project,'diff','--name-only',basis,'--','Assets/Exoduser/Runtime/NativeHud.cs','Assets/Exoduser/Runtime/NativePanelTabBar.cs','Assets/Exoduser/Runtime/NativeForgePanel.cs','Assets/Exoduser/Runtime/NativeFlavorSavePaths.cs','Assets/Exoduser/Runtime/NativeFlavorStorage.cs','Assets/Exoduser/Runtime/NativeGame.CombatSave.cs'],{encoding:'utf8',stdio:['ignore','pipe','pipe']}).trim();
 ok(names==='','forbidden files unchanged: '+names);
-const core=cp.execFileSync('git',['-C',project,'diff','--name-only','78cef36f9','--','Assets/Exoduser/Runtime/Core'],{encoding:'utf8'}).trim().split('\n').filter(Boolean);   // wave 2 only: since the wave-1 + demo-flavor merge
+// wave 2 only: Core files touched by this branch's own (non-merge) commits since the wave-1 + demo-flavor merge,
+// excluding commits that arrived through later merges of unity/main or other lanes (BGM P1), so re-merging unity/main does not trip this check.
+const exclude=['origin/unity/main','origin/codex/unity-bgm-import-p1-20261104'].filter(r=>{try{cp.execFileSync('git',['-C',project,'rev-parse','--verify','--quiet',r],{stdio:'ignore'});return true;}catch(e){return false;}}).map(r=>'^'+r);
+const core=[...new Set(cp.execFileSync('git',['-C',project,'log','--no-merges','--name-only','--format=','78cef36f9..HEAD',...exclude,'--','Assets/Exoduser/Runtime/Core'],{encoding:'utf8'}).trim().split('\n').filter(Boolean))];
 ok(core.every(f=>/Core\/(NativeCursorSteps|NativeGraphicsPolicy)\.cs(\.meta)?$/.test(f)),'wave 2 adds only two new Core presentation helpers, no rule file changed: '+core.join(','));
 console.log(JSON.stringify({sourceChecks:checks}));
 const env=Object.assign({},process.env,{DOTNET_ADD_GLOBAL_TOOLS_TO_PATH:'false'}),dll=path.join(out,'dotnet-build');fs.mkdirSync(out,{recursive:true});
