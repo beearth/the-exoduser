@@ -170,4 +170,4 @@ R2가 G8을 통과하기 전에는 다른 지역용 Meshy 양산을 하지 않�
 | 2026-10-28 | 1장 보스 아레나 맵 제작 순서 1-1 → 1-4 → 1-2 → 1-3을 `docs/engine/UNITY_CH1_BOSS_ARENA_MAP_SPEC_20261028.md`에 계약화했다. Core 원형 격자·진입·출구·충돌을 보존하고, 기둥/수로·탯줄·이랑·둥지의 표현을 각각 구분한다. 명세 작성 단계이며 네 아레나의 구현·시각 PASS는 아니다. | Codex 맵 인수 / 보스 명세 §5 |
 | 2026-10-28 | 1-1 보스 아레나 수로의 첫 기하 후보 `codex/pc-map-arena-20261028` `2f2e8bc9b`: 실제 `BossArenaLayout.Generate(0)` 막힘 격자에서 보행 바깥 인접 278타일을 선택, 출입축 x±3을 비우고 Core Tiles 변경 0. .NET 검사 11/0와 원격 SHA 확인. 메시·`M_ToxicFlow` 연결·Unity 컴파일·Player·1x 화면은 미완료. `VISUAL VERDICT: RETOUCH`, 통합 HOLD. | Codex 맵 인수 / Unity 브랜치 후보 |
 
-- 2026-11-04 B5 기본 필드: `NativeGame.B5Fix.cs`가 조립 뒤 달빛기둥 2종 이름과 A2ToxicRiver 수면 그림자만 처리한다. `--b5fix-off` 및 A2R 인자/기본 활성 리소스에서는 건너뛴다. 실제 Unity 컴파일·3840 1x 비교 대기, 디자인 미검수.
+- 2026-11-04 B5 기본 필드: `NativeGame.B5Fix.cs`가 조립 뒤 달빛기둥 2종 이름과 A2ToxicRiver 수면 그림자만 처리한다. `--b5fix-off` 및 A2R 인자/기본 활성 리소스에서는 건너뛴다. 공용 실행기 HALT로 실제 Unity 컴파일·3840 1x 비교 미실행, 미검증 보류.
