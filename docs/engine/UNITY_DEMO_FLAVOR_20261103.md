@@ -35,6 +35,10 @@
 
 폴더 안 구조는 옛 빌드와 같다: `character-roster-v1`·`combat-save-v1`·`native-settings-v1`이 루트 바로 아래에 있고 이름공간 하위 폴더를 만들지 않는다. 그래서 **옛 이름 빌드와 정식판이 같은 폴더를 공유한다**(같은 파일을 읽고 쓴다). 루트는 플랫폼과 flavor로만 고른다(폴더가 있는지 찾아보지 않는다). demo·BIC·EA는 옛 루트를 보지 않고 새 제품명 루트의 자기 이름공간에서 처음부터 시작하며, QA sandbox는 실제 루트를 절대 보지 않는다. 스키마·revision·코덱은 바뀌지 않았다.
 
+**제품명 가드(11-04 3차):** 옛 루트는 `Application.productName`이 정식명 `EXODUSER: HELL LORD`(`NativeFlavorSavePaths.OfficialProductName`, ProjectSettings productName과 같음을 테스트가 확인) 또는 옛 이름 `LegacyProductName`과 정확히 같을 때만 쓴다. 제품명이 다른 Player(Settings QA·A03A04 QA·Web Preview 등)를 인자 없이 켜도 자기 `persistentDataPath`에 격리되어 사용자의 실제 full 폴더를 읽거나 쓰지 않는다. 루트 계산은 `ArgumentException`뿐 아니라 `NotSupportedException`·`PathTooLongException`·`SecurityException`도 같은 실패 경로(저장 불가 로그, `TryResolve=false`)로 보낸다.
+
+**명령줄 flavor 정책(11-04 3차):** `--unity-build-flavor`는 개발 빌드(`Debug.isDebugBuild`)나 QA/자동 실행(`QaRunPolicy.IsAutomated`) 때만 flavor를 정한다(`BuildFlavor.CommandLineHonored`). 배포 빌드는 인수를 무시하고 내장 `build_flavor.json`을 쓴다. 그래서 체험판 패키지는 `-flavor demo`로 내장해 만들어야 하고, 실행 인수로는 정식판 저장을 열 수 없다. 명령줄 flavor를 쓰는 실행은 `NativeQaSandbox`가 자동 격리하므로(`BuildFlavor.UsesCommandLine`) 실제 저장 루트를 만지지 않는다. 이 인수에 기대는 곳은 `NativeBuildFlavor.Capture`(overlay-capture, `-capture`라 QA 실행)와 Steam 실행 옵션 문서(내장 방식으로 정정)뿐이다.
+
 이름공간: full=`EXODUSER-HELL-FULL`(QA sandbox에서만 쓴다), demo=`EXODUSER-HELL-DEMO`, 비패키지 bic/ea의 빈 namespace는 `EXODUSER-HELL-BIC/EA`로 보완한다. 해석은 파일을 만들거나 열지 않는다. 폴더는 각 저장소가 처음 저장할 때 만든다. 이 코드에서 full 루트에 쓰는 것은 기존 저장소의 정상 저장뿐이다.
 
 **결정 근거(11-04):** "옛 폴더 → 새 폴더 복사 + 지문 재가져오기" 방식은 검증에서 2연속 FAIL이었다(롤백·부분 실패·후보 경로 여러 개·동시 실행마다 새 예외가 나왔다). CLAUDE §4.1(같은 방법 2연속 FAIL이면 방법을 바꾼다)에 따라 정식판 저장 루트를 제품명과 분리해 옛 루트에 고정하고 복사·가져오기를 없앴다. 이제 롤백·분기·재가져오기 문제가 생길 수 없다. 폴더 이름이 "이식 검증판"인 것은 사용자에게 보이지 않는 경로라 감수한다. 출시 전에 이름을 정리해야 하면 그때 이전 도구를 따로 만든다(데모 v0 범위 밖).
@@ -77,7 +81,7 @@ CTO 독립 검증 3명이 68684c9a1을 FAIL로 판정한 11건의 처리다. Cor
 |---|---|
 | 1 | 최신 unity/main을 다시 병합(CHANGELOG 양쪽 절 보존). 병합 뒤 `merge-base --is-ancestor origin/unity/main HEAD`로 fast-forward 가능을 확인했다 |
 | 2·9 | CHANGELOG_SYNC.md 줄마다 CR을 세어 LF 줄 0(CRLF 100%). NativeStageClearOverlay.cs의 원래 LF 줄 3개(39·146·154행)를 되돌려 906fbad35 기준 줄 끝 분포를 유지 |
-| 3 | 테스트 스텁 `Application.version` 추가. 전체 회귀(`recovery.cjs --full`)가 실제로 컴파일·실행되어 위시리스트 4해상도(1920×1080·3840×1080·960×540·640×360)·QA 격리·바이트 보존까지 통과 |
+| 3 | 테스트 스텁 `Application.version` 추가. 전체 회귀(`recovery.cjs --full`)가 실제로 컴파일·실행되어 위시리스트 4해상도(1920×1080·3840×1080·960×540·640×360)·QA 격리까지 통과 |
 | 4 | 폐기(11-04 제작법 변경): 표식 기반 재가져오기. 가져오기 자체를 없앴다 |
 | 5 | 폐기(11-04): `.tmp` 제외·실패 시 새로 시작·로비 안내. 코드·데이터에서 걷어냈고 번역 목록에서도 행을 뺐다(No.4288은 반납, 지금은 STY-25 드루이드 문구가 쓴다) |
 | 6 | 폐기(11-04): lock 회수·staging 보존. lock·staging 코드가 없다 |

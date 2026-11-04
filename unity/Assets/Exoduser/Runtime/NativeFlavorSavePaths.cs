@@ -11,6 +11,11 @@ namespace Exoduser.UnityPort
   public enum RootKind {Windows,MacPlayer,Other}
   // Product name of the old build; its folder name is fixed here on purpose (it no longer follows the product title).
   public const string LegacyProductName="EXODUSER · Unity 이식 검증판";
+  // The one place that spells the official product name (ProjectSettings productName; a test compares the two).
+  public const string OfficialProductName="EXODUSER: HELL LORD";
+  // Only a build that carries the official or the old product name may use the old full root. Any other product (QA, preview or tool apps)
+  // keeps its own persistentDataPath, so launching it without arguments never reads or writes the player's real full folder.
+  public static bool UsesLegacyRoot(string productName){return productName==OfficialProductName||productName==LegacyProductName;}
   // Windows: LocalLow/<company>/<old product>. Mac Player: Application Support/<bundle id folder>. Other (Editor): unchanged persistentDataPath.
   public static string FullRoot(string persistentRoot,string company,RootKind kind)
   {

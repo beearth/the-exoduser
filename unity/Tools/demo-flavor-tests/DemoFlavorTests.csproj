@@ -8,5 +8,6 @@
   <Compile Include="../../Assets/Exoduser/Runtime/BuildFlavor.cs"/>
   <Compile Include="../../Assets/Exoduser/Runtime/NativeDemoEndText.cs"/>
   <Compile Include="../../Assets/Exoduser/Runtime/Core/LobbyLanguage.cs"/>
+  <Compile Include="../../Assets/Exoduser/Runtime/Core/Platform/QaRunPolicy.cs"/>
  </ItemGroup>
 </Project>
