@@ -57,7 +57,7 @@ function makeEnv(c, rnd) {
   const aff = { dodgeChance: c.dodge || 0, ccRes: c.ccRes || 0, stunRes: c.stunRes || 0, eDefFlat: c.edef || 0, shieldBlockDR: c.shieldBlockDR || 0 };
   const zero = () => 0, noop = () => undefined, empty = () => ({});
   const env = {
-    URLSearchParams, location:{search:''}, matchMedia:()=>({matches:false}), _gameTime:0,
+    URLSearchParams, location:{search:'?feel=0'}, matchMedia:()=>({matches:false}), _gameTime:0,
     Math: M, P, G, OPT: { shake: 100, hitStop: 100, parts: 100 }, _HS: { pStun: 6 }, PASSIVES: { pGuard: c.pGuard || 0 }, STATS: { dex: c.dex || 0 }, INV: { equipped: {} },
     window: {}, __cos: () => 0.5, SFX: new Proxy({}, { get: () => noop }),
     _eqAffix: k => aff[k] || 0, _eqStat: k => (k === 'Dex' ? 0 : 0), _lEq: zero, _uEq: zero, _uqS: {}, _gritTotal: zero, enhMul: zero, pDefAdd: zero,

@@ -55,13 +55,15 @@ class EnemySpawnProgram
                     if (f == null) { Check(false, path + "." + p.Name + " missing in C# " + type.Name); continue; }
                     Cmp(f.GetValue(cs), p.Value, path + "." + p.Name);
                 }
-                // a C# field that the web does not have on this object must be unset (null = web undefined)
+                // a C# field that the web does not have on this object must be unset (null = web undefined). Exception (sweep verdict 11-04): the value-type
+                // AI-runtime fields of EnemySpawn.Ai.cs, which the web mkEn leaves undefined until updateE first writes them; enemy-ai-oracle checks their behaviour.
                 foreach (var f in type.GetFields(BindingFlags.Public | BindingFlags.Instance))
-                    if (!seen.Contains(f.Name)) Check(f.GetValue(cs) == null, path + "." + f.Name + " set in C# but undefined in web");
+                    if (!seen.Contains(f.Name) && !(type == typeof(EnemySpawn) && AiRuntimeFields.Contains(f.Name))) Check(f.GetValue(cs) == null, path + "." + f.Name + " set in C# but undefined in web");
                 return;
         }
     }
 
+    static readonly HashSet<string> AiRuntimeFields = new HashSet<string> { "echDx", "echDy", "_chgAimMax", "_chgDur", "_chgSpd", "_chgLen", "_projChargeT", "_sepCd", "_escorting", "_hasAtkTicket", "_eliteBoltAim", "_eliteBoltWarn", "_absorbed" };
     static int Main(string[] args)
     {
         var root = JsonDocument.Parse(File.ReadAllText(args[1])).RootElement;
