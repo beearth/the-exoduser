@@ -31,8 +31,11 @@ Shader "EXODUSER/A2RootSurface"
    TEXTURE2D(_FieldCover);SAMPLER(sampler_FieldCover);TEXTURE2D(_FieldSdf);TEXTURE2D(_FieldMoss);TEXTURE2D(_FieldMossNormal);TEXTURE2D(_FieldMossRough);
    CBUFFER_START(UnityPerMaterial)
    half4 _ScanColor;
+   float _A2RHellRot;
    float4 _BaseMap_ST;half4 _BaseColor;half _Cutoff,_Smoothness,_Metallic,_ForestBlend,_ForestTextureMix,_SoilTextureMix,_FullField;
    CBUFFER_END
+   half3 HellSkin(half3 c,half3 t){if(_A2RHellRot<.5)return c*t;half l=dot(c,half3(.299,.587,.114));return lerp(half3(.006,.004,.003),half3(.070,.025,.021),saturate(l*2.4))*half3(1,.95,1.02);}
+   half3 HellVein(half3 c,half3 t){if(_A2RHellRot<.5)return c*t;half l=dot(c,half3(.299,.587,.114));return half3(.050,.010,.008)*(.5+l*2.2);}
    struct A {float4 positionOS:POSITION;float3 normalOS:NORMAL;float4 tangentOS:TANGENT;float2 uv:TEXCOORD0;half4 color:COLOR;};
    struct V {float4 positionCS:SV_POSITION;float3 world:TEXCOORD0;float3 normal:TEXCOORD1;float4 tangent:TEXCOORD2;float2 uv:TEXCOORD3;half fog:TEXCOORD4;half4 color:TEXCOORD5;};
    V vert(A v){V o;o.world=TransformObjectToWorld(v.positionOS.xyz);o.positionCS=TransformWorldToHClip(o.world);o.normal=TransformObjectToWorldNormal(v.normalOS);o.tangent=float4(TransformObjectToWorldDir(v.tangentOS.xyz),v.tangentOS.w*GetOddNegativeScale());o.uv=v.uv;o.color=v.color;o.fog=ComputeFogFactor(o.positionCS.z);return o;}
@@ -41,8 +44,8 @@ Shader "EXODUSER/A2RootSurface"
     float2 tile=i.world.xz/6;float sweep=smoothstep(0,1,(sin(i.world.x*.7+i.world.z*.29)+sin(i.world.z*.51-i.world.x*.17)+2)*.25);
     half rock=.08+.26*sweep,ash=.06+.12*(1-sweep);
     half3 skin=SAMPLE_TEXTURE2D(_BaseMap,sampler_BaseMap,i.uv).rgb;
-    half3 stone=SAMPLE_TEXTURE2D(_RockMap,sampler_ForestMap,tile).rgb*half3(.55,.56,.58);
-    half3 soil=SAMPLE_TEXTURE2D(_AshMap,sampler_ForestMap,tile).rgb*half3(.55,.56,.58);
+    half3 stone=HellSkin(SAMPLE_TEXTURE2D(_RockMap,sampler_ForestMap,tile).rgb,half3(.55,.56,.58));
+    half3 soil=HellSkin(SAMPLE_TEXTURE2D(_AshMap,sampler_ForestMap,tile).rgb,half3(.55,.56,.58));
     half3 a=skin*(1-rock-ash)+stone*rock+soil*ash;
     half3 forest=lerp(soil*.9,stone*.6,.28+.2*sweep)*half3(.75,.65,.48);
     a=lerp(a,forest,_ForestBlend);
@@ -52,10 +55,10 @@ Shader "EXODUSER/A2RootSurface"
     float treeDistance=min(min(distance(i.world.xz,float2(34.8,-70.5)),distance(i.world.xz,float2(49,-64.8))),min(distance(i.world.xz,float2(53.3,-77)),distance(i.world.xz,float2(29.5,-64))));
     float soilMix=_ForestBlend*_SoilTextureMix;
     float rootMix=soilMix*max(.85*(1-smoothstep(2,5,treeDistance)),smoothstep(2,5,abs(across)))*(.45+.25*sweep);
-    a=lerp(a,SAMPLE_TEXTURE2D(_SoilMap,sampler_ForestMap,soilUV).rgb*half3(.62,.55,.45),soilMix);
-    a=lerp(a,SAMPLE_TEXTURE2D(_RootMap,sampler_ForestMap,rootUV).rgb*half3(.70,.63,.52),rootMix);
+    a=lerp(a,HellSkin(SAMPLE_TEXTURE2D(_SoilMap,sampler_ForestMap,soilUV).rgb,half3(.62,.55,.45)),soilMix);
+    a=lerp(a,HellVein(SAMPLE_TEXTURE2D(_RootMap,sampler_ForestMap,rootUV).rgb,half3(.70,.63,.52)),rootMix);
     float leafMix=_ForestBlend*_ForestTextureMix*lerp(.1,1,smoothstep(1.5,3.5,abs(across)))*(.25+.75*sweep);
-    half3 leaf=SAMPLE_TEXTURE2D(_ForestMap,sampler_ForestMap,leafUV).rgb*half3(.42,.37,.26);
+    half3 leaf=HellSkin(SAMPLE_TEXTURE2D(_ForestMap,sampler_ForestMap,leafUV).rgb,half3(.42,.37,.26));
     a=lerp(a,leaf,leafMix);
     half3 ns=UnpackNormalScale(SAMPLE_TEXTURE2D(_BumpMap,sampler_BumpMap,i.uv),.45);
     half3 nr=UnpackNormalScale(SAMPLE_TEXTURE2D(_RockNormal,sampler_ForestMap,tile),.3);
@@ -70,10 +73,10 @@ Shader "EXODUSER/A2RootSurface"
      float macro=smoothstep(-.7,.7,sin(i.world.x*.27+sin(i.world.z*.23)*1.8)+sin(i.world.z*.36+i.world.x*.16)*.55);
      float fringe=1-smoothstep(.1,5,edge);
      float2 soilFine=i.world.xz/2.3;
-     half3 dirt=SAMPLE_TEXTURE2D(_SoilMap,sampler_ForestMap,soilFine).rgb*half3(.55,.48,.36);
-     half3 roots=SAMPLE_TEXTURE2D(_RootMap,sampler_ForestMap,i.world.xz/3.8).rgb*half3(.60,.48,.32);
-     half3 leaves=SAMPLE_TEXTURE2D(_ForestMap,sampler_ForestMap,i.world.xz/1.8).rgb*half3(.47,.38,.24);
-     half3 moss=SAMPLE_TEXTURE2D(_FieldMoss,sampler_ForestMap,i.world.xz/2.6).rgb*half3(.50,.56,.34);
+     half3 dirt=HellSkin(SAMPLE_TEXTURE2D(_SoilMap,sampler_ForestMap,soilFine).rgb,half3(.55,.48,.36));
+     half3 roots=HellVein(SAMPLE_TEXTURE2D(_RootMap,sampler_ForestMap,i.world.xz/3.8).rgb,half3(.60,.48,.32));
+     half3 leaves=HellSkin(SAMPLE_TEXTURE2D(_ForestMap,sampler_ForestMap,i.world.xz/1.8).rgb,half3(.47,.38,.24));
+     half3 moss=HellVein(SAMPLE_TEXTURE2D(_FieldMoss,sampler_ForestMap,i.world.xz/2.6).rgb,half3(.50,.56,.34));
      mossMix=SAMPLE_TEXTURE2D(_FieldCover,sampler_FieldCover,float2(i.world.x/80,-i.world.z/80)).r*(.48+.35*macro);
      a=lerp(dirt,roots,.3+.35*fringe);a=lerp(a,leaves,macro*.42);a=lerp(a,moss,mossMix);
      nt=normalize(lerp(UnpackNormalScale(SAMPLE_TEXTURE2D(_SoilNormal,sampler_ForestMap,soilFine),.65),UnpackNormalScale(SAMPLE_TEXTURE2D(_RootNormal,sampler_ForestMap,i.world.xz/3.8),.65),.3+.35*fringe));
@@ -95,7 +98,7 @@ Shader "EXODUSER/A2RootSurface"
     surface.smoothness=lerp(surface.smoothness,.22+.23*(1-SAMPLE_TEXTURE2D(_FieldMossRough,sampler_ForestMap,i.world.xz/2.6).r),mossMix);
     if(_FullField>.5)surface.smoothness=lerp(.44-.24*SAMPLE_TEXTURE2D(_SoilRough,sampler_ForestMap,i.world.xz/2.3).r,.24+.18*(1-SAMPLE_TEXTURE2D(_FieldMossRough,sampler_ForestMap,i.world.xz/2.6).r),mossMix);
     half3 scanARM=SAMPLE_TEXTURE2D(_ScanARM,sampler_ScanMap,i.uv).rgb;
-    surface.albedo=lerp(surface.albedo,SAMPLE_TEXTURE2D(_ScanMap,sampler_ScanMap,i.uv).rgb*_ScanColor.rgb,scanWeight);surface.occlusion=lerp(1,scanARM.r,scanWeight);surface.smoothness=lerp(surface.smoothness,1-scanARM.g,scanWeight);
+    surface.albedo=lerp(surface.albedo,HellVein(SAMPLE_TEXTURE2D(_ScanMap,sampler_ScanMap,i.uv).rgb,_ScanColor.rgb),scanWeight);surface.occlusion=lerp(1,scanARM.r,scanWeight);surface.smoothness=lerp(surface.smoothness,1-scanARM.g,scanWeight);
     #if defined(_DBUFFER)
     ApplyDecalToSurfaceData(i.positionCS,surface,input);
     input.bakedGI=SampleSH(input.normalWS);
