@@ -62,7 +62,7 @@ NativeLobby/CharacterRoster/삭제 UI·통합 소유는 기존 Mac 담당. 기�
 |---|---|
 | CharacterRoster | Capacity=5 제거, 생성/전체복원 count guard없음. Ordinal HashSet으로이름중복을검사하고생성/삭제/Clear/복원에서동기화. 이름2~8·금지문자·출시잠금·선택검증유지 |
 | NativeLobby.Characters | OpenCharacterCreation의개수guard와 /5표시제거, 기존창/저장권한조건유지 |
-| SilverLobby 생성행 | 기존 +새캐릭터와현재Count만표시. count에따른비활성/가득참안내없음. 라벨286×64·15px자동줄바꿈/수량78×64·13px, 기존2개뷰포트/스크롤유지 |
+| SilverLobby 생성행 | + 와 "새 캐릭터" 라벨만 표시(11-04 D-016, 70502a2b4: 수량 숫자 줄 삭제 — a9ddfbffc가 5칸 상한을 없앤 뒤 남은 뜻 없는 "n", 웹 정본 카드는 + 와 이름뿐). 비활성/가득참안내없음. 라벨286×64·15px자동줄바꿈(수량 78×64·13px 칸은 없어짐), 기존2개뷰포트/스크롤유지 |
 | CharacterRosterStore | 개수/64KiB상한제거. payloadversion2신규저장·v1/2읽기·v1읽기원문무변경·저장승격/backup보존. 기존파일명과schema/충돌·원자교체·손상보존유지 |
 | CharacterSmoke | 6개생성후에도생성창열림을검사하도록수정. fixture작성만, 실제Player실행0 |
 | 검증·한계 | 생성42/복원15/저장59(5,000개·64KiB초과·v1호환)·삭제58모델검사PASS, Core/Runtime311독립compile오류0. 도타실행보호로정식Unity/Player/M1·1920/2560/3840실제시각·실행본반영0/NOT_READY |
