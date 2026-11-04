@@ -29,7 +29,7 @@ C1-특성 (`presentationTraits[2,*]`, 아이콘 키는 그대로 두고 디자�
 
 | 칸 | 제목 KO / EN | 본문 KO / EN | No. |
 |---|---|---|---|
-| 0 | 무거운 한 발 / One Heavy Round | 중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다. / From mid-range, bring your target down with one heavy-chamber round. | 4277·4278 |
+| 0 | 무거운 한 발 / One Heavy Round | 중거리에서 큰 약실의 한 발로 목표를 무너뜨립니다. / From mid-range, bring your target down with a single shot from a large chamber. | 4277·4278 |
 | 1 | 붉은 부착탄 / Red Sticky Charge | 적에게 붙인 탄이 잠시 뒤 터져 몰려든 무리를 흩어 놓습니다. / A round stuck to an enemy bursts a moment later and scatters the crowd. | 4279·4280 |
 | 2 | 검은 연기 / Black Smoke | 연막을 남기며 옆으로 빠져 다음 사격 자리를 잡습니다. / Leave a smokescreen as you slip aside and take your next firing position. | 4281·4282 |
 
@@ -87,3 +87,31 @@ C1-특성 (`presentationTraits[2,*]`, 아이콘 키는 그대로 두고 디자�
 2. 한국어가 바뀐 No.4274~4287은 나머지 27개 언어를 번역해 같은 파일에 넣는다. 웹 정본 키가 없는 새 문장이다.
 3. EN만 바뀐 행은 번역 목록의 해당 No. EN 칸도 같이 고친다.
 4. 화면 확인은 Mac 1920×1080 1x 캡처로 한다: 캐릭터 선택 5슬롯(특히 아이반 카드·실버테일 카드), 사망 결정 화면 en, 지옥문 패널 en.
+
+## 7. 반영 기록 (11-04 유니티 총괄)
+
+브랜치 `claude/unity-pc-first-impression-tone-20261104`(origin/unity/main 349a9d7db 기준). 병합 전까지는 이 브랜치에만 있다.
+
+| 항목 | 반영 위치 | 결과 |
+|---|---|---|
+| C1 아이반 카드(No.4274~4282) | `NativeLobby.CharacterPresentation.cs` 이름·직업·설명·특성 표, 레일 라벨, 영어 인라인 배열·`TraitEnglish`·`TraitEnglishBody`, `NativeLobby.SilverCharacter.cs` 레일 라벨·영어 배열 | 반영. 슬롯 ID·comingSoon·아이콘 키·원화 그대로 |
+| C2·C3·C6(No.4283~4285) | 같은 C# 표·영어 배열, `visual_select_labels.json` 12행 | 반영. 29개 언어 |
+| C5(No.4286) | `character_dialog_labels.json` description | 반영. 29개 언어 |
+| C7(No.4287) | `character_basic_stories.json` ko stories[4]. 주어가 빠진 ja·zh·zht·fr·pl·cs도 같은 뜻으로 주어 보완 | 반영. 나머지 언어는 이미 주어 있음 |
+| C4 | `character_basic_stories.json` en stories[1] | EN만 반영 |
+| D1·T1~T9 | `death_decision_text.json`·`demo_text.json`·`death_screen_labels.json`·`hellgate_objectives.json`·`pet_bubble.json` | EN만 반영 |
+| D2 | `death_web.json` dd_queen crow "여신님" | 웹 현행(game.html dd_queen)과 같게 |
+
+- `visual_select_labels.json`: 옛 키 12행(헬거너·창포수 등)을 새 키 12행으로 제자리 교체했다. 언어별 행 수는 65 그대로이고, 옛 키는 Runtime·Tools에서 쓰는 곳이 없음을 grep으로 확인했다.
+- 영어 폴백 직업은 `DEMOLITIONIST`, 이름·레일은 `Ivan`이다.
+- 남긴 것: `character_ui.json`(웹 `CHAR_VISUALS` 추출본, 런타임에서 읽지 않음)은 웹 정본 그대로라 바꾸지 않았다. 웹 시절 기록 문서(기획서·RESUME·ENGLISH_CHARACTER_BADGE 등)의 옛 문구도 그대로 둔다. §5 보고 항목은 이번에도 손대지 않았다.
+- 화면 확인(§6의 4번)은 Mac 1920×1080 1x 캡처가 남아 있다.
+
+
+## 8. STY-24 29언어 문자열 검수 후속 (2026-11-04)
+
+기준 d80d1157e, 검수 브랜치 codex/unity-i18n-first-impression-20261104. 조사 대상은 Data 9파일·79키(78키×29언어 + 한국어 전용 D2)이며 용어 정합으로 기본 스토리 stories[3]도 함께 검사했다. §5의 미사용 쌍단검 2행은 전수 검사 조건에 따라 한국어 복사 56값만 실번역했다. 옛 설정 문구와 미노출 상태는 유지한다.
+
+아이반 폭파공 29언어 표기는 기존값을 유지하고 번역 가이드에 캐릭터·직업 용어표를 추가했다. 창법사 es/ru/uk/bg, 변성술사 zh/zht, 전사 id를 통일했다. C4의 hu는 장검을 다이안의 등에 붙인 것으로 읽히던 소유·위치를 바로잡고 ja/el은 검 소유자를 명시했다. T5/T7/T8/T9는 나머지 27언어에도 같은 의미·말투를 반영했다. No.4278 EN은 “From mid-range, bring your target down with a single shot from a large chamber.”로 다듬었다.
+
+[대상·검사·넘침 위험표](../16번역·로컬라이제이션/STY24_I18N_AUDIT_20261104.md). 한국어·Core·Runtime C#·미사용 character_ui.json은 변경하지 않았다. 화면·폰트·원어민·Mac 판정과 줄기 병합은 별도 대기다.

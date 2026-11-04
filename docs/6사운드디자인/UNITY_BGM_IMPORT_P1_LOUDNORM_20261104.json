@@ -1,0 +1,498 @@
+{
+  "scope": "오프라인 2-pass loudnorm 및 최종 MP3 재디코딩 측정. 청음/Unity 실행 아님.",
+  "target": {
+    "I": -16,
+    "TP": -1.5,
+    "LRA": 11,
+    "format": "mp3 192k, 44100 Hz stereo"
+  },
+  "tracks": [
+    {
+      "file": "공통/지옥 추락 사망 징글.mp3",
+      "clip": "death_alt",
+      "cue": "death",
+      "sourceCommit": "b94c8fbff29d01fa94c9cd7a51a7f4eadc4d7fc8",
+      "pass1": {
+        "input_i": "-14.00",
+        "input_tp": "0.21",
+        "input_lra": "8.40",
+        "input_thresh": "-24.33",
+        "output_i": "-14.78",
+        "output_tp": "-1.50",
+        "output_lra": "6.60",
+        "output_thresh": "-25.06",
+        "normalization_type": "dynamic",
+        "target_offset": "-1.22"
+      },
+      "pass2": {
+        "input_i": "-13.92",
+        "input_tp": "0.20",
+        "input_lra": "8.30",
+        "input_thresh": "-24.22",
+        "output_i": "-15.92",
+        "output_tp": "-1.80",
+        "output_lra": "8.30",
+        "output_thresh": "-26.22",
+        "normalization_type": "linear",
+        "target_offset": "-0.08"
+      },
+      "encoded": {
+        "input_i": "-16.27",
+        "input_tp": "-1.74",
+        "input_lra": "8.30",
+        "input_thresh": "-26.59",
+        "output_i": "-14.78",
+        "output_tp": "-1.50",
+        "output_lra": "6.60",
+        "output_thresh": "-25.06",
+        "normalization_type": "dynamic",
+        "target_offset": "-1.22"
+      },
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "mp3",
+            "sample_rate": "44100",
+            "channels": 2,
+            "bit_rate": "192000"
+          },
+          {
+            "codec_name": "png"
+          }
+        ],
+        "format": {
+          "duration": "103.720000",
+          "size": "2535185",
+          "bit_rate": "195540"
+        }
+      }
+    },
+    {
+      "file": "공통/탈출 성공.mp3",
+      "clip": "victory_alt",
+      "cue": "victory",
+      "sourceCommit": "b94c8fbff29d01fa94c9cd7a51a7f4eadc4d7fc8",
+      "pass1": {
+        "input_i": "-13.62",
+        "input_tp": "0.06",
+        "input_lra": "11.10",
+        "input_thresh": "-24.30",
+        "output_i": "-14.88",
+        "output_tp": "-1.50",
+        "output_lra": "10.00",
+        "output_thresh": "-25.25",
+        "normalization_type": "dynamic",
+        "target_offset": "-1.12"
+      },
+      "pass2": {
+        "input_i": "-13.62",
+        "input_tp": "0.06",
+        "input_lra": "11.10",
+        "input_thresh": "-24.30",
+        "output_i": "-16.31",
+        "output_tp": "-2.03",
+        "output_lra": "11.50",
+        "output_thresh": "-26.79",
+        "normalization_type": "dynamic",
+        "target_offset": "0.31"
+      },
+      "encoded": {
+        "input_i": "-16.58",
+        "input_tp": "-2.32",
+        "input_lra": "11.50",
+        "input_thresh": "-27.12",
+        "output_i": "-15.88",
+        "output_tp": "-1.50",
+        "output_lra": "9.50",
+        "output_thresh": "-26.13",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.12"
+      },
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "mp3",
+            "sample_rate": "44100",
+            "channels": 2,
+            "bit_rate": "192000"
+          },
+          {
+            "codec_name": "png"
+          }
+        ],
+        "format": {
+          "duration": "202.719977",
+          "size": "5004983",
+          "bit_rate": "197513"
+        }
+      }
+    },
+    {
+      "file": "공통/복수의 대장간.mp3",
+      "clip": "forge_vengeance",
+      "cue": "forge",
+      "sourceCommit": "b94c8fbff29d01fa94c9cd7a51a7f4eadc4d7fc8",
+      "pass1": {
+        "input_i": "-13.88",
+        "input_tp": "-0.41",
+        "input_lra": "3.70",
+        "input_thresh": "-23.92",
+        "output_i": "-15.14",
+        "output_tp": "-1.50",
+        "output_lra": "2.30",
+        "output_thresh": "-25.16",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.86"
+      },
+      "pass2": {
+        "input_i": "-13.83",
+        "input_tp": "-0.43",
+        "input_lra": "3.70",
+        "input_thresh": "-23.85",
+        "output_i": "-15.95",
+        "output_tp": "-2.55",
+        "output_lra": "3.60",
+        "output_thresh": "-25.97",
+        "normalization_type": "linear",
+        "target_offset": "-0.05"
+      },
+      "encoded": {
+        "input_i": "-16.26",
+        "input_tp": "-2.80",
+        "input_lra": "3.80",
+        "input_thresh": "-26.30",
+        "output_i": "-15.14",
+        "output_tp": "-1.50",
+        "output_lra": "2.30",
+        "output_thresh": "-25.16",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.86"
+      },
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "mp3",
+            "sample_rate": "44100",
+            "channels": 2,
+            "bit_rate": "192000"
+          },
+          {
+            "codec_name": "png"
+          }
+        ],
+        "format": {
+          "duration": "294.000000",
+          "size": "7126378",
+          "bit_rate": "193915"
+        }
+      }
+    },
+    {
+      "file": "공통/forge.mp3",
+      "clip": "forge_vengeance_alt",
+      "cue": "forge",
+      "sourceCommit": "b94c8fbff29d01fa94c9cd7a51a7f4eadc4d7fc8",
+      "pass1": {
+        "input_i": "-9.62",
+        "input_tp": "-0.15",
+        "input_lra": "6.50",
+        "input_thresh": "-19.71",
+        "output_i": "-14.73",
+        "output_tp": "-3.11",
+        "output_lra": "3.60",
+        "output_thresh": "-24.78",
+        "normalization_type": "dynamic",
+        "target_offset": "-1.27"
+      },
+      "pass2": {
+        "input_i": "-9.59",
+        "input_tp": "-0.22",
+        "input_lra": "6.20",
+        "input_thresh": "-19.63",
+        "output_i": "-15.97",
+        "output_tp": "-6.60",
+        "output_lra": "6.20",
+        "output_thresh": "-26.01",
+        "normalization_type": "linear",
+        "target_offset": "-0.03"
+      },
+      "encoded": {
+        "input_i": "-16.26",
+        "input_tp": "-6.57",
+        "input_lra": "6.40",
+        "input_thresh": "-26.34",
+        "output_i": "-14.73",
+        "output_tp": "-2.81",
+        "output_lra": "3.60",
+        "output_thresh": "-24.78",
+        "normalization_type": "dynamic",
+        "target_offset": "-1.27"
+      },
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "mp3",
+            "sample_rate": "44100",
+            "channels": 2,
+            "bit_rate": "192000"
+          },
+          {
+            "codec_name": "png"
+          }
+        ],
+        "format": {
+          "duration": "294.360000",
+          "size": "7139040",
+          "bit_rate": "194022"
+        }
+      }
+    },
+    {
+      "file": "공통/Anvil Ashes.mp3",
+      "clip": "forge_anvil_ashes",
+      "cue": "forge",
+      "sourceCommit": "b94c8fbff29d01fa94c9cd7a51a7f4eadc4d7fc8",
+      "pass1": {
+        "input_i": "-13.08",
+        "input_tp": "1.00",
+        "input_lra": "4.80",
+        "input_thresh": "-23.19",
+        "output_i": "-15.22",
+        "output_tp": "-1.60",
+        "output_lra": "3.90",
+        "output_thresh": "-25.30",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.78"
+      },
+      "pass2": {
+        "input_i": "-13.03",
+        "input_tp": "0.76",
+        "input_lra": "4.60",
+        "input_thresh": "-23.13",
+        "output_i": "-15.95",
+        "output_tp": "-2.16",
+        "output_lra": "4.70",
+        "output_thresh": "-26.05",
+        "normalization_type": "linear",
+        "target_offset": "-0.05"
+      },
+      "encoded": {
+        "input_i": "-16.26",
+        "input_tp": "-2.27",
+        "input_lra": "4.70",
+        "input_thresh": "-26.37",
+        "output_i": "-15.22",
+        "output_tp": "-1.65",
+        "output_lra": "3.90",
+        "output_thresh": "-25.30",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.78"
+      },
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "mp3",
+            "sample_rate": "44100",
+            "channels": 2,
+            "bit_rate": "192000"
+          },
+          {
+            "codec_name": "png"
+          }
+        ],
+        "format": {
+          "duration": "359.680000",
+          "size": "8671585",
+          "bit_rate": "192873"
+        }
+      }
+    },
+    {
+      "file": "1장_썩은숲/Neon Hellfire Protocol (Remastered).wav",
+      "clip": "hell1_rot_neon_hellfire",
+      "cue": "hell1",
+      "sourceCommit": "b94c8fbff29d01fa94c9cd7a51a7f4eadc4d7fc8",
+      "pass1": {
+        "input_i": "-15.25",
+        "input_tp": "-2.76",
+        "input_lra": "5.60",
+        "input_thresh": "-25.33",
+        "output_i": "-15.75",
+        "output_tp": "-1.99",
+        "output_lra": "6.00",
+        "output_thresh": "-25.80",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.25"
+      },
+      "pass2": {
+        "input_i": "-15.22",
+        "input_tp": "-2.76",
+        "input_lra": "5.70",
+        "input_thresh": "-25.27",
+        "output_i": "-15.97",
+        "output_tp": "-3.51",
+        "output_lra": "5.60",
+        "output_thresh": "-26.02",
+        "normalization_type": "linear",
+        "target_offset": "-0.03"
+      },
+      "encoded": {
+        "input_i": "-16.26",
+        "input_tp": "-3.44",
+        "input_lra": "5.60",
+        "input_thresh": "-26.34",
+        "output_i": "-15.74",
+        "output_tp": "-1.84",
+        "output_lra": "6.00",
+        "output_thresh": "-25.79",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.26"
+      },
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "mp3",
+            "sample_rate": "44100",
+            "channels": 2,
+            "bit_rate": "192000"
+          }
+        ],
+        "format": {
+          "duration": "234.360000",
+          "size": "5626191",
+          "bit_rate": "192052"
+        }
+      }
+    },
+    {
+      "file": "1장_썩은숲/Neon Hellfire Protocol2(Remastered).wav",
+      "clip": "hell1_rot_neon_hellfire_2",
+      "cue": "hell1",
+      "sourceCommit": "b94c8fbff29d01fa94c9cd7a51a7f4eadc4d7fc8",
+      "pass1": {
+        "input_i": "-15.21",
+        "input_tp": "-2.40",
+        "input_lra": "3.10",
+        "input_thresh": "-25.34",
+        "output_i": "-15.45",
+        "output_tp": "-1.50",
+        "output_lra": "2.90",
+        "output_thresh": "-25.52",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.55"
+      },
+      "pass2": {
+        "input_i": "-15.18",
+        "input_tp": "-2.40",
+        "input_lra": "3.10",
+        "input_thresh": "-25.25",
+        "output_i": "-15.97",
+        "output_tp": "-3.19",
+        "output_lra": "3.10",
+        "output_thresh": "-26.04",
+        "normalization_type": "linear",
+        "target_offset": "-0.03"
+      },
+      "encoded": {
+        "input_i": "-16.26",
+        "input_tp": "-3.29",
+        "input_lra": "3.10",
+        "input_thresh": "-26.39",
+        "output_i": "-15.45",
+        "output_tp": "-1.50",
+        "output_lra": "2.90",
+        "output_thresh": "-25.51",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.55"
+      },
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "mp3",
+            "sample_rate": "44100",
+            "channels": 2,
+            "bit_rate": "192000"
+          }
+        ],
+        "format": {
+          "duration": "233.520000",
+          "size": "5606129",
+          "bit_rate": "192056"
+        }
+      }
+    },
+    {
+      "file": "1장_썩은숲/Wrath of the Golden Age (Remastered).wav",
+      "clip": "hell1_rot_wrath_golden_age",
+      "cue": "hell1",
+      "sourceCommit": "b94c8fbff29d01fa94c9cd7a51a7f4eadc4d7fc8",
+      "pass1": {
+        "input_i": "-15.69",
+        "input_tp": "-2.46",
+        "input_lra": "4.50",
+        "input_thresh": "-25.81",
+        "output_i": "-15.28",
+        "output_tp": "-1.50",
+        "output_lra": "4.10",
+        "output_thresh": "-25.35",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.72"
+      },
+      "pass2": {
+        "input_i": "-15.65",
+        "input_tp": "-2.46",
+        "input_lra": "4.50",
+        "input_thresh": "-25.75",
+        "output_i": "-15.97",
+        "output_tp": "-2.77",
+        "output_lra": "4.50",
+        "output_thresh": "-26.06",
+        "normalization_type": "linear",
+        "target_offset": "-0.03"
+      },
+      "encoded": {
+        "input_i": "-16.26",
+        "input_tp": "-2.90",
+        "input_lra": "4.50",
+        "input_thresh": "-26.37",
+        "output_i": "-15.28",
+        "output_tp": "-1.50",
+        "output_lra": "4.10",
+        "output_thresh": "-25.35",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.72"
+      },
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "mp3",
+            "sample_rate": "44100",
+            "channels": 2,
+            "bit_rate": "192000"
+          }
+        ],
+        "format": {
+          "duration": "199.160000",
+          "size": "4781705",
+          "bit_rate": "192074"
+        }
+      }
+    }
+  ]
+}

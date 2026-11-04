@@ -150,7 +150,7 @@ namespace Exoduser.UnityPort
             pauseMenu=new NativePauseMenu(Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular")??font,settings,
                 SetSfxPercent,SetBgmPercent,SetFrameCap,
                 SetFullscreenPreference);
-            pauseMenu.OptionChanged=OnSettingsOptionChanged;pauseMenu.LanguagePicked=code=>{lobby.SetLanguage(code);QueueSettingsSave();};pauseMenu.DiagLine=SettingsDiagLine;
+            pauseMenu.OptionChanged=OnSettingsOptionChanged;pauseMenu.BindingSupported=SupportedNativeBinding;pauseMenu.LanguagePicked=code=>{lobby.SetLanguage(code);QueueSettingsSave();};pauseMenu.DiagLine=SettingsDiagLine;
             UpdateSettingsPersistenceNotice();
             var args=Environment.GetCommandLineArgs();
             bool legacyFixture=Array.IndexOf(args,"--unity-demo-text-smoke")>=0||Array.IndexOf(args,"--unity-death-screen-smoke")>=0||Array.IndexOf(args,"--unity-death-ui-smoke")>=0||Array.IndexOf(args,"--unity-currency-orb-capture")>=0||(A2Requested&&(Application.isEditor||Array.IndexOf(args,"--unity-steam-keyshot")>=0||Array.IndexOf(args,"--unity-field-screen")>=0))||Array.IndexOf(args,"--unity-ground-receiver-capture")>=0||Array.IndexOf(args,"--unity-ground-map-capture")>=0||Array.IndexOf(args,"--unity-facing-only-qa")>=0||Array.IndexOf(args,"--unity-world-ultrawide-check")>=0||Array.IndexOf(args,"--unity-playtest-capture")>=0||Array.IndexOf(args,"--unity-boss-text-smoke")>=0||Array.IndexOf(args,"--unity-exp-capture")>=0||Array.IndexOf(args,A15DirectArgument)>=0||Array.IndexOf(args,IntroSilenceFlag)>=0||Array.IndexOf(args,NativeSettingsStorageScope.FixtureArgument)>=0||Array.IndexOf(args,"--unity-inventory-keys-smoke")>=0||Array.IndexOf(args,"--unity-pause-smoke")>=0||Array.IndexOf(args,"--unity-character-story-smoke")>=0||Array.IndexOf(args,"--unity-character-store-smoke")>=0||Array.IndexOf(args,"--unity-character-smoke")>=0||Array.IndexOf(args,"--unity-skill-smoke")>=0||Array.IndexOf(args,"--unity-ui-smoke")>=0||Array.IndexOf(args,"--unity-inventory-smoke")>=0||Array.IndexOf(args,"--unity-hud-smoke")>=0||Array.IndexOf(args,"--unity-hud-blend-smoke")>=0||Array.IndexOf(args,"--unity-drop-smoke")>=0||Array.IndexOf(args,"--unity-revive-smoke")>=0||Array.IndexOf(args,"--unity-smoke")>=0;
@@ -177,6 +177,7 @@ namespace Exoduser.UnityPort
             else if(Array.IndexOf(args,"--unity-world-ultrawide-check")>=0){Running=false;StartCoroutine(WorldWideCapture());}
             else if(Array.IndexOf(args,"--unity-ui-overlap-check")>=0){Running=false;StartCoroutine(UiOverlapCapture());}
             else if(Array.IndexOf(args,"--unity-loading-tip-capture")>=0){Running=false;StartCoroutine(LoadingTipCapture());}
+            else if(Array.IndexOf(args,"--unity-transition-loading-capture")>=0){Running=false;StartCoroutine(TransitionLoadingCapture());}
             else if(Array.IndexOf(args,"--unity-rigpixel-natural")>=0){Running=false;StartCoroutine(RigPixelNaturalCapture());}
             else if(Array.IndexOf(args,"--unity-hero-review")>=0){Running=false;StartCoroutine(HeroCapture());}
             else if(Array.IndexOf(args,"--unity-impact-review")>=0){Running=false;StartCoroutine(ImpactReview());}
@@ -353,7 +354,12 @@ namespace Exoduser.UnityPort
         string DesiredMusic()
         {
             if(Simulation==null||menu||lobby!=null&&lobby.IsBlocking)return "";
+            return StageMusicKey();
+        }
+        string StageMusicKey()
+        {
             if(PlayerDown)return "death";
+            if(forge.Open)return "forge";
             var flow=Simulation.Stage;
             if(flow.InArena)return flow.BossAlive?"boss":"victory";
             return "hell"+((int)EnemyTables.SiToHell[Math.Min(Simulation.Config.StageIndex,EnemyTables.SiToHell.Length-1)]+1);
@@ -362,8 +368,15 @@ namespace Exoduser.UnityPort
         {
             if(music==null)return;
             string key=DesiredMusic();
-            if(key.Length>0&&music.Wanted.Length==0)lobby?.StopStageMusic();   // the lobby's startup stage music hands over to the game BGM
-            music.Sync(key);music.Tick(Time.unscaledDeltaTime);ambient.Tick(Time.unscaledDeltaTime);
+            // Settings > Sound > BGM select (web optBgmTrack): the chosen song replaces the stage song; beds and the boss snapshot still follow the stage key.
+            string track=settings!=null?settings.Options.BgmTrack:NativeOptionSet.BgmTrackDefault;
+            string audio=NativeBgmCatalog.Resolve(key,track);
+            bool autoBgm=NativeBgmCatalog.IsAuto(track);
+            if(!menu)settingsBgmPreview=false;
+            // The web plays a newly chosen song right away; while the pause window is open the stage key is not wanted, so the preview plays it anyway.
+            else if(key.Length==0&&settingsBgmPreview&&Simulation!=null&&!(lobby!=null&&lobby.IsBlocking))audio=NativeBgmCatalog.Resolve(StageMusicKey(),track);
+            if(audio.Length>0&&music.Wanted.Length==0)lobby?.StopStageMusic();   // the lobby's startup stage music hands over to the game BGM
+            music.Sync(key,audio,autoBgm);music.Tick(Time.unscaledDeltaTime);ambient.Tick(Time.unscaledDeltaTime);
         }
         // sounds the host owes the Core's fight timeline: P1 entry (staff taps, root pillars rise), spaced in ticks after the boss intro
         void DispatchFeedback()

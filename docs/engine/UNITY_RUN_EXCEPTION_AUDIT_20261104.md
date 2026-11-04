@@ -20,6 +20,9 @@
 |8 R08 낮음|`NativeDeathOverlay.cs:44~45,58~62`|death_web 누락/빈 구조면 생성자에서 NRE·ArgumentNull. 사망 이벤트나 petPool에 petLines에 없는 키가 있으면 SetLine의 Dictionary 인덱서 KeyNotFound.|선택용 과거 대사/재생 자료만 안전하게 비우고, 없어진 키는 빈 대사. 결정 화면과 행동은 유지. 현재 JSON은 petPool·필수 dd 키 누락 **0**.|
 |9 R09 낮음|`NativeDemoText.cs:22~24`|빈 객체·null 행·null texts면 NRE. 중복/null key는 Dictionary.Add 실패. 앞 행이 이미 삽입된 뒤 뒤 행이 실패하면 loaded=false라 다음 호출도 부분 상태에서 재실패할 수 있음.|전체 구조·중복을 먼저 검증한 뒤 사전에 반영. **자료 손상 시 명시적 InvalidOperationException으로 로딩을 중단하는 제안이며 예외 0을 보장하는 수정이 아님**. 현재 81개 entries, 29언어 길이 오류·중복 키 **0**.|
 |10 R10 낮음|`NativeHellGateLabels.cs:19,24,31`|영어 행 없는 불완전한 표에서 미등록 언어가 선택되면 locales["en"] KeyNotFound. null/중복 행은 로딩 자체 실패.|구조·키·영어 대체 행을 사전 검증하고 부분 초기화를 막음. **손상 자료는 명시적 로딩 실패로 남김**, 배포 전 검사가 별도로 필요. 현재 표 29언어·en 있음.|
+|11 R11 높음(P1)|`Vfx/CombatImpactView.cs:138,244`|피격 클립 렌더러는 생성 직후 enabled=true·sprite=null 상태로 DrawEnemyHits(BeforeCamera)에 노출돼 `c.renderer.sprite.rect`에서 NRE. 적을 때린 프레임에 발생.|생성 직후 `renderer.enabled=false`, DrawEnemyHits 조건에 `c.renderer.sprite==null` 추가(L11, 컴파일 미확인).|
+|12 R12 높음(P1)|`NativeGame.PauseFocus.cs:12`|사망 결정 화면("다시 일어선다")에서 창 포커스를 잃으면 SetGameFocus(false)가 menu=true로 바꿔 결정 화면이 일시정지 메뉴에 가려지고 상태가 바뀜.|조건에 `!(Simulation!=null&&PlayerDown&&death.Active)` 추가(L11, 컴파일 미확인).|
+|13 R13 중간(P2)|`NativeEnemyRigRenderer.cs:65,68`|사망 연출 중 gone 루프의 SyncActor와 Observe의 SyncActor는 try/catch·failed 가드가 없어 애니메이션 예외가 Sync/피드백 호출 밖으로 전파.|`!a.failed` + try/catch로 실패 시 failed=true·failedIds·Fallbacks++·Fallback(a) (63행 갱신 루프와 동일, L11, 컴파일 미확인).|
 
 ## 범위와 서로 다른 소스 버전
 

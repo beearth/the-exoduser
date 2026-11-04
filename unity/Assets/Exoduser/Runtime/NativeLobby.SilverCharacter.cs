@@ -118,10 +118,10 @@ namespace Exoduser.UnityPort
             int i=Mathf.Clamp(characterVisual,0,4);
             bool locked=i!=0,shortScreen=h<=940;
             float x=w-420,bodyY=62,top=bodyY+(shortScreen?190:300),size=shortScreen?54:64;
-            string[] railLabels={"전사","실버테일","헬거너","변성술사","창법사"};
-            string[] railEnglish={"Warrior","Silvertail","Hellgunner","Transmuter","Spearmage"};
+            string[] railLabels={"전사","실버테일","아이반","변성술사","창법사"};
+            string[] railEnglish={"Warrior","Silvertail","Ivan","Transmuter","Spearmage"};
             var railName=new GUIStyle(silverBody){fontSize=13,fontStyle=FontStyle.Normal,wordWrap=true,alignment=TextAnchor.UpperCenter};
-            var railSoon=new GUIStyle(silverVisualCaption){fontSize=10,wordWrap=true,alignment=TextAnchor.UpperCenter};
+            var railSoon=new GUIStyle(silverVisualCaption){fontSize=14,fontStyle=FontStyle.Normal,wordWrap=true,alignment=TextAnchor.UpperCenter};
             railSoon.normal.textColor=new Color(111/255f,114/255f,114/255f);
             const float labelWidth=76,labelGap=9,footerGap=9,actionGap=18;
             float nameHeight=0,soonHeight=0;
@@ -132,6 +132,7 @@ namespace Exoduser.UnityPort
                 nameHeight=Mathf.Max(nameHeight,railName.CalcHeight(new GUIContent(railEnglish[n]),labelWidth));
             }
             string soon=VisualSelectionLabel("출시 준비 중","Coming soon");railSoon.font=CharacterTitleFont(soon);
+            soon=SilverRailSoon(soon,railSoon,labelWidth-8);// 디자인 판정 11-04: 칸 간격 79px에 한 줄 75px이면 네 칸이 붙어 보인다 → 한 줄이 68px를 넘으면 균형 두 줄
             soonHeight=railSoon.CalcHeight(new GUIContent(soon),labelWidth);
             float railY=h-84-actionGap-size-labelGap-nameHeight-footerGap-soonHeight;
             NativeUiAudit.Region(new Rect(0,0,w,h),"panel");
@@ -151,12 +152,12 @@ namespace Exoduser.UnityPort
             SilverCornerPanel(info);
             CharacterLabel(new Rect(x+36,bodyY+34,308,16),VisualSelectionLabel(presentationJobs[i],new[]
             {
-                "WARRIOR","BLADE DANCER","HELLGUNNER","TRANSMUTER","SPEARMAGE"
+                "WARRIOR","BLADE DANCER","DEMOLITIONIST","TRANSMUTER","SPEARMAGE"
             }
             [i]),silverVisualCaption,TextAnchor.MiddleLeft,true);
             string nameText=VisualSelectionLabel(presentationNames[i],new[]
             {
-                "Exoduser Warrior","Silvertail","Hellgunner","Transmuter","Spearmage"
+                "Exoduser Warrior","Silvertail","Ivan","Transmuter","Spearmage"
             }
             [i]);
             // 11-04 overlap ratchet: Latin names now use Cinzel (wider than Hahmlet), so fr "Guerrier Exoduser" ran 2px past the panel edge.
@@ -213,9 +214,9 @@ namespace Exoduser.UnityPort
             bool prior=GUI.enabled;
             Rect cancel=new Rect(x,h-84,180,44),create=new Rect(x+200,h-84,180,44);
             TrackQaNameButton(create);
-            NativeSilverHellUi.ArtImage(cancel,silverVisualCancel);
-            NativeSilverHellUi.ArtImage(create,locked?silverVisualDisabled:silverVisualCreate);
-            // The original KO labels are baked into these assets; do not print a second label.
+            // 11-04 lead review: the flat hexagon plates are replaced by the shared thorn ActionPlate (create = crimson primary). Labels are drawn here (Hahmlet / Cinzel) with the existing character-dialog keys.
+            DrawVisualActionPlate(cancel,CharacterDialogLabel("cancel",K("취소","Cancel")),false,"visual-cancel",true);
+            DrawVisualActionPlate(create,locked?CharacterDialogLabel("comingSoon",K("출시 준비 중","Coming soon")):CharacterDialogLabel("create",K("생성","Create")),!locked,"visual-create",!locked);
             GUI.SetNextControlName("visual-cancel");
             if(NativeUiAudit.Button(cancel,"",GUIStyle.none))CloseCharacterCreation();
             GUI.enabled=prior&&!locked;
@@ -228,7 +229,32 @@ namespace Exoduser.UnityPort
                 characterVisualFocusPending=false;
             }
         }
+        void DrawVisualActionPlate(Rect r,string text,bool primary,string control,bool enabled)
+        {
+            bool hover=enabled&&r.Contains(Event.current.mousePosition);bool focus=enabled&&GUI.GetNameOfFocusedControl()==control;
+            bool pressed=!AutomatedInput&&hover&&ExoInput.Mouse(0);
+            NativeSilverHellUi.ActionPlate(r,primary,focus||hover?1:0,pressed,28,6);
+            // Long translations (de "Demnächst verfügbar", fr) must stay inside the plate: tighten the tracking first, then step the size down (floor 11px).
+            var f=CharacterTitleFont(text);int size=15;float spacing=size*.2f,limit=r.width-20,width=SpacedWidth(f,size,text,spacing)-spacing;
+            if(width>limit){spacing=size*.08f;width=SpacedWidth(f,size,text,spacing)-spacing;}
+            while(width>limit&&size>11){size--;spacing=size*.08f;width=SpacedWidth(f,size,text,spacing)-spacing;}
+            var color=!enabled?new Color(138/255f,141/255f,141/255f):(focus||hover)?new Color(242/255f,237/255f,226/255f):new Color(223/255f,214/255f,194/255f);
+            DrawSpaced(r.center.x-width/2,r.y,r.height,text,f,size,spacing,color,true);
+        }
         // 웹 .cs-ico.locked .cs-ico-ring::after의 같은 X 사슬 원본을 슬롯 전체에 표시한다.
+        // "출시 준비 중" 같은 레일 아래 문구: 한 줄이 maxWidth를 넘으면 공백 중 두 줄 폭의 최대값이 가장 작은 곳에서 나눈다(공백이 없으면 그대로, 줄바꿈은 GUIStyle에 맡김).
+        static string SilverRailSoon(string text,GUIStyle style,float maxWidth)
+        {
+            if(string.IsNullOrEmpty(text)||style.CalcSize(new GUIContent(text)).x<=maxWidth)return text;
+            int split=-1;float best=float.MaxValue;
+            for(int n=text.IndexOf(' ');n>0;n=text.IndexOf(' ',n+1))
+            {
+                float a=style.CalcSize(new GUIContent(text.Substring(0,n))).x,b=style.CalcSize(new GUIContent(text.Substring(n+1))).x,worst=Mathf.Max(a,b);
+                if(worst<best){best=worst;split=n;}
+            }
+            return split<0?text:text.Substring(0,split)+"\n"+text.Substring(split+1);
+        }
+
         static string SilverRailName(string text,GUIStyle style,float width)
         {
             if(text.IndexOf(' ')>=0||style.CalcSize(new GUIContent(text)).x<=width)return text;

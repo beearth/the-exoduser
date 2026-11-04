@@ -3,7 +3,7 @@
     {
       "code": "ko",
       "title": "새 캐릭터 생성",
-      "description": "지옥에 보낼 캐릭터의 이름을 지어주세요",
+      "description": "지옥에 보낼 자의 이름을 지어라",
       "nameLabel": "캐릭터 이름 (2~8자)",
       "cancel": "취소",
       "create": "생성",
@@ -20,7 +20,7 @@
     {
       "code": "en",
       "title": "Create New Character",
-      "description": "Name the character you will send to hell",
+      "description": "Name the one you will send into Hell.",
       "nameLabel": "Character Name (2-8 chars)",
       "cancel": "Cancel",
       "create": "Create",
@@ -37,7 +37,7 @@
     {
       "code": "zh",
       "title": "创建新角色",
-      "description": "请为你要送入地狱的角色取名",
+      "description": "为你要送入地狱的人取名。",
       "nameLabel": "角色名（2~8字）",
       "cancel": "取消",
       "create": "创建",
@@ -54,7 +54,7 @@
     {
       "code": "zht",
       "title": "創建新角色",
-      "description": "請為你要送入地獄的角色取名",
+      "description": "為你要送入地獄的人取名。",
       "nameLabel": "角色名（2~8字）",
       "cancel": "取消",
       "create": "創建",
@@ -71,7 +71,7 @@
     {
       "code": "ja",
       "title": "新規キャラクター作成",
-      "description": "地獄に送るキャラクターの名前を付けてください",
+      "description": "地獄へ送る者の名を付けよ。",
       "nameLabel": "キャラクター名（2〜8文字）",
       "cancel": "キャンセル",
       "create": "作成",
@@ -88,7 +88,7 @@
     {
       "code": "vi",
       "title": "Tạo nhân vật mới",
-      "description": "Đặt tên nhân vật sẽ gửi xuống địa ngục",
+      "description": "Hãy đặt tên cho kẻ sẽ bị đưa xuống địa ngục.",
       "nameLabel": "Tên (2-8 ký tự)",
       "cancel": "Hủy",
       "create": "Tạo",
@@ -105,7 +105,7 @@
     {
       "code": "th",
       "title": "สร้างตัวละครใหม่",
-      "description": "ตั้งชื่อตัวละครที่จะส่งลงนรก",
+      "description": "จงตั้งชื่อผู้ที่เจ้าจะส่งลงนรก",
       "nameLabel": "ชื่อ (2-8 ตัวอักษร)",
       "cancel": "ยกเลิก",
       "create": "สร้าง",
@@ -122,7 +122,7 @@
     {
       "code": "id",
       "title": "Buat karakter baru",
-      "description": "Beri nama karakter yang akan dikirim ke neraka",
+      "description": "Namai orang yang akan kamu kirim ke neraka.",
       "nameLabel": "Nama (2-8 karakter)",
       "cancel": "Batal",
       "create": "Buat",
@@ -139,7 +139,7 @@
     {
       "code": "ms",
       "title": "Cipta watak baharu",
-      "description": "Namakan watak yang akan anda hantar ke Neraka",
+      "description": "Namakan orang yang akan kamu hantar ke Neraka.",
       "nameLabel": "Nama watak (2–8 aksara)",
       "cancel": "Batal",
       "create": "Cipta",
@@ -156,7 +156,7 @@
     {
       "code": "es",
       "title": "Crear nuevo personaje",
-      "description": "Nombra al personaje que enviarás al infierno",
+      "description": "Nombra a quien enviarás al infierno.",
       "nameLabel": "Nombre (2-8 caracteres)",
       "cancel": "Cancelar",
       "create": "Crear",
@@ -173,7 +173,7 @@
     {
       "code": "fr",
       "title": "Créer un personnage",
-      "description": "Nommez le personnage à envoyer en enfer",
+      "description": "Nommez celui que vous enverrez en enfer.",
       "nameLabel": "Nom (2-8 caractères)",
       "cancel": "Annuler",
       "create": "Créer",
@@ -190,7 +190,7 @@
     {
       "code": "it",
       "title": "Crea nuovo personaggio",
-      "description": "Dai un nome al personaggio per l'inferno",
+      "description": "Dai un nome a chi manderai all'inferno.",
       "nameLabel": "Nome (2-8 caratteri)",
       "cancel": "Annulla",
       "create": "Crea",
@@ -207,7 +207,7 @@
     {
       "code": "ptbr",
       "title": "Criar novo personagem",
-      "description": "Nomeie o personagem para o inferno",
+      "description": "Dê nome a quem você enviará ao inferno.",
       "nameLabel": "Nome (2-8 caracteres)",
       "cancel": "Cancelar",
       "create": "Criar",
@@ -224,7 +224,7 @@
     {
       "code": "ro",
       "title": "Creează personaj nou",
-      "description": "Numește personajul trimis în infern",
+      "description": "Dă un nume celui pe care îl vei trimite în infern.",
       "nameLabel": "Nume (2-8 caractere)",
       "cancel": "Anulează",
       "create": "Creează",
@@ -241,7 +241,7 @@
     {
       "code": "de",
       "title": "Neuen Charakter erstellen",
-      "description": "Benenne den Charakter für die Hölle",
+      "description": "Benenne den, den du in die Hölle schickst.",
       "nameLabel": "Name (2-8 Zeichen)",
       "cancel": "Abbrechen",
       "create": "Erstellen",
@@ -258,7 +258,7 @@
     {
       "code": "nl",
       "title": "Nieuw karakter aanmaken",
-      "description": "Geef het personage voor de hel een naam",
+      "description": "Geef de naam van degene die je naar de hel stuurt.",
       "nameLabel": "Naam (2-8 tekens)",
       "cancel": "Annuleren",
       "create": "Aanmaken",
@@ -275,7 +275,7 @@
     {
       "code": "sv",
       "title": "Skapa ny karaktär",
-      "description": "Namnge karaktären för helvetet",
+      "description": "Namnge den du skickar till helvetet.",
       "nameLabel": "Namn (2-8 tecken)",
       "cancel": "Avbryt",
       "create": "Skapa",
@@ -292,7 +292,7 @@
     {
       "code": "da",
       "title": "Opret ny karakter",
-      "description": "Navngiv karakteren til helvede",
+      "description": "Navngiv den, du sender til helvede.",
       "nameLabel": "Navn (2-8 tegn)",
       "cancel": "Annuller",
       "create": "Opret",
@@ -309,7 +309,7 @@
     {
       "code": "no",
       "title": "Opprett ny karakter",
-      "description": "Gi navn til karakteren for helvete",
+      "description": "Gi navn til den du sender til helvete.",
       "nameLabel": "Navn (2-8 tegn)",
       "cancel": "Avbryt",
       "create": "Opprett",
@@ -326,7 +326,7 @@
     {
       "code": "ru",
       "title": "Создать персонажа",
-      "description": "Дайте имя персонажу для ада",
+      "description": "Дайте имя тому, кого отправите в ад.",
       "nameLabel": "Имя (2-8 символов)",
       "cancel": "Отмена",
       "create": "Создать",
@@ -343,7 +343,7 @@
     {
       "code": "uk",
       "title": "Створити персонажа",
-      "description": "Назвіть персонажа для пекла",
+      "description": "Дайте ім’я тому, кого відправите в пекло.",
       "nameLabel": "Ім'я (2-8 символів)",
       "cancel": "Скасувати",
       "create": "Створити",
@@ -360,7 +360,7 @@
     {
       "code": "pl",
       "title": "Stwórz nową postać",
-      "description": "Nazwij postać wysyłaną do piekła",
+      "description": "Nazwij tego, kogo poślesz do piekła.",
       "nameLabel": "Nazwa (2-8 znaków)",
       "cancel": "Anuluj",
       "create": "Stwórz",
@@ -377,7 +377,7 @@
     {
       "code": "cs",
       "title": "Vytvořit novou postavu",
-      "description": "Pojmenujte postavu pro peklo",
+      "description": "Pojmenuj toho, koho pošleš do pekla.",
       "nameLabel": "Jméno (2-8 znaků)",
       "cancel": "Zrušit",
       "create": "Vytvořit",
@@ -394,7 +394,7 @@
     {
       "code": "hu",
       "title": "Új karakter létrehozása",
-      "description": "Nevezd el a pokolba küldendő karaktert",
+      "description": "Nevezd el azt, akit a pokolra küldesz.",
       "nameLabel": "Név (2-8 karakter)",
       "cancel": "Mégse",
       "create": "Létrehozás",
@@ -411,7 +411,7 @@
     {
       "code": "bg",
       "title": "Създай нов персонаж",
-      "description": "Дайте име на героя за ада",
+      "description": "Дай име на този, когото ще изпратиш в ада.",
       "nameLabel": "Име (2-8 символа)",
       "cancel": "Отказ",
       "create": "Създай",
@@ -428,7 +428,7 @@
     {
       "code": "el",
       "title": "Δημιουργία χαρακτήρα",
-      "description": "Ονομάστε τον χαρακτήρα για την κόλαση",
+      "description": "Δώσε όνομα σε εκείνον που θα στείλεις στην κόλαση.",
       "nameLabel": "Όνομα (2-8 χαρακτήρες)",
       "cancel": "Ακύρωση",
       "create": "Δημιουργία",
@@ -445,7 +445,7 @@
     {
       "code": "fi",
       "title": "Luo uusi hahmo",
-      "description": "Nimeä helvettiin lähetettävä hahmo",
+      "description": "Nimeä se, jonka lähetät helvettiin.",
       "nameLabel": "Nimi (2-8 merkkiä)",
       "cancel": "Peruuta",
       "create": "Luo",
@@ -462,7 +462,7 @@
     {
       "code": "tr",
       "title": "Yeni karakter oluştur",
-      "description": "Cehenneme gönderilecek karaktere isim verin",
+      "description": "Cehenneme göndereceğin kişiye bir isim ver.",
       "nameLabel": "İsim (2-8 karakter)",
       "cancel": "İptal",
       "create": "Oluştur",
@@ -479,7 +479,7 @@
     {
       "code": "ar",
       "title": "إنشاء شخصية جديدة",
-      "description": "سمِّ الشخصية التي سترسلها للجحيم",
+      "description": "سمِّ من سترسله إلى الجحيم.",
       "nameLabel": "الاسم (2-8 أحرف)",
       "cancel": "إلغاء",
       "create": "إنشاء",

@@ -1,4 +1,5 @@
 using System;
+using Exoduser.UnityPort.Core;
 using UnityEngine;
 
 namespace Exoduser.UnityPort
@@ -10,9 +11,12 @@ namespace Exoduser.UnityPort
     {
         public const float MusicBase = .6f, BedGain = .15f, FadeOutSeconds = .5f, FadeInSeconds = .3f, BedFadeSeconds = .8f;
         readonly NativeAudioMixer bus; readonly GameObject root; readonly AudioSource music, bed, arenaBed;
-        string playing = "", wanted = ""; float musicLevel, bedLevel, arenaLevel; bool bedWanted, arenaWanted;
+        string playing = "", wanted = "", wantedGame = ""; float musicLevel, bedLevel, arenaLevel, playedFor; bool bedWanted, arenaWanted, rotating, forgeRotating;
+        readonly NativeFieldBgmRotation rotation = new NativeFieldBgmRotation(n => UnityEngine.Random.Range(0, n));   // 1-1 field rotation (BGM select "auto" only)
+        readonly NativeBgmCues cues = new NativeBgmCues(n => UnityEngine.Random.Range(0, n));
         public string Playing { get { return playing; } }
         public string Wanted { get { return wanted; } }
+        public bool Rotating { get { return rotating; } }
         public bool BedWanted { get { return bedWanted; } }
         public bool BedAudible { get { return bed.isPlaying && bedLevel > 0; } }
         public int Switches;
@@ -40,15 +44,27 @@ namespace Exoduser.UnityPort
         }
         public void SetPercents(int sfxPercent, int bgmPercent) { bus.SetSfxPercent(sfxPercent); bus.SetMusicPercent(bgmPercent); }
         // BGM.play(key): "" stops the music. A key without a track (hell2..7 are not part of this slice) leaves silence, never another chapter's song.
-        public void Sync(string key)
+        public void Sync(string key) { Sync(key, key); }
+        // key = the stage key (forest bed, boss snapshot); audioKey = the song to play (the BGM select may replace it, NativeBgmCatalog.Resolve).
+        public void Sync(string key, string audioKey) { Sync(key, audioKey, false); }
+        // rotate = the BGM select is "auto": on the field (hell1) the song plays once, then the six rotation songs follow (NativeFieldBgmRotation).
+        // A boss / death / victory / chosen song leaves the rotation; the next field entry starts with hell1 again. Silence (key "") keeps its place.
+        public void Sync(string key, string audioKey, bool rotate)
         {
-            if (key == wanted) return;
-            wanted = key; Switches++; Log.Add(key);
+            bool rot = rotate && audioKey == NativeFieldBgmRotation.FirstClip && (key == "hell1" || key.Length == 0);
+            if (!rot && audioKey.Length > 0) rotation.Reset();
+            string cue = cues.Resolve(key, audioKey);
+            bool forge = audioKey == "forge";
+            string target = rot ? rotation.Current : cue;
+            if (target == wanted && key == wantedGame && rot == rotating && forge == forgeRotating) return;
+            if (target != wanted) { Switches++; Log.Add(target); }
+            wanted = target; wantedGame = key; rotating = rot; forgeRotating = forge;
             bus.Snapshot(key == "boss");
             bedWanted = key == "hell1"; arenaWanted = key == "boss" && arenaBed.clip != null;
         }
         public void Tick(float dt)
         {
+            music.loop = !(rotating || forgeRotating);   // field/forge shuffle songs play once; an explicitly selected file loops
             if (playing != wanted)
             {
                 if (music.isPlaying && musicLevel > 0) { musicLevel = Mathf.Max(0, musicLevel - dt / FadeOutSeconds); music.volume = musicLevel * MusicBase * NativeDecisionSound.MusicGain; }
@@ -56,11 +72,14 @@ namespace Exoduser.UnityPort
                 {
                     music.Stop(); playing = wanted; var clip = playing.Length > 0 ? Resources.Load<AudioClip>("Audio/Bgm/" + (playing == "boss" ? "bgm_druid_boss" : playing)) : null;   // 1-1 slice: the boss is the druid (SND-09)
                     if (clip == null && playing.Length > 0) clip = Resources.Load<AudioClip>("Audio/Bgm/" + playing);
-                    music.clip = clip; musicLevel = 0;
+                    if (clip == null && playing == "lobby") clip = Resources.Load<AudioClip>("Audio/Lobby/lobby");   // BGM select "lobby"
+                    music.clip = clip; musicLevel = 0; playedFor = 0;
                     if (clip != null) music.Play();
                 }
             }
-            else if (music.isPlaying) { musicLevel = Mathf.Min(1, musicLevel + dt / FadeInSeconds); music.volume = musicLevel * MusicBase * NativeDecisionSound.MusicGain; }
+            else if (music.isPlaying) { playedFor += dt; musicLevel = Mathf.Min(1, musicLevel + dt / FadeInSeconds); music.volume = musicLevel * MusicBase * NativeDecisionSound.MusicGain; }
+            else if (rotating && music.clip != null && playedFor > 1f && !AudioListener.pause) { wanted = rotation.Advance(); Switches++; Log.Add(wanted); playedFor = 0; }   // the song ended: the switch above loads the next one (same fade-in path)
+            else if (forgeRotating && music.clip != null && playedFor > 1f && !AudioListener.pause) { wanted = cues.AdvanceForge(); Switches++; Log.Add(wanted); playedFor = 0; }
             if (bedWanted)
             {
                 if (!bed.isPlaying) { bed.Play(); bedLevel = 0; }
@@ -84,7 +103,7 @@ namespace Exoduser.UnityPort
                 if (bedLevel <= 0) { bed.Stop(); bedStartLogged = false; }
             }
         }
-        public void Silence() { wanted = ""; playing = ""; bedWanted = false; arenaWanted = false; music.Stop(); bed.Stop(); arenaBed.Stop(); bedStartLogged = false; musicLevel = bedLevel = arenaLevel = 0; bus.Snapshot(false, 0); }
+        public void Silence() { rotation.Reset(); cues.ClearContext(); rotating = forgeRotating = false; playedFor = 0; wanted = ""; wantedGame = ""; playing = ""; bedWanted = false; arenaWanted = false; music.Stop(); bed.Stop(); arenaBed.Stop(); bedStartLogged = false; musicLevel = bedLevel = arenaLevel = 0; bus.Snapshot(false, 0); }
         public void Dispose() { if (root != null) UnityEngine.Object.Destroy(root); }
     }
 }
