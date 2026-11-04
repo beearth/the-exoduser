@@ -173,7 +173,9 @@ namespace Exoduser.UnityPort
    try{GUI.matrix=NativeUiViewport.EdgeMatrix;startupGuideOpacity=opacity;startupGuideDrawBarrier=drawBarrier;GUI.color=new Color(tint.r,tint.g,tint.b,tint.a*opacity);DrawStartupGuidePhysical();}
    finally{GUI.matrix=matrix;GUI.color=tint;startupGuideOpacity=previousOpacity;startupGuideDrawBarrier=previousBarrier;}
   }
-  void DrawStartupBarrier(){if(startupBarrier==null)startupBarrier=Resources.Load<Texture2D>("Art/Startup/bonfire_barrier");if(startupBarrier==null)return;float size=560*(1+Mathf.Sin(Time.unscaledTime*1000/300)*.03f);var color=GUI.color;GUI.color=new Color(color.r,color.g,color.b,color.a*.9f);NativeUiAudit.DrawTexture(new Rect((NativeUiSafeArea.DesignWidth-size)/2,(NativeUiSafeArea.DesignHeight-size)/2,size,size),startupBarrier,ScaleMode.StretchToFill);GUI.color=color;}
+  // Silver Hell restyle (11-04): silver/crimson sheet (tools/vfx/recolor_bonfire_barrier.py), 560 -> 320 design px (ring ~232 px = 41% smaller than ~412), overlay alpha .9 -> .5
+  public const float BarrierSize=320,BarrierAlpha=.5f;
+  void DrawStartupBarrier(){if(startupBarrier==null)startupBarrier=Resources.Load<Texture2D>("Art/Startup/bonfire_barrier_silver");if(startupBarrier==null)return;float size=BarrierSize*(1+Mathf.Sin(Time.unscaledTime*1000/300)*.03f);var color=GUI.color;GUI.color=new Color(color.r,color.g,color.b,color.a*BarrierAlpha);NativeUiAudit.DrawTexture(new Rect((NativeUiSafeArea.DesignWidth-size)/2,(NativeUiSafeArea.DesignHeight-size)/2,size,size),startupBarrier,ScaleMode.StretchToFill);GUI.color=color;}
   void DrawStartupGuidePhysical()
   {
    float sw=NativeUiSafeArea.DesignWidth,sh=NativeUiSafeArea.DesignHeight;bool insideSafe=new Rect(0,0,sw,sh).Contains(Event.current.mousePosition);

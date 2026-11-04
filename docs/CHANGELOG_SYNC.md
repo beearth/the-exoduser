@@ -1,3 +1,5 @@
+2026-11-04 12:00 VFX 첫인상 4순위 시작 안내 금색 소환진을 실버 헬로: `bonfire_barrier_silver.png`(은백·진홍, `tools/vfx/recolor_bonfire_barrier.py`), `DrawStartupBarrier` 560→320px·알파 .9→.5·반구 ≤.18·영웅 상자 ≤.12, 검사 `tools/vfx/bonfire_barrier_silver_check.py`. 표현 전용, Core 수정 0. 상세 VFX_LEAD_MASTER §7.
+
 2026-11-04 11:20 공용 실행기 단독 검사 중 새 Editor 작업 대기(CTO): BuildLoop 단독 Player(_player_exclusive.json)가 도는 동안 새 Editor 서버 시작·batch·상주 서버 제출은 끝날 때까지 기다린다. 돌고 있는 Editor는 끊지 않음, 검사 기준 무변경. 원인=a7db9621b UI 겹침 검사가 다른 레인 Editor 빌드와 겹쳐 14fps로 1800초 제한 초과. 실행기 `2026.11.04-exclusive2`, exclusive-test 12건. 문서 unity/Tools/devtools/README.md.
 
 2026-11-04 11:05 UI 겹침 검사 Player 시간 제한 1800→3600초(도구 총괄, BuildLoop a7db9621b FAIL): 단독 실행으로 영상 준비 실패는 없어졌으나 다른 레인 Editor 빌드·대량 디스크 작업과 겹쳐 Player가 약 14fps로 느려져 2560 화면군에서 1800초 제한에 걸림(08:44 회차는 약 40fps로 861초에 3840 도달). 전 화면 행렬은 공용 PC 부하에서 30분을 넘길 수 있어 check.ps1 제한만 늘림. 판정 기준·화면 목록 무변경.
