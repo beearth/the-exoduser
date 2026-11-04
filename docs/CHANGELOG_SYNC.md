@@ -58153,3 +58153,14 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 
 
 2026-11-04 DECISION-1 실버테일·아이반 모듈 G0 정정: Meshy rest·비율·신전 추정·아이반 어깨 축소 제안을 현행 설계에서 제외하고 이름·부모·Humanoid만 추출하도록 변경. 새 rest는 Tripo 214c3a56·d381fefe·816e7107 파트 경계, 머리는 분리 머리 두피~턱. 허벅지:정강이 0.90~1.05, 아이반 어깨폭 유지·실제 A포즈 팔폭 0.98~1.06H, 실버테일 앞뒤 축 허브/엉덩이 경첩·2구간 날·180도/1830mm·끝 약 0.25H 반영. 판 1.15배 유지·재배치/아래 소매·천 틈 처리. 허용 인계 위치에 GLB 없어 새 관절·비율은 GLB 수령 후로 표기, 생성/다운로드/Unity 실행 없음.
+## 2026-11-04 STY-24 첫인상 문구 톤 반영(유니티 총괄, Sonnet 구현)
+- C1 총기 슬롯을 아이반/폭파공으로 교체(CharacterPresentation·SilverCharacter 표·레일·영어 배열), C2·C3·C6 실버테일 문구, C5 이름 입력 설명, C7 창법사 주어를 visual_select_labels·character_dialog_labels·character_basic_stories 29개 언어에 반영(No.4274~4287). C4·D1·T1~T9는 EN만, D2는 death_web dd_queen을 웹 현행과 같게 맞췄다.
+- 번역대상_전체목록 No.4274~4287 상태 갱신, EN만 바뀐 No.(0516·0808·2894·3085·3105·3343·3594·3864·4257·4264) EN 칸 수정. Core 변경 0.
+
+
+## 2026-11-04 STY-24 첫인상 29언어 문자열 검수
+
+- 기준 d80d1157e, codex/unity-i18n-first-impression-20261104. Resources/Data 변경 대상 9파일·78키×29언어 + 한국어 전용 D2, 용어 연관 stories[3]을 검수했다.
+- 실제 수정은 visual_select_labels·character_basic_stories·demo_text·hellgate_objectives·pet_bubble 5 JSON의 비KO 211값이다. 한국어 복사 56값, 직업명 정합, 사슬 오역·문법과 피 회복 말투, 지옥문 표식·명칭, 중간 말줄임, 장검 소유·위치를 보정했다. KO·Core·Runtime C# 변경 0.
+- 번역 가이드 용어표·전체목록 No.4274~4287/4108~4109 상태·STY-24 후속·[검사 및 넘침 위험](16번역·로컬라이제이션/STY24_I18N_AUDIT_20261104.md)을 동기화했다. 목록 CRLF 보존.
+- 문자열 검사 범위이며 Mac 실게임·넘침·RTL/글리프·원어민 감수는 미확인. No.3106/character_ui.json은 범위 밖으로 보존했다.
