@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HUD 현재 재현</title>
+<link rel="stylesheet" href="_stage.css">
+<style>
+/* 현재 Unity HUD(unity/main 795869009) 재현. 좌표는 NativeHudDockLayout.cs·NativeHud.cs 계산값(1920×1080 설계 좌표, ArtScale .9).
+   원화 3장은 Unity 원본 PNG를 그대로 쓴다. 액체 색은 HudOrb.shader 값. */
+.abs{position:absolute}
+#bar{left:591.0px;top:931.2px;width:738px;height:163.8px;filter:brightness(.8)}   /* GUI.color .8 = 곱 */
+.liq{position:absolute;border-radius:50%;overflow:hidden;background:#080808}
+#hpLiq{left:440.25px;top:912.5px;width:157.5px;height:157.5px;background:radial-gradient(circle at 50% 50%,#6b1020 0%,#3d0a12 50%,#1e050a 100%)}
+#mpLiq{left:1322.25px;top:912.5px;width:157.5px;height:157.5px;background:#060608;display:flex}
+#mpLiq i{flex:1;display:block}
+#mpLiq i:first-child{background:linear-gradient(0deg,#0c2244 0%,#1a4488 30%,#3388cc 70%,rgba(51,136,204,.3) 90%,transparent 100%)}
+#mpLiq i:last-child{background:linear-gradient(0deg,#0c3322 0%,#1a5533 30%,#2a8844 70%,rgba(42,136,68,.3) 90%,transparent 100%)}
+.frame{position:absolute;width:236.7px;height:236.7px;top:872.9px}
+.t{position:absolute;text-align:center;color:#fff;text-shadow:1px 2px 0 #000;white-space:nowrap;line-height:1}
+.num{font-family:'ExoCinzelDeco','Cinzel Decorative',serif;font-weight:700}
+.key{position:absolute;top:1040.1px;height:16.2px;font:300 15px/16.2px var(--f-body);color:#c0bdb7;white-space:nowrap;overflow:hidden;text-align:center}
+.key span{display:inline-block;transform-origin:0 50%}
+.slot{position:absolute;top:994.2px;width:33.3px;height:40.5px;display:flex;align-items:center;justify-content:center}
+.slot img{width:27.9px;height:27.9px;object-fit:contain}
+.slot.empty::after{content:'—';font:300 15px var(--f-body);color:rgba(118,121,121,.7);position:absolute;top:4px}
+.chain{position:absolute;height:2.7px;background:#44ffaa}
+</style></head><body>
+<div id="stage">
+  <div class="tag">CURRENT · 795869009</div>
+  <div class="bullet" style="left:700px;top:860px"></div><div class="bullet v" style="left:1250px;top:880px"></div><div class="bullet" style="left:980px;top:900px"></div>
+  <canvas id="bar" class="abs" width="2460" height="546"></canvas>
+  <div id="hpLiq" class="liq"></div>
+  <img class="frame" src="../../../unity/Assets/Exoduser/Resources/Art/ui/ui_globe_hp.png" style="left:397.05px" alt="">
+  <div id="mpLiq" class="liq"><i></i><i></i></div>
+  <img class="frame" src="../../../unity/Assets/Exoduser/Resources/Art/ui/ui_globe_mp.png" style="left:1279.05px" alt="">
+  <div id="slots"></div>
+  <!-- HP: wrap.y+62s h30s 24px / wrap.y+90s h20s 18px α.6 -->
+  <div class="t num" style="left:440.25px;width:157.5px;top:968.3px;font-size:24px;line-height:27px">552</div>
+  <div class="t num" style="left:440.25px;width:157.5px;top:993.5px;font-size:18px;line-height:18px;color:rgba(255,255,255,.6)">/ 552</div>
+  <!-- MP/ST: 이름 14px(#88bbff/#88dd88) · 현재 17px · 최대 14px α.5 -->
+  <div class="t num" style="left:1322.25px;width:78.75px;top:944px;font-size:14px;line-height:21.6px;color:#88bbff">MP</div>
+  <div class="t num" style="left:1322.25px;width:78.75px;top:966.5px;font-size:17px;line-height:25.2px">120</div>
+  <div class="t num" style="left:1322.25px;width:78.75px;top:992.6px;font-size:14px;line-height:21.6px;color:rgba(255,255,255,.5)">120</div>
+  <div class="t num" style="left:1401px;width:78.75px;top:944px;font-size:14px;line-height:21.6px;color:#88dd88">ST</div>
+  <div class="t num" style="left:1401px;width:78.75px;top:966.5px;font-size:17px;line-height:25.2px">100</div>
+  <div class="t num" style="left:1401px;width:78.75px;top:992.6px;font-size:14px;line-height:21.6px;color:rgba(255,255,255,.5)">100</div>
+</div>
+<script>
+// 스테이지 맞춤
+function fit(){var s=Math.min(innerWidth/1920,innerHeight/1080);document.getElementById('stage').style.transform='scale('+s+')'}
+addEventListener('resize',fit);fit();
+if(/guides/.test(location.search))document.body.classList.add('guides');
+var A='../../../unity/Assets/Exoduser/Resources/Art/ui/';
+var LEFT=[128,173,217,261,303,347,392,436,479,522,566,610,654],KEYS=['1','2','3','4','F','Z','LMB','RMB','Shift','E','Q','Ctrl','Space'];
+// NativeHud.SlotSkillId + Simulation.InitStartingSkills (새 캐릭터 시작 상태)
+var SK={0:'orb/spikeTrap',4:'orb/holyDome',6:'kiSlash',7:'orb/fireball',8:'orb/charge',9:'orb/maliceSwipe',10:'orb/parry',11:'orb/iceOrb',12:'orb/giantSlam'};
+var host=document.getElementById('slots'),st=document.getElementById('stage');
+LEFT.forEach(function(l,i){
+  var x=591+l*.9,s=document.createElement('div');s.className='slot'+(SK[i]?'':' empty');s.style.left=x+'px';
+  if(SK[i]){var im=new Image();im.src=A+'skill_icons/'+SK[i]+'.png';s.appendChild(im)}host.appendChild(s);
+  // KeyLabelRect: x+3, w 37*.9-6 = 27.3, 가로 눌림 = min(1, 27.3/자연폭)
+  var k=document.createElement('div');k.className='key';k.style.left=(x+3)+'px';k.style.width='27.3px';
+  var sp=document.createElement('span');sp.textContent=KEYS[i];k.appendChild(sp);st.appendChild(k);
+  document.fonts.ready.then(function(){var w=sp.offsetWidth;var q=Math.min(1,27.3/Math.max(1,w));
+    sp.style.transform='scaleX('+q+')';if(q===1){sp.style.marginLeft=((27.3-w)/2)+'px'}});
+});
+// Shift 슬롯 밑 연쇄 게이지 3px (#44ffaa 가득, NativeHudSkills.cs ChainGaugeColor)
+var c=document.createElement('div');c.className='chain';c.style.left=(591+479*.9)+'px';c.style.top=(994.2+40.5-2.7)+'px';c.style.width='33.3px';st.appendChild(c);
+// BuildLabelCleanBar 재현: 원화 키 글자 픽셀만 투명화(파일 열기 제한 시 원본 그대로)
+(function(){var cv=document.getElementById('bar'),x=cv.getContext('2d'),im=new Image();im.onload=function(){x.drawImage(im,0,0);
+  try{var d=x.getImageData(0,0,2460,546),p=d.data,w=2460,h=546,y0=h-Math.round(h*.332),y1=h-Math.round(h*.222),g=/* Unity 텍스처 행은 아래가 0 → 캔버스 위 기준으로 뒤집음 */new Uint8Array(w*h);
+   for(var i=0;i<13;i++){var c=(146.5+44*i)/820,x0=Math.max(0,Math.floor((c-.018)*w)),x1=Math.min(w-1,Math.ceil((c+.018)*w));
+    for(var y=y0;y<y1;y++)for(var X=x0;X<=x1;X++){var o=(y*w+X)*4;g[y*w+X]=(p[o+3]>0&&p[o]>p[o+2]*1.08&&p[o+1]>p[o+2]*1.04&&p[o]>90&&p[o+1]>68)?1:0}}
+   for(var y=y0;y<y1;y++)for(var X=0;X<w;X++)if(g[y*w+X])for(var dy=-2;dy<=2;dy++)for(var dx=-2;dx<=2;dx++){var xx=X+dx,yy=y+dy;if(xx>=0&&xx<w&&yy>=y0&&yy<y1)p[(yy*w+xx)*4+3]=0}
+   x.putImageData(d,0,0)}catch(e){/* file:// 캔버스 제한: 원화 글자 그대로 */}};im.src=A+'ui_bar_only.png'})();
+</script>
+</body></html>

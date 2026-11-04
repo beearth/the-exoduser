@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HUD 비교판</title>
+<link rel="stylesheet" href="_stage.css">
+<style>
+/* 같은 크기 비교판: 현재 vs A vs B. 세 장 모두 1920×1080 설계 좌표에서 같은 영역(x 240~1680, y 760~1080)을 같은 배율로 자른다.
+   ?x3 = 3배 확대(슬롯·라벨 영역 x 560~1360, y 960~1080). ?guides = 레일·구체 중심·슬롯 중심 측정선. */
+html,body{overflow:auto;background:#0b0b0d;color:var(--tx);font-family:var(--f-body)}
+.wrap{padding:16px}
+h1{font:600 20px var(--f-num);letter-spacing:.2em;color:var(--tx);margin:0 0 4px}
+p.note{margin:0 0 14px;color:var(--tx-2);font-size:14px}
+.row{margin:0 0 14px}
+.row b{display:block;font:600 13px var(--f-num);letter-spacing:.18em;color:var(--tx-2);margin:0 0 6px}
+.view{position:relative;overflow:hidden;border:1px solid var(--sv-dp)}
+.view iframe{position:absolute;border:0;width:1920px;height:1080px;transform-origin:0 0}
+</style></head><body><div class="wrap">
+<h1>HUD · CURRENT / A / B</h1>
+<p class="note">같은 영역·같은 배율. 판정 항목: ① 뜸(접지) ② 안 맞음(비례·중심선) ③ 듬성(간격·빈 슬롯) ④ 색(실버 헬 토큰). 수치는 defects.md 표 F.</p>
+<div id="rows"></div>
+</div>
+<script>
+var x3=/x3/.test(location.search),g=/guides/.test(location.search)?'?guides':'';
+var C=x3?{x:560,y:960,w:800,h:120,z:3}:{x:240,y:760,w:1440,h:320,z:1};
+var items=[['CURRENT · unity/main 795869009 (재현)','current.html'],['A · 구조 유지 + 실버 헬','mock_A.html'],['B · 비례 재조정','mock_B.html']];
+var rows=document.getElementById('rows');
+function lay(){var avail=Math.max(320,innerWidth-34);var k=Math.min(C.z,avail/C.w);
+  [].forEach.call(document.querySelectorAll('.view'),function(v){v.style.width=C.w*k+'px';v.style.height=C.h*k+'px';var f=v.firstChild;f.style.transform='scale('+k+')';f.style.left=(-C.x*k)+'px';f.style.top=(-C.y*k)+'px'})}
+items.forEach(function(it){var r=document.createElement('div');r.className='row';r.innerHTML='<b></b><div class="view"><iframe loading="eager"></iframe></div>';r.querySelector('b').textContent=it[0];r.querySelector('iframe').src=it[1]+g;rows.appendChild(r)});
+addEventListener('resize',lay);lay();
+</script>
+</body></html>

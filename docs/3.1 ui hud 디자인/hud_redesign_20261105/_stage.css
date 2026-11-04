@@ -1,0 +1,32 @@
+/* HUD 재디자인 시안 공용 무대 (2026-11-05, 레인 U1). 1920×1080 설계 좌표 고정, 창 크기에 맞춰 통째 축소.
+   글꼴은 Unity 저장소 원본을 상대 경로로 쓴다(unity/main 체크아웃 기준). 없으면 Google Fonts → serif 순. */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Hahmlet:wght@300;400&display=swap');
+@font-face{font-family:'ExoCinzel';src:url('../../../unity/Assets/Exoduser/Resources/Art/fonts/Cinzel-VariableFont_wght.ttf') format('truetype');font-weight:400 900}
+@font-face{font-family:'ExoCinzelDeco';src:url('../../../unity/Assets/Exoduser/Resources/Art/fonts/CinzelDecorative-Bold.ttf') format('truetype');font-weight:700}
+@font-face{font-family:'ExoHahmlet';src:url('../../../unity/Assets/Exoduser/Resources/Art/fonts/Hahmlet-300-ko.ttf') format('truetype');font-weight:300}
+@font-face{font-family:'ExoHahmlet';src:url('../../../unity/Assets/Exoduser/Resources/Art/fonts/Hahmlet-400-ko.ttf') format('truetype');font-weight:400}
+
+:root{
+  /* 실버 헬 §3 토큰 (DESIGN_CONCEPT_SILVER_HELL_20261028.md:24-38) */
+  --sv-hi:#f6f5f2;--sv-lt:#c9c7c3;--sv-md:#8a8b88;--sv-dk:#4f5352;--sv-dp:#2c2e31;--iron:#0f0f10;
+  --tx:#e6e3dc;--tx-2:#a7a49d;--tx-3:#6b6964;
+  --eye:#c21a10;--eye-dp:#7e0d07;--eye-hot:#f16937;
+  --chrome:linear-gradient(180deg,#f6f5f2 0%,#c9c7c3 34%,#4f5352 50%,#c9c7c3 63%,#8a8b88 100%);
+  /* 제안 토큰(승인 필요, defects.md D-C3): 자원 의미색. 실버 헬 §3에 없는 값 */
+  --res-mp-hi:#7f9cbc;--res-mp:#3b5f86;--res-mp-dp:#16212e;
+  --f-num:'ExoCinzel','Cinzel',serif;--f-body:'ExoHahmlet','Hahmlet','Nanum Myeongjo',serif;
+}
+html,body{margin:0;height:100%;background:#050506;overflow:hidden}
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;
+  /* 1-1 숲 바닥 대용 무대: 실게임 합성 판정은 Mac 캡처로 한다(G0_BRIEF 첫 실물 판정) */
+  background:
+    radial-gradient(ellipse 900px 420px at 50% 38%,rgba(78,92,70,.55),transparent 70%),
+    radial-gradient(ellipse 700px 300px at 18% 80%,rgba(36,44,34,.9),transparent 70%),
+    radial-gradient(ellipse 700px 300px at 82% 78%,rgba(34,40,36,.9),transparent 70%),
+    linear-gradient(180deg,#2a3128 0%,#1c211b 55%,#121511 100%)}
+.bullet{position:absolute;width:14px;height:14px;border-radius:50%;
+  background:radial-gradient(circle,#ffd9c8 0 25%,#ff5a2a 45%,rgba(194,26,16,0) 72%)}
+.bullet.v{background:radial-gradient(circle,#efe2ff 0 25%,#9a5cff 45%,rgba(90,40,160,0) 72%)}
+.tag{position:absolute;left:24px;top:20px;font:600 22px var(--f-num);letter-spacing:.2em;color:var(--tx-2)}
+.guide{position:absolute;pointer-events:none;border:0 dashed rgba(120,220,255,.75)}
+body.guides .guide{border-width:1px}

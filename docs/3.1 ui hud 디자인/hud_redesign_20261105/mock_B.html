@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HUD 시안 B</title>
+<link rel="stylesheet" href="_stage.css">
+</head><body>
+<!-- 시안 B: 비례 재조정. 구체 액체 176(웹 175와 같은 급), 슬롯 48·주공격 LMB/RMB 56을 가운데 받침에 올림,
+     판 높이 = 구체 바깥 지름 × .40, 분노(Space) 표시 예시 포함. 1920×1080 설계 px. ?guides 로 측정선 표시. -->
+<div id="stage">
+  <div class="tag">MOCK B · 비례 재조정</div>
+  <div class="bullet" style="left:700px;top:860px"></div><div class="bullet v" style="left:1250px;top:880px"></div><div class="bullet" style="left:980px;top:900px"></div>
+</div>
+<script src="_hud_mock.js"></script>
+<script>
+fitStage();
+buildHud({
+  rail:{h:14}, orbOuter:212, liquid:176, band:18, orbSink:4, overlap:16, eyeW:34, poise:true,
+  plateH:84, cham:14, padX:20, slotCY:36, s:48, sBig:56, bigLift:8, gIn:5, gOut:14, chipUp:8,
+  boss:{w:150, rise:16, cham:12},
+  hp:.72, mp:.85, st:.6, mob:.6,
+  hpT:['397','552'], mpT:['102','120'], stT:['60','100'],
+  hpCur:30, hpMax:14, rsCur:20, rsMax:12, numDy:-4,
+  groups:[
+    [{key:'1',icon:'orb/spikeTrap'},{key:'2'},{key:'3'},{key:'4'}],
+    [{key:'F',icon:'orb/holyDome',cd:.55,cdn:'7'},{key:'Z'}],
+    [{mouse:'L',icon:'orb/kiSlash',sel:true,big:true},{mouse:'R',icon:'orb/maliceSwipe',big:true}],
+    [{key:'SHFT',icon:'orb/charge',gauge:.6},{key:'E',icon:'orb/fireball'},{key:'Q',icon:'orb/parry'},{key:'CTRL',icon:'orb/iceOrb'},{key:'SPC',icon:'orb/giantSlam',rage:.45}]
+  ]
+});
+</script>
+</body></html>
