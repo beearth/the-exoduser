@@ -298,7 +298,7 @@ namespace Exoduser.UnityPort
             
         }
         public const string A2FieldCacheResource="A2R/Baked/Field/";
-        public const int A2FieldCacheVersion=1;
+        public const int A2FieldCacheVersion=2;
         public static bool? A2FieldCacheQaOverride;
         [Serializable] public sealed class A2FieldCacheIndex
         {public int version;public bool verified;public string mapHash;public string[] stages,inputPaths,inputHashes;}
@@ -307,7 +307,7 @@ namespace Exoduser.UnityPort
         [Serializable] public sealed class A2FieldCacheRenderer
         {public string[] roles;public A2FieldCacheProperty[] properties;}
         [Serializable] public sealed class A2FieldCacheProperty
-        {public string name,texture;public int kind,integer;public float scalar;public Color color;public Vector4 vector;}
+        {public string name,texture;public int kind,integer;public int[] bits;public float scalar;public Color color;public Vector4 vector;}
         A2FieldCacheIndex a2FieldCacheIndex;
         bool a2FieldCacheChecked;
         string a2FieldCacheMapHash;
@@ -352,22 +352,7 @@ namespace Exoduser.UnityPort
                         }
                     }
                     if(changed)renderers[i].sharedMaterials=slots;
-                    if(state.properties.Length>0)
-                    {
-                        var block=new MaterialPropertyBlock();
-                        foreach(var p in state.properties)
-                        {
-                            switch(p.kind)
-                            {
-                                case 0:block.SetColor(p.name,p.color);break;
-                                case 1:block.SetVector(p.name,p.vector);break;
-                                case 2:block.SetFloat(p.name,p.scalar);break;
-                                case 3:block.SetInteger(p.name,p.integer);break;
-                                case 4:block.SetTexture(p.name,string.IsNullOrEmpty(p.texture)?null:Resources.Load<Texture>(p.texture));break;
-                            }
-                        }
-                        renderers[i].SetPropertyBlock(block);
-                    }
+                    A2FieldRestoreProperties(renderers[i],state.properties);
                     var sprite=renderers[i] as SpriteRenderer;
                     if(sprite!=null&&sprite.name=="A2 횃불 불꽃"){sprite.sprite=hellFlameFrames[0];hellFlames.Add(sprite);}
                 }
@@ -396,6 +381,28 @@ namespace Exoduser.UnityPort
                 if(Application.isPlaying)Destroy(holder);else DestroyImmediate(holder);
             }
             Debug.Log("[A2 전체필드] 구운 단계 "+stage);return true;
+        }
+        static float A2FieldPropertyFloat(A2FieldCacheProperty p,int index,int count)
+        {
+            if(p.bits==null||p.bits.Length!=count)throw new System.IO.InvalidDataException("A2 field property bits: "+p.name);
+            return BitConverter.ToSingle(BitConverter.GetBytes(p.bits[index]),0);
+        }
+        static void A2FieldRestoreProperties(Renderer renderer,A2FieldCacheProperty[] properties)
+        {
+            if(properties.Length==0)return;var block=new MaterialPropertyBlock();
+            foreach(var p in properties)
+            {
+                switch(p.kind)
+                {
+                    // Preserve the native Color/Vector tag and exact setter inputs; JSON stores integer float bits.
+                    case 0:block.SetColor(p.name,new Color(A2FieldPropertyFloat(p,0,4),A2FieldPropertyFloat(p,1,4),A2FieldPropertyFloat(p,2,4),A2FieldPropertyFloat(p,3,4)));break;
+                    case 1:block.SetVector(p.name,new Vector4(A2FieldPropertyFloat(p,0,4),A2FieldPropertyFloat(p,1,4),A2FieldPropertyFloat(p,2,4),A2FieldPropertyFloat(p,3,4)));break;
+                    case 2:block.SetFloat(p.name,A2FieldPropertyFloat(p,0,1));break;
+                    case 3:block.SetInteger(p.name,p.integer);break;
+                    case 4:block.SetTexture(p.name,string.IsNullOrEmpty(p.texture)?null:Resources.Load<Texture>(p.texture));break;
+                }
+            }
+            renderer.SetPropertyBlock(block);
         }
         static float[] A2FieldReadFloats(System.IO.BinaryReader reader)
         {

@@ -20,6 +20,9 @@ public static class A2FieldBakeBuild
     static readonly Dictionary<Texture,Texture> Textures=new Dictionary<Texture,Texture>();
     static readonly Dictionary<Sprite,Sprite> Sprites=new Dictionary<Sprite,Sprite>();
     static Mesh container;
+    const long StorageBudget=32L*1024*1024;
+    static long storageBytes;
+    static readonly List<string> storagePaths=new List<string>();
     static object Get(object game,string name){return game.GetType().GetField(name,Private).GetValue(game);}
     static void Set(object game,string name,object value){game.GetType().GetField(name,Private).SetValue(game,value);}
     sealed class Context : IDisposable
@@ -160,7 +163,7 @@ public static class A2FieldBakeBuild
     {
         var previous=NativeRemodel3D.Field;bool forest=NativeRemodel3D.ForestA2;Directory.CreateDirectory(Folder);AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
         Meshes.Clear();Materials.Clear();Textures.Clear();Sprites.Clear();
-        container=new Mesh{name="A2 field baked assets"};AssetDatabase.CreateAsset(container,Folder+"/geometry.asset");
+        container=null;storageBytes=0;storagePaths.Clear();
         try
         {
             using(var c=Create())
@@ -183,7 +186,14 @@ public static class A2FieldBakeBuild
                 var index=new NativeGame.A2FieldCacheIndex{version=NativeGame.A2FieldCacheVersion,mapHash=hash,stages=Stages,inputPaths=paths,inputHashes=hashes};
                 File.WriteAllText(Folder+"/index.json",JsonUtility.ToJson(index,true));
             }
-            AssetDatabase.SaveAssets();AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+            foreach(var path in storagePaths)AssetDatabase.SaveAssetIfDirty(AssetDatabase.LoadMainAssetAtPath(path));
+            foreach(var path in Directory.GetFiles(Folder,"geometry*.asset"))
+            {
+                string asset=path.Replace('\\','/');
+                if(!storagePaths.Contains(asset))AssetDatabase.DeleteAsset(asset);
+                else if(new FileInfo(path).Length>80L*1024*1024)throw new InvalidDataException("Baked geometry partition exceeds 80 MiB: "+asset);
+            }
+            AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
             Debug.Log("[A2 전체필드] 굽기 저장 완료 / 8단계 / 생성 메시 "+Meshes.Count+" / 재질 "+Materials.Count+" / 텍스처 "+Textures.Count);
         }
         finally {NativeRemodel3D.Field=previous;NativeRemodel3D.ForestA2=forest;}
@@ -228,7 +238,7 @@ public static class A2FieldBakeBuild
             var slots=r.sharedMaterials;for(int i=0;i<slots.Length;i++)slots[i]=Persist(slots[i]);r.sharedMaterials=slots;
             var sprite=r as SpriteRenderer;if(sprite!=null&&sprite.sprite!=null&&!AssetDatabase.Contains(sprite.sprite))
             {
-                Sprite saved;if(!Sprites.TryGetValue(sprite.sprite,out saved)){saved=UnityEngine.Object.Instantiate(sprite.sprite);saved.name=sprite.sprite.name;AssetDatabase.AddObjectToAsset(saved,container);Sprites.Add(sprite.sprite,saved);}sprite.sprite=saved;
+                Sprite saved;if(!Sprites.TryGetValue(sprite.sprite,out saved)){saved=UnityEngine.Object.Instantiate(sprite.sprite);saved.name=sprite.sprite.name;Store(saved,65536);Sprites.Add(sprite.sprite,saved);}sprite.sprite=saved;
             }
         }
         foreach(var reflection in group.GetComponentsInChildren<A2RiverReflection>(true)){reflection.Viewer=null;reflection.Surface=Persist(reflection.Surface);}
@@ -236,10 +246,28 @@ public static class A2FieldBakeBuild
         var meta=new NativeGame.A2FieldCacheStage{version=NativeGame.A2FieldCacheVersion,mapHash=hash,filters=filters.Count,renderers=states};
         File.WriteAllText(Folder+"/"+Stages[stage]+"-meta.json",JsonUtility.ToJson(meta,true));
     }
+    static long MeshStorageSize(Mesh mesh)
+    {
+        long bytes=131072;
+        for(int i=0;i<mesh.vertexBufferCount;i++)bytes+=(long)mesh.GetVertexBufferStride(i)*mesh.vertexCount*2;
+        for(int i=0;i<mesh.subMeshCount;i++)bytes+=(long)mesh.GetIndexCount(i)*8;
+        for(int i=0;i<mesh.blendShapeCount;i++)bytes+=(long)mesh.GetBlendShapeFrameCount(i)*mesh.vertexCount*72;
+        return bytes;
+    }
+    static void Store(UnityEngine.Object value,long bytes)
+    {
+        if(container==null||(storageBytes>0&&storageBytes+bytes>StorageBudget))
+        {
+            string path=Folder+"/geometry"+(storagePaths.Count==0?"":"-"+storagePaths.Count.ToString("D3"))+".asset";
+            container=new Mesh{name="A2 field baked storage "+storagePaths.Count};AssetDatabase.CreateAsset(container,path);
+            storagePaths.Add(path);storageBytes=0;
+        }
+        AssetDatabase.AddObjectToAsset(value,container);EditorUtility.SetDirty(container);storageBytes+=bytes;
+    }
     static Mesh Persist(Mesh source)
     {
         if(source==null||EditorUtility.IsPersistent(source))return source;Mesh saved;
-        if(!Meshes.TryGetValue(source,out saved)){saved=UnityEngine.Object.Instantiate(source);saved.name=source.name;saved.hideFlags=HideFlags.None;AssetDatabase.AddObjectToAsset(saved,container);Meshes.Add(source,saved);}return saved;
+        if(!Meshes.TryGetValue(source,out saved)){saved=UnityEngine.Object.Instantiate(source);saved.name=source.name;saved.hideFlags=HideFlags.None;Store(saved,MeshStorageSize(source));Meshes.Add(source,saved);}return saved;
     }
     static Material Persist(Material source)
     {
@@ -251,11 +279,47 @@ public static class A2FieldBakeBuild
             Texture cached;if(!Textures.TryGetValue(texture,out cached))
             {
                 var image=texture as Texture2D;if(image==null||!image.isReadable)throw new InvalidDataException("Generated texture must retain editor pixels: "+name);
-                cached=UnityEngine.Object.Instantiate(image);cached.name=image.name;cached.hideFlags=HideFlags.None;AssetDatabase.AddObjectToAsset(cached,container);Textures.Add(texture,cached);
+                cached=UnityEngine.Object.Instantiate(image);cached.name=image.name;cached.hideFlags=HideFlags.None;Store(cached,image.GetRawTextureData().LongLength*2+131072);Textures.Add(texture,cached);
             }
             saved.SetTexture(name,cached);
         }
-        AssetDatabase.AddObjectToAsset(saved,container);return saved;
+        Store(saved,65536);return saved;
+    }
+    static int FloatBits(float value){return BitConverter.ToInt32(BitConverter.GetBytes(value),0);}
+    static int[] PropertyBits(Vector4 value){return new[]{FloatBits(value.x),FloatBits(value.y),FloatBits(value.z),FloatBits(value.w)};}
+    static float FromBits(int bits){return BitConverter.ToSingle(BitConverter.GetBytes(bits),0);}
+    static bool SameBits(Vector4 a,Vector4 b){for(int i=0;i<4;i++)if(FloatBits(a[i])!=FloatBits(b[i]))return false;return true;}
+    static uint FloatOrder(float value){uint bits=unchecked((uint)FloatBits(value));return (bits&0x80000000u)!=0?~bits:bits^0x80000000u;}
+    static float OrderedFloat(uint value){return FromBits(unchecked((int)((value&0x80000000u)!=0?value^0x80000000u:~value)));}
+    static int[] ColorInputBits(string name,Color observed,Vector4 target)
+    {
+        var probe=new MaterialPropertyBlock();Vector4 input=observed;
+        for(int channel=0;channel<4;channel++)
+        {
+            bool found=false;int center=FloatBits(input[channel]);
+            // The inverse colour conversion is usually only a few ULP from its original setter input.
+            for(int step=0;step<=64&&!found;step++)for(int sign=step==0?0:-1;sign<=1;sign+=2)
+            {
+                float value=FromBits(unchecked(center+step*sign));if(float.IsNaN(value)||float.IsInfinity(value))continue;
+                input[channel]=value;probe.SetColor(name,(Color)input);
+                if(FloatBits(probe.GetVector(name)[channel])==FloatBits(target[channel])){found=true;break;}
+            }
+            // Search the complete finite float domain if the inverse approximation was less accurate.
+            if(!found)
+            {
+                ulong lo=FloatOrder(-float.MaxValue),hi=FloatOrder(float.MaxValue),wanted=FloatOrder(target[channel]);
+                while(lo<=hi)
+                {
+                    ulong mid=(lo+hi)/2;input[channel]=OrderedFloat((uint)mid);probe.SetColor(name,(Color)input);
+                    uint got=FloatOrder(probe.GetVector(name)[channel]);
+                    if(got==wanted){found=true;break;}if(got<wanted)lo=mid+1;else {if(mid==0)break;hi=mid-1;}
+                }
+            }
+            if(!found)throw new InvalidDataException("No exact native Color input: "+name+" channel "+channel);
+        }
+        probe.SetColor(name,(Color)input);
+        if(!SameBits(probe.GetVector(name),target)||!SameBits(probe.GetColor(name),observed))throw new InvalidDataException("Native Color tag/value changed: "+name);
+        return PropertyBits(input);
     }
     static NativeGame.A2FieldCacheProperty[] ReadProperties(Renderer renderer,Material[] materials)
     {
@@ -268,12 +332,16 @@ public static class A2FieldBakeBuild
             var p=new NativeGame.A2FieldCacheProperty{name=pair.Key};
             switch(pair.Value)
             {
-                case ShaderPropertyType.Color:p.kind=0;p.color=block.GetColor(pair.Key);break;
-                case ShaderPropertyType.Vector:p.kind=1;p.vector=block.GetVector(pair.Key);break;
+                case ShaderPropertyType.Color:
+                    p.color=block.GetColor(pair.Key);p.vector=block.GetVector(pair.Key);
+                    var probe=new MaterialPropertyBlock();probe.SetVector(pair.Key,p.vector);
+                    if(SameBits(probe.GetColor(pair.Key),p.color)){p.kind=1;p.bits=PropertyBits(p.vector);}
+                    else {p.kind=0;p.bits=ColorInputBits(pair.Key,p.color,p.vector);}break;
+                case ShaderPropertyType.Vector:p.kind=1;p.vector=block.GetVector(pair.Key);p.bits=PropertyBits(p.vector);break;
                 case ShaderPropertyType.Int:p.kind=3;p.integer=block.GetInteger(pair.Key);break;
                 case ShaderPropertyType.Texture:
                     p.kind=4;var texture=block.GetTexture(pair.Key);if(texture!=null){var path=AssetDatabase.GetAssetPath(texture);int at=path.LastIndexOf("/Resources/",StringComparison.Ordinal);if(at<0)throw new InvalidDataException("Property-block texture outside Resources");p.texture=Path.ChangeExtension(path.Substring(at+11),null);}break;
-                default:p.kind=2;p.scalar=block.GetFloat(pair.Key);break;
+                default:p.kind=2;p.scalar=block.GetFloat(pair.Key);p.bits=new[]{FloatBits(p.scalar)};break;
             }
             result.Add(p);
         }
