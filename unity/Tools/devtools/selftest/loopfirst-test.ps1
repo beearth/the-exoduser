@@ -103,6 +103,21 @@ try {
  Check ($r -like '*BuildLoop Player 우선 대기*') ('grant went before the BuildLoop waiter: '+$r)
  Reset-Me; Remove-Item -LiteralPath (Get-PriorityPath),(Get-GrantWaitPath 'char-reshoot') -Force -ErrorAction SilentlyContinue
  $ping2.Kill();$ping2.WaitForExit()
+ # editor grant: BuildLoop, then the granted editor owner, then the rest; a player grant does not reorder editors
+ $e1=Add-EditorReservation 'codex-map-fieldbuild' '20000101T000000001'; $e2=Add-EditorReservation 'vfx-druid' '20000101T000000003'; $e3=Add-EditorReservation 'buildloop' '20000101T000000004'
+ $script:GrantKindArg=$true;$Kind='editor';$Owner='vfx-druid';$GrantCount=1;$TtlMin=60; Cmd-Grant; $script:GrantKindArg=$false;$Kind='player'
+ function Test-BuildLoopRunning { return $true }
+ $order=@(Get-Reservations 'editor' | ForEach-Object { $_.owner }) -join ','
+ Check ($order -eq 'buildloop,vfx-druid,codex-map-fieldbuild') ('editor order with loop: '+$order)
+ function Test-BuildLoopRunning { return $false }
+ $order=@(Get-Reservations 'editor' | ForEach-Object { $_.owner }) -join ','
+ Check ($order -eq 'vfx-druid,codex-map-fieldbuild,buildloop') ('editor order without loop: '+$order)
+ Check ($null -eq (Get-PriorityGrant 'vfx-druid' 'player')) 'editor grant leaked into player grants'
+ Check ($null -ne (Get-PriorityGrant 'char-reshoot' 'player')) 'editor grant replaced the player grant of another owner'
+ Use-PriorityGrant 'vfx-druid' 'editor'
+ $order=@(Get-Reservations 'editor' | ForEach-Object { $_.owner }) -join ','
+ Check ($order -eq 'codex-map-fieldbuild,vfx-druid,buildloop') ('spent editor grant still reorders: '+$order)
+ Remove-Item -LiteralPath $e1,$e2,$e3 -Force
  'PASS: '+$n+' loop-first decisions; Unity launches=0'
 } finally {
  if($ping -and -not $ping.HasExited){$ping.Kill()}

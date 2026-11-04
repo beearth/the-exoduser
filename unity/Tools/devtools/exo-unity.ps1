@@ -47,7 +47,7 @@ if($Command -ne 'install-bin' -and $env:EXO_UNITY_NO_FORWARD -ne '1' -and
     exit $LASTEXITCODE
 }
 
-$ExoUnityVersion = '2026.11.04-grant'
+$ExoUnityVersion = '2026.11.04-haltexempt'
 $MaxPlayerSlots = 2
 Import-Module (Join-Path $PSScriptRoot 'QueueTurn.psm1') -Force
 try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false) } catch { }
@@ -179,6 +179,10 @@ function Get-Reservations([string]$ReservationKind = '') {
     if ($ReservationKind -eq 'editor') {
         $loop = @($out | Where-Object { [string]$_.owner -eq 'buildloop' })
         if ($loop.Count -gt 0 -and (Test-BuildLoopRunning)) { $out = @($loop) + @($out | Where-Object { [string]$_.owner -ne 'buildloop' }) }
+        # editor grant(11-04 CTO 순번): BuildLoop 바로 뒤에 grant -Kind editor owner의 예약을 둔다. 잠금을 얻을 때 1회 차감.
+        $head = @($out | Where-Object { [string]$_.owner -eq 'buildloop' -and (Test-BuildLoopRunning) })
+        $granted = @($out | Where-Object { [string]$_.owner -ne 'buildloop' -and (Get-PriorityGrant ([string]$_.owner) 'editor') })
+        if ($granted.Count -gt 0) { $out = @($head) + @($granted) + @($out | Where-Object { -not (@($head) -contains $_) -and -not (@($granted) -contains $_) }) }
     }
     return $out
 }
@@ -336,11 +340,23 @@ function Check-ServerCrash([string]$qd) {
 }
 
 # 11-04: HALT가 대기 중에 생기면(좀비 감지 등) 순번·슬롯을 얻은 뒤에도 실행하지 않는다. vfx-summon Player가 HALT 뒤 13:23에 떴던 결함.
+# halt-exempt(11-04 CTO): HALT 동안 _halt_exempt.json의 owner(만료 전)만 build/player를 계속한다. 종료 정지 A/B는 같은 부팅의 오염 상태에서만
+# 원인을 가를 수 있어서다. 예외 owner는 Player 시작 때 좀비 검사로 HALT를 다시 만들거나 거부하지 않는다(좀비는 진단 증거라 건드리지 않음, 경고만).
+# HALT 파일 자체와 다른 owner의 차단은 그대로다. 파일은 개발툴이 CTO 결정으로 만들고 지운다.
+function Test-HaltExempt {
+    if ([string]::IsNullOrWhiteSpace($Owner)) { return $false }
+    $e = Read-Json (Join-Path $Root '_halt_exempt.json'); if (-not $e -or -not $e.owners) { return $false }
+    $exp = $null; try { $exp = [DateTime]::Parse([string]$e.expiresAt).ToUniversalTime() } catch { }
+    if (-not $exp -or $exp -lt [DateTime]::UtcNow) { return $false }
+    return (@($e.owners) -contains [string]$Owner)
+}
 function Assert-HaltClear([string]$where) {
+    if ((Test-Path -LiteralPath $HaltPath) -and (Test-HaltExempt)) { return }
     if (Test-Path -LiteralPath $HaltPath) { Say ('HALT가 생겨 ' + $where + ' 대기를 멈춘다(실행하지 않음)'); Show-Halt; Write-Output ('[halt] ' + $where + ' 대기 중 HALT - 시작 거부'); exit 3 }   # exit도 finally(예약·슬롯 반환)를 거친다
 }
 
 function Test-HaltGate {
+    if (($Command.ToLower() -in 'build', 'player') -and (Test-Path -LiteralPath $HaltPath) -and (Test-HaltExempt)) { Say ('HALT 예외 owner ' + $Owner + ': HALT 중에도 실행(CTO 결정, _halt_exempt.json)'); return }
     if (($Command.ToLower() -in 'start', 'run', 'build', 'player', 'browser') -and (Test-Path -LiteralPath $HaltPath)) {
         Say 'HALT 파일이 있어 실행하지 않음'
         Show-Halt
@@ -536,18 +552,19 @@ function Clear-PriorityWaiter([int]$selfPid) {
 # 그 owner의 Player는 player 예약 큐와 drain을 건너뛰고, 기다리는 동안 _player_grant_wait_<owner>.json으로 다른 새 Player를 막는다.
 # BuildLoop 우선 대기(_player_priority.json)·단독·슬롯·메모리·돌고 있는 Player를 끊지 않는 규칙은 그대로다. 입장할 때마다 1회 차감, 0회나 TTL이면 끝난다.
 function Get-GrantsPath { return (Join-Path $Root '_player_priority_grants.json') }
-function Get-PriorityGrant([string]$who) {
+function Get-GrantKind($e) { if ($e.PSObject.Properties['kind'] -and $e.kind) { return [string]$e.kind }; return 'player' }
+function Get-PriorityGrant([string]$who, [string]$grantKind = 'player') {
     if ([string]::IsNullOrWhiteSpace($who)) { return $null }
     $g = Read-Json (Get-GrantsPath); if (-not $g -or -not $g.grants) { return $null }
     foreach ($e in @($g.grants)) {
         $exp = $null; try { $exp = [DateTime]::Parse([string]$e.expiresAt).ToUniversalTime() } catch { }
-        if ([string]$e.owner -eq $who -and [int]$e.remaining -gt 0 -and $exp -and $exp -gt [DateTime]::UtcNow) { return $e }
+        if ([string]$e.owner -eq $who -and (Get-GrantKind $e) -eq $grantKind -and [int]$e.remaining -gt 0 -and $exp -and $exp -gt [DateTime]::UtcNow) { return $e }
     }
     return $null
 }
-function Use-PriorityGrant([string]$who) {
+function Use-PriorityGrant([string]$who, [string]$grantKind = 'player') {
     $g = Read-Json (Get-GrantsPath); if (-not $g -or -not $g.grants) { return }
-    $list = @(); foreach ($e in @($g.grants)) { if ([string]$e.owner -eq $who -and [int]$e.remaining -gt 0) { $e.remaining = [int]$e.remaining - 1 }; $list += $e }
+    $list = @(); foreach ($e in @($g.grants)) { if ([string]$e.owner -eq $who -and (Get-GrantKind $e) -eq $grantKind -and [int]$e.remaining -gt 0) { $e.remaining = [int]$e.remaining - 1 }; $list += $e }
     Write-JsonAtomic (Get-GrantsPath) ([ordered]@{ grants = @($list) })
 }
 function Get-GrantWaitPath([string]$who) { return (Join-Path $Root ('_player_grant_wait_' + ($who -replace '[^A-Za-z0-9_.-]', '_') + '.json')) }
@@ -566,10 +583,11 @@ function Cmd-Grant {
     if ([string]::IsNullOrWhiteSpace($Owner)) { throw '-Owner 가 필요합니다.' }
     New-Item -ItemType Directory -Force -Path $Root | Out-Null
     $g = Read-Json (Get-GrantsPath); $list = @()
-    if ($g -and $g.grants) { foreach ($e in @($g.grants)) { if ([string]$e.owner -ne $Owner) { $list += $e } } }
-    $list += [pscustomobject]([ordered]@{ owner = $Owner; remaining = $GrantCount; grantedAt = (NowIso); expiresAt = [DateTime]::UtcNow.AddMinutes($TtlMin).ToString('o'); note = $Note })
+    $gk = 'player'; if ($script:GrantKindArg) { $gk = $Kind }
+    if ($g -and $g.grants) { foreach ($e in @($g.grants)) { if (-not ([string]$e.owner -eq $Owner -and (Get-GrantKind $e) -eq $gk)) { $list += $e } } }
+    $list += [pscustomobject]([ordered]@{ owner = $Owner; kind = $gk; remaining = $GrantCount; grantedAt = (NowIso); expiresAt = [DateTime]::UtcNow.AddMinutes($TtlMin).ToString('o'); note = $Note })
     Write-JsonAtomic (Get-GrantsPath) ([ordered]@{ grants = @($list) })
-    Say ('Player 우선 순번 부여: ' + $Owner + ' ' + $GrantCount + '회, ' + $TtlMin + '분 (' + $Note + ')')
+    Say ($gk + ' 우선 순번 부여: ' + $Owner + ' ' + $GrantCount + '회, ' + $TtlMin + '분 (' + $Note + ')')
 }
 
 function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
@@ -738,6 +756,7 @@ function Acquire-Slot([string]$Role, [string]$wt, [int]$ownerPid, [string]$queue
                 $procs = @(Get-UnityProcs | Where-Object { $_.ProcessName -eq 'Unity' })
                 $free = Get-CommitFreeGB
                 if ($procs.Count -eq 0 -and $free -ge $needGB) {
+                    if ($Owner -and (Get-PriorityGrant ([string]$Owner) 'editor')) { Use-PriorityGrant ([string]$Owner) 'editor' }
                     if ($Owner -and -not $KeepReservation) { foreach ($r in @(Get-Reservations 'editor' | Where-Object { $_.owner -eq $Owner })) { Remove-Item -LiteralPath $r.file -Force -ErrorAction SilentlyContinue } }
                     return
                 }
@@ -1513,7 +1532,8 @@ function Cmd-Player {
     # 11-03 사용자 "백그라운드 테스트는 맥에서만": PC Player 실행은 CLAUDE.md 3.4 예외 3가지만 허용한다(편집기 batchmode 컴파일·임포트는 그대로).
     if (-not $PcException) { Reject 'PC에서는 player 실행을 기본 거부한다. Player 테스트·캡처는 Mac에서 실행한다. 예외(BuildLoop 바탕화면 교체·CTO 1회 교체·CTO 승인 후보 바로가기)만 -PcException buildloop|cto-swap|candidate' }
     $zombies = @(Find-ZombiePlayers)
-    if ($zombies.Count) { Stop-ForZombies $zombies 'player' }
+    if ($zombies.Count -and (Test-Path -LiteralPath $HaltPath) -and (Test-HaltExempt)) { Say ('HALT 예외 owner: 좀비 ' + (($zombies | ForEach-Object { $_.name + ':' + $_.pid }) -join ',') + '는 진단 증거로 두고 진행(죽이지 않음)') }
+    elseif ($zombies.Count) { Stop-ForZombies $zombies 'player' }
     if (-not $DryRun) { $games = @(Find-UserGames); if ($games.Count) { Defer-ForUserGames $games } }
     if ([string]::IsNullOrWhiteSpace($Exe)) { throw '-Exe 가 필요합니다.' }
     if (-not (Test-Path -LiteralPath $Exe)) { throw "플레이어를 찾을 수 없음: $Exe" }
@@ -1663,7 +1683,7 @@ switch ($Command.ToLower()) {
     'reap'      { Cmd-Reap }
     'reserve'   { Cmd-Reserve }
     'unreserve' { Cmd-Unreserve }
-    'grant'     { Cmd-Grant }
+    'grant'     { $script:GrantKindArg = $PSBoundParameters.ContainsKey('Kind'); Cmd-Grant }
     'queue'     { Cmd-Queue }
     'player'    { Cmd-Player }
     'browser'   { Cmd-Browser }

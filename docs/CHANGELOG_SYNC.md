@@ -1,3 +1,5 @@
+2026-11-04 18:20 HALT 예외·Editor 우선 순번(CTO: 종료 정지 재발 3d05cf81, HALT 유지·좀비 14612 보존): 실행기 2026.11.04-haltexempt. HALT 동안 _halt_exempt.json의 owner(claude-quit-fix, 만료 있음)만 build/player를 계속하고, 좀비 검사로 HALT를 다시 만들지 않는다. 다른 owner는 HALT가 풀릴 때까지 exit 3이다. grant -Kind editor는 editor 예약을 BuildLoop 바로 뒤에 둔다(임펙트 드루이드 7기술 빌드용). halt-exempt 10건, loopfirst 30건, 기존 검사 9종 PASS.
+
 2026-11-04 18:00 Player 우선 순번 grant(CTO 순번 결정: ① BuildLoop ② 캐릭터 총괄 전사 대검 재촬영 3회 ③ 나머지): 실행기 2026.11.04-grant에 grant 명령을 추가했다. 지정 owner의 Player N회가 BuildLoop 다음 순번을 받는다(예약 큐·drain 건너뜀, 대기 중 다른 새 Player 차단, 입장마다 차감, TTL). BuildLoop 우선·단독·슬롯·메모리·돌고 있는 Player 보존 규칙은 그대로다. loopfirst-test 25건 PASS.
 
 2026-11-04 17:50 BuildLoop Editor 우선(CTO: 사용자 실행본 갱신이 데모 v0 확인 기준): 바탕화면 교체가 하루 종일 Editor 예약 순번에 밀렸다(a04450ec8 회차가 예약 2번째). 실행기 2026.11.04-loopfirst2는 BuildLoop 회차가 살아 있을 때 owner=buildloop editor 예약을 맨 앞으로 옮긴다. 돌고 있는 Editor는 끊지 않는다. 맨 앞이 buildloop이면 drain이 바로 새 Player를 멈춘다. loop bin에 Gate3D(590f44d4f, unity/main ee6999366)를 설치했다. 검사 loopfirst 18건, 기존 입장·순번 검사 9종 PASS.
