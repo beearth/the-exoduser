@@ -58173,3 +58173,4 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 - 실제 수정은 visual_select_labels·character_basic_stories·demo_text·hellgate_objectives·pet_bubble 5 JSON의 비KO 211값이다. 한국어 복사 56값, 직업명 정합, 사슬 오역·문법과 피 회복 말투, 지옥문 표식·명칭, 중간 말줄임, 장검 소유·위치를 보정했다. KO·Core·Runtime C# 변경 0.
 - 번역 가이드 용어표·전체목록 No.4274~4287/4108~4109 상태·STY-24 후속·[검사 및 넘침 위험](16번역·로컬라이제이션/STY24_I18N_AUDIT_20261104.md)을 동기화했다. 목록 CRLF 보존.
 - 문자열 검사 범위이며 Mac 실게임·넘침·RTL/글리프·원어민 감수는 미확인. No.3106/character_ui.json은 범위 밖으로 보존했다.
+2026-11-04 L11 크래시 P1 수정(표현 코드만, Core·수치 무변경, 컴파일 미확인): R11 CombatImpactView 피격 클립 sprite==null NRE(생성 직후 enabled=false + DrawEnemyHits sprite 가드), R12 NativeGame.PauseFocus 사망 결정 화면 포커스 상실 시 메뉴 전환 차단, R13 NativeEnemyRigRenderer 65·68행 SyncActor try/catch 가드. UNITY_RUN_EXCEPTION_AUDIT R11~R13, 상세 worklog/cloud-lanes/L11-crash-p1_20261104.md
