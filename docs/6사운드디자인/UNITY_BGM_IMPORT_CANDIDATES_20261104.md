@@ -20,6 +20,8 @@
 
 ### 1.1 P0 판단 — 1-1 데모 한 판(10~15분)
 
+- **반입 상태(11-04 유니티 총괄, `claude/unity-pc-options-wave1-20261104` `05231e112`, unity/main 미병합):** P0 3곡을 `Resources/Audio/Bgm/`에 mp3 192k로 반입했다 — `hell1_rot_ashes_banner.mp3`(420.00초·10.08MB), `hell1_rot_cathedral_steel.mp3`(288.88초·6.93MB), `hell1_rot_iron_oath.mp3`(247.24초·5.94MB), 세 곡 -16.24 LUFS(hell1 -15.98, 클리핑 없음). 재생: 필드 진입 hell1 1회 → 3곡 셔플 순환(직전 곡 반복 없음), 설정 BGM auto일 때만, 특정 곡 선택 시 그 곡 반복(웹 playTrack loop). 설정 목록 6→9값. 청음 판정(사용자 귀)·라이선스 확인(§1.2) 전이며 공개·업로드 없음.
+
 - 웹은 장 BGM 1곡(1장 = Ashes of the Fallen Gate, 4:22)을 한 번 튼 뒤 `gameplay` 큐(40곡 이상)를 무작위로 섞는다. Unity는 지금 `hell1` 한 곡을 반복한다. 데모 한 판이 10~15분이므로 같은 곡이 2~3번 반복된다.
 - 회전곡은 3곡(15.9분, Vorbis 약 15MB)이면 한 판 동안 반복이 없다. 1장 회전 후보 15곡 중, 사용자가 06-02에 Remastered로 다시 뽑은 1장 곡(Ashes Under the Banner·Cathedral of Steel·Iron Oath Under Ash·Neon Hellfire Protocol·Wrath of the Golden Age)을 선호 신호로 보고 그중 길이가 긴 3곡을 골랐다. 3곡 모두 WAV 원본이라 반입 때 Vorbis로 변환한다.
 - 곡 자체가 맞는지는 귀로 판정해야 한다. 원하면 R11 청음판(필드 플레이 영상 + 곡 후보)으로 사용자가 고를 수 있다.
