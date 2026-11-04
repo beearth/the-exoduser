@@ -48,7 +48,7 @@ if($Command -ne 'install-bin' -and $env:EXO_UNITY_NO_FORWARD -ne '1' -and
     exit $LASTEXITCODE
 }
 
-$ExoUnityVersion = '2026.11.04-zombiehalt'
+$ExoUnityVersion = '2026.11.04-zombiealert'
 $MaxPlayerSlots = 2
 Import-Module (Join-Path $PSScriptRoot 'QueueTurn.psm1') -Force
 try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false) } catch { }
@@ -1554,6 +1554,25 @@ function Split-Zombies($zombies) {
     foreach ($z in @($zombies)) { if (Test-ZombieKnown $z) { $known += $z } elseif (Test-ZombieManaged $z) { $managed += $z } else { $new += $z } }
     return [pscustomobject]@{ new = @($new); known = @($known); managed = @($managed) }
 }
+# zombie-alert(11-04 19:40 CTO): 좀비가 생기면 부팅 후 몇 시간 뒤 첫 발생인지 기록한다(오염 시점 측정). HALT는 CTO에 먼저 보고한 뒤 만든다.
+# 그래서 새 좀비는 HALT 대신 _zombie_alert.json(누적)에 시각·부팅 경과·좀비 목록을 남기고, 그 Player 시작만 거부한다(exit 3).
+# 좀비가 남아 있는 동안 다음 Player도 같은 이유로 거부되므로 창 모드 Player는 멈추고, Editor batch는 계속된다.
+function Get-BootAgeHours { try { return [math]::Round(((Get-Date) - (Get-CimInstance Win32_OperatingSystem -ErrorAction Stop).LastBootUpTime).TotalHours, 2) } catch { return $null } }
+function Write-ZombieAlert($zombies, [string]$what, [string]$source) {
+    $p = Join-Path $Root '_zombie_alert.json'; $a = Read-Json $p
+    $boot = $null; try { $boot = (Get-CimInstance Win32_OperatingSystem -ErrorAction Stop).LastBootUpTime.ToUniversalTime().ToString('o') } catch { }
+    $events = @(); if ($a -and $a.events) { $events = @($a.events) }
+    $known = @($events | ForEach-Object { [int]$_.pid })
+    $new = @(@($zombies) | Where-Object { $known -notcontains [int]$_.pid })
+    if ($new.Count -eq 0) { return $false }
+    foreach ($z in $new) {
+        $zs = $null; try { $zs = (Get-Process -Id ([int]$z.pid) -ErrorAction Stop).StartTime.ToUniversalTime().ToString('o') } catch { }
+        $events += [pscustomobject]([ordered]@{ pid = [int]$z.pid; name = [string]$z.name; processStart = $zs; detectedAt = (NowIso); bootAt = $boot; bootAgeHours = (Get-BootAgeHours); threads = $z.threads; cpuSec = $z.cpuSec; what = $what; source = $source; owner = [string]$Owner; exe = [string]$Exe })
+    }
+    Write-JsonAtomic $p ([ordered]@{ note = '좀비 감지 기록(HALT 아님). HALT는 CTO 보고 뒤 결정. 첫 발생 부팅 경과 = 첫 항목 bootAgeHours'; firstBootAgeHours = $events[0].bootAgeHours; events = @($events) })
+    Say ('좀비 감지 기록: ' + (($new | ForEach-Object { $_.name + ':' + $_.pid }) -join ', ') + ' 부팅 후 ' + (Get-BootAgeHours) + '시간 (_zombie_alert.json, HALT 만들지 않음 - CTO 보고 대상)')
+    return $true
+}
 function Stop-ForZombies($zombies, [string]$what) {
     $sp = Split-Zombies $zombies
     foreach ($z in @($sp.known)) { Say ('경고: 알려진 kill 불가 좀비 ' + $z.name + ':' + $z.pid + ' - HALT 만들지 않음(_zombie_known.json, 재부팅 때 정리)') }
@@ -1564,8 +1583,8 @@ function Stop-ForZombies($zombies, [string]$what) {
     $cause = '재부팅 필요: 종료 못 한 Player 좀비 ' + @($zombies).Count + '개 - ' + $list
     $id = [guid]::NewGuid().ToString('N').Substring(0, 8)
     try { Write-JsonAtomic (Join-Path $ExecDir ('done\' + $id + '.json')) ([ordered]@{ runnerVersion = $ExoUnityVersion; id = $id; kind = $what; ok = $false; rejected = $true; note = $cause; zombies = @($zombies); exe = [string]$Exe; finishedAt = (NowIso) }) } catch { }
-    New-Halt $cause $what @() (Get-Date)
-    Reject ($cause + '. 새 Player를 띄우지 않았다. 재부팅 뒤 ' + $HaltPath + '를 지우면 풀린다')
+    $null = Write-ZombieAlert $zombies $what 'start-check'
+    Reject ($cause + ' (부팅 후 ' + (Get-BootAgeHours) + '시간). 새 Player를 띄우지 않았다. HALT는 만들지 않았다(_zombie_alert.json, CTO 보고 대상)')
 }
 
 # 11-04: 사용자가 바탕화면에서 띄운 게임(부모 explorer)은 실제 세이브 폴더에 저장하므로, 그동안 돈 QA Player가 USER_SAVE 변경으로 실패했다.
@@ -1663,7 +1682,7 @@ function Cmd-Player {
         elseif (-not $gpu) { $fail = '그래픽 장치 이름을 로그에서 찾지 못함(GPU 확인 불가)' }
         if (@($g.warnings | Where-Object { $_ -like '*커널 대기 의심*' }).Count) {
             $after = @(Find-ZombiePlayers); $after = @($after | Where-Object { -not (Test-ZombieKnown $_) })   # 알려진 좀비는 이 Player의 HALT 사유에서 뺀다
-            if ($after.Count) { $g.warnings = @($g.warnings) + '재부팅 필요: 이 Player가 종료되지 않음 - HALT 생성'; New-Halt ('재부팅 필요: 종료 못 한 Player 좀비 ' + (($after | ForEach-Object { $_.name + ':' + $_.pid }) -join ', ')) 'player' @($log) $t0c }
+            if ($after.Count) { $g.warnings = @($g.warnings) + ('재부팅 필요: 이 Player가 종료되지 않음(부팅 후 ' + (Get-BootAgeHours) + '시간) - HALT 대신 _zombie_alert.json 기록, CTO 보고 대상'); $null = Write-ZombieAlert $after 'player' 'post-run' }
         }
         Finish-Guarded 'player' $id $g ([ordered]@{ exe = $exeFull; args = @($ia); gpu = $gpu; gfxNull = $nullGfx; log = $log; desktop = $Desktop; hiddenWindows = $g.hiddenWindows; hiddenTitles = @($g.hiddenTitles); desktopClosed = $g.desktopClosed; processId = $g.processId; startedAt = $g.startedAt; finishedAt = $g.finishedAt; hiddenDesktopName = $g.hiddenDesktopName; slot = $script:PlayerSlotPath; diskAtStart = $diskWait }) $extraOk $fail
     } finally {

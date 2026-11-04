@@ -24,7 +24,12 @@ try {
  Write-JsonAtomic (Get-ZombieKnownPath) ([ordered]@{zombies=@([ordered]@{pid=$PID;processStart='2000-01-01T00:00:00';note='reused pid'})})
  Check (-not (Test-ZombieKnown $me)) 'reused pid treated as known'
  $r=$null;try{Stop-ForZombies @($me) 'player'}catch{$r=$_.Exception.Message}
- Check ($script:halted -like '*재부팅 필요*' -and $r -like 'REJECT*') 'new zombie no longer makes the HALT'
+ # 11-04 19:40 CTO: a new zombie is recorded (boot age) and refused, but the HALT is made only after a report to the CTO
+ Check ($null -eq $script:halted -and $r -like 'REJECT*') ('new zombie must be refused without a HALT: halted='+$script:halted+' r='+$r)
+ $al=Read-Json (Join-Path $Root '_zombie_alert.json')
+ Check ($al -and @($al.events).Count -eq 1 -and [int]$al.events[0].pid -eq $PID -and $null -ne $al.events[0].bootAgeHours) 'zombie alert with boot age not written'
+ $r=$null;try{Stop-ForZombies @($me) 'player'}catch{$r=$_.Exception.Message}
+ Check ($r -like 'REJECT*' -and @((Read-Json (Join-Path $Root '_zombie_alert.json')).events).Count -eq 1) 'same zombie refused again but recorded twice'
  $body=$ast.Extent.Text
  Check ($body.Contains('$after = @($after | Where-Object { -not (Test-ZombieKnown $_) })')) 'post-run HALT still counts known zombies'
  Check ($body.Contains("return ([string]`$pp.CommandLine -match 'exo-unity\.ps1')")) 'managed rule missing'

@@ -1,3 +1,5 @@
+2026-11-04 19:50 좀비 기록(CTO 19:40, 재부팅 19:33 뒤): 실행기 2026.11.04-zombiealert. 새 좀비는 HALT 대신 _zombie_alert.json에 부팅 경과 시간과 함께 기록하고, 그 Player만 거부한다. HALT는 CTO 보고 뒤에 만든다. 재부팅 전 _halt_exempt.json·_zombie_known.json은 halt-history로 옮겼다. quit-fix 깨끗한 부팅 A/B 18회는 rank 0 grant다. zombie-known 10건·기존 검사 PASS.
+
 2026-11-04 19:45 좀비 HALT(CTO 오염 상태 확정: 같은 부팅에서 좀비 14612·40496): 실행기 2026.11.04-zombiehalt. 좀비 HALT 동안 Editor batch build는 진행(batchmode 정지 0/61), 다른 owner의 Player는 거부 대신 HALT 해제까지 대기, claude-quit-fix A/B는 좀비가 있어도 7회까지(maxRuns), 좀비 4개면 자동 중단. 40496을 알려진 좀비로 등록했고 HALT는 재부팅까지 유지한다. zombie-halt 10건·기존 검사 PASS.
 
 2026-11-04 19:30 순번 rank·알려진 좀비(CTO 긴급: 사용자가 HALT를 지웠고 재부팅은 작업 종료 뒤): 19:15 HALT가 좀비 14612와 A/B 정지 40496으로 다시 생겼다. 실행기 2026.11.04-zombieknown/rank. _zombie_known.json의 좀비(14612)는 경고만 남기고, 실행기가 처리 중인 정지 Player는 세지 않으며, 그 밖의 새 좀비는 HALT다. grant에 rank를 붙였다. Player 순번은 quit-fix A/B(0) → BuildLoop(1) → 대검 재촬영(2) → ulead-combo4(3) → 6차(4) → 나머지, Editor 순번은 BuildLoop → vfx-druid(2) → ulead-combo4(3) → 6차(4) → 나머지. loopfirst 36·zombie-known 8·기존 11종 PASS.
