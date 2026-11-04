@@ -111,7 +111,7 @@ namespace Exoduser.UnityPort
             Map=A2FieldLayout.CreateMap(JsonUtility.FromJson<MapData>(resource.text));
             font=Resources.Load<Font>("Art/fonts/NotoSansKR");
             hud=new NativeHud();skills=new NativeSkills();skills.Changed=RequestCombatSave;stats=new NativeStatPanel();hud.SlotSelected=slot=>{if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected callback slot="+slot+" before menu="+menu+" hp="+Simulation.Player.Hp+" skillsOpen="+skills.Open);if(!menu&&Simulation.Player.Hp>0){SetSkills(true,slot);if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected result skillsOpen="+skills.Open+" menu="+menu);}};
-            NativePanelTabBar.Requested+=OnPanelRequested;forge=new NativeForgePanel();levelUp=new NativeLevelUpOverlay();death=new NativeDeathOverlay();death.OnRetry=RetryFromDeath;stageClear=new NativeStageClearOverlay();bossBar=new NativeBossBar();areaTitle=new NativeAreaTitle();objective=new NativeObjectivePanel();areaTitleAllowed=!Array.Exists(Environment.GetCommandLineArgs(),a=>a.StartsWith("--unity-",StringComparison.Ordinal)&&a!="--unity-world-3d"&&a!="--unity-a2-forest"&&!NativeReviewArgs.IsReviewArgument(a));
+            NativePanelTabBar.Requested+=OnPanelRequested;forge=new NativeForgePanel();levelUp=new NativeLevelUpOverlay();death=new NativeDeathOverlay();death.OnRetry=RetryFromDeath;death.OnLobby=()=>ApplyPauseCommand(PauseMenuCommand.ReturnLobby);death.OnRestart=()=>ApplyPauseCommand(PauseMenuCommand.Restart);stageClear=new NativeStageClearOverlay();bossBar=new NativeBossBar();areaTitle=new NativeAreaTitle();objective=new NativeObjectivePanel();areaTitleAllowed=!Array.Exists(Environment.GetCommandLineArgs(),a=>a.StartsWith("--unity-",StringComparison.Ordinal)&&a!="--unity-world-3d"&&a!="--unity-a2-forest"&&!NativeReviewArgs.IsReviewArgument(a));
             inventory=new NativeInventory(()=>{Simulation.ApplyEquipment(inventory.State);hud.Refresh(Simulation.Player,Simulation.TickCount,true);RequestCombatSave();});
             BuildProps();
             var kiSheet=Resources.Load<Texture2D>("Art/vfx/ki_slash_silver_sheet");
@@ -271,7 +271,7 @@ namespace Exoduser.UnityPort
             if(Simulation!=null)levelUpSeen=Simulation.Player.Level;
             // Web _fallenResolve death branch (game.html 43851-43896): Player.Hp <= 0 shows #death once. Unity has no chapter / max-combo / damage-log state: chapter 0 is the only ported chapter, combo and log stay unported.
             if(Simulation!=null&&!pauseSmoke&&!hudSmoke&&!inventorySmoke){
-                if(PlayerDown){if(!deathShown){deathShown=true;deathCount++;death.Show(new NativeDeathOverlay.Info{kills=Simulation.Kills,chapter=0,expLoss=-1,maxCombo=-1,deaths=deathCount,damageLog=null});}}
+                if(PlayerDown){if(!deathShown){deathShown=true;deathCount++;death.Show(new NativeDeathOverlay.Info{kills=Simulation.Kills,chapter=0,expLoss=-1,maxCombo=-1,deaths=deathCount,damageLog=null,inArena=Simulation.Stage.InArena});}}
                 else if(deathShown){deathShown=false;death.Hide();}
             }
             if(WaitForFrontendEntryInput())return;
@@ -288,6 +288,11 @@ namespace Exoduser.UnityPort
                 else if(!stats.TextInputActive&&NativeKeyBindInput.Down("inventory"))OnPanelHotkeyRequested("invPanel");
                 else stats.HandleKeys(()=>SetStats(false));
                 return;
+            }
+            // Death screen keys belong to the death screen itself (its two actions), not to the hidden pause page behind it.
+            if(PlayerDown&&death.Active&&!menu){
+                if(!pauseSmoke){var c=death.PollKeys();if(c==NativeDeathOverlay.Choice.Rise)RetryFromDeath();else if(c==NativeDeathOverlay.Choice.Restart)ApplyPauseCommand(PauseMenuCommand.Restart);else if(c==NativeDeathOverlay.Choice.GiveUp)ApplyPauseCommand(PauseMenuCommand.ReturnLobby);}
+                UpdateViews();return;
             }
             if(menu||PlayerDown){
                 if(!pauseSmoke)ApplyPauseCommand(pauseMenu.PollKeys(PlayerDown,Screen.fullScreen));
@@ -608,7 +613,7 @@ namespace Exoduser.UnityPort
             StageFlowDrawWorld();
             // 사망 대기 화면: 물리 화면 전체 필터·비네트 + 명조 제목·원형 게이지. 사망 확정 뒤 사망 패널은 이 위에 그린다.
             revive.LocaleCode=lobby.Language;revive.DrawDeathScreen(p);
-            if(death.Active&&PlayerDown&&!heroReviewActive){death.Draw();}
+            if(death.Active&&PlayerDown&&!heroReviewActive){death.LocaleCode=lobby.Language;death.Draw();}
             else if((menu||PlayerDown)&&!hudSmoke&&!inventorySmoke&&!heroReviewActive){
                 pauseMenu.English=lobby.Language!="ko";
                 pauseMenu.LocaleCode=lobby.Language;

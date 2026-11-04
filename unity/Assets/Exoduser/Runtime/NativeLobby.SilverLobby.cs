@@ -127,7 +127,9 @@ namespace Exoduser.UnityPort
         }
         int lobbyEntryDensity;
         void RefreshLobbyEntryArt(){int density=Screen.height>1080?2:1;if(lobbyEntryDensity==density)return;lobbyEntryDensity=density;lobbySilverEnter=Resources.Load<Texture2D>("Art/ui/silver_hell/lobby_enter_ready_"+density+"x");lobbySilverDisabled=Resources.Load<Texture2D>("Art/ui/silver_hell/lobby_enter_disabled_"+density+"x");}
-        static readonly Color SilverSlotFace=new Color(5/255f,5/255f,7/255f,.94f);
+        // 11-04 RETOUCH: empty-slot face Y 5.3 -> 8.5. Alpha .94 stays (it is what hides the lamp/flag bleed at 3840); alpha alone cannot lift Y above the dark bg (Y 4.3~5.8),
+        // so the face colour rises: Y(out)=(1-a)*Ybg+a*Yface, Yface(8,8,12)=8.46 -> 8.2 over bg 4.3~5.8, 8.9 over the 15.3 panel.
+        static readonly Color SilverSlotFace=new Color(8/255f,8/255f,12/255f,.94f);
         void DrawEmptySilverSlot(Rect card){Fill(card,SilverSlotFace);Border(card,new Color(.61f,.62f,.62f,.13f),1);Border(new Rect(card.x+14,card.y+14,56,56),new Color(.61f,.62f,.62f,.12f),1);}
         internal bool DeathUiEntryPointerCapture,DeathUiEntryPointerInside,EntryPointerInside,EntryHoverVisible;
         internal string EntryReviewState;

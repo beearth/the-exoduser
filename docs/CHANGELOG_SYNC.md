@@ -22,6 +22,13 @@
 2026-11-04 SND-12 R7 드루이드 7기술 효과음 Unity 연결(사운드 총괄): 사용자 선택 채택 10키(druid_slash3_ground·slam_lift·debris·charge_kick·wall_crash·grab_bind·grab_throw·erupt_warn·root_spikes·heart_vein)를 Resources/Audio/RM1에 넣고 시작 음량 .5. 연결: NativeFeedbackAudio(SlamOnLanding·DruidExtras — 예고 이벤트+DruidRemodelData 상수 지연) + 새 NativeDruidSoundCues(보스 상태 bossSlamWind·bossChargeWind·bossGrab 전환, Fx wallSlam, 균열 Exploded — Core 읽기 전용). 시각 변경 druid_slam Tele+SlamActive→Tele+2, druid_erupt 즉시→BurrowEruptWarn 늦춤. 전부 안 맞음 5키(grab_step·absorb·burrow_move·staff_tap·heart_wave)는 연결 없음. Core 무변경, PC 컴파일 오류 0, 청음은 Mac. docs: DRUID_V81_SKILL_SFX_G1 §4.1, SOUND_LEAD_MASTER R7.
 
 2026-11-04 SND-11 Unity 걷기 발소리(사운드 총괄): NativeFeedbackAudio.TrackWalk — 걸은 거리 128px마다 footstep/footstep2 번갈아 .55, rate Jitter(.9,.15), 구르기·넉백·사망 제외, 한 프레임 48px 초과 이동 무시. NativeGame.DispatchFeedback에서 호출. Core 무변경, docs/6사운드디자인/6사운드디자인.md 절 추가. PC 컴파일만, 청음은 Mac.
+2026-11-04 사망 결정 화면 태국어 결합 기호 누락 수정(총괄 후보 캡처 검수): Spaced()가 한 글자씩 그려 모음·성조 기호가 빠짐 → 결합 문자 스크립트(태국·라오·크메르·미얀마·인도계·아랍)는 자간 없이 한 번에, 나머지는 문자 묶음(StringInfo) 단위로. 글자 칸 폭을 size*2에서 실제 폭+2px로(UI 겹침 검사 오탐 감소). death-d2 8/0, 참조 컴파일 오류 0. 화면 판정 전(claude/unity-pc-death-pbz-20261104).
+
+2026-11-04 사망 결정 화면 D1 촬영 장면 추가(NativeGame.DeathScreenCapture, 캡처 전용): 결정 화면 언어 10개(ko·en·ja·ru·th·el·de·vi·fi·hu) death_decision_<code>, --unity-death-field-decision 필드 사망 2선택지 death_field_decision, --unity-death-sequence 0~10초 15fps 연속 프레임(무음 영상용). 게임 동작 변경 0, 참조 컴파일 오류 0(claude/unity-pc-death-pbz-20261104).
+
+2026-11-04 사망 결정 화면 RETOUCH D2·경미(claude/unity-pc-death-pbz-20261104): 문구 9키를 29개 언어로(Resources/Data/death_decision_text.json, 번역 목록 4264~4272 전파, 장식 영문 행은 전 언어 영문 유지, ar는 en으로 그림), 긴 언어는 정수 pt 축소(말줄임 없음). 로비 빈 슬롯 면 (5,5,7,.94)→(8,8,12,.94)로 예상 Y 8.5(알파만으로는 배경 Y 4.3~5.8보다 올릴 수 없음). 사망 결정 화면은 산세리프 0(sans는 옛 리플레이 모양에만 남김). merge 52fce6875가 어긋나게 둔 Spaced 괄호·TitleGate 위치 정정(참조 컴파일 오류 0). PC 검사·컴파일만, 화면 판정 전.
+
+2026-11-04 Mac Unity 사망 확정 화면 교체 "안식은 없다": 웹 #death 이식판(원화·펫·이모지·미이식 표시) 대신 검정 → 제목·진홍 헤어라인·THERE IS NO REST → "포기할 것인가?" 결정(보스방 3 선택지, 필드 2 선택지). 끊겨 있던 로비 버튼과 숨은 일시정지 키 경로를 바로잡음. 번짐 PNG 선형화로 Linear 색 보정. ARM64 빌드 오류0, 사망 스모크 1920·1600 PASS. 번역 목록 4264–4272. [기록](3.1%20ui%20hud%20디자인/UNITY_DEATH_SCREEN_20261103.md#2026-11-04-사망-확정-패널-교체--안식은-없다-결정-화면-mac-pc-ui-총괄).
 
 2026-11-04 SND-13 1-1 데모 한 판 소리 장면 목록(사운드 총괄, CTO 10:05): docs/6사운드디자인/DEMO_1-1_SOUND_SCENES_20261104.md 신설. 필드·보스·출구 장면별 키·지금 상태·청음 라운드를 정리했다. 빈칸은 생체나무 맥동·호흡, 보스 처치 순간, 출구 열림·진입, 드루이드 등장(staff_tap 4회 불채택 → 등장 전체 한 소리). R8 청음 후보 74줄 pick_r8.html(카드마다 장면 영상 동기 재생). SOUND_LEAD_MASTER에 R8 절 추가. 코드 변경 없음, 청음·Unity 반영 전.
 
