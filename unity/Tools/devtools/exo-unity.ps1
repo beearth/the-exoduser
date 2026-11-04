@@ -47,7 +47,7 @@ if($Command -ne 'install-bin' -and $env:EXO_UNITY_NO_FORWARD -ne '1' -and
     exit $LASTEXITCODE
 }
 
-$ExoUnityVersion = '2026.11.04-haltexempt'
+$ExoUnityVersion = '2026.11.04-zombieknown'
 $MaxPlayerSlots = 2
 Import-Module (Join-Path $PSScriptRoot 'QueueTurn.psm1') -Force
 try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false) } catch { }
@@ -1496,7 +1496,34 @@ function Wait-DiskIdle([string]$exePath, [int]$maxSec = 600) {
     }
 }
 
+# zombie-known(11-04 CTO): 사용자가 HALT를 지웠고 재부팅은 작업이 끝난 뒤에 한다. 알려진 kill 불가 좀비(_zombie_known.json의 pid+시작 시각)는
+# HALT를 다시 만들지 않고 경고만 남긴다. 부모 실행기(exo-unity)가 살아 있는 Player는 그 실행기가 시간 초과 kill·진단 영수증을 처리 중이라 좀비로 세지 않는다.
+# 그 밖의 새 좀비는 지금처럼 HALT(재부팅 필요)다. 좀비 프로세스는 어느 경우에도 죽이지 않는다.
+function Get-ZombieKnownPath { return (Join-Path $Root '_zombie_known.json') }
+function Test-ZombieKnown($z) {
+    $k = Read-Json (Get-ZombieKnownPath); if (-not $k -or -not $k.zombies) { return $false }
+    $start = ''; try { $start = (Get-Process -Id ([int]$z.pid) -ErrorAction Stop).StartTime.ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ss') } catch { }
+    foreach ($e in @($k.zombies)) { if ([int]$e.pid -eq [int]$z.pid -and (-not $e.processStart -or [string]$e.processStart -eq $start)) { return $true } }
+    return $false
+}
+function Test-ZombieManaged($z) {
+    try {
+        $c = Get-CimInstance Win32_Process -Filter ('ProcessId=' + [int]$z.pid) -ErrorAction Stop
+        $pp = Get-CimInstance Win32_Process -Filter ('ProcessId=' + [int]$c.ParentProcessId) -ErrorAction Stop
+        return ([string]$pp.CommandLine -match 'exo-unity\.ps1')
+    } catch { return $false }
+}
+function Split-Zombies($zombies) {
+    $new = @(); $known = @(); $managed = @()
+    foreach ($z in @($zombies)) { if (Test-ZombieKnown $z) { $known += $z } elseif (Test-ZombieManaged $z) { $managed += $z } else { $new += $z } }
+    return [pscustomobject]@{ new = @($new); known = @($known); managed = @($managed) }
+}
 function Stop-ForZombies($zombies, [string]$what) {
+    $sp = Split-Zombies $zombies
+    foreach ($z in @($sp.known)) { Say ('경고: 알려진 kill 불가 좀비 ' + $z.name + ':' + $z.pid + ' - HALT 만들지 않음(_zombie_known.json, 재부팅 때 정리)') }
+    foreach ($z in @($sp.managed)) { Say ('경고: 실행기가 처리 중인 정지 Player ' + $z.name + ':' + $z.pid + ' - 그 실행기의 시간 초과 kill·진단을 기다림') }
+    if (@($sp.new).Count -eq 0) { return }
+    $zombies = @($sp.new)
     $list = (@($zombies) | ForEach-Object { $_.name + ':' + $_.pid + '(스레드' + $_.threads + ', CPU ' + $_.cpuSec + 's)' }) -join ', '
     $cause = '재부팅 필요: 종료 못 한 Player 좀비 ' + @($zombies).Count + '개 - ' + $list
     $id = [guid]::NewGuid().ToString('N').Substring(0, 8)
@@ -1597,7 +1624,7 @@ function Cmd-Player {
         if ($nullGfx) { $extraOk = $false; $fail = 'Forcing GfxDevice: Null - GPU 렌더링 아님' }
         elseif (-not $gpu) { $fail = '그래픽 장치 이름을 로그에서 찾지 못함(GPU 확인 불가)' }
         if (@($g.warnings | Where-Object { $_ -like '*커널 대기 의심*' }).Count) {
-            $after = @(Find-ZombiePlayers)
+            $after = @(Find-ZombiePlayers); $after = @($after | Where-Object { -not (Test-ZombieKnown $_) })   # 알려진 좀비는 이 Player의 HALT 사유에서 뺀다
             if ($after.Count) { $g.warnings = @($g.warnings) + '재부팅 필요: 이 Player가 종료되지 않음 - HALT 생성'; New-Halt ('재부팅 필요: 종료 못 한 Player 좀비 ' + (($after | ForEach-Object { $_.name + ':' + $_.pid }) -join ', ')) 'player' @($log) $t0c }
         }
         Finish-Guarded 'player' $id $g ([ordered]@{ exe = $exeFull; args = @($ia); gpu = $gpu; gfxNull = $nullGfx; log = $log; desktop = $Desktop; hiddenWindows = $g.hiddenWindows; hiddenTitles = @($g.hiddenTitles); desktopClosed = $g.desktopClosed; processId = $g.processId; startedAt = $g.startedAt; finishedAt = $g.finishedAt; hiddenDesktopName = $g.hiddenDesktopName; slot = $script:PlayerSlotPath; diskAtStart = $diskWait }) $extraOk $fail
