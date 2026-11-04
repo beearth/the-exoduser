@@ -91,3 +91,17 @@
 | 5b | 사망 제목 크로스페이드 | NativeRevive.DeathScreen.cs `DeadTextFade`, NativeDeathOverlay.cs `TitleGate` | 앞 제목 페이드아웃 .8s → .35s, 패널 제목은 0.4s 지연 후 .8s 동안 올라옴 → 두 제목이 같은 시각에 보이지 않음 |
 
 검사: `unity/Tools/death-ui-tests/judge6.test.cjs`(6/0), 기존 review-0540·retouch-layout·candidate·run.cjs 통과, 5어셈블리 컴파일 오류 0. 화면 촬영·판정은 미실시.
+
+## 11-04 경미 7건 묶음 중 로비·캐릭터 선택 4건 (PC 검사·컴파일만, 화면 판정 전)
+
+| # | 항목 | 고친 곳 | 전 → 후 |
+|---|---|---|---|
+| 1 | 캐릭터 선택 취소/생성 | NativeLobby.SilverCharacter.cs `DrawVisualActionPlate` | 민 육각 원화(visual_cancel·create·disabled) → 공용 `NativeSilverHellUi.ActionPlate`(edge 28·outset 6). 생성=진홍 primary, 잠긴 캐릭터는 일반 판에 흐린 "출시 준비 중". 라벨은 Hahmlet·Cinzel 15px(자간 .2em)로 판 위에 그리고, 키는 기존 `CharacterDialogLabel`의 cancel·create·comingSoon을 쓴다(새 문구 없음). 포커스·호버는 판 안 글로우 |
+| 2 | "출시 준비 중" 레일 글자 | 같은 파일 `railSoon` | 10px → 14px, FontStyle.Normal. 폰트는 `CharacterTitleFont`(한글·비라틴은 Hahmlet 400 본문 경로, 라틴은 Cinzel). 레일 높이는 `CalcHeight`로 다시 계산돼 줄이 늘어나도 아래 이름·판이 밀려 맞는다 |
+| 3 | 3840 로비 오른쪽 패널 글자 | NativeLobby.SilverLobby.cs | 슬롯 이름 20(하한 14) → 22(하한 16), WARRIOR 줄 11 → 13, Lv 줄 13 → 15. `NativeUiViewport.Edges.Width>1921`(초와이드)일 때만 적용하고 16:9(1920)는 값이 그대로다 |
+| 7 | 로비 포스터 밉맵 | Editor/SourceTextureImporter.cs | `OriginalUiNoMipmaps`에 `Art/ui/lobby_poster/` 추가(밉맵 끔·Bilinear), `GetVersion` 4 → 5로 옛 캐시 재임포트. 두 .meta는 이미 enableMipMap 0·filterMode 1이라 그대로 |
+
+3840 UI 배율 조사: 가운데 묶음은 `NativeUiSafeArea.Fit`(min(폭/1920, 높이/1080)), 오른쪽 패널은 `NativeUiEdgeArea.Fit`(높이/1080, 폭=Width/Scale)이다. 3840×1080은 두 배율 모두 1.0이라 1920×1080과 같은 픽셀 크기이고, 폭만 늘어난다. 배율은 문제가 아니며, 패널 글자 자체가 13px 안팎이라 32:9 모니터에서 작게 보이는 것이다. 그래서 고칠 위치는 배율이 아니라 패널 글자 하한이고, 위 3번대로 초와이드에만 적용했다. 1080 높이의 16:9 글자까지 키우려면 사용자 결정이 필요하다.
+
+검사: `unity/Tools/death-ui-tests/ui-minor6.test.cjs` 7/0(1~7 소스 계약). `run.cjs`의 "visual and name button artwork" 검사는 1번에 맞춰 ActionPlate 호출을 확인하도록 바꿨다.
+화면 확인(Mac 촬영): 캐릭터 선택 1920(ko·en·de, 전사·잠긴 캐릭터)의 취소/생성 판과 레일 "출시 준비 중" 줄, 로비 3840×1080 오른쪽 패널(슬롯 이름·WARRIOR·Lv 줄)과 1920 비교, 포스터 장면 밉맵 없음.

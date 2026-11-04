@@ -75,10 +75,14 @@ namespace Exoduser.UnityPort
                 if(lobbySlotPortrait==null)lobbySlotPortrait=Resources.Load<Texture2D>("Art/CharacterSelect/portrait_warrior")??Resources.Load<Texture2D>("Art/lobby/warrior_portrait");
                 Image(new Rect(portrait.x+1,portrait.y+1,54,54),lobbySlotPortrait,ScaleMode.ScaleAndCrop);
                 Border(portrait,new Color(.61f,.62f,.62f,.25f),1);
-                int nameSize=20;while(nameSize>14&&SpacedWidth(silverName.font,nameSize,name,nameSize*.08f)>152)nameSize--;
+                // 11-04 lead review: on super-wide screens (edge width > 1920) the UI scale is height-based (1.0 at 3840x1080), so panel text was only 1x-sized. A floor is applied to this panel's text only; 16:9 is unchanged.
+                int wide=NativeUiViewport.Edges.Width>1921f?2:0;
+                int nameSize=20+wide;while(nameSize>14+wide&&SpacedWidth(silverName.font,nameSize,name,nameSize*.08f)>152)nameSize--;
                 var nameBox=new Rect(1510,card.y+9,152,30);NativeUiAudit.BeginGroup(nameBox);try{DrawSpaced(0,0,30,name,silverName.font,nameSize,nameSize*.08f,NativeSilverHellUi.Text,true);}finally{NativeUiAudit.EndGroup();}
-                SilverLabel(new Rect(1676,card.y+17,88,20),K("전사","WARRIOR"),silverMicro,TextAnchor.MiddleRight);
-                SilverLabel(new Rect(1510,card.y+49,266,24),SilverSlotCaption(name),silverBody,TextAnchor.MiddleLeft);
+                var slotMicro=silverMicro;var slotBody=silverBody;
+                if(wide>0){slotMicro=new GUIStyle(silverMicro){fontSize=silverMicro.fontSize+2};slotBody=new GUIStyle(silverBody){fontSize=silverBody.fontSize+2};}
+                SilverLabel(new Rect(1676,card.y+17,88,20),K("전사","WARRIOR"),slotMicro,TextAnchor.MiddleRight);
+                SilverLabel(new Rect(1510,card.y+49,266,24),SilverSlotCaption(name),slotBody,TextAnchor.MiddleLeft);
                 GUI.SetNextControlName("character-slot-"+index);if(NativeUiAudit.Button(new Rect(card.x,card.y,345,84),"",GUIStyle.none))SelectCharacter(index);
                 if((selected||card.Contains(Event.current.mousePosition))&&NativeUiAudit.Button(new Rect(1788,card.y+21,24,34),"×",silverBody))RequestCharacterDelete(index);
             }
