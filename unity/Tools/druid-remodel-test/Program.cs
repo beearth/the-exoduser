@@ -169,9 +169,12 @@ static partial class P
     static int Main(string[] args)
     {
         string dir = args.Length > 0 ? args[0] : "remodel-out"; Directory.CreateDirectory(dir);
+        if (args.Length > 1 && args[1] == "--length") { FightLengthChecks(dir); Console.WriteLine("fightlength only: " + checks + " checks, " + bad + " failed"); return bad == 0 ? 0 : 1; }
         var a = Fight("A-root-cut", true, 20261027u); var b = Fight("B-root-not-hit", false, 20261028u);
         ReachChecks(); Verify(a); Verify(b); VerifyTelegraphs(); ParryGuard(); PillarChecks(); VerifyMoveTable(); VerifyMotionTotals(); { int c0 = checks, b0 = bad; RadiusChecks(); Console.WriteLine("radius / edge hit / no-trap / burrow / reach by life: " + (checks - c0) + " checks, " + (bad - b0) + " failed"); }
         int druidChecks = checks, druidBad = bad;
+        { int c0 = checks, b0 = bad; FightLengthChecks(dir); Console.WriteLine("fight length (11-04 CTO decision 3): " + (checks - c0) + " checks, " + (bad - b0) + " failed"); }
+        druidChecks = checks; druidBad = bad;
         FrameworkChecks();
         int fwChecks = checks - druidChecks, fwBad = bad - druidBad;
         File.WriteAllText(Path.Combine(dir, "remodel-telegraphs.json"), TelegraphJson(), new UTF8Encoding(false));
