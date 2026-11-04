@@ -1,6 +1,7 @@
 // CX-03a enemy tick oracle exporter: runs the ORIGINAL enemy-loop head (L1) and updateE head (U1) from game.html in a Node VM and writes oracle.json.
+// 기본값: A안 VM 기대값 층. --expectation-mode web은 주입 없는 원래 웹 기대값.
 //   node export.cjs [--source <game.html>] [--head <commit sha of the source>] [--expect-source-sha <sha256>] [--out oracle.json]
-// Blocks are located by text anchors (the first line must start with the expected text and match exactly one line) and executed UNCHANGED.
+// Blocks are located by text anchors (the first line must start with the expected text and match exactly one line) with only the recorded A-plan mkEn expressions changed (use --expectation-mode web for unchanged source).
 // Wrappers (the only text added around original lines):
 //   U1:  "function __U1(e,sp){" + original lines of updateE up to the line before the "D4식 DOT" comment + "}"
 //        __U1T is __U1 plus ONE appended statement "return {tail:true,d:d};" used only to learn whether the function fell through to the DOT part and the
@@ -20,7 +21,8 @@ function record(name,start,end){const body=lines.slice(start,end+1).join('\n');a
 function stmt(name,prefix){const s=find(prefix);for(let e=s;e<Math.min(lines.length,s+400);e++){const body=lines.slice(s,e+1).join('\n');if(compiles(body))return record(name,s,e);}throw Error('no complete statement from '+prefix);}
 function untilBrace(name,prefix){const s=find(prefix);for(let e=s+1;e<lines.length;e++)if(lines[e]==='}'||lines[e]==='}\r')return record(name,s,e);throw Error('no closing brace for '+prefix);}
 function single(name,prefix){const s=find(prefix);return record(name,s,s);}
-const blocks=[];const add=b=>blocks.push(b);
+const expectation=require(arg('--a-plan-module',path.join(__dirname,'../enemy-spawn-oracle/a-plan.cjs'))).create(arg('--expectation-mode','a-plan'));
+const blocks=[];const add=b=>blocks.push(b.startsWith('function mkEn(')?expectation.inject(b,lines):b);
 // ---- tables / helpers mkEn needs (same blocks as CX-02), used here only to create realistic enemy objects ----
 add(stmt('EL','const EL={'));add(stmt('CHAPTER_STAGES','const CHAPTER_STAGES=['));add(stmt('TOTAL_STAGES','const TOTAL_STAGES='));
 add(stmt('HELL_NAMES','const HELL_NAMES=['));add(stmt('HELL_THEMES','const HELL_THEMES=['));add(stmt('HELL_BOSSES','const HELL_BOSSES=['));
@@ -48,6 +50,7 @@ const updateE=untilBrace('updateE (whole function)','function updateE(e,sp){');
 const ctx=vm.createContext({});
 const PRELUDE=fs.readFileSync(path.join(__dirname,'prelude.js'),'utf8');
 vm.runInContext(PRELUDE,ctx);
+if(expectation.prelude)vm.runInContext(expectation.prelude,ctx);
 for(const b of blocks)vm.runInContext(b,ctx);
 vm.runInContext(updateE,ctx);
 vm.runInContext("var __mkOrig=mkEn;mkEn=function(x,y,si,etype,ib,el,room){const o=__mkOrig(x,y,si,etype,ib,el,room);__log.push(['mk',x,y,si,etype,el===undefined?null:el,o?o.hp:null,o?o.atk:null]);return o;};",ctx);
@@ -143,5 +146,5 @@ for(let k=0;k<4;k++)for(const et of [1,8,13,16,21,23,25,26,0,3]) mk('shooter fuz
 const results=[];
 for(const c of cases){let r;try{r=runCase(c);}catch(err){throw new Error('case '+c.name+': '+err.message);}results.push({case:c,out:r});}
 const tables={ETYPE_RANGE:JSON.parse(JSON.stringify(vm.runInContext('ETYPE_RANGE',ctx)))};
-fs.writeFileSync(outPath,JSON.stringify({source:{file:sourcePath,sha256:fileSha,head:headSha,anchors},snap:SNAP,cases:results},null,0));
+fs.writeFileSync(outPath,JSON.stringify({expectation:expectation.metadata,source:{file:sourcePath,sha256:fileSha,head:headSha,anchors},snap:SNAP,cases:results},null,0));
 console.log('wrote '+outPath+' cases='+results.length);

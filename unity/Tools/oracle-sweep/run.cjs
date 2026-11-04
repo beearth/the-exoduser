@@ -217,6 +217,7 @@ async function main() {
         const holes=blob('godot/data/ch1_map_source/si0.json',path.join(c.home,'si0.json'),frozen);
         inputNotes.push('소환굴 위치 입력: '+frozen+':godot/data/ch1_map_source/si0.json');exArgs.push('--holes',holes);
       }
+      else if (['enemy-ai-oracle','enemy-spawn-oracle','enemy-hurt-oracle'].includes(folder)) exArgs.push('--a-plan-module',path.join(tools,'enemy-spawn-oracle/a-plan.cjs'),'--expectation-mode',option('--expectation-mode','a-plan'));
       else if (folder === 'stage-flow-oracle') exArgs.push('--map',data(c,'ch1_map.json'));
       else if (folder === 'save-oracle') { blob('unity/Assets/Exoduser/Runtime/Core/InventoryData.cs',path.join(c.project,'Assets/Exoduser/Runtime/Core/InventoryData.cs')); }
       else if (folder === 'damage-parity-oracle') exArgs.push('--project',unity,'--dependency-root',dependency);

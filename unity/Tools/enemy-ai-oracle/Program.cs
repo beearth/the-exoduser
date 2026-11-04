@@ -13,10 +13,12 @@ using Exoduser.UnityPort.Core;
 // Math.random() draws consumed. Standalone .NET check, not a Unity runtime verdict.
 class EnemyAiProgram
 {
+    static int classifiedChecks, classifiedFailures; static bool classified;
     static int failures, total; static readonly List<object> rows = new List<object>(); static string currentCase = "";
     static readonly SortedDictionary<string, int> failByCase = new SortedDictionary<string, int>();   // every failure, by scenario name (rows keep only the first 400)
     static void Check(bool pass, string name)
     {
+        if (classified) { classifiedChecks++; if (!pass) classifiedFailures++; return; }
         total++;
         if (pass) { if (total % 50000 == 1) rows.Add(new { name = currentCase + " | " + name, passed = true }); }
         else { failures++; failByCase.TryGetValue(currentCase, out var fc); failByCase[currentCase] = fc + 1; if (failures <= 400) rows.Add(new { name = currentCase + " | " + name, passed = false }); }
@@ -164,6 +166,8 @@ class EnemyAiProgram
     {
         var doc = JsonDocument.Parse(File.ReadAllText(args[1])); var root = doc.RootElement;
         var snapKeys = new List<string>(); foreach (var k in root.GetProperty("snap").EnumerateArray()) snapKeys.Add(k.GetString());
+        bool aPlanMode = root.TryGetProperty("expectation", out var expectation) && expectation.GetProperty("mode").GetString() == "a-plan";
+        var classifiedRows = new List<object>(); var caseResults = new List<object>();
         int cases = 0, ticksRun = 0;
         foreach (var rc in root.GetProperty("cases").EnumerateArray())
         {
@@ -178,6 +182,9 @@ class EnemyAiProgram
             e.x = 1000 + JsMath.Cos(ang) * dist; e.y = 1000 + JsMath.Sin(ang) * dist; Fill(e, c.GetProperty("over")); e._aAtkM = 1; e._aSpdM = 1; host.Ens.Add(e);
             foreach (var a in c.GetProperty("allies").EnumerateArray()) { var al = host.Make((int)a.GetProperty("etype").GetDouble(), 1, 2); Fill(al, a.GetProperty("over")); al._aAtkM = 1; al._aSpdM = 1; host.Ens.Add(al); }
             foreach (var a in c.GetProperty("corpses").EnumerateArray()) { var co = host.Make((int)a.GetProperty("etype").GetDouble(), 1, 2); Fill(co, a.GetProperty("over")); co.alive = false; co.hp = 0; host.Dead.Add(co); host.Ens.Add(co); }
+            int effectiveEtype = (int)e.etype;
+            classified = aPlanMode && (effectiveEtype == 0 || effectiveEtype == 4 || effectiveEtype == 6 || effectiveEtype == 19 || effectiveEtype == 29);
+            int checksBefore = classified ? classifiedChecks : total, failuresBefore = classified ? classifiedFailures : failures;
             var ctx = new EnemyTickContext {
                 PlayerX = 1000, PlayerY = 1000, CamX = 1000, CamY = 1000, Random = host.Random, Now = () => 0, Map = new int[1][] { new int[1] }, MapWidth = 1, MapHeight = 1, Stage = si, DemoLastStage = 0, DemoMode = false,
                 CanMove = (x, y, r) => true, CanMoveTile = (x, y, r) => true, IsWall = (x, y, f) => false, HasLos = (a, b, cc, d) => false, WallStuck = (x, y) => false,
@@ -222,10 +229,13 @@ class EnemyAiProgram
             CmpValue(host.PkbX, pw.GetProperty("kbx"), "P.kb.x"); CmpValue(host.PkbY, pw.GetProperty("kby"), "P.kb.y"); CmpValue(host.Pfreeze, pw.GetProperty("fz"), "P._freezeSlow");
             CmpValue(host.Ps, pw.GetProperty("s"), "P.s"); if (host.P_st2Set) CmpValue(host.Pst2, pw.GetProperty("st2"), "P.st2");
             Check((int)o.GetProperty("rand").GetDouble() == draws, "random draws C# " + draws + " vs web " + o.GetProperty("rand").GetDouble());
+            var caseRow = new { name = currentCase, inputEtype = etype, effectiveEtype, classification = classified ? "A-plan melee (parry-g2-tests)" : "compared", checks = (classified ? classifiedChecks : total) - checksBefore, failures = (classified ? classifiedFailures : failures) - failuresBefore };
+            caseResults.Add(caseRow); if (classified) classifiedRows.Add(caseRow);
         }
-        var summary = new { cases, ticksRun, checks = total, failures, rows };
+        var summary = new { cases, ticksRun, checks = total, failures, rows, expectationMode = aPlanMode ? "a-plan" : "web", classifiedChecks, classifiedFailures, classifiedRows, caseResults };
         File.WriteAllText(args[0], JsonSerializer.Serialize(summary));
         Console.WriteLine("ENEMY_AI_RESULT cases " + cases + " ticks " + ticksRun + " checks " + total + " failures " + failures);
+        Console.WriteLine("CLASSIFIED_A_PLAN cases " + classifiedRows.Count + " checks " + classifiedChecks + " differences " + classifiedFailures + " (parry-g2-tests)");
         foreach (var kv in failByCase) Console.WriteLine("FAIL_CASE " + kv.Value + " " + kv.Key);
         foreach (var r in rows) { var s = JsonSerializer.Serialize(r); if (s.Contains("\"passed\":false")) Console.WriteLine(s.Length > 400 ? s.Substring(0, 400) : s); }
         return failures == 0 ? 0 : 1;
