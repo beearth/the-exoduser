@@ -25,7 +25,8 @@ namespace Exoduser.UnityPort
         static readonly Dictionary<SpriteRenderer,float> contactWidths = new Dictionary<SpriteRenderer,float>();
         static readonly HashSet<SpriteRenderer> pivotFeet = new HashSet<SpriteRenderer>();
         static Material lit, contact;
-        static readonly MaterialPropertyBlock shadowBlock = new MaterialPropertyBlock();
+        static MaterialPropertyBlock shadowBlockValue;
+        static MaterialPropertyBlock shadowBlock { get { return shadowBlockValue ?? (shadowBlockValue=new MaterialPropertyBlock()); } }
         static readonly Dictionary<SpriteRenderer, MeshRenderer> shadows = new Dictionary<SpriteRenderer, MeshRenderer>();
         static bool loaded;
         static readonly List<SpriteRenderer> deadActors = new List<SpriteRenderer>();

@@ -13,10 +13,13 @@ namespace Exoduser.UnityPort
         sealed class Ring
         {
             public LineRenderer Source;public MeshRenderer Draw;public float Radius;public Color Color;public bool Forced,PriorForceOff;
-            public readonly MaterialPropertyBlock Block=new MaterialPropertyBlock();
+            MaterialPropertyBlock blockValue;
+            public MaterialPropertyBlock Block { get { return blockValue ?? (blockValue=new MaterialPropertyBlock()); } }
         }
         readonly List<Ring> rings=new List<Ring>();
-        readonly MaterialPropertyBlock block=new MaterialPropertyBlock();
+        MaterialPropertyBlock blockValue;
+        // Project can run for an inactive owner, before Awake/OnEnable.
+        MaterialPropertyBlock block { get { return blockValue ?? (blockValue=new MaterialPropertyBlock()); } }
         SpriteRenderer source;GameObject surface;MeshRenderer draw;
         bool ground,forced,priorForceOff;float requestedExtent;
         public MeshRenderer SurfaceRenderer { get { return draw; } }

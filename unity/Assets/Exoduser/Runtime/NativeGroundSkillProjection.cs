@@ -28,7 +28,8 @@ namespace Exoduser.UnityPort
         static readonly HashSet<ScriptableRenderer> installed=new HashSet<ScriptableRenderer>();
         static readonly PropertyInfo featureList=typeof(ScriptableRenderer).GetProperty("rendererFeatures",BindingFlags.Instance|BindingFlags.NonPublic);
         static Material depthMaterial, rootDepthMaterial, probeMaterial;
-        static readonly MaterialPropertyBlock receiverBlock=new MaterialPropertyBlock();
+        static MaterialPropertyBlock receiverBlockValue;
+        static MaterialPropertyBlock receiverBlock { get { return receiverBlockValue ?? (receiverBlockValue=new MaterialPropertyBlock()); } }
         static Mesh cube;
         static Camera camera;
         static RTHandle probe;
@@ -185,8 +186,11 @@ namespace Exoduser.UnityPort
         sealed class ProjectionPass : ScriptableRenderPass
         {
             static readonly int ReceiverDepth=Shader.PropertyToID("_ExoduserGroundDepth"),ProbeMode=Shader.PropertyToID("_ExoduserGroundProbe");
-            static readonly ShaderTagId receiverTag=new ShaderTagId("ExoduserGroundReceiver"),projectionTag=new ShaderTagId("ExoduserGroundProjection");
-            static readonly ShaderTagId waterTag=new ShaderTagId("ExoduserGroundWater");
+            // ShaderTagId calls native Shader.TagToID; defer until the render callback.
+            static ShaderTagId? receiverTagValue,projectionTagValue,waterTagValue;
+            static ShaderTagId receiverTag { get { if(!receiverTagValue.HasValue)receiverTagValue=new ShaderTagId("ExoduserGroundReceiver");return receiverTagValue.Value; } }
+            static ShaderTagId projectionTag { get { if(!projectionTagValue.HasValue)projectionTagValue=new ShaderTagId("ExoduserGroundProjection");return projectionTagValue.Value; } }
+            static ShaderTagId waterTag { get { if(!waterTagValue.HasValue)waterTagValue=new ShaderTagId("ExoduserGroundWater");return waterTagValue.Value; } }
             sealed class PassData { public RendererListHandle List;public int Probe; }
             public ProjectionPass() { renderPassEvent=RenderPassEvent.BeforeRenderingTransparents;requiresIntermediateTexture=true;ConfigureInput(ScriptableRenderPassInput.Depth); }
             RendererListHandle List(RenderGraph graph,UniversalRenderingData rendering,UniversalCameraData cam,UniversalLightData light,ShaderTagId tag,Material material=null,uint layer=ProjectionRenderingLayer)

@@ -16,7 +16,9 @@ namespace Exoduser.UnityPort
         sealed class Group{public readonly List<Member> members=new List<Member>();public float amount;}
         static readonly int FadeId=Shader.PropertyToID("_A2Fade");
         readonly List<Group> groups=new List<Group>();
-        readonly MaterialPropertyBlock block=new MaterialPropertyBlock();
+        MaterialPropertyBlock blockValue;
+        // Initialize on use: Unity can construct components on the loading thread.
+        MaterialPropertyBlock block { get { return blockValue ?? (blockValue=new MaterialPropertyBlock()); } }
         Camera viewer;Func<Vector3> hero;Shader shader;
         public int FadedCount{get;private set;}
         public int Candidates{get;private set;}
