@@ -1,3 +1,5 @@
+2026-11-04 사망 결정 화면 D1 촬영 장면 추가(NativeGame.DeathScreenCapture, 캡처 전용): 결정 화면 언어 10개(ko·en·ja·ru·th·el·de·vi·fi·hu) death_decision_<code>, --unity-death-field-decision 필드 사망 2선택지 death_field_decision, --unity-death-sequence 0~10초 15fps 연속 프레임(무음 영상용). 게임 동작 변경 0, 참조 컴파일 오류 0(claude/unity-pc-death-pbz-20261104).
+
 2026-11-04 사망 결정 화면 RETOUCH D2·경미(claude/unity-pc-death-pbz-20261104): 문구 9키를 29개 언어로(Resources/Data/death_decision_text.json, 번역 목록 4264~4272 전파, 장식 영문 행은 전 언어 영문 유지, ar는 en으로 그림), 긴 언어는 정수 pt 축소(말줄임 없음). 로비 빈 슬롯 면 (5,5,7,.94)→(8,8,12,.94)로 예상 Y 8.5(알파만으로는 배경 Y 4.3~5.8보다 올릴 수 없음). 사망 결정 화면은 산세리프 0(sans는 옛 리플레이 모양에만 남김). merge 52fce6875가 어긋나게 둔 Spaced 괄호·TitleGate 위치 정정(참조 컴파일 오류 0). PC 검사·컴파일만, 화면 판정 전.
 
 2026-11-04 Mac Unity 사망 확정 화면 교체 "안식은 없다": 웹 #death 이식판(원화·펫·이모지·미이식 표시) 대신 검정 → 제목·진홍 헤어라인·THERE IS NO REST → "포기할 것인가?" 결정(보스방 3 선택지, 필드 2 선택지). 끊겨 있던 로비 버튼과 숨은 일시정지 키 경로를 바로잡음. 번짐 PNG 선형화로 Linear 색 보정. ARM64 빌드 오류0, 사망 스모크 1920·1600 PASS. 번역 목록 4264–4272. [기록](3.1%20ui%20hud%20디자인/UNITY_DEATH_SCREEN_20261103.md#2026-11-04-사망-확정-패널-교체--안식은-없다-결정-화면-mac-pc-ui-총괄).
