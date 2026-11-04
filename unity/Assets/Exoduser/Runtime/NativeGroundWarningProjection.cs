@@ -25,7 +25,6 @@ namespace Exoduser.UnityPort
             if(!NativeRemodel3D.Active){Restore();return;}
             renderer.forceRenderingOff=true;NativeGroundSkillProjection.UnregisterVolume(renderer);
             if(!NativeGroundSkillProjection.Available||points.Count==0)return;
-            bool linear=QualitySettings.activeColorSpace==ColorSpace.Linear;
             vertices.Clear();colors.Clear();indices.Clear();ab.Clear();cc.Clear();triangles.Clear();
             float minX=float.PositiveInfinity,maxX=float.NegativeInfinity,minZ=minX,maxZ=maxX;
             foreach(var p in points){minX=Mathf.Min(minX,p.x);maxX=Mathf.Max(maxX,p.x);minZ=Mathf.Min(minZ,p.y);maxZ=Mathf.Max(maxZ,p.y);}
@@ -40,10 +39,9 @@ namespace Exoduser.UnityPort
                 float area=(b.x-a.x)*(c.y-a.y)-(b.y-a.y)*(c.x-a.x);if(Mathf.Abs(area)<.00000001f)continue;
                 if(area<0){var swap=b;b=c;c=swap;}
                 int start=vertices.Count;var uv=new Vector4(a.x,a.y,b.x,b.y);var last=new Vector2(c.x,c.y);
-                // The projection shader writes vertex colours as linear values; callers pass sRGB tints (VFX palette hex).
-                // Without this conversion a Linear project lifted the dark toxic stain to an opaque-looking mint disc (G2 capture 11-04).
-                var tc=linear?tint[ia].linear:tint[ia];
-                for(int v=0;v<6;v++){var p=v%3==0?a:v%3==1?b:c;vertices.Add(inverse.MultiplyPoint3x4(new Vector3(p.x,v<3?low:high,p.y)));colors.Add(tc);ab.Add(uv);cc.Add(last);}
+                // Tints arrive already linear: the source mesh builder converts the sRGB palette once (NativeDruidTelegraphView.Mb),
+                // so the plain sprite-material fallback and this projection show the same colour.
+                for(int v=0;v<6;v++){var p=v%3==0?a:v%3==1?b:c;vertices.Add(inverse.MultiplyPoint3x4(new Vector3(p.x,v<3?low:high,p.y)));colors.Add(tint[ia]);ab.Add(uv);cc.Add(last);}
                 foreach(int index in faces)indices.Add(start+index);
             }
             volume.Clear();volume.SetVertices(vertices);volume.SetColors(colors);volume.SetUVs(1,ab);volume.SetUVs(2,cc);volume.SetTriangles(indices,0,false);volume.RecalculateBounds();

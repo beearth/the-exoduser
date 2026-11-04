@@ -1,3 +1,5 @@
+2026-11-04 드루이드 예고 색 수정 2(임펙트 총괄): 3b8b85930·82c4b35a5의 투영 쪽 선형 변환은 원인 위치가 아니었다. 아레나 PC 후보(f122e153d) 촬영에서도 예고가 민트 원판·살구색 테로 남았다. 아레나는 투영을 타지 않고 원래 스프라이트 재질 메시로 그리는데, Unity는 메시 정점색을 색공간 변환하지 않아 sRGB 팔레트가 선형으로 읽혀 밝아졌다. 변환을 NativeDruidTelegraphView.Mb.Add 한 곳으로 옮기고(두 경로 공통), NativeGroundWarningProjection의 변환은 지웠다(이중 변환 방지). PC Roslyn 기존 무관 1건 외 0.
+
 2026-11-04 드루이드 내려찍기·채찍 VFX 질감 시트 재작업(G2 FAIL 후 제작법 변경 2차): 벡터 고리·균열·호 삭제, earth 시트(먼지 24f·파편 16·균열/패인 자국 데칼·채찍 띠) 반입(tools/vfx/import_druid_earth.py)·먼지 +6틱 r260 표 대조·균열/패인 자국 바닥 투영·코어 HDR 2.4·채찍 궤적=지팡이 소켓 리본. Core 수치 0, druid-skill-vfx-tests 198/0.
 
 2026-11-04 드루이드 VFX G2 FAIL·바닥 투영 색 수정(임펙트 총괄): NativeGroundWarningProjection이 sRGB 정점색을 선형 변환 없이 써서 드루이드 예고 데칼이 민트 초록 원판으로 보이던 결함을 Linear 프로젝트에서 Color.linear로 고침(쓰는 곳 NativeDruidTelegraphView·DruidSkillVfxView 2곳). 드루이드 층은 제작법을 질감 시트로 바꿔 다시 만든다. PC Roslyn 기존 무관 1건 외 0.
