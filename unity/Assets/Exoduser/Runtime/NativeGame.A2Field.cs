@@ -219,7 +219,9 @@ namespace Exoduser.UnityPort
             if(source==null){Debug.LogError("[A2 필드] 스캔 뿌리 지면 누락");return;}
             if(a2FieldRootMaterial==null)
             {
-                a2FieldRootMaterial=new Material(Resources.Load<Material>("Art/map/a2/rootrelief/Materials/A2_Root_Cluster_Patch"));
+                var sourceMaterial=Resources.Load<Material>("Art/map/a2/rootrelief/Materials/A2_Root_Cluster_Patch");
+                if(sourceMaterial==null){Debug.LogError("[A2 필드] 스캔 뿌리 재질 누락");return;}
+                a2FieldRootMaterial=new Material(sourceMaterial);
                 foreach(var key in new[]{"_BaseMap","_BumpMap","_RockMap","_AshMap","_RockNormal","_RockRough","_ForestMap","_ForestNormal","_ForestRough","_SoilMap","_SoilNormal","_SoilRough","_RootMap","_RootNormal","_RootRough","_FieldSdf","_FieldCover","_FieldMoss","_FieldMossNormal","_FieldMossRough"})
                     if(a2FieldRootMaterial.HasProperty(key))a2FieldRootMaterial.SetTexture(key,a2FieldSoil.GetTexture(key));
                 foreach(var key in new[]{"_ForestBlend","_ForestTextureMix","_SoilTextureMix","_FullField"})if(a2FieldRootMaterial.HasProperty(key))a2FieldRootMaterial.SetFloat(key,a2FieldSoil.GetFloat(key));
@@ -229,7 +231,7 @@ namespace Exoduser.UnityPort
             go.transform.SetPositionAndRotation(new Vector3(x,baseY,z),Quaternion.Euler(0,yaw,0));go.transform.localScale=new Vector3(scale,.8f,scale);
             foreach(var mf in go.GetComponentsInChildren<MeshFilter>())
             {
-                if(!mf.sharedMesh.isReadable){Debug.LogError("[A2 필드] 뿌리 메시 읽기 누락");continue;}
+                if(mf.sharedMesh==null||!mf.sharedMesh.isReadable){Debug.LogError("[A2 필드] 뿌리 메시 읽기 누락");continue;}
                 var mesh=Instantiate(mf.sharedMesh);var vertices=mesh.vertices;var center=mf.transform.TransformPoint(mesh.bounds.center);var shift=new Vector3(center.x-x,0,center.z-z);
                 for(int i=0;i<vertices.Length;i++){var v=mf.transform.TransformPoint(vertices[i])-shift;v.y=a2Field.TerrainHeight(v.x,v.z)+Mathf.Max(0,v.y-baseY)+.006f;vertices[i]=mf.transform.InverseTransformPoint(v);}
                 mesh.vertices=vertices;mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();mf.sharedMesh=mesh;
@@ -241,7 +243,7 @@ namespace Exoduser.UnityPort
             foreach(var mf in go.GetComponentsInChildren<MeshFilter>())
             {
                 if(NativeGroundSkillProjection.IsProxy(mf))continue;
-                var mesh=mf.sharedMesh;if(!mesh.isReadable){Debug.LogError("[A2 필드] 접지 표면 읽기 누락 "+go.name);continue;}
+                var mesh=mf.sharedMesh;if(mesh==null||!mesh.isReadable){Debug.LogError("[A2 필드] 접지 표면 읽기 누락 "+go.name);continue;}
                 var vertices=mesh.vertices;var xyz=new float[vertices.Length*3];
                 for(int i=0;i<vertices.Length;i++){var p=mf.transform.TransformPoint(vertices[i]);xyz[i*3]=p.x;xyz[i*3+1]=p.y;xyz[i*3+2]=p.z;}
                 var indices=mesh.triangles;
@@ -254,15 +256,16 @@ namespace Exoduser.UnityPort
             var filters=tree.GetComponentsInChildren<MeshFilter>();
             foreach(var mf in filters)
             {
-                if(!mf.sharedMesh.isReadable)continue;
+                if(mf.sharedMesh==null||!mf.sharedMesh.isReadable)continue;
                 var points=mf.sharedMesh.vertices;var normals=mf.sharedMesh.normals;
+                if(normals.Length!=points.Length){Debug.LogError("[A2 필드] 수피 메시 노멀 누락");continue;}
                 for(int j=0;j<3;j++)
                 {
                     var desired=tree.transform.position+new Vector3((j-1)*.45f,1.5f+j*.8f,-.8f);float best=float.MaxValue;var hit=Vector3.zero;var hitNormal=Vector3.back;
                     for(int i=0;i<points.Length;i++){var p=mf.transform.TransformPoint(points[i]);var n=mf.transform.TransformDirection(normals[i]);if(n.z>-.12f)continue;float score=(p-desired).sqrMagnitude;if(score<best){best=score;hit=p;hitNormal=n.normalized;}}
                     if(best>9)continue;
                     var moss=A2Module("Hanging_Moss",hit.x,hit.z,.4f,.55f,.4f,variation*37+j*67);if(moss==null)continue;
-                    var rs=moss.GetComponentsInChildren<Renderer>();var bounds=rs[0].bounds;foreach(var r in rs)bounds.Encapsulate(r.bounds);
+                    var rs=moss.GetComponentsInChildren<Renderer>();if(rs.Length==0){Destroy(moss);continue;}var bounds=rs[0].bounds;foreach(var r in rs)bounds.Encapsulate(r.bounds);
                     moss.transform.position+=hit-new Vector3(bounds.center.x,bounds.max.y,bounds.center.z);moss.name="A2 수피 표면에 붙은 이끼";
                     foreach(var renderer in rs){var tint=new MaterialPropertyBlock();renderer.GetPropertyBlock(tint);tint.SetColor("_BaseColor",new Color(.60f,.62f,.40f,1));renderer.SetPropertyBlock(tint);}
                     if(j==0)
