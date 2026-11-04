@@ -64,3 +64,5 @@
 - 현재 에디터·굽기·빌드·실측·화면 검증 대기. 2차 공용 실행의 첫 대기는 선행 map-scale-c1 단독 Player 때문에 초과했으며 검사 실패가 아니다. CTO 지시대로10분 후 최대6회 재대기한다. 최종 시간·SHA·실행 영수증·미검증 한계는 I:/EXODUSER-Storage/codex-takeover/map-webcards/REPORT.md 맨 위2차에 기록한다. Mac 판정·사용자 실행본·바로가기 변경은 별도다.
 
 - 카드 셰이더의 _Tint는 HDR/Gamma 속성이 없는 일반 Color다. 기존 Material.SetColor 저장값을 MPB.SetVector로 전달해 추가 sRGB 변환을 피한다. 에디터 검증은 원본 Material.SetColor→GetVector와 MPB의 세 가지 실제 틴트 값을 비교한다. 근거: [Material.SetColor](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Material.SetColor.html), [MaterialPropertyBlock.SetColor](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MaterialPropertyBlock.SetColor.html). 숫자·팔레트 변경은 없다.
+
+- 공용 실행기 17cf3f4f에서 C# 컴파일 및 굽기 실행(종료0, 약327초). 카드189장 입력의 공유 메시142개·원화55종 재질165개·AO·수면262144픽셀 산출물 개수 검사를 통과했다. 정밀 동등성 검증·후보 빌드·Player 전후 실측은 대기 중이다. 종료 로그 Curl error 42: Callback aborted 1건은 별도 기록하며 컴파일 오류로 바꾸어 세지 않는다. Unity 임포터의 범위 밖 메타데이터/설정 자동 변경450개는 원본으로 복원하고 인계에서 제외했다.
