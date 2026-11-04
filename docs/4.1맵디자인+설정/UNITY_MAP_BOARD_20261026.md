@@ -1,3 +1,10 @@
+## 2026-11-04 map-fieldbuild 중단 — 성능·화면 미검증
+
+- 소스 보존 커밋 6f019c8b0c11795e6339443c99acf247761c18b3(지정 브랜치 push·원격 일치). BRIEF의 같은 검사 2회 실패 중단 조건을 에디터 참조 컴파일에 적용한다. CS0246은 검사 스크립트가 Remodel의 Rm4PoolLightCuller를 제외한 원인이었으며 3개 참조 소스를 포함해 통과했다. 이후 검사 도구 보완에서 GetInstanceID의 CS0619가 발생했다. 해당 미커밋 도구 보완은 폐기해 6f019c8b0c의 컴파일 확인본으로 돌렸다. 추가 검사·Player·빌드는 실행하지 않는다.
+- 공용 에셋 검사 58e56b16: exit 1, 274955ms(첫 임포트 264924ms 포함), USER_SAVE 변경 0. 기준 DLL을 동적으로 로드한 뒤 JsonUtility의 외부 타입 변환에서 Map.Data.colliders가 null이 되어 A2FieldLandmarks가 실패했다(IL 0x1c6의 배열 길이 조회 확인). 게임 플레이 결함으로 판정하지 않는다. 이전의 부분 외곽 1333.039ms·전경 62.242ms는 맵 중첩 자료가 완전하지 않은 검사이므로 전후 표/1.5초 판정에서 제외한다.
+- 남은 일: 검사 도구는 등록된 MapData를 파싱하고 기준 타입에 공개 필드를 재귀 복사하도록 보완, GetEntityId를 사용하거나 읽기 불가 메시의 동일 자산을 비교, 검사 재개 시 참조 컴파일 및 에셋 검사로 전후 메시·표시 높이 대조. 이 보완은 이번 커밋에 넣지 않았다. 이후 큰 비용을 굽기로 제거하고 단독 Player 1회·3840 1x 전후·픽셀 차·먼 적·끄기 인자·Mac 판정을 수행해야 한다.
+- 상태: IMPLEMENTATION_ONLY / PERFORMANCE_UNVERIFIED / VISUAL_UNVERIFIED. 순수 수치 검사만 통과했다. Core·금지 코드·바로가기·사용자 실행본·병합 변경 0. 공용 검사에서 생긴 448 meta·URP 설정·packages-lock 450경로는 자기 작업본의 검사 전 HEAD로 복구했다. 진행 예약은 해제했다. 결과 정본은 I:/EXODUSER-Storage/codex-takeover/map-fieldbuild/REPORT.md.
+
 ## 2026-11-04 A2Field 조립 비용 분해·정점 일괄 변환 (map-fieldbuild)
 
 - 기준 `2c6700fb9654c0df680b6793f0ea8f86a0dade08`, 브랜치 `codex/unity-map-fieldbuild-20261104`. G0 목표는 기존 1-1 구도·Core·34° 카메라·끄기 인자를 유지하면서 A2Field 조립 합계를 단독 Player에서 1.5초 이하로 낮추는 것이다. BRIEF의 기존 외곽 약 3.1초·랜드마크 1.9초·지면 1.1초는 전달받은 값이며 이번 레인의 재측정값과 구분한다.
