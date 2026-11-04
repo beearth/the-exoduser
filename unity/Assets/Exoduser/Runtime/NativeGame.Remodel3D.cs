@@ -51,10 +51,12 @@ namespace Exoduser.UnityPort
             var op = SceneManager.LoadSceneAsync(R3SceneName, LoadSceneMode.Additive);
             while (op != null && !op.isDone) yield return null;
             r3Scene = SceneManager.GetSceneByName(R3SceneName);
+            if (!r3Scene.IsValid() || !r3Scene.isLoaded) { r3Failed = true; r3Loading = false; yield break; }
             r3Roots = r3Scene.GetRootGameObjects();
             Transform camT = R3Find("Main Camera"), markerT = R3Find("Player Marker"), vcamT = R3Find("CM LOOK-001"), terrT = R3Find("Terrain");
             if (camT == null || markerT == null || terrT == null || terrT.GetComponent<Terrain>() == null) { Debug.LogWarning("[RM-INT] RM-1 scene rig / terrain not found: staying 2D"); r3Failed = true; r3Loading = false; yield break; }
             r3Cam = camT.GetComponent<Camera>(); r3Marker = markerT; r3Vcam = vcamT != null ? vcamT.GetComponent<CinemachineCamera>() : null;
+            if (r3Cam == null) { Debug.LogWarning("[RM-INT] camera component missing: staying 2D"); r3Failed = true; r3Loading = false; yield break; }
             r3Brain=r3Cam.GetComponent<CinemachineBrain>();
             if(NativeHd2D.Enabled&&r3Brain!=null)r3Brain.UpdateMethod=CinemachineBrain.UpdateMethods.ManualUpdate;
             NativeRemodel3D.Ground = terrT.GetComponent<Terrain>();
@@ -102,7 +104,7 @@ namespace Exoduser.UnityPort
         void Remodel3DLate()
         {
             HellArenaLate();
-            if (!NativeRemodel3D.Active || r3Cam == null || Simulation == null) return;
+            if (!NativeRemodel3D.Active || r3Cam == null || r3Marker == null || Simulation == null) return;
             RemodelArenaCameraStep();
             NativeGroundSkillProjection.BeginFrame(r3Cam);
             bool hidden = view.cullingMask == 0;   // the lobby / startup hides the world through the 2D camera mask: mirror it

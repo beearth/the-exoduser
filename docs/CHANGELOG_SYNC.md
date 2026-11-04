@@ -1,3 +1,5 @@
+2026-11-04 1-1 한 판 예외 위험 점검(Codex run-exception-audit 731b4b558) 3D 조립 쪽 반영(유니티 총괄): R03 장면 로드 유효성·카메라 컴포넌트 null이면 2D 유지, R04 LateUpdate r3Marker 파괴 검사, R05 뿌리 재질 null, R06 메시 null·수피 노멀 길이·이끼 Renderer 0개. R02 r3Roots는 08f969779에 이미 있어 중복 적용 없음. 참조 컴파일 오류 0, root-guard 통과(claude/unity-pc-field-prepare-wait-20261104).
+
 2026-11-04 14:50 PC Player 종료 정지 진단 준비(CTO 근본 원인 배정): 실행기 2026.11.04-stalldiag가 시간 초과 kill 때 스레드 대기 사유·GameInput 서비스 상태·로그 마지막 줄·kill 성공 여부를 영수증 stall에 남긴다(시험 stall-diag-test 7건). PortVerification.Build -gamepadBackend xinput은 그 빌드에서만 windowsGamepadBackendHint=XInput(WGI 회피 A/B, ProjectSettings 무변경). Roslyn Player/Editor 오류 0. 근거=창 모드 WGI 초기화 실행 정지 29/593, -batchmode 0/61(10-29~11-04).
 
 2026-11-04 14:20 좀비 감지 오탐 정정·디스크 유휴 대기(CTO): 13:09 HALT는 오탐이었다. 시작 76초 된 Player(PID 44556, 스레드 1·CPU 0.1s·로그 'Mono path'까지)가 USB HDD I: 포화(다른 세션 재귀 grep, 유휴 0%·대기열 2~3, 새 7GB 빌드 백신 검사)로 느리게 뜨던 중이었다. 좀비 조건을 시작 120초 이상 + CPU 정지 + 로그 마지막 줄이 종료 단계 표시일 때만으로 바꿨다. Player 시작 전에 실행 파일 드라이브 유휴율 50% 이상 10초를 기다리고(상한 10분), 영수증 diskAtStart에 남긴다. 실행기 `2026.11.04-zombie2`, zombie-guard-test 8건(05:06형 검출·13:09형 미검출·디스크 대기/상한). 문서 unity/Tools/devtools/README.md.
