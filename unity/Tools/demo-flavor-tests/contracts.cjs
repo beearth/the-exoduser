@@ -1,0 +1,24 @@
+const fs = require('node:fs');
+const path = require('node:path');
+const root = path.resolve(__dirname, '../../..');
+const read = p => fs.readFileSync(path.join(root, p), 'utf8');
+const base = 'unity/Assets/Exoduser/';
+let failed = 0, passed = 0;
+function check(ok, label) { console.log(`${ok ? 'PASS' : 'FAIL'} ${label}`); ok ? passed++ : failed++; }
+check(/productName: "EXODUSER: HELL LORD"/.test(read('unity/ProjectSettings/ProjectSettings.asset')), 'U-D3 official product title');
+check(read(base+'Editor/PortVerification.cs').includes('PlayerSettings.productName="EXODUSER: HELL LORD"'), 'U-D3 build setup preserves official product title');
+const roster = read(base+'Runtime/NativeLobby.CharacterStore.cs');
+const settings = read(base+'Runtime/NativeGame.SettingsPersistence.cs');
+check(roster.includes('NativeFlavorStorage.TryResolve') && settings.includes('NativeFlavorStorage.TryResolve'), 'U-D4 roster and settings route through flavor storage');
+const overlay = read(base+'Runtime/NativeStageClearOverlay.cs');
+check(!/DemoEnd(Sub|Button)\(false\)/.test(overlay), 'U-D1 selected locale reaches diagnostic end texts');
+const rows = JSON.parse(read(base+'Resources/Data/stageclear_labels.json')).entries;
+const expected = ['ko','en','zh','zht','ja','vi','th','id','ms','es','fr','it','ptbr','ro','de','nl','sv','da','no','ru','uk','pl','cs','hu','bg','el','fi','tr','ar'];
+check(rows.length === 29 && expected.every(code => rows.some(r=>r.code===code && ['demoSub','demoNext','demoWishlist'].every(k=>typeof r[k]==='string' && r[k].trim()))), 'U-D1/U-D5 29 complete locale rows');
+check(overlay.includes('RequestWishlist') && overlay.includes('demoWishlist'), 'U-D5 separate store action on demo end');
+const endText = read(base+'Runtime/NativeDemoEndText.cs');
+check(endText.includes('asset==null') && endText.includes('catch(Exception)') && endText.includes('builtInEnglish') && endText.includes('korean') && !/Resources\.Load<TextAsset>\([^)]*\)\.text/.test(endText), 'R08 end text loader checks the asset, survives broken JSON, falls back en -> ko -> built-in English');
+const en = rows.find(r=>r.code==='en');
+check(en && endText.includes('"'+en.demoSub+'"') && endText.includes('"'+en.demoNext+'"') && endText.includes('"'+en.demoWishlist+'"'), 'R08 built-in English text equals the en row of stageclear_labels.json');
+console.log(JSON.stringify({passed, failed}));
+process.exitCode = failed ? 1 : 0;

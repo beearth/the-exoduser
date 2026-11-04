@@ -145,7 +145,7 @@ namespace Exoduser.UnityPort {
   void StopLobbyWorldObservation(){if(lobbyWorldPlayer!=null){lobbyWorldPlayer.frameReady-=lobbyWorldFrame;lobbyWorldPlayer.loopPointReached-=lobbyWorldEnd;}lobbyWorldPlayer=null;lobbyWorldFrame=null;lobbyWorldEnd=null;}
   void LobbyFixtureLog(string message,string stack,LogType type){if(lobbyReceipt!=null&&message.IndexOf("AudioSampleProvider",StringComparison.OrdinalIgnoreCase)>=0&&(message.IndexOf("overflow",StringComparison.OrdinalIgnoreCase)>=0||message.IndexOf("underflow",StringComparison.OrdinalIgnoreCase)>=0||message.IndexOf("discard",StringComparison.OrdinalIgnoreCase)>=0))lobbyReceipt.audioBufferWarnings++;}
   void StopLobbyFixtureObservers(){StopLobbyWorldObservation();if(lobbyLogSubscribed){Application.logMessageReceived-=LobbyFixtureLog;lobbyLogSubscribed=false;}}
-  void OnDisable(){StopLobbyFixtureObservers();}
+  // OnDisable lives in NativeGame.Remodel3D.cs (it also frees the 3D field assembly state).
   void WriteLobbyProgress(){if(lobbyReceipt==null||string.IsNullOrEmpty(lobbyFixtureOutput))return;lobbyReceipt.samples=lobbySamples.ToArray();File.WriteAllText(Path.Combine(lobbyFixtureOutput,"lobby-progress.json"),JsonUtility.ToJson(lobbyReceipt,true));lobbyProgressAt=LobbyNow;}
   void ProbeLobbyAudio(){
    if(lobbyReceipt==null)return;float voiceValue=0,musicValue=0;var voice=lobby.CurrentVideo?.Voice;if(voice!=null){voiceValue=AudioPeak(voice);lobbyReceipt.voicePeak=Mathf.Max(lobbyReceipt.voicePeak,voiceValue);}

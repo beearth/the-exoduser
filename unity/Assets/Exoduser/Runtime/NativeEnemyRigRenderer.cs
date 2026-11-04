@@ -62,10 +62,10 @@ namespace Exoduser.UnityPort {
     // Revived ghouls and any identity changes must return to their own existing art.
     if(!a.def.Matches(e)){Release(a);actors.Remove(e.Id);continue;}a.lastSeen=tick;if(a.failed){Fallback(a);continue;}try{SyncActor(a,tick);if(a.ready)HideSprites(a);}catch(Exception ex){a.failed=true;failedIds.Add(e.Id);Fallbacks++;Fallback(a);Debug.LogWarning("[EnemyRig] animation fallback "+e.Id+": "+ex.Message);}
    }
-   var gone=new List<int>();foreach(var pair in actors){var a=pair.Value;if(a.lastSeen==tick)continue;if(a.enemy.Alive||a.deathTick<0||tick-a.deathTick>a.def.deathTicks+96)gone.Add(pair.Key);else SyncActor(a,tick);}
+   var gone=new List<int>();foreach(var pair in actors){var a=pair.Value;if(a.lastSeen==tick)continue;if(a.enemy.Alive||a.deathTick<0||tick-a.deathTick>a.def.deathTicks+96)gone.Add(pair.Key);else if(!a.failed){try{SyncActor(a,tick);}catch(Exception ex){a.failed=true;failedIds.Add(pair.Key);Fallbacks++;Fallback(a);Debug.LogWarning("[EnemyRig] gone-sync fallback "+pair.Key+": "+ex.Message);}}}
    foreach(int id in gone){Release(actors[id]);actors.Remove(id);}
   }
-  public void Observe(FeedbackEvent feedback,int tick){if(feedback.Kind==FeedbackKind.EnemyDeath&&actors.TryGetValue(feedback.TargetId,out var a)){a.deathTick=tick;SyncActor(a,tick);}}
+  public void Observe(FeedbackEvent feedback,int tick){if(feedback.Kind==FeedbackKind.EnemyDeath&&actors.TryGetValue(feedback.TargetId,out var a)){a.deathTick=tick;if(!a.failed){try{SyncActor(a,tick);}catch(Exception ex){a.failed=true;failedIds.Add(feedback.TargetId);Fallbacks++;Fallback(a);Debug.LogWarning("[EnemyRig] observe fallback "+feedback.TargetId+": "+ex.Message);}}}}
   static void HideSprites(Actor a){if(a.sprites.Body!=null)a.sprites.Body.enabled=false;if(a.sprites.Walk!=null)a.sprites.Walk.enabled=false;}
   static void Fallback(Actor a){a.ready=false;if(a.image!=null)a.image.enabled=false;if(a.contact!=null)a.contact.enabled=false;if(a.sprites.Body!=null)a.sprites.Body.enabled=a.enemy.Alive;if(a.sprites.Walk!=null)a.sprites.Walk.enabled=false;}
   static Rect ScreenBounds(Camera camera,Bounds b){var min=new Vector2(float.MaxValue,float.MaxValue);var max=new Vector2(float.MinValue,float.MinValue);for(int x=0;x<2;x++)for(int y=0;y<2;y++)for(int z=0;z<2;z++){var p=camera.WorldToScreenPoint(new Vector3(x==0?b.min.x:b.max.x,y==0?b.min.y:b.max.y,z==0?b.min.z:b.max.z));min=Vector2.Min(min,p);max=Vector2.Max(max,p);}return Rect.MinMaxRect(min.x,min.y,max.x,max.y);}

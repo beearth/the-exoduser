@@ -36,7 +36,7 @@
 | 구분 | 값 | 출처 |
 |---|---|---|
 | 정의(웹) | 4종 플레이버 행(라벨·제한·로그인 제목·데모 종료 문구·레벨 캡·패키지 식별자·메모), 데모 목록 2개, 로비 라벨 치수 | `Resources/Data/buildflavor_web.json`(줄 번호 기록) |
-| 선택 값 | 실행 인자 `--unity-build-flavor <full\|demo\|bic\|ea>` > 임베드 `Resources/Data/build_flavor.json`의 `selected`(저장소에는 `full`로 커밋) > 기본 `full` | `BuildFlavor.Current` |
+| 선택 값 | 개발 빌드·QA 실행에서만 실행 인자 `--unity-build-flavor <full\|demo\|bic\|ea>`(이때 QA sandbox 강제) > 임베드 `Resources/Data/build_flavor.json`의 `selected`(저장소에는 `full`로 커밋, 빌드 때 `-flavor`로 바꿈) > 기본 `full`. 배포 빌드는 실행 인자를 무시(11-04 3차) | `BuildFlavor.Current` |
 | 릴리스 버전 | `Resources/Data/release_web.json` = 웹 릴리스 스냅샷(감사 기준8ad7fa322: `0.7.11`, `2026-11-02`, channel `ea-full`). Unity 표시 버전은 `Application.version`이며 웹 메타데이터와 별도다 | 스냅샷 |
 | 모드 줄 | "OFFLINE" 고정(Unity 로비에 온라인 계정 모드 없음) | Unity 상태 |
 | 미이식 | 레벨 캡 100(가짜 제한 금지: 화면·동작에 쓰지 않음), 데모 어픽스 금지 7종, 데모 합성 허용 22종, 로그인·데모 입장 버튼, 데모 시작 경로, EA 패키지 식별자 | `BuildFlavor.NotPorted` |

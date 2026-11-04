@@ -1,0 +1,10 @@
+[
+  {"file":"공통/지옥 추락 사망 징글.mp3","clip":"death_alt","cue":"death"},
+  {"file":"공통/탈출 성공.mp3","clip":"victory_alt","cue":"victory"},
+  {"file":"공통/복수의 대장간.mp3","clip":"forge_vengeance","cue":"forge"},
+  {"file":"공통/forge.mp3","clip":"forge_vengeance_alt","cue":"forge"},
+  {"file":"공통/Anvil Ashes.mp3","clip":"forge_anvil_ashes","cue":"forge"},
+  {"file":"1장_썩은숲/Neon Hellfire Protocol (Remastered).wav","clip":"hell1_rot_neon_hellfire","cue":"hell1"},
+  {"file":"1장_썩은숲/Neon Hellfire Protocol2(Remastered).wav","clip":"hell1_rot_neon_hellfire_2","cue":"hell1"},
+  {"file":"1장_썩은숲/Wrath of the Golden Age (Remastered).wav","clip":"hell1_rot_wrath_golden_age","cue":"hell1"}
+]

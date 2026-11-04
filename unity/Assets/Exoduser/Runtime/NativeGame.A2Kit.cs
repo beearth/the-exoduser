@@ -73,7 +73,7 @@ namespace Exoduser.UnityPort
         void A2CanopyLight()
         {
             const int size=256;
-            var cookie=new Texture2D(size,size,TextureFormat.RGBA32,false,true){name="A2 숲 지붕 빛",wrapMode=TextureWrapMode.Repeat,filterMode=FilterMode.Bilinear};
+            var cookie=R3Track(new Texture2D(size,size,TextureFormat.RGBA32,false,true){name="A2 숲 지붕 빛",wrapMode=TextureWrapMode.Repeat,filterMode=FilterMode.Bilinear});
             var pixels=new Color32[size*size];
             for(int y=0;y<size;y++)for(int x=0;x<size;x++)
             {
@@ -83,7 +83,7 @@ namespace Exoduser.UnityPort
                 pixels[y*size+x]=new Color32(b,b,b,b);
             }
             cookie.SetPixels32(pixels);cookie.Apply(false,true);
-            foreach(var root in r3Roots)foreach(var light in root.GetComponentsInChildren<Light>(true))
+            foreach(var root in r3Roots)if(root!=null)foreach(var light in root.GetComponentsInChildren<Light>(true))
             {
                 if(light.type!=LightType.Directional)continue;
                 light.color=new Color(1,.84f,.68f);light.intensity=2.3f;light.shadowStrength=.9f;light.cookie=cookie;

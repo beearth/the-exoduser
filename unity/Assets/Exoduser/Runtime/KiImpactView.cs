@@ -161,7 +161,10 @@ namespace Exoduser.UnityPort
                 if(age>=18){RemoveBurst(n);continue;}
                 var origin=NativeRemodel3D.Point(e.X,e.Y);
                 float alpha=(float)KiImpactPresentation.CoreAlpha(age);
-                b.core.enabled=alpha>0;b.core.color=ContactColor(age,alpha);
+                // L9 D2: in the 3D path the flat 16-gon core (additive, ZTest Always, no falloff) sits on the ground point and,
+                // through the 3D-only ACES/exposure/bloom stack, reads as a beige translucent polygon disc with a white flash.
+                // NativeImpactView's original silver contact flipbook already carries the 3D contact core, so 2D keeps this disc only.
+                b.core.enabled=alpha>0&&!NativeRemodel3D.Active;b.core.color=ContactColor(age,alpha);
                 b.core.transform.position=origin;b.core.transform.rotation=Quaternion.identity;
                 b.core.transform.localScale=Vector3.one*(float)(KiImpactPresentation.CoreDiameter(e.Step,e.Scale,b.height)/100);
                 var cam=camera?.Invoke();

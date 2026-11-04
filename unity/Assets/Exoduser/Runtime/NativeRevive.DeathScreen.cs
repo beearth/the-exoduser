@@ -198,7 +198,7 @@ namespace Exoduser.UnityPort
             Font tf=latin?deathLatin:NativeSilverHellUi.TextFont(deathBody,title);int ts=latin?62:74;
             float em=thai?0:Cjk(title)?.34f:latin?.2f:.16f,settle=1+.35f*(1-t),spacing=ts*em*settle;
             float tw=CenteredText(cx,titleY,title,tf,ts,spacing,A(Bone,.96f*t),.9f);
-            NativeUiAudit.Region(new Rect(cx-tw/2,titleY-ts*.8f,tw,ts*1.6f),"component","death-title","명조 큰 제목 "+tf.name+" "+ts+"px");
+            NativeUiAudit.Region(new Rect(cx-tw/2,titleY-ts*.8f,tw,ts*1.6f),"component","death-title","명조 큰 제목 "+(tf!=null?tf.name:"")+" "+ts+"px");
             // 금빛 헤어라인: 제목 양옆, 안쪽이 진하고 바깥으로 사라진다. 안쪽 끝에 짧은 세로 획.
             float gap=44,len=Mathf.Clamp(560-tw*.5f,180,300);float inner=tw*.5f+gap;
             GUI.color=A(Gold,.62f*t);

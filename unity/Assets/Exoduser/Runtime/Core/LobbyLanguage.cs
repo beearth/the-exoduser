@@ -32,5 +32,7 @@ namespace Exoduser.UnityPort.Core
    return null;
   }
   public static string Normalize(string value) { return Resolve(value)??"en"; }
+  // Startup language: the saved choice (settings file) wins over the host default; an empty or unknown saved value keeps the default.
+  public static string Startup(string saved,string fallback) { return Resolve(saved)??fallback; }
  }
 }

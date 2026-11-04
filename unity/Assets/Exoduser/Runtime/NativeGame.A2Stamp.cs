@@ -94,19 +94,20 @@ namespace Exoduser.UnityPort
                 Put(j%3==0?Pick(tall):j%3==1?Pick(edge):Pick(low),x,z,Rand(1.1f,1.7f),a*Mathf.Rad2Deg+90);
             }
 
-            var material=new Material(shader){name="A2 대량 산포"};
+            var material=R3Track(new Material(shader){name="A2 대량 산포"});
             var root=new GameObject("A2 대량 산포");root.transform.SetParent(a2Root.transform,false);
             int verts=0;
             foreach(var pair in chunks)
             {
                 var c=pair.Value;
-                var mesh=new Mesh{name="A2 산포 청크",indexFormat=IndexFormat.UInt32};
+                var mesh=R3Track(new Mesh{name="A2 산포 청크",indexFormat=IndexFormat.UInt32});
                 mesh.SetVertices(c.v);mesh.SetNormals(c.n);mesh.SetColors(c.c);mesh.SetUVs(0,c.uv);mesh.SetTriangles(c.i,0,true);mesh.UploadMeshData(true);
                 verts+=c.v.Count;
                 var go=new GameObject("청크");go.transform.SetParent(root.transform,false);
                 go.AddComponent<MeshFilter>().sharedMesh=mesh;
                 var mr=go.AddComponent<MeshRenderer>();mr.sharedMaterial=material;mr.shadowCastingMode=ShadowCastingMode.Off;mr.receiveShadows=true;mr.lightProbeUsage=LightProbeUsage.Off;mr.reflectionProbeUsage=ReflectionProbeUsage.Off;
             }
+            a2StampSites.Clear();
             Debug.Log("[A2 산포] 인스턴스 "+count+" 청크 "+chunks.Count+" 정점 "+verts+" "+timer.ElapsedMilliseconds+"ms");
         }
     }

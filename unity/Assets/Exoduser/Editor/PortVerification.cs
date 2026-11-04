@@ -203,7 +203,7 @@ public static class PortVerification {
   if(File.Exists(name)){var opened=EditorSceneManager.OpenScene(name,OpenSceneMode.Single);var roots=opened.GetRootGameObjects();reuse=roots.Length==1&&roots[0].name=="EXODUSER Native CSharp"&&roots[0].GetComponent<NativeGame>()!=null&&roots[0].GetComponents<Component>().Length==2;}
   if(!reuse){var scene=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);new GameObject("EXODUSER Native CSharp").AddComponent<NativeGame>();EditorSceneManager.SaveScene(scene,name);}
   EditorBuildSettings.scenes=new[]{new EditorBuildSettingsScene(name,true)};
-  PlayerSettings.companyName="ForDearGamers";PlayerSettings.productName="EXODUSER · Unity 이식 검증판";
+  PlayerSettings.companyName="ForDearGamers";PlayerSettings.productName="EXODUSER: HELL LORD";
   PlayerSettings.defaultScreenWidth=1920;PlayerSettings.defaultScreenHeight=1080;PlayerSettings.fullScreenMode=FullScreenMode.Windowed;
   PlayerSettings.runInBackground=true;
   return name;

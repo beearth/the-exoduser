@@ -22,7 +22,7 @@ namespace Exoduser.UnityPort
         static string Compute()
         {
             var args = Environment.GetCommandLineArgs(); int at = Array.IndexOf(args, Argument);
-            bool automatic = QaRunPolicy.IsAutomated(args, Application.isBatchMode);   // batchmode, or any --unity-*-smoke/-capture/-review/-check/--unity-qa-* argument
+            bool automatic = QaRunPolicy.IsAutomated(args, Application.isBatchMode) || BuildFlavor.UsesCommandLine;   // batchmode, any --unity-*-smoke/-capture/-review/-check/--unity-qa-* argument, or a run whose flavor comes from --unity-build-flavor (dev/QA only)
             if (at < 0 && !automatic) return "";
             string reason = "";
             try
