@@ -15,6 +15,7 @@ foreach($name in $functions){
 }
 # 11-04 ratchet: the known-list step (Apply-UiKnownList) runs node on the loop worktree; these decisions test the raw summary only.
 function Apply-UiKnownList($run,$stateObj,$runDir){}
+function Get-UiCheckDir($runDir){ return (Join-Path $runDir 'ui-check') }; function Save-UiCheckRecord($uiDir,$runDir){}   # 11-04: UI 출력 위치(G:)는 이 판정과 무관
 
 $fixture=Join-Path $Output ('fixture-'+[guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $fixture -Force|Out-Null

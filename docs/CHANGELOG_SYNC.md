@@ -1,3 +1,5 @@
+2026-11-04 20:50 BuildLoop UI 검사 출력 G: 이전(CTO 20:36): e3d8d6a 회차는 3D 관문 PASS·스모크 exit 0 뒤 UI 겹침 분석기(analyze.cjs)가 I:(exFAT USB HDD)에 1.5GB 보고서를 쓴 직후 CPU 0·디스크 유휴로 30분 멈췄다. kill한 뒤 판정 FAIL이 났고 바탕화면은 db26d55f6 그대로다. kill 뒤에도 프로세스가 스레드 1·핸들 0으로 약 1분 남아, Player 좀비와 같은 커널 대기 모양이었다. buildloop.ps1은 UI 검사 출력(회차당 7.7GB)을 NTFS G:exoduser-wt_buildloop-uicheck에 쓰고 요약만 회차 폴더에 남긴다. 검사 uicheck-dir 7건, BuildLoop 검사 10종 PASS.
+
 2026-11-04 19:55 단독 Player가 Editor를 세우는 범위(CTO: 예약 9건인데 Editor 잠금 빔): 캐릭터 재촬영 -Exclusive Player(19:46~) 동안 모든 새 Editor 작업이 "BuildLoop 단독 검사" 규칙으로 섰다. 실행기 2026.11.04-exclloop는 BuildLoop 단독 검사(loop=true)만 Editor를 세우고, 다른 -Exclusive는 Player만 막는다. exclusive 15건·기존 검사 PASS.
 
 2026-11-04 19:50 좀비 기록(CTO 19:40, 재부팅 19:33 뒤): 실행기 2026.11.04-zombiealert. 새 좀비는 HALT 대신 _zombie_alert.json에 부팅 경과 시간과 함께 기록하고, 그 Player만 거부한다. HALT는 CTO 보고 뒤에 만든다. 재부팅 전 _halt_exempt.json·_zombie_known.json은 halt-history로 옮겼다. quit-fix 깨끗한 부팅 A/B 18회는 rank 0 grant다. zombie-known 10건·기존 검사 PASS.
