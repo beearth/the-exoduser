@@ -136,6 +136,7 @@ namespace Exoduser.UnityPort
             int born = boundTick;
             switch (kind)
             {
+                case "parryMagicHit": anglerTracker.NoteMagicHit(x, y, r); break;                                             // U-VFX-14: a Q-split water shot touched an enemy (Core ParryMagicHitFx, r 72)
                 case "druidDust": Spawn(DustClip, x, y, r * 2, r * 2, born, 7, 8); break;                                       // playVFXAng('druid_dust',x,y,r*2/256,7)
                 case "druidRoots":
                     Spawn(HitClip, x, y, 362 * .72, 543 * .72, born, 7, 8);                                                    // druid_hit .72, 7
@@ -150,6 +151,7 @@ namespace Exoduser.UnityPort
             DrawFieldZones(sim);
             var druid = sim.Druid; if (druid == null) { Finish(); return; }
             int t = sim.TickCount; boundTick = t;
+            AnglerWaterBegin(sim, druid, t);   // U-VFX-14: follow the angler water orbs before the bullets are drawn (NativeBossView.AnglerWater.cs)
             double nowMs = Time.unscaledTime * 1000.0;
             // ground hazards first (low sorting order, under the actors)
             foreach (var lp in druid.LavaPools)
@@ -244,6 +246,7 @@ namespace Exoduser.UnityPort
                 }
                 DrawFieldBullet(p, t);   // VFX-D18: field enemies' bullets, per kind as game.html pass 2 (NativeBossView.FieldBullets.cs)
             }
+            AnglerWaterDraw(sim, t);   // U-VFX-14: charge, launch spray, contact crown / split, falling streaks, wet marks
             // once-clips (additive)
             for (int i = 0; i < vfx.Count;)
             {

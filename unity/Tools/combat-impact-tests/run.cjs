@@ -19,6 +19,7 @@ if(m1){
  fs.writeFileSync(generated,'using System;using Exoduser.UnityPort.Core;static partial class M1ParryTests{static void ShieldCut(Simulation sim,Action capture){var p=sim.Player;'+cut.replace(/yield return M1Shot\("06-parry-shield"\);/g,'capture();').replace('yield return M1ParryCameraComparison(qContact);','')+'}static void GateRoute(Simulation sim){active=sim;var p=sim.Player;'+gate.replace('levelUp.Hide();','')+'}}');files.push(generated);
 }
 const policy=path.join(root,'unity/Assets/Exoduser/Runtime/Vfx/CombatImpactTimeline.cs');if(fs.existsSync(policy))files.push(policy);
+if(name==='checks')files.push(path.join(root,'unity/Assets/Exoduser/Runtime/Vfx/AnglerWaterTimeline.cs'),path.join(__dirname,'AnglerWaterTests.cs'));   // U-VFX-14
 // Ratio formulas are owned by Enemy3D. Compile its policy unchanged, including
 // all recursive Core sources above; do not invoke or modify enemy3d-tests.
 files.push(path.join(root,'unity/Assets/Exoduser/Runtime/NativeEnemyRigPolicy.cs'));
@@ -37,6 +38,8 @@ if(status===0&&name==='checks'){
   log+=(water.stdout||'')+(water.stderr||'')+(water.error?.message||'');status=water.status??1;}
  if(status===0){const bodies=cp.spawnSync('C:/Python314/python.exe',['-B',path.join(root,'tools/vfx/enemy_body_extents.py'),'--check-only'],{cwd:root,encoding:'utf8',windowsHide:true,stdio:['ignore','pipe','pipe'],env,timeout:60000});
   log+=(bodies.stdout||'')+(bodies.stderr||'')+(bodies.error?.message||'');status=bodies.status??1;}
+ if(status===0){const angler=cp.spawnSync('C:/Python314/python.exe',['-B',path.join(root,'tools/vfx/import_angler_water.py'),'--check-only'],{cwd:root,encoding:'utf8',windowsHide:true,stdio:['ignore','pipe','pipe'],env:{...env,PYTHONDONTWRITEBYTECODE:'1'},timeout:60000});
+  log+=(angler.stdout||'')+(angler.stderr||'')+(angler.error?.message||'');status=angler.status??1;}
  if(status===0){const palette=cp.spawnSync('C:/Python314/python.exe',['-B',path.join(root,'tools/vfx/recolor_skill_palette.py'),'--check-only'],{cwd:root,encoding:'utf8',windowsHide:true,stdio:['ignore','pipe','pipe'],env:{...env,PYTHONDONTWRITEBYTECODE:'1'},timeout:60000});
   log+=(palette.stdout||'')+(palette.stderr||'')+(palette.error?.message||'');status=palette.status??1;}
  if(status===0){const hits=cp.spawnSync('C:/Python314/python.exe',['-B',path.join(root,'tools/vfx/remaster_element_hits.py'),'--check-only'],{cwd:root,encoding:'utf8',windowsHide:true,stdio:['ignore','pipe','pipe'],env:{...env,PYTHONDONTWRITEBYTECODE:'1'},timeout:60000});

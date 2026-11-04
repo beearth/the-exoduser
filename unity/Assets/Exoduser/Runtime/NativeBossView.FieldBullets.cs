@@ -11,8 +11,10 @@ namespace Exoduser.UnityPort
     // 62 % of the width) for magic bullets, the element orb sheet for element balls. 2026-11-03: baked Hell Gothic palette rows replace rainbow + ELC runtime tint;
     // U-VFX-07b: element balls use proj_elem_orb_v3 (generated art, keyed by tools/vfx/make_elem_orb_v3.py; head centred on the shot point, same box).
     // The druid poison orb stays in NativeBossView.Update. Geometry, animation, and Core projectile classification are unchanged.
-    // Not ported (no art in Unity yet, drawn as the nearest sheet instead): the kraken water orb of physical / ice element balls (elem orb sheet row), the procedural classic rainbow
-    // of black / blue beans (physical-palette comet), the dark sphere of the Q bean (dark-palette comet).
+    // Ported 2026-11-04 (U-VFX-14, NativeBossView.AnglerWater.cs): the kraken water orb of the four 1-1 anglers (the web's fbEnergy shot, game.html 54183) is drawn with the new
+    // water_orb_loop sheet, ribbon tail, charge, launch spray, hit / parry / vanish effects before DrawFieldBullet is reached.
+    // Not ported (no art in Unity yet, drawn as the nearest sheet instead): the web's _drawKrakenShot for any other physical / ice element ball (the Core has no such spawn; the
+    // elem orb sheet row stays), the procedural classic rainbow of black / blue beans (physical-palette comet), the dark sphere of the Q bean (dark-palette comet).
     public sealed partial class NativeBossView
     {
         const string MouthRes = "Art/vfx/field/proj_phys_mouth", OrbRes = "Art/vfx/field/proj_elem_orb_v3", CometRes = "Art/vfx/field/proj_bolt_comet_el";
@@ -85,6 +87,8 @@ namespace Exoduser.UnityPort
             bool physical = p.ParryClass == "physical";
             double sSc = ps * (physical ? 2 : 1), ang = Math.Atan2(p.Vy, p.Vx); int order = (int)p.Y + 6;
             if (p.Web) { FieldMouth(p, 22.05 * (ps * 2) * .55, ang, tick, order); return; }                       // snake-mouth web bullet: 22.05 * webScale * .55, webScale = ps * 2
+            if (AnglerSplitDraw(p, tick)) return;                                                                    // U-VFX-14 r2: the five allied water shots of a Q-parried angler ball
+            if (AnglerOrbDraw(p, tick)) return;                                                                      // U-VFX-14: the angler's water orb (web fbEnergy), the old ice orb row only if the sheet is missing
             if (p.ElemBall)
             {
                 double eb = Math.Max(96, sz * 5.3); int row = p.El >= 0 && p.El < ElemOrbRow.Length ? ElemOrbRow[p.El] : -1;

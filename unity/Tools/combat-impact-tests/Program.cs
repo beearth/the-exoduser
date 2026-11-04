@@ -4,7 +4,7 @@ using Exoduser.UnityPort.Core;
 using Exoduser.UnityPort.Core.Combat;
 using Exoduser.UnityPort.Vfx;
 
-static class Program
+static partial class Program
 {
     static int checks,bad;
     static void Check(bool value,string name){checks++;if(!value){bad++;Console.WriteLine("FAIL "+name);}}
@@ -192,6 +192,7 @@ static class Program
                 Check(baseline*(double)fx.CameraScale(age,true)==baseline,"camera returns bit-exact baseline "+baseline+" tick "+age);
             Check((double)fx.CameraScale(18,true)>.975&&(double)fx.CameraScale(18,true)<1,"pushin returns over20ticks");
         }
+        AnglerWaterChecks();
         Console.WriteLine("combat-impact: "+checks+" checks, "+bad+" failures");return bad==0?0:1;
     }
 }
