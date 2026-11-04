@@ -65,6 +65,7 @@
 |---|---|---|
 | D-T1 | 단위 테스트 "실제 값 불일치 의심" 묶음을 하나씩 원인 확정(코드 결함인지 테스트 부채인지) | §3 |
 | D-T2 | 낡은 소스 문자열 검사·추출 하니스 누락 테스트를 현행 코드로 갱신하거나 폐기 판단. 11-04 일괄 점검 NEEDS-INPUT 9개(CoreTests·enemy-tick·LobbyTests·comparison·feedback·hud·inventory·ki-slash 2) 포함 | §3·D-014 |
+| D-T2-E | enemy-tick C# 참조 묶음 누락(CS0103·CS0234): **보류·열린 항목, 데모 블로커 아님**. 하니스 자체 수정·재실행 없음 | 05da091ea 기준 CTO 후속 판단; REPORT.md T2 재검토 절, 기존 enemy-tick 2회 컴파일 실패 |
 | D-007 | `DOCS_SYNC_AUDIT_20261028.md` 코드 의심 버그 4번: strFlat/dexFlat/intFlat 어픽스가 ATK 기준값에 안 들어감 | 감사 문서 |
 | D-008 | 같은 문서 5·8번: critDmgA/critDmgB, blastShot/bladeShot 사장 경로 확인 | 감사 문서 |
 | D-009 | 1-1 완주 검사의 보스 처치 단계 완성. 3회차 추적: 다크드루이드(최대HP 33,332)에 최대HP 20% 타격 40회 — `bossChargeWind`·`bossDruidDive` 중 피해 0(부활·휴식 `reviveIframes` 추정), 20% 아래 타격에서 `recover`로 33,332 전체 회복(부활 단계 추정). 보스 SSOT(`8.1보스디자인바이블`, `2_5 부활`)와 대조해 설계인지 확정한 뒤, 하니스는 처치까지 타격 횟수·간격을 늘린다 | 2026-11-03 실행 |
