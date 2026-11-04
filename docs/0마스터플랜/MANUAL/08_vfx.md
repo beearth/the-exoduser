@@ -1,5 +1,5 @@
 # MANUAL 08 — VFX 디렉션 (초안 2026-11-05)
-- 상태: 초안(2차 반영 11-05) | 출처 상태: SOURCE_VERIFY fea5684(CX22-3) 기준 | 연구 반영: d4_04_boss_vfx, pbz, yellowsky(광원), d4_01_env(조명 연동), conventions, codex_vfx_direction, codex_3d_pixel(합성 순서), codex_motion_direction(VFX-판정 정합), TOOLCHAIN_20261105 | 연구 반영 대기: PoE2 VFX 팔레트 수치(2차 조사도 4개 게임 전부 입자 수·오버드로·GPU ms·HDR 수치 "미확인", 공개 자료 없음), 점광원 예산 Mac 실측, 황천 전투 이펙트 팔레트, 목표 기기 VFX 프레임 시간 할당(Mac 측정 전)
+- 상태: 초안(2차 반영 11-05) | 출처 상태: SOURCE_VERIFY 0a9b84e(CX22-5 최종) 기준 | 연구 반영: d4_04_boss_vfx, pbz, yellowsky(광원), d4_01_env(조명 연동), conventions, codex_vfx_direction, codex_3d_pixel(합성 순서), codex_motion_direction(VFX-판정 정합), TOOLCHAIN_20261105 | 연구 반영 대기: PoE2 VFX 팔레트 수치(2차 조사도 4개 게임 전부 입자 수·오버드로·GPU ms·HDR 수치 "미확인", 공개 자료 없음), 점광원 예산 Mac 실측, 황천 전투 이펙트 팔레트, 목표 기기 VFX 프레임 시간 할당(Mac 측정 전)
 - 범위: 예고→접점→본체→잔여 4단계 타이밍, 색·밝기·채도, 파티클·오버드로 예산, 패링 전용색, 점 금지. / 정하지 않는 것: 판정 범위·피해·프레임 길이(Core). VFX 외곽은 Core 판정 원과 맞아야 한다.
 
 ## 1. 목표 장면·레퍼런스 (무엇을, 왜)
@@ -78,14 +78,14 @@ Core 수치: `Core/DruidRemodelData.cs`. 나머지 9종은 `docs/5.1임펙트디
 | D4 조명과 VFX | 조명을 받는 VFX를 쓰되 중요한 신호가 어둠에 묻히지 않게 PBR 규칙을 예술적으로 조정 | [사실 단일] Blizzard 2021-12 | 검증됨 |
 | 입자 수 추산 | 정상 상태 생존 수 ≈ 방출률 r × 수명 L (버스트·서브 이미터 없을 때). 화면 예산은 동시 효과 수까지 합산해 시작. 실제 엔진 상한·측정을 대신하지 않음 | [추정·산술] §5 | 우리 기준 |
 | 면적 지표 | 투명 카드 면적 합 ÷ 화면 면적을 보조 지표로 기록(실제 GPU 오버드로 실측 아님) | [추정] | 우리 기준 |
-| 엔진 규모 수치 | Shuriken "수천", VFX Graph "수백만"은 가능 규모의 개략치일 뿐 우리 허용치가 아님 | [사실]/[추정] Unity 문서 | 미검증 |
+| 엔진 규모 수치 | Shuriken "수천", VFX Graph "수백만"은 가능 규모의 개략치일 뿐 우리 허용치가 아님 | [사실]/[추정] Unity 문서 | 검증됨 |
 | 정렬 큐 | 적 예고 > 적 탄 > 플레이어 피격 > 플레이어 타격 > 장식 (렌더 큐 표로 고정). 바닥 예고·장판 = URP Decal Projector + Shader Graph, 발밑 원 = ZTest Always 쿼드 | [제안] TOOLCHAIN §2-7 | 내부 |
 | VFX 프레임 시간 | 전투 VFX GPU ≈1.0ms (합계 14.7ms 중, 여유 1.9ms). 목표 1920×1080 60fps, Mac M5 Pro 측정 전 | [추정] TOOLCHAIN §3a 예산 | 우리 기준 |
 | 방사형 블러 | 기본 채택 금지(탄·바닥 신호까지 흐림). 제한 영역·짧은 순간 후보도 별도 가독성 검증 필요 | [추정] §6 | 우리 기준 |
 | 디졸브 | 큰 형태 마스크 + 진행값으로 본체를 걷어낼 것. 임계 가장자리 전체 발광이나 미세 점이 오래 남는 연출 금지(점 금지와 일치) | [추정] §6 | 우리 기준 |
 | 최소 탄 두께 | 이동·회전 중 가는 탄이 사라지면 장식보다 먼저 탄의 최소 화면 두께·경계를 고친다. 정지 확대만으로 합격 판정 금지 | [추정] §7 | 우리 기준 |
 | 핵심 신호 | 밝기·면적 최대는 중요한 순간에만. 반복 기본 공격·지속 잔여가 적 탄 윤곽보다 먼저 보이면 밝기·면적·지속을 함께 줄인다 | [추정] §4 | 우리 기준 |
-| 엔진 기능 확인 필요 | Unity 6000.0 문서 간 불일치(URP 카메라 버퍼, Lit Mesh), VFX Graph 17.0 = Compute Shader·SSBO 필요, OpenGL ES·URP Gamma 미지원, URP에서 Simple Lit·왜곡·Half-resolution 미지원 표기. 설치된 패키지에서 재확인 | [사실] Unity 문서 / [미확인] 설치본 | 미검증 |
+| 엔진 기능 확인 필요 | Unity 6000.0 문서 간 불일치(URP 카메라 버퍼, Lit Mesh), VFX Graph 17.0 = Compute Shader·SSBO 필요, OpenGL ES·URP Gamma 미지원, URP에서 Simple Lit·왜곡·Half-resolution 미지원 표기. 설치된 패키지에서 재확인 | [사실] Unity 문서 / [미확인] 설치본 | 검증됨 |
 
 ## 4. 제작 도구 — 확정 추천: 파티클 시스템(CPU) + 플립북 시트 + 메시/셰이더 지면 표식
 | 역할 | Unity 추천 | UE5 대응 |
