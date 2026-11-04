@@ -1,11 +1,12 @@
 using UnityEditor;
 public sealed class SourceTextureImporter : AssetPostprocessor
 {
- public override uint GetVersion(){return 4;}
+ public override uint GetVersion(){return 5;}
  // This is the import policy for painted 9-slice faces, buttons and frames.
  // The broad UI mipmap rule below must not override their committed meta settings.
  internal static bool OriginalUiNoMipmaps(string assetPath)
  {
+  if(assetPath.StartsWith("Assets/Exoduser/Resources/Art/ui/lobby_poster/"))return true;
   if(!assetPath.StartsWith("Assets/Exoduser/Resources/Art/ui/silver_hell/"))return false;
   var name=System.IO.Path.GetFileNameWithoutExtension(assetPath);
   return name.StartsWith("btn_")||name.StartsWith("lobby_enter_")||name.StartsWith("visual_")||

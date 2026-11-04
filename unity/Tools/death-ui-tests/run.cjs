@@ -13,8 +13,8 @@ const silver=read('NativeLobby.SilverHell.cs');
 check(!read('NativeGame.DeathScreenCapture.cs').includes('colorProbe')&&!fs.existsSync(path.join(runtime,'NativeGame.DeathColorProbe.cs')),'retired colour probe and shader dependency removed');
 const lobby=read('NativeLobby.SilverLobby.cs'),visual=read('NativeLobby.SilverCharacter.cs'),name=read('NativeLobby.CharacterPresentation.cs');
 check(lobby.includes('new Rect(1428,702,416,156)')&&lobby.includes('canEnter?lobbySilverEnter:lobbySilverDisabled')&&!lobby.includes('ActionPlate('),'ENTER art/rect and slot cards restored; no procedural plate');
-check(visual.includes('ArtImage(cancel,silverVisualCancel)')&&visual.includes('locked?silverVisualDisabled:silverVisualCreate')
- &&name.includes('ArtImage(cancel,silverNameCancel)')&&name.includes('ArtImage(create,silverNameCreate)'),'visual and name button artwork drawn');
+check(visual.includes('DrawVisualActionPlate(cancel,')&&visual.includes('NativeSilverHellUi.ActionPlate(r,primary,')&&visual.includes('!locked,"visual-create"')
+ &&name.includes('ArtImage(cancel,silverNameCancel)')&&name.includes('ArtImage(create,silverNameCreate)'),'visual buttons use the shared ActionPlate (11-04 minor 1); name button artwork drawn');
 check(lobby.includes('FrameOnly(new Rect(1368,8,544,1064))'),'decorated right rail frame restored');
 let imported=true;
 for(const asset of ['btn_primary_composed','btn_plaque_20261029','guide_button_glow','lobby_enter_btn_silver_20261029','lobby_enter_disabled','visual_create','visual_cancel','visual_disabled','name_create','name_cancel','panel_frame_20261029']){

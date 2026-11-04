@@ -16,7 +16,12 @@ namespace Exoduser.UnityPort
             if (locales.Count > 0) return;
             var asset = Resources.Load<TextAsset>("Data/hellgate_objectives");
             if (asset == null) throw new InvalidOperationException("Missing hellgate_objectives locale resource");
-            foreach (var entry in JsonUtility.FromJson<Bundle>(asset.text).entries) locales.Add(entry.code,entry);
+            var data=JsonUtility.FromJson<Bundle>(asset.text);
+            if(data==null||data.entries==null)throw new InvalidOperationException("Incomplete hellgate locale bundle");
+            var keys=new HashSet<string>();bool english=false;
+            foreach(var entry in data.entries){if(entry==null||string.IsNullOrEmpty(entry.code)||!keys.Add(entry.code))throw new InvalidOperationException("Invalid hellgate locale entry");if(entry.code=="en")english=true;}
+            if(!english)throw new InvalidOperationException("Missing hellgate English fallback");
+            foreach(var entry in data.entries)locales.Add(entry.code,entry);
         }
         public static void Lines(NativeHellGateObjective objective,string code,out string heading,out string detail)
         {
