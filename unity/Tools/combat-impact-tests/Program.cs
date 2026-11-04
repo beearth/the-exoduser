@@ -13,6 +13,14 @@ static class Program
     static readonly uint[][] SparkTable={
         new uint[]{0xf5e5d5,0xf0debd,6,10,12,18},new uint[]{0xffd9a0,0xd8562a,5,8,10,14},new uint[]{0xe8f3f8,0x5f98c0,4,6,8,10},
         new uint[]{0,0,0,0,0,0},new uint[]{0xfff4d0,0xc8a848,3,4,6,6},new uint[]{0xfff2d6,0xc9a45e,4,6,8,8},new uint[]{0xdcc8a4,0x7e6236,4,6,8,8}};
+    // r4: hit sparks taper head 2 px -> tail .5 px, alpha 1 -> 0 along the length.
+    static void SparkTaper()
+    {
+        Check(Math.Abs(CombatParryPresentation.Spark.TaperWidth(1)*2-2)<1e-9&&Math.Abs(CombatParryPresentation.Spark.TaperWidth(0)*2-.5)<1e-9,"spark taper: 2 px at the head, .5 px at the tail");
+        Check(CombatParryPresentation.Spark.TaperAlpha(0)==0&&CombatParryPresentation.Spark.TaperAlpha(.94)>.93&&CombatParryPresentation.Spark.TaperAlpha(1)==0,"spark taper: alpha 0 at the tail, 1 near the head, soft cap");
+        double prev=-1;for(int i=0;i<=94;i++){double a=CombatParryPresentation.Spark.TaperAlpha(i/100.0);Check(a>=prev-1e-12,"spark taper alpha rises toward the head "+i);prev=a;}
+        Check(CombatHitLook.Sparks(new FeedbackEvent{Kind=FeedbackKind.EnemyHit,VisualOnly=true,Element=0,Angle=.3f},1).All(s=>s.Taper)&&!new CombatParryPresentation().Sparks(new FeedbackEvent{Kind=FeedbackKind.Parry,Step=1},1).Any(s=>s.Taper),"hit sparks taper, parry sparks stay flat");
+    }
     // Soft core (11-04): radial texture with no hard rim, per-element colour, shader opacity peak 1.6 over the 5-tick beat.
     static void SoftCore()
     {
@@ -57,6 +65,7 @@ static class Program
         }
         Check(CombatHitLook.CoreRgb.SequenceEqual(CoreTable),"G1 core colour table is the §2.2 palette");
         SoftCore();
+        SparkTaper();
         Check(CombatHitAnchor.Applies(true,5,FeedbackKind.EnemyHit,CombatClipMode.Core)&&!CombatHitAnchor.Applies(false,5,FeedbackKind.EnemyHit,CombatClipMode.Core),"core follows the visible body like the other hit layers");
         foreach(var kind in new[]{FeedbackKind.EnemyHit,FeedbackKind.EnemyCrit,FeedbackKind.BossHit})foreach(int el in new[]{-1,0,1,2,3,4,5,6}) {
             int row=el>=0&&el<=5?el:6;bool heavy=kind!=FeedbackKind.EnemyHit;var t=SparkTable[row];
@@ -68,7 +77,7 @@ static class Program
                 if(row==3){Check(sparks.Length==0,"G1 dark has no line sparks, body smoke only "+tag);continue;}
                 bool shape=true;
                 foreach(var s in sparks) {
-                    shape&=s.From==t[0]&&s.To==t[1]&&s.Thickness==2&&s.Length*90>=s.Thickness*3&&s.Length<=.375&&s.Length>=.105&&s.Length>0&&(row==6?s.Gain==1:s.Gain==1.4&&s.GainTicks==4);
+                    shape&=s.From==t[0]&&s.To==t[1]&&s.Thickness==2&&s.Length*90>=s.Thickness*3&&s.Length<=.375&&s.Length>=.105&&s.Length>0&&(row==6?s.Gain==1:s.Gain==1.4&&s.GainTicks==4)&&s.Taper;
                     shape&=s.Life>=(row==4?3:12)&&s.Life<=(row==4?4:21)&&s.Delay<=1;
                 }
                 Check(shape,"G1 sparks are thin lines (length >= 3x thickness), table colours, .2-.35 s "+tag);

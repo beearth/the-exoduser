@@ -188,7 +188,7 @@ namespace Exoduser.UnityPort.Vfx
                     var s=new CombatParryPresentation.Spark{Delay=row.Chain?0:i%2,Life=rng.Next(row.LifeMin,row.LifeMax+1),Angle=angle,
                         Length=row.LenMin+rng.NextDouble()*(row.LenMax-row.LenMin),Thickness=row.Thick,Speed=row.SpeedMin+rng.NextDouble()*(row.SpeedMax-row.SpeedMin),
                         Color=rng.NextDouble(),Gravity=row.Gravity,From=row.From,To=row.To,Aged=row.Aged,Normal=row.Normal,Prior=chain.Count>0?chain.ToArray():null,
-                        Gain=row.Normal?1:SparkGain,GainTicks=row.Normal?0:SparkGainTicks};
+                        Gain=row.Normal?1:SparkGain,GainTicks=row.Normal?0:SparkGainTicks,Taper=true};
                     chain.Add(s);list.Add(s);angle+=(rng.NextDouble()-.5)*1.2;
                 }
             }
@@ -206,6 +206,12 @@ namespace Exoduser.UnityPort.Vfx
             public uint From=0xf5e5d5,To=0xf0debd;public double Gravity=.00065;public bool Aged,Normal;public Spark[] Prior;
             // HDR gain of an additive hit spark for its first GainTicks ticks (11-04 r3); 1 / 0 = untouched.
             public double Gain=1;public int GainTicks;
+            // Hit sparks use the tapered sprite (head 2 px -> tail .5 px, alpha 1 -> 0 along the length; head = +x).
+            public bool Taper;
+            public const double TailWidth=.25,TailAlphaFloor=0;
+            // Pure taper profile over t = 0 (tail) .. 1 (head): half-width fraction and alpha. Baked by CombatImpactView.
+            public static double TaperWidth(double t){return TailWidth+(1-TailWidth)*Math.Max(0,Math.Min(1,t));}
+            public static double TaperAlpha(double t){t=Math.Max(0,Math.Min(1,t));return t*Math.Max(0,Math.Min(1,(1-t)/.06));}
         }
         public bool IsMelee(FeedbackEvent e) {
             if(e.Kind!=FeedbackKind.Parry||!string.IsNullOrEmpty(e.SampleKey))return false;

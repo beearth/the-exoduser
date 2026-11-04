@@ -23,7 +23,7 @@ Shader "EXODUSER/SkillAdditive"
                 fixed4 p=tex2D(_MainTex,i.uv);
                 fixed a=p.a*i.color.a; if(_Flat>0.5) a*=max(p.r,max(p.g,p.b));
                 fixed3 rgb=_Flat>0.5?fixed3(1,1,1):p.rgb;
-                return fixed4(rgb*i.color.rgb*a*_Gain,_NormalBlend>0.5?a:0);
+                return fixed4(rgb*i.color.rgb*a*lerp(1,_Gain,saturate((i.uv.x-.5)*2)),_NormalBlend>0.5?a:0);
             }
             ENDCG
         }
