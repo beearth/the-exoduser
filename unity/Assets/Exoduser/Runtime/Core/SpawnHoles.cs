@@ -8,6 +8,7 @@ namespace Exoduser.UnityPort.Core
     {
         public double X, Y, Size; public int Room;
         public bool Triggered; public double? SpawnDelay, SpawnTotal, SpawnCd, SpawnInterval; public double Spawned;
+        public int? PlannedCount;
     }
 
     // C01-AI: the 소환굴 (spawn hole) update of the web update() (game.html 35730~35790): the only natural field spawner of 1-1.
@@ -32,12 +33,17 @@ namespace Exoduser.UnityPort.Core
         public Func<double, double, int, int, bool> Spawn;       // mkEn(x, y, si, etype, false, undefined, room) + push; false = mkEn returned null
         public Action<SpawnHole> Finished;                       // addParts/addTxt/shake of the last summon
 
-        public int TotalPlanned { get { int t = 0; foreach (var h in Stage0Holes) t += EnemyPools.SpawnHoleCount(h[2], 0); return t; } }
+        FieldLayout layout=FieldLayout.Original;
+        public int TotalPlanned { get { int t = 0,before=0; foreach(var h in Stage0Holes){int count=EnemyPools.SpawnHoleCount(h[2],0);t+=layout.PlannedCount(count,before);before+=count;}return t; } }
 
         public void LoadStage0()
+        { LoadStage0(FieldLayout.Original); }
+        public void LoadStage0(FieldLayout profile)
         {
+            layout=profile??FieldLayout.Original;
             Holes.Clear();
-            foreach (var h in Stage0Holes) Holes.Add(new SpawnHole { X = h[0], Y = h[1], Size = h[2], Room = (int)h[3] });
+            int before=0;
+            foreach(var h in Stage0Holes){int count=EnemyPools.SpawnHoleCount(h[2],0);Holes.Add(new SpawnHole { X = layout.Coordinate(h[0]), Y = layout.Coordinate(h[1]), Size = h[2], Room = (int)h[3],PlannedCount=layout.AreaEnemies?(int?)layout.PlannedCount(count,before):null });before+=count;}
         }
 
         // gameFrame = _gameFrame; px/py = P; sp = frame step
@@ -54,7 +60,7 @@ namespace Exoduser.UnityPort.Core
                 if (h.SpawnDelay > 0) { h.SpawnDelay -= sp; continue; }
                 if (h.SpawnTotal == null)
                 {
-                    h.SpawnTotal = EnemyPools.SpawnHoleCount(h.Size, stage); h.Spawned = 0; h.SpawnCd = 0;
+                    h.SpawnTotal = h.PlannedCount ?? EnemyPools.SpawnHoleCount(h.Size, stage); h.Spawned = 0; h.SpawnCd = 0;
                     h.SpawnInterval = Math.Truncate(900 / h.SpawnTotal.Value);
                 }
                 if (h.SpawnCd > 0) { h.SpawnCd -= sp; continue; }

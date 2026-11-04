@@ -29,6 +29,8 @@ namespace Exoduser.UnityPort
             public int[] regionKills, regionTotals;
         }
         [Serializable] sealed class FullRunNearby {public string kind;public int id,type;public double hp,x,y,distance;public bool line;}
+        [Serializable] sealed class FullRunStageMark {public string kind;public int tick,kills;public float seconds;}
+        Action<StageEvent> fullRunStageEvent;
         string fullRunCapturePrefix="",fullRunCaptureActivity="",fullRunLastCaptureActivity="";int fullRunLastCaptureFrame=-10000;float fullRunAimX,fullRunAimY;
         [Serializable] sealed class FullRunReceipt
         {
@@ -44,6 +46,8 @@ namespace Exoduser.UnityPort
             public float worldClearSeconds;
             public string clearUiScope = "After natural clear: actual panel callbacks and virtual Escape through NativeGame.Update; not OS/IMGUI button injection.";
             public List<FullRunSample> samples = new List<FullRunSample>();
+            public List<FullRunStageMark> stageMarks = new List<FullRunStageMark>();
+            public double fieldScale;public string fieldEnemies;public int seed;
         }
         [Serializable] sealed class FullRunLongFrame {public float seconds,ms;public int tick,loadPhase;public bool arena;public string capture,state;}
         sealed class FullRunFrameProbe : MonoBehaviour
@@ -68,6 +72,8 @@ namespace Exoduser.UnityPort
             Screen.SetResolution(width, 1080, FullScreenMode.Windowed);
             var receipt = new FullRunReceipt { device = SystemInfo.graphicsDeviceName, buildGuid = Application.buildGUID, width = width, height = 1080 };
             float started = Time.realtimeSinceStartup;
+            receipt.fieldScale=fieldLayout.Scale;receipt.fieldEnemies=fieldLayout.AreaEnemies?"area":"keep";receipt.seed=(int)SourceStarterFixture.Seed;
+            fullRunStageEvent=e=>receipt.stageMarks.Add(new FullRunStageMark{kind=e.Kind.ToString(),tick=e.Tick,kills=Simulation.Kills,seconds=Time.realtimeSinceStartup-started});
             yield return new WaitForSecondsRealtime(1);
             lobby.SetPlaybackFocus(true); // Hidden desktop has no foreground focus; retain the ordinary entry flow.
             Screen.SetResolution(width,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.4f);
@@ -96,7 +102,7 @@ namespace Exoduser.UnityPort
             var visits = new HashSet<int>();
             var patterns = new HashSet<string>();
             var performance = gameObject.AddComponent<FullRunFrameProbe>();performance.game=this;performance.output=output;performance.started=started;
-            var navigation = new FullRunNavigation();
+            var navigation = new FullRunNavigation(Math.Max(210,Map.Data.width+10));
             var controlPolicy=new FullRunControlPolicy();string policyText=null;
             string policyPath=Path.Combine(output,"fullrun-policy.json");int lastChainTick=-10000;
             if(!File.Exists(policyPath))File.WriteAllText(policyPath,JsonUtility.ToJson(controlPolicy,true));
@@ -122,7 +128,7 @@ namespace Exoduser.UnityPort
                             death.OnRetry?.Invoke();Running=false;yield return FullRunWaitFrontend("death-retry",receipt);Running=false;
                             if(!string.IsNullOrEmpty(receipt.frontendFailure)||PlayerDown||Simulation.Stage.InArena){receipt.result="death-retry-blocked";break;}
                             receipt.retries++;fullRunCapturePrefix="retry-"+receipt.retries.ToString("00")+"-";
-                            navigation=new FullRunNavigation();patterns.Clear();yield return FullRunShot(output,"retry-field");continue;
+                            navigation=new FullRunNavigation(Math.Max(210,Map.Data.width+10));patterns.Clear();yield return FullRunShot(output,"retry-field");continue;
                         }
                         receipt.result="player-death";break;
                     }
@@ -444,6 +450,7 @@ namespace Exoduser.UnityPort
             WriteCombatStats(output);
             File.WriteAllText(Path.Combine(output,"parry-bot.json"),"{\"opportunities\":"+g2ParryBot.opportunities+",\"attempts\":"+g2ParryBot.attempts+",\"targetInputRate\":0.7}");
             receipt.seconds=Time.realtimeSinceStartup-started;
+            fullRunStageEvent=null;
             File.WriteAllText(Path.Combine(output,"fullrun.json"),JsonUtility.ToJson(receipt,true));
             Debug.Log("FULLRUN_RESULT "+receipt.result+" seconds="+receipt.seconds);
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);
@@ -454,6 +461,8 @@ namespace Exoduser.UnityPort
     // Collision-aware navigation for QA input. A path is sampled against the same host collision callback.
     sealed class FullRunNavigation
     {
+        readonly int fieldSide;
+        public FullRunNavigation(int fieldSide=210){this.fieldSide=Math.Max(210,fieldSide);}
         readonly List<Vector2> path=new List<Vector2>();Vector2 goal;int nextPlan,probeTick,fineUntil;Vector2 probePosition,probeGoal;
         public Vector2 Direction(float x,float y,float tx,float ty,float radius,Func<float,float,float,bool> canMove,int tick,bool precise=false)
         {
@@ -463,7 +472,7 @@ namespace Exoduser.UnityPort
             if(tick>=nextPlan||Vector2.Distance(goal,target)>100)
             {
                 nextPlan=tick+90;goal=target;path.Clear();
-                bool fine=tick<fineUntil;int side=fine?421:210;float cell=fine?20:40;
+                bool fine=tick<fineUntil;int side=fine?fieldSide*2+1:fieldSide;float cell=fine?20:40;
                 int sx=Mathf.Clamp((int)(x/cell),0,side-1),sy=Mathf.Clamp((int)(y/cell),0,side-1),start=sy*side+sx;
                 float ox=fine?x-sx*cell:cell*.5f,oy=fine?y-sy*cell:cell*.5f;var previous=new int[side*side];for(int i=0;i<previous.Length;i++)previous[i]=-1;
                 var queue=new Queue<int>();queue.Enqueue(start);previous[start]=start;int closest=start;float best=float.MaxValue;

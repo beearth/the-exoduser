@@ -8,6 +8,13 @@ namespace Exoduser.UnityPort.Core
         public SpawnHoleSystem SpawnHoles;
         public Func<int, int, bool> FloorTile;   // G.map[ty][tx] === 0 (set by the host; used only by the hole's wall spiral)
         public int MapTilesWide = 200, MapTilesHigh = 200;
+        public FieldLayout FieldLayout { get; private set; } = FieldLayout.Original;
+        public void ConfigureField(FieldLayout layout, int width, int height)
+        {
+            if(layout==null||width<=0||height<=0)throw new ArgumentException("Invalid field profile or dimensions");
+            if(SpawnHoles!=null||Regions!=null||FieldBossSpawned)throw new InvalidOperationException("Configure field before spawns and regions");
+            FieldLayout=layout;MapTilesWide=width;MapTilesHigh=height;
+        }
 
         /// <summary>initStage(0) hole set: the 14 final holes (totalSpawned 168 is the clear-ratio denominator, not counted per summon).</summary>
         public void EnableFieldSpawns()
@@ -24,7 +31,7 @@ namespace Exoduser.UnityPort.Core
                     return true;
                 }
             };
-            SpawnHoles.LoadStage0();
+            SpawnHoles.LoadStage0(FieldLayout);
             Stage.TotalSpawned = SpawnHoles.TotalPlanned;   // G._totalSpawned = sum of the hole counts (168)
         }
 

@@ -8,8 +8,9 @@ namespace Exoduser.UnityPort
     // (1 tile = 40 px = 0.4 u). Off, every Point() is byte-for-byte the old 2D mapping (x / 100, -y / 100, 0), so the 2D path and its oracles are unchanged.
     public static class NativeRemodel3D
     {
-        public static readonly bool Requested = Array.IndexOf(Environment.GetCommandLineArgs(), "--remodel3d") >= 0 ||
-            (Application.isEditor && Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-qa-sandbox")>=0 && Environment.GetEnvironmentVariable("EXO_A2_EDITOR_PREVIEW")=="1");
+        public static readonly bool Requested = Core.FieldLayout.FromArguments(Environment.GetCommandLineArgs()).IsOriginal &&
+            (Array.IndexOf(Environment.GetCommandLineArgs(), "--remodel3d") >= 0 ||
+            (Application.isEditor && Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-qa-sandbox")>=0 && Environment.GetEnvironmentVariable("EXO_A2_EDITOR_PREVIEW")=="1"));
         public static bool Active;            // the RM-1 scene is loaded and the field is shown in 3D right now (false in the boss arena / before the scene is ready)
         public static Terrain Ground;         // the scene's Terrain (window of tiles x48..152 / y126..200)
         public static bool ForestA2;          // A2 승인 구도만 원근을 넓힌다. 비A2 LOOK-001은 보존한다.

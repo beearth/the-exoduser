@@ -44,6 +44,7 @@ namespace Exoduser.UnityPort
             while (flow.Events.Count > 0)
             {
                 var e = flow.Events.Dequeue();
+                fullRunStageEvent?.Invoke(e);
                 switch (e.Kind)
                 {
                     case StageEventKind.GateUnlocked:

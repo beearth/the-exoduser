@@ -3,6 +3,7 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="../../Assets/Exoduser/Runtime/SourceMap.cs" />
+    <Compile Include="../../Assets/Exoduser/Runtime/Core/FieldLayout.cs" />
     <Compile Include="../../Assets/Exoduser/Runtime/A2ForestLayout.cs" />
     <Compile Include="../../Assets/Exoduser/Runtime/A2FieldLayout.cs" Condition="Exists('../../Assets/Exoduser/Runtime/A2FieldLayout.cs')" />
   </ItemGroup>

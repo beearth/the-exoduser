@@ -11,6 +11,7 @@ namespace Exoduser.UnityPort
         public MapChunk[] chunks;
         public MapProp[] props;
         public MapHill hill;
+        [NonSerialized] public Core.FieldLayout fieldLayout;
     }
     [Serializable] public sealed class MapEllipse { public float x,y,rx,ry; }
     [Serializable] public sealed class MapChunk { public string texture; public float x,y,width,height; public int sx,sy,sw,sh; }
@@ -21,6 +22,37 @@ namespace Exoduser.UnityPort
     // world.gd:3317-3375 corresponds to source canMv's four corner samples.
     public sealed class SourceMap
     {
+        // Experimental 2D data; the shipped JSON and the k=1 instance remain untouched.
+        public static MapData CreateFieldData(MapData source, Core.FieldLayout layout)
+        {
+            if(layout==null)throw new ArgumentNullException(nameof(layout));
+            if(layout.IsOriginal)return source;
+            if(source.width!=200||source.height!=200||source.tileSize!=40||source.fieldLayout!=null)throw new ArgumentException("Scale requires the original CH1 field");
+            double k=layout.Scale;
+            var d=new MapData{width=(int)Math.Round(source.width*k),height=(int)Math.Round(source.height*k),tileSize=source.tileSize,
+                startX=(float)(source.startX*k),startY=(float)(source.startY*k),fieldLayout=layout};
+            d.tiles=new int[d.width*d.height];
+            for(int y=0;y<d.height;y++)for(int x=0;x<d.width;x++) {
+                int ox=(int)Math.Floor((x+.5)/k),oy=(int)Math.Floor((y+.5)/k);
+                int t=ox<source.width&&oy<source.height?source.tiles[oy*source.width+ox]:1;
+                d.tiles[y*d.width+x]=(t==2||t==3)?0:t;
+            }
+            int gx=(int)Math.Floor(4020*k/d.tileSize),gy=(int)Math.Floor(220*k/d.tileSize),ey=(int)Math.Floor(300*k/d.tileSize);
+            for(int x=gx-1;x<=gx+1;x++){d.tiles[gy*d.width+x]=3;d.tiles[ey*d.width+x]=2;}
+            if(source.colliders!=null){d.colliders=new MapEllipse[source.colliders.Length];for(int i=0;i<d.colliders.Length;i++){
+                var c=source.colliders[i];d.colliders[i]=new MapEllipse{x=(float)(c.x*k),y=(float)(c.y*k),rx=c.rx,ry=c.ry};
+            }}
+            if(source.hill!=null){var h=source.hill;d.hill=new MapHill{cx=(float)(h.cx*k),cy=(float)(h.cy*k),rx=(float)(h.rx*k),ry=(float)(h.ry*k),inner=h.inner,outer=h.outer,
+                rampX0=(float)(h.rampX0*k),rampX1=(float)(h.rampX1*k),rampY=(float)(h.rampY*k),rampHalf0=(float)(h.rampHalf0*k),rampHalf1=(float)(h.rampHalf1*k)};}
+            if(source.props!=null){d.props=new MapProp[source.props.Length];for(int i=0;i<d.props.Length;i++){
+                var p=source.props[i];d.props[i]=new MapProp{id=p.id,texture=p.texture,x=(float)(p.x*k),y=(float)(p.y*k),width=p.width,height=p.height,
+                    pivotX=p.pivotX,pivotY=p.pivotY,rotation=p.rotation,alpha=p.alpha,ground=p.ground,flip=p.flip};
+            }}
+            if(source.chunks!=null){d.chunks=new MapChunk[source.chunks.Length];for(int i=0;i<d.chunks.Length;i++){
+                var c=source.chunks[i];d.chunks[i]=new MapChunk{texture=c.texture,x=(float)(c.x*k),y=(float)(c.y*k),width=(float)(c.width*k),height=(float)(c.height*k),sx=c.sx,sy=c.sy,sw=c.sw,sh=c.sh};
+            }}
+            return d;
+        }
         public readonly MapData Data;
         readonly Func<float,float,bool> additionalBlocked;
         readonly Func<float,float,bool> additionalProjectileBlocked;
