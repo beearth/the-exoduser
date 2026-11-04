@@ -92,6 +92,9 @@ static class P
         Check(slots.Count == InventoryState.Slots.Length, "slot count");
         for (int i = 0; i < slots.Count; i++) Check(slots[i] == InventoryItemJson.SlotName(i), "slot order " + i);
         string[] modeled = { "player", "inv", "game", "bagMax", "potLv" };
+        // Unity-only key (02750169f): game.stageDiffOff keeps the chosen next-stage difficulty across save/continue; the web never saves G._stageDiffOff and a
+        // web save without it decodes to 0. Compared as absent; its own range / round trip is checked below.
+        Func<JsonValue, JsonValue> dropUnityOnly = v => { var g = v?.Get("game"); if (g?.Members != null) g.Members.RemoveAll(kv => kv.Key == "stageDiffOff"); return v; };
 
         // 1) Unity model -> JSON equals the web literal for the keys Unity owns (key order of every object checked)
         foreach (var c in Cases(root, "encode"))
@@ -105,7 +108,7 @@ static class P
             };
             int si = 0; foreach (var e in inp.GetProperty("equipped").EnumerateArray()) { if (e.ValueKind == JsonValueKind.Object) m.Equipped[si] = InventoryItemJson.Read(Tree(e)); si++; }
             foreach (var b in inp.GetProperty("bag").EnumerateArray()) m.Bag.Add(InventoryItemJson.Read(Tree(b)));
-            var got = SaveJson.Parse(SaveJson.Write(CombatSaveCodec.Encode(m)));         // through text, like the file
+            var got = dropUnityOnly(SaveJson.Parse(SaveJson.Write(CombatSaveCodec.Encode(m))));         // through text, like the file
             var web = Tree(c.GetProperty("saved"));
             var gotM = JsonValue.NewObject(); var webM = JsonValue.NewObject();
             foreach (var k in modeled) { gotM.Set(k, got.Get(k)); webM.Set(k, web.Get(k)); }
@@ -121,7 +124,7 @@ static class P
             bool ok = CombatSaveCodec.TryDecode(web, out m, out err);
             Check(ok, "decode failed: " + err);
             if (!ok) continue;
-            var again = SaveJson.Parse(SaveJson.Write(CombatSaveCodec.Encode(m)));
+            var again = dropUnityOnly(SaveJson.Parse(SaveJson.Write(CombatSaveCodec.Encode(m))));
             var left = SaveJson.Parse(SaveJson.Write(web));
             string d = Diff(NormInv(again), NormInv(left), "$", true);
             Check(d == null, d ?? "");
