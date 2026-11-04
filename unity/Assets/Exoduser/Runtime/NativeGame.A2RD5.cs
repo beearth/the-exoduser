@@ -8,6 +8,13 @@ namespace Exoduser.UnityPort
 {
     public sealed partial class NativeGame
     {
+        [Serializable] sealed class D5Calibration {public float heroMetres=1.61f,heroPixels,windPixelsPerMetre,pitch,fov;public Vector3 origin,camera;}
+        void D5WriteCalibration()
+        {
+            var origin=NativeRemodel3D.Point(Simulation.Player.X,Simulation.Player.Y);var pixel=(Vector2)r3Cam.WorldToScreenPoint(origin);
+            var data=new D5Calibration{origin=origin,camera=r3Cam.transform.position,pitch=r3Cam.transform.eulerAngles.x,fov=r3Cam.fieldOfView,heroPixels=Vector2.Distance(pixel,(Vector2)r3Cam.WorldToScreenPoint(origin+Vector3.up*1.61f)),windPixelsPerMetre=Vector2.Distance(pixel,(Vector2)r3Cam.WorldToScreenPoint(origin+new Vector3(1,0,.28f)))};
+            File.WriteAllText(Path.Combine(a2rPlayOutput,"d5-calibration.json"),JsonUtility.ToJson(data,true));
+        }
         public GameObject D5PlaceShrub(Transform parent,float x,float z,float yaw)
         {
             if(a2Field!=null&&a2Field.Water(x,z)||NativeRemodel3D.GroundY(x,z)<-.2f)return null;
