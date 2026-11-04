@@ -65,7 +65,9 @@ namespace Exoduser.UnityPort
             readonly Material material;readonly MaterialPropertyBlock block;
             public CardProperties(Material material,bool legacy){this.material=material;block=legacy?null:new MaterialPropertyBlock();}
             public void SetFloat(string key,float value){if(block==null)material.SetFloat(key,value);else block.SetFloat(key,value);}
-            public void SetColor(string key,Color value){if(block==null)material.SetColor(key,value);else block.SetColor(key,value);}
+            // Card _Tint is a plain Color, without HDR/Gamma. MPB.SetColor would
+            // apply an extra sRGB conversion in linear projects; keep Material's raw value.
+            public void SetColor(string key,Color value){if(block==null)material.SetColor(key,value);else block.SetVector(key,(Vector4)value);}
             public void SetVector(string key,Vector4 value){if(block==null)material.SetVector(key,value);else block.SetVector(key,value);}
             public void Apply(Renderer renderer){if(block!=null)renderer.SetPropertyBlock(block);}
         }
@@ -95,9 +97,10 @@ namespace Exoduser.UnityPort
             readonly long started=System.Diagnostics.Stopwatch.GetTimestamp();
             public long Start(){return enabled?System.Diagnostics.Stopwatch.GetTimestamp():0;}
             public void Add(string name,long begin){if(!enabled)return;long old;ticks.TryGetValue(name,out old);ticks[name]=old+System.Diagnostics.Stopwatch.GetTimestamp()-begin;}
-            public void Dump()
+            public void Dump(bool legacy,int meshes,int materials,int owned,bool bakedWater,int dynamicFloors)
             {
                 if(!enabled)return;
+                Debug.Log("[A2 전체필드] 웹카드 자원 경로="+(legacy?"이전":"공유·굽기")+" 공유메시="+meshes+" 공유재질="+materials+" 공유대상생성="+owned+" 동적바닥카드투영="+dynamicFloors+" 구운수면="+bakedWater);
                 double ms=1000.0/System.Diagnostics.Stopwatch.Frequency;
                 foreach(var entry in ticks)Debug.Log("[A2 전체필드] 웹카드 세부 "+entry.Key+" "+(entry.Value*ms).ToString("F3",System.Globalization.CultureInfo.InvariantCulture)+"ms");
                 Debug.Log("[A2 전체필드] 웹카드 세부 GetPixels·알파 CPU 처리 0회 / 런타임 노멀맵 생성 0회 (기존 텍스처 로드)");
@@ -131,7 +134,7 @@ namespace Exoduser.UnityPort
                 t=profile.Start();var ao=FootAO();if(legacy)Destroy(ao.GetComponent<Collider>());ao.name="A2R web foot AO";ao.transform.SetParent(visuals.transform,true);ao.transform.SetPositionAndRotation(new Vector3(item.worldX,item.groundY+.012f,item.worldZ),Quaternion.Euler(90,0,0));float width=Mathf.Clamp(c.width*(c.kind=="m_c1camp"&&A2RD3.On?.62f:.42f),.25f,c.kind=="m_c1camp"&&A2RD3.On?3.4f:2.3f);ao.transform.localScale=new Vector3(width,width*.40f,1);var ar=ao.GetComponent<MeshRenderer>();ar.sharedMaterial=FootMaterial();ar.shadowCastingMode=ShadowCastingMode.Off;profile.Add("접지 AO 생성·재질",t);
                 item.added=true;Result.added++;count.added++;
             }
-            profile.Add("카드 루프 전체(중첩 구간)",loop);t=profile.Start();foreach(var key in new[]{"_ForestMap","_SoilMap","_RootMap"})originalTextures[key]=ground.GetTexture(key);if(!string.IsNullOrEmpty(A2RHumanSave.Root))System.IO.File.WriteAllText(System.IO.Path.Combine(A2RHumanSave.Root,"web-assets-receipt.json"),JsonUtility.ToJson(Result,true));Debug.Log("[A2R] Full C10 cards="+Result.sourceCards+" added="+Result.added+" duplicates="+Result.duplicates+" ground="+Result.groundTiles+" floating="+Result.floating);SetLook(false);profile.Add("영수증·초기 표시",t);profile.Dump();
+            profile.Add("카드 루프 전체(중첩 구간)",loop);t=profile.Start();foreach(var key in new[]{"_ForestMap","_SoilMap","_RootMap"})originalTextures[key]=ground.GetTexture(key);if(!string.IsNullOrEmpty(A2RHumanSave.Root))System.IO.File.WriteAllText(System.IO.Path.Combine(A2RHumanSave.Root,"web-assets-receipt.json"),JsonUtility.ToJson(Result,true));Debug.Log("[A2R] Full C10 cards="+Result.sourceCards+" added="+Result.added+" duplicates="+Result.duplicates+" ground="+Result.groundTiles+" floating="+Result.floating);SetLook(false);profile.Add("영수증·초기 표시",t);profile.Dump(legacy,sharedMeshes.Count,sharedMaterials.Count,ownedResources.Count,!ownsWaterDomain&&waterDomain!=null,floorCards.Count);
         }
         Texture2D waterDomain;
         static bool IsFloor(string kind){return kind=="m_c1groot"||kind=="m_c1gtoxicf"||kind=="m_c1pool"||kind=="pit_poison";}

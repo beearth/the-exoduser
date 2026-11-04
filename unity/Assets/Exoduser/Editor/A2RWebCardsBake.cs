@@ -122,11 +122,21 @@ public sealed class A2RWebCardsBake : IPreprocessBuildWithReport
             var different=JsonUtility.FromJson<A2RWebAssets.Card>(JsonUtility.ToJson(card));different.emission=card.emission+.25f;
             var a=web.CreateR15ReviewCard(card,root.transform,0);var b=web.CreateR15ReviewCard(different,root.transform,0);
             if(a.GetComponent<MeshFilter>().sharedMesh!=b.GetComponent<MeshFilter>().sharedMesh||a.GetComponent<MeshRenderer>().sharedMaterial!=b.GetComponent<MeshRenderer>().sharedMaterial)throw new Exception("동일 카드 메시·재질 공유 실패");
-            var body=a.GetComponent<MeshRenderer>();var faded=b.GetComponent<MeshRenderer>();var block=new MaterialPropertyBlock();body.GetPropertyBlock(block);if(block.GetFloat("_Emission")!=card.emission)throw new Exception("첫 카드 인스턴스 속성 덮임");faded.GetPropertyBlock(block);if(block.GetFloat("_Emission")!=different.emission)throw new Exception("두번째 카드 인스턴스 속성 누락");body.GetPropertyBlock(block);var wind=new Vector4(.3f,1.2f,.06f,0);var tint=new Color(.82f,.76f,.58f,1);block.SetVector("_A2RWind",wind);block.SetColor("_Tint",tint);body.SetPropertyBlock(block);
+            var body=a.GetComponent<MeshRenderer>();var faded=b.GetComponent<MeshRenderer>();var block=new MaterialPropertyBlock();body.GetPropertyBlock(block);if(block.GetFloat("_Emission")!=card.emission)throw new Exception("첫 카드 인스턴스 속성 덮임");faded.GetPropertyBlock(block);if(block.GetFloat("_Emission")!=different.emission)throw new Exception("두번째 카드 인스턴스 속성 누락");
+            var propertiesType=typeof(A2RWebAssets).GetNestedType("CardProperties",BindingFlags.NonPublic);var reference=new Material(body.sharedMaterial);
+            try
+            {
+                foreach(var tint in new[]{new Color(.82f,.76f,.58f,1),new Color(.86f,.88f,.84f,1),new Color(1.04f,.92f,1.08f,1)})
+                {
+                    reference.SetColor("_Tint",tint);var properties=Activator.CreateInstance(propertiesType,new object[]{body.sharedMaterial,false});propertiesType.GetMethod("SetColor").Invoke(properties,new object[]{"_Tint",tint});propertiesType.GetMethod("Apply").Invoke(properties,new object[]{body});body.GetPropertyBlock(block);if(block.GetVector("_Tint")!=reference.GetVector("_Tint"))throw new Exception("기존 재질→MPB 색 공간 값 차이");
+                }
+            }finally{Object.DestroyImmediate(reference);}
+            body.GetPropertyBlock(block);var wind=new Vector4(.3f,1.2f,.06f,0);var storedTint=block.GetVector("_Tint");block.SetVector("_A2RWind",wind);body.SetPropertyBlock(block);
             var occlusion=root.AddComponent<A2ROcclusion>();occlusion.Initialize(root.transform,camera,()=>Vector3.zero);occlusion.Register(body,faded,true,true);occlusion.SetLook(true);occlusion.SetMasksEnabled(false);
-            foreach(var r in new[]{body,faded}){block.Clear();r.GetPropertyBlock(block);if(block.GetVector("_A2RWind")!=wind||block.GetColor("_Tint")!=tint)throw new Exception("가림 처리에서 인스턴스 속성 유실");}
+            foreach(var r in new[]{body,faded}){block.Clear();r.GetPropertyBlock(block);if(block.GetVector("_A2RWind")!=wind||block.GetVector("_Tint")!=storedTint)throw new Exception("가림 처리에서 인스턴스 속성 유실");}
         }
         finally{UnityEditor.SceneManagement.EditorSceneManager.ClosePreviewScene(scene);}
     }
-    public static int Build(){Bake();Verify();return Exoduser.A2RBuilder.Build();}
+    // The build callback above bakes/verifies once, before asset collection.
+    public static int Build(){return Exoduser.A2RBuilder.Build();}
 }

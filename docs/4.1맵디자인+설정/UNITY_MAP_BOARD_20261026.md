@@ -62,3 +62,5 @@
 - --a2r-webcards-profile은 공통 계측 인자다. --a2r-webcards-legacy를 추가하면 같은 빌드 안에서 기존 생성·개별 재질 경로를 실행한다. 세부 로그는 A2RStage의 외부 시간 기준을 재설정하지 않는다. 지면/카드 루프 합계와 하위 측정은 중첩되므로 합산하지 않는다.
 - 검증은 구운 에셋 누락 검사 선행 실패를 확인한 뒤 구현했다. 에디터에서는 모든 카드/변형 메시의 정점·UV·법선·탄젠트·삼각형·경계, 원본 텍스처 참조, 수면262144픽셀, 다른 emission을 가진 카드의 공유, 가림 후 MPB 보존을 검사한다. 고정 빌드 a2r-build-webcards의 동일 실행 파일로 이전/구운 경로를 각각 무창·무음·단독 3840×1080 실행하여 입구/캠프 쌍과 원본 픽셀 차이를 남긴다.
 - 현재 에디터·굽기·빌드·실측·화면 검증 대기. 2차 공용 실행의 첫 대기는 선행 map-scale-c1 단독 Player 때문에 초과했으며 검사 실패가 아니다. CTO 지시대로10분 후 최대6회 재대기한다. 최종 시간·SHA·실행 영수증·미검증 한계는 I:/EXODUSER-Storage/codex-takeover/map-webcards/REPORT.md 맨 위2차에 기록한다. Mac 판정·사용자 실행본·바로가기 변경은 별도다.
+
+- 카드 셰이더의 _Tint는 HDR/Gamma 속성이 없는 일반 Color다. 기존 Material.SetColor 저장값을 MPB.SetVector로 전달해 추가 sRGB 변환을 피한다. 에디터 검증은 원본 Material.SetColor→GetVector와 MPB의 세 가지 실제 틴트 값을 비교한다. 근거: [Material.SetColor](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Material.SetColor.html), [MaterialPropertyBlock.SetColor](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MaterialPropertyBlock.SetColor.html). 숫자·팔레트 변경은 없다.
