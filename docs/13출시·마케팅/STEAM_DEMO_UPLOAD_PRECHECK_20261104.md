@@ -47,12 +47,12 @@ I:\EXODUSER-Storage\unity-jobs\bin\exo-unity.ps1 build -Worktree <소스 작업�
 | 칸 | 값 |
 |---|---|
 | 실행 파일 | `EXODUSER-Unity.exe` |
-| 인수 | `-force-d3d11 --remodel3d --unity-build-flavor demo` |
+| 인수 | `-force-d3d11 --remodel3d` |
 | OS·CPU | Windows, 64비트 |
 
 - **`--remodel3d`는 기본값이 아니다.** `NativeRemodel3D.Requested`는 이 인자가 있을 때만 참이다(Editor QA 예외만 따로 있음). 실행 옵션에서 빠지면 체험판이 2D로 돈다. 기본으로 켜려면 코드를 바꿔야 하고, 그 판단은 Unity 담당 총괄의 몫이다.
-- `--unity-build-flavor demo`는 빌드에 넣은 flavor보다 먼저 적용된다. 빌드에 이미 demo가 들어 있으면 이 인자는 겹칠 뿐이지만, 빠뜨린 빌드를 막아 주므로 둔다.
-- 세이브 이름공간: flavor가 demo면 저장 루트가 `…\LocalLow\ForDearGamers\EXODUSER_ HELL LORD\EXODUSER-HELL-DEMO\`가 되고, full이면 `…\EXODUSER-HELL-FULL\`이 된다. 레벨 상한 100, 끝 화면 "정식판 위시리스트에 추가"(No.4261)도 flavor가 정한다. **셋 다 flavor 병합 뒤에만 맞다.**
+- **11-04 3차 변경:** 배포 빌드(개발 빌드·QA 실행이 아님)는 명령줄 `--unity-build-flavor`를 **무시**하고 내장 `build_flavor.json`만 쓴다. 실행 인수로 체험판을 만들 수 없으므로, 체험판 패키지는 반드시 `PortVerification` `-flavor demo`로 빌드한다. 실행 인수에 넣어도 효과가 없어 뺐다.
+- 세이브 이름공간: flavor가 demo면 저장 루트가 `…\LocalLow\ForDearGamers\EXODUSER_ HELL LORD\EXODUSER-HELL-DEMO\`가 되고, full이면 옛 루트 `…\LocalLow\ForDearGamers\EXODUSER · Unity 이식 검증판\`(하위 이름공간 없음, 11-04 루트 고정)이다. 레벨 상한 100, 끝 화면 "정식판 위시리스트에 추가"(No.4261)도 flavor가 정한다. **셋 다 flavor 병합 뒤에만 맞다.**
 - 실행 옵션 칸의 실제 값은 Steamworks 체험판 설치 화면에서 사용자가 확인한다(클릭 목록 A). 아직 화면으로 읽지 않았다.
 
 ## 3. 막힘 목록 (11-04 갱신)
