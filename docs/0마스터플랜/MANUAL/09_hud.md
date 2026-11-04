@@ -1,6 +1,6 @@
 # MANUAL 09 — 전투 HUD (초안 2026-11-05)
 
-- 상태: 초안 | 연구 반영: d4_02_hud.md(`docs/0마스터플랜/D4_STUDY/02_hud_ui.md`), poe2.md(`GAME_STUDY/poe2.md`, HUD 직접 수치 없음), conventions.md(`ARPG_CONVENTIONS_CHECKLIST_20261105.md`), hud_G0_BRIEF.md·hud_defects.md(HUD G1 레인 U1 산출), d4_03_cam.md(가독성·덕킹 수치), **[2차 11-05]** `codex_menus_loot.md`(§6 공통 관례·§7.3 XAG 101·102 교차 확인, PoE2 0.2.0 HUD 사례), `codex_cinematic_text.md`(§4 글자 크기·대비, §6 데미지 숫자), `TOOLCHAIN_20261105.md` §2-8(HUD/UI 방식), **[3차 11-05]** `hud_defects.md` §6~6.1(Mac 실화면 판정 `c1b51cda5`과 **C안 r2**)·`hud_G0_BRIEF.md` 갱신본·`silver_hell.diff`(실버 헬 §8 충돌 기록 2건), `codex_hud_critique.md`(H3 독립 비평: R1~R10 약점·C 검증 후보), `codex_synthesis.md` §1.8·§2·§3.4(HUD 공통 원칙·상충 판정), `FIRST_SCENE_PLAN.md`(HUD 끄고 캡처 관문) | 연구 반영 대기: Mac 직접 연 레퍼런스 4종 하단 HUD 캡처, **C r2 Unity 캡처(미구현, H4 대기)**, PoE2 HUD 실측(공개 자료 없음, 2차 연구도 글자 높이·대비·전환 ms 전부 미확인), D4 실화면 1920×1080 사람 측정, Mac 직접 연 레퍼런스 4종 하단 HUD 캡처
+- 상태: 초안 | 출처 상태: SOURCE_VERIFY 6c3aac6 기준 | 연구 반영: d4_02_hud.md(`docs/0마스터플랜/D4_STUDY/02_hud_ui.md`), poe2.md(`GAME_STUDY/poe2.md`, HUD 직접 수치 없음), conventions.md(`ARPG_CONVENTIONS_CHECKLIST_20261105.md`), hud_G0_BRIEF.md·hud_defects.md(HUD G1 레인 U1 산출), d4_03_cam.md(가독성·덕킹 수치), **[2차 11-05]** `codex_menus_loot.md`(§6 공통 관례·§7.3 XAG 101·102 교차 확인, PoE2 0.2.0 HUD 사례), `codex_cinematic_text.md`(§4 글자 크기·대비, §6 데미지 숫자), `TOOLCHAIN_20261105.md` §2-8(HUD/UI 방식), **[3차 11-05]** `hud_defects.md` §6~6.1(Mac 실화면 판정 `c1b51cda5`과 **C안 r2**)·`hud_G0_BRIEF.md` 갱신본·`silver_hell.diff`(실버 헬 §8 충돌 기록 2건), `codex_hud_critique.md`(H3 독립 비평: R1~R10 약점·C 검증 후보), `codex_synthesis.md` §1.8·§2·§3.4(HUD 공통 원칙·상충 판정), `FIRST_SCENE_PLAN.md`(HUD 끄고 캡처 관문) | 연구 반영 대기: Mac 직접 연 레퍼런스 4종 하단 HUD 캡처, **C r2 Unity 캡처(미구현, H4 대기)**, PoE2 HUD 실측(공개 자료 없음, 2차 연구도 글자 높이·대비·전환 ms 전부 미확인), D4 실화면 1920×1080 사람 측정, Mac 직접 연 레퍼런스 4종 하단 HUD 캡처
 - 범위: 전투 중 화면에 상시 붙는 HUD 전부. 체력·자원 구체, 스킬바(13칸), 물약, 버프·디버프 줄, 경험치 바, 적 머리 위 체력바, 엘리트 표시, 보스 체력바, 미니맵·목표. 1920×1080과 3840×1080.
 - 이 문서가 정하지 않는 것: 쿨다운·자원 비용·칸 배정·발동(Core 소관, 표현만 정함), 창(인벤토리 등)은 MANUAL 10, 글꼴·번역은 MANUAL 14, 전리품 바닥 라벨은 MANUAL 11, 카메라·가림은 별도 매뉴얼.
 
@@ -235,7 +235,7 @@
 | D09-11 ★신규 | **HUD 구체 크레스트(뿔 해골)를 실버 헬 §4 M4 "특별한 곳만"의 예외로 인정하는가**(실버 헬 §8 [충돌 기록] 2026-11-05) | 예외 인정: 구체 틀에 한해 유지, 은빛 명도, 지름의 약 1/3 이하. 일반 UI·바에는 계속 금지 | 인정 안 함 → 눈 홈 구체(A·B)로 가고 톤은 가고일·재질로 보강 |
 | D09-12 ★신규 | H3의 C(H3) 후보(외곽 132, 레일·받침 없음, 칩 22)를 C r2와 함께 Mac에서 비교 캡처할지 | 비교하지 않음(액체 53% 감소 위험). C r2 구현 뒤 1x 글자·자원 판독이 FAIL일 때만 대안으로 | 둘 다 같은 조건 캡처 비교 |
 | D09-13 ★신규 | 실버 헬 §3 토큰 추가·§4 예외 문구를 문서(`DESIGN_CONCEPT_SILVER_HELL`)에 언제 반영하는가 | D09-2·11 승인 직후 같은 커밋 | 구현 확인 뒤 |
-| D09-10 | 전리품 이름표를 껐을 때 HUD 구석 상태 아이콘(PoE2 0.2.0 사례)을 넣는가 | 넣는다(MANUAL 11 D11-3·D11-4와 함께) | 넣지 않음 |
+| D09-10 | 전리품 이름표를 껐을 때 HUD 구석 상태 아이콘(PoE2 0.2.0 사례)을 넣는가 | 넣는다(MANUAL 11 D11-3·D11-4와 함께) 〔출처 재확인 필요〕 | 넣지 않음 |
 
 ## 9. 출처
 
