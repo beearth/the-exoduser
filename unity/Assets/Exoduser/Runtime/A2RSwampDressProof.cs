@@ -47,7 +47,11 @@ namespace Exoduser.UnityPort
             for (int i = 0; i < 20; i++) { UpdateViews(); yield return null; }
             a2rPlay.start = new Vector2(Simulation.Player.X, Simulation.Player.Y);
             yield return A2RSwampPair("02-field-entry", swamp);
-            yield return A2RNatureSize(1920); yield return A2RPlayShot("S3-entry-1920-swamp");
+            int s3VisibleAt3840 = swamp.VisibleDebris;
+            yield return A2RNatureSize(1920); yield return A2RSwampPair("S3-entry-1920", swamp);
+            int s3VisibleAt1920 = swamp.VisibleDebris;
+            // Steam S3 is the south bridge entrance, at native 1920x1080.
+            yield return A2RSwampMovie();
             yield return A2RNatureSize(3840);
             // Keep the original source walking path; no player-coordinate assignment on this route.
             var goal = new Vector2(2050, 4400); var route = A2RWalkPath(a2rPlay.start, goal);
@@ -76,6 +80,16 @@ namespace Exoduser.UnityPort
             bool ai = Simulation.Config.EnemyAiEnabled; Simulation.Config.EnemyAiEnabled = false;
             for (int i = 0; i < 20; i++) { UpdateViews(); yield return null; }
             yield return A2RSwampPair("fixture-bridge-north", swamp);
+            Simulation.Config.EnemyAiEnabled = ai;
+            int visibleAt3840 = swamp.VisibleDebris;
+            yield return A2RNatureSize(1920); yield return A2RPlayShot("fixture-bridge-north-1920-swamp");
+            File.WriteAllText(Path.Combine(a2rPlayOutput, "swamp-proof.json"), JsonUtility.ToJson(new SwampProofReceipt
+            { initialCommandLineOffVerified = initialOffVerified, shoreSegments = swamp.ShoreSegments, visibleDebrisAt1920 = swamp.VisibleDebris, visibleDebrisAt3840 = visibleAt3840, s3VisibleDebrisAt1920 = s3VisibleAt1920, s3VisibleDebrisAt3840 = s3VisibleAt3840, frames = 300 }, true));
+            swamp.SetApplied(A2RSwampDress.Requested); A2RPlayFinish();
+        }
+
+        IEnumerator A2RSwampMovie()
+        {
             string frames = Path.Combine(a2rPlayOutput, "water-frames"); Directory.CreateDirectory(frames);
             var image = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
             Time.captureFramerate = 30;
@@ -85,12 +99,7 @@ namespace Exoduser.UnityPort
                 image.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0); image.Apply();
                 File.WriteAllBytes(Path.Combine(frames, "f" + i.ToString("000") + ".jpg"), image.EncodeToJPG(95));
             }
-            Time.captureFramerate = 0; Destroy(image); Simulation.Config.EnemyAiEnabled = ai;
-            int visibleAt3840 = swamp.VisibleDebris;
-            yield return A2RNatureSize(1920); yield return A2RPlayShot("fixture-bridge-north-1920-swamp");
-            File.WriteAllText(Path.Combine(a2rPlayOutput, "swamp-proof.json"), JsonUtility.ToJson(new SwampProofReceipt
-            { initialCommandLineOffVerified = initialOffVerified, shoreSegments = swamp.ShoreSegments, visibleDebrisAt1920 = swamp.VisibleDebris, visibleDebrisAt3840 = visibleAt3840, frames = 300 }, true));
-            swamp.SetApplied(A2RSwampDress.Requested); A2RPlayFinish();
+            Time.captureFramerate = 0; Destroy(image);
         }
 
         IEnumerator A2RSwampPair(string id, A2RSwampDress swamp)
@@ -110,7 +119,9 @@ namespace Exoduser.UnityPort
         {
             public bool initialCommandLineOffVerified;
             public int shoreSegments, visibleDebrisAt1920, visibleDebrisAt3840, frames;
-            public int fps = 30, width = 3840, height = 1080;
+            public int s3VisibleDebrisAt1920, s3VisibleDebrisAt3840;
+            public string clipLocation = "S3 south bridge entrance; Core 4020,7420";
+            public int fps = 30, width = 1920, height = 1080;
             public bool visualPass = false, macVerified = false;
             public string scope = "Actual Player frames; Core walking uses the existing smoke invulnerability (Iframes=600); bridge-north is a fixed-pose fixture. Visual and natural-exit judgement remain separate.";
         }
