@@ -4,7 +4,24 @@ class Program {
  static bool Near(float a,float b)=>Math.Abs(a-b)<.0001f;
  static float Width(string s)=>s=="AV"?14:s=="경험치"?39:s=="e\u0301"?7:s=="🚀"?12:10;
  static List<(float x,string text)> Paint(string text,float spacing,out float width){var list=new List<(float,string)>();width=NativeUiTextRun.Layout(text,spacing,Width,(x,s)=>list.Add((x,s)));return list;}
- static int Main(string[] args){float w;var p=Paint("AV",0,out w);Check(Near(w,14),"zero spacing uses shaped width, not glyph sum");Check(p.Count==1&&p[0].text=="AV"&&Near(p[0].x,0),"one shaped draw for zero spacing");
+ static int Main(string[] args){
+ // Pixel-snapped labels must keep their native advance even when CSS rounded
+ // font sizes ask for a smaller one. Already-separated runs remain identical.
+ var method=typeof(NativeUiTextRun).GetMethod("PixelAdvance",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+ Check(method!=null,"pixel-safe advance is available");
+ if(method!=null){
+  float Advance(float native,float desired,float scale)=>(float)method.Invoke(null,new object[]{native,desired,scale});
+  foreach(float scale in new[]{1f,2560f/1920f,2f,900f/1080f,1600f/1080f}){
+   foreach(float native in new[]{11.16046f,8.125f,7.8479f,34.54f}){
+    float desired=native*.96f+.3f,actual=Advance(native,desired,scale);
+    Check(actual>=desired,"tracking never squeezes a glyph "+scale+"/"+native);
+    for(int phase=0;phase<20;phase++)Check(Math.Round(phase*.05f+actual*scale)-Math.Round(phase*.05f)+.001f>=native*scale,"independently rounded labels do not overlap "+scale+"/"+native+"/"+phase);
+   }
+   Check(Near(Advance(8,12,scale),12),"already separated ko/en run keeps its original advance "+scale);
+   Check(Advance(34.54f,34.54f,scale)>=34.54f,"mixed font boundary preserves full run "+scale);
+  }
+ }
+ float w;var p=Paint("AV",0,out w);Check(Near(w,14),"zero spacing uses shaped width, not glyph sum");Check(p.Count==1&&p[0].text=="AV"&&Near(p[0].x,0),"one shaped draw for zero spacing");
  p=Paint("경험치",0,out w);Check(p.Count==1&&p[0].text=="경험치"&&Near(w,39),"HUD label retains the complete Korean string");
  p=Paint("AV",2,out w);Check(p.Count==2&&Near(p[1].x,12)&&Near(w,24),"existing positive CSS spacing and trailing advance retained");
  p=Paint("e\u0301X",.5f,out w);Check(p.Count==2&&p[0].text=="e\u0301"&&Near(p[1].x,7.5f)&&Near(w,18),"combining accent stays with its base");

@@ -510,3 +510,8 @@ PC 컴파일 결과: 추가 공통b04ddd73b를fe236a8bc로 정상 병합한 뒤 
 - 출처: NativeInventoryWebLayout.cs:104(Txt)와 NativeInventoryOssuary.cs:59(Serif)가 "가방 ("·숫자·"/"·"300"·")"를 맞대어 그림. 0 끝 606.63+8.5=615.13, "/" 시작 615.1(SerifWidth). 측정 방식 차이로 0.03px 겹침.
 - 수정: 조각 사이 1px(NativeInventory.CountRunGap), Serif 묶음 칸=실제 advance, 개수 줄 Txt·Serif 칸=실제 폭. 인벤토리(Dock)·봉안함·보관함 3곳.
 - 검증: inventory-count-runs 5/0, 참조 컴파일 오류 0. 후보 빌드 겹침 검사와 1x 전후 비교는 다음 단계.
+
+
+## 2026-11-04 스킬·키바인딩 래칫 줄이기 2
+
+8ad7fa322 기준 스킬48·키바인딩38의 독립 Label 반올림 교차를 픽셀 진행 폭으로 보정했다. 알려진 목록은707→621건(381→312키), 봉안함은 착수 시 이미0건이었다. 기존 충분한 진행·무자간 단일 서체·양수 자간 스킬 행/원화/폰트/크기/입력 유지, 제외3파일 변경0. CPU498/0·PC DLL참조5어셈블리 오류0이며 실제 화면 감소량/디자인 PASS는 아직 미확인. [원인·출처별 수치·오탐 목록·Mac 관문](../3.1%20ui%20hud%20디자인/UNITY_UI_OVERLAP_BURN2_20261104.md).

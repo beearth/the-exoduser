@@ -1,3 +1,5 @@
+2026-11-04 UI 겹침 래칫 줄이기2(codex/unity-ui-overlap-burn2-20261104, 기준8ad7fa322): 스킬 혼합 글꼴 경계48건·키바인딩 안내 글자38건의 독립 Label 반올림 교차를 화면 배율별 최소 진행 폭으로 수정. 폰트/크기/색/문구/입력·분석기 임계 유지. 알려진 목록707→621건(381→312키), 봉안함은 착수0건, 확정오탐0. 텍스트런498/0·PC DLL참조5어셈블리 오류0. 새 Player 실측 감소/ko-en 1x/디자인총괄 PASS·Mac 판정·CTO 병합 대기. docs/3.1 ui hud 디자인/UNITY_UI_OVERLAP_BURN2_20261104.md.
+
 2026-11-04 캐릭터 선택 직업 이름 칸 맞춤(UI 겹침 래칫 새 퇴보 10건, 유니티 총괄): 첫인상 변경으로 라틴 이름이 Cinzel이 되면서 fr "Guerrier…"가 오른쪽 패널을 2px 넘침(캐릭터선택0·2 × 해상도 5종). 이름이 308px 칸보다 넓을 때만 정수 pt로 줄임(하한 18, 자간 비례, 말줄임 없음), 맞는 이름은 28pt 그대로. classname-fit 4/0, 참조 컴파일 오류 0(claude/unity-pc-classname-fit-20261104).
 
 2026-11-04 14:50 PC Player 종료 정지 진단 준비(CTO 근본 원인 배정): 실행기 2026.11.04-stalldiag가 시간 초과 kill 때 스레드 대기 사유·GameInput 서비스 상태·로그 마지막 줄·kill 성공 여부를 영수증 stall에 남긴다(시험 stall-diag-test 7건). PortVerification.Build -gamepadBackend xinput은 그 빌드에서만 windowsGamepadBackendHint=XInput(WGI 회피 A/B, ProjectSettings 무변경). Roslyn Player/Editor 오류 0. 근거=창 모드 WGI 초기화 실행 정지 29/593, -batchmode 0/61(10-29~11-04).
