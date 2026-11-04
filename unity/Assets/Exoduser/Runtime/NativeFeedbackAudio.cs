@@ -102,7 +102,7 @@ namespace Exoduser.UnityPort
                 case FeedbackKind.BossHit:Receipt.requested++;Queue(BossHitRequest(e));break;   // _BOSS_SFX[0].hit pitch .7
                 case FeedbackKind.EnemyCrit:Receipt.requested++;if(e.IsBoss&&HasClip("druid_hit_heavy"))HeavyHit(e);else Queue(Make("crit_heavy",e.Volume,Jitter(1,.05f),World(e),e));break;
                 case FeedbackKind.EnemyDeath:HandleDeath(e);break;
-                case FeedbackKind.BossDeath:Receipt.requested++;direct.Add(HasClip("druid_vo_last")?Make("druid_vo_last",.75f,Jitter(1,.03f),World(e),e):Make("death_boss",.75f,Jitter(.7f,.15f),World(e),e));break;   // _BOSS_SFX[0].die
+                case FeedbackKind.BossDeath:Receipt.requested++;direct.Add(HasClip("druid_vo_last")?Make("druid_vo_last",.75f,Jitter(1,.03f),World(e),e):Make("death_boss",.75f,Jitter(.7f,.15f),World(e),e));PlayWire(NativeSoundWire.DruidBossKill,e.X,e.Y,e.Tick,"Core BossDeath (last life)");break;   // _BOSS_SFX[0].die; R8 druid_boss_kill layers on the same moment
                 case FeedbackKind.Parry:   // game.html doParry (38667): Q parry -> q_parry .9 (1+-.08); otherwise sword_parry 1 (1+-.1) + one sword_back* .5 (1.1+-.1); then 50 % voice_parry1-4 (1+-.03) else male_grunt (1+-.15)
                     Receipt.requested++;
                     if(e.Step==1)direct.Add(Make("q_parry",.9f,Jitter(1,.08f),World(e),e));
@@ -252,12 +252,12 @@ namespace Exoduser.UnityPort
         // a logical sound key from the boss / enemy logic: tell_* (120 ms per key, at most 2 at once, off-screen skipped) and druid_* (mapped to a file or logged as "no file")
         void HandleLogical(FeedbackEvent e)
         {
-            string[] files;if(!LogicalFiles.TryGetValue(e.SampleKey,out files))files=new[]{e.SampleKey};
-            float volume;if(e.Volume>0)volume=e.Volume;else if(!StartVolume.TryGetValue(e.SampleKey,out volume))volume=.5f;
-            string adopted=AdoptedSource(e.SampleKey);string note=files.Length==0?"no file yet (3rd-round pending, left empty)":(files[0]!=e.SampleKey?"temporary file "+string.Join("+",files):"file ok"+(adopted!=null?" (adopted "+adopted+")":""));
+            string[] files=NativeSoundWire.ResolveFiles(e.SampleKey,HasClip,LogicalFiles,NativeSoundWire.Fallbacks);   // R8/R9: RM1/<key>.mp3 first, then the temporary file, then log only
+            float volume;if(e.Volume>0)volume=e.Volume;else if(!StartVolume.TryGetValue(e.SampleKey,out volume)&&!NativeSoundWire.StartVolume.TryGetValue(e.SampleKey,out volume))volume=.5f;
+            string adopted=AdoptedSource(e.SampleKey);string note=files.Length==0?NativeSoundWire.NoFileNote(e.SampleKey):(files[0]!=e.SampleKey?"temporary file "+string.Join("+",files):"file ok"+(adopted!=null?" (adopted "+adopted+")":""));
             WhipOnSwing(e);SporeOnFan(e);SlamOnLanding(e);
             if(DruidExtras(e))return;   // the Core erupt event is replaced by the warn / blast / spikes set (no double sound)
-            var pos=World(e);bool tell=e.SampleKey.StartsWith("tell_",StringComparison.Ordinal);bool druid=e.SampleKey.StartsWith("druid_",StringComparison.Ordinal);
+            var pos=World(e);bool tell=e.SampleKey.StartsWith("tell_",StringComparison.Ordinal);bool druid=e.SampleKey.StartsWith("druid_",StringComparison.Ordinal)||e.SampleKey.StartsWith("exit_",StringComparison.Ordinal);   // exit_* ride the Skill group like the druid skill sounds
             if(tell){
                 int last;if(lastTellTick.TryGetValue(e.SampleKey,out last)&&e.Tick-last<8){Receipt.dropped++;Lines.Add(Line(e.Tick,e.SampleKey,e.Source,"Tell",volume,"DROPPED same key within 120 ms"));return;}
                 if(OnScreen!=null&&!OnScreen(pos)){Receipt.dropped++;Lines.Add(Line(e.Tick,e.SampleKey,e.Source,"Tell",volume,"DROPPED off-screen"));return;}
@@ -294,7 +294,11 @@ namespace Exoduser.UnityPort
         // host-driven one-shot (boss howl at the arena intro, tell keys, A8 bubbles): same routing as a Core event
         public const string SinkCoreSource="third fall: sink escape",SinkViewSource="view: sink hole opens (body sink 55 %)";
         // 1-1 druid sink: called by the sink drawing (NativeGame.BossSinkDraw) when the hole shows; same routing and Receipt line as a Core sample event
-        public void PlaySinkHole(float x,float y,int tick){Handle(new FeedbackEvent{Kind=FeedbackKind.Sample,Tick=tick,X=x,Y=y,SampleKey="druid_sink",Source=SinkViewSource,Rate=1,QueuedRate=1});}
+        public void PlaySinkHole(float x,float y,int tick){Handle(new FeedbackEvent{Kind=FeedbackKind.Sample,Tick=tick,X=x,Y=y,SampleKey=NativeSoundWire.DruidDeathSink,Source=SinkViewSource,Rate=1,QueuedRate=1});}   // R9: RM1/druid_death_sink.mp3 if present, else the druid_sink file (NativeSoundWire.Fallbacks)
+        // R8/R9 wiring: a host / stage / boss-state trigger asks for one logical sound at a Core tick (same routing and Receipt line as a Core sample event)
+        public void PlayWire(string key,float x,float y,int tick,string source){Handle(new FeedbackEvent{Kind=FeedbackKind.Sample,Tick=tick,X=x,Y=y,SampleKey=key,Source=source,Rate=1,QueuedRate=1});}
+        // a Receipt line written by a looping source outside this class (forest bed, tree breath, heap)
+        public void AddLine(int tick,string key,string source,string group,float volume,string file){Lines.Add(Line(tick,key,source,group,volume,file));}
         // UI 탭은 전투 Tick이 멈춘 패널에서도 즉시 1회. SFX/UI와 기존 사용자 음량을 따른다.
         [Serializable] public sealed class UiAudioEvent {public string key,group;public int frame;public double time,dspTime;public float gain,sourceVolume,pitch;}
         public readonly List<UiAudioEvent> UiEvents=new List<UiAudioEvent>();

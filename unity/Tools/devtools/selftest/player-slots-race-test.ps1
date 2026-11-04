@@ -10,7 +10,7 @@ param($source,$rootDir,$identity)
 $ErrorActionPreference='Stop'
 $t=$null;$e=$null;$ast=[Management.Automation.Language.Parser]::ParseFile($source,[ref]$t,[ref]$e)
 foreach($f in $ast.FindAll({param($n)$n -is [Management.Automation.Language.FunctionDefinitionAst]},$true)){. ([scriptblock]::Create($f.Extent.Text))}
-$Root=$rootDir;$LockPath=Join-Path $Root '_pc_lock.json';$QueueRoot=Join-Path $Root 'queue'
+$Root=$rootDir;$LockPath=Join-Path $Root '_pc_lock.json';$QueueRoot=Join-Path $Root 'queue';$HaltPath=Join-Path $Root 'HALT';$ExclusivePath=Join-Path $Root '_player_exclusive.json'
 $Utf8NoBom=New-Object Text.UTF8Encoding($false);$MaxPlayerSlots=2;$ExoUnityVersion='2026.11.03-slots1'
 $Owner=$identity;$WaitMin=-1;$PollSec=0
 function Get-CommitFreeGB {return 30}
