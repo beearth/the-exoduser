@@ -1,3 +1,5 @@
+> 2026-11-03 21:10 후속 소스 수정: U-D3 제품명·빌드 초기화 정식명, U-D4 flavor 저장 분리(11-04 제작법 변경: 복사·가져오기 폐기, 정식판은 옛 루트 고정), U-D1 29언어 표/locale API, U-D5 본편 상점 버튼을 구현했다. PC 계약6/6·격리 동작72/72, Mac 검수 대기. ar은 기존 IMGUI 영문 폴백 유지. U-D2 보류. [구현·보존 계약·검수 인자](../engine/UNITY_DEMO_FLAVOR_20261103.md). 아래 26404441은 수정 이전 업로드 이력이며 새 업로드·공개는 하지 않았다.
+
 # Steam 체험판 앱(5337590) Unity 전환 — 2026-11-03
 
 ## 2026-11-04 소스 대조 — Unity 버전
@@ -26,7 +28,7 @@ Steamworks의 공개(Set Live)·게시·상점 문구 게시는 사용자가 누
 | 기준 | 바탕화면 실행본 `I:\EXODUSER-Storage\unity-latest\build` = unity/main **9f0d00cf8**(11-03 19:59, M1 23/23, 홀드 스킵 3초·지옥문 목표). BuildLoop가 b04ddd73b 이상을 내면 다음 업로드는 그것 |
 | 고정 content | `G:\exoduser-steam\content\demo-unity\` (robocopy /MIR /XJ, BackUpThisFolder·pdb 제외, 212파일 6.16GB). 커밋 표식 `content\demo-unity.build-commit.json` |
 | VDF | `G:\exoduser-steam\scripts\app_build_5337590_unity.vdf`(setlive "", desc에 SHA) + `depot_build_5337591_unity.vdf`(pdb·BackUpThisFolder·log·bak 제외) |
-| 실행 옵션(예정) | `EXODUSER-Unity.exe` / `-force-d3d11 --remodel3d --unity-build-flavor demo` |
+| 실행 옵션(예정) | `EXODUSER-Unity.exe` / `-force-d3d11 --remodel3d` (flavor는 인수가 아니라 빌드에 내장: `-flavor demo`로 만든 패키지) |
 | 업로드 결과 | 3절 |
 
 ## 3. 업로드 결과
@@ -40,7 +42,7 @@ Steamworks의 공개(Set Live)·게시·상점 문구 게시는 사용자가 누
 
 ## 4. Unity 빌드 flavor 점검 — 체험판에 맞는가
 
-`BuildFlavor.cs`: 명령줄 `--unity-build-flavor demo` > 내장 `Data/build_flavor.json`(`full`로 커밋) > full. 체험판은 **실행 인수로 demo를 준다**(빌드 재생성 없이).
+`BuildFlavor.cs`: 내장 `Data/build_flavor.json`(`full`로 커밋) > full. 명령줄 `--unity-build-flavor`는 개발 빌드와 QA 실행에서만 읽고(QA sandbox 강제), 배포 빌드는 무시한다(11-04). 체험판 패키지는 **`-flavor demo`로 빌드해 demo를 내장**한다. 실행 인수로 정식판 저장을 열 수 없다.
 
 | 항목 | demo flavor 동작 (9f0d00cf8) | 판정 / unity/main에서 고칠 것 |
 |---|---|---|
@@ -91,36 +93,41 @@ Steamworks의 공개(Set Live)·게시·상점 문구 게시는 사용자가 누
 A. 비공개 시험 (지금)
 1. SteamPipe → 빌드 → "새로운 앱 브랜치 생성" → 이름 `unity-test`, 비밀번호 설정
 2. 빌드 목록에서 3절 BuildID 줄 → 오른쪽 선택 상자 `unity-test` → "변경 사항 미리 보기" → 적용
-3. 설치 → 일반 → "새로운 실행 옵션 추가" → 수정: 실행 파일 `EXODUSER-Unity.exe` / 인수 `-force-d3d11 --remodel3d --unity-build-flavor demo` / 시작 유형 실행(기본 설정) / Windows / 64비트 전용 / 베타 브랜치 `unity-test` / 설명(영어) `Play Unity Demo` → 갱신
+3. 설치 → 일반 → "새로운 실행 옵션 추가" → 수정: 실행 파일 `EXODUSER-Unity.exe` / 인수 `-force-d3d11 --remodel3d` / 시작 유형 실행(기본 설정) / Windows / 64비트 전용 / 베타 브랜치 `unity-test` / 설명(영어) `Play Unity Demo` → 갱신
 4. 게시 → "변경 사항 보기"로 기존 미게시 변경을 먼저 확인 → 게시 준비 → Steam에 게시
 5. Steam 클라이언트에서 체험판 속성 → 베타 → 비밀번호 입력 → `unity-test` 받기 → 실행 확인(DEMO 표기·1-1 종료 화면)
 
 B. 공개 전환 (U-D1·U-D3 수정 빌드로, 사용자 확인 뒤)
 1. 수정 빌드 업로드 → `unity-test`에서 확인
 2. 빌드 → 그 BuildID를 `default`로 공개
-3. 설치 → 일반 → 실행 옵션 0을 `EXODUSER-Unity.exe` / `-force-d3d11 --remodel3d --unity-build-flavor demo`로 수정, 옵션 1 삭제 → 게시
+3. 설치 → 일반 → 실행 옵션 0을 `EXODUSER-Unity.exe` / `-force-d3d11 --remodel3d`로 수정(flavor는 demo 내장 빌드가 정한다), 옵션 1 삭제 → 게시
 4. 빌드 검토가 필요하면 Notes(영문)와 함께 검토 요청 → 승인 뒤 공개
 5. 5절 상점 교체분 게시
 
-## 7. flavor 수정 `20f276b5c` 저장 이전 경로 코드 확인 (11-04 새벽, 스팀 총괄)
+## 7. flavor 저장 경로 (11-04 제작법 변경으로 다시 씀)
 
-대상: `origin/codex/unity-demo-flavor-20261103`의 `NativeFlavorSavePaths.cs`·`NativeFlavorStorage.cs`와 호출부(`NativeLobby.CharacterStore.cs`, `NativeGame.SettingsPersistence.cs`, 전투 저장은 로스터 부모 폴더를 따라감), 테스트 `unity/Tools/demo-flavor-tests/Program.cs`. 코드를 읽어서만 확인했다. PC에서 Unity를 실행하지 않았고 사용자 저장을 건드리지 않았다(폴더 이름만 조회).
+이전 판의 7절(`20f276b5c` 저장 이전 경로 확인, F-1 staging 결함)은 가져오기 방식이 2연속 FAIL이라 **폐기(11-04)** 했다. 현행: 정식판은 옛 루트에 고정하고 체험판은 새 루트 이름공간에서 처음부터 시작한다. 가져오기·복사는 없다.
 
-| 질문 | 결과 | 근거 |
-|---|---|---|
-| 기존 저장을 덮어쓰는가 | **아니오** | 목적 폴더(`<persistentDataPath>/<namespace>`)가 이미 있으면 가져오기를 하지 않고 그대로 쓴다. 새 파일은 `FileMode.CreateNew`로 고정 staging(`<namespace>.legacy-import`)에만 쓰고, 끝나면 `Directory.Move`로 목적 폴더를 만든다 |
-| 기존 저장을 지우거나 옮기는가 | **아니오** | 원본은 `FileAccess.Read`로만 열고 Delete·Move 호출이 없다. `.json`·`.bak`만 복사하고 Player.log는 가져오지 않는다. 테스트가 원본 바이트 불변을 확인한다 |
-| 실패하면 원래 경로로 돌아가는가 | **아니오. 원래 경로로 돌아가지 않고 저장을 막는다(fail-closed)** | `TryResolve` 실패 → 캐릭터 로스터는 `IoError`(로비 저장 오류 표시, 쓰기 금지), 설정은 기본값으로 실행하고 저장하지 않는다. 원본은 그대로 남는다. 옛 경로에 계속 쓰면 체험판·본편 저장이 다시 섞이므로 이 방식이 더 안전하다 |
-| 체험판이 본편 저장을 가져가는가 | **아니오** | 이름공간 없는 옛 저장은 full만 가져간다. demo는 옛 루트의 `EXODUSER-HELL-DEMO` 폴더만 가져간다. 웹 데모(25550483) 저장은 NW.js 쪽이라 관계없다 |
-| Windows에서 제품명 `:` 처리 | **문제 없음** | 11-03 20:55 PC Editor 컴파일이 `%USERPROFILE%\AppData\LocalLow\ForDearGamers\EXODUSER_ HELL LORD\`를 만들었다. Unity가 `:`를 `_`로 바꾼다. 옛 루트는 실제 경로의 부모 폴더 기준이라 `EXODUSER · Unity 이식 검증판`을 정확히 찾는다. 이 PC에는 옛 루트에 실제 저장(roster·combat·settings, 10-27~28)이 있어, 새 full 빌드를 처음 실행할 때 가져오기가 1회 일어난다 |
+| 플랫폼 | full(정식판) | demo·BIC·EA | QA sandbox(`--unity-qa-sandbox`) |
+|---|---|---|---|
+| Windows Player | `%USERPROFILE%/AppData/LocalLow/ForDearGamers/EXODUSER · Unity 이식 검증판/` (persistentDataPath의 부모 + 옛 제품명 폴더) | `<persistentDataPath>/<이름공간>/` = `.../LocalLow/ForDearGamers/EXODUSER_ HELL LORD/EXODUSER-HELL-DEMO`·`-BIC`·`-EA` | `<sandbox>/<이름공간>/` (full도 `EXODUSER-HELL-FULL`) |
+| Mac Player | `~/Library/Application Support/com.ForDearGamers.EXODUSER----Unity-----------------/` (번들 ID 폴더, 코드 `BundleIdentifier`가 계산) | `<persistentDataPath>/<이름공간>/` | `<sandbox>/<이름공간>/` |
+| 그 밖(Editor 등) | `Application.persistentDataPath` 그대로 (QA·개발용) | `<persistentDataPath>/<이름공간>/` | `<sandbox>/<이름공간>/` |
 
-**결함 F-1 (병합 전 수정 권장)**: 가져오기가 도중에 실패하면 staging 폴더 `<namespace>.legacy-import`가 남는다. 실패 원인은 원본 파일 잠김, 디스크 부족, 실행 중 강제 종료 등이다. 그 뒤로는 실행할 때마다 첫 검사("Unfinished or conflicting save import")에서 실패해 **저장이 영구히 막힌다**. 플레이어가 그 폴더를 손으로 지우기 전까지 풀리지 않는다. 테스트 "active legacy writer blocks import"도 staging을 남기지만, 잠금이 풀린 뒤 다시 시도하는 경우는 검사하지 않는다.
-- 수정안: staging에는 복사본만 있으므로, 이번 시도가 만든 staging은 `catch`에서 지우고 false를 반환한다. 다음 실행 때 목적 폴더가 없는데 staging이 남아 있으면 그 staging을 지우고 한 번 다시 가져온다. 원본은 계속 건드리지 않는다.
-- 테스트 추가: 잠금 → 실패 → 잠금 해제 → 두 번째 `TryPrepare` 성공과 바이트 동일.
+폴더 안 구조는 옛 빌드와 같다: `character-roster-v1`·`combat-save-v1`·`native-settings-v1`이 루트 바로 아래에 있고 이름공간 하위 폴더를 만들지 않는다. 그래서 **옛 이름 빌드와 정식판이 같은 폴더를 공유한다**(같은 파일을 읽고 쓴다). 루트는 플랫폼과 flavor로만 고른다(폴더가 있는지 찾아보지 않는다). demo·BIC·EA는 옛 루트를 보지 않고 새 제품명 루트의 자기 이름공간에서 처음부터 시작하며, QA sandbox는 실제 루트를 절대 보지 않는다. 스키마·revision·코덱은 바뀌지 않았다.
 
-**남은 확인 F-2**: 체험판 depot은 Windows 전용이다. Mac 판정으로는 Windows의 실제 첫 실행(옛 저장 가져오기와 창 제목)을 볼 수 없다. 가져오기 로직의 Windows 경로는 PC .NET 격리 테스트 58/58로만 확인됐다. 6절 A의 `unity-test`에서 사용자가 처음 실행할 때 창 제목 `EXODUSER: HELL LORD`와 저장 동작을 같이 확인한다.
+| 질문 | 결과 |
+|---|---|
+| 기존 저장을 덮어쓰거나 지우거나 옮기는가 | **아니오.** 정식판은 옛 이름 빌드와 같은 폴더를 쓸 뿐, 복사·삭제·이동 코드가 없다. 쓰기는 기존 저장소의 정상 저장뿐이다 |
+| 체험판이 본편 저장을 가져가는가 | **아니오.** demo는 새 제품명 루트의 `EXODUSER-HELL-DEMO`에서 처음부터 시작하고 옛 루트를 보지 않는다. 웹 데모(25550483) 저장은 NW.js 쪽이라 관계없다 |
+| 롤백(옛 이름 빌드로 되돌아가기) | 같은 폴더를 쓰므로 분기·재가져오기가 없다 |
+| Windows 제품명 `:` | Unity가 `_`로 바꾼다(`LocalLow/ForDearGamers/EXODUSER_ HELL LORD/`). 정식판 저장 루트는 이 경로의 부모 + 옛 제품명 폴더다 |
 
-판정: 덮어쓰기·삭제 위험은 없다(데이터 안전 측면은 병합 가능). 다만 F-1 때문에 일시적 실패가 영구 저장 불가로 바뀌므로, 공개 체험판에 넣기 전에 F-1을 고치는 것을 권장한다.
+**결정 근거(11-04):** "옛 폴더 → 새 폴더 복사 + 지문 재가져오기" 방식은 검증에서 2연속 FAIL이었다(롤백·부분 실패·후보 경로 여러 개·동시 실행마다 새 예외가 나왔다). CLAUDE §4.1(같은 방법 2연속 FAIL이면 방법을 바꾼다)에 따라 정식판 저장 루트를 제품명과 분리해 옛 루트에 고정하고 복사·가져오기를 없앴다. 이제 롤백·분기·재가져오기 문제가 생길 수 없다. 폴더 이름이 "이식 검증판"인 것은 사용자에게 보이지 않는 경로라 감수한다. 출시 전에 이름을 정리해야 하면 그때 이전 도구를 따로 만든다(데모 v0 범위 밖).
+
+**#11 알려진 변화(정보):** Screenmanager 레지스트리(`HKCU\Software\ForDearGamers\<제품명>`, 창 위치·모니터 선택)는 제품명 `EXODUSER: HELL LORD`를 따르므로 이름이 바뀐 뒤 한 번 초기화된다(저장과 무관). Player.log는 저장 루트가 아니라 persistentDataPath(새 제품명)에 있다: Windows `%USERPROFILE%/AppData/LocalLow/ForDearGamers/EXODUSER_ HELL LORD/Player.log`(Unity가 `:`를 `_`로 바꾼다), 옛 이름 빌드의 로그는 옛 폴더에 남아 있다. combat-stats는 이름공간 밖에서 `NativeQaSandbox.Resolve(persistentDataPath)/combat-stats`(또는 `-output`)에 쓴다.
+
+남은 확인: 체험판 depot은 Windows 전용이라 Mac으로는 Windows 첫 실행을 볼 수 없다. 6절 A의 `unity-test`에서 사용자가 처음 실행할 때 창 제목 `EXODUSER: HELL LORD`와 저장 동작을 같이 확인한다. 루트 계산은 PC .NET 격리 테스트(72/72)로만 확인했다.
 
 ## 8. 아침 사용자 클릭 목록 (11-04 새벽 Steamworks 화면 읽기 기준)
 
@@ -136,7 +143,7 @@ B. 공개 전환 (U-D1·U-D3 수정 빌드로, 사용자 확인 뒤)
 3. **게시 준비** → **Steam에 게시**.
 
 체험판 5337590 (6절 A, 비공개 시험):
-4. 지금 있는 26404441(수정 전 9f0d00cf8)로 A의 1~5를 진행해 Steam 설치·실행 경로를 먼저 확인한다. flavor 수정 빌드는 F-1 수정과 Mac 판정을 통과한 뒤 같은 `unity-test` 브랜치에 다시 올린다. 그 업로드는 비공개이며 스팀 총괄이 한다.
+4. 지금 있는 26404441(수정 전 9f0d00cf8)로 A의 1~5를 진행해 Steam 설치·실행 경로를 먼저 확인한다. flavor 수정 빌드는 루트 고정판(복사·가져오기 없음, 11-04)이 Mac 판정을 통과한 뒤 같은 `unity-test` 브랜치에 다시 올린다. 그 패키지는 `-flavor demo`로 만들고 실행 옵션에 flavor 인수를 쓰지 않는다. 그 업로드는 비공개이며 스팀 총괄이 한다.
 
 공개 전환(6절 B)과 상점 교체(5.2절)는 U-D3를 고친 빌드가 `unity-test`에서 확인된 뒤, 사용자 확인을 받고 같은 날 진행한다.
 
@@ -181,7 +188,7 @@ B. 공개 전환 (U-D1·U-D3 수정 빌드로, 사용자 확인 뒤)
 > The demo lets you play through 1-1, the first region of hell, from start to finish. Begin as a level 1 Warrior, get hands-on with the greatsword, starting skills, bullet parrying, Chain Drive and loot, then face the region's first boss, the Dark Druid. The demo level cap is 100, and demo progress is saved separately from the full game. Skill fusion, more heroes, and the deeper layers of hell and their bosses await in the full game.
 
 전제와 확인할 것:
-- "체험판 진행은 정식판과 따로 저장"은 flavor 수정(U-D4, `20f276b5c`, F-1 수정 대기)이 체험판 빌드에 들어간 뒤에만 맞는 문장이다. 그 전에 게시하면 이 문장을 뺀다.
+- "체험판 진행은 정식판과 따로 저장"은 flavor 수정(U-D4, 11-04 제작법 변경판)이 체험판 빌드에 들어간 뒤에만 맞는 문장이다. 그 전에 게시하면 이 문장을 뺀다.
 - 보스 영문명 `Dark Druid`는 웹 `game.html` 번역표(`'다크드루이드':'Dark Druid'`)를 따랐다.
 - "Chain Drive"는 영어 상점의 기존 기능명을 그대로 썼다. 한국어는 상점 본문 용어 "사슬 기동"을 썼다.
 
@@ -207,7 +214,7 @@ B. 공개 전환 (U-D1·U-D3 수정 빌드로, 사용자 확인 뒤)
 ### 10.1 게시 시점
 
 - 체험판 앱 5337590이 공개된 뒤, 같은 날 붙인다. 공개 전에 붙이면 본편 상점에 "체험판"이 나오지만 받을 버튼이 없다.
-- "체험판 진행은 정식판과 따로 저장" 문장은 저장 분리 수정(U-D4)이 든 체험판 빌드가 공개될 때만 맞다. 지금 계획된 공개 빌드(F-1·U-D1/3/4/5 수정 SHA)에 들어 있으므로, 문장은 그대로 둔다.
+- "체험판 진행은 정식판과 따로 저장" 문장은 저장 분리 수정(U-D4)이 든 체험판 빌드가 공개될 때만 맞다. 지금 계획된 공개 빌드(루트 고정판·U-D1/3/4/5 수정 SHA)에 들어 있으므로, 문장은 그대로 둔다.
 - 본편 상점에는 **게시되지 않은 변경**이 이미 있다(한국어·영어 상세 설명 새 초안). Publish 탭에서 게시하면 그 초안도 함께 공개된다(10.3 C1).
 
 ### 10.2 붙여 넣는 위치 (사용자 클릭 순서)

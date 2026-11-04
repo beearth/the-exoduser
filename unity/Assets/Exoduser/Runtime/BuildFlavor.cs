@@ -5,6 +5,8 @@ namespace Exoduser.UnityPort {
  // Build kind (web `EXODUSER_BUILD_TARGET` full|demo + the ea label of index.html `_LOBBY_BUILD`, plus the `?bic` booth flag): one definition read by every display that differs
  // between builds. Definitions come from Data/buildflavor_web.json (web lines recorded there). Resolution order: command line `--unity-build-flavor <full|demo|bic|ea>`
  // > embedded Data/build_flavor.json "selected" (written by the build script patch, committed as "full") > full.
+ // The command line is honoured only in development builds and QA/automated runs (QaRunPolicy); a shipped build always uses its embedded flavor,
+ // and a run that honoured the command line is forced through the QA sandbox (NativeQaSandbox), so it never touches a real save folder.
  // Restrictions that Unity has no system for yet (level cap, demo affix ban, demo fuse allow-list) are exposed as definitions only and listed in NotPorted.
  public sealed class BuildFlavor {
   public enum Kind {Full,Demo,Bic,Ea}
@@ -39,9 +41,13 @@ namespace Exoduser.UnityPort {
   }
   static Def DefOf(Kind k){switch(k){case Kind.Demo:return defs.flavors.demo;case Kind.Bic:return defs.flavors.bic;case Kind.Ea:return defs.flavors.ea;default:return defs.flavors.full;}}
   // The flavor name that will be used and where it came from ("command line", "embedded build_flavor.json", "default").
-  public static string ResolveName(out string source){
-   var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,Argument);
-   if(i>=0&&i+1<a.Length){source="command line";return a[i+1];}
+  public static bool CommandLineHonored(string[] args,bool debugBuild,bool batchMode){return args!=null&&Array.IndexOf(args,Argument)>=0&&(debugBuild||Core.QaRunPolicy.IsAutomated(args,batchMode));}
+  // True when this run takes its flavor from the command line (NativeQaSandbox then isolates every save path).
+  public static bool UsesCommandLine{get{return CommandLineHonored(Environment.GetCommandLineArgs(),Debug.isDebugBuild,Application.isBatchMode);}}
+  public static string ResolveName(out string source){return ResolveName(Environment.GetCommandLineArgs(),Debug.isDebugBuild,Application.isBatchMode,out source);}
+  public static string ResolveName(string[] a,bool debugBuild,bool batchMode,out string source){
+   int i=Array.IndexOf(a,Argument);
+   if(CommandLineHonored(a,debugBuild,batchMode)&&i+1<a.Length){source="command line";return a[i+1];}
    var embedded=Resources.Load<TextAsset>("Data/build_flavor");
    if(embedded!=null){var s=JsonUtility.FromJson<Selected>(embedded.text);if(s!=null&&!string.IsNullOrEmpty(s.selected)){source="embedded Data/build_flavor.json";return s.selected;}}
    source="default";return "full";
@@ -78,8 +84,10 @@ namespace Exoduser.UnityPort {
   // JsonUtility turns a JSON null into a default object, so presence is judged by the sub text
   bool HasClearFinal{get{return def.clearFinal!=null&&def.clearFinal.sub!=null&&def.clearFinal.sub.Length>0;}}
   public bool DemoEndAtStage(int stageIndex){return HasClearFinal&&def.clearFinal.stage==stageIndex;}
-  public string DemoEndSub(bool english){var s=HasClearFinal?def.clearFinal.sub:null;return s==null?null:(english&&s.Length>1&&!string.IsNullOrEmpty(s[1])?s[1]:s[0]);}
-  public string DemoEndButton(bool english){var s=HasClearFinal?def.clearFinal.button:null;return s==null?null:(english&&s.Length>1&&!string.IsNullOrEmpty(s[1])?s[1]:s[0]);}
+  public string DemoEndSub(string locale){return HasClearFinal?NativeDemoEndText.ForLocale(locale).demoSub:null;}
+  public string DemoEndButton(string locale){return HasClearFinal?NativeDemoEndText.ForLocale(locale).demoNext:null;}
+  public string DemoEndSub(bool english){return DemoEndSub(english?"en":"ko");}
+  public string DemoEndButton(bool english){return DemoEndButton(english?"en":"ko");}
   // web: 'v'+version+' · '+date without dashes (index.html _LOBBY_VER)
   public static string ReleaseVersion{get{Load();return release.version??"";}}   // release-version.json (web EXODUSER_RELEASE.version)
   // Unity build version (PlayerSettings.bundleVersion = Application.version): the title screen shows this instead of the web release version (11-04 first-impression 5).

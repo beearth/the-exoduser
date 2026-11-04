@@ -17,7 +17,11 @@ namespace Exoduser.UnityPort
    // web OPT.fpsCap default 0 = unlimited (P13); a saved file still restores its own cap
    settings=new NativeSettingsState();cinSeen=false;var args=Environment.GetCommandLineArgs();string directory;
    if(SettingsFixtureRequested&&!SettingsQaIdentity){nativeSettingsStatus=NativeSettingsStoreStatus.IoError;return;}
-   if(NativeSettingsStorageScope.TryResolve(args,NativeQaSandbox.Resolve(Application.persistentDataPath),Application.productName,Application.identifier,out directory,out nativeSettingsStatus)){
+   string storageRoot="";
+   // Preserve fixture/review IO contracts and IO-free QA. Only ordinary persistence resolves its save folder.
+   bool explicitScope=SettingsFixtureRequested||Array.IndexOf(args,NativeSettingsStorageScope.CinematicReviewArgument)>=0||NativeSettingsStorageScope.IsQa(args);
+   if(!explicitScope&&!NativeFlavorStorage.TryResolve(out storageRoot)){nativeSettingsStatus=NativeSettingsStoreStatus.IoError;ApplySettingsHostValues();return;}
+   if(NativeSettingsStorageScope.TryResolve(args,storageRoot,Application.productName,Application.identifier,out directory,out nativeSettingsStatus)){
     nativeSettingsDirectory=directory;nativeSettingsStore=new NativeSettingsStore(directory,NativeSettingsJsonCodec.Encode,NativeSettingsJsonCodec.Decode,settings,Screen.fullScreen);
     NativeSettingsSnapshot snapshot;bool loaded=nativeSettingsStore.TryLoad(out snapshot,out nativeSettingsStatus);
     if(loaded&&snapshot!=null){string raw;cinSeen=snapshot.extra!=null&&snapshot.extra.TryGetValue("cinSeen",out raw)&&raw=="true";settings.TryRestore(snapshot.sfxPercent,snapshot.bgmPercent,snapshot.frameCap);if(snapshot.extra!=null){string rawOpt;if(snapshot.extra.TryGetValue("opt",out rawOpt))settings.Options.Decode(rawOpt);for(int slot=0;slot<settings.Presets.Length;slot++){string rawPreset;if(snapshot.extra.TryGetValue("preset"+(slot+1),out rawPreset))settings.Presets[slot]=rawPreset;}}if(nativeSettingsStatus!=NativeSettingsStoreStatus.Missing){RestoreNativeBindings(snapshot);RequestSettingsFullscreen(snapshot.fullscreen,false);}}

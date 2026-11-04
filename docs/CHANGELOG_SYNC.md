@@ -2,9 +2,41 @@
 
 2026-11-04 일시정지·설정 1차 연결(유니티 총괄, Sonnet 서브에이전트 구현, 브랜치 claude/unity-pc-options-wave1-20261104): pause-options-parity 보고(P01·P02·P13·P30·P33·P34·P37·P42) 8건을 연결했다. 새 설정 FPS 기본 무제한(웹 OPT.fpsCap 0)·재진입/탭 전환 스크롤 0·언어를 설정 파일 opt.lang에 저장(저장값 > 시작 언어 결정, 옛 파일은 기본 유지)·BGM 선택을 음악 호스트에 전달(목록에는 재생되는 6값 auto/lobby/hell1/boss/death/victory만 표시, 나머지 67값은 숨기고 저장 값은 덮어쓰지 않음)·게임 탭 첫 행 움직임 줄이기·조작 탭 키 목록 키보드 초점(주/보조 슬롯 42칸+초기화, 웹 DOM 순서)·설정 캐릭터 카드 표시를 실제 캐릭터와 일치(클릭은 막음)·프리셋 슬롯에 주·보조 키와 언어 포함+빈 슬롯/읽기 실패 안내. 신규 Core: NativeSettingsPreset·NativeBgmSelection·NativeKeyFocus, NativeOptionSet.Lang, LobbyLanguage.Startup, CharacterRoster.PlayableVisualIndex(전투·드랍·스킬 규칙 무변경). 신규 문구 No.4293~4297(병합 때 4289~4293에서 다시 매김; 번역 목록, 29개 언어는 a15_options_web.json). 참조 컴파일 5개 어셈블리 오류 0, 새 options-wave1 소스 28+Core 101 PASS, settings-persistence·pause-navigation·keybind-parity·startup-locale PASS, host-resume·pause-settings는 기존부터 빌드 실패. Unity 실행·화면·소리·재시작 저장 복원은 Mac 미검수. 문서: docs/3.1 ui hud 디자인/UNITY_PAUSE_OPTIONS_PARITY_20261104.md 반영 상태.
 
+2026-11-04 SND-17b BGM 라이선스 확인·P1 반입 순서(사운드 총괄): 사용자 확인(CTO 경유) — Suno 생성 당시 유료 플랜 → UNITY_BGM_IMPORT_CANDIDATES의 Suno 76곡 출처 칸을 "유료 플랜 확인(사용자, 11-04)"로 갱신했다. P1 반입 순서 7단계(1 사망·승리 두 번째 4.8MB → 2 대장간 14.8MB → 3 1장 Remastered 나머지 10.4MB → 4 1장 mp3 → 5 공통 회전 → 6 2~7장 → 7 최종 보스), 데모 권장 = P0 + 1~3단계 11곡 약 45MB. 출처 태그 없는 3파일은 계속 보류. 반입·코드 변경 없음.
+
+2026-11-04 demo-flavor 루트 고정판 마무리 5건(유니티 총괄, Sonnet 구현, claude/unity-pc-demo-flavor-fix-20261104): ① 옛 full 루트는 productName이 정식명 "EXODUSER: HELL LORD"(상수 NativeFlavorSavePaths.OfficialProductName, ProjectSettings와 같음을 테스트가 확인) 또는 옛 이름일 때만 사용, 다른 제품명 Player는 persistentDataPath로 격리 ② 명령줄 --unity-build-flavor는 개발 빌드·QA 실행에서만 읽고(QA sandbox 자동 강제) 배포 빌드는 내장 flavor만 사용 ③ STEAM_UNITY_DEMO·UNITY_DEMO_FLAVOR docs 정리(F-1 조건, "바이트 보존 통과" 삭제, 경로 표·정책 절 반영, 체험판 실행 옵션은 flavor 인수 없이 -flavor demo 내장 빌드) ④ NativeGame.SettingsPersistence 주석의 imports 삭제 ⑤ 루트 계산이 NotSupported·PathTooLong·Security 예외도 같은 실패 경로로 처리. Core 수치·판정 변경 없음. 컴파일 5개 어셈블리 오류0, demo-flavor-tests 86 PASS. Unity·Player 실행 없음.
+
 2026-11-04 STY-25 1-1 다크드루이드 등장·퇴장 대사(스토리 총괄, CTO 배정): G0 A안 연출 순서에 맞춰 이름 카드 부제 "썩은 숲의 숲지기", 목숨 2·3 전환 자막 2줄, 출구 개방 뒤 다음 지역 암시 펫 대사 1쌍을 새로 쓰고 기존 등장·침강·처치 대사 6줄과 묶었다. 신규 KO·EN 5건 No.4288~4292. 문서 `docs/11내러티브·로어디자인/DARK_DRUID_1-1_BOSS_TEXT_20261104.md`. 게임 데이터 변경 0(보스전 총괄 반영 대기).
 
 2026-11-04 SND-17 Unity BGM 반입 후보 목록(사운드 총괄, CTO 배정): docs/6사운드디자인/UNITY_BGM_IMPORT_CANDIDATES_20261104.md 신설. 웹 bgm 79파일(설정 57 + 큐 22)의 경로·길이·용량·형식·Vorbis 반입 추정·BGM.tracks 쓰임·출처(메타데이터: 76파일 made with suno, beearthone, 생성일·곡 id)를 정리했다. 바이트 대조로 Unity 보유 10·제외 사본 6. P0 반입 권장 3곡(1-1 필드 회전, Ashes Under the Banner·Cathedral of Steel·Iron Oath Under Ash Remastered, 15.9분·약 15MB), P1 52, P2 8. Suno 상업 권리 사용자 확인 필요. 반입·코드 변경 없음.
+
+2026-11-04 demo-flavor 저장 루트 고정으로 제작법 변경(유니티 총괄, Sonnet 구현, claude/unity-pc-demo-flavor-fix-20261104): 복사+지문 재가져오기가 2연속 FAIL이라(CLAUDE §4.1) 가져오기·표식·.replaced·.abandoned·lock 회수·staging·실패 안내를 코드·테스트·demo_text.json에서 전부 걷어냈다. 정식판(full) 저장 루트는 제품명과 분리해 옛 루트에 고정(Windows LocalLow/ForDearGamers/EXODUSER · Unity 이식 검증판, Mac Player 번들 ID 폴더, 그 밖은 persistentDataPath), 폴더 안 구조는 옛 빌드와 같아 옛 이름 빌드와 같은 폴더를 공유한다. demo·BIC·EA는 새 제품명 루트의 이름공간에서 새로 시작, QA sandbox 그대로. 루트는 플랫폼·flavor로만 고른다(폴더 존재 탐색 없음). 테스트는 루트 계산·flavor 격리·위시리스트로 줄여 72/72, 번역목록에서 가져오기 실패 안내 행 제거(No.4288 반납, STY-25가 사용), docs 3곳(15 세이브 SSOT·STEAM_UNITY_DEMO·UNITY_DEMO_FLAVOR) 새 제작법 기준 재작성, 레지스트리 Screenmanager·Player.log 위치 변화 기록. Core 수정 0·PC 컴파일·.NET 격리 테스트까지만(Player 실행·Mac 판정 미실시).
+
+2026-11-04 demo-flavor 검증 FAIL 11건 수정(유니티 총괄, Sonnet 구현, claude/unity-pc-demo-flavor-fix-20261104): 최신 unity/main 재병합(CHANGELOG 양쪽 절 보존·CRLF 100%), 전체 회귀 스텁 Application.version 추가로 --full이 실제 실행(위시리스트 4해상도·QA 격리·바이트 보존), 가져오기 표식 파일로 옛 이름 빌드로 되돌아가 놀았을 때 다시 가져오기(기존 목적 폴더는 .replaced-시각으로 보존, 둘 다 바뀌면 목적 유지·경고), 옛 .tmp 복사 제외·옛 저장이 영구히 못 읽히면 새로 시작+로비 안내(No.4288, 29개 언어), 버려진 lock 회수·남은 staging은 지우지 않고 .abandoned-시각으로 보존, Mac 옛 루트에 번들 ID 폴더(com.ForDearGamers.EXODUSER----Unity-----------------, 코드 계산) 추가, PauseInputCheck 기대 경로를 flavor 이름공간 코드로 계산, NativeStageClearOverlay 원래 LF 줄 3개 복원, 번역목록 No.4261 정정, 레지스트리·combat-stats·Player.log 변화 기록(UNITY_DEMO_FLAVOR_20261103.md). Core 수정 0·PC 컴파일·.NET 격리 테스트까지만(Player 실행·Mac 판정 미실시).
+
+2026-11-04 02:15 재지시 Desktop3 설치: sparse release-version.json 원인 해소 확인 후 정확한db26d55f6 공용빌드c4505bef 1회 성공·오류0/USER_SAVE0. 같은패키지 M1 23/23·지옥문개방,3초hold·사망/부활·UI16영수증/원화11종mipCount1,1920/3840 PNG50장/실제WM호버자료 확보. 02:29:25 설치SHA/runtimeDLL 일치 확인·385는build_prev1개·바로가기 유지. 자기87fa1910e 브랜치/sparse실파일 복귀 확인, 소스변경/추가빌드/Steam0. 전체 디자인/Mac 판정 대기. [영수증·범위](engine/UNITY_DESKTOP_CTO_SWAP_20261104.md).
+
+2026-11-04 02:20 순차3 문구 F1·F2: F-1 보강41bfb2212a push 뒤 판정표6ef1899cb §5 실제19행(ko포함) demoWishlist/정식판 용어 적용·나머지10언어 보존, 중복4259/4260 삭제 후3473/2824 참조·4261KO 동기화, buildflavor 영어button2곳 End of Demo. 목록 단독LF1개 CRLF정상화, 최종 데이터39/39. Mac 화면/RTL은 미판정·추가빌드/Player0. [변경·검사](engine/UNITY_DEMO_FLAVOR_TEXT_RETOUCH_20261104.md).
+
+2026-11-04 02:20 순차 지시: 교체3 db26d55f6 공용빌드13f54a0b 1회는 sparse 루트 release-version.json 누락으로 실패, 재시도0·385설치 유지·Player/캡처0. 이후 F-1을 GUID staging/새 lease 생성자만 회수/Move 직전 source·staging 목록·크기 대조/tmp·bak-only 거부/OS메타 허용/TryResolve 실패 미캐시로 보강. 회귀38/38·계약6/6·동작64/64·독립프로세스7/7, 공용컴파일348efe7a 1회 오류0·USER_SAVE0. Mac 두 프로세스 fixture 인계·미판정. [교체 실패](engine/UNITY_DESKTOP_CTO_SWAP_20261104.md), [보강·Mac 명령](engine/UNITY_DEMO_FLAVOR_F1_20261104.md).
+
+2026-11-04 F-1 02:25 제품 lease 부작용 수정: 충돌 staging 파일은 lease 생성 전 거부, 신규 lease만 CreateNew/DeleteOnClose·기존 lease는 Open/내용 불변. catch staging 정리·구형 staging 복구·잠금실패→해제→재시도·원본바이트/남의 폴더/기존 lease 보존30/30, 전체 계약6/6·동작58/58, 공용bin 컴파일31e88306 1회 exit0·compileErrors0·USER_SAVE0. Player/빌드/Desktop/Steam0. Mac demo sandbox 인자와 별도 격리 이전/lease 검수 인계, Mac 미판정. [근거·계약](engine/UNITY_DEMO_FLAVOR_F1_20261104.md).
+
+2026-11-04 F-1 02:10 경로 키 통일: Snapshot 키 생성 한 곳에서 역슬래시를 슬래시로 변환, 제품 코드에 같은 키 비교 없음. 지정 테스트1회·25검사 통과 뒤 staging-file 충돌 거부가 새0바이트 lease를 만들어 전체 파일 집합 불변 검사 실패. 충돌 파일8바이트 preserve 유지 직접 확인. 지시대로 재실패 즉시정지, 전체 회귀/PC 컴파일0·Player0·Desktop0. [오류 원문·다음 검토](engine/UNITY_DEMO_FLAVOR_F1_20261104.md).
+
+2026-11-04 F-1 01:55 테스트 공유 잠금 수정: 최신 unity/main5ce03758f 병합(4b0bef66c), Snapshot 읽기를 FileShare.ReadWrite로 수정. 지정 테스트1회에서 잠금 실패→catch정리→해제 후1회 재시도 성공·원본3파일 바이트 불변 등10검사 통과 뒤, 구형 staging 비교의 Windows 경로 dictionary 키 구분자 불일치로 실패. 브리프 재실패 즉시정지 준수, 추가 수정/전체 회귀/PC 컴파일0·Player0·Desktop0. [오류 원문·범위](engine/UNITY_DEMO_FLAVOR_F1_20261104.md).
+
+2026-11-04 F-1 이어받기: 시작 시 최신 unity/main c4b388903 병합(c8bf42cd8), catch staging 정리·구형 staging 회수 후 복사1회·배타 lease 초안. 설치된 Roslyn 직접 회귀에서 수정 전 F-1 RED, 수정 후 catch 정리까지3검사 통과 뒤 원본 비교 테스트의 공유 잠금 충돌로 실패. 같은 테스트2FAIL 정지, PC 컴파일0·Player0·Desktop0·원본 바이트 불변 미검증, 병합 보류. [실패/재개 근거](engine/UNITY_DEMO_FLAVOR_F1_20261104.md).
+
+2026-11-04 F-1 저장 이전 staging 복구: 소유·최신공통 확인, 잠금→해제→재시도/원본·writer·destination 보존 회귀 초안 추가. NuGet path1 초기화 오류가 SDK10/8에서2회 발생해 동일2FAIL 규칙으로 중지. production 미수정·테스트 미실행·PC 컴파일 미실행. Desktop385/eaf실패·원복 기록 보존. [차단 근거](engine/UNITY_DEMO_FLAVOR_F1_20261104.md).
+
+2026-11-04 00:00 Desktop 수동 교체2회차: eaf67fae9 Windows 빌드1회/오류0 뒤 M1 09c 실패(기록17/18, 필수23미달)·UI 원화11종 mipmap8/11로 거부. 기존385e76ce1 원복·자기 브랜치 복귀, 사용자 저장0. 같은 실패후보1920 캡처11장·대지강타1회46프레임을 확보하고 build-commit.smoke.visual.rejectedCandidate에 source/adopted=false로 연결. [근거](engine/UNITY_DESKTOP_CTO_SWAP_20261104.md).
+
+2026-11-03 22:35 바탕화면 Unity 1회 수동 교체(CTO cto-swap): 정확한 unity/main385e76ce1 detached에서 공용 bin Windows 빌드1회·오류0·USER_SAVE0, M1 23/23·홀드3.0초·필드 목표2줄·실제 사망 진입 통과 후 build-commit 갱신. 9f0d00cf8은 build_prev 하나로 보존, 바로가기 유지·자기 브랜치 복귀. 전체 UI 겹침/미술/자연 완주 후속은 유지. [근거](engine/UNITY_DESKTOP_CTO_SWAP_20261103.md).
+
+2026-11-03 21:10 Steam 체험판 flavor U-D3/U-D4/U-D1/U-D5: 정식 제품명과 빌드 초기화, demo/full 저장 namespace 및 기존 검증판 원본 보존 이전, 종료 문구29언어(locale API, ar 기존 영문 폴백), 본편 상점 steam://store/4749590 별도 버튼. 계약6/6·격리 동작58/58, PC 공용 bin 컴파일/Mac 화면·재시작 인계. Player·Steam 업로드 없음, U-D2 보류. [계약·Mac 인자](engine/UNITY_DEMO_FLAVOR_20261103.md).
+
+
 
 2026-11-04 FIX-1 이전 표 집계 단위 정정: 명칭 통계는 변경된 행 수가 아니라 악의오브 치환 횟수이므로 MAIN_DOCS_MIGRATION의 열 제목을 바로잡음. 표 값·게임 수치·판정 무변경.
 

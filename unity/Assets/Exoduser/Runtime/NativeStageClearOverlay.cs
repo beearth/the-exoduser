@@ -32,8 +32,12 @@ namespace Exoduser.UnityPort {
   public string LocaleCode="ko";public bool DiagnosticDetails=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-ui-diagnostics")>=0;public int LayoutOverflowCount{get;private set;}
   readonly NativeStageClearPresentation.NextAction nextAction=new NativeStageClearPresentation.NextAction();
   bool keyboardReady;
+  public const string WishlistUrl=NativeStageClearPresentation.WishlistUrl;
+  public Action<string> OpenStore=Application.OpenURL;
+  public bool RequestWishlist(){return NativeStageClearPresentation.RequestWishlist(active,input.kind==Kind.DemoEnd,Age,OpenStore);}
   public NativeStageClearPresentation.Layout LastLayout{get;private set;}
-  NativeStageClearPresentation.Layout SafeLayout(){var l=NativeStageClearPresentation.Arrange(NativeUiSafeArea.DesignWidth,NativeUiSafeArea.DesignHeight,PresentationModel());var a=NativeUiViewport.Current;l.Panel=new NativeStageClearPresentation.Area(a.X+l.Panel.X*a.Scale,a.Y+l.Panel.Y*a.Scale,l.Panel.Width*a.Scale,l.Panel.Height*a.Scale);l.Next=new NativeStageClearPresentation.Area(a.X+l.Next.X*a.Scale,a.Y+l.Next.Y*a.Scale,l.Next.Width*a.Scale,l.Next.Height*a.Scale);l.Scale*=a.Scale;return l;}
+  NativeStageClearPresentation.Layout SafeLayout(){var l=NativeStageClearPresentation.Arrange(NativeUiSafeArea.DesignWidth,NativeUiSafeArea.DesignHeight,PresentationModel(),input.kind==Kind.DemoEnd);var a=NativeUiViewport.Current;l.Panel=new NativeStageClearPresentation.Area(a.X+l.Panel.X*a.Scale,a.Y+l.Panel.Y*a.Scale,l.Panel.Width*a.Scale,l.Panel.Height*a.Scale);l.Next=new NativeStageClearPresentation.Area(a.X+l.Next.X*a.Scale,a.Y+l.Next.Y*a.Scale,l.Next.Width*a.Scale,l.Next.Height*a.Scale);l.Wishlist=new NativeStageClearPresentation.Area(a.X+l.Wishlist.X*a.Scale,a.Y+l.Wishlist.Y*a.Scale,l.Wishlist.Width*a.Scale,l.Wishlist.Height*a.Scale);l.Scale*=a.Scale;return l;}
+  public Rect WishlistScreenRect{get{if(input.kind!=Kind.DemoEnd)return Rect.zero;var l=SafeLayout();return new Rect(l.Wishlist.X,l.Wishlist.Y,l.Wishlist.Width,l.Wishlist.Height);}}
   public Rect ButtonScreenRect{get{if(DiagnosticDetails){var a=NativeUiViewport.Current;return new Rect(a.X+850*a.Scale,a.Y+956*a.Scale,220*a.Scale,44*a.Scale);}var l=SafeLayout();return new Rect(l.Next.X,l.Next.Y,l.Next.Width,l.Next.Height);}}
   public bool RequestNext(){return nextAction.Request(active,Age,OnNext);}
   public Kind ShownKind{get{return input.kind;}}
@@ -139,7 +143,7 @@ namespace Exoduser.UnityPort {
   Color RankColor(string r){switch(r){case "S":return C(227,194,122);case "A":return C(169,200,164);case "B":return C(157,184,204);case "C":return C(194,182,169);default:return C(141,124,101);}}
 
   // ---- window ----
-  [Serializable] sealed class LocaleRow {public string code,title,hellTitle,sub,time,kills,reward,sp,regions,potions,deaths,score,next,demoSub,demoNext;}
+  [Serializable] sealed class LocaleRow {public string code,title,hellTitle,sub,time,kills,reward,sp,regions,potions,deaths,score,next,demoSub,demoNext,demoWishlist;}
   [Serializable] sealed class LocaleBundle {public LocaleRow[] entries;}
   readonly Dictionary<string,LocaleRow> localeRows=new Dictionary<string,LocaleRow>();Font japanese,latin;
   public bool AuditText;public int MissingGlyphs{get;private set;}public readonly List<string> VisibleTexts=new List<string>();
@@ -147,7 +151,7 @@ namespace Exoduser.UnityPort {
   LocaleRow CurrentLabels(){
    if(localeRows.Count==0){var asset=Resources.Load<TextAsset>("Data/stageclear_labels");if(asset!=null){var b=JsonUtility.FromJson<LocaleBundle>(asset.text);foreach(var e in b.entries)localeRows[e.code]=e;}}
    LocaleRow row;if(localeRows.TryGetValue(EffectiveLocale,out row))return row;if(localeRows.TryGetValue("en",out row))return row;
-   return new LocaleRow{title="ZONE CLEARED",hellTitle="HELL ESCAPED",sub="Prepare, then continue",time="Clear time",kills="Kills",reward="Reward",sp="Stat points",regions="Regions cleared",potions="Potions",deaths="Deaths",score="Score",next="Return to lobby",demoSub="The Rotten Forest is not finished yet.",demoNext="End demo"};
+   return new LocaleRow{title="ZONE CLEARED",hellTitle="HELL ESCAPED",sub="Prepare, then continue",time="Clear time",kills="Kills",reward="Reward",sp="Stat points",regions="Regions cleared",potions="Potions",deaths="Deaths",score="Score",next="Return to lobby",demoSub="The Rotten Forest is not finished yet.",demoNext="End demo",demoWishlist="Wishlist the full game"};
   }
   Font BodyFont(){if(EffectiveLocale=="ja"){if(japanese==null)japanese=Resources.Load<Font>("Art/fonts/NotoSerifCJKjp-Regular");return japanese??nanum;}if(EffectiveLocale=="ko"||EffectiveLocale=="en")return nanum;if(latin==null)latin=Resources.Load<Font>("Art/fonts/NativeCaptionNotoSerif");return NativeA15SettingsLabels.FontForLocale(EffectiveLocale,latin??nanum);}
   public NativeStageClearPresentation.Model PresentationModel(){
@@ -194,6 +198,12 @@ namespace Exoduser.UnityPort {
     GUI.enabled=enabled&&Age>=.5f&&OnNext!=null;
     if(NativeUiAudit.Button(buttonRect,GUIContent.none,GUIStyle.none))RequestNext();
     if(GUI.enabled&&keyboardReady&&Event.current.type==EventType.KeyDown&&(Event.current.keyCode==KeyCode.Return||Event.current.keyCode==KeyCode.KeypadEnter||Event.current.keyCode==KeyCode.Space)){Event.current.Use();RequestNext();}
+    if(input.kind==Kind.DemoEnd){
+     float wishY=(l.Wishlist.Y-l.Panel.Y)/l.Scale;var wishRect=new Rect(28,wishY,504,56);bool wishHover=wishRect.Contains(Event.current.mousePosition);
+     GUI.enabled=enabled&&Age>=.5f;GUI.color=new Color(1,1,1,a);Grad(wishRect,wishHover?C(44,46,49):C(20,20,23),C(10,10,12));GUI.color=Color.white;Border(wishRect,wishHover?C(201,199,195,a):C(138,139,136,a));
+     Paint(new Rect(46,wishY+4,468,48),labels.demoWishlist,body,18,C(230,227,220,a),TextAnchor.MiddleCenter);
+     if(NativeUiAudit.Button(wishRect,GUIContent.none,GUIStyle.none))RequestWishlist();
+    }
    }finally{GUI.matrix=old;GUI.color=color;GUI.enabled=enabled;}
   }
 
@@ -225,13 +235,13 @@ namespace Exoduser.UnityPort {
    // ---- ZONE CLEARED (Cinzel 9.6px, ls .34em) ----
    string en=i.kind==Kind.HellEscape?defs.hell.titleEn:defs.zone.titleEn;float ew=CinzelWidth(9,en,3.264f);Cinzel(9,en,960-ew/2f,enY+6.5f,C(168,153,127,.72f*a),3.264f);
    // ---- sub (14.08px Nanum, ls .12em) ----
-   string sub=i.kind==Kind.DemoEnd?(BuildFlavor.Current.DemoEndSub(false)??defs.demo.sub):v.sub;CenterText(960,subY,18,sub,nanum,14,C(199,187,172,.88f*a),1.6896f);
+   string sub=i.kind==Kind.DemoEnd?(BuildFlavor.Current.DemoEndSub(EffectiveLocale)??CurrentLabels().demoSub):v.sub;CenterText(960,subY,18,sub,BodyFont(),14,C(199,187,172,.88f*a),1.6896f);
    // ---- result block ----
    DrawResult(resultY,resultH,a,i,sc,par,rows,gridRows);
    // ---- stats lines ----
    float y=statsY;foreach(var line in stats){DrawStatLine(960,y,line,a);y+=17.952f;}
    // ---- next button ----
-   string btn=i.kind==Kind.DemoEnd?(BuildFlavor.Current.DemoEndButton(false)??defs.demo.button):v.button;DrawButton(new Rect(850,btnY,220,44),btn,a);
+   string btn=i.kind==Kind.DemoEnd?(BuildFlavor.Current.DemoEndButton(EffectiveLocale)??CurrentLabels().demoNext):v.button;DrawButton(new Rect(850,btnY,220,44),btn,a);
   }
 
   void DrawResult(float y,float h,float a,Input i,Score sc,int? par,List<KeyValuePair<string,KeyValuePair<string,bool>>> rows,int gridRows){
