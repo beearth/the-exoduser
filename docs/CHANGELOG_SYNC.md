@@ -58017,3 +58017,6 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 ## 2026-11-04 05:40 실행 결과 — 공용 후처리 2FAIL STOP
 - 실제빌드540fdcde20/공용f2a287d2 PASS 뒤3D/d3d11의1920 원본25장·제품9건PASS. GUI116행 최소간격16px, 이름/삭제 실제나눔명조·면18px inset·공통철draw 확인.
 - hover57be03df/사망02ef0c30의 공용 ReadAllText 로그잠금 예외2회로 STOP. 최종가드7/9,3840 0/25. 동일조건 재시도0·추가빌드0, 공용bin/권한/환경/타슬롯변경0. 실제25/50과 미완료 관문을 관련docs/REPORT에 동기화했다.
+
+2026-11-04 실버테일·아이반 모듈 G0 설계(Codex char-g0-st-ivan): 파트 S01~S40·I01~I34, rigid/천·머리 체인·허브 경첩·단검·배낭·총 소켓과 합격선을 새 문서 UNITY_HERO_MODULAR_G0_ST_IVAN_20261104.md에 기록했다. Blender 전용 extract_rig_rest.py로 Meshy GLB 각 24관절의 부모·Y-up rest(m)·Humanoid 대응과 실제 스킨 높이 1.72/1.85m를 추출했다. 실버테일 팔 5항목·아이반 팔 4항목은 조립 전 수정 필요(손끝·팔폭은 신전 기하 추정). 머리 두피/턱 실측·다리 목표·아이반 어깨폭·실버테일 접힘 기구 결정은 보류. 원본 메시/LOCK/보드/런타임 변경 0, Unity·유료 생성 0, 조립·Mac 판정 전. JSON·검증 로그·보고는 I:/EXODUSER-Storage/codex-takeover/char-g0-st-ivan/.
+
