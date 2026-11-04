@@ -30,3 +30,5 @@ html,body{margin:0;height:100%;background:#050506;overflow:hidden}
 .tag{position:absolute;left:24px;top:20px;font:600 22px var(--f-num);letter-spacing:.2em;color:var(--tx-2)}
 .guide{position:absolute;pointer-events:none;border:0 dashed rgba(120,220,255,.75)}
 body.guides .guide{border-width:1px}
+/* C안 제안 토큰(승인 필요, defects.md 6절): ST 녹청(verdigris). 원색 초록이 아닌 채도 낮은 쇠 녹빛, MP 강철 파랑과 색상으로 구분 */
+:root{--res-st-hi:#7a9680;--res-st:#3e5e4a;--res-st-dp:#122019}

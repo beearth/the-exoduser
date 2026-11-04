@@ -6,7 +6,9 @@
    R3 밀도: 같은 묶음 안 간격 gIn, 묶음 사이 gOut. 빈 슬롯도 같은 소켓(검은 구멍·"—" 없음).
    R4 색: 금속·바탕 무채색, 빨강은 HP 액체·선택 슬롯 안쪽 빛·포이즈 눈·위험(분노)만. */
 (function(){
-var ART='../../../unity/Assets/Exoduser/Resources/Art/ui/skill_icons/';
+var UI='../../../unity/Assets/Exoduser/Resources/Art/ui/',ART=UI+'skill_icons/';
+// C안(cfg.art): 현재 원화(구체 틀·스킬바 가운데 볏)와 인벤토리 철 재질을 실버 헬 명도로 다시 칠해 재사용한다.
+var ART_FILTER='grayscale(1) brightness(1.55) contrast(1.4)';
 var NS='http://www.w3.org/2000/svg';
 function el(tag,cls,style,parent){var e=document.createElement(tag);if(cls)e.className=cls;if(style)e.setAttribute('style',style);if(parent)parent.appendChild(e);return e}
 function svg(w,h,inner,style,parent){var d=el('div','',style,parent);d.innerHTML='<svg xmlns="'+NS+'" width="'+w+'" height="'+h+'" viewBox="0 0 '+w+' '+h+'">'+inner+'</svg>';return d}
@@ -40,6 +42,8 @@ window.buildHud=function(cfg){
     '.hair{position:absolute;height:1px;background:linear-gradient(90deg,transparent,rgba(201,199,195,.55),transparent);z-index:9}'
   ].join('\n');document.head.appendChild(css);
   var hud=el('div','hud','position:absolute;inset:0',st);
+  if(cfg.art)cfg.orbOuter=cfg.liquid*263/175;               // 원화 틀 263 : 액체 175 (NativeHudDockLayout.cs:20,38)
+  var IRON='linear-gradient(180deg,rgba(201,199,195,.10),rgba(201,199,195,.03) 40%,rgba(0,0,0,.30)),url('+UI+'inventory/iron_480.png) center/240px repeat';
   var R=cfg.orbOuter/2, base=1080-cfg.rail.h;           // 레일 윗면 y
   var orbCY=base+cfg.orbSink-R;                         // 구체 바닥이 레일에 orbSink px 묻힘
   // 슬롯 줄 너비 계산
@@ -50,13 +54,15 @@ window.buildHud=function(cfg){
   el('div','rail','left:'+(lcx-R+18)+'px;top:'+base+'px;width:'+(rcx-lcx+2*R-36)+'px;height:'+cfg.rail.h+'px',hud);
   // 스킬판
   var plate=el('div','plate','left:'+plateX+'px;top:'+plateY+'px;width:'+plateW+'px;height:'+cfg.plateH+'px;clip-path:polygon(0 '+cfg.cham+'px,'+cfg.cham+'px 0,calc(100% - '+cfg.cham+'px) 0,100% '+cfg.cham+'px,100% 100%,0 100%)',hud);
+  if(cfg.art)plate.style.background=IRON;
   el('div','edge','',plate);el('div','inner','',plate);
   // 가운데 보스(B안: 주공격 묶음 받침)
   if(cfg.boss){var bw=cfg.boss.w,bx=960-bw/2,by=plateY-cfg.boss.rise;
-    var b=el('div','plate','left:'+bx+'px;top:'+by+'px;width:'+bw+'px;height:'+(base-by)+'px;clip-path:polygon(0 '+cfg.boss.cham+'px,'+cfg.boss.cham+'px 0,calc(100% - '+cfg.boss.cham+'px) 0,100% '+cfg.boss.cham+'px,100% 100%,0 100%)',hud);el('div','edge','',b);el('div','inner','',b);}
+    var b=el('div','plate','left:'+bx+'px;top:'+by+'px;width:'+bw+'px;height:'+(base-by)+'px;clip-path:polygon(0 '+cfg.boss.cham+'px,'+cfg.boss.cham+'px 0,calc(100% - '+cfg.boss.cham+'px) 0,100% '+cfg.boss.cham+'px,100% 100%,0 100%)',hud);if(cfg.art)b.style.background=IRON;el('div','edge','',b);el('div','inner','',b);}
   // M3 가운데 마름모(진홍 점 1개만 허용)
   var topY=cfg.boss?plateY-cfg.boss.rise:plateY;
-  svg(22,22,'<path d="M11 2 L20 11 L11 20 L2 11Z" fill="#0f0f10" stroke="#c9c7c3" stroke-width="1.2"/><circle cx="11" cy="11" r="2.2" fill="#c21a10"/>','position:absolute;left:949px;top:'+(topY-11)+'px;z-index:6',hud);
+  if(cfg.art){var cw=220*cfg.crestScale,chh=90*cfg.crestScale;el('div','','position:absolute;left:'+(960-cw/2)+'px;top:'+(topY-chh*.62)+'px;width:'+cw+'px;height:'+chh+'px;background:url('+UI+'ui_bar_only.png) -'+(1120*cfg.crestScale)+'px -'+(100*cfg.crestScale)+'px/'+(2460*cfg.crestScale)+'px '+(546*cfg.crestScale)+'px no-repeat;filter:'+ART_FILTER+';z-index:6',hud)}
+  else svg(22,22,'<path d="M11 2 L20 11 L11 20 L2 11Z" fill="#0f0f10" stroke="#c9c7c3" stroke-width="1.2"/><circle cx="11" cy="11" r="2.2" fill="#c21a10"/>','position:absolute;left:949px;top:'+(topY-11)+'px;z-index:6',hud);
   // 슬롯
   var rowX=960-rowW/2, cy=plateY+cfg.slotCY;
   pos.forEach(function(p){
@@ -75,6 +81,7 @@ window.buildHud=function(cfg){
   function orb(cx,mp){
     var d=cfg.orbOuter,L=cfg.liquid,x0=cx-R,y0=orbCY-R;
     var g=el('div','','position:absolute;left:'+(cx-L/2)+'px;top:'+(orbCY-L/2)+'px;width:'+L+'px;height:'+L+'px;border-radius:50%;overflow:hidden;background:#08080a;z-index:7',hud);
+    if(cfg.art){return orbArt(cx,mp,g,L,d)}
     if(!mp){el('div','','position:absolute;left:0;right:0;bottom:0;height:'+(cfg.hp*100)+'%;background:radial-gradient(ellipse 70% 80% at 50% 18%,#9a160c 0%,#6a0b06 42%,#3a0603 75%,#1c0302 100%);border-top:1px solid rgba(246,245,242,.30)',g)}
     else{var h=el('div','','position:absolute;inset:0;display:flex',g);
       el('div','','flex:1;position:relative',h).appendChild(el('div','','position:absolute;left:0;right:0;bottom:0;height:'+(cfg.mp*100)+'%;background:linear-gradient(0deg,var(--res-mp-dp) 0%,var(--res-mp) 60%,var(--res-mp-hi) 100%);border-top:1px solid rgba(246,245,242,.30)'));
@@ -107,6 +114,34 @@ window.buildHud=function(cfg){
       '<path d="M'+(R-eyeW/2-7)+' '+eyeY+' l5 -2 v4z M'+(R+eyeW/2+7)+' '+eyeY+' l-5 -2 v4z" fill="#c9c7c3"/></g>',
       'position:absolute;left:'+(x0-10)+'px;top:'+(y0-10)+'px;z-index:8',hud);
     // 숫자
+    if(!mp){var cy2=orbCY+cfg.numDy;
+      var c=el('div','rv cur','left:'+(cx-L/2)+'px;width:'+L+'px;top:'+(cy2-cfg.hpCur*.62)+'px;--cs:'+cfg.hpCur+'px',hud);c.textContent=cfg.hpT[0];
+      el('div','hair','left:'+(cx-22)+'px;width:44px;top:'+(cy2+cfg.hpCur*.48)+'px',hud);
+      var m=el('div','rv max','left:'+(cx-L/2)+'px;width:'+L+'px;top:'+(cy2+cfg.hpCur*.48+5)+'px;--ms:'+cfg.hpMax+'px',hud);m.textContent=cfg.hpT[1];}
+    else{[['MP',cfg.mpT,-1],['ST',cfg.stT,1]].forEach(function(r){var hx=cx+r[2]*L/4,w=L/2,cy3=orbCY+cfg.numDy;
+      var l=el('div','rv lab','left:'+(hx-w/2)+'px;width:'+w+'px;top:'+(cy3-cfg.rsCur*.62-16)+'px',hud);l.textContent=r[0];
+      var c=el('div','rv cur','left:'+(hx-w/2)+'px;width:'+w+'px;top:'+(cy3-cfg.rsCur*.62)+'px;--cs:'+cfg.rsCur+'px',hud);c.textContent=r[1][0];
+      el('div','hair','left:'+(hx-14)+'px;width:28px;top:'+(cy3+cfg.rsCur*.48)+'px',hud);
+      var m=el('div','rv max','left:'+(hx-w/2)+'px;width:'+w+'px;top:'+(cy3+cfg.rsCur*.48+4)+'px;--ms:'+cfg.rsMax+'px;color:var(--tx-2)',hud);m.textContent=r[1][1];})}
+  }
+  function orbArt(cx,mp,g,L,F){
+    // 액체: 현재 HudOrb 형태(유리 반사·흰 수면선 없음). HP = 현재 와인빛 그대로, MP·ST = 위가 부드럽게 사라지는 세로 그라데이션
+    if(!mp)el('div','','position:absolute;left:0;right:0;bottom:0;height:'+(cfg.hp*100)+'%;background:radial-gradient(circle at 50% '+(100-50/cfg.hp)+'%,#6b1020 0%,#3d0a12 50%,#1e050a 100%)',g);
+    else{var h=el('div','','position:absolute;inset:0;display:flex',g);
+      [[cfg.mp,'var(--res-mp-dp) 0%,var(--res-mp) 45%,var(--res-mp-hi) 80%,rgba(127,156,188,.25) 92%,transparent 100%'],[cfg.st,'var(--res-st-dp) 0%,var(--res-st) 45%,var(--res-st-hi) 80%,rgba(122,150,128,.25) 92%,transparent 100%']].forEach(function(q,i){
+        if(i)el('div','','width:1px;background:linear-gradient(180deg,transparent,rgba(201,199,195,.45),transparent)',h);
+        el('div','','flex:1;position:relative',h).appendChild(el('div','','position:absolute;left:0;right:0;bottom:0;height:'+(q[0]*100+6)+'%;background:linear-gradient(0deg,'+q[1]+')'))})}
+    el('div','','position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 50% 50%,transparent 66%,rgba(0,0,0,.5) 100%)',g);
+    var s=F/263, fx=cx-135.5*s, fy=orbCY-F/2;
+    // 기동 고리(MP): 현재와 같은 자리(액체 +11,+18.65, 153) 3px 은빛 #CFCCC6
+    if(mp&&cfg.mob!=null){var rr=153/2*L/175, ccx=cx-L/2+(11+76.5)*L/175, ccy=orbCY-L/2+(18.65+76.5)*L/175, a=cfg.mob*2*Math.PI;
+      svg(2*rr+8,2*rr+8,'<path d="M'+(rr+4)+' 4 A'+rr+' '+rr+' 0 '+(cfg.mob>.5?1:0)+' 1 '+(rr+4+rr*Math.sin(a)).toFixed(2)+' '+(rr+4-rr*Math.cos(a)).toFixed(2)+'" fill="none" stroke="#cfccc6" stroke-width="3" opacity=".9"/>','position:absolute;left:'+(ccx-rr-4)+'px;top:'+(ccy-rr-4)+'px;z-index:9',hud)}
+    var im=new Image();im.src=UI+(mp?'ui_globe_mp.png':'ui_globe_hp.png');im.alt='';im.setAttribute('style','position:absolute;left:'+fx+'px;top:'+fy+'px;width:'+F+'px;height:'+F+'px;filter:'+ART_FILTER+' drop-shadow(0 6px 14px rgba(0,0,0,.6));z-index:8');hud.appendChild(im);
+    // 포이즈 눈: 뿔 해골 눈 자리(틀 좌표 128·145, 38.5 /263), 켜질 때만 진홍
+    if(cfg.poise)[128,145].forEach(function(ex){el('div','','position:absolute;left:'+(fx+ex*s-3)+'px;top:'+(fy+38.5*s-3)+'px;width:6px;height:6px;border-radius:50%;background:#f16937;box-shadow:0 0 6px 2px rgba(194,26,16,.85),0 0 14px 4px rgba(194,26,16,.45);z-index:9',hud)});
+    nums(cx,mp,L);
+  }
+  function nums(cx,mp,L){
     if(!mp){var cy2=orbCY+cfg.numDy;
       var c=el('div','rv cur','left:'+(cx-L/2)+'px;width:'+L+'px;top:'+(cy2-cfg.hpCur*.62)+'px;--cs:'+cfg.hpCur+'px',hud);c.textContent=cfg.hpT[0];
       el('div','hair','left:'+(cx-22)+'px;width:44px;top:'+(cy2+cfg.hpCur*.48)+'px',hud);

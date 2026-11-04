@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HUD 시안 C</title>
+<link rel="stylesheet" href="_stage.css">
+</head><body>
+<!-- 시안 C (2026-11-05 Mac 판정 뒤): B 배치(소켓 48·주공격 56 가운데 받침·받침 레일) + 현재 원화 장식(뿔 해골 구체 틀·스킬바 가운데 볏)과 철 재질을 실버 헬 명도로 다시 칠함.
+     액체는 현재 HudOrb 형태(유리 반사 없음), ST는 녹청 제안 토큰. 1920×1080 설계 px. ?guides 로 측정선 표시. -->
+<div id="stage">
+  <div class="tag">MOCK C · 배치 B + 현재 장식 은빛</div>
+  <div class="bullet" style="left:700px;top:860px"></div><div class="bullet v" style="left:1250px;top:880px"></div><div class="bullet" style="left:980px;top:900px"></div>
+</div>
+<script src="_hud_mock.js"></script>
+<script>
+fitStage();
+buildHud({
+  art:true, crestScale:.42, rail:{h:14}, liquid:168, band:18, orbSink:6, overlap:16, eyeW:34, poise:true,
+  plateH:84, cham:14, padX:20, slotCY:36, s:48, sBig:56, bigLift:8, gIn:5, gOut:14, chipUp:8,
+  boss:{w:150, rise:16, cham:12},
+  hp:.72, mp:.85, st:.6, mob:.6,
+  hpT:['397','552'], mpT:['102','120'], stT:['60','100'],
+  hpCur:30, hpMax:14, rsCur:20, rsMax:12, numDy:-4,
+  groups:[
+    [{key:'1',icon:'orb/spikeTrap'},{key:'2'},{key:'3'},{key:'4'}],
+    [{key:'F',icon:'orb/holyDome',cd:.55,cdn:'7'},{key:'Z'}],
+    [{mouse:'L',icon:'orb/kiSlash',sel:true,big:true},{mouse:'R',icon:'orb/maliceSwipe',big:true}],
+    [{key:'SHFT',icon:'orb/charge',gauge:.6},{key:'E',icon:'orb/fireball'},{key:'Q',icon:'orb/parry'},{key:'CTRL',icon:'orb/iceOrb'},{key:'SPC',icon:'orb/giantSlam',rage:.45}]
+  ]
+});
+</script>
+</body></html>
