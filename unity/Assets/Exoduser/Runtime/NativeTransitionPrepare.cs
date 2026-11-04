@@ -2,8 +2,10 @@ using System;
 using Exoduser.UnityPort.Core;
 namespace Exoduser.UnityPort {
  // Presentation-host policy for screen-transition preparation (not Core; no rule or assembly result lives here).
- // Heavy field assembly reports real steps here; the transition host waits while steps keep arriving and recovers
- // to the lobby only on an exception or when the reports stop for StallSeconds of real frame time.
+ // Heavy field assembly reports real steps here; the transition host waits while steps keep arriving. It gives up only on an
+ // error, when reports stop for StallSeconds of clamped frame time, or at the HardCapSeconds absolute cap (frames clamped to
+ // HardCapMaxFrame). Giving up never rolls back to the lobby: the screen opens as is and a half-built 3D field is stopped and
+ // torn down, so play continues in 2D (the 3D field is retried at the next field entry, see FieldLoadGate).
  internal static class NativeTransitionProgress {
   static long beats;static int depth,generation;static string stage="",failure;static float fraction;
   // Set by the owner of the assembly coroutine: true while that coroutine is still running. Progress left Active without a live owner is an orphan.
@@ -32,7 +34,7 @@ namespace Exoduser.UnityPort {
  // Counts frame time without progress. Frame time is clamped, so one long frame (a synchronous assembly step,
  // a GC or disk hitch) can never by itself look like a hang; only reports that stop while frames keep running do.
  internal sealed class TransitionPrepareWatchdog {
-  internal const double StallSecondsAssembly=20,StallSecondsIdle=12,MaxFrame=.25,HardCapSeconds=120;
+  internal const double StallSecondsAssembly=20,StallSecondsIdle=12,MaxFrame=.25,HardCapSeconds=120,HardCapMaxFrame=2;
   double idle,total;long seen;bool started;string reason;
   internal double Idle{get{return idle;}}
   internal double Total{get{return total;}}
@@ -48,8 +50,9 @@ namespace Exoduser.UnityPort {
   internal bool Tick(double delta,long beats,bool assemblyActive){
    if(!started)Begin(beats);
    if(double.IsNaN(delta)||double.IsInfinity(delta)||delta<0)delta=0;
-   // Absolute cap on one preparation, in real time: continuous reports cannot keep the black screen forever.
-   total+=delta;if(total>=HardCapSeconds){reason="prepare-hard-cap("+HardCapSeconds+"s)";return true;}
+   // Absolute cap on one preparation: continuous reports cannot keep the black screen forever. Each frame counts at most HardCapMaxFrame (2 s), so a
+   // debugger stop, an OS sleep or a throttled background tab (one 125 s frame, 0.2 fps) is not mistaken for a hang.
+   total+=Math.Min(delta,HardCapMaxFrame);if(total>=HardCapSeconds){reason="prepare-hard-cap("+HardCapSeconds+"s)";return true;}
    if(beats!=seen){seen=beats;idle=0;return false;}
    idle+=Math.Min(delta,MaxFrame);
    if(idle>=(assemblyActive?StallSecondsAssembly:StallSecondsIdle)){reason="prepare-stalled (no progress for "+(assemblyActive?StallSecondsAssembly:StallSecondsIdle)+"s)";return true;}
@@ -64,6 +67,25 @@ namespace Exoduser.UnityPort {
    flow.Tick(holding?0:delta,ready,!string.IsNullOrEmpty(error));
    return error;
   }
+ }
+ // Decides when the 3D field assembly may (re)start. A stall or hard-cap abort, or the first exception, defers the retry to the next field entry;
+ // a second exception ends retries for the session. Scene loads/unloads still in flight (orphans) block a restart so RM1_Slice is never loaded twice.
+ internal sealed class FieldLoadGate {
+  internal const int MaxExceptionRetries=1;
+  int exceptionFails,pendingOps;bool deferred,permanent;
+  internal bool Permanent{get{return permanent;}}
+  internal bool Deferred{get{return deferred;}}
+  internal int PendingOps{get{return pendingOps;}}
+  internal bool CanStart{get{return !permanent&&!deferred&&pendingOps==0;}}
+  internal void Abort(bool exception){if(exception&&++exceptionFails>MaxExceptionRetries)permanent=true;else deferred=true;}
+  internal void MarkPermanent(){permanent=true;}
+  internal void FieldEntry(){deferred=false;}
+  internal void OpStarted(){pendingOps++;}
+  internal void OpDone(){if(pendingOps>0)pendingOps--;}
+ }
+ // Loading line target: on failure it freezes where it was (no run to 100%), the flow's fade-in then takes it away.
+ internal static class TransitionProgressBar {
+  internal static float Target(bool sawAssembly,bool assembling,float fraction,bool failed,float shown){if(failed)return shown;return sawAssembly?(assembling?fraction:1):0;}
  }
  // Runs a nested coroutine chain on the host so an exception anywhere in it is caught (Unity would only log it and silently stop).
  // Nested IEnumerators are flattened here; on failure every pending iterator is disposed so its finally blocks run.

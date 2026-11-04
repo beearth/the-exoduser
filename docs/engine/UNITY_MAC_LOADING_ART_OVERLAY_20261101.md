@@ -71,6 +71,20 @@ PC R5 `0a60cbcee273e1150ba7df8909acb77dd9f18edc`에서 게임 구역 전환 화�
 
 시간 상한 요약: 조립 중 보고 멈춤 20초, 비조립 12초(기존), 전환 한 번 준비 절대 120초. 검사 `run.cjs`는 기존 13개에 (a) Begin 전 2초 무보고+21초 조립, (b) 조립 중 예외, (c) 보고가 계속 와도 120초에서 hard-cap, (d) 고착 Active 뒤 다음 전환·옛 소유자 End 무시, (e) 첫 사유 보존, (f) 메뉴 전환 비대기를 더해 29개다. 20초·12초·120초는 설계 값이며 느린 PC 실측은 없다.
 
+### 11-04 fix3 — 재검증 지적 정리 (상한·실패 시 3D 처리)
+
+상태: PC 하니스·참조 컴파일만, Unity 실컴파일·Mac 화면 판정 전. Core·화면 디자인 무변경.
+
+| 항목 | 동작 |
+|---|---|
+| 120초 상한 | 프레임당 최대 2초(`HardCapMaxFrame`)로 잘라 센다. 125초 한 프레임(디버거·절전)은 2초, 0.2fps(5초 프레임)는 프레임당 2초라 30프레임이 60초다. 보고가 계속 와도 클램프 프레임 60개(60fps면 실시간 120초)에서 `prepare-hard-cap(120s)`. 정지 판정(20초·12초)은 기존 0.25초 클램프 그대로. |
+| 실패 시 3D 처리(fix2의 "그 세션 내내 2D"를 대체) | 어떤 중단이든 롤백 없이 그대로 연다. 반쯤 만든 3D는 끄고 `R3Teardown`으로 정리한다(씬 언로드, `r3Roots`·`r3Cam`·`a2Root` 등 참조 해제). 중단 사유별 재시도: (1) `prepare-stalled`·`prepare-hard-cap`·소유자 비활성화는 `r3Failed`를 두지 않고 **다음 필드 입장(필드 전환 `Request`)마다** 다시 시도한다. (2) 조립 예외는 **재시도 1회**(`FieldLoadGate.MaxExceptionRetries`), 두 번째 예외부터 `r3Failed=true`로 그 세션은 2D. (3) 씬 없음·리그 없음 같은 결정적 실패는 기존대로 `r3Failed`. 재시도 전 대기 중이면 `FieldPreparePending`은 false라 현재 전환은 2D로 열린다. |
+| 씬 로드 중 중단 | `LoadSceneAsync`의 AsyncOperation을 `r3LoadOp`에 잡아 두고, 로드 루프가 진행값이 바뀔 때마다 `Report("remodel3d-scene")`한다(정지는 그대로 감지). 로드가 끝나기 전에 중단되면 `completed`에서 그 씬 루트를 끄고 언로드한다(RM1_Slice의 Main Camera·AudioListener·전역 Volume 고아 방지). 로드·언로드가 남아 있는 동안은 재시작하지 않는다(`FieldLoadGate.PendingOps`). |
+| OnDisable | `NativeGame.OnDisable`이 조립 중(`r3Loading`)이면 `owner-disabled`로 중단·정리하고(다음 입장에 재시도), 아니면 `r3Loading`만 해제한다. |
+| 진행선 | 실패한 전환(`flow.Failed` 또는 기록된 error)에서는 진행선 목표를 현재 값에 고정해 100%까지 채우지 않는다. 이어지는 FadeIn이 선을 지운다. 성공 때는 조립 끝에 1로 찬다. |
+| 주석 | "로비로 되돌림" 표현을 `NativeTransitionPrepare.cs`에서 실제 동작(롤백 없이 열고 3D는 정리)으로, `NativeScreenTransition.cs`에 120초 hard-cap을 적었다. |
+| 검사 | `run.cjs` 46/0(fix2의 29개에 125초 한 프레임·0.2fps·재시도 정책·중단 뒤 다음 입장 재시도·진행선 고정 추가), `abort-contract.test.cjs`(씬 로드 고아 정리·OnDisable·주석 계약 10건), `root-guard`·`capture-contract` PASS. 실게임의 `UnloadSceneAsync`·재시도 조립은 Mac 확인 필요. |
+
 ## 11-04 로비→필드 전환 로딩 촬영 모드
 
 상태: PC 컴파일·소스 검사만, 촬영 미실행(Mac 공용 실행기로 촬영).

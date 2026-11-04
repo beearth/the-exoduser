@@ -138,6 +138,39 @@ static class P{
   {var s=new Sim();s.fieldBound=false;s.pending=()=>true;NativeTransitionProgress.Begin("background");
    while(s.Busy&&s.wall<60)s.Frame(F);
    C(s.doneAt>=1.0&&s.doneAt<=1.8&&!s.flow.Failed&&!TransitionPrepareWatchdog.FieldBound("splash-menu")&&TransitionPrepareWatchdog.FieldBound("lobby-game")&&TransitionPrepareWatchdog.FieldBound("story-game"),"(f) non-field transitions ignore assembly and pending",s.doneAt.ToString("F2"));}
+  // 10 (g). One 125 s frame (debugger stop, sleep) counts as at most 2 s: no hard-cap, no abort.
+  {var s=new Sim();bool begun=false,hit=false;int tk=0;bool aborted=false;s.onFail=r=>aborted=true;
+   while(s.Busy&&s.wall<400){double d=F;
+    if(s.swapped&&!begun){tk=NativeTransitionProgress.Begin("test-pause");NativeTransitionProgress.Report("a",.1f);begun=true;}
+    if(begun&&!hit&&NativeTransitionProgress.Active){d=125;hit=true;NativeTransitionProgress.Report("b",.2f);NativeTransitionProgress.End(tk);}
+    s.Frame(d);}
+   C(hit&&!aborted&&!s.flow.Failed&&s.doneAt>0&&s.dog.Total<5,"(g) a single 125s frame is not a hard-cap",s.dog.Total.ToString("F2")+" "+(s.recorded??""));}
+  // 10 (h). 0.2 fps (5 s frames) with a report each frame for 30 frames: counted at 2 s each (60 s), no hard-cap.
+  {var d=new TransitionPrepareWatchdog();d.Begin(0);bool fail=false;for(int i=0;i<30;i++)fail|=d.Tick(5,i+1,true);
+   C(!fail&&Math.Abs(d.Total-60)<1e-9,"(h) 0.2fps throttled frames are clamped to 2s each (30 frames = 60s)",d.Total.ToString("F2"));
+   var e=new TransitionPrepareWatchdog();e.Begin(0);bool cap=false;int n=0;for(;n<100&&!cap;n++)cap=e.Tick(5,n+1,true);
+   C(cap&&n==60&&e.Reason=="prepare-hard-cap(120s)","(h) sustained reports still hit the cap (60 clamped frames)",n+" "+e.Reason);}
+  // 10 (i). Abort retry policy: stall/hard-cap defers to the next field entry; first exception retried once; second exception ends retries; orphan ops block restart.
+  {var g=new FieldLoadGate();C(g.CanStart,"(i) fresh gate may start");
+   g.Abort(false);C(!g.CanStart&&g.Deferred&&!g.Permanent,"(i) hard-cap/stall abort defers, not permanent");
+   g.FieldEntry();C(g.CanStart,"(i) next field entry retries after a hard-cap/stall abort");
+   g.Abort(false);g.FieldEntry();g.Abort(false);g.FieldEntry();C(g.CanStart&&!g.Permanent,"(i) stall/hard-cap aborts can retry at every entry");
+   var x=new FieldLoadGate();x.Abort(true);C(!x.CanStart&&!x.Permanent,"(i) first exception defers");x.FieldEntry();C(x.CanStart,"(i) first exception retried once at the next entry");
+   x.Abort(true);x.FieldEntry();C(x.Permanent&&!x.CanStart,"(i) second exception: permanent 2D for the session (no endless retry)");
+   var o=new FieldLoadGate();o.OpStarted();o.OpStarted();C(!o.CanStart,"(i) pending scene load/unload blocks a restart");o.OpDone();C(!o.CanStart,"(i) still blocked while one op remains");o.OpDone();o.OpDone();C(o.CanStart&&o.PendingOps==0,"(i) restart allowed after all ops finished");}
+  // 10 (i2). End to end: first transition aborts by hard-cap, the next field entry completes with the 3D field.
+  {var gate=new FieldLoadGate();bool loaded=false;
+   var a=new Sim();bool begun=false;a.pending=()=>!loaded&&!gate.Deferred&&!gate.Permanent;a.onFail=r=>{gate.Abort(false);NativeTransitionProgress.Release();};
+   while(a.Busy&&a.wall<200){if(a.swapped&&!begun){NativeTransitionProgress.Begin("t1");begun=true;}if(begun&&NativeTransitionProgress.Active&&((int)a.wall)%1==0)NativeTransitionProgress.Report("r",.1f);a.Frame(F);}
+   C(a.flow.Failed&&gate.Deferred&&!gate.CanStart&&a.doneAt>0&&a.recorded.StartsWith("prepare-hard-cap"),"(i2) first entry aborted by hard-cap and opened without 3D",a.recorded??"");
+   gate.FieldEntry();bool started=false;int tk=0;double began=-1;
+   var b=new Sim(false);b.pending=()=>!loaded&&!gate.Deferred&&!gate.Permanent;
+   while(b.Busy&&b.wall<100){if(b.swapped&&gate.CanStart&&!started){started=true;began=b.wall;tk=NativeTransitionProgress.Begin("t2");}
+    if(started&&!loaded&&b.wall-began>=5){NativeTransitionProgress.End(tk);loaded=true;}b.Frame(F);}
+   C(started&&loaded&&!b.flow.Failed&&b.doneAt>=began+5,"(i2) next field entry retried the 3D field and waited for it",b.doneAt.ToString("F1"));}
+  // 10 (j). Failure freezes the loading line instead of running it to 100%; success still fills.
+  {C(TransitionProgressBar.Target(true,false,.4f,true,.4f)==.4f&&TransitionProgressBar.Target(true,true,.7f,true,.3f)==.3f,"(j) failed transition: line does not run to 100%");
+   C(TransitionProgressBar.Target(true,false,.4f,false,.4f)==1f&&TransitionProgressBar.Target(true,true,.7f,false,.3f)==.7f&&TransitionProgressBar.Target(false,false,0,false,0)==0f,"(j) normal: fills to 1 after assembly, follows fraction while it runs, 0 without assembly");}
   foreach(var l in log)Console.WriteLine(l);
   Console.WriteLine("checks="+checks+" failures="+failures);Environment.Exit(failures==0?0:1);}
 }
