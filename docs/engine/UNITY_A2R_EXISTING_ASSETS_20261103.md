@@ -320,3 +320,9 @@ proof-a2r-r2255-vs-4895bf9c6.png / proof-a2r-r2255-diagnostics.png 직접 확인
 - 재현(.NET, A2R d79f0968b Core + 실제 1-1 맵): 몸통을 노드 위에 두면 몸통에서 정확히 135px 떨어진 곳에서 state=idle·정적 pass=True로 정체한다. 몸통이 없으면 4틱 만에 도착한다.
 - 수정(`NativeGame.A2RSightSmoke.cs`, QA만): `A2RRouteCanMove` = 정적 판정 + 살아 있는 앵글러 몸통(순간이동 중이면 착지점) 회피. 경로·연결 칸 BFS에 사용하고, 시작 칸은 이미 서 있는 곳이라 출발 표본을 다시 검사하지 않으며, 몸통 안의 첫 노드는 건너뛴다. 정체하면 현재 위치에서 최대 3회 재계획하고(`walkReplans`), 실패 메시지에 몸통(`body=angler N@(x,y)`)을 남긴다. Core·맵은 바꾸지 않았다.
 - 검증: 실제 QA 코드(A2RSightPath·A2RRouteCanMove·A2RAnglerBody)를 추출해 Core와 실행했다. 같은 몸통에서 바닥 목표(6580,1540)까지 90노드 1,411틱 만에 도착했다. 순간이동 착지점은 막힘으로, 잠든 앵글러는 막지 않음으로 판정된다. Unity batch 컴파일 오류 0, PC Player 실행 0. 실제 A2R 스모크 재실행은 Mac 또는 맵 레인 몫이다.
+
+## 2026-11-05 기본 꺼짐으로 unity/main 보존
+
+- 기본 꺼짐: `Resources/A2R/default-enabled.json` `enabled=false`, `A2RHumanSave.CandidateDefault`가 그 값을 읽는다(전에는 파일이 있기만 하면 켜짐이었고 `NativeRemodel3D.Requested`까지 켰다).
+- 켜기: `--remodel3d --a2r1-light`. `--a2r-off`가 항상 우선한다. 옛 후보 기본값은 `enabled=true`로 복원한다.
+- 주의: 꺼져 있어도 `Resources/A2R` 1,602파일 약 1.19GB가 빌드에 포함된다. 판정 전이며 이 절은 화면 합격을 뜻하지 않는다.

@@ -10,7 +10,10 @@ namespace Exoduser.UnityPort
     {
         public const string Flag="--a2r-play-sandbox";
         public static string Root {get;private set;}
-        public static bool CandidateDefault {get{return Resources.Load<TextAsset>("A2R/default-enabled")!=null;}}
+        [Serializable] sealed class CandidateFlag{public bool enabled;}
+        static bool candidateRead,candidateDefault;
+        // 11-05: A2R is kept in the tree but off by default. Turn on with --remodel3d --a2r1-light; default-enabled.json enabled=true restores the old candidate default.
+        public static bool CandidateDefault {get{if(!candidateRead){var flag=Resources.Load<TextAsset>("A2R/default-enabled");candidateDefault=flag!=null&&JsonUtility.FromJson<CandidateFlag>(flag.text).enabled;candidateRead=true;}return candidateDefault;}}
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
         static void Bind()
         {
