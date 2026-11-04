@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Exoduser.UnityPort.Core;
 
@@ -7,9 +8,15 @@ namespace Exoduser.UnityPort
     public sealed partial class NativeGame
     {
         // right after ResetRun created the run's Simulation, before StageFlowAttach / the arena
+        // which druid set this run fights, and why (NativeReviewArgs.DecideDruidSet); read by the review-args capture
+        bool druidSetRemodel; string druidSetReason = "default";
+
         void ReviewArgsApply()
         {
-            if (NativeReviewArgs.DruidRemodel) Simulation.DruidRemodel = true;
+            // 3D boss arena = the --remodel3d scene (the only path that has the arena); demo = build flavor DemoMode. Core default stays false.
+            druidSetRemodel = NativeReviewArgs.DecideDruidSet(Environment.GetCommandLineArgs(), NativeRemodel3D.Requested, BuildFlavor.Current.DemoMode, out druidSetReason);
+            Simulation.DruidRemodel = druidSetRemodel;
+            Debug.Log("[DruidSet] remodel=" + (druidSetRemodel ? "true" : "false") + " reason=" + druidSetReason);
         }
 
         // EnterFromLobby: start at the boss arena entry. Returns true when the run was moved (the first practice is then skipped).

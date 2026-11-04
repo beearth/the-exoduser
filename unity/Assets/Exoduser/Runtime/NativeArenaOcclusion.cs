@@ -116,19 +116,41 @@ namespace Exoduser.UnityPort
         }
         public void Step(Vector3 hero)
         {
+            Step(hero,null);
+        }
+        // Hero and boss are tested independently: camera->target segment vs pillar bounds. Either one occluded fades the pillar.
+        public void Step(Vector3 hero,Vector3? boss)
+        {
             if(!active)return;
-            var center=camera.WorldToViewportPoint(hero+Vector3.up*.9f);
+            var heroAim=hero+Vector3.up*.9f;
+            var center=camera.WorldToViewportPoint(heroAim);
             Shader.SetGlobalMatrix("_ArenaViewportVP",camera.projectionMatrix*camera.worldToCameraMatrix);
             Shader.SetGlobalVector("_ArenaBattle",new Vector4(center.x,center.y,.225f,.20f));
+            Vector3 bossAim=Vector3.zero,bossView=Vector3.zero;
+            if(boss.HasValue)
+            {
+                bossAim=boss.Value+Vector3.up*1.4f;
+                bossView=camera.WorldToViewportPoint(bossAim);
+                Shader.SetGlobalVector("_ArenaBattleBoss",new Vector4(bossView.x,bossView.y,.225f,.20f));
+            }
+            else Shader.SetGlobalVector("_ArenaBattleBoss",Vector4.zero);
             Faded=0;
             foreach(var e in entries)
             {
                 if(e.body==null)continue;
-                float depth;
-                var rect=Project(e.body.bounds,out depth);
-                bool front=e.body.bounds.center.z<hero.z+.1f&&depth<center.z;
-                float dx=(Mathf.Clamp(center.x,rect.xMin,rect.xMax)-center.x)/.225f,dy=(Mathf.Clamp(center.y,rect.yMin,rect.yMax)-center.y)/.20f;
-                bool hit=e.body.gameObject.activeInHierarchy&&front&&rect.width>0&&dx*dx+dy*dy<=1;
+                bool alive=e.body.gameObject.activeInHierarchy;
+                bool front=false,hit=false;
+                if(alive)
+                {
+                    bool fh,hh;
+                    Occludes(e.body.bounds,heroAim,center.z,hero.z,out fh,out hh);
+                    front=fh;hit=hh;
+                    if(boss.HasValue)
+                    {
+                        Occludes(e.body.bounds,bossAim,bossView.z,boss.Value.z,out fh,out hh);
+                        front|=fh;hit|=hh;
+                    }
+                }
                 if(hit)e.hold=Time.unscaledTime+.12f;
                 e.progress=Mathf.MoveTowards(e.progress,hit||front&&Time.unscaledTime<e.hold?1:0,Time.unscaledDeltaTime/.2f);
                 e.fade.enabled=e.progress>0;
@@ -139,6 +161,23 @@ namespace Exoduser.UnityPort
                 e.body.SetPropertyBlock(block);
                 e.fade.SetPropertyBlock(block);
             }
+        }
+        // front: pillar is in front of the target (old rule). hit: camera->target segment crosses the (padded) bounds.
+        bool Occludes(Bounds b,Vector3 aim,float targetDepth,float targetZ,out bool front,out bool hit)
+        {
+            float depth;
+            Project(b,out depth);
+            front=b.center.z<targetZ+.1f&&depth<targetDepth;
+            hit=false;
+            if(!front)return false;
+            var from=camera.transform.position;
+            var d=aim-from;
+            float len=d.magnitude;
+            if(len<=.001f)return false;
+            b.Expand(.3f);
+            float t;
+            hit=b.IntersectRay(new Ray(from,d/len),out t)&&t<=len;
+            return hit;
         }
         Rect Project(Bounds b,out float depth)
         {

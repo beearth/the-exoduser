@@ -2,6 +2,8 @@
 
 11-04 갱신: 드루이드 입력을 v8.2(OldmanV82.fbx)로 교체하고 NativeDruidRigPixelView에 lantern_orb 월드 위치 읽기 API(HasOrbSocket/OrbSocketWorldPosition/TryGetOrbSocketWorldPosition)를 추가했다. 정책4,672/0·FBX 계약 통과·Roslyn5어셈블리 오류0, Core 변경0, Mac 판정 대기([PREP §9.3](UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md)). 아래 03:00 절의 v8.1 서술은 이력이다.
 
+11-04 갱신(v9.1): 드루이드 입력을 v9.1(OldmanV91.fbx 65뼈·38클립 + HuskHeapP3.fbx)로 교체하고 NativeDruidRigPixelView에 껍질/노인 페이즈 상태 레이어, phase12/23_collapse·intro_reveal·death_sink 연결, f108 껍질 끄기+힙 고정, P3 발 위치 보정, Core 판정 반경에서 계산한 목숨별 크기(P1 0.3146·P2 0.2645·P3 노인 0.6510, 영웅 대비 높이 ×1.36/×1.14/×1.58)를 넣었다. 상세·근거·캡처 단계(--unity-boss-arena-p3-edge)는 [PREP 10.1](UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md#101-unity-연결--v82--v91-교체-상태-레이어-p3-크기-규칙-11-04-보스-아레나-레인-core-변경-0). 정책 5,435/0, FBX 계약 통과, Roslyn 5어셈블리 오류 0, Core 변경 0. Unity 임포트·화면은 Mac 미검증.
+
 최신 병합: origin/unity/main 309892b1da390a6ac7218d2935ca0e808157c7a8 (merge 51e0b30e77). 작업본 G:/exoduser-wt/codex-boss-arena, 브랜치 codex/unity-boss-arena-20261103. 20:25/21:00/21:35/21:45 및11-04 00:50/01:20/03:00 실제시각 CTO 결정을 적용한다. PC는 CPU 하니스·Roslyn 컴파일, Player 빌드·화면·성능 판정은 Mac 담당이다.
 
 ## RB1-7 현재 상태

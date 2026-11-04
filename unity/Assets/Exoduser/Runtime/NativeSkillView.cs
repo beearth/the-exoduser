@@ -27,6 +27,8 @@ namespace Exoduser.UnityPort
         Sprite spike, dome, shard, disc; readonly Sprite[] slamFrames = new Sprite[4], orbFrames = new Sprite[9], maliceFrames = new Sprite[20];
         Item orb;
         public int ActiveZones, ActiveWaves, ActiveBlades, ActiveMaliceOrbs; public bool OrbShown;
+        // B9 (arena RETOUCH 11-04): while any boss telegraph is alive, the hero-side ground zones (spike trap, holy dome) drop to half opacity so the warning shapes read.
+        const float TelegraphDimTarget = .5f; readonly List<DruidTelegraph> telegraphScratch = new List<DruidTelegraph>(); float telegraphDim = 1f; public float TelegraphDim { get { return telegraphDim; } }
 
         public NativeSkillView(Transform parent)
         {
@@ -120,6 +122,7 @@ namespace Exoduser.UnityPort
         {
             BindMaliceBursts(sim); UpdateMaliceBursts(sim.TickCount);
             ActiveZones = ActiveWaves = ActiveBlades = ActiveMaliceOrbs = 0; var p = sim.Player;
+            sim.RemodelTelegraphs(telegraphScratch); telegraphDim = Mathf.MoveTowards(telegraphDim, telegraphScratch.Count > 0 ? TelegraphDimTarget : 1f, Time.unscaledDeltaTime / .15f);
             // ---- ground zones ----
             stale.Clear(); foreach (var k in zones.Keys) stale.Add(k);
             foreach (var z in sim.FireZones)
@@ -130,17 +133,17 @@ namespace Exoduser.UnityPort
                 if (z.Type == "spikeTrap")
                 {
                     it.a.transform.localRotation = Quaternion.Euler(0, 0, -time * 1000f * 0.00005f * Mathf.Rad2Deg);
-                    Fit(it.a, z.R * 2 * deploy, spike.rect.width); it.a.color = new Color(1, 1, 1, (.43f + .04f * Mathf.Sin(time * 1000f * .003f)) * fade);
+                    Fit(it.a, z.R * 2 * deploy, spike.rect.width); it.a.color = new Color(1, 1, 1, (.43f + .04f * Mathf.Sin(time * 1000f * .003f)) * fade * telegraphDim);
                 }
                 else
                 {
                     float t = time; float sz = z.R * 2 * deploy;
                     it.a.transform.localRotation = Quaternion.Euler(0, 0, time * 1000f * 0.00005f * Mathf.Rad2Deg);
-                    Fit(it.a, sz * 1.02f, dome.rect.width); it.a.color = new Color(182 / 255f, 1f, 84 / 255f, (.52f + .12f * Mathf.Sin(t * 3)) * fade * WebLitHolyDome);
+                    Fit(it.a, sz * 1.02f, dome.rect.width); it.a.color = new Color(182 / 255f, 1f, 84 / 255f, (.52f + .12f * Mathf.Sin(t * 3)) * fade * WebLitHolyDome * telegraphDim);
                     for (int ri = 0; ri < 2; ri++)
                     {
                         float rp = (Mathf.Sin(t * (2.1f + ri * .35f) + ri * 2.4f) + 1) * .5f;
-                        SetRing(it.rings[ri], z.R * (.62f + ri * .19f + rp * .09f) * deploy, new Color(213 / 255f, 1f, 114 / 255f, (.64f + rp * .18f) * fade * WebLitHolyDomeRing), it.a);
+                        SetRing(it.rings[ri], z.R * (.62f + ri * .19f + rp * .09f) * deploy, new Color(213 / 255f, 1f, 114 / 255f, (.64f + rp * .18f) * fade * WebLitHolyDomeRing * telegraphDim), it.a);
                     }
                 }
             }

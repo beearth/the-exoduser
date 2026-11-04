@@ -165,12 +165,20 @@ namespace Exoduser.UnityPort
             for(int i=0;i<DruidRemodelData.PillarCount;i++)
             {
                 var go=Place(stump,"Arena Core pillar Stump",Vector3.zero,i*97,1.6f,3.2f);
+                // B7: spread low root stumps of the same 1-1 asset family around the base so the pillar reads as a rooted trunk, not a cone. Presentation only.
+                for(int k=0;k<4;k++)
+                {
+                    float a=(i*37+k*90+20)*Mathf.Deg2Rad;
+                    var root2=Place(stump,"Arena pillar root flare",new Vector3(Mathf.Cos(a)*.9f,0,Mathf.Sin(a)*.9f),i*53+k*71,.95f,.5f);
+                    root2.transform.SetParent(go.transform,true);
+                }
                 pillars.Add(go);
                 pillarScales.Add(go.transform.localScale);
                 pillarLast.Add(new Vector3(float.NaN,0,0));
                 go.SetActive(false);
             }
             occlusion=new NativeArenaOcclusion(root.transform,camera);
+            CreatePillarAo(pillars.Count);
             CreateTorches();
             CreateChannel();
             NativeGroundSkillProjection.RegisterReceiver(root.GetComponent<MeshFilter>());
@@ -233,8 +241,9 @@ namespace Exoduser.UnityPort
             {
                 bool on=i<data.Count;
                 pillars[i].SetActive(on);
-                if(!on)continue;
+                if(!on){SyncPillarAo(i,false,0,0,0);continue;}
                 var p=data[i];
+                SyncPillarAo(i,true,(float)p.X/100,-(float)p.Y/100,(float)p.R/100);
                 var key=new Vector3((float)p.X,(float)p.Y,(float)p.R);
                 if(pillarLast[i]==key)continue;
                 pillarLast[i]=key;
@@ -247,14 +256,15 @@ namespace Exoduser.UnityPort
             }
             SyncCpuMs=(float)timer.Elapsed.TotalMilliseconds;
         }
-        public void Late(Vector3 hero)
+        public void Late(Vector3 hero,Vector3? boss=null)
         {
-            occlusion?.Step(hero);
+            occlusion?.Step(hero,boss);
             TorchLate();
         }
         public void SetActive(bool on)
         {
             root.SetActive(on&&Ready);
+            ApplyArenaLighting(on&&Ready);
             occlusion?.SetActive(on&&Ready);
         }
         public void Dispose()

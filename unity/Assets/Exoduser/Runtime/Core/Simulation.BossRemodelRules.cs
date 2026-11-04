@@ -114,11 +114,36 @@ namespace Exoduser.UnityPort.Core
             }
         }
 
+        // 11-04 (CTO option a): the Core body is a solid disc for the player. The web has no player-enemy collision, so a bot could stand on the boss centre; with the husk at 91 px that reads as a bug.
+        // The player is pushed radially out to (boss radius + player radius), at most BodyPushMax px per tick (a charge runs at 22), the nearest free angle when the radial spot is a wall or a pillar.
+        // Not while rolling / dashing (passing through is the point of those), held (bossGrab), the boss is underground or kneeling, or the fight is ending. Only sets with BodySeparation (the druid).
+        public const double BodyPushMax = 24;
+        void RemodelSeparatePlayer(EnemyState e, DruidLifeState st)
+        {
+            if (st.Done || st.Dying || !e.Alive || Player.Hp <= 0 || RollActive || DashActive || HarpActive) return;
+            DruidData d; if (!Druid.Data.TryGetValue(e, out d)) return;
+            if (d.S == "bossGrab" || d.S == "bossDruidUnder" || d.S == "bossDruidRest") return;
+            double need = e.Radius + Player.Radius, dx = Player.X - e.X, dy = Player.Y - e.Y, dist = Math.Sqrt(dx * dx + dy * dy);
+            if (dist >= need) return;
+            double ux = dist > 1e-6 ? dx / dist : 0, uy = dist > 1e-6 ? dy / dist : 1;   // exactly on the centre: out towards the south (the arena entry)
+            double target = Math.Min(need + .01, dist + BodyPushMax), baseAng = Math.Atan2(uy, ux);
+            for (int k = 0; k <= 8; k++)
+            {
+                for (int sgn = -1; sgn <= 1; sgn += 2)
+                {
+                    if (k == 0 && sgn == 1) continue;
+                    double a = baseAng + sgn * k * (Math.PI / 8), nx = e.X + Math.Cos(a) * target, ny = e.Y + Math.Sin(a) * target;
+                    if (Pass((float)nx, (float)ny, Player.Radius)) { Player.X = (float)nx; Player.Y = (float)ny; return; }
+                }
+            }
+        }
+
         // after DruidBoss.TickBoss
         void RemodelTickTail(EnemyState e)
         {
             DruidLifeState st;
             if (!druidLives.TryGetValue(e, out st)) return;
+            if (st.Set.BodySeparation) RemodelSeparatePlayer(e, st);
             if (st.Blocking) st.BlockMark = e.ReviveIframes;
             if (!obstacleProbe) return;
             obstacleProbe = false;

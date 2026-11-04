@@ -52,6 +52,10 @@ Roslyn 사전 검사: compile-check.ps1 -Output <I: 경로>. 기본 LibraryProje
 스모크 앞 reserve는 -Kind player다. Editor 사전 대기는 없고 Player 전용 슬롯·10GB·FIFO를 따른다. Get-BlockingUnityOwner는 종류에 맞는 앞 owner/slot을 읽는다. Player 슬롯 초과도 WAIT·lastAttemptSha 보존·waiting-build 보관으로 처리하며 실제 Cmd-Run fixture로 검사한다.
 ABORT 회차가 만든 build_new는 그 회차 폴더 aborted-build로 보관한다. pending 없이 남은 build_new(이전 ABORT 고아)는 다음 회차가 orphan-build-before로 보관하고 진행한다(11-03 회차마다 ABORT 정체 수정). pending 후보·링크는 옮기지 않는다.
 빌드가 다시 쓰는 Unity 직렬화 추적 파일(unity/Assets·ProjectSettings 아래 .meta·.mat·.asset·.unity, 작업본 수정만)은 버리지 않고 남긴 채 진행한다. 새 커밋과 겹치는 파일이 하나라도 있으면 그 목록으로 중단한다(정리는 사용자 확인). INDEX 변경·그 밖의 파일 변경은 예전처럼 중단. 11-03 guid만 있는 .meta 824개·재질 29개·URP 설정·FirstPlayable.unity 재직렬화로 12:25부터 회차마다 중단된 일의 수정. 시험 selftest/buildloop-reserialize-test.ps1.
-새 커밋이 바꾸는 파일의 작업본 사본(유지 중인 재직렬화·미추적)이 커밋 내용과 똑같으면 그 파일만 스테이징하고 갱신한다. git은 내용이 같아도 로컬 수정·미추적 파일이 있으면 fast-forward를 거부하기 때문이다(내용 손실 0). 내용이 다르면 그대로 목록과 함께 중단한다. 다른 버전으로 되돌리기는 사용자 확인 사항이다.
+새 커밋이 바꾸는 파일의 작업본 사본(유지 중인 재직렬화·미추적)이 커밋 내용과 똑같으면 그 파일만 스테이징하고 갱신한다. git은 내용이 같아도 로컬 수정·미추적 파일이 있으면 fast-forward를 거부하기 때문이다(내용 손실 0). 내용이 다르면 아래 자동 폐기 규칙을 거친 뒤 남은 것만 목록과 함께 중단한다.
+
+자동 폐기(11-04 사용자 "알아서 자동으로 버려"): 새 커밋과 내용이 다른 유지 파일 중 (a) HEAD와 공백만 다른 것(`git diff --ignore-all-space --ignore-blank-lines`), (b) HEAD가 fileFormatVersion·guid 두 줄뿐인 빈 .meta이고 작업본 guid가 같은 것만 버린다. 원본은 runs/<id>/discarded/<경로>에 해시 확인 후 복사하고 list.json에 사유를 남긴 뒤 `git restore --worktree`로 HEAD 판에 맞추고 fast-forward 한다(run.json autoDiscarded). 미추적·스테이징·값 차이·guid 차이·.meta/.mat/.asset/.unity 밖 파일은 예전처럼 중단한다. 11-03 밤 silver_hell meta 11개(공백만)·button_iron.png.meta(빈 meta를 같은 guid로 채움)로 회차마다 멈춘 일의 처리. 시험 selftest/buildloop-autodiscard-test.ps1.
+
+배포 기록: Load-State가 build-commit.json(루프 형식 commit·utc, 수동 교체 형식 shaFull·at)을 읽어 state.json deployed와 커밋이 다르고 시각이 같거나 늦으면 deployed로 받아들인다(verdict EXTERNAL, runId=by, 로그 한 줄). CTO 수동 교체가 build-commit.json만 바꿔 상태판 '마지막 배포 빌드'가 틀리던 일의 수정.
 
 WAIT는 본편 lastAttemptSha를 보존하면서 lastAttemptVerdict만 WAIT로 기록한다. 같은 SHA가 과거 실패로 남아 있어도 다음 일반 주기는 WAIT를 재시도하며, check도 Force가 필요하다는 경고를 내지 않는다. 브랜치 NoSwap의 배포 attempt 상태는 계속 변경하지 않는다. 분류/상태 단위13건과 실제 동일 SHA 다음 주기 fixture로 확인한다.

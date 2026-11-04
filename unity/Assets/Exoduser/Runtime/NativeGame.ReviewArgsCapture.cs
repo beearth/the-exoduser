@@ -21,7 +21,7 @@ namespace Exoduser.UnityPort
             AudioListener.volume = 0; AudioListener.pause = true; smokeActive = true;
             string output = Argument("-output"); if (string.IsNullOrEmpty(output)) yield break;
             m1Caps = Path.Combine(output, "caps"); Directory.CreateDirectory(m1Caps);
-            var rc = new ReviewReceipt { scope = "real NativeGame; args: druid-remodel " + NativeReviewArgs.DruidRemodel + ", boss-direct " + NativeReviewArgs.BossDirect };
+            var rc = new ReviewReceipt { scope = "real NativeGame; args: druid-remodel " + NativeReviewArgs.DruidRemodel + ", druid-legacy " + NativeReviewArgs.DruidLegacy + ", druid set " + druidSetRemodel + " (" + druidSetReason + "), boss-direct " + NativeReviewArgs.BossDirect };
             Action<string, bool, string> add = (n, ok, note) => rc.checks.Add(new ReviewCheck { name = n, ok = ok, note = note });
             Screen.SetResolution(1920, 1080, FullScreenMode.Windowed); yield return new WaitForSecondsRealtime(.5f);
             float deadline;
@@ -39,7 +39,8 @@ namespace Exoduser.UnityPort
 
             var sim = Simulation; var flow = sim.Stage; var p = sim.Player;
             Debug.Log("review-capture: sim " + sim.GetHashCode() + " exits " + flow.Exits.Count + " player " + p.X + "," + p.Y + " practice " + (firstPractice != null) + " unlocked " + flow.BossUnlocked + " enabled " + flow.Enabled);
-            add("--unity-druid-remodel: Simulation.DruidRemodel on, default setting still off", sim.DruidRemodel == NativeReviewArgs.DruidRemodel && !DruidRemodelSettings.Default, "sim " + sim.DruidRemodel + ", default " + DruidRemodelSettings.Default);
+            string expectReason; bool expectRemodel = NativeReviewArgs.DecideDruidSet(Environment.GetCommandLineArgs(), NativeRemodel3D.Requested, BuildFlavor.Current.DemoMode, out expectReason);
+            add("druid set rule (legacy-arg > arg > 3d-arena > demo > default): Simulation.DruidRemodel follows it, Core default setting still off", sim.DruidRemodel == expectRemodel && druidSetRemodel == expectRemodel && druidSetReason == expectReason && (!NativeReviewArgs.DruidRemodel || NativeReviewArgs.DruidLegacy || sim.DruidRemodel) && (!NativeReviewArgs.DruidLegacy || !sim.DruidRemodel) && !DruidRemodelSettings.Default, "sim " + sim.DruidRemodel + ", reason " + druidSetReason + ", expected " + expectRemodel + "/" + expectReason + ", core default " + DruidRemodelSettings.Default);
             add("--unity-boss-direct: first practice skipped", firstPractice == null == NativeReviewArgs.BossDirect, "practice " + (firstPractice != null ? "active" : "none"));
             if (NativeReviewArgs.BossDirect)
             {
@@ -60,11 +61,11 @@ namespace Exoduser.UnityPort
                 if (hasData)
                 {
                     bool rm = sim.Druid.Remodel, pillars = sim.Druid.Pillars.Count == 4;
-                    add("arena fight uses the " + (NativeReviewArgs.DruidRemodel ? "remodelled" : "web-port") + " druid", rm == NativeReviewArgs.DruidRemodel && (!NativeReviewArgs.DruidRemodel || pillars), "Remodel " + rm + ", pillars " + sim.Druid.Pillars.Count + ", boss hp " + boss.Hp + "/" + boss.MaxHp);
+                    add("arena fight uses the " + (druidSetRemodel ? "remodelled" : "web-port") + " druid", rm == druidSetRemodel && (!druidSetRemodel || pillars), "Remodel " + rm + ", pillars " + sim.Druid.Pillars.Count + ", boss hp " + boss.Hp + "/" + boss.MaxHp);
                 }
                 for (int i = 0; i < 30; i++) StepInput(0, 0, p.X, p.Y - 100, false, false);
                 yield return ReviewShot("rv3-arena-entry");
-                if (hasData && NativeReviewArgs.DruidRemodel)
+                if (hasData && druidSetRemodel)
                 {
                     // RB1-3: let the remodelled druid fight (the player stands 220 px from him, invulnerable, AI on) and shoot every telegraph kind once, in the middle of its warning
                     sim.Config.EnemyAiEnabled = true; p.X = boss.X; p.Y = boss.Y + 220;

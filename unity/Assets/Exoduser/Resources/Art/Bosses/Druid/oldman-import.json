@@ -1,8 +1,8 @@
 {
-  "sourceVersion": "v8.2",
-  "sourceSha256": "313bb238185919b69dd9233fade9f12185e803cb6e72d9a807ae0d781bd3798c",
-  "sourceBytes": 24299904,
-  "rig": "Generic selected for exact 34-bone authored actions/socket; Unity Avatar.isHuman/isValid pending Mac import",
+  "sourceVersion": "v9.1",
+  "sourceSha256": "d1527e54760ead9f2f778315dadb8a17e362fa7ac441f01f81ef8c432fc35265",
+  "sourceBytes": 28875148,
+  "rig": "Generic selected for exact 65-bone authored actions/sockets; Unity Avatar.isHuman/isValid pending Mac import",
   "bones": [
     "Beard_1",
     "Beard_2",
@@ -12,6 +12,35 @@
     "Cloak_Back_2",
     "Cloak_Back_3",
     "Cloak_Back_4",
+    "HK_Head",
+    "HK_Hips",
+    "HK_LeftArm",
+    "HK_LeftFoot",
+    "HK_LeftForeArm",
+    "HK_LeftHand",
+    "HK_LeftLeg",
+    "HK_LeftShoulder",
+    "HK_LeftToeBase",
+    "HK_LeftUpLeg",
+    "HK_RightArm",
+    "HK_RightFoot",
+    "HK_RightForeArm",
+    "HK_RightHand",
+    "HK_RightLeg",
+    "HK_RightShoulder",
+    "HK_RightToeBase",
+    "HK_RightUpLeg",
+    "HK_Root",
+    "HK_Spine",
+    "HK_Spine01",
+    "HK_Spine02",
+    "HK_neck",
+    "HP_BackHump",
+    "HP_BackRoots",
+    "HP_ChestPlate_L",
+    "HP_ChestPlate_R",
+    "HP_Crown",
+    "HP_Skull",
     "Head",
     "Hips",
     "LeftArm",
@@ -22,6 +51,8 @@
     "LeftShoulder",
     "LeftToeBase",
     "LeftUpLeg",
+    "OM_Lift",
+    "OM_Staff",
     "Panel_Front_1",
     "Panel_Front_2",
     "RightArm",
@@ -39,8 +70,17 @@
     "headfront",
     "neck"
   ],
-  "boneCount": 34,
-  "triangles": 78323,
+  "boneCount": 65,
+  "oldManBones": 34,
+  "huskBones": 23,
+  "huskPoseBones": 6,
+  "oldManHelperBones": [
+    "OM_Lift",
+    "OM_Staff"
+  ],
+  "triangles": 152229,
+  "oldManTriangles": 78323,
+  "huskTriangles": 73906,
   "materials": [
     "druid_bark",
     "druid_beard",
@@ -48,6 +88,7 @@
     "druid_feather",
     "druid_glow",
     "druid_hair",
+    "druid_husk_bark",
     "front_panel_cloth",
     "lantern_orb",
     "staff_bark",
@@ -55,28 +96,115 @@
     "staff_leather"
   ],
   "chestEmissionFaces": 43,
-  "chestEmissionScope": "Authored v8.2 druid_glow material faces preserved; screen glow <=0.5% pending Mac",
+  "chestEmissionScope": "Authored druid_glow material faces of char1 preserved; screen glow <=0.5% pending Mac",
   "objects": [
     "Armature",
     "FrontPanel",
+    "HuskSocket_Arm_L",
+    "HuskSocket_BackHump",
+    "HuskSocket_BackHump_Roots",
+    "HuskSocket_ChestPlate_L",
+    "HuskSocket_ChestPlate_R",
+    "HuskSocket_Crown",
+    "HuskSocket_Leg_L",
+    "HuskSocket_Leg_R",
+    "HuskSocket_RootArm_R",
+    "HuskSocket_Skull",
+    "Husk_Arm_L",
+    "Husk_BackHump",
+    "Husk_BackHump_Roots",
+    "Husk_ChestPlate_L",
+    "Husk_ChestPlate_R",
+    "Husk_Crown",
+    "Husk_Leg_L",
+    "Husk_Leg_R",
+    "Husk_RootArm_R",
+    "Husk_Skull",
     "StaffSocket_L",
     "Staff_L",
     "char1",
     "lantern_orb"
   ],
-  "socketParent": "LeftHand",
+  "huskMeshes": [
+    "Husk_Arm_L",
+    "Husk_BackHump",
+    "Husk_BackHump_Roots",
+    "Husk_ChestPlate_L",
+    "Husk_ChestPlate_R",
+    "Husk_Crown",
+    "Husk_Leg_L",
+    "Husk_Leg_R",
+    "Husk_RootArm_R",
+    "Husk_Skull"
+  ],
+  "huskSockets": [
+    "HuskSocket_Arm_L",
+    "HuskSocket_BackHump",
+    "HuskSocket_BackHump_Roots",
+    "HuskSocket_ChestPlate_L",
+    "HuskSocket_ChestPlate_R",
+    "HuskSocket_Crown",
+    "HuskSocket_Leg_L",
+    "HuskSocket_Leg_R",
+    "HuskSocket_RootArm_R",
+    "HuskSocket_Skull"
+  ],
+  "socketParent": "OM_Staff",
   "socketRestMetres": [
-    0.6211404800415039,
-    -0.24139992892742157,
+    0.6211404204368591,
+    -0.2413998693227768,
     1.2365225553512573
   ],
-  "socketImportOffsetMetres": 32.93271945376083,
-  "socketCorrectedErrorMetres": 3.897415730752426e-06,
+  "socketImportOffsetMetres": 124.7360293835233,
+  "socketCorrectedErrorMetres": 1.82203122092305e-05,
+  "rigidHuskImportOffsetMetres": 6.2128900877524575,
+  "rigidHuskCorrectedErrorMetres": 2.864161125213122e-07,
+  "rigidHuskParts": 6,
   "hornHeight": 2.71,
   "meshHeight": 2.82,
   "blendShapes": [
     "Fist_L"
   ],
+  "footprint": {
+    "scope": "rest pose of state_P3 (old man) / state_P1 (husk legs); centre = midpoint of the two ankle bone heads, radius = farthest horizontal distance of foot-weighted vertices; Blender world metres at scale 1",
+    "oldMan": {
+      "radiusMetres": 0.4761574625036051,
+      "centreMetres": [
+        0.013542808592319489,
+        -2.6683192253112793
+      ],
+      "ankleSpanMetres": 0.5053034356950354,
+      "footVertices": 1628,
+      "soleMinZMetres": -0.00019966541731264442,
+      "boundsMetres": [
+        -0.3389508128166199,
+        -3.029456615447998,
+        0.3493916094303131,
+        -2.4912753105163574
+      ]
+    },
+    "husk": {
+      "radiusMetres": 1.3987046160599186,
+      "centreMetres": [
+        0.0024947524070739746,
+        0.07904448360204697
+      ],
+      "ankleSpanMetres": 0.7330498080535502,
+      "footVertices": 3439,
+      "soleMinZMetres": -1.6954161765170284e-05,
+      "boundsMetres": [
+        -1.3192973136901855,
+        -0.5675057172775269,
+        1.389418125152588,
+        0.4646713137626648
+      ]
+    },
+    "oldManMeshHeightMetres": 2.8285168307920685,
+    "huskTopMetres": 4.829533100128174
+  },
+  "oldManFootRadiusMetres": 0.4761574625036051,
+  "huskFootRadiusMetres": 1.3987046160599186,
+  "huskTopMetres": 4.829533100128174,
   "clips": [
     {
       "name": "Idle",
@@ -325,6 +453,62 @@
       "lastFrame": 90.0,
       "fps": 60.0,
       "duration": 1.5
+    },
+    {
+      "name": "state_P1",
+      "sourceAction": "state_p1",
+      "firstFrame": 0.0,
+      "lastFrame": 1.0,
+      "fps": 60.0,
+      "duration": 0.016666666666666666
+    },
+    {
+      "name": "state_P2",
+      "sourceAction": "state_p2",
+      "firstFrame": 0.0,
+      "lastFrame": 1.0,
+      "fps": 60.0,
+      "duration": 0.016666666666666666
+    },
+    {
+      "name": "state_P3",
+      "sourceAction": "state_p3",
+      "firstFrame": 0.0,
+      "lastFrame": 1.0,
+      "fps": 60.0,
+      "duration": 0.016666666666666666
+    },
+    {
+      "name": "phase12_collapse",
+      "sourceAction": "phase12_collapse",
+      "firstFrame": 0.0,
+      "lastFrame": 120.0,
+      "fps": 60.0,
+      "duration": 2.0
+    },
+    {
+      "name": "phase23_collapse",
+      "sourceAction": "phase23_collapse",
+      "firstFrame": 0.0,
+      "lastFrame": 120.0,
+      "fps": 60.0,
+      "duration": 2.0
+    },
+    {
+      "name": "intro_reveal",
+      "sourceAction": "intro_reveal",
+      "firstFrame": 0.0,
+      "lastFrame": 165.0,
+      "fps": 60.0,
+      "duration": 2.75
+    },
+    {
+      "name": "death_sink",
+      "sourceAction": "death_sink",
+      "firstFrame": 0.0,
+      "lastFrame": 150.0,
+      "fps": 60.0,
+      "duration": 2.5
     }
   ],
   "missingClips": [
@@ -335,5 +519,5 @@
     "Sink"
   ],
   "fallbackPose": "Idle time zero, held; no synthetic skill action",
-  "scope": "Format conversion only; v8.2 meshes/weights/parents/auxiliary bones/blendshape retained. Importer helper Icosphere excluded. No Unity/Player/render execution"
+  "scope": "Format conversion only; v9.1 meshes/weights/parents/auxiliary bones/blendshape retained. Importer helper Icosphere excluded. No Unity/Player/render execution"
 }

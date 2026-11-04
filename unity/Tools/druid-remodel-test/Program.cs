@@ -64,8 +64,8 @@ static partial class P
             bool placed = mot.Before(s, boss, p);
             if (!placed && (st == null || !st.Collapsing))
             {
-                double ang = Math.Atan2(boss.Y - 800, boss.X - 800) + 0.9; p.X = (float)(boss.X + Math.Cos(ang) * 110); p.Y = (float)(boss.Y + Math.Sin(ang) * 110);
-                if (!s.CanMove((float)p.X, (float)p.Y, p.Radius)) { p.X = boss.X + 110; p.Y = boss.Y; }
+                double ang = Math.Atan2(boss.Y - 800, boss.X - 800) + 0.9; double keep = boss.Radius + 66; p.X = (float)(boss.X + Math.Cos(ang) * keep); p.Y = (float)(boss.Y + Math.Sin(ang) * keep);   // 110 px from the old 44 px body = radius + 66
+                if (!s.CanMove((float)p.X, (float)p.Y, p.Radius)) { p.X = boss.X + (float)keep; p.Y = boss.Y; }
             }
             if (st != null && st.Collapsing)
             {
@@ -146,7 +146,7 @@ static partial class P
         for (int i = 0; i < 3; i++)
         {
             Check(Math.Abs(r.MaxHp[i] - Math.Round(r.BaseHp * frac[i])) <= 1, n + ": life " + (i + 1) + " HP " + r.MaxHp[i] + " vs " + Math.Round(r.BaseHp * frac[i]));
-            Check(Math.Abs(r.Radius[i] - Math.Round(r.Radius[0] * body[i])) <= 1, n + ": life " + (i + 1) + " radius " + r.Radius[i]);
+            Check(r.Radius[i] == DruidRemodelData.LifeRadiusPx[i], n + ": life " + (i + 1) + " radius " + r.Radius[i] + " vs LifeRadiusPx " + DruidRemodelData.LifeRadiusPx[i]);
             Check(Math.Abs(r.ShieldMax[i] - Math.Round(r.MaxHp[i] * shield[i])) <= 1 && Math.Abs(r.Shield[i] - r.ShieldMax[i]) < 1e-3, n + ": life " + (i + 1) + " shield " + r.Shield[i] + "/" + r.ShieldMax[i]);
         }
         // kneel = exactly 120 ticks between the collapse and the new life event
@@ -169,9 +169,12 @@ static partial class P
     static int Main(string[] args)
     {
         string dir = args.Length > 0 ? args[0] : "remodel-out"; Directory.CreateDirectory(dir);
+        if (args.Length > 1 && args[1] == "--length") { FightLengthChecks(dir); Console.WriteLine("fightlength only: " + checks + " checks, " + bad + " failed"); return bad == 0 ? 0 : 1; }
         var a = Fight("A-root-cut", true, 20261027u); var b = Fight("B-root-not-hit", false, 20261028u);
-        ReachChecks(); Verify(a); Verify(b); VerifyTelegraphs(); ParryGuard(); PillarChecks(); VerifyMoveTable(); VerifyMotionTotals();
+        ReachChecks(); Verify(a); Verify(b); VerifyTelegraphs(); ParryGuard(); PillarChecks(); VerifyMoveTable(); VerifyMotionTotals(); { int c0 = checks, b0 = bad; RadiusChecks(); Console.WriteLine("radius / edge hit / no-trap / burrow / reach by life: " + (checks - c0) + " checks, " + (bad - b0) + " failed"); }
         int druidChecks = checks, druidBad = bad;
+        { int c0 = checks, b0 = bad; FightLengthChecks(dir); Console.WriteLine("fight length (11-04 CTO decision 3): " + (checks - c0) + " checks, " + (bad - b0) + " failed"); }
+        druidChecks = checks; druidBad = bad;
         FrameworkChecks();
         int fwChecks = checks - druidChecks, fwBad = bad - druidBad;
         File.WriteAllText(Path.Combine(dir, "remodel-telegraphs.json"), TelegraphJson(), new UTF8Encoding(false));

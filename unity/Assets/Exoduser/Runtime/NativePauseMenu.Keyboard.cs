@@ -69,7 +69,7 @@ namespace Exoduser.UnityPort
    bool live=GUI.enabled&&inputLive;bool hover=live&&rect.Contains(Event.current.mousePosition);bool pressed=hover&&ExoInput.Mouse(0);bool lit=hover||selected;
    if(live&&lit&&!pressed)NativeSilverHellUi.ButtonFocus(rect);
    // The shared solid iron face owns opacity; emphasis stays inside its silver edge.
-   NativeSilverHellUi.ActionPlate(rect,primary,lit?1:0,pressed,36,8);
+   NativeSilverHellUi.ActionPlate(rect,primary,lit?1:0,pressed,36,8,settingsChip:page==PausePage.Settings);
    // .sh-btn text: Hahmlet 400, letter-spacing .16em, #d6d3cd (selected/primary #f2f0ec). GUIStyle.none: no skin background behind the plate.
    Color col=lit||primary?NativeSilverHellUi.Bright:new Color(214/255f,211/255f,205/255f);
    SpacedLabel(rect,text,17,col);

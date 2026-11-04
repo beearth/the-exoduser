@@ -435,11 +435,12 @@ namespace Exoduser.UnityPort.Core
             var ph = Ph(d.BossPhase);
             for (int i = 0; i < d.MoveCDs.Length; i++) if (d.MoveCDs[i] > 0) d.MoveCDs[i] -= 1;
             if (e.Stunned > 0 || d.S != "idle") return;
+            double rawDist = dist; dist -= RmShift(d);   // remodel: ranges / score / grab test see the player as seen from the design-radius body (LifeRadiusBasis); the raw distance only guards
             double engDist = 180 - d.BossPhase * 20;
             d.CombatSt = dist > engDist + 30 ? "approach" : dist < 50 ? "retreat" : "engage";
             d.BossPatT -= 1;
             if (Remodel && RmForcedPick(e, d, dist)) return;
-            if (d.BossPatT > 0 || dist > 500 || dist < 20) return;
+            if (d.BossPatT > 0 || rawDist > 500 || rawDist < 20) return;
             // G._pStats.avgDist is a statistic nothing else reads in the ported slice
             if (d.ComboSeq != null && d.ComboIdx < d.ComboSeq.Length)
             {

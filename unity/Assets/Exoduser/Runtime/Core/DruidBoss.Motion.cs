@@ -65,7 +65,7 @@ namespace Exoduser.UnityPort.Core
             if (e.Stunned > 0) return;
             double vmax = Set.WalkSpeed * Ph(d.BossPhase).SpdM;
             double toP = Atan2(host.PY - d.Y, host.PX - d.X), heading = toP, fx, fy;
-            bool walk = d.Alerted && dist > Set.WalkStandOff;
+            bool walk = d.Alerted && dist - RmShift(d) > Set.WalkStandOff;   // stand-off measured from the body edge of the design radius (LifeRadiusBasis)
             if (walk && host.FlowDir(d.X, d.Y, out fx, out fy)) heading = Atan2(fy, fx);
             d.Facing = TurnToward(d.Facing, heading, Set.WalkTurn);
             if (walk && Math.Abs(WrapAngle(heading - d.Facing)) < 0.8) d.RmVel = Math.Min(vmax, d.RmVel + vmax / Set.WalkAccelTicks);

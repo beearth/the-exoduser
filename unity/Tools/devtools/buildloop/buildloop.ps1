@@ -145,7 +145,29 @@ function Load-State {
       }
     }
   }
+  $ext = Get-ExternalDeploy $s.deployed (Join-Path $Cfg.Out 'build-commit.json')
+  if ($null -ne $ext) { Log ('바탕화면 build-commit.json이 더 최신이라 배포 기록으로 받아들임: ' + $ext.sha + ' (' + $ext.at + ', ' + $ext.runId + ')'); $s.deployed = $ext }
   return $s
+}
+# 11-04: CTO 수동 교체(cto-swap)는 build-commit.json만 고치고 state.json은 그대로 둔다. 실행본의 진실은 build-commit.json이므로
+# 그 커밋이 기록과 다르고 시각이 같거나 더 늦으면 deployed로 받아들인다. 형식은 루프(commit·utc)와 수동 교체(shaFull·at) 둘 다 읽는다.
+function Get-ExternalDeploy($deployed, [string]$bcPath) {
+  if (-not (Test-Path -LiteralPath $bcPath)) { return $null }
+  $raw = Get-Content -LiteralPath $bcPath -Raw -Encoding UTF8
+  $full = ''; $at = ''; $by = ''
+  try { $bc = $raw | ConvertFrom-Json; $full = [string](Prop $bc 'shaFull' (Prop $bc 'commit' '')); $at = [string](Prop $bc 'at' (Prop $bc 'utc' '')); $by = [string](Prop $bc 'by' '') } catch {
+    $mc = [regex]::Match($raw, '"(?:shaFull|commit)"\s*:\s*"([0-9a-fA-F]{7,40})"'); if ($mc.Success) { $full = $mc.Groups[1].Value }
+    $mt = [regex]::Match($raw, '"(?:at|utc|built_at)"\s*:\s*"([^"]+)"'); if ($mt.Success) { $at = $mt.Groups[1].Value }
+  }
+  if ($full -notmatch '^[0-9a-fA-F]{7,40}$') { return $null }
+  if ($full.Length -lt 40) { try { $full = ([string](GitR rev-parse $full)).Trim() } catch { return $null } }
+  $depFull = ''; $depAt = $null
+  if ($null -ne $deployed) { $depFull = [string](Prop $deployed 'shaFull' ''); try { $depAt = [datetime]::Parse([string]$deployed.at) } catch { } }
+  if ($full -eq $depFull) { return $null }
+  $bcAt = $null; try { $bcAt = [datetimeoffset]::Parse($at).LocalDateTime } catch { }
+  if ($null -ne $depAt -and ($null -eq $bcAt -or $bcAt -lt $depAt)) { return $null }
+  $shown = $at; if ($null -ne $bcAt) { $shown = $bcAt.ToString('yyyy-MM-dd HH:mm') }
+  return [pscustomobject]@{ sha = $full.Substring(0, 9); shaFull = $full; at = $shown; runId = $(if ($by) { $by } else { 'external' }); verdict = 'EXTERNAL' }
 }
 function Save-State($s) { WriteJson $StateFile $s 8 }
 
@@ -415,6 +437,45 @@ function Get-IncomingCollision([string]$worktree, [string[]]$kept, [string]$targ
   for ($i = 0; $i -lt $paths.Count; $i++) { if ($want.ContainsKey($paths[$i]) -and $want[$paths[$i]] -eq $have[$i]) { $same += $paths[$i] } else { $different += $paths[$i] } }
   return [pscustomobject]@{ same = $same; different = $different }
 }
+# 11-04 사용자 "알아서 자동으로 버려": 새 커밋과 다른 유지 파일 중 Unity가 의미 없이 다시 쓴 것만 버린다.
+#  (a) HEAD와 공백만 다름  (b) HEAD가 fileFormatVersion·guid 두 줄뿐인 빈 .meta이고 작업본 guid가 같음.
+# 미추적·스테이징·값/guid가 다른 파일은 rest로 돌려 예전처럼 중단한다.
+function Get-AutoDiscard([string]$worktree, [string[]]$different, [string[]]$kept) {
+  $discard = @(); $rest = @()
+  foreach ($p in @($different)) {
+    if (-not $p) { continue }
+    if (@($kept) -notcontains $p -or $p -notmatch '^unity/(Assets|ProjectSettings)/.+\.(meta|mat|asset|unity)$') { $rest += $p; continue }
+    & git.exe -C $worktree -c core.quotePath=false diff --quiet --ignore-all-space --ignore-blank-lines HEAD -- $p
+    if ($LASTEXITCODE -eq 0) { $discard += [pscustomobject]@{ path = $p; reason = 'whitespace' }; continue }
+    if ($p.EndsWith('.meta')) {
+      $headText = [string]((& git.exe -C $worktree -c core.quotePath=false show ('HEAD:' + $p)) -join "`n")
+      $headLines = @($headText -split "`r?`n" | ForEach-Object { $_.Trim() } | Where-Object { $_ })
+      $hg = [regex]::Match($headText, '(?m)^guid:\s*([0-9a-f]{32})\s*$')
+      $wg = [regex]::Match([IO.File]::ReadAllText((Join-Path $worktree $p)), '(?m)^guid:\s*([0-9a-f]{32})\s*$')
+      if ($headLines.Count -eq 2 -and $headLines[0] -match '^fileFormatVersion:\s*\d+$' -and $hg.Success -and $wg.Success -and $hg.Groups[1].Value -eq $wg.Groups[1].Value) {
+        $discard += [pscustomobject]@{ path = $p; reason = 'stub-meta-filled' }; continue
+      }
+    }
+    $rest += $p
+  }
+  return [pscustomobject]@{ discard = $discard; rest = $rest }
+}
+# 원본을 runDir\discarded\<경로>에 복사한 뒤 작업본만 HEAD로 되돌린다(인덱스는 건드리지 않음).
+function Invoke-AutoDiscard([string]$worktree, $items, [string]$runDir) {
+  $paths = @($items | ForEach-Object { $_.path })
+  if (-not $paths.Count) { return }
+  $keep = Join-Path $runDir 'discarded'
+  foreach ($p in $paths) {
+    $src = Join-Path $worktree $p; $dst = Join-Path $keep $p
+    New-Item -ItemType Directory -Force -Path (Split-Path $dst -Parent) | Out-Null
+    Copy-Item -LiteralPath $src -Destination $dst -Force
+    if ((Get-FileHash -LiteralPath $dst).Hash -ne (Get-FileHash -LiteralPath $src).Hash) { throw ('폐기 전 보존 복사 불일치: ' + $p) }
+  }
+  WriteJson (Join-Path $keep 'list.json') @($items) 4
+  $spec = Join-Path $runDir 'auto-discard.txt'; [IO.File]::WriteAllLines($spec, [string[]]$paths, (New-Object Text.UTF8Encoding($false)))
+  & git.exe -C $worktree -c core.quotePath=false restore --worktree --pathspec-from-file=$spec
+  if ($LASTEXITCODE -ne 0) { throw '자동 폐기 restore 실패' }
+}
 function Get-BlockingUnityOwner([string]$kind = 'editor', [string]$root = 'I:\EXODUSER-Storage\unity-jobs') {
   foreach ($f in @(Get-ChildItem (Join-Path $root 'queue') -Filter '*.json' -ErrorAction SilentlyContinue | Sort-Object Name)) {
     $r = ReadJson $f.FullName
@@ -447,6 +508,8 @@ function Invoke-Exo([string]$command, [string[]]$jobArgs, [string]$logBase, [str
   foreach ($line in @(Get-Content -LiteralPath ($logBase+'.out.log') -Encoding UTF8)) { if ($line.Trim().StartsWith('{')) { try { $receipt = $line | ConvertFrom-Json } catch { } } }
   $waitReason = ''
   if ($rc -ne 0 -and $null -eq $receipt) { $waitReason = Get-UnityWaitReason ([IO.File]::ReadAllText($logBase+'.err.log')) }
+  # 11-04: 사용자가 바탕화면 게임을 띄워 둔 동안 실행기는 Player를 미룬다. 실패가 아니라 다음 회차에 다시 한다.
+  if ([string](Prop $receipt 'deferred' '') -eq 'user-game') { $waitReason = [string](Prop $receipt 'note' '사용자 게임 실행 중, 미룸'); $receipt = $null }
   return [pscustomobject]@{ exit = $rc; receipt = $receipt; stdout = ($logBase+'.out.log'); stderr = ($logBase+'.err.log'); waitReason = $waitReason }
 }
 function Invoke-UiOverlapCheck([string]$check, [string]$exe, [string]$worktree, [string]$output, [string]$log) {
@@ -816,7 +879,14 @@ function Cmd-Run {
       # 새 커밋이 바꾸는 파일 중 작업본 사본(유지 중인 재직렬화·미추적)이 커밋 내용과 똑같으면 스테이징만 하고 갱신한다(내용 손실 0).
       # git은 내용이 같아도 로컬 수정이 있으면 ff를 거부하기 때문이다. 내용이 다르면 그대로 중단(되돌리기는 사용자 확인 사항).
       $col = Get-IncomingCollision $Cfg.Worktree $dirt.kept $head.full
-      if ($col.different.Count) { throw ('Unity 재직렬화 파일이 새 커밋과 겹침(' + $col.different.Count + '개, 사용자 정리 필요): ' + (($col.different | Select-Object -First 5) -join ', ')) }
+      if ($col.different.Count) {
+        $auto = Get-AutoDiscard $Cfg.Worktree $col.different $dirt.kept
+        if ($auto.rest.Count) { throw ('Unity 재직렬화 파일이 새 커밋과 겹침(' + $auto.rest.Count + '개, 값·guid·소스 차이라 사용자 정리 필요): ' + (($auto.rest | Select-Object -First 5) -join ', ')) }
+        Invoke-AutoDiscard $Cfg.Worktree $auto.discard $runDir
+        $run.autoDiscarded = @($auto.discard)
+        Log ('새 커밋과 겹친 Unity 재직렬화 파일 ' + $auto.discard.Count + '개 자동 폐기(공백만·빈 meta 채움만, 원본은 runs\' + $runId + '\discarded)')
+        $gone = @($auto.discard | ForEach-Object { $_.path }); $dirt.kept = @($dirt.kept | Where-Object { $gone -notcontains $_ })
+      }
       $sameAsTarget = @($col.same)
     }
     if ($dirt.kept.Count) {

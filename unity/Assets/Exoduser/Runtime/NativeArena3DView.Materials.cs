@@ -7,6 +7,10 @@ namespace Exoduser.UnityPort
     public sealed partial class NativeArena3DView
     {
         const float TorchHeight=1.4f;
+        // Presentation constants for the arena RETOUCH (docs UNITY_BOSS_RIGPIXEL_DRUID_PREP section 10.3). Core pillar geometry and the camera are untouched.
+        const float GroundTintR=.66f,GroundTintG=.56f,GroundTintB=.50f,GroundSaturationKeep=.62f,GroundFlatten=.45f;
+        const float TorchIntensity=5.5f,TorchRange=4f;
+        const float SunIntensityScale=.65f,SunPitch=48f,AmbientScale=.8f;
         readonly List<SpriteRenderer> torchFlames=new List<SpriteRenderer>();
         readonly List<Light> torchLights=new List<Light>();
         readonly List<Sprite> torchFrames=new List<Sprite>();
@@ -36,6 +40,8 @@ namespace Exoduser.UnityPort
                 material.SetTexture("_Normal"+suffix,RequiredTexture(path+"_normal"));
                 material.SetTexture("_Mask"+suffix,RequiredTexture(path+"_mask"));
             }
+            // B1/B2 (arena RETOUCH 11-04): dark brown-red ground like the 1-1 field, desaturated, painted contrast pulled toward the tile mean.
+            material.SetColor("_Tint",new Color(GroundTintR,GroundTintG,GroundTintB,1));material.SetFloat("_Sat",GroundSaturationKeep);material.SetFloat("_Flat",GroundFlatten);material.SetFloat("_Dark",1);
             material.SetTexture("_Soil",RequiredTexture("Art/map/a2/ground/A2_ForestSoil_BaseColor"));
             material.SetTexture("_Roots",RequiredTexture("Art/map/a2/ground/A2_ExposedRoots_BaseColor"));
             groundMaterial=material;
@@ -60,7 +66,7 @@ namespace Exoduser.UnityPort
                 go.transform.localScale=Vector3.one*(.65f/torchFrames[0].bounds.size.y);
                 var flame=go.AddComponent<SpriteRenderer>();flame.sharedMaterial=fire;flame.sprite=torchFrames[0];flame.color=new Color(1.8f,1.15f,.65f,1);torchFlames.Add(flame);arenaFlames.Add(flame);
                 var lightObject=new GameObject("RB1-8b Pool_Hell torch "+index);lightObject.transform.SetParent(root.transform,false);lightObject.transform.position=at+Vector3.up*(TorchHeight+.15f);
-                var lamp=lightObject.AddComponent<Light>();lamp.type=LightType.Point;lamp.color=new Color(1,.60f,.28f);lamp.intensity=5;lamp.range=4.7f;lamp.shadows=LightShadows.Soft;lamp.shadowStrength=.8f;lamp.shadowBias=.025f;lamp.shadowNormalBias=.1f;torchLights.Add(lamp);
+                var lamp=lightObject.AddComponent<Light>();lamp.type=LightType.Point;lamp.color=new Color(1,.55f,.24f);lamp.intensity=TorchIntensity;lamp.range=TorchRange;lamp.shadows=LightShadows.None;torchLights.Add(lamp);
                 index++;
             }
         }
@@ -95,7 +101,7 @@ namespace Exoduser.UnityPort
                 flame.sprite=torchFrames[((int)(Time.unscaledTime*12)+i*3)%8];
                 flame.transform.rotation=camera.transform.rotation;
                 // Same Pool_Hell mean intensity, restrained continuous flicker.
-                torchLights[i].intensity=5*(1+.035f*Mathf.Sin(Time.unscaledTime*4.7f+i*.9f)+.02f*Mathf.Sin(Time.unscaledTime*7.3f+i));
+                torchLights[i].intensity=TorchIntensity*(1+.035f*Mathf.Sin(Time.unscaledTime*4.7f+i*.9f)+.02f*Mathf.Sin(Time.unscaledTime*7.3f+i));
             }
         }
         [Serializable] public sealed class TorchReceipt {public Vector3 position;public Color color;public float intensity,range;public string shadows;}
@@ -110,8 +116,69 @@ namespace Exoduser.UnityPort
             foreach(var lamp in torchLights)receipt.torches.Add(new TorchReceipt{position=lamp.transform.position,color=lamp.color,intensity=lamp.intensity,range=lamp.range,shadows=lamp.shadows.ToString()});
             return receipt;
         }
+        // B3: arena-only sun and ambient. The field values are saved on entry and restored on exit; Core and the camera are not touched.
+        struct SunState{public Light Light;public float Intensity;public Quaternion Rotation;}
+        readonly List<SunState> sunSaved=new List<SunState>();
+        Color ambSky,ambEquator,ambGround;bool lightingOn;
+        void ApplyArenaLighting(bool on)
+        {
+            if(on==lightingOn)return;
+            lightingOn=on;
+            if(on)
+            {
+                sunSaved.Clear();
+                foreach(var l in UnityEngine.Object.FindObjectsByType<Light>(FindObjectsSortMode.None))
+                {
+                    if(l==null||l.type!=LightType.Directional||!l.isActiveAndEnabled)continue;
+                    sunSaved.Add(new SunState{Light=l,Intensity=l.intensity,Rotation=l.transform.rotation});
+                    var e=l.transform.eulerAngles;l.intensity*=SunIntensityScale;l.transform.rotation=Quaternion.Euler(SunPitch,e.y,e.z);
+                }
+                ambSky=RenderSettings.ambientSkyColor;ambEquator=RenderSettings.ambientEquatorColor;ambGround=RenderSettings.ambientGroundColor;
+                RenderSettings.ambientSkyColor=ambSky*AmbientScale;RenderSettings.ambientEquatorColor=ambEquator*AmbientScale;RenderSettings.ambientGroundColor=ambGround*AmbientScale;
+            }
+            else
+            {
+                foreach(var s in sunSaved)if(s.Light!=null){s.Light.intensity=s.Intensity;s.Light.transform.rotation=s.Rotation;}
+                sunSaved.Clear();
+                RenderSettings.ambientSkyColor=ambSky;RenderSettings.ambientEquatorColor=ambEquator;RenderSettings.ambientGroundColor=ambGround;
+            }
+        }
+        // B7: smooth radial contact shadow under each pillar (no noise, no dither), created after the occlusion pass so it stays a plain transparent sprite.
+        readonly List<SpriteRenderer> pillarAo=new List<SpriteRenderer>();
+        Sprite aoSprite;Texture2D aoTexture;
+        void CreatePillarAo(int count)
+        {
+            const int n=64;
+            aoTexture=new Texture2D(n,n,TextureFormat.RGBA32,false){name="Arena pillar AO",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};
+            for(int y=0;y<n;y++)for(int x=0;x<n;x++)
+            {
+                float d=Mathf.Sqrt(((x+.5f)/n*2-1)*((x+.5f)/n*2-1)+((y+.5f)/n*2-1)*((y+.5f)/n*2-1));
+                float a=Mathf.Pow(1-Mathf.SmoothStep(0,1,d),1.4f);
+                aoTexture.SetPixel(x,y,new Color(.012f,.010f,.008f,a));
+            }
+            aoTexture.Apply(false,true);
+            aoSprite=Sprite.Create(aoTexture,new Rect(0,0,n,n),new Vector2(.5f,.5f),n);
+            for(int i=0;i<count;i++)
+            {
+                var go=new GameObject("Arena pillar base AO");go.transform.SetParent(root.transform,false);
+                go.transform.rotation=Quaternion.Euler(90,0,0);
+                var sr=go.AddComponent<SpriteRenderer>();sr.sprite=aoSprite;sr.color=new Color(1,1,1,.78f);sr.sortingOrder=-19000;sr.shadowCastingMode=ShadowCastingMode.Off;sr.receiveShadows=false;sr.enabled=false;
+                pillarAo.Add(sr);
+            }
+        }
+        void SyncPillarAo(int index,bool on,float x,float z,float radius)
+        {
+            if(index>=pillarAo.Count)return;
+            var sr=pillarAo[index];sr.enabled=on;if(!on)return;
+            sr.transform.position=new Vector3(x,.035f,z);
+            float d=radius*2*1.9f; // roots spread past the Core radius; judgement radius is unchanged
+            sr.transform.localScale=new Vector3(d,d,1);
+        }
         void DisposeTorches()
         {
+            ApplyArenaLighting(false);
+            if(aoSprite!=null)UnityEngine.Object.Destroy(aoSprite);
+            if(aoTexture!=null)UnityEngine.Object.Destroy(aoTexture);
             foreach(var flame in torchFlames)arenaFlames.Remove(flame);
             if(channelMesh!=null)UnityEngine.Object.Destroy(channelMesh);
             foreach(var frame in torchFrames)UnityEngine.Object.Destroy(frame);

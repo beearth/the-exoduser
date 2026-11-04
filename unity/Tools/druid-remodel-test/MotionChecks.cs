@@ -3,7 +3,7 @@
 //  M2     - the aim turns at most 2 deg per tick in a telegraph, is frozen for the last 12 f, and never changes in a swing / lunge / recovery; walking turns at most 3 deg
 //  M4     - recovery end -> next telegraph: life 1 / 2 / 3 = 45 / 36 / 30 f, 12 f inside a combo
 //  M5     - walking speed <= 1.1 x 1.2 = 1.32 px/tick, acceleration <= max / 20 per tick
-//  #12    - heartbeat: first beat Total 90, beats 2-3 Total 60, 30 f pause, a player at r 259 around the boss takes no damage, at r 261 he does
+//  #12    - heartbeat: first beat Total 90, beats 2-3 Total 60, 30 f pause, a player at r 259 + 8 (the P3 shift) around the boss takes no damage, at r 261 + 8 he does
 //  API    - the first Total of every telegraph entry equals the new telegraph (+ the fixed lead of the move)
 using System;
 using System.Collections.Generic;
@@ -78,7 +78,7 @@ static partial class P
                 if (probeSerial != s.Druid.TeleSerial) { probeSerial = s.Druid.TeleSerial; probeBeat = 0; }
                 if (!probeDone && probeBeat < 3 && probeBeat == d.HbBeat)
                 {
-                    double r = probeBeat == 1 ? 261 : 259;
+                    double r = (probeBeat == 1 ? 261 : 259) + P3Shift;   // 260 + the P3 shift (39 - 31 = 8 -> now 26) around the centre
                     for (int k = 0; k < 16; k++)
                     {
                         double a = Math.PI * 2 * k / 16, x = d.X + Math.Cos(a) * r, y = d.Y + Math.Sin(a) * r;
@@ -190,7 +190,7 @@ static partial class P
             }
             if (t.MoveId == "groundFissure" && t.Shape == DruidTeleShape.Circle) return;
             if (want >= 0) Check(Math.Abs(t.Total - want) < 1e-9, name + ": API Total of " + t.MoveId + " (index " + t.Index + ") " + t.Total + " vs " + want);
-            if (t.MoveId == "heartbeat") Check(t.Safe != null && t.Safe.Length >= 1 && t.Safe[0][2] == DruidRemodelData.HeartbeatSafeRadius, name + ": API heartbeat Safe carries the ring of 260");
+            if (t.MoveId == "heartbeat") Check(t.Safe != null && t.Safe.Length >= 1 && t.Safe[0][2] == DruidRemodelData.HeartbeatSafeRadius + P3Shift, name + ": API heartbeat Safe carries the ring of 260 + P3 shift " + P3Shift);
         }
     }
 

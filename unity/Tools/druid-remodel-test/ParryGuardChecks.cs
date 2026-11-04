@@ -22,9 +22,9 @@ static partial class P
             var boss = s.Stage.Boss; Check(boss != null && s.Druid.Remodel, n + ": remodel fight started");
             if (boss == null) return;
             for (int i = 0; i < 200; i++) { s.Tick(0, 0, boss.X, boss.Y, false, false); p.Hp = p.MaxHp; }
-            // the bullet comes from the far side of the player (the player stands 110 px from the boss), aimed at the player
-            double ang = Math.Atan2(boss.Y - 2160, boss.X - 2560) + 0.9; p.X = (float)(boss.X + Math.Cos(ang) * 110); p.Y = (float)(boss.Y + Math.Sin(ang) * 110);
-            if (!s.CanMove((float)p.X, (float)p.Y, p.Radius)) { p.X = boss.X + 110; p.Y = boss.Y; }
+            // the bullet comes from the far side of the player (the player stands radius + 66 px from the boss = 110 px from the old 44 px body), aimed at the player
+            double ang = Math.Atan2(boss.Y - 2160, boss.X - 2560) + 0.9; double keep = boss.Radius + 66; p.X = (float)(boss.X + Math.Cos(ang) * keep); p.Y = (float)(boss.Y + Math.Sin(ang) * keep);
+            if (!s.CanMove((float)p.X, (float)p.Y, p.Radius)) { p.X = boss.X + (float)keep; p.Y = boss.Y; }
             double away = Math.Atan2(p.Y - boss.Y, p.X - boss.X), dist = key == "E" ? 90 : 140, sx = p.X + Math.Cos(away) * dist, sy = p.Y + Math.Sin(away) * dist, toP = Math.Atan2(p.Y - sy, p.X - sx);
             var b = s.Druid.SpawnProjectile(boss, s.Druid.Data[boss], new ProjSpec { X = sx, Y = sy, Vx = Math.Cos(toP) * 3, Vy = Math.Sin(toP) * 3, Dmg = 500, Life = 400, Ml = 400, El = key == "E" ? 0 : 3, Col = "col", Sz = 1.2, Commit = true }, false);
             Check(b != null, n + ": bullet spawned"); if (b == null) return;

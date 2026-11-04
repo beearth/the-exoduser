@@ -5,12 +5,12 @@ namespace Exoduser.CharacterLab
     // Mac batch import/contract gate only. PC compiles this code without running Unity.
     public static class DruidRigPixelVerification
     {
-        const string PathName="Assets/Exoduser/Resources/Art/Bosses/Druid/OldmanV82.fbx";
+        const string PathName="Assets/Exoduser/Resources/Art/Bosses/Druid/OldmanV91.fbx",HeapPath="Assets/Exoduser/Resources/Art/Bosses/Druid/HuskHeapP3.fbx";
         [Serializable] sealed class ClipReceipt {public string name;public float seconds,expectedSeconds,footSlipHorizontalCm;public bool rootOrLocomotion;}
         [Serializable] sealed class Receipt
         {
-            public string scope="Unity import/Generic Avatar/31 clip lengths/local horizontal feet only; no gameplay visual or world foot plant PASS",animationType;
-            public bool passed,avatarValid,humanoid,socket,fist;public int renderers,auxiliaryBones;
+            public string scope="Unity import/Generic Avatar/38 clip lengths/65 bones/husk sockets/heap mesh/local horizontal feet only; no gameplay visual or world foot plant PASS",animationType;
+            public bool passed,avatarValid,humanoid,socket,fist,hipsUnderLift,heapStatic;public int renderers,auxiliaryBones,bones,huskSockets,heapTriangles;
             public List<ClipReceipt> clips=new List<ClipReceipt>();public List<string> errors=new List<string>();
         }
         static string Key(string name){foreach(string key in NativeDruidRigPolicy.AllClips)if(name.Equals(key,StringComparison.OrdinalIgnoreCase)||name.EndsWith("|"+key,StringComparison.OrdinalIgnoreCase))return key;return null;}
@@ -29,11 +29,15 @@ namespace Exoduser.CharacterLab
                 if(!result.avatarValid||result.humanoid)result.errors.Add("Generic Avatar validation failed");
                 foreach(var t in prefab.GetComponentsInChildren<Transform>(true))
                 {
-                    if(t.name=="StaffSocket_L")result.socket=t.parent!=null&&t.parent.name=="LeftHand";
+                    if(t.name=="StaffSocket_L")result.socket=t.parent!=null&&t.parent.name=="OM_Staff"&&t.parent.parent!=null&&t.parent.parent.name=="LeftHand";
+                    if(t.name=="Hips")result.hipsUnderLift=t.parent!=null&&t.parent.name=="OM_Lift";
+                    if(t.name.StartsWith("HuskSocket_",StringComparison.Ordinal))result.huskSockets++;
                     if(t.name.StartsWith("Cloak_Back_",StringComparison.Ordinal)||t.name.StartsWith("Panel_Front_",StringComparison.Ordinal)||t.name.StartsWith("Beard_",StringComparison.Ordinal)||t.name.StartsWith("Chain_L_",StringComparison.Ordinal))result.auxiliaryBones++;
                 }
-                if(!result.socket)result.errors.Add("StaffSocket_L/LeftHand missing");if(result.auxiliaryBones!=10)result.errors.Add("Expected auxiliary bones10");
-                var renderers=prefab.GetComponentsInChildren<Renderer>(true);result.renderers=renderers.Length;if(renderers.Length!=4)result.errors.Add("Expected exactly four source renderers");
+                if(!result.socket)result.errors.Add("StaffSocket_L must hang under OM_Staff under LeftHand");if(!result.hipsUnderLift)result.errors.Add("Hips must hang under OM_Lift");if(result.auxiliaryBones!=10)result.errors.Add("Expected auxiliary bones10");
+                if(result.huskSockets<9)result.errors.Add("Expected at least 9 HuskSocket_ nodes, found "+result.huskSockets);
+                var skinned=prefab.GetComponentsInChildren<SkinnedMeshRenderer>(true);if(skinned.Length>0&&skinned[0].bones!=null)result.bones=skinned[0].bones.Length;if(result.bones<34)result.errors.Add("Skin lost bones: "+result.bones+" (65 authored; Unity may list only weighted ones)");
+                var renderers=prefab.GetComponentsInChildren<Renderer>(true);result.renderers=renderers.Length;if(renderers.Length!=14)result.errors.Add("Expected 4 old-man + 10 husk renderers, found "+renderers.Length);
                 foreach(var renderer in renderers)
                 {
                     if(renderer is SkinnedMeshRenderer skin&&skin.sharedMesh!=null&&skin.sharedMesh.GetBlendShapeIndex("Fist_L")>=0)result.fist=true;
@@ -55,7 +59,7 @@ namespace Exoduser.CharacterLab
                 foreach(string key in NativeDruidRigPolicy.AllClips)
                 {
                     AnimationClip clip;if(!clips.TryGetValue(key,out clip)){result.errors.Add("Missing clip "+key);continue;}
-                    int frames=NativeDruidRigPolicy.Frames(key);var row=new ClipReceipt{name=key,seconds=clip.length,expectedSeconds=frames/60f,rootOrLocomotion=key=="Walk"||key=="charge_run"||key=="grab_lunge"||key=="burrow_dive"||key=="burrow_erupt"};
+                    int frames=NativeDruidRigPolicy.Frames(key);var row=new ClipReceipt{name=key,seconds=clip.length,expectedSeconds=frames/60f,rootOrLocomotion=key=="Walk"||key=="charge_run"||key=="grab_lunge"||key=="burrow_dive"||key=="burrow_erupt"||key=="phase23_collapse"||key=="phase12_collapse"||key=="intro_reveal"||key=="death_sink"};
                     if(Mathf.Abs(clip.length-row.expectedSeconds)>.001f||Mathf.Abs(clip.frameRate-60)>.01f)result.errors.Add("60fps duration mismatch "+key);
                     Vector2 firstLeft=Vector2.zero,firstRight=Vector2.zero;
                     for(int f=0;f<=frames;f++)
@@ -66,6 +70,20 @@ namespace Exoduser.CharacterLab
                     }
                     if(!row.rootOrLocomotion&&row.footSlipHorizontalCm>.02f)result.errors.Add("Foot horizontal slip "+key+" "+row.footSlipHorizontalCm+"cm");
                     result.clips.Add(row);
+                }
+                var heapPrefab=AssetDatabase.LoadAssetAtPath<GameObject>(HeapPath);
+                if(heapPrefab==null)result.errors.Add("HuskHeapP3 model import failed");
+                else
+                {
+                    var heapRenderers=heapPrefab.GetComponentsInChildren<Renderer>(true);var heapFilters=heapPrefab.GetComponentsInChildren<MeshFilter>(true);
+                    result.heapStatic=heapRenderers.Length==1&&heapFilters.Length==1&&heapPrefab.GetComponentsInChildren<SkinnedMeshRenderer>(true).Length==0&&heapPrefab.GetComponent<Animator>()==null;
+                    if(!result.heapStatic)result.errors.Add("HuskHeapP3 must be one static mesh renderer");
+                    else
+                    {
+                        var heapMesh=heapFilters[0].sharedMesh;for(int sub=0;sub<heapMesh.subMeshCount;sub++)result.heapTriangles+=(int)(heapMesh.GetIndexCount(sub)/3);
+                        if(result.heapTriangles!=37994)result.errors.Add("HuskHeapP3 triangles "+result.heapTriangles);
+                        foreach(var material in heapRenderers[0].sharedMaterials)if(material==null||NativeDruidRigPolicy.Palette(material.name.Replace(" (Instance)",""))==null)result.errors.Add("Unmapped heap material "+(material==null?"null":material.name));
+                    }
                 }
                 foreach(string path in new[]{"Shaders/DruidRigPixelToon","Shaders/RigPixelComposite"}){var shader=Resources.Load<Shader>(path);if(shader==null||ShaderUtil.ShaderHasError(shader))result.errors.Add("Shader import error "+path);}
             }

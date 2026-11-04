@@ -50,6 +50,7 @@
 | D-012 | Unity M1 09c(SWAP2 eaf67fae9): 아귀 전멸·지역 4/4·플래그인데 `BossUnlocked=false`, 진행 기록 17/18에서 조기 종료 | Core 결함이 아님. 마지막 지역은 15프레임 지역 판정에서, 지옥문은 그 뒤 첫 30프레임 룸 판정에서 열려 1~44틱 걸린다(웹 `_regionTick`·`checkRooms`와 같음). 검사는 마지막 처치 뒤 30틱만 진행했다. 패링 G2는 위상만 옮겼다 | **수정**(unity/main 병합 db26d55f6): M1 09c가 개방까지 최대 +45틱 대기(강제 개방 없음). `Tools/region-test` 450위상 재현(최대 44틱, 30틱 시점 봉인 105/450) 124/0. 상세 `UNITY_M1_REGION_RB_20261028.md` §9 |
 | D-013 | Unity Core 시험 36/1: canMv 대조 2,523표본 중 2개(4018.5,104.7 r10 / 4042.9,207.9 r15) 불일치 | oracle 입력 누락. 웹 맵 생성이 `MAP_OBJS`에 넣는 `boss_gate_col`(원 반경 100)이 정적 맵 export에 없음. Unity(벽 13타일+게이트 타일 차단, 3ed856bf6)가 실제 웹과 같은 판정 | **수정**(db26d55f6): `map-oracle.cjs`에 같은 원 추가 → 36/0. Core·맵 무변경. 게이트 주변 2px 격자에서는 타일 근사와 원의 테두리 모양이 5,156/157,383표본 다름(새 통로·막힌 길 없음, 출구·아레나 진입 무영향). 정확 일치는 맵 총괄 판단 후보 |
 | D-U1 | Unity 사냥꾼 패시브(pHunter)가 보스·정예에 적용 안 됨. 스탯창도 "보스·정예 별칭 분기 미연결" 안내 | `Simulation.EnemyBridge`의 HunterMul이 `etype>=90`만 봄. D-002 이전 웹(안 쓰이는 `isBoss/isElite`)의 실제 동작을 그대로 이식한 것 | **수정**: `Simulation.HunterMul(w, rank)` = `ib \|\| elite(참) \|\| etype>=90 ? 1+0.10×rank : 1`(웹 06ac6882b `_hunterMul`). 스탯창 미지원 안내 삭제. `Tools/hunter-oracle`: 웹 원문 280사례 불일치 0(수정 전 규칙 96/280), 실제 피격 경로 pHunter 3 = 보스·정예·레어 ×1.3, 일반 ×1 |
+| D-U2 | Unity 피격 방어가 웹과 다름: 물리방어에 망토·왕관 def·장비 근성 없음, 에너지방어(마법·패링 피해) 0 고정, 장비 방어 어픽스(physDR·barrier·healthyDef·injuredDR·dotDR·farDR) 무효. 1-1 드랍 갑옷·방패·바지·망토에도 붙는 어픽스 | 이식(B09) 당시 장비·어픽스 층이 없어 입력 0으로 둔 자리가 장비 이식 뒤에도 연결되지 않음 | **수정**: `InventoryState.CalculateStats`가 웹 `_playerDefTotals()`(7칸 def + 15칸 eDef + defFlat/eDefFlat + 강화 + ⌊(⌊Lv/2⌋+장비 근성)/2⌋) 계산, `Simulation.Growth`가 SP 근성·pArmor를 두 방어에 더함, `ApplyEquipment`가 `PlayerEnergyDefense` 연결. `HurtPlayer`가 웹 순서대로 physDR(물리만) → barrier → 조건부 DR(캡 50%). 웹은 `opts.src`를 문자열로만 넘겨 bossDR은 죽은 경로, far/close는 원점 거리(|x|+|y|)라 라벨 붙은 독 DOT에만 farDR(Unity도 같게 `HurtOptions.Labeled`). burnDR은 Unity에 플레이어 화상 DOT가 없어 미연결. `Tools/defense-oracle`: 웹 원문 장비 240건·피격 11,520건 불일치 0(수정 전 239/240·8,601/11,520) |
 
 회귀 테스트: `test/bossEliteFlagsAndDefenseTotals.test.js` 3건 통과. 영향 테스트 22파일 138건 재실행 — 실패 16건은 전부 기준선부터 실패하던 것, 새 실패 0.
 
@@ -62,7 +63,7 @@
 | D-007 | `DOCS_SYNC_AUDIT_20261028.md` 코드 의심 버그 4번: strFlat/dexFlat/intFlat 어픽스가 ATK 기준값에 안 들어감 | 감사 문서 |
 | D-008 | 같은 문서 5·8번: critDmgA/critDmgB, blastShot/bladeShot 사장 경로 확인 | 감사 문서 |
 | D-009 | 1-1 완주 검사의 보스 처치 단계 완성. 3회차 추적: 다크드루이드(최대HP 33,332)에 최대HP 20% 타격 40회 — `bossChargeWind`·`bossDruidDive` 중 피해 0(부활·휴식 `reviveIframes` 추정), 20% 아래 타격에서 `recover`로 33,332 전체 회복(부활 단계 추정). 보스 SSOT(`8.1보스디자인바이블`, `2_5 부활`)와 대조해 설계인지 확정한 뒤, 하니스는 처치까지 타격 횟수·간격을 늘린다 | 2026-11-03 실행 |
-| D-U2 | Unity 피격 방어 합산이 웹 D-004/005 이전 상태: `InventoryState.CalculateStats`의 물리방어 = 2 + 방패·갑옷·장화·장갑·바지 def + defFlat + ⌊⌊Lv/2⌋×.5⌋. 망토·왕관 def와 강화(enhMul)가 빠졌고, 에너지방어(`PlayerEnergyDefense`)는 0 고정(15칸 eDef·근성 미연결) | 웹 `_playerDefTotals()`(main 4cf4d74eb) |
+| D-U3 | Unity 최대 HP·MP·ST에 장비 근성이 빠짐: 웹 `_gritHpFlat/_gritMpFlat/_gritStFlat` = `_gritTotal()`(SP 근성 + ⌊Lv/2⌋ + 장비 `bGrit` + `gritFlatN/R`)인데 Unity는 SP 근성·레벨분만 더함. 같은 대조 때 `maxSTFlat`·`maxMPFlat` 등 자원 어픽스도 함께 확인 | 웹 `recalcStats` 28354·28361, `recalcSt` 16773 |
 
 ## 6. 실행 기록
 

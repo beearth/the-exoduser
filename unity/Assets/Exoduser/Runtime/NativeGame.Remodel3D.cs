@@ -123,7 +123,7 @@ namespace Exoduser.UnityPort
             foreach (var c in chunks.Values) if (c.renderer != null) c.renderer.enabled = false;
             Remodel3DBillboards();
             HellLightingLate();
-            if(NativeRemodel3D.ArenaActive)r3Arena?.Late(NativeRemodel3D.Point(p.X,p.Y));
+            if(NativeRemodel3D.ArenaActive)r3Arena?.Late(NativeRemodel3D.Point(p.X,p.Y),ArenaOcclusionBoss());
             if(!NativeRemodel3D.ArenaActive)A2EnemyGrounding();
             else if(a2EnemyShadowRoot!=null)a2EnemyShadowRoot.SetActive(false);
             ApplyMeleePresentation(r3Cam);
