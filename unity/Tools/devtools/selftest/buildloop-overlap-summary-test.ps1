@@ -13,6 +13,9 @@ foreach($name in $functions){
  if(-not $f){throw ('FAIL: missing bounded UI summary consumer: '+$name)}
  . ([scriptblock]::Create($f.Extent.Text))
 }
+# 11-04 ratchet: the known-list step (Apply-UiKnownList) runs node on the loop worktree; these decisions test the raw summary only.
+function Apply-UiKnownList($run,$stateObj,$runDir){}
+
 $fixture=Join-Path $Output ('fixture-'+[guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $fixture -Force|Out-Null
 $Utf8=New-Object Text.UTF8Encoding($false)

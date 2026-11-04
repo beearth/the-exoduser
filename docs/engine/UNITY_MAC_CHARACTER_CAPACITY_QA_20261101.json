@@ -213,5 +213,40 @@
     "dailyBaselineKnown": false,
     "dailyConsumption": "unknown",
     "sharedAccount": true
+  },
+  "pcReceiverFinal": {
+    "archive": "I:/EXODUSER-Storage/character-capacity/20261101-unlimited/receiver/EXODUSER-Windows-x64-characters-20261101.zip",
+    "bytes": 2172346702,
+    "sha256": "c1cfd4497f3a3a1e4a4bc126a32718675c0ce0bb5547f4b9fbad2523cef6d6e4",
+    "unpacked": "I:/EXODUSER-Storage/character-capacity/20261101-unlimited/receiver/unpacked/EXODUSER-Win64",
+    "files": 212,
+    "totalUnpackedBytes": 4461953365,
+    "sizeMismatches": 0,
+    "identity": [
+      {
+        "path": "EXODUSER-Unity.exe",
+        "sha256": "9806abde4a406ed68647e9505852c49f6aa72a372f4f084e2aa2821affea57a2",
+        "expectedSha256": "9806abde4a406ed68647e9505852c49f6aa72a372f4f084e2aa2821affea57a2",
+        "bytes": 667136
+      },
+      {
+        "path": "EXODUSER-Unity_Data/Managed/Exoduser.Runtime.dll",
+        "sha256": "2284cee4c457fa87246f29cb7a03679e0c8effba1e7966b75cd92b86b3cff907",
+        "expectedSha256": "2284cee4c457fa87246f29cb7a03679e0c8effba1e7966b75cd92b86b3cff907",
+        "bytes": 1435136
+      },
+      {
+        "path": "EXODUSER-Unity_Data/Managed/Exoduser.Core.dll",
+        "sha256": "1b5d2df494600ea98529fe2f25e7e4ffbd143ccc459919f5448c798cf353153c",
+        "expectedSha256": "1b5d2df494600ea98529fe2f25e7e4ffbd143ccc459919f5448c798cf353153c",
+        "bytes": 700416
+      }
+    ],
+    "archiveTimestampRestoreUnsupported": true,
+    "extractionWithCurrentTimesExit": 0,
+    "windowsRuntimeExecuted": false,
+    "existingDesktopShortcutChanged": false,
+    "unityMain": "907083b7cb91a9198425a62a90999c65457d6ebb",
+    "macTemporaryServerStopped": true
   }
 }

@@ -142,3 +142,4 @@
 - 비용: ElevenLabs 카운터 37,539 → 38,799(1,260).
 - 11-04 R8·R9 Unity 미리 배선: 11키의 시각을 연결했다(파일은 무음 자리표시). 고르면 `RM1/<키>.mp3`만 넣으면 된다. 표는 [DEMO_1-1_SOUND_SCENES §2.2](DEMO_1-1_SOUND_SCENES_20261104.md). 검사 43개 통과, PC 컴파일 오류 0, Mac 확인 전이다.
 - 11-04 데모 v0 ③ 첫인상 소리 커버리지: 1-1 한 판(타이틀 → 클리어/사망)의 순간별 상태 표는 [DEMO_1-1_SOUND_SCENES §0](DEMO_1-1_SOUND_SCENES_20261104.md)에 있다. 빈 칸·임시 칸 10개는 R10 `pick_r10.html`(10카드·91줄, 웹 동작 녹화 동기)에 올렸다. ElevenLabs 카운터 38,799 → 40,176(1,377).
+- 11-04 Unity BGM 반입 후보: 웹 79파일 표는 [UNITY_BGM_IMPORT_CANDIDATES_20261104.md](UNITY_BGM_IMPORT_CANDIDATES_20261104.md)에 있다. 이미 있음 10, P0 반입 권장 3(1-1 필드 회전곡, Remastered 1장 3곡, Vorbis 약 15MB), P1 52, P2 8, 제외 6이다. 76파일이 Suno 생성이며, 상업 권리(생성 당시 유료 플랜)는 사용자 확인이 필요하다.
