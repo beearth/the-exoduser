@@ -126,6 +126,7 @@ function _spawnBossProjectile(e,o){__rec('spawnBossProjectile',e,o);}
 function addTxt(){__rec.apply(null,['addTxt'].concat(Array.prototype.slice.call(arguments)));}
 function addParts(x,y,c,n){__rec('addParts',x,y,c,n);}
 function shake(n){__rec('shake',n);}
+function _feelContact(){} // 화면 접점 장식 API: 게임 상태/호출 기록 대조 범위 밖
 function doHitFlash(c,a){__rec('doHitFlash',c,a);}
 function playSample(k,v,p){__rec('playSample',k,v,p);}
 function _hitSfxForEtype(et){__rec('hitSfxForEtype',et);return {key:'hit_'+et,pitch:1+et/1000};}
