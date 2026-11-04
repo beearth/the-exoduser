@@ -22,7 +22,7 @@ class EnemyHurtProgram
     static readonly List<object> rows = new List<object>();
     static readonly List<object> failureDetails = new List<object>();
     static readonly List<object> expectationOverrides = new List<object>();
-    static JsonElement aPlan; static bool useAPlan;
+    static JsonElement aPlan; static bool useAPlan, vmAPlan;
     static int failures, total;
     static string currentCase = "";
     static string currentKind = "tables";
@@ -251,7 +251,9 @@ class EnemyHurtProgram
     static int Main(string[] args)
     {
         var root = JsonDocument.Parse(File.ReadAllText(args[1])).RootElement;
+        vmAPlan=root.TryGetProperty("expectation",out var expectation)&&expectation.GetProperty("mode").GetString()=="a-plan";
         useAPlan=Array.IndexOf(args,"--a-plan")>=0;
+        if(vmAPlan&&useAPlan)throw new InvalidOperationException("A-plan VM fixture already contains policy; do not apply --a-plan twice");
         if(useAPlan)aPlan=JsonDocument.Parse(File.ReadAllText(Path.Combine(Path.GetDirectoryName(args[1]),"a-plan-expectations.json"))).RootElement;
         var t = root.GetProperty("tables");
         var potTable = new Dictionary<string, EnemyPotDef>();
@@ -495,7 +497,7 @@ class EnemyHurtProgram
             scope = "standalone_dotnet_original_function_oracle_not_Unity_runtime", passed = failures == 0, failures, total, checksByKind = kindChecks, failuresByKind = kindFailures, cases = caseCount, h1Cases = h1Count, h2Cases = h2Count, chainCases = chainCount, h3Cases = h3Count, h4Cases = h4Count, chain4Cases = chain4Count, chain3Cases = chain3Count, deathExits = exitCounts, addedEnemies = addedCount, earlyReturns = earlyCount,
             source = new { sha256 = root.GetProperty("source").GetProperty("sha256").GetString(), lines = root.GetProperty("source").GetProperty("lines").GetInt32(), head = root.GetProperty("source").GetProperty("head").GetString() },
             note = "every case compares the early-return flag and returned locals, all enemy fields, player, globals, the ordered injected-call list with arguments and the Math.random count; failing items listed (first 80), passing ones sampled",
-            checks = rows, failureDetails, expectationOverrides, expectationMode=useAPlan?"웹과 다름(A안)":"web-original"
+            checks = rows, failureDetails, expectationOverrides, expectationMode=vmAPlan?"a-plan VM":useAPlan?"웹과 다름(A안)":"web-original"
         }, new JsonSerializerOptions { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
         File.WriteAllText(args[0], result);
         Console.WriteLine("ENEMY_HURT_RESULT " + total + " checks / " + failures + " failures (" + caseCount + " cases)");
