@@ -1,3 +1,7 @@
+## 11-04 19:15 ×2 실측 재개 — 새 HALT 중단
+
+2026-11-04 19:16 map-scale-c1 x2-2 재개 중단: 사용자 19:15 HALT 해제 지시 뒤, 19:15:19 새 공용 HALT 생성 확인. 종료 불능 Player는 기존 EXODUSER-A2R PID14612와 추가 EXODUSER-Unity PID40496. 이번 재개는 소스14b6a1be55·clean 확인 및 상태 조회만 수행했고 실제 Unity 컴파일/빌드/Player 시작0, 검사 실패 계수0. 사용자 지시대로 새 HALT에서 멈췄으며 프로세스·HALT 변경0. x2-keep/x2-linear/k=1 성능 기준판 미측정, 추천 보류. 기본k=1·3D 유지. 결과: map-scale-c1/REPORT.md 맨 위 x2-2.
+
 ## 11-04 저녁 ×2 결정 및 실측 대기
 
 2026-11-04 저녁 사용자 결정: 1-1 좌표 ×2. 최신 origin/unity/main 6bf739eeb6 병합, CHANGELOG 충돌 양쪽/CRLF 보존. 실험 인자 --field-scale 2 --field-enemies keep(168) 또는 linear(336, NW/NE/SW/SE 46/120/106/64). 선택적 중간값 --field-enemies 1.5(252)도 같은 빌드에 포함. 기본1/keep·3D 지형·원화·전투 거리·카메라는 유지. 같은 2D 봇/시드0x20261024/재도전0/공용 단독 순번으로 k=1 성능 기준 및 ×2 조건을 측정할 예정. 진입 11~13분과 기준 대비 최저 FPS·최장 프레임 악화 없음이 선택 기준. 실제 Unity 컴파일/빌드/Player는 공용 HALT 해제 대기이며 아직 미검증.
