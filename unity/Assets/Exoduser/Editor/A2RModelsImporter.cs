@@ -8,7 +8,7 @@ using UnityEngine.Rendering;
 namespace Exoduser
 {
     // Imports only the validated static, uncompressed profile extracted by tools/a2r-extract-models.cjs.
-    public static class A2RModelsImporter
+    public static partial class A2RModelsImporter
     {
         const string Root="Assets/Exoduser/Resources/A2R/Models3D";
         [Serializable] sealed class TextureSpec {public string file,role;public int wrap;}

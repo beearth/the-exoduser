@@ -1,3 +1,10 @@
+## 2026-11-04 D5 2차 식생·획득 순간 진단
+
+- 비목질 큰 덩어리 m_ctree14/m_ctree20/m_c1cocoon/m_c1spod는 기본 D5에서 원화/교체 모델을 모두 끈다. 목질 고목·숲벽·카메라는 유지한다. --a2r-d5-off는 기존 표시로 돌아간다.
+- Withered_Shrub는 기존 A2Module 생성 경로를 자기 NativeGame.A2RD5.cs에서 호출한다. 실제 활성 메시 높이 .64m(약 .398H), 폭 1.4m 이하, 그림자/새 Collider 없음. 원본 보행 띠 밖 .75m 검사, 레인 가장자리·나무 아래 최대 48개를 3개 무리로 계획한다.
+- Editor batch는 실제 모듈 생성 후 높이·폭·전 정점 보행 침범·Collider·바람 6검사를 확인하고 빌드한다. 게임 1x 비교/최대 식생/바람 px/캠프 결함은 Player 확인 전이다.
+- 8번은 격리된 실제 Core 사망/HP 추출 경로(RNG=0, 즉시 복원)의 ReviveTextRaised를 받아 1장 촬영한다. 표시 텍스트/통화 직접 주입 없음. 자연 플레이 증거가 아니다. Core 파일 수정 0.
+
 ## 2026-11-04 A2R D5 빌드 확인·공용 HALT로 촬영 중단
 
 - 빌드 소스 f5f2c3b712, 공용 실행기 caca7ddc: BuildResult Succeeded, 빌드 오류 0, C# 오류 0, 종료 0, USER_SAVE 변경 0. 실행기 errorLogs=2는 별도 기록이며 전체 로그 오류 0으로 쓰지 않는다.
