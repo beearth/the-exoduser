@@ -58079,3 +58079,7 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 - legacy 임포터는 meshes.globalScale=0.8409828·useFileScale=1·fileScale=0.01이므로 원시100→유효0.840983. humanDescription.globalScale=0.008409828을 중복 적용하지 않는다. 전장·bounds는 기존 월드 정점 측정을 유지한다.
 - 경계 테스트 21건 통과: legacy cm 보상 PASS, 미터 메시100배 FAIL, useFileScale=false·globalScale·유효 경계0.5/2 포함. 파지 추정 2.5cm WARN 유지, 마커·프리팹·런타임 수정 0.
 - 실제 검증: 공용 Editor 배치9cd93631 1회 정상 종료. legacy 원시(100,100.000008,99.999992)→유효(0.840983,0.840983,0.840983), 배율 PASS·파지 추정2.5cm WARN·종합 WARN. 컴파일 오류0·실행 오류 로그0·세이브 변경0, Player0. 결과표와 영수증을 같은 docs에 기록했다.
+2026-11-04 실버테일·아이반 모듈 G0 설계(Codex char-g0-st-ivan): 파트 S01~S40·I01~I34, rigid/천·머리 체인·허브 경첩·단검·배낭·총 소켓과 합격선을 새 문서 UNITY_HERO_MODULAR_G0_ST_IVAN_20261104.md에 기록했다. Blender 전용 extract_rig_rest.py로 Meshy GLB 각 24관절의 부모·Y-up rest(m)·Humanoid 대응과 실제 스킨 높이 1.72/1.85m를 추출했다. 실버테일 팔 5항목·아이반 팔 4항목은 조립 전 수정 필요(손끝·팔폭은 신전 기하 추정). 머리 두피/턱 실측·다리 목표·아이반 어깨폭·실버테일 접힘 기구 결정은 보류. 원본 메시/LOCK/보드/런타임 변경 0, Unity·유료 생성 0, 조립·Mac 판정 전. JSON·검증 로그·보고는 I:/EXODUSER-Storage/codex-takeover/char-g0-st-ivan/.
+
+
+2026-11-04 DECISION-1 실버테일·아이반 모듈 G0 정정: Meshy rest·비율·신전 추정·아이반 어깨 축소 제안을 현행 설계에서 제외하고 이름·부모·Humanoid만 추출하도록 변경. 새 rest는 Tripo 214c3a56·d381fefe·816e7107 파트 경계, 머리는 분리 머리 두피~턱. 허벅지:정강이 0.90~1.05, 아이반 어깨폭 유지·실제 A포즈 팔폭 0.98~1.06H, 실버테일 앞뒤 축 허브/엉덩이 경첩·2구간 날·180도/1830mm·끝 약 0.25H 반영. 판 1.15배 유지·재배치/아래 소매·천 틈 처리. 허용 인계 위치에 GLB 없어 새 관절·비율은 GLB 수령 후로 표기, 생성/다운로드/Unity 실행 없음.
