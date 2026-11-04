@@ -1,6 +1,6 @@
 # Unity BGM 반입 후보 — 웹 79파일 (사운드 총괄, 2026-11-04)
 
-- 배정: CTO 11-04. 유니티 총괄의 설정 1차(`edee9204a`)에서 BGM 선택이 실제 음악에 연결됐다. 다만 Unity 곡 자원이 6값(`auto`·`lobby`·`hell1`·`boss`·`death`·`victory`, `NativeBgmSelection`)뿐이라 목록도 그만큼만 보인다.
+- 배정: CTO 11-04. **후보와 병합본 구분(감사 기준3abbea79e):** 설정 1차(`edee9204a`)의 BGM 선택·`NativeBgmSelection` 6값(`auto`·`lobby`·`hell1`·`boss`·`death`·`victory`)은 미병합 후보의 설명이다. 기준본에는 NativeBgmSelection이 없고, NativeGameMusic은 요청 키의 한 곡을 loop로 재생한다. 이 목록은 반입 계획이며 선택·회전 기능의 적용 완료 보고가 아니다.
 - 기준: 웹 정본 `G:/exoduser-wt/latest-web`(origin/main `06ac6882b`)의 `bgm/` 폴더 79파일이다(설정 목록 57곡 + 큐에만 있는 22파일). 곡 묶음은 game.html `BGM.tracks`(4113~4170행)다.
   - Unity 쪽 대조는 바이트(md5)로 했다.
   - 출처는 파일 메타데이터 태그다.
@@ -23,7 +23,7 @@
 - 웹은 장 BGM 1곡(1장 = Ashes of the Fallen Gate, 4:22)을 한 번 튼 뒤 `gameplay` 큐(40곡 이상)를 무작위로 섞는다. Unity는 지금 `hell1` 한 곡을 반복한다. 데모 한 판이 10~15분이므로 같은 곡이 2~3번 반복된다.
 - 회전곡은 3곡(15.9분, Vorbis 약 15MB)이면 한 판 동안 반복이 없다. 1장 회전 후보 15곡 중, 사용자가 06-02에 Remastered로 다시 뽑은 1장 곡(Ashes Under the Banner·Cathedral of Steel·Iron Oath Under Ash·Neon Hellfire Protocol·Wrath of the Golden Age)을 선호 신호로 보고 그중 길이가 긴 3곡을 골랐다. 3곡 모두 WAV 원본이라 반입 때 Vorbis로 변환한다.
 - 곡 자체가 맞는지는 귀로 판정해야 한다. 원하면 R11 청음판(필드 플레이 영상 + 곡 후보)으로 사용자가 고를 수 있다.
-- 반입하려면 `Resources/Audio/Bgm/`에 파일을 넣고 `NativeBgmSelection` 지원 값과 필드 회전 재생을 추가해야 한다(유니티 총괄 영역, 이 문서는 후보만).
+- 반입하려면 `Resources/Audio/Bgm/`에 파일을 넣고 후속 후보의 `NativeBgmSelection` 지원 값과 필드 회전 재생을 함께 반영해야 한다(유니티 총괄 영역, 이 문서는 후보만).
 
 ### 1.2 라이선스·출처
 
@@ -100,7 +100,7 @@
 | P1 | 복수의 대장간 | `공통/복수의 대장간.mp3` | 4:54 | 6MB mp3 172k | 4.6MB | forge | Suno (beearthone)  · 유료 플랜 확인(사용자, 11-04) · id 86d35f6a | 대장간 화면 BGM(forge 큐) |
 | P1 | 지옥 추락 사망 징글 | `공통/지옥 추락 사망 징글.mp3` | 1:44 | 2.3MB mp3 187k | 1.6MB | death | Suno (beearthone)  · 유료 플랜 확인(사용자, 11-04) · id 72fbda1c | 사망·승리 큐 두 번째 곡(같은 Suno 제목의 다른 take, Unity 1곡으로 충분) |
 | P1 | 탈출 성공 | `공통/탈출 성공.mp3` | 3:23 | 4.7MB mp3 194k | 3.2MB | victory | Suno (beearthone)  · 유료 플랜 확인(사용자, 11-04) · id 24eb606a | 사망·승리 큐 두 번째 곡(같은 Suno 제목의 다른 take, Unity 1곡으로 충분) |
-| P1 | Anvil Ashes | `공통/Anvil Ashes.mp3` | 5:60 | 7.8MB mp3 182k | 5.6MB | forge | Suno (beearthone)  · 유료 플랜 확인(사용자, 11-04) · id b998e693 | 대장간 화면 BGM(forge 큐) |
+| P1 | Anvil Ashes | `공통/Anvil Ashes.mp3` | 6:00 | 7.8MB mp3 182k | 5.6MB | forge | Suno (beearthone)  · 유료 플랜 확인(사용자, 11-04) · id b998e693 | 대장간 화면 BGM(forge 큐) |
 | P1 | Coronam Ferro (Remastered) | `공통/Coronam Ferro (Remastered).wav` | 3:22 | 36.9MB wav 1536k | 3.2MB | gameplay | Suno  · 유료 플랜 확인(사용자, 11-04) · id eedb7fc5 | Remastered 원본(WAV, 반입 시 Vorbis 변환). mp3판이 있으면 그쪽과 비교 / 같은 바이트: 공통/Coronam Ferro2(Remastered).wav |
 | P1 | Coronam Ferro | `공통/Coronam Ferro V2.mp3` | 3:22 | 4.5MB mp3 189k | 3.2MB | gameplay | Suno (beearthone)  · 유료 플랜 확인(사용자, 11-04) · id b74033b9 | gameplay — 2~7장 또는 공통 회전 |
 | P1 | Coronam Ferro | `공통/Coronam Ferro.mp3` | 3:48 | 5MB mp3 185k | 3.6MB | gameplay | Suno (beearthone)  · 유료 플랜 확인(사용자, 11-04) · id c0749f24 | gameplay — 2~7장 또는 공통 회전 |
@@ -140,3 +140,5 @@
 |---|---|
 | 2026-11-04 | 웹 79파일 조사, P0 3곡(15.0MB)·P1 52곡·P2 8·보유 10·제외 6. Suno 상업 권리 확인 필요 표시. 반입은 아직 안 함 |
 | 2026-11-04 | 사용자 확인(CTO 경유): Suno 생성 당시 유료 플랜 → Suno 76곡 상업 이용 조건 확인, 출처 칸 갱신. P1 반입 순서 7단계 결정(데모 권장 = P0 + 1~3단계, 11곡 약 45MB). P2 3곡은 계속 보류 |
+
+2026-11-04 감사: Anvil Ashes의 기존 조사 원자료 `table.json`은359.7초다. 초 단위 반올림 표기6:00으로 정정했다. 표 재집계는 P0 3·P1 52·P2 8·보유10·제외6=79파일이며 반입 추정 용량과 사용자 라이선스 확인 기록은 유지한다. 음원 반입·변환·재생·외부 권리 재검증은 하지 않았다.

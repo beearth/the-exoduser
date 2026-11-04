@@ -64,7 +64,7 @@
 | D-007 | `DOCS_SYNC_AUDIT_20261028.md` 코드 의심 버그 4번: strFlat/dexFlat/intFlat 어픽스가 ATK 기준값에 안 들어감 | 감사 문서 |
 | D-008 | 같은 문서 5·8번: critDmgA/critDmgB, blastShot/bladeShot 사장 경로 확인 | 감사 문서 |
 | D-009 | 1-1 완주 검사의 보스 처치 단계 완성. 3회차 추적: 다크드루이드(최대HP 33,332)에 최대HP 20% 타격 40회 — `bossChargeWind`·`bossDruidDive` 중 피해 0(부활·휴식 `reviveIframes` 추정), 20% 아래 타격에서 `recover`로 33,332 전체 회복(부활 단계 추정). 보스 SSOT(`8.1보스디자인바이블`, `2_5 부활`)와 대조해 설계인지 확정한 뒤, 하니스는 처치까지 타격 횟수·간격을 늘린다 | 2026-11-03 실행 |
-| D-U3 | Unity 최대 HP·MP·ST에 장비 근성이 빠짐: 웹 `_gritHpFlat/_gritMpFlat/_gritStFlat` = `_gritTotal()`(SP 근성 + ⌊Lv/2⌋ + 장비 `bGrit` + `gritFlatN/R`)인데 Unity는 SP 근성·레벨분만 더함. 같은 대조 때 `maxSTFlat`·`maxMPFlat` 등 자원 어픽스도 함께 확인 | 웹 `recalcStats` 28354·28361, `recalcSt` 16773 |
+| D-U3 | **도구 병합·불일치 측정, Core 수정 대기**. Unity 최대 HP·MP·ST에 장비 근성이 빠짐: 웹 `_gritHpFlat/_gritMpFlat/_gritStFlat` = `_gritTotal()`(SP 근성 + ⌊Lv/2⌋ + 장비 `bGrit` + `gritFlatN/R`)인데 Unity는 SP 근성·레벨분만 더함. 같은 대조 때 `maxSTFlat`·`maxMPFlat` 등 자원 어픽스도 함께 확인 | 웹 `recalcStats` 28354·28361, `recalcSt` 16773 |
 | D-T3 | 적 AI·생성·피격 oracle에 패링 A안 기대값 층 추가: 지금은 A안 의도 차이로 항상 FAIL이라 이 영역 회귀를 못 잡음. 웹 원문 결과에 A안 투사체 정책(대상 5종 9999, 원거리 240, 나머지 2배·projT 2배, 엘리트·M02 배율)을 씌운 기대값으로 비교하고, 대상 5종 근접 상태는 G2 전용 검사(`parry-g2-tests`)로 넘긴다 | D-014 |
 | D-U4 | Unity 스킬창에 웹 10-31(9a5be1fac) 고정 기술 3칸(Space 구르기·X 처형 고유기, T 활)이 없음. Core `SkillUiState.SlotCount=13`, `skill_ui.json` 13칸. 표현층이라 UI 담당 판단(웹은 비교 기준) | D-014 |
 
@@ -80,3 +80,17 @@
 | 11-03 | 4cf4d74eb 배포 | main 비강제 푸시(e260f712f→4cf4d74eb). 3333(latest-web) 4cf4d74eb 반영. DEMO/EA 동기화를 latest-web에서 실행(G: 메인은 옛 커밋이라 사용 안 함): DEMO 갱신 30·EA 29, 추가·삭제 0. 두 실행본 game.html에 `_playerDefTotals` 확인, DEMO `_BIC=true` 유지 |
 
 관찰(결함 아님): 아레나 진입 순간 처치 수가 남은 필드 적 수만큼 증가 — `_enterBossArena`의 "던전 잔여 몹 소멸 = 킬로 카운트" 의도 규칙. 웹판 `bgm/intro.mp4` requestfailed는 `preload="metadata"` 범위 요청 중단으로 파일은 정상(206).
+
+## 2026-11-04 D-U3 원문 대조 도구 병합 보충
+
+병합 `9a38c9564`(도구 `7e7f68e32`), 감사 기준 `3abbea79e`. `unity/Tools/resource-oracle`는 원문 applyStats/recalcSt를 실행하고 Core ApplyEquipment의 Config·Player 최대 HP/MP/ST/쉴드를 비교한다. 고정 시드873220, 합성530사례(기준32·단독138·혼합360), 자원 관련 어픽스115종이다.
+
+| 확인 | 값·한계 |
+|---|---|
+| 기존 결과 입력 | 웹 `06ac6882b550cb6373f2953ede3b2acc6f69e211`, Core `bea021bcf1b2d20689e9f014834456879c5a722a` |
+| 기존 result.json 재독 | 530사례 중 불일치372(단독12·혼합360), Config-Player 불일치0. 단독 원인 이름11개 중 장비 항10개와 SP VIT 1개이며, 장비 bGrit는 일반/allocated 두 사례로 집계된다 |
+| 실행 결과 의미 | compare 종료0=동일,2=수치 불일치,1=하니스/입력 오류. 자원별 실패 수와 사례 수는 다른 단위다. 최대치 효과가 양쪽0인 회복·흡수 항을 구현 PASS로 해석하지 않는다 |
+| 인수·재사용 | run.cjs 필수 `--source --out --web-commit --core-commit --dependency-root`. `--reuse-build`는 Program/Core가 같을 때만 사용한다. .NET SDK8.0.301, 외부 NuGet 소스 없음 |
+| 남은 일 | 이 기준본에는 후속 Core 수정이 병합되지 않았다. 수정 담당이 새 SHA의 결과를 별도로 인수해야 한다. 자연 플레이·드랍 확률·UI·Player·Mac 판정은 이 하니스 범위 밖이다 |
+
+원본 영수증: `I:/EXODUSER-Storage/debug/resource-oracle-20261104/result.json`. 이번 감사는 읽기만 했고 재실행·Core 변경0이다. D-014의 C#76개 집계는 resource-oracle을 제외한다. 최초 sweep 전체124항목은 프로젝트76(56 PASS/10 FAIL/9 NEEDS-INPUT/1 SKIP) + 추출기48(33 PASS/15 NEEDS-INPUT)이며, 추출기 통과를 Core 규칙 통과로 합산하지 않는다.
