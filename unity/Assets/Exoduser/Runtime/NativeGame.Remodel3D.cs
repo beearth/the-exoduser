@@ -172,7 +172,7 @@ namespace Exoduser.UnityPort
                 float roll = tr.rotation.eulerAngles.z;
                 if(NativeHd2D.Enabled&&NativeHd2D.IsActor(sr))
                 { NativeHd2D.ProjectActor(sr,r3Cam,roll);r3Projected.Add(sr);continue; }
-                float below = (NativeSkillView.IsCenteredSkillSprite(sr)||KiImpactView.IsFeelSprite(sr)) ? 0 : (sr == playerView ? NativeRemodelCamera.HeroFootLift(sr.sprite) : NativeEnemyFootprint.FootLift(sr.sprite)) * Mathf.Abs(tr.lossyScale.y);
+                float below = (NativeSkillView.IsCenteredSkillSprite(sr)||KiImpactView.IsFeelSprite(sr)||Vfx.DruidSkillVfxView.IsCentered(sr)) ? 0 : (sr == playerView ? NativeRemodelCamera.HeroFootLift(sr.sprite) : NativeEnemyFootprint.FootLift(sr.sprite)) * Mathf.Abs(tr.lossyScale.y);
                 tr.SetPositionAndRotation(tr.position + new Vector3(0, below * cos, below * sin), tilt * Quaternion.Euler(0, 0, roll));
                 r3Projected.Add(sr);
             }
