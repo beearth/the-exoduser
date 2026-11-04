@@ -311,13 +311,22 @@ Unity 이식 중 찾은 웹 결함. 이식은 웹 그대로 두고, 웹 수정�
 - 요지: 1-1 적은 etype 29종(+다안 육괴·문지기)이다. 외형은 지금 위치 해시로 40칸 아틀라스에서 골라 행동과 무관하다 → **etype 하나에 3D 모델 하나**로 묶는다. 1차 = 빈도 상위 5종(7·16·1·47·4, 일반 스폰의 40.3%, 모두 이족). 비인간형 9종은 Meshy 인간형 리깅 불가로 표시했다. 비용 기본 1,005cr·상한 2,010cr(잔액 4,103cr), 1차 요청 상한 350cr + $0.70, 시범 가시 사도 1종 먼저.
 - 도구 비교 추가(CTO 전달, 사용자 "트라이포도 있고 메시도 있으니까 다 잘 써 봐"): G0 §4.1. 0차 = 가시 사도(인간형)·다안 육괴(비인간형)를 Meshy(API)와 Tripo(Mac Chrome 웹, 사용자 로그인)로 각각 만들어 34° "스프라이트 | Meshy | Tripo" 비교판과 자동 리깅 성공표를 남기고, 체형별로 이긴 도구를 쓴다. Meshy 상한 130cr + Tripo 웹 2종 + $0.14, 승인 뒤 실행.
 
-### 8.5.4 드루이드 세트 기본값 (11-04, 보스 아레나 레인)
+### 8.5.4 드루이드 세트 기본값과 실측 분석 (11-04)
+
+**8.5.4-b 세트 기본값 규칙 (보스 아레나 레인)**
 
 - 이유: 3D 실측 실행이 리모델 플래그(`--unity-druid-remodel`)가 꺼진 채로 돌아 옛 웹 세트(23기술, HP 5페이즈)의 드루이드와 싸웠다. 데모에서 보이는 보스는 리모델 7기술 드루이드여야 한다.
 - 규칙(뷰·런타임 계층, `NativeReviewArgs.DecideDruidSet`, 위가 우선): ① `--unity-druid-legacy` = 옛 웹 세트 강제(꺼짐) ② `--unity-druid-remodel` = 켜짐 ③ 3D 보스 아레나 장면(`--remodel3d`) = 켜짐 ④ 빌드 종류가 데모·체험판(`BuildFlavor.Current.DemoMode`) = 켜짐 ⑤ 그 밖 = 꺼짐(Core 기본값).
 - 적용 위치: 런 마다 `Simulation`이 만들어진 직후 `NativeGame.ReviewArgsApply`가 `Simulation.DruidRemodel`을 정하고 `[DruidSet] remodel=<true|false> reason=<legacy-arg|arg|3d-arena|demo|default>`를 한 줄 로그로 남긴다.
 - 불변: Core(`DruidRemodelSettings.Default = false`)와 모든 Core 수치는 그대로다. `Simulation`을 직접 만드는 테스트·웹 oracle 하니스는 계속 옛 세트를 받는다(옵트인할 때만 리모델).
 - 검증: `unity/Tools/druid-rigpixel-tests`가 규칙 조합(인자·아레나·데모)과 Core 기본값 꺼짐을 검사한다. `--unity-review-args-capture` 하니스는 "인자가 있으면 켜짐"에서 "규칙을 따른다 + Core 기본값은 여전히 꺼짐"으로 기대를 바꿨다(검사 약화 없음, 아레나 안 드루이드가 규칙 결과와 같은 세트인지 그대로 확인).
+
+**8.5.4-a 실측 분석: 1-1 한 판 보스전 사망 — 옛 기술 세트 결함 (2026-11-04, CTO 전달)**
+
+- 2D 2판·3D 1판 모두 지옥문 뒤 보스전에서 봇이 사망했다. 3D 1판(`I:/EXODUSER-Storage/fullrun-measure/3d-round-1-telemetry.jsonl`)의 보스 상태가 `bossBurstWind`·`bossGrabWind`·`bossSweep`이었다. 즉 **리모델 7기술이 아닌 옛 웹 드루이드 기술 세트**로 싸웠다. 3D 장면(RM1_Slice)은 켜졌지만 Core 리모델 플래그(`--unity-druid-remodel`, 기본 false)가 꺼져 있었다.
+- 사망 순서(틱): 25801 잡기 예고 → 26031 회복 중 플레이어 기절(HP 2,616→1,510) → 26226 `bossSweep`에 맞아 사망. 보스 HP 148,786→87,464.
+- **옛 세트 한정 결함, 리모델에서 제외**: 옛 `sweep`은 예고 25틱 뒤 14틱 동안(진행 15~85%) 사거리 `d.R+pr+400`px, 좌우 각 1.7rad(약 195° 부채꼴)을 매 틱 판정한다(`DruidBoss.Moves.cs` 58·481~487행). 기절 중에는 피할 수 없다. 리모델 7기술(`DruidRemodelData.Moves`)에는 `sweep`·`burst`가 없다.
+- 조치(CTO 결정): 데모 v0의 1-1 보스는 리모델 드루이드를 기본으로 한다. 보스 아레나 브랜치에서 `--unity-druid-remodel` 기본값을 켜고(3D 장면 판·체험판 기준), 옛 세트는 끄기 인자로 남긴다. Core 수치·판정은 바꾸지 않고 세트 선택만 바꾼다. 3D 재측정은 그 통합 빌드로 다시 한다. 리모델 세트에서도 잡기 뒤 기절 + 연속 공격이 나오면 `GrabHeldRecovery 60`을 본다.
 
 ### 8.6 세션 구성 (사용자 입력 턴에 유니티 총괄 또는 보스전 총괄이 연다)
 
