@@ -1,6 +1,6 @@
 # MANUAL 03 — 카메라·가림 투명화·실루엣·보스 아레나 줌 (초안 2026-11-05)
 
-- 상태: 초안 | 연구 반영: d4_03_cam(전체), conventions(A·B 절), yellowsky(규칙 6 보스 카메라), poe2(§7 카메라, R10 흔들림), d4_01_env(§6) | 연구 반영 대기: D4 가림 방식 공식 자료(공개 없음, 추정으로 처리), 연구 tech budget
+- 상태: 초안(2차 반영) | 연구 반영: d4_03_cam(전체), conventions(A·B 절), yellowsky(규칙 6 보스 카메라), poe2(§7 카메라, R10 흔들림), d4_01_env(§6), **2차: TOOLCHAIN(§3a a-2 OccluderFadePass·a-3 SilhouettePass, §1 설치 패키지), codex_urp_mood(§10 34° 먼 적·가림·LOD·DOF·비네트), codex_keyshot_composition(§5 카메라·거리 고정), codex_cinematic_text(§3 D4 실시간 컷신 카메라 설명), our_tech_audit(#16 반복 GetComponent), codex_tech_budget(예산 항목), ENGINE_DECISION(§3 카메라 UE5 칸)** | 연구 반영 대기: D4 가림 방식 공식 자료(공개 없음, 추정으로 처리). 보스별 카메라 피치·FOV·줌·복귀 시간은 D4·Hades·PoE2 모두 공개 수치 없음(codex_cinematic_text §3, 미확인)
 - 범위: 게임 카메라(피치·거리·FOV·추적), 흔들림, 보스 아레나 줌, 가림 투명화(1단계), 가려진 영웅·엘리트 실루엣(2단계), 발밑 원, 먼 적 보호, 시네마틱 카메라와의 경계.
 - 이 문서가 정하지 않는 것: 시네마틱 연출 내용(13), 안개 수치(02), 판정·수치(규칙 코어), HUD 배치.
 - 현재 구현 근거: 1-1 피치 34°, 거리 16.5u (`unity/Assets/Exoduser/Runtime/NativeRemodel3D.cs` 17~18행), 보스 줌 `NativeGame.BossView.cs` 30행 `BossCameraZoom`(기존 2D 경로: 보스 생존 중 목표 0.8, 감쇠 .94^dt), 아레나 프레임 `NativeArenaCameraLayout.cs`(기본 반높이 최대 ×1.35).
@@ -88,6 +88,19 @@
 | 비네트·어둠 | 적 레이어 제외 또는 화면 가장자리 15%까지만 | [추정] d4_03 §2.4 |
 | 늘이기·줌 중 | 먼 적이 화면 밖으로 나가지 않음 | [단일] yellowsky 4.2 합격 |
 
+### 3.6 먼 적·가림·카메라 추가 사실 (2차 반영)
+
+| 항목 | 내용 | 근거 |
+|---|---|---|
+| 34°로는 크기를 못 정함 | 피치 34°만으로 적의 화면 픽셀 크기나 최소 가시 거리를 정할 수 없다(FOV·카메라 공간 깊이·형태에 의존). "최소 16px" 같은 보편 임계값은 없다. 이 프로젝트의 최소 적 높이(px)·대비 임계·허용 투과율은 **미확인**이라 실측으로 정한다. 머리·몸통·발·무기를 월드→화면 좌표로 투영해 최종 화면에서 기록 | [사실·추정] codex_urp_mood §10 |
+| LOD 사라짐 | LOD 전환 기준은 화면 높이 비율이다. 먼 적이 이동 중 갑자기 사라지는지 Cull/LOD 경계를 확인한다. LOD Cross Fade의 alpha testing도 비용 대상 | [사실] codex_urp_mood §10 |
+| 먼 적을 흐리는 효과 | DOF·모션블러·블룸을 한꺼번에 켜지 않고 효과별 같은 프레임으로 켬/끔 비교. 원거리 적을 희생하는 전역 블러를 분위기 필수값으로 두지 않는다. 비네트가 화면 위쪽 적을 지우면 낮추거나 범위를 줄인다 | [추정] codex_urp_mood §10 |
+| 가림물 처리 범위 | 카메라-적 사이 가림물 페이드·실루엣은 별도 기능으로 검토. **모든 가림물을 항상 투명화하면 중첩 비용과 화면 혼잡이 생긴다** → 대상 레이어를 고목 줄기·수관·큰 바위로 제한(3.3과 일치) | [추정] codex_urp_mood §10 |
+| 키샷 카메라 | 키샷 3안은 피치·거리·FOV·회전·추적 오프셋을 모두 고정하고 크롭으로 재구도하지 않는다. 영웅 발 접점 (50%, 60%)은 임시 가정이고 실제 값이 다르면 그 값을 세 안에 공통 적용 | [추정] codex_keyshot_composition §5 (01번 3.1표) |
+| 가림 예산 | 가림 페이드 ≤ 0.5ms, 실루엣 ≤ 0.2ms (Mac M5 Pro, 1080p, 첫 실측 전) | [추정] TOOLCHAIN §3a, 15번 3.2표 |
+| D4 실시간 컷신 | D4는 일반 대화에서 등각 느낌을 유지한 채 가까이 가는 카메라와, 중요한 이야기에서 카메라를 통제하는 실시간 컷신을 구분하고, 실시간 컷신에 플레이어 장비·그래픽 설정을 반영한다고 2020년 개발 글에서 설명(보스별 구도·초수 명세 아님). Hades 1·PoE2는 카메라 높이 조정 패치 기록만 있고 수치 없음 | [사실·개발 당시 설명] codex_cinematic_text §3.1~3.3 (13번 문서 시네마틱 카메라와 공동) |
+| 설치된 카메라 패키지 | 코드 manifest 기준 Cinemachine 6.6.0, Timeline 6.6.0. 4장·5.2의 `CinemachinePositionComposer`는 컴포넌트 이름 기준 표기이며 6.6.0에서 같은 이름·필드인지 Mac에서 확인. **현재 코드는 `CinemachineFollow`를 Late에서 반복 조회**(our_tech_audit #16, `NativeGame.Remodel3D.cs:199`)하므로 리그 교체 시 참조 저장으로 함께 정리 | [사실 내부] TOOLCHAIN §1, our_tech_audit #16 |
+
 ## 4. 제작 도구
 
 | 역할 | Unity 추천 (확정) | UE5 대응 | 대안 |
@@ -97,6 +110,8 @@
 | 가림 1단계 | 구형 캐스트 + 알파 블렌드 셰이더(깊이 선패스 + 블렌드 본패스), 속성 블록으로 `_Fade` 제어 | Material Parameter + 투명 머티리얼 | 화면 원형 컷아웃(부드러운 그라디언트) |
 | 가림 2단계 | 렌더러 기능 Render Objects 2패스(깊이 테스트 Greater로 가려진 픽셀만 단색) | Custom Depth + Post Process 외곽/실루엣 | — |
 | 시네마틱 카메라 | 별도 카메라 + 0.4초 블렌드 | Sequencer/Camera Cut | — |
+| 가림 1단계 구현 형태(TOOLCHAIN a-2 `OccluderFadePass`) | `Occluder` 레이어(고목 줄기·수관·큰 바위만) 대상 Renderer Feature: 깊이 선패스 + 알파 블렌드로 다시 그림, 영웅·보스 화면 위치 기준 원형 범위 키워드. 예산 ≤ 0.5ms [추정]. **디더 금지**(점 금지) | Translucent 교체 또는 Custom Depth. UE5 관례의 Dither Temporal AA 페이드는 점 금지와 충돌 | 오브젝트별 `_Fade` 머티리얼(위 행) |
+| 가림 2단계 구현 형태(TOOLCHAIN a-3 `SilhouettePass`) | URP 기본 Render Objects 2개(`Hero`·`EliteBoss` 레이어, Depth Greater, 단색). **코드 0**, 예산 ≤ 0.2ms [추정] | Custom Depth/Stencil + Post Process Material | — |
 | 판정 | 공용 실행기 캡처, 고정 위치 | 같음 | — |
 
 커스텀 툴: 없음. 단, `OccluderFade` 컴포넌트(가림 대상 표시 + 페이드 값 관리)를 구현 서브에이전트가 만든다. 입력 = 레이어·캐스트 반경·시간 표, 출력 = 렌더러별 `_Fade`.
