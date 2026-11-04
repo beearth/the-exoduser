@@ -28,10 +28,9 @@ Shader "EXODUSER/HudPrototypeC"
             float _Mode,_Diameter,_HpTranslate,_Hurt,_Mana,_Stamina,_Flip,_FadeRight,_FadeBottom;
             float4 _UvRect;
             float _FrameAperture;
-            const float EmptyCenterAlpha=1;
-            const float EmptyEdgeAlpha=1;
-            const float SurfaceSoftPixels=2;
-            const float SurfaceWavePixels=1;
+            // Design constants must not become unbound external uniforms on FXC/HLSLcc (Metal).
+            static const float SurfaceSoftPixels=2;
+            static const float SurfaceWavePixels=1;
             float3 rgb(float r,float g,float b){return float3(r,g,b)/255;}
             float linearChannel(float c){return c<=.04045?c/12.92:pow((c+.055)/1.055,2.4);}
             float4 outputColor(float4 c)
@@ -140,7 +139,7 @@ Shader "EXODUSER/HudPrototypeC"
                 }
                 float2 d=i.uv-.5;float r=length(d),edge=saturate((.5-r)*_Diameter+.5);
                 // Opaque dark glass blocks scenery in the unfilled HP/MP/ST interior; the circular edge still antialiases.
-                float radial=smoothstep(.22,.5,r),emptyAlpha=lerp(EmptyCenterAlpha,EmptyEdgeAlpha,radial);
+                float radial=smoothstep(.22,.5,r);
                 float3 bowl=emptyBowlColor();
                 bool hp=_Mode<.5,mp=i.uv.x<.5;
                 float fill=hp?saturate(1-_HpTranslate):saturate(mp?_Mana:_Stamina);
@@ -157,12 +156,12 @@ Shader "EXODUSER/HudPrototypeC"
                     wet*=lerp(1,.50,smoothstep(.82,1,h));
                 }
                 liquid*=1-.30*radial;
-                float a=wet+emptyAlpha*(1-wet);
-                float3 color=(liquid*wet+bowl*emptyAlpha*(1-wet))/max(a,.0001);
+                // Empty and filled interiors are opaque. Neither RGB nor alpha relies on a material default.
+                float3 color=lerp(bowl,liquid,wet);
                 float rim=meniscusCoverage(i.uv,fill);
                 color=lerp(color,meniscusColor(hp,mp),rim);
                 if(hp&&_Hurt>0)color=lerp(color,rgb(194,26,16),saturate(1-(.5-r)*_Diameter/22)*.85);
-                return outputColor(float4(color,a*edge));
+                return outputColor(float4(color,edge));
             }
             ENDCG
         }

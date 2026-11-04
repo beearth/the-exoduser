@@ -58217,3 +58217,9 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 - C 전용 shader/partial만 변경: 불투명 #161c22 통·AA 1px 수면선, 아이콘 alpha.55 디스크+Cinzel 8방향1px 테, 원화 외곽 post-matte 알파 가드. H6 내부점 제거·판색/접지/배치·공유 HUD/A/B/Core/ProjectSettings 보존.
 - 원화 ROI 낮은 잔여 HP385/ST314→0, 각75804texel 금속1성분/고립0; 보호 AA손실0. hud-proto-tests10종통과, 오프라인5어셈블리 오류0. 원화/수식 검사와 화면 판정을 구분한다.
 - H4_unity_prototype_C.md H7 절·H7_validation.log에 Mac9f0d650b2 직접본5장, 원인/줄·색전송·AA손실·검사실패/해결·재캡처위치를 기록. 화면 미검수(Mac), 채택 미판정·본선 미병합.
+
+## 2026-11-05 H8 — C 빈 통 GPU 상수 계약·기동 눈금 대조
+
+- C shader의 EmptyAlpha 전역 의존을 제거하고 빈 RGB를 직접선택·출력alpha를원형edge로고정했다. 남은설계상수2개는static const. FXC reflection에서기존외부상수4개제거확인, 실제Metal값은미관측.
+- H7가드/쿨다운/금속/판/공유HUD/A/B/Core/설정 보존. MP1393,898은원화alpha255/가드1이며기동눈금과위치·폭·한상태RGB일치: 가드수정0, Mac기동값대조필요. A/B의non-static4개는보고만.
+- H4_unity_prototype_C.md H8절·H8_validation.log에직접본C4이미지7장·원인/줄·전역전수표·수면2/1복원영향·다른원인한계·두배경동일픽셀재검수를기록. 12러너PASS, 오프라인5어셈블리오류0. 화면미검수(Mac)·본선미병합.

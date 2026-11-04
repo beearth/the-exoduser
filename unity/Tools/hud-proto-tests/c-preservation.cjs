@@ -79,3 +79,10 @@ const cShader=shaders+'HudPrototypeC.shader';
 check(method(now(cShader).toString('utf8'),'frameApertureCoverage')===method(previous(cShader).toString('utf8'),'frameApertureCoverage'),'H7 keeps Mac-approved H6 inner aperture guard exactly');
 check(method(now(runtime+'NativeHud.PrototypeC.cs').toString('utf8'),'PrototypeCGlobe')===method(previous(runtime+'NativeHud.PrototypeC.cs').toString('utf8'),'PrototypeCGlobe'),'H7 keeps shield registration and globe draw order exactly');
 console.log('PASS '+checks+' total C preservation contracts through H7');
+const h8Base='be25c67970f15b61b4f253f73ef464268f07824e';
+const h7=p=>cp.execFileSync('git',['show',h8Base+':'+p],{cwd:root,maxBuffer:16*1024*1024,windowsHide:true});
+for(const p of [runtime+'NativeHud.PrototypeC.cs',runtime+'NativeHudPrototypeCArt.cs'])
+  check(now(p).equals(h7(p)),p+': H8 preserves the entire accepted C cooldown/plate/draw code');
+for(const name of ['frameApertureCoverage','frameOuterCoverage','meniscusCoverage','meniscusColor','emptyBowlColor'])
+  check(method(now(cShader).toString('utf8'),name)===method(h7(cShader).toString('utf8'),name),'H8 preserves accepted H7 '+name+' function');
+console.log('PASS '+checks+' total C preservation contracts through H8');

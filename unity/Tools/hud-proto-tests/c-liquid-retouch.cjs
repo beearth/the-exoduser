@@ -5,9 +5,9 @@ const root=path.resolve(__dirname,'../../..'),shader=fs.readFileSync(path.join(r
 let checks=0;const check=(v,m)=>{checks++;assert.ok(v,m);},near=(a,b,m)=>check(Math.abs(a-b)<1e-8,m);
 const sat=x=>Math.max(0,Math.min(1,x)),smoothstep=(a,b,x)=>{const t=sat((x-a)/(b-a));return t*t*(3-2*t);};
 const constants=[...shader.matchAll(/const float (\w+)=([.\d]+);/g)].map(m=>'const '+m[1]+'='+m[2]+';').join('\n');
-const expression=shader.match(/float radial=(.*?),emptyAlpha=(.*?);/);assert(expression,'production empty alpha expression');
-const empty=new Function('r','smoothstep','lerp',constants+'const radial='+expression[1]+';return '+expression[2]+';');
-for(const r of [0,.1,.22,.3,.4,.49,.5])near(empty(r,smoothstep,(a,b,t)=>a+(b-a)*t),1,'empty C bowl is opaque at every interior radius');
+const expression=shader.match(/float r=length\(d\),edge=([^;]+);/);assert(expression,'production direct circle alpha');
+const empty=new Function('r','_Diameter','saturate','return '+expression[1]+';');
+for(const r of [0,.1,.22,.3,.4,.49,.495])near(empty(r,156,sat),1,'empty C bowl is opaque at every interior radius');
 function body(name){const start=shader.indexOf(' '+name+'(');assert(start>=0,'production '+name);const open=shader.indexOf('{',start);let end=open+1,depth=1;
  for(;depth&&end<shader.length;end++){if(shader[end]==='{')depth++;if(shader[end]==='}')depth--;}assert.equal(depth,0);return shader.slice(open+1,end-1);}
 const scalar=name=>new Function('uv','fill','_Diameter','sin','abs','smoothstep',constants+body(name).replace(/\bfloat /g,'let '));

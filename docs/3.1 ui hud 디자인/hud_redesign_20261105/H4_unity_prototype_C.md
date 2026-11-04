@@ -1,3 +1,108 @@
+# H8 — C 빈 통의 GPU 상수 계약 수정·프레임 틈 원인 대조
+
+**코드/오프라인 검사 통과, 화면 미검수(Mac).** 기준 `be25c67970f15b61b4f253f73ef464268f07824e`, 브랜치 `codex/unity-hud-proto-20261105`. 생산 변경은 **HudPrototypeC.shader 한 파일**이다. 기본/A/B·공용 NativeHud·HudOrb·Core·ProjectSettings·H7 내부/외곽 가드·쿨다운·금속/판 변경0. 본선 미병합·채택 미판정.
+
+## C4 근거와 직접 본 범위
+
+[Mac C4 보고 896ef47f2](https://github.com/beearth/the-exoduser/blob/896ef47f2/docs/0마스터플랜/worklog/cloud-lanes/reports/mac_20261104.md#L3)의 빈 통 FAIL과 외곽점0/수면선/쿨다운/금속 가장자리 양호를 구분한다. 같은 ST 빈 지점이 두 장면에서 (79,74,57)/(2,2,2)였고 HP 위쪽으로 나무가 비쳤다. C4는 **H7 코드**의 판정이다.
+
+`hudc4-1920-2x`, `partial-cooldown-2x`, `partial-ground-2x`(각2320×500), `hp-8x`/`mpst-8x`(각800×480), `edge-8x`(480×560), `cooldown-3x`(1980×210) PNG **7장을 직접 열었다**. 로컬 사본은 지정 Git blob과 일치했다. HP/ST의 배경 투과, MP 좌상단 갈색 점, 외곽 잔점 제거와 또렷한 숫자를 확인했다. 새 H8 화면·Metal·GPU readback은 실행하지 않았다.
+
+## 결함별 원인·조치
+
+이하 CS=`unity/Assets/Exoduser/Resources/Shaders/HudPrototypeC.shader`, C=`unity/Assets/Exoduser/Runtime/NativeHud.PrototypeC.cs`, O=`unity/Assets/Exoduser/Resources/Shaders/HudOrb.shader`. 줄은 달리 적지 않으면 H8 기준이다.
+
+| 항목 | 원인/근거 | 조치·파일:줄 |
+|---|---|---|
+| 빈 통 불투명화 실패 | H7 CS:31–34의 non-static 전역 const가 외부 constant buffer 입력. C#에서 값을 공급하지 않음. 두 EmptyAlpha가0이면 dry 출력alpha=0으로 C4 증상과 일치 | 두 EmptyAlpha 전역을 제거. RGB를 `lerp(bowl,liquid,wet)`, 출력alpha를 `edge`로 직접 고정. **CS:141–164, 특히160/164** |
+| 수면 관련 전역 | SurfaceSoftPixels/SurfaceWavePixels도 같은 저장 형식 결함 | 기존 숫자2/1을 `static const`로 고정(CS:31–33). 수면/meniscus 함수 자체·색·1px AA 유지. 0값에 기대던 화면과의 차이는 아래에 명시 |
+| MP 프레임 약3px 틈 | 보고 위치의 원화 3×3 bilinear alpha255, H5/H6/H7 가드factor1. 원화 구멍이나 가드 침식으로 설명되지 않음. 그 위 기동 눈금과 위치·폭·한 상태 RGB가 일치 | **가드 수정0**. 원인을 잘못 겨냥한 범위 축소를 하지 않음. C:108–113, O:34–45, 아래 대조표. 실제 캡처 게이지값은 Mac 재확인 |
+| 기존 통과 항목 | H7 내부/외곽 가드, 금속 ramp, C 쿨다운/판/배치, 공유 셰이더 보존 검사 | 해당 함수와 파일 바이트 보존. A/B의 같은 전역 문제는 보고만 함 |
+
+### 확인한 상수 계약과 GPU 증명의 경계
+
+[Microsoft HLSL 변수 규칙](https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-variable-syntax)은 non-static 전역의 기본 external/uniform 저장과 초기값 공급 책임을 설명한다. [상수 선언 대응표](https://learn.microsoft.com/en-us/windows/uwp/gaming/glsl-to-hlsl-reference)도 HLSL 상수에 `static const`를 사용한다. [Unity 6000.6 셰이더 컴파일 문서](https://docs.unity.com/en-us/engine/6000.6/manual/materials-and-shaders/shaders/shader-troubleshooting/shader-reducing/shader-compilation)는 Metal 변환에 FXC/HLSLcc 경로를 설명한다.
+
+이 PC의 FXC로 **실제 H7 C fragment/helper**를 오프라인 컴파일했다. 첫 진단에서는 X3207(외부 상수 설정 필요)이 네 선언에 나왔고, legacy tex2D를 위한 /Gec 추가 후 reflection에 다음 네 입력이 남았다:
+
+~~~text
+cbuffer $Globals
+float EmptyCenterAlpha;   Offset68
+float EmptyEdgeAlpha;     Offset72
+float SurfaceSoftPixels;  Offset76
+float SurfaceWavePixels;  Offset80
+~~~
+
+H8 동일 검사는 네 이름이 외부 버퍼에서 모두 사라지고 실제 실행 입력 _Mode/_Mana는 남음을 확인했다. 이 검사는 **SM5 /Gec, UNITY_COLORSPACE_GAMMA=1, UnityCG의 입출력 구조만 최소 v2f_img로 대체**한 생산 fragment 컴파일/reflection이다. **Unity Metal 변환물·실제 바인딩·GPU 메모리가 아니다.** 외부 상수로 잘못 선언된 소스 계약은 확인했지만, Mac에서 실제 값이0이었는지는 관측하지 못했다. 따라서 C4 원인에 매우 잘 맞는 결함을 제거한 것이며 GPU 결과 확정은 Mac 재캡처가 필요하다.
+
+기존 scalar 검사는 HLSL `const float` 초기값을 JS lexical const로 추출해1/1/2/1을 주입했다. 수식은 검증했지만 HLSL 저장 형식을 재현하지 못한 사각지점이었다. H8 `c-gpu-contract.cjs`는 C 전역 선언이 static const인지 검사하고 실제 FXC reflection·직접 alpha 출력식도 검사한다.
+
+## C·A/B 전역 const 전수 목록과 0값 영향
+
+| H7 선언(전부 static 없음) | H7 파일:줄 | 0일 때 영향 | H8 처리 |
+|---|---|---|---|
+| EmptyCenterAlpha=1 | CS:31 | 빈 중심 alpha0 | 제거, 원 내부 출력alpha 직접1 |
+| EmptyEdgeAlpha=1 | CS:32 | 빈 외측 alpha0 | 제거, 원의 AA 경계만 별도 유지 |
+| SurfaceSoftPixels=2 | CS:33 | smoothstep 양끝이 같아져 정상4px 전이가 사라짐/퇴화 | CS:32 static const2 |
+| SurfaceWavePixels=1 | CS:34 | 수면/meniscus의 파형·곡률0, 직선 | CS:33 static const1 |
+| EmptyDiamondCenter=3.535534 | HudPrototype.shader:33 | 빈 슬롯 다이아몬드가 중심으로 축소 | **공유 A/B 수정 금지, 보고만** |
+| EmptyDiamondHalfBand=.707107 | HudPrototype.shader:34 | 다이아몬드 선 폭이 AA 잔여만 남음 | 동일 |
+| NotchHalfLength=3 | HudPrototype.shader:35 | 기동 노치 길이가 AA 잔여만 남음 | 동일 |
+| NotchHalfWidth=1 | HudPrototype.shader:36 | 기동 노치 폭이 AA 잔여만 남음 | 동일 |
+
+A/B shader는 C의 슬롯 RT에도 재사용하므로 빈 슬롯 장식에도 잠재 영향이 있다. C의 기동 고리는 이 A/B 노치가 아니라 **공유 HudOrb의 별도 경로**다. 후자의3° 노치 수치는 직접 literal이며 이번 non-static const 목록과 다르다.
+
+C의 내부 가드 임계값(.25/.45, .90/.98, 반경71.5/73.5), 외곽 가드 임계값(.20/.30, .16/.24, 반경73.5/75.5), 수면선 폭0~1px 등은 **함수 안 직접 literal**이므로 위 전역이0이 되는 문제의 대상이 아니다. 해당 함수·색 전송·금속 ramp는 바이트 그대로다.
+
+**수면 영향은 숨기지 않는다.** 기존 GPU에서 Surface 두 값이0이었다면 H8에서 총4px coverage 전이와 진폭1px 파형과 최대0.5px의 기존 곡률이 복원된다. C4가 ‘직선·양호’라고 본 형상과 달라질 수 있다. 임의의 새 수치를 고르지 않고 원래2/1 설계값을 고정했으며, 메니스커스 자체의 FWHM/적분1px·AA 지지폭2px·색·연속성은 유지했다. 이 수치 PASS가 새 화면 판정을 대신하지 않는다.
+
+## 다른 원인 후보와 제외 범위
+
+| 후보 | 소스에서 확인한 것 | 아직 증명하지 못한 것 |
+|---|---|---|
+| HudOrb의 _Fill/공유 액체 | C 액체는 Shaders/HudPrototypeC 재질, PrototypeCBlit mode0/1 경로(C:55–56,75–80). O는 쉴드/기동 고리에 사용 | 실제 Mac 자산/variant가 이 SHA인지 GPU 캡처로 재확인 |
+| RT 알파/포맷 | C RT는 ARGB32·sRGB, GL.sRGBWrite/active RT 복구(C:14–33). alpha를 버리는 RGB-only 포맷 아님 | Metal RT 값 readback 없음 |
+| IMGUI 블렌드/tint | TryDrawPrototypeC에서 GUI.color=white, 기존 DrawTexture alphaBlend. 정상 source-over라면 opaque source가 배경을 투과시키지 않음(C:83–104) | 네이티브 GUI 상태/블렌드의 실제 GPU 동작은 미관측 |
+| 호출/겹침 순서 | 액체→프레임→쉴드/기동→문자(C:105–129). 알파1 원화 아래에 배경이 다시 생기는 소스 경로는 없음 | 다른 캡처/후처리/상태에 대한 실측은 별도 |
+| 재질 키워드/분기 | C shader에 shader_feature/multi_compile 없음. UNITY_COLORSPACE_GAMMA는 outputColor RGB와 source decode만 바꿈. discard/Blend/ColorMask로alpha를 없애는 선언 없음 | 실제 Metal 컴파일 변형/바인딩은 미관측 |
+
+## GPU 경로의 출력 계약·색
+
+CS:140의 `edge=saturate((.5-r)*_Diameter+.5)`, **CS:164의 `return outputColor(float4(color,edge));`** 때문에 지름156에서 r≤.5−.5/156인 원 내부의 **빈 영역 출력 알파=1**이다. 원 경계 AA와 바깥은 여전히0~1/0이다. CS:160의 dry wet0은 bowl 색을 직접 선택한다. outputColor는 RGB만 변환하고 alpha는 바꾸지 않는다.
+
+빈 통 색 #161c22=(22,28,34), H5 저장 계약 `D(D(color)) → sRGB RT 쓰기 E → 저장 D(color)`는 유지한다. 8bit 저장은(2,3,4), 조건부 IMGUI 재인코딩 모델의 예상 표시는 **(22,28,34)**다. fragment의 선형 중간 RGB 자체를 22/255라고 부르지 않는다. 실제 Metal RT/화면의 RGB·alpha는 아직 미확인이다.
+
+## MP ‘구멍’과 HP 대칭 위치
+
+| 대조 | 결과·근거 |
+|---|---|
+| MP 화면 (1393,898) 주변3×3 | 원본 source약(197,121), 대표 RGBA(2,1,1,255). Gamma/Linear bilinear alpha1, H5매트/H6내부/H7외곽 모두1 (`c-frame-ring.cjs`) |
+| HP 같은 원화 지점 | 화면약(484,898). HP/MP 원본 PNG 동일. HP에는 기동 눈금 대신 청색 쉴드 고리가 겹침 |
+| 기동 눈금 위치/폭 | O:39–44, 화면각 약341.409°, cell=.2의 마지막3°에 포함. 반경에 따른 호 길이약3.49px로 Mac 약3px와 일치 |
+| Core 연동 | `Core/Simulation.PlayerCombat.cs:20` HarpGaugeMax225, `Core/ChainDash.cs:14` GaugeCost[1]=45 → `NativeHud.cs:156` cell45/225=.2. 모두 읽기만 함 |
+| 색 대조 | 채워진 눈금의 소스 RGB계산(36.5994,30.9037,22.2124)에 기존 링의 추가 인코딩 모델을 적용하면 **(106,98,83)**으로 Mac t001006과 일치. 다른 상태(68,53,0)까지 완전히 설명한 것은 아님 |
+| 조치/한계 | 원본 구멍·가드 침식 가설은 지지되지 않음. 가드를 좁혀도 해당 픽셀의factor1은 바뀌지 않아 **코드 수정0**. 실제 t001006/t001568의 기동 게이지·draw state를 Mac에서 대조할 것 |
+
+갈색 눈금의 모양/색을 바꾸는 것은 이번 원화 가드 수정과 다른 UI 판단이다. 금지된 HudOrb/공용 NativeHud를 수정하거나 C 전용 고리를 새로 만들지 않았다.
+
+## 검사와 Mac 재확인
+
+`H8_validation.log`에 실제 명령/출력을 첨부했다. GPU계약215/0, 원화/기동눈금533/0, 배치637/0, 액체3,781/0, 외곽1,395,620/0, 쿨다운23,608+6/0, C래스터454/0·수식5,392/0, 보존61/0, 내부가드1,599,545+11/0, 전송51+10,242/0, legacy PASS·A/B수식16/0로 **12러너 통과**했다. 오프라인 C#5어셈블리 오류0(Player Core133/Runtime300, Editor Core133/Runtime300/Editor64), 기존경고155이며 C# 생산 변경0. Unity/Metal 실행0.
+
+의도된 RED1(non-static 전역). 실제 초기 FXC 진단1회 실패는 legacy tex2D에 필요한 /Gec 누락으로, 옵션을 고친 뒤 성공했다. staged whitespace 검사1회는 FXC 출력의 후행 공백1개를 제거한 뒤 통과했다. 같은 검사2회 실패 없음. 컴파일 DLL/PDB·테스트 DXBC/생성물은 확인 후 제거하고 로그만 보존한다.
+
+Mac은 기존 C4의 **창 모드·무음·-batchmode/-nographics 없이** 같은 SHA/해상도/캐릭터/잔량/기동 게이지/카메라에서 확인한다. 현재/A/B 코드 보존과 새 C 화면 합격은 별개다.
+
+- **빈 통:** 같은 ST 빈 원내 지점(기존에79/74/57와2/2/2를 잰 정확한 XY)을 흙 바닥과 어두운 나무 두 장면에서 다시 잰다. Git 보고에는 그 XY가 없으므로 Mac 원본 측정 좌표를 유지한다. 보조(1450,915)와 HP(480,906)는 실제 빈 영역이고 문자/수면/쉴드/기동 링/원화/hurt와 안 겹치는지 먼저 확인한다. 두 장면 모두 (22,28,34)에 가까운지와 좌표·3×3표본·상태를 기록한다.
+- **GPU 필요 시:** C의 prototypeHp/prototypeResources RT에서 같은 빈 영역의 alpha1과 RGB 저장값을 readback/캡처하고, 최종 GUI 화면과 분리한다. 배경 의존이 남으면 RT 단계/GUI 단계 중 어디서 달라지는지 기록한다. PC에서는 이 검사를 실행하지 않았다.
+- **수면:** partial HP/MP/ST, full·0에서 정적2/1 복원 후의 곡률·4px전이·1px 메니스커스가 C4의 양호 판정을 해치지 않는지 1x/8x 확인한다. 직선과의 픽셀 동일성을 요구한 패치가 아니다.
+- **MP 눈금:** (1393,898)±2px와 HP(484,898), 같은배경/다른기동게이지 및 같은게이지/다른배경을 교차 비교한다. 채움/눈금이 갈색 지점을 만드는지 확인한다. 알파값/기동 게이지를 모르면 배경색과 유사하다는 이유로 구멍이라고 확정하지 않는다.
+- **유지 항목:** ST외곽 x1500~1535/y970~1010·HP대칭385~420, 내부 구역·금속 AA·쿨다운 숫자·판색/접지·3840을 재확인한다. 칠흑 배경의 외곽, 0잔량·분노/기동·클릭·영상은 별도 미확인이다.
+
+---
+
+# H7 및 그 이전 구현·검증 기록
+
 # H7 — C 빈 구체·쿨다운 대비·외곽 매트 RETOUCH
 
 **코드·오프라인 검사 통과, 화면 미검수(Mac). 본선 미병합·채택 미판정.** 기준은 `8169df9af5db5d2b7a3f10294604b90b52e9267e`, 브랜치는 `codex/unity-hud-proto-20261105`다. 생산 수정은 C 전용 셰이더와 C 전용 partial 두 파일뿐이다. Core·HP/피해 로직·NativeHud 공용 파일·ProjectSettings 변경 0.
