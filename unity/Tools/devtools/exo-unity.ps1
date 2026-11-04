@@ -46,7 +46,7 @@ if($Command -ne 'install-bin' -and $env:EXO_UNITY_NO_FORWARD -ne '1' -and
     exit $LASTEXITCODE
 }
 
-$ExoUnityVersion = '2026.11.04-exclusive'
+$ExoUnityVersion = '2026.11.04-loopfirst'
 $MaxPlayerSlots = 2
 Import-Module (Join-Path $PSScriptRoot 'QueueTurn.psm1') -Force
 try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false) } catch { }
@@ -319,8 +319,13 @@ function Check-ServerCrash([string]$qd) {
     if ($recent -ge 2) { New-Halt $c 'server' @($l.log) (Get-Date).AddHours(-1) }
 }
 
+# 11-04: HALT가 대기 중에 생기면(좀비 감지 등) 순번·슬롯을 얻은 뒤에도 실행하지 않는다. vfx-summon Player가 HALT 뒤 13:23에 떴던 결함.
+function Assert-HaltClear([string]$where) {
+    if (Test-Path -LiteralPath $HaltPath) { Say ('HALT가 생겨 ' + $where + ' 대기를 멈춘다(실행하지 않음)'); Show-Halt; Write-Output ('[halt] ' + $where + ' 대기 중 HALT - 시작 거부'); exit 3 }   # exit도 finally(예약·슬롯 반환)를 거친다
+}
+
 function Test-HaltGate {
-    if (($Command.ToLower() -in 'start', 'run', 'player', 'browser') -and (Test-Path -LiteralPath $HaltPath)) {
+    if (($Command.ToLower() -in 'start', 'run', 'build', 'player', 'browser') -and (Test-Path -LiteralPath $HaltPath)) {
         Say 'HALT 파일이 있어 실행하지 않음'
         Show-Halt
         exit 3
@@ -467,6 +472,19 @@ function Get-ExclusiveHolder {
     return $null
 }
 
+# 11-04 CTO: 단독 검사 Player가 도는 동안에는 새 Editor 작업(서버 시작·batch·상주 서버 제출)도 순번 대기한다. 이미 도는 Editor는 끊지 않는다.
+function Wait-ExclusivePlayer([string]$what) {
+    $deadline = (Get-Date).AddMinutes($WaitMin); $said = $false
+    while ($true) {
+        Assert-HaltClear ('단독 검사 뒤 ' + $what)
+        $ex = Get-ExclusiveHolder
+        if (-not $ex) { return }
+        if ((Get-Date) -gt $deadline) { throw ('단독 검사 대기 시간 초과(' + $WaitMin + '분): ' + $ex.reservedAs) }
+        if (-not $said) { Say ('대기: BuildLoop 단독 검사 Player 실행 중(' + $ex.reservedAs + ' pid ' + $ex.pid + ') - 새 ' + $what + ' 작업은 끝난 뒤 시작 (' + $PollSec + '초 간격)'); $said = $true }
+        Start-Sleep -Seconds $PollSec
+    }
+}
+
 function Release-PlayerSlot {
     $x = Read-Json $ExclusivePath
     if ($x -and $script:PlayerSlotToken -and $x.token -eq $script:PlayerSlotToken) { Remove-Item -LiteralPath $ExclusivePath -Force -ErrorAction SilentlyContinue }
@@ -479,15 +497,45 @@ function Release-PlayerAdmission {
     if ($script:PlayerAdmissionHandle) { $script:PlayerAdmissionHandle.Dispose(); $script:PlayerAdmissionHandle=$null }
 }
 
+# loopfirst(11-04 CTO 1순위 바탕화면): 8ad7fa322 회차의 UI 검사 Player가 FIFO player 예약 7건 뒤에서 40분을 넘겨 교체가 FAIL했다.
+# BuildLoop Player(-PcException buildloop)는 player 예약 큐·굶주림 방지 drain을 건너뛰고 최소 180분 기다린다. 단독·슬롯·메모리 조건은 그대로다.
+# 기다리는 동안 _player_priority.json을 두어 다른 새 Player 입장을 막는다(단독 실행이 빈틈마다 들어오는 Player에 굶지 않게). 주인 pid가 죽으면 무시한다.
+function Get-PriorityPath { return (Join-Path $Root '_player_priority.json') }
+function Test-LoopFirst { return ($PcException -eq 'buildloop') }
+function Get-PriorityWaiter([int]$selfPid) {
+    $p = Read-Json (Get-PriorityPath)
+    if (-not $p -or -not $p.pid -or [int]$p.pid -eq $selfPid) { return $null }
+    $proc = Get-Process -Id ([int]$p.pid) -ErrorAction SilentlyContinue
+    if (-not $proc) { return $null }
+    try { if ($p.processStart -and $proc.StartTime.ToUniversalTime().ToString('o') -ne [string]$p.processStart) { return $null } } catch { }
+    return $p
+}
+function Clear-PriorityWaiter([int]$selfPid) {
+    $p = Read-Json (Get-PriorityPath)
+    if ($p -and [int]$p.pid -eq $selfPid) { Remove-Item -LiteralPath (Get-PriorityPath) -Force -ErrorAction SilentlyContinue }
+}
+
 function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
     New-Item -ItemType Directory -Force -Path $Root | Out-Null
     Set-ReservationWaiter $ownerPid
-    $deadline = (Get-Date).AddMinutes($WaitMin); $lastMsg = ''
+    $wait = $WaitMin; if ((Test-LoopFirst) -and $wait -gt 0 -and $wait -lt 180) { $wait = 180 }
+    $deadline = (Get-Date).AddMinutes($wait); $lastMsg = ''
+    if (Test-LoopFirst) {
+        $start = ''; try { $start = (Get-Process -Id $ownerPid).StartTime.ToUniversalTime().ToString('o') } catch { }
+        Write-JsonAtomic (Get-PriorityPath) ([ordered]@{ pid = $ownerPid; processStart = $start; owner = [string]$Owner; since = (NowIso) })
+    }
+    try {
     while ($true) {
+        Assert-HaltClear 'Player 슬롯'
         $slots = @(Get-PlayerSlots -Reap); $legacy = Get-LegacyPlayerCount
-        $blocked = Get-PlayerDrainReason
-        $rs = @(Get-WaitingPlayerReservations)
-        if (-not $blocked -and $rs.Count -gt 0 -and (-not $Owner -or $rs[0].owner -ne $Owner)) { $blocked = 'player 예약 큐 맨 앞은 ' + $rs[0].owner }
+        $blocked = ''
+        if (-not (Test-LoopFirst)) {
+            $pw = Get-PriorityWaiter $ownerPid
+            if ($pw) { $blocked = 'BuildLoop Player 우선 대기: ' + $pw.owner + ' pid ' + $pw.pid }
+            if (-not $blocked) { $blocked = Get-PlayerDrainReason }
+            $rs = @(Get-WaitingPlayerReservations)
+            if (-not $blocked -and $rs.Count -gt 0 -and (-not $Owner -or $rs[0].owner -ne $Owner)) { $blocked = 'player 예약 큐 맨 앞은 ' + $rs[0].owner }
+        }
         $ex = Get-ExclusiveHolder
         if (-not $blocked -and $ex) { $blocked = 'Player 단독 실행 중: ' + $ex.reservedAs + ' pid ' + $ex.pid }
         if (-not $blocked -and (Test-WantExclusive) -and ($slots.Count + $legacy) -gt 0) { $blocked = '단독 실행 대기: 다른 Player ' + ($slots.Count + $legacy) + '개 종료 대기' }
@@ -502,8 +550,11 @@ function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
             # 프로세스 생성까지 새 실행기의 진입을 직렬화한다. 첫 Player가 생성되기 전
             # 신2개+구1개가 모두 Unity 0개를 관측하는 시작 경합을 막는다. _pc_lock은 쓰지 않는다.
             $legacy=Get-LegacyPlayerCount
+            if (-not (Test-LoopFirst)) {
             $turn=@(Get-WaitingPlayerReservations)
             if ($turn.Count -gt 0 -and (-not $Owner -or $turn[0].owner -ne $Owner)) { $blocked='player 예약 큐 맨 앞은 '+$turn[0].owner }
+            if (-not $blocked -and (Get-PriorityWaiter $ownerPid)) { $blocked='BuildLoop Player 우선 대기' }
+            }
             if (-not $blocked) {
             # 구버전 Player가 있으면 후보 파일도 1개로 줄여 동시 경쟁자의 상호 포기 반복을 막는다.
             for ($i=1; $i -le ($MaxPlayerSlots - $legacy); $i++) {
@@ -516,7 +567,7 @@ function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
                 $script:PlayerSlotPath=$path; $script:PlayerSlotToken=$token
                 # 다른 slot/구버전 lock의 동시 획득 뒤 상한을 다시 검사한다.
                 $limit = $MaxPlayerSlots; if (Test-WantExclusive) { $limit = 1 }
-                if ((@(Get-PlayerSlots).Count + (Get-LegacyPlayerCount)) -le $limit -and (Get-CommitFreeGB) -ge 10 -and -not (Get-PlayerDrainReason) -and -not (Get-ExclusiveHolder)) {
+                if ((@(Get-PlayerSlots).Count + (Get-LegacyPlayerCount)) -le $limit -and (Get-CommitFreeGB) -ge 10 -and ((Test-LoopFirst) -or (-not (Get-PlayerDrainReason) -and -not (Get-PriorityWaiter $ownerPid))) -and -not (Get-ExclusiveHolder)) {
                     if (Test-WantExclusive) { Write-JsonAtomic $ExclusivePath ([ordered]@{ pid = $ownerPid; startedAt = $content.startedAt; token = $token; reservedAs = [string]$Owner; exe = $exeFull }) }
                     $admitted=$true; return
                 }
@@ -527,10 +578,11 @@ function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
             }
             } finally { if (-not $admitted) { Release-PlayerAdmission } } }
         }
-        if ((Get-Date) -gt $deadline) { throw ('Player 슬롯 대기 시간 초과(' + $WaitMin + '분): ' + $blocked) }
+        if ((Get-Date) -gt $deadline) { throw ('Player 슬롯 대기 시간 초과(' + $wait + '분): ' + $blocked) }
         if ($blocked -ne $lastMsg) { Say ('대기: ' + $blocked + ' (' + $PollSec + '초 간격)'); $lastMsg=$blocked }
         Start-Sleep -Seconds $PollSec
     }
+    } finally { if (Test-LoopFirst) { Clear-PriorityWaiter $ownerPid } }
 }
 
 # ------------------------------------------------------------------ 잠금 + 슬롯
@@ -596,11 +648,14 @@ function Acquire-Slot([string]$Role, [string]$wt, [int]$ownerPid, [string]$queue
     $deadline = (Get-Date).AddMinutes($WaitMin)
     $lastMsg = ''
     while ($true) {
+        Assert-HaltClear 'Editor 잠금'
         $blocked = $null
+        $ex = Get-ExclusiveHolder
+        if ($ex) { $blocked = ('BuildLoop 단독 검사 Player 실행 중(' + $ex.reservedAs + ' pid ' + $ex.pid + ')') }
         $res = @(Get-Reservations 'editor')
         if ($res.Count -gt 0) {
             $front = $res[0]
-            if ([string]::IsNullOrWhiteSpace($Owner) -or $front.owner -ne $Owner) {
+            if (-not $blocked -and ([string]::IsNullOrWhiteSpace($Owner) -or $front.owner -ne $Owner)) {
                 $blocked = ('예약 큐 맨 앞은 {0}({1}) - 내 차례 아님' -f $front.owner, $front.note)
             }
         }
@@ -774,7 +829,7 @@ function Get-RequiredMedia([string]$wt) {
             if ($r.requiredMedia) { return @($r.requiredMedia | ForEach-Object { [pscustomobject]@{ path = [string]$_.path; minBytes = [long]$_.minBytes } }) }
         } catch { }
     }
-    $names = 'cs_idle_silvertail_4k', 'cs_idle_warrior_cs3_4k', 'fdg_intro', 'intro', 'lobby_varkan_crypt_loop_v2_unity', 'title_motion_20260929', 'title_motion_hd_20260929', 'warrior_story_v23_clean', 'world_intro_v22b_steam'
+    $names = 'cs_idle_silvertail_4k', 'cs_idle_warrior_cs3_4k', 'fdg_intro', 'intro', 'lobby_varkan_crypt_loop_v2_unity', 'title_motion_20260929', 'title_motion_hd_20260929', 'warrior_story_v23_clean', 'world_intro_v23_newopening_steam'
     return @($names | ForEach-Object { [pscustomobject]@{ path = ('Assets/StreamingAssets/Lobby/' + $_ + '.mp4'); minBytes = 1000000 } })
 }
 
@@ -822,6 +877,7 @@ function Cmd-Run {
     if ($DryRun) { Write-Output ('[dryrun] run method=' + $Method + ' args=' + (Format-ArgList (Resolve-JobArgs))); exit 0 }
     if ($Method -eq 'PortVerification.Build') { Ensure-LobbyMedia $wt }
     $qd = Get-QueueDir $wt
+    Wait-ExclusivePlayer 'Editor'
     $argList = Resolve-JobArgs
     $id = [Guid]::NewGuid().ToString('N').Substring(0, 8)
     $sw = [Diagnostics.Stopwatch]::StartNew()
@@ -879,6 +935,7 @@ function Cmd-Run {
     # 예약 순번 전에는 batch 티켓을 만들지 않는다. 구버전 FIFO 실행기의 앞을 막지 않기 위한 읽기 전용 대기다.
     $turnDeadline = (Get-Date).AddMinutes($WaitMin); $lastFront = ''
     while ($true) {
+        Assert-HaltClear 'Editor 순번'
         $reservationTurn = @(Get-Reservations 'editor')
         $frontBeforeTicket = ''; if ($reservationTurn.Count -gt 0) { $frontBeforeTicket = [string]$reservationTurn[0].owner }
         if (Test-ExoTicketTurn -FirstTicket '' -Ticket '' -Owner $Owner -FrontReservationOwner $frontBeforeTicket) { break }
@@ -893,6 +950,7 @@ function Cmd-Run {
     try {
         $lastMsg = ''; $ticketDeadline = (Get-Date).AddMinutes($WaitMin)
         while ($true) {   # 티켓 순서: 살아 있는 가장 앞 티켓이 내 것일 때만 진행
+            Assert-HaltClear 'Editor 티켓'
             $first = $null
             foreach ($t in (Get-ChildItem -LiteralPath $Tickets -Filter '*.json' | Sort-Object Name)) {
                 $tj = Read-Json $t.FullName
@@ -1151,6 +1209,19 @@ function Get-WindowHits($pids, $label) {
 }
 
 # 프로세스 1개를 띄우고 끝까지 지켜본다: 창(MainWindowHandle) 감시, 트리 정리 확인
+function Get-StallSnapshot([int]$procId) {
+    $s = [ordered]@{ at = (NowIso); threads = 0; states = @{}; waitReasons = @{}; services = @() }
+    try { foreach ($th in @(Get-CimInstance Win32_Thread -Filter ("ProcessHandle='" + $procId + "'") -ErrorAction Stop)) { $s.threads++; $k = [string]$th.ThreadState; $s.states[$k] = 1 + [int]$s.states[$k]; $w = [string]$th.ThreadWaitReason; $s.waitReasons[$w] = 1 + [int]$s.waitReasons[$w] } } catch { $s.threadError = $_.Exception.Message }
+    foreach ($name in 'GameInputRedistService', 'GameInputSvc', 'GameInputRawInputProxy') {
+        try {
+            $svc = Get-CimInstance Win32_Service -Filter ("Name='" + $name + "'") -ErrorAction Stop
+            if ($svc) { $row = [ordered]@{ name = $name; state = [string]$svc.State; pid = [int]$svc.ProcessId; started = ''; threads = 0 }; if ($svc.ProcessId) { try { $sp = Get-Process -Id $svc.ProcessId -ErrorAction Stop; $row.started = $sp.StartTime.ToString('o'); $row.threads = $sp.Threads.Count } catch { } }; $s.services += [pscustomobject]$row }
+        } catch { }
+    }
+    foreach ($p in @(Get-Process -Name 'GameInputRawInputProxy' -ErrorAction SilentlyContinue)) { $s.services += [pscustomobject][ordered]@{ name = 'process:GameInputRawInputProxy'; state = 'Running'; pid = $p.Id; started = $(try { $p.StartTime.ToString('o') } catch { '' }); threads = $p.Threads.Count } }
+    return $s
+}
+
 function Invoke-Guarded([string]$File, [string[]]$ArgList, [string]$Cwd, [int]$limitSec, [int]$killAfter, [string[]]$ownTokens, [bool]$HiddenDesktop = $false) {
     $pre = @{}
     foreach ($p in @(Get-Process -Name $WatchNames -ErrorAction SilentlyContinue)) { $pre[$p.Id] = 1 }
@@ -1198,7 +1269,7 @@ function Invoke-Guarded([string]$File, [string[]]$ArgList, [string]$Cwd, [int]$l
         if ($sw.Elapsed.TotalSeconds -ge $limitSec) { $timedOut = $true; break }
         Start-Sleep -Milliseconds 700
     }
-    $exit = 0
+    $exit = 0; $stall = $null
     if ($proc.HasExited) {
         # 종료 코드를 못 읽어도 아래 정리·숨은 데스크톱 닫기·영수증은 계속한다(11-04 r17 영수증 유실).
         try {
@@ -1207,8 +1278,13 @@ function Invoke-Guarded([string]$File, [string[]]$ArgList, [string]$Cwd, [int]$l
         } catch { $warnings += ('종료 코드 읽기 실패: ' + $_.Exception.Message); $exit = -1 }
     }
     else {
+        # 11-04 CTO: 정지가 생기면 kill 전 스레드 대기 사유·GameInput 서비스 상태와 kill 결과를 남겨 kill 불가 층을 따로 센다.
+        $stall = [ordered]@{ before = (Get-StallSnapshot $proc.Id); lastLogLine = '' }
+        foreach ($tok in $ownTokens) { if ($tok -and (Test-Path -LiteralPath $tok)) { $stall.lastLogLine = [string](Get-LastLogLine $tok) } }
         & taskkill.exe /PID $proc.Id /T /F 2>&1 | Out-Null
         $proc.WaitForExit(15000) | Out-Null
+        $stall.killedWithin15s = [bool]$proc.HasExited
+        if (-not $proc.HasExited) { $stall.after = (Get-StallSnapshot $proc.Id) }
         $exit = -1
     }
     # 종료 확인: 트리에 있던 프로세스가 실제로 사라졌는지
@@ -1226,7 +1302,7 @@ function Invoke-Guarded([string]$File, [string[]]$ArgList, [string]$Cwd, [int]$l
     if ($HiddenDesktop) { Close-DesktopProcess $dproc; $desktopClosed = [bool](Close-HiddenDesktop $desk) }
     $sw.Stop()
     return [pscustomobject]@{
-        exitCode = $exit; timedOut = $timedOut; expectedKill = $expectedKill; durMs = $sw.ElapsedMilliseconds
+        exitCode = $exit; timedOut = $timedOut; expectedKill = $expectedKill; durMs = $sw.ElapsedMilliseconds; stall = $stall
         processId = $proc.Id; startedAt = $t0.ToUniversalTime().ToString('o'); finishedAt = (NowIso); hiddenDesktopName = $(if ($desk) { $desk.Name } else { '' })
         windowHits = @($violations | Select-Object -Unique); warnings = @($warnings | Select-Object -Unique)
         leftovers = @($left); leftoversKilled = @($killed); treeCount = $tree.Count; hiddenWindows = $hiddenMax; hiddenTitles = @($hiddenTitles); desktopClosed = $desktopClosed
@@ -1246,7 +1322,7 @@ function Finish-Guarded([string]$kind, [string]$id, $g, $extra, [bool]$extraOk, 
     $res = [ordered]@{
         runnerVersion = $ExoUnityVersion; id = $id; kind = $kind; ok = $ok; exitCode = $g.exitCode; durMs = $g.durMs; expectedKill = $g.expectedKill; timedOut = $g.timedOut
         windowHandleCount = $g.windowHits.Count; windowHits = @($g.windowHits); warnings = @($g.warnings); treeProcesses = $g.treeCount
-        leftovers = @($g.leftovers); note = ($notes -join ' | '); userSaveChanged = $sc.Count; userSaveFiles = @($sc)
+        leftovers = @($g.leftovers); stall = $g.stall; note = ($notes -join ' | '); userSaveChanged = $sc.Count; userSaveFiles = @($sc)
     }
     foreach ($k in $extra.Keys) { $res[$k] = $extra[$k] }
     New-Item -ItemType Directory -Force -Path (Join-Path $ExecDir 'done') | Out-Null
@@ -1269,8 +1345,30 @@ function Finish-Guarded([string]$kind, [string]$id, $g, $extra, [bool]$extraOk, 
 
 # 11-04: 05:06부터 Player가 Quit 뒤 'Input System … Shutdown'에서 커널 드라이버 교착(HID/GPU)에 걸려 강제 종료 뒤에도
 # 스레드 1개·CPU 정지로 남았고, 그 상태에서 4번 더 띄워 좀비가 5개까지 쌓였다. 이런 프로세스가 하나라도 있으면 재부팅 전까지 새 Player를 막는다.
+# 11-04 13:09 오탐 정정(CTO): 시작 76초 된 Player(PID 44556)가 USB HDD I:의 디스크 포화로 느리게 뜨는 중이었는데 스레드 1개·CPU 정지만 보고
+# 좀비로 판정해 HALT를 만들었다. 이제 좀비는 시작 120초 이상 + CPU 정지 + 로그 마지막 줄이 종료 단계 표시일 때만이다.
+# 시작 단계에서 느린 것은 Invoke-Guarded 시간 제한이 처리한다. 로그를 못 찾으면 좀비로 보지 않는다.
+$ZombieShutdownPattern = 'Cleanup current backend|ShutdownInProgress|Input Polling Thread exited|Input System module state changed to: Shutdown|CodeReloadManager destroyed'
+function Get-PlayerLogPath([string]$cmd) {
+    $m = [regex]::Match([string]$cmd, '(?i)-logFile\s+(?:"([^"]+)"|(\S+))')
+    if (-not $m.Success) { return '' }
+    if ($m.Groups[1].Success) { return $m.Groups[1].Value } else { return $m.Groups[2].Value }
+}
+function Get-LastLogLine([string]$path) {
+    if (-not $path -or -not (Test-Path -LiteralPath $path)) { return $null }
+    try { $t = Read-SharedText $path } catch { return $null }
+    $lines = @($t -split "`r?`n" | Where-Object { $_.Trim() })
+    if (-not $lines.Count) { return '' }
+    return $lines[$lines.Count - 1]
+}
 function Find-ZombiePlayers {
-    $cand = @(Get-Process -Name 'EXODUSER-*' -ErrorAction SilentlyContinue | Where-Object { try { $_.Threads.Count -le 1 } catch { $false } })
+    $now = Get-Date
+    $cand = @(Get-Process -Name 'EXODUSER-*' -ErrorAction SilentlyContinue | Where-Object { try { ($now - $_.StartTime).TotalSeconds -ge 120 } catch { $false } })
+    if (-not $cand.Count) { return @() }
+    $cmds = @{}; foreach ($c in @(Get-CimInstance Win32_Process -Filter "Name like 'EXODUSER%'" -ErrorAction SilentlyContinue)) { $cmds[[int]$c.ProcessId] = [string]$c.CommandLine }
+    $shutdown = @{}
+    foreach ($p in $cand) { $last = Get-LastLogLine (Get-PlayerLogPath $cmds[[int]$p.Id]); if ($null -ne $last -and $last -match $ZombieShutdownPattern) { $shutdown[$p.Id] = $last } }
+    $cand = @($cand | Where-Object { $shutdown.ContainsKey($_.Id) })
     if (-not $cand.Count) { return @() }
     $cpu = @{}; foreach ($p in $cand) { try { $cpu[$p.Id] = $p.TotalProcessorTime.Ticks } catch { } }
     Start-Sleep -Milliseconds 1500
@@ -1278,12 +1376,32 @@ function Find-ZombiePlayers {
     foreach ($p in $cand) {
         try {
             $q = Get-Process -Id $p.Id -ErrorAction Stop
-            if ($q.Threads.Count -le 1 -and $cpu.ContainsKey($p.Id) -and $q.TotalProcessorTime.Ticks -eq $cpu[$p.Id]) {
-                $out += [pscustomobject]@{ pid = $q.Id; name = $q.ProcessName; threads = $q.Threads.Count; cpuSec = [math]::Round($q.TotalProcessorTime.TotalSeconds, 1); workingSetMB = [math]::Round($q.WorkingSet64 / 1MB); started = $(try { $q.StartTime.ToString('o') } catch { '' }) }
+            if ($cpu.ContainsKey($p.Id) -and $q.TotalProcessorTime.Ticks -eq $cpu[$p.Id]) {
+                $out += [pscustomobject]@{ pid = $q.Id; name = $q.ProcessName; threads = $q.Threads.Count; cpuSec = [math]::Round($q.TotalProcessorTime.TotalSeconds, 1); workingSetMB = [math]::Round($q.WorkingSet64 / 1MB); started = $(try { $q.StartTime.ToString('o') } catch { '' }); lastLogLine = [string]$shutdown[$p.Id] }
             }
         } catch { }
     }
     return $out
+}
+
+# 11-04 CTO: I:는 USB HDD(exFAT)라 다른 작업이 디스크를 포화시키면 Player 시작이 몇 분씩 걸린다. 시작 전에 실행 파일 드라이브의
+# 유휴율이 50% 이상으로 10초 이어질 때까지 기다린다(상한 10분, 넘으면 경고 후 진행). 측정은 영수증에 남긴다.
+function Read-DiskIdle([string]$drive) {
+    try { $d = Get-CimInstance Win32_PerfFormattedData_PerfDisk_LogicalDisk -Filter ("Name='" + $drive + "'") -ErrorAction Stop; return [pscustomobject]@{ idle = [int]$d.PercentIdleTime; queue = [int]$d.CurrentDiskQueueLength } } catch { return $null }
+}
+function Wait-DiskIdle([string]$exePath, [int]$maxSec = 600) {
+    $drive = ([IO.Path]::GetPathRoot([IO.Path]::GetFullPath($exePath))).TrimEnd('\')
+    $t0 = Get-Date; $streak = 0; $last = $null; $said = $false
+    while ($true) {
+        $last = Read-DiskIdle $drive
+        if ($null -eq $last) { return [ordered]@{ drive = $drive; measured = $false; waitedSec = 0 } }
+        if ($last.idle -ge 50) { $streak++ } else { $streak = 0 }
+        $waited = ((Get-Date) - $t0).TotalSeconds
+        if ($streak -ge 10) { return [ordered]@{ drive = $drive; measured = $true; idleAtStart = $last.idle; queueAtStart = $last.queue; waitedSec = [math]::Round($waited); timedOut = $false } }
+        if ($waited -ge $maxSec) { Say ('경고: ' + $drive + ' 디스크 유휴 ' + $last.idle + '%(대기열 ' + $last.queue + ') - ' + $maxSec + '초 기다려도 한가하지 않아 그대로 시작'); return [ordered]@{ drive = $drive; measured = $true; idleAtStart = $last.idle; queueAtStart = $last.queue; waitedSec = [math]::Round($waited); timedOut = $true } }
+        if (-not $said -and $streak -eq 0) { Say ('대기: ' + $drive + ' 디스크 유휴 ' + $last.idle + '%(대기열 ' + $last.queue + ') - 50% 이상 10초 이어질 때까지 기다린 뒤 Player 시작'); $said = $true }
+        Start-Sleep -Seconds 1
+    }
 }
 
 function Stop-ForZombies($zombies, [string]$what) {
@@ -1358,6 +1476,7 @@ function Cmd-Player {
     try {
         if ($Owner) { Cmd-Reserve | Out-Null }
         Acquire-PlayerSlot $exeFull $PID
+        $diskWait = Wait-DiskIdle $exeFull
         $script:SaveBefore = Get-UserSaveSnapshot
         $g = $null; $crashCause = $null; $logsUsed = @($log); $t0c = Get-Date
         for ($attempt = 1; $attempt -le 2; $attempt++) {
@@ -1388,7 +1507,7 @@ function Cmd-Player {
             $after = @(Find-ZombiePlayers)
             if ($after.Count) { $g.warnings = @($g.warnings) + '재부팅 필요: 이 Player가 종료되지 않음 - HALT 생성'; New-Halt ('재부팅 필요: 종료 못 한 Player 좀비 ' + (($after | ForEach-Object { $_.name + ':' + $_.pid }) -join ', ')) 'player' @($log) $t0c }
         }
-        Finish-Guarded 'player' $id $g ([ordered]@{ exe = $exeFull; args = @($ia); gpu = $gpu; gfxNull = $nullGfx; log = $log; desktop = $Desktop; hiddenWindows = $g.hiddenWindows; hiddenTitles = @($g.hiddenTitles); desktopClosed = $g.desktopClosed; processId = $g.processId; startedAt = $g.startedAt; finishedAt = $g.finishedAt; hiddenDesktopName = $g.hiddenDesktopName; slot = $script:PlayerSlotPath }) $extraOk $fail
+        Finish-Guarded 'player' $id $g ([ordered]@{ exe = $exeFull; args = @($ia); gpu = $gpu; gfxNull = $nullGfx; log = $log; desktop = $Desktop; hiddenWindows = $g.hiddenWindows; hiddenTitles = @($g.hiddenTitles); desktopClosed = $g.desktopClosed; processId = $g.processId; startedAt = $g.startedAt; finishedAt = $g.finishedAt; hiddenDesktopName = $g.hiddenDesktopName; slot = $script:PlayerSlotPath; diskAtStart = $diskWait }) $extraOk $fail
     } finally {
         Release-PlayerAdmission
         Release-PlayerSlot

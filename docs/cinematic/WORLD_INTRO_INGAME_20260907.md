@@ -1,6 +1,8 @@
-# 세계관 인트로 v22b — 문 장면 폐지 / 인게임 적용
+# 세계관 인트로 v23 — 새 도입부 / 문 장면 폐지 / 인게임 적용
 
-> **현행 2026-10-31:** `video/world_intro_v22b_steam.mp4`로 모든 ENTER 경로를 통일. `gateLock` 존재 조건·구 `video/intro.mp4` 재생/프리로드·`cinGate`/`cin-door` 배경과 예약 진동을 폐지했다. 원본 영상 파일·승인 인장 화면·시청 기록은 보존한다. 아래 v13/v15 검수는 당시 이력이다.
+> **현행 2026-11-04:** 웹 `video/world_intro_v23_newopening_steam.mp4`(main `06ac6882b`), Unity `NativeLobby.WorldMovie`="world_intro_v23_newopening_steam.mp4"(분할본 `unity/Tools/MediaRecovery/world-intro-v23-newopening-canonical/`). v22b의 0~13.15초(행성 무리·성 박힌 행성·렌즈 플레어)만 새 컨셉 연작 영상 3컷으로 바꾸고, 395프레임(13.15초) 붉은 철문부터 끝까지는 v22b 원본 프레임이다. 음성·BGM·29언어×32큐 자막·+0.4초 오프셋(`WorldCueOffset`)·컷 경계·로고는 v22b와 같다. 아래 "2026-11-04" 절과 [v16 스타일락 기획](WORLD_INTRO_V16_STYLELOCK_PLAN_20261103.md) 참조. v22b 원본·분할본은 롤백용으로 보존.
+
+> **2026-10-31 이력:** `video/world_intro_v22b_steam.mp4`로 모든 ENTER 경로를 통일. `gateLock` 존재 조건·구 `video/intro.mp4` 재생/프리로드·`cinGate`/`cin-door` 배경과 예약 진동을 폐지했다. 원본 영상 파일·승인 인장 화면·시청 기록은 보존한다. 아래 v13/v15 검수는 당시 이력이다.
 
 > **2026-10-24 Unity 로비 이식 정정:** 사용자가 구버전을 지적해 Unity는 최신 제작 원본 world_intro_v22b_paint_en.mp4(98,177,870B)로 교체한다. 웹 G:index는 여전히 v17이며 source provenance와 구분한다. v22b/v17 decoded 음성 MD5·113.291667초 길이 동일로29언어×32자막/17컷 시각을 유지한다. 끊김·오디오·실제 완주는 재검수 중이며 [UNITY-LOBBY-01](../engine/UNITY_LOBBY_20261024.md)에 실패/진행/한계를 기록한다. 아래 v15/v13 기록은 이력이다.
 
@@ -21,8 +23,8 @@
 | 항목 | 현행 값 / 적용 위치 |
 |---|---|
 | 위치 | `index.html` 세계관 시네마틱. `game.html` 전쟁 복수 서사는 변경 없음 |
-| 흐름 | 첫 실행·시작 메뉴 재감상·로비 재감상·계정 첫 진입·미리보기 → 승인 인장 ENTER → `startWorldIntro()` → v22b → 기존 로그인/로비 라우팅. 언어/DEMO·EA·full과 무관 |
-| 게임 에셋 | `video/world_intro_v22b_steam.mp4`, 102,204,634바이트, SHA256 `3b99d59bca9d84a37bb6b49067148e1ed69fefb478ff206221b59c8c952d0b0f`. 무자막 EN 정본 동일 byte. 앞의 별도 문 장면은 폐지, v22b 내부 컷은 재편집하지 않음 |
+| 흐름 | 첫 실행·시작 메뉴 재감상·로비 재감상·계정 첫 진입·미리보기 → 승인 인장 ENTER → `startWorldIntro()` → v23 → 기존 로그인/로비 라우팅. 언어/DEMO·EA·full과 무관 |
+| 게임 에셋 | `video/world_intro_v23_newopening_steam.mp4`(Unity는 `Assets/StreamingAssets/Lobby/` 같은 이름), 90,144,119바이트, SHA256 `6abe88a5d4a5f829fb9f6c3e99cf488d79cd365ae58c52c8ddf6a469c05278c9`. 웹 파생 `assets/web-derived/20261101/video/world_intro_v23_newopening_steam.web.mp4`(main) 68,305,338바이트, SHA256 `98026b4369a47ab2e2b2d589774677d4ef1aea1c84f25e730a5e5db1e5be0398`. 이전 v22b(102,204,634바이트, `3b99d59b…c952d0b0f`)는 보존·런타임 미사용 |
 | 보존 원본 | `output/cinematic/world_intro_auto_v3_en_ko.mp4` 및 `video/world_intro_v3_en_ko.mp4` 유지. v4·v5는 별도 파일 |
 | 규격 | H.264 High + AAC 48kHz stereo, 1920×1080, 30fps, 3410프레임. 영상 113.666667초 / 컨테이너 113.701초 |
 | 음성·자막 | ElevenLabs 영어 음성 193단어, 29언어 × 32큐 네이티브 선택형 자막. 기존 `introVoice` 별도 재생 금지 |
@@ -138,6 +140,22 @@
 | 브라우저 | Chromium960×540 실제 HTML/CSS/로비 진입·로딩 DOM 함수,대기 목록 Promise 격리. 전후8조건: 수정 전 이전 완료가 loading/chapterGate none·프리로드1회,수정 후 새 로딩 block 유지·프리로드0회. 최신 완료는 none·프리로드1회 확인 |
 | 범위·기록 | 실계정/저장 API·사용자 데이터·로딩 에셋 변경 없음. tmp/lobby-loading-owner/browser-report.json,changes.patch. 기존 Git 쓰기 제한으로 커밋 미완료 |
 
+## 2026-11-04 v23 — 새 도입부 3컷 (웹·Unity)
+
+사용자: "첫이미지 문나올때까지 저기만 바꿔서 넣어봐", "유니버스 본 화면은 그냥 사진인데", "이제 게임에 적용해 배포", "인게임에 넣어". v22b 앞부분(행성에 성이 박힌 그림·렌즈 플레어)이 "AI 티" 난다는 지적에 따라 문 이전만 교체했다.
+
+| 프레임(30fps) | 초 | 화면 | 출처 |
+|---|---|---|---|
+| 0–11 | 0–0.40 | 검정 리드인 | v22b 원본 |
+| 12–132 | 0.40–4.44 | 재 평원·붉은 구덩이로 빨려드는 세계들·붉은 망토 전사, 검정에서 페이드인 | Kling 3.0 이미지→영상(GPT Image 2.5 컨셉) |
+| 133–260 | 4.44–8.70 | 재가 나선으로 빨려들며 잿빛 세계가 생겨남 | Kling 2.5 Turbo 720p→1080p |
+| 261–394 | 8.70–13.15 | 두개골 협곡 위로 부서지는 세계들 | Kling 3.0 |
+| 395–3409 | 13.15–113.70 | 붉은 철문부터 로고까지 | v22b 원본 프레임 |
+
+- 컷 경계는 기존 CUTS +0.4초(4.441667·8.70·13.15)와 같다. 컷 사이 12프레임 디졸브. H.264 High CRF18 tune film, v22b AAC 오디오 바이트 복사, 3410프레임, 컨테이너 113.70초.
+- 웹(main `06ac6882b`): `index.html` src, 웹 파생 매니페스트·파생 파일, 인트로 테스트 4개. 테스트 56/62 PASS, 실패 6개는 변경 전 main과 동일.
+- Unity(이 커밋): `NativeLobby.WorldMovie`·`WorldMovieSha256`·`WorldMovieBytes`, `NativeGame.CanonicalWorldSmoke`가 상수로 바이트·해시 대조, `restore-lobby-media.cjs`·`export-lobby-assets.cjs` 입력을 v23 분할본(30MiB×3)으로, `smoke-rules.json`·`exo-unity.ps1` 필수 미디어 이름, `Fixtures/lobby-assets.json`, `.gitignore`. 새 `.meta` 추가, 복원되지 않는 v22b `.meta`는 삭제(v22b 분할본은 보존).
+
 ## 2026-10-31 모든 경로의 문 연출 폐지·최신 v22b
 
 | 진입 | 실제 라우팅·유지 계약 |
@@ -158,3 +176,13 @@
 - 경로별 0.3/1.5/3초 캡처·언어별 3시점·v17/v22b 같은 시점 비교·한계·원격 SHA: `I:/EXODUSER-Storage/codex-takeover/intro-nodoor/REPORT.md`. 요청된 G: REPORT는 같은 보고서 안내 사본이다.
 
 - 최종 병합 source `3c6e076977fa702e46712fdde335b3b7a7752627`: full 3840×1080·indexdemo 일본어 1600×900 재진입/다음 컷 PASS. 29언어×3시점87/87 PASS. v22b 1배속 자연끝113.701초·ended1회·재생중 seek0·미리보기 seen 미기록·로그인 전환 PASS(0.6초 이후 실측113.135초). 종료 후0초 정리 seek2회는 재생중 점프와 구분. 실제 스피커 청취는 하지 않음. 영수증 `v22b-review/natural-playback.json`, `merged-routes.json`.
+
+
+## FIX-1 웹 oracle 기록 — 2026-11-04
+
+출처는 main `06ac6882b550cb6373f2953ede3b2acc6f69e211`의 11-04 웹 v23 기록이다. Unity v23 본문과 검증 범위는 유지한다.
+
+- 웹 확인: Mac Chrome 1352×664에서 `?cinematic=1` ENTER → v23 재생, 2.5·6.6·14.6초 화면과 한국어 자막을 확인했다.
+- 인코딩 픽셀 형식은 yuv420p이고, 철문 진입에도 디졸브가 들어간다.
+- 웹 검증: 인트로·웹 배포 테스트 62개 중 56 PASS, 6 FAIL. 6개는 변경 전 main에서도 같은 6개가 실패했다(정규화·현재 웹 빌드 fixture). 무관한 기존 항목 `assets/title-signboard/A/master-7680x2160.png` 미선택 오류는 별도다.
+- 당시 남은 확인은 Steam 업로드·DEMO/EA 동기화(PC 도구)였다. 이 과거 웹 기록은 현재 배포·Unity 실게임 검증을 새로 통과했다는 뜻이 아니다.

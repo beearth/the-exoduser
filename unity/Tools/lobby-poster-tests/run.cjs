@@ -1,0 +1,45 @@
+// Source contract for the lobby movie poster hand-over (11-04). Node only; no Unity.
+const fs=require('node:fs'),path=require('node:path');
+const project=path.resolve(__dirname,'../..'),rt=project+'/Assets/Exoduser/Runtime/',art=project+'/Assets/Exoduser/Resources/Art/ui/lobby_poster/';
+const i=process.argv.indexOf('--out'),out=i>=0?process.argv[i+1]:'I:/EXODUSER-Storage/codex-takeover/lobby-poster/tests';
+const read=n=>fs.readFileSync(rt+n,'utf8');const results=[];
+const check=(name,ok,detail)=>results.push({name,passed:!!ok,detail:detail||''});
+const posters={'fdg_intro':[1920,1080],'warrior_story_v23_clean':[1920,1080]},guids=new Set();
+for(const [n,[w,h]] of Object.entries(posters)){
+ const p=art+n+'.png',m=p+'.meta',ok=fs.existsSync(p)&&fs.existsSync(m);check('poster_files_'+n,ok);if(!ok)continue;
+ const b=fs.readFileSync(p),size=[b.readUInt32BE(16),b.readUInt32BE(20)];
+ check('poster_native_size_'+n,size[0]===w&&size[1]===h,size.join('x'));
+ check('poster_under_8MB_'+n,b.length<=8*1024*1024,b.length+' bytes');
+ const meta=fs.readFileSync(m,'utf8'),g=/guid: ([0-9a-f]{32})/.exec(meta);
+ check('poster_meta_fixed_guid_'+n,g&&!guids.has(g[1]),g&&g[1]);if(g)guids.add(g[1]);
+ check('poster_meta_no_mipmaps_'+n,/enableMipMap: 0/.test(meta)&&/sRGBTexture: 1/.test(meta));
+}
+check('poster_folder_meta',fs.existsSync(art.replace(/\/$/,'')+'.meta'));
+const v=read('NativeLobbyVideo.cs');
+check('video_presentable_property',/public bool Presentable\{/.test(v)&&/frameReadyAt/.test(v));
+check('video_presentable_waits_frame_ready_then_a_later_frame',/frameReadyAt>=0&&UnityEngine\.Time\.frameCount>frameReadyAt/.test(v));
+check('video_presentable_requires_no_error_and_texture',/Presentable\{get\{return Error\.Length==0&&Prepared&&texture!=null&&player\.frame>=0/.test(v));
+check('video_frame_ready_records_first_frame',/void OnFrame\(VideoPlayer p,long frame\)\{if\(p!=player\)return;if\(frameReadyAt<0\)frameReadyAt=/.test(v));
+check('video_open_resets_frame_ready',/Ended=false;frameReadyAt=-1;/.test(v));
+const raw=/\.Error\.Length==0&&\w+\.Prepared&&\w+\.Frame>=0\?/;
+for(const f of ['NativeLobby.cs','NativeLobby.SilverCharacter.cs','NativeLobby.CharacterPresentation.cs','NativeTitleSignboard.cs'])check('no_raw_prepared_frame_pick_'+f,!raw.test(read(f)));
+const l=read('NativeLobby.cs');
+check('drawmovie_poster_until_presentable',/void DrawMovie\(Rect box,Texture fallback,bool cover\)\{var texture=movie\.Presentable\?movie\.Texture:fallback;Image\(box,texture/.test(l));
+check('lobby_background_poster_until_presentable',/Texture tex=movie\.Presentable\?movie\.Texture:lobbyPoster;/.test(l));
+check('lobby_background_same_wide_rule',/NativeFullscreenArtwork\.Draw\(tex,NativeUiViewport\.ScreenInDesign,lobbyPoster\)/.test(l));
+check('splash_poster_until_presentable',/Texture tex=movie\.Presentable\?movie\.Texture:splashTitle;/.test(l));
+check('fdg_poster_loaded',/fdgPoster=Resources\.Load<Texture2D>\("Art\/ui\/lobby_poster\/fdg_intro"\)/.test(l));
+check('fdg_poster_same_rect_as_movie',/DrawMovie\(new Rect\(0,0,1920,1080\),fdgPoster!=null\?fdgPoster:fdgEmblem,false\)/.test(l));
+check('fdg_failure_keeps_poster',/FallingBack\)Image\(new Rect\(0,0,1920,1080\),fdgPoster!=null\?fdgPoster:fdgEmblem\)/.test(l));
+const s=read('NativeLobby.CharacterStory.cs');
+check('story_poster_loaded',/Resources\.Load<Texture2D>\("Art\/ui\/lobby_poster\/warrior_story_v23_clean"\)/.test(s));
+check('story_poster_same_rect_as_movie',/DrawMovie\(new Rect\(0,0,1920,1080\),warriorStoryPoster,false\)/.test(s)&&!/DrawMovie\(new Rect\(0,0,1920,1080\),null,false\)/.test(s));
+check('world_intro_first_frame_black_no_poster',/DrawMovie\(new Rect\(0,0,1920,1080\),UsesGatePoster\?gatePoster:null,false\)/.test(read('NativeLobby.CinematicPresentation.cs')),'frame 0 of world_intro_v22b_steam is pure black (mean 0,0,0)');
+check('silver_scene_poster_until_presentable',/if\(playback\.Presentable\)src=playback\.Texture;/.test(read('NativeLobby.SilverCharacter.cs')));
+check('presentation_poster_until_presentable',/playback\.Presentable\?playback\.Texture:videoFailed/.test(read('NativeLobby.CharacterPresentation.cs')));
+check('title_signboard_still_until_presentable',/videoReady=movie!=null&&movie\.Presentable;/.test(read('NativeTitleSignboard.cs')));
+check('qa_wait_unchanged_transition',/movie\.Prepared&&movie\.Frame>=0/.test(read('NativeLobby.Transition.cs')));
+check('qa_wait_unchanged_smoke',/movie\.Prepared&&movie\.Player\.isPlaying/.test(read('NativeGame.LobbySmoke.cs')));
+const failed=results.filter(r=>!r.passed),receipt={scope:'lobby movie poster source contract',total:results.length,passed:results.length-failed.length,failed:failed.length,results};
+fs.mkdirSync(out,{recursive:true});fs.writeFileSync(out+'/receipt.json',JSON.stringify(receipt,null,1));
+console.log(JSON.stringify({total:receipt.total,passed:receipt.passed,failed:failed.map(f=>f.name)}));process.exit(failed.length?1:0);

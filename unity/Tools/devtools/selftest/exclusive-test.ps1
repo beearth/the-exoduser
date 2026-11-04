@@ -34,6 +34,12 @@ try {
  $script:PlayerSlotPath=$null;$script:PlayerSlotToken=$null;$PcException='candidate';$Owner='ui-candidate'
  $r=Try-Acquire
  Check ($r -like '*단독 실행 중*') ('normal Player admitted during exclusive run: '+$r)
+ # new Editor work also waits while the exclusive check runs (server start/batch via Acquire-Slot, server submit via Wait-ExclusivePlayer)
+ $edit=$null;try{Wait-ExclusivePlayer 'Editor';$edit='ran'}catch{$edit=$_.Exception.Message}
+ Check ($edit -like '*단독 검사 대기*') ('Editor job not held during exclusive check: '+$edit)
+ $slot=$null;try{Acquire-Slot 'devtools-runner' 'fixture' $PID (Join-Path $Root 'q');$slot='locked'}catch{$slot=$_.Exception.Message}
+ Check ($slot -like '*BuildLoop 단독 검사*') ('Editor lock taken during exclusive check: '+$slot)
+ Check (-not (Test-Path $LockPath)) 'Editor lock file written during exclusive check'
  # the loop finishes: marker and slot go, normal Players flow again with two slots
  $script:PlayerSlotPath=$mine;$script:PlayerSlotToken=$mineToken;Release-PlayerSlot
  Check (-not (Test-Path $ExclusivePath)) 'exclusive marker left after release'

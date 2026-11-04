@@ -46,7 +46,7 @@ namespace Exoduser.UnityPort
                 var panel=new Rect(40,(1080-height)/2,width,height);
                 SilverCornerPanel(panel);
                 NativeUiAudit.Region(panel,"component","character-basic-story","기본 스토리");
-                SilverLabel(new Rect(panel.x+inset,panel.y+28,inner,30),row.title,silverVisualTitle,TextAnchor.UpperLeft);
+                CharacterLabel(new Rect(panel.x+inset,panel.y+28,inner,30),row.title,silverVisualTitle,TextAnchor.UpperLeft,true);
                 Fill(new Rect(panel.x+inset,panel.y+72,inner,1),new Color(.61f,.62f,.62f,.25f));
                 var viewport=new Rect(panel.x+inset,panel.y+92,inner,height-116);
                 basicStoryScroll=NativeUiAudit.BeginScrollView(viewport,basicStoryScroll,

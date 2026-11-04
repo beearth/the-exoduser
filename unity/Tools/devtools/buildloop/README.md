@@ -8,6 +8,7 @@ origin/unity/main 변경을 확인해 exo-unity Win 빌드 → 숨은 데스크�
 | buildloop.ps1 run -Force -Ref <branch> -Mode desktop | 브랜치 자체 시험, 자동 NoSwap. desktop 기본, batch는 명시적 대안 |
 | -Worktree <소유 NTFS checkout> | 소스 실행 시 기본은 이 스크립트의 checkout. 설치본은 source.json의 통합 checkout |
 | -WaitMin <분> | 기본 60, 예약·PC 슬롯 대기 예산을 exo에도 전달. fix2 브랜치 게이트는 90 |
+| -Gate3D off|trial|on | 11-04 CTO 데모=3D. 기본 trial: 관문 m1-check(2D 인자 그대로) 뒤 같은 build_new로 `--remodel3d` m1-check를 1회 더 돌려 run.json trial3d(ran·exit·timedOut·m1 ok/fail·firstBlocked·logFail·passed)와 로그 "3D 관문 시험(기록만)"에만 남긴다. 판정·교체·WAIT에 쓰지 않는다. on: 관문 스모크 자체를 `--remodel3d`로. PASS 확인 뒤 기본을 on으로 바꾸고 겹침 검사도 3D 인자로 맞춘다. 검사 selftest/buildloop-gate3d-test.ps1 |
 | -OutputRoot <I: 경로> | 브랜치 시험은 별도 출력. 본편 교체는 unity-latest에서만 |
 | buildloop.ps1 swap | 이전 PASS 후보 pending 재시도. NoSwap에서는 상태도 읽지 않음 |
 | buildloop.ps1 install | 병합된 깨끗한 unity/main 또는 detached checkout만 loop/bin으로 복사하고 source.json 기록 |
@@ -59,3 +60,6 @@ ABORT 회차가 만든 build_new는 그 회차 폴더 aborted-build로 보관한
 배포 기록: Load-State가 build-commit.json(루프 형식 commit·utc, 수동 교체 형식 shaFull·at)을 읽어 state.json deployed와 커밋이 다르고 시각이 같거나 늦으면 deployed로 받아들인다(verdict EXTERNAL, runId=by, 로그 한 줄). CTO 수동 교체가 build-commit.json만 바꿔 상태판 '마지막 배포 빌드'가 틀리던 일의 수정.
 
 WAIT는 본편 lastAttemptSha를 보존하면서 lastAttemptVerdict만 WAIT로 기록한다. 같은 SHA가 과거 실패로 남아 있어도 다음 일반 주기는 WAIT를 재시도하며, check도 Force가 필요하다는 경고를 내지 않는다. 브랜치 NoSwap의 배포 attempt 상태는 계속 변경하지 않는다. 분류/상태 단위13건과 실제 동일 SHA 다음 주기 fixture로 확인한다.
+
+
+UI 겹침 래칫(11-04 CTO): 전 화면 UI 검사가 겹침을 내면 `unity/Tools/ui-overlap/known-filter.cjs`로 `known-overlaps.json`과 대조한다. 키는 출처 파일(줄 번호 제외)·겹친 두 문자열·화면·언어이고, 목록의 줄 번호는 참고용이다(무관한 수정으로 줄이 밀려도 같은 결함). 목록 밖 겹침이 하나라도 있으면 FAIL. 목록은 바탕화면 빌드에 이미 있던 결함만 담고(출처 줄 git blame이 그 빌드 이전), 건수는 state.uiKnownMin보다 늘 수 없다(래칫 위반 FAIL). 결과는 runs/<id>/ui-check/known-filter.json. 시험 selftest/buildloop-ui-known-test.ps1, ui-overlap/known-filter.test.cjs.

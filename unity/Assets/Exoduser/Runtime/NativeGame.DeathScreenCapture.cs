@@ -86,6 +86,21 @@ namespace Exoduser.UnityPort
             revive.ForcedReviveAge=null;revive.ForcedAge=null;yield return new WaitForSecondsRealtime(.7f);
             rec.filterAfterRevive=revive.FilterAmount;check(revive.ScreenPhase=="None"&&rec.filterAfterRevive<=0,"filter cleared "+revive.ScreenPhase+" "+rec.filterAfterRevive);
             yield return DeathCapture(output,"death_06_revived",files);
+            if(Has("--unity-death-field-decision")){
+                // D1 (11-04 judge): field death offers 2 choices. The first revive's Core cooldown makes this second field fall non-revivable (same rule as the boss flow), no arena.
+                for(int i=0;i<400&&p.State!="fallen"&&p.State!="dead";i++){p.Iframes=0;sim.HurtPlayer(99999);}
+                check(p.State=="fallen"&&!p.FallenCanRevive,"second field fall must not revive");
+                yield return DeathShot(output,"death_field_wait",files,2f,180);
+                revive.ForcedAge=5f;DeathAdvanceTo(0);check(p.State=="dead","field Core death failed: "+p.State);
+                yield return new WaitForSecondsRealtime(.6f);
+                death.ForcedAge=3.5f;yield return null;yield return DeathCapture(output,"death_field_decision",files);
+                check(death.ActionsReady&&death.ChoiceCount==2,"field death offers 2 choices ("+death.ChoiceCount+")");
+                if(Has("--unity-death-sequence"))yield return DeathSequence(output,"death_field_seq",files);
+                death.ForcedAge=null;revive.ForcedAge=null;
+                rec.files=files.ToArray();rec.failures=string.Join(" | ",fails.ToArray());rec.passed=fails.Count==0;
+                File.WriteAllText(Path.Combine(output,"death-screen-capture.json"),JsonUtility.ToJson(rec,true));
+                sound?.Reset();Application.Quit(rec.passed?0:2);yield break;
+            }
 
             check(BossDirectEnter(),"requires --unity-boss-direct 0");
             for(int i=0;i<1000&&(!sim.Stage.InArena||sim.Stage.LoadPhase!=0);i++){
@@ -107,6 +122,20 @@ namespace Exoduser.UnityPort
             revive.ForcedAge=5f;DeathAdvanceTo(0);rec.actualDeath=p.State=="dead";check(rec.actualDeath,"Core death failed: "+p.State);
             yield return new WaitForSecondsRealtime(.6f);
             yield return DeathCapture(output,"death_07_panel_enter",files);
+            // "안식은 없다" decision screen (2026-11-04): title, decision, keyboard focus through the real death-screen key path.
+            death.ForcedAge=1.4f;yield return null;yield return DeathCapture(output,"death_09_title",files);
+            death.ForcedAge=3.5f;yield return null;yield return DeathCapture(output,"death_10_decision",files);
+            check(death.ActionsReady&&death.ChoiceCount==3&&death.FocusedChoice==NativeDeathOverlay.Choice.Rise,"boss-room death offers 3 choices, rise focused ("+death.ChoiceCount+")");
+            var kb=UnityEngine.InputSystem.InputSystem.AddDevice<UnityEngine.InputSystem.Keyboard>();
+            try{kb.MakeCurrent();UnityEngine.InputSystem.LowLevel.InputState.Change(kb,new UnityEngine.InputSystem.LowLevel.KeyboardState(UnityEngine.InputSystem.Key.DownArrow));var cmd=death.PollKeys();
+                check(death.FocusedChoice==NativeDeathOverlay.Choice.Restart&&cmd==NativeDeathOverlay.Choice.None,"Down moves focus to restart without acting");UnityEngine.InputSystem.LowLevel.InputState.Change(kb,new UnityEngine.InputSystem.LowLevel.KeyboardState());}
+            finally{UnityEngine.InputSystem.InputSystem.RemoveDevice(kb);}
+            yield return null;yield return DeathCapture(output,"death_11_restart_focus",files);
+            // D2 (11-04 judge): the decision text per language, incl. long scripts (th·el·ru) and long Latin (de·vi·fi·hu).
+            foreach(var code in new[]{"ko","en","ja","ru","th","el","de","vi","fi","hu"}){lobby.SetLanguage(code);death.ForcedAge=3.5f;yield return null;yield return DeathCapture(output,"death_decision_"+code,files);}
+            lobby.SetLanguage(language);
+            if(Has("--unity-death-sequence"))yield return DeathSequence(output,"death_boss_seq",files);
+            death.ForcedAge=null;
             revive.ForcedAge=null;
             rec.files=files.ToArray();rec.failures=string.Join(" | ",fails.ToArray());rec.passed=fails.Count==0;
             File.WriteAllText(Path.Combine(output,"death-screen-capture.json"),JsonUtility.ToJson(rec,true));
@@ -116,6 +145,13 @@ namespace Exoduser.UnityPort
         {
             var p=Simulation.Player;
             for(int i=0;i<300&&p.State=="fallen"&&p.StateTicks>ticks;i++)StepInput(0,0,p.X+100,p.Y,false,false);
+        }
+        static bool Has(string flag){return Array.IndexOf(Environment.GetCommandLineArgs(),flag)>=0;}
+        // D1 (11-04 judge): 0~10 s of the decision screen at 15 fps from its deterministic clock (ForcedAge), for a 10 s silent video.
+        IEnumerator DeathSequence(string dir,string prefix,List<string> files)
+        {
+            for(int i=0;i<=150;i++){death.ForcedAge=i/15f;yield return null;yield return DeathCapture(dir,prefix+"_"+i.ToString("D3"),files);}
+            death.ForcedAge=3.5f;
         }
         IEnumerator DeathShot(string dir,string name,List<string> files,float age,int ticks)
         {

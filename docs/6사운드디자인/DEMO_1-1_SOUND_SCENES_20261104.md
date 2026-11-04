@@ -4,6 +4,57 @@
 - 기준: Unity `Resources/Audio` 실물(origin/unity/main). 청음 라운드는 R5~R8이고, 반영은 사용자가 고른 뒤에만 한다.
 - 사용자 기준(11-04): "사운드 고를 때 모션도 매칭해라, 모션이 보여야 사운드를 고르지". 모든 청음 카드에 **움직이는 장면 영상**을 붙인다. "장면에서 듣기"를 누르면 영상과 소리가 같은 시각에 재생된다(R7부터 적용, R5·R6은 영상을 덧붙이는 중).
 
+## 0. 한 판 전체 소리 커버리지 (2026-11-04, CTO 배정 — 데모 v0 ③ 첫인상)
+
+1-1 한 판을 화면 순서(타이틀 → 로비 → 캐릭터 선택 → 필드 → 드루이드 → 클리어/사망)로 놓고, 순간마다 지금 소리의 상태를 적었다. 기준은 origin/unity/main의 `Resources/Audio` 실물과 소리를 부르는 코드다.
+
+상태 표기:
+- **채택**: 사용자가 고른 소리
+- **웹 이식**: 웹 파일을 그대로 옮긴 것
+- **임시**: 다른 소리를 대신 씀
+- **없음**: 소리가 나지 않음
+- **R5~R10**: 동작 영상과 맞춘 청음 라운드에 후보가 올라가 사용자 선택을 기다림
+
+| 화면 | 순간 | 키 | 상태 | 청음 |
+|---|---|---|---|---|
+| 타이틀 | 네메시아 시작 연출 음악 | `Startup/nemesis` | 웹 이식 | — |
+| 타이틀 | ENTER(시작) | `Startup/enter` | 웹 이식(11-02 웹에서 사용자 청취·수정) | — |
+| 타이틀 | 입장 버튼 hover 루프 | `UI/entry_hover` | 웹 이식(11-02) | — |
+| 타이틀 | 깨어남·첫 스테이지 진입 | `Startup/wakeup`·`stage_first` | 웹 이식 | — |
+| 로비 | 로비 BGM·프롤로그 테마 | `Lobby/lobby`·`prologue_theme*` | 웹 이식 | — |
+| 로비 | 버튼 hover·확인, 패널 열기·닫기, 탭 | `ui_button_*`·`ui_panel_*`·`ui_tab` | 채택(SND-10) | — |
+| 캐릭터 선택 | 영웅 고르기·생성·삭제·난이도·새 게임 결정음 | `UI/ddung_*`(`NativeDecisionSound`) | 웹 이식(11-02) | — |
+| 필드 | 1장 BGM | `Bgm/hell1` | 웹 이식 | — |
+| 필드 | 숲 바탕음·바람·독 늪·화로 | `amb_hell_forest_bed`·(새)·`amb_toxic_river`·(새) | 웹 이식 / 없음 | R6·R8 |
+| 필드 | 생체나무 맥동·호흡 | (새) | 없음(맵 오브젝트도 없음) | R8 |
+| 필드 | 걷기 발소리 | `footstep*` | 웹 이식(Unity 걷기 연결 11-04) | R5 |
+| 필드 | **구르기** | `roll_body` | **임시(발소리로 대신)** | **R10** |
+| 필드 | 휘두르기·몬스터 피격·내가 맞음 | `sword_swing*`·`monster_hit*`·`player_hit*` | 웹 이식 | R5 |
+| 필드 | 패링·근접 패링·반격 | `sword_parry`·`q_parry`·(새) | 웹 이식 / 없음 | R5·R6 |
+| 필드 | 적 재질별 피격·사망 | `flat_hit`·`death_*` | 웹 이식 | R6 |
+| 필드 | 적 예고음 | `tell_*` | 채택(SND-08) | — |
+| 필드 | 레벨업·아이템 줍기 | `ui_levelup`·`pickup_*` | 웹 이식 | R5 |
+| 필드 | **포션 사용** | (새) | **없음** | **R10** |
+| 필드 | **아이템 떨어짐** | (새) | **없음** | **R10** |
+| 필드 | **악의 오브 흡수** | (새) | **없음** | **R10** |
+| 필드 | **지역 클리어** | (새) | **없음** | **R10** |
+| 필드 | **지옥문 열림** | (새) | **없음** | **R10** |
+| 필드 | **봉인된 문 부딪힘** | (새) | **없음** | **R10** |
+| 필드 | 스킬(화염구·얼음 폭풍 등) | `fireball`·`ice_storm`… | 웹 이식(일부) | 다음 라운드 |
+| 드루이드 | **보스 아레나 진입(봉인)** | (새) | **없음** | **R10** |
+| 드루이드 | 등장·형태 전환·더미·침강 | `druid_intro`·`druid_collapse12/23`·`druid_heap`·`druid_death_sink` | 배선 완료(자리표시) / 침강은 `druid_sink` 임시 | R9 |
+| 드루이드 | 7기술 | `druid_*` | 채택(SND-09·R7, unity/main 7eefc676a) | — |
+| 드루이드 | 피격·목소리·BGM·아레나 바탕음 | `druid_hit*`·`druid_vo_*`·`bgm_druid_boss`·`amb_druid_arena` | 채택(SND-09) | — |
+| 클리어 | 보스 처치 순간 | `druid_boss_kill` | 배선 완료(자리표시) | R8 |
+| 클리어 | 승리 BGM | `Bgm/victory` | 웹 이식 | — |
+| 클리어 | 출구 열림·진입 | `exit_open`·`exit_enter` | 배선 완료(자리표시) | R8 |
+| 클리어 | **스테이지 클리어 패널** | (새) | **없음** | **R10** |
+| 사망 | **플레이어 쓰러짐** | (새) | **없음**(웹의 `player_dead*` 목소리 미이식) | **R10** |
+| 사망 | 사망 BGM | `Bgm/death` | 웹 이식 | — |
+
+- 빈 칸·임시 칸 10개(굵게)는 R10에 올렸다. 스킬 소리는 기술 수가 많아 다음 라운드로 둔다.
+- "웹 이식" 칸은 동작이 정상이어서 빈 칸으로 세지 않았다. 품질 재선택은 R5·R6처럼 동작 영상이 붙은 청음에서 한다.
+
 ## 1. 장면 목록
 
 상태 표기:
@@ -34,12 +85,13 @@
 |---|---|---|---|---|
 | 아레나 바탕음 | `amb_druid_arena` | 채택(SND-09) | — | — |
 | 보스 BGM | `bgm_druid_boss` | 채택(SND-09 B) | — | — |
-| 드루이드 등장 | `druid_staff_tap`(빈 키) + `druid_roots_rise` + `druid_vo_phase` | 지팡이 소리는 4번 연속 안 맞아 비어 있음 | **R8** `druid_entrance` | 지팡이 한 번 대신 등장 전체를 한 소리로(새 방향) |
+| 드루이드 등장 | `druid_staff_tap`(빈 키) + `druid_roots_rise` + `druid_vo_phase` | 지팡이 소리는 4번 연속 안 맞아 비어 있음 | **R9** `intro`(R8 `druid_entrance` 후보 포함) | v9.1 `intro_reveal`(바닥에서 솟아 크기 공개, 90틱)에 맞춤 |
 | 7기술 | [G1 장면 목록](DRUID_V81_SKILL_SFX_G1_20261104.md) | 채택 7키 + R7 채택 10키 | R7 제출 완료 | Unity 연결 진행 중 |
 | 피격·목소리 | `druid_hit`·`druid_hit_heavy`·`druid_vo_*` | 채택(SND-09) | — | — |
-| 목숨 1·2 끝 무릎 꿇음 | `druid_vo_fall`·`druid_root_pierce`(빈 키) | 목소리 채택, 뿌리 꿰뚫기는 비어 있음 | — | 다음 라운드 |
+| 목숨 1·2 끝 형태 전환 | `druid_vo_fall`·`druid_root_pierce`(빈 키) | 목소리 채택, 껍질 소리 없음 | **R9** `collapse12`·`collapse23` | v9.1 `phase12_collapse`(가슴판 열림)·`phase23_collapse`(껍질 무너짐, 120틱) |
+| P3 껍질 더미 | (새 키) | 없음 | **R9** `heap` | 3번째 목숨 내내 남는 더미, 3D 루프 |
 | 보스 처치 순간 | (새 키) | 없음(마지막 숨·가라앉기뿐) | **R8** `boss_kill` | 마지막 타격 직후 |
-| 드루이드 퇴장(땅으로 가라앉기) | `druid_sink` | 채택(SND-08, 동작 없이 고름) | **R8** `druid_sink` | 동작 영상과 다시 비교 |
+| 드루이드 퇴장(땅으로 가라앉기) | `druid_sink` | 채택(SND-08, 동작 없이 고름) | **R9** `death_sink`(R8 후보·지금 소리 포함) | v9.1 `death_sink`(Core 침강 66틱)에 맞춤 |
 | 승리 | `victory`(BGM) | 웹 이식 | — | — |
 
 ### 1.3 출구
@@ -60,8 +112,49 @@
 - 고르기 페이지: `http://127.0.0.1:3399/pick_r8.html`(PICKSETS `r8`). 생성·가공 스크립트는 `I:/EXODUSER-Storage/sound-r8-20261104/`(저장소 밖)에 있다.
 - 비용: ElevenLabs 구독 카운터는 [SOUND_LEAD_MASTER](SOUND_LEAD_MASTER_20261026.md) R8 절에 적는다.
 
+## 2.1 R9 드루이드 v9.1 새 동작 (2026-11-04, CTO 배정)
+
+- 대상(5카드): 등장 `intro_reveal`, 1→2 `phase12_collapse`, 2→3 `phase23_collapse`, 침강 `death_sink`, P3 `HuskHeap`. 새 키 5개 × 해석 3개 × 변형 3 = 45개다. 등장·침강 카드에는 R8 후보(대체 동작으로 만든 것)도 넣어 실제 동작으로 다시 비교한다. 카드 합계는 64줄이다.
+- 영상: v9.1 GLB 클립을 보스 PREP §10.1 연결대로 Core 틱 길이에 맞추고(등장 165f→90틱, 침강 150f→66틱), 34° 카메라에서 Blender로 무창 렌더했다.
+  - 기술·idle 클립은 껍질 9뼈에 P1 값만 갖고 있다. 그래서 Unity와 같은 방식으로 클립을 평가한 뒤 목숨 상태(`state_P2/P3`) 값으로 덮어썼다.
+  - 5차 아레나 PC 캡처는 정지 화면뿐이라 이번에는 렌더 영상을 쓴다. 움직이는 캡처가 나오면 영상만 바꾼다.
+- 고르기: `http://127.0.0.1:3399/pick_r9.html`(PICKSETS `r9`). 스크립트는 `I:/EXODUSER-Storage/sound-r9-20261104/`(저장소 밖)에 있다.
+
+## 2.2 Unity 배선 — 고르면 파일만 넣는다 (2026-11-04, CTO 배정)
+
+R8·R9의 키와 시각은 Unity에 이미 연결돼 있다. 사용자가 고른 가공본을 **`unity/Assets/Exoduser/Resources/Audio/RM1/<키>.mp3`** 이름으로 넣으면 코드 수정 없이 바로 난다.
+- 우선순위: 키 이름 파일 → 대체 파일(`NativeSoundWire.Fallbacks`) → 기록만(Receipt "no file yet").
+- 시각은 Core 틱 기준이고, Core 코드·수치는 바꾸지 않았다.
+- 검사: `unity/Tools/sound-wire-tests` 43개 통과, PC 전체 컴파일 5어셈블리 오류 0. Unity 실행 소리·Receipt는 Mac 확인 전이다.
+
+| 키(파일 이름) | 고르는 카드 | 트리거 | 위치 | 시작 음량 | 파일 없을 때 |
+|---|---|---|---|---|---|
+| `amb_forest_bed` | R8 숲 바탕음 | 숲 바탕음 루프(지금 자리 그대로) | 2D | 지금 값 | `Ambient/amb_hell_forest_bed` |
+| `bio_tree_pulse` | R8 생체나무 맥동 | `NativeAmbientSources.AddBioTree(위치)`로 등록한 나무마다 3.5~4.5초 간격 | 3D 나무 | .5 | 기록만 |
+| `bio_tree_breath` | R8 생체나무 호흡 | 같은 등록 나무, 가까이에서 루프 | 3D 나무 | .4 | 기록만 |
+| `druid_intro` | R9 등장 | `StageEventKind.BossIntro` | 보스 | .8 | 기록만 |
+| `druid_collapse12` | R9 1→2 껍질 갈라짐 | 보스 상태가 `bossDruidRest`로 들어감, 목숨 1 끝 | 보스 | .7 | 기록만 |
+| `druid_collapse23` | R9 2→3 껍질 무너짐 | 같은 진입, 목숨 2 끝 | 보스 | .7 | 기록만 |
+| `druid_heap` | R9 P3 껍질 더미 | collapse23에 그 자리에서 3D 루프 시작, 최종 처치·침강·아레나 로드·필드 복귀·리셋에서 멈춤 | 3D 고정 | .35 | 기록만 |
+| `druid_boss_kill` | R8 보스 처치 | `FeedbackKind.BossDeath`(`druid_vo_last`와 겹침) | 보스 | .8 | 기록만 |
+| `druid_death_sink` | R9 침강(R8 가라앉기 후보 포함) | 침강 그림 시작(`PlaySinkHole`) | 보스 | .55 | 지금 `druid_sink` |
+| `exit_open` | R8 출구 열림 | `StageEventKind.ExitOpened` | 출구 | .6 | 기록만 |
+| `exit_enter` | R8 출구 진입 | `StageEventKind.StageCleared` | 플레이어 | .6 | 기록만 |
+
+- 아직 호출하는 곳이 없는 것: `AddBioTree`. Unity 1-1에 생체나무 오브젝트가 생기면 맵 쪽이 나무마다 이 함수를 한 번 부른다.
+- 반영 절차: 사용자가 고른 행의 가공본(`_out/sfx_forge/_r8|_r9/single/<…>.mp3`)을 위 파일 이름으로 복사한다. meta는 기존 RM1 mp3의 meta 형식을 따르고 GUID는 새로 만든다. 그다음 이 표의 "파일 없을 때" 칸을 "채택 <후보>"로 바꾼다.
+
+## 2.3 R10 1-1 한 판 첫인상 빈 칸 (2026-11-04, CTO 배정)
+
+- 대상(10카드): 구르기(지금은 발소리로 대신 냄), 플레이어 쓰러짐, 포션 사용, 아이템 떨어짐, 악의 오브 흡수, 지역 클리어, 지옥문 열림, 봉인된 문 부딪힘, 보스 아레나 진입(봉인), 스테이지 클리어 패널. 새 키 10개 × 해석 3개 × 변형 3 = 90개다. 구르기 지금 소리 1줄을 더해 카드 합계 91줄이다. 피크 −18dB 미만으로 키운 변형 3개에는 주의 표시를 달았다.
+- 영상: 웹 게임의 같은 동작을 headless·무음으로 녹화했다(`I:/EXODUSER-Storage/sound-motion-r10/`, 10클립, 가운데 1.8배). ★ 시각은 게임 함수 호출에서 잡았고 오차는 ±0.2초다.
+  - 대체: 아이템 떨어짐은 확률 드랍 대신 희귀 무기를 강제로 떨궜다. 스테이지 클리어는 보스를 바로 처치 처리했다(패널의 처치율 0% 표시).
+  - 웹 결함 후보: 봉인된 문 문구(`지옥문이 봉인됨`)가 출구 검사 30프레임 주기 안의 `_gameFrame%45` 조건 때문에 거의 뜨지 않는다. 웹은 유지보수 전용이라 기록만 한다. Unity 이식 때 확인할 항목이다.
+- 고르기: `http://127.0.0.1:3399/pick_r10.html`(PICKSETS `r10`). 스크립트는 `I:/EXODUSER-Storage/sound-r10-20261104/`에 있다.
+- Unity 연결은 고른 뒤에 한다. 트리거는 `Roll` 피드백(구르기, 지금은 `roll_body` → footstep 임시), 플레이어 사망(`PlayerDown` 전환), 포션 사용, 드랍 생성, 오브 흡수, `StageEventKind`의 `RegionCleared`·`GateUnlocked`·`GateSealed`·`ArenaEntered`·`StageCleared`(패널)다.
+
 ## 3. 다음
 
-1. R5·R6 카드에 동작 영상을 붙인다. 웹 게임의 같은 동작을 headless·무음으로 녹화한다.
+1. (11-04 완료) R5·R6 카드 18장에 동작 영상을 붙였다. 웹 게임의 같은 동작을 headless·무음으로 녹화했다(13클립, 실제 소리 함수 호출 시각 ±0.2초). 환경음 3장은 장소 영상이다. Q 방패 막기만 E 패링 장면으로 대신했다.
 2. 사용자 선택(R5·R6·R8)을 받으면 Unity에 반영한다. 새 키는 소리 코드에 연결한다. 생체나무·출구는 맵·VFX 연출 담당에 시각 신호를 요청한다.
 3. 남은 빈칸은 `druid_root_pierce`(무릎 꿇음 뒤 뿌리 꿰뚫기)와 `druid_staff_tap`(R8 등장음으로 대체되면 폐기)이다.

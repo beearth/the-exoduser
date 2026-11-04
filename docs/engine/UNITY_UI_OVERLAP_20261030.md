@@ -1,5 +1,19 @@
 # Unity UI 글자 겹침 수정과 전 화면 상시 검사
 
+## 2026-11-04 BuildLoop 겹침 래칫 현행
+
+| 항목 | 소스 계약 |
+|---|---|
+| 동결 목록 | `unity/Tools/ui-overlap/known-overlaps.json`(c3b3afa7c): **381항목**, 표본 충돌707건. 바탕화면 기준db26d55f6, 수집9e97b55ae/분석37315650d. 현재 잔여 건수라는 뜻은 아님 |
+| 동일 항목 키 | 출처 파일(행번호 제외) + 두 문자열 + 화면(page) + 언어(language). 해상도·줄번호는 키에 없음(`known-filter.cjs:6-8`) |
+| 통과 | 원검사 영수증이 유효하고 frameCount>0·missing0인 충돌 결과에 한해 목록 대조. 목록 밖 충돌0, 원검사 issueCount와 필터 issues 일치, 목록 수≤이전 최솟값 state.uiKnownMin이어야 함 |
+| 갱신 | 통과 때 목록 수가 더 작으면 uiKnownMin을 낮춤. 기존 결함을 새로 목록에 보태 통과시키지 않음 |
+| 시간 제한 | 전 화면 검사 Player3600초(`ui-overlap/check.ps1:20`). 타임아웃 완화가 겹침 허용오차 변경은 아님 |
+| 보고 | runs/<id>/ui-check/known-filter.json에 known/unknown·목록 수. 래칫 통과는 전체 UI 겹침0이나 디자인 PASS가 아님 |
+
+기준 unity/main `8ad7fa322`의 Git 객체 대조이며 새 캡처·BuildLoop 실행·사용자 실행본 갱신은 하지 않았다. 아래 개별 결함 수치는 각각 당시 SHA/캡처의 이력이다.
+
+
 > 현행 후보: 2026-11-03 20:20절. 이전 Internal_GetTextRectOffset 단독/네이티브 Event.QueueEvent 검수 경로는 아래 실패 이력이며 현행 구현이 아니다. docs 정본 unity/main.
 
 > 2026-10-31 최신: 사이드 판·미니맵·상태·알림·실습은 실제 화면 끝, 무대·제목·모달·구슬/스킬바는 중앙. 다섯 창64px 메달 제목·성장 본문181px 확대·스킬16표시·최종 확장원화+하단 그라데이션 로딩 규격은 [초광폭 현행 SSOT](UNITY_UI_ULTRAWIDE_20261031.md)의 첫 절을 따른다. 아래 이전 수치/검수는 이력이며 새 Player 검수 대기. 공통76상태·실제 직업/세계관/타이틀/브랜드 영상 준비/프레임 진행·활성16로딩/실패 폴백을 검사하며, 프레임별 전체 근거 순차 저장으로 대량 보고서 메모리 누적을 없앴다. 명시 지역 검정 그림자/일반 CP 광휘의 별도 한도를 포함한 분석 회귀44건 통과.
@@ -504,3 +518,9 @@ PC 컴파일 결과: 추가 공통b04ddd73b를fe236a8bc로 정상 병합한 뒤 
 |2560×1600|2→0|1→0|32.59/429.63/239.56→0/0/0|
 
 회귀67/67 PASS(기존31 포함). 새 계약 RED1회→구현 후 GREEN1회, 같은 테스트2회 실패 없음. 통합 PC 컴파일1회 Core126/Runtime267 exit0·오류0, 경고2/531. Player/정식 빌드/새 캡처0. 분석기 임계/알파/clip/문자열/source 제외 변경0. 입력이 같은 옛1410장 전수 재분석은 반복하지 않았다. 실제 전후 수치는 새 Mac 같은 해상도 캡처를 받은 후 기록한다.
+
+## 11-04 가방 개수 줄 퇴보 30건 (바탕화면 교체 래칫 9e97b55ae)
+
+- 출처: NativeInventoryWebLayout.cs:104(Txt)와 NativeInventoryOssuary.cs:59(Serif)가 "가방 ("·숫자·"/"·"300"·")"를 맞대어 그림. 0 끝 606.63+8.5=615.13, "/" 시작 615.1(SerifWidth). 측정 방식 차이로 0.03px 겹침.
+- 수정: 조각 사이 1px(NativeInventory.CountRunGap), Serif 묶음 칸=실제 advance, 개수 줄 Txt·Serif 칸=실제 폭. 인벤토리(Dock)·봉안함·보관함 3곳.
+- 검증: inventory-count-runs 5/0, 참조 컴파일 오류 0. 후보 빌드 겹침 검사와 1x 전후 비교는 다음 단계.

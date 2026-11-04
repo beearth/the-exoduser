@@ -1,3 +1,62 @@
+2026-11-04 STY-25 B7 보스 처치 펫 대사 Unity 패치 제안(스토리 총괄, CTO 요청): 1-1 드루이드 침강 뒤 펫 대사 No.3350·3351이 웹 _petSay(boss_kill)에만 있어 Unity pet_bubble.json cue boss_kill_ch0(tier 4, 4+4초, 런당 1회)와 29언어 entries를 웹 정본에서 옮긴 패치를 작성. B8·B9는 B7 뒤로. 문서 docs/11내러티브·로어디자인/DARK_DRUID_1-1_B7_PET_PATCH_20261104.md. 게임 데이터 변경 0(유니티 총괄 반영 대기).
+
+2026-11-04 SND-17b BGM 라이선스 확인·P1 반입 순서(사운드 총괄): 사용자 확인(CTO 경유) — Suno 생성 당시 유료 플랜 → UNITY_BGM_IMPORT_CANDIDATES의 Suno 76곡 출처 칸을 "유료 플랜 확인(사용자, 11-04)"로 갱신했다. P1 반입 순서 7단계(1 사망·승리 두 번째 4.8MB → 2 대장간 14.8MB → 3 1장 Remastered 나머지 10.4MB → 4 1장 mp3 → 5 공통 회전 → 6 2~7장 → 7 최종 보스), 데모 권장 = P0 + 1~3단계 11곡 약 45MB. 출처 태그 없는 3파일은 계속 보류. 반입·코드 변경 없음.
+
+2026-11-04 STY-25 1-1 다크드루이드 등장·퇴장 대사(스토리 총괄, CTO 배정): G0 A안 연출 순서에 맞춰 이름 카드 부제 "썩은 숲의 숲지기", 목숨 2·3 전환 자막 2줄, 출구 개방 뒤 다음 지역 암시 펫 대사 1쌍을 새로 쓰고 기존 등장·침강·처치 대사 6줄과 묶었다. 신규 KO·EN 5건 No.4288~4292. 문서 `docs/11내러티브·로어디자인/DARK_DRUID_1-1_BOSS_TEXT_20261104.md`. 게임 데이터 변경 0(보스전 총괄 반영 대기).
+
+2026-11-04 SND-17 Unity BGM 반입 후보 목록(사운드 총괄, CTO 배정): docs/6사운드디자인/UNITY_BGM_IMPORT_CANDIDATES_20261104.md 신설. 웹 bgm 79파일(설정 57 + 큐 22)의 경로·길이·용량·형식·Vorbis 반입 추정·BGM.tracks 쓰임·출처(메타데이터: 76파일 made with suno, beearthone, 생성일·곡 id)를 정리했다. 바이트 대조로 Unity 보유 10·제외 사본 6. P0 반입 권장 3곡(1-1 필드 회전, Ashes Under the Banner·Cathedral of Steel·Iron Oath Under Ash Remastered, 15.9분·약 15MB), P1 52, P2 8. Suno 상업 권리 사용자 확인 필요. 반입·코드 변경 없음.
+
+2026-11-04 FIX-1 이전 표 집계 단위 정정: 명칭 통계는 변경된 행 수가 아니라 악의오브 치환 횟수이므로 MAIN_DOCS_MIGRATION의 열 제목을 바로잡음. 표 값·게임 수치·판정 무변경.
+
+2026-11-04 FIX-1 web3d 보관 마무리: 1037ffec1에서 보관 경로 추가·색인 정정은 반영됐으나 경로 지정 커밋의 rename 출력에 원래 경로 삭제가 포함되지 않았다. 후속 새 커밋에서 docs/0마스터플랜/session_handoff/web3d.md 삭제를 반영하며 보관 파일 바이트는 유지한다. 이력 재작성 없음.
+
+2026-11-04 FIX-1 main 문서 이전 정정: 최신 unity/main 정상 병합, 악의오브 정본 명칭(자원표·패시브표·44개 대조), 웹 v23·전체 화면 원화 확장 누락 기록 보충, 루트 색인·web3d 보관·integ12 이미지 위치 정정. Core·게임 코드 변경 없음. 상세 MAIN_DOCS_MIGRATION_20261104.md.
+
+2026-11-04 main 문서 정리 선행 이전: main 06ac6882b550cb6373f2953ede3b2acc6f69e211 고유 자료 71개(신규 67·기존 경로 보충 4)를 보존. 자원표·패시브표의 웹 oracle 정정은 Core 동일성 미대조로 표시. 수신 JSON·UI 인계 기록은 Unity 후속 내용을 유지해 합침. 게임 코드·Core·실행본 변경 없음. 상세 MAIN_DOCS_MIGRATION_20261104.md.
+2026-11-04 SND-16 1-1 한 판 소리 커버리지(사운드 총괄, CTO 배정 — 데모 v0 ③): DEMO_1-1_SOUND_SCENES §0에 타이틀·로비·캐릭터 선택·필드·드루이드·클리어·사망 순간별 키·상태(채택/웹 이식/임시/없음)·청음 라운드 표를 추가했다. 빈 칸·임시 칸 10개(구르기 임시, 플레이어 사망·포션·아이템 드랍·악의 오브·지역 클리어·지옥문 열림·봉인 문·아레나 진입·스테이지 클리어 패널 없음)는 R10 청음 후보 91줄 pick_r10.html로 묶었다(웹 동작 녹화 10클립 동기). 웹 봉인 문 문구 미표시 결함 후보를 기록했다. 코드 변경 없음, 청음·Unity 반영 전.
+
+2026-11-04 D-014 oracle 일괄 점검 판정(디버깅 총괄, Codex 레인 debug-oracle-sweep 14ae05cbb 병합): Core bea021bcf·웹 06ac6882b 기준 C# 76개 PASS 56/FAIL 10/입력 대기 9/SKIP 1/빌드 깨짐 0. FAIL 10개는 게임 결함 0 — 패링 A안 투사체 정책(적 AI 61,645·생성 7,543·분열 372, 적 종류×필드 전수 집계로 확인), Unity 의도 확장(저장 stageDiffOff, 로캘 이름 Killu), 표현 분기(피격 플래시는 feel 꺼짐 때만 그림, 웹 ?feel=0과 같음), 낡은 기대값 4개, 웹 10-31 스킬창 고정 기술 3칸(D-U4). Tools만 수정: 생성 oracle AI 값형 필드 예외, 저장 Unity 전용 키, 피격 export feel=0, 어픽스 기준 문구 2·키 21·인트로 29언어×27줄, 적 AI 시나리오별 실패 집계. 재실행 피격 47,559/0·저장 2,604/0·설정 91/0·인트로 29/0·어픽스 PASS. 새 백로그 D-T3(A안 기대값 층)·D-U4. Core·Unity 실행 0. 문서: DEBUG_LEAD_BOARD D-014·D-T2·D-T3·D-U4, unity/Tools/README.
+
+2026-11-04 STY-24 데모 v0 첫인상 문구 톤 검수(스토리 총괄, CTO 배정): demo_text 81·사망 화면·펫 말풍선·지옥문·캐릭터 선택의 한국어·영어를 정본과 대조. P0 = 캐릭터 선택 총기 슬롯이 보관된 헬거너 이름·혈탄 특성인데 왼쪽 스토리는 아이반(STY-D1). P1 = 실버테일 무기 표기(11-02 정정), 이름 입력 해요체, 사망 EN 제목 중복 등. 제안 KO 14건 No.4274~4287 등록. 문서 `docs/11내러티브·로어디자인/DEMO_V0_FIRST_IMPRESSION_TONE_REVIEW_20261104.md`. 게임 데이터 변경 0(유니티 총괄 반영 대기).
+
+2026-11-04 SND-15 R8·R9 소리 키 Unity 미리 배선(사운드 총괄, CTO 배정, Sonnet 서브에이전트 구현): 11키를 연결했다. amb_forest_bed·bio_tree_pulse/breath(AddBioTree)·druid_intro(BossIntro)·druid_collapse12/23(bossDruidRest 진입, 목숨 1/2)·druid_heap(3D 루프)·druid_boss_kill(BossDeath)·druid_death_sink(PlaySinkHole)·exit_open(ExitOpened)·exit_enter(StageCleared). 우선순위는 RM1/<키>.mp3 → 대체(숲 바탕음·druid_sink) → 기록만. 새 NativeSoundWire.cs(Unity 없이 검사 가능), 검사 unity/Tools/sound-wire-tests 43개 통과, PC 컴파일 5어셈블리 오류 0. Core 변경 0, mp3 추가 0. 키 → 파일 표는 DEMO_1-1_SOUND_SCENES §2.2. Unity 실행 확인은 Mac 대기.
+2026-11-04 docs↔Unity Core 수치 감사(기준8ad7fa322, Codex 문서 전용): 사냥꾼·앵글러 분열탄 공식을 보완하고 D-U2 pArmor 물리방어 전용·DR 식을 정정했다. Unity 표시버전0.1.0과 웹 메타데이터를 구분하고 사망 결정29언어×9키·입력개시2.79/2.67초·태국어 조판·펫 초상 제거 사실을 동기화했다. 실행기 좀비120초/CPU1.5초/종료로그·HALT exit3·디스크50%/10초/600초, 겹침381항목/707표본·3600초 래칫을 docs에 기록했다. 영웅1.61u 기준을 맵·보스 문서에 전파했으며 아레나13064048f의 반경130/111/57·CPU161.6초/72판은 미병합 후보 보드로만 구분했다. 코드·Core·실행기·예약·실행본 변경0, 빌드/Player/oracle 재실행0. 감사·보고: I:/EXODUSER-Storage/codex-takeover/docs-sync-audit/AUDIT.md 및 REPORT.md.
+
+2026-11-04 캐릭터 선택 직업 이름 칸 맞춤(UI 겹침 래칫 새 퇴보 10건, 유니티 총괄): 첫인상 변경으로 라틴 이름이 Cinzel이 되면서 fr "Guerrier…"가 오른쪽 패널을 2px 넘침(캐릭터선택0·2 × 해상도 5종). 이름이 308px 칸보다 넓을 때만 정수 pt로 줄임(하한 18, 자간 비례, 말줄임 없음), 맞는 이름은 28pt 그대로. classname-fit 4/0, 참조 컴파일 오류 0(claude/unity-pc-classname-fit-20261104).
+2026-11-04 17:20 BuildLoop 3D 관문 시험(CTO 데모 기본 인자 결정: 3D 확정): BuildLoop 스모크(m1-check)·UI 겹침 검사가 --remodel3d 없이 2D 경로로 돌았다(바탕화면 바로가기는 -force-d3d11 --remodel3d). buildloop.ps1에 -Gate3D off|trial|on을 추가했다(기본 trial). trial은 관문 m1-check 뒤 --remodel3d m1-check 1회를 run.json trial3d와 로그에 기록만 하고 판정에는 쓰지 않는다. PASS가 확인되면 on으로 바꾼다. 같이 고친 것: 11-04 UI 래칫(Apply-UiKnownList) 뒤로 깨져 있던 buildloop-overlap-summary·ui-overlap-invocation 검사 하니스에 래칫 대체 함수를 넣었다. 검사 buildloop-gate3d 8건과 BuildLoop 검사 9종 PASS. 리그픽셀 기본 인자는 각 총괄 PASS 뒤에 넣는다(이번 변경 없음).
+
+2026-11-04 17:00 M1 촬영 해상도 인자(최신판 테스트 총괄, CTO 경유): --unity-m1-check가 1600×900을 고정해 바탕화면 빌드를 1920×1080·3840×1080으로 판정할 수 없었다. NativeReviewArgs에 -review-width/-review-height(기본 1600×900, 범위 밖은 기본)를 추가했고, M1 무창 RenderTexture와 창 모드 SetResolution이 그 크기를 쓴다. m1-check.json에 captureWidth/captureHeight/screenWidth/screenHeight를 기록하고, -batchmode에서 -screen-width/-height와 다르면 경고한다. 무창·무음·세이브 격리는 그대로다. 프런트 리뷰 240초 끊김(f7f6fe99)은 결함이 아니었다. --unity-frontend-review는 저장소 fixture 표식이고 촬영·종료가 없어 타이틀에 머물다 실행기 시간 초과로 kill된 것이다. 타이틀·캐릭터 선택 촬영은 --unity-entry-flow-capture로 한다. Roslyn 참조 컴파일 5어셈블리 오류 0. 문서 unity/Tools/devtools/README.md.
+
+2026-11-04 16:40 BuildLoop Player 우선(CTO 1순위 바탕화면): 8ad7fa322 회차가 빌드·스모크는 통과했으나 UI 겹침 검사 Player가 다른 레인 player 예약 7건(FIFO) 뒤에서 기본 대기 40분을 넘겨 실행되지 못했고, 판정 FAIL로 바탕화면 db26d55f6이 유지됐다. 실행기 2026.11.04-loopfirst: -PcException buildloop Player는 예약 큐·굶주림 방지 drain을 건너뛰고 최소 180분 기다리며, 기다리는 동안 _player_priority.json으로 다른 새 Player 입장을 막는다(단독·슬롯·메모리 조건은 그대로, 주인 pid가 죽거나 재사용되면 무시). 검사 selftest/loopfirst-test.ps1 12건 PASS, 기존 Player/Editor 입장 검사 11종 PASS. 문서 unity/Tools/devtools/README.md.
+
+2026-11-04 14:50 PC Player 종료 정지 진단 준비(CTO 근본 원인 배정): 실행기 2026.11.04-stalldiag가 시간 초과 kill 때 스레드 대기 사유·GameInput 서비스 상태·로그 마지막 줄·kill 성공 여부를 영수증 stall에 남긴다(시험 stall-diag-test 7건). PortVerification.Build -gamepadBackend xinput은 그 빌드에서만 windowsGamepadBackendHint=XInput(WGI 회피 A/B, ProjectSettings 무변경). Roslyn Player/Editor 오류 0. 근거=창 모드 WGI 초기화 실행 정지 29/593, -batchmode 0/61(10-29~11-04).
+
+2026-11-04 14:20 좀비 감지 오탐 정정·디스크 유휴 대기(CTO): 13:09 HALT는 오탐이었다. 시작 76초 된 Player(PID 44556, 스레드 1·CPU 0.1s·로그 'Mono path'까지)가 USB HDD I: 포화(다른 세션 재귀 grep, 유휴 0%·대기열 2~3, 새 7GB 빌드 백신 검사)로 느리게 뜨던 중이었다. 좀비 조건을 시작 120초 이상 + CPU 정지 + 로그 마지막 줄이 종료 단계 표시일 때만으로 바꿨다. Player 시작 전에 실행 파일 드라이브 유휴율 50% 이상 10초를 기다리고(상한 10분), 영수증 diskAtStart에 남긴다. 실행기 `2026.11.04-zombie2`, zombie-guard-test 8건(05:06형 검출·13:09형 미검출·디스크 대기/상한). 문서 unity/Tools/devtools/README.md.
+
+2026-11-04 14:00 HALT 대기 중 시작 거부를 exit 3으로(CTO): 순번·슬롯을 기다리던 실행이 HALT를 만나면 시작하지 않고 exit 3(HALT 게이트와 같은 코드)으로 끝난다. exit도 finally에서 예약·슬롯을 반환한다. 실행기 `2026.11.04-haltwait2`, halt-wait-test는 별도 프로세스로 Player·Editor 대기 모두 exit 3·정리를 확인.
+
+2026-11-04 13:45 공용 실행기 HALT 우회 수정(CTO): HALT가 명령 시작 때만 검사돼 HALT 전부터 대기하던 vfx-summon Player가 13:23:52에 떴고(PID 57916), build 명령은 HALT 게이트 목록에 없었다. 게이트에 build 추가, Player 슬롯·Editor 잠금·순번·티켓·단독 검사 대기 루프마다 HALT 재검사(Assert-HaltClear, 예약·슬롯 반환). 실행기 `2026.11.04-haltwait`, 시험 halt-wait-test.ps1 4건, race 시험 픽스처에 HaltPath·ExclusivePath 지정. 문서 unity/Tools/devtools/README.md.
+
+2026-11-04 13:20 QA 성능 표본기(CTO 데모 v0 성능 측정): Runtime NativePerfProbe(--unity-perf-probe, -output)가 매 프레임 프레임 시간·FrameTimingManager CPU 메인/렌더·GPU 시간·렌더 카운터(드로콜·SetPass·배치·삼각형·정점·그림자 캐스터·스킨 메시)를 NativeGame.PerfSegment(로비·필드 진입·먼 적·캠프·보스 아레나) × 화면 크기별로 모아 perf-probe.json에 쓴다. --perf-off shadows는 URP 그림자 거리 0(A/B). PortVerification.Build -frameTimingStats 1은 그 빌드에서만 Frame Timing Stats를 켜고 복원한다(ProjectSettings 무변경). Core·게임 규칙 무변경, QA 인자 없을 때 동작 0. Roslyn 사전 검사 Player/Editor 오류 0.
+
+2026-11-04 SND-14 드루이드 v9.1 새 동작 소리 R9(사운드 총괄, CTO 배정): 등장 intro_reveal·1→2 phase12_collapse·2→3 phase23_collapse·침강 death_sink·P3 HuskHeap의 청음 후보 45개 + R8 등장·침강 후보 합본 64줄 pick_r9.html(v9.1 클립 Core 틱 렌더 영상 동기). DEMO_1-1_SOUND_SCENES 보스 줄을 R9로 갱신하고 §2.1을 추가했다. R5·R6 카드 18장 동작 영상 추가를 기록했다. SOUND_LEAD_MASTER에 R9 절을 추가했다. 코드 변경 없음, 청음·Unity 반영 전.
+2026-11-04 바탕화면 교체 퇴보 30건(UI 겹침 래칫, 전부 가방 개수 "가방 (0/300)") 수정: 인벤토리·봉안함·보관함 개수 줄이 두 글꼴 5조각을 맞대어 그리는데 CalcSize와 검사기 xAdvance가 소수점 아래로 달라 맞닿은 조각이 겹침으로 읽힘(45fb2ee48부터 Serif가 묶음 칸으로 기록). 조각 사이 1px(CountRunGap), Serif·Txt 칸을 실제 폭으로(300px·r.width+total·40 제거). 검사 inventory-count-runs 5/0, 참조 컴파일 오류 0. 화면 판정 전(claude/unity-pc-ossuary-count-20261104).
+
+2026-11-04 12:55 UI 겹침 알려진 목록 동결(래칫 시작): unity/Tools/ui-overlap/known-overlaps.json 381항목·707건. 9e97b55ae 전 화면 검사 캡처를 analyzer 37315650d로 재분석(1094→737, 사망 외곽선 오탐 357 제거)하고 출처 줄 git blame으로 바탕화면 db26d55f6 이전 결함만 담았다. 퇴보 30건(NativeInventoryOssuary.cs:59, 45fb2ee48 — 인벤토리·봉안함·보관함 개수 '0 / 300'·'가방 (10)' 숫자와 '/'·괄호 겹침)은 목록에 없어 교체를 막는다(유니티 총괄 수정 중). 목록은 줄이기만 한다.
+
+2026-11-04 12:50 BuildLoop UI 겹침 래칫(CTO 결정): ui-overlap/known-filter.cjs가 겹침을 출처 파일(줄 번호 제외)+겹친 두 문자열+화면+언어로 known-overlaps.json과 대조, 목록 밖 겹침이 하나라도 있으면 FAIL. BuildLoop Apply-UiKnownList는 모두 목록 안일 때만 UI 게이트를 통과시키고, 목록 건수가 state.uiKnownMin보다 늘면 래칫 위반 FAIL(줄어들기만). 목록은 바탕화면 db26d55f6에 이미 있던 결함(출처 줄 git blame 기준)만 담는다. 9e97b55ae 분류: 기존 1064·퇴보 30(NativeInventoryOssuary.cs:59, 45fb2ee48). 시험 known-filter.test.cjs 5·buildloop-ui-known-test.ps1 6. 문서 unity/Tools/devtools/buildloop/README.md.
+
+2026-11-04 12:40 UI 겹침 analyzer 사망 대사 외곽선 오탐 수정(도구 총괄, BuildLoop 9e97b55ae FAIL 1094건 중 357건): NativeDeathOverlay가 death-black-outline 프로필을 글자 외곽선(101~102줄)과 펫 대사 줄(207줄, 0,1.5/±2,0/0,-1/0,3 × fit) 두 오프셋으로 그리는데 analyzer는 앞 세트만 알아 같은 대사의 외곽선 패스를 서로 다른 글자로 셌다. 프로필 오프셋에 207줄 세트를 추가(동일 문자열·동일 출처·같은 크기·선언 거리만). 실제 보고서 프레임 픽스처 death-pet-outline-9e97.json으로 26건→0, 다른 대사 충돌·선언 밖 거리는 계속 검출. 런타임·검사 화면·합격 기준 무변경. 나머지 HUD·탭바·대장간 등은 UI 수정 대상.
+
+2026-11-04 세계관 인트로 v23 Unity 적용(사용자 "이제 게임에 적용해 배포", "인게임에 넣어"): `NativeLobby.WorldMovie`를 `world_intro_v23_newopening_steam.mp4`(90,144,119B, SHA256 `6abe88a5…c05278c9`)로 바꾸고, 복원·내보내기 도구 입력을 `unity/Tools/MediaRecovery/world-intro-v23-newopening-canonical/`(30MiB×3)로 옮겼다. v22b 0~13.15초만 새 도입부 3컷이고 철문부터·음성·자막·+0.4초 오프셋은 v22b와 같다. 웹은 main `06ac6882b`. Mac 빌드 성공(0 errors), `--unity-canonical-world-smoke`에서 실행 중 바이트·해시 일치, 6/35/93초 자막·자연 종료 후 로비 화면 확인. 같은 검사 FAIL 4개(door prepared·invitation fade·door fade·ends naturally into lobby)는 오늘 v22b 빌드에서도 동일한 기존 실패다. 문서: [인게임 인트로](cinematic/WORLD_INTRO_INGAME_20260907.md) 2026-11-04 절.
+2026-11-04 패링 Core 분열탄 남는 차이 3건 문서화(shQuery 공유 버퍼 별칭=웹 버그로 판단·Unity 미재현, 분열탄 fallen 정지, ClearHazards 소거), oracle README·2_3 사실 표기 정정 — 몬스터_공격시스템.md
+
+2026-11-04 12:40 Core 결함 수정 4차(앵글러 물 에너지탄 Q 분열탄·접촉 넉백): 분열탄 5발을 웹처럼 플레이어 투사체 규칙으로 비행·타격(신설 Simulation.ParryShot.cs TickParryShot, DruidBoss.Projectiles에서 위임): 2프레임마다 900px 유도 0.7rad(맞힌 적 제외, 이어 필드보스), 사거리 900, 마법 벽 반사 3회·반사 쿨 6, 겹친 앵글러 전부 타격 후 소멸(피격 쿨이어도), 일반 적 ~~(dmg×elMul)·넉백·약점 기절 +35·스플래시 69px 50%(+투구)·투구 magicPen·통일 관통 50+pierceFlat. 대형탄은 400px 충돌 필터 제외(Q 해제 띠 500). 접촉: 슬라이드 100 먼저 + HurtOptions.NoKnock(비례 넉백만 생략, 보호막 넉백 유지). 2차의 ReflectHoming/ReflectContact 분열탄 분기 제거. 무지개탄 Q 전용·E 불가·블루콩 유도반사·다른 탄 무변경. parry-reflect-oracle 172,955 checks 0 failures(anglerEnergy 1,512케이스·anglerRuntime 47·parryShot 80시나리오 웹 pProjs 루프 원문 대조), druid-boss 5,421,635/0, fieldboss 302,271/0, weapon-xbow 108,780/0, parry-reflect-sim 26/0, parry-g2 87/0, 공용 실행기 Unity 컴파일 ok(오류 0, compile 20.7초, job 1022979e). 남는 차이(pProj 풀 소진 시 관통 0, _uBowPierce, 웜·화마귀, 처리 순서, 사거리 끝 1프레임, 일반 탄 400px 반경)는 몬스터_공격시스템. 문서: 2_3 사실 표기 정정, 몬스터_공격시스템, UNITY_PARRY_REFLECT, UNITY_ORACLE_COVERAGE_AUDIT, UNITY_M1_REGION_RB, oracle README.
+
+2026-11-04 12:30 Core 결함 수정(앵글러 물 에너지탄 패링): Unity가 크라켄 물 에너지탄을 forbidden으로 분류해 Q 패링이 안 되던 것을 웹(fbEnergy 터미널)과 같게 수정. ProjSpec/BossProjectile.FbEnergy, ClassOf=magic, Q=원본 제거+5발 분열(자원×10, 청콩 반사 없음), E 제외, 접촉=무적 중에도 소멸·비무적에만 피해+슬라이드 100, 벽 접촉 8방향 샘플. 무지개탄 Q 전용·다른 탄 분류 불변. parry-reflect-oracle 61509 checks 0 failures(anglerEnergy 12766·anglerRuntime 35 신설), druid-boss-oracle 5421635 checks 0 mismatches, fieldboss-oracle 302271 checks 0 failures, 참조 컴파일 오류 0. 문서: 2_3 사실 표기, 몬스터_공격시스템.
+
+2026-11-04 11:20 공용 실행기 단독 검사 중 새 Editor 작업 대기(CTO): BuildLoop 단독 Player(_player_exclusive.json)가 도는 동안 새 Editor 서버 시작·batch·상주 서버 제출은 끝날 때까지 기다린다. 돌고 있는 Editor는 끊지 않음, 검사 기준 무변경. 원인=a7db9621b UI 겹침 검사가 다른 레인 Editor 빌드와 겹쳐 14fps로 1800초 제한 초과. 실행기 `2026.11.04-exclusive2`, exclusive-test 12건. 문서 unity/Tools/devtools/README.md.
+
 2026-11-04 map-scale-c1 2D 실측4조건 완료: 빌드ed69d2f730 1회·추가0, 같은 buildGuid·기존 봇/시드·재도전0·공용 실행기 단독 순번. 1.3keep/1.5keep/1.3area/1.5area의 실제 진입 틱·경과·처치·보스 소요를 UNITY_MAP_BOARD에 기록. 4판 보스전 사망, 크래시/사용자 창/잔여/실제 세이브 변경0. 재개 필드/Core 검사16/0·참조 컴파일 오류0, 기존 광역 Core 전체 통과는 미충족 유지. 기본1/keep·사용자 실행본·카메라34도·3D 미변경. 사용자 결정 전 실험이며 완주/디자인 PASS 아님.
 
 2026-11-04 15시 map-scale-c1 재개: run-checks.cjs 기본 범위를 필드/Core 관련 검사로 명시하고 확대 봇 경로 검사를 포함. 광역 기존 검사(--extended)의 누락 스크립트·oracle은 차단으로 기록. 재개 후 지정 검사1회 16단계/실패0, PC 참조 컴파일1회 5어셈블리 오류0. 앞서 확인한 광역 기존 결함은 미해결로 유지한다. Runtime 변경0이므로 ed69d2f730의 기존 성공 빌드1회를 2D 실측4판에 재사용, 추가 빌드0. UNITY_MAP_BOARD 동기화.
@@ -9,6 +68,18 @@
 2026-11-04 SND-12 R7 드루이드 7기술 효과음 Unity 연결(사운드 총괄): 사용자 선택 채택 10키(druid_slash3_ground·slam_lift·debris·charge_kick·wall_crash·grab_bind·grab_throw·erupt_warn·root_spikes·heart_vein)를 Resources/Audio/RM1에 넣고 시작 음량 .5. 연결: NativeFeedbackAudio(SlamOnLanding·DruidExtras — 예고 이벤트+DruidRemodelData 상수 지연) + 새 NativeDruidSoundCues(보스 상태 bossSlamWind·bossChargeWind·bossGrab 전환, Fx wallSlam, 균열 Exploded — Core 읽기 전용). 시각 변경 druid_slam Tele+SlamActive→Tele+2, druid_erupt 즉시→BurrowEruptWarn 늦춤. 전부 안 맞음 5키(grab_step·absorb·burrow_move·staff_tap·heart_wave)는 연결 없음. Core 무변경, PC 컴파일 오류 0, 청음은 Mac. docs: DRUID_V81_SKILL_SFX_G1 §4.1, SOUND_LEAD_MASTER R7.
 
 2026-11-04 SND-11 Unity 걷기 발소리(사운드 총괄): NativeFeedbackAudio.TrackWalk — 걸은 거리 128px마다 footstep/footstep2 번갈아 .55, rate Jitter(.9,.15), 구르기·넉백·사망 제외, 한 프레임 48px 초과 이동 무시. NativeGame.DispatchFeedback에서 호출. Core 무변경, docs/6사운드디자인/6사운드디자인.md 절 추가. PC 컴파일만, 청음은 Mac.
+2026-11-04 사망 결정 화면 태국어 결합 기호 누락 수정(총괄 후보 캡처 검수): Spaced()가 한 글자씩 그려 모음·성조 기호가 빠짐 → 결합 문자 스크립트(태국·라오·크메르·미얀마·인도계·아랍)는 자간 없이 한 번에, 나머지는 문자 묶음(StringInfo) 단위로. 글자 칸 폭을 size*2에서 실제 폭+2px로(UI 겹침 검사 오탐 감소). death-d2 8/0, 참조 컴파일 오류 0. 화면 판정 전(claude/unity-pc-death-pbz-20261104).
+
+2026-11-04 사망 결정 화면 D1 촬영 장면 추가(NativeGame.DeathScreenCapture, 캡처 전용): 결정 화면 언어 10개(ko·en·ja·ru·th·el·de·vi·fi·hu) death_decision_<code>, --unity-death-field-decision 필드 사망 2선택지 death_field_decision, --unity-death-sequence 0~10초 15fps 연속 프레임(무음 영상용). 게임 동작 변경 0, 참조 컴파일 오류 0(claude/unity-pc-death-pbz-20261104).
+
+2026-11-04 사망 결정 화면 RETOUCH D2·경미(claude/unity-pc-death-pbz-20261104): 문구 9키를 29개 언어로(Resources/Data/death_decision_text.json, 번역 목록 4264~4272 전파, 장식 영문 행은 전 언어 영문 유지, ar는 en으로 그림), 긴 언어는 정수 pt 축소(말줄임 없음). 로비 빈 슬롯 면 (5,5,7,.94)→(8,8,12,.94)로 예상 Y 8.5(알파만으로는 배경 Y 4.3~5.8보다 올릴 수 없음). 사망 결정 화면은 산세리프 0(sans는 옛 리플레이 모양에만 남김). merge 52fce6875가 어긋나게 둔 Spaced 괄호·TitleGate 위치 정정(참조 컴파일 오류 0). PC 검사·컴파일만, 화면 판정 전.
+
+2026-11-04 Mac Unity 사망 확정 화면 교체 "안식은 없다": 웹 #death 이식판(원화·펫·이모지·미이식 표시) 대신 검정 → 제목·진홍 헤어라인·THERE IS NO REST → "포기할 것인가?" 결정(보스방 3 선택지, 필드 2 선택지). 끊겨 있던 로비 버튼과 숨은 일시정지 키 경로를 바로잡음. 번짐 PNG 선형화로 Linear 색 보정. ARM64 빌드 오류0, 사망 스모크 1920·1600 PASS. 번역 목록 4264–4272. [기록](3.1%20ui%20hud%20디자인/UNITY_DEATH_SCREEN_20261103.md#2026-11-04-사망-확정-패널-교체--안식은-없다-결정-화면-mac-pc-ui-총괄).
+2026-11-04 첫인상 결함 3·5(유니티 총괄 브리프 first-impression-235, claude/unity-pc-lobby-poster-20261104 위): 메인 메뉴 항목 18→30px 명조(한글·CJK Hahmlet 본문 경로, 라틴 Cinzel 600, 긴 라벨은 22px까지 줄임)·초점 표시를 '—' 대신 진홍 마름모+밝기(비초점은 어둡게), 버전 표기를 웹 release_web(v0.7.11) 대신 Unity Application.version(PlayerSettings bundleVersion 0.1.0, 11-04 CTO 결정·웹 0.7.x와 분리, 체험판은 DEMO · v0.1.0)으로, 로비 VersionLine도 통일, 브랜드 인트로 '아무 키나 눌러 계속'·캐릭터 선택 '출시 준비 중'을 Noto Sans KR에서 명조·Cinzel로, 캐릭터 선택 본문·이름·제목·직업·기본 스토리를 같은 명조·Cinzel 경로로 통일; 메인 메뉴 32:9는 확장 원화가 없어 연결 못 함(조사만, 생성 0). 소스 계약 `unity/Tools/first-impression-tests/run.cjs`·참조 컴파일 5어셈블리 오류 0. 상태: PC 검사·컴파일만, 화면 판정 전. 상세: docs/3.1 ui hud 디자인/스플래시_인트로_시퀀스.md '2026-11-04 첫인상 3·5'.
+
+2026-11-04 스킬 정보 작은 버튼 가시 끝장식이 글자를 덮던 결함(디자인총괄, parity 병합 d50fa39a1 판정): NativeSkills.InfoButton에 명시 chip 인자, 강화 +·강화 −·리셋(64~68px) 3개만 칩 원화(settingsChip). 크기로 자동 판단하지 않음, 넓은 장착 버튼은 가시 판 유지. 검사 skill-chip 3/0, 참조 컴파일 오류 0. 화면 판정 전(claude/unity-pc-lobby-poster-20261104).
+
+2026-11-04 로비 영상 정지 포스터(claude/unity-pc-lobby-poster-20261104): 영상 준비 전 검은 화면 제거 — fdg_intro·warrior_story 첫 프레임 포스터 신규, `NativeLobbyVideo.Presentable`(frameReady 뒤 한 프레임)로 영상 전환, 실패 시 포스터 유지. 소스 계약 35/0, 5어셈블리 컴파일 오류 0. PC 검사·컴파일만, 화면 판정 전.
 
 2026-11-04 SND-13 1-1 데모 한 판 소리 장면 목록(사운드 총괄, CTO 10:05): docs/6사운드디자인/DEMO_1-1_SOUND_SCENES_20261104.md 신설. 필드·보스·출구 장면별 키·지금 상태·청음 라운드를 정리했다. 빈칸은 생체나무 맥동·호흡, 보스 처치 순간, 출구 열림·진입, 드루이드 등장(staff_tap 4회 불채택 → 등장 전체 한 소리). R8 청음 후보 74줄 pick_r8.html(카드마다 장면 영상 동기 재생). SOUND_LEAD_MASTER에 R8 절 추가. 코드 변경 없음, 청음·Unity 반영 전.
 
@@ -21,6 +92,7 @@
 2026-11-04 09:20 UI 겹침 검사 전면 영상 대기 10→30초(도구 총괄, BuildLoop 08:44 FAIL): 빌드·스모크 PASS 뒤 전 화면 UI 겹침 검사 14분째 UiWaitRootMovie가 world_intro_v22b_steam.mp4 준비를 10초 안에 못 봐 실패, 바탕화면 교체 안 됨. 그 시각 다른 레인 Player 2~3개가 GPU 영상 디코더를 함께 씀. QA 경로만 30초로 늘리고 실패 메시지에 prepared·frame·url을 남긴다(Runtime QA, Core·게임 화면 무변경). 11-03 09:20 실패(마우스 안전영역 역변환)는 다른 원인.
 
 2026-11-04 바닥 예고 투영 색 수정(임펙트 총괄, CTO 요청 단독 브랜치): NativeGroundWarningProjection이 sRGB 정점색을 선형 변환 없이 셰이더에 넘겨 Linear 프로젝트에서 드루이드 바닥 예고(어두운 독액 얼룩 #1c3307 계열)가 밝은 민트 초록 원판·부채꼴로 보였다(PC 무창 후보 d7f5c3a1e 1920 촬영). Linear일 때 Color.linear로 변환. 쓰는 곳 NativeDruidTelegraphView(unity/main) 1곳. 같은 파일 내용으로 PC Roslyn Core·Runtime 컴파일 확인(기존 무관 Remodel 1건 외 0).
+2026-11-04 09:10 임펙트 리뷰 촬영 로비 결함 수정: NativeGame.ImpactReview.cs가 EnterNativeTest 뒤 로비를 끄지 않아 480프레임이 전부 로비였던 문제 — --hero-render=rigpixel 요청 시 HeroCapture와 같은 RigPixelReviewEntry 정식 입장(단순 EnterNativeTest는 필드 조립 16초 중 12초 전환 타임아웃으로 로비 복귀·검은 프레임), lobby.enabled=false·CloseStartupCaptureMedia·SetGameFocus(true)·해상도 재적용 추가, 30프레임 뒤 로비가 보이면 영수증 lobbyVisible=true·종료 코드 실패. 촬영 전용, Core 변경 0.
 
 2026-11-04 08:30 전투 통계 세이브 격리 누수 수정(도구 총괄, BuildLoop 08:05 FAIL 원인): ObserveCombatStatsEnd가 -output 없을 때 Application.persistentDataPath/combat-stats에 바로 써서 --a2r-play-sandbox·--unity-qa-sandbox 실행(사용자 맵 후보 PID 11048)이 사용자 실제 세이브 폴더 combat-stats.json을 바꿨고, 같은 시각 루프 빌드가 USER_SAVE changed=1로 FAIL. NativeQaSandbox.Resolve(Application.persistentDataPath)를 거치도록 한 줄 수정(Runtime, Core 무변경). 저장 내용·시점은 그대로.
 
@@ -57975,3 +58047,21 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 ## 2026-11-04 05:40 실행 결과 — 공용 후처리 2FAIL STOP
 - 실제빌드540fdcde20/공용f2a287d2 PASS 뒤3D/d3d11의1920 원본25장·제품9건PASS. GUI116행 최소간격16px, 이름/삭제 실제나눔명조·면18px inset·공통철draw 확인.
 - hover57be03df/사망02ef0c30의 공용 ReadAllText 로그잠금 예외2회로 STOP. 최종가드7/9,3840 0/25. 동일조건 재시도0·추가빌드0, 공용bin/권한/환경/타슬롯변경0. 실제25/50과 미완료 관문을 관련docs/REPORT에 동기화했다.
+
+## 2026-11-04 영웅 무기 소켓·배율 전수 점검 도구 (char-socket-audit)
+
+- Editor 전용 HeroWeaponScaleAudit.Run 추가. Resources/Characters 영웅 프리팹의 소켓/부착 뼈, 자식 로컬·월드 배율, 정점 월드 bounds·칼끝, 손잡이 중심 거리, 무기 전장/리그 키, FBX 임포트 단위를 읽기 전용으로 기록한다.
+- 브리프 판정 경계값 15건 통과. legacy cm 메시 배율100과 실제 월드 길이를 구분하여 기록하며, 손잡이 마커가 없는 문서 기반 추정은 실제 파지 검증으로 승격하지 않는다.
+- 결과표: docs/engine/UNITY_HERO_WEAPON_SCALE_AUDIT_20261104.md. Core·런타임·프리팹·임포터 수정 0, Player 실행 0.
+- 실측: 공용 Editor 배치 bc3ce989 1회 정상 종료(컴파일 오류 0·세이브 변경 0), Warrior 키 1.850001m·대검 1.600001m·길이비 0.864865·추정 파지거리 0.025m. 엄격 판정 FAIL은 원시 메시 월드 배율100 한 건이며, 실제 전장/거리/칼끝은 허용범위다. 길이 정상이라는 관찰과 배율 규칙의 legacy 오탐 가능성을 함께 기록했다.
+
+## 2026-11-04 FIX-1 영웅 무기 유효 배율 판정 (캐릭터 총괄 결정)
+
+- 배율 판정만 Transform 부모 곱 × (useFileScale?fileScale:1) × ModelImporter.globalScale로 변경. 원시 월드 배율과 유효 배율을 JSON·MD·docs에 모두 기록한다.
+- legacy 임포터는 meshes.globalScale=0.8409828·useFileScale=1·fileScale=0.01이므로 원시100→유효0.840983. humanDescription.globalScale=0.008409828을 중복 적용하지 않는다. 전장·bounds는 기존 월드 정점 측정을 유지한다.
+- 경계 테스트 21건 통과: legacy cm 보상 PASS, 미터 메시100배 FAIL, useFileScale=false·globalScale·유효 경계0.5/2 포함. 파지 추정 2.5cm WARN 유지, 마커·프리팹·런타임 수정 0.
+- 실제 검증: 공용 Editor 배치9cd93631 1회 정상 종료. legacy 원시(100,100.000008,99.999992)→유효(0.840983,0.840983,0.840983), 배율 PASS·파지 추정2.5cm WARN·종합 WARN. 컴파일 오류0·실행 오류 로그0·세이브 변경0, Player0. 결과표와 영수증을 같은 docs에 기록했다.
+2026-11-04 실버테일·아이반 모듈 G0 설계(Codex char-g0-st-ivan): 파트 S01~S40·I01~I34, rigid/천·머리 체인·허브 경첩·단검·배낭·총 소켓과 합격선을 새 문서 UNITY_HERO_MODULAR_G0_ST_IVAN_20261104.md에 기록했다. Blender 전용 extract_rig_rest.py로 Meshy GLB 각 24관절의 부모·Y-up rest(m)·Humanoid 대응과 실제 스킨 높이 1.72/1.85m를 추출했다. 실버테일 팔 5항목·아이반 팔 4항목은 조립 전 수정 필요(손끝·팔폭은 신전 기하 추정). 머리 두피/턱 실측·다리 목표·아이반 어깨폭·실버테일 접힘 기구 결정은 보류. 원본 메시/LOCK/보드/런타임 변경 0, Unity·유료 생성 0, 조립·Mac 판정 전. JSON·검증 로그·보고는 I:/EXODUSER-Storage/codex-takeover/char-g0-st-ivan/.
+
+
+2026-11-04 DECISION-1 실버테일·아이반 모듈 G0 정정: Meshy rest·비율·신전 추정·아이반 어깨 축소 제안을 현행 설계에서 제외하고 이름·부모·Humanoid만 추출하도록 변경. 새 rest는 Tripo 214c3a56·d381fefe·816e7107 파트 경계, 머리는 분리 머리 두피~턱. 허벅지:정강이 0.90~1.05, 아이반 어깨폭 유지·실제 A포즈 팔폭 0.98~1.06H, 실버테일 앞뒤 축 허브/엉덩이 경첩·2구간 날·180도/1830mm·끝 약 0.25H 반영. 판 1.15배 유지·재배치/아래 소매·천 틈 처리. 허용 인계 위치에 GLB 없어 새 관절·비율은 GLB 수령 후로 표기, 생성/다운로드/Unity 실행 없음.

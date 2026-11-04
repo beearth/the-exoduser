@@ -99,12 +99,12 @@
       "transform": "byte_exact"
     },
     {
-      "source": "I:/EXODUSER-Storage/SteamUpload/world_intro_v22b_steam.mp4",
-      "destination": "StreamingAssets/Lobby/world_intro_v22b_steam.mp4",
-      "bytes": 102204634,
-      "sourceSha256": "3b99d59bca9d84a37bb6b49067148e1ed69fefb478ff206221b59c8c952d0b0f",
-      "sha256": "3b99d59bca9d84a37bb6b49067148e1ed69fefb478ff206221b59c8c952d0b0f",
-      "transform": "byte_exact_user_designated_20261025"
+      "source": "origin/main 06ac6882b video/world_intro_v23_newopening_steam.mp4",
+      "destination": "StreamingAssets/Lobby/world_intro_v23_newopening_steam.mp4",
+      "bytes": 90144119,
+      "sourceSha256": "6abe88a5d4a5f829fb9f6c3e99cf488d79cd365ae58c52c8ddf6a469c05278c9",
+      "sha256": "6abe88a5d4a5f829fb9f6c3e99cf488d79cd365ae58c52c8ddf6a469c05278c9",
+      "transform": "byte_exact_user_designated_20261104"
     },
     {
       "source": "assets/lobby/lobby_varkan_crypt_loop_v2.mp4",

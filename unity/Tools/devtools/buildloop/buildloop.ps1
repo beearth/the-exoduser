@@ -11,6 +11,7 @@ param(
   [switch]$AllowKnown,
   [switch]$HudSmoke,           # m1-check 뒤에 hud-smoke 도 무창으로 돌려 스스로 종료하는지 기록(DBT-6)
   [switch]$KeepStage,          # 브랜치 시험 뒤에도 build_new 를 지우지 않는다(데스크톱 시험용)
+  [ValidateSet('off', 'trial', 'on')][string]$Gate3D = 'trial',   # 11-04 CTO 데모=3D: trial=관문 m1-check 뒤 --remodel3d m1-check 1회를 기록만(판정 무관), on=관문 스모크 자체를 --remodel3d로
   [switch]$SkipSmoke,          # 빌드까지만(스모크 생략, 판정 ABORT 로 기록)
   [ValidateSet('desktop', 'batch')][string]$Mode = 'desktop',   # 스모크 방식: desktop=숨은 데스크톱(기본, HUD/UI 캡처 포함) / batch=batchmode GPU(월드만)
   [switch]$NoSwap,             # build 를 교체하지 않는다(브랜치 시험용). -Ref 가 origin/unity/main 이 아니면 자동으로 켜진다
@@ -512,6 +513,26 @@ function Invoke-Exo([string]$command, [string[]]$jobArgs, [string]$logBase, [str
   if ([string](Prop $receipt 'deferred' '') -eq 'user-game') { $waitReason = [string](Prop $receipt 'note' '사용자 게임 실행 중, 미룸'); $receipt = $null }
   return [pscustomobject]@{ exit = $rc; receipt = $receipt; stdout = ($logBase+'.out.log'); stderr = ($logBase+'.err.log'); waitReason = $waitReason }
 }
+# 11-04 CTO 래칫: 바탕화면 빌드에 이미 있던 겹침만 known-overlaps.json에 두고, 목록 밖 겹침이 하나라도 있으면 FAIL.
+# 목록 건수는 state.uiKnownMin보다 늘 수 없다(줄어들기만). 검사 화면·analyzer 판정은 그대로다.
+function Apply-UiKnownList($run, $stateObj, [string]$runDir) {
+  $u = $run.uiOverlap
+  if ($u.passed -or -not $u.valid -or [int]$u.issueCount -le 0 -or @($u.missing).Count -gt 0 -or [int]$u.frameCount -le 0) { return }
+  $known = Join-Path $Cfg.Worktree 'unity\Tools\ui-overlap\known-overlaps.json'
+  if (-not (Test-Path -LiteralPath $known)) { $u.note = [string]$u.note + '; 알려진 목록 없음'; return }
+  $out = Join-Path $runDir 'ui-check\known-filter.json'
+  $raw = & 'C:\nvm4w\nodejs\node.exe' (Join-Path $Cfg.Worktree 'unity\Tools\ui-overlap\known-filter.cjs') ([string]$u.detailReport) $known $out 2>&1
+  $line = @($raw | ForEach-Object { [string]$_ } | Where-Object { $_.Trim().StartsWith('{') } | Select-Object -Last 1)
+  if (-not $line) { $u.note = [string]$u.note + '; 알려진 목록 대조 실패'; return }
+  $r = $line[0] | ConvertFrom-Json
+  $entries = [int]$r.knownListEntries; $min = Prop $stateObj 'uiKnownMin' $null
+  $u.knownIssues = [int]$r.knownIssues; $u.unknownIssues = [int]$r.unknownIssues; $u.knownListEntries = $entries; $u.knownFilter = $out
+  if ($null -ne $min -and $entries -gt [int]$min) { $u.note = [string]$u.note + ('; 알려진 목록이 ' + $min + '건에서 ' + $entries + '건으로 늘어남(래칫 위반)'); return }
+  if ($r.passed -eq $true -and [int]$r.issues -eq [int]$u.issueCount) {
+    $u.passed = $true; $u.note = ('UI 겹침 ' + $u.issueCount + '건 모두 알려진 기존 결함(목록 ' + $entries + '건, 새 겹침 0)')
+    if ($null -eq $min -or $entries -lt [int]$min) { $stateObj | Add-Member -NotePropertyName uiKnownMin -NotePropertyValue $entries -Force }
+  } else { $u.note = [string]$u.note + ('; 목록 밖 새 겹침 ' + $r.unknownIssues + '건(알려진 ' + $r.knownIssues + '건) - ' + $out) }
+}
 function Invoke-UiOverlapCheck([string]$check, [string]$exe, [string]$worktree, [string]$output, [string]$log) {
   # PS5.1 turns native stderr into NativeCommandError under & ... *> with EAP=Stop.
   # Redirect the child's raw streams directly, retaining the parent's error policy.
@@ -525,11 +546,11 @@ function Invoke-UiOverlapCheck([string]$check, [string]$exe, [string]$worktree, 
     return [pscustomobject]@{ exit = $rc; stdout = $log; stderr = $errLog; processId = $pr.Id }
   } finally { $pr.Dispose() }
 }
-function Run-Smoke([string]$buildDir, [string]$smokeDir, [string]$flag = '--unity-m1-check', [string]$receiptName = 'm1-check.json') {
+function Run-Smoke([string]$buildDir, [string]$smokeDir, [string]$flag = '--unity-m1-check', [string]$receiptName = 'm1-check.json', [string[]]$extra = @()) {
   New-Item -ItemType Directory -Force -Path $smokeDir | Out-Null
   $desktop = 'hidden'; if ($Mode -eq 'batch') { $desktop = 'batch' }
   $sw = [Diagnostics.Stopwatch]::StartNew()
-  $x = Invoke-Exo 'player' @($flag,'-output',$smokeDir,'-force-d3d11') (Join-Path $smokeDir 'exo') (Join-Path $buildDir 'EXODUSER-Unity.exe') $desktop
+  $x = Invoke-Exo 'player' (@($flag,'-output',$smokeDir,'-force-d3d11') + @($extra)) (Join-Path $smokeDir 'exo') (Join-Path $buildDir 'EXODUSER-Unity.exe') $desktop
   $r = $x.receipt
   if ($null -ne $r -and $r.log -and (Test-Path -LiteralPath $r.log)) { Copy-Item -LiteralPath $r.log -Destination (Join-Path $smokeDir 'player.log') }
   return [pscustomobject]@{ waitReason = $x.waitReason; mode = $Mode; ran = ($null -ne $r); exit = $x.exit; timedOut = [bool](Prop $r 'timedOut' $false); windowSeen = ([int](Prop $r 'windowHandleCount' 0) -gt 0); slowExit = $false; receiptWritten = (Test-Path -LiteralPath (Join-Path $smokeDir $receiptName)); exitAfterReceiptSec = $null; hiddenVisibleWindows = (Prop $r 'hiddenWindows' 0); desktopClosed = (Prop $r 'desktopClosed' $false); note = [string](Prop $r 'note' ''); seconds = [int]$sw.Elapsed.TotalSeconds; runner = $r }
@@ -952,7 +973,9 @@ function Cmd-Run {
       for ($sa = 1; $sa -le 1; $sa++) {
       $smokeDir = Join-Path $runDir 'smoke'
 
-      $sm = Run-Smoke $stage $smokeDir
+      $gateExtra = @(); if ($Gate3D -eq 'on') { $gateExtra = @('--remodel3d') }
+      $sm = Run-Smoke $stage $smokeDir '--unity-m1-check' 'm1-check.json' $gateExtra
+      $run.gate3D = $Gate3D
       $run.smokeSeconds = $sm.seconds; $run.smokeNote = $sm.note
       Log ("스모크: ran={0} exit={1} timedOut={2} windowSeen={3} slowExit={4} {5}" -f $sm.ran, $sm.exit, $sm.timedOut, $sm.windowSeen, $sm.slowExit, $sm.note)
       $run.smoke = $sm
@@ -976,6 +999,16 @@ function Cmd-Run {
       }
       break
       }
+      # 3D 관문 시험(기록만): 같은 build_new로 --remodel3d m1-check 1회. 판정·교체에 쓰지 않는다. PASS가 확인되면 -Gate3D on으로 바꾼다.
+      if ($Gate3D -eq 'trial' -and $null -ne $m1 -and $sm.exit -eq 0) {
+        $t3 = Run-Smoke $stage (Join-Path $runDir 'trial3d') '--unity-m1-check' 'm1-check.json' @('--remodel3d')
+        $t3m = $null; $t3l = $null
+        if ($t3.ran) { $t3m = Judge-M1 (Join-Path (Join-Path $runDir 'trial3d') 'm1-check.json') $rules; $t3l = Judge-Log (Join-Path (Join-Path $runDir 'trial3d') 'player.log') 'player' $rules }
+        $run.trial3d = [ordered]@{ ran = $t3.ran; exit = $t3.exit; timedOut = $t3.timedOut; waitReason = $t3.waitReason; seconds = $t3.seconds; m1Present = [bool]($t3m -and $t3m.present); m1Ok = $(if ($t3m) { $t3m.ok } else { 0 }); m1Fail = $(if ($t3m) { $t3m.fail } else { 0 }); firstBlocked = $(if ($t3m) { $t3m.firstBlocked } else { '' }); logFail = $(if ($t3l) { $t3l.fail } else { 0 }) }
+        $t3pass = $t3.ran -and $t3.exit -eq 0 -and -not $t3.timedOut -and $t3m -and $t3m.present -and $t3m.fail -eq 0 -and $t3l -and $t3l.fail -eq 0
+        $run.trial3d.passed = [bool]$t3pass
+        Log ("3D 관문 시험(기록만): passed={0} ran={1} exit={2} timedOut={3} m1 ok={4} fail={5} 첫막힘={6} 로그fail={7} {8}" -f $t3pass, $t3.ran, $t3.exit, $t3.timedOut, $run.trial3d.m1Ok, $run.trial3d.m1Fail, $run.trial3d.firstBlocked, $run.trial3d.logFail, $t3.waitReason)
+      }
 
       # M1 다음의 필수 UI 검사. 기존 잠금은 exo 실행기에 정상 양도하고 반환받는다.
       if ($null -ne $m1 -and $m1.present -and $m1.fail -eq 0 -and $sm.exit -eq 0) {
@@ -988,6 +1021,7 @@ function Cmd-Run {
           $run.uiOverlap = Read-UiOverlapSummary (Join-Path $runDir 'ui-check\overlap\overlap-summary.json') $uiCall.exit (Join-Path $runDir 'ui-check\overlap\overlap-report.json')
           $run.uiOverlap.log = $uiLog
           $run.uiOverlap.stderrLog = $uiCall.stderr; $run.uiOverlap.processId = $uiCall.processId
+          Apply-UiKnownList $run $st $runDir
         } finally { }
       }
     } else { $run.smokeNote = '빌드 실패로 스모크 없음' }
