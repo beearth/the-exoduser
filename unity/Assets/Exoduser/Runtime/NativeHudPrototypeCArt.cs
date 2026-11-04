@@ -23,7 +23,7 @@ namespace Exoduser.UnityPort
                 float signed=Mathf.Max(Mathf.Max(-x,x-width),Mathf.Max(Mathf.Max(-y,y-height),Mathf.Max(diagonal,other)));
                 float border=Cover(Mathf.Abs(signed+1)-.5f),inside=Cover(signed);
                 float alpha=support?SupportInteriorAlpha:Mathf.Lerp(PlateTopAlpha,PlateBottomAlpha,y/height);
-                Color c=NativeHudPrototypeArt.C(44,46,49,alpha);
+                Color c=Color.Lerp(NativeHudPrototypeArt.C(44,46,49,alpha),NativeHudPrototypeArt.C(15,15,16,alpha),.25f);
                 float edge=border*EdgeAlpha;float total=edge+alpha*(1-edge);
                 Color silver=Silver(edge);c=new Color((silver.r*edge+c.r*alpha*(1-edge))/total,
                     (silver.g*edge+c.g*alpha*(1-edge))/total,(silver.b*edge+c.b*alpha*(1-edge))/total,total*inside);

@@ -1,0 +1,67 @@
+H6 HUD C small RETOUCH — 2026-11-05
+base: e708a10704211f7072b6480db3a069f2198a6667
+branch: codex/unity-hud-proto-20261105
+worktree: G:/exoduser-wt/codex-h6-hud-c
+Mac evidence: 0c94cb909a8b41f5ab6356022053c4ff85ad6636; six supplied 2x/board images viewed directly and matched to Git.
+No Unity/Metal/framebuffer execution. Mac 8x original was not available.
+
+Worker test stdout, exit0 (terminal controls removed):
+node unity/Tools/hud-proto-tests/c-aperture.cjs
+C aperture source audit {"source":"ui_globe_hp.png","insideBefore":3223,"insideAfter":234,"brightPartialBefore":2987,"brightPartialAfter":0,"protectedPixels":185425,"protectedAlphaLoss":0,"sharedFrameComponents":1,"sharedFrameSize":79458}
+C aperture source audit {"source":"ui_globe_mp.png","insideBefore":3223,"insideAfter":234,"brightPartialBefore":2987,"brightPartialAfter":0,"protectedPixels":185425,"protectedAlphaLoss":0,"sharedFrameComponents":1,"sharedFrameSize":79458}
+PASS 11 C production original-art aperture wiring contracts
+PASS 1599545 C aperture original-PNG/function/wiring contracts (Unity/Metal/framebuffer not executed)
+protectedPixels includes fully transparent source samples, not a count of visible elements.
+Interior survivors: opaque108, dark156, union168, transitional66; total234.
+All234 connect through the full source to one79458pixel metal component; this is not a visual dot0 verdict.
+Bilinear checks: source-texel ±.25, 3x3 subtexel samples, Gamma/Linear. Not whole-screen 3x3 coverage.
+
+node unity/Tools/hud-proto-tests/c-render-math.cjs
+C raster alpha area: plate=47513.973px2 rail=812.161px2
+PASS 454 C production support raster contracts
+PASS 5392 C production shader scalar/color contracts (HLSL/Metal/visual not executed)
+
+Parent test stdout, each exit0 (terminal controls removed):
+node unity/Tools/hud-proto-tests/run.cjs
+PASS 637 HUD prototype argument/layout/input contracts
+
+node unity/Tools/hud-proto-tests/c-preservation.cjs
+{
+  "scope":"No-argument/A/B paths and accepted H5 features (not pixel validation)",
+  "baseline":"c1b51cda503d1de1ef3ae2c828309e7c27d539f7",
+  "retouchBase":"3a13dc0d46d22a19e1f0640d7689914df99569c4",
+  "boundaryBase":"e708a10704211f7072b6480db3a069f2198a6667",
+  "checks":49,
+  "passed":true
+}
+
+node unity/Tools/hud-proto-tests/c-transport.cjs
+C token 61,10,18 => CPU/GPU storage 12,1,2 => conditional GUI display 61,13,22
+C token 59,95,134 => CPU/GPU storage 11,29,61 => conditional GUI display 59,95,134
+C token 62,94,74 => CPU/GPU storage 12,29,17 => conditional GUI display 61,95,73
+PASS 51 C production target/blit state contracts
+PASS 10242 C production color transfer contracts (native IMGUI/Metal/framebuffer not executed)
+
+node unity/Tools/hud-proto-tests/legacy-path.cjs
+PASS: complete original HUD body equals75add6ff4 after removing only three opt-in additions; NativeHud205/NativeHudSkills89 lines, CR0 retained.
+
+node unity/Tools/hud-proto-tests/render-math.cjs
+PASS 16 HUD prototype diamond/notch/soft-shadow contracts
+
+./unity/Tools/devtools/buildloop/compile-check.ps1 -Project G:/exoduser-wt/codex-h6-hud-c/unity -LibraryProject G:/exoduser-wt/codex-unity-parity-1102/unity -Output I:/EXODUSER-Storage/devtools/h6-hud-c
+Player Exoduser.Core sources=133 exit=0 errors=0
+Player Exoduser.Runtime sources=300 exit=0 errors=0
+Editor Exoduser.Core sources=133 exit=0 errors=0
+Editor Exoduser.Runtime sources=300 exit=0 errors=0
+Editor Exoduser.Editor sources=64 exit=0 errors=0
+result.json passed=true; warnings155; changed C# warnings0.
+
+TDD intended RED2, followed by GREEN; actual test failures0.
+Independent production source specification/quality review: no blocking findings.
+H5 color/metal/old-matte/liquid/GL/layout/alpha and no-argument/A/B preserved.
+H6 screen remains unreviewed (Mac); user decides adoption; no main/unity/main merge or push.
+
+Final EOL audit PASS: existing production/tests/report CR0 retained; new files LF.
+CHANGELOG_SYNC.md original bytes retained as prefix; CRLF58201 ->58207, bareLF0.
+Whitespace check PASS with core.whitespace=cr-at-eol. Verified offline compile binaries15 removed; logs retained.
+Independent final document/test review: no blockers; source-coordinate floor and CSilver wiring wording clarified.

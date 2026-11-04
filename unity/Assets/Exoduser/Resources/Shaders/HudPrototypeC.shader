@@ -13,6 +13,7 @@ Shader "EXODUSER/HudPrototypeC"
         _Flip ("Mirror crop horizontally", Float) = 0
         _FadeRight ("Fade cropped right edge", Float) = 0
         _FadeBottom ("Fade cropped bottom edge", Float) = 0
+        _FrameAperture ("Full original frame aperture only", Float) = 0
     }
     SubShader
     {
@@ -26,6 +27,7 @@ Shader "EXODUSER/HudPrototypeC"
             sampler2D _MainTex;
             float _Mode,_Diameter,_HpTranslate,_Hurt,_Mana,_Stamina,_Flip,_FadeRight,_FadeBottom;
             float4 _UvRect;
+            float _FrameAperture;
             const float EmptyCenterAlpha=.08;
             const float EmptyEdgeAlpha=.42;
             const float SurfaceSoftPixels=2;
@@ -59,6 +61,18 @@ Shader "EXODUSER/HudPrototypeC"
                 float matte=smoothstep(.45,.75,l)*(1-smoothstep(.65,.98,sourceAlpha))*(1-smoothstep(.025,.08,chroma));
                 return sourceAlpha*(1-matte);
             }
+            float frameApertureCoverage(float2 uv,float sourceAlpha,float l)
+            {
+                if(_FrameAperture<.5)return 1;
+                // Original full frame is registered to 263 logical px. The existing shield/mobility
+                // ring has center (48+11+153/2,44+18.65+153/2) and inner radius 71.5.
+                float x=uv.x*263-135.5,y=(1-uv.y)*263-139.15;
+                float r=sqrt(x*x+y*y),inside=1-smoothstep(71.5,73.5,r);
+                // Keep opaque fangs and dark antialiased sculpture; suppress bright partial-alpha
+                // original-art residue inside the opening without moving the liquid or its surface.
+                float preserve=max(1-smoothstep(.25,.45,l),smoothstep(.90,.98,sourceAlpha));
+                return lerp(1,preserve,inside);
+            }
             float3 mpGradient(float h)
             {
                 return h<.45?lerp(rgb(22,33,46),rgb(59,95,134),h/.45):
@@ -85,12 +99,14 @@ Shader "EXODUSER/HudPrototypeC"
                     float2 local=i.uv;if(_Flip>.5)local.x=1-local.x;
                     float2 uv=_UvRect.xy+local*_UvRect.zw;
                     float4 art=tex2D(_MainTex,uv);
+                    float sourceAlpha=art.a;
                     #ifndef UNITY_COLORSPACE_GAMMA
                     art.rgb=LinearToGammaSpace(art.rgb);
                     #endif
                     float l=dot(art.rgb,float3(.2126,.7152,.0722));
                     float chroma=max(art.r,max(art.g,art.b))-min(art.r,min(art.g,art.b));
                     art.a=matteAlpha(l,chroma,art.a);
+                    art.a*=frameApertureCoverage(uv,sourceAlpha,l);
                     float fadeRight=_FadeRight>0?saturate((1-local.x)/_FadeRight):1;
                     float fadeBottom=_FadeBottom>0?saturate(local.y/_FadeBottom):1;
                     return outputColor(float4(silver(l),art.a*fadeRight*fadeBottom));

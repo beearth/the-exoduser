@@ -60,6 +60,7 @@ namespace UnityEngine {
  public static class QualitySettings {public static ColorSpace activeColorSpace=ColorSpace.Gamma;}
  public struct Color {public float r,g,b,a;public Color(float r,float g,float b,float a=1){this.r=r;this.g=g;this.b=b;this.a=a;}
   static float Decode(float c){return c<=.04045f?c/12.92f:(float)Math.Pow((c+.055f)/1.055f,2.4);}
+  public static Color Lerp(Color a,Color b,float t){t=Mathf.Clamp01(t);return new Color(a.r+(b.r-a.r)*t,a.g+(b.g-a.g)*t,a.b+(b.b-a.b)*t,a.a+(b.a-a.a)*t);}
   public Color linear {get{return new Color(Decode(r),Decode(g),Decode(b),a);}}}
  public static class Mathf {
   public static int CeilToInt(float x){return (int)Math.Ceiling(x);}public static float Min(float a,float b){return Math.Min(a,b);}
@@ -85,6 +86,7 @@ namespace Exoduser.UnityPort {
    Check(area>47000&&area<48000,"C face alpha area is near A, not the old faint outline");
    UnityEngine.QualitySettings.activeColorSpace=UnityEngine.ColorSpace.Linear;
    var linearPlate=NativeHudPrototypeCArt.Plate(709,74,12);var gammaPixel=plate.At(350,35);var linearPixel=linearPlate.At(350,35);
+   Check(Math.Abs(gammaPixel.r*255-36.75f)<.00001f&&Math.Abs(gammaPixel.g*255-38.25f)<.00001f&&Math.Abs(gammaPixel.b*255-40.75f)<.00001f,"C face mixes25percent official iron into sv-dp without changing alpha");
    var expectedLinear=gammaPixel.linear;Check(Math.Abs(linearPixel.r-expectedLinear.r)<.000001f&&Math.Abs(linearPixel.g-expectedLinear.g)<.000001f&&Math.Abs(linearPixel.b-expectedLinear.b)<.000001f,"C CPU raster writes decoded RGB in Linear mode");
    Check(Math.Abs(linearPixel.a-gammaPixel.a)<.000001f,"C CPU raster color-space conversion never changes alpha");
    UnityEngine.QualitySettings.activeColorSpace=UnityEngine.ColorSpace.Gamma;

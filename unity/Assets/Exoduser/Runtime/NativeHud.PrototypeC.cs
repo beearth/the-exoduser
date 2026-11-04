@@ -31,14 +31,15 @@ namespace Exoduser.UnityPort
                 Graphics.Blit(source??Texture2D.whiteTexture,target,prototypeCMaterial,0);}
             finally{GL.sRGBWrite=oldWrite;RenderTexture.active=old;}
         }
-        RenderTexture PrototypeCSilver(Texture source,string name,Rect crop,bool mirror=false,float fadeRight=0,float fadeBottom=0)
+        RenderTexture PrototypeCSilver(Texture source,string name,Rect crop,bool mirror=false,float fadeRight=0,float fadeBottom=0,bool frameAperture=false)
         {
             // Source crops use a top-left origin. RenderTexture UVs use a bottom-left origin.
             var target=PrototypeCArtTarget(name,Mathf.RoundToInt(crop.width),Mathf.RoundToInt(crop.height));
             prototypeCMaterial.SetVector("_UvRect",new Vector4(crop.x/source.width,1-crop.yMax/source.height,
                 crop.width/source.width,crop.height/source.height));
             prototypeCMaterial.SetFloat("_Flip",mirror?1:0);prototypeCMaterial.SetFloat("_FadeRight",fadeRight);
-            prototypeCMaterial.SetFloat("_FadeBottom",fadeBottom);PrototypeCBlit(target,2,source);return target;
+            prototypeCMaterial.SetFloat("_FadeBottom",fadeBottom);
+            prototypeCMaterial.SetFloat("_FrameAperture",frameAperture?1:0);PrototypeCBlit(target,2,source);return target;
         }
         void EnsurePrototypeC(float width,float height)
         {
@@ -59,8 +60,8 @@ namespace Exoduser.UnityPort
                     l.LeftLiquid.X+l.Liquid/2-l.Rail.X,l.RightLiquid.X+l.Liquid/2-l.Rail.X));
                 prototypeHair=OwnPrototypeArt(NativeHudPrototypeArt.Hair());prototypeChip=OwnPrototypeArt(NativeHudPrototypeArt.Chip());
                 prototypeMouseL=OwnPrototypeArt(NativeHudPrototypeArt.Mouse(false));prototypeMouseR=OwnPrototypeArt(NativeHudPrototypeArt.Mouse(true));
-                prototypeCLeftFrame=PrototypeCSilver(hpFrame,"H4 source HP skull horns",new Rect(0,0,hpFrame.width,hpFrame.height));
-                prototypeCRightFrame=PrototypeCSilver(mpFrame,"H4 source MP skull horns",new Rect(0,0,mpFrame.width,mpFrame.height));
+                prototypeCLeftFrame=PrototypeCSilver(hpFrame,"H4 source HP skull horns",new Rect(0,0,hpFrame.width,hpFrame.height),frameAperture:true);
+                prototypeCRightFrame=PrototypeCSilver(mpFrame,"H4 source MP skull horns",new Rect(0,0,mpFrame.width,mpFrame.height),frameAperture:true);
                 var gargoyleCrop=new Rect(150,75,215,245);
                 prototypeCGargoyleL=PrototypeCSilver(bar,"H4 source left gargoyle",gargoyleCrop,false,.28f);
                 prototypeCGargoyleR=PrototypeCSilver(bar,"H4 source right gargoyle",gargoyleCrop,true,.28f);
