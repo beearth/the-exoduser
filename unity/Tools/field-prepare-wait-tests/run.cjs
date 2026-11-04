@@ -13,13 +13,16 @@ static class P{
  static void C(bool ok,string name,string detail=""){checks++;if(!ok)failures++;log.Add((ok?"PASS ":"FAIL ")+name+(detail.Length>0?" | "+detail:""));}
  // Mirrors NativeScreenTransition.Update: ready needs the swap done and no assembly in flight; the flow ticks only through Advance.
  sealed class Sim{
-  public ScreenTransitionFlow flow=new ScreenTransitionFlow();public TransitionPrepareWatchdog dog=new TransitionPrepareWatchdog();public bool swapped;public string error;public double wall;public double failedAt=-1,doneAt=-1;public int frames;
-  public Func<bool> prepared=()=>true;public Func<string> problem=()=>null;
-  public Sim(){NativeTransitionProgress.Reset();flow.Begin(false);}
+  public ScreenTransitionFlow flow=new ScreenTransitionFlow();public TransitionPrepareWatchdog dog=new TransitionPrepareWatchdog();public bool swapped;public string error;public double wall;public double failedAt=-1,doneAt=-1;public int frames;public bool fieldBound=true;public string recorded;public Action<string> onFail;
+  public Func<bool> prepared=()=>true;public Func<string> problem=()=>null;public Func<bool> pending=()=>false;
+  public Sim(bool reset=true){if(reset)NativeTransitionProgress.Reset();NativeTransitionProgress.NewTransition();flow.Begin(false);}
   public void Frame(double delta){
    frames++;wall+=delta;bool ready=false;string err=null;
-   try{ready=swapped&&prepared()&&!NativeTransitionProgress.Active;if(swapped&&problem!=null)err=problem();}catch(Exception e){err=e.Message;}
-   err=TransitionPrepareWatchdog.Advance(flow,dog,delta,ready,err,NativeTransitionProgress.Active,NativeTransitionProgress.Beats);
+   NativeTransitionProgress.ReleaseOrphan();
+   try{ready=swapped&&prepared()&&!NativeTransitionProgress.Blocks(fieldBound,pending());if(swapped&&problem!=null)err=problem();if(swapped&&fieldBound&&string.IsNullOrEmpty(err))err=NativeTransitionProgress.Failure;}catch(Exception e){err=e.Message;}
+   err=TransitionPrepareWatchdog.Advance(flow,dog,delta,ready,err,fieldBound&&NativeTransitionProgress.Active,fieldBound?NativeTransitionProgress.Beats:0);
+   if(flow.Failed&&string.IsNullOrEmpty(err))err="prepare-failed";
+   if(!string.IsNullOrEmpty(err)){bool first=string.IsNullOrEmpty(recorded);recorded=TransitionPrepareWatchdog.FirstReason(recorded,err);if(first&&fieldBound&&TransitionPrepareWatchdog.IsPrepareFailure(err)&&onFail!=null)onFail(err);}
    if(flow.NeedsSwap)swapped=true;
    if(flow.Failed&&failedAt<0){failedAt=wall;error=err;}
    if(!flow.Busy&&doneAt<0)doneAt=wall;
@@ -29,22 +32,22 @@ static class P{
  static void Main(){
   const double F=1.0/60;
   // 1. 20 s of assembly that keeps reporting, plus a 15 s single-frame hitch: must enter the field once, no fail.
-  {var s=new Sim();double elapsed=0;bool begun=false,hit1=false;int step=0;
+  {var s=new Sim();double elapsed=0;bool begun=false,hit1=false;int step=0;int tk=0;
    while(s.Busy&&s.wall<120){
     double d=F;
-    if(s.swapped&&!begun){NativeTransitionProgress.Begin("test-field");begun=true;}
+    if(s.swapped&&!begun){tk=NativeTransitionProgress.Begin("test-field");begun=true;}
     if(begun&&NativeTransitionProgress.Active){elapsed+=F;if(!hit1&&step==3){d=15;elapsed+=15-F;hit1=true;}
      if(elapsed>=(step+1)*2.0&&step<10){NativeTransitionProgress.Report("step"+step,(step+1)/10f);step++;}
-     if(elapsed>=20&&step>=10){NativeTransitionProgress.End();}}
+     if(elapsed>=20&&step>=10){NativeTransitionProgress.End(tk);}}
     s.Frame(d);}
    C(s.doneAt>0&&s.failedAt<0&&!s.flow.Failed,"20s assembly with reports: single transition reaches the field, no recover",s.error??"");
    C(s.doneAt>=20,"waited for the assembly (done at "+s.doneAt.ToString("F1")+"s)");
    C(NativeTransitionProgress.Fraction==1f&&!NativeTransitionProgress.Active,"progress ends at 1 and inactive");}
   // 2. 20 s delay as ONE unreported synchronous 20 s frame (the old failure shape) then continue: must not fail.
-  {var s=new Sim();bool begun=false,hit=false;
+  {var s=new Sim();bool begun=false,hit=false;int tk=0;
    while(s.Busy&&s.wall<120){double d=F;
-    if(s.swapped&&!begun){NativeTransitionProgress.Begin("test-sync");begun=true;}
-    if(begun&&!hit&&s.wall>2){d=20;hit=true;NativeTransitionProgress.End();}
+    if(s.swapped&&!begun){tk=NativeTransitionProgress.Begin("test-sync");begun=true;}
+    if(begun&&!hit&&s.wall>2){d=20;hit=true;NativeTransitionProgress.End(tk);}
     s.Frame(d);}
    C(hit&&s.doneAt>0&&!s.flow.Failed,"one 20s frame no longer counts as failure",s.error??"");}
   // 3. Heartbeat stop: one report, then silence while frames keep running -> failure at the assembly limit.
@@ -73,10 +76,68 @@ static class P{
    C(s.doneAt>0&&!s.flow.Failed&&s.doneAt>=1.0&&s.doneAt<=1.6,"no-assembly transition completes in about fade out + fade in",s.doneAt.ToString("F2"));}
   // 7. Reports are monotonic and a late small report cannot pull the bar back.
   {NativeTransitionProgress.Reset();NativeTransitionProgress.Begin("m");NativeTransitionProgress.Report("a",.5f);NativeTransitionProgress.Report("b",.2f);float f=NativeTransitionProgress.Fraction;NativeTransitionProgress.Report("c",2f);float g=NativeTransitionProgress.Fraction;
-   C(f==.5f&&g==1f,"progress monotonic and clamped",f+" "+g);NativeTransitionProgress.End();}
+   C(f==.5f&&g==1f,"progress monotonic and clamped",f+" "+g);NativeTransitionProgress.Reset();}
   // 8. Watchdog counts clamped frame time: hitching frames without reports cannot reach the limit faster than the clamp allows.
-  {var d=new TransitionPrepareWatchdog();d.Begin(0);bool fail=false;for(int i=0;i<10;i++)fail|=d.Tick(30,0,true);
+  {var d=new TransitionPrepareWatchdog();d.Begin(0);bool fail=false;for(int i=0;i<10;i++){bool t=d.Tick(30,0,true);fail|=t&&d.Reason.StartsWith("prepare-stalled");}
    C(!fail&&d.Idle<=10*TransitionPrepareWatchdog.MaxFrame+1e-9,"30s frames count as at most "+TransitionPrepareWatchdog.MaxFrame+"s each",d.Idle.ToString("F2"));}
+  // 9 (a). Nothing reports for 2 s after the swap (scene load / lighting), then a 21 s assembly: the transition waits for the field; play never opens first.
+  {var s=new Sim();bool loaded=false,early=false;s.pending=()=>!loaded;int tk=0;double began=-1;int step=0;
+   while(s.Busy&&s.wall<120){
+    if(s.swapped&&began<0)began=s.wall+2;
+    if(began>0&&!loaded&&s.wall>=began){
+     if(tk==0){tk=NativeTransitionProgress.Begin("test-a2");}
+     double el=s.wall-began;if(el>=(step+1)*2.0&&step<10){NativeTransitionProgress.Report("s"+step,(step+1)/10f);step++;}
+     if(el>=21){NativeTransitionProgress.End(tk);loaded=true;}}
+    s.Frame(F);
+    if(!loaded&&s.flow.Phase==ScreenTransitionPhase.FadeIn)early=true;}
+   C(!early,"(a) play screen never opened before the assembly finished");
+   C(loaded&&s.doneAt>=began+21&&!s.flow.Failed,"(a) waited through the 2s silent gap and the 21s assembly",s.doneAt.ToString("F1")+" "+(s.recorded??""));}
+  // 9 (b). Exception during assembly: the guard catches it, 3D fails, the transition opens in 2D with the reason recorded.
+  {var s=new Sim();bool failed3d=false,loading3d=true,loaded=false;string why=null;s.pending=()=>!loaded&&!failed3d;int tk=0;bool started=false;System.Collections.IEnumerator run=null;bool finallyRan=false;
+   System.Collections.IEnumerator Inner(){try{tk=NativeTransitionProgress.Begin("test-ex");yield return null;NativeTransitionProgress.Report("half",.3f);yield return null;throw new InvalidOperationException("half built");}finally{finallyRan=true;NativeTransitionProgress.End(tk);}}
+   System.Collections.IEnumerator Outer(){yield return Inner();loaded=true;}
+   NativeTransitionProgress.OwnerAlive=()=>loading3d;
+   while(s.Busy&&s.wall<120){
+    if(s.swapped&&!started){started=true;run=AssemblyGuard.Run(Outer(),e=>{why="assembly-exception: "+e.GetType().Name+": "+e.Message;NativeTransitionProgress.Fail(why);failed3d=true;loading3d=false;NativeTransitionProgress.Release();});}
+    if(run!=null&&!failed3d&&!loaded){for(int k=0;k<30&&!failed3d&&!loaded;k++){if(!run.MoveNext())break;}}
+    s.Frame(F);}
+   NativeTransitionProgress.OwnerAlive=null;
+   C(failed3d&&!loaded&&!loading3d,"(b) exception: r3Failed set, r3Loading cleared, half-built 3D not loaded");
+   C(finallyRan,"(b) nested iterator finally ran (progress ended)");
+   C(s.doneAt>0&&!NativeTransitionProgress.Active,"(b) transition still finishes (opens 2D), progress inactive");
+   C(s.recorded!=null&&s.recorded.Contains("half built"),"(b) failure reason kept in the transition record",s.recorded??"");}
+  // 9 (c). Reports never stop for 125 s: the absolute cap fails the preparation at 120 s.
+  {var s=new Sim();bool begun=false;int tk=0;double t0=-1,nextReport=0;bool aborted=false;s.onFail=r=>{aborted=true;NativeTransitionProgress.Release();};
+   while(s.Busy&&s.wall<130){
+    if(s.swapped&&!begun){tk=NativeTransitionProgress.Begin("test-endless");begun=true;t0=s.wall;}
+    if(begun&&NativeTransitionProgress.Active&&s.wall-t0>=nextReport){NativeTransitionProgress.Report("tick",.1f);nextReport+=1;}
+    s.Frame(F);}
+   double after=s.failedAt-t0;
+   C(s.flow.Failed&&after>=119.5&&after<=121,"(c) hard cap at 120s although reports keep coming",after.ToString("F2"));
+   C(s.recorded!=null&&s.recorded.StartsWith("prepare-hard-cap(120s)"),"(c) reason text",s.recorded??"");
+   C(aborted&&!NativeTransitionProgress.Active&&s.doneAt>0,"(c) abort callback ran, progress cleared, black screen ended",s.doneAt.ToString("F1"));}
+  // 9 (d). A stale Active (owner died, never ended) must not break the next transition; the dead owner's late End is ignored.
+  {NativeTransitionProgress.Reset();int stale=NativeTransitionProgress.Begin("stuck");NativeTransitionProgress.OwnerAlive=()=>false;
+   var s=new Sim(false);
+   C(!NativeTransitionProgress.Active,"(d) stale Active cleared when the next transition begins");
+   int fresh=NativeTransitionProgress.Begin("next");NativeTransitionProgress.End(stale);
+   C(NativeTransitionProgress.Active,"(d) a stale End does not close another owner's stage");
+   NativeTransitionProgress.End(fresh);NativeTransitionProgress.OwnerAlive=null;
+   while(s.Busy&&s.wall<60)s.Frame(F);
+   C(s.doneAt>=1.0&&s.doneAt<=1.8&&!s.flow.Failed,"(d) next transition completes normally",s.doneAt.ToString("F2")+" "+(s.recorded??""));
+   var s2=new Sim();NativeTransitionProgress.Begin("stuck2");NativeTransitionProgress.OwnerAlive=()=>false;
+   while(s2.Busy&&s2.wall<60)s2.Frame(F);NativeTransitionProgress.OwnerAlive=null;
+   C(s2.doneAt>0&&!s2.flow.Failed,"(d) supervisor frees an Active left behind mid-transition",s2.doneAt.ToString("F2"));}
+  // 9 (e). The first failure reason is kept; FadeIn frames cannot overwrite it with prepare-failed or a later problem text.
+  {var s=new Sim();bool begun=false;s.problem=()=>s.flow.Failed?"late-problem":null;
+   while(s.Busy&&s.wall<120){if(s.swapped&&!begun){NativeTransitionProgress.Begin("test-hang");NativeTransitionProgress.Report("one",.1f);begun=true;}
+    s.Frame(F);}
+   C(s.recorded!=null&&s.recorded.StartsWith("prepare-stalled"),"(e) first reason (stalled) preserved over later reasons",s.recorded??"");
+   C(TransitionPrepareWatchdog.FirstReason("a","b")=="a"&&TransitionPrepareWatchdog.FirstReason(null,"b")=="b"&&TransitionPrepareWatchdog.FirstReason("","b")=="b","(e) FirstReason helper");}
+  // 9 (f). Menu transitions never wait for the field.
+  {var s=new Sim();s.fieldBound=false;s.pending=()=>true;NativeTransitionProgress.Begin("background");
+   while(s.Busy&&s.wall<60)s.Frame(F);
+   C(s.doneAt>=1.0&&s.doneAt<=1.8&&!s.flow.Failed&&!TransitionPrepareWatchdog.FieldBound("splash-menu")&&TransitionPrepareWatchdog.FieldBound("lobby-game")&&TransitionPrepareWatchdog.FieldBound("story-game"),"(f) non-field transitions ignore assembly and pending",s.doneAt.ToString("F2"));}
   foreach(var l in log)Console.WriteLine(l);
   Console.WriteLine("checks="+checks+" failures="+failures);Environment.Exit(failures==0?0:1);}
 }

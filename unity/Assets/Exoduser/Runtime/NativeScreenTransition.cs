@@ -13,7 +13,7 @@ namespace Exoduser.UnityPort {
   readonly List<TransitionRecord> history=new List<TransitionRecord>();TransitionRecord entry;Action swap,done;Func<bool> prepared;Func<string> problem;bool executing,swapped;
   // The flow clock (Core, unchanged) caps preparation at 12 s and fails on one long frame. While Preparing the host holds that clock and
   // judges failure itself: an exception, or no progress report for the watchdog's frame time. Visuals run on their own clock.
-  readonly TransitionPrepareWatchdog watchdog=new TransitionPrepareWatchdog();double visualAt;float shownProgress;bool sawAssembly;
+  readonly TransitionPrepareWatchdog watchdog=new TransitionPrepareWatchdog();double visualAt;float shownProgress;bool sawAssembly,fieldBound;
   double clockAt;Texture2D sigil,embers,halo,emberShadow;int shadowHeight;Labels labels;
   internal static bool ReducedMotionRequested=>(ReduceMotion!=null&&ReduceMotion())||Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-reduced-motion")>=0;
   internal static bool Busy=>current!=null&&current.flow.Busy;
@@ -25,18 +25,25 @@ namespace Exoduser.UnityPort {
   internal static int Request(string boundary,Action onBlack,Func<bool> ready=null,Action onDone=null,Func<string> error=null){
    if(current==null){var go=new GameObject("Screen transition");DontDestroyOnLoad(go);current=go.AddComponent<NativeScreenTransition>();}
    var c=current;if(c.flow.Busy)return 0;bool reduced=ReducedMotionRequested;
-   c.clockAt=Time.realtimeSinceStartupAsDouble;c.visualAt=0;c.shownProgress=0;c.sawAssembly=false;c.watchdog.End();c.flow.Begin(reduced);c.blackLatch.Cancel();c.swap=onBlack;c.done=onDone;c.prepared=ready;c.problem=error;c.swapped=false;c.entry=new TransitionRecord{id=++nextId,boundary=boundary,started=Time.realtimeSinceStartup};c.history.Add(c.entry);if(c.history.Count>128)c.history.RemoveAt(0);return c.entry.id;
+   c.clockAt=Time.realtimeSinceStartupAsDouble;c.visualAt=0;c.shownProgress=0;c.sawAssembly=false;c.fieldBound=TransitionPrepareWatchdog.FieldBound(boundary);NativeTransitionProgress.NewTransition();c.watchdog.End();c.flow.Begin(reduced);c.blackLatch.Cancel();c.swap=onBlack;c.done=onDone;c.prepared=ready;c.problem=error;c.swapped=false;c.entry=new TransitionRecord{id=++nextId,boundary=boundary,started=Time.realtimeSinceStartup};c.history.Add(c.entry);if(c.history.Count>128)c.history.RemoveAt(0);return c.entry.id;
   }
   internal static bool Cancel(int id){if(current==null||!current.flow.Busy||current.entry.id!=id)return false;current.entry.cancelled=true;current.blackLatch.Cancel();current.swap=null;current.done=null;current.prepared=null;current.problem=null;current.flow.Cancel();return true;}
-  void Update(){NativeLobbyVideo.ApplyTransitionMix();if(!flow.Busy)return;bool ready=false;string error=null;try{ready=swapped&&(prepared==null||prepared())&&!NativeTransitionProgress.Active;if(swapped&&problem!=null)error=problem();}catch(Exception e){error=e.Message;}
+  void Update(){NativeLobbyVideo.ApplyTransitionMix();if(!flow.Busy)return;bool ready=false;string error=null;NativeTransitionProgress.ReleaseOrphan();
+   // Only transitions into the field wait for the 3D field (assembly in flight, or requested and not built yet). Menu transitions never do.
+   try{ready=swapped&&(prepared==null||prepared())&&!NativeTransitionProgress.Blocks(fieldBound,NativeGame.FieldPreparePending);if(swapped&&problem!=null)error=problem();if(swapped&&fieldBound&&string.IsNullOrEmpty(error))error=NativeTransitionProgress.Failure;}catch(Exception e){error=e.Message;}
    double now=Time.realtimeSinceStartupAsDouble;double delta=Math.Max(0,now-clockAt);clockAt=now;visualAt+=delta;
-   bool assembling=NativeTransitionProgress.Active;if(assembling)sawAssembly=true;
+   bool assembling=fieldBound&&NativeTransitionProgress.Active;if(assembling)sawAssembly=true;
    float target=sawAssembly?(assembling?NativeTransitionProgress.Fraction:1):0;shownProgress=Mathf.MoveTowards(shownProgress,target,(float)delta*(assembling?.6f:3f));
-   error=TransitionPrepareWatchdog.Advance(flow,watchdog,delta,ready,error,assembling,NativeTransitionProgress.Beats);NativeLobbyVideo.ApplyTransitionMix();
+   error=TransitionPrepareWatchdog.Advance(flow,watchdog,delta,ready,error,assembling,fieldBound?NativeTransitionProgress.Beats:0);NativeLobbyVideo.ApplyTransitionMix();
    if(flow.NeedsSwap)blackLatch.Request(Time.frameCount);if(flow.Failed)blackLatch.Cancel();
    if(blackLatch.TryConsume(Time.frameCount)){executing=true;try{entry.blackPaintedFrame=blackLatch.PresentedFrame;entry.swappedFrame=Time.frameCount;swap?.Invoke();swapped=true;entry.swapped=Time.realtimeSinceStartup;}catch(Exception e){error=e.ToString();flow.Tick(0,false,true);}finally{executing=false;swap=null;}}
    if(flow.Failed&&string.IsNullOrEmpty(error))error="prepare-failed";
-   if(!string.IsNullOrEmpty(error)){entry.error=error;entry.failed=true;Debug.LogWarning("SCREEN_TRANSITION_RECOVER "+entry.boundary+" "+error);}
+   if(!string.IsNullOrEmpty(error)){
+    // First reason wins and is logged once; the later frames of the same failed transition (fade in) cannot overwrite it.
+    if(string.IsNullOrEmpty(entry.error)){entry.error=error;Debug.LogWarning("SCREEN_TRANSITION_RECOVER "+entry.boundary+" "+error);
+     // Stalled or hard-capped preparation: stop the half-built 3D field and open in 2D (the existing 3D-failure path).
+     if(fieldBound&&TransitionPrepareWatchdog.IsPrepareFailure(error))NativeGame.AbortFieldPrepare(error);}
+    entry.failed=true;}
    if(flow.Failed)entry.failed=true;
    if(!flow.Busy){entry.finished=Time.realtimeSinceStartup;var callback=done;done=null;prepared=null;problem=null;if(!entry.cancelled)callback?.Invoke();}
   }

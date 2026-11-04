@@ -37,14 +37,45 @@ namespace Exoduser.UnityPort
             if (!NativeRemodel3D.Requested || Simulation == null) return;
             if (r3Late == null) { r3Late = gameObject.AddComponent<R3Late>(); r3Late.Late = Remodel3DLate; }
             bool field = !Simulation.Stage.InArena;
-            if (field && !r3Loaded && !r3Loading && !r3Failed) StartCoroutine(Remodel3DLoad());
+            if (field && !r3Loaded && !r3Loading && !r3Failed) r3LoadRoutine = StartCoroutine(Remodel3DLoad());
             bool want = field && r3Loaded;
             if (want != NativeRemodel3D.Active) Remodel3DSetActive(want);
         }
 
+        Coroutine r3LoadRoutine;
+        // True while a field-bound transition must keep waiting: the 3D field is requested, the field (not the arena) is on screen, and it is neither built nor failed.
+        internal static bool FieldPreparePending { get { var g = Instance; return g != null && NativeRemodel3D.Requested && g.Simulation != null && !g.Simulation.Stage.InArena && !g.r3Loaded && !g.r3Failed; } }
+        internal static bool FieldAssemblyRunning { get { var g = Instance; return g != null && g.r3Loading; } }
+        internal static void AbortFieldPrepare(string why) { var g = Instance; if (g != null) g.Remodel3DAbort(why); }
+
+        // Reports from the very first step (before the scene load), runs the whole chain under a guard so an exception cannot leave a half-built 3D field open.
         IEnumerator Remodel3DLoad()
         {
-            r3Loading = true;
+            r3Loading = true; NativeTransitionProgress.OwnerAlive = () => FieldAssemblyRunning;
+            int token = NativeTransitionProgress.Begin("remodel3d-load");
+            string failure = null;
+            var run = AssemblyGuard.Run(Remodel3DLoadSteps(), e => { failure = e.GetType().Name + ": " + e.Message; Debug.LogException(e); });
+            try { while (run.MoveNext()) yield return run.Current; }
+            finally { NativeTransitionProgress.End(token); }
+            if (failure != null) Remodel3DAbort("assembly-exception: " + failure);
+        }
+
+        // Stops a half-built 3D field and keeps the 2D view (the same outcome as the scene / rig failures below). The first reason is kept for the transition record.
+        void Remodel3DAbort(string why)
+        {
+            if (r3Loaded) return;
+            NativeTransitionProgress.Fail(why); Debug.LogWarning("[RM-INT] 3D field aborted, staying 2D: " + why);
+            if (r3LoadRoutine != null) { StopCoroutine(r3LoadRoutine); r3LoadRoutine = null; }
+            r3Failed = true; r3Loading = false;
+            if (r3Cam != null) r3Cam.enabled = false;
+            if (r3Roots != null) foreach (var root in r3Roots) if (root != null) root.SetActive(false);
+            if (a2Root != null) a2Root.SetActive(false);
+            NativeTransitionProgress.Release();
+            if (NativeRemodel3D.Active) Remodel3DSetActive(false);
+        }
+
+        IEnumerator Remodel3DLoadSteps()
+        {
             if (!Application.CanStreamedLevelBeLoaded(R3SceneName)) { Debug.LogWarning("[RM-INT] scene " + R3SceneName + " is not in the build: staying 2D"); r3Failed = true; r3Loading = false; yield break; }
             var op = SceneManager.LoadSceneAsync(R3SceneName, LoadSceneMode.Additive);
             while (op != null && !op.isDone) yield return null;

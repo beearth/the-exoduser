@@ -15,9 +15,9 @@ namespace Exoduser.UnityPort
         System.Collections.IEnumerator A2FieldSetup(Terrain ground)
         {
             bool camWas=r3Cam!=null&&r3Cam.enabled;if(r3Cam!=null)r3Cam.enabled=false;
-            NativeTransitionProgress.Begin("a2-field");
+            int token=NativeTransitionProgress.Begin("a2-field");
             try{var steps=A2FieldSetupSteps(ground);while(steps.MoveNext())yield return steps.Current;}
-            finally{if(r3Cam!=null)r3Cam.enabled=camWas;NativeTransitionProgress.End();}
+            finally{if(r3Cam!=null)r3Cam.enabled=camWas;NativeTransitionProgress.End(token);}
         }
         System.Collections.IEnumerator A2FieldSetupSteps(Terrain ground)
         {
