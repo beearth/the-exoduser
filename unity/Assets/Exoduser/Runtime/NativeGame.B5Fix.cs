@@ -83,6 +83,7 @@ namespace Exoduser.UnityPort
             if (string.IsNullOrEmpty(output)) { Application.Quit(3); yield break; }
             Directory.CreateDirectory(output);
             AudioListener.volume = 0; AudioListener.pause = true;
+            Application.runInBackground = true;
             Screen.SetResolution(3840, 1080, FullScreenMode.Windowed);
             smokeActive = true; pauseSmoke = true; Running = false;
             lobby.Flow.ShowLobby(); lobby.Flow.SelectPreview();
@@ -97,6 +98,9 @@ namespace Exoduser.UnityPort
             Simulation.SpawnNormalEnemy(4000, 6500);
             Simulation.SpawnNormalEnemy(3650, 6400);
             for (int i = 0; i < 20; i++) { UpdateViews(); yield return null; }
+#if UNITY_STANDALONE_WIN
+            if (Screen.width != 3840 || Screen.height != 1080) FieldCaptureResize(3840, 1080);
+#endif
             Time.timeScale = 0;
             yield return new WaitForEndOfFrame();
             int width = 3840, height = 1080;
@@ -130,7 +134,8 @@ namespace Exoduser.UnityPort
             string receipt = "{\"width\":3840,\"height\":1080,\"changedPixels\":" + pixels
                 + ",\"rgbAbsoluteDifference\":" + sum + ",\"disabledShafts\":" + changed[0]
                 + ",\"waterRenderers\":" + changed[1] + ",\"worldSameFrame\":true,\"screenChangedPixels\":" + screenPixels
-                + ",\"hud\":true,\"scope\":\"actual hidden-desktop GPU Player final screen pair plus same-frame world pair; fixed bridge and two distant fixture enemies; not natural play\"}";
+                + ",\"hud\":true,\"buildGuid\":\"" + Application.buildGUID
+                + "\",\"scope\":\"숨김 데스크톱 실제 GPU Player 최종 화면 전후 및 동일 프레임 월드 전후. 다리 고정 구도와 먼 적 2마리 검수 배치. 자연 플레이와 구분\"}";
             File.WriteAllText(Path.Combine(output, "pixel-diff.json"), receipt);
             Destroy(before); Destroy(after);
             Destroy(screenBefore); Destroy(screenAfter);

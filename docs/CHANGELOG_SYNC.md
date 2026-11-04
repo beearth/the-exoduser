@@ -4,7 +4,7 @@
 
 - 새 `NativeGame.B5Fix.cs`에서 필드 조립 뒤 기존·전체필드 달빛기둥 렌더러만 끄고, A2ToxicRiver 수면만 receiveShadows=false 및 렌더러별 그림자 감쇠를 적용한다. 고목·지면·광원·카메라·Core는 수정하지 않는다.
 - `--b5fix-off`로 비활성화한다. `--a2r1-light` 또는 Resources `A2R/default-enabled`가 있으면 적용하지 않는다. A2R 병합 전 기본 필드 전용이다.
-- 실제 Unity 컴파일·3840x1080 HUD 포함 최종 화면 및 동일 프레임 월드 GPU 비교 대기. 시각 PASS와 병합·실행본 갱신은 미확인.
+- 검수는 격리 Player 자기 창의 3840x1080 크기 보정·빌드 GUID 기록을 포함한다. 실제 Unity 컴파일·HUD 포함 최종 화면 및 동일 프레임 월드 GPU 비교 대기. 시각 PASS와 병합·실행본 갱신은 미확인.
 
 
 2026-11-04 D-014 oracle 일괄 점검 판정(디버깅 총괄, Codex 레인 debug-oracle-sweep 14ae05cbb 병합): Core bea021bcf·웹 06ac6882b 기준 C# 76개 PASS 56/FAIL 10/입력 대기 9/SKIP 1/빌드 깨짐 0. FAIL 10개는 게임 결함 0 — 패링 A안 투사체 정책(적 AI 61,645·생성 7,543·분열 372, 적 종류×필드 전수 집계로 확인), Unity 의도 확장(저장 stageDiffOff, 로캘 이름 Killu), 표현 분기(피격 플래시는 feel 꺼짐 때만 그림, 웹 ?feel=0과 같음), 낡은 기대값 4개, 웹 10-31 스킬창 고정 기술 3칸(D-U4). Tools만 수정: 생성 oracle AI 값형 필드 예외, 저장 Unity 전용 키, 피격 export feel=0, 어픽스 기준 문구 2·키 21·인트로 29언어×27줄, 적 AI 시나리오별 실패 집계. 재실행 피격 47,559/0·저장 2,604/0·설정 91/0·인트로 29/0·어픽스 PASS. 새 백로그 D-T3(A안 기대값 층)·D-U4. Core·Unity 실행 0. 문서: DEBUG_LEAD_BOARD D-014·D-T2·D-T3·D-U4, unity/Tools/README.
