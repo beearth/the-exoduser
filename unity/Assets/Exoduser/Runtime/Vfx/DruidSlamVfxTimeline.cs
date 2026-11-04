@@ -25,14 +25,19 @@ namespace Exoduser.UnityPort.Vfx
 
         // ---- contact core: act 0 at the staff tip, 1.2 H, additive HDR, peak scale at +2, 5 ticks, alpha 1 -> .225 (20 % of life) -> 0; _Opacity peak 2.4 so the bloom threshold (1.1) catches it ----
         public const int CoreLife = 5, CorePeakAct = 2;
-        public const double CoreDiameter = 1.2 * HeroH, CoreAlphaPeak = 1.0, CoreHdrGain = 2.4;
+        public const double CoreDiameter = 1.2 * HeroH, CoreAlphaPeak = 1.0, CoreHdrGain = 1.6;
         public static double CoreAlpha(double age)
         {
             if (age < 0 || age >= CoreLife) return 0;
             double f = age / CoreLife;
             return f < .2 ? 1 - f / .2 * .775 : .225 * (1 - (f - .2) / .8);
         }
-        // the value written to KiSlashAdditive _Opacity (rgb * a * _Opacity): 2.4 at the peak
+        // Soft warm core texture (r = 0 centre .. 1 sprite edge): alpha (1 - r)^2.2, exactly 0 from r .95 (no hard rim); colour baked into the texture
+        // (centre #fff4d0 -> amber #d49a5c at r .5, amber beyond). Same rule as the enemy-hit core (vfx-soft-core brief). The old glow texture saturated to a hard white ball at _Opacity 2.4.
+        public const double CoreTexCutoff = .95, CoreTexExponent = 2.2, CoreTexMidR = .5;
+        public static double CoreTexAlpha(double r) { return r >= CoreTexCutoff ? 0 : Math.Pow(1 - Math.Max(0, r), CoreTexExponent); }
+        public static uint CoreTexColor(double r) { return r >= CoreTexMidR ? CoreEdge : Lerp(CoreHot, CoreEdge, r / CoreTexMidR); }
+        // the value written to KiSlashAdditive _Opacity (rgb * a * _Opacity): 1.6 at the peak (only the centre passes the bloom threshold 1.1)
         public static double CoreOpacity(double age) { return CoreAlpha(age) * CoreHdrGain; }
         public static double CoreScale(double age)
         {
@@ -91,6 +96,9 @@ namespace Exoduser.UnityPort.Vfx
         // last 1 s fades, alpha <= .42. ----
         public const int DecalLife = 180, DecalFade = 60;                     // act +6 .. +186
         public const double DecalAlphaPeak = .42;
+        // Flat fallback (no floor projection: the 2D arena, or a 3D field without the receiver): the crack sheet is dark brown (mean rgb 37,27,18) on dark soil and vanished at .42, so alpha x2, <= .85
+        public const double FlatAlphaGain = 2.0, FlatAlphaMax = .85;
+        public static double CrackAlphaFlat(double act) { return Math.Min(FlatAlphaMax, CrackAlpha(act) * FlatAlphaGain); }
         public const int CrackVariants = 4;
         public static int CrackVariant(int seed) { return (int)unchecked(((uint)seed * 2654435761u) >> 28) % CrackVariants; }
         public static double CrackAngle(int seed) { return new Random(unchecked(seed * 7919 + 101)).NextDouble() * Math.PI * 2; }
@@ -117,8 +125,11 @@ namespace Exoduser.UnityPort.Vfx
             public int SpawnAct, Life, Frame; public double Angle, Reach, Size, Lift, Spin, Phase;
         }
         public const double DebrisAlphaPeak = .85;
-        // visible chunk fraction of its 128 px cell over the 16 stills (measured 0.586 .. 0.797): the cell is sized so every visible chunk is 10..24 screen px
-        public const double DebrisFillMin = .586, DebrisFillMax = .797, DebrisCellMinScreen = 17.1, DebrisCellMaxScreen = 30.0;
+        // visible chunk fraction of its 128 px cell over the 16 stills (measured 0.586 .. 0.797)
+        // r2 (G2 FAIL: too small to see): visible chunk 14..30 screen px, so the cell is 23.9 .. 37.6 px; the first 4 ticks are x1.3 brighter
+        public const double DebrisFillMin = .586, DebrisFillMax = .797, DebrisCellMinScreen = 23.9, DebrisCellMaxScreen = 37.6, DebrisVisMinScreen = 14, DebrisVisMaxScreen = 30;
+        public const int DebrisBrightTicks = 4; public const double DebrisBrightGain = 1.3;
+        public static double DebrisBright(double age) { return age >= 0 && age < DebrisBrightTicks ? DebrisBrightGain : 1; }
         public const int DebrisFrames = 16;
         public static double DebrisCellCore(double u) { return (DebrisCellMinScreen + (DebrisCellMaxScreen - DebrisCellMinScreen) * u) / ScreenPerCorePx; }
         public static Debris[] Debrises(int seed)

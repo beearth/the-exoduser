@@ -6,8 +6,8 @@ namespace Exoduser.UnityPort.Vfx
     // Druid (remodel) slashCombo body VFX: every number of the "slashCombo" row of docs/5.1임펙트디자인/DRUID_V81_SKILL_VFX_G1_20261104.md §1 / §2 (1), as pure functions.
     // Same rules as DruidSlamVfxTimeline: no Unity types, no Core writes, clock = Core ticks since the bossSlash state began (act 0). The damage check is act +2
     // (St2 == DruidRemodelData.SlashHitAt); the hit fan is Facing +-1.2 rad out to R + pr + 300 (DruidRemodelData.SlashReach).
-    // Textured version (G2 FAIL rework, 11-04): hits 1 and 2 (SlashIdx 0, 1) draw a camera-facing ribbon textured with whip_smear that follows the REAL staff head
-    // (rig lantern_orb socket, or the Core staff-tip formula R + 70 along Facing + WeaponAng without the rig) for the last 6 ticks, additive, gone at act +8;
+    // Textured version (G2 FAIL rework, 11-04; r2: 0.7 H wide, 8 ticks, bone-to-bark tint): hits 1 and 2 (SlashIdx 0, 1) draw a camera-facing ribbon textured with whip_smear that follows the REAL staff head
+    // (rig lantern_orb socket, or the Core staff-tip formula R + 70 along Facing + WeaponAng without the rig) for the last 8 ticks, alpha blend + weak additive head, gone at act +8;
     // the old thin arc on the judged boundary is gone. Hit 3 (SlashIdx 2) draws no ribbon but strikes the ground at the staff tip on the damage tick
     // (HDR core, one small earth_dust_burst, 6..8 debris stills) and leaves a ground_gouge_linear decal down the fan's middle line. Lengths are Core px.
     public static class DruidSlashVfxTimeline
@@ -24,9 +24,16 @@ namespace Exoduser.UnityPort.Vfx
 
         // ---- ribbon (hits 1 and 2) ----
         public const int TrailLife = 8;                                            // act 0 .. +8 = 0.13 s
-        public const int RibbonTicks = 6;                                          // length of the ribbon = the staff head's path over the last 6 ticks
-        public const double RibbonWidth = .30 * HeroH;                             // 0.25 .. 0.35 H across (39.3 Core px)
-        public const double RibbonWidthMinH = .25, RibbonWidthMaxH = .35;
+        public const int RibbonTicks = 8;                                          // length of the ribbon = the staff head's path over the last 8 ticks (r2)
+        public const double RibbonWidth = .70 * HeroH;                             // r2: 0.6 .. 0.8 H across (91.7 Core px); 0.25..0.35 H vanished at 1x
+        public const double RibbonWidthMinH = .6, RibbonWidthMaxH = .8;
+        // r2: the whip_smear texture is drawn twice. Main layer = normal alpha blend, vertex tint head #e8d8b8 (bone) -> tail #7a5a3c (bark), so sheet colours stay;
+        // second layer = additive, weak (_Opacity .35), only the head glow. No pure white anywhere in the ribbon.
+        public const uint RibbonHeadTint = 0xE8D8B8, RibbonTailTint = 0x7A5A3C;
+        public const double RibbonBlendAlpha = .85, RibbonAddOpacity = .35;
+        // vertex alpha along the ribbon, t = 0 newest sample (front edge) .. 1 oldest: front edge brightest, transparent at the tail
+        public static double RibbonAlongAlpha(double t) { t = Math.Max(0, Math.Min(1, t)); return Math.Pow(1 - t, 1.3); }
+        public static uint RibbonTint(double t) { return DruidSlamVfxTimeline.Lerp(RibbonHeadTint, RibbonTailTint, Math.Max(0, Math.Min(1, t))); }
         public const int RibbonVariants = 3;
         public static int RibbonVariant(int seed) { return (int)unchecked(((uint)seed * 2246822519u) >> 28) % RibbonVariants; }
         // texture x range of the visible smear (dense head at the left end): u = 0 head (newest sample), u = 1 tail
@@ -42,7 +49,7 @@ namespace Exoduser.UnityPort.Vfx
             double a = facing + weaponAng, r = StaffRadius(bossR);
             x = bossX + Math.Cos(a) * r; y = bossY + Math.Sin(a) * r;
         }
-        // Overall opacity of the additive ribbon (1 while it sweeps, then ease to 0 at act +8)
+        // Overall opacity of the ribbon (both layers) (1 while it sweeps, then ease to 0 at act +8)
         public static double TrailAlpha(double act)
         {
             if (act < 0 || act >= TrailLife) return 0;
@@ -70,7 +77,7 @@ namespace Exoduser.UnityPort.Vfx
         // The boss has walked 2 ticks (2.5 px each) when the damage tick comes; tip = that centre + Facing * (R + 70)
         public static double HitCentreAdvance { get { return ForwardPerTick * HitAct; } }
 
-        public const double StrikeCoreDiameter = .8 * HeroH;                       // 104.8
+        public const double StrikeCoreDiameter = .8 * HeroH;                       // 104.8 (soft core texture, HDR _Opacity peak 1.6)
         public static double StrikeCoreAlpha(double age) { return DruidSlamVfxTimeline.CoreAlpha(age); }
         public static double StrikeCoreOpacity(double age) { return DruidSlamVfxTimeline.CoreOpacity(age); }   // HDR: 2.4 at the peak
         public static double StrikeCoreScale(double age) { return DruidSlamVfxTimeline.CoreScale(age); }
@@ -109,6 +116,9 @@ namespace Exoduser.UnityPort.Vfx
         // ---- hit 3 remainder: ground_gouge_linear decal (variant by seed) along the middle line of the fan, 2.5 s (last 60 ticks fade), alpha <= .35 ----
         public const int GougeLife = 150, GougeFade = 60;
         public const double GougeAlphaPeak = .35;
+        // flat fallback (2D arena / no floor projection): dark gouge on dark soil, alpha x2 <= .7
+        public const double GougeFlatGain = 2.0, GougeFlatMax = .7;
+        public static double GougeAlphaFlat(double age) { return Math.Min(GougeFlatMax, GougeAlpha(age) * GougeFlatGain); }
         public const int GougeVariants = 3;
         public static int GougeVariant(int seed) { return (int)unchecked(((uint)seed * 3266489917u) >> 28) % GougeVariants; }
         // Length from the boss body edge to the judged boundary: (R + pr + 300) - R

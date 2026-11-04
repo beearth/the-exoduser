@@ -74,7 +74,7 @@ namespace Exoduser.UnityPort
         [Serializable] sealed class ArenaReviewVfx
         {
             public int tick,slashIdx,slamN,slashN,slamsStarted,slashesStarted,bodySpritesDrawn,maxBodySpritesDrawn;
-            public string state;public double st2,bossX,bossY,facing;public bool orbGlowDrawn;public int seqSlam,seqSlash;
+            public string state;public double st2,bossX,bossY,facing;public bool orbGlowDrawn,orbSocket,decalsProjected;public string trailSource;public int ribbonSamplesRig,ribbonSamplesFormula,flatDecalsDrawn;public int seqSlam,seqSlash;
         }
         sealed class ArenaVfxPending{public int due;public string name;}
         static bool DruidVfxReviewRequested{get{return Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-druid-vfx-review")>=0;}}
@@ -123,11 +123,11 @@ namespace Exoduser.UnityPort
         ArenaReviewVfx DruidVfxReviewFrame(DruidData d)
         {
             if(!arenaVfxReview||d==null)return null;
-            var v=skillVfx;
+            var v=skillVfx;UnityEngine.Vector3 orbProbe;
             return new ArenaReviewVfx
             {
                 tick=Simulation.TickCount,state=d.S,st2=d.St2,slashIdx=d.SlashIdx,bossX=d.X,bossY=d.Y,facing=d.Facing,slamN=arenaVfxSlamN,slashN=arenaVfxSlashN,
-                slamsStarted=v==null?-1:v.SlamsStarted,slashesStarted=v==null?-1:v.SlashesStarted,bodySpritesDrawn=v==null?-1:v.BodySpritesDrawn,maxBodySpritesDrawn=v==null?-1:v.MaxBodySpritesDrawn,orbGlowDrawn=v!=null&&v.OrbGlowDrawn,
+                slamsStarted=v==null?-1:v.SlamsStarted,slashesStarted=v==null?-1:v.SlashesStarted,bodySpritesDrawn=v==null?-1:v.BodySpritesDrawn,maxBodySpritesDrawn=v==null?-1:v.MaxBodySpritesDrawn,orbGlowDrawn=v!=null&&v.OrbGlowDrawn,orbSocket=NativeDruidRigPixelView.TryGetOrbSocketWorldPosition(out orbProbe),trailSource=v==null?"":v.RibbonSamplesRig>0&&v.RibbonSamplesFormula==0?"rig":v.RibbonSamplesFormula>0&&v.RibbonSamplesRig==0?"formula":v.RibbonSamplesRig>0?"mixed":"none",ribbonSamplesRig=v==null?0:v.RibbonSamplesRig,ribbonSamplesFormula=v==null?0:v.RibbonSamplesFormula,decalsProjected=v!=null&&v.DecalsProjected,flatDecalsDrawn=v==null?0:v.FlatDecalsDrawn,
                 seqSlam=arenaVfxSeq[0],seqSlash=arenaVfxSeq[1]
             };
         }

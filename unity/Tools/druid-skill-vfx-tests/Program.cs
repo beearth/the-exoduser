@@ -98,7 +98,7 @@ static partial class Program
             {
                 if (s.Frame < 0 || s.Frame > 15) frameOk = false;
                 double vmin = s.Size * DruidSlamVfxTimeline.ScreenPerCorePx * DruidSlamVfxTimeline.DebrisFillMin, vmax = s.Size * DruidSlamVfxTimeline.ScreenPerCorePx * DruidSlamVfxTimeline.DebrisFillMax;
-                if (vmin < 10 - 1e-6 || vmax > 24 + 1e-6) sizeOk = false;
+                if (vmin < 14 - 1e-6 || vmax > 30 + 1e-6) sizeOk = false;
                 if (s.Life < 12 || s.Life > 21) lifeOk = false;
                 if (s.SpawnAct < 0 || s.SpawnAct > 6) spawnOk = false; else perTick[s.SpawnAct]++;
                 if (DruidSlamVfxTimeline.DebrisTravel(s, 0) != 0 || DruidSlamVfxTimeline.DebrisTravel(s, s.Life) < 85 || DruidSlamVfxTimeline.DebrisTravel(s, s.Life) > 170.001) travelOk = false;
@@ -116,7 +116,7 @@ static partial class Program
         }
         Check(dOk && counts.Min() == 9 && counts.Max() == 11 && counts.Count == 3, "debris count 9..11 over 2000 seeds (all three values occur)");
         Check(frameOk, "debris still index within 0..15 (debris_chunks 4x4)");
-        Check(sizeOk, "debris visible size 10..24 screen px for every still (cell x measured fill .586 .. .797)");
+        Check(sizeOk, "debris visible size 14..30 screen px for every still (cell x measured fill .586 .. .797) [r2: was 10..24]");
         Check(lifeOk, "debris life 12..21 ticks (0.2..0.35 s)");
         Check(spawnOk, "debris spawn during act 0..+6");
         Check(perTickOk, "debris + rim dusts: at most 2 new body sprites per tick");
@@ -178,10 +178,28 @@ static partial class Program
         Check(DruidSlamVfxTimeline.CoreScale(2) == 1 && DruidSlamVfxTimeline.CoreScale(0) < 1 && DruidSlamVfxTimeline.CoreScale(4) < 1 && DruidSlamVfxTimeline.CoreScale(4) > .6, "core size peaks at +2");
         Check(DruidSlamVfxTimeline.CoreColor(0) == 0xFFF4D0 && DruidSlamVfxTimeline.CoreColor(5) == 0xD49A5C, "core colour #fff4d0 at act 0 to #d49a5c");
         Check(((DruidSlamVfxTimeline.CoreColor(0) >> 16) & 0xFF) >= 240, "core peak red channel >= 240");
-        Check(DruidSlamVfxTimeline.CoreHdrGain == 2.4 && Near(DruidSlamVfxTimeline.CoreOpacity(0), 2.4, Eps), "core HDR: _Opacity peaks at 2.4 (above the 1.1 bloom threshold)");
+        Check(DruidSlamVfxTimeline.CoreHdrGain == 1.6 && Near(DruidSlamVfxTimeline.CoreOpacity(0), 1.6, Eps), "core HDR: _Opacity peaks at 1.6 (only the centre passes the 1.1 bloom threshold) [r2: was 2.4]");
         double maxOp = 0; int hdrSteps = 0; for (double a = -1; a < 8; a += .05) { double o = DruidSlamVfxTimeline.CoreOpacity(a); maxOp = Math.Max(maxOp, o); if (o > 1.1) hdrSteps++; }
-        Check(Near(maxOp, 2.4, Eps) && DruidSlamVfxTimeline.CoreOpacity(5) == 0 && DruidSlamVfxTimeline.CoreOpacity(1) > 0, "core HDR opacity never exceeds 2.4 and is 0 after 5 ticks");
+        Check(Near(maxOp, 1.6, Eps) && DruidSlamVfxTimeline.CoreOpacity(5) == 0 && DruidSlamVfxTimeline.CoreOpacity(1) > 0, "core HDR opacity never exceeds 1.6 and is 0 after 5 ticks");
         Check(hdrSteps > 0 && hdrSteps * .05 <= 1.0 + 1e-6, "core is above the bloom threshold for at most 1 tick (a 1..3 frame flash, then ordinary light)");
+
+        // ---- r2: soft warm core texture (alpha (1-r)^2.2, 0 from r .95, colour baked) ----
+        bool texMono = true, texEdge = true; double pr2 = 2;
+        for (double r = 0; r <= 1.2; r += .005) { double al = DruidSlamVfxTimeline.CoreTexAlpha(r); if (al > pr2 + Eps) texMono = false; pr2 = al; if (r >= .95 && al != 0) texEdge = false; if (al < 0 || al > 1) texMono = false; }
+        Check(texMono, "core texture alpha only falls with the radius, within 0..1 (no ring, no plateau)");
+        Check(texEdge && DruidSlamVfxTimeline.CoreTexAlpha(.95) == 0 && DruidSlamVfxTimeline.CoreTexAlpha(1) == 0 && DruidSlamVfxTimeline.CoreTexAlpha(.9) > 0, "core texture alpha is exactly 0 from r .95 (no hard rim)");
+        Check(Near(DruidSlamVfxTimeline.CoreTexAlpha(0), 1, Eps) && Near(DruidSlamVfxTimeline.CoreTexAlpha(.5), Math.Pow(.5, 2.2), 1e-9), "core texture alpha (1-r)^2.2: 1 at the centre, .218 at r .5");
+        Check(DruidSlamVfxTimeline.CoreTexAlpha(.5) < .25 && DruidSlamVfxTimeline.CoreTexAlpha(.7) < .08, "core texture: the body is soft (alpha < .25 from r .5), no solid disc");
+        Check(DruidSlamVfxTimeline.CoreTexColor(0) == 0xFFF4D0 && DruidSlamVfxTimeline.CoreTexColor(.5) == 0xD49A5C && DruidSlamVfxTimeline.CoreTexColor(.8) == 0xD49A5C && DruidSlamVfxTimeline.CoreTexColor(.25) != 0xFFF4D0 && DruidSlamVfxTimeline.CoreTexColor(.25) != 0xD49A5C, "core texture colour: #fff4d0 centre -> #d49a5c at r .5, baked");
+
+        // ---- r2: flat decal fallback alpha (the sheets are dark on dark soil) ----
+        bool flatOk = true; for (double a = -1; a <= 200; a += .5) { double f = DruidSlamVfxTimeline.CrackAlphaFlat(a); if (f < 0 || f > .85 + Eps || f < DruidSlamVfxTimeline.CrackAlpha(a) - Eps) flatOk = false; if (DruidSlamVfxTimeline.CrackAlpha(a) == 0 && f != 0) flatOk = false; }
+        Check(flatOk && Near(DruidSlamVfxTimeline.CrackAlphaFlat(60), .84, Eps), "flat crack alpha = projected x2, <= .85, same life and fade (projected path keeps <= .42)");
+        Check(DruidSlamVfxTimeline.CrackAlphaFlat(186) == 0 && DruidSlamVfxTimeline.CrackAlphaFlat(0) == 0 && DruidSlamVfxTimeline.CrackAlphaFlat(185) > 0, "flat crack lives exactly as long as the projected one");
+
+        // ---- r2: debris brighter for the first 4 ticks ----
+        Check(DruidSlamVfxTimeline.DebrisBright(0) == 1.3 && DruidSlamVfxTimeline.DebrisBright(3) == 1.3 && DruidSlamVfxTimeline.DebrisBright(4) == 1 && DruidSlamVfxTimeline.DebrisBright(10) == 1 && DruidSlamVfxTimeline.DebrisBright(-1) == 1, "debris x1.3 bright for the first 4 ticks, then the sheet colour");
+        Check(DruidSlamVfxTimeline.DebrisVisMinScreen == 14 && DruidSlamVfxTimeline.DebrisVisMaxScreen == 30, "debris visible size 14..30 screen px");
 
         // ---- wind-up chunks (debris stills) ----
         bool chunkOk = true, liftOk = true, chunkSize = true, chunkFrame = true;
@@ -191,13 +209,13 @@ static partial class Program
             foreach (var c in ch)
             {
                 if (Math.Sqrt(c.X * c.X + c.Y * c.Y) > .9 * 260 || Math.Sqrt(c.X * c.X + c.Y * c.Y) < 60) chunkOk = false;
-                if (c.Size * DruidSlamVfxTimeline.ScreenPerCorePx * DruidSlamVfxTimeline.DebrisFillMin < 10 - 1e-6 || c.Size * DruidSlamVfxTimeline.ScreenPerCorePx * DruidSlamVfxTimeline.DebrisFillMax > 24 + 1e-6) chunkSize = false;
+                if (c.Size * DruidSlamVfxTimeline.ScreenPerCorePx * DruidSlamVfxTimeline.DebrisFillMin < 14 - 1e-6 || c.Size * DruidSlamVfxTimeline.ScreenPerCorePx * DruidSlamVfxTimeline.DebrisFillMax > 30 + 1e-6) chunkSize = false;
                 if (c.Frame < 0 || c.Frame > 15) chunkFrame = false;
                 for (int w = 0; w < 12; w++) { double px = DruidSlamVfxTimeline.ChunkLiftPx(c, w); if (px < 1 - Eps || px > 3 + Eps) liftOk = false; }
             }
         }
         Check(chunkOk, "6 wind-up chunks inside the circle");
-        Check(chunkSize, "wind-up debris stills are 10..24 screen px visible");
+        Check(chunkSize, "wind-up debris stills are 14..30 screen px visible [r2: was 10..24]");
         Check(chunkFrame, "wind-up debris still index within 0..15");
         Check(liftOk, "wind-up chunks bob 1..3 screen px");
         Check(DruidSlamVfxTimeline.WindLiftTicks == 12 && !DruidSlamVfxTimeline.ChunkActive(-1) && DruidSlamVfxTimeline.ChunkActive(0) && DruidSlamVfxTimeline.ChunkActive(11) && !DruidSlamVfxTimeline.ChunkActive(12), "wind-up chunks only in the last 12 ticks");
@@ -225,6 +243,14 @@ static partial class Program
             Check(view.Contains("TryGetOrbSocketWorldPosition") && view.Contains("StaffTip("), "ribbon: rig staff-head socket, Core staff-tip formula as the fallback");
             Check(view.Contains("NativeGroundSkillSurface.Mark") && view.Contains("NativeGroundSkillSurface.Project"), "decals use the receiver-depth floor projection");
             Check(view.Contains("CoreOpacity") && view.Contains("StrikeCoreOpacity"), "both cores write the HDR opacity");
+            Check(view.Split(new[] { "Put(true, coreSprite" }, StringSplitOptions.None).Length == 3 && view.Contains("MakeCoreTex") && view.Contains("CoreTexAlpha") && view.Contains("CoreTexColor"), "both cores use the soft baked-colour core texture (old glow texture is only the orb glow)");
+            Check(view.Contains("flatPool") && view.Contains("lyingOn3D") && view.Contains("Quaternion.Euler(90, 0, 0)") && view.Contains("IsLying") && view.Contains("CrackAlphaFlat") && view.Contains("GougeAlphaFlat"), "decal fallback: flat textured sprite (lying on the 3D floor when the receiver is missing)");
+            Check(view.Split(new[] { "d.transform.localScale = new Vector3((float)wCore / sprite.rect.width" }, StringSplitOptions.None).Length == 2, "decal fallback quad has the same size as the projection (one shared scale line)");
+            Check(Src("unity/Assets/Exoduser/Runtime/NativeGame.Remodel3D.cs").Contains("DruidSkillVfxView.IsLying"), "billboard pass skips the lying decal sprites");
+            int rs = view.IndexOf("void DrawRibbon"), re = view.IndexOf("// ---- hit 3 ground strike"); string ribSrc = rs >= 0 && re > rs ? view.Substring(rs, re - rs) : "";
+            Check(ribSrc.Length > 0 && !ribSrc.Contains("White") && !ribSrc.Contains("Color.white") && ribSrc.Contains("RibbonTint") && ribSrc.Contains("RibbonAlongAlpha") && ribSrc.Contains("trailBlendR") && ribSrc.Contains("RibbonAddOpacity"), "ribbon: alpha-blend layer tinted bone -> bark + weak additive head, no pure-white constant");
+            Check(view.Contains("ShardTint") && view.Split(new[] { "ShardTint(sa, al)" }, StringSplitOptions.None).Length == 3, "both flying-debris draws use the x1.3 first-4-ticks tint");
+            Check(view.Contains("RibbonSamplesRig") && view.Contains("RibbonSamplesFormula") && Src("unity/Assets/Exoduser/Runtime/NativeGame.BossArenaReview.cs").Contains("trailSource"), "QA: review JSON records trailSource (rig / formula) and orbSocket");
             string sheetDir = "unity/Assets/Exoduser/Resources/Art/vfx/boss/earth/";
             foreach (var sheet in new[] { "earth_dust_burst", "debris_chunks", "ground_crack_radial", "ground_crack_radial_v2", "ground_crack_radial_v3", "ground_crack_radial_v4", "ground_gouge_linear", "ground_gouge_linear_v2", "ground_gouge_linear_v3", "whip_smear", "whip_smear_v2", "whip_smear_v3" })
             {

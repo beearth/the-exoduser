@@ -11,7 +11,9 @@ namespace Exoduser.UnityPort.Vfx
     // ground_gouge_linear*, whip_smear*) instead of clean vector shapes.
     //  (2) slam: wind-up debris stills lift, contact core (HDR additive), earth_dust_burst whose visible edge reaches the Core r260 on act +6 (+ 3 small ones on the rim),
     //      debris stills flying out, a crack decal projected on the floor (opens from the centre over act 0..+6), low dust.
-    //  (1) slashCombo: hits 1 and 2 sweep a whip_smear ribbon that follows the real staff head (rig lantern_orb socket, else the Core staff-tip formula) for 6 ticks;
+    //  r2 (G2 FAIL 11-04): soft warm core texture (alpha (1-r)^2.2, colour baked, _Opacity peak 1.6); floor decals fall back to a flat textured sprite when the floor projection is
+    //      off (2D arena / receiver missing; alpha x2 because the sheets are dark on dark soil); 0.7 H wide 8-tick ribbon, alpha blend (bone -> bark tint) + weak additive head; debris 14..30 px, x1.3 for 4 ticks.
+    //  (1) slashCombo: hits 1 and 2 sweep a whip_smear ribbon that follows the real staff head (rig lantern_orb socket, else the Core staff-tip formula) for 8 ticks;
     //      hit 3 strikes the ground at the staff tip (HDR core, small dust, debris) and leaves a ground_gouge_linear decal down the fan's middle line.
     // Every number is DruidSlamVfxTimeline / DruidSlashVfxTimeline (pure, checked by unity/Tools/druid-skill-vfx-tests). Clock = Core ticks, so pause / frame stepping cannot consume the effect.
     // Draw order: decals (projected on the real floor, sorting -8994) < dust -8989 < debris -8988 < telegraph decal -8985 < actors; only the contact core and the ribbon are additive
@@ -20,7 +22,7 @@ namespace Exoduser.UnityPort.Vfx
     {
         const int DecalOrder = -8994, DustOrder = -8989, ShardOrder = -8988, CoreOrder = 29999, MaxBodySprites = 24, MaxDecals = 8;
         const string EarthDir = "Art/vfx/boss/earth/";
-        const double FallbackStaffLift = .45 * DruidSlamVfxTimeline.HeroH;   // staff head height used when the rig socket is missing (Core formula is 2D)
+        const double FallbackStaffLift = .9 * DruidSlamVfxTimeline.HeroH;    // staff head height used when the rig socket is missing (Core formula is 2D); the boss is ~3 hero heights tall
         static readonly Color White = new Color(1, 1, 1, 1);
 
         sealed class Slam { public int Born, Seed, Variant; public double X, Y, TipX, TipY, Angle; public DruidSlamVfxTimeline.Debris[] Shards; public DruidSlamVfxTimeline.Puff[] Dust; public DruidSlamVfxTimeline.RingDust[] Ring; }
@@ -35,24 +37,30 @@ namespace Exoduser.UnityPort.Vfx
         }
 
         // sprites this view owns (the 3D billboard pass must not lift them like characters: pivot = centre of the effect)
-        static readonly HashSet<SpriteRenderer> owned = new HashSet<SpriteRenderer>();
+        static readonly HashSet<SpriteRenderer> owned = new HashSet<SpriteRenderer>(), lying = new HashSet<SpriteRenderer>();
         public static bool IsCentered(SpriteRenderer sprite) { return sprite != null && owned.Contains(sprite); }
+        // flat decal sprites lying on the 3D floor (projection unavailable): the billboard pass must not stand them up
+        public static bool IsLying(SpriteRenderer sprite) { return sprite != null && lying.Contains(sprite); }
 
         readonly Transform root;
-        readonly List<SpriteRenderer> alphaPool = new List<SpriteRenderer>(), addPool = new List<SpriteRenderer>(), decalPool = new List<SpriteRenderer>(); int alphaUsed, addUsed, decalUsed;
-        readonly Sprite glow; readonly Texture2D glowTex; readonly Material spriteMaterial;
+        readonly List<SpriteRenderer> alphaPool = new List<SpriteRenderer>(), addPool = new List<SpriteRenderer>(), decalPool = new List<SpriteRenderer>(), flatPool = new List<SpriteRenderer>(); int alphaUsed, addUsed, decalUsed, flatUsed;
+        bool projected, lyingOn3D;   // per frame: the floor projection is live / the decals lie flat on the 3D floor
+        public bool DecalsProjected { get { return projected; } }
+        public int FlatDecalsDrawn { get { return flatUsed; } }
+        readonly Sprite glow, coreSprite; readonly Texture2D glowTex, coreTex; readonly Material spriteMaterial;
         readonly Texture2D dustTex, debrisTex; readonly Sprite[] dustFrames = new Sprite[DruidEarthSheetTable.Frames], debrisFrames = new Sprite[DruidSlamVfxTimeline.DebrisFrames];
         readonly Texture2D[] crackTex = new Texture2D[DruidSlamVfxTimeline.CrackVariants], gougeTex = new Texture2D[DruidSlashVfxTimeline.GougeVariants], smearTex = new Texture2D[DruidSlashVfxTimeline.RibbonVariants];
         readonly Sprite[] crackSprites = new Sprite[DruidSlamVfxTimeline.CrackVariants], gougeSprites = new Sprite[DruidSlashVfxTimeline.GougeVariants];
-        readonly Mesh trailMesh = new Mesh { name = "druid-slash-ribbon" }; readonly MeshRenderer trailR; readonly MaterialPropertyBlock trailBlock = new MaterialPropertyBlock();
-        readonly List<Vector3> tv = new List<Vector3>(); readonly List<Vector2> tuv = new List<Vector2>(); readonly List<int> tt = new List<int>(); readonly List<Vector3> rib = new List<Vector3>();
+        readonly Mesh trailMesh = new Mesh { name = "druid-slash-ribbon" }; readonly MeshRenderer trailR, trailBlendR; readonly MaterialPropertyBlock trailBlock = new MaterialPropertyBlock(), trailBlendBlock = new MaterialPropertyBlock();
+        static readonly bool LinearSpace = QualitySettings.activeColorSpace == ColorSpace.Linear;
+        readonly List<Vector3> tv = new List<Vector3>(); readonly List<Vector2> tuv = new List<Vector2>(); readonly List<Color> tcol = new List<Color>(); readonly List<int> tt = new List<int>(); readonly List<Vector3> rib = new List<Vector3>();
         readonly List<Slash> slashes = new List<Slash>();
         readonly MaterialPropertyBlock block = new MaterialPropertyBlock();
         readonly List<Slam> slams = new List<Slam>();
         string prevState; int lastTick = int.MinValue, windStart = -1; DruidSlamVfxTimeline.Chunk[] chunks;
         public int SlamsStarted, SlashesStarted, MaxBodySpritesDrawn, BodySpritesDrawn;   // QA
-        public bool OrbGlowDrawn, RibbonOnRig;
-        public int RibbonPoints;
+        public bool OrbGlowDrawn, RibbonOnRig;   // RibbonOnRig: the last recorded ribbon sample came from the rig socket (false = Core staff-tip formula)
+        public int RibbonPoints, RibbonSamplesRig, RibbonSamplesFormula;
 
         public DruidSkillVfxView(Transform parent)
         {
@@ -60,6 +68,7 @@ namespace Exoduser.UnityPort.Vfx
             var probe = new GameObject("probe").AddComponent<SpriteRenderer>(); spriteMaterial = probe.sharedMaterial; UnityEngine.Object.Destroy(probe.gameObject);   // default sprite material: alpha blend (also what the floor projection expects)
             glowTex = MakeTex(64, 64, (u, v) => Mathf.Pow(Mathf.Clamp01(1 - Mathf.Sqrt(u * u + v * v)), 1.7f));
             glow = Sprite.Create(glowTex, new Rect(0, 0, 64, 64), new Vector2(.5f, .5f), 100);
+            coreTex = MakeCoreTex(128); coreSprite = Sprite.Create(coreTex, new Rect(0, 0, 128, 128), new Vector2(.5f, .5f), 100);
             dustTex = Resources.Load<Texture2D>(EarthDir + "earth_dust_burst"); debrisTex = Resources.Load<Texture2D>(EarthDir + "debris_chunks");
             if (dustTex != null)
                 for (int i = 0; i < dustFrames.Length; i++) { int r = i / DruidEarthSheetTable.Cols, c = i % DruidEarthSheetTable.Cols; dustFrames[i] = Sprite.Create(dustTex, new Rect(c * 256, (DruidEarthSheetTable.Rows - 1 - r) * 256, 256, 256), new Vector2(.5f, .5f), 100); }
@@ -73,6 +82,25 @@ namespace Exoduser.UnityPort.Vfx
             tgo.AddComponent<MeshFilter>().sharedMesh = trailMesh;
             trailR = tgo.AddComponent<MeshRenderer>(); trailR.sharedMaterial = NativeDruidArt.Additive;   // KiSlashAdditive: Blend One One, rgb * a * _Opacity
             trailR.sortingOrder = CoreOrder - 1; trailR.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; trailR.receiveShadows = false; trailR.enabled = false;
+            var bgo = new GameObject("slashRibbonBlend"); bgo.transform.SetParent(root, false);
+            bgo.AddComponent<MeshFilter>().sharedMesh = trailMesh;
+            trailBlendR = bgo.AddComponent<MeshRenderer>(); trailBlendR.sharedMaterial = spriteMaterial;   // alpha blend: vertex colour (tint + alpha along the ribbon) x texture
+            trailBlendR.sortingOrder = CoreOrder - 2; trailBlendR.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; trailBlendR.receiveShadows = false; trailBlendR.enabled = false;
+        }
+
+        static Color Hex(uint c, float a) { var k = new Color(((c >> 16) & 0xFF) / 255f, ((c >> 8) & 0xFF) / 255f, (c & 0xFF) / 255f, a); return LinearSpace ? new Color(k.linear.r, k.linear.g, k.linear.b, a) : k; }   // mesh vertex colours are not converted by Unity
+
+        // soft warm core: alpha (1 - r)^2.2 (0 from r .95), colour baked (#fff4d0 centre -> #d49a5c at r .5): KiSlashAdditive reads the texture rgb * a * _Opacity
+        static Texture2D MakeCoreTex(int n)
+        {
+            var tex = new Texture2D(n, n, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp };
+            var px = new Color32[n * n];
+            for (int y = 0; y < n; y++) for (int x = 0; x < n; x++)
+            {
+                double u = (x + .5) / n * 2 - 1, v = (y + .5) / n * 2 - 1, r = Math.Sqrt(u * u + v * v); uint c = DruidSlamVfxTimeline.CoreTexColor(r);
+                px[y * n + x] = new Color32((byte)((c >> 16) & 0xFF), (byte)((c >> 8) & 0xFF), (byte)(c & 0xFF), (byte)Math.Round(DruidSlamVfxTimeline.CoreTexAlpha(r) * 255));
+            }
+            tex.SetPixels32(px); tex.Apply(false, false); return tex;
         }
 
         static Sprite FullSprite(Texture2D t) { return Sprite.Create(t, new Rect(0, 0, t.width, t.height), new Vector2(.5f, .5f), 100); }
@@ -91,8 +119,9 @@ namespace Exoduser.UnityPort.Vfx
             foreach (var r in alphaPool) owned.Remove(r);
             foreach (var r in addPool) owned.Remove(r);
             foreach (var r in decalPool) owned.Remove(r);
+            foreach (var r in flatPool) { owned.Remove(r); lying.Remove(r); }
             if (root != null) UnityEngine.Object.Destroy(root.gameObject);
-            UnityEngine.Object.Destroy(trailMesh); UnityEngine.Object.Destroy(glow); UnityEngine.Object.Destroy(glowTex);
+            UnityEngine.Object.Destroy(trailMesh); UnityEngine.Object.Destroy(glow); UnityEngine.Object.Destroy(glowTex); UnityEngine.Object.Destroy(coreSprite); UnityEngine.Object.Destroy(coreTex);
             foreach (var s in dustFrames) if (s != null) UnityEngine.Object.Destroy(s);
             foreach (var s in debrisFrames) if (s != null) UnityEngine.Object.Destroy(s);
             foreach (var s in crackSprites) if (s != null) UnityEngine.Object.Destroy(s);
@@ -107,7 +136,8 @@ namespace Exoduser.UnityPort.Vfx
             int tick = sim.TickCount;
             if (tick < lastTick) Reset();
             lastTick = tick;
-            alphaUsed = 0; addUsed = 0; decalUsed = 0;
+            alphaUsed = 0; addUsed = 0; decalUsed = 0; flatUsed = 0;
+            projected = NativeRemodel3D.Active && NativeGroundSkillProjection.Available; lyingOn3D = NativeRemodel3D.Active && !projected;
             var druid = sim.Druid; DruidData dd = null;
             bool live = druid != null && druid.Remodel && druid.Boss != null && druid.Boss.Alive && druid.Data.TryGetValue(druid.Boss, out dd);
             double windAge = -1;
@@ -149,6 +179,7 @@ namespace Exoduser.UnityPort.Vfx
             for (int i = alphaUsed; i < alphaPool.Count; i++) alphaPool[i].enabled = false;
             for (int i = addUsed; i < addPool.Count; i++) addPool[i].enabled = false;
             for (int i = decalUsed; i < decalPool.Count; i++) decalPool[i].enabled = false;
+            for (int i = flatUsed; i < flatPool.Count; i++) flatPool[i].enabled = false;
             foreach (var d in decalPool) NativeGroundSkillSurface.Project(d);   // the floor projection reads the sprite state set above
         }
 
@@ -214,26 +245,48 @@ namespace Exoduser.UnityPort.Vfx
 
         // ---- floor layer: ground decals projected on the real floor (NativeGroundSkillSurface, like the pooled blood stamps) ----
         // Core px + euler z (deg) -> a pooled floor sprite. Size in Core px (the sprite is 100 px per world unit).
+        // projected: pooled floor sprite read by NativeGroundSkillSurface. Otherwise a pooled flat sprite: on the 2D arena it just faces the camera; on a 3D floor without the
+        // receiver (lyingOn3D) it lies on the ground plane (x 90 deg, then the in-plane spin) and the billboard pass skips it (IsLying).
         void Decal(Sprite sprite, double x, double y, double eulerZ, double wCore, double hCore, double alpha)
         {
-            if (sprite == null || alpha <= 0 || wCore <= 0 || hCore <= 0 || decalUsed >= MaxDecals) return;
-            if (decalUsed >= decalPool.Count)
+            if (sprite == null || alpha <= 0 || wCore <= 0 || hCore <= 0) return;
+            SpriteRenderer d;
+            if (projected)
             {
-                var go = new GameObject("fxGround"); go.transform.SetParent(root, false);
-                var r = go.AddComponent<SpriteRenderer>(); r.sharedMaterial = spriteMaterial; r.sortingOrder = DecalOrder;
-                r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; r.receiveShadows = false;
-                NativeGroundSkillSurface.Mark(r); decalPool.Add(r); owned.Add(r);
+                if (decalUsed >= MaxDecals) return;
+                if (decalUsed >= decalPool.Count)
+                {
+                    var go = new GameObject("fxGround"); go.transform.SetParent(root, false);
+                    var r = go.AddComponent<SpriteRenderer>(); r.sharedMaterial = spriteMaterial; r.sortingOrder = DecalOrder;
+                    r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; r.receiveShadows = false;
+                    NativeGroundSkillSurface.Mark(r); decalPool.Add(r); owned.Add(r);
+                }
+                d = decalPool[decalUsed++];
+                d.transform.SetPositionAndRotation(World(x, y, 0), Quaternion.Euler(0, 0, (float)eulerZ));
             }
-            var d = decalPool[decalUsed++];
+            else
+            {
+                if (flatUsed >= MaxDecals) return;
+                if (flatUsed >= flatPool.Count)
+                {
+                    var go = new GameObject("fxGroundFlat"); go.transform.SetParent(root, false);
+                    var r = go.AddComponent<SpriteRenderer>(); r.sharedMaterial = spriteMaterial; r.sortingOrder = DecalOrder;
+                    r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; r.receiveShadows = false;
+                    flatPool.Add(r); owned.Add(r);
+                }
+                d = flatPool[flatUsed++];
+                if (lyingOn3D) lying.Add(d); else lying.Remove(d);
+                var spin = Quaternion.Euler(0, 0, (float)eulerZ);
+                d.transform.SetPositionAndRotation(World(x, y, 0), lyingOn3D ? Quaternion.Euler(90, 0, 0) * spin : spin);
+            }
             d.enabled = true; d.sprite = sprite; d.color = new Color(1, 1, 1, (float)Math.Min(1, alpha));
-            d.transform.SetPositionAndRotation(World(x, y, 0), Quaternion.Euler(0, 0, (float)eulerZ));
             d.transform.localScale = new Vector3((float)wCore / sprite.rect.width, (float)hCore / sprite.rect.height, 1);
         }
 
         // slam crack decal: opens from the centre act 0 -> +6 (scale 0 -> 1: GroundSkillProjection has no radial mask property), kept 3 s, last 1 s fades
         void SlamDecal(Slam s, int age)
         {
-            double alpha = DruidSlamVfxTimeline.CrackAlpha(age), reveal = DruidSlamVfxTimeline.CrackReveal(age);
+            double alpha = projected ? DruidSlamVfxTimeline.CrackAlpha(age) : DruidSlamVfxTimeline.CrackAlphaFlat(age), reveal = DruidSlamVfxTimeline.CrackReveal(age);
             if (alpha <= 0 || reveal <= 0) return;
             double size = DruidSlamVfxTimeline.CrackSize(s.Variant) * reveal;
             Decal(crackSprites[s.Variant], s.X, s.Y, s.Angle * Mathf.Rad2Deg, size, size, alpha);
@@ -243,7 +296,7 @@ namespace Exoduser.UnityPort.Vfx
         void SlashDecal(Slash s, int age)
         {
             if (!s.HasFurrow) return;
-            double alpha = DruidSlashVfxTimeline.GougeAlpha(age - DruidSlashVfxTimeline.HitAct); if (alpha <= 0) return;
+            double gage = age - DruidSlashVfxTimeline.HitAct, alpha = projected ? DruidSlashVfxTimeline.GougeAlpha(gage) : DruidSlashVfxTimeline.GougeAlphaFlat(gage); if (alpha <= 0) return;
             double len = DruidSlashVfxTimeline.GougeLength(s.PlayerR), size = DruidSlashVfxTimeline.GougeSize(s.Variant, len), along = DruidSlashVfxTimeline.GougeCentreAlong(s.Variant, size, s.BossR, len);
             double h = size * DruidEarthSheetTable.GougeSheetH / DruidEarthSheetTable.GougeSheetW;
             Decal(gougeSprites[s.Variant], s.HitX + Math.Cos(s.Facing) * along, s.HitY + Math.Sin(s.Facing) * along, -s.Facing * Mathf.Rad2Deg, size, h, alpha);   // Core y is down: the world angle is -Facing
@@ -257,36 +310,39 @@ namespace Exoduser.UnityPort.Vfx
             int age = tick - cur.Born;
             if (!DruidSlashVfxTimeline.HasTrail(cur.Idx) || age < 0 || age >= DruidSlashVfxTimeline.TrailLife) return;
             Vector3 p;
-            if (NativeDruidRigPixelView.TryGetOrbSocketWorldPosition(out p)) RibbonOnRig = true;
+            if (NativeDruidRigPixelView.TryGetOrbSocketWorldPosition(out p)) { RibbonOnRig = true; RibbonSamplesRig++; }
             else
             {
                 double x, y; DruidSlashVfxTimeline.StaffTip(d.X, d.Y, d.Facing, d.WeaponAng, d.R, out x, out y);
-                p = World(x, y, FallbackStaffLift); RibbonOnRig = false;
+                p = World(x, y, FallbackStaffLift); RibbonOnRig = false; RibbonSamplesFormula++;
             }
             int n = cur.Pts.Count;
             if (n > 0 && cur.PtTick[n - 1] == tick) cur.Pts[n - 1] = p;   // one sample per tick: the newest frame wins
             else { cur.Pts.Add(p); cur.PtTick.Add(tick); }
         }
 
+        void HideRibbon() { trailR.enabled = false; trailBlendR.enabled = false; }
+
+        // Two layers on one mesh: alpha blend (the sheet's bone colours, tinted bone -> bark and faded towards the tail by vertex colour) + a weak additive head glow. Nothing is pure white.
         void DrawRibbon(int tick, Camera cam)
         {
             Slash cur = null;
             foreach (var s in slashes) if (DruidSlashVfxTimeline.HasTrail(s.Idx) && tick - s.Born >= 0 && tick - s.Born < DruidSlashVfxTimeline.TrailLife) cur = s;   // swings are >= 36 ticks apart: at most one is alive
             RibbonPoints = 0;
-            if (cur == null) { trailR.enabled = false; return; }
+            if (cur == null) { HideRibbon(); return; }
             double age = tick - cur.Born, op = DruidSlashVfxTimeline.TrailAlpha(age);
             var tex = smearTex[cur.Variant];
-            if (op <= 0 || tex == null) { trailR.enabled = false; return; }
+            if (op <= 0 || tex == null) { HideRibbon(); return; }
             int oldest = cur.Born + DruidSlashVfxTimeline.RibbonOldestAct(age);
             rib.Clear();
             for (int i = cur.Pts.Count - 1; i >= 0; i--) { if (cur.PtTick[i] < oldest) break; rib.Add(cur.Pts[i]); }   // newest first
             RibbonPoints = rib.Count;
-            if (rib.Count < 2) { trailR.enabled = false; return; }
+            if (rib.Count < 2) { HideRibbon(); return; }
             double total = 0; for (int i = 1; i < rib.Count; i++) total += Vector3.Distance(rib[i - 1], rib[i]);
-            if (total < 1e-4) { trailR.enabled = false; return; }
+            if (total < 1e-4) { HideRibbon(); return; }
             Vector3 fwd = cam != null ? cam.transform.forward : Vector3.forward, up = cam != null ? cam.transform.up : Vector3.up;
             float half = (float)(DruidSlashVfxTimeline.RibbonWidth / 100 / 2), u0 = (float)DruidSlashVfxTimeline.RibbonU0(cur.Variant), u1 = (float)DruidSlashVfxTimeline.RibbonU1(cur.Variant);
-            tv.Clear(); tuv.Clear(); tt.Clear();
+            tv.Clear(); tuv.Clear(); tt.Clear(); tcol.Clear();
             double run = 0;
             for (int i = 0; i < rib.Count; i++)
             {
@@ -295,12 +351,15 @@ namespace Exoduser.UnityPort.Vfx
                 Vector3 dir = rib[Math.Max(0, i - 1)] - rib[Math.Min(rib.Count - 1, i + 1)];
                 Vector3 side = Vector3.Cross(dir, fwd); side = side.sqrMagnitude < 1e-10f ? up : side.normalized;
                 float w = half * (1 - .6f * t), u = Mathf.Lerp(u0, u1, t);   // a little thinner towards the tail
-                tv.Add(rib[i] + side * w); tuv.Add(new Vector2(u, 1));
-                tv.Add(rib[i] - side * w); tuv.Add(new Vector2(u, 0));
+                var vc = Hex(DruidSlashVfxTimeline.RibbonTint(t), (float)(DruidSlashVfxTimeline.RibbonAlongAlpha(t) * DruidSlashVfxTimeline.RibbonBlendAlpha * op));
+                tv.Add(rib[i] + side * w); tuv.Add(new Vector2(u, 1)); tcol.Add(vc);
+                tv.Add(rib[i] - side * w); tuv.Add(new Vector2(u, 0)); tcol.Add(vc);
                 if (i > 0) { int k = i * 2; tt.Add(k - 2); tt.Add(k - 1); tt.Add(k); tt.Add(k - 1); tt.Add(k + 1); tt.Add(k); }
             }
-            trailMesh.Clear(); trailMesh.SetVertices(tv); trailMesh.SetUVs(0, tuv); trailMesh.SetTriangles(tt, 0); trailMesh.bounds = new Bounds(Vector3.zero, new Vector3(2000, 2000, 2000));
-            trailR.GetPropertyBlock(trailBlock); trailBlock.SetTexture("_MainTex", tex); trailBlock.SetFloat(NativeDruidArt.Opacity, (float)op); trailR.SetPropertyBlock(trailBlock);
+            trailMesh.Clear(); trailMesh.SetVertices(tv); trailMesh.SetUVs(0, tuv); trailMesh.SetColors(tcol); trailMesh.SetTriangles(tt, 0); trailMesh.bounds = new Bounds(Vector3.zero, new Vector3(2000, 2000, 2000));
+            trailR.GetPropertyBlock(trailBlock); trailBlock.SetTexture("_MainTex", tex); trailBlock.SetFloat(NativeDruidArt.Opacity, (float)(op * DruidSlashVfxTimeline.RibbonAddOpacity)); trailR.SetPropertyBlock(trailBlock);
+            trailBlendR.GetPropertyBlock(trailBlendBlock); trailBlendBlock.SetTexture("_MainTex", tex); trailBlendR.SetPropertyBlock(trailBlendBlock);
+            trailBlendR.transform.position = Vector3.zero; trailBlendR.transform.rotation = Quaternion.identity; trailBlendR.transform.localScale = Vector3.one; trailBlendR.enabled = true;
             trailR.transform.position = Vector3.zero; trailR.transform.rotation = Quaternion.identity; trailR.transform.localScale = Vector3.one;
             trailR.enabled = true;
         }
@@ -313,7 +372,7 @@ namespace Exoduser.UnityPort.Vfx
             if (ca >= 0 && ca < DruidSlamVfxTimeline.CoreLife)
             {
                 double d = DruidSlashVfxTimeline.StrikeCoreDiameter * DruidSlashVfxTimeline.StrikeCoreScale(ca);
-                Put(true, glow, World(s.TipX, s.TipY, d * .22), d, d, 0, White, (float)DruidSlashVfxTimeline.StrikeCoreOpacity(ca), CoreOrder, cam);
+                Put(true, coreSprite, World(s.TipX, s.TipY, d * .22), d, d, 0, White, (float)DruidSlashVfxTimeline.StrikeCoreOpacity(ca), CoreOrder, cam);
             }
             body = DrawDust(body, s.TipX, s.TipY, DruidSlashVfxTimeline.StrikeDustSize, ca, DruidSlashVfxTimeline.StrikeDustLife, DruidSlashVfxTimeline.StrikeDustAlpha(ca), 0, cam);
             foreach (var sh in s.Shards)
@@ -321,10 +380,13 @@ namespace Exoduser.UnityPort.Vfx
                 double sa = age - sh.SpawnAct, al = DruidSlamVfxTimeline.DebrisAlpha(sh, sa); if (al <= 0) continue;
                 if (body >= MaxBodySprites) return body;
                 double ang = s.Facing + sh.Angle, dx = Math.Cos(ang), dy = Math.Sin(ang), tr = DruidSlamVfxTimeline.DebrisTravel(sh, sa);
-                Put(false, debrisFrames[sh.Frame], World(s.TipX + dx * tr, s.TipY + dy * tr, DruidSlamVfxTimeline.DebrisHeight(sh, sa)), sh.Size, sh.Size, (float)DruidSlamVfxTimeline.DebrisRotation(sh, sa), new Color(1, 1, 1, (float)al), 1, ShardOrder, cam); body++;
+                Put(false, debrisFrames[sh.Frame], World(s.TipX + dx * tr, s.TipY + dy * tr, DruidSlamVfxTimeline.DebrisHeight(sh, sa)), sh.Size, sh.Size, (float)DruidSlamVfxTimeline.DebrisRotation(sh, sa), ShardTint(sa, al), 1, ShardOrder, cam); body++;
             }
             return body;
         }
+
+        // debris colour: the sheet's own colours, x1.3 for the first 4 ticks (r2)
+        static Color ShardTint(double age, double alpha) { float g = (float)DruidSlamVfxTimeline.DebrisBright(age); return new Color(g, g, g, (float)alpha); }
 
         // one earth_dust_burst sprite (24 frames over `life` ticks)
         int DrawDust(int body, double x, double y, double size, double age, int life, double alpha, double lift, Camera cam)
@@ -355,7 +417,7 @@ namespace Exoduser.UnityPort.Vfx
             if (age >= 0 && age < DruidSlamVfxTimeline.CoreLife)
             {
                 double d = DruidSlamVfxTimeline.CoreDiameter * DruidSlamVfxTimeline.CoreScale(age);
-                Put(true, glow, World(s.TipX, s.TipY, d * .22), d, d, 0, White, (float)DruidSlamVfxTimeline.CoreOpacity(age), CoreOrder, cam);
+                Put(true, coreSprite, World(s.TipX, s.TipY, d * .22), d, d, 0, White, (float)DruidSlamVfxTimeline.CoreOpacity(age), CoreOrder, cam);
             }
             // shock dust: the visible edge of the +6 frame is the hit circle
             body = DrawDust(body, s.X, s.Y, DruidSlamVfxTimeline.DustMainSize, age, DruidSlamVfxTimeline.DustMainLife, DruidSlamVfxTimeline.DustMainAlpha(age), 0, cam);
@@ -369,7 +431,7 @@ namespace Exoduser.UnityPort.Vfx
                 double sa = age - sh.SpawnAct, al = DruidSlamVfxTimeline.DebrisAlpha(sh, sa); if (al <= 0) continue;
                 if (body >= MaxBodySprites) return body;
                 double dx = Math.Cos(sh.Angle), dy = Math.Sin(sh.Angle), tr = DruidSlamVfxTimeline.DebrisTravel(sh, sa);
-                Put(false, debrisFrames[sh.Frame], World(s.X + dx * tr, s.Y + dy * tr, DruidSlamVfxTimeline.DebrisHeight(sh, sa)), sh.Size, sh.Size, (float)DruidSlamVfxTimeline.DebrisRotation(sh, sa), new Color(1, 1, 1, (float)al), 1, ShardOrder, cam); body++;
+                Put(false, debrisFrames[sh.Frame], World(s.X + dx * tr, s.Y + dy * tr, DruidSlamVfxTimeline.DebrisHeight(sh, sa)), sh.Size, sh.Size, (float)DruidSlamVfxTimeline.DebrisRotation(sh, sa), ShardTint(sa, al), 1, ShardOrder, cam); body++;
             }
             foreach (var p in s.Dust)
             {

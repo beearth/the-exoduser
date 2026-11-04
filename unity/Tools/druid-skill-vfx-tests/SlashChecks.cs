@@ -25,9 +25,9 @@ static partial class Program
         Check(!DruidSlashVfxTimeline.HasOrbGlow(0) && !DruidSlashVfxTimeline.HasOrbGlow(1) && DruidSlashVfxTimeline.HasOrbGlow(2), "slash orb: hit 3 telegraph only");
 
         // ---- ribbon on the real staff head (hits 1 and 2) ----
-        Check(DruidSlashVfxTimeline.RibbonTicks == 6, "ribbon: the last 6 ticks of the staff head's path");
-        Check(DruidSlashVfxTimeline.RibbonWidth >= .25 * 131 - 1e-9 && DruidSlashVfxTimeline.RibbonWidth <= .35 * 131 + 1e-9, "ribbon: width 0.25..0.35 H");
-        Check(DruidSlashVfxTimeline.RibbonOldestAct(0) == 0 && DruidSlashVfxTimeline.RibbonOldestAct(5.5) == 0 && DruidSlashVfxTimeline.RibbonOldestAct(6) == 0 && DruidSlashVfxTimeline.RibbonOldestAct(7.5) == 1 && DruidSlashVfxTimeline.RibbonOldestAct(8) == 2, "ribbon: samples older than 6 ticks drop out");
+        Check(DruidSlashVfxTimeline.RibbonTicks == 8, "ribbon: the last 8 ticks of the staff head's path [r2: was 6]");
+        Check(DruidSlashVfxTimeline.RibbonWidth >= .6 * 131 - 1e-9 && DruidSlashVfxTimeline.RibbonWidth <= .8 * 131 + 1e-9, "ribbon: width 0.6..0.8 H [r2: was 0.25..0.35]");
+        Check(DruidSlashVfxTimeline.RibbonOldestAct(0) == 0 && DruidSlashVfxTimeline.RibbonOldestAct(5.5) == 0 && DruidSlashVfxTimeline.RibbonOldestAct(8) == 0 && DruidSlashVfxTimeline.RibbonOldestAct(9.5) == 1 && DruidSlashVfxTimeline.RibbonOldestAct(10) == 2, "ribbon: samples older than 8 ticks drop out [r2: was 6]");
         var rv = new HashSet<int>(); for (int seed = -2000; seed < 2000; seed++) { int v = DruidSlashVfxTimeline.RibbonVariant(seed); rv.Add(v); }
         Check(rv.Count == 3 && rv.All(v => v >= 0 && v <= 2), "ribbon: whip_smear variant 0..2 all occur over seeds");
         bool uOk = true; for (int v = 0; v < 3; v++) { double a = DruidSlashVfxTimeline.RibbonU0(v), b = DruidSlashVfxTimeline.RibbonU1(v); if (!(a >= 0 && a < b && b <= 1)) uOk = false; }
@@ -50,6 +50,16 @@ static partial class Program
         Check(angleOk, "ribbon fallback: direction = Facing + WeaponAng");
         Check(offBoundary, "ribbon: not on the judged boundary R + pr + 300 (staff radius R + 70 is >= 230 Core px inside, more than twice the ribbon width)");
 
+        // r2 ribbon look: tinted (no pure white), fades towards the tail, weak additive head
+        Check(DruidSlashVfxTimeline.RibbonHeadTint != 0xFFFFFF && DruidSlashVfxTimeline.RibbonTailTint != 0xFFFFFF && DruidSlashVfxTimeline.RibbonTint(0) == DruidSlashVfxTimeline.RibbonHeadTint && DruidSlashVfxTimeline.RibbonTint(1) == DruidSlashVfxTimeline.RibbonTailTint, "ribbon tint bone #e8d8b8 -> bark #7a5a3c, never pure white");
+        bool tintOk = true; for (double t = 0; t <= 1; t += .05) { uint c = DruidSlashVfxTimeline.RibbonTint(t); if (((c >> 16) & 0xFF) > 0xE8 || ((c >> 8) & 0xFF) > 0xD8 || (c & 0xFF) > 0xB8) tintOk = false; }
+        Check(tintOk, "ribbon tint stays at or under the bone head colour on every channel");
+        bool alongOk = true; double pv2 = 2; for (double t = 0; t <= 1.0001; t += .05) { double al = DruidSlashVfxTimeline.RibbonAlongAlpha(t); if (al > pv2 + Eps || al < 0 || al > 1) alongOk = false; pv2 = al; }
+        Check(alongOk && Near(DruidSlashVfxTimeline.RibbonAlongAlpha(0), 1, Eps) && DruidSlashVfxTimeline.RibbonAlongAlpha(1) == 0, "ribbon: front edge brightest (alpha 1), transparent at the tail, only falls");
+        Check(DruidSlashVfxTimeline.RibbonAddOpacity <= .4 && DruidSlashVfxTimeline.RibbonBlendAlpha <= .9, "ribbon: additive head is weak (_Opacity <= .4), blend layer <= .9");
+        bool gFlat = true; for (double a = -1; a <= 200; a += .5) { double f = DruidSlashVfxTimeline.GougeAlphaFlat(a); if (f < 0 || f > .7 + Eps || f < DruidSlashVfxTimeline.GougeAlpha(a) - Eps || (DruidSlashVfxTimeline.GougeAlpha(a) == 0 && f != 0)) gFlat = false; }
+        Check(gFlat && Near(DruidSlashVfxTimeline.GougeAlphaFlat(60), .7, Eps), "flat gouge alpha = projected x2, <= .7, same life");
+
         // alpha and life
         Check(DruidSlashVfxTimeline.TrailLife == 8 && DruidSlashVfxTimeline.TrailLife <= 12, "ribbon: 8 ticks (0.13 s), well under the 12-tick cover limit");
         Check(DruidSlashVfxTimeline.TrailAlpha(-1) == 0 && DruidSlashVfxTimeline.TrailAlpha(8) == 0 && DruidSlashVfxTimeline.TrailAlpha(9) == 0 && DruidSlashVfxTimeline.TrailAlpha(60) == 0, "ribbon: alpha 0 from act +8 on");
@@ -71,7 +81,7 @@ static partial class Program
         Check(Near(DruidSlashVfxTimeline.StrikeCoreDiameter, .8 * 131, 1e-6), "strike core diameter 0.8 H");
         Check(DruidSlamVfxTimeline.CoreLife == 5 && DruidSlamVfxTimeline.CorePeakAct == 2 && Near(DruidSlashVfxTimeline.StrikeCoreAlpha(0), 1, Eps) && DruidSlashVfxTimeline.StrikeCoreAlpha(5) == 0, "strike core: 5 ticks, peak +2, alpha 1 -> 0");
         Check(DruidSlashVfxTimeline.StrikeCoreColor(0) == 0xFFF4D0 && DruidSlashVfxTimeline.StrikeCoreColor(5) == 0xD49A5C && DruidSlashVfxTimeline.StrikeCoreScale(2) == 1, "strike core: #fff4d0 -> #d49a5c, size peaks at +2");
-        Check(Near(DruidSlashVfxTimeline.StrikeCoreOpacity(0), 2.4, Eps) && DruidSlashVfxTimeline.StrikeCoreOpacity(5) == 0, "strike core HDR: _Opacity peaks at 2.4, 0 after 5 ticks");
+        Check(Near(DruidSlashVfxTimeline.StrikeCoreOpacity(0), 1.6, Eps) && DruidSlashVfxTimeline.StrikeCoreOpacity(5) == 0, "strike core HDR: _Opacity peaks at 1.6, 0 after 5 ticks [r2: was 2.4]");
 
         // strike debris and dust
         var counts = new HashSet<int>(); bool cntOk = true, angOk = true, size = true, life = true, spawn = true, perTick = true, alpha = true, travel = true, alive = true, dir = true, frameOk = true;
@@ -84,7 +94,7 @@ static partial class Program
             {
                 if (Math.Abs(s.Angle) > 35 * Math.PI / 180 + Eps) angOk = false;
                 if (s.Frame < 0 || s.Frame > 15) frameOk = false;
-                if (s.Size * DruidSlamVfxTimeline.ScreenPerCorePx * DruidSlamVfxTimeline.DebrisFillMin < 10 - 1e-6 || s.Size * DruidSlamVfxTimeline.ScreenPerCorePx * DruidSlamVfxTimeline.DebrisFillMax > 24 + 1e-6) size = false;
+                if (s.Size * DruidSlamVfxTimeline.ScreenPerCorePx * DruidSlamVfxTimeline.DebrisFillMin < 14 - 1e-6 || s.Size * DruidSlamVfxTimeline.ScreenPerCorePx * DruidSlamVfxTimeline.DebrisFillMax > 30 + 1e-6) size = false;
                 if (s.Life < 12 || s.Life > 21) life = false;
                 if (s.SpawnAct < 2 || s.SpawnAct > 6) spawn = false; else pt[s.SpawnAct]++;
                 if (DruidSlamVfxTimeline.DebrisTravel(s, 0) != 0 || DruidSlamVfxTimeline.DebrisTravel(s, s.Life) < 70 - Eps || DruidSlamVfxTimeline.DebrisTravel(s, s.Life) > 130 + Eps || DruidSlamVfxTimeline.DebrisHeight(s, 0) != 0) travel = false;
@@ -106,7 +116,7 @@ static partial class Program
         Check(angOk, "strike debris: every direction within Facing +-35 deg");
         Check(dir, "strike debris: the wedge is filled (first / last still beyond +-20 deg)");
         Check(frameOk, "strike debris: still index within 0..15");
-        Check(size, "strike debris: visible size 10..24 screen px");
+        Check(size, "strike debris: visible size 14..30 screen px [r2: was 10..24]");
         Check(life, "strike debris: life 12..21 ticks (0.2..0.35 s)");
         Check(spawn, "strike debris: spawn on act +2 .. +6");
         Check(alpha && travel, "strike debris: alpha <= .85, travel 70..130 Core px");
