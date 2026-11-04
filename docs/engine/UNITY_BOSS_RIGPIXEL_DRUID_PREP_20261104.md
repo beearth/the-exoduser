@@ -432,3 +432,17 @@ Mac 전체 인수·7기술별1x 캡처/10초 영상 수집 요청은 [03:00 인�
 **정책 검사 1회.** `druid-rigpixel-tests/Program.cs` 총 **5,531 검사 / 실패 0**, 적 전용 **43 검사**. (박스px, 기본텍셀) → (RTpx, 적용텍셀): (1,069,1)→(1,088,1), (4,000,1)→(2,016,2), (30,000,3)→(1,280,24), (500,1)→(512,1), (500,3)→(192,3), (2,044,1)→(2,048,1), (2,045,1)→(1,056,2). 다음 프레임 텍셀1 복귀·0/음수/NaN/±Infinity 입력 거부·float 최소/최대 범위·기존 영웅/드루이드 정책 유지 포함. 임시 csproj는 작업본 밖에서 실행했고 리포에는 넣지 않는다. 기존 Core 미사용 변수 경고 CS0219 2건·SDK 워크로드 확인 안내가 있었으며 테스트 종료 0이다.
 
 **에디터 컴파일:** 컴파일 미확인(공용 실행기 20분 순번 대기 초과: EXO_QUEUE_WAIT owner=claude-quit-fix, 종료 1, Unity 시작 0회). 요청 1회, 재시도 0회. 자기 예약 반환 완료. Player·빌드 실행 0. **화면 판정 미확인:** 보스전 총괄의 같은 통합 빌드/Mac에서 id 3·7 및 가까운 큰 적의 3D 유지, 머리·무기·망토 잘림 0, 화면 크기·발밑, 먼 적 가독성, 2,048 RT 메모리를 확인해야 한다.
+
+### 10.7 boss-fix-b: 아레나 실조명 Editor 촬영·바닥 후보 인자 (2026-11-05)
+
+기준 HEAD `7445707be`. 최신 사용자 지시로 Unity·Player·공용 실행기 실행과 commit·push를 하지 않았다. **컴파일·화면은 미확인(Mac 담당)**. 후보 숫자는 Mac 측정 뒤 CTO가 정하며, 런타임 바닥·조명 기본값은 그대로다. DruidRigPixelToon.shader·실루엣·드루이드 색·Core·카메라는 수정하지 않았다.
+
+기존 캡처 JSON에서 필드 방향광 3.2 → 아레나 2.08, 피치 49° → 48°, 환경광 ×.80을 확인했다. 바닥 셰이더는 실제 환경광을 읽지 않고 상수 (.08,.075,.065)만 더하며 `_Dark=1`이다. 평면 법선의 Lambert는 sin(48°)=.7431이라 피치 1° 차이만으로 BRIEF의 Y 7~11을 설명할 수 없다. 틴트·수광·그림자·톤매핑의 결합이 조사 대상이며, 숲 그림자가 바닥 전체를 덮는지는 미확인이다. BRIEF의 Y 7.5/7.5/9.3·11.1/8.3/9.1은 이전 측정 인용이며 이번 실측이 아니다.
+
+`Ground.shader`에 `_GroundAmbient`(Vector, 기존 선형 상수 그대로), `_GroundShadowFloor=0`, `_LookDiagnostic=0`을 추가했다. 기본 수광식은 이전과 같다. 양수 그림자 하한이나 다른 환경광·톤은 Editor 촬영 인자로 요청할 때만 임시 재질에 적용한다. 런타임 변경은 `NativeArena3DView*.cs`의 소유 객체 해제만 Play=Destroy / Edit=DestroyImmediate로 나눈 것이다.
+
+Mac 메서드: `Exoduser.Editor.BossArenaLookShot.Capture`. 필수 인자 `-output <출력폴더> -fieldReference <material-field-reference.json> -poseReference <move-slam-active.json 또는 move-heartbeat-active.json>`. 입력은 기존 `druid-vfx-candidate/capture-1920/arena-review/`의 JSON 두 개다. 카메라 34°·16.5·46.9453°·1920×1080을 검증하고 `NativeArena3DView` 생성→Prewarm→SetActive→Late의 실제 경로로 숲·재질·아레나 조명 분기·횃불을 만든다. Play 모드에 들어가지 않는다. 후보 인자 없이 기준 `before.png/.json`과 `look.json`만 생성한다.
+
+후보 인자(CTO 지정값만): `-groundAmbient R,G,B`(선형 0~2.4), `-groundShadowFloor 0~1`, `-groundTint R,G,B`(0~1), `-groundSat 0~1`, `-groundFlat 0~1`, `-groundDark 0~1`. 하나라도 있으면 동일 장면·동결한 횃불 상태에서 `after.png/.json`도 쓴다. 선택 인자 `-roi x,y,w,h`는 좌상단 원점의 정규화 영역(기본 .15,.20,.70,.65)이다. 전체·좌·중·우의 가시 바닥 픽셀 수, PNG Rec.601 Y 평균/표준편차, HSV S 평균/최대/.30 초과 비율, 원래 그림자 감쇠 평균/최소/.5 미만 비율·Lambert를 기록한다. 합격 플래그는 없고 CTO 선택 대기 상태를 쓴다. `VerifyMath` 메서드는 같은 측정기의 마스크·좌표·분산·그림자·인자 거부 검사를 포함하며 Capture 시작 때 실행된다. 이 메서드도 PC에서 실행하지 않았다.
+
+한계: 필드 상위 조명은 이전 JSON과 HellLighting 코드 상수로 재생한다. NativeGame의 실제 시작·영웅 부착광/스포트·동적 Core 기둥·배우·VFX·실시간 필드 수면 재질은 재현하지 않는다. 기존 JSON에 없는 방향광 shadowStrength=.55와 bias는 A2Field 코드에서 가져온다. 따라서 이 도구의 기준 컷은 이전 Player PNG의 픽셀 동일 재현이나 Y 합격 증거가 아니다. 그림자/바닥 마스크와 투명 경계도 Mac 검증이 필요하다. Runtime 가림 자원은 Editor 전용 해제 어댑터가 현재 private 멤버를 확인해 정리하며, 별도 소유 파일 NativeArenaOcclusion.cs는 수정하지 않았다. Mac은 전체 리소스·LFS와 URP 17.6/Unity 6000.6.7f1이 갖춰진 작업본에서 무창·무음, GPU 렌더 가능 상태로 실행한다. 남은 일: Editor 컴파일·첫 기준 촬영 → CTO 후보 인자 지정 → Mac 측정 → 실제 같은 빌드에서 영웅·보스·먼 적 가독성, Y 70~80·S≤.30·격자/반복/점 0 판정. 자세한 인계는 레인 `REPORT.md`에 기록한다. CHANGELOG와 커밋은 총괄 담당이다.
