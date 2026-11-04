@@ -13,10 +13,32 @@ namespace Exoduser.UnityPort
         readonly Dictionary<int,Vector3> previous=new Dictionary<int,Vector3>();readonly Dictionary<int,float> lastStep=new Dictionary<int,float>();
         readonly Dictionary<int,Vector3> projectiles=new Dictionary<int,Vector3>();readonly HashSet<int> activeProjectiles=new HashSet<int>();readonly List<int> gone=new List<int>();
         Action<List<Actor>> collect;GameObject effects;ParticleSystem leaves;Func<Vector3> hero;int nextRipple,pierCount;float nextSample;
+        public static bool WindOff {get{return Array.IndexOf(Environment.GetCommandLineArgs(),"--a2r-wind-off")>=0;}}
+        readonly Dictionary<Mesh,Mesh> hangingMeshes=new Dictionary<Mesh,Mesh>();
+        readonly List<Renderer> hangingRenderers=new List<Renderer>();MaterialPropertyBlock hangingBlock;
+        void PrepareHangingMoss(Transform world)
+        {
+            foreach(var filter in world.GetComponentsInChildren<MeshFilter>(true))
+            {
+                var r=filter.GetComponent<MeshRenderer>();var source=filter.sharedMesh;
+                if(r==null||r.sharedMaterial==null||r.sharedMaterial.shader.name!="EXODUSER/A2HangingMoss"||source==null||!source.isReadable)continue;
+                Mesh mesh;if(!hangingMeshes.TryGetValue(source,out mesh))
+                {
+                    mesh=Instantiate(source);mesh.name=source.name+" top-pinned wind";var points=mesh.vertices;var colors=new Color[points.Length];var b=source.bounds;
+                    for(int i=0;i<points.Length;i++)colors[i]=new Color(Mathf.Clamp01((b.max.y-points[i].y)/Mathf.Max(.001f,b.size.y)),.37f,0,1);
+                    mesh.colors=colors;b.Expand(.5f);mesh.bounds=b;hangingMeshes.Add(source,mesh);
+                }
+                filter.sharedMesh=mesh;hangingRenderers.Add(r);
+                // Occlusion already made a companion before nature setup. Its mesh and
+                // LitFade wind must match the body; otherwise the silhouette tears apart.
+                var portion=filter.transform.Find("A2R sight circle portion");
+                if(portion!=null){var f=portion.GetComponent<MeshFilter>();var fade=portion.GetComponent<MeshRenderer>();if(f!=null)f.sharedMesh=mesh;if(fade!=null)hangingRenderers.Add(fade);}
+            }
+        }
         public bool Applied {get;private set;}public int ActorCount {get;private set;}public int FootRipples {get;private set;}public int ProjectileRipples {get;private set;}public int PierCount {get{return pierCount;}}public int ParticleCount {get{int total=0;if(effects!=null)foreach(var p in effects.GetComponentsInChildren<ParticleSystem>())total+=p.particleCount;return total;}}
         public void Initialize(Transform world,Vector3 camp,Func<Vector3> player,Action<List<Actor>> readActors)
         {
-            hero=player;collect=readActors;effects=new GameObject("A2R restrained existing-world air");effects.transform.SetParent(world,false);
+            hero=player;collect=readActors;PrepareHangingMoss(world);effects=new GameObject("A2R restrained existing-world air");effects.transform.SetParent(world,false);
             MakeParticles("camp fireflies",camp+Vector3.up*1.2f,new Vector3(8,1.8f,6),16,8,.03f,.06f,new Color(.72f,.49f,.18f,.23f),0);
             leaves=MakeParticles("forest falling leaves",hero()+Vector3.up*4,new Vector3(18,3,16),24,12,.06f,.12f,new Color(.24f,.19f,.10f,.30f),1);
             var bridge=world.Find("A2 시작 목교");Vector3 at=bridge!=null?bridge.position:new Vector3(43.2f,0,-71.8f);
@@ -47,7 +69,13 @@ namespace Exoduser.UnityPort
             var rotation=p.rotationOverLifetime;rotation.enabled=true;rotation.z=kind==1?.15f:.02f;
             var renderer=go.GetComponent<ParticleSystemRenderer>();renderer.sharedMaterial=new Material(Resources.Load<Shader>("A2R/Air"));renderer.sharedMaterial.SetFloat("_Kind",kind);renderer.renderMode=kind==2?ParticleSystemRenderMode.HorizontalBillboard:ParticleSystemRenderMode.Billboard;renderer.shadowCastingMode=ShadowCastingMode.Off;renderer.receiveShadows=false;renderer.maxParticleSize=.012f;renderer.minParticleSize=0;p.Play();return p;
         }
-        public void SetLook(bool on){Applied=on;if(effects!=null)effects.SetActive(on&&Array.IndexOf(Environment.GetCommandLineArgs(),"--a2r-air-effects")>=0);Shader.SetGlobalFloat("_A2RNatureOn",on?1:0);Shader.SetGlobalFloat("_A2R3DWindOn",on?1:0);}
+        public void SetLook(bool on)
+        {
+            Applied=on;if(effects!=null)effects.SetActive(on&&Array.IndexOf(Environment.GetCommandLineArgs(),"--a2r-air-effects")>=0);
+            Shader.SetGlobalFloat("_A2RNatureOn",on?1:0);Shader.SetGlobalFloat("_A2R3DWindOn",on?1:0);Shader.SetGlobalFloat("_A2RWindOff",WindOff?1:0);
+            if(hangingRenderers.Count>0&&hangingBlock==null)hangingBlock=new MaterialPropertyBlock();
+            foreach(var r in hangingRenderers)if(r!=null){r.GetPropertyBlock(hangingBlock);hangingBlock.SetVector("_A2R3DWind",new Vector4(.065f,0,0,0));r.SetPropertyBlock(hangingBlock);}
+        }
         public void Ripple(Vector3 at,float strength,bool projectile=false){ripples[nextRipple++%24]=new Vector4(at.x,at.z,Time.time,strength);if(projectile)ProjectileRipples++;else FootRipples++;}
         void LateUpdate()
         {
@@ -56,6 +84,7 @@ namespace Exoduser.UnityPort
             Shader.SetGlobalInteger("_A2RRippleCount",Mathf.Min(nextRipple,24));if(Time.unscaledTime<nextSample)return;nextSample=Time.unscaledTime+.16f;
             foreach(var a in actors){if(a.projectile)continue;var p=a.position;Vector3 old;float last;bool moved=previous.TryGetValue(a.id,out old)&&(p-old).sqrMagnitude>.003f;previous[a.id]=p;lastStep.TryGetValue(a.id,out last);if(moved&&p.y<-.39f&&Time.time-last>.38f){Ripple(p,.012f);lastStep[a.id]=Time.time;}}
         }
-        void OnDisable(){Shader.SetGlobalFloat("_A2RNatureOn",0);}
+        void OnDisable(){Shader.SetGlobalFloat("_A2RNatureOn",0);Shader.SetGlobalFloat("_A2R3DWindOn",0);}
+        void OnDestroy(){foreach(var mesh in hangingMeshes.Values)if(mesh!=null){if(Application.isPlaying)Destroy(mesh);else DestroyImmediate(mesh);}}
     }
 }

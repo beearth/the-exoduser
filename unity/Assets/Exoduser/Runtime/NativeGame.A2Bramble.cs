@@ -15,6 +15,8 @@ namespace Exoduser.UnityPort
                 var bark=Resources.Load<Material>("Art/map/a2/hollow/Materials/A2_Loft_Bark");
                 if(bark==null){Debug.LogError("[A2] 고사 덤불 목질 누락. 기존 사진 덤불 유지");return;}
                 a2BrambleMaterial=new Material(bark);a2BrambleMaterial.name="A2 마른 잔가지 목질";
+                a2BrambleMaterial.shader=Resources.Load<Shader>("A2R/LitOpaque");
+                a2BrambleMaterial.SetVector("_A2R3DWind",new Vector4(.04f,.15f,0,0));
                 a2BrambleMaterial.SetColor("_BaseColor",new Color(1.1f,.8f,.5f));
                 a2BrambleMaterial.SetFloat("_Smoothness",0);a2BrambleMaterial.SetFloat("_BumpScale",.45f);
                 a2BrambleMaterial.SetFloat("_SpecularHighlights",0);a2BrambleMaterial.EnableKeyword("_SPECULARHIGHLIGHTS_OFF");
@@ -51,7 +53,10 @@ namespace Exoduser.UnityPort
                     }
                 }
             }
-            var mesh=new Mesh{name="A2 고사 가지 군집 "+variant};mesh.SetVertices(points);mesh.SetUVs(0,uv);mesh.SetTriangles(triangles,0);mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();return mesh;
+            float height=0;foreach(var point in points)height=Mathf.Max(height,point.y);
+            var colors=new List<Color>(points.Count);float phase=Mathf.Repeat((variant+1)*.381966f,1);
+            foreach(var point in points)colors.Add(new Color(Mathf.Clamp01(point.y/Mathf.Max(.001f,height)),phase,0,1));
+            var mesh=new Mesh{name="A2 고사 가지 군집 "+variant};mesh.SetVertices(points);mesh.SetColors(colors);mesh.SetUVs(0,uv);mesh.SetTriangles(triangles,0);mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();var bounds=mesh.bounds;bounds.Expand(.5f);mesh.bounds=bounds;return mesh;
         }
 
         static void A2Twig(List<Vector3> points,List<Vector2> uv,List<int> triangles,Vector3 from,Vector3 to,Vector3 bend,float radius,int rings,int sides)
