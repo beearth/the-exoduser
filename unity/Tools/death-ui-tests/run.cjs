@@ -68,7 +68,7 @@ function toolchain(){
 try{
  const tc=toolchain(),version=path.basename(path.dirname(path.dirname(tc.refs))),tfm=path.basename(tc.refs);
  const source=read('NativeUiChrome.cs');
- const body=method(source,'static void ClearState(')+'\n'+method(source,'internal static GUIStyle ClearBackgrounds(')+'\n'+method(silver,'internal static float ArtSelection(')+'\n'+method(silver,'internal static void ActionPlate(');
+ const body=method(source,'static void ClearState(')+'\n'+method(source,'internal static GUIStyle ClearBackgrounds(')+'\n'+method(silver,'internal static float ArtSelection(')+'\n'+method(silver,'internal static void ThornPlate(')+'\n'+method(silver,'internal static void ActionPlate(');
  const test=fs.readFileSync(path.join(__dirname,'MaterialProbe.cs'),'utf8').replace('/*PRODUCTION*/',body);
  fs.writeFileSync(output+'/Probe.cs',test);
  fs.writeFileSync(output+'/probe.runtimeconfig.json',JSON.stringify({runtimeOptions:{tfm,framework:{name:'Microsoft.NETCore.App',version}}}));

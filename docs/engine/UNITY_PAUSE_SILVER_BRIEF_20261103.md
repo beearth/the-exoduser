@@ -201,3 +201,7 @@ Mac 3941b3ff8의3차 FAIL에 따라 공통 ActionPlate를 생성 텍스처/투�
 
 ### 23:05 디자인총괄 원화 합격표가 우선
 21:25 코드 판 RETOUCH는 폐기하고 공용 ActionPlate를 원래 btn_primary_composed/btn_plaque_20261029 9-slice로 복구한다. 밉맵OFF·밝기1.0, 호버 안쪽 빛만. 기본 IMGUI 스킨 배경은 제거하되 사용자 원화 배경은 보존한다. 일시정지 inputLive/명조/배치는 유지하고 primary 플래그를 주요 원화에 전달한다. 실제 합격은 새 Mac 비교판 대기다.
+
+### 11-04 01:45 작은 버튼 RETOUCH
+
+설정 게임·조작의 height<48 또는 width<160인 ActionPlate는 가시 없는 사전축소 btn_chip_1x/2x를 쓴다. 큰 일시정지 버튼/상단 리벳 탭 원화는 유지한다. 글자는 면 안쪽6px에서 크기를 맞추고, 키 보조바인딩 ×22px는 별도 확보한다. PC 참조컴파일/소스 검사는 통과했으며 실제4탭1920/3840·1x/3x 가독성은 Mac 대기다. [현재 UI 계약](../3.1%20ui%20hud%20디자인/UNITY_SMALL_PLATE_RETOUCH_20261104.md).
