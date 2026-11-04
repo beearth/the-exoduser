@@ -131,7 +131,7 @@ namespace Exoduser
             try
             {
                 command.SetRenderTarget(target);command.ClearRenderTarget(true,true,Color.clear);
-                var view=Matrix4x4.TRS(new Vector3(40,10,-40),Quaternion.Euler(90,0,0),Vector3.one).inverse;
+                var view=Matrix4x4.Scale(new Vector3(1,1,-1))*Matrix4x4.TRS(new Vector3(40,10,-40),Quaternion.Euler(90,0,0),Vector3.one).inverse;
                 command.SetViewProjectionMatrices(view,GL.GetGPUProjectionMatrix(Matrix4x4.Ortho(-1,1,-1,1,.1f,100),true));
                 command.DrawMesh(mesh,Matrix4x4.identity,material,0,0);Graphics.ExecuteCommandBuffer(command);
                 var request=AsyncGPUReadback.Request(target);request.WaitForCompletion();
