@@ -47,12 +47,20 @@ namespace Exoduser.UnityPort {
             s=new GUIStyle(GUI.skin.label){font=font,fontSize=size,alignment=TextAnchor.MiddleLeft,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};
             styles[size]=s;return s;
         }
+        // 1x legibility floor. Below it the text is not shrunk further: overflow is logged once per surface, language and key.
+        internal const int MinButtonFont=11;
+        static readonly HashSet<string> overflowWarned=new HashSet<string>();
+        internal static void WarnTextOverflow(string surface,string locale,string key,float need,float have,int size){
+            if(!overflowWarned.Add(surface+"|"+locale+"|"+key))return;
+            Debug.LogWarning("[TextFit] overflow surface="+surface+" locale="+locale+" key="+key+" need="+need.ToString("0.0")+" have="+have.ToString("0.0")+" size="+size);
+        }
         // Whole translated run, shadowed (0 1px 2px #000) and centred in the tab.
-        static void Label(Rect r,string text,int size,float spacing,Color c){
+        static void Label(Rect r,string text,int size,float spacing,Color c,string key,string locale){
             // Measure and paint the complete translated run so combining/RTL scripts stay intact.
             var st=new GUIStyle(Style(size)){font=NativeSilverHellUi.TextFont(font,text),alignment=TextAnchor.MiddleCenter,clipping=TextClipping.Clip};
             var inside=new Rect(r.x+12,r.y,r.width-24,r.height);
-            while(st.fontSize>8&&st.CalcSize(new GUIContent(text)).x>inside.width)st.fontSize--;
+            while(st.fontSize>MinButtonFont&&st.CalcSize(new GUIContent(text)).x>inside.width)st.fontSize--;
+            float need=st.CalcSize(new GUIContent(text)).x;if(need>inside.width)WarnTextOverflow("tab",locale,key,need,inside.width,st.fontSize);
             for(int pass=0;pass<2;pass++){
                 st.normal.textColor=pass==0?new Color(0,0,0,.7f):c;
                 NativeDemoText.Label(new Rect(inside.x,inside.y+(pass==0?1f:0f),inside.width,inside.height),text,st);
@@ -74,7 +82,7 @@ namespace Exoduser.UnityPort {
                 // :hover{filter:brightness(1.16)}
                 if(GUI.enabled&&r.Contains(Event.current.mousePosition))Fill(r,new Color(1,1,1,.05f));
                 string text=NativeLocaleCatalog.Get("native_ui_fallbacks",Labels[i],locale,Labels[i]);
-                Label(r,text,(int)s.size,s.spacing,active?NativeSilverHellUi.Bright:NativeSilverHellUi.Text);
+                Label(r,text,(int)s.size,s.spacing,active?NativeSilverHellUi.Bright:NativeSilverHellUi.Text,Labels[i],locale);
                 if(NativeUiSounds.SilentButton(()=>NativeSilverHellUi.Button(r,GUIContent.none,GUIStyle.none))&&!active)clicked=Ids[i];
             }
             Fill(new Rect(s.x,s.y+s.h-1,s.w,1),s.line);

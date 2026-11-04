@@ -124,7 +124,8 @@ namespace Exoduser.UnityPort
    NativeSilverHellUi.Slice(box,art,44,0,31,0,true);
    var inside=new Rect(box.x+31,box.y+6,box.width-62,box.height-12);
    var style=new GUIStyle(GUIStyle.none){font=CharacterTitleFont(text),fontSize=14,alignment=TextAnchor.MiddleCenter,wordWrap=false,clipping=TextClipping.Clip,padding=new RectOffset(),margin=new RectOffset()};
-   while(style.fontSize>8){var measured=style.CalcSize(new GUIContent(text));if(measured.x<=inside.width&&measured.y<=inside.height)break;style.fontSize--;}
+   while(style.fontSize>NativePanelTabBar.MinButtonFont){var measured=style.CalcSize(new GUIContent(text));if(measured.x<=inside.width&&measured.y<=inside.height)break;style.fontSize--;}
+   var fitted=style.CalcSize(new GUIContent(text));if(fitted.x>inside.width||fitted.y>inside.height)NativePanelTabBar.WarnTextOverflow("name-button",Language,primary?"create":"cancel",fitted.x,inside.width,style.fontSize);
    style.normal.textColor=primary?NativeSilverHellUi.Bright:NativeSilverHellUi.Text;
    NativeDemoText.Label(inside,text,style);
   }
@@ -137,7 +138,8 @@ namespace Exoduser.UnityPort
    float x=panel.x+41,y=panel.y;
    string heading=CharacterDialogLabel("title",K("새 캐릭터 생성","Create Character"));
    var title=new GUIStyle(presentationNameTitle){font=CharacterTitleFont(heading),fontStyle=FontStyle.Normal,fontSize=24,wordWrap=false,clipping=TextClipping.Clip,padding=new RectOffset()};NameDialogFontName=title.font==null?"missing":title.font.name;
-   while(title.fontSize>16&&title.CalcSize(new GUIContent(heading)).x>358)title.fontSize--;
+   while(title.fontSize>18&&title.CalcSize(new GUIContent(heading)).x>358)title.fontSize--;
+   float titleWidth=title.CalcSize(new GUIContent(heading)).x;if(titleWidth>358)NativePanelTabBar.WarnTextOverflow("name-title",Language,"title",titleWidth,358,title.fontSize);
    title.normal.textColor=NativeSilverHellUi.Bright;NativeDemoText.Label(new Rect(x,y+35,358,42),heading,title);
    string description=CharacterDialogLabel("description",K("지옥에 보낼 캐릭터의 이름을 지어주세요","Choose a name for the character you will send to hell."));
    string nameLabel=CharacterDialogLabel("nameLabel",K("캐릭터 이름 (2~8자)","Character name (2–8 characters)"));
