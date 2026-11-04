@@ -60,7 +60,7 @@ namespace Exoduser.UnityPort
             string failure = null;
             var run = AssemblyGuard.Run(Remodel3DLoadSteps(), e => { failure = e.GetType().Name + ": " + e.Message; Debug.LogException(e); });
             try { while (run.MoveNext()) yield return run.Current; }
-            finally { NativeTransitionProgress.End(token); }
+            finally { (run as System.IDisposable)?.Dispose(); NativeTransitionProgress.End(token); }   // dispose the guard (and the iterators under it) when the routine is stopped
             if (failure != null) Remodel3DAbort("assembly-exception: " + failure, true);
         }
 
@@ -121,9 +121,10 @@ namespace Exoduser.UnityPort
             if (!r3Scene.IsValid() || !r3Scene.isLoaded) { r3Failed = true; r3Loading = false; yield break; }
             r3Roots = r3Scene.GetRootGameObjects();
             Transform camT = R3Find("Main Camera"), markerT = R3Find("Player Marker"), vcamT = R3Find("CM LOOK-001"), terrT = R3Find("Terrain");
-            if (camT == null || markerT == null || terrT == null || terrT.GetComponent<Terrain>() == null) { Debug.LogWarning("[RM-INT] RM-1 scene rig / terrain not found: staying 2D"); r3Failed = true; r3Loading = false; yield break; }
+            if (camT == null || markerT == null || terrT == null || terrT.GetComponent<Terrain>() == null) throw new System.InvalidOperationException("RM-1 scene rig / terrain not found");   // -> shared abort path: R3Teardown unloads the additive scene
             r3Cam = camT.GetComponent<Camera>(); r3Marker = markerT; r3Vcam = vcamT != null ? vcamT.GetComponent<CinemachineCamera>() : null;
-            if (r3Cam == null) { Debug.LogWarning("[RM-INT] camera component missing: staying 2D"); r3Failed = true; r3Loading = false; yield break; }
+            if (r3Cam == null) throw new System.InvalidOperationException("RM-1 camera component missing");
+            if (r3Cam == null) throw new System.InvalidOperationException("RM-1 camera destroyed during load");
             r3Brain=r3Cam.GetComponent<CinemachineBrain>();
             if(NativeHd2D.Enabled&&r3Brain!=null)r3Brain.UpdateMethod=CinemachineBrain.UpdateMethods.ManualUpdate;
             NativeRemodel3D.Ground = terrT.GetComponent<Terrain>();

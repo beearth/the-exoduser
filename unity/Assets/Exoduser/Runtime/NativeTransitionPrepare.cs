@@ -88,6 +88,14 @@ namespace Exoduser.UnityPort {
   internal void OpStarted(){pendingOps++;}
   internal void OpDone(){if(pendingOps>0)pendingOps--;}
  }
+ // Assets the 3D field cannot open without. A missing one is an assembly failure (exception -> shared abort counter -> 2D), never a half-built "success".
+ // Required: the ground PBR surface material the soil material is cloned from, and the two base-colour ground scans. (Normal / roughness / moss / root maps stay optional.)
+ internal static class FieldRequirements {
+  internal const string SoilMaterial="ground PBR surface material (지옥 바닥 PBR 표면)";
+  internal static readonly string[] GroundScans={"A2_ForestFloor_BaseColor","A2_ForestSoil_BaseColor"};
+  internal static string FirstMissing(bool soilPresent,Func<string,bool> scanPresent){
+   if(!soilPresent)return SoilMaterial;foreach(var n in GroundScans)if(!scanPresent(n))return n;return null;}
+ }
  // Cached assembly objects may have been destroyed by an abort; callers pass a Unity-null predicate (a plain C# null check would miss them).
  internal static class CacheValidity {
   internal static bool NeedsRebuild<T>(T single,T[] many,Func<T,bool> dead)where T:class{
@@ -106,15 +114,18 @@ namespace Exoduser.UnityPort {
  internal static class AssemblyGuard {
   internal static System.Collections.IEnumerator Run(System.Collections.IEnumerator root,Action<Exception> fail){
    var stack=new System.Collections.Generic.Stack<System.Collections.IEnumerator>();stack.Push(root);Exception error=null;
-   while(stack.Count>0){
-    var top=stack.Peek();bool more=false;object current=null;
-    try{more=top.MoveNext();if(more)current=top.Current;}catch(Exception e){error=e;}
-    if(error!=null)break;
-    if(!more){stack.Pop();continue;}
-    var inner=current as System.Collections.IEnumerator;if(inner!=null){stack.Push(inner);continue;}
-    yield return current;
-   }
-   if(error!=null){while(stack.Count>0){var d=stack.Pop() as IDisposable;try{if(d!=null)d.Dispose();}catch(Exception){}}fail(error);}
+   // finally: every pending iterator is disposed on an error AND when the guard itself is disposed (StopCoroutine / caller Dispose), so inner finally blocks run.
+   try{
+    while(stack.Count>0){
+     var top=stack.Peek();bool more=false;object current=null;
+     try{more=top.MoveNext();if(more)current=top.Current;}catch(Exception e){error=e;}
+     if(error!=null)break;
+     if(!more){stack.Pop();continue;}
+     var inner=current as System.Collections.IEnumerator;if(inner!=null){stack.Push(inner);continue;}
+     yield return current;
+    }
+   }finally{while(stack.Count>0){var d=stack.Pop() as IDisposable;try{if(d!=null)d.Dispose();}catch(Exception){}}}
+   if(error!=null)fail(error);
   }
  }
  // The same curve ScreenTransitionFlow uses for its ember pulse, kept host-side so the pulse keeps breathing

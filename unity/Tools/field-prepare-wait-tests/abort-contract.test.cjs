@@ -25,6 +25,11 @@ const checks=[
  ['abort comment states the shared counter policy',/shares ONE counter/.test(s)&&!/retried at the next field entry\. exception=true/.test(s)],
  ['unload-only wait defers instead of counting',/WaitingOnOps\(r3Loading\)\) \{ r3Gate\.Defer\(\)/.test(s)&&!/WaitingOnOps\(r3Loading\)\) \{[^}]*r3Gate\.Abort/.test(s)],
  ['hellLayerOriginals released after a permanent abort and after success',/if \(r3Gate\.Permanent\) \{ r3Failed = true; hellLayerOriginals = null; \}/.test(s)&&/r3Loaded = true; r3Loading = false; r3Made\.Clear\(\); hellLayerOriginals = null;/.test(s)],
+ ['R06: required field asset missing throws (no silent yield break)',/FieldRequirements\.FirstMissing\(a2FieldSoil!=null/.test(R('NativeGame.A2Field.cs'))&&/throw new InvalidOperationException\("A2 field required asset missing/.test(R('NativeGame.A2Field.cs'))&&!/지면 재질 누락"\);yield break/.test(R('NativeGame.A2Field.cs'))],
+ ['R05: bad rig / camera throws into the abort path (scene unloaded by R3Teardown), no bare r3Failed return',/throw new System\.InvalidOperationException\("RM-1 scene rig \/ terrain not found"\)/.test(s)&&/throw new System\.InvalidOperationException\("RM-1 camera component missing"\)/.test(s)&&!/rig \/ terrain not found: staying 2D/.test(s)],
+ ['R04: Remodel3DLoad disposes the guard in its finally; the guard disposes its stack in finally',/finally \{ \(run as System\.IDisposable\)\?\.Dispose\(\);/.test(s)&&/\}finally\{while\(stack\.Count>0\)/.test(p)],
+ ['R07: r3Cam Unity-null check before use after the yields',/if\(r3Cam==null\)throw new InvalidOperationException\("A2 field camera destroyed during assembly"\);\s*\/\/[^\n]*\n\s*var aa=r3Cam\.GetUniversalAdditionalCameraData/.test(R('NativeGame.A2Field.cs'))],
+ ['R09: root relief checks sharedMesh null before isReadable',/filters\[0\]\.sharedMesh==null\|\|!filters\[0\]\.sharedMesh\.isReadable/.test(R('NativeGame.A2RootRelief.cs'))],
  ['no stale "recovers to the lobby" wording',!/recovers to the lobby/.test(p)&&!/recovers to the lobby/.test(t)],
 ];
 const A=['NativeGame.A2Bramble.cs','NativeGame.A2Field.cs','NativeGame.A2Forest.cs','NativeGame.A2RootRelief.cs','NativeGame.A2ShoreField.cs','NativeGame.HellEnvironment.cs','NativeGame.HellGround.cs','NativeGame.HellLighting.cs'];

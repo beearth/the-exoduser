@@ -49,7 +49,9 @@ namespace Exoduser.UnityPort
                 if(profile.TryGet<ColorAdjustments>(out tone)){tone.postExposure.Override(.55f);tone.contrast.Override(16);}
             }
             NativeTransitionProgress.Report("a2-lights",.04f);yield return null;
-            if(a2FieldSoil==null){Debug.LogError("[A2 필드] 지면 재질 누락");yield break;}
+            // Required assets (FieldRequirements): a missing one fails the assembly (exception -> abort policy -> 2D) instead of opening a half-built field as ready.
+            {var missing=FieldRequirements.FirstMissing(a2FieldSoil!=null,n=>Resources.Load<Texture2D>("Art/map/a2/ground/"+n)!=null);
+             if(missing!=null){Debug.LogError("[A2 필드] 필수 자원 누락 "+missing);throw new InvalidOperationException("A2 field required asset missing: "+missing);}}
             a2FieldSoil.SetFloat("_ForestBlend",1);a2FieldSoil.SetFloat("_ForestTextureMix",.65f);a2FieldSoil.SetFloat("_SoilTextureMix",1);a2FieldSoil.SetFloat("_FullField",1);
             foreach(var pair in new[]{new[]{"_ForestMap","A2_ForestFloor_BaseColor"},new[]{"_ForestNormal","A2_ForestFloor_Normal"},new[]{"_ForestRough","A2_ForestFloor_Roughness"},new[]{"_SoilMap","A2_ForestSoil_BaseColor"},new[]{"_SoilNormal","A2_ForestSoil_Normal"},new[]{"_SoilRough","A2_ForestSoil_Roughness"},new[]{"_RootMap","A2_ExposedRoots_BaseColor"},new[]{"_RootNormal","A2_ExposedRoots_Normal"},new[]{"_RootRough","A2_ExposedRoots_Roughness"}})
             {
@@ -77,6 +79,7 @@ namespace Exoduser.UnityPort
             A2FieldGroundCover();NativeTransitionProgress.Report("a2-ground-cover",.95f);yield return null;
             A2BridgeMoss();NativeTransitionProgress.Report("a2-bridge-moss",.97f);yield return null;
             A2FieldAtmosphere();NativeTransitionProgress.Report("a2-atmosphere",.99f);yield return null;
+            if(r3Cam==null)throw new InvalidOperationException("A2 field camera destroyed during assembly");   // Unity null: scene reclaimed while yielding
             var aa=r3Cam.GetUniversalAdditionalCameraData();aa.antialiasing=NativeHd2D.Enabled?AntialiasingMode.None:AntialiasingMode.SubpixelMorphologicalAntiAliasing;aa.antialiasingQuality=AntialiasingQuality.High;
             aa.requiresDepthTexture=true;r3Cam.depthTextureMode|=DepthTextureMode.Depth;
             r3Cam.backgroundColor=new Color(.105f,.145f,.17f);r3Cam.farClipPlane=220;

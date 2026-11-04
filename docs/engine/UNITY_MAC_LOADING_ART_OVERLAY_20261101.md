@@ -110,6 +110,19 @@ PC R5 `0a60cbcee273e1150ba7df8909acb77dd9f18edc`에서 게임 구역 전환 화�
 | fix4 표 문구 | 카운터 공유 문구는 fix4 표 그대로이며, 위 예외(언로드 대기 stall은 세지 않음)를 이 표에 추가했다. |
 | 검사 | `run.cjs` 62/0(덤불 캐시 재생성·파괴된 TerrainLayer 가드·언로드 대기 추가), `abort-contract`(캐시 필드 비움·R3Track 대입 필드 전수 스캔·Unity null 검사·레이어 원본 사용), `root-guard`·`capture-contract` PASS. 실게임 재시도 결과는 Mac 확인 필요. |
 
+### 11-04 fix7 — 예외 정적 점검 2차(R04~R07·R09) 반영
+
+상태: PC 하니스·참조 컴파일만, Unity 실컴파일·Mac 판정 전. 제안 패치(`run-exception-audit-2/proposed`)는 옛 판 기준이라 의도만 가져왔고, 최신 코드에서 모두 남아 있음을 확인한 뒤 고쳤다.
+
+| 항목 | 최신 코드 상태 → 처리 |
+|---|---|
+| R06 필수 자원 | 남아 있었음(`A2Field.cs` 지면 재질 누락이 `yield break`라 상위가 `r3Loaded=true`로 열었다). 필수 목록을 `FieldRequirements`에 명시: 지면 PBR 표면 재질(`지옥 바닥 PBR 표면`에서 복제하는 soil 재질), 지면 스캔 `A2_ForestFloor_BaseColor`·`A2_ForestSoil_BaseColor`. 노멀·러프니스·이끼·뿌리 맵은 선택(기존대로 로그만). 누락이면 `InvalidOperationException` → AssemblyGuard → 공유 중단 카운터(재시도 1회, 두 번째는 Permanent 2D)이며 `r3Loaded`는 서지 않고 전환은 2D로 안전하게 열린다. |
+| R05 잘못된 rig | 남아 있었음. rig·Terrain·Camera 없음은 `r3Failed`+`yield break` 대신 예외로 올려 `R3Teardown`(additive 씬 언로드 포함) 경로를 탄다. 결정적 실패라 재시도 1회 뒤 Permanent. 씬 없음·씬 로드 실패는 기존대로(`r3Failed`). |
+| R04 중단 시 Dispose | 남아 있었음. `AssemblyGuard.Run`의 정리를 `finally`로 옮겨 가드를 Dispose하면 안쪽 반복자의 finally가 돈다. `Remodel3DLoad`의 finally가 가드를 Dispose한다. `StopCoroutine` 자체가 반복자를 Dispose하는지는 Unity 동작이라 미확인(우리 쪽 finally 경로만 보장). |
+| R07 r3Cam | 남아 있었음. yield 뒤 `r3Cam` 사용 전(`A2Field`·`Remodel3DLoad`)에 Unity null 검사를 넣고 파괴됐으면 예외 중단 경로로 보낸다. |
+| R09 RootRelief | 남아 있었음(기준본에도 있던 누락). `sharedMesh==null`이면 기존 "부조 메시 읽기 누락" 경로로 건너뛴다. |
+| 검사 | `run.cjs` 77/0(필수 자원 누락→실패 카운트→2D 열기·Permanent, 가드 Dispose 추가), `abort-contract`(R04~R07·R09 소스 계약), `root-guard`·`capture-contract` PASS. |
+
 백로그(하): `abort-contract.test.cjs`는 정규식 소스 계약이라 같은 줄의 두 번째 대입·인덱서 대입·지역 변수 경유 저장·주석으로 속이기를 못 잡는다(변이 빈틈, 의도적으로 보류).
 
 ## 11-04 로비→필드 전환 로딩 촬영 모드

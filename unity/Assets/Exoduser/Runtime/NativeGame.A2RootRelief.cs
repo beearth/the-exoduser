@@ -43,7 +43,7 @@ namespace Exoduser.UnityPort
                 var go=Instantiate(useRaised?raised:source,a2Root.transform);go.name=useRaised?"A2 거목 높은 스캔 뿌리":"A2 연속 뿌리 부조";
                 go.transform.SetPositionAndRotation(new Vector3(placement.x,baseY,placement.y),Quaternion.Euler(0,placement.w,0));go.transform.localScale=Vector3.one*placement.z;
                 var filters=go.GetComponentsInChildren<MeshFilter>();
-                if(filters.Length!=1||!filters[0].sharedMesh.isReadable||filters[0].sharedMesh.colors.Length!=filters[0].sharedMesh.vertexCount)
+                if(filters.Length!=1||filters[0].sharedMesh==null||!filters[0].sharedMesh.isReadable||filters[0].sharedMesh.colors.Length!=filters[0].sharedMesh.vertexCount)
                 {Debug.LogError("[A2] 부조 메시 읽기/재질 가중 누락. 기존 거목 접합 유지");go.SetActive(false);Destroy(go);continue;}
                 var filter=filters[0];var mesh=R3Track(Instantiate(filter.sharedMesh));var vertices=mesh.vertices;
                 var center=filter.transform.TransformPoint(mesh.bounds.center);

@@ -217,6 +217,31 @@ static class P{
    while(b.Busy&&b.wall<100){if(b.swapped&&g.CanStart&&!started){started=true;began=b.wall;tk=NativeTransitionProgress.Begin("n2");}if(started&&!loaded&&b.wall-began>=4){NativeTransitionProgress.End(tk);loaded=true;}b.Frame(F);}
    C(started&&loaded&&!b.flow.Failed&&b.doneAt>=began+4&&g.Aborts==abortsBefore,"(n) next transition assembles through the normal path with a watchdog and waits for it",b.doneAt.ToString("F1"));
    var p=new FieldLoadGate();p.MarkPermanent();p.Defer();C(!p.Deferred,"(n) Defer never overrides permanent");}
+  // 13 (o). R06: a required ground asset missing is an assembly failure (not a half-built success): r3Loaded stays false, the shared abort counter is used, 2D opens safely.
+  {C(FieldRequirements.FirstMissing(true,n=>true)==null,"(o) all required assets present -> nothing missing");
+   C(FieldRequirements.FirstMissing(false,n=>true)==FieldRequirements.SoilMaterial,"(o) soil material missing is reported first");
+   C(FieldRequirements.FirstMissing(true,n=>n!="A2_ForestSoil_BaseColor")=="A2_ForestSoil_BaseColor","(o) a missing base-colour ground scan is reported by name");
+   C(FieldRequirements.GroundScans.Length==2,"(o) required list is explicit in code");
+   var gate=new FieldLoadGate();bool r3Loaded=false,r3Failed=false;int done2D=0;string reason=null;
+   System.Collections.IEnumerator Assembly(){var tk=NativeTransitionProgress.Begin("a2-field");try{yield return null;var missing=FieldRequirements.FirstMissing(false,n=>true);if(missing!=null)throw new InvalidOperationException("A2 field required asset missing: "+missing);r3Loaded=true;}finally{NativeTransitionProgress.End(tk);}}
+   for(int entry=0;entry<3;entry++){
+    gate.FieldEntry();var sm=new Sim(entry==0);sm.pending=()=>!r3Loaded&&!r3Failed&&!gate.Deferred&&!gate.Permanent;bool started=false;System.Collections.IEnumerator run=null;
+    while(sm.Busy&&sm.wall<60){
+     if(sm.swapped&&!started&&gate.CanStart){started=true;run=AssemblyGuard.Run(Assembly(),e=>{reason=e.Message;NativeTransitionProgress.Fail(e.Message);gate.Abort(true);if(gate.Permanent)r3Failed=true;});}
+     if(run!=null&&!r3Loaded)run.MoveNext();
+     sm.Frame(F);}
+    if(sm.doneAt>0&&!r3Loaded)done2D++;}
+   C(!r3Loaded&&done2D==3,"(o) required asset missing -> r3Loaded=false and every entry still opens (2D)");
+   C(gate.Aborts==2&&gate.Permanent&&r3Failed,"(o) counted by the shared abort counter: one retry, then permanent 2D",gate.Aborts+"");
+   C(reason!=null&&reason.Contains("required asset missing"),"(o) reason recorded",reason??"");}
+  // 13 (p). R04: stopping the routine (Dispose of the guard) runs the finally blocks of the iterators underneath it.
+  {bool innerFinally=false,midFinally=false;
+   System.Collections.IEnumerator Inner(){try{yield return null;yield return null;}finally{innerFinally=true;}}
+   System.Collections.IEnumerator Mid(){try{yield return Inner();}finally{midFinally=true;}}
+   var g=AssemblyGuard.Run(Mid(),e=>{});g.MoveNext();g.MoveNext();((IDisposable)g).Dispose();
+   C(innerFinally&&midFinally,"(p) disposing the guard disposes nested iterators (finally blocks run)");
+   bool failed=false;var g2=AssemblyGuard.Run(Mid(),e=>failed=true);while(g2.MoveNext()){}
+   C(!failed,"(p) normal completion unchanged");}
   foreach(var l in log)Console.WriteLine(l);
   Console.WriteLine("checks="+checks+" failures="+failures);Environment.Exit(failures==0?0:1);}
 }
