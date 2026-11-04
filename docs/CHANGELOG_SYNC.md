@@ -1,3 +1,7 @@
+## 2026-11-04 A2R A2RSetup NullReferenceException 가드 (L8)
+
+- `NativeGame.A2Redesign.cs:19` `r3Roots` 루프에 `root!=null` 가드 추가: 파괴된 루트(RM1_Slice `Shafts`, HellLighting.cs:34 Destroy)를 건너뜀. Core·구조 변경 0. 컴파일 미확인(PC)·Mac 재판정 필요. 상세 `docs/0마스터플랜/worklog/cloud-lanes/L8-a2r-nre_20261104.md`.
+
 2026-11-04 A2R 시야·바닥 증명 경로 정체(디버깅 총괄, CTO 03:05): (5189.318,3689.442)→(5180,3700) state=idle·정적 pass=True 정체는 깨어난 심연의 앵글러가 순간이동해 착지한 몸통(R120+15)이 경로 위에서 플레이어를 매 틱 밀어낸 것(Core `TickFieldBoss` = 웹 `_fbTickOne`). QA BFS·pass가 정적 맵만 봐서 생긴 QA 결함이다. `NativeGame.A2RSightSmoke.cs`가 살아 있는 몸통·착지점을 피하고 정체 시 최대 3회 재계획하며, 실패 메시지에 몸통 위치를 적는다. .NET 재현(몸통에서 135px 정체)과 추출 코드 검증(목표 도착 90노드)을 했고, Unity 컴파일 오류 0, Core·맵 무변경. 기록 docs/engine/UNITY_A2R_EXISTING_ASSETS_20261103.md.
 
 ## 2026-11-04 A2R 00:10 검증 FAIL·갱신 보류
