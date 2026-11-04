@@ -8,6 +8,8 @@
 
 2026-11-04 10:15 공용 실행기 BuildLoop Player 단독 실행(CTO A안): -PcException buildloop/-Exclusive Player는 다른 Player가 끝날 때까지 기다린 뒤 혼자 돌고, 그동안 새 Player를 받지 않는다(돌던 Player는 끊지 않음, 다른 레인 동시 2슬롯 유지). 원인=QA Player 동시 4K 영상 디코드로 52a39f8f6 회차 M1 로비 영상 준비 12초 초과 33회·08:44 회차 UI 겹침 영상 준비 실패, 바탕화면 교체 막힘. 실행기 `2026.11.04-exclusive`, 시험 exclusive-test.ps1. 문서 unity/Tools/devtools/README.md.
 
+2026-11-04 1-1 실측(CTO 정정 반영): source 52a39f8f6, 빌드 1회/시작→지옥문 2판 자연 진행. 경과 평균 7.59~7.78분, 단순 거리 비례 ×1.3=9.87~10.11분/×1.5=11.39~11.67분. RM1_Slice 패키징 누락으로 2D 폴백이므로 3D 확대 결정 보류. 보스전 각 1사망, 크래시·실제 예외·USER_SAVE 변경·사용자 화면 창·잔여 0. 코드/Core 변경 0. 관측 범위·구역 시간·결함·정리 기록: docs/engine/UNITY_FULLRUN_MEASURE_20261104.md.
+
 2026-11-04 09:20 UI 겹침 검사 전면 영상 대기 10→30초(도구 총괄, BuildLoop 08:44 FAIL): 빌드·스모크 PASS 뒤 전 화면 UI 겹침 검사 14분째 UiWaitRootMovie가 world_intro_v22b_steam.mp4 준비를 10초 안에 못 봐 실패, 바탕화면 교체 안 됨. 그 시각 다른 레인 Player 2~3개가 GPU 영상 디코더를 함께 씀. QA 경로만 30초로 늘리고 실패 메시지에 prepared·frame·url을 남긴다(Runtime QA, Core·게임 화면 무변경). 11-03 09:20 실패(마우스 안전영역 역변환)는 다른 원인.
 
 2026-11-04 바닥 예고 투영 색 수정(임펙트 총괄, CTO 요청 단독 브랜치): NativeGroundWarningProjection이 sRGB 정점색을 선형 변환 없이 셰이더에 넘겨 Linear 프로젝트에서 드루이드 바닥 예고(어두운 독액 얼룩 #1c3307 계열)가 밝은 민트 초록 원판·부채꼴로 보였다(PC 무창 후보 d7f5c3a1e 1920 촬영). Linear일 때 Color.linear로 변환. 쓰는 곳 NativeDruidTelegraphView(unity/main) 1곳. 같은 파일 내용으로 PC Roslyn Core·Runtime 컴파일 확인(기존 무관 Remodel 1건 외 0).
