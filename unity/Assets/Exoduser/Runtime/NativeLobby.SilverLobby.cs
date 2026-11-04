@@ -64,7 +64,7 @@ namespace Exoduser.UnityPort
                 int index=characterScroll+n;
                 var card=new Rect(1428,421+n*94,390,84);
                 string name=Characters.NameAt(index);
-                if(name.Length==0){DrawEmptySilverSlot(card);continue;}
+                if(name.Length==0){DrawEmptySilverSlot(card);if(n==0&&Characters.Count==0&&NativeFlavorStorage.ImportFailed)DrawImportFailedNote(card);continue;}
                 bool selected=index==Characters.SelectedIndex;
                 if(selected){
                     Fill(card,new Color(194/255f,26/255f,16/255f,.1f));
@@ -131,6 +131,14 @@ namespace Exoduser.UnityPort
         // so the face colour rises: Y(out)=(1-a)*Ybg+a*Yface, Yface(8,8,12)=8.46 -> 8.2 over bg 4.3~5.8, 8.9 over the 15.3 panel.
         static readonly Color SilverSlotFace=new Color(8/255f,8/255f,12/255f,.94f);
         void DrawEmptySilverSlot(Rect card){Fill(card,SilverSlotFace);Border(card,new Color(.61f,.62f,.62f,.13f),1);Border(new Rect(card.x+14,card.y+14,56,56),new Color(.61f,.62f,.62f,.12f),1);}
+        // Old save folder could not be imported (permanent problem): say so inside the first empty slot. Original files stay untouched.
+        public const string ImportFailedKey="이전 저장을 가져오지 못해 새로 시작합니다. 기존 파일은 그대로 보존됩니다.";
+        GUIStyle importFailedStyle;
+        void DrawImportFailedNote(Rect card)
+        {
+            if(importFailedStyle==null)importFailedStyle=new GUIStyle(silverMicro){wordWrap=true,fontSize=12,alignment=TextAnchor.MiddleLeft};
+            NativeDemoText.Label(new Rect(card.x+82,card.y+8,card.width-96,card.height-16),NativeDemoText.Get(ImportFailedKey,Language,"Your earlier save could not be imported, so you are starting fresh. The original files are untouched."),importFailedStyle);
+        }
         internal bool DeathUiEntryPointerCapture,DeathUiEntryPointerInside,EntryPointerInside,EntryHoverVisible;
         internal string EntryReviewState;
         internal Vector2 EntryPointer,EntryPointerScreen;internal Rect EntryRect;

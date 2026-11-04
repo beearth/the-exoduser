@@ -4,6 +4,7 @@ static class Program {
  static string Fixture(string root,string folder,string value){string p=Path.Combine(root,folder);Directory.CreateDirectory(p);p=Path.Combine(p,"marker.v1.json");File.WriteAllText(p,value);return p;}
  static string Prepare(string root,string ns,bool full,string old,bool qa=false){string target,error;if(!NativeFlavorSavePaths.TryPrepare(root,ns,full,old,qa,out target,out error))throw new Exception(error);return target;}
  static void RejectsPromotion(string source,string stage,object snapshot,string message){bool rejected=false;try{typeof(NativeFlavorSavePaths).GetMethod("ValidateImport",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Static).Invoke(null,new[]{source,stage,snapshot});}catch(System.Reflection.TargetInvocationException e){rejected=e.InnerException is IOException;}Check(rejected,message);}
+ static void AcceptsPromotion(string source,string stage,object snapshot,string message){bool accepted=true;try{typeof(NativeFlavorSavePaths).GetMethod("ValidateImport",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Static).Invoke(null,new[]{source,stage,snapshot});}catch(System.Reflection.TargetInvocationException){accepted=false;}Check(accepted,message);}
  static int Main(string[] args){try{
   string work=Path.GetFullPath(args[0]),resources=Path.GetFullPath(args[1]);
   // Caller supplies one dedicated fixture path. Never enumerate or touch persistent user data.
@@ -11,9 +12,15 @@ static class Program {
   if(Directory.Exists(work))Directory.Delete(work,true);Directory.CreateDirectory(work);
   Environment.SetEnvironmentVariable("EXO_TEST_RESOURCE_ROOT",resources);
   string support=Path.Combine(work,"Application Support");
-  string editor=Path.Combine(support,"ForDearGamers","EXODUSER: HELL LORD"),player=Path.Combine(support,"unity.ForDearGamers.EXODUSER: HELL LORD");
+  string editor=Path.Combine(support,"ForDearGamers","EXODUSER: HELL LORD"),player=Path.Combine(support,NativeFlavorSavePaths.BundleIdentifier("ForDearGamers","EXODUSER: HELL LORD"));
   var editorRoots=NativeFlavorSavePaths.LegacyRoots(editor,"ForDearGamers",true);var playerRoots=NativeFlavorSavePaths.LegacyRoots(player,"ForDearGamers",true);
-  Check(editorRoots[0]==playerRoots[0]&&editorRoots[1]==playerRoots[1]&&editorRoots[1].Contains("unity.ForDearGamers."),"macOS Editor and Player legacy layouts both resolved");
+  Check(editorRoots.Length==3&&editorRoots[0]==playerRoots[0]&&editorRoots[1]==playerRoots[1]&&editorRoots[2]==playerRoots[2]&&editorRoots[1].Contains("unity.ForDearGamers."),"macOS Editor and Player legacy layouts both resolved");
+  // #7: the real old Player folder is the bundle id; it is computed by Unity's rule, not typed into the product.
+  const string macBundle="com.ForDearGamers.EXODUSER----Unity-----------------";
+  Check(NativeFlavorSavePaths.BundleIdentifier("ForDearGamers",NativeFlavorSavePaths.LegacyProductName)==macBundle,"bundle id rule reproduces the real old Mac Player folder name");
+  Check(editorRoots[2]==Path.Combine(support,macBundle),"macOS legacy roots include the bundle-id folder for Editor and Player layouts");
+  Fixture(Path.Combine(support,macBundle),"character-roster-v1","mac-bundle-save");string macDestination,macError;
+  Check(NativeFlavorSavePaths.TryPrepare(player,"EXODUSER-HELL-FULL",true,playerRoots,false,out macDestination,out macError)&&File.ReadAllText(Path.Combine(macDestination,"character-roster-v1","marker.v1.json"))=="mac-bundle-save","macOS Player imports the old save from the bundle-id folder");
   string old=Path.Combine(work,"company",NativeFlavorSavePaths.LegacyProductName),root=Path.Combine(work,"company","official");
   string roster=Fixture(old,"character-roster-v1","roster-7"),combat=Fixture(old,"combat-save-v1","combat-99"),settings=Fixture(old,"native-settings-v1","settings-2");
   File.WriteAllText(Path.Combine(old,"Player.log"),"not a save");
@@ -29,7 +36,7 @@ static class Program {
   File.Delete(copied);RejectsPromotion(old,full,snapshot,"promotion rejects a missing copied file");File.WriteAllBytes(copied,copiedBytes);
   File.AppendAllText(copied,"changed-size");RejectsPromotion(old,full,snapshot,"promotion rejects staging size mismatch");File.WriteAllBytes(copied,copiedBytes);
   string added=Path.Combine(old,"combat-save-v1","added.json");File.WriteAllText(added,"new");RejectsPromotion(old,full,snapshot,"promotion rejects source file-set change");File.Delete(added);
-  string temp=Path.Combine(full,"combat-save-v1","inflight.tmp");File.WriteAllText(temp,"inflight");RejectsPromotion(old,full,snapshot,"promotion rejects a staging tmp");File.Delete(temp);
+  string temp=Path.Combine(full,"combat-save-v1","inflight.tmp");File.WriteAllText(temp,"inflight");AcceptsPromotion(old,full,snapshot,"#5 promotion ignores a stray .tmp in staging (a temporary is never a save)");File.Delete(temp);
   Fixture(full,"character-roster-v1","new-save");Prepare(root,"EXODUSER-HELL-FULL",true,old);
   Check(File.ReadAllText(Path.Combine(full,"character-roster-v1","marker.v1.json"))=="new-save","existing canonical save is never overwritten");
   string qaRoot=Path.Combine(work,"qa");string qa=Prepare(qaRoot,"EXODUSER-HELL-FULL",true,old,true);
@@ -49,6 +56,15 @@ static class Program {
   UnityEngine.Application.persistentDataPath=cacheRoot;BuildFlavor.Override(BuildFlavor.Kind.Full);
   using(var lease=new FileStream(Path.Combine(cacheRoot,".EXODUSER-HELL-FULL.legacy-import.lock"),FileMode.CreateNew,FileAccess.ReadWrite,FileShare.None))Check(!NativeFlavorStorage.TryResolve(out dir),"TryResolve rejects lease contention");
   Check(NativeFlavorStorage.TryResolve(out dir)&&File.ReadAllText(Path.Combine(dir,"character-roster-v1","marker.v1.json"))=="cached-source","TryResolve retries same root after contention ends, without cached failure");
+  Check(!NativeFlavorStorage.ImportFailed,"clean import does not flag a failed import");
+  // #5: an old folder the importer cannot read must not block saving: start fresh, flag it, keep every old byte.
+  string badRoot=Path.Combine(work,"bad","official"),badLegacy=Path.Combine(work,"bad",NativeFlavorSavePaths.LegacyProductName);Fixture(badLegacy,"character-roster-v1","bad-source");Directory.CreateDirectory(Path.Combine(badLegacy,"character-roster-v1","unexpected-subfolder"));
+  UnityEngine.Application.persistentDataPath=badRoot;
+  Check(NativeFlavorStorage.TryResolve(out dir)&&NativeFlavorStorage.ImportFailed&&!Directory.Exists(dir)&&File.ReadAllText(Path.Combine(badLegacy,"character-roster-v1","marker.v1.json"))=="bad-source","unreadable old save: storage resolves, player starts fresh, import failure flagged, old bytes kept");
+  // #8: QA sandbox path uses the flavor namespace; callers take it from code, not from a typed folder name.
+  Check(NativeFlavorStorage.Namespace==BuildFlavor.Current.SaveNamespace||BuildFlavor.Current.SaveNamespace==""||BuildFlavor.Current.SaveNamespace==null,"flavor namespace comes from the flavor definition");
+  string qaSandbox=Path.Combine(work,"qa-sandbox");UnityEngine.Application.persistentDataPath=Path.Combine(work,"never-used");NativeQaSandbox.Active=true;NativeQaSandbox.Root=qaSandbox;
+  Check(NativeFlavorStorage.TryResolve(out dir)&&dir==Path.Combine(qaSandbox,NativeFlavorStorage.Namespace),"QA sandbox storage lives under the flavor namespace folder");NativeQaSandbox.Active=false;
   BuildFlavor.Override(BuildFlavor.Kind.Demo);
   Check(BuildFlavor.Current.DemoEndAtStage(0)&&!BuildFlavor.Current.DemoEndAtStage(1),"demo stage-0 end threshold unchanged");
   for(int i=0;i<LobbyLanguage.Count;i++){string code=LobbyLanguage.GetCode(i);Check(!string.IsNullOrWhiteSpace(BuildFlavor.Current.DemoEndSub(code))&&!string.IsNullOrWhiteSpace(BuildFlavor.Current.DemoEndButton(code))&&!string.IsNullOrWhiteSpace(NativeDemoEndText.ForLocale(code).demoWishlist),"actual flavor API locale "+code);}

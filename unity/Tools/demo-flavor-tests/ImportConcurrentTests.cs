@@ -30,7 +30,7 @@ static class ImportConcurrentTests
   }
   using(var retry=Child("import",root,source,answer)){Check(retry.WaitForExit(15000)&&retry.ExitCode==0&&File.ReadAllText(answer)=="ok","separate process retries successfully after release");}
   Check(File.ReadAllBytes(original).SequenceEqual(bytes)&&File.ReadAllBytes(Path.Combine(root,Ns,"character-roster-v1/characters.json")).SequenceEqual(bytes),"all original and promoted bytes preserved");
-  Check(!Directory.Exists(stage)&&Directory.GetDirectories(root,Ns+".legacy-import-*").Length==0&&!File.Exists(Path.Combine(root,"."+Ns+".legacy-import.lock")),"new lease owner reclaims abandoned staging and leaves no own residue");
+  Check(!Directory.Exists(stage)&&Directory.GetDirectories(root,Ns+".legacy-import.abandoned-*").Length==1&&Directory.GetDirectories(root,Ns+".legacy-import-*").Length==0&&!File.Exists(Path.Combine(root,"."+Ns+".legacy-import.lock")),"new lease owner sets abandoned staging aside (kept, not deleted) and leaves no own residue");
   Console.WriteLine("PASS "+checks+" two-process import checks");return 0;
  }catch(Exception e){Console.Error.WriteLine("FAIL concurrent fixture: "+e.Message);return 1;}}
 }

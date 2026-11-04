@@ -7,7 +7,7 @@
 - [Steam 공식 데모 지침](https://partner.steamgames.com/doc/store/application/demos#426): 체험판 메뉴에서 본편 상점으로 연결해 위시리스트로 이어지는 흐름을 확인했다. 완료 후 자동 외부 이동 대신 사용자가 누르는 별도 버튼으로 연결한다. 결제·자동 찜 등록은 하지 않는다.
 - [공식 본편 상점](https://store.steampowered.com/app/4749590/)의 제품명 **EXODUSER: HELL LORD**를 ProjectSettings와 `PortVerification.MakeScene` 제품명 설정 양쪽에 적용한다. 회사명 `ForDearGamers` 유지.
 - [실버 헬](../3.1%20ui%20hud%20디자인/DESIGN_CONCEPT_SILVER_HELL_20261028.md)의 흑철 바탕·은빛 선·명조 글꼴을 새 상점 버튼에 적용한다. 기존 결과 화면 아래에 별도 56px 행을 추가한다. 다음 행동 버튼의 입력·저장 콜백과 분리한다.
-- [Unity persistentDataPath 문서](https://docs.unity.com/en-us/engine/6000.0/script-reference/unityengine/application/persistentdatapath)를 확인했다. Windows는 회사/제품, Mac은 Editor 회사/제품 또는 Player `unity.회사.제품` 형식이다. 공식 제품명의 `:`를 Windows에서 임의 치환하지 않고 Unity가 반환한 실제 경로를 사용한다.
+- [Unity persistentDataPath 문서](https://docs.unity.com/en-us/engine/6000.0/script-reference/unityengine/application/persistentdatapath)를 확인했다. Windows는 회사/제품, Mac Editor는 회사/제품 형식이다. Mac Player의 실제 폴더는 번들 ID(`com.회사.제품`, 영숫자가 아닌 UTF-8 바이트마다 `-`)이며 `unity.회사.제품` 가정은 틀렸다(11-04 실제 경로 확인). 공식 제품명의 `:`를 Windows에서 임의 치환하지 않고 Unity가 반환한 실제 경로를 사용한다.
 
 ## 결함과 수정
 
@@ -25,7 +25,7 @@
 
 일반 저장 루트는 `Application.persistentDataPath/<BuildFlavor.SaveNamespace>`다. full=`EXODUSER-HELL-FULL`, demo=`EXODUSER-HELL-DEMO`. 비패키지 bic/ea의 빈 namespace는 `EXODUSER-HELL-BIC/EA`로 보완한다. 캐릭터 `character-roster-v1`, 전투 `combat-save-v1`, 설정 `native-settings-v1` 세 폴더가 같은 루트를 사용한다. 스키마·revision·코덱은 변경하지 않는다.
 
-기존 이름은 `EXODUSER · Unity 이식 검증판`이다. Windows는 실제 persistentDataPath의 형제 폴더, Mac은 `~/Library/Application Support/ForDearGamers/<기존 이름>`와 `~/Library/Application Support/unity.ForDearGamers.<기존 이름>`를 탐색한다. Mac에서는 Editor 형식을 우선한다. 회사명은 바꾸지 않는다.
+기존 이름은 `EXODUSER · Unity 이식 검증판`이다. Windows는 실제 persistentDataPath의 형제 폴더, Mac은 `~/Library/Application Support/ForDearGamers/<기존 이름>`·`~/Library/Application Support/unity.ForDearGamers.<기존 이름>`에 더해 번들 ID 폴더 `~/Library/Application Support/com.ForDearGamers.EXODUSER----Unity-----------------`를 탐색한다(번들 ID는 코드 `NativeFlavorSavePaths.BundleIdentifier`가 계산하고, 테스트가 위 문자열과 같은지 확인한다). 앞의 두 형식은 실제 Player 경로가 아님이 11-04 확인되어 호환용 후보로만 남긴다. Mac에서는 Editor 형식을 우선한다. 회사명은 바꾸지 않는다.
 
 이전 우선순위: 이미 있는 목적 namespace는 그대로 사용 → 이전 제품 루트의 같은 namespace → full에 한해 현재 제품 루트의 무 namespace 저장 → full에 한해 기존 제품의 무 namespace 저장. 예전 공유 저장은 출처 flavor를 판별할 수 없으므로 demo에는 자동으로 넣지 않는다. 예전 체험판에서 만들어진 공유 저장도 원본 위치에 그대로 남는다. 명시적으로 demo namespace에 있던 데이터만 demo에 이전한다. 자동 demo→full 진행 병합은 없다.
 
@@ -38,7 +38,7 @@
 ## 검증과 Mac 인계
 
 - 수정 전 회귀 계약 5/5 실패 → 수정 후 계약 6/6 통과.
-- .NET 격리 동작 검사 **58/58**: 실제 flavor API 29언어, demo/full 구분, 원본 불변·세 저장 폴더 byte 보존, 목적 저장 보존, QA 격리, 같은 namespace demo 이전, 중단·활성 writer 거부, Mac 두 경로, 완료 임계 stage0 유지, full 종료 영향 없음, 버튼 분리/페이드 펜스/정확한 앱 URI.
+- .NET 격리 동작 검사 **58/58**: 실제 flavor API 29언어, demo/full 구분, 원본 불변·세 저장 폴더 byte 보존, 목적 저장 보존, QA 격리, 같은 namespace demo 이전, 중단·활성 writer 거부, Mac 후보 경로 3개(Editor·`unity.`·번들 ID), 완료 임계 stage0 유지, full 종료 영향 없음, 버튼 분리/페이드 펜스/정확한 앱 URI.
 - 1920×1080·3840×1080·960×540·640×360 수학적 배치 검사 통과. 실제 화면·폰트·마우스 동작의 검수가 아니다.
 - Unity 공용 bin Editor 최종 컴파일 **7b156bb4**: ok=true, exit=0, compileErrors=0, USER_SAVE 변경0. 첫 컴파일 8a24d6a3도 오류0이었으며 이후 Mac 경로 보완을 최종 컴파일로 재확인했다. PC Player 실행·Player 빌드 없음.
 
@@ -62,3 +62,27 @@ Mac 실행 인자(해당 Mac의 공용 실행기를 사용, PC에서 실행하�
 ```
 
 이 장치는 강제 QA 진입/보스 처치를 포함한다. 자연 완주 증거로 해석하지 않는다. Mac에서 확인할 것: 같은 소스 패키지 창 제목, demo/full 독립 캐릭터·전투·설정의 종료/재시작, 합성 legacy fixture 이전과 원본 불변, 1920/3840 1x의 긴 문구·누락 글꼴·버튼 겹침0, 상점 버튼이 앱4749590을 열고 결과/저장 다음 콜백을 실행하지 않는지, 기존 종료 버튼이 정상 복귀하는지. 실제 사용자 데이터로 최초 이관을 시험하지 않는다.
+
+## 11-04 검증 FAIL 11건 수정 (브랜치 claude/unity-pc-demo-flavor-fix-20261104)
+
+CTO 독립 검증 3명이 68684c9a1을 FAIL로 판정한 11건의 처리다. Core 수치·판정은 바뀌지 않았다. PC 컴파일·.NET 격리 테스트까지만 했고 Unity Player 실행·Mac 판정은 하지 않았다.
+
+| # | 처리 |
+|---|---|
+| 1 | 최신 unity/main을 다시 병합(CHANGELOG 양쪽 절 보존). 병합 뒤 `merge-base --is-ancestor origin/unity/main HEAD`로 fast-forward 가능을 확인했다 |
+| 2·9 | CHANGELOG_SYNC.md 줄마다 CR을 세어 LF 줄 0(CRLF 100%). NativeStageClearOverlay.cs의 원래 LF 줄 3개(39·146·154행)를 되돌려 906fbad35 기준 줄 끝 분포를 유지 |
+| 3 | 테스트 스텁 `Application.version` 추가. 전체 회귀(`recovery.cjs --full`)가 실제로 컴파일·실행되어 위시리스트 4해상도(1920×1080·3840×1080·960×540·640×360)·QA 격리·바이트 보존까지 통과 |
+| 4 | 가져오기 성공 때 목적 폴더 옆에 표식 `.<이름공간>.legacy-import.marker`(옛 폴더·목적 폴더의 파일 목록·크기·최종 수정 시각 SHA-256 지문, 옛 폴더 최신 수정 시각)를 남긴다. 다음 실행에서 옛 폴더가 표식보다 새롭고 목적 폴더가 표식 이후 그대로면 같은 staging→검증→교체 절차로 다시 가져오고, 기존 목적 폴더는 `<목적>.replaced-<UTC 시각>`으로 옆에 보존한다. 둘 다 바뀌었으면 목적 폴더를 유지하고 경고 로그만 남긴다. 옛 원본은 계속 읽기 전용(FileShare.Read) |
+| 5 | 옛 폴더의 `.tmp`는 복사·비교에서 제외(짝 json 유무와 무관, 원본은 그대로 둔다). 링크·알 수 없는 하위 폴더·백업만 있는 저장처럼 옛 저장 자체가 영구히 못 읽히면 저장 전체를 막지 않고 새로 시작한다(`NativeFlavorStorage.ImportFailed`, Debug.LogWarning, 로비 첫 빈 캐릭터 슬롯 안내 문구 No.4288, 29개 언어). 실패 표식(status=failed)을 남겨 목적 폴더가 그대로인 동안 다음 실행에서 다시 시도한다. 사용 중인 writer·다른 프로세스의 lease 같은 일시 충돌은 지금처럼 실패(재시도) |
+| 6 | 어떤 프로세스도 열고 있지 않은 lock(`OpenOrCreate`+`FileShare.None` 성공)은 버려진 것으로 보고 이번 호출이 소유해 끝나면 지운다. 남은 staging은 지우지 않고 `<이름>.legacy-import.abandoned-<시각>`으로 옆에 옮겨 보존한다(열려 있는 파일이 있으면 옮기지 않고 실패) |
+| 7 | Mac 옛 루트 후보에 번들 ID 폴더 추가(위 계산 규칙). 테스트 fixture를 실제 경로로 정정하고 계산 결과가 `com.ForDearGamers.EXODUSER----Unity-----------------`와 같은지·그 폴더에서 실제로 가져오는지 확인 |
+| 8 | PauseInputCheck의 기대 경로를 `NativeFlavorStorage.Namespace`(코드의 flavor 이름공간)로 계산한다 |
+| 10 | 번역 목록 No.4261 문구를 병합 사실로 정정 |
+| 11 | 아래 알려진 변화 |
+
+**알려진 변화(코드 수정 없음, 정보):**
+- Screenmanager 레지스트리(창 위치·모니터 선택)는 제품명이 바뀌어 새 이름에서 한 번 초기화된다.
+- combat-stats는 flavor 이름공간 밖에 있다. `NativeQaSandbox.Resolve(persistentDataPath)/combat-stats`(또는 `-output`)에 쓰며 `<이름공간>` 폴더 안이 아니다.
+- Player.log 위치가 바뀐다. Windows는 `%USERPROFILE%/AppData/LocalLow/ForDearGamers/<새 제품명>/Player.log`다.
+
+**실행:** `C:/nvm4w/nodejs/node.exe unity/Tools/demo-flavor-tests/recovery.cjs`(ImportRecovery), `--concurrent`(두 프로세스), `--full`(계약·전체 동작 회귀), `contracts.cjs`, `retouch.cjs`. 로그는 `I:/EXODUSER-Storage/codex-takeover/unity-11-fullrun/f1-tests`에 남는다.
