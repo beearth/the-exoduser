@@ -26,12 +26,16 @@ namespace Exoduser.UnityPort
    try{
     if(NativeQaSandbox.Active){directory=NativeFlavorSavePaths.NamespacedRoot(NativeQaSandbox.Root,Namespace);return true;}
     if(BuildFlavor.Current.Id==BuildFlavor.Kind.Full){
+     if(!NativeFlavorSavePaths.UsesLegacyRoot(Application.productName)){directory=Path.GetFullPath(Application.persistentDataPath);return !string.IsNullOrWhiteSpace(directory);}
      string root=NativeFlavorSavePaths.FullRoot(Application.persistentDataPath,Application.companyName,PlatformKind());
      if(string.IsNullOrWhiteSpace(root)||!Path.IsPathRooted(root))return false;
      directory=Path.GetFullPath(root);return true;
     }
     directory=NativeFlavorSavePaths.NamespacedRoot(Application.persistentDataPath,Namespace);return true;
-   }catch(ArgumentException e){Debug.LogError("Flavor save storage unavailable: "+e.Message);return false;}
+   }catch(Exception e){
+    if(!(e is ArgumentException||e is NotSupportedException||e is PathTooLongException||e is System.Security.SecurityException))throw;
+    Debug.LogError("Flavor save storage unavailable: "+e.Message);directory="";return false;
+   }
   }
  }
 }

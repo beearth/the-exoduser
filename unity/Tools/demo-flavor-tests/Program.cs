@@ -26,7 +26,23 @@ static class Program {
   string dir,full,demo,fullFromOld;
   UnityEngine.Application.platform=UnityEngine.RuntimePlatform.WindowsPlayer;UnityEngine.Application.persistentDataPath=winNew;
   BuildFlavor.Override(BuildFlavor.Kind.Full);Check(NativeFlavorStorage.TryResolve(out full)&&full==Path.GetFullPath(winOld),"full on Windows resolves to the old product folder");
-  UnityEngine.Application.persistentDataPath=winOld;Check(NativeFlavorStorage.TryResolve(out fullFromOld)&&fullFromOld==full,"full resolves to the same folder whichever product name the build carries");
+  UnityEngine.Application.persistentDataPath=winOld;Check(NativeFlavorStorage.TryResolve(out fullFromOld)&&fullFromOld==full,"full resolves to the same folder from the old product path");
+  UnityEngine.Application.productName=oldName;UnityEngine.Application.persistentDataPath=winNew;Check(NativeFlavorStorage.TryResolve(out dir)&&dir==full,"old product name also uses the old full root");
+  UnityEngine.Application.productName="Settings QA";Check(NativeFlavorStorage.TryResolve(out dir)&&dir==Path.GetFullPath(winNew)&&dir!=full,"another product name keeps its own persistentDataPath (never the real full root)");
+  UnityEngine.Application.productName="EXODUSER: HELL LORD ";Check(NativeFlavorStorage.TryResolve(out dir)&&dir==Path.GetFullPath(winNew),"product name must match exactly (trailing space is another product)");
+  UnityEngine.Application.productName=NativeFlavorSavePaths.OfficialProductName;
+  string projectSettings=File.ReadAllText(Path.GetFullPath(Path.Combine(work,"..","..","ProjectSettings","ProjectSettings.asset")));
+  Check(Array.Exists(projectSettings.Split('\n'),l=>l.TrimEnd('\r')=="  productName: \""+NativeFlavorSavePaths.OfficialProductName+"\""),"OfficialProductName equals ProjectSettings productName");
+  Check(NativeFlavorSavePaths.UsesLegacyRoot(NativeFlavorSavePaths.OfficialProductName)&&NativeFlavorSavePaths.UsesLegacyRoot(oldName)&&!NativeFlavorSavePaths.UsesLegacyRoot("")&&!NativeFlavorSavePaths.UsesLegacyRoot(null)&&!NativeFlavorSavePaths.UsesLegacyRoot("EXODUSER: HELL LORD QA"),"legacy root only for official or old product name");
+  // Command-line flavor: honoured only in development builds and QA/automated runs.
+  string src;var cl=new[]{"x.exe",BuildFlavor.Argument,"full"};var clDemoQa=new[]{"x.exe","--unity-overlay-capture","flavor","d",BuildFlavor.Argument,"demo"};
+  var clDemo=new[]{"x.exe",BuildFlavor.Argument,"demo"};
+  Check(!BuildFlavor.CommandLineHonored(clDemo,false,false)&&BuildFlavor.ResolveName(clDemo,false,false,out src)=="full"&&src!="command line","release build ignores the command-line flavor and uses the embedded one");
+  Check(BuildFlavor.CommandLineHonored(clDemoQa,false,false)&&BuildFlavor.ResolveName(clDemoQa,false,false,out src)=="demo"&&src=="command line","QA argument run honours the command-line flavor");
+  Check(BuildFlavor.CommandLineHonored(cl,true,false)&&BuildFlavor.ResolveName(cl,true,false,out src)=="full"&&src=="command line","development build honours the command-line flavor");
+  Check(BuildFlavor.CommandLineHonored(cl,false,true)&&!BuildFlavor.CommandLineHonored(new[]{"x.exe"},true,true),"batchmode honours it; no argument means no command-line flavor");
+  UnityEngine.Debug.isDebugBuild=true;Check(BuildFlavor.UsesCommandLine==false,"UsesCommandLine is false without the argument in the process");UnityEngine.Debug.isDebugBuild=false;
+  // QA with a command-line flavor must go through the sandbox: Resolve with the sandbox active never yields the real root (checked below for every flavor).
   UnityEngine.Application.persistentDataPath=winNew;
   var seen=new List<string>{full};
   foreach(var kind in new[]{BuildFlavor.Kind.Demo,BuildFlavor.Kind.Bic,BuildFlavor.Kind.Ea}){
@@ -44,6 +60,13 @@ static class Program {
   foreach(var kind in new[]{BuildFlavor.Kind.Full,BuildFlavor.Kind.Demo,BuildFlavor.Kind.Bic,BuildFlavor.Kind.Ea}){BuildFlavor.Override(kind);Check(NativeFlavorStorage.TryResolve(out dir)&&dir==Path.Combine(Path.GetFullPath(qaSandbox),NativeFlavorStorage.Namespace),"QA sandbox "+kind+" lives under the sandbox namespace folder");}
   NativeQaSandbox.Active=false;
   Check(!Directory.Exists(Path.Combine(work,"never-used")),"persistent root untouched during QA");
+  // Path failures (NotSupported, PathTooLong, Security) go to the same unavailable path as argument errors; anything else still throws.
+  foreach(var ex in new Exception[]{new NotSupportedException("x"),new PathTooLongException("x"),new System.Security.SecurityException("x")}){
+   NativeQaSandbox.Active=true;NativeQaSandbox.Root=null;NativeQaSandbox.Throw=ex;BuildFlavor.Override(BuildFlavor.Kind.Full);
+   Check(!NativeFlavorStorage.TryResolve(out dir)&&dir=="","unavailable instead of crash: "+ex.GetType().Name);
+  }
+  NativeQaSandbox.Throw=new InvalidOperationException("x");bool escaped=false;try{NativeFlavorStorage.TryResolve(out dir);}catch(InvalidOperationException){escaped=true;}Check(escaped,"unrelated exceptions are not swallowed");
+  NativeQaSandbox.Throw=null;NativeQaSandbox.Active=false;
   BuildFlavor.Override(BuildFlavor.Kind.Demo);
   Check(BuildFlavor.Current.DemoEndAtStage(0)&&!BuildFlavor.Current.DemoEndAtStage(1),"demo stage-0 end threshold unchanged");
   for(int i=0;i<LobbyLanguage.Count;i++){string code=LobbyLanguage.GetCode(i);Check(!string.IsNullOrWhiteSpace(BuildFlavor.Current.DemoEndSub(code))&&!string.IsNullOrWhiteSpace(BuildFlavor.Current.DemoEndButton(code))&&!string.IsNullOrWhiteSpace(NativeDemoEndText.ForLocale(code).demoWishlist),"actual flavor API locale "+code);}

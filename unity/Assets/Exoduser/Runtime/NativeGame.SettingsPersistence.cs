@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort
    settings=new NativeSettingsState(120);cinSeen=false;var args=Environment.GetCommandLineArgs();string directory;
    if(SettingsFixtureRequested&&!SettingsQaIdentity){nativeSettingsStatus=NativeSettingsStoreStatus.IoError;return;}
    string storageRoot="";
-   // Preserve fixture/review IO contracts and IO-free QA. Only ordinary persistence resolves/imports saves.
+   // Preserve fixture/review IO contracts and IO-free QA. Only ordinary persistence resolves its save folder.
    bool explicitScope=SettingsFixtureRequested||Array.IndexOf(args,NativeSettingsStorageScope.CinematicReviewArgument)>=0||NativeSettingsStorageScope.IsQa(args);
    if(!explicitScope&&!NativeFlavorStorage.TryResolve(out storageRoot)){nativeSettingsStatus=NativeSettingsStoreStatus.IoError;ApplySettingsHostValues();return;}
    if(NativeSettingsStorageScope.TryResolve(args,storageRoot,Application.productName,Application.identifier,out directory,out nativeSettingsStatus)){

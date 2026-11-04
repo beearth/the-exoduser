@@ -28,7 +28,7 @@ Steamworks의 공개(Set Live)·게시·상점 문구 게시는 사용자가 누
 | 기준 | 바탕화면 실행본 `I:\EXODUSER-Storage\unity-latest\build` = unity/main **9f0d00cf8**(11-03 19:59, M1 23/23, 홀드 스킵 3초·지옥문 목표). BuildLoop가 b04ddd73b 이상을 내면 다음 업로드는 그것 |
 | 고정 content | `G:\exoduser-steam\content\demo-unity\` (robocopy /MIR /XJ, BackUpThisFolder·pdb 제외, 212파일 6.16GB). 커밋 표식 `content\demo-unity.build-commit.json` |
 | VDF | `G:\exoduser-steam\scripts\app_build_5337590_unity.vdf`(setlive "", desc에 SHA) + `depot_build_5337591_unity.vdf`(pdb·BackUpThisFolder·log·bak 제외) |
-| 실행 옵션(예정) | `EXODUSER-Unity.exe` / `-force-d3d11 --remodel3d --unity-build-flavor demo` |
+| 실행 옵션(예정) | `EXODUSER-Unity.exe` / `-force-d3d11 --remodel3d` (flavor는 인수가 아니라 빌드에 내장: `-flavor demo`로 만든 패키지) |
 | 업로드 결과 | 3절 |
 
 ## 3. 업로드 결과
@@ -42,7 +42,7 @@ Steamworks의 공개(Set Live)·게시·상점 문구 게시는 사용자가 누
 
 ## 4. Unity 빌드 flavor 점검 — 체험판에 맞는가
 
-`BuildFlavor.cs`: 명령줄 `--unity-build-flavor demo` > 내장 `Data/build_flavor.json`(`full`로 커밋) > full. 체험판은 **실행 인수로 demo를 준다**(빌드 재생성 없이).
+`BuildFlavor.cs`: 내장 `Data/build_flavor.json`(`full`로 커밋) > full. 명령줄 `--unity-build-flavor`는 개발 빌드와 QA 실행에서만 읽고(QA sandbox 강제), 배포 빌드는 무시한다(11-04). 체험판 패키지는 **`-flavor demo`로 빌드해 demo를 내장**한다. 실행 인수로 정식판 저장을 열 수 없다.
 
 | 항목 | demo flavor 동작 (9f0d00cf8) | 판정 / unity/main에서 고칠 것 |
 |---|---|---|
@@ -93,14 +93,14 @@ Steamworks의 공개(Set Live)·게시·상점 문구 게시는 사용자가 누
 A. 비공개 시험 (지금)
 1. SteamPipe → 빌드 → "새로운 앱 브랜치 생성" → 이름 `unity-test`, 비밀번호 설정
 2. 빌드 목록에서 3절 BuildID 줄 → 오른쪽 선택 상자 `unity-test` → "변경 사항 미리 보기" → 적용
-3. 설치 → 일반 → "새로운 실행 옵션 추가" → 수정: 실행 파일 `EXODUSER-Unity.exe` / 인수 `-force-d3d11 --remodel3d --unity-build-flavor demo` / 시작 유형 실행(기본 설정) / Windows / 64비트 전용 / 베타 브랜치 `unity-test` / 설명(영어) `Play Unity Demo` → 갱신
+3. 설치 → 일반 → "새로운 실행 옵션 추가" → 수정: 실행 파일 `EXODUSER-Unity.exe` / 인수 `-force-d3d11 --remodel3d` / 시작 유형 실행(기본 설정) / Windows / 64비트 전용 / 베타 브랜치 `unity-test` / 설명(영어) `Play Unity Demo` → 갱신
 4. 게시 → "변경 사항 보기"로 기존 미게시 변경을 먼저 확인 → 게시 준비 → Steam에 게시
 5. Steam 클라이언트에서 체험판 속성 → 베타 → 비밀번호 입력 → `unity-test` 받기 → 실행 확인(DEMO 표기·1-1 종료 화면)
 
 B. 공개 전환 (U-D1·U-D3 수정 빌드로, 사용자 확인 뒤)
 1. 수정 빌드 업로드 → `unity-test`에서 확인
 2. 빌드 → 그 BuildID를 `default`로 공개
-3. 설치 → 일반 → 실행 옵션 0을 `EXODUSER-Unity.exe` / `-force-d3d11 --remodel3d --unity-build-flavor demo`로 수정, 옵션 1 삭제 → 게시
+3. 설치 → 일반 → 실행 옵션 0을 `EXODUSER-Unity.exe` / `-force-d3d11 --remodel3d`로 수정(flavor는 demo 내장 빌드가 정한다), 옵션 1 삭제 → 게시
 4. 빌드 검토가 필요하면 Notes(영문)와 함께 검토 요청 → 승인 뒤 공개
 5. 5절 상점 교체분 게시
 
@@ -143,7 +143,7 @@ B. 공개 전환 (U-D1·U-D3 수정 빌드로, 사용자 확인 뒤)
 3. **게시 준비** → **Steam에 게시**.
 
 체험판 5337590 (6절 A, 비공개 시험):
-4. 지금 있는 26404441(수정 전 9f0d00cf8)로 A의 1~5를 진행해 Steam 설치·실행 경로를 먼저 확인한다. flavor 수정 빌드는 F-1 수정과 Mac 판정을 통과한 뒤 같은 `unity-test` 브랜치에 다시 올린다. 그 업로드는 비공개이며 스팀 총괄이 한다.
+4. 지금 있는 26404441(수정 전 9f0d00cf8)로 A의 1~5를 진행해 Steam 설치·실행 경로를 먼저 확인한다. flavor 수정 빌드는 루트 고정판(복사·가져오기 없음, 11-04)이 Mac 판정을 통과한 뒤 같은 `unity-test` 브랜치에 다시 올린다. 그 패키지는 `-flavor demo`로 만들고 실행 옵션에 flavor 인수를 쓰지 않는다. 그 업로드는 비공개이며 스팀 총괄이 한다.
 
 공개 전환(6절 B)과 상점 교체(5.2절)는 U-D3를 고친 빌드가 `unity-test`에서 확인된 뒤, 사용자 확인을 받고 같은 날 진행한다.
 
@@ -214,7 +214,7 @@ B. 공개 전환 (U-D1·U-D3 수정 빌드로, 사용자 확인 뒤)
 ### 10.1 게시 시점
 
 - 체험판 앱 5337590이 공개된 뒤, 같은 날 붙인다. 공개 전에 붙이면 본편 상점에 "체험판"이 나오지만 받을 버튼이 없다.
-- "체험판 진행은 정식판과 따로 저장" 문장은 저장 분리 수정(U-D4)이 든 체험판 빌드가 공개될 때만 맞다. 지금 계획된 공개 빌드(F-1·U-D1/3/4/5 수정 SHA)에 들어 있으므로, 문장은 그대로 둔다.
+- "체험판 진행은 정식판과 따로 저장" 문장은 저장 분리 수정(U-D4)이 든 체험판 빌드가 공개될 때만 맞다. 지금 계획된 공개 빌드(루트 고정판·U-D1/3/4/5 수정 SHA)에 들어 있으므로, 문장은 그대로 둔다.
 - 본편 상점에는 **게시되지 않은 변경**이 이미 있다(한국어·영어 상세 설명 새 초안). Publish 탭에서 게시하면 그 초안도 함께 공개된다(10.3 C1).
 
 ### 10.2 붙여 넣는 위치 (사용자 클릭 순서)
