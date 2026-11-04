@@ -30,7 +30,7 @@
 | B4 | P1→P2: 가슴 판 2장이 떨어지고 창살 안에 노인이 보일 때(§6.3, 목숨 2 시작) | 드루이드 자막 | **…껍질쯤이야. 숲이 또 입혀 준다.** | **…Only a husk. The forest will clothe me again.** | **4289** | 신규 |
 | B5 | P2→P3: 두 팔·왕관이 떨어지고 노인 상체가 일어설 때(§6.3, 목숨 3 시작) | 드루이드 자막 | **…이 숨은 내 것이다. 아무도 못 거둔다.** | **…This breath is mine. No one reaps it.** | **4290** | 신규 |
 | B6 | P3→끝: 껍질이 뿌리 더미로 무너지고 노인이 침강할 때(STY-D9) | 드루이드 자막 `sink0` | 숲은 아직 배고프다. 둥지에서 보자. | The forest is still hungry. See you at the nest. | 3344 | 기존 |
-| B7 | 침강이 끝난 뒤(보스 처치 펫 대사) | 핵터 → 디로이 | …달아났다. 숲 깊은 곳으로. / 도망쳤네. 꼬리 말고 숨은 거야. | …It fled. Deeper into the forest. / It ran. It's hiding with its tail tucked. | 3350·3351 | 기존 |
+| B7 | 침강이 끝난 뒤(보스 처치 펫 대사) | 핵터 → 디로이 | …달아났다. 숲 깊은 곳으로. / 도망쳤네. 꼬리 말고 숨은 거야. | …It fled. Deeper into the forest. / It ran. It's hiding with its tail tucked. | 3350·3351 | 기존(웹에만 있음. Unity 데이터 패치는 [B7 패치 제안](DARK_DRUID_1-1_B7_PET_PATCH_20261104.md)) |
 | B8 | 출구가 열린 뒤, 북쪽 출구로 갈 때 | 핵터 | **…북쪽은 밭이다. 무얼 키우는지는 묻지 마.** | **…North of here lies a field. Don't ask what it grows.** | **4291** | 신규 |
 | B9 | B8의 짝 대사 | 디로이 | **냄새부터 최악이야. 빨리 지나가자.** | **It already smells awful. Let's get through quickly.** | **4292** | 신규 |
 | B10 | 체험판 종료 화면 부제 | 화면 문구 | 썩은 숲은 아직 끝나지 않았다. | The Rotten Forest is not finished yet. | 3473 | 기존(STY-23) |
