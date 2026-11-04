@@ -59,3 +59,6 @@ ABORT 회차가 만든 build_new는 그 회차 폴더 aborted-build로 보관한
 배포 기록: Load-State가 build-commit.json(루프 형식 commit·utc, 수동 교체 형식 shaFull·at)을 읽어 state.json deployed와 커밋이 다르고 시각이 같거나 늦으면 deployed로 받아들인다(verdict EXTERNAL, runId=by, 로그 한 줄). CTO 수동 교체가 build-commit.json만 바꿔 상태판 '마지막 배포 빌드'가 틀리던 일의 수정.
 
 WAIT는 본편 lastAttemptSha를 보존하면서 lastAttemptVerdict만 WAIT로 기록한다. 같은 SHA가 과거 실패로 남아 있어도 다음 일반 주기는 WAIT를 재시도하며, check도 Force가 필요하다는 경고를 내지 않는다. 브랜치 NoSwap의 배포 attempt 상태는 계속 변경하지 않는다. 분류/상태 단위13건과 실제 동일 SHA 다음 주기 fixture로 확인한다.
+
+
+UI 겹침 래칫(11-04 CTO): 전 화면 UI 검사가 겹침을 내면 `unity/Tools/ui-overlap/known-filter.cjs`로 `known-overlaps.json`과 대조한다. 키는 출처 파일(줄 번호 제외)·겹친 두 문자열·화면·언어이고, 목록의 줄 번호는 참고용이다(무관한 수정으로 줄이 밀려도 같은 결함). 목록 밖 겹침이 하나라도 있으면 FAIL. 목록은 바탕화면 빌드에 이미 있던 결함만 담고(출처 줄 git blame이 그 빌드 이전), 건수는 state.uiKnownMin보다 늘 수 없다(래칫 위반 FAIL). 결과는 runs/<id>/ui-check/known-filter.json. 시험 selftest/buildloop-ui-known-test.ps1, ui-overlap/known-filter.test.cjs.
