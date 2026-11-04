@@ -20,7 +20,7 @@ namespace Exoduser.UnityPort {
    a2rOcclusion.SetMasksEnabled(false);yield return A2RPlayShot("diag-camp-no-sight");a2rOcclusion.SetMasksEnabled(true);
    a2rModels.SetLook(false);yield return A2RPlayShot("diag-camp-no-3d");a2rModels.SetLook(true);
    yield return R18Pose(new Vector2(4320,6700));for(int n=0;n<20;n++){UpdateViews();yield return null;}
-   Shader.SetGlobalFloat("_A2RWindOff",0);a2rModels.WindDiagnostics();const int frames=60;Time.captureFramerate=30;var image=new Texture2D(Screen.width,Screen.height,TextureFormat.RGB24,false);string dir=Path.Combine(a2rPlayOutput,"debug10");Directory.CreateDirectory(dir);
+   Shader.SetGlobalFloat("_A2RWindOff",0);a2rModels.WindDiagnostics();a2rModels.D5VisibleWind(r3Cam,Path.Combine(a2rPlayOutput,"visible-wind.txt"));const int frames=60;Time.captureFramerate=30;var image=new Texture2D(Screen.width,Screen.height,TextureFormat.RGB24,false);string dir=Path.Combine(a2rPlayOutput,"debug10");Directory.CreateDirectory(dir);
    for(int f=0;f<frames;f++){UpdateViews();yield return new WaitForEndOfFrame();image.ReadPixels(new Rect(0,0,Screen.width,Screen.height),0,0);image.Apply();File.WriteAllBytes(Path.Combine(dir,"f"+f.ToString("000")+".jpg"),image.EncodeToJPG(92));}
    Time.captureFramerate=0;Destroy(image);Simulation.Config.EnemyAiEnabled=ai;
   }

@@ -33,10 +33,25 @@ namespace Exoduser.UnityPort
         }
         public void D5WindScale(float multiplier)
         {
-            var block=new MaterialPropertyBlock();foreach(var r in visuals.GetComponentsInChildren<MeshRenderer>(true))for(int i=0;i<r.sharedMaterials.Length;i++)
+            var block=new MaterialPropertyBlock();var seen=new HashSet<Material>();foreach(var r in visuals.GetComponentsInChildren<MeshRenderer>(true))for(int i=0;i<r.sharedMaterials.Length;i++)
             {
-                var m=r.sharedMaterials[i];if(m==null||!m.HasProperty("_A2R3DWind"))continue;r.GetPropertyBlock(block,i);var v=block.HasVector("_A2R3DWind")?block.GetVector("_A2R3DWind"):m.GetVector("_A2R3DWind");v.x*=multiplier;block.SetVector("_A2R3DWind",v);r.SetPropertyBlock(block,i);
+                var m=r.sharedMaterials[i];if(m==null||!m.HasProperty("_A2R3DWind"))continue;r.GetPropertyBlock(block,i);
+                // Do not create a slot block over a renderer-wide sight mask.
+                if(block.HasVector("_A2R3DWind")){var v=block.GetVector("_A2R3DWind");v.x*=multiplier;block.SetVector("_A2R3DWind",v);r.SetPropertyBlock(block,i);}
+                if(seen.Add(m)){var v=m.GetVector("_A2R3DWind");v.x*=multiplier;m.SetVector("_A2R3DWind",v);}
             }
+        }
+        public void D5VisibleWind(Camera camera,string output)
+        {
+            var planes=GeometryUtility.CalculateFrustumPlanes(camera);var groups=new Dictionary<string,int[]>();var text=new System.Text.StringBuilder();var block=new MaterialPropertyBlock();
+            foreach(var r in UnityEngine.Object.FindObjectsByType<MeshRenderer>(FindObjectsInactive.Exclude,FindObjectsSortMode.None))
+            {
+                if(!r.enabled||r.name.Contains("portion")||!GeometryUtility.TestPlanesAABB(planes,r.bounds)||(occlusion!=null&&!occlusion.CaptureLodIncluded(r)))continue;
+                var f=r.GetComponent<MeshFilter>();float maxR=0;if(f!=null&&f.sharedMesh!=null&&f.sharedMesh.isReadable)foreach(var color in f.sharedMesh.colors)maxR=Mathf.Max(maxR,color.r);
+                for(int i=0;i<r.sharedMaterials.Length;i++){var m=r.sharedMaterials[i];if(m==null)continue;r.GetPropertyBlock(block,i);if(!block.HasVector("_A2R3DWind"))r.GetPropertyBlock(block);var wind=block.HasVector("_A2R3DWind")?block.GetVector("_A2R3DWind"):m.HasProperty("_A2R3DWind")?m.GetVector("_A2R3DWind"):Vector4.zero;int[] count;if(!groups.TryGetValue(m.shader.name,out count)){count=new int[3];groups[m.shader.name]=count;}count[0]++;if(wind.x>0)count[1]++;if(maxR>.4f)count[2]++;string name=r.name;for(var t=r.transform.parent;t!=null;t=t.parent)name=t.name+"/"+name;text.AppendLine(name+" shader="+m.shader.name+" slot="+i+" amp="+wind.x+" Rmax="+maxR+" instancing="+m.enableInstancing);}
+            }
+            foreach(var pair in groups)text.Insert(0,pair.Key+" visibleSlots="+pair.Value[0]+" nonzeroAmp="+pair.Value[1]+" RmaxAbove04="+pair.Value[2]+"\n");
+            text.Insert(0,"time="+Time.time+" windOn="+Shader.GetGlobalFloat("_A2R3DWindOn")+" windOff="+Shader.GetGlobalFloat("_A2RWindOff")+"\n");System.IO.File.WriteAllText(output,text.ToString());
         }
         public List<GameObject> D5Hide(string category)
         {
