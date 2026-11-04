@@ -26,9 +26,11 @@ namespace Exoduser.UnityPort
             foreach(var renderer in go.GetComponentsInChildren<MeshRenderer>(true))if(renderer.enabled){renderer.shadowCastingMode=ShadowCastingMode.Off;var block=new MaterialPropertyBlock();renderer.GetPropertyBlock(block);block.SetColor("_BaseColor",new Color(.48f,.45f,.42f,1));renderer.SetPropertyBlock(block);}
             return go;
         }
-        bool d5RewardProofArmed,d5RewardProofSeen;
+        bool d5RewardProofSeen;
+        Core.Simulation d5RewardProofSource;Action<Core.ReviveText> d5RewardText;
         IEnumerator D5EnsureRewardProof()
         {
+            D5ArmRewardProof();
             if(d5RewardProofSeen||!NativeQaSandbox.Active)yield break;
             var previousRandom=Simulation.Random01;
             try
@@ -43,8 +45,9 @@ namespace Exoduser.UnityPort
         }
         public void D5ArmRewardProof()
         {
-            if(d5RewardProofArmed||!NativeQaSandbox.Active||Array.IndexOf(Environment.GetCommandLineArgs(),"--a2r-d4-proof")<0)return;
-            d5RewardProofArmed=true;Simulation.ReviveTextRaised+=text=>{if(d5RewardProofSeen||a2rPlay==null||string.IsNullOrEmpty(a2rPlayOutput)||text.Ko==null||!text.Ko.StartsWith("악의오브 추출 +",StringComparison.Ordinal))return;d5RewardProofSeen=true;StartCoroutine(D5RewardProof(text.Ko));};
+            if(d5RewardProofSource==Simulation||!NativeQaSandbox.Active||Array.IndexOf(Environment.GetCommandLineArgs(),"--a2r-d4-proof")<0)return;
+            if(d5RewardProofSource!=null&&d5RewardText!=null)d5RewardProofSource.ReviveTextRaised-=d5RewardText;
+            d5RewardProofSource=Simulation;d5RewardText=text=>{if(d5RewardProofSeen||menu||lobby!=null&&lobby.IsBlocking||a2rPlay==null||string.IsNullOrEmpty(a2rPlayOutput)||text.Ko==null||!text.Ko.StartsWith("악의오브 추출 +",StringComparison.Ordinal))return;d5RewardProofSeen=true;StartCoroutine(D5RewardProof(text.Ko));};Simulation.ReviveTextRaised+=d5RewardText;
         }
         IEnumerator D5RewardProof(string text)
         {
