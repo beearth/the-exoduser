@@ -8,12 +8,13 @@ test('1 empty lobby slot has the same dark face as filled slots',()=>{
  assert(!/bool selected=index==Characters\.SelectedIndex;Fill\(card,SilverSlotFace\)/.test(s),'filled slots stay as they were (empty-slot change only)');
  const m=s.match(/SilverSlotFace=new Color\(5\/255f,5\/255f,7\/255f,\.94f\)/);assert(m,'face alpha .94 is nearly opaque');
 });
-test('2 entry hover brightens ENTER and adds a rim glow through one shared EntryFocus path',()=>{
+test('2 entry hover brightens ENTER with a soft elliptical glow (no box rim) through one shared EntryFocus path',()=>{
  const h=rt('NativeLobby.SilverHell.cs'),l=rt('NativeLobby.SilverLobby.cs');
- assert(h.includes('DrawEntryRim(box)')&&h.includes('EntryRimReach'),'rim glow in EntryFocus');
- assert(/GUI\.color=new Color\(1,1,1,\.34f\)/.test(h),'ENTER glow alpha .18 -> .34 (drawn twice)');
+ assert(!h.includes('DrawEntryRim')&&!h.includes('EntryRimReach'),'rectangular rim removed (read as a grey frame)');
+ assert(h.includes('DrawEntryTextGlow(box)')&&/Mathf\.Sqrt\(x\*x\+y\*y\)/.test(h),'elliptical ENTER glow falling to 0 at its edge');
+ assert(/GUI\.color=new Color\(1,1,1,\.18f\)/.test(h)&&(h.match(/DrawTexture\(new Rect\(0,0,inside\.width,inside\.height\),innerButtonGlow\)/g)||[]).length===1,'medallion glow back to one .18 draw (doubled .34 showed hard edges)');
  assert(/EntryHoverVisible=canEnter&&hovered&&NativeSilverHellUi\.EntryFocus\(play\)/.test(l)&&/bool hovered=EntryReviewState=="hover"\|\|EntryReviewState==null&&EntryPointerInside/.test(l),'QA hover state and real hover share EntryFocus');
- const rim=h.match(/new Color\(196\/255f,202\/255f,210\/255f,a\*\.34f\)/);assert(rim,'silver, not neon');
+ assert(/new Color\(232\/255f,226\/255f,212\/255f,d\*d\*\.42f\)/.test(h),'warm silver, not neon');
 });
 test('3 Greek experience label is the full word and no other language is elided',()=>{
  const d=JSON.parse(read('Assets/Exoduser/Resources/Data/demo_text.json'));

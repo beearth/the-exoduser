@@ -84,7 +84,7 @@
 | # | 항목 | 고친 곳 | 전 → 후 |
 |---|---|---|---|
 | 1 | 로비 빈 슬롯 면 | NativeLobby.SilverLobby.cs `SilverSlotFace` | 빈 슬롯 면 투명 → rgba(5,5,7,.94) 어두운 면. 채운 슬롯 그리기는 바꾸지 않음(디자인 퇴보 방지, 총괄 검수). 빈 칸과 채운 칸 면 밝기는 후보 캡처에서 대조 |
-| 2 | 입장 호버 | NativeLobby.SilverHell.cs `EntryFocus`·`DrawEntryRim` | ENTER 안쪽 광 알파 .18 → .34(두 번 겹침) + 테 외곽 16px·안쪽 6px 은빛(196,202,210) 광 최대 .34. 실제 호버와 `-ui-entry-state hover`가 같은 EntryFocus 경로 |
+| 2 | 입장 호버 | NativeLobby.SilverHell.cs `EntryFocus`·`DrawEntryTextGlow` | 79fd4514d의 사각 테 외곽 광(회색 사각 틀로 보임)과 메달 광 두 겹(.34, 딱딱한 사각 가장자리)은 총괄 후보 캡처 검수에서 되돌림. 메달 광은 원래 한 번 .18, 대신 ENTER 글자 뒤에 가장자리가 0으로 사라지는 따뜻한 은빛 타원 광(232,226,212, 최대 .42, 판의 x .33~.67·y .60~.86). 테 외곽 광은 판 실루엣을 따르는 원화가 없어 넣지 않음(실루엣 광은 아트 작업 필요). 실제 호버와 `-ui-entry-state hover`가 같은 EntryFocus 경로 |
 | 3 | 그리스어 경험치 | Resources/Data/demo_text.json 키 경험치 | ΕΜΠ → Εμπειρία. 패널이 라벨 폭에 맞춰 넓어지고 안 들어가면 한 단계 줄임(NativeObjectivePanel.FitWord), 말줄임 없음. 웹 lang_el.js는 oracle이라 그대로 |
 | 4 | 펫 말풍선 본문 | NativePetBubbleView.cs | 본문 폰트 NativeSilverHellUi.Font() → NanumMyeongjo-Regular(이름창과 같은 경로). 22px 시작·하한 규칙 그대로 |
 | 5a | 사운드 탭 줄 끝 | NativePauseMenu.A15Web.cs | 효과음·음악·BGM 선택 행 폭 960 → 818(원점 96 + 818 = 914, 게임 탭과 같음) |
