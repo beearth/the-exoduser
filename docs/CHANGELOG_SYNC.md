@@ -1,3 +1,5 @@
+2026-11-04 19:30 순번 rank·알려진 좀비(CTO 긴급: 사용자가 HALT를 지웠고 재부팅은 작업 종료 뒤): 19:15 HALT가 좀비 14612와 A/B 정지 40496으로 다시 생겼다. 실행기 2026.11.04-zombieknown/rank. _zombie_known.json의 좀비(14612)는 경고만 남기고, 실행기가 처리 중인 정지 Player는 세지 않으며, 그 밖의 새 좀비는 HALT다. grant에 rank를 붙였다. Player 순번은 quit-fix A/B(0) → BuildLoop(1) → 대검 재촬영(2) → ulead-combo4(3) → 6차(4) → 나머지, Editor 순번은 BuildLoop → vfx-druid(2) → ulead-combo4(3) → 6차(4) → 나머지. loopfirst 36·zombie-known 8·기존 11종 PASS.
+
 2026-11-04 18:20 HALT 예외·Editor 우선 순번(CTO: 종료 정지 재발 3d05cf81, HALT 유지·좀비 14612 보존): 실행기 2026.11.04-haltexempt. HALT 동안 _halt_exempt.json의 owner(claude-quit-fix, 만료 있음)만 build/player를 계속하고, 좀비 검사로 HALT를 다시 만들지 않는다. 다른 owner는 HALT가 풀릴 때까지 exit 3이다. grant -Kind editor는 editor 예약을 BuildLoop 바로 뒤에 둔다(임펙트 드루이드 7기술 빌드용). halt-exempt 10건, loopfirst 30건, 기존 검사 9종 PASS.
 
 2026-11-04 18:00 Player 우선 순번 grant(CTO 순번 결정: ① BuildLoop ② 캐릭터 총괄 전사 대검 재촬영 3회 ③ 나머지): 실행기 2026.11.04-grant에 grant 명령을 추가했다. 지정 owner의 Player N회가 BuildLoop 다음 순번을 받는다(예약 큐·drain 건너뜀, 대기 중 다른 새 Player 차단, 입장마다 차감, TTL). BuildLoop 우선·단독·슬롯·메모리·돌고 있는 Player 보존 규칙은 그대로다. loopfirst-test 25건 PASS.
