@@ -1,5 +1,5 @@
 # MANUAL 06 — 보스 디렉션: 1-1 다크 드루이드부터 (초안 2026-11-05)
-- 상태: 초안(2차 반영 11-05) | 출처 상태: SOURCE_VERIFY 7522375(CX22-2) 기준 | 연구 반영: d4_04_boss_vfx, d4_04_anim, d4_03_cam, pbz(보스 리듬 규칙10), yellowsky, codex_motion_direction, codex_frame_data, codex_vfx_direction, codex_3d_pixel, codex_3d_pixel_small_team, TOOLCHAIN_20261105, REFERENCE_INDEX_20261105 | 연구 반영 대기: No Rest for the Wicked 프레임 실측(5.1 NRFTW_REFERENCE_STUDY_20261031은 감각 원칙만; REFERENCE_INDEX가 NRftW를 보스 동작 1차 자료로 지정했으나 80.lv 원문은 Mac에서 직접 열람 필요), 드루이드 신규 모델 LOCK 시트 확정, 보스 등장·퇴장 컷 길이 Mac 실측
+- 상태: 초안(2차 반영 11-05) | 출처 상태: SOURCE_VERIFY fea5684(CX22-3) 기준 | 연구 반영: d4_04_boss_vfx, d4_04_anim, d4_03_cam, pbz(보스 리듬 규칙10), yellowsky, codex_motion_direction, codex_frame_data, codex_vfx_direction, codex_3d_pixel, codex_3d_pixel_small_team, TOOLCHAIN_20261105, REFERENCE_INDEX_20261105 | 연구 반영 대기: No Rest for the Wicked 프레임 실측(5.1 NRFTW_REFERENCE_STUDY_20261031은 감각 원칙만; REFERENCE_INDEX가 NRftW를 보스 동작 1차 자료로 지정했으나 80.lv 원문은 Mac에서 직접 열람 필요), 드루이드 신규 모델 LOCK 시트 확정, 보스 등장·퇴장 컷 길이 Mac 실측
 - 범위: 페이즈 구조 표현, 기술별 예고·회피 창·빈틈의 표시 규칙, 등장·퇴장·전환 연출, 보스전 카메라. / 정하지 않는 것: HP·기술 선택·프레임 길이·포이즈(Core `DruidBoss*.cs`, `DruidRemodelData.cs`가 정답). 아래 프레임 수는 Core 인용이며 변경 제안은 "Core 제안"으로 표시한다.
 
 ## 1. 목표 장면·레퍼런스 (무엇을, 왜)

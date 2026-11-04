@@ -1,6 +1,6 @@
 # MANUAL 03 — 카메라·가림 투명화·실루엣·보스 아레나 줌 (초안 2026-11-05)
 
-- 상태: 출처 상태: SOURCE_VERIFY 7522375(CX22-2) 기준 | 초안(3차 반영 11-05) | 연구 반영: **3차: FIRST_SCENE_PLAN(§2 카메라 고정값·§5 단계), codex_synthesis(§1.3 카메라·가림 원칙, §2 보스 줌 배율·실루엣 깊이 정합 판정), yellowsky 갱신본(자체 시야 거리 조절 사실, 보스 카메라 수치는 [기준]), ENGINE_TRIAL_UE5_PLAN(§3·§4.2 UE5 카메라 칸 정합)**, d4_03_cam(전체), conventions(A·B 절), yellowsky(규칙 6 보스 카메라), poe2(§7 카메라, R10 흔들림), d4_01_env(§6), **2차: TOOLCHAIN(§3a a-2 OccluderFadePass·a-3 SilhouettePass, §1 설치 패키지), codex_urp_mood(§10 34° 먼 적·가림·LOD·DOF·비네트), codex_keyshot_composition(§5 카메라·거리 고정), codex_cinematic_text(§3 D4 실시간 컷신 카메라 설명), our_tech_audit(#16 반복 GetComponent), codex_tech_budget(예산 항목), ENGINE_DECISION(§3 카메라 UE5 칸)** | 연구 반영 대기: D4 가림 방식 공식 자료(공개 없음, 추정으로 처리). 보스별 카메라 피치·FOV·줌·복귀 시간은 D4·Hades·PoE2 모두 공개 수치 없음(codex_cinematic_text §3, 미확인)
+- 상태: 출처 상태: SOURCE_VERIFY fea5684(CX22-3) 기준 | 초안(3차 반영 11-05) | 연구 반영: **3차: FIRST_SCENE_PLAN(§2 카메라 고정값·§5 단계), codex_synthesis(§1.3 카메라·가림 원칙, §2 보스 줌 배율·실루엣 깊이 정합 판정), yellowsky 갱신본(자체 시야 거리 조절 사실, 보스 카메라 수치는 [기준]), ENGINE_TRIAL_UE5_PLAN(§3·§4.2 UE5 카메라 칸 정합)**, d4_03_cam(전체), conventions(A·B 절), yellowsky(규칙 6 보스 카메라), poe2(§7 카메라, R10 흔들림), d4_01_env(§6), **2차: TOOLCHAIN(§3a a-2 OccluderFadePass·a-3 SilhouettePass, §1 설치 패키지), codex_urp_mood(§10 34° 먼 적·가림·LOD·DOF·비네트), codex_keyshot_composition(§5 카메라·거리 고정), codex_cinematic_text(§3 D4 실시간 컷신 카메라 설명), our_tech_audit(#16 반복 GetComponent), codex_tech_budget(예산 항목), ENGINE_DECISION(§3 카메라 UE5 칸)** | 연구 반영 대기: D4 가림 방식 공식 자료(공개 없음, 추정으로 처리). 보스별 카메라 피치·FOV·줌·복귀 시간은 D4·Hades·PoE2 모두 공개 수치 없음(codex_cinematic_text §3, 미확인)
 - 범위: 게임 카메라(피치·거리·FOV·추적), 흔들림, 보스 아레나 줌, 가림 투명화(1단계), 가려진 영웅·엘리트 실루엣(2단계), 발밑 원, 먼 적 보호, 시네마틱 카메라와의 경계.
 - 이 문서가 정하지 않는 것: 시네마틱 연출 내용(13), 안개 수치(02), 판정·수치(규칙 코어), HUD 배치.
 - 현재 구현 근거: 1-1 피치 34°, 거리 16.5u (`unity/Assets/Exoduser/Runtime/NativeRemodel3D.cs` 17~18행), 보스 줌 `NativeGame.BossView.cs` 30행 `BossCameraZoom`(기존 2D 경로: 보스 생존 중 목표 0.8, 감쇠 .94^dt), 아레나 프레임 `NativeArenaCameraLayout.cs`(기본 반높이 최대 ×1.35).
@@ -96,7 +96,7 @@
 | 항목 | 내용 | 근거 | 출처 상태 |
 |---|---|---|---|
 | 34°로는 크기를 못 정함 | 피치 34°만으로 적의 화면 픽셀 크기나 최소 가시 거리를 정할 수 없다(FOV·카메라 공간 깊이·형태에 의존). "최소 16px" 같은 보편 임계값은 없다. 이 프로젝트의 최소 적 높이(px)·대비 임계·허용 투과율은 **미확인**이라 실측으로 정한다. 머리·몸통·발·무기를 월드→화면 좌표로 투영해 최종 화면에서 기록 | [사실·추정] codex_urp_mood §10 | 미검증 |
-| LOD 사라짐 | LOD 전환 기준은 화면 높이 비율이다. 먼 적이 이동 중 갑자기 사라지는지 Cull/LOD 경계를 확인한다. LOD Cross Fade의 alpha testing도 비용 대상 | [사실] codex_urp_mood §10 | 미검증 |
+| LOD 사라짐 | LOD 전환 기준은 화면 높이 비율이다. 먼 적이 이동 중 갑자기 사라지는지 Cull/LOD 경계를 확인한다. LOD Cross Fade의 alpha testing도 비용 대상 | [사실] codex_urp_mood §10 | 검증됨 |
 | 먼 적을 흐리는 효과 | DOF·모션블러·블룸을 한꺼번에 켜지 않고 효과별 같은 프레임으로 켬/끔 비교. 원거리 적을 희생하는 전역 블러를 분위기 필수값으로 두지 않는다. 비네트가 화면 위쪽 적을 지우면 낮추거나 범위를 줄인다 | [추정] codex_urp_mood §10 | 미검증 |
 | 가림물 처리 범위 | 카메라-적 사이 가림물 페이드·실루엣은 별도 기능으로 검토. **모든 가림물을 항상 투명화하면 중첩 비용과 화면 혼잡이 생긴다** → 대상 레이어를 고목 줄기·수관·큰 바위로 제한(3.3과 일치) | [추정] codex_urp_mood §10 | 미검증 |
 | 키샷 카메라 | 키샷 3안은 피치·거리·FOV·회전·추적 오프셋을 모두 고정하고 크롭으로 재구도하지 않는다. 영웅 발 접점 (50%, 60%)은 임시 가정이고 실제 값이 다르면 그 값을 세 안에 공통 적용 | [추정] codex_keyshot_composition §5 (01번 3.1표) | 우리 기준 |

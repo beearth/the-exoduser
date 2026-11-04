@@ -1,10 +1,10 @@
 # MANUAL 02 — 광원·안개·색 보정 (초안 2026-11-05)
 
-- 상태: 출처 상태: SOURCE_VERIFY 7522375(CX22-2) 기준 | 초안(3차 반영 11-05) | 연구 반영: **3차: yellowsky 갱신본(공개 평가 사실만 채택, 수치는 전부 우리 [기준]이라 Yellowsky 측정값으로 쓰지 않음), codex_synthesis(§1.2·§2 안개·톤매핑·APV·Forward+ 판정), FIRST_SCENE_PLAN(§5 단계 4 광원·안개), ENGINE_TRIAL_UE5_PLAN(§3 UE5 칸 정합)**, d4_01_env(§4~§5), poe2(§3~§4, §9 L1~P1), yellowsky(전투·임팩트 쪽 규칙만), d4_03_cam(R5 먼 적 보호), conventions(B4, C1), **2차: codex_yellowsky(식별·팀·기간만 확정, 광원·안개·색 사실 0건), codex_urp_mood(URP 안개·APV·라이트맵·쿠키·림·LUT 순서), codex_tech_budget(예산 항목), TOOLCHAIN(§2-4·§2-5·§3a a-4·§3c c-2·c-3), REFERENCE_INDEX §1·§2b, ENGINE_DECISION §2(UE5 칸 점검)** | 연구 반영 대기: **Yellowsky 광원·안개·색 실제 관찰 메모(문서 연구로는 근거 0건 확정, 공개 실기 영상을 사람이 장면별로 보는 방법만 남음 — D02-5), PoE2 발표 영상(S02)의 안개·톤매핑 방식, 이 프로젝트의 실측 수치(안개 Start/End·Density·APV 간격·Post Exposure EV·LUT Contribution 등 codex_urp_mood가 모두 "미확인"으로 남김)**
+- 상태: 출처 상태: SOURCE_VERIFY fea5684(CX22-3) 기준 | 초안(6차 반영 11-05) | 연구 반영: **6차: yellowsky_cn(CX25 중국어 1차 자료, 식별·장르·미술 역할만 확정), yellowsky_engine_mac(Mac 직접 열람, 엔진 = 개발사 자기 신고 1건), SOURCE_VERIFY_R3(CX22-3)**, **3차: yellowsky 갱신본(공개 평가 사실만 채택, 수치는 전부 우리 [기준]이라 Yellowsky 측정값으로 쓰지 않음), codex_synthesis(§1.2·§2 안개·톤매핑·APV·Forward+ 판정), FIRST_SCENE_PLAN(§5 단계 4 광원·안개), ENGINE_TRIAL_UE5_PLAN(§3 UE5 칸 정합)**, d4_01_env(§4~§5), poe2(§3~§4, §9 L1~P1), yellowsky(전투·임팩트 쪽 규칙만), d4_03_cam(R5 먼 적 보호), conventions(B4, C1), **2차: codex_yellowsky(식별·팀·기간만 확정, 광원·안개·색 사실 0건), codex_urp_mood(URP 안개·APV·라이트맵·쿠키·림·LUT 순서), codex_tech_budget(예산 항목), TOOLCHAIN(§2-4·§2-5·§3a a-4·§3c c-2·c-3), REFERENCE_INDEX §1·§2b, ENGINE_DECISION §2(UE5 칸 점검)** | 연구 반영 대기: **Yellowsky 광원·안개·색 실제 관찰 메모(문서 연구로는 근거 0건 확정, 공개 실기 영상을 사람이 장면별로 보는 방법만 남음 — D02-5), PoE2 발표 영상(S02)의 안개·톤매핑 방식, 이 프로젝트의 실측 수치(안개 Start/End·Density·APV 간격·Post Exposure EV·LUT Contribution 등 codex_urp_mood가 모두 "미확인"으로 남김)**
 - 범위: 장면 유형별 광원 방향·색온도·밝기, 안개층, 후처리 순서, 색 보정 LUT, 먼 적 가독성 규칙.
 - 이 문서가 정하지 않는 것: 지형·소품(01), 카메라·가림 실루엣(03), VFX 발광 위계의 세부(VFX 매뉴얼), 규칙 코어 수치.
 - **분위기 최상위 기준은 Downfall of Yellowsky다(사용자 확정).** 그러나 이번 연구에서 이 게임의 광원·안개·색 수치를 확인한 공개 자료가 없다. 그래서 이 문서의 수치는 D4·PoE2 연구와 우리 가독성 한계에서 나온 **[추정] 시작값**이고, 분위기 판정(6절)은 사용자가 가진 Yellowsky 레퍼런스 영상 캡처와 나란히 놓고 한다. 연구가 보강되면 이 문서를 개정한다.
-- **Yellowsky 식별(2차, codex_yellowsky §1·§2·§8):** 대상은 Steam AppID 5024530 《黄天逆途》, 개발·배급 望虚社, Steam 영어 설명의 이름은 "Downfall of Yellow Sky"다 [사실, Steam 상점]. 붙여 쓴 "Yellowsky"는 해외 보도·Reddit 표기이고 같은 작품이라는 연결은 [추정, 신뢰도 높음]. 팀 11명·공개 당시 약 2년·당시 외부 투자 0은 보도값이다 [사실·보도, 출처 시점 2026-07/08, 현재값 미확인; PlayFront는 10명·1년 이상이라 차이 있음]. **엔진은 미확인이다.** 조사한 텍스트에 Unity·Unreal·자체 엔진 명시가 없다 [codex_yellowsky §2]. 이 때문에 TOOLCHAIN §2-5와 이전 연구 메모의 "Yellowsky는 UE5(모집글 1건)"는 [단일·미확정]으로 낮춘다(ENGINE_DECISION §0도 "황천은 미확인"). **광원 개수·안개 층·색 범위·노출·후처리 수치를 확인한 공개 자료는 이번 조사에서도 0건이다.** 영상 PV(Bilibili BV1Nkga6cE1g)는 HTTP 412, 이미지는 정책상 받지 않았다. 따라서 3장의 Yellowsky 관련 수치는 계속 [추정]이며 "Yellowsky에서 확인한 값"으로 쓰지 않는다. REFERENCE_INDEX §1이 정한 연구 방법은 사람이 공개 실기 영상(BV19C356bEhm, BV1Nkga6cE1g, YouTube AHCgx-Z0tBc)을 장면별로 보고 "광원 개수·안개 층·색 범위·이펙트 크기" 판정 메모만 남기는 것이다(영상·캡처 반입 금지). 17173 기사(단일 출처)에는 제작진이 "이펙트 과밀로 인한 시각 피로"를 조절 과제로 본다는 내용이 있어 VFX 위계(발광 12% 이하, 15번 3.5)와 같은 방향이다 [단일, REFERENCE_INDEX §1].
+- **Yellowsky 식별(2차, codex_yellowsky §1·§2·§8):** 대상은 Steam AppID 5024530 《黄天逆途》, 개발·배급 望虚社, Steam 영어 설명의 이름은 "Downfall of Yellow Sky"다 [사실, Steam 상점]. 붙여 쓴 "Yellowsky"는 해외 보도·Reddit 표기이고 같은 작품이라는 연결은 [추정, 신뢰도 높음]. 팀 11명·공개 당시 약 2년·당시 외부 투자 0은 보도값이다 [사실·보도, 출처 시점 2026-07/08, 현재값 미확인; PlayFront는 10명·1년 이상이라 차이 있음]. **엔진 (6차 정정):** 2024-09-29 개발사(伽马聚集工作室, 현 望虚社) indienova 모집글에 "引擎：虚幻5"가 적혀 있다. **개발사 자기 신고 1건이고 Mac에서 원문을 직접 확인했다** [단일, yellowsky_engine_mac]. 현재까지 유지 여부·엔진 버전·Lumen/Nanite 사용·렌더 방식은 **미확인**이다. 엔진을 바꿨다는 근거도 못 찾았다. "UE5니까 Lumen" 같은 추론은 쓰지 않는다. 이 글만으로는 "UE5라서 그 화면이 나왔다"가 증명되지 않는다. 같은 주체(伽马聚集=望虚社)는 백과 표기와 게임 제목 일치에 기댄 것이다 [추정, 신뢰도 높음]. (SOURCE_VERIFY R2/R3는 도구 접근 불가로 `접속불가`를 유지했으나, 이는 Mac 직접 열람과 별개 판정이다.) **광원 개수·안개 층·색 범위·노출·후처리 수치를 확인한 공개 자료는 이번 조사에서도 0건이다.** 영상 PV(Bilibili BV1Nkga6cE1g)는 HTTP 412, 이미지는 정책상 받지 않았다. 따라서 3장의 Yellowsky 관련 수치는 계속 [추정]이며 "Yellowsky에서 확인한 값"으로 쓰지 않는다. REFERENCE_INDEX §1이 정한 연구 방법은 사람이 공개 실기 영상(BV19C356bEhm, BV1Nkga6cE1g, YouTube AHCgx-Z0tBc)을 장면별로 보고 "광원 개수·안개 층·색 범위·이펙트 크기" 판정 메모만 남기는 것이다(영상·캡처 반입 금지). 17173 기사(단일 출처)에는 제작진이 "이펙트 과밀로 인한 시각 피로"를 조절 과제로 본다는 내용이 있어 VFX 위계(발광 12% 이하, 15번 3.5)와 같은 방향이다 [단일, REFERENCE_INDEX §1].
 
 ## 1. 목표 장면·레퍼런스 (무엇을, 왜)
 
@@ -17,7 +17,19 @@
 
 핵심 긴장: **분위기를 위해 어두워질수록 먼 적이 지워진다.** 카메라 LOCK의 먼 적 보임이 분위기보다 위다. PoE2는 "맵이 너무 어둡다"는 불만이 반복된 사례다 [사실, poe2 S12a·S12b].
 
-- **3차 정정 (CTO 11-05, 엔진 독립):** Yellowsky(黄天逆途)의 **엔진·렌더 방식(UE5·Lumen·Height/Volumetric Fog 등)은 모두 미확인**이다. UE5 단서는 2024 모집글 1건(단일, 원문 재검증 못 함)뿐이고 갱신본의 Lumen·Height Fog 구성은 "추정"이다. 확인된 것은 개발 望虚社, 11명, 약 2년, 외부 투자 0뿐이다. 따라서 이 문서의 분위기 목표는 **방향(수치 + 장면 판정 기준)으로만** 쓰고, "Yellowsky가 이 기법으로 만들었다"는 문장은 쓰지 않는다. 갱신본에서 쓸 수 있는 공개 사실은 3.6에 등급과 함께 정리했다.
+- **6차 정정 (CTO 11-05, 엔진 독립):** Yellowsky(黄天逆途)의 **엔진 = UE5는 2024-09 개발사 자기 신고 1건(Mac 원문 확인)** 이다. **현재 버전·Lumen·렌더 방식·조명·안개 제작법은 미확인**이고, 개발 원문이 없다(Lumen·Height/Volumetric Fog 구성은 "추정"). 확인된 것은 아래 표의 항목뿐이다(codex_yellowsky_cn).
+
+  | 확정 사실 (codex_yellowsky_cn) | 등급 | 출처 상태 |
+  |---|---|---|
+  | 개발·배급 望虚社, Steam AppID 5024530 | [사실, 공식 상점] | 검증됨 |
+  | 수선 소재 탑다운 액션, ARPG 중심(`以ARPG体验为主`), 로그라이크 요소, 스타일화 아트 | [사실, 공식 상점·공식 Q&A 서문] | 검증됨(상점) / 미검증(Q&A 본체는 이미지) |
+  | 고해상 모델 일부를 원격 제작한 참여자 존재, 제작 도구 표기 ZBrush·Marmoset(八猴5) | [단일, 참여자 자기 진술·포트폴리오 표기] | 미검증 |
+  | 원화 주미(原画主美) 역할 존재(참여자가 CAK_를 지목) | [단일, 참여자 진술] | 미검증 |
+  | 2.5D는 Steam 인기 사용자 태그일 뿐 구현 명세 아님. 픽셀·선렌더 사용 여부 미확인 | [사실(태그), 구현 미확인] | 미검증 |
+  | 조명·안개·후처리 제작법(Lumen/GI/Height·Volumetric Fog/노출) | **개발 원문 없음**. 화면 인상으로 쓰면 [추정] | 우리 기준 |
+  | 11명·약 2년·외부 투자 0 | [보도값, 시점 2026-07/08] | 검증됨(17173·3DM 본문 한정, 개발자 1차 아님) |
+
+  따라서 이 문서의 분위기 목표는 **방향(수치 + 장면 판정 기준)으로만** 쓰고, "Yellowsky가 이 기법으로 만들었다"는 문장은 쓰지 않는다. 갱신본에서 쓸 수 있는 공개 사실은 3.6에 등급과 함께 정리했다.
 
 ## 2. 디렉션 원칙
 
@@ -98,19 +110,19 @@
 | Linear 투과율 모델 | `T = saturate((End − d)/(End − Start))`. 설계자가 정한 Start=20, d=40, T=0.8이면 End=120 (계산 예, 권장값 아님) | 먼 적 위치 d와 보존할 투과율 T를 먼저 정하고 End를 역산 | [추정·계산] §2 | 미검증 |
 | 균일 매질 계산 | 목표 투과율 T ≥ 0.7, 경로 30m이면 소멸계수 σt ≤ −ln(0.7)/30 ≈ 0.0119 m⁻¹ (계산 예, 권장값 아님). 플러그인 Density 단위와 같은지 확인 전에는 대입 금지 | 안개 밀도 상한을 "경로 투과율"로 판정 | [추정·계산] §3 | 미검증 |
 | 높이 안개 판정 | 중앙 시선 피치 34°일 뿐, 원근 화면 위쪽 픽셀은 얕은 각도로 낮은 안개층을 오래 통과한다. 적 머리가 층 위여도 카메라→적 광선이 층을 지날 수 있다 | **표면 높이가 아니라 시선 경로 투과율로 먼 적 가독성을 판정**(3.2 "먼 적 판정"을 이 방식으로 측정) | [사실·추정] §3, §10 | 미검증 |
-| 높이 안개 합성 지점 | Full Screen Pass: `Before Rendering Transparents`(투명 이전) / `Before Rendering Post Processing`(투명 이후·후처리 이전). 깊이로 월드 좌표 복원이 공식 예제. `Requirements: Color`는 현재 색 버퍼와 다름 | 안개는 색 보정 이전에 합성. 투명 이후면 물·입자에 별도 안개 처리 필요 여부 확인 | [사실] §3 | 미검증 |
+| 높이 안개 합성 지점 | Full Screen Pass: `Before Rendering Transparents`(투명 이전) / `Before Rendering Post Processing`(투명 이후·후처리 이전). 깊이로 월드 좌표 복원이 공식 예제. `Requirements: Color`는 현재 색 버퍼와 다름 | 안개는 색 보정 이전에 합성. 투명 이후면 물·입자에 별도 안개 처리 필요 여부 확인 | [사실] §3 | 검증됨(깊이로 월드 좌표 복원 예제 한정, R3) |
 | 볼류메트릭 | 6000.6 URP는 볼류메트릭 안개(HDRP Local Volumetrics)를 **내장하지 않는다**. APV·후처리 Volume·볼류메트릭 안개는 서로 다른 기능 | 빛줄기는 3.2대로 숲 지붕 틈 1~2줄기만. 전역 볼류메트릭은 a-4 확장이 담당 | [사실] §4.1 | 검증됨 |
 | 서드파티 후보 3종 | Kronnect Volumetric Fog & Mist 2(국소 매질, 다운스케일 1.25~2.0 안내, Unity 6·Forward/Forward+/Deferred 지원 주장) / SaladGamer Volumetric Light Beam(스포트 원뿔 전용, HD 5/10/20 steps 예시, SD 광선당 2·HD 1 드로콜 안내) / sinnwrig URP-Fog-Volumes(레이마칭, 반·¼ 해상도, 볼륨당 광원 32, 테스트는 Unity 2022.3 등) | 모두 6000.6.7f1 + 대상 플랫폼(Metal) 검증은 미확인. 구매·반입 없이 비교용으로만 | [사실·제작사 안내] §4.2~4.4 | 검증됨(제작사 안내 수치 한정) |
-| 성능 모델 | 레이마칭 비용 ∝ 처리 픽셀 × 유효 스텝 × 광원·그림자 샘플. 반해상도 렌더는 본체 픽셀 ¼이나 안개 GPU 비용 75% 절감을 보장하지 않음. 1920×1080 = 2,073,600px, 3840×1080 = 4,147,200px(처리 2배) | 21:9 측정을 1080p와 따로 한다(15번 3.1) | [추정·계산] §4, §3 | 미검증 |
+| 성능 모델 | 레이마칭 비용 ∝ 처리 픽셀 × 유효 스텝 × 광원·그림자 샘플. 반해상도 렌더는 본체 픽셀 ¼이나 안개 GPU 비용 75% 절감을 보장하지 않음. 1920×1080 = 2,073,600px, 3840×1080 = 4,147,200px(처리 2배) | 3840×1080(32:9) 측정을 1920×1080과 따로 한다(15번 3.1. 6차: 이전 "21:9" 표기는 SOURCE_VERIFY R3가 지적한 32:9 오기라 정정) | [추정·계산] §4, §3 | 미검증 |
 | Render Graph | Unity 6.4부터 URP 커스텀 패스용 Compatibility Mode 제거 | 구형 패스 방식 해결책 금지. a-4는 Render Graph로 작성 | [사실] §1 | 검증됨 |
 | APV | `Light Probe System = Adaptive Probe Volumes`, Mixed/Baked 광원 + Contribute GI + Receive GI(Light Probes). Min/Max Probe Spacing 단위 m, L1/L2(L2 정밀·자원 큼), Memory Budget Low/Medium/High. 균일 격자 가정에서 간격 절반 = 프로브 약 8배(적응 배치라 실제 8배 보장 안 됨). Virtual Offset/Dilation은 베이크 처리라 끈다고 런타임이 빨라지지 않음 | 이동 적 간접광은 APV, 정적 표면은 라이트맵. **픽셀 액터가 별도 RT로 합성되면 그 카메라·셰이더가 APV를 받는지는 미확인** (TOOLCHAIN §2-4도 광원을 코드로 옮겨 받는다고 기록) | [사실·추정] §5, TOOLCHAIN §2-4 | 검증됨(APV 설정·배치 설명 한정) |
 | 라이트맵 | 해상도 2배 = 텍셀 4배. Progressive 128 samples는 일부 야외에서 충분하다는 문서 설명, Max Bounces 기본 2(0–100). Shadowmask는 텍셀당 최대 4광원 | 큰 명암(고목·지면)을 먼저 라이트맵으로 고정. "베이크이므로 런타임 비용 0"이라 쓰지 않는다(텍스처 메모리·샘플 대역폭 있음) | [사실] §6 | 검증됨(Max Bounces·Shadowmask 한정) |
-| 라이트 쿠키 | Directional/Spot 2D, Point Cubemap, Area 미지원. Atlas 한 변 2배 = 저장 텍셀 4배. Rendering Layers로 광원이 특정 Renderer만 비추게 가능 | 방향광 큰 수목 무늬 또는 Spot 창살. 적이 다니는 길 전체를 검게 자르는 패턴 금지 | [사실] §7 | 미검증 |
+| 라이트 쿠키 | Directional/Spot 2D, Point Cubemap, Area 미지원. Atlas 한 변 2배 = 저장 텍셀 4배. Rendering Layers로 광원이 특정 Renderer만 비추게 가능 | 방향광 큰 수목 무늬 또는 Spot 창살. 적이 다니는 길 전체를 검게 자르는 패턴 금지 | [사실] §7 | 검증됨(R3) |
 | 림(Fresnel) | Shader Graph Fresnel: 노멀·시선 내적. N·V=0.5에서 `(1−N·V)^p`는 p=1/2/4일 때 0.5/0.25/0.0625. "화면 1px"을 보장하지 않음 | 머리·어깨·무기 윤곽만 남기는 마스크(발·접지부 제외). **픽셀 액터가 저해상도 RT에서 합성되면 월드 림이 RT 안에서 먼저 사라질 수 있다 → 최종 출력 1배 크기로 판단.** 모든 적에 점광원을 다는 방식은 비용 큼 | [사실·추정] §8 | 검증됨 |
 | 색 보정 순서 | Grading Mode HDR이면 색 보정이 톤매핑 이전, LDR이면 이후. LUT Size 기본 32. Post Exposure(EV)는 톤매핑 전, 이전 HDR 효과(블룸 입력)에는 영향 없음. 공개 소스 관찰: HDR = Post Exposure → 내부 LogC LUT → 선택적 사용자 LUT, LDR = Post Exposure → 톤매핑 → 선택적 사용자 LUT → 내부 색 보정 LUT. 사용자 LUT 검사식: 높이 N, 너비 N², 비-sRGB (소스 관찰, 6000.6.7f1 패키지와의 일치 미확인) | 5.2 "톤매핑 → 색 조정 → … → Color Lookup" 순서는 **작업 순서 제안**이고 셰이더 계산 순서를 바꾸는 절차가 아니다. LUT를 만들 때 톤매퍼 이중 적용 금지. 검은색으로 뭉친 정보는 LUT로 복구되지 않으므로 명도 분리는 조명 단계로 돌아가 고친다 | [사실·공개 소스] §9 | 검증됨 |
 | 32 → 64 LUT | 내부 색 격자 샘플 N³이라 8배. GPU 시간 8배는 아님 | 32 유지 | [추정·계산] §9 | 미검증 |
 | 톤매핑 | Neutral = 색상·채도 변화를 최소화한 범위 재매핑, ACES = 더 강한 대비와 색상·채도 변화(문서 설명) | D02-3의 판정 근거. 은색 유지·흰 원판 재발 방지에는 Neutral이 문서 설명과 맞는다 [추정] | [사실] §9.1 | 검증됨 |
-| Unity 6.5+ | 색 보정·톤매핑 등 지원 효과의 on-tile 실행 경로 안내. 효과마다 독립 전체화면 패스가 추가된다고 단정할 수 없음 | 안개 패스와의 병합 가능성은 Mac 실측 | [사실] §9 | 미검증 |
+| Unity 6.5+ | 색 보정·톤매핑 등 지원 효과의 on-tile 실행 경로 안내. 효과마다 독립 전체화면 패스가 추가된다고 단정할 수 없음 | 안개 패스와의 병합 가능성은 Mac 실측 | [사실] §9 | 검증됨(on-tile 단일패스 경로 안내 한정, R3. 안개 패스 병합 가능성은 미검증) |
 | 먼 적을 지우는 요소 | LOD 전환은 화면 높이 비율 기준, DOF·모션블러·블룸이 작은 적을 흐림, 비네트가 화면 위쪽 적을 지움, 붉은 예고가 붉은 안개·LUT에 묻힘 | 효과별 켬/끔 같은 프레임 비교. **붉은 예고는 색만으로 구분하지 않고 밝기·형태·움직임으로도 구분되는지 최종 합성 상태에서 확인** | [추정] §10 | 미검증 |
 | 적 최소 화면 높이 | 피치 34°만으로 픽셀 크기나 최소 가시 거리를 정할 수 없고, "최소 16px면 된다" 같은 보편 임계값은 없다. 수직 물체 화면 높이 성분 `h·cos34° ≈ 0.829h`, 지면 길이 성분 `l·sin34° ≈ 0.559l`은 국소 근사 | 머리·몸통·발·무기를 월드→화면 투영해 최종 화면에서 기록 | [사실·추정·계산] §10 | 미검증 |
 
@@ -130,8 +142,8 @@
 | 데모가 전체적으로 흐릿하다 | [단일] 知乎 | 흐림은 피할 약점. DoF·과한 Bloom 금지 근거(원칙 10) | 접속불가 |
 | 이펙트 때문에 인물과 배경이 구분되지 않는다 | [단일] B站 댓글 | 원칙 5, 3.1 적 명도 분리(L* 20)의 방향 근거 | 미검증 |
 | 특효를 절제해야 한다 | [사실] 知乎 2건 | VFX 발광 위계 12% 이하(15번 3.5)와 같은 방향 | 접속불가 |
-| 엔진 UE5 | **[단일·미확인]** 모집글 1건, 원문 미재검증 | 쓰지 않음(D02-9★) | 접속불가 |
-| Lumen·Height/Volumetric Fog 구성 | **[추정·미확인]** 공개 근거 0건 | 쓰지 않음 | 우리 기준 |
+| 엔진 UE5 | **[단일]** 2024-09 개발사 모집글 1건("引擎：虚幻5"), 개발사 자기 신고, Mac 원문 확인. 현재 유지·버전·Lumen·렌더 방식 미확인 | 기법 근거로 쓰지 않음(D02-9★) | 접속불가(SOURCE_VERIFY R3) / Mac 직접 열람 확인 |
+| Lumen·Height/Volumetric Fog 구성 | **[추정·미확인]** 개발 원문 0건. "UE5니까 Lumen" 추론 금지 | 쓰지 않음 | 우리 기준 |
 
 **갱신본 [기준] 값과 이 문서 값의 차이 (어느 쪽도 Yellowsky 실측이 아님):**
 
@@ -203,7 +215,7 @@
 
 ### 5.3 UE5 반입 (대응만)
 
-Directional Light + Lumen 또는 베이크, Exponential Height Fog(+ Volumetric Fog, 광원별 Volumetric Scattering Intensity로 산란 조절 [사실, TOOLCHAIN W34]). Mac Apple Silicon에서 Lumen 소프트웨어 RT는 동작, 하드웨어 RT는 실험적(ENGINE_DECISION §2). UE5가 안개·광산란의 "가장 가까운 결과"일 가능성이 높으나 [추정] 엔진 결정은 ENGINE_DECISION 실험 후다. **3차(ENGINE_TRIAL_UE5_PLAN §3 정합):** 비교 실험의 첫 기준은 Deferred/Metal, 1920×1080, screen percentage 100%, 고정 노출, motion blur·DOF·grain·비네트 끔이고 **Lumen은 끄고** 직접광 + 환경광으로 구도·명암을 먼저 맞춘다. Lumen을 켠 결과는 설정을 따로 적은 추가 결과로만 둔다. UE만 과한 안개·광택·심도로 미화해 엔진 차이라고 부르지 않는다. Yellowsky가 Lumen·Height Fog를 썼다는 근거는 없다(미확인). 단일 Post Process Volume(Unbound), LUT는 Color Grading LUT 슬롯. 노출은 Manual 고정.
+Directional Light + Lumen 또는 베이크, Exponential Height Fog(+ Volumetric Fog, 광원별 Volumetric Scattering Intensity로 산란 조절 [사실, TOOLCHAIN W34]). Mac Apple Silicon에서 Lumen 소프트웨어 RT는 동작, 하드웨어 RT는 실험적(ENGINE_DECISION §2). UE5가 안개·광산란의 "가장 가까운 결과"일 가능성이 높으나 [추정] 엔진 결정은 ENGINE_DECISION 실험 후다. **3차(ENGINE_TRIAL_UE5_PLAN §3 정합):** 비교 실험의 첫 기준은 Deferred/Metal, 1920×1080, screen percentage 100%, 고정 노출, motion blur·DOF·grain·비네트 끔이고 **Lumen은 끄고** 직접광 + 환경광으로 구도·명암을 먼저 맞춘다. Lumen을 켠 결과는 설정을 따로 적은 추가 결과로만 둔다. UE만 과한 안개·광택·심도로 미화해 엔진 차이라고 부르지 않는다. Yellowsky가 Lumen·Height Fog를 썼다는 근거는 없다(엔진 UE5는 2024 자기 신고 1건, 나머지 미확인). 단일 Post Process Volume(Unbound), LUT는 Color Grading LUT 슬롯. 노출은 Manual 고정.
 
 ## 6. 합격 기준
 
@@ -224,7 +236,7 @@ Directional Light + Lumen 또는 베이크, Exponential Height Fog(+ Volumetric 
 
 - 먼 적을 지우는 안개·비네트·어둠. 거리 안개 켜기(D02-1 결정 전까지 현재 값 변경 금지. 단계 시험용 약한 거리 안개는 D02-12★ 결정 뒤).
 - DoF·틸트시프트·색수차(흐림 평의 원인 후보, 갱신본 규칙 9). 전체 노출을 내려 분위기를 대신하기.
-- "Yellowsky가 이 기법으로 만들었다"고 쓰기(엔진·렌더 방식 미확인).
+- "Yellowsky가 이 기법으로 만들었다"고 쓰기(엔진은 2024 자기 신고 1건, 렌더 방식 미확인). "UE5니까 Lumen/Height Fog" 추론, 엔진을 조명·안개 기법의 근거로 쓰기.
 - 순흑 영역(UI 제외). 자동 노출. 필름 그레인·노이즈·디더링.
 - 원색 초록·노랑 광원. 파란 안개·회색 안개(아트 바이블 C7이 유지될 때).
 - 역할 없는 광원. 그림자 광원 한도 초과.
@@ -243,7 +255,7 @@ Directional Light + Lumen 또는 베이크, Exponential Height Fog(+ Volumetric 
 | D02-6 | 영웅 주변 빛 반경(8m)을 키샷 판정 때 조정해도 되나 | 조정 가능 | 고정 |
 | D02-7★ | 높이 안개·광산란을 **자체 확장(`HellFogFeature` → a-4 `HeightFogScatterPass`, Render Graph 재작성)**으로 갈까, 서드파티(Kronnect·CristianQiu 오픈소스·VLB)를 도입할까. TOOLCHAIN §2-5는 자체 확장(A)을 추천, codex_urp_mood는 "후보 채택 불가, 실측·6000.6.7f1 호환 미확인"으로 중립 | 자체 확장 A. 서드파티는 같은 장면 A/B 비교 기준선으로만 쓰고 반입·구매는 사용자 승인(오픈소스 라이선스 확인, 유료 Buto 등은 비용 승인). 2회 FAIL이면 후보 B로 비교 | 처음부터 서드파티 도입 |
 | D02-8★ | 안개 패스 예산을 TOOLCHAIN a-4 값(PC ≤1.2ms, Mac 저비용판 ≤0.6ms)으로 바꾸고 이전 초안(1.0/1.5ms)을 폐기할까. 15번 3.2표 합계(14.7ms)와 연동 | 폐기·개정(15번 D15-7★과 함께 결정) | 이전 값 유지 |
-| D02-9★ | Yellowsky의 엔진이 미확인인데도 TOOLCHAIN §2-5의 "Yellowsky는 UE5(모집글 1건)"를 근거로 UE5 전환 쪽에 무게를 둘까. ENGINE_DECISION도 "황천 미확인"으로 정정함. 엔진 결정은 팬텀블레이드 제로(UE5 [사실])와 실험 결과로 | 이 근거를 쓰지 않는다. 엔진 1차 출처(개발 일지·Steam 시스템 요구·크레딧)는 사람이 확인 | 단일 모집글을 근거로 유지. (3차: 갱신본이 UE5를 "1차 출처"로 다시 적고 codex_synthesis도 "엔진 미확인에 UE5 단일 단서 추가"로 보존. 원문 재검증이 없어 결정 불변, 갱신본의 Lumen·Height/Volumetric Fog 구성은 추정) |
+| D02-9★ | (6차 개정) Yellowsky의 UE5는 2024-09 개발사 모집글 자기 신고 1건(Mac 확인)뿐이고 현재 유지·버전·Lumen·렌더 방식은 미확인이다. 이 1건을 "UE5가 이 분위기의 제작 기법 근거"로 쓰거나 UE5 전환 근거로 삼아도 될까. ENGINE_DECISION도 "황천 미확인"으로 정정함. 엔진 결정은 팬텀블레이드 제로(UE5 [사실])와 실험 결과로 | 이 근거를 쓰지 않는다. 엔진 1차 출처(개발 일지·Steam 시스템 요구·크레딧)는 사람이 확인 | 단일 모집글을 근거로 유지. (3차: 갱신본이 UE5를 "1차 출처"로 다시 적고 codex_synthesis도 "엔진 미확인에 UE5 단일 단서 추가"로 보존. 원문 재검증이 없어 결정 불변, 갱신본의 Lumen·Height/Volumetric Fog 구성은 추정) |
 | D02-10 | 림 방식을 최종 출력 1배 크기에서 판정하는 것을 합격 조건에 넣을까. 픽셀 액터 RT 안에서 만든 림이 월드 합성에서 사라질 수 있음(codex_urp_mood §8) | 넣는다(6장 합격 기준에 반영) | RT 안 판정만 |
 
 | D02-11★ | 3.6 표처럼 갱신본 [기준] 값(주광 6800~7500K·고도 35~50°, 높이 안개 0~1.2m, 위 1/4 안개 ≤35%, 순흑 ≤3%, 그림자 최저 휘도 18~28)과 이 문서 [추정] 값이 다르다. 둘 다 Yellowsky 실측이 아니다. 어느 쪽을 시작값으로 할까 | 이 문서 값을 시작값으로 유지하고 갱신본 값은 "대안 시작값"으로만 둔다. Mac 첫 비교판에서 먼 적 ΔL(≥70%)·L* 20을 지키는 쪽으로 확정. 안개 상한(D02-2)은 15/25/50% 중 측정 후 | 갱신본 값으로 교체 |
@@ -260,4 +272,5 @@ Directional Light + Lumen 또는 베이크, Exponential Height Fog(+ Volumetric 
 - 내부: `docs/4.1맵디자인+설정/UNITY_MAP_ART_BIBLE_20261026.md` C1·C7·V3·V6, `unity/Assets/Exoduser/Runtime/NativeGame.HellLighting.cs`, CLAUDE.md 4.2
 - **2차 반영 입력:** `docs/0마스터플랜/GAME_STUDY/codex_yellowsky.md` §1~§8(식별·팀·기간·엔진 미확인·광원/안개/색 근거 없음), `docs/0마스터플랜/GAME_STUDY/codex_urp_mood.md` §1~§11(URP 6000.6 안개·APV·라이트맵·쿠키·림·LUT 순서·34° 먼 적), `docs/0마스터플랜/GAME_STUDY/codex_tech_budget.md` §6.3(PoE2 GI 약 3ms 부분 값, 예산 근거로 쓰지 않음), `docs/0마스터플랜/MANUAL/TOOLCHAIN_20261105.md` §2-4·§2-5·§3a a-4·§3c c-2·c-3, `docs/0마스터플랜/GAME_STUDY/REFERENCE_INDEX_20261105.md` §1·§2b, `docs/0마스터플랜/ENGINE_DECISION_20261105.md` §0·§2(UE5 칸: Lumen·Exponential Height Fog·Volumetric Fog)
 - **3차 반영 입력:** `docs/0마스터플랜/GAME_STUDY/downfall_of_yellowsky.md` 갱신본 §0·§1.1~§1.5·§6(공개 평가는 채택, [기준] 수치와 UE5 구성은 미채택), `docs/0마스터플랜/GAME_STUDY/codex_synthesis.md` §1.2·§2(안개·톤매핑·APV·Forward+·검정 면적 판정), `docs/0마스터플랜/MANUAL/FIRST_SCENE_PLAN.md` §5 단계 4, `docs/0마스터플랜/ENGINE_TRIAL_UE5_PLAN.md` §3
+- **6차 반영 입력:** `scratchpad/study4` yellowsky_cn.md(codex_yellowsky_cn, CX25), yellowsky_engine_mac.md(Mac 직접 열람), SOURCE_VERIFY_R3.md(fea5684, CX22-3)
 - **Mac 눈대중 검증(keyshot_verify_mac, 6장 표본, [단일·Mac 눈대중]):** 전투 중심이 가장 밝다(D4 #2·#6, PoE2 #4·#5, Wicked #1·#3, 黄天逆途 #2)는 점이 확인돼 3.1 "빛 웅덩이" 원칙과 같은 방향이다. 단 Wicked 일부는 주황이 화면을 크게 차지해 "작은 강조색"이 아니고, 공통 팔레트는 없다. 우리 안개 색·밝기 수치의 근거로는 쓰지 않는다. 상세는 01번 3.2.
