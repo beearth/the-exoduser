@@ -1,3 +1,7 @@
+## 2026-11-05 K1 도구 이식성 재개 완료
+- 공용 toolpaths를 허용 러너42개에 연결. EXO→PATH→기존 경로, 미발견 명시. global.json 유지, EXO_DOTNET_ROLLFORWARD=1에서만 임시 정책 latestPatch. 소유권 금지 oracle-sweep 제외.
+- Windows combat-impact C#914/0·자원530/0 동일, C# 출력·자원 결과 전체 일치. 공용3/0·문법44개 통과. Mac/Linux·전체 스위트·Python 아트 미확인. 보고서/로그: `docs/0마스터플랜/worklog/cloud-lanes/K1-tools-portable_20261105.md`.
+
 ## 2026-11-05 K1 도구 이식성 후보 중단 (미완료)
 - 공용 toolpaths 후보와 회귀 테스트만 보존. 동일 검사2회 실패(구현 전 RED, 구현 후 PATHEXT 확장자 대소문자 비교)로 중단. 기존 러너 연결0, global.json·Core·금지 소유 파일 변경0.
 - 변경 전 combat-impact C#914/0(기존 --pure 미처리로 아트 누락 exit1), resource-oracle530/0. 전후 비교·Windows 출력 보존·Mac/Linux·임시 정책 실행 미확인. 근거: `docs/0마스터플랜/worklog/cloud-lanes/K1-tools-portable_20261105.md`.

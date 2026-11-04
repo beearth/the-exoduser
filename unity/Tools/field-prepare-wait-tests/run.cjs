@@ -1,3 +1,4 @@
+const toolpaths=require('../_shared/toolpaths.cjs');
 // Policy checks for "do not bounce back to the lobby while the 3D field is still assembling". No Unity: the real
 // Runtime/NativeTransitionPrepare.cs and Core/ScreenTransitionFlow.cs are compiled with a small fake frame loop.
 // Delay injection (20 s assembly, a 25 s single frame, stopped heartbeat) lives only here.
@@ -252,9 +253,9 @@ fs.writeFileSync(work+'/NuGet.Config','<configuration><packageSources><clear/></
 // NU1100 root cause (11-04): with no global.json the host picks SDK 10, which needs net8 ref packs from NuGet (sources are cleared).
 // Pin an installed 8.0 SDK, whose bundled targeting pack builds net8.0 offline. EXO_DOTNET_SDK overrides the version.
 fs.writeFileSync(work+'/global.json',JSON.stringify({sdk:{version:process.env.EXO_DOTNET_SDK||'8.0.301',rollForward:'latestFeature'}}));
-const dotnet=process.env.EXO_DOTNET||'C:/Program Files/dotnet/dotnet.exe';
+const dotnet=toolpaths.dotnet();
 const env={...process.env,DOTNET_CLI_HOME:work+'/dotnet-home',DOTNET_CLI_TELEMETRY_OPTOUT:'1',DOTNET_ADD_GLOBAL_TOOLS_TO_PATH:'false',DOTNET_NOLOGO:'1',TEMP:work+'/temp',TMP:work+'/temp'};
-let r=cp.spawnSync(dotnet,['build',work+'/Prepare.csproj','--verbosity','quiet','-p:UseSharedCompilation=false'],{env,cwd:work,encoding:'utf8',windowsHide:true,stdio:['ignore','pipe','pipe']});
+let r=toolpaths.spawnSync(dotnet,['build',work+'/Prepare.csproj','--verbosity','quiet','-p:UseSharedCompilation=false'],{env,cwd:work,encoding:'utf8',windowsHide:true,stdio:['ignore','pipe','pipe']});
 fs.writeFileSync(evidence+'/build.log',(r.stdout||'')+(r.stderr||''));if(r.status!==0){console.log(r.stdout,r.stderr);process.exit(1);}
-r=cp.spawnSync(dotnet,[work+'/bin/Debug/net8.0/Prepare.dll'],{env,cwd:work,encoding:'utf8',windowsHide:true,stdio:['ignore','pipe','pipe']});
+r=toolpaths.spawnSync(dotnet,[work+'/bin/Debug/net8.0/Prepare.dll'],{env,cwd:work,encoding:'utf8',windowsHide:true,stdio:['ignore','pipe','pipe']});
 fs.writeFileSync(evidence+'/result.txt',(r.stdout||'')+(r.stderr||''));console.log(r.stdout,r.stderr);process.exit(r.status===0?0:1);

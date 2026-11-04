@@ -1,0 +1,103 @@
+[toolpaths tests]
+dotnet: C:\Program Files\dotnet\dotnet.EXE -> 10.0.400
+python: C:\Users\심도진\AppData\Local\Python\bin\python3.EXE -> Python 3.14.3
+✔ portable tool discovery, missing tools and temporary SDK policy (12.9854ms)
+✔ selected installed executables exist and print versions (234.4643ms)
+✔ real SDK build uses temporary latestPatch policy and leaves original bytes intact (2469.5855ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2781.4476
+
+[combat before: C# segment (outer art step failed)]
+unity\Assets\Exoduser\Runtime\Core\EnemyAi.cs(87,119): warning CS0219: 'gb' �Ҵ�Ǿ����� ������ �ʾҽ��ϴ�.
+unity\Assets\Exoduser\Runtime\Core\EnemyAi.cs(87,131): warning CS0219: 'water' �Ҵ�Ǿ����� ������ �ʾҽ��ϴ�.
+combat-impact: 914 checks, 0 failures
+
+[combat after --pure]
+unity\Assets\Exoduser\Runtime\Core\EnemyAi.cs(87,119): warning CS0219: 'gb' �Ҵ�Ǿ����� ������ �ʾҽ��ϴ�.
+unity\Assets\Exoduser\Runtime\Core\EnemyAi.cs(87,131): warning CS0219: 'water' �Ҵ�Ǿ����� ������ �ʾҽ��ϴ�.
+combat-impact: 914 checks, 0 failures
+
+[resource before compare]
+종료 0
+자원 대조 530건 / 불일치 0건 / 단독 0건 / 혼합 0건 / Config-Player 불일치 0
+자원별 불일치 HP/MP/ST/쉴드: 0/0/0/0
+
+[resource after compare]
+종료 0
+자원 대조 530건 / 불일치 0건 / 단독 0건 / 혼합 0건 / Config-Player 불일치 0
+자원별 불일치 HP/MP/ST/쉴드: 0/0/0/0
+
+[parity]
+{
+  "syntax": 44,
+  "combat": {
+    "checks": 914,
+    "failures": 0,
+    "stableOutputIdentical": true
+  },
+  "resource": {
+    "total": 530,
+    "mismatches": 0,
+    "fullResultIdentical": true
+  },
+  "excluded": [
+    "unity/Tools/oracle-sweep/run.cjs"
+  ]
+}
+
+[migrated/excluded scope]
+{
+  "changed": [
+    "unity/Tools/auto-potion-oracle/runner.cjs",
+    "unity/Tools/bgm-import-p1/run.cjs",
+    "unity/Tools/c01-field-oracle/runner.cjs",
+    "unity/Tools/combat-impact-tests/run-ki.cjs",
+    "unity/Tools/combat-impact-tests/run.cjs",
+    "unity/Tools/damage-parity-oracle/runner.cjs",
+    "unity/Tools/dash-hit-oracle/runner.cjs",
+    "unity/Tools/dash-parry-oracle/runner.cjs",
+    "unity/Tools/druid-boss-oracle/run.cjs",
+    "unity/Tools/enemy-ai-oracle/runner.cjs",
+    "unity/Tools/enemy-hurt-oracle/runner.cjs",
+    "unity/Tools/enemy-pool-oracle/runner.cjs",
+    "unity/Tools/enemy-spawn-oracle/runner.cjs",
+    "unity/Tools/enemy-tables-oracle/runner.cjs",
+    "unity/Tools/enemy-tick-oracle/runner.cjs",
+    "unity/Tools/enemy3d-tests/run.cjs",
+    "unity/Tools/feedback-oracle/runner.cjs",
+    "unity/Tools/field-prepare-wait-tests/run.cjs",
+    "unity/Tools/fieldboss-oracle/runner.cjs",
+    "unity/Tools/hero-motion/run.cjs",
+    "unity/Tools/hud-oracle/run.cjs",
+    "unity/Tools/impact-feedback/run.cjs",
+    "unity/Tools/inventory-oracle/run.cjs",
+    "unity/Tools/ki-slash-oracle/runner.cjs",
+    "unity/Tools/level-exp-oracle/run.cjs",
+    "unity/Tools/lobby-oracle/run.cjs",
+    "unity/Tools/parry-g2-tests/compare-baseline.cjs",
+    "unity/Tools/parry-g2-tests/run.cjs",
+    "unity/Tools/parry-reflect-oracle/runner.cjs",
+    "unity/Tools/pause-navigation/host-resume.cjs",
+    "unity/Tools/player-hurt-oracle/runner.cjs",
+    "unity/Tools/rage-malice-oracle/run.cjs",
+    "unity/Tools/region-oracle/runner.cjs",
+    "unity/Tools/resource-oracle/run.cjs",
+    "unity/Tools/roll-oracle/runner.cjs",
+    "unity/Tools/save-oracle/run.cjs",
+    "unity/Tools/screen-flash-contract/run.cjs",
+    "unity/Tools/shield-revive-oracle/run.cjs",
+    "unity/Tools/skill-oracle/runner.cjs",
+    "unity/Tools/stage-flow-oracle/runner.cjs",
+    "unity/Tools/verify-core.cjs",
+    "unity/Tools/weapon-xbow-oracle/runner.cjs"
+  ],
+  "excluded": [
+    "unity/Tools/oracle-sweep/run.cjs"
+  ]
+}

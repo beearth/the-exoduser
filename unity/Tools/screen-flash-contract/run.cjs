@@ -1,3 +1,4 @@
+const toolpaths=require('../_shared/toolpaths.cjs');
 // 실제 Unity OnGUI 문장을 C#으로 컴파일하고 실행한 웹 원본 합성과 대조한다.
 const fs = require('node:fs');
 const path = require('node:path');
@@ -49,20 +50,20 @@ const options = {cwd: project, windowsHide: true, encoding: 'utf8', timeout: 120
   ...process.env, DOTNET_CLI_HOME: path.join(out, 'dotnet-home'), DOTNET_ADD_GLOBAL_TOOLS_TO_PATH: 'false',
   DOTNET_NOLOGO: '1', DOTNET_SKIP_FIRST_TIME_EXPERIENCE: '1'
 }};
-const dotnet = 'C:/Program Files/dotnet/dotnet.exe';
+const dotnet = toolpaths.dotnet();
 // 외부 패키지·NuGet 복원 없이 설치된 .NET 8 참조팩으로 실제 문장만 컴파일한다.
-const packRoot = 'C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Ref';
+const packRoot = toolpaths.refRoot();
 const version = fs.readdirSync(packRoot).filter(x => x.startsWith('8.')).sort((a,b) => a.localeCompare(b, undefined, {numeric:true})).at(-1);
 if (!version) throw new Error('.NET 8 참조팩 없음');
 const ref = path.join(packRoot, version, 'ref/net8.0');
 const binary = path.join(out, 'Contract.dll');
 const references = fs.readdirSync(ref).filter(x => x.endsWith('.dll')).map(x => '-r:' + path.join(ref, x));
-let r = cp.spawnSync(dotnet, ['C:/Program Files/dotnet/sdk/8.0.301/Roslyn/bincore/csc.dll', '-nologo', '-target:exe', '-out:' + binary, ...references, path.join(out, 'Program.cs')], options);
+let r = toolpaths.spawnSync(dotnet, [toolpaths.csc('8.0.301'), '-nologo', '-target:exe', '-out:' + binary, ...references, path.join(out, 'Program.cs')], options);
 let log = (r.stdout || '') + (r.stderr || '');
 const compiled = r.status === 0;
 if (compiled) {
   fs.writeFileSync(path.join(out, 'Contract.runtimeconfig.json'), JSON.stringify({runtimeOptions:{tfm:'net8.0',framework:{name:'Microsoft.NETCore.App',version:'8.0.0'}}}));
-  r = cp.spawnSync(dotnet, [binary], options);
+  r = toolpaths.spawnSync(dotnet, [binary], options);
   log += (r.stdout || '') + (r.stderr || '');
 }
 const counts = log.match(/검사=(\d+) 실패=(\d+)/);

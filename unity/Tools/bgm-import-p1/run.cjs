@@ -1,3 +1,4 @@
+const toolpaths=require('../_shared/toolpaths.cjs');
 const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),assert=require('node:assert/strict');
 const project=path.resolve(__dirname,'../..'),out=path.resolve(process.argv[2]),rt=path.join(project,'Assets/Exoduser/Runtime');
 fs.mkdirSync(out,{recursive:true});
@@ -10,7 +11,7 @@ files.push(path.join(out,'StageFixture.cs'));
 if(fs.existsSync(path.join(rt,'NativeBgmCues.cs')))files.push(path.join(rt,'NativeBgmCues.cs'));
 fs.writeFileSync(path.join(out,'Contract.csproj'),`<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><EnableDefaultCompileItems>false</EnableDefaultCompileItems></PropertyGroup><ItemGroup>${files.map(f=>`<Compile Include="${f.replaceAll('\\','/')}"/>`).join('')}</ItemGroup></Project>`);
 fs.writeFileSync(path.join(out,'global.json'),'{"sdk":{"version":"8.0.301","rollForward":"disable"}}');
-const r=cp.spawnSync('C:/Program Files/dotnet/dotnet.exe',['run','--project',path.join(out,'Contract.csproj')],{cwd:out,encoding:'utf8',stdio:['ignore','pipe','pipe'],windowsHide:true});
+const r=toolpaths.spawnSync(toolpaths.dotnet(),['run','--project',path.join(out,'Contract.csproj')],{cwd:out,encoding:'utf8',stdio:['ignore','pipe','pipe'],windowsHide:true});
 fs.writeFileSync(path.join(out,'result.log'),(r.stdout||'')+(r.stderr||''));process.stdout.write((r.stdout||'')+(r.stderr||''));if(r.status!==0)process.exit(r.status||1);
 const catalog=require('./catalog.json'),data=JSON.parse(fs.readFileSync(path.join(project,'Assets/Exoduser/Resources/Data/a15_options_web.json'),'utf8'));
 const values=data.entries.find(e=>e.key==='bgm.values').texts;

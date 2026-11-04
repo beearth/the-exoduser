@@ -1,9 +1,10 @@
+const toolpaths=require('../_shared/toolpaths.cjs');
 // No Unity process, network, package restore, or writes outside this worktree.
 const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process');
 const root=path.resolve(__dirname,'../../..'),out=path.join(root,'tools/combat-impact-check');
 fs.mkdirSync(out,{recursive:true});
 const latest=p=>fs.readdirSync(p).filter(x=>/^\d/.test(x)).sort((a,b)=>a.localeCompare(b,undefined,{numeric:true})).at(-1);
-const sdk='C:/Program Files/dotnet/sdk',pack='C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Ref';
+const sdk=toolpaths.sdkRoot(),pack=toolpaths.refRoot();
 const ref=path.join(pack,latest(pack),'ref');const tfm=fs.readdirSync(ref).at(-1);
 const walk=p=>fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(path.join(p,e.name)):e.name.endsWith('.cs')?[path.join(p,e.name)]:[]);
 const feedback=process.argv.includes('--feedback'),m1=process.argv.includes('--m1'),region=process.argv.includes('--region'),name=feedback?'feedback':m1?'m1':region?'region':'checks';
@@ -24,22 +25,22 @@ const policy=path.join(root,'unity/Assets/Exoduser/Runtime/Vfx/CombatImpactTimel
 files.push(path.join(root,'unity/Assets/Exoduser/Runtime/NativeEnemyRigPolicy.cs'));
 const args=['/nologo','/target:exe','/langversion:latest','/out:'+path.join(out,name+'.dll'),...fs.readdirSync(path.join(ref,tfm)).filter(f=>f.endsWith('.dll')).map(f=>'/r:'+path.join(ref,tfm,f)),...files];
 const env={...process.env,DOTNET_CLI_HOME:out,DOTNET_CLI_TELEMETRY_OPTOUT:'1',DOTNET_SKIP_FIRST_TIME_EXPERIENCE:'1'};
-function run(a){return cp.spawnSync('C:/Program Files/dotnet/dotnet.exe',a,{encoding:'utf8',windowsHide:true,env,timeout:60000});}
+function run(a){return toolpaths.spawnSync(toolpaths.dotnet(),a,{encoding:'utf8',windowsHide:true,env,timeout:60000});}
 let r=run([path.join(sdk,latest(sdk),'Roslyn/bincore/csc.dll'),...args]);let log=(r.stdout||'')+(r.stderr||'')+(r.error?.message||'');
 if(r.status===0){fs.writeFileSync(path.join(out,name+'.runtimeconfig.json'),JSON.stringify({runtimeOptions:{tfm,framework:{name:'Microsoft.NETCore.App',version:tfm.slice(3)+'.0'},rollForward:'LatestMajor'}}));r=run([path.join(out,name+'.dll'),...(feedback?[path.join(out,'feedback.json'),path.join(__dirname,'../feedback-oracle/oracle.json')]:m1||region?[path.join(root,'unity/Assets/Exoduser/Resources/Data/ch1_map.json')]:[])]);log+=(r.stdout||'')+(r.stderr||'')+(r.error?.message||'');}
 let status=r.status??1;
-if(status===0&&name==='checks'){
- const art=cp.spawnSync('C:/Python314/python.exe',[path.join(root,'tools/vfx/recolor_blood_dark.py'),'--check-only'],{cwd:root,encoding:'utf8',windowsHide:true,env:{...env,PYTHONDONTWRITEBYTECODE:'1'},timeout:60000});
+if(status===0&&name==='checks'&&!process.argv.includes('--pure')){
+ const art=toolpaths.spawnSync(toolpaths.python(),[path.join(root,'tools/vfx/recolor_blood_dark.py'),'--check-only'],{cwd:root,encoding:'utf8',windowsHide:true,env:{...env,PYTHONDONTWRITEBYTECODE:'1'},timeout:60000});
  log+=(art.stdout||'')+(art.stderr||'')+(art.error?.message||'');status=art.status??1;
- if(status===0){const orb=cp.spawnSync('C:/Python314/python.exe',[path.join(root,'tools/vfx/make_elem_orb_v3.py'),'--check-only'],{cwd:root,encoding:'utf8',windowsHide:true,env:{...env,PYTHONDONTWRITEBYTECODE:'1'},timeout:60000});
+ if(status===0){const orb=toolpaths.spawnSync(toolpaths.python(),[path.join(root,'tools/vfx/make_elem_orb_v3.py'),'--check-only'],{cwd:root,encoding:'utf8',windowsHide:true,env:{...env,PYTHONDONTWRITEBYTECODE:'1'},timeout:60000});
   log+=(orb.stdout||'')+(orb.stderr||'')+(orb.error?.message||'');status=orb.status??1;}
- if(status===0){const water=cp.spawnSync('C:/Python314/python.exe',[path.join(root,'tools/vfx/recolor_parry_water.py'),'--check-only'],{cwd:root,encoding:'utf8',windowsHide:true,env:{...env,PYTHONDONTWRITEBYTECODE:'1'},timeout:60000});
+ if(status===0){const water=toolpaths.spawnSync(toolpaths.python(),[path.join(root,'tools/vfx/recolor_parry_water.py'),'--check-only'],{cwd:root,encoding:'utf8',windowsHide:true,env:{...env,PYTHONDONTWRITEBYTECODE:'1'},timeout:60000});
   log+=(water.stdout||'')+(water.stderr||'')+(water.error?.message||'');status=water.status??1;}
- if(status===0){const bodies=cp.spawnSync('C:/Python314/python.exe',['-B',path.join(root,'tools/vfx/enemy_body_extents.py'),'--check-only'],{cwd:root,encoding:'utf8',windowsHide:true,stdio:['ignore','pipe','pipe'],env,timeout:60000});
+ if(status===0){const bodies=toolpaths.spawnSync(toolpaths.python(),['-B',path.join(root,'tools/vfx/enemy_body_extents.py'),'--check-only'],{cwd:root,encoding:'utf8',windowsHide:true,stdio:['ignore','pipe','pipe'],env,timeout:60000});
   log+=(bodies.stdout||'')+(bodies.stderr||'')+(bodies.error?.message||'');status=bodies.status??1;}
- if(status===0){const palette=cp.spawnSync('C:/Python314/python.exe',['-B',path.join(root,'tools/vfx/recolor_skill_palette.py'),'--check-only'],{cwd:root,encoding:'utf8',windowsHide:true,stdio:['ignore','pipe','pipe'],env:{...env,PYTHONDONTWRITEBYTECODE:'1'},timeout:60000});
+ if(status===0){const palette=toolpaths.spawnSync(toolpaths.python(),['-B',path.join(root,'tools/vfx/recolor_skill_palette.py'),'--check-only'],{cwd:root,encoding:'utf8',windowsHide:true,stdio:['ignore','pipe','pipe'],env:{...env,PYTHONDONTWRITEBYTECODE:'1'},timeout:60000});
   log+=(palette.stdout||'')+(palette.stderr||'')+(palette.error?.message||'');status=palette.status??1;}
- if(status===0){const hits=cp.spawnSync('C:/Python314/python.exe',['-B',path.join(root,'tools/vfx/remaster_element_hits.py'),'--check-only'],{cwd:root,encoding:'utf8',windowsHide:true,stdio:['ignore','pipe','pipe'],env:{...env,PYTHONDONTWRITEBYTECODE:'1'},timeout:60000});
+ if(status===0){const hits=toolpaths.spawnSync(toolpaths.python(),['-B',path.join(root,'tools/vfx/remaster_element_hits.py'),'--check-only'],{cwd:root,encoding:'utf8',windowsHide:true,stdio:['ignore','pipe','pipe'],env:{...env,PYTHONDONTWRITEBYTECODE:'1'},timeout:60000});
   log+=(hits.stdout||'')+(hits.stderr||'')+(hits.error?.message||'');status=hits.status??1;}
 }
 fs.writeFileSync(path.join(out,process.argv.includes('--red')?'red.log':name+'.log'),log);process.stdout.write(log);process.exitCode=status;

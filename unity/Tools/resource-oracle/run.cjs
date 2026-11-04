@@ -1,3 +1,4 @@
+const toolpaths=require('../_shared/toolpaths.cjs');
 // node run.cjs --source game.html --out DIR --web-commit SHA --core-commit SHA --dependency-root REPO
 // Windows PowerShell에서도 stdin을 닫고 무창으로만 Node/.NET을 실행한다.
 const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process');
@@ -6,8 +7,8 @@ const out=path.resolve(arg('--out')),project=path.resolve(__dirname,'../..'),bui
 fs.mkdirSync(out,{recursive:true});fs.mkdirSync(build,{recursive:true});
 for(const name of ['Program.cs','ResourceOracleTests.csproj','global.json','NuGet.Config'])fs.copyFileSync(path.join(__dirname,name),path.join(build,name));
 const env={...process.env,DOTNET_CLI_HOME:path.join(build,'.dotnet'),DOTNET_ADD_GLOBAL_TOOLS_TO_PATH:'false',DOTNET_NOLOGO:'1',DOTNET_SKIP_FIRST_TIME_EXPERIENCE:'1',DOTNET_CLI_TELEMETRY_OPTOUT:'1',DOTNET_CLI_WORKLOAD_UPDATE_NOTIFY_DISABLE:'true',RESOURCE_ORACLE_TEST_OUT:path.join(out,'oracle.json'),RESOURCE_ORACLE_SOURCE:path.resolve(arg('--source')),RESOURCE_ORACLE_WEB_SHA:arg('--web-commit'),RESOURCE_ORACLE_CORE_SHA:arg('--core-commit'),RESOURCE_ORACLE_DEPENDENCY:path.resolve(arg('--dependency-root'))};
-function run(exe,args,name){const r=cp.spawnSync(exe,args,{cwd:build,env,windowsHide:true,stdio:['ignore','pipe','pipe'],encoding:'utf8',timeout:180000,maxBuffer:8*1024*1024});const log=(r.stdout||'')+(r.stderr||'')+(r.error?'\n'+r.error.message:'');fs.writeFileSync(path.join(out,name+'.log'),log);console.log(name+': 종료 '+r.status+'\n'+log.slice(-4000));return r.status;}
-const dotnet=process.platform==='win32'?'C:/Program Files/dotnet/dotnet.exe':'dotnet';
+function run(exe,args,name){const r=toolpaths.spawnSync(exe,args,{cwd:build,env,windowsHide:true,stdio:['ignore','pipe','pipe'],encoding:'utf8',timeout:180000,maxBuffer:8*1024*1024});const log=(r.stdout||'')+(r.stderr||'')+(r.error?'\n'+r.error.message:'');fs.writeFileSync(path.join(out,name+'.log'),log);console.log(name+': 종료 '+r.status+'\n'+log.slice(-4000));return r.status;}
+const dotnet=toolpaths.dotnet();
 let status=run(process.execPath,['--test',path.join(__dirname,'export.test.cjs')],'export-contract');if(status!==0)process.exit(status??1);
 if(!process.argv.includes('--reuse-build')){status=run(dotnet,['build',path.join(build,'ResourceOracleTests.csproj'),'-v:q','-p:NuGetAudit=false','-p:UseSharedCompilation=false','-p:ExoduserProject='+project],'build');if(status!==0)process.exit(status??1);}
 status=run(dotnet,[path.join(build,'bin/Debug/net8.0/ResourceOracleTests.dll'),path.join(out,'oracle.json'),path.join(out,'result.json')],'compare');

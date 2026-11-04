@@ -26,3 +26,5 @@ PowerShell 예시(저장된 원문과 그 Git SHA를 인자로 지정):
 | defense-oracle | 근성·방어·hurtP | 같은 근성의 최대 자원 기여 |
 
 같은 검사가 2회 실패하면 멈추고 보고한다. 종료 코드 2는 이 측정 도구의 정상 불일치 결과이며 Core를 고쳐 통과시키지 않는다.
+
+실행 파일 탐색과 EXO_DOTNET_ROLLFORWARD=1의 임시 SDK 정책은 [공용 도구 사용법](../_shared/README.md)을 따른다. 원본 global.json은 유지한다.

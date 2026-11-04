@@ -1,3 +1,4 @@
+const toolpaths=require('../_shared/toolpaths.cjs');
 // 제품 NativeGame 함수 원문 + 실제 Core 전체 소스. Unity 화면/장치 검수와 구분한다.
 const fs=require('fs'),path=require('path'),cp=require('child_process'),crypto=require('crypto');
 const project=path.resolve(__dirname,'../..'),output=path.resolve(process.argv[2]);
@@ -38,5 +39,5 @@ class Program{static int count,fail;static void Check(bool ok,string name){count
 `);
 fs.writeFileSync(path.join(output,'HostResume.csproj'),`<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><EnableDefaultCompileItems>false</EnableDefaultCompileItems><NoWarn>0169;0649;0414</NoWarn></PropertyGroup><ItemGroup><Compile Include="Program.cs"/><Compile Include="${project.replaceAll('\\','/')}/Assets/Exoduser/Runtime/Core/**/*.cs"/></ItemGroup></Project>`);
 fs.writeFileSync(path.join(output,'global.json'),'{"sdk":{"version":"8.0.301","rollForward":"disable"}}');
-const r=cp.spawnSync('C:/Program Files/dotnet/dotnet.exe',['run','--project',path.join(output,'HostResume.csproj'),'--artifacts-path',path.join(output,'artifacts')],{cwd:output,encoding:'utf8',windowsHide:true,maxBuffer:4*1024*1024});
+const r=toolpaths.spawnSync(toolpaths.dotnet(),['run','--project',path.join(output,'HostResume.csproj'),'--artifacts-path',path.join(output,'artifacts')],{cwd:output,encoding:'utf8',windowsHide:true,maxBuffer:4*1024*1024});
 fs.writeFileSync(path.join(output,'result.log'),(r.stdout||'')+(r.stderr||''));process.stdout.write((r.stdout||'')+(r.stderr||''));process.exit(r.status??2);

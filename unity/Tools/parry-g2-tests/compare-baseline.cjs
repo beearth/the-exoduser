@@ -1,9 +1,10 @@
+const toolpaths=require('../_shared/toolpaths.cjs');
 const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process');
 const root=path.resolve(__dirname,'../../..'),out='I:/EXODUSER-Storage/codex-takeover/parry-g2/baseline-current';
 fs.mkdirSync(out,{recursive:true});
 const base='b3cf7a682bd753d81952157ba2d5b7cd55392db4';
-const sdk='C:/Program Files/dotnet/sdk/8.0.301/Roslyn/bincore',refs='C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/8.0.6/ref/net8.0',dotnet='C:/Program Files/dotnet/dotnet.exe';
-const run=(exe,args,timeout=180000)=>cp.spawnSync(exe,args,{cwd:root,windowsHide:true,encoding:'utf8',timeout,maxBuffer:8000000});
+const sdk=path.dirname(toolpaths.csc('8.0.301')),refs=toolpaths.refPack('8.0.6','net8.0'),dotnet=toolpaths.dotnet();
+const run=(exe,args,timeout=180000)=>toolpaths.spawnSync(exe,args,{cwd:root,windowsHide:true,encoding:'utf8',timeout,maxBuffer:8000000});
 const git=args=>{let r=run('C:/Program Files/Git/cmd/git.exe',args);if(r.status!==0)throw Error(r.stderr);return r.stdout.trim();};
 const fixture='unity/Tools/enemy-hurt-oracle/oracle.json',harness='unity/Tools/enemy-hurt-oracle/Program.cs';
 const pinnedFixture=git(['rev-parse',base+':'+fixture]);

@@ -1,9 +1,10 @@
+const toolpaths=require('../_shared/toolpaths.cjs');
 // Ki presentation regression: Roslyn only; no Unity, browser or external writes.
 const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process');
 const root=path.resolve(__dirname,'../../..'),out=path.join(root,'tools/combat-impact-check/ki');
 fs.mkdirSync(out,{recursive:true});
 const latest=p=>fs.readdirSync(p).filter(x=>/^\d/.test(x)).sort((a,b)=>a.localeCompare(b,undefined,{numeric:true})).at(-1);
-const pack='C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Ref',sdk='C:/Program Files/dotnet/sdk';
+const pack=toolpaths.refRoot(),sdk=toolpaths.sdkRoot();
 const ref=path.join(pack,latest(pack),'ref'),tfm=fs.readdirSync(ref).at(-1),files=[path.join(__dirname,'KiPresentationTests.cs')];
 const source=fs.readFileSync(path.join(root,'unity/Assets/Exoduser/Runtime/KiImpactView.cs'),'utf8');
 const start=source.indexOf('    public static class KiImpactPresentation'),end=source.indexOf('    public sealed class KiImpactView');
@@ -21,7 +22,7 @@ const wiring=[
 ];
 const core=path.join(out,'FeedbackStub.cs');fs.writeFileSync(core,'namespace Exoduser.UnityPort.Core {}');files.push(core);
 const env={...process.env,DOTNET_CLI_HOME:out,DOTNET_CLI_TELEMETRY_OPTOUT:'1',DOTNET_SKIP_FIRST_TIME_EXPERIENCE:'1'};
-const run=args=>cp.spawnSync('C:/Program Files/dotnet/dotnet.exe',args,{cwd:root,encoding:'utf8',windowsHide:true,env,timeout:60000,stdio:['ignore','pipe','pipe']});
+const run=args=>toolpaths.spawnSync(toolpaths.dotnet(),args,{cwd:root,encoding:'utf8',windowsHide:true,env,timeout:60000,stdio:['ignore','pipe','pipe']});
 let r=run([path.join(sdk,latest(sdk),'Roslyn/bincore/csc.dll'),'/nologo','/target:exe','/out:'+path.join(out,'checks.dll'),...fs.readdirSync(path.join(ref,tfm)).filter(f=>f.endsWith('.dll')).map(f=>'/r:'+path.join(ref,tfm,f)),...files]);
 let log=(r.stdout||'')+(r.stderr||'')+(r.error?.message||'');
 if(r.status===0){fs.writeFileSync(path.join(out,'checks.runtimeconfig.json'),JSON.stringify({runtimeOptions:{tfm,framework:{name:'Microsoft.NETCore.App',version:tfm.slice(3)+'.0'},rollForward:'LatestMajor'}}));r=run([path.join(out,'checks.dll')]);log+=(r.stdout||'')+(r.stderr||'')+(r.error?.message||'');}

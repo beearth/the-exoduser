@@ -22,8 +22,13 @@ function skip(kind){return '건너뜀(경로 없음): '+kind+'\n';}
 function dotnet(required=true){const exe=findTool('dotnet');if(!exe&&required){process.stdout.write(skip('dotnet'));process.exit(0);}return exe;}
 function python(){return findTool('python');}
 function dotnetRoot(){return path.dirname(fs.realpathSync(dotnet()));}
-function sdkRoot(){return path.join(dotnetRoot(),'sdk');}
-function refRoot(){return path.join(dotnetRoot(),'packs/Microsoft.NETCore.App.Ref');}
+function installedDirectory(relative,kind){
+  const dir=path.join(dotnetRoot(),relative);
+  if(!fs.existsSync(dir)||!fs.readdirSync(dir).some(name=>/^\d/.test(name))){process.stdout.write(skip(kind));process.exit(0);}
+  return dir;
+}
+function sdkRoot(){return installedDirectory('sdk','dotnet SDK');}
+function refRoot(){return installedDirectory('packs/Microsoft.NETCore.App.Ref','dotnet reference pack');}
 function latest(root,prefix=''){return fs.readdirSync(root).filter(s=>/^\d/.test(s)&&s.startsWith(prefix)).sort((a,b)=>a.localeCompare(b,undefined,{numeric:true})).at(-1);}
 function csc(version='8.0.301') {
   const root=sdkRoot(),pick=fs.existsSync(path.join(root,version))?version:latest(root,version.split('.')[0]+'.');
