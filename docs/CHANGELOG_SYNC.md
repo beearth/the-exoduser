@@ -1,3 +1,7 @@
+## 2026-11-04 STY-25 B7 보스 처치 펫 대사 반영 (표시층만, Core 변경 0)
+
+- `pet_bubble.json` cue `boss_kill_ch0`(No.3350 핵터·3351 디로이, 29개 언어, `exit_north_ch0` 앞)와 entries 2개, `NativeGame.PetBubble.cs`(출구 개방 1.7초 뒤 런당 1회 Offer, B8·B9는 B7이 나온 뒤에만). 정본 `DARK_DRUID_1-1_B7_PET_PATCH_20261104.md`. 기존 쿨다운·Active 중 Offer 금지·사망 Clear·메뉴/로딩 숨김 규칙은 그대로.
+
 ## 2026-11-04 STY-25 1-1 다크드루이드 등장·전환 문구 반영 (표시층만, Core 변경 0)
 
 - 코드: 이름 카드 부제 `NativeGame.StageFlow.cs` `StageSubtitle` → `NativeDemoText.Get("썩은 숲의 숲지기")`(No.4288). 목숨 전환 자막 `NativeGame.BossDialogue.cs` `OnDruidLife`(Core `DruidRemodelRaised` 읽기 전용 구독, `collapse` 이벤트 Life 0/1 → `life1`/`life2`, 2.0초 표시 < CollapseTicks 120; 리모델 세트에서만 발생), `NativeBossDialogue.Show(key, seconds)` 표시 길이 인자. 펫 짝 대사 `NativeGame.PetBubble.cs` cue `exit_north_ch0`(출구 개방 뒤 4초, 런당 1회, tier 0, 다른 말풍선이 없을 때).

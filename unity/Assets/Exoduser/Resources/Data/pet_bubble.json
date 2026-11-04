@@ -142,6 +142,18 @@
       "pairSeconds": 0
     },
     {
+      "id": "boss_kill_ch0",
+      "tier": 4,
+      "weight": 0,
+      "who": "crow",
+      "key": "…달아났다. 숲 깊은 곳으로.",
+      "seconds": 4,
+      "cooldown": 99999,
+      "pairWho": "cat",
+      "pairKey": "도망쳤네. 꼬리 말고 숨은 거야.",
+      "pairSeconds": 4
+    },
+    {
       "id": "exit_north_ch0",
       "tier": 0,
       "weight": 0,
@@ -667,6 +679,74 @@
         "Μυρίζει ήδη απαίσια. Ας περάσουμε γρήγορα.",
         "Вече мирише ужасно. Да минем бързо.",
         "Baunya sudah teruk. Mari lalu dengan cepat."
+      ]
+    },
+    {
+      "key": "…달아났다. 숲 깊은 곳으로.",
+      "texts": [
+        "…달아났다. 숲 깊은 곳으로.",
+        "…It fled. Deeper into the forest.",
+        "…逃走了。逃进了森林深处。",
+        "…逃げた。森の奥へ。",
+        "…Ha huido. Hacia lo más profundo del bosque.",
+        "…逃走了。逃進了森林深處。",
+        "…Сбежал. Вглубь леса.",
+        "…Er ist geflohen. Tief in den Wald.",
+        "…Fugiu. Para o fundo da floresta.",
+        "…Il s'est enfui. Au fond de la forêt.",
+        "…Uciekł. W głąb lasu.",
+        "…È fuggito. Nel profondo della foresta.",
+        "…Втік. У глибину лісу.",
+        "…Kaçtı. Ormanın derinliklerine.",
+        "…Nó đã chạy trốn. Vào sâu trong rừng.",
+        "…มันหนีไปแล้ว เข้าไปในส่วนลึกของป่า",
+        "…Dia kabur. Ke dalam hutan.",
+        "…لقد هرب. إلى أعماق الغابة.",
+        "…Den flydde. Djupt in i skogen.",
+        "…Den flygtede. Dybt ind i skoven.",
+        "…Den flyktet. Dypt inn i skogen.",
+        "…Se pakeni. Metsän syvyyksiin.",
+        "…Utekl. Hluboko do lesa.",
+        "…Elmenekült. Az erdő mélyére.",
+        "…A fugit. În adâncul pădurii.",
+        "…Hij is gevlucht. Diep het bos in.",
+        "…Έφυγε. Βαθιά μέσα στο δάσος.",
+        "…Избяга. Дълбоко в гората.",
+        "…Ia melarikan diri. Ke dalam hutan."
+      ]
+    },
+    {
+      "key": "도망쳤네. 꼬리 말고 숨은 거야.",
+      "texts": [
+        "도망쳤네. 꼬리 말고 숨은 거야.",
+        "It ran. It's hiding with its tail tucked.",
+        "它跑了。夹着尾巴躲起来了。",
+        "逃げたな。尻尾を巻いて隠れている。",
+        "Huyó. Se esconde con la cola entre las patas.",
+        "牠跑了。夾著尾巴躲起來了。",
+        "Сбежал. Прячется, поджав хвост.",
+        "Er ist geflohen. Er versteckt sich mit eingezogenem Schwanz.",
+        "Fugiu. Está escondido de rabo entre as pernas.",
+        "Il s'est enfui. Il se cache, la queue entre les pattes.",
+        "Uciekł. Siedzi w ukryciu z podkulonym ogonem.",
+        "È scappato. Si nasconde con la coda tra le gambe.",
+        "Втік. Ховається, підібгавши хвіст.",
+        "Kaçtı. Kuyruğunu kısıp saklanıyor.",
+        "Nó chạy rồi. Đang cụp đuôi trốn.",
+        "มันหนีไปแล้ว ซ่อนตัวพร้อมหางตกลู่",
+        "Dia kabur. Bersembunyi dengan ekor terselip.",
+        "هرب. يختبئ وذيله بين ساقيه.",
+        "Den flydde. Den gömmer sig med svansen mellan benen.",
+        "Den flygtede. Den gemmer sig med halen mellem benene.",
+        "Den stakk. Den gjemmer seg med halen mellom beina.",
+        "Se pakeni. Piileskelee häntä koipien välissä.",
+        "Utekl. Schovává se se staženým ocasem.",
+        "Elfutott. Behúzott farokkal bujkál.",
+        "A fugit. Se ascunde cu coada între picioare.",
+        "Hij is gevlucht. Hij verstopt zich met de staart tussen de benen.",
+        "Το έσκασε. Κρύβεται με την ουρά κάτω.",
+        "Избяга. Крие се с подвита опашка.",
+        "Dia lari. Dia bersembunyi dengan ekor terselit."
       ]
     }
   ]
