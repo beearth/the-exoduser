@@ -1,3 +1,4 @@
+using System;
 using Exoduser.UnityPort.Core;
 namespace Exoduser.UnityPort
 {
@@ -64,5 +65,55 @@ namespace Exoduser.UnityPort
             if(beat>previousBeat&&(state=="bossHeartPause"||state=="bossRec"))return "heartbeat";
             return null;
         }
+
+        // ---- B8 / retouch cuts (11-04), only with --unity-boss-arena-seq ----
+        public const int SeqEntryExitFrames=300;
+        public const double PureBlackMeanY=.5,PureBlackMaxSeconds=.5;
+        // seq-entry: from the first frame of the field fade-out (Core LoadPhase 0 -> 1 while not yet in the arena; EnterArena follows 50 ticks later) for 300 frames.
+        // seq-exit: from the first frame InArena turns false, 300 frames.
+        public sealed class EntryExitWindow
+        {
+            int prevLoad;bool prevArena,have;public int EntryLeft,ExitLeft;
+            public void Step(int loadPhase,bool inArena,out bool entry,out bool exit)
+            {
+                if(have)
+                {
+                    if(prevLoad==0&&loadPhase>0&&!inArena)EntryLeft=SeqEntryExitFrames;
+                    if(prevArena&&!inArena)ExitLeft=SeqEntryExitFrames;
+                }
+                have=true;prevLoad=loadPhase;prevArena=inArena;
+                entry=EntryLeft>0;exit=ExitLeft>0;
+                if(entry)EntryLeft--;
+                if(exit)ExitLeft--;
+            }
+        }
+        // Longest run of pure-black frames (mean Y < .5 of 255) and its duration in real seconds.
+        public sealed class BlackRun
+        {
+            int run;double seconds;public int Longest;public double LongestSeconds,Total;
+            public void Add(double meanY255,double frameSeconds)
+            {
+                if(meanY255<PureBlackMeanY){run++;seconds+=frameSeconds;Total+=frameSeconds;if(run>Longest)Longest=run;if(seconds>LongestSeconds)LongestSeconds=seconds;}
+                else{run=0;seconds=0;}
+            }
+        }
+        public static double LumaY(int r,int g,int b){return .2126*r+.7152*g+.0722*b;}
+        // bullet-cut: the first frame a boss warning or live hazard (never the arena-wide pulse) points at / reaches the hero. All numbers come from the read-only Core telegraph snapshot.
+        public static bool TeleTowardHero(DruidTelegraph t,double hx,double hy,double heroR)
+        {
+            if(t==null||t.Kind==DruidTeleKind.None)return false;
+            double dx=hx-t.X,dy=hy-t.Y,dist=Math.Sqrt(dx*dx+dy*dy);
+            switch(t.Shape)
+            {
+                case DruidTeleShape.Circle:return dist<=t.Radius+heroR+200;
+                case DruidTeleShape.Cone:return dist<=t.Radius+heroR&&AngleDiff(Math.Atan2(dy,dx),t.Dir)<=t.Angle*.5+.35;
+                case DruidTeleShape.Line:case DruidTeleShape.Trail:return dist<=t.Length+heroR&&AngleDiff(Math.Atan2(dy,dx),t.Dir)<=.5;
+                case DruidTeleShape.RingGap:return t.Live&&dist<=t.Radius+t.Width*.5+heroR+120&&dist>=t.Inner-heroR-400;
+                default:return false;
+            }
+        }
+        static double AngleDiff(double a,double b){double d=(a-b)%(2*Math.PI);if(d>Math.PI)d-=2*Math.PI;if(d<-Math.PI)d+=2*Math.PI;return Math.Abs(d);}
+        // far-enemy-cut: the enemy sits in the top third of the screen (Unity screen y grows upward) and in front of the camera.
+        public static bool InTopThird(float screenY,float screenZ,int screenHeight){return screenZ>0&&screenY>=screenHeight*2f/3f&&screenY<=screenHeight;}
     }
 }

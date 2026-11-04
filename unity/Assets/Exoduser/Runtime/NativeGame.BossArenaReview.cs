@@ -34,6 +34,7 @@ namespace Exoduser.UnityPort
         {
             public string seq,separationScope="approx: outward centre-distance gain on a tick whose input pointed at the boss (Core RemodelSeparatePlayer is private); 0 while rolling/dashing",contactStep="";
             public int seqIndex;
+            public float meanY;
             public bool rolling,dashing;
             public float shellScale,oldManScale,bossScreenHeightPx,pillarCentreDistancePx,pillarRadiusPx,bossRadiusPx,gapPx,playerX,playerY,moveDx,moveDy,separationApproxPx,centreDistancePx;
         }
@@ -47,6 +48,10 @@ namespace Exoduser.UnityPort
         float arenaSeqPrevX,arenaSeqPrevY,arenaSeqPrevCentre,arenaSeqMoveDx,arenaSeqMoveDy,arenaSeqPush,arenaSeqCentre;
         NativeArenaReviewPolicy.ContactStep arenaSeqStep;
         ArenaSeqExtra arenaSeqExtra;
+        // B8 / retouch cuts: entry-exit windows (bossless), pure-black measurement, bullet-cut, far-enemy-cut.
+        readonly NativeArenaReviewPolicy.EntryExitWindow arenaSeqWindow=new NativeArenaReviewPolicy.EntryExitWindow();
+        readonly NativeArenaReviewPolicy.BlackRun arenaSeqBlack=new NativeArenaReviewPolicy.BlackRun();
+        bool arenaSeqEntry,arenaSeqExit,arenaSeqBulletCut,arenaSeqFarCut,arenaSeqEnemySeen,arenaSeqFlushExit;int arenaSeqEntryFrames,arenaSeqExitFrames;
         bool arenaReviewMetricsOnly;
         string arenaReviewOutput;
         readonly StringBuilder arenaReviewTrace=new StringBuilder();
@@ -90,12 +95,20 @@ namespace Exoduser.UnityPort
             static ArenaReviewCircle[] Circles(double[][] rows){if(rows==null)return null;var result=new List<ArenaReviewCircle>();foreach(var row in rows)if(row!=null&&row.Length>=3)result.Add(new ArenaReviewCircle{x=row[0],y=row[1],r=row[2]});return result.ToArray();}
             public ArenaReviewBoundary(DruidTelegraph value){geometry=value;safe=Circles(value.Safe);shadows=Circles(value.Shadows);}
         }
-        [Serializable] sealed class ArenaReviewResult
+        [Serializable] class ArenaReviewResult
         {
             public string result,buildGuid,sandbox,scope,timingScope;
             public bool metricsOnly;
             public int width,height;
             public string[] captured,missing,missingScreenshots;
+        }
+        // Only written with --unity-boss-arena-seq: review.json keeps its old shape without it.
+        [Serializable] sealed class ArenaReviewSeqResult:ArenaReviewResult
+        {
+            public string farEnemyCut,bulletCut;
+            public int entryFrames,exitFrames,entryBlackFramesLongest;
+            public float entryBlackSecondsLongest,entryBlackSecondsTotal;
+            public bool entryBlackWithinHalfSecond;
         }
         void BossArenaReviewBegin(string output)
         {
@@ -104,7 +117,7 @@ namespace Exoduser.UnityPort
             arenaReviewOutput=Path.Combine(output,"arena-review");
             Directory.CreateDirectory(arenaReviewOutput);
             if((File.GetAttributes(arenaReviewOutput)&FileAttributes.ReparsePoint)!=0)throw new IOException("Arena review output cannot be a link");
-            foreach(var file in Directory.GetFiles(arenaReviewOutput)){var name=Path.GetFileName(file);bool owned=name.StartsWith("move-",StringComparison.Ordinal)||name.StartsWith("transition-",StringComparison.Ordinal)||name=="camera-frames.jsonl"||name=="moves.jsonl"||name=="review.json"||name=="druid-rigpixel.json"||name=="druid-rigpixel-rt.png"||name.StartsWith("material-field-reference.",StringComparison.Ordinal)||name.StartsWith("material-arena-reference.",StringComparison.Ordinal)||name=="material-comparison.html";if(owned&&(name.EndsWith(".png",StringComparison.Ordinal)||name.EndsWith(".json",StringComparison.Ordinal)||name.EndsWith(".jsonl",StringComparison.Ordinal)||name=="material-comparison.html")){if((File.GetAttributes(file)&FileAttributes.ReparsePoint)!=0)throw new IOException("Arena review file cannot be a link");File.Delete(file);}}
+            foreach(var file in Directory.GetFiles(arenaReviewOutput)){var name=Path.GetFileName(file);bool owned=name.StartsWith("move-",StringComparison.Ordinal)||name.StartsWith("transition-",StringComparison.Ordinal)||name=="camera-frames.jsonl"||name=="moves.jsonl"||name=="review.json"||name=="bullet-cut.png"||name=="bullet-cut.json"||name=="far-enemy-cut.png"||name=="far-enemy-cut.json"||name=="druid-rigpixel.json"||name=="druid-rigpixel-rt.png"||name.StartsWith("material-field-reference.",StringComparison.Ordinal)||name.StartsWith("material-arena-reference.",StringComparison.Ordinal)||name=="material-comparison.html";if(owned&&(name.EndsWith(".png",StringComparison.Ordinal)||name.EndsWith(".json",StringComparison.Ordinal)||name.EndsWith(".jsonl",StringComparison.Ordinal)||name=="material-comparison.html")){if((File.GetAttributes(file)&FileAttributes.ReparsePoint)!=0)throw new IOException("Arena review file cannot be a link");File.Delete(file);}}
             if(ArenaSeqOn)foreach(var dir in Directory.GetDirectories(arenaReviewOutput))
             {
                 if(!Path.GetFileName(dir).StartsWith("seq-",StringComparison.Ordinal))continue;
@@ -142,6 +155,11 @@ namespace Exoduser.UnityPort
                 arenaReviewFissure=0;
             }
             Simulation.DruidTelegraphs(arenaReviewTele);
+            if(ArenaSeqOn&&!arenaSeqBulletCut&&!arenaReviewMetricsOnly)
+            {   // bullet-cut: first tick a boss warning / live hazard points at the hero (1920 PNG + JSON through the normal shot path)
+                var hero=Simulation.Player;
+                foreach(var t in arenaReviewTele)if(NativeArenaReviewPolicy.TeleTowardHero(t,hero.X,hero.Y,hero.Radius)){arenaSeqBulletCut=true;QueueArenaReviewShot("bullet-cut");break;}
+            }
             int fissure=arenaReviewFissure;
             foreach(var t in arenaReviewTele)
             {
@@ -219,6 +237,15 @@ namespace Exoduser.UnityPort
         {
             names=new List<string>();buffer=false;
             var s=Simulation;
+            if(s!=null)
+            {   // entry/exit windows do not need a boss (the field fade-out runs before the arena exists)
+                bool inEntry,inExit;arenaSeqWindow.Step(s.Stage.LoadPhase,s.Stage.InArena,out inEntry,out inExit);
+                arenaSeqEntry=inEntry;arenaSeqExit=inExit;
+                if(inEntry)names.Add("entry");
+                if(inExit){if(arenaSeqExitFrames==0)arenaSeqFlushExit=true;names.Add("exit");}
+                else if(s.Stage.InArena&&s.Stage.StageCleared)buffer=true;   // exit pre-roll ring (24 frames) once the arena is cleared
+                if(names.Count>0||buffer)arenaSeqExtra=new ArenaSeqExtra();
+            }
             if(s==null||s.Druid==null)return;
             var boss=s.Druid.Boss;DruidData d;
             if(boss==null||!s.Druid.Data.TryGetValue(boss,out d))return;
@@ -298,6 +325,18 @@ namespace Exoduser.UnityPort
             finally{RenderTexture.active=old;}
             string baseJson=JsonUtility.ToJson(row);
             var ex=arenaSeqExtra;
+            if(ex!=null&&(names.Contains("entry")||names.Contains("exit")))
+            {   // B8: pure-black measurement on the written 960-wide frames
+                double sum=0;for(int i=0;i<pixels.Length;i++)sum+=NativeArenaReviewPolicy.LumaY(pixels[i].r,pixels[i].g,pixels[i].b);
+                ex.meanY=(float)(sum/Math.Max(1,pixels.Length));
+                if(names.Contains("entry")){arenaSeqEntryFrames++;arenaSeqBlack.Add(ex.meanY,Time.unscaledDeltaTime);}
+                if(names.Contains("exit"))arenaSeqExitFrames++;
+            }
+            if(arenaSeqFlushExit)
+            {
+                arenaSeqFlushExit=false;
+                foreach(var o in arenaSeqRing)if(o.frame>=row.frame-ArenaSeqRing)ArenaSeqWriteFrame("exit",o.pixels,o.width,o.height,o.frame,o.baseJson,o.extra);
+            }
             if(arenaSeqFlushCollapse)
             {
                 arenaSeqFlushCollapse=false;
@@ -336,6 +375,17 @@ namespace Exoduser.UnityPort
             arenaReviewSink=sink;
             var camera=HudCamera;
             if(camera==null)return;
+            if(ArenaSeqOn&&!arenaReviewMetricsOnly&&arena&&s.Stage.LoadPhase==0)
+            {   // far-enemy-cut: first frame a non-boss enemy stands in the top third of the screen
+                foreach(var enemy in s.Enemies)
+                {
+                    if(!enemy.Alive||enemy.IsBoss)continue;
+                    arenaSeqEnemySeen=true;
+                    if(arenaSeqFarCut)break;
+                    var sp=camera.WorldToScreenPoint(Point(enemy.X,enemy.Y));
+                    if(NativeArenaReviewPolicy.InTopThird(sp.y,sp.z,Screen.height)){arenaSeqFarCut=true;QueueArenaReviewShot("far-enemy-cut");break;}
+                }
+            }
             Rect heroRect,bossRect;
             float hh=NativeArenaActorMetrics.HeightPixels(playerView,camera,out heroRect),bh=NativeArenaActorMetrics.HeightPixels(druidBody==null?null:druidBody.Renderer,camera,out bossRect);
             if(heroView!=null&&heroView.Ready&&!playerView.enabled)hh=NativeArenaActorMetrics.ModelHeightPixels(heroView.Model,camera,out heroRect);
@@ -566,7 +616,18 @@ namespace Exoduser.UnityPort
             {
                 result=missing.Count>0?"FAIL_MISSING_ACTIVATIONS":missingImages.Count>0?"FAIL_MISSING_CAPTURE_FILES":"ACTIVATION_COVERAGE_7_OF_7_VISUAL_QA_PENDING",buildGuid=Application.buildGUID,sandbox=NativeQaSandbox.Root,metricsOnly=arenaReviewMetricsOnly,width=Screen.width,height=Screen.height,captured=new List<string>(arenaReviewSeen).ToArray(),missing=missing.ToArray(),missingScreenshots=missingImages.ToArray(),scope="Virtual keyboard/mouse only. 3D bounds and isolated same-pose GPU hero silhouette (alpha>64 RGB sum>12 row>=3 pixels, includes weapon/cape, excludes map occlusion); sprite fallback alpha bounds include weapon and occluded pixels; compare actual PNG body. Pose sampled after final Cinemachine/billboard, PNG same rendered frame. Field hero scale unchanged. No forced move/HP/position edits.",timingScope="Capture PNG encoding/write contaminates current and following frame. Use a separate --unity-boss-arena-metrics-only run, same resolution, one Player, for FPS/long-frame verdict."
             };
-            File.WriteAllText(Path.Combine(arenaReviewOutput,"review.json"),JsonUtility.ToJson(result,true));
+            object finalResult=result;
+            if(ArenaSeqOn)
+            {   // B6/B8 retouch cuts: extra fields only on the seq path
+                var seqResult=new ArenaReviewSeqResult{result=result.result,buildGuid=result.buildGuid,sandbox=result.sandbox,scope=result.scope,timingScope=result.timingScope,metricsOnly=result.metricsOnly,width=result.width,height=result.height,captured=result.captured,missing=result.missing,missingScreenshots=result.missingScreenshots};
+                seqResult.farEnemyCut=arenaSeqFarCut?"captured":arenaSeqEnemySeen?"no-top-third-frame":"none-in-arena";
+                seqResult.bulletCut=arenaSeqBulletCut?"captured":"none";
+                seqResult.entryFrames=arenaSeqEntryFrames;seqResult.exitFrames=arenaSeqExitFrames;
+                seqResult.entryBlackFramesLongest=arenaSeqBlack.Longest;seqResult.entryBlackSecondsLongest=(float)arenaSeqBlack.LongestSeconds;seqResult.entryBlackSecondsTotal=(float)arenaSeqBlack.Total;
+                seqResult.entryBlackWithinHalfSecond=arenaSeqEntryFrames>0&&arenaSeqBlack.LongestSeconds<=NativeArenaReviewPolicy.PureBlackMaxSeconds;
+                finalResult=seqResult;
+            }
+            File.WriteAllText(Path.Combine(arenaReviewOutput,"review.json"),JsonUtility.ToJson(finalResult,true));
             Debug.Log("ARENA_REVIEW_RESULT "+result.result+" missing="+string.Join(",",missing));
             if(arenaReviewHeroRT!=null)
             {

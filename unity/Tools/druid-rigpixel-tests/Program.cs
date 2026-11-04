@@ -26,6 +26,38 @@ class DruidRigTests
  {
   string r;bool on=NativeReviewArgs.DecideDruidSet(a,arena,demo,out r);Check(on==want&&r==why,"druid set "+(a==null?"null":string.Join(" ",a))+" arena="+arena+" demo="+demo+" -> "+on+"/"+r+" expected "+want+"/"+why);
  }
+ static void HsvOk(string hex,string label)
+ {   // B5: S <= .40, no primary lime (hue 63 deg olive-yellow with low saturation is the allowed withered tone)
+  int r=Convert.ToInt32(hex.Substring(1,2),16),g=Convert.ToInt32(hex.Substring(3,2),16),b=Convert.ToInt32(hex.Substring(5,2),16);
+  double max=Math.Max(r,Math.Max(g,b))/255.0,min=Math.Min(r,Math.Min(g,b))/255.0,s=max<=0?0:(max-min)/max;
+  Check(s<=.40,label+" saturation "+s+" <= .40 (RGB "+r+","+g+","+b+")");Console.WriteLine(label+" "+hex+" RGB("+r+","+g+","+b+") S="+s.ToString("0.000")+" V="+max.ToString("0.000"));
+ }
+ static void RetouchB()
+ {
+  HsvOk(NativeDruidRigPolicy.GlowEmissionHex,"glow emission");HsvOk(NativeDruidRigPolicy.GlowPaletteHex,"glow palette");
+  Check(NativeDruidRigPolicy.Palette("druid_glow")==NativeDruidRigPolicy.GlowPaletteHex&&NativeDruidRigPolicy.Palette("lantern_orb")==NativeDruidRigPolicy.GlowPaletteHex,"glow palette routed");
+  // B8 entry/exit windows
+  var w=new NativeArenaReviewPolicy.EntryExitWindow();bool en,ex;int entry=0,exit=0;
+  w.Step(0,false,out en,out ex);Check(!en&&!ex,"window idle");
+  w.Step(1,false,out en,out ex);Check(en&&!ex,"entry starts on LoadPhase 0->1 outside the arena");entry++;
+  for(int i=1;i<NativeArenaReviewPolicy.SeqEntryExitFrames;i++){w.Step(i<50?1:2,i>=50,out en,out ex);if(en)entry++;}
+  Check(entry==NativeArenaReviewPolicy.SeqEntryExitFrames,"entry window is exactly 300 frames: "+entry);w.Step(0,true,out en,out ex);Check(!en,"entry window closed");
+  w.Step(0,false,out en,out ex);Check(ex,"exit starts when InArena turns false");exit++;
+  for(int i=1;i<400;i++){w.Step(0,false,out en,out ex);if(ex)exit++;}
+  Check(exit==NativeArenaReviewPolicy.SeqEntryExitFrames,"exit window is exactly 300 frames: "+exit);
+  var w2=new NativeArenaReviewPolicy.EntryExitWindow();w2.Step(1,true,out en,out ex);w2.Step(2,true,out en,out ex);Check(!en&&!ex,"LoadPhase inside the arena opens nothing");
+  // pure black run
+  var run=new NativeArenaReviewPolicy.BlackRun();for(int i=0;i<10;i++)run.Add(0,1/60.0);run.Add(40,1/60.0);for(int i=0;i<4;i++)run.Add(.2,1/60.0);
+  Check(run.Longest==10&&Math.Abs(run.LongestSeconds-10/60.0)<1e-9&&Math.Abs(run.Total-14/60.0)<1e-9,"black run longest "+run.Longest+" total "+run.Total);
+  Check(NativeArenaReviewPolicy.PureBlackMaxSeconds==.5&&Math.Abs(NativeArenaReviewPolicy.LumaY(255,255,255)-255)<1e-9&&NativeArenaReviewPolicy.LumaY(0,0,0)==0,"black limit and luma");
+  // far enemy / bullet cuts
+  Check(NativeArenaReviewPolicy.InTopThird(800,5,1080)&&!NativeArenaReviewPolicy.InTopThird(700,5,1080)&&!NativeArenaReviewPolicy.InTopThird(800,-1,1080)&&NativeArenaReviewPolicy.InTopThird(720,1,1080),"top third rule");
+  var line=new DruidTelegraph{Kind=DruidTeleKind.GroundDecal,Shape=DruidTeleShape.Line,X=0,Y=0,Dir=0,Length=600,Width=80};
+  Check(NativeArenaReviewPolicy.TeleTowardHero(line,300,20,20),"line toward hero");Check(!NativeArenaReviewPolicy.TeleTowardHero(line,-300,0,20),"line away from hero");Check(!NativeArenaReviewPolicy.TeleTowardHero(line,900,0,20),"line out of reach");
+  var cone=new DruidTelegraph{Kind=DruidTeleKind.GroundDecal,Shape=DruidTeleShape.Cone,X=0,Y=0,Dir=Math.PI,Radius=300,Angle=1.0};
+  Check(NativeArenaReviewPolicy.TeleTowardHero(cone,-200,10,20),"cone wraps across +-pi");Check(!NativeArenaReviewPolicy.TeleTowardHero(cone,200,0,20),"cone behind");
+  var arenaWide=new DruidTelegraph{Kind=DruidTeleKind.GroundDecal,Shape=DruidTeleShape.ArenaMinusSafe,X=0,Y=0};Check(!NativeArenaReviewPolicy.TeleTowardHero(arenaWide,0,0,20)&&!NativeArenaReviewPolicy.TeleTowardHero(null,0,0,20),"arena-wide pulse and null never count");
+ }
  static void DruidSetRule()
  {
   var none=new string[0];var rm=new[]{"--unity-druid-remodel"};var lg=new[]{"--unity-druid-legacy"};var both=new[]{"--unity-druid-remodel","--unity-druid-legacy"};
@@ -75,7 +107,7 @@ class DruidRigTests
   }
   Phase("bossRec","grab","grab_throw",DruidRemodelData.GrabHeldRecovery,0,0,true);Phase("bossRec","grab","grab_miss_rec",DruidRemodelData.GrabMissRecovery);Phase("recover","grab","grab_miss_rec",40);
   Phase("bossRec","grab","charge_rec",DruidRemodelData.GrabMissRecovery,0,0,false,"charge");
-  foreach(var pair in new[]{new[]{"druid_bone","#b9ad90"},new[]{"druid_bark","#4a3826"},new[]{"druid_feather","#1c2024"},new[]{"druid_hair","#2a2624"},new[]{"druid_beard","#8f8a82"},new[]{"druid_glow","#a8642a"},new[]{"druid_moss","#36421f"},new[]{"staff_bark","#4a3826"},new[]{"staff_leather","#2e231b"},new[]{"staff_bone","#b9ad90"},new[]{"lantern_orb","#a8642a"},new[]{"front_panel_cloth","#26211d"}})Check(NativeDruidRigPolicy.Palette(pair[0])==pair[1],"LOCK palette "+pair[0]);Check(NativeDruidRigPolicy.Palette("iron")==null,"hero palette isolated");
+  foreach(var pair in new[]{new[]{"druid_bone","#b9ad90"},new[]{"druid_bark","#4a3826"},new[]{"druid_feather","#1c2024"},new[]{"druid_hair","#2a2624"},new[]{"druid_beard","#8f8a82"},new[]{"druid_glow","#7b7d52"},new[]{"druid_moss","#36421f"},new[]{"staff_bark","#4a3826"},new[]{"staff_leather","#2e231b"},new[]{"staff_bone","#b9ad90"},new[]{"lantern_orb","#7b7d52"},new[]{"front_panel_cloth","#26211d"}})Check(NativeDruidRigPolicy.Palette(pair[0])==pair[1],"LOCK palette "+pair[0]);Check(NativeDruidRigPolicy.Palette("iron")==null,"hero palette isolated");
   using(var json=JsonDocument.Parse(File.ReadAllText("unity/Assets/Exoduser/Resources/Art/Bosses/Druid/oldman-import.json")))
   {
    var source=json.RootElement;Check(source.GetProperty("sourceVersion").GetString()=="v9.1","current source");Check(source.GetProperty("clips").GetArrayLength()==38,"38 imported clips");
@@ -139,6 +171,7 @@ class DruidRigTests
   Near(NativeDruidRigPolicy.Frames("state_P2"),1,"state frames");Check(NativeDruidRigPolicy.Palette("druid_husk_bark")=="#2a2018","husk bark palette");
   Check(NativeDruidRigPolicy.Phase23HuskOffFrame==108&&NativeDruidRigPolicy.IntroTicks==90,"authored switch frames");
   DruidSetRule();
+  RetouchB();
   Console.WriteLine("druid-rigpixel checks="+checks+" failed="+bad);return bad==0?0:1;
  }
 }

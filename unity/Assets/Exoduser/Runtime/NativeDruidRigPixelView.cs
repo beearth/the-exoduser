@@ -79,7 +79,7 @@ namespace Exoduser.UnityPort
                         string name=old[i]==null?"":old[i].name.Replace(" (Instance)","");string hex=NativeDruidRigPolicy.Palette(name);Color color;if(hex==null||!ColorUtility.TryParseHtmlString(hex,out color))throw new InvalidOperationException("Unmapped v9.1 material: "+name);
                         var mat=new Material(toon){name="Druid rig-pixel "+name};mat.SetColor("_PaletteColor",color);mat.SetColor("_BaseColor",Color.white);mat.SetFloat("_MetallicPlane",0);
                         float tag=name=="druid_feather"||name=="front_panel_cloth"?.7f:name=="staff_leather"?.8f:name=="druid_bark"||name=="staff_bark"||name=="druid_husk_bark"?.6f:1;
-                        mat.SetFloat("_SurfaceTag",tag);mat.SetFloat("_DruidGroundClip",1);mat.SetFloat("_DruidGroundY",0);mat.SetFloat("_DruidGlow",name=="lantern_orb"||name=="druid_glow"?1:0);Color amber;ColorUtility.TryParseHtmlString("#d49a5c",out amber);mat.SetColor("_DruidEmission",amber);
+                        mat.SetFloat("_SurfaceTag",tag);mat.SetFloat("_DruidGroundClip",1);mat.SetFloat("_DruidGroundY",0);mat.SetFloat("_DruidGlow",name=="lantern_orb"||name=="druid_glow"?1:0);Color amber;ColorUtility.TryParseHtmlString(NativeDruidRigPolicy.GlowEmissionHex,out amber);mat.SetColor("_DruidEmission",amber);
                         replacement[i]=mat;materials.Add(mat);
                     }
                     r.sharedMaterials=replacement;r.shadowCastingMode=ShadowCastingMode.Off;r.receiveShadows=false;r.forceRenderingOff=true;if(r is SkinnedMeshRenderer skin)skin.updateWhenOffscreen=true;

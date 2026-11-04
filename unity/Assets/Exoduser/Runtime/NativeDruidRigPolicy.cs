@@ -165,6 +165,8 @@ namespace Exoduser.UnityPort
             }
             return Phase("Idle",1,0,false,true);
         }
+        // B5 (arena RETOUCH 11-04): the chest-gap and lantern glow is a withered olive, not primary lime or amber. #b2b57c = RGB(178,181,124), HSV(63 deg, S .315, V .71) <= S .40. Was #d49a5c amber RGB(212,154,92), S .566.
+        public const string GlowEmissionHex="#b2b57c",GlowPaletteHex="#7b7d52";
         public static string Palette(string name)
         {
             switch(name)
@@ -175,7 +177,7 @@ namespace Exoduser.UnityPort
                 case "druid_feather":return "#1c2024";
                 case "druid_hair":return "#2a2624";
                 case "druid_beard":return "#8f8a82";
-                case "druid_glow":case "lantern_orb":return "#a8642a";
+                case "druid_glow":case "lantern_orb":return GlowPaletteHex;
                 case "druid_moss":return "#36421f";
                 case "staff_leather":return "#2e231b";
                 case "front_panel_cloth":return "#26211d";

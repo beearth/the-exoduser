@@ -391,3 +391,25 @@ Mac 전체 인수·7기술별1x 캡처/10초 영상 수집 요청은 [03:00 인�
 | B9 발밑 데칼 | `NativeSkillView.cs` | 가시덫 .43±.04, 회복영역 .52±.12(링 .64+) | 보스 텔레그래프(`RemodelTelegraphs`)가 하나라도 살아 있으면 두 존의 불투명도 ×0.5(0.15초에 걸쳐 전환), 가시덫 최대 약 .24 |
 
 미해결·메모: 기둥이 영웅이 아니라 보스 앞을 가리는 경우의 가림 투명화는 `NativeArenaOcclusion`이 영웅 위치 하나만 받아 이번에 확장하지 않았다(`NativeGame.Remodel3D.cs` 호출부 변경 필요, 이 브리프 범위 밖). 바닥 휘도·표준편차 실측은 Mac 캡처 필요.
+
+### 10.4 보스 실루엣·막·진입(디자인 RETOUCH B4·B5·B6·B8) (11-04, Core 변경 0)
+
+대상 파일: `DruidRigPixelToon.shader`, `NativeDruidRigPolicy.cs`, `NativeDruidRigPixelView.cs`, `NativeArenaReviewPolicy.cs`, `NativeGame.BossArenaReview.cs`, `druid-rigpixel-tests/Program.cs`. 컴파일(Unity)은 HALT 파일 때문에 미확인, 화면은 미재촬영(Mac 필요).
+
+| # | 원인(확인 범위) | 바꾼 값 |
+|---|---|---|
+| B4 | 5차 캡처의 `druid-rigpixel.json`은 `failed:true`(RT 초과 폴백, 5942f98c5가 고침)라 대기 컷은 폴백 스프라이트였고, `move-charge-active`는 리그 픽셀이었다. 합성 셰이더 림(`RimStrength` .26)은 **달 방향 한쪽 외곽에만** 켜지고(`RigPixelComposite.shader`, 영웅·적 공유라 미수정) 셀 조명은 달·점광에만 의존해, 돌진처럼 몸이 달과 반대로 기울면 머리·뿔·두개골이 가장 어두운 셀에 몰린다. 몸이 숙여 뿔이 몸에 겹치는지는 클립 확인이 필요해 미확인 | 드루이드 셰이더에 카메라 쪽 차가운 채움광 `(.20,.215,.25)*(.35+.65*Band(n·v))`(같은 4단 셀), 시선 기준 외곽 림 `(.30,.37,.46)`을 2단(fresnel 1-n·v ≥ .55 → .55, ≥ .78 → +.45)으로 모든 자세에 추가. 달 림(.26)은 그대로. 셀 4단 유지 |
+| B5 | 발광 `druid_glow`·`lantern_orb`는 리그 픽셀에서 이미 비조명 단색이다. 5차 캡처의 연두는 폴백 스프라이트 몸통의 그림이다(이번 범위 밖 에셋). 호박색 #d49a5c는 S .566이라 합격선(.40)을 넘었다 | 발광 #d49a5c RGB(212,154,92) S .566 → **#b2b57c RGB(178,181,124) HSV(63°, S .315, V .71)**(시든 올리브), 팔레트 기본색 #a8642a → #7b7d52 RGB(123,125,82) S .344. 심장 박동 `ChestPulse`(.6~1.0)는 그대로 |
+| B6 | 가라앉기 시작 캡처의 흰 반투명 구체·섬광은 가라앉기 코드(`NativeGame.BossView.cs`, `NativeDruidBody.DrawSink`: 몸통 스프라이트·구멍 디스크·가산 glow .84)에도 보스 리그 뷰에도 없다. 구체를 그리는 코드를 찾지 못했고(Runtime에 구체 메시 없음, 영웅 악의오브 추출·베기 연출로 추정) 이번에 고치지 않았다. 피해 숫자는 캡처에서 이미 막 위에 있었다 | 변경 없음. 막 불투명도 .35 이하는 미달성·미확인(발생 원인 파일 확정 후 처리) |
+| B8 | `transition-entry-visible`는 `ArenaActive`가 켜지는 프레임, 곧 Core `LoadPhase` 2의 첫 틱(`LoadT=0`, 로딩 그림 알파 `LoadT/35`=0)이라 순흑이다. 실제 연출은 LoadPhase 1(50틱 페이드)→2(130틱 검정 위 로딩 그림, 그림 알파 35틱 상승)→3→4(Core 타이밍, 미수정). 순흑은 전환 직전 몇 틱과 LoadPhase 2 첫 몇 틱뿐이다(촬영 시점 문제, 실측은 아래 seq-entry) | 연출 변경 없음. 순흑 판정용 `seq-entry` 프레임마다 960폭 평균 Y(`meanY`)를 기록하고 `review.json`에 가장 긴 순흑(Y<.5) 프레임 수·초를 적는다(합격 `entryBlackWithinHalfSecond` ≤ 0.5초) |
+
+#### 새 QA 캡처 (`--unity-boss-arena-review --unity-boss-arena-seq`일 때만, 인자 없으면 기존 경로·review.json 동일)
+
+| 이름 | 내용 |
+|---|---|
+| `seq-entry` | LoadPhase 0→1(필드 페이드 시작, 아레나 밖)부터 300프레임, 가로 960, `frames.jsonl`에 `meanY` |
+| `seq-exit` | `InArena`가 꺼지는 프레임부터 300프레임(스테이지 클리어 뒤 24프레임 링 사전 기록 포함) |
+| `bullet-cut.png/.json` | 보스 경고·살아 있는 장판(아레나 전체 펄스 제외)이 영웅 쪽을 향하거나 닿는 첫 틱, 1920 원본. 판정은 `NativeArenaReviewPolicy.TeleTowardHero`(Core 텔레그래프 읽기 전용; Core에는 보스 탄 목록이 없다) |
+| `far-enemy-cut.png/.json` | 보스 아님·생존 적이 화면 위 1/3에 있는 첫 프레임. 아레나에 적이 없으면 `review.json`의 `farEnemyCut`="none-in-arena"(적은 있었으나 위 1/3에 없으면 "no-top-third-frame") |
+
+검증: `druid-rigpixel-tests` 5,488 검사 실패 0(발광 S ≤ .40, 진입·퇴장 창 정확히 300프레임, 순흑 연속, 컷 판정 포함), `druid-remodel-test` 99,429 검사 실패 0. 셰이더·뷰·리뷰 캡처 코드의 Unity 컴파일은 HALT로 미확인.
