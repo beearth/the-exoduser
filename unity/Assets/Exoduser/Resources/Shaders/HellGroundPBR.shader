@@ -75,11 +75,13 @@ Shader "EXODUSER/HellGroundPBR"
      half3 leaves=SAMPLE_TEXTURE2D(_ForestMap,sampler_ForestMap,i.world.xz/1.8).rgb*half3(.47,.38,.24);
      half3 moss=SAMPLE_TEXTURE2D(_FieldMoss,sampler_ForestMap,i.world.xz/2.6).rgb*half3(.50,.56,.34);
      mossMix=SAMPLE_TEXTURE2D(_FieldCover,sampler_FieldCover,float2(i.world.x/80,-i.world.z/80)).r*(.48+.35*macro);
-     a=lerp(dirt,roots,.3+.35*fringe);a=lerp(a,leaves,macro*.42);a=lerp(a,moss,mossMix);
+     a=lerp(dirt,roots,.3+.35*fringe);a=lerp(a,leaves,macro*.2);mossMix=0;
+     half lum=saturate(dot(a,half3(.3,.59,.11))*2.1);half bruise=smoothstep(.35,.7,sin(i.world.x*.19+sin(i.world.z*.31)*2.1)*.5+.5);
+     a=lerp(half3(.026,.011,.011),lerp(half3(.24,.095,.075),half3(.19,.085,.095),bruise),lum);
      nt=normalize(lerp(UnpackNormalScale(SAMPLE_TEXTURE2D(_SoilNormal,sampler_ForestMap,soilFine),.65),UnpackNormalScale(SAMPLE_TEXTURE2D(_RootNormal,sampler_ForestMap,i.world.xz/3.8),.65),.3+.35*fringe));
      nt=normalize(lerp(nt,UnpackNormalScale(SAMPLE_TEXTURE2D(_FieldMossNormal,sampler_ForestNormal,i.world.xz/2.6),.55),mossMix));
      input.normalWS=normalize(mul(nt,float3x3(t,b,n)));
-     a*=lerp(.8,1.12,macro)*_BaseColor.rgb;
+     a*=lerp(.85,1.1,macro);
     }
     SurfaceData surface=(SurfaceData)0;surface.albedo=a;surface.alpha=1;surface.occlusion=1;surface.normalTS=nt;surface.specular=.04;
     half rough=SAMPLE_TEXTURE2D(_RockRough,sampler_RockRough,tile).r;surface.smoothness=lerp(.24,.50-.25*rough,rock);surface.metallic=0;
