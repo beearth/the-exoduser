@@ -11,6 +11,11 @@ using UnityEngine;
 // Unity와 분리된 판정: 1=배율, 2=파지, 4=칼끝, 8=LOCK 비율, 16=측정 불능.
 public static class HeroWeaponAuditRules
 {
+    public static float EffectiveScale(float raw, float fileScale, bool useFileScale, float globalScale)
+    {
+        return raw * (useFileScale ? fileScale : 1f) * globalScale;
+    }
+
     public static int Assess(float x, float y, float z, float grip, float tip, float sole,
         float length, float height, float ratioMin, float ratioMax)
     {
@@ -48,14 +53,14 @@ namespace Exoduser.Editor.CharacterLab
         }
         [Serializable] public sealed class Hero
         {
-            public string prefab, status, error;
+            public string prefab, status, scaleStatus, error;
             public float rigHeightM, soleWorldY, topWorldY, fieldHeightM;
             public List<Weapon> weapons = new List<Weapon>();
             public List<Import> imports = new List<Import>();
         }
         [Serializable] public sealed class Weapon
         {
-            public string root, socket, socketBone, status, gripSource, tipSource, lengthSource, lockSource;
+            public string root, socket, socketBone, status, scaleStatus, gripStatus, gripSource, tipSource, lengthSource, lockSource;
             public Vector3 gripWorld, socketWorld, socketBoneWorld, tipWorld, boundsMin, boundsMax;
             public float gripSocketDistanceM, gripBoneDistanceM, lengthM, ratio, ratioMin, ratioMax;
             public int ruleFlags;
@@ -66,9 +71,9 @@ namespace Exoduser.Editor.CharacterLab
         [Serializable] public sealed class Node
         {
             public string path, meshAsset;
-            public Vector3 localPosition, localScale, worldScale, boundsMin, boundsMax;
+            public Vector3 localPosition, localScale, worldScale, effectiveScale, boundsMin, boundsMax;
             public bool hasMesh;
-            public float importUnitScale, diagnosticSourceUnitProduct;
+            public float importUnitScale = 1f, diagnosticSourceUnitProduct;
         }
         [Serializable] public sealed class Import
         {
@@ -151,6 +156,7 @@ namespace Exoduser.Editor.CharacterLab
             if (hero.weapons.Count == 0) { hero.status = "FAIL"; hero.error = "무기/소켓을 식별하지 못함(누락을 PASS 처리하지 않음)"; }
             else hero.status = hero.weapons.Any(w => w.status == "FAIL") ? "FAIL"
                 : hero.weapons.Any(w => w.status == "WARN") ? "WARN" : "PASS";
+            hero.scaleStatus = hero.weapons.Count == 0 || hero.weapons.Any(w => w.scaleStatus == "FAIL") ? "FAIL" : "PASS";
         }
 
         static Weapon InspectWeapon(Transform root, Transform heroRoot, Hero hero, HashSet<Transform> bones)
@@ -178,10 +184,12 @@ namespace Exoduser.Editor.CharacterLab
                     var imp = AddImport(hero.imports, n.meshAsset);
                     if (imp != null)
                     {
-                        n.importUnitScale = imp.globalScale * (imp.useFileScale ? imp.fileScale : 1);
-                        n.diagnosticSourceUnitProduct = n.worldScale.x * n.importUnitScale;
+                        n.importUnitScale = HeroWeaponAuditRules.EffectiveScale(1, imp.fileScale, imp.useFileScale, imp.globalScale);
                     }
-                    if (BadScale(n.worldScale)) { scaleFail = true; w.findings.Add("FAIL: 메시 월드 배율 범위 밖 " + n.path + " " + V(n.worldScale)); }
+                    n.effectiveScale = n.worldScale * n.importUnitScale;
+                    n.diagnosticSourceUnitProduct = n.effectiveScale.x;
+                    if (BadScale(n.effectiveScale)) { scaleFail = true; w.findings.Add("FAIL: 메시 유효 배율 범위 밖 " + n.path
+                        + " 원시=" + V(n.worldScale) + " 유효=" + V(n.effectiveScale)); }
                 }
                 w.children.Add(n);
             }
@@ -245,7 +253,7 @@ namespace Exoduser.Editor.CharacterLab
                 w.lockSource = "SILVERTAIL_LOCKED_SPEC_v1_2 [A] 전장 1830mm / 실측 리그 키";
             }
             else w.lockSource = "해당 무기 수치 LOCK 없음 → 길이비 WARN 생략(단검 수치 문서 검색 포함)";
-            Vector3 scale = w.children.First(n => n.hasMesh).worldScale;
+            Vector3 scale = w.children.First(n => n.hasMesh).effectiveScale;
             w.ruleFlags = HeroWeaponAuditRules.Assess(scale.x, scale.y, scale.z, w.gripSocketDistanceM,
                 w.tipWorld.y, hero.soleWorldY, w.lengthM, hero.rigHeightM, w.ratioMin, w.ratioMax);
             if (scaleFail) w.ruleFlags |= 1;
@@ -253,6 +261,9 @@ namespace Exoduser.Editor.CharacterLab
             if ((w.ruleFlags & 4) != 0) w.findings.Add("FAIL: rest 칼끝이 발바닥보다 0.2m 초과 아래");
             if ((w.ruleFlags & 8) != 0) w.findings.Add("WARN: LOCK 길이비 ±15% 밖");
             if ((w.ruleFlags & 16) != 0) w.findings.Add("FAIL: 필수 측정값 누락/비정상");
+            w.scaleStatus = scaleFail ? "FAIL" : "PASS";
+            w.gripStatus = w.gripSocketDistanceM < 0 || (w.ruleFlags & 2) != 0 ? "FAIL" : w.estimatedGrip ? "WARN" : "PASS";
+            if (warrior && w.estimatedGrip) w.findings.Add("WARN: legacy 손잡이 중심은 문서 기반 추정치(명시 마커 없음)");
             w.status = (w.ruleFlags & ~8) != 0 || socket == null || bone == null ? "FAIL"
                 : (w.ruleFlags & 8) != 0 || w.estimatedGrip ? "WARN" : "PASS";
             return w;
@@ -328,11 +339,11 @@ namespace Exoduser.Editor.CharacterLab
             b.AppendLine("- 측정 기준 커밋: `" + a.sourceSha + "`, Unity `" + a.unityVersion + "`, UTC `" + a.generatedUtc + "`.");
             b.AppendLine("- Editor 배치 전용. Player 0회. 저장된 rest 포즈 실측이며 실게임/애니메이션/디자인 판정은 미검수.");
             b.AppendLine("- " + a.pose + ". 키·무기·거리 표는 화면 배율 적용 전 m. 1-1 표시 키는 리그 실측 ×0.87.");
-            b.AppendLine("- PASS/WARN/FAIL은 브리프 정적 규칙이다. 정상 관찰 이력이 있는 legacy도 규칙을 완화해 PASS로 바꾸지 않는다.");
+            b.AppendLine("- FIX-1(캐릭터 총괄 결정): 배율은 Transform 부모 곱 × (useFileScale?fileScale:1) × globalScale의 유효 배율로 판정한다. 배율 PASS와 파지 추정 WARN을 구분한다.");
             b.AppendLine();
-            b.AppendLine("| 프리팹 | 판정 | 리그 키 m | 1-1 키 u | 발바닥 Y m | 무기 수 |");
-            b.AppendLine("|---|---|---:|---:|---:|---:|");
-            foreach (Hero h in a.prefabs) b.AppendLine("| " + h.prefab + " | " + h.status + " | " + F(h.rigHeightM) + " | " + F(h.fieldHeightM) + " | " + F(h.soleWorldY) + " | " + h.weapons.Count + " |");
+            b.AppendLine("| 프리팹 | 배율 판정 | 종합 판정 | 리그 키 m | 1-1 키 u | 발바닥 Y m | 무기 수 |");
+            b.AppendLine("|---|---|---|---:|---:|---:|---:|");
+            foreach (Hero h in a.prefabs) b.AppendLine("| " + h.prefab + " | " + h.scaleStatus + " | " + h.status + " | " + F(h.rigHeightM) + " | " + F(h.fieldHeightM) + " | " + F(h.soleWorldY) + " | " + h.weapons.Count + " |");
             foreach (Hero h in a.prefabs)
             {
                 b.AppendLine(); b.AppendLine("## " + Path.GetFileName(h.prefab)); b.AppendLine();
@@ -344,6 +355,7 @@ namespace Exoduser.Editor.CharacterLab
                     b.AppendLine("| " + w.root + " | " + w.socket + " | " + w.socketBone + " | " + w.status + " | " + F(w.lengthM) + " | " + F(w.ratio) + " | " + F(w.tipWorld.y) + " | " + F(w.tipWorld.y - h.soleWorldY) + " | " + (w.gripSocketDistanceM < 0 ? "미측정" : F(w.gripSocketDistanceM)) + " |");
                     b.AppendLine();
                     b.AppendLine("- 손잡이: " + w.gripSource + "; 월드 " + V(w.gripWorld) + ". 추정값은 실제 손가락 접촉 검증을 대신하지 않음.");
+                    b.AppendLine("- 배율 판정 " + w.scaleStatus + "; 파지 판정 " + w.gripStatus + "; 종합 판정 " + w.status + ".");
                     b.AppendLine("- 소켓 월드 " + V(w.socketWorld) + "; 부착 뼈 월드 " + V(w.socketBoneWorld)
                         + "; 손잡이↔부착 뼈 " + F(w.gripBoneDistanceM) + "m(판정 거리는 소켓 기준).");
                     b.AppendLine("- 칼끝: " + w.tipSource + "; 월드 " + V(w.tipWorld) + ".");
@@ -351,23 +363,24 @@ namespace Exoduser.Editor.CharacterLab
                     b.AppendLine("- 무기 월드 bounds 최저/최고: " + V(w.boundsMin) + " / " + V(w.boundsMax) + ".");
                     foreach (string finding in w.findings) b.AppendLine("- " + finding);
                     b.AppendLine();
-                    b.AppendLine("| 자식 경로(루트 포함) | 로컬 위치 | 로컬 배율 | 월드 배율(부모 곱) | 메시 bounds min | 메시 bounds max | FBX |");
-                    b.AppendLine("|---|---|---|---|---|---|---|");
-                    foreach (Node n in w.children) b.AppendLine("| " + n.path + " | " + V(n.localPosition) + " | " + V(n.localScale) + " | " + V(n.worldScale) + " | " + (n.hasMesh ? V(n.boundsMin) : "—") + " | " + (n.hasMesh ? V(n.boundsMax) : "—") + " | " + n.meshAsset + " |");
+                    b.AppendLine("| 자식 경로(루트 포함) | 로컬 위치 | 로컬 배율 | 원시 월드 배율(부모 Transform 곱) | 유효 배율 | 임포트 보상 | 메시 bounds min | 메시 bounds max | FBX |");
+                    b.AppendLine("|---|---|---|---|---|---:|---|---|---|");
+                    foreach (Node n in w.children) b.AppendLine("| " + n.path + " | " + V(n.localPosition) + " | " + V(n.localScale) + " | " + V(n.worldScale) + " | " + (n.hasMesh ? V(n.effectiveScale) : "—") + " | " + (n.hasMesh ? F(n.importUnitScale) : "—") + " | " + (n.hasMesh ? V(n.boundsMin) : "—") + " | " + (n.hasMesh ? V(n.boundsMax) : "—") + " | " + n.meshAsset + " |");
                 }
                 b.AppendLine(); b.AppendLine("| FBX | globalScale | useFileScale | fileScale |");
                 b.AppendLine("|---|---:|---|---:|");
                 foreach (Import i in h.imports) b.AppendLine("| " + i.path + " | " + F(i.globalScale) + " | " + i.useFileScale + " | " + F(i.fileScale) + " |");
             }
             b.AppendLine(); b.AppendLine("## 판정 규칙과 한계"); b.AppendLine();
-            b.AppendLine("- 무기 메시 `lossyScale` 각 축이 0.5~2.0 밖이면 FAIL. 파지거리 >0.05m, 칼끝 <발바닥−0.2m이면 FAIL. 부동소수점 경계 오차 허용 0.000001m. 필수 데이터 누락도 FAIL.");
+            b.AppendLine("- 무기 메시 유효 배율 각 축이 0.5~2.0 밖일 때 배율 FAIL. 원시 배율만으로 FAIL하지 않는다. 파지거리 >0.05m, 칼끝 <발바닥−0.2m이면 FAIL. 부동소수점 경계 오차 허용 0.000001m. 필수 데이터 누락도 FAIL.");
             b.AppendLine("- LOCK 허용범위는 [비 하한×0.85, 비 상한×1.15]. 전사 0.8~1.0은 WARRIOR_DESIGN_LOCK에 숫자가 없어 브리프가 지정한 대체값. 별도 SSOT에는 전장 1.60m/손잡이+폼멜 0.35m가 있음.");
             b.AppendLine("- 실버테일 Rotary Blade 1.830m는 SILVERTAIL_LOCKED_SPEC_v1_2 [A]. 단검은 docs 검색에서 수치 LOCK을 찾지 못해 길이비 WARN 생략. 임포트 코드의 제작값은 LOCK으로 승격하지 않음.");
-            b.AppendLine("- legacy cm 메시의 로컬 배율100은 실제 100m 무기를 뜻하지 않는다. 임포트 단위가 정점에 반영된 상태이므로 월드 정점 전장/bounds를 함께 봐야 한다. 원시 배율 FAIL은 정상 관찰과 양립할 수 있으며, 이 규칙만으로 임포트 재수정을 권고하지 않는다.");
-            b.AppendLine("- JSON의 diagnosticSourceUnitProduct=월드 X배율×globalScale×(useFileScale?fileScale:1)은 단위 보상 참고값이다. 이미 임포트된 정점에 다시 곱해 길이·bounds를 계산하지 않는다.");
+            b.AppendLine("- legacy는 원시100 × fileScale0.01 × globalScale0.8409828 ≈ 유효0.840983이므로 배율 PASS. WeaponImport는 ModelImporter.globalScale로 전장을 맞추며, FBX meta의 meshes.globalScale=0.8409828·useFileScale=1과 실행 중 ModelImporter API 값을 대조한다. humanDescription.globalScale=0.008409828은 추가로 곱하지 않는다.");
+            b.AppendLine("- 미터로 구운 메시(fileScale=1, globalScale=1)에 잘못된 Transform100을 걸면 유효100으로 계속 FAIL. 비-FBX 메시에는 임포트 보상1을 적용한다.");
+            b.AppendLine("- JSON worldScale은 원시 배율, effectiveScale은 판정 배율, importUnitScale은 단위 보상, diagnosticSourceUnitProduct는 유효 X축의 호환 별칭이다. 이미 임포트된 정점에 보상을 다시 곱해 길이·bounds를 계산하지 않는다.");
             b.AppendLine("- JSON 거리 -1은 소켓/뼈 미식별로 인한 미측정이다. 소켓 미식별은 FAIL이며 원점으로 대신 판정하지 않는다.");
             b.AppendLine("- 손잡이 명시 마커가 없으면 WARN 이상(전사는 문서 기반 중앙 추정); 접힌/곡선 검은 tip 마커와 전개 상태 검증이 추가로 필요. 미식별/통합 본체 무기는 FAIL로 남기며 자동 PASS하지 않는다.");
-            b.AppendLine("- 다음 관문: 캐릭터 총괄이 원시 배율 규칙의 legacy 오탐 여부를 검토하고, 손잡이 마커·애니메이션 파지·Mac 실게임 1x로 확인. 모듈 전사 브랜치와 런타임은 이 레인에서 수정하지 않음.");
+            b.AppendLine("- 다음 관문: legacy 손잡이 추정 2.5cm WARN 유지, 마커 추가 없음. 애니메이션 파지·Mac 실게임 1x는 미검수. 모듈 전사 브랜치와 런타임은 이 레인에서 수정하지 않음.");
             return b.ToString().Replace("\r\n", "\n");
         }
     }

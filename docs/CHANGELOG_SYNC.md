@@ -58021,3 +58021,10 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 - 브리프 판정 경계값 15건 통과. legacy cm 메시 배율100과 실제 월드 길이를 구분하여 기록하며, 손잡이 마커가 없는 문서 기반 추정은 실제 파지 검증으로 승격하지 않는다.
 - 결과표: docs/engine/UNITY_HERO_WEAPON_SCALE_AUDIT_20261104.md. Core·런타임·프리팹·임포터 수정 0, Player 실행 0.
 - 실측: 공용 Editor 배치 bc3ce989 1회 정상 종료(컴파일 오류 0·세이브 변경 0), Warrior 키 1.850001m·대검 1.600001m·길이비 0.864865·추정 파지거리 0.025m. 엄격 판정 FAIL은 원시 메시 월드 배율100 한 건이며, 실제 전장/거리/칼끝은 허용범위다. 길이 정상이라는 관찰과 배율 규칙의 legacy 오탐 가능성을 함께 기록했다.
+
+## 2026-11-04 FIX-1 영웅 무기 유효 배율 판정 (캐릭터 총괄 결정)
+
+- 배율 판정만 Transform 부모 곱 × (useFileScale?fileScale:1) × ModelImporter.globalScale로 변경. 원시 월드 배율과 유효 배율을 JSON·MD·docs에 모두 기록한다.
+- legacy 임포터는 meshes.globalScale=0.8409828·useFileScale=1·fileScale=0.01이므로 원시100→유효0.840983. humanDescription.globalScale=0.008409828을 중복 적용하지 않는다. 전장·bounds는 기존 월드 정점 측정을 유지한다.
+- 경계 테스트 21건 통과: legacy cm 보상 PASS, 미터 메시100배 FAIL, useFileScale=false·globalScale·유효 경계0.5/2 포함. 파지 추정 2.5cm WARN 유지, 마커·프리팹·런타임 수정 0.
+- 실제 검증: 공용 Editor 배치9cd93631 1회 정상 종료. legacy 원시(100,100.000008,99.999992)→유효(0.840983,0.840983,0.840983), 배율 PASS·파지 추정2.5cm WARN·종합 WARN. 컴파일 오류0·실행 오류 로그0·세이브 변경0, Player0. 결과표와 영수증을 같은 docs에 기록했다.
