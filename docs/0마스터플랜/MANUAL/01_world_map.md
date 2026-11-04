@@ -1,6 +1,6 @@
 # MANUAL 01 — 월드·맵 (지형·재질·소품 군집·접지·물·늪) (초안 2026-11-05)
 
-- 상태: 초안(2차 반영) | 연구 반영: d4_01_env(D4_STUDY/01_environment.md), poe2(GAME_STUDY/poe2.md), conventions(ARPG_CONVENTIONS_CHECKLIST_20261105.md), yellowsky(맵 근거 없음 확인), **2차: codex_keyshot_composition(Steam 규격·키샷 3안), TOOLCHAIN(§2-1~§2-3, §3c c-1), our_tech_audit(현재 숲 모듈 삼각형·접지·텍스처 현황), codex_yellowsky(환경 근거 0건 재확인), codex_tech_budget(소품 폴리곤 공개 수치 없음 확인)** | 연구 반영 대기: PoE2 발표 영상(S02)의 지형 블렌드 세부, D4 원문 대조(E1·E5·E8·E14~E18). 키샷 구도 3안은 Codex 문서 조사로 만든 설계 제안이고, Mac이 공개 스크린샷 23장(D4·PoE2·Wicked·黄天逆途)을 눈대중으로 본 검증(keyshot_verify_mac)을 3.2에 반영했다(6장만 본 표본, 최종 아님). 안 좌표는 [추정]이며, 실제 고정 카메라에서의 좌표 실측이 필요함
+- 상태: 초안(3차 반영 11-05) | 연구 반영: **3차: FIRST_SCENE_PLAN(구도안 2·단계 순서·접지 합격선·보유 자산), codex_asset_size(§5.3 텍스처 규칙·a2 용량), codex_synthesis(§1.1 환경 원칙·§2 지형 vs 메시 우열 미정), yellowsky 갱신본(맵 근거 계속 0건)**, d4_01_env(D4_STUDY/01_environment.md), poe2(GAME_STUDY/poe2.md), conventions(ARPG_CONVENTIONS_CHECKLIST_20261105.md), yellowsky(맵 근거 없음 확인), **2차: codex_keyshot_composition(Steam 규격·키샷 3안), TOOLCHAIN(§2-1~§2-3, §3c c-1), our_tech_audit(현재 숲 모듈 삼각형·접지·텍스처 현황), codex_yellowsky(환경 근거 0건 재확인), codex_tech_budget(소품 폴리곤 공개 수치 없음 확인)** | 연구 반영 대기: PoE2 발표 영상(S02)의 지형 블렌드 세부, D4 원문 대조(E1·E5·E8·E14~E18). 키샷 구도 3안은 Codex 문서 조사로 만든 설계 제안이고, Mac이 공개 스크린샷 23장(D4·PoE2·Wicked·黄天逆途)을 눈대중으로 본 검증(keyshot_verify_mac)을 3.2에 반영했다(6장만 본 표본, 최종 아님). 안 좌표는 [추정]이며, 실제 고정 카메라에서의 좌표 실측이 필요함
 - 범위: 1-1 숲길(남→북 다리·양쪽 늪·고목 전경)의 지형, 지면 재질, 소품 군집, 접지, 물·늪 표현, 제작 순서. 1-2 이후는 같은 키트에 테마만 갈아 끼우는 규칙까지.
 - 이 문서가 정하지 않는 것: 광원·안개·색 보정(02), 카메라·가림(03), 게임 규칙(걷기 칸·충돌·NavMesh는 규칙 코어 `unity/Assets/Exoduser/Runtime/Core`가 정답), 웹 1-1 소품의 좌표와 종류(CLAUDE.md "맵": 웹 좌표 그대로).
 - 사용자 평가(11-04): "붕 뜨고, 안 맞고, 듬성듬성, 색이 구리다." 이 문서는 이 네 가지에 각각 답한다. 붕 뜸 = 접지, 안 맞음 = 재질 경계와 스케일, 듬성듬성 = 군집과 식생 밀도, 색 = 명도 리듬(02와 공동).
@@ -86,6 +86,33 @@
 
 **기록 형식(후속 이미지 관찰 시):** 전투 스크린샷·이동 스크린샷·스토어 헤더를 구분하고, 각 이미지의 페이지 URL, 고유 식별자 또는 갤러리 순번과 장면 설명을 함께 적는다. 육안 수치는 `[추정]`으로, 광원 방향은 관찰과 해석을 분리해 적는다.
 
+### 3.3 FIRST_SCENE_PLAN 대조와 에셋 크기 상한 (3차 반영)
+
+**FIRST_SCENE_PLAN(Codex 계획 초안, 미실행)과 이 문서의 차이:**
+
+| 항목 | FIRST_SCENE_PLAN | 이 문서 | 처리 |
+|---|---|---|---|
+| 첫 키샷 | 안 2(중경 교전 + 북쪽 후속 적) | D01-9★ 추천과 같음(안 2 첫 장) | 일치. 평가 기준은 D01-9 그대로 |
+| 먼 적 수 | 후속 적 1마리, 발 y 25~32%, 높이 2~4%H | 6장 합격 3마리 이상 | D01-7★ 그대로 열려 있음. 계획은 1마리라 3마리 변형이 추가로 필요 |
+| 공간 3층 | "가장자리 큰 고목 / y 43~65% 교전 / y 24~35% 후속 적"을 합격 판단에 씀 | 3.2에서 "3층 공식" 삭제 | ★D01-10 |
+| 최종 캡처 | HUD·디버그 끔, 실제 플레이 순간, 10초 무음 영상, 21:9 추가 확인 | D01-8: Steam 겸용은 HUD 켬 | ★D01-11 |
+| 접지 합격선 | 바닥을 지형에 2~8cm 묻음, 높이 차 3cm 초과 또는 화면 틈 2px 초과 FAIL [추정·계획] | BudgetCheck 0.02u 이하 | ★D01-12 |
+| 자산 | 보유 자산 먼저(지형 형상·PBR 4세트·목교·고목 A/B·Hollow·r3 군집·소품). 있음은 Git 존재일 뿐 품질 미판정. 새 제작은 첫 Mac 캡처에서 가장 큰 차이만 | S3~S7 제작 | 보유 우선 규칙을 5.1 S0에 반영 |
+| 시간 | 13~24시간, 2~4 작업일 [추정]. 생성·유료 승인 대기·Mac 대기 제외 | 없음 | 참고용 [추정] |
+
+**에셋 크기 상한 (codex_asset_size §5·§7, 모두 [추정·후속 구현안] 미적용):**
+
+| 항목 | 값 | 근거 |
+|---|---|---|
+| 지면·나무 PBR 기본 크기 | 2048², 작은 소품·마스크 1024², 아주 작은 보조 512². 원본보다 확대하지 않음 | [추정] codex_asset_size §5.3. 개별 시험 뒤 확정 |
+| 압축·밉 | 현행 a2 지정 PBR 규칙 유지(max 2048, HQ 압축, 밉 켬, Trilinear, aniso 8). 기본색 sRGB, 노멀은 NormalMap, 거칠기·마스크 선형 | [사실] `SourceTextureImporter.cs:17–44`(codex_asset_size §5.1), 규칙 값은 [추정] |
+| 현재 맵 a2 규모 | `Resources/Art/map/a2` 233파일 405,608,808 byte(≈386.8 MiB). Git 원본이며 설치량·VRAM 아님 | [사실] FIRST_SCENE_PLAN §3, codex_asset_size §2 |
+| 별도 보존분 | A2R 797파일 1,247,335,249 byte는 다른 브랜치 보존분이라 현재 HEAD 분모 밖 | [사실] codex_asset_size §1 |
+| 소품 2D 원화 | `prop_*.png`가 있다는 이유로 3D 자산 확정 근거로 쓰지 않음 | [추정] FIRST_SCENE_PLAN §3 |
+| 작업 디스크 | 대표 4파일(숲흙 BaseColor, r3 고목 A, Warrior R7, EyeMass)이 계획 작성 작업본 디스크에 없었음(sparse). Git 보유와 디스크 준비는 다름 | [사실] FIRST_SCENE_PLAN §3 |
+
+지형 방식(D01-1)에 대해 codex_synthesis §2는 "Terrain 높이 블렌드(D4 추천)와 메시 지형(PoE2 추천)의 근거 우열 미정, 현재 접합·경사·패스 비용 확인 전 절충 아키텍처를 새로 만들지 않는다"고 판정했다. D01-1 추천(지형 + 접합부 메시)은 D4 안 쪽이므로 "Mac 비교 캡처 1회 뒤 확정"으로 단서를 단다.
+
 ## 4. 제작 도구
 
 | 역할 | Unity 추천 (확정) | UE5 대응 | 대안 |
@@ -116,6 +143,7 @@
 
 | 단계 | 입력 | 작업 | 출력 형식 |
 |---|---|---|---|
+| S0 격리·자산 확인 (3차, FIRST_SCENE_PLAN §5 단계 0) | 기준 SHA, 보유 자산 목록 | 별도 브랜치·별도 씬(후보 `FirstScene_Keyshot02`, 확정 전 제안)에서만 조립. 본선 초기화 훅이 먼저 도는지 로그로 확인. 보유 자산(지형 형상·PBR·목교·고목·군집)을 먼저 대조하고 가장 큰 차이만 새로 제작 | 격리 확인 로그 + 보유/부족 표. 본선 Core·씬·공유 재질 수정 0 |
 | S1 키샷 고정 | 1-1 장면, 카메라 LOCK | 카메라 위치·적 배치·HUD 켬을 명세로 고정 | 캡처 명세 1장(위치·시각·파일명 규칙 `keyshot_<단계>_<해상도>.png`) |
 | S2 블록아웃 | 웹 소품 좌표, 아트 바이블 명도 V1~V6 | 회색 재질로 형태·명도 리듬만 맞춤 | 회색 상자 캡처 1920×1080, 3840×1080 |
 | S3 지면 재질 | 4층 정의 | 타일 4종 제작, 높이 블렌드 연결, 저주파 마스크 칠하기 | 타일: 2048² PNG/TGA(색 sRGB, 노멀, 마스크 선형), 알파맵 512² |
@@ -150,6 +178,8 @@
 | 접지 | Decal Actor 또는 Contact Shadows 보조 |
 | 군집 | PCG 그래프로 `ForestKit Scatter` 규칙 재현 |
 | 식생 | Foliage 인스턴스, Masked 머티리얼 |
+| 단위·좌표 (3차, ENGINE_TRIAL §4.2) | Unity 1unit = 1m가 확인된 경우에만 UE 위치(cm) = 100 × (Unity z, x, y). 스케일이 다르면 알려진 모델 높이에서 공통 계수를 구해 모든 좌표에 같이 적용 [추정] |
+| 시험 레벨 | 작은 비 World Partition 레벨 하나(`/Game/Trial/L_11_Keyshot`)로 키샷만 비교. 엔진 전환 결정이 아님 [추정] |
 
 ## 6. 합격 기준
 
@@ -165,6 +195,8 @@
 | Steam 스크린샷 후보 | 키샷 PNG가 1920×1080 이상 16:9 실제 플레이 캡처인지(콘셉트 아트·합성 아님) | 5장 이상 확보 가능한 구도 3안 중 PASS 개수 |
 | 키샷 3안 | 3.1표 좌표 목표를 실제 고정 카메라에서 측정 | 목표 불가능한 안은 폐기(카메라 이동 금지) |
 | 걷기 칸 | 소품·데칼이 걷기 칸을 덮은 수 | 0, NavMesh 차이 0 |
+| 단계별 Mac 판정 (3차) | 지형 → 재질 → 소품 → 광원 → 캐릭터 → HUD 끄고 캡처 순으로, 각 단계 끝에 Mac 실제 렌더 캡처(1920×1080·3840×1080, 1x·3x). 캡처 없으면 PENDING, 컴파일·정적 검사·파일 존재는 시각 PASS가 아님 | FIRST_SCENE_PLAN §5. 한 단계 FAIL이면 다음 단계로 가지 않음 |
+| 최종 인수 (3차) | 같은 소스 SHA의 Mac 빌드에서 실제 적·전투·이동 포함. 대역·정지 포즈·표식 상자만 통과한 것은 최종 PASS 아님 | FIRST_SCENE_PLAN §5·§7 |
 | 예산 | 화면 삼각형 300k 이하, 15번 문서 한도 | 초과 시 RETOUCH |
 
 RETOUCH는 PASS가 아니다. 결함·담당·다음 산출물을 적는다.
@@ -194,6 +226,10 @@ RETOUCH는 PASS가 아니다. 결함·담당·다음 산출물을 적는다.
 | D01-8 | 키샷 3안을 Steam 스크린샷 5장 중 3장의 후보로 겸용할까(실제 플레이·HUD 켬·1920×1080 이상) | 겸용. 최종 스크린샷은 데모 v0 빌드 캡처만 사용 | 판정용과 마케팅용 분리 촬영 |
 | D01-9★ | 첫 키샷을 안 1(다리 축선 + 먼 적 예고)이 아니라 **안 2(밝은 중앙 교전)**로 찍고, "먼 후속 적 + 고목 전경"을 레퍼런스 근거 없는 우리 LOCK 규칙으로만 유지할까. 3.1 표와 6장 합격 기준(먼 적 3마리, 고목 전경)은 그대로 두되 근거 표기만 바꾼다. Mac 검증은 6장 눈대중 표본이라 최종 아님 | 안 2를 첫 키샷, 안 3을 두 번째 장, 안 1은 먼 적 판정용 별도 캡처. 평가 기준은 "어두운 주변에서 밝은 중앙 교전이 바로 읽힘" | 안 1 우선(Codex 원안) |
 
+| D01-10★ | FIRST_SCENE_PLAN §2는 합격 판단에 "공간 3층(가장자리 큰 고목 / 교전 / 후속 적)"을 쓴다. 3.2 검증은 이 3층 공식을 구도 원칙에서 삭제했다. 어느 쪽으로 맞출까 | 3층을 "원칙"이 아니라 이 키샷의 확인 항목으로만 쓴다(레퍼런스 근거 없음 표기, LOCK 규칙). 구도 원칙에는 올리지 않음 | 계획 문구 그대로 합격 기준에 채택 |
+| D01-11★ | 최종 캡처는 계획이 HUD 끔(판정용), D01-8은 Steam 겸용으로 HUD 켬이다. 어떻게 나눌까 | 판정용(HUD 끔 + 10초 무음 영상)과 Steam 후보(HUD 켬, 플레이 이해에 도움 되는 범위)를 같은 순간에서 두 장으로 찍는다. 최종 스크린샷은 데모 v0 빌드 캡처만 | HUD 끔 한 장으로 둘 다 사용 |
+| D01-12★ | 접지 합격선이 두 개다: BudgetCheck 지형-메시 높이 차 ≤0.02u(15번)와 FIRST_SCENE_PLAN "3cm 초과 FAIL, 2~8cm 묻음". 1unit=1m이면 2cm와 3cm | 더 엄격한 0.02u를 자동 검사 값으로, 계획의 2~8cm 묻음은 소품 배치 규칙으로 둔다. 화면 틈 2px 초과 FAIL은 함께 적용. 1unit=1m는 Mac에서 먼저 확인 | 계획 값(3cm)으로 통일 |
+
 ## 9. 출처
 
 - `docs/0마스터플랜/D4_STUDY/01_environment.md` (스크래치패드 d4_01_env.md) §1~§8
@@ -204,4 +240,5 @@ RETOUCH는 PASS가 아니다. 결함·담당·다음 산출물을 적는다.
 - 내부: `docs/4.1맵디자인+설정/UNITY_MAP_ART_BIBLE_20261026.md`(팔레트·명도·재질표), `UNITY_MAP_BOARD_20261026.md`, `unity/Assets/Exoduser/Runtime/NativeRemodel3D.cs` 17~18행(피치 34°, 거리 16.5u)
 - CLAUDE.md 1절(맵), 4.2절(점 금지)
 - **2차 반영 입력:** `docs/0마스터플랜/GAME_STUDY/codex_keyshot_composition.md` §1~§6(Steam 규격 [S1] https://partner.steamgames.com/doc/store/assets/standard , 규칙 [S2] https://partner.steamgames.com/doc/store/assets/rules , 키샷 3안), `docs/0마스터플랜/GAME_STUDY/our_tech_audit.md` §3 #19·#21·#22·#23, §9, `docs/0마스터플랜/MANUAL/TOOLCHAIN_20261105.md` §2-1~§2-3·§3c c-1, `docs/0마스터플랜/GAME_STUDY/codex_yellowsky.md`(환경 사실 0건), `docs/0마스터플랜/GAME_STUDY/codex_tech_budget.md` §3(소품 삼각형 공개 수치 없음), `docs/0마스터플랜/ENGINE_DECISION_20261105.md`(UE5 칸: Landscape·PCG·Foliage 점검)
+- **3차 반영 입력:** `docs/0마스터플랜/MANUAL/FIRST_SCENE_PLAN.md` §2~§7, `docs/0마스터플랜/GAME_STUDY/codex_asset_size.md` §1·§2·§5·§7, `docs/0마스터플랜/GAME_STUDY/codex_synthesis.md` §1.1·§2(지형 vs 메시), `docs/0마스터플랜/ENGINE_TRIAL_UE5_PLAN.md` §3·§4.2, `docs/0마스터플랜/GAME_STUDY/downfall_of_yellowsky.md` 갱신본(맵 근거 0건 유지)
 - **키샷 검증 입력:** `docs/0마스터플랜/GAME_STUDY/keyshot_verify_mac.md`(브랜치 claude/unity-mac-report-20261104, Mac 눈대중 23장, 6장 표본)

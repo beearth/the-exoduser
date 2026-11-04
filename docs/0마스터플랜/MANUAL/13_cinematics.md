@@ -1,6 +1,6 @@
 # MANUAL 13 — 시네마틱·연출 (등장·전환·처치·타이틀·영상 데모) (초안 2026-11-05)
 
-- 상태: 초안(2차 반영) | 연구 반영: d4_03_cam(§1 시네마틱 카메라, §4 처치 연출), d4_04_boss_vfx(§5 등장·퇴장), yellowsky(규칙 6·9, §4.6), conventions(J, M 절), pbz(규칙 R3 히트스톱 관찰), **2차: codex_cinematic_text(공개 접근성 권고, D4·Hades·PoE2 연출 확인 범위), codex_keyshot_composition(Steam 스크린샷 규격), TOOLCHAIN(§3c c-3 KeyshotBoard, Recorder, §1 Timeline/Cinemachine 6.6.0), codex_yellowsky(데모 영상 관련 사실 없음 재확인), ENGINE_DECISION(Sequencer·Movie Render Queue 칸 점검)** | 연구 반영 대기: 타이틀·로비 연출 레퍼런스 연구(codex_cinematic_text도 타이틀은 다루지 않음, 업계 관례로 작성), 사운드 매뉴얼(연출 음 레이어). **초 단위 수치(등장 4초, 퇴장 3초, 정적 60프레임 등)는 공개 자료에서 확인되지 않았다**(세 게임 모두 인트로·보스 등장·클리어·사망 길이 미확인, 장르 공통 표준도 없음). 이 문서의 길이 값은 계속 [추정] 우리 기준이다
+- 상태: 초안(3차 반영 11-05) | 연구 반영: **3차: FIRST_SCENE_PLAN(§5 단계 6 캡처 조건), codex_synthesis(§1.12 시네마틱 원칙 5개 — 기존 3.8·3.9와 대부분 일치, 추가는 홍보 카메라 분리·복귀 일관성), yellowsky 갱신본(스크린샷 2장 사실 확인)**, d4_03_cam(§1 시네마틱 카메라, §4 처치 연출), d4_04_boss_vfx(§5 등장·퇴장), yellowsky(규칙 6·9, §4.6), conventions(J, M 절), pbz(규칙 R3 히트스톱 관찰), **2차: codex_cinematic_text(공개 접근성 권고, D4·Hades·PoE2 연출 확인 범위), codex_keyshot_composition(Steam 스크린샷 규격), TOOLCHAIN(§3c c-3 KeyshotBoard, Recorder, §1 Timeline/Cinemachine 6.6.0), codex_yellowsky(데모 영상 관련 사실 없음 재확인), ENGINE_DECISION(Sequencer·Movie Render Queue 칸 점검)** | 연구 반영 대기: 타이틀·로비 연출 레퍼런스 연구(codex_cinematic_text도 타이틀은 다루지 않음, 업계 관례로 작성), 사운드 매뉴얼(연출 음 레이어). **초 단위 수치(등장 4초, 퇴장 3초, 정적 60프레임 등)는 공개 자료에서 확인되지 않았다**(세 게임 모두 인트로·보스 등장·클리어·사망 길이 미확인, 장르 공통 표준도 없음). 이 문서의 길이 값은 계속 [추정] 우리 기준이다
 - 범위: 보스 등장·퇴장, 처치 연출, 지역·화면 전환, 타이틀·로비 연출, 사망·부활 연출, 실게임 카메라 원칙, Steam 영상 데모 규칙.
 - 이 문서가 정하지 않는 것: 보스 무브셋·공격 템포(보스 매뉴얼), 사운드 상세(사운드 매뉴얼), 카메라 LOCK 수치 자체(03), 규칙 코어의 히트스톱 프레임 값.
 - Core 인용: 일반 타격 히트스톱 5프레임 `Core/EnemyHurt.Body.cs:129`, 처치 4프레임 `Core/EnemyHurt.Death.cs:318`, 큰 처치 12프레임 `Core/EnemyHurt.DeathTail.cs:140`, 플레이어 스턴 5프레임 `Core/PlayerPoise.cs:12`. 이 문서는 이 값을 바꾸지 않는다. 표현이 이를 어떻게 소비하는지만 정한다.
@@ -100,7 +100,7 @@
 | 먼 적 | 먼 적이 보이는 컷 최소 1개 | CLAUDE.md |
 | 해상도·fps | 1920×1080 60fps (21:9 3840×1080 별도 1컷 검증용) | [추정] |
 | 무음 판정 | 10초 무음 영상 별도 | CLAUDE.md |
-| 스크린샷 | 전투 1장 + 분위기 1장으로 나눔 | [추정] yellowsky §2.4 |
+| 스크린샷 | 전투 1장 + 분위기 1장으로 나눔 | Yellowsky가 2026-08 고해상 스크린샷 2장(전투 1·분위기 1)을 낸 것은 [사실](游侠·GamerSky, 갱신본 §1.1). 우리가 같은 비율로 나누는 것은 [추정] |
 
 ### 3.8 접근성·자막·스킵 기준 (2차 반영: codex_cinematic_text §2·§3)
 
@@ -128,6 +128,8 @@
 | 캡슐 | Header 920×430, Small 462×174, Main 1232×706, Vertical 748×896, Page Background 1438×810(선택), Bundle Header 707×232. 기본 캡슐은 게임 아트·게임명·공식 부제만, 리뷰·수상·할인 문구 금지 | [사실] 같음 |
 | 라이브러리 | 히어로에 문자 금지, 로고는 별도 투명 배경 자산 | [사실] Graphical Asset Rules |
 | 키샷 관계 | 키샷 3안은 스크린샷 후보. 캡슐은 별도 제작(16:9 절단 금지). 타이틀 이미지는 키아트 쪽 | [추정] 01번 3.1 |
+| 첫 키샷 캡처 조건 (3차) | HUD·디버그 표식·FPS 숨김, 실제 플레이 중 구도안 2 순간 선택, 10초 무음 실제 플레이 영상, 16:9·21:9·32:9 성립, 수정·합성 없는 프레임. 대역·정지 포즈·AI 정지 연출은 최종 증거 아님. Steam 후보(HUD 켬 여부)는 01번 D01-11★ | [추정·계획] FIRST_SCENE_PLAN §5 단계 6, §7 |
+| 홍보 카메라 분리 (3차) | 근접 홍보 컷·푸시인을 플레이 카메라 변경의 근거로 쓰지 않음. 게임 화면 / 엔진 컷신 / 홍보 키아트의 용도를 나눔 | [사실 범위] codex_synthesis §1.12 #4 |
 | 녹화 도구 | Unity Recorder(고정 프레임레이트 Constant). 공용 실행기 무창 조건에서 쓸 수 있는지는 Mac 확인 필요(TOOLCHAIN §3c). 키샷 비교판은 `KeyshotBoard`(c-3) | [사실] Recorder 문서, [미확인] 무창 |
 
 ## 4. 제작 도구
@@ -195,6 +197,8 @@ Level Sequence로 시퀀스, Camera Cut 없이 Spring Arm 길이 트랙, 스킵�
 - 필름 그레인·디더 페이드, 점 패턴 전환.
 - 연출 때문에 규칙 코어 판정 변경. 발을 숨겨 높이를 속이는 시네마틱 기법(발밑 = 코어 원).
 - 사용자 모니터에 창·소리를 띄우는 캡처.
+- 근접 홍보 카메라·트레일러 푸시인을 플레이 중 매 타격 반응이나 카메라 변경 근거로 옮기기(codex_synthesis §1.12·§2). PBZ 푸시인은 실측 플레이 값이 아님.
+- 연출 종료 뒤 상태·음악·자막·입력 복귀를 확인하지 않고 완료 처리하기. 시네마틱 렌더 자동화 성공을 실제 플레이 검증으로 대신하기.
 
 ## 8. 사용자 결정 필요 항목
 
@@ -214,7 +218,8 @@ Level Sequence로 시퀀스, Camera Cut 없이 Spring Arm 길이 트랙, 스킵�
 
 - `docs/0마스터플랜/D4_STUDY/03_camera_occlusion_combat.md` §1(시네마틱), §4(처치 길이)
 - `docs/0마스터플랜/D4_STUDY/04_boss_vfx_anim.md` 규칙 ⑩, §5 등장·퇴장·카메라 (스크래치패드 d4_04_boss_vfx.md)
-- `docs/0마스터플랜/GAME_STUDY/downfall_of_yellowsky.md` 규칙 6·9, §4.6
+- `docs/0마스터플랜/GAME_STUDY/downfall_of_yellowsky.md` 규칙 6·9, §4.6 (갱신본: 규칙 9의 영상 60~90초·컷 ≤4초는 우리 [기준], 스크린샷 2장·실기 데모 조회수는 [사실])
+- **3차 반영 입력:** `docs/0마스터플랜/MANUAL/FIRST_SCENE_PLAN.md` §5·§7, `docs/0마스터플랜/GAME_STUDY/codex_synthesis.md` §1.12·§2, `docs/0마스터플랜/ENGINE_TRIAL_UE5_PLAN.md` §8.4(MRQ는 보조 렌더 후보일 뿐 실게임 증거 아님)
 - `docs/0마스터플랜/GAME_STUDY/phantom_blade_zero.md` R3(히트스톱 관찰)
 - `docs/0마스터플랜/ARPG_CONVENTIONS_CHECKLIST_20261105.md` D1, E4, J, K5, M
 - 내부: `unity/Assets/Exoduser/Runtime/NativeBossBar.cs`, `NativeScreenTransition.cs`, `Core/EnemyHurt*.cs`, `docs/engine/UNITY_BOSS_BATTLE_BOARD_20261026.md`

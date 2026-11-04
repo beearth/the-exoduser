@@ -1,6 +1,6 @@
 # MANUAL 03 — 카메라·가림 투명화·실루엣·보스 아레나 줌 (초안 2026-11-05)
 
-- 상태: 초안(2차 반영) | 연구 반영: d4_03_cam(전체), conventions(A·B 절), yellowsky(규칙 6 보스 카메라), poe2(§7 카메라, R10 흔들림), d4_01_env(§6), **2차: TOOLCHAIN(§3a a-2 OccluderFadePass·a-3 SilhouettePass, §1 설치 패키지), codex_urp_mood(§10 34° 먼 적·가림·LOD·DOF·비네트), codex_keyshot_composition(§5 카메라·거리 고정), codex_cinematic_text(§3 D4 실시간 컷신 카메라 설명), our_tech_audit(#16 반복 GetComponent), codex_tech_budget(예산 항목), ENGINE_DECISION(§3 카메라 UE5 칸)** | 연구 반영 대기: D4 가림 방식 공식 자료(공개 없음, 추정으로 처리). 보스별 카메라 피치·FOV·줌·복귀 시간은 D4·Hades·PoE2 모두 공개 수치 없음(codex_cinematic_text §3, 미확인)
+- 상태: 초안(3차 반영 11-05) | 연구 반영: **3차: FIRST_SCENE_PLAN(§2 카메라 고정값·§5 단계), codex_synthesis(§1.3 카메라·가림 원칙, §2 보스 줌 배율·실루엣 깊이 정합 판정), yellowsky 갱신본(자체 시야 거리 조절 사실, 보스 카메라 수치는 [기준]), ENGINE_TRIAL_UE5_PLAN(§3·§4.2 UE5 카메라 칸 정합)**, d4_03_cam(전체), conventions(A·B 절), yellowsky(규칙 6 보스 카메라), poe2(§7 카메라, R10 흔들림), d4_01_env(§6), **2차: TOOLCHAIN(§3a a-2 OccluderFadePass·a-3 SilhouettePass, §1 설치 패키지), codex_urp_mood(§10 34° 먼 적·가림·LOD·DOF·비네트), codex_keyshot_composition(§5 카메라·거리 고정), codex_cinematic_text(§3 D4 실시간 컷신 카메라 설명), our_tech_audit(#16 반복 GetComponent), codex_tech_budget(예산 항목), ENGINE_DECISION(§3 카메라 UE5 칸)** | 연구 반영 대기: D4 가림 방식 공식 자료(공개 없음, 추정으로 처리). 보스별 카메라 피치·FOV·줌·복귀 시간은 D4·Hades·PoE2 모두 공개 수치 없음(codex_cinematic_text §3, 미확인)
 - 범위: 게임 카메라(피치·거리·FOV·추적), 흔들림, 보스 아레나 줌, 가림 투명화(1단계), 가려진 영웅·엘리트 실루엣(2단계), 발밑 원, 먼 적 보호, 시네마틱 카메라와의 경계.
 - 이 문서가 정하지 않는 것: 시네마틱 연출 내용(13), 안개 수치(02), 판정·수치(규칙 코어), HUD 배치.
 - 현재 구현 근거: 1-1 피치 34°, 거리 16.5u (`unity/Assets/Exoduser/Runtime/NativeRemodel3D.cs` 17~18행), 보스 줌 `NativeGame.BossView.cs` 30행 `BossCameraZoom`(기존 2D 경로: 보스 생존 중 목표 0.8, 감쇠 .94^dt), 아레나 프레임 `NativeArenaCameraLayout.cs`(기본 반높이 최대 ×1.35).
@@ -39,9 +39,12 @@
 | 보스 아레나 거리(현행) | 필드와 같은 16.5u (×1.00). 18.3u(줌 0.90)는 11-03 폐기 | [사실 내부] `docs/engine/UNITY_BOSS_BATTLE_BOARD_20261026.md` 298행 |
 | 보스 아레나 거리(연구 제안) | 최대 ×1.20 (19.8u), 전환 0.6초 ease-in-out, 피치 변화 0°. Core 제안이 아니라 표현 제안, 현행과 충돌 | [추정] d4_03 R1, d4_04_boss_vfx ⑩ → 결정 D03-1 |
 | 기존 구현 상한 | 아레나 프레임 ×1.35 | [사실 내부] NativeArenaCameraLayout.cs → 상한 충돌, 결정 D03-1 |
-| 보스 대기술 늘이기(연출) | 거리 +8~15%, 늘이는 0.4~0.6초, 접점 임펄스 0.12초, 복귀 0.5초 | [단일] yellowsky 규칙 6 |
+| 보스 대기술 늘이기(연출) | 거리 +8~15%, 늘이는 0.4~0.6초, 접점 임펄스 0.12초, 복귀 0.5초 | 사실 부분(대기술 때 카메라 늘이기 + 강타)은 [단일] 17173, **수치는 갱신본의 우리 [기준]이라 [추정]** (yellowsky 규칙 6). codex_synthesis §2: 보스 줌 배율은 "공통 결론 없음, 세 숫자를 합치지 않는다" |
 | 영웅 화면 위치 | 중심 약간 아래, 맵 끝에서 빈 공간이 보이지 않게 클램프 | [사실 내부] conventions A1·A2 |
 | 마우스 휠 줌 | 없음 | conventions A6 |
+| 수직 FOV · 추적 앞서보기 | 46.9453°, lookAhead 1.45 (비 ForestA2 값 피치 48.7014126°·거리 14는 가져오면 안 됨) | [사실 내부] `NativeRemodelCamera.cs`, `Resources/Data/remodel_camera.json` (FIRST_SCENE_PLAN §2) |
+| 키샷 카메라 고정 (3차) | 거리·FOV·yaw·추적 오프셋·영웅 표시 크기 모두 유지. 좌표를 맞추려 카메라·모델 크기를 바꾸거나 최종 화면을 크롭해 재구도하지 않음. 첫 Mac 캡처에서 실제 활성 카메라 값을 대조 | [추정·운용] FIRST_SCENE_PLAN §2 |
+| 사용자 시야 거리 조절 | Yellowsky는 자체 시야 거리 조절(自定义视距)을 핵심 기능으로 소개한다 [사실] 갱신본(2건). 우리 LOCK은 사용자 줌 없음(A6) | 데모 v0는 넣지 않음 → D03-8★ |
 
 ### 3.2 흔들림
 
@@ -148,6 +151,8 @@
 
 SpringArm(피치 고정, 길이만 변경), Camera Shake(위치만), 가림은 투명 머티리얼 파라미터 + Custom Depth 스텐실 실루엣, 발밑 원은 Decal.
 
+**3차 정합(ENGINE_TRIAL_UE5_PLAN §3·§4.2):** 원근 CameraComponent, 피치는 수평면 아래 34°(숫자 부호보다 최종 forward 벡터가 하향 34°인지 확인). SpringArm 충돌에 의한 길이 변경·카메라 lag·자동 yaw·사용자 줌은 끈다. **FOV 축이 다르다:** Unity `fieldOfView`는 세로, UE `CameraComponent.FieldOfView`는 가로 → UE 가로 FOV = 2·atan(tan(Unity 세로 FOV/2) × 가로세로비). 예: 세로 60°·16:9 가정이면 약 91.49°(가정 예시이고 우리 값은 46.9453°). 거리·FOV를 함께 바꿔 맞추는 것은 전경 고목과 먼 적의 원근 비율을 바꾸므로 금지, 환산값을 그대로 쓴다. 캐릭터를 별도 RT로 그릴 때 월드 고목·난간 뒤 가림은 깊이 합성이 필요하다(Custom Depth 방식 가림 실루엣도 같은 조건, D03-9★).
+
 ## 6. 합격 기준
 
 | 판정 | 방법 | 합격 |
@@ -162,6 +167,8 @@ SpringArm(피치 고정, 길이만 변경), Camera Shake(위치만), 가림은 �
 | 흔들림 | 옵션 끔 상태 | 완전 정지 |
 | 먼 적 LOD·효과 | 이동 중 갑자기 사라짐 0, DOF·모션블러·비네트 켬/끔 같은 프레임 비교 | 먼 적 ΔL 유지(02번) |
 | 예산 | 캐스트 연산 + 추가 패스(가림 ≤ 0.5ms, 실루엣 ≤ 0.2ms) | 15번 3.2표 한도 안 |
+| 키샷 카메라 대조 (3차) | 첫 Mac 캡처에서 활성 카메라 피치·거리·FOV가 34°·16.5u·46.9453°인지 확인하고, 구도안 2 좌표가 이 카메라와 충돌하면 좌표를 폐기하고 관측값 기록 | 카메라·모델 크기 조정·크롭 재구도 0 |
+| 가림 + 깊이 정합 (3차) | 영웅이 고목·난간 뒤를 지날 때 월드 가림물 앞뒤 관계, 먼 적·바닥 예고가 가림 해제 뒤에도 남는지 | 앞뒤 관계 오류 0, 먼 적 유지 |
 
 ## 7. 금지
 
@@ -184,6 +191,8 @@ SpringArm(피치 고정, 길이만 변경), Camera Shake(위치만), 가림은 �
 | D03-5 | 고목 수관을 가림 대상에 넣어 구도가 흐려지는지 첫 시험 후 컷아웃 대안으로 갈아타도 되나 | 가능 | 알파만 고수 |
 | D03-6★ | 가림 1단계 구현을 오브젝트별 `_Fade` 머티리얼(이전 초안)로 할까, TOOLCHAIN a-2 `OccluderFadePass` Renderer Feature(대상 레이어 일괄, 깊이 선패스+알파, 예산 ≤0.5ms, 디더 금지)로 할까 | a-2 Renderer Feature 채택, `OccluderFade` 컴포넌트는 대상 표시·값 관리만(TOOLCHAIN과 일치) | 머티리얼 방식 유지 |
 | D03-7★ | 현재 코드는 `CinemachineFollow`, 문서는 `CinemachinePositionComposer`, 설치는 Cinemachine 6.6.0이다. 거리만 보간하고 피치·FOV는 잠금이라는 요건을 만족하는 컴포넌트를 Mac에서 확인해 문서를 맞출까 | 확인 후 요건을 만족하는 쪽으로 통일, 요건 미달이면 거리 전용 래퍼 | 문서 표기만 유지 |
+| D03-8★ | Yellowsky는 사용자 시야 거리 조절을 제공한다(공개 사실 2건). 우리 LOCK은 사용자 줌 없음(A6)인데 범위를 넓히면 먼 적 크기·안개 차폐가 바뀐다. 따를까 | 데모 v0는 고정(조절 없음). 후속 검토 시 거리 범위를 먼 적 ΔL(02번) 통과 구간으로 좁히고 피치는 잠금 | 좁은 범위(±5%)로 옵션 제공 |
+| D03-9★ | 가림 2단계 실루엣은 D4 안(같은 RT 카메라의 Renderer로 Depth Greater)을 쓰는데, 우리 캐릭터는 별도 저해상도 RT라 월드 고목의 깊이가 그 RT에 있는지 미확인(codex_synthesis §2: 색·깊이·노멀·ID 행렬 정합 필요). 이대로 진행할까 | 구현 전에 Mac 최소 시험 1회: 고목 뒤 영웅의 앞뒤 관계와 실루엣 위치를 확인. 안 되면 월드 깊이를 RT에 넘기는 합성으로 변경. 확인 전 "해결됨" 표기 금지 | 실루엣 없이 1단계만 |
 
 ## 9. 출처
 
@@ -192,4 +201,5 @@ SpringArm(피치 고정, 길이만 변경), Camera Shake(위치만), 가림은 �
 - `docs/0마스터플랜/GAME_STUDY/downfall_of_yellowsky.md` §0 규칙 6, §4.2
 - `docs/0마스터플랜/ARPG_CONVENTIONS_CHECKLIST_20261105.md` A1~A6, B1~B4, §2.2
 - 내부: `unity/Assets/Exoduser/Runtime/NativeRemodel3D.cs`, `NativeGame.BossView.cs`, `NativeArenaCameraLayout.cs`, CLAUDE.md 1절(카메라 LOCK)
+- **3차 반영 입력:** `docs/0마스터플랜/MANUAL/FIRST_SCENE_PLAN.md` §2·§5, `docs/0마스터플랜/GAME_STUDY/codex_synthesis.md` §1.3·§2(보스 줌·실루엣 깊이·트레일러 푸시인 판정), `docs/0마스터플랜/ENGINE_TRIAL_UE5_PLAN.md` §3·§4.2·§5, `docs/0마스터플랜/GAME_STUDY/downfall_of_yellowsky.md` 갱신본 §2·§3(자체 시야 거리)
 - **2차 반영 입력:** `docs/0마스터플랜/MANUAL/TOOLCHAIN_20261105.md` §1·§3a a-2·a-3, `docs/0마스터플랜/GAME_STUDY/codex_urp_mood.md` §10, `codex_keyshot_composition.md` §5, `codex_cinematic_text.md` §3.1~3.3, `our_tech_audit.md` #16, `ENGINE_DECISION_20261105.md` §3(CameraActor/SpringArm 대응 동일)

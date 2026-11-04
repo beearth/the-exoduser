@@ -121,11 +121,27 @@
 | 14 | D14-4 글자 3단(D4) · D14-8 아랍어 RTL v0 뒤, Mac 한 화면 실렌더 먼저 · D14-9 자막 기본 켬·3단·40자(ko/en) · D14-10 XAG 104 산세리프 모드는 CLAUDE.md 4.2-2와 충돌 → v0 없음 |
 | 15 | D15-1 개정(하한 GTX 1060 6GB/16GB/SSD/1080p 30fps) · D15-2 개정(공개 수치 없음 확정 → 시작값 + Mac 실측 개정) · D15-4 개정(BudgetCheck 제작과 자동 연결 승인 분리) · ★D15-8 데모 4GB 한도 잠정 유지 · D15-9 URP 자산을 OS 기준 배정으로 · D15-10 위험 30개 중 #02·#19·#20·#22·#25 키샷 전 처리 |
 
+### 3.4b 3차 반영(11-05 05 KST)으로 새로 생긴 항목
+입력: Yellowsky 갱신본, codex_asset_size, FIRST_SCENE_PLAN(Codex), codex_synthesis, ENGINE_TRIAL_UE5_PLAN, HUD G1 갱신(defects·G0·실버 헬 M4 충돌 기록), codex_hud_critique.
+CTO 정정 반영: **Yellowsky 엔진·렌더(UE5·Lumen·볼류메트릭)는 미확인**. 확정 사실은 望虚社·11명·약 2년·외부 투자 0뿐. 분위기 목표는 엔진과 분리해 수치·장면 기준으로만 쓴다(02 §1·§7). 갱신본의 광원·안개 수치도 작성자 [기준]이지 실측이 아니다.
+
+| 요소 | 결정 항목 (★ = 충돌) |
+|---|---|
+| 01 | ★D01-10 계획의 "공간 3층" vs 01의 3층 공식 삭제 → 확인 항목으로만 · ★D01-11 최종 캡처 HUD 끔(판정) vs 켬(Steam) → 같은 순간 두 장 · ★D01-12 접지 0.02u vs 3cm FAIL(2~8cm 묻음) → 0.02u 자동 검사 + 묻음은 배치 규칙 |
+| 02 | ★D02-11 갱신본 [기준] 값 vs 02 [추정] 값 → 02 유지, 안개 상한 15/25/50%는 Mac 측정 후 · ★D02-12 거리 안개 끔 vs 계획 단계 4 약한 거리 안개 → 키샷 1회 비교, 먼 적 ΔL < 70%면 끔 · D02-13 ACES vs Neutral 승자 없음 → Neutral 유지 + 같은 장면 비교 1회 필수 |
+| 03 | ★D03-8 Yellowsky는 시야 거리 조절 제공 → 데모 v0 고정 · ★D03-9 실루엣이 캐릭터 RT에서 고목 깊이를 받는지 미확인 → 구현 전 Mac 최소 시험 |
+| 06 | ★D06-6 장판 예고 ≥0.9초 vs Core 예고 32~70틱 → 표현 보조만, Core 연장은 Core 제안으로 분리 |
+| 09 | ★D09-1 변경: 시안 **C r2**(A 배치 + 현행 크레스트·가고일 은빛) 추천, "A + B 받침" 폐기 · ★D09-2 변경: MP `#3b5f86` + ST 녹청 `#3e5e4a/#7a9680/#122019` 실버 헬 §3 추가 · ★D09-11 구체 뿔 해골 크레스트를 실버 헬 §4 M4 예외로(구체 틀 한정, 지름 1/3 이하) · ★D09-12 H3 C안 비교 캡처 안 함(액체 면적 −53%) · ★D09-13 실버 헬 문서 반영 시점 = D09-2·11 승인 직후 같은 커밋 |
+| 11 | ★D11-12 `MinPickRarity`가 줍기만 막는지 표시까지 숨기는지 코드 읽기로 확인 |
+| 12 | ★D12-1 보강: 현행 48은 논리 풀, 엔진 Real 32·Virtual 512는 이미 있음 → 논리 48 유지 + 위험 소리 면제 |
+| 14 | ★D14-11 "18px" 측정 기준: Cinzel nominal 18 = 대문자 높이 12.6px(18px 대문자는 약 25.7px 필요) → 최종 1x 캡처 잉크 높이로 판정 |
+| 15 | ★D15-11 데모 4GB 한도 vs codex_asset_size 다운로드 ≤1.0GiB·설치 ≤2.0GiB → 4GB 상한 + 1.0/2.0 1차 목표, baseline Build Report 먼저 · D15-12 Resources 정리는 키샷과 분리한 별도 레인, 삭제·이동은 사용자 승인 |
+
 ### 3.5 2차 반영 연구 입력
 PC Codex: codex_urp_mood · codex_keyshot_composition · codex_yellowsky · codex_tech_budget · our_tech_audit · codex_cinematic_text · codex_motion_direction · codex_frame_data · codex_combat_impact · codex_vfx_direction · codex_3d_pixel · codex_3d_pixel_small_team · codex_menus_loot · codex_sound_music(모두 `docs/0마스터플랜/GAME_STUDY/`, 원격 codex/unity-study-*·codex/unity-audit-our-tech-20261105). 클라우드: TOOLCHAIN_20261105(claude/unity-cloud-toolchain-20261105, 병합 시 이 폴더), REFERENCE_INDEX_20261105(reference-scout), ENGINE_DECISION_20261105(ENG), keyshot_verify_mac(claude/unity-mac-report-20261104).
 - Resources 원본: 1,417파일 / 2,881,554,015 byte = **2,748 MiB**(our_tech_audit §6, 15번 §3.7). CTO 메모의 "2,751MB"는 오기로 보인다.
 - 2차 연구 결론: 공격 단계별 프레임, 몬스터 예고·경직, PBZ 정지·카메라 수치, 사운드 dB·LUFS, VFX 입자·오버드로·GPU ms, 폴리곤·드로우콜은 **공개 자료로 채울 수 없음**이 확인됨 → [추정] 시작값 + Mac 실측 영상으로 개정.
-- 아직 없는 것: codex_asset_size(예정).
+- codex_asset_size는 3차에서 반영(15 §3.10).
 
 ## 4. 다음 단계
 1. 사용자: §3.1 충돌 10건 → §3.2 지출 → §3.3 순으로 결정.
@@ -133,5 +149,6 @@ PC Codex: codex_urp_mood · codex_keyshot_composition · codex_yellowsky · code
 3. 결정 반영 후 문서별 "확정" 표시 → DIRECTION_RESET 4단계(키샷 한 장면부터, Mac 판정).
 
 ## 변경 이력
+- 2026-11-05 3차 반영: Yellowsky 갱신본·codex_asset_size·FIRST_SCENE_PLAN·codex_synthesis·UE5 시험 계획·HUD G1 갱신·codex_hud_critique, CTO 정정(Yellowsky 엔진 미확인). 색인 §3.4b.
 - 2026-11-05 2차 반영: PC Codex 연구 14건·TOOLCHAIN·REFERENCE_INDEX·ENGINE_DECISION·Mac 키샷 검증을 15개 문서에 보강, 색인 §2 도구·§3.1 충돌·§3.4 신규 항목 갱신.
 - 2026-11-05 초안 15개 + 색인 작성(레인 MAN). 연구 입력 SHA: arpg-conventions cb5e4c8, d4-study 1e91470, d4-study-boss e8fce5b, d4-study-combat 7f278fa, d4-study-ui 6d44f4e, hud-redesign-g1 8af73fc, phantomblade a23d58a, poe2 f05b5fb, yellowsky b740d57.

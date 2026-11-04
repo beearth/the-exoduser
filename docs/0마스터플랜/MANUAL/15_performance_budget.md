@@ -1,6 +1,6 @@
 # MANUAL 15 — 성능 예산 (폴리곤·텍스처·드로우콜·프레임 시간·GC·로딩) (초안 2026-11-05)
 
-- 상태: 초안(2차 반영 완료) | 연구 반영: poe2(§8 성능 예산, §9 L1·L2·F1), d4_01_env(§3~§5 소품·베이크 수치), d4_03_cam(R6 발광 단계), conventions(J2, K4 그래픽 옵션), **2차: codex_tech_budget(공개 자료에 정량 예산 대부분 없음 확인, 최소 사양·FPS 환산 반영), our_tech_audit(Resources 원본 2,881,554,015 byte·상위 위험 30개·현재 상태 대비), TOOLCHAIN(§3a~§3d 패스 예산 합계 14.7ms, BudgetCheck c-5), ENGINE_DECISION(UE5 칸 점검)** | 연구 반영 대기: 없음. 단 삼각형·텍스처·draw call·파티클·voice·GC의 7종 공개 수치는 "확인 불가"가 결론이라 계속 [추정] 시작값이고, 모든 항목은 Mac M5 Pro 첫 실측 후 개정
+- 상태: 초안(3차 반영 11-05) | 연구 반영: **3차: codex_asset_size(Resources 폴더별·참조 대조·텍스처 규칙·Steam 용량 목표·절감 순서), FIRST_SCENE_PLAN(§7 측정 관문), codex_synthesis(§1.14 성능 원칙·§2 Resources/A2R 판정), ENGINE_TRIAL_UE5_PLAN(§9 성능 판정 기준)**, 이전: poe2(§8 성능 예산, §9 L1·L2·F1), d4_01_env(§3~§5 소품·베이크 수치), d4_03_cam(R6 발광 단계), conventions(J2, K4 그래픽 옵션), **2차: codex_tech_budget(공개 자료에 정량 예산 대부분 없음 확인, 최소 사양·FPS 환산 반영), our_tech_audit(Resources 원본 2,881,554,015 byte·상위 위험 30개·현재 상태 대비), TOOLCHAIN(§3a~§3d 패스 예산 합계 14.7ms, BudgetCheck c-5), ENGINE_DECISION(UE5 칸 점검)** | 연구 반영 대기: 없음. 단 삼각형·텍스처·draw call·파티클·voice·GC의 7종 공개 수치는 "확인 불가"가 결론이라 계속 [추정] 시작값이고, 모든 항목은 Mac M5 Pro 첫 실측 후 개정
 - 범위: 1-1 한 판(데모 v0) 기준 60fps를 지키는 예산. 지형·소품·캐릭터(픽셀 렌더)·조명·후처리·VFX·로딩·메모리.
 - 이 문서가 정하지 않는 것: 규칙 코어 틱 레이트와 시뮬 비용(코어 소관), 웹판 성능 문서(`docs/12퍼포먼스·최적화/` 대부분이 웹 H5 이력이라 Unity 예산의 근거로 쓰지 않는다. 메모 참고만).
 - 기준 하드웨어: PC(High) = 컴파일·빌드 담당, **판정은 Mac(M5 Pro)에서 한다**(CLAUDE.md 3.4). 목표는 둘 다 1920×1080 60fps. 21:9 3840×1080도 성립해야 한다(CLAUDE.md 4.2-4). 저사양 하한 기기 정의는 아직 없다 → 결정 D15-1.
@@ -172,6 +172,25 @@
 
 완화 요인: GUIStyle 초기화·재사용, 드롭 mask/beam material null 가드, 죽은 Volume/Bloom 목록 재사용은 이미 되어 있다 [사실, our_tech_audit §3]. 이 표는 "전부 고친 뒤에야 예산 합격"이 아니라, 3.2 예산을 어기는 원인 후보다. 상위 항목 중 02·09·19·20은 PixelActorPass(TOOLCHAIN a-1)와 영웅·적 모델 상한(캐릭터 매뉴얼)에서 함께 해결한다.
 
+### 3.10 Resources 용량 절감 계획 대조 (3차 반영: codex_asset_size, 계획이며 미실행)
+
+원본 byte·임포트 payload·설치·다운로드·RAM/VRAM은 서로 다른 지표다. 이 절의 숫자는 Git 원본 또는 소스 직렬화 설정이며 빌드 감소 보장이 아니다. 기준 HEAD `75add6ff`, 현재 Player/Steam 실제 용량은 **미측정**.
+
+| 항목 | 값 | 근거 |
+|---|---|---|
+| Resources 원본 | 1,417파일 2,881,554,015 byte = 2,748.06 MiB = 2.684 GiB (십진 2.882GB). 앞의 "2,751MB" 표기와 약칭 "2.75GB"는 같은 범위의 다른 표기이며 환산으로 맞추지 않음 | [사실] codex_asset_size §1, codex_synthesis §2 |
+| 하위 최대 | Art/FullscreenWide 128파일 약 1,061.23 MiB(PNG 픽셀 합 620,980,304, 최대 7680×2160, 모두 max8192/무압축/밉 없음), Art/map/a2 233파일 405,608,808 byte, Enemies3D 32파일 99,711,618 byte (부분집합이라 더하지 않음) | [사실] §2, §7.2 |
+| A2R | 별도 브랜치 보존분 797파일 1,247,335,249 byte. 현재 HEAD에 없음 → **현재 절감량·분모에 넣지 않음** | [사실] §1 |
+| Resources 안 텍스처 .meta | 998개: Default 압축 0(무압축) 831 / HQ 167, 밉 켬 454, Read/Write 켬 23, Default max 8192 = 831 / 2048 = 167. (전체 1,057개 집계와 분모가 다름) | [사실] §5.1 |
+| 후보 | 카탈로그 도달불가 와이드 68개 655.08 MiB, 일반 미참조 73개 63.14 MiB(OFL 9개 보존), 판단 불가 361개. 검토 상한 합 718.22 MiB — 설치 감소 보장 아님, 삭제 확정 0 | [사실] §3~§7.1 |
+| 텍스처 payload 이론값 | 와이드 128개 BC7 8192 기준 592.44 MiB(RGB24 가정 1,776.64 / RGBA32 2,368.85). 유지 60개 BC7 4096 cap = 206.17 MiB. 68개 제외 + 60개 BC7 + 4096 cap이면 기준 대비 이론 차이 1,570.47–2,162.68 MiB | [추정·계산] §7.2. 실제 임포트 포맷·Player 크기 미확인 |
+| Steam 내부 목표 | 다운로드 ≤1.0 GiB, 설치 ≤2.0 GiB/OS (1-1 한 판·타이틀/로비·필수 언어·모든 화면비·오프라인 재실행 포함). 설치 1.0 GiB는 후속 도전 목표 | [추정·제안] §6. Halls of Torment Prelude 요구 공간 1GB 한 사례 [사실], Steam 일률 권장 GB는 없음 |
+| 텍스처 규칙 제안 | 유지 와이드 배경: BC7 HQ 시험 후 4096 cap 검토(32:9 3840px에 2048 일괄은 확대 발생해 불채택). UI 원화·글자·9-slice는 최초 일괄 압축 제외(no-mip 규칙 보존). 3D a2/PBR는 HQ 압축 유지, 기본 2048·작은 소품 1024·보조 512. 픽셀 atlas는 셀 경계 검증 뒤 개별, 좌표로 Sprite를 만드는 atlas는 자동 축소 제외 | [추정] §5.3 (미적용). 기존 제약: `SourceTextureImporter.cs`, `SilverUiImportCheck.cs`, `PortVerification.cs` |
+| 로딩 방식 | 로컬 번들로 재포장만 하면 전체 설치량이 줄지 않음. 배포하지 않는 그룹이 실제 빌드·depot 목록에서 빠져야 줄어듦. 작업량: 포함 명세 2–4인일 / 원화만 Addressables 5–8 / 전체 12–20 / 직접 AssetBundle 15–25 | [추정] §4 |
+| 실행 순서 | ① baseline Build Report ② 도달불가 와이드 68개 확인 ③ 일반 미참조 ④ 유지 원화 압축 시험 ⑤ 필요한 해상도만 제한 ⑥ 데모 제외 그룹 분리 ⑦ 원화 Addressables | [추정] §7 |
+
+**첫 장면 측정 관문 (FIRST_SCENE_PLAN §7):** 고목·소품 가시 인스턴스·삼각형·draw/SetPass·그림자 패스, 물 반사·수면 패스, 리그 적 RT 요청 수·시간, 후처리·안개 비용을 같은 카메라·적 수·해상도에서 Mac이 잰다. CPU/GPU 프레임, GC, 텍스처/RT 실제 상주 메모리, 첫 가시 프레임 지연을 기록하고 GPU 지표를 못 얻으면 0ms가 아니라 "미측정"으로 쓴다. 예산 초과 시 새 광선·반사·후처리부터 한 요소씩 줄이고 먼 적·34° LOCK·점 0을 희생하지 않는다. 군집화했다고 성능이 자동 개선됐다고 쓰지 않는다.
+
 ### 3.9 공개 PC 최소 사양 (하한 기기 정의 참고, D15-1)
 
 출처: `docs/0마스터플랜/GAME_STUDY/codex_tech_budget.md` §10, 조사일 2026-11-05 상점 열람 [사실]. 최소 사양 기준이며 FPS 조건이 있는 것만 적었다.
@@ -246,6 +265,8 @@
 
 Nanite/Virtual Shadow Map/Lumen 사용 여부와 비용을 별도 측정 후 예산 재산정. Mac Apple Silicon에서 Lumen 소프트웨어 레이트레이싱은 동작, 하드웨어 RT는 실험적, Nanite·VSM은 M2 이상 Beta (ENGINE_DECISION §2·§0, 원문 확인은 실험 D1에 사람이 함 → [단일·미확정]). 3장 표는 엔진 독립 목표로 유지하고, 항목별 한도는 UE5 측정으로 재교정.
 
+**3차 정합(ENGINE_TRIAL_UE5_PLAN §3·§9):** UE5 비교 실험의 첫 기준은 Deferred/Metal, 1920×1080, screen percentage 100%, dynamic resolution 끔, Lumen 끔(추가 결과는 설정 별도 표기). 성능은 같은 M5 Pro·전원 조건·같은 장면/배우 수/해상도에서 **warm 10초 구간**의 CPU/GPU frame time p50/p95와 메모리를 기록하고, cold 셰이더 시간과 steady FPS를 섞지 않는다. 잠정 기준 60fps·p95 16.7ms 이하는 총괄 확정 전 합격 기준이 아니며(3.1표와 일치), 3840×1080은 1080p 결과를 외삽하지 않고 따로 잰다. 단일 10초 구간은 장시간 안정성 증거가 아니다. 두 엔진 결과가 다른 기기·계측 누락이면 우열을 주장하지 않는다.
+
 ## 6. 합격 기준
 
 | 판정 | 방법 | 합격 |
@@ -292,6 +313,8 @@ Nanite/Virtual Shadow Map/Lumen 사용 여부와 비용을 별도 측정 후 예
 | D15-8★ | 데모 패키지 4GB 한도를 유지할까. Resources 원본만 2,881,554,015 byte(≈2.88GB; FullscreenWide 1.11GB, map 0.59GB, fonts 0.11GB)이고 최종 포함 byte는 Build Report 미측정. CJK 폰트 OTF 3개 73.7MB는 언어별 배포 계약 없이 줄일 수 없다 | 한도 유지를 잠정 채택하고 첫 Build Report 후 확정. 와이드 원화·QA·미방문 챕터 자산의 데모 포함 계약을 먼저 정함 | 한도를 6GB로 상향 |
 | D15-9 | URP 자산을 OS가 아닌 품질 인덱스로 배정하는 현 로직(Mac이 PC High 자산을 쓸 수 있음)을 기기 기준으로 바꿀까(코드 수정, 사용자 승인 뒤 구현 레인) | 바꾼다. Mac 판정은 Mac 자산이어야 의미가 있다 | 현행 유지하되 판정 빌드의 품질 인덱스를 문서에 고정(TOOLCHAIN D6과 묶음) |
 | D15-10 | 상위 위험 30개(3.8표) 중 어느 것을 키샷 전에 처리할까 | 02(적별 카메라)·19·20(모델 삼각형)은 PixelActorPass·캐릭터 매뉴얼과 같이, 22·25(임포트 정책)는 d-1 임포트 규칙과 같이 처리. 나머지는 첫 프로파일 후 | 전부 측정 후 결정 |
+| D15-11★ | D15-8의 "데모 패키지 4GB 이하"와 codex_asset_size의 Steam 내부 목표(다운로드 ≤1.0 GiB, 설치 ≤2.0 GiB/OS)가 다르다. 어느 기준을 쓸까 | 4GB는 상한(하드 한도)으로 유지, 1.0/2.0 GiB는 1차 목표로 병기. baseline Build Report(OS별 다운로드·설치 byte)를 먼저 측정한 뒤 확정. 목표를 맞추려고 UI 가독성·32:9·언어·폴백을 삭제하지 않음 | 1.0/2.0 GiB로 교체 |
+| D15-12 | Resources 정리 순서(기준 측정 → 도달불가 와이드 68개 → 미참조 → 압축 시험 → 해상도 제한 → 데모 제외 → Addressables)와 실행 담당. 이번 문서는 계획이며 자산 이동·삭제를 실행하지 않았다 | 이 순서를 받아들이되 키샷 작업과 분리된 별도 레인으로. 삭제·이동은 사용자 승인 뒤(CLAUDE.md 파괴적 변경) | 키샷 이후로 미룸 |
 
 ## 9. 출처
 
@@ -301,4 +324,5 @@ Nanite/Virtual Shadow Map/Lumen 사용 여부와 비용을 별도 측정 후 예
 - `docs/0마스터플랜/GAME_STUDY/downfall_of_yellowsky.md` 규칙 3, §4.1
 - `docs/0마스터플랜/ARPG_CONVENTIONS_CHECKLIST_20261105.md` J2, K4
 - 내부: `docs/12퍼포먼스·최적화/`(웹 이력, 개념 참고만), `unity/Assets/Exoduser/Runtime/NativeScreenTransition.cs`, `NativeGame.cs` 104·737행, `NativeGraphicsOptions.cs`, CLAUDE.md 3.4·4.2
+- **3차 반영 입력:** `docs/0마스터플랜/GAME_STUDY/codex_asset_size.md` §1~§7(Resources 집계·참조 대조·.meta 규칙·Steam 목표), `docs/0마스터플랜/MANUAL/FIRST_SCENE_PLAN.md` §3·§7, `docs/0마스터플랜/GAME_STUDY/codex_synthesis.md` §1.14·§2, `docs/0마스터플랜/ENGINE_TRIAL_UE5_PLAN.md` §3·§9
 - **2차 반영 입력(저장소 경로):** `docs/0마스터플랜/GAME_STUDY/codex_tech_budget.md`(§3~§12, 공개 7종 조사. 정량 값 대부분 미확인), `docs/0마스터플랜/GAME_STUDY/our_tech_audit.md`(§3 상위 30개, §4 예산 대비, §5 임포트 집계, §6 Resources 범위, §7 후속 관문), `docs/0마스터플랜/MANUAL/TOOLCHAIN_20261105.md`(§3a 패스 예산, §3c c-5 BudgetCheck, §3d d-1~d-4), `docs/0마스터플랜/ENGINE_DECISION_20261105.md`(UE5 Mac 지원 수준: Lumen 소프트웨어 RT 동작, Nanite·VSM은 M2+ Beta)
