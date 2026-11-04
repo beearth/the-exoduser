@@ -10,6 +10,41 @@ Windows 11 Player가 종료 단계(`Input System module state changed to: Shutdo
 - 따라서 하드 종료(TerminateProcess)는 **사용자 모드 WGI 해제 정지만** 건너뛸 수 있다. 커널 층 정지는 못 막을 수 있다. 이 수정이 모든 멈춤을 없앤다고 말하지 않는다.
 - 13:08에 보인 **시작 지연**(`Mono config path` 다음)은 별개다(디스크·백신 첫 실행 검사 추정). 이 수정 범위가 아니다.
 
+## 정지 묶음 구조 (11-04 15시 재집계, claude-quit-fix)
+`_exec/logs` Player 로그 659개(10-28 이후)를 실행기 영수증과 맞춰 시간순으로 놓았다(스크립트는 세션 scratchpad `timeline.cjs`, 결과만 여기 적는다).
+- 정지 29건은 **5개 묶음**이다. 묶음 시작(첫 정지): 10-29 09:15, 10-30 15:18, 10-31 05:03, 11-03 10:25, 11-04 05:15.
+- 묶음이 시작되면 **재부팅 전까지 그 뒤 창 모드 실행은 거의 모두 정지**한다(예: 10-30 15:18·15:21·15:24·15:29·15:44 연속 정지). 사이에 낀 `-batchmode` 실행은 정상 종료한다(10-30 15:47~15:56 3건, 19:23 1건).
+- 첫 정지 직전 실행은 정상 종료였고(대부분 동시 실행 0), 부팅 뒤 경과 시간도 1.5~29시간으로 제각각이다.
+- 묶음 시작 −45분~+3분의 System·Application·Kernel-PnP/Configuration·AppXDeployment·DeviceSetupManager·WindowsUpdateClient·UserPnp 이벤트에 공통 사건(서비스 재시작·장치 연결·업데이트)이 없다. **촉발 사건은 아직 못 찾았다.** 10-29 09:01 Application Hang 1002(사용자 실행본 unity-latest)가 첫 묶음 14분 전에 있었지만 다른 묶음에는 이런 선행 사건이 없다.
+- 촉발 후보 "WGI를 초기화한 창 모드 Player를 강제 종료(timeout taskkill·expectedKill)하면 오염된다"(개발툴 총괄 제안, 11-04 04:20 c21ffb38 timeout kill 뒤 05:06부터 정지)는 **이력과 맞지 않는다.** 부팅 구간별로 보면 묶음 5개 중 3개(10-29·10-31·11-03)는 같은 부팅에서 앞선 강제 종료가 없고, 반대로 11-04 07:32 부팅 뒤에는 timeout kill 3건(08:36 8f5dff4b, 10:26 baa5909e, 14:50 0d6673d4) 뒤에도 정지가 0회다. 그래서 오염을 일부러 만드는 실험은 하지 않았다(재현 수단이 없는데 공용 PC 전체가 재부팅 전까지 정지 상태가 된다).
+- 11-04 07:32 재부팅 뒤 창 모드 Player 49회(15:00까지)는 **정지 0회**다. 즉 지금 PC는 "오염 전" 상태이고, 이 상태의 A/B는 base도 0이 나올 가능성이 크다. 그래서 A/B는 ① 4종을 회차마다 번갈아 돌려(묶음이 시작되면 모든 변형이 같은 시점에 영향을 받게) ② 하드 종료가 정지 지점(`Input System … Shutdown.`)에 아예 도달하지 않는지 로그로 확인하고 ③ XInput 빌드에 WGI·GameInput DLL이 실제로 로드되는지 모듈 목록으로 확인하는 방식으로 판정한다.
+- 기준 상태(정상, 11-04 15:20): `GameInputRedistService` 프로세스 2개(서비스 PID 5540, 07:33 사용자 세션 11316), `GameInputRawInputProxy` 1개(스레드 1), `GameInputSvc` 중지. 장치: XBOX Synthetic Gamepad Bus(SWD), Xbox Wireless Adapter for Windows, AMD Controller Emulation(가상 패드), Razer DeathAdder V3 Pro. 다음 묶음이 생기면 이 값과 비교한다.
+- 웹: UUM-91181(같은 위치, `RoUninitialize` 중 `Windows.Gaming.Input.dll` 언로드)은 6000.0.37f1에서 고쳤다고 했지만 6000.2.14f1(2025-11-30)에서 재발 보고가 있고, 우리 6000.6.7f1에서도 난다. 커뮤니티 우회책은 `Application.quitting`에서 `TerminateProcess`(mnemotic 등, IL2CPP 포함 동작 보고)다.
+
+## 판정 방식 (11-04 16:05 CTO 결정)
+- "오염 전" 상태에서 단독 150회 A/B는 모든 변형이 0으로 나와 원인을 가르지 못하므로 하지 않는다. 순번은 데모 v0 레인이 우선이다.
+- 대신 감시 스크립트 `I:\EXODUSER-Storage\stall-ab\sentinel.ps1`(읽기 전용)가 11-04 07:32 부팅 뒤 실행기 Player 전체를 base 관측으로 센다. 첫 정지(로그 끝이 `Input System module state changed to: Shutdown.` 또는 실행기 stall 영수증)를 보면 즉시 끝나며 `sentinel\first-stall.json`에 부팅 후 경과, 그 전 창 모드 실행 수, 동시 실행, kill 15초 안 성공 여부, 입력 장치 목록, GameInput 프로세스 상태를 남긴다. 장치·GameInput 변화는 `sentinel\events.jsonl`에 계속 쌓인다.
+- 첫 정지가 나오면 **같은 부팅 안에서** `run-ab.ps1`로 짧은 A/B(base·hdev·xinput·xh·hnohard 회차 교대 각 5회)를 돌린다. 이때는 CTO가 순번을 당긴다.
+- 하드 종료 병합은 그 결과가 나올 때까지 보류한다(CTO).
+- 그 사이 오염과 무관하게 확인할 수 있는 것(종료 경로별 종료 코드·세이브·레지스트리, XInput 빌드의 WGI DLL 로드 여부)은 보통 순번으로 미리 해 둔다.
+
+### 부팅별 첫 정지까지 (④, `_exec/logs` 기준 WGI 로그가 있는 창 모드 실행 수)
+| 부팅 | 첫 정지 | 부팅 후 경과 | 첫 정지 전 창 모드 실행 | 첫 정지 뒤 창 모드 실행 → 정지 |
+|---|---|---|---|---|
+| 10-29 06:40 | 10-29 09:15 | 2.6시간 | 1 | 1 → 1 |
+| 10-29 10:18 | 10-30 15:18 | 29.0시간 | 72 | 9 → 6 |
+| 10-30 20:17 | 10-31 05:03 | 8.8시간 | 68 | 12 → 12 |
+| 10-31 09:00 | 없음 | — | 105 | — |
+| 11-01 09:43 | 없음 | — | 17 | — |
+| 11-02 18:38 | 없음 | — | 131 | — |
+| 11-03 09:01 | 11-03 10:25 | 1.4시간 | 34 | 3 → 3 |
+| 11-03 10:51 | 없음 | — | 23 | — |
+| 11-03 15:39 | 11-04 05:15(개발툴 집계로는 05:06 ui-candidate) | 13.6시간 | 48 | 2 → 2 |
+| 11-04 07:32 | 16:07 현재 없음 | 8.6시간 경과 | 실행기 영수증 152회(timeout kill 4회) | — |
+
+부팅 10번 중 5번은 묶음이 생겼고 5번은 없었다. 첫 정지까지의 실행 수(1~72회)·경과 시간(1.4~29시간)에 규칙이 없다. 실행 횟수가 쌓여서 생기는 문제로 보이지 않는다.
+11-04 16:07 기준 입력 장치: Razer DeathAdder V3 Pro, HID Keyboard, XBOX Synthetic Gamepad Bus(실제 패드 연결 없음). Xbox Wireless Adapter는 Net 클래스로 있다. GameInput: RedistService 2개(스레드 12/2), RawInputProxy 1개(스레드 1), XboxGipSvc 실행 중.
+
 ## 웹 근거
 - Unity Issue Tracker, "Player .exe remains open as a background task after closing it when Active Input Handling is set to 'Input System Package (New)'" — `RoUninitialize` 중 `Windows.Gaming.Input.dll` 언로드에서 멈춤. 6000.0.37f1 등에서 고쳤다고 했으나 6000.2.14f1(2025-11)에서 다시 보고됨.
 - Unity Discussions, "[BUG] Unity 6 Build Game Process Continues Running in Background After Closing Window" — 우회: 종료 시 kernel32 `TerminateProcess(GetCurrentProcess(), 0)`.
@@ -44,6 +79,14 @@ Runtime 전체에서 `OnDestroy`/`OnDisable`/`Application.quitting`/`wantsToQuit
 ## 검증
 - 이 PC, Unity 미실행: `buildloop/compile-check.ps1` Player·Editor 오류 0. `quit-wrapper-source-test.cjs` PASS.
 - **실제 종료 검증은 Mac이 아니라 PC Windows에서 개발툴 총괄이 A/B로 한다**: `--unity-no-hard-exit`(대조) vs 기본(하드 종료)를 창 모드로 각 실행·종료 30~50회, 정지율, 종료 코드 0/2/3, `[HardExit]` 로그 줄, 세이브·설정 파일 mtime을 비교한다. 이 문서 작성 시점에는 미실행이다.
+
+## kill 불가 정지가 다시 생기면 (원인 장치 특정, 사용자 작업)
+kill 불가 층은 커널에서 끝나지 않은 I/O 요청(IRP)이 프로세스를 붙잡는 경우라 게임 코드로는 못 푼다. 다음에 생기면 **재부팅 전에** 아래만 하면 원인 드라이버가 이름으로 나온다.
+1. Sysinternals Process Explorer를 **관리자 권한**으로 연다(Options → Configure Symbols는 기본값으로 두면 된다).
+2. 남아 있는 `EXODUSER-Unity.exe`(또는 `EXODUSER-*.exe`)를 더블클릭 → Threads 탭 → 상태가 `Wait:Executive`이거나 커널 시간이 멈춘 스레드를 고르고 Stack을 연다.
+3. 스택 맨 위쪽 `.sys` 이름을 적는다. 후보와 뜻: `nosku.sys`·`noskp.sys`(INCA nProtect 키보드 보안), `Mkd2Nadr.sys`(AhnLab MyKeyDefense), `JRSUKD25.sys`(RaonSecure TouchEn), `RzDev_00b6.sys`(Razer), `WUDFRd.sys`(UMDF 가상 장치 — XBOX Synthetic Gamepad Bus 등), `hidclass.sys`/`kbdhid.sys`(입력 공통 경로).
+4. Handles 탭에서 `\Device\...` 이름(HID·가상 패드 장치 경로)도 함께 적는다.
+그 결과로 장치·드라이버 정리(가상 패드 제거, 은행 보안 키보드 프로그램 제거·갱신, GameInput 갱신)를 **사용자가 결정**한다. 실험 결과 전에는 아무것도 지우지 않는다.
 
 ## 남은 위험
 - 커널 층 정지는 하드 종료로도 못 막을 수 있다(원인 미확정).
