@@ -524,3 +524,8 @@ unity/main에 적 3D 레인 `6f6d7dd6d`가 먼저 들어오면서 rig-pixel 적�
 - 표시 높이는 영웅 1.31u 기준 임시값이고 G5에서 Core 반경과 맞추면 바뀔 수 있다. 피격 크기는 투영 높이에서 다시 계산하므로 표가 바뀌어도 VFX 숫자는 그대로다.
 
 Mac 피격 판정에 넣을 컷(1x·3x): 가장 작은 요마(3, 화면 52.2px — 피격 코어가 몸보다 커 보이지 않는지), 가장 큰 문지기(29, 184.3px — 큰 적 상한 1.2에서 접점 498.3px가 가슴인지), 부풀은 사도(8, 배 571.8px), 기준 가시 사도(1, 550.0px). 발 y는 모두 605.9px(거리 16.5·1080p).
+
+## 11-04 L9 — 3D 접점 코어 비표시(Mac D2)
+
+- `Runtime/KiImpactView.cs` `DrawBursts`: `b.core.enabled=alpha>0&&!NativeRemodel3D.Active`. 3D(`--remodel3d`)에서는 평면 16각 크림 코어를 그리지 않는다. 3D 접점 정점은 `NativeImpactView` 웹 은빛 플립북(0.16s)이 맡는다. 2D 표시 계약(5틱·키×.35/.6·#fff4d0→#ffd9a0)은 그대로다.
+- 이유·후보 표·Mac 재확인: `docs/0마스터플랜/worklog/cloud-lanes/L9-white-disc_20261104.md`. 컴파일 미확인(PC)·화면 미검수(Mac).
