@@ -1,3 +1,5 @@
+> **2026-11-05 Unity Core 재계산:** Core 수치(Lv1 전사 시작 상태, meleeRef=magicRef=15, pAtkMul .7, pMagicMul 1.4)로 다시 계산한 DPS·자원 효율과 이 표의 차이 4건(평타 ST/s 7.5, 기검참 공속 0.667초/타, 악의구 연사 19f, 밸런스 리포트 B절은 이력)은 [SKILL_SETTING_AUDIT_20261105 §5](../2_1%20스킬관리+합체시스템+자원/SKILL_SETTING_AUDIT_20261105.md)를 따른다. 표 본문 정정은 감사 BL-06에서 한다.
+
 ## Native 공격속도·회복 — 2026-10-15 현행
 
 | 항목 | 현재 계약 |
