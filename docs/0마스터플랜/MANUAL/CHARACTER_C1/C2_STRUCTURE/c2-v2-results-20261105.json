@@ -1,0 +1,178 @@
+{
+ "reduced": {
+  "decimate_ratio": 0.1932,
+  "pieces": {
+   "helm": 1272,
+   "chest": 2960,
+   "pauldron.L": 680,
+   "glove.L": 924,
+   "greave.L": 1352,
+   "pauldron.R": 676,
+   "glove.R": 908,
+   "greave.R": 1356
+  },
+  "total_tris": 10128
+ },
+ "mask": {
+  "pieces": {
+   "helm": {
+    "candidate_faces": 882,
+    "hidden": 736,
+    "not_covered_verts": 123,
+    "not_covered_share": 0.126
+   },
+   "chest": {
+    "candidate_faces": 546,
+    "hidden": 455,
+    "not_covered_verts": 75,
+    "not_covered_share": 0.12
+   },
+   "pauldron.L": {
+    "candidate_faces": 53,
+    "hidden": 53,
+    "not_covered_verts": 0,
+    "not_covered_share": 0.0
+   },
+   "glove.L": {
+    "candidate_faces": 791,
+    "hidden": 791,
+    "not_covered_verts": 0,
+    "not_covered_share": 0.0
+   },
+   "greave.L": {
+    "candidate_faces": 368,
+    "hidden": 349,
+    "not_covered_verts": 15,
+    "not_covered_share": 0.039
+   },
+   "pauldron.R": {
+    "candidate_faces": 53,
+    "hidden": 53,
+    "not_covered_verts": 0,
+    "not_covered_share": 0.0
+   },
+   "glove.R": {
+    "candidate_faces": 791,
+    "hidden": 791,
+    "not_covered_verts": 0,
+    "not_covered_share": 0.0
+   },
+   "greave.R": {
+    "candidate_faces": 368,
+    "hidden": 347,
+    "not_covered_verts": 16,
+    "not_covered_share": 0.041
+   }
+  },
+  "hidden_faces": 3575,
+  "share": 0.338
+ },
+ "real_piercing": {
+  "rest": {
+   "helm": {
+    "kept_inner": 336,
+    "kept_verts_through": 0
+   },
+   "chest": {
+    "kept_inner": 260,
+    "kept_verts_through": 0
+   },
+   "pauldron.L": {
+    "kept_inner": 36,
+    "kept_verts_through": 0
+   },
+   "glove.L": {
+    "kept_inner": 26,
+    "kept_verts_through": 0
+   },
+   "greave.L": {
+    "kept_inner": 61,
+    "kept_verts_through": 0
+   },
+   "pauldron.R": {
+    "kept_inner": 36,
+    "kept_verts_through": 0
+   },
+   "glove.R": {
+    "kept_inner": 26,
+    "kept_verts_through": 0
+   },
+   "greave.R": {
+    "kept_inner": 63,
+    "kept_verts_through": 0
+   }
+  },
+  "idle": {
+   "helm": {
+    "kept_inner": 336,
+    "kept_verts_through": 0
+   },
+   "chest": {
+    "kept_inner": 260,
+    "kept_verts_through": 0
+   },
+   "pauldron.L": {
+    "kept_inner": 36,
+    "kept_verts_through": 0
+   },
+   "glove.L": {
+    "kept_inner": 26,
+    "kept_verts_through": 0
+   },
+   "greave.L": {
+    "kept_inner": 61,
+    "kept_verts_through": 0
+   },
+   "pauldron.R": {
+    "kept_inner": 36,
+    "kept_verts_through": 0
+   },
+   "glove.R": {
+    "kept_inner": 26,
+    "kept_verts_through": 0
+   },
+   "greave.R": {
+    "kept_inner": 63,
+    "kept_verts_through": 0
+   }
+  },
+  "stress": {
+   "helm": {
+    "kept_inner": 336,
+    "kept_verts_through": 0
+   },
+   "chest": {
+    "kept_inner": 260,
+    "kept_verts_through": 0
+   },
+   "pauldron.L": {
+    "kept_inner": 36,
+    "kept_verts_through": 0
+   },
+   "glove.L": {
+    "kept_inner": 26,
+    "kept_verts_through": 0
+   },
+   "greave.L": {
+    "kept_inner": 61,
+    "kept_verts_through": 2
+   },
+   "pauldron.R": {
+    "kept_inner": 36,
+    "kept_verts_through": 0
+   },
+   "glove.R": {
+    "kept_inner": 26,
+    "kept_verts_through": 0
+   },
+   "greave.R": {
+    "kept_inner": 63,
+    "kept_verts_through": 0
+   }
+  }
+ },
+ "lock": {
+  "plates": 14,
+  "tris": 36390
+ }
+}

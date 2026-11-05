@@ -1,0 +1,40 @@
+{
+ "helm": {
+  "inner_verts": 978,
+  "ray_miss": 203,
+  "body_normal_points_away_or_cavity": 77,
+  "at_or_beyond_armour": 126,
+  "miss_dist_to_rim_cm": [
+   5.0,
+   10.9,
+   13.4
+  ],
+  "z_range": [
+   1.555,
+   1.834
+  ],
+  "facesets": {
+   "4": 23,
+   "5": 26,
+   "17": 234
+  }
+ },
+ "chest": {
+  "inner_verts": 623,
+  "ray_miss": 110,
+  "body_normal_points_away_or_cavity": 108,
+  "at_or_beyond_armour": 2,
+  "miss_dist_to_rim_cm": [
+   3.2,
+   6.5,
+   9.6
+  ],
+  "z_range": [
+   1.229,
+   1.519
+  ],
+  "facesets": {
+   "1": 174
+  }
+ }
+}
