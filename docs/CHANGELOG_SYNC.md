@@ -1,3 +1,5 @@
+2026-11-05 MO 현재 기준(Mac, 게임 코드·자산 불변): 영웅 idle·walk·attack1 10초 영상·1x 컷·7항목 채점. 기본 실행 영웅은 2D 스프라이트, 기본 공격 Core 예비 틱 없음. docs/0마스터플랜/MANUAL/MO_BASELINE/MO_BASELINE_20261105.md.
+
 2026-11-04 L13 데모 통합 병합 브랜치(클라우드, CTO 결정): unity/main 9196a515d 위에 demo-flavor-fix ac4e187ae → field-prepare-merge 79d4d14f1 → options-wave2 2cd42d3ab → first-impression-tone 479634337 → ui-minor6 19216c411 → white-disc(D2) 17967874a → crash-p1-fix 50f530c02를 --no-ff로 병합(끝 ec8561386). 충돌은 L1 해결안대로(CHANGELOG 양쪽, 번역대상 4274~4287 브랜치 쪽, SilverCharacter 주석 unity/main 쪽). combo4 대비 unity/Assets·ProjectSettings 차이는 D2·P1 4파일뿐. node review-0540 1건 FAIL(options-wave2 리셋 확인창 settingsChip, combo4에도 있음). 컴파일·빌드·화면 미확인 — Mac 판정 대기. 기록: docs/0마스터플랜/worklog/cloud-lanes/L13-demo-integration_20261104.md
 
 2026-11-04 L9 D2 피격·처치 지점 베이지 다각형 원판(클라우드 레인): 원인 1순위 KiImpactView 접점 코어(16각 평면·#fff4d0→#ffd9a0·알파 .35/1/.75/.5/.25·ZTest Always 가산)가 3D 전용 ACES·Bloom(임계 1.1)에서 흰 섬광+베이지 원판으로 읽힘. 3D 경로에서만 코어 비표시(접점은 NativeImpactView 은빛 플립북이 담당), 2D·Core 불변. 컴파일 미확인(PC)·화면 미검수(Mac). docs/0마스터플랜/worklog/cloud-lanes/L9-white-disc_20261104.md

@@ -1,0 +1,71 @@
+// LOCAL ONLY — Mac MO baseline capture. Never commit. Moved to ~/exoduser-wt/_tm after the build.
+using System;
+using System.Collections;
+using System.IO;
+using System.Text;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
+namespace Exoduser.UnityPort {
+ public sealed partial class NativeGame {
+  [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+  static void LocalMotionBoot(){
+   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--local-motion")<0)return;
+   var g=new GameObject("LocalMotionBoot");DontDestroyOnLoad(g);g.AddComponent<LocalMotionBooter>();
+  }
+  sealed class LocalMotionBooter:MonoBehaviour{
+   IEnumerator Start(){while(Instance==null)yield return null;yield return null;yield return null;Instance.StartCoroutine(Instance.LocalMotionCapture());}
+  }
+  float LocalFreeTicks(float x,float y,float dx,float dy,float r){int t=0;while(t<400&&Map.CanMove(x+dx*(t+1)*4,y+dy*(t+1)*4,r))t++;return t*4;}
+  IEnumerator LocalMotionCapture(){
+   string output=Argument("-output");if(string.IsNullOrEmpty(output)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))){Application.Quit(2);yield break;}
+   Directory.CreateDirectory(output);AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;smokeActive=true;pauseSmoke=true;
+   Screen.SetResolution(1920,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.4f);
+   if(A2Requested){lobby.Flow.ShowLobby();lobby.Flow.SelectPreview();if(!lobby.Flow.EnterTest()){Debug.LogError("LMP entry failed");Application.Quit(2);yield break;}}
+   else{lobby.ShowLobby();lobby.SelectPreview();if(!lobby.EnterNativeTest()){Debug.LogError("LMP entry failed");Application.Quit(2);yield break;}}
+   EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;SetGameFocus(true);
+   var s=Simulation;var p=s.Player;p.X=A2Requested?4200:3920;p.Y=A2Requested?7460:7300;
+   var loc=Argument("--unity-keyshot-location");if(!string.IsNullOrEmpty(loc)){var xy=loc.Split(':');if(xy.Length==2&&float.TryParse(xy[0],out var lx)&&float.TryParse(xy[1],out var ly)){p.X=lx;p.Y=ly;}}
+   s.Config.EnemyAiEnabled=false;s.Enemies.Clear();s.SpawnHoles=null;p.Iframes=100000;
+   float deadline=Time.realtimeSinceStartup+40;while(!Remodel3DReady&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
+   yield return new WaitForSecondsRealtime(1);
+   var keyboard=InputSystem.AddDevice<Keyboard>();var mouse=InputSystem.AddDevice<Mouse>();
+   float[][] axes={new[]{1f,0f},new[]{-1f,0f},new[]{0f,-1f},new[]{0f,1f}};Key[] axisKey={Key.D,Key.A,Key.W,Key.S};
+   var free=new float[4];for(int i=0;i<4;i++)free[i]=LocalFreeTicks(p.X,p.Y,axes[i][0],axes[i][1],p.Radius);
+   var log=new StringBuilder("clip,f,tick,x,y,facing,state,stateTicks,motion,hx,hy\n");
+   File.WriteAllText(Path.Combine(output,"probe.txt"),"start "+p.X+":"+p.Y+" free R/L/N/S="+string.Join("/",free)+" heroReady="+(heroView!=null&&heroView.Ready)+" rigpixel="+RigPixelRequested+" remodel="+NativeRemodel3D.Active+" pitch="+NativeRemodel3D.Pitch*Mathf.Rad2Deg+" dist="+NativeRemodel3D.DistU+" fov="+(HudCamera!=null?HudCamera.fieldOfView:0)+"\n");
+   Time.captureFramerate=60;
+   string[] clips={"idle","walk","attack1"};
+   foreach(string clip in clips){
+    string dir=Path.Combine(output,clip);Directory.CreateDirectory(dir);float x0=p.X,y0=p.Y;
+    for(int f=0;f<600;f++){
+     p.Iframes=100000;p.Hp=p.MaxHp;p.Stamina=p.MaxStamina;p.Mana=p.MaxMana;
+     var keys=new System.Collections.Generic.List<Key>();bool lmb=false;float ax=p.X+300,ay=p.Y;
+     if(clip=="walk"){
+      // right/left then up/down, 20 ticks of rest between legs
+      int leg=f/150;int t=f%150;bool rest=t>=130;
+      if(!rest)keys.Add(axisKey[leg%4==0?0:leg%4==1?1:leg%4==2?2:3]);
+      int aimIdx=leg%4==0?0:leg%4==1?1:leg%4==2?2:3;ax=p.X+axes[aimIdx][0]*300;ay=p.Y+axes[aimIdx][1]*300;
+     }
+     if(clip=="attack1")lmb=f%120<6;
+     keyboard.MakeCurrent();mouse.MakeCurrent();InputState.Change(keyboard,new KeyboardState(keys.ToArray()));
+     var aimPoint=NativeRemodel3D.Point(ax,ay);if(NativeRemodel3D.Active)aimPoint.y=NativeRemodel3D.Point(p.X,p.Y).y;var screen=HudCamera.WorldToScreenPoint(aimPoint);
+     var ms=new MouseState{position=new Vector2(screen.x,screen.y)};if(lmb)ms=ms.WithButton(MouseButton.Left,true);InputState.Change(mouse,ms);
+     Running=true;FixedUpdate();Running=false;UpdateViews();
+     yield return new WaitForEndOfFrame();
+     var tex=ScreenCapture.CaptureScreenshotAsTexture();File.WriteAllBytes(Path.Combine(dir,"f"+f.ToString("0000")+".jpg"),tex.EncodeToJPG(95));
+     bool still=clip=="idle"&&f==300||clip=="walk"&&f==70||clip=="attack1"&&f<60&&f%2==0;
+     if(still)File.WriteAllBytes(Path.Combine(dir,"still-"+f.ToString("0000")+".png"),tex.EncodeToPNG());
+     Destroy(tex);
+     var hp=HudCamera.WorldToScreenPoint(NativeRemodel3D.Point(p.X,p.Y));
+     log.Append(clip).Append(',').Append(f).Append(',').Append(s.TickCount).Append(',').Append(p.X.ToString("F2")).Append(',').Append(p.Y.ToString("F2")).Append(',').Append(p.Facing.ToString("F3")).Append(',').Append(p.State).Append(',').Append(p.StateTicks).Append(',').Append(heroView!=null?heroView.Motion.MotionKind.ToString():"none").Append(',').Append(hp.x.ToString("F1")).Append(',').Append(hp.y.ToString("F1")).Append('\n');
+     if(f%60==0)File.WriteAllText(Path.Combine(output,"motion-log.csv"),log.ToString());
+    }
+    p.X=x0;p.Y=y0;InputState.Change(keyboard,new KeyboardState());InputState.Change(mouse,new MouseState());
+    for(int i=0;i<90;i++){Running=true;FixedUpdate();Running=false;UpdateViews();yield return new WaitForEndOfFrame();}
+   }
+   Time.captureFramerate=0;File.WriteAllText(Path.Combine(output,"motion-log.csv"),log.ToString());
+   File.AppendAllText(Path.Combine(output,"probe.txt"),"DONE\n");Application.Quit(0);
+  }
+ }
+}
