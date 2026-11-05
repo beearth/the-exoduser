@@ -1,0 +1,26 @@
+const fs = require('fs');
+const path = require('path');
+const cp = require('child_process');
+const repo = path.resolve(__dirname, '../../..');
+const out = path.resolve(process.env.EXO_TEST_OUT || 'E:/exoduser-s2-tests');
+const dotnet = process.env.EXO_DOTNET || 'C:/Program Files/dotnet/dotnet.exe';
+const dotRoot = path.dirname(dotnet);
+const sdk = fs.readdirSync(path.join(dotRoot, 'sdk')).filter(v => v.startsWith('8.')).sort().at(-1);
+const refVersion = fs.readdirSync(path.join(dotRoot, 'packs/Microsoft.NETCore.App.Ref')).filter(v => v.startsWith('8.')).sort().at(-1);
+if (!sdk || !refVersion) throw new Error('Existing .NET 8 SDK/reference pack required; no install attempted.');
+fs.mkdirSync(out, {recursive:true});
+const helper = path.join(repo, 'unity/Assets/Exoduser/Editor/DevTools/WebBuild/WebBuildFileStage.cs');
+const refs = path.join(dotRoot, 'packs/Microsoft.NETCore.App.Ref', refVersion, 'ref/net8.0');
+const dll = path.join(out, 'WebBuildSlim3Tests.dll');
+const args = [path.join(dotRoot,'sdk',sdk,'Roslyn/bincore/csc.dll'),'-nologo','-target:exe','-langversion:9','-out:'+dll,
+  ...fs.readdirSync(refs).filter(n=>n.endsWith('.dll')).map(n=>'-r:'+path.join(refs,n)),path.join(__dirname,'Program.cs')];
+if (fs.existsSync(helper)) args.push(helper);
+const env = {...process.env, DOTNET_CLI_HOME:path.join(out,'dotnet-home'), DOTNET_NOLOGO:'1', DOTNET_SKIP_FIRST_TIME_EXPERIENCE:'1', DOTNET_CLI_TELEMETRY_OPTOUT:'1'};
+const build=cp.spawnSync(dotnet,args,{encoding:'utf8',env,windowsHide:true,maxBuffer:4*1024*1024});
+process.stdout.write(build.stdout||''); process.stderr.write(build.stderr||'');
+if(build.error)throw build.error;if(build.status!==0)process.exit(build.status||1);
+fs.writeFileSync(path.join(out,'WebBuildSlim3Tests.runtimeconfig.json'),JSON.stringify({runtimeOptions:{tfm:'net8.0',framework:{name:'Microsoft.NETCore.App',version:'8.0.0'},rollForward:'LatestPatch'}}));
+const run=cp.spawnSync(dotnet,[dll,path.join(out,'cases')],{encoding:'utf8',env,windowsHide:true,maxBuffer:4*1024*1024});
+fs.writeFileSync(path.join(out,'latest.log'),(build.stdout||'')+(build.stderr||'')+(run.stdout||'')+(run.stderr||''));
+process.stdout.write(run.stdout||''); process.stderr.write(run.stderr||'');
+if(run.error)throw run.error;process.exit(run.status===0?0:(run.status||1));

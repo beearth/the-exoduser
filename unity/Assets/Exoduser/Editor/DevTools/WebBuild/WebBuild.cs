@@ -14,7 +14,7 @@ using UnityEngine.Rendering;
 
 namespace Exoduser.DevTools
 {
-    public static class WebBuild
+    public static partial class WebBuild
     {
         const string ScenePath = "Assets/Scenes/FirstPlayable.unity"; // same single scene as the PC verification build (PortVerification.MakeScene)
 
@@ -76,25 +76,31 @@ namespace Exoduser.DevTools
         // Probe: apply overrides, import, dump the report, exit (no player build).
         public static void Probe()
         {
-            int exit = 2;
+            int exit=2;Slim2State state=null;string error="";
+            bool slim2=Arg("-slim2")=="true";
             try
             {
-                if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.WebGL) throw new InvalidOperationException("need -buildTarget WebGL");
-                if (Arg("-slim2") == "true")
+                ValidateS2Flags(slim2);
+                if(EditorUserBuildSettings.activeBuildTarget!=BuildTarget.WebGL)throw new InvalidOperationException("need -buildTarget WebGL");
+                if(slim2)
                 {
-                    var state = PrepareSlim2("");
-                    if (!string.IsNullOrEmpty(Arg("-receipt")))
-                        WriteText(Arg("-receipt"), "{\"probe\":true,\"slim2\":" + JsonUtility.ToJson(state.receipt) + "}");
+                    state=NewSlim2State();InitializeS2(state);PrepareSlim2("",state);
                 }
                 else
                 {
-                    int n = ApplyWebTextures(Arg("-texMax"));
-                    File.WriteAllText(Arg("-probeOut"), TextureReport());
-                    Debug.Log("UNITY_WEB_PROBE textures=" + n);
+                    int n=ApplyWebTextures(Arg("-texMax"));
+                    File.WriteAllText(Arg("-probeOut"),TextureReport());
+                    Debug.Log("UNITY_WEB_PROBE textures="+n);
                 }
-                exit = 0;
+                exit=0;
             }
-            catch (Exception e) { Debug.LogException(e); }
+            catch(Exception e){error=e.ToString();Debug.LogException(e);}
+            finally
+            {
+                RestoreS2(state);
+                if(state!=null&&!state.receipt.s2.restorePassed)exit=2;
+                if(slim2)WriteBuildReceipt(null,state,error,"",0,0,true);
+            }
             EditorApplication.Exit(exit);
         }
 
@@ -166,6 +172,7 @@ namespace Exoduser.DevTools
             public string textureCsv, audioCsv, uncompressedCsv, diagnosticsCsv;
             public string mipmapPolicy = "shared importer unchanged; mismatches reported";
             public string longAudioPolicy;
+            public S2Receipt s2;
             public List<OverrideCount> textureOverridesByClass = new List<OverrideCount>();
             public List<OverrideCount> audioOverridesByClass = new List<OverrideCount>();
         }
@@ -175,6 +182,7 @@ namespace Exoduser.DevTools
         sealed class Slim2State
         {
             public Slim2Receipt receipt = new Slim2Receipt();
+            public WebBuildFileStage stage;
             public HashSet<string> atlasTextures = new HashSet<string>(StringComparer.Ordinal);
             public HashSet<string> meshTextures = new HashSet<string>(StringComparer.Ordinal);
             public Dictionary<string, TextureRequest> requests = new Dictionary<string, TextureRequest>(StringComparer.Ordinal);
@@ -334,6 +342,7 @@ namespace Exoduser.DevTools
                 ps.maxTextureSize=policy.maxSize==0 ? keepCap : Math.Min(keepCap,policy.maxSize);
                 ps.format=format; ps.crunchedCompression=crunch; ps.compressionQuality=50;
                 ps.textureCompression=plain ? TextureImporterCompression.Uncompressed : TextureImporterCompression.Compressed;
+                s.stage.PreserveMeta(path);
                 imp.SetPlatformTextureSettings(ps); imp.SaveAndReimport();
                 imp=(TextureImporter)AssetImporter.GetAtPath(path);
                 var rb=imp.GetPlatformTextureSettings("WebGL");
@@ -371,8 +380,8 @@ namespace Exoduser.DevTools
                     Diagnostic(s,path,"audio-deferred","duration not verified",">0",length); continue;
                 }
                 bool longClip=length>1.0;
-                var settings=importer.ContainsSampleSettingsOverride("WebGL") ?
-                    importer.GetOverrideSampleSettings("WebGL") : importer.defaultSampleSettings;
+                var settings=importer.ContainsSampleSettingsOverride(BuildTargetGroup.WebGL) ?
+                    importer.GetOverrideSampleSettings(BuildTargetGroup.WebGL) : importer.defaultSampleSettings;
                 s.audioRequests[path]=new AudioRequest {
                     format=mode=="keep" ? "keep" : longClip && !allowAacLong ? "Vorbis" : "AAC",
                     loadType=mode=="keep" ? "keep" : longClip ? (allowAacLong ? "CompressedInMemory" : "Streaming") : "DecompressOnLoad",
@@ -386,16 +395,12 @@ namespace Exoduser.DevTools
                 settings.compressionFormat=AudioCompressionFormat.AAC;
                 settings.loadType=longClip ? AudioClipLoadType.CompressedInMemory : AudioClipLoadType.DecompressOnLoad;
                 if (longClip) settings.quality=0.5f;
-                if (!importer.SetOverrideSampleSettings("WebGL",settings))
+                string selector=ApplyAudioCandidate(s,path,settings);
+                if (string.IsNullOrEmpty(selector))
                 {
                     s.audioStatus[path]="platform-override-rejected"; s.receipt.audioDeferred++;
-                    Diagnostic(s,path,"audio-rejected","AudioImporter rejected WebGL override"); continue;
+                    Diagnostic(s,path,"audio-rejected","all platform selectors rejected or failed readback; see s2.audioAttempts"); continue;
                 }
-                importer.SaveAndReimport(); importer=(AudioImporter)AssetImporter.GetAtPath(path);
-                var actual=importer.GetOverrideSampleSettings("WebGL");
-                if (!importer.ContainsSampleSettingsOverride("WebGL") || actual.compressionFormat!=settings.compressionFormat ||
-                    actual.loadType!=settings.loadType || (longClip && Math.Abs(actual.quality-0.5f)>0.0001f))
-                    throw new InvalidOperationException("WebGL audio override readback mismatch: "+path);
                 s.audioStatus[path]="override-applied"; s.receipt.audioOverrides++;
                 Count(s.receipt.audioOverridesByClass,longClip ? "over-1s-AAC-inmemory-opt-in" : "at-most-1s-decompress");
             }
@@ -436,20 +441,22 @@ namespace Exoduser.DevTools
         }
         static string AudioReport(Slim2State s)
         {
-            var b=new StringBuilder("path,길이,포맷,loadType,크기,sourceFileBytes,requestedFormat,requestedLoadType,quality,requestedQuality,status\n");
+            var b=new StringBuilder("path,길이,포맷,loadType,크기,sourceFileBytes,requestedFormat,requestedLoadType,quality,requestedQuality,status,acceptedSelector,adoptedString\n");
             foreach(var g in AssetDatabase.FindAssets("t:AudioClip",new[]{"Assets"}).OrderBy(x=>x,StringComparer.Ordinal))
             {
                 var path=AssetDatabase.GUIDToAssetPath(g);
                 var imp=AssetImporter.GetAtPath(path) as AudioImporter;
                 var clip=AssetDatabase.LoadAssetAtPath<AudioClip>(path); if(imp==null || clip==null) continue;
                 // This is importer metadata, not a measurement of the encoded build codec.
-                var settings=imp.ContainsSampleSettingsOverride("WebGL") ? imp.GetOverrideSampleSettings("WebGL") : imp.defaultSampleSettings;
+                var settings=imp.ContainsSampleSettingsOverride(BuildTargetGroup.WebGL) ? imp.GetOverrideSampleSettings(BuildTargetGroup.WebGL) : imp.defaultSampleSettings;
                 AudioRequest request; s.audioRequests.TryGetValue(path,out request);
                 string status; s.audioStatus.TryGetValue(path,out status);
+                var selection=s.receipt.s2.audioAttempts.LastOrDefault(x=>x.path==path);
                 b.Append(Csv(path,clip.length,settings.compressionFormat,clip.loadType,
                     UnityEngine.Profiling.Profiler.GetRuntimeMemorySizeLong(clip),File.Exists(path)?new FileInfo(path).Length:0,
                     request==null ? "" : request.format,request==null ? "" : request.loadType,
-                    settings.quality,request==null ? "" : request.quality,status??"report-only"));
+                    settings.quality,request==null ? "" : request.quality,status??"report-only",
+                    selection==null?"":selection.acceptedSelector,selection==null?"":selection.adoptedString));
                 Resources.UnloadAsset(clip);
             }
             return b.ToString();
@@ -464,15 +471,16 @@ namespace Exoduser.DevTools
             var full=Path.GetFullPath(probe);
             return Path.Combine(Path.GetDirectoryName(full),Path.GetFileNameWithoutExtension(full)+suffix);
         }
-        static Slim2State PrepareSlim2(string defaultCsv)
+        static Slim2State PrepareSlim2(string defaultCsv,Slim2State s)
         {
-            var s=NewSlim2State(); var probe=Arg("-probeOut");
+            var probe=Arg("-probeOut");
             if(string.IsNullOrEmpty(probe)) probe=defaultCsv;
             if(string.IsNullOrEmpty(probe)) throw new ArgumentException("-probeOut required for slim2 Probe");
             s.receipt.textureCsv=Path.GetFullPath(probe); s.receipt.audioCsv=Sidecar(probe,".audio.csv");
             s.receipt.uncompressedCsv=Sidecar(probe,".uncompressed.csv"); s.receipt.diagnosticsCsv=Sidecar(probe,".diagnostics.csv");
             try
             {
+                PrepareS2Assets(s);
                 ApplySlim2Textures(s); ApplySlim2Audio(s);
                 WriteText(s.receipt.textureCsv,BuildTextureReport(s));
                 WriteText(s.receipt.audioCsv,AudioReport(s));
@@ -484,18 +492,18 @@ namespace Exoduser.DevTools
 
         public static void Run()
         {
-            int exit = 2;
+            int exit=2,droppedVideos=0,replacedVideos=0;
+            Slim2State slim2State=null;BuildReport report=null;
+            string error="",api=Arg("-api");if(string.IsNullOrEmpty(api))api="both";
+            bool fontsHeld=false;
             try
             {
-                var outDir = Arg("-outDir");
-                if (string.IsNullOrEmpty(outDir)) throw new ArgumentException("-outDir required");
-                var receipt = Arg("-receipt");
-                var api = Arg("-api");
-                if (string.IsNullOrEmpty(api)) api = "both";
-
-                if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.WebGL)
-                    throw new InvalidOperationException("Pass -buildTarget WebGL (active=" + EditorUserBuildSettings.activeBuildTarget + ")");
-
+                var outDir=Arg("-outDir");
+                if(string.IsNullOrEmpty(outDir))throw new ArgumentException("-outDir required");
+                bool slim=Arg("-slim")=="true",slim2=Arg("-slim2")=="true";
+                ValidateS2Flags(slim2);
+                if(EditorUserBuildSettings.activeBuildTarget!=BuildTarget.WebGL)
+                    throw new InvalidOperationException("Pass -buildTarget WebGL (active="+EditorUserBuildSettings.activeBuildTarget+")");
                 // Graphics API: WebGPU first, WebGL2 fallback.
                 PlayerSettings.SetUseDefaultGraphicsAPIs(BuildTarget.WebGL, false);
                 GraphicsDeviceType[] apis =
@@ -520,35 +528,23 @@ namespace Exoduser.DevTools
                 if (!File.Exists(ScenePath)) throw new FileNotFoundException(ScenePath);
                 Directory.CreateDirectory(outDir);
 
-                bool slim = Arg("-slim") == "true", slim2 = Arg("-slim2") == "true", fontsHeld = false;
-                Slim2State slim2State = null;
-                if (slim2)
+
+                if(slim2)
                 {
-                    slim2State = PrepareSlim2(outDir.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar) + ".textures.csv");
-                    if (Arg("-holdCjk") != "false") { HoldCjkFonts(); fontsHeld = true; }
+                    slim2State=NewSlim2State();InitializeS2(slim2State);
+                    PrepareSlim2(outDir.TrimEnd(Path.DirectorySeparatorChar,Path.AltDirectorySeparatorChar)+".textures.csv",slim2State);
                 }
-                else if (slim)
+                else if(slim)
                 {
-                    int nTex = ApplyWebTextures(Arg("-texMax"));
-                    var csv = TextureReport();
-                    if (!string.IsNullOrEmpty(Arg("-probeOut"))) File.WriteAllText(Arg("-probeOut"), csv);
-                    if (Arg("-holdCjk") != "false") { HoldCjkFonts(); fontsHeld = true; }
-                    Debug.Log("UNITY_WEB_SLIM textures=" + nTex + " cjkHeld=" + fontsHeld);
+                    int nTex=ApplyWebTextures(Arg("-texMax"));
+                    var csv=TextureReport();
+                    if(!string.IsNullOrEmpty(Arg("-probeOut")))File.WriteAllText(Arg("-probeOut"),csv);
+                    if(Arg("-holdCjk")!="false"){fontsHeld=true;HoldCjkFonts();}
+                    Debug.Log("UNITY_WEB_SLIM textures="+nTex+" cjkHeld="+fontsHeld);
                 }
-                BuildReport report;
-                try
-                {
-                    report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
-                    {
-                        scenes = new[] { ScenePath },
-                        locationPathName = outDir,
-                        target = BuildTarget.WebGL,
-                        options = BuildOptions.None
-                    });
-                }
-                finally { if (fontsHeld) RestoreCjkFonts(); }
-                bool ok = report.summary.result == BuildResult.Succeeded;
-                int droppedVideos = 0, replacedVideos = 0;
+                report=BuildPipeline.BuildPlayer(new BuildPlayerOptions {
+                    scenes=new[]{ScenePath},locationPathName=outDir,target=BuildTarget.WebGL,options=BuildOptions.None });
+                bool ok=report.summary.result==BuildResult.Succeeded;
                 var videoDir = Arg("-videoDir");
                 if (ok && !string.IsNullOrEmpty(videoDir) && Directory.Exists(videoDir))
                 {
@@ -562,27 +558,21 @@ namespace Exoduser.DevTools
                     if (Directory.Exists(lobby))
                         foreach (var f in Directory.GetFiles(lobby, "*.mp4")) { File.Delete(f); droppedVideos++; }
                 }
-                var sb = new StringBuilder();
-                sb.Append("{\"passed\":").Append(ok ? "true" : "false")
-                  .Append(",\"result\":\"").Append(report.summary.result).Append("\"")
-                  .Append(",\"errors\":").Append(report.summary.totalErrors)
-                  .Append(",\"bytes\":").Append(report.summary.totalSize)
-                  .Append(",\"droppedVideos\":").Append(droppedVideos).Append(",\"replacedVideos\":").Append(replacedVideos).Append(",\"api\":\"").Append(api).Append("\"").Append(",\"compression\":\"").Append(PlayerSettings.WebGL.compressionFormat).Append("\"")
-                  .Append(",\"engine\":\"").Append(Application.unityVersion).Append("\"");
-                if (slim2State != null) sb.Append(",\"slim2\":").Append(JsonUtility.ToJson(slim2State.receipt));
-                sb.Append(",\"topAssets\":[");
-                var packed = report.packedAssets.SelectMany(p => p.contents).OrderByDescending(c => (long)c.packedSize).Take(40).ToArray();
-                for (int i = 0; i < packed.Length; i++)
-                {
-                    if (i > 0) sb.Append(',');
-                    sb.Append("{\"path\":\"").Append(packed[i].sourceAssetPath.Replace("\\", "/")).Append("\",\"packed\":").Append(packed[i].packedSize).Append('}');
-                }
-                sb.Append("]}");
-                if (!string.IsNullOrEmpty(receipt)) File.WriteAllText(receipt, sb.ToString());
-                Debug.Log("UNITY_WEB_BUILD " + report.summary.result + " bytes=" + report.summary.totalSize);
-                exit = ok ? 0 : 2;
+
+                exit=ok?0:2;
             }
-            catch (Exception e) { Debug.LogException(e); }
+            catch(Exception e){error=e.ToString();Debug.LogException(e);}
+            finally
+            {
+                RestoreS2(slim2State);
+                if(fontsHeld)
+                {
+                    try{RestoreCjkFonts();}
+                    catch(Exception e){error+="\nCJK restoration: "+e;Debug.LogException(e);exit=2;}
+                }
+                if(slim2State!=null&&!slim2State.receipt.s2.restorePassed)exit=2;
+                WriteBuildReceipt(report,slim2State,error,api,droppedVideos,replacedVideos);
+            }
             EditorApplication.Exit(exit);
         }
     }
