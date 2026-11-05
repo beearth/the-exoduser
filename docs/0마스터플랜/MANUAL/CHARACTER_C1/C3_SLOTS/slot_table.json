@@ -1,0 +1,144 @@
+{
+ "slots_core": [
+  "weapon",
+  "shield",
+  "boots",
+  "armor",
+  "helmet",
+  "bow",
+  "gloves",
+  "pants",
+  "belt",
+  "necklace",
+  "ring1",
+  "ring2",
+  "cape",
+  "bracelet",
+  "headband",
+  "ossuary",
+  "headband2"
+ ],
+ "items": {
+  "A_helm": {
+   "slot": "helmet",
+   "set": "A",
+   "covers": [
+    "skull"
+   ]
+  },
+  "A_chest": {
+   "slot": "armor",
+   "set": "A",
+   "covers": [
+    "chest"
+   ]
+  },
+  "A_pauldron.L": {
+   "slot": "armor",
+   "set": "A",
+   "covers": []
+  },
+  "A_pauldron.R": {
+   "slot": "armor",
+   "set": "A",
+   "covers": []
+  },
+  "A_glove.L": {
+   "slot": "gloves",
+   "set": "A",
+   "covers": [
+    "hand.L"
+   ]
+  },
+  "A_glove.R": {
+   "slot": "gloves",
+   "set": "A",
+   "covers": [
+    "hand.R"
+   ]
+  },
+  "A_greave.L": {
+   "slot": "boots",
+   "set": "A",
+   "covers": [
+    "shin.L"
+   ]
+  },
+  "A_greave.R": {
+   "slot": "boots",
+   "set": "A",
+   "covers": [
+    "shin.R"
+   ]
+  },
+  "B_helm": {
+   "slot": "helmet",
+   "set": "B",
+   "covers": [
+    "skull"
+   ]
+  },
+  "B_coat": {
+   "slot": "armor",
+   "set": "B",
+   "covers": [
+    "chest",
+    "pelvis",
+    "thigh.L",
+    "thigh.R"
+   ]
+  },
+  "B_shoulder.L": {
+   "slot": "armor",
+   "set": "B",
+   "covers": []
+  },
+  "B_shoulder.R": {
+   "slot": "armor",
+   "set": "B",
+   "covers": []
+  },
+  "B_bracer.L": {
+   "slot": "gloves",
+   "set": "B",
+   "covers": []
+  },
+  "B_bracer.R": {
+   "slot": "gloves",
+   "set": "B",
+   "covers": []
+  },
+  "B_boot.L": {
+   "slot": "boots",
+   "set": "B",
+   "covers": [
+    "foot.L"
+   ]
+  },
+  "B_boot.R": {
+   "slot": "boots",
+   "set": "B",
+   "covers": [
+    "foot.R"
+   ]
+  }
+ },
+ "body_parts": [
+  "chest",
+  "face",
+  "foot.L",
+  "foot.R",
+  "forearm.L",
+  "forearm.R",
+  "hand.L",
+  "hand.R",
+  "pelvis",
+  "shin.L",
+  "shin.R",
+  "skull",
+  "thigh.L",
+  "thigh.R",
+  "upperarm.L",
+  "upperarm.R"
+ ]
+}

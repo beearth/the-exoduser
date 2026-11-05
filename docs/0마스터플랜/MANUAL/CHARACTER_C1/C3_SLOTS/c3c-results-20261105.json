@@ -1,0 +1,129 @@
+{
+ "parts": {
+  "count": 16,
+  "unassigned_faces": 0,
+  "double_faces": 0
+ },
+ "source_bbone_segments": {
+  "max": 10,
+  "with_bbone": [
+   "DEF-spine",
+   "DEF-spine.001",
+   "DEF-spine.002",
+   "DEF-spine.003",
+   "DEF-spine.004",
+   "DEF-spine.005",
+   "DEF-thigh.L",
+   "DEF-thigh.L.001",
+   "DEF-thigh.L.002",
+   "DEF-shin.L",
+   "DEF-shin.L.001",
+   "DEF-shin.L.002",
+   "DEF-thigh.R",
+   "DEF-thigh.R.001",
+   "DEF-thigh.R.002",
+   "DEF-shin.R",
+   "DEF-shin.R.001",
+   "DEF-shin.R.002",
+   "DEF-upper_arm.L",
+   "DEF-upper_arm.L.001",
+   "DEF-upper_arm.L.002",
+   "DEF-forearm.L",
+   "DEF-forearm.L.001",
+   "DEF-forearm.L.002",
+   "DEF-upper_arm.R",
+   "DEF-upper_arm.R.001",
+   "DEF-upper_arm.R.002",
+   "DEF-forearm.R",
+   "DEF-forearm.R.001",
+   "DEF-forearm.R.002"
+  ]
+ },
+ "coverage": {
+  "A_helm>skull": {
+   "verts": 1178,
+   "ray_miss_share": 0.337,
+   "farther_than_9cm_share": 0.0
+  },
+  "A_chest>chest": {
+   "verts": 789,
+   "ray_miss_share": 0.383,
+   "farther_than_9cm_share": 0.033
+  },
+  "A_glove.L>hand.L": {
+   "verts": 699,
+   "ray_miss_share": 0.0,
+   "farther_than_9cm_share": 0.0
+  },
+  "A_glove.R>hand.R": {
+   "verts": 699,
+   "ray_miss_share": 0.0,
+   "farther_than_9cm_share": 0.0
+  },
+  "A_greave.L>shin.L": {
+   "verts": 430,
+   "ray_miss_share": 0.165,
+   "farther_than_9cm_share": 0.0
+  },
+  "A_greave.R>shin.R": {
+   "verts": 430,
+   "ray_miss_share": 0.191,
+   "farther_than_9cm_share": 0.0
+  },
+  "B_helm>skull": {
+   "verts": 1178,
+   "ray_miss_share": 0.392,
+   "farther_than_9cm_share": 0.004
+  },
+  "B_coat>chest": {
+   "verts": 789,
+   "ray_miss_share": 0.351,
+   "farther_than_9cm_share": 0.038
+  },
+  "B_coat>pelvis": {
+   "verts": 329,
+   "ray_miss_share": 0.0,
+   "farther_than_9cm_share": 0.009
+  },
+  "B_coat>thigh.L": {
+   "verts": 216,
+   "ray_miss_share": 0.046,
+   "farther_than_9cm_share": 0.213
+  },
+  "B_coat>thigh.R": {
+   "verts": 216,
+   "ray_miss_share": 0.046,
+   "farther_than_9cm_share": 0.213
+  },
+  "B_boot.L>foot.L": {
+   "verts": 1083,
+   "ray_miss_share": 0.0,
+   "farther_than_9cm_share": 0.0
+  },
+  "B_boot.R>foot.R": {
+   "verts": 1083,
+   "ray_miss_share": 0.0,
+   "farther_than_9cm_share": 0.0
+  }
+ },
+ "tris": {
+  "body": 21160,
+  "A": 10336,
+  "B": 14356
+ },
+ "exports": {
+  "H_Body": 1647052,
+  "S_SetA": 761836,
+  "S_SetB": 925420
+ },
+ "delta_mm": {
+  "source as is": {
+   "1": 4.082,
+   "3": 30.631
+  },
+  "source bbones off": {
+   "1": 0.001,
+   "3": 0.001
+  }
+ }
+}

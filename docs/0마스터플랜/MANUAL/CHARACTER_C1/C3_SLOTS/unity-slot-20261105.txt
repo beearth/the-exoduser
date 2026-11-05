@@ -1,0 +1,13 @@
+avatar valid=True human=True
+missingBones=0 itemsBound=16
+bodyParts=16
+noCharacter dc=1158.9 setpass=336.6
+naked renderers=16 tris=21160 dc+=84.2 setpass+=-0.4
+A renderers=18 tris=23546 dc+=94.7 setpass+=-0.4
+B renderers=17 tris=26286 dc+=89.5 setpass+=-0.4
+A-helmB renderers=18 tris=23546 dc+=55.3 setpass+=-11.4
+armorA-only renderers=18 tris=23984 dc+=55.3 setpass+=-11.4
+armorB-only renderers=15 tris=27348 dc+=77.9 setpass+=-1.4
+A-sword renderers=18 tris=23546 dc+=100.0 setpass+=-0.4
+B-axe renderers=17 tris=26286 dc+=94.7 setpass+=-0.4
+DONE
