@@ -143,7 +143,10 @@ namespace Exoduser.UnityPort.Core
                     if (Player.StateTicks <= 0) {
                         bool basic = Player.BasicWindup; Player.BasicWindup = false;
                         Player.State = "wSwing"; Player.StateTicks = 5; Player.SwingProgress = 0;
-                        if (basic && Config.ActiveAttack == "kiSlash") SpawnKiSlash((KiComboStep % 3) + 1);   // the first-strike crescent leaves when the swing starts, 6 ticks after the input
+                        if (basic && Config.ActiveAttack == "kiSlash") {
+                            SpawnKiSlash((KiComboStep % 3) + 1);   // the first-strike crescent leaves when the swing starts, 6 ticks after the input
+                            KiComboTicks -= BasicWindupTicks;   // web sets _cresComboT=120 at the input tick (game.html _fireKiSlashCrescent); the window stays 120 from the input, so the remainder at the next attack tick is 80 (= web), not 86
+                        }
                     }
                 }
                 else if (Player.State == "wWindup" && Player.KiChargeActive) {

@@ -69,6 +69,7 @@ namespace Exoduser.UnityPort
         public int Tick,Combo,SkillCastCount;
         public float RemainingTicks,RollRemaining,EffectiveHealth,Charge;
         public bool Rolling,Moving,KiAttack,Chain,ChainPull;
+        public bool BasicWindup;   // D-MO-2: Core PlayerState.BasicWindup (first-strike windup, not the ki charge)
     }
     public struct HeroMotionSample { public HeroMotionKind Kind; public float Phase,ContactPhase; public int Combo; }
     public struct HeroBodyWeight
@@ -249,7 +250,10 @@ namespace Exoduser.UnityPort
                 case "wRecover":s.Kind=HeroMotionKind.Recover;s.Phase=Clamp(1-q.RemainingTicks/recoveryLength);break;
                 case "sRecover":s.Kind=HeroMotionKind.BashRecover;s.Phase=Clamp(1-q.RemainingTicks/recoveryLength);break;
                 case "sBash":s.Kind=HeroMotionKind.Bash;s.Phase=Clamp(1-q.RemainingTicks/20f);s.ContactPhase=.4f;break;
-                case "wWindup":case "kiGather":case "sDraw":s.Kind=HeroMotionKind.Charge;s.Phase=Clamp(q.Charge/120f);break;
+                case "wWindup":
+                    if(q.BasicWindup)goto default;   // D-MO-2 (11-05): the 6-tick first-strike windup is not a charge; keep the idle/run pose so the swing starts with the existing idle->Swing transition (anticipation clip = motion pipeline)
+                    goto case "kiGather";
+                case "kiGather":case "sDraw":s.Kind=HeroMotionKind.Charge;s.Phase=Clamp(q.Charge/120f);break;
                 case "gSlamWindup":s.Kind=HeroMotionKind.SlamWindup;s.Phase=Clamp(1-q.RemainingTicks/10f);s.ContactPhase=0;break;
                 case "gSlam1":s.Kind=HeroMotionKind.SlamStrike;s.Phase=Clamp(1-q.RemainingTicks/10f);s.ContactPhase=0;break;
                 case "gSlamRecover":s.Kind=HeroMotionKind.SlamRecover;s.Phase=Clamp(1-q.RemainingTicks/12f);s.ContactPhase=0;break;
@@ -398,7 +402,7 @@ namespace Exoduser.UnityPort
             if(!ReferenceEquals(observedSimulation,sim)){clock.Reset();gait.Reset();turn.Reset();leftPlanted=rightPlanted=false;observedSimulation=sim;rollGroundTick=-1;rollGroundPhase=-1;}
             if(!ready)Bind();
             var p=sim.Player;
-            observed=new HeroMotionInput {State=p.State,Tick=sim.TickCount,RemainingTicks=p.StateTicks,RollRemaining=(float)sim.RollMoveT,Rolling=sim.RollActive,Moving=moving,EffectiveHealth=p.Hp+p.Shield,Combo=sim.KiComboStep,KiAttack=sim.Config.ActiveAttack=="kiSlash",Charge=p.KiChargeActive?p.KiChargeTicks:(float)sim.KgChg,SkillCastCount=sim.SkillCastCount,Chain=rigPixelMotion&&(sim.HarpActive||sim.DashActive),ChainPull=sim.DashActive};
+            observed=new HeroMotionInput {State=p.State,Tick=sim.TickCount,RemainingTicks=p.StateTicks,RollRemaining=(float)sim.RollMoveT,Rolling=sim.RollActive,Moving=moving,EffectiveHealth=p.Hp+p.Shield,Combo=sim.KiComboStep,KiAttack=sim.Config.ActiveAttack=="kiSlash",Charge=p.KiChargeActive?p.KiChargeTicks:(float)sim.KgChg,BasicWindup=p.BasicWindup,SkillCastCount=sim.SkillCastCount,Chain=rigPixelMotion&&(sim.HarpActive||sim.DashActive),ChainPull=sim.DashActive};
             current=clock.Evaluate(observed);
             if(rigPixelMotion)turn.Observe(sim.TickCount,Mathf.Atan2(Mathf.Cos(p.Facing),-Mathf.Sin(p.Facing))*Mathf.Rad2Deg,current.Kind==HeroMotionKind.Idle||current.Kind==HeroMotionKind.Run);
             if(rigPixelMotion)gait.Observe(sim.TickCount,transform.position.x,NativeRemodel3D.Active?transform.position.z:transform.position.y,1/Math.Max(.01f,transform.lossyScale.y),3.0126457,moving&&current.Kind!=HeroMotionKind.Roll&&current.Kind!=HeroMotionKind.Chain&&current.Kind!=HeroMotionKind.Dead);
