@@ -211,9 +211,28 @@ ArmR_HoldWeapon (마스크 Warrior_ArmR = 오른팔, 가중치 1)
 
 위 표의 회복·합계는 현재 측정값 34틱과 5틱에서 계산했다. 공격 판정 시점이 늦어지므로 전투 손맛과 밸런스가 달라진다. 이 영향은 측정하지 않았다.
 
+## 실습 전제 — CH 레인 C1 공용 리그 합격 뒤 (CTO 11-05 15:10 로드맵: 캐릭터 CH → 모션 MO → 임팩트)
+
+- 이 문서의 ②(리그)는 MO가 따로 만들지 않는다. **CH 레인의 C1 공용 스켈레톤이 합격한 뒤, 그 리그에 모캡을 리타깃**하는 것이 ③부터의 실습이다. 아래 §4.0.2 리그 옵션표는 CH가 C1을 고를 때의 참고 입력이다.
+- 리그 사양의 정본은 CH 레인의 `docs/0마스터플랜/MANUAL/CHARACTER_PIPELINE_20261105.md`(작성 중, 2026-11-05 조회 시점에 원격 브랜치 없음)다. 아래 "리그 요구사항"은 모캡·리타깃 쪽에서 그 문서에 넣어 달라는 요구이며, 두 문서가 어긋나면 CH 문서를 따르고 여기를 고친다.
+
+## 리그 요구사항 (모캡·리타깃 쪽 → CH 레인 C1 참고)
+
+| 요구 | 내용 | 왜 필요한가 | 현재 R7 |
+|---|---|---|---|
+| 본 이름 표준 | Unity Humanoid 필수 15본(Hips·Spine·Chest·Neck·Head·L/R UpperArm·LowerArm·Hand·UpperLeg·LowerLeg·Foot) + Shoulder·UpperChest·Toes. 이름은 **UE5 Mannequin 표기**(`pelvis, spine_01~05, neck_01, head, clavicle_l, upperarm_l, lowerarm_l, hand_l, thigh_l, calf_l, foot_l, ball_l` …) 하나로 통일 | Unity Humanoid 자동 매핑·UE IK Retargeter 양쪽을 추가 매핑 없이 통과(K8 실험 공용). 모캡 도구 출력(Move One·Rokoko·Mixamo)은 전부 Humanoid 표준으로 흡수 | Meshy 24본(`Spine02/Spine01/Spine`, `neck` 소문자 등 비표준) → 수동 매핑 의존 |
+| 루트 본 | 최상위에 지면 원점 `root`(Hips=`pelvis`의 부모, 바닥 높이 0, 회전 0) | 모캡의 루트 이동·회전을 담는 자리. 게임 반입 시 Core가 이동을 맡으므로 root 커브는 제거하지만, 리타깃·발 미끄러짐 검수·UE 루트 모션 비교에 필요 | 없음(`Armature` 널 → `Hips`) |
+| 발 IK 본 | `ik_foot_root, ik_foot_l, ik_foot_r`(root 자식, 발 본과 같은 위치·회전) | 발 고정(Unity Animation Rigging TwoBoneIK / UE Control Rig)의 타깃. 지금은 코드 `SolveArm`이 발 본을 직접 움직여 IK 타깃이 없다 | 없음 |
+| 손 IK·무기 소켓 본 | `ik_hand_root, ik_hand_gun, ik_hand_l, ik_hand_r` + **`weapon_r`(hand_r 자식), `weapon_l`(hand_l 자식)** | 양손 파지(보조손이 칼자루를 따라감)·운반 자세를 애니메이션 데이터로 만들기 위함. 현재는 널 `Socket_Weapon_R`·`Grip_L`을 코드 IK가 매 프레임 맞춘다 | 널 2개(본 아님) |
+| 손가락 본 | 손당 15본(thumb/index/middle/ring/pinky × 3) **권장**. 없으면 `Fist_R` 블렌드셰이프 유지 | 1순위 모캡(Move One 무료)은 손가락 추적이 없어 손가락은 손키·포즈 라이브러리로 채운다. 본이 있어야 파지 포즈를 클립에 담는다 | 없음(블렌드셰이프) |
+| 트위스트 본 | `upperarm_twist_01_l/r, lowerarm_twist_01_l/r, thigh_twist_01_l/r, calf_twist_01_l/r` | 대검 휘두름·팔로스루에서 팔 꼬임(캔디 랩) 방지. 모캡 리타깃 결과에서 가장 먼저 보이는 결함 | 없음 |
+| 리타깃 가능 본 수 | 위 합계: 코어 17 + 루트 1 + IK 7 + 무기 2 + 트위스트 8 + 손가락 30 = **65본**(손가락 제외 35). 망토 9본은 별도(리타깃 제외, `CapeSpring` 물리) | Mixamo 65본·UE5 Mannequin과 같은 급. Meshy 24본은 Humanoid 최소치라 리타깃은 되지만 꼬임·파지·발 고정을 전부 코드가 메워야 한다 | 24+9 |
+| 바인드 포즈·축·스케일 | **A포즈**(팔 45° 아래, 촬영 캘리브레이션과 동일), 1 unit = 1 m, 키 1.85 m, 발바닥 y=0, Blender 내보내기 Y-up(Unity)/Z-up(UE) 설정을 TOOLS 문서에 고정 | 모캡 캘리브레이션 포즈와 바인드 포즈가 다르면 리타깃 첫 프레임부터 어긋난다 | A포즈, 1.85 m |
+| 모캡 제외 본 | 망토 9본, 얼굴(`head_end, headfront`), 무기 소켓 | 리타깃 매핑에서 빼고 물리·수동으로 | — |
+
 ## §4 단계별 설정·실패 기록
 
-실습 기록은 **Mac 실습 대기**다. 형식: 단계 / 도구·버전 / 설정값 / 입력 SHA / 결과 / FAIL 사유 / 다음 시도. 아래 4.0은 클라우드가 쓴 ①② 도구 옵션표 초안이며, 도구별 `TOOLS/*.md`(옵션 전수표·절차·실습 기록, 틀은 `DIRECTION_RESET_20261105.md` 09:50 결정)는 Mac 실습 때 채운다.
+실습 기록은 **Mac 실습 대기**(위 "실습 전제" 충족 뒤)다. 형식: 단계 / 도구·버전 / 설정값 / 입력 SHA / 결과 / FAIL 사유 / 다음 시도. 아래 4.0은 클라우드가 쓴 ①② 도구 옵션표 초안이며, 도구별 `TOOLS/*.md`(옵션 전수표·절차·실습 기록, 틀은 `DIRECTION_RESET_20261105.md` 09:50 결정)는 Mac 실습 때 채운다.
 
 ### 4.0.1 ① 타이밍 표 → 클립 규격 (제안, Core 불변, D-MO-2 반영)
 
@@ -226,7 +245,7 @@ ArmR_HoldWeapon (마스크 Warrior_ArmR = 오른팔, 가중치 1)
 | Hurt | 60 | 6(Core) — 표현 연장 여부는 사용자 결정 | — | 제자리(넉백은 Core) |
 | Death | 60 | 48(최종 자세) + 홀드 | — | 제자리 |
 
-### 4.0.2 ② 리그 1개 — 옵션표
+### 4.0.2 ② 리그 1개 — 옵션표 (CH 레인 C1 선택의 참고 입력. MO가 리그를 만들지 않음)
 
 | 옵션 | 비용 | Unity Humanoid 호환 | 장점 | 제약·위험 | 출처 |
 |---|---|---|---|---|---|
