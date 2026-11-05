@@ -1,0 +1,67 @@
+// LOCAL ONLY — Mac clean-map judging (pixel compare, stain isolation, tree px). Never commit.
+using System;using System.Collections;using System.Collections.Generic;using System.IO;using System.Linq;using System.Text;using UnityEngine;
+namespace Exoduser.UnityPort{public sealed partial class NativeGame{
+ [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]static void LocalCmBoot(){if(Array.IndexOf(Environment.GetCommandLineArgs(),"--local-cm")<0)return;var g=new GameObject("LocalCmBoot");DontDestroyOnLoad(g);g.AddComponent<LocalCmBooter>();}
+ sealed class LocalCmBooter:MonoBehaviour{IEnumerator Start(){while(Instance==null)yield return null;yield return null;yield return null;Instance.StartCoroutine(Instance.LocalCm());}}
+ static string CmPath(Transform t){var s=t.name;for(var p=t.parent;p!=null;p=p.parent)s=p.name+"/"+s;return s;}
+ bool CmSwamp(out Vector2 site){site=Vector2.zero;float best=float.MaxValue;var bridge=new Vector2(4320,7180);for(float py=20;py<8000;py+=40)for(float px=20;px<8000;px+=40){float d=Vector2.Distance(new Vector2(px,py),bridge);if(d<1000||d>=best||!Map.CanMove(px,py,15))continue;float wx=px/100,wz=-py/100;bool far=false,near=false;for(int j=0;j<16;j++){float a=j*Mathf.PI/8,cx=Mathf.Cos(a),cz=Mathf.Sin(a);if(a2Field.Water(wx+cx*3.5f,wz+cz*3.5f))far=true;if(a2Field.Water(wx+cx*2,wz+cz*2))near=true;}if(far&&!near){best=d;site=new Vector2(px,py);}}return best<float.MaxValue;}
+ IEnumerator LocalCm(){
+  string output=Argument("-output");if(string.IsNullOrEmpty(output)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))){Application.Quit(2);yield break;}
+  Directory.CreateDirectory(output);var log=new StringBuilder();void Flush()=>File.WriteAllText(Path.Combine(output,"cm.txt"),log.ToString());
+  AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;smokeActive=true;pauseSmoke=true;
+  lobby.Flow.ShowLobby();lobby.Flow.SelectPreview();if(!lobby.Flow.EnterTest()){log.Append("ENTER_FAIL\n");Flush();Application.Quit(2);yield break;}
+  EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;gameFocused=true;
+  var s=Simulation;s.Config.EnemyAiEnabled=false;s.Enemies.Clear();s.SpawnHoles=null;
+  float dl=Time.realtimeSinceStartup+240;while(!Remodel3DReady&&Time.realtimeSinceStartup<dl){UpdateViews();yield return null;}
+  if(!Remodel3DReady){log.Append("NO_REMODEL\n");Flush();Application.Quit(3);yield break;}
+  if(!CmSwamp(out var swamp)){log.Append("NO_SWAMP\n");Flush();Application.Quit(3);yield break;}
+  var pts=new[]{new Vector2(4200,7460),new Vector2(4320,7180),swamp};var names=new[]{"start","bridge","swamp"};log.Append("swamp=").Append(swamp).Append(" pitch=").Append((NativeRemodel3D.Pitch*Mathf.Rad2Deg).ToString("F2")).Append(" dist=").Append(NativeRemodel3D.DistU.ToString("F2")).Append('\n');
+  { var on=FindObjectsByType<Renderer>(FindObjectsInactive.Exclude,FindObjectsSortMode.None).Where(r=>r.enabled).ToArray();log.Append("enabledRenderers=").Append(on.Length).Append(" underA2=").Append(on.Count(r=>r.transform.IsChildOf(a2Root.transform))).Append(" lights=").Append(FindObjectsByType<Light>(FindObjectsInactive.Exclude,FindObjectsSortMode.None).Count(l=>l.enabled)).Append('\n');Flush(); }
+  Time.captureFramerate=60;
+  IEnumerator Shot(string folder,int ptIdx,string tag){s.Player.X=pts[ptIdx].x;s.Player.Y=pts[ptIdx].y;lastX=pts[ptIdx].x;lastY=pts[ptIdx].y;for(int f=0;f<72;f++){UpdateViews();yield return null;}yield return new WaitForEndOfFrame();var t=ScreenCapture.CaptureScreenshotAsTexture();var d=Path.Combine(output,folder);Directory.CreateDirectory(d);File.WriteAllBytes(Path.Combine(d,names[ptIdx]+tag+".png"),t.EncodeToPNG());log.Append(folder).Append('/').Append(names[ptIdx]).Append(tag).Append(' ').Append(t.width).Append('x').Append(t.height).Append('\n');Destroy(t);Flush();}
+  Screen.SetResolution(1920,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.5f);
+  for(int i=0;i<3;i++)yield return Shot("1920",i,"");
+  // tree pixels: every tree-like renderer on screen, at each point
+  var cam=r3Cam;log.Append("cam fov=").Append(cam.fieldOfView.ToString("F3")).Append(" aspect=").Append(cam.aspect.ToString("F3")).Append('\n');
+  for(int i=0;i<3;i++){s.Player.X=pts[i].x;s.Player.Y=pts[i].y;lastX=pts[i].x;lastY=pts[i].y;for(int f=0;f<72;f++){UpdateViews();yield return null;}
+   var rows=new List<(float d,string line)>();float tanH=Mathf.Tan(cam.fieldOfView*.5f*Mathf.Deg2Rad);
+   foreach(var r in FindObjectsByType<MeshRenderer>(FindObjectsInactive.Exclude,FindObjectsSortMode.None)){if(!r.enabled||!(r.name.Contains("Ancient_Tree")||r.name.Contains("Hollow")))continue;var b=r.bounds;var base0=new Vector3(b.center.x,b.min.y+1.2f,b.center.z);var sp=cam.WorldToViewportPoint(base0);if(sp.z<=0||sp.x<-.05f||sp.x>1.05f||sp.y<-.05f||sp.y>1.05f)continue;float pxU=Screen.height/(2f*sp.z*tanH);var mn=new Vector2(1e6f,1e6f);var mx=new Vector2(-1e6f,-1e6f);for(int c=0;c<8;c++){var w=new Vector3((c&1)==0?b.min.x:b.max.x,(c&2)==0?b.min.y:b.max.y,(c&4)==0?b.min.z:b.max.z);var q=cam.WorldToScreenPoint(w);mn=Vector2.Min(mn,q);mx=Vector2.Max(mx,q);}rows.Add((sp.z,r.name+" depth="+sp.z.ToString("F2")+" pxPerU="+pxU.ToString("F1")+" boundsU="+b.size.ToString("F1")+" screenBox="+((mx.x-mn.x).ToString("F0"))+"x"+((mx.y-mn.y).ToString("F0"))));}
+   log.Append("trees@").Append(names[i]).Append(" n=").Append(rows.Count).Append('\n');foreach(var row in rows.OrderBy(q=>q.d).Take(6))log.Append("  ").Append(row.line).Append('\n');
+   { var g=new Vector3(0,0,0);var pos=NativeRemodel3D.Point(pts[i].x,pts[i].y);var sp=cam.WorldToViewportPoint(pos);log.Append("  groundAtHero depth=").Append(sp.z.ToString("F2")).Append(" pxPerU=").Append((Screen.height/(2f*sp.z*tanH)).ToString("F1")).Append('\n');}
+   Flush();
+  }
+  if(Array.IndexOf(Environment.GetCommandLineArgs(),"--local-cm-exp")>=0){
+   // 4: inventory
+   var inv=new StringBuilder();foreach(var mb in FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include,FindObjectsSortMode.None)){string n=mb.GetType().Name;if(n.Contains("Decal")||n.Contains("Projector"))inv.Append("decal ").Append(n).Append(' ').Append(CmPath(mb.transform)).Append(" enabled=").Append(mb.enabled).Append(" active=").Append(mb.gameObject.activeInHierarchy).Append('\n');}
+   foreach(var l in FindObjectsByType<Light>(FindObjectsInactive.Include,FindObjectsSortMode.None)){inv.Append("light ").Append(l.type).Append(' ').Append(CmPath(l.transform)).Append(" i=").Append(l.intensity.ToString("F2")).Append(" range=").Append(l.range.ToString("F1")).Append(" cookie=").Append(l.cookie!=null?l.cookie.name:"none").Append(" shadows=").Append(l.shadows).Append(" enabled=").Append(l.enabled).Append(" active=").Append(l.gameObject.activeInHierarchy).Append('\n');}
+   foreach(var p in FindObjectsByType<ReflectionProbe>(FindObjectsInactive.Include,FindObjectsSortMode.None))inv.Append("probe ").Append(CmPath(p.transform)).Append(" enabled=").Append(p.enabled).Append(" tex=").Append(p.texture!=null).Append('\n');
+   inv.Append("RenderSettings fog=").Append(RenderSettings.fog).Append(" ambient=").Append(RenderSettings.ambientMode).Append(" skybox=").Append(RenderSettings.skybox!=null?RenderSettings.skybox.name:"none").Append('\n');
+   foreach(var v in FindObjectsByType<UnityEngine.Rendering.Volume>(FindObjectsInactive.Include,FindObjectsSortMode.None))inv.Append("volume ").Append(CmPath(v.transform)).Append(" global=").Append(v.isGlobal).Append(" w=").Append(v.weight).Append(" comps=").Append(v.profile!=null?string.Join(",",v.profile.components.Where(c=>c.active).Select(c=>c.GetType().Name)):"").Append('\n');
+   foreach(var r in FindObjectsByType<Renderer>(FindObjectsInactive.Exclude,FindObjectsSortMode.None))if(r.enabled&&r.transform.IsChildOf(a2Root.transform))inv.Append("").ToString();
+   File.WriteAllText(Path.Combine(output,"inventory.txt"),inv.ToString());
+   var fogR=a2Root.GetComponentsInChildren<Renderer>(true).Where(r=>r.name.Contains("높이 안개")).ToArray();bool fogWas=RenderSettings.fog;
+   // 1 fog off
+   foreach(var r in fogR)r.enabled=false;RenderSettings.fog=false;for(int i=0;i<3;i++)yield return Shot("exp1-nofog",i,"");foreach(var r in fogR)r.enabled=true;RenderSettings.fog=fogWas;
+   // 2 only the directional light
+   var ls=FindObjectsByType<Light>(FindObjectsInactive.Exclude,FindObjectsSortMode.None).Where(l=>l.enabled&&l.type!=LightType.Directional).ToArray();foreach(var l in ls)l.enabled=false;for(int i=0;i<3;i++)yield return Shot("exp2-dironly",i,"");foreach(var l in ls)l.enabled=true;
+   // 3 unlit single colour ground
+   var ground=a2Root.GetComponentsInChildren<MeshRenderer>(true).Where(r=>r.name.StartsWith("A2 지면 ",StringComparison.Ordinal)).ToArray();var old=ground.Select(r=>r.sharedMaterial).ToArray();var un=new Material(Shader.Find("Sprites/Default"));un.color=new Color(.35f,.35f,.35f);log.Append("unlit shader=").Append(un.shader.name).Append('\n');foreach(var r in ground)r.sharedMaterial=un;log.Append("groundRenderers=").Append(ground.Length).Append('\n');for(int i=0;i<3;i++)yield return Shot("exp3-unlit",i,"");for(int i=0;i<ground.Length;i++)ground[i].sharedMaterial=old[i];
+  }
+  if(Array.IndexOf(Environment.GetCommandLineArgs(),"--local-cm-exp2")>=0){
+   var key=FindObjectsByType<Light>(FindObjectsInactive.Exclude,FindObjectsSortMode.None).First(l=>l.type==LightType.Directional&&l.enabled);var sh0=key.shadows;var rot=key.transform.rotation;log.Append("key rot=").Append(rot.eulerAngles.ToString("F1")).Append(" intensity=").Append(key.intensity).Append('\n');
+   var cast=FindObjectsByType<Renderer>(FindObjectsInactive.Exclude,FindObjectsSortMode.None).Where(r=>r.enabled&&r.shadowCastingMode!=UnityEngine.Rendering.ShadowCastingMode.Off).GroupBy(r=>r.name.StartsWith("A2 지면 ",StringComparison.Ordinal)?"A2 지면 *":r.name).Select(g=>g.Key+"="+g.Count());log.Append("shadowCasters ").Append(string.Join(", ",cast)).Append('\n');Flush();
+   key.shadows=LightShadows.None;for(int i=0;i<3;i++)yield return Shot("exp5-noshadow",i,"");key.shadows=sh0;
+   key.enabled=false;for(int i=0;i<3;i++)yield return Shot("exp6-nokey",i,"");key.enabled=true;
+   var water=a2Root.GetComponentsInChildren<Renderer>(true).Where(r=>r.name.Contains("독액")).ToArray();foreach(var r in water)r.enabled=false;for(int i=0;i<3;i++)yield return Shot("exp7-nowater",i,"");foreach(var r in water)r.enabled=true;
+   var shafts=a2Root.GetComponentsInChildren<Renderer>(true).Where(r=>r.name.Contains("빛기둥")||(r.GetComponent<MeshFilter>()!=null&&r.GetComponent<MeshFilter>().sharedMesh!=null&&r.GetComponent<MeshFilter>().sharedMesh.name.Contains("달빛"))).ToArray();log.Append("shafts=").Append(shafts.Length).Append('\n');foreach(var r in shafts)r.enabled=false;for(int i=0;i<3;i++)yield return Shot("exp8-noshaft",i,"");foreach(var r in shafts)r.enabled=true;
+   var ground2=a2Root.GetComponentsInChildren<MeshRenderer>(true).Where(r=>r.name.StartsWith("A2 지면 ",StringComparison.Ordinal)).ToArray();var old2=ground2.Select(r=>r.sharedMaterial).ToArray();var sd=Shader.Find("Hidden/Internal-Colored");log.Append("depthUnlit=").Append(sd!=null).Append('\n');Flush();if(sd!=null){var un2=new Material(sd);un2.SetColor("_Color",new Color(.35f,.35f,.35f));un2.SetInt("_ZWrite",1);un2.SetInt("_Cull",0);un2.renderQueue=2000;foreach(var r in ground2)r.sharedMaterial=un2;for(int i=0;i<3;i++)yield return Shot("exp3b-unlitdepth",i,"");for(int i=0;i<ground2.Length;i++)ground2[i].sharedMaterial=old2[i];}
+   foreach(var nm in new[]{0,1,2}){s.Player.X=pts[nm].x;s.Player.Y=pts[nm].y;lastX=pts[nm].x;lastY=pts[nm].y;for(int f=0;f<72;f++){UpdateViews();yield return null;}var on=FindObjectsByType<Light>(FindObjectsInactive.Exclude,FindObjectsSortMode.None).Where(l=>l.enabled).Select(l=>l.name+"@"+l.transform.position.ToString("F0")+" i="+l.intensity.ToString("F1")+" r="+l.range.ToString("F1")+" c="+ColorUtility.ToHtmlStringRGB(l.color));log.Append("lightsOn@").Append(names[nm]).Append(' ').Append(string.Join(" | ",on)).Append('\n');}Flush();
+   var pools=GameObject.Find("Lights/Pools");log.Append("poolsObj=").Append(pools!=null).Append('\n');if(pools!=null)pools.SetActive(false);for(int i=0;i<3;i++)yield return Shot("exp9-nopools",i,"");if(pools!=null)pools.SetActive(true);
+   foreach(var rr in FindObjectsByType<A2RiverReflection>(FindObjectsInactive.Include,FindObjectsSortMode.None))rr.enabled=false;a2Water.SetFloat("_PlanarStrength",0);for(int i=0;i<3;i++)yield return Shot("exp10-noreflect",i,"");
+   Time.captureFramerate=0;log.Append("DONE\n");Flush();Application.Quit(0);yield break;
+  }
+  Time.captureFramerate=0;
+  Screen.SetResolution(3840,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(1f);log.Append("wide screen=").Append(Screen.width).Append('x').Append(Screen.height).Append('\n');Flush();Time.captureFramerate=60;for(int i=0;i<3;i++)yield return Shot("3840",i,"");Time.captureFramerate=0;
+  log.Append("errors none-tracked\nDONE\n");Flush();Application.Quit(0);
+ }
+}}
