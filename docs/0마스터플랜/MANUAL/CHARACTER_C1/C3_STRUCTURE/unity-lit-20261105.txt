@@ -1,0 +1,17 @@
+avatar none
+humanoid built valid=False human=False mapped=22 absent=0
+remap renderers=20 missingBones=0 ms=2.390
+socket bone DEF-hand.R
+W_Greatsword rawBounds=0.018
+W_Axe rawBounds=0.012
+recorder valid dc=True sp=True tr=True dev=False
+idle A-full swapMs=0.051 framesToShot=0 renderers=22 tris=27116 dc=0 setpass=0 triCounter=0
+idle B-full swapMs=0.076 framesToShot=1 renderers=22 tris=27628 dc=0 setpass=0 triCounter=0
+idle A-body-B-helm swapMs=0.040 framesToShot=1 renderers=22 tris=26800 dc=2258 setpass=427 triCounter=32949576
+idle B-body-A-helm swapMs=0.036 framesToShot=1 renderers=22 tris=27944 dc=2258 setpass=415 triCounter=32942124
+idle A-sword swapMs=0.042 framesToShot=1 renderers=22 tris=27116 dc=2279 setpass=436 triCounter=32952606
+idle A-axe swapMs=0.040 framesToShot=1 renderers=22 tris=27116 dc=2287 setpass=437 triCounter=32945478
+idle B-axe swapMs=0.041 framesToShot=1 renderers=22 tris=27628 dc=2287 setpass=437 triCounter=32945478
+stress A-sword swapMs=0.039 framesToShot=1 renderers=22 tris=27116 dc=2287 setpass=437 triCounter=32950086
+stress B-axe swapMs=0.047 framesToShot=1 renderers=22 tris=27628 dc=2287 setpass=437 triCounter=32945478
+DONE

@@ -1,0 +1,61 @@
+// LOCAL ONLY. Mac C3 structure check. Never commit into the game.
+using System;using System.Collections;using System.Collections.Generic;using System.Diagnostics;using System.IO;using System.Linq;using UnityEngine;using Unity.Cinemachine;using Unity.Profiling;
+namespace Exoduser.UnityPort{public sealed partial class NativeGame{
+ [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]static void LocalC3Boot(){if(Array.IndexOf(Environment.GetCommandLineArgs(),"--local-c3")<0)return;var g=new GameObject("LocalC3Boot");DontDestroyOnLoad(g);g.AddComponent<LocalC3Booter>();}
+ sealed class LocalC3Booter:MonoBehaviour{IEnumerator Start(){while(Instance==null)yield return null;yield return null;yield return null;Instance.StartCoroutine(Instance.LocalC3());}}
+ void LocalC3Shot(string p){var t=ScreenCapture.CaptureScreenshotAsTexture();File.WriteAllBytes(p,t.EncodeToPNG());Destroy(t);}
+ static void LocalLayer(GameObject g,int l){foreach(var t in g.GetComponentsInChildren<Transform>(true))t.gameObject.layer=l;}
+ IEnumerator LocalC3(){string output=Argument("-output");Directory.CreateDirectory(output);AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;smokeActive=true;pauseSmoke=true;var log=new System.Text.StringBuilder();
+  Screen.SetResolution(1920,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.4f);
+  lobby.Flow.ShowLobby();lobby.Flow.SelectPreview();if(!lobby.Flow.EnterTest()){Application.Quit(2);yield break;}
+  EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;SetGameFocus(true);
+  var s=Simulation;var p=s.Player;p.X=3450;p.Y=7900;s.Config.EnemyAiEnabled=false;s.Enemies.Clear();s.SpawnHoles=null;
+  float dl=Time.realtimeSinceStartup+40;while(!Remodel3DReady&&Time.realtimeSinceStartup<dl){UpdateViews();yield return null;}
+  bool rig=RigPixelRequested;if(rig){dl=Time.realtimeSinceStartup+20;while((rigPixelHero==null||!rigPixelHero.Ready)&&Time.realtimeSinceStartup<dl){UpdateViews();yield return null;}}
+  yield return new WaitForSecondsRealtime(1.5f);UpdateViews();
+  var cam=r3Cam;var brain=cam.GetComponent<CinemachineBrain>();if(!rig){if(brain!=null)brain.enabled=false;r3Late.enabled=false;}
+  var hero=NativeRemodel3D.Point(p.X,p.Y);float rad=33f*Mathf.Deg2Rad,d=16.5f;
+  if(!rig){p.X+=4000;UpdateViews();yield return null;cam.transform.SetPositionAndRotation(hero+new Vector3(0,Mathf.Sin(rad)*d,-Mathf.Cos(rad)*d+1.48f),Quaternion.Euler(33f,0,0));}
+  // human mapping check
+  var avs=Resources.LoadAll<Avatar>("LocalC3");foreach(var av in avs)log.Append("avatar ").Append(av.name).Append(" valid=").Append(av.isValid).Append(" human=").Append(av.isHuman).Append('\n');if(avs.Length==0)log.Append("avatar none\n");
+  // base = set A
+  var sw=new Stopwatch();var srcA=Resources.Load<GameObject>("LocalC3/C3_SetA");var srcB=Resources.Load<GameObject>("LocalC3/C3_SetB");if(srcA==null||srcB==null){File.WriteAllText(Path.Combine(output,"c3.txt"),"NO_PREFAB");Application.Quit(3);yield break;}
+  float sc=88f/75.37f/1.85f;var baseGo=Instantiate(srcA);baseGo.transform.position=rig?heroView.Model.transform.parent.position:hero;baseGo.transform.rotation=Quaternion.Euler(0,240,0);baseGo.transform.localScale=Vector3.one*sc;
+  var bones=new Dictionary<string,Transform>();foreach(var t in baseGo.GetComponentsInChildren<Transform>(true))if(!bones.ContainsKey(t.name))bones[t.name]=t;
+  // runtime Humanoid attempt with an explicit bone map
+  try{var map=new Dictionary<string,string>{{"Hips","DEF-spine"},{"Spine","DEF-spine.001"},{"Chest","DEF-spine.002"},{"UpperChest","DEF-spine.003"},{"Neck","DEF-spine.004"},{"Head","DEF-spine.006"},{"LeftShoulder","DEF-shoulder.L"},{"RightShoulder","DEF-shoulder.R"},{"LeftUpperArm","DEF-upper_arm.L"},{"RightUpperArm","DEF-upper_arm.R"},{"LeftLowerArm","DEF-forearm.L"},{"RightLowerArm","DEF-forearm.R"},{"LeftHand","DEF-hand.L"},{"RightHand","DEF-hand.R"},{"LeftUpperLeg","DEF-thigh.L"},{"RightUpperLeg","DEF-thigh.R"},{"LeftLowerLeg","DEF-shin.L"},{"RightLowerLeg","DEF-shin.R"},{"LeftFoot","DEF-foot.L"},{"RightFoot","DEF-foot.R"},{"LeftToes","DEF-toe.L"},{"RightToes","DEF-toe.R"}};
+   var hb=new List<HumanBone>();int absent=0;foreach(var kv in map){if(!bones.ContainsKey(kv.Value)){absent++;log.Append("human missing ").Append(kv.Value).Append('\n');continue;}var b=new HumanBone{humanName=kv.Key,boneName=kv.Value};b.limit.useDefaultValues=true;hb.Add(b);}
+   var sk=baseGo.GetComponentsInChildren<Transform>(true).Select(t=>new SkeletonBone{name=t.name,position=t.localPosition,rotation=t.localRotation,scale=t.localScale}).ToArray();
+   var hd=new HumanDescription{human=hb.ToArray(),skeleton=sk,upperArmTwist=.5f,lowerArmTwist=.5f,upperLegTwist=.5f,lowerLegTwist=.5f,armStretch=.05f,legStretch=.05f,feetSpacing=0,hasTranslationDoF=false};
+   var built=AvatarBuilder.BuildHumanAvatar(baseGo,hd);log.Append("humanoid built valid=").Append(built.isValid).Append(" human=").Append(built.isHuman).Append(" mapped=").Append(hb.Count).Append(" absent=").Append(absent).Append('\n');
+  }catch(Exception e){log.Append("humanoid exception ").Append(e.Message).Append('\n');}
+  // set B: remap every skinned mesh onto the base skeleton, no second animator
+  sw.Start();var bGo=Instantiate(srcB);int missing=0,remapped=0;var bSkins=bGo.GetComponentsInChildren<SkinnedMeshRenderer>(true);foreach(var r in bSkins){var nb=new Transform[r.bones.Length];for(int i=0;i<nb.Length;i++){if(r.bones[i]==null||!bones.TryGetValue(r.bones[i].name,out nb[i]))missing++;}r.bones=nb;if(r.rootBone!=null&&bones.TryGetValue(r.rootBone.name,out var rb))r.rootBone=rb;r.transform.SetParent(baseGo.transform,false);remapped++;}
+  Destroy(bGo);sw.Stop();log.Append("remap renderers=").Append(remapped).Append(" missingBones=").Append(missing).Append(" ms=").Append(sw.Elapsed.TotalMilliseconds.ToString("F3")).Append('\n');
+  var all=baseGo.GetComponentsInChildren<SkinnedMeshRenderer>(true);Shader sh=Shader.Find("Universal Render Pipeline/Lit");
+  Material M(Color c,float me,float smo){var m=new Material(sh);m.color=c;m.SetFloat("_Metallic",me);m.SetFloat("_Smoothness",smo);return m;}
+  var clay=M(new Color(.46f,.43f,.41f),0,.38f);var ia=M(new Color(.055f,.055f,.06f),.85f,.58f);var ib=M(new Color(.42f,.27f,.17f),.15f,.45f);var st_=M(new Color(.5f,.52f,.55f),.9f,.65f);
+  foreach(var r in all){r.updateWhenOffscreen=true;r.sharedMaterial=r.name.StartsWith("A_")?ia:r.name.StartsWith("B_")?ib:clay;}
+  // pose helpers
+  var an=baseGo.GetComponent<Animation>();AnimationState cl=null;foreach(AnimationState a in an)cl=a;void Pose(int f){cl.enabled=true;cl.weight=1;cl.time=f/cl.clip.frameRate;an.Sample();cl.enabled=false;}
+  Pose(0);
+  // sockets: placed at rest in world, then parented to the hand bone
+  Transform hand;if(!bones.TryGetValue("DEF-hand.R",out hand))hand=bones.Values.First(b=>b.name.Contains("hand")&&b.name.EndsWith(".R"));log.Append("socket bone ").Append(hand.name).Append('\n');
+  GameObject Wp(string n){var g=Instantiate(Resources.Load<GameObject>("LocalC3/"+n));foreach(var r in g.GetComponentsInChildren<Renderer>(true))r.sharedMaterial=st_;g.transform.localScale=Vector3.one;float len=g.GetComponentsInChildren<Renderer>(true).Max(r=>r.bounds.size.magnitude);log.Append(n).Append(" rawBounds=").Append(len.ToString("F3")).Append('\n');g.transform.localScale=Vector3.one*(sc*(n=="W_Axe"?1.2f:1.72f)/len);g.transform.position=hand.position+baseGo.transform.forward*0f;g.transform.rotation=baseGo.transform.rotation*Quaternion.Euler(105,0,0);g.transform.SetParent(hand,true);g.SetActive(false);return g;}
+  var gs=Wp("W_Greatsword");var ax=Wp("W_Axe");
+  if(rig){foreach(var t in new[]{gs,ax})LocalLayer(t,30);foreach(var r in heroView.Model.GetComponentsInChildren<Renderer>(true))r.enabled=false;LocalLayer(baseGo,30);}
+  bool isHelm(string n)=>n=="A_helm"||n=="B_helm"||n=="MA_head"||n=="MB_head";
+  ProfilerRecorder dc=ProfilerRecorder.StartNew(ProfilerCategory.Render,"Draw Calls Count"),sp=ProfilerRecorder.StartNew(ProfilerCategory.Render,"SetPass Calls Count"),tr=ProfilerRecorder.StartNew(ProfilerCategory.Render,"Triangles Count");log.Append("recorder valid dc=").Append(dc.Valid).Append(" sp=").Append(sp.Valid).Append(" tr=").Append(tr.Valid).Append(" dev=").Append(UnityEngine.Debug.isDebugBuild).Append('\n');
+  double Apply(string body,string helm,GameObject w){var t=Stopwatch.StartNew();foreach(var r in all){string n=r.name;bool eye=n.Contains(".eye.");bool on=eye||(isHelm(n)?(helm=="A"?n=="A_helm"||n=="MA_head":n=="B_helm"||n=="MB_head"):(body=="A"?n.StartsWith("A_")||n.StartsWith("MA_"):n.StartsWith("B_")||n.StartsWith("MB_")));r.enabled=on;}gs.SetActive(w==gs);ax.SetActive(w==ax);t.Stop();return t.Elapsed.TotalMilliseconds;}
+  var states=new (string n,string b,string h,GameObject w)[]{("A-full","A","A",null),("B-full","B","B",null),("A-body-B-helm","A","B",null),("B-body-A-helm","B","A",null),("A-sword","A","A",gs),("A-axe","A","A",ax),("B-axe","B","B",ax)};
+  float baseFov=cam.fieldOfView;var rot=cam.transform.rotation;
+  foreach(var pose in new[]{(1,"idle"),(2,"stress")}){Pose(pose.Item1);
+   foreach(var st in states){if(pose.Item2=="stress"&&st.n!="A-sword"&&st.n!="B-axe")continue;
+    int f0=Time.frameCount;double ms=Apply(st.b,st.h,st.w);if(rig){UpdateViews();yield return null;yield return null;}
+    cam.fieldOfView=baseFov;cam.transform.rotation=rot;yield return new WaitForEndOfFrame();LocalC3Shot(Path.Combine(output,(rig?"rig-":"lit-")+pose.Item2+"-"+st.n+"-1x.png"));
+    int on=all.Count(r=>r.enabled);int tris=all.Where(r=>r.enabled).Sum(r=>r.sharedMesh.triangles.Length/3);
+    log.Append(pose.Item2).Append(' ').Append(st.n).Append(" swapMs=").Append(ms.ToString("F3")).Append(" framesToShot=").Append(Time.frameCount-f0).Append(" renderers=").Append(on).Append(" tris=").Append(tris);if(dc.Valid)log.Append(" dc=").Append(dc.LastValue).Append(" setpass=").Append(sp.LastValue).Append(" triCounter=").Append(tr.LastValue);log.Append('\n');
+    if(!rig){var mid=baseGo.transform.position+Vector3.up*.55f;cam.transform.rotation=Quaternion.LookRotation((mid-cam.transform.position).normalized,Vector3.up);cam.fieldOfView=2*Mathf.Rad2Deg*Mathf.Atan(Mathf.Tan(baseFov*.5f*Mathf.Deg2Rad)/6f);yield return new WaitForEndOfFrame();LocalC3Shot(Path.Combine(output,"lit-"+pose.Item2+"-"+st.n+"-6x.png"));cam.transform.rotation=rot;}
+   }}
+  dc.Dispose();sp.Dispose();tr.Dispose();File.WriteAllText(Path.Combine(output,"c3.txt"),log+"DONE\n");Application.Quit(0);}
+}}

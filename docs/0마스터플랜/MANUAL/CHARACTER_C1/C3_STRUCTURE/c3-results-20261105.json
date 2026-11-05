@@ -1,0 +1,104 @@
+{
+ "label": "structure check only, not final sculpt",
+ "sets": {
+  "A": {
+   "helm": 1648,
+   "chest": 2904,
+   "pauldron.L": 672,
+   "glove.L": 908,
+   "greave.L": 1324,
+   "pauldron.R": 656,
+   "glove.R": 896,
+   "greave.R": 1328
+  },
+  "B": {
+   "helm": 716,
+   "coat": 7396,
+   "shoulder.L": 788,
+   "bracer.L": 684,
+   "boot.L": 1184,
+   "shoulder.R": 796,
+   "bracer.R": 672,
+   "boot.R": 1188
+  },
+  "A_total": 10336,
+  "B_total": 13424
+ },
+ "coverage": {
+  "A": {
+   "helm": {
+    "not_covered_share": 0.267,
+    "hidden": 626
+   },
+   "chest": {
+    "not_covered_share": 0.236,
+    "hidden": 374
+   },
+   "pauldron.L": {
+    "not_covered_share": 0.153,
+    "hidden": 42
+   },
+   "glove.L": {
+    "not_covered_share": 0.029,
+    "hidden": 765
+   },
+   "greave.L": {
+    "not_covered_share": 0.075,
+    "hidden": 334
+   },
+   "pauldron.R": {
+    "not_covered_share": 0.125,
+    "hidden": 45
+   },
+   "glove.R": {
+    "not_covered_share": 0.022,
+    "hidden": 771
+   },
+   "greave.R": {
+    "not_covered_share": 0.103,
+    "hidden": 321
+   }
+  },
+  "B": {
+   "helm": {
+    "not_covered_share": 0.198,
+    "hidden": 318
+   },
+   "coat": {
+    "not_covered_share": 0.121,
+    "hidden": 1052
+   },
+   "shoulder.L": {
+    "not_covered_share": 0.303,
+    "hidden": 47
+   },
+   "bracer.L": {
+    "not_covered_share": 0.125,
+    "hidden": 202
+   },
+   "boot.L": {
+    "not_covered_share": 0.003,
+    "hidden": 1347
+   },
+   "shoulder.R": {
+    "not_covered_share": 0.283,
+    "hidden": 49
+   },
+   "bracer.R": {
+    "not_covered_share": 0.106,
+    "hidden": 210
+   },
+   "boot.R": {
+    "not_covered_share": 0.005,
+    "hidden": 1341
+   }
+  }
+ },
+ "export": {
+  "C3_SetA": 2604028,
+  "C3_SetB": 2451740,
+  "W_Greatsword": 15276,
+  "W_Axe": 15292
+ },
+ "bone_count_deform": 39
+}
