@@ -1,3 +1,29 @@
+## 기본 공격 1타 예비 6틱 — 2026-11-05 (Unity Core, 사용자 결정 D-MO-2)
+
+사용자 결정(11-05 "6틱, 총 길이 유지"): 기본 공격 **1타**에 예비(wWindup) 6틱을 넣고 회복에서 6틱을 빼 총 길이를 유지한다. 정답은 `unity/Assets/Exoduser/Runtime/Core/Simulation.cs`(상수 `BasicWindupTicks=6`, `BasicRecoverFloor=4`, `AttackRecoverBaseTicks()`, `AttackRecoverTicks()`)이다. 조사: [CW_INVESTIGATION_20261105](../0마스터플랜/worklog/cloud-lanes/CW_INVESTIGATION_20261105.md), 브리프: [BRIEF_CORE_WINDUP_20261105](../0마스터플랜/worklog/cloud-lanes/BRIEF_CORE_WINDUP_20261105.md).
+
+| 구간 | 상태 | 틱 | 식 | 비고 |
+|---|---|---|---|---|
+| 예비 | `wWindup`(`Player.BasicWindup=true`, `KiChargeActive=false`) | **6 고정** | `BasicWindupTicks` | 공격 속도(WeaponSpeed×AttackSpeedMultiplier) 영향 없음. ST는 입력 틱에 차감. 입력 무시, 이동 .8배(swing과 같음), 조준각은 매 틱 Facing 갱신(기존 wWindup 충전 규칙과 동일) |
+| 스윙 | `wSwing` | 5 | 고정 | 접점(HitArc)은 swing 3번째 틱(st2 3) → 입력 기준 **9틱째**(이전 3틱째, +6) |
+| 회복 | `wRecover` | **28**(시작 장비) | `max(recoverBase − 6, 4)`, `recoverBase=(int)(16/((WeaponSpeed 또는 .3)×AttackSpeedMultiplier))` | 시작 장비 .45×1.0336 → base 34 → 28. 하한 4는 `WeaponSpeed×AttackSpeedMultiplier > 1.6`부터 걸린다(그 구간만 총 길이가 늘어난다) |
+| 합계 | — | **39**(시작 장비) | 6+5+28 = 이전 0+5+34 | 다음 입력 가능 틱(사이클 40)·DPS 동일 |
+
+- **1타 판정:** 일반 무기(`ActiveAttack!="kiSlash"`)는 Core에 콤보 추적이 없어 모든 스윙이 1타다. 기검참은 다음 발사 단계가 1일 때(`KiComboStep%3==0`, 즉 콤보 없음 또는 3타 뒤)만 1타이고, 2타는 즉시 wSwing(회복 base), 3타는 기존 충전 wWindup(`KiChargeActive=true`) 그대로다. 기검참 1타 검기는 swing 시작 틱(입력+6)에 발사된다.
+- **기검참 콤보 창:** 웹은 입력 틱에 `_cresComboT=120`. Unity 1타 검기는 입력+6에 발사되므로 발사 직후 `KiComboTicks -= 6`(=114)로 **입력 기준 120틱**을 유지한다(다음 공격 가능 틱의 잔여 80 = 웹. 보정 전에는 86이었다, Mac 확인 11-05). `KiCooldownTicks`(12/20)는 발사 틱 기준 그대로이며 Core 어디서도 판정에 쓰이지 않는다.
+- **예비 중 입력:** 구르기(Space)·스킬 키는 swing 중과 같이 자세를 끊는다. Q·E는 idle/sRecover에서만 들어가므로 예비·swing·recover 모두 불가(기존과 같음). 피격은 swing 중과 같이 포이즈 −1·stagger(`KiChargeActive=false`이므로 충전 면제 없음).
+- **표현 구분:** `Player.BasicWindup`로 기검참 충전과 구분한다. 리그픽셀(`NativeHeroMotion.cs` `case "wWindup"`)은 1타 예비면 충전 포즈가 아니라 기존 idle/run 포즈를 유지하고 swing 시작에 기존 idle→Swing 전이를 쓴다(Mac 확인 11-05: 충전 포즈로 보내면 입력 틱과 예비 끝에 두 번 튄다). 예비 전용 동작 클립은 동작 파이프라인(MO 레인) 몫. 스프라이트 경로(`NativeGame.cs:443-444`, 공격 시트가 틱 0부터, windup 22·recover 34 식 복제)는 현행 유지하고 기록만 한다.
+- **검증:** PC 컴파일 0·Core 43/0·ki-slash-oracle 94/0·first-practice 88/0(CTO 전달). Mac 실게임(dfacd981d): 1타 6/5/28 합 39, HitArc 입력+8(상태 기준; 입력 틱을 0으로 셈), 피해 동일, 기검 2·3타·홀드 충전 전 구간 동일. 콤보 창 보정·표현 분기(이 절의 두 항목)는 후속 커밋이며 PC·Mac 재확인 대기. 손 기대값을 바꾼 하네스: `unity/Tools/Tests/Program.cs`, `unity/Tools/ki-slash-oracle/Program.cs`, `unity/Tools/first-practice/Program.cs`, `Runtime/NativeGame.B05Smoke.cs`.
+
+### Core ↔ 웹 oracle 의도된 차이 (기본 공격 틱)
+
+| 항목 | 웹 game.html | Unity Core | 판정 |
+|---|---|---|---|
+| 기본 공격 1타 진입 | idle → `wSwing 5` 즉시(33055·33564). 비충전 `wWindup` 분기(33355)는 Charge Finisher(34078)만 사용 | idle → `wWindup 6` → `wSwing 5` | **의도된 차이**(사용자 결정 11-05). oracle 비교에서 이 항목만 허용, 다른 불일치는 FAIL |
+| 1타 회복 | `~~(16/(spd×mul))` | `max(base−6, 4)` | 의도된 차이(총 길이 유지). `x>1.6`에서는 총 길이가 웹보다 1~9틱 길다 |
+| 기검참 콤보 창 | 입력 틱에 `_cresComboT=120` | 발사(입력+6) 뒤 `KiComboTicks=114` → 입력 기준 120 | 동일(보정으로 맞춤) |
+| 기검참 2타·3타, 접점 위치(swing 안 st2 3), 피해식, ST, 이동 배율 | 그대로 | 그대로 | 동일 |
+
 ## Native 공격속도·회복 — 2026-10-15 현행
 
 | 항목 | 현재 계약 |

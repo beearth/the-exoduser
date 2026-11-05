@@ -36,3 +36,6 @@
 - Mac: 1타 틱 로그(입력 → wWindup 6 → wSwing 5 → HitArc → wRecover 28) + 리그픽셀·스프라이트 영상 각 1개. 스프라이트 경로는 예비 프레임이 없어 6틱 동안 idle이 보일 것 — 그 사실을 적는다(화면 수정은 동작 파이프라인 몫).
 - 독립 검수(R2) 뒤 CTO 병합. 병합 전 "화면 비교판 나아짐/같음" 규칙은 동작 영상으로 적용.
 - 브랜치 `claude/unity-cloud-core-windup-20261105`.
+
+## 5. 레인 결과 (CW, 2026-11-05)
+- 조사 SHA `cd671b7`([CW_INVESTIGATION_20261105](CW_INVESTIGATION_20261105.md)), **구현 SHA `bdeefed`**(Core+하네스 기대값+docs 한 커밋). 컴파일·Core 테스트는 미확인(클라우드 레인, PC 실행 담당 배정 대기). 1타 판정: 일반 무기 매 스윙, 기검참 `KiComboStep%3==0`. 표현 구분은 `PlayerState.BasicWindup`.
