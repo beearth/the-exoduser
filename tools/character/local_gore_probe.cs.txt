@@ -7,14 +7,14 @@ namespace Exoduser.UnityPort{public sealed partial class NativeGame{
   Screen.SetResolution(1920,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.4f);
   lobby.Flow.ShowLobby();lobby.Flow.SelectPreview();if(!lobby.Flow.EnterTest()){Application.Quit(2);yield break;}
   EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;SetGameFocus(true);
-  var s=Simulation;var p=s.Player;p.X=3450;p.Y=7900;s.SpawnHoles=null;s.Enemies.Clear();s.Config.EnemyAiEnabled=true;
+  var s=Simulation;var p=s.Player;p.X=3450;p.Y=7900;s.SpawnHoles=null;s.Enemies.Clear();s.Config.EnemyAiEnabled=false;s.Config.ActiveAttack="weapon";
   float dl=Time.realtimeSinceStartup+40;while(!Remodel3DReady&&Time.realtimeSinceStartup<dl){UpdateViews();yield return null;}
   yield return new WaitForSecondsRealtime(1.5f);UpdateViews();
   string dir=Path.Combine(output,"f");Directory.CreateDirectory(dir);Time.captureFramerate=60;int k0=s.Kills;
   for(int f=0;f<1800;f++){p.Hp=p.MaxHp;p.Shield=p.MaxShield;p.Iframes=600;p.Stamina=p.MaxStamina;p.Mana=p.MaxMana;
-   int alive=s.Enemies.Count(e=>e.Alive);if(alive<4&&f%40==0){float a=f*.7f;var e=s.SpawnNormalEnemy(p.X+Mathf.Cos(a)*45,p.Y+Mathf.Sin(a)*45);if(e!=null&&f<3)log.Append("spawned\n");}
+   int alive=s.Enemies.Count(e=>e.Alive);if(alive<1){float a=f*.7f;var e=s.SpawnNormalEnemy(p.X+45,p.Y);if(e!=null&&f<3)log.Append("spawned\n");}
    float ax=p.X+200,ay=p.Y,near=1e9f;foreach(var e in s.Enemies)if(e.Alive){float dd=(e.X-p.X)*(e.X-p.X)+(e.Y-p.Y)*(e.Y-p.Y);if(dd<near){near=dd;ax=e.X;ay=e.Y;}}
-   foreach(var e in s.Enemies)if(e.Alive&&e.Hp>1)e.Hp=1;float mv=near>900?1:0;float dn=Mathf.Sqrt(Mathf.Max(near,1));StepInput(mv*(ax-p.X)/dn,mv*(ay-p.Y)/dn,ax,ay,f%48<4,false);yield return new WaitForEndOfFrame();var t=ScreenCapture.CaptureScreenshotAsTexture();File.WriteAllBytes(Path.Combine(dir,"f"+f.ToString("0000")+".jpg"),t.EncodeToJPG(92));Destroy(t);
+   StepInput(0,0,ax,ay,true,false);yield return new WaitForEndOfFrame();var t=ScreenCapture.CaptureScreenshotAsTexture();File.WriteAllBytes(Path.Combine(dir,"f"+f.ToString("0000")+".jpg"),t.EncodeToJPG(92));Destroy(t);
    if(f%300==0)File.WriteAllText(Path.Combine(output,"gore.txt"),log+"kills="+(s.Kills-k0)+" f="+f+"\n");}
   Time.captureFramerate=0;File.WriteAllText(Path.Combine(output,"gore.txt"),log+"kills="+(s.Kills-k0)+"\nDONE\n");Application.Quit(0);}
 }}
