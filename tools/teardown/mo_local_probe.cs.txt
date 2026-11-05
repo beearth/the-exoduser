@@ -28,12 +28,13 @@ namespace Exoduser.UnityPort {
    var loc=Argument("--unity-keyshot-location");if(!string.IsNullOrEmpty(loc)){var xy=loc.Split(':');if(xy.Length==2&&float.TryParse(xy[0],out var lx)&&float.TryParse(xy[1],out var ly)){p.X=lx;p.Y=ly;}}
    s.Config.EnemyAiEnabled=false;s.Enemies.Clear();s.SpawnHoles=null;p.Iframes=100000;
    float deadline=Time.realtimeSinceStartup+40;while(!Remodel3DReady&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
+   if(RigPixelRequested){float rd=Time.realtimeSinceStartup+20;while((rigPixelHero==null||!rigPixelHero.Ready)&&Time.realtimeSinceStartup<rd){UpdateViews();yield return null;}}
    yield return new WaitForSecondsRealtime(1);
    var keyboard=InputSystem.AddDevice<Keyboard>();var mouse=InputSystem.AddDevice<Mouse>();
    float[][] axes={new[]{1f,0f},new[]{-1f,0f},new[]{0f,-1f},new[]{0f,1f}};Key[] axisKey={Key.D,Key.A,Key.W,Key.S};
    var free=new float[4];for(int i=0;i<4;i++)free[i]=LocalFreeTicks(p.X,p.Y,axes[i][0],axes[i][1],p.Radius);
    var log=new StringBuilder("clip,f,tick,x,y,facing,state,stateTicks,motion,hx,hy\n");
-   File.WriteAllText(Path.Combine(output,"probe.txt"),"start "+p.X+":"+p.Y+" free R/L/N/S="+string.Join("/",free)+" heroReady="+(heroView!=null&&heroView.Ready)+" rigpixel="+RigPixelRequested+" remodel="+NativeRemodel3D.Active+" pitch="+NativeRemodel3D.Pitch*Mathf.Rad2Deg+" dist="+NativeRemodel3D.DistU+" fov="+(HudCamera!=null?HudCamera.fieldOfView:0)+"\n");
+   File.WriteAllText(Path.Combine(output,"probe.txt"),"start "+p.X+":"+p.Y+" free R/L/N/S="+string.Join("/",free)+" heroReady="+(heroView!=null&&heroView.Ready)+" rigReady="+(rigPixelHero!=null&&rigPixelHero.Ready)+" rigpixel="+RigPixelRequested+" remodel="+NativeRemodel3D.Active+" pitch="+NativeRemodel3D.Pitch*Mathf.Rad2Deg+" dist="+NativeRemodel3D.DistU+" fov="+(HudCamera!=null?HudCamera.fieldOfView:0)+"\n");
    Time.captureFramerate=60;
    string[] clips={"idle","walk","attack1"};
    foreach(string clip in clips){
