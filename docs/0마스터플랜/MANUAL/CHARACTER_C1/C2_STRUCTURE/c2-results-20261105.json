@@ -1,0 +1,199 @@
+{
+ "label": "structure check only, not final sculpt",
+ "pieces": {
+  "helm": {
+   "tris": 5552,
+   "verts": 2774,
+   "offset_m": 0.03,
+   "unweighted": 0,
+   "groups": 39
+  },
+  "chest": {
+   "tris": 12412,
+   "verts": 6202,
+   "offset_m": 0.032,
+   "unweighted": 0,
+   "groups": 39
+  },
+  "pauldron.L": {
+   "tris": 2672,
+   "verts": 1336,
+   "offset_m": 0.04,
+   "unweighted": 0,
+   "groups": 39
+  },
+  "glove.L": {
+   "tris": 4448,
+   "verts": 2226,
+   "offset_m": 0.022,
+   "unweighted": 0,
+   "groups": 39
+  },
+  "greave.L": {
+   "tris": 6236,
+   "verts": 3118,
+   "offset_m": 0.026000000000000002,
+   "unweighted": 0,
+   "groups": 39
+  },
+  "pauldron.R": {
+   "tris": 2672,
+   "verts": 1338,
+   "offset_m": 0.04,
+   "unweighted": 0,
+   "groups": 39
+  },
+  "glove.R": {
+   "tris": 4416,
+   "verts": 2210,
+   "offset_m": 0.022,
+   "unweighted": 0,
+   "groups": 39
+  },
+  "greave.R": {
+   "tris": 6252,
+   "verts": 3126,
+   "offset_m": 0.026000000000000002,
+   "unweighted": 0,
+   "groups": 39
+  }
+ },
+ "mask": {
+  "body_faces": 10590,
+  "hidden_faces": 3852,
+  "hidden_share": 0.364,
+  "masked_tris": 13456,
+  "armour_tris": 44660
+ },
+ "piercing": {
+  "rest": {
+   "helm": {
+    "inner_verts": 978,
+    "body_through_armour": 123,
+    "after_mask": 50
+   },
+   "chest": {
+    "inner_verts": 623,
+    "body_through_armour": 77,
+    "after_mask": 42
+   },
+   "pauldron.L": {
+    "inner_verts": 72,
+    "body_through_armour": 0,
+    "after_mask": 0
+   },
+   "glove.L": {
+    "inner_verts": 805,
+    "body_through_armour": 0,
+    "after_mask": 0
+   },
+   "greave.L": {
+    "inner_verts": 388,
+    "body_through_armour": 15,
+    "after_mask": 13
+   },
+   "pauldron.R": {
+    "inner_verts": 72,
+    "body_through_armour": 0,
+    "after_mask": 0
+   },
+   "glove.R": {
+    "inner_verts": 805,
+    "body_through_armour": 0,
+    "after_mask": 0
+   },
+   "greave.R": {
+    "inner_verts": 388,
+    "body_through_armour": 13,
+    "after_mask": 11
+   }
+  },
+  "idle": {
+   "helm": {
+    "inner_verts": 978,
+    "body_through_armour": 123,
+    "after_mask": 50
+   },
+   "chest": {
+    "inner_verts": 623,
+    "body_through_armour": 77,
+    "after_mask": 42
+   },
+   "pauldron.L": {
+    "inner_verts": 72,
+    "body_through_armour": 0,
+    "after_mask": 0
+   },
+   "glove.L": {
+    "inner_verts": 805,
+    "body_through_armour": 0,
+    "after_mask": 0
+   },
+   "greave.L": {
+    "inner_verts": 388,
+    "body_through_armour": 15,
+    "after_mask": 13
+   },
+   "pauldron.R": {
+    "inner_verts": 72,
+    "body_through_armour": 0,
+    "after_mask": 0
+   },
+   "glove.R": {
+    "inner_verts": 805,
+    "body_through_armour": 0,
+    "after_mask": 0
+   },
+   "greave.R": {
+    "inner_verts": 388,
+    "body_through_armour": 13,
+    "after_mask": 11
+   }
+  },
+  "stress": {
+   "helm": {
+    "inner_verts": 978,
+    "body_through_armour": 135,
+    "after_mask": 59
+   },
+   "chest": {
+    "inner_verts": 623,
+    "body_through_armour": 81,
+    "after_mask": 45
+   },
+   "pauldron.L": {
+    "inner_verts": 72,
+    "body_through_armour": 7,
+    "after_mask": 5
+   },
+   "glove.L": {
+    "inner_verts": 805,
+    "body_through_armour": 0,
+    "after_mask": 0
+   },
+   "greave.L": {
+    "inner_verts": 388,
+    "body_through_armour": 24,
+    "after_mask": 21
+   },
+   "pauldron.R": {
+    "inner_verts": 72,
+    "body_through_armour": 0,
+    "after_mask": 0
+   },
+   "glove.R": {
+    "inner_verts": 805,
+    "body_through_armour": 0,
+    "after_mask": 0
+   },
+   "greave.R": {
+    "inner_verts": 388,
+    "body_through_armour": 16,
+    "after_mask": 14
+   }
+  }
+ },
+ "export": {
+  "fbx_bytes": 3702364
+ }
+}

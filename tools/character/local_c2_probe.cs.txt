@@ -1,0 +1,35 @@
+// LOCAL ONLY. Mac C1 engine check. Never commit into the game.
+using System;using System.Collections;using System.IO;using System.Linq;using UnityEngine;using Unity.Cinemachine;
+namespace Exoduser.UnityPort{public sealed partial class NativeGame{
+ [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]static void LocalC1Boot(){if(Array.IndexOf(Environment.GetCommandLineArgs(),"--local-c1")<0)return;var g=new GameObject("LocalC1Boot");DontDestroyOnLoad(g);g.AddComponent<LocalC1Booter>();}
+ sealed class LocalC1Booter:MonoBehaviour{IEnumerator Start(){while(Instance==null)yield return null;yield return null;yield return null;Instance.StartCoroutine(Instance.LocalC1());}}
+ void LocalShot(string p){var t=ScreenCapture.CaptureScreenshotAsTexture();File.WriteAllBytes(p,t.EncodeToPNG());Destroy(t);}
+ IEnumerator LocalC1(){string output=Argument("-output");Directory.CreateDirectory(output);AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;smokeActive=true;pauseSmoke=true;
+  Screen.SetResolution(1920,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.4f);
+  lobby.Flow.ShowLobby();lobby.Flow.SelectPreview();if(!lobby.Flow.EnterTest()){Application.Quit(2);yield break;}
+  EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;SetGameFocus(true);
+  var s=Simulation;var p=s.Player;p.X=3450;p.Y=7900;s.Config.EnemyAiEnabled=false;s.Enemies.Clear();s.SpawnHoles=null;
+  float dl=Time.realtimeSinceStartup+40;while(!Remodel3DReady&&Time.realtimeSinceStartup<dl){UpdateViews();yield return null;}
+  yield return new WaitForSecondsRealtime(1.5f);UpdateViews();
+  var cam=r3Cam;var brain=cam.GetComponent<CinemachineBrain>();if(brain!=null)brain.enabled=false;r3Late.enabled=false;
+  var hero=NativeRemodel3D.Point(p.X,p.Y);float pitch=33f;float d=16.5f;float rad=pitch*Mathf.Deg2Rad;
+  cam.transform.SetPositionAndRotation(hero+new Vector3(0,Mathf.Sin(rad)*d,-Mathf.Cos(rad)*d+1.48f),Quaternion.Euler(pitch,0,0));
+  string log="fov="+cam.fieldOfView+" cam="+cam.transform.position.ToString("F2")+" hero="+hero.ToString("F2")+"\n";
+  yield return new WaitForEndOfFrame();LocalShot(Path.Combine(output,"unity-33-field.png"));
+  var src=Resources.Load<GameObject>("LocalC1/EXO_Warrior_C2_structure");if(src==null){File.WriteAllText(Path.Combine(output,"c1.txt"),log+"NO_PREFAB");Application.Quit(3);yield break;}
+  var go=Instantiate(src);go.transform.position=hero;float sc=88f/75.37f/1.85f;go.transform.localScale=Vector3.one*sc;
+  Material mat=null;var sh=Shader.Find("Universal Render Pipeline/Lit");if(sh!=null){mat=new Material(sh);}else{var any=FindObjectsByType<MeshRenderer>(FindObjectsSortMode.None).Select(r=>r.sharedMaterial).FirstOrDefault(m=>m!=null&&m.shader.name.Contains("Lit"));if(any!=null){mat=new Material(any);mat.mainTexture=null;}}
+  var rs=go.GetComponentsInChildren<SkinnedMeshRenderer>(true);foreach(var r in rs){if(mat!=null){var mm=new Material(mat);bool iron=r.name.StartsWith("A_");mm.color=iron?new Color(.055f,.055f,.06f):new Color(.46f,.43f,.41f);if(iron){mm.SetFloat("_Metallic",.85f);mm.SetFloat("_Smoothness",.54f);}r.sharedMaterial=mm;}r.updateWhenOffscreen=true;}
+  {var keep=new Vector3(hero.x,hero.y,hero.z);p.X+=4000;UpdateViews();yield return null;go.transform.position=keep;cam.transform.SetPositionAndRotation(keep+new Vector3(0,Mathf.Sin(rad)*d,-Mathf.Cos(rad)*d+1.48f),Quaternion.Euler(pitch,0,0));}
+  var an=go.GetComponent<Animation>();log+="parts="+rs.Length+" bones="+rs.Select(r=>r.bones.Length).DefaultIfEmpty(0).Max()+" tris="+rs.Sum(r=>r.sharedMesh.triangles.Length/3)+" verts="+rs.Sum(r=>r.sharedMesh.vertexCount)+" normals="+rs.All(r=>r.sharedMesh.normals.Length==r.sharedMesh.vertexCount)+" shader="+(mat!=null?mat.shader.name:"none")+" anim="+(an!=null)+" clips="+(an!=null?an.GetClipCount():0)+"\n";
+  AnimationState st=null;if(an!=null)foreach(AnimationState a in an)st=a;if(st!=null)log+="clip="+st.name+" len="+st.length+" rate="+st.clip.frameRate+"\n";
+  string[] poses={"rest","idle","stress"};float baseFov=cam.fieldOfView;var scPos=cam.transform.position;
+  for(int i=0;i<3;i++)foreach(int yaw in new[]{0,60,180}){
+   if(st!=null){st.enabled=true;st.weight=1;st.time=i/st.clip.frameRate;an.Sample();st.enabled=false;}
+   go.transform.rotation=Quaternion.Euler(0,180+yaw,0);
+   cam.fieldOfView=baseFov;yield return new WaitForEndOfFrame();LocalShot(Path.Combine(output,"unity-"+poses[i]+"-y"+yaw.ToString("000")+"-1x.png"));
+   var mid=go.transform.position+Vector3.up*.55f;var fwd=(mid-cam.transform.position).normalized;var old=cam.transform.rotation;cam.transform.rotation=Quaternion.LookRotation(fwd,Vector3.up);cam.fieldOfView=2*Mathf.Rad2Deg*Mathf.Atan(Mathf.Tan(baseFov*.5f*Mathf.Deg2Rad)/6f);
+   yield return new WaitForEndOfFrame();LocalShot(Path.Combine(output,"unity-"+poses[i]+"-y"+yaw.ToString("000")+"-6x.png"));cam.transform.rotation=old;
+  }
+  File.WriteAllText(Path.Combine(output,"c1.txt"),log+"DONE\n");Application.Quit(0);}
+}}

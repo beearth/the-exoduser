@@ -1,3 +1,5 @@
+2026-11-05 캐릭터 C2 구조 검증(Mac, 게임 코드·자산 불변, 최종 조형 아님): 웨이트 전사·바디 마스크·Unity 조립 동작, 뚫림 측정은 미확정. docs/0마스터플랜/MANUAL/CHARACTER_C1/C2_STRUCTURE/C2_STRUCTURE_20261105.md.
+
 2026-11-05 캐릭터 C1(Mac, 게임 코드·자산 불변): CC0 베이스 바디 1.85m, 임시 14파트, Rigify, Unity 33° 이음새 확인, 엉덩이 접힘은 코렉티브 필요. docs/0마스터플랜/MANUAL/CHARACTER_C1/CHARACTER_C1_20261105.md.
 
 2026-11-04 L13 데모 통합 병합 브랜치(클라우드, CTO 결정): unity/main 9196a515d 위에 demo-flavor-fix ac4e187ae → field-prepare-merge 79d4d14f1 → options-wave2 2cd42d3ab → first-impression-tone 479634337 → ui-minor6 19216c411 → white-disc(D2) 17967874a → crash-p1-fix 50f530c02를 --no-ff로 병합(끝 ec8561386). 충돌은 L1 해결안대로(CHANGELOG 양쪽, 번역대상 4274~4287 브랜치 쪽, SilverCharacter 주석 unity/main 쪽). combo4 대비 unity/Assets·ProjectSettings 차이는 D2·P1 4파일뿐. node review-0540 1건 FAIL(options-wave2 리셋 확인창 settingsChip, combo4에도 있음). 컴파일·빌드·화면 미확인 — Mac 판정 대기. 기록: docs/0마스터플랜/worklog/cloud-lanes/L13-demo-integration_20261104.md
