@@ -54,6 +54,7 @@ namespace Exoduser.UnityPort.Core
         public float KnockbackX, KnockbackY, Iframes, Poise = 4;
         public bool KiChargeActive;
         public float KiChargeTicks;
+        public bool BasicWindup;      // D-MO-2 (11-05): true only while the basic-attack first strike winds up (State "wWindup", KiChargeActive false). Presentation tells it from the ki charge by this flag.
         public int Level = 1, Experience, MaxExperience = 15, StatPoints, PassivePoints;
         public string TransDate; public int TransCount; // web P._transLvDate/_transLvCount (one transcend level per local day)
         // B08: P.shieldRegenT, P._demonRevCd, die() pre-rolled revive (P._fallen*), P._reviveOnceUsed
