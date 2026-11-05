@@ -4,7 +4,21 @@
 
 ## 판정 (CTO, 11-05)
 
-파이프라인 완주 PASS, **리토폴로지 단계 미달(쿼드 아님)**. 규칙대로 방법을 바꿔 Instant Meshes로 다시 시도한다. 설치는 사용자 승인 대기 중이다.
+파이프라인 완주 PASS, **리토폴로지 단계 미달(쿼드 아님)**. Rosetta까지 필요한 공식 Intel 파일은 쓰지 않고, 사용자가 Xcode를 설치하면 Instant Meshes를 소스 빌드한다.
+
+## 리토폴로지 재시도 (CTO 지시 순서, 실패·중단)
+
+순서: 복셀 재구성(크기 = 최장변 4.051m ÷ 300 = 1.35cm) → 스케일·회전 적용(이미 단위값) → Quadriflow(목표 면 2,000·4,000, 대칭 끔, `use_preserve_sharp` 켬, `seed=1`).
+
+입력 상태: 면 45,720, 전부 사각형, 비다양체 간선 0, 비다양체 정점 0, 경계 간선 0.
+
+두 목표 모두 같은 결과이다. Python 예외는 나지 않았고 연산자가 `{'CANCELLED'}`를 반환했으며 면 수는 45,720 그대로이다. Blender가 출력한 메시지 원문:
+
+```
+Warning: QuadriFlow: The mesh needs to be manifold and have face normals that point in a consistent direction
+```
+
+입력 메시를 bmesh로 검사하면 문제가 없는데 거부되는 이유는 **미상**이다. 지시대로 여기서 중단했다. UV·베이크·LOD는 다시 돌리지 않았고, 512px/m 맞춤 단계도 하지 않았다. 다음 방법은 사용자가 Xcode를 설치한 뒤 Instant Meshes 소스 빌드이다.
 
 ## 결과
 
