@@ -1,0 +1,2092 @@
+{
+ "fb_Tree_04": {
+  "source": "Tree_04.FBX",
+  "lod_measured": 0,
+  "M1": {
+   "lods": {
+    "0": {
+     "tris": 3095,
+     "verts": 1799,
+     "objects": 2
+    },
+    "1": {
+     "tris": 1808,
+     "verts": 964,
+     "objects": 1
+    },
+    "2": {
+     "tris": 2870,
+     "verts": 1495,
+     "objects": 1
+    },
+    "3": {
+     "tris": 684,
+     "verts": 440,
+     "objects": 1
+    }
+   },
+   "objects_total": 5,
+   "materials_total": 3,
+   "object_list": [
+    {
+     "name": "TreeBranches_04",
+     "tris": 225,
+     "verts": 304,
+     "mats": [
+      "Tree_04_Branches"
+     ]
+    },
+    {
+     "name": "TreeTrunk_04_LOD0",
+     "tris": 2870,
+     "verts": 1495,
+     "mats": [
+      "Tree_04_Trunk",
+      "Bark_04"
+     ]
+    }
+   ]
+  },
+  "M2": {
+   "size_m": [
+    20.172,
+    19.414,
+    26.152
+   ],
+   "surface_m2": 1189.747,
+   "pivot_from_bottom_centre_m": [
+    2.08,
+    0.741,
+    0.05
+   ],
+   "pivot_on_floor": true
+  },
+  "M3": {
+   "tris_per_m2_all": 2.6,
+   "thirds": [
+    {
+     "band": "low",
+     "tri_share": 0.53,
+     "area_share": 0.092,
+     "tris_per_m2": 15.0
+    },
+    {
+     "band": "mid",
+     "tri_share": 0.445,
+     "area_share": 0.575,
+     "tris_per_m2": 2.0
+    },
+    {
+     "band": "high",
+     "tri_share": 0.025,
+     "area_share": 0.334,
+     "tris_per_m2": 0.2
+    }
+   ],
+   "tri_area_cm2_p10_p50_p90": [
+    100.33,
+    243.52,
+    570.25
+   ]
+  },
+  "M4": {
+   "has_uv": true,
+   "uv_layers": 1,
+   "islands": 84,
+   "uv_area_sum": 20.032,
+   "use_0_1": 1.0,
+   "overlap_ge3": 1.0,
+   "loops_outside_0_1": 0.5533
+  },
+  "M5": {
+   "px_per_m_from_ref": 375.8,
+   "ref_tex": "Bark_04_BC.tga",
+   "ref_wh": [
+    2048,
+    4096
+   ],
+   "px_per_m_at_1k_uv": 132.9,
+   "per_object": [
+    {
+     "name": "TreeBranches_04",
+     "tris": 225,
+     "area_m2": 1115.003,
+     "uv_area": 8.3996,
+     "px_per_m_at_1k": 88.9,
+     "mats": [
+      "Tree_04_Branches"
+     ]
+    },
+    {
+     "name": "TreeTrunk_04_LOD0",
+     "tris": 2870,
+     "area_m2": 74.744,
+     "uv_area": 11.6325,
+     "px_per_m_at_1k": 404.0,
+     "mats": [
+      "Tree_04_Trunk",
+      "Bark_04"
+     ]
+    }
+   ]
+  },
+  "M6": {
+   "albedo": {
+    "file": "Bark_04_BC.tga",
+    "w": 2048,
+    "h": 4096,
+    "channels": 4,
+    "depth": 32,
+    "bytes": 33554476
+   },
+   "normal": {
+    "file": "Bark_04_N.tga",
+    "w": 2048,
+    "h": 4096,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 25165868
+   },
+   "mask": {
+    "file": "Bark_04_MSK.tga",
+    "w": 512,
+    "h": 1024,
+    "channels": 4,
+    "depth": 32,
+    "bytes": 2097196
+   },
+   "height": {
+    "file": "Bark_04_H.tga",
+    "w": 2048,
+    "h": 4096,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 25165868
+   },
+   "detail": {
+    "file": "Bark_04_Detail_02.tga",
+    "w": 4096,
+    "h": 4096,
+    "channels": 4,
+    "depth": 32,
+    "bytes": 67108908
+   }
+  },
+  "M8": {
+   "silhouette_px_share": 0.0812,
+   "fill_of_own_bbox": 0.3649
+  },
+  "M6_sheet_order": [
+   "albedo",
+   "normal",
+   "mask",
+   "height"
+  ]
+ },
+ "fb_Rock_02": {
+  "source": "Rock_02.FBX",
+  "lod_measured": 0,
+  "M1": {
+   "lods": {
+    "0": {
+     "tris": 7651,
+     "verts": 3928,
+     "objects": 1
+    },
+    "1": {
+     "tris": 3775,
+     "verts": 1964,
+     "objects": 1
+    },
+    "2": {
+     "tris": 1849,
+     "verts": 982,
+     "objects": 1
+    },
+    "3": {
+     "tris": 891,
+     "verts": 491,
+     "objects": 1
+    },
+    "4": {
+     "tris": 430,
+     "verts": 246,
+     "objects": 1
+    }
+   },
+   "objects_total": 5,
+   "materials_total": 1,
+   "object_list": [
+    {
+     "name": "Rock02_LOD0",
+     "tris": 7651,
+     "verts": 3928,
+     "mats": [
+      "Rock_02"
+     ]
+    }
+   ]
+  },
+  "M2": {
+   "size_m": [
+    9.62,
+    14.308,
+    3.82
+   ],
+   "surface_m2": 129.605,
+   "pivot_from_bottom_centre_m": [
+    -0.715,
+    1.01,
+    -0.167
+   ],
+   "pivot_on_floor": true
+  },
+  "M3": {
+   "tris_per_m2_all": 59.0,
+   "thirds": [
+    {
+     "band": "low",
+     "tri_share": 0.188,
+     "area_share": 0.186,
+     "tris_per_m2": 59.8
+    },
+    {
+     "band": "mid",
+     "tri_share": 0.36,
+     "area_share": 0.362,
+     "tris_per_m2": 58.7
+    },
+    {
+     "band": "high",
+     "tri_share": 0.452,
+     "area_share": 0.452,
+     "tris_per_m2": 59.0
+    }
+   ],
+   "tri_area_cm2_p10_p50_p90": [
+    148.9,
+    167.5,
+    188.3
+   ]
+  },
+  "M4": {
+   "has_uv": true,
+   "uv_layers": 1,
+   "islands": 1,
+   "uv_area_sum": 0.629,
+   "use_0_1": 0.629,
+   "overlap_ge3": 0.0,
+   "loops_outside_0_1": 0.0
+  },
+  "M5": {
+   "px_per_m_from_ref": 142.7,
+   "ref_tex": "Rock02_BC.tga",
+   "ref_wh": [
+    2048,
+    2048
+   ],
+   "px_per_m_at_1k_uv": 71.3,
+   "per_object": [
+    {
+     "name": "Rock02_LOD0",
+     "tris": 7651,
+     "area_m2": 129.605,
+     "uv_area": 0.629,
+     "px_per_m_at_1k": 71.3,
+     "mats": [
+      "Rock_02"
+     ]
+    }
+   ]
+  },
+  "M6": {
+   "albedo": {
+    "file": "Rock02_BC.tga",
+    "w": 2048,
+    "h": 2048,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 12582956
+   },
+   "normal": {
+    "file": "Rock02_N.tga",
+    "w": 2048,
+    "h": 2048,
+    "channels": 4,
+    "depth": 32,
+    "bytes": 11033794
+   },
+   "mask": {
+    "file": "Rock02_MSK.tga",
+    "w": 1024,
+    "h": 1024,
+    "channels": 4,
+    "depth": 32,
+    "bytes": 4194348
+   },
+   "height": {
+    "file": "Rock02_H.tga",
+    "w": 2048,
+    "h": 2048,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 12582956
+   }
+  },
+  "M8": {
+   "silhouette_px_share": 0.2083,
+   "fill_of_own_bbox": 0.5542
+  },
+  "M6_sheet_order": [
+   "albedo",
+   "normal",
+   "mask",
+   "height"
+  ]
+ },
+ "fb_Rock_07": {
+  "source": "Rock_07.FBX",
+  "lod_measured": 0,
+  "M1": {
+   "lods": {
+    "0": {
+     "tris": 5268,
+     "verts": 2709,
+     "objects": 1
+    },
+    "1": {
+     "tris": 2649,
+     "verts": 1355,
+     "objects": 1
+    },
+    "2": {
+     "tris": 1318,
+     "verts": 678,
+     "objects": 1
+    },
+    "3": {
+     "tris": 651,
+     "verts": 339,
+     "objects": 1
+    },
+    "4": {
+     "tris": 318,
+     "verts": 170,
+     "objects": 1
+    },
+    "5": {
+     "tris": 153,
+     "verts": 85,
+     "objects": 1
+    }
+   },
+   "objects_total": 6,
+   "materials_total": 1,
+   "object_list": [
+    {
+     "name": "Rock07_LOD0",
+     "tris": 5268,
+     "verts": 2709,
+     "mats": [
+      "Rock_07"
+     ]
+    }
+   ]
+  },
+  "M2": {
+   "size_m": [
+    6.756,
+    4.685,
+    1.989
+   ],
+   "surface_m2": 37.89,
+   "pivot_from_bottom_centre_m": [
+    0.38,
+    0.081,
+    0.032
+   ],
+   "pivot_on_floor": true
+  },
+  "M3": {
+   "tris_per_m2_all": 139.0,
+   "thirds": [
+    {
+     "band": "low",
+     "tri_share": 0.516,
+     "area_share": 0.535,
+     "tris_per_m2": 134.1
+    },
+    {
+     "band": "mid",
+     "tri_share": 0.326,
+     "area_share": 0.312,
+     "tris_per_m2": 145.6
+    },
+    {
+     "band": "high",
+     "tri_share": 0.157,
+     "area_share": 0.153,
+     "tris_per_m2": 143.0
+    }
+   ],
+   "tri_area_cm2_p10_p50_p90": [
+    61.85,
+    69.89,
+    84.42
+   ]
+  },
+  "M4": {
+   "has_uv": true,
+   "uv_layers": 1,
+   "islands": 1,
+   "uv_area_sum": 0.6411,
+   "use_0_1": 0.641,
+   "overlap_ge3": 0.0,
+   "loops_outside_0_1": 0.0
+  },
+  "M5": {
+   "px_per_m_from_ref": 133.2,
+   "ref_tex": "Rock07_BC.tga",
+   "ref_wh": [
+    1024,
+    1024
+   ],
+   "px_per_m_at_1k_uv": 133.2,
+   "per_object": [
+    {
+     "name": "Rock07_LOD0",
+     "tris": 5268,
+     "area_m2": 37.89,
+     "uv_area": 0.6411,
+     "px_per_m_at_1k": 133.2,
+     "mats": [
+      "Rock_07"
+     ]
+    }
+   ]
+  },
+  "M6": {
+   "albedo": {
+    "file": "Rock07_BC.tga",
+    "w": 1024,
+    "h": 1024,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 3145772
+   },
+   "normal": {
+    "file": "Rock07_N.tga",
+    "w": 1024,
+    "h": 1024,
+    "channels": 4,
+    "depth": 32,
+    "bytes": 4194348
+   },
+   "mask": {
+    "file": "Rock07_MSK.tga",
+    "w": 512,
+    "h": 512,
+    "channels": 4,
+    "depth": 32,
+    "bytes": 1048620
+   }
+  },
+  "M8": {
+   "silhouette_px_share": 0.273,
+   "fill_of_own_bbox": 0.682
+  },
+  "M6_sheet_order": [
+   "albedo",
+   "normal",
+   "mask"
+  ]
+ },
+ "fb_Root_01": {
+  "source": "Root_01.FBX",
+  "lod_measured": 0,
+  "M1": {
+   "lods": {
+    "0": {
+     "tris": 1496,
+     "verts": 804,
+     "objects": 1
+    },
+    "1": {
+     "tris": 727,
+     "verts": 402,
+     "objects": 1
+    },
+    "2": {
+     "tris": 345,
+     "verts": 201,
+     "objects": 1
+    },
+    "3": {
+     "tris": 163,
+     "verts": 101,
+     "objects": 1
+    }
+   },
+   "objects_total": 4,
+   "materials_total": 1,
+   "object_list": [
+    {
+     "name": "Root01_LOD0",
+     "tris": 1496,
+     "verts": 804,
+     "mats": [
+      "Root_01"
+     ]
+    }
+   ]
+  },
+  "M2": {
+   "size_m": [
+    3.049,
+    1.284,
+    0.214
+   ],
+   "surface_m2": 2.903,
+   "pivot_from_bottom_centre_m": [
+    0.003,
+    -0.003,
+    0.0
+   ],
+   "pivot_on_floor": true
+  },
+  "M3": {
+   "tris_per_m2_all": 515.3,
+   "thirds": [
+    {
+     "band": "low",
+     "tri_share": 0.656,
+     "area_share": 0.749,
+     "tris_per_m2": 451.5
+    },
+    {
+     "band": "mid",
+     "tri_share": 0.232,
+     "area_share": 0.183,
+     "tris_per_m2": 654.2
+    },
+    {
+     "band": "high",
+     "tri_share": 0.112,
+     "area_share": 0.068,
+     "tris_per_m2": 844.5
+    }
+   ],
+   "tri_area_cm2_p10_p50_p90": [
+    8.19,
+    16.87,
+    34.86
+   ]
+  },
+  "M4": {
+   "has_uv": true,
+   "uv_layers": 1,
+   "islands": 1,
+   "uv_area_sum": 0.6406,
+   "use_0_1": 0.641,
+   "overlap_ge3": 0.0,
+   "loops_outside_0_1": 0.0
+  },
+  "M5": {
+   "px_per_m_from_ref": 962.0,
+   "ref_tex": "Root_01_BC.tga",
+   "ref_wh": [
+    2048,
+    2048
+   ],
+   "px_per_m_at_1k_uv": 481.0,
+   "per_object": [
+    {
+     "name": "Root01_LOD0",
+     "tris": 1496,
+     "area_m2": 2.903,
+     "uv_area": 0.6406,
+     "px_per_m_at_1k": 481.0,
+     "mats": [
+      "Root_01"
+     ]
+    }
+   ]
+  },
+  "M6": {
+   "albedo": {
+    "file": "Root_01_BC.tga",
+    "w": 2048,
+    "h": 2048,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 12582956
+   },
+   "normal": {
+    "file": "Root_01_N.tga",
+    "w": 2048,
+    "h": 2048,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 12582956
+   },
+   "mask": {
+    "file": "Root_01_MSK.tga",
+    "w": 2048,
+    "h": 2048,
+    "channels": 4,
+    "depth": 32,
+    "bytes": 16777260
+   },
+   "height": {
+    "file": "Root_01_H.tga",
+    "w": 2048,
+    "h": 2048,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 12582956
+   }
+  },
+  "M8": {
+   "silhouette_px_share": 0.1522,
+   "fill_of_own_bbox": 0.4755
+  },
+  "M6_sheet_order": [
+   "albedo",
+   "normal",
+   "mask",
+   "height"
+  ]
+ },
+ "ph_dead_tree_trunk": {
+  "source": "dead_tree_trunk.gltf",
+  "lod_measured": 0,
+  "M1": {
+   "lods": {
+    "0": {
+     "tris": 101802,
+     "verts": 52593,
+     "objects": 1
+    }
+   },
+   "objects_total": 1,
+   "materials_total": 1,
+   "object_list": [
+    {
+     "name": "dead_tree_trunk",
+     "tris": 101802,
+     "verts": 52593,
+     "mats": [
+      "dead_tree_trunk"
+     ]
+    }
+   ]
+  },
+  "M2": {
+   "size_m": [
+    3.051,
+    0.278,
+    0.29
+   ],
+   "surface_m2": 1.976,
+   "pivot_from_bottom_centre_m": [
+    0.014,
+    -0.032,
+    0.028
+   ],
+   "pivot_on_floor": true
+  },
+  "M3": {
+   "tris_per_m2_all": 51517.9,
+   "thirds": [
+    {
+     "band": "low",
+     "tri_share": 0.357,
+     "area_share": 0.374,
+     "tris_per_m2": 49161.3
+    },
+    {
+     "band": "mid",
+     "tri_share": 0.424,
+     "area_share": 0.414,
+     "tris_per_m2": 52688.6
+    },
+    {
+     "band": "high",
+     "tri_share": 0.219,
+     "area_share": 0.212,
+     "tris_per_m2": 53392.3
+    }
+   ],
+   "tri_area_cm2_p10_p50_p90": [
+    0.13,
+    0.19,
+    0.27
+   ]
+  },
+  "M4": {
+   "has_uv": true,
+   "uv_layers": 1,
+   "islands": 35,
+   "uv_area_sum": 0.8045,
+   "use_0_1": 0.805,
+   "overlap_ge3": 0.0,
+   "loops_outside_0_1": 0.0
+  },
+  "M5": {
+   "px_per_m_from_ref": 2613.6,
+   "ref_tex": "dead_tree_trunk_diff_4k.jpg",
+   "ref_wh": [
+    4096,
+    4096
+   ],
+   "px_per_m_at_1k_uv": 653.4,
+   "per_object": [
+    {
+     "name": "dead_tree_trunk",
+     "tris": 101802,
+     "area_m2": 1.976,
+     "uv_area": 0.8045,
+     "px_per_m_at_1k": 653.4,
+     "mats": [
+      "dead_tree_trunk"
+     ]
+    }
+   ]
+  },
+  "M6": {
+   "albedo": {
+    "file": "dead_tree_trunk_diff_4k.jpg",
+    "w": 4096,
+    "h": 4096,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 8678984
+   },
+   "arm": {
+    "file": "dead_tree_trunk_arm_4k.jpg",
+    "w": 4096,
+    "h": 4096,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 8796469
+   },
+   "normal": {
+    "file": "dead_tree_trunk_nor_gl_4k.jpg",
+    "w": 4096,
+    "h": 4096,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 12570581
+   }
+  },
+  "M8": {
+   "silhouette_px_share": 0.0723,
+   "fill_of_own_bbox": 0.2041
+  },
+  "M6_sheet_order": [
+   "albedo",
+   "normal",
+   "arm"
+  ]
+ },
+ "ph_dead_tree_trunk_02": {
+  "source": "dead_tree_trunk_02.gltf",
+  "lod_measured": 0,
+  "M1": {
+   "lods": {
+    "0": {
+     "tris": 83128,
+     "verts": 46112,
+     "objects": 1
+    }
+   },
+   "objects_total": 1,
+   "materials_total": 1,
+   "object_list": [
+    {
+     "name": "dead_tree_trunk_02",
+     "tris": 83128,
+     "verts": 46112,
+     "mats": [
+      "dead_tree_trunk_02"
+     ]
+    }
+   ]
+  },
+  "M2": {
+   "size_m": [
+    4.051,
+    1.056,
+    1.055
+   ],
+   "surface_m2": 6.026,
+   "pivot_from_bottom_centre_m": [
+    -0.101,
+    0.027,
+    0.328
+   ],
+   "pivot_on_floor": false
+  },
+  "M3": {
+   "tris_per_m2_all": 13795.4,
+   "thirds": [
+    {
+     "band": "low",
+     "tri_share": 0.049,
+     "area_share": 0.052,
+     "tris_per_m2": 12865.2
+    },
+    {
+     "band": "mid",
+     "tri_share": 0.444,
+     "area_share": 0.493,
+     "tris_per_m2": 12423.6
+    },
+    {
+     "band": "high",
+     "tri_share": 0.507,
+     "area_share": 0.455,
+     "tris_per_m2": 15390.4
+    }
+   ],
+   "tri_area_cm2_p10_p50_p90": [
+    0.14,
+    0.43,
+    1.63
+   ]
+  },
+  "M4": {
+   "has_uv": true,
+   "uv_layers": 1,
+   "islands": 158,
+   "uv_area_sum": 0.7576,
+   "use_0_1": 0.758,
+   "overlap_ge3": 0.0,
+   "loops_outside_0_1": 0.0
+  },
+  "M5": {
+   "px_per_m_from_ref": 1452.4,
+   "ref_tex": "dead_tree_trunk_02_diff_4k.jpg",
+   "ref_wh": [
+    4096,
+    4096
+   ],
+   "px_per_m_at_1k_uv": 363.1,
+   "per_object": [
+    {
+     "name": "dead_tree_trunk_02",
+     "tris": 83128,
+     "area_m2": 6.026,
+     "uv_area": 0.7576,
+     "px_per_m_at_1k": 363.1,
+     "mats": [
+      "dead_tree_trunk_02"
+     ]
+    }
+   ]
+  },
+  "M6": {
+   "albedo": {
+    "file": "dead_tree_trunk_02_diff_4k.jpg",
+    "w": 4096,
+    "h": 4096,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 12850600
+   },
+   "arm": {
+    "file": "dead_tree_trunk_02_arm_4k.jpg",
+    "w": 4096,
+    "h": 4096,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 11080754
+   },
+   "normal": {
+    "file": "dead_tree_trunk_02_nor_gl_4k.jpg",
+    "w": 4096,
+    "h": 4096,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 20275088
+   }
+  },
+  "M8": {
+   "silhouette_px_share": 0.0992,
+   "fill_of_own_bbox": 0.3343
+  },
+  "M6_sheet_order": [
+   "albedo",
+   "normal",
+   "arm"
+  ]
+ },
+ "ph_root_cluster_01": {
+  "source": "root_cluster_01.gltf",
+  "lod_measured": 0,
+  "M1": {
+   "lods": {
+    "0": {
+     "tris": 225261,
+     "verts": 117551,
+     "objects": 1
+    }
+   },
+   "objects_total": 1,
+   "materials_total": 1,
+   "object_list": [
+    {
+     "name": "root_cluster_01",
+     "tris": 225261,
+     "verts": 117551,
+     "mats": [
+      "root_cluster_01"
+     ]
+    }
+   ]
+  },
+  "M2": {
+   "size_m": [
+    4.123,
+    2.683,
+    1.509
+   ],
+   "surface_m2": 15.644,
+   "pivot_from_bottom_centre_m": [
+    0.003,
+    0.348,
+    0.045
+   ],
+   "pivot_on_floor": true
+  },
+  "M3": {
+   "tris_per_m2_all": 14399.5,
+   "thirds": [
+    {
+     "band": "low",
+     "tri_share": 0.506,
+     "area_share": 0.494,
+     "tris_per_m2": 14748.5
+    },
+    {
+     "band": "mid",
+     "tri_share": 0.332,
+     "area_share": 0.338,
+     "tris_per_m2": 14161.8
+    },
+    {
+     "band": "high",
+     "tri_share": 0.161,
+     "area_share": 0.167,
+     "tris_per_m2": 13848.8
+    }
+   ],
+   "tri_area_cm2_p10_p50_p90": [
+    0.37,
+    0.63,
+    1.01
+   ]
+  },
+  "M4": {
+   "has_uv": true,
+   "uv_layers": 1,
+   "islands": 150,
+   "uv_area_sum": 0.7367,
+   "use_0_1": 0.737,
+   "overlap_ge3": 0.0,
+   "loops_outside_0_1": 0.0
+  },
+  "M5": {
+   "px_per_m_from_ref": 888.9,
+   "ref_tex": "root_cluster_01_diff_4k.jpg",
+   "ref_wh": [
+    4096,
+    4096
+   ],
+   "px_per_m_at_1k_uv": 222.2,
+   "per_object": [
+    {
+     "name": "root_cluster_01",
+     "tris": 225261,
+     "area_m2": 15.644,
+     "uv_area": 0.7367,
+     "px_per_m_at_1k": 222.2,
+     "mats": [
+      "root_cluster_01"
+     ]
+    }
+   ]
+  },
+  "M6": {
+   "albedo": {
+    "file": "root_cluster_01_diff_4k.jpg",
+    "w": 4096,
+    "h": 4096,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 11840519
+   },
+   "arm": {
+    "file": "root_cluster_01_arm_4k.jpg",
+    "w": 4096,
+    "h": 4096,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 12474013
+   },
+   "normal": {
+    "file": "root_cluster_01_nor_gl_4k.jpg",
+    "w": 4096,
+    "h": 4096,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 20758647
+   }
+  },
+  "M8": {
+   "silhouette_px_share": 0.4019,
+   "fill_of_own_bbox": 0.7271
+  },
+  "M6_sheet_order": [
+   "albedo",
+   "normal",
+   "arm"
+  ]
+ },
+ "ph_rock_moss_set_01": {
+  "source": "rock_moss_set_01.gltf",
+  "lod_measured": 0,
+  "M1": {
+   "lods": {
+    "0": {
+     "tris": 63127,
+     "verts": 33988,
+     "objects": 6
+    }
+   },
+   "objects_total": 6,
+   "materials_total": 1,
+   "object_list": [
+    {
+     "name": "rock_moss_set_01_rock01",
+     "tris": 11000,
+     "verts": 6078,
+     "mats": [
+      "rock_moss_set_01"
+     ]
+    },
+    {
+     "name": "rock_moss_set_01_rock02",
+     "tris": 10996,
+     "verts": 6192,
+     "mats": [
+      "rock_moss_set_01"
+     ]
+    },
+    {
+     "name": "rock_moss_set_01_rock03",
+     "tris": 5000,
+     "verts": 2741,
+     "mats": [
+      "rock_moss_set_01"
+     ]
+    },
+    {
+     "name": "rock_moss_set_01_rock04",
+     "tris": 10589,
+     "verts": 5691,
+     "mats": [
+      "rock_moss_set_01"
+     ]
+    },
+    {
+     "name": "rock_moss_set_01_rock05",
+     "tris": 16548,
+     "verts": 8538,
+     "mats": [
+      "rock_moss_set_01"
+     ]
+    },
+    {
+     "name": "rock_moss_set_01_rock06",
+     "tris": 8994,
+     "verts": 4748,
+     "mats": [
+      "rock_moss_set_01"
+     ]
+    }
+   ]
+  },
+  "M2": {
+   "size_m": [
+    8.005,
+    6.949,
+    1.768
+   ],
+   "surface_m2": 75.306,
+   "pivot_from_bottom_centre_m": [
+    -2.888,
+    1.773,
+    0.661
+   ],
+   "pivot_on_floor": false
+  },
+  "M3": {
+   "tris_per_m2_all": 838.3,
+   "thirds": [
+    {
+     "band": "low",
+     "tri_share": 0.473,
+     "area_share": 0.46,
+     "tris_per_m2": 862.1
+    },
+    {
+     "band": "mid",
+     "tri_share": 0.422,
+     "area_share": 0.416,
+     "tris_per_m2": 850.9
+    },
+    {
+     "band": "high",
+     "tri_share": 0.105,
+     "area_share": 0.124,
+     "tris_per_m2": 707.9
+    }
+   ],
+   "tri_area_cm2_p10_p50_p90": [
+    3.94,
+    9.76,
+    22.41
+   ]
+  },
+  "M4": {
+   "has_uv": true,
+   "uv_layers": 1,
+   "islands": 84,
+   "uv_area_sum": 0.4121,
+   "use_0_1": 0.412,
+   "overlap_ge3": 0.0001,
+   "loops_outside_0_1": 0.0
+  },
+  "M5": {
+   "px_per_m_from_ref": 303.0,
+   "ref_tex": "rock_moss_set_01_diff_4k.jpg",
+   "ref_wh": [
+    4096,
+    4096
+   ],
+   "px_per_m_at_1k_uv": 75.8,
+   "per_object": [
+    {
+     "name": "rock_moss_set_01_rock01",
+     "tris": 11000,
+     "area_m2": 16.359,
+     "uv_area": 0.0674,
+     "px_per_m_at_1k": 65.8,
+     "mats": [
+      "rock_moss_set_01"
+     ]
+    },
+    {
+     "name": "rock_moss_set_01_rock02",
+     "tris": 10996,
+     "area_m2": 12.913,
+     "uv_area": 0.0663,
+     "px_per_m_at_1k": 73.4,
+     "mats": [
+      "rock_moss_set_01"
+     ]
+    },
+    {
+     "name": "rock_moss_set_01_rock03",
+     "tris": 5000,
+     "area_m2": 10.888,
+     "uv_area": 0.083,
+     "px_per_m_at_1k": 89.4,
+     "mats": [
+      "rock_moss_set_01"
+     ]
+    },
+    {
+     "name": "rock_moss_set_01_rock04",
+     "tris": 10589,
+     "area_m2": 11.666,
+     "uv_area": 0.0625,
+     "px_per_m_at_1k": 75.0,
+     "mats": [
+      "rock_moss_set_01"
+     ]
+    },
+    {
+     "name": "rock_moss_set_01_rock05",
+     "tris": 16548,
+     "area_m2": 12.078,
+     "uv_area": 0.0663,
+     "px_per_m_at_1k": 75.8,
+     "mats": [
+      "rock_moss_set_01"
+     ]
+    },
+    {
+     "name": "rock_moss_set_01_rock06",
+     "tris": 8994,
+     "area_m2": 11.402,
+     "uv_area": 0.0666,
+     "px_per_m_at_1k": 78.2,
+     "mats": [
+      "rock_moss_set_01"
+     ]
+    }
+   ]
+  },
+  "M6": {
+   "albedo": {
+    "file": "rock_moss_set_01_diff_4k.jpg",
+    "w": 4096,
+    "h": 4096,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 2530683
+   },
+   "arm": {
+    "file": "rock_moss_set_01_rough_4k.jpg",
+    "w": 4096,
+    "h": 4096,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 1021159
+   },
+   "normal": {
+    "file": "rock_moss_set_01_nor_gl_4k.jpg",
+    "w": 4096,
+    "h": 4096,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 3168973
+   }
+  },
+  "M8": {
+   "silhouette_px_share": 0.1912,
+   "fill_of_own_bbox": 0.3649
+  },
+  "M6_sheet_order": [
+   "albedo",
+   "normal",
+   "arm"
+  ]
+ },
+ "ph_boulder_01": {
+  "source": "boulder_01.gltf",
+  "lod_measured": 0,
+  "M1": {
+   "lods": {
+    "0": {
+     "tris": 66122,
+     "verts": 67042,
+     "objects": 1
+    }
+   },
+   "objects_total": 1,
+   "materials_total": 1,
+   "object_list": [
+    {
+     "name": "boulder_01",
+     "tris": 66122,
+     "verts": 67042,
+     "mats": [
+      "boulder_01"
+     ]
+    }
+   ]
+  },
+  "M2": {
+   "size_m": [
+    1.272,
+    1.83,
+    1.004
+   ],
+   "surface_m2": 6.537,
+   "pivot_from_bottom_centre_m": [
+    0.112,
+    -0.033,
+    0.074
+   ],
+   "pivot_on_floor": false
+  },
+  "M3": {
+   "tris_per_m2_all": 10115.5,
+   "thirds": [
+    {
+     "band": "low",
+     "tri_share": 0.213,
+     "area_share": 0.399,
+     "tris_per_m2": 5382.4
+    },
+    {
+     "band": "mid",
+     "tri_share": 0.383,
+     "area_share": 0.337,
+     "tris_per_m2": 11507.9
+    },
+    {
+     "band": "high",
+     "tri_share": 0.404,
+     "area_share": 0.264,
+     "tris_per_m2": 15510.1
+    }
+   ],
+   "tri_area_cm2_p10_p50_p90": [
+    0.21,
+    0.59,
+    1.75
+   ]
+  },
+  "M4": {
+   "has_uv": true,
+   "uv_layers": 1,
+   "islands": 25538,
+   "uv_area_sum": 0.7622,
+   "use_0_1": 0.762,
+   "overlap_ge3": 0.0,
+   "loops_outside_0_1": 0.0
+  },
+  "M5": {
+   "px_per_m_from_ref": 1398.7,
+   "ref_tex": "boulder_01_diff_4k.jpg",
+   "ref_wh": [
+    4096,
+    4096
+   ],
+   "px_per_m_at_1k_uv": 349.7,
+   "per_object": [
+    {
+     "name": "boulder_01",
+     "tris": 66122,
+     "area_m2": 6.537,
+     "uv_area": 0.7622,
+     "px_per_m_at_1k": 349.7,
+     "mats": [
+      "boulder_01"
+     ]
+    }
+   ]
+  },
+  "M6": {
+   "albedo": {
+    "file": "boulder_01_diff_4k.jpg",
+    "w": 4096,
+    "h": 4096,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 13282817
+   },
+   "arm": {
+    "file": "boulder_01_arm_4k.jpg",
+    "w": 4096,
+    "h": 4096,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 7802675
+   },
+   "normal": {
+    "file": "boulder_01_nor_gl_4k.jpg",
+    "w": 4096,
+    "h": 4096,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 19220463
+   }
+  },
+  "M8": {
+   "silhouette_px_share": 0.1739,
+   "fill_of_own_bbox": 0.6689
+  },
+  "M6_sheet_order": [
+   "albedo",
+   "normal",
+   "arm"
+  ]
+ },
+ "our_Ancient_Tree_A": {
+  "source": "RF3_Ancient_Tree_A.fbx",
+  "lod_measured": 0,
+  "M1": {
+   "lods": {
+    "0": {
+     "tris": 19888,
+     "verts": 11699,
+     "objects": 1
+    }
+   },
+   "objects_total": 1,
+   "materials_total": 1,
+   "object_list": [
+    {
+     "name": "RF3_Ancient_Tree_A",
+     "tris": 19888,
+     "verts": 11699,
+     "mats": [
+      "RF3_Ancient_Tree_A_Baked"
+     ]
+    }
+   ]
+  },
+  "M2": {
+   "size_m": [
+    20.241,
+    19.182,
+    22.708
+   ],
+   "surface_m2": 401.678,
+   "pivot_from_bottom_centre_m": [
+    -0.518,
+    -1.407,
+    0.708
+   ],
+   "pivot_on_floor": false
+  },
+  "M3": {
+   "tris_per_m2_all": 49.5,
+   "thirds": [
+    {
+     "band": "low",
+     "tri_share": 0.304,
+     "area_share": 0.278,
+     "tris_per_m2": 54.2
+    },
+    {
+     "band": "mid",
+     "tri_share": 0.484,
+     "area_share": 0.525,
+     "tris_per_m2": 45.6
+    },
+    {
+     "band": "high",
+     "tri_share": 0.212,
+     "area_share": 0.197,
+     "tris_per_m2": 53.3
+    }
+   ],
+   "tri_area_cm2_p10_p50_p90": [
+    87.42,
+    176.94,
+    344.86
+   ]
+  },
+  "M4": {
+   "has_uv": true,
+   "uv_layers": 1,
+   "islands": 51,
+   "uv_area_sum": 0.6278,
+   "use_0_1": 0.628,
+   "overlap_ge3": 0.0,
+   "loops_outside_0_1": 0.0
+  },
+  "M5": {
+   "px_per_m_from_ref": 161.9,
+   "ref_tex": "RF3_Ancient_Tree_A_BaseColor.png",
+   "ref_wh": [
+    4096,
+    4096
+   ],
+   "px_per_m_at_1k_uv": 40.5,
+   "per_object": [
+    {
+     "name": "RF3_Ancient_Tree_A",
+     "tris": 19888,
+     "area_m2": 401.678,
+     "uv_area": 0.6278,
+     "px_per_m_at_1k": 40.5,
+     "mats": [
+      "RF3_Ancient_Tree_A_Baked"
+     ]
+    }
+   ]
+  },
+  "M6": {
+   "albedo": {
+    "file": "RF3_Ancient_Tree_A_BaseColor.png",
+    "w": 4096,
+    "h": 4096,
+    "channels": 4,
+    "depth": 32,
+    "bytes": 22408050
+   },
+   "normal": {
+    "file": "RF3_Ancient_Tree_A_Normal.png",
+    "w": 4096,
+    "h": 4096,
+    "channels": 4,
+    "depth": 32,
+    "bytes": 38163736
+   },
+   "rough": {
+    "file": "RF3_Ancient_Tree_A_MetallicSmoothness.png",
+    "w": 4096,
+    "h": 4096,
+    "channels": 4,
+    "depth": 32,
+    "bytes": 567849
+   },
+   "ao": {
+    "file": "RF3_Ancient_Tree_A_AO.png",
+    "w": 4096,
+    "h": 4096,
+    "channels": 4,
+    "depth": 32,
+    "bytes": 12929040
+   }
+  },
+  "M8": {
+   "silhouette_px_share": 0.0506,
+   "fill_of_own_bbox": 0.2294
+  },
+  "M6_sheet_order": [
+   "albedo",
+   "normal",
+   "rough",
+   "ao"
+  ]
+ },
+ "our_Hollow_Loft": {
+  "source": "A2_Hollow_Loft_Tree.fbx",
+  "lod_measured": 0,
+  "M1": {
+   "lods": {
+    "0": {
+     "tris": 26876,
+     "verts": 13510,
+     "objects": 1
+    }
+   },
+   "objects_total": 1,
+   "materials_total": 3,
+   "object_list": [
+    {
+     "name": "A2_Hollow_Loft_Tree",
+     "tris": 26876,
+     "verts": 13510,
+     "mats": [
+      "A2_Loft_Bark",
+      "A2_Loft_Inner",
+      "A2_Loft_Broken"
+     ]
+    }
+   ]
+  },
+  "M2": {
+   "size_m": [
+    9.908,
+    7.347,
+    18.514
+   ],
+   "surface_m2": 353.144,
+   "pivot_from_bottom_centre_m": [
+    -0.115,
+    -0.301,
+    0.018
+   ],
+   "pivot_on_floor": true
+  },
+  "M3": {
+   "tris_per_m2_all": 76.1,
+   "thirds": [
+    {
+     "band": "low",
+     "tri_share": 0.599,
+     "area_share": 0.484,
+     "tris_per_m2": 94.2
+    },
+    {
+     "band": "mid",
+     "tri_share": 0.213,
+     "area_share": 0.315,
+     "tris_per_m2": 51.4
+    },
+    {
+     "band": "high",
+     "tri_share": 0.188,
+     "area_share": 0.201,
+     "tris_per_m2": 71.2
+    }
+   ],
+   "tri_area_cm2_p10_p50_p90": [
+    60.12,
+    107.82,
+    217.53
+   ]
+  },
+  "M4": {
+   "has_uv": true,
+   "uv_layers": 1,
+   "islands": 11,
+   "uv_area_sum": 188.0964,
+   "use_0_1": 1.0,
+   "overlap_ge3": 1.0,
+   "loops_outside_0_1": 0.818
+  },
+  "M5": {
+   "px_per_m_from_ref": 1494.7,
+   "ref_tex": "bark_brown_02_Diffuse.jpg",
+   "ref_wh": [
+    2048,
+    2048
+   ],
+   "px_per_m_at_1k_uv": 747.3,
+   "per_object": [
+    {
+     "name": "A2_Hollow_Loft_Tree",
+     "tris": 26876,
+     "area_m2": 353.144,
+     "uv_area": 188.0964,
+     "px_per_m_at_1k": 747.3,
+     "mats": [
+      "A2_Loft_Bark",
+      "A2_Loft_Inner",
+      "A2_Loft_Broken"
+     ]
+    }
+   ]
+  },
+  "M6": {
+   "albedo": {
+    "file": "bark_brown_02_Diffuse.jpg",
+    "w": 2048,
+    "h": 2048,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 2356592
+   },
+   "normal": {
+    "file": "bark_brown_02_nor_gl.jpg",
+    "w": 2048,
+    "h": 2048,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 3707907
+   }
+  },
+  "M8": {
+   "silhouette_px_share": 0.0965,
+   "fill_of_own_bbox": 0.4
+  },
+  "M6_sheet_order": [
+   "albedo",
+   "normal"
+  ]
+ },
+ "our_Foreground_Log": {
+  "source": "A2_Scanned_Foreground_Log.fbx",
+  "lod_measured": 0,
+  "M1": {
+   "lods": {
+    "0": {
+     "tris": 45719,
+     "verts": 27064,
+     "objects": 1
+    }
+   },
+   "objects_total": 1,
+   "materials_total": 1,
+   "object_list": [
+    {
+     "name": "A2_Scanned_Foreground_Log",
+     "tris": 45719,
+     "verts": 27064,
+     "mats": [
+      "A2_Scanned_Foreground_Log"
+     ]
+    }
+   ]
+  },
+  "M2": {
+   "size_m": [
+    4.052,
+    1.056,
+    1.056
+   ],
+   "surface_m2": 6.018,
+   "pivot_from_bottom_centre_m": [
+    0.0,
+    -0.0,
+    0.0
+   ],
+   "pivot_on_floor": true
+  },
+  "M3": {
+   "tris_per_m2_all": 7596.8,
+   "thirds": [
+    {
+     "band": "low",
+     "tri_share": 0.05,
+     "area_share": 0.053,
+     "tris_per_m2": 7254.9
+    },
+    {
+     "band": "mid",
+     "tri_share": 0.443,
+     "area_share": 0.494,
+     "tris_per_m2": 6807.6
+    },
+    {
+     "band": "high",
+     "tri_share": 0.507,
+     "area_share": 0.453,
+     "tris_per_m2": 8496.4
+    }
+   ],
+   "tri_area_cm2_p10_p50_p90": [
+    0.24,
+    0.77,
+    2.98
+   ]
+  },
+  "M4": {
+   "has_uv": true,
+   "uv_layers": 1,
+   "islands": 158,
+   "uv_area_sum": 0.7574,
+   "use_0_1": 0.757,
+   "overlap_ge3": 0.0,
+   "loops_outside_0_1": 0.0
+  },
+  "M5": {
+   "px_per_m_from_ref": 726.5,
+   "ref_tex": "A2_Scanned_Foreground_Log_BaseColor.jpg",
+   "ref_wh": [
+    2048,
+    2048
+   ],
+   "px_per_m_at_1k_uv": 363.3,
+   "per_object": [
+    {
+     "name": "A2_Scanned_Foreground_Log",
+     "tris": 45719,
+     "area_m2": 6.018,
+     "uv_area": 0.7574,
+     "px_per_m_at_1k": 363.3,
+     "mats": [
+      "A2_Scanned_Foreground_Log"
+     ]
+    }
+   ]
+  },
+  "M6": {
+   "albedo": {
+    "file": "A2_Scanned_Foreground_Log_BaseColor.jpg",
+    "w": 2048,
+    "h": 2048,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 3484654
+   },
+   "normal": {
+    "file": "A2_Scanned_Foreground_Log_Normal.jpg",
+    "w": 2048,
+    "h": 2048,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 4920531
+   },
+   "arm": {
+    "file": "A2_Scanned_Foreground_Log_ARM.jpg",
+    "w": 2048,
+    "h": 2048,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 2968937
+   }
+  },
+  "M8": {
+   "silhouette_px_share": 0.0992,
+   "fill_of_own_bbox": 0.3356
+  },
+  "M6_sheet_order": [
+   "albedo",
+   "normal",
+   "arm"
+  ]
+ },
+ "our_Moss_Rock_1": {
+  "source": "RF3_Moss_Rock_1.fbx",
+  "lod_measured": 0,
+  "M1": {
+   "lods": {
+    "0": {
+     "tris": 8250,
+     "verts": 4698,
+     "objects": 1
+    }
+   },
+   "objects_total": 1,
+   "materials_total": 1,
+   "object_list": [
+    {
+     "name": "RF3_Moss_Rock_1",
+     "tris": 8250,
+     "verts": 4698,
+     "mats": [
+      "RF3_Moss_Rock_1_Baked"
+     ]
+    }
+   ]
+  },
+  "M2": {
+   "size_m": [
+    2.238,
+    3.369,
+    1.473
+   ],
+   "surface_m2": 16.344,
+   "pivot_from_bottom_centre_m": [
+    0.0,
+    -0.0,
+    -0.0
+   ],
+   "pivot_on_floor": true
+  },
+  "M3": {
+   "tris_per_m2_all": 504.8,
+   "thirds": [
+    {
+     "band": "low",
+     "tri_share": 0.39,
+     "area_share": 0.406,
+     "tris_per_m2": 485.1
+    },
+    {
+     "band": "mid",
+     "tri_share": 0.339,
+     "area_share": 0.358,
+     "tris_per_m2": 477.7
+    },
+    {
+     "band": "high",
+     "tri_share": 0.272,
+     "area_share": 0.237,
+     "tris_per_m2": 579.4
+    }
+   ],
+   "tri_area_cm2_p10_p50_p90": [
+    7.05,
+    16.36,
+    36.91
+   ]
+  },
+  "M4": {
+   "has_uv": true,
+   "uv_layers": 1,
+   "islands": 13,
+   "uv_area_sum": 0.0674,
+   "use_0_1": 0.067,
+   "overlap_ge3": 0.0001,
+   "loops_outside_0_1": 0.0
+  },
+  "M5": {
+   "px_per_m_from_ref": 131.6,
+   "ref_tex": "RF3_Moss_Rock_1_BaseColor.png",
+   "ref_wh": [
+    2048,
+    2048
+   ],
+   "px_per_m_at_1k_uv": 65.8,
+   "per_object": [
+    {
+     "name": "RF3_Moss_Rock_1",
+     "tris": 8250,
+     "area_m2": 16.344,
+     "uv_area": 0.0674,
+     "px_per_m_at_1k": 65.8,
+     "mats": [
+      "RF3_Moss_Rock_1_Baked"
+     ]
+    }
+   ]
+  },
+  "M6": {
+   "albedo": {
+    "file": "RF3_Moss_Rock_1_BaseColor.png",
+    "w": 2048,
+    "h": 2048,
+    "channels": 4,
+    "depth": 32,
+    "bytes": 635252
+   },
+   "normal": {
+    "file": "RF3_Moss_Rock_1_Normal.png",
+    "w": 2048,
+    "h": 2048,
+    "channels": 4,
+    "depth": 32,
+    "bytes": 764357
+   },
+   "rough": {
+    "file": "RF3_Moss_Rock_1_MetallicSmoothness.png",
+    "w": 2048,
+    "h": 2048,
+    "channels": 4,
+    "depth": 32,
+    "bytes": 308810
+   },
+   "ao": {
+    "file": "RF3_Moss_Rock_1_AO.png",
+    "w": 2048,
+    "h": 2048,
+    "channels": 4,
+    "depth": 32,
+    "bytes": 355546
+   }
+  },
+  "M8": {
+   "silhouette_px_share": 0.1875,
+   "fill_of_own_bbox": 0.6011
+  },
+  "M6_sheet_order": [
+   "albedo",
+   "normal",
+   "rough",
+   "ao"
+  ]
+ },
+ "our_Wood_Bridge": {
+  "source": "RF3_Rotten_Wood_Bridge.fbx",
+  "lod_measured": 0,
+  "M1": {
+   "lods": {
+    "0": {
+     "tris": 16938,
+     "verts": 8663,
+     "objects": 1
+    }
+   },
+   "objects_total": 1,
+   "materials_total": 1,
+   "object_list": [
+    {
+     "name": "RF3_Rotten_Wood_Bridge",
+     "tris": 16938,
+     "verts": 8663,
+     "mats": [
+      "RF3_Rotten_Wood_Bridge_Baked"
+     ]
+    }
+   ]
+  },
+  "M2": {
+   "size_m": [
+    4.699,
+    11.617,
+    2.786
+   ],
+   "surface_m2": 209.239,
+   "pivot_from_bottom_centre_m": [
+    0.009,
+    0.0,
+    0.806
+   ],
+   "pivot_on_floor": false
+  },
+  "M3": {
+   "tris_per_m2_all": 81.0,
+   "thirds": [
+    {
+     "band": "low",
+     "tri_share": 0.014,
+     "area_share": 0.154,
+     "tris_per_m2": 7.3
+    },
+    {
+     "band": "mid",
+     "tri_share": 0.654,
+     "area_share": 0.703,
+     "tris_per_m2": 75.3
+    },
+    {
+     "band": "high",
+     "tri_share": 0.332,
+     "area_share": 0.143,
+     "tris_per_m2": 188.6
+    }
+   ],
+   "tri_area_cm2_p10_p50_p90": [
+    10.78,
+    22.82,
+    278.63
+   ]
+  },
+  "M4": {
+   "has_uv": true,
+   "uv_layers": 1,
+   "islands": 1073,
+   "uv_area_sum": 0.0988,
+   "use_0_1": 0.099,
+   "overlap_ge3": 0.0004,
+   "loops_outside_0_1": 0.0
+  },
+  "M5": {
+   "px_per_m_from_ref": 44.5,
+   "ref_tex": "RF3_Rotten_Wood_Bridge_BaseColor.png",
+   "ref_wh": [
+    2048,
+    2048
+   ],
+   "px_per_m_at_1k_uv": 22.3,
+   "per_object": [
+    {
+     "name": "RF3_Rotten_Wood_Bridge",
+     "tris": 16938,
+     "area_m2": 209.239,
+     "uv_area": 0.0988,
+     "px_per_m_at_1k": 22.3,
+     "mats": [
+      "RF3_Rotten_Wood_Bridge_Baked"
+     ]
+    }
+   ]
+  },
+  "M6": {
+   "albedo": {
+    "file": "RF3_Rotten_Wood_Bridge_BaseColor.png",
+    "w": 2048,
+    "h": 2048,
+    "channels": 4,
+    "depth": 32,
+    "bytes": 3434487
+   },
+   "normal": {
+    "file": "RF3_Rotten_Wood_Bridge_Normal.png",
+    "w": 2048,
+    "h": 2048,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 2737314
+   },
+   "rough": {
+    "file": "RF3_Rotten_Wood_Bridge_MetallicSmoothness.png",
+    "w": 2048,
+    "h": 2048,
+    "channels": 4,
+    "depth": 32,
+    "bytes": 1032517
+   },
+   "ao": {
+    "file": "RF3_Rotten_Wood_Bridge_AO.png",
+    "w": 2048,
+    "h": 2048,
+    "channels": 4,
+    "depth": 24,
+    "bytes": 2050793
+   }
+  },
+  "M8": {
+   "silhouette_px_share": 0.243,
+   "fill_of_own_bbox": 0.4179
+  },
+  "M6_sheet_order": [
+   "albedo",
+   "normal",
+   "rough",
+   "ao"
+  ]
+ }
+}
