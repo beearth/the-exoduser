@@ -59,9 +59,12 @@ class Program
   var s=Make();var e=s.SpawnNormalEnemy(40,0);
   Check(e.Hp==875&&Near(e.Shield,875)&&e.Attack==31,"source lv1 etype0 HP875 shield875 attack31");
   Check(Near(e.Speed,.645)&&Near(e.Radius,22),"source .5 random movement/radius");
-  s.Tick(0,0,100,0,true,false);Check(s.Player.State=="wSwing"&&Near(s.Player.StateTicks,5)&&Near(s.Player.Stamina,95),"original swing5/cost5 admission");
-  s.Tick(0,0,100,0,false,false);Check(Near(e.Shield,875),"no premature hit tick2");
-  s.Tick(0,0,100,0,false,false);Check(Near(e.Shield,743)&&e.Hp==875,"original hit on frame3 JS132 damage shield first");
+  s.Tick(0,0,100,0,true,false);Check(s.Player.State=="wWindup"&&s.Player.BasicWindup&&!s.Player.KiChargeActive&&Near(s.Player.StateTicks,Simulation.BasicWindupTicks)&&Near(s.Player.Stamina,95),"D-MO-2 first strike winds up 6 ticks, cost5 paid at the input");
+  for(int i=0;i<5;i++){s.Tick(0,0,100,0,false,false);Check(s.Player.State=="wWindup"&&Near(e.Shield,875),"windup tick "+(i+2)+" keeps the state and does not hit");}
+  s.Tick(0,0,100,0,false,false);Check(s.Player.State=="wSwing"&&!s.Player.BasicWindup&&Near(s.Player.StateTicks,5),"windup tick 7 enters the original swing5");
+  s.Tick(0,0,100,0,false,false);Check(Near(e.Shield,875),"no premature hit on swing tick2");
+  s.Tick(0,0,100,0,false,false);Check(Near(e.Shield,743)&&e.Hp==875,"original hit on swing frame3 (input+9) JS132 damage shield first");
+  while(s.Player.State=="wSwing")s.Tick(0,0,100,0,false,false);Check(s.Player.State=="wRecover"&&Near(s.Player.StateTicks,s.AttackRecoverTicks())&&s.AttackRecoverTicks()==Math.Max(s.AttackRecoverBaseTicks()-6,4),"first-strike recover = max(base-6,4)");
   s=Make();s.Tick(1,1,100,0,false,false);Check(Near(s.Player.X,2.6/Math.Sqrt(2))&&Near(s.Player.Y,2.6/Math.Sqrt(2)),"diagonal normalization original2.6px");
   s=Make();s.CanMove=(x,y,r)=>x<=0;s.Tick(1,1,100,0,false,false);Check(Near(s.Player.X,0)&&Near(s.Player.Y,2.6/Math.Sqrt(2)),"wall collision axis slide");
   s=Make();e=s.SpawnNormalEnemy(40,0);s.HurtEnemy(e,875);Check(e.Hp==875&&Near(e.Shield,0)&&s.Kills==0,"shield depletion is not death");

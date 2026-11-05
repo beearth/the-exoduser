@@ -66,7 +66,7 @@ namespace Exoduser.UnityPort
                 }
                 check(hit, melee[w] + " LMB hit landed on the target at 30 px");
                 check(sim.TotalDamage - total0 == expected, melee[w] + " hit damage " + (sim.TotalDamage - total0) + " != web formula " + expected + " diag:" + diag);
-                int wantRecover = (int)(16 / ((sim.Config.WeaponSpeed != 0 ? sim.Config.WeaponSpeed : .3f) * sim.Config.AttackSpeedMultiplier));
+                int wantRecover = sim.AttackRecoverTicks();   // D-MO-2: the plain-weapon swing is a wound-up first strike, recover = max(base-6, 4)
                 check(Math.Abs(recoverTicks - wantRecover) <= 2, melee[w] + " recovery " + recoverTicks + " vs ~" + wantRecover);
                 rec.melee.Add(melee[w] + " atk " + item.atk + " spd " + item.spd + " range " + item.wRange + "+" + item.bonusRange + "*4 dmg " + (sim.TotalDamage - total0) + " swing@" + swingTicks + " recover " + recoverTicks);
             }
