@@ -1,3 +1,5 @@
+2026-11-05 M3 UV 후속(Codex): 원본4096²·면적82.038965m²/LOD0 81.626154m²로512px/m 최소4638²/4626² 계산,4096 초과라 재베이크0. 공식 Blender4.5 Minimum Stretch→Average Island Scale→Pack Islands1회 진단:2048 중앙65.2089→78.1665px/m,4096 환산156.3329,UV 면적합8.276→11.892%,RMS3.292422mm 변화0. 기존blend/FBX/베이크 불변,UDIM·낮춘목표는계산대안만,Git이미지0. docs/0마스터플랜/CLEAN_MAP/M3_ANCIENT_TREE_20261105.md.
+
 2026-11-05 M3 CTO 보정 추가: 핵심을 LOD3단·UV재배치·루트플레어 메시로 정정, 이끼전이·그림자는Unity단계제외. Decimate효과는21479→11999△(-44.14%) 수치로만기록. cloud TM의≤300△스커트제안은있으나현RF의Blender제작절차출처없어메시미제작. 아트팀3문서·영수증sync0f9277507·LC e3fd69f10 대조:RF개별원천/라이선스/바이트연결없어 미확인 → 교체 후보. 문서추가만,Blender/Unity·모델·텍스처변경0. docs/0마스터플랜/CLEAN_MAP/M3_ANCIENT_TREE_20261105.md.
 
 2026-11-05 M3 고목 Blender 가공 계측(Codex, 기준412bdee09): 입력72e104989 RF_Ancient_Rotten_Tree 실측21479△(지시19888과+1591), Collapse+Shrinkwrap·UV·Cycles베이크·LOD 수행. 최종11999/5999/2997△, 원본→결과 RMS3.292/7.442/31.875mm. FBX재수입에서삭제되던LOD2 중복면1개를동일검증으로정리,파일재확인7/7. UV2390섬·밀도중앙65.209px/m로목표512미달·원본보다낮음; 개선완료/채택판정없음. 거친원본형태가남아Git이미지0장,모델·텍스처는I:/EXODUSER-Storage/asset-teardown/clean-map/m3/에만보존. Unity·런타임·Core변경0. 상세: docs/0마스터플랜/CLEAN_MAP/M3_ANCIENT_TREE_20261105.md.
