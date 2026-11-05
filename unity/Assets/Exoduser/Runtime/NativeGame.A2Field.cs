@@ -79,6 +79,7 @@ namespace Exoduser.UnityPort
             A2FieldGroundCover();NativeTransitionProgress.Report("a2-ground-cover",.95f);yield return null;
             A2BridgeMoss();NativeTransitionProgress.Report("a2-bridge-moss",.97f);yield return null;
             A2FieldAtmosphere();NativeTransitionProgress.Report("a2-atmosphere",.99f);yield return null;
+            A2CleanApply();
             A2SightSetup();
             if(r3Cam==null)throw new InvalidOperationException("A2 field camera destroyed during assembly");   // Unity null: scene reclaimed while yielding
             var aa=r3Cam.GetUniversalAdditionalCameraData();aa.antialiasing=NativeHd2D.Enabled?AntialiasingMode.None:AntialiasingMode.SubpixelMorphologicalAntiAliasing;aa.antialiasingQuality=AntialiasingQuality.High;
@@ -244,6 +245,7 @@ namespace Exoduser.UnityPort
         }
         void A2FieldRegister(GameObject go,bool deck=false)
         {
+            if(A2CleanMode.Enabled&&!deck)return;   // switched-off props must not lift the actor height; Core walking is unaffected
             foreach(var mf in go.GetComponentsInChildren<MeshFilter>())
             {
                 if(NativeGroundSkillProjection.IsProxy(mf))continue;

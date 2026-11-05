@@ -18,21 +18,54 @@ Shader "EXODUSER/HellGroundPBR"
    #pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
    #pragma multi_compile_fragment _ _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3
    #pragma multi_compile_fog
+   #pragma multi_compile_local_fragment _ _A2_GROUND_M1A
+   #pragma multi_compile_local _ _A2_DBG_NORMAL _A2_DBG_VCOLOR _A2_DBG_SH _A2_DBG_FLAT _A2_DBG_ALBEDO
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DBuffer.hlsl"
-   TEXTURE2D(_BaseMap);SAMPLER(sampler_BaseMap);TEXTURE2D(_BumpMap);SAMPLER(sampler_BumpMap);
-   TEXTURE2D(_RockMap);SAMPLER(sampler_RockMap);TEXTURE2D(_AshMap);SAMPLER(sampler_AshMap);
-   TEXTURE2D(_RockNormal);SAMPLER(sampler_RockNormal);TEXTURE2D(_RockRough);SAMPLER(sampler_RockRough);
-   TEXTURE2D(_ForestMap);SAMPLER(sampler_ForestMap);TEXTURE2D(_ForestNormal);SAMPLER(sampler_ForestNormal);TEXTURE2D(_ForestRough);SAMPLER(sampler_ForestRough);
+   // Trial variants drop some texture samples, and a texture sampler then fails to compile. They share one inline sampler; the default variant is unchanged.
+   #if defined(_A2_GROUND_M1A)||defined(_A2_DBG_NORMAL)||defined(_A2_DBG_VCOLOR)||defined(_A2_DBG_SH)||defined(_A2_DBG_FLAT)||defined(_A2_DBG_ALBEDO)
+   SAMPLER(sampler_TrilinearRepeatAniso8);
+   #define A2_SAMPLER(x)
+   #define sampler_AshMap sampler_TrilinearRepeatAniso8
+   #define sampler_BaseMap sampler_TrilinearRepeatAniso8
+   #define sampler_BumpMap sampler_TrilinearRepeatAniso8
+   #define sampler_FieldCover sampler_TrilinearRepeatAniso8
+   #define sampler_FieldSdf sampler_TrilinearRepeatAniso8
+   #define sampler_ForestMap sampler_TrilinearRepeatAniso8
+   #define sampler_ForestNormal sampler_TrilinearRepeatAniso8
+   #define sampler_ForestRough sampler_TrilinearRepeatAniso8
+   #define sampler_RockMap sampler_TrilinearRepeatAniso8
+   #define sampler_RockNormal sampler_TrilinearRepeatAniso8
+   #define sampler_RockRough sampler_TrilinearRepeatAniso8
+   #define sampler_SoilMap sampler_TrilinearRepeatAniso8
+   #else
+   #define A2_SAMPLER(x) SAMPLER(x)
+   #endif
+   TEXTURE2D(_BaseMap);A2_SAMPLER(sampler_BaseMap);TEXTURE2D(_BumpMap);A2_SAMPLER(sampler_BumpMap);
+   TEXTURE2D(_RockMap);A2_SAMPLER(sampler_RockMap);TEXTURE2D(_AshMap);A2_SAMPLER(sampler_AshMap);
+   TEXTURE2D(_RockNormal);A2_SAMPLER(sampler_RockNormal);TEXTURE2D(_RockRough);A2_SAMPLER(sampler_RockRough);
+   TEXTURE2D(_ForestMap);A2_SAMPLER(sampler_ForestMap);TEXTURE2D(_ForestNormal);A2_SAMPLER(sampler_ForestNormal);TEXTURE2D(_ForestRough);A2_SAMPLER(sampler_ForestRough);
    TEXTURE2D(_SoilMap);TEXTURE2D(_SoilNormal);TEXTURE2D(_SoilRough);TEXTURE2D(_RootMap);TEXTURE2D(_RootNormal);TEXTURE2D(_RootRough);
-   TEXTURE2D(_FieldCover);SAMPLER(sampler_FieldCover);TEXTURE2D(_FieldSdf);SAMPLER(sampler_FieldSdf);TEXTURE2D(_FieldMoss);TEXTURE2D(_FieldMossNormal);TEXTURE2D(_FieldMossRough);
+   TEXTURE2D(_FieldCover);A2_SAMPLER(sampler_FieldCover);TEXTURE2D(_FieldSdf);A2_SAMPLER(sampler_FieldSdf);TEXTURE2D(_FieldMoss);TEXTURE2D(_FieldMossNormal);TEXTURE2D(_FieldMossRough);
    CBUFFER_START(UnityPerMaterial)
    float4 _BaseMap_ST;half4 _BaseColor;half _Cutoff,_Smoothness,_Metallic,_ForestBlend,_ForestTextureMix,_SoilTextureMix,_FullField;
    CBUFFER_END
-   struct A {float4 positionOS:POSITION;float3 normalOS:NORMAL;float4 tangentOS:TANGENT;float2 uv:TEXCOORD0;};
-   struct V {float4 positionCS:SV_POSITION;float3 world:TEXCOORD0;float3 normal:TEXCOORD1;float4 tangent:TEXCOORD2;float2 uv:TEXCOORD3;half fog:TEXCOORD4;};
-   V vert(A v){V o;o.world=TransformObjectToWorld(v.positionOS.xyz);o.positionCS=TransformWorldToHClip(o.world);o.normal=TransformObjectToWorldNormal(v.normalOS);o.tangent=float4(TransformObjectToWorldDir(v.tangentOS.xyz),v.tangentOS.w*GetOddNegativeScale());o.uv=v.uv;o.fog=ComputeFogFactor(o.positionCS.z);return o;}
+   struct A {float4 positionOS:POSITION;float3 normalOS:NORMAL;float4 tangentOS:TANGENT;float2 uv:TEXCOORD0;
+   #ifdef _A2_DBG_VCOLOR
+   float4 color:COLOR;
+   #endif
+   };
+   struct V {float4 positionCS:SV_POSITION;float3 world:TEXCOORD0;float3 normal:TEXCOORD1;float4 tangent:TEXCOORD2;float2 uv:TEXCOORD3;half fog:TEXCOORD4;
+   #ifdef _A2_DBG_VCOLOR
+   float4 color:TEXCOORD5;
+   #endif
+   };
+   V vert(A v){V o;o.world=TransformObjectToWorld(v.positionOS.xyz);o.positionCS=TransformWorldToHClip(o.world);o.normal=TransformObjectToWorldNormal(v.normalOS);o.tangent=float4(TransformObjectToWorldDir(v.tangentOS.xyz),v.tangentOS.w*GetOddNegativeScale());o.uv=v.uv;o.fog=ComputeFogFactor(o.positionCS.z);
+   #ifdef _A2_DBG_VCOLOR
+   o.color=v.color;
+   #endif
+   return o;}
    half4 frag(V i):SV_Target
    {
     float2 tile=i.world.xz/6;float sweep=smoothstep(0,1,(sin(i.world.x*.7+i.world.z*.29)+sin(i.world.z*.51-i.world.x*.17)+2)*.25);
@@ -81,6 +114,27 @@ Shader "EXODUSER/HellGroundPBR"
      input.normalWS=normalize(mul(nt,float3x3(t,b,n)));
      a*=lerp(.8,1.12,macro);
     }
+    #ifdef _A2_GROUND_M1A
+    // BRIEF_CLEAN_MAP M1a: forest_ground_04 real size 3.2m / 1.152m per u = 2.78u, source colour with no tint.
+    {
+     float2 cleanUV=i.world.xz/2.78;
+     mossMix=0;
+     a=SAMPLE_TEXTURE2D(_SoilMap,sampler_SoilMap,cleanUV).rgb;
+     nt=UnpackNormalScale(SAMPLE_TEXTURE2D(_SoilNormal,sampler_SoilMap,cleanUV),.65);
+     input.normalWS=normalize(mul(nt,float3x3(t,b,n)));
+    }
+    #endif
+    #if defined(_A2_DBG_NORMAL)
+    return half4(n*.5+.5,1);
+    #elif defined(_A2_DBG_VCOLOR)
+    return half4(i.color.rgb,1);
+    #elif defined(_A2_DBG_SH)
+    return half4(SampleSH(input.normalWS),1);
+    #elif defined(_A2_DBG_ALBEDO)
+    return half4(a,1);
+    #elif defined(_A2_DBG_FLAT)
+    input.bakedGI=half3(.2,.2,.2);
+    #endif
     SurfaceData surface=(SurfaceData)0;surface.albedo=a;surface.alpha=1;surface.occlusion=1;surface.normalTS=nt;surface.specular=.04;
     half rough=SAMPLE_TEXTURE2D(_RockRough,sampler_RockRough,tile).r;surface.smoothness=lerp(.24,.50-.25*rough,rock);surface.metallic=0;
     surface.smoothness=lerp(surface.smoothness,.36-.16*rough,_ForestBlend);
@@ -89,9 +143,14 @@ Shader "EXODUSER/HellGroundPBR"
     half leafRough=SAMPLE_TEXTURE2D(_ForestRough,sampler_ForestRough,leafUV).r;surface.smoothness=lerp(surface.smoothness,.12+.18*(1-leafRough),leafMix);
     surface.smoothness=lerp(surface.smoothness,.22+.23*(1-SAMPLE_TEXTURE2D(_FieldMossRough,sampler_ForestRough,i.world.xz/2.6).r),mossMix);
     if(_FullField>.5)surface.smoothness=lerp(.44-.24*SAMPLE_TEXTURE2D(_SoilRough,sampler_ForestMap,i.world.xz/2.3).r,.24+.18*(1-SAMPLE_TEXTURE2D(_FieldMossRough,sampler_ForestMap,i.world.xz/2.6).r),mossMix);
+    #ifdef _A2_GROUND_M1A
+    surface.smoothness=.44-.24*SAMPLE_TEXTURE2D(_SoilRough,sampler_SoilMap,i.world.xz/2.78).r;
+    #endif
     #if defined(_DBUFFER)
     ApplyDecalToSurfaceData(i.positionCS,surface,input);
+    #ifndef _A2_DBG_FLAT
     input.bakedGI=SampleSH(input.normalWS);
+    #endif
     #endif
     half4 color=UniversalFragmentPBR(input,surface);color.rgb=MixFog(color.rgb,i.fog);return color;
    }
