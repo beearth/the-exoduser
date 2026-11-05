@@ -27,6 +27,13 @@ namespace Exoduser.UnityPort{public sealed partial class NativeGame{
   // T pose avatar built at runtime: AvatarBuilder.BuildHumanAvatar with the arms aimed sideways; the imported avatar's reference is the A pose bind
   void Aim(HumanBodyBones from,HumanBodyBones to,Vector3 dir){var a=an.GetBoneTransform(from);var c=an.GetBoneTransform(to);a.rotation=Quaternion.FromToRotation((c.position-a.position).normalized,dir)*a.rotation;}
   var human=new List<HumanBone>();foreach(HumanBodyBones b in Enum.GetValues(typeof(HumanBodyBones))){if(b==HumanBodyBones.LastBone)continue;var t=an.GetBoneTransform(b);if(t==null)continue;var hb=new HumanBone{humanName=HumanTrait.BoneName[(int)b],boneName=t.name};hb.limit.useDefaultValues=true;human.Add(hb);}
+  float LeanOf(Animator m,Transform root){var h=m.GetBoneTransform(HumanBodyBones.Hips).position;var c=m.GetBoneTransform(HumanBodyBones.Head).position;var v=root.InverseTransformDirection(c-h);return Mathf.Atan2(v.z,v.y)*Mathf.Rad2Deg;}
+  log.Append("c3 bind lean=").Append(LeanOf(an,go.transform).ToString("F1")).Append('\n');
+  if(Array.IndexOf(Environment.GetCommandLineArgs(),"--local-mx-bindspine")<0){
+   foreach(var pair in new[]{(HumanBodyBones.Hips,HumanBodyBones.Spine),(HumanBodyBones.Spine,HumanBodyBones.Chest),(HumanBodyBones.Chest,HumanBodyBones.UpperChest),(HumanBodyBones.UpperChest,HumanBodyBones.Neck),(HumanBodyBones.Neck,HumanBodyBones.Head)})if(an.GetBoneTransform(pair.Item1)!=null&&an.GetBoneTransform(pair.Item2)!=null)Aim(pair.Item1,pair.Item2,Vector3.up);
+   foreach(var pair in new[]{(HumanBodyBones.LeftUpperLeg,HumanBodyBones.LeftLowerLeg),(HumanBodyBones.LeftLowerLeg,HumanBodyBones.LeftFoot),(HumanBodyBones.RightUpperLeg,HumanBodyBones.RightLowerLeg),(HumanBodyBones.RightLowerLeg,HumanBodyBones.RightFoot)})Aim(pair.Item1,pair.Item2,Vector3.down);
+  }
+  log.Append("c3 T lean=").Append(LeanOf(an,go.transform).ToString("F1")).Append('\n');
   Aim(HumanBodyBones.LeftUpperArm,HumanBodyBones.LeftLowerArm,Vector3.left);Aim(HumanBodyBones.LeftLowerArm,HumanBodyBones.LeftHand,Vector3.left);Aim(HumanBodyBones.RightUpperArm,HumanBodyBones.RightLowerArm,Vector3.right);Aim(HumanBodyBones.RightLowerArm,HumanBodyBones.RightHand,Vector3.right);
   var skel=go.GetComponentsInChildren<Transform>(true).Select(t=>new SkeletonBone{name=t.name,position=t.localPosition,rotation=t.localRotation,scale=t.localScale}).ToArray();
   var hd=new HumanDescription{human=human.ToArray(),skeleton=skel,upperArmTwist=.5f,lowerArmTwist=.5f,upperLegTwist=.5f,lowerLegTwist=.5f,armStretch=.05f,legStretch=.05f,feetSpacing=0,hasTranslationDoF=false};
@@ -39,7 +46,7 @@ namespace Exoduser.UnityPort{public sealed partial class NativeGame{
   var hx=new HumanPoseHandler(xav,x.transform);var hc=new HumanPoseHandler(av,go.transform);var hp=new HumanPose();hx.GetHumanPose(ref hp);
   log.Append("xbot T muscle maxAbs=").Append(hp.muscles.Max(Mathf.Abs).ToString("F3")).Append('\n');{var q=new HumanPose();hc.GetHumanPose(ref q);log.Append("c3 T muscle maxAbs=").Append(q.muscles.Max(Mathf.Abs).ToString("F3")).Append('\n');}
   AnimationClip Clip(string n){var k=Resources.LoadAll<AnimationClip>("LocalMx/"+n).FirstOrDefault(c=>!c.name.Contains("__preview__"));log.Append("clip ").Append(n).Append(' ').Append(k!=null?k.name+" len="+k.length.ToString("F3")+" fr="+k.frameRate+" legacy="+k.legacy+" human="+k.humanMotion:"NULL").Append('\n');return k;}
-  var cIdle=Clip("idle_61f");var cWalk=Clip("walk_inplace_42f");var attackArg=Argument("--local-mx-attack")??"slash_downward_39f:16:39";var aParts=attackArg.Split(':');var cAtk=Clip(aParts[0]);int P=int.Parse(aParts[1]),N=int.Parse(aParts[2]);Flush();
+  var cIdle=Clip("idle_61f");var cWalk=Clip("run_inplace");int walkFrames=Mathf.RoundToInt(cWalk.length*30);var attackArg=Argument("--local-mx-attack")??"slash_downward_39f:20:13:38:33";var aParts=attackArg.Split(':');var cAtk=Clip(aParts[0]);float P=float.Parse(aParts[1]),preF=float.Parse(aParts[2]),N=float.Parse(aParts[3])+1;int blendFrom=int.Parse(aParts[4]);Flush();
   if(cIdle==null||cWalk==null||cAtk==null){log.Append("NO_CLIP\n");Flush();Application.Quit(3);yield break;}
   var sIdle=new MxSampler(x,cIdle);
   HumanPose Read(MxSampler m,float f){m.At(f);var q=new HumanPose();hx.GetHumanPose(ref q);return q;}
@@ -54,7 +61,7 @@ namespace Exoduser.UnityPort{public sealed partial class NativeGame{
   var sa=Instantiate(Resources.Load<GameObject>("LocalC3/S_SetA"));int miss=0;foreach(var r in sa.GetComponentsInChildren<SkinnedMeshRenderer>(true)){var nb=new Transform[r.bones.Length];for(int i=0;i<nb.Length;i++)if(r.bones[i]==null||!bones.TryGetValue(r.bones[i].name,out nb[i]))miss++;r.bones=nb;if(r.rootBone!=null&&bones.TryGetValue(r.rootBone.name,out var rb))r.rootBone=rb;r.transform.SetParent(go.transform,false);}Destroy(sa);log.Append("armour missingBones=").Append(miss).Append('\n');
   var hide=new HashSet<string>(cover.Values.SelectMany(v=>v));
   var sh=Shader.Find("Universal Render Pipeline/Lit");Material M(Color c,float me,float smo){var m=new Material(sh);m.color=c;m.SetFloat("_Metallic",me);m.SetFloat("_Smoothness",smo);return m;}
-  var clay=M(new Color(.46f,.43f,.41f),0,.38f);var ia=M(new Color(.055f,.055f,.06f),.85f,.58f);var st_=M(new Color(.5f,.52f,.55f),.9f,.65f);
+  var clay=M(new Color(.46f,.43f,.41f),0,.38f);var ia=M(new Color(.055f,.055f,.06f),.85f,.58f);var st_=M(new Color(.5f,.52f,.55f),.55f,.35f);
   foreach(var r in go.GetComponentsInChildren<SkinnedMeshRenderer>(true)){r.updateWhenOffscreen=true;r.sharedMaterial=r.name.StartsWith("A_")?ia:clay;if(r.name.StartsWith("Body_")&&hide.Contains(r.name.Substring(5)))r.enabled=false;}
   go.transform.localScale=Vector3.one*sc;
   var heroPos=rig?heroView.Model.transform.parent.position:NativeRemodel3D.Point(p.X,p.Y);go.transform.position=heroPos;
@@ -70,11 +77,12 @@ namespace Exoduser.UnityPort{public sealed partial class NativeGame{
   Flush();
   // walk playback rate from stance foot speed against the Core ground speed
   Use(cWalk);float xLeg=0;{var q=Read(cur,0);xLeg=xh[HumanBodyBones.Hips].position.y-x.transform.position.y;}
-  float best=0;var pv=xh[HumanBodyBones.LeftFoot].position;for(int i=1;i<42;i++){cur.At(i);var v=xh[HumanBodyBones.LeftFoot].position;if(v.y-x.transform.position.y<.16f*xLeg)best=Mathf.Max(best,Mathf.Abs(v.z-pv.z)*30f);pv=v;}
+  float best=0;var pv=xh[HumanBodyBones.LeftFoot].position;for(int i=1;i<walkFrames;i++){cur.At(i);var v=xh[HumanBodyBones.LeftFoot].position;if(v.y-x.transform.position.y<.16f*xLeg)best=Mathf.Max(best,Mathf.Abs(v.z-pv.z)*30f);pv=v;}
   var hipC=an.GetBoneTransform(HumanBodyBones.Hips);float c3Leg=hipC.position.y-heroPos.y;float clipSpeed=best*(c3Leg/Mathf.Max(.001f,xLeg));var a0=NativeRemodel3D.Point(p.X,p.Y);var a1=NativeRemodel3D.Point(p.X+2.72f*60,p.Y);float coreSpeed=(a1-a0).magnitude;float walkRate=coreSpeed/Mathf.Max(.01f,clipSpeed);log.Append("xLeg=").Append(xLeg.ToString("F3")).Append(" c3Leg=").Append(c3Leg.ToString("F3")).Append(" stanceClip=").Append(clipSpeed.ToString("F3")).Append("u/s core=").Append(coreSpeed.ToString("F3")).Append("u/s walkRate=").Append(walkRate.ToString("F3")).Append('\n');Flush();
   var kb=InputSystem.AddDevice<Keyboard>();var ms0=InputSystem.AddDevice<Mouse>();
   void Tick(List<Key> keys,bool lmb,float aimX,float aimY){p.Iframes=100000;p.Hp=p.MaxHp;p.Stamina=p.MaxStamina;p.Mana=p.MaxMana;kb.MakeCurrent();ms0.MakeCurrent();InputState.Change(kb,new KeyboardState(keys.ToArray()));var ap=NativeRemodel3D.Point(p.X+aimX,p.Y+aimY);if(NativeRemodel3D.Active)ap.y=NativeRemodel3D.Point(p.X,p.Y).y;var scr=HudCamera.WorldToScreenPoint(ap);var ms=new MouseState{position=new Vector2(scr.x,scr.y)};if(lmb)ms=ms.WithButton(MouseButton.Left,true);InputState.Change(ms0,ms);Running=true;FixedUpdate();Running=false;UpdateViews();}
-  float pre=P*2f/3f,follow=P+1.5f;float TickToFrame(int t){if(t<=6)return Mathf.Lerp(pre,P-1,t/6f);if(t<=8)return Mathf.Lerp(P-1,P,(t-6)/2f);if(t<=11)return Mathf.Lerp(P,follow,(t-8)/3f);return Mathf.Lerp(follow,N-1,(t-11)/28f);}
+  float pre=preF,follow=P+1.5f;log.Append("rates pre=").Append(((P-1-pre)*2/6f).ToString("F2")).Append(" recover=").Append(((N-1-follow)*2/28f).ToString("F2")).Append('\n');float TickToFrame(int t){if(t<=6)return Mathf.Lerp(pre,P-1,t/6f);if(t<=8)return Mathf.Lerp(P-1,P,(t-6)/2f);if(t<=11)return Mathf.Lerp(P,follow,(t-8)/3f);return Mathf.Lerp(follow,N-1,(t-11)/28f);}
+  var mx=new StringBuilder("clip,f,atkTick,src,handOverShoulder,bladeDeg,bladeFwd\n");
   var tl=new StringBuilder("clip,f,tick,state,st,atkTick,srcFrame,yaw,hipY\n");
   foreach(var name in (Argument("--local-mx-only")??"idle,walk,attack").Split(',')){
    string dir=Path.Combine(output,name);Directory.CreateDirectory(dir);Time.captureFramerate=60;float x0=p.X,y0=p.Y;float phase=0;
@@ -87,15 +95,16 @@ namespace Exoduser.UnityPort{public sealed partial class NativeGame{
     var fd=NativeRemodel3D.Point(p.X+Mathf.Cos(p.Facing)*100,p.Y+Mathf.Sin(p.Facing)*100)-NativeRemodel3D.Point(p.X,p.Y);yaw=Mathf.Atan2(fd.x,fd.z)*Mathf.Rad2Deg;
     int atkTick=-1;HumanPose pose;float srcF=-1;
     if(p.State=="wWindup")atkTick=6-Mathf.RoundToInt(p.StateTicks);else if(p.State=="wSwing")atkTick=11-Mathf.RoundToInt(p.StateTicks);else if(p.State=="wRecover")atkTick=39-Mathf.RoundToInt(p.StateTicks);
-    if(name=="walk"){if(keys.Count>0)phase+=walkRate*.5f;var q=Read(Use(cWalk),phase%41f);q.bodyPosition.x=hpI.bodyPosition.x;q.bodyPosition.z=hpI.bodyPosition.z;pose=q;}
-    else if(atkTick>=0){srcF=TickToFrame(atkTick);var q=Read(Use(cAtk),srcF);var idleQ=Read(Use(cIdle),f%60);if(atkTick<2)q=Mix(idleQ,Read(Use(cAtk),srcF),(atkTick+1)/3f);else if(atkTick>=33){q=Read(Use(cAtk),srcF);q=Mix(q,idleQ,(atkTick-32)/7f);}else q=Read(Use(cAtk),srcF);pose=q;}
+    if(name=="walk"){if(keys.Count>0)phase+=walkRate*.5f;var q=Read(Use(cWalk),phase%(walkFrames-1));q.bodyPosition.x=hpI.bodyPosition.x;q.bodyPosition.z=hpI.bodyPosition.z;pose=q;}
+    else if(atkTick>=0){srcF=TickToFrame(atkTick);var q=Read(Use(cAtk),srcF);var idleQ=Read(Use(cIdle),f%60);if(atkTick<2)q=Mix(idleQ,Read(Use(cAtk),srcF),(atkTick+1)/3f);else if(atkTick>=blendFrom){q=Read(Use(cAtk),srcF);q=Mix(q,idleQ,(atkTick-blendFrom+1f)/(39f-blendFrom));}else q=Read(Use(cAtk),srcF);q.bodyPosition.x=hpI.bodyPosition.x;q.bodyPosition.z=hpI.bodyPosition.z;pose=q;}
     else pose=Read(Use(cIdle),f%60);
     hc.SetHumanPose(ref pose);go.transform.SetPositionAndRotation(new Vector3(pos.x,pos.y+groundOff,pos.z),Quaternion.Euler(0,yaw,0));
     yield return new WaitForEndOfFrame();
     var tex=ScreenCapture.CaptureScreenshotAsTexture();File.WriteAllBytes(Path.Combine(dir,"f"+f.ToString("0000")+".jpg"),tex.EncodeToJPG(92));Destroy(tex);
+    { var hipW=an.GetBoneTransform(HumanBodyBones.Hips).position.y;var shoY=an.GetBoneTransform(HumanBodyBones.RightUpperArm).position.y;var handY=an.GetBoneTransform(HumanBodyBones.RightHand).position.y;var bladeDir=mf.transform.TransformDirection(ax*sign).normalized;var fw=go.transform.InverseTransformDirection(bladeDir);mx.Append(name).Append(',').Append(f).Append(',').Append(atkTick).Append(',').Append(srcF.ToString("F1")).Append(',').Append(((handY-hipW)/Mathf.Max(.001f,shoY-hipW)).ToString("F2")).Append(',').Append((Mathf.Asin(Mathf.Clamp(bladeDir.y,-1,1))*Mathf.Rad2Deg).ToString("F0")).Append(',').Append(fw.z.ToString("F2")).Append('\n'); }
     tl.Append(name).Append(',').Append(f).Append(',').Append(s.TickCount).Append(',').Append(p.State).Append(',').Append(p.StateTicks).Append(',').Append(atkTick).Append(',').Append(srcF.ToString("F2")).Append(',').Append(yaw.ToString("F1")).Append(',').Append(hipC.position.y.ToString("F3")).Append('\n');
    }
-   p.X=x0;p.Y=y0;Time.captureFramerate=0;File.WriteAllText(Path.Combine(output,"motion-log.csv"),tl.ToString());
+   p.X=x0;p.Y=y0;Time.captureFramerate=0;File.WriteAllText(Path.Combine(output,"motion-log.csv"),tl.ToString());File.WriteAllText(Path.Combine(output,"metrics.csv"),mx.ToString());
    InputState.Change(kb,new KeyboardState());for(int i=0;i<20;i++){Running=true;FixedUpdate();Running=false;UpdateViews();yield return null;}
   }
   log.Append("DONE\n");Flush();Application.Quit(0);
