@@ -58,7 +58,9 @@ Core에서 `Player.State = "wSwing"`를 대입하는 곳은 `Runtime/Core/Simula
 | player-hurt-oracle | `Tools/player-hurt-oracle` | 상태 손 대입 + `HurtPlayer`만 호출(Tick 없음) | 동일 | 변경 없음 |
 | roll/dash-parry/feedback/stage-flow/skill-ui oracle | 각 Program/export | 상태 손 대입(`wWindup`은 모두 `KiChargeActive=true`) | 동일 | 변경 없음 |
 | gameplay-parity export-movement | `Tools/gameplay-parity/export-movement.cjs:16` | 상태별 이동 배율(wRecover .8 등) | 예비 중 이동 .8은 swing과 같은 `MovePlayer(.8)` 분기 | 변경 없음 |
+| **first-practice**(조사 누락, PC 스윕에서 발견) | `Tools/first-practice/Program.cs:39-40` | 공격 입력 틱 뒤 `Wait(s,3)`에 레슨 더미 처치(접점 입력+2 + 여유 1) | 접점 입력+9(=6 예비 +1 swing 진입 +2 st2→3) → `Wait(s,Simulation.BasicWindupTicks+3)`(여유 1 유지), 식을 주석에 기록 | 기대값 갱신(후속 커밋). **누락 사유:** 위 전수 검색이 상태 문자열(`wSwing`·`wRecover`·`wWindup`)만 찾았고, 이 하네스는 상태를 보지 않고 틱 수(`Wait(s,3)`)로만 접점을 기대해 검색에 걸리지 않았다. 교훈: 공격 틱을 바꾸면 `Tick(s,true)` 뒤 고정 `Wait(n)`을 쓰는 하네스도 찾아야 한다(`git grep "Tick(s,true);Wait"` 등) |
 
+- **PC 검증(CTO 전달, 8c01c0e30 기준):** 컴파일 오류 0, Core(Tools/Tests) 43/0, ki-slash-oracle 94/0(부모 93/0 + 이 레인 검사 1), oracle-sweep 전후 비교 새 FAIL 1건 = 위 first-practice(PC 임시 진단 `Wait(s,9)`로 FIRST PRACTICE 88/0). 전후 동일한 기존 FAIL(enemy-tables `STG[33].bn`, skill-ui source slot order, PoiseTests 2건)은 CW 변경과 무관해 기록만 하고 고치지 않는다(각 소유 레인 몫, oracle-triage_20261104 #9·#10 참조).
 - 웹 oracle "허용 목록": 기본 공격 틱 타이밍을 웹 실행 결과와 직접 대조하는 oracle은 없다(위 표). 의도된 차이는 `BASIC_ATTACK_DAMAGE_20260910.md` 하단 표와 CHANGELOG_SYNC에 기록한다. 이후 공격 틱 oracle을 만들면 "idle→wWindup 6 → wSwing"만 허용하고 나머지 불일치는 FAIL이다.
 
 ## 4. 적 AI의 플레이어 공격 예측
