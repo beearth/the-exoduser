@@ -18,16 +18,31 @@ const edge=new Function('r','_Diameter','saturate','return '+edgeExpression[1]+'
 for(const diameter of [156,175])for(let i=0;i<=100;i++){
  const r=(.5-1/diameter)*i/100;check(edge(r,diameter,sat)===1,'GPU alpha expression is exactly one throughout the interior');
 }check(edge(.5,156,sat)===.5&&edge(.5+1/156,156,sat)===0,'only circle perimeter/outside retains AA/transparency');
-// Gamma compilation removes Unity-only color conversion calls. A minimal vertex-output struct
-// replaces UnityCG; the production fragment and helpers below are otherwise compiled unchanged.
+// Use the project's installed Unity 6000.6.7f1 includes in both color-space branches.
+// This is an explicit SM5/D3D11 offline fixture, not Unity's target selection or Metal output.
 const out=path.join(root,'unity/Library/HudProtoTests');fs.mkdirSync(out,{recursive:true});
-const hlsl='struct v2f_img { float4 pos:SV_POSITION; float2 uv:TEXCOORD0; };\n'+shader.split('CGPROGRAM')[1].split('ENDCG')[0].replace(/^\s*#pragma.*$/gm,'').replace(/^\s*#include.*$/gm,'');
-const input=path.join(out,'H8-contract.hlsl'),binary=path.join(out,'H8-contract.dxbc'),assembly=path.join(out,'H8-contract.asm');fs.writeFileSync(input,hlsl);
+const hlsl=shader.split('CGPROGRAM')[1].split('ENDCG')[0].replace(/^\s*#pragma.*$/gm,'');
+const input=path.join(out,'H8-contract.hlsl');fs.writeFileSync(input,hlsl);
 const compiler=process.env.EXO_FXC||'C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/fxc.exe';
+const includes=process.env.EXO_UNITY_CGINCLUDES||'G:/unity/Editor/6000.6.7f1/Editor/Data/Resources/CGIncludes';
 check(fs.existsSync(compiler),'FXC is required for this Windows offline regression (EXO_FXC overrides path)');
-const compiled=cp.spawnSync(compiler,['/nologo','/Gec','/T','ps_5_0','/E','frag','/D','UNITY_COLORSPACE_GAMMA=1','/Fo',binary,'/Fc',assembly,input],{windowsHide:true,encoding:'utf8',maxBuffer:8*1024*1024});
-check(compiled.status===0,'FXC production fragment compile: '+compiled.stdout+compiled.stderr);
-const reflected=fs.readFileSync(assembly,'utf8');
-for(const name of ['EmptyCenterAlpha','EmptyEdgeAlpha','SurfaceSoftPixels','SurfaceWavePixels'])check(!new RegExp('//\\s+float '+name+';').test(reflected),name+' is absent from external constant buffer reflection');
-check(/float _Mode;/.test(reflected)&&/float _Mana;/.test(reflected),'reflection still contains intended runtime inputs');
-console.log('PASS '+checks+' C static-constant/FXC-reflection/direct-alpha contracts (Metal values unobserved)');
+for(const file of ['UnityCG.cginc','UnityShaderVariables.cginc','HLSLSupport.cginc','UnityShaderUtilities.cginc','UnityInstancing.cginc'])
+ check(fs.existsSync(path.join(includes,file)),'actual Unity include is required: '+file+' (EXO_UNITY_CGINCLUDES overrides directory)');
+const binaries=[];
+for(const colorSpace of ['Gamma','Linear']){
+ const binary=path.join(out,'H8-contract-'+colorSpace+'.dxbc'),assembly=path.join(out,'H8-contract-'+colorSpace+'.asm');
+ const args=['/nologo','/Gec','/T','ps_5_0','/E','frag','/I',includes,
+  '/D','SHADER_API_D3D11=1','/D','SHADER_API_DESKTOP=1','/D','SHADER_TARGET=50','/D','SHADER_STAGE_FRAGMENT=1'];
+ // The source uses #ifndef, so defining UNITY_COLORSPACE_GAMMA=0 would still select Gamma.
+ if(colorSpace==='Gamma')args.push('/D','UNITY_COLORSPACE_GAMMA=1');
+ args.push('/Fo',binary,'/Fc',assembly,input);
+ const compiled=cp.spawnSync(compiler,args,{windowsHide:true,encoding:'utf8',maxBuffer:8*1024*1024});
+ check(compiled.status===0,'FXC '+colorSpace+' production fragment compile: '+compiled.stdout+compiled.stderr);
+ const reflected=fs.readFileSync(assembly,'utf8');
+ for(const name of ['EmptyCenterAlpha','EmptyEdgeAlpha','SurfaceSoftPixels','SurfaceWavePixels'])
+  check(!new RegExp('//\\s+float '+name+';').test(reflected),colorSpace+': '+name+' is absent from external constant buffer reflection');
+ check(/float _Mode;/.test(reflected)&&/float _Mana;/.test(reflected),colorSpace+': reflection still contains intended runtime inputs');
+ binaries.push(fs.readFileSync(binary));console.log('FXC '+colorSpace+' PASS; Unity includes '+includes);
+}
+check(!binaries[0].equals(binaries[1]),'Gamma and Linear compile to different programs');
+console.log('PASS '+checks+' C static-constant/FXC Gamma+Linear/direct-alpha contracts (Metal values unobserved)');

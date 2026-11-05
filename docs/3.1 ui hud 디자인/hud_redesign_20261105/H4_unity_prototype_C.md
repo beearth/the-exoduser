@@ -1,3 +1,49 @@
+# H8 후속 — Mac C5 판정 반영·Linear 오프라인 검사 보강
+
+**Mac C5: 지시 항목 기준 PASS. 지정 빈 통 색 불일치는 미해결이며 채택은 사용자 판단이다.** 판정 대상 생산 SHA는 `d474e30bffcbaa7bdff3f46227959f943c2d404a`. 이 후속 변경은 검사·문서뿐이며 모든 생산 파일(기본/A/B/C·Core·공유 파일·ProjectSettings)을 그대로 둔다.
+
+## 확인한 화면과 남은 항목
+
+[Mac 보고 97b39f38e:3–19](https://github.com/beearth/the-exoduser/blob/97b39f38e297ce57aa365f640cdc7a0ab6a07e7f/docs/0마스터플랜/worklog/cloud-lanes/reports/mac_20261104.md#L3)을 반영했다. 같은 커밋의 `hudc5-hp-8x.png`, `hudc5-mpst-8x.png`, `hudc5-partial-cooldown-2x.png`, `hudc5-point-4frames-8x.png` 네 장을 직접 열었다. 확대 PNG 관찰을 현장 1x·GPU readback으로 확장하지 않는다.
+
+| 항목 | Mac C5 판정·측정 | 직접 이미지 관찰/한계 |
+|---|---|---|
+| 빈 통 | 5장면에서 배경 독립, 불투명 해결. RGB약(0,12,25)~(0,10,23)으로 지정(22,28,34)와 다름 | 빈 부분은 짙은 남색이며 배경 무늬가 안 보임. 5장면 RGB·배경 독립은 Mac 보고값. GPU alpha 직접 측정은 미실시 |
+| 수면 | 8x 톱니·낱점 없음. 기울기·자주색 얼룩은 1x에서 문제 없다는 Mac 판단 | HP 확대에서 기울기와 분홍/자주 변화 관찰. 직접 1x 판정 없음 |
+| MP (1393,898) | C4의 프레임 구멍 판정 정정. 배경 대신 기동 고리 상태에 따라 (106,98,83)/(68,53,0) | 네 프레임에서 고정 위치·고리 상태별 색 변화 확인. 직접 게이지 조작/telemetry는 없음 |
+| 쿨다운·외곽 | 4·12·19 회귀 없음, 이번 밝은 바닥 외곽 잔점0 | 2x 숫자 판독 가능. 칠흑 배경 판정 아님 |
+| 미확인 | 이번3840, HP·ST0, 분노·기동 직접 조작, 클릭, 영상, 칠흑 배경 | 미확인 상태 유지 |
+
+아래 H8의 “화면 미검수(Mac)”는 **수정 시점의 기록**이다. 지금은 위 범위의 C5 판정이 추가됐으며 전체 게임 품질·채택·본선 병합 PASS를 뜻하지 않는다.
+
+## 빈 통 색 차이의 독립 대조
+
+C shader `HudPrototypeC.shader:106`은 여전히 `rgb(22,28,34)`, :36–43은 H5의 색 전송, :160은 dry 영역에서 그 색 선택, **:164는 `return outputColor(float4(color,edge));`**다. `NativeHud.PrototypeC.cs:17,28–33,87,108`은 sRGB ARGB32 RT·Linear에서 sRGBWrite·흰 GUI tint·DrawTexture 경로다. 공용 `NativeUiAudit.cs:172–178`도 기록 후 GUI.DrawTexture로 넘기며 그 함수 안에서 RGB를 바꾸지 않는다. 모두 읽기만 했다.
+
+D=sRGB decode, E=sRGB encode일 때 기존 조건부 모델의 계산을 다시 수행했다. RT 8비트 양자화만으로 C5의 빨강0·남색 편향은 설명되지 않는다.
+
+| 채널 | 지정 sRGB byte | fragment D(D(token)) | RT E 적용 후 byte(반올림 전→저장) | 기존 IMGUI 모델 최종 byte | C5 보고 |
+|---|---:|---:|---:|---:|---:|
+| R | 22 | 0.000620990 | 2.045914→2 | 22 | 0 |
+| G | 28 | 0.000898781 | 2.961123→3 | 28 | 10~12 |
+| B | 34 | 0.001238103 | 4.079055→4 | 34 | 23~25 |
+
+이 표의 예상은 **GPU 관측값이 아니다**. Mac 결과는 이 단순 전송 모델로 실제 경로를 전부 설명하지 못함을 보여 준다. RT 쓰기·샘플링/IMGUI·최종 framebuffer·캡처 색 변환 중 어느 단계인지는 아직 확정할 수 없다. 원인을 모른 채 빈 통 토큰이나 공통 색 공간 보정을 보상 변경하지 않았다. 수면/프레임/금속/쿨다운 등 C5 통과 화면도 그대로다.
+
+다음 Mac 확인은 같은 dry 픽셀(수면·글자·프레임·링·hurt 제외)에서 **RT 저장 RGB/alpha → GUI 합성 직후 RGB → PNG RGB**를 분리하고, RT 실제 format/isDataSRGB·해상도·좌표·색 프로파일을 함께 기록한다. RT raw byte와 샘플링 후 linear 값을 혼동하지 않는다. 배경 다른 두 장면의 동일 좌표 시험은 유지한다. 이것은 다음 진단 절차이며 이번 PC에서 실행하지 않았다.
+
+## 이번에 직접 보강한 검사
+
+`unity/Tools/hud-proto-tests/c-gpu-contract.cjs:21–48`에서 최소 v2f_img 대체물을 제거했다. 프로젝트와 일치하는 Unity6000.6.7f1의 **실제 UnityCG 및 의존 include**로 Gamma와 Linear fragment를 각각 컴파일/reflection 검사한다. Linear에서는 `UNITY_COLORSPACE_GAMMA` 자체를 정의하지 않고 Gamma에서만1로 정의한다.
+
+- 명령: `node unity/Tools/hud-proto-tests/c-gpu-contract.cjs`.
+- 결과: **227/0**, Gamma·Linear FXC 컴파일 오류0, 두 branch 외부 버퍼에서 네 설계 상수 모두 없음, 필요한 런타임 입력은 유지. 로그 `H8_C5_followup.log`.
+- 도구 경로 override: `EXO_FXC`, `EXO_UNITY_CGINCLUDES`. 기본 include는 `G:/unity/Editor/6000.6.7f1/Editor/Data/Resources/CGIncludes`.
+- 조건: SM5/D3D11, fragment, /Gec. 실제 Unity target 선택·HLSLcc→Metal·GPU 출력 검증이 아니다. 이번 검사는 기존 Gamma-only 사각을 줄였을 뿐 색 차이 원인을 증명하지 않는다.
+- 생산 코드/에셋 변경0이므로 H8의 C#5어셈블리 오류0·12러너 통과를 재실행으로 포장하지 않는다. 바꾼 러너만 실행했으며 이번 실제 실패0. 기본/A/B/C 전체 생산 트리가 d474e30bf와 동일함을 diff로 확인한다.
+
+---
+
 # H8 — C 빈 통의 GPU 상수 계약 수정·프레임 틈 원인 대조
 
 **코드/오프라인 검사 통과, 화면 미검수(Mac).** 기준 `be25c67970f15b61b4f253f73ef464268f07824e`, 브랜치 `codex/unity-hud-proto-20261105`. 생산 변경은 **HudPrototypeC.shader 한 파일**이다. 기본/A/B·공용 NativeHud·HudOrb·Core·ProjectSettings·H7 내부/외곽 가드·쿨다운·금속/판 변경0. 본선 미병합·채택 미판정.

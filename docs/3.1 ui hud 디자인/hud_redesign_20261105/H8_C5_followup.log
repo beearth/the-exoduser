@@ -1,0 +1,21 @@
+H8 C5 follow-up; base d474e30bffcbaa7bdff3f46227959f943c2d404a
+Production code unchanged; no Unity/Metal/GPU execution.
+Command: node unity/Tools/hud-proto-tests/c-gpu-contract.cjs
+C globals [{"name":"SurfaceSoftPixels","value":2,"static":true},{"name":"SurfaceWavePixels","value":1,"static":true}]
+Frozen shared A/B globals (report only) [{"name":"EmptyDiamondCenter","value":3.535534,"static":false},{"name":"EmptyDiamondHalfBand","value":0.707107,"static":false},{"name":"NotchHalfLength","value":3,"static":false},{"name":"NotchHalfWidth","value":1,"static":false}]
+FXC Gamma PASS; Unity includes G:/unity/Editor/6000.6.7f1/Editor/Data/Resources/CGIncludes
+FXC Linear PASS; Unity includes G:/unity/Editor/6000.6.7f1/Editor/Data/Resources/CGIncludes
+PASS 227 C static-constant/FXC Gamma+Linear/direct-alpha contracts (Metal values unobserved)
+Exit: 0
+
+CPU color model (not observed Metal values):
+Token 22,28,34 -> fragment 0.000620990169,0.000898780587,0.001238103202
+Expected sRGB RT bytes 2,3,4 -> modeled GUI bytes 22,28,34
+C5 observed report: 0,10..12,23..25. Quantization alone does not explain difference.
+Mac C5 report commit: 97b39f38e297ce57aa365f640cdc7a0ab6a07e7f
+Production judged: d474e30bffcbaa7bdff3f46227959f943c2d404a
+No new production changes. Unity/Metal not run locally.
+Production tree diff against d474e30bf: zero. Existing line endings preserved.
+Reviewed Git image extracts and generated FXC binaries/assembly removed after inspection.
+Independent code review: no blocking findings.
+Independent document review: clarified that Mac screen RGB observations are not GPU alpha readback.

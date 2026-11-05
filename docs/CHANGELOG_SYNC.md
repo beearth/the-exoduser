@@ -58223,3 +58223,8 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 - C shader의 EmptyAlpha 전역 의존을 제거하고 빈 RGB를 직접선택·출력alpha를원형edge로고정했다. 남은설계상수2개는static const. FXC reflection에서기존외부상수4개제거확인, 실제Metal값은미관측.
 - H7가드/쿨다운/금속/판/공유HUD/A/B/Core/설정 보존. MP1393,898은원화alpha255/가드1이며기동눈금과위치·폭·한상태RGB일치: 가드수정0, Mac기동값대조필요. A/B의non-static4개는보고만.
 - H4_unity_prototype_C.md H8절·H8_validation.log에직접본C4이미지7장·원인/줄·전역전수표·수면2/1복원영향·다른원인한계·두배경동일픽셀재검수를기록. 12러너PASS, 오프라인5어셈블리오류0. 화면미검수(Mac)·본선미병합.
+
+## 2026-11-05 — H8 후속: Mac C5 판정·Linear 검사
+
+- Mac 97b39f38e의 d474e30bf C5 PASS(지시 항목 기준)를 H4 보고서에 반영. 빈 통 지정색 불일치·미확인 범위를 별도 유지.
+- C GPU 계약 러너를 실제 Unity6000.6.7f1 include의 Gamma/Linear FXC 검사로 확장: 227/0. 생산 코드·에셋 변경0, Unity 실행0.
