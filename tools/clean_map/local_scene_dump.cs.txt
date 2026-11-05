@@ -1,0 +1,45 @@
+// LOCAL ONLY — Mac clean-map M0 inventory. Never commit. Moved to ~/exoduser-wt/_tm after the build.
+using System;
+using System.Collections;
+using System.IO;
+using System.Linq;
+using System.Text;
+using UnityEngine;
+namespace Exoduser.UnityPort {
+ public sealed partial class NativeGame {
+  [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+  static void LocalDumpBoot(){
+   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--local-scene-dump")<0)return;
+   var g=new GameObject("LocalDumpBoot");DontDestroyOnLoad(g);g.AddComponent<LocalDumpBooter>();
+  }
+  sealed class LocalDumpBooter:MonoBehaviour{
+   IEnumerator Start(){while(Instance==null)yield return null;yield return null;yield return null;Instance.StartCoroutine(Instance.LocalDumpRun());}
+  }
+  static string LdPath(Transform t){var s=t.name;var p=t.parent;while(p!=null){s=p.name+"/"+s;p=p.parent;}return s;}
+  static string LdCsv(string v){return "\""+(v??"").Replace("\"","'").Replace("\n"," ")+"\"";}
+  IEnumerator LocalDumpRun(){
+   string output=Argument("-output");if(string.IsNullOrEmpty(output)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))){Application.Quit(2);yield break;}
+   Directory.CreateDirectory(output);AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;smokeActive=true;pauseSmoke=true;
+   yield return new WaitForSecondsRealtime(.4f);
+   lobby.Flow.ShowLobby();lobby.Flow.SelectPreview();if(!lobby.Flow.EnterTest()){File.WriteAllText(Path.Combine(output,"dump.txt"),"ENTER_FAIL\n");Application.Quit(2);yield break;}
+   EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;SetGameFocus(true);
+   float deadline=Time.realtimeSinceStartup+60;while(!Remodel3DReady&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
+   for(float e=Time.realtimeSinceStartup+6;Time.realtimeSinceStartup<e;){UpdateViews();yield return null;}
+   var sb=new StringBuilder("path,name,type,activeInHierarchy,rendererEnabled,mesh,tris,lodGroup,materials,shaders,textures,sizeX,sizeY,sizeZ,posX,posY,posZ\n");
+   foreach(var r in FindObjectsByType<Renderer>(FindObjectsInactive.Include,FindObjectsSortMode.None)){
+    Mesh m=null;var mf=r.GetComponent<MeshFilter>();if(mf!=null)m=mf.sharedMesh;var sk=r as SkinnedMeshRenderer;if(sk!=null)m=sk.sharedMesh;
+    long tris=0;if(m!=null)for(int i=0;i<m.subMeshCount;i++)tris+=m.GetIndexCount(i)/3;
+    string tex="";try{foreach(var mat in r.sharedMaterials){if(mat==null)continue;var mt=mat.HasProperty("_BaseMap")?mat.GetTexture("_BaseMap"):mat.HasProperty("_MainTex")?mat.GetTexture("_MainTex"):null;if(mt!=null)tex+=mt.name+"@"+mt.width+"x"+mt.height+";";}}catch{}
+    var b=r.bounds;
+    sb.Append(LdCsv(LdPath(r.transform))).Append(',').Append(LdCsv(r.name)).Append(',').Append(r.GetType().Name).Append(',').Append(r.gameObject.activeInHierarchy?1:0).Append(',').Append(r.enabled?1:0).Append(',').Append(LdCsv(m!=null?m.name:"")).Append(',').Append(tris).Append(',').Append(r.GetComponentInParent<LODGroup>()!=null?1:0).Append(',').Append(LdCsv(string.Join(";",r.sharedMaterials.Where(x=>x!=null).Select(x=>x.name)))).Append(',').Append(LdCsv(string.Join(";",r.sharedMaterials.Where(x=>x!=null&&x.shader!=null).Select(x=>x.shader.name).Distinct()))).Append(',').Append(LdCsv(tex)).Append(',').Append(b.size.x.ToString("F2")).Append(',').Append(b.size.y.ToString("F2")).Append(',').Append(b.size.z.ToString("F2")).Append(',').Append(b.center.x.ToString("F1")).Append(',').Append(b.center.y.ToString("F1")).Append(',').Append(b.center.z.ToString("F1")).Append('\n');
+   }
+   File.WriteAllText(Path.Combine(output,"renderers.csv"),sb.ToString());
+   var o=new StringBuilder();
+   foreach(var t in FindObjectsByType<Terrain>(FindObjectsInactive.Include,FindObjectsSortMode.None))o.Append("terrain ").Append(LdPath(t.transform)).Append(" active=").Append(t.gameObject.activeInHierarchy).Append(" trees=").Append(t.terrainData!=null?t.terrainData.treeInstanceCount:-1).Append(" detail=").Append(t.drawInstanced).Append('\n');
+   foreach(var l in FindObjectsByType<Light>(FindObjectsInactive.Include,FindObjectsSortMode.None))o.Append("light ").Append(LdPath(l.transform)).Append(" ").Append(l.type).Append(" i=").Append(l.intensity).Append(" active=").Append(l.gameObject.activeInHierarchy).Append('\n');
+   foreach(var p in FindObjectsByType<ParticleSystem>(FindObjectsInactive.Include,FindObjectsSortMode.None))o.Append("particle ").Append(LdPath(p.transform)).Append(" active=").Append(p.gameObject.activeInHierarchy).Append('\n');
+   File.WriteAllText(Path.Combine(output,"other.txt"),o.ToString());
+   File.WriteAllText(Path.Combine(output,"dump.txt"),"sha-run remodel="+Remodel3DReady+" a2="+(a2Root!=null)+" DONE\n");Application.Quit(0);
+  }
+ }
+}
