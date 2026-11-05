@@ -11,7 +11,7 @@
 | 무기 소켓 교체 (대검↔도끼) | **동작.** 손 본을 따라감 ([대검](lit-idle-A-sword-6x.png), [도끼](lit-idle-B-axe-6x.png), [stress 대검](lit-stress-A-sword-6x.png), [stress 도끼](lit-stress-B-axe-6x.png)) |
 | 다른 파일 장비의 본 재매핑 | **동작.** B 렌더러 20개, 빠진 본 0, 약 2.5ms. 애니메이터는 A 하나 |
 | rigpixel 1x에서 A·B 구분 | **구분됨** (아래 표) |
-| Humanoid 매핑 | **실패.** 원인 아래 |
+| Humanoid 매핑 | 첫 시도 실패, **C3b에서 통과** (아래) |
 | 캐릭터만의 드로우콜 | **못 잼.** 프레임 전체 값만 있음 |
 
 자세한 수치: [일반 렌더](unity-lit-20261105.txt), [rigpixel](unity-rigpixel-20261105.txt), [Blender](c3-results-20261105.json). 영상은 찍지 않았고 정지 화면과 로그로 확인했다.
@@ -38,7 +38,53 @@
 3. 슬롯별로 렌더러를 켜고 끈다. 투구 슬롯은 투구 + 머리 파트가 한 묶음이다. 머리 가림이 투구마다 다르기 때문이다.
 4. 무기는 스킨 없이 `DEF-hand.R`의 자식으로 둔다.
 
-**파일 크기 관찰:** 지금 구조는 가려진 몸 파트를 세트마다 따로 갖는다. 장비 조합이 늘면 조합마다 만들 수 없으니, 슬롯별 몸 파트 분리나 셰이더 마스크가 필요하다. 시험하지 않았다.
+**이 시험의 한계:** 지금 구조는 가려진 몸 파트를 세트마다 따로 갖는다. 아래 CTO 결정으로 바꾼다.
+
+## CTO 판정과 결정 (11-05)
+
+**구조 PASS.** 드로우콜은 잔여로 남기고 C4에서 Frame Debugger로 캐릭터만 잰다.
+
+**몸 파트 숨김은 슬롯별 고정 몸 파트로 간다.** 몸 파트 분할을 Core 장비 슬롯과 1:1로 맞추고, 장비 아이템은 "내가 덮는 몸 파트 목록"만 갖는다. 세트마다 마스크를 두지 않는다. 셰이더 마스크는 소매 걷기 같은 부분 노출이 필요할 때 추가하는 2단계로 보류한다. 아직 구현하지 않았다.
+
+### 슬롯 임시표 (CH 조사 전, 임시)
+
+Core 슬롯 17개: `InventoryState.Slots`. "덮는 몸 파트"는 제안이고 게임 데이터가 아니다.
+
+| Core 슬롯 | 표시 방식 | 기본으로 덮는 임시 몸 파트 |
+|---|---|---|
+| `helmet` | 메시 | head (얼굴 제외 범위는 투구별, 지금 파트 단위로는 표현 못 함) |
+| `armor` | 메시 | torso, upperarm.L/R |
+| `gloves` | 메시 | hand.L/R, forearm.L/R |
+| `pants` | 메시 | thigh.L/R |
+| `boots` | 메시 | foot.L/R, shin.L/R |
+| `cape` | 메시 | 없음 (겉에 덧붙임) |
+| `belt` | 메시 | 없음 (겉에 덧붙임) |
+| `weapon`, `shield`, `bow` | 소켓 | 없음 |
+| `necklace`, `ring1`, `ring2`, `bracelet`, `headband`, `headband2`, `ossuary` | 미정 | 없음. **화면 표시 여부 미정** |
+
+**이 표의 문제:** Core에 `shoulder` 슬롯이 없으므로 LOCK의 견갑은 `armor`에 속한다. 파트 단위 숨김은 얼굴을 남기는 투구, 짧은 소매 갑옷을 표현하지 못한다.
+
+## C3b: Humanoid 통과
+
+**Unity 자동 매핑 오류 0, 아바타 유효(`valid=True human=True`), 22개 사람 본 자동 연결.** 애드온은 필요 없었다.
+
+| 항목 | 값 |
+|---|---|
+| 방법 | 변형 본만 남긴 새 뼈대를 만들고 Hips→Spine→Chest→UpperChest→Neck→Neck2→Head, 팔·다리 사슬로 재부모화. 트위스트는 자식, Root 추가, 사람 이름으로 변경 |
+| 본 | 40 (변형 39 + Root) |
+| T 포즈 | [T 포즈](c3b-tpose-6x.png), [바인드 포즈](c3b-bind-6x.png). 몸 깨짐 없음 |
+| 기록 | [Unity](c3b-unity-20261105.txt), [Blender](c3b-results-20261105.json) |
+| 재현 | [`tools/character/c3b.py`](../../../../../tools/character/c3b.py) |
+
+**확인 범위와 한계:**
+- T 포즈는 시험 코드가 팔 본 방향을 직접 돌린 것이다(왼팔 방향 (1,0,0)). 바인드 포즈는 A 포즈이고 임포트 설정을 T 포즈로 강제하지 않았다. 근육값 절대 최대는 바인드 .968, T 1.041이고 해석하지 않았다. **다른 동작을 리타깃했을 때 맞을지는 모른다. 클립은 재생하지 않았다.**
+- **Rigify 리그와 변형 차이가 있다.** 같은 포즈에서 최대 정점 차이 rest·idle 4.08mm, stress 30.6mm. 원인 미확인.
+- 이 뼈대는 맨몸 파트만 시험했다. 세트 A·B 장비와 소켓을 새 뼈대로 옮기지 않았다.
+- 엉덩이 접힘은 그대로이다.
+
+## C4 전 남은 일
+
+마스크 재계산 1회(안 덮인 정점 투구 26.7%, 흉갑 23.6%, 원인 미확인), 새 뼈대로 장비 다시 내보내기, 슬롯별 몸 파트 구조로 교체, Frame Debugger 드로우콜.
 
 ## 드로우콜·비용
 
@@ -58,7 +104,7 @@
 | 잔여 | 결과 |
 |---|---|
 | 엉덩이 코렉티브 | 안 다룸. 모캡 뒤 |
-| Humanoid | **실패, 원인 확인.** Unity 자동 매핑은 "Required human bone 'Head' not found". 이름을 직접 지정한 런타임 시도는 "Transform 'DEF-spine' is not an ancestor of 'DEF-thigh.L'". Rigify의 변형 본만 내보내면 계층이 끊긴다. **Humanoid를 쓰려면 변형 본을 하나의 계층으로 다시 잇는 내보내기 단계가 필요하다.** 시험하지 않았다 |
+| Humanoid | **C3b에서 해결(아래).** 첫 시도: Unity 자동 매핑은 "Required human bone 'Head' not found". 이름을 직접 지정한 런타임 시도는 "Transform 'DEF-spine' is not an ancestor of 'DEF-thigh.L'". Rigify의 변형 본만 내보내면 계층이 끊긴다. **Humanoid를 쓰려면 변형 본을 하나의 계층으로 다시 잇는 내보내기 단계가 필요하다.** 시험하지 않았다 |
 | rigpixel 경로 | 위 표대로 동작. 시험 수준 |
 | 드로우콜 | 프레임 전체만 측정. 캐릭터 단독은 미측정 |
 

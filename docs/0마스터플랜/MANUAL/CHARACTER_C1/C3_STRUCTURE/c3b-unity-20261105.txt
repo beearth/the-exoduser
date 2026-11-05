@@ -1,0 +1,6 @@
+animator=True avatar=True valid=True human=True
+Hips→Hips LeftUpperLeg→LeftUpperLeg RightUpperLeg→RightUpperLeg LeftLowerLeg→LeftLowerLeg RightLowerLeg→RightLowerLeg LeftFoot→LeftFoot RightFoot→RightFoot Spine→Spine Chest→Chest Neck→Neck Head→Head LeftShoulder→LeftShoulder RightShoulder→RightShoulder LeftUpperArm→LeftUpperArm RightUpperArm→RightUpperArm LeftLowerArm→LeftLowerArm RightLowerArm→RightLowerArm LeftHand→LeftHand RightHand→RightHand LeftToes→LeftToes RightToes→RightToes UpperChest→UpperChest 
+muscles=95 maxAbsAtBind=0.968
+TposeLeftUpperArmDir=(1.00, 0.00, 0.00)
+musclesAtT maxAbs=1.041
+DONE

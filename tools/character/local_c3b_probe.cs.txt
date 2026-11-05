@@ -1,0 +1,39 @@
+// LOCAL ONLY. Mac C3b Humanoid check. Never commit into the game.
+using System;using System.Collections;using System.IO;using System.Linq;using UnityEngine;using Unity.Cinemachine;
+namespace Exoduser.UnityPort{public sealed partial class NativeGame{
+ [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]static void LocalC3bBoot(){if(Array.IndexOf(Environment.GetCommandLineArgs(),"--local-c3b")<0)return;var g=new GameObject("LocalC3bBoot");DontDestroyOnLoad(g);g.AddComponent<LocalC3bBooter>();}
+ sealed class LocalC3bBooter:MonoBehaviour{IEnumerator Start(){while(Instance==null)yield return null;yield return null;yield return null;Instance.StartCoroutine(Instance.LocalC3b());}}
+ void LocalC3bShot(string p){var t=ScreenCapture.CaptureScreenshotAsTexture();File.WriteAllBytes(p,t.EncodeToPNG());Destroy(t);}
+ IEnumerator LocalC3b(){string output=Argument("-output");Directory.CreateDirectory(output);AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;smokeActive=true;pauseSmoke=true;var log=new System.Text.StringBuilder();
+  Screen.SetResolution(1920,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.4f);
+  lobby.Flow.ShowLobby();lobby.Flow.SelectPreview();if(!lobby.Flow.EnterTest()){Application.Quit(2);yield break;}
+  EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;SetGameFocus(true);
+  var s=Simulation;var p=s.Player;p.X=3450;p.Y=7900;s.Config.EnemyAiEnabled=false;s.Enemies.Clear();s.SpawnHoles=null;
+  float dl=Time.realtimeSinceStartup+40;while(!Remodel3DReady&&Time.realtimeSinceStartup<dl){UpdateViews();yield return null;}
+  yield return new WaitForSecondsRealtime(1.5f);UpdateViews();
+  var cam=r3Cam;var brain=cam.GetComponent<CinemachineBrain>();if(brain!=null)brain.enabled=false;r3Late.enabled=false;
+  var hero=NativeRemodel3D.Point(p.X,p.Y);float rad=33f*Mathf.Deg2Rad,d=16.5f;p.X+=4000;UpdateViews();yield return null;
+  cam.transform.SetPositionAndRotation(hero+new Vector3(0,Mathf.Sin(rad)*d,-Mathf.Cos(rad)*d+1.48f),Quaternion.Euler(33f,0,0));
+  var src=Resources.Load<GameObject>("LocalC3/H_C3b");if(src==null){File.WriteAllText(Path.Combine(output,"c3b.txt"),"NO_PREFAB");Application.Quit(3);yield break;}
+  float sc=88f/75.37f/1.85f;var go=Instantiate(src);go.transform.position=hero;go.transform.rotation=Quaternion.Euler(0,180,0);go.transform.localScale=Vector3.one*sc;
+  var an=go.GetComponent<Animator>();log.Append("animator=").Append(an!=null);if(an!=null){var av=an.avatar;log.Append(" avatar=").Append(av!=null);if(av!=null)log.Append(" valid=").Append(av.isValid).Append(" human=").Append(av.isHuman);}log.Append('\n');
+  var sh=Shader.Find("Universal Render Pipeline/Lit");var clay=new Material(sh);clay.color=new Color(.46f,.43f,.41f);foreach(var r in go.GetComponentsInChildren<SkinnedMeshRenderer>(true)){r.sharedMaterial=clay;r.updateWhenOffscreen=true;}
+  float bf=cam.fieldOfView;var rot=cam.transform.rotation;var mid=hero+Vector3.up*.6f;
+  IEnumerator Shot(string n){cam.fieldOfView=bf;cam.transform.rotation=rot;yield return new WaitForEndOfFrame();LocalC3bShot(Path.Combine(output,n+"-1x.png"));cam.transform.rotation=Quaternion.LookRotation((mid-cam.transform.position).normalized,Vector3.up);cam.fieldOfView=2*Mathf.Rad2Deg*Mathf.Atan(Mathf.Tan(bf*.5f*Mathf.Deg2Rad)/6f);yield return new WaitForEndOfFrame();LocalC3bShot(Path.Combine(output,n+"-6x.png"));}
+  yield return Shot("bind");
+  if(an!=null&&an.avatar!=null&&an.avatar.isHuman){
+   string[] need={"Hips","Spine","Chest","UpperChest","Neck","Head","LeftUpperArm","LeftLowerArm","LeftHand","RightUpperArm","RightLowerArm","RightHand","LeftUpperLeg","LeftLowerLeg","LeftFoot","RightUpperLeg","RightLowerLeg","RightFoot","LeftShoulder","RightShoulder","LeftToes","RightToes"};
+   foreach(HumanBodyBones b in Enum.GetValues(typeof(HumanBodyBones))){if(b==HumanBodyBones.LastBone)continue;var t=an.GetBoneTransform(b);if(t!=null)log.Append(b).Append("→").Append(t.name).Append(' ');}log.Append('\n');
+   var h=new HumanPoseHandler(an.avatar,go.transform);var hp=new HumanPose();h.GetHumanPose(ref hp);log.Append("muscles=").Append(hp.muscles.Length).Append(" maxAbsAtBind=").Append(hp.muscles.Max(Mathf.Abs).ToString("F3")).Append('\n');
+   // T pose from the mapped bones themselves: arms along the model's sideways axis, then read the muscles it gives
+   an.enabled=false;var right=go.transform.right;
+   void Aim(HumanBodyBones from,HumanBodyBones to,Vector3 dir){var a=an.GetBoneTransform(from);var c=an.GetBoneTransform(to);a.rotation=Quaternion.FromToRotation((c.position-a.position).normalized,dir)*a.rotation;}
+   // the model is turned 180 degrees, so its left is along world +x here
+   Vector3 L=-right;Vector3 R=right;
+   Aim(HumanBodyBones.LeftUpperArm,HumanBodyBones.LeftLowerArm,L);Aim(HumanBodyBones.LeftLowerArm,HumanBodyBones.LeftHand,L);Aim(HumanBodyBones.RightUpperArm,HumanBodyBones.RightLowerArm,R);Aim(HumanBodyBones.RightLowerArm,HumanBodyBones.RightHand,R);
+   var la=an.GetBoneTransform(HumanBodyBones.LeftUpperArm);var ll=an.GetBoneTransform(HumanBodyBones.LeftLowerArm);var v=(ll.position-la.position).normalized;log.Append("TposeLeftUpperArmDir=").Append(v.ToString("F2")).Append('\n');
+   h.GetHumanPose(ref hp);log.Append("musclesAtT maxAbs=").Append(hp.muscles.Max(Mathf.Abs).ToString("F3")).Append('\n');
+   yield return Shot("tpose");h.Dispose();
+  } else log.Append("not human\n");
+  File.WriteAllText(Path.Combine(output,"c3b.txt"),log+"DONE\n");Application.Quit(0);}
+}}
