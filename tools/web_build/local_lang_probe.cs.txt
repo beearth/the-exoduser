@@ -1,0 +1,22 @@
+// LOCAL ONLY. Mac English screen check. Never commit into the game.
+using System;using System.Collections;using System.IO;using UnityEngine;
+namespace Exoduser.UnityPort{public sealed partial class NativeGame{
+ [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]static void LocalLangBoot(){if(Array.IndexOf(Environment.GetCommandLineArgs(),"--local-lang")<0)return;var g=new GameObject("LocalLangBoot");DontDestroyOnLoad(g);g.AddComponent<LocalLangBooter>();}
+ sealed class LocalLangBooter:MonoBehaviour{IEnumerator Start(){while(Instance==null)yield return null;yield return null;yield return null;Instance.StartCoroutine(Instance.LocalLang());}}
+ IEnumerator LocalLangShot(string output,string n){UpdateViews();yield return null;yield return null;yield return new WaitForEndOfFrame();var t=ScreenCapture.CaptureScreenshotAsTexture();File.WriteAllBytes(Path.Combine(output,n+".png"),t.EncodeToPNG());Destroy(t);}
+ IEnumerator LocalLang(){string output=Argument("-output");Directory.CreateDirectory(output);AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;smokeActive=true;pauseSmoke=true;var log=new System.Text.StringBuilder();
+  Screen.SetResolution(1920,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.4f);
+  log.Append("before=").Append(lobby.Language).Append('\n');lobby.Flow.ShowLobby();lobby.SetLanguage("en");log.Append("after=").Append(lobby.Language).Append('\n');yield return new WaitForSecondsRealtime(2f);yield return LocalLangShot(output,"01-lobby");
+  lobby.AdvanceSplash();yield return new WaitForSecondsRealtime(3f);log.Append("stage1b=").Append(lobby.StageName).Append('\n');yield return LocalLangShot(output,"01b-title");
+  lobby.ShowLobby();yield return new WaitForSecondsRealtime(3f);log.Append("stage1c=").Append(lobby.StageName).Append('\n');yield return LocalLangShot(output,"01c-lobby");
+  lobby.Flow.SelectPreview();if(!lobby.Flow.EnterTest()){File.WriteAllText(Path.Combine(output,"lang.txt"),log+"ENTER_FAIL\n");Application.Quit(2);yield break;}
+  EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;SetGameFocus(true);
+  var s=Simulation;var p=s.Player;p.X=3450;p.Y=7900;s.Config.EnemyAiEnabled=false;s.SpawnHoles=null;s.Enemies.Clear();
+  float dl=Time.realtimeSinceStartup+40;while(!Remodel3DReady&&Time.realtimeSinceStartup<dl){UpdateViews();yield return null;}
+  yield return new WaitForSecondsRealtime(1.5f);log.Append("field=").Append(lobby.Language).Append('\n');yield return LocalLangShot(output,"02-field");
+  s.SpawnNormalEnemy(p.X+120,p.Y);s.SpawnNormalEnemy(p.X-120,p.Y-40);yield return LocalLangShot(output,"03-enemies");
+  Toast(RarityNames[3]+" "+"Test"+" 획득!");yield return LocalLangShot(output,"04-toast-codepath");
+  foreach(var tab in new[]{"invPanel","skillPanel","statPanel","forge"}){OnPanelHotkeyRequested(tab);yield return LocalLangShot(output,"05-"+tab);OnPanelHotkeyRequested(tab);yield return null;}
+  menu=true;pauseMenu.OpenSettingsDirect();yield return LocalLangShot(output,"06-settings");menu=false;
+  log.Append("final=").Append(lobby.Language).Append('\n');File.WriteAllText(Path.Combine(output,"lang.txt"),log+"DONE\n");Application.Quit(0);}
+}}
