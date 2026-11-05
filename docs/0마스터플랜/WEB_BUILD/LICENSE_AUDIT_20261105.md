@@ -1,4 +1,4 @@
-# 크로마 어워즈 제출용 권리 점검 (레인 LC) — 총 자산 1,673 · 실제 사용 1,430(+씬 참조 추정 232) · 권리 불명 202 · 교체 또는 제거 필요 210(권리) + 정책 교체 68(생성 메시)
+# 크로마 어워즈 제출용 권리 점검 (레인 LC) — 총 자산 1,673(Mac 실제 파일 1,656 · 3.81GB) · 실제 사용 1,430(+씬 참조 추정 232) · 권리 불명 202 · 교체 또는 제거 필요 210(권리) + 정책 교체 68(생성 메시)
 
 기준: origin/unity/main `64745756d` (2026-11-05), `git ls-tree -r origin/unity/main -- unity/Assets` 4,510행(meta 2,338 제외 2,172 → 코드 `.cs`·asmdef 등 499 제외 **비코드 자산 1,673**). 규정 근거: [CHROMA_AWARDS_PLAN §0 위험표 IP·음악](../CHROMA_AWARDS_PLAN_20261105.md) — 권리 없는 IP 불가, 음악은 직접 제작·라이선스·허가·AI 생성만, AI 도구는 요청 시 정확히 공개(§0 ⑩).
 
@@ -20,7 +20,8 @@
 3. 증빙 대조: `unity/Tools/Fixtures/{source_receipt,inventory-assets,lobby-assets}.json`, `unity/Tools/character-ui/art-provenance.json`, `Resources/Enemies3D/{enemy3d,pilot}-provenance.json`, `Resources/Audio/RM1/RM1_AUDIO_KEYS.json`, `Resources/Art/TitleSignboard/A/manifest.json`, `Art/fonts/*-OFL.txt` 9개, [ART_TEAM_MASTER](../../17게임아트팀/ART_TEAM_MASTER.md), [UNITY_BGM_IMPORT_CANDIDATES §1.2](../../6사운드디자인/UNITY_BGM_IMPORT_CANDIDATES_20261104.md)(`claude/unity-pc-sound-bgm-license-20261104` 8eb59883), [6사운드디자인.md](../../6사운드디자인/6사운드디자인.md) 음원 출처 주석, [SOUND_LEAD_MASTER](../../6사운드디자인/SOUND_LEAD_MASTER_20261026.md), [UNITY_KEYSHOT_A2](../../engine/UNITY_KEYSHOT_A2_20261030.md), [UNITY_RM_INT_RUNTIME_HOOK](../../engine/UNITY_RM_INT_RUNTIME_HOOK_20261028.md), [UNITY_CHARACTER_BOARD](../../engine/UNITY_CHARACTER_BOARD_20261027.md), [UNITY_BOSS_DARK_DRUID_3D_IMPORT](../../engine/UNITY_BOSS_DARK_DRUID_3D_IMPORT_20261029.md), `docs/8.0몬스터디자인/UNITY_CH1_1_ENEMY_3D_RIG_G0_20261103.md`, [STEAM_DEMO_UPLOAD_PRECHECK X4·X5](../../13출시·마케팅/STEAM_DEMO_UPLOAD_PRECHECK_20261104.md), 영수증 트리아지 `codex/unity-asset-receipt-triage-20261105:docs/engine/ASSET_RECEIPT_TRIAGE_20261105.md`(바이트 정합 판정 12건, 출처 변경 없음).
 4. 실제 사용: `unity/Assets/Exoduser/Runtime`·`Editor`의 `Resources.Load` 리터럴 273개와 `Resources/Data/*.json`의 `Art/…` 경로를 폴더 단위로 대조. 오디오는 파일 이름 어근 154개 중 144개가 코드에 직접 등장하고, 나머지 10개(`ddung_*` 6, `voice_parry2~4`, `boss_howl1`)는 접두어+번호 동적 로드다.
 5. 웹 원본의 최초 커밋: `git log origin/main --diff-filter=A -- <경로>`. 2026-02~05의 `auto: … 자동 저장/sync snapshot` 커밋은 출처 정보가 없다.
-6. 한계: 자산 바이너리와 씬(`.unity`)이 이 체크아웃에 없어 GUID 참조 전수·파일 메타 태그 재검사는 하지 않았다. BGM의 `made with suno` 태그는 11-04 PC 문서를 인용했다. 각 AI 서비스의 약관 원문은 열지 않았고 "유료 플랜·구독 사용 기록이 docs에 있는가"만 적었다.
+6. 실제 파일 대조(11-05 추가): Mac 자산 목록 [RESOURCES_INVENTORY_MAC_20261105](RESOURCES_INVENTORY_MAC_20261105.md)·`resources_inventory_mac_20261105.csv`(`claude/unity-mac-report-20261104` 295c002ff, unity/main 64745756d와 Runtime 차이 0) 1,656행을 이 표의 폴더 그룹에 합쳤다(§2.7). 차이 17 = 이 표에만 있는 Editor 비코드 6·Scenes 3·Rendering 13·루트 asset 2(Mac 조사 범위 밖, 빌드 미포함) − Mac에만 있는 복원 영상 3(`world_intro_v22b_steam`·`world_intro_v23_newopening_steam`·`warrior_story_v23_clean`, MediaRecovery 조립본) + Mac이 포함한 Remodel `.cs` 4. Mac 발견: 자산 옆에 LICENSE·README·출처 안내 파일이 있는 자산은 11개뿐이고 전부 `Remodel/CH1_3/Data/ch1_3_source_receipt.json` 하나를 가리킨다 — 안내 파일 부재는 권리 없음이 아니며, 이 문서 §2의 출처 열이 그 교차 결과다.
+7. 한계: 자산 바이너리와 씬(`.unity`)이 이 체크아웃에 없어 GUID 참조 전수·파일 메타 태그 재검사는 하지 않았다. BGM의 `made with suno` 태그는 11-04 PC 문서를 인용했다. 각 AI 서비스의 약관 원문은 열지 않았고 "유료 플랜·구독 사용 기록이 docs에 있는가"만 적었다.
 
 분류 기호: **자체** 자체 제작 / **AI** AI 생성(도구·요금제) / **CC0** Poly Haven 등 / **OFL** 폰트 / **상용** 상용 라이선스 / **불명** 출처 불명 / **CC?** 출처는 있으나 라이선스 조건 미확인.
 
@@ -40,6 +41,8 @@
 | NotoSerifCJK{jp,sc,tc}-Regular.otf | NotoSerifCJK-OFL.txt | Google Noto | 코드 | OFL |
 | NotoSerifThai-Regular.ttf | NotoSerifThai-OFL.txt | Google Noto | 코드 | OFL |
 | ArabicCaption*.asset ×4 | — | Unity 폰트 에셋(자체 파생) | 코드 | 자체 |
+
+Mac 목록의 폰트 내부 라이선스 칸: 17개 중 16개가 OFL 문구(Thai는 OFL URL), NanumMyeongjo만 "NHN Corporation"(동봉 OFL 파일이 라이선스를 증명). `Cinzel-400/600.ttf`의 패밀리명은 "EXODUSER Latin Serif", `NativeLobbyNotoSansKR-*.ttf`는 "EXODUSER Lobby Sans KR"로 바뀐 파생본이다 — OFL은 파생본 이름 변경을 허용하고 Reserved Font Name(Cinzel Decorative 'Cinzel', Noto Sans KR 'Source')을 쓰지 않았으며 같은 OFL 파일을 동봉했으므로 조건 충족. 크레딧에는 원 폰트 이름으로 적는다.
 
 ### 2.2 오디오 — 154파일 (mp3 145·wav 9)
 
@@ -68,7 +71,7 @@
 | `intro.mp4` | 웹 `video/intro.mp4`(2026-02-27 최초), 세계관 인트로 초기판. 영상·내레이션 도구 기록 없음, 음악 Suno | 코드 | **확인 필요**(내레이션 음성 출처) |
 | `fdg_intro.mp4` | 회사 로고 영상(08-10 커밋), 제작 기록 없음. 로고 원화는 자체 브랜드 | 코드 | 자체 추정, 제작 기록 보강 필요 |
 
-코드가 참조하지만 unity/main `Assets`에 없는 영상: `world_intro_v22b_steam.mp4`·`world_intro_v23_newopening_steam.mp4`·`warrior_story_v23_clean.mp4`(`unity/Tools/MediaRecovery/*/part-*.bin`으로 분할 보관, 빌드 때 조립). 제작은 GPT Image 정지화 + MagicLight Hailuo 2.3 영상화 + ElevenLabs 내레이션 + Suno(ART_TEAM_MASTER §3.2b·§3.2c, docs/cinematic). 제출 빌드에 들어가면 같은 "AI 생성, 유료 포인트" 분류다.
+Mac 디스크에는 위 12개 외에 복원 영상 3개(`world_intro_v22b_steam.mp4` 102.2MB·`world_intro_v23_newopening_steam.mp4` 90.1MB·`warrior_story_v23_clean.mp4` 94.8MB, 합 287MB)가 더 있다(StreamingAssets 15파일 339MB). 코드가 참조하지만 unity/main `Assets`에 없는 영상: `world_intro_v22b_steam.mp4`·`world_intro_v23_newopening_steam.mp4`·`warrior_story_v23_clean.mp4`(`unity/Tools/MediaRecovery/*/part-*.bin`으로 분할 보관, 빌드 때 조립). 제작은 GPT Image 정지화 + MagicLight Hailuo 2.3 영상화 + ElevenLabs 내레이션 + Suno(ART_TEAM_MASTER §3.2b·§3.2c, docs/cinematic). 제출 빌드에 들어가면 같은 "AI 생성, 유료 포인트" 분류다.
 
 ### 2.4 3D 모델 — 88 FBX
 
@@ -130,6 +133,59 @@
 | `.cs` 493 · asmdef 3 · asmref 1 · py 1 · ps1 1 | 499 | 자체 작성(Runtime·Editor·Core). 서드파티 소스 반입 0(헤더 grep: 라이선스 문구 0) | 자체 |
 | `Packages/manifest.json` | — | Unity 공식 패키지 10종(URP 17.6.0·Shader Graph·VFX Graph·Cinemachine 6.6.0·Input System 1.20.1·ProBuilder 6.1.4·Timeline·AI Navigation 2.0.16) = Unity Companion License, 빌드 포함 가능. `com.coplaydev.unity-mcp`(git aa5fc638) = **MIT**(저장소 LICENSE 확인 "Copyright (c) 2025 CoplayDev"), Editor 전용·플레이어 빌드 미포함 | 제출 가능 |
 | 레퍼런스 자산 | 0 | Fontainebleau·Book of the Dead·Megascans·Unity Asset Store·Mixamo 자산은 `unity/Assets`에 **반입 0**(docs 검색: 11-05 에셋 분해 측정·비교 용도만, CLAUDE.md "레퍼런스의 에셋·코드는 반입하지 않는다" 준수) | — |
+
+### 2.7 실제 파일 열 — Mac 목록 합산 (1,656파일 · 3,631MiB = 3.81GB)
+
+Mac이 디스크에서 읽은 크기·해상도·길이를 §2 폴더 그룹에 맞춰 합쳤다. 안내 파일 열은 전 그룹 "없음"(예외 Remodel CH1_3 Data의 영수증 1개). 해상도는 그룹 안 최소~최대, mp4 길이·FBX 내부는 Mac도 못 읽었다.
+
+| 그룹(§2 행) | 파일 | 크기 | 해상도 / 길이 | 판정 요약 |
+|---|---|---|---|---|
+| 폰트(+OFL·asset) | 30 | 105.6MB | — | OFL |
+| Audio/Bgm | 16 | 85.3MB | 62.2분 | Suno·ElevenLabs |
+| Audio/Lobby | 6 | 25.5MB | 19.1분 | Suno 5 · 확인 1 |
+| Audio/Startup | 4 | 9.4MB | 7.0분 | Suno 2 · 불명 2 |
+| Audio/Ambient | 1 | 0.1MB | 0.2분 | ElevenLabs |
+| Audio/RM1(+json) | 38 | 0.8MB | 0.7분 | ElevenLabs 36 · CC? 1 |
+| Audio/UI | 20 | 7.8MB | 0.8분 | AI 11 · 자체 2 · CC? 6 · 불명 1 |
+| Audio/SFX | 53 | 2.1MB | 1.7분 | AI 2 · **불명 51** |
+| Audio/루트(+mixer 2) | 19 | 1.2MB | 0.6분 | **불명 17** |
+| StreamingAssets 영상 | 15 | 339.4MB | 길이 미읽음 | AI(Kling 확정 2, 도구 미기록 10, 복원 3) |
+| Art/Characters(Meshy) | 51 | 307.8MB | 2048²~4096² | AI, 정책 교체 |
+| DarkDruid Source | 6 | 65.0MB | 2048² | AI, 정책 교체 |
+| Enemies3D(+json 2) | 32 | 95.1MB | FBX 내장 | AI, 정책 교체 |
+| map/a2 r1 Models | 11 | 2.4MB | — | 자체+CC0 |
+| map/a2/r3(모델·재질·텍스처) | 91 | 207.1MB | 1024²~4096² | 자체+CC0 |
+| map/a2 기타(Poly Haven·ground·hollow 등) | 131 | 177.3MB | 1024²~4096² | CC0+자체 |
+| map/hell_lighting | 9 | 22.9MB | 1024²~2048² | CC0 8 · 기록 없음 1 |
+| map/production_finish | 64 | 120.0MB | 1026² 고정 | AI |
+| map/props | 27 | 18.9MB | 32²~1143×1400 | AI |
+| map/keyshot(FBX 9·텍스처 4·json 1) | 14 | 8.6MB | 1024² | **불명 13** |
+| map/boss_arena | 1 | 2.1MB | 1024² | **불명 1** |
+| Art/enemy | 17 | 26.2MB | 1774×887~8192×1280 | AI(PixelLab) |
+| Art/player | 10 | 0.4MB | 384×512~1008×48 | AI |
+| Art/boss | 7 | 16.7MB | 887×1774~2400×724 | AI |
+| Art/vfx | 79 | 97.2MB | 256²~6144×1152 | AI |
+| ui/skill_icons | 98 | 2.9MB | 118²~420×512 | **불명 98** |
+| ui/inventory | 90 | 29.2MB | 51²~1836×858 | AI |
+| ui/silver_hell | 52 | 9.8MB | 120×9~2560×1440 | AI+자체 |
+| ui/기타 | 87 | 25.9MB | 34²~3200×1456 | AI+자체 |
+| ui/cursors | 24 | 0.1MB | bytes | 자체 추정 |
+| FullscreenWide | 128 | **1,061.2MB** | 1660×700~7680×2160 | AI. 용량 1위(WebGL 300MB 상한의 3.5배, WG 레인 참고) |
+| Loading(+Difficulty) | 74 | 396.0MB | 1672×941~5119×1439 | AI. 용량 2위 |
+| Startup | 23 | 74.3MB | 835×348~2048×1152 | AI |
+| CharacterSelect | 33 | 43.0MB | 64²~3840×2160 | AI+자체 |
+| lobby | 24 | 41.6MB | 384×624~3072×7488 | AI |
+| TitleSignboard(+manifest) | 9 | 24.3MB | 44×203~5760×1620 | AI |
+| PetBubble | 2 | 3.5MB | 1536×1024 | AI |
+| Remodel Decals | 19 | 14.7MB | 256²~1024² | **불명 19** |
+| Remodel Ground(+json 2) | 11 | 57.0MB | 1024²~4260×3031 | AI 파생 |
+| Remodel Mass | 2 | 4.4MB | 1024² | AI |
+| Remodel 기타(씬·Generated·Data·mat·cs) | 123 | 93.9MB | 128²~256² | 자체 |
+| Shaders·Resources/VFX·VFX·QA | 53 | 1.7MB | — | 자체 |
+| Data | 51 | 2.3MB | — | 자체 |
+| 기타(Resources 루트 1) | 1 | 0.0MB | — | 자체 |
+
+4096px 이상 이미지 91장, 오디오 총 92.3분. 권리 불명 202파일의 용량은 약 45MB(skill_icons 2.9 + Decals 14.7 + keyshot 8.6 + 효과음 3.3 + boss_arena 2.1 + Startup 2종·entry_hover 약 12)로 전체의 1.2%지만, 1-1 전투 소리 전부가 들어 있다.
 
 ## 3. 교체 또는 제거 필요 목록
 
@@ -198,4 +254,4 @@ Meshy·Tripo 생성 메시 FBX 44(Characters 11 · DarkDruid 3 · Enemies3D 30)�
 2. 디자인 총괄: R3 스킬 아이콘 98 출처 분리(사용자 원화 vs 미기록) 뒤 재생성 범위 확정.
 3. 맵: R4·R5·R6 제작 기록 복원 또는 CC0 교체.
 4. 아트: §3.4 영상 10개 생성 도구 역추적 → ART_TEAM_MASTER 로그에 추가.
-5. 이 표는 unity/main `64745756d` 기준이다. 자산이 늘면 §2 표에 행을 추가하고 첫 줄 4개 숫자를 갱신한다. 제출 직전(01-05) 1회 재점검한다.
+5. 이 표는 unity/main `64745756d` 기준, 실제 파일 열은 Mac 목록 295c002ff 기준이다. 자산이 늘면 §2 표에 행을 추가하고 첫 줄 4개 숫자를 갱신한다. 제출 직전(01-05) 1회 재점검한다.
