@@ -7,7 +7,7 @@ S1은 에디터 빌드 스크립트 준비 작업이다. Unity 실행·WebGL 빌
 - 작업 브랜치: codex/unity-pc-webgl-slim2-20261105
 - 기준: 72e104989a184c58ec27dcde37bc1674ec37a71e
 - 가져온 스크립트·에디터 메타 원본: origin/claude/unity-pc-devtools-web-20261028 @4af345fc5a1cf375607ace2807177a635e206f86
-- 가져온 .meta는 Editor/DevTools.meta, Editor/DevTools/WebBuild.meta, Editor/DevTools/WebBuild/WebBuild.cs.meta뿐이다. DevTools.meta의 기존 GUID a123889795cecbc468a5a6e96eea33be는 지정 원본의 a89c922b7bf0c1541881283f1daaea8e로 맞췄다. 런타임 자산 .meta는 변경하지 않는다.
+- 새로 가져온 .meta는 Editor/DevTools/WebBuild.meta와 Editor/DevTools/WebBuild/WebBuild.cs.meta다. 상위 Editor/DevTools.meta는 최초 S1 커밋 983de25704에서 옛 브랜치 GUID로 바뀌었으나, CTO 보정에 따라 72e104989의 기존 GUID a123889795cecbc468a5a6e96eea33be와 파일 바이트를 새 커밋으로 복원했다. 하위 새 메타와 코드·런타임 자산 .meta는 이번 보정에서 변경하지 않았다.
 - 구현 파일: unity/Assets/Exoduser/Editor/DevTools/WebBuild/WebBuild.cs
 - 보존 파일: unity/Assets/link.xml
 - 템플릿 지정 PlayerSettings.WebGL.template = "PROJECT:Exoduser"는 제거한다. Exoduser WebGL 템플릿 자산은 가져오지 않는다.
@@ -172,7 +172,7 @@ unity/Assets/link.xml은 UnityEngine.PhysicsModule의 preserve="all" 한 assembl
 | CSV 경로·실패 시 진단 저장 | 462–482; Run 기본 경로527 |
 | 분류별 영수증 구조·Run 영수증 추가 | 161–170,572 |
 
-PhysicsModule 보존의 근거는 unity/Assets/link.xml:2다. Editor 메타의 원본 GUID 근거는 세 .meta 각각2행이다. 위 코드 줄은 이 S1 제출의 WebBuild.cs를 기준으로 한다.
+PhysicsModule 보존의 근거는 unity/Assets/link.xml:2다. 두 신규 Editor 메타의 GUID는 4af345fc5, 기존 DevTools.meta의 GUID는 72e104989를 따르며 각 .meta 2행이다. 위 코드 줄은 이 S1 제출의 WebBuild.cs를 기준으로 한다.
 
 ### 검증 범위
 
@@ -181,6 +181,6 @@ PhysicsModule 보존의 근거는 unity/Assets/link.xml:2다. Editor 메타의 �
 - 최종 컴파일: **exit0, 오류0, 경고0**. 첫 시도에서 object 선택 매개변수의 문자열 기본값 때문에 CS1763 오류2건이 났으며, 기본값을 null로 고친 두 번째 시도에서 통과했다. 실제 컴파일 실패는1회다.
 - 컴파일한 소스 SHA-256: d48fae47af939ee6a74d87da831fac589ecfbd5ce4fd38147139617da9756155.
 - Node 정적 검증: **13/13 통과**. 원본4af345fc5의 legacy ApplyWebTextures, CJK hold/restore, Run 기본·영상·기존 영수증 경로를 비교했다. 요청된 템플릿 제거·보고 범위 확대와 gated slim2 추가를 제외한 기존 경로는 같았다.
-- 같은 정적 검증에서 공통 importer 필드 대입0, 보호 규칙8접두사+17정확경로, 기준 Git 이미지219개 존재, Editor 메타3개 원본 바이트 일치, link.xml PhysicsModule1항목을 확인했다.
+- 최초 정적 검증에서 공통 importer 필드 대입0, 보호 규칙8접두사+17정확경로, 기준 Git 이미지219개 존재, Editor 메타3개 원본 바이트 일치, link.xml PhysicsModule1항목을 확인했다. 후속 GUID 보정에서는 DevTools.meta가 72e104989와 바이트 일치하고 하위 신규 메타2개·WebBuild.cs가 983de25704와 무변경임을 확인했다. 코드 변경이 없어 오프라인 컴파일·Unity 실행은 다시 하지 않았다.
 
 컴파일은 Unity API의 형식·호출 서명을 확인한 것이다. AssetDatabase 임포트 실행, 플랫폼 포맷 validator 결과, 재임포트 후 크기·형식·CPU readback, WebGL 빌드, MeshCollider 오류 재현·해결, 브라우저 코덱·메모리·성능·용량은 **미확인**이다. Unity 실행·실제 빌드·Importer 측정은0회이며, 측정값을 미리 채우지 않았다. 공통 밉맵 변경 허용 및 장음 AAC 대체 허용에 대한 사용자 판단도 남아 있다.
