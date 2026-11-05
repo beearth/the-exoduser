@@ -7,6 +7,7 @@
 - **이 문서의 상태:** §1(스마트메시 정체)·§1b(생성 도구 옵션 전수표, CTO 추가 지시)·§2(8단계 절차서 + 도구별 옵션 전수)는 클라우드 웹 조사로 채웠다. §3(손에 익히는 과제)은 Blender를 쓸 수 없는 세션이라 **"Mac 실습 대기"**로 비워 두었다. 전·후 비교 이미지는 0장이므로 브리프 §0 기준으로는 **미완(글만 있음)**이다. 합격 조건 중 "§1 확인 + §2 8단계 출처·설정값"만 채웠다.
 - **생성 메시 폐기(11-05 09:30):** Tripo·Meshy의 메시 *생성*은 쓰지 않는다. 이 문서에서는 두 서비스를 **"업로드한 스캔·스컬프트 메시의 리토폴로지 기능 단독"** 관점으로만 본다.
 - **출처 표기:** `[열림]` = 이 세션에서 URL을 직접 열어 본문을 확인. `[발췌]` = 검색 결과 발췌만 확인(본문 못 열음). `[미검증]` = 발췌조차 상충하거나 없음. 이 세션의 네트워크 정책에서 다음 호스트가 열리지 않았다: docs.blender.org, projects.blender.org, docs.unity3d.com, docs.unity.com, exoside.com, tripo3d.ai, docs.meshy.ai, superhivemarket.com, cgchannel.com, helpx.adobe.com, adobe.com, api.polyhaven.com. github.com(raw 포함)만 열렸다. Mac 실습 때 `[발췌]` 항목의 원문을 한 번 열어 설정 이름을 대조한다.
+- **범위 조정(CTO 11-05 15:05, 사용자 "모든 자원 캐릭터 심화"):** 도구 매뉴얼은 `MANUAL/TOOLS/`에 도구별 8칸 파일(DIRECTION_RESET 09:50 틀)로 쓰며 **캐릭터 도구가 우선**이다 — ① [Rigify 리깅·본 표준·Humanoid/UE 호환](TOOLS/BLENDER_RIGIFY_RIG.md) ② [웨이트 전사](TOOLS/BLENDER_WEIGHT_TRANSFER.md) ③ [모듈러 파트·바디 마스크](TOOLS/BLENDER_MODULAR_PARTS_BODYMASK.md) ④ [소켓·무기 부착](TOOLS/SOCKET_WEAPON_ATTACH.md) ⑤ [Unity bones 재매핑·UE Leader Pose](TOOLS/UNITY_BONES_REMAP_UE_LEADERPOSE.md) ⑥ 그다음 이 문서의 §1b·§2(리토폴로지·UV·베이크·LOD·생성 옵션표)를 8칸 파일로 분리. 색인: [TOOLS/README.md](TOOLS/README.md). 이미 쓴 §1·§1b·§2는 유지한다.
 - **우리 환경 사실(repo에서 확인):** Unity `6000.4.8f1`(`unity/ProjectSettings/ProjectVersion.txt`), URP `17.6.0`, ProBuilder `6.1.4`(`unity/Packages/manifest.json`). Polybrush·glTFast는 **미설치**. 브리프가 가리키는 "매뉴얼 01·15"는 아직 repo에 없다(`docs/0마스터플랜/MANUAL/`은 이 문서로 신설).
 - **유료 지출 0 원칙:** 아래의 유료 도구(Quad Remesher·Substance·Marmoset·UVPackmaster·Smart Remesh)는 체험판·무료판 범위만 적었다. 구매는 사용자 승인 사안이다.
 
@@ -415,3 +416,4 @@
 
 - 2026-11-05 클라우드 TM 레인(브랜치 `claude/unity-cloud-tool-mastery-20261105`): 초판. §1 후보 16종 확인, §2 8단계 출처·설정값·대안 채움(직접 열린 URL 6개는 github.com 계열, 그 외 공식 문서는 검색 발췌), §3 Mac 실습 대기, §4 미검증 13건.
 - 2026-11-05 2차(CTO 추가 지시 "옵션들을 다 쓰고 있나"): §1b 생성 도구(Tripo·Meshy·Hunyuan3D·Rodin) 옵션 전수표 + 사실 확인(`meshy_generate.cjs`가 meshy-6·quad·target_polycount 30000 고정 전송 → 2~4만△ 유입 원인), §2 각 단계에 "옵션 전수 + 우리 값" 표, §3b 옵션 비교판 과제(Mac·무료 티어), §4 미검증 13→17건.
+- 2026-11-05 3차(CTO 범위 조정 15:05, 캐릭터 도구 우선): `MANUAL/TOOLS/` 신설 — README 색인 + 캐릭터 도구 5장(Rigify 리깅·웨이트 전사·모듈러 파트/바디 마스크·소켓 부착·Unity bones 재매핑/UE Leader Pose)을 8칸 틀로 작성(클라우드 조사, 실습 칸 Mac 대기). 소품 파이프라인 8칸 분리는 그다음.
