@@ -12,6 +12,19 @@
 - 모캡 서비스 입력: mp4/mov, 서비스별 길이 상한(Move One 무료 30초, DeepMotion 무료 클립 10~20초 보도 상충, Rokoko 월 30초).
 
 ## ③ 옵션 전수표
+### ③-0 영상 생성 서비스 비교 — Kling vs Higgsfield (CTO 보충 11-05, 사용자 "요즘 힉스필드가 잘한다던데")
+공식 페이지(kling.ai·docs.higgsfield.ai·higgsfield.ai)는 이 세션에서 열리지 않아 전부 `[발췌]`다. 기억 기반 서술은 없고, 발췌가 없는 칸은 `[미검증]`으로 둔다.
+
+| 항목 | **Kling**(Kuaishou, 직접 MCP 1.3.3) | **Higgsfield**(플랫폼: Kling 3.0/2.6 Pro·Veo 3.1·Wan·Seedance 등 35+ 모델 + 자체 DoP/Soul 모델·카메라 프리셋 70~100+) | 근거(접속) |
+|---|---|---|---|
+| ① 입력 | 텍스트 / 이미지 / **Motion Control: 참조 동작 영상(3~30초, 권장 5~12초) + 캐릭터 이미지(전신이면 영상도 전신, 최소 720p·짧은 변 340px)** / Omni-Ref / 모션 제어(MCP 기능 목록) | 텍스트 / 이미지(DoP I2V: 이미지 + 프롬프트 + Motion 드롭다운 + seed) / 모델별 엔드포인트(Kling 3.0 포함) / 참조 동작 클립 입력은 **Higgsfield 자체 모델에는 미확인**(묶인 Kling 모델 경유 가능성 `[미검증]`) | kling.ai/blog/ai-motion-transfer-video-tutorial `[발췌]`; clipia.ai kling-motion-control `[발췌]`; vercel.com kling-v3.0-motion-control `[발췌]`; docs.florafauna.ai higgsfield-dop `[발췌]`; API연결_가이드 §21 |
+| ② 전신·고정 카메라·단색 배경·컷 없음 보장 옵션 | **Camera Control**(pro·kling-v1-5·5초 조건, ComfyUI 노드 기준) + negative_prompt(≤2500자) + Motion Control은 "정적 카메라·1인·전신" 권장 — 보장은 아니고 프롬프트·네거티브·참조 영상으로 유도 | **카메라 프리셋**(Dolly·Crane·Static 등 70~100+)이 핵심 기능 → "Static/고정" 프리셋 존재 여부 `[미검증]`; 프리셋은 카메라 움직임을 더하는 쪽이 대부분이라 모캡 입력에는 **프리셋 미사용·고정 프롬프트**가 안전. 단색 배경·컷 없음은 양쪽 모두 프롬프트 유도만 | docs.comfy.org kling-camera-control-t2v `[발췌]`; creatify·theneuron 리뷰 `[발췌]` |
+| ③ 길이·fps·해상도 | 5 / 10초(std·pro), 3.0은 초당 과금(720p·1080p·4K); fps 공식 미확인(보도 30fps `[미검증]`); Motion Control 출력 ≤1080p | 3~5초(모델별), 720p~1080p, 8K 업스케일 별도; fps 보도 30 `[미검증]`; Kling 3.0 경유 시 Kling 사양 | apidoc.cometapi kling t2v `[발췌]`; fast.io kling review `[발췌]`; toolbit·dev.to Higgsfield `[발췌]` |
+| ④ 무료/크레딧·우리 승인 상태 | 유료, **사용자 승인됨**(API연결_가이드 §15, 수량·요금·기간 예산 확인 뒤). 3.0 Std 720p 무음 6크레딧/초(5초=30), 구 모델 5초 Std 10크레딧 | Starter $19/270크레딧 · Plus $59(연 $47)/1,200 · Ultra $129(연 $99)/3,000; 무료 = 0크레딧·영상 불가·비상업·워터마크(2026-09 가격표 기준, 구 "일 10크레딧" 보도 상충); Kling 3.0 5초 720p ≈10크레딧(리뷰 1건). **승인 상태: API연결_가이드 §15 "영상 = Kling 및 Higgsfield", §52~53 앱 연결·직접 MCP 잔액 조회 확인(10/31) — 연결은 돼 있으나 "유료 사용 승인" 문구는 Kling에만 있음 → Higgsfield 유료 생성은 승인 필요로 표기** | heygen higgsfield-pricing(2026-10) `[발췌]`; krea higgsfield-pricing `[발췌]`; creatify is-higgsfield-free `[발췌]`; API연결_가이드 §13·15·52·53·144 |
+| ⑤ 영상 모캡 입력 조건과의 일치 | 모캡 요구(전신 프레임 안·고정 카메라·단색 배경·30fps·2~4초·1인·소품 최소)에 **Motion Control**이 가장 가깝다: 우리가 찍은 짧은 참조 동작(사용자 연기 2~3초)을 LOCK 캐릭터 이미지에 입히면 "동작은 사람 것, 외형은 캐릭터" → 모캡 지터는 참조 영상 품질에 종속 | Higgsfield 자체 모델은 카메라 연출 특화라 모캡 입력(고정·전신)과 방향이 반대; Kling 3.0을 Higgsfield에서 쓰면 조건은 Kling과 같고 **크레딧 체계·승인만 다름** | 종합(위 발췌) |
+
+**공정 비교 실험안(Mac, 승인 범위 안):** 같은 프롬프트 "대검을 든 전신 남성 전사, 측면 고정 카메라, 단색 배경, 수평 베기 1회, 3초"(영문 병기, negative: camera movement, cut, zoom, multiple people, cropped body) → Kling(직접 MCP, Std 5초→3초 트림) 1편 / Higgsfield(동일 프롬프트, 프리셋 없음, 모델은 **Kling 3.0 경유와 자체 DoP 2편** — 플랫폼 효과와 모델 효과를 분리) → 같은 영상 모캡(Rokoko Vision Starter) → 수치: 프레임 수, 관절 떨림(손 본 프레임 간 속도 스파이크 수 >2 m/s), 발 미끄러짐(접지 구간 발 본 수평 이동 cm), 팔 길이 변동(프레임 간 상완 길이 표준편차), 모캡 실패 프레임 수. 결과표를 ⑧에, 크레딧은 SPEND_LOG에. Higgsfield 유료 생성은 **사용자 승인 뒤**.
+
 ### ③-1 Kling(승인 도구, 전용 MCP 1.3.3 — API연결_가이드)
 | 옵션 | 무엇을 바꾸나 | 우리 값 | 근거 |
 |---|---|---|---|
@@ -55,7 +68,8 @@
 - 순수 측면 뷰·소품 든 영상(다리 겹침·검이 팔을 가려 추적 실패).
 - 생성 영상의 팔 길이 변동(프레임 간 비일관성)을 모캡이 그대로 뼈 길이 변화로 받음 → 클린업 없이 반입 금지.
 - 무료 비상업 티어 결과를 상용 빌드에 넣는 것.
-- Kling 추가 충전·신규 구독을 승인으로 해석하는 것(API연결_가이드 §96).
+- Kling 추가 충전·신규 구독을 승인으로 해석하는 것(API연결_가이드 §96). Higgsfield는 연결·잔액 조회만 확인된 상태로, 유료 생성은 별도 승인 뒤.
+- Higgsfield 카메라 프리셋(Dolly·Crane·Orbit 등)을 모캡 입력 영상에 적용하는 것(고정 카메라 조건 위반).
 - "출처 없는 절차 생성 금지"와의 관계: 각 서비스 수치는 위 URL 발췌이고 상충 항목(DeepMotion 클립 길이·무료 FBX, Move One 무료 크레딧, Rokoko 상업 조건)은 `[미검증]`으로 표기했다. 실습 때 서비스 UI의 실제 설정·크레딧 차감·약관 문구를 캡처해 ⑧에 남기고, 그때까지 이 경로를 채택 결정의 근거로 쓰지 않는다.
 
 ## ⑧ 실습 기록

@@ -15,7 +15,7 @@
 | 5c | [pixel_fx.md](pixel_fx.md) | 임팩트 플립북 재료(코드 이펙트 244, 팔레트·타이밍 맞춤만) | 〃 |
 | 5d | [sprite_gen.md](sprite_gen.md) | 시트 조립·영상 프레임/루프·배경 분리 **유틸만**(생성 경로 금지) | 조사 완료, 실습 선택 |
 | 5e | [cascadeur.md](cascadeur.md) | 키 포즈 + 물리 보간(AutoPosing·AutoPhysics). Free는 .casc 전용·비상업, 반입은 Indie(유료 승인) | 조사 완료, Mac 실습(대검 베기 키 5개) 대기 |
-| 5f | [video_to_motion.md](video_to_motion.md) | Kling 영상 → Move One/DeepMotion/Rokoko Vision 모캡 → FBX 리타깃. 무료 티어는 실험만(비상업/상업 조건 미확인) | 조사 완료, 실습 1회 승인 뒤 |
+| 5f | [video_to_motion.md](video_to_motion.md) | Kling·Higgsfield 영상 → Move One/DeepMotion/Rokoko Vision 모캡 → FBX 리타깃. 무료 티어는 실험만(비상업/상업 조건 미확인) | 조사 완료, 실습 1회 승인 뒤 |
 | — | 2dimg2motion(정지 이미지→14프레임) | 채택 안 함 — TOOL_MASTERY §1b-6 한 줄 | — |
 | 6 | (분리 예정) 리토폴로지·UV·베이크·LOD·생성 옵션표 | 소품 파이프라인 | 내용은 [../TOOL_MASTERY_20261105.md](../TOOL_MASTERY_20261105.md) §1b·§2에 있음(유지). 캐릭터 5장 실습 뒤 8칸 파일로 분리 |
 
