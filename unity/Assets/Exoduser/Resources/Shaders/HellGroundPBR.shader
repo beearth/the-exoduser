@@ -18,6 +18,7 @@ Shader "EXODUSER/HellGroundPBR"
    #pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
    #pragma multi_compile_fragment _ _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3
    #pragma multi_compile_fog
+   #pragma multi_compile_local_fragment _ _A2_CLEAN_GROUND
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DBuffer.hlsl"
@@ -26,6 +27,9 @@ Shader "EXODUSER/HellGroundPBR"
    TEXTURE2D(_RockNormal);SAMPLER(sampler_RockNormal);TEXTURE2D(_RockRough);SAMPLER(sampler_RockRough);
    TEXTURE2D(_ForestMap);SAMPLER(sampler_ForestMap);TEXTURE2D(_ForestNormal);SAMPLER(sampler_ForestNormal);TEXTURE2D(_ForestRough);SAMPLER(sampler_ForestRough);
    TEXTURE2D(_SoilMap);TEXTURE2D(_SoilNormal);TEXTURE2D(_SoilRough);TEXTURE2D(_RootMap);TEXTURE2D(_RootNormal);TEXTURE2D(_RootRough);
+   #ifdef _A2_CLEAN_GROUND
+   SAMPLER(sampler_SoilMap);   // 이 변형에서는 _ForestMap 표본이 모두 사라져 sampler_ForestMap을 쓸 수 없다.
+   #endif
    TEXTURE2D(_FieldCover);SAMPLER(sampler_FieldCover);TEXTURE2D(_FieldSdf);SAMPLER(sampler_FieldSdf);TEXTURE2D(_FieldMoss);TEXTURE2D(_FieldMossNormal);TEXTURE2D(_FieldMossRough);
    CBUFFER_START(UnityPerMaterial)
    float4 _BaseMap_ST;half4 _BaseColor;half _Cutoff,_Smoothness,_Metallic,_ForestBlend,_ForestTextureMix,_SoilTextureMix,_FullField;
@@ -81,6 +85,18 @@ Shader "EXODUSER/HellGroundPBR"
      input.normalWS=normalize(mul(nt,float3x3(t,b,n)));
      a*=lerp(.8,1.12,macro);
     }
+    #ifdef _A2_CLEAN_GROUND
+    // 출처: BRIEF_CLEAN_MAP_20261105 §1 M1. --a2-clean 전용 변형, 기본 변형에는 컴파일되지 않는다.
+    // A2_ForestSoil(forest_ground_04) 단순 타일. 512px/m 역산 1024px/512=2.0u. 1u=1m 가정, 문서 근거 없음.
+    // 색 tint와 노멀 강도는 위 _FullField의 dirt/soilFine 값을 그대로 쓴다.
+    {
+     float2 cleanUV=i.world.xz/2.0;
+     mossMix=0;
+     a=SAMPLE_TEXTURE2D(_SoilMap,sampler_SoilMap,cleanUV).rgb*half3(.55,.48,.36);
+     nt=UnpackNormalScale(SAMPLE_TEXTURE2D(_SoilNormal,sampler_SoilMap,cleanUV),.65);
+     input.normalWS=normalize(mul(nt,float3x3(t,b,n)));
+    }
+    #endif
     SurfaceData surface=(SurfaceData)0;surface.albedo=a;surface.alpha=1;surface.occlusion=1;surface.normalTS=nt;surface.specular=.04;
     half rough=SAMPLE_TEXTURE2D(_RockRough,sampler_RockRough,tile).r;surface.smoothness=lerp(.24,.50-.25*rough,rock);surface.metallic=0;
     surface.smoothness=lerp(surface.smoothness,.36-.16*rough,_ForestBlend);
@@ -89,6 +105,9 @@ Shader "EXODUSER/HellGroundPBR"
     half leafRough=SAMPLE_TEXTURE2D(_ForestRough,sampler_ForestRough,leafUV).r;surface.smoothness=lerp(surface.smoothness,.12+.18*(1-leafRough),leafMix);
     surface.smoothness=lerp(surface.smoothness,.22+.23*(1-SAMPLE_TEXTURE2D(_FieldMossRough,sampler_ForestRough,i.world.xz/2.6).r),mossMix);
     if(_FullField>.5)surface.smoothness=lerp(.44-.24*SAMPLE_TEXTURE2D(_SoilRough,sampler_ForestMap,i.world.xz/2.3).r,.24+.18*(1-SAMPLE_TEXTURE2D(_FieldMossRough,sampler_ForestMap,i.world.xz/2.6).r),mossMix);
+    #ifdef _A2_CLEAN_GROUND
+    surface.smoothness=.44-.24*SAMPLE_TEXTURE2D(_SoilRough,sampler_SoilMap,i.world.xz/2.0).r;
+    #endif
     #if defined(_DBUFFER)
     ApplyDecalToSurfaceData(i.positionCS,surface,input);
     input.bakedGI=SampleSH(input.normalWS);
