@@ -193,7 +193,7 @@ namespace Exoduser.UnityPort
             bool stump=id=="Scanned_Stump";
             bool hollow=id=="Hollow_Loft_Tree";
             bool foreground=id=="Scanned_Foreground_Log";
-            var prefab=Resources.Load<GameObject>(foreground?"Art/map/a2/foreground/Models/A2_Scanned_Foreground_Log":hollow?"Art/map/a2/hollow/Models/A2_Hollow_Loft_Tree":stump?"Art/map/a2/stump/Models/A2_Scanned_Stump":roots?"Art/map/a2/roots/Models/A2_"+id:id=="Foam_Bank"?"Art/map/a2/Models/RF_Foam_Bank":"Art/map/a2/r3/Models/RF3_"+source);
+            var prefab=Resources.Load<GameObject>(foreground?(System.Array.IndexOf(System.Environment.GetCommandLineArgs(),"--a2-tm-log")>=0?"Art/map/a2/tm/Models/A2_TM_Log":"Art/map/a2/foreground/Models/A2_Scanned_Foreground_Log"):hollow?"Art/map/a2/hollow/Models/A2_Hollow_Loft_Tree":stump?"Art/map/a2/stump/Models/A2_Scanned_Stump":roots?"Art/map/a2/roots/Models/A2_"+id:id=="Foam_Bank"?"Art/map/a2/Models/RF_Foam_Bank":"Art/map/a2/r3/Models/RF3_"+source);
             if(prefab==null){Debug.LogError("[A2] 모듈 누락 "+id);return null;}
             float placementGround=NativeRemodel3D.GroundY(x,z);
             float height=placementGround+lift+(id=="Dead_Leaf_Litter"?.01f:-.08f);

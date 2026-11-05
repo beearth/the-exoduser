@@ -1,0 +1,122 @@
+{
+ "input": "dead_tree_trunk_02.gltf",
+ "blender": "4.5.15 LTS",
+ "stages": {
+  "retopo": {
+   "method": "voxel-decimate",
+   "voxel_size_m": 0.012,
+   "voxel_tris": 116576,
+   "target_quads": 4000,
+   "tris": 7998,
+   "verts": 4003,
+   "area_m2": 5.709,
+   "low_to_high_mm_rms_max": [
+    0.0,
+    0.0
+   ],
+   "high_to_low_mm_rms_max": [
+    3.08,
+    20.32
+   ]
+  },
+  "uv": {
+   "seam_plan": "바닥 세로 심 1개 + 양끝 5% 고리 심 (스크립트로 지정, 스마트 UV 아님)",
+   "seam_edges": 159,
+   "islands": 4,
+   "tex": [
+    2048,
+    1024
+   ],
+   "target_px_per_m": 512.0,
+   "area_weighted_px_per_m_p5_p50_p95": [
+    244.2,
+    454.4,
+    585.5
+   ],
+   "sliver_faces_removed": 6,
+   "used_share": 0.56,
+   "pack_scale": 0.886,
+   "padding_px": 12
+  },
+  "bake": {
+   "engine": "Cycles CPU",
+   "selected_to_active": true,
+   "cage_extrusion_m": 0.03,
+   "max_ray_m": 0.1,
+   "margin_px": 16,
+   "ao_distance_m": 1.0,
+   "maps": {
+    "Normal": {
+     "type": "NORMAL",
+     "size": [
+      2048,
+      1024
+     ],
+     "samples": 8
+    },
+    "BaseColor": {
+     "type": "DIFFUSE",
+     "size": [
+      2048,
+      1024
+     ],
+     "samples": 8
+    },
+    "Rough": {
+     "type": "ROUGHNESS",
+     "size": [
+      1024,
+      512
+     ],
+     "samples": 8
+    },
+    "AO": {
+     "type": "AO",
+     "size": [
+      1024,
+      512
+     ],
+     "samples": 256
+    }
+   },
+   "ao_highpass_noise": 0.02654
+  },
+  "lod": {
+   "chain": [
+    7992,
+    3996,
+    1998
+   ],
+   "method": "Decimate COLLAPSE, UV 유지, 같은 텍스처 공유",
+   "dev_mm_rms_max_to_high": [
+    [
+     0.01,
+     0.8
+    ],
+    [
+     1.48,
+     7.54
+    ],
+    [
+     2.5,
+     8.35
+    ]
+   ]
+  },
+  "export": {
+   "fbx": "A2_TM_Log.fbx",
+   "axis": "-Z forward, Y up",
+   "smooth": "FACE",
+   "bytes": 445324
+  }
+ },
+ "high": {
+  "tris": 83128,
+  "size_m": [
+   4.051,
+   1.056,
+   1.055
+  ],
+  "area_m2": 6.026
+ }
+}
