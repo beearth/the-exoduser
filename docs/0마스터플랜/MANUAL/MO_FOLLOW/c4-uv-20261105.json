@@ -1,0 +1,62 @@
+{
+ "A_helm": {
+  "tris": 1648,
+  "islands": 126,
+  "uv_used": 0.494,
+  "density_p5_p95_ratio": 1.24
+ },
+ "A_chest": {
+  "tris": 2904,
+  "islands": 189,
+  "uv_used": 0.43,
+  "density_p5_p95_ratio": 1.22
+ },
+ "A_pauldron.L": {
+  "tris": 672,
+  "islands": 57,
+  "uv_used": 0.618,
+  "density_p5_p95_ratio": 1.32
+ },
+ "A_glove.L": {
+  "tris": 908,
+  "islands": 55,
+  "uv_used": 0.532,
+  "density_p5_p95_ratio": 1.23
+ },
+ "A_greave.L": {
+  "tris": 1324,
+  "islands": 64,
+  "uv_used": 0.498,
+  "density_p5_p95_ratio": 1.2
+ },
+ "B_helm": {
+  "tris": 1648,
+  "islands": 137,
+  "uv_used": 0.477,
+  "density_p5_p95_ratio": 1.33
+ },
+ "B_coat": {
+  "tris": 7396,
+  "islands": 358,
+  "uv_used": 0.515,
+  "density_p5_p95_ratio": 1.21
+ },
+ "B_shoulder.L": {
+  "tris": 788,
+  "islands": 59,
+  "uv_used": 0.599,
+  "density_p5_p95_ratio": 1.29
+ },
+ "B_bracer.L": {
+  "tris": 684,
+  "islands": 58,
+  "uv_used": 0.619,
+  "density_p5_p95_ratio": 1.2
+ },
+ "B_boot.L": {
+  "tris": 1184,
+  "islands": 55,
+  "uv_used": 0.429,
+  "density_p5_p95_ratio": 1.22
+ }
+}
