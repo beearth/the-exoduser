@@ -427,3 +427,4 @@
 - 2026-11-05 2차(CTO 추가 지시 "옵션들을 다 쓰고 있나"): §1b 생성 도구(Tripo·Meshy·Hunyuan3D·Rodin) 옵션 전수표 + 사실 확인(`meshy_generate.cjs`가 meshy-6·quad·target_polycount 30000 고정 전송 → 2~4만△ 유입 원인), §2 각 단계에 "옵션 전수 + 우리 값" 표, §3b 옵션 비교판 과제(Mac·무료 티어), §4 미검증 13→17건.
 - 2026-11-05 3차(CTO 범위 조정 15:05, 캐릭터 도구 우선): `MANUAL/TOOLS/` 신설 — README 색인 + 캐릭터 도구 5장(Rigify 리깅·웨이트 전사·모듈러 파트/바디 마스크·소켓 부착·Unity bones 재매핑/UE Leader Pose)을 8칸 틀로 작성(클라우드 조사, 실습 칸 Mac 대기). 소품 파이프라인 8칸 분리는 그다음.
 - 2026-11-05 4차(CTO 전달, 사용자 공유 오픈소스 4종): TOOLS/pixel_oe.md·pixel_fx.md·sprite_gen.md 추가(8칸, Mac 실습 입력·명령·기대 출력 기재), §1b-6 판정 요약(2dimg2motion 채택 안 함 사유 포함). sprite-gen은 핵심이 AI 생성이라 유틸만 허용으로 정정.
+- 2026-11-05 5차(CTO 전달, 사용자 질문 "애니메이션같이 모션을 제작하면 안 되나"): TOOLS/cascadeur.md(Free = .casc 전용·비상업 → 반입은 Indie 유료 승인; 대검 베기 키 5개 실습 절차), TOOLS/video_to_motion.md(Kling→Move One/DeepMotion/Rokoko Vision→리타깃; 무료 티어는 실험만, 상업 반입은 유료·조건 확인) 추가. 두 경로 모두 D-MO-1 결정의 추가 후보로만 둔다.
