@@ -1,13 +1,13 @@
 # M3 거대 고목 정적 소품 가공 — 2026-11-05
 
-상태: **가공 실행 완료, UV 밀도 목표 미달. 개선 완료를 주장하지 않으며 채택 판정은 하지 않음.** 삼각형은21,479→11,999로 줄였지만, UV 밀도 중앙값은65.209px/m로 목표512px/m의 약12.74%다. 원본4096 맵 기준 계산값129.260px/m보다도 낮다. 원본 형상 결함이 남아 비교 이미지는 Git에 등재하지 않는다. Unity 반입·접지·실게임 화면 검수는 미실시이며, 채택 판정은 Mac·사용자 몫이다.
+상태: **가공 실행 완료, UV 밀도 목표 미달. 개선 완료를 주장하지 않으며 채택 판정은 하지 않음.** 삼각형은21,479→11,999로 줄였지만, UV 밀도 중앙값은65.209px/m로 목표512px/m의 약12.74%다. 원본4096 맵 기준 계산값129.260px/m보다도 낮다. 원본 형상 결함이 남아 비교 이미지는 Git에 등재하지 않는다. Unity 반입·이끼 전이·그림자·실게임 화면 검수는 미실시이며, 채택 판정은 Mac·사용자 몫이다. 후속 정정으로 루트 플레어 메시 제작은 범위에 포함했지만 적용 가능한 제작 절차 출처가 없어 미실시다(아래 보정 절).
 
 - 문서 작업 기준: origin/unity/main @ 412bdee09.
 - 입력 자산 기준: 72e104989의 RF_Ancient_Rotten_Tree FBX와 PNG 7개.
 - 절차 기준: origin/claude/unity-mac-tool-mastery-20261105 @ 1e61370814.
 - 외부 산출 위치: I:/EXODUSER-Storage/asset-teardown/clean-map/m3/.
 - Git에 남긴 산출물: 결과 문서와 CHANGELOG_SYNC 갱신, 이미지0장. 가공 모델·베이크 텍스처·임시 스크립트·진단 이미지는 Git 밖에 둔다.
-- 제작 제한: Decimate Collapse + Shrinkwrap, UV 재배치, Cycles Normal/AO 베이크, LOD만 수행한다. Quadriflow·복셀 재구성·생성 메시·Unity 실행은 하지 않는다.
+- 제작 범위(CTO 보정): 핵심은 LOD 3단·UV 재배치·루트 플레어 메시다. 기존 Decimate/베이크 실행은 이력과 수치로만 남기며 미달 UV의 개선을 주장하지 않는다. 루트 플레어는 절차 출처가 확인될 때만 제작한다. 이끼 전이·그림자·Unity 실행은 제외한다.
 
 재현 도구는 G:/tools/blender/blender-4.5.15-windows-x64/blender.exe이며 --background --factory-startup -noaudio --threads 4 --python-exit-code 1로 실행했다. 외부 산출 폴더에서 **m3_inspect.py→m3_geometry.py→m3_finish.py→m3_validate_lod.py→m3_verify.py** 순서로 재현한다. m3_uv.py는 finish의UV 단계 모듈이고 m3_lod_diagnostic.py는 메시를 바꾸지 않는 진단이다. 단계별 출처는 stages.log에 기록했다. E:/asset-teardown-scratch/m3는 TEMP/TMP/TMPDIR와 BLENDER_USER_RESOURCES/CONFIG/SCRIPTS/DATAFILES 위치로만 쓴다. Git 코드·런타임 자산 변경은 없다.
 
@@ -151,7 +151,7 @@ Blender FBX importer의 import_fbx.py:1916과 같은 mesh.validate(clean_customd
 
 - 정확한UV 중첩 면적·늘어남의 위치·기존노멀 보존·베이크의 실질 이득: 미확인. 래스터 추정과 파일생성만으로 통과라고 판단하지 않음.
 - 단면·곁가지·틈·원본 분리 성분의 완전 보존: 미확인. 큰 윤곽 관찰과11,999△ 결과만으로 보증하지 않음.
-- 개별 현재 입력 FBX의 원본 스캔/라이선스 파일 대응: 미확인.
+- 개별 현재 입력 FBX의 원본 스캔/라이선스 파일 대응: **미확인 → 교체 후보**. 아래 아트팀·영수증·LC 추가 대조에서도 개별 연결 근거는 확인하지 못함.
 
 ### 미실시
 
@@ -159,5 +159,49 @@ Blender FBX importer의 import_fbx.py:1916과 같은 mesh.validate(clean_customd
 - 원본의찢어진 패치·공동·접합부에 대한 추가 조형: 구체 제작절차 출처 없음, 미실시.
 - 8192² 확대: 사용자 허용 없음, 미실시.
 - Quadriflow·복셀 재구성·생성메시: 이번 지시에서 금지, 미실시.
-- Unity 재질·임포트·접지·LODGroup과 게임카메라1x 품질·성능: 이번 범위 밖, 미실시.
+- 루트 플레어 메시: 이번 범위에 포함. 현재 RF 고목에 적용할 제작 절차는 **출처 없음, 미실시**(제안과 실제 절차를 아래에서 구분).
+- Unity 재질·임포트·이끼 전이·그림자·LODGroup과 게임카메라1x 품질·성능: 이번 범위 밖, 미실시.
 - 최종 채택·합격 판정: Mac·사용자 몫이며 이 작업에서 판정하지 않음.
+
+## M3 보정 추가 — 루트 플레어 범위·개별 출처 대조
+
+출처: 사용자/CTO 「M3 보정」(2026-11-05). 이 추가분은 같은 브랜치의 ba849e993b 뒤에 기록한다. LOD 3단 + UV 재배치 + 접지 메시(루트 플레어)가 핵심이다. “접지 전체 제외”는 철회하고, **메시 제작은 포함 / 이끼 전이·그림자는 Unity 단계로 제외**한다. 이번 추가분에서 Blender·Unity 실행, 모델·텍스처·이미지 변경은 모두0이다. 이전 계측과 산출물은 그대로다.
+
+### Decimate 이득은 수치만
+
+| 측정 | 값 | 해석 범위 |
+|---|---:|---|
+| 원본→LOD0 삼각형 | 21,479→11,999△ | 9,480△ 감소(44.14%). 이미 가공된 저폴리 원본의 감량 수치 |
+| 원본→LOD0 RMS/최대 | 3.2924 / 21.6761mm | 정점 전수→삼각형 최근접 거리. 미관·접지 개선이나 실게임 성능 향상을 뜻하지 않음 |
+
+새 고해상도 형상을 복원했다거나 Decimate로 맵이 깔끔해졌다고 판단하지 않는다. UV 목표 미달·원본 형태 문제와 루트 플레어 제작 여부는 감량 수치와 별개다.
+
+### 루트 플레어: 관련 제안과 적용 가능한 절차 구분
+
+출처: origin/claude/unity-cloud-tool-mastery-20261105 @0e95d26d1의 docs/0마스터플랜/MANUAL/TOOL_MASTERY_20261105.md §2.1·§2.2·§2.8, origin/unity/main @8f52937e2의 BRIEF_CLEAN_MAP_20261105.md M3행, Mac TM @1e61370814의 문서·파이프라인.
+
+| 확인한 근거 | 실제 내용 | 이번 적용 |
+|---|---|---|
+| BRIEF_CLEAN_MAP_20261105.md:19 | M3에 루트 플레어·이끼 전이·그림자를 접지 목표로 열거 | 목표·범위의 출처. 메시 제작 순서 자체는 아님 |
+| TOOL_MASTERY_20261105.md:182–184, §2.1 | 복셀0.05→0.02m·Clay Strips 강도0.5·Dyntopo로 플레어를 포함한 약50만△ 스컬프트 제안, Mac 실습 대기 | 현재 정적 저폴리 M3의 제한과 다른 경로이므로 수행하지 않음 |
+| 같은 문서:213–216, §2.2 | 쿼드 리토폴로지 후 RetopoFlow/Poly Build로 플레어·실루엣 손질 | 이번 쿼드 금지와 다른 경로. RF 밑동의 선택 부위·형태 보정 절차도 없음 |
+| 같은 문서:341–344, §2.8 | ProBuilder 스커트 보정; 고목에서 바닥까지 내려오는 ≤300△ 스커트 + 정점색A 페이드 제안, Mac 실습 대기 | 관련 수치 제안은 있음. Unity/ProBuilder 실행은 이번 금지이며, 현재 RF 고목에 적용할 Blender 부위 선택·폭/높이·연결 절차는 없음. 페이드 재질도 Unity 단계 |
+| TM_DEAD_TREE_TRUNK_20261105.md·tm_pipeline.py @1e61370814 | Collapse+Shrinkwrap·UV·베이크·LOD 절차 | 루트 플레어 메시를 제작하는 단계는 없음 |
+
+따라서 “플레어 관련 자료가 전혀 없다”고 쓰지 않는다. **루트 플레어 메시 제작은 범위에 포함하되, 현재 RF 고목의 Blender 제작 절차는 출처 없음, 미실시.** 300△ 제안을 현재 LOD0 11,999△에 그대로 더하면 12,000△ 상한을 넘으므로, 후속 제작 절차에는 기존 밑동 보정 범위와 총량 배분도 필요하다. 새 임의 스커트·조형이나 Unity 페이드로 빈틈을 대신 채우지 않았다.
+
+### 아트팀·영수증·LC 대조
+
+출처: origin/unity/main @8f52937e255d18564d8964d7e6683e9aa3f4cc70, origin/codex/unity-asset-receipt-sync-20261105 @0f927750748234d8cd501144f2b8a6550ce58997, origin/claude/unity-cloud-license-audit-20261105 @e3fd69f10b4ff9eb0cc7c034876447df07921237. 다음은 해당 고정 Git 트리의 기록 대조이며, Git 밖 원천 라이선스 파일의 전수 조사가 아니다.
+
+| 지정 대조처 | 근거 파일:줄·검색 범위 | 확인 결과 |
+|---|---|---|
+| docs/17게임아트팀 | ART_TEAM_MASTER.md:1–415, HELL_SKY_DESIGN_LOCK_20261027.md:1–77, IVAN_T8_KEYART_V35_20261026.md:1–48 전체 | RF_Ancient·RF3_Ancient·Ancient_Rotten·RottenForest·forest-r1·woodbridge-r2 직접 항목0. 이 고목의 개별 출처·라이선스 연결 기록을 찾지 못함 |
+| 영수증 트리아지 | docs/engine/ASSET_RECEIPT_TRIAGE_20261105.md:9–14,18–29 @0f9277507 | 바이트·변경 의도 대조인12행은 적8방향·socket/iron·brand/title logo. RF 고목 대상 행 없음 |
+| 영수증 원본3종 | unity/Tools/Fixtures/source_receipt.json:1–890, inventory-assets.json:1–131, lobby-assets.json:1–440 @0f9277507 | RF_Ancient·Ancient_Rotten·map/a2 직접 항목0. M3 FBX와 동명PNG의 원천 연결 영수증 없음 |
+| LC 모델 표 | docs/0마스터플랜/WEB_BUILD/LICENSE_AUDIT_20261105.md:84 @e3fd69f10 | RF_*11종을 폴더 단위로 “Blender 자체+CC0, 제출 가능” 분류. 기존 UNITY_RM_INT_RUNTIME_HOOK와 Git 밖 출처-실물대조.json 인용. RF_Ancient 개별 원천 매핑은 표에 없음 |
+| LC 텍스처·집계 | 같은 문서:94,156–158 | a2 텍스처161종 그룹 분류와 r1 모델11개 파일·용량 집계. 고목7종PNG의 개별 라이선스 연결 증명은 아님 |
+
+LC의 다른 자산군인 Meshy/Tripo 캐릭터(:80–83), pine_roots/tree_stump_01 등 개별 스캔(:86), 출처 불명 map/keyshot(:88)을 RF 고목과 혼동하지 않는다. 앞 절의 CC0 계보 기록은 보존하지만, 그룹 분류를 현재 FBX 전체의 원천·라이선스 직접 대조로 승격하지 않는다.
+
+**RF_Ancient_Rotten_Tree.fbx + 동명 텍스처: 미확인 → 교체 후보.** 지정한 세 대조처에서 개별 원천·라이선스·바이트 연결을 확인하지 못했기 때문에 사용자 보정 기준을 적용한다. 이는 교체 실행이나 라이선스 위반 확정이 아니며, 원천 영수증 확보 또는 출처가 연결된 자산으로의 교체 선택은 후속이다.
