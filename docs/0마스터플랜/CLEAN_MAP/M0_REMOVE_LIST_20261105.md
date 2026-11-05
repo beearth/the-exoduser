@@ -55,7 +55,7 @@
 ## 4. 한계
 
 - 입장 시점의 장면 1회 기록이다. 실행 중 켜지는 소품은 다른 값일 수 있다. 꺼진 Renderer 241개(`RF3_Withered_Shrub` 114개, 화로 등)는 표에서 뺐고 CSV에 있다.
-- `Graphics.DrawMesh` 계열은 A2 파일과 `NativeGame.Remodel3D.cs`에서 찾지 않았을 뿐, 전체 코드를 훑지는 않았다.
+- `Graphics.DrawMesh` 계열은 A2 파일과 `NativeGame.Remodel3D.cs`를 검색해 없음을 확인했다. 그 밖의 코드는 훑지 않았다.
 - 분해 문서의 이끼 바위(`RF3_Moss_Rock_*`)는 이번 기록에 켜진 상태로 없다.
 - 미확인은 "문서에서 못 찾음"이라는 뜻이다. PC의 `I:/EXODUSER-Storage/demo-art/blender-env/`에 있는 영수증은 Mac에서 볼 수 없다.
 - 카메라·프레임당 삼각형은 재지 않았다. 표는 장면 전체 합계다.
