@@ -1,0 +1,4 @@
+#if UNITY_EDITOR
+using UnityEditor;
+sealed class LocalC1Import:AssetPostprocessor{void OnPreprocessModel(){if(!assetPath.Contains("LocalC1"))return;var m=(ModelImporter)assetImporter;m.importNormals=ModelImporterNormals.Import;m.importTangents=ModelImporterTangents.None;m.animationType=ModelImporterAnimationType.Legacy;m.importAnimation=true;m.isReadable=true;m.meshCompression=ModelImporterMeshCompression.Off;m.optimizeMeshVertices=false;m.optimizeMeshPolygons=false;m.weldVertices=false;m.importBlendShapes=false;}}
+#endif

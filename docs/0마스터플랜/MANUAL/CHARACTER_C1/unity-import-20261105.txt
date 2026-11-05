@@ -1,0 +1,4 @@
+fov=46.9453 cam=(34.50, 9.28, -91.36) hero=(34.50, 0.29, -79.00)
+parts=16 bones=56 tris=23336 verts=16297 normals=True shader=Universal Render Pipeline/Lit anim=True clips=1
+clip=C1 len=0.08333333 rate=24
+DONE
