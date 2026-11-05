@@ -23,6 +23,8 @@
 
 **제출처:** Devpost가 아니라 `submit.chromaawards.com`이다(`chroma-awards.devpost.com` 404). 제출 페이지 자체는 보안 확인에 막혀 읽지 못했다. 입력 칸은 미확인이다. 시즌 1 Devpost 근거였던 이 문서의 이전 칸은 교체했다.
 
+**WG 레인용:** 공식 문구는 "갤러리에 임베드 가능한 링크"까지이고 **iframe 허용 헤더는 공식 페이지에 명시가 없다.** X-Frame-Options·CSP frame-ancestors로 임베드를 막지 않아야 안전하다는 것은 제 추정이다. WebGL의 Brotli·SharedArrayBuffer 헤더 조건과 함께 호스팅에서 시험해야 한다. Experimental 심사 요지: 틀을 깨는 메커니즘·형식, 분명한 창작 의도, 게임 느낌·메커니즘·아트·오디오·마감 ([EX]).
+
 ### 새로 발견한 위험 (계획에 없던 것)
 
 | 항목 | 내용 | 출처 | 영향 |
