@@ -50,6 +50,26 @@ mel.recompile_material(m);eal.save_loaded_asset(m)
 o=unreal.FbxImportUI();o.import_mesh=True;o.import_textures=False;o.import_materials=False;o.import_as_skeletal=False;o.mesh_type_to_import=unreal.FBXImportType.FBXIT_STATIC_MESH;o.static_mesh_import_data.generate_lightmap_u_vs=False;o.static_mesh_import_data.auto_generate_collision=False;o.static_mesh_import_data.combine_meshes=True
 at.import_asset_tasks([task(G,'/Game/Floor/Mesh',o)])
 gm=unreal.load_asset('/Game/Floor/Mesh/ground');gm=gm or unreal.load_asset(eal.list_assets('/Game/Floor/Mesh')[0]);gm.set_material(0,m);eal.save_loaded_asset(gm);bb=gm.get_bounding_box();print('GROUND_BOUNDS',bb.min,bb.max,gm.get_num_triangles(0))
+
+C1=os.environ.get('C1_FBX')
+hero=None
+if C1:
+    o=unreal.FbxImportUI();o.import_mesh=True;o.import_as_skeletal=True;o.import_animations=True;o.import_materials=False;o.import_textures=False;o.mesh_type_to_import=unreal.FBXImportType.FBXIT_SKELETAL_MESH;o.create_physics_asset=False
+    o.skeletal_mesh_import_data.set_editor_property('import_morph_targets',False);o.skeletal_mesh_import_data.set_editor_property('normal_import_method',unreal.FBXNormalImportMethod.FBXNIM_IMPORT_NORMALS)
+    at.import_asset_tasks([task(C1,'/Game/Floor/Hero',o)])
+    names=eal.list_assets('/Game/Floor/Hero');print('HERO_ASSETS',names)
+    sk=None;an=None
+    for n in names:
+        a=unreal.load_asset(n)
+        if isinstance(a,unreal.SkeletalMesh):sk=a
+        if isinstance(a,unreal.AnimSequence):an=a
+    hm=at.create_asset('M_Clay','/Game/Floor',unreal.Material,unreal.MaterialFactoryNew())
+    cc_=mel.create_material_expression(hm,unreal.MaterialExpressionConstant3Vector,-300,0);cc_.set_editor_property('constant',unreal.LinearColor(.46,.43,.41));mel.connect_material_property(cc_,'',P.MP_BASE_COLOR)
+    rr=mel.create_material_expression(hm,unreal.MaterialExpressionConstant,-300,150);rr.set_editor_property('r',.62);mel.connect_material_property(rr,'',P.MP_ROUGHNESS);mel.recompile_material(hm);eal.save_loaded_asset(hm)
+    mats=sk.get_editor_property('materials')
+    for i in range(len(mats)):mats[i].set_editor_property('material_interface',hm)
+    sk.set_editor_property('materials',mats);eal.save_loaded_asset(sk);print('HERO_SK',sk.get_name(),len(mats),an.get_name() if an else None)
+    hero=(sk,an)
 les=unreal.get_editor_subsystem(unreal.LevelEditorSubsystem);eas=unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
 les.new_level('/Game/Floor/L_11_Floor')
 def S(c,loc=(0,0,0),rot=(0,0,0),lb=None):
@@ -59,6 +79,12 @@ sun=S(unreal.DirectionalLight,(0,0,3000),(E('SUN_P','-24'),E('SUN_Y','205'),0),'
 S(unreal.SkyAtmosphere,lb='Atmos')
 sk=S(unreal.SkyLight,(0,0,2000),lb='Sky');sc=sk.light_component;sc.set_mobility(unreal.ComponentMobility.MOVABLE);sc.set_editor_property('real_time_capture',True);sc.set_intensity(E('SKY','0.55'));sc.set_light_color(unreal.LinearColor(.72,.8,1))
 f=S(unreal.ExponentialHeightFog,(0,0,0),lb='Fog');fc=f.component;fc.set_editor_property('start_distance',E('FOG_START','0'));fc.set_editor_property('fog_density',E('FOG_D','.07'));fc.set_editor_property('fog_height_falloff',E('FOG_F','.35'));fc.set_editor_property('fog_inscattering_luminance',unreal.LinearColor(E('FOG_R','.06'),E('FOG_G','.085'),E('FOG_B','.11')))
+
+if hero:
+    sc_=.632;gz=E('GROUND_H_CM','0');ha=S(unreal.SkeletalMeshActor,(0,0,gz),(0,E('HERO_YAW','150'),0),'C1Hero');ha.set_actor_scale3d(unreal.Vector(sc_,sc_,sc_));sm=ha.skeletal_mesh_component;sm.set_skinned_asset_and_update(hero[0]);sm.set_editor_property('cast_shadow',True)
+    if hero[1]:
+        sm.set_animation_mode(unreal.AnimationMode.ANIMATION_SINGLE_NODE);ad=sm.get_editor_property('animation_data');ad.set_editor_property('anim_to_play',hero[1]);ad.set_editor_property('saved_position',E('HERO_T','0.0416667'));ad.set_editor_property('saved_play_rate',0.0);sm.set_editor_property('animation_data',ad)
+    print('HERO_PLACED',gz)
 pp=S(unreal.PostProcessVolume,(0,0,200),lb='PP');pp.set_editor_property('unbound',True);ps=pp.settings
 for n,v in(('auto_exposure_method',unreal.AutoExposureMethod.AEM_MANUAL),('auto_exposure_apply_physical_camera_exposure',False),('auto_exposure_bias',E('EV','0.7')),('bloom_intensity',0.0),('motion_blur_amount',0.0),('vignette_intensity',0.0),('film_grain_intensity',0.0),('depth_of_field_fstop',32.0)):
     ps.set_editor_property('override_'+n,True);ps.set_editor_property(n,v)
