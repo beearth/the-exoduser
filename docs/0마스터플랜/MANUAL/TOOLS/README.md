@@ -11,6 +11,10 @@
 | 3 | [BLENDER_MODULAR_PARTS_BODYMASK.md](BLENDER_MODULAR_PARTS_BODYMASK.md) | 모듈러 파트 분할·바디 마스크 | 〃 |
 | 4 | [SOCKET_WEAPON_ATTACH.md](SOCKET_WEAPON_ATTACH.md) | 소켓/무기 부착(Blender→Unity/UE) | 〃 |
 | 5 | [UNITY_BONES_REMAP_UE_LEADERPOSE.md](UNITY_BONES_REMAP_UE_LEADERPOSE.md) | Unity SkinnedMeshRenderer bones 재매핑·UE Leader Pose | 〃 |
+| 5b | [pixel_oe.md](pixel_oe.md) | 픽셀 렌더 후처리(아웃라인 확장·대비 다운스케일·팔레트) — CTO 1순위 평가 | 조사 완료, Mac 실습 과제(입력·명령·기대 출력) 기재 |
+| 5c | [pixel_fx.md](pixel_fx.md) | 임팩트 플립북 재료(코드 이펙트 244, 팔레트·타이밍 맞춤만) | 〃 |
+| 5d | [sprite_gen.md](sprite_gen.md) | 시트 조립·영상 프레임/루프·배경 분리 **유틸만**(생성 경로 금지) | 조사 완료, 실습 선택 |
+| — | 2dimg2motion(정지 이미지→14프레임) | 채택 안 함 — TOOL_MASTERY §1b-6 한 줄 | — |
 | 6 | (분리 예정) 리토폴로지·UV·베이크·LOD·생성 옵션표 | 소품 파이프라인 | 내용은 [../TOOL_MASTERY_20261105.md](../TOOL_MASTERY_20261105.md) §1b·§2에 있음(유지). 캐릭터 5장 실습 뒤 8칸 파일로 분리 |
 
 출처 표기는 TOOL_MASTERY §0과 같다: `[열림]` 직접 확인 / `[발췌]` 검색 발췌 / `[미검증]` 상충·없음. 이 세션 네트워크에서 docs.blender.org·docs.unity3d.com·dev.epicgames.com은 열리지 않아 GitHub 소스와 발췌로 채웠다. Mac 실습 때 원문을 열어 설정 이름을 대조한다.

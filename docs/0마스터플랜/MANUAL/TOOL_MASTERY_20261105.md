@@ -143,6 +143,15 @@
 - 리토폴로지 *입력*으로 쓸 때의 공통 세팅: 텍스처 **끔**, 형태 품질 **최고**(Tripo geometry_quality detailed / Meshy ultra 4k / Hunyuan octree 384 / Rodin High), 면 수는 **상한 그대로 요청하지 않고 2~4배 높게 받아 Instant Meshes로 내린다**(생성기 감폴리보다 우리 리토폴로지가 엣지 흐름을 통제).
 - 생성기 자체 저폴리(Tripo smart_low_poly / Meshy Smart Topology t2.5 / Rodin 4K-Quad)는 비교판 B·C안으로만 받고, 결과가 §2.2 판정(실루엣·엣지 흐름)을 통과하는지 사용자가 본다.
 
+### 1b-6. 사용자 공유 오픈소스 4종(오늘코딩 Shorts, CTO 11-05) — 판정 요약
+
+| 도구 | 저장소(접속) | 라이선스·최근 커밋 | 판정 | 상세 |
+|---|---|---|---|---|
+| PixelOE | github.com/KohakuBlueleaf/PixelOE **[열림]** | Apache-2.0 · 2026-09-28 v1.0.1 | **채택 후보 1순위**(픽셀 렌더 후처리, 디더 끔·고정 팔레트 조건) | [TOOLS/pixel_oe.md](TOOLS/pixel_oe.md) |
+| pixelfx | github.com/patch-gg/pixelfx **[열림]** | MIT · 2026-10-31 0.3.0 | **재료로만 채택**(프리셋 그대로 금지, 실버 헬 팔레트·4단계 타이밍 맞춤) | [TOOLS/pixel_fx.md](TOOLS/pixel_fx.md) |
+| sprite-gen | github.com/aldegad/sprite-gen **[열림]** | Apache-2.0 · 2026-11-01 | **유틸만 조건부**(video-frames·video-loop·cutout·slice-sheet·compose-atlas·inspect-motion). 핵심 경로는 AI 생성(codex/Grok) → 사용 금지 | [TOOLS/sprite_gen.md](TOOLS/sprite_gen.md) |
+| 2dimg2motion("2D Image Motion") | github.com/WU-HAOTIAN34/2dimg2motion **[열림]** | MIT · 2026-07-02 · 244★ | **채택 안 함.** 정지 PNG 1장 → 14프레임(00·13 원본, 02/05/08/11은 이미지 모델이 키포즈를 '다시 그림', 나머지 8장 중간 프레임). 즉 생성 이미지 기반 2D 키포즈 애니로, 우리 경로(리깅 3D + 모캡 리타깃 → 실시간 픽셀 렌더, 스크립트/생성 키 애니 금지·DESIGN LOCK 동일성)와 정면 충돌하고 프레임마다 캐릭터 동일성이 보장되지 않는다. 의존: Python·Pillow + 이미지 생성 모델(유료) | — |
+
 ## 2. 단계별 절차서 (자산 파이프라인 순서)
 
 각 단계: ① 도구 1순위/대안 ② 출처 2개 이상(URL·접속) ③ 우리 용도 설정값(실습 전 제안값, 실습에서 측정해 고친다) ④ 실패 시 대안 ⑤ 실습 칸.
@@ -417,3 +426,4 @@
 - 2026-11-05 클라우드 TM 레인(브랜치 `claude/unity-cloud-tool-mastery-20261105`): 초판. §1 후보 16종 확인, §2 8단계 출처·설정값·대안 채움(직접 열린 URL 6개는 github.com 계열, 그 외 공식 문서는 검색 발췌), §3 Mac 실습 대기, §4 미검증 13건.
 - 2026-11-05 2차(CTO 추가 지시 "옵션들을 다 쓰고 있나"): §1b 생성 도구(Tripo·Meshy·Hunyuan3D·Rodin) 옵션 전수표 + 사실 확인(`meshy_generate.cjs`가 meshy-6·quad·target_polycount 30000 고정 전송 → 2~4만△ 유입 원인), §2 각 단계에 "옵션 전수 + 우리 값" 표, §3b 옵션 비교판 과제(Mac·무료 티어), §4 미검증 13→17건.
 - 2026-11-05 3차(CTO 범위 조정 15:05, 캐릭터 도구 우선): `MANUAL/TOOLS/` 신설 — README 색인 + 캐릭터 도구 5장(Rigify 리깅·웨이트 전사·모듈러 파트/바디 마스크·소켓 부착·Unity bones 재매핑/UE Leader Pose)을 8칸 틀로 작성(클라우드 조사, 실습 칸 Mac 대기). 소품 파이프라인 8칸 분리는 그다음.
+- 2026-11-05 4차(CTO 전달, 사용자 공유 오픈소스 4종): TOOLS/pixel_oe.md·pixel_fx.md·sprite_gen.md 추가(8칸, Mac 실습 입력·명령·기대 출력 기재), §1b-6 판정 요약(2dimg2motion 채택 안 함 사유 포함). sprite-gen은 핵심이 AI 생성이라 유틸만 허용으로 정정.
