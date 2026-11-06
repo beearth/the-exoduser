@@ -8,7 +8,7 @@
 
 ## 0. 한 쪽 요약 (아침 보고용, 3회차 출처 검증 뒤 재작성)
 
-**권고: "2주 비교 실험 후 결정". 실험 동안은 Unity 유지(현 상태 그대로, 추가 투자 없음).** 결정 기준표(아래 K1~K7)를 미리 고정하고, 결과가 기준을 넘으면 UE5로 넘어간다.
+**권고: "2주 비교 실험 후 결정". 실험 동안은 Unity 유지(현 상태 그대로, 추가 투자 없음).** 결정 기준표(아래 K1~K7)를 미리 고정하고, 결과가 기준을 넘으면 UE5로 넘어간다. **11-06 갱신: 제출용 웹은 Unity 고정, 제품 엔진은 K1(화질 블라인드)+K3(작업환경·리소스 제작 효율, §7.7)로 정한다.**
 
 **왜 다시 썼나.** 출처 검증(CX22-2·CX22-3)에서 이 문서의 UE 불리 쪽 서술이 4건 과장으로 나왔다: ① "UE 자산 diff·리뷰 불가" ② UE 5.6~5.7 Xcode 최소값 ③ "Blueprint는 AI가 못 읽음" 일반화 ④ "UE6 정식 2028 말" 확정 표기. 같은 방향의 오류가 반복됐으므로 **UE에 불리한 논거를 하나씩 "이걸 뒤집는 공식 근거가 있나"로 다시 따졌다**(아래 표). 이 문서가 처음부터 Unity 쪽으로 기울어 있었다는 점을 인정한다.
 
@@ -65,13 +65,13 @@
 |---|---|---|---|
 | K1 | 키샷 비교판(같은 구도·1920×1080·3840×1080·1x/3x 크롭) 블라인드 판정 — 사용자 + CTO | UE 쪽이 **분명히** 낫다(사용자 판정, 둘 중 하나 고르라 했을 때 UE 선택) | 같거나 Unity가 낫다 |
 | K2 | 먼 적 가시성(카메라 LOCK 피치 34°, 안개 속 원경 적 3마리) | UE가 안개 품질을 올리면서 먼 적을 지우지 않는다 | UE도 먼 적을 지워야만 분위기가 난다(=이점 없음) |
-| K3 | 같은 시간 예산(엔진당 작업 4일) 안에 도달한 품질 | UE가 **같은 시간에** 더 높다 | UE가 시간 더 들여야 동급 |
+| K3 | **작업환경·리소스 제작 효율**(§7.7): ① 같은 스캔 고목 1그루 → 34° 캡처 7단계의 소요 분·손작업 수·막힌 지점 ② 같은 시간 예산(엔진당 작업 4일) 안에 도달한 키샷 품질 | UE가 7단계 합계 시간·손작업이 **분명히 적고**(대략 2/3 이하) 같은 시간에 키샷 품질도 높다 | 차이가 작거나 Unity가 적다 |
 | K4 | AI 에이전트 작업성: 무창·무음 빌드+캡처 자동화가 Mac/PC에서 돌아가는가 | UE에서 Day 5까지 스크립트 1개로 "빌드→캡처 PNG" 성공 | UE 자동 캡처가 안 되거나 사람 손 필요 |
 | K5 | 반복 속도: 코드 1줄 수정→화면 확인까지 시간 + 사람 개입 시간·도구 실패 횟수·의도 밖 변경 수(CX12 제안) | UE ≤ Unity의 3배 | UE > Unity의 3배 (판정 루프 붕괴) |
 | K6 | 성능: Mac M5 Pro 1080p, PC 최소사양 후보(GTX 1060급) | 두 기기 모두 60fps(Mac)·30fps 이상(최소사양) | UE가 최소사양 30fps 미달 → 데모 시장 축소 |
 | K7 | 픽셀 렌더 캐릭터(리깅 3D→저해상도) 합성 | UE에서 월드 고해상도+캐릭터 저해상도 합성이 Day 8까지 동작 | 합성이 안 돼 화면 전체를 저해상도로 써야 함 |
 
-**규칙:** K1·K2·K3가 모두 "전환"이고 K4~K7 중 "유지"가 1개 이하면 **전환 권고**. K1이 "유지"면 다른 항목과 무관하게 **유지**. 나머지 경우는 유지하고 실험에서 배운 UE 쪽 기법(안개 층·조명 구성)을 Unity 매뉴얼에 옮긴다.
+**규칙(11-06 갱신):** 제출용 웹 빌드는 **Unity 고정**(UE5 공식 웹 내보내기 없음, §7.7). 제품 엔진은 **K1(화질 블라인드) + K3(작업환경·리소스 제작 효율)**으로 정한다 — 둘 다 "전환"이면 **전환 권고**, K1이 "유지"면 **유지**. K2·K4~K7은 실패 조건 확인용이며, "유지"가 나온 항목은 사유를 결정 기록에 남긴다. 나머지 경우는 유지하고 실험에서 배운 UE 쪽 기법(안개 층·조명 구성)을 Unity 매뉴얼에 옮긴다.
 
 ---
 
@@ -236,6 +236,55 @@
 | U7 | (선택) Windows PC에도 UE 설치 | 성능 K6 최소사양 측정, Windows 패키징 | 1~2시간 |
 | U8 | (선택) 클라우드 세션 네트워크 허용 목록에 `dev.epicgames.com`, `store.steampowered.com`, `fab.com` 추가 | 이번 조사에서 공식 문서 원문을 못 열었다 | 5분 |
 | U9 | D4·D10 비교판 판정 | 결정권자 | 각 30분 |
+
+---
+
+### 7.7 K3 — 작업환경·리소스 제작 효율 (11-06 추가)
+
+> 사용자 11-06 02:20 원문: "좋은 리소스를 얼마나 더 쉽게 뽑아낼 수 있느냐, 맵 에디터나 그런 게 어디가 더 좋냐의 차이."
+> 표기: **[발췌]** = 공식 문서 페이지 내용을 검색 결과로 확인(이 세션은 dev.epicgames.com·docs.unity3d.com 원문을 직접 열 수 없어 **검색 발췌**이며, 원문 대조는 Mac `ENGINE_K3_WORKFLOW_20261106.md`에서 한다) / **[미검증]** = 공식 문서 절을 찾지 못함. 기억에 기댄 서술은 넣지 않았다.
+
+#### ① 비교 항목표
+
+| 항목 | UE5 | 출처·등급 | Unity 6 (URP) | 출처·등급 | 우리 판단 포인트 |
+|---|---|---|---|---|---|
+| 스캔 자산 공급 | Fab에서 받은 Megascans를 에디터 안에서 바로 반입하는 경로(Fab 플러그인) | Fab 문서 "Purchasing and Downloading Assets in Fab" https://dev.epicgames.com/documentation/fab/purchasing-and-downloading-assets-in-fab — 에디터 내 반입 절은 **[미검증]** | Fab에서 FBX 등으로 받아 외부 임포트(엔진 전용 반입 도구 없음) | Fab Standard License는 "any engine or tool, assuming the file formats are compatible"(③) **[발췌]**. Unity 쪽 반입 절차 공식 문서 **[미검증]** | 반입 단계 수·재질 재연결 손작업 수를 측정(②의 2·3단계) |
+| 고폴리 처리 | **Nanite**: 임포트 때 메시를 계층 클러스터로 나눠 화면에 보이는 디테일만 처리, 임포트·메시 에디터·콘텐츠 브라우저 일괄로 켬. Nanite Foliage 별도 | https://dev.epicgames.com/documentation/unreal-engine/nanite-virtualized-geometry-in-unreal-engine · https://dev.epicgames.com/documentation/unreal-engine/nanite-foliage **[발췌]** | 리토폴로지·LOD Group·노멀 베이크로 직접 줄임 | LOD Group 공식 절 **[미검증]**(검색에 안 나옴) | 스캔 고목 1그루를 34° 화면에 세우기까지 폴리곤 감축 손작업이 있는지 |
+| 조명 | **Lumen**: 간접광을 낮은 해상도로 계산해 실시간 GI·반사. Nanite 메시와 VSM 완전 지원. 요구 하드웨어 명시(DX12 등) | https://dev.epicgames.com/documentation/unreal-engine/lumen-global-illumination-and-reflections-in-unreal-engine · 라이선시 온보딩 문서 **[발췌]** | 라이트맵 굽기(Progressive Lightmapper) + **APV**(자동 배치 라이트 프로브, 스트리밍·베이크 블렌딩 지원) + Reflection Probe | APV(URP 6000.3) https://docs.unity3d.com/6000.3/Documentation/Manual/urp/probevolumes-concept.html **[발췌]** · Progressive Lightmapper(2021.3 문서) **[발췌, 구버전]** · Reflection Probe 파이프라인 비교표 **[발췌]** | 기본 조명·안개까지 걸리는 시간, 굽기 대기 시간(②의 5단계) |
+| 맵 편집 | Landscape·Foliage 모드, **PCG 프레임워크**(분할 생성·런타임 생성·빌드 머신용 커맨드렛), **World Partition**(그리드 셀 자동 스트리밍, HLOD·Data Layer) | PCG https://dev.epicgames.com/documentation/en-us/unreal-engine/using-pcg-generation-modes-in-unreal-engine · World Partition HLOD https://dev.epicgames.com/documentation/unreal-engine/world-partition---hierarchical-level-of-detail-in-unreal-engine · 커맨드렛 https://dev.epicgames.com/documentation/unreal-engine/world-partition-builder-commandlet-reference **[발췌]**. Landscape·Foliage 모드 절 **[미검증]** | 내장 Terrain + Terrain Tools 패키지(높이 조각, Shader Graph로 지형 렌더), ProBuilder(설치됨 [코드: manifest probuilder 6.1.4]), 에셋 스토어 도구 | Terrain https://docs.unity3d.com/Manual/script-Terrain.html **[발췌]** · ProBuilder 공식 절 **[미검증]** | 늪·다리·고목 배치를 스크립트(PCG/에디터 코드)로 재현할 수 있는지 |
+| 재질 편집 | Material Editor(노드) | 공식 절 **[미검증]** | Shader Graph(설치됨 [코드: shadergraph 17.6.0]) | Unity 6.0 새 기능 목록 **[발췌]**, 세부 절 **[미검증]** | 늪 물·젖은 나무껍질 재질 1개 만드는 시간 |
+| 지형 스트리밍 | World Partition 자동 셀 스트리밍(거리 기반) | 위 World Partition 문서 **[발췌]** | 지형 스트리밍 공식 기능 절 못 찾음, 포럼에 서드파티(SECTR)·메시 베이크 권고만 | **[미검증]** | 1-1은 단일 장면이라 **현재 영향 작음** [추정] |
+| 웹 빌드(제출용) | UE5에 공식 HTML5/WebGL 내보내기 없음(4.24에서 커뮤니티로 이관, 공식 대안은 Pixel Streaming = 서버 영상 송출) | Epic 포럼 직원 답변·보도 https://forums.unrealengine.com/t/html5-export-support/154782 **[발췌, 공식 문서 절 미검증]** | Web 플랫폼(WebGL2 기본) 공식 지원 | https://docs.unity3d.com/6000.6/Documentation/Manual/webgl.html · https://docs.unity3d.com/6000.6/Documentation/Manual/WebGL2.html **[발췌]** | **제출용 웹은 Unity로 고정**(④) |
+| 우리 쪽 비용 | Core C# 18,320줄(133파일) 이식 필요 [코드], 픽셀 합성 파이프라인 새로 구축 [추정], 웹 제출 경로 없음(위) | — | 이식 없음, 기존 픽셀 합성·하니스 그대로 [코드] | — | K3 판정에 "전환 비용"은 넣지 않고 §5에서 따로 본다 |
+
+#### ② 측정 설계 (Mac 수행: `ENGINE_K3_WORKFLOW_20261106.md` — 여기서는 표 틀만)
+
+같은 스캔 고목 1그루(Fab Standard License 무료 Megascans 중 1개, 양쪽 같은 자산)를 빈 바닥에 세워 **카메라 LOCK 피치 34°** 캡처까지 7단계. 엔진마다 처음 하는 사람 기준으로 1회, 같은 사람이 같은 날 수행.
+
+| # | 단계 | 측정 | UE5 소요(분) | UE5 손작업 수 | UE5 막힌 지점 | Unity 소요(분) | Unity 손작업 수 | Unity 막힌 지점 |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 자산 받기 | Fab 라이브러리 → 로컬 | | | | | | |
+| 2 | 반입 | 프로젝트에 메시·텍스처 들어옴 | | | | | | |
+| 3 | 재질 | 알베도·노멀·러프니스 연결, 화면에서 정상 | | | | | | |
+| 4 | 배치 | 빈 바닥 위, 스케일·접지 맞춤 | | | | | | |
+| 5 | 조명·안개 기본 | 주광 1 + 높이 안개, 굽기 대기 포함 | | | | | | |
+| 6 | 카메라 | 피치 34°·FOV·거리 = ForestA2 LOCK 수치 | | | | | | |
+| 7 | 캡처 | 1920×1080 PNG 1장(무창·무음 경로로) | | | | | | |
+| — | **합계** | | | | | | | |
+
+기록 규칙: 손작업 = 사람이 클릭·입력한 독립 조작 묶음 수(같은 창 안 연속 조작은 1). 막힌 지점 = 5분 넘게 멈춘 곳과 원인. 결과 캡처 2장은 K1과 같은 블라인드 비교판에도 넣는다.
+
+#### ③ Fab 라이선스 — Megascans를 Unity에서 쓸 때
+
+- **Fab Standard License:** Epic 공지 원문(검색 발췌) "you can use Fab Standard licensed assets in any engine or tool, assuming the file formats are compatible" — https://forums.unrealengine.com/t/megascans-update-march-2025/2419561 · https://www.unrealengine.com/en-US/blog/fab-epics-new-unified-content-marketplace-launches-today **[발췌]**. 즉 **무료 범위가 UE 한정은 아니다**(Standard License로 받은 경우).
+- **예외:** Fab 출시 전 Quixel.com·Bridge에서 받은 자산은 Epic Content License(UE 전용 조건) 또는 Unreal Unlimited 조건을 따른다 — https://support.fab.com/s/article/Fab-Transition-FAQs **[발췌]**.
+- **등급:** Standard License는 Personal·Professional 2단계, 연 매출 10만 달러 초과 법인은 Professional이라는 서술은 포럼 글 근거 **[미확인 — Fab EULA 원문 대조 필요]**.
+- **실험 규칙:** 비교용 자산은 Fab에서 **Standard License로 새로 받은 것만** 쓴다(§7.3과 같음).
+
+#### ④ 결정 규칙 갱신 (11-06)
+
+- **제출용 웹 빌드는 Unity로 고정한다.** UE5에는 공식 웹 내보내기가 없다(위 표).
+- **제품 엔진(Steam 데스크톱판)은 K1(화질 블라인드) + K3(작업환경·리소스 제작 효율)로 정한다.** K2·K4~K7은 실패 조건 확인용(어느 하나라도 "유지"면 그 사유를 결정 기록에 남긴다)으로 둔다.
 
 ---
 
