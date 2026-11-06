@@ -26,8 +26,15 @@ namespace Exoduser.UnityPort.Core
         private uint randomState;
         private int nextEnemyId = 1, nextLootId = 1, attackBonus, pickupHoldTicks;
         private float attackAngle;
+        private bool basicWindupSwing;   // D-MO-2: the current swing started with the basic windup (its recover gives the 6 ticks back)
         private float actionMoveX, actionMoveY;
         private bool playerActionBranchConsumed;
+        // D-MO-2 (11-05): basic-attack first-strike windup. 6 fixed ticks; its recover = max(base - 6, 4) so the total stays 6/5/28 (= old 0/5/34 at the starter speed).
+        public const int BasicWindupTicks = 6, BasicRecoverFloor = 4;
+        /// <summary>Web wRecover length: (int)(16 / (WeaponSpeed-or-.3 x AttackSpeedMultiplier)). Used as is by strikes without the windup.</summary>
+        public int AttackRecoverBaseTicks() { return (int)(16 / ((Config.WeaponSpeed!=0?Config.WeaponSpeed:.3f) * Config.AttackSpeedMultiplier)); }
+        /// <summary>Recover of the wound-up first strike: max(AttackRecoverBaseTicks() - BasicWindupTicks, BasicRecoverFloor). The floor binds when WeaponSpeed x AttackSpeedMultiplier > 1.6.</summary>
+        public int AttackRecoverTicks() { return Math.Max(AttackRecoverBaseTicks() - BasicWindupTicks, BasicRecoverFloor); }
         private static readonly double[] Difficulty = { .45, .55, .65, .76, .88, 1, 1.12, 1.25, 1.40, 1.58, 1.78 };
         private static readonly string[] DropSlots = { "weapon", "shield", "boots", "armor", "helmet", "bow", "gloves", "pants", "belt", "necklace", "ring1", "ring2", "cape", "bracelet", "headband", "headband2" };
         private static readonly double[] NormalRarityWeights = { 65, 22, 9, 3, 1, .01 };
@@ -87,6 +94,8 @@ namespace Exoduser.UnityPort.Core
             Player.Mana = Math.Min(Player.MaxMana, Player.Mana + Config.PlayerManaRegen * (float)(1 + Growth.Value("pMRegen") * .03) / regenDivisor);
             Player.StateTicks--;
             Player.Iframes = Math.Max(0, Player.Iframes - 1);
+            if (Player.State != "wWindup") Player.BasicWindup = false;   // D-MO-2: the flag lives only inside the basic windup
+            if (Player.State != "wWindup" && Player.State != "wSwing" && Player.State != "wRecover") basicWindupSwing = false;   // an interrupted windup / swing (stagger, roll, skill) does not carry its recover rebate to a later swing
             attackHeldForMagic = attack;
             actionMoveX = moveX; actionMoveY = moveY; playerActionBranchConsumed = false;
             TickPlayerShieldAndRevive();
@@ -111,10 +120,32 @@ namespace Exoduser.UnityPort.Core
                         if (Config.ActiveAttack == "kiSlash" && KiComboStep == 2 && KiComboTicks > 0) {
                             Player.State = "wWindup"; Player.StateTicks = 999;
                             Player.KiChargeActive = true; Player.KiChargeTicks = 0;
+                            basicWindupSwing = false;
+                        }
+                        else if (Config.ActiveAttack != "kiSlash" || KiComboStep % 3 == 0) {
+                            // D-MO-2 (user decision 11-05): the basic-attack FIRST strike winds up BasicWindupTicks (6) before the 5-tick swing.
+                            // Fixed length, no attack-speed scaling; the recover of this strike gives the 6 ticks back (AttackRecoverTicks).
+                            // A plain weapon has no combo tracker in Core, so every plain swing is a first strike; ki slash only when the next step is 1.
+                            // Web oracle (game.html 33055/33564) enters wSwing at once: intended difference (BRIEF_CORE_WINDUP_20261105 §0).
+                            Player.State = "wWindup"; Player.StateTicks = BasicWindupTicks; Player.BasicWindup = true;
+                            basicWindupSwing = true;
                         }
                         else {
                             Player.State = "wSwing"; Player.StateTicks = 5; Player.SwingProgress = 0;
+                            basicWindupSwing = false;
                             if (Config.ActiveAttack == "kiSlash") SpawnKiSlash((KiComboStep % 3) + 1);
+                        }
+                    }
+                }
+                else if (Player.State == "wWindup" && !Player.KiChargeActive) {
+                    // Web 33355 non-charge windup branch: the aim follows the facing like the ki charge does, inputs are ignored, st2 <= 0 enters the swing.
+                    attackAngle = Player.Facing;
+                    if (Player.StateTicks <= 0) {
+                        bool basic = Player.BasicWindup; Player.BasicWindup = false;
+                        Player.State = "wSwing"; Player.StateTicks = 5; Player.SwingProgress = 0;
+                        if (basic && Config.ActiveAttack == "kiSlash") {
+                            SpawnKiSlash((KiComboStep % 3) + 1);   // the first-strike crescent leaves when the swing starts, 6 ticks after the input
+                            KiComboTicks -= BasicWindupTicks;   // web sets _cresComboT=120 at the input tick (game.html _fireKiSlashCrescent); the window stays 120 from the input, so the remainder at the next attack tick is 80 (= web), not 86
                         }
                     }
                 }
@@ -136,7 +167,8 @@ namespace Exoduser.UnityPort.Core
                     if (Player.StateTicks <= 3 && Player.StateTicks + 1 > 3) HitArc();
                     if (Player.StateTicks <= 0) {
                         Player.State = "wRecover";
-                        Player.StateTicks = (int)(16 / ((Config.WeaponSpeed!=0?Config.WeaponSpeed:.3f) * Config.AttackSpeedMultiplier));
+                        Player.StateTicks = basicWindupSwing ? AttackRecoverTicks() : AttackRecoverBaseTicks();   // D-MO-2: the wound-up first strike recovers max(base-6, 4); other strikes keep the web recover
+                        basicWindupSwing = false;
                     }
                 }
                 else if (Player.State == "wRecover" && Player.StateTicks <= 0) Player.State = "idle";
