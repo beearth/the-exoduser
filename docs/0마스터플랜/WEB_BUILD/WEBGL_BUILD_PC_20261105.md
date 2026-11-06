@@ -118,6 +118,7 @@ Unity 6000.6 공식 표에서 BC4·BC5는 Web Desktop 지원, Web Mobile 미지�
 - 1초 초과: 사용자 대체 허용 전에는 변경 보류 및 진단 기록. 자동으로 Vorbis/Streaming을 쓴 뒤 성공 처리하지 않는다.
 - -webAudio aac-inmemory를 명시하면 AAC 품질0.5 + CompressedInMemory를 선택하는 대체 경로다.
 - -webAudio keep을 명시하면 1초 이하도 포함해 전부 보존한다.
+- 2026-11-05 프로브(1288f5258, 빌드 없음, 영수증 I:/EXODUSER-Storage/debug/webgl-20261105/audio-probe/receipt.json audioAttempts): 154개 전부 BuildTargetGroup.WebGL·"WebGL"·"Web" 세 경로 모두 SetOverrideSampleSettings set=False. 플랫폼 문자열 원인 추정은 기각. 다음 시험은 S3 뒤에 Vorbis 요청 1회만, defaultSampleSettings 임시 변경은 불허.
 - 1초 이하: 별도 keep이 없으면 WebGL의 AAC 포맷에서 DecompressOnLoad를 지정한다. 현재 quality는 보존하고 플랫폼 설정만 다룬다.
 - SetOverrideSampleSettings("WebGL", settings)의 bool 반환과 GetOverrideSampleSettings readback을 확인한다. 반환 true도 실제 브라우저 디코딩·스트리밍 성공을 뜻하지 않는다.
 - 공통 defaultSampleSettings 및 PC/Mac 플랫폼 override는 바꾸지 않는다.
