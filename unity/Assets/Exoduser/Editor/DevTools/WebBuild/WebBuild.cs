@@ -481,6 +481,7 @@ namespace Exoduser.DevTools
             try
             {
                 PrepareS2Assets(s);
+                PrepareS3(s);
                 ApplySlim2Textures(s); ApplySlim2Audio(s);
                 WriteText(s.receipt.textureCsv,BuildTextureReport(s));
                 WriteText(s.receipt.audioCsv,AudioReport(s));
@@ -543,8 +544,9 @@ namespace Exoduser.DevTools
                     Debug.Log("UNITY_WEB_SLIM textures="+nTex+" cjkHeld="+fontsHeld);
                 }
                 report=BuildPipeline.BuildPlayer(new BuildPlayerOptions {
-                    scenes=new[]{ScenePath},locationPathName=outDir,target=BuildTarget.WebGL,options=BuildOptions.None });
+                    scenes=BuildScenes(),locationPathName=outDir,target=BuildTarget.WebGL,options=BuildOptions.None });
                 bool ok=report.summary.result==BuildResult.Succeeded;
+                if(ok)PatchWebArgs(outDir);
                 var videoDir = Arg("-videoDir");
                 if (ok && !string.IsNullOrEmpty(videoDir) && Directory.Exists(videoDir))
                 {

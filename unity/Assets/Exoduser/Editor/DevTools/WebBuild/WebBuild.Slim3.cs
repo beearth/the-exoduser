@@ -286,6 +286,7 @@ namespace Exoduser.DevTools
         }
         static void RestoreS2(Slim2State s)
         {
+            WebBuildImportOverride.Clear();
             if(s==null||s.stage==null)return;
             var r=s.receipt.s2;r.restoreAttempted=true;
             try { r.restoreErrors.AddRange(s.stage.Restore(()=>AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport))); }
