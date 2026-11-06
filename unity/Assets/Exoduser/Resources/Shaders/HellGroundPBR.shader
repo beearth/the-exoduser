@@ -19,6 +19,7 @@ Shader "EXODUSER/HellGroundPBR"
    #pragma multi_compile_fragment _ _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3
    #pragma multi_compile_fog
    #pragma multi_compile_local_fragment _ _A2_CLEAN_GROUND
+   #pragma multi_compile_local _ _A2_DEBUG_GROUND
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DBuffer.hlsl"
@@ -34,9 +35,20 @@ Shader "EXODUSER/HellGroundPBR"
    CBUFFER_START(UnityPerMaterial)
    float4 _BaseMap_ST;half4 _BaseColor;half _Cutoff,_Smoothness,_Metallic,_ForestBlend,_ForestTextureMix,_SoilTextureMix,_FullField;
    CBUFFER_END
-   struct A {float4 positionOS:POSITION;float3 normalOS:NORMAL;float4 tangentOS:TANGENT;float2 uv:TEXCOORD0;};
-   struct V {float4 positionCS:SV_POSITION;float3 world:TEXCOORD0;float3 normal:TEXCOORD1;float4 tangent:TEXCOORD2;float2 uv:TEXCOORD3;half fog:TEXCOORD4;};
-   V vert(A v){V o;o.world=TransformObjectToWorld(v.positionOS.xyz);o.positionCS=TransformWorldToHClip(o.world);o.normal=TransformObjectToWorldNormal(v.normalOS);o.tangent=float4(TransformObjectToWorldDir(v.tangentOS.xyz),v.tangentOS.w*GetOddNegativeScale());o.uv=v.uv;o.fog=ComputeFogFactor(o.positionCS.z);return o;}
+   #ifdef _A2_DEBUG_GROUND
+   // --a2-debug-ground 전용 변형. 얼룩 원인 분리용 출력이며 기본 변형에는 컴파일되지 않는다. 값은 NativeGame.A2Clean.cs가 전역으로 넣는다.
+   float _A2DebugGroundMode;
+   #define A2_DEBUG_ATTR float4 color:COLOR;
+   #define A2_DEBUG_VARY half4 color:TEXCOORD5;
+   #define A2_DEBUG_COPY o.color=v.color;
+   #else
+   #define A2_DEBUG_ATTR
+   #define A2_DEBUG_VARY
+   #define A2_DEBUG_COPY
+   #endif
+   struct A {float4 positionOS:POSITION;float3 normalOS:NORMAL;float4 tangentOS:TANGENT;float2 uv:TEXCOORD0;A2_DEBUG_ATTR};
+   struct V {float4 positionCS:SV_POSITION;float3 world:TEXCOORD0;float3 normal:TEXCOORD1;float4 tangent:TEXCOORD2;float2 uv:TEXCOORD3;half fog:TEXCOORD4;A2_DEBUG_VARY};
+   V vert(A v){V o;o.world=TransformObjectToWorld(v.positionOS.xyz);o.positionCS=TransformWorldToHClip(o.world);o.normal=TransformObjectToWorldNormal(v.normalOS);o.tangent=float4(TransformObjectToWorldDir(v.tangentOS.xyz),v.tangentOS.w*GetOddNegativeScale());o.uv=v.uv;o.fog=ComputeFogFactor(o.positionCS.z);A2_DEBUG_COPY return o;}
    half4 frag(V i):SV_Target
    {
     float2 tile=i.world.xz/6;float sweep=smoothstep(0,1,(sin(i.world.x*.7+i.world.z*.29)+sin(i.world.z*.51-i.world.x*.17)+2)*.25);
@@ -87,12 +99,12 @@ Shader "EXODUSER/HellGroundPBR"
     }
     #ifdef _A2_CLEAN_GROUND
     // 출처: BRIEF_CLEAN_MAP_20261105 §1 M1. --a2-clean 전용 변형, 기본 변형에는 컴파일되지 않는다.
-    // A2_ForestSoil(forest_ground_04) 단순 타일. 512px/m 역산 1024px/512=2.0u. 1u=1m 가정, 문서 근거 없음.
-    // 색 tint와 노멀 강도는 위 _FullField의 dirt/soilFine 값을 그대로 쓴다.
+    // M1a: A2_ForestSoil(forest_ground_04, Poly Haven 폭 3.2m) 실척 타일. 3.2m÷1.152m/u≈2.78u(1u 환산: Mac 662fb36ff M0_M1_JUDGE §6).
+    // 틴트 제거: 틴트가 원본 평균을 Adobe PBR Guide Part 2 비금속 하한(sRGB 50) 아래로 내렸다(CLEAN_MAP/M1_RETILE_SOURCES §3). 노멀 강도는 _FullField의 soilFine 값 그대로.
     {
-     float2 cleanUV=i.world.xz/2.0;
+     float2 cleanUV=i.world.xz/2.78;
      mossMix=0;
-     a=SAMPLE_TEXTURE2D(_SoilMap,sampler_SoilMap,cleanUV).rgb*half3(.55,.48,.36);
+     a=SAMPLE_TEXTURE2D(_SoilMap,sampler_SoilMap,cleanUV).rgb;
      nt=UnpackNormalScale(SAMPLE_TEXTURE2D(_SoilNormal,sampler_SoilMap,cleanUV),.65);
      input.normalWS=normalize(mul(nt,float3x3(t,b,n)));
     }
@@ -106,11 +118,20 @@ Shader "EXODUSER/HellGroundPBR"
     surface.smoothness=lerp(surface.smoothness,.22+.23*(1-SAMPLE_TEXTURE2D(_FieldMossRough,sampler_ForestRough,i.world.xz/2.6).r),mossMix);
     if(_FullField>.5)surface.smoothness=lerp(.44-.24*SAMPLE_TEXTURE2D(_SoilRough,sampler_ForestMap,i.world.xz/2.3).r,.24+.18*(1-SAMPLE_TEXTURE2D(_FieldMossRough,sampler_ForestMap,i.world.xz/2.6).r),mossMix);
     #ifdef _A2_CLEAN_GROUND
-    surface.smoothness=.44-.24*SAMPLE_TEXTURE2D(_SoilRough,sampler_SoilMap,i.world.xz/2.0).r;
+    surface.smoothness=.44-.24*SAMPLE_TEXTURE2D(_SoilRough,sampler_SoilMap,i.world.xz/2.78).r;
     #endif
     #if defined(_DBUFFER)
     ApplyDecalToSurfaceData(i.positionCS,surface,input);
     input.bakedGI=SampleSH(input.normalWS);
+    #endif
+    #ifdef _A2_DEBUG_GROUND
+    // 1 worldNormal: 메시 정점 법선(노멀맵 전). 2 vertexColor. 3 shOnly: SampleSH(노멀맵 후)만, 알베도 흰색. 4 flatAmbient: 아래 PBR에 단색 앰비언트. 5 albedoOnly.
+    // 1·2·3·5는 조명·안개를 건너뛰고 바로 출력한다. 4의 단색은 A2Ambient의 equator 값(A2Forest.cs).
+    if(_A2DebugGroundMode>.5&&_A2DebugGroundMode<1.5)return half4(n*.5+.5,1);
+    if(_A2DebugGroundMode>1.5&&_A2DebugGroundMode<2.5)return half4(i.color.rgb,1);
+    if(_A2DebugGroundMode>2.5&&_A2DebugGroundMode<3.5)return half4(SampleSH(input.normalWS),1);
+    if(_A2DebugGroundMode>3.5&&_A2DebugGroundMode<4.5)input.bakedGI=half3(.20,.19,.16);
+    if(_A2DebugGroundMode>4.5)return half4(a,1);
     #endif
     half4 color=UniversalFragmentPBR(input,surface);color.rgb=MixFog(color.rgb,i.fog);return color;
    }

@@ -13,6 +13,21 @@ namespace Exoduser.UnityPort
     {
         public static readonly bool Enabled=Array.IndexOf(Environment.GetCommandLineArgs(),"--a2-clean")>=0;
         public static readonly bool M1Ground=Enabled&&Array.IndexOf(Environment.GetCommandLineArgs(),"--a2-clean-m0")<0;
+        // --a2-clean --a2-debug-ground=<모드>: 얼룩 분리 출력. 출처: CTO 지시(Mac M0_M1_JUDGE c535b6513 후속) ①. 없으면 0이고 아무것도 하지 않는다.
+        static readonly string[] DebugGroundModes={"worldNormal","vertexColor","shOnly","flatAmbient","albedoOnly"};
+        public static readonly int DebugGround=ParseDebugGround();
+        static int ParseDebugGround()
+        {
+            if(!Enabled)return 0;
+            foreach(var arg in Environment.GetCommandLineArgs())
+            {
+                if(!arg.StartsWith("--a2-debug-ground=",StringComparison.Ordinal))continue;
+                int mode=Array.IndexOf(DebugGroundModes,arg.Substring(18))+1;
+                if(mode==0)Debug.LogError("[A2 Clean] 알 수 없는 --a2-debug-ground 모드: "+arg);
+                return mode;
+            }
+            return 0;
+        }
     }
     public sealed partial class NativeGame
     {
@@ -41,9 +56,20 @@ namespace Exoduser.UnityPort
             }
             Debug.Log("[A2 Clean] 렌더러 "+a2CleanDisabledTotal+"개 끔/M1지면="+A2CleanMode.M1Ground);
             if(A2CleanMode.M1Ground)A2CleanGround();
+            if(A2CleanMode.DebugGround>0)
+            {
+                Shader.SetGlobalFloat("_A2DebugGroundMode",A2CleanMode.DebugGround);a2FieldSoil.EnableKeyword("_A2_DEBUG_GROUND");
+                StartCoroutine(A2DebugGroundLog());
+            }
+        }
+        // 어느 앰비언트 설정이 최종 값인지 코드만으로 확정되지 않아(A2Ambient·HellLightingActive) 실행 값을 로그로 남긴다.
+        IEnumerator A2DebugGroundLog()
+        {
+            yield return new WaitForSeconds(5f);
+            Debug.Log("[A2 Debug] 모드="+A2CleanMode.DebugGround+" ambientMode="+RenderSettings.ambientMode+" sky="+RenderSettings.ambientSkyColor+" equator="+RenderSettings.ambientEquatorColor+" ground="+RenderSettings.ambientGroundColor+" intensity="+RenderSettings.ambientIntensity+" reflection="+RenderSettings.defaultReflectionMode+"/"+RenderSettings.reflectionIntensity+" fog="+RenderSettings.fog);
         }
         // 출처: BRIEF_CLEAN_MAP §1 M1. 자산: forest_ground_04=A2_ForestSoil(docs/engine/UNITY_KEYSHOT_A2_20261030.md 2026-10-31 05:40).
-        // 단순 타일 2.0u만 쓴다. 수치는 HellGroundPBR의 _A2_CLEAN_GROUND 분기. 1u=1m 가정, 문서 근거 없음.
+        // M1a: 실척 타일 2.78u, 틴트 없음. 수치와 출처는 HellGroundPBR의 _A2_CLEAN_GROUND 분기.
         void A2CleanGround(){a2FieldSoil.EnableKeyword("_A2_CLEAN_GROUND");}
         [Serializable] sealed class A2CleanShotsReceipt
         {
