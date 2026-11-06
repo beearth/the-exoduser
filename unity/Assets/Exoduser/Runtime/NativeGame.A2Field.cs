@@ -38,15 +38,15 @@ namespace Exoduser.UnityPort
             {
                 if(light.type==LightType.Directional)
                 {
-                    light.intensity=3.2f;light.color=new Color(.85f,.90f,1);light.shadows=LightShadows.Soft;
-                    light.shadowStrength=.55f;light.shadowBias=.035f;light.shadowNormalBias=.12f;light.transform.rotation=Quaternion.Euler(49,-32,0);
+                    light.intensity=2.1f;light.color=new Color(.92f,.86f,.86f);light.shadows=LightShadows.Soft;
+                    light.shadowStrength=.82f;light.shadowBias=.035f;light.shadowNormalBias=.12f;light.transform.rotation=Quaternion.Euler(49,-32,0);
                 }
                 else if(light.name.StartsWith("Pool_",StringComparison.Ordinal))light.enabled=false;
             }
             foreach(var root in r3Roots)if(root!=null)foreach(var volume in root.GetComponentsInChildren<Volume>(true))
             {
                 var profile=volume.profile;if(profile==null)continue;ColorAdjustments tone;
-                if(profile.TryGet<ColorAdjustments>(out tone)){tone.postExposure.Override(.55f);tone.contrast.Override(16);}
+                if(profile.TryGet<ColorAdjustments>(out tone)){tone.postExposure.Override(.3f);tone.contrast.Override(22);tone.saturation.Override(2);tone.colorFilter.Override(Color.white);}
             }
             NativeTransitionProgress.Report("a2-lights",.04f);yield return null;
             // Required assets (FieldRequirements): a missing one fails the assembly (exception -> abort policy -> 2D) instead of opening a half-built field as ready.
@@ -118,7 +118,7 @@ namespace Exoduser.UnityPort
             }
             Debug.Log("[A2 전체 지면] "+nx+"x"+nz+"/삼각형 "+triangles.Length/3+"/64셀청크 "+chunkCount+"/근경.25u·먼외곽2u/공유경계노멀·탄젠트");
             Destroy(mesh);
-            a2Water=R3Track(new Material(Shader.Find("EXODUSER/A2ToxicRiver")));A2ShoreField();
+            a2Water=R3Track(new Material(Shader.Find("EXODUSER/A2ToxicRiver")));a2Water.SetColor("_BaseColor",new Color(.42f,.46f,.10f));A2ShoreField();
             var waterMesh=R3Track(new Mesh{name="숲 외곽 독액 수면"});waterMesh.vertices=new[]{new Vector3(A2FieldLayout.GroundMinX,-.45f,A2FieldLayout.GroundMinZ),new Vector3(A2FieldLayout.GroundMaxX,-.45f,A2FieldLayout.GroundMinZ),new Vector3(A2FieldLayout.GroundMinX,-.45f,A2FieldLayout.GroundMaxZ),new Vector3(A2FieldLayout.GroundMaxX,-.45f,A2FieldLayout.GroundMaxZ)};
             waterMesh.uv=new[]{Vector2.zero,Vector2.right,Vector2.up,Vector2.one};waterMesh.triangles=new[]{0,2,1,1,2,3};waterMesh.RecalculateNormals();waterMesh.RecalculateBounds();
             var water=new GameObject("A2 원본 보행 밖 독액 개울");water.transform.SetParent(a2Root.transform,false);water.layer=4;
@@ -219,6 +219,10 @@ namespace Exoduser.UnityPort
         void A2FieldRoots(float x,float z,float scale,float yaw)
         {
             if(a2Field.Water(x,z))return;
+            a2StampSites.Add(new Vector3(x,z,scale));
+        }
+        void A2FieldRootsScan(float x,float z,float scale,float yaw)
+        {
             var source=Resources.Load<GameObject>("Art/map/a2/rootrelief/Models/A2_Root_Cluster_Patch");
             if(source==null){Debug.LogError("[A2 필드] 스캔 뿌리 지면 누락");return;}
             if(a2FieldRootMaterial==null)

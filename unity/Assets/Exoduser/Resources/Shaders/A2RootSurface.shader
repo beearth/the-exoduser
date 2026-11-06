@@ -78,7 +78,7 @@ Shader "EXODUSER/A2RootSurface"
      a=lerp(dirt,roots,.3+.35*fringe);a=lerp(a,leaves,macro*.42);a=lerp(a,moss,mossMix);
      nt=normalize(lerp(UnpackNormalScale(SAMPLE_TEXTURE2D(_SoilNormal,sampler_ForestMap,soilFine),.65),UnpackNormalScale(SAMPLE_TEXTURE2D(_RootNormal,sampler_ForestMap,i.world.xz/3.8),.65),.3+.35*fringe));
      nt=normalize(lerp(nt,UnpackNormalScale(SAMPLE_TEXTURE2D(_FieldMossNormal,sampler_ForestMap,i.world.xz/2.6),.55),mossMix));
-     a*=lerp(.8,1.12,macro);
+     a*=lerp(.8,1.12,macro)*_BaseColor.rgb;
     }
     
     float3 n=normalize(i.normal),t=normalize(float3(1,0,0)-n*n.x),b=-normalize(cross(n,t));
