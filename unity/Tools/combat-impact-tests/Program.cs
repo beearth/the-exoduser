@@ -161,23 +161,31 @@ static class Program
                 Check(!(bool)fx.IsMelee(new FeedbackEvent{Kind=FeedbackKind.Parry,SampleKey=sample}),"reflection sample excluded: "+sample);
             for(int seed=0;seed<20;seed++)foreach(int step in new[]{0,1}) {
                 melee.Step=step;dynamic lines=fx.Sparks(melee,seed);int n=lines.Length;
-                Check(n>=(step==1?80:30)&&n<=(step==1?130:60),"spark count "+step+" seed "+seed);
+                Check(n>=(step==1?60:30)&&n<=(step==1?80:60),"spark count "+step+" seed "+seed);
                 int initial=0,fan=0;bool shape=true;
                 foreach(dynamic line in lines){if(line.Delay==0)initial++;if(line.ReverseFan)fan++;
-                    shape&=line.Delay>=0&&line.Delay<=3&&line.Life>=18&&line.Life<=30&&line.Length>=.10&&line.Length<=.25&&line.Thickness>=1&&line.Thickness<=2;
+                    shape&=(line.Delay==0||line.Delay==1)&&line.Life>=20&&line.Life<=30&&line.Length>=.08&&line.Length<=.15&&line.Thickness>=1&&line.Thickness<=2;
+                    shape&=Math.Abs((double)line.UpScale-(step==1?.5:1))<1e-9;
                     for(int t=0;t<=30;t++)if((double)fx.SparkAlpha(line,t)>0)shape&=(double)fx.SparkLength(line,t)>=.05;
                 }
-                Check(shape&&Math.Abs(initial/(double)n-.3)<.025&&Math.Abs(fan/(double)n-.7)<.025,"line lengths, thickness, lifetime, 30 percent contact and 70 percent reverse fan");
-                double previous=0;for(int t=0;t<=3;t++){double brightness=0;foreach(dynamic line in lines)brightness+=(double)fx.SparkAlpha(line,t);Check(brightness>previous,"rising spark density/brightness tick "+t);previous=brightness;}
-                double next=0;foreach(dynamic line in lines)next+=(double)fx.SparkAlpha(line,4);Check(next<previous,"spark peak at tick3");
+                Check(shape&&Math.Abs(initial/(double)n-.7)<.03&&Math.Abs(fan/(double)n-.7)<.03,"line lengths .08-.15, thickness, life 20-30, 70 percent frame 0 / 30 percent frame 1, upward half for perfect melee");
+                // PBZ: full strength on appearance (no 3-frame rise), then pow 1.5 decay.
+                int visible0=0;foreach(dynamic line in lines)if((double)fx.SparkAlpha(line,0)>0)visible0++;
+                Check(Math.Abs(visible0/(double)n-.7)<.03,"70 percent visible at frame 0");
+                bool full=true,fall=true;foreach(dynamic line in lines){int d=(int)line.Delay;full&=Math.Abs((double)fx.SparkAlpha(line,d)-1)<1e-9;double pv=2;for(int t=d;t<(int)line.Life;t++){double al=(double)fx.SparkAlpha(line,t);fall&=al<=pv+1e-12&&al>0;pv=al;}fall&=(double)fx.SparkAlpha(line,line.Life)==0;}
+                Check(full&&fall,"spark alpha 1 on appearance then monotone pow1.5 decay to expiry");
+                Check(Math.Abs((double)fx.SparkAlpha(lines[0],5)-Math.Pow((lines[0].Life-5.0)/(lines[0].Life-1),1.5))<1e-9,"spark alpha follows pow((life-age)/(life-1),1.5)");
             }
             melee.Step=1;
+            // Full-screen flash replaced by a 7-frame contact star: max at 0, linear to 6, gone from 7.
             for(int age=-1;age<=30;age++) {
-                double a=(double)fx.FlashAlpha(age,false),linear=(double)fx.FlashAlpha(age,true);
-                Check(a>=0&&a*255<=40&&linear>=0&&linear<=.02,"screen brightness bound tick "+age);
-                if(age<0||age>=6)Check(a==0&&linear==0,"flash exact six tick expiry "+age);
+                double a=(double)fx.StarAlpha(age);
+                Check(a>=0&&a<=1,"star alpha bound tick "+age);
+                if(age<0||age>=7)Check(a==0,"star exact seven tick expiry "+age);
             }
-            Check((double)fx.FlashAlpha(1,false)>(double)fx.FlashAlpha(0,false)&&(double)fx.FlashAlpha(2,false)<(double)fx.FlashAlpha(1,false),"one tick flash rise then five tick decay");
+            Check((double)fx.StarAlpha(0)==1&&(double)fx.StarAlpha(6)>0&&Math.Abs((double)fx.StarAlpha(3)-(1-3/7.0))<1e-9&&(double)fx.StarAlpha(7)==0,"star: 1.0 at frame 0, linear fade, ends after age 6");
+            Check((double)fx.KickFactor(-1)==0&&(double)fx.KickFactor(0)==1&&(double)fx.KickFactor(1)==-.5&&(double)fx.KickFactor(2)==0&&CombatParryPresentation.KickDelay==7,"camera kick: 1.0, -0.5, 0 starting contact +7");
+            Check(Math.Abs(CombatParryPresentation.StarCoreWidth-.30)<1e-9&&Math.Abs(CombatParryPresentation.StarRayLong-.60)<1e-9&&Math.Abs(CombatParryPresentation.StarRayShort-.35)<1e-9&&Math.Abs(CombatParryPresentation.StarDiscWidth-.85)<1e-9&&Math.Abs(CombatParryPresentation.StarDiscPeak-.25)<1e-9&&Math.Abs(CombatParryPresentation.SparkGravity-.0014)<1e-12,"star sizes, disc alpha and gravity constants");
             Check(!(bool)fx.HasFlash(new FeedbackEvent{Kind=FeedbackKind.Parry,Step=0})&&(bool)fx.HasFlash(melee),"flash only perfect melee");
             Check(!(bool)fx.HasFlash(new FeedbackEvent{Kind=FeedbackKind.Parry,Step=1,Source="waterBean"}),"projectile has no new melee flash");
             for(int seed=0;seed<20;seed++)foreach(int step in new[]{0,1}){

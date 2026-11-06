@@ -9,7 +9,7 @@ namespace Exoduser.UnityPort.Core.Combat
 
     public static class ParryRewards
     {
-        public const double HitStopParry = 2, HitStopParryReflect = 0;   // _HS.parry / _HS.parryReflect (8677)
+        public const double HitStopParry = 5, HitStopParryReflect = 0;   // _HS.parry / _HS.parryReflect (8677). Web oracle _HS.parry=2; Unity melee parry 5 (11-07 user-approved, PBZ gameplay ~5f)
         public const double SlowMoFrames = 0, ShakeParry = 6, ShakeDetonateCharge = 6;
         public const double BaseRecovery = 50, InvulnerableFrames = 25;
 

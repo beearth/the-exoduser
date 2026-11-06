@@ -21,8 +21,8 @@ namespace Exoduser.UnityPort.Vfx
         readonly Sprite puff;readonly Texture2D puffTexture;
         readonly List<ParryLine> parryLines=new List<ParryLine>();
         readonly Sprite line;readonly Texture2D lineTexture;
-        readonly SpriteRenderer meleeFlash;readonly Material meleeFlashMaterial;
-        int parryBorn=-1000,meleeFlashBorn=-1000;
+        readonly SpriteRenderer starCore,starRayA,starRayB,starDisc;readonly Material starDiscMaterial;
+        int parryBorn=-1000,meleeFlashBorn=-1000,kickBorn=-1000;float starX,starY,kickAmount;
         public bool ParryPushIn;
         public float ParryCameraScale(int tick){return ReducedMotion?1:(float)parry.CameraScale(clock.Now(tick)-parryBorn,ParryPushIn);}
         // Called for each fixed step the simulation is held by the melee parry hit-stop.
@@ -72,8 +72,10 @@ namespace Exoduser.UnityPort.Vfx
             for(int y=0;y<4;y++)for(int x=0;x<64;x++)linePixels[y*64+x]=new Color32(255,255,255,(byte)(255*Mathf.Min(1,Mathf.Min(x,63-x)/8f)*(y==0||y==3?.35f:1)));
             lineTexture.SetPixels32(linePixels);lineTexture.Apply();line=Sprite.Create(lineTexture,new Rect(0,0,64,4),new Vector2(.5f,.5f),100);
             // Before transparent danger sprites (queue3000), after opaque terrain.
-            meleeFlashMaterial=new Material(alpha){renderQueue=2999};
-            meleeFlash=Make("Melee parry screen flash below danger",meleeFlashMaterial);meleeFlash.sprite=dot;meleeFlash.sortingOrder=-32700;meleeFlash.enabled=false;
+            // 11-07: the full-screen flash is gone; a contact-local star (soft core, two thin rays, faint disc) replaces it. Reuses puff/line.
+            starDiscMaterial=new Material(alpha){renderQueue=2999};
+            starDisc=Make("Melee parry star disc below danger",starDiscMaterial);starDisc.sortingOrder=-32700;starDisc.enabled=false;
+            starCore=Make("Melee parry star core",add);starCore.enabled=false;starRayA=Make("Melee parry star ray A",add);starRayA.enabled=false;starRayB=Make("Melee parry star ray B",add);starRayB.enabled=false;
             ringTexture=new Texture2D(32,32,TextureFormat.RGBA32,false){filterMode=FilterMode.Point};var px=new Color32[32*32];
             for(int y=0;y<32;y++)for(int x=0;x<32;x++)px[y*32+x]=new Color32(255,255,255,(byte)(x==0||x==31||y==0||y==31?255:0));
             ringTexture.SetPixels32(px);ringTexture.Apply();ring=Sprite.Create(ringTexture,new Rect(0,0,32,32),new Vector2(.5f,.5f),100);
@@ -113,7 +115,9 @@ namespace Exoduser.UnityPort.Vfx
             // Latest warm line sparks for all parries; retain G2 feedback data.
             // Push-in candidate (R4) applies to melee parries only; bullet parries keep the G1 shake 4 because they are frequent.
             if(e.Kind==FeedbackKind.Parry){Parries++;bool melee=e.MeleeParry||parry.IsMelee(e);float amount=e.ParryShake>0?e.ParryShake:melee?6:4;
-                if(melee&&ParryPushIn){parryBorn=clock.Now(e.Tick);amount=Mathf.Min(amount,2);}ParryLines(e);Shake(clock.Now(e.Tick),amount);}
+                if(melee&&ParryPushIn){parryBorn=clock.Now(e.Tick);amount=Mathf.Min(amount,2);}ParryLines(e);
+                // Perfect melee: no shake at contact, one bounce at contact +7 frames (11-07 PBZ). Block and bullet parries keep the decaying shake.
+                if(melee&&e.Step==1){kickBorn=clock.Now(e.Tick)+CombatParryPresentation.KickDelay;kickAmount=amount;}else Shake(clock.Now(e.Tick),amount);}
             if(hit){Hits++;HitParts(e);}
             if((e.Kind==FeedbackKind.EnemyDeath||e.Kind==FeedbackKind.BossDeath)&&e.Source!="druid_sink") {
                 Deaths++;
@@ -167,10 +171,13 @@ namespace Exoduser.UnityPort.Vfx
         float R(float low,float span){return low+(float)random.NextDouble()*span;}
         void Shake(int tick,float amount){float current=shake*Mathf.Pow(.86f,Mathf.Max(0,tick-shakeBorn));shakeBorn=tick;shake=Mathf.Max(current,amount);}
         public Vector3 CameraOffset(int tick) {
-            float age=clock.Now(tick)-shakeBorn;if(ReducedMotion||age<0)return Vector3.zero;
-            float amplitude=shake*Mathf.Pow(.86f,age)*ShakeScale;if(amplitude<.3f)return Vector3.zero;
-            float a=amplitude/100;
-            return new Vector3(Mathf.Cos(age*2.399f)*a,Mathf.Sin(age*2.13f)*a,0);
+            if(ReducedMotion)return Vector3.zero;
+            var offset=Vector3.zero;
+            float age=clock.Now(tick)-shakeBorn;
+            if(age>=0){float amplitude=shake*Mathf.Pow(.86f,age)*ShakeScale;if(amplitude>=.3f){float a=amplitude/100;offset=new Vector3(Mathf.Cos(age*2.399f)*a,Mathf.Sin(age*2.13f)*a,0);}}
+            float ka=clock.Now(tick)-kickBorn,kick=(float)parry.KickFactor(ka)*kickAmount*ShakeScale/100;
+            if(kick!=0)offset+=new Vector3(Mathf.Cos(ka*2.399f)*kick,Mathf.Sin(ka*2.13f+1f)*kick,0);
+            return offset;
         }
         void AddParticle(FeedbackEvent e,float vx,float vy,Color col,float size,float life,float gravity,int type=0,float angle=0) {
             if(particles.Count>=256){ReleaseRenderer(particles[0].renderer);particles.RemoveAt(0);}
@@ -197,8 +204,9 @@ namespace Exoduser.UnityPort.Vfx
                 p.renderer.enabled=opacity>0&&origin.z>0;if(!p.renderer.enabled){i++;continue;}
                 var aim=camera.WorldToScreenPoint(NativeRemodel3D.Point(p.source.X+Mathf.Cos((float)spec.Angle)*100,p.source.Y+Mathf.Sin((float)spec.Angle)*100));
                 var direction=new Vector2(aim.x-origin.x,aim.y-origin.y).normalized;
+                if(spec.UpScale!=1&&direction.y>0){direction.y*=(float)spec.UpScale;direction.Normalize();}   // perfect melee: half the upward launch
                 float a=Mathf.Max(0,age-spec.Delay),travel=height*(float)spec.Speed*a;
-                var centre=new Vector2(origin.x,origin.y)+direction*travel+Vector2.down*(height*.00065f*a*a);
+                var centre=new Vector2(origin.x,origin.y)+direction*travel+Vector2.down*(height*(float)CombatParryPresentation.SparkGravity*a*a);
                 float length=height*(float)parry.SparkLength(spec,age),thickness=(float)spec.Thickness*camera.pixelHeight/900f;
                 // Lifetime taper never shrinks below one reference pixel or key length×.05.
                 thickness=Mathf.Max(camera.pixelHeight/900f,thickness*(1-age/spec.Life*.5f));
@@ -209,12 +217,33 @@ namespace Exoduser.UnityPort.Vfx
                 p.renderer.transform.localScale=new Vector3(Vector3.Distance(at,right)/line.bounds.size.x,Vector3.Distance(at,up)/line.bounds.size.y,1);
                 var color=Color.Lerp(Hex("#f5e5d5"),Hex("#f0debd"),(float)spec.Color);color.a=opacity;p.renderer.color=color;i++;
             }
-            float flash=ReducedMotion?0:(float)parry.FlashAlpha(clock.Now(tick)-meleeFlashBorn,QualitySettings.activeColorSpace==ColorSpace.Linear);
-            meleeFlash.enabled=flash>0;
-            if(flash>0){var centre=camera.ViewportToWorldPoint(new Vector3(.5f,.5f,plane));var corner=camera.ViewportToWorldPoint(new Vector3(1,1,plane));
-                meleeFlash.transform.SetPositionAndRotation(centre,camera.transform.rotation);
-                meleeFlash.transform.localScale=new Vector3(Vector3.Dot(corner-centre,camera.transform.right)*2/dot.bounds.size.x,Vector3.Dot(corner-centre,camera.transform.up)*2/dot.bounds.size.y,1);
-                meleeFlash.color=new Color(1,244/255f,208/255f,flash);}
+            DrawParryStar(tick,camera,height,plane);
+        }
+        // Contact-local star: soft additive core (#f4caac), two thin additive rays (#f4caac), faint disc (#e8d6c4, peak .25).
+        // Full strength at age 0, linear fade over 7 frames. No full-screen bloom. ReducedMotion keeps only the core at half alpha.
+        void DrawParryStar(int tick,Camera camera,float height,float plane) {
+            float k=(float)parry.StarAlpha(clock.Now(tick)-meleeFlashBorn);
+            bool on=k>0;starCore.enabled=on;starRayA.enabled=on&&!ReducedMotion;starRayB.enabled=on&&!ReducedMotion;starDisc.enabled=on&&!ReducedMotion;
+            if(!on)return;
+            var origin=camera.WorldToScreenPoint(NativeRemodel3D.Point(starX,starY));
+            if(origin.z<=0){starCore.enabled=starRayA.enabled=starRayB.enabled=starDisc.enabled=false;return;}
+            float px=camera.pixelHeight/900f;
+            Place(starCore,puff,origin,height*(float)CombatParryPresentation.StarCoreWidth,height*(float)CombatParryPresentation.StarCoreWidth,camera,plane);
+            var warm=Hex("#f4caac");warm.a=k*(ReducedMotion?.5f:1);starCore.color=warm;
+            if(ReducedMotion)return;
+            Place(starRayA,line,origin,height*(float)CombatParryPresentation.StarRayLong,1.5f*px,camera,plane);
+            Place(starRayB,line,origin,height*(float)CombatParryPresentation.StarRayShort,1.5f*px,camera,plane,90);
+            warm.a=k;starRayA.color=warm;starRayB.color=warm;
+            Place(starDisc,puff,origin,height*(float)CombatParryPresentation.StarDiscWidth,height*(float)CombatParryPresentation.StarDiscWidth,camera,plane);
+            var disc=Hex("#e8d6c4");disc.a=k*(float)CombatParryPresentation.StarDiscPeak;starDisc.color=disc;
+        }
+        void Place(SpriteRenderer r,Sprite sprite,Vector3 screen,float width,float thickness,Camera camera,float plane,float degrees=0) {
+            r.sprite=sprite;
+            var at=camera.ScreenToWorldPoint(new Vector3(screen.x,screen.y,plane));
+            var right=camera.ScreenToWorldPoint(new Vector3(screen.x+width,screen.y,plane));
+            var up=camera.ScreenToWorldPoint(new Vector3(screen.x,screen.y+thickness,plane));
+            r.transform.SetPositionAndRotation(at,camera.transform.rotation*Quaternion.Euler(0,0,degrees));
+            r.transform.localScale=new Vector3(Vector3.Distance(at,right)/sprite.bounds.size.x,Vector3.Distance(at,up)/sprite.bounds.size.y,1);
         }
         void HitParts(FeedbackEvent e) {
             var ec=ElementColor(e.Element);var ep=e.Element>=0&&e.Element<6?Hex(new[]{"#dddddd","#ff6622","#44aaff","#bb55ee","#ffee44","#ffdd55"}[e.Element]):ec;
@@ -334,21 +363,21 @@ namespace Exoduser.UnityPort.Vfx
             var saved=new List<KeyValuePair<SpriteRenderer,bool>>();
             Action<SpriteRenderer> hide=r=>{if(r!=null){saved.Add(new KeyValuePair<SpriteRenderer,bool>(r,r.enabled));r.enabled=false;}};
             foreach(var c in clips)hide(c.renderer);foreach(var p in particles)hide(p.renderer);foreach(var p in parryLines)hide(p.renderer);foreach(var d in dust)hide(d.renderer);
-            foreach(var r in bloodGround)hide(r);hide(meleeFlash);
+            foreach(var r in bloodGround)hide(r);hide(starCore);hide(starRayA);hide(starRayB);hide(starDisc);
             return ()=>{foreach(var pair in saved)if(pair.Key!=null)pair.Key.enabled=pair.Value;};
         }
         int flashBorn=-1000;float flashPeak;Color flashColor;
         public float FlashAlpha(int tick){return Mathf.Max(0,flashPeak-Mathf.Max(0,tick-flashBorn)*.08f);}
         public void Flash(FeedbackEvent e){
             // Screen flash only for a perfect melee parry (R2); bullet parries and blocks get none.
-            if(e.Kind==FeedbackKind.Parry){if(parry.HasFlash(e))meleeFlashBorn=clock.Now(e.Tick);return;}
+            if(e.Kind==FeedbackKind.Parry){if(parry.HasFlash(e)){meleeFlashBorn=clock.Now(e.Tick);starX=e.X;starY=e.Y;}return;}
             if(!e.VisualOnly)return;
             float strength=e.IsBoss?.2f:.1f;
             flashPeak=Mathf.Min(.5f,FlashAlpha(e.Tick)+strength*.5f);flashBorn=e.Tick;flashColor=ElementColor(e.Element);
         }
         static void Release(UnityEngine.Object o){if(Application.isPlaying)UnityEngine.Object.Destroy(o);else UnityEngine.Object.DestroyImmediate(o);}
         static void ReleaseRenderer(SpriteRenderer r){owned.Remove(r);Release(r.gameObject);}
-        public void Reset(){foreach(var c in clips)ReleaseRenderer(c.renderer);clips.Clear();foreach(var p in particles)ReleaseRenderer(p.renderer);particles.Clear();foreach(var p in parryLines)ReleaseRenderer(p.renderer);parryLines.Clear();foreach(var d in dust)ReleaseRenderer(d.renderer);dust.Clear();rollBorn=-1000;clock.Reset();meleeFlash.enabled=false;parryBorn=meleeFlashBorn=-1000;timeline.Reset();bloodDecals.Reset();foreach(var r in bloodGround)if(r!=null){r.enabled=false;NativeGroundSkillSurface.Project(r);}rollDustTick=-1;shakeBorn=flashBorn=-1000;shake=flashPeak=0;}
-        public void Dispose(){RenderPipelineManager.beginCameraRendering-=BeforeCamera;Camera.onPreCull-=BeforeBuiltinCamera;Reset();ReleaseRenderer(meleeFlash);Release(meleeFlashMaterial);Release(line);Release(lineTexture);foreach(var r in bloodGround)if(r!=null)ReleaseRenderer(r);foreach(var sheet in sheets.Values)if(sheet!=null)foreach(var frame in sheet.frames)Release(frame);sheets.Clear();Release(dot);Release(ring);Release(ringTexture);Release(puff);Release(puffTexture);Release(add);Release(alpha);Release(whiteAlpha);Release(bloodFloor);}
+        public void Reset(){foreach(var c in clips)ReleaseRenderer(c.renderer);clips.Clear();foreach(var p in particles)ReleaseRenderer(p.renderer);particles.Clear();foreach(var p in parryLines)ReleaseRenderer(p.renderer);parryLines.Clear();foreach(var d in dust)ReleaseRenderer(d.renderer);dust.Clear();rollBorn=-1000;clock.Reset();starCore.enabled=starRayA.enabled=starRayB.enabled=starDisc.enabled=false;parryBorn=meleeFlashBorn=kickBorn=-1000;kickAmount=0;timeline.Reset();bloodDecals.Reset();foreach(var r in bloodGround)if(r!=null){r.enabled=false;NativeGroundSkillSurface.Project(r);}rollDustTick=-1;shakeBorn=flashBorn=-1000;shake=flashPeak=0;}
+        public void Dispose(){RenderPipelineManager.beginCameraRendering-=BeforeCamera;Camera.onPreCull-=BeforeBuiltinCamera;Reset();ReleaseRenderer(starCore);ReleaseRenderer(starRayA);ReleaseRenderer(starRayB);ReleaseRenderer(starDisc);Release(starDiscMaterial);Release(line);Release(lineTexture);foreach(var r in bloodGround)if(r!=null)ReleaseRenderer(r);foreach(var sheet in sheets.Values)if(sheet!=null)foreach(var frame in sheet.frames)Release(frame);sheets.Clear();Release(dot);Release(ring);Release(ringTexture);Release(puff);Release(puffTexture);Release(add);Release(alpha);Release(whiteAlpha);Release(bloodFloor);}
     }
 }

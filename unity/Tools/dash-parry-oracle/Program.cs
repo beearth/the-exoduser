@@ -57,7 +57,7 @@ static class P
           Check(c.GetProperty("harpSpd").GetDouble() == ChainDash.FlightSpeed, "harpSpd"); Check(c.GetProperty("harpGaugeBaseCells").GetInt32() == ChainDash.BaseGaugeCells, "base cells");
           Check(c.GetProperty("miniStun").GetDouble() == EnemyPoiseRules.MiniStun && c.GetProperty("fullStun").GetDouble() == EnemyPoiseRules.FullStun, "mini/full stun");
           Check(c.GetProperty("parryWin").GetInt32() == ParryRules.ParryWin && c.GetProperty("sdGrace").GetDouble() == ParryRules.SdGrace, "parry win / sd grace");
-          var hs = c.GetProperty("hitStop"); Check(ParryRewards.HitStopParry == 2 && ParryRewards.HitStopParryReflect == 0 && hs.GetProperty("pStun").GetDouble() == PlayerPoise.PStunHitStop, "hit stop parry / reflect / pStun");
+          var hs = c.GetProperty("hitStop"); Check(ParryRewards.HitStopParry == 5 /* web _HS.parry=2; Unity 11-07 user-approved 5 */ && ParryRewards.HitStopParryReflect == 0 && hs.GetProperty("pStun").GetDouble() == PlayerPoise.PStunHitStop, "hit stop parry / reflect / pStun");
           Check(hs.GetProperty("groggy").GetDouble() == 8, "hit stop groggy 8 (value only)"); }
 
         foreach (var c in Cases(root, "parryTicks")) { var i = c.GetProperty("in"); var o = c.GetProperty("out"); double cape = N0(i, "cape"); Num("winTicks", ParryRules.LParryWinTicks(cape), o, "winTicks", Ctx(i)); Num("sbT", ParryRules.LSbParryT(cape), o, "sbT", Ctx(i)); }
@@ -98,7 +98,7 @@ static class P
             var r = ParryRewards.Apply(inp);
             Num("iframes", r.Iframes, o, "iframes", x); Num("hp", r.Hp, o, "hp", x); Num("st", r.St, o, "st", x); Num("mp", r.Mp, o, "mp", x); Num("poise", r.Poise, o, "poise", x); Num("rage", r.Rage, o, "rage", x); Num("mats", r.Mats, o, "mats", x);
             Num("harpGauge", r.HarpGauge, o, "harpGauge", x); // G1 A-plan expectation overlay: resources/poise/windows still compare to the immutable web fixture.
-            Check(r.HitStop==(inp.LessonActive?0:Js.Int(2*inp.OptHitStop/100)),x+" G2 melee hitStop");Check(r.SlowMo==0,x+" G2 slowMo");Check(r.Shake==6*inp.OptShake/100,x+" G2 melee shake");
+            Check(r.HitStop==(inp.LessonActive?0:Js.Int(5*inp.OptHitStop/100)),x+" G2 melee hitStop");Check(r.SlowMo==0,x+" G2 slowMo");Check(r.Shake==6*inp.OptShake/100,x+" G2 melee shake");
         }
         foreach (var c in Cases(root, "harpDist")) { var i = c.GetProperty("in"); var o = c.GetProperty("out"); int tier = (int)N0(i, "tier"); double cb = N0(i, "chargeBoost"), mb = N0(i, "magicBlink"), pc = N0(i, "pCharge");
             Num("distTier", ChainDash.DistanceOfTier(tier, cb, mb, pc), o, "distTier", Ctx(i));

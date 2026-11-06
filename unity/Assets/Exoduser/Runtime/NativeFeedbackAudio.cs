@@ -65,6 +65,7 @@ namespace Exoduser.UnityPort
                 if(!clips.ContainsKey(key))throw new InvalidOperationException("Missing RM-1 audio sample "+key);
             Receipt.loadedClips=clips.Count;bus.SetSfxPercent(60);AudioListener.GetOutputData(output,0);
         }
+        public const float ParryMetalDelay=.04f;
         public bool HasClip(string key){return clips.ContainsKey(key);}
         public AudioClip Clip(string key){AudioClip clip;if(!clips.TryGetValue(key,out clip))throw new InvalidOperationException("Audio sample outside admitted scope "+key);return clip;}
         float Jitter(float centre,float spread){return centre*(1+((float)rng.NextDouble()-.5f)*2*spread);}   // web _r(centre, spread)
@@ -105,10 +106,11 @@ namespace Exoduser.UnityPort
                 case FeedbackKind.BossDeath:Receipt.requested++;direct.Add(HasClip("druid_vo_last")?Make("druid_vo_last",.75f,Jitter(1,.03f),World(e),e):Make("death_boss",.75f,Jitter(.7f,.15f),World(e),e));PlayWire(NativeSoundWire.DruidBossKill,e.X,e.Y,e.Tick,"Core BossDeath (last life)");break;   // _BOSS_SFX[0].die; R8 druid_boss_kill layers on the same moment
                 case FeedbackKind.Parry:   // game.html doParry (38667): Q parry -> q_parry .9 (1+-.08); otherwise sword_parry 1 (1+-.1) + one sword_back* .5 (1.1+-.1); then 50 % voice_parry1-4 (1+-.03) else male_grunt (1+-.15)
                     Receipt.requested++;
-                    if(e.Step==1)direct.Add(Make("q_parry",.9f,Jitter(1,.08f),World(e),e));
+                    // 11-07 PBZ: the metal strike lands 2-3 frames after the screen contact, so metal keys play 40 ms late; voices stay on the contact tick.
+                    if(e.Step==1){var q=Make("q_parry",.9f,Jitter(1,.08f),World(e),e);q.delay=ParryMetalDelay;direct.Add(q);}
                     else{
-                        direct.Add(Make("sword_parry",1f,Jitter(1,.1f),World(e),e));
-                        direct.Add(Make(new[]{"sword_back","sword_back2","sword_back3"}[rng.Next(3)],.5f,Jitter(1.1f,.1f),World(e),e));
+                        var metal=Make("sword_parry",1f,Jitter(1,.1f),World(e),e);metal.delay=ParryMetalDelay;direct.Add(metal);
+                        var back=Make(new[]{"sword_back","sword_back2","sword_back3"}[rng.Next(3)],.5f,Jitter(1.1f,.1f),World(e),e);back.delay=ParryMetalDelay;direct.Add(back);
                     }
                     if(rng.NextDouble()<.5)direct.Add(Make("voice_parry"+(1+rng.Next(4)),1f,Jitter(1,.03f),World(e),e));
                     else direct.Add(Make("male_grunt",1f,Jitter(1,.15f),World(e),e));

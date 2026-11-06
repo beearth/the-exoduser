@@ -529,3 +529,24 @@ Mac 피격 판정에 넣을 컷(1x·3x): 가장 작은 요마(3, 화면 52.2px �
 
 - `Runtime/KiImpactView.cs` `DrawBursts`: `b.core.enabled=alpha>0&&!NativeRemodel3D.Active`. 3D(`--remodel3d`)에서는 평면 16각 크림 코어를 그리지 않는다. 3D 접점 정점은 `NativeImpactView` 웹 은빛 플립북(0.16s)이 맡는다. 2D 표시 계약(5틱·키×.35/.6·#fff4d0→#ffd9a0)은 그대로다.
 - 이유·후보 표·Mac 재확인: `docs/0마스터플랜/worklog/cloud-lanes/L9-white-disc_20261104.md`. 컴파일 미확인(PC)·화면 미검수(Mac).
+
+## 근접 패링 연출 PBZ 게임플레이 실측 교체 — 2026-11-07
+
+근거: `I:/EXODUSER-Storage/study/pbz/RESULT.md` §1·§2·§4(PBZ 게임플레이 영상 60fps, 패링 5회 정밀 판독), 11-07 사용자 지시 "패링 수치를 우리 Unity 패링 연출에 적용해줘". 위 G2 표(스파크 80~130·18~30틱·섬광·접점 즉시 흔들림)와 `PARRY_REDESIGN_G1_20261103.md` §3 두 번째 표(런치 트레일러 기준)를 이 표가 대체한다(표현 값만). "근접 완벽 패링"=`IsMelee&&Step==1`. 막기(Step0)와 탄 패링은 아래에 따로 적은 것 외에 그대로다.
+
+| # | 항목 | 이전 | 현재 | 코드 |
+|---|---|---|---|---|
+| 1 | 완벽 근접 스파크 개수 | 80~130 | 60~80 (막기 30~60·탄 36~50/20~30 그대로) | `CombatParryPresentation.Sparks` |
+| 2 | 등장 | 30% 0틱, 나머지 1~3틱, 알파 .3→1을 3틱 | 70% 0틱·30% 1틱, 등장 즉시 알파1, 이후 `pow((수명-나이)/(수명-1),1.5)` (모든 패링 스파크) | `SparkAlpha` |
+| 3 | 수명 | 18~30틱 | 20~30틱 | 〃 |
+| 4 | 낙하 | 중력 `height*.00065*a²` | `.0014`(`SparkGravity`, 모든 패링 스파크). 완벽 근접은 발사 방향 위쪽 성분 절반(`Spark.UpScale=.5`, 뷰에서 화면 방향에 적용·재정규화) | `DrawMeleeParry` |
+| 5 | 길이 | 키 .10~.25 | .08~.15 | `Sparks` |
+| 6 | 섬광 | 화면 전체 플래시(선형 .02/감마 .15), 1틱 상승 5틱 감소 | 삭제. 접점 국소 별꽃, 0틱 최대·7틱(나이 0~6) 선형 감소(`StarAlpha`): 부드러운 코어(가산, 지름 키×.30, #f4caac) · 가는 광선 2개(가산, 가로 ×.60·세로 ×.35, 1.5px 기준 두께, #f4caac) · 옅은 원판(일반 알파, 지름 ×.85, 최대 알파 .25, #e8d6c4). ReducedMotion은 코어만 알파 절반. 화면 전체 블룸 없음 | `DrawParryStar` |
+| 7 | 카메라 | 접점에 Shake(6) 후 .86^t 감쇠 | 완벽 근접: 접점 흔들림 0, 접점 +7틱에 한 번 튀고(0틱 1.0 → 1틱 -0.5 → 2틱 0, 크기 `e.ParryShake`/6) 끝. 막기·탄은 그대로 | `KickFactor`, `CameraOffset` |
+| 8 | 소리 | 접점 틱 | 금속음(`sword_parry`·`sword_back*`·`q_parry`)만 40ms 지연(`Req.delay`→`PlayDelayed`). 음성은 접점 그대로. 표본·볼륨·피치 불변 | `NativeFeedbackAudio.ParryMetalDelay` |
+| 9 | 히트스톱 | Core 2틱 | Core 5틱(`ParryRewards.HitStopParry`, 11-07 사용자 승인 "5틱으로 변경", PBZ 약 5f). 웹 oracle `_HS.parry`=2와 다름. 포즈 홀드는 `HitStopTicks`를 그대로 읽는다 | Core |
+
+- 사용 스프라이트: 기존 `puff`(코어·원판)·`line`(광선), `add`/`alpha` 재질. 새 텍스처 없음. 브리프는 `dot`을 말했으나 `dot`은 모서리 있는 흰 사각형이라 둥근 코어 대신 `puff`를 썼다.
+- 굴절(왜곡) 원판은 셰이더가 필요해 이번에 넣지 않았다(에셋 팩 결정 대기).
+- 시간 기준은 `CombatPresentationClock`(히트스톱 중에도 진행). 5틱 홀드 동안 별꽃(7틱)이 대부분 지나가고 카메라 튐(접점 +7틱)은 홀드 종료 직후에 온다.
+- 검증: combat-impact 835/0(PC dotnet), parry-g2-tests 87/0, dash-parry-oracle 187165/0. 실제 화면·청음·1x/3x 점0은 Mac 판정 전 미검증.

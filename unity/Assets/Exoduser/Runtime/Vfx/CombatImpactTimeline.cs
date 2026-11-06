@@ -111,38 +111,42 @@ namespace Exoduser.UnityPort.Vfx
     // Pure presentation policy. Never reads/writes simulation rules or its RNG.
     public sealed class CombatParryPresentation
     {
-        public sealed class Spark {public int Delay,Life;public double Angle,Length,Thickness,Speed,Color;public bool ReverseFan;}
+        public sealed class Spark {public int Delay,Life;public double Angle,Length,Thickness,Speed,Color,UpScale=1;public bool ReverseFan;}
         public bool IsMelee(FeedbackEvent e) {
             if(e.Kind!=FeedbackKind.Parry||!string.IsNullOrEmpty(e.SampleKey))return false;
             return string.IsNullOrEmpty(e.Source)||e.Source=="contact"||e.Source=="swing"||e.Source=="slam"||e.Source=="charge"||e.Source=="combo"||e.Source.StartsWith("melee",StringComparison.Ordinal);
         }
         public bool HasFlash(FeedbackEvent e){return IsMelee(e)&&e.Step==1;}
+        // 11-07 PBZ gameplay measurement (study/pbz/RESULT.md): perfect melee 60-80 sparks (block 30-60, bullet 36-50/20-30),
+        // 70 % at contact frame 0 and 30 % at frame 1, full alpha on appearance, life 20-30, mostly falling (gravity .0014),
+        // length .08-.15 of the hero height. A perfect melee parry halves the upward launch component (UpScale).
+        public const double SparkGravity=.0014;
         public Spark[] Sparks(FeedbackEvent e,int seed) {
             if(e.Kind!=FeedbackKind.Parry)return Array.Empty<Spark>();
-            // Melee: perfect/Q 80-130, shield block 30-60. Bullet parries: a smaller burst of the same lines (perfect 36-50,
-            // block 20-30) so the reflected bullet stays the subject.
             var rng=new Random(seed);bool melee=IsMelee(e);
-            int n=e.Step==1?(melee?rng.Next(80,131):rng.Next(36,51)):(melee?rng.Next(30,61):rng.Next(20,31));
-            var lines=new Spark[n];int initial=(int)Math.Round(n*.3),fan=(int)Math.Round(n*.7);
+            int n=e.Step==1?(melee?rng.Next(60,81):rng.Next(36,51)):(melee?rng.Next(30,61):rng.Next(20,31));
+            var lines=new Spark[n];int fan=(int)Math.Round(n*.7);
             for(int i=0;i<n;i++) {
                 bool reverse=i<fan;
-                lines[i]=new Spark{Delay=i<initial?0:1+(i-initial)*3/(n-initial),Life=rng.Next(18,31),
+                lines[i]=new Spark{Delay=i<fan?0:1,Life=rng.Next(20,31),
                     ReverseFan=reverse,Angle=e.Angle+Math.PI+(rng.NextDouble()-.5)*(reverse?Math.PI:Math.PI*2),
-                    Length=.10+rng.NextDouble()*.15,Thickness=1+rng.NextDouble(),Speed=.025+rng.NextDouble()*.04,Color=rng.NextDouble()};
+                    Length=.08+rng.NextDouble()*.07,Thickness=1+rng.NextDouble(),Speed=.025+rng.NextDouble()*.04,Color=rng.NextDouble(),
+                    UpScale=melee&&e.Step==1?.5:1};
             }
             return lines;
         }
         public double SparkAlpha(Spark s,double age) {
             if(age<s.Delay||age>=s.Life)return 0;
-            return age<=3?.3+.7*age/3:Math.Pow((s.Life-age)/(s.Life-3),1.5);
+            return Math.Min(1,Math.Pow((s.Life-age)/(s.Life-1),1.5));
         }
         public double SparkLength(Spark s,double age){return Math.Max(.05,s.Length*(1-Math.Max(0,age-3)/(s.Life-3)*.7));}
-        public double FlashAlpha(double age,bool linear) {
-            if(age<0||age>=6)return 0;
-            // Linear framebuffer blending needs the stricter cap: sRGB(0.02)*255
-            // is 38.7 even over black. Gamma framebuffer maximum is 38.25.
-            return (linear?.02:.15)*(age<1?age:1-(age-1)/5);
-        }
+        // Contact star (replaces the full-screen flash): full strength at age 0, linear fade over 7 frames (age 0-6).
+        public const int StarTicks=7;
+        public double StarAlpha(double age){return age<0||age>=StarTicks?0:1-age/StarTicks;}
+        public const double StarCoreWidth=.30,StarRayLong=.60,StarRayShort=.35,StarDiscWidth=.85,StarDiscPeak=.25;
+        // Perfect melee parry camera: no shake at contact; one bounce at contact +7 frames, finished within 2 frames.
+        public const int KickDelay=7;
+        public double KickFactor(double age){return age<0||age>=2?0:age<1?1:-.5;}
         // One push-in candidate: the VFX flag and the parry G2 flag (--parry-feedback-push-in, which also lowers the Core
         // melee shake to 2) both select the R4 field-of-view push below; there is no second dolly.
         public bool ParsePushIn(string[] args){return Array.IndexOf(args,"--unity-parry-camera=pushin")>=0||Array.IndexOf(args,"--parry-feedback-push-in")>=0;}
