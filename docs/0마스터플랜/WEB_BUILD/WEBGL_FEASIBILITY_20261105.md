@@ -6,7 +6,7 @@
 
 **조건부 가능(A안 유지 권고).** 10-28 개발툴 DT-16이 같은 프로젝트를 WebGPU로 빌드해 FDG→1-1→이동·공격 스모크를 통과한 기록이 있다(770MB→175MB, 로드 10~14초, `docs/engine/UNITY_DEVTOOLS_MASTER_20261028.md`:183). 그 뒤 10-30에 들어온 Windows 전용 `DllImport`(Tools) 1건이 새 빌드 차단 후보이고, 용량(원본 2.75GB, 기본 임포트가 비압축 8192)·첫 로딩(≤20초)·명령줄 스위치 의존(3D 필드·적 리그가 `--remodel3d` 등 인자로만 켜짐)이 가장 큰 위험이다. 차단 요소 수: **치명 4 / 중 9 / 경 10**(§2). 용량 추정은 §3, 실패 조건별 위험도는 §4.
 
-**11-05 PC 실측(CTO 전달, 72e104989, `-slim -astc`):** 빌드 성공·오류 0이지만 **data.br 811.8MB**(10-28 축소 빌드 147MB의 5.5배). Build Report 사용자 자산 1.3GB 중 텍스처 1.0GB(75.7%)·사운드 113.6MB·메시 86.1MB·애니 62.6MB. textures.csv에 RGBA32 799MB·RGB24 117MB·비크런치 DXT5 402MB가 남아 있어 **텍스처 오버라이드가 대부분에 적용되지 않았다**. 원인 가설과 ≤300MB 도달 경로는 §3.4 용량 절감 계획. 10-28 DT-16 상세(CTO 전달): 무압축 약 770MB·첫 화면 18~23초 / 축소 174.9MB·전송 164.7MB·첫 화면 12.4초·WebGPU 1-1 연습장 진입·이동 OK·페이지 예외 0, 콘솔에 ReadPixels 실패 2건(§2.2 M1).
+**11-05 PC 실측(CTO 전달, 72e104989, `-slim -astc`):** 빌드 성공·오류 0이지만 **data.br 811.8MB**(10-28 축소 빌드 147MB의 5.5배). Build Report 사용자 자산 1.3GB 중 텍스처 1.0GB(75.7%)·사운드 113.6MB·메시 86.1MB·애니 62.6MB. textures.csv에 RGBA32 799MB·RGB24 117MB·비크런치 DXT5 402MB가 남아 있어 **텍스처 오버라이드가 대부분에 적용되지 않았다**. 원인 가설과 ≤300MB 도달 경로는 §3.4 용량 절감 계획. **11-05 PC 실측 2회차(CTO 전달, slim2): data.br 687MB**, 비압축 1,512MB. 비4배수 텍스처 365개가 DXT5 요청에도 RGBA32로 강등(런타임 2,060MB), 오디오 WebGL 오버라이드 154건 전부 거부. 브라우저(로컬) WebGPU·WebGL2 모두 1-1 진입, 전투 1분 오류 0, 첫 로딩 15~19초. 상세 §8, 절감 재계산 §3.4 ⑥. 10-28 DT-16 상세(CTO 전달): 무압축 약 770MB·첫 화면 18~23초 / 축소 174.9MB·전송 164.7MB·첫 화면 12.4초·WebGPU 1-1 연습장 진입·이동 OK·페이지 예외 0, 콘솔에 ReadPixels 실패 2건(§2.2 M1).
 
 ## 1. 조사 범위와 방법
 
@@ -175,23 +175,34 @@ Web은 임포트 포맷을 AAC로 바꾼다는 옛 문서(2022.x)가 있어 Vorb
 - `Warrior_R7.fbx` 12.4MB·`Warrior_Rigged.fbx` 18.7MB·대검 13.5MB 원본: 리그 캐시(`Warrior_Rigged_Cape.asset` 16.2MB)·중복 리그가 둘 다 들어가는지 빌드 리포트로 확인. 애니는 Compression Optimal·키프레임 축소.
 - 예상: 메시 86→50MB, 애니 62→35MB.
 
-#### ⑥ ≤300MB 도달 경로와 남는 위험
+#### ⑥ ≤300MB 도달 경로와 남는 위험(2회차 실측 분포로 재계산, 11-05 저녁)
 
-| 단계 | 누적 예상(data.br) | 전제 |
-|---|---|---|
-| 현재(실측) | 811.8MB | — |
-| ② 오버라이드 전 텍스처 적용(H1~H5 해소) | 약 **250~330MB** | 4의 배수 패딩 또는 ASTC가 실제로 적용됨 |
-| + ③ 제외 목록 | 약 **120~180MB** | CTO가 범위 결정 |
-| + ④⑤ 사운드·메시 | 약 **90~140MB** | 오디오 포맷 반영 확인 |
+2회차(§8) Build Report 비압축 1,512MB → data.br 687MB(비율 0.45. RGBA32는 Brotli가 잘 줄이고, DXT/크런치 뒤에는 0.85~0.9로 거의 안 줄어든다). 아래 "처리 뒤" 열은 **추정**이고, 다음 빌드 리포트로 바꾼다. 앞 판의 "90~140MB" 추정은 이 표로 **대체**한다.
 
-남는 위험: (a) H1이 맞으면 패딩 스크립트가 원본 PNG 수백 장을 건드리므로 `Texture2D.width`를 읽는 코드와의 정합을 1x 캡처로 다시 봐야 한다(화면 작업 기준 §4.2). (b) ASTC 경로는 데스크톱 Chrome WebGL2에서 소프트웨어 해제라 다운로드는 줄어도 메모리는 RGBA32와 같다. (c) 첫 로딩 20초는 120~150MB가 상한이라 ③까지 해야 한다. (d) 이 절의 수치는 전부 추정이며 csv와 다음 빌드 리포트로 바꾼다.
+| 묶음 | 2회차 비압축 MB | 처리 | 처리 뒤 비압축(추정) |
+|---|---|---|---|
+| `Art/ui` | 383 | 비4배수 365장 중 다수. PNG 4의 배수 패딩(또는 `npotScale: ToNearest`, 단 `Texture2D.width` 의존 코드 §3.4 ② 제외) → DXT5 크런치 q50, 최대 2048. `window_base` 11.1MB류 배경은 1024 | 45~60 |
+| `Art/map` | 376 | a2 노멀 1024·색 2048·소품 1024, DXT 크런치. `production_finish`(원본 120MB) 사용 여부 확인 뒤 제외 | 60~90(제외 시 40~60) |
+| `Art/FullscreenWide` | 138 | 제외(16:9 캔버스) | 0 |
+| `Art/vfx` | 74 | DXT5 크런치 2048 | 15~20 |
+| `Audio/Bgm` | 72 | 1-1 필드·드루이드·로비·사망 곡만(16곡 중 4~5) | 20~25 |
+| `Art/lobby` | 62 | `varkan_idle` 17.5MB 등 2048 DXT5 크런치 | 10~15 |
+| `Art/Loading` | 61 | 16:9 16장만, DXT1 크런치 | 5~8 |
+| `Art/fonts` | 35(CJK 제외 뒤) | ko·en만(아랍·태국 제외) | 30~33 |
+| 나머지(메시 86·애니 63·사운드 약 42·Startup·CharacterSelect·enemy·boss 텍스처 약 120) | 약 311 | 메시 압축 Medium·`isReadable 0`, 애니 Optimal, 오디오 오버라이드 수리 뒤 Vorbis(H6, §8 ②), 텍스처 DXT 크런치 | 130~150 |
+| **합계** | **1,512** | | **315~400 비압축 → data.br 약 270~340MB** |
+
+- **300MB는 경계선이다.** 위 표 전부를 해도 270~340MB라서, `production_finish` 제외·UI 배경 1024·`CharacterSelect` 영웅 1명·StreamingAssets 영상 720p(20MB, data.br 밖)까지 가야 **≤300MB가 안정적**이다. 첫 로딩 ≤20초(§4)는 120~150MB가 상한이라 이 표로는 못 맞추고, 로비·로딩 아트를 Addressables/AssetBundle로 뒤에 받는 구조(L)가 필요하다. 다만 2회차 로컬 실측이 687MB에 15~19초였으므로(§8 ④) 회선·캐시(`webGLDataCaching`)에 따라 300MB도 20초 안에 들 수 있다 → 호스팅에서 재측정.
+- 가장 큰 단일 지렛대는 **비4배수 365장 패딩**(H1 확정, §8 ①)이다. 전제는 런타임 rect 코드와의 정합(§3.4 ②의 세 곳 + `NativeGame.cs:533` 원본 텍스처 로드 지점을 1x 캡처로 재검).
+- 두 번째는 **오디오 오버라이드 거부(§8 ②)** 해결. 안 풀리면 기본 임포트 설정(`SourceAudioImporter.cs`)을 웹 빌드 동안만 Vorbis로 바꾸는 우회가 있다(PC 임포트 설정은 건드리지 않는 조건 유지).
+- 남는 위험: (a) 패딩 스크립트가 원본 PNG 수백 장을 바꾸므로 화면 작업 기준(§4.2)대로 1x 캡처 재검 (b) ASTC 경로는 데스크톱 Chrome WebGL2에서 소프트웨어 해제라 다운로드는 줄어도 메모리는 RGBA32와 같음 (c) 이 절의 수치는 전부 추정.
 
 ## 4. 실패 조건별 위험도
 
 | 조건 | 현재 상태 추정 | 위험 | 결정 변수 |
 |---|---|---|---|
-| 빌드 ≤300MB | **실측 811.8MB**(11-05 PC, 오버라이드 대부분 미적용). §3.4 경로대로면 90~180MB | **높음**(§3.4 ①② 해소 전까지) | FullscreenWide·Loading·폰트·영상 제외 결정, 텍스처 오버라이드 |
-| 첫 로딩 ≤20초 | 10-28 175MB가 10~14초(Vercel, 사용자 회선). 데이터 파일은 시작 전 전부 받는다(Addressables 없음). 20초 안이면 데이터 ≲120~150MB(50Mbps 기준) + wasm 컴파일 + `Awake` 동기 로드(아래) | **높음** | 데이터 크기, Brotli, 호스팅 CDN, 캐싱(`webGLDataCaching: 1` 이미 ON) |
+| 빌드 ≤300MB | **실측 811.8MB → 2회차 687MB**(11-05 PC). §3.4 ⑥ 표대로 처리하면 data.br 270~340MB(추정) → 300 밑은 추가 제외 전제 | **높음**(패딩·오디오 오버라이드 해소 전까지) | FullscreenWide·Loading·폰트·영상 제외 결정, 텍스처 오버라이드 |
+| 첫 로딩 ≤20초 | 2회차 687MB가 로컬 15~19초(§8 ④), 10-28 175MB가 10~14초(Vercel, 사용자 회선). 데이터 파일은 시작 전 전부 받는다(Addressables 없음). 20초 안이면 데이터 ≲120~150MB(50Mbps 기준) + wasm 컴파일 + `Awake` 동기 로드(아래) | **높음** | 데이터 크기, Brotli, 호스팅 CDN, 캐싱(`webGLDataCaching: 1` 이미 ON) |
 | 1080p 30fps | 적마다 RT 렌더(M5) + HDR·MSAA4·SSAO·안개(M6) + 단일 스레드. 10-28 기록에 fps 수치 없음 | **중**(통합 GPU에서는 높음) | 품질 레벨 Balanced, 적 리그 렌더 상한, 안개·SSAO 토글, WebGPU 여부 |
 | 크래시 0 | 예외 설정(M7), 힙 증가 실패(M7), WebGPU 드라이버 편차(검색 발췌: "WebGPU 지원을 보고하는 모든 기기가 일관되지 않음"), 세이브 유실(M2)은 크래시는 아니지만 데모 평가에 치명 | **중** | 예외 설정 1 유지, 초기 메모리 상향, WebGL2 폴백 경로도 10판 |
 
@@ -269,7 +280,31 @@ Resources 전체를 한 번에 올리는 것이 원인은 아니다(`Resources.L
 | API | `SystemInfo.graphicsDeviceType` 로그, WebGPU 끈 Chrome 플래그로 WebGL2 폴백 1회 | 두 경로 |
 | 2D/3D | `NativeRemodel3D.Active` 로그(C3) | 어느 필드로 측정했는지 |
 
-## 8. 대안 B — 웹 H5판(main `game.html`)
+## 8. PC 실측 2회차(slim2, data.br 687MB) — CTO 전달 사실 기록
+
+출처: PC 영수증 `E:/exoduser-wt/webgl-build-slim2-receipt.json`, CSV `I:/EXODUSER-Storage/debug/webgl-20261105/slim2/`. 이 세션은 두 파일을 직접 열지 못했고 CTO가 전달한 수치를 그대로 옮겼다. 해석(→ 표시)은 WG 판단.
+
+| # | 실측 | 해석 |
+|---|---|---|
+| ① | 비4배수 텍스처 **365개**가 DXT5 요청에도 **RGBA32로 강등**(런타임 2,060MB) | §3.4 ① H1 **확정**. `.meta` 1,021장 `nPOTScale: None` 중 365장이 실제 4의 배수가 아님. → 절감의 핵심은 "4의 배수 패딩"(§3.4 ②·⑥)이고, 전제는 `Texture2D.width`로 사각형을 계산하는 코드(`NativeGame.cs:394-396,533`, `NativeHud.cs:125`, 기검참 시트 `NativeGame.cs:117-121`)가 패딩 뒤에도 같은 좌표를 내는지 1x 캡처 확인 |
+| ② | 오디오 WebGL 오버라이드 **154건 전부 "AudioImporter rejected WebGL override"** | 원인 PC 조사 중. 추정 1: Unity 6 플랫폼 문자열(구 문서는 `"WebGL"`이 유효 목록이고 `"Web"`은 없음, 검색 발췌·6000 원문 미확인). 추정 2: `SetOverrideSampleSettings`는 "해당 플랫폼에 불가능한 설정"이면 false를 돌려주므로 포맷(PCM/MP3 지정)이 Web에서 거부됐을 수 있음 → Vorbis + CompressedInMemory로 재시도, 그래도 거부되면 `BuildTarget` 열거형 오버로드 사용, 최후에는 웹 빌드 동안 기본 임포트 설정을 바꾸는 우회(§3.4 ⑥) |
+| ③ | Build Report 비압축 **1,512MB** 분포: `Art/ui` 383 · `Art/map` 376 · `Art/FullscreenWide` 138 · `Art/vfx` 74 · `Audio/Bgm` 72 · `Art/lobby` 62 · `Art/Loading` 61 · `Art/fonts` 35 | §3.4 ⑥ 표의 기준값. 1회차 811.8MB → 2회차 687MB의 차이는 CJK 폰트 제외·일부 오버라이드 적용분으로 보임(미확인) |
+| ④ | 브라우저(로컬 서버): **WebGPU·WebGL2 모두 1-1 진입**, 전투 1분 오류 0, 첫 로딩 **15~19초** | 크래시 0 조건은 두 API에서 통과(로컬·1분 기준). 첫 로딩은 로컬이라 회선 영향이 없는 수치 → 호스팅에서는 다운로드 시간이 더해진다. 2D/3D 필드 중 어느 쪽인지(§2.1 C3) 미기재 |
+| ⑤ | 임베드: `X-Frame-Options` 없으면 다른 origin iframe 로드 OK(16~18초). 부모가 COEP(`require-corp`)면 실패. COOP/COEP 불필요(스레드 off). `allow="webgpu"` 권장[추정] | 아래 호스팅 조건 표에 반영 |
+
+### 8.1 호스팅·임베드 조건 표
+
+| 구분 | 조건 | 근거 |
+|---|---|---|
+| 필요 헤더 | `*.data.br`·`*.js.br`·`*.wasm.br` → `Content-Encoding: br`; `*.wasm.br` → `Content-Type: application/wasm`; HTTPS | 10-28 `vercel.json`, 공식 서버 설정 문서(검색 발췌) |
+| 금지 헤더(임베드될 때) | 우리 쪽 `X-Frame-Options: DENY/SAMEORIGIN`, `Content-Security-Policy: frame-ancestors`로 갤러리 origin을 막는 값 | ⑤ 실측(없으면 OK) |
+| 부모 페이지 조건 | 부모가 `Cross-Origin-Embedder-Policy: require-corp`면 우리 리소스에 `Cross-Origin-Resource-Policy: cross-origin`이 있어야 로드됨[추정]. 부모 COEP 없음이면 그대로 OK | ⑤ 실측(부모 COEP면 실패) |
+| 불필요 | `Cross-Origin-Opener-Policy`·COEP(스레드 off, `webGLThreadsSupport: 0`) | ⑤ 실측, §6 |
+| iframe 속성 | `allow="webgpu"`[추정], `allow="fullscreen"` | ⑤ 권장. WebGPU 권한 정책 이름은 브라우저 문서로 확인 필요 |
+| 공식 갤러리 임베드 규격 | **[미확인]** — Mac이 원문 확인 중. 확인되면 이 표를 그 규격에 맞춘다 | — |
+| 호스팅 후보 | Vercel(헤더 설정 가능, 10-28 실적) / itch.io(헤더 불가 → Decompression Fallback) / Cloudflare Pages(파일당 25MB 제한, 확인 필요) / GitHub Pages(헤더 불가·100MB) | §6 |
+
+## 9. 대안 B — 웹 H5판(main `game.html`)
 
 | 장점 | 단점 |
 |---|---|
@@ -280,7 +315,7 @@ Resources 전체를 한 번에 올리는 것이 원인은 아니다(`Resources.L
 
 권고: A를 1주 실측(§7)으로 판정하고, B는 **제출 보험**으로만 둔다. A가 §4 조건을 못 넘으면 "A 범위 축소(WebGL2만, 적 리그 상한, 16:9만)"를 B보다 먼저 검토한다.
 
-## 9. 출처
+## 10. 출처
 
 | 출처 | 접속 | 비고 |
 |---|---|---|
@@ -306,7 +341,7 @@ Resources 전체를 한 번에 올리는 것이 원인은 아니다(`Resources.L
 | https://discussions.unity.com/t/unity-webgl-and-native-plugins-cant-build/945895 | 미접속, 검색 발췌(커뮤니티) | DllImport `__Internal`·undefined symbol |
 | https://app.cinevva.com/id/news/2026-09-01-unity-6-6-webgpu-production | 미접속, 검색 발췌(2차 보도) | 6.6에서 WebGPU "실험" 표기 제거 — 공식 릴리스 노트로 확인 필요 |
 
-## 10. 남은 일(이 감사 범위 밖)
+## 11. 남은 일(이 감사 범위 밖)
 
 1. PC 실측 빌드(§7) → 결과를 이 문서 §3.3·§4에 실측값으로 덮어쓴다.
 2. C1·C3 수정은 유니티 총괄 배정(코드 변경이라 이 레인은 하지 않음).
