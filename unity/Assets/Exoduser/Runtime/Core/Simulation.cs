@@ -26,15 +26,15 @@ namespace Exoduser.UnityPort.Core
         private uint randomState;
         private int nextEnemyId = 1, nextLootId = 1, attackBonus, pickupHoldTicks;
         private float attackAngle;
-        private bool basicWindupSwing;   // D-MO-2: the current swing started with the basic windup (its recover gives the 6 ticks back)
+        private bool basicWindupSwing;   // D-MO-2: the current swing started with the basic windup (its recover gives BasicRecoverRebateTicks (6) back)
         private float actionMoveX, actionMoveY;
         private bool playerActionBranchConsumed;
-        // D-MO-2 (11-05): basic-attack first-strike windup. 6 fixed ticks; its recover = max(base - 6, 4) so the total stays 6/5/28 (= old 0/5/34 at the starter speed).
-        public const int BasicWindupTicks = 6, BasicRecoverFloor = 4;
+        // D-MO-2 (11-05): basic-attack first-strike windup, fixed ticks. 11-07 user decision: windup 24 (NRFTW A1 400ms), recover kept (rebate stays 6) -> first strike total 24/5/28 = 57 ticks at the starter speed.
+        public const int BasicWindupTicks = 24, BasicRecoverRebateTicks = 6, BasicRecoverFloor = 4;
         /// <summary>Web wRecover length: (int)(16 / (WeaponSpeed-or-.3 x AttackSpeedMultiplier)). Used as is by strikes without the windup.</summary>
         public int AttackRecoverBaseTicks() { return (int)(16 / ((Config.WeaponSpeed!=0?Config.WeaponSpeed:.3f) * Config.AttackSpeedMultiplier)); }
-        /// <summary>Recover of the wound-up first strike: max(AttackRecoverBaseTicks() - BasicWindupTicks, BasicRecoverFloor). The floor binds when WeaponSpeed x AttackSpeedMultiplier > 1.6.</summary>
-        public int AttackRecoverTicks() { return Math.Max(AttackRecoverBaseTicks() - BasicWindupTicks, BasicRecoverFloor); }
+        /// <summary>Recover of the wound-up first strike: max(AttackRecoverBaseTicks() - BasicRecoverRebateTicks, BasicRecoverFloor). The floor binds when WeaponSpeed x AttackSpeedMultiplier > 1.6.</summary>
+        public int AttackRecoverTicks() { return Math.Max(AttackRecoverBaseTicks() - BasicRecoverRebateTicks, BasicRecoverFloor); }
         private static readonly double[] Difficulty = { .45, .55, .65, .76, .88, 1, 1.12, 1.25, 1.40, 1.58, 1.78 };
         private static readonly string[] DropSlots = { "weapon", "shield", "boots", "armor", "helmet", "bow", "gloves", "pants", "belt", "necklace", "ring1", "ring2", "cape", "bracelet", "headband", "headband2" };
         private static readonly double[] NormalRarityWeights = { 65, 22, 9, 3, 1, .01 };
@@ -123,8 +123,8 @@ namespace Exoduser.UnityPort.Core
                             basicWindupSwing = false;
                         }
                         else if (Config.ActiveAttack != "kiSlash" || KiComboStep % 3 == 0) {
-                            // D-MO-2 (user decision 11-05): the basic-attack FIRST strike winds up BasicWindupTicks (6) before the 5-tick swing.
-                            // Fixed length, no attack-speed scaling; the recover of this strike gives the 6 ticks back (AttackRecoverTicks).
+                            // D-MO-2 (user decision 11-05): the basic-attack FIRST strike winds up BasicWindupTicks (24) before the 5-tick swing.
+                            // Fixed length, no attack-speed scaling; the recover of this strike gives BasicRecoverRebateTicks (6) back (AttackRecoverTicks).
                             // A plain weapon has no combo tracker in Core, so every plain swing is a first strike; ki slash only when the next step is 1.
                             // Web oracle (game.html 33055/33564) enters wSwing at once: intended difference (BRIEF_CORE_WINDUP_20261105 §0).
                             Player.State = "wWindup"; Player.StateTicks = BasicWindupTicks; Player.BasicWindup = true;
@@ -144,8 +144,8 @@ namespace Exoduser.UnityPort.Core
                         bool basic = Player.BasicWindup; Player.BasicWindup = false;
                         Player.State = "wSwing"; Player.StateTicks = 5; Player.SwingProgress = 0;
                         if (basic && Config.ActiveAttack == "kiSlash") {
-                            SpawnKiSlash((KiComboStep % 3) + 1);   // the first-strike crescent leaves when the swing starts, 6 ticks after the input
-                            KiComboTicks -= BasicWindupTicks;   // web sets _cresComboT=120 at the input tick (game.html _fireKiSlashCrescent); the window stays 120 from the input, so the remainder at the next attack tick is 80 (= web), not 86
+                            SpawnKiSlash((KiComboStep % 3) + 1);   // the first-strike crescent leaves when the swing starts, BasicWindupTicks after the input
+                            KiComboTicks -= BasicWindupTicks;   // web sets _cresComboT=120 at the input tick (game.html _fireKiSlashCrescent); the window stays 120 from the input, so the combo window stays 120 ticks from the input (11-07: 24 are consumed by the windup, 96 remain at swing start)
                         }
                     }
                 }
