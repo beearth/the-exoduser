@@ -224,4 +224,6 @@ RigPixelTurnClock은 Core조준/게임루트를바꾸지않고 모델자식의�
 | 우클(E) 칼등치기 sBash | sDraw(탭 ≤10틱, 놓는 틱에 발동) → sBash 20 → sRecover ⌊28/(1+pParry×.1)⌋ = 28 | sBash 진입 +8 (StateTicks 12 교차) | sRecover 끝 |
 | sBash 패링창 | StateTicks > 20−16 = sBash 첫 16틱 (ParryWin 16) | — | — |
 
-표현 규칙(이번 키): 1타 예비 6틱은 어깨 멘 준비 자세에서 감아 올리는 짧은 감속 예비, 접점 프레임(1타 f8·2타 f2·3타 R+2·sBash +8)은 칼끝 최고속·골반 최저점 근처에 둔다. Core idle 동안(콤보 창)의 '다음 타 장전 자세'는 표현 변형이며 Core 상태는 idle 그대로다. 결과물(영상·격자·그래프·.blend·포즈 JSON)은 I:/EXODUSER-Storage/study/keyanim/ — Unity 반입은 사용자 PASS 뒤 다음 단계.
+**11-07 사용자 결정: 1타 예비 BasicWindupTicks 6 → 24(400ms, 노레위 A1 예비와 같음), 회복 28 그대로 — Core 변경은 CTO 레인.** 이 변경 뒤 1타 = wWindup 24 (f0-23) → wSwing 5 (f24-28, HitArc f26) → wRecover 28 (f29-56) → idle f57. 손 키는 24틱 기준으로 잡았다.
+
+표현 규칙(이번 키): 1타 예비는 어깨 멘 준비 자세에서 감아 올려 정점에서 감속·2틱 정지, 마지막 예비 틱에 루트가 먼저 밀기 시작. 접점 프레임(1타 f26·2타 f2·3타 R+2·sBash +8)은 칼끝 최고속·골반 최저점 근처에 둔다. Core idle 동안(콤보 창)의 '다음 타 장전 자세'는 표현 변형이며 Core 상태는 idle 그대로다. 결과물(영상·격자·그래프·.blend·포즈 JSON)은 I:/EXODUSER-Storage/study/keyanim/ — Unity 반입은 사용자 PASS 뒤 다음 단계.
