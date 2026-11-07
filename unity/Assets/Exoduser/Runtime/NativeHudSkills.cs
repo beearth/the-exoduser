@@ -20,11 +20,10 @@ namespace Exoduser.UnityPort {
    double rage=simulation.Rage;if(!(rage>0))return;
    if(rageText==null){rageText=new GUIStyle(keyLabel){fontSize=13,fontStyle=FontStyle.Normal,alignment=TextAnchor.UpperCenter};}
    var old=GUI.color;float fill=RageFill(rage,simulation.RageMaximum);
-   GUI.color=new Color(1f,.078f,0,.45f);NativeUiAudit.DrawTexture(new Rect(slot.x,slot.yMax-slot.height*fill,slot.width,slot.height*fill),Texture2D.whiteTexture);
-   GUI.color=RageBorder(rage);const float b=2;
-   NativeUiAudit.DrawTexture(new Rect(slot.x,slot.y,slot.width,b),Texture2D.whiteTexture);NativeUiAudit.DrawTexture(new Rect(slot.x,slot.yMax-b,slot.width,b),Texture2D.whiteTexture);
-   NativeUiAudit.DrawTexture(new Rect(slot.x,slot.y,b,slot.height),Texture2D.whiteTexture);NativeUiAudit.DrawTexture(new Rect(slot.xMax-b,slot.y,b,slot.height),Texture2D.whiteTexture);
-   if(rage>=100){GUI.color=new Color(1f,.118f,0,.6f);const float g=5;NativeUiAudit.DrawTexture(new Rect(slot.x+b,slot.y+b,slot.width-2*b,g),Texture2D.whiteTexture);NativeUiAudit.DrawTexture(new Rect(slot.x+b,slot.yMax-b-g,slot.width-2*b,g),Texture2D.whiteTexture);}
+   // 11-08 round socket: the same fill height / border warmth / full glow, drawn as a disc segment and a ring
+   DrawSocketFill(slot,fill,new Color(1f,.078f,0,.45f));
+   DrawSocketRing(slot,RageBorder(rage));
+   if(rage>=100)DrawSocketRing(new Rect(slot.x+2,slot.y+2,slot.width-4,slot.height-4),new Color(1f,.118f,0,.6f));
    string label=Math.Truncate(rage).ToString("0")+"%";
    GUI.color=new Color(.4f,0,0,.9f);NativeSilverHellUi.Label(new Rect(slot.x+1,slot.y+3,slot.width,slot.height),label,rageText);
    GUI.color=Color.white;NativeSilverHellUi.Label(new Rect(slot.x,slot.y+2,slot.width,slot.height),label,rageText);
@@ -37,13 +36,12 @@ namespace Exoduser.UnityPort {
   readonly System.Collections.Generic.Dictionary<string,Texture2D> slotIcons=new System.Collections.Generic.Dictionary<string,Texture2D>();
   GUIStyle cooldownText;
   // web updateQS: the slot shows the skill icon with a dark sweep that shrinks as the cooldown runs out and the remaining seconds
-  void DrawSlotSkill(Rect slot,string id,Simulation s){
+  void DrawSlotSkill(int index,Rect slot,string id,Simulation s){
    Texture2D tex;if(!slotIcons.TryGetValue(id,out tex)){tex=Resources.Load<Texture2D>("Art/ui/skill_icons/orb/"+id);slotIcons[id]=tex;}
-   const float scale=NativeHudDockLayout.ArtScale;
-   if(tex!=null){var inset=new Rect(slot.x+3*scale,slot.y+3*scale,slot.width-6*scale,slot.height-6*scale);NativeUiAudit.DrawTexture(inset,tex,ScaleMode.ScaleToFit,true);}
-   float total;float cd=s.SkillCooldown(id,out total);
+   if(tex!=null){var inset=new Rect(slot.x+1,slot.y+1,slot.width-2,slot.height-2);NativeUiAudit.DrawTexture(inset,tex,ScaleMode.ScaleToFit,true);}
+   float total;float cd=s.SkillCooldown(id,out total);NoteCooldown(index,cd);
    if(cd>0&&total>0){
-    var old=GUI.color;float frac=Mathf.Clamp01(cd/total);GUI.color=new Color(0,0,0,.62f);NativeUiAudit.DrawTexture(new Rect(slot.x,slot.yMax-slot.height*frac,slot.width,slot.height*frac),Texture2D.whiteTexture);
+    var old=GUI.color;float frac=Mathf.Clamp01(cd/total);DrawSocketFill(slot,frac,new Color(0,0,0,.62f));
     if(cooldownText==null){cooldownText=new GUIStyle(keyLabel){fontSize=15,fontStyle=FontStyle.Normal,alignment=TextAnchor.MiddleCenter};}
     GUI.color=new Color(217/255f,214/255f,208/255f,1f);NativeSilverHellUi.Label(slot,Mathf.CeilToInt(cd/60f).ToString(),cooldownText);GUI.color=old;
    }
@@ -52,7 +50,8 @@ namespace Exoduser.UnityPort {
   public static Color ChainGaugeColor(double pct){return pct>=1?new Color(.267f,1f,.667f):pct>=.5f?new Color(.533f,.8f,1f):new Color(1f,.533f,.267f);}
   void DrawChainGauge(Rect slot,Simulation s){
    double max=s.HarpGaugeMax;if(!(max>0))return;float pct=(float)Math.Min(1,s.HarpGauge/max);
-   var old=GUI.color;GUI.color=ChainGaugeColor(pct);NativeUiAudit.DrawTexture(new Rect(slot.x,slot.yMax-3*NativeHudDockLayout.ArtScale,slot.width*pct,3*NativeHudDockLayout.ArtScale),Texture2D.whiteTexture);GUI.color=old;
+   // 11-08: a 3 px chord line inside the round socket bottom (82% of the diameter), same width rule and colours
+   float w=slot.width*.62f;var old=GUI.color;GUI.color=ChainGaugeColor(pct);NativeUiAudit.DrawTexture(new Rect(slot.center.x-w*.5f,slot.yMax-7,w*pct,3),Texture2D.whiteTexture);GUI.color=old;
   }
   void DrawSkillSlots(NativeHudDockLayout dock,float width,float height,Simulation simulation){
    if(TracePointerEvents&&(Event.current.type==EventType.MouseDown||Event.current.type==EventType.MouseUp)){
@@ -63,8 +62,9 @@ namespace Exoduser.UnityPort {
    for(int i=0;i<13;i++){
     var rect=SkillSlotRect(dock,i);
     string slotSkill=simulation!=null?SlotSkillId(simulation,i):null;
-    if(slotSkill!=null)DrawSlotSkill(rect,slotSkill,simulation);
-    else if(i!=6){var old=GUI.color;GUI.color=new Color(118/255f,121/255f,121/255f,.7f);NativeSilverHellUi.Label(new Rect(rect.x,rect.y+4,rect.width,25),"—",keyLabel);GUI.color=old;}
+    if(slotSkill!=null)DrawSlotSkill(i,rect,slotSkill,simulation);
+    // 11-08: an empty socket stays a dark well (no dash glyph); hover lifts a thin silver ring, no outer glow
+    if(rect.Contains(Event.current.mousePosition))DrawSocketRing(rect,new Color(201/255f,199/255f,195/255f,.55f));
     if(NativeSilverHellUi.Button(rect,"",GUIStyle.none)){statusSelectionUntil=i==6?Time.unscaledTime+1.6f:0;SlotSelected?.Invoke(i);}
    }
    if(simulation==null)return;

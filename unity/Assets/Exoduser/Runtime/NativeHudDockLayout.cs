@@ -3,13 +3,18 @@ using UnityEngine;
 namespace Exoduser.UnityPort
 {
     // Geometry is expressed in NativeGame's uniformly scaled HUD coordinate space.
-    // Alpha bounds come from the largest alpha>=32 connected art component,
-    // excluding isolated export specks; no texture pixels are modified.
+    // Orb frames keep the source globe art geometry. The slot bar is the 11-08 lit
+    // silver-steel relief (unity/Tools/hud/hud_bake.py): an 800x128 canvas whose
+    // Blender units equal 1080p pixels, socket centres measured from the canvas centre.
     public sealed class NativeHudDockLayout
     {
         public const float ArtScale=.9f;
         const float BottomInset=10f,OrbCenter=441f;
-        static readonly float[] SlotLeft={128,173,217,261,303,347,392,436,479,522,566,610,654};
+        // hud_bake.py canvas: 800x128 units, Blender y spans -4..124 (top = 124).
+        public const float BarCanvasWidth=800f,BarCanvasHeight=128f,BarCanvasTopY=124f;
+        const float BarBottomInset=2f,SocketY=54f,SocketDiameter=46f,LabelTopY=25f,LabelBottomY=9f;
+        // 13 round sockets: [1 2 3 4 F Z] [LMB RMB] [Shift E Q Ctrl Space], 46 px, gap 6, group gap 22; LMB centred.
+        static readonly float[] SocketCenterX={-328,-276,-224,-172,-120,-68,0,52,120,172,224,276,328};
         public static readonly string[] KeyNames={"1","2","3","4","F","Z","LMB","RMB","Shift","E","Q","Ctrl","Space"};
         public Rect SlotBar,LeftLiquid,RightLiquid,LeftFrame,RightFrame;
         public Rect ActiveSlot;
@@ -28,21 +33,22 @@ namespace Exoduser.UnityPort
             result.RightFrame=new Rect(mid+OrbCenter-135.5f*s,frameY,frameSize,frameSize);
             result.LeftLiquid=Liquid(result.LeftFrame);
             result.RightLiquid=Liquid(result.RightFrame);
-            float barWidth=820*s,barHeight=182*s;
-            // Web #skBar is bottom:10px-25px with a bottom-origin 0.9 scale.
-            result.SlotBar=new Rect((width-barWidth)/2,height-BottomInset+25-barHeight,barWidth,barHeight);
+            result.SlotBar=new Rect(mid-BarCanvasWidth*.5f,height-BarBottomInset-BarCanvasHeight,BarCanvasWidth,BarCanvasHeight);
             result.ActiveSlot=result.SlotRect(6);
             return result;
         }
 
         static Rect Liquid(Rect frame){return new Rect(frame.x+48*ArtScale,frame.y+44*ArtScale,175*ArtScale,175*ArtScale);}
-        public Rect SlotRect(int index){float s=ArtScale;return new Rect(SlotBar.x+SlotLeft[index]*s,SlotBar.y+70*s,37*s,45*s);}
+        public static float SocketU(int index){return (SocketCenterX[index]+BarCanvasWidth*.5f)/BarCanvasWidth;}
+        public const float SocketV=(SocketY+4f)/BarCanvasHeight;   // texture v (bottom = 0) of the socket row
+        public Rect SlotRect(int index){float r=SocketDiameter*.5f;return new Rect(SlotBar.center.x+SocketCenterX[index]-r,SlotBar.y+(BarCanvasTopY-SocketY)-r,SocketDiameter,SocketDiameter);}
         public static Rect VisibleFrame(Rect frame){return new Rect(frame.x+frame.width*9/465,frame.y+frame.height*4/469,frame.width*452/465,frame.height*465/469);}
-        public Rect VisibleBar{get{return new Rect(SlotBar.x+SlotBar.width*154/2460,SlotBar.y+SlotBar.height*84/546,SlotBar.width*2163/2460,SlotBar.height*378/546);}}
+        // Plate silhouette including end brackets and the eye arch.
+        public Rect VisibleBar{get{return new Rect(SlotBar.center.x-382,SlotBar.y+2,764,BarCanvasHeight-4);}}
         public static Rect KeyLabelRect(Rect barRect,float height,int index)
         {
-            float s=ArtScale;
-            return new Rect(barRect.x+SlotLeft[index]*s,barRect.y+121*s,37*s,18*s);
+            float r=SocketDiameter*.5f;
+            return new Rect(barRect.center.x+SocketCenterX[index]-r,barRect.y+(BarCanvasTopY-LabelTopY),SocketDiameter,LabelTopY-LabelBottomY);
         }
     }
 }

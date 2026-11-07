@@ -14,8 +14,7 @@ namespace Exoduser.UnityPort
     {
         readonly Material material;
         readonly RenderTexture hp,mana,shield,eye,mobility;float mobilityDrawn=-1,mobilityCellDrawn=-1;
-        readonly Texture2D hpFrame,mpFrame,bar,icon;
-        Texture2D labelCleanBar;
+        readonly Texture2D hpFrame,mpFrame,icon;
         readonly Font textFont,numberFont;
         GUIStyle hpNumber,maximum,resourceNumber,resourceLabel,tooltip,keyLabel;
         HudValues values;int tick=-1,slowTick=-1;bool[] eyes=new bool[4];
@@ -37,8 +36,8 @@ namespace Exoduser.UnityPort
         public string ActiveSkill {get;private set;}
         public NativeHud()
         {
-            hpFrame=Required<Texture2D>("Art/ui/ui_globe_hp");mpFrame=Required<Texture2D>("Art/ui/ui_globe_mp");bar=Required<Texture2D>("Art/ui/ui_bar_only");
-            icon=Required<Texture2D>("Art/ui/skill_icons/kiSlash");textFont=NativeSilverHellUi.Font()??Required<Font>("Art/fonts/NanumMyeongjo-Regular");numberFont=Required<Font>("Art/fonts/CinzelDecorative-Bold");
+            hpFrame=Required<Texture2D>("Art/ui/ui_globe_hp");mpFrame=Required<Texture2D>("Art/ui/ui_globe_mp");
+            icon=Required<Texture2D>("Art/ui/skill_icons/orb/kiSlash");textFont=NativeSilverHellUi.Font()??Required<Font>("Art/fonts/NanumMyeongjo-Regular");numberFont=Required<Font>("Art/fonts/CinzelDecorative-Bold");
             material=new Material(Required<Shader>("Shaders/HudOrb"));
             hp=Target("HP liquid");mana=Target("MP ST liquid");shield=Target("Shield ring");mobility=Target("Mobility ring");eye=Target("Poise eye");
             Blit(eye,3);
@@ -74,7 +73,8 @@ namespace Exoduser.UnityPort
             if(hpNumber!=null)return;
             hpNumber=new GUIStyle(GUI.skin.label){font=numberFont,fontSize=24,alignment=TextAnchor.MiddleCenter};hpNumber.normal.textColor=Color.white;
             maximum=new GUIStyle(hpNumber){fontSize=18};resourceNumber=new GUIStyle(hpNumber){fontSize=17};resourceLabel=new GUIStyle(hpNumber){fontSize=14};
-            keyLabel=new GUIStyle(GUI.skin.label){font=textFont,fontStyle=FontStyle.Normal,fontSize=15,alignment=TextAnchor.MiddleCenter,wordWrap=false,clipping=TextClipping.Clip,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};keyLabel.normal.textColor=new Color(192/255f,189/255f,183/255f);
+            EnsureLitBar();
+            keyLabel=new GUIStyle(GUI.skin.label){font=keyFont,fontStyle=FontStyle.Normal,fontSize=13,alignment=TextAnchor.MiddleCenter,wordWrap=false,clipping=TextClipping.Clip,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};keyLabel.normal.textColor=new Color(167/255f,164/255f,157/255f);   // --tx-2
             tooltip=new GUIStyle(GUI.skin.box){font=textFont,fontSize=20,alignment=TextAnchor.MiddleCenter};tooltip.normal.textColor=new Color(219/255f,216/255f,210/255f);
         }
         public bool FeelHurtActive;Texture2D feelHurtMark;
@@ -82,18 +82,16 @@ namespace Exoduser.UnityPort
         public void Draw(float width,float height,string activeAttack,Simulation simulation=null)
         {
             if(values==null)return;Styles();ActiveSkill=activeAttack;float mid=width/2;
-            const float scale=NativeHudDockLayout.ArtScale;
+
             var dock=NativeHudDockLayout.Create(width,height);
             NativeUiAudit.Region(dock.LeftFrame,"component","hud-hp-frame","HP 원화 외곽");NativeUiAudit.Region(dock.RightFrame,"component","hud-mp-frame","MP/ST 원화 외곽");NativeUiAudit.Region(dock.SlotBar,"component","hud-skills","중앙 스킬바");
             Rect slotBar=dock.SlotBar;
-            // Source bar includes Cinzel key labels; erase only those glyph pixels in a runtime copy.
-            // The original imported PNG stays byte-identical and the common labels are drawn below.
-            if(labelCleanBar==null)labelCleanBar=BuildLabelCleanBar();
-            var oldColor=GUI.color;GUI.color=new Color(.8f,.8f,.8f);NativeUiAudit.DrawTexture(slotBar,labelCleanBar??bar,ScaleMode.StretchToFill,true);GUI.color=oldColor;
+            // 11-08: lit silver-steel relief replaces the flat web bar art (ui_bar_only.png stays in the project, unused here).
+            DrawLitBar(slotBar);
             RefreshMobility(simulation);Globe(dock.LeftLiquid,dock.LeftFrame,false);DrawFeelHurt(dock.LeftLiquid);Globe(dock.RightLiquid,dock.RightFrame,true);
             Rect lmb=dock.ActiveSlot;
             if(activeAttack=="kiSlash"){
-                var insetIcon=new Rect(lmb.x+3*scale,lmb.y+3*scale,lmb.width-6*scale,lmb.height-6*scale);
+                var insetIcon=new Rect(lmb.x+1,lmb.y+1,lmb.width-2,lmb.height-2);
                 NativeUiAudit.DrawTexture(insetIcon,icon,ScaleMode.ScaleToFit,true);if(Event.current.type==EventType.Repaint)IconDrawn=true;
 
             }
@@ -113,25 +111,6 @@ namespace Exoduser.UnityPort
                 GUI.matrix=matrix*Matrix4x4.TRS(new Vector3(content.x,content.y,0),Quaternion.identity,new Vector3(squeeze,1,1));
                 NativeSilverHellUi.Label(new Rect(0,0,content.width/squeeze,content.height),keys[i],keyLabel);GUI.matrix=matrix;
             }
-        }
-        Texture2D BuildLabelCleanBar()
-        {
-            var old=RenderTexture.active;var rt=RenderTexture.GetTemporary(bar.width,bar.height,0,RenderTextureFormat.ARGB32);
-            var copy=new Texture2D(bar.width,bar.height,TextureFormat.RGBA32,false){name="HUD bar with source key glyphs removed",filterMode=FilterMode.Bilinear,wrapMode=TextureWrapMode.Clamp};
-            try{
-                if(NativeCpuPixels.UseCpu(bar))copy.SetPixels32(bar.GetPixels32());   // web: no synchronous RenderTexture readback (blank copy -> grey bar); desktop keeps the Blit path below
-                else{Graphics.Blit(bar,rt);RenderTexture.active=rt;copy.ReadPixels(new Rect(0,0,bar.width,bar.height),0,0);}
-                copy.Apply(false,false);
-                var pixels=copy.GetPixels32();var glyph=new bool[pixels.Length];int h=bar.height,w=bar.width;
-                int y0=Mathf.RoundToInt(h*.222f),y1=Mathf.RoundToInt(h*.332f);
-                for(int i=0;i<NativeHudDockLayout.KeyNames.Length;i++){
-                    float center=(146.5f+44*i)/820f;int x0=Mathf.Max(0,Mathf.FloorToInt((center-.018f)*w)),x1=Mathf.Min(w-1,Mathf.CeilToInt((center+.018f)*w));
-                    for(int y=y0;y<y1;y++)for(int x=x0;x<=x1;x++){int p=y*w+x;Color32 c=pixels[p];glyph[p]=c.a>0&&c.r>c.b*1.08f&&c.g>c.b*1.04f&&c.r>90&&c.g>68;}
-                }
-                for(int y=y0;y<y1;y++)for(int x=0;x<w;x++)if(glyph[y*w+x])for(int dy=-2;dy<=2;dy++)for(int dx=-2;dx<=2;dx++){int xx=x+dx,yy=y+dy;if(xx>=0&&xx<w&&yy>=y0&&yy<y1){int p=yy*w+xx;Color32 c=pixels[p];pixels[p]=new Color32(c.r,c.g,c.b,0);}}
-                copy.SetPixels32(pixels);copy.Apply(false,true);return copy;
-            }catch(Exception e){Debug.LogWarning("HUD source key-label cleanup unavailable: "+e.Message);Release(copy);return null;}
-            finally{RenderTexture.active=old;RenderTexture.ReleaseTemporary(rt);}
         }
         void Globe(Rect wrap,Rect frame,bool right)
         {
@@ -199,6 +178,6 @@ namespace Exoduser.UnityPort
             }finally{Release(h);Release(m);}
         }
         static void Release(UnityEngine.Object value){if(Application.isPlaying)UnityEngine.Object.Destroy(value);else UnityEngine.Object.DestroyImmediate(value);}
-        public void Dispose(){if(feelHurtMark!=null)Release(feelHurtMark);foreach(var rt in new[]{hp,mana,shield,eye,mobility}){rt.Release();Release(rt);}Release(labelCleanBar);Release(material);}
+        public void Dispose(){if(feelHurtMark!=null)Release(feelHurtMark);foreach(var rt in new[]{hp,mana,shield,eye,mobility}){rt.Release();Release(rt);}DisposeLitBar();Release(material);}
     }
 }
