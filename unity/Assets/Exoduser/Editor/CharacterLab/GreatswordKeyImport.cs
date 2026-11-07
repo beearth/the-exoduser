@@ -19,11 +19,47 @@ namespace Exoduser.CharacterLab
         [Serializable] class Report
         {
             public string clip, motion, prefab, axisMap; public int frames, bones, contactFrame; public float scale, restFitRmsMeters;
-            public float maxLeftGripError; public int maxLeftGripErrorFrame; public float contactTipHeight; public List<string> missingBones = new List<string>(); public bool passed;
+            public float maxLeftGripError, gripAlongMin = 9, gripAlongMax = -9; public int maxLeftGripErrorFrame; public float contactTipHeight; public List<string> missingBones = new List<string>(); public bool passed;
         }
         const string Prefab = "Assets/Exoduser/Resources/Characters/Warrior.prefab";
 
         static string Arg(string[] a, string key, string fallback) { int i = Array.IndexOf(a, key); return i >= 0 && i + 1 < a.Length ? a[i + 1] : fallback; }
+
+        /// <summary>11-08 칼 2.50m(CTO 결정): WeaponImport를 새 길이로 다시 돌리고, 전사 프리팹 안의 칼 사본을 같은 배율로 맞춘다(소켓~자루 끝 .15 x 2.50/1.60).
+        /// Blender rig와 같은 균일 배율이다. Core 판정 사거리는 바꾸지 않는다.</summary>
+        public static int ResizeWeapon()
+        {
+            // 재질·텍스처·다른 프리팹 참조는 건드리지 않는다(WeaponImport.Run은 재질 값을 기본으로 되돌리므로 부르지 않음): FBX 배율과 칼 위치만 같은 비율로 바꾼다. 이미 목표 길이면 아무것도 하지 않는다.
+            var args = Exoduser.DevTools.ExoArgs.Get();
+            string reportPath = Arg(args, "-report", "I:/EXODUSER-Storage/study/keyanim/unity/weapon_resize_report.json");
+            float target = WeaponImport.Length;
+            var root = PrefabUtility.LoadPrefabContents(Prefab);
+            string result;
+            try
+            {
+                var socket = root.GetComponentsInChildren<Transform>(true).First(t => t.name == "Socket_Weapon_R");
+                var weapon = socket.Cast<Transform>().First(t => t.name == "Warrior_Greatsword");
+                var model = weapon.Find("Model");
+                System.Func<float[]> measure = () => { float lo = float.MaxValue, hi = float.MinValue; foreach (var mf in weapon.GetComponentsInChildren<MeshFilter>(true)) foreach (var v in mf.sharedMesh.vertices) { float y = socket.InverseTransformPoint(mf.transform.TransformPoint(v)).y; lo = Mathf.Min(lo, y); hi = Mathf.Max(hi, y); } float sx = socket.lossyScale.y; return new[] { (hi - lo) * sx, hi * sx, -lo * sx }; };
+                var before = measure(); float k = target / before[0];
+                if (Mathf.Abs(k - 1) > 1e-4f)
+                {
+                    var imp = (ModelImporter)AssetImporter.GetAtPath(WeaponImport.Fbx);
+                    imp.globalScale *= k; imp.isReadable = true; imp.SaveAndReimport();
+                    model.localPosition *= k;
+                    var art = PrefabUtility.LoadPrefabContents(WeaponImport.PrefabPath);
+                    try { var am = art.transform.Find("Model"); if (am != null) { am.localPosition *= k; PrefabUtility.SaveAsPrefabAsset(art, WeaponImport.PrefabPath); } } finally { PrefabUtility.UnloadPrefabContents(art); }
+                }
+                weapon.localPosition = new Vector3(0, Exoduser.UnityPort.GreatswordKeyDirector.SocketToPommel, 0);
+                var after = measure();
+                result = "{\"length\":" + after[0].ToString("F4") + ",\"socketToPommel\":" + after[1].ToString("F4") + ",\"socketToTip\":" + after[2].ToString("F4") + ",\"scaleApplied\":" + k.ToString("F5") + ",\"expectLength\":" + target.ToString("F2") + "}";
+                PrefabUtility.SaveAsPrefabAsset(root, Prefab);
+            }
+            finally { PrefabUtility.UnloadPrefabContents(root); }
+            AssetDatabase.SaveAssets();
+            File.WriteAllText(reportPath, result); Debug.Log("[WEAPON_RESIZE] " + result);
+            return 0;
+        }
 
         public static int Run()
         {
@@ -116,10 +152,13 @@ namespace Exoduser.CharacterLab
                     }
                     if (socket != null && grip != null)
                     {
-                        float e = Vector3.Distance(grip.position, socket.position + socket.up * .09f);
+                        // 왼손 파지 원점은 손잡이 축 위(socket.up 선)에 있어야 한다: 축에서 벗어난 거리 = 오차, 축 방향 거리는 프레임마다 같아야 한다
+                        var d = grip.position - socket.position; float along = Vector3.Dot(d, socket.up);
+                        float e = (d - socket.up * along).magnitude;
+                        report.gripAlongMin = Mathf.Min(report.gripAlongMin, along); report.gripAlongMax = Mathf.Max(report.gripAlongMax, along);
                         if (e > report.maxLeftGripError) { report.maxLeftGripError = e; report.maxLeftGripErrorFrame = f; }
                     }
-                    if (f == data.contact && socket != null) report.contactTipHeight = root.InverseTransformPoint(socket.position - socket.up * 1.45f).y;
+                    if (f == data.contact && socket != null) report.contactTipHeight = root.InverseTransformPoint(socket.position - socket.up * Exoduser.UnityPort.GreatswordKeyDirector.SocketToTip).y;
                     foreach (int i in order)
                     {
                         var bone = map[data.bones[i]]; string path = AnimationUtility.CalculateTransformPath(bone, root);
@@ -154,7 +193,7 @@ namespace Exoduser.CharacterLab
                 File.WriteAllText(clipPath, JsonUtility.ToJson(table));
                 AssetDatabase.ImportAsset(clipPath);
                 report.bones = order.Count;
-                report.passed = report.missingBones.All(b => b.EndsWith("_end") || b.Contains("front")) && report.restFitRmsMeters < .01f && report.maxLeftGripError < .01f;
+                report.passed = report.missingBones.All(b => b.EndsWith("_end") || b.Contains("front")) && report.restFitRmsMeters < .01f && report.maxLeftGripError < .003f && report.gripAlongMax - report.gripAlongMin < .003f;
             }
             finally { UnityEngine.Object.DestroyImmediate(inst); }
             File.WriteAllText(reportPath, JsonUtility.ToJson(report, true));
@@ -182,7 +221,7 @@ namespace Exoduser.CharacterLab
                 {
                     for (int i = 0; i < bones.Length; i++) { int o = (f * bones.Length + i) * 4; bones[i].localRotation = new Quaternion(table.rot[o], table.rot[o + 1], table.rot[o + 2], table.rot[o + 3]); }
                     if (table.hips >= 0) bones[table.hips].localPosition = new Vector3(table.hipsPos[f * 3], table.hipsPos[f * 3 + 1], table.hipsPos[f * 3 + 2]);
-                    sb.AppendLine("f" + f + " grip=" + Vector3.Distance(grip.position, socket.position + socket.up * .09f).ToString("F4") + " tipY=" + r.InverseTransformPoint(socket.position - socket.up * 1.45f).y.ToString("F3") + " hipsY=" + r.InverseTransformPoint(hips.position).y.ToString("F3"));
+                    sb.AppendLine("f" + f + " gripAlong=" + Vector3.Dot(grip.position - socket.position, socket.up).ToString("F4") + " tipY=" + r.InverseTransformPoint(socket.position - socket.up * Exoduser.UnityPort.GreatswordKeyDirector.SocketToTip).y.ToString("F3") + " hipsY=" + r.InverseTransformPoint(hips.position).y.ToString("F3"));
                 }
             }
             finally { UnityEngine.Object.DestroyImmediate(inst); }

@@ -7,7 +7,7 @@ namespace Exoduser.UnityPort {
  public sealed partial class NativeGame {
   bool heroReviewActive;
   [Serializable] sealed class HeroFrame {
-   public int frame,tick,combo;public string section,state,motion;public float phase,x,y,facing,footError,footPlantError,leftGripError,screenHeight,screenX,screenY,bladeTipHeight,gaitPhase,gaitFootPlantError,visualTurnOffset;public bool spriteVisible,bladeTipKnown,footPivotActive,leftGripMeasured,gaitFootPlanted;public Vector3 root;
+   public int frame,tick,combo,stateTicks;public string section,state,motion,keyClip;public float keyFrame;public float phase,x,y,facing,footError,footPlantError,leftGripError,screenHeight,screenX,screenY,bladeTipHeight,gaitPhase,gaitFootPlantError,visualTurnOffset;public bool spriteVisible,bladeTipKnown,footPivotActive,leftGripMeasured,gaitFootPlanted;public Vector3 root;
   }
   [Serializable] sealed class HeroReview {
    public string scope="실제 Player·격리 세이브·Core 입력·지옥강타 첫틱 피해 표적과 별도 피격/사망 fixture, OS 손조작 아님. PNG 연속프레임을30fps 영상으로 조립";
@@ -42,11 +42,23 @@ namespace Exoduser.UnityPort {
     if(good){moveX=d.x;moveY=d.y;free=true;break;}
    }
    check(free,"충돌을 유지한 이동·구르기 방향 확보");
+   if(!string.IsNullOrEmpty(Argument("-hero-sections"))){
+    // 11-08 대검 검수: 시작점은 다리 입구 횃불 기둥 뒤라 카메라에서 영웅이 가린다 -> 남쪽(카메라 쪽) 빈 땅으로 옮긴다. 사방 3m가 다 걸을 수 있는 첫 지점.
+    float sx=p.X,sy=p.Y;bool moved=false;
+    for(int r=200;r<=900&&!moved;r+=50)for(int k=0;k<12&&!moved;k++){float a=Mathf.PI*.5f+(k%2==0?1:-1)*(k/2)*Mathf.PI/10;float cx=sx+Mathf.Cos(a)*r,cy=sy+Mathf.Sin(a)*r;bool spotOk=Map.CanMove(cx,cy,p.Radius);
+     foreach(var d in new[]{new Vector2(1,0),new Vector2(-1,0),new Vector2(0,-1),new Vector2(0,1)})for(int q=1;q<=12&&spotOk;q++)spotOk=Map.CanMove(cx+d.x*q*25,cy+d.y*q*25,p.Radius);
+     if(spotOk){p.X=cx;p.Y=cy;moved=true;}}
+    check(moved,"대검 검수 촬영 자리(남쪽 빈 땅) 확보: "+p.X.ToString("F0")+","+p.Y.ToString("F0"));UpdateViews();
+   }
    string[] sections={"대기","방향","달리기","구르기","대검3타","검기3타","E충전강타","시전","보조시전","패링","피격","사망"};
    int[] lengths={60,160,90,36,180,180,120,90,60,45,45,90};int frame=0,shot=0;var motions=new HashSet<string>();
+   // 11-08 대검 손 키 5동작 실게임 검수: -hero-sections GS_A1|GS_COMBO|GS_BASH|GS_CHARGE (각 600틱 = 10초, 2틱마다 1장 = 30fps)
+   string customSections=Argument("-hero-sections");bool custom=!string.IsNullOrEmpty(customSections);
+   if(custom){sections=customSections.Split('|');lengths=Array.ConvertAll(sections,_=>600);}
+   int held120=0;
    foreach(string section in sections){
     int index=Array.IndexOf(sections,section);p.State="idle";p.StateTicks=0;
-    sim.Config.ActiveAttack=section=="대검3타"?"weapon":"kiSlash";
+    sim.Config.ActiveAttack=section=="대검3타"||section=="GS_A1"?"weapon":"kiSlash";held120=0;
     if(section=="구르기"){sim.HarpGauge=225;sim.SetRollInput(moveY<0,moveY>0,moveX<0,moveX>0,false);}
     if(section=="피격"){p.Iframes=0;p.Hp=p.MaxHp;p.Shield=p.MaxShield;sim.HurtPlayer(80);}
     if(section=="사망"){p.Iframes=0;p.Hp=0;p.Shield=0;p.State="dead";p.StateTicks=0;}
@@ -59,8 +71,12 @@ namespace Exoduser.UnityPort {
     }
     for(int f=0;f<lengths[index];f++,frame++){
      bool attack=section=="대검3타"||section=="검기3타"&&f<130;
+     if(section.StartsWith("GS")){p.Stamina=p.MaxStamina;p.Mana=p.MaxMana;}
+     if(section=="GS_A1")attack=true;   // 무기 모드: 매번 첫 타(예비 24틱)
+     if(section=="GS_COMBO")attack=!(p.State=="wWindup"&&p.KiChargeActive&&p.KiChargeTicks>=1);   // 1타·2타·3타(충전 1틱 뒤 탭 놓기) 반복
+     if(section=="GS_CHARGE"){if(p.State=="idle"){sim.KiComboStep=2;sim.KiComboTicks=120;}held120=p.KiChargeActive&&p.KiChargeTicks>=120?held120+1:0;attack=held120<50;}   // 3단 채우고 50틱 버틴 뒤 놓기
      if(section=="구르기")sim.SetRollInput(moveY<0,moveY>0,moveX<0,moveX>0,f==0);
-     sim.SetPlayerCombatInput(section=="패링"&&f<30,section=="E충전강타"&&f<70,false);
+     sim.SetPlayerCombatInput(section=="패링"&&f<30,section=="E충전강타"&&f<70||section=="GS_BASH"&&f%80<2,false);
      sim.SetSkillInput(section=="보조시전"&&f==0,false,false,false,section=="시전"&&f==0,false,false,false);
      float ax=moveX,ay=moveY;if(section=="방향"){float angle=(f/20)*Mathf.PI/4;ax=Mathf.Cos(angle);ay=Mathf.Sin(angle);}
      StepInput(section=="방향"&&RigPixelRequested?ax:section=="달리기"?moveX:0,section=="방향"&&RigPixelRequested?ay:section=="달리기"?moveY:0,p.X+ax*300,p.Y+ay*300,attack,false);
@@ -69,7 +85,7 @@ namespace Exoduser.UnityPort {
      var motion=heroView.Motion;motions.Add(motion.MotionKind.ToString());sectionMotions.Add(motion.MotionKind.ToString());
      if(section=="달리기"&&motion.GaitFootPlanted){gaitPlantSamples++;maxGaitPlantError=Mathf.Max(maxGaitPlantError,motion.GaitFootPlantError);}
      bool gripMeasured=gripMarker!=null&&gripSocket!=null&&(motion.MotionKind==HeroMotionKind.Swing||motion.MotionKind==HeroMotionKind.Charge||motion.MotionKind==HeroMotionKind.Bash||motion.MotionKind==HeroMotionKind.Guard||motion.MotionKind==HeroMotionKind.SlamWindup||motion.MotionKind==HeroMotionKind.SlamStrike);
-     float gripError=gripMeasured?Vector3.Distance(gripMarker.position,gripSocket.position+gripSocket.up*.09f):0;
+     float gripError=0;if(gripMeasured){var gd=gripMarker.position-gripSocket.position;gripError=(gd-gripSocket.up*Vector3.Dot(gd,gripSocket.up)).magnitude;}   // 11-08: 손잡이 축에서 벗어난 거리(칼 길이·파지 간격과 무관)
      if(gripMeasured){maxGripError=Mathf.Max(maxGripError,gripError);gripSamples++;}
      if(section=="대검3타"||section=="검기3타"){maxFootPlantError=Mathf.Max(maxFootPlantError,motion.FootPlantError);if(motion.FootPivotActive)footPivotSamples++;}
      if(section=="시전"&&f==0){
@@ -94,7 +110,7 @@ namespace Exoduser.UnityPort {
       }
       var anchor=HudCamera.WorldToScreenPoint(heroView.Model.transform.parent.position);
       bool tipKnown=motion.TryGetBladeTip(out var frameTip);float tipHeight=tipKnown?Vector3.Dot(frameTip-heroView.Model.transform.position,heroView.Model.transform.up):0;
-      report.frames.Add(new HeroFrame{frame=frame,tick=sim.TickCount,section=section,state=p.State,motion=motion.MotionKind.ToString(),phase=motion.MotionPhase,combo=motion.ComboStep,x=p.X,y=p.Y,facing=p.Facing,footError=heroView.FootError(),footPlantError=motion.FootPlantError,footPivotActive=motion.FootPivotActive,leftGripError=gripError,leftGripMeasured=gripMeasured,screenHeight=high-low,screenX=anchor.x,screenY=Screen.height-anchor.y,bladeTipKnown=tipKnown,bladeTipHeight=tipHeight,spriteVisible=playerView.enabled,root=heroView.Model.transform.parent.position,gaitPhase=motion.GaitPhase,gaitFootPlanted=motion.GaitFootPlanted,gaitFootPlantError=motion.GaitFootPlantError,visualTurnOffset=motion.VisualTurnOffset});
+      report.frames.Add(new HeroFrame{frame=frame,tick=sim.TickCount,stateTicks=(int)p.StateTicks,keyClip=motion.KeyClipActive?motion.KeyClip.ToString():"",keyFrame=motion.KeyClipActive?motion.KeyClipFrame:-1,section=section,state=p.State,motion=motion.MotionKind.ToString(),phase=motion.MotionPhase,combo=motion.ComboStep,x=p.X,y=p.Y,facing=p.Facing,footError=heroView.FootError(),footPlantError=motion.FootPlantError,footPivotActive=motion.FootPivotActive,leftGripError=gripError,leftGripMeasured=gripMeasured,screenHeight=high-low,screenX=anchor.x,screenY=Screen.height-anchor.y,bladeTipKnown=tipKnown,bladeTipHeight=tipHeight,spriteVisible=playerView.enabled,root=heroView.Model.transform.parent.position,gaitPhase=motion.GaitPhase,gaitFootPlanted=motion.GaitFootPlanted,gaitFootPlantError=motion.GaitFootPlantError,visualTurnOffset=motion.VisualTurnOffset});
       ScreenCapture.CaptureScreenshot(Path.Combine(output,"frames","hero-"+(shot++).ToString("0000")+".png"));
      }
     }
@@ -117,7 +133,7 @@ namespace Exoduser.UnityPort {
    }
    check(!playerView.enabled,"리깅 생성 성공 시 기존 플레이어 빌보드 숨김");
    if(RigPixelRequested){check(rigPixelHero!=null&&rigPixelHero.Ready&&rigPixelHero.RenderCount>0,"실시간 RT 합성 실제 실행");check(rigPixelHero!=null&&rigPixelHero.AnchorScreenError<=.71f,"최종 카메라 발밑 앵커 0.71px 이내");File.WriteAllText(Path.Combine(output,"rigpixel-render.json"),"{\"textureWidth\":"+(rigPixelHero!=null?rigPixelHero.TextureWidth:0)+",\"texelScale\":"+(rigPixelHero!=null?rigPixelHero.TexelScale:0)+",\"renderCount\":"+(rigPixelHero!=null?rigPixelHero.RenderCount:0)+",\"width\":"+Screen.width+",\"height\":"+Screen.height+"}");}
-   foreach(string kind in new[]{"Idle","Run","Roll","Swing","Recover","Charge","SlamWindup","SlamStrike","SlamRecover","Hurt","Dead"})check(motions.Contains(kind),"실제 상태 샘플 "+kind);
+   if(!custom)foreach(string kind in new[]{"Idle","Run","Roll","Swing","Recover","Charge","SlamWindup","SlamStrike","SlamRecover","Hurt","Dead"})check(motions.Contains(kind),"실제 상태 샘플 "+kind);
    report.passed=ok;File.WriteAllText(Path.Combine(output,"hero-review.json"),JsonUtility.ToJson(report,true));
    lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();
    yield return new WaitForSecondsRealtime(.8f);Application.Quit(ok?0:2);

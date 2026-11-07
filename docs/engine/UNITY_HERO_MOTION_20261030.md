@@ -239,3 +239,38 @@ RigPixelTurnClock은 Core조준/게임루트를바꾸지않고 모델자식의�
 | 칼 규약 | Unity 칼날 = `-socket.up`, 칼머리 = `socket.up×0.15`, 왼손 = `socket.up×0.09`. Blender 리그를 이 규약으로 맞춤(처음 판은 칼이 주먹 반대쪽으로 나와 접점 칼끝이 1.43m로 측정됨) |
 | 검증 | hero-motion 하네스 152/0(1타 키 시계 포함), Core 60/0(dotnet 직접 실행, verify-core.cjs는 godot 스냅샷 부재로 기존처럼 실행 불가), 반입 검사 왼손 파지 0.05mm·접점 칼끝 높이 0.19m. PC 무창 후보 빌드(`-remodel-scenes 1`) + `--unity-hero-review --remodel3d --hero-render=rigpixel` 촬영: 실게임 접점 틱 = 입력+26, 칼끝 높이 0.21m |
 | 남은 일 | hero-review의 '정지1·2타 발 회전'(표본 0)과 '장갑 중심 파지 3mm'(스윙 틱 11.7mm) 검사가 이 경로에서 실패 → 클립용 기준으로 바꿀지 결정 필요. 이동 중 1타는 발이 미끄러진다(클립에 보행 없음). 스프라이트 경로(`NativeGame.cs` 443~445)는 예비 `10/WeaponSpeed`=22틱·회복 34로 Core 24/28과 다름 — 이번에는 기록만 |
+
+### 2026-11-08 대검 손 키 5동작 Unity 반입 + 칼 2.50m (표현만, Core 수치·판정 무변경)
+
+| 항목 | 내용 |
+|---|---|
+| 결정 | 칼 = 키의 1.35배 **2.50m**(11-08 CTO 결정, 사용자가 바꾸라 하면 2.78m). `WeaponImport.Length` 1.60→2.50, `GreatswordKeyImport.ResizeWeapon`이 칼 FBX 재반입(globalScale 0.841→1.314) + `Warrior.prefab` 칼 사본을 같은 배율로(소켓~칼머리 .15→.2344, 소켓~칼끝 2.2656). 실측 길이 2.5000m |
+| 원본 | Blender 손 키 5동작(I:/EXODUSER-Storage/study/keyanim, 칼 2.50·왼손 간격 .20). 자가검수 통과 상태: 속도 순서·접점 팔꿈치·손~가슴·칼끝 반경·손목 지연, 매뉴얼 4장 8항(팔 관통 0·정면/측면/45° 양팔 보임), 높낮이(예비 골반 ≥90%·머리 차 ≥키 25%) |
+| 표 | `Resources/Characters/Warrior_GS_{A1,Combo,Bash,Charge,Release}_pose.json` — 57·160·52·171·49프레임, 본 24개 로컬 회전 + Hips 위치. 반입 검사 왼손 파지(손잡이 축 이탈) 0.007mm, 손잡이 축 거리 0.200 일정 |
+| 재생 | `GreatswordKeyDirector`(Core 상태·틱 → 클립·프레임). 클립 프레임 = Core 경과 틱이라 접점 = HitArc 틱 |
+| 혼합 | 시작 4틱·회복 끝 8틱 기존 운반 포즈와 혼합, 클립·타격이 바뀌면 직전 키 자세에서 3틱 이어 받기. 구르기·체인·사망이면 끊김. E 홀드(kiGather)는 기존 절차 |
+| 검수 장치 | `--unity-hero-review -hero-sections GS_A1|GS_COMBO|GS_BASH|GS_CHARGE`(각 600틱=10초, 2틱마다 1장). 장갑 파지 검사는 손잡이 축 이탈 거리로 바꿈(칼 길이·파지 간격 무관) |
+| 실게임 검수(PC 무창 후보, 1-1, 11-08) | 4구간 x 10초(1200장). HitArc 틱의 클립 프레임: 1타 f26, 2타 f59, 3타 탭 f99, 놓기 f12, 우클 f12 — 전부 일치. 클립이 이어진 동안 왼손 파지 오차 ≤3mm(1타 30/30). 남은 결함: ① 클립이 시작·전환되는 1~3틱(2타 첫 틱, 3타 탭 첫 틱, 차징 시작, sDraw 시작)에 왼손이 손잡이에서 최대 4.5~15cm 벌어짐 — 기존 한손 운반 포즈에서 넘어오는 혼합 구간이며 왼팔 IK가 닿지 못하는 경우 ② 놓기 회복 끝 2틱(f45·f47) 칼끝이 지면 아래 0.21~0.22m — 운반 포즈 혼합 구간, 접지 보정 후에도 남음. 영상: I:/EXODUSER-Storage/study/keyanim/ingame/gs5b/videos/ |
+
+**Core 상태 → 클립 프레임**
+
+| Core | 클립 | 프레임 | 접점(HitArc) |
+|---|---|---|---|
+| wWindup(BasicWindup) → wSwing → wRecover | 무기 모드 A1 / 검기 모드 Combo | 0~23 / 24~28 / 29~56(비율) | f26 = 입력+26 |
+| (예비 없이) wSwing → wRecover | Combo 2타 | 57~61 / 62~95 | f59 |
+| wWindup(KiChargeActive) | Charge | 경과 틱 0~170, 이후 122~169 반복(숨쉬기 12틱×4) | 단계 f40·80·120 |
+| 충전 ≤8틱 뒤 wSwing → wRecover | Combo 3타(탭) | 97~101 / 102~135 | f99 |
+| 충전 >8틱 뒤 wSwing → wRecover | Release | 10~14 / 15~48 | f12 |
+| sDraw → sBash → sRecover | Bash | 0~3(긴 sDraw는 f3 유지) / 4~23 / 24~51 | f12(sBash 남은 12) |
+
+**Core 판정 사거리 vs 화면 칼끝 거리 (결정은 사용자)**
+
+| 동작 | Core 판정 | 화면 칼끝 수평 거리(접점, world3D 0.87배) | 칼끝 높이 |
+|---|---|---|---|
+| 1타 | WeaponRange 50px + 적 반지름 → 0.5m + r | 2.52m | 1.98m |
+| 2타 | 같음 | 2.48m | 0.88m |
+| 3타(탭) | 같음 | 2.67m | 1.47m |
+| 놓기(3단) | 같음 | 2.75m | 0.99m |
+| 우클 sBash | ParryRules sBash(별도) | 1.98m | 1.34m |
+
+- 화면 칼이 Core 판정 반경보다 약 4~5배 길다. Core 수치는 바꾸지 않았다(11-08 CTO 지시). 판정을 화면 칼에 맞출지는 사용자 결정.

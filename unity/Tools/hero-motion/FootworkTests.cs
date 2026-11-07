@@ -54,5 +54,47 @@ static class FootworkTests
         t++;k.Observe(q("wSwing",5,false));Check(!k.Active,"예비 없는 2·3타 스윙은 1타 클립이 아님");
         t++;k.Observe(q("wWindup",24,true));t++;var roll=q("wWindup",23,true);roll.Rolling=true;k.Observe(roll);Check(!k.Active,"구르기로 끊기면 비활성");
     }
-    static void Main(){RegressionFootwork();RegressionGreatswordKeyClock();Console.WriteLine("전사 정지 베기 발 회전·대검 1타 키 시계: "+checks+"개 통과");}
+    static void RegressionGreatswordKeyDirector()
+    {
+        var k=new GreatswordKeyDirector();int t=500;
+        Func<string,float,bool,bool,float,HeroMotionInput> q=(state,left,basic,ki,charge)=>new HeroMotionInput{State=state,Tick=t,RemainingTicks=left,BasicWindup=basic,KiAttack=ki,Charge=charge,EffectiveHealth=100};
+        Action<string,int,bool,bool> run=(state,len,basic,ki)=>{for(int i=0;i<len;i++){k.Observe(q(state,len-i,basic,ki,0));t++;}};
+        // 1타 (검기 모드 = 콤보 클립, 무기 모드 = 1타 클립): 입력+26 = 접점 f26
+        k.Observe(q("idle",0,false,true,0));t++;Check(!k.Active,"대기 = 키 비활성");
+        int input=t;for(int i=0;i<24;i++){k.Observe(q("wWindup",24-i,true,true,0));t++;}
+        Check(k.Clip==GreatswordClip.Combo&&k.Frame==23,"검기 1타 예비 = 콤보 클립 f23");
+        for(int i=0;i<3;i++){k.Observe(q("wSwing",5-i,false,true,0));if(i<2)t++;}
+        Check(k.Frame==26&&t-input==26,"1타 HitArc 틱 = 콤보 f26 = 입력+26");t++;
+        k.Observe(q("wSwing",2,false,true,0));t++;k.Observe(q("wSwing",1,false,true,0));t++;
+        run("wRecover",28,false,true);Check(k.Frame>55&&k.Weight<.3f,"1타 회복 끝 f55 이후, 혼합 복귀");
+        // 2타: 예비 없이 바로 휘두르기 -> 콤보 f57, HitArc(StateTicks 3) = f59
+        k.Observe(q("idle",0,false,true,0));t++;
+        k.Observe(q("wSwing",5,false,true,0));Check(k.Clip==GreatswordClip.Combo&&k.Frame==57&&k.Weight>.99f&&k.SinceSwitch==0,"2타 스윙 진입 = 콤보 f57, 1타 회복 키 자세에서 바로 이어 받음(운반 포즈 혼합 없음)");t++;
+        k.Observe(q("wSwing",4,false,true,0));t++;k.Observe(q("wSwing",3,false,true,0));Check(k.Frame==59,"2타 HitArc = 콤보 f59");t++;
+        k.Observe(q("wSwing",2,false,true,0));t++;k.Observe(q("wSwing",1,false,true,0));t++;
+        k.Observe(q("wRecover",34,false,true,0));Check(Math.Abs(k.Frame-62)<1e-4,"2타 회복 진입 = f62");t++;
+        // 3타 탭: 충전 1틱 뒤 놓기 -> 콤보 f97, HitArc f99
+        k.Observe(q("idle",0,false,true,0));t++;
+        k.Observe(q("wWindup",999,false,true,1));Check(k.Clip==GreatswordClip.Charge&&k.Frame==0,"3타 충전 시작 = 차징 f0");t++;
+        k.Observe(q("wSwing",5,false,true,0));Check(k.Clip==GreatswordClip.Combo&&k.Frame==97&&k.SinceSwitch==0,"탭 놓기 = 콤보 f97, 앞 자세에서 혼합");t++;
+        k.Observe(q("wSwing",4,false,true,0));t++;k.Observe(q("wSwing",3,false,true,0));Check(k.Frame==99,"3타 탭 HitArc = 콤보 f99");t++;
+        k.Observe(q("wRecover",34,false,true,0));t++;k.Observe(q("idle",0,false,true,0));t++;
+        // 차징 3단 -> 놓기: 40·80·120틱 단계, 170틱 뒤 숨쉬기 반복, 놓으면 놓기 f10, HitArc f12
+        for(int i=0;i<200;i++){k.Observe(q("wWindup",999,false,true,Math.Min(120,i+1)));if(i==120)Check(k.Frame==120,"차징 120틱 = 3단 f120");if(i<199)t++;}
+        Check(k.Clip==GreatswordClip.Charge&&k.Frame>=GreatswordKeyDirector.ChargeLoopStart&&k.Frame<GreatswordKeyDirector.ChargeEnd,"170틱 넘게 버티면 숨쉬기 반복 구간");t++;
+        k.Observe(q("wSwing",5,false,true,0));Check(k.Clip==GreatswordClip.Release&&k.Frame==10,"차지 놓기 = 놓기 f10");t++;
+        k.Observe(q("wSwing",4,false,true,0));t++;k.Observe(q("wSwing",3,false,true,0));Check(k.Frame==12,"놓기 HitArc = f12");t++;
+        // 우클: sDraw 길이와 무관하게 f3에서 버티고, sBash 남은 틱 12(진입+8) = f12
+        k.Observe(q("idle",0,false,true,0));t++;
+        for(int i=0;i<30;i++){k.Observe(q("sDraw",999,false,true,0));t++;}
+        Check(k.Clip==GreatswordClip.Bash&&k.Frame==3,"긴 sDraw는 가드 f3 유지");
+        for(int i=0;i<9;i++){k.Observe(q("sBash",20-i,false,true,0));if(i<8)t++;}
+        Check(k.Frame==12,"sBash 타격(남은 12) = 우클 f12");t++;
+        k.Observe(q("sRecover",28,false,true,0));Check(Math.Abs(k.Frame-24)<1e-4,"sRecover 진입 = f24");t++;
+        // 무기 모드 1타 = 1타 클립, 구르기로 끊기면 비활성
+        k.Observe(q("idle",0,false,false,0));t++;k.Observe(q("wWindup",24,true,false,0));Check(k.Clip==GreatswordClip.A1&&k.Frame==0,"무기 모드 1타 = 1타 클립 f0");t++;
+        var roll=q("wWindup",23,true,false,0);roll.Rolling=true;k.Observe(roll);Check(!k.Active,"구르기로 끊기면 비활성");
+        Check(Math.Abs(GreatswordKeyDirector.SocketToTip-2.265625f)<1e-5,"칼 2.50m: 소켓~칼끝 2.2656m");
+    }
+    static void Main(){RegressionFootwork();RegressionGreatswordKeyClock();RegressionGreatswordKeyDirector();Console.WriteLine("전사 정지 베기 발 회전·대검 키 시계·5클립 지휘: "+checks+"개 통과");}
 }

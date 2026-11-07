@@ -13,7 +13,7 @@ namespace Exoduser.CharacterLab
         public const string Fbx = Dir + "/Warrior_Greatsword.fbx";
         public const string MatPath = Dir + "/Warrior_Greatsword_Mat.mat";
         public const string PrefabPath = Dir + "/Warrior_Greatsword.prefab";
-        public const float Length = 1.60f;
+        public const float Length = 2.50f;   // 11-08 CTO 결정: 키의 1.35배(2.50m). Core 판정 사거리 무변경
 
         public static void Run()
         {
@@ -24,7 +24,7 @@ namespace Exoduser.CharacterLab
             var mat = SetupMaterial();
 
             var imp = (ModelImporter)AssetImporter.GetAtPath(Fbx);
-            imp.globalScale = 1f; imp.isReadable = false; imp.meshCompression = ModelImporterMeshCompression.Off;
+            imp.globalScale = 1f; imp.isReadable = true; imp.meshCompression = ModelImporterMeshCompression.Off;   // 런타임 칼끝 바인딩이 정점을 읽는다(d8adbb744)
             imp.materialImportMode = ModelImporterMaterialImportMode.None; imp.importBlendShapes = false;
             imp.animationType = ModelImporterAnimationType.None; imp.importAnimation = false;
             imp.SaveAndReimport();
