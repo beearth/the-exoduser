@@ -65,7 +65,7 @@ R4 전달·철회 이력은 `hero/r4/delivery-history/`와 `desktop-withdrawal.j
 | ivan | 아이반(검은 연기) | T8 r4 확정 | UCH-01 시트 |
 | spearmage | 창법사 | 원화 RETOUCH 중 | 원화 채택 뒤 |
 | transmuter | 변성술사 | 원화 RETOUCH 중(활·낫·거대 장검 가변) | 원화 채택 뒤 |
-| zerokin | 제로킨(번개의 아들) | 설계 v0.1, 원화 0 ([설계](../archetypes/zerokin/ZEROKIN_CONCEPT_v0_1_20261107.md)) | 외형 LOCK 확인 뒤 Z1 시트. 데모 v0 범위 밖 |
+| zerokin | 제로킨(번개의 아들) | 설계 v0.1 + Z1 시트(body r2·head·건틀릿, 총괄 조건부 PASS) ([설계](../archetypes/zerokin/ZEROKIN_CONCEPT_v0_1_20261107.md) §6.1) | 사용자 외형 확인 뒤 Z2 Meshy. 데모 v0 범위 밖 |
 
 ## 2. 단계
 
