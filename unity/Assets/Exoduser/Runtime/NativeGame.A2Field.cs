@@ -79,6 +79,7 @@ namespace Exoduser.UnityPort
             A2FieldGround();NativeTransitionProgress.Report("a2-ground",.90f);yield return null;
             A2FieldGroundCover();NativeTransitionProgress.Report("a2-ground-cover",.95f);yield return null;
             A2BridgeMoss();NativeTransitionProgress.Report("a2-bridge-moss",.97f);yield return null;
+            A2GroundDebris();NativeTransitionProgress.Report("a2-ground-debris",.98f);yield return null;
             A2FieldAtmosphere();NativeTransitionProgress.Report("a2-atmosphere",.99f);yield return null;
             A2SightSetup();
             if(r3Cam==null)throw new InvalidOperationException("A2 field camera destroyed during assembly");   // Unity null: scene reclaimed while yielding
