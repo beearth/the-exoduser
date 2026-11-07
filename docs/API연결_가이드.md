@@ -71,7 +71,8 @@ MCP 외에도 웹 조회, 이미지 생성, 터미널·파일 편집, Computer U
 | API 또는 연동 | 구현·설정 기준 | 현재 검증 경계 |
 |---|---|---|
 | OpenAI GPT API | 프로젝트 `OPENAI_API_KEY`, `server.cjs`의 `/api/gpt-image` 구현 | 키 값 비공개. 10/30 모델 목록 인증만 확인, 이미지 생성 프록시의 현재 런타임은 별도 |
-| Tripo Studio / 직접 API | [공식 웹 작업 공간](https://studio.tripo3d.ai/ko/workspace/generate) | 11/02 로그인 웹 구독 확인·사용 승인. 직접 MCP 도구는 현재 세션에 없으며 API 인증은 미검증. Higgsfield 경유 Tripo와 별도 과금 |
+| Tripo Studio / 직접 API | [공식 웹 작업 공간](https://studio.tripo3d.ai/ko/workspace/generate), PC `tripo-cli` 0.11.2(`npm i -g tripo-cli`, `tripo login --region ov`) | 11/02 로그인 웹 구독 확인·사용 승인. **11-08 PC CLI 로그인·`tripo doctor` 인증·네트워크 PASS, API 잔액 0** — API 크레딧은 Studio 구독 크레딧과 별도 지갑이라 Studio 잔액을 CLI·API에서 못 쓴다. 충전 전에는 Studio 웹(Claude in Chrome)으로 생성한다. 키는 CLI가 `~/.tripo/config.json`에 저장(Git·문서에 복사 금지). Higgsfield 경유 Tripo와 별도 과금 |
+| Meshy CLI | PC `meshy-cli` 0.8.3(`npm i -g meshy-cli`) | **11-08 PC 로그인·잔액 1,618 확인.** Meshy 웹은 세션 1개만 허용해 브라우저 기기 승인이 끊기므로, 기존 DPAPI 키(`.codex/credentials/meshy-api-key.dpapi`)를 `meshy auth login --with-key`로 CLI 저장소(DPAPI 암호화)에 넣었다. Claude 세션은 `meshy` 명령을 바로 쓴다(Meshy MCP는 Codex 설정에만 있음) |
 | ElevenLabs | 기존 TTS·SFX 도구 및 프록시 | 웹 계정 관측과 직접 API 인증을 구분. 기존 사운드 SSOT·예산 유지 |
 | PixelLab | 기존 `tools/pixellab_request.mjs`와 에셋 이력 | 현재 API 인증 미검증. 사용자 확정 캐릭터 생성 금지 유지 |
 | xAI / Grok | 기존 이미지·VFX 생성 도구 이력 | 현재 인증·모델·단가 미검증. 과거 단가로 새 요청을 계산하지 않음 |
