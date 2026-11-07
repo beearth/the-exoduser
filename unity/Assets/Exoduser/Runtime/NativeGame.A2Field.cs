@@ -303,6 +303,7 @@ namespace Exoduser.UnityPort
             }
             A2CanopyShadows();
             A2TreeHeightDarken();
+            A2ShrubSoften();
             var shader=Shader.Find("EXODUSER/A2Atmosphere");
             var moonDirection=Quaternion.Euler(49,-32,0)*Vector3.forward;
             foreach(var root in r3Roots)if(root!=null)foreach(var light in root.GetComponentsInChildren<Light>(true))if(light.enabled&&light.type==LightType.Directional)moonDirection=light.transform.forward;
@@ -344,6 +345,23 @@ namespace Exoduser.UnityPort
             Debug.Log("[A2 수관 그림자] 잎 덩어리 카드 "+count+"장, 4~11m, 높이 13~19m");
         }
         const float A2CanopyKeep=.84f;   // 256칸 중 약 215칸에 카드(그늘 덮개 목표 25~40%)
+        // 11-08 잡음 ≤.05(05·10 원인): 마른 덤불 RF3_Withered_Shrub은 매끈함 1·붉은 가는 가지라 1x 고주파(반짝임·그림자 선)를 만든다.
+        // 지우지 않고 대비만 낮춘다: 매끈함 .15, 색 곱 (.68,.62,.58), 가는 가지 그림자 끔(접지는 바닥 잔해 층 접지 그림자가 맡음).
+        void A2ShrubSoften()
+        {
+            Material soft=null;int count=0;
+            foreach(Transform t in a2Root.transform)
+            {
+                if(t.name!="A2_Withered_Shrub")continue;
+                foreach(var r in t.GetComponentsInChildren<MeshRenderer>(true))
+                {
+                    var m=r.sharedMaterial;if(m==null)continue;
+                    if(soft==null){soft=R3Track(new Material(m){name=m.name+" (대비 낮춤)"});if(soft.HasProperty("_Smoothness"))soft.SetFloat("_Smoothness",.15f);if(soft.HasProperty("_BaseColor"))soft.SetColor("_BaseColor",new Color(.68f,.62f,.58f,1));}
+                    r.sharedMaterial=soft;r.shadowCastingMode=ShadowCastingMode.Off;count++;
+                }
+            }
+            Debug.Log("[A2 마른 덤불 대비] 렌더러 "+count);
+        }
         // 11-07 PoE2 HeightGradientDarkenWS: 고목 윗부분을 지면 위 4.5m부터 3m 구간 .75배까지 어둡게 한다. URP Lit 불투명 재질만 바꾼다.
         void A2TreeHeightDarken()
         {

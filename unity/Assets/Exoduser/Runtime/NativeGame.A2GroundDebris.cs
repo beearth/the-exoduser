@@ -17,8 +17,15 @@ namespace Exoduser.UnityPort
         // CTO RETOUCH: 잔해가 바닥보다 어두우면 "더러운 바닥"으로 읽힌다 → 중간 카드는 바닥 평균의 약 1.2배(.65), 작은 조각은 바닥 ±15%(.72)
         const float CardBrightness=.42f,SmallBrightness=.55f,SmallAlpha=.6f;   // 11-08 ≤.05: 잔가지가 바닥보다 밝은 회색 선으로 떠서 .5→.42   // .65/.72는 노멀을 누른 뒤 흰 뼛조각처럼 떴다
         // 셀 번호: 0~9 잔가지, 10~14 솔잎 무더기, 15~19 잔뿌리, 20~25 낙엽
-        static int DebrisMediumCell(System.Random r,bool walk){double k=r.NextDouble();if(walk)return k<.6?r.Next(0,10):r.Next(20,26);return k<.45?r.Next(0,10):k<.65?r.Next(15,20):r.Next(20,26);}
-        static int DebrisSmallCell(System.Random r){return r.NextDouble()<.6?r.Next(20,26):r.Next(10,15);}
+        static bool DebrisSet3;static int DebrisCols=4,DebrisRows=8;
+        // debris3 셀: 0~9 잔가지 · 10~19 뿌리 · 20~35 썩은 잎 · 36~51 죽은 이끼 · 52~57 뼈 · 58~62 버섯 · 63~67 녹슨 쇠. 썩은 잎·죽은 이끼·잔가지가 주력
+        static int DebrisMediumCell(System.Random r,bool walk)
+        {
+            double k=r.NextDouble();
+            if(DebrisSet3){if(walk)return k<.4?r.Next(0,10):k<.75?r.Next(20,36):r.Next(36,52);return k<.25?r.Next(0,10):k<.45?r.Next(10,20):k<.75?r.Next(20,36):r.Next(36,52);}
+            if(walk)return k<.6?r.Next(0,10):r.Next(20,26);return k<.45?r.Next(0,10):k<.65?r.Next(15,20):r.Next(20,26);
+        }
+        static int DebrisSmallCell(System.Random r){if(DebrisSet3)return r.NextDouble()<.55?r.Next(20,36):r.Next(36,52);return r.NextDouble()<.6?r.Next(20,26):r.Next(10,15);}
         sealed class DebrisChunkMesh
         {
             public readonly List<Vector3> v=new List<Vector3>();public readonly List<Vector2> uv=new List<Vector2>();
@@ -44,7 +51,11 @@ namespace Exoduser.UnityPort
         void A2GroundDebris()
         {
             if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-a2-no-debris")>=0){Debug.Log("[A2 바닥 잔해] 검수용 끔");return;}
-            var col=Resources.Load<Texture2D>("Art/map/a2/cards/debris_col");var nrm=Resources.Load<Texture2D>("Art/map/a2/cards/debris_nrm");var hgt=Resources.Load<Texture2D>("Art/map/a2/cards/debris_h");
+            // 11-08 CTO 지급 생성 아틀라스 시험(잔가지·뿌리 그대로, 낙엽은 썩은 회갈로, 이끼·자갈 제외): --unity-a2-debris2 로 바꿔 전후 비교
+            // 11-08 기본 = debris3(CTO 합격: 1차 생성 잔가지·뿌리 + 2차 썩은 잎·죽은 이끼·뼈/버섯/녹슨 쇠, 8열×16행). 비교용 --unity-a2-debris-old(우리 Blender 절차 아틀라스), --unity-a2-debris2(1차 생성만)
+            var argv=Environment.GetCommandLineArgs();string set=Array.IndexOf(argv,"--unity-a2-debris-old")>=0?"debris":Array.IndexOf(argv,"--unity-a2-debris2")>=0?"debris2":"debris3";
+            DebrisSet3=set=="debris3";DebrisCols=DebrisSet3?8:4;DebrisRows=DebrisSet3?16:8;
+            var col=Resources.Load<Texture2D>("Art/map/a2/cards/"+set+"_col");var nrm=Resources.Load<Texture2D>("Art/map/a2/cards/"+set+"_nrm");var hgt=Resources.Load<Texture2D>("Art/map/a2/cards/"+set+"_h");
             var pcol=Resources.Load<Texture2D>("Art/map/a2/cards/patch_col");var pnrm=Resources.Load<Texture2D>("Art/map/a2/cards/patch_nrm");
             var cardShader=Shader.Find("EXODUSER/A2GroundCard");var aoShader=Shader.Find("EXODUSER/A2GroundCardAO");
             if(col==null||nrm==null||hgt==null||pcol==null||pnrm==null||cardShader==null||aoShader==null){Debug.LogError("[A2 바닥 잔해] 자원 누락");return;}
@@ -64,7 +75,7 @@ namespace Exoduser.UnityPort
                 for(int q=0;q<nm;q++)
                 {
                     float px=x+(float)rng.NextDouble(),pz=z+(float)rng.NextDouble();if(!DebrisFree(px,pz))continue;
-                    int cell=DebrisMediumCell(rng,walk);float len=Mathf.Lerp(.45f,.9f,(float)rng.NextDouble());if(cell<10||(cell>=15&&cell<20))len*=1.4f;   // 잔가지·잔뿌리 카드는 2:1이라 길게
+                    int cell=DebrisMediumCell(rng,walk);float len=Mathf.Lerp(.45f,.9f,(float)rng.NextDouble());if(DebrisSet3?cell<20:(cell<10||(cell>=15&&cell<20)))len*=1.4f;   // 잔가지·잔뿌리 카드는 2:1이라 길게
                     float yaw=(float)(rng.NextDouble()*Math.PI*2),tint=CardBrightness*Mathf.Lerp(.85f,1.08f,(float)rng.NextDouble());var rect=DebrisRect(cell);var ch=chunks[DebrisChunkIndex(px,pz,nx,nz)];
                     DebrisQuad(ch.medium,px,pz,len,len*.5f,yaw,.01f,rect,new Color(tint,tint*.9f,tint*.78f,1),true);
                     DebrisQuad(ch.ao,px+.02f,pz-.02f,len*1.15f,len*.58f,yaw,.006f,rect,Color.white,true);medium++;
@@ -83,6 +94,7 @@ namespace Exoduser.UnityPort
                     DebrisPatch(chunks[DebrisChunkIndex(px,pz,nx,nz)].patch,px,pz,size,size*Mathf.Lerp(.75f,1.25f,(float)rng.NextDouble()),(float)(rng.NextDouble()*Math.PI*2),new Rect((kind%2)*.5f,kind<2?.5f:0f,.5f,.5f));patches++;
                 }
             }
+            if(DebrisSet3)DebrisStoryAndFungus(chunks,nx,nz,rng,ref medium);
             var root=new GameObject("A2 바닥 잔해 층");root.transform.SetParent(a2Root.transform,false);A2DebrisRoot=root;int renderers=0;
             for(int k=0;k<chunks.Length;k++)
             {
@@ -101,8 +113,34 @@ namespace Exoduser.UnityPort
             A2DebrisCards=medium;A2DebrisSmall=small;A2DebrisPatches=patches;A2DebrisRenderers=renderers;
             Debug.Log("[A2 바닥 잔해] 중간 "+medium+" 작은 "+small+" 패치 "+patches+" 청크 렌더러 "+renderers+" 조립 "+timer.ElapsedMilliseconds+"ms");
         }
+        // 뼈·녹슨 쇠: 길가(걷는 면 경계 안쪽 .5~3m)에 드물게(필드 80m당 12개 = 화면당 1~2) 이야기 포인트로. 버섯: 고목 밑동에만 무리(고목 60%에 3~6장).
+        void DebrisStoryAndFungus(DebrisChunk[] chunks,int nx,int nz,System.Random rng,ref int medium)
+        {
+            int story=0,fungus=0,want=Mathf.RoundToInt(12*(DebrisMaxX-DebrisMinX-24)/80f);
+            for(int tries=0;story<want&&tries<4000;tries++)
+            {
+                float x=DebrisMinX+12+(float)rng.NextDouble()*(DebrisMaxX-DebrisMinX-24),z=DebrisMinZ+12+(float)rng.NextDouble()*(DebrisMaxZ-DebrisMinZ-24);
+                float d=a2Field.Distance(x,z);if(d<.5f||d>3f||!DebrisFree(x,z))continue;
+                int cell=rng.NextDouble()<.7?rng.Next(52,58):rng.Next(63,68);float len=Mathf.Lerp(.7f,1.1f,(float)rng.NextDouble()),yaw=(float)(rng.NextDouble()*Math.PI*2),t=CardBrightness*1.1f;
+                var ch=chunks[DebrisChunkIndex(x,z,nx,nz)];DebrisQuad(ch.medium,x,z,len,len*.5f,yaw,.012f,DebrisRect(cell),new Color(t,t*.95f,t*.88f,1),true);DebrisQuad(ch.ao,x+.02f,z-.02f,len*1.15f,len*.58f,yaw,.006f,DebrisRect(cell),Color.white,true);story++;medium++;
+            }
+            foreach(Transform tree in a2Root.transform)
+            {
+                if(tree.name!="A2_Hollow_Loft_Tree"&&tree.name!="A2_Ancient_Rotten_Tree"&&tree.name!="A2 전경 바깥 거목")continue;
+                if(rng.NextDouble()>.6)continue;
+                var rs=tree.GetComponentsInChildren<MeshRenderer>();if(rs.Length==0)continue;var b=rs[0].bounds;foreach(var r in rs)b.Encapsulate(r.bounds);
+                float rad=Mathf.Clamp(Mathf.Min(b.extents.x,b.extents.z)*.55f,.6f,3f);float baseAng=(float)(rng.NextDouble()*Math.PI*2);int n=rng.Next(3,7);
+                for(int k=0;k<n;k++)
+                {
+                    float a=baseAng+(float)(rng.NextDouble()-.5)*1.4f,dist=rad*Mathf.Lerp(.85f,1.15f,(float)rng.NextDouble());float x=tree.position.x+Mathf.Cos(a)*dist,z=tree.position.z+Mathf.Sin(a)*dist;
+                    if(a2Field.Water(x,z))continue;float len=Mathf.Lerp(.35f,.6f,(float)rng.NextDouble());float t=CardBrightness*Mathf.Lerp(.95f,1.1f,(float)rng.NextDouble());
+                    DebrisQuad(chunks[DebrisChunkIndex(x,z,nx,nz)].medium,x,z,len,len*.5f,(float)(rng.NextDouble()*Math.PI*2),.012f,DebrisRect(rng.Next(58,63)),new Color(t,t*.97f,t*.93f,1),true);fungus++;medium++;
+                }
+            }
+            Debug.Log("[A2 바닥 잔해] 이야기 포인트(뼈·녹슨 쇠) "+story+" 고목 밑 버섯 "+fungus);
+        }
         static int Poissonish(System.Random r,float mean){int n=(int)mean;return n+(r.NextDouble()<mean-n?1:0);}
-        static Rect DebrisRect(int cell){return new Rect((cell%4)*.25f,1-(cell/4+1)*.125f,.25f,.125f);}
+        static Rect DebrisRect(int cell){float w=1f/DebrisCols,h=1f/DebrisRows;return new Rect((cell%DebrisCols)*w,1-(cell/DebrisCols+1)*h,w,h);}
         static int DebrisChunkIndex(float x,float z,int nx,int nz){int cx=Mathf.Clamp((int)((x-DebrisMinX)/DebrisChunkSize),0,nx-1),cz=Mathf.Clamp((int)((z-DebrisMinZ)/DebrisChunkSize),0,nz-1);return cz*nx+cx;}
         // 물·다리·쓰러진 고목/뿌리 상판 위는 비운다(카드가 떠 보이지 않게).
         bool DebrisFree(float x,float z)

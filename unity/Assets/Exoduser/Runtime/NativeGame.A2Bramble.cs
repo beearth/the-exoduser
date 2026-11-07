@@ -16,7 +16,7 @@ namespace Exoduser.UnityPort
                 var bark=Resources.Load<Material>("Art/map/a2/hollow/Materials/A2_Loft_Bark");
                 if(bark==null){Debug.LogError("[A2] 고사 덤불 목질 누락. 기존 사진 덤불 유지");return;}
                 a2BrambleMaterial=R3Track(new Material(bark));a2BrambleMaterial.name="A2 마른 잔가지 목질";
-                a2BrambleMaterial.SetColor("_BaseColor",new Color(1.1f,.8f,.5f));
+                a2BrambleMaterial.SetColor("_BaseColor",new Color(.62f,.5f,.38f));   // 11-08 잡음 ≤.05: (1.1,.8,.5)는 바닥보다 밝은 붉은 가지 선이라 1x 고주파(05·10 초과 원인)
                 a2BrambleMaterial.SetFloat("_Smoothness",0);a2BrambleMaterial.SetFloat("_BumpScale",.45f);
                 a2BrambleMaterial.SetFloat("_SpecularHighlights",0);a2BrambleMaterial.EnableKeyword("_SPECULARHIGHLIGHTS_OFF");
                 a2BrambleMaterial.SetFloat("_EnvironmentReflections",0);a2BrambleMaterial.EnableKeyword("_ENVIRONMENTREFLECTIONS_OFF");
