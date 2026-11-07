@@ -209,3 +209,19 @@ Shift 모션은 Core의 실제HarpActive||DashActive를읽는 Chain 표현이다
 ### R6c 픽셀 전용 상체 선행 회전
 
 RigPixelTurnClock은 Core조준/게임루트를바꾸지않고 모델자식의로컬yaw만지연한다. Idle/Run에서 목표yaw변화의최단각을offset에누적한뒤 Core틱당12도(720도/초)씩0으로복귀한다. 가슴은-offset을±55도로제한해먼저돌고, 머리는남은각의±25도만더한다. 운반손목표와칼방향도같은상체선행각으로회전한다. 공격/충전/방어/사슬/구르기/피격/사망은offset0으로즉시정렬하여첫타격의판정방향을지연하지않는다. 같은Core틱은방향을더진행시키지않고새Simulation/되감기에서초기화한다. HeroFrame.visualTurnOffset로실제프레임과대조한다. 순수회귀6개(첫배치/12도회전/정지/추종/같은틱공격정렬/360최단각) RED→GREEN, 기존거리·Chain9개와합계15/15. 기존R7메시/클립재사용이며새손키4프레임/새유료생성은없다. 새Player에서상체선행/발접지/첫타격/정지행렬확인전미검증이다.
+
+## 2026-11-07 대검 손 키프레임 — Core 타이밍 표 (읽기만, Core 무변경)
+
+손 키(Blender -b, 우리 손으로 잡은 키, 레퍼런스 원본 반입 0)는 아래 Core 틱에 프레임을 맞춘다. 1프레임 = 1틱 = 16.7ms(60Hz). StateTicks는 TickPlayerCombat 전에 1 줄어든다(Simulation.cs 95). 접점 = wSwing 진입 뒤 2번째 틱(StateTicks 3 교차, HitArc). 시작 장비 기준 AttackRecoverBaseTicks = 34(⌊16/(spd×mul)⌋).
+
+| 동작 | Core 상태·길이 (입력 틱 = f0) | 접점 프레임 | 끝 |
+|---|---|---|---|
+| 좌클 1타 | wWindup 6 (f0-5, BasicWindupTicks) → wSwing 5 (f6-10) → wRecover max(34−6, 4)=28 (f11-38) | f8 | idle f39 |
+| 좌클 2타 (기검참 KiComboStep=1, 120틱 창) | 예비 없음, 입력 틱에 wSwing 5 (f0-4) → wRecover 34 (f5-38) | f2 | idle f39 |
+| 좌클 3타 탭 (KiComboStep=2) | wWindup 충전(StateTicks 999) → 다음 틱 놓으면 KiChargeTicks 1, 0단 → wSwing 5 → wRecover 34 | 놓는 틱+2 | 놓는 틱+39 |
+| 좌클 3타 홀드 차징 | 매 틱 KiChargeTicks+1, 단계 = ⌊ticks/40⌋ (f40 1단·f80 2단·f120 3단, 최대 120). 단계 진입 틱에 소리, 3단은 KiChargeFlash 4프레임×2틱 | 단계 진입 f40·f80·f120 | 놓을 때까지 |
+| 차징 발사 | 놓는 틱 R에 wSwing 5 (R…R+4) → wRecover 34 (R+5…R+38), 피해 ×2^단계 | R+2 | idle R+39 |
+| 우클(E) 칼등치기 sBash | sDraw(탭 ≤10틱, 놓는 틱에 발동) → sBash 20 → sRecover ⌊28/(1+pParry×.1)⌋ = 28 | sBash 진입 +8 (StateTicks 12 교차) | sRecover 끝 |
+| sBash 패링창 | StateTicks > 20−16 = sBash 첫 16틱 (ParryWin 16) | — | — |
+
+표현 규칙(이번 키): 1타 예비 6틱은 어깨 멘 준비 자세에서 감아 올리는 짧은 감속 예비, 접점 프레임(1타 f8·2타 f2·3타 R+2·sBash +8)은 칼끝 최고속·골반 최저점 근처에 둔다. Core idle 동안(콤보 창)의 '다음 타 장전 자세'는 표현 변형이며 Core 상태는 idle 그대로다. 결과물(영상·격자·그래프·.blend·포즈 JSON)은 I:/EXODUSER-Storage/study/keyanim/ — Unity 반입은 사용자 PASS 뒤 다음 단계.
