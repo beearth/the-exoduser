@@ -458,3 +458,37 @@ CTO 판정 396d92ec4: 눈으로 수정본이 2차보다 낫다. 잡음 기준 .0
 
 34° 카메라 화면 안 무리(뒤 6.3 m~앞 37.4 m): 시작 6무리(먼 25~37 m에 P3·P4·D2g), S1 목 7무리(먼 P6·P7·P8), 굽힘 W 5무리(먼 P9·P10), 굽힘 E 4무리. → ×1에서는 한 화면에 무리가 4~7개 들어와 "다음 무리를 찾아가는" 리듬이 약하다(×2의 근거).
 다음: CTO 결정 뒤 (A)면 걷기 격자·소환굴·스폰 변경을 Core 별도 커밋으로 하고 하네스를 갱신한다. 1-1 카메라 캡처로 판정한다.
+
+## 11. ×2 통합 후보(11-08)
+
+브랜치 `claude/unity-map-x2-20261108`(unity/main d9b7bb44a 위). unity/main에는 병합하지 않았다.
+
+| 병합 | SHA |
+|---|---|
+| 기준 origin/unity/main | d9b7bb44a |
+| origin/codex/unity-map-scale-c1-20261104 (×2 Core 배율) | a0e66b2c2 |
+| origin/claude/unity-map-1-1-20261107 (3D 바닥·조명·잔해) | 922517f0c |
+
+충돌: 코드 0. docs 2개(이 보드, CHANGELOG_SYNC)만 충돌했고 두 병합 모두 양쪽 내용을 전부 남겼다(unity/main 쪽 먼저, 병합 쪽 뒤). node로 바이트 보존.
+
+검사(각 1회): field-layout-tests/run-checks.cjs 16단계 실패 0(host-contract·navigation·field-layout 932항목 0실패·c01/fieldboss/region/stage-flow oracle·Core 60항목 0실패·region-real-map·start-mobs·a2-field). Unity 컴파일·빌드(공용 실행기 build, -remodel-scenes 1) `[result] ok=True` errorLogs=0, `error CS` 0, Shader error 0. 플레이어 실행·실플레이 판정은 하지 않았다(미검증).
+
+k=2 keep/linear 실측(11-04 x2-2, 위 "11-04 x2-2 실측 결과"에서 옮김, 봇 1판)
+
+| 조건 | 적 예정 | 지역 NW/NE/SW/SE | 진입 경과 분 | 진입 처치 | 평균/최저 FPS | 최장 프레임 ms | 판정 |
+|---|---:|---|---:|---:|---|---:|---|
+| k=1 기준 | 168 | 23/60/53/32 | 6.36 | 354 | 108.177 / 3.206 | 311.902 | 비교 기준 |
+| k=2 keep | 168 | 23/60/53/32 | 6.94 | 237 | 110.630 / 1.104 | 905.781 | 시간·성능 미달 |
+| k=2 linear | 336 | 46/120/106/64 | 8.00 | 541 | 109.155 / 1.030 | 971.093 | 시간·성능 미달 |
+| k=2 중간 ×1.5 | 252 | 35/89/80/48 | 8.18 | 374 | 106.178 / 0.156 † | 6389.801 † | 시간 미달 |
+
+적 수 채택은 보류 그대로다(11~13분 미달). 이 통합에서 새 실측은 하지 않았고 지역 합계는 field-layout-tests PROFILE 출력과 일치한다(k=2 area 672 참고).
+
+Core 변경 범위(origin/unity/main 대비 Core 폴더 8파일, +85/-7): 모두 FieldLayout 배율·좌표 적용이고 기본 k=1/keep은 항등이다. 전투 거리·아레나·RNG는 불변.
+- FieldLayout.cs(+meta): 신규. 배율 k(1~2)·적 수 모드(keep/area/linear/배수) 정의, 좌표 변환·누적 반올림 적 수 배분.
+- Simulation.FieldBoss.cs: 필드 보스 위치에 배율 적용.
+- Simulation.Holes.cs: ConfigureField 추가, 스폰홀 로드에 profile 전달, 지역 총수는 PlannedCount 사용.
+- Simulation.Regions.cs: 지역 총수 계산에 PlannedCount 반영 한 줄.
+- Simulation.StartMobs.cs: k≠1일 때만 시작 몹 좌표·문지기 위치에 배율.
+- SpawnHoles.cs: 홀 좌표·계획 수에 layout 적용(k=1은 기존 값).
+- StageFlow.cs: 한 줄(필드 배율 연결).
