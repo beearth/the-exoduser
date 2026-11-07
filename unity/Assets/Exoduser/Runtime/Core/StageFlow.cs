@@ -272,6 +272,7 @@ namespace Exoduser.UnityPort.Core
             InArena = false; Arena = null; Boss = null; BossAlive = true; StageCleared = false; LoadPhase = 0; LoadT = 0; LoadFade = 0; CheckT = 0;
             Exits.Clear(); Exits.AddRange(fieldExits);
             float gx = (fieldBossCx + .5f) * T, gy = (fieldGateY + 6 + .5f) * T;
+            if(!sim.FieldLayout.IsOriginal){gx=(float)sim.FieldLayout.Coordinate(4020);gy=(float)sim.FieldLayout.Coordinate(460);}
             p.X = gx; p.Y = gy;
             if (sim.CanMove != null && !sim.CanMove(gx, gy, p.Radius))
             {

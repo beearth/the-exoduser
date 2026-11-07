@@ -41,6 +41,12 @@ namespace Exoduser.UnityPort.Core
         private static double Dist(double x1, double y1, double x2, double y2) { double dx = x2 - x1, dy = y2 - y1; return Math.Sqrt(dx * dx + dy * dy); }   // dst()
 
         public void EnableFieldBosses() { FieldBossesEnabled = true; }
+        public void FieldBossSite(int index,out double x,out double y,out int element)
+        {
+            if(index<0||index>=FieldBossCount)throw new ArgumentOutOfRangeException(nameof(index));
+            x=FieldLayout.Coordinate((FieldBossSites[index][0]+.5)*StartMobTile);
+            y=FieldLayout.Coordinate((FieldBossSites[index][1]+.5)*StartMobTile);element=FieldBossElements[index];
+        }
 
         public static string ElementColor(int el) { return el >= 0 && el < ElementColors.Length ? ElementColors[el] : "#66e5ff"; }
         public static int FieldBossHp(int lv) { return Js.Int((1800 + (lv != 0 ? lv : 1) * 350) * FieldBossHpMul); }   // _fbHp(lv)
@@ -54,7 +60,7 @@ namespace Exoduser.UnityPort.Core
         // _fbMk(tx, ty, el)
         public FieldBossState MakeFieldBoss(int index, int tx, int ty, int el)
         {
-            double x = (tx + .5) * StartMobTile, y = (ty + .5) * StartMobTile;
+            double x = FieldLayout.Coordinate((tx + .5) * StartMobTile), y = FieldLayout.Coordinate((ty + .5) * StartMobTile);
             int hp = FieldBossHp(Player.Level);
             return new FieldBossState { Index = index, X = x, Y = y, HomeX = x, HomeY = y, Hp = hp, MaxHp = hp, Atk = Js.Int((20 + Player.Level * 3) * 1.2), TpX = x, TpY = y, El = el };
         }

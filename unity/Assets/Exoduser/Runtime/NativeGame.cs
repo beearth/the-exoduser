@@ -13,6 +13,7 @@ namespace Exoduser.UnityPort
     {
         public Simulation Simulation {get; private set;}
         public SourceMap Map {get; private set;}
+        FieldLayout fieldLayout=FieldLayout.Original;
         public bool Running {get; private set;}
         public int LoadedChunks {get {return chunks.Count;}}
         public int RenderedEnemyCount {get {return enemies.Count;}}
@@ -108,7 +109,8 @@ namespace Exoduser.UnityPort
             UnityEngine.Rendering.Universal.CameraExtensions.GetUniversalAdditionalCameraData(view).renderPostProcessing=true; // RM-1 VFX V0: HDR core + Bloom
             view.transform.position=new Vector3(40.2f,-74.2f,-10);
             var resource=Resources.Load<TextAsset>("Data/ch1_map");if(resource==null)throw new InvalidOperationException("Original map resource is missing");
-            Map=A2FieldLayout.CreateMap(JsonUtility.FromJson<MapData>(resource.text));
+            fieldLayout=FieldLayout.FromArguments(Environment.GetCommandLineArgs());
+            Map=A2FieldLayout.CreateMap(SourceMap.CreateFieldData(JsonUtility.FromJson<MapData>(resource.text),fieldLayout));
             font=Resources.Load<Font>("Art/fonts/NotoSansKR");
             hud=new NativeHud();skills=new NativeSkills();skills.Changed=RequestCombatSave;stats=new NativeStatPanel();hud.SlotSelected=slot=>{if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected callback slot="+slot+" before menu="+menu+" hp="+Simulation.Player.Hp+" skillsOpen="+skills.Open);if(!menu&&Simulation.Player.Hp>0){SetSkills(true,slot);if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected result skillsOpen="+skills.Open+" menu="+menu);}};
             NativePanelTabBar.Requested+=OnPanelRequested;forge=new NativeForgePanel();levelUp=new NativeLevelUpOverlay();death=new NativeDeathOverlay();death.OnRetry=RetryFromDeath;death.OnLobby=()=>ApplyPauseCommand(PauseMenuCommand.ReturnLobby);death.OnRestart=()=>ApplyPauseCommand(PauseMenuCommand.Restart);stageClear=new NativeStageClearOverlay();bossBar=new NativeBossBar();areaTitle=new NativeAreaTitle();objective=new NativeObjectivePanel();areaTitleAllowed=!Array.Exists(Environment.GetCommandLineArgs(),a=>a.StartsWith("--unity-",StringComparison.Ordinal)&&a!="--unity-world-3d"&&a!="--unity-a2-forest"&&!NativeReviewArgs.IsReviewArgument(a));
@@ -230,6 +232,7 @@ namespace Exoduser.UnityPort
             kiView?.Reset();boltView?.Reset();impacts?.Reset();skillView?.Reset();skillRemaster?.Reset();sound?.Reset();druidCues?.Reset();
             var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;if(settings!=null)config.DifficultyIndex=settings.Options.Get("diff");if(BuildFlavor.Current.DemoMode)config.LevelCap=BuildFlavor.Current.LevelCap;CombatBeginRun(config);
             Simulation=new Simulation(config,SourceStarterFixture.Seed);ConfigureParryFeedback();revive.Reset();Simulation.ReviveTextRaised+=t=>{if(!DeathPresentationActive)revive.Add(t);};Simulation.Config.DemoMode=BuildFlavor.Current.DemoMode;Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.ProjectileBlocked;Simulation.LevelledUp+=OnLevelledUp;ReviewArgsApply();ApplySettingsOptions();
+            Simulation.ConfigureField(fieldLayout,Map.Data.width,Map.Data.height);
             inventory.Reset();CombatRestoreState();skills.SetOpen(false);stats.SetOpen(false);forge.SetOpen(false);levelUp.Hide();levelUpSeen=Simulation.Player.Level;death.Hide();deathShown=false;stageClear.Hide();bossBar.Hide();areaTitle.Hide();areaTitleShown=false;skillInputFence=false;Simulation.ApplyEquipment(inventory.State);CombatRestoreResources();
             Simulation.IsLootOnScreen=l=>WorldPointVisible(l.X,l.Y,0);   // Actual 2D/3D camera viewport; pickup distance rules remain in Core.
             // D01: mkItem drops are real; R picks the highest rarity on screen (web 32936) into the bag. Persistent saves stay unimplemented.

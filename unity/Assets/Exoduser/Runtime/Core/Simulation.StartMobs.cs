@@ -37,7 +37,9 @@ namespace Exoduser.UnityPort.Core
 
             foreach (var s in Ch1StartMediumSpawns)
             {
-                var e = SpawnEnemy((startX + s[0]) * StartMobTile, (startY + s[1]) * StartMobTile, 4, -1, false, 3);   // EL.D
+                float x=FieldLayout.IsOriginal?(startX+s[0])*StartMobTile:Player.X+(float)(s[0]*StartMobTile*FieldLayout.Scale);
+                float y=FieldLayout.IsOriginal?(startY+s[1])*StartMobTile:Player.Y+(float)(s[1]*StartMobTile*FieldLayout.Scale);
+                var e = SpawnEnemy(x, y, 4, -1, false, 3);   // EL.D
                 if (e == null) continue;
                 var w = e.Web ?? SyncToWeb(e);
                 e.Elite = 0; w.elite = 0; w.mods = new List<string>(); w.aura = null; w._firstShot = false;   // elite=0; mods=[]; aura=null; _firstShot=false
@@ -48,6 +50,9 @@ namespace Exoduser.UnityPort.Core
             if (Stage.HasFieldGate)
             {
                 int tx = Stage.FieldGateCx, ty = Stage.FieldGateY + 3;
+                if(!FieldLayout.IsOriginal){float gx=(float)FieldLayout.Coordinate(4020),gy=(float)FieldLayout.Coordinate(340);tx=(int)(gx/StartMobTile);ty=(int)(gy/StartMobTile);
+                    if(ty>0&&ty<MapTilesHigh&&(FloorTile==null||FloorTile(tx,ty)))SpawnGateGuard(si,hell,gx,gy);
+                    return StartEyeMasses+StartGuards+StartEscorts+StartWave;}
                 if (ty > 0 && ty < MapTilesHigh && (FloorTile == null || FloorTile(tx, ty))) SpawnGateGuard(si, hell, (tx + .5f) * StartMobTile, (ty + .5f) * StartMobTile);
             }
             return StartEyeMasses + StartGuards + StartEscorts + StartWave;

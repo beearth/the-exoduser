@@ -77,3 +77,7 @@
 각 단계의 보고는 제작 가이드 §23 `MAP PRODUCTION REPORT`의 MASTER / OUTER MASS / LARGE / MEDIUM / GROUND / PLAYABLE / LANDMARK / CAMERA QA / TECH QA / FILES / GIT / `VISUAL VERDICT: PASS | RETOUCH | FAIL`을 채운다. 네 아레나의 **게임 화면은 제작 전**이며, 이 문서의 수치와 기존 Core 구현만으로 화면 완성을 주장하지 않는다.
 
 2026-10-28 첫 기하 후보: `codex/pc-map-arena-20261028` `2f2e8bc9b`의 `ArenaChannelPlan.Build(BossArenaLayout.Generate(0))`가 1-1 원형 보행 바깥에 붙은 막힘 타일 278개를 고른다. 실제 Core를 링크한 .NET 검사 11/0, 보행 선택 0, 타일 변경 0. 렌더 메시·재질·보스방 연결·Unity 컴파일·Player·1x 판정은 미완료이므로 `VISUAL VERDICT: RETOUCH`이며 통합 HOLD다. 세부 영수증은 같은 브랜치의 `docs/engine/UNITY_RM1_ARENA_CHANNEL_20261028.md`에 있다.
+
+## 2026-11-04 개발용 필드 확대와 아레나 경계
+
+사용자 결정 전 실험용 '--field-scale 1.3|1.5'는 필드만 확대한다. BossArenaLayout 128×108·40px·진입(2580,4140)·보스(2580,2180)·출구(2580,100)는 그대로다. 필드 문지기/복귀는 게이트 양자화에서 파생하지 않고 원본 절대 앵커(4020,340)/(4020,460)×k를 쓴다. ×1.3 문지기(5226,442)·복귀(5226,598), ×1.5 (6030,510)/(6030,690). 복귀 반경40~200 탐색은 기존 그대로다. 필드 게이트·진입 마커 중앙은 (5220,300)/(5220,380), (6020,340)/(6020,460)이며 각 3칸이다. 상세는 UNITY_MAP_BOARD의 2026-11-04 좌표 프로필 절. 카메라34°와 보스 전투 수치 변경 없음.

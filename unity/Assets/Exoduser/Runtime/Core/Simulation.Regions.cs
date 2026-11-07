@@ -36,7 +36,7 @@ namespace Exoduser.UnityPort.Core
             if (si == 0) for (int k = 0; k < RegionFbToRegion.Length; k++) r[RegionFbToRegion[k]].FbIdx = k;
             if (SpawnHoles != null)
                 foreach (var h in SpawnHoles.Holes)
-                    r[(h.Y / StartMobTile < midY ? 0 : 2) + (h.X / StartMobTile < midX ? 0 : 1)].Total += EnemyPools.SpawnHoleCount(h.Size, si);
+                    r[(h.Y / StartMobTile < midY ? 0 : 2) + (h.X / StartMobTile < midX ? 0 : 1)].Total += h.PlannedCount ?? EnemyPools.SpawnHoleCount(h.Size, si);
             Regions = r;
             // the +10 % region = where the guard stands (none: the boss gate coordinates)
             var guard = Stage.GateGuard;

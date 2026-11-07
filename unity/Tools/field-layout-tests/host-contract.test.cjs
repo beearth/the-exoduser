@@ -1,0 +1,10 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+const root=path.resolve(__dirname,'../../Assets/Exoduser/Runtime');
+const host=fs.readFileSync(path.join(root,'NativeGame.cs'),'utf8');
+assert(host.indexOf('Simulation.ConfigureField(')<host.indexOf('Simulation.EnableFieldSpawns()'));
+const remodel=fs.readFileSync(path.join(root,'NativeRemodel3D.cs'),'utf8');
+assert.match(remodel,/Requested = Core.FieldLayout.FromArguments\(Environment.GetCommandLineArgs\(\)\).IsOriginal &&/);
+const qa=fs.readFileSync(path.join(root,'NativeGame.FullRunQa.cs'),'utf8');
+assert.match(qa,/List<FullRunStageMark> stageMarks/,'QA must record exact gate and boss event ticks');
+assert.match(fs.readFileSync(path.join(root,'NativeGame.StageFlow.cs'),'utf8'),/fullRunStageEvent\?\.Invoke\(e\)/);
+console.log('호스트 주입·2D 강제·실측 시점 계약 통과');
