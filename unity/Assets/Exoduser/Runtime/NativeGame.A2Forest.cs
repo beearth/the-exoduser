@@ -148,7 +148,7 @@ namespace Exoduser.UnityPort
             Debug.Log("[A2] R3 스캔 자산 조립 후보. R4 HOLD 인수0·Core/원본맵 변경0·A2 수로/거목 경계 적용 "+timer.ElapsedMilliseconds+"ms");
         }
         // 11-07 1-1 숲 조명(PoE2 1장 실측, I:/EXODUSER-Storage/study/poe2/recipe/RESULT.md): 주광은 어두운 청색, 환경광은 이전의 약 45%(PoE2 0.2~0.35 범위), 얇은 남색 안개.
-        internal static readonly Color A2MoonColor=new Color(.72f,.75f,.84f);
+        internal static readonly Color A2MoonColor=new Color(.74f,.76f,.83f);
         internal const float A2MoonIntensity=2.1f;
         internal static readonly Color A2FogColor=new Color(.075f,.10f,.13f);
         static void A2Ambient()

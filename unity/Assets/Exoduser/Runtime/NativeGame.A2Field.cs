@@ -40,7 +40,7 @@ namespace Exoduser.UnityPort
                 {
                     // 11-07 PoE2 1장 숲: 어두운 청색 주광(#32426d~#798aad 계열). 화면 밝기는 캐릭터 주변 차가운 빛이 맡는다.
                     light.intensity=A2MoonIntensity;light.color=A2MoonColor;light.shadows=LightShadows.Soft;
-                    light.shadowStrength=.55f;light.shadowBias=.035f;light.shadowNormalBias=.12f;light.transform.rotation=Quaternion.Euler(49,-32,0);
+                    light.shadowStrength=.62f;var moonData=light.GetComponent<UniversalAdditionalLightData>();if(moonData==null)moonData=light.gameObject.AddComponent<UniversalAdditionalLightData>();moonData.softShadowQuality=SoftShadowQuality.High;light.shadowBias=.035f;light.shadowNormalBias=.12f;light.transform.rotation=Quaternion.Euler(49,-32,0);
                 }
                 else if(light.name.StartsWith("Pool_",StringComparison.Ordinal))light.enabled=false;
             }
@@ -314,25 +314,35 @@ namespace Exoduser.UnityPort
             }
         }
         // 11-07 PoE2 black_shadowonly: 보이지 않는 수관 판이 바닥에 그림자만 드리워 빛 웅덩이를 만든다. 판은 화면 위 16m, 그림자 전용.
+        // 11-07 RETOUCH: 큰 노이즈 판 대신 잎 덩어리 카드 여러 장(4~11m, 높이 13~19m, 회전 무작위). 크기가 섞인 얼룩, 그늘 덮개 목표 25~40%.
+        // 경계는 셰이더의 그림자맵 텍셀 디더 + 달빛 High 소프트 섀도로 넓은 반그림자. 검수용 --unity-a2-no-canopy는 덮개 측정 대조용으로 끈다.
         void A2CanopyShadows()
         {
+            if(System.Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-a2-no-canopy")>=0){Debug.Log("[A2 수관 그림자] 검수용 끔");return;}
             var shader=Shader.Find("EXODUSER/A2CanopyShadow");if(shader==null){Debug.LogError("[A2 수관 그림자] 셰이더 누락");return;}
             var root=new GameObject("A2 그림자 전용 수관");root.transform.SetParent(a2Root.transform,false);
-            var mesh=R3Track(new Mesh{name="수관 그림자 판"});mesh.vertices=new[]{new Vector3(-.5f,0,-.5f),new Vector3(.5f,0,-.5f),new Vector3(-.5f,0,.5f),new Vector3(.5f,0,.5f)};
+            var mesh=R3Track(new Mesh{name="수관 잎 덩어리 카드"});mesh.vertices=new[]{new Vector3(-.5f,0,-.5f),new Vector3(.5f,0,-.5f),new Vector3(-.5f,0,.5f),new Vector3(.5f,0,.5f)};
+            mesh.uv=new[]{new Vector2(0,0),new Vector2(1,0),new Vector2(0,1),new Vector2(1,1)};
             mesh.normals=new[]{Vector3.up,Vector3.up,Vector3.up,Vector3.up};mesh.triangles=new[]{0,2,1,1,2,3};mesh.RecalculateBounds();
-            int index=0;
-            for(int gz=0;gz<4;gz++)for(int gx=0;gx<4;gx++)
+            var materials=new Material[4];
+            for(int m=0;m<materials.Length;m++){materials[m]=R3Track(new Material(shader));materials[m].SetFloat("_Leaf",.75f+.2f*m);materials[m].SetFloat("_Holes",.28f+.03f*m);materials[m].SetFloat("_Soft",.22f);materials[m].SetFloat("_Seed",m*31.7f);}
+            var rng=new System.Random(1107);int count=0;
+            for(int i=0;i<256;i++)
             {
-                // 달빛(49°,-32°)이 16m 위 판의 그림자를 x −7.5m·z +12m로 민다. 그만큼 반대로 두어 그림자가 걷는 면 전체에 떨어지게 한다.
-                float cx=gx*24+1.5f,cz=-gz*24-8;
-                var go=new GameObject("수관 그림자 "+index);go.transform.SetParent(root.transform,false);
-                go.transform.position=new Vector3(cx,a2Field.Height(Mathf.Clamp(cx,1,79),Mathf.Clamp(cz,-79,-1))+16,cz);go.transform.localScale=new Vector3(26,1,26);
+                float size=4+7*(float)Math.Pow(rng.NextDouble(),1.6);float height=13+6*(float)rng.NextDouble();
+                // 그림자가 떨어질 바닥 점을 고르고, 달빛 방향(49°,-32°)으로 높이만큼 거슬러 카드를 둔다.
+                // 지터 격자(16×16칸, 칸 5.75m): 무작위 배치는 장면마다 덮개가 17~58%로 들쭉날쭉했다.
+                if(rng.NextDouble()>A2CanopyKeep)continue;int cell=i;float gx=-6+(cell%16+(float)rng.NextDouble())*5.75f,gz=6-(cell/16+(float)rng.NextDouble())*5.75f;
+                float k=height/16f;float cx=gx+7.5f*k,cz=gz-12f*k;
+                var go=new GameObject("수관 잎 덩어리 "+i);go.transform.SetParent(root.transform,false);
+                go.transform.SetPositionAndRotation(new Vector3(cx,a2Field.Height(Mathf.Clamp(gx,1,79),Mathf.Clamp(gz,-79,-1))+height,cz),Quaternion.Euler(0,(float)rng.NextDouble()*360,0));
+                go.transform.localScale=new Vector3(size,1,size*(.7f+.6f*(float)rng.NextDouble()));
                 go.AddComponent<MeshFilter>().sharedMesh=mesh;var r=go.AddComponent<MeshRenderer>();
-                var mat=R3Track(new Material(shader));mat.SetFloat("_Scale",5.5f+.8f*(index%3));mat.SetFloat("_Open",.6f);mat.SetFloat("_Seed",index*17.3f);
-                r.sharedMaterial=mat;r.shadowCastingMode=ShadowCastingMode.ShadowsOnly;r.receiveShadows=false;index++;
+                r.sharedMaterial=materials[i%materials.Length];r.shadowCastingMode=ShadowCastingMode.ShadowsOnly;r.receiveShadows=false;count++;
             }
-            Debug.Log("[A2 수관 그림자] 판 "+index+"장, 높이 16m, 덩어리 5.5~7.1m, 빈틈 .6");
+            Debug.Log("[A2 수관 그림자] 잎 덩어리 카드 "+count+"장, 4~11m, 높이 13~19m");
         }
+        const float A2CanopyKeep=.84f;   // 256칸 중 약 215칸에 카드(그늘 덮개 목표 25~40%)
         // 11-07 PoE2 HeightGradientDarkenWS: 고목 윗부분을 지면 위 4.5m부터 3m 구간 .75배까지 어둡게 한다. URP Lit 불투명 재질만 바꾼다.
         void A2TreeHeightDarken()
         {

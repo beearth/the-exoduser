@@ -1,8 +1,10 @@
 Shader "EXODUSER/A2CanopyShadow"
 {
  // 11-07 PoE2 black_shadowonly: 화면 밖 수관이 보이지 않은 채 바닥에 그림자만 드리운다(빛 웅덩이).
- // 렌더러는 ShadowsOnly로만 쓴다. 잎 덩어리는 월드 노이즈를 잘라 만든다(텍스처 없음, 잔점 없음: 덩어리 2~5m).
- Properties { _Scale("덩어리 크기 m",Float)=4.2 _Open("빈틈 비율",Range(0,1))=.42 _Seed("씨앗",Float)=0 }
+ // 렌더러는 ShadowsOnly로만 쓴다. 카드 한 장 = 잎 덩어리 하나: 가장자리를 노이즈로 흔든 둥근 덩어리 × 잎 사이 구멍(약 .9m·.35m).
+ // 경계는 그림자맵 텍셀 단위 4×4 Bayer 디더로 부분 투과시켜, 소프트 섀도(High 7×7 텐트)가 이를 평균해 넓은 반그림자로 만든다.
+ // 디더 주기(그림자맵 4텍셀)는 텐트 폭보다 작아서 화면에는 점이 남지 않는다.
+ Properties { _Leaf("잎 구멍 크기 m",Float)=.9 _Holes("구멍 비율",Range(0,1))=.38 _Soft("반그림자 폭",Range(.01,.5))=.22 _Seed("씨앗",Float)=0 }
  SubShader
  {
   Tags {"RenderPipeline"="UniversalPipeline" "RenderType"="TransparentCutout" "Queue"="AlphaTest"}
@@ -18,11 +20,11 @@ Shader "EXODUSER/A2CanopyShadow"
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Shadows.hlsl"
    CBUFFER_START(UnityPerMaterial)
-    float _Scale,_Open,_Seed;
+    float _Leaf,_Holes,_Soft,_Seed;
    CBUFFER_END
    float3 _LightDirection;float3 _LightPosition;
-   struct A {float4 positionOS:POSITION;float3 normalOS:NORMAL;};
-   struct V {float4 positionCS:SV_POSITION;float3 world:TEXCOORD0;};
+   struct A {float4 positionOS:POSITION;float3 normalOS:NORMAL;float2 uv:TEXCOORD0;};
+   struct V {float4 positionCS:SV_POSITION;float3 world:TEXCOORD0;float2 uv:TEXCOORD1;};
    float CanopyHash(float2 p){p=frac(p*float2(123.34,456.21));p+=dot(p,p+45.32);return frac(p.x*p.y);}
    float CanopyNoise(float2 p){float2 c=floor(p),f=frac(p);f=f*f*(3-2*f);
     return lerp(lerp(CanopyHash(c),CanopyHash(c+float2(1,0)),f.x),lerp(CanopyHash(c+float2(0,1)),CanopyHash(c+float2(1,1)),f.x),f.y);}
@@ -40,15 +42,24 @@ Shader "EXODUSER/A2CanopyShadow"
     #else
      o.positionCS.z=max(o.positionCS.z,UNITY_NEAR_CLIP_VALUE);
     #endif
-    o.world=positionWS;return o;
+    o.world=positionWS;o.uv=v.uv;return o;
+   }
+   static const float CanopyBayer[16]={0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5};
+   float Bayer4(float2 p)
+   {
+    uint2 q=uint2(p)&3u;uint i=q.x+q.y*4u;
+    return (CanopyBayer[i]+.5)/16;
    }
    half4 frag(V i):SV_Target
    {
-    float2 p=i.world.xz/_Scale+_Seed;
-    // 도메인 왜곡으로 가지 모양 가장자리를 만든다. 큰 수관 덩어리 + 잎 무리 2옥타브만(작은 얼룩은 1x에서 잡음이 된다).
-    p+=float2(CanopyNoise(p*.45+1.3),CanopyNoise(p*.45+9.4))*1.6-.8;
-    float n=CanopyNoise(p)*.7+CanopyNoise(p*2.2+7.1)*.3;
-    clip(n-_Open);
+    float2 w=i.world.xz+_Seed;
+    // 덩어리 실루엣: 카드 중심에서의 거리를 큰 노이즈로 흔든다(가지 쪽으로 뻗은 불규칙 모양).
+    float2 c=i.uv*2-1;float r=length(c)+(CanopyNoise(w/2.6)-.5)*.75+(CanopyNoise(w/1.1+4.2)-.5)*.3;
+    float clump=1-smoothstep(.75-_Soft,.75+_Soft,r);
+    // 잎 사이 구멍: 크기가 섞인 2옥타브(약 .9m·.35m). 구멍 경계도 같은 폭으로 부드럽게.
+    float leaf=CanopyNoise(w/_Leaf)*.65+CanopyNoise(w/(_Leaf*.38)+9.1)*.35;
+    float open=smoothstep(_Holes-_Soft*.6,_Holes+_Soft*.6,leaf);
+    clip(clump*open-Bayer4(i.positionCS.xy));
     return 0;
    }
    ENDHLSL
