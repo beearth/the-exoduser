@@ -101,10 +101,12 @@ namespace Exoduser.UnityPort
                     watch.Stop();System.Array.Sort(times);renderCost.elapsedSeconds=(float)watch.Elapsed.TotalSeconds;
                     renderCost.framesPerSecond=renderCost.frames/Mathf.Max(.0001f,renderCost.elapsedSeconds);renderCost.p95FrameMs=times[Mathf.CeilToInt(times.Length*.95f)-1];
                     File.WriteAllText(Path.Combine(folder,names[i]+"-렌더부하.json"),JsonUtility.ToJson(renderCost,true));
+                    {var ds=new A2DebrisShot{medium=A2DebrisCards,small=A2DebrisSmall,patches=A2DebrisPatches,renderers=A2DebrisRenderers};A2DebrisVisibleStats(out ds.visibleRenderers,out ds.visibleTriangles);File.WriteAllText(Path.Combine(folder,names[i]+"-바닥잔해.json"),JsonUtility.ToJson(ds,true));}
                     yield return KeyshotSave(folder,names[i],receipt);
                 }
             }
             {string video=Argument("-field-video");if(!string.IsNullOrEmpty(video))yield return A2FieldVideo(video);}
+            {string crowd=Argument("-field-crowd");if(!string.IsNullOrEmpty(crowd))yield return A2FieldCrowd(crowd);}
             receipt.unityErrors=keyshotErrors;
             receipt.passed=keyshotErrors==0&&receipt.frames.Count==22&&receipt.frames.TrueForAll(f=>f.remodel&&f.actualScreen&&f.screenHeight==1080&&(f.screenWidth==1920||f.screenWidth==3840)&&f.luminance>.01f);
             File.WriteAllText(Path.Combine(output,"전체필드-검수.json"),JsonUtility.ToJson(receipt,true));
@@ -137,6 +139,58 @@ namespace Exoduser.UnityPort
                 }
             }
             finally{Time.captureFramerate=previous;}
+        }
+        // 11-07 맵 1단계 성능 검수: 적 N마리(기본 100)를 영웅 주변 3~12m 걷는 칸으로 옮겨 화면에 모은 뒤, 바닥 잔해 층 켬/끔 각 300프레임 시간.
+        // 격리 QA 전용(AI 꺼짐 = 리그 렌더 비용만, 판정·Core 규칙 무변경). -field-crowd <폴더> [-field-crowd-count N]. 결과 <폴더>/군중-프레임.json
+        [System.Serializable] sealed class A2DebrisShot { public int visibleRenderers,medium,small,patches,renderers;public long visibleTriangles; }
+        [System.Serializable] sealed class A2CrowdRun { public string label;public int frames;public float fps,p50Ms,p95Ms,p99Ms; }
+        [System.Serializable] sealed class A2CrowdReport { public string scope="격리 QA 정지 군중(AI 꺼짐, 적 리그 렌더 포함). 실제 전투 AI·스킬 비용은 별도";public int width,height,enemiesOnScreen,debrisVisibleRenderers;public long debrisVisibleTriangles;public System.Collections.Generic.List<A2CrowdRun> runs=new System.Collections.Generic.List<A2CrowdRun>(); }
+        IEnumerator A2FieldCrowd(string folder)
+        {
+            Directory.CreateDirectory(folder);
+            Screen.SetResolution(1920,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.5f);
+#if UNITY_STANDALONE_WIN
+            if(Screen.width!=1920||Screen.height!=1080)FieldCaptureResize(1920,1080);
+#endif
+            yield return new WaitForSecondsRealtime(.5f);
+            int want=100;int.TryParse(Argument("-field-crowd-count"),out int parsed);if(parsed>0)want=parsed;
+            var center=new Vector2(4000,3500);if(!Map.CanMove(center.x,center.y,15))center=new Vector2(4000,5000);
+            Simulation.Player.X=center.x;Simulation.Player.Y=center.y;lastX=center.x;lastY=center.y;
+            int placed=0;var rng=new System.Random(7);
+            foreach(var e in Simulation.Enemies)
+            {
+                if(placed>=want)break;if(e==null||!e.Alive||e.IsBoss)continue;
+                for(int tries=0;tries<40;tries++)
+                {
+                    double ang=rng.NextDouble()*System.Math.PI*2,r=300+rng.NextDouble()*900;float x=center.x+(float)(System.Math.Cos(ang)*r),y=center.y+(float)(System.Math.Sin(ang)*r*.8);
+                    if(!Map.CanMove(x,y,15))continue;
+                    e.X=x;e.Y=y;e.Elite=0;if(e.Web!=null){e.Web.x=e.X;e.Web.y=e.Y;}placed++;break;
+                }
+            }
+            // 살아 있는 일반 적이 모자라면 같은 종류를 SpawnEnemy로 채운다(FieldCompare QA와 같은 방식, 보상 집계 끔).
+            var types=new System.Collections.Generic.List<int>();foreach(var e in Simulation.Enemies)if(e!=null&&e.Alive&&!e.IsBoss&&!types.Contains(e.Etype))types.Add(e.Etype);if(types.Count==0)types.Add(0);
+            for(int guard=0;placed<want&&guard<want*40;guard++)
+            {
+                double ang=rng.NextDouble()*System.Math.PI*2,r=300+rng.NextDouble()*900;float x=center.x+(float)(System.Math.Cos(ang)*r),y=center.y+(float)(System.Math.Sin(ang)*r*.8);
+                if(!Map.CanMove(x,y,15))continue;
+                var e=Simulation.SpawnEnemy(x,y,types[placed%types.Count],null,false);if(e==null)continue;
+                e.X=x;e.Y=y;e.Elite=0;if(e.Web!=null){e.Web.x=e.X;e.Web.y=e.Y;e.Web.elite=0;e.Web.mods.Clear();}placed++;
+            }
+            Simulation.Player.Iframes=1e9f;
+            for(int f=0;f<60;f++){UpdateViews();yield return null;}
+            var report=new A2CrowdReport{width=Screen.width,height=Screen.height,enemiesOnScreen=placed};
+            A2DebrisVisibleStats(out report.debrisVisibleRenderers,out report.debrisVisibleTriangles);
+            foreach(bool on in new[]{true,false,true,false})
+            {
+                if(A2DebrisRoot!=null)A2DebrisRoot.SetActive(on);
+                for(int f=0;f<30;f++){UpdateViews();yield return null;}
+                var times=new float[300];for(int f=0;f<times.Length;f++){UpdateViews();yield return null;times[f]=Time.unscaledDeltaTime*1000;}
+                System.Array.Sort(times);float sum=0;foreach(var t in times)sum+=t;
+                report.runs.Add(new A2CrowdRun{label=on?"잔해 층 켬":"잔해 층 끔",frames=times.Length,fps=times.Length*1000/sum,p50Ms=times[150],p95Ms=times[284],p99Ms=times[296]});
+            }
+            if(A2DebrisRoot!=null)A2DebrisRoot.SetActive(true);
+            yield return KeyshotSave(folder,"군중-"+placed,new KeyshotReceipt());
+            File.WriteAllText(Path.Combine(folder,"군중-프레임.json"),JsonUtility.ToJson(report,true));
         }
 #if UNITY_STANDALONE_WIN
         delegate bool FieldWindowCallback(System.IntPtr window,System.IntPtr state);

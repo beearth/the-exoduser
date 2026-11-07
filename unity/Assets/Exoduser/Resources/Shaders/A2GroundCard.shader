@@ -30,9 +30,10 @@ Shader "EXODUSER/A2GroundCard"
    CBUFFER_START(UnityPerMaterial)
    float4 _BaseMap_ST;half _Clip,_Cutoff,_Smooth,_Cavity,_Alpha,_Src,_Dst,_ZW;
    CBUFFER_END
-   struct A {float4 positionOS:POSITION;float3 normalOS:NORMAL;float4 tangentOS:TANGENT;float2 uv:TEXCOORD0;float4 color:COLOR;};
+   struct A {float4 positionOS:POSITION;float4 tangentOS:TANGENT;float2 uv:TEXCOORD0;float4 color:COLOR;};
    struct V {float4 positionCS:SV_POSITION;float3 world:TEXCOORD0;float3 normal:TEXCOORD1;float4 tangent:TEXCOORD2;float2 uv:TEXCOORD3;half4 color:TEXCOORD4;half fog:TEXCOORD5;};
-   V vert(A v){V o;o.world=TransformObjectToWorld(v.positionOS.xyz);o.positionCS=TransformWorldToHClip(o.world);o.normal=TransformObjectToWorldNormal(v.normalOS);o.tangent=float4(TransformObjectToWorldDir(v.tangentOS.xyz),v.tangentOS.w);o.uv=v.uv;o.color=v.color;o.fog=ComputeFogFactor(o.positionCS.z);return o;}
+   // 바닥에 누운 카드: 메시에 노멀을 싣지 않고 위(0,1,0)로 쓴다(정점 크기 절약)
+   V vert(A v){V o;o.world=TransformObjectToWorld(v.positionOS.xyz);o.positionCS=TransformWorldToHClip(o.world);o.normal=float3(0,1,0);o.tangent=float4(TransformObjectToWorldDir(v.tangentOS.xyz),v.tangentOS.w);o.uv=v.uv;o.color=v.color;o.fog=ComputeFogFactor(o.positionCS.z);return o;}
    half4 frag(V i,bool front:SV_IsFrontFace):SV_Target
    {
     half4 c=SAMPLE_TEXTURE2D(_BaseMap,sampler_BaseMap,i.uv);

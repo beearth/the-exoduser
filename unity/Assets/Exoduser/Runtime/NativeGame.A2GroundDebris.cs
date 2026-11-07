@@ -5,28 +5,40 @@ using UnityEngine.Rendering;
 
 namespace Exoduser.UnityPort
 {
-    // 11-07 1-1 바닥 잔해 층(스프라이트 시트, CTO 판정 SA 채택). 표현 전용: Core·보행·충돌 무변경.
-    // 층(아래→위): 바닥 재질 → 이끼·젖은 흙 패치 데칼(1.2~2.2m, 알파 블렌드, +.3cm) → 접지 그림자(곱하기, +.6cm) → 잔가지·솔잎·잔뿌리·낙엽 카드(.5~1.2m, 알파 테스트, +1cm).
-    // 아틀라스: Resources/Art/map/a2/cards/debris_*(우리 Blender 절차 메시 26종을 위에서 구움, 4열×8행 셀 512×256), patch_*(우리 바닥 텍스처에서 자른 2×2).
-    // 밀도: 걷는 길 중앙 적게(약 .17장/m²), 가장자리·바깥 숲·늪 둘레 많게(1.5~1.8), 전투 공터는 더 비움, 6m 노이즈로 들쭉날쭉. 물·다리·쓰러진 고목 위는 비움.
-    // 드로우콜: 26m 청크(4×4) × 재질 3. 각 청크는 한 메시(UInt16)로 합쳐 둔다.
+    // 11-07 1-1 바닥 잔해 층(스프라이트 시트). 표현 전용: Core·보행·충돌 무변경.
+    // 고밀도판(PoE2 숲 타일 셀 실측 기준, study/poe2/recipe/tgm_density.txt): 길 중앙은 거의 비우고(100m²당 ~5), 길 가장자리·바깥 덤불 지대는 m²당 30~60조각.
+    // 크기 3종: 큰 패치 1.2~2.2m(알파 블렌드) / 중간 카드 .3~.8m(잔가지·잔뿌리·낙엽 무리, 접지 그림자 있음) / 작은 조각 .1~.2m(낙엽·솔잎, 저대비 — 1x에서 점이 되지 않게 바닥 색 쪽으로).
+    // 층(아래→위): 패치(+.3cm) → 접지 그림자(+.6cm, 곱하기) → 카드(+1cm, fwidth 선명화 알파 블렌드).
+    // 13m 청크마다 한 메시(정적으로 합침) + LOD 2단(가까이 전체, 멀리 작은 조각 뺌). 아틀라스는 우리 Blender 절차 메시(debris_*), 패치는 우리 바닥에서 자름(patch_*).
     public sealed partial class NativeGame
     {
-        internal static int A2DebrisCards, A2DebrisPatches, A2DebrisRenderers;
-        // 카드 명도: 아틀라스 끝 회갈(.60,.50,.38)이 1-1 어두운 빛에서 흰 점으로 뜨지 않게 .6배. 밀도 배수 1.4(첫 시도 1.0은 거의 안 보였고 1.8은 잡음 지수 .03을 넘었다).
-        const float CardBrightness=.6f,DebrisDensityScale=1.4f;
-        const float DebrisMinX=-12,DebrisMaxX=92,DebrisMinZ=-92,DebrisMaxZ=12,DebrisChunk=26;
-        // 셀 번호: 0~9 잔가지, 10~14 솔잎, 15~19 잔뿌리, 20~25 낙엽
-        static int DebrisCell(System.Random r,bool walk)
-        {
-            double k=r.NextDouble();
-            if(walk){if(k<.6)return r.Next(0,10);return r.Next(20,26);}   // 걷는 길에는 솔잎 무더기(잔점이 되기 쉬움)를 두지 않는다
-            if(k<.35)return r.Next(0,10);if(k<.65)return r.Next(10,15);if(k<.80)return r.Next(15,20);return r.Next(20,26);
-        }
+        internal static int A2DebrisCards, A2DebrisSmall, A2DebrisPatches, A2DebrisRenderers;internal static GameObject A2DebrisRoot;
+        const float DebrisMinX=-12,DebrisMaxX=92,DebrisMinZ=-92,DebrisMaxZ=12,DebrisChunkSize=13;
+        const float CardBrightness=.5f,SmallBrightness=.45f,SmallAlpha=.75f;   // 고밀도에서 1x 잡음을 누르려고 중간 .6→.5, 작은 .5→.45
+        // 셀 번호: 0~9 잔가지, 10~14 솔잎 무더기, 15~19 잔뿌리, 20~25 낙엽
+        static int DebrisMediumCell(System.Random r,bool walk){double k=r.NextDouble();if(walk)return k<.6?r.Next(0,10):r.Next(20,26);return k<.45?r.Next(0,10):k<.65?r.Next(15,20):r.Next(20,26);}
+        static int DebrisSmallCell(System.Random r){return r.NextDouble()<.6?r.Next(20,26):r.Next(10,15);}
         sealed class DebrisChunkMesh
         {
-            public readonly List<Vector3> v=new List<Vector3>();public readonly List<Vector2> uv=new List<Vector2>();public readonly List<Vector3> n=new List<Vector3>();
-            public readonly List<Vector4> t=new List<Vector4>();public readonly List<Color> c=new List<Color>();public readonly List<int> i=new List<int>();
+            public readonly List<Vector3> v=new List<Vector3>();public readonly List<Vector2> uv=new List<Vector2>();
+            public readonly List<Vector4> t=new List<Vector4>();public readonly List<Color32> c=new List<Color32>();public readonly List<int> i=new List<int>();
+        }
+        sealed class DebrisChunk { public readonly DebrisChunkMesh patch=new DebrisChunkMesh(),ao=new DebrisChunkMesh(),medium=new DebrisChunkMesh(),small=new DebrisChunkMesh(); }
+        // m²당 개수: (중간, 작은, 패치)
+        Vector3 DebrisDensity(float x,float z,out bool walk)
+        {
+            walk=false;if(a2Field.Water(x,z))return Vector3.zero;
+            float d=a2Field.Distance(x,z);float wobble=Mathf.Lerp(.55f,1.35f,Mathf.PerlinNoise(x/6f+31.7f,z/6f+7.3f));
+            if(d>=0)
+            {
+                walk=true;float edge=1-Mathf.SmoothStep(0,1,Mathf.Clamp01(d/3f));       // 경계에서 3m 안쪽까지 가장자리 띠
+                float clear=.3f+.7f*Mathf.Clamp01(a2Field.GroundCover(x,z));
+                return new Vector3(Mathf.Lerp(.01f,4f,edge),Mathf.Lerp(.04f,24f,edge),Mathf.Lerp(0,.25f,edge))*clear*wobble;
+            }
+            float away=-d;
+            if(away<6)return new Vector3(7,50,.5f)*wobble;                              // 늪 둘레·외곽 띠
+            if(away<15)return new Vector3(4,24,.35f)*wobble;
+            return new Vector3(2,6,.15f)*wobble;                                         // 화면에 거의 안 들어오는 먼 바깥
         }
         void A2GroundDebris()
         {
@@ -40,57 +52,57 @@ namespace Exoduser.UnityPort
             cardMat.SetFloat("_Clip",1);cardMat.SetFloat("_Src",(float)BlendMode.SrcAlpha);cardMat.SetFloat("_Dst",(float)BlendMode.OneMinusSrcAlpha);cardMat.SetFloat("_ZW",0);cardMat.renderQueue=2450;
             var patchMat=R3Track(new Material(cardShader){name="A2 바닥 패치 데칼"});patchMat.SetTexture("_BaseMap",pcol);patchMat.SetTexture("_BumpMap",pnrm);patchMat.SetTexture("_HeightMap",Texture2D.whiteTexture);
             patchMat.SetFloat("_Clip",0);patchMat.SetFloat("_Src",(float)BlendMode.SrcAlpha);patchMat.SetFloat("_Dst",(float)BlendMode.OneMinusSrcAlpha);patchMat.SetFloat("_ZW",0);patchMat.SetFloat("_Cavity",0);patchMat.SetFloat("_Smooth",.24f);patchMat.renderQueue=2420;
-            var aoMat=R3Track(new Material(aoShader){name="A2 바닥 잔해 접지 그림자"});aoMat.SetTexture("_BaseMap",col);aoMat.SetFloat("_Strength",.55f);aoMat.renderQueue=2440;
-            int nx=Mathf.CeilToInt((DebrisMaxX-DebrisMinX)/DebrisChunk),nz=Mathf.CeilToInt((DebrisMaxZ-DebrisMinZ)/DebrisChunk);
-            var cards=new DebrisChunkMesh[nx*nz];var aos=new DebrisChunkMesh[nx*nz];var patches=new DebrisChunkMesh[nx*nz];
-            for(int k=0;k<cards.Length;k++){cards[k]=new DebrisChunkMesh();aos[k]=new DebrisChunkMesh();patches[k]=new DebrisChunkMesh();}
-            var rng=new System.Random(1107);int cardCount=0,patchCount=0;
+            var aoMat=R3Track(new Material(aoShader){name="A2 바닥 잔해 접지 그림자"});aoMat.SetTexture("_BaseMap",col);aoMat.SetFloat("_Strength",.4f);aoMat.renderQueue=2440;
+            int nx=Mathf.CeilToInt((DebrisMaxX-DebrisMinX)/DebrisChunkSize),nz=Mathf.CeilToInt((DebrisMaxZ-DebrisMinZ)/DebrisChunkSize);
+            var chunks=new DebrisChunk[nx*nz];for(int k=0;k<chunks.Length;k++)chunks[k]=new DebrisChunk();
+            var rng=new System.Random(1107);int medium=0,small=0,patches=0;
             for(float z=DebrisMinZ;z<DebrisMaxZ;z+=1)for(float x=DebrisMinX;x<DebrisMaxX;x+=1)
             {
-                float d=DebrisDensity(x+.5f,z+.5f,out bool walk);if(d<=0)continue;
-                int count=(int)d+(rng.NextDouble()<d-(int)d?1:0);
-                for(int q=0;q<count;q++)
+                var d=DebrisDensity(x+.5f,z+.5f,out bool walk);if(d.x+d.y+d.z<=0)continue;
+                int nm=Poissonish(rng,d.x),ns=Poissonish(rng,d.y),np=Poissonish(rng,d.z);
+                for(int q=0;q<nm;q++)
                 {
                     float px=x+(float)rng.NextDouble(),pz=z+(float)rng.NextDouble();if(!DebrisFree(px,pz))continue;
-                    int cell=DebrisCell(rng,walk);float len=cell<10?Mathf.Lerp(.5f,1.2f,(float)rng.NextDouble()):cell<15?Mathf.Lerp(.6f,.9f,(float)rng.NextDouble()):cell<20?Mathf.Lerp(.6f,1.1f,(float)rng.NextDouble()):Mathf.Lerp(.5f,.8f,(float)rng.NextDouble());
-                    float yaw=(float)(rng.NextDouble()*Math.PI*2);float tint=CardBrightness*Mathf.Lerp(.85f,1.08f,(float)rng.NextDouble());
-                    var rect=new Rect((cell%4)*.25f,1-(cell/4+1)*.125f,.25f,.125f);int chunk=DebrisChunkIndex(px,pz,nx,nz);
-                    // 청색 달빛 아래 회갈 카드가 푸른 뼛빛으로 뜨지 않게 따뜻한 곱(1,.9,.78)
-                    DebrisQuad(cards[chunk],px,pz,len,len*.5f,yaw,.01f,rect,new Color(tint,tint*.9f,tint*.78f,1));
-                    DebrisQuad(aos[chunk],px+.03f,pz-.03f,len*1.2f,len*.62f,yaw,.006f,rect,Color.white);cardCount++;
+                    int cell=DebrisMediumCell(rng,walk);float len=Mathf.Lerp(.3f,.8f,(float)rng.NextDouble());if(cell<10||(cell>=15&&cell<20))len*=1.4f;   // 잔가지·잔뿌리 카드는 2:1이라 길게
+                    float yaw=(float)(rng.NextDouble()*Math.PI*2),tint=CardBrightness*Mathf.Lerp(.85f,1.08f,(float)rng.NextDouble());var rect=DebrisRect(cell);var ch=chunks[DebrisChunkIndex(px,pz,nx,nz)];
+                    DebrisQuad(ch.medium,px,pz,len,len*.5f,yaw,.01f,rect,new Color(tint,tint*.9f,tint*.78f,1),true);
+                    DebrisQuad(ch.ao,px+.03f,pz-.03f,len*1.2f,len*.62f,yaw,.006f,rect,Color.white,true);medium++;
                 }
-                // 패치: 3m 격자 기준 확률(밀도 비례), 지형을 따르게 3×3 정점
-                if(((int)(x-DebrisMinX))%3==0&&((int)(z-DebrisMinZ))%3==0&&rng.NextDouble()<Mathf.Clamp01(d*.22f))
+                for(int q=0;q<ns;q++)
                 {
-                    float px=x+1.5f,pz=z+1.5f;if(!DebrisFree(px,pz))continue;
+                    float px=x+(float)rng.NextDouble(),pz=z+(float)rng.NextDouble();if(!DebrisFree(px,pz))continue;
+                    int cell=DebrisSmallCell(rng);float len=Mathf.Lerp(.2f,.4f,(float)rng.NextDouble());   // 카드 .2~.4m = 조각 하나 .1~.2m
+                    float yaw=(float)(rng.NextDouble()*Math.PI*2),tint=SmallBrightness*Mathf.Lerp(.9f,1.05f,(float)rng.NextDouble());
+                    DebrisQuad(chunks[DebrisChunkIndex(px,pz,nx,nz)].small,px,pz,len,len*.5f,yaw,.008f,DebrisRect(cell),new Color(tint,tint*.88f,tint*.74f,SmallAlpha),false);small++;
+                }
+                for(int q=0;q<np;q++)
+                {
+                    float px=x+(float)rng.NextDouble(),pz=z+(float)rng.NextDouble();if(!DebrisFree(px,pz))continue;
                     int kind=walk?(rng.NextDouble()<.55?1:2):(rng.NextDouble()<.6?0:3);float size=Mathf.Lerp(1.2f,2.2f,(float)rng.NextDouble());
-                    var rect=new Rect((kind%2)*.5f,kind<2?.5f:0f,.5f,.5f);
-                    DebrisPatch(patches[DebrisChunkIndex(px,pz,nx,nz)],px,pz,size,size*Mathf.Lerp(.75f,1.25f,(float)rng.NextDouble()),(float)(rng.NextDouble()*Math.PI*2),rect);patchCount++;
+                    DebrisPatch(chunks[DebrisChunkIndex(px,pz,nx,nz)].patch,px,pz,size,size*Mathf.Lerp(.75f,1.25f,(float)rng.NextDouble()),(float)(rng.NextDouble()*Math.PI*2),new Rect((kind%2)*.5f,kind<2?.5f:0f,.5f,.5f));patches++;
                 }
             }
-            var root=new GameObject("A2 바닥 잔해 층");root.transform.SetParent(a2Root.transform,false);int renderers=0;
-            for(int k=0;k<cards.Length;k++)
+            var root=new GameObject("A2 바닥 잔해 층");root.transform.SetParent(a2Root.transform,false);A2DebrisRoot=root;int renderers=0;
+            for(int k=0;k<chunks.Length;k++)
             {
-                renderers+=DebrisRenderer(root,"패치 "+k,patches[k],patchMat);
-                renderers+=DebrisRenderer(root,"접지 그림자 "+k,aos[k],aoMat);
-                renderers+=DebrisRenderer(root,"잔해 카드 "+k,cards[k],cardMat);
+                var ch=chunks[k];if(ch.medium.v.Count+ch.small.v.Count+ch.patch.v.Count==0)continue;
+                var holder=new GameObject("잔해 청크 "+k);holder.transform.SetParent(root.transform,false);
+                var near=new List<Renderer>();var far=new List<Renderer>();
+                var p=DebrisRenderer(holder,"패치",ch.patch,patchMat);if(p!=null){near.Add(p);far.Add(p);}
+                var a=DebrisRenderer(holder,"접지 그림자",ch.ao,aoMat);if(a!=null){near.Add(a);far.Add(a);}
+                // LOD0 = 중간+작은 한 메시, LOD1 = 중간만(작은 조각은 먼 곳에서 1px 남짓이라 뺀다)
+                var all=new DebrisChunkMesh();DebrisAppend(all,ch.medium);DebrisAppend(all,ch.small);
+                var l0=DebrisRenderer(holder,"카드 LOD0",all,cardMat);if(l0!=null)near.Add(l0);
+                var l1=DebrisRenderer(holder,"카드 LOD1",ch.medium,cardMat);if(l1!=null)far.Add(l1);
+                var group=holder.AddComponent<LODGroup>();group.SetLODs(new[]{new LOD(.30f,near.ToArray()),new LOD(.015f,far.ToArray())});group.RecalculateBounds();
+                renderers+=near.Count+(l1!=null?1:0);
             }
-            A2DebrisCards=cardCount;A2DebrisPatches=patchCount;A2DebrisRenderers=renderers;
-            Debug.Log("[A2 바닥 잔해] 카드 "+cardCount+" 패치 "+patchCount+" 렌더러(드로우콜) "+renderers+" 조립 "+timer.ElapsedMilliseconds+"ms");
+            A2DebrisCards=medium;A2DebrisSmall=small;A2DebrisPatches=patches;A2DebrisRenderers=renderers;
+            Debug.Log("[A2 바닥 잔해] 중간 "+medium+" 작은 "+small+" 패치 "+patches+" 청크 렌더러 "+renderers+" 조립 "+timer.ElapsedMilliseconds+"ms");
         }
-        static int DebrisChunkIndex(float x,float z,int nx,int nz){int cx=Mathf.Clamp((int)((x-DebrisMinX)/DebrisChunk),0,nx-1),cz=Mathf.Clamp((int)((z-DebrisMinZ)/DebrisChunk),0,nz-1);return cz*nx+cx;}
-        float DebrisDensity(float x,float z,out bool walk)
-        {
-            walk=false;if(a2Field.Water(x,z))return 0;
-            float d=a2Field.Distance(x,z);float wobble=Mathf.Lerp(.5f,1.3f,Mathf.PerlinNoise(x/6f+31.7f,z/6f+7.3f));
-            if(d>=0)
-            {
-                walk=true;float center=Mathf.SmoothStep(0,1,Mathf.Clamp01((d-.5f)/4.5f));
-                float clear=Mathf.Clamp01(a2Field.GroundCover(x,z));   // 전투 공터·다리 근처는 0에 가깝다
-                return DebrisDensityScale*Mathf.Lerp(1.1f,.12f,center)*(.35f+.65f*clear)*wobble;
-            }
-            return DebrisDensityScale*Mathf.Lerp(1.3f,.7f,Mathf.Clamp01(-d/10f))*wobble;
-        }
+        static int Poissonish(System.Random r,float mean){int n=(int)mean;return n+(r.NextDouble()<mean-n?1:0);}
+        static Rect DebrisRect(int cell){return new Rect((cell%4)*.25f,1-(cell/4+1)*.125f,.25f,.125f);}
+        static int DebrisChunkIndex(float x,float z,int nx,int nz){int cx=Mathf.Clamp((int)((x-DebrisMinX)/DebrisChunkSize),0,nx-1),cz=Mathf.Clamp((int)((z-DebrisMinZ)/DebrisChunkSize),0,nz-1);return cz*nx+cx;}
         // 물·다리·쓰러진 고목/뿌리 상판 위는 비운다(카드가 떠 보이지 않게).
         bool DebrisFree(float x,float z)
         {
@@ -98,32 +110,43 @@ namespace Exoduser.UnityPort
             if(Mathf.Abs(A2ForestLayout.Along(x,z))<5.5f&&Mathf.Abs(A2ForestLayout.Across(x,z))<2.5f)return false;
             return a2Field.Height(x,z)-a2Field.TerrainHeight(x,z)<.05f;
         }
-        void DebrisQuad(DebrisChunkMesh m,float x,float z,float len,float wid,float yaw,float lift,Rect uv,Color color)
+        // perVertex=false면 중심 높이 하나(작은 조각: 정점마다 지형 질의를 하지 않아 조립 비용을 줄인다)
+        void DebrisQuad(DebrisChunkMesh m,float x,float z,float len,float wid,float yaw,float lift,Rect uv,Color color,bool perVertex)
         {
-            float c=Mathf.Cos(yaw),s=Mathf.Sin(yaw);var along=new Vector3(c,0,s);var across=new Vector3(-s,0,c);int b=m.v.Count;
-            var corners=new[]{-along*len*.5f-across*wid*.5f,along*len*.5f-across*wid*.5f,along*len*.5f+across*wid*.5f,-along*len*.5f+across*wid*.5f};
-            var uvs=new[]{new Vector2(uv.xMin,uv.yMin),new Vector2(uv.xMax,uv.yMin),new Vector2(uv.xMax,uv.yMax),new Vector2(uv.xMin,uv.yMax)};
-            for(int k=0;k<4;k++){float px=x+corners[k].x,pz=z+corners[k].z;m.v.Add(new Vector3(px,a2Field.Height(px,pz)+lift,pz));m.uv.Add(uvs[k]);m.n.Add(Vector3.up);m.t.Add(new Vector4(c,0,s,1));m.c.Add(color);}
+            float c=Mathf.Cos(yaw),s=Mathf.Sin(yaw);float ax=c*len*.5f,az=s*len*.5f,bx=-s*wid*.5f,bz=c*wid*.5f;int b=m.v.Count;
+            float cy=perVertex?0:a2Field.Height(x,z)+lift;var col=(Color32)color;var tan=new Vector4(c,0,s,1);
+            for(int k=0;k<4;k++)
+            {
+                float sa=k==0||k==3?-1:1,sb=k<2?-1:1;float px=x+ax*sa+bx*sb,pz=z+az*sa+bz*sb;
+                m.v.Add(new Vector3(px,perVertex?a2Field.Height(px,pz)+lift:cy,pz));m.uv.Add(new Vector2(sa<0?uv.xMin:uv.xMax,sb<0?uv.yMin:uv.yMax));m.t.Add(tan);m.c.Add(col);
+            }
             m.i.Add(b);m.i.Add(b+3);m.i.Add(b+2);m.i.Add(b);m.i.Add(b+2);m.i.Add(b+1);
         }
         void DebrisPatch(DebrisChunkMesh m,float x,float z,float sx,float sz,float yaw,Rect uv)
         {
-            float c=Mathf.Cos(yaw),s=Mathf.Sin(yaw);int b=m.v.Count;
+            float c=Mathf.Cos(yaw),s=Mathf.Sin(yaw);int b=m.v.Count;var tan=new Vector4(c,0,s,1);
             for(int j=0;j<3;j++)for(int k=0;k<3;k++)
             {
                 float u=k/2f,v=j/2f,lx=(u-.5f)*sx,lz=(v-.5f)*sz,px=x+lx*c-lz*s,pz=z+lx*s+lz*c;
-                m.v.Add(new Vector3(px,a2Field.Height(px,pz)+.003f,pz));m.uv.Add(new Vector2(uv.xMin+u*uv.width,uv.yMin+v*uv.height));m.n.Add(Vector3.up);m.t.Add(new Vector4(c,0,s,1));m.c.Add(Color.white);
+                m.v.Add(new Vector3(px,a2Field.Height(px,pz)+.003f,pz));m.uv.Add(new Vector2(uv.xMin+u*uv.width,uv.yMin+v*uv.height));m.t.Add(tan);m.c.Add(new Color32(255,255,255,255));
             }
             for(int j=0;j<2;j++)for(int k=0;k<2;k++){int a=b+j*3+k;m.i.Add(a);m.i.Add(a+3);m.i.Add(a+4);m.i.Add(a);m.i.Add(a+4);m.i.Add(a+1);}
         }
-        int DebrisRenderer(GameObject root,string name,DebrisChunkMesh m,Material mat)
+        static void DebrisAppend(DebrisChunkMesh to,DebrisChunkMesh from){int b=to.v.Count;to.v.AddRange(from.v);to.uv.AddRange(from.uv);to.t.AddRange(from.t);to.c.AddRange(from.c);foreach(var i in from.i)to.i.Add(b+i);}
+        Renderer DebrisRenderer(GameObject root,string name,DebrisChunkMesh m,Material mat)
         {
-            if(m.v.Count==0)return 0;
+            if(m.v.Count==0)return null;
+            // 노멀은 셰이더가 위(0,1,0)로 쓴다. 정점 = 위치·UV·탄젠트·색(Color32).
             var mesh=R3Track(new Mesh{name=name,indexFormat=m.v.Count>65000?IndexFormat.UInt32:IndexFormat.UInt16});
-            mesh.SetVertices(m.v);mesh.SetUVs(0,m.uv);mesh.SetNormals(m.n);mesh.SetTangents(m.t);mesh.SetColors(m.c);mesh.SetTriangles(m.i,0);mesh.RecalculateBounds();mesh.UploadMeshData(true);
+            mesh.SetVertices(m.v);mesh.SetUVs(0,m.uv);mesh.SetTangents(m.t);mesh.SetColors(m.c);mesh.SetTriangles(m.i,0);mesh.RecalculateBounds();mesh.UploadMeshData(true);
             var go=new GameObject(name);go.transform.SetParent(root.transform,false);go.AddComponent<MeshFilter>().sharedMesh=mesh;
             var r=go.AddComponent<MeshRenderer>();r.sharedMaterial=mat;r.shadowCastingMode=ShadowCastingMode.Off;r.receiveShadows=true;r.lightProbeUsage=LightProbeUsage.Off;r.reflectionProbeUsage=ReflectionProbeUsage.Off;
-            return 1;
+            return r;
+        }
+        internal static void A2DebrisVisibleStats(out int renderers,out long triangles)
+        {
+            renderers=0;triangles=0;if(A2DebrisRoot==null)return;
+            foreach(var r in A2DebrisRoot.GetComponentsInChildren<MeshRenderer>())if(r.isVisible&&r.enabled){renderers++;var f=r.GetComponent<MeshFilter>();if(f!=null&&f.sharedMesh!=null)triangles+=f.sharedMesh.GetIndexCount(0)/3;}
         }
     }
 }
