@@ -327,15 +327,17 @@ namespace Exoduser.UnityPort
         public const int TapChargeTicks=8;      // 8틱 안에 놓으면 탭 3타, 그보다 길면 차지 놓기
         public const float LeftGrip=.20f,BladeLength=2.50f,SocketToPommel=.15f*BladeLength/1.60f,SocketToTip=BladeLength-SocketToPommel;
         public const int BlendIn=4,BlendOut=8,Cross=3,Rejoin=8;   // 직전 키 클립이 Rejoin틱 안에 끝났으면 운반 포즈를 거치지 않고 그 자세에서 이어 받는다
-        enum Hit { None, First, Second, Third, Charge, Release, Bash }
-        Hit hit;string previousState;int enteredTick,lastTick=-1,activeStart,switchTick=-1000,lastActiveTick=-1000;float recoveryLength=1,lastCharge;bool comboMode;
+        enum Hit { None, First, Second, Third, Charge, Release, Bash, Idle }
+        Hit hit;string previousState;int enteredTick,lastTick=-1,activeStart,switchTick=-1000,lastActiveTick=-1000;GreatswordClip lastClip=GreatswordClip.None;float lastFrame;float recoveryLength=1,lastCharge;bool comboMode;
         public GreatswordClip Clip {get;private set;}=GreatswordClip.None;
         public bool Active => Clip!=GreatswordClip.None;
         public float Frame {get;private set;}
         public float Weight {get;private set;}
         /// <summary>앞 클립·타격에서 이어진 전환이면 0부터 세는 틱(혼합용), 아니면 큰 값.</summary>
         public int SinceSwitch {get;private set;}=1000;
-        public void Reset(){hit=Hit.None;previousState=null;lastTick=-1;activeStart=0;switchTick=-1000;lastActiveTick=-1000;Clip=GreatswordClip.None;Frame=0;Weight=0;SinceSwitch=1000;}
+        /// <summary>키 자세에서 기존 절차 포즈(달리기 등)로 빠져나가는 중(Weight가 1→0).</summary>
+        public bool Exiting {get;private set;}
+        public void Reset(){hit=Hit.None;previousState=null;lastTick=-1;activeStart=0;switchTick=-1000;lastActiveTick=-1000;lastClip=GreatswordClip.None;Exiting=false;Clip=GreatswordClip.None;Frame=0;Weight=0;SinceSwitch=1000;}
         public void Observe(HeroMotionInput q)
         {
             if(lastTick>=0&&q.Tick<lastTick)Reset();
@@ -349,6 +351,7 @@ namespace Exoduser.UnityPort
                 else if(q.State=="wRecover"||q.State=="sRecover")recoveryLength=Math.Max(1,q.RemainingTicks);
                 else if(q.State=="sDraw")hit=Hit.Bash;
                 else if(q.State=="sBash"){if(hit!=Hit.Bash)hit=Hit.Bash;}
+                else if(q.State=="idle")hit=Hit.Idle;
                 else hit=Hit.None;
             }
             if(q.State=="wWindup"&&hit==Hit.Charge)lastCharge=q.Charge;
@@ -380,6 +383,9 @@ namespace Exoduser.UnityPort
                     else if(q.State=="wRecover")frame=ReleaseRecoverStart+phase*(ReleaseRecoverEnd-ReleaseRecoverStart);
                     else clip=GreatswordClip.None;
                     end=ReleaseRecoverEnd;break;
+                case Hit.Idle:
+                    // 제자리 대기 = 1타 f0(양손 운반, 두손 파지). 움직이면 기존 절차 보행으로 빠져나간다
+                    clip=q.State=="idle"&&!q.Moving?GreatswordClip.A1:GreatswordClip.None;frame=0;end=1e9f;break;
                 case Hit.Bash:
                     clip=GreatswordClip.Bash;
                     if(q.State=="sDraw")frame=Math.Min(e,BashDrawEnd);
@@ -389,7 +395,14 @@ namespace Exoduser.UnityPort
                     end=BashRecoverEnd;break;
             }
             if(interrupted)clip=GreatswordClip.None;
-            if(clip==GreatswordClip.None){Clip=clip;Weight=0;SinceSwitch=1000;return;}
+            if(clip==GreatswordClip.None)
+            {
+                // 회복 끝에서 운반 포즈로 섞지 않는다. 키가 끝난 뒤 다른 절차 상태로 가면 BlendOut틱 동안 마지막 키 자세에서 빠져나간다(구르기·체인·사망은 즉시)
+                int dt=q.Tick-lastActiveTick;
+                if(!interrupted&&lastClip!=GreatswordClip.None&&dt>0&&dt<BlendOut){Clip=lastClip;Frame=lastFrame;Weight=1-dt/(float)BlendOut;SinceSwitch=1000;Exiting=true;return;}
+                Clip=clip;Weight=0;SinceSwitch=1000;Exiting=false;return;
+            }
+            Exiting=false;
             if(oldClip!=GreatswordClip.None&&(oldClip!=clip||oldHit!=hit))switchTick=q.Tick;   // 앞 클립·타격 자세에서 이어 받는다
             if(oldClip==GreatswordClip.None)
             {
@@ -399,8 +412,8 @@ namespace Exoduser.UnityPort
             }
             lastActiveTick=q.Tick;
             Clip=clip;Frame=frame;SinceSwitch=Math.Max(0,q.Tick-switchTick);
-            float fadeIn=Math.Min(1,(q.Tick-activeStart+1f)/BlendIn),fadeOut=Math.Min(1,(end-frame)/BlendOut+.125f);
-            Weight=Math.Max(0,Math.Min(fadeIn,fadeOut));
+            Weight=Math.Min(1,(q.Tick-activeStart+1f)/BlendIn);   // 회복 끝은 대기(1타 f0)로 이어지므로 빠져나가는 혼합을 하지 않는다
+            lastClip=clip;lastFrame=frame;
         }
     }
 
@@ -411,13 +424,16 @@ namespace Exoduser.UnityPort
     {
         readonly NativeHeroMotionClock clock=new NativeHeroMotionClock();
         readonly GreatswordKeyDirector keyDirector=new GreatswordKeyDirector();
-        [Serializable] sealed class KeyPoseTable { public int fps=60,frames,contactFrame,hips=-1; public string[] paths; public float[] rot,hipsPos; }
+        [Serializable] sealed class KeyPoseTable { public int fps=60,frames,contactFrame,hips=-1; public string[] paths; public float[] rot,hipsPos,lh; }
         static readonly string[] KeyClipNames={"A1","Combo","Bash","Charge","Release"};   // GreatswordClip 순서
         readonly KeyPoseTable[] keyTables=new KeyPoseTable[5];Transform[] keyBones;Quaternion[] keyLastRot,keyFromRot;Vector3 keyLastHips,keyFromHips;bool keyHasLast;
         KeyPoseTable KeyTable => keyDirector.Active?keyTables[(int)keyDirector.Clip]:null;
         public bool KeyClipActive => keyBones!=null&&KeyTable!=null;
         public float KeyClipFrame => keyDirector.Frame;
         public GreatswordClip KeyClip => keyDirector.Clip;
+        float keyLeftHold=1;
+        /// <summary>지금 키 자세에서 왼손이 손잡이를 쥔 비율(대기 한손 운반 = 0).</summary>
+        public float KeyLeftHold => KeyClipActive?keyLeftHold:1;
         readonly RigPixelLocomotionClock gait=new RigPixelLocomotionClock();
         readonly RigPixelTurnClock turn=new RigPixelTurnClock();
         bool rigPixelMotion;
@@ -550,14 +566,26 @@ namespace Exoduser.UnityPort
                     SolveArm(rightUpper,rightFore,rightHand,rightHand.position+transform.up*(.04f-h),hint.normalized);rightHand.rotation=rot;lifted=true;
                 }
             }
-            // 섞이는 동안(운반 포즈 혼합·클립 전환·접지 보정) 관절 회전 보간은 양손 파지를 벌린다 -> 왼팔 2본 IK로 손잡이(소켓에서 칼머리 쪽 LeftGrip)에 다시 붙인다. 혼합 비율만큼만.
-            if((w<.999f||cross||lifted)&&leftGrip!=null&&socket!=null&&leftUpper!=null&&leftFore!=null&&leftHand!=null)
+            // 양손 파지 유지: 키 자세가 켜져 있는 동안 왼팔 2본 IK로 손잡이(소켓에서 칼머리 쪽 LeftGrip)에 붙인다(혼합·전환·접지 보정 중에도 끝까지).
+            // 왼팔이 닿지 않으면 오른손(칼)을 그만큼 왼어깨 쪽으로 당긴다. 절차 포즈로 빠져나갈 때만 남은 비율만큼 놓는다.
+            if(leftGrip!=null&&socket!=null&&leftUpper!=null&&leftFore!=null&&leftHand!=null&&rightUpper!=null&&rightFore!=null&&rightHand!=null)
             {
-                var handRot=leftHand.rotation;
+                // 표의 프레임별 왼손 파지 비율(대기 한손 운반 = 0)을 따른다
+                float lhNow=t.lh!=null&&t.lh.Length==t.frames?Mathf.Lerp(t.lh[f0],t.lh[f1],u):1;
+                float hold=lhNow*(keyDirector.Exiting?Mathf.Clamp01(w):1);keyLeftHold=hold;
+                var handRot=leftHand.rotation;float reach=(Vector3.Distance(leftUpper.position,leftFore.position)+Vector3.Distance(leftFore.position,leftHand.position))*.995f;
                 for(int it=0;it<4;it++)
                 {
                     var off=leftGrip.position-leftHand.position;
-                    var target=Vector3.Lerp(leftHand.position,socket.position+socket.up*GreatswordKeyDirector.LeftGrip-off,Mathf.Clamp01(w));
+                    var want=socket.position+socket.up*GreatswordKeyDirector.LeftGrip-off;
+                    var toWant=want-leftUpper.position;float over=toWant.magnitude-reach;
+                    if(over>0&&hold>=.999f&&lhNow>=.999f)
+                    {
+                        var rRot=rightHand.rotation;var rHint=rightFore.position-(rightUpper.position+rightHand.position)*.5f;if(rHint.sqrMagnitude<1e-6f)rHint=transform.right;
+                        SolveArm(rightUpper,rightFore,rightHand,rightHand.position-toWant.normalized*over,rHint.normalized);rightHand.rotation=rRot;
+                        want=socket.position+socket.up*GreatswordKeyDirector.LeftGrip-off;
+                    }
+                    var target=Vector3.Lerp(leftHand.position,want,hold);
                     var pole=leftFore.position-(leftUpper.position+leftHand.position)*.5f;if(pole.sqrMagnitude<1e-6f)pole=-transform.right;
                     SolveArm(leftUpper,leftFore,leftHand,target,pole.normalized);leftHand.rotation=handRot;
                 }

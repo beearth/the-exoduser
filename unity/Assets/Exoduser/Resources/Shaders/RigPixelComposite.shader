@@ -1,10 +1,12 @@
 Shader "Exoduser/RigPixelComposite" {
  Properties { _MainTex("Point RT",2D)="black"{} }
  SubShader {
-  Tags { "RenderPipeline"="UniversalPipeline" "Queue"="Transparent" "RenderType"="Transparent" }
+  Tags { "RenderPipeline"="UniversalPipeline" "Queue"="AlphaTest+20" "RenderType"="TransparentCutout" }
   Pass {
    Tags { "LightMode"="UniversalForward" }
-   Blend One OneMinusSrcAlpha Cull Off ZWrite Off
+   // 11-08: 영웅 판은 덮인 픽셀(알파 1)만 남기고 빈 곳은 clip -> 불투명 단계(AlphaTest)에서 깊이를 쓴다. 장면 깊이 텍스처에 영웅이 들어가야
+   // 화면 높이 안개(A2HeightFog, SampleSceneDepth)가 영웅 뒤 먼 늪 깊이로 영웅을 칠하지 않는다(상체가 비쳐 보이던 결함)
+   Blend One OneMinusSrcAlpha Cull Off ZWrite On
    HLSLPROGRAM
    #pragma vertex Vert
    #pragma fragment Frag

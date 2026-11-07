@@ -14,8 +14,8 @@ namespace Exoduser.CharacterLab
 {
     public static class GreatswordKeyImport
     {
-        [Serializable] class Flat { public string motion; public int fps, frameCount, contact; public string[] bones; public float[] rest, frames; }
-        [Serializable] class KeyPoseTable { public int fps, frames, contactFrame, hips; public string[] paths; public float[] rot, hipsPos; }
+        [Serializable] class Flat { public string motion; public int fps, frameCount, contact; public string[] bones; public float[] rest, frames, lh; }
+        [Serializable] class KeyPoseTable { public int fps, frames, contactFrame, hips; public string[] paths; public float[] rot, hipsPos, lh; }
         [Serializable] class Report
         {
             public string clip, motion, prefab, axisMap; public int frames, bones, contactFrame; public float scale, restFitRmsMeters;
@@ -150,7 +150,8 @@ namespace Exoduser.CharacterLab
                         bone.rotation = root.rotation * (ToUnity(du) * restU[i]);
                         if (i == hips) bone.position = root.TransformPoint(MapP(new Vector3(data.frames[o], data.frames[o + 1], data.frames[o + 2])));
                     }
-                    if (socket != null && grip != null)
+                    bool onGrip = data.lh == null || data.lh.Length <= f || data.lh[f] > .99f;   // 11-08: 대기는 한손 운반(왼손이 손잡이를 놓음) -> 그 프레임은 파지 검사 제외
+                    if (socket != null && grip != null && onGrip)
                     {
                         // 왼손 파지 원점은 손잡이 축 위(socket.up 선)에 있어야 한다: 축에서 벗어난 거리 = 오차, 축 방향 거리는 프레임마다 같아야 한다
                         var d = grip.position - socket.position; float along = Vector3.Dot(d, socket.up);
@@ -176,7 +177,7 @@ namespace Exoduser.CharacterLab
                 }
                 // runtime pose table (TextAsset). A generic AnimationClip cannot drive the bones of a humanoid Animator via SampleAnimation,
                 // so the runtime writes these local transforms itself (NativeHeroMotion.ApplyKeyClip).
-                var table = new KeyPoseTable { fps = data.fps, frames = data.frameCount, contactFrame = data.contact, hips = -1 };
+                var table = new KeyPoseTable { fps = data.fps, frames = data.frameCount, contactFrame = data.contact, hips = -1, lh = data.lh };
                 var paths = curves.Keys.ToList(); table.paths = paths.ToArray();
                 table.rot = new float[data.frameCount * paths.Count * 4];
                 for (int bi = 0; bi < paths.Count; bi++)

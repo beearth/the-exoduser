@@ -7,7 +7,7 @@ namespace Exoduser.UnityPort {
  public sealed partial class NativeGame {
   bool heroReviewActive;
   [Serializable] sealed class HeroFrame {
-   public int frame,tick,combo,stateTicks;public string section,state,motion,keyClip;public float keyFrame;public float phase,x,y,facing,footError,footPlantError,leftGripError,screenHeight,screenX,screenY,bladeTipHeight,gaitPhase,gaitFootPlantError,visualTurnOffset;public bool spriteVisible,bladeTipKnown,footPivotActive,leftGripMeasured,gaitFootPlanted;public Vector3 root;
+   public int frame,tick,combo,stateTicks;public string section,state,motion,keyClip;public float keyFrame,bladeClear;public int armOutR,armOutL;public float phase,x,y,facing,footError,footPlantError,leftGripError,screenHeight,screenX,screenY,bladeTipHeight,gaitPhase,gaitFootPlantError,visualTurnOffset;public bool spriteVisible,bladeTipKnown,footPivotActive,leftGripMeasured,gaitFootPlanted;public Vector3 root;
   }
   [Serializable] sealed class HeroReview {
    public string scope="실제 Player·격리 세이브·Core 입력·지옥강타 첫틱 피해 표적과 별도 피격/사망 fixture, OS 손조작 아님. PNG 연속프레임을30fps 영상으로 조립";
@@ -85,6 +85,7 @@ namespace Exoduser.UnityPort {
      var motion=heroView.Motion;motions.Add(motion.MotionKind.ToString());sectionMotions.Add(motion.MotionKind.ToString());
      if(section=="달리기"&&motion.GaitFootPlanted){gaitPlantSamples++;maxGaitPlantError=Mathf.Max(maxGaitPlantError,motion.GaitFootPlantError);}
      bool gripMeasured=gripMarker!=null&&gripSocket!=null&&(motion.MotionKind==HeroMotionKind.Swing||motion.MotionKind==HeroMotionKind.Charge||motion.MotionKind==HeroMotionKind.Bash||motion.MotionKind==HeroMotionKind.Guard||motion.MotionKind==HeroMotionKind.SlamWindup||motion.MotionKind==HeroMotionKind.SlamStrike);
+     if(motion.KeyClipActive&&motion.KeyLeftHold<.99f)gripMeasured=false;   // 표에서 왼손이 손잡이를 놓은 프레임(대기 한손 운반·잡으러 가는 중)
      float gripError=0;if(gripMeasured){var gd=gripMarker.position-gripSocket.position;gripError=(gd-gripSocket.up*Vector3.Dot(gd,gripSocket.up)).magnitude;}   // 11-08: 손잡이 축에서 벗어난 거리(칼 길이·파지 간격과 무관)
      if(gripMeasured){maxGripError=Mathf.Max(maxGripError,gripError);gripSamples++;}
      if(section=="대검3타"||section=="검기3타"){maxFootPlantError=Mathf.Max(maxFootPlantError,motion.FootPlantError);if(motion.FootPivotActive)footPivotSamples++;}
@@ -110,7 +111,19 @@ namespace Exoduser.UnityPort {
       }
       var anchor=HudCamera.WorldToScreenPoint(heroView.Model.transform.parent.position);
       bool tipKnown=motion.TryGetBladeTip(out var frameTip);float tipHeight=tipKnown?Vector3.Dot(frameTip-heroView.Model.transform.position,heroView.Model.transform.up):0;
-      report.frames.Add(new HeroFrame{frame=frame,tick=sim.TickCount,stateTicks=(int)p.StateTicks,keyClip=motion.KeyClipActive?motion.KeyClip.ToString():"",keyFrame=motion.KeyClipActive?motion.KeyClipFrame:-1,section=section,state=p.State,motion=motion.MotionKind.ToString(),phase=motion.MotionPhase,combo=motion.ComboStep,x=p.X,y=p.Y,facing=p.Facing,footError=heroView.FootError(),footPlantError=motion.FootPlantError,footPivotActive=motion.FootPivotActive,leftGripError=gripError,leftGripMeasured=gripMeasured,screenHeight=high-low,screenX=anchor.x,screenY=Screen.height-anchor.y,bladeTipKnown=tipKnown,bladeTipHeight=tipHeight,spriteVisible=playerView.enabled,root=heroView.Model.transform.parent.position,gaitPhase=motion.GaitPhase,gaitFootPlanted=motion.GaitFootPlanted,gaitFootPlantError=motion.GaitFootPlantError,visualTurnOffset=motion.VisualTurnOffset});
+      // 칼날(칼밑 .15~칼끝)과 몸통 캡슐(Hips~Neck r.16)·머리 구(r.13)의 최소 여유(음수 = 관통). 영웅 배율 반영
+      float bladeClear=9;{var hips=heroAnimator.GetBoneTransform(HumanBodyBones.Hips);var neck=heroAnimator.GetBoneTransform(HumanBodyBones.Neck);var headB=heroAnimator.GetBoneTransform(HumanBodyBones.Head);
+       if(gripSocket!=null&&hips!=null&&neck!=null&&headB!=null){float sc=gripSocket.lossyScale.y;var a0=hips.position;var ab=neck.position-a0;
+        for(int bi=1;bi<=24;bi++){var bp=gripSocket.position-gripSocket.up*(.15f+(GreatswordKeyDirector.SocketToTip-.15f)*bi/24f)*sc;float tt=Mathf.Clamp01(Vector3.Dot(bp-a0,ab)/Mathf.Max(1e-6f,ab.sqrMagnitude));
+         bladeClear=Mathf.Min(bladeClear,Vector3.Distance(bp,a0+ab*tt)-.16f*sc,Vector3.Distance(bp,headB.position)-.13f*sc);}}}
+      // 11-08 팔 판독(1-1 카메라 화면): 위팔 중간·팔꿈치·아래팔 중간·손목 4점 중 몸통 화면 실루엣(Hips~Neck 캡슐 r.16 투영) 밖에 있는 점 수
+      int armOutR=0,armOutL=0;{var hipsT=heroAnimator.GetBoneTransform(HumanBodyBones.Hips);var neckT=heroAnimator.GetBoneTransform(HumanBodyBones.Neck);
+       if(hipsT!=null&&neckT!=null){float sc=gripSocket!=null?gripSocket.lossyScale.y:1;Vector2 S(Vector3 w){var v=HudCamera.WorldToScreenPoint(w);return new Vector2(v.x,v.y);}
+        var sa=S(hipsT.position);var sb=S(neckT.position);float rpx=(S(neckT.position+HudCamera.transform.right*.16f*sc)-sb).magnitude;
+        int Out(HumanBodyBones up,HumanBodyBones lo,HumanBodyBones hd){var u0=heroAnimator.GetBoneTransform(up);var l0=heroAnimator.GetBoneTransform(lo);var h0=heroAnimator.GetBoneTransform(hd);if(u0==null||l0==null||h0==null)return 0;int n=0;
+         foreach(var w in new[]{(u0.position+l0.position)*.5f,l0.position,(l0.position+h0.position)*.5f,h0.position}){var q=S(w);var ab=sb-sa;float tt=Mathf.Clamp01(Vector2.Dot(q-sa,ab)/Mathf.Max(1e-6f,ab.sqrMagnitude));if((q-(sa+ab*tt)).magnitude>rpx)n++;}return n;}
+        armOutR=Out(HumanBodyBones.RightUpperArm,HumanBodyBones.RightLowerArm,HumanBodyBones.RightHand);armOutL=Out(HumanBodyBones.LeftUpperArm,HumanBodyBones.LeftLowerArm,HumanBodyBones.LeftHand);}}
+      report.frames.Add(new HeroFrame{armOutR=armOutR,armOutL=armOutL,bladeClear=bladeClear,frame=frame,tick=sim.TickCount,stateTicks=(int)p.StateTicks,keyClip=motion.KeyClipActive?motion.KeyClip.ToString():"",keyFrame=motion.KeyClipActive?motion.KeyClipFrame:-1,section=section,state=p.State,motion=motion.MotionKind.ToString(),phase=motion.MotionPhase,combo=motion.ComboStep,x=p.X,y=p.Y,facing=p.Facing,footError=heroView.FootError(),footPlantError=motion.FootPlantError,footPivotActive=motion.FootPivotActive,leftGripError=gripError,leftGripMeasured=gripMeasured,screenHeight=high-low,screenX=anchor.x,screenY=Screen.height-anchor.y,bladeTipKnown=tipKnown,bladeTipHeight=tipHeight,spriteVisible=playerView.enabled,root=heroView.Model.transform.parent.position,gaitPhase=motion.GaitPhase,gaitFootPlanted=motion.GaitFootPlanted,gaitFootPlantError=motion.GaitFootPlantError,visualTurnOffset=motion.VisualTurnOffset});
       ScreenCapture.CaptureScreenshot(Path.Combine(output,"frames","hero-"+(shot++).ToString("0000")+".png"));
      }
     }

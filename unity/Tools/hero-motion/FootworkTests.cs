@@ -60,13 +60,14 @@ static class FootworkTests
         Func<string,float,bool,bool,float,HeroMotionInput> q=(state,left,basic,ki,charge)=>new HeroMotionInput{State=state,Tick=t,RemainingTicks=left,BasicWindup=basic,KiAttack=ki,Charge=charge,EffectiveHealth=100};
         Action<string,int,bool,bool> run=(state,len,basic,ki)=>{for(int i=0;i<len;i++){k.Observe(q(state,len-i,basic,ki,0));t++;}};
         // 1타 (검기 모드 = 콤보 클립, 무기 모드 = 1타 클립): 입력+26 = 접점 f26
-        k.Observe(q("idle",0,false,true,0));t++;Check(!k.Active,"대기 = 키 비활성");
+        var mv=q("idle",0,false,true,0);mv.Moving=true;k.Observe(mv);t++;Check(!k.Active,"걷는 중 대기 = 키 비활성(절차 보행)");
+        k.Observe(q("idle",0,false,true,0));Check(k.Clip==GreatswordClip.A1&&k.Frame==0,"제자리 대기 = 1타 f0(두손 운반)");t++;
         int input=t;for(int i=0;i<24;i++){k.Observe(q("wWindup",24-i,true,true,0));t++;}
         Check(k.Clip==GreatswordClip.Combo&&k.Frame==23,"검기 1타 예비 = 콤보 클립 f23");
         for(int i=0;i<3;i++){k.Observe(q("wSwing",5-i,false,true,0));if(i<2)t++;}
         Check(k.Frame==26&&t-input==26,"1타 HitArc 틱 = 콤보 f26 = 입력+26");t++;
         k.Observe(q("wSwing",2,false,true,0));t++;k.Observe(q("wSwing",1,false,true,0));t++;
-        run("wRecover",28,false,true);Check(k.Frame>55&&k.Weight<.3f,"1타 회복 끝 f55 이후, 혼합 복귀");
+        run("wRecover",28,false,true);Check(k.Frame>55&&k.Weight>.99f,"1타 회복 끝 f55 이후도 키 자세 유지(운반 포즈로 섞지 않음)");
         // 2타: 예비 없이 바로 휘두르기 -> 콤보 f57, HitArc(StateTicks 3) = f59
         k.Observe(q("idle",0,false,true,0));t++;
         k.Observe(q("wSwing",5,false,true,0));Check(k.Clip==GreatswordClip.Combo&&k.Frame==57&&k.Weight>.99f&&k.SinceSwitch==0,"2타 스윙 진입 = 콤보 f57, 1타 회복 키 자세에서 바로 이어 받음(운반 포즈 혼합 없음)");t++;
