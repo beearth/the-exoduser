@@ -294,6 +294,48 @@ def build_skillbar():
     sphere("pupil", (ec[0], ec[1], 8.6), (1.2, 3.5, 1.0), "pupil")
     return (800, 128, 0, 60)   # 화면 폭, 높이, 중심 x, 중심 y (Blender 단위)
 
+# ---------- 구슬 링(A안): 얇은 은빛 강철 고리, 지름의 약 2.8% 띠 + 반복 음각 + 네 방위 M3 마름모 ----------
+def build_orbring():
+    R0, R1 = 86.0, 91.0          # 안쪽·바깥 반지름(구슬 지름 172)
+    annulus("band", 0, 0, R0, R1, 0, 4.2, "iron_hi", bevel=1.0, verts=160)
+    torus("lipin", (0, 0, 3.4), R0 + 0.2, 0.8, "iron")
+    torus("lipout", (0, 0, 3.4), R1 - 0.2, 0.8, "iron")
+    # 반복 음각: 띠 위 얕은 홈 60개(1x에서 결로만 읽히게)
+    band = bpy.data.objects["band"]
+    for k in range(60):
+        a = k * 2 * math.pi / 60
+        bpy.ops.mesh.primitive_cube_add(size=1, location=((R0 + R1) / 2 * math.cos(a), (R0 + R1) / 2 * math.sin(a), 4.6))
+        c = bpy.context.active_object; c.scale = (1.0, 3.2, 1.6); c.rotation_euler = (0, 0, a); c.name = f"groove{k}"; cut(band, c)
+    mods = [m for m in band.modifiers if m.type == "BEVEL"]
+    for m in mods: band.modifiers.remove(m)
+    add_bevel(band, 0.9, 2)
+    for k in range(4):
+        a = math.pi / 2 + k * math.pi / 2
+        cx, cy = (R1 + 1.5) * math.cos(a), (R1 + 1.5) * math.sin(a)
+        o = prism(f"diam{k}", [(0, 4.5), (3.2, 0), (0, -4.5), (-3.2, 0)], 2.0, 6.0, "iron_hi", bevel=0.7, segs=2)
+        o.location = (cx, cy, 0); o.rotation_euler = (0, 0, a - math.pi / 2)
+    return (200, 200, 0, 0)
+
+# ---------- 미니맵 테(A안): M1 눈 고리 — 은빛 원 + 가시 32개(큰·작은 번갈아), 북쪽에 눈 ----------
+def build_minimap():
+    R0, R1 = 70.0, 75.0
+    annulus("band", 0, 0, R0, R1, 0, 4.4, "iron_hi", bevel=1.0, verts=160)
+    torus("lipin", (0, 0, 3.0), R0 + 0.1, 0.7, "iron")
+    for k in range(32):
+        a = math.pi / 2 + k * 2 * math.pi / 32
+        if k == 0: continue   # 북쪽은 눈
+        L = 8.5 if k % 2 == 0 else 4.5
+        if k % 8 == 0: L = 12.0   # 동서남 장가시
+        b = (R1 * math.cos(a), R1 * math.sin(a), 2.8); t = ((R1 + L) * math.cos(a), (R1 + L) * math.sin(a), 2.8)
+        cone(f"spike{k}", b, t, 1.7 if k % 2 == 0 else 1.2, "iron_hi", 8)
+    ec = (0, R1 + 9.5)
+    bpy.ops.mesh.primitive_cylinder_add(vertices=48, radius=8.0, depth=2.0, location=(ec[0], ec[1], 3.5))
+    disc = bpy.context.active_object; disc.data.materials.append(MATS["floor"][0])
+    torus("eyering", (ec[0], ec[1], 4.8), 8.8, 1.6, "iron_hi")
+    sphere("iris", (ec[0], ec[1], 4.4), (5.6, 3.1, 1.5), "eye")
+    sphere("pupil", (ec[0], ec[1], 5.4), (0.9, 2.6, 0.9), "pupil")
+    return (190, 200, 0, 6)
+
 # ---------- 렌더 ----------
 def render_maps(canvas):
     W, H, cx, cy = canvas
@@ -361,7 +403,7 @@ def pack(results):
     print("[hud_bake] albedo luminance p50=%.3f p90=%.3f p99=%.3f metal=%.2f rough_p50=%.2f" % (
         np.percentile(lum, 50), np.percentile(lum, 90), np.percentile(lum, 99), pbr[..., 2][m].mean(), np.percentile(pbr[..., 1][m], 50)), flush=True)
 
-BUILDERS = {"skillbar": build_skillbar}
+BUILDERS = {"skillbar": build_skillbar, "orbring": build_orbring, "minimap": build_minimap}
 canvas = BUILDERS[PART]()
 bpy.context.view_layer.update()
 res = render_maps(canvas)

@@ -55,6 +55,13 @@ variants = [
     ("달빛 오른쪽 위", [((0.55, 0.55, 0.62), (2.6, 2.75, 3.0)), ((-0.6, -0.3, 0.5), (0.35, 0.33, 0.32))]),
     ("저체력 붉은 빛(왼쪽 낮게)", [((-0.5, 0.6, 0.62), (1.6, 1.7, 1.9)), ((-0.9, -0.1, 0.35), (2.4, 0.35, 0.22))]),
 ]
+LIT = arg("--lit-out", "")
+if LIT:
+    c = shade(variants[0][1], (0.16, 0.17, 0.19), (0.015, 0.015, 0.018))
+    h, w = c.shape[:2]
+    img = bpy.data.images.new("lit", w, h, alpha=True); img.colorspace_settings.name = "Non-Color"
+    img.pixels[:] = np.concatenate([c, alpha], -1).ravel().tolist()
+    img.filepath_raw = LIT; img.file_format = "PNG"; img.save(); print("[hud_relight] lit", LIT, flush=True)
 rows = []
 for name, lights in variants:
     c = shade(lights, (0.16, 0.17, 0.19), (0.015, 0.015, 0.018))
