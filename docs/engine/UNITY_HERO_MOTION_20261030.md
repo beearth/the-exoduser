@@ -227,3 +227,15 @@ RigPixelTurnClock은 Core조준/게임루트를바꾸지않고 모델자식의�
 **11-07 사용자 결정: 1타 예비 BasicWindupTicks 6 → 24(400ms, 노레위 A1 예비와 같음), 회복 28 그대로 — Core 변경은 CTO 레인.** 이 변경 뒤 1타 = wWindup 24 (f0-23) → wSwing 5 (f24-28, HitArc f26) → wRecover 28 (f29-56) → idle f57. 손 키는 24틱 기준으로 잡았다.
 
 표현 규칙(이번 키): 1타 예비는 어깨 멘 준비 자세에서 감아 올려 정점에서 감속·2틱 정지, 마지막 예비 틱에 루트가 먼저 밀기 시작. 접점 프레임(1타 f26·2타 f2·3타 R+2·sBash +8)은 칼끝 최고속·골반 최저점 근처에 둔다. Core idle 동안(콤보 창)의 '다음 타 장전 자세'는 표현 변형이며 Core 상태는 idle 그대로다. 결과물(영상·격자·그래프·.blend·포즈 JSON)은 I:/EXODUSER-Storage/study/keyanim/ — Unity 반입은 사용자 PASS 뒤 다음 단계.
+
+### 2026-11-07 대검 1타 손 키 Unity 반입 (표현만, Core 무변경)
+
+| 항목 | 내용 |
+|---|---|
+| 원본 | Blender 손 키(I:/EXODUSER-Storage/study/keyanim, a1 57프레임). 레퍼런스 원본 반입 0 |
+| 반입 | Editor job `Exoduser.CharacterLab.GreatswordKeyImport.Run` → `Resources/Characters/Warrior_GS_A1_pose.json`(본 24개 × 57프레임 로컬 회전 + Hips 위치, 망토 제외). 축 변환은 휴지 본 위치 맞춤으로 자동 판정(`-x,+z,-y`, 오차 0.0006mm), 회전 = M·ΔBlender·Mᵀ·Unity 휴지 회전 |
+| 왜 표인가 | Humanoid Animator가 붙은 모델에는 일반 Transform 곡선 클립의 `SampleAnimation`이 적용되지 않는다(에디터 실측: 모든 프레임이 같은 자세). 그래서 LateUpdate에서 표를 Transform에 직접 쓴다 |
+| 재생 | `GreatswordKeyClock`: wWindup(BasicWindup) 진입 틱 = f0, wSwing 진입 = f24, HitArc 틱 = f26(클립 접점), wRecover = f29~f55(회복 길이가 28이 아니면 비율). 시작 4f·끝 8f는 기존 운반 포즈와 혼합. 구르기·체인·사망이면 끊김. 2·3타·기검참 충전은 기존 절차 유지 |
+| 칼 규약 | Unity 칼날 = `-socket.up`, 칼머리 = `socket.up×0.15`, 왼손 = `socket.up×0.09`. Blender 리그를 이 규약으로 맞춤(처음 판은 칼이 주먹 반대쪽으로 나와 접점 칼끝이 1.43m로 측정됨) |
+| 검증 | hero-motion 하네스 152/0(1타 키 시계 포함), Core 60/0(dotnet 직접 실행, verify-core.cjs는 godot 스냅샷 부재로 기존처럼 실행 불가), 반입 검사 왼손 파지 0.05mm·접점 칼끝 높이 0.19m. PC 무창 후보 빌드(`-remodel-scenes 1`) + `--unity-hero-review --remodel3d --hero-render=rigpixel` 촬영: 실게임 접점 틱 = 입력+26, 칼끝 높이 0.21m |
+| 남은 일 | hero-review의 '정지1·2타 발 회전'(표본 0)과 '장갑 중심 파지 3mm'(스윙 틱 11.7mm) 검사가 이 경로에서 실패 → 클립용 기준으로 바꿀지 결정 필요. 이동 중 1타는 발이 미끄러진다(클립에 보행 없음). 스프라이트 경로(`NativeGame.cs` 443~445)는 예비 `10/WeaponSpeed`=22틱·회복 34로 Core 24/28과 다름 — 이번에는 기록만 |

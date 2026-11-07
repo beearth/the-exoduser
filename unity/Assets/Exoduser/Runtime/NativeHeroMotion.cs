@@ -270,12 +270,59 @@ namespace Exoduser.UnityPort
         }
     }
 
+    /// <summary>
+    /// 대검 1타 손 키 클립(11-07, Warrior_GS_A1: 57프레임 = Core 1타 24/5/28틱)의 재생 프레임.
+    /// 클립 프레임 = Core 경과 틱: wWindup(BasicWindup) 진입 틱 = f0, wSwing 진입 = f24, HitArc 틱 = f26(클립 접점), wRecover = f29~f56.
+    /// 회복 길이가 공속으로 28이 아니면 회복 구간만 비율로 늘이고 줄인다(접점 프레임은 고정). 표현 전용, Core를 읽기만 한다.
+    /// </summary>
+    public sealed class GreatswordKeyClock
+    {
+        public const int WindupFrames=24,SwingFrames=5,RecoverFrames=28,Length=WindupFrames+SwingFrames+RecoverFrames,ContactFrame=26;
+        const int BlendInFrames=4,BlendOutFrames=8;
+        string previousState;int enteredTick,lastTick=-1;float recoveryLength=RecoverFrames;bool firstStrike;
+        public bool Active {get;private set;}
+        public float Frame {get;private set;}
+        public float Weight {get;private set;}
+        public void Reset(){previousState=null;firstStrike=false;Active=false;Frame=0;Weight=0;lastTick=-1;}
+        public void Observe(HeroMotionInput q)
+        {
+            if(lastTick>=0&&q.Tick<lastTick)Reset();
+            lastTick=q.Tick;
+            if(q.State!=previousState)
+            {
+                enteredTick=q.Tick;
+                if(q.State=="wWindup")firstStrike=q.BasicWindup;
+                else if(q.State=="wRecover")recoveryLength=Math.Max(1,q.RemainingTicks);
+                else if(q.State!="wSwing")firstStrike=false;
+                previousState=q.State;
+            }
+            bool interrupted=q.Rolling||q.Chain||q.EffectiveHealth<=0;
+            Active=firstStrike&&!interrupted&&(q.State=="wWindup"||q.State=="wSwing"||q.State=="wRecover");
+            if(!Active){Weight=0;return;}
+            int elapsed=Math.Max(0,q.Tick-enteredTick);
+            if(q.State=="wWindup")Frame=Math.Min(elapsed,WindupFrames-1);
+            else if(q.State=="wSwing")Frame=WindupFrames+Math.Min(elapsed,SwingFrames-1);
+            else
+            {
+                float phase=Math.Max(0,Math.Min(1,1-q.RemainingTicks/recoveryLength));
+                Frame=WindupFrames+SwingFrames+phase*(RecoverFrames-1);
+            }
+            float fadeIn=Math.Min(1,(Frame+1)/BlendInFrames),fadeOut=Math.Min(1,(Length-1-Frame)/BlendOutFrames+.125f);
+            Weight=Math.Max(0,Math.Min(fadeIn,fadeOut));
+        }
+    }
+
 #if UNITY_5_3_OR_NEWER
     /// <summary>Core를 읽는 전사 표현. 루트 위치·방향·충돌·판정의 writer는 NativeGame이다.</summary>
     [DefaultExecutionOrder(90)]
     public sealed class NativeHeroMotion : MonoBehaviour
     {
         readonly NativeHeroMotionClock clock=new NativeHeroMotionClock();
+        readonly GreatswordKeyClock keyClock=new GreatswordKeyClock();
+        [Serializable] sealed class KeyPoseTable { public int fps=60,frames,contactFrame,hips=-1; public string[] paths; public float[] rot,hipsPos; }
+        KeyPoseTable keyFirstStrike;Transform[] keyBones;
+        public bool KeyClipActive => keyClock.Active&&keyFirstStrike!=null&&keyBones!=null;
+        public float KeyClipFrame => keyClock.Frame;
         readonly RigPixelLocomotionClock gait=new RigPixelLocomotionClock();
         readonly RigPixelTurnClock turn=new RigPixelTurnClock();
         bool rigPixelMotion;
@@ -351,7 +398,38 @@ namespace Exoduser.UnityPort
             spineBend=Muscle("Spine Front-Back");chestBend=Muscle("Chest Front-Back");spineTwist=Muscle("Spine Twist Left-Right");chestTwist=Muscle("Chest Twist Left-Right");
             CacheBladeTip();
             PrepareRollContact();
+            BindKeyClip();
             ready=true;
+        }
+        // 11-07 대검 손 키 1타. Humanoid Animator는 일반 Transform 곡선 클립을 SampleAnimation으로 적용하지 않는다
+        // → 반입 job(GreatswordKeyImport)이 실제 프리팹 계층에 구운 본별 로컬 자세 표를 LateUpdate에서 직접 쓴다. 망토는 CapeSpring 몫이라 표에 없다.
+        void BindKeyClip()
+        {
+            keyFirstStrike=null;keyBones=null;
+            var asset=Resources.Load<TextAsset>("Characters/Warrior_GS_A1_pose");if(asset==null)return;
+            var table=JsonUtility.FromJson<KeyPoseTable>(asset.text);
+            if(table==null||table.paths==null||table.frames<=0||table.rot==null||table.rot.Length!=table.frames*table.paths.Length*4)return;
+            var bones=new Transform[table.paths.Length];
+            for(int i=0;i<bones.Length;i++){bones[i]=animator.transform.Find(table.paths[i]);if(bones[i]==null){Debug.LogWarning("[대검 키] 본 경로 없음: "+table.paths[i]);return;}}
+            keyFirstStrike=table;keyBones=bones;
+        }
+        void ApplyKeyClip()
+        {
+            // 기존 대기 운반 포즈에서 들어오고(4f) 회복 끝에서 다시 대기 포즈로 돌아간다(8f). 표는 모델 로컬 공간이라 조준 yaw는 루트가 맡는다.
+            if(leftGrip!=null)ApplyCarryPose(false);
+            var t=keyFirstStrike;int n=keyBones.Length;
+            float frame=Mathf.Clamp(keyClock.Frame,0,t.frames-1);int f0=(int)frame,f1=Math.Min(f0+1,t.frames-1);float u=frame-f0,w=keyClock.Weight;
+            for(int i=0;i<n;i++)
+            {
+                int a=(f0*n+i)*4,b=(f1*n+i)*4;
+                var q=Quaternion.Slerp(new Quaternion(t.rot[a],t.rot[a+1],t.rot[a+2],t.rot[a+3]),new Quaternion(t.rot[b],t.rot[b+1],t.rot[b+2],t.rot[b+3]),u);
+                keyBones[i].localRotation=w>=.999f?q:Quaternion.Slerp(keyBones[i].localRotation,q,w);
+            }
+            if(t.hips>=0&&t.hipsPos!=null)
+            {
+                var p=Vector3.Lerp(new Vector3(t.hipsPos[f0*3],t.hipsPos[f0*3+1],t.hipsPos[f0*3+2]),new Vector3(t.hipsPos[f1*3],t.hipsPos[f1*3+1],t.hipsPos[f1*3+2]),u);
+                keyBones[t.hips].localPosition=w>=.999f?p:Vector3.Lerp(keyBones[t.hips].localPosition,p,w);
+            }
         }
         void CacheBladeTip()
         {
@@ -399,11 +477,12 @@ namespace Exoduser.UnityPort
         public void Sync(Simulation sim,bool moving)
         {
             if(sim==null)return;
-            if(!ReferenceEquals(observedSimulation,sim)){clock.Reset();gait.Reset();turn.Reset();leftPlanted=rightPlanted=false;observedSimulation=sim;rollGroundTick=-1;rollGroundPhase=-1;}
+            if(!ReferenceEquals(observedSimulation,sim)){clock.Reset();keyClock.Reset();gait.Reset();turn.Reset();leftPlanted=rightPlanted=false;observedSimulation=sim;rollGroundTick=-1;rollGroundPhase=-1;}
             if(!ready)Bind();
             var p=sim.Player;
             observed=new HeroMotionInput {State=p.State,Tick=sim.TickCount,RemainingTicks=p.StateTicks,RollRemaining=(float)sim.RollMoveT,Rolling=sim.RollActive,Moving=moving,EffectiveHealth=p.Hp+p.Shield,Combo=sim.KiComboStep,KiAttack=sim.Config.ActiveAttack=="kiSlash",Charge=p.KiChargeActive?p.KiChargeTicks:(float)sim.KgChg,BasicWindup=p.BasicWindup,SkillCastCount=sim.SkillCastCount,Chain=rigPixelMotion&&(sim.HarpActive||sim.DashActive),ChainPull=sim.DashActive};
             current=clock.Evaluate(observed);
+            keyClock.Observe(observed);
             if(rigPixelMotion)turn.Observe(sim.TickCount,Mathf.Atan2(Mathf.Cos(p.Facing),-Mathf.Sin(p.Facing))*Mathf.Rad2Deg,current.Kind==HeroMotionKind.Idle||current.Kind==HeroMotionKind.Run);
             if(rigPixelMotion)gait.Observe(sim.TickCount,transform.position.x,NativeRemodel3D.Active?transform.position.z:transform.position.y,1/Math.Max(.01f,transform.lossyScale.y),3.0126457,moving&&current.Kind!=HeroMotionKind.Roll&&current.Kind!=HeroMotionKind.Chain&&current.Kind!=HeroMotionKind.Dead);
             if(ready)SampleLocomotion();
@@ -542,6 +621,7 @@ namespace Exoduser.UnityPort
             FootPivotActive=false;
             SampleLocomotion();
             if(rigPixelMotion)transform.localRotation=Quaternion.Euler(0,turn.Offset,0);
+            if(KeyClipActive){ApplyKeyClip();return;}
             var leftFootPosition=leftFoot!=null?leftFoot.position:Vector3.zero;var rightFootPosition=rightFoot!=null?rightFoot.position:Vector3.zero;
             var leftFootRotation=leftFoot!=null?leftFoot.rotation:Quaternion.identity;var rightFootRotation=rightFoot!=null?rightFoot.rotation:Quaternion.identity;
             var leftToePosition=leftToes!=null?leftToes.position:leftFootPosition;var rightToePosition=rightToes!=null?rightToes.position:rightFootPosition;

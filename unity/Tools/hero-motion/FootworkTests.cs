@@ -33,5 +33,26 @@ static class FootworkTests
         var repeat=pose(HeroMotionKind.Swing,1,.4f,.4f,false);foreach(string field in fields)Check(n(first,field)==n(repeat,field),"동일 Core 표본은 정지 중 회전 누적 없음: "+field);
     }
 
-    static void Main(){RegressionFootwork();Console.WriteLine("전사 정지 베기 발 회전: "+checks+"개 통과");}
+    // 11-07 대검 손 키 1타: 클립 프레임 = Core 경과 틱(예비24·스윙5·회복28), HitArc 틱 = 클립 접점 f26
+    static void RegressionGreatswordKeyClock()
+    {
+        var k=new GreatswordKeyClock();int t=100;
+        Func<string,float,bool,HeroMotionInput> q=(state,left,basic)=>new HeroMotionInput{State=state,Tick=t,RemainingTicks=left,BasicWindup=basic,EffectiveHealth=100};
+        k.Observe(q("idle",0,false));Check(!k.Active,"대기에서는 키 클립 비활성");
+        t++;int input=t;k.Observe(q("wWindup",24,true));Check(k.Active&&k.Frame==0,"1타 입력 틱 = 클립 f0");
+        for(int i=1;i<24;i++){t++;k.Observe(q("wWindup",24-i,true));}
+        Check(k.Frame==23,"예비 마지막 틱 = f23");
+        t++;k.Observe(q("wSwing",5,false));Check(k.Frame==24,"wSwing 진입 = f24");
+        t++;k.Observe(q("wSwing",4,false));t++;k.Observe(q("wSwing",3,false));
+        Check(k.Frame==GreatswordKeyClock.ContactFrame&&t-input==26,"HitArc 틱(StateTicks 3) = 클립 접점 f26 = 입력+26");
+        t++;k.Observe(q("wSwing",2,false));t++;k.Observe(q("wSwing",1,false));
+        t++;k.Observe(q("wRecover",28,false));Check(Math.Abs(k.Frame-29)<1e-4,"회복 진입 = f29");
+        for(int i=27;i>=1;i--){t++;k.Observe(q("wRecover",i,false));}
+        Check(k.Frame>55&&k.Frame<56&&k.Weight<.3f,"회복 끝 = f55, 대기 포즈로 혼합 복귀");
+        t++;k.Observe(q("idle",0,false));Check(!k.Active,"idle 복귀 = 비활성");
+        t++;k.Observe(q("wWindup",999,false));Check(!k.Active,"기검참 충전 예비는 1타 클립이 아님");
+        t++;k.Observe(q("wSwing",5,false));Check(!k.Active,"예비 없는 2·3타 스윙은 1타 클립이 아님");
+        t++;k.Observe(q("wWindup",24,true));t++;var roll=q("wWindup",23,true);roll.Rolling=true;k.Observe(roll);Check(!k.Active,"구르기로 끊기면 비활성");
+    }
+    static void Main(){RegressionFootwork();RegressionGreatswordKeyClock();Console.WriteLine("전사 정지 베기 발 회전·대검 1타 키 시계: "+checks+"개 통과");}
 }
