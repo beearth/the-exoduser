@@ -1,3 +1,5 @@
+> 2026-11-07 갱신(브랜치 claude/unity-map-1-1-20261107, 병합 전): 1-1 전체 필드의 주광·환경광·거리 안개·A2HeightFog·지면 `_FullField` 값은 이 문서의 이력 값에서 바뀌었다. 현재 값은 [UNITY_MAP_BOARD §9](../4.1맵디자인+설정/UNITY_MAP_BOARD_20261026.md)를 따른다.
+
 ## R5 실제 공동 Player 기술 검수 — 2026-10-31 12시 UTC
 
 **맵 기술 범위 PASS / VISUAL VERDICT: RETOUCH. 전체 맵 아트 완료가 아니다.**

@@ -88,7 +88,8 @@ namespace Exoduser.UnityPort
             if(on&&A2Requested)
             {
                 A2Ambient();
-                RenderSettings.fogColor=new Color(.105f,.145f,.17f);RenderSettings.fogMode=FogMode.Linear;RenderSettings.fogStartDistance=19;RenderSettings.fogEndDistance=62;
+                // 11-07: 거리 안개는 먼 외곽만 녹인다(40→130m). 걷는 면의 안개는 A2HeightFog 층 안개(시작 8m, 최대 알파 .45, 높이 7.5m)가 맡아 먼 적(25~40m)을 지우지 않는다.
+                RenderSettings.fogColor=A2FogColor;RenderSettings.fogMode=FogMode.Linear;RenderSettings.fogStartDistance=40;RenderSettings.fogEndDistance=130;
             }
         }
         void HellLightingLate()

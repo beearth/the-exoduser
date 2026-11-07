@@ -33,6 +33,29 @@ Shader "EXODUSER/HellGroundPBR"
    struct A {float4 positionOS:POSITION;float3 normalOS:NORMAL;float4 tangentOS:TANGENT;float2 uv:TEXCOORD0;};
    struct V {float4 positionCS:SV_POSITION;float3 world:TEXCOORD0;float3 normal:TEXCOORD1;float4 tangent:TEXCOORD2;float2 uv:TEXCOORD3;half fog:TEXCOORD4;};
    V vert(A v){V o;o.world=TransformObjectToWorld(v.positionOS.xyz);o.positionCS=TransformWorldToHClip(o.world);o.normal=TransformObjectToWorldNormal(v.normalOS);o.tangent=float4(TransformObjectToWorldDir(v.tangentOS.xyz),v.tangentOS.w*GetOddNegativeScale());o.uv=v.uv;o.fog=ComputeFogFactor(o.positionCS.z);return o;}
+   float FieldHash(float2 p){p=frac(p*float2(123.34,456.21));p+=dot(p,p+45.32);return frac(p.x*p.y);}
+   float FieldNoise(float2 p){float2 c=floor(p),f=frac(p);f=f*f*(3-2*f);
+    return lerp(lerp(FieldHash(c),FieldHash(c+float2(1,0)),f.x),lerp(FieldHash(c+float2(0,1)),FieldHash(c+float2(1,1)),f.x),f.y);}
+   // 같은 텍스처를 UV×1과 UV×0.5로 섞어 반복 무늬를 지운다. 높이는 낮은 밉(약 8×8 텍셀 평균) 명도라 큰 붓 덩어리만 남는다.
+   // 색은 밉4(1024² 기준 64텍셀, 텍셀당 약 8cm) 큰 덩어리에서 가져오고, 세부는 명도만 detail 비율로 얹는다.
+   // 스캔 자갈·그레인의 색 잡티가 1x·3x에 남지 않게 한다(잡음 지수 ≤.03, 3x 잔점 0).
+   half3 FieldLayer(TEXTURE2D_PARAM(tex,smp),float2 uv,half detail,out half height)
+   {
+    float2 uv2=uv*.5+.23;
+    // 세부도 밉 바이어스 1.5(텍셀 약 1.4cm→4cm 평균)에서 읽어 자갈 한 알 크기의 점을 지운다.
+    half3 near=SAMPLE_TEXTURE2D_BIAS(tex,smp,uv,1.5).rgb*.55+SAMPLE_TEXTURE2D_BIAS(tex,smp,uv2,1.5).rgb*.45;
+    half3 broad=SAMPLE_TEXTURE2D_LOD(tex,smp,uv,4).rgb*.55+SAMPLE_TEXTURE2D_LOD(tex,smp,uv2,4).rgb*.45;
+    half lb=max(dot(broad,half3(.299,.587,.114)),.03h),d=dot(near,half3(.299,.587,.114))-lb;
+    height=saturate(lb*1.6+d*.8);
+    return broad*(1+clamp(d/lb,-.5h,.5h)*detail);
+   }
+   half3 FieldNormal(TEXTURE2D_PARAM(tex,smp),float2 uv,half scale)
+   {
+    half3 a=UnpackNormalScale(SAMPLE_TEXTURE2D_BIAS(tex,smp,uv,1.5),scale),b=UnpackNormalScale(SAMPLE_TEXTURE2D_BIAS(tex,smp,uv*.5+.23,1.5),scale);
+    return normalize(half3(a.xy+b.xy,a.z*b.z));
+   }
+   // 높이 블렌딩: 마스크가 바뀌는 곳에서 높은 쪽 질감이 먼저 올라온다. 폭 .12는 화면에서 약 .3~.5m 경계.
+   float HeightBlend(half baseH,half layerH,float mask){return smoothstep(-.12,.12,(mask-.5)*1.4+(layerH-baseH)*.6);}
    half4 frag(V i):SV_Target
    {
     float2 tile=i.world.xz/6;float sweep=smoothstep(0,1,(sin(i.world.x*.7+i.world.z*.29)+sin(i.world.z*.51-i.world.x*.17)+2)*.25);
@@ -64,22 +87,33 @@ Shader "EXODUSER/HellGroundPBR"
     InputData input=(InputData)0;input.positionWS=i.world;input.normalWS=normalize(mul(nt,float3x3(t,b,n)));input.viewDirectionWS=GetWorldSpaceNormalizeViewDir(i.world);
     input.shadowCoord=TransformWorldToShadowCoord(i.world);input.bakedGI=SampleSH(input.normalWS);input.normalizedScreenSpaceUV=GetNormalizedScreenSpaceUV(i.positionCS);input.shadowMask=1;
     float mossMix=0;
+    float fieldSmooth=0;
     if(_FullField>.5)
     {
+     // 11-07 1-1 바닥 질감(리소스·PoE2 실측): 텍셀 190~205px/m(1024² 한 장을 5.0~5.4m마다), UV×1·×0.5 이중 스케일,
+     // 높이 블렌딩(색 명도에서 뽑은 낮은 밉 높이, 경계 약 .3~.5m), 월드 노이즈 거시 마스크(약 10~14m, sin 무늬 대신), 색 변주 ±5%, 채도 .72배.
      float edge=(SAMPLE_TEXTURE2D(_FieldSdf,sampler_FieldSdf,float2(i.world.x/80,-i.world.z/80)).r-.5)*40;
-     float macro=smoothstep(-.7,.7,sin(i.world.x*.27+sin(i.world.z*.23)*1.8)+sin(i.world.z*.36+i.world.x*.16)*.55);
+     float2 wp=i.world.xz;
+     float macro=smoothstep(.28,.72,FieldNoise(wp/13.0+float2(3.1,7.7))*.7+FieldNoise(wp/5.5+float2(11.3,2.9))*.3);
      float fringe=1-smoothstep(.1,5,edge);
-     float2 soilFine=i.world.xz/2.3;
-     half3 dirt=SAMPLE_TEXTURE2D(_SoilMap,sampler_ForestMap,soilFine).rgb*half3(.55,.48,.36);
-     half3 roots=SAMPLE_TEXTURE2D(_RootMap,sampler_ForestMap,i.world.xz/3.8).rgb*half3(.60,.48,.32);
-     half3 leaves=SAMPLE_TEXTURE2D(_ForestMap,sampler_ForestMap,i.world.xz/1.8).rgb*half3(.47,.38,.24);
-     half3 moss=SAMPLE_TEXTURE2D(_FieldMoss,sampler_ForestMap,i.world.xz/2.6).rgb*half3(.50,.56,.34);
-     mossMix=SAMPLE_TEXTURE2D(_FieldCover,sampler_FieldCover,float2(i.world.x/80,-i.world.z/80)).r*(.48+.35*macro);
-     a=lerp(dirt,roots,.3+.35*fringe);a=lerp(a,leaves,macro*.42);a=lerp(a,moss,mossMix);
-     nt=normalize(lerp(UnpackNormalScale(SAMPLE_TEXTURE2D(_SoilNormal,sampler_ForestMap,soilFine),.65),UnpackNormalScale(SAMPLE_TEXTURE2D(_RootNormal,sampler_ForestMap,i.world.xz/3.8),.65),.3+.35*fringe));
-     nt=normalize(lerp(nt,UnpackNormalScale(SAMPLE_TEXTURE2D(_FieldMossNormal,sampler_ForestNormal,i.world.xz/2.6),.55),mossMix));
+     half hs,hr,hl,hm;
+     half3 dirt=FieldLayer(_SoilMap,sampler_ForestMap,wp/5.0,.25,hs)*half3(.58,.52,.43);
+     half3 roots=FieldLayer(_RootMap,sampler_ForestMap,wp/5.0+.37,.35,hr)*half3(.60,.52,.42);
+     half3 leaves=FieldLayer(_ForestMap,sampler_ForestMap,wp/5.4+.61,.55,hl)*half3(.55,.48,.37);
+     half3 moss=FieldLayer(_FieldMoss,sampler_ForestMap,wp/5.2+.19,.30,hm)*half3(.50,.52,.40);
+     float cover=SAMPLE_TEXTURE2D(_FieldCover,sampler_FieldCover,float2(i.world.x/80,-i.world.z/80)).r;
+     half h=hs;a=dirt;fieldSmooth=.30;
+     float tr=HeightBlend(h,hr,.30+.35*fringe);a=lerp(a,roots,tr);h=lerp(h,hr,tr);fieldSmooth=lerp(fieldSmooth,.26,tr);
+     float tl=HeightBlend(h,hl,macro*.48);a=lerp(a,leaves,tl);h=lerp(h,hl,tl);fieldSmooth=lerp(fieldSmooth,.22,tl);
+     mossMix=HeightBlend(h,hm,cover*(.45+.35*macro));a=lerp(a,moss,mossMix);fieldSmooth=lerp(fieldSmooth,.28,mossMix);
+     half3 nSoil=FieldNormal(_SoilNormal,sampler_ForestMap,wp/5.0,.3),nRoot=FieldNormal(_RootNormal,sampler_ForestMap,wp/5.0+.37,.45);
+     nt=normalize(lerp(nSoil,nRoot,tr));
+     nt=normalize(lerp(nt,FieldNormal(_ForestNormal,sampler_ForestNormal,wp/5.4+.61,.3),tl));
+     nt=normalize(lerp(nt,FieldNormal(_FieldMossNormal,sampler_ForestNormal,wp/5.2+.19,.45),mossMix));
      input.normalWS=normalize(mul(nt,float3x3(t,b,n)));
-     a*=lerp(.8,1.12,macro);
+     a*=lerp(.88,1.06,macro);
+     a*=1+(half3(FieldNoise(wp/9.0+float2(1.7,4.2)),FieldNoise(wp/9.0+float2(8.3,.6)),FieldNoise(wp/9.0+float2(5.9,9.1)))-.5)*.10;
+     half lum=dot(a,half3(.299,.587,.114));a=lerp(lum.xxx,a,.82);
     }
     SurfaceData surface=(SurfaceData)0;surface.albedo=a;surface.alpha=1;surface.occlusion=1;surface.normalTS=nt;surface.specular=.04;
     half rough=SAMPLE_TEXTURE2D(_RockRough,sampler_RockRough,tile).r;surface.smoothness=lerp(.24,.50-.25*rough,rock);surface.metallic=0;
@@ -88,7 +122,7 @@ Shader "EXODUSER/HellGroundPBR"
     surface.smoothness=lerp(surface.smoothness,.12+.18*(1-SAMPLE_TEXTURE2D(_RootRough,sampler_ForestRough,rootUV).r),rootMix);
     half leafRough=SAMPLE_TEXTURE2D(_ForestRough,sampler_ForestRough,leafUV).r;surface.smoothness=lerp(surface.smoothness,.12+.18*(1-leafRough),leafMix);
     surface.smoothness=lerp(surface.smoothness,.22+.23*(1-SAMPLE_TEXTURE2D(_FieldMossRough,sampler_ForestRough,i.world.xz/2.6).r),mossMix);
-    if(_FullField>.5)surface.smoothness=lerp(.44-.24*SAMPLE_TEXTURE2D(_SoilRough,sampler_ForestMap,i.world.xz/2.3).r,.24+.18*(1-SAMPLE_TEXTURE2D(_FieldMossRough,sampler_ForestMap,i.world.xz/2.6).r),mossMix);
+    if(_FullField>.5)surface.smoothness=fieldSmooth; // 재질마다 거칠기 한 값: 바닥 반짝이 점 제거
     #if defined(_DBUFFER)
     ApplyDecalToSurfaceData(i.positionCS,surface,input);
     input.bakedGI=SampleSH(input.normalWS);

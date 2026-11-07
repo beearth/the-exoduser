@@ -104,11 +104,39 @@ namespace Exoduser.UnityPort
                     yield return KeyshotSave(folder,names[i],receipt);
                 }
             }
+            {string video=Argument("-field-video");if(!string.IsNullOrEmpty(video))yield return A2FieldVideo(video);}
             receipt.unityErrors=keyshotErrors;
             receipt.passed=keyshotErrors==0&&receipt.frames.Count==22&&receipt.frames.TrueForAll(f=>f.remodel&&f.actualScreen&&f.screenHeight==1080&&(f.screenWidth==1920||f.screenWidth==3840)&&f.luminance>.01f);
             File.WriteAllText(Path.Combine(output,"전체필드-검수.json"),JsonUtility.ToJson(receipt,true));
             Application.logMessageReceived-=KeyshotLog;lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();
             yield return new WaitForSecondsRealtime(.5f);Application.Quit(receipt.passed?0:3);
+        }
+        // 11-07 맵 1단계 검수: 정지 구도 10초 무음 프레임(30fps, 게임 시간 고정 간격). 안개 흐름·불꽃·광원 변화가 살아 있는지 본다.
+        // -field-video <폴더> [-field-video-at x:y(Core 좌표, 실행기가 쉼표로 인수를 나누므로 콜론)]. 프레임은 JPG로 쓰고 영상 변환은 바깥 ffmpeg가 한다.
+        IEnumerator A2FieldVideo(string folder)
+        {
+            Screen.SetResolution(1920,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.5f);
+#if UNITY_STANDALONE_WIN
+            if(Screen.width!=1920||Screen.height!=1080)FieldCaptureResize(1920,1080);
+#endif
+            float sizeDeadline=Time.realtimeSinceStartup+5;
+            while((Screen.width!=1920||Screen.height!=1080)&&Time.realtimeSinceStartup<sizeDeadline)yield return null;
+            Directory.CreateDirectory(folder);
+            var at=Argument("-field-video-at");var p=new Vector2(4000,5000);
+            if(!string.IsNullOrEmpty(at)){var parts=at.Split(':');float x,y;if(parts.Length==2&&float.TryParse(parts[0],System.Globalization.NumberStyles.Float,System.Globalization.CultureInfo.InvariantCulture,out x)&&float.TryParse(parts[1],System.Globalization.NumberStyles.Float,System.Globalization.CultureInfo.InvariantCulture,out y))p=new Vector2(x,y);}
+            Simulation.Player.X=p.x;Simulation.Player.Y=p.y;lastX=p.x;lastY=p.y;
+            for(int frame=0;frame<30;frame++){UpdateViews();yield return null;}
+            int previous=Time.captureFramerate;Time.captureFramerate=30;
+            try
+            {
+                for(int frame=0;frame<300;frame++)
+                {
+                    UpdateViews();yield return new WaitForEndOfFrame();
+                    var shot=ScreenCapture.CaptureScreenshotAsTexture();
+                    File.WriteAllBytes(Path.Combine(folder,"f"+frame.ToString("000")+".jpg"),shot.EncodeToJPG(93));Destroy(shot);
+                }
+            }
+            finally{Time.captureFramerate=previous;}
         }
 #if UNITY_STANDALONE_WIN
         delegate bool FieldWindowCallback(System.IntPtr window,System.IntPtr state);
