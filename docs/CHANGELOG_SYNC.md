@@ -58184,3 +58184,9 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 2026-11-04 L11 크래시 P1 수정(표현 코드만, Core·수치 무변경, 컴파일 미확인): R11 CombatImpactView 피격 클립 sprite==null NRE(생성 직후 enabled=false + DrawEnemyHits sprite 가드), R12 NativeGame.PauseFocus 사망 결정 화면 포커스 상실 시 메뉴 전환 차단, R13 NativeEnemyRigRenderer 65·68행 SyncActor try/catch 가드. UNITY_RUN_EXCEPTION_AUDIT R11~R13, 상세 worklog/cloud-lanes/L11-crash-p1_20261104.md
 2026-11-05 가리는 물체 통째 반투명·사망 글자 정리(claude/unity-tree-fade-20261105, 표현만, Core 무변경): 가림 투명화가 후보 브랜치에만 있어 unity/main에 없었다. A2SightFade를 새로 넣어 영웅과 카메라 사이의 3D 물체를 alpha .3로 처리한다(나무에 붙은 작은 장식 포함, 바닥·물·다리·납작한 메시 제외, 디더링 0). 사망 대기의 "죽음·부활력" 글자와 게이지를 끄고 글자 화면은 "안식은 없다" 하나만 둔다. 부활 판정·대기 시간은 그대로다. 검사 --unity-a2-sight-check 4장, M1 23/23.
 2026-11-05 설정 "이 빌드 미지원" 안내 겹침 수정(표현만, Core 무변경): 795869009 데모 통합 뒤 de·fr에서 옵션 이름과 안내가 겹쳐 BuildLoop가 0a5802e84를 FAIL 처리함(새 겹침 72건, 그중 스킬슬롯12 de 2건은 재검사에서 재현 안 됨). NativePauseMenu.A15Web.cs: 이름+안내가 한 줄에 안 들어가면 이름 r.y+1, 안내 r.y+26 왼쪽 정렬로 두 줄 표시. 검증: 1410장 707건 전부 알려진 목록, 새 겹침 0, known-overlaps 무변경.
+
+## 2026-11-05 BH 연구: 33° 쿼터뷰 탄막 가독성 (docs만, Core 무변경)
+
+- 새 문서 docs/0마스터플랜/GAME_STUDY/bullet_hell_quarter_view.md: 레퍼런스 10종(동방·Gungeon·Nuclear Throne·Hades·Returnal·Furi·Nine Sols·PoE2·D4·Vampire Survivors) 탄 문법, 기울어진 카메라 문제·해법, 회피·패링 관례 vs Core(구르기 무적 14/18·E 패링 16틱·Q 무지개탄), 핵슬+탄막 공존·실패 사례, Mac 33° 테스트 판정 기준표(A 크기·B 통로·C 색 ΔL*·D 예고 틱) 초안.
+- Core 수치는 Runtime/Core 파일:줄로 인용만 했고 변경 0. 제안 3건은 "Core 제안 BH-1~3"으로 번호. 매뉴얼 07·08은 아직 저장소에 없어 반영 제안만 적음.
+- 이 세션은 WebFetch 전 도메인 차단이라 웹 근거는 모두 "검색 발췌", 미검증 11건 집계.
