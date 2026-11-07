@@ -1,6 +1,7 @@
 using System;
 #if UNITY_5_3_OR_NEWER
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Exoduser.UnityPort.Core;
 #endif
@@ -270,12 +271,169 @@ namespace Exoduser.UnityPort
         }
     }
 
+    /// <summary>
+    /// 대검 1타 손 키 클립(11-07, Warrior_GS_A1: 57프레임 = Core 1타 24/5/28틱)의 재생 프레임.
+    /// 클립 프레임 = Core 경과 틱: wWindup(BasicWindup) 진입 틱 = f0, wSwing 진입 = f24, HitArc 틱 = f26(클립 접점), wRecover = f29~f56.
+    /// 회복 길이가 공속으로 28이 아니면 회복 구간만 비율로 늘이고 줄인다(접점 프레임은 고정). 표현 전용, Core를 읽기만 한다.
+    /// </summary>
+    public sealed class GreatswordKeyClock
+    {
+        public const int WindupFrames=24,SwingFrames=5,RecoverFrames=28,Length=WindupFrames+SwingFrames+RecoverFrames,ContactFrame=26;
+        const int BlendInFrames=4,BlendOutFrames=8;
+        string previousState;int enteredTick,lastTick=-1;float recoveryLength=RecoverFrames;bool firstStrike;
+        public bool Active {get;private set;}
+        public float Frame {get;private set;}
+        public float Weight {get;private set;}
+        public void Reset(){previousState=null;firstStrike=false;Active=false;Frame=0;Weight=0;lastTick=-1;}
+        public void Observe(HeroMotionInput q)
+        {
+            if(lastTick>=0&&q.Tick<lastTick)Reset();
+            lastTick=q.Tick;
+            if(q.State!=previousState)
+            {
+                enteredTick=q.Tick;
+                if(q.State=="wWindup")firstStrike=q.BasicWindup;
+                else if(q.State=="wRecover")recoveryLength=Math.Max(1,q.RemainingTicks);
+                else if(q.State!="wSwing")firstStrike=false;
+                previousState=q.State;
+            }
+            bool interrupted=q.Rolling||q.Chain||q.EffectiveHealth<=0;
+            Active=firstStrike&&!interrupted&&(q.State=="wWindup"||q.State=="wSwing"||q.State=="wRecover");
+            if(!Active){Weight=0;return;}
+            int elapsed=Math.Max(0,q.Tick-enteredTick);
+            if(q.State=="wWindup")Frame=Math.Min(elapsed,WindupFrames-1);
+            else if(q.State=="wSwing")Frame=WindupFrames+Math.Min(elapsed,SwingFrames-1);
+            else
+            {
+                float phase=Math.Max(0,Math.Min(1,1-q.RemainingTicks/recoveryLength));
+                Frame=WindupFrames+SwingFrames+phase*(RecoverFrames-1);
+            }
+            float fadeIn=Math.Min(1,(Frame+1)/BlendInFrames),fadeOut=Math.Min(1,(Length-1-Frame)/BlendOutFrames+.125f);
+            Weight=Math.Max(0,Math.Min(fadeIn,fadeOut));
+        }
+    }
+
+
+    public enum GreatswordClip { None=-1, A1=0, Combo=1, Bash=2, Charge=3, Release=4 }
+    /// <summary>대검 손 키 5클립(1타·콤보·우클·차징·놓기)을 Core 상태·틱으로 고른다. 표현만 읽고 Core 수치·판정은 바꾸지 않는다.
+    /// 클립 프레임 = Core 경과 틱이라 칼 접점 프레임이 HitArc 틱과 항상 같다(1타 f26, 2타 f59, 3타 탭 f99, 놓기 f12, 우클 f12).</summary>
+    public sealed class GreatswordKeyDirector
+    {
+        public const int A1SwingStart=24,A1RecoverStart=29,A1RecoverEnd=56;
+        public const int Hit2Swing=57,Hit2RecoverStart=62,Hit2RecoverEnd=95,Hit3Swing=97,Hit3RecoverStart=102,Hit3RecoverEnd=135;
+        public const int ReleaseSwing=10,ReleaseRecoverStart=15,ReleaseRecoverEnd=48;
+        public const int BashDrawEnd=3,BashStrike=4,BashRecoverStart=24,BashRecoverEnd=51;
+        public const int ChargeEnd=170,ChargeLoopStart=122,ChargeLoop=48;   // 3단 뒤 숨쉬기 12틱 x4 반복
+        public const int TapChargeTicks=8;      // 8틱 안에 놓으면 탭 3타, 그보다 길면 차지 놓기
+        public const float LeftGrip=.20f,BladeLength=2.50f,SocketToPommel=.15f*BladeLength/1.60f,SocketToTip=BladeLength-SocketToPommel;
+        public const int BlendIn=4,BlendOut=8,Cross=3,Rejoin=8;   // 직전 키 클립이 Rejoin틱 안에 끝났으면 운반 포즈를 거치지 않고 그 자세에서 이어 받는다
+        enum Hit { None, First, Second, Third, Charge, Release, Bash, Idle }
+        Hit hit;string previousState;int enteredTick,lastTick=-1,activeStart,switchTick=-1000,lastActiveTick=-1000;GreatswordClip lastClip=GreatswordClip.None;float lastFrame;float recoveryLength=1,lastCharge;bool comboMode;
+        public GreatswordClip Clip {get;private set;}=GreatswordClip.None;
+        public bool Active => Clip!=GreatswordClip.None;
+        public float Frame {get;private set;}
+        public float Weight {get;private set;}
+        /// <summary>앞 클립·타격에서 이어진 전환이면 0부터 세는 틱(혼합용), 아니면 큰 값.</summary>
+        public int SinceSwitch {get;private set;}=1000;
+        /// <summary>키 자세에서 기존 절차 포즈(달리기 등)로 빠져나가는 중(Weight가 1→0).</summary>
+        public bool Exiting {get;private set;}
+        public void Reset(){hit=Hit.None;previousState=null;lastTick=-1;activeStart=0;switchTick=-1000;lastActiveTick=-1000;lastClip=GreatswordClip.None;Exiting=false;Clip=GreatswordClip.None;Frame=0;Weight=0;SinceSwitch=1000;}
+        public void Observe(HeroMotionInput q)
+        {
+            if(lastTick>=0&&q.Tick<lastTick)Reset();
+            lastTick=q.Tick;
+            var oldHit=hit;var oldClip=Clip;
+            if(q.State!=previousState)
+            {
+                string from=previousState;enteredTick=q.Tick;previousState=q.State;
+                if(q.State=="wWindup"){if(q.BasicWindup){hit=Hit.First;comboMode=q.KiAttack;}else hit=Hit.Charge;}
+                else if(q.State=="wSwing"){if(from=="wWindup"&&hit==Hit.First){}else if(from=="wWindup"&&hit==Hit.Charge)hit=lastCharge<=TapChargeTicks?Hit.Third:Hit.Release;else hit=Hit.Second;}
+                else if(q.State=="wRecover"||q.State=="sRecover")recoveryLength=Math.Max(1,q.RemainingTicks);
+                else if(q.State=="sDraw")hit=Hit.Bash;
+                else if(q.State=="sBash"){if(hit!=Hit.Bash)hit=Hit.Bash;}
+                else if(q.State=="idle")hit=Hit.Idle;
+                else hit=Hit.None;
+            }
+            if(q.State=="wWindup"&&hit==Hit.Charge)lastCharge=q.Charge;
+            bool interrupted=q.Rolling||q.Chain||q.EffectiveHealth<=0;
+            int e=Math.Max(0,q.Tick-enteredTick);
+            float phase=Math.Max(0,Math.Min(1,1-q.RemainingTicks/recoveryLength));
+            var clip=GreatswordClip.None;float frame=0,end=0;
+            switch(hit)
+            {
+                case Hit.First:
+                    clip=comboMode?GreatswordClip.Combo:GreatswordClip.A1;
+                    if(q.State=="wWindup")frame=Math.Min(e,A1SwingStart-1);
+                    else if(q.State=="wSwing")frame=A1SwingStart+Math.Min(e,4);
+                    else if(q.State=="wRecover")frame=A1RecoverStart+phase*(A1RecoverEnd-A1RecoverStart);
+                    else clip=GreatswordClip.None;
+                    end=A1RecoverEnd;break;
+                case Hit.Second:case Hit.Third:
+                    clip=GreatswordClip.Combo;bool two=hit==Hit.Second;
+                    if(q.State=="wSwing")frame=(two?Hit2Swing:Hit3Swing)+Math.Min(e,4);
+                    else if(q.State=="wRecover")frame=two?Hit2RecoverStart+phase*(Hit2RecoverEnd-Hit2RecoverStart):Hit3RecoverStart+phase*(Hit3RecoverEnd-Hit3RecoverStart);
+                    else clip=GreatswordClip.None;
+                    end=two?Hit2RecoverEnd:Hit3RecoverEnd;break;
+                case Hit.Charge:
+                    clip=q.State=="wWindup"?GreatswordClip.Charge:GreatswordClip.None;
+                    frame=e<=ChargeEnd?e:ChargeLoopStart+((e-ChargeLoopStart)%ChargeLoop);end=1e9f;break;
+                case Hit.Release:
+                    clip=GreatswordClip.Release;
+                    if(q.State=="wSwing")frame=ReleaseSwing+Math.Min(e,4);
+                    else if(q.State=="wRecover")frame=ReleaseRecoverStart+phase*(ReleaseRecoverEnd-ReleaseRecoverStart);
+                    else clip=GreatswordClip.None;
+                    end=ReleaseRecoverEnd;break;
+                case Hit.Idle:
+                    // 제자리 대기 = 1타 f0(양손 운반, 두손 파지). 움직이면 기존 절차 보행으로 빠져나간다
+                    clip=q.State=="idle"&&!q.Moving?GreatswordClip.A1:GreatswordClip.None;frame=0;end=1e9f;break;
+                case Hit.Bash:
+                    clip=GreatswordClip.Bash;
+                    if(q.State=="sDraw")frame=Math.Min(e,BashDrawEnd);
+                    else if(q.State=="sBash")frame=BashStrike+Math.Min(e,BashRecoverStart-BashStrike-1);
+                    else if(q.State=="sRecover")frame=BashRecoverStart+phase*(BashRecoverEnd-BashRecoverStart);
+                    else clip=GreatswordClip.None;
+                    end=BashRecoverEnd;break;
+            }
+            if(interrupted)clip=GreatswordClip.None;
+            if(clip==GreatswordClip.None)
+            {
+                // 회복 끝에서 운반 포즈로 섞지 않는다. 키가 끝난 뒤 다른 절차 상태로 가면 BlendOut틱 동안 마지막 키 자세에서 빠져나간다(구르기·체인·사망은 즉시)
+                int dt=q.Tick-lastActiveTick;
+                if(!interrupted&&lastClip!=GreatswordClip.None&&dt>0&&dt<BlendOut){Clip=lastClip;Frame=lastFrame;Weight=1-dt/(float)BlendOut;SinceSwitch=1000;Exiting=true;return;}
+                Clip=clip;Weight=0;SinceSwitch=1000;Exiting=false;return;
+            }
+            Exiting=false;
+            if(oldClip!=GreatswordClip.None&&(oldClip!=clip||oldHit!=hit))switchTick=q.Tick;   // 앞 클립·타격 자세에서 이어 받는다
+            if(oldClip==GreatswordClip.None)
+            {
+                bool rejoin=q.Tick-lastActiveTick<=Rejoin;
+                activeStart=rejoin?q.Tick-BlendIn:q.Tick;
+                if(rejoin)switchTick=q.Tick;
+            }
+            lastActiveTick=q.Tick;
+            Clip=clip;Frame=frame;SinceSwitch=Math.Max(0,q.Tick-switchTick);
+            Weight=Math.Min(1,(q.Tick-activeStart+1f)/BlendIn);   // 회복 끝은 대기(1타 f0)로 이어지므로 빠져나가는 혼합을 하지 않는다
+            lastClip=clip;lastFrame=frame;
+        }
+    }
+
 #if UNITY_5_3_OR_NEWER
     /// <summary>Core를 읽는 전사 표현. 루트 위치·방향·충돌·판정의 writer는 NativeGame이다.</summary>
     [DefaultExecutionOrder(90)]
     public sealed class NativeHeroMotion : MonoBehaviour
     {
         readonly NativeHeroMotionClock clock=new NativeHeroMotionClock();
+        readonly GreatswordKeyDirector keyDirector=new GreatswordKeyDirector();
+        [Serializable] sealed class KeyPoseTable { public int fps=60,frames,contactFrame,hips=-1; public string[] paths; public float[] rot,hipsPos,lh; }
+        static readonly string[] KeyClipNames={"A1","Combo","Bash","Charge","Release"};   // GreatswordClip 순서
+        readonly KeyPoseTable[] keyTables=new KeyPoseTable[5];Transform[] keyBones;Quaternion[] keyLastRot,keyFromRot;Vector3 keyLastHips,keyFromHips;bool keyHasLast;
+        KeyPoseTable KeyTable => keyDirector.Active?keyTables[(int)keyDirector.Clip]:null;
+        public bool KeyClipActive => keyBones!=null&&KeyTable!=null;
+        public float KeyClipFrame => keyDirector.Frame;
+        public GreatswordClip KeyClip => keyDirector.Clip;
+        float keyLeftHold=1;
+        /// <summary>지금 키 자세에서 왼손이 손잡이를 쥔 비율(대기 한손 운반 = 0).</summary>
+        public float KeyLeftHold => KeyClipActive?keyLeftHold:1;
         readonly RigPixelLocomotionClock gait=new RigPixelLocomotionClock();
         readonly RigPixelTurnClock turn=new RigPixelTurnClock();
         bool rigPixelMotion;
@@ -351,7 +509,88 @@ namespace Exoduser.UnityPort
             spineBend=Muscle("Spine Front-Back");chestBend=Muscle("Chest Front-Back");spineTwist=Muscle("Spine Twist Left-Right");chestTwist=Muscle("Chest Twist Left-Right");
             CacheBladeTip();
             PrepareRollContact();
+            BindKeyClip();
             ready=true;
+        }
+        // 11-07 대검 손 키 1타. Humanoid Animator는 일반 Transform 곡선 클립을 SampleAnimation으로 적용하지 않는다
+        // → 반입 job(GreatswordKeyImport)이 실제 프리팹 계층에 구운 본별 로컬 자세 표를 LateUpdate에서 직접 쓴다. 망토는 CapeSpring 몫이라 표에 없다.
+        void BindKeyClip()
+        {
+            keyBones=null;Array.Clear(keyTables,0,keyTables.Length);string[] paths=null;
+            for(int c=0;c<KeyClipNames.Length;c++)
+            {
+                var asset=Resources.Load<TextAsset>("Characters/Warrior_GS_"+KeyClipNames[c]+"_pose");if(asset==null){Debug.LogWarning("[대검 키] 표 없음: "+KeyClipNames[c]);continue;}
+                var table=JsonUtility.FromJson<KeyPoseTable>(asset.text);
+                if(table==null||table.paths==null||table.frames<=0||table.rot==null||table.rot.Length!=table.frames*table.paths.Length*4)continue;
+                if(paths==null)paths=table.paths;else if(!paths.SequenceEqual(table.paths)){Debug.LogWarning("[대검 키] 본 순서 불일치: "+KeyClipNames[c]);continue;}
+                keyTables[c]=table;
+            }
+            if(paths==null)return;
+            var bones=new Transform[paths.Length];
+            for(int i=0;i<bones.Length;i++){bones[i]=animator.transform.Find(paths[i]);if(bones[i]==null){Debug.LogWarning("[대검 키] 본 경로 없음: "+paths[i]);return;}}
+            keyBones=bones;keyLastRot=new Quaternion[bones.Length];keyFromRot=new Quaternion[bones.Length];keyHasLast=false;
+        }
+        void ApplyKeyClip()
+        {
+            // 기존 대기 운반 포즈에서 들어오고(4f) 회복 끝에서 다시 대기 포즈로 돌아간다(8f). 클립·타격이 바뀌면 직전에 적용한 키 자세에서 3틱 동안 이어 받는다.
+            // 표는 모델 로컬 공간이라 조준 yaw는 루트가 맡는다.
+            if(leftGrip!=null)ApplyCarryPose(false);
+            var t=KeyTable;int n=keyBones.Length;
+            float frame=Mathf.Clamp(keyDirector.Frame,0,t.frames-1);int f0=(int)frame,f1=Math.Min(f0+1,t.frames-1);float u=frame-f0,w=keyDirector.Weight;
+            int since=keyDirector.SinceSwitch;bool cross=keyHasLast&&since<GreatswordKeyDirector.Cross;
+            if(cross&&since==0){Array.Copy(keyLastRot,keyFromRot,n);keyFromHips=keyLastHips;}
+            float c=cross?(since+1f)/(GreatswordKeyDirector.Cross+1f):1;
+            for(int i=0;i<n;i++)
+            {
+                int a=(f0*n+i)*4,b=(f1*n+i)*4;
+                var q=Quaternion.Slerp(new Quaternion(t.rot[a],t.rot[a+1],t.rot[a+2],t.rot[a+3]),new Quaternion(t.rot[b],t.rot[b+1],t.rot[b+2],t.rot[b+3]),u);
+                if(cross)q=Quaternion.Slerp(keyFromRot[i],q,c);
+                keyBones[i].localRotation=w>=.999f?q:Quaternion.Slerp(keyBones[i].localRotation,q,w);
+                keyLastRot[i]=q;
+            }
+            if(t.hips>=0&&t.hipsPos!=null)
+            {
+                var p=Vector3.Lerp(new Vector3(t.hipsPos[f0*3],t.hipsPos[f0*3+1],t.hipsPos[f0*3+2]),new Vector3(t.hipsPos[f1*3],t.hipsPos[f1*3+1],t.hipsPos[f1*3+2]),u);
+                if(cross)p=Vector3.Lerp(keyFromHips,p,c);
+                keyBones[t.hips].localPosition=w>=.999f?p:Vector3.Lerp(keyBones[t.hips].localPosition,p,w);
+                keyLastHips=p;
+            }
+            // 칼끝 접지 하한 4cm(Blender 키와 같은 규칙): 운반 포즈와 섞이는 회복 끝에서 칼이 땅을 뚫지 않게 오른팔을 들어 올린다
+            bool lifted=false;
+            if(rightUpper!=null&&rightFore!=null&&rightHand!=null&&TryGetBladeTip(out var keyTip))
+            {
+                float h=Vector3.Dot(keyTip-transform.position,transform.up);
+                if(h<.04f)
+                {
+                    var rot=rightHand.rotation;var hint=rightFore.position-(rightUpper.position+rightHand.position)*.5f;if(hint.sqrMagnitude<1e-6f)hint=transform.right;
+                    SolveArm(rightUpper,rightFore,rightHand,rightHand.position+transform.up*(.04f-h),hint.normalized);rightHand.rotation=rot;lifted=true;
+                }
+            }
+            // 양손 파지 유지: 키 자세가 켜져 있는 동안 왼팔 2본 IK로 손잡이(소켓에서 칼머리 쪽 LeftGrip)에 붙인다(혼합·전환·접지 보정 중에도 끝까지).
+            // 왼팔이 닿지 않으면 오른손(칼)을 그만큼 왼어깨 쪽으로 당긴다. 절차 포즈로 빠져나갈 때만 남은 비율만큼 놓는다.
+            if(leftGrip!=null&&socket!=null&&leftUpper!=null&&leftFore!=null&&leftHand!=null&&rightUpper!=null&&rightFore!=null&&rightHand!=null)
+            {
+                // 표의 프레임별 왼손 파지 비율(대기 한손 운반 = 0)을 따른다
+                float lhNow=t.lh!=null&&t.lh.Length==t.frames?Mathf.Lerp(t.lh[f0],t.lh[f1],u):1;
+                float hold=lhNow*(keyDirector.Exiting?Mathf.Clamp01(w):1);keyLeftHold=hold;
+                var handRot=leftHand.rotation;float reach=(Vector3.Distance(leftUpper.position,leftFore.position)+Vector3.Distance(leftFore.position,leftHand.position))*.995f;
+                for(int it=0;it<4;it++)
+                {
+                    var off=leftGrip.position-leftHand.position;
+                    var want=socket.position+socket.up*GreatswordKeyDirector.LeftGrip-off;
+                    var toWant=want-leftUpper.position;float over=toWant.magnitude-reach;
+                    if(over>0&&hold>=.999f&&lhNow>=.999f)
+                    {
+                        var rRot=rightHand.rotation;var rHint=rightFore.position-(rightUpper.position+rightHand.position)*.5f;if(rHint.sqrMagnitude<1e-6f)rHint=transform.right;
+                        SolveArm(rightUpper,rightFore,rightHand,rightHand.position-toWant.normalized*over,rHint.normalized);rightHand.rotation=rRot;
+                        want=socket.position+socket.up*GreatswordKeyDirector.LeftGrip-off;
+                    }
+                    var target=Vector3.Lerp(leftHand.position,want,hold);
+                    var pole=leftFore.position-(leftUpper.position+leftHand.position)*.5f;if(pole.sqrMagnitude<1e-6f)pole=-transform.right;
+                    SolveArm(leftUpper,leftFore,leftHand,target,pole.normalized);leftHand.rotation=handRot;
+                }
+            }
+            keyHasLast=true;
         }
         void CacheBladeTip()
         {
@@ -399,11 +638,12 @@ namespace Exoduser.UnityPort
         public void Sync(Simulation sim,bool moving)
         {
             if(sim==null)return;
-            if(!ReferenceEquals(observedSimulation,sim)){clock.Reset();gait.Reset();turn.Reset();leftPlanted=rightPlanted=false;observedSimulation=sim;rollGroundTick=-1;rollGroundPhase=-1;}
+            if(!ReferenceEquals(observedSimulation,sim)){clock.Reset();keyDirector.Reset();keyHasLast=false;gait.Reset();turn.Reset();leftPlanted=rightPlanted=false;observedSimulation=sim;rollGroundTick=-1;rollGroundPhase=-1;}
             if(!ready)Bind();
             var p=sim.Player;
             observed=new HeroMotionInput {State=p.State,Tick=sim.TickCount,RemainingTicks=p.StateTicks,RollRemaining=(float)sim.RollMoveT,Rolling=sim.RollActive,Moving=moving,EffectiveHealth=p.Hp+p.Shield,Combo=sim.KiComboStep,KiAttack=sim.Config.ActiveAttack=="kiSlash",Charge=p.KiChargeActive?p.KiChargeTicks:(float)sim.KgChg,BasicWindup=p.BasicWindup,SkillCastCount=sim.SkillCastCount,Chain=rigPixelMotion&&(sim.HarpActive||sim.DashActive),ChainPull=sim.DashActive};
             current=clock.Evaluate(observed);
+            keyDirector.Observe(observed);
             if(rigPixelMotion)turn.Observe(sim.TickCount,Mathf.Atan2(Mathf.Cos(p.Facing),-Mathf.Sin(p.Facing))*Mathf.Rad2Deg,current.Kind==HeroMotionKind.Idle||current.Kind==HeroMotionKind.Run);
             if(rigPixelMotion)gait.Observe(sim.TickCount,transform.position.x,NativeRemodel3D.Active?transform.position.z:transform.position.y,1/Math.Max(.01f,transform.lossyScale.y),3.0126457,moving&&current.Kind!=HeroMotionKind.Roll&&current.Kind!=HeroMotionKind.Chain&&current.Kind!=HeroMotionKind.Dead);
             if(ready)SampleLocomotion();
@@ -542,6 +782,7 @@ namespace Exoduser.UnityPort
             FootPivotActive=false;
             SampleLocomotion();
             if(rigPixelMotion)transform.localRotation=Quaternion.Euler(0,turn.Offset,0);
+            if(KeyClipActive){ApplyKeyClip();return;}
             var leftFootPosition=leftFoot!=null?leftFoot.position:Vector3.zero;var rightFootPosition=rightFoot!=null?rightFoot.position:Vector3.zero;
             var leftFootRotation=leftFoot!=null?leftFoot.rotation:Quaternion.identity;var rightFootRotation=rightFoot!=null?rightFoot.rotation:Quaternion.identity;
             var leftToePosition=leftToes!=null?leftToes.position:leftFootPosition;var rightToePosition=rightToes!=null?rightToes.position:rightFootPosition;
