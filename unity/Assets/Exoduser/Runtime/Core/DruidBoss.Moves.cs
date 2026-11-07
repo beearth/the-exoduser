@@ -15,7 +15,9 @@ namespace Exoduser.UnityPort.Core
         void StartPattern(EnemyState e, DruidData d, BossMove mv, double dist, int phase, int extraDelay)
         {
             d.AtkParryable = (Remodel ? Set.Parryable : Parryable).Contains(mv.Id);
-            int tele = I(mv.Tele * Ph(phase).TeleM) + extraDelay;
+            int tele = I(mv.Tele * Ph(phase).TeleM);
+            if (Remodel && Set.MinTele > 0 && !Set.Forced.Contains(mv.Id)) tele = Math.Max(tele, Set.MinTele);   // 11-07 tempo: a scaled telegraph never goes under 32 f
+            tele += extraDelay;
             if (!d.RmFire) { RmTell(mv, d, dist); d.PrevMove = d.CurMove; d.CurMove = mv.Id; }   // RM-1 sound: one telegraph = one tell sound, on the frame the telegraph starts
             double px = host.PX, py = host.PY;
             if (Remodel)
@@ -48,7 +50,7 @@ namespace Exoduser.UnityPort.Core
                 case "summon": d.S = "bossSummonWind"; d.St2 = Or(tele, 55); RmText(d.X, d.Y - 30, "👹 소환!", "#aa00ff", 50); break;
                 case "grab":
                     if (dist < 120) { d.S = "bossGrabWind"; d.St2 = Or(tele, 40); d.GrabWindMax = d.St2; d.GrabAng = d.Facing; RmText(d.X, d.Y - 30, "🖐 잡기!", "#cc00ff", 45); }
-                    else { d.S = "bossChargeWind"; d.St2 = Or(I(55 * Ph(phase).TeleM) + extraDelay, 55); RmText(d.X, d.Y - 30, "⚠ 돌진!", "#ffaa00", 50); }
+                    else { d.S = "bossChargeWind"; d.St2 = Or(Remodel ? tele : I(55 * Ph(phase).TeleM) + extraDelay, 55); RmText(d.X, d.Y - 30, "⚠ 돌진!", "#ffaa00", 50); }   // remodel: a grab picked out of reach winds up like the grab (11-07: was a fixed 55)
                     break;
                 case "spin": d.S = "bossSpinWind"; d.St2 = Or(tele, 35); d.SpinAng = 0; RmText(d.X, d.Y - 30, "🌀 회전참!", "#ff6644", 45); break;
                 case "mine": d.S = "bossMineWind"; d.St2 = Or(tele, 30); RmText(d.X, d.Y - 30, "💣 지뢰!", "#5e10a8", 40); break;

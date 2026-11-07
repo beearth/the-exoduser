@@ -105,9 +105,18 @@ namespace Exoduser.UnityPort.Core
         int RmRecoveryTicks(DruidData d, double webSt2)
         {
             string id = d.RmMoveId ?? "";
-            if (id == "grab" && RmGrab) return webSt2 == 40 ? DruidRemodelData.GrabMissRecovery : DruidRemodelData.GrabHeldRecovery;   // 40 = the miss of the web code
-            var mv = FindMove(id);
-            return mv != null ? mv.Rec : 40;
+            int rec;
+            if (id == "grab" && RmGrab) rec = webSt2 == 40 ? DruidRemodelData.GrabMissRecovery : DruidRemodelData.GrabHeldRecovery;   // 40 = the miss of the web code
+            else { var mv = FindMove(id); return mv != null ? RmScaleRec(d, mv.Rec) : 40; }
+            return RmScaleRec(d, rec);
+        }
+
+        // 11-07 tempo: the recovery of life 2 / 3 is shortened (Set.RecoveryMul), never under Set.MinRecovery (or under the table value if that is lower). Set without RecoveryMul = unchanged.
+        int RmScaleRec(DruidData d, int rec)
+        {
+            var m = Set.RecoveryMul; if (m == null || m.Length == 0) return rec;
+            double f = m[Math.Min(Math.Max(d.BossPhase, 0), m.Length - 1)]; if (f >= 1) return rec;
+            return Math.Max((int)Math.Round(rec * f), Math.Min(rec, Set.MinRecovery));
         }
 
         // a parry of this boss landed (E / Q on a swing, a dash, the slam, the tide ring): the recovery of that move is 30 f longer, once per move

@@ -34,19 +34,19 @@ namespace Exoduser.UnityPort.Core
         public const double WalkSpeed = 1.1, WalkStandOff = 100;               // stops walking once this close to the player (no orbiting, no side dodge)
         public const int WalkAccelTicks = 20, WalkStopTicks = 12;              // 0 -> max in 20 f, max -> 0 in 12 f
         public const double WalkTurn = 3 * Math.PI / 180, TeleTurn = 2 * Math.PI / 180;   // rad per tick: walking 3 deg, during a telegraph 2 deg
-        public const int AimFixTicks = 12;                                     // the aim is frozen this many ticks before the move goes off (M2); the feint cuts the first half only
+        public const int AimFixTicks = 20;                                     // the aim is frozen this many ticks before the move goes off (M2); 11-07 tempo: 12 -> 20 (PoE2 stops tracking 256-450 ms before the contact); the feint cuts the first half only
         public static readonly int[] GapTicks = { 45, 36, 30 };                // recovery end -> next telegraph, life 1 / 2 / 3 (M4)
         public const int ComboLinkTicks = 12;                                  // between the moves of a combo
         public const int ParryRecoveryBonus = 30;                              // a parried move recovers 30 f longer (M3): hits 1-2 of #1, #2, #3, #10
         public const int FeintRecovery = 25;
         // move frames that are not in the table (BossMove.Tele / Rec / Cd): active parts and speeds, spec §10.2
-        public const int SlashActive = 8, SlashHitAt = 6, SlashLinkTele = 24;  // #1: telegraph 32 for the first hit (Moves[0].Tele), 24 for hits 2 and 3, swing 8 f, damage check when St2 == 6
+        public const int SlashActive = 8, SlashHitAt = 6, SlashLinkTele = 52;  // #1: telegraph 32 for the first hit (Moves[0].Tele), 52 for hits 2 and 3 (11-07 tempo: was 24; contact-to-contact = 52 + 8 - 6 + 6 = 60 f, reference 54-66), swing 8 f, damage check when St2 == 6
         public const int SlamActive = 6;                                       // #2
         public const double ChargeSpeed = 22, ChargeTicks = 40;                // #3: up to 880 px
         public const double FissureSpeed = 14;                                 // #4: head px per tick
         public const double FanBulletMul = 0.75;                               // #5
         public const int GrabLungeTicks = 18; public const double GrabLungeSpeed = 9, GrabContact = 30;   // #6: lunge 18 f at 9 px/tick, grabs when within body + player + GrabContact
-        public const int GrabMissRecovery = 80, GrabHeldRecovery = 60;         // after a missed lunge (table) / after the throw (initial value)
+        public const int GrabMissRecovery = 110, GrabHeldRecovery = 60;        // after a missed lunge (11-07 tempo: 80 -> 110, same as the table) / after the throw (initial value)
         public const double PoisonDashSpeed = 4; public const int PoisonDashTicks = 45;   // #8: the poison-trail dash inside the move, 4 px/tick x 45 f = 180 px (boss-battle lead 2026-10-28); its direction is the frozen aim
         public const double BurrowTrackSpeed = 1.4;                            // #7: the marker that follows the player underground moves at most this fast
         public const int BurrowEruptWarn = 30, BurrowEruptPost = 6;            // #7: erupt telegraph 30 f (was 8) then the blast, 6 f after
@@ -63,16 +63,16 @@ namespace Exoduser.UnityPort.Core
 
         // phase index 0 / 1 / 2 = life 1 / 2 / 3 (P1 / P2 / P3). Order = spec table rows #1..#12.
         public static readonly BossMove[] Moves = {
-            M("slashCombo",   13, 32, 80, 110, false,   0, 100, new[] { 0, 1, 2 }, new[] { "melee", "multi-hit" }),
-            M("slam",         14, 48, 70, 160, false,   0, 140, new[] { 0, 1, 2 }, new[] { "melee", "aoe" }),
-            M("charge",        2, 54, 70, 130, true,   40, 400, new[] { 0, 1, 2 }, new[] { "gap-close", "melee" }),
+            M("slashCombo",   13, 32, 60, 110, false,   0, 100, new[] { 0, 1, 2 }, new[] { "melee", "multi-hit" }),
+            M("slam",         14, 72, 110, 160, false,   0, 140, new[] { 0, 1, 2 }, new[] { "melee", "aoe" }),
+            M("charge",        2, 66, 110, 130, true,   40, 400, new[] { 0, 1, 2 }, new[] { "gap-close", "melee" }),
             M("groundFissure",34, 40, 60, 160, false,  60, 400, new[] { 0, 1, 2 }, new[] { "aoe", "zone", "ranged" }),
             M("fan",           1, 38, 60, 120, false,  60, 300, new[] { 0, 1 },    new[] { "ranged", "frontal" }),
-            M("grab",          8, 60, 80, 200, false,   0, 150, new[] { 0, 1, 2 }, new[] { "melee", "punish" }),
-            M("burrowStrike", 58, 50, 70, 220, false, 150, 600, new[] { 1, 2 },    new[] { "gap-close", "melee", "ambush" }),
-            M("chaseAoe",     21, 30, 60, 200, false,   0, 999, new[] { 1, 2 },    new[] { "aoe", "zone", "utility" }),
+            M("grab",          8, 72, 110, 200, false,   0, 150, new[] { 0, 1, 2 }, new[] { "melee", "punish" }),
+            M("burrowStrike", 58, 66, 110, 220, false, 150, 600, new[] { 1, 2 },    new[] { "gap-close", "melee", "ambush" }),
+            M("chaseAoe",     21, 32, 60, 200, false,   0, 999, new[] { 1, 2 },    new[] { "aoe", "zone", "utility" }),
             M("summon",        6, 60, 60, 320, false,   0, 999, new[] { 1 },       new[] { "utility" }),
-            M("tideWave",     35, 70, 70, 180, false,   0, 999, new[] { 2 },       new[] { "aoe", "ranged" }),
+            M("tideWave",     35, 72, 110, 180, false,   0, 999, new[] { 2 },       new[] { "aoe", "ranged" }),
             M("seekerMines",  36, 40, 60, 200, false,   0, 999, new[] { 2 },       new[] { "ranged", "zone", "utility" }),
             M("heartbeat",    57, 90, 90, DruidRemodelData.HeartbeatCooldownTicks, false, 0, 999, new[] { 2 }, new[] { "aoe" }),
         };
@@ -85,11 +85,13 @@ namespace Exoduser.UnityPort.Core
             C(new[] { 1 },       "chaseAoe", "fan"),
             C(new[] { 2 },       "tideWave", "charge", "slam"),
         };
-        // spec §3: combo chance P1 .30 / P2 .45 / P3 .60, feint P1 0 / P2 .10 / P3 .15; §4: telegraph never shortens (TeleM 1), cooldown x1.0/.8/.65, speed x1.0/1.1/1.2
+        // spec §3: combo chance P1 .30 / P2 .45 / P3 .60, feint P1 0 / P2 .10 / P3 .15; cooldown x1.0/.8/.65, speed x1.0/1.1/1.2. 11-07 tempo (reference study RESULT.md): telegraph x1.0/.8/.8 (floor MinTele), recovery x1.0/.7/.7 (floor MinRecovery)
+        public const int MinTele = 32, MinRecovery = 60;
+        public static readonly double[] RecoveryMul = { 1.0, 0.7, 0.7 };
         public static readonly BossPhaseDef[] Phases = {
-            new BossPhaseDef { HpLow = 0, HpHigh = 1, SpdM = 1.0, TeleM = 1, CdM = 1.0,  ComboC = .30, FeintC = 0,   DelayC = 0, Label = "P1" },
-            new BossPhaseDef { HpLow = 0, HpHigh = 1, SpdM = 1.1, TeleM = 1, CdM = 0.8,  ComboC = .45, FeintC = .10, DelayC = 0, Label = "P2" },
-            new BossPhaseDef { HpLow = 0, HpHigh = 1, SpdM = 1.2, TeleM = 1, CdM = 0.65, ComboC = .60, FeintC = .15, DelayC = 0, Label = "P3" },
+            new BossPhaseDef { HpLow = 0, HpHigh = 1, SpdM = 1.0, TeleM = 1.0, CdM = 1.0,  ComboC = .30, FeintC = 0,   DelayC = 0, Label = "P1" },
+            new BossPhaseDef { HpLow = 0, HpHigh = 1, SpdM = 1.1, TeleM = 0.8, CdM = 0.8,  ComboC = .45, FeintC = .10, DelayC = 0, Label = "P2" },
+            new BossPhaseDef { HpLow = 0, HpHigh = 1, SpdM = 1.2, TeleM = 0.8, CdM = 0.65, ComboC = .60, FeintC = .15, DelayC = 0, Label = "P3" },
         };
         // red = parryable (spec: 1·2 hit of the branch lash, slam, charge, tide wave); the third lash is switched off by the state machine
         public static readonly HashSet<string> Parryable = new HashSet<string> { "slashCombo", "slam", "charge", "tideWave" };
@@ -113,7 +115,7 @@ namespace Exoduser.UnityPort.Core
                 Moves = Moves, Combos = Combos, Phases = Phases, Parryable = Parryable, Instant = Instant, Forced = new HashSet<string> { "heartbeat" },
                 SlamRadius = SlamRadius, PoisonTrailTicks = PoisonTrailTicks, ChaseZoneRadius = ChaseZoneRadius, ChaseZoneWarn = ChaseZoneWarn, ChaseZoneCount = ChaseZoneCount, SummonMax = SummonMax,
                 WalkSpeed = WalkSpeed, WalkStandOff = WalkStandOff, WalkAccelTicks = WalkAccelTicks, WalkStopTicks = WalkStopTicks, WalkTurn = WalkTurn, TeleTurn = TeleTurn, AimFixTicks = AimFixTicks, GapTicks = GapTicks, ComboLinkTicks = ComboLinkTicks, PillarCount = PillarCount, PopupKeep = (string[])PopupKeep.Clone(),
-                Heartbeat = true, GrabAbsorb = true, RootBonus = true, RootHitsNeeded = RootHitsNeeded, RootBonusFraction = RootBonusFraction, Sink = true };
+                MinTele = MinTele, MinRecovery = MinRecovery, RecoveryMul = RecoveryMul, Heartbeat = true, GrabAbsorb = true, RootBonus = true, RootHitsNeeded = RootHitsNeeded, RootBonusFraction = RootBonusFraction, Sink = true };
             return s;
         }
     }
