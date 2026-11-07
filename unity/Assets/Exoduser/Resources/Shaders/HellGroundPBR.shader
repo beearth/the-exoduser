@@ -98,10 +98,10 @@ Shader "EXODUSER/HellGroundPBR"
      float macro=smoothstep(.28,.72,FieldNoise(wp/13.0+float2(3.1,7.7))*.7+FieldNoise(wp/5.5+float2(11.3,2.9))*.3);
      float fringe=1-smoothstep(.1,5,edge);
      half hs,hr,hl,hm;
-     half3 dirt=FieldLayer(_SoilMap,sampler_ForestMap,wp/5.0,.75,.14,hs)*half3(.60,.52,.41);
-     half3 roots=FieldLayer(_RootMap,sampler_ForestMap,wp/5.0+.37,.85,.2,hr)*half3(.62,.52,.40);
-     half3 leaves=FieldLayer(_ForestMap,sampler_ForestMap,wp/5.4+.61,.9,.28,hl)*half3(.58,.49,.36);
-     half3 moss=FieldLayer(_FieldMoss,sampler_ForestMap,wp/5.2+.19,.8,.18,hm)*half3(.47,.53,.35);
+     half3 dirt=FieldLayer(_SoilMap,sampler_ForestMap,wp/5.0,.75,.11,hs)*half3(.60,.52,.41);
+     half3 roots=FieldLayer(_RootMap,sampler_ForestMap,wp/5.0+.37,.85,.16,hr)*half3(.62,.52,.40);
+     half3 leaves=FieldLayer(_ForestMap,sampler_ForestMap,wp/5.4+.61,.9,.22,hl)*half3(.58,.49,.36);
+     half3 moss=FieldLayer(_FieldMoss,sampler_ForestMap,wp/5.2+.19,.8,.14,hm)*half3(.47,.53,.35);
      float cover=SAMPLE_TEXTURE2D(_FieldCover,sampler_FieldCover,float2(i.world.x/80,-i.world.z/80)).r;
      half h=hs;a=dirt;fieldSmooth=.30;
      float tr=HeightBlend(h,hr,.30+.35*fringe);a=lerp(a,roots,tr);h=lerp(h,hr,tr);fieldSmooth=lerp(fieldSmooth,.26,tr);

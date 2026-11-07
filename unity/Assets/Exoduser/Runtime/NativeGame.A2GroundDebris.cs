@@ -14,7 +14,8 @@ namespace Exoduser.UnityPort
     {
         internal static int A2DebrisCards, A2DebrisSmall, A2DebrisPatches, A2DebrisRenderers;internal static GameObject A2DebrisRoot;
         const float DebrisMinX=-12,DebrisMaxX=92,DebrisMinZ=-92,DebrisMaxZ=12,DebrisChunkSize=13;
-        const float CardBrightness=.5f,SmallBrightness=.45f,SmallAlpha=.75f;   // 고밀도에서 1x 잡음을 누르려고 중간 .6→.5, 작은 .5→.45
+        // CTO RETOUCH: 잔해가 바닥보다 어두우면 "더러운 바닥"으로 읽힌다 → 중간 카드는 바닥 평균의 약 1.2배(.65), 작은 조각은 바닥 ±15%(.72)
+        const float CardBrightness=.5f,SmallBrightness=.55f,SmallAlpha=.6f;   // .65/.72는 노멀을 누른 뒤 흰 뼛조각처럼 떴다
         // 셀 번호: 0~9 잔가지, 10~14 솔잎 무더기, 15~19 잔뿌리, 20~25 낙엽
         static int DebrisMediumCell(System.Random r,bool walk){double k=r.NextDouble();if(walk)return k<.6?r.Next(0,10):r.Next(20,26);return k<.45?r.Next(0,10):k<.65?r.Next(15,20):r.Next(20,26);}
         static int DebrisSmallCell(System.Random r){return r.NextDouble()<.6?r.Next(20,26):r.Next(10,15);}
@@ -33,12 +34,12 @@ namespace Exoduser.UnityPort
             {
                 walk=true;float edge=1-Mathf.SmoothStep(0,1,Mathf.Clamp01(d/3f));       // 경계에서 3m 안쪽까지 가장자리 띠
                 float clear=.3f+.7f*Mathf.Clamp01(a2Field.GroundCover(x,z));
-                return new Vector3(Mathf.Lerp(.01f,4f,edge),Mathf.Lerp(.04f,24f,edge),Mathf.Lerp(0,.25f,edge))*clear*wobble;
+                return new Vector3(Mathf.Lerp(.01f,3f,edge),Mathf.Lerp(.03f,14f,edge),Mathf.Lerp(0,.25f,edge))*clear*wobble;
             }
             float away=-d;
-            if(away<6)return new Vector3(7,50,.5f)*wobble;                              // 늪 둘레·외곽 띠
-            if(away<15)return new Vector3(4,24,.35f)*wobble;
-            return new Vector3(2,6,.15f)*wobble;                                         // 화면에 거의 안 들어오는 먼 바깥
+            if(away<6)return new Vector3(5,30,.5f)*wobble;                              // 늪 둘레·외곽 띠
+            if(away<15)return new Vector3(4,14,.35f)*wobble;
+            return new Vector3(2,4,.15f)*wobble;                                         // 화면에 거의 안 들어오는 먼 바깥
         }
         void A2GroundDebris()
         {
@@ -48,11 +49,11 @@ namespace Exoduser.UnityPort
             var cardShader=Shader.Find("EXODUSER/A2GroundCard");var aoShader=Shader.Find("EXODUSER/A2GroundCardAO");
             if(col==null||nrm==null||hgt==null||pcol==null||pnrm==null||cardShader==null||aoShader==null){Debug.LogError("[A2 바닥 잔해] 자원 누락");return;}
             var timer=System.Diagnostics.Stopwatch.StartNew();
-            var cardMat=R3Track(new Material(cardShader){name="A2 바닥 잔해 카드"});cardMat.SetTexture("_BaseMap",col);cardMat.SetTexture("_BumpMap",nrm);cardMat.SetTexture("_HeightMap",hgt);
+            var cardMat=R3Track(new Material(cardShader){name="A2 바닥 잔해 카드"});cardMat.SetTexture("_BaseMap",col);cardMat.SetTexture("_BumpMap",nrm);cardMat.SetTexture("_HeightMap",hgt);cardMat.SetFloat("_Cavity",.08f);cardMat.SetFloat("_NormalScale",.4f);
             cardMat.SetFloat("_Clip",1);cardMat.SetFloat("_Src",(float)BlendMode.SrcAlpha);cardMat.SetFloat("_Dst",(float)BlendMode.OneMinusSrcAlpha);cardMat.SetFloat("_ZW",0);cardMat.renderQueue=2450;
             var patchMat=R3Track(new Material(cardShader){name="A2 바닥 패치 데칼"});patchMat.SetTexture("_BaseMap",pcol);patchMat.SetTexture("_BumpMap",pnrm);patchMat.SetTexture("_HeightMap",Texture2D.whiteTexture);
             patchMat.SetFloat("_Clip",0);patchMat.SetFloat("_Src",(float)BlendMode.SrcAlpha);patchMat.SetFloat("_Dst",(float)BlendMode.OneMinusSrcAlpha);patchMat.SetFloat("_ZW",0);patchMat.SetFloat("_Cavity",0);patchMat.SetFloat("_Smooth",.24f);patchMat.renderQueue=2420;
-            var aoMat=R3Track(new Material(aoShader){name="A2 바닥 잔해 접지 그림자"});aoMat.SetTexture("_BaseMap",col);aoMat.SetFloat("_Strength",.4f);aoMat.renderQueue=2440;
+            var aoMat=R3Track(new Material(aoShader){name="A2 바닥 잔해 접지 그림자"});aoMat.SetTexture("_BaseMap",col);aoMat.SetFloat("_Strength",.25f);aoMat.renderQueue=2440;
             int nx=Mathf.CeilToInt((DebrisMaxX-DebrisMinX)/DebrisChunkSize),nz=Mathf.CeilToInt((DebrisMaxZ-DebrisMinZ)/DebrisChunkSize);
             var chunks=new DebrisChunk[nx*nz];for(int k=0;k<chunks.Length;k++)chunks[k]=new DebrisChunk();
             var rng=new System.Random(1107);int medium=0,small=0,patches=0;
@@ -63,15 +64,15 @@ namespace Exoduser.UnityPort
                 for(int q=0;q<nm;q++)
                 {
                     float px=x+(float)rng.NextDouble(),pz=z+(float)rng.NextDouble();if(!DebrisFree(px,pz))continue;
-                    int cell=DebrisMediumCell(rng,walk);float len=Mathf.Lerp(.3f,.8f,(float)rng.NextDouble());if(cell<10||(cell>=15&&cell<20))len*=1.4f;   // 잔가지·잔뿌리 카드는 2:1이라 길게
+                    int cell=DebrisMediumCell(rng,walk);float len=Mathf.Lerp(.45f,.9f,(float)rng.NextDouble());if(cell<10||(cell>=15&&cell<20))len*=1.4f;   // 잔가지·잔뿌리 카드는 2:1이라 길게
                     float yaw=(float)(rng.NextDouble()*Math.PI*2),tint=CardBrightness*Mathf.Lerp(.85f,1.08f,(float)rng.NextDouble());var rect=DebrisRect(cell);var ch=chunks[DebrisChunkIndex(px,pz,nx,nz)];
                     DebrisQuad(ch.medium,px,pz,len,len*.5f,yaw,.01f,rect,new Color(tint,tint*.9f,tint*.78f,1),true);
-                    DebrisQuad(ch.ao,px+.03f,pz-.03f,len*1.2f,len*.62f,yaw,.006f,rect,Color.white,true);medium++;
+                    DebrisQuad(ch.ao,px+.02f,pz-.02f,len*1.15f,len*.58f,yaw,.006f,rect,Color.white,true);medium++;
                 }
                 for(int q=0;q<ns;q++)
                 {
                     float px=x+(float)rng.NextDouble(),pz=z+(float)rng.NextDouble();if(!DebrisFree(px,pz))continue;
-                    int cell=DebrisSmallCell(rng);float len=Mathf.Lerp(.2f,.4f,(float)rng.NextDouble());   // 카드 .2~.4m = 조각 하나 .1~.2m
+                    int cell=DebrisSmallCell(rng);float len=Mathf.Lerp(.3f,.45f,(float)rng.NextDouble());   // 카드 .3~.45m = 조각 하나 .15~.22m(.1m 조각은 1x에서 점이 됐다)
                     float yaw=(float)(rng.NextDouble()*Math.PI*2),tint=SmallBrightness*Mathf.Lerp(.9f,1.05f,(float)rng.NextDouble());
                     DebrisQuad(chunks[DebrisChunkIndex(px,pz,nx,nz)].small,px,pz,len,len*.5f,yaw,.008f,DebrisRect(cell),new Color(tint,tint*.88f,tint*.74f,SmallAlpha),false);small++;
                 }

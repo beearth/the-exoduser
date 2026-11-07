@@ -33,7 +33,7 @@ Shader "EXODUSER/A2HeightFog"
     // 화면 위쪽 먼 하늘(깊이 없음)도 같은 끝값으로 덮는다. 높이는 맞은 점의 지면 위 높이로 본다.
     float height=world.y-_Base;
     float low=1-smoothstep(_Cutoff*.35,_Cutoff,height);
-    float drift=lerp(.75,1.15,FogNoise(world.xz/14+_Time.y*_Drift*float2(.6,.25)));
+    float drift=lerp(.95,1.05,FogNoise(world.xz/14+_Time.y*_Drift*float2(.6,.25)));
     float alpha=min(_MaxAlpha,_MaxAlpha*ramp*low*drift);
     return half4(_Color.rgb,alpha);
    }

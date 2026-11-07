@@ -6,7 +6,7 @@ Shader "EXODUSER/A2GroundCard"
  Properties
  {
   _BaseMap("색(알파)",2D)="white"{} _BumpMap("노멀",2D)="bump"{} _HeightMap("높이",2D)="white"{}
-  _Clip("알파 테스트",Float)=1 _Cutoff("잘림",Float)=.5 _Smooth("매끈함",Float)=.2 _Cavity("낮은 곳 어둡게",Float)=.25 _Alpha("불투명도",Float)=1
+  _Clip("알파 테스트",Float)=1 _Cutoff("잘림",Float)=.5 _Smooth("매끈함",Float)=.2 _Cavity("낮은 곳 어둡게",Float)=.25 _NormalScale("노멀 세기",Float)=1 _Alpha("불투명도",Float)=1
   [HideInInspector]_Src("src",Float)=1 [HideInInspector]_Dst("dst",Float)=0 [HideInInspector]_ZW("zwrite",Float)=1
  }
  SubShader
@@ -28,7 +28,7 @@ Shader "EXODUSER/A2GroundCard"
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
    TEXTURE2D(_BaseMap);SAMPLER(sampler_BaseMap);TEXTURE2D(_BumpMap);TEXTURE2D(_HeightMap);
    CBUFFER_START(UnityPerMaterial)
-   float4 _BaseMap_ST;half _Clip,_Cutoff,_Smooth,_Cavity,_Alpha,_Src,_Dst,_ZW;
+   float4 _BaseMap_ST;half _Clip,_Cutoff,_Smooth,_Cavity,_Alpha,_Src,_Dst,_ZW,_NormalScale;
    CBUFFER_END
    struct A {float4 positionOS:POSITION;float4 tangentOS:TANGENT;float2 uv:TEXCOORD0;float4 color:COLOR;};
    struct V {float4 positionCS:SV_POSITION;float3 world:TEXCOORD0;float3 normal:TEXCOORD1;float4 tangent:TEXCOORD2;float2 uv:TEXCOORD3;half4 color:TEXCOORD4;half fog:TEXCOORD5;};
@@ -42,7 +42,7 @@ Shader "EXODUSER/A2GroundCard"
     if(_Clip>.5){half w=max(fwidth(alpha),1e-3h);alpha=saturate((alpha-_Cutoff)/w+.5);clip(alpha-.02h);}
     half h=SAMPLE_TEXTURE2D(_HeightMap,sampler_BaseMap,i.uv).r;
     half3 albedo=c.rgb*i.color.rgb*lerp(1-_Cavity,1,saturate(h*3));
-    half3 nt=UnpackNormal(SAMPLE_TEXTURE2D(_BumpMap,sampler_BaseMap,i.uv));
+    half3 nt=UnpackNormalScale(SAMPLE_TEXTURE2D(_BumpMap,sampler_BaseMap,i.uv),_NormalScale);   // 둥근 가지 옆면이 위 달빛에서 검게 깎이지 않게 낮춘다
     float3 n=normalize(i.normal),t=normalize(i.tangent.xyz),b=cross(n,t)*i.tangent.w;
     InputData input=(InputData)0;input.positionWS=i.world;input.normalWS=normalize(mul(nt,float3x3(t,b,n)));input.viewDirectionWS=GetWorldSpaceNormalizeViewDir(i.world);
     input.shadowCoord=TransformWorldToShadowCoord(i.world);input.bakedGI=SampleSH(input.normalWS);input.normalizedScreenSpaceUV=GetNormalizedScreenSpaceUV(i.positionCS);input.shadowMask=1;

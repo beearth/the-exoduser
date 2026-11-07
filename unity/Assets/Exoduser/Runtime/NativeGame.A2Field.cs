@@ -47,7 +47,7 @@ namespace Exoduser.UnityPort
             foreach(var root in r3Roots)if(root!=null)foreach(var volume in root.GetComponentsInChildren<Volume>(true))
             {
                 var profile=volume.profile;if(profile==null)continue;ColorAdjustments tone;
-                if(profile.TryGet<ColorAdjustments>(out tone)){tone.postExposure.Override(.55f);tone.contrast.Override(16);}
+                if(profile.TryGet<ColorAdjustments>(out tone)){tone.postExposure.Override(.9f);tone.contrast.Override(16);}   // 11-07 RETOUCH: 화면 평균 명도 .17 → ≥.20
             }
             NativeTransitionProgress.Report("a2-lights",.04f);yield return null;
             // Required assets (FieldRequirements): a missing one fails the assembly (exception -> abort policy -> 2D) instead of opening a half-built field as ready.
