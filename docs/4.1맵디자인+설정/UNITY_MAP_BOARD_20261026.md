@@ -492,3 +492,62 @@ Core 변경 범위(origin/unity/main 대비 Core 폴더 8파일, +85/-7): 모두
 - Simulation.StartMobs.cs: k≠1일 때만 시작 몹 좌표·문지기 위치에 배율.
 - SpawnHoles.cs: 홀 좌표·계획 수에 layout 적용(k=1은 기존 값).
 - StageFlow.cs: 한 줄(필드 배율 연결).
+
+## 12. ×2 3D 필드(11-08)
+
+브랜치 `claude/unity-map-x2-20261108`. Core 무수정(`Runtime/Core/**` 0줄), unity/main 미병합. 영향 목록 `SCALE_X2_IMPACT.md` 중 A2 필드 항목(1·3·5~10·13·14·15)을 처리했다.
+
+**원칙:** 필드 크기 `A2Scale.FieldSize`(= MapData `width×tileSize/100`: ×1 80u, ×2 160u. 생성자가 MapData와 대조해 다르면 예외). 손으로 넣은 월드 좌표(지역 중심·다리·섬·물가 곡선·고목 밑동·랜드마크·횃불·빛기둥·전경 통나무·촬영 위치)는 위치만 ×K. 크기·반경·높이·카메라·안개·텍스처 해상도 밀도는 그대로. 반복 배치 루프는 간격을 두고 범위만 넓혀 같은 밀도로 더 놓는다. 좌표 변환은 Core px → 1타일 0.4u 그대로.
+
+### 12.1 바꾼 파일·상수 (이전 → k 적용)
+
+| 파일 | 이전(×1) | 적용 |
+|---|---|---|
+| `A2FieldLayout.cs` 신규 `A2Scale` | — | `K`=`FieldLayout.Scale`(--field-scale), `FieldSize`=80K, `FieldSizeOf(MapData)` |
+| 〃 `GroundMinX/MaxX/MinZ/MaxZ` | const -105/185/-185/105 | -105 / FieldSize+105 / -FieldSize-105 / 105 (static readonly) |
+| 〃 `GroundAxis` near 범위(.25u 격자) | x -45…125, z -125…45 | x -45…FieldSize+45, z -(FieldSize+45)…45 (먼 쪽 2u 간격 그대로). 축 정점 ×1 약 740 → ×2 1061 |
+| 〃 `SurfaceCells` | const 501 | round(FieldSize/.16)+1 (×2 1001), 칸 .16u 그대로 |
+| 〃 `Height`·`RegisterSurface` 필드 경계 | 80 | FieldSize |
+| 〃 `TerrainHeight` 늪 경계 | x 43·62, z -58·-34 (램프 폭 6·12·6·10) | 위치만 ×K, 폭·사인 파장(.29·.12 등) 그대로 |
+| 〃 `DistantForestSites` | col 0..25, row 0..20, x0 -85, z0 -140, 10u | col 0..(FS+170)/10, row 0..(FS+120)/10, z0 -(FS+60). ×2는 691곳 |
+| 〃 `Regions` 11곳 | 손 좌표 | ×K |
+| `A2ForestLayout.cs` | `BridgeX/Z` 43.2/-71.8, `IslandX/Z` 53.3/-77 (const) | ×K (static readonly). 다리 길이 4.45·폭 1.7, 섬 반경 3.4 그대로 |
+| 〃 `Shore(z)` | 곡선 | `K·Shore(z/K)` (물가 곡선의 위치 ×K) |
+| 〃 `Water`·`BankHeight` z 한계 | -94 / -30 | ×K |
+| 〃 `Trunk`·`SecondaryTree` 중심 | 손 좌표 | ×K (반경 그대로) |
+| `NativeRemodel3D.cs` `Requested` | `IsOriginal`일 때만 | 게이트 제거(`--remodel3d`는 그대로 필요) |
+| `NativeGame.A2Field.cs` 거리장 | 200² | round(FS/.4)² (×2 400²) |
+| 〃 이끼 덮개 | 256² | round(256·FS/80)² (×2 512², 텍셀 .3125m 그대로) |
+| 〃 지면 UV | /80 | /FieldSize. 머티리얼 `_FieldSize` 설정, 뿌리 재질에도 복사 |
+| 〃 `A2FieldOuterMass` | 줄 0..22, z0 -80, 타일 200 | 줄 0..round((FS-.8)/3.6) (×2 44), z0 -FS, 타일 폭·높이는 `Map.Data` |
+| 〃 목교·횃불 7곳·빛기둥 9곳·층안개 기준 표본 | 손 좌표 | ×K |
+| 〃 `A2CanopyShadows` | 16×16=256칸, 칸 5.75m, 높이 클램프 79 | round((FS+12)/5.75)² 칸 (×1 16², ×2 30²=900), 칸 5.75m·카드 크기 그대로, 클램프 FS-1. ×1은 난수 호출 순서까지 동일 |
+| `NativeGame.A2Foreground.cs` | 거목 (31,-76), 통나무 (34.5,-80.7), 통행 밖 경계 z -80.05 | 위치·경계선 ×K (grounded 경로만) |
+| `NativeGame.A2GroundCover.cs` | 간격 2.2u, 0..42, z0 -86 | 간격 그대로, 0..round((FS+12)/2.2) (×2 78), z0 -(FS+6) |
+| `NativeGame.A2GroundDebris.cs` | Debris범위 -12…92 / -92…12 | -12…FS+12 / -(FS+12)…12, 청크 13m 그대로(청크 수 증가) |
+| `NativeGame.A2ShoreField.cs` | 물가 거리장 1024² | round(1024·범위/290)² (×2 1306², 칸 약 .283m 그대로) |
+| `NativeGame.A2FieldCapture.cs`·`A2SightCheck.cs` | 촬영·점검 위치(Core px) | ×K, `-field-crowd` 중심·`-field-video` 기본 위치 ×K |
+| `HellGroundPBR.shader`·`A2RootSurface.shader` | `/80` | `/_FieldSize` (기본 80). 거리장 디코드 `*40`은 거리 범위(m)라 그대로 |
+| `Tools/a2-field/Program.cs`, `field-layout-tests/host-contract.test.cjs` | const 리플렉션, IsOriginal 단언 | static readonly 지원, 새 게이트 단언 |
+
+### 12.2 남긴 것 (바꾸지 않음)
+
+카메라 피치 34°·거리·FOV·원근 LOCK, 안개 시작/끝(층 안개 8~90m 등), 오브젝트 크기·반경·높이, 텍스처·원화 크기(업스케일 없음), 지면 재질의 m 단위 반복(5m 등), 사인 파장, 카드·청크(13m)·간격, 카메라 far 220. 옛 단일 키샷 경로(`A2LegacyKeyshotSetup`·`A2River`·`A2RootRelief`, 호출처 없음)의 ×1 리터럴. 셰이더의 비FullField 경로에 남은 다리·고목 위치 상수(FullField에서는 덮어써서 출력에 영향 없음).
+
+### 12.3 k=1 불변 확인
+
+- 같은 입력 비교기(`I:\EXODUSER-Storage\map-x2\k1check`): 변경 전 HEAD의 `A2FieldLayout`·`A2ForestLayout`(네임스페이스만 바꾼 사본)과 변경 후를 같은 `ch1_map.json`으로 만들어 비트 단위 비교. `TerrainHeight`·`Distance`·`GroundCover`·`Height`·`Water`·`Shore`·`BranchDistance`·`Trunk`·`SecondaryTree`·`BankHeight`·`Island`·`BlockedCore`를 필드 밖 포함 격자에서 표본 608265개, `GroundAxis` 두 축·`Regions`·`DistantForestSites`·Ground 범위·다리/섬 좌표 전수: 불일치 0.
+- 셰이더 `_FieldSize` 기본값 80, 배치 루프는 ×1에서 이전 상한과 같은 값(OuterMass 22줄, 수관 16×16, 바닥 덮개 42, 거리장 200², 덮개 256², 물가 1024²).
+- `k=2` 생성 점검(같은 비교기, MapData `CreateFieldData`): 생성자 대조 통과, 지면 축 정점 1061×1061, 먼 숲 691곳, 다리 (86.4,-143.6), 섬 (106.6,-154), `Shore(-72·2)=96=2·Shore(-72)`.
+
+### 12.4 검사·빌드
+
+- field-layout-tests/run-checks.cjs 16단계: host-contract 한 단언이 옛 `IsOriginal` 게이트를 요구해 1회 실패 → 새 게이트 단언으로 고친 뒤 그 파일만 1회 통과, 나머지 15단계는 첫 실행에서 통과(a2-field 32항목 PASS).
+- Unity 컴파일·빌드(공용 실행기 build, `-remodel-scenes 1`): `error CS` 0, `Shader error` 0, 영수증 passed=true errors=0. 로그의 errorLogs=2는 라이선스 토큰 안내 줄이다.
+- 플레이어 촬영·실행은 하지 않았다(총괄 몫). **조립 시간 실측 없음:** 빌드 배치 모드는 게임을 실행하지 않아 `[A2 전체필드] … k=… ms`와 단계별 `[A2 전체필드 단계]` 로그(이번에 추가)가 나오지 않는다. ×1/×2 비교는 `--field-scale 2 --remodel3d` 플레이 후 그 로그로 한다.
+
+### 12.5 남은 문제
+
+- 조립 시간 미측정. 규모 증가: 지면 정점 약 2배(근경 .25u 격자 면적), 바닥 잔해·수관 카드(900장)·원경 숲(691곳)·고사덤불은 면적에 비례해 약 3~4배. 60s 목표 미확인.
+- 늪(동쪽 낮은 영역)·강 폭은 위치만 ×K라 ×2에서 강 폭은 상대적으로 좁아 보일 수 있다(오브젝트 크기 유지 원칙).
+- 실제 ×2 구도·먼 적 가시성·접합(통행 경계의 시각 거리장)은 촬영 판정 전이다.

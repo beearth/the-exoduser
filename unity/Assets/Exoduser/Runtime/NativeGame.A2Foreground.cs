@@ -6,14 +6,16 @@ namespace Exoduser.UnityPort
     {
         void A2Foreground(bool grounded=false)
         {
-            var tree=A2Module("Hollow_Loft_Tree",31,grounded?-76:-84,.75f,1.15f,.75f,-25,-.2f,false);
-            if(tree!=null){tree.name="A2 전경 바깥 거목";if(!grounded)A2OutsidePlay(tree);}
+            // 11-08 ×2: 배치 위치와 "원본 통행 밖" 경계선(-80.05)만 ×K(grounded 경로). 크기는 그대로. 비grounded(옛 키샷 경로)는 ×1 좌표 그대로.
+            float K=grounded?A2Scale.K:1,edgeZ=-80.05f*K;
+            var tree=A2Module("Hollow_Loft_Tree",31*K,grounded?-76*K:-84,.75f,1.15f,.75f,-25,-.2f,false);
+            if(tree!=null){tree.name="A2 전경 바깥 거목";if(!grounded)A2OutsidePlay(tree,edgeZ);}
             int placed=0,attached=0;
-            var sites=grounded?new[]{new Vector4(34.5f,-80.7f,1.7f,8)}:new[]{new Vector4(36.7f,-81.5f,2.2f,-20),new Vector4(33.4f,-81,1.75f,62)};
+            var sites=grounded?new[]{new Vector4(34.5f*K,-80.7f*K,1.7f,8)}:new[]{new Vector4(36.7f,-81.5f,2.2f,-20),new Vector4(33.4f,-81,1.75f,62)};
             foreach(var p in sites)
             {
                 var log=A2Module("Scanned_Foreground_Log",p.x,p.y,p.z,grounded?1.1f:p.x>35?2:1.7f,grounded?.8f:1.4f,p.w,grounded?.08f:-.25f,false);if(log==null)continue;
-                log.name="A2 전경 부패목질";A2OutsidePlay(log);if(!grounded)log.transform.position+=Vector3.up*(p.x>35?2.2f:1);placed++;
+                log.name="A2 전경 부패목질";A2OutsidePlay(log,edgeZ);if(!grounded)log.transform.position+=Vector3.up*(p.x>35?2.2f:1);placed++;
                 foreach(float offset in new[]{-1.2f,-.2f,.8f})
                 {
                     var desired=log.transform.TransformPoint(new Vector3(offset,0,0));Vector3 hit;
@@ -22,16 +24,16 @@ namespace Exoduser.UnityPort
                     var renderers=moss.GetComponentsInChildren<MeshRenderer>();var bounds=renderers[0].bounds;foreach(var renderer in renderers)bounds.Encapsulate(renderer.bounds);
                     moss.transform.position+=hit-Vector3.up*.02f-new Vector3(bounds.center.x,bounds.max.y,bounds.center.z);
                     bounds=renderers[0].bounds;foreach(var renderer in renderers)bounds.Encapsulate(renderer.bounds);
-                    if(bounds.max.z> -80.05f){moss.SetActive(false);Destroy(moss);continue;}
+                    if(bounds.max.z> edgeZ){moss.SetActive(false);Destroy(moss);continue;}
                     foreach(var renderer in renderers){var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.65f,.62f,.48f,1));renderer.SetPropertyBlock(block);}attached++;
                 }
             }
             Debug.Log("[A2] 전경 목질 "+placed+"개/실제 윗면 정점 이끼 "+attached+"개. 통나무z<=-80.05/거목하부 원본통행 밖으로 접합");
         }
-        static void A2OutsidePlay(GameObject root)
+        static void A2OutsidePlay(GameObject root,float edgeZ)
         {
             var renderers=root.GetComponentsInChildren<MeshRenderer>();if(renderers.Length==0)return;var bounds=renderers[0].bounds;foreach(var renderer in renderers)bounds.Encapsulate(renderer.bounds);
-            if(bounds.max.z> -80.05f)root.transform.position+=Vector3.back*(bounds.max.z+80.05f);
+            if(bounds.max.z> edgeZ)root.transform.position+=Vector3.back*(bounds.max.z-edgeZ);
         }
         static bool A2UpperSurfaceVertex(GameObject root,Vector3 desired,out Vector3 hit)
         {

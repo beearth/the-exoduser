@@ -28,7 +28,8 @@ namespace Exoduser.UnityPort
         }
         void A2FullFieldShore()
         {
-            const int n=1024;const float size=A2FieldLayout.GroundMaxX-A2FieldLayout.GroundMinX,step=size/n;var distance=new float[n*n];
+            // 11-08: 칸 간격(약 .283m)은 그대로, 칸 수만 지면 범위에 비례(×1 1024, ×2 1306).
+            float size=A2FieldLayout.GroundMaxX-A2FieldLayout.GroundMinX;int n=Mathf.RoundToInt(1024*size/290f);float step=size/n;var distance=new float[n*n];
             for(int y=0;y<n;y++)for(int x=0;x<n;x++)distance[y*n+x]=a2Field.Water(A2FieldLayout.GroundMinX+(x+.5f)*step,A2FieldLayout.GroundMinZ+(y+.5f)*step)?10000:0;
             for(int pass=0;pass<2;pass++)
             {

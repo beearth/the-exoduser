@@ -50,10 +50,11 @@ namespace Exoduser.UnityPort
                 if(profile.TryGet<ColorAdjustments>(out tone)){tone.postExposure.Override(.9f);tone.contrast.Override(16);}   // 11-07 RETOUCH: 화면 평균 명도 .17 → ≥.20
             }
             NativeTransitionProgress.Report("a2-lights",.04f);yield return null;
+            long stepMs=0;Action<string> stepLog=name=>{Debug.Log("[A2 전체필드 단계] "+name+" 누적 "+timer.ElapsedMilliseconds+"ms(+"+(timer.ElapsedMilliseconds-stepMs)+")");stepMs=timer.ElapsedMilliseconds;};
             // Required assets (FieldRequirements): a missing one fails the assembly (exception -> abort policy -> 2D) instead of opening a half-built field as ready.
             {var missing=FieldRequirements.FirstMissing(a2FieldSoil!=null,n=>Resources.Load<Texture2D>("Art/map/a2/ground/"+n)!=null);
              if(missing!=null){Debug.LogError("[A2 필드] 필수 자원 누락 "+missing);throw new InvalidOperationException("A2 field required asset missing: "+missing);}}
-            a2FieldSoil.SetFloat("_ForestBlend",1);a2FieldSoil.SetFloat("_ForestTextureMix",.65f);a2FieldSoil.SetFloat("_SoilTextureMix",1);a2FieldSoil.SetFloat("_FullField",1);
+            a2FieldSoil.SetFloat("_ForestBlend",1);a2FieldSoil.SetFloat("_ForestTextureMix",.65f);a2FieldSoil.SetFloat("_SoilTextureMix",1);a2FieldSoil.SetFloat("_FullField",1);a2FieldSoil.SetFloat("_FieldSize",a2Field.FieldSize);   // 11-08 ×2: 거리장·이끼 덮개 UV 분모(m). ×1 80, ×2 160
             foreach(var pair in new[]{new[]{"_ForestMap","A2_ForestFloor_BaseColor"},new[]{"_ForestNormal","A2_ForestFloor_Normal"},new[]{"_ForestRough","A2_ForestFloor_Roughness"},new[]{"_SoilMap","A2_ForestSoil_BaseColor"},new[]{"_SoilNormal","A2_ForestSoil_Normal"},new[]{"_SoilRough","A2_ForestSoil_Roughness"},new[]{"_RootMap","A2_ExposedRoots_BaseColor"},new[]{"_RootNormal","A2_ExposedRoots_Normal"},new[]{"_RootRough","A2_ExposedRoots_Roughness"}})
             {
                 var tex=Resources.Load<Texture2D>("Art/map/a2/ground/"+pair[1]);
@@ -62,25 +63,28 @@ namespace Exoduser.UnityPort
             }
             foreach(var pair in new[]{new[]{"_FieldMoss","BaseColor"},new[]{"_FieldMossNormal","Normal"},new[]{"_FieldMossRough","Roughness"}})
             {var moss=Resources.Load<Texture2D>("Art/map/a2/ground/A2_FieldMoss_"+pair[1]);if(moss==null)Debug.LogError("[A2 필드] 이끼 지면 누락 "+pair[1]);else a2FieldSoil.SetTexture(pair[0],moss);}
-            NativeTransitionProgress.Report("a2-textures",.08f);yield return null;
-            var sdf=R3Track(new Texture2D(200,200,TextureFormat.RGBA32,false,true){name="원본 보행 경계 시각 거리장",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear});
-            var pixels=new Color[40000];
-            for(int y=0;y<200;y++)for(int x=0;x<200;x++)pixels[y*200+x]=new Color(.5f+a2Field.Distance((x+.5f)*.4f,-(y+.5f)*.4f)/40,0,0,1);
+            NativeTransitionProgress.Report("a2-textures",.08f);stepLog("a2-textures");yield return null;
+            // 11-08 ×2: 해상도는 필드 크기에 비례(타일당 1픽셀 = .4m 그대로): ×1 200², ×2 400².
+            int sdfN=Mathf.RoundToInt(a2Field.FieldSize/.4f);
+            var sdf=R3Track(new Texture2D(sdfN,sdfN,TextureFormat.RGBA32,false,true){name="원본 보행 경계 시각 거리장",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear});
+            var pixels=new Color[sdfN*sdfN];
+            for(int y=0;y<sdfN;y++)for(int x=0;x<sdfN;x++)pixels[y*sdfN+x]=new Color(.5f+a2Field.Distance((x+.5f)*.4f,-(y+.5f)*.4f)/40,0,0,1);
             sdf.SetPixels(pixels);sdf.Apply(false,true);a2FieldSoil.SetTexture("_FieldSdf",sdf);
-            NativeTransitionProgress.Report("a2-sdf",.12f);yield return null;
-            var cover=R3Track(new Texture2D(256,256,TextureFormat.RGBA32,false,true){name="A2 전투중심을 비운 연결 이끼 지면",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear});
-            var coverPixels=new Color[256*256];for(int y=0;y<256;y++)for(int x=0;x<256;x++)coverPixels[y*256+x]=new Color(a2Field.GroundCover((x+.5f)/256*80,-(y+.5f)/256*80)*Mathf.Lerp(1,.45f,Mathf.SmoothStep(0,1,Mathf.Clamp01(a2Field.Distance((x+.5f)/256*80,-(y+.5f)/256*80)/2))),0,0,1);
+            NativeTransitionProgress.Report("a2-sdf",.12f);stepLog("a2-sdf");yield return null;
+            int coverN=Mathf.RoundToInt(256*a2Field.FieldSize/80f);float coverF=a2Field.FieldSize;   // 11-08 ×2: 텍셀 .3125m 그대로(×1 256², ×2 512²)
+            var cover=R3Track(new Texture2D(coverN,coverN,TextureFormat.RGBA32,false,true){name="A2 전투중심을 비운 연결 이끼 지면",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear});
+            var coverPixels=new Color[coverN*coverN];for(int y=0;y<coverN;y++)for(int x=0;x<coverN;x++)coverPixels[y*coverN+x]=new Color(a2Field.GroundCover((x+.5f)/coverN*coverF,-(y+.5f)/coverN*coverF)*Mathf.Lerp(1,.45f,Mathf.SmoothStep(0,1,Mathf.Clamp01(a2Field.Distance((x+.5f)/coverN*coverF,-(y+.5f)/coverN*coverF)/2))),0,0,1);
             cover.SetPixels(coverPixels);cover.Apply(false,true);a2FieldSoil.SetTexture("_FieldCover",cover);
-            NativeTransitionProgress.Report("a2-cover",.16f);yield return null;
-            A2FieldOuterMass();NativeTransitionProgress.Report("a2-outer-mass",.46f);yield return null;
-            A2Foreground(true);NativeTransitionProgress.Report("a2-foreground",.56f);yield return null;
-            A2FieldLandmarks();NativeTransitionProgress.Report("a2-landmarks",.64f);yield return null;
-            A2FieldConnections();NativeTransitionProgress.Report("a2-connections",.74f);yield return null;
-            A2FieldGround();NativeTransitionProgress.Report("a2-ground",.90f);yield return null;
-            A2FieldGroundCover();NativeTransitionProgress.Report("a2-ground-cover",.95f);yield return null;
-            A2BridgeMoss();NativeTransitionProgress.Report("a2-bridge-moss",.97f);yield return null;
-            A2GroundDebris();NativeTransitionProgress.Report("a2-ground-debris",.98f);yield return null;
-            A2FieldAtmosphere();NativeTransitionProgress.Report("a2-atmosphere",.99f);yield return null;
+            NativeTransitionProgress.Report("a2-cover",.16f);stepLog("a2-cover");yield return null;
+            A2FieldOuterMass();NativeTransitionProgress.Report("a2-outer-mass",.46f);stepLog("a2-outer-mass");yield return null;
+            A2Foreground(true);NativeTransitionProgress.Report("a2-foreground",.56f);stepLog("a2-foreground");yield return null;
+            A2FieldLandmarks();NativeTransitionProgress.Report("a2-landmarks",.64f);stepLog("a2-landmarks");yield return null;
+            A2FieldConnections();NativeTransitionProgress.Report("a2-connections",.74f);stepLog("a2-connections");yield return null;
+            A2FieldGround();NativeTransitionProgress.Report("a2-ground",.90f);stepLog("a2-ground");yield return null;
+            A2FieldGroundCover();NativeTransitionProgress.Report("a2-ground-cover",.95f);stepLog("a2-ground-cover");yield return null;
+            A2BridgeMoss();NativeTransitionProgress.Report("a2-bridge-moss",.97f);stepLog("a2-bridge-moss");yield return null;
+            A2GroundDebris();NativeTransitionProgress.Report("a2-ground-debris",.98f);stepLog("a2-ground-debris");yield return null;
+            A2FieldAtmosphere();NativeTransitionProgress.Report("a2-atmosphere",.99f);stepLog("a2-atmosphere");yield return null;
             A2SightSetup();
             if(r3Cam==null)throw new InvalidOperationException("A2 field camera destroyed during assembly");   // Unity null: scene reclaimed while yielding
             var aa=r3Cam.GetUniversalAdditionalCameraData();aa.antialiasing=NativeHd2D.Enabled?AntialiasingMode.None:AntialiasingMode.SubpixelMorphologicalAntiAliasing;aa.antialiasingQuality=AntialiasingQuality.High;
@@ -88,7 +92,7 @@ namespace Exoduser.UnityPort
             r3Cam.backgroundColor=A2FogColor;r3Cam.farClipPlane=220;
             if(hellHeroRim!=null){hellHeroRim.color=new Color(.54f,.67f,1f);hellHeroRim.range=6f;hellHeroRim.intensity=2.6f;}
             if(r3Marker!=null)foreach(var l in r3Marker.GetComponentsInChildren<Light>(true))if(l.type==LightType.Spot)l.color=new Color(.62f,.74f,1f);
-            A2Ambient();Debug.Log("[A2 전체필드] 원본40000타일 보행·시야 불변/全域地面·외곽·접합 조립 "+timer.ElapsedMilliseconds+"ms");
+            A2Ambient();Debug.Log("[A2 전체필드] 원본"+Map.Data.tiles.Length+"타일 보행·시야 불변/全域地面·외곽·접합 조립 k="+A2Scale.K+" 필드 "+a2Field.FieldSize+"u "+timer.ElapsedMilliseconds+"ms");
         }
         void A2FieldGround()
         {
@@ -98,7 +102,7 @@ namespace Exoduser.UnityPort
             for(int y=0;y<nz;y++)for(int x=0;x<nx;x++)
             {
                 float wx=xs[x],wz=zs[y];int i=y*nx+x;
-                vertices[i]=new Vector3(wx,a2Field.TerrainHeight(wx,wz),wz);uv[i]=new Vector2(wx/80,-wz/80);
+                vertices[i]=new Vector3(wx,a2Field.TerrainHeight(wx,wz),wz);uv[i]=new Vector2(wx/a2Field.FieldSize,-wz/a2Field.FieldSize);
                 if(x==nx-1||y==nz-1)continue;
                 triangles[k++]=i;triangles[k++]=i+nx;triangles[k++]=i+1;triangles[k++]=i+1;triangles[k++]=i+nx;triangles[k++]=i+nx+1;
             }
@@ -134,10 +138,12 @@ namespace Exoduser.UnityPort
         void A2FieldOuterMass()
         {
             // 원본 외곽 윤곽을 따라 BACK/MID/FRONT를 연결한다. 중앙 공터에는 세로 장애물을 넣지 않는다.
-            for(int row=0;row<=22;row++)
+            // 11-08 ×2: 줄 간격 3.6u는 그대로, 줄 수만 필드 크기에 비례(×1 0..22, ×2 0..44). 타일 폭·높이는 Map.Data에서 읽는다.
+            float fieldF=a2Field.FieldSize;int outerRows=Mathf.RoundToInt((fieldF-.8f)/3.6f),mapW=Map.Data.width,mapH=Map.Data.height;
+            for(int row=0;row<=outerRows;row++)
             {
-                float z=-80+row*3.6f;int tileY=Mathf.Clamp(Mathf.FloorToInt(-z/.4f),0,199),left=-1,right=-1;
-                for(int x=0;x<200;x++)if(Map.Data.tiles[tileY*200+x]!=1){if(left<0)left=x;right=x;}
+                float z=-fieldF+row*3.6f;int tileY=Mathf.Clamp(Mathf.FloorToInt(-z/.4f),0,mapH-1),left=-1,right=-1;
+                for(int x=0;x<mapW;x++)if(Map.Data.tiles[tileY*mapW+x]!=1){if(left<0)left=x;right=x;}
                 if(left<0)continue;
                 foreach(int side in new[]{-1,1})for(int layer=0;layer<3;layer++)
                 {
@@ -189,11 +195,13 @@ namespace Exoduser.UnityPort
                 A2FieldRoots(x,z,Mathf.Clamp(r*1.5f,1.6f,3.1f),treeYaw);index++;
             }
             // 시작 갈림길의 낮은 목교는 통로와 나란히 놓이며 별도 충돌을 만들지 않는다.
-            var bridge=A2Module("Rotten_Wood_Bridge",43.2f,-71.8f,.96f,.55f,.85f,24,.02f);
+            // 11-08 ×2: 다리·횃불 위치만 ×K(다리 크기·횃불 크기는 그대로)
+            float K=A2Scale.K;
+            var bridge=A2Module("Rotten_Wood_Bridge",A2ForestLayout.BridgeX,A2ForestLayout.BridgeZ,.96f,.55f,.85f,24,.02f);
             if(bridge!=null)bridge.name="A2 시작 목교";
-            A2Torch(40.8f,-74.1f);A2Torch(45.6f,-69.5f);
+            A2Torch(40.8f*K,-74.1f*K);A2Torch(45.6f*K,-69.5f*K);
             foreach(var p in new[]{new Vector2(31,-61),new Vector2(18.3f,-40.2f),new Vector2(59,-39),new Vector2(32,-15),new Vector2(40,-5.5f)})
-                A2Torch(p.x,p.y);
+                A2Torch(p.x*K,p.y*K);
         }
         void A2FieldConnections()
         {
@@ -232,7 +240,7 @@ namespace Exoduser.UnityPort
                 a2FieldRootMaterial=R3Track(new Material(sourceMaterial));
                 foreach(var key in new[]{"_BaseMap","_BumpMap","_RockMap","_AshMap","_RockNormal","_RockRough","_ForestMap","_ForestNormal","_ForestRough","_SoilMap","_SoilNormal","_SoilRough","_RootMap","_RootNormal","_RootRough","_FieldSdf","_FieldCover","_FieldMoss","_FieldMossNormal","_FieldMossRough"})
                     if(a2FieldRootMaterial.HasProperty(key))a2FieldRootMaterial.SetTexture(key,a2FieldSoil.GetTexture(key));
-                foreach(var key in new[]{"_ForestBlend","_ForestTextureMix","_SoilTextureMix","_FullField"})if(a2FieldRootMaterial.HasProperty(key))a2FieldRootMaterial.SetFloat(key,a2FieldSoil.GetFloat(key));
+                foreach(var key in new[]{"_ForestBlend","_ForestTextureMix","_SoilTextureMix","_FullField","_FieldSize"})if(a2FieldRootMaterial.HasProperty(key))a2FieldRootMaterial.SetFloat(key,a2FieldSoil.GetFloat(key));
                 a2FieldRootMaterial.SetColor("_ScanColor",new Color(.9f,.8f,.63f,1));
             }
             float baseY=a2Field.TerrainHeight(x,z);var go=Instantiate(source,a2Root.transform);go.name="A2 흙에 이어진 스캔 뿌리";
@@ -298,7 +306,8 @@ namespace Exoduser.UnityPort
             haze.AddComponent<MeshFilter>().sharedMesh=screen;var fog=haze.AddComponent<MeshRenderer>();fog.sharedMaterial=R3Track(new Material(Shader.Find("EXODUSER/A2HeightFog")));fog.shadowCastingMode=ShadowCastingMode.Off;
             {
                 // 층 안개 기준 높이 = 걷는 면 평균 지면. 시작 8m·최대 알파 .45·높이 7.5m 컷오프(맵 분석 13, PoE2 lightfog 750u).
-                float sum=0;int count=0;for(int gz=1;gz<8;gz++)for(int gx=1;gx<8;gx++){float wx=gx*10,wz=-gz*10;if(Map.CanMove(wx*100,-wz*100,15)){sum+=a2Field.Height(wx,wz);count++;}}
+                float sum=0;int count=0;for(int gz=1;gz<8;gz++)for(int gx=1;gx<8;gx++){float wx=gx*10*A2Scale.K,wz=-gz*10*A2Scale.K;   // 11-08 ×2: 같은 7×7 표본을 필드에 맞춰 늘림
+                if(Map.CanMove(wx*100,-wz*100,15)){sum+=a2Field.Height(wx,wz);count++;}}
                 var m=fog.sharedMaterial;m.SetColor("_Color",A2FogColor);m.SetFloat("_Start",8);m.SetFloat("_End",90);m.SetFloat("_MaxAlpha",.45f);m.SetFloat("_Base",count>0?sum/count:0);m.SetFloat("_Cutoff",7.5f);
             }
             A2CanopyShadows();
@@ -307,8 +316,9 @@ namespace Exoduser.UnityPort
             var shader=Shader.Find("EXODUSER/A2Atmosphere");
             var moonDirection=Quaternion.Euler(49,-32,0)*Vector3.forward;
             foreach(var root in r3Roots)if(root!=null)foreach(var light in root.GetComponentsInChildren<Light>(true))if(light.enabled&&light.type==LightType.Directional)moonDirection=light.transform.forward;
-            foreach(var p in new[]{new Vector2(39,-70),new Vector2(26,-60),new Vector2(60,-58),new Vector2(21,-40),new Vector2(43,-34),new Vector2(64,-39),new Vector2(30,-18),new Vector2(53,-16),new Vector2(40,-6)})
+            foreach(var p0 in new[]{new Vector2(39,-70),new Vector2(26,-60),new Vector2(60,-58),new Vector2(21,-40),new Vector2(43,-34),new Vector2(64,-39),new Vector2(30,-18),new Vector2(53,-16),new Vector2(40,-6)})
             {
+                var p=p0*A2Scale.K;   // 11-08 ×2: 빛기둥 위치만 ×K
                 var bottom=new Vector3(p.x,a2Field.Height(p.x,p.y),p.y);var top=bottom-moonDirection*(13/Mathf.Max(.1f,-moonDirection.y));
                 var side=Vector3.right;var mesh=R3Track(new Mesh{name="수관 사이 달빛"});mesh.vertices=new[]{top-side*.3f,top+side*.3f,bottom-side*1.5f,bottom+side*1.5f};mesh.uv=new[]{Vector2.zero,Vector2.right,Vector2.up,Vector2.one};mesh.triangles=new[]{0,2,1,1,2,3};mesh.RecalculateBounds();
                 var go=new GameObject("A2 필드 국소 빛기둥");go.transform.SetParent(a2Root.transform,false);go.AddComponent<MeshFilter>().sharedMesh=mesh;
@@ -329,15 +339,17 @@ namespace Exoduser.UnityPort
             var materials=new Material[4];
             for(int m=0;m<materials.Length;m++){materials[m]=R3Track(new Material(shader));materials[m].SetFloat("_Leaf",.75f+.2f*m);materials[m].SetFloat("_Holes",.28f+.03f*m);materials[m].SetFloat("_Soft",.22f);materials[m].SetFloat("_Seed",m*31.7f);}
             var rng=new System.Random(1107);int count=0;
-            for(int i=0;i<256;i++)
+            // 11-08 ×2: 칸 5.75m는 그대로, 칸 수만 필드 크기로(칸 = round((FieldSize+12)/5.75): ×1 16×16=256, ×2 30×30=900). ×1은 rng 호출 순서까지 동일.
+            int cells=Mathf.RoundToInt((a2Field.FieldSize+12)/5.75f);float fieldMax=a2Field.FieldSize-1;
+            for(int i=0;i<cells*cells;i++)
             {
                 float size=4+7*(float)Math.Pow(rng.NextDouble(),1.6);float height=13+6*(float)rng.NextDouble();
                 // 그림자가 떨어질 바닥 점을 고르고, 달빛 방향(49°,-32°)으로 높이만큼 거슬러 카드를 둔다.
                 // 지터 격자(16×16칸, 칸 5.75m): 무작위 배치는 장면마다 덮개가 17~58%로 들쭉날쭉했다.
-                if(rng.NextDouble()>A2CanopyKeep)continue;int cell=i;float gx=-6+(cell%16+(float)rng.NextDouble())*5.75f,gz=6-(cell/16+(float)rng.NextDouble())*5.75f;
+                if(rng.NextDouble()>A2CanopyKeep)continue;int cell=i;float gx=-6+(cell%cells+(float)rng.NextDouble())*5.75f,gz=6-(cell/cells+(float)rng.NextDouble())*5.75f;
                 float k=height/16f;float cx=gx+7.5f*k,cz=gz-12f*k;
                 var go=new GameObject("수관 잎 덩어리 "+i);go.transform.SetParent(root.transform,false);
-                go.transform.SetPositionAndRotation(new Vector3(cx,a2Field.Height(Mathf.Clamp(gx,1,79),Mathf.Clamp(gz,-79,-1))+height,cz),Quaternion.Euler(0,(float)rng.NextDouble()*360,0));
+                go.transform.SetPositionAndRotation(new Vector3(cx,a2Field.Height(Mathf.Clamp(gx,1,fieldMax),Mathf.Clamp(gz,-fieldMax,-1))+height,cz),Quaternion.Euler(0,(float)rng.NextDouble()*360,0));
                 go.transform.localScale=new Vector3(size,1,size*(.7f+.6f*(float)rng.NextDouble()));
                 go.AddComponent<MeshFilter>().sharedMesh=mesh;var r=go.AddComponent<MeshRenderer>();
                 r.sharedMaterial=materials[i%materials.Length];r.shadowCastingMode=ShadowCastingMode.ShadowsOnly;r.receiveShadows=false;count++;

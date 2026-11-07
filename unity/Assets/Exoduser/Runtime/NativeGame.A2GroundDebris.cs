@@ -13,7 +13,9 @@ namespace Exoduser.UnityPort
     public sealed partial class NativeGame
     {
         internal static int A2DebrisCards, A2DebrisSmall, A2DebrisPatches, A2DebrisRenderers;internal static GameObject A2DebrisRoot;
-        const float DebrisMinX=-12,DebrisMaxX=92,DebrisMinZ=-92,DebrisMaxZ=12,DebrisChunkSize=13;
+        // 11-08 ×2: 잔해 범위 = 필드 밖 12m 여백 포함(-12 … FieldSize+12). 청크 13m는 그대로(청크 수 증가).
+        static readonly float DebrisMinX=-12,DebrisMaxX=A2Scale.FieldSize+12,DebrisMinZ=-A2Scale.FieldSize-12,DebrisMaxZ=12;
+        const float DebrisChunkSize=13;
         // CTO RETOUCH: 잔해가 바닥보다 어두우면 "더러운 바닥"으로 읽힌다 → 중간 카드는 바닥 평균의 약 1.2배(.65), 작은 조각은 바닥 ±15%(.72)
         const float CardBrightness=.42f,SmallBrightness=.55f,SmallAlpha=.6f;   // 11-08 ≤.05: 잔가지가 바닥보다 밝은 회색 선으로 떠서 .5→.42   // .65/.72는 노멀을 누른 뒤 흰 뼛조각처럼 떴다
         // 셀 번호: 0~9 잔가지, 10~14 솔잎 무더기, 15~19 잔뿌리, 20~25 낙엽

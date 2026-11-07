@@ -1,6 +1,6 @@
 Shader "EXODUSER/HellGroundPBR"
 {
- Properties { _BaseMap("피부 컬러맵",2D)="white"{} _BaseColor("색",Color)=(1,1,1,1) _BumpMap("피부 노멀",2D)="bump"{} _RockMap("젖은 돌",2D)="white"{} _AshMap("탄화토",2D)="white"{} _RockNormal("돌 노멀",2D)="bump"{} _RockRough("돌 러프니스",2D)="white"{} _ForestMap("숲 낙엽/흙",2D)="white"{} _ForestNormal("숲 노멀",2D)="bump"{} _ForestRough("숲 러프니스",2D)="white"{} _ForestTextureMix("낙엽 혼합",Range(0,1))=0 _FullField("전체 숲 지면",Float)=0 _FieldSdf("원본 외곽 거리장",2D)="gray"{} _FieldCover("전투공간 지면 이끼",2D)="black"{} _FieldMoss("이끼",2D)="white"{} _FieldMossNormal("이끼 노멀",2D)="bump"{} _FieldMossRough("이끼 러프니스",2D)="white"{} _Cutoff("잘림",Float)=.5 _Smoothness("매끈함",Float)=.24 _Metallic("금속",Float)=0 _ForestBlend("A2 젖은 숲 바닥",Range(0,1))=0
+ Properties { _BaseMap("피부 컬러맵",2D)="white"{} _BaseColor("색",Color)=(1,1,1,1) _BumpMap("피부 노멀",2D)="bump"{} _RockMap("젖은 돌",2D)="white"{} _AshMap("탄화토",2D)="white"{} _RockNormal("돌 노멀",2D)="bump"{} _RockRough("돌 러프니스",2D)="white"{} _ForestMap("숲 낙엽/흙",2D)="white"{} _ForestNormal("숲 노멀",2D)="bump"{} _ForestRough("숲 러프니스",2D)="white"{} _ForestTextureMix("낙엽 혼합",Range(0,1))=0 _FullField("전체 숲 지면",Float)=0 _FieldSize("전체 숲 한 변(m) — 거리장·덮개 UV 분모",Float)=80 _FieldSdf("원본 외곽 거리장",2D)="gray"{} _FieldCover("전투공간 지면 이끼",2D)="black"{} _FieldMoss("이끼",2D)="white"{} _FieldMossNormal("이끼 노멀",2D)="bump"{} _FieldMossRough("이끼 러프니스",2D)="white"{} _Cutoff("잘림",Float)=.5 _Smoothness("매끈함",Float)=.24 _Metallic("금속",Float)=0 _ForestBlend("A2 젖은 숲 바닥",Range(0,1))=0
  _SoilTextureMix("A2 스캔 지면 사용",Range(0,1))=0 _SoilMap("A2 숲 자갈흙",2D)="white"{} _SoilNormal("A2 자갈흙 노멀",2D)="bump"{} _SoilRough("A2 자갈흙 러프니스",2D)="white"{} _RootMap("A2 노출 뿌리흙",2D)="white"{} _RootNormal("A2 뿌리흙 노멀",2D)="bump"{} _RootRough("A2 뿌리흙 러프니스",2D)="white"{} }
  SubShader
  {
@@ -28,7 +28,7 @@ Shader "EXODUSER/HellGroundPBR"
    TEXTURE2D(_SoilMap);TEXTURE2D(_SoilNormal);TEXTURE2D(_SoilRough);TEXTURE2D(_RootMap);TEXTURE2D(_RootNormal);TEXTURE2D(_RootRough);
    TEXTURE2D(_FieldCover);SAMPLER(sampler_FieldCover);TEXTURE2D(_FieldSdf);SAMPLER(sampler_FieldSdf);TEXTURE2D(_FieldMoss);TEXTURE2D(_FieldMossNormal);TEXTURE2D(_FieldMossRough);
    CBUFFER_START(UnityPerMaterial)
-   float4 _BaseMap_ST;half4 _BaseColor;half _Cutoff,_Smoothness,_Metallic,_ForestBlend,_ForestTextureMix,_SoilTextureMix,_FullField;
+   float4 _BaseMap_ST;half4 _BaseColor;half _Cutoff,_Smoothness,_Metallic,_ForestBlend,_ForestTextureMix,_SoilTextureMix,_FullField,_FieldSize;
    CBUFFER_END
    struct A {float4 positionOS:POSITION;float3 normalOS:NORMAL;float4 tangentOS:TANGENT;float2 uv:TEXCOORD0;};
    struct V {float4 positionCS:SV_POSITION;float3 world:TEXCOORD0;float3 normal:TEXCOORD1;float4 tangent:TEXCOORD2;float2 uv:TEXCOORD3;half fog:TEXCOORD4;};
@@ -93,7 +93,7 @@ Shader "EXODUSER/HellGroundPBR"
     {
      // 11-07 1-1 바닥 질감(리소스·PoE2 실측): 텍셀 190~205px/m(1024² 한 장을 5.0~5.4m마다), UV×1·×0.5 이중 스케일,
      // 높이 블렌딩(색 명도에서 뽑은 낮은 밉 높이, 경계 약 .3~.5m), 월드 노이즈 거시 마스크(약 10~14m, sin 무늬 대신), 색 변주 ±5%, 채도 .72배.
-     float edge=(SAMPLE_TEXTURE2D(_FieldSdf,sampler_FieldSdf,float2(i.world.x/80,-i.world.z/80)).r-.5)*40;
+     float edge=(SAMPLE_TEXTURE2D(_FieldSdf,sampler_FieldSdf,float2(i.world.x/_FieldSize,-i.world.z/_FieldSize)).r-.5)*40;
      float2 wp=i.world.xz;
      float macro=smoothstep(.28,.72,FieldNoise(wp/13.0+float2(3.1,7.7))*.7+FieldNoise(wp/5.5+float2(11.3,2.9))*.3);
      float fringe=1-smoothstep(.1,5,edge);
@@ -102,7 +102,7 @@ Shader "EXODUSER/HellGroundPBR"
      half3 roots=FieldLayer(_RootMap,sampler_ForestMap,wp/5.0+.37,.85,.16,hr)*half3(.62,.52,.40);
      half3 leaves=FieldLayer(_ForestMap,sampler_ForestMap,wp/5.4+.61,.9,.22,hl)*half3(.58,.49,.36);
      half3 moss=FieldLayer(_FieldMoss,sampler_ForestMap,wp/5.2+.19,.8,.14,hm)*half3(.47,.53,.35);
-     float cover=SAMPLE_TEXTURE2D(_FieldCover,sampler_FieldCover,float2(i.world.x/80,-i.world.z/80)).r;
+     float cover=SAMPLE_TEXTURE2D(_FieldCover,sampler_FieldCover,float2(i.world.x/_FieldSize,-i.world.z/_FieldSize)).r;
      half h=hs;a=dirt;fieldSmooth=.30;
      float tr=HeightBlend(h,hr,.30+.35*fringe);a=lerp(a,roots,tr);h=lerp(h,hr,tr);fieldSmooth=lerp(fieldSmooth,.26,tr);
      float tl=HeightBlend(h,hl,macro*.48);a=lerp(a,leaves,tl);h=lerp(h,hl,tl);fieldSmooth=lerp(fieldSmooth,.22,tl);

@@ -8,7 +8,8 @@ namespace Exoduser.UnityPort
     // (1 tile = 40 px = 0.4 u). Off, every Point() is byte-for-byte the old 2D mapping (x / 100, -y / 100, 0), so the 2D path and its oracles are unchanged.
     public static class NativeRemodel3D
     {
-        public static readonly bool Requested = Core.FieldLayout.FromArguments(Environment.GetCommandLineArgs()).IsOriginal &&
+        // 11-08 ×2: 배율 레이아웃(--field-scale)에서도 3D가 켜진다. 필드 크기·좌표는 A2Scale이 읽는다. --remodel3d는 그대로 필요하다.
+        public static readonly bool Requested =
             (Array.IndexOf(Environment.GetCommandLineArgs(), "--remodel3d") >= 0 ||
             (Application.isEditor && Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-qa-sandbox")>=0 && Environment.GetEnvironmentVariable("EXO_A2_EDITOR_PREVIEW")=="1"));
         public static bool Active;            // the RM-1 scene is loaded and the field is shown in 3D right now (false in the boss arena / before the scene is ready)

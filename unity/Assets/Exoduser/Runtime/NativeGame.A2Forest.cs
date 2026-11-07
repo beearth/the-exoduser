@@ -348,7 +348,7 @@ namespace Exoduser.UnityPort
         void A2ForegroundIsland(Terrain ground)
         {
             // 전경 거목의 비보행 섬. 수면 차단은 그대로여서 장식 섬에 진입할 수 없다.
-            const float x=A2ForestLayout.IslandX,z=A2ForestLayout.IslandZ;
+            float x=A2ForestLayout.IslandX,z=A2ForestLayout.IslandZ;
             const int rings=5,segments=48;var v=new Vector3[(rings+1)*(segments+1)];var t=new int[rings*segments*6];
             for(int ring=0;ring<=rings;ring++)for(int col=0;col<=segments;col++)
             {

@@ -67,7 +67,9 @@ namespace Exoduser.UnityPort
             while(!Remodel3DReady&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
             if(!Remodel3DReady){Application.Quit(3);yield break;}
             A2FieldCaptureGeometry(output);
+            float K=A2Scale.K;   // 11-08 ×2: 촬영 위치(Core px)를 ×K
             var locations=new[]{new Vector2(4020,7420),new Vector2(3500,6250),new Vector2(4000,5000),new Vector2(2200,4400),new Vector2(6500,4400),new Vector2(4600,3500),new Vector2(4000,1850),new Vector2(4020,500),new Vector2(4790.811f,7142.689f),new Vector2(3320,7500),new Vector2(3320,7000)};
+            for(int li=0;li<locations.Length;li++)locations[li]*=K;
             var names=new[]{"01-시작","02-초반","03-전투공터","04-서측","05-동측","06-랜드마크","07-후반","08-보스입구","09-거목몸통재현","10-왼전경하단경계","11-왼전경상단경계"};
             foreach(int width in new[]{1920,3840})
             {
@@ -124,7 +126,7 @@ namespace Exoduser.UnityPort
             float sizeDeadline=Time.realtimeSinceStartup+5;
             while((Screen.width!=1920||Screen.height!=1080)&&Time.realtimeSinceStartup<sizeDeadline)yield return null;
             Directory.CreateDirectory(folder);
-            var at=Argument("-field-video-at");var p=new Vector2(4000,5000);
+            var at=Argument("-field-video-at");var p=new Vector2(4000,5000)*A2Scale.K;
             if(!string.IsNullOrEmpty(at)){var parts=at.Split(':');float x,y;if(parts.Length==2&&float.TryParse(parts[0],System.Globalization.NumberStyles.Float,System.Globalization.CultureInfo.InvariantCulture,out x)&&float.TryParse(parts[1],System.Globalization.NumberStyles.Float,System.Globalization.CultureInfo.InvariantCulture,out y))p=new Vector2(x,y);}
             Simulation.Player.X=p.x;Simulation.Player.Y=p.y;lastX=p.x;lastY=p.y;
             for(int frame=0;frame<30;frame++){UpdateViews();yield return null;}
@@ -154,7 +156,7 @@ namespace Exoduser.UnityPort
 #endif
             yield return new WaitForSecondsRealtime(.5f);
             int want=100;int.TryParse(Argument("-field-crowd-count"),out int parsed);if(parsed>0)want=parsed;
-            var center=new Vector2(4000,3500);if(!Map.CanMove(center.x,center.y,15))center=new Vector2(4000,5000);
+            var center=new Vector2(4000,3500)*A2Scale.K;if(!Map.CanMove(center.x,center.y,15))center=new Vector2(4000,5000)*A2Scale.K;
             Simulation.Player.X=center.x;Simulation.Player.Y=center.y;lastX=center.x;lastY=center.y;
             int placed=0;var rng=new System.Random(7);
             foreach(var e in Simulation.Enemies)

@@ -106,7 +106,7 @@ class Program
             Check(accidentalPools==0,"수로 밖 전투 지면의 우발적 둥근 웅덩이 제거 "+accidentalPools);
             var terrain=type.GetMethod("TerrainHeight");
             // 실제 카메라의 화면 모서리 광선과 렌더 표면의 교차. 원본 통행 판정과 독립이다.
-            float Limit(string name,float fallback){var value=type.GetField(name);return value==null?fallback:Convert.ToSingle(value.GetRawConstantValue());}
+            float Limit(string name,float fallback){var value=type.GetField(name);return value==null?fallback:Convert.ToSingle(value.IsLiteral?value.GetRawConstantValue():value.GetValue(null));}   // 11-08: 지면 범위가 const에서 static readonly(A2Scale)로 바뀜
             float gx0=Limit("GroundMinX",-45),gx1=Limit("GroundMaxX",125),gz0=Limit("GroundMinZ",-125),gz1=Limit("GroundMaxZ",45);
             var terrainAt=(Func<float,float,float>)terrain.CreateDelegate(typeof(Func<float,float,float>),field);
             var farMethod=type.GetMethod("DistantForestSites");var forestSites=new System.Collections.Generic.List<(float x,float z)>();

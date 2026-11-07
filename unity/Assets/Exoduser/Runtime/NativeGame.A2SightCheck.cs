@@ -30,7 +30,7 @@ namespace Exoduser.UnityPort
             float deadline=Time.realtimeSinceStartup+60;
             while(!Remodel3DReady&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
             if(!Remodel3DReady||a2SightFade==null){Application.Quit(3);yield break;}
-            {var ctrl=Simulation.Player;ctrl.X=4020;ctrl.Y=7420;lastX=4020;lastY=7420;float t0=Time.realtimeSinceStartup+.6f;while(Time.realtimeSinceStartup<t0){UpdateViews();yield return null;}yield return new WaitForEndOfFrame();var c0=ScreenCapture.CaptureScreenshotAsTexture();File.WriteAllBytes(Path.Combine(output,"control-start.png"),c0.EncodeToPNG());Destroy(c0);Debug.Log("[A2 가림 검사] 대조 "+A2SightPlayerState());}
+            {var ctrl=Simulation.Player;ctrl.X=4020*A2Scale.K;ctrl.Y=7420*A2Scale.K;lastX=4020*A2Scale.K;lastY=7420*A2Scale.K;float t0=Time.realtimeSinceStartup+.6f;while(Time.realtimeSinceStartup<t0){UpdateViews();yield return null;}yield return new WaitForEndOfFrame();var c0=ScreenCapture.CaptureScreenshotAsTexture();File.WriteAllBytes(Path.Combine(output,"control-start.png"),c0.EncodeToPNG());Destroy(c0);Debug.Log("[A2 가림 검사] 대조 "+A2SightPlayerState());}
             int shot=0;var report=new System.Text.StringBuilder("{\"candidates\":"+a2SightFade.Candidates+",\"shots\":[");
             foreach(var c in Map.Data.colliders)
             {

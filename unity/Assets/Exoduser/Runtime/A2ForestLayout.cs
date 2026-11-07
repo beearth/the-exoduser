@@ -6,12 +6,16 @@ namespace Exoduser.UnityPort
     // Core tick/전투 규칙과 원본 ch1_map 데이터는 변경하지 않는다.
     public static class A2ForestLayout
     {
-        public const float BridgeX=43.2f, BridgeZ=-71.8f;
-        public const float WaterLevel=-1.25f, IslandX=53.3f, IslandZ=-77;
+        // 11-08 ×2: 다리·섬·물가 곡선·고목 밑동의 위치만 ×K(다리 길이·폭, 섬 반경, 줄기 반경, 수위는 그대로). K=1이면 항등.
+        static readonly float K=A2Scale.K;
+        public static readonly float BridgeX=43.2f*K, BridgeZ=-71.8f*K;
+        public const float WaterLevel=-1.25f;
+        public static readonly float IslandX=53.3f*K, IslandZ=-77*K;
         public const float SinYaw=.406736643f, CosYaw=.913545458f;
         public static float Along(float x,float z) { return (x-BridgeX)*SinYaw+(z-BridgeZ)*CosYaw; }
         public static float Across(float x,float z) { return (x-BridgeX)*CosYaw-(z-BridgeZ)*SinYaw; }
-        public static float Shore(float z)
+        public static float Shore(float z) { return K*Shore1(z/K); }
+        static float Shore1(float z)
         {
             float bend=Math.Max(0,Math.Min(1,(z+66)/10));bend=bend*bend*(3-2*bend);
             float returning=Math.Max(0,Math.Min(1,(z+52)/10));returning=returning*returning*(3-2*returning);
@@ -19,7 +23,7 @@ namespace Exoduser.UnityPort
         }
         public static bool Water(float x,float z)
         {
-            if(z<=-94||z>=-30)return false;
+            if(z<=-94*K||z>=-30*K)return false;
             return x>Shore(z)||BranchDistance(x,z)<0;
         }
         public static float BranchDistance(float x,float z)
@@ -32,13 +36,13 @@ namespace Exoduser.UnityPort
         public static bool Bridge(float x,float z) { return Math.Abs(Along(x,z))<=4.45f&&Math.Abs(Across(x,z))<=1.7f; }
         public static bool Trunk(float x,float z)
         {
-            if(Circle(x,z,34.8f,-70.5f,2.6f)||Circle(x,z,49,-64.8f,2)||Circle(x,z,53.3f,-77,1.8f)||Circle(x,z,29.5f,-64,1.9f)||Circle(x,z,47.6f,-67.2f,1.3f))return true;
-            for(int layer=0;layer<3;layer++)for(int j=0;j<5;j++)if(Circle(x,z,22+j*9.5f+layer*2.3f,-57+layer*8.5f,.8f))return true;
+            if(Circle(x,z,34.8f*K,-70.5f*K,2.6f)||Circle(x,z,49*K,-64.8f*K,2)||Circle(x,z,53.3f*K,-77*K,1.8f)||Circle(x,z,29.5f*K,-64*K,1.9f)||Circle(x,z,47.6f*K,-67.2f*K,1.3f))return true;
+            for(int layer=0;layer<3;layer++)for(int j=0;j<5;j++)if(Circle(x,z,(22+j*9.5f+layer*2.3f)*K,(-57+layer*8.5f)*K,.8f))return true;
             for(int layer=0;layer<3;layer++)for(int j=0;j<7;j++)
-            {float tx=24+j*6.2f+layer*1.1f,tz=-60+layer*6.5f;if(SecondaryTree(tx,tz)&&Circle(x,z,tx,tz,.5f))return true;}
+            {float tx=(24+j*6.2f+layer*1.1f)*K,tz=(-60+layer*6.5f)*K;if(SecondaryTree(tx,tz)&&Circle(x,z,tx,tz,.5f))return true;}
             return false;
         }
-        public static bool SecondaryTree(float x,float z) { return !Circle(x,z,23.4f,-63.4f,3.5f)&&!Circle(x,z,59.4f,-60.2f,3.5f); }
+        public static bool SecondaryTree(float x,float z) { return !Circle(x,z,23.4f*K,-63.4f*K,3.5f)&&!Circle(x,z,59.4f*K,-60.2f*K,3.5f); }
         static bool Circle(float x,float z,float cx,float cz,float r) { return (x-cx)*(x-cx)+(z-cz)*(z-cz)<r*r; }
         public static float IslandRadius(float angle) { return 3.4f*(1+.10f*(float)Math.Sin(angle*3)+.08f*(float)Math.Cos(angle*5)); }
         public static bool Island(float x,float z) { float dx=x-IslandX,dz=z-IslandZ;return Math.Sqrt(dx*dx+dz*dz)<=IslandRadius((float)Math.Atan2(dz,dx)); }
@@ -56,7 +60,7 @@ namespace Exoduser.UnityPort
         // 물가의 높은 수직 단면을 침식 경사로 잇는다. 통행 다리의 기존 높이는 보존한다.
         public static float BankHeight(float x,float z,float ground)
         {
-            if(z<=-94||z>=-30||Water(x,z)||Bridge(x,z))return ground;
+            if(z<=-94*K||z>=-30*K||Water(x,z)||Bridge(x,z))return ground;
             // 굽은 강에서 X축 간격은 실제 물가 거리가 아니다. 접선의 법선 방향 폭으로 보정한다.
             float slope=(Shore(z+.05f)-Shore(z-.05f))/.1f;
             float d=(Shore(z)-x)/(float)Math.Sqrt(1+slope*slope);

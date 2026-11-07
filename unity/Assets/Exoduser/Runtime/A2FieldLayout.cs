@@ -3,13 +3,25 @@ using System.Collections.Generic;
 
 namespace Exoduser.UnityPort
 {
+    // 11-08 ×2 필드: Core.FieldLayout.Scale(k, 1~2)을 3D 표현층이 읽는 단일 지점. k=1이면 모든 곱셈이 항등이라 ×1 동작은 그대로다.
+    // 손으로 넣은 월드 좌표(지역 중심·다리·랜드마크·횃불 등)는 위치만 ×K로 옮기고 크기·반경·높이·카메라·안개는 그대로 둔다.
+    // FieldSize(m)는 MapData(width×tileSize/100)와 같다: 200×40/100=80, k=2면 400×40/100=160. A2FieldLayout 생성 때 MapData와 대조한다.
+    public static class A2Scale
+    {
+        public const float BaseFieldSize=80;
+        public static readonly float K=(float)Core.FieldLayout.FromArguments(Environment.GetCommandLineArgs()).Scale;
+        public static readonly float FieldSize=BaseFieldSize*K;
+        public static float FieldSizeOf(MapData data) { return data.width*data.tileSize/100f; }
+    }
     // 1-1 전체 숲의 시각 좌표. 원본 SourceMap은 유일한 보행/투사체 계약이다.
     public sealed class A2FieldLayout
     {
-        public const float GroundMinX=-105,GroundMaxX=185,GroundMinZ=-185,GroundMaxZ=105;
+        // 지면 메시 범위: 필드 밖 여백(-25 / +105 / +60 / +105)은 그대로, 필드 한 변만 FieldSize로 늘린다.
+        public static readonly float GroundMinX=-105,GroundMaxX=A2Scale.FieldSize+105,GroundMinZ=-A2Scale.FieldSize-105,GroundMaxZ=105;
         public static float[] GroundAxis(bool xAxis)
         {
-            float min=xAxis?GroundMinX:GroundMinZ,max=xAxis?GroundMaxX:GroundMaxZ,nearMin=xAxis?-45:-125,nearMax=xAxis?125:45;
+            float F=A2Scale.FieldSize;
+            float min=xAxis?GroundMinX:GroundMinZ,max=xAxis?GroundMaxX:GroundMaxZ,nearMin=xAxis?-45:-F-45,nearMax=xAxis?F+45:45;
             var values=new List<float>();
             for(float v=min;v<nearMin;v+=2)values.Add(v);
             for(float v=nearMin;v<=nearMax;v+=.25f)values.Add(v);
@@ -35,8 +47,11 @@ namespace Exoduser.UnityPort
         readonly MapData data;
         readonly float[] signed;
         readonly float tile;
-        const int SurfaceCells=501;
+        // 11-08: 면적 격자 칸 수 = FieldSize/SurfaceStep+1 (×1 501, ×2 1001). 칸 간격 .16m는 그대로.
+        readonly float fieldSize;
+        readonly int SurfaceCells;
         const float SurfaceStep=.16f;
+        public float FieldSize { get { return fieldSize; } }
         float[] surfaces;
         float[] terrainSamples;
         readonly System.Collections.Generic.List<DeckTriangle> deckTriangles=new System.Collections.Generic.List<DeckTriangle>();
@@ -47,6 +62,8 @@ namespace Exoduser.UnityPort
         public A2FieldLayout(MapData data)
         {
             this.data=data;tile=data.tileSize/100f;treeBoundary=new SourceMap(data);
+            fieldSize=A2Scale.FieldSizeOf(data);SurfaceCells=(int)Math.Round(fieldSize/SurfaceStep)+1;
+            if(Math.Abs(fieldSize-A2Scale.FieldSize)>.001f)throw new InvalidOperationException("A2 field size "+fieldSize+" != A2Scale "+A2Scale.FieldSize);
             var toLand=new float[data.tiles.Length];var toForest=new float[data.tiles.Length];
             for(int i=0;i<signedLength(data);i++)
             {
@@ -128,7 +145,7 @@ namespace Exoduser.UnityPort
             float deck=(1-Smooth(Clamp((along-3.8f)/.8f,0,1)))*(1-Smooth(Clamp((across-1.4f)/.3f,0,1)));
             // 원형 상판이 등록되면 이전 사각형 폴백을 발판으로 남기지 않는다.
             if(deckTriangles.Count==0)ground=Math.Max(ground,Lerp(ground,.12f,deck));
-            if(surfaces!=null&&x>=0&&x<=80&&z<=0&&z>=-80)
+            if(surfaces!=null&&x>=0&&x<=fieldSize&&z<=0&&z>=-fieldSize)
             {
                 float u=x/SurfaceStep,v=-z/SurfaceStep;int ix=Math.Min((int)u,SurfaceCells-2),iy=Math.Min((int)v,SurfaceCells-2);
                 float a=Surface(ix,iy),b=Surface(ix+1,iy),c=Surface(ix,iy+1),d=Surface(ix+1,iy+1);
@@ -155,8 +172,9 @@ namespace Exoduser.UnityPort
             }
             surface=Math.Max(surface,-.25f);
             float outside=Smooth(Clamp(-d/2.8f,0,1));
-            float east=Smooth(Clamp((x-43)/6,0,1))*(1-Smooth(Clamp((z+58)/12,0,1)));
-            float northEast=Smooth(Clamp((x-62)/6,0,1))*Smooth(Clamp((z+34)/10,0,1));
+            float K=A2Scale.K;   // 늪 경계의 위치(43·62·-58·-34)만 ×K, 램프 폭(6·12·10)과 사인 파장은 그대로
+            float east=Smooth(Clamp((x-43*K)/6,0,1))*(1-Smooth(Clamp((z+58*K)/12,0,1)));
+            float northEast=Smooth(Clamp((x-62*K)/6,0,1))*Smooth(Clamp((z+34*K)/10,0,1));
             surface+=outside*(.25f-1.9f*Math.Max(east,northEast));
             // 키샷 지류는 발목 깊이의 실제 얕은 개울이다. 원본 XY 보행 경계는 바꾸지 않는다.
             float channel=1-Smooth(Clamp((A2ForestLayout.BranchDistance(x,z)+.15f)/1.4f,0,1));
@@ -173,7 +191,7 @@ namespace Exoduser.UnityPort
                 float ax=xyz[a],az=-xyz[a+2],bx=xyz[b],bz=-xyz[b+2],cx=xyz[c],cz=-xyz[c+2];
                 float det=(bz-cz)*(ax-cx)+(cx-bx)*(az-cz);if(Math.Abs(det)<.000001f)continue;
                 float minX=Math.Min(ax,Math.Min(bx,cx)),maxX=Math.Max(ax,Math.Max(bx,cx)),minZ=Math.Min(az,Math.Min(bz,cz)),maxZ=Math.Max(az,Math.Max(bz,cz));
-                if(maxX<0||minX>80||maxZ<0||minZ>80)continue;
+                if(maxX<0||minX>fieldSize||maxZ<0||minZ>fieldSize)continue;
                 int x0=Math.Max(0,(int)Math.Floor(minX/SurfaceStep)),x1=Math.Min(SurfaceCells-1,(int)Math.Ceiling(maxX/SurfaceStep));
                 int y0=Math.Max(0,(int)Math.Floor(minZ/SurfaceStep)),y1=Math.Min(SurfaceCells-1,(int)Math.Ceiling(maxZ/SurfaceStep));
                 for(int y=y0;y<=y1;y++)for(int x=x0;x<=x1;x++)
@@ -242,16 +260,20 @@ namespace Exoduser.UnityPort
         public float[,] DistantForestSites()
         {
             var sites=new List<float[]>();
-            for(int row=0;row<=20;row++)for(int col=0;col<=25;col++)
+            // 격자: x -85…FieldSize+85, z -(FieldSize+60)…60 (×1: col 0..25, row 0..20), 10u 간격은 그대로
+            int cols=(int)Math.Round((fieldSize+170)/10),rows=(int)Math.Round((fieldSize+120)/10);
+            for(int row=0;row<=rows;row++)for(int col=0;col<=cols;col++)
             {
                 float x=-85+col*10+2.4f*(float)Math.Sin(row*.9f+col*1.7f);
-                float z=-140+row*10+1.8f*(float)Math.Sin(col*.71f+row*.93f),d=Distance(x,z);
+                float z=-(fieldSize+60)+row*10+1.8f*(float)Math.Sin(col*.71f+row*.93f),d=Distance(x,z);
                 if(d>-12||d< -110)continue;sites.Add(new[]{x,z,(float)row,(float)col});
             }
             var result=new float[sites.Count,4];for(int i=0;i<sites.Count;i++)for(int j=0;j<4;j++)result[i,j]=sites[i][j];return result;
         }
         public bool TreeSite(float x,float z,float radius) { return Distance(x,z)<-radius-.6f; }
-        public static readonly float[,] Regions=new float[,]{{33,-70},{53,-61},{22,-59},{40,-50},{16,-40},{41,-35},{65,-38},{40,-25},{25,-19},{58,-17},{40,-7}};
+        // 전투 구역 중심(×1 좌표 × K). 11-08: 위치만 ×K.
+        public static readonly float[,] Regions=Scaled(new float[,]{{33,-70},{53,-61},{22,-59},{40,-50},{16,-40},{41,-35},{65,-38},{40,-25},{25,-19},{58,-17},{40,-7}});
+        static float[,] Scaled(float[,] a) { var r=new float[a.GetLength(0),a.GetLength(1)];for(int i=0;i<r.GetLength(0);i++)for(int j=0;j<r.GetLength(1);j++)r[i,j]=a[i,j]*A2Scale.K;return r; }
         public float GroundCover(float x,float z)
         {
             if(Water(x,z)||Math.Abs(A2ForestLayout.Along(x,z))<5&&Math.Abs(A2ForestLayout.Across(x,z))<2)return 0;
