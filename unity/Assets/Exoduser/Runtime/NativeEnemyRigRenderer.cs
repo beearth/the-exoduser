@@ -80,7 +80,10 @@ namespace Exoduser.UnityPort {
   void Lighting(Vector3 ground){
    if(lights.Length==0||Time.frameCount>=nextLights){lights=FindObjectsByType<Light>(FindObjectsSortMode.None);nextLights=Time.frameCount+120;}moon=null;for(int i=0;i<4;i++){lightPositions[i]=lightColors[i]=Vector4.zero;lightDistances[i]=float.MaxValue;}
    foreach(var l in lights){if(l==null||!l.isActiveAndEnabled||l.intensity<=0)continue;if(l.type==LightType.Directional){if(moon==null||l.intensity>moon.intensity)moon=l;continue;}if(l.type!=LightType.Point)continue;float d=(l.transform.position-ground).sqrMagnitude;if(d>l.range*l.range||d>=lightDistances[3])continue;int k=3;while(k>0&&d<lightDistances[k-1]){lightDistances[k]=lightDistances[k-1];lightPositions[k]=lightPositions[k-1];lightColors[k]=lightColors[k-1];k--;}lightDistances[k]=d;var p=l.transform.position;lightPositions[k]=new Vector4(p.x,p.y,p.z,l.range);var c=l.color.linear*l.intensity;lightColors[k]=new Vector4(c.r,c.g,c.b,1);}
-   Shader.SetGlobalVector("_RigPixelMoonDirection",moon!=null?-moon.transform.forward:Vector3.up);Shader.SetGlobalColor("_RigPixelMoonColor",moon!=null?moon.color.linear*moon.intensity:Color.black);Shader.SetGlobalColor("_RigPixelAmbient",RenderSettings.ambientEquatorColor.linear);Shader.SetGlobalVectorArray("_RigPixelPointPositions",lightPositions);Shader.SetGlobalVectorArray("_RigPixelPointColors",lightColors);
+   Shader.SetGlobalVector("_RigPixelMoonDirection",moon!=null?-moon.transform.forward:Vector3.up);var moonLight=moon!=null?moon.color.linear*moon.intensity:Color.black;
+   // 11-07 1-1 숲은 주광이 어두운 청색이다. 적은 먼 거리(25~40m)에서도 읽혀야 하므로 적 렌더에만 주광 밝기 하한(휘도 1.5)을 둔다.
+   if(NativeRemodel3D.ForestA2&&moon!=null){float lum=moonLight.grayscale;if(lum<1.5f)moonLight*=1.5f/Mathf.Max(.05f,lum);}
+   Shader.SetGlobalColor("_RigPixelMoonColor",moonLight);Shader.SetGlobalColor("_RigPixelAmbient",RenderSettings.ambientEquatorColor.linear);Shader.SetGlobalVectorArray("_RigPixelPointPositions",lightPositions);Shader.SetGlobalVectorArray("_RigPixelPointColors",lightColors);
   }
   void LateUpdate(){
    if(failed||simulation==null||capture==null)return;var camera=cameraSource();if(camera==null||!camera.isActiveAndEnabled||!NativeRemodel3D.Active){foreach(var a in actors.Values)Fallback(a);return;}HideLayer(camera);HideLayer(Camera.main);double before=Time.realtimeSinceStartupAsDouble;
@@ -99,7 +102,7 @@ namespace Exoduser.UnityPort {
    float extent=size*wpp*texel,cx=Mathf.Round((box.center.x-foot.x)/texel)*wpp*texel,cy=Mathf.Round((box.center.y-foot.y)/texel)*wpp*texel;
    capture.orthographicSize=extent*.5f;capture.aspect=1;capture.transform.SetPositionAndRotation(a.ground+camera.transform.right*cx+camera.transform.up*cy-camera.transform.forward*8,camera.transform.rotation);request.destination=a.texture;
    var snap=NativeHd2D.SnapAnchor(camera,a.ground);a.image.transform.SetPositionAndRotation(snap+camera.transform.right*cx+camera.transform.up*cy,camera.transform.rotation);a.image.transform.localScale=new Vector3(extent,extent,1);a.image.sortingOrder=(int)a.enemy.Y;
-   Lighting(a.ground);var direction=moon!=null?-moon.transform.forward:new Vector3(-.6f,1,-.4f);a.composite.SetVector("_RimDirection",new Vector4(Vector3.Dot(direction,camera.transform.right),Vector3.Dot(direction,camera.transform.up),0,0));a.composite.SetColor("_RimColor",(moon!=null?moon.color:new Color(.62f,.75f,.9f))*.08f);
+   Lighting(a.ground);var direction=moon!=null?-moon.transform.forward:new Vector3(-.6f,1,-.4f);a.composite.SetVector("_RimDirection",new Vector4(Vector3.Dot(direction,camera.transform.right),Vector3.Dot(direction,camera.transform.up),0,0));a.composite.SetColor("_RimColor",NativeRemodel3D.ForestA2?new Color(.58f,.72f,1f)*.16f:(moon!=null?moon.color:new Color(.62f,.75f,.9f))*.08f);
    foreach(var r in a.skins)r.forceRenderingOff=false;
    try{if(!RenderPipeline.SupportsRenderRequest(capture,request))throw new InvalidOperationException("URP SingleCameraRequest unsupported");RenderPipeline.SubmitRenderRequest(capture,request);}finally{foreach(var r in a.skins)r.forceRenderingOff=true;}
    a.hasFrame=a.ready=true;a.image.enabled=true;HideSprites(a);RenderCount++;

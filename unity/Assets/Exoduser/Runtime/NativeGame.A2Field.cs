@@ -38,15 +38,16 @@ namespace Exoduser.UnityPort
             {
                 if(light.type==LightType.Directional)
                 {
-                    light.intensity=3.2f;light.color=new Color(.85f,.90f,1);light.shadows=LightShadows.Soft;
-                    light.shadowStrength=.55f;light.shadowBias=.035f;light.shadowNormalBias=.12f;light.transform.rotation=Quaternion.Euler(49,-32,0);
+                    // 11-07 PoE2 1장 숲: 어두운 청색 주광(#32426d~#798aad 계열). 화면 밝기는 캐릭터 주변 차가운 빛이 맡는다.
+                    light.intensity=A2MoonIntensity;light.color=A2MoonColor;light.shadows=LightShadows.Soft;
+                    light.shadowStrength=.62f;var moonData=light.GetComponent<UniversalAdditionalLightData>();if(moonData==null)moonData=light.gameObject.AddComponent<UniversalAdditionalLightData>();moonData.softShadowQuality=SoftShadowQuality.High;light.shadowBias=.035f;light.shadowNormalBias=.12f;light.transform.rotation=Quaternion.Euler(49,-32,0);
                 }
                 else if(light.name.StartsWith("Pool_",StringComparison.Ordinal))light.enabled=false;
             }
             foreach(var root in r3Roots)if(root!=null)foreach(var volume in root.GetComponentsInChildren<Volume>(true))
             {
                 var profile=volume.profile;if(profile==null)continue;ColorAdjustments tone;
-                if(profile.TryGet<ColorAdjustments>(out tone)){tone.postExposure.Override(.55f);tone.contrast.Override(16);}
+                if(profile.TryGet<ColorAdjustments>(out tone)){tone.postExposure.Override(.9f);tone.contrast.Override(16);}   // 11-07 RETOUCH: 화면 평균 명도 .17 → ≥.20
             }
             NativeTransitionProgress.Report("a2-lights",.04f);yield return null;
             // Required assets (FieldRequirements): a missing one fails the assembly (exception -> abort policy -> 2D) instead of opening a half-built field as ready.
@@ -78,12 +79,15 @@ namespace Exoduser.UnityPort
             A2FieldGround();NativeTransitionProgress.Report("a2-ground",.90f);yield return null;
             A2FieldGroundCover();NativeTransitionProgress.Report("a2-ground-cover",.95f);yield return null;
             A2BridgeMoss();NativeTransitionProgress.Report("a2-bridge-moss",.97f);yield return null;
+            A2GroundDebris();NativeTransitionProgress.Report("a2-ground-debris",.98f);yield return null;
             A2FieldAtmosphere();NativeTransitionProgress.Report("a2-atmosphere",.99f);yield return null;
             A2SightSetup();
             if(r3Cam==null)throw new InvalidOperationException("A2 field camera destroyed during assembly");   // Unity null: scene reclaimed while yielding
             var aa=r3Cam.GetUniversalAdditionalCameraData();aa.antialiasing=NativeHd2D.Enabled?AntialiasingMode.None:AntialiasingMode.SubpixelMorphologicalAntiAliasing;aa.antialiasingQuality=AntialiasingQuality.High;
             aa.requiresDepthTexture=true;r3Cam.depthTextureMode|=DepthTextureMode.Depth;
-            r3Cam.backgroundColor=new Color(.105f,.145f,.17f);r3Cam.farClipPlane=220;
+            r3Cam.backgroundColor=A2FogColor;r3Cam.farClipPlane=220;
+            if(hellHeroRim!=null){hellHeroRim.color=new Color(.54f,.67f,1f);hellHeroRim.range=6f;hellHeroRim.intensity=2.6f;}
+            if(r3Marker!=null)foreach(var l in r3Marker.GetComponentsInChildren<Light>(true))if(l.type==LightType.Spot)l.color=new Color(.62f,.74f,1f);
             A2Ambient();Debug.Log("[A2 전체필드] 원본40000타일 보행·시야 불변/全域地面·외곽·접합 조립 "+timer.ElapsedMilliseconds+"ms");
         }
         void A2FieldGround()
@@ -292,6 +296,13 @@ namespace Exoduser.UnityPort
             var screen=R3Track(new Mesh{name="높이 안개 화면 적분"});screen.vertices=new[]{new Vector3(-1,-1,0),new Vector3(1,-1,0),new Vector3(-1,1,0),new Vector3(1,1,0)};screen.triangles=new[]{0,2,1,1,2,3};
             screen.bounds=new Bounds(Vector3.zero,Vector3.one*10000);
             haze.AddComponent<MeshFilter>().sharedMesh=screen;var fog=haze.AddComponent<MeshRenderer>();fog.sharedMaterial=R3Track(new Material(Shader.Find("EXODUSER/A2HeightFog")));fog.shadowCastingMode=ShadowCastingMode.Off;
+            {
+                // 층 안개 기준 높이 = 걷는 면 평균 지면. 시작 8m·최대 알파 .45·높이 7.5m 컷오프(맵 분석 13, PoE2 lightfog 750u).
+                float sum=0;int count=0;for(int gz=1;gz<8;gz++)for(int gx=1;gx<8;gx++){float wx=gx*10,wz=-gz*10;if(Map.CanMove(wx*100,-wz*100,15)){sum+=a2Field.Height(wx,wz);count++;}}
+                var m=fog.sharedMaterial;m.SetColor("_Color",A2FogColor);m.SetFloat("_Start",8);m.SetFloat("_End",90);m.SetFloat("_MaxAlpha",.45f);m.SetFloat("_Base",count>0?sum/count:0);m.SetFloat("_Cutoff",7.5f);
+            }
+            A2CanopyShadows();
+            A2TreeHeightDarken();
             var shader=Shader.Find("EXODUSER/A2Atmosphere");
             var moonDirection=Quaternion.Euler(49,-32,0)*Vector3.forward;
             foreach(var root in r3Roots)if(root!=null)foreach(var light in root.GetComponentsInChildren<Light>(true))if(light.enabled&&light.type==LightType.Directional)moonDirection=light.transform.forward;
@@ -302,6 +313,71 @@ namespace Exoduser.UnityPort
                 var go=new GameObject("A2 필드 국소 빛기둥");go.transform.SetParent(a2Root.transform,false);go.AddComponent<MeshFilter>().sharedMesh=mesh;
                 var r=go.AddComponent<MeshRenderer>();r.sharedMaterial=R3Track(new Material(shader));r.sharedMaterial.SetColor("_Color",new Color(1.1f,1.4f,1.65f,.065f));r.shadowCastingMode=ShadowCastingMode.Off;
             }
+        }
+        // 11-07 PoE2 black_shadowonly: 보이지 않는 수관 판이 바닥에 그림자만 드리워 빛 웅덩이를 만든다. 판은 화면 위 16m, 그림자 전용.
+        // 11-07 RETOUCH: 큰 노이즈 판 대신 잎 덩어리 카드 여러 장(4~11m, 높이 13~19m, 회전 무작위). 크기가 섞인 얼룩, 그늘 덮개 목표 25~40%.
+        // 경계는 셰이더의 그림자맵 텍셀 디더 + 달빛 High 소프트 섀도로 넓은 반그림자. 검수용 --unity-a2-no-canopy는 덮개 측정 대조용으로 끈다.
+        void A2CanopyShadows()
+        {
+            if(System.Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-a2-no-canopy")>=0){Debug.Log("[A2 수관 그림자] 검수용 끔");return;}
+            var shader=Shader.Find("EXODUSER/A2CanopyShadow");if(shader==null){Debug.LogError("[A2 수관 그림자] 셰이더 누락");return;}
+            var root=new GameObject("A2 그림자 전용 수관");root.transform.SetParent(a2Root.transform,false);
+            var mesh=R3Track(new Mesh{name="수관 잎 덩어리 카드"});mesh.vertices=new[]{new Vector3(-.5f,0,-.5f),new Vector3(.5f,0,-.5f),new Vector3(-.5f,0,.5f),new Vector3(.5f,0,.5f)};
+            mesh.uv=new[]{new Vector2(0,0),new Vector2(1,0),new Vector2(0,1),new Vector2(1,1)};
+            mesh.normals=new[]{Vector3.up,Vector3.up,Vector3.up,Vector3.up};mesh.triangles=new[]{0,2,1,1,2,3};mesh.RecalculateBounds();
+            var materials=new Material[4];
+            for(int m=0;m<materials.Length;m++){materials[m]=R3Track(new Material(shader));materials[m].SetFloat("_Leaf",.75f+.2f*m);materials[m].SetFloat("_Holes",.28f+.03f*m);materials[m].SetFloat("_Soft",.22f);materials[m].SetFloat("_Seed",m*31.7f);}
+            var rng=new System.Random(1107);int count=0;
+            for(int i=0;i<256;i++)
+            {
+                float size=4+7*(float)Math.Pow(rng.NextDouble(),1.6);float height=13+6*(float)rng.NextDouble();
+                // 그림자가 떨어질 바닥 점을 고르고, 달빛 방향(49°,-32°)으로 높이만큼 거슬러 카드를 둔다.
+                // 지터 격자(16×16칸, 칸 5.75m): 무작위 배치는 장면마다 덮개가 17~58%로 들쭉날쭉했다.
+                if(rng.NextDouble()>A2CanopyKeep)continue;int cell=i;float gx=-6+(cell%16+(float)rng.NextDouble())*5.75f,gz=6-(cell/16+(float)rng.NextDouble())*5.75f;
+                float k=height/16f;float cx=gx+7.5f*k,cz=gz-12f*k;
+                var go=new GameObject("수관 잎 덩어리 "+i);go.transform.SetParent(root.transform,false);
+                go.transform.SetPositionAndRotation(new Vector3(cx,a2Field.Height(Mathf.Clamp(gx,1,79),Mathf.Clamp(gz,-79,-1))+height,cz),Quaternion.Euler(0,(float)rng.NextDouble()*360,0));
+                go.transform.localScale=new Vector3(size,1,size*(.7f+.6f*(float)rng.NextDouble()));
+                go.AddComponent<MeshFilter>().sharedMesh=mesh;var r=go.AddComponent<MeshRenderer>();
+                r.sharedMaterial=materials[i%materials.Length];r.shadowCastingMode=ShadowCastingMode.ShadowsOnly;r.receiveShadows=false;count++;
+            }
+            Debug.Log("[A2 수관 그림자] 잎 덩어리 카드 "+count+"장, 4~11m, 높이 13~19m");
+        }
+        const float A2CanopyKeep=.84f;   // 256칸 중 약 215칸에 카드(그늘 덮개 목표 25~40%)
+        // 11-07 PoE2 HeightGradientDarkenWS: 고목 윗부분을 지면 위 4.5m부터 3m 구간 .75배까지 어둡게 한다. URP Lit 불투명 재질만 바꾼다.
+        void A2TreeHeightDarken()
+        {
+            var shader=Shader.Find("EXODUSER/A2TreeLit");if(shader==null){Debug.LogError("[A2 고목 어둡게] 셰이더 누락");return;}
+            var map=new Dictionary<Material,Material>();var block=new MaterialPropertyBlock();int renderers=0;
+            foreach(Transform tree in a2Root.transform)
+            {
+                if(tree.name!="A2_Hollow_Loft_Tree"&&tree.name!="A2_Ancient_Rotten_Tree"&&tree.name!="A2 전경 바깥 거목")continue;
+                float baseY=tree.position.y;
+                foreach(var r in tree.GetComponentsInChildren<MeshRenderer>(true))
+                {
+                    var mats=r.sharedMaterials;bool changed=false;
+                    for(int i=0;i<mats.Length;i++)
+                    {
+                        var s=mats[i];if(s==null||s.shader==null||s.shader.name!="Universal Render Pipeline/Lit")continue;
+                        if(s.HasProperty("_Surface")&&s.GetFloat("_Surface")>.5f||s.HasProperty("_AlphaClip")&&s.GetFloat("_AlphaClip")>.5f)continue;
+                        if(!map.TryGetValue(s,out var d))
+                        {
+                            d=R3Track(new Material(shader){name=s.name+" (높이 어둡게)"});
+                            foreach(var key in new[]{"_BaseMap","_BumpMap","_MetallicGlossMap","_OcclusionMap"})if(s.HasProperty(key)&&s.GetTexture(key)!=null)d.SetTexture(key,s.GetTexture(key));
+                            if(s.HasProperty("_BaseMap")){d.SetTextureScale("_BaseMap",s.GetTextureScale("_BaseMap"));d.SetTextureOffset("_BaseMap",s.GetTextureOffset("_BaseMap"));}
+                            foreach(var key in new[]{"_BumpScale","_Metallic","_Smoothness","_OcclusionStrength"})if(s.HasProperty(key))d.SetFloat(key,s.GetFloat(key));
+                            if(s.HasProperty("_BaseColor"))d.SetColor("_BaseColor",s.GetColor("_BaseColor"));
+                            d.SetFloat("_HasGloss",s.HasProperty("_MetallicGlossMap")&&s.GetTexture("_MetallicGlossMap")!=null?1:0);
+                            if(s.HasProperty("_OcclusionMap")&&s.GetTexture("_OcclusionMap")==null)d.SetFloat("_OcclusionStrength",0);
+                            map[s]=d;
+                        }
+                        mats[i]=d;changed=true;
+                    }
+                    if(!changed)continue;
+                    r.sharedMaterials=mats;r.GetPropertyBlock(block);block.SetFloat("_DarkBase",baseY);r.SetPropertyBlock(block);renderers++;
+                }
+            }
+            Debug.Log("[A2 고목 어둡게] 렌더러 "+renderers+" 재질 "+map.Count+" (4.5m부터 3m 구간 .75배)");
         }
     }
 }
