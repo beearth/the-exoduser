@@ -14,8 +14,9 @@ using Exoduser.UnityPort.Core;
 static partial class P
 {
     // spec §10.2: telegraph (tele), recovery (rec), cooldown (cd) per move, Moves[] order
-    static readonly int[] SpecTele = { 32, 48, 54, 40, 38, 60, 50, 30, 60, 70, 40, 90 };
-    static readonly int[] SpecRec = { 80, 70, 70, 60, 60, 80, 70, 60, 60, 70, 60, 90 };   // 2026-10-28 M3 unification: #4 and #5 -> 60, #10 -> 70
+    // 2026-11-07 tempo (reference study, boss board 11-07 table): big single-hit moves 66-72 f telegraph / 110 f recovery, small floor 32, slash chain recovery 60
+    static readonly int[] SpecTele = { 32, 72, 66, 40, 38, 72, 66, 32, 60, 72, 40, 90 };
+    static readonly int[] SpecRec = { 60, 110, 110, 60, 60, 110, 110, 60, 60, 110, 60, 90 };
     static readonly int[] SpecCd = { 110, 160, 130, 160, 120, 200, 220, 200, 320, 180, 200, 2400 };
     static readonly List<string> motionNotes = new List<string>();
     static double maxWalkEver, maxTurnWalkEver, maxTurnWindEver, maxVelEver, maxDashEver; static int parryBonusChecks, burrowPillarChecks;
@@ -30,7 +31,7 @@ static partial class P
             Check(mv[i].Tele == SpecTele[i], "§10.2 #" + (i + 1) + " " + mv[i].Id + " tele " + mv[i].Tele + " vs " + SpecTele[i]);
             Check(mv[i].Rec == SpecRec[i], "§10.2 #" + (i + 1) + " " + mv[i].Id + " rec " + mv[i].Rec + " vs " + SpecRec[i]);
             Check(mv[i].Cd == SpecCd[i], "§10.2 #" + (i + 1) + " " + mv[i].Id + " cooldown " + mv[i].Cd + " vs " + SpecCd[i]);
-            Check(mv[i].Tele >= 24, "M1 #" + (i + 1) + " telegraph >= 24 (" + mv[i].Tele + ")");
+            Check(mv[i].Tele >= DruidRemodelData.MinTele, "M1 #" + (i + 1) + " telegraph >= " + DruidRemodelData.MinTele + " (" + mv[i].Tele + ")");
         }
         var big = mv.Where((m, i) => i != 0 && i != 7).Select(m => m.Tele).Min();
         Check(big >= 30, "M1 smallest non-slash telegraph " + big);
@@ -40,7 +41,12 @@ static partial class P
         Check(DruidRemodelData.PoisonDashSpeed == 4 && DruidRemodelData.PoisonDashTicks == 45, "#8 poison dash 4 px/tick x 45 f");
         Check(DruidRemodelData.GapTicks.SequenceEqual(new[] { 45, 36, 30 }) && DruidRemodelData.ComboLinkTicks == 12, "M4 gaps 45 / 36 / 30, combo link 12");
         Check(DruidRemodelData.WalkSpeed == 1.1 && DruidRemodelData.WalkAccelTicks == 20 && DruidRemodelData.WalkStopTicks == 12, "M5 walk 1.1 px/tick, accel 20 f, stop 12 f");
-        Check(Math.Abs(DruidRemodelData.WalkTurn - 3 * Math.PI / 180) < 1e-12 && Math.Abs(DruidRemodelData.TeleTurn - 2 * Math.PI / 180) < 1e-12 && DruidRemodelData.AimFixTicks == 12, "M2 turn 3 deg / 2 deg, aim fixed 12 f before");
+        Check(Math.Abs(DruidRemodelData.WalkTurn - 3 * Math.PI / 180) < 1e-12 && Math.Abs(DruidRemodelData.TeleTurn - 2 * Math.PI / 180) < 1e-12 && DruidRemodelData.AimFixTicks == 20, "M2 turn 3 deg / 2 deg, aim fixed 20 f before (11-07 tempo, was 12)");
+        // 11-07 tempo: phase scaling and the big-move numbers
+        Check(DruidRemodelData.Phases[0].TeleM == 1.0 && DruidRemodelData.Phases[1].TeleM == 0.8 && DruidRemodelData.Phases[2].TeleM == 0.8, "tempo: telegraph x1.0 / 0.8 / 0.8");
+        Check(DruidRemodelData.RecoveryMul.SequenceEqual(new[] { 1.0, 0.7, 0.7 }) && DruidRemodelData.MinRecovery == 60 && DruidRemodelData.Set.MinTele == 32 && DruidRemodelData.Set.MinRecovery == 60, "tempo: recovery x1.0 / 0.7 / 0.7, floor 60 f; telegraph floor 32 f");
+        Check(mv[1].Tele >= 66 && mv[1].Tele <= 84 && mv[1].Rec >= 100 && mv[1].Rec <= 150, "tempo: the signature slam telegraph 66-84 f, recovery 100-150 f");
+        Check(DruidRemodelData.SlashLinkTele + DruidRemodelData.SlashActive >= 54 && DruidRemodelData.SlashLinkTele + DruidRemodelData.SlashActive <= 66, "tempo: slash hit-to-hit interval " + (DruidRemodelData.SlashLinkTele + DruidRemodelData.SlashActive) + " f within 54-66");
         Check(DruidRemodelData.Phases.Max(p => p.SpdM) * DruidRemodelData.WalkSpeed <= 1.32 + 1e-9, "§10.1 maximum 1.32 px/tick");
         Check(DruidRemodelData.ParryRecoveryBonus == 30 && DruidRemodelData.HeartbeatSafeRadius == 260 && DruidRemodelData.HeartbeatPause == 30, "parry +30 f, heartbeat safe ring 260, pause 30");
     }
@@ -151,7 +157,7 @@ static partial class P
             {
                 if (t.Live) continue;
                 string key = t.MoveId + "/" + (int)t.Kind + "/" + t.Index + "/" + t.Serial;
-                if (!totalSeen.ContainsKey(key)) { totalSeen[key] = t.Total; CheckTotal(name, t); }
+                if (!totalSeen.ContainsKey(key)) { totalSeen[key] = t.Total; CheckTotal(name, t, d.BossPhase); }
                 if (t.MoveId == "burrowStrike" && t.Shape == DruidTeleShape.Circle && s.DruidPillars.Count > 0)
                 {   // RB1-3: he comes up on the side of a pillar, just outside it (pillar radius + body + 24)
                     double want = 80 + d.R + 24; bool onPillar = s.DruidPillars.Any(pi => Math.Abs(Math.Sqrt((t.X - pi.X) * (t.X - pi.X) + (t.Y - pi.Y) * (t.Y - pi.Y)) - want) < 3.0);
@@ -164,17 +170,19 @@ static partial class P
 
         static double WrapA(double a) { while (a > Math.PI) a -= Math.PI * 2; while (a < -Math.PI) a += Math.PI * 2; return a; }
 
-        static void CheckTotal(string name, DruidTelegraph t)
+        static double Sc(int tele, int phase) { return Math.Max((int)(tele * DruidRemodelData.Phases[Math.Min(Math.Max(phase, 0), 2)].TeleM), DruidRemodelData.MinTele); }   // StartPattern: I(Tele x TeleM), floor MinTele
+
+        static void CheckTotal(string name, DruidTelegraph t, int phase)
         {
             var mv = DruidRemodelData.Moves; int i = t.Move - 1; double want = -1;
             switch (t.MoveId)
             {
-                case "slashCombo": want = (t.Index == 0 ? mv[0].Tele : DruidRemodelData.SlashLinkTele) + DruidRemodelData.SlashActive - DruidRemodelData.SlashHitAt; break;
-                case "slam": want = mv[1].Tele + DruidRemodelData.SlamActive; break;
-                case "charge": case "groundFissure": case "fan": case "grab": case "summon": case "tideWave": case "seekerMines": want = mv[i].Tele; break;
-                case "burrowStrike": want = mv[6].Tele + 45 + DruidRemodelData.BurrowEruptWarn; break;
+                case "slashCombo": want = (t.Index == 0 ? Sc(mv[0].Tele, phase) : DruidRemodelData.SlashLinkTele) + DruidRemodelData.SlashActive - DruidRemodelData.SlashHitAt; break;
+                case "slam": want = Sc(mv[1].Tele, phase) + DruidRemodelData.SlamActive; break;
+                case "charge": case "groundFissure": case "fan": case "grab": case "summon": case "tideWave": case "seekerMines": want = Sc(mv[i].Tele, phase); break;
+                case "burrowStrike": want = Sc(mv[6].Tele, phase) + 45 + DruidRemodelData.BurrowEruptWarn; break;
                 case "chaseAoe": want = DruidRemodelData.ChaseZoneWarn; break;
-                case "heartbeat": want = t.Index == 0 ? mv[11].Tele : DruidRemodelData.HeartbeatBeatWind; break;
+                case "heartbeat": want = t.Index == 0 ? (int)(mv[11].Tele * DruidRemodelData.Phases[Math.Min(Math.Max(phase, 0), 2)].TeleM) : DruidRemodelData.HeartbeatBeatWind; break;
             }
             if (t.MoveId == "groundFissure" && t.Shape == DruidTeleShape.Circle) return;
             if (want >= 0) Check(Math.Abs(t.Total - want) < 1e-9, name + ": API Total of " + t.MoveId + " (index " + t.Index + ") " + t.Total + " vs " + want);

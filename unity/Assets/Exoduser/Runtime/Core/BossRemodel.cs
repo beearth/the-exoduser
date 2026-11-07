@@ -82,6 +82,8 @@ namespace Exoduser.UnityPort.Core
         public int WalkAccelTicks = 20, WalkStopTicks = 12;                 // 0 -> max / max -> 0
         public double WalkTurn = 3 * Math.PI / 180, TeleTurn = 2 * Math.PI / 180;   // rad per tick: walking / during a telegraph
         public int AimFixTicks = 12;                                        // the aim is frozen this many ticks before the move goes off
+        public int MinTele, MinRecovery;                                    // 0 = off. 11-07 tempo: floor of a scaled telegraph (not for forced moves) / of a scaled recovery
+        public double[] RecoveryMul;                                        // per life, null = 1: recovery x this (after the table value, before the parry bonus)
         public int[] GapTicks = { 45, 36, 30 };                             // recovery end -> next telegraph, per life
         public int ComboLinkTicks = 12;                                     // between the moves of a combo
         // arena furniture (RB1-3): root pillars on a ring of PillarRingFraction x the arena radius, first one at PillarStartDeg (0 = none)
